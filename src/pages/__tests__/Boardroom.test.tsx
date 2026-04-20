@@ -5,7 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import React from "react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
-const isDemoMode = true; // Safe default for demo mode
+
 
 vi.mock("@/integrations/supabase/client", () => ({
   supabase: {

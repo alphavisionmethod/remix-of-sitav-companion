@@ -1,0 +1,13 @@
+{
+  "generatedAt": "2026-04-20T18:38:05.746Z",
+  "gate": "hardcoded-demo-flags",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "scannedRoots": [
+    "src/pages",
+    "src/components"
+  ],
+  "hits": [],
+  "issues": []
+}

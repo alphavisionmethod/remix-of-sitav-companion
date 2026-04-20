@@ -89,7 +89,7 @@
 | PWA | 🟢 READY | service worker live |
 | Edge (Supabase Functions) | 🟢 READY | 194 fns deployed |
 | Electron desktop | 🟢 READY | layout gate GREEN |
-| OS-ISO (sovereign Linux) | 🟢 READY | ISO produced by CI nightly + on release; 247/247 BLOCK GREEN — see §12.1 |
+| OS-ISO (sovereign Linux) | 🟢 READY | ISO produced by CI nightly + on release; 248/248 BLOCK GREEN — see §12.1 |
 | OVA (VM appliance) | 🟢 READY | OVA wired to release events; autoinstall graduated from live-from-CD (Wave 6) |
 | RAW IMG (cloud-init) | 🟢 READY | IMG produced by CI; flashable + cloud-import verified |
 | iOS / Android (Capacitor) | ⚪ DEFERRED | mobile-deferral attestation signed |
@@ -404,16 +404,26 @@ Tables: `advisor_board_actions` · `advisor_action_queue` · `advisor_action_pro
 
 ## Part XV — Mock Data / Demo Mode / Stubs Register
 
-### 15.1 Stub scan summary
+### 15.1 Stub scan summary (post-Wave-7)
 
-| Cluster | TODO/FIXME/MOCK/placeholder hits |
-|---|---:|
-| `src/` total | **1 038** |
+| Category | Count | Real risk |
+|---|---:|---|
+| Doc-strings / JSDoc / future-work prose | ~900 | None — informational |
+| Test fixtures (`vi.mock`, `__tests__/**`) | ~120 | None — test-only |
+| **Hardcoded `isDemoMode = true` at module scope (prod)** | **0** (was 14) | **Resolved** |
+| **Drifted `useDataMode()` wiring** | **0** (was 3) | **Resolved** |
+| **Frozen-demo pages** (flag never shadowed) | **0** (was 2) | **Resolved** |
+
+Live stub-density advisory (`generated/stub-density-report.json`):
+TODO=1, FIXME=0, XXX=3, HACK=0 across 3 files. Baseline=54 (slack 50).
 
 ### 15.2 Risk classification
-- Most hits are doc-strings, future-work markers, or test fixtures
-- No `MOCK_AUTH_USER` / `BYPASS_RLS` / `DEMO_MODE_ENABLED=true` flags found in production paths
-- Recommend: add `check-stub-density` advisory gate to track regression
+
+- Zero hardcoded demo overrides remain in production pages/components
+- Zero `MOCK_AUTH_USER` / `BYPASS_RLS` / `DEMO_MODE_ENABLED=true` flags
+- All pages derive demo state from canonical `useAuth().isDemo`
+- BLOCK gate `hardcoded-demo-flags` (#248) prevents regression
+- Advisory gate `stub-density` tracks `TODO|FIXME|XXX|HACK` drift
 
 ---
 

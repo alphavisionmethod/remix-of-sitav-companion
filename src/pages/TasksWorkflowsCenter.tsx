@@ -25,7 +25,7 @@ import {
   GitBranch, Kanban, ListOrdered, Target, Flame, Pause, Play,
 } from "lucide-react";
 
-const isDemoMode = true; // Safe default for demo mode
+
 
 
 

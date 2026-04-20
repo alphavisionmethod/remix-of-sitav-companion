@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-20T18:26:18.141Z",
+  "generatedAt": "2026-04-20T18:39:17.594Z",
   "gate": "os-release-readiness",
   "phase": "phase-12-native-deployability",
   "inputs": [
@@ -1728,6 +1728,13 @@
     {
       "file": "generated/raw-img-artifact-presence-report.json",
       "gate": "raw-img-artifact-presence",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/hardcoded-demo-flags-report.json",
+      "gate": "hardcoded-demo-flags",
       "ok": true,
       "errors": 0,
       "warnings": 0

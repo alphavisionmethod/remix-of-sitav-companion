@@ -343,6 +343,11 @@ const REQUIRED_GATES = [
   "iso-artifact-presence",
   "ova-artifact-presence",
   "raw-img-artifact-presence",
+  // Wave 7 — Stub & Demo-Flag Hardening (BLOCK gate #248)
+  // Prevents reintroduction of hardcoded module-scope `isDemoMode = true|false`
+  // declarations in production pages/components per
+  // constraints/reality-mode-wiring. Excludes __tests__.
+  "hardcoded-demo-flags",
 ];
 
 // Mobile Deployment Closure — RETIRED (2026-04-19)
@@ -385,6 +390,9 @@ const REQUIRED_OUTPUT_WRITERS: Record<string, string> = {
     "scripts/architecture/checks/check-ova-artifact-presence.ts",
   "raw-img-artifact-presence":
     "scripts/architecture/checks/check-raw-img-artifact-presence.ts",
+  // Wave 7 lock-in
+  "hardcoded-demo-flags":
+    "scripts/architecture/checks/check-hardcoded-demo-flags.ts",
 };
 const writerStartupErrors: string[] = [];
 for (const [gateId, scriptPath] of Object.entries(REQUIRED_OUTPUT_WRITERS)) {

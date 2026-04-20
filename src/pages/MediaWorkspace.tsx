@@ -11,7 +11,6 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/contexts/AuthContext";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { motion, AnimatePresence } from "framer-motion";
@@ -26,13 +25,9 @@ import {
 import { DEMO_MEDIA, type DemoMediaItem as MediaItem } from "@/data/seed/media";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
-const isDemoMode = true; // Safe default for demo mode
-
-
-
 const MediaWorkspace = () => {
-  const { user } = useAuth();
-  const { isDemoMode } = useDataMode();
+  const { user, isDemo } = useAuth();
+  const isDemoMode = isDemo;
   const [search, setSearch] = useState("");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [typeFilter, setTypeFilter] = useState("all");

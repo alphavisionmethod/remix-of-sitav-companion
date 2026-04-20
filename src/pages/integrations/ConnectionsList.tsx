@@ -16,16 +16,12 @@ import { useAuth } from "@/contexts/AuthContext";
 import { EmptyState } from "@/components/sita/SitaComponents";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
-const isDemoMode = true; // Safe default for demo mode
-
-
-
-
 export default function ConnectionsList() {
   const [tab, setTab] = useState("connections");
   const [agencyMode, setAgencyMode] = useState(false);
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, isDemo } = useAuth();
+  const isDemoMode = isDemo;
 
   // Real mode: fetch from connector_instances table
   const { data: realConnections = [] } = useQuery({

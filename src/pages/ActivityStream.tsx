@@ -12,7 +12,6 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { dbAny as db } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useMemo } from "react";
 import { cn } from "@/lib/utils";
@@ -25,8 +24,6 @@ import {
 
 import { DEMO_ACTIVITY_TIMELINE } from "@/data/fixtures/demo-data";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-
-const isDemoMode = true; // Safe default for demo mode
 
 
 
@@ -268,8 +265,8 @@ const CatchUpSummary = ({ events }: { events: any[] }) => {
 
 // ── Main Component ───────────────────────────────────────────
 const ActivityStream = () => {
-  const { user } = useAuth();
-  const { isDemoMode } = useDataMode();
+  const { user, isDemo } = useAuth();
+  const isDemoMode = isDemo;
   const [category, setCategory] = useState<FeedCategory>("all");
   const [expandedId, setExpandedId] = useState<number | null>(null);
   const [searchQuery, setSearchQuery] = useState("");

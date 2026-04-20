@@ -1,14 +1,14 @@
 # SITA OS — Release Readiness Report
 
-> Generated: 2026-04-20T18:26:18.141Z
+> Generated: 2026-04-20T18:39:17.594Z
 > Verdict: **YELLOW** ⚠️
 
 ## Summary
 
 | Metric | Value |
 |---|---|
-| Gates required | 247 |
-| Gates present  | 370 |
+| Gates required | 248 |
+| Gates present  | 371 |
 | Gates missing  | 0 |
 | Total errors   | 0 |
 | Total warnings | 4252 |
@@ -266,6 +266,7 @@
 | `iso-artifact-presence` | ✅ | 0 | 0 |
 | `ova-artifact-presence` | ✅ | 0 | 0 |
 | `raw-img-artifact-presence` | ✅ | 0 | 0 |
+| `hardcoded-demo-flags` | ✅ | 0 | 0 |
 | `ai-engineer-tab-registry (warn)` | ✅ | 0 | 0 |
 | `ai-engineer-wiring-coverage (warn)` | ✅ | 0 | 68 |
 | `ai-engineer-primitive-coverage (warn)` | ✅ | 0 | 72 |
