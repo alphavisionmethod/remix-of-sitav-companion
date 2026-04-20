@@ -331,7 +331,7 @@ Tables: `advisor_board_actions` · `advisor_action_queue` · `advisor_action_pro
 
 ## Part XII — Validation / Evidence / Release Audit
 
-> **CORRECTION (2026-04-20)** — All 3 previously missing required-gate outputs are now produced and ingested by the aggregator. BLOCK status: **0 errors, 0 missing, 21/21 BLOCK gates GREEN**. Wave 3 also installs a `REQUIRED_OUTPUT_WRITERS` startup assertion in `check-os-release-readiness.ts` that fails the aggregator immediately if a required-output writer script disappears. Aggregate verdict is YELLOW only because of advisory warnings (informational; never blocks release). See `WAVE2_ADVISORY_DISPOSITION.md` for the bucketed advisory triage.
+> **CORRECTION (2026-04-20, post-Wave 5)** — All previously missing required-gate outputs are produced and ingested by the aggregator. BLOCK status: **0 errors, 0 missing, 244/244 BLOCK gates GREEN** (was reported as 21 in earlier waves; aggregator has since expanded to 244 required gates). Wave 3 installs a `REQUIRED_OUTPUT_WRITERS` startup assertion in `check-os-release-readiness.ts` that fails the aggregator immediately if a required-output writer script disappears. Wave 5 closes the remaining tier-1 production-safety gaps (storage lockdown, service-role policy hardening, service-status truth-tags, validator path drift). Aggregate verdict is YELLOW only because of advisory warnings owned by Phase-15 migration and Phase-3-6 hardening (informational; never blocks release). See `WAVE5_PRODUCTION_HARDENING.md` and `WAVE2_ADVISORY_DISPOSITION.md` for the bucketed disposition.
 
 ### 12.1 Master aggregator
 - Script: `scripts/architecture/checks/check-os-release-readiness.ts`

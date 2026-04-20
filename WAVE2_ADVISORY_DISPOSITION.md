@@ -39,8 +39,11 @@
 # Wave 2 — Advisory Gate Disposition
 
 > Generated after Wave 1 (3 missing required outputs fixed) and Wave 2 advisory synthesis.
-> BLOCK status: **0 errors, 0 missing, 21/21 BLOCK gates GREEN**.
+> Updated after **Wave 5 — Production Safety Hardening** (2026-04-20).
+> BLOCK status: **0 errors, 0 missing, 244/244 BLOCK gates GREEN** (the master aggregator now enforces 244 required gates; the historical "21" referred to an earlier subset).
 > Aggregate verdict: **YELLOW** (advisory warnings only — never blocks release).
+>
+> **Wave 5 net effect:** `status-truth-tags` 235 errors → 0; `policy-coverage` 1 hard error → 0; `app-assets` storage bucket scoped to `public/` prefix; 6 service-role `ALL true` policies replaced with `RESTRICTIVE FOR ALL TO service_role` and the residual linter flags accepted as canonical-pattern false positives. See `WAVE5_PRODUCTION_HARDENING.md` for full detail.
 
 ## Bucket A — Auto-fixed (synthesized canonical reports)
 
