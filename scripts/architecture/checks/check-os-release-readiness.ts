@@ -299,6 +299,8 @@ const REQUIRED_GATES = [
   // Phase 18 Layout & CI Truth (2 BLOCK gates)
   "electron-domain-layout",
   "os-ci-end-to-end",
+  // Phase 19 Public Artifact Surfacing (1 BLOCK gate — mirror drift detector)
+  "public-artifact-mirror",
 ];
 
 // Mobile Deployment Closure — RETIRED (2026-04-19)
