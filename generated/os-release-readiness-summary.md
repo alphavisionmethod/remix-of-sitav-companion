@@ -1,6 +1,6 @@
 # SITA OS — Release Readiness Report
 
-> Generated: 2026-04-19T22:10:46.616Z
+> Generated: 2026-04-20T01:04:03.244Z
 > Verdict: **YELLOW** ⚠️
 
 ## Summary
@@ -11,7 +11,7 @@
 | Gates present  | 234 |
 | Gates missing  | 0 |
 | Total errors   | 0 |
-| Total warnings | 3638 |
+| Total warnings | 3621 |
 
 ## Per-gate results
 
@@ -37,7 +37,7 @@
 | `ci-artifacts-proof` | ✅ | 0 | 0 |
 | `electron-signing-readiness` | ✅ | 0 | 0 |
 | `lib-decomposition-readiness` | ✅ | 0 | 1731 |
-| `lib-ownership-drift` | ✅ | 0 | 99 |
+| `lib-ownership-drift` | ✅ | 0 | 82 |
 | `misplaced-runtime-logic` | ✅ | 0 | 0 |
 | `misplaced-data-logic` | ✅ | 0 | 0 |
 | `misplaced-domain-logic` | ✅ | 0 | 0 |
@@ -254,7 +254,7 @@
 
 ## Verdict
 
-⚠️ All required gates passed, but 3638 warning(s) present. Release is cuttable but review warnings.
+⚠️ All required gates passed, but 3621 warning(s) present. Release is cuttable but review warnings.
 
 ## Related
 
