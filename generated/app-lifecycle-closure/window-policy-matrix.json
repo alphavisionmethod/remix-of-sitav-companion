@@ -1,0 +1,15 @@
+{
+  "generatedAt": "2026-04-20T22:00:00.000Z",
+  "windowClasses": {
+    "internal": {"multiWindow":true,"shellIntegration":"full","ipc":"full","restoration":"auto","sandboxed":false},
+    "web-app": {"multiWindow":false,"shellIntegration":"partial","ipc":"restricted","restoration":"auto","sandboxed":true},
+    "wrapped-app": {"multiWindow":false,"shellIntegration":"partial","ipc":"restricted","restoration":"manual","sandboxed":true},
+    "native": {"multiWindow":true,"shellIntegration":"partial","ipc":"full","restoration":"manual","sandboxed":false},
+    "restricted": {"multiWindow":false,"shellIntegration":"none","ipc":"none","restoration":"none","sandboxed":true}
+  },
+  "derivationRules": {
+    "restricted_trust_tier_overrides": true,
+    "appClass_to_windowClass": {"sita-native":"internal","internal":"internal","native":"native","pwa":"wrapped-app","wrapped":"wrapped-app","web":"web-app","external":"web-app"}
+  },
+  "policyFile": "src/lib/app-platform/app-window-policy.ts"
+}

@@ -1,0 +1,20 @@
+{
+  "generatedAt": "2026-04-20T22:00:00.000Z",
+  "recoveryManagerFile": "src/lib/app-platform/app-recovery-manager.ts",
+  "lifecycleManagerFile": "src/lib/app-platform/app-lifecycle-manager.ts",
+  "maxAutoRestarts": 3,
+  "crashStateStorage": "localStorage",
+  "crashStateTTL": "24h",
+  "crashRecoveryFlow": ["RUNNING→CRASHED","CRASHED→RECOVERING","RECOVERING→RUNNING"],
+  "failureEscalation": ["CRASHED→ERROR","RECOVERING→ERROR"],
+  "errorRecovery": ["ERROR→INSTALLED"],
+  "stateSnapshotSupported": true,
+  "supportBundleIntegrated": true,
+  "appTypeCoverage": {
+    "internal": {"crashRecovery":true,"stateRestore":true},
+    "web": {"crashRecovery":true,"stateRestore":true},
+    "pwa": {"crashRecovery":true,"stateRestore":false},
+    "native": {"crashRecovery":true,"stateRestore":false},
+    "external": {"crashRecovery":false,"stateRestore":false}
+  }
+}
