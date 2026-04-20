@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-04-20T00:13:35.826Z",
-  "note": "Pre-existing in-migration src/lib top-level entries. New additions outside allowlist fail CI.",
+  "generatedAt": "2026-04-20T01:03:35.178Z",
+  "note": "Pre-existing in-migration src/lib top-level entries. New additions outside allowlist fail CI. ai-platform added Phase 19 as canonical AI consolidation home.",
   "entries": [
     "__tests__",
     "admin",
@@ -10,6 +10,7 @@
     "ai",
     "ai-engineering",
     "ai-gateway",
+    "ai-platform",
     "api",
     "app-platform",
     "app-store-launcher.ts",
