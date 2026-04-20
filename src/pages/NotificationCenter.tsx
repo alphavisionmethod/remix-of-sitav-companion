@@ -10,7 +10,6 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { dbAny as db } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useAdaptiveInterface } from "@/hooks/useAdaptiveInterface";
 import { useOSOrchestration } from "@/hooks/useOSOrchestration";
 import { motion, AnimatePresence } from "framer-motion";
@@ -141,8 +140,8 @@ const NotificationCard = ({ notif, onMarkRead, onDismiss, onAction }: {
 
 // ── Main Component ───────────────────────────────────────────
 const NotificationCenter = () => {
-  const { user } = useAuth();
-  const { isDemoMode } = useDataMode();
+  const { user, isDemo } = useAuth();
+  const isDemoMode = isDemo;
   const queryClient = useQueryClient();
   const interfaceState = useAdaptiveInterface();
   const os = useOSOrchestration();

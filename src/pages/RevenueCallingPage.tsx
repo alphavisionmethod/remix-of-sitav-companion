@@ -15,7 +15,6 @@ import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
-import { useDataMode } from "@/contexts/DataModeContext";
 import {
   Phone, PhoneCall, PhoneOff, PhoneIncoming, Clock, Users, Target,
   FileText, Play, Pause, SkipForward, ChevronRight, ChevronDown,
@@ -101,7 +100,8 @@ function CallStats({ contacts, callLogs }: { contacts: Contact[]; callLogs: Call
 }
 
 function ActiveDialer({ contact, onEnd, onSkip }: { contact: Contact; onEnd: () => void; onSkip: () => void }) {
-  const { isDemoMode } = useDataMode();
+  const { isDemo } = useAuth();
+  const isDemoMode = isDemo;
   const [state, setState] = useState<DialerState>("dialing");
   const [elapsed, setElapsed] = useState(0);
   const [muted, setMuted] = useState(false);

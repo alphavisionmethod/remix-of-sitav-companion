@@ -1,5 +1,4 @@
 import { useAuth } from "@/contexts/AuthContext";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useState, useMemo } from "react";
 import { SitaPageHeader, SitaCard, SitaCardTitle } from "@/components/sita/SitaCard";
 import { KPITile, EmptyState, SitaTabs } from "@/components/sita/SitaComponents";
@@ -20,7 +19,8 @@ const STATUS_STYLES = { uploading: "text-primary", processing: "text-amber-400",
 const STATUS_ICONS = { uploading: Clock, processing: Clock, complete: CheckCircle2, failed: AlertTriangle, generating: Clock, ready: CheckCircle2, expired: AlertTriangle, pending: Clock };
 
 const ImportExportCenter = () => {
-  const { isDemoMode } = useDataMode();
+  const { isDemo } = useAuth();
+  const isDemoMode = isDemo;
   const [tab, setTab] = useState("upload");
   const [isDragging, setIsDragging] = useState(false);
   const { data: liveJobs } = useImportExportJobs();
