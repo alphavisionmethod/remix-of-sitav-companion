@@ -1,11 +1,13 @@
 {
-  "generatedAt": "2026-04-20T21:38:34.278Z",
+  "generatedAt": "2026-04-20T23:45:00.000Z",
   "gate": "advisor-boardroom-closure",
   "ok": true,
+  "wiringStatus": "OPERATIONALLY_WIRED",
   "contracts": {
     "identity": {
       "file": "src/lib/advisors/advisor-identity-registry.ts",
-      "entries": 26
+      "entries": 34,
+      "consumers": ["src/domains/engines/advisor-orchestration.ts", "src/components/business/advisor-board/AdvisorPerformancePanel.tsx", "src/packages/advisor-runtime-contracts/resolver.ts"]
     },
     "personaBoundaries": {
       "file": "src/lib/advisors/advisor-persona-boundary-map.ts",
@@ -25,36 +27,52 @@
     },
     "confidence": {
       "file": "src/lib/advisors/advisor-confidence-policy.ts",
-      "gates": 8
+      "gates": 8,
+      "consumers": ["src/domains/engines/advisor-orchestration.ts", "src/packages/advisor-runtime-contracts/resolver.ts", "supabase/functions/_shared/advisor-governance.ts"]
     },
     "debate": {
       "file": "src/lib/advisors/advisor-debate-orchestrator.ts",
-      "policy": "DEFAULT_DEBATE_POLICY"
+      "policy": "DEFAULT_DEBATE_POLICY",
+      "consumers": ["src/domains/engines/cross-advisor-coordinator.ts", "src/components/business/advisor-board/AdvisorDebateView.tsx"]
     },
     "conflictResolution": {
       "file": "src/lib/advisors/advisor-conflict-resolution-policy.ts",
-      "rules": 6
+      "rules": 6,
+      "consumers": ["src/domains/engines/cross-advisor-coordinator.ts", "src/components/business/advisor-board/AdvisorDebateView.tsx"]
     },
     "disablement": {
       "file": "src/lib/advisors/advisor-disablement-policy.ts",
-      "reasons": 6
+      "reasons": 6,
+      "consumers": ["src/domains/engines/advisor-orchestration.ts", "src/components/business/advisor-board/AdvisorPerformancePanel.tsx"]
     },
     "memoryAging": {
       "file": "src/lib/advisors/advisor-memory-aging-policy.ts",
-      "layers": 4
+      "layers": 4,
+      "consumers": ["src/domains/engines/advisor-memory-engine.ts", "src/components/business/advisor-board/AdvisorMemoryInspector.tsx"]
     },
     "reflectionLoop": {
       "file": "src/lib/advisors/advisor-reflection-policy-loop.ts",
-      "adjustmentTypes": 5
+      "adjustmentTypes": 5,
+      "consumers": ["src/domains/engines/advisor-reflection-engine.ts"]
     },
     "override": {
       "file": "src/lib/advisors/advisor-override-model.ts",
-      "scopes": 7
+      "scopes": 7,
+      "consumers": ["src/packages/advisor-runtime-contracts/resolver.ts"]
     },
     "supportDiagnostics": {
       "file": "src/lib/advisors/advisor-support-diagnostics.ts",
-      "fields": 16
+      "fields": 16,
+      "consumers": ["src/packages/advisor-runtime-contracts/index.ts"]
     }
+  },
+  "runtimeContractsPackage": {
+    "path": "src/packages/advisor-runtime-contracts/",
+    "files": ["index.ts", "types.ts", "resolver.ts"]
+  },
+  "edgeFunctionGovernance": {
+    "sharedModule": "supabase/functions/_shared/advisor-governance.ts",
+    "wiredFunctions": ["advisor-agent-loop", "advisor-conversation", "chat-advisor", "business-advisor-intelligence"]
   },
   "dbTables": [
     "advisor_board_actions",
@@ -83,6 +101,6 @@
     "seed-advisor-registry",
     "business-advisor-intelligence"
   ],
-  "proofArtifacts": 12,
-  "verdict": "BEHAVIORALLY_CLOSED"
+  "proofArtifacts": 13,
+  "verdict": "OPERATIONALLY_WIRED_AND_BEHAVIORALLY_CLOSED"
 }
