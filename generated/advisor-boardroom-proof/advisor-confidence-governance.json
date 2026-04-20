@@ -1,0 +1,24 @@
+{
+  "generatedAt": "2026-04-20T21:38:34.278Z",
+  "gates": 8,
+  "actionClasses": [
+    "observe",
+    "recommend",
+    "draft",
+    "simulate",
+    "execute",
+    "execute-financial",
+    "communicate-external",
+    "system-config"
+  ],
+  "minConfidenceRange": {
+    "lowest": 0,
+    "highest": 0.9
+  },
+  "belowThresholdBehaviors": [
+    "refuse",
+    "caveat",
+    "escalate",
+    "downgrade-to-draft"
+  ]
+}

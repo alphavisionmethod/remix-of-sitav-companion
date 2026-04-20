@@ -1,0 +1,31 @@
+{
+  "generatedAt": "2026-04-20T21:38:34.278Z",
+  "feedbackSignals": [
+    "outcomeQuality",
+    "ownerAction",
+    "executionFitness",
+    "shouldRepeat",
+    "lessonLearned"
+  ],
+  "adjustmentTypes": [
+    "confidence-shift",
+    "autonomy-change",
+    "blocked-action-add",
+    "blocked-action-remove",
+    "capability-gate"
+  ],
+  "autoAdjustmentRange": {
+    "confidenceDelta": [
+      -0.05,
+      0.02
+    ],
+    "autonomyDelta": [
+      -1,
+      0
+    ]
+  },
+  "ownerApprovalRequired": [
+    "autonomy-change",
+    "capability-gate"
+  ]
+}

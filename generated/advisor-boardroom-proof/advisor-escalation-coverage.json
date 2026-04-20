@@ -1,0 +1,23 @@
+{
+  "generatedAt": "2026-04-20T21:38:34.278Z",
+  "escalationRules": 8,
+  "triggers": [
+    "financial-over-500",
+    "external-communication",
+    "low-confidence",
+    "irreversible",
+    "system-config",
+    "cross-domain",
+    "kill-switch",
+    "first-time-action"
+  ],
+  "escalationTargets": [
+    "owner",
+    "dual-admin"
+  ],
+  "priorities": [
+    "immediate",
+    "next-review",
+    "batch"
+  ]
+}

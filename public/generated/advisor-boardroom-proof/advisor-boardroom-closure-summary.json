@@ -1,0 +1,88 @@
+{
+  "generatedAt": "2026-04-20T21:38:34.278Z",
+  "gate": "advisor-boardroom-closure",
+  "ok": true,
+  "contracts": {
+    "identity": {
+      "file": "src/lib/advisors/advisor-identity-registry.ts",
+      "entries": 26
+    },
+    "personaBoundaries": {
+      "file": "src/lib/advisors/advisor-persona-boundary-map.ts",
+      "entries": 7
+    },
+    "permissions": {
+      "file": "src/lib/ai-platform/runtime/advisor-permission-matrix.ts",
+      "entries": 6
+    },
+    "escalation": {
+      "file": "src/lib/ai-platform/runtime/advisor-escalation-policy.ts",
+      "rules": 8
+    },
+    "reversibility": {
+      "file": "src/lib/ai-platform/runtime/advisor-reversibility-map.ts",
+      "entries": 12
+    },
+    "confidence": {
+      "file": "src/lib/advisors/advisor-confidence-policy.ts",
+      "gates": 8
+    },
+    "debate": {
+      "file": "src/lib/advisors/advisor-debate-orchestrator.ts",
+      "policy": "DEFAULT_DEBATE_POLICY"
+    },
+    "conflictResolution": {
+      "file": "src/lib/advisors/advisor-conflict-resolution-policy.ts",
+      "rules": 6
+    },
+    "disablement": {
+      "file": "src/lib/advisors/advisor-disablement-policy.ts",
+      "reasons": 6
+    },
+    "memoryAging": {
+      "file": "src/lib/advisors/advisor-memory-aging-policy.ts",
+      "layers": 4
+    },
+    "reflectionLoop": {
+      "file": "src/lib/advisors/advisor-reflection-policy-loop.ts",
+      "adjustmentTypes": 5
+    },
+    "override": {
+      "file": "src/lib/advisors/advisor-override-model.ts",
+      "scopes": 7
+    },
+    "supportDiagnostics": {
+      "file": "src/lib/advisors/advisor-support-diagnostics.ts",
+      "fields": 16
+    }
+  },
+  "dbTables": [
+    "advisor_board_actions",
+    "advisor_board_recommendations",
+    "advisor_board_reflections",
+    "advisor_board_memory",
+    "advisor_board_tool_executions",
+    "advisor_agents",
+    "advisor_autonomy_policies",
+    "advisor_feedback",
+    "advisor_knowledge",
+    "advisor_memories",
+    "advisor_profiles",
+    "advisor_registry",
+    "advisor_action_queue",
+    "advisor_action_proof_packs"
+  ],
+  "edgeFunctions": [
+    "advisor-agent-loop",
+    "advisor-avatar-generate",
+    "advisor-conversation",
+    "advisor-deep-intelligence",
+    "advisor-knowledge-manage",
+    "advisor-weekly-report",
+    "chat-advisor",
+    "seed-advisor-registry",
+    "business-advisor-intelligence"
+  ],
+  "proofArtifacts": 12,
+  "verdict": "BEHAVIORALLY_CLOSED"
+}

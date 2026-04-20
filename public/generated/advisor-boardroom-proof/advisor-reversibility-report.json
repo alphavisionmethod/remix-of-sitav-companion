@@ -1,0 +1,23 @@
+{
+  "generatedAt": "2026-04-20T21:38:34.278Z",
+  "actionTypes": 12,
+  "reversibilityDistribution": {
+    "fully-reversible": 6,
+    "partially-reversible": 1,
+    "irreversible": 1,
+    "time-limited": 2
+  },
+  "irreversibleActions": [
+    "send-notification"
+  ],
+  "timeLimitedActions": [
+    {
+      "action": "send-email",
+      "windowMs": 30000
+    },
+    {
+      "action": "delete-record",
+      "windowMs": 604800000
+    }
+  ]
+}

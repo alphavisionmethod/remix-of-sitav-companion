@@ -1,0 +1,20 @@
+{
+  "generatedAt": "2026-04-20T21:38:34.278Z",
+  "disablementReasons": 6,
+  "reasons": [
+    "owner-paused",
+    "budget-exhausted",
+    "kill-switch",
+    "trust-degraded",
+    "error-rate-exceeded",
+    "maintenance"
+  ],
+  "fallbackBehaviors": [
+    "delegate-to-fallback",
+    "refuse-with-receipt",
+    "silent-degrade",
+    "queue-for-owner"
+  ],
+  "autoReenableConditions": 4,
+  "memoryPreserved": true
+}

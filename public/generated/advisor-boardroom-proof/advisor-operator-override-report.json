@@ -1,0 +1,23 @@
+{
+  "generatedAt": "2026-04-20T21:38:34.278Z",
+  "overrideScopes": 7,
+  "scopes": [
+    "pause",
+    "disable",
+    "force-escalate",
+    "reduce-autonomy",
+    "reset-trust",
+    "clear-memory",
+    "force-reevaluate"
+  ],
+  "dualApprovalRequired": [
+    "disable",
+    "reset-trust",
+    "clear-memory"
+  ],
+  "allEmitAuditLog": true,
+  "irreversibleOverrides": [
+    "reset-trust",
+    "clear-memory"
+  ]
+}
