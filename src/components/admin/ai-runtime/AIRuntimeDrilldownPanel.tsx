@@ -110,7 +110,7 @@ export function AIRuntimeDrilldownPanel({ agentId, userId }: Props) {
         <NightlyProofBadge />
       </div>
       <Tabs defaultValue="actions" className="w-full">
-        <TabsList className="grid grid-cols-3 h-8">
+        <TabsList className="grid grid-cols-3 sm:grid-cols-3 h-8">
           <TabsTrigger value="actions" className="text-[11px] gap-1">
             <Activity className="h-3 w-3" /> Actions ({data.actions.length})
           </TabsTrigger>

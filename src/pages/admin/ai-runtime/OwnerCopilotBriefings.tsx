@@ -42,7 +42,7 @@ export default function OwnerCopilotBriefings() {
 
   return (
     <AdminControlPlaneShell contextScope="AI Runtime · Owner Copilot">
-      <div className="p-6 space-y-6">
+      <div className="p-4 sm:p-6 space-y-6">
         <div>
           <h1 className="text-2xl font-semibold flex items-center gap-2">
             <MessageSquare className="h-6 w-6" /> Owner Copilot Briefings
@@ -60,9 +60,9 @@ export default function OwnerCopilotBriefings() {
           {items.map(b => (
             <Card key={b.id}>
               <CardHeader>
-                <div className="flex items-start justify-between gap-2">
+                <div className="flex flex-col sm:flex-row items-start justify-between gap-2">
                   <CardTitle className="text-base">{b.topic}</CardTitle>
-                  <div className="flex gap-2">
+                  <div className="flex flex-wrap gap-2">
                     <Badge variant="outline">{b.source_kind}</Badge>
                     <Badge variant="outline">conf {(b.confidence * 100).toFixed(0)}%</Badge>
                     <Badge>{b.status}</Badge>
@@ -79,7 +79,7 @@ export default function OwnerCopilotBriefings() {
                       value={rationale[b.id] ?? ""}
                       onChange={e => setRationale(r => ({ ...r, [b.id]: e.target.value }))}
                     />
-                    <div className="flex gap-2">
+                    <div className="flex flex-col sm:flex-row gap-2">
                       <Button size="sm" onClick={() => decide(b.id, "approved")}>
                         <Check className="h-4 w-4 mr-1" /> Approve
                       </Button>

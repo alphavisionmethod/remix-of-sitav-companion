@@ -67,7 +67,7 @@ export function BoardSection({
 
   return (
     <Card className={className}>
-      <CardHeader className="flex flex-row items-center justify-between gap-3 space-y-0">
+      <CardHeader className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 space-y-0">
         <CardTitle className="text-sm flex items-center gap-2">
           {icon}
           {title}

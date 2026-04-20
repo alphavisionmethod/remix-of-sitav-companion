@@ -52,12 +52,12 @@ export default function ExternalWorkforceApiBoard() {
 
   return (
     <AdminControlPlaneShell contextScope="External Workforce API">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
           <h1 className="text-2xl font-semibold flex items-center gap-2"><Webhook className="h-5 w-5" /> External Workforce API &amp; Webhooks</h1>
           <p className="text-sm text-muted-foreground">Phase 8B — read-only signed API + HMAC-SHA256 webhooks. No internal IDs leaked.</p>
         </div>
-        <Button variant="ghost" size="sm" onClick={refresh} disabled={loading} aria-label="Refresh">
+        <Button variant="ghost" size="sm" onClick={refresh} disabled={loading} aria-label="Refresh" className="self-start sm:self-auto">
           <RefreshCw className={`h-4 w-4 ${loading ? "animate-spin" : ""}`} />
         </Button>
       </div>
