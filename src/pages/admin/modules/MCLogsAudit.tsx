@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { useAuth } from "@/contexts/AuthContext";
 import {
   FileText, Search, Shield, User, Bot, Clock, Eye,
   ChevronDown, Download, AlertTriangle, CheckCircle, XCircle,
@@ -41,7 +41,8 @@ const DEMO_LOGS: AuditEntry[] = [
 ];
 
 export default function MCLogsAudit() {
-  const { isDemoMode } = useDataMode();
+  const { isDemo } = useAuth();
+  const isDemoMode = isDemo;
   const [search, setSearch] = useState("");
   const [actorFilter, setActorFilter] = useState<LogActor | "all">("all");
   const [severityFilter, setSeverityFilter] = useState<LogSeverity | "all">("all");

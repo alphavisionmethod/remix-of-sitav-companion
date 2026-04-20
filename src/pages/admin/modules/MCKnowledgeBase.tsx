@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { useAuth } from "@/contexts/AuthContext";
 import {
   BookOpen, Search, FileText, AlertTriangle, Wrench, Lightbulb,
   Bug, Rocket, Shield, ChevronRight, Clock, Eye, Link2, Brain,
@@ -54,7 +54,8 @@ const SOURCE_BADGE: Record<string, { label: string; style: string }> = {
 };
 
 export default function MCKnowledgeBase() {
-  const { isDemoMode } = useDataMode();
+  const { isDemo } = useAuth();
+  const isDemoMode = isDemo;
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState<DocCategory>("all");
   const [selectedId, setSelectedId] = useState<string | null>(null);

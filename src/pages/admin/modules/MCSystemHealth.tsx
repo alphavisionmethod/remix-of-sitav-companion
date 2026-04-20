@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { useAuth } from "@/contexts/AuthContext";
 import {
   Activity, Shield, RefreshCw, CheckCircle, AlertTriangle, XCircle,
   TrendingUp, TrendingDown, Clock, Eye, Bot, Lock, Bell, Layers,
@@ -40,7 +40,8 @@ const SUBSYSTEMS: Subsystem[] = [
 ];
 
 export default function MCSystemHealth() {
-  const { isDemoMode } = useDataMode();
+  const { isDemo } = useAuth();
+  const isDemoMode = isDemo;
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const overallScore = Math.round(SUBSYSTEMS.reduce((s, sub) => s + sub.score, 0) / SUBSYSTEMS.length * 10) / 10;
   const healthyCount = SUBSYSTEMS.filter(s => s.state === "healthy").length;

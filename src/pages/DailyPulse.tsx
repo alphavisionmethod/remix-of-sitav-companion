@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { fromTable } from "@/lib/supabase-helpers";
 import { useQuery } from "@tanstack/react-query";
-import { useDataMode } from "@/contexts/DataModeContext";
+
 import { useLoopEmitter } from "@/hooks/use-flagship-loop-proof";
 import { HeroCard, SummaryCard, QueueCard, AdvisorCard } from "@/components/sita/cards";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
@@ -74,8 +74,8 @@ function usePulseLiveData(userId: string | undefined) {
 // ── Component ────────────────────────────────────────────────
 
 export default function DailyPulse() {
-  const { user } = useAuth();
-  const { isDemoMode } = useDataMode();
+  const { user, isDemo } = useAuth();
+  const isDemoMode = isDemo;
   const navigate = useNavigate();
   const emitLoop = useLoopEmitter("sign-in-dashboard-pulse");
   const [approvalsOpen, setApprovalsOpen] = useState(false);

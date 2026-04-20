@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { useAuth } from "@/contexts/AuthContext";
 import {
   HeadphonesIcon, Search, User, Clock, AlertTriangle, CheckCircle,
   ChevronRight, MessageSquare, Wrench, Eye, ArrowUp,
@@ -44,7 +44,8 @@ const DEMO_CASES: SupportCase[] = [
 ];
 
 export default function MCSupport() {
-  const { isDemoMode } = useDataMode();
+  const { isDemo } = useAuth();
+  const isDemoMode = isDemo;
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<CaseStatus | "all">("all");
   const [selectedId, setSelectedId] = useState<string | null>(null);
