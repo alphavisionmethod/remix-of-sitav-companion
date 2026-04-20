@@ -79,7 +79,7 @@ export default function ArchitecturalCleanupTruthPanel() {
   }, [reloadTick]);
 
   if (!loaded) {
-    return <div className="text-xs text-muted-foreground py-12 text-center">Loading cleanup truth…</div>;
+    return <div className="flex flex-col items-center text-xs text-muted-foreground py-12 text-center">Loading cleanup truth…</div>;
   }
 
   return (

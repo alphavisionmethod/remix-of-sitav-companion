@@ -57,7 +57,7 @@ export default function KnowledgeFederationBoard() {
 
   return (
     <AdminControlPlaneShell contextScope="Knowledge Federation">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
           <h1 className="text-2xl font-semibold flex items-center gap-2"><Network className="h-5 w-5" /> Cross-Tenant Knowledge Federation</h1>
           <p className="text-sm text-muted-foreground">Phase 8C — opt-in only, differential-privacy ε ≤ 1.0, no individual tenant IDs leaked.</p>
