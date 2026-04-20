@@ -17302,6 +17302,60 @@ export type Database = {
           },
         ]
       }
+      recovery_boot_evidence: {
+        Row: {
+          bless_state: string | null
+          collected_at: string
+          device_id: string
+          evidence_hash: string
+          failed_units: Json
+          id: string
+          inserted_at: string
+          inserted_by: string | null
+          kernel_version: string | null
+          recovery_reason: string
+          shell_crash_count: number
+          signature: string
+          slot: string
+          tpm_pcr_snapshot: Json
+          verity_state: string | null
+        }
+        Insert: {
+          bless_state?: string | null
+          collected_at: string
+          device_id: string
+          evidence_hash: string
+          failed_units?: Json
+          id?: string
+          inserted_at?: string
+          inserted_by?: string | null
+          kernel_version?: string | null
+          recovery_reason: string
+          shell_crash_count?: number
+          signature: string
+          slot: string
+          tpm_pcr_snapshot?: Json
+          verity_state?: string | null
+        }
+        Update: {
+          bless_state?: string | null
+          collected_at?: string
+          device_id?: string
+          evidence_hash?: string
+          failed_units?: Json
+          id?: string
+          inserted_at?: string
+          inserted_by?: string | null
+          kernel_version?: string | null
+          recovery_reason?: string
+          shell_crash_count?: number
+          signature?: string
+          slot?: string
+          tpm_pcr_snapshot?: Json
+          verity_state?: string | null
+        }
+        Relationships: []
+      }
       recovery_snapshots: {
         Row: {
           completed_at: string | null
