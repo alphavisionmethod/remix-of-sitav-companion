@@ -28,6 +28,27 @@ export const ROUTE_RUNTIME_MAP: readonly RouteRuntimeEntry[] = [
   { path: "/files", surfaces: all("available") },
   { path: "/boardroom", surfaces: all("available") },
 ];
+  { path: "/business", surfaces: all("available") },
+  { path: "/money", surfaces: all("available") },
+  { path: "/concierge", surfaces: all("available") },
+  { path: "/revenue-office", surfaces: all("available") },
+  { path: "/investment-office", surfaces: all("available") },
+  { path: "/digital-presence", surfaces: { ...all("available"), APPLIANCE_RUNTIME: "unavailable" } },
+  { path: "/advisors", surfaces: all("available") },
+  { path: "/apps", surfaces: all("available") },
+  { path: "/connectors", surfaces: all("available") },
+  { path: "/workspace", surfaces: all("available") },
+  { path: "/governance", surfaces: all("available") },
+  { path: "/enterprise", surfaces: { ...all("available"), APPLIANCE_RUNTIME: "unavailable" } },
+  { path: "/policies", surfaces: all("available") },
+  { path: "/notifications", surfaces: all("available") },
+  { path: "/search", surfaces: all("available") },
+  { path: "/onboarding", surfaces: all("available") },
+  { path: "/observability", surfaces: all("available") },
+  { path: "/owner", surfaces: { ...all("available"), SIMULATED_OS_EXPERIENCE: "degraded", APPLIANCE_RUNTIME: "unavailable" } },
+  { path: "/mission", surfaces: { ...all("available"), SIMULATED_OS_EXPERIENCE: "degraded" } },
+  { path: "/nova-desktop", surfaces: all("available") },
+  { path: "/auth", surfaces: all("available") },
 
 export function getRouteRuntimeAvailability(path: string): RouteRuntimeEntry | undefined {
   return ROUTE_RUNTIME_MAP.find((r) => r.path === path);
