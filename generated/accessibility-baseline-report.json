@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-20T23:38:23.892Z",
+  "gate": "accessibility-baseline",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "pageClassesCovered": 6,
+  "evidenceRoutes": 811,
+  "compliantRoutes": 811,
+  "compliancePct": 100
+}

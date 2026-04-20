@@ -1,0 +1,194 @@
+{
+  "generatedAt": "2026-04-20T23:38:23.979Z",
+  "gate": "truth-primitive-coverage",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "totalEntries": 20,
+  "coveredEntries": 20,
+  "coveragePct": 100,
+  "entries": [
+    {
+      "pageId": "boardroom-main",
+      "route": "/boardroom",
+      "disclosureType": "ai-generated",
+      "requiredPrimitives": [
+        "AITruthDisclosure",
+        "EvidenceLink",
+        "ProvenanceChip"
+      ]
+    },
+    {
+      "pageId": "advisor-chat",
+      "route": "/advisor/*",
+      "disclosureType": "ai-generated",
+      "requiredPrimitives": [
+        "AITruthDisclosure",
+        "TrustBadge"
+      ]
+    },
+    {
+      "pageId": "business-intelligence",
+      "route": "/business/intelligence",
+      "disclosureType": "ai-assisted",
+      "requiredPrimitives": [
+        "AITruthDisclosure",
+        "ProvenanceChip"
+      ]
+    },
+    {
+      "pageId": "finance-forecast",
+      "route": "/money/forecast",
+      "disclosureType": "ai-assisted",
+      "requiredPrimitives": [
+        "AITruthDisclosure",
+        "EvidenceLink"
+      ]
+    },
+    {
+      "pageId": "tax-estimate",
+      "route": "/money/tax",
+      "disclosureType": "ai-assisted",
+      "requiredPrimitives": [
+        "AITruthDisclosure",
+        "EvidenceLink"
+      ]
+    },
+    {
+      "pageId": "concierge-main",
+      "route": "/concierge",
+      "disclosureType": "ai-generated",
+      "requiredPrimitives": [
+        "AITruthDisclosure"
+      ]
+    },
+    {
+      "pageId": "desktop-shell",
+      "route": "/",
+      "disclosureType": "simulation",
+      "requiredPrimitives": [
+        "StatusBadge"
+      ]
+    },
+    {
+      "pageId": "boot-sequence",
+      "route": "/os/boot",
+      "disclosureType": "simulation",
+      "requiredPrimitives": [
+        "StatusBadge"
+      ]
+    },
+    {
+      "pageId": "admin-ai-runtime",
+      "route": "/admin/ai-gateway/*",
+      "disclosureType": "ai-assisted",
+      "requiredPrimitives": [
+        "ProvenanceChip",
+        "EvidenceLink",
+        "StatusBadge"
+      ]
+    },
+    {
+      "pageId": "admin-ai-team",
+      "route": "/admin/ai-team/*",
+      "disclosureType": "ai-assisted",
+      "requiredPrimitives": [
+        "ProvenanceChip",
+        "StatusBadge"
+      ]
+    },
+    {
+      "pageId": "admin-approvals",
+      "route": "/admin/approvals/*",
+      "disclosureType": "none",
+      "requiredPrimitives": [
+        "StatusBadge",
+        "EvidenceLink"
+      ]
+    },
+    {
+      "pageId": "admin-security",
+      "route": "/admin/founder/security",
+      "disclosureType": "none",
+      "requiredPrimitives": [
+        "StatusBadge",
+        "TrustBadge"
+      ]
+    },
+    {
+      "pageId": "connectors-settings",
+      "route": "/connectors/*",
+      "disclosureType": "none",
+      "requiredPrimitives": [
+        "StatusBadge",
+        "ProvenanceChip"
+      ]
+    },
+    {
+      "pageId": "payments-overview",
+      "route": "/money/payments",
+      "disclosureType": "none",
+      "requiredPrimitives": [
+        "StatusBadge",
+        "EvidenceLink",
+        "ProofBadge"
+      ]
+    },
+    {
+      "pageId": "investment-office",
+      "route": "/money/investments",
+      "disclosureType": "ai-assisted",
+      "requiredPrimitives": [
+        "AITruthDisclosure",
+        "ProvenanceChip"
+      ]
+    },
+    {
+      "pageId": "revenue-office",
+      "route": "/money/revenue",
+      "disclosureType": "ai-assisted",
+      "requiredPrimitives": [
+        "AITruthDisclosure",
+        "ProvenanceChip"
+      ]
+    },
+    {
+      "pageId": "owner-dashboard",
+      "route": "/daily-pulse",
+      "disclosureType": "ai-assisted",
+      "requiredPrimitives": [
+        "AITruthDisclosure",
+        "ProvenanceChip"
+      ]
+    },
+    {
+      "pageId": "app-permissions",
+      "route": "/apps/*/permissions",
+      "disclosureType": "none",
+      "requiredPrimitives": [
+        "StatusBadge",
+        "TrustBadge"
+      ]
+    },
+    {
+      "pageId": "digital-presence",
+      "route": "/digital-presence/*",
+      "disclosureType": "ai-assisted",
+      "requiredPrimitives": [
+        "AITruthDisclosure",
+        "ProvenanceChip"
+      ]
+    },
+    {
+      "pageId": "approval-chamber",
+      "route": "/approval-chamber",
+      "disclosureType": "none",
+      "requiredPrimitives": [
+        "StatusBadge",
+        "EvidenceLink",
+        "TrustBadge"
+      ]
+    }
+  ]
+}
