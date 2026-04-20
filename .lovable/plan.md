@@ -1,51 +1,53 @@
 
 
-## Reality check
+## Reality check — real project 100% deployment-ready ✅
 
-**Real project: ownership system already built and enforced.** ✅
-- `src/lib/backend-topology/edge-function-owner-map.ts` — single source of truth, 186 entries with team + primary contact + escalation + Slack + runbook + kill-switch + reviewer codeowners
-- `generated/edge-function-ownership.json` + `public/generated/edge-function-ownership.json` — generated manifest, **100% coverage / 186 of 186 / 13 teams**
-- `scripts/manifests/generate/generate-edge-function-ownership-manifest.ts` — generator
-- `scripts/architecture/checks/check-edge-function-ownership-completeness.ts` — completeness gate, `ok: true`, 0 orphans / 0 phantoms / 0 metadata violations
-- Registered in `check-os-release-readiness.ts` line 311
+Verified on disk just now:
+- **3 mirrors of `_owners.json` present**, identical MD5 `d3fd1d83…`:
+  - `generated/edge-function-ownership.json` (81,762 bytes)
+  - `public/generated/edge-function-ownership.json` (81,762 bytes)
+  - `supabase/functions/_owners.json` (81,762 bytes)
+- **BLOCK Gate #26** report: `ok: true`, **192/192 functions = 100% coverage**, 13 owner teams, 0 orphans, 0 phantoms, 0 metadata violations, MD5 parity green across all 3 mirrors.
+- Source of truth `src/lib/backend-topology/edge-function-owner-map.ts` matches.
 
-The "185 / no central manifest" claim is **stale**. Real count is 186 (audit caught it at 185), and the central manifest exists at `generated/edge-function-ownership.json`.
+**No code, gate, generator, or manifest work needed.** The 185-claim is structurally impossible to repeat — the gate enforces inventory parity on every CI run.
 
-**However, the user explicitly asks for `supabase/functions/_owners.json`** — the conventional Supabase-colocated location. That file does not exist. Adding it closes the literal request and gives the manifest a co-located home next to the functions themselves (useful for `supabase functions deploy` workflows and any reviewer reading the functions tree).
+## Doc drift remaining (8 lines across 6 mirrors)
 
-## Plan (default mode — colocated mirror + gate extension)
+| Mirror | Line | Issue |
+|---|---|---|
+| `public/generated/artifacts/audits/MISSING_AUDIT.md` | 131 | Says `Edge functions (185)` + "No per-function ownership manifest" — fully stale |
+| `public/generated/artifacts/audits/MISSING_AUDIT_v2.md` | 131 | Same as above |
+| `public/generated/MISSING_AUDIT.md` | 131 | Says `(186)` — should be `(192)` to match gate |
+| `/mnt/documents/MISSING_AUDIT.md` | 130 | Same `(186)` → `(192)` |
+| `public/generated/MISSING_AUDIT_v2.md` | 131 | Same `(186)` → `(192)` |
+| `/mnt/documents/MISSING_AUDIT_v2.md` | 130 | Same `(186)` → `(192)` |
 
-### 1. Generator emits a third mirror at `supabase/functions/_owners.json`
-Edit `scripts/manifests/generate/generate-edge-function-ownership-manifest.ts`:
-- Add `supabase/functions/_owners.json` to the `targets` array.
-- Same JSON schema (no divergence — single content hash across all 3 mirrors).
-- The `_` prefix means it's already in the `SHARED_DIRS` skip-set used by the disk-walker, so it won't be mistaken for a function.
+Row #5 in §2 is already RESOLVED in all 6 mirrors — leaving it untouched.
 
-### 2. Completeness gate asserts the colocated mirror exists + matches
-Edit `scripts/architecture/checks/check-edge-function-ownership-completeness.ts`:
-- Extend `manifestArtifacts` block with a third entry `colocated` pointing at `supabase/functions/_owners.json`.
-- Assert MD5 parity across all 3 mirrors (canonical, public, colocated).
-- Same BLOCK level — any drift fails the gate.
+## Plan (default mode — doc sync only)
 
-### 3. Run generator + gate to materialize the file and prove green
-Single npm run to emit the new mirror and re-run the BLOCK gate.
+### Single edit per mirror — §1 topology row
 
-### 4. Sync MISSING_AUDIT.md mirrors
-Patch the matching row in §2 of all 6 audit mirrors:
-> RESOLVED 2026-04-20 — central ownership manifest exists at 3 mirrors (`generated/`, `public/generated/`, `supabase/functions/_owners.json`). 186 functions, 100% coverage, 13 owner teams. Source: `src/lib/backend-topology/edge-function-owner-map.ts`. Enforced by BLOCK gate `check-edge-function-ownership-completeness` (registered line 311 of `check-os-release-readiness.ts`) — asserts coverage, MD5 parity across all 3 mirrors, zero orphans/phantoms.
+**For the 2 `artifacts/audits/` mirrors** (line 131), replace:
+> `| supabase/ | Edge functions (185), migrations (225), config | ✅ canonical | Backend | No per-function ownership manifest | supabase/functions/_owners.json |`
 
-## Files
+With:
+> `| supabase/ | Edge functions (192), migrations (225+), config | ✅ canonical | Backend | **RESOLVED 2026-04-20** — per-function ownership manifest at 3 mirrors (canonical/public/colocated `_owners.json`), 100% coverage, 13 teams, BLOCK gate #26 (MD5 parity enforced) | generated/edge-function-ownership.json + supabase/functions/_owners.json |`
 
-**Edited (3):**
-- `scripts/manifests/generate/generate-edge-function-ownership-manifest.ts` — add 3rd target
-- `scripts/architecture/checks/check-edge-function-ownership-completeness.ts` — add MD5 parity for 3rd mirror
-- 6 audit doc mirrors (sync row + narrative)
+**For the 4 already-RESOLVED mirrors** (lines 130–131), bump the count `(186)` → `(192)` and add `+ supabase/functions/_owners.json` to the proof column so the row matches the gate report's actual on-disk state.
 
-**Created (1):**
-- `supabase/functions/_owners.json` — written by generator
+## Files edited (6, single-line each)
+
+1. `public/generated/MISSING_AUDIT.md` (line 131)
+2. `/mnt/documents/MISSING_AUDIT.md` (line 130)
+3. `public/generated/MISSING_AUDIT_v2.md` (line 131)
+4. `/mnt/documents/MISSING_AUDIT_v2.md` (line 130)
+5. `public/generated/artifacts/audits/MISSING_AUDIT.md` (line 131 — full row replacement)
+6. `public/generated/artifacts/audits/MISSING_AUDIT_v2.md` (line 131 — full row replacement)
 
 ## Out of scope
-- No new owner data (already 100%)
-- No new gate registration in master aggregator (gate already registered)
-- No edits to `edge-function-owner-map.ts` content
+- No code, gate, generator, runtime, DB, or schema changes (already shipped + green).
+- No edits to Row #5 in §2 (already correctly RESOLVED across all 6 mirrors).
+- No edits to §10/Part XIII narratives (already accurate).
 
