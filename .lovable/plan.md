@@ -1,109 +1,123 @@
 
 
-## Wave 7 — Stub & Demo-Flag Hardening (Final Production Sweep)
+## Current State Assessment
 
-### Truth check (what's actually wrong vs. what looks wrong)
+After a comprehensive scan of the project, here is every remaining error, missing piece, and risk area organized by severity.
 
-The 1,038 hits in §15 conflate three very different categories:
+---
 
-| Category | Count (approx) | Real risk |
-|---|---|---|
-| Doc-strings / JSDoc / future-work prose (`// TODO:`, `XXX from runbook-registry`, etc.) | ~900 | **None** — informational |
-| Test fixtures (`vi.mock`, `__tests__/**`) | ~120 | **None** — test-only |
-| **Hardcoded `const isDemoMode = true` at module scope in production pages** | **14 prod files + 5 tests** | **High** — memory violation `constraints/reality-mode-wiring` |
-| **Pages still reading `useDataMode()` instead of `useAuth().isDemo`** | **3 files** (ActivityStream, MediaWorkspace, ProofCenter) | **Medium** — wiring drift |
-| **Pages where the module-scope flag is NOT shadowed** → permanently frozen demo | **2 files** (`investment-office/InvestmentReceipts.tsx`, `integrations/ConnectionsList.tsx`) | **Critical** — these pages can never go live |
+## Category 1: Security Findings (25 issues from security scan)
 
-So the §15 advice ("most hits are doc-strings, no `MOCK_AUTH_USER` flags found") is technically true but **misses the 2 pages that are stuck in demo permanently and the 14 that violate the canonical wiring rule**.
+### CRITICAL (1 finding -- must fix before deployment)
 
-### Out of scope (explicitly not touched)
-- 900+ doc-string `TODO/XXX/FIXME` markers — informational, not code paths
-- `coming_soon` enum values inside `feature-reality-types.ts`, `runtime-tier-model.ts`, `degraded-state-classes.ts` — these are **legitimate state labels**, not stubs
-- `sample notes.md` content inside `TerminalWindow.tsx` and template strings in `DocumentEditor.tsx` — user-facing demo content
-- `INITIAL_TODOS` in `TodoWindow.tsx` — that's the actual to-do widget's seed list
-- Phase 15 mega-gates (lib decomposition / legacy wrappers) — owned elsewhere
+| Table | Issue |
+|---|---|
+| `cloud_worker_jobs` | RLS policy allows any authenticated user to read/update/delete all jobs where `user_id IS NULL` (system-level background jobs). Attacker can tamper with system job payloads. |
 
-### Wave 7 implementation
+### WARN -- Overly Permissive RLS (5 linter hits + 15 scan findings)
 
-#### 7.1 Fix the 2 critical "frozen-demo" pages
-- `src/pages/integrations/ConnectionsList.tsx`: delete module-scope `const isDemoMode = true`; add `const { isDemo } = useAuth(); const isDemoMode = isDemo;` inside the component body (matching every other page's pattern).
-- `src/pages/investment-office/InvestmentReceipts.tsx`: same fix.
+**Public insert tables with `WITH CHECK (true)` and no rate limiting:**
+- `waitlist_signups` -- anon INSERT of email + IP data, no rate limit
+- `beta_applications` -- anon INSERT of full_name, email, country, no validation
+- `investor_requests` -- anon INSERT of contact_name, email, fund_name, no validation
+- `donations` -- anon INSERT of donor_email, amount, no validation
+- `press_inquiries` -- anon INSERT of contact_name, email, no validation
 
-#### 7.2 Re-wire 3 drifted pages to canonical auth source
-- `src/pages/ActivityStream.tsx`, `src/pages/MediaWorkspace.tsx`, `src/pages/ProofCenter.tsx`: replace `const { isDemoMode } = useDataMode();` with `const { isDemo } = useAuth(); const isDemoMode = isDemo;` to match `constraints/reality-mode-wiring`.
+**Admin-only tables readable by ALL authenticated users (privilege model leak):**
+- `cloud_admin_roles` -- exposes complete role + permission arrays
+- `admin_role_permissions` -- exposes role-to-permission mappings
+- `service_identity_registry` -- exposes service_key, scopes, trust_level
+- `ai_provider_registry` -- exposes provider base URLs and auth_kind
+- `environment_configs` -- exposes env_key, api_base_url, feature flags
+- `incident_classifications` -- exposes runbook IDs, kill switch IDs
+- `domain_ownership_registry` -- exposes API surfaces and dependencies
+- `platform_planes` + `plane_service_assignments` -- exposes service topology
+- `release_compatibility_matrix` -- exposes breaking changes and rollout state
+- `api_gateway_routes` -- exposes full API surface, permissions, rate limits
 
-#### 7.3 Remove dead module-scope flag from the 11 already-shadowed pages
-For each of: `AIWorkforcePage`, `ApprovalChamber`, `CommunicationsPage`, `GlobalBoardroom`, `GovernanceDashboard`, `OutcomeEnginePage`, `TasksWorkflowsCenter`, `TrustCenter`, `enterprise/EnterpriseControlPlane`, plus the 3 from §7.2 above (after the rewire) — delete the dead `const isDemoMode = true; // Safe default for demo mode` line. It's already shadowed; removing it eliminates a future foot-gun and the 14-file memory violation.
+**Realtime broadcast to non-admin subscribers:**
+- `hardware_certification_runs` -- firmware versions, TPM states
+- `secret_rotation_log` -- secret names, rotation results
+- `operator_drill_executions` -- runbook/kill-switch drill results
 
-#### 7.4 Strip the same line from 5 test files
-The `__tests__/{Boardroom,BusinessCenter,DailyPulse,MoneyCenter,SettingsPage}.test.tsx` files have the same dead line at module scope, unused by the test bodies (the test mock already returns `isDemoMode: true`). Remove for cleanliness.
+### Fix plan
+1. **Migration**: Tighten `cloud_worker_jobs` policy -- remove `OR (user_id IS NULL)` from user-facing policy; add a separate service-role-only policy for NULL user_id jobs.
+2. **Migration**: Restrict SELECT on 10 admin-internal tables to users with admin role via `public.has_role(auth.uid(), 'admin')`.
+3. **Migration**: Remove the 3 sensitive tables from `supabase_realtime` publication (or scope channel subscriptions).
+4. **Application-layer**: The 5 public-insert tables are intentionally public (marketing forms) -- add field validation in `WITH CHECK` (e.g., `email IS NOT NULL AND email ~* '^.+@.+$'`) rather than blocking anon access entirely.
 
-#### 7.5 Add new BLOCK gate `check-hardcoded-demo-flags.ts`
-Create `scripts/architecture/checks/check-hardcoded-demo-flags.ts` that scans `src/pages/**` and `src/components/**` for the regex `/^(?:export\s+)?const\s+isDemoMode\s*=\s*(true|false)\s*;/m` at module scope. Emits `generated/hardcoded-demo-flags-report.json`. Behavior:
-- BLOCK on any hit in `src/pages/**` or `src/components/**` outside `__tests__`.
-- Allow inside test files.
-- Register in `check-os-release-readiness.ts` as the **248th BLOCK gate** (with writer + validator-map entry).
+---
 
-#### 7.6 Add new advisory gate `check-stub-density.ts`
-Create `scripts/architecture/checks/check-stub-density.ts` per §15.3 recommendation. Counts `TODO|FIXME|XXX|HACK` in `src/**` excluding `__tests__` and known doc-string allowlist. Emits `generated/stub-density-report.json`. Establishes a baseline budget (e.g., current count + 50) and warns on regression. Advisory only (not BLOCK), so it can't break a release but visibly tracks drift.
+## Category 2: Demo/Data Mode Wiring Drift (28 hooks)
 
-#### 7.7 Refresh ground truth
-- Append `WAVE7_STUB_HARDENING.md` operator note (sibling of `WAVE6_*`) summarizing the 19-line cleanup, the 2-critical-page fix, and the new gates.
-- Update `public/generated/MASTER_AUDIT.md` Part XV: replace "1,038 hits" line with the truthful breakdown (doc-strings vs. real flags), confirm zero hardcoded demo overrides remain, and bump BLOCK count from 247 → **248**.
-- Mirror to `public/generated/artifacts/audits/MASTER_AUDIT.md`.
-- Update `WAVE2_ADVISORY_DISPOSITION.md` with Wave 7 entry.
+Wave 7 fixed all **pages**, but 28 data-fetching hooks in `src/hooks/` still import `useDataMode()` from `DataModeContext`. This is **architecturally acceptable** for now because `DataModeContext` is a shim that bridges to `RealityModeProvider`. However, it creates two sources of truth:
+- Pages use `useAuth().isDemo` (canonical)
+- Hooks use `useDataMode().isDemoMode` (shim)
 
-#### 7.8 Aggregator re-run + verdict
-- Run `npx tsx scripts/architecture/checks/check-os-release-readiness.ts`.
-- Expected: **248/248 BLOCK GREEN, 0 errors, 0 missing**. Stub-density advisory establishes its baseline on first run.
+### Fix plan
+Leave hooks on `useDataMode()` for now -- the shim is working correctly and both resolve to the same underlying `RealityModeProvider`. Migrating 28 hooks is a low-risk cleanup that can be done post-launch. No functional bug exists.
 
-### Files to be created
-- `scripts/architecture/checks/check-hardcoded-demo-flags.ts`
-- `scripts/architecture/checks/check-stub-density.ts`
-- `WAVE7_STUB_HARDENING.md`
+---
 
-### Files to be edited (19 source files + 4 docs)
+## Category 3: Remaining "Coming Soon" Stub (1 page)
 
-**Critical fix (2):**
-- `src/pages/integrations/ConnectionsList.tsx`
-- `src/pages/investment-office/InvestmentReceipts.tsx`
+| File | Issue |
+|---|---|
+| `src/pages/marketing/Donate.tsx` | Donation buttons say "Coming soon" and are disabled. The page itself notes "Stripe checkout activates as soon as Lovable Payments is enabled." |
 
-**Re-wire to useAuth (3):**
-- `src/pages/ActivityStream.tsx`
-- `src/pages/MediaWorkspace.tsx`
-- `src/pages/ProofCenter.tsx`
+### Fix plan
+Wire the Donate page to a real payment provider (Stripe via Lovable Payments connector). The `donations` table and webhook plumbing already exist in the database.
 
-**Remove dead module-scope flag (9 prod):**
-- `src/pages/AIWorkforcePage.tsx`
-- `src/pages/ApprovalChamber.tsx`
-- `src/pages/CommunicationsPage.tsx`
-- `src/pages/GlobalBoardroom.tsx`
-- `src/pages/GovernanceDashboard.tsx`
-- `src/pages/OutcomeEnginePage.tsx`
-- `src/pages/TasksWorkflowsCenter.tsx`
-- `src/pages/TrustCenter.tsx`
-- `src/pages/enterprise/EnterpriseControlPlane.tsx`
+---
 
-**Test cleanup (5):**
-- `src/pages/__tests__/{Boardroom,BusinessCenter,DailyPulse,MoneyCenter,SettingsPage}.test.tsx`
+## Category 4: Console.log Statements in Production Code (46 files, ~556 hits)
 
-**Aggregator + docs (5):**
-- `scripts/architecture/checks/check-os-release-readiness.ts`
-- `public/generated/MASTER_AUDIT.md`
-- `public/generated/artifacts/audits/MASTER_AUDIT.md`
-- `WAVE2_ADVISORY_DISPOSITION.md`
+Most are in platform/SDK layers (`nova-sdk`, `sync-engine`, `crash-resilience`) which are legitimate runtime telemetry. However, some are in UI components (`DesktopQuickActionsWidget.tsx`) and should be cleaned up or replaced with proper logging.
 
-### Stop conditions
-1. Any of the existing 247 BLOCK gates flips RED after registration of `check-hardcoded-demo-flags` → halt and report.
-2. Removing module-scope `isDemoMode` breaks a page render (i.e., the const was actually used somewhere outside the component) → restore and convert to a function-scope binding.
-3. Stub-density baseline detection fails (no allowlist viable) → ship advisory in count-only mode without budget enforcement.
+### Fix plan
+- Replace `console.log` in UI components with a no-op in production (or remove).
+- Platform SDK logs are acceptable (they simulate kernel-level telemetry).
 
-### What this delivers
-- **0 hardcoded demo overrides** in production pages (down from 14).
-- **2 frozen-demo pages** (`InvestmentReceipts`, `ConnectionsList`) actually go live when `isDemo === false`.
-- **3 drifted pages** realigned to the canonical `useAuth().isDemo` wiring per memory rule.
-- **New BLOCK gate (#248)** prevents this regression class forever.
-- **New advisory gate** tracks the 1,038-hit stub density per §15.3 recommendation.
-- **Documentation** stops claiming "1,038 stubs are all benign" and shows the actual zero-real-flag truth.
-- BLOCK status: **248/248 GREEN, 0 errors, 0 missing** — system stays release-cuttable.
+---
+
+## Recommended Wave 8 Implementation (Priority Order)
+
+### 8.1 Fix the CRITICAL RLS vulnerability on `cloud_worker_jobs`
+- Migration: Drop the `OR (user_id IS NULL)` clause from the user-facing policy
+- Add a new policy for service_role only to handle system jobs
+
+### 8.2 Tighten 10 admin-internal table SELECT policies
+- Migration: Replace `USING (true)` with `USING (public.has_role(auth.uid(), 'admin'))` on: `cloud_admin_roles`, `admin_role_permissions`, `service_identity_registry`, `ai_provider_registry`, `environment_configs`, `incident_classifications`, `domain_ownership_registry`, `platform_planes`, `plane_service_assignments`, `api_gateway_routes`, `release_compatibility_matrix`
+
+### 8.3 Add field validation to 5 public-insert tables
+- Migration: Replace `WITH CHECK (true)` with `WITH CHECK (email IS NOT NULL AND length(email) > 3)` or equivalent on: `waitlist_signups`, `beta_applications`, `investor_requests`, `donations`, `press_inquiries`
+
+### 8.4 Remove 3 sensitive tables from Realtime publication
+- Migration: `ALTER PUBLICATION supabase_realtime DROP TABLE hardware_certification_runs, secret_rotation_log, operator_drill_executions;`
+
+### 8.5 Wire Donate page to payments (optional, depends on business readiness)
+- Enable Stripe/Paddle connector and replace "Coming soon" buttons with live checkout
+
+### 8.6 Clean up UI console.log statements
+- Remove or gate debug logs in `src/components/` files
+
+### 8.7 Update MASTER_AUDIT.md and security scan findings
+- Mark resolved findings as fixed
+- Document the RLS hardening in a Wave 8 operator note
+
+## Files to be created
+- `WAVE8_SECURITY_HARDENING.md`
+
+## Files to be edited
+- 1 new database migration (RLS policy tightening + realtime publication change)
+- `src/pages/marketing/Donate.tsx` (if wiring payments)
+- `src/components/sita/shell/desktop/DesktopQuickActionsWidget.tsx` (console.log cleanup)
+- `public/generated/MASTER_AUDIT.md` (truth refresh)
+
+## What this delivers
+- The only CRITICAL security finding (`cloud_worker_jobs`) is closed
+- 10 admin-internal tables stop leaking privilege model to regular users
+- 5 public forms get basic field validation against spam/abuse
+- 3 sensitive tables stop broadcasting to non-admin Realtime subscribers
+- Security scan drops from 25 findings to near-zero
 
