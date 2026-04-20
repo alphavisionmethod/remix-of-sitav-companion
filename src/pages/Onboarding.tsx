@@ -71,13 +71,65 @@ const Onboarding = () => {
   const [step, setStep] = useState<Step>("welcome");
   const [state, setState] = useState<OnboardingState>(defaultState);
   const [isSaving, setIsSaving] = useState(false);
+  const [showResumePrompt, setShowResumePrompt] = useState(false);
+
+  // Resume/re-entry telemetry — first-use audit P1.4 client wiring
+  const { checkpoint, isLoading: resumeLoading, saveCheckpoint, clearCheckpoint } = useOnboardingResume();
 
   const idx = stepOrder.indexOf(step);
+
+  // Map step index → 1..29 ceremony screen (master spec)
+  const screenForStep = useCallback((s: Step) => {
+    const i = stepOrder.indexOf(s);
+    // 10 steps mapped onto screens 1..29 (welcome=1, complete=29)
+    return Math.max(1, Math.min(29, Math.round(1 + (i / (stepOrder.length - 1)) * 28)));
+  }, []);
+
+  // Persist checkpoint on every step change after welcome (debounced inside hook)
+  useEffect(() => {
+    if (!user || step === "welcome" || step === "complete") return;
+    const branch: OnboardingBranch = "balanced"; // legacy flow → balanced depth
+    saveCheckpoint({
+      currentScreen: screenForStep(step),
+      branch,
+      profileSnapshot: state as unknown as Record<string, unknown>,
+      conditionalState: { step },
+      lastCompletedScreen: idx > 0 ? screenForStep(stepOrder[idx - 1]) : null,
+    });
+  }, [step, state, user, idx, screenForStep, saveCheckpoint]);
+
+  // Surface resume prompt once checkpoint loads (only at welcome)
+  useEffect(() => {
+    if (!resumeLoading && checkpoint && step === "welcome") {
+      setShowResumePrompt(true);
+    }
+  }, [resumeLoading, checkpoint, step]);
+
+  const handleResume = () => {
+    if (!checkpoint) return;
+    const restoredStep = (checkpoint.conditional_state?.step as Step) ?? "role";
+    const restoredState = checkpoint.profile_snapshot as Partial<OnboardingState>;
+    setState((prev) => ({ ...prev, ...restoredState }));
+    setStep(restoredStep);
+    setShowResumePrompt(false);
+    toast.success("Resumed where you left off");
+  };
+
+  const handleStartFresh = () => {
+    clearCheckpoint();
+    setShowResumePrompt(false);
+  };
+
   const next = async () => {
     if (step === "review") {
       await persistOnboardingData();
     }
-    if (idx < stepOrder.length - 1) setStep(stepOrder[idx + 1]);
+    if (idx < stepOrder.length - 1) {
+      const nextStep = stepOrder[idx + 1];
+      setStep(nextStep);
+      // On final completion, clear server-side checkpoint
+      if (nextStep === "complete") clearCheckpoint();
+    }
   };
   const prev = () => idx > 0 && setStep(stepOrder[idx - 1]);
 
