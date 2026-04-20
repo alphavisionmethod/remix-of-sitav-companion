@@ -7,20 +7,26 @@ import type { RuntimeTier } from "@/runtimes/runtime-tier-model";
 
 export type RouteSurfaceAvailability = "available" | "degraded" | "unavailable";
 
+type TierSurfaces = Record<RuntimeTier, RouteSurfaceAvailability>;
+
 export interface RouteRuntimeEntry {
   readonly path: string;
-  readonly surfaces: Record<RuntimeTier, RouteSurfaceAvailability>;
+  readonly surfaces: TierSurfaces;
 }
 
+const all = (v: RouteSurfaceAvailability): TierSurfaces => ({
+  WEB_APP: v, DESKTOP_HOST: v, APPLIANCE_RUNTIME: v, SIMULATED_OS_EXPERIENCE: v,
+});
+
 export const ROUTE_RUNTIME_MAP: readonly RouteRuntimeEntry[] = [
-  { path: "/", surfaces: { WEB_APP: "available", PWA: "available", DESKTOP_HOST: "available", APPLIANCE_RUNTIME: "available" } },
-  { path: "/login", surfaces: { WEB_APP: "available", PWA: "available", DESKTOP_HOST: "available", APPLIANCE_RUNTIME: "available" } },
-  { path: "/register", surfaces: { WEB_APP: "available", PWA: "available", DESKTOP_HOST: "available", APPLIANCE_RUNTIME: "unavailable" } },
-  { path: "/desktop", surfaces: { WEB_APP: "available", PWA: "available", DESKTOP_HOST: "available", APPLIANCE_RUNTIME: "available" } },
-  { path: "/admin", surfaces: { WEB_APP: "available", PWA: "degraded", DESKTOP_HOST: "available", APPLIANCE_RUNTIME: "available" } },
-  { path: "/settings", surfaces: { WEB_APP: "available", PWA: "available", DESKTOP_HOST: "available", APPLIANCE_RUNTIME: "available" } },
-  { path: "/files", surfaces: { WEB_APP: "available", PWA: "available", DESKTOP_HOST: "available", APPLIANCE_RUNTIME: "available" } },
-  { path: "/boardroom", surfaces: { WEB_APP: "available", PWA: "degraded", DESKTOP_HOST: "available", APPLIANCE_RUNTIME: "available" } },
+  { path: "/", surfaces: all("available") },
+  { path: "/login", surfaces: all("available") },
+  { path: "/register", surfaces: { ...all("available"), APPLIANCE_RUNTIME: "unavailable" } },
+  { path: "/desktop", surfaces: all("available") },
+  { path: "/admin", surfaces: { ...all("available"), SIMULATED_OS_EXPERIENCE: "degraded" } },
+  { path: "/settings", surfaces: all("available") },
+  { path: "/files", surfaces: all("available") },
+  { path: "/boardroom", surfaces: all("available") },
 ];
 
 export function getRouteRuntimeAvailability(path: string): RouteRuntimeEntry | undefined {
@@ -29,6 +35,6 @@ export function getRouteRuntimeAvailability(path: string): RouteRuntimeEntry | u
 
 export function isRouteAvailableOn(path: string, tier: RuntimeTier): boolean {
   const entry = getRouteRuntimeAvailability(path);
-  if (!entry) return true; // unmapped routes default available
+  if (!entry) return true;
   return entry.surfaces[tier] !== "unavailable";
 }
