@@ -18,6 +18,13 @@ export interface WindowSessionSnapshot {
   maximized: boolean;
   zIndex: number;
   savedAt: number;
+  // ── Extended fields (Wave 12.7) ────────────────────────────
+  workspaceId?: string;
+  monitorId?: string;
+  focusOrder?: number;
+  lifecycleState?: string;
+  dpiScale?: number;
+  snapZone?: string | null;
 }
 
 export interface SessionBundle {

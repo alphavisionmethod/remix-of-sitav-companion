@@ -1,0 +1,10 @@
+{
+  "generatedAt": "2026-04-20T23:00:00.000Z",
+  "gate": "window-session-persistence",
+  "sessionFields": ["windowId","appId","position","width","height","minimized","maximized","zIndex","savedAt","workspaceId","monitorId","focusOrder","lifecycleState","dpiScale","snapZone"],
+  "persistableWindows": 8,
+  "storeFile": "src/lib/windowing/window-session-store.ts",
+  "persistenceMethod": "sessionStorage",
+  "cleanShutdownDetection": true,
+  "periodicPersistence": true
+}

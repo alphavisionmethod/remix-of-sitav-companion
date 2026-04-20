@@ -1,0 +1,17 @@
+{
+  "generatedAt": "2026-04-20T23:00:00.000Z",
+  "gate": "window-monitor-compatibility",
+  "capabilities": {
+    "multiMonitorPlacement": true,
+    "offScreenRecovery": true,
+    "monitorDetachHandling": true,
+    "safePlacementCalculation": true
+  },
+  "policyFile": "src/lib/windowing/window-monitor-policy.ts",
+  "runtimeSupport": {
+    "web": "single-monitor-only",
+    "pwa": "single-monitor-only",
+    "desktop": "full-multi-monitor",
+    "appliance": "single-monitor-only"
+  }
+}

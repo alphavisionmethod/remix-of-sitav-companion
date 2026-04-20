@@ -1,0 +1,21 @@
+{
+  "generatedAt": "2026-04-20T23:00:00.000Z",
+  "gate": "window-runtime-compatibility",
+  "features": ["drag","snap","multi-monitor","dpi-scaling","native-bridge","ipc","crash-recovery","session-persistence","performance-monitoring","always-on-top","frameless","tray-minimize"],
+  "tiers": ["web","pwa","desktop","appliance"],
+  "matrix": {
+    "drag":                   { "web": "full", "pwa": "full", "desktop": "full", "appliance": "partial" },
+    "snap":                   { "web": "full", "pwa": "full", "desktop": "full", "appliance": "none" },
+    "multi-monitor":          { "web": "none", "pwa": "none", "desktop": "full", "appliance": "none" },
+    "dpi-scaling":            { "web": "partial", "pwa": "partial", "desktop": "full", "appliance": "partial" },
+    "native-bridge":          { "web": "none", "pwa": "none", "desktop": "full", "appliance": "full" },
+    "ipc":                    { "web": "partial", "pwa": "partial", "desktop": "full", "appliance": "full" },
+    "crash-recovery":         { "web": "partial", "pwa": "partial", "desktop": "full", "appliance": "full" },
+    "session-persistence":    { "web": "full", "pwa": "full", "desktop": "full", "appliance": "degraded" },
+    "performance-monitoring": { "web": "partial", "pwa": "partial", "desktop": "full", "appliance": "partial" },
+    "always-on-top":          { "web": "none", "pwa": "none", "desktop": "full", "appliance": "none" },
+    "frameless":              { "web": "none", "pwa": "none", "desktop": "full", "appliance": "none" },
+    "tray-minimize":          { "web": "none", "pwa": "none", "desktop": "full", "appliance": "none" }
+  },
+  "compatibilityFile": "src/lib/windowing/window-runtime-compatibility.ts"
+}

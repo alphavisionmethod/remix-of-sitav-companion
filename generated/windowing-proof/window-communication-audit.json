@@ -1,0 +1,19 @@
+{
+  "generatedAt": "2026-04-20T23:00:00.000Z",
+  "gate": "window-communication-audit",
+  "channelTypes": ["broadcast","direct","system","domain"],
+  "policies": {
+    "business-os": "domain-only",
+    "money-os": "domain-only",
+    "concierge": "domain-only",
+    "investment": "domain-only",
+    "boardroom": "open",
+    "files": "system-only",
+    "communications": "domain-only",
+    "settings": "system-only",
+    "terminal": "system-only",
+    "app-store": "system-only"
+  },
+  "policyFile": "src/lib/windowing/window-communication-policy.ts",
+  "capabilityPolicyFile": "src/lib/windowing/window-capability-policy.ts"
+}

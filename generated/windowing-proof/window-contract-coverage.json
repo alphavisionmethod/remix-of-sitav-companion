@@ -1,0 +1,19 @@
+{
+  "generatedAt": "2026-04-20T23:00:00.000Z",
+  "gate": "window-contract-closure",
+  "totalWindows": 10,
+  "coveredWindows": 10,
+  "coverage": "100%",
+  "windows": [
+    { "windowId": "business-os", "contractComplete": true, "fields": ["windowType","windowRole","runtimeSurface","shellTarget","persistencePolicy","recoveryPolicy","permissionScope","communicationPolicy"] },
+    { "windowId": "money-os", "contractComplete": true, "fields": ["windowType","windowRole","runtimeSurface","shellTarget","persistencePolicy","recoveryPolicy","permissionScope","communicationPolicy"] },
+    { "windowId": "concierge", "contractComplete": true, "fields": ["windowType","windowRole","runtimeSurface","shellTarget","persistencePolicy","recoveryPolicy","permissionScope","communicationPolicy"] },
+    { "windowId": "investment", "contractComplete": true, "fields": ["windowType","windowRole","runtimeSurface","shellTarget","persistencePolicy","recoveryPolicy","permissionScope","communicationPolicy"] },
+    { "windowId": "boardroom", "contractComplete": true, "fields": ["windowType","windowRole","runtimeSurface","shellTarget","persistencePolicy","recoveryPolicy","permissionScope","communicationPolicy"] },
+    { "windowId": "files", "contractComplete": true, "fields": ["windowType","windowRole","runtimeSurface","shellTarget","persistencePolicy","recoveryPolicy","permissionScope","communicationPolicy"] },
+    { "windowId": "communications", "contractComplete": true, "fields": ["windowType","windowRole","runtimeSurface","shellTarget","persistencePolicy","recoveryPolicy","permissionScope","communicationPolicy"] },
+    { "windowId": "settings", "contractComplete": true, "fields": ["windowType","windowRole","runtimeSurface","shellTarget","persistencePolicy","recoveryPolicy","permissionScope","communicationPolicy"] },
+    { "windowId": "terminal", "contractComplete": true, "fields": ["windowType","windowRole","runtimeSurface","shellTarget","persistencePolicy","recoveryPolicy","permissionScope","communicationPolicy"] },
+    { "windowId": "app-store", "contractComplete": true, "fields": ["windowType","windowRole","runtimeSurface","shellTarget","persistencePolicy","recoveryPolicy","permissionScope","communicationPolicy"] }
+  ]
+}

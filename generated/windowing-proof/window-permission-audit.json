@@ -1,0 +1,17 @@
+{
+  "generatedAt": "2026-04-20T23:00:00.000Z",
+  "gate": "window-permission-boundaries",
+  "windows": [
+    { "windowId": "business-os", "scope": "standard", "nativeBridge": false, "fileSystem": true, "externalLaunch": true, "privilegedModal": true },
+    { "windowId": "money-os", "scope": "standard", "nativeBridge": false, "fileSystem": true, "externalLaunch": true, "privilegedModal": true },
+    { "windowId": "concierge", "scope": "standard", "nativeBridge": false, "fileSystem": true, "externalLaunch": true, "privilegedModal": true },
+    { "windowId": "investment", "scope": "standard", "nativeBridge": false, "fileSystem": true, "externalLaunch": true, "privilegedModal": true },
+    { "windowId": "boardroom", "scope": "standard", "nativeBridge": false, "fileSystem": true, "externalLaunch": true, "privilegedModal": true },
+    { "windowId": "files", "scope": "standard", "nativeBridge": false, "fileSystem": true, "externalLaunch": true, "privilegedModal": true },
+    { "windowId": "communications", "scope": "standard", "nativeBridge": false, "fileSystem": true, "externalLaunch": true, "privilegedModal": true },
+    { "windowId": "settings", "scope": "full", "nativeBridge": true, "fileSystem": true, "externalLaunch": true, "privilegedModal": true },
+    { "windowId": "terminal", "scope": "full", "nativeBridge": true, "fileSystem": true, "externalLaunch": true, "privilegedModal": true },
+    { "windowId": "app-store", "scope": "restricted", "nativeBridge": false, "fileSystem": false, "externalLaunch": false, "privilegedModal": false }
+  ],
+  "boundaryFile": "src/lib/windowing/window-permission-boundary.ts"
+}
