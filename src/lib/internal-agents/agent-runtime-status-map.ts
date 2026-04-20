@@ -59,22 +59,33 @@ export const AGENT_RUNTIME_STATUS_MAP: Record<string, AgentRuntimeStatusEntry> =
   },
 
   // ───────────────────────── reliability-ops (8)
+  // The self-healer, slo-evaluator, and execute-action edge functions exist
+  // and run on schedule, but they operate at the council/event level rather
+  // than dispatching by per-agent ID — so honest classification is
+  // "scheduled-only" until per-agent dispatch is added.
   "aw-incident-response": {
-    runtimeStatus: "wired",
-    runtimeInvocationPath: "supabase/functions/internal-agent-self-healer",
-    runtimeAliasId: "ro-incident-response",
+    runtimeStatus: "scheduled-only",
+    deferredReason:
+      "Executor lives in supabase/functions/internal-agent-self-healer but does not dispatch by per-agent ID yet.",
+    deferredEta: "post-launch",
   },
   "aw-workflow-recovery": {
-    runtimeStatus: "wired",
-    runtimeInvocationPath: "supabase/functions/internal-agent-self-healer",
+    runtimeStatus: "scheduled-only",
+    deferredReason:
+      "Executor lives in supabase/functions/internal-agent-self-healer; per-agent dispatch pending.",
+    deferredEta: "post-launch",
   },
   "aw-sre": {
-    runtimeStatus: "wired",
-    runtimeInvocationPath: "supabase/functions/internal-agent-slo-evaluator",
+    runtimeStatus: "scheduled-only",
+    deferredReason:
+      "Executor lives in supabase/functions/internal-agent-slo-evaluator; per-agent dispatch pending.",
+    deferredEta: "post-launch",
   },
   "aw-fleet-health": {
-    runtimeStatus: "wired",
-    runtimeInvocationPath: "supabase/functions/health-cron",
+    runtimeStatus: "scheduled-only",
+    deferredReason:
+      "Executor lives in supabase/functions/health-cron; per-agent dispatch pending.",
+    deferredEta: "post-launch",
   },
   "aw-connector-health": {
     runtimeStatus: "scheduled-only",
@@ -89,8 +100,10 @@ export const AGENT_RUNTIME_STATUS_MAP: Record<string, AgentRuntimeStatusEntry> =
     deferredEta: "post-launch",
   },
   "aw-rollback": {
-    runtimeStatus: "wired",
-    runtimeInvocationPath: "supabase/functions/internal-agent-execute-action",
+    runtimeStatus: "scheduled-only",
+    deferredReason:
+      "Executor lives in supabase/functions/internal-agent-execute-action; per-agent dispatch pending.",
+    deferredEta: "post-launch",
   },
   "aw-support-diagnostics": {
     runtimeStatus: "deferred",
@@ -100,17 +113,22 @@ export const AGENT_RUNTIME_STATUS_MAP: Record<string, AgentRuntimeStatusEntry> =
 
   // ───────────────────────── runtime-cost (6)
   "aw-ai-spend-control": {
-    runtimeStatus: "wired",
-    runtimeInvocationPath: "supabase/functions/internal-agent-cost-optimizer",
-    runtimeAliasId: "rc-cost-sentinel",
+    runtimeStatus: "scheduled-only",
+    deferredReason:
+      "Executor lives in supabase/functions/internal-agent-cost-optimizer; per-agent dispatch pending.",
+    deferredEta: "post-launch",
   },
   "aw-token-budget": {
-    runtimeStatus: "wired",
-    runtimeInvocationPath: "supabase/functions/internal-agent-cost-optimizer",
+    runtimeStatus: "scheduled-only",
+    deferredReason:
+      "Executor lives in supabase/functions/internal-agent-cost-optimizer; per-agent dispatch pending.",
+    deferredEta: "post-launch",
   },
   "aw-model-routing": {
-    runtimeStatus: "wired",
-    runtimeInvocationPath: "supabase/functions/routing-policy-update",
+    runtimeStatus: "scheduled-only",
+    deferredReason:
+      "Executor lives in supabase/functions/routing-policy-update; per-agent dispatch pending.",
+    deferredEta: "post-launch",
   },
   "aw-latency-optimizer": {
     runtimeStatus: "deferred",
@@ -162,13 +180,16 @@ export const AGENT_RUNTIME_STATUS_MAP: Record<string, AgentRuntimeStatusEntry> =
 
   // ───────────────────────── knowledge-coordination (5)
   "aw-knowledge-curator": {
-    runtimeStatus: "wired",
-    runtimeInvocationPath: "supabase/functions/advisor-knowledge-manage",
-    runtimeAliasId: "kc-knowledge-coordinator",
+    runtimeStatus: "scheduled-only",
+    deferredReason:
+      "Executor lives in supabase/functions/advisor-knowledge-manage; per-agent dispatch pending.",
+    deferredEta: "post-launch",
   },
   "aw-release-notes": {
-    runtimeStatus: "wired",
-    runtimeInvocationPath: "supabase/functions/internal-agent-weekly-digest",
+    runtimeStatus: "scheduled-only",
+    deferredReason:
+      "Executor lives in supabase/functions/internal-agent-weekly-digest; per-agent dispatch pending.",
+    deferredEta: "post-launch",
   },
   "aw-sprint-planning": {
     runtimeStatus: "deferred",
