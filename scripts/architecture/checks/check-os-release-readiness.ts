@@ -309,6 +309,8 @@ const REQUIRED_GATES = [
   "runbook-coverage",
   // Phase 26 Per-edge-function ownership manifest (1 BLOCK gate — 100% owner coverage + mirror parity + freshness)
   "edge-function-ownership-completeness",
+  // Phase 27 Per-provider client registry (1 BLOCK gate — src/lib/connectors/<provider>/client.ts coverage + canonical registry)
+  "connector-client-registry-completeness",
 ];
 
 // Mobile Deployment Closure — RETIRED (2026-04-19)
