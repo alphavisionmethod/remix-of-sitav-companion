@@ -4248,6 +4248,60 @@ export type Database = {
         }
         Relationships: []
       }
+      beta_applications: {
+        Row: {
+          country: string | null
+          created_at: string
+          device_targets: string[]
+          email: string
+          full_name: string
+          id: string
+          invite_code: string | null
+          profile: Json
+          score: number
+          source: string | null
+          status: string
+          technical_level: string | null
+          updated_at: string
+          use_case: string | null
+          why: string | null
+        }
+        Insert: {
+          country?: string | null
+          created_at?: string
+          device_targets?: string[]
+          email: string
+          full_name: string
+          id?: string
+          invite_code?: string | null
+          profile?: Json
+          score?: number
+          source?: string | null
+          status?: string
+          technical_level?: string | null
+          updated_at?: string
+          use_case?: string | null
+          why?: string | null
+        }
+        Update: {
+          country?: string | null
+          created_at?: string
+          device_targets?: string[]
+          email?: string
+          full_name?: string
+          id?: string
+          invite_code?: string | null
+          profile?: Json
+          score?: number
+          source?: string | null
+          status?: string
+          technical_level?: string | null
+          updated_at?: string
+          use_case?: string | null
+          why?: string | null
+        }
+        Relationships: []
+      }
       bills: {
         Row: {
           amount_cents: number
@@ -9984,6 +10038,54 @@ export type Database = {
         }
         Relationships: []
       }
+      donations: {
+        Row: {
+          amount_cents: number
+          created_at: string
+          currency: string
+          donor_email: string | null
+          donor_name: string | null
+          id: string
+          is_public: boolean
+          message: string | null
+          paid_at: string | null
+          receipt_hash: string | null
+          status: string
+          stripe_session_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          amount_cents: number
+          created_at?: string
+          currency?: string
+          donor_email?: string | null
+          donor_name?: string | null
+          id?: string
+          is_public?: boolean
+          message?: string | null
+          paid_at?: string | null
+          receipt_hash?: string | null
+          status?: string
+          stripe_session_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          amount_cents?: number
+          created_at?: string
+          currency?: string
+          donor_email?: string | null
+          donor_name?: string | null
+          id?: string
+          is_public?: boolean
+          message?: string | null
+          paid_at?: string | null
+          receipt_hash?: string | null
+          status?: string
+          stripe_session_id?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       dr_drill_executions: {
         Row: {
           completed_at: string | null
@@ -13654,6 +13756,51 @@ export type Database = {
         }
         Relationships: []
       }
+      investor_requests: {
+        Row: {
+          contact_name: string
+          contact_role: string | null
+          created_at: string
+          email: string
+          fund_name: string
+          id: string
+          jurisdiction: string | null
+          notes: string | null
+          stage_interest: string | null
+          status: string
+          ticket_band: string
+          updated_at: string
+        }
+        Insert: {
+          contact_name: string
+          contact_role?: string | null
+          created_at?: string
+          email: string
+          fund_name: string
+          id?: string
+          jurisdiction?: string | null
+          notes?: string | null
+          stage_interest?: string | null
+          status?: string
+          ticket_band: string
+          updated_at?: string
+        }
+        Update: {
+          contact_name?: string
+          contact_role?: string | null
+          created_at?: string
+          email?: string
+          fund_name?: string
+          id?: string
+          jurisdiction?: string | null
+          notes?: string | null
+          stage_interest?: string | null
+          status?: string
+          ticket_band?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       invoices: {
         Row: {
           amount_cents: number
@@ -16524,6 +16671,42 @@ export type Database = {
           symbol?: string
           updated_at?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      press_inquiries: {
+        Row: {
+          beat: string | null
+          contact_name: string
+          created_at: string
+          email: string
+          id: string
+          message: string | null
+          outlet: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          beat?: string | null
+          contact_name: string
+          created_at?: string
+          email: string
+          id?: string
+          message?: string | null
+          outlet: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          beat?: string | null
+          contact_name?: string
+          created_at?: string
+          email?: string
+          id?: string
+          message?: string | null
+          outlet?: string
+          status?: string
+          updated_at?: string
         }
         Relationships: []
       }
@@ -20473,6 +20656,48 @@ export type Database = {
         }
         Relationships: []
       }
+      waitlist_signups: {
+        Row: {
+          confirmed_at: string | null
+          created_at: string
+          email: string
+          id: string
+          ip_country: string | null
+          position: number
+          referral_code: string
+          referred_by: string | null
+          source: string | null
+          updated_at: string
+          user_agent: string | null
+        }
+        Insert: {
+          confirmed_at?: string | null
+          created_at?: string
+          email: string
+          id?: string
+          ip_country?: string | null
+          position: number
+          referral_code: string
+          referred_by?: string | null
+          source?: string | null
+          updated_at?: string
+          user_agent?: string | null
+        }
+        Update: {
+          confirmed_at?: string | null
+          created_at?: string
+          email?: string
+          id?: string
+          ip_country?: string | null
+          position?: number
+          referral_code?: string
+          referred_by?: string | null
+          source?: string | null
+          updated_at?: string
+          user_agent?: string | null
+        }
+        Relationships: []
+      }
       watchlists: {
         Row: {
           created_at: string
@@ -21063,6 +21288,33 @@ export type Database = {
           },
         ]
       }
+      public_donations_wall: {
+        Row: {
+          donor_name: string | null
+          id: string | null
+          message: string | null
+          paid_at: string | null
+          receipt_hash: string | null
+          tier: string | null
+        }
+        Insert: {
+          donor_name?: never
+          id?: string | null
+          message?: never
+          paid_at?: string | null
+          receipt_hash?: string | null
+          tier?: never
+        }
+        Update: {
+          donor_name?: never
+          id?: string | null
+          message?: never
+          paid_at?: string | null
+          receipt_hash?: string | null
+          tier?: never
+        }
+        Relationships: []
+      }
       uptime_status: {
         Row: {
           current_status: string | null
@@ -21286,6 +21538,7 @@ export type Database = {
         Returns: Json
       }
       expire_overdue_kill_switches: { Args: never; Returns: number }
+      gen_short_code: { Args: { len?: number }; Returns: string }
       get_ai_runtime_streak_summary: { Args: never; Returns: Json }
       get_compliance_rls_summary: { Args: never; Returns: Json }
       get_connector_refresh_streak_summary: { Args: never; Returns: Json }
