@@ -73,6 +73,18 @@ const Signup = lazy(() => import("./pages/auth/Signup"));
 const ForgotPassword = lazy(() => import("./pages/auth/ForgotPassword"));
 const ResetPassword = lazy(() => import("./pages/auth/ResetPassword"));
 
+// Marketing site routes (public, no kernel)
+const MarketingHome = lazy(() => import("./pages/marketing/Home"));
+const MarketingDemo = lazy(() => import("./pages/marketing/Demo"));
+const MarketingBeta = lazy(() => import("./pages/marketing/Beta"));
+const MarketingWaitlist = lazy(() => import("./pages/marketing/Waitlist"));
+const MarketingInvestors = lazy(() => import("./pages/marketing/Investors"));
+const MarketingDonate = lazy(() => import("./pages/marketing/Donate"));
+const MarketingDownload = lazy(() => import("./pages/marketing/Download"));
+const MarketingManifesto = lazy(() => import("./pages/marketing/Manifesto"));
+const MarketingProof = lazy(() => import("./pages/marketing/Proof"));
+const MarketingPress = lazy(() => import("./pages/marketing/Press"));
+
 // ═══════════════════════════════════════════════════════════════
 // Admin tools wrapper
 // ═══════════════════════════════════════════════════════════════
@@ -230,7 +242,19 @@ const App = () => (
             <Route path="/signup" element={<PublicLayout><PublicRoute><Signup /></PublicRoute></PublicLayout>} />
             <Route path="/forgot-password" element={<PublicLayout><PublicRoute><ForgotPassword /></PublicRoute></PublicLayout>} />
             <Route path="/reset-password" element={<PublicLayout><ResetPassword /></PublicLayout>} />
-            <Route path="/" element={<PublicLayout><HomeRoute /></PublicLayout>} />
+
+            {/* Marketing site (public, no kernel) */}
+            <Route path="/" element={<PublicLayout><MarketingHome /></PublicLayout>} />
+            <Route path="/demo" element={<PublicLayout><MarketingDemo /></PublicLayout>} />
+            <Route path="/beta" element={<PublicLayout><MarketingBeta /></PublicLayout>} />
+            <Route path="/waitlist" element={<PublicLayout><MarketingWaitlist /></PublicLayout>} />
+            <Route path="/investors" element={<PublicLayout><MarketingInvestors /></PublicLayout>} />
+            <Route path="/donate" element={<PublicLayout><MarketingDonate /></PublicLayout>} />
+            <Route path="/download" element={<PublicLayout><MarketingDownload /></PublicLayout>} />
+            <Route path="/manifesto" element={<PublicLayout><MarketingManifesto /></PublicLayout>} />
+            <Route path="/proof" element={<PublicLayout><MarketingProof /></PublicLayout>} />
+            <Route path="/press" element={<PublicLayout><MarketingPress /></PublicLayout>} />
+            <Route path="/app" element={<PublicLayout><HomeRoute /></PublicLayout>} />
 
             {/* TIER 2+3: AUTHENTICATED */}
             <Route path="/*" element={
