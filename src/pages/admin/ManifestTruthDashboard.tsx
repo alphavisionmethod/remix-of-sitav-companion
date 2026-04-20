@@ -5,6 +5,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { MANIFEST_REGISTRY, getManifestsByClass, getAuthoritativeManifests } from "@/lib/truth-manifests/manifest-registry";
 import { generateHealthSummary } from "@/lib/truth-manifests/manifest-health-engine";
 import type { ManifestHealthSummary } from "@/lib/truth-manifests/manifest-types";
+import ArtifactOwnershipGraphCard from "@/components/admin/ArtifactOwnershipGraphCard";
 
 const ManifestTruthDashboard = () => {
   const [summary, setSummary] = useState<ManifestHealthSummary | null>(null);
@@ -36,6 +37,8 @@ const ManifestTruthDashboard = () => {
           <Card><CardHeader className="pb-2"><CardTitle className="text-sm text-muted-foreground">Authoritative</CardTitle></CardHeader><CardContent><p className="text-2xl font-bold text-purple-400">{getAuthoritativeManifests().length}</p></CardContent></Card>
         </div>
       )}
+
+      <ArtifactOwnershipGraphCard />
 
       <Card>
         <CardHeader><CardTitle>Manifest Registry</CardTitle></CardHeader>

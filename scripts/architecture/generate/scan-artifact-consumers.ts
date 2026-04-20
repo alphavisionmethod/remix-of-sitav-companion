@@ -139,8 +139,9 @@ for (const [file, lines] of fileLines) {
     for (const lm of literalMatches) {
       const ref = normalizeRef(lm[1]);
       if (!ref) continue;
+      const arr = consumerMap.get(ref);
+      if (!arr) continue; // ref normalized to a non-tracked artifact (e.g. .md file)
       // Skip — we already recorded structured patterns; only add if no PATTERN already hit this exact line
-      const arr = consumerMap.get(ref)!;
       if (arr.some(c => c.path === file && c.line === i + 1)) continue;
       recordHit(ref, file, i, "literal");
     }
