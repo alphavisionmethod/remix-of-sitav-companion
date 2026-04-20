@@ -1,0 +1,1897 @@
+{
+  "generatedAt": "2026-04-20T01:45:45.222Z",
+  "source": {
+    "checksDir": "scripts/architecture/checks",
+    "requiredGatesCount": 230,
+    "deploymentGapSuiteCount": 17,
+    "overrideCount": 0
+  },
+  "totalValidators": 186,
+  "blockCount": 50,
+  "warnCount": 17,
+  "advisoryCount": 119,
+  "disabledCount": 0,
+  "archivedCount": 0,
+  "classified": 67,
+  "unclassified": 119,
+  "coveragePercent": 36,
+  "entries": [
+    {
+      "validator": "check-5-plane-boundaries",
+      "gateId": "5-plane-boundaries",
+      "classification": "block",
+      "consumer": "release-readiness",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.900Z",
+      "hasReportArtifact": true,
+      "rationale": "Auto-classified: gateId present in REQUIRED_GATES."
+    },
+    {
+      "validator": "check-action-envelope-boundary",
+      "gateId": "action-envelope-boundary",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.900Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-admin-command-palette-coherence",
+      "gateId": "admin-command-palette-coherence",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.900Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-admin-domain-budget",
+      "gateId": "admin-domain-budget",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.900Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-admin-ia",
+      "gateId": "admin-ia",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.900Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-admin-page-classification-coverage",
+      "gateId": "admin-page-classification-coverage",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.900Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-admin-route-coherence",
+      "gateId": "admin-route-coherence",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.900Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-admin-route-registry-conformance",
+      "gateId": "admin-route-registry-conformance",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.900Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-admin-shell-consistency",
+      "gateId": "admin-shell-consistency",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.900Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-admin-top-level-domain-count",
+      "gateId": "admin-top-level-domain-count",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.900Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-advisor-registry",
+      "gateId": "advisor-registry",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.900Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-ai-advisor-reality",
+      "gateId": "ai-advisor-reality",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.900Z",
+      "hasReportArtifact": true,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-ai-cost-metering",
+      "gateId": "ai-cost-metering",
+      "classification": "warn",
+      "consumer": "deployment-gap-suite",
+      "bucket": "deployment-gap",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.900Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: validator wired into run-all-deployment-gap-gates.ts."
+    },
+    {
+      "validator": "check-ai-receipt-completeness",
+      "gateId": "ai-receipt-completeness",
+      "classification": "block",
+      "consumer": "release-readiness",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.900Z",
+      "hasReportArtifact": true,
+      "rationale": "Auto-classified: gateId present in REQUIRED_GATES."
+    },
+    {
+      "validator": "check-app-plane-coverage",
+      "gateId": "app-plane-coverage",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.900Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-app-profile-matrix",
+      "gateId": "app-profile-matrix",
+      "classification": "block",
+      "consumer": "release-readiness",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.900Z",
+      "hasReportArtifact": true,
+      "rationale": "Auto-classified: gateId present in REQUIRED_GATES."
+    },
+    {
+      "validator": "check-app-sdk-extension-events",
+      "gateId": "app-sdk-extension-events",
+      "classification": "block",
+      "consumer": "release-readiness",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.900Z",
+      "hasReportArtifact": true,
+      "rationale": "Auto-classified: gateId present in REQUIRED_GATES."
+    },
+    {
+      "validator": "check-app-sdk-extension-registry",
+      "gateId": "app-sdk-extension-registry",
+      "classification": "block",
+      "consumer": "release-readiness",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.901Z",
+      "hasReportArtifact": true,
+      "rationale": "Auto-classified: gateId present in REQUIRED_GATES."
+    },
+    {
+      "validator": "check-app-store-install-flow",
+      "gateId": "app-store-install-flow",
+      "classification": "warn",
+      "consumer": "deployment-gap-suite",
+      "bucket": "deployment-gap",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.901Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: validator wired into run-all-deployment-gap-gates.ts."
+    },
+    {
+      "validator": "check-appliance-deployability",
+      "gateId": "appliance-deployability",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.902Z",
+      "hasReportArtifact": true,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-artifact-ownership-coverage",
+      "gateId": "artifact-ownership-coverage",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-20T01:36:55.200Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-autosave-adoption",
+      "gateId": "autosave-adoption",
+      "classification": "warn",
+      "consumer": "deployment-gap-suite",
+      "bucket": "deployment-gap",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.902Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: validator wired into run-all-deployment-gap-gates.ts."
+    },
+    {
+      "validator": "check-backend-api-deployability",
+      "gateId": "backend-api-deployability",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.902Z",
+      "hasReportArtifact": true,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-boardroom-cockpit-telemetry",
+      "gateId": "boardroom-cockpit-telemetry",
+      "classification": "block",
+      "consumer": "release-readiness",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.902Z",
+      "hasReportArtifact": true,
+      "rationale": "Auto-classified: gateId present in REQUIRED_GATES."
+    },
+    {
+      "validator": "check-boardroom-layer7-closure",
+      "gateId": "boardroom-layer7-closure",
+      "classification": "block",
+      "consumer": "release-readiness",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.902Z",
+      "hasReportArtifact": true,
+      "rationale": "Auto-classified: gateId present in REQUIRED_GATES."
+    },
+    {
+      "validator": "check-boot-chain",
+      "gateId": "boot-chain",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.902Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-bounded-context-coverage",
+      "gateId": "bounded-context-coverage",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.902Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-canonical-paths",
+      "gateId": "canonical-paths",
+      "classification": "block",
+      "consumer": "release-readiness",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.902Z",
+      "hasReportArtifact": true,
+      "rationale": "Auto-classified: gateId present in REQUIRED_GATES."
+    },
+    {
+      "validator": "check-capability-families",
+      "gateId": "capability-families",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.902Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-chaos-drill-classification",
+      "gateId": "chaos-drill-classification",
+      "classification": "block",
+      "consumer": "release-readiness",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.903Z",
+      "hasReportArtifact": true,
+      "rationale": "Auto-classified: gateId present in REQUIRED_GATES."
+    },
+    {
+      "validator": "check-ci-artifacts-proof",
+      "gateId": "ci-artifacts-proof",
+      "classification": "block",
+      "consumer": "release-readiness",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.903Z",
+      "hasReportArtifact": true,
+      "rationale": "Auto-classified: gateId present in REQUIRED_GATES."
+    },
+    {
+      "validator": "check-ci-umbrella-integrity",
+      "gateId": "ci-umbrella-integrity",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.903Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-command-palette-profile-leakage",
+      "gateId": "command-palette-profile-leakage",
+      "classification": "block",
+      "consumer": "release-readiness",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.903Z",
+      "hasReportArtifact": true,
+      "rationale": "Auto-classified: gateId present in REQUIRED_GATES."
+    },
+    {
+      "validator": "check-component-classification",
+      "gateId": "component-classification",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.903Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-connector-catalog",
+      "gateId": "connector-catalog",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.903Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-connector-oauth-hardening",
+      "gateId": "connector-oauth-hardening",
+      "classification": "warn",
+      "consumer": "deployment-gap-suite",
+      "bucket": "deployment-gap",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.903Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: validator wired into run-all-deployment-gap-gates.ts."
+    },
+    {
+      "validator": "check-connector-reality",
+      "gateId": "connector-reality",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.903Z",
+      "hasReportArtifact": true,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-connector-reauth-telemetry",
+      "gateId": "connector-reauth-telemetry",
+      "classification": "block",
+      "consumer": "release-readiness",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.903Z",
+      "hasReportArtifact": true,
+      "rationale": "Auto-classified: gateId present in REQUIRED_GATES."
+    },
+    {
+      "validator": "check-context-membership",
+      "gateId": "context-membership",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.903Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-contract-family-completeness",
+      "gateId": "contract-family-completeness",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.904Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-contract-registry",
+      "gateId": "contract-registry",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.904Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-contract-topology",
+      "gateId": "contract-topology",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.904Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-cosmetic-debt-closure",
+      "gateId": "cosmetic-debt-closure",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-20T00:13:05.693Z",
+      "hasReportArtifact": true,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-cron-execution-evidence",
+      "gateId": "cron-execution-evidence",
+      "classification": "block",
+      "consumer": "release-readiness",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.904Z",
+      "hasReportArtifact": true,
+      "rationale": "Auto-classified: gateId present in REQUIRED_GATES."
+    },
+    {
+      "validator": "check-cta-wiring",
+      "gateId": "cta-wiring",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.904Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-db-reality",
+      "gateId": "db-reality",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.904Z",
+      "hasReportArtifact": true,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-db-truth-completeness",
+      "gateId": "db-truth-completeness",
+      "classification": "warn",
+      "consumer": "deployment-gap-suite",
+      "bucket": "deployment-gap",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.904Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: validator wired into run-all-deployment-gap-gates.ts."
+    },
+    {
+      "validator": "check-dead-pages",
+      "gateId": "dead-pages",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.904Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-delegation-receipts",
+      "gateId": "delegation-receipts",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.904Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-demo-data-imports",
+      "gateId": "demo-data-imports",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.904Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-deployability-coverage",
+      "gateId": "deployability-coverage",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.904Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-deployable-plane-isolation",
+      "gateId": "deployable-plane-isolation",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.904Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-deployment-profile-coverage",
+      "gateId": "deployment-profile-coverage",
+      "classification": "block",
+      "consumer": "release-readiness",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.904Z",
+      "hasReportArtifact": true,
+      "rationale": "Auto-classified: gateId present in REQUIRED_GATES."
+    },
+    {
+      "validator": "check-deprecated-wrappers",
+      "gateId": "deprecated-wrappers",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.904Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-desktop-deployability",
+      "gateId": "desktop-deployability",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.905Z",
+      "hasReportArtifact": true,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-domain-purity",
+      "gateId": "domain-purity",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.905Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-domain-reality",
+      "gateId": "domain-reality",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.905Z",
+      "hasReportArtifact": true,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-dr-drill-evidence",
+      "gateId": "dr-drill-evidence",
+      "classification": "block",
+      "consumer": "release-readiness",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.905Z",
+      "hasReportArtifact": true,
+      "rationale": "Auto-classified: gateId present in REQUIRED_GATES."
+    },
+    {
+      "validator": "check-drift",
+      "gateId": "drift",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.905Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-duplicate-families",
+      "gateId": "duplicate-families",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.905Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-edge-function-governance-coverage",
+      "gateId": "edge-function-governance-coverage",
+      "classification": "warn",
+      "consumer": "deployment-gap-suite",
+      "bucket": "deployment-gap",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.905Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: validator wired into run-all-deployment-gap-gates.ts."
+    },
+    {
+      "validator": "check-edge-function-health-replay",
+      "gateId": "edge-function-health-replay",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.905Z",
+      "hasReportArtifact": true,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-edge-function-membership-completeness",
+      "gateId": "edge-function-membership-completeness",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.906Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-electron-domain-layout",
+      "gateId": "electron-domain-layout",
+      "classification": "block",
+      "consumer": "release-readiness",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.906Z",
+      "hasReportArtifact": true,
+      "rationale": "Auto-classified: gateId present in REQUIRED_GATES."
+    },
+    {
+      "validator": "check-electron-shell-session-readiness",
+      "gateId": "electron-shell-session-readiness",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.906Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-electron-signing-readiness",
+      "gateId": "electron-signing-readiness",
+      "classification": "block",
+      "consumer": "release-readiness",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.906Z",
+      "hasReportArtifact": true,
+      "rationale": "Auto-classified: gateId present in REQUIRED_GATES."
+    },
+    {
+      "validator": "check-engine-no-io",
+      "gateId": "engine-no-io",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.906Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-error-boundaries",
+      "gateId": "error-boundaries",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.906Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-event-catalog",
+      "gateId": "event-catalog",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.906Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-event-receipt-linkage",
+      "gateId": "event-receipt-linkage",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.906Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-evidence-freshness",
+      "gateId": "evidence-freshness",
+      "classification": "warn",
+      "consumer": "deployment-gap-suite",
+      "bucket": "deployment-gap",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.906Z",
+      "hasReportArtifact": true,
+      "rationale": "Auto-classified: validator wired into run-all-deployment-gap-gates.ts."
+    },
+    {
+      "validator": "check-evidence-graph-completeness",
+      "gateId": "evidence-graph-completeness",
+      "classification": "block",
+      "consumer": "release-readiness",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.906Z",
+      "hasReportArtifact": true,
+      "rationale": "Auto-classified: gateId present in REQUIRED_GATES."
+    },
+    {
+      "validator": "check-experimental-isolation",
+      "gateId": "experimental-isolation",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.906Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-feature-governance",
+      "gateId": "feature-governance",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.906Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-feature-integration-completeness",
+      "gateId": "feature-integration-completeness",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.906Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-feature-reality-coverage",
+      "gateId": "feature-reality-coverage",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.906Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-federation-optin-append-only",
+      "gateId": "federation-optin-append-only",
+      "classification": "block",
+      "consumer": "release-readiness",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.906Z",
+      "hasReportArtifact": true,
+      "rationale": "Auto-classified: gateId present in REQUIRED_GATES."
+    },
+    {
+      "validator": "check-file-picker-adoption",
+      "gateId": "file-picker-adoption",
+      "classification": "warn",
+      "consumer": "deployment-gap-suite",
+      "bucket": "deployment-gap",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.906Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: validator wired into run-all-deployment-gap-gates.ts."
+    },
+    {
+      "validator": "check-frontend-backend-substrate-map",
+      "gateId": "frontend-backend-substrate-map",
+      "classification": "warn",
+      "consumer": "deployment-gap-suite",
+      "bucket": "deployment-gap",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.907Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: validator wired into run-all-deployment-gap-gates.ts."
+    },
+    {
+      "validator": "check-golden-path-coverage",
+      "gateId": "golden-path-coverage",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.907Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-hidden-app-routes",
+      "gateId": "hidden-app-routes",
+      "classification": "block",
+      "consumer": "release-readiness",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.907Z",
+      "hasReportArtifact": true,
+      "rationale": "Auto-classified: gateId present in REQUIRED_GATES."
+    },
+    {
+      "validator": "check-hook-purity",
+      "gateId": "hook-purity",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.907Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-ia-coherence",
+      "gateId": "ia-coherence",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.907Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-inline-mocks",
+      "gateId": "inline-mocks",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.907Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-integration-map",
+      "gateId": "integration-map",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.907Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-its-real-gate",
+      "gateId": "its-real-gate",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.907Z",
+      "hasReportArtifact": true,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-kill-switch-coverage",
+      "gateId": "kill-switch-coverage",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.907Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-ks-payments-auth-readiness",
+      "gateId": "ks-payments-auth-readiness",
+      "classification": "block",
+      "consumer": "release-readiness",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.907Z",
+      "hasReportArtifact": true,
+      "rationale": "Auto-classified: gateId present in REQUIRED_GATES."
+    },
+    {
+      "validator": "check-launcher-registry-completeness",
+      "gateId": "launcher-registry-completeness",
+      "classification": "block",
+      "consumer": "release-readiness",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.907Z",
+      "hasReportArtifact": true,
+      "rationale": "Auto-classified: gateId present in REQUIRED_GATES."
+    },
+    {
+      "validator": "check-layer-boundaries",
+      "gateId": "layer-boundaries",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.907Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-legacy-wrapper-usage",
+      "gateId": "legacy-wrapper-usage",
+      "classification": "block",
+      "consumer": "release-readiness",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.907Z",
+      "hasReportArtifact": true,
+      "rationale": "Auto-classified: gateId present in REQUIRED_GATES."
+    },
+    {
+      "validator": "check-lib-ownership-drift",
+      "gateId": "lib-ownership-drift",
+      "classification": "block",
+      "consumer": "release-readiness",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-20T01:03:37.652Z",
+      "hasReportArtifact": true,
+      "rationale": "Auto-classified: gateId present in REQUIRED_GATES."
+    },
+    {
+      "validator": "check-manifest-truth-completeness",
+      "gateId": "manifest-truth-completeness",
+      "classification": "warn",
+      "consumer": "deployment-gap-suite",
+      "bucket": "deployment-gap",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-20T01:37:18.168Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: validator wired into run-all-deployment-gap-gates.ts."
+    },
+    {
+      "validator": "check-misplaced-data-logic",
+      "gateId": "misplaced-data-logic",
+      "classification": "block",
+      "consumer": "release-readiness",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.908Z",
+      "hasReportArtifact": true,
+      "rationale": "Auto-classified: gateId present in REQUIRED_GATES."
+    },
+    {
+      "validator": "check-misplaced-domain-logic",
+      "gateId": "misplaced-domain-logic",
+      "classification": "block",
+      "consumer": "release-readiness",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.908Z",
+      "hasReportArtifact": true,
+      "rationale": "Auto-classified: gateId present in REQUIRED_GATES."
+    },
+    {
+      "validator": "check-misplaced-runtime-logic",
+      "gateId": "misplaced-runtime-logic",
+      "classification": "block",
+      "consumer": "release-readiness",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.908Z",
+      "hasReportArtifact": true,
+      "rationale": "Auto-classified: gateId present in REQUIRED_GATES."
+    },
+    {
+      "validator": "check-mobile-build-pipeline",
+      "gateId": "mobile-build-pipeline",
+      "classification": "block",
+      "consumer": "release-readiness",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.908Z",
+      "hasReportArtifact": true,
+      "rationale": "Auto-classified: gateId present in REQUIRED_GATES."
+    },
+    {
+      "validator": "check-mobile-capability-truth",
+      "gateId": "mobile-capability-truth",
+      "classification": "block",
+      "consumer": "release-readiness",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.908Z",
+      "hasReportArtifact": true,
+      "rationale": "Auto-classified: gateId present in REQUIRED_GATES."
+    },
+    {
+      "validator": "check-mobile-deferral-attestation",
+      "gateId": "mobile-deferral-attestation",
+      "classification": "block",
+      "consumer": "release-readiness",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.908Z",
+      "hasReportArtifact": true,
+      "rationale": "Auto-classified: gateId present in REQUIRED_GATES."
+    },
+    {
+      "validator": "check-mobile-offline-persistence",
+      "gateId": "mobile-offline-persistence",
+      "classification": "warn",
+      "consumer": "deployment-gap-suite",
+      "bucket": "deployment-gap",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.908Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: validator wired into run-all-deployment-gap-gates.ts."
+    },
+    {
+      "validator": "check-mobile-store-readiness",
+      "gateId": "mobile-store-readiness",
+      "classification": "block",
+      "consumer": "release-readiness",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.908Z",
+      "hasReportArtifact": true,
+      "rationale": "Auto-classified: gateId present in REQUIRED_GATES."
+    },
+    {
+      "validator": "check-mock-leak",
+      "gateId": "mock-leak",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.908Z",
+      "hasReportArtifact": true,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-module-count",
+      "gateId": "module-count",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.908Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-native-observability-readiness",
+      "gateId": "native-observability-readiness",
+      "classification": "block",
+      "consumer": "release-readiness",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.909Z",
+      "hasReportArtifact": true,
+      "rationale": "Auto-classified: gateId present in REQUIRED_GATES."
+    },
+    {
+      "validator": "check-no-backend-in-ui",
+      "gateId": "no-backend-in-ui",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.909Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-no-duplicate-primary-concept",
+      "gateId": "no-duplicate-primary-concept",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.909Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-no-hidden-executor",
+      "gateId": "no-hidden-executor",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.909Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-no-inline-empty-states",
+      "gateId": "no-inline-empty-states",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.909Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-no-page-mocks",
+      "gateId": "no-page-mocks",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.909Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-no-runtime-in-shared",
+      "gateId": "no-runtime-in-shared",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.909Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-no-ui-in-backend",
+      "gateId": "no-ui-in-backend",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.909Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-no-workflow-bypass",
+      "gateId": "no-workflow-bypass",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.909Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-observability-reality",
+      "gateId": "observability-reality",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.909Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-onboarding-branch-telemetry",
+      "gateId": "onboarding-branch-telemetry",
+      "classification": "block",
+      "consumer": "release-readiness",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.909Z",
+      "hasReportArtifact": true,
+      "rationale": "Auto-classified: gateId present in REQUIRED_GATES."
+    },
+    {
+      "validator": "check-onboarding-surface-truth",
+      "gateId": "onboarding-surface-truth",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-20T01:22:07.513Z",
+      "hasReportArtifact": true,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-orchestration-authority",
+      "gateId": "orchestration-authority",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.909Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-os-build-pipeline",
+      "gateId": "os-build-pipeline",
+      "classification": "block",
+      "consumer": "release-readiness",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.909Z",
+      "hasReportArtifact": true,
+      "rationale": "Auto-classified: gateId present in REQUIRED_GATES."
+    },
+    {
+      "validator": "check-os-ci-end-to-end",
+      "gateId": "os-ci-end-to-end",
+      "classification": "block",
+      "consumer": "release-readiness",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.909Z",
+      "hasReportArtifact": true,
+      "rationale": "Auto-classified: gateId present in REQUIRED_GATES."
+    },
+    {
+      "validator": "check-os-recovery-readiness",
+      "gateId": "os-recovery-readiness",
+      "classification": "block",
+      "consumer": "release-readiness",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.909Z",
+      "hasReportArtifact": true,
+      "rationale": "Auto-classified: gateId present in REQUIRED_GATES."
+    },
+    {
+      "validator": "check-os-release-readiness",
+      "gateId": "os-release-readiness",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-20T01:45:37.112Z",
+      "hasReportArtifact": true,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-os-support-bundle-readiness",
+      "gateId": "os-support-bundle-readiness",
+      "classification": "block",
+      "consumer": "release-readiness",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.909Z",
+      "hasReportArtifact": true,
+      "rationale": "Auto-classified: gateId present in REQUIRED_GATES."
+    },
+    {
+      "validator": "check-os-trust-chain-readiness",
+      "gateId": "os-trust-chain-readiness",
+      "classification": "block",
+      "consumer": "release-readiness",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.909Z",
+      "hasReportArtifact": true,
+      "rationale": "Auto-classified: gateId present in REQUIRED_GATES."
+    },
+    {
+      "validator": "check-os-update-readiness",
+      "gateId": "os-update-readiness",
+      "classification": "block",
+      "consumer": "release-readiness",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.909Z",
+      "hasReportArtifact": true,
+      "rationale": "Auto-classified: gateId present in REQUIRED_GATES."
+    },
+    {
+      "validator": "check-outbound-communication-policy",
+      "gateId": "outbound-communication-policy",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.910Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-owner-copilot-readonly",
+      "gateId": "owner-copilot-readonly",
+      "classification": "block",
+      "consumer": "release-readiness",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.910Z",
+      "hasReportArtifact": true,
+      "rationale": "Auto-classified: gateId present in REQUIRED_GATES."
+    },
+    {
+      "validator": "check-owner-workflow-map",
+      "gateId": "owner-workflow-map",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.910Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-page-registry-completeness",
+      "gateId": "page-registry-completeness",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.910Z",
+      "hasReportArtifact": true,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-page-state-coverage",
+      "gateId": "page-state-coverage",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.910Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-per-bucket-warn-ratchet",
+      "gateId": "per-bucket-warn-ratchet",
+      "classification": "warn",
+      "consumer": "deployment-gap-suite",
+      "bucket": "deployment-gap",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.910Z",
+      "hasReportArtifact": true,
+      "rationale": "Auto-classified: validator wired into run-all-deployment-gap-gates.ts."
+    },
+    {
+      "validator": "check-plane-import-graph",
+      "gateId": "plane-import-graph",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.910Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-plane-transitive",
+      "gateId": "plane-transitive",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.910Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-platform-anti-patterns",
+      "gateId": "platform-anti-patterns",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.910Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-platform-readiness",
+      "gateId": "platform-readiness",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.910Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-policy-coverage",
+      "gateId": "policy-coverage",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.910Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-policy-mapping",
+      "gateId": "policy-mapping",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.910Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-policy-resolver-coverage",
+      "gateId": "policy-resolver-coverage",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.910Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-primitive-purity",
+      "gateId": "primitive-purity",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.910Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-production-launch-attestation",
+      "gateId": "production-launch-attestation",
+      "classification": "block",
+      "consumer": "release-readiness",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.910Z",
+      "hasReportArtifact": true,
+      "rationale": "Auto-classified: gateId present in REQUIRED_GATES."
+    },
+    {
+      "validator": "check-production-operations",
+      "gateId": "production-operations",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.910Z",
+      "hasReportArtifact": true,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-profile-route-coverage",
+      "gateId": "profile-route-coverage",
+      "classification": "block",
+      "consumer": "release-readiness",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.910Z",
+      "hasReportArtifact": true,
+      "rationale": "Auto-classified: gateId present in REQUIRED_GATES."
+    },
+    {
+      "validator": "check-profile-runtime-baseline-drift",
+      "gateId": "profile-runtime-baseline-drift",
+      "classification": "block",
+      "consumer": "release-readiness",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.910Z",
+      "hasReportArtifact": true,
+      "rationale": "Auto-classified: gateId present in REQUIRED_GATES."
+    },
+    {
+      "validator": "check-projection-purity",
+      "gateId": "projection-purity",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.910Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-proof-coverage",
+      "gateId": "proof-coverage",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.910Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-protocol-purity",
+      "gateId": "protocol-purity",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.911Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-qemu-vm-readiness",
+      "gateId": "qemu-vm-readiness",
+      "classification": "block",
+      "consumer": "release-readiness",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.911Z",
+      "hasReportArtifact": true,
+      "rationale": "Auto-classified: gateId present in REQUIRED_GATES."
+    },
+    {
+      "validator": "check-receipt-coverage",
+      "gateId": "receipt-coverage",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.911Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-redirect-coverage",
+      "gateId": "redirect-coverage",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.911Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-registry-integrity",
+      "gateId": "registry-integrity",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.911Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-release-decision-persistence",
+      "gateId": "release-decision-persistence",
+      "classification": "block",
+      "consumer": "release-readiness",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.911Z",
+      "hasReportArtifact": true,
+      "rationale": "Auto-classified: gateId present in REQUIRED_GATES."
+    },
+    {
+      "validator": "check-release-evidence-graph-snapshot",
+      "gateId": "release-evidence-graph-snapshot",
+      "classification": "block",
+      "consumer": "release-readiness",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.911Z",
+      "hasReportArtifact": true,
+      "rationale": "Auto-classified: gateId present in REQUIRED_GATES."
+    },
+    {
+      "validator": "check-residual-lib-canonicality",
+      "gateId": "residual-lib-canonicality",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.911Z",
+      "hasReportArtifact": true,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-route-drift",
+      "gateId": "route-drift",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.911Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-route-guard-coverage",
+      "gateId": "route-guard-coverage",
+      "classification": "block",
+      "consumer": "release-readiness",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.911Z",
+      "hasReportArtifact": true,
+      "rationale": "Auto-classified: gateId present in REQUIRED_GATES."
+    },
+    {
+      "validator": "check-route-page-contract-layer-usage",
+      "gateId": "route-page-contract-layer-usage",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.911Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-route-plane-coverage",
+      "gateId": "route-plane-coverage",
+      "classification": "block",
+      "consumer": "release-readiness",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.911Z",
+      "hasReportArtifact": true,
+      "rationale": "Auto-classified: gateId present in REQUIRED_GATES."
+    },
+    {
+      "validator": "check-route-registry-completeness",
+      "gateId": "route-registry-completeness",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.911Z",
+      "hasReportArtifact": true,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-route-topology-truth",
+      "gateId": "route-topology-truth",
+      "classification": "warn",
+      "consumer": "deployment-gap-suite",
+      "bucket": "deployment-gap",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.911Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: validator wired into run-all-deployment-gap-gates.ts."
+    },
+    {
+      "validator": "check-route-truth",
+      "gateId": "route-truth",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.912Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-route-wrapper-usage",
+      "gateId": "route-wrapper-usage",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.912Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-runbook-coverage",
+      "gateId": "runbook-coverage",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.912Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-runtime-foundations",
+      "gateId": "runtime-foundations",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.912Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-search-source-coverage",
+      "gateId": "search-source-coverage",
+      "classification": "warn",
+      "consumer": "deployment-gap-suite",
+      "bucket": "deployment-gap",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.912Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: validator wired into run-all-deployment-gap-gates.ts."
+    },
+    {
+      "validator": "check-security-fabric-probes",
+      "gateId": "security-fabric-probes",
+      "classification": "block",
+      "consumer": "release-readiness",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.912Z",
+      "hasReportArtifact": true,
+      "rationale": "Auto-classified: gateId present in REQUIRED_GATES."
+    },
+    {
+      "validator": "check-sensitive-document-privacy",
+      "gateId": "sensitive-document-privacy",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.912Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-service-authority-unique",
+      "gateId": "service-authority-unique",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.912Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-service-consolidation-alignment",
+      "gateId": "service-consolidation-alignment",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.912Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-service-layer-boundaries",
+      "gateId": "service-layer-boundaries",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.912Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-service-registry-sync",
+      "gateId": "service-registry-sync",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.912Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-service-sprawl",
+      "gateId": "service-sprawl",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.912Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-service-topology",
+      "gateId": "service-topology",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.912Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-services-structure-hygiene",
+      "gateId": "services-structure-hygiene",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.913Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-shared-component-profile-pollution",
+      "gateId": "shared-component-profile-pollution",
+      "classification": "block",
+      "consumer": "release-readiness",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.913Z",
+      "hasReportArtifact": true,
+      "rationale": "Auto-classified: gateId present in REQUIRED_GATES."
+    },
+    {
+      "validator": "check-stale-deleted-paths",
+      "gateId": "stale-deleted-paths",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-20T00:22:33.820Z",
+      "hasReportArtifact": true,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-status-truth-tags",
+      "gateId": "status-truth-tags",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.913Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-supportability-coverage",
+      "gateId": "supportability-coverage",
+      "classification": "warn",
+      "consumer": "deployment-gap-suite",
+      "bucket": "deployment-gap",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.913Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: validator wired into run-all-deployment-gap-gates.ts."
+    },
+    {
+      "validator": "check-surface-ownership",
+      "gateId": "surface-ownership",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.913Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-system-stack",
+      "gateId": "system-stack",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.913Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-table-membership-completeness",
+      "gateId": "table-membership-completeness",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.913Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-validator-gate-coverage",
+      "gateId": "validator-gate-coverage",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-20T01:45:08.241Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-warn-ratchet",
+      "gateId": "warn-ratchet",
+      "classification": "warn",
+      "consumer": "deployment-gap-suite",
+      "bucket": "deployment-gap",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.913Z",
+      "hasReportArtifact": true,
+      "rationale": "Auto-classified: validator wired into run-all-deployment-gap-gates.ts."
+    },
+    {
+      "validator": "check-web-deployability",
+      "gateId": "web-deployability",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.913Z",
+      "hasReportArtifact": true,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-window-snap-integration",
+      "gateId": "window-snap-integration",
+      "classification": "warn",
+      "consumer": "deployment-gap-suite",
+      "bucket": "deployment-gap",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.913Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: validator wired into run-all-deployment-gap-gates.ts."
+    },
+    {
+      "validator": "check-workflow-reality",
+      "gateId": "workflow-reality",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.913Z",
+      "hasReportArtifact": true,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-workflow-state-usage",
+      "gateId": "workflow-state-usage",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.914Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-workflow-states",
+      "gateId": "workflow-states",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.914Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-wrapper-purity",
+      "gateId": "wrapper-purity",
+      "classification": "advisory",
+      "consumer": "advisory-only",
+      "declaredInRegistry": false,
+      "lastModifiedAt": "2026-04-19T23:17:56.914Z",
+      "hasReportArtifact": false,
+      "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    }
+  ]
+}
