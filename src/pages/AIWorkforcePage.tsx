@@ -15,6 +15,7 @@ import { EmptyState } from "@/components/sita/SitaComponents";
 import { DEMO_CORE_AGENTS as DEMO_AGENTS } from "@/data/seed/core-pages";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
+const statusColor = { active: "bg-emerald-500", paused: "bg-amber-500", idle: "bg-muted" };
 
 export default function AIWorkforcePage() {
   const [selectedTab, setSelectedTab] = useState("roster");
