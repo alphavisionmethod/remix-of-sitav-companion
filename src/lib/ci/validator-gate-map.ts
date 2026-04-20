@@ -62,6 +62,16 @@ export const VALIDATOR_GATE_OVERRIDES: ValidatorGateMapEntry[] = [
 
   // ─── Archived (must live under archive/, not under scripts/architecture/checks/) ──
   // (None at present.)
+
+  // ─── WARN-tier advisory drift detectors ──────────────────────────────────
+  {
+    validator: "check-routes-inventory-completeness",
+    gateId: "routes-inventory-completeness",
+    classification: "warn",
+    consumer: "advisory-only",
+    bucket: "architecture-hygiene",
+    rationale: "Asserts public/generated/routes.json is fresh, mirrors generated/routes.json, and covers all <Route> declarations across App.tsx + every src/routes/* shell. WARN-tier — does not block release; surfaces in advisory ingestion.",
+  },
 ];
 
 /** Lookup table for fast access by validator basename. */
