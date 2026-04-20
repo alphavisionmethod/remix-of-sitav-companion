@@ -124,6 +124,19 @@ for (const [scriptPath, mentions] of scriptMentionsDir) {
   }
 }
 
+// ── 5. Build npm-script reverse map (load early so directory inference can use it) ─
+const pkg = readJsonSafe<{ scripts: Record<string, string> }>("package.json");
+const scriptToNpm = new Map<string, string>();
+if (pkg?.scripts) {
+  for (const [npmKey, cmd] of Object.entries(pkg.scripts)) {
+    const m = cmd.match(/(?:tsx|ts-node|node|deno run -A)\s+([^\s;&|]+\.(?:ts|js|mjs|cjs))/);
+    if (m) {
+      const f = m[1].replace(/\\/g, "/").replace(/^\.\//, "");
+      if (!scriptToNpm.has(f)) scriptToNpm.set(f, npmKey);
+    }
+  }
+}
+
 // Also attribute by package.json script command mentions of "generated/<dir>" — for
 // `closure:* :emit` scripts that declare static curated dirs via echo statements.
 if (pkg?.scripts) {
@@ -132,16 +145,6 @@ if (pkg?.scripts) {
     for (const dm of dirMatches) {
       const dir = dm[1];
       if (!dirOwnerMap.has(dir)) dirOwnerMap.set(dir, `package.json#${npmKey}`);
-    }
-  }
-}
-const scriptToNpm = new Map<string, string>();
-if (pkg?.scripts) {
-  for (const [npmKey, cmd] of Object.entries(pkg.scripts)) {
-    const m = cmd.match(/(?:tsx|ts-node|node|deno run -A)\s+([^\s;&|]+\.(?:ts|js|mjs|cjs))/);
-    if (m) {
-      const f = m[1].replace(/\\/g, "/").replace(/^\.\//, "");
-      if (!scriptToNpm.has(f)) scriptToNpm.set(f, npmKey);
     }
   }
 }
