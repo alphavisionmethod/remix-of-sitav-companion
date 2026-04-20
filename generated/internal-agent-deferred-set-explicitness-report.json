@@ -1,0 +1,349 @@
+{
+  "generatedAt": "2026-04-20T10:11:06.257Z",
+  "gate": "internal-agent-deferred-set-explicitness",
+  "ok": false,
+  "errorCount": 11,
+  "warningCount": 0,
+  "total": 40,
+  "coveragePercent": 100,
+  "breakdown": {
+    "wired": 19,
+    "scheduledOnly": 8,
+    "uiSurfaceOnly": 5,
+    "deferred": 8
+  },
+  "rows": [
+    {
+      "agentId": "aw-product-manager",
+      "runtimeStatus": "ui-surface-only",
+      "deferredReason": "Product-Manager agent surfaces in admin Boardroom; no scheduler.",
+      "deferredEta": "post-launch"
+    },
+    {
+      "agentId": "aw-ux-research",
+      "runtimeStatus": "deferred",
+      "deferredReason": "UX-research signal source (session replay aggregation) not yet ingested.",
+      "deferredEta": "post-launch"
+    },
+    {
+      "agentId": "aw-design-system",
+      "runtimeStatus": "scheduled-only",
+      "deferredReason": "Design-system drift checks run in CI; runtime executor pending.",
+      "deferredEta": "post-launch"
+    },
+    {
+      "agentId": "aw-frontend-engineer",
+      "runtimeStatus": "ui-surface-only",
+      "deferredReason": "Surfaces as advisor card in AI Engineering hub; no scheduler.",
+      "deferredEta": "post-launch"
+    },
+    {
+      "agentId": "aw-backend-engineer",
+      "runtimeStatus": "ui-surface-only",
+      "deferredReason": "Surfaces as advisor card in AI Engineering hub; no scheduler.",
+      "deferredEta": "post-launch"
+    },
+    {
+      "agentId": "aw-mobile-engineer",
+      "runtimeStatus": "deferred",
+      "deferredReason": "Native mobile is ARCHIVED scope; agent kept as registry-only placeholder.",
+      "deferredEta": "indefinite (mobile scope archived)"
+    },
+    {
+      "agentId": "aw-documentation",
+      "runtimeStatus": "wired",
+      "runtimeInvocationPath": "supabase/functions/internal-agent-suggestion-generator",
+      "pathExists": true,
+      "aliasReferencesFound": []
+    },
+    {
+      "agentId": "aw-qa-architect",
+      "runtimeStatus": "scheduled-only",
+      "deferredReason": "QA architect depends on test-coverage signal stream not yet wired.",
+      "deferredEta": "post-launch"
+    },
+    {
+      "agentId": "aw-incident-response",
+      "runtimeStatus": "wired",
+      "runtimeInvocationPath": "supabase/functions/internal-agent-self-healer",
+      "pathExists": true,
+      "aliasReferencesFound": []
+    },
+    {
+      "agentId": "aw-workflow-recovery",
+      "runtimeStatus": "wired",
+      "runtimeInvocationPath": "supabase/functions/internal-agent-self-healer",
+      "pathExists": true,
+      "aliasReferencesFound": []
+    },
+    {
+      "agentId": "aw-connector-health",
+      "runtimeStatus": "scheduled-only",
+      "deferredReason": "Per-provider OAuth refresh observers are wired; council-level aggregator executor pending.",
+      "deferredEta": "post-launch"
+    },
+    {
+      "agentId": "aw-release-safety",
+      "runtimeStatus": "ui-surface-only",
+      "deferredReason": "Surfaces in admin Release board; runtime trigger lives in CI, not in an edge function.",
+      "deferredEta": "post-launch"
+    },
+    {
+      "agentId": "aw-rollback",
+      "runtimeStatus": "wired",
+      "runtimeInvocationPath": "supabase/functions/internal-agent-execute-action",
+      "pathExists": true,
+      "aliasReferencesFound": []
+    },
+    {
+      "agentId": "aw-sre",
+      "runtimeStatus": "wired",
+      "runtimeInvocationPath": "supabase/functions/internal-agent-slo-evaluator",
+      "pathExists": true,
+      "aliasReferencesFound": []
+    },
+    {
+      "agentId": "aw-fleet-health",
+      "runtimeStatus": "wired",
+      "runtimeInvocationPath": "supabase/functions/health-cron",
+      "pathExists": true,
+      "aliasReferencesFound": []
+    },
+    {
+      "agentId": "aw-support-diagnostics",
+      "runtimeStatus": "deferred",
+      "deferredReason": "Phase 10 — pending support-bundle ingestion pipeline.",
+      "deferredEta": "post-launch"
+    },
+    {
+      "agentId": "aw-security-monitor",
+      "runtimeStatus": "wired",
+      "runtimeInvocationPath": "supabase/functions/security-council-tick",
+      "pathExists": true,
+      "aliasReferencesFound": [
+        "st-security-monitor"
+      ]
+    },
+    {
+      "agentId": "aw-permission-drift",
+      "runtimeStatus": "wired",
+      "runtimeInvocationPath": "supabase/functions/security-council-tick",
+      "pathExists": true,
+      "aliasReferencesFound": [
+        "st-permission-drift"
+      ]
+    },
+    {
+      "agentId": "aw-policy-review",
+      "runtimeStatus": "wired",
+      "runtimeInvocationPath": "supabase/functions/security-council-tick",
+      "pathExists": true,
+      "aliasReferencesFound": [
+        "st-policy-review"
+      ]
+    },
+    {
+      "agentId": "aw-audit-trail",
+      "runtimeStatus": "wired",
+      "runtimeInvocationPath": "supabase/functions/security-council-tick",
+      "pathExists": true,
+      "aliasReferencesFound": [
+        "st-audit-completeness"
+      ]
+    },
+    {
+      "agentId": "aw-trust-threshold",
+      "runtimeStatus": "wired",
+      "runtimeInvocationPath": "supabase/functions/security-council-tick",
+      "pathExists": true,
+      "aliasReferencesFound": [
+        "st-trust-threshold"
+      ]
+    },
+    {
+      "agentId": "aw-fraud-abuse",
+      "runtimeStatus": "wired",
+      "runtimeInvocationPath": "supabase/functions/security-council-tick",
+      "pathExists": true,
+      "aliasReferencesFound": [
+        "st-fraud-abuse"
+      ]
+    },
+    {
+      "agentId": "aw-privacy-boundary",
+      "runtimeStatus": "wired",
+      "runtimeInvocationPath": "supabase/functions/security-council-tick",
+      "pathExists": true,
+      "aliasReferencesFound": [
+        "st-privacy-boundary"
+      ]
+    },
+    {
+      "agentId": "aw-token-budget",
+      "runtimeStatus": "wired",
+      "runtimeInvocationPath": "supabase/functions/internal-agent-cost-optimizer",
+      "pathExists": true,
+      "aliasReferencesFound": []
+    },
+    {
+      "agentId": "aw-ai-spend-control",
+      "runtimeStatus": "wired",
+      "runtimeInvocationPath": "supabase/functions/internal-agent-cost-optimizer",
+      "pathExists": true,
+      "aliasReferencesFound": []
+    },
+    {
+      "agentId": "aw-model-routing",
+      "runtimeStatus": "wired",
+      "runtimeInvocationPath": "supabase/functions/routing-policy-update",
+      "pathExists": true,
+      "aliasReferencesFound": []
+    },
+    {
+      "agentId": "aw-latency-optimizer",
+      "runtimeStatus": "deferred",
+      "deferredReason": "Latency telemetry roll-up pending; needs p95/p99 windowed source.",
+      "deferredEta": "post-launch"
+    },
+    {
+      "agentId": "aw-capacity-planning",
+      "runtimeStatus": "deferred",
+      "deferredReason": "Forecast model not yet trained; awaits 90 days of usage data.",
+      "deferredEta": "post-launch"
+    },
+    {
+      "agentId": "aw-cache-compression",
+      "runtimeStatus": "deferred",
+      "deferredReason": "No prompt-cache layer in production yet.",
+      "deferredEta": "post-launch"
+    },
+    {
+      "agentId": "aw-arch-consistency",
+      "runtimeStatus": "wired",
+      "runtimeInvocationPath": "supabase/functions/internal-agent-policy-architect",
+      "pathExists": true,
+      "aliasReferencesFound": [
+        "aw-policy-architect"
+      ]
+    },
+    {
+      "agentId": "aw-registry-truth",
+      "runtimeStatus": "scheduled-only",
+      "deferredReason": "Registry diff job runs in CI; no edge-function executor yet.",
+      "deferredEta": "post-launch"
+    },
+    {
+      "agentId": "aw-generated-manifest",
+      "runtimeStatus": "scheduled-only",
+      "deferredReason": "Manifest freshness checked by CI; runtime executor not required.",
+      "deferredEta": "post-launch"
+    },
+    {
+      "agentId": "aw-contract-integrity",
+      "runtimeStatus": "scheduled-only",
+      "deferredReason": "Contract validators run in CI; runtime executor pending.",
+      "deferredEta": "post-launch"
+    },
+    {
+      "agentId": "aw-boundary-enforcement",
+      "runtimeStatus": "scheduled-only",
+      "deferredReason": "5-plane boundary enforcement runs in CI; runtime executor pending.",
+      "deferredEta": "post-launch"
+    },
+    {
+      "agentId": "aw-change-control",
+      "runtimeStatus": "ui-surface-only",
+      "deferredReason": "Change-control board surfaces in admin; no scheduler yet.",
+      "deferredEta": "post-launch"
+    },
+    {
+      "agentId": "aw-knowledge-curator",
+      "runtimeStatus": "wired",
+      "runtimeInvocationPath": "supabase/functions/advisor-knowledge-manage",
+      "pathExists": true,
+      "aliasReferencesFound": []
+    },
+    {
+      "agentId": "aw-release-notes",
+      "runtimeStatus": "wired",
+      "runtimeInvocationPath": "supabase/functions/internal-agent-weekly-digest",
+      "pathExists": true,
+      "aliasReferencesFound": []
+    },
+    {
+      "agentId": "aw-sprint-planning",
+      "runtimeStatus": "deferred",
+      "deferredReason": "Sprint planner depends on roadmap signal source not yet wired.",
+      "deferredEta": "post-launch"
+    },
+    {
+      "agentId": "aw-tpm",
+      "runtimeStatus": "deferred",
+      "deferredReason": "TPM agent depends on multi-team coordination signals not yet modelled.",
+      "deferredEta": "post-launch"
+    },
+    {
+      "agentId": "aw-repo-drift",
+      "runtimeStatus": "scheduled-only",
+      "deferredReason": "Repo drift detection runs in CI; runtime executor pending.",
+      "deferredEta": "post-launch"
+    }
+  ],
+  "issues": [
+    {
+      "severity": "error",
+      "area": "aw-documentation",
+      "message": "runtimeInvocationPath supabase/functions/internal-agent-suggestion-generator contains no reference to agent or any alias (aw-documentation)"
+    },
+    {
+      "severity": "error",
+      "area": "aw-incident-response",
+      "message": "runtimeInvocationPath supabase/functions/internal-agent-self-healer contains no reference to agent or any alias (aw-incident-response, ro-incident-response)"
+    },
+    {
+      "severity": "error",
+      "area": "aw-workflow-recovery",
+      "message": "runtimeInvocationPath supabase/functions/internal-agent-self-healer contains no reference to agent or any alias (aw-workflow-recovery)"
+    },
+    {
+      "severity": "error",
+      "area": "aw-rollback",
+      "message": "runtimeInvocationPath supabase/functions/internal-agent-execute-action contains no reference to agent or any alias (aw-rollback)"
+    },
+    {
+      "severity": "error",
+      "area": "aw-sre",
+      "message": "runtimeInvocationPath supabase/functions/internal-agent-slo-evaluator contains no reference to agent or any alias (aw-sre)"
+    },
+    {
+      "severity": "error",
+      "area": "aw-fleet-health",
+      "message": "runtimeInvocationPath supabase/functions/health-cron contains no reference to agent or any alias (aw-fleet-health)"
+    },
+    {
+      "severity": "error",
+      "area": "aw-token-budget",
+      "message": "runtimeInvocationPath supabase/functions/internal-agent-cost-optimizer contains no reference to agent or any alias (aw-token-budget)"
+    },
+    {
+      "severity": "error",
+      "area": "aw-ai-spend-control",
+      "message": "runtimeInvocationPath supabase/functions/internal-agent-cost-optimizer contains no reference to agent or any alias (aw-ai-spend-control, rc-cost-sentinel)"
+    },
+    {
+      "severity": "error",
+      "area": "aw-model-routing",
+      "message": "runtimeInvocationPath supabase/functions/routing-policy-update contains no reference to agent or any alias (aw-model-routing)"
+    },
+    {
+      "severity": "error",
+      "area": "aw-knowledge-curator",
+      "message": "runtimeInvocationPath supabase/functions/advisor-knowledge-manage contains no reference to agent or any alias (aw-knowledge-curator, kc-knowledge-coordinator)"
+    },
+    {
+      "severity": "error",
+      "area": "aw-release-notes",
+      "message": "runtimeInvocationPath supabase/functions/internal-agent-weekly-digest contains no reference to agent or any alias (aw-release-notes)"
+    }
+  ]
+}

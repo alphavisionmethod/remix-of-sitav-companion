@@ -1,0 +1,326 @@
+{
+  "version": "1.0.0",
+  "generatedAt": "2026-04-20T10:11:08.914Z",
+  "total": 40,
+  "breakdown": {
+    "wired": 19,
+    "scheduledOnly": 8,
+    "uiSurfaceOnly": 5,
+    "deferred": 8
+  },
+  "honestClaim": "19 of 40 internal agents have a real runtime invocation path; 21 are explicitly classified as scheduled-only, ui-surface-only, or deferred (with documented reason + ETA).",
+  "rows": [
+    {
+      "agentId": "aw-product-manager",
+      "name": "Product Manager",
+      "council": "product-build",
+      "runtimeStatus": "ui-surface-only",
+      "deferredReason": "Product-Manager agent surfaces in admin Boardroom; no scheduler.",
+      "deferredEta": "post-launch"
+    },
+    {
+      "agentId": "aw-ux-research",
+      "name": "UX Research",
+      "council": "product-build",
+      "runtimeStatus": "deferred",
+      "deferredReason": "UX-research signal source (session replay aggregation) not yet ingested.",
+      "deferredEta": "post-launch"
+    },
+    {
+      "agentId": "aw-design-system",
+      "name": "Design System",
+      "council": "product-build",
+      "runtimeStatus": "scheduled-only",
+      "deferredReason": "Design-system drift checks run in CI; runtime executor pending.",
+      "deferredEta": "post-launch"
+    },
+    {
+      "agentId": "aw-frontend-engineer",
+      "name": "Frontend Engineer",
+      "council": "product-build",
+      "runtimeStatus": "ui-surface-only",
+      "deferredReason": "Surfaces as advisor card in AI Engineering hub; no scheduler.",
+      "deferredEta": "post-launch"
+    },
+    {
+      "agentId": "aw-backend-engineer",
+      "name": "Backend Engineer",
+      "council": "product-build",
+      "runtimeStatus": "ui-surface-only",
+      "deferredReason": "Surfaces as advisor card in AI Engineering hub; no scheduler.",
+      "deferredEta": "post-launch"
+    },
+    {
+      "agentId": "aw-mobile-engineer",
+      "name": "Mobile Engineer",
+      "council": "product-build",
+      "runtimeStatus": "deferred",
+      "deferredReason": "Native mobile is ARCHIVED scope; agent kept as registry-only placeholder.",
+      "deferredEta": "indefinite (mobile scope archived)"
+    },
+    {
+      "agentId": "aw-documentation",
+      "name": "Documentation",
+      "council": "product-build",
+      "runtimeStatus": "wired",
+      "runtimeInvocationPath": "supabase/functions/internal-agent-suggestion-generator"
+    },
+    {
+      "agentId": "aw-qa-architect",
+      "name": "QA Architect",
+      "council": "product-build",
+      "runtimeStatus": "scheduled-only",
+      "deferredReason": "QA architect depends on test-coverage signal stream not yet wired.",
+      "deferredEta": "post-launch"
+    },
+    {
+      "agentId": "aw-incident-response",
+      "name": "Incident Response",
+      "council": "reliability-ops",
+      "runtimeStatus": "wired",
+      "runtimeInvocationPath": "supabase/functions/internal-agent-self-healer",
+      "runtimeAliasId": "ro-incident-response"
+    },
+    {
+      "agentId": "aw-workflow-recovery",
+      "name": "Workflow Recovery",
+      "council": "reliability-ops",
+      "runtimeStatus": "wired",
+      "runtimeInvocationPath": "supabase/functions/internal-agent-self-healer"
+    },
+    {
+      "agentId": "aw-connector-health",
+      "name": "Connector Health",
+      "council": "reliability-ops",
+      "runtimeStatus": "scheduled-only",
+      "deferredReason": "Per-provider OAuth refresh observers are wired; council-level aggregator executor pending.",
+      "deferredEta": "post-launch"
+    },
+    {
+      "agentId": "aw-release-safety",
+      "name": "Release Safety",
+      "council": "reliability-ops",
+      "runtimeStatus": "ui-surface-only",
+      "deferredReason": "Surfaces in admin Release board; runtime trigger lives in CI, not in an edge function.",
+      "deferredEta": "post-launch"
+    },
+    {
+      "agentId": "aw-rollback",
+      "name": "Rollback",
+      "council": "reliability-ops",
+      "runtimeStatus": "wired",
+      "runtimeInvocationPath": "supabase/functions/internal-agent-execute-action"
+    },
+    {
+      "agentId": "aw-sre",
+      "name": "SRE",
+      "council": "reliability-ops",
+      "runtimeStatus": "wired",
+      "runtimeInvocationPath": "supabase/functions/internal-agent-slo-evaluator"
+    },
+    {
+      "agentId": "aw-fleet-health",
+      "name": "Fleet Health",
+      "council": "reliability-ops",
+      "runtimeStatus": "wired",
+      "runtimeInvocationPath": "supabase/functions/health-cron"
+    },
+    {
+      "agentId": "aw-support-diagnostics",
+      "name": "Support Diagnostics",
+      "council": "reliability-ops",
+      "runtimeStatus": "deferred",
+      "deferredReason": "Phase 10 — pending support-bundle ingestion pipeline.",
+      "deferredEta": "post-launch"
+    },
+    {
+      "agentId": "aw-security-monitor",
+      "name": "Security Monitor",
+      "council": "security-trust",
+      "runtimeStatus": "wired",
+      "runtimeInvocationPath": "supabase/functions/security-council-tick",
+      "runtimeAliasId": "st-security-monitor"
+    },
+    {
+      "agentId": "aw-permission-drift",
+      "name": "Permission Drift",
+      "council": "security-trust",
+      "runtimeStatus": "wired",
+      "runtimeInvocationPath": "supabase/functions/security-council-tick",
+      "runtimeAliasId": "st-permission-drift"
+    },
+    {
+      "agentId": "aw-policy-review",
+      "name": "Policy Review",
+      "council": "security-trust",
+      "runtimeStatus": "wired",
+      "runtimeInvocationPath": "supabase/functions/security-council-tick",
+      "runtimeAliasId": "st-policy-review"
+    },
+    {
+      "agentId": "aw-audit-trail",
+      "name": "Audit Trail",
+      "council": "security-trust",
+      "runtimeStatus": "wired",
+      "runtimeInvocationPath": "supabase/functions/security-council-tick",
+      "runtimeAliasId": "st-audit-completeness"
+    },
+    {
+      "agentId": "aw-trust-threshold",
+      "name": "Trust Threshold",
+      "council": "security-trust",
+      "runtimeStatus": "wired",
+      "runtimeInvocationPath": "supabase/functions/security-council-tick",
+      "runtimeAliasId": "st-trust-threshold"
+    },
+    {
+      "agentId": "aw-fraud-abuse",
+      "name": "Fraud & Abuse",
+      "council": "security-trust",
+      "runtimeStatus": "wired",
+      "runtimeInvocationPath": "supabase/functions/security-council-tick",
+      "runtimeAliasId": "st-fraud-abuse"
+    },
+    {
+      "agentId": "aw-privacy-boundary",
+      "name": "Privacy Boundary",
+      "council": "security-trust",
+      "runtimeStatus": "wired",
+      "runtimeInvocationPath": "supabase/functions/security-council-tick",
+      "runtimeAliasId": "st-privacy-boundary"
+    },
+    {
+      "agentId": "aw-token-budget",
+      "name": "Token Budget",
+      "council": "runtime-cost",
+      "runtimeStatus": "wired",
+      "runtimeInvocationPath": "supabase/functions/internal-agent-cost-optimizer"
+    },
+    {
+      "agentId": "aw-ai-spend-control",
+      "name": "AI Spend Control",
+      "council": "runtime-cost",
+      "runtimeStatus": "wired",
+      "runtimeInvocationPath": "supabase/functions/internal-agent-cost-optimizer",
+      "runtimeAliasId": "rc-cost-sentinel"
+    },
+    {
+      "agentId": "aw-model-routing",
+      "name": "Model Routing",
+      "council": "runtime-cost",
+      "runtimeStatus": "wired",
+      "runtimeInvocationPath": "supabase/functions/routing-policy-update"
+    },
+    {
+      "agentId": "aw-latency-optimizer",
+      "name": "Latency Optimizer",
+      "council": "runtime-cost",
+      "runtimeStatus": "deferred",
+      "deferredReason": "Latency telemetry roll-up pending; needs p95/p99 windowed source.",
+      "deferredEta": "post-launch"
+    },
+    {
+      "agentId": "aw-capacity-planning",
+      "name": "Capacity Planning",
+      "council": "runtime-cost",
+      "runtimeStatus": "deferred",
+      "deferredReason": "Forecast model not yet trained; awaits 90 days of usage data.",
+      "deferredEta": "post-launch"
+    },
+    {
+      "agentId": "aw-cache-compression",
+      "name": "Cache & Compression",
+      "council": "runtime-cost",
+      "runtimeStatus": "deferred",
+      "deferredReason": "No prompt-cache layer in production yet.",
+      "deferredEta": "post-launch"
+    },
+    {
+      "agentId": "aw-arch-consistency",
+      "name": "Architecture Consistency",
+      "council": "architecture-governance",
+      "runtimeStatus": "wired",
+      "runtimeInvocationPath": "supabase/functions/internal-agent-policy-architect",
+      "runtimeAliasId": "ar-architecture-truth"
+    },
+    {
+      "agentId": "aw-registry-truth",
+      "name": "Registry Truth",
+      "council": "architecture-governance",
+      "runtimeStatus": "scheduled-only",
+      "deferredReason": "Registry diff job runs in CI; no edge-function executor yet.",
+      "deferredEta": "post-launch"
+    },
+    {
+      "agentId": "aw-generated-manifest",
+      "name": "Generated Manifest",
+      "council": "architecture-governance",
+      "runtimeStatus": "scheduled-only",
+      "deferredReason": "Manifest freshness checked by CI; runtime executor not required.",
+      "deferredEta": "post-launch"
+    },
+    {
+      "agentId": "aw-contract-integrity",
+      "name": "Contract Integrity",
+      "council": "architecture-governance",
+      "runtimeStatus": "scheduled-only",
+      "deferredReason": "Contract validators run in CI; runtime executor pending.",
+      "deferredEta": "post-launch"
+    },
+    {
+      "agentId": "aw-boundary-enforcement",
+      "name": "Boundary Enforcement",
+      "council": "architecture-governance",
+      "runtimeStatus": "scheduled-only",
+      "deferredReason": "5-plane boundary enforcement runs in CI; runtime executor pending.",
+      "deferredEta": "post-launch"
+    },
+    {
+      "agentId": "aw-change-control",
+      "name": "Change Control",
+      "council": "architecture-governance",
+      "runtimeStatus": "ui-surface-only",
+      "deferredReason": "Change-control board surfaces in admin; no scheduler yet.",
+      "deferredEta": "post-launch"
+    },
+    {
+      "agentId": "aw-knowledge-curator",
+      "name": "Knowledge Curator",
+      "council": "knowledge-coordination",
+      "runtimeStatus": "wired",
+      "runtimeInvocationPath": "supabase/functions/advisor-knowledge-manage",
+      "runtimeAliasId": "kc-knowledge-coordinator"
+    },
+    {
+      "agentId": "aw-release-notes",
+      "name": "Release Notes",
+      "council": "knowledge-coordination",
+      "runtimeStatus": "wired",
+      "runtimeInvocationPath": "supabase/functions/internal-agent-weekly-digest"
+    },
+    {
+      "agentId": "aw-sprint-planning",
+      "name": "Sprint Planning",
+      "council": "knowledge-coordination",
+      "runtimeStatus": "deferred",
+      "deferredReason": "Sprint planner depends on roadmap signal source not yet wired.",
+      "deferredEta": "post-launch"
+    },
+    {
+      "agentId": "aw-tpm",
+      "name": "TPM",
+      "council": "knowledge-coordination",
+      "runtimeStatus": "deferred",
+      "deferredReason": "TPM agent depends on multi-team coordination signals not yet modelled.",
+      "deferredEta": "post-launch"
+    },
+    {
+      "agentId": "aw-repo-drift",
+      "name": "Repo Drift",
+      "council": "knowledge-coordination",
+      "runtimeStatus": "scheduled-only",
+      "deferredReason": "Repo drift detection runs in CI; runtime executor pending.",
+      "deferredEta": "post-launch"
+    }
+  ]
+}
