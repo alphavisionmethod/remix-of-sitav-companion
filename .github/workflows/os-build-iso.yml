@@ -128,6 +128,16 @@ jobs:
           cat out/*.manifest.json
           cat generated/os-build-summary.md || true
 
+      - name: Wave 6 — Verify ISO artifact presence
+        env:
+          SITA_RELEASE_MODE: ci
+        run: npx tsx scripts/architecture/checks/check-iso-artifact-presence.ts
+
+      - name: Wave 6 — Verify RAW IMG artifact presence
+        env:
+          SITA_RELEASE_MODE: ci
+        run: npx tsx scripts/architecture/checks/check-raw-img-artifact-presence.ts
+
       - name: Cleanup MOK
         if: always()
         run: rm -f "$RUNNER_TEMP/mok.key" "$RUNNER_TEMP/mok.crt"

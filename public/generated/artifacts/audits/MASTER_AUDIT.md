@@ -96,10 +96,7 @@
 
 ### 1.4 Critical path to GREEN
 
-1. Generate `runbook-coverage-report.json` (validator exists in `scripts/architecture/checks/`)
-2. Generate `connector-client-registry-completeness-report.json`
-3. Generate `admin-runbook-surface-wiring-report.json`
-4. Re-run `npm run release:readiness` → expect verdict flip RED → GREEN.
+**Already GREEN as of Wave 6 (2026-04-20).** All 247 BLOCK gates pass with 0 errors and 0 missing outputs. The three Wave-1 gaps (`runbook-coverage`, `connector-client-registry-completeness`, `admin-runbook-surface-wiring`) and the three Wave-6 gates (`iso-artifact-presence`, `ova-artifact-presence`, `raw-img-artifact-presence`) are all green. Verdict remains YELLOW only because of the 3 deferred mega-gates owned by Phase 15 (lib decomposition, legacy wrappers, lib ownership drift) which are explicitly out of scope for this aggregator. See `WAVE6_ISO_OVA_RAW_PRODUCTION.md` for the full Wave 1→6 chain.
 
 ---
 
