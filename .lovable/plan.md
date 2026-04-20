@@ -1,55 +1,46 @@
 
 
-## Reality check — real project 100% deployment-ready ✅
+## Reality check — physical project is 100% deployment-ready ✅
 
 Verified on disk just now:
+- **All 32 files** in 4 legacy AI folders are 7-line `DEPRECATED SHIM` re-exports pointing at `src/lib/ai-platform/{runtime,engineering,gateway,sovereign}/`
+- Zero physical duplication; canonical implementation lives only in `src/lib/ai-platform/`
+- `src/lib/ai-platform/README.md` is the canonical responsibility map
+- Audit doc §3 row 1 + §4 rows 5–6 already correctly marked **RESOLVED 2026-04-20**
 
-| Asset | State |
-|---|---|
-| `src/lib/ai-platform/{runtime,engineering,gateway,sovereign}/` + 4 legacy shims | ✅ Present |
-| 8 canonical READMEs (`services`, `core-services`, `platform`, `platform-law`, `platform-plane`, `web-platform`, `observability`, `incidents`) | ✅ Present |
-| **BLOCK Gate #27** `cluster-readme-coverage` | ✅ `ok: true`, 8/8 clusters anchored, 0 errors, 0 warnings |
-| Gate #27 registered in master aggregator | ✅ Line 332 of `check-os-release-readiness.ts` |
-| `onboarding-surface-registry.ts` + `check-onboarding-surface-truth.ts` | ✅ Both present |
+**No code, runtime, or shim work needed.** The naming overlap is structurally resolved.
 
-**Code, gates, READMEs, and registry — nothing to do.** The structural fix is shipped and CI-enforced.
+## Real gap — drift enforcement
 
-## Doc drift remaining (5 rows × 6 mirrors = 30 lines)
+Gate #27 (`cluster-readme-coverage`) anchors 8 clusters but **does NOT cover the 4 AI legacy folders**. A future agent could add a non-shim file to `src/lib/ai/` and CI would not catch it. This is the only honest "100% ready for deployment" gap remaining for this row.
 
-§3 cluster-overlap rows (lines 99–102) are already correctly marked **RESOLVED 2026-04-20** in all 6 mirrors.
+## Plan (default mode — enforcement gate + doc citation)
 
-The remaining drift is in the **§4 cluster inventory table** — rows still flagged 🟡 with stale "Cluster naming" / "Naming overlap" / "Overlaps with…" notes for the 8 now-anchored clusters:
+### 1. New CI gate `check-ai-shim-integrity.ts` (BLOCK tier)
+- Asserts every `*.ts` file under `src/lib/{ai,ai-engineering,ai-gateway,sovereign-ai-gateway}/` (recursive) contains the `DEPRECATED SHIM` marker AND a single `export * from "@/lib/ai-platform/...";` line
+- Fails CI on:
+  - any new non-shim file added to a legacy folder
+  - any shim re-export pointing somewhere other than `@/lib/ai-platform/...`
+  - a shim larger than 12 lines (drift detector)
+- Emits report at `generated/ai-shim-integrity-report.json`
+- Registered as **Gate #28** in `scripts/architecture/checks/check-os-release-readiness.ts`
 
-| Mirror | Stale rows |
-|---|---|
-| All 6 mirrors of `MISSING_AUDIT.md` + `MISSING_AUDIT_v2.md` | Lines ~153 (`src/lib/ai`), ~154 (`ai-engineering`), ~170 (`core-services`), ~197 (`platform`), ~198 (`platform-law`), and matching rows for `platform-plane`, `web-platform`, `services`, `observability`, `incidents` |
+### 2. Extend Gate #27 `AMBIGUOUS_CLUSTERS`
+Add `src/lib/ai-platform` (with its existing README) so the canonical home itself is also coverage-asserted. (The 4 legacy folders are covered by Gate #28, not #27, since their README would just say "deprecated".)
 
-Each row needs: 🟡 → ✅, and notes column updated to cite the canonical README + Gate #27.
+### 3. Doc sync (6 mirrors)
+Update §4 rows 5–8 in all 6 mirrors of `MISSING_AUDIT.md` + `MISSING_AUDIT_v2.md` to cite **Gate #28** (`ai-shim-integrity`) alongside the existing Gate #27 reference, so the resolution evidence is double-anchored.
 
-## Plan (default mode — doc sync only)
+### Files
 
-### Single sweep per mirror — §4 cluster inventory rows
+**Created (1):** `scripts/architecture/checks/check-ai-shim-integrity.ts` (Gate #28)
+**Edited (8):**
+- `scripts/architecture/checks/check-os-release-readiness.ts` (register Gate #28)
+- `scripts/architecture/checks/check-cluster-readme-coverage.ts` (add `ai-platform` to AMBIGUOUS_CLUSTERS)
+- 6 audit mirrors (rows 5–8 in §4)
 
-For each of the 8 anchored clusters in §4 of all 6 mirrors:
-
-**Before:**
-> `| 5 | src/lib/ai | Top-level AI primitives | 🟡 | Overlaps with ai-engineering/ai-gateway |`
-
-**After:**
-> `| 5 | src/lib/ai | Legacy shim → src/lib/ai-platform/runtime | ✅ | RESOLVED 2026-04-20 — anchored by src/lib/ai-platform/README.md (BLOCK gate #27) |`
-
-Same pattern for: `ai-engineering`, `ai-gateway`, `sovereign-ai-gateway` (all shims), and `services`, `core-services`, `platform`, `platform-law`, `platform-plane`, `web-platform`, `observability`, `incidents` (all anchored by their own README + Gate #27).
-
-### Files edited (6)
-
-1. `public/generated/MISSING_AUDIT.md`
-2. `public/generated/MISSING_AUDIT_v2.md`
-3. `public/generated/artifacts/audits/MISSING_AUDIT.md`
-4. `public/generated/artifacts/audits/MISSING_AUDIT_v2.md`
-5. `/mnt/documents/MISSING_AUDIT.md`
-6. `/mnt/documents/MISSING_AUDIT_v2.md`
-
-## Out of scope
-- No code, gate, README, runtime, DB, or schema changes (already shipped + green).
-- No edits to §3 rows 1–5 (already correctly RESOLVED across all 6 mirrors).
+### Out of scope
+- No moves, deletions, or renames (physical reality already canonical)
+- No README changes (`ai-platform/README.md` already complete)
+- No new shims (all 32 files already shimmed)
 
