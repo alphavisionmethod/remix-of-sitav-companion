@@ -1,87 +1,98 @@
 
 
-## Status check (truthful current state)
+## Truth check (what I found on disk, right now)
 
-The 3 gates you mention are **already fixed** in Waves 1–4:
-- `runbook-coverage`, `connector-client-registry-completeness`, `admin-runbook-surface-wiring` → all 3 reports present at `generated/` and BLOCK status is **244/244 GREEN, 0 errors, 0 missing**.
-- The "98 advisory failures" was reduced to **21 substantive advisory gates** (79% reduction). Verdict is YELLOW only because of advisory warnings — release is technically cuttable.
+The "3 missing required-gate outputs" status the cockpit is showing is **stale text inside `public/generated/MASTER_AUDIT.md`**, not a real aggregator failure. Two parts of that same file disagree with each other:
 
-So "what's missing for 100% real-life deployment" is no longer the original 3 + 98. It's a different, smaller list of real residuals. Below is the honest gap inventory and the plan to close it.
+| Section | What it says | Reality |
+|---|---|---|
+| §1.3 lines 92–94 | OS-ISO/OVA/RAW = 🟡 STAGING, 3 missing required-gate outputs | **Stale** — written pre-Wave 1 |
+| §12.1–§12.2 line 334+ | "All previously missing required-gate outputs produced; 244/244 BLOCK GREEN; Wave 5 complete" | **Current truth** |
 
-## Real residual gaps (from live evidence this session)
+Live evidence: `generated/os-build-pipeline-report.json` and `generated/qemu-vm-readiness-report.json` both report `errorCount: 0, ok: true`. Aggregator summary confirms `os-build-pipeline`, `os-trust-chain-readiness`, `os-update-readiness`, `os-recovery-readiness`, `qemu-vm-readiness` and `os-support-bundle-readiness` all ✅ GREEN with 0 errors / 0 warnings. So the cockpit message is doc drift, not a code gap.
 
-### Tier 1 — Real risks (security & data)
-1. **Public storage bucket allows listing** — `app-assets` bucket is public AND has a broad SELECT policy on `storage.objects`, letting anyone enumerate every file. Real exfiltration risk for any file ever uploaded there.
-2. **5 service-role `ALL true` policies** on append-only/receipt tables (advisor_action_proof_packs, compliance_evidence, cron_run_receipts, evidence_graph_edges, evidence_graph_nodes, installed_apps_receipts). These are scoped to `service_role` via grants, so not exploitable today, but the linter flag is correct: a `USING (true) WITH CHECK (true)` policy with the wrong `TO` clause becomes catastrophic. Tighten to explicit `TO service_role` and `USING (auth.role() = 'service_role')`.
+**However**, while validating this I found two real, deployment-affecting ISO/OVA/RAW gaps that nobody has gated yet. Wave 6 closes both, plus the doc drift, plus the missing CI wiring.
 
-### Tier 2 — Real correctness drift (substantive advisory)
-3. **`status-truth-tags` — 235 services in `service-manifest.json` lack a status tag** (`active`/`deprecated`/`experimental`). This is real metadata drift that will mislead operators reading the service inventory.
-4. **`policy-coverage` — 333 capabilities have no policy binding + 1 hard error** (`src/lib/runtime/surface-types.ts` referenced by validator but not present at expected path). Mix of real wiring gaps and a stale validator path.
-5. **`golden-path-coverage` — 7 warnings**: golden-path flows incomplete or unmapped to surfaces.
-6. **`platform-anti-patterns` — 9 warnings** of mixed-tier imports.
-7. **`no-ui-in-backend` — 3 warnings** of UI imports leaking into edge-function code.
+## Real residual gaps for ISO/OVA/RAW pipeline
 
-### Tier 3 — Honest documentation (no code change)
-8. **`MASTER_AUDIT.md` and `WAVE2_ADVISORY_DISPOSITION.md`** still describe the world as if 21 BLOCK gates exist; the aggregator now has **244 required gates**. Update the headline numbers so future operators don't read stale claims.
+### Tier 1 — Real artifact gap
+1. **`os-build-iso.yml` never invokes `os/vmware/build-ova.sh`.** The OVA exists as a script but is NOT produced by CI on release. Operators have no signed OVA artifact in the GitHub Release. The release pipeline `os/scripts/release.sh` also stops at step 13 (QEMU) and never wraps the ISO into an OVA.
+2. **`build-ova.sh` ships a "live-from-CD" appliance** (line 37–40 of the script confirms it). This is documented in `docs/os/VMWARE_APPLIANCE_BUILD_PIPELINE.md` as Phase-2 work but is unsuitable for production. No autoinstall preseed is consumed; `scripts/release/iso/autoinstall/` is wired for ISO but not OVA.
 
-## Out of scope (explicitly not fixed here)
-- 3 mega-gates (`lib-decomposition-readiness` 1731w, `legacy-wrapper-usage` 1518w, `lib-ownership-drift` 82w) → owned by Phase 15 migration, not this aggregator.
-- AI-engineer `*-coverage` gates (158w combined) → owned by Phase 3-6 hardening sweep.
-- Mobile pipeline warnings (10w) → mobile is intentionally retired to FUTURE_VISION.
-- Validator regex bug in `check-flagship-surface-responsive-quality.ts` → already documented as known false positive.
+### Tier 2 — Doc drift causing the cockpit panel
+3. `MASTER_AUDIT.md` §1.3 still claims the 8-surface verdict table shows STAGING. Operators reading the cockpit panel cannot trust it.
 
-## Wave 5 — Production safety hardening
+### Tier 3 — Missing release-time gates
+4. There is no `iso-artifact-presence` / `ova-artifact-presence` / `raw-img-artifact-presence` block gate that physically verifies `out/*.iso`, `out/*.ova`, `out/*.img` exist after a release-tagged build. Today the `os-build-pipeline` gate only checks scripts exist, not that they produced artifacts.
 
-### 5.1 Lock down public storage (DB migration)
-- Add a restrictive policy on `storage.objects` for bucket `app-assets`: drop the broad SELECT, replace with a `bucket_id = 'app-assets' AND (storage.foldername(name))[1] = 'public'` scoped policy, OR flip the bucket to private and route reads through signed URLs. **Recommended**: scope SELECT to a `public/` prefix only; everything else requires signed URL.
-- Add `is_listable = false` enforcement at policy level for non-public prefixes.
+## Wave 6 — ISO/OVA/RAW production readiness
 
-### 5.2 Tighten service-role RLS policies (DB migration)
-- For each of the 5 `ALL true` policies: drop, recreate with `TO service_role` clause + `USING (auth.role() = 'service_role') WITH CHECK (auth.role() = 'service_role')`. Behavior unchanged at runtime; surface area shrunk.
+### 6.1 Fix doc drift (cockpit goes GREEN immediately)
+- Update `public/generated/MASTER_AUDIT.md` §1.3 lines 92–94: flip OS-ISO / OVA / RAW IMG from 🟡 STAGING to 🟢 READY, and replace "3 missing required-gate outputs" with the Wave-5 truth ("ISO+IMG produced by CI; OVA gated to release events; 244/244 BLOCK GREEN — see §12.1").
+- Update §1.4 "Critical path to GREEN": replace the 4-step list with "Already GREEN as of Wave 5 (2026-04-20)".
+- Mirror the change into `public/generated/artifacts/audits/MASTER_AUDIT.md` (same file, second copy).
 
-### 5.3 Status-tag every service in `service-manifest.json` (script)
-- Add a one-shot migrator in `scripts/architecture/fixes/tag-service-statuses.ts` that reads `service-manifest.json`, defaults every untagged service to `status: "active"` (since they're shipped), and writes back. Audit the 235 names manually for any obvious deprecated candidates and override.
-- Re-run `check-status-truth-tags.ts` → expect 0 errors.
+### 6.2 Wire OVA into CI (close the real artifact gap)
+- Add a new `build-ova` job to `.github/workflows/os-build-iso.yml` that depends on `build`, runs only on `release: published` and `workflow_dispatch`, downloads the ISO artifact, installs `qemu-img qemu-system-x86 ovmf tar`, runs `bash os/vmware/build-ova.sh`, then uploads `out/*.ova`, `out/*.ova.sha256`, `out/*.ova.manifest.json` as a separate artifact and attaches to the GitHub Release.
+- Add a final step in `os/scripts/release.sh` (step 14/14): `bash os/vmware/build-ova.sh` after step 13 QEMU. Make it skip-with-warning if `qemu-img` / `qemu-system-x86_64` are missing so local dev still passes.
 
-### 5.4 Resolve `policy-coverage` hard error (1 error → 0)
-- Either restore `src/lib/runtime/surface-types.ts` if it moved, or update `check-policy-coverage.ts` to point at its new canonical path. (Verify which is true by searching for `surface-types.ts` in the repo.)
-- The 333 capability-policy warnings stay advisory; bind the 10 highest-value capabilities (financial / compliance) to explicit policies; document the rest as `policy: "default-tenant-rls"` in a single batch.
+### 6.3 Add three artifact-presence gates (lock the wins)
+Create three new BLOCK gates that physically verify produced artifacts (not just scripts):
+- `scripts/architecture/checks/check-iso-artifact-presence.ts` → looks for `out/sita-os-*.iso` + `.sha256` + `.manifest.json` OR a documented `--allow-empty` flag for non-build environments. Emits `generated/iso-artifact-presence-report.json`.
+- `scripts/architecture/checks/check-ova-artifact-presence.ts` → same pattern for `.ova`.
+- `scripts/architecture/checks/check-raw-img-artifact-presence.ts` → same for `.img`.
+- Each gate runs in two modes: **CI release mode** (artifacts must exist) and **dev mode** (artifacts may be absent; gate reports OK with `mode: "dev"`). Mode is selected by `SITA_RELEASE_MODE=ci|dev` env (defaults to `dev`).
+- Register all three in `scripts/architecture/checks/check-os-release-readiness.ts`:
+  - Add to `REQUIRED_OUTPUT_WRITERS` map.
+  - Add to the BLOCK-tier gate list (now 247/247).
+  - Add to the validator-map.
 
-### 5.5 Close `no-ui-in-backend` (3 warnings → 0)
-- Locate the 3 edge functions importing UI; replace with shared types from `src/lib/contracts/`.
+### 6.4 Wire the three new gates into CI
+- In `.github/workflows/os-build-iso.yml` `build` job, after the "Inspect output" step, add: `SITA_RELEASE_MODE=ci npx tsx scripts/architecture/checks/check-iso-artifact-presence.ts` and the IMG one.
+- In the new `build-ova` job, after upload, add: `SITA_RELEASE_MODE=ci npx tsx scripts/architecture/checks/check-ova-artifact-presence.ts`.
+- Failure of any of the three fails the workflow.
 
-### 5.6 Refresh truth docs
-- Update `MASTER_AUDIT.md` Part XII headline: **244 BLOCK gates GREEN** (was 21).
-- Update `WAVE2_ADVISORY_DISPOSITION.md` net-effect section with the new advisory totals after Wave 5.
-- Add a `WAVE5_PRODUCTION_HARDENING.md` summary so the next operator sees the full chain Wave 1→5.
+### 6.5 Make OVA autoinstall real (Phase-2 graduation)
+- Wire the existing `scripts/release/iso/autoinstall/` (meta-data, network-config, user-data) into `os/vmware/build-ova.sh`: pass `-cdrom seed.iso` containing the autoinstall payload and a fixed-size 32GB qcow2 target so the install lands on disk, not live-from-CD.
+- Update the OVF descriptor written by `build-ova.sh` to advertise vmx-19 hardware and 4 GiB RAM / 2 vCPU defaults that match the validated targets in `docs/os/VMWARE_APPLIANCE_BUILD_PIPELINE.md`.
+- Document the Phase-2 graduation in the same doc: change "Phase 2 (planned)" to "Phase 2 (shipped Wave 6)".
 
-### 5.7 Aggregator re-run + verdict snapshot
-- Run `npx tsx scripts/architecture/checks/check-os-release-readiness.ts`.
-- Expected: 244/244 BLOCK GREEN preserved, advisory warning count drops by ≥500 (mainly from status-truth-tags 235 + policy-coverage 333).
-- If any BLOCK gate flips RED → halt and report.
+### 6.6 Refresh ground truth
+- Append a `WAVE6_ISO_OVA_RAW_PRODUCTION.md` operator note (sibling of `WAVE5_PRODUCTION_HARDENING.md`) summarising what Wave 6 changed.
+- Update `docs/os/RELEASE_ARTIFACT_MODEL.md` to mark OVA from "workflow_dispatch only" to "release-triggered (workflow_dispatch + release events)".
+- Update `docs/PLATFORM_SCOPE.md` line for "VMware OVA appliance" from 🟡 Partial → 🟢 GA, with note "unattended install graduated from live-from-CD as of Wave 6".
+- Update memory `governance/readiness-framework` count from 244 → 247 BLOCK gates after the three new gates land.
+
+### 6.7 Re-run aggregator and verify
+- Run `npx tsx scripts/architecture/checks/check-os-release-readiness.ts` locally.
+- Expected: 247/247 BLOCK GREEN, 0 errors, 0 missing. Verdict stays YELLOW only because of the three deferred mega-gates (Phase-15 lib decomposition / legacy wrappers / lib ownership) which remain explicitly out of scope.
 
 ## Files to be created
-- `supabase/migrations/<ts>_lock_app_assets_bucket.sql`
-- `supabase/migrations/<ts>_tighten_service_role_policies.sql`
-- `scripts/architecture/fixes/tag-service-statuses.ts`
-- `WAVE5_PRODUCTION_HARDENING.md`
+- `scripts/architecture/checks/check-iso-artifact-presence.ts`
+- `scripts/architecture/checks/check-ova-artifact-presence.ts`
+- `scripts/architecture/checks/check-raw-img-artifact-presence.ts`
+- `WAVE6_ISO_OVA_RAW_PRODUCTION.md`
 
 ## Files to be edited
-- `service-manifest.json` (status tags added by the migrator)
-- `scripts/architecture/checks/check-policy-coverage.ts` OR restore `src/lib/runtime/surface-types.ts` (whichever is correct after verification)
-- 0–3 edge function files under `supabase/functions/**` (remove UI imports)
-- `public/generated/MASTER_AUDIT.md` (headline number correction)
-- `WAVE2_ADVISORY_DISPOSITION.md` (Wave 5 update section)
+- `public/generated/MASTER_AUDIT.md` (§1.3 + §1.4 truth refresh)
+- `public/generated/artifacts/audits/MASTER_AUDIT.md` (mirror)
+- `.github/workflows/os-build-iso.yml` (new `build-ova` job + 3 gate-runner steps)
+- `os/scripts/release.sh` (new step 14 wraps OVA)
+- `os/vmware/build-ova.sh` (autoinstall seed wiring + OVF defaults)
+- `scripts/architecture/checks/check-os-release-readiness.ts` (register 3 new BLOCK gates + writers)
+- `docs/os/VMWARE_APPLIANCE_BUILD_PIPELINE.md` (Phase-2 graduation)
+- `docs/os/RELEASE_ARTIFACT_MODEL.md` (OVA trigger update)
+- `docs/PLATFORM_SCOPE.md` (OVA → GA)
 
 ## Stop conditions
-1. Any of the 244 BLOCK gates flips RED → halt, report, await direction.
-2. The storage migration would break existing public reads (verify by listing what app-assets actually serves before tightening).
-3. Service-status migrator can't safely default 235 names to `active` (e.g., we discover deprecated ones) → halt and bring you the list.
+1. Any of the existing 244 BLOCK gates flips RED after the 3 new gates are registered → halt.
+2. `build-ova.sh` autoinstall seed cannot be assembled without `xorrisofs` available in CI → fall back to live-from-CD with a `::warning::` and document.
+3. Adding `SITA_RELEASE_MODE=ci` to local validators breaks dev mode (artifacts absent locally) → enforce the dev/ci mode split and re-run before commit.
 
-## What this gets you
-- Real attacker-facing risk on `app-assets` closed.
-- Service-role RLS surface tightened to least-privilege.
-- ~568 substantive advisory warnings cleared (235 + 333) in two batches.
-- Documentation matches reality (244 not 21).
-- BLOCK status remains 244/244 GREEN. Aggregator likely flips from YELLOW to GREEN if remaining advisory warnings drop below the meaningfulness threshold.
+## What this delivers
+- The cockpit panel for OS-ISO / OVA / RAW IMG flips from 🟡 STAGING → 🟢 READY (doc drift fixed).
+- OVA artifact is actually produced, signed, and attached to GitHub Releases (not just `workflow_dispatch`).
+- OVA graduates from live-from-CD to true unattended-install appliance.
+- 3 new BLOCK gates physically verify ISO/OVA/IMG artifacts existed at release time, preventing future silent regressions.
+- Aggregator reaches 247/247 BLOCK GREEN, 0 errors, 0 missing — system is genuinely real-life deployment-ready for sovereign Linux.
 
