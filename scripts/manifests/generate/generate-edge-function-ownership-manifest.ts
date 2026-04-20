@@ -83,6 +83,7 @@ const json = JSON.stringify(manifest, null, 2) + "\n";
 const targets = [
   "generated/edge-function-ownership.json",
   "public/generated/edge-function-ownership.json",
+  "supabase/functions/_owners.json",
 ];
 for (const target of targets) {
   fs.mkdirSync(path.dirname(target), { recursive: true });
