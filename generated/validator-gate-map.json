@@ -1,18 +1,18 @@
 {
-  "generatedAt": "2026-04-20T01:46:19.299Z",
+  "generatedAt": "2026-04-20T01:56:44.436Z",
   "source": {
     "checksDir": "scripts/architecture/checks",
     "requiredGatesCount": 230,
     "deploymentGapSuiteCount": 17,
-    "overrideCount": 0
+    "overrideCount": 1
   },
-  "totalValidators": 186,
+  "totalValidators": 187,
   "blockCount": 50,
-  "warnCount": 17,
+  "warnCount": 18,
   "advisoryCount": 119,
   "disabledCount": 0,
   "archivedCount": 0,
-  "classified": 186,
+  "classified": 187,
   "unclassified": 0,
   "unwiredAdvisoryCount": 119,
   "coveragePercent": 100,
@@ -1619,6 +1619,17 @@
       "lastModifiedAt": "2026-04-19T23:17:56.912Z",
       "hasReportArtifact": false,
       "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-routes-inventory-completeness",
+      "gateId": "routes-inventory-completeness",
+      "classification": "warn",
+      "consumer": "advisory-only",
+      "bucket": "architecture-hygiene",
+      "declaredInRegistry": true,
+      "lastModifiedAt": "2026-04-20T01:55:01.565Z",
+      "hasReportArtifact": true,
+      "rationale": "Asserts public/generated/routes.json is fresh, mirrors generated/routes.json, and covers all <Route> declarations across App.tsx + every src/routes/* shell. WARN-tier — does not block release; surfaces in advisory ingestion."
     },
     {
       "validator": "check-runbook-coverage",

@@ -1,0 +1,22 @@
+{
+  "generatedAt": "2026-04-20T01:55:47.940Z",
+  "gate": "routes-inventory-completeness",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "totalRoutes": 696,
+  "byPlane": {
+    "user": 410,
+    "admin": 261,
+    "shell-runtime": 25
+  },
+  "byRuntimeTier": {
+    "tier1_public": 5,
+    "tier3_authenticated_with_shell": 472,
+    "tier2_authenticated_no_shell": 4,
+    "tier4_admin": 215
+  },
+  "minRoutes": 100,
+  "freshnessDays": 7
+}
