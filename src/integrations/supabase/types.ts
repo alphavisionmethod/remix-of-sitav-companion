@@ -15035,6 +15035,51 @@ export type Database = {
           },
         ]
       }
+      onboarding_resume_checkpoints: {
+        Row: {
+          branch: string
+          conditional_state: Json
+          created_at: string
+          current_screen: number
+          expires_at: string
+          id: string
+          last_completed_screen: number | null
+          profile_snapshot: Json
+          resume_token: string
+          session_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          branch: string
+          conditional_state?: Json
+          created_at?: string
+          current_screen: number
+          expires_at?: string
+          id?: string
+          last_completed_screen?: number | null
+          profile_snapshot?: Json
+          resume_token?: string
+          session_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          branch?: string
+          conditional_state?: Json
+          created_at?: string
+          current_screen?: number
+          expires_at?: string
+          id?: string
+          last_completed_screen?: number | null
+          profile_snapshot?: Json
+          resume_token?: string
+          session_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       onboarding_sessions: {
         Row: {
           boot_id: string
