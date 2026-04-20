@@ -134,7 +134,9 @@
     "check:validator-gate-coverage": "npx tsx scripts/architecture/checks/check-validator-gate-coverage.ts",
     "validators:run-advisory": "npx tsx scripts/architecture/checks/run-all-advisory-validators.ts",
     "generate:routes-inventory": "npx tsx scripts/manifests/generate/generate-route-manifest.ts",
-    "check:routes-inventory-completeness": "npx tsx scripts/architecture/checks/check-routes-inventory-completeness.ts"
+    "check:routes-inventory-completeness": "npx tsx scripts/architecture/checks/check-routes-inventory-completeness.ts",
+    "check:runbook-coverage": "npx tsx scripts/architecture/checks/check-runbook-coverage.ts",
+    "generate:runbook-index": "npx tsx scripts/support/runbooks/generate-runbook-index.ts"
   },
   "dependencies": {
     "@electron/packager": "^18.3.6",
