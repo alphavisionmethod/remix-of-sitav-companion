@@ -1,19 +1,19 @@
 # SITA OS — Release Readiness Report
 
-> Generated: 2026-04-20T01:46:28.988Z
-> Verdict: **YELLOW** ⚠️
+> Generated: 2026-04-20T06:34:17.767Z
+> Verdict: **RED** ❌
 
 ## Summary
 
 | Metric | Value |
 |---|---|
-| Gates required | 230 |
-| Gates present  | 353 |
-| Gates missing  | 0 |
+| Gates required | 239 |
+| Gates present  | 359 |
+| Gates missing  | 3 |
 | Total errors   | 0 |
-| Total warnings | 3621 |
+| Total warnings | 3624 |
 | Advisory gates surfaced | 119 |
-| Validator-map coverage | 100% (186 validators) |
+| Validator-map coverage | 100% (187 validators) |
 
 ## Per-gate results
 
@@ -249,6 +249,12 @@
 | `production-launch-attestation` | ✅ | 0 | 0 |
 | `electron-domain-layout` | ✅ | 0 | 0 |
 | `os-ci-end-to-end` | ✅ | 0 | 0 |
+| `public-artifact-mirror` | ✅ | 0 | 0 |
+| `onboarding-components-folder` | ✅ | 0 | 0 |
+| `artifact-index-traceability` | ✅ | 0 | 0 |
+| `edge-function-ownership-completeness` | ✅ | 0 | 0 |
+| `recovery-boot-evidence` | ✅ | 0 | 0 |
+| `artifact-ownership-graph` | ✅ | 0 | 3 |
 | `ai-engineer-tab-registry (warn)` | ✅ | 0 | 0 |
 | `ai-engineer-wiring-coverage (warn)` | ✅ | 0 | 68 |
 | `ai-engineer-primitive-coverage (warn)` | ✅ | 0 | 72 |
@@ -372,10 +378,13 @@
 | `workflow-state-usage (advisory)` | ❌ | 0 | 0 |
 | `workflow-states (advisory)` | ❌ | 0 | 0 |
 | `wrapper-purity (advisory)` | ❌ | 0 | 0 |
+| `runbook-coverage` | ❌ MISSING | — | — |
+| `connector-client-registry-completeness` | ❌ MISSING | — | — |
+| `admin-runbook-surface-wiring` | ❌ MISSING | — | — |
 
 ## Verdict
 
-⚠️ All required gates passed, but 3621 warning(s) present. Release is cuttable but review warnings.
+❌ Release is **NOT cuttable**. Fix 0 error(s) and resolve 3 missing gate(s).
 
 ## Related
 

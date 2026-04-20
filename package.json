@@ -138,7 +138,10 @@
     "check:runbook-coverage": "npx tsx scripts/architecture/checks/check-runbook-coverage.ts",
     "generate:runbook-index": "npx tsx scripts/support/runbooks/generate-runbook-index.ts",
     "generate:edge-function-ownership": "npx tsx scripts/manifests/generate/generate-edge-function-ownership-manifest.ts",
-    "check:edge-function-ownership-completeness": "npx tsx scripts/architecture/checks/check-edge-function-ownership-completeness.ts"
+    "check:edge-function-ownership-completeness": "npx tsx scripts/architecture/checks/check-edge-function-ownership-completeness.ts",
+    "generate:artifact-consumers": "npx tsx scripts/architecture/generate/scan-artifact-consumers.ts",
+    "generate:artifact-ownership-graph": "npm run generate:artifact-ownership && npm run generate:artifact-consumers && npx tsx scripts/architecture/generate/generate-artifact-ownership-graph.ts",
+    "check:artifact-ownership-graph": "npx tsx scripts/architecture/checks/check-artifact-ownership-graph.ts"
   },
   "dependencies": {
     "@electron/packager": "^18.3.6",
