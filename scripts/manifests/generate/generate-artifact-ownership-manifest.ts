@@ -124,8 +124,17 @@ for (const [scriptPath, mentions] of scriptMentionsDir) {
   }
 }
 
-// ── 5. Build npm-script reverse map ──────────────────────────
-const pkg = readJsonSafe<{ scripts: Record<string, string> }>("package.json");
+// Also attribute by package.json script command mentions of "generated/<dir>" — for
+// `closure:* :emit` scripts that declare static curated dirs via echo statements.
+if (pkg?.scripts) {
+  for (const [npmKey, cmd] of Object.entries(pkg.scripts)) {
+    const dirMatches = [...cmd.matchAll(/(generated\/[a-z0-9_-]+(?:\/[a-z0-9_-]+)?)/gi)];
+    for (const dm of dirMatches) {
+      const dir = dm[1];
+      if (!dirOwnerMap.has(dir)) dirOwnerMap.set(dir, `package.json#${npmKey}`);
+    }
+  }
+}
 const scriptToNpm = new Map<string, string>();
 if (pkg?.scripts) {
   for (const [npmKey, cmd] of Object.entries(pkg.scripts)) {
