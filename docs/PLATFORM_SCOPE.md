@@ -12,12 +12,13 @@
 | Ubuntu-native ISO | 🟢 GA | `os/scripts/release.sh` | `os-build-pipeline` |
 | Electron desktop shell (on Ubuntu base) | 🟢 GA | `electron/main.cjs` | `electron-shell-session-readiness` |
 | QEMU VM validation | 🟢 GA | `os/qemu-validate.sh` | `qemu-vm-readiness` |
+| VMware OVA appliance | 🟢 GA | `os/vmware/build-ova.sh` | `ova-artifact-presence` (Wave 6 — autoinstall graduated from live-from-CD 2026-04-20) |
+| Raw flashable IMG (cloud-init) | 🟢 GA | `os/scripts/build-raw-img.sh` | `raw-img-artifact-presence` (Wave 6) |
 
 ## 🟡 Partial / evolving
 
 | Surface | Status | Notes |
 |---|---|---|
-| VMware OVA appliance | 🟡 Partial | `os/vmware/` present; hardware support matrix in progress |
 | Hardware support matrix | 🟡 Partial | See `docs/os/HARDWARE_SUPPORT_MATRIX.md` |
 | PWA (browser-installable) | 🟡 Optional | Lives inside the Web SPA via `public/sw.js` + manifest |
 
