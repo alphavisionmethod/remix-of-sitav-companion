@@ -313,6 +313,7 @@ const REQUIRED_GATES = [
   "connector-client-registry-completeness",
   // Phase 28 Admin runbook surface IA wiring (1 BLOCK gate — registry + mount + hub tab parity)
   "admin-runbook-surface-wiring",
+  "recovery-boot-evidence",
 ];
 
 // Mobile Deployment Closure — RETIRED (2026-04-19)
