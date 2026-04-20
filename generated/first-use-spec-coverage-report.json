@@ -1,0 +1,48 @@
+{
+  "generatedAt": "2026-04-20T07:55:52.703Z",
+  "gate": "first-use-spec-coverage",
+  "phase": "phase-32-first-use-spec-truth",
+  "totalScreens": 29,
+  "expectedScreens": 29,
+  "perPhaseCoverage": {
+    "0": {
+      "implemented": 1,
+      "partial": 0,
+      "planned": 0,
+      "total": 1
+    },
+    "1": {
+      "implemented": 5,
+      "partial": 0,
+      "planned": 0,
+      "total": 5
+    },
+    "2": {
+      "implemented": 4,
+      "partial": 0,
+      "planned": 0,
+      "total": 4
+    },
+    "3": {
+      "implemented": 18,
+      "partial": 0,
+      "planned": 0,
+      "total": 18
+    },
+    "4": {
+      "implemented": 1,
+      "partial": 0,
+      "planned": 0,
+      "total": 1
+    }
+  },
+  "statusCounts": {
+    "implemented": 29,
+    "partial": 0,
+    "planned": 0
+  },
+  "errorCount": 0,
+  "warningCount": 0,
+  "ok": true,
+  "issues": []
+}
