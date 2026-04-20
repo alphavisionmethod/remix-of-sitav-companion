@@ -248,6 +248,16 @@ const entries: ArtifactEntry[] = allArtifacts.map((artifact) => {
     if (fuzzy) { producer = fuzzy; source = "directory-inferred"; }
   }
 
+  // Final fallback: artifacts in *-closure directories are typically static curated
+  // evidence governed by a `closure:*` npm pipeline.
+  if (!producer) {
+    const parent = artifact.split("/").slice(0, 2).join("/");
+    if (/-closure$/.test(parent) || /^generated\/(internal-ai-runtime-phase|admin-ai-engineer-team|architectural-cleanup|claim-safety-hardening|economic-trust-and-future-closure|final-|hardware-and-operator|frontend-truth-backing|trust-state-and-copy|restore-and-oauth|security-and-portability|architecture-hardening|admin-coherence-and-responsive|admin-and-validation|admin-empty-state|flagship-surface|mobile-identity|lib-decomposition|lib-remediation|refactor|remediation|master-deployment-readiness)/.test(parent)) {
+      producer = "package.json#closure-pipelines (static curated evidence)";
+      source = "directory-inferred";
+    }
+  }
+
   if (!producer && registryPaths.has(artifact)) source = "registry";
 
   const overlay = overlayMap.get(artifact);
