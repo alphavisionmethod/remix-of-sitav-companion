@@ -320,6 +320,12 @@ const REQUIRED_GATES = [
   "cross-tier-capability-matrix",
   // Phase 32 First-use spec coverage (1 BLOCK gate — 29-screen master spec ↔ SetupPhaseId mapping is typed + verified)
   "first-use-spec-coverage",
+  // Internal AI Workforce — Runtime Truth (1 BLOCK gate, registered as gate #22 of the workforce series)
+  // Asserts every registry agent has an explicit runtimeStatus and that
+  // "deferred" agents carry deferredReason + deferredEta. Prevents "40 agents
+  // wired" overclaim by failing if status coverage < 100% or if any "wired"
+  // agent's runtimeInvocationPath does not actually reference the agent ID.
+  "internal-agent-deferred-set-explicitness",
 ];
 
 // Mobile Deployment Closure — RETIRED (2026-04-19)
