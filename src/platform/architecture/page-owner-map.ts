@@ -21,7 +21,6 @@ export const PAGE_OWNER_MAP: readonly PageOwnerEntry[] = [
   { page: "src/pages/admin/KillSwitchesPage.tsx", domain: "admin-safety", owner: "operations", riskTier: "R4" },
   { page: "src/pages/admin/RunbooksPage.tsx", domain: "admin-ops", owner: "operations", riskTier: "R2" },
   { page: "src/pages/BusinessShellPage.tsx", domain: "business", owner: "productivity", riskTier: "R0" },
-];
   { page: "src/pages/MoneyShellPage.tsx", domain: "money", owner: "finance", riskTier: "R3" },
   { page: "src/pages/ConciergeShellPage.tsx", domain: "concierge", owner: "intelligence", riskTier: "R2" },
   { page: "src/pages/RevenueOfficeShellPage.tsx", domain: "revenue", owner: "finance", riskTier: "R2" },
@@ -41,6 +40,7 @@ export const PAGE_OWNER_MAP: readonly PageOwnerEntry[] = [
   { page: "src/pages/admin/MissionControlPage.tsx", domain: "mission", owner: "operations", riskTier: "R3" },
   { page: "src/pages/NovaDesktopPage.tsx", domain: "desktop", owner: "platform", riskTier: "R0" },
   { page: "src/pages/SearchPage.tsx", domain: "search", owner: "platform", riskTier: "R0" },
+];
 
 export function getPageOwner(pagePath: string): PageOwnerEntry | undefined {
   return PAGE_OWNER_MAP.find((p) => p.page === pagePath);

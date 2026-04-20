@@ -28,7 +28,6 @@ export const ROUTE_RUNTIME_MAP: readonly RouteRuntimeEntry[] = [
   { path: "/files", surfaces: all("available") },
   { path: "/boardroom", surfaces: all("available") },
   { path: "/business", surfaces: all("available") },
-];
   { path: "/money", surfaces: all("available") },
   { path: "/concierge", surfaces: all("available") },
   { path: "/revenue-office", surfaces: all("available") },
@@ -49,6 +48,7 @@ export const ROUTE_RUNTIME_MAP: readonly RouteRuntimeEntry[] = [
   { path: "/mission", surfaces: { ...all("available"), SIMULATED_OS_EXPERIENCE: "degraded" } },
   { path: "/nova-desktop", surfaces: all("available") },
   { path: "/auth", surfaces: all("available") },
+];
 
 export function getRouteRuntimeAvailability(path: string): RouteRuntimeEntry | undefined {
   return ROUTE_RUNTIME_MAP.find((r) => r.path === path);
