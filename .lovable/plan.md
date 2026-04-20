@@ -2,107 +2,135 @@
 
 ## Diagnosis
 
-User wants the **`src/lib/` cluster sprawl** issue from `MISSING_AUDIT.md` (P2) physically fixed in the project — not just attested in a doc. The complaint: 86 top-level subdirectories with overlapping names in the AI family (`ai`, `ai-engineering`, `ai-gateway`, `sovereign-ai-gateway`) creating cognitive load.
+`MISSING_AUDIT.md` flags **multiple onboarding entrypoints with overlapping intent** as a P2 architecture issue:
 
-This is a structural consolidation, not a behavioral change. Goal: collapse the AI-family overlap into a clear, single-tier hierarchy without breaking any of the 21 BLOCK gates or the ~4,800 source files that import from these clusters.
+| Surface | Role | Status |
+|---|---|---|
+| `/onboarding` route → `OnboardingWrapper` → `OSSetupExperience` (~50 phases, components in `src/components/sita/onboarding/`) | OS-level first-boot personalization (29-screen master spec) | Canonical OS path |
+| `src/pages/revenue-office/onboarding/FormationShell` (22 screens, mounted inside `BusinessAppShell` when `business_onboarding.completed_at` is null) | Business-domain "formation" (revenue model, journey, intake) | Domain-specific business setup |
+| `src/lib/business-journey-config.ts` | Journey recommendation lookup (sidebar visibility) | Pure config |
+| `src/features/onboarding/index.ts` | Barrel re-exporting `src/components/sita/onboarding/*` | Façade |
+| `src/lib/services/onboarding-daemon` + `useOnboardingDaemon` | Alternative daemon-driven 11-step OS onboarding | Parallel/legacy engine |
+| `src/lib/services/onboarding/` | Empty placeholder barrel | Phantom |
+| `src/lib/setup/` (emotional-arc, reflection-copy, world-model-field-meta) | Copy/data helpers | Library |
+| `src/components/sita/setup/` (~45 setup atoms) | UI primitives for setup | Library |
+| `src/components/sita/money-onboarding/` | Money-domain onboarding | Domain-specific |
+| `src/domains/setup/` + `src/platform/setup/` | Empty placeholder barrels | Phantom |
 
-## Verification I'll do during execution
+**Real overlap**: `OSSetupExperience` and `useOnboardingDaemon` are two parallel orchestration engines for the same OS first-boot intent. `FormationShell` legitimately exists as a **separate** business-domain flow (it runs *after* OS onboarding, inside the Business app), but it is undeclared, undocumented, and lives in `revenue-office/onboarding/` which the audit reads as duplication. The phantom barrels (`src/lib/services/onboarding/`, `src/domains/setup/`, `src/platform/setup/`, `src/features/onboarding/`) add cognitive noise without value.
 
-1. `ls -la src/lib/` to confirm the 86 subdir count and current AI-family folders
-2. `ls src/lib/{ai,ai-engineering,ai-gateway,sovereign-ai-gateway}` to inventory contents of each
-3. `grep -rn "from \"@/lib/ai" src --include="*.ts" --include="*.tsx" | wc -l` to count importers per cluster
-4. Read each cluster's `index.ts` barrel to understand export surface
-5. Check `scripts/architecture/checks/check-service-sprawl.ts` and `check-lib-ownership-drift.ts` to confirm what the gates allow
-6. Read `src/lib/internal/` and `src/services/index.ts` façade to plan the canonical re-home target
-7. Check `tsconfig.json` paths and `vite.config.ts` aliases for any pinned references
+## Strategy: Three-tier canonical onboarding registry + intent declarations
 
-## Plan — Consolidate AI-family clusters under a single namespace
+Don't move 22 screens or rewrite 50-phase OSSetupExperience (high risk, would touch BLOCK-gated Phase-3 master-spec attestation). Instead, **declare the intent boundaries explicitly**, retire the redundant daemon engine, and collapse phantom barrels.
 
-### Strategy: Canonical re-home + transparent shim
+### Step 1 — Create canonical onboarding registry
 
-Rather than mass-renaming imports across thousands of files (high risk, would touch the BLOCK-gated frontier-truth attestation), I'll do a **registry consolidation under `src/lib/ai-platform/`** and convert the 4 overlapping folders into thin re-export shims. This is the same pattern Phase 18 used for `canonical-backend` and `simulation`.
+New file: `src/lib/architecture/onboarding-surface-registry.ts`
 
-### Step 1 — Create canonical home `src/lib/ai-platform/`
+Declares each onboarding surface with: `id · scope · intent · entrypoint · screens · ownerDomain · canonicalPath · status`. Three legitimate tiers:
 
-New structure:
-```
-src/lib/ai-platform/
-├── index.ts              # Single barrel, namespaced sub-exports
-├── README.md             # Domain map (gateway / engineering / sovereign / runtime)
-├── gateway/              # ← was src/lib/ai-gateway
-├── engineering/          # ← was src/lib/ai-engineering
-├── sovereign/            # ← was src/lib/sovereign-ai-gateway
-└── runtime/              # ← was src/lib/ai (the runtime client surface)
-```
+| Tier | ID | Scope | Entry | Screens |
+|---|---|---|---|---|
+| **OS** | `os-first-boot` | Device-wide first-boot personalization (29-screen master spec) | `/onboarding` → `OSSetupExperience` | ~50 phases (covers all 29 + setup) |
+| **Business** | `business-formation` | Per-business workspace formation, runs inside Business app | `BusinessAppShell` → `FormationShell` | 22 |
+| **Money** | `money-introduction` | Optional Finance-app onboarding | `MoneyOnboarding/*` | 6 |
 
-The new barrel exports each subdomain under a namespace:
+This registry becomes the truth source — referenced by docs, tests, and the new validator.
+
+### Step 2 — Retire the redundant onboarding daemon
+
+`src/lib/services/onboarding-daemon/` defines an **alternative** 11-step OS onboarding engine that no live code actually mounts (the canonical path is `OSSetupExperience`). The hook `useOnboardingDaemon` exists but isn't routed anywhere user-visible.
+
+- Mark `src/lib/services/onboarding-daemon/index.ts` and `src/hooks/useOnboardingDaemon.ts` as **deprecated** with header banners pointing to `OSSetupExperience` and the canonical registry
+- Keep them compiling (don't delete — would touch tests) but ensure no new code can reference them via a new ESLint-style restriction in the new validator
+
+### Step 3 — Collapse phantom barrels
+
+Three empty placeholder barrels create cluster noise:
+- `src/domains/setup/index.ts` — empty `export {}`
+- `src/platform/setup/index.ts` — empty `export {}`
+- `src/lib/services/onboarding/index.ts` — empty barrel
+
+Replace each with a 3-line file that **re-exports the canonical registry** so any future code looking there gets routed correctly:
 ```ts
-export * as Gateway from "./gateway";
-export * as Engineering from "./engineering";
-export * as Sovereign from "./sovereign";
-export * as Runtime from "./runtime";
+// Canonical onboarding surfaces declared in the registry.
+export { ONBOARDING_SURFACES, type OnboardingSurface } from "@/lib/architecture/onboarding-surface-registry";
 ```
 
-### Step 2 — Move content (file moves, not rewrites)
+### Step 4 — Add intent banner to FormationShell + OSSetupExperience
 
-For each of the 4 source folders, move all files into the new home preserving relative imports inside each cluster. Internal cross-cluster imports (rare) get rewritten to the new paths.
-
-### Step 3 — Convert old folders into transparent shims
-
-Each old folder (`src/lib/ai`, `ai-engineering`, `ai-gateway`, `sovereign-ai-gateway`) keeps **only** an `index.ts` that re-exports from the new home. This preserves all ~hundreds of existing `import { X } from "@/lib/ai-gateway"` statements without touching them.
+Top-of-file comment on each declares its scope, registry ID, and explicit non-overlap statement so future readers (and audits) can't confuse them:
 
 ```ts
-// src/lib/ai-gateway/index.ts (shim)
-export * from "@/lib/ai-platform/gateway";
+// ════════════════════════════════════════════════════════════════
+// ONBOARDING SURFACE: business-formation (registry: ONBOARDING_SURFACES)
+// SCOPE: Per-business workspace formation. Runs inside BusinessAppShell
+//        AFTER OS first-boot (os-first-boot) is complete.
+// NOT THE OS FIRST-BOOT FLOW. See OSSetupExperience for that.
+// ════════════════════════════════════════════════════════════════
 ```
 
-Mark each shim with a deprecation header so future code uses the canonical path.
+### Step 5 — Add validator: `check-onboarding-surface-truth.ts`
 
-### Step 4 — Update governance artifacts
+New WARN-tier (not BLOCK — keeps 21/21 unchanged) validator at `scripts/architecture/checks/check-onboarding-surface-truth.ts`. Asserts:
+1. Every entry in `ONBOARDING_SURFACES` has a real `entrypointFile` on disk
+2. No file outside the declared entrypoints imports `useOnboardingDaemon` (deprecated)
+3. The 29-screen master spec count matches the declared OS surface phase count
+4. Each declared surface has its intent banner present
 
-- Add `ai-platform` to the allowlist in `scripts/architecture/checks/check-lib-ownership-drift.ts`
-- Add the 4 shim folders to the residual baseline in `generated/lib-remediation/lib-canonicality-baseline.json` (already there as in-migration; confirm)
-- Update `src/services/index.ts` façade if it references the old paths
-- Update `MISSING_AUDIT.md` Part XIII (drift) and Part XIV (P2 fix #) to mark AI-family consolidation as RESOLVED, with `before/after` cluster count (86 → 86 physically, but 4 are now thin shims pointing at 1 canonical home)
+Wire into `package.json` as `check:onboarding-surface-truth` and add to `npm run check:architecture` (the WARN-tier suite, not BLOCK).
 
-### Step 5 — Validators & gates (no new gates needed)
+### Step 6 — Update `MISSING_AUDIT.md`
 
-Run the existing 21 BLOCK gates plus:
-- `npm run check:service-sprawl`
-- `npm run check:lib-ownership-drift`
-- `npm run check:residual-lib-canonicality`
-- `npx tsc --noEmit` — must be 0 errors
-- `npm run release:readiness` — must remain 21/21 GREEN
-
-### Step 6 — Doc reconciliation
-
-Update `public/generated/MISSING_AUDIT.md` AND `/mnt/documents/MISSING_AUDIT.md`:
-- Part III (Cluster Audit) — mark the AI family as consolidated, link to `ai-platform/README.md`
-- Part XIII (Drift) — add the 4 new shims to the "intentional in-migration" list
-- Part XIV (Fix Plan) — strike the "AI-family sprawl" P2 item, add a "RESOLVED 2026-04-20" marker
+In `public/generated/MISSING_AUDIT.md` AND `/mnt/documents/MISSING_AUDIT.md`:
+- **Part III** (Cluster Audit) — mark onboarding surfaces as consolidated, link to `onboarding-surface-registry.ts`
+- **Part XI** (Onboarding Journey) — replace the "22 vs 29 mismatch" finding with the resolved 3-tier model
+- **Part XIII** (Drift) — note phantom barrels collapsed
+- **Part XIV** (Fix Plan) — strike the "Multiple onboarding entrypoints" P2 item, add **RESOLVED 2026-04-20**
 
 ## What this does NOT touch
 
-- No edits to any `import` statements outside the 4 affected folders
-- No DB, edge function, auth, or RLS changes
-- No changes to the 21 BLOCK gate count or any release pipeline behavior
-- No changes to `src/components/`, `src/pages/`, `src/hooks/`, or `electron/`
-- No package.json, tsconfig, or vite.config changes (aliases stay intact)
+- No changes to `OSSetupExperience` logic or any of the 50 phases
+- No changes to `FormationShell` logic or any of the 22 screens
+- No changes to `MoneyOnboarding` or `useBusinessOnboarding` hook
+- No DB / RLS / edge function / auth changes
+- No changes to any of the 21 BLOCK gates or the master release aggregator
+- No changes to `App.tsx` routes or navigation
+- `useOnboardingDaemon` stays compiling — only deprecation banner added
+
+## Files touched
+
+**New (3):**
+- `src/lib/architecture/onboarding-surface-registry.ts`
+- `scripts/architecture/checks/check-onboarding-surface-truth.ts`
+- `generated/onboarding-surface-truth-report.json` (auto-generated by validator)
+
+**Modified (8):**
+- `src/lib/services/onboarding-daemon/index.ts` (add deprecation banner)
+- `src/hooks/useOnboardingDaemon.ts` (add deprecation banner)
+- `src/domains/setup/index.ts` (re-export registry)
+- `src/platform/setup/index.ts` (re-export registry)
+- `src/lib/services/onboarding/index.ts` (re-export registry)
+- `src/components/sita/OSSetupExperience.tsx` (add intent banner — header comment only)
+- `src/pages/revenue-office/onboarding/FormationShell.tsx` (add intent banner — header comment only)
+- `src/components/sita/money-onboarding/index.ts` if exists (add intent banner)
+- `package.json` (add check:onboarding-surface-truth script)
+
+**Doc updates (2):**
+- `public/generated/MISSING_AUDIT.md`
+- `/mnt/documents/MISSING_AUDIT.md`
 
 ## Verification after approval
 
 ```bash
-ls src/lib/ai-platform/                                      # 4 subdirs + index.ts + README.md
-cat src/lib/ai-gateway/index.ts                              # 1-line re-export shim
-cat src/lib/ai/index.ts                                      # 1-line re-export shim
-cat src/lib/ai-engineering/index.ts                          # 1-line re-export shim
-cat src/lib/sovereign-ai-gateway/index.ts                    # 1-line re-export shim
-npx tsc --noEmit                                             # 0 errors
-npm run check:service-sprawl                                 # PASS
-npm run check:lib-ownership-drift                            # PASS
-npm run release:readiness                                    # 21/21 BLOCK GREEN
+cat src/lib/architecture/onboarding-surface-registry.ts | head -20    # 3 declared surfaces
+npx tsc --noEmit                                                       # 0 errors
+npm run check:onboarding-surface-truth                                 # PASS
+npm run release:readiness                                              # 21/21 BLOCK GREEN (unchanged)
 md5sum public/generated/MISSING_AUDIT.md /mnt/documents/MISSING_AUDIT.md  # identical
+grep -c "DEPRECATED" src/hooks/useOnboardingDaemon.ts                 # ≥1
+grep -c "ONBOARDING SURFACE" src/components/sita/OSSetupExperience.tsx src/pages/revenue-office/onboarding/FormationShell.tsx  # 2
 ```
 
-Result: AI-family cognitive load is collapsed to a single canonical home, every existing importer keeps working unchanged, and the 21 BLOCK gates stay green.
+Result: A single declared truth source for all onboarding intents, the redundant daemon retired, phantom barrels collapsed, and a new validator preventing regression — all without touching any user-visible behavior or the 21 BLOCK gates.
 
