@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-20T16:38:21.384Z",
+  "generatedAt": "2026-04-20T16:54:35.921Z",
   "gate": "os-release-readiness",
   "phase": "phase-12-native-deployability",
   "inputs": [
@@ -449,7 +449,7 @@
       "gate": "flagship-surface-responsive-quality",
       "ok": true,
       "errors": 0,
-      "warnings": 14
+      "warnings": 6
     },
     {
       "file": "generated/admin-empty-state-patterns-report.json",
@@ -2574,7 +2574,7 @@
     }
   ],
   "totalErrors": 0,
-  "totalWarnings": 4260,
+  "totalWarnings": 4252,
   "missingGates": [],
   "ok": true,
   "verdict": "YELLOW"

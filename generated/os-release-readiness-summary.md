@@ -1,6 +1,6 @@
 # SITA OS — Release Readiness Report
 
-> Generated: 2026-04-20T16:38:21.384Z
+> Generated: 2026-04-20T16:54:35.921Z
 > Verdict: **YELLOW** ⚠️
 
 ## Summary
@@ -11,7 +11,7 @@
 | Gates present  | 367 |
 | Gates missing  | 0 |
 | Total errors   | 0 |
-| Total warnings | 4260 |
+| Total warnings | 4252 |
 | Advisory gates surfaced | 119 |
 | Validator-map coverage | 100% (187 validators) |
 
@@ -82,7 +82,7 @@
 | `concierge-ai-state-handling` | ✅ | 0 | 1 |
 | `communications-connector-state-alignment` | ✅ | 0 | 2 |
 | `flagship-surface-trust-copy` | ✅ | 0 | 4 |
-| `flagship-surface-responsive-quality` | ✅ | 0 | 14 |
+| `flagship-surface-responsive-quality` | ✅ | 0 | 6 |
 | `admin-empty-state-patterns` | ✅ | 0 | 3 |
 | `cross-domain-coherence-empty-state` | ✅ | 0 | 0 |
 | `cost-spotlight-empty-state` | ✅ | 0 | 0 |
@@ -389,7 +389,7 @@
 
 ## Verdict
 
-⚠️ All required gates passed, but 4260 warning(s) present. Release is cuttable but review warnings.
+⚠️ All required gates passed, but 4252 warning(s) present. Release is cuttable but review warnings.
 
 ## Related
 

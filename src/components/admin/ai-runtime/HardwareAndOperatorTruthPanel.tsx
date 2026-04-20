@@ -89,7 +89,7 @@ export default function HardwareAndOperatorTruthPanel() {
 
   if (loading) {
     return (
-      <div className="text-xs text-muted-foreground py-12 text-center">
+      <div className="flex flex-col items-center text-xs text-muted-foreground py-12 text-center sm:py-16">
         Loading hardware & operator truth…
       </div>
     );

@@ -71,8 +71,8 @@ export default function SovereignDeploymentDRBoard() {
 
   return (
     <AdminControlPlaneShell contextScope="Sovereign Deployment & DR">
-      <div className="p-6 space-y-6">
-        <div className="flex items-center justify-between">
+      <div className="p-4 sm:p-6 space-y-6">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
           <div>
             <h1 className="text-2xl font-semibold flex items-center gap-2">
               <ShieldAlert className="h-6 w-6" /> Sovereign Deployment & DR
@@ -81,7 +81,7 @@ export default function SovereignDeploymentDRBoard() {
               L3 hard ceiling — drills run automatically, production failover requires human approval.
             </p>
           </div>
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
             <Button variant="outline" size="sm" onClick={refresh} disabled={loading}>
               <RefreshCw className={`h-4 w-4 mr-2 ${loading ? "animate-spin" : ""}`} /> Refresh
             </Button>

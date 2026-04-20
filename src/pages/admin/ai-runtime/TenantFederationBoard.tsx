@@ -45,8 +45,8 @@ export default function TenantFederationBoard() {
 
   return (
     <AdminControlPlaneShell contextScope="AI Runtime · Tenant Federation">
-      <div className="p-6 space-y-6">
-        <div className="flex items-start justify-between gap-3">
+      <div className="p-4 sm:p-6 space-y-6">
+        <div className="flex flex-col sm:flex-row items-start justify-between gap-3">
           <div>
             <h1 className="text-2xl font-semibold flex items-center gap-2">
               <Globe className="h-6 w-6" /> Multi-Tenant Federation

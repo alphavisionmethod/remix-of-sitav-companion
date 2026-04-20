@@ -19,7 +19,9 @@ const IntegrationStreakPanel = lazy(() =>
 
 function ModuleFallback() {
   return (
-    <div className="text-xs text-muted-foreground py-12 text-center">Loading module…</div>
+    <div className="flex flex-col items-center text-xs text-muted-foreground py-12 text-center sm:py-16">
+      Loading module…
+    </div>
   );
 }
 

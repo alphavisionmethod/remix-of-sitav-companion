@@ -183,9 +183,9 @@ export default function AIRuntimeHome() {
 
   return (
     <AdminControlPlaneShell>
-      <div className="flex justify-end px-4 pt-2">
+      <div className="flex flex-col sm:flex-row justify-end gap-2 px-4 pt-2">
         <Link to="/admin/health/error-patrol">
-          <Button size="sm" variant="outline">
+          <Button size="sm" variant="outline" className="w-full sm:w-auto">
             <ExternalLink className="mr-1 h-3 w-3" />
             Open Error Patrol
           </Button>
