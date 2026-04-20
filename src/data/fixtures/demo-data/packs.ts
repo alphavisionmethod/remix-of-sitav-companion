@@ -1,7 +1,6 @@
 // ═══════════════════════════════════════════════════════════════
-// SITA OS — Canonical Barrel: src/legacy/canonical-backend
-// Created by Wave 1 of src/lib decomposition.
-// Files migrated here from src/lib/* will be re-exported from this barrel.
-// Do NOT add deep cross-layer imports here.
+// SITA OS — Demo Data Facade: Pack Enablement
+// Pages import from here instead of core-services directly
 // ═══════════════════════════════════════════════════════════════
-export {};
+
+export { listPacks } from "@/lib/core-services/capability-router/pack-enablement.service";

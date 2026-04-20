@@ -1,40 +1,58 @@
 {
-  "generatedAt": "2026-04-19T23:51:11.409Z",
+  "generatedAt": "2026-04-20T00:01:28.819Z",
   "gate": "cosmetic-debt-closure",
+  "mode": "PHYSICAL",
   "tier": "BLOCK-composite",
   "parentGate": "lib-ownership-drift",
-  "required": [
-    {
-      "closes": "A1",
-      "path": "generated/lib-size-budget-attestation.json",
-      "description": "src/lib/ size ratchet budget"
-    },
-    {
-      "closes": "A2",
-      "path": "docs/architecture/SERVICES_LAYER_DECISION.md",
-      "description": "Services layer architectural decision"
-    },
-    {
-      "closes": "A3",
-      "path": "generated/legacy-barrel-attestation.json",
-      "description": "Legacy barrel governance attestation"
-    }
-  ],
+  "totalAssertions": 12,
   "verified": [
     {
       "closes": "A1",
-      "path": "generated/lib-size-budget-attestation.json",
-      "bytes": 1467
+      "path": "src/lib/canonical-backend/index.ts"
+    },
+    {
+      "closes": "A1",
+      "path": "src/integrations/canonical-backend/index.ts"
+    },
+    {
+      "closes": "A1",
+      "path": "src/lib/simulation/monte-carlo-engine.ts"
+    },
+    {
+      "closes": "A1",
+      "path": "src/domains/simulation/monte-carlo-engine.ts"
+    },
+    {
+      "closes": "A1",
+      "path": "src/lib/mock-data/index.ts"
+    },
+    {
+      "closes": "A1",
+      "path": "src/data/fixtures/mock-data/index.ts"
+    },
+    {
+      "closes": "A1",
+      "path": "src/lib/demo-data/index.ts"
+    },
+    {
+      "closes": "A1",
+      "path": "src/lib/seed/index.ts"
     },
     {
       "closes": "A2",
-      "path": "docs/architecture/SERVICES_LAYER_DECISION.md",
-      "bytes": 2639
+      "path": "src/services/index.ts"
     },
     {
       "closes": "A3",
-      "path": "generated/legacy-barrel-attestation.json",
-      "bytes": 1325
+      "path": "src/legacy/canonical-backend"
+    },
+    {
+      "closes": "A3",
+      "path": "src/legacy/simulation"
+    },
+    {
+      "closes": "A3",
+      "path": "src/legacy/unclassified"
     }
   ],
   "violations": [],
