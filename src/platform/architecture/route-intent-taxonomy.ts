@@ -142,7 +142,7 @@ export const ROUTE_METADATA_REGISTRY: readonly RouteMetadata[] = [
   // ── Auth ──
   {
     routeId: "auth-login", path: "/login", prefix: "/login", family: "Landing/Auth",
-    intent: "AUTH", tier: "PUBLIC", plane: "shell-runtime", layer: "Web (Public)",
+    intent: "AUTH", tier: "PUBLIC", plane: "shell-runtime", layer: "web",
     owner: "identity", domain: "auth",
     supportedRuntimes: ALL_RUNTIMES, degradedRuntimes: NO_RUNTIMES, blockedRuntimes: NO_RUNTIMES,
     profiles: ["user", "operator"], authRequired: false, authLevel: "public", requiredCapabilities: [],
@@ -153,7 +153,7 @@ export const ROUTE_METADATA_REGISTRY: readonly RouteMetadata[] = [
   },
   {
     routeId: "auth-register", path: "/register", prefix: "/register", family: "Landing/Auth",
-    intent: "AUTH", tier: "PUBLIC", plane: "shell-runtime", layer: "Web (Public)",
+    intent: "AUTH", tier: "PUBLIC", plane: "shell-runtime", layer: "web",
     owner: "identity", domain: "auth",
     supportedRuntimes: ALL_RUNTIMES, degradedRuntimes: NO_RUNTIMES, blockedRuntimes: NO_RUNTIMES,
     profiles: ["user", "operator"], authRequired: false, authLevel: "public", requiredCapabilities: [],
@@ -165,7 +165,7 @@ export const ROUTE_METADATA_REGISTRY: readonly RouteMetadata[] = [
   // ── Desktop ──
   {
     routeId: "desktop-home", path: "/desktop", prefix: "/desktop", family: "Nova Desktop",
-    intent: "DESKTOP_OS", tier: "AUTHENTICATED", plane: "user", layer: "OS (Kernel / Services)",
+    intent: "DESKTOP_OS", tier: "AUTHENTICATED", plane: "user", layer: "os-kernel",
     owner: "platform", domain: "desktop",
     supportedRuntimes: ALL_RUNTIMES, degradedRuntimes: NO_RUNTIMES, blockedRuntimes: NO_RUNTIMES,
     profiles: ["user"], authRequired: true, authLevel: "authenticated", requiredCapabilities: [],
@@ -177,7 +177,7 @@ export const ROUTE_METADATA_REGISTRY: readonly RouteMetadata[] = [
   // ── Business ──
   {
     routeId: "business", path: "/business", prefix: "/business", family: "Business",
-    intent: "USER_WORKSPACE", tier: "AUTHENTICATED", plane: "user", layer: "App (User-Facing)",
+    intent: "USER_WORKSPACE", tier: "AUTHENTICATED", plane: "user", layer: "app",
     owner: "productivity", domain: "business",
     supportedRuntimes: ALL_RUNTIMES, degradedRuntimes: NO_RUNTIMES, blockedRuntimes: NO_RUNTIMES,
     profiles: ["user"], authRequired: true, authLevel: "authenticated", requiredCapabilities: [],
@@ -189,7 +189,7 @@ export const ROUTE_METADATA_REGISTRY: readonly RouteMetadata[] = [
   // ── Money ──
   {
     routeId: "money", path: "/money", prefix: "/money", family: "Money/Finance",
-    intent: "USER_WORKSPACE", tier: "AUTHENTICATED", plane: "user", layer: "App (User-Facing)",
+    intent: "USER_WORKSPACE", tier: "AUTHENTICATED", plane: "user", layer: "app",
     owner: "finance", domain: "money",
     supportedRuntimes: ALL_RUNTIMES, degradedRuntimes: NO_RUNTIMES, blockedRuntimes: NO_RUNTIMES,
     profiles: ["user"], authRequired: true, authLevel: "authenticated", requiredCapabilities: [],
@@ -203,7 +203,7 @@ export const ROUTE_METADATA_REGISTRY: readonly RouteMetadata[] = [
   // ── Concierge ──
   {
     routeId: "concierge", path: "/concierge", prefix: "/concierge", family: "Concierge",
-    intent: "USER_WORKSPACE", tier: "AUTHENTICATED", plane: "user", layer: "App (User-Facing)",
+    intent: "USER_WORKSPACE", tier: "AUTHENTICATED", plane: "user", layer: "app",
     owner: "intelligence", domain: "concierge",
     supportedRuntimes: ALL_RUNTIMES, degradedRuntimes: NO_RUNTIMES, blockedRuntimes: NO_RUNTIMES,
     profiles: ["user"], authRequired: true, authLevel: "authenticated", requiredCapabilities: [],
@@ -218,7 +218,7 @@ export const ROUTE_METADATA_REGISTRY: readonly RouteMetadata[] = [
   // ── Boardroom ──
   {
     routeId: "boardroom", path: "/boardroom", prefix: "/boardroom", family: "Boardroom",
-    intent: "USER_WORKSPACE", tier: "AUTHENTICATED", plane: "user", layer: "App (User-Facing)",
+    intent: "USER_WORKSPACE", tier: "AUTHENTICATED", plane: "user", layer: "app",
     owner: "intelligence", domain: "boardroom",
     supportedRuntimes: ALL_RUNTIMES, degradedRuntimes: NO_RUNTIMES, blockedRuntimes: NO_RUNTIMES,
     profiles: ["user"], authRequired: true, authLevel: "authenticated", requiredCapabilities: [],
@@ -233,7 +233,7 @@ export const ROUTE_METADATA_REGISTRY: readonly RouteMetadata[] = [
   // ── Files ──
   {
     routeId: "files", path: "/files", prefix: "/files", family: "Files",
-    intent: "USER_WORKSPACE", tier: "AUTHENTICATED", plane: "user", layer: "App (User-Facing)",
+    intent: "USER_WORKSPACE", tier: "AUTHENTICATED", plane: "user", layer: "app",
     owner: "productivity", domain: "files",
     supportedRuntimes: ALL_RUNTIMES, degradedRuntimes: NO_RUNTIMES, blockedRuntimes: NO_RUNTIMES,
     profiles: ["user", "operator"], authRequired: true, authLevel: "authenticated", requiredCapabilities: [],
@@ -246,7 +246,7 @@ export const ROUTE_METADATA_REGISTRY: readonly RouteMetadata[] = [
   // ── Settings ──
   {
     routeId: "settings", path: "/settings", prefix: "/settings", family: "Settings",
-    intent: "SETTINGS", tier: "AUTHENTICATED", plane: "shell-runtime", layer: "App (User-Facing)",
+    intent: "SETTINGS", tier: "AUTHENTICATED", plane: "shell-runtime", layer: "app",
     owner: "platform", domain: "settings",
     supportedRuntimes: ALL_RUNTIMES, degradedRuntimes: NO_RUNTIMES, blockedRuntimes: NO_RUNTIMES,
     profiles: ["user", "operator"], authRequired: true, authLevel: "authenticated", requiredCapabilities: [],
@@ -259,7 +259,7 @@ export const ROUTE_METADATA_REGISTRY: readonly RouteMetadata[] = [
   // ── Revenue Office ──
   {
     routeId: "revenue-office", path: "/revenue-office", prefix: "/revenue-office", family: "Revenue Office",
-    intent: "USER_WORKSPACE", tier: "AUTHENTICATED", plane: "user", layer: "App (User-Facing)",
+    intent: "USER_WORKSPACE", tier: "AUTHENTICATED", plane: "user", layer: "app",
     owner: "finance", domain: "revenue",
     supportedRuntimes: ALL_RUNTIMES, degradedRuntimes: NO_RUNTIMES, blockedRuntimes: NO_RUNTIMES,
     profiles: ["user"], authRequired: true, authLevel: "authenticated", requiredCapabilities: [],
@@ -273,7 +273,7 @@ export const ROUTE_METADATA_REGISTRY: readonly RouteMetadata[] = [
   // ── Investment Office ──
   {
     routeId: "investment-office", path: "/investment-office", prefix: "/investment-office", family: "Investment Office",
-    intent: "USER_WORKSPACE", tier: "AUTHENTICATED", plane: "user", layer: "App (User-Facing)",
+    intent: "USER_WORKSPACE", tier: "AUTHENTICATED", plane: "user", layer: "app",
     owner: "finance", domain: "investment",
     supportedRuntimes: ALL_RUNTIMES, degradedRuntimes: NO_RUNTIMES, blockedRuntimes: NO_RUNTIMES,
     profiles: ["user"], authRequired: true, authLevel: "authenticated", requiredCapabilities: [],
@@ -287,7 +287,7 @@ export const ROUTE_METADATA_REGISTRY: readonly RouteMetadata[] = [
   // ── Digital Presence ──
   {
     routeId: "digital-presence", path: "/digital-presence", prefix: "/digital-presence", family: "Digital Presence",
-    intent: "USER_WORKSPACE", tier: "AUTHENTICATED", plane: "user", layer: "App (User-Facing)",
+    intent: "USER_WORKSPACE", tier: "AUTHENTICATED", plane: "user", layer: "app",
     owner: "marketing", domain: "digital-presence",
     supportedRuntimes: WEB_DESKTOP, degradedRuntimes: ["SIMULATED_OS_EXPERIENCE"] as readonly RuntimeTier[], blockedRuntimes: ["APPLIANCE_RUNTIME"] as readonly RuntimeTier[],
     profiles: ["user"], authRequired: true, authLevel: "authenticated", requiredCapabilities: [],
@@ -300,7 +300,7 @@ export const ROUTE_METADATA_REGISTRY: readonly RouteMetadata[] = [
   // ── Connectors ──
   {
     routeId: "connectors", path: "/connectors", prefix: "/connectors", family: "Connectors",
-    intent: "INTEGRATION", tier: "AUTHENTICATED", plane: "user", layer: "App (User-Facing)",
+    intent: "INTEGRATION", tier: "AUTHENTICATED", plane: "user", layer: "app",
     owner: "integrations", domain: "connectors",
     supportedRuntimes: ALL_RUNTIMES, degradedRuntimes: NO_RUNTIMES, blockedRuntimes: NO_RUNTIMES,
     profiles: ["user"], authRequired: true, authLevel: "authenticated", requiredCapabilities: [],
@@ -314,7 +314,7 @@ export const ROUTE_METADATA_REGISTRY: readonly RouteMetadata[] = [
   // ── Advisors ──
   {
     routeId: "advisors", path: "/advisors", prefix: "/advisors", family: "Advisors",
-    intent: "USER_WORKSPACE", tier: "AUTHENTICATED", plane: "user", layer: "App (User-Facing)",
+    intent: "USER_WORKSPACE", tier: "AUTHENTICATED", plane: "user", layer: "app",
     owner: "intelligence", domain: "advisors",
     supportedRuntimes: ALL_RUNTIMES, degradedRuntimes: NO_RUNTIMES, blockedRuntimes: NO_RUNTIMES,
     profiles: ["user"], authRequired: true, authLevel: "authenticated", requiredCapabilities: [],
@@ -328,7 +328,7 @@ export const ROUTE_METADATA_REGISTRY: readonly RouteMetadata[] = [
   // ── Workspace ──
   {
     routeId: "workspace", path: "/workspace", prefix: "/workspace", family: "Workspace",
-    intent: "USER_WORKSPACE", tier: "AUTHENTICATED", plane: "user", layer: "App (User-Facing)",
+    intent: "USER_WORKSPACE", tier: "AUTHENTICATED", plane: "user", layer: "app",
     owner: "productivity", domain: "workspace",
     supportedRuntimes: ALL_RUNTIMES, degradedRuntimes: NO_RUNTIMES, blockedRuntimes: NO_RUNTIMES,
     profiles: ["user"], authRequired: true, authLevel: "authenticated", requiredCapabilities: [],
@@ -341,7 +341,7 @@ export const ROUTE_METADATA_REGISTRY: readonly RouteMetadata[] = [
   // ── Apps / App Store ──
   {
     routeId: "apps", path: "/apps", prefix: "/apps", family: "App Store",
-    intent: "APP_PLATFORM", tier: "AUTHENTICATED", plane: "user", layer: "App (User-Facing)",
+    intent: "APP_PLATFORM", tier: "AUTHENTICATED", plane: "user", layer: "app",
     owner: "platform", domain: "apps",
     supportedRuntimes: ALL_RUNTIMES, degradedRuntimes: NO_RUNTIMES, blockedRuntimes: NO_RUNTIMES,
     profiles: ["user"], authRequired: true, authLevel: "authenticated", requiredCapabilities: [],
@@ -354,7 +354,7 @@ export const ROUTE_METADATA_REGISTRY: readonly RouteMetadata[] = [
   // ── Notifications ──
   {
     routeId: "notifications", path: "/notifications", prefix: "/notifications", family: "Notifications",
-    intent: "SETTINGS", tier: "AUTHENTICATED", plane: "shell-runtime", layer: "App (User-Facing)",
+    intent: "SETTINGS", tier: "AUTHENTICATED", plane: "shell-runtime", layer: "app",
     owner: "platform", domain: "notifications",
     supportedRuntimes: ALL_RUNTIMES, degradedRuntimes: NO_RUNTIMES, blockedRuntimes: NO_RUNTIMES,
     profiles: ["user", "operator"], authRequired: true, authLevel: "authenticated", requiredCapabilities: [],
@@ -367,7 +367,7 @@ export const ROUTE_METADATA_REGISTRY: readonly RouteMetadata[] = [
   // ── Search ──
   {
     routeId: "search", path: "/search", prefix: "/search", family: "Search",
-    intent: "USER_WORKSPACE", tier: "AUTHENTICATED", plane: "shell-runtime", layer: "App (User-Facing)",
+    intent: "USER_WORKSPACE", tier: "AUTHENTICATED", plane: "shell-runtime", layer: "app",
     owner: "platform", domain: "search",
     supportedRuntimes: ALL_RUNTIMES, degradedRuntimes: NO_RUNTIMES, blockedRuntimes: NO_RUNTIMES,
     profiles: ["user", "operator"], authRequired: true, authLevel: "authenticated", requiredCapabilities: [],
@@ -380,7 +380,7 @@ export const ROUTE_METADATA_REGISTRY: readonly RouteMetadata[] = [
   // ── Onboarding ──
   {
     routeId: "onboarding", path: "/onboarding", prefix: "/onboarding", family: "Onboarding",
-    intent: "ONBOARDING", tier: "AUTHENTICATED", plane: "user", layer: "App (User-Facing)",
+    intent: "ONBOARDING", tier: "AUTHENTICATED", plane: "user", layer: "app",
     owner: "platform", domain: "onboarding",
     supportedRuntimes: ALL_RUNTIMES, degradedRuntimes: NO_RUNTIMES, blockedRuntimes: NO_RUNTIMES,
     profiles: ["user"], authRequired: true, authLevel: "authenticated", requiredCapabilities: [],
@@ -393,7 +393,7 @@ export const ROUTE_METADATA_REGISTRY: readonly RouteMetadata[] = [
   // ── Governance ──
   {
     routeId: "governance", path: "/governance", prefix: "/governance", family: "Governance",
-    intent: "USER_WORKSPACE", tier: "AUTHENTICATED", plane: "user", layer: "App (User-Facing)",
+    intent: "USER_WORKSPACE", tier: "AUTHENTICATED", plane: "user", layer: "app",
     owner: "compliance", domain: "governance",
     supportedRuntimes: ALL_RUNTIMES, degradedRuntimes: NO_RUNTIMES, blockedRuntimes: NO_RUNTIMES,
     profiles: ["user"], authRequired: true, authLevel: "authenticated", requiredCapabilities: [],
@@ -406,7 +406,7 @@ export const ROUTE_METADATA_REGISTRY: readonly RouteMetadata[] = [
   // ── Enterprise ──
   {
     routeId: "enterprise", path: "/enterprise", prefix: "/enterprise", family: "Enterprise",
-    intent: "USER_WORKSPACE", tier: "AUTHENTICATED", plane: "user", layer: "App (User-Facing)",
+    intent: "USER_WORKSPACE", tier: "AUTHENTICATED", plane: "user", layer: "app",
     owner: "enterprise", domain: "enterprise",
     supportedRuntimes: WEB_DESKTOP, degradedRuntimes: ["SIMULATED_OS_EXPERIENCE"] as readonly RuntimeTier[], blockedRuntimes: ["APPLIANCE_RUNTIME"] as readonly RuntimeTier[],
     profiles: ["user"], authRequired: true, authLevel: "authenticated", requiredCapabilities: [],
@@ -419,7 +419,7 @@ export const ROUTE_METADATA_REGISTRY: readonly RouteMetadata[] = [
   // ── Policies ──
   {
     routeId: "policies", path: "/policies", prefix: "/policies", family: "Policies",
-    intent: "SETTINGS", tier: "AUTHENTICATED", plane: "user", layer: "App (User-Facing)",
+    intent: "SETTINGS", tier: "AUTHENTICATED", plane: "user", layer: "app",
     owner: "compliance", domain: "policies",
     supportedRuntimes: ALL_RUNTIMES, degradedRuntimes: NO_RUNTIMES, blockedRuntimes: NO_RUNTIMES,
     profiles: ["user"], authRequired: true, authLevel: "authenticated", requiredCapabilities: [],
@@ -432,7 +432,7 @@ export const ROUTE_METADATA_REGISTRY: readonly RouteMetadata[] = [
   // ── Observability (user) ──
   {
     routeId: "observability", path: "/observability", prefix: "/observability", family: "Observability",
-    intent: "SUPPORT", tier: "AUTHENTICATED", plane: "user", layer: "App (User-Facing)",
+    intent: "SUPPORT", tier: "AUTHENTICATED", plane: "user", layer: "app",
     owner: "operations", domain: "observability",
     supportedRuntimes: ALL_RUNTIMES, degradedRuntimes: NO_RUNTIMES, blockedRuntimes: NO_RUNTIMES,
     profiles: ["user"], authRequired: true, authLevel: "authenticated", requiredCapabilities: [],
@@ -445,7 +445,7 @@ export const ROUTE_METADATA_REGISTRY: readonly RouteMetadata[] = [
   // ── Admin ──
   {
     routeId: "admin", path: "/admin", prefix: "/admin", family: "Admin Core",
-    intent: "ADMIN_OPERATOR", tier: "OPERATOR_CRITICAL", plane: "admin", layer: "Admin (Operator)",
+    intent: "ADMIN_OPERATOR", tier: "OPERATOR_CRITICAL", plane: "admin", layer: "admin-operator",
     owner: "operations", domain: "admin",
     supportedRuntimes: ALL_RUNTIMES, degradedRuntimes: ["SIMULATED_OS_EXPERIENCE"] as readonly RuntimeTier[], blockedRuntimes: NO_RUNTIMES,
     profiles: ["operator"], authRequired: true, authLevel: "admin", requiredCapabilities: ["admin.view"],
@@ -459,7 +459,7 @@ export const ROUTE_METADATA_REGISTRY: readonly RouteMetadata[] = [
   // ── Owner ──
   {
     routeId: "owner", path: "/owner", prefix: "/owner", family: "Owner",
-    intent: "OWNER_OVERRIDE", tier: "SYSTEM_CRITICAL", plane: "admin", layer: "Admin (Operator)",
+    intent: "OWNER_OVERRIDE", tier: "SYSTEM_CRITICAL", plane: "admin", layer: "admin-operator",
     owner: "operations", domain: "owner",
     supportedRuntimes: WEB_DESKTOP, degradedRuntimes: ["SIMULATED_OS_EXPERIENCE"] as readonly RuntimeTier[], blockedRuntimes: ["APPLIANCE_RUNTIME"] as readonly RuntimeTier[],
     profiles: ["operator"], authRequired: true, authLevel: "owner", requiredCapabilities: ["owner.view"],
@@ -473,7 +473,7 @@ export const ROUTE_METADATA_REGISTRY: readonly RouteMetadata[] = [
   // ── Mission Control ──
   {
     routeId: "mission", path: "/mission", prefix: "/mission", family: "Mission Control",
-    intent: "ADMIN_OPERATOR", tier: "OPERATOR_CRITICAL", plane: "admin", layer: "Admin (Operator)",
+    intent: "ADMIN_OPERATOR", tier: "OPERATOR_CRITICAL", plane: "admin", layer: "admin-operator",
     owner: "operations", domain: "mission",
     supportedRuntimes: ALL_RUNTIMES, degradedRuntimes: ["SIMULATED_OS_EXPERIENCE"] as readonly RuntimeTier[], blockedRuntimes: NO_RUNTIMES,
     profiles: ["operator"], authRequired: true, authLevel: "admin", requiredCapabilities: ["admin.view"],
@@ -487,7 +487,7 @@ export const ROUTE_METADATA_REGISTRY: readonly RouteMetadata[] = [
   // ── Nova Desktop ──
   {
     routeId: "nova-desktop", path: "/nova-desktop", prefix: "/nova-desktop", family: "Nova Desktop",
-    intent: "DESKTOP_OS", tier: "AUTHENTICATED", plane: "user", layer: "OS (Kernel / Services)",
+    intent: "DESKTOP_OS", tier: "AUTHENTICATED", plane: "user", layer: "os-kernel",
     owner: "platform", domain: "desktop",
     supportedRuntimes: ALL_RUNTIMES, degradedRuntimes: NO_RUNTIMES, blockedRuntimes: NO_RUNTIMES,
     profiles: ["user"], authRequired: true, authLevel: "authenticated", requiredCapabilities: [],
@@ -500,7 +500,7 @@ export const ROUTE_METADATA_REGISTRY: readonly RouteMetadata[] = [
   // ── Landing / Root ──
   {
     routeId: "landing", path: "/", prefix: "/", family: "Landing/Auth",
-    intent: "LANDING", tier: "AUTHENTICATED", plane: "user", layer: "Web (Public)",
+    intent: "LANDING", tier: "AUTHENTICATED", plane: "user", layer: "web",
     owner: "platform", domain: "shell",
     supportedRuntimes: ALL_RUNTIMES, degradedRuntimes: NO_RUNTIMES, blockedRuntimes: NO_RUNTIMES,
     profiles: ["user", "operator"], authRequired: true, authLevel: "authenticated", requiredCapabilities: [],
@@ -513,7 +513,7 @@ export const ROUTE_METADATA_REGISTRY: readonly RouteMetadata[] = [
   // ── Auth flow ──
   {
     routeId: "auth", path: "/auth", prefix: "/auth", family: "Landing/Auth",
-    intent: "AUTH", tier: "PUBLIC", plane: "shell-runtime", layer: "Web (Public)",
+    intent: "AUTH", tier: "PUBLIC", plane: "shell-runtime", layer: "web",
     owner: "identity", domain: "auth",
     supportedRuntimes: ALL_RUNTIMES, degradedRuntimes: NO_RUNTIMES, blockedRuntimes: NO_RUNTIMES,
     profiles: ["user", "operator"], authRequired: false, authLevel: "public", requiredCapabilities: [],
@@ -526,7 +526,7 @@ export const ROUTE_METADATA_REGISTRY: readonly RouteMetadata[] = [
   // ── API surface ──
   {
     routeId: "api", path: "/api", prefix: "/api", family: "Backend API",
-    intent: "INTERNAL_TOOLING", tier: "SYSTEM_CRITICAL", plane: "backend-services", layer: "Domain (Capability)",
+    intent: "INTERNAL_TOOLING", tier: "SYSTEM_CRITICAL", plane: "backend-services", layer: "domain-capability",
     owner: "platform", domain: "api",
     supportedRuntimes: ALL_RUNTIMES, degradedRuntimes: NO_RUNTIMES, blockedRuntimes: NO_RUNTIMES,
     profiles: ["user", "operator"], authRequired: true, authLevel: "authenticated", requiredCapabilities: [],
