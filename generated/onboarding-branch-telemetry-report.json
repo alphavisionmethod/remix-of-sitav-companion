@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-20T04:39:20.603Z",
+  "generatedAt": "2026-04-20T04:43:57.153Z",
   "gate": "onboarding-branch-telemetry",
   "ok": true,
   "errorCount": 0,
@@ -13,7 +13,8 @@
   "resumePersistence": {
     "tablePresent": true,
     "rlsComplete": true,
-    "edgeFunctionPresent": true
+    "edgeFunctionPresent": true,
+    "clientWired": true
   },
   "issues": []
 }
