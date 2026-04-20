@@ -20,8 +20,8 @@ export const PAGE_OWNER_MAP: readonly PageOwnerEntry[] = [
   { page: "src/pages/admin/AdminDashboard.tsx", domain: "admin", owner: "operations", riskTier: "R2" },
   { page: "src/pages/admin/KillSwitchesPage.tsx", domain: "admin-safety", owner: "operations", riskTier: "R4" },
   { page: "src/pages/admin/RunbooksPage.tsx", domain: "admin-ops", owner: "operations", riskTier: "R2" },
-];
   { page: "src/pages/BusinessShellPage.tsx", domain: "business", owner: "productivity", riskTier: "R0" },
+];
   { page: "src/pages/MoneyShellPage.tsx", domain: "money", owner: "finance", riskTier: "R3" },
   { page: "src/pages/ConciergeShellPage.tsx", domain: "concierge", owner: "intelligence", riskTier: "R2" },
   { page: "src/pages/RevenueOfficeShellPage.tsx", domain: "revenue", owner: "finance", riskTier: "R2" },

@@ -27,8 +27,8 @@ export const ROUTE_RUNTIME_MAP: readonly RouteRuntimeEntry[] = [
   { path: "/settings", surfaces: all("available") },
   { path: "/files", surfaces: all("available") },
   { path: "/boardroom", surfaces: all("available") },
-];
   { path: "/business", surfaces: all("available") },
+];
   { path: "/money", surfaces: all("available") },
   { path: "/concierge", surfaces: all("available") },
   { path: "/revenue-office", surfaces: all("available") },
