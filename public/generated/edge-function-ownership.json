@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-04-20T04:22:54.937Z",
+  "generatedAt": "2026-04-20T10:25:30.414Z",
   "source": "src/lib/backend-topology/edge-function-owner-map.ts",
-  "totalFunctionsOnDisk": 186,
-  "totalFunctionsOwned": 186,
+  "totalFunctionsOnDisk": 192,
+  "totalFunctionsOwned": 192,
   "coveragePercent": 100,
   "totalOwnerTeams": 13,
   "ownersByTeam": {
@@ -12,11 +12,11 @@
     "ai-engineering": 10,
     "os-kernel": 7,
     "platform-core": 34,
-    "user-experience": 20,
+    "user-experience": 25,
     "finance-engine": 9,
     "cloud-infrastructure": 8,
     "connector-integrations": 13,
-    "compliance-security": 29,
+    "compliance-security": 30,
     "notification-services": 7,
     "app-platform": 14
   },
@@ -493,6 +493,17 @@
       "runbookRef": "RB-011-SECURITY",
       "killSwitchRef": null,
       "reviewerCodeOwners": "@sita/compliance-security"
+    },
+    {
+      "name": "beta-apply",
+      "path": "supabase/functions/beta-apply/index.ts",
+      "ownerTeam": "user-experience",
+      "primaryContact": "@sita/user-experience",
+      "escalationContact": "pd:user-experience-oncall",
+      "slackChannel": "#user-experience",
+      "runbookRef": "RB-012-USER-EXPERIENCE",
+      "killSwitchRef": null,
+      "reviewerCodeOwners": "@sita/user-experience"
     },
     {
       "name": "boardroom-cockpit-telemetry",
@@ -1386,6 +1397,17 @@
       "reviewerCodeOwners": "@sita/finance-engine"
     },
     {
+      "name": "investor-request",
+      "path": "supabase/functions/investor-request/index.ts",
+      "ownerTeam": "user-experience",
+      "primaryContact": "@sita/user-experience",
+      "escalationContact": "pd:user-experience-oncall",
+      "slackChannel": "#user-experience",
+      "runbookRef": "RB-012-USER-EXPERIENCE",
+      "killSwitchRef": null,
+      "reviewerCodeOwners": "@sita/user-experience"
+    },
+    {
       "name": "invoice-generate",
       "path": "supabase/functions/invoice-generate/index.ts",
       "ownerTeam": "finance-engine",
@@ -1606,6 +1628,17 @@
       "reviewerCodeOwners": "@sita/ai-engineering"
     },
     {
+      "name": "press-inquiry",
+      "path": "supabase/functions/press-inquiry/index.ts",
+      "ownerTeam": "user-experience",
+      "primaryContact": "@sita/user-experience",
+      "escalationContact": "pd:user-experience-oncall",
+      "slackChannel": "#user-experience",
+      "runbookRef": "RB-012-USER-EXPERIENCE",
+      "killSwitchRef": null,
+      "reviewerCodeOwners": "@sita/user-experience"
+    },
+    {
       "name": "production-launch-attestor",
       "path": "supabase/functions/production-launch-attestor/index.ts",
       "ownerTeam": "compliance-security",
@@ -1659,6 +1692,17 @@
       "runbookRef": "RB-009-NOTIFICATIONS",
       "killSwitchRef": null,
       "reviewerCodeOwners": "@sita/notification-services"
+    },
+    {
+      "name": "recovery-evidence-ingest",
+      "path": "supabase/functions/recovery-evidence-ingest/index.ts",
+      "ownerTeam": "compliance-security",
+      "primaryContact": "@sita/compliance-security",
+      "escalationContact": "pd:security-oncall",
+      "slackChannel": "#compliance-security",
+      "runbookRef": "RB-011-SECURITY",
+      "killSwitchRef": null,
+      "reviewerCodeOwners": "@sita/compliance-security"
     },
     {
       "name": "release-artifact-signer",
@@ -1967,6 +2011,28 @@
       "runbookRef": "RB-011-SECURITY",
       "killSwitchRef": null,
       "reviewerCodeOwners": "@sita/compliance-security"
+    },
+    {
+      "name": "waitlist-signup",
+      "path": "supabase/functions/waitlist-signup/index.ts",
+      "ownerTeam": "user-experience",
+      "primaryContact": "@sita/user-experience",
+      "escalationContact": "pd:user-experience-oncall",
+      "slackChannel": "#user-experience",
+      "runbookRef": "RB-012-USER-EXPERIENCE",
+      "killSwitchRef": null,
+      "reviewerCodeOwners": "@sita/user-experience"
+    },
+    {
+      "name": "waitlist-stats",
+      "path": "supabase/functions/waitlist-stats/index.ts",
+      "ownerTeam": "user-experience",
+      "primaryContact": "@sita/user-experience",
+      "escalationContact": "pd:user-experience-oncall",
+      "slackChannel": "#user-experience",
+      "runbookRef": "RB-012-USER-EXPERIENCE",
+      "killSwitchRef": null,
+      "reviewerCodeOwners": "@sita/user-experience"
     },
     {
       "name": "webauthn-challenge",

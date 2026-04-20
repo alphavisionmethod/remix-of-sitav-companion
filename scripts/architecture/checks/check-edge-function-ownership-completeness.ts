@@ -31,6 +31,7 @@ const FUNCTIONS_DIR = "supabase/functions";
 const SHARED_DIRS = new Set(["_shared", "_tests", "shared", "_lib"]);
 const CANONICAL = "generated/edge-function-ownership.json";
 const PUBLIC_MIRROR = "public/generated/edge-function-ownership.json";
+const COLOCATED_MIRROR = "supabase/functions/_owners.json";
 const FRESHNESS_DAYS = 7;
 const REPORT_PATH = "generated/edge-function-ownership-completeness-report.json";
 
@@ -86,9 +87,10 @@ for (const fn of onDisk) {
   }
 }
 
-// 4. Mirror parity + freshness
+// 4. Mirror parity + freshness (3 mirrors: canonical, public, colocated)
 const canonicalMd5 = md5(CANONICAL);
 const mirrorMd5 = md5(PUBLIC_MIRROR);
+const colocatedMd5 = md5(COLOCATED_MIRROR);
 if (!canonicalMd5) {
   violations.push({ kind: "missing-canonical", subject: CANONICAL,
     detail: `Run \`npm run generate:edge-function-ownership\` to emit it.` });
@@ -97,9 +99,17 @@ if (!mirrorMd5) {
   violations.push({ kind: "missing-public-mirror", subject: PUBLIC_MIRROR,
     detail: `Run \`npm run generate:edge-function-ownership\` to emit it.` });
 }
+if (!colocatedMd5) {
+  violations.push({ kind: "missing-colocated-mirror", subject: COLOCATED_MIRROR,
+    detail: `Run \`npm run generate:edge-function-ownership\` to emit it.` });
+}
 if (canonicalMd5 && mirrorMd5 && canonicalMd5 !== mirrorMd5) {
   violations.push({ kind: "mirror-drift", subject: PUBLIC_MIRROR,
     detail: `md5(${CANONICAL})=${canonicalMd5} ≠ md5(${PUBLIC_MIRROR})=${mirrorMd5}` });
+}
+if (canonicalMd5 && colocatedMd5 && canonicalMd5 !== colocatedMd5) {
+  violations.push({ kind: "mirror-drift", subject: COLOCATED_MIRROR,
+    detail: `md5(${CANONICAL})=${canonicalMd5} ≠ md5(${COLOCATED_MIRROR})=${colocatedMd5}` });
 }
 
 if (canonicalMd5) {
@@ -133,7 +143,8 @@ const report = {
   manifestArtifacts: {
     canonical: { path: CANONICAL, md5: canonicalMd5, present: !!canonicalMd5 },
     publicMirror: { path: PUBLIC_MIRROR, md5: mirrorMd5, present: !!mirrorMd5 },
-    parityOk: !!canonicalMd5 && canonicalMd5 === mirrorMd5,
+    colocated: { path: COLOCATED_MIRROR, md5: colocatedMd5, present: !!colocatedMd5 },
+    parityOk: !!canonicalMd5 && canonicalMd5 === mirrorMd5 && canonicalMd5 === colocatedMd5,
   },
   violations,
   ok: violations.length === 0,
