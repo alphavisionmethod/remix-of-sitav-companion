@@ -370,6 +370,8 @@ const REQUIRED_GATES = [
   "advisor-identity-closure",
   "advisor-tool-permissions",
   "advisor-reversibility",
+  // Wave 19 — Truth Governance & Contradiction Management (1 BLOCK gate)
+  "truth-governance",
 ];
 
 // Mobile Deployment Closure — RETIRED (2026-04-19)
