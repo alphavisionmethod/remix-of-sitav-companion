@@ -22,6 +22,35 @@ const RATE_LIMIT_MAX = parseInt(process.env.RATE_LIMIT_MAX || "500", 10);
 const RATE_LIMIT_WINDOW_MS = parseInt(process.env.RATE_LIMIT_WINDOW_MS || "60000", 10);
 
 const startedAt = Date.now();
+let serverRef: { close: () => void } | null = null;
+let rateLimitCleanupInterval: ReturnType<typeof setInterval> | null = null;
+let shuttingDown = false;
+
+// ── Structured Logger ───────────────────────────────────────
+
+function log(level: "info" | "warn" | "error", msg: string, extra?: Record<string, unknown>) {
+  const entry = { ts: new Date().toISOString(), level, service: "sita-api-gateway", msg, ...extra };
+  if (level === "error") console.error(JSON.stringify(entry));
+  else if (level === "warn") console.warn(JSON.stringify(entry));
+  else console.log(JSON.stringify(entry));
+}
+
+// ── Env Validation (fail-fast) ──────────────────────────────
+
+function validateEnv() {
+  const errors: string[] = [];
+  if (!SUPABASE_ANON_KEY) errors.push("SUPABASE_ANON_KEY is required");
+  if (SUPABASE_URL && !/^https?:\/\/.+/.test(SUPABASE_URL)) errors.push(`SUPABASE_URL invalid format: ${SUPABASE_URL}`);
+  if (BRAIN_CORE_URL && !/^https?:\/\/.+/.test(BRAIN_CORE_URL)) errors.push(`BRAIN_CORE_URL invalid format: ${BRAIN_CORE_URL}`);
+  if (isNaN(PORT) || PORT < 1 || PORT > 65535) errors.push(`PORT invalid: ${process.env.PORT}`);
+  if (isNaN(RATE_LIMIT_MAX) || RATE_LIMIT_MAX < 1) errors.push(`RATE_LIMIT_MAX invalid: ${process.env.RATE_LIMIT_MAX}`);
+  if (errors.length > 0) {
+    for (const e of errors) log("error", e);
+    log("error", "Env validation failed — exiting");
+    process.exit(1);
+  }
+  log("info", "Env validation passed");
+}
 
 // ── Rate Limiter (in-memory) ────────────────────────────────
 
