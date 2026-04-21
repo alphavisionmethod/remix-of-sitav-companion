@@ -3047,6 +3047,63 @@ export type Database = {
         }
         Relationships: []
       }
+      alert_dedup_log: {
+        Row: {
+          alert_id: string | null
+          created_at: string
+          dedup_key: string | null
+          fingerprint: string
+          id: string
+          occurrence_count: number
+          original_severity: string
+          suppression_rule_id: string | null
+          user_id: string
+          was_deduplicated: boolean
+          was_suppressed: boolean
+        }
+        Insert: {
+          alert_id?: string | null
+          created_at?: string
+          dedup_key?: string | null
+          fingerprint: string
+          id?: string
+          occurrence_count?: number
+          original_severity?: string
+          suppression_rule_id?: string | null
+          user_id: string
+          was_deduplicated?: boolean
+          was_suppressed?: boolean
+        }
+        Update: {
+          alert_id?: string | null
+          created_at?: string
+          dedup_key?: string | null
+          fingerprint?: string
+          id?: string
+          occurrence_count?: number
+          original_severity?: string
+          suppression_rule_id?: string | null
+          user_id?: string
+          was_deduplicated?: boolean
+          was_suppressed?: boolean
+        }
+        Relationships: [
+          {
+            foreignKeyName: "alert_dedup_log_alert_id_fkey"
+            columns: ["alert_id"]
+            isOneToOne: false
+            referencedRelation: "alerts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "alert_dedup_log_suppression_rule_id_fkey"
+            columns: ["suppression_rule_id"]
+            isOneToOne: false
+            referencedRelation: "alert_suppression_rules"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       alert_routes: {
         Row: {
           channel: string
@@ -3080,6 +3137,57 @@ export type Database = {
           source_pattern?: string
           target?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      alert_suppression_rules: {
+        Row: {
+          created_at: string
+          created_by: string
+          expires_at: string
+          fingerprint_pattern: string | null
+          id: string
+          is_active: boolean
+          match_count: number
+          reason: string
+          severity_filter: string[] | null
+          source: string | null
+          starts_at: string
+          subsystem: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string
+          expires_at: string
+          fingerprint_pattern?: string | null
+          id?: string
+          is_active?: boolean
+          match_count?: number
+          reason?: string
+          severity_filter?: string[] | null
+          source?: string | null
+          starts_at?: string
+          subsystem?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string
+          expires_at?: string
+          fingerprint_pattern?: string | null
+          id?: string
+          is_active?: boolean
+          match_count?: number
+          reason?: string
+          severity_filter?: string[] | null
+          source?: string | null
+          starts_at?: string
+          subsystem?: string | null
+          updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }
@@ -19145,6 +19253,60 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      sla_breach_contributing_events: {
+        Row: {
+          contributing_alert_id: string | null
+          contribution_summary: string
+          created_at: string
+          drill_result_id: string | null
+          event_type: string
+          id: string
+          occurred_at: string
+          severity: string
+          sla_alert_id: string
+          user_id: string
+        }
+        Insert: {
+          contributing_alert_id?: string | null
+          contribution_summary?: string
+          created_at?: string
+          drill_result_id?: string | null
+          event_type?: string
+          id?: string
+          occurred_at?: string
+          severity?: string
+          sla_alert_id: string
+          user_id: string
+        }
+        Update: {
+          contributing_alert_id?: string | null
+          contribution_summary?: string
+          created_at?: string
+          drill_result_id?: string | null
+          event_type?: string
+          id?: string
+          occurred_at?: string
+          severity?: string
+          sla_alert_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sla_breach_contributing_events_contributing_alert_id_fkey"
+            columns: ["contributing_alert_id"]
+            isOneToOne: false
+            referencedRelation: "alerts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "sla_breach_contributing_events_sla_alert_id_fkey"
+            columns: ["sla_alert_id"]
+            isOneToOne: false
+            referencedRelation: "boardroom_followthrough_sla_alerts"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       sla_definitions: {
         Row: {
