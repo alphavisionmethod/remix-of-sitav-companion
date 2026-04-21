@@ -48,7 +48,8 @@ jobs:
           cache: npm
       - run: npm ci
       - name: ESLint
-        run: npx eslint src/ --max-warnings 0 || true
+        run: npx eslint src/ --max-warnings 0
+        continue-on-error: true
 
   # ── Unit Tests (blocks merge) ─────────────────────────────
   unit-tests:
