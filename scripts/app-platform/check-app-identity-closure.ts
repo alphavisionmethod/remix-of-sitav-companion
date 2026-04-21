@@ -32,8 +32,9 @@ for (const f of REQUIRED_FILES) {
 const catalogPath = "src/lib/app-platform/catalog.ts";
 if (fs.existsSync(catalogPath)) {
   const content = fs.readFileSync(catalogPath, "utf-8");
-  const idMatches = content.match(/id:\s*"([^"]+)"/g) ?? [];
-  const ids = idMatches.map(m => m.replace(/id:\s*"/, "").replace(/"$/, ""));
+  // Match top-level app IDs (lines starting with optional whitespace + id:) not nested permission IDs
+  const idMatches = content.match(/^\s{2,6}id:\s*"([^"]+)"/gm) ?? [];
+  const ids = idMatches.map(m => m.trim().replace(/id:\s*"/, "").replace(/"$/, ""));
   const seen = new Set<string>();
   for (const id of ids) {
     if (seen.has(id)) {
