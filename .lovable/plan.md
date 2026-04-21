@@ -1,198 +1,209 @@
 
 
-# SITA OS Platform Remediation Program
+# Zero-Regression Architecture Cleanup: Service Consolidation, Archive Resolution, and Domain Boundary Enforcement
 
 ## Summary
 
-A phased remediation addressing 8 structural risks: testing confidence, service sprawl (209 dirs vs 45 target), admin sprawl (568 pages), kill-switch drill gaps, AI domain model overlap, platform extensibility, mobile truth, and cost/performance observability. Delivered as new strategy docs, consolidation scripts, redesigned admin surfaces, drill infrastructure, and observability dashboards.
+Three workstreams executed in 5 phases to safely consolidate 37 duplicate service pairs between `src/lib/core-services/` and `src/lib/services/`, resolve ~38 wrapper/deprecated files (19 migrated-wrapper files in `src/domains/types/` plus deprecated service artifacts), and formalize the Advisor/Boardroom/Brain boundary across 30 directories that currently scatter these concepts.
 
 ---
 
-## Phase 1 -- Reality and Safety (this implementation pass)
+## Workstream A -- Consolidate 37 Duplicate Service Pairs
 
-### 1A. Testing Strategy Framework and Critical Path Matrix
+### Current State
+
+37 directory names appear in both `src/lib/core-services/` and `src/lib/services/` (e.g., `brain-core`, `policy-engine`, `workflow-engine`, `receipt-service`, `memory-service`). Per the existing Service Constitution, `core-services/` is the canonical authority layer; `services/` contains the duplicate. Additionally, 19 migrated-wrapper files exist in `src/domains/types/` re-exporting from `src/lib/types/`.
+
+### Deliverables
 
 **New files:**
 
-- `src/lib/testing/testing-strategy.ts` -- Layered strategy registry declaring 7 test tiers (unit, integration, edge-function, workflow, e2e, regression, safety/permission) with coverage targets per domain.
-- `src/lib/testing/critical-path-matrix.ts` -- Matrix of ~25 highest-risk user journeys (homepage load, waitlist submit, beta apply, crowdfund pledge, investor request, deal room, boardroom demo, launchpad download, AI chat, CRM creation, workflow trigger, consent enforcement, receipt creation). Each entry: feature, primary flow, expected behavior, edge cases, data deps, failure modes, owner, test type, current coverage status.
-- `src/test/critical-journeys/` -- Behavioral tests for top-10 journeys (homepage route integrity, waitlist submit round-trip, boardroom demo flow, AI chat grounded answer, CRM record CRUD, workflow trigger execution).
-- `src/lib/testing/confidence-model.ts` -- Replaces validator-theater with a scored confidence model. Calculates domain coverage %, pass/fail of critical journeys, safety drill status, deployment confidence score, and lists known untested critical paths.
+- `src/lib/architecture/duplicate-service-registry.ts` -- Registry of all 37 pairs with fields: `coreServicesPath`, `servicesPath`, `overlapType` (full/partial/wrapper/naming-only), `canonicalChoice`, `callerCount`, `importers`, `testCoverage`, `riskLevel`, `migrationPhase`, `equivalenceStatus`.
+- `src/lib/architecture/service-equivalence-reports.ts` -- For each of the 37 pairs: public API diff, export comparison, side-effect analysis, behavioral equivalence verdict (identical/compatible/divergent).
+- `scripts/architecture/checks/check-duplicate-service-pairs.ts` -- CI gate that scans both directories, detects new undeclared overlaps, and blocks merge if an unknown pair appears.
+- `scripts/architecture/consolidation/generate-service-wrappers.ts` -- Script that for each validated pair: (1) confirms hash equivalence, (2) replaces the `services/` copy with a `@lovable:migrated-wrapper` re-export pointing to `core-services/`, (3) logs the operation.
+- `scripts/architecture/consolidation/verify-no-dangling-imports.ts` -- Post-consolidation verifier that searches the entire codebase for imports of removed paths.
 
 **Modified files:**
 
-- CI integration: New `scripts/architecture/checks/check-behavioral-confidence.ts` that requires behavioral tests for sensitive domains and blocks merge when critical journey coverage drops.
+- `src/platform/architecture/component-duplication-map.ts` -- Extend `DUPLICATE_FAMILIES` to include service-level pairs (not just component-level).
+- `src/lib/architecture/service-inventory.ts` -- Update sample inventory to reflect actual 37 pairs with correct classification and wave assignment.
 
-### 1B. Kill Switch Inventory and First Drills
+**Migration model per pair:**
+
+1. Hash-compare canonical (`core-services/X`) vs duplicate (`services/X`)
+2. If identical: replace `services/X/index.ts` with wrapper re-export
+3. If divergent: document differences, choose canonical behavior, add adapter
+4. Search all importers of `services/X`, verify they work through wrapper
+5. Add/verify tests around the canonical path
+6. After validation window: delete wrapper, update all importers to canonical path
+7. Update docs and architecture maps
+
+### Phases
+
+- Wave 1 (low risk, hash-identical): ~20 pairs where files are likely byte-identical wrappers already
+- Wave 2 (medium risk, compatible API): ~10 pairs with minor differences
+- Wave 3 (high risk, divergent): ~7 pairs requiring behavioral analysis and adapter layers
+
+---
+
+## Workstream B -- Resolve Wrapper/Deprecated Files and Define Retention Policy
+
+### Current State
+
+- 19 `@lovable:migrated-wrapper` files in `src/domains/types/` re-exporting from `src/lib/types/`
+- 8 `@deprecated` marked files in `src/lib/`
+- 6 files in `scripts/legacy/`
+- Component duplication map tracks 14 families (7 MIGRATING, 3 FALSE_POSITIVE, 2 WRAPPED)
+
+### Deliverables
 
 **New files:**
 
-- `src/lib/control-plane/kill-switch-drill-runner.ts` -- Drill execution engine. For each of the 14 registered kill switches: defines trigger conditions, success criteria (observable signal verification), rollback criteria, time-to-disable expectation, and failure escalation. Supports dry-run (simulated) and live drill modes.
-- `src/lib/control-plane/kill-switch-drill-calendar.ts` -- Quarterly drill schedule with per-switch cadence, responsible operator assignment, and overdue tracking.
-- `src/pages/admin/KillSwitchDrillCenter.tsx` -- Dashboard showing: switch status, last drill date, last successful drill, failed drill history, time-to-stop benchmarks, authorized operators, drill execution button (dry-run), and overdue alerts.
+- `src/lib/architecture/archive-inventory.ts` -- Complete inventory of every wrapper, deprecated, and legacy file with fields: `path`, `category` (migrated-wrapper/deprecated/legacy-script/false-positive), `lastModified`, `importerCount`, `safeToDelete`, `retentionReason`, `retentionDeadline`.
+- `src/lib/architecture/archive-retention-policy.ts` -- Formal policy defining: retention categories (active-wrapper/deprecated-pending/historical-reference/compliance-hold), maximum retention periods, deletion approval requirements, metadata requirements, naming conventions.
+- `scripts/architecture/checks/check-archive-health.ts` -- CI gate tracking: total archived count, files past retention deadline, unresolved items, deletion eligibility.
+- `scripts/architecture/consolidation/batch-delete-archived.ts` -- Safe batch deletion script that: validates zero importers via code search, runs build check after each batch, logs every deletion, supports dry-run mode.
 
-**Database migration:**
+**Resolution plan for 19 domain/types wrappers:**
 
-- `kill_switch_drill_results` table: drill_id, switch_id, drill_type (dry-run/live), started_at, completed_at, success (bool), time_to_disable_ms, operator_id, failure_notes, rollback_verified. RLS: admin-only read/write.
+1. Search all importers of each `src/domains/types/*.ts` wrapper
+2. For wrappers with zero importers: delete immediately
+3. For wrappers with importers: update importers to point to `src/lib/types/` directly, then delete wrapper
+4. Validate build after each batch of 5
 
-### 1C. Service Inventory and Classification
+**Resolution plan for legacy scripts:**
+
+1. `scripts/legacy/migration-tools/consolidate-services.js` -- retain as reference until service consolidation complete, then delete
+2. `scripts/legacy/archived-phase-scripts/RENAMING_MAP.md` -- migrate useful content to docs, delete file
+3. `scripts/legacy/wrappers/` -- audit contents, delete if empty or superseded
+
+---
+
+## Workstream C -- Formalize Advisor / Boardroom / Brain Boundaries
+
+### Current State
+
+30 directories scatter advisor/boardroom/brain logic across 8 top-level locations: `src/components/`, `src/domains/`, `src/features/`, `src/lib/`, `src/lib/services/`, `src/lib/core-services/`, `src/packages/`, `src/pages/`. The existing `ai-domain-model.ts` defines correct conceptual boundaries but the code does not follow them.
+
+### Deliverables
 
 **New files:**
 
-- `src/lib/architecture/service-inventory.ts` -- Canonical inventory of all 209 service directories, each classified as: core-domain, orchestration, integration-adapter, utility, dead/redundant, duplicate, merge-candidate, delete-candidate. Includes target destination service mapping.
-- `src/lib/architecture/target-service-model.ts` -- Defines the 45-service target operating model with 15 canonical domains: identity-contacts, website-content, waitlist-beta, investor-dealroom, donor-crowdfund, advisory-boardroom, workflow-engine, campaigns-messaging, analytics-attribution, trust-receipts-audit, launchpad-build, platform-integrations, ai-orchestration, admin-command, os-platform.
-- `scripts/architecture/checks/check-service-consolidation-progress.ts` -- Tracks consolidation wave progress: current count, target, merged this wave, remaining, and warns when new services are created without domain justification.
-
-### 1D. Admin Route Audit
-
-**New files:**
-
-- `src/lib/architecture/admin-route-audit.ts` -- Inventory of all 568 admin pages classified by: purpose, role served, usage frequency (high/medium/low/unknown), overlap/duplication group, recommended action (keep/merge/archive/delete/convert-to-tab/convert-to-modal).
-- `src/lib/architecture/admin-ia-target.ts` -- Target admin IA with ~15 top-level sections: Overview, CRM/Contacts, Investors, Backers/Crowdfund, Waitlist/Beta, Campaigns, Workflows, Advisory/Boardroom, Launchpad/Builds, Website/Content, Trust/Audit, Analytics, Settings/Integrations, Platform Health, Security.
-- Consolidation recommendation report generated to `generated/admin-consolidation-plan.json`.
-
-### 1E. AI Domain Model Clarification
-
-**New files:**
-
-- `src/lib/architecture/ai-domain-model.ts` -- Canonical definitions:
-  - **Advisor**: A specialized guidance persona bound to a domain (e.g., Business Advisor, Finance Advisor). Owns recommendation generation, domain-specific intelligence, and user-facing guidance interactions.
-  - **Boardroom**: A structured multi-advisor consultation surface. Owns debate orchestration, consensus building, and strategic multi-perspective review sessions.
-  - **Brain**: The underlying orchestration/memory/reasoning substrate. Owns context retrieval, memory persistence, model routing, capability registration, and inference pipeline.
-- Decision tree for engineers: "Single-role guidance? -> Advisor. Multi-perspective strategic session? -> Boardroom. Shared intelligence infrastructure? -> Brain."
-- Naming alignment map: lists current services/routes/components with their canonical domain assignment and any required renames.
-
-### 1F. Mobile Truth Correction
+- `src/lib/architecture/advisor-boardroom-brain-audit.ts` -- Maps all 30 directories to their canonical domain assignment (advisor/boardroom/brain/cross-cutting) with current vs. target location, rename/merge/keep recommendation, and migration priority.
+- `docs/ADVISOR_BOARDROOM_BRAIN_BOUNDARY.md` -- Authoritative boundary document with: definitions, ownership rules, what-belongs-where examples, anti-examples, decision tree, public vs. internal terminology guide, route ownership map, service ownership map, component ownership map.
+- `src/lib/architecture/ai-concept-decision-tree.ts` -- Programmatic decision framework exported as a typed function that engineers call to classify new AI features.
 
 **Modified files:**
 
-- `docs/MOBILE_HONESTY.md` -- Updated to clearly distinguish: (1) mobile-responsive web (active, production), (2) installable PWA (active, optional), (3) native mobile app (not available, future consideration). Removes any language implying native app existence.
-- `src/lib/architecture/mobile-strategy.ts` -- Strategy declaration: PWA-first for mobile experience, web push via VAPID for notifications, native apps deferred pending business decision. Includes honest "available now / coming later" state for each capability.
+- `src/lib/architecture/ai-domain-model.ts` -- Expand with: code/route mapping audit results, rename/refactor recommendations list, public/internal language alignment map.
 
-### 1G. Baseline Performance Instrumentation
+**Audit results structure (30 directories mapped):**
 
-**New files:**
+```text
+ADVISOR domain (canonical home: src/lib/advisors/, src/packages/advisor-*)
+  Keep:  src/lib/advisors/
+         src/packages/advisor-config/
+         src/packages/advisor-runtime-contracts/
+         src/packages/contracts/advisor/
+         src/pages/advisors/
+         src/components/advisors/
+  Merge: src/lib/services/advisor-feedback/    -> src/lib/advisors/feedback/
+         src/lib/services/advisor-knowledge/   -> src/lib/advisors/knowledge/
+         src/lib/services/advisor-memory/      -> src/lib/advisors/memory/
+         src/lib/advisor-intelligence/         -> src/lib/advisors/intelligence/
+         src/lib/advisor-protocol/             -> src/lib/advisors/protocol/
+         src/features/advisors/                -> src/lib/advisors/features/
+         src/domains/advisors/                 -> src/lib/advisors/domain/
 
-- `src/lib/observability/performance-baselines.ts` -- Defines baseline metrics to track: route load times (p50/p95/p99), edge function latency, AI chat response time, workflow execution time, cold start times. Provides measurement hooks.
-- `src/lib/observability/cost-model.ts` -- Cost estimation framework: infra cost by subsystem, AI usage cost per session, storage cost, messaging cost, estimated cost-per-active-user. Initially populated with placeholder estimates to be refined with real data.
-- `src/lib/observability/slo-definitions.ts` -- Initial SLO set: core route availability (99.5%), waitlist form success (99.9%), AI chat p95 latency (<3s), kill switch actuation (<30s), workflow execution success (99%).
+BOARDROOM domain (canonical home: src/lib/boardroom/)
+  Keep:  src/lib/boardroom/
+         src/packages/boardroom-contracts/
+         src/pages/boardroom/
+         src/components/sita/apps/boardroom/
+  Merge: src/lib/services/boardroom/           -> src/lib/boardroom/services/
+         src/lib/services/boardroom-service/   -> src/lib/boardroom/service/
+         src/features/boardroom/               -> src/lib/boardroom/features/
+         src/domains/boardroom/                -> src/lib/boardroom/domain/
+         src/lib/hooks/boardroom/              -> src/lib/boardroom/hooks/
 
----
+BRAIN domain (canonical home: src/lib/core-services/brain-core/)
+  Keep:  src/lib/core-services/brain-core/
+  Merge: src/lib/services/brain-core/          -> wrapper to core-services/brain-core/
+```
 
-## Phase 2 -- Simplification and Confidence
+**Rename recommendations for alignment:**
 
-### 2A. Critical Behavioral Test Implementation
-
-Expand `src/test/critical-journeys/` to cover all 25 matrix entries with real behavioral assertions (not just structural checks). Add CI gate requiring 80%+ critical journey coverage.
-
-### 2B. Service Consolidation Wave 1
-
-Execute first consolidation wave targeting the clearest merge/delete candidates (~50 services). Create migration scripts in `scripts/architecture/consolidation/` that move exports, update import paths, and verify no broken references.
-
-### 2C. Admin IA Redesign
-
-Implement the target admin IA: collapse 568 pages into ~80 by converting most to tabs/views within consolidated parent pages. Build `AdminGlobalSearch.tsx` command palette for instant jump-to-any-record.
-
-### 2D. Confidence Dashboard
-
-`src/pages/admin/PlatformConfidenceDashboard.tsx` -- Shows: test coverage by domain, critical journey pass/fail, safety drill status, deployment confidence score, service consolidation progress, admin reduction progress.
-
-### 2E. Kill Switch Dashboard Enhancement
-
-Wire drill results from the database into the existing kill switch console. Add SLO tracking for actuation time benchmarks.
-
-### 2F. First SLOs and Cost Model
-
-Populate SLO definitions with real measured baselines. Create `src/pages/admin/CostPerformanceDashboard.tsx` showing latency, failure rate, error budget, and estimated unit economics.
-
----
-
-## Phase 3 -- Platform Readiness
-
-### 3A. Public API Strategy
-
-- `docs/API_STRATEGY.md` -- Defines first externally accessible surfaces (contacts, events, receipts, workflow triggers), authentication model (API keys + JWT), versioning (URL path v1/v2), rate limiting, and audit trail.
-- `src/lib/architecture/api-surface-registry.ts` -- Registry of approved public API endpoints with permission requirements.
-
-### 3B. Extension/Plugin Model
-
-- `docs/EXTENSION_STRATEGY.md` -- Defines what third parties can extend (workflow actions, integration adapters, advisory tools), safe exposure boundaries, and UI extension points.
-
-### 3C. Tenant/Isolation Strategy
-
-- `docs/TENANCY_STRATEGY.md` -- Documents current org/workspace model, data isolation via RLS, secrets isolation, and roadmap to full multi-tenant deployment.
-
-### 3D. Service Consolidation Wave 2
-
-Continue toward the 45-service target. Update the service facade barrel export.
+- `src/components/business/advisor-board/` -- Rename to `advisor-panel/` (it is single-advisor, not boardroom)
+- `src/components/admin/boardroom/` -- Keep (admin analytics for boardroom)
+- `src/lib/services/boardroom/` vs `src/lib/services/boardroom-service/` -- Consolidate into one
 
 ---
 
-## Phase 4 -- Operational Excellence
+## Phase Plan
 
-### 4A. Recurring Drills
+### Phase 1 -- Discovery and Safety Net
 
-Quarterly kill-switch drill automation with email/notification reminders and overdue escalation.
+- Generate all three registries/inventories (duplicate pairs, archive inventory, AI concept audit)
+- Add CI gates for duplicate detection and archive health
+- Add tests around the 10 highest-traffic canonical services before any consolidation
+- No destructive changes
 
-### 4B. Stronger CI Gates
+### Phase 2 -- Model Clarification
 
-Behavioral test requirements for all P0 flows. Service creation guardrail (require domain justification ADR).
+- Publish `ADVISOR_BOARDROOM_BRAIN_BOUNDARY.md`
+- Finalize canonical service targets for all 37 pairs
+- Define archive retention policy
+- Ship decision tree for engineers
 
-### 4C. Platform Stabilization Command Center
+### Phase 3 -- Low-Risk Cleanup
 
-`src/pages/admin/PlatformStabilizationCenter.tsx` -- Executive dashboard showing all 8 remediation tracks: service consolidation %, test coverage %, admin reduction %, kill switch drill status, domain model alignment, API readiness, mobile roadmap status, performance/cost readiness. Risk register and owner/milestone tracking.
+- Consolidate Wave 1 duplicate pairs (~20 hash-identical)
+- Delete zero-importer domain/types wrappers
+- Validate build/tests after each batch
+
+### Phase 4 -- Medium/High-Risk Cleanup
+
+- Consolidate Wave 2-3 duplicate pairs with adapters where needed
+- Resolve remaining archive items
+- Begin advisor/boardroom directory consolidation (move scattered services into canonical homes)
+
+### Phase 5 -- Hardening
+
+- Remove all compatibility wrappers after validation window
+- Enforce new architecture rules via CI
+- Publish final cleanup summary with before/after metrics
 
 ---
 
 ## Technical Details
 
-### Database Migrations (Phase 1)
+### New Files (~10)
 
-```sql
-CREATE TABLE public.kill_switch_drill_results (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  switch_id TEXT NOT NULL,
-  drill_type TEXT NOT NULL CHECK (drill_type IN ('dry-run', 'live')),
-  started_at TIMESTAMPTZ NOT NULL DEFAULT now(),
-  completed_at TIMESTAMPTZ,
-  success BOOLEAN,
-  time_to_disable_ms INTEGER,
-  operator_id UUID REFERENCES auth.users(id),
-  failure_notes TEXT,
-  rollback_verified BOOLEAN DEFAULT false,
-  created_at TIMESTAMPTZ DEFAULT now()
-);
+- `src/lib/architecture/duplicate-service-registry.ts`
+- `src/lib/architecture/service-equivalence-reports.ts`
+- `src/lib/architecture/archive-inventory.ts`
+- `src/lib/architecture/archive-retention-policy.ts`
+- `src/lib/architecture/advisor-boardroom-brain-audit.ts`
+- `src/lib/architecture/ai-concept-decision-tree.ts`
+- `docs/ADVISOR_BOARDROOM_BRAIN_BOUNDARY.md`
+- `scripts/architecture/checks/check-duplicate-service-pairs.ts`
+- `scripts/architecture/checks/check-archive-health.ts`
+- `scripts/architecture/consolidation/generate-service-wrappers.ts`
+- `scripts/architecture/consolidation/verify-no-dangling-imports.ts`
+- `scripts/architecture/consolidation/batch-delete-archived.ts`
 
-ALTER TABLE public.kill_switch_drill_results ENABLE ROW LEVEL SECURITY;
-```
+### Modified Files
 
-### New Files Summary (Phase 1 -- ~20 files)
-
-- `src/lib/testing/testing-strategy.ts`
-- `src/lib/testing/critical-path-matrix.ts`
-- `src/lib/testing/confidence-model.ts`
-- `src/test/critical-journeys/*.test.ts` (6 test files)
-- `src/lib/control-plane/kill-switch-drill-runner.ts`
-- `src/lib/control-plane/kill-switch-drill-calendar.ts`
-- `src/pages/admin/KillSwitchDrillCenter.tsx`
+- `src/platform/architecture/component-duplication-map.ts`
 - `src/lib/architecture/service-inventory.ts`
-- `src/lib/architecture/target-service-model.ts`
-- `src/lib/architecture/admin-route-audit.ts`
-- `src/lib/architecture/admin-ia-target.ts`
 - `src/lib/architecture/ai-domain-model.ts`
-- `src/lib/architecture/mobile-strategy.ts`
-- `src/lib/observability/performance-baselines.ts`
-- `src/lib/observability/cost-model.ts`
-- `src/lib/observability/slo-definitions.ts`
-- `scripts/architecture/checks/check-behavioral-confidence.ts`
-- `scripts/architecture/checks/check-service-consolidation-progress.ts`
 
-### Modified Files (Phase 1)
+### No Database Changes Required
 
-- `docs/MOBILE_HONESTY.md` -- Truth corrections
-- Route registration for new admin pages
+This is purely codebase structure and documentation work.
 
 ### Design Direction
 
-All new admin surfaces use the existing glassmorphic card system with: muted backgrounds, high-contrast data, minimal chrome, evidence-based status indicators (green/yellow/red with proof links), and executive-grade information density. No decorative elements -- every pixel earns its place.
+All new registries follow existing patterns (`ServiceEntry`, `DuplicateFamily`) with typed enums, exhaustive classification, and exported query functions for CI consumption. CI gates use the established `ViolationCollector` pattern.
 
