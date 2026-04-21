@@ -1,0 +1,65 @@
+{
+  "generatedAt": "2026-04-21T04:53:01.698Z",
+  "gate": "truth-governance",
+  "advisoryCount": 4252,
+  "advisoryEffect": "conditional",
+  "advisoryDescription": "Advisory burden is significant. Release is conditional on advisory review.",
+  "activeTriggers": [
+    {
+      "dimension": "distribution",
+      "trigger": "notarization-pending",
+      "condition": "Apple notarization not completed",
+      "resultingVerdict": "DISTRIBUTION_BLOCKED"
+    },
+    {
+      "dimension": "distribution",
+      "trigger": "mobile-archived",
+      "condition": "Mobile native distribution archived",
+      "resultingVerdict": "DISTRIBUTION_BLOCKED"
+    },
+    {
+      "dimension": "trust",
+      "trigger": "encryption-pending",
+      "condition": "OAuth token encryption at rest not enforced",
+      "resultingVerdict": "TRUST_GAP_OPEN"
+    },
+    {
+      "dimension": "behavioral",
+      "trigger": "no-e2e-boot",
+      "condition": "E2E boot validation has not executed",
+      "resultingVerdict": "BEHAVIORALLY_PARTIAL"
+    },
+    {
+      "dimension": "operational",
+      "trigger": "high-advisory-count",
+      "condition": ">2000 advisory warnings",
+      "resultingVerdict": "CONDITIONALLY_READY"
+    }
+  ],
+  "contradictionDowngradeRules": [
+    {
+      "minSeverity": "critical",
+      "minOpenCount": 1,
+      "effect": "force-blocked",
+      "description": "Any open critical contradiction blocks release."
+    },
+    {
+      "minSeverity": "high",
+      "minOpenCount": 1,
+      "effect": "force-conditional",
+      "description": "Any open high-severity contradiction forces CONDITIONALLY_READY."
+    },
+    {
+      "minSeverity": "medium",
+      "minOpenCount": 3,
+      "effect": "caveat",
+      "description": "3+ open medium contradictions add release caveat."
+    },
+    {
+      "minSeverity": "low",
+      "minOpenCount": 5,
+      "effect": "caveat",
+      "description": "5+ open low contradictions add release caveat."
+    }
+  ]
+}

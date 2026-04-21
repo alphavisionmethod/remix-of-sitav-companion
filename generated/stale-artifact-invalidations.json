@@ -1,0 +1,110 @@
+{
+  "generatedAt": "2026-04-21T04:53:01.698Z",
+  "gate": "truth-governance",
+  "totalRules": 10,
+  "validCount": 8,
+  "staleCount": 0,
+  "invalidCount": 2,
+  "invalidations": [
+    {
+      "ruleId": "INV-001",
+      "artifactPattern": "generated/ai-*-report.json",
+      "category": "schema-change",
+      "maxAgeHours": 168,
+      "concreteArtifact": "generated/ai-runtime-streak-health-report.json",
+      "state": "valid",
+      "ageHours": 0.1,
+      "acknowledged": false
+    },
+    {
+      "ruleId": "INV-002",
+      "artifactPattern": "generated/connector-*-report.json",
+      "category": "schema-change",
+      "maxAgeHours": 168,
+      "concreteArtifact": "generated/connector-refresh-streak-report.json",
+      "state": "valid",
+      "ageHours": 0.1,
+      "acknowledged": false
+    },
+    {
+      "ruleId": "INV-003",
+      "artifactPattern": "generated/route-*-report.json",
+      "category": "route-change",
+      "maxAgeHours": 24,
+      "concreteArtifact": "generated/route-plane-coverage-report.json",
+      "state": "valid",
+      "ageHours": 0.1,
+      "acknowledged": false
+    },
+    {
+      "ruleId": "INV-004",
+      "artifactPattern": "generated/no-shell-only-production-pages-report.json",
+      "category": "route-change",
+      "maxAgeHours": 24,
+      "concreteArtifact": "generated/no-shell-only-production-pages-report.json",
+      "state": "valid",
+      "ageHours": 0.1,
+      "acknowledged": false
+    },
+    {
+      "ruleId": "INV-005",
+      "artifactPattern": "generated/oauth-security-closure-report.json",
+      "category": "policy-change",
+      "maxAgeHours": 336,
+      "concreteArtifact": "generated/oauth-security-closure-report.json",
+      "state": "valid",
+      "ageHours": 0.1,
+      "acknowledged": false
+    },
+    {
+      "ruleId": "INV-006",
+      "artifactPattern": "generated/advisor-boardroom-proof/**",
+      "category": "runtime-change",
+      "maxAgeHours": 336,
+      "concreteArtifact": "generated/advisor-boardroom-proof/advisor-identity-closure-check.json",
+      "state": "valid",
+      "ageHours": 0.1,
+      "acknowledged": false
+    },
+    {
+      "ruleId": "INV-007",
+      "artifactPattern": "generated/os-release-readiness-report.json",
+      "category": "release-change",
+      "maxAgeHours": 168,
+      "concreteArtifact": "generated/os-release-readiness-report.json",
+      "state": "valid",
+      "ageHours": 0.1,
+      "acknowledged": false
+    },
+    {
+      "ruleId": "INV-008",
+      "artifactPattern": "generated/truth-governance-report.json",
+      "category": "policy-change",
+      "maxAgeHours": 168,
+      "concreteArtifact": "generated/truth-governance-report.json",
+      "state": "invalid",
+      "ageHours": 0,
+      "acknowledged": false
+    },
+    {
+      "ruleId": "INV-009",
+      "artifactPattern": "generated/component-canonicalization-report.json",
+      "category": "runtime-change",
+      "maxAgeHours": 168,
+      "concreteArtifact": "generated/component-canonicalization-report.json",
+      "state": "valid",
+      "ageHours": 0.1,
+      "acknowledged": false
+    },
+    {
+      "ruleId": "INV-010",
+      "artifactPattern": "generated/app-*-report.json",
+      "category": "runtime-change",
+      "maxAgeHours": 336,
+      "concreteArtifact": "generated/app-identity-closure-report.json",
+      "state": "invalid",
+      "ageHours": 0,
+      "acknowledged": false
+    }
+  ]
+}

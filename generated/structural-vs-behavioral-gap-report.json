@@ -1,0 +1,79 @@
+{
+  "generatedAt": "2026-04-21T04:53:01.698Z",
+  "gate": "truth-governance",
+  "subsystems": [
+    {
+      "subsystem": "ai-runtime",
+      "structuralScore": 100,
+      "structuralVerdict": "READY",
+      "behavioralScore": 85,
+      "behavioralVerdict": "CONDITIONALLY_READY",
+      "gap": 15,
+      "gapSeverity": "low"
+    },
+    {
+      "subsystem": "advisor-boardroom",
+      "structuralScore": 23,
+      "structuralVerdict": "DEFERRED",
+      "behavioralScore": 18,
+      "behavioralVerdict": "DEFERRED",
+      "gap": 5,
+      "gapSeverity": "low"
+    },
+    {
+      "subsystem": "connector-oauth",
+      "structuralScore": 0,
+      "structuralVerdict": "DEFERRED",
+      "behavioralScore": 95,
+      "behavioralVerdict": "READY",
+      "gap": -95,
+      "gapSeverity": "high"
+    },
+    {
+      "subsystem": "app-platform",
+      "structuralScore": 0,
+      "structuralVerdict": "DEFERRED",
+      "behavioralScore": 0,
+      "behavioralVerdict": "DEFERRED",
+      "gap": 0,
+      "gapSeverity": "low"
+    },
+    {
+      "subsystem": "admin-operator",
+      "structuralScore": 100,
+      "structuralVerdict": "READY",
+      "behavioralScore": 95,
+      "behavioralVerdict": "READY",
+      "gap": 5,
+      "gapSeverity": "low"
+    },
+    {
+      "subsystem": "frontend-ux",
+      "structuralScore": 100,
+      "structuralVerdict": "READY",
+      "behavioralScore": 0,
+      "behavioralVerdict": "DEFERRED",
+      "gap": 100,
+      "gapSeverity": "high"
+    },
+    {
+      "subsystem": "mobile-distribution",
+      "structuralScore": 0,
+      "structuralVerdict": "DEFERRED",
+      "behavioralScore": 0,
+      "behavioralVerdict": "DEFERRED",
+      "gap": 0,
+      "gapSeverity": "low"
+    },
+    {
+      "subsystem": "security-trust",
+      "structuralScore": 0,
+      "structuralVerdict": "DEFERRED",
+      "behavioralScore": 0,
+      "behavioralVerdict": "DEFERRED",
+      "gap": 0,
+      "gapSeverity": "low"
+    }
+  ],
+  "highGapCount": 2
+}

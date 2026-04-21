@@ -1,0 +1,33 @@
+{
+  "generatedAt": "2026-04-21T04:53:01.698Z",
+  "gate": "truth-governance",
+  "filesAudited": 1,
+  "violationsFound": 3,
+  "violations": [
+    {
+      "file": "generated/os-release-readiness-summary.md",
+      "matchedSynonym": "green",
+      "forVerdict": "CONDITIONALLY_READY"
+    },
+    {
+      "file": "generated/os-release-readiness-summary.md",
+      "matchedSynonym": "operational",
+      "forVerdict": "OPERATIONALLY_DEFERRED"
+    },
+    {
+      "file": "generated/os-release-readiness-summary.md",
+      "matchedSynonym": "safe",
+      "forVerdict": "TRUST_GAP_OPEN"
+    }
+  ],
+  "approvedVocabulary": [
+    "READY",
+    "CONDITIONALLY_READY",
+    "STRUCTURALLY_READY_ONLY",
+    "BEHAVIORALLY_PARTIAL",
+    "DISTRIBUTION_BLOCKED",
+    "OPERATIONALLY_DEFERRED",
+    "TRUST_GAP_OPEN",
+    "DEFERRED"
+  ]
+}

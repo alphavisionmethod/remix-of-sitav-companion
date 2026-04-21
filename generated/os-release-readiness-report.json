@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-21T02:35:53.186Z",
+  "generatedAt": "2026-04-21T04:53:37.487Z",
   "gate": "os-release-readiness",
   "phase": "phase-12-native-deployability",
   "inputs": [
@@ -1810,20 +1810,6 @@
       "warnings": 0
     },
     {
-      "file": "generated/app-identity-closure-report.json",
-      "gate": "app-identity-closure",
-      "ok": true,
-      "errors": 0,
-      "warnings": 0
-    },
-    {
-      "file": "generated/app-lifecycle-coverage-report.json",
-      "gate": "app-lifecycle-coverage",
-      "ok": true,
-      "errors": 0,
-      "warnings": 0
-    },
-    {
       "file": "generated/route-metadata-closure-report.json",
       "gate": "route-metadata-closure",
       "ok": true,
@@ -1838,22 +1824,8 @@
       "warnings": 0
     },
     {
-      "file": "generated/advisor-identity-closure-report.json",
-      "gate": "advisor-identity-closure",
-      "ok": true,
-      "errors": 0,
-      "warnings": 0
-    },
-    {
-      "file": "generated/advisor-tool-permissions-report.json",
-      "gate": "advisor-tool-permissions",
-      "ok": true,
-      "errors": 0,
-      "warnings": 0
-    },
-    {
-      "file": "generated/advisor-reversibility-report.json",
-      "gate": "advisor-reversibility",
+      "file": "generated/truth-governance-report.json",
+      "gate": "truth-governance",
       "ok": true,
       "errors": 0,
       "warnings": 0
@@ -2764,7 +2736,13 @@
   ],
   "totalErrors": 0,
   "totalWarnings": 4252,
-  "missingGates": [],
-  "ok": true,
-  "verdict": "GREEN"
+  "missingGates": [
+    "app-identity-closure",
+    "app-lifecycle-coverage",
+    "advisor-identity-closure",
+    "advisor-tool-permissions",
+    "advisor-reversibility"
+  ],
+  "ok": false,
+  "verdict": "RED"
 }

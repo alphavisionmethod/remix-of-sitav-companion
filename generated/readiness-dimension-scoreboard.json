@@ -1,0 +1,429 @@
+{
+  "generatedAt": "2026-04-21T04:53:01.698Z",
+  "gate": "truth-governance",
+  "dimensions": [
+    "structural",
+    "behavioral",
+    "distribution",
+    "operational",
+    "trust"
+  ],
+  "subsystems": [
+    {
+      "subsystem": "ai-runtime",
+      "dimensions": [
+        {
+          "dimension": "structural",
+          "score": 100,
+          "verdict": "READY",
+          "passingGates": 8,
+          "totalGates": 8,
+          "openContradictions": 0,
+          "advisoryCount": 0
+        },
+        {
+          "dimension": "behavioral",
+          "score": 85,
+          "verdict": "CONDITIONALLY_READY",
+          "passingGates": 9,
+          "totalGates": 9,
+          "openContradictions": 1,
+          "advisoryCount": 1
+        },
+        {
+          "dimension": "distribution",
+          "score": 0,
+          "verdict": "DISTRIBUTION_BLOCKED",
+          "passingGates": 0,
+          "totalGates": 0,
+          "openContradictions": 1,
+          "advisoryCount": 0
+        },
+        {
+          "dimension": "operational",
+          "score": 100,
+          "verdict": "READY",
+          "passingGates": 6,
+          "totalGates": 6,
+          "openContradictions": 0,
+          "advisoryCount": 0
+        },
+        {
+          "dimension": "trust",
+          "score": 85,
+          "verdict": "CONDITIONALLY_READY",
+          "passingGates": 6,
+          "totalGates": 6,
+          "openContradictions": 1,
+          "advisoryCount": 0
+        }
+      ],
+      "overallVerdict": "DISTRIBUTION_BLOCKED",
+      "lastEvaluated": "2026-04-21T04:53:01.698Z"
+    },
+    {
+      "subsystem": "advisor-boardroom",
+      "dimensions": [
+        {
+          "dimension": "structural",
+          "score": 23,
+          "verdict": "DEFERRED",
+          "passingGates": 3,
+          "totalGates": 13,
+          "openContradictions": 0,
+          "advisoryCount": 0
+        },
+        {
+          "dimension": "behavioral",
+          "score": 18,
+          "verdict": "DEFERRED",
+          "passingGates": 3,
+          "totalGates": 13,
+          "openContradictions": 1,
+          "advisoryCount": 0
+        },
+        {
+          "dimension": "distribution",
+          "score": 0,
+          "verdict": "DISTRIBUTION_BLOCKED",
+          "passingGates": 0,
+          "totalGates": 0,
+          "openContradictions": 1,
+          "advisoryCount": 0
+        },
+        {
+          "dimension": "operational",
+          "score": 0,
+          "verdict": "OPERATIONALLY_DEFERRED",
+          "passingGates": 0,
+          "totalGates": 0,
+          "openContradictions": 0,
+          "advisoryCount": 0
+        },
+        {
+          "dimension": "trust",
+          "score": 8,
+          "verdict": "TRUST_GAP_OPEN",
+          "passingGates": 3,
+          "totalGates": 13,
+          "openContradictions": 1,
+          "advisoryCount": 0
+        }
+      ],
+      "overallVerdict": "DISTRIBUTION_BLOCKED",
+      "lastEvaluated": "2026-04-21T04:53:01.699Z"
+    },
+    {
+      "subsystem": "connector-oauth",
+      "dimensions": [
+        {
+          "dimension": "structural",
+          "score": 0,
+          "verdict": "DEFERRED",
+          "passingGates": 0,
+          "totalGates": 0,
+          "openContradictions": 0,
+          "advisoryCount": 0
+        },
+        {
+          "dimension": "behavioral",
+          "score": 95,
+          "verdict": "READY",
+          "passingGates": 5,
+          "totalGates": 5,
+          "openContradictions": 1,
+          "advisoryCount": 1
+        },
+        {
+          "dimension": "distribution",
+          "score": 0,
+          "verdict": "DISTRIBUTION_BLOCKED",
+          "passingGates": 0,
+          "totalGates": 0,
+          "openContradictions": 1,
+          "advisoryCount": 0
+        },
+        {
+          "dimension": "operational",
+          "score": 0,
+          "verdict": "OPERATIONALLY_DEFERRED",
+          "passingGates": 0,
+          "totalGates": 0,
+          "openContradictions": 0,
+          "advisoryCount": 0
+        },
+        {
+          "dimension": "trust",
+          "score": 85,
+          "verdict": "CONDITIONALLY_READY",
+          "passingGates": 5,
+          "totalGates": 5,
+          "openContradictions": 1,
+          "advisoryCount": 1
+        }
+      ],
+      "overallVerdict": "DISTRIBUTION_BLOCKED",
+      "lastEvaluated": "2026-04-21T04:53:01.699Z"
+    },
+    {
+      "subsystem": "app-platform",
+      "dimensions": [
+        {
+          "dimension": "structural",
+          "score": 0,
+          "verdict": "DEFERRED",
+          "passingGates": 0,
+          "totalGates": 2,
+          "openContradictions": 0,
+          "advisoryCount": 0
+        },
+        {
+          "dimension": "behavioral",
+          "score": 0,
+          "verdict": "DEFERRED",
+          "passingGates": 0,
+          "totalGates": 2,
+          "openContradictions": 1,
+          "advisoryCount": 0
+        },
+        {
+          "dimension": "distribution",
+          "score": 0,
+          "verdict": "DISTRIBUTION_BLOCKED",
+          "passingGates": 0,
+          "totalGates": 0,
+          "openContradictions": 1,
+          "advisoryCount": 0
+        },
+        {
+          "dimension": "operational",
+          "score": 0,
+          "verdict": "OPERATIONALLY_DEFERRED",
+          "passingGates": 0,
+          "totalGates": 0,
+          "openContradictions": 0,
+          "advisoryCount": 0
+        },
+        {
+          "dimension": "trust",
+          "score": 0,
+          "verdict": "TRUST_GAP_OPEN",
+          "passingGates": 0,
+          "totalGates": 0,
+          "openContradictions": 1,
+          "advisoryCount": 0
+        }
+      ],
+      "overallVerdict": "DISTRIBUTION_BLOCKED",
+      "lastEvaluated": "2026-04-21T04:53:01.699Z"
+    },
+    {
+      "subsystem": "admin-operator",
+      "dimensions": [
+        {
+          "dimension": "structural",
+          "score": 100,
+          "verdict": "READY",
+          "passingGates": 4,
+          "totalGates": 4,
+          "openContradictions": 0,
+          "advisoryCount": 1
+        },
+        {
+          "dimension": "behavioral",
+          "score": 95,
+          "verdict": "READY",
+          "passingGates": 1,
+          "totalGates": 1,
+          "openContradictions": 1,
+          "advisoryCount": 1
+        },
+        {
+          "dimension": "distribution",
+          "score": 0,
+          "verdict": "DISTRIBUTION_BLOCKED",
+          "passingGates": 0,
+          "totalGates": 0,
+          "openContradictions": 1,
+          "advisoryCount": 0
+        },
+        {
+          "dimension": "operational",
+          "score": 100,
+          "verdict": "READY",
+          "passingGates": 4,
+          "totalGates": 4,
+          "openContradictions": 0,
+          "advisoryCount": 1
+        },
+        {
+          "dimension": "trust",
+          "score": 0,
+          "verdict": "TRUST_GAP_OPEN",
+          "passingGates": 0,
+          "totalGates": 0,
+          "openContradictions": 1,
+          "advisoryCount": 0
+        }
+      ],
+      "overallVerdict": "DISTRIBUTION_BLOCKED",
+      "lastEvaluated": "2026-04-21T04:53:01.699Z"
+    },
+    {
+      "subsystem": "frontend-ux",
+      "dimensions": [
+        {
+          "dimension": "structural",
+          "score": 100,
+          "verdict": "READY",
+          "passingGates": 4,
+          "totalGates": 4,
+          "openContradictions": 0,
+          "advisoryCount": 0
+        },
+        {
+          "dimension": "behavioral",
+          "score": 0,
+          "verdict": "DEFERRED",
+          "passingGates": 0,
+          "totalGates": 0,
+          "openContradictions": 1,
+          "advisoryCount": 0
+        },
+        {
+          "dimension": "distribution",
+          "score": 0,
+          "verdict": "DISTRIBUTION_BLOCKED",
+          "passingGates": 0,
+          "totalGates": 0,
+          "openContradictions": 1,
+          "advisoryCount": 0
+        },
+        {
+          "dimension": "operational",
+          "score": 0,
+          "verdict": "OPERATIONALLY_DEFERRED",
+          "passingGates": 0,
+          "totalGates": 0,
+          "openContradictions": 0,
+          "advisoryCount": 0
+        },
+        {
+          "dimension": "trust",
+          "score": 0,
+          "verdict": "TRUST_GAP_OPEN",
+          "passingGates": 0,
+          "totalGates": 0,
+          "openContradictions": 1,
+          "advisoryCount": 0
+        }
+      ],
+      "overallVerdict": "DISTRIBUTION_BLOCKED",
+      "lastEvaluated": "2026-04-21T04:53:01.699Z"
+    },
+    {
+      "subsystem": "mobile-distribution",
+      "dimensions": [
+        {
+          "dimension": "structural",
+          "score": 0,
+          "verdict": "DEFERRED",
+          "passingGates": 0,
+          "totalGates": 0,
+          "openContradictions": 0,
+          "advisoryCount": 0
+        },
+        {
+          "dimension": "behavioral",
+          "score": 0,
+          "verdict": "DEFERRED",
+          "passingGates": 0,
+          "totalGates": 0,
+          "openContradictions": 1,
+          "advisoryCount": 0
+        },
+        {
+          "dimension": "distribution",
+          "score": 0,
+          "verdict": "DISTRIBUTION_BLOCKED",
+          "passingGates": 2,
+          "totalGates": 7,
+          "openContradictions": 1,
+          "advisoryCount": 2
+        },
+        {
+          "dimension": "operational",
+          "score": 0,
+          "verdict": "OPERATIONALLY_DEFERRED",
+          "passingGates": 0,
+          "totalGates": 0,
+          "openContradictions": 0,
+          "advisoryCount": 0
+        },
+        {
+          "dimension": "trust",
+          "score": 75,
+          "verdict": "DEFERRED",
+          "passingGates": 1,
+          "totalGates": 1,
+          "openContradictions": 1,
+          "advisoryCount": 1
+        }
+      ],
+      "overallVerdict": "DISTRIBUTION_BLOCKED",
+      "lastEvaluated": "2026-04-21T04:53:01.699Z"
+    },
+    {
+      "subsystem": "security-trust",
+      "dimensions": [
+        {
+          "dimension": "structural",
+          "score": 0,
+          "verdict": "DEFERRED",
+          "passingGates": 0,
+          "totalGates": 0,
+          "openContradictions": 0,
+          "advisoryCount": 0
+        },
+        {
+          "dimension": "behavioral",
+          "score": 0,
+          "verdict": "DEFERRED",
+          "passingGates": 0,
+          "totalGates": 0,
+          "openContradictions": 1,
+          "advisoryCount": 0
+        },
+        {
+          "dimension": "distribution",
+          "score": 0,
+          "verdict": "DISTRIBUTION_BLOCKED",
+          "passingGates": 0,
+          "totalGates": 0,
+          "openContradictions": 1,
+          "advisoryCount": 0
+        },
+        {
+          "dimension": "operational",
+          "score": 100,
+          "verdict": "READY",
+          "passingGates": 3,
+          "totalGates": 3,
+          "openContradictions": 0,
+          "advisoryCount": 1
+        },
+        {
+          "dimension": "trust",
+          "score": 85,
+          "verdict": "CONDITIONALLY_READY",
+          "passingGates": 3,
+          "totalGates": 3,
+          "openContradictions": 1,
+          "advisoryCount": 1
+        }
+      ],
+      "overallVerdict": "DISTRIBUTION_BLOCKED",
+      "lastEvaluated": "2026-04-21T04:53:01.699Z"
+    }
+  ]
+}

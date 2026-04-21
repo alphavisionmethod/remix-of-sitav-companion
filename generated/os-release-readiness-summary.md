@@ -1,15 +1,15 @@
 # SITA OS — Release Readiness Report
 
-> Generated: 2026-04-21T02:35:53.186Z
-> Verdict: **GREEN** ✅
+> Generated: 2026-04-21T04:53:37.487Z
+> Verdict: **RED** ❌
 
 ## Summary
 
 | Metric | Value |
 |---|---|
-| Gates required | 265 |
-| Gates present  | 394 |
-| Gates missing  | 0 |
+| Gates required | 266 |
+| Gates present  | 390 |
+| Gates missing  | 5 |
 | Total errors   | 0 |
 | Total warnings | 4252 |
 | Advisory gates surfaced | 119 |
@@ -277,13 +277,9 @@
 | `runbook-linkage` | ✅ | 0 | 0 |
 | `artifact-proof-closure` | ✅ | 0 | 0 |
 | `evidence-graph-completeness-v2` | ✅ | 0 | 0 |
-| `app-identity-closure` | ✅ | 0 | 0 |
-| `app-lifecycle-coverage` | ✅ | 0 | 0 |
 | `route-metadata-closure` | ✅ | 0 | 0 |
 | `component-canonicalization` | ✅ | 0 | 0 |
-| `advisor-identity-closure` | ✅ | 0 | 0 |
-| `advisor-tool-permissions` | ✅ | 0 | 0 |
-| `advisor-reversibility` | ✅ | 0 | 0 |
+| `truth-governance` | ✅ | 0 | 0 |
 | `ai-engineer-tab-registry (warn)` | ✅ | 0 | 0 |
 | `ai-engineer-wiring-coverage (warn)` | ✅ | 0 | 68 |
 | `ai-engineer-primitive-coverage (warn)` | ✅ | 0 | 72 |
@@ -413,10 +409,15 @@
 | `workflow-state-usage (advisory)` | ✅ | 0 | 0 |
 | `workflow-states (advisory)` | ✅ | 0 | 0 |
 | `wrapper-purity (advisory)` | ✅ | 0 | 0 |
+| `app-identity-closure` | ❌ MISSING | — | — |
+| `app-lifecycle-coverage` | ❌ MISSING | — | — |
+| `advisor-identity-closure` | ❌ MISSING | — | — |
+| `advisor-tool-permissions` | ❌ MISSING | — | — |
+| `advisor-reversibility` | ❌ MISSING | — | — |
 
 ## Verdict
 
-✅ All 265 required readiness gates passed (0 errors, 0 missing). 4252 advisory warning(s) are informational only. Release is **cuttable**.
+❌ Release is **NOT cuttable**. Fix 0 error(s) and resolve 5 missing gate(s).
 
 ## Related
 
