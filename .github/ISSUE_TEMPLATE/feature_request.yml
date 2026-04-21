@@ -1,36 +1,88 @@
-name: Feature Request
-description: Suggest a feature for SITA OS
+name: ✨ Feature Request
+description: Suggest a feature or improvement for SITA OS
 labels: ["enhancement"]
+assignees: []
 body:
   - type: markdown
     attributes:
-      value: "## Feature Request"
+      value: |
+        ## Feature Request
+        Help us understand what you'd like to see in SITA OS.
+
   - type: textarea
     id: problem
     attributes:
-      label: Problem
-      description: What problem does this solve?
+      label: Problem Statement
+      description: What problem does this feature solve? What's the pain point?
+      placeholder: "I'm always frustrated when..."
     validations:
       required: true
+
   - type: textarea
     id: solution
     attributes:
       label: Proposed Solution
-      description: How should this work?
+      description: How should this work? Be as specific as possible.
     validations:
       required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered
+      description: What other approaches did you consider?
+    validations:
+      required: false
+
   - type: dropdown
     id: area
     attributes:
       label: Area
+      multiple: true
       options:
         - Frontend / UI
         - Backend / Edge Functions
-        - AI / Advisors
-        - Connectors
+        - AI / Advisors / Boardroom
+        - Connectors / Integrations
         - Admin Console
-        - Desktop / OS
-        - Infrastructure
+        - Desktop / OS / Electron
+        - Mobile / PWA
+        - Infrastructure / CI
+        - Developer Experience
+        - Security / Compliance
         - Other
     validations:
       required: true
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority (your assessment)
+      options:
+        - Nice to have
+        - Should have (improves productivity)
+        - Must have (blocks key workflow)
+    validations:
+      required: false
+
+  - type: dropdown
+    id: user_type
+    attributes:
+      label: Who benefits from this?
+      multiple: true
+      options:
+        - End users (business owners)
+        - Administrators / Operators
+        - Developers
+        - AI / Advisor system
+        - Everyone
+    validations:
+      required: false
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional Context
+      description: Mockups, screenshots, links, or other relevant information
+    validations:
+      required: false

@@ -1,61 +1,114 @@
-name: Bug Report
+name: 🐛 Bug Report
 description: Report a bug in SITA OS
 labels: ["bug", "triage"]
+assignees: []
 body:
   - type: markdown
     attributes:
-      value: "## Bug Report"
+      value: |
+        ## Bug Report
+        Thank you for reporting! Please fill in as much detail as possible to help us reproduce and fix the issue.
+        
+        **For security vulnerabilities**, please use our [responsible disclosure process](../SECURITY.md) instead.
+
   - type: textarea
     id: description
     attributes:
-      label: Description
-      description: A clear description of the bug
+      label: Bug Description
+      description: A clear and concise description of the bug
+      placeholder: "When I click X, Y happens instead of Z..."
     validations:
       required: true
+
   - type: textarea
     id: steps
     attributes:
       label: Steps to Reproduce
-      description: How to reproduce this behavior
+      description: Detailed steps to reproduce the behavior
       value: |
-        1. Go to '...'
+        1. Navigate to '...'
         2. Click on '...'
-        3. See error
+        3. Observe '...'
     validations:
       required: true
+
   - type: textarea
     id: expected
     attributes:
       label: Expected Behavior
-      description: What should happen
+      description: What should happen instead
     validations:
       required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual Behavior
+      description: What actually happens (include error messages, console output)
+    validations:
+      required: false
+
   - type: dropdown
     id: severity
     attributes:
       label: Severity
       options:
-        - Low (cosmetic)
+        - Low (cosmetic / visual only)
         - Medium (workaround exists)
-        - High (blocks workflow)
-        - Critical (data loss / security)
+        - High (blocks workflow, no workaround)
+        - Critical (data loss / security / production down)
     validations:
       required: true
+
   - type: dropdown
     id: area
     attributes:
       label: Affected Area
+      multiple: true
       options:
         - Frontend / UI
         - Backend / Edge Functions
-        - Database
-        - Authentication
-        - AI / Advisors
-        - Connectors
+        - Database / Data
+        - Authentication / Authorization
+        - AI / Advisors / Boardroom
+        - Connectors / Integrations
         - Admin Console
         - Desktop / Electron
-        - Mobile
-        - CI / CD
+        - Mobile / PWA
+        - CI / CD / Build
+        - Notifications
+        - File Management
+        - Settings / Configuration
         - Other
     validations:
       required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Browser, OS, and any relevant versions
+      value: |
+        - Browser: 
+        - OS: 
+        - Environment: (staging / production)
+        - Commit SHA (if known): 
+    validations:
+      required: false
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots / Recordings
+      description: If applicable, add screenshots or screen recordings
+    validations:
+      required: false
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Console Logs / Error Output
+      description: Paste any relevant console errors or logs
+      render: shell
+    validations:
+      required: false
