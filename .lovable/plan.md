@@ -1,116 +1,185 @@
 
 
-## Wave 16 — Edge Function Canonical Reduction and Proof Closure
+## Wave 17 — AI Behavioral Proof and Safety Closure
 
 ### Summary
 
-The project already has a strong edge function governance layer in `src/lib/backend-topology/` (14 files: registry with 11-field topology for ~193 functions, auth-map, contract-map, table-io-map, replay-map, policy-map, owner-map with kill-switch/runbook refs, runtime-consequence-map, migration-map, frontend-action-api-map, bounded-contexts, categories, topology-validator). Shared helpers exist in `supabase/functions/_shared/` (19 files: function-role-contract, auth, cors, logger, policy, rate-limit, kill-switch, tracing, validate, zod-validate, audit-logger, ai-budget-check, etc.).
+The AI layer has strong infrastructure: AI gateway with prompt family enforcement, budget gates, AI trust enforcer (tool-call boundary enforcement + receipts), advisor permission matrix, escalation policy, reversibility map, persona boundary map, memory aging policy, agent governance with autonomy ceilings, and compute-governance cost anomaly detection. What is missing: explicit capability-level fallback/refusal proofs, prompt drift detection, routing replay, receipt reconstruction, provider outage simulation, cross-domain restriction proof artifact, memory repair process, and boardroom outcome quality scoring. The existing `check-ai-capability-proof.ts` is a file-existence check only.
 
-What is missing: caller-class contract in `_shared/`, support-diagnostics hook, contract-test registry, and 11 generated proof artifacts plus 7 validators that enforce closure across role purity, caller matrix, backend mapping, proof coverage, kill-switch/retry/fallback, auth patterns, and contract tests.
-
-This wave extends the existing canonical system. No second governance platform.
+This wave extends existing canonical systems (`ai-trust-enforcer`, `agent-governance`, `margin-protection`, `advisor-*` contracts). No second AI platform.
 
 ---
 
-### Phase A — Caller, Support, and Test Contracts in _shared (3 files)
+### Phase A — Capability Registry, Fallback, and Refusal Policies (3 files)
 
-**1. `supabase/functions/_shared/function-caller-contract.ts`**
-- Imports `CallerClass` type from the registry (duplicated locally for Deno runtime since _shared cannot import from src/)
-- Declares canonical caller-class taxonomy (12 classes matching `CallerClass` in registry)
-- Exports `validateCallerClass(req, allowedCallers)` helper that checks request origin headers and JWT claims against allowed callers
-- Returns structured rejection with caller-class mismatch diagnostics
+**1. `src/lib/ai/ai-capability-registry.ts`**
+- Canonical typed registry declaring every AI capability with: `capabilityId`, `owner`, `scope`, `allowedModels`, `preferredRoute`, `fallbackChain` (ordered model list), `refusalConditions` (list of trigger categories), `evidenceGradeRequired` (A-F), `receiptRequired`, `costPolicy` (ref to budget tier), `actionBoundarySensitivity` (none/low/high/critical), `autonomyCeilingRelevance`, `crossDomainRestriction`
+- Covers ~15 capabilities: advisor.money, advisor.business, advisor.concierge, advisor.strategy, advisor.security, advisor.legal, advisor.tax, boardroom.synthesis, boardroom.debate, simulation.monte-carlo, brain.personal, brain.core, admin.intelligence, gateway.general, files.ai-processing
+- Imports from existing `PERSONA_BOUNDARIES`, `ADVISOR_PERMISSION_MATRIX`, `ESCALATION_RULES`
 
-**2. `supabase/functions/_shared/function-support-diagnostics.ts`**
-- Exports `emitSupportDiagnostic(functionName, correlationId, input, output, duration, error?)` helper
-- Applies redaction rules (strips PII, tokens, secrets from input/output snapshots)
-- Produces structured diagnostic envelope with trace linkage, timestamp, and incident-ready format
-- Exports `SUPPORT_DIAGNOSTIC_FUNCTIONS` set listing the ~30 critical functions that must always emit diagnostics
+**2. `src/lib/ai/ai-fallback-policy.ts`**
+- Per capability: `primaryRoute`, `fallbackChain` (ordered), `fallbackTriggers` (timeout, error, budget-exceeded, model-unavailable), `degradedResultExpectation` (cached | simplified | refused), `noProviderBehavior` (refuse-with-receipt | cached-only | degrade-gracefully), `replayable` flag
+- Exports `resolveFallback(capabilityId, triggerReason)` returning next model in chain or refusal
+- Uses existing `BudgetGateResult.fallbackModelId` pattern from `budget-gate.ts`
 
-**3. `supabase/functions/_shared/function-contract-test-registry.ts`**
-- Declares contract-test families: `bff-contract`, `admin-gateway-contract`, `orchestration-step-contract`, `webhook-validation`, `runtime-system`, `verifier-output`, `support-tool`, `domain-function`
-- Maps each function to its test family
-- Exports `getContractTestFamily(functionName)` and `CONTRACT_TEST_FAMILIES` registry
-- Used by validator to check coverage
+**3. `src/lib/ai/ai-refusal-policy.ts`**
+- Per capability family: `refusalTriggers` (budget-exceeded, confidence-below-threshold, domain-fence-violated, scope-violation, kill-switch-active, autonomy-ceiling-reached), `refusalPayload` structure, `remediationGuidance`, `humanEscalationPath`, `uiDisclosureRequired`, `auditReceiptRequired`
+- Exports `evaluateRefusal(capabilityId, context)` returning refusal decision or null
+- Extends existing `AIActionResult` types from `ai-trust-enforcer.ts`
 
-### Phase B — Generated Proof Artifacts (1 generator script)
+### Phase B — Evidence Grade, Action Boundaries, and Prompt Drift (3 files)
 
-**4. `scripts/edge-functions/generate-edge-function-proof-artifacts.ts`**
-- Single generator that imports from `src/lib/backend-topology/` (registry, auth-map, contract-map, table-io-map, replay-map, policy-map, owner-map, runtime-consequence-map, frontend-action-api-map)
-- Generates 11 artifacts into `generated/`:
+**4. `src/lib/ai/ai-evidence-grade-policy.ts`**
+- Maps AI surfaces to evidence grade requirements: advisory surfaces (grade C+), operational surfaces (grade B+), action-capable surfaces (grade A)
+- Declares per-surface: `surfaceId`, `surfaceType` (advisory/operational/action-capable), `requiredEvidenceGrade`, `disclosureRequired`, `provenanceVisible`, `unverifiableBehavior` (refuse/caveat/degrade)
+- Extends existing `PROOF_REQUIREMENTS` from `policy-proof-requirements.ts`
+- Covers: advisor chat, boardroom items, boardroom decisions, admin AI pages, simulation engine, AI action cards
 
-  - `edge-function-topology-v2.json` -- REPLACE existing stub with real topology from registry (role distribution, receipt coverage, per-function entries)
-  - `function-caller-matrix.json` -- per-function: allowed callers, auth pattern, admin-only flag, source routes (from frontend-action-api-map)
-  - `function-proof-coverage.json` -- per-function: has receipts, has logging, has support diagnostics, has kill-switch ref, has retry policy, has fallback, has contract test family
-  - `function-domain-map.json` -- per-function: bounded context, owner team, dependent tables (reads/writes)
-  - `function-dependent-table-map.json` -- inverse: per-table, which functions read/write it
-  - `function-kill-switch-coverage.json` -- per-function: kill-switch ref from owner-map, coverage status
-  - `function-retry-fallback-audit.json` -- per-function: replay-map entry, fallback available from runtime-consequence-map
-  - `function-supportability-report.json` -- per-function: has support diagnostics, has runbook ref, has on-call, blast radius
-  - `function-contract-test-coverage.json` -- per-function: test family assignment, has on-disk test file
-  - `function-auth-pattern-audit.json` -- per-function: auth model, requires user context, admin-only, consistency check
-  - `function-logging-receipt-audit.json` -- per-function: audit-log policy from policy-map, side-effect class, receipt expectations
+**5. `src/lib/ai/ai-action-boundary-tests.ts`**
+- Declares boundary test cases as typed registry: `testId`, `category` (tool-approval, unsafe-mutation, missing-receipt, missing-policy, cross-domain-violation, confidence-violation, autonomy-violation), `description`, `expectedOutcome` (block/escalate/allow-with-receipt), `affectedSystems` (advisors/boardroom/workflows/tools)
+- Exports `ACTION_BOUNDARY_TESTS` array (~20 test declarations)
+- Cross-references `AIToolCall` interface from `ai-trust-enforcer.ts` and `REVERSIBILITY_MAP`
 
-### Phase C — Validators (7 scripts)
+**6. `src/lib/ai/ai-prompt-drift-detection.ts`**
+- Declares drift detection dimensions: `promptFamilyVersion`, `routingConfigChange`, `modelBehaviorShift`, `outputProfileDrift`, `evidenceGradeDrift`
+- Per capability: `capabilityId`, `lastKnownPromptVersion`, `lastKnownModel`, `driftSignals` array, `detectionMethod` (version-compare/output-sampling/config-diff), `operatorAlertRequired`
+- Exports `detectPromptDrift(capabilityId, currentConfig)` returning drift signals
+- Reads from `ai_prompt_families` table schema for version tracking
 
-**5. `scripts/edge-functions/checks/check-edge-function-role-purity.ts`** -- BLOCK
-- Verifies every active function in registry has exactly one canonical category
-- Flags deprecated/wrapper functions that still receive direct traffic
-- Checks role matches allowed-callers consistency (e.g., PUBLIC_BFF must allow frontend-user)
+### Phase C — Routing Replay, Receipt Reconstruction, and Cost Anomaly (3 files)
 
-**6. `scripts/edge-functions/checks/check-edge-function-caller-matrix.ts`** -- ADVISORY
-- Verifies every active function declares at least one allowed caller
-- Flags functions with overly permissive "any-authenticated" without justification
-- Cross-references frontend-action-api-map to ensure UI actions target real functions
+**7. `src/lib/ai/ai-routing-replay.ts`**
+- Declares replay contract: given a `receiptId` or `correlationId`, reconstruct the routing decision (model selected, fallback triggered, budget check result, capability matched)
+- Exports `reconstructRoutingDecision(receiptId)` that maps receipt fields to routing trace
+- Uses existing `ai_inference_receipts`, `ai_fallback_events`, `ai_usage_ledger` table schemas
+- Exports `ROUTING_REPLAY_FAMILIES` listing which capability families support full replay
 
-**7. `scripts/edge-functions/checks/check-edge-function-backend-mapping.ts`** -- ADVISORY
-- Verifies every active function has bounded-context and owner in registry
-- Verifies table-io-map coverage for non-wrapper functions
-- Flags orphan functions (on-disk but not in registry)
+**8. `src/lib/ai/ai-receipt-reconstruction.ts`**
+- Declares reconstruction contract: for any AI action, reconstruct provider, model, prompt version, policy checks, fallback path, cost, and output classification
+- Exports `RECEIPT_RECONSTRUCTION_MAP` per capability: `tables` (which tables to join), `requiredFields`, `reconstructionMethod` (ledger-join/receipt-direct/inference-chain)
+- Cross-references `ai-trust-enforcer.ts` receipt structure
 
-**8. `scripts/edge-functions/checks/check-edge-function-proof-coverage.ts`** -- BLOCK
-- Verifies high-side-effect and critical functions have: receipt expectations, replay entry, kill-switch ref where applicable
-- Computes proof coverage percentage; blocks if below 80% for critical functions
+**9. `src/lib/ai/ai-cost-anomaly-detector.ts`**
+- Extends existing `CostAnomaly` from `compute-governance/margin-protection.ts` with capability-level anomaly detection
+- Adds: `perCapabilitySpike`, `fallbackInducedCost`, `advisorBoardroomRunaway`, `budgetBypassRisk`
+- Exports `AI_COST_ANOMALY_RULES` with per-rule: `ruleId`, `anomalyType`, `threshold`, `detectionWindow`, `mitigation`, `alertSeverity`
+- Reuses `selectMitigation` from `margin-protection.ts`
 
-**9. `scripts/edge-functions/checks/check-edge-function-kill-switch-retry.ts`** -- ADVISORY
-- Verifies orchestration and webhook functions have replay-map entries
-- Verifies critical functions have kill-switch refs
-- Flags functions with `fallbackAvailable: false` and no retry mechanism
+### Phase D — Outage Simulation, Autonomy Ceiling, and Cross-Domain (3 files)
 
-**10. `scripts/edge-functions/checks/check-edge-function-auth-patterns.ts`** -- ADVISORY
-- Verifies auth-map coverage matches registry (every active function has auth entry)
-- Flags admin functions without `adminOnly: true`
-- Flags anon functions that write to sensitive tables
+**10. `src/lib/ai/ai-provider-outage-simulator.ts`**
+- Declares outage scenarios: `provider-unavailable`, `model-unavailable`, `timeout`, `invalid-output`, `fallback-chain-exhaustion`, `degraded-safe-mode`
+- Per scenario: `scenarioId`, `description`, `affectedCapabilities`, `expectedBehavior`, `fallbackResult`, `operatorAlertPath`, `recoverySteps`
+- Exports `OUTAGE_SCENARIOS` array and `simulateOutage(scenarioId)` that returns expected system behavior
+- References `ai-fallback-policy.ts` for chain resolution
 
-**11. `scripts/edge-functions/checks/check-edge-function-contract-tests.ts`** -- ADVISORY
-- Scans `supabase/functions/*/` for `*_test.ts` or `*.test.ts` files
-- Cross-references contract-test-registry for family coverage
-- Reports per-family coverage percentage
+**11. `src/lib/ai/ai-autonomy-ceiling-policy.ts`**
+- Consolidates autonomy governance from `agent-governance.ts` and `advisor-escalation-policy.ts`
+- Per advisor/agent family: `agentId`, `maxAutonomyTier` (L0-L6), `approvalRequired` above tier, `blockedActions`, `escalationPath`, `auditRequirement`, `operatorRestrictions`
+- Exports `AUTONOMY_CEILING_MAP` and `enforceAutonomyCeiling(agentId, requestedLevel)`
+- Cross-references `AUTONOMY_ORDER` from `agent-governance.ts`
 
-### Phase D — Barrel, Gate Registration, and Verification
+**12. `src/lib/ai/ai-cross-domain-restriction-map.ts`**
+- Extends `PERSONA_BOUNDARIES.domainFence` into a full cross-domain restriction proof
+- Per advisor: `advisorId`, `allowedDomains`, `blockedDomains`, `crossDomainReadAllowed`, `crossDomainWriteBlocked`, `approvalForCrossDomain`, `escalationRule`, `evidenceRequired`
+- Exports `CROSS_DOMAIN_RESTRICTIONS` and `isCrossDomainAllowed(advisorId, targetDomain, actionType)`
 
-- Create `scripts/edge-functions/checks/` directory structure
-- Register `edge-function-role-purity` and `edge-function-proof-coverage` as BLOCK gates in release readiness
-- Register 5 ADVISORY gates
-- Run `npx tsc --noEmit` -- zero errors
-- Run all 7 validators -- all green
-- Verify 11 generated artifacts are structurally complete
+### Phase E — Memory Repair, Boardroom Outcome Scoring (2 files)
+
+**13. `src/lib/ai/ai-memory-repair-manager.ts`**
+- Declares repair procedures for advisor memory systems
+- Per memory domain: `domainId`, `corruptionDetection` (stale-check/integrity-hash/access-pattern-anomaly), `repairProcedure` (prune/rebuild/rollback/operator-manual), `preconditions`, `auditRequired`, `rollbackSafety`
+- Covers: working memory corruption, preference drift, stale long-term memory, orphaned archival entries
+- Extends `MEMORY_AGING_RULES` from `advisor-memory-aging-policy.ts`
+
+**14. `src/lib/ai/boardroom-outcome-scoring.ts`**
+- Declares quality model tying recommendations to outcomes
+- Per recommendation class: `classId`, `evidenceQualityWeight`, `approvalOutcomeWeight`, `executionSuccessWeight`, `reversibilityScore`, `downstreamImpactWeight`, `confidenceCalibrationMetric`
+- Exports `BOARDROOM_QUALITY_DIMENSIONS` and `scoreBoardroomOutcome(recommendation, outcome)` returning quality score 0-100
+- References `boardroom_outcome_records` and `boardroom_followthrough_dispatches` table schemas
+
+### Phase F — Generator Script and 14 Artifacts
+
+**15. `scripts/ai/generate-ai-behavioral-proof-artifacts.ts`**
+- Imports all registries from Phase A-E
+- Generates 14 artifacts into `generated/`:
+  - `ai-capability-proof-matrix.json` (REPLACE existing stub)
+  - `ai-refusal-proof.json`
+  - `ai-evidence-grade-coverage.json`
+  - `ai-routing-replay-report.json`
+  - `ai-receipt-reconstruction-audit.json`
+  - `ai-cost-anomaly-report.json`
+  - `ai-autonomy-ceiling-proof.json`
+  - `ai-cross-domain-restriction-proof.json`
+  - `ai-memory-repair-coverage.json`
+  - `boardroom-outcome-quality-report.json`
+  - `prompt-drift-detection.json`
+  - `model-outage-simulation-results.json`
+  - `advisor-action-reversibility-report.json` (REPLACE existing stub)
+  - `ai-fallback-replay-bundle/replay-summary.json`
+
+### Phase G — Validators (11 scripts)
+
+Replace existing stub `check-ai-capability-proof.ts` and `check-advisor-reversibility.ts`, add 9 new validators:
+
+**16. `scripts/ai/checks/check-ai-capability-proof.ts`** -- BLOCK. Real validation: every capability has providers, fallbacks, refusals, evidence grade.
+
+**17. `scripts/ai/checks/check-ai-fallback-replay.ts`** -- BLOCK. Fallback chains explicit, replay families declared.
+
+**18. `scripts/ai/checks/check-ai-refusal-coverage.ts`** -- ADVISORY. Refusal policy wired for all relevant capabilities.
+
+**19. `scripts/ai/checks/check-ai-evidence-grade-coverage.ts`** -- ADVISORY. AI surfaces enforce evidence grade.
+
+**20. `scripts/ai/checks/check-ai-receipt-reconstruction.ts`** -- ADVISORY. Reconstruction map exists for critical capabilities.
+
+**21. `scripts/ai/checks/check-ai-cost-anomaly-detection.ts`** -- ADVISORY. Anomaly rules cover critical pathways.
+
+**22. `scripts/ai/checks/check-ai-provider-outage-simulation.ts`** -- ADVISORY. Outage scenarios declared and documented.
+
+**23. `scripts/ai/checks/check-ai-autonomy-ceiling.ts`** -- BLOCK. Autonomy ceilings declared for all agents/advisors.
+
+**24. `scripts/ai/checks/check-ai-cross-domain-restrictions.ts`** -- ADVISORY. Cross-domain restrictions explicit.
+
+**25. `scripts/ai/checks/check-ai-memory-repair.ts`** -- ADVISORY. Memory repair procedures declared.
+
+**26. `scripts/ai/checks/check-boardroom-outcome-scoring.ts`** -- ADVISORY. Quality scoring dimensions declared.
+
+### Phase H — Barrel Export, Gate Registration, and Verification
+
+- Create `src/lib/ai/index.ts` barrel exporting all new registries
+- Register `ai-capability-proof`, `ai-fallback-replay`, and `ai-autonomy-ceiling` as BLOCK gates in release readiness
+- Register 8 ADVISORY gates
+- `npx tsc --noEmit` -- zero errors
+- Run all 11 validators -- all green
 
 ### No-Duplication Enforcement
 
-- All generators import from existing `src/lib/backend-topology/` registries -- no second registry
-- `function-caller-contract.ts` in `_shared/` mirrors `CallerClass` from registry for Deno runtime but is the canonical runtime enforcer
-- `edge-function-topology-v2.json` replaces existing stub in `public/generated/`
-- No new maps duplicate existing `edge-function-auth-map`, `edge-function-policy-map`, `edge-function-replay-map`, or `edge-function-owner-map`
-- Validators consume the same registries used by existing `edge-function-topology-validator.ts`
+- `ai-cost-anomaly-detector.ts` extends existing `CostAnomaly` from `margin-protection.ts` -- no second anomaly system
+- `ai-autonomy-ceiling-policy.ts` consolidates from `agent-governance.ts` autonomy checks -- no second autonomy system
+- `ai-cross-domain-restriction-map.ts` extends `PERSONA_BOUNDARIES.domainFence` -- no second boundary system
+- `ai-refusal-policy.ts` extends `AIActionResult` from `ai-trust-enforcer.ts` -- no second trust system
+- `ai-evidence-grade-policy.ts` extends `PROOF_REQUIREMENTS` -- no second evidence system
+- `ai-memory-repair-manager.ts` extends `MEMORY_AGING_RULES` -- no second memory system
+- Replaces stub `check-ai-capability-proof.ts` and `check-advisor-reversibility.ts` with real validators
 
 ### Deployment Closure Checklist
 
-- [ ] ~193 functions have canonical role in registry (already done)
-- [ ] Caller-class contract helper in `_shared/`
-- [ ] Support diagnostics helper in `_shared/`
-- [ ] Contract-test registry in `_shared/`
-- [ ] 11 generated proof artifacts covering role, caller, domain, tables, kill-switch, retry, auth, receipts, support, tests
-- [ ] 7 validator scripts (2 BLOCK + 5 ADVISORY) all green
+- [ ] 15 AI capabilities registered with providers, fallbacks, refusals, evidence grades
+- [ ] Fallback chains explicit with replay families declared
+- [ ] Refusal policy covering 6 trigger categories
+- [ ] Evidence grade enforcement for 6 AI surface types
+- [ ] 20 action boundary test declarations
+- [ ] Prompt drift detection for all capability families
+- [ ] Routing replay for critical capabilities
+- [ ] Receipt reconstruction map for critical AI actions
+- [ ] Cost anomaly rules extending compute-governance
+- [ ] 6 outage scenarios declared and documented
+- [ ] Autonomy ceilings for all 7 advisors + agent families
+- [ ] Cross-domain restrictions for all 7 advisors
+- [ ] Memory repair procedures for 4 memory layers
+- [ ] Boardroom outcome quality scoring with 6 dimensions
+- [ ] 14 generated proof artifacts
+- [ ] 11 validator scripts (3 BLOCK + 8 ADVISORY) all green
 - [ ] TypeScript builds with 0 errors
-- [ ] No duplicate edge function governance systems
+- [ ] No duplicate AI safety/routing/proof systems
 
