@@ -14134,6 +14134,48 @@ export type Database = {
         }
         Relationships: []
       }
+      kill_switch_drill_results: {
+        Row: {
+          completed_at: string | null
+          created_at: string | null
+          drill_type: string
+          failure_notes: string | null
+          id: string
+          operator_id: string | null
+          rollback_verified: boolean | null
+          started_at: string
+          success: boolean | null
+          switch_id: string
+          time_to_disable_ms: number | null
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string | null
+          drill_type: string
+          failure_notes?: string | null
+          id?: string
+          operator_id?: string | null
+          rollback_verified?: boolean | null
+          started_at?: string
+          success?: boolean | null
+          switch_id: string
+          time_to_disable_ms?: number | null
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string | null
+          drill_type?: string
+          failure_notes?: string | null
+          id?: string
+          operator_id?: string | null
+          rollback_verified?: boolean | null
+          started_at?: string
+          success?: boolean | null
+          switch_id?: string
+          time_to_disable_ms?: number | null
+        }
+        Relationships: []
+      }
       kill_switch_recommendations: {
         Row: {
           acknowledged_at: string | null
