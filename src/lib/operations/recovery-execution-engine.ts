@@ -28,6 +28,89 @@ export interface RecoveryReceipt {
   readonly overallStatus: "success" | "partial" | "failed";
 }
 
+// ═══════════════════════════════════════════════════════════════
+// Wave 21 — Governed Recovery Execution
+// ═══════════════════════════════════════════════════════════════
+
+import {
+  type RecoveryExecutionInstance,
+  type RecoveryExecutionState,
+  createExecutionInstance,
+  transitionState,
+} from "./runbook-execution-contract";
+import { computeMetrics, type RecoveryTimingMetrics } from "./recovery-metrics";
+import { getConfirmationRequirement } from "./recovery-operator-confirmation";
+import { buildPostmortem, type PostmortemArtifact } from "./recovery-postmortem-builder";
+
+export interface GovernedRecoveryResult {
+  readonly receipt: RecoveryReceipt;
+  readonly instance: RecoveryExecutionInstance;
+  readonly metrics: RecoveryTimingMetrics;
+  readonly postmortem: PostmortemArtifact | null;
+}
+
+export async function executeRecoveryWithGovernance(
+  runbookRef: string,
+  steps: RecoveryStep[],
+  opts?: {
+    onProgress?: (stepId: string, status: RecoveryStepStatus) => void;
+    onStateChange?: (state: RecoveryExecutionState) => void;
+    generatePostmortem?: boolean;
+    impactedSystems?: string[];
+  },
+): Promise<GovernedRecoveryResult> {
+  const instance = createExecutionInstance(runbookRef);
+  const notify = (s: RecoveryExecutionState, reason: string) => {
+    transitionState(instance, s, reason);
+    opts?.onStateChange?.(s);
+  };
+
+  notify("READY", "Execution initialized");
+  notify("TRIAGED", "Runbook loaded and steps validated");
+  notify("EXECUTION_PENDING", "Beginning step execution");
+
+  const receipt = await executeRecoveryPlan(runbookRef, steps, (stepId, status) => {
+    if (status === "running") {
+      const step = steps.find((s) => s.id === stepId);
+      if (step?.requiresConfirmation) {
+        try { transitionState(instance, "AWAITING_CONFIRMATION", `Step ${stepId} requires confirmation`); } catch {}
+        try { transitionState(instance, "MANUAL_STEP_REQUIRED", `Confirmation received for ${stepId}`); } catch {}
+      } else {
+        try { transitionState(instance, "AUTOMATED_STEP_RUNNING", `Executing step ${stepId}`); } catch {}
+      }
+    }
+    opts?.onProgress?.(stepId, status);
+  });
+
+  const finalState: RecoveryExecutionState = receipt.overallStatus === "success"
+    ? "RECOVERED" : receipt.overallStatus === "partial" ? "PARTIALLY_REMEDIATED" : "FAILED";
+  try { notify(finalState, `Recovery ${receipt.overallStatus}`); } catch {}
+
+  const metrics = computeMetrics(receipt);
+
+  let postmortem: PostmortemArtifact | null = null;
+  if (opts?.generatePostmortem !== false) {
+    try { transitionState(instance, "POSTMORTEM_PENDING", "Generating postmortem"); } catch {}
+    postmortem = buildPostmortem({
+      receipt,
+      type: "incident",
+      impactedSystems: opts?.impactedSystems ?? [],
+      metrics,
+    });
+    try { transitionState(instance, "CLOSED", "Postmortem generated"); } catch {}
+  }
+
+  return { receipt, instance, metrics, postmortem };
+}
+
+export function abortRecovery(instance: RecoveryExecutionInstance, reason: string): void {
+  transitionState(instance, "FAILED", `Aborted: ${reason}`);
+}
+
+export function escalateRecovery(instance: RecoveryExecutionInstance, reason: string): void {
+  transitionState(instance, "ESCALATED", `Escalated: ${reason}`);
+}
+
 export async function executeRecoveryPlan(
   runbookRef: string,
   steps: RecoveryStep[],
