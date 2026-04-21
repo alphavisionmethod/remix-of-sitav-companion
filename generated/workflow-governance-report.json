@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-04-21T23:45:09.758Z",
+  "generatedAt": "2026-04-21T23:45:50.315Z",
   "totalWorkflows": 19,
-  "violations": 7,
+  "violations": 3,
   "errors": 0,
-  "warnings": 7,
+  "warnings": 3,
   "workflowSummaries": [
     {
       "file": "ai-runtime-truth-nightly.yml",
@@ -46,12 +46,13 @@
       "triggers": [
         "push",
         "pull_request",
-        "schedule"
+        "schedule",
+        "workflow_dispatch"
       ],
-      "jobCount": 18,
+      "jobCount": 19,
       "hasPermissions": true,
       "hasConcurrency": true,
-      "hasTimeouts": false
+      "hasTimeouts": true
     },
     {
       "file": "connector-truth-nightly.yml",
@@ -119,7 +120,7 @@
       "jobCount": 7,
       "hasPermissions": true,
       "hasConcurrency": true,
-      "hasTimeouts": false
+      "hasTimeouts": true
     },
     {
       "file": "desktop-build.yml",
@@ -238,38 +239,14 @@
   "details": [
     {
       "file": "ci.yml",
-      "rule": "W1:job-timeout",
-      "detail": "Job 'pr-summary' missing timeout-minutes",
-      "severity": "warning"
-    },
-    {
-      "file": "ci.yml",
       "rule": "W2:excessive-failure-swallowing",
       "detail": "17 bare '|| true' patterns — prefer continue-on-error for visibility",
-      "severity": "warning"
-    },
-    {
-      "file": "ci.yml",
-      "rule": "W4:schedule-no-dispatch",
-      "detail": "Schedule-triggered workflow has no workflow_dispatch fallback for manual runs",
-      "severity": "warning"
-    },
-    {
-      "file": "deploy.yml",
-      "rule": "W1:job-timeout",
-      "detail": "Job 'notify' missing timeout-minutes",
       "severity": "warning"
     },
     {
       "file": "mobile-build.yml",
       "rule": "W2:excessive-failure-swallowing",
       "detail": "5 bare '|| true' patterns — prefer continue-on-error for visibility",
-      "severity": "warning"
-    },
-    {
-      "file": "native-readiness.yml",
-      "rule": "W3:artifact-retention",
-      "detail": "Uses upload-artifact without specifying retention-days",
       "severity": "warning"
     },
     {
