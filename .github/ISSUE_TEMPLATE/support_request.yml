@@ -1,0 +1,67 @@
+name: Support Request
+description: Request operational or technical support
+labels: ["support", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Support Request
+        For security issues, see [SECURITY.md](../SECURITY.md) instead.
+
+  - type: dropdown
+    id: urgency
+    attributes:
+      label: Urgency
+      options:
+        - Low (general question)
+        - Medium (degraded but functional)
+        - High (significant impact)
+        - Critical (production down)
+    validations:
+      required: true
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: Support Category
+      options:
+        - Account / Authentication
+        - Data / Database
+        - Integration / Connector
+        - Performance / Latency
+        - Deployment / Infrastructure
+        - AI / Advisor behavior
+        - Billing / Licensing
+        - Configuration
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Describe what you need help with
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment Details
+      description: Include relevant context
+      value: |
+        - Environment: (staging / production)
+        - Browser / OS: 
+        - Commit SHA: 
+        - Correlation ID (if available): 
+    validations:
+      required: false
+
+  - type: textarea
+    id: attempted
+    attributes:
+      label: What have you already tried?
+      description: List any troubleshooting steps taken
+    validations:
+      required: false

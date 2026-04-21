@@ -1,37 +1,257 @@
 {
-  "generatedAt": "2026-04-21T23:36:06.820Z",
-  "totalWorkflows": 18,
-  "violations": 5,
+  "generatedAt": "2026-04-21T23:45:50.315Z",
+  "totalWorkflows": 19,
+  "violations": 3,
   "errors": 0,
-  "warnings": 5,
-  "details": [
+  "warnings": 3,
+  "workflowSummaries": [
     {
-      "file": "ci.yml",
-      "rule": "job-timeout",
-      "detail": "Job 'pr-summary' missing timeout-minutes",
-      "severity": "warning"
+      "file": "ai-runtime-truth-nightly.yml",
+      "name": "AI Runtime Truth — Nightly",
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ],
+      "jobCount": 2,
+      "hasPermissions": true,
+      "hasConcurrency": false,
+      "hasTimeouts": true
+    },
+    {
+      "file": "build-planes.yml",
+      "name": "Build All Planes (Deferred)",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "jobCount": 2,
+      "hasPermissions": true,
+      "hasConcurrency": false,
+      "hasTimeouts": true
+    },
+    {
+      "file": "check-boundaries.yml",
+      "name": "Architecture Boundaries",
+      "triggers": [
+        "pull_request",
+        "push"
+      ],
+      "jobCount": 3,
+      "hasPermissions": true,
+      "hasConcurrency": true,
+      "hasTimeouts": true
     },
     {
       "file": "ci.yml",
-      "rule": "excessive-failure-swallowing",
+      "name": "CI",
+      "triggers": [
+        "push",
+        "pull_request",
+        "schedule",
+        "workflow_dispatch"
+      ],
+      "jobCount": 19,
+      "hasPermissions": true,
+      "hasConcurrency": true,
+      "hasTimeouts": true
+    },
+    {
+      "file": "connector-truth-nightly.yml",
+      "name": "Connector Truth Nightly",
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ],
+      "jobCount": 2,
+      "hasPermissions": true,
+      "hasConcurrency": false,
+      "hasTimeouts": true
+    },
+    {
+      "file": "customer-journey-manual.yml",
+      "name": "Customer Journey Manual Verification",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "jobCount": 2,
+      "hasPermissions": true,
+      "hasConcurrency": true,
+      "hasTimeouts": true
+    },
+    {
+      "file": "customer-journey-nightly.yml",
+      "name": "Customer Journey Nightly Verification",
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ],
+      "jobCount": 3,
+      "hasPermissions": true,
+      "hasConcurrency": false,
+      "hasTimeouts": true
+    },
+    {
+      "file": "deploy-backend.yml",
+      "name": "Deploy Backend",
+      "triggers": [
+        "push"
+      ],
+      "jobCount": 2,
+      "hasPermissions": true,
+      "hasConcurrency": true,
+      "hasTimeouts": true
+    },
+    {
+      "file": "deploy-frontend.yml",
+      "name": "Deploy Frontend (Deferred)",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "jobCount": 2,
+      "hasPermissions": true,
+      "hasConcurrency": true,
+      "hasTimeouts": true
+    },
+    {
+      "file": "deploy.yml",
+      "name": "Deploy",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "jobCount": 7,
+      "hasPermissions": true,
+      "hasConcurrency": true,
+      "hasTimeouts": true
+    },
+    {
+      "file": "desktop-build.yml",
+      "name": "Release · Desktop Matrix",
+      "triggers": [
+        "workflow_dispatch",
+        "push"
+      ],
+      "jobCount": 3,
+      "hasPermissions": true,
+      "hasConcurrency": true,
+      "hasTimeouts": true
+    },
+    {
+      "file": "mobile-build.yml",
+      "name": "mobile-build",
+      "triggers": [
+        "push",
+        "pull_request",
+        "workflow_dispatch"
+      ],
+      "jobCount": 7,
+      "hasPermissions": true,
+      "hasConcurrency": true,
+      "hasTimeouts": true
+    },
+    {
+      "file": "native-readiness.yml",
+      "name": "native-readiness",
+      "triggers": [
+        "pull_request",
+        "push"
+      ],
+      "jobCount": 3,
+      "hasPermissions": true,
+      "hasConcurrency": true,
+      "hasTimeouts": true
+    },
+    {
+      "file": "os-build-iso.yml",
+      "name": "sita-os-build-iso",
+      "triggers": [
+        "push",
+        "schedule",
+        "release",
+        "workflow_dispatch"
+      ],
+      "jobCount": 8,
+      "hasPermissions": true,
+      "hasConcurrency": true,
+      "hasTimeouts": true
+    },
+    {
+      "file": "playwright-proof-nightly.yml",
+      "name": "Playwright Proof (Nightly)",
+      "triggers": [
+        "schedule",
+        "workflow_dispatch"
+      ],
+      "jobCount": 3,
+      "hasPermissions": true,
+      "hasConcurrency": false,
+      "hasTimeouts": true
+    },
+    {
+      "file": "release-electron.yml",
+      "name": "Release · Electron (→ Desktop Matrix)",
+      "triggers": [
+        "workflow_dispatch"
+      ],
+      "jobCount": 2,
+      "hasPermissions": true,
+      "hasConcurrency": true,
+      "hasTimeouts": true
+    },
+    {
+      "file": "release-gates.yml",
+      "name": "Release Readiness Gates",
+      "triggers": [
+        "pull_request",
+        "push"
+      ],
+      "jobCount": 3,
+      "hasPermissions": true,
+      "hasConcurrency": true,
+      "hasTimeouts": true
+    },
+    {
+      "file": "sentry-release.yml",
+      "name": "Observability · Sentry Release",
+      "triggers": [
+        "workflow_dispatch",
+        "push",
+        "release"
+      ],
+      "jobCount": 3,
+      "hasPermissions": true,
+      "hasConcurrency": true,
+      "hasTimeouts": true
+    },
+    {
+      "file": "workflow-governance.yml",
+      "name": "Workflow Governance",
+      "triggers": [
+        "pull_request",
+        "push",
+        "schedule",
+        "workflow_dispatch"
+      ],
+      "jobCount": 5,
+      "hasPermissions": true,
+      "hasConcurrency": true,
+      "hasTimeouts": true
+    }
+  ],
+  "details": [
+    {
+      "file": "ci.yml",
+      "rule": "W2:excessive-failure-swallowing",
       "detail": "17 bare '|| true' patterns — prefer continue-on-error for visibility",
       "severity": "warning"
     },
     {
-      "file": "deploy.yml",
-      "rule": "job-timeout",
-      "detail": "Job 'notify' missing timeout-minutes",
-      "severity": "warning"
-    },
-    {
       "file": "mobile-build.yml",
-      "rule": "excessive-failure-swallowing",
+      "rule": "W2:excessive-failure-swallowing",
       "detail": "5 bare '|| true' patterns — prefer continue-on-error for visibility",
       "severity": "warning"
     },
     {
       "file": "os-build-iso.yml",
-      "rule": "excessive-failure-swallowing",
+      "rule": "W2:excessive-failure-swallowing",
       "detail": "4 bare '|| true' patterns — prefer continue-on-error for visibility",
       "severity": "warning"
     }

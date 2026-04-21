@@ -1,0 +1,157 @@
+{
+  "generatedAt": "2026-04-21T23:45:53.402Z",
+  "totalCriticalPaths": 22,
+  "coveredPaths": 22,
+  "uncoveredPaths": 0,
+  "coveragePct": 100,
+  "totalRules": 114,
+  "uniqueTeams": [
+    "@sita/admin-governance",
+    "@sita/advisor-intelligence",
+    "@sita/agent-runtime",
+    "@sita/ai-engineering",
+    "@sita/app-platform",
+    "@sita/cloud-infrastructure",
+    "@sita/compliance-security",
+    "@sita/connector-integrations",
+    "@sita/finance-engine",
+    "@sita/notification-services",
+    "@sita/os-kernel",
+    "@sita/platform-core",
+    "@sita/user-experience"
+  ],
+  "results": [
+    {
+      "path": ".github/workflows/",
+      "covered": true,
+      "matchedRule": "/.github/workflows/",
+      "owner": "@sita/platform-core, @sita/cloud-infrastructure"
+    },
+    {
+      "path": ".github/CODEOWNERS",
+      "covered": true,
+      "matchedRule": "/.github/CODEOWNERS",
+      "owner": "@sita/platform-core"
+    },
+    {
+      "path": "src/components/",
+      "covered": true,
+      "matchedRule": "/src/components/",
+      "owner": "@sita/user-experience"
+    },
+    {
+      "path": "src/pages/",
+      "covered": true,
+      "matchedRule": "/src/pages/",
+      "owner": "@sita/user-experience"
+    },
+    {
+      "path": "src/lib/",
+      "covered": true,
+      "matchedRule": "/src/lib/",
+      "owner": "@sita/platform-core"
+    },
+    {
+      "path": "src/services/",
+      "covered": true,
+      "matchedRule": "/src/services/",
+      "owner": "@sita/platform-core"
+    },
+    {
+      "path": "src/platform/",
+      "covered": true,
+      "matchedRule": "/src/platform/",
+      "owner": "@sita/platform-core"
+    },
+    {
+      "path": "src/integrations/",
+      "covered": true,
+      "matchedRule": "/src/integrations/",
+      "owner": "@sita/platform-core"
+    },
+    {
+      "path": "supabase/functions/",
+      "covered": true,
+      "matchedRule": "*",
+      "owner": "@sita/platform-core"
+    },
+    {
+      "path": "supabase/migrations/",
+      "covered": true,
+      "matchedRule": "/supabase/migrations/",
+      "owner": "@sita/platform-core, @sita/compliance-security"
+    },
+    {
+      "path": "scripts/",
+      "covered": true,
+      "matchedRule": "/scripts/",
+      "owner": "@sita/platform-core"
+    },
+    {
+      "path": "scripts/architecture/",
+      "covered": true,
+      "matchedRule": "/scripts/architecture/",
+      "owner": "@sita/platform-core"
+    },
+    {
+      "path": "scripts/release/",
+      "covered": true,
+      "matchedRule": "/scripts/release/",
+      "owner": "@sita/platform-core, @sita/compliance-security"
+    },
+    {
+      "path": "deploy/api-gateway/",
+      "covered": true,
+      "matchedRule": "/deploy/api-gateway/",
+      "owner": "@sita/cloud-infrastructure"
+    },
+    {
+      "path": "deploy/brain-core/",
+      "covered": true,
+      "matchedRule": "/deploy/brain-core/",
+      "owner": "@sita/cloud-infrastructure, @sita/ai-engineering"
+    },
+    {
+      "path": "os/",
+      "covered": true,
+      "matchedRule": "/os/",
+      "owner": "@sita/os-kernel"
+    },
+    {
+      "path": "electron/",
+      "covered": true,
+      "matchedRule": "/electron/",
+      "owner": "@sita/app-platform"
+    },
+    {
+      "path": "Dockerfile",
+      "covered": true,
+      "matchedRule": "Dockerfile",
+      "owner": "@sita/platform-core, @sita/cloud-infrastructure"
+    },
+    {
+      "path": "docker-compose.yml",
+      "covered": true,
+      "matchedRule": "docker-compose*.yml",
+      "owner": "@sita/platform-core, @sita/cloud-infrastructure"
+    },
+    {
+      "path": "package.json",
+      "covered": true,
+      "matchedRule": "package.json",
+      "owner": "@sita/platform-core"
+    },
+    {
+      "path": "tsconfig.json",
+      "covered": true,
+      "matchedRule": "tsconfig*.json",
+      "owner": "@sita/platform-core"
+    },
+    {
+      "path": "vite.config.ts",
+      "covered": true,
+      "matchedRule": "vite.config.*",
+      "owner": "@sita/platform-core"
+    }
+  ]
+}

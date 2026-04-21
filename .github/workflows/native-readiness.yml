@@ -67,3 +67,5 @@ jobs:
           path: |
             generated/*-readiness-report.json
             generated/os-release-readiness-summary.md
+          retention-days: 14
+          if-no-files-found: warn

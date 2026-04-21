@@ -1,0 +1,28 @@
+name: "Upload Reports"
+description: >
+  Composite action: uploads the generated/ directory as a workflow artifact
+  with a configurable name and retention period.
+inputs:
+  name:
+    description: "Artifact name"
+    required: false
+    default: "reports"
+  path:
+    description: "Path to upload"
+    required: false
+    default: "generated/"
+  retention-days:
+    description: "Artifact retention in days"
+    required: false
+    default: "14"
+runs:
+  using: "composite"
+  steps:
+    - name: Upload reports artifact
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ inputs.name }}
+        path: ${{ inputs.path }}
+        retention-days: ${{ inputs.retention-days }}
+        if-no-files-found: warn

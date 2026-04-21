@@ -1,33 +1,88 @@
 version: 2
 updates:
+  # ── Root npm dependencies ──────────────────────────────────────
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
       interval: "weekly"
       day: "monday"
+      time: "06:00"
+      timezone: "UTC"
     open-pull-requests-limit: 10
     labels:
       - "dependencies"
+      - "chore"
+    reviewers:
+      - "sita/platform-core"
+    commit-message:
+      prefix: "deps"
+      include: "scope"
     groups:
+      # Group minor + patch updates to reduce PR noise
       minor-and-patch:
         update-types:
           - "minor"
           - "patch"
+      # Group test/dev tooling separately
+      dev-tooling:
+        dependency-type: "development"
+        update-types:
+          - "minor"
+          - "patch"
     ignore:
-      # React is pinned to 18 across the project
+      # React is pinned to 18 across the project (root + remotion)
       - dependency-name: "react"
         update-types: ["version-update:semver-major"]
       - dependency-name: "react-dom"
         update-types: ["version-update:semver-major"]
       - dependency-name: "@types/react"
         update-types: ["version-update:semver-major"]
+      - dependency-name: "@types/react-dom"
+        update-types: ["version-update:semver-major"]
+      # TypeScript major is pinned to 5.x
+      - dependency-name: "typescript"
+        update-types: ["version-update:semver-major"]
 
+  # ── API Gateway service ────────────────────────────────────────
+  - package-ecosystem: "npm"
+    directory: "/deploy/api-gateway"
+    schedule:
+      interval: "weekly"
+      day: "tuesday"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+      - "infrastructure"
+    reviewers:
+      - "sita/cloud-infrastructure"
+
+  # ── Brain Core service ─────────────────────────────────────────
+  - package-ecosystem: "npm"
+    directory: "/deploy/brain-core"
+    schedule:
+      interval: "weekly"
+      day: "tuesday"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+      - "infrastructure"
+    reviewers:
+      - "sita/cloud-infrastructure"
+      - "sita/ai-engineering"
+
+  # ── GitHub Actions ─────────────────────────────────────────────
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "weekly"
       day: "monday"
+      time: "06:00"
+      timezone: "UTC"
     open-pull-requests-limit: 5
     labels:
       - "ci"
       - "dependencies"
+    reviewers:
+      - "sita/platform-core"
+    commit-message:
+      prefix: "ci"
