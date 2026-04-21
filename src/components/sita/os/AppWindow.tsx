@@ -346,7 +346,11 @@ export function AppWindow({ window: win }: AppWindowProps) {
 
       {/* ── Window body ────────────────────────────────────── */}
       <div
-        className={cn("flex-1 overflow-y-auto", (isDragging || isResizing) && "pointer-events-none select-none")}
+        className={cn(
+          "flex-1 min-h-0 overflow-y-auto overflow-x-hidden",
+          "os-window-scrollable",
+          (isDragging || isResizing) && "pointer-events-none select-none"
+        )}
         onContextMenu={(e) => e.stopPropagation()}
       >
         {win.component}
