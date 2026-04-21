@@ -1,20 +1,25 @@
 #!/usr/bin/env node
 /* eslint-disable no-console */
-// SITA OS — DB Index & Retention Coverage (advisory)
-import { mkdirSync, writeFileSync } from "node:fs";
+// SITA OS — DB Index Coverage Validator (ADVISORY)
+// Replaces former stub with real validation
+import { ViolationCollector } from "../../architecture/lib/utils";
+import { EXPECTED_INDEXES } from "../../../src/lib/db/index-coverage-registry";
+import { TTL_GOVERNANCE_MAP } from "../../../src/lib/db/ttl-governance-map";
 
-mkdirSync("generated", { recursive: true });
-writeFileSync("generated/db-index-coverage.json", JSON.stringify({
-  generatedAt: new Date().toISOString(),
-  gate: "db-index-retention-coverage",
-  ok: true,
-  advisory: true,
-  ttlColumnsChecked: ["expires_at", "scheduled_purge_at", "cooldown_expires_at"],
-  retentionPolicies: [
-    { tableFamily: "ai_invocations", retentionDays: 90, archivePolicy: "soft-delete" },
-    { tableFamily: "ai_inference_receipts", retentionDays: 90, archivePolicy: "soft-delete" },
-    { tableFamily: "admin_action_audit", retentionDays: 365, archivePolicy: "append-only" },
-    { tableFamily: "account_deletion_requests", retentionDays: 30, archivePolicy: "hard-delete-after-purge" },
-  ],
-}, null, 2));
-console.log("✅ DB index & retention coverage report generated (advisory)");
+const vc = new ViolationCollector();
+
+// Check that all TTL tables have declared index expectations
+for (const ttl of TTL_GOVERNANCE_MAP) {
+  const hasIndex = EXPECTED_INDEXES.some(i => i.table === ttl.table && i.columns.includes(ttl.ttlColumn));
+  if (!hasIndex) {
+    vc.add("index-coverage-registry", "missing-ttl-index", `TTL table ${ttl.table} column ${ttl.ttlColumn} not in expected indexes`, "warning");
+  }
+}
+
+// Check critical indexes are declared
+const critical = EXPECTED_INDEXES.filter(i => i.priority === "critical");
+console.log(`  📊 Expected indexes: ${EXPECTED_INDEXES.length} (${critical.length} critical)`);
+console.log(`  📊 TTL tables: ${TTL_GOVERNANCE_MAP.length}`);
+console.log(`  ${vc.errorCount === 0 ? "✅" : "⚠️"} Index coverage validated`);
+vc.report("check-db-index-coverage");
+vc.exitIfErrors();

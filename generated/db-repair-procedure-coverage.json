@@ -1,0 +1,151 @@
+{
+  "generatedAt": "2026-04-21T00:18:47.113Z",
+  "totalProcedures": 7,
+  "entries": [
+    {
+      "id": "repair-stuck-workflow",
+      "domain": "os-kernel",
+      "failureType": "Workflow stuck in non-terminal state",
+      "repairMode": "semi-automated",
+      "preconditions": [
+        "Identify stuck execution_envelope ID",
+        "Verify no in-flight steps"
+      ],
+      "auditRequirements": [
+        "Log repair action to admin_action_audit",
+        "Create proof_record"
+      ],
+      "rollbackSafety": "Revertible — restore previous status",
+      "runbookRef": "runbook-workflow-recovery",
+      "tablesAffected": [
+        "execution_envelopes",
+        "command_steps"
+      ],
+      "description": "Reset stuck workflow to failed/cancelled state"
+    },
+    {
+      "id": "repair-orphaned-install",
+      "domain": "platform-core",
+      "failureType": "Orphaned app install record",
+      "repairMode": "semi-automated",
+      "preconditions": [
+        "Verify app no longer in managed_apps",
+        "Confirm user intent"
+      ],
+      "auditRequirements": [
+        "Log cleanup to audit_logs"
+      ],
+      "rollbackSafety": "Soft-delete only — recoverable",
+      "runbookRef": "runbook-app-install-recovery",
+      "tablesAffected": [
+        "managed_apps",
+        "license_activations"
+      ],
+      "description": "Clean up orphaned app install records"
+    },
+    {
+      "id": "repair-broken-permission",
+      "domain": "auth-identity",
+      "failureType": "Broken permission ledger reference",
+      "repairMode": "manual",
+      "preconditions": [
+        "Identify affected user_id",
+        "Verify role state in user_roles"
+      ],
+      "auditRequirements": [
+        "Log to admin_action_audit with justification"
+      ],
+      "rollbackSafety": "Revertible — restore previous role assignment",
+      "runbookRef": "runbook-permission-repair",
+      "tablesAffected": [
+        "user_roles",
+        "os_role_capabilities",
+        "os_capabilities"
+      ],
+      "description": "Repair inconsistent permission/role assignments"
+    },
+    {
+      "id": "repair-receipt-mismatch",
+      "domain": "platform-core",
+      "failureType": "Receipt hash mismatch or missing receipt",
+      "repairMode": "manual",
+      "preconditions": [
+        "Identify mismatched receipt_id",
+        "Locate source execution_envelope"
+      ],
+      "auditRequirements": [
+        "Log repair to admin_action_audit",
+        "Create corrective proof_record"
+      ],
+      "rollbackSafety": "Append-only — new receipt supplements old",
+      "runbookRef": "runbook-receipt-reconciliation",
+      "tablesAffected": [
+        "receipts",
+        "proof_records",
+        "execution_envelopes"
+      ],
+      "description": "Reconcile mismatched or missing execution receipts"
+    },
+    {
+      "id": "repair-connector-token",
+      "domain": "connector-fabric",
+      "failureType": "Invalidated or corrupt connector token",
+      "repairMode": "automated",
+      "preconditions": [
+        "Verify connector_config exists",
+        "User must re-authorize if token expired"
+      ],
+      "auditRequirements": [
+        "Log token cleanup to sync_logs"
+      ],
+      "rollbackSafety": "Non-revertible — user must re-auth",
+      "runbookRef": "runbook-connector-token-cleanup",
+      "tablesAffected": [
+        "connector_tokens",
+        "connector_oauth_flows"
+      ],
+      "description": "Clean up invalidated connector tokens and trigger re-auth"
+    },
+    {
+      "id": "repair-session-corruption",
+      "domain": "os-kernel",
+      "failureType": "Corrupted or stuck session",
+      "repairMode": "automated",
+      "preconditions": [
+        "Identify affected session_id"
+      ],
+      "auditRequirements": [
+        "Log session invalidation to os_audit_events"
+      ],
+      "rollbackSafety": "Non-revertible — session must be re-established",
+      "runbookRef": "runbook-session-recovery",
+      "tablesAffected": [
+        "os_sessions",
+        "admin_sessions",
+        "cloud_device_sessions"
+      ],
+      "description": "Invalidate corrupted sessions and force re-authentication"
+    },
+    {
+      "id": "repair-queue-state",
+      "domain": "platform-core",
+      "failureType": "Stuck queue/retry entries",
+      "repairMode": "semi-automated",
+      "preconditions": [
+        "Identify stuck entries by status + age",
+        "Verify no active processing"
+      ],
+      "auditRequirements": [
+        "Log queue repair to audit_logs"
+      ],
+      "rollbackSafety": "Entries can be re-queued",
+      "runbookRef": "runbook-queue-repair",
+      "tablesAffected": [
+        "ai_workforce_approval_queue",
+        "advisor_action_queue",
+        "cloud_worker_jobs"
+      ],
+      "description": "Reset stuck queue entries to retryable state or dead-letter"
+    }
+  ]
+}
