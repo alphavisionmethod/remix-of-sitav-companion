@@ -1,128 +1,153 @@
 
 
-# Release Distribution Closure — Implementation Plan
+# Product Model & Hard Proof Closure — Implementation Plan
 
 ## Summary
 
-Implement a complete release-proof system covering desktop signing/notarization truth, OS boot validation, install/upgrade/rollback matrix, hardware compatibility, first-boot certification, channel migration, provenance/attestation, checksum publication, and evidence packs. All work extends existing canonical systems — no second release platform.
+Implement a formal product-model layer (11 canonical contracts + generator + 12 validators) and a 7-category hard-proof model (8 contracts + generator + 8 validators) to close the gap between "many pages exist" and "one coherent, provably working product." All work extends existing canonical systems (`src/platform/`, `src/lib/platform/proof/`, `src/lib/truth/`) rather than creating parallel platforms.
 
----
-
-## PART 1 — Canonical Systems to Preserve and Extend
+## Existing Systems to Preserve and Extend
 
 | System | Location | Action |
 |---|---|---|
-| Electron release pipeline | `.github/workflows/release-electron.yml` | Extend with signing steps |
-| OS ISO/OVA build pipeline | `.github/workflows/os-build-iso.yml` | Already has QEMU smoke, extend with matrix proof |
-| Desktop credential verifier | `scripts/release/desktop/verify-signing-credentials.ts` | Extend to emit notarization status |
-| Artifact proof closure check | `scripts/release/check-artifact-proof-closure.ts` | Extend required artifacts list |
-| Release contracts package | `src/packages/release-contracts/` | Add new types |
-| First-boot script | `scripts/release/iso/sita-first-boot.sh` | Reference in certification |
-| Provenance attestation | `public/generated/release-provenance-attestation.json` | Replace with richer model |
-| OS boot proof bundle | `public/generated/os-boot-proof-bundle.json` | Extend |
-| VMware supply-chain scripts | `scripts/release/vmware/` | Reference, do not duplicate |
+| Proof Registry (10 classes) | `src/lib/platform/proof/proof-registry.ts` | Extend with 7-category model |
+| Proof Requirement Map | `src/lib/platform/proof/proof-requirement-map.ts` | Keep as-is |
+| Notifications barrel | `src/platform/notifications/index.ts` | Extend with center model |
+| Search barrel | `src/platform/search/index.ts` | Extend with command-search model |
+| Auth barrel | `src/platform/auth/index.ts` | Extend with user model contract |
+| Shell runtime profiles | `src/shell-runtime/` | Reference from navigation model |
+| Truth governance | `src/lib/truth/` | Wire proof categories into claims |
+| Feature-runtime-tier registry | `src/runtimes/feature-runtime-tier-registry.ts` | Reference from offline matrix |
+| Command palettes | `src/components/sita/CommandPalette.tsx` + domain variants | Reference from command-search model |
 
----
+## Phase 1 — Product Model Contracts (11 files)
 
-## PART 2 — Duplicates to Consolidate
+Create `src/platform/product/` with these canonical TypeScript contracts:
 
-- `scripts/release/supply-chain/sita-ota-agent.sh` vs `scripts/release/iso/sita-ota-agent.sh` — keep ISO version, alias supply-chain
-- `scripts/release/checks/check-release-readiness.ts` is misnamed (checks prompts, not release) — rename or repurpose
+1. **user-model-contract.ts** — Canonical user identity (auth ID, roles, entity scope, persona, session context, settings ownership, operator distinction). References existing `AuthContext` and role system.
 
----
+2. **navigation-model.ts** — Canonical navigation across shells, route families, app launches, admin paths, deep links. References existing route-plane-map and shell-runtime profiles.
 
-## PART 3 — New Files to Create
+3. **task-action-model.ts** — Cross-domain work object and action grammar (task ID, domain, action type, approval/escalation binding, notification/search discoverability, evidence attachment).
 
-### Phase 1: Core Contracts (src/lib/release/)
+4. **notification-center-model.ts** — Unified notification semantics (alerts, reminders, approvals, AI recommendations, integration failures, actionable vs informational, history/dismissal). Extends existing notification hooks.
 
-1. **`src/lib/release/artifact-proof-contract.ts`** — Canonical proof model per build target (target ID, artifact type, signing requirements, provenance, checksums, channels, boot/install validation, hardware compat, support linkage, readiness state)
+5. **command-search-model.ts** — Universal command/search/discovery layer (command palette, global search, cross-domain entity lookup, action invocation, help/diagnostic discovery). References existing `CommandPalette` and `use-global-search`.
 
-2. **`src/lib/release/desktop-signing-policy.ts`** — Per-platform signing requirements (linux: ready, macOS: deferred-on-cert, win32: deferred-on-cert), required secrets, gate behavior, closure path
+6. **deep-link-registry.ts** — Cross-app deep-link routing (link identities, parameters, auth/runtime restrictions, shell/window behavior, context restoration).
 
-3. **`src/lib/release/os-boot-validation-policy.ts`** — Boot criteria per format (ISO, OVA, RAW), CI job mapping, failure detection, recovery expectations, evidence emitted
+7. **state-grammar.ts** — Shared product states (loading, empty, error, blocked, degraded, recovering, ready, attention-required, stale-data, permission-required, evidence-required).
 
-4. **`src/lib/release/install-upgrade-rollback-matrix.ts`** — Fresh install, upgrade, rollback, channel migration, downgrade constraints per target
+8. **trust-explanation-layer.ts** — Unified "why am I seeing this?" model (provenance, AI disclosure, permission explanation, trust copy, support escalation).
 
-5. **`src/lib/release/hardware-compatibility-matrix.ts`** — Desktop OS variants, VM environments (QEMU, VMware, VirtualBox), appliance targets, GPU/TPM requirements
+9. **offline-degraded-matrix.ts** — Product-wide offline/degraded behavior matrix per domain (online-only, offline-read, degraded-safe, blocked, sync/recovery). References existing `mobile-offline-policy` and `offline-queue`.
 
-6. **`src/lib/release/first-boot-certification.ts`** — First shell launch, runtime readiness, essential daemons, profile resolution, crash-safe startup checks
+10. **settings-coherence-map.ts** — Unified settings ownership (user-level vs domain-level vs operator-level, visibility rules, runtime constraints). References existing `settings-profile.ts`.
 
-7. **`src/lib/release/release-channel-policy.ts`** — Channels (dev, internal, beta, stable), promotion rules, migration semantics, rollback behavior, data safety
+11. **index.ts** — Barrel export for all product model contracts.
 
-8. **`src/lib/release/provenance-attestation-builder.ts`** — Builder that assembles provenance records from build workflow, source revision, signing status, materials
+Supporting contracts (4 files):
+- **domain-boundary-map.ts** — Domain purposes, core objects, allowed/forbidden overlaps, navigation entries, ownership.
+- **recent-history-model.ts** — Resume recent work, cross-app context recovery, action history.
+- **permission-explanation-policy.ts** — What permission, why needed, what if denied, help path.
+- **evidence-disclosure-map.ts** — Evidence/provenance disclosure requirements per domain.
 
-9. **`src/lib/release/checksum-publication.ts`** — Per-artifact checksum algorithm, value generation, publication path, verification guidance
+## Phase 2 — Hard Proof Model (7-Category, 8 files)
 
-10. **`src/lib/release/release-evidence-pack-builder.ts`** — Assembles coherent evidence packs per target combining all above artifacts
+Create `src/lib/proof/` with these canonical contracts:
 
-### Phase 2: Generated Proof Artifacts
+1. **proof-category-model.ts** — Defines the 7 proof categories: implementation, wiring, behavior, failure, recovery, operational, release. Each with description, minimum evidence requirements, and confidence weight.
 
-A generator script **`scripts/release/generate-release-proof-artifacts.ts`** that produces:
+2. **system-proof-registry.ts** — Maps 14 major subsystems (AI runtime, advisor/boardroom, connectors, app platform, frontend, mobile, desktop, OS, security, admin, release, truth governance, notifications, search) to proof coverage across all 7 categories.
 
-- `public/generated/release-artifact-proof/desktop/proof-pack.json`
-- `public/generated/release-artifact-proof/os-images/proof-pack.json`
-- `public/generated/desktop-notarization-status.json`
-- `public/generated/os-boot-ci-matrix.json`
-- `public/generated/release-checksums.json`
-- `public/generated/install-upgrade-rollback-matrix.json`
-- `public/generated/hardware-compatibility-validation.json`
-- `public/generated/first-boot-certification-report.json`
-- `public/generated/release-channel-migration-report.json`
-- `public/generated/supply-chain-attestation.json`
-- `public/generated/release-supportability-report.json`
+3. **proof-gap-engine.ts** — Detects missing proof coverage per subsystem per category. Computes gap severity and blocker status.
 
-Updates existing `public/generated/release-provenance-attestation.json` with full provenance model.
+4. **proof-threshold-policy.ts** — Minimum evidence thresholds per category for "working" claims. Downgrade rules when categories are incomplete.
 
-### Phase 3: Validators / Gate Scripts
+5. **proof-confidence-model.ts** — Confidence scoring per subsystem based on proof category coverage. Maps to approved readiness language.
 
-Create under `scripts/release/checks/`:
+6. **behavior-proof-map.ts** — Maps behavioral proof artifacts (e2e tests, nightly runs, runtime probes) to subsystems.
 
-1. `check-desktop-signing-and-notarization.ts`
-2. `check-os-boot-validation.ts`
-3. `check-install-upgrade-rollback-matrix.ts`
-4. `check-hardware-compatibility.ts`
-5. `check-first-boot-certification.ts`
-6. `check-release-channel-migration.ts`
-7. `check-provenance-attestation.ts`
-8. `check-checksum-publication.ts`
-9. `check-release-evidence-packs.ts`
+7. **failure-proof-map.ts** — Maps failure/recovery proof artifacts (chaos drills, DR drills, kill-switch tests, rollback validation) to subsystems.
 
-Each validator inspects the generated artifacts, classifies findings as BLOCK or ADVISORY, and emits gate reports via the existing `emitGateReport` utility.
+8. **index.ts** — Barrel export.
 
-### Phase 4: Integration Wiring
+## Phase 3 — Generator Script
 
-- Update `scripts/release/check-artifact-proof-closure.ts` to require all new generated artifacts
-- Add `generate:release-proof` script to `package.json`
-- Add `check:release-proof` script that runs all 9 validators
-- Wire into `scripts/generate-all.ts`
-- Link to existing runbooks: `docs/runbooks/release-rollback.md`, `docs/runbooks/vmware-boot-failure.md`, `docs/runbooks/desktop-host-bridge-failure.md`
+Create `scripts/product/generate-product-proof-artifacts.ts`:
 
----
+Generates all 23 required artifacts in `generated/`:
 
-## PART 4 — Deployment Closure Checklist
+**Product model artifacts (13):**
+- product-model-closure.json
+- navigation-coherence-report.json
+- task-action-model-report.json
+- notification-center-coverage.json
+- command-search-coverage.json
+- deep-link-coverage.json
+- state-grammar-coverage.json
+- trust-explanation-coverage.json
+- offline-degraded-coverage.json
+- settings-coherence-report.json
+- domain-boundary-clarity-report.json
+- recent-history-recovery-report.json
+- permission-explanation-coverage.json
 
-Distribution is production-closed only when ALL are true:
+**Proof model artifacts (10):**
+- system-proof-matrix.json
+- proof-gap-report.json (extends existing)
+- behavior-proof-coverage.json
+- failure-proof-coverage.json
+- recovery-proof-coverage.json
+- operational-proof-coverage.json
+- release-proof-coverage.json
+- proof-confidence-scoreboard.json
+- subsystem-proof-readiness.json
+- proof-threshold-audit.json
 
-- [ ] Desktop signing/notarization status explicitly declared per platform
-- [ ] OS image boot validation runs in CI (QEMU smoke for ISO, OVA)
-- [ ] Install/upgrade/rollback matrix declared and referenced
-- [ ] Hardware compatibility matrix declared with honest gap reporting
-- [ ] First-boot certification criteria defined per shipped format
-- [ ] Release channel promotion/migration rules codified
-- [ ] Provenance attestation emitted per artifact
-- [ ] SHA-256 checksums published per artifact
-- [ ] Evidence packs generated for desktop and OS-images targets
-- [ ] All 9 gate validators pass (BLOCK issues = 0)
-- [ ] No duplicate release logic remains
+## Phase 4 — Validators (20 scripts)
 
----
+**Product model validators (12) in `scripts/product/`:**
 
-## Technical Notes
+1. check-user-model-coherence.ts
+2. check-navigation-coherence.ts
+3. check-task-action-model.ts
+4. check-notification-center-coverage.ts
+5. check-command-search-coverage.ts
+6. check-deep-link-coverage.ts
+7. check-state-grammar-coverage.ts
+8. check-trust-explanation-coverage.ts
+9. check-offline-degraded-matrix.ts
+10. check-settings-coherence.ts
+11. check-domain-boundary-clarity.ts
+12. check-permission-explanation-coverage.ts
 
-- All contract files use TypeScript interfaces extending existing patterns from `src/packages/release-contracts/`
-- All validators use the existing `ViolationCollector` and `emitGateReport` utilities
-- Generated artifacts follow the existing `public/generated/` convention
-- The generator script is idempotent and safe to run in CI or locally
-- Desktop signing remains honestly "deferred-on-cert" until Apple/Windows secrets land — the system codifies the exact closure path without false claims
-- Approximately 22 new files total across contracts, generators, and validators
+**Proof model validators (8) in `scripts/proof/`:**
+
+13. check-system-proof-matrix.ts
+14. check-proof-gap-engine.ts
+15. check-behavior-proof-coverage.ts
+16. check-failure-proof-coverage.ts
+17. check-recovery-proof-coverage.ts
+18. check-operational-proof-coverage.ts
+19. check-release-proof-coverage.ts
+20. check-proof-thresholds.ts
+
+Each validator uses the existing `emitGateReport` utility and checks for both source contracts and generated artifacts.
+
+## Technical Details
+
+- All contracts use TypeScript `as const` readonly arrays for registry data
+- Product model contracts reference existing canonical systems (AuthContext, route-plane-map, shell-runtime profiles, CommandPalette, notification hooks) rather than replacing them
+- Proof model extends the existing `ProofClass` / `ProofRegistryEntry` system with 7 deployment-readiness categories that are orthogonal to the runtime proof classes
+- Generator script is idempotent, safe for CI and local execution
+- Validators use the shared `emitGateReport` from `scripts/validation/_lib/`
+- Approximately 35 new files total: 15 product contracts, 8 proof contracts, 1 generator, 20 validators, plus barrel exports
+
+## No-Duplication Enforcement
+
+- The product model does not replace existing `CommandPalette`, notification hooks, or search hooks — it provides the governance contract they conform to
+- The 7-category proof model does not replace the existing runtime `ProofRegistry` (which tracks approval/execution/audit proofs) — it adds a deployment-readiness proof taxonomy
+- No new React components, pages, or routes are created
+- No existing files are deleted; barrel exports are added to wire new contracts into the platform
 
