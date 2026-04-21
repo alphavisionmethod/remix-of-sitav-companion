@@ -7,33 +7,17 @@ const DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 export function FinanceMoneyFlow() {
   const [period, setPeriod] = useState<"current" | "previous">("current");
   const data = period === "current" ? CURRENT_WEEK : PREVIOUS_WEEK;
+  const prevData = period === "current" ? PREVIOUS_WEEK : CURRENT_WEEK;
 
-  const { path, areaPath, dots } = useMemo(() => {
-    const W = 460, H = 160, padX = 30, padY = 20;
-    const min = Math.min(...data) * 0.9;
-    const max = Math.max(...data) * 1.05;
-    const range = max - min || 1;
-    const step = (W - padX * 2) / (data.length - 1);
-
-    const pts = data.map((v, i) => ({
-      x: padX + i * step,
-      y: padY + (1 - (v - min) / range) * (H - padY * 2),
-      value: v,
-    }));
-
-    const line = pts.map((p, i) => `${i === 0 ? "M" : "L"}${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(" ");
-    const area = `${line} L${pts[pts.length - 1].x},${H} L${pts[0].x},${H} Z`;
-
-    return { path: line, areaPath: area, dots: pts };
-  }, [data]);
+  const maxVal = useMemo(() => Math.max(...data, ...prevData) * 1.1, [data, prevData]);
 
   return (
-    <div className="rounded-2xl p-5 bg-[#12121e] border border-[#1a1a2e]">
+    <div className="rounded-2xl p-5 card-vibrant card-vibrant-green">
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <div>
-          <p className="text-xs text-white/40 uppercase tracking-wider">Savings</p>
-          <p className="text-2xl font-bold text-white/90">
+          <p className="text-xs text-muted-foreground uppercase tracking-wider">Savings</p>
+          <p className="text-2xl font-bold text-foreground">
             ${data.reduce((a, b) => a + b, 0).toLocaleString()}
           </p>
         </div>
@@ -44,8 +28,8 @@ export function FinanceMoneyFlow() {
               onClick={() => setPeriod(p)}
               className={`px-3 py-1 rounded-full text-[11px] font-medium transition-colors ${
                 period === p
-                  ? "bg-emerald-500/20 text-emerald-400"
-                  : "text-white/30 hover:text-white/50"
+                  ? "bg-trust-safe/20 text-trust-safe"
+                  : "text-muted-foreground hover:text-secondary-foreground"
               }`}
             >
               {p === "current" ? "This Week" : "Last Week"}
@@ -54,32 +38,57 @@ export function FinanceMoneyFlow() {
         </div>
       </div>
 
-      {/* Chart */}
-      <svg viewBox="0 0 460 160" className="w-full" fill="none">
-        <defs>
-          <linearGradient id="fin-flow-grad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="rgb(16,185,129)" stopOpacity={0.3} />
-            <stop offset="100%" stopColor="rgb(16,185,129)" stopOpacity={0.02} />
-          </linearGradient>
-        </defs>
-        <path d={areaPath} fill="url(#fin-flow-grad)" />
-        <path
-          d={path}
-          stroke="rgb(16,185,129)"
-          strokeWidth={2.5}
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          style={{ filter: "drop-shadow(0 0 6px rgba(16,185,129,0.5))" }}
-        />
-        {dots.map((dot, i) => (
-          <g key={i}>
-            <circle cx={dot.x} cy={dot.y} r={4} fill="#12121e" stroke="rgb(16,185,129)" strokeWidth={2} />
-            <text x={dot.x} y={155} textAnchor="middle" className="text-[10px]" fill="rgba(255,255,255,0.3)">
-              {DAYS[i]}
-            </text>
-          </g>
-        ))}
-      </svg>
+      {/* Bar Chart — dual color like reference */}
+      <div className="flex items-end gap-2 h-[140px] mt-2">
+        {data.map((val, i) => {
+          const diff = val - prevData[i];
+          const isPositive = diff >= 0;
+          const barH = (val / maxVal) * 100;
+          const prevH = (prevData[i] / maxVal) * 100;
+          return (
+            <div key={i} className="flex-1 flex flex-col items-center gap-1">
+              <div className="w-full flex items-end gap-0.5 h-[110px]">
+                {/* Previous bar */}
+                <div
+                  className="flex-1 rounded-t-sm transition-all duration-500"
+                  style={{
+                    height: `${prevH}%`,
+                    background: 'linear-gradient(180deg, hsl(350 70% 55%), hsl(340 60% 42%))',
+                    boxShadow: '0 0 6px hsl(350 70% 55% / 0.25)',
+                    opacity: 0.7,
+                  }}
+                />
+                {/* Current bar */}
+                <div
+                  className="flex-1 rounded-t-sm transition-all duration-500"
+                  style={{
+                    height: `${barH}%`,
+                    background: isPositive
+                      ? 'linear-gradient(180deg, hsl(170 70% 55%), hsl(152 65% 42%))'
+                      : 'linear-gradient(180deg, hsl(350 70% 55%), hsl(340 60% 42%))',
+                    boxShadow: isPositive
+                      ? '0 0 8px hsl(165 70% 50% / 0.35)'
+                      : '0 0 8px hsl(350 70% 55% / 0.35)',
+                  }}
+                />
+              </div>
+              <span className="text-[10px] text-muted-foreground">{DAYS[i]}</span>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Legend */}
+      <div className="flex items-center gap-4 mt-3">
+        <div className="flex items-center gap-1.5">
+          <div className="w-2.5 h-2.5 rounded-sm" style={{ background: 'linear-gradient(180deg, hsl(170 70% 55%), hsl(152 65% 42%))' }} />
+          <span className="text-[10px] text-muted-foreground">This week</span>
+        </div>
+        <div className="flex items-center gap-1.5">
+          <div className="w-2.5 h-2.5 rounded-sm opacity-70" style={{ background: 'linear-gradient(180deg, hsl(350 70% 55%), hsl(340 60% 42%))' }} />
+          <span className="text-[10px] text-muted-foreground">Last week</span>
+        </div>
+      </div>
     </div>
   );
 }
