@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-04-21T02:25:42.897Z",
+  "generatedAt": "2026-04-21T02:26:57.624Z",
   "gate": "advisor-tool-permissions",
-  "ok": false,
+  "ok": true,
   "requiredRoles": [
     "business",
     "finance",
