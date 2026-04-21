@@ -1,118 +1,150 @@
 
 
-# Immersive Advisor Board UI Redesign
+# Self-Contained Website Demo Package
 
 ## Summary
 
-Transform the advisor frontend across OS Desktop and Mobile App to match the reference images: a dark, cinematic glassmorphic boardroom with holographic advisor cards, floating consensus/confidence HUDs, and glowing neon-accented portraits. The current implementation uses standard card grids with muted styling -- this redesign replaces it with a premium, immersive executive boardroom aesthetic.
+Create a standalone `src/website-demo/` folder containing a fully self-contained, zero-dependency (no auth, no Supabase, no real data) interactive SITA OS desktop demo. Visitors click desktop icons, open glassmorphic floating windows with mock app content, interact with the dock, and explore Business, Finance, Concierge, Boardroom, Investment, and utility apps -- all purely visual with hardcoded mock data.
 
 ## What Changes
 
-### Part 1 -- Immersive Boardroom Council View (Desktop)
+### Part 1 -- Demo Entry Point and Shell
 
-**New component: `src/components/advisors/ImmersiveBoardroomCouncil.tsx`**
+**New file: `src/website-demo/WebsiteDemo.tsx`**
 
-A full-viewport dark boardroom scene inspired by Image 1 (the round-table council). Features:
+A single top-level component that renders the full demo experience:
+- Dark gradient wallpaper with SITA branding (reuses the ambient background style from `ShellAmbientBackground`)
+- Desktop icon grid (8 app icons: Business, Finance, Concierge, Boardroom, Investment, Files, Notes, Settings)
+- Bottom dock bar with pinned apps and running-app indicators
+- Top menu bar showing "SITA OS" branding, clock, and status icons
+- Built-in lightweight window manager (local state, no context providers needed)
+- All interactions are self-contained -- no `useNavigate`, no `useAuth`, no Supabase calls
 
-- Dark gradient background simulating a premium executive room (`bg-gradient-to-b from-[#0a0a14] via-[#10101f] to-[#0d0d18]`)
-- Advisors arranged in a semicircular/oval layout using CSS transforms, each seat with:
-  - Large `AdvisorPortrait` (xl size) with domain-colored glowing ring
-  - Glassmorphic data card floating beside each advisor showing their key metric (e.g., `$3,800`, `+12%`, `Confidence 78%`)
-  - Speaking/active state with animated neon pulse
-- Center holographic HUD panel showing:
-  - **Consensus** gauge (circular progress ring)
-  - **Confidence** aggregate gauge
-  - SITA logo centered
-- Horizontal glassmorphic header: "EXECUTIVE'S BOARDROOM" with session counter
+### Part 2 -- Lightweight Demo Window Manager
 
-### Part 2 -- Advisor Personality Showcase Cards
+**New file: `src/website-demo/DemoWindowManager.tsx`**
 
-**New component: `src/components/advisors/AdvisorShowcaseCard.tsx`**
+Simplified floating window system (inspired by `FloatingWindow.tsx` but ~200 lines instead of 887):
+- Draggable windows with traffic-light close/minimize/maximize buttons
+- Glassmorphic window chrome using the same `MATERIALS` tokens
+- Z-index stacking on focus
+- Window state managed via `useState` array -- no external context
+- Supports opening multiple windows simultaneously
+- Smooth open/close animations via Framer Motion
 
-Inspired by Image 3 (the four personality cards). Each card is a tall glassmorphic panel:
+### Part 3 -- Mock App Content Panels
 
-- Top half: Large advisor portrait with ethereal/abstract gradient aura behind it
-- Advisor title below portrait (e.g., "Financial Strategist", "Business Growth Advisor", "Concierge Planner")
-- Bottom half: A miniature domain-relevant visualization (sparkline chart, calendar grid, or world map)
-- Glass material: `bg-white/[0.04] backdrop-blur-xl border border-white/[0.08]`
-- Perspective tilt on hover using CSS `transform: perspective(800px) rotateY()`
-- Used in the "Council" tab as the default view
+**New files in `src/website-demo/apps/`:**
 
-### Part 3 -- Debate Mode View Redesign
+Each is a static visual panel with hardcoded mock data:
 
-**Modify: `src/components/advisors/AdvisorDebateView.tsx`**
+- **`DemoBusinessApp.tsx`** -- Dashboard with mock KPI cards (Revenue $284k, Leads 47, Pipeline $1.2M), mini bar chart, recent activity list, sidebar nav showing available sections
+- **`DemoFinanceApp.tsx`** -- Peace Score gauge (78/100), monthly spending breakdown, bill reminders, account balances, budget progress bars
+- **`DemoConciergApp.tsx`** -- Today's schedule (5 items), upcoming tasks list, family calendar preview, household task cards
+- **`DemoBoardroomApp.tsx`** -- Advisor council view with 6 advisor portraits (using the generated PNGs), consensus gauge, active debate preview
+- **`DemoInvestmentApp.tsx`** -- Portfolio summary (mock positions), watchlist, performance sparklines, allocation donut chart
+- **`DemoFilesApp.tsx`** -- Finder-style file browser with folder tree and file grid
+- **`DemoNotesApp.tsx`** -- Notes list with preview pane, folder sidebar
+- **`DemoSettingsApp.tsx`** -- Settings categories list with toggle switches
 
-Inspired by Image 2 (dual-advisor debate). Replace the current basic card layout:
+### Part 4 -- Demo Dock
 
-- Split-screen dark layout with two advisor portraits facing each other
-- Left advisor: warm gold/amber accent glow; Right advisor: cool blue/teal accent glow
-- Between them: Large convergence score gauge (circular, animated)
-- Each side shows:
-  - Glassmorphic "Evidence" panel with structured findings
-  - Confidence progress bar with percentage
-  - "Counterpoints" section
-- Dark background with subtle particle/grid effects
+**New file: `src/website-demo/DemoDock.tsx`**
 
-### Part 4 -- AdvisorWorkspace Page Redesign
+Simplified dock bar:
+- 8 app icons with magnification effect on hover (CSS scale transform)
+- Running-app dot indicator for open windows
+- Click to open/focus app window
+- Glassmorphic bar material matching the real dock
+- App launcher button (+) that shows all available apps
 
-**Modify: `src/pages/advisors/AdvisorWorkspace.tsx`**
+### Part 5 -- Demo Menu Bar
 
-- Replace the `MainGuideHeader` with a cinematic dark header bar matching the reference OS chrome (back arrow, "ADVISORS" breadcrumb, "EXECUTIVE'S BOARDROOM" title, session counter)
-- Replace `CouncilGrid` with the new `ImmersiveBoardroomCouncil` for the boardroom mode and `AdvisorShowcaseCard` grid for the council/daily-pulse mode
-- Replace the tab bar with a sleek glassmorphic pill selector
-- Dark theme enforcement: wrap the advisor workspace in a dark-mode container (`dark` class) so it renders in the cinematic dark palette regardless of system theme
+**New file: `src/website-demo/DemoMenuBar.tsx`**
 
-### Part 5 -- Mobile App Advisor View
+Top status bar:
+- Left: Apple-style SITA logo, app name of focused window
+- Right: Live clock, Wi-Fi icon, battery icon, notification bell
+- Glassmorphic material from `MATERIALS.menuBar`
 
-**New component: `src/components/advisors/MobileAdvisorBoard.tsx`**
+### Part 6 -- Demo Desktop Icons
 
-Mobile-optimized version of the showcase:
+**New file: `src/website-demo/DemoDesktopIcons.tsx`**
 
-- Horizontal scroll of advisor personality cards (compact version of Part 2)
-- Tappable cards that expand to full-screen advisor detail
-- Bottom consensus bar showing aggregate confidence
-- Swipeable debate view for mobile
+Grid of double-clickable desktop icons:
+- macOS-style icon rendering (gradient square with rounded corners + label)
+- Single click selects (blue highlight), double click opens app window
+- Icons for all 8 apps with proper domain gradients
 
-**Modify: Mobile routes** to use the new component when navigating to advisors from the mobile app
+### Part 7 -- Shared Demo Primitives
 
-### Part 6 -- Shared Glassmorphic Primitives
+**New file: `src/website-demo/demo-primitives.tsx`**
 
-**New file: `src/components/advisors/boardroom-primitives.tsx`**
+Reusable building blocks for mock app content:
+- `MockCard` -- Glassmorphic stat card with label, value, trend indicator
+- `MockChart` -- Simple SVG sparkline/bar chart with hardcoded data
+- `MockTable` -- Styled table rows for lists
+- `MockGauge` -- Circular progress ring (used for Peace Score, consensus)
+- `MockSidebar` -- App sidebar with nav items and active state
+- `MockAvatar` -- Uses the real advisor portrait PNGs
 
-Shared building blocks used across Parts 1-5:
+### Part 8 -- Demo Data
 
-- `GlassPanel` -- Standard glassmorphic container with configurable blur, opacity, and border glow
-- `HolographicGauge` -- Circular animated gauge for consensus/confidence (SVG-based with gradient strokes)
-- `NeonRing` -- Animated glowing ring component for advisor portraits
-- `FloatingMetricCard` -- Small glassmorphic data readout that hovers near an advisor
-- `CinematicBackground` -- Dark gradient with optional grid/particle overlay
+**New file: `src/website-demo/demo-data.ts`**
 
-### Part 7 -- Generate Additional Advisor Portraits
+All mock data in one file:
+- Business KPIs, pipeline deals, lead list
+- Finance accounts, bills, spending categories
+- Concierge schedule, tasks, calendar events
+- Investment portfolio positions, watchlist
+- Advisor profiles with portrait image imports
+- File/folder tree structure
+- Notes list
 
-Generate portraits for the remaining advisor domains (Growth, Trust, Opportunity, Recovery, Boardroom, Family, General) using the AI image generation API, and register them in `advisor-avatar-assets.ts`. This ensures every advisor seat shows a real portrait, not a fallback icon.
+### Part 9 -- Integration Export
+
+**New file: `src/website-demo/index.ts`**
+
+Clean barrel export:
+```typescript
+export { WebsiteDemo } from './WebsiteDemo';
+```
+
+The component is designed to be dropped into any page:
+```tsx
+<WebsiteDemo />
+```
+
+It renders as a full-viewport interactive desktop experience with no external dependencies beyond React, Framer Motion, Lucide icons, and Tailwind CSS (all already in the project).
 
 ## Technical Details
 
-- All new components use Framer Motion for animations (spring physics, stagger reveals, pulse effects)
-- Dark theme is scoped using a `dark` class wrapper on the advisor workspace, not changing the global theme
-- Glassmorphic materials use `backdrop-blur-xl`, `bg-white/[0.03-0.06]`, `border-white/[0.06-0.12]`
-- The semicircular advisor layout uses absolute positioning with trigonometric placement (`Math.cos`/`Math.sin` for seat positions around an ellipse)
-- Advisor portraits use the existing `AdvisorPortrait` component with the generated PNGs from `advisor-avatar-assets.ts`
-- The `HolographicGauge` uses SVG `<circle>` with `stroke-dasharray`/`stroke-dashoffset` animation
-- Mobile view uses `snap-x` scroll containers and `Intersection Observer` for visibility-based animations
-- No new backend dependencies -- all data comes from existing hooks (`useAdvisorStatuses`, mock data, Supabase queries)
+- Zero auth/Supabase dependencies -- all imports stay within `website-demo/` or use `@/lib/utils`, `lucide-react`, `framer-motion`, and Tailwind
+- Advisor portraits imported from `@/assets/advisors/` (the generated PNGs)
+- Design tokens (gradients, materials, depth layers) are duplicated as local constants to avoid coupling to the OS runtime
+- Window manager uses `useReducer` with actions: `OPEN`, `CLOSE`, `FOCUS`, `MINIMIZE`, `MAXIMIZE`, `MOVE`
+- All animations use Framer Motion spring physics matching the real OS feel
+- Responsive: works at 1024px+ (shows "Best viewed on desktop" message below 1024px)
+- Total estimated size: ~15 files, ~2500 lines
 
 ## Files Created
-- `src/components/advisors/boardroom-primitives.tsx`
-- `src/components/advisors/ImmersiveBoardroomCouncil.tsx`
-- `src/components/advisors/AdvisorShowcaseCard.tsx`
-- `src/components/advisors/MobileAdvisorBoard.tsx`
-- Additional advisor portrait PNGs in `src/assets/advisors/`
+- `src/website-demo/index.ts`
+- `src/website-demo/WebsiteDemo.tsx`
+- `src/website-demo/DemoWindowManager.tsx`
+- `src/website-demo/DemoDock.tsx`
+- `src/website-demo/DemoMenuBar.tsx`
+- `src/website-demo/DemoDesktopIcons.tsx`
+- `src/website-demo/demo-primitives.tsx`
+- `src/website-demo/demo-data.ts`
+- `src/website-demo/apps/DemoBusinessApp.tsx`
+- `src/website-demo/apps/DemoFinanceApp.tsx`
+- `src/website-demo/apps/DemoConciergeApp.tsx`
+- `src/website-demo/apps/DemoBoardroomApp.tsx`
+- `src/website-demo/apps/DemoInvestmentApp.tsx`
+- `src/website-demo/apps/DemoFilesApp.tsx`
+- `src/website-demo/apps/DemoNotesApp.tsx`
+- `src/website-demo/apps/DemoSettingsApp.tsx`
 
 ## Files Modified
-- `src/components/advisors/AdvisorDebateView.tsx` -- Complete redesign to cinematic split-screen
-- `src/pages/advisors/AdvisorWorkspace.tsx` -- Wire new components, dark theme wrapper, cinematic header
-- `src/components/advisors/AdvisorCouncilShell.tsx` -- Update council tab to use showcase cards
-- `src/lib/advisors/advisor-avatar-assets.ts` -- Register all new domain portraits
-- Mobile route files as needed to integrate `MobileAdvisorBoard`
+- None -- fully additive
 
