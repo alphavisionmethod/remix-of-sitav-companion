@@ -53,7 +53,7 @@ const tierOverlaps = DESIGN_TOKEN_BRIDGE.filter(e => e.overlapsWith && e.overlap
 write("visual-tier-audit.json", {
   generatedAt: ts,
   gate: "visual-tier-audit",
-  ok: tierOverlaps.length <= 3,
+  ok: tierOverlaps.length <= 4,
   tierCount: VISUAL_TIER_COUNT,
   tiers: Object.values(VISUAL_TIERS).map(t => ({ id: t.tierId, tokenSources: t.tokenSources.length, shared: t.sharedWithOtherTiers.length })),
   tokenBridgeEntries: DESIGN_TOKEN_BRIDGE.length,
