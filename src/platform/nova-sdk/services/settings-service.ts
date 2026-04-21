@@ -135,6 +135,7 @@ export interface SettingsSchema {
   // General — Personalization
   "general.displayName": string;
   "general.defaultFocusDomain": "business" | "household" | "planning" | "mixed";
+  "general.quickAccessFavorites": string[];
 
   // General — Guidance
   "general.guidanceLevel": "minimal" | "standard" | "guided";
@@ -441,6 +442,7 @@ class SettingsServiceClass implements SystemService {
     // General — Personalization
     d.set("general.displayName", "");
     d.set("general.defaultFocusDomain", "mixed");
+    d.set("general.quickAccessFavorites", ["home", "dashboard", "boardroom", "finance"]);
     // General — Guidance
     d.set("general.guidanceLevel", "standard");
     d.set("general.showNewFeatureTips", true);
@@ -499,6 +501,7 @@ class SettingsServiceClass implements SystemService {
     this.constraints.set("general.navigationPreference", { enum: ["expanded", "collapsed", "minimal"] });
     this.constraints.set("general.openLinksIn", { enum: ["same", "new", "ask"] });
     this.constraints.set("general.defaultFocusDomain", { enum: ["business", "household", "planning", "mixed"] });
+    this.constraints.set("general.guidanceLevel", { enum: ["minimal", "standard", "guided"] });
     this.constraints.set("general.guidanceLevel", { enum: ["minimal", "standard", "guided"] });
     this.constraints.set("general.approvalStyle", { enum: ["ask-as-needed", "batch-reviews", "minimal-interruptions"] });
     this.constraints.set("privacy.docRetention", { enum: ["1year", "7years", "forever"] });
