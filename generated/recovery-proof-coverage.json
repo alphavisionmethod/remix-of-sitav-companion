@@ -1,0 +1,107 @@
+{
+  "generatedAt": "2026-04-21T07:48:18.926Z",
+  "gate": "recovery-proof",
+  "category": "RECOVERY",
+  "ok": false,
+  "totalSubsystems": 14,
+  "present": 0,
+  "partial": 7,
+  "missing": 7,
+  "entries": [
+    {
+      "subsystem": "ai-runtime",
+      "status": "partial",
+      "notes": "Budget recovery exists, full state recovery untested"
+    },
+    {
+      "subsystem": "advisor-boardroom",
+      "status": "missing",
+      "notes": "No rollback drill evidence"
+    },
+    {
+      "subsystem": "connectors",
+      "status": "missing",
+      "notes": "No reconnection drill"
+    },
+    {
+      "subsystem": "app-platform",
+      "status": "partial",
+      "notes": "State persistence exists via sessionStorage"
+    },
+    {
+      "subsystem": "frontend",
+      "status": "partial",
+      "notes": "Browser back/forward works, deep state recovery partial"
+    },
+    {
+      "subsystem": "mobile",
+      "status": "partial",
+      "notes": "Offline queue recovery exists"
+    },
+    {
+      "subsystem": "desktop",
+      "status": "missing",
+      "notes": "No auto-update rollback drill"
+    },
+    {
+      "subsystem": "os-runtime",
+      "status": "missing",
+      "notes": "No OS-level recovery drill"
+    },
+    {
+      "subsystem": "security",
+      "status": "partial",
+      "notes": "Session refresh exists, account recovery partial"
+    },
+    {
+      "subsystem": "admin",
+      "status": "missing",
+      "notes": "No admin state recovery drill"
+    },
+    {
+      "subsystem": "release",
+      "status": "partial"
+    },
+    {
+      "subsystem": "truth-governance",
+      "status": "partial"
+    },
+    {
+      "subsystem": "notifications",
+      "status": "missing",
+      "notes": "No missed-notification recovery"
+    },
+    {
+      "subsystem": "search",
+      "status": "missing",
+      "notes": "No search state recovery"
+    }
+  ],
+  "recoveryMap": [
+    {
+      "subsystem": "release",
+      "type": "rollback-validation",
+      "status": "verified"
+    },
+    {
+      "subsystem": "connectors",
+      "type": "reconnection-drill",
+      "status": "missing"
+    },
+    {
+      "subsystem": "desktop",
+      "type": "dr-drill",
+      "status": "missing"
+    },
+    {
+      "subsystem": "mobile",
+      "type": "dr-drill",
+      "status": "planned"
+    },
+    {
+      "subsystem": "admin",
+      "type": "dr-drill",
+      "status": "missing"
+    }
+  ]
+}

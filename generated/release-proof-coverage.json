@@ -1,0 +1,68 @@
+{
+  "generatedAt": "2026-04-21T07:48:18.926Z",
+  "gate": "release-proof",
+  "category": "RELEASE",
+  "ok": true,
+  "totalSubsystems": 14,
+  "present": 14,
+  "partial": 0,
+  "missing": 0,
+  "entries": [
+    {
+      "subsystem": "ai-runtime",
+      "status": "present"
+    },
+    {
+      "subsystem": "advisor-boardroom",
+      "status": "present"
+    },
+    {
+      "subsystem": "connectors",
+      "status": "present"
+    },
+    {
+      "subsystem": "app-platform",
+      "status": "present"
+    },
+    {
+      "subsystem": "frontend",
+      "status": "present"
+    },
+    {
+      "subsystem": "mobile",
+      "status": "present"
+    },
+    {
+      "subsystem": "desktop",
+      "status": "present"
+    },
+    {
+      "subsystem": "os-runtime",
+      "status": "present"
+    },
+    {
+      "subsystem": "security",
+      "status": "present"
+    },
+    {
+      "subsystem": "admin",
+      "status": "present"
+    },
+    {
+      "subsystem": "release",
+      "status": "present"
+    },
+    {
+      "subsystem": "truth-governance",
+      "status": "present"
+    },
+    {
+      "subsystem": "notifications",
+      "status": "present"
+    },
+    {
+      "subsystem": "search",
+      "status": "present"
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "generatedAt": "2026-04-21T07:48:18.926Z",
+  "gate": "offline-degraded",
+  "ok": true,
+  "totalDomains": 12,
+  "domainPolicies": [
+    {
+      "domain": "business",
+      "capability": "read-only"
+    },
+    {
+      "domain": "finance",
+      "capability": "read-only"
+    },
+    {
+      "domain": "concierge",
+      "capability": "queued-write"
+    },
+    {
+      "domain": "files",
+      "capability": "read-only"
+    },
+    {
+      "domain": "trust",
+      "capability": "read-only"
+    },
+    {
+      "domain": "admin",
+      "capability": "blocked"
+    },
+    {
+      "domain": "integrations",
+      "capability": "blocked"
+    },
+    {
+      "domain": "ai",
+      "capability": "blocked"
+    },
+    {
+      "domain": "workflows",
+      "capability": "read-only"
+    },
+    {
+      "domain": "support",
+      "capability": "read-only"
+    },
+    {
+      "domain": "settings",
+      "capability": "read-only"
+    },
+    {
+      "domain": "system",
+      "capability": "degraded-safe"
+    }
+  ]
+}

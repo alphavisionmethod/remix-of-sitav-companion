@@ -1,0 +1,68 @@
+{
+  "generatedAt": "2026-04-21T07:48:18.926Z",
+  "gate": "domain-boundary-clarity",
+  "ok": true,
+  "totalDomains": 12,
+  "domains": [
+    {
+      "domain": "business",
+      "purpose": "CRM, client management, proposals",
+      "coreObjectCount": 4
+    },
+    {
+      "domain": "finance",
+      "purpose": "Invoicing, payments, accounting, tax",
+      "coreObjectCount": 4
+    },
+    {
+      "domain": "concierge",
+      "purpose": "Scheduling, communications, task management",
+      "coreObjectCount": 4
+    },
+    {
+      "domain": "files",
+      "purpose": "Document management, storage, AI analysis",
+      "coreObjectCount": 4
+    },
+    {
+      "domain": "trust",
+      "purpose": "Compliance, privacy, evidence, provenance",
+      "coreObjectCount": 4
+    },
+    {
+      "domain": "admin",
+      "purpose": "Operator controls, fleet, diagnostics",
+      "coreObjectCount": 5
+    },
+    {
+      "domain": "integrations",
+      "purpose": "External connectors, sync, webhooks",
+      "coreObjectCount": 4
+    },
+    {
+      "domain": "ai",
+      "purpose": "AI advisors, boardroom, recommendations",
+      "coreObjectCount": 4
+    },
+    {
+      "domain": "workflows",
+      "purpose": "Automation, approval chains, orchestration",
+      "coreObjectCount": 4
+    },
+    {
+      "domain": "support",
+      "purpose": "Help, diagnostics, issue resolution",
+      "coreObjectCount": 4
+    },
+    {
+      "domain": "settings",
+      "purpose": "User/workspace preferences, configuration",
+      "coreObjectCount": 2
+    },
+    {
+      "domain": "system",
+      "purpose": "OS runtime, boot, recovery, updates",
+      "coreObjectCount": 3
+    }
+  ]
+}

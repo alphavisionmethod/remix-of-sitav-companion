@@ -1,0 +1,254 @@
+{
+  "generatedAt": "2026-04-21T07:48:18.926Z",
+  "gate": "proof-confidence",
+  "ok": true,
+  "overallScore": 76,
+  "overallLanguage": "pre-alpha",
+  "subsystems": [
+    {
+      "subsystem": "ai-runtime",
+      "confidenceScore": 78,
+      "readinessLanguage": "beta",
+      "presentCategories": [
+        "IMPLEMENTATION",
+        "WIRING",
+        "OPERATIONAL",
+        "RELEASE"
+      ],
+      "partialCategories": [
+        "BEHAVIOR",
+        "FAILURE",
+        "RECOVERY"
+      ],
+      "missingCategories": []
+    },
+    {
+      "subsystem": "advisor-boardroom",
+      "confidenceScore": 73,
+      "readinessLanguage": "beta",
+      "presentCategories": [
+        "IMPLEMENTATION",
+        "WIRING",
+        "OPERATIONAL",
+        "RELEASE"
+      ],
+      "partialCategories": [
+        "BEHAVIOR",
+        "FAILURE"
+      ],
+      "missingCategories": [
+        "RECOVERY"
+      ]
+    },
+    {
+      "subsystem": "connectors",
+      "confidenceScore": 73,
+      "readinessLanguage": "beta",
+      "presentCategories": [
+        "IMPLEMENTATION",
+        "WIRING",
+        "OPERATIONAL",
+        "RELEASE"
+      ],
+      "partialCategories": [
+        "BEHAVIOR",
+        "FAILURE"
+      ],
+      "missingCategories": [
+        "RECOVERY"
+      ]
+    },
+    {
+      "subsystem": "app-platform",
+      "confidenceScore": 88,
+      "readinessLanguage": "release-candidate",
+      "presentCategories": [
+        "IMPLEMENTATION",
+        "WIRING",
+        "BEHAVIOR",
+        "OPERATIONAL",
+        "RELEASE"
+      ],
+      "partialCategories": [
+        "FAILURE",
+        "RECOVERY"
+      ],
+      "missingCategories": []
+    },
+    {
+      "subsystem": "frontend",
+      "confidenceScore": 78,
+      "readinessLanguage": "beta",
+      "presentCategories": [
+        "IMPLEMENTATION",
+        "WIRING",
+        "OPERATIONAL",
+        "RELEASE"
+      ],
+      "partialCategories": [
+        "BEHAVIOR",
+        "FAILURE",
+        "RECOVERY"
+      ],
+      "missingCategories": []
+    },
+    {
+      "subsystem": "mobile",
+      "confidenceScore": 78,
+      "readinessLanguage": "beta",
+      "presentCategories": [
+        "IMPLEMENTATION",
+        "WIRING",
+        "OPERATIONAL",
+        "RELEASE"
+      ],
+      "partialCategories": [
+        "BEHAVIOR",
+        "FAILURE",
+        "RECOVERY"
+      ],
+      "missingCategories": []
+    },
+    {
+      "subsystem": "desktop",
+      "confidenceScore": 60,
+      "readinessLanguage": "alpha",
+      "presentCategories": [
+        "IMPLEMENTATION",
+        "WIRING",
+        "RELEASE"
+      ],
+      "partialCategories": [
+        "BEHAVIOR",
+        "OPERATIONAL"
+      ],
+      "missingCategories": [
+        "FAILURE",
+        "RECOVERY"
+      ]
+    },
+    {
+      "subsystem": "os-runtime",
+      "confidenceScore": 73,
+      "readinessLanguage": "beta",
+      "presentCategories": [
+        "IMPLEMENTATION",
+        "WIRING",
+        "OPERATIONAL",
+        "RELEASE"
+      ],
+      "partialCategories": [
+        "BEHAVIOR",
+        "FAILURE"
+      ],
+      "missingCategories": [
+        "RECOVERY"
+      ]
+    },
+    {
+      "subsystem": "security",
+      "confidenceScore": 88,
+      "readinessLanguage": "release-candidate",
+      "presentCategories": [
+        "IMPLEMENTATION",
+        "WIRING",
+        "BEHAVIOR",
+        "OPERATIONAL",
+        "RELEASE"
+      ],
+      "partialCategories": [
+        "FAILURE",
+        "RECOVERY"
+      ],
+      "missingCategories": []
+    },
+    {
+      "subsystem": "admin",
+      "confidenceScore": 73,
+      "readinessLanguage": "beta",
+      "presentCategories": [
+        "IMPLEMENTATION",
+        "WIRING",
+        "OPERATIONAL",
+        "RELEASE"
+      ],
+      "partialCategories": [
+        "BEHAVIOR",
+        "FAILURE"
+      ],
+      "missingCategories": [
+        "RECOVERY"
+      ]
+    },
+    {
+      "subsystem": "release",
+      "confidenceScore": 88,
+      "readinessLanguage": "release-candidate",
+      "presentCategories": [
+        "IMPLEMENTATION",
+        "WIRING",
+        "BEHAVIOR",
+        "OPERATIONAL",
+        "RELEASE"
+      ],
+      "partialCategories": [
+        "FAILURE",
+        "RECOVERY"
+      ],
+      "missingCategories": []
+    },
+    {
+      "subsystem": "truth-governance",
+      "confidenceScore": 88,
+      "readinessLanguage": "release-candidate",
+      "presentCategories": [
+        "IMPLEMENTATION",
+        "WIRING",
+        "BEHAVIOR",
+        "OPERATIONAL",
+        "RELEASE"
+      ],
+      "partialCategories": [
+        "FAILURE",
+        "RECOVERY"
+      ],
+      "missingCategories": []
+    },
+    {
+      "subsystem": "notifications",
+      "confidenceScore": 60,
+      "readinessLanguage": "alpha",
+      "presentCategories": [
+        "IMPLEMENTATION",
+        "WIRING",
+        "RELEASE"
+      ],
+      "partialCategories": [
+        "BEHAVIOR",
+        "OPERATIONAL"
+      ],
+      "missingCategories": [
+        "FAILURE",
+        "RECOVERY"
+      ]
+    },
+    {
+      "subsystem": "search",
+      "confidenceScore": 60,
+      "readinessLanguage": "alpha",
+      "presentCategories": [
+        "IMPLEMENTATION",
+        "WIRING",
+        "RELEASE"
+      ],
+      "partialCategories": [
+        "BEHAVIOR",
+        "OPERATIONAL"
+      ],
+      "missingCategories": [
+        "FAILURE",
+        "RECOVERY"
+      ]
+    }
+  ]
+}

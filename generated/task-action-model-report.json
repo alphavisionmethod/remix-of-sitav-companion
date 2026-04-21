@@ -1,0 +1,20 @@
+{
+  "generatedAt": "2026-04-21T07:48:18.926Z",
+  "gate": "task-action-model",
+  "ok": true,
+  "domainsWithBoundaries": 12,
+  "domainsCovered": [
+    "business",
+    "finance",
+    "concierge",
+    "files",
+    "trust",
+    "admin",
+    "integrations",
+    "ai",
+    "workflows",
+    "support",
+    "settings",
+    "system"
+  ]
+}

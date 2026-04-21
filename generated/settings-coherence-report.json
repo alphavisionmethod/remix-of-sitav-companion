@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-21T07:48:18.926Z",
+  "gate": "settings-coherence",
+  "ok": true,
+  "totalSettings": 10,
+  "byLevel": {
+    "user": 6,
+    "domain": 1,
+    "operator": 2,
+    "system": 1
+  }
+}

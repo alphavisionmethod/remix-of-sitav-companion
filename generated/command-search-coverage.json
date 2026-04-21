@@ -1,0 +1,17 @@
+{
+  "generatedAt": "2026-04-21T07:48:18.926Z",
+  "gate": "command-search",
+  "ok": true,
+  "modelDefined": true,
+  "resultKinds": [
+    "page",
+    "app",
+    "entity",
+    "action",
+    "setting",
+    "help",
+    "diagnostic",
+    "notification",
+    "recent"
+  ]
+}

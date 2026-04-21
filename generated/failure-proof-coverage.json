@@ -1,0 +1,133 @@
+{
+  "generatedAt": "2026-04-21T07:48:18.926Z",
+  "gate": "failure-proof",
+  "category": "FAILURE",
+  "ok": false,
+  "totalSubsystems": 14,
+  "present": 0,
+  "partial": 11,
+  "missing": 3,
+  "entries": [
+    {
+      "subsystem": "ai-runtime",
+      "status": "partial",
+      "notes": "Fallback chain exists, chaos drills missing"
+    },
+    {
+      "subsystem": "advisor-boardroom",
+      "status": "partial",
+      "notes": "Error boundaries exist, advisor failure isolation untested"
+    },
+    {
+      "subsystem": "connectors",
+      "status": "partial",
+      "notes": "Retry logic exists, failure isolation incomplete"
+    },
+    {
+      "subsystem": "app-platform",
+      "status": "partial",
+      "notes": "App crash isolation partial"
+    },
+    {
+      "subsystem": "frontend",
+      "status": "partial",
+      "notes": "Error boundaries exist, not all routes wrapped"
+    },
+    {
+      "subsystem": "mobile",
+      "status": "partial"
+    },
+    {
+      "subsystem": "desktop",
+      "status": "missing",
+      "notes": "No crash recovery drill"
+    },
+    {
+      "subsystem": "os-runtime",
+      "status": "partial",
+      "notes": "Kill-switch exists, full failure drill missing"
+    },
+    {
+      "subsystem": "security",
+      "status": "partial",
+      "notes": "Session expiry handled, MFA failure path partial"
+    },
+    {
+      "subsystem": "admin",
+      "status": "partial",
+      "notes": "Admin error handling exists, not fully tested"
+    },
+    {
+      "subsystem": "release",
+      "status": "partial",
+      "notes": "Rollback mechanism defined, drill missing"
+    },
+    {
+      "subsystem": "truth-governance",
+      "status": "partial",
+      "notes": "Contradiction detection works, no chaos drill"
+    },
+    {
+      "subsystem": "notifications",
+      "status": "missing",
+      "notes": "No notification failure handling"
+    },
+    {
+      "subsystem": "search",
+      "status": "missing",
+      "notes": "No search failure fallback"
+    }
+  ],
+  "failureMap": [
+    {
+      "subsystem": "ai-runtime",
+      "type": "fallback-chain",
+      "status": "verified"
+    },
+    {
+      "subsystem": "ai-runtime",
+      "type": "kill-switch-test",
+      "status": "planned"
+    },
+    {
+      "subsystem": "app-platform",
+      "type": "error-boundary",
+      "status": "verified"
+    },
+    {
+      "subsystem": "frontend",
+      "type": "error-boundary",
+      "status": "verified"
+    },
+    {
+      "subsystem": "security",
+      "type": "kill-switch-test",
+      "status": "planned"
+    },
+    {
+      "subsystem": "advisor-boardroom",
+      "type": "chaos-drill",
+      "status": "missing"
+    },
+    {
+      "subsystem": "os-runtime",
+      "type": "chaos-drill",
+      "status": "missing"
+    },
+    {
+      "subsystem": "notifications",
+      "type": "fallback-chain",
+      "status": "missing"
+    },
+    {
+      "subsystem": "search",
+      "type": "fallback-chain",
+      "status": "missing"
+    },
+    {
+      "subsystem": "truth-governance",
+      "type": "chaos-drill",
+      "status": "planned"
+    }
+  ]
+}

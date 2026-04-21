@@ -1,0 +1,295 @@
+{
+  "generatedAt": "2026-04-21T07:48:18.926Z",
+  "gate": "proof-gap",
+  "ok": true,
+  "totalGaps": 41,
+  "blockingGaps": 0,
+  "advisoryGaps": 41,
+  "gaps": [
+    {
+      "subsystem": "ai-runtime",
+      "category": "BEHAVIOR",
+      "status": "partial",
+      "severity": "ADVISORY",
+      "notes": "E2E coverage partial"
+    },
+    {
+      "subsystem": "ai-runtime",
+      "category": "FAILURE",
+      "status": "partial",
+      "severity": "ADVISORY",
+      "notes": "Fallback chain exists, chaos drills missing"
+    },
+    {
+      "subsystem": "ai-runtime",
+      "category": "RECOVERY",
+      "status": "partial",
+      "severity": "ADVISORY",
+      "notes": "Budget recovery exists, full state recovery untested"
+    },
+    {
+      "subsystem": "advisor-boardroom",
+      "category": "BEHAVIOR",
+      "status": "partial",
+      "severity": "ADVISORY",
+      "notes": "UI renders, e2e action flow partial"
+    },
+    {
+      "subsystem": "advisor-boardroom",
+      "category": "FAILURE",
+      "status": "partial",
+      "severity": "ADVISORY",
+      "notes": "Error boundaries exist, advisor failure isolation untested"
+    },
+    {
+      "subsystem": "advisor-boardroom",
+      "category": "RECOVERY",
+      "status": "missing",
+      "severity": "ADVISORY",
+      "notes": "No rollback drill evidence"
+    },
+    {
+      "subsystem": "connectors",
+      "category": "BEHAVIOR",
+      "status": "partial",
+      "severity": "ADVISORY",
+      "notes": "Sync flows partial"
+    },
+    {
+      "subsystem": "connectors",
+      "category": "FAILURE",
+      "status": "partial",
+      "severity": "ADVISORY",
+      "notes": "Retry logic exists, failure isolation incomplete"
+    },
+    {
+      "subsystem": "connectors",
+      "category": "RECOVERY",
+      "status": "missing",
+      "severity": "ADVISORY",
+      "notes": "No reconnection drill"
+    },
+    {
+      "subsystem": "app-platform",
+      "category": "FAILURE",
+      "status": "partial",
+      "severity": "ADVISORY",
+      "notes": "App crash isolation partial"
+    },
+    {
+      "subsystem": "app-platform",
+      "category": "RECOVERY",
+      "status": "partial",
+      "severity": "ADVISORY",
+      "notes": "State persistence exists via sessionStorage"
+    },
+    {
+      "subsystem": "frontend",
+      "category": "BEHAVIOR",
+      "status": "partial",
+      "severity": "ADVISORY",
+      "notes": "1,079 pages exist, e2e coverage partial"
+    },
+    {
+      "subsystem": "frontend",
+      "category": "FAILURE",
+      "status": "partial",
+      "severity": "ADVISORY",
+      "notes": "Error boundaries exist, not all routes wrapped"
+    },
+    {
+      "subsystem": "frontend",
+      "category": "RECOVERY",
+      "status": "partial",
+      "severity": "ADVISORY",
+      "notes": "Browser back/forward works, deep state recovery partial"
+    },
+    {
+      "subsystem": "mobile",
+      "category": "BEHAVIOR",
+      "status": "partial",
+      "severity": "ADVISORY",
+      "notes": "PWA mode, native untested"
+    },
+    {
+      "subsystem": "mobile",
+      "category": "FAILURE",
+      "status": "partial",
+      "severity": "ADVISORY"
+    },
+    {
+      "subsystem": "mobile",
+      "category": "RECOVERY",
+      "status": "partial",
+      "severity": "ADVISORY",
+      "notes": "Offline queue recovery exists"
+    },
+    {
+      "subsystem": "desktop",
+      "category": "BEHAVIOR",
+      "status": "partial",
+      "severity": "ADVISORY",
+      "notes": "Electron shell exists, e2e incomplete"
+    },
+    {
+      "subsystem": "desktop",
+      "category": "FAILURE",
+      "status": "missing",
+      "severity": "ADVISORY",
+      "notes": "No crash recovery drill"
+    },
+    {
+      "subsystem": "desktop",
+      "category": "RECOVERY",
+      "status": "missing",
+      "severity": "ADVISORY",
+      "notes": "No auto-update rollback drill"
+    },
+    {
+      "subsystem": "desktop",
+      "category": "OPERATIONAL",
+      "status": "partial",
+      "severity": "ADVISORY",
+      "notes": "Basic logging, no structured diagnostics"
+    },
+    {
+      "subsystem": "os-runtime",
+      "category": "BEHAVIOR",
+      "status": "partial",
+      "severity": "ADVISORY",
+      "notes": "Tier 1/2 tested, Tier 3/4 simulated"
+    },
+    {
+      "subsystem": "os-runtime",
+      "category": "FAILURE",
+      "status": "partial",
+      "severity": "ADVISORY",
+      "notes": "Kill-switch exists, full failure drill missing"
+    },
+    {
+      "subsystem": "os-runtime",
+      "category": "RECOVERY",
+      "status": "missing",
+      "severity": "ADVISORY",
+      "notes": "No OS-level recovery drill"
+    },
+    {
+      "subsystem": "security",
+      "category": "FAILURE",
+      "status": "partial",
+      "severity": "ADVISORY",
+      "notes": "Session expiry handled, MFA failure path partial"
+    },
+    {
+      "subsystem": "security",
+      "category": "RECOVERY",
+      "status": "partial",
+      "severity": "ADVISORY",
+      "notes": "Session refresh exists, account recovery partial"
+    },
+    {
+      "subsystem": "admin",
+      "category": "BEHAVIOR",
+      "status": "partial",
+      "severity": "ADVISORY",
+      "notes": "Admin pages render, action flows partial"
+    },
+    {
+      "subsystem": "admin",
+      "category": "FAILURE",
+      "status": "partial",
+      "severity": "ADVISORY",
+      "notes": "Admin error handling exists, not fully tested"
+    },
+    {
+      "subsystem": "admin",
+      "category": "RECOVERY",
+      "status": "missing",
+      "severity": "ADVISORY",
+      "notes": "No admin state recovery drill"
+    },
+    {
+      "subsystem": "release",
+      "category": "FAILURE",
+      "status": "partial",
+      "severity": "ADVISORY",
+      "notes": "Rollback mechanism defined, drill missing"
+    },
+    {
+      "subsystem": "release",
+      "category": "RECOVERY",
+      "status": "partial",
+      "severity": "ADVISORY"
+    },
+    {
+      "subsystem": "truth-governance",
+      "category": "FAILURE",
+      "status": "partial",
+      "severity": "ADVISORY",
+      "notes": "Contradiction detection works, no chaos drill"
+    },
+    {
+      "subsystem": "truth-governance",
+      "category": "RECOVERY",
+      "status": "partial",
+      "severity": "ADVISORY"
+    },
+    {
+      "subsystem": "notifications",
+      "category": "BEHAVIOR",
+      "status": "partial",
+      "severity": "ADVISORY",
+      "notes": "Hook renders, push untested in production"
+    },
+    {
+      "subsystem": "notifications",
+      "category": "FAILURE",
+      "status": "missing",
+      "severity": "ADVISORY",
+      "notes": "No notification failure handling"
+    },
+    {
+      "subsystem": "notifications",
+      "category": "RECOVERY",
+      "status": "missing",
+      "severity": "ADVISORY",
+      "notes": "No missed-notification recovery"
+    },
+    {
+      "subsystem": "notifications",
+      "category": "OPERATIONAL",
+      "status": "partial",
+      "severity": "ADVISORY",
+      "notes": "Basic logging only"
+    },
+    {
+      "subsystem": "search",
+      "category": "BEHAVIOR",
+      "status": "partial",
+      "severity": "ADVISORY",
+      "notes": "Palette renders, cross-domain search partial"
+    },
+    {
+      "subsystem": "search",
+      "category": "FAILURE",
+      "status": "missing",
+      "severity": "ADVISORY",
+      "notes": "No search failure fallback"
+    },
+    {
+      "subsystem": "search",
+      "category": "RECOVERY",
+      "status": "missing",
+      "severity": "ADVISORY",
+      "notes": "No search state recovery"
+    },
+    {
+      "subsystem": "search",
+      "category": "OPERATIONAL",
+      "status": "partial",
+      "severity": "ADVISORY",
+      "notes": "Basic logging only"
+    }
+  ],
+  "subsystemsWithBlockers": []
+}

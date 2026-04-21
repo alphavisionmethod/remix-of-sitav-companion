@@ -1,0 +1,43 @@
+{
+  "generatedAt": "2026-04-21T07:48:18.926Z",
+  "gate": "permission-explanation",
+  "ok": true,
+  "totalExplanations": 7,
+  "permissions": [
+    {
+      "key": "admin.users.manage",
+      "domain": "admin",
+      "riskLevel": "high"
+    },
+    {
+      "key": "admin.fleet.manage",
+      "domain": "admin",
+      "riskLevel": "critical"
+    },
+    {
+      "key": "admin.killswitch.manage",
+      "domain": "admin",
+      "riskLevel": "critical"
+    },
+    {
+      "key": "finance.payments.write",
+      "domain": "finance",
+      "riskLevel": "high"
+    },
+    {
+      "key": "ai.advisor.execute",
+      "domain": "ai",
+      "riskLevel": "high"
+    },
+    {
+      "key": "files.upload",
+      "domain": "files",
+      "riskLevel": "low"
+    },
+    {
+      "key": "integrations.manage",
+      "domain": "integrations",
+      "riskLevel": "medium"
+    }
+  ]
+}

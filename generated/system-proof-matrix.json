@@ -1,0 +1,135 @@
+{
+  "generatedAt": "2026-04-21T07:48:18.926Z",
+  "gate": "system-proof-matrix",
+  "ok": true,
+  "subsystemCount": 14,
+  "categoryCount": 7,
+  "matrix": {
+    "ai-runtime": {
+      "IMPLEMENTATION": "present",
+      "WIRING": "present",
+      "BEHAVIOR": "partial",
+      "FAILURE": "partial",
+      "RECOVERY": "partial",
+      "OPERATIONAL": "present",
+      "RELEASE": "present"
+    },
+    "advisor-boardroom": {
+      "IMPLEMENTATION": "present",
+      "WIRING": "present",
+      "BEHAVIOR": "partial",
+      "FAILURE": "partial",
+      "RECOVERY": "missing",
+      "OPERATIONAL": "present",
+      "RELEASE": "present"
+    },
+    "connectors": {
+      "IMPLEMENTATION": "present",
+      "WIRING": "present",
+      "BEHAVIOR": "partial",
+      "FAILURE": "partial",
+      "RECOVERY": "missing",
+      "OPERATIONAL": "present",
+      "RELEASE": "present"
+    },
+    "app-platform": {
+      "IMPLEMENTATION": "present",
+      "WIRING": "present",
+      "BEHAVIOR": "present",
+      "FAILURE": "partial",
+      "RECOVERY": "partial",
+      "OPERATIONAL": "present",
+      "RELEASE": "present"
+    },
+    "frontend": {
+      "IMPLEMENTATION": "present",
+      "WIRING": "present",
+      "BEHAVIOR": "partial",
+      "FAILURE": "partial",
+      "RECOVERY": "partial",
+      "OPERATIONAL": "present",
+      "RELEASE": "present"
+    },
+    "mobile": {
+      "IMPLEMENTATION": "present",
+      "WIRING": "present",
+      "BEHAVIOR": "partial",
+      "FAILURE": "partial",
+      "RECOVERY": "partial",
+      "OPERATIONAL": "present",
+      "RELEASE": "present"
+    },
+    "desktop": {
+      "IMPLEMENTATION": "present",
+      "WIRING": "present",
+      "BEHAVIOR": "partial",
+      "FAILURE": "missing",
+      "RECOVERY": "missing",
+      "OPERATIONAL": "partial",
+      "RELEASE": "present"
+    },
+    "os-runtime": {
+      "IMPLEMENTATION": "present",
+      "WIRING": "present",
+      "BEHAVIOR": "partial",
+      "FAILURE": "partial",
+      "RECOVERY": "missing",
+      "OPERATIONAL": "present",
+      "RELEASE": "present"
+    },
+    "security": {
+      "IMPLEMENTATION": "present",
+      "WIRING": "present",
+      "BEHAVIOR": "present",
+      "FAILURE": "partial",
+      "RECOVERY": "partial",
+      "OPERATIONAL": "present",
+      "RELEASE": "present"
+    },
+    "admin": {
+      "IMPLEMENTATION": "present",
+      "WIRING": "present",
+      "BEHAVIOR": "partial",
+      "FAILURE": "partial",
+      "RECOVERY": "missing",
+      "OPERATIONAL": "present",
+      "RELEASE": "present"
+    },
+    "release": {
+      "IMPLEMENTATION": "present",
+      "WIRING": "present",
+      "BEHAVIOR": "present",
+      "FAILURE": "partial",
+      "RECOVERY": "partial",
+      "OPERATIONAL": "present",
+      "RELEASE": "present"
+    },
+    "truth-governance": {
+      "IMPLEMENTATION": "present",
+      "WIRING": "present",
+      "BEHAVIOR": "present",
+      "FAILURE": "partial",
+      "RECOVERY": "partial",
+      "OPERATIONAL": "present",
+      "RELEASE": "present"
+    },
+    "notifications": {
+      "IMPLEMENTATION": "present",
+      "WIRING": "present",
+      "BEHAVIOR": "partial",
+      "FAILURE": "missing",
+      "RECOVERY": "missing",
+      "OPERATIONAL": "partial",
+      "RELEASE": "present"
+    },
+    "search": {
+      "IMPLEMENTATION": "present",
+      "WIRING": "present",
+      "BEHAVIOR": "partial",
+      "FAILURE": "missing",
+      "RECOVERY": "missing",
+      "OPERATIONAL": "partial",
+      "RELEASE": "present"
+    }
+  }
+}
