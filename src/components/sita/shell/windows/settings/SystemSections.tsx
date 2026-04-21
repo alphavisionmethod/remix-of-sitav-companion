@@ -439,7 +439,180 @@ function GeneralContentFull() {
       </NovaCard>
 
       {/* ── SECTION 9: Reset & Restore ── */}
-      <ResetSectionButton sectionId="general" />
+      <NovaCard>
+        <VStack spacing="tight">
+          <SectionHeader title="Reset & Restore" description="Safely manage your General settings" />
+          <GeneralResetActions />
+        </VStack>
+      </NovaCard>
+    </VStack>
+  );
+}
+
+const QUICK_ACCESS_OPTIONS = [
+  { id: "home", label: "Home", icon: <HomeIcon className="h-3 w-3" /> },
+  { id: "dashboard", label: "Dashboard", icon: <Layout className="h-3 w-3" /> },
+  { id: "boardroom", label: "Boardroom", icon: <Activity className="h-3 w-3" /> },
+  { id: "finance", label: "Finance", icon: <Activity className="h-3 w-3" /> },
+  { id: "business", label: "Business", icon: <Activity className="h-3 w-3" /> },
+  { id: "household", label: "Household", icon: <HomeIcon className="h-3 w-3" /> },
+  { id: "notifications", label: "Notifications", icon: <Bell className="h-3 w-3" /> },
+  { id: "launchpad", label: "Launchpad", icon: <Layout className="h-3 w-3" /> },
+];
+
+function QuickAccessFavorites() {
+  const [favorites, setFavorites] = useSettingsValue("general.quickAccessFavorites", ["home", "dashboard", "boardroom", "finance"] as any);
+  const favList = Array.isArray(favorites) ? favorites as string[] : ["home", "dashboard", "boardroom", "finance"];
+
+  const toggle = useCallback((id: string) => {
+    const next = favList.includes(id) ? favList.filter(f => f !== id) : [...favList, id];
+    setFavorites(next as any);
+    trackSettingChange("general.quickAccessFavorites", favList, next);
+  }, [favList, setFavorites]);
+
+  return (
+    <div className="grid grid-cols-4 gap-1.5">
+      {QUICK_ACCESS_OPTIONS.map(opt => {
+        const active = favList.includes(opt.id);
+        return (
+          <button key={opt.id} onClick={() => toggle(opt.id)} className={cn(
+            "flex flex-col items-center gap-1 rounded-lg border p-2 text-[9px] transition-all",
+            active
+              ? "border-[hsl(var(--primary))]/40 bg-[hsl(var(--primary))]/8 text-[hsl(var(--primary))]"
+              : "border-border/30 text-[hsl(0_0%_50%)] hover:border-border/60 hover:text-foreground"
+          )}>
+            {opt.icon}
+            <span className="font-medium">{opt.label}</span>
+            {active && <Star className="h-2 w-2 fill-current" />}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
+function trackSettingChange(key: string, oldValue: unknown, newValue: unknown) {
+  try {
+    window.dispatchEvent(new CustomEvent("sita-analytics", {
+      detail: {
+        event: "settings.general.changed",
+        properties: { key, oldValue, newValue, timestamp: new Date().toISOString() },
+      },
+    }));
+  } catch {}
+}
+
+function GeneralResetActions() {
+  const [confirmState, setConfirmState] = useState<"idle" | "restore" | "reset" | "clear">("idle");
+
+  useEffect(() => {
+    if (confirmState !== "idle") {
+      const t = setTimeout(() => setConfirmState("idle"), 4000);
+      return () => clearTimeout(t);
+    }
+  }, [confirmState]);
+
+  const doRestore = useCallback(() => {
+    if (confirmState !== "restore") { setConfirmState("restore"); return; }
+    // Delete all user-layer general keys → falls back to defaults
+    const ns = SettingsService.getNamespace("general.");
+    for (const key of Object.keys(ns)) SettingsService.delete(key as any, "user");
+    SettingsService.delete("appearance.theme", "user");
+    SettingsService.delete("sound.uiSounds", "user");
+    SettingsService.delete("appearance.reduceMotion", "user");
+    toast.success("Restored recommended defaults");
+    setConfirmState("idle");
+    trackSettingChange("general.*", "custom", "defaults");
+    window.dispatchEvent(new CustomEvent("nova-settings-reset", { detail: { section: "general" } }));
+  }, [confirmState]);
+
+  const doReset = useCallback(() => {
+    if (confirmState !== "reset") { setConfirmState("reset"); return; }
+    const ns = SettingsService.getNamespace("general.");
+    for (const key of Object.keys(ns)) SettingsService.delete(key as any, "user");
+    toast.success("General preferences reset");
+    setConfirmState("idle");
+    trackSettingChange("general.*", "custom", "reset");
+    window.dispatchEvent(new CustomEvent("nova-settings-reset", { detail: { section: "general" } }));
+  }, [confirmState]);
+
+  const doClear = useCallback(() => {
+    if (confirmState !== "clear") { setConfirmState("clear"); return; }
+    const ns = SettingsService.getNamespace("general.");
+    for (const key of Object.keys(ns)) SettingsService.delete(key as any, "user");
+    toast.success("Custom overrides cleared");
+    setConfirmState("idle");
+    trackSettingChange("general.*", "custom", "cleared");
+  }, [confirmState]);
+
+  const doExport = useCallback(() => {
+    const snapshot = SettingsService.exportSettings();
+    const blob = new Blob([snapshot], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url; a.download = `sita-settings-${new Date().toISOString().slice(0, 10)}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+    toast.success("Settings snapshot exported");
+    trackSettingChange("general.export", null, "exported");
+  }, []);
+
+  return (
+    <VStack spacing="tight">
+      <HStack spacing="tight" justify="between" align="center">
+        <VStack spacing="micro">
+          <NovaText variant="body">Restore Recommended Defaults</NovaText>
+          <NovaText variant="label" muted className="!text-[9px]">Return to SITA's recommended configuration</NovaText>
+        </VStack>
+        <NovaButton
+          variant={confirmState === "restore" ? "primary" : "secondary"}
+          onClick={doRestore}
+          icon={<RotateCcw className="h-3 w-3" />}
+          className={cn("!text-[9px] !py-1 !px-2.5", confirmState === "restore" && "!bg-[hsl(38_85%_50%)] hover:!bg-[hsl(38_85%_45%)]")}
+        >
+          {confirmState === "restore" ? "Confirm" : "Restore"}
+        </NovaButton>
+      </HStack>
+      <Divider />
+      <HStack spacing="tight" justify="between" align="center">
+        <VStack spacing="micro">
+          <NovaText variant="body">Reset General Preferences</NovaText>
+          <NovaText variant="label" muted className="!text-[9px]">Clear all custom settings on this page</NovaText>
+        </VStack>
+        <NovaButton
+          variant={confirmState === "reset" ? "primary" : "secondary"}
+          onClick={doReset}
+          icon={<Trash2 className="h-3 w-3" />}
+          className={cn("!text-[9px] !py-1 !px-2.5", confirmState === "reset" && "!bg-[hsl(0_65%_50%)] hover:!bg-[hsl(0_65%_45%)]")}
+        >
+          {confirmState === "reset" ? "Confirm Reset" : "Reset"}
+        </NovaButton>
+      </HStack>
+      <Divider />
+      <HStack spacing="tight" justify="between" align="center">
+        <VStack spacing="micro">
+          <NovaText variant="body">Clear Custom Overrides</NovaText>
+          <NovaText variant="label" muted className="!text-[9px]">Remove overrides while preserving account defaults</NovaText>
+        </VStack>
+        <NovaButton
+          variant={confirmState === "clear" ? "primary" : "secondary"}
+          onClick={doClear}
+          icon={<RotateCcw className="h-3 w-3" />}
+          className={cn("!text-[9px] !py-1 !px-2.5", confirmState === "clear" && "!bg-[hsl(0_65%_50%)] hover:!bg-[hsl(0_65%_45%)]")}
+        >
+          {confirmState === "clear" ? "Confirm" : "Clear"}
+        </NovaButton>
+      </HStack>
+      <Divider />
+      <HStack spacing="tight" justify="between" align="center">
+        <VStack spacing="micro">
+          <NovaText variant="body">Export Settings Snapshot</NovaText>
+          <NovaText variant="label" muted className="!text-[9px]">Download a JSON snapshot of all your settings</NovaText>
+        </VStack>
+        <NovaButton variant="secondary" onClick={doExport} icon={<Download className="h-3 w-3" />} className="!text-[9px] !py-1 !px-2.5">
+          Export
+        </NovaButton>
+      </HStack>
     </VStack>
   );
 }
