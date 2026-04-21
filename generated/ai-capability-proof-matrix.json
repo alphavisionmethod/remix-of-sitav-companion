@@ -1,19 +1,162 @@
 {
-  "generatedAt": "2026-04-20T21:20:30.255Z",
-  "advisorRoles": [
-    "business",
-    "finance",
-    "concierge",
-    "security",
-    "operations",
-    "investment"
+  "generatedAt": "2026-04-21T00:51:13.710Z",
+  "totalCapabilities": 15,
+  "capabilities": [
+    {
+      "capabilityId": "advisor.money",
+      "owner": "finance-os",
+      "allowedModels": 3,
+      "hasFallbackChain": true,
+      "refusalConditions": 4,
+      "evidenceGradeRequired": "A",
+      "receiptRequired": true,
+      "actionBoundarySensitivity": "critical"
+    },
+    {
+      "capabilityId": "advisor.business",
+      "owner": "business-os",
+      "allowedModels": 3,
+      "hasFallbackChain": true,
+      "refusalConditions": 4,
+      "evidenceGradeRequired": "B",
+      "receiptRequired": true,
+      "actionBoundarySensitivity": "high"
+    },
+    {
+      "capabilityId": "advisor.concierge",
+      "owner": "concierge-os",
+      "allowedModels": 3,
+      "hasFallbackChain": true,
+      "refusalConditions": 4,
+      "evidenceGradeRequired": "B",
+      "receiptRequired": true,
+      "actionBoundarySensitivity": "high"
+    },
+    {
+      "capabilityId": "advisor.strategy",
+      "owner": "cross-domain",
+      "allowedModels": 2,
+      "hasFallbackChain": true,
+      "refusalConditions": 4,
+      "evidenceGradeRequired": "A",
+      "receiptRequired": true,
+      "actionBoundarySensitivity": "critical"
+    },
+    {
+      "capabilityId": "advisor.security",
+      "owner": "security-os",
+      "allowedModels": 2,
+      "hasFallbackChain": true,
+      "refusalConditions": 3,
+      "evidenceGradeRequired": "A",
+      "receiptRequired": true,
+      "actionBoundarySensitivity": "critical"
+    },
+    {
+      "capabilityId": "advisor.legal",
+      "owner": "legal-domain",
+      "allowedModels": 2,
+      "hasFallbackChain": true,
+      "refusalConditions": 4,
+      "evidenceGradeRequired": "A",
+      "receiptRequired": true,
+      "actionBoundarySensitivity": "critical"
+    },
+    {
+      "capabilityId": "advisor.tax",
+      "owner": "finance-os",
+      "allowedModels": 2,
+      "hasFallbackChain": true,
+      "refusalConditions": 4,
+      "evidenceGradeRequired": "A",
+      "receiptRequired": true,
+      "actionBoundarySensitivity": "critical"
+    },
+    {
+      "capabilityId": "boardroom.synthesis",
+      "owner": "boardroom",
+      "allowedModels": 2,
+      "hasFallbackChain": true,
+      "refusalConditions": 3,
+      "evidenceGradeRequired": "A",
+      "receiptRequired": true,
+      "actionBoundarySensitivity": "critical"
+    },
+    {
+      "capabilityId": "boardroom.debate",
+      "owner": "boardroom",
+      "allowedModels": 2,
+      "hasFallbackChain": true,
+      "refusalConditions": 2,
+      "evidenceGradeRequired": "A",
+      "receiptRequired": true,
+      "actionBoundarySensitivity": "high"
+    },
+    {
+      "capabilityId": "simulation.monte-carlo",
+      "owner": "simulation-engine",
+      "allowedModels": 2,
+      "hasFallbackChain": true,
+      "refusalConditions": 2,
+      "evidenceGradeRequired": "B",
+      "receiptRequired": true,
+      "actionBoundarySensitivity": "high"
+    },
+    {
+      "capabilityId": "brain.personal",
+      "owner": "personal-brain",
+      "allowedModels": 2,
+      "hasFallbackChain": true,
+      "refusalConditions": 2,
+      "evidenceGradeRequired": "C",
+      "receiptRequired": false,
+      "actionBoundarySensitivity": "low"
+    },
+    {
+      "capabilityId": "brain.core",
+      "owner": "core-intelligence",
+      "allowedModels": 3,
+      "hasFallbackChain": true,
+      "refusalConditions": 2,
+      "evidenceGradeRequired": "C",
+      "receiptRequired": false,
+      "actionBoundarySensitivity": "none"
+    },
+    {
+      "capabilityId": "admin.intelligence",
+      "owner": "admin-plane",
+      "allowedModels": 2,
+      "hasFallbackChain": true,
+      "refusalConditions": 2,
+      "evidenceGradeRequired": "B",
+      "receiptRequired": true,
+      "actionBoundarySensitivity": "high"
+    },
+    {
+      "capabilityId": "gateway.general",
+      "owner": "ai-gateway",
+      "allowedModels": 4,
+      "hasFallbackChain": true,
+      "refusalConditions": 2,
+      "evidenceGradeRequired": "C",
+      "receiptRequired": true,
+      "actionBoundarySensitivity": "none"
+    },
+    {
+      "capabilityId": "files.ai-processing",
+      "owner": "files-domain",
+      "allowedModels": 3,
+      "hasFallbackChain": true,
+      "refusalConditions": 2,
+      "evidenceGradeRequired": "B",
+      "receiptRequired": true,
+      "actionBoundarySensitivity": "low"
+    }
   ],
-  "permissionMatrixFile": "src/lib/ai-platform/runtime/advisor-permission-matrix.ts",
-  "escalationPolicyFile": "src/lib/ai-platform/runtime/advisor-escalation-policy.ts",
-  "escalationRules": 8,
-  "reversibilityMapFile": "src/lib/ai-platform/runtime/advisor-reversibility-map.ts",
-  "actionTypes": 12,
-  "irreversibleActions": [
-    "send-notification"
-  ]
+  "coverageSummary": {
+    "withFallbacks": 15,
+    "withRefusals": 15,
+    "withReceipts": 13,
+    "critical": 6
+  }
 }

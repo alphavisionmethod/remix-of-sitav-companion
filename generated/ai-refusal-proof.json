@@ -1,0 +1,175 @@
+{
+  "generatedAt": "2026-04-21T00:51:13.710Z",
+  "totalTriggerCategories": 6,
+  "policies": [
+    {
+      "trigger": "budget-exceeded",
+      "description": "AI budget for this capability or period has been exhausted",
+      "remediationGuidance": "Wait for budget reset or request budget increase from admin",
+      "humanEscalationPath": "owner → admin",
+      "uiDisclosureRequired": true,
+      "auditReceiptRequired": true
+    },
+    {
+      "trigger": "confidence-below-threshold",
+      "description": "Model confidence is below the required threshold for this action",
+      "remediationGuidance": "Provide more context, refine the request, or escalate to human review",
+      "humanEscalationPath": "owner",
+      "uiDisclosureRequired": true,
+      "auditReceiptRequired": true
+    },
+    {
+      "trigger": "domain-fence-violated",
+      "description": "Advisor attempted to act outside its designated domain boundary",
+      "remediationGuidance": "Route request to the appropriate domain advisor",
+      "humanEscalationPath": "owner → strategy-advisor",
+      "uiDisclosureRequired": true,
+      "auditReceiptRequired": true
+    },
+    {
+      "trigger": "scope-violation",
+      "description": "Requested action exceeds the capability scope declaration",
+      "remediationGuidance": "Use a capability with appropriate scope or request scope expansion",
+      "humanEscalationPath": "admin",
+      "uiDisclosureRequired": true,
+      "auditReceiptRequired": true
+    },
+    {
+      "trigger": "kill-switch-active",
+      "description": "A kill switch is active that blocks this capability",
+      "remediationGuidance": "Contact admin to review and deactivate the kill switch if appropriate",
+      "humanEscalationPath": "dual-admin",
+      "uiDisclosureRequired": true,
+      "auditReceiptRequired": true
+    },
+    {
+      "trigger": "autonomy-ceiling-reached",
+      "description": "Requested autonomy level exceeds the configured ceiling for this agent",
+      "remediationGuidance": "Reduce autonomy level or request approval for elevated autonomy",
+      "humanEscalationPath": "owner → admin",
+      "uiDisclosureRequired": true,
+      "auditReceiptRequired": true
+    }
+  ],
+  "capabilityRefusalCoverage": [
+    {
+      "capabilityId": "advisor.money",
+      "refusalConditions": [
+        "budget-exceeded",
+        "confidence-below-threshold",
+        "domain-fence-violated",
+        "kill-switch-active"
+      ]
+    },
+    {
+      "capabilityId": "advisor.business",
+      "refusalConditions": [
+        "budget-exceeded",
+        "confidence-below-threshold",
+        "domain-fence-violated",
+        "kill-switch-active"
+      ]
+    },
+    {
+      "capabilityId": "advisor.concierge",
+      "refusalConditions": [
+        "budget-exceeded",
+        "confidence-below-threshold",
+        "domain-fence-violated",
+        "kill-switch-active"
+      ]
+    },
+    {
+      "capabilityId": "advisor.strategy",
+      "refusalConditions": [
+        "budget-exceeded",
+        "confidence-below-threshold",
+        "scope-violation",
+        "autonomy-ceiling-reached"
+      ]
+    },
+    {
+      "capabilityId": "advisor.security",
+      "refusalConditions": [
+        "budget-exceeded",
+        "confidence-below-threshold",
+        "kill-switch-active"
+      ]
+    },
+    {
+      "capabilityId": "advisor.legal",
+      "refusalConditions": [
+        "budget-exceeded",
+        "confidence-below-threshold",
+        "domain-fence-violated",
+        "scope-violation"
+      ]
+    },
+    {
+      "capabilityId": "advisor.tax",
+      "refusalConditions": [
+        "budget-exceeded",
+        "confidence-below-threshold",
+        "domain-fence-violated",
+        "scope-violation"
+      ]
+    },
+    {
+      "capabilityId": "boardroom.synthesis",
+      "refusalConditions": [
+        "budget-exceeded",
+        "confidence-below-threshold",
+        "autonomy-ceiling-reached"
+      ]
+    },
+    {
+      "capabilityId": "boardroom.debate",
+      "refusalConditions": [
+        "budget-exceeded",
+        "confidence-below-threshold"
+      ]
+    },
+    {
+      "capabilityId": "simulation.monte-carlo",
+      "refusalConditions": [
+        "budget-exceeded",
+        "confidence-below-threshold"
+      ]
+    },
+    {
+      "capabilityId": "brain.personal",
+      "refusalConditions": [
+        "budget-exceeded",
+        "kill-switch-active"
+      ]
+    },
+    {
+      "capabilityId": "brain.core",
+      "refusalConditions": [
+        "budget-exceeded",
+        "kill-switch-active"
+      ]
+    },
+    {
+      "capabilityId": "admin.intelligence",
+      "refusalConditions": [
+        "budget-exceeded",
+        "kill-switch-active"
+      ]
+    },
+    {
+      "capabilityId": "gateway.general",
+      "refusalConditions": [
+        "budget-exceeded",
+        "kill-switch-active"
+      ]
+    },
+    {
+      "capabilityId": "files.ai-processing",
+      "refusalConditions": [
+        "budget-exceeded",
+        "kill-switch-active"
+      ]
+    }
+  ]
+}

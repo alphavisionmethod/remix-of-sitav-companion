@@ -1,0 +1,49 @@
+{
+  "generatedAt": "2026-04-21T00:51:13.710Z",
+  "totalDimensions": 6,
+  "dimensions": [
+    {
+      "dimensionId": "evidence-quality",
+      "name": "Evidence Quality",
+      "weight": 0.2,
+      "description": "Quality and completeness of evidence supporting the recommendation",
+      "scoringMethod": "evidence-grade-weighted-average"
+    },
+    {
+      "dimensionId": "approval-outcome",
+      "name": "Approval Outcome",
+      "weight": 0.15,
+      "description": "Whether the recommendation was approved, rejected, or deferred",
+      "scoringMethod": "binary-with-context"
+    },
+    {
+      "dimensionId": "execution-success",
+      "name": "Execution Success",
+      "weight": 0.25,
+      "description": "Whether the approved action executed successfully",
+      "scoringMethod": "completion-rate"
+    },
+    {
+      "dimensionId": "reversibility",
+      "name": "Reversibility",
+      "weight": 0.1,
+      "description": "Whether the action was reversible and if rollback was needed",
+      "scoringMethod": "rollback-penalty"
+    },
+    {
+      "dimensionId": "downstream-impact",
+      "name": "Downstream Impact",
+      "weight": 0.2,
+      "description": "Measurable impact on business, financial, or operational metrics",
+      "scoringMethod": "metric-delta"
+    },
+    {
+      "dimensionId": "confidence-calibration",
+      "name": "Confidence Calibration",
+      "weight": 0.1,
+      "description": "How well the stated confidence matched the actual outcome",
+      "scoringMethod": "brier-score-proxy"
+    }
+  ],
+  "totalWeight": 0.9999999999999999
+}

@@ -1,0 +1,72 @@
+{
+  "generatedAt": "2026-04-21T00:51:13.710Z",
+  "totalEntries": 11,
+  "entries": [
+    {
+      "agentId": "money-advisor",
+      "agentType": "advisor",
+      "maxTier": "L3-simulate",
+      "blockedActions": 3
+    },
+    {
+      "agentId": "business-advisor",
+      "agentType": "advisor",
+      "maxTier": "L3-simulate",
+      "blockedActions": 3
+    },
+    {
+      "agentId": "concierge-advisor",
+      "agentType": "advisor",
+      "maxTier": "L3-simulate",
+      "blockedActions": 3
+    },
+    {
+      "agentId": "strategy-advisor",
+      "agentType": "advisor",
+      "maxTier": "L2-draft",
+      "blockedActions": 2
+    },
+    {
+      "agentId": "security-advisor",
+      "agentType": "advisor",
+      "maxTier": "L2-draft",
+      "blockedActions": 3
+    },
+    {
+      "agentId": "legal-advisor",
+      "agentType": "advisor",
+      "maxTier": "L1-suggest",
+      "blockedActions": 3
+    },
+    {
+      "agentId": "tax-advisor",
+      "agentType": "advisor",
+      "maxTier": "L1-suggest",
+      "blockedActions": 2
+    },
+    {
+      "agentId": "st-security-monitor",
+      "agentType": "internal-agent",
+      "maxTier": "L3-simulate",
+      "blockedActions": 2
+    },
+    {
+      "agentId": "st-cost-optimizer",
+      "agentType": "internal-agent",
+      "maxTier": "L3-simulate",
+      "blockedActions": 2
+    },
+    {
+      "agentId": "st-quality-auditor",
+      "agentType": "internal-agent",
+      "maxTier": "L2-draft",
+      "blockedActions": 1
+    },
+    {
+      "agentId": "workforce-executor",
+      "agentType": "workforce-agent",
+      "maxTier": "L4-auto-reversible",
+      "blockedActions": 1
+    }
+  ]
+}

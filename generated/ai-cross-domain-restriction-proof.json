@@ -1,0 +1,113 @@
+{
+  "generatedAt": "2026-04-21T00:51:13.710Z",
+  "totalAdvisors": 7,
+  "restrictions": [
+    {
+      "advisorId": "money-advisor",
+      "allowedDomains": [
+        "finance-os"
+      ],
+      "blockedDomains": [
+        "legal",
+        "hr",
+        "security"
+      ],
+      "crossDomainReadAllowed": true,
+      "crossDomainWriteBlocked": true,
+      "approvalForCrossDomain": "owner",
+      "escalationRule": "ESC-006",
+      "evidenceRequired": true
+    },
+    {
+      "advisorId": "business-advisor",
+      "allowedDomains": [
+        "business-os"
+      ],
+      "blockedDomains": [
+        "legal",
+        "finance-os",
+        "hr"
+      ],
+      "crossDomainReadAllowed": true,
+      "crossDomainWriteBlocked": true,
+      "approvalForCrossDomain": "owner",
+      "escalationRule": "ESC-006",
+      "evidenceRequired": true
+    },
+    {
+      "advisorId": "concierge-advisor",
+      "allowedDomains": [
+        "concierge-os"
+      ],
+      "blockedDomains": [
+        "finance-os",
+        "legal",
+        "security"
+      ],
+      "crossDomainReadAllowed": true,
+      "crossDomainWriteBlocked": true,
+      "approvalForCrossDomain": "owner",
+      "escalationRule": "ESC-006",
+      "evidenceRequired": true
+    },
+    {
+      "advisorId": "strategy-advisor",
+      "allowedDomains": [
+        "cross-domain"
+      ],
+      "blockedDomains": [],
+      "crossDomainReadAllowed": true,
+      "crossDomainWriteBlocked": true,
+      "approvalForCrossDomain": "owner → admin",
+      "escalationRule": "ESC-006",
+      "evidenceRequired": true
+    },
+    {
+      "advisorId": "security-advisor",
+      "allowedDomains": [
+        "security-os",
+        "cross-domain"
+      ],
+      "blockedDomains": [
+        "finance-os",
+        "hr"
+      ],
+      "crossDomainReadAllowed": true,
+      "crossDomainWriteBlocked": true,
+      "approvalForCrossDomain": "dual-admin",
+      "escalationRule": "ESC-005",
+      "evidenceRequired": true
+    },
+    {
+      "advisorId": "legal-advisor",
+      "allowedDomains": [
+        "legal-domain"
+      ],
+      "blockedDomains": [
+        "finance-os",
+        "engineering"
+      ],
+      "crossDomainReadAllowed": true,
+      "crossDomainWriteBlocked": true,
+      "approvalForCrossDomain": "owner → admin",
+      "escalationRule": "ESC-006",
+      "evidenceRequired": true
+    },
+    {
+      "advisorId": "tax-advisor",
+      "allowedDomains": [
+        "finance-os"
+      ],
+      "blockedDomains": [
+        "legal",
+        "hr",
+        "security"
+      ],
+      "crossDomainReadAllowed": true,
+      "crossDomainWriteBlocked": true,
+      "approvalForCrossDomain": "owner → admin",
+      "escalationRule": "ESC-006",
+      "evidenceRequired": true
+    }
+  ]
+}

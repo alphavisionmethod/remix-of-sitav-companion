@@ -1,0 +1,122 @@
+{
+  "generatedAt": "2026-04-21T00:51:13.710Z",
+  "totalSurfaces": 6,
+  "surfaces": [
+    {
+      "surfaceId": "advisor-chat",
+      "surfaceType": "advisory",
+      "requiredEvidenceGrade": "C",
+      "disclosureRequired": true,
+      "provenanceVisible": true,
+      "unverifiableBehavior": "caveat",
+      "description": "Advisor chat responses shown to users"
+    },
+    {
+      "surfaceId": "boardroom-items",
+      "surfaceType": "operational",
+      "requiredEvidenceGrade": "B",
+      "disclosureRequired": true,
+      "provenanceVisible": true,
+      "unverifiableBehavior": "caveat",
+      "description": "Boardroom recommendation items with evidence"
+    },
+    {
+      "surfaceId": "boardroom-decisions",
+      "surfaceType": "action-capable",
+      "requiredEvidenceGrade": "A",
+      "disclosureRequired": true,
+      "provenanceVisible": true,
+      "unverifiableBehavior": "refuse",
+      "description": "Boardroom decisions that trigger actions"
+    },
+    {
+      "surfaceId": "admin-ai-pages",
+      "surfaceType": "operational",
+      "requiredEvidenceGrade": "B",
+      "disclosureRequired": true,
+      "provenanceVisible": true,
+      "unverifiableBehavior": "caveat",
+      "description": "Admin AI runtime monitoring and control surfaces"
+    },
+    {
+      "surfaceId": "simulation-engine",
+      "surfaceType": "operational",
+      "requiredEvidenceGrade": "B",
+      "disclosureRequired": true,
+      "provenanceVisible": true,
+      "unverifiableBehavior": "degrade",
+      "description": "Monte Carlo and scenario simulation outputs"
+    },
+    {
+      "surfaceId": "ai-action-cards",
+      "surfaceType": "action-capable",
+      "requiredEvidenceGrade": "A",
+      "disclosureRequired": true,
+      "provenanceVisible": true,
+      "unverifiableBehavior": "refuse",
+      "description": "AI-generated action cards with execute capability"
+    }
+  ],
+  "capabilityGrades": [
+    {
+      "capabilityId": "advisor.money",
+      "requiredGrade": "A"
+    },
+    {
+      "capabilityId": "advisor.business",
+      "requiredGrade": "B"
+    },
+    {
+      "capabilityId": "advisor.concierge",
+      "requiredGrade": "B"
+    },
+    {
+      "capabilityId": "advisor.strategy",
+      "requiredGrade": "A"
+    },
+    {
+      "capabilityId": "advisor.security",
+      "requiredGrade": "A"
+    },
+    {
+      "capabilityId": "advisor.legal",
+      "requiredGrade": "A"
+    },
+    {
+      "capabilityId": "advisor.tax",
+      "requiredGrade": "A"
+    },
+    {
+      "capabilityId": "boardroom.synthesis",
+      "requiredGrade": "A"
+    },
+    {
+      "capabilityId": "boardroom.debate",
+      "requiredGrade": "A"
+    },
+    {
+      "capabilityId": "simulation.monte-carlo",
+      "requiredGrade": "B"
+    },
+    {
+      "capabilityId": "brain.personal",
+      "requiredGrade": "C"
+    },
+    {
+      "capabilityId": "brain.core",
+      "requiredGrade": "C"
+    },
+    {
+      "capabilityId": "admin.intelligence",
+      "requiredGrade": "B"
+    },
+    {
+      "capabilityId": "gateway.general",
+      "requiredGrade": "C"
+    },
+    {
+      "capabilityId": "files.ai-processing",
+      "requiredGrade": "B"
+    }
+  ]
+}
