@@ -112,6 +112,39 @@ export interface SettingsSchema {
   "general.timezone": string;
   "general.startupBehavior": "lastState" | "home" | "dashboard";
 
+  // General — Region & Formatting
+  "general.language": string;
+  "general.region": string;
+  "general.currency": string;
+  "general.measurementUnits": "metric" | "imperial";
+  "general.numberFormat": "comma-dot" | "dot-comma";
+  "general.weekStartsOn": "sunday" | "monday";
+  "general.defaultCalendarView": "day" | "week" | "month" | "agenda";
+
+  // General — Session
+  "general.restoreLastSession": boolean;
+  "general.reopenPanels": boolean;
+  "general.resumePendingTasks": boolean;
+
+  // General — Navigation & Behavior
+  "general.navigationPreference": "expanded" | "collapsed" | "minimal";
+  "general.rememberLastOpenPanels": boolean;
+  "general.confirmBeforeLeaving": boolean;
+  "general.openLinksIn": "same" | "new" | "ask";
+
+  // General — Personalization
+  "general.displayName": string;
+  "general.defaultFocusDomain": "business" | "household" | "planning" | "mixed";
+
+  // General — Guidance
+  "general.guidanceLevel": "minimal" | "standard" | "guided";
+  "general.showNewFeatureTips": boolean;
+  "general.showUpdateHighlights": boolean;
+  "general.showSetupRecommendations": boolean;
+
+  // General — Approval
+  "general.approvalStyle": "ask-as-needed" | "batch-reviews" | "minimal-interruptions";
+
   // Accessibility
   "accessibility.voiceOver": boolean;
   "accessibility.zoom": boolean;
@@ -388,6 +421,33 @@ class SettingsServiceClass implements SystemService {
     d.set("general.timeFormat", "12h");
     d.set("general.timezone", Intl.DateTimeFormat().resolvedOptions().timeZone);
     d.set("general.startupBehavior", "lastState");
+    // General — Region & Formatting
+    d.set("general.language", "en");
+    d.set("general.region", "US");
+    d.set("general.currency", "USD");
+    d.set("general.measurementUnits", "metric");
+    d.set("general.numberFormat", "comma-dot");
+    d.set("general.weekStartsOn", "monday");
+    d.set("general.defaultCalendarView", "week");
+    // General — Session
+    d.set("general.restoreLastSession", true);
+    d.set("general.reopenPanels", true);
+    d.set("general.resumePendingTasks", false);
+    // General — Navigation
+    d.set("general.navigationPreference", "expanded");
+    d.set("general.rememberLastOpenPanels", true);
+    d.set("general.confirmBeforeLeaving", true);
+    d.set("general.openLinksIn", "same");
+    // General — Personalization
+    d.set("general.displayName", "");
+    d.set("general.defaultFocusDomain", "mixed");
+    // General — Guidance
+    d.set("general.guidanceLevel", "standard");
+    d.set("general.showNewFeatureTips", true);
+    d.set("general.showUpdateHighlights", true);
+    d.set("general.showSetupRecommendations", true);
+    // General — Approval
+    d.set("general.approvalStyle", "ask-as-needed");
     // Accessibility
     d.set("accessibility.voiceOver", false);
     d.set("accessibility.zoom", false);
@@ -431,6 +491,16 @@ class SettingsServiceClass implements SystemService {
     this.constraints.set("general.dateFormat", { enum: ["mdy", "dmy", "ymd"] });
     this.constraints.set("general.timeFormat", { enum: ["12h", "24h"] });
     this.constraints.set("general.startupBehavior", { enum: ["lastState", "home", "dashboard"] });
+    this.constraints.set("general.language", { enum: ["en", "es", "pt", "fr", "de"] });
+    this.constraints.set("general.measurementUnits", { enum: ["metric", "imperial"] });
+    this.constraints.set("general.numberFormat", { enum: ["comma-dot", "dot-comma"] });
+    this.constraints.set("general.weekStartsOn", { enum: ["sunday", "monday"] });
+    this.constraints.set("general.defaultCalendarView", { enum: ["day", "week", "month", "agenda"] });
+    this.constraints.set("general.navigationPreference", { enum: ["expanded", "collapsed", "minimal"] });
+    this.constraints.set("general.openLinksIn", { enum: ["same", "new", "ask"] });
+    this.constraints.set("general.defaultFocusDomain", { enum: ["business", "household", "planning", "mixed"] });
+    this.constraints.set("general.guidanceLevel", { enum: ["minimal", "standard", "guided"] });
+    this.constraints.set("general.approvalStyle", { enum: ["ask-as-needed", "batch-reviews", "minimal-interruptions"] });
     this.constraints.set("privacy.docRetention", { enum: ["1year", "7years", "forever"] });
     this.constraints.set("privacy.trackingPrevention", { enum: ["standard", "strict", "off"] });
     this.constraints.set("business.followUpPolicy", { enum: ["aggressive", "smart", "gentle"] });
