@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-21T06:35:49.235Z",
+  "generatedAt": "2026-04-21T06:38:40.336Z",
   "gate": "truth-governance",
   "totalRules": 10,
   "validCount": 9,
@@ -13,7 +13,7 @@
       "maxAgeHours": 168,
       "concreteArtifact": "generated/ai-runtime-streak-health-report.json",
       "state": "valid",
-      "ageHours": 0.6,
+      "ageHours": 0.7,
       "acknowledged": false
     },
     {
@@ -23,7 +23,7 @@
       "maxAgeHours": 168,
       "concreteArtifact": "generated/connector-refresh-streak-report.json",
       "state": "valid",
-      "ageHours": 0.6,
+      "ageHours": 0.7,
       "acknowledged": false
     },
     {
@@ -33,7 +33,7 @@
       "maxAgeHours": 24,
       "concreteArtifact": "generated/route-plane-coverage-report.json",
       "state": "valid",
-      "ageHours": 0.6,
+      "ageHours": 0.7,
       "acknowledged": false
     },
     {
@@ -43,7 +43,7 @@
       "maxAgeHours": 24,
       "concreteArtifact": "generated/no-shell-only-production-pages-report.json",
       "state": "valid",
-      "ageHours": 0.6,
+      "ageHours": 0.7,
       "acknowledged": false
     },
     {
@@ -53,7 +53,7 @@
       "maxAgeHours": 336,
       "concreteArtifact": "generated/oauth-security-closure-report.json",
       "state": "valid",
-      "ageHours": 0.6,
+      "ageHours": 0.7,
       "acknowledged": false
     },
     {
@@ -63,7 +63,7 @@
       "maxAgeHours": 336,
       "concreteArtifact": "generated/advisor-boardroom-proof/advisor-identity-closure-check.json",
       "state": "valid",
-      "ageHours": 0.6,
+      "ageHours": 0.7,
       "acknowledged": false
     },
     {
@@ -73,7 +73,7 @@
       "maxAgeHours": 168,
       "concreteArtifact": "generated/os-release-readiness-report.json",
       "state": "valid",
-      "ageHours": 0.6,
+      "ageHours": 0.7,
       "acknowledged": false
     },
     {
@@ -93,7 +93,7 @@
       "maxAgeHours": 168,
       "concreteArtifact": "generated/component-canonicalization-report.json",
       "state": "valid",
-      "ageHours": 0.6,
+      "ageHours": 0.7,
       "acknowledged": false
     },
     {
