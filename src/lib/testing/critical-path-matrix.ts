@@ -4,7 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 export type CoverageStatus = "covered" | "partial" | "uncovered" | "structural-only";
-export type TestType = "behavioral" | "e2e" | "integration" | "unit" | "structural";
+export type TestType = "behavioral" | "e2e" | "integration" | "unit" | "structural" | "workflow" | "safety-permission";
 export type RiskLevel = "critical" | "high" | "medium" | "low";
 
 export interface CriticalPathEntry {
