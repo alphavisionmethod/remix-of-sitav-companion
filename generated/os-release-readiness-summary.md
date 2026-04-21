@@ -1,15 +1,15 @@
 # SITA OS — Release Readiness Report
 
-> Generated: 2026-04-20T19:11:21.145Z
-> Verdict: **GREEN** ✅
+> Generated: 2026-04-21T02:30:51.618Z
+> Verdict: **RED** ❌
 
 ## Summary
 
 | Metric | Value |
 |---|---|
-| Gates required | 248 |
-| Gates present  | 371 |
-| Gates missing  | 0 |
+| Gates required | 265 |
+| Gates present  | 389 |
+| Gates missing  | 5 |
 | Total errors   | 0 |
 | Total warnings | 4252 |
 | Advisory gates surfaced | 119 |
@@ -267,10 +267,28 @@
 | `ova-artifact-presence` | ✅ | 0 | 0 |
 | `raw-img-artifact-presence` | ✅ | 0 | 0 |
 | `hardcoded-demo-flags` | ✅ | 0 | 0 |
+| `runtime-authority` | ✅ | 0 | 0 |
+| `os-boot-recovery-closure` | ✅ | 0 | 0 |
+| `route-plane-runtime-profile-consistency` | ✅ | 0 | 0 |
+| `truth-surface-coverage` | ✅ | 0 | 0 |
+| `provider-refresh-closure` | ✅ | 0 | 0 |
+| `oauth-security-closure` | ✅ | 0 | 0 |
+| `ai-capability-proof` | ✅ | 0 | 0 |
+| `runbook-linkage` | ✅ | 0 | 0 |
+| `artifact-proof-closure` | ✅ | 0 | 0 |
+| `evidence-graph-completeness-v2` | ✅ | 0 | 0 |
+| `route-metadata-closure` | ✅ | 0 | 0 |
+| `component-canonicalization` | ✅ | 0 | 0 |
 | `ai-engineer-tab-registry (warn)` | ✅ | 0 | 0 |
 | `ai-engineer-wiring-coverage (warn)` | ✅ | 0 | 68 |
 | `ai-engineer-primitive-coverage (warn)` | ✅ | 0 | 72 |
 | `ai-engineer-action-coverage (warn)` | ✅ | 0 | 18 |
+| `truth-primitive-coverage (warn)` | ✅ | 0 | 0 |
+| `frontend-page-state-coverage (warn)` | ✅ | 0 | 0 |
+| `layout-grammar-coverage (warn)` | ✅ | 0 | 0 |
+| `accessibility-baseline (warn)` | ✅ | 0 | 0 |
+| `mobile-adaptive-coverage (warn)` | ✅ | 0 | 0 |
+| `page-performance-budget (warn)` | ✅ | 0 | 0 |
 | `action-envelope-boundary (advisory)` | ✅ | 0 | 0 |
 | `admin-command-palette-coherence (advisory)` | ✅ | 0 | 0 |
 | `admin-domain-budget (advisory)` | ✅ | 0 | 0 |
@@ -390,10 +408,15 @@
 | `workflow-state-usage (advisory)` | ✅ | 0 | 0 |
 | `workflow-states (advisory)` | ✅ | 0 | 0 |
 | `wrapper-purity (advisory)` | ✅ | 0 | 0 |
+| `app-identity-closure` | ❌ MISSING | — | — |
+| `app-lifecycle-coverage` | ❌ MISSING | — | — |
+| `advisor-identity-closure` | ❌ MISSING | — | — |
+| `advisor-tool-permissions` | ❌ MISSING | — | — |
+| `advisor-reversibility` | ❌ MISSING | — | — |
 
 ## Verdict
 
-✅ All 248 required readiness gates passed (0 errors, 0 missing). 4252 advisory warning(s) are informational only. Release is **cuttable**.
+❌ Release is **NOT cuttable**. Fix 0 error(s) and resolve 5 missing gate(s).
 
 ## Related
 
