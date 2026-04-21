@@ -2,13 +2,26 @@ import { useState, useCallback } from "react";
 import { useMemo } from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { AdvisorAvatar } from "@/components/sita/primitives/AdvisorAvatar";
 import { getDefaultAdvisorAvatar } from "@/lib/advisors/advisor-avatar-assets";
 import { getCachedPortraitUrl } from "@/hooks/use-advisor-portraits";
 import { Skeleton } from "@/components/ui/skeleton";
-import { RefreshCw } from "lucide-react";
+import { RefreshCw, Briefcase, DollarSign, Headphones, Heart, TrendingUp, Shield, Sparkles, Scale, Brain } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 
 type AdvisorDomain = "business" | "money" | "concierge" | "family" | "growth" | "trust" | "opportunity" | "recovery" | "boardroom" | "general";
+
+const domainIcons: Record<AdvisorDomain, LucideIcon> = {
+  business: Briefcase,
+  money: DollarSign,
+  concierge: Headphones,
+  family: Heart,
+  growth: TrendingUp,
+  trust: Shield,
+  opportunity: Sparkles,
+  recovery: Scale,
+  boardroom: Brain,
+  general: Brain,
+};
 
 interface AdvisorPortraitProps {
   domain: AdvisorDomain;
@@ -89,18 +102,47 @@ export const AdvisorPortrait = ({
 
   // Fallback to icon avatar
   if (!resolvedUrl || imgState === "error") {
+    const FallbackIcon = domainIcons[domain];
     return (
       <div data-testid="advisor-portrait" className={cn("relative", className)}>
-        {imgState === "error" ? (
-          <button
-            onClick={handleRetry}
-            className={cn("rounded-full p-[2px] bg-gradient-to-br flex items-center justify-center group cursor-pointer", gradient, s.container)}
-            title="Retry loading portrait"
-          >
-            <RefreshCw className="h-1/3 w-1/3 text-white/60 group-hover:text-white transition-colors" />
-          </button>
-        ) : (
-          <AdvisorAvatar domain={domain} name={name} avatarUrl={avatarUrl} status={status} size={size === "xl" ? "lg" : size === "lg" ? "lg" : size} />
+        <div
+          role="img"
+          aria-label={`${name || domain} advisor`}
+          className={cn(
+            "rounded-full p-[2px] bg-gradient-to-br flex items-center justify-center group",
+            gradient,
+            s.container,
+            imgState === "error" && "cursor-pointer"
+          )}
+          onClick={imgState === "error" ? handleRetry : undefined}
+          title={imgState === "error" ? "Click to retry loading portrait" : undefined}
+        >
+          <div className="rounded-full bg-card/80 dark:bg-card/60 flex items-center justify-center w-full h-full">
+            <FallbackIcon
+              className={cn(
+                "text-muted-foreground transition-colors",
+                size === "sm" ? "h-3.5 w-3.5" : size === "md" ? "h-5 w-5" : size === "lg" ? "h-8 w-8" : "h-12 w-12",
+                imgState === "error" && "group-hover:text-foreground"
+              )}
+              strokeWidth={1.5}
+            />
+          </div>
+          {imgState === "error" && (
+            <RefreshCw className="absolute bottom-0 right-0 h-3 w-3 text-muted-foreground bg-card rounded-full p-0.5" />
+          )}
+        </div>
+        {/* Status dot */}
+        {status && (
+          <div
+            className={cn(
+              "absolute bottom-0 right-0 rounded-full border-2 border-card",
+              size === "sm" ? "h-2 w-2" : size === "md" ? "h-2.5 w-2.5" : "h-3 w-3",
+              status === "active" && "bg-[hsl(var(--trust-safe))]",
+              status === "thinking" && "bg-[hsl(var(--sita-purple))] animate-pulse",
+              status === "idle" && "bg-muted-foreground/40",
+              status === "offline" && "bg-muted-foreground/20"
+            )}
+          />
         )}
         {speaking && (
           <motion.div
