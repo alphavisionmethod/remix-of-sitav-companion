@@ -1,0 +1,48 @@
+{
+  "generatedAt": "2026-04-21T00:29:26.185Z",
+  "gate": "edge-function-kill-switch-retry",
+  "ok": true,
+  "warningCount": 8,
+  "issues": [
+    {
+      "fn": "admin-bff-gateway",
+      "severity": "warning",
+      "message": "High-severity function missing kill-switch ref"
+    },
+    {
+      "fn": "user-bff-gateway",
+      "severity": "warning",
+      "message": "High-severity function missing kill-switch ref"
+    },
+    {
+      "fn": "brain-core",
+      "severity": "warning",
+      "message": "High-severity function missing kill-switch ref"
+    },
+    {
+      "fn": "self-healing",
+      "severity": "warning",
+      "message": "High-severity function missing kill-switch ref"
+    },
+    {
+      "fn": "event-processor",
+      "severity": "warning",
+      "message": "High-severity function missing kill-switch ref"
+    },
+    {
+      "fn": "scheduler-dispatch",
+      "severity": "warning",
+      "message": "High-severity function missing kill-switch ref"
+    },
+    {
+      "fn": "gdpr-delete",
+      "severity": "warning",
+      "message": "High-severity function missing kill-switch ref"
+    },
+    {
+      "fn": "gdpr-export",
+      "severity": "warning",
+      "message": "High-severity function missing kill-switch ref"
+    }
+  ]
+}

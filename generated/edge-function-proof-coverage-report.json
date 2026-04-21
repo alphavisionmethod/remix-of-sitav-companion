@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-04-21T00:28:39.873Z",
+  "generatedAt": "2026-04-21T00:29:21.564Z",
   "gate": "edge-function-proof-coverage",
-  "ok": false,
+  "ok": true,
   "criticalFunctions": 36,
   "covered": 0,
   "coveragePercent": 0,
-  "errorCount": 1,
+  "errorCount": 0,
   "warningCount": 36,
   "issues": [
     {

@@ -1,0 +1,121 @@
+{
+  "generatedAt": "2026-04-21T00:29:35.214Z",
+  "gate": "edge-function-contract-tests",
+  "ok": true,
+  "totalActive": 81,
+  "tested": 24,
+  "coveragePercent": 30,
+  "warningCount": 22,
+  "issues": [
+    {
+      "fn": "admin-ai-workforce-run",
+      "severity": "warning",
+      "message": "High side-effect function without contract test"
+    },
+    {
+      "fn": "admin-users",
+      "severity": "warning",
+      "message": "High side-effect function without contract test"
+    },
+    {
+      "fn": "advisor-agent-loop",
+      "severity": "warning",
+      "message": "High side-effect function without contract test"
+    },
+    {
+      "fn": "ambient-os-operations",
+      "severity": "warning",
+      "message": "High side-effect function without contract test"
+    },
+    {
+      "fn": "tasks-workflow-api",
+      "severity": "warning",
+      "message": "High side-effect function without contract test"
+    },
+    {
+      "fn": "communications-api",
+      "severity": "warning",
+      "message": "High side-effect function without contract test"
+    },
+    {
+      "fn": "business-board-api",
+      "severity": "warning",
+      "message": "High side-effect function without contract test"
+    },
+    {
+      "fn": "payment-kill-switch",
+      "severity": "warning",
+      "message": "High side-effect function without contract test"
+    },
+    {
+      "fn": "cloud-admin-api",
+      "severity": "warning",
+      "message": "High side-effect function without contract test"
+    },
+    {
+      "fn": "cloud-device-api",
+      "severity": "warning",
+      "message": "High side-effect function without contract test"
+    },
+    {
+      "fn": "cloud-lifecycle-api",
+      "severity": "warning",
+      "message": "High side-effect function without contract test"
+    },
+    {
+      "fn": "cloud-sync-api",
+      "severity": "warning",
+      "message": "High side-effect function without contract test"
+    },
+    {
+      "fn": "cloud-tenant-api",
+      "severity": "warning",
+      "message": "High side-effect function without contract test"
+    },
+    {
+      "fn": "cloud-worker-api",
+      "severity": "warning",
+      "message": "High side-effect function without contract test"
+    },
+    {
+      "fn": "connector-oauth",
+      "severity": "warning",
+      "message": "High side-effect function without contract test"
+    },
+    {
+      "fn": "connector-operations",
+      "severity": "warning",
+      "message": "High side-effect function without contract test"
+    },
+    {
+      "fn": "connector-sync",
+      "severity": "warning",
+      "message": "High side-effect function without contract test"
+    },
+    {
+      "fn": "os-command",
+      "severity": "warning",
+      "message": "High side-effect function without contract test"
+    },
+    {
+      "fn": "ecosystem-operations",
+      "severity": "warning",
+      "message": "High side-effect function without contract test"
+    },
+    {
+      "fn": "scheduler-dispatch",
+      "severity": "warning",
+      "message": "High side-effect function without contract test"
+    },
+    {
+      "fn": "seed-user-data",
+      "severity": "warning",
+      "message": "High side-effect function without contract test"
+    },
+    {
+      "fn": "gdpr-delete",
+      "severity": "warning",
+      "message": "High side-effect function without contract test"
+    }
+  ]
+}
