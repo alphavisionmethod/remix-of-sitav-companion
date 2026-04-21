@@ -1,0 +1,17 @@
+{
+  "generatedAt": "2026-04-21T02:24:53.328Z",
+  "gate": "advisor-confidence-governance",
+  "advisory": true,
+  "ok": true,
+  "requiredClasses": [
+    "observe",
+    "recommend",
+    "draft",
+    "simulate",
+    "execute",
+    "execute-financial",
+    "communicate-external",
+    "system-config"
+  ],
+  "warnings": 0
+}

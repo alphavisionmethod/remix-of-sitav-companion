@@ -1,0 +1,16 @@
+{
+  "generatedAt": "2026-04-21T02:25:18.766Z",
+  "gate": "advisor-override-model",
+  "advisory": true,
+  "ok": true,
+  "requiredScopes": [
+    "pause",
+    "disable",
+    "force-escalate",
+    "reduce-autonomy",
+    "reset-trust",
+    "clear-memory",
+    "force-reevaluate"
+  ],
+  "warnings": 0
+}

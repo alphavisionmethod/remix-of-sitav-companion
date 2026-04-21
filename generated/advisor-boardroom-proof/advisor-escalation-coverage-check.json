@@ -1,0 +1,14 @@
+{
+  "generatedAt": "2026-04-21T02:25:03.592Z",
+  "gate": "advisor-escalation-coverage",
+  "advisory": true,
+  "ok": true,
+  "requiredTriggers": [
+    "financial-over-500",
+    "external-communication",
+    "low-confidence",
+    "irreversible",
+    "system-config"
+  ],
+  "warnings": 1
+}

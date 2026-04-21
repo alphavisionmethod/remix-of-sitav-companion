@@ -1,0 +1,13 @@
+{
+  "generatedAt": "2026-04-21T02:25:13.671Z",
+  "gate": "advisor-memory-aging",
+  "advisory": true,
+  "ok": true,
+  "requiredLayers": [
+    "working",
+    "short-term",
+    "long-term",
+    "archival"
+  ],
+  "warnings": 0
+}

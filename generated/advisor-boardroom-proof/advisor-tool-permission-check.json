@@ -1,0 +1,14 @@
+{
+  "generatedAt": "2026-04-21T02:25:42.897Z",
+  "gate": "advisor-tool-permissions",
+  "ok": false,
+  "requiredRoles": [
+    "business",
+    "finance",
+    "concierge",
+    "security",
+    "operations",
+    "investment"
+  ],
+  "missingRoles": []
+}
