@@ -196,6 +196,10 @@ jobs:
         run: npx tsx scripts/validation/check-generated-truth.ts || true
       - name: Check final delivery conformance
         run: npx tsx scripts/validation/check-final-delivery-conformance.ts || true
+      - name: Service manifest completeness
+        run: npx tsx scripts/root/check-service-manifest-completeness.ts
+      - name: Env contract completeness
+        run: npx tsx scripts/root/check-env-contract-completeness.ts
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -495,6 +499,10 @@ jobs:
         run: npx tsx scripts/validation/check-phase5-readiness.ts || true
       - name: Final delivery conformance
         run: npx tsx scripts/validation/check-final-delivery-conformance.ts || true
+      - name: Service manifest completeness
+        run: npx tsx scripts/root/check-service-manifest-completeness.ts || true
+      - name: Env contract completeness
+        run: npx tsx scripts/root/check-env-contract-completeness.ts || true
       - uses: actions/upload-artifact@v4
         if: always()
         with:
