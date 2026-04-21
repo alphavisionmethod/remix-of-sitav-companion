@@ -16,6 +16,9 @@ const FCC10HumanOversightEscalation = lazy(
 const FCC11IncidentResponseTimeline = lazy(
   () => import("@/pages/admin/FCC11IncidentResponseTimeline"),
 );
+const AdminRecoveryOperations = lazy(
+  () => import("@/pages/admin/support/AdminRecoveryOperations"),
+);
 
 function ModuleFallback() {
   return (
@@ -65,6 +68,13 @@ export default function SupportHome() {
       description: "Escalations needing human review.",
       legacyPath: "/admin/founder/oversight",
       render: wrap(FCC10HumanOversightEscalation),
+    },
+    {
+      id: "recovery",
+      label: "Recovery Ops",
+      description: "Reset users, revoke sessions, replay webhooks, export diagnostics.",
+      legacyPath: "/admin/support/recovery-ops",
+      render: wrap(AdminRecoveryOperations),
     },
   ];
 
