@@ -153,13 +153,13 @@ function generateString(schema: z.ZodString, fieldName: string): FixturePair {
 
   if (isUuid) {
     valid.push("aaaaaaaa-bbbb-cccc-dddd-eeeeeeee0001", "00000000-0000-0000-0000-000000000000");
-    invalid.push("not-a-uuid", "12345", "", "aaaaaaaa-bbbb-cccc-dddd", "AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEE0001");
+    invalid.push("not-a-uuid", "12345", "", "aaaaaaaa-bbbb-cccc-dddd", "zzzzzzzz-zzzz-zzzz-zzzz-zzzzzzzzzzzz");
   } else if (isEmail) {
     valid.push("test@example.com", "a@b.co");
     invalid.push("not-an-email", "@missing.com", "no-at-sign", "", "test@", "test@.");
   } else if (isUrl) {
     valid.push("https://example.com", "https://sita.app/path?q=1");
-    invalid.push("not-a-url", "ftp://wrong", "", "://missing-scheme", "http://", 42);
+    invalid.push("not-a-url", "", "://missing-scheme", "just-text-no-scheme", 42);
   } else {
     const base = `test-${fieldName}`;
     if (minLen !== undefined && base.length < minLen) {
