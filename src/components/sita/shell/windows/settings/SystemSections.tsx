@@ -392,6 +392,13 @@ function GeneralContentFull() {
           ]} />
         </VStack>
       </NovaCard>
+      {/* ── SECTION 6b: Personalization — Quick Access Favorites ── */}
+      <NovaCard>
+        <VStack spacing="tight">
+          <SectionHeader title="Quick Access Favorites" description="Choose the tools and views you want closest at hand" />
+          <QuickAccessFavorites />
+        </VStack>
+      </NovaCard>
 
       {/* ── SECTION 7: Guidance & Recommendations ── */}
       <NovaCard>
