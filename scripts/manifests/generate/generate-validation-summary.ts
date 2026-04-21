@@ -56,13 +56,45 @@ const routeManifest = fs.existsSync("generated/route-manifest.json")
   ? JSON.parse(fs.readFileSync("generated/route-manifest.json", "utf-8"))
   : { routes: [] };
 
-const a11yChecks = (routeManifest.routes || []).map((r: { path: string; component: string }) => ({
-  route: r.path,
-  component: r.component,
-  checks: { hasAriaLabels: true, hasKeyboardNav: true, hasFocusManagement: true, hasColorContrast: true, hasScreenReaderSupport: true },
-  score: 100,
-  status: "compliant" as const,
-}));
+const ARIA_SCAN_PATTERNS = [
+  { key: "hasAriaLabels", pattern: /aria-label|aria-labelledby|role\s*=/ },
+  { key: "hasKeyboardNav", pattern: /tabIndex|onKeyDown|onKeyUp|focus-visible/ },
+  { key: "hasFocusManagement", pattern: /autoFocus|focus-trap|sr-only|useFocusTrap/ },
+  { key: "hasColorContrast", pattern: /contrast|text-foreground|bg-background/ },
+  { key: "hasScreenReaderSupport", pattern: /aria-live|aria-hidden|sr-only|role=/ },
+];
+
+const a11yChecks = (routeManifest.routes || []).map((r: { path: string; component: string }) => {
+  // Attempt to read the component source for honest scanning
+  const componentPath = r.component
+    ? `src/${r.component.replace(/^@\//, "")}.tsx`
+    : null;
+  let content = "";
+  if (componentPath && fs.existsSync(componentPath)) {
+    try { content = fs.readFileSync(componentPath, "utf-8"); } catch { /* skip */ }
+  }
+
+  const checks: Record<string, boolean> = {};
+  let passCount = 0;
+  for (const { key, pattern } of ARIA_SCAN_PATTERNS) {
+    const found = content.length > 0 ? pattern.test(content) : false;
+    checks[key] = found;
+    if (found) passCount++;
+  }
+  const score = ARIA_SCAN_PATTERNS.length > 0
+    ? Math.round((passCount / ARIA_SCAN_PATTERNS.length) * 100)
+    : 0;
+
+  return {
+    route: r.path,
+    component: r.component,
+    checks,
+    score,
+    status: (score >= 60 ? "compliant" : "needs-review") as "compliant" | "needs-review",
+  };
+});
+
+const compliantCount = a11yChecks.filter((c: { status: string }) => c.status === "compliant").length;
 
 fs.writeFileSync("generated/accessibility-summary.json", JSON.stringify({
   version: "1.1.0",
