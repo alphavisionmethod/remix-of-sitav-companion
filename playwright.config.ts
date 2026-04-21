@@ -29,6 +29,11 @@ export default defineConfig({
       name: "chromium",
       use: { ...devices["Desktop Chrome"] },
     },
+    {
+      name: "consolidation-regression",
+      testMatch: "consolidation-wave-regression.spec.ts",
+      use: { ...devices["Desktop Chrome"] },
+    },
   ],
   webServer: process.env.CI
     ? undefined
