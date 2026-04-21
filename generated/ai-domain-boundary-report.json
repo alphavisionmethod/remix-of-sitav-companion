@@ -1,0 +1,107 @@
+{
+  "generatedAt": "2026-04-21T21:28:40.767Z",
+  "gate": "ai-domain-boundaries",
+  "filesScanned": 155,
+  "violations": [
+    {
+      "file": "src/lib/advisor-protocol/index.ts",
+      "importPath": "@/lib/boardroom/types",
+      "sourceDomain": "advisor",
+      "targetDomain": "boardroom",
+      "rule": "advisor→boardroom boundary violation"
+    },
+    {
+      "file": "src/lib/advisors/index.ts",
+      "importPath": "@/lib/ai-platform/runtime/advisor-permission-matrix",
+      "sourceDomain": "advisor",
+      "targetDomain": "brain",
+      "rule": "advisor→brain boundary violation"
+    },
+    {
+      "file": "src/lib/advisors/index.ts",
+      "importPath": "@/lib/ai-platform/runtime/advisor-escalation-policy",
+      "sourceDomain": "advisor",
+      "targetDomain": "brain",
+      "rule": "advisor→brain boundary violation"
+    },
+    {
+      "file": "src/lib/advisors/index.ts",
+      "importPath": "@/lib/ai-platform/runtime/advisor-reversibility-map",
+      "sourceDomain": "advisor",
+      "targetDomain": "brain",
+      "rule": "advisor→brain boundary violation"
+    },
+    {
+      "file": "src/lib/services/boardroom-service/advisor-track-composer.service.ts",
+      "importPath": "@/packages/advisor-config",
+      "sourceDomain": "boardroom",
+      "targetDomain": "advisor",
+      "rule": "boardroom→advisor boundary violation"
+    },
+    {
+      "file": "src/packages/advisor-runtime-contracts/index.ts",
+      "importPath": "@/lib/ai-platform/runtime/advisor-permission-matrix",
+      "sourceDomain": "advisor",
+      "targetDomain": "brain",
+      "rule": "advisor→brain boundary violation"
+    },
+    {
+      "file": "src/packages/advisor-runtime-contracts/index.ts",
+      "importPath": "@/lib/ai-platform/runtime/advisor-escalation-policy",
+      "sourceDomain": "advisor",
+      "targetDomain": "brain",
+      "rule": "advisor→brain boundary violation"
+    },
+    {
+      "file": "src/packages/advisor-runtime-contracts/index.ts",
+      "importPath": "@/lib/ai-platform/runtime/advisor-reversibility-map",
+      "sourceDomain": "advisor",
+      "targetDomain": "brain",
+      "rule": "advisor→brain boundary violation"
+    },
+    {
+      "file": "src/packages/advisor-runtime-contracts/resolver.ts",
+      "importPath": "@/lib/ai-platform/runtime/advisor-permission-matrix",
+      "sourceDomain": "advisor",
+      "targetDomain": "brain",
+      "rule": "advisor→brain boundary violation"
+    },
+    {
+      "file": "src/packages/advisor-runtime-contracts/resolver.ts",
+      "importPath": "@/lib/ai-platform/runtime/advisor-escalation-policy",
+      "sourceDomain": "advisor",
+      "targetDomain": "brain",
+      "rule": "advisor→brain boundary violation"
+    },
+    {
+      "file": "src/packages/advisor-runtime-contracts/resolver.ts",
+      "importPath": "@/lib/ai-platform/runtime/advisor-reversibility-map",
+      "sourceDomain": "advisor",
+      "targetDomain": "brain",
+      "rule": "advisor→brain boundary violation"
+    },
+    {
+      "file": "src/packages/advisor-runtime-contracts/types.ts",
+      "importPath": "@/lib/ai-platform/runtime/advisor-permission-matrix",
+      "sourceDomain": "advisor",
+      "targetDomain": "brain",
+      "rule": "advisor→brain boundary violation"
+    },
+    {
+      "file": "src/packages/advisor-runtime-contracts/types.ts",
+      "importPath": "@/lib/ai-platform/runtime/advisor-escalation-policy",
+      "sourceDomain": "advisor",
+      "targetDomain": "brain",
+      "rule": "advisor→brain boundary violation"
+    },
+    {
+      "file": "src/packages/advisor-runtime-contracts/types.ts",
+      "importPath": "@/lib/ai-platform/runtime/advisor-reversibility-map",
+      "sourceDomain": "advisor",
+      "targetDomain": "brain",
+      "rule": "advisor→brain boundary violation"
+    }
+  ],
+  "ok": false,
+  "errorCount": 14
+}
