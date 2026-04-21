@@ -5,6 +5,26 @@ import boardroomAvatar from "@/assets/advisors/boardroom-advisor.png";
 import growthAvatar from "@/assets/advisors/growth-advisor.png";
 import trustAvatar from "@/assets/advisors/trust-advisor.png";
 
+import iconBusiness from "@/assets/app-icons/business.png";
+import iconFinance from "@/assets/app-icons/finance.png";
+import iconConcierge from "@/assets/app-icons/concierge.png";
+import iconBoardroom from "@/assets/app-icons/boardroom.png";
+import iconInvestment from "@/assets/app-icons/investment.png";
+import iconFiles from "@/assets/app-icons/files.png";
+import iconNotes from "@/assets/app-icons/notes.png";
+import iconSettings from "@/assets/app-icons/settings.png";
+
+export const APP_ICON_MAP: Record<string, string> = {
+  business: iconBusiness,
+  finance: iconFinance,
+  concierge: iconConcierge,
+  boardroom: iconBoardroom,
+  investment: iconInvestment,
+  files: iconFiles,
+  notes: iconNotes,
+  settings: iconSettings,
+};
+
 export const DEMO_APPS = [
   { id: "business", label: "Business", gradient: "from-blue-500 to-cyan-400", icon: "Briefcase" as const },
   { id: "finance", label: "Finance", gradient: "from-emerald-500 to-teal-400", icon: "DollarSign" as const },
