@@ -1,59 +1,1614 @@
 {
-  "generatedAt": "2026-04-20T21:27:50.034Z",
-  "gate": "db-authority-map",
-  "contexts": [
+  "generatedAt": "2026-04-21T00:18:47.113Z",
+  "totalTables": 201,
+  "entries": [
     {
-      "context": "identity",
-      "tables": [
-        "accounts",
-        "account_deletion_requests",
-        "admin_sessions"
-      ],
-      "owner": "identity"
+      "table": "action_safety_classifications",
+      "authorityType": "config",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, admin-managed"
     },
     {
-      "context": "ai-platform",
-      "tables": [
-        "ai_invocations",
-        "ai_model_registry",
-        "ai_provider_registry",
-        "ai_capability_routing",
-        "ai_prompt_families",
-        "ai_prompt_versions"
-      ],
-      "owner": "ai-engineering"
+      "table": "admin_action_audit",
+      "authorityType": "append-only-audit",
+      "criticality": "high",
+      "tenantScope": "actor_user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "append-only, immutable after write"
     },
     {
-      "context": "advisor-board",
-      "tables": [
-        "advisor_board_actions",
-        "advisor_board_recommendations",
-        "advisor_board_reflections",
-        "advisor_board_memory"
-      ],
-      "owner": "intelligence"
+      "table": "admin_action_confirmations",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "actor_user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
     },
     {
-      "context": "admin-safety",
-      "tables": [
-        "admin_action_audit",
-        "admin_action_confirmations",
-        "admin_safety_actions",
-        "admin_role_permissions"
-      ],
-      "owner": "operations"
+      "table": "admin_role_permissions",
+      "authorityType": "config",
+      "criticality": "high",
+      "tenantScope": "global",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, admin-managed"
     },
     {
-      "context": "ai-budget",
-      "tables": [
-        "ai_budget_alerts",
-        "ai_budget_decision_receipts",
-        "ai_usage_ledger",
-        "ai_receipt_records"
-      ],
-      "owner": "ai-engineering"
+      "table": "admin_safety_actions",
+      "authorityType": "config",
+      "criticality": "medium",
+      "tenantScope": "global",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, admin-managed"
+    },
+    {
+      "table": "admin_sessions",
+      "authorityType": "source-of-truth",
+      "criticality": "high",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "cloud_admin_role_assignments",
+      "authorityType": "source-of-truth",
+      "criticality": "high",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "cloud_admin_roles",
+      "authorityType": "source-of-truth",
+      "criticality": "high",
+      "tenantScope": "global",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "advisor_action_queue",
+      "authorityType": "queue",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "transient, auto-purged after processing"
+    },
+    {
+      "table": "advisor_agents",
+      "authorityType": "source-of-truth",
+      "criticality": "critical",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "advisor_autonomy_policies",
+      "authorityType": "config",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, admin-managed"
+    },
+    {
+      "table": "advisor_board_actions",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "advisor_board_memory",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "advisor_board_recommendations",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "advisor_board_reflections",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "advisor_board_tool_executions",
+      "authorityType": "event",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "append-only, TTL-governed archival"
+    },
+    {
+      "table": "advisor_feedback",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "advisor_knowledge",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "advisor_memories",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "advisor_profiles",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "simulations",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "ai_inference_receipts",
+      "authorityType": "receipt",
+      "criticality": "high",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "append-only, immutable after write"
+    },
+    {
+      "table": "ai_workforce_approval_queue",
+      "authorityType": "queue",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "transient, auto-purged after processing"
+    },
+    {
+      "table": "ai_workforce_budget_classes",
+      "authorityType": "source-of-truth",
+      "criticality": "critical",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "ai_workforce_cached_outputs",
+      "authorityType": "derived",
+      "criticality": "low",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "transient, auto-expired"
+    },
+    {
+      "table": "ai_workforce_invocations",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "ai_workforce_launch_honesty",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "ai_workforce_outputs",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "ai_workforce_recommendation_scores",
+      "authorityType": "derived",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "derived, rebuildable from source"
+    },
+    {
+      "table": "ai_workforce_recommendations",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "ai_workforce_role_health",
+      "authorityType": "derived",
+      "criticality": "high",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "derived, rebuildable from source"
+    },
+    {
+      "table": "ai_workforce_role_task_permissions",
+      "authorityType": "config",
+      "criticality": "high",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, admin-managed"
+    },
+    {
+      "table": "ai_workforce_roles",
+      "authorityType": "source-of-truth",
+      "criticality": "high",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "ai_workforce_task_types",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "biometric_credentials",
+      "authorityType": "source-of-truth",
+      "criticality": "critical",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "onboarding_sessions",
+      "authorityType": "source-of-truth",
+      "criticality": "high",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "org_members",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "organizations",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "owner_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "profiles",
+      "authorityType": "source-of-truth",
+      "criticality": "critical",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "user_roles",
+      "authorityType": "source-of-truth",
+      "criticality": "high",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "boardroom_decision_receipts",
+      "authorityType": "receipt",
+      "criticality": "critical",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "append-only, immutable after write"
+    },
+    {
+      "table": "boardroom_evidence",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "boardroom_items",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "boardroom_recommendations",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "boardroom_sessions",
+      "authorityType": "source-of-truth",
+      "criticality": "high",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "appointments",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "client_capability_matrix",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "global",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "crm_automations",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "crm_communications",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "crm_companies",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "crm_contact_company",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "crm_contacts",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "crm_import_jobs",
+      "authorityType": "queue",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "transient, auto-purged after processing"
+    },
+    {
+      "table": "crm_merge_log",
+      "authorityType": "event",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "append-only, TTL-governed archival"
+    },
+    {
+      "table": "crm_notes",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "crm_opportunities",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "crm_pipeline_stages",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "crm_segments",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "crm_tags",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "crm_tasks",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "lead_inbox_items",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "leads",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "cloud_abuse_events",
+      "authorityType": "event",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "append-only, TTL-governed archival"
+    },
+    {
+      "table": "cloud_account_closure_requests",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "cloud_activity_journal",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "cloud_archive_jobs",
+      "authorityType": "queue",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "transient, auto-purged after processing"
+    },
+    {
+      "table": "cloud_audit_events",
+      "authorityType": "append-only-audit",
+      "criticality": "high",
+      "tenantScope": "actor_user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "append-only, immutable after write"
+    },
+    {
+      "table": "cloud_backup_snapshots",
+      "authorityType": "derived",
+      "criticality": "medium",
+      "tenantScope": "global",
+      "rlsRequired": true,
+      "lifecycleExpectation": "derived, rebuildable from source"
+    },
+    {
+      "table": "cloud_blobs",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "cloud_bootstrap_markers",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "cloud_compliance_hooks",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "global",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "cloud_conflicts",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "cloud_device_sessions",
+      "authorityType": "source-of-truth",
+      "criticality": "high",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "cloud_devices",
+      "authorityType": "source-of-truth",
+      "criticality": "critical",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "cloud_feature_flags",
+      "authorityType": "config",
+      "criticality": "medium",
+      "tenantScope": "global",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, admin-managed"
+    },
+    {
+      "table": "cloud_file_versions",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "cloud_files",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "cloud_folders",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "cloud_import_export_jobs",
+      "authorityType": "queue",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "transient, auto-purged after processing"
+    },
+    {
+      "table": "cloud_lifecycle_rules",
+      "authorityType": "config",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, admin-managed"
+    },
+    {
+      "table": "cloud_maintenance_modes",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "global",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "cloud_metrics_snapshots",
+      "authorityType": "derived",
+      "criticality": "medium",
+      "tenantScope": "global",
+      "rlsRequired": true,
+      "lifecycleExpectation": "derived, rebuildable from source"
+    },
+    {
+      "table": "cloud_namespace_registry",
+      "authorityType": "config",
+      "criticality": "medium",
+      "tenantScope": "owner_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, admin-managed"
+    },
+    {
+      "table": "cloud_plans",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "global",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "cloud_policies",
+      "authorityType": "config",
+      "criticality": "medium",
+      "tenantScope": "global",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, admin-managed"
+    },
+    {
+      "table": "cloud_preview_jobs",
+      "authorityType": "queue",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "transient, auto-purged after processing"
+    },
+    {
+      "table": "cloud_reconciliation_runs",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "global",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "cloud_search_index",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "cloud_shared_workspaces",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "tenant_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "cloud_shares",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "global",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "cloud_storage_providers",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "global",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "cloud_storage_tiers",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "global",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "cloud_storage_usage",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "cloud_support_sessions",
+      "authorityType": "support",
+      "criticality": "high",
+      "tenantScope": "global",
+      "rlsRequired": true,
+      "lifecycleExpectation": "operational, periodic cleanup"
+    },
+    {
+      "table": "cloud_sync_changes",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "cloud_sync_checkpoints",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "cloud_sync_jobs",
+      "authorityType": "queue",
+      "criticality": "medium",
+      "tenantScope": "global",
+      "rlsRequired": true,
+      "lifecycleExpectation": "transient, auto-purged after processing"
+    },
+    {
+      "table": "cloud_sync_objects",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "cloud_tenant_memberships",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "cloud_tenant_plans",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "tenant_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "cloud_tenant_policies",
+      "authorityType": "config",
+      "criticality": "medium",
+      "tenantScope": "tenant_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, admin-managed"
+    },
+    {
+      "table": "cloud_tenant_quotas",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "tenant_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "cloud_tenants",
+      "authorityType": "source-of-truth",
+      "criticality": "critical",
+      "tenantScope": "global",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "cloud_trash",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "cloud_user_plans",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "cloud_worker_jobs",
+      "authorityType": "queue",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "transient, auto-purged after processing"
+    },
+    {
+      "table": "incidents",
+      "authorityType": "event",
+      "criticality": "critical",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "append-only, TTL-governed archival"
+    },
+    {
+      "table": "connector_oauth_flows",
+      "authorityType": "source-of-truth",
+      "criticality": "critical",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "connector_sync_runs",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "connector_tokens",
+      "authorityType": "source-of-truth",
+      "criticality": "critical",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "notification_delivery_receipts",
+      "authorityType": "receipt",
+      "criticality": "high",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "append-only, immutable after write"
+    },
+    {
+      "table": "notification_preferences",
+      "authorityType": "config",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, admin-managed"
+    },
+    {
+      "table": "notifications",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "platform_notifications",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "global",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "vapid_keys",
+      "authorityType": "source-of-truth",
+      "criticality": "critical",
+      "tenantScope": "global",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "command_memory",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "command_routing_decisions",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "command_steps",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "device_attestations",
+      "authorityType": "event",
+      "criticality": "critical",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "append-only, TTL-governed archival"
+    },
+    {
+      "table": "device_mesh_peers",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "device_ownership",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "global",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "os_audit_events",
+      "authorityType": "append-only-audit",
+      "criticality": "high",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "append-only, immutable after write"
+    },
+    {
+      "table": "os_auth_methods",
+      "authorityType": "derived",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "derived, rebuildable from source"
+    },
+    {
+      "table": "os_capabilities",
+      "authorityType": "derived",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "derived, rebuildable from source"
+    },
+    {
+      "table": "os_command_events",
+      "authorityType": "event",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "append-only, TTL-governed archival"
+    },
+    {
+      "table": "os_commands",
+      "authorityType": "derived",
+      "criticality": "medium",
+      "tenantScope": "actor_user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "derived, rebuildable from source"
+    },
+    {
+      "table": "os_elevation_tokens",
+      "authorityType": "derived",
+      "criticality": "critical",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "derived, rebuildable from source"
+    },
+    {
+      "table": "os_keyrings",
+      "authorityType": "derived",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "derived, rebuildable from source"
+    },
+    {
+      "table": "os_policies",
+      "authorityType": "config",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, admin-managed"
+    },
+    {
+      "table": "os_role_capabilities",
+      "authorityType": "derived",
+      "criticality": "high",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "derived, rebuildable from source"
+    },
+    {
+      "table": "os_secrets_metadata",
+      "authorityType": "derived",
+      "criticality": "critical",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "derived, rebuildable from source"
+    },
+    {
+      "table": "os_service_identities",
+      "authorityType": "derived",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "derived, rebuildable from source"
+    },
+    {
+      "table": "os_sessions",
+      "authorityType": "derived",
+      "criticality": "high",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "derived, rebuildable from source"
+    },
+    {
+      "table": "os_user_accounts",
+      "authorityType": "derived",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "derived, rebuildable from source"
+    },
+    {
+      "table": "runtime_agents",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "api_gateway_routes",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "global",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "approval_decisions",
+      "authorityType": "source-of-truth",
+      "criticality": "critical",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "business_health_scores",
+      "authorityType": "derived",
+      "criticality": "critical",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "derived, rebuildable from source"
+    },
+    {
+      "table": "calendar_events",
+      "authorityType": "event",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "append-only, TTL-governed archival"
+    },
+    {
+      "table": "concierge_automations",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "concierge_errands",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "concierge_recurring_obligations",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "config_change_history",
+      "authorityType": "event",
+      "criticality": "medium",
+      "tenantScope": "actor_user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "append-only, TTL-governed archival"
+    },
+    {
+      "table": "context_graph_snapshots",
+      "authorityType": "derived",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "derived, rebuildable from source"
+    },
+    {
+      "table": "domain_ownership_registry",
+      "authorityType": "config",
+      "criticality": "medium",
+      "tenantScope": "global",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, admin-managed"
+    },
+    {
+      "table": "dual_authority_challenges",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "ecosystem_commands",
+      "authorityType": "derived",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "derived, rebuildable from source"
+    },
+    {
+      "table": "ecosystem_contracts",
+      "authorityType": "derived",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "derived, rebuildable from source"
+    },
+    {
+      "table": "ecosystem_events",
+      "authorityType": "event",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "append-only, TTL-governed archival"
+    },
+    {
+      "table": "environment_configs",
+      "authorityType": "config",
+      "criticality": "medium",
+      "tenantScope": "global",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, admin-managed"
+    },
+    {
+      "table": "flagship_loops",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "founder_directives",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "gift_tracker",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "graph_edges",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "grocery_items",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "grocery_lists",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "health_validation_results",
+      "authorityType": "derived",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "derived, rebuildable from source"
+    },
+    {
+      "table": "layer_health_snapshots",
+      "authorityType": "derived",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "derived, rebuildable from source"
+    },
+    {
+      "table": "license_activations",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "global",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "license_audit_log",
+      "authorityType": "append-only-audit",
+      "criticality": "high",
+      "tenantScope": "global",
+      "rlsRequired": true,
+      "lifecycleExpectation": "append-only, immutable after write"
+    },
+    {
+      "table": "licenses",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "managed_apps",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "outcome_verifications",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "plane_service_assignments",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "global",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "platform_planes",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "global",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "platform_runbooks",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "profit_signals",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "read_model_snapshots",
+      "authorityType": "derived",
+      "criticality": "medium",
+      "tenantScope": "global",
+      "rlsRequired": true,
+      "lifecycleExpectation": "derived, rebuildable from source"
+    },
+    {
+      "table": "recommendation_execution_bindings",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "recommendation_execution_events",
+      "authorityType": "event",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "append-only, TTL-governed archival"
+    },
+    {
+      "table": "recommendation_learning_signals",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "recommendation_outcome_verifications",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "release_compatibility_matrix",
+      "authorityType": "derived",
+      "criticality": "medium",
+      "tenantScope": "global",
+      "rlsRequired": true,
+      "lifecycleExpectation": "derived, rebuildable from source"
+    },
+    {
+      "table": "remediation_programs",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "remediation_tasks",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "rollback_events",
+      "authorityType": "event",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "append-only, TTL-governed archival"
+    },
+    {
+      "table": "school_activities",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "service_identity_registry",
+      "authorityType": "config",
+      "criticality": "medium",
+      "tenantScope": "global",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, admin-managed"
+    },
+    {
+      "table": "service_providers_list",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "support_access_grants",
+      "authorityType": "support",
+      "criticality": "medium",
+      "tenantScope": "global",
+      "rlsRequired": true,
+      "lifecycleExpectation": "operational, periodic cleanup"
+    },
+    {
+      "table": "support_case_events",
+      "authorityType": "event",
+      "criticality": "medium",
+      "tenantScope": "actor_user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "append-only, TTL-governed archival"
+    },
+    {
+      "table": "support_cases",
+      "authorityType": "support",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "operational, periodic cleanup"
+    },
+    {
+      "table": "system_guarantees",
+      "authorityType": "derived",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "derived, rebuildable from source"
+    },
+    {
+      "table": "system_slots",
+      "authorityType": "derived",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "derived, rebuildable from source"
+    },
+    {
+      "table": "timeline_events",
+      "authorityType": "event",
+      "criticality": "critical",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "append-only, TTL-governed archival"
+    },
+    {
+      "table": "token_classes",
+      "authorityType": "source-of-truth",
+      "criticality": "critical",
+      "tenantScope": "global",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "travel_plans",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "update_boot_attempts",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "update_catalog",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "global",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "update_channels",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "update_history",
+      "authorityType": "event",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "append-only, TTL-governed archival"
+    },
+    {
+      "table": "update_preflight_results",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "update_staging",
+      "authorityType": "queue",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "transient, auto-purged after processing"
+    },
+    {
+      "table": "business_onboarding",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "communication_metrics",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "concierge_documents",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "user_id",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "onboarding_choices",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "global",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "onboarding_completion_markers",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "global",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "onboarding_hardware_detection",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "global",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "onboarding_restore_sources",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "global",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
+    },
+    {
+      "table": "onboarding_steps",
+      "authorityType": "source-of-truth",
+      "criticality": "medium",
+      "tenantScope": "global",
+      "rlsRequired": true,
+      "lifecycleExpectation": "long-lived, user-managed CRUD"
     }
-  ],
-  "totalTables": 420,
-  "mappedContexts": 5
+  ]
 }

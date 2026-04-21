@@ -1,25 +1,1815 @@
 {
-  "generatedAt": "2026-04-20T21:27:50.034Z",
-  "gate": "db-bounded-context-map",
-  "contexts": [
-    "identity",
-    "ai-platform",
-    "advisor-board",
-    "admin-safety",
-    "ai-budget",
-    "connectors",
-    "boardroom",
-    "files",
-    "notifications",
-    "compliance"
-  ],
-  "crossRefs": {
-    "ai-platform": {
-      "edgeFunctions": [
-        "ai-gateway",
-        "ai-receipt-logger"
-      ],
-      "tables": 12
+  "generatedAt": "2026-04-21T00:18:47.113Z",
+  "totalTables": 201,
+  "entries": [
+    {
+      "tableName": "action_safety_classifications",
+      "boundedContext": "admin-governance",
+      "owner": "admin-governance",
+      "tableRole": "config",
+      "classification": "control-plane-config",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "admin_action_audit",
+      "boundedContext": "admin-governance",
+      "owner": "admin-governance",
+      "tableRole": "log",
+      "classification": "append-only-audit",
+      "retentionCategory": "long-term-7yr",
+      "supportImportance": "critical"
+    },
+    {
+      "tableName": "admin_action_confirmations",
+      "boundedContext": "admin-governance",
+      "owner": "admin-governance",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "admin_role_permissions",
+      "boundedContext": "admin-governance",
+      "owner": "admin-governance",
+      "tableRole": "config",
+      "classification": "control-plane-config",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "admin_safety_actions",
+      "boundedContext": "admin-governance",
+      "owner": "admin-governance",
+      "tableRole": "config",
+      "classification": "control-plane-config",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "admin_sessions",
+      "boundedContext": "admin-governance",
+      "owner": "admin-governance",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "short-90d",
+      "supportImportance": "high"
+    },
+    {
+      "tableName": "cloud_admin_role_assignments",
+      "boundedContext": "admin-governance",
+      "owner": "admin-governance",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "cloud_admin_roles",
+      "boundedContext": "admin-governance",
+      "owner": "admin-governance",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "advisor_action_queue",
+      "boundedContext": "advisor-intelligence",
+      "owner": "advisor-team",
+      "tableRole": "write",
+      "classification": "queue-retry",
+      "retentionCategory": "short-90d",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "advisor_agents",
+      "boundedContext": "advisor-intelligence",
+      "owner": "advisor-team",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "advisor_autonomy_policies",
+      "boundedContext": "advisor-intelligence",
+      "owner": "advisor-team",
+      "tableRole": "config",
+      "classification": "control-plane-config",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "advisor_board_actions",
+      "boundedContext": "advisor-intelligence",
+      "owner": "advisor-team",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "advisor_board_memory",
+      "boundedContext": "advisor-intelligence",
+      "owner": "advisor-team",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "advisor_board_recommendations",
+      "boundedContext": "advisor-intelligence",
+      "owner": "advisor-team",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "advisor_board_reflections",
+      "boundedContext": "advisor-intelligence",
+      "owner": "advisor-team",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "advisor_board_tool_executions",
+      "boundedContext": "advisor-intelligence",
+      "owner": "advisor-team",
+      "tableRole": "log",
+      "classification": "event-ledger",
+      "retentionCategory": "medium-1yr",
+      "supportImportance": "high"
+    },
+    {
+      "tableName": "advisor_feedback",
+      "boundedContext": "advisor-intelligence",
+      "owner": "advisor-team",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "advisor_knowledge",
+      "boundedContext": "advisor-intelligence",
+      "owner": "advisor-team",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "advisor_memories",
+      "boundedContext": "advisor-intelligence",
+      "owner": "advisor-team",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "advisor_profiles",
+      "boundedContext": "advisor-intelligence",
+      "owner": "advisor-team",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "simulations",
+      "boundedContext": "advisor-intelligence",
+      "owner": "advisor-team",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "ai_inference_receipts",
+      "boundedContext": "ai-workforce",
+      "owner": "ai-engineering",
+      "tableRole": "log",
+      "classification": "receipt-proof",
+      "retentionCategory": "long-term-7yr",
+      "supportImportance": "critical"
+    },
+    {
+      "tableName": "ai_workforce_approval_queue",
+      "boundedContext": "ai-workforce",
+      "owner": "ai-engineering",
+      "tableRole": "write",
+      "classification": "queue-retry",
+      "retentionCategory": "short-90d",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "ai_workforce_budget_classes",
+      "boundedContext": "ai-workforce",
+      "owner": "ai-engineering",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "ai_workforce_cached_outputs",
+      "boundedContext": "ai-workforce",
+      "owner": "ai-engineering",
+      "tableRole": "write",
+      "classification": "cache-temporary",
+      "retentionCategory": "transient-30d",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "ai_workforce_invocations",
+      "boundedContext": "ai-workforce",
+      "owner": "ai-engineering",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "ai_workforce_launch_honesty",
+      "boundedContext": "ai-workforce",
+      "owner": "ai-engineering",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "ai_workforce_outputs",
+      "boundedContext": "ai-workforce",
+      "owner": "ai-engineering",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "ai_workforce_recommendation_scores",
+      "boundedContext": "ai-workforce",
+      "owner": "ai-engineering",
+      "tableRole": "write",
+      "classification": "projection-read-model",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "ai_workforce_recommendations",
+      "boundedContext": "ai-workforce",
+      "owner": "ai-engineering",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "ai_workforce_role_health",
+      "boundedContext": "ai-workforce",
+      "owner": "ai-engineering",
+      "tableRole": "write",
+      "classification": "projection-read-model",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "ai_workforce_role_task_permissions",
+      "boundedContext": "ai-workforce",
+      "owner": "ai-engineering",
+      "tableRole": "config",
+      "classification": "control-plane-config",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "ai_workforce_roles",
+      "boundedContext": "ai-workforce",
+      "owner": "ai-engineering",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "ai_workforce_task_types",
+      "boundedContext": "ai-workforce",
+      "owner": "ai-engineering",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "biometric_credentials",
+      "boundedContext": "auth-identity",
+      "owner": "platform-engineering",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "critical"
+    },
+    {
+      "tableName": "onboarding_sessions",
+      "boundedContext": "auth-identity",
+      "owner": "platform-engineering",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "short-90d",
+      "supportImportance": "high"
+    },
+    {
+      "tableName": "org_members",
+      "boundedContext": "auth-identity",
+      "owner": "platform-engineering",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "organizations",
+      "boundedContext": "auth-identity",
+      "owner": "platform-engineering",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "profiles",
+      "boundedContext": "auth-identity",
+      "owner": "platform-engineering",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "user_roles",
+      "boundedContext": "auth-identity",
+      "owner": "platform-engineering",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "boardroom_decision_receipts",
+      "boundedContext": "boardroom",
+      "owner": "advisor-team",
+      "tableRole": "log",
+      "classification": "receipt-proof",
+      "retentionCategory": "long-term-7yr",
+      "supportImportance": "critical"
+    },
+    {
+      "tableName": "boardroom_evidence",
+      "boundedContext": "boardroom",
+      "owner": "advisor-team",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "boardroom_items",
+      "boundedContext": "boardroom",
+      "owner": "advisor-team",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "boardroom_recommendations",
+      "boundedContext": "boardroom",
+      "owner": "advisor-team",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "boardroom_sessions",
+      "boundedContext": "boardroom",
+      "owner": "advisor-team",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "short-90d",
+      "supportImportance": "high"
+    },
+    {
+      "tableName": "appointments",
+      "boundedContext": "business-crm",
+      "owner": "crm-team",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "client_capability_matrix",
+      "boundedContext": "business-crm",
+      "owner": "crm-team",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "crm_automations",
+      "boundedContext": "business-crm",
+      "owner": "crm-team",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "crm_communications",
+      "boundedContext": "business-crm",
+      "owner": "crm-team",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "crm_companies",
+      "boundedContext": "business-crm",
+      "owner": "crm-team",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "crm_contact_company",
+      "boundedContext": "business-crm",
+      "owner": "crm-team",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "crm_contacts",
+      "boundedContext": "business-crm",
+      "owner": "crm-team",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "crm_import_jobs",
+      "boundedContext": "business-crm",
+      "owner": "crm-team",
+      "tableRole": "write",
+      "classification": "queue-retry",
+      "retentionCategory": "short-90d",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "crm_merge_log",
+      "boundedContext": "business-crm",
+      "owner": "crm-team",
+      "tableRole": "log",
+      "classification": "event-ledger",
+      "retentionCategory": "medium-1yr",
+      "supportImportance": "high"
+    },
+    {
+      "tableName": "crm_notes",
+      "boundedContext": "business-crm",
+      "owner": "crm-team",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "crm_opportunities",
+      "boundedContext": "business-crm",
+      "owner": "crm-team",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "crm_pipeline_stages",
+      "boundedContext": "business-crm",
+      "owner": "crm-team",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "crm_segments",
+      "boundedContext": "business-crm",
+      "owner": "crm-team",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "crm_tags",
+      "boundedContext": "business-crm",
+      "owner": "crm-team",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "crm_tasks",
+      "boundedContext": "business-crm",
+      "owner": "crm-team",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "lead_inbox_items",
+      "boundedContext": "business-crm",
+      "owner": "crm-team",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "leads",
+      "boundedContext": "business-crm",
+      "owner": "crm-team",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "cloud_abuse_events",
+      "boundedContext": "cloud-infrastructure",
+      "owner": "cloud-team",
+      "tableRole": "log",
+      "classification": "event-ledger",
+      "retentionCategory": "medium-1yr",
+      "supportImportance": "high"
+    },
+    {
+      "tableName": "cloud_account_closure_requests",
+      "boundedContext": "cloud-infrastructure",
+      "owner": "cloud-team",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "cloud_activity_journal",
+      "boundedContext": "cloud-infrastructure",
+      "owner": "cloud-team",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "cloud_archive_jobs",
+      "boundedContext": "cloud-infrastructure",
+      "owner": "cloud-team",
+      "tableRole": "write",
+      "classification": "queue-retry",
+      "retentionCategory": "short-90d",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "cloud_audit_events",
+      "boundedContext": "cloud-infrastructure",
+      "owner": "cloud-team",
+      "tableRole": "log",
+      "classification": "append-only-audit",
+      "retentionCategory": "long-term-7yr",
+      "supportImportance": "critical"
+    },
+    {
+      "tableName": "cloud_backup_snapshots",
+      "boundedContext": "cloud-infrastructure",
+      "owner": "cloud-team",
+      "tableRole": "write",
+      "classification": "projection-read-model",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "cloud_blobs",
+      "boundedContext": "cloud-infrastructure",
+      "owner": "cloud-team",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "cloud_bootstrap_markers",
+      "boundedContext": "cloud-infrastructure",
+      "owner": "cloud-team",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "cloud_compliance_hooks",
+      "boundedContext": "cloud-infrastructure",
+      "owner": "cloud-team",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "cloud_conflicts",
+      "boundedContext": "cloud-infrastructure",
+      "owner": "cloud-team",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "cloud_device_sessions",
+      "boundedContext": "cloud-infrastructure",
+      "owner": "cloud-team",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "short-90d",
+      "supportImportance": "high"
+    },
+    {
+      "tableName": "cloud_devices",
+      "boundedContext": "cloud-infrastructure",
+      "owner": "cloud-team",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "cloud_feature_flags",
+      "boundedContext": "cloud-infrastructure",
+      "owner": "cloud-team",
+      "tableRole": "config",
+      "classification": "control-plane-config",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "cloud_file_versions",
+      "boundedContext": "cloud-infrastructure",
+      "owner": "cloud-team",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "cloud_files",
+      "boundedContext": "cloud-infrastructure",
+      "owner": "cloud-team",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "cloud_folders",
+      "boundedContext": "cloud-infrastructure",
+      "owner": "cloud-team",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "cloud_import_export_jobs",
+      "boundedContext": "cloud-infrastructure",
+      "owner": "cloud-team",
+      "tableRole": "write",
+      "classification": "queue-retry",
+      "retentionCategory": "short-90d",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "cloud_lifecycle_rules",
+      "boundedContext": "cloud-infrastructure",
+      "owner": "cloud-team",
+      "tableRole": "config",
+      "classification": "control-plane-config",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "cloud_maintenance_modes",
+      "boundedContext": "cloud-infrastructure",
+      "owner": "cloud-team",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "cloud_metrics_snapshots",
+      "boundedContext": "cloud-infrastructure",
+      "owner": "cloud-team",
+      "tableRole": "write",
+      "classification": "projection-read-model",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "cloud_namespace_registry",
+      "boundedContext": "cloud-infrastructure",
+      "owner": "cloud-team",
+      "tableRole": "write",
+      "classification": "control-plane-config",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "cloud_plans",
+      "boundedContext": "cloud-infrastructure",
+      "owner": "cloud-team",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "cloud_policies",
+      "boundedContext": "cloud-infrastructure",
+      "owner": "cloud-team",
+      "tableRole": "config",
+      "classification": "control-plane-config",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "cloud_preview_jobs",
+      "boundedContext": "cloud-infrastructure",
+      "owner": "cloud-team",
+      "tableRole": "write",
+      "classification": "queue-retry",
+      "retentionCategory": "short-90d",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "cloud_reconciliation_runs",
+      "boundedContext": "cloud-infrastructure",
+      "owner": "cloud-team",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "cloud_search_index",
+      "boundedContext": "cloud-infrastructure",
+      "owner": "cloud-team",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "cloud_shared_workspaces",
+      "boundedContext": "cloud-infrastructure",
+      "owner": "cloud-team",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "cloud_shares",
+      "boundedContext": "cloud-infrastructure",
+      "owner": "cloud-team",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "cloud_storage_providers",
+      "boundedContext": "cloud-infrastructure",
+      "owner": "cloud-team",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "cloud_storage_tiers",
+      "boundedContext": "cloud-infrastructure",
+      "owner": "cloud-team",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "cloud_storage_usage",
+      "boundedContext": "cloud-infrastructure",
+      "owner": "cloud-team",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "cloud_support_sessions",
+      "boundedContext": "cloud-infrastructure",
+      "owner": "cloud-team",
+      "tableRole": "write",
+      "classification": "support-debug",
+      "retentionCategory": "short-90d",
+      "supportImportance": "high"
+    },
+    {
+      "tableName": "cloud_sync_changes",
+      "boundedContext": "cloud-infrastructure",
+      "owner": "cloud-team",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "cloud_sync_checkpoints",
+      "boundedContext": "cloud-infrastructure",
+      "owner": "cloud-team",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "cloud_sync_jobs",
+      "boundedContext": "cloud-infrastructure",
+      "owner": "cloud-team",
+      "tableRole": "write",
+      "classification": "queue-retry",
+      "retentionCategory": "short-90d",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "cloud_sync_objects",
+      "boundedContext": "cloud-infrastructure",
+      "owner": "cloud-team",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "cloud_tenant_memberships",
+      "boundedContext": "cloud-infrastructure",
+      "owner": "cloud-team",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "cloud_tenant_plans",
+      "boundedContext": "cloud-infrastructure",
+      "owner": "cloud-team",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "cloud_tenant_policies",
+      "boundedContext": "cloud-infrastructure",
+      "owner": "cloud-team",
+      "tableRole": "config",
+      "classification": "control-plane-config",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "cloud_tenant_quotas",
+      "boundedContext": "cloud-infrastructure",
+      "owner": "cloud-team",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "cloud_tenants",
+      "boundedContext": "cloud-infrastructure",
+      "owner": "cloud-team",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "cloud_trash",
+      "boundedContext": "cloud-infrastructure",
+      "owner": "cloud-team",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "cloud_user_plans",
+      "boundedContext": "cloud-infrastructure",
+      "owner": "cloud-team",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "cloud_worker_jobs",
+      "boundedContext": "cloud-infrastructure",
+      "owner": "cloud-team",
+      "tableRole": "write",
+      "classification": "queue-retry",
+      "retentionCategory": "short-90d",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "incidents",
+      "boundedContext": "compliance",
+      "owner": "compliance-team",
+      "tableRole": "log",
+      "classification": "event-ledger",
+      "retentionCategory": "medium-1yr",
+      "supportImportance": "high"
+    },
+    {
+      "tableName": "connector_oauth_flows",
+      "boundedContext": "connector-fabric",
+      "owner": "connector-team",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "critical"
+    },
+    {
+      "tableName": "connector_sync_runs",
+      "boundedContext": "connector-fabric",
+      "owner": "connector-team",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "connector_tokens",
+      "boundedContext": "connector-fabric",
+      "owner": "connector-team",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "short-90d",
+      "supportImportance": "critical"
+    },
+    {
+      "tableName": "notification_delivery_receipts",
+      "boundedContext": "notification",
+      "owner": "notification-team",
+      "tableRole": "log",
+      "classification": "receipt-proof",
+      "retentionCategory": "long-term-7yr",
+      "supportImportance": "critical"
+    },
+    {
+      "tableName": "notification_preferences",
+      "boundedContext": "notification",
+      "owner": "notification-team",
+      "tableRole": "config",
+      "classification": "control-plane-config",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "notifications",
+      "boundedContext": "notification",
+      "owner": "notification-team",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "platform_notifications",
+      "boundedContext": "notification",
+      "owner": "notification-team",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "vapid_keys",
+      "boundedContext": "notification",
+      "owner": "notification-team",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "critical"
+    },
+    {
+      "tableName": "command_memory",
+      "boundedContext": "os-kernel",
+      "owner": "os-kernel-team",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "command_routing_decisions",
+      "boundedContext": "os-kernel",
+      "owner": "os-kernel-team",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "command_steps",
+      "boundedContext": "os-kernel",
+      "owner": "os-kernel-team",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "device_attestations",
+      "boundedContext": "os-kernel",
+      "owner": "os-kernel-team",
+      "tableRole": "log",
+      "classification": "event-ledger",
+      "retentionCategory": "medium-1yr",
+      "supportImportance": "critical"
+    },
+    {
+      "tableName": "device_mesh_peers",
+      "boundedContext": "os-kernel",
+      "owner": "os-kernel-team",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "device_ownership",
+      "boundedContext": "os-kernel",
+      "owner": "os-kernel-team",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "os_audit_events",
+      "boundedContext": "os-kernel",
+      "owner": "os-kernel-team",
+      "tableRole": "log",
+      "classification": "append-only-audit",
+      "retentionCategory": "long-term-7yr",
+      "supportImportance": "critical"
+    },
+    {
+      "tableName": "os_auth_methods",
+      "boundedContext": "os-kernel",
+      "owner": "os-kernel-team",
+      "tableRole": "system",
+      "classification": "projection-read-model",
+      "retentionCategory": "permanent",
+      "supportImportance": "high"
+    },
+    {
+      "tableName": "os_capabilities",
+      "boundedContext": "os-kernel",
+      "owner": "os-kernel-team",
+      "tableRole": "system",
+      "classification": "projection-read-model",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "os_command_events",
+      "boundedContext": "os-kernel",
+      "owner": "os-kernel-team",
+      "tableRole": "log",
+      "classification": "event-ledger",
+      "retentionCategory": "medium-1yr",
+      "supportImportance": "high"
+    },
+    {
+      "tableName": "os_commands",
+      "boundedContext": "os-kernel",
+      "owner": "os-kernel-team",
+      "tableRole": "system",
+      "classification": "projection-read-model",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "os_elevation_tokens",
+      "boundedContext": "os-kernel",
+      "owner": "os-kernel-team",
+      "tableRole": "system",
+      "classification": "projection-read-model",
+      "retentionCategory": "short-90d",
+      "supportImportance": "critical"
+    },
+    {
+      "tableName": "os_keyrings",
+      "boundedContext": "os-kernel",
+      "owner": "os-kernel-team",
+      "tableRole": "system",
+      "classification": "projection-read-model",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "os_policies",
+      "boundedContext": "os-kernel",
+      "owner": "os-kernel-team",
+      "tableRole": "config",
+      "classification": "control-plane-config",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "os_role_capabilities",
+      "boundedContext": "os-kernel",
+      "owner": "os-kernel-team",
+      "tableRole": "system",
+      "classification": "projection-read-model",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "os_secrets_metadata",
+      "boundedContext": "os-kernel",
+      "owner": "os-kernel-team",
+      "tableRole": "system",
+      "classification": "projection-read-model",
+      "retentionCategory": "permanent",
+      "supportImportance": "critical"
+    },
+    {
+      "tableName": "os_service_identities",
+      "boundedContext": "os-kernel",
+      "owner": "os-kernel-team",
+      "tableRole": "system",
+      "classification": "projection-read-model",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "os_sessions",
+      "boundedContext": "os-kernel",
+      "owner": "os-kernel-team",
+      "tableRole": "system",
+      "classification": "projection-read-model",
+      "retentionCategory": "short-90d",
+      "supportImportance": "high"
+    },
+    {
+      "tableName": "os_user_accounts",
+      "boundedContext": "os-kernel",
+      "owner": "os-kernel-team",
+      "tableRole": "system",
+      "classification": "projection-read-model",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "runtime_agents",
+      "boundedContext": "os-kernel",
+      "owner": "os-kernel-team",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "api_gateway_routes",
+      "boundedContext": "platform-core",
+      "owner": "platform-engineering",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "approval_decisions",
+      "boundedContext": "platform-core",
+      "owner": "platform-engineering",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "business_health_scores",
+      "boundedContext": "platform-core",
+      "owner": "platform-engineering",
+      "tableRole": "system",
+      "classification": "projection-read-model",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "calendar_events",
+      "boundedContext": "platform-core",
+      "owner": "platform-engineering",
+      "tableRole": "log",
+      "classification": "event-ledger",
+      "retentionCategory": "medium-1yr",
+      "supportImportance": "high"
+    },
+    {
+      "tableName": "concierge_automations",
+      "boundedContext": "platform-core",
+      "owner": "platform-engineering",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "concierge_errands",
+      "boundedContext": "platform-core",
+      "owner": "platform-engineering",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "concierge_recurring_obligations",
+      "boundedContext": "platform-core",
+      "owner": "platform-engineering",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "config_change_history",
+      "boundedContext": "platform-core",
+      "owner": "platform-engineering",
+      "tableRole": "log",
+      "classification": "event-ledger",
+      "retentionCategory": "medium-1yr",
+      "supportImportance": "high"
+    },
+    {
+      "tableName": "context_graph_snapshots",
+      "boundedContext": "platform-core",
+      "owner": "platform-engineering",
+      "tableRole": "write",
+      "classification": "projection-read-model",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "domain_ownership_registry",
+      "boundedContext": "platform-core",
+      "owner": "platform-engineering",
+      "tableRole": "write",
+      "classification": "control-plane-config",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "dual_authority_challenges",
+      "boundedContext": "platform-core",
+      "owner": "platform-engineering",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "high"
+    },
+    {
+      "tableName": "ecosystem_commands",
+      "boundedContext": "platform-core",
+      "owner": "platform-engineering",
+      "tableRole": "system",
+      "classification": "projection-read-model",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "ecosystem_contracts",
+      "boundedContext": "platform-core",
+      "owner": "platform-engineering",
+      "tableRole": "system",
+      "classification": "projection-read-model",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "ecosystem_events",
+      "boundedContext": "platform-core",
+      "owner": "platform-engineering",
+      "tableRole": "log",
+      "classification": "event-ledger",
+      "retentionCategory": "medium-1yr",
+      "supportImportance": "high"
+    },
+    {
+      "tableName": "environment_configs",
+      "boundedContext": "platform-core",
+      "owner": "platform-engineering",
+      "tableRole": "config",
+      "classification": "control-plane-config",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "flagship_loops",
+      "boundedContext": "platform-core",
+      "owner": "platform-engineering",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "founder_directives",
+      "boundedContext": "platform-core",
+      "owner": "platform-engineering",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "gift_tracker",
+      "boundedContext": "platform-core",
+      "owner": "platform-engineering",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "graph_edges",
+      "boundedContext": "platform-core",
+      "owner": "platform-engineering",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "grocery_items",
+      "boundedContext": "platform-core",
+      "owner": "platform-engineering",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "grocery_lists",
+      "boundedContext": "platform-core",
+      "owner": "platform-engineering",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "health_validation_results",
+      "boundedContext": "platform-core",
+      "owner": "platform-engineering",
+      "tableRole": "system",
+      "classification": "projection-read-model",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "layer_health_snapshots",
+      "boundedContext": "platform-core",
+      "owner": "platform-engineering",
+      "tableRole": "system",
+      "classification": "projection-read-model",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "license_activations",
+      "boundedContext": "platform-core",
+      "owner": "platform-engineering",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "license_audit_log",
+      "boundedContext": "platform-core",
+      "owner": "platform-engineering",
+      "tableRole": "log",
+      "classification": "append-only-audit",
+      "retentionCategory": "long-term-7yr",
+      "supportImportance": "critical"
+    },
+    {
+      "tableName": "licenses",
+      "boundedContext": "platform-core",
+      "owner": "platform-engineering",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "managed_apps",
+      "boundedContext": "platform-core",
+      "owner": "platform-engineering",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "outcome_verifications",
+      "boundedContext": "platform-core",
+      "owner": "platform-engineering",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "plane_service_assignments",
+      "boundedContext": "platform-core",
+      "owner": "platform-engineering",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "platform_planes",
+      "boundedContext": "platform-core",
+      "owner": "platform-engineering",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "platform_runbooks",
+      "boundedContext": "platform-core",
+      "owner": "platform-engineering",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "profit_signals",
+      "boundedContext": "platform-core",
+      "owner": "platform-engineering",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "read_model_snapshots",
+      "boundedContext": "platform-core",
+      "owner": "platform-engineering",
+      "tableRole": "write",
+      "classification": "projection-read-model",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "recommendation_execution_bindings",
+      "boundedContext": "platform-core",
+      "owner": "platform-engineering",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "recommendation_execution_events",
+      "boundedContext": "platform-core",
+      "owner": "platform-engineering",
+      "tableRole": "log",
+      "classification": "event-ledger",
+      "retentionCategory": "medium-1yr",
+      "supportImportance": "high"
+    },
+    {
+      "tableName": "recommendation_learning_signals",
+      "boundedContext": "platform-core",
+      "owner": "platform-engineering",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "recommendation_outcome_verifications",
+      "boundedContext": "platform-core",
+      "owner": "platform-engineering",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "release_compatibility_matrix",
+      "boundedContext": "platform-core",
+      "owner": "platform-engineering",
+      "tableRole": "system",
+      "classification": "projection-read-model",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "remediation_programs",
+      "boundedContext": "platform-core",
+      "owner": "platform-engineering",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "remediation_tasks",
+      "boundedContext": "platform-core",
+      "owner": "platform-engineering",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "rollback_events",
+      "boundedContext": "platform-core",
+      "owner": "platform-engineering",
+      "tableRole": "log",
+      "classification": "event-ledger",
+      "retentionCategory": "medium-1yr",
+      "supportImportance": "high"
+    },
+    {
+      "tableName": "school_activities",
+      "boundedContext": "platform-core",
+      "owner": "platform-engineering",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "service_identity_registry",
+      "boundedContext": "platform-core",
+      "owner": "platform-engineering",
+      "tableRole": "write",
+      "classification": "control-plane-config",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "service_providers_list",
+      "boundedContext": "platform-core",
+      "owner": "platform-engineering",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "support_access_grants",
+      "boundedContext": "platform-core",
+      "owner": "platform-engineering",
+      "tableRole": "write",
+      "classification": "support-debug",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "support_case_events",
+      "boundedContext": "platform-core",
+      "owner": "platform-engineering",
+      "tableRole": "log",
+      "classification": "event-ledger",
+      "retentionCategory": "medium-1yr",
+      "supportImportance": "high"
+    },
+    {
+      "tableName": "support_cases",
+      "boundedContext": "platform-core",
+      "owner": "platform-engineering",
+      "tableRole": "write",
+      "classification": "support-debug",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "system_guarantees",
+      "boundedContext": "platform-core",
+      "owner": "platform-engineering",
+      "tableRole": "system",
+      "classification": "projection-read-model",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "system_slots",
+      "boundedContext": "platform-core",
+      "owner": "platform-engineering",
+      "tableRole": "system",
+      "classification": "projection-read-model",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "timeline_events",
+      "boundedContext": "platform-core",
+      "owner": "platform-engineering",
+      "tableRole": "log",
+      "classification": "event-ledger",
+      "retentionCategory": "medium-1yr",
+      "supportImportance": "high"
+    },
+    {
+      "tableName": "token_classes",
+      "boundedContext": "platform-core",
+      "owner": "platform-engineering",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "short-90d",
+      "supportImportance": "critical"
+    },
+    {
+      "tableName": "travel_plans",
+      "boundedContext": "platform-core",
+      "owner": "platform-engineering",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "update_boot_attempts",
+      "boundedContext": "platform-core",
+      "owner": "platform-engineering",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "update_catalog",
+      "boundedContext": "platform-core",
+      "owner": "platform-engineering",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "update_channels",
+      "boundedContext": "platform-core",
+      "owner": "platform-engineering",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "update_history",
+      "boundedContext": "platform-core",
+      "owner": "platform-engineering",
+      "tableRole": "log",
+      "classification": "event-ledger",
+      "retentionCategory": "medium-1yr",
+      "supportImportance": "high"
+    },
+    {
+      "tableName": "update_preflight_results",
+      "boundedContext": "platform-core",
+      "owner": "platform-engineering",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "update_staging",
+      "boundedContext": "platform-core",
+      "owner": "platform-engineering",
+      "tableRole": "write",
+      "classification": "queue-retry",
+      "retentionCategory": "short-90d",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "business_onboarding",
+      "boundedContext": "user-experience",
+      "owner": "ux-team",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "communication_metrics",
+      "boundedContext": "user-experience",
+      "owner": "ux-team",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "concierge_documents",
+      "boundedContext": "user-experience",
+      "owner": "ux-team",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "onboarding_choices",
+      "boundedContext": "user-experience",
+      "owner": "ux-team",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "onboarding_completion_markers",
+      "boundedContext": "user-experience",
+      "owner": "ux-team",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "onboarding_hardware_detection",
+      "boundedContext": "user-experience",
+      "owner": "ux-team",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "onboarding_restore_sources",
+      "boundedContext": "user-experience",
+      "owner": "ux-team",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
+    },
+    {
+      "tableName": "onboarding_steps",
+      "boundedContext": "user-experience",
+      "owner": "ux-team",
+      "tableRole": "write",
+      "classification": "lifecycle-state",
+      "retentionCategory": "permanent",
+      "supportImportance": "medium"
     }
-  }
+  ]
 }

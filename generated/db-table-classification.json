@@ -1,0 +1,1011 @@
+{
+  "generatedAt": "2026-04-21T00:18:47.113Z",
+  "totalTables": 201,
+  "entries": {
+    "action_safety_classifications": {
+      "table": "action_safety_classifications",
+      "classification": "control-plane-config",
+      "rationale": "Config/registry pattern"
+    },
+    "admin_action_audit": {
+      "table": "admin_action_audit",
+      "classification": "append-only-audit",
+      "rationale": "Audit naming pattern"
+    },
+    "admin_action_confirmations": {
+      "table": "admin_action_confirmations",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "admin_role_permissions": {
+      "table": "admin_role_permissions",
+      "classification": "control-plane-config",
+      "rationale": "Config/registry pattern"
+    },
+    "admin_safety_actions": {
+      "table": "admin_safety_actions",
+      "classification": "control-plane-config",
+      "rationale": "Config/registry pattern"
+    },
+    "admin_sessions": {
+      "table": "admin_sessions",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "cloud_admin_role_assignments": {
+      "table": "cloud_admin_role_assignments",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "cloud_admin_roles": {
+      "table": "cloud_admin_roles",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "advisor_action_queue": {
+      "table": "advisor_action_queue",
+      "classification": "queue-retry",
+      "rationale": "Queue/job naming pattern"
+    },
+    "advisor_agents": {
+      "table": "advisor_agents",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "advisor_autonomy_policies": {
+      "table": "advisor_autonomy_policies",
+      "classification": "control-plane-config",
+      "rationale": "Config/registry pattern"
+    },
+    "advisor_board_actions": {
+      "table": "advisor_board_actions",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "advisor_board_memory": {
+      "table": "advisor_board_memory",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "advisor_board_recommendations": {
+      "table": "advisor_board_recommendations",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "advisor_board_reflections": {
+      "table": "advisor_board_reflections",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "advisor_board_tool_executions": {
+      "table": "advisor_board_tool_executions",
+      "classification": "event-ledger",
+      "rationale": "schemaClass=log"
+    },
+    "advisor_feedback": {
+      "table": "advisor_feedback",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "advisor_knowledge": {
+      "table": "advisor_knowledge",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "advisor_memories": {
+      "table": "advisor_memories",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "advisor_profiles": {
+      "table": "advisor_profiles",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "simulations": {
+      "table": "simulations",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "ai_inference_receipts": {
+      "table": "ai_inference_receipts",
+      "classification": "receipt-proof",
+      "rationale": "Receipt/proof naming pattern"
+    },
+    "ai_workforce_approval_queue": {
+      "table": "ai_workforce_approval_queue",
+      "classification": "queue-retry",
+      "rationale": "Queue/job naming pattern"
+    },
+    "ai_workforce_budget_classes": {
+      "table": "ai_workforce_budget_classes",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "ai_workforce_cached_outputs": {
+      "table": "ai_workforce_cached_outputs",
+      "classification": "cache-temporary",
+      "rationale": "Cache/temporary naming pattern"
+    },
+    "ai_workforce_invocations": {
+      "table": "ai_workforce_invocations",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "ai_workforce_launch_honesty": {
+      "table": "ai_workforce_launch_honesty",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "ai_workforce_outputs": {
+      "table": "ai_workforce_outputs",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "ai_workforce_recommendation_scores": {
+      "table": "ai_workforce_recommendation_scores",
+      "classification": "projection-read-model",
+      "rationale": "System/projection pattern"
+    },
+    "ai_workforce_recommendations": {
+      "table": "ai_workforce_recommendations",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "ai_workforce_role_health": {
+      "table": "ai_workforce_role_health",
+      "classification": "projection-read-model",
+      "rationale": "System/projection pattern"
+    },
+    "ai_workforce_role_task_permissions": {
+      "table": "ai_workforce_role_task_permissions",
+      "classification": "control-plane-config",
+      "rationale": "Config/registry pattern"
+    },
+    "ai_workforce_roles": {
+      "table": "ai_workforce_roles",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "ai_workforce_task_types": {
+      "table": "ai_workforce_task_types",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "biometric_credentials": {
+      "table": "biometric_credentials",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "onboarding_sessions": {
+      "table": "onboarding_sessions",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "org_members": {
+      "table": "org_members",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "organizations": {
+      "table": "organizations",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "profiles": {
+      "table": "profiles",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "user_roles": {
+      "table": "user_roles",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "boardroom_decision_receipts": {
+      "table": "boardroom_decision_receipts",
+      "classification": "receipt-proof",
+      "rationale": "Receipt/proof naming pattern"
+    },
+    "boardroom_evidence": {
+      "table": "boardroom_evidence",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "boardroom_items": {
+      "table": "boardroom_items",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "boardroom_recommendations": {
+      "table": "boardroom_recommendations",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "boardroom_sessions": {
+      "table": "boardroom_sessions",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "appointments": {
+      "table": "appointments",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "client_capability_matrix": {
+      "table": "client_capability_matrix",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "crm_automations": {
+      "table": "crm_automations",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "crm_communications": {
+      "table": "crm_communications",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "crm_companies": {
+      "table": "crm_companies",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "crm_contact_company": {
+      "table": "crm_contact_company",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "crm_contacts": {
+      "table": "crm_contacts",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "crm_import_jobs": {
+      "table": "crm_import_jobs",
+      "classification": "queue-retry",
+      "rationale": "Queue/job naming pattern"
+    },
+    "crm_merge_log": {
+      "table": "crm_merge_log",
+      "classification": "event-ledger",
+      "rationale": "schemaClass=log"
+    },
+    "crm_notes": {
+      "table": "crm_notes",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "crm_opportunities": {
+      "table": "crm_opportunities",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "crm_pipeline_stages": {
+      "table": "crm_pipeline_stages",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "crm_segments": {
+      "table": "crm_segments",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "crm_tags": {
+      "table": "crm_tags",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "crm_tasks": {
+      "table": "crm_tasks",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "lead_inbox_items": {
+      "table": "lead_inbox_items",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "leads": {
+      "table": "leads",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "cloud_abuse_events": {
+      "table": "cloud_abuse_events",
+      "classification": "event-ledger",
+      "rationale": "Event/log naming pattern"
+    },
+    "cloud_account_closure_requests": {
+      "table": "cloud_account_closure_requests",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "cloud_activity_journal": {
+      "table": "cloud_activity_journal",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "cloud_archive_jobs": {
+      "table": "cloud_archive_jobs",
+      "classification": "queue-retry",
+      "rationale": "Queue/job naming pattern"
+    },
+    "cloud_audit_events": {
+      "table": "cloud_audit_events",
+      "classification": "append-only-audit",
+      "rationale": "Audit naming pattern"
+    },
+    "cloud_backup_snapshots": {
+      "table": "cloud_backup_snapshots",
+      "classification": "projection-read-model",
+      "rationale": "System/projection pattern"
+    },
+    "cloud_blobs": {
+      "table": "cloud_blobs",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "cloud_bootstrap_markers": {
+      "table": "cloud_bootstrap_markers",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "cloud_compliance_hooks": {
+      "table": "cloud_compliance_hooks",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "cloud_conflicts": {
+      "table": "cloud_conflicts",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "cloud_device_sessions": {
+      "table": "cloud_device_sessions",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "cloud_devices": {
+      "table": "cloud_devices",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "cloud_feature_flags": {
+      "table": "cloud_feature_flags",
+      "classification": "control-plane-config",
+      "rationale": "Config/registry pattern"
+    },
+    "cloud_file_versions": {
+      "table": "cloud_file_versions",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "cloud_files": {
+      "table": "cloud_files",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "cloud_folders": {
+      "table": "cloud_folders",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "cloud_import_export_jobs": {
+      "table": "cloud_import_export_jobs",
+      "classification": "queue-retry",
+      "rationale": "Queue/job naming pattern"
+    },
+    "cloud_lifecycle_rules": {
+      "table": "cloud_lifecycle_rules",
+      "classification": "control-plane-config",
+      "rationale": "Config/registry pattern"
+    },
+    "cloud_maintenance_modes": {
+      "table": "cloud_maintenance_modes",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "cloud_metrics_snapshots": {
+      "table": "cloud_metrics_snapshots",
+      "classification": "projection-read-model",
+      "rationale": "System/projection pattern"
+    },
+    "cloud_namespace_registry": {
+      "table": "cloud_namespace_registry",
+      "classification": "control-plane-config",
+      "rationale": "Config/registry pattern"
+    },
+    "cloud_plans": {
+      "table": "cloud_plans",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "cloud_policies": {
+      "table": "cloud_policies",
+      "classification": "control-plane-config",
+      "rationale": "Config/registry pattern"
+    },
+    "cloud_preview_jobs": {
+      "table": "cloud_preview_jobs",
+      "classification": "queue-retry",
+      "rationale": "Queue/job naming pattern"
+    },
+    "cloud_reconciliation_runs": {
+      "table": "cloud_reconciliation_runs",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "cloud_search_index": {
+      "table": "cloud_search_index",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "cloud_shared_workspaces": {
+      "table": "cloud_shared_workspaces",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "cloud_shares": {
+      "table": "cloud_shares",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "cloud_storage_providers": {
+      "table": "cloud_storage_providers",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "cloud_storage_tiers": {
+      "table": "cloud_storage_tiers",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "cloud_storage_usage": {
+      "table": "cloud_storage_usage",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "cloud_support_sessions": {
+      "table": "cloud_support_sessions",
+      "classification": "support-debug",
+      "rationale": "Support/debug naming pattern"
+    },
+    "cloud_sync_changes": {
+      "table": "cloud_sync_changes",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "cloud_sync_checkpoints": {
+      "table": "cloud_sync_checkpoints",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "cloud_sync_jobs": {
+      "table": "cloud_sync_jobs",
+      "classification": "queue-retry",
+      "rationale": "Queue/job naming pattern"
+    },
+    "cloud_sync_objects": {
+      "table": "cloud_sync_objects",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "cloud_tenant_memberships": {
+      "table": "cloud_tenant_memberships",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "cloud_tenant_plans": {
+      "table": "cloud_tenant_plans",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "cloud_tenant_policies": {
+      "table": "cloud_tenant_policies",
+      "classification": "control-plane-config",
+      "rationale": "Config/registry pattern"
+    },
+    "cloud_tenant_quotas": {
+      "table": "cloud_tenant_quotas",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "cloud_tenants": {
+      "table": "cloud_tenants",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "cloud_trash": {
+      "table": "cloud_trash",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "cloud_user_plans": {
+      "table": "cloud_user_plans",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "cloud_worker_jobs": {
+      "table": "cloud_worker_jobs",
+      "classification": "queue-retry",
+      "rationale": "Queue/job naming pattern"
+    },
+    "incidents": {
+      "table": "incidents",
+      "classification": "event-ledger",
+      "rationale": "schemaClass=log"
+    },
+    "connector_oauth_flows": {
+      "table": "connector_oauth_flows",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "connector_sync_runs": {
+      "table": "connector_sync_runs",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "connector_tokens": {
+      "table": "connector_tokens",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "notification_delivery_receipts": {
+      "table": "notification_delivery_receipts",
+      "classification": "receipt-proof",
+      "rationale": "Receipt/proof naming pattern"
+    },
+    "notification_preferences": {
+      "table": "notification_preferences",
+      "classification": "control-plane-config",
+      "rationale": "Config/registry pattern"
+    },
+    "notifications": {
+      "table": "notifications",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "platform_notifications": {
+      "table": "platform_notifications",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "vapid_keys": {
+      "table": "vapid_keys",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "command_memory": {
+      "table": "command_memory",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "command_routing_decisions": {
+      "table": "command_routing_decisions",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "command_steps": {
+      "table": "command_steps",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "device_attestations": {
+      "table": "device_attestations",
+      "classification": "event-ledger",
+      "rationale": "schemaClass=log"
+    },
+    "device_mesh_peers": {
+      "table": "device_mesh_peers",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "device_ownership": {
+      "table": "device_ownership",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "os_audit_events": {
+      "table": "os_audit_events",
+      "classification": "append-only-audit",
+      "rationale": "Audit naming pattern"
+    },
+    "os_auth_methods": {
+      "table": "os_auth_methods",
+      "classification": "projection-read-model",
+      "rationale": "System/projection pattern"
+    },
+    "os_capabilities": {
+      "table": "os_capabilities",
+      "classification": "projection-read-model",
+      "rationale": "System/projection pattern"
+    },
+    "os_command_events": {
+      "table": "os_command_events",
+      "classification": "event-ledger",
+      "rationale": "Event/log naming pattern"
+    },
+    "os_commands": {
+      "table": "os_commands",
+      "classification": "projection-read-model",
+      "rationale": "System/projection pattern"
+    },
+    "os_elevation_tokens": {
+      "table": "os_elevation_tokens",
+      "classification": "projection-read-model",
+      "rationale": "System/projection pattern"
+    },
+    "os_keyrings": {
+      "table": "os_keyrings",
+      "classification": "projection-read-model",
+      "rationale": "System/projection pattern"
+    },
+    "os_policies": {
+      "table": "os_policies",
+      "classification": "control-plane-config",
+      "rationale": "Config/registry pattern"
+    },
+    "os_role_capabilities": {
+      "table": "os_role_capabilities",
+      "classification": "projection-read-model",
+      "rationale": "System/projection pattern"
+    },
+    "os_secrets_metadata": {
+      "table": "os_secrets_metadata",
+      "classification": "projection-read-model",
+      "rationale": "System/projection pattern"
+    },
+    "os_service_identities": {
+      "table": "os_service_identities",
+      "classification": "projection-read-model",
+      "rationale": "System/projection pattern"
+    },
+    "os_sessions": {
+      "table": "os_sessions",
+      "classification": "projection-read-model",
+      "rationale": "System/projection pattern"
+    },
+    "os_user_accounts": {
+      "table": "os_user_accounts",
+      "classification": "projection-read-model",
+      "rationale": "System/projection pattern"
+    },
+    "runtime_agents": {
+      "table": "runtime_agents",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "api_gateway_routes": {
+      "table": "api_gateway_routes",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "approval_decisions": {
+      "table": "approval_decisions",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "business_health_scores": {
+      "table": "business_health_scores",
+      "classification": "projection-read-model",
+      "rationale": "System/projection pattern"
+    },
+    "calendar_events": {
+      "table": "calendar_events",
+      "classification": "event-ledger",
+      "rationale": "Event/log naming pattern"
+    },
+    "concierge_automations": {
+      "table": "concierge_automations",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "concierge_errands": {
+      "table": "concierge_errands",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "concierge_recurring_obligations": {
+      "table": "concierge_recurring_obligations",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "config_change_history": {
+      "table": "config_change_history",
+      "classification": "event-ledger",
+      "rationale": "schemaClass=log"
+    },
+    "context_graph_snapshots": {
+      "table": "context_graph_snapshots",
+      "classification": "projection-read-model",
+      "rationale": "System/projection pattern"
+    },
+    "domain_ownership_registry": {
+      "table": "domain_ownership_registry",
+      "classification": "control-plane-config",
+      "rationale": "Config/registry pattern"
+    },
+    "dual_authority_challenges": {
+      "table": "dual_authority_challenges",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "ecosystem_commands": {
+      "table": "ecosystem_commands",
+      "classification": "projection-read-model",
+      "rationale": "System/projection pattern"
+    },
+    "ecosystem_contracts": {
+      "table": "ecosystem_contracts",
+      "classification": "projection-read-model",
+      "rationale": "System/projection pattern"
+    },
+    "ecosystem_events": {
+      "table": "ecosystem_events",
+      "classification": "event-ledger",
+      "rationale": "Event/log naming pattern"
+    },
+    "environment_configs": {
+      "table": "environment_configs",
+      "classification": "control-plane-config",
+      "rationale": "Config/registry pattern"
+    },
+    "flagship_loops": {
+      "table": "flagship_loops",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "founder_directives": {
+      "table": "founder_directives",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "gift_tracker": {
+      "table": "gift_tracker",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "graph_edges": {
+      "table": "graph_edges",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "grocery_items": {
+      "table": "grocery_items",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "grocery_lists": {
+      "table": "grocery_lists",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "health_validation_results": {
+      "table": "health_validation_results",
+      "classification": "projection-read-model",
+      "rationale": "System/projection pattern"
+    },
+    "layer_health_snapshots": {
+      "table": "layer_health_snapshots",
+      "classification": "projection-read-model",
+      "rationale": "System/projection pattern"
+    },
+    "license_activations": {
+      "table": "license_activations",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "license_audit_log": {
+      "table": "license_audit_log",
+      "classification": "append-only-audit",
+      "rationale": "Audit naming pattern"
+    },
+    "licenses": {
+      "table": "licenses",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "managed_apps": {
+      "table": "managed_apps",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "outcome_verifications": {
+      "table": "outcome_verifications",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "plane_service_assignments": {
+      "table": "plane_service_assignments",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "platform_planes": {
+      "table": "platform_planes",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "platform_runbooks": {
+      "table": "platform_runbooks",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "profit_signals": {
+      "table": "profit_signals",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "read_model_snapshots": {
+      "table": "read_model_snapshots",
+      "classification": "projection-read-model",
+      "rationale": "System/projection pattern"
+    },
+    "recommendation_execution_bindings": {
+      "table": "recommendation_execution_bindings",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "recommendation_execution_events": {
+      "table": "recommendation_execution_events",
+      "classification": "event-ledger",
+      "rationale": "Event/log naming pattern"
+    },
+    "recommendation_learning_signals": {
+      "table": "recommendation_learning_signals",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "recommendation_outcome_verifications": {
+      "table": "recommendation_outcome_verifications",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "release_compatibility_matrix": {
+      "table": "release_compatibility_matrix",
+      "classification": "projection-read-model",
+      "rationale": "System/projection pattern"
+    },
+    "remediation_programs": {
+      "table": "remediation_programs",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "remediation_tasks": {
+      "table": "remediation_tasks",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "rollback_events": {
+      "table": "rollback_events",
+      "classification": "event-ledger",
+      "rationale": "Event/log naming pattern"
+    },
+    "school_activities": {
+      "table": "school_activities",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "service_identity_registry": {
+      "table": "service_identity_registry",
+      "classification": "control-plane-config",
+      "rationale": "Config/registry pattern"
+    },
+    "service_providers_list": {
+      "table": "service_providers_list",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "support_access_grants": {
+      "table": "support_access_grants",
+      "classification": "support-debug",
+      "rationale": "Support/debug naming pattern"
+    },
+    "support_case_events": {
+      "table": "support_case_events",
+      "classification": "event-ledger",
+      "rationale": "Event/log naming pattern"
+    },
+    "support_cases": {
+      "table": "support_cases",
+      "classification": "support-debug",
+      "rationale": "Support/debug naming pattern"
+    },
+    "system_guarantees": {
+      "table": "system_guarantees",
+      "classification": "projection-read-model",
+      "rationale": "System/projection pattern"
+    },
+    "system_slots": {
+      "table": "system_slots",
+      "classification": "projection-read-model",
+      "rationale": "System/projection pattern"
+    },
+    "timeline_events": {
+      "table": "timeline_events",
+      "classification": "event-ledger",
+      "rationale": "Event/log naming pattern"
+    },
+    "token_classes": {
+      "table": "token_classes",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "travel_plans": {
+      "table": "travel_plans",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "update_boot_attempts": {
+      "table": "update_boot_attempts",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "update_catalog": {
+      "table": "update_catalog",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "update_channels": {
+      "table": "update_channels",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "update_history": {
+      "table": "update_history",
+      "classification": "event-ledger",
+      "rationale": "schemaClass=log"
+    },
+    "update_preflight_results": {
+      "table": "update_preflight_results",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "update_staging": {
+      "table": "update_staging",
+      "classification": "queue-retry",
+      "rationale": "Queue/job naming pattern"
+    },
+    "business_onboarding": {
+      "table": "business_onboarding",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "communication_metrics": {
+      "table": "communication_metrics",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "concierge_documents": {
+      "table": "concierge_documents",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "onboarding_choices": {
+      "table": "onboarding_choices",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "onboarding_completion_markers": {
+      "table": "onboarding_completion_markers",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "onboarding_hardware_detection": {
+      "table": "onboarding_hardware_detection",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "onboarding_restore_sources": {
+      "table": "onboarding_restore_sources",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    },
+    "onboarding_steps": {
+      "table": "onboarding_steps",
+      "classification": "lifecycle-state",
+      "rationale": "Primary state table (default)"
+    }
+  }
+}

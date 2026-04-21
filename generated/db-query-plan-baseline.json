@@ -1,0 +1,207 @@
+{
+  "generatedAt": "2026-04-21T00:18:47.113Z",
+  "totalQueryFamilies": 11,
+  "entries": [
+    {
+      "id": "auth-session-lookup",
+      "name": "Auth/Session Lookup",
+      "primaryTable": "os_sessions",
+      "joinTables": [
+        "profiles",
+        "user_roles"
+      ],
+      "requiredIndexes": [
+        "os_sessions(user_id)",
+        "os_sessions(expires_at)"
+      ],
+      "highRiskPatterns": [
+        "sequential scan on os_sessions",
+        "missing expires_at filter"
+      ],
+      "expectedAccessPattern": "index scan on user_id + expires_at filter",
+      "slaMs": 50
+    },
+    {
+      "id": "onboarding-resume",
+      "name": "Onboarding Resume/Checkpoint",
+      "primaryTable": "onboarding_sessions",
+      "joinTables": [
+        "onboarding_steps",
+        "onboarding_choices"
+      ],
+      "requiredIndexes": [
+        "onboarding_sessions(user_id)"
+      ],
+      "highRiskPatterns": [
+        "sequential scan on onboarding_sessions"
+      ],
+      "expectedAccessPattern": "index scan on user_id",
+      "slaMs": 100
+    },
+    {
+      "id": "advisor-lookup",
+      "name": "Advisor/Action/Approval Lookup",
+      "primaryTable": "advisor_agents",
+      "joinTables": [
+        "advisor_board_recommendations",
+        "advisor_board_actions"
+      ],
+      "requiredIndexes": [
+        "advisor_agents(user_id)",
+        "advisor_board_actions(recommendation_id)"
+      ],
+      "highRiskPatterns": [
+        "sequential scan on advisor_board_actions"
+      ],
+      "expectedAccessPattern": "index scan on user_id, FK index on recommendation_id",
+      "slaMs": 100
+    },
+    {
+      "id": "boardroom-item",
+      "name": "Boardroom Item/Recommendation Lookup",
+      "primaryTable": "boardroom_items",
+      "joinTables": [
+        "boardroom_recommendations",
+        "boardroom_evidence",
+        "boardroom_decision_receipts"
+      ],
+      "requiredIndexes": [
+        "boardroom_items(user_id)",
+        "boardroom_decision_receipts(user_id)"
+      ],
+      "highRiskPatterns": [
+        "sequential scan on boardroom_items"
+      ],
+      "expectedAccessPattern": "index scan on user_id",
+      "slaMs": 100
+    },
+    {
+      "id": "payment-receipt",
+      "name": "Payment Status and Receipt Lookup",
+      "primaryTable": "invoices",
+      "joinTables": [
+        "receipts",
+        "proof_records"
+      ],
+      "requiredIndexes": [
+        "invoices(user_id)",
+        "receipts(user_id)"
+      ],
+      "highRiskPatterns": [
+        "sequential scan on invoices without user_id filter"
+      ],
+      "expectedAccessPattern": "index scan on user_id + status filter",
+      "slaMs": 100
+    },
+    {
+      "id": "connector-health",
+      "name": "Connector Refresh/Sync Health",
+      "primaryTable": "connector_tokens",
+      "joinTables": [
+        "connector_sync_runs",
+        "sync_logs"
+      ],
+      "requiredIndexes": [
+        "connector_tokens(user_id)",
+        "connector_tokens(expires_at)",
+        "connector_sync_runs(status)"
+      ],
+      "highRiskPatterns": [
+        "sequential scan on connector_tokens",
+        "missing expires_at index"
+      ],
+      "expectedAccessPattern": "index scan on user_id + expires_at",
+      "slaMs": 50
+    },
+    {
+      "id": "file-lineage",
+      "name": "File Processing Lineage",
+      "primaryTable": "cloud_files",
+      "joinTables": [
+        "cloud_file_versions",
+        "cloud_blobs"
+      ],
+      "requiredIndexes": [
+        "cloud_files(user_id)",
+        "cloud_file_versions(user_id)"
+      ],
+      "highRiskPatterns": [
+        "sequential scan on cloud_files"
+      ],
+      "expectedAccessPattern": "index scan on user_id",
+      "slaMs": 100
+    },
+    {
+      "id": "kill-switch",
+      "name": "Kill-Switch / Incident Lookup",
+      "primaryTable": "incidents",
+      "joinTables": [
+        "platform_runbooks"
+      ],
+      "requiredIndexes": [
+        "incidents(status)",
+        "incidents(user_id)"
+      ],
+      "highRiskPatterns": [
+        "sequential scan on incidents"
+      ],
+      "expectedAccessPattern": "index scan on status",
+      "slaMs": 50
+    },
+    {
+      "id": "support-bundle",
+      "name": "Support Bundle / Escalation",
+      "primaryTable": "support_cases",
+      "joinTables": [
+        "support_case_events",
+        "support_access_grants"
+      ],
+      "requiredIndexes": [
+        "support_cases(user_id)",
+        "support_cases(status)"
+      ],
+      "highRiskPatterns": [
+        "sequential scan on support_cases"
+      ],
+      "expectedAccessPattern": "index scan on user_id + status",
+      "slaMs": 100
+    },
+    {
+      "id": "admin-summary",
+      "name": "Admin Dashboard Summary",
+      "primaryTable": "admin_action_audit",
+      "joinTables": [
+        "admin_sessions",
+        "admin_action_confirmations"
+      ],
+      "requiredIndexes": [
+        "admin_action_audit(actor_user_id)",
+        "admin_sessions(user_id)"
+      ],
+      "highRiskPatterns": [
+        "sequential scan on admin_action_audit"
+      ],
+      "expectedAccessPattern": "index scan on actor_user_id + time range",
+      "slaMs": 200
+    },
+    {
+      "id": "ai-budget-check",
+      "name": "AI Budget Pre-Check",
+      "primaryTable": "ai_usage_ledger",
+      "joinTables": [
+        "ai_user_hard_ceilings",
+        "ai_budget_decision_receipts"
+      ],
+      "requiredIndexes": [
+        "ai_usage_ledger(user_id)",
+        "ai_usage_ledger(expires_at)"
+      ],
+      "highRiskPatterns": [
+        "sequential scan on ai_usage_ledger",
+        "missing expires_at filter"
+      ],
+      "expectedAccessPattern": "index scan on user_id + time range",
+      "slaMs": 50
+    }
+  ]
+}

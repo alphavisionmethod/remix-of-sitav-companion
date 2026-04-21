@@ -1,0 +1,19 @@
+{
+  "generatedAt": "2026-04-21T00:18:47.113Z",
+  "totalMigrations": 164,
+  "byContext": {
+    "auth-identity": 15,
+    "platform-core": 116,
+    "notification": 6,
+    "compliance": 1,
+    "advisor-intelligence": 5,
+    "connector-fabric": 3,
+    "os-kernel": 5,
+    "ai-workforce": 6,
+    "boardroom": 2,
+    "business-crm": 3,
+    "cloud-infrastructure": 2
+  },
+  "highRiskMigrations": 27,
+  "archiveCandidates": 4
+}

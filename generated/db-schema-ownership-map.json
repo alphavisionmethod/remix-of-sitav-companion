@@ -1,0 +1,20 @@
+{
+  "generatedAt": "2026-04-21T00:18:47.113Z",
+  "domainToOwner": {
+    "auth-identity": "platform-engineering",
+    "admin-governance": "admin-governance",
+    "advisor-intelligence": "advisor-team",
+    "ai-workforce": "ai-engineering",
+    "boardroom": "advisor-team",
+    "business-crm": "crm-team",
+    "cloud-infrastructure": "cloud-team",
+    "connector-fabric": "connector-team",
+    "finance": "finance-team",
+    "notification": "notification-team",
+    "os-kernel": "os-kernel-team",
+    "platform-core": "platform-engineering",
+    "compliance": "compliance-team",
+    "user-experience": "ux-team"
+  },
+  "tableCount": 201
+}

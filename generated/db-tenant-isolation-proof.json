@@ -1,0 +1,2424 @@
+{
+  "generatedAt": "2026-04-21T00:18:47.113Z",
+  "totalTables": 201,
+  "verified": 201,
+  "unverified": 0,
+  "entries": [
+    {
+      "table": "action_safety_classifications",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "admin_action_audit",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "admin_role",
+      "actorClasses": [
+        "end-user",
+        "admin",
+        "service-role"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "admin_action_confirmations",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "admin_permission",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "admin_role_permissions",
+      "isolationMechanism": "global-no-tenant",
+      "policyMechanism": "admin_role",
+      "actorClasses": [
+        "end-user",
+        "service-role"
+      ],
+      "supportOverridePath": null,
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "admin_safety_actions",
+      "isolationMechanism": "global-no-tenant",
+      "policyMechanism": "admin_permission",
+      "actorClasses": [
+        "end-user",
+        "service-role"
+      ],
+      "supportOverridePath": null,
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "admin_sessions",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "admin_role",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "advisor_action_queue",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "advisor_agents",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "advisor_autonomy_policies",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "advisor_board_actions",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "advisor_board_memory",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "advisor_board_recommendations",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "advisor_board_reflections",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "advisor_board_tool_executions",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "advisor_feedback",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "advisor_knowledge",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "advisor_memories",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "advisor_profiles",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "ai_inference_receipts",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "ai_workforce_approval_queue",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "ai_workforce_budget_classes",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "ai_workforce_cached_outputs",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "ai_workforce_invocations",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "ai_workforce_launch_honesty",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "ai_workforce_outputs",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "ai_workforce_recommendation_scores",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "ai_workforce_recommendations",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "ai_workforce_role_health",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "ai_workforce_role_task_permissions",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "ai_workforce_roles",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "ai_workforce_task_types",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "api_gateway_routes",
+      "isolationMechanism": "global-no-tenant",
+      "policyMechanism": "admin_role",
+      "actorClasses": [
+        "end-user",
+        "service-role"
+      ],
+      "supportOverridePath": null,
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "appointments",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "approval_decisions",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "biometric_credentials",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "boardroom_decision_receipts",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "boardroom_evidence",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "boardroom_items",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "boardroom_recommendations",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "boardroom_sessions",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "business_health_scores",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "business_onboarding",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "calendar_events",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "client_capability_matrix",
+      "isolationMechanism": "global-no-tenant",
+      "policyMechanism": "admin_permission",
+      "actorClasses": [
+        "end-user",
+        "service-role"
+      ],
+      "supportOverridePath": null,
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "cloud_abuse_events",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "admin_role",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "cloud_account_closure_requests",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "admin_role",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "cloud_activity_journal",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "admin_role",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "cloud_admin_role_assignments",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "admin_role",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "cloud_admin_roles",
+      "isolationMechanism": "global-no-tenant",
+      "policyMechanism": "admin_role",
+      "actorClasses": [
+        "end-user",
+        "service-role"
+      ],
+      "supportOverridePath": null,
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "cloud_archive_jobs",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "admin_role",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "cloud_audit_events",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "admin_role",
+      "actorClasses": [
+        "end-user",
+        "admin",
+        "service-role"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "cloud_backup_snapshots",
+      "isolationMechanism": "global-no-tenant",
+      "policyMechanism": "admin_role",
+      "actorClasses": [
+        "end-user",
+        "service-role"
+      ],
+      "supportOverridePath": null,
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "cloud_blobs",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "admin_role",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "cloud_bootstrap_markers",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "admin_role",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "cloud_compliance_hooks",
+      "isolationMechanism": "global-no-tenant",
+      "policyMechanism": "admin_role",
+      "actorClasses": [
+        "end-user",
+        "service-role"
+      ],
+      "supportOverridePath": null,
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "cloud_conflicts",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "admin_role",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "cloud_device_sessions",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "admin_role",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "cloud_devices",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "admin_role",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "cloud_feature_flags",
+      "isolationMechanism": "global-no-tenant",
+      "policyMechanism": "admin_role",
+      "actorClasses": [
+        "end-user",
+        "service-role"
+      ],
+      "supportOverridePath": null,
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "cloud_file_versions",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "admin_role",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "cloud_files",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "admin_role",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "cloud_folders",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "admin_role",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "cloud_import_export_jobs",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "admin_role",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "cloud_lifecycle_rules",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "admin_role",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "cloud_maintenance_modes",
+      "isolationMechanism": "global-no-tenant",
+      "policyMechanism": "admin_role",
+      "actorClasses": [
+        "end-user",
+        "service-role"
+      ],
+      "supportOverridePath": null,
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "cloud_metrics_snapshots",
+      "isolationMechanism": "global-no-tenant",
+      "policyMechanism": "admin_role",
+      "actorClasses": [
+        "end-user",
+        "service-role"
+      ],
+      "supportOverridePath": null,
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "cloud_namespace_registry",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "admin_role",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "cloud_plans",
+      "isolationMechanism": "global-no-tenant",
+      "policyMechanism": "admin_role",
+      "actorClasses": [
+        "end-user",
+        "service-role"
+      ],
+      "supportOverridePath": null,
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "cloud_policies",
+      "isolationMechanism": "global-no-tenant",
+      "policyMechanism": "admin_role",
+      "actorClasses": [
+        "end-user",
+        "service-role"
+      ],
+      "supportOverridePath": null,
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "cloud_preview_jobs",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "admin_role",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "cloud_reconciliation_runs",
+      "isolationMechanism": "global-no-tenant",
+      "policyMechanism": "admin_role",
+      "actorClasses": [
+        "end-user",
+        "service-role"
+      ],
+      "supportOverridePath": null,
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "cloud_search_index",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "admin_role",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "cloud_shared_workspaces",
+      "isolationMechanism": "rls-tenant-id",
+      "policyMechanism": "admin_role",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "cloud_shares",
+      "isolationMechanism": "global-no-tenant",
+      "policyMechanism": "admin_role",
+      "actorClasses": [
+        "end-user",
+        "service-role"
+      ],
+      "supportOverridePath": null,
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "cloud_storage_providers",
+      "isolationMechanism": "global-no-tenant",
+      "policyMechanism": "admin_role",
+      "actorClasses": [
+        "end-user",
+        "service-role"
+      ],
+      "supportOverridePath": null,
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "cloud_storage_tiers",
+      "isolationMechanism": "global-no-tenant",
+      "policyMechanism": "admin_role",
+      "actorClasses": [
+        "end-user",
+        "service-role"
+      ],
+      "supportOverridePath": null,
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "cloud_storage_usage",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "admin_role",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "cloud_support_sessions",
+      "isolationMechanism": "global-no-tenant",
+      "policyMechanism": "admin_role",
+      "actorClasses": [
+        "end-user",
+        "service-role"
+      ],
+      "supportOverridePath": null,
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "cloud_sync_changes",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "admin_role",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "cloud_sync_checkpoints",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "admin_role",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "cloud_sync_jobs",
+      "isolationMechanism": "global-no-tenant",
+      "policyMechanism": "admin_role",
+      "actorClasses": [
+        "end-user",
+        "service-role"
+      ],
+      "supportOverridePath": null,
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "cloud_sync_objects",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "admin_role",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "cloud_tenant_memberships",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "admin_role",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "cloud_tenant_plans",
+      "isolationMechanism": "rls-tenant-id",
+      "policyMechanism": "admin_role",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "cloud_tenant_policies",
+      "isolationMechanism": "rls-tenant-id",
+      "policyMechanism": "admin_role",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "cloud_tenant_quotas",
+      "isolationMechanism": "rls-tenant-id",
+      "policyMechanism": "admin_role",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "cloud_tenants",
+      "isolationMechanism": "global-no-tenant",
+      "policyMechanism": "admin_role",
+      "actorClasses": [
+        "end-user",
+        "service-role"
+      ],
+      "supportOverridePath": null,
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "cloud_trash",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "admin_role",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "cloud_user_plans",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "admin_role",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "cloud_worker_jobs",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "admin_role",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "command_memory",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "command_routing_decisions",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "command_steps",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "communication_metrics",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "concierge_automations",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "concierge_documents",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "concierge_errands",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "concierge_recurring_obligations",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "config_change_history",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "admin_permission",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "connector_oauth_flows",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "connector_sync_runs",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "connector_tokens",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "context_graph_snapshots",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "crm_automations",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "crm_communications",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "crm_companies",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "crm_contact_company",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "crm_contacts",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "crm_import_jobs",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "crm_merge_log",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin",
+        "service-role"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "crm_notes",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "crm_opportunities",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "crm_pipeline_stages",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "crm_segments",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "crm_tags",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "crm_tasks",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "device_attestations",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "device_mesh_peers",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "device_ownership",
+      "isolationMechanism": "global-no-tenant",
+      "policyMechanism": "admin_role",
+      "actorClasses": [
+        "end-user",
+        "service-role"
+      ],
+      "supportOverridePath": null,
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "domain_ownership_registry",
+      "isolationMechanism": "global-no-tenant",
+      "policyMechanism": "admin_permission",
+      "actorClasses": [
+        "end-user",
+        "service-role"
+      ],
+      "supportOverridePath": null,
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "dual_authority_challenges",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "ecosystem_commands",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "ecosystem_contracts",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "ecosystem_events",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "environment_configs",
+      "isolationMechanism": "global-no-tenant",
+      "policyMechanism": "admin_role",
+      "actorClasses": [
+        "end-user",
+        "service-role"
+      ],
+      "supportOverridePath": null,
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "flagship_loops",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "founder_directives",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "gift_tracker",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "graph_edges",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "grocery_items",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "grocery_lists",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "health_validation_results",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "incidents",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "layer_health_snapshots",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "lead_inbox_items",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "leads",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "license_activations",
+      "isolationMechanism": "global-no-tenant",
+      "policyMechanism": "authenticated_all",
+      "actorClasses": [
+        "end-user",
+        "service-role"
+      ],
+      "supportOverridePath": null,
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "license_audit_log",
+      "isolationMechanism": "global-no-tenant",
+      "policyMechanism": "append_only",
+      "actorClasses": [
+        "end-user",
+        "service-role"
+      ],
+      "supportOverridePath": null,
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "licenses",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "managed_apps",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "notification_delivery_receipts",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "notification_preferences",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "notifications",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "onboarding_choices",
+      "isolationMechanism": "global-no-tenant",
+      "policyMechanism": "authenticated_all",
+      "actorClasses": [
+        "end-user",
+        "service-role"
+      ],
+      "supportOverridePath": null,
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "onboarding_completion_markers",
+      "isolationMechanism": "global-no-tenant",
+      "policyMechanism": "authenticated_all",
+      "actorClasses": [
+        "end-user",
+        "service-role"
+      ],
+      "supportOverridePath": null,
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "onboarding_hardware_detection",
+      "isolationMechanism": "global-no-tenant",
+      "policyMechanism": "authenticated_all",
+      "actorClasses": [
+        "end-user",
+        "service-role"
+      ],
+      "supportOverridePath": null,
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "onboarding_restore_sources",
+      "isolationMechanism": "global-no-tenant",
+      "policyMechanism": "authenticated_all",
+      "actorClasses": [
+        "end-user",
+        "service-role"
+      ],
+      "supportOverridePath": null,
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "onboarding_sessions",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "onboarding_steps",
+      "isolationMechanism": "global-no-tenant",
+      "policyMechanism": "authenticated_all",
+      "actorClasses": [
+        "end-user",
+        "service-role"
+      ],
+      "supportOverridePath": null,
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "org_members",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "org_membership",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "organizations",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "org_membership",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "os_audit_events",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin",
+        "service-role"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "os_auth_methods",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "os_capabilities",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "os_command_events",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "os_commands",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "os_elevation_tokens",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "os_keyrings",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "os_policies",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "os_role_capabilities",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "os_secrets_metadata",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "os_service_identities",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "os_sessions",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "os_user_accounts",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "outcome_verifications",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "plane_service_assignments",
+      "isolationMechanism": "global-no-tenant",
+      "policyMechanism": "admin_role",
+      "actorClasses": [
+        "end-user",
+        "service-role"
+      ],
+      "supportOverridePath": null,
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "platform_notifications",
+      "isolationMechanism": "global-no-tenant",
+      "policyMechanism": "admin_permission",
+      "actorClasses": [
+        "end-user",
+        "service-role"
+      ],
+      "supportOverridePath": null,
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "platform_planes",
+      "isolationMechanism": "global-no-tenant",
+      "policyMechanism": "admin_role",
+      "actorClasses": [
+        "end-user",
+        "service-role"
+      ],
+      "supportOverridePath": null,
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "platform_runbooks",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "profiles",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "profit_signals",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "read_model_snapshots",
+      "isolationMechanism": "global-no-tenant",
+      "policyMechanism": "admin_permission",
+      "actorClasses": [
+        "end-user",
+        "service-role"
+      ],
+      "supportOverridePath": null,
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "recommendation_execution_bindings",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "recommendation_execution_events",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "recommendation_learning_signals",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "recommendation_outcome_verifications",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "release_compatibility_matrix",
+      "isolationMechanism": "global-no-tenant",
+      "policyMechanism": "admin_permission",
+      "actorClasses": [
+        "end-user",
+        "service-role"
+      ],
+      "supportOverridePath": null,
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "remediation_programs",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "remediation_tasks",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "rollback_events",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "runtime_agents",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "school_activities",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "service_identity_registry",
+      "isolationMechanism": "global-no-tenant",
+      "policyMechanism": "admin_permission",
+      "actorClasses": [
+        "end-user",
+        "service-role"
+      ],
+      "supportOverridePath": null,
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "service_providers_list",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "simulations",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "support_access_grants",
+      "isolationMechanism": "global-no-tenant",
+      "policyMechanism": "admin_role",
+      "actorClasses": [
+        "end-user",
+        "service-role"
+      ],
+      "supportOverridePath": null,
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "support_case_events",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "admin_permission",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "support_cases",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "admin_permission",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "system_guarantees",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "system_slots",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "timeline_events",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "token_classes",
+      "isolationMechanism": "global-no-tenant",
+      "policyMechanism": "admin_role",
+      "actorClasses": [
+        "end-user",
+        "service-role"
+      ],
+      "supportOverridePath": null,
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "travel_plans",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "update_boot_attempts",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "update_catalog",
+      "isolationMechanism": "global-no-tenant",
+      "policyMechanism": "read_only",
+      "actorClasses": [
+        "end-user",
+        "service-role"
+      ],
+      "supportOverridePath": null,
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "update_channels",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "update_history",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "update_preflight_results",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "update_staging",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "user_roles",
+      "isolationMechanism": "rls-user-id",
+      "policyMechanism": "user_id_match",
+      "actorClasses": [
+        "end-user",
+        "admin"
+      ],
+      "supportOverridePath": "admin-escalation",
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    },
+    {
+      "table": "vapid_keys",
+      "isolationMechanism": "global-no-tenant",
+      "policyMechanism": "admin_role",
+      "actorClasses": [
+        "end-user",
+        "service-role"
+      ],
+      "supportOverridePath": null,
+      "evidenceSource": "tenancy-boundary-map + rls-policy-registry",
+      "verified": true
+    }
+  ]
+}

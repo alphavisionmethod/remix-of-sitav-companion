@@ -1,36 +1,1822 @@
 {
-  "generatedAt": "2026-04-20T21:27:50.034Z",
-  "gate": "db-retention-policy-matrix",
-  "policies": [
+  "generatedAt": "2026-04-21T00:18:47.113Z",
+  "totalTables": 201,
+  "byClass": {
+    "permanent": 155,
+    "long-term-7yr": 9,
+    "short-90d": 19,
+    "medium-1yr": 17,
+    "transient-30d": 1
+  },
+  "entries": [
     {
-      "family": "ai_invocations",
-      "retentionDays": 90,
+      "table": "action_safety_classifications",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
       "archivePolicy": "soft-delete",
-      "ttlColumn": "expires_at"
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
     },
     {
-      "family": "ai_inference_receipts",
-      "retentionDays": 90,
-      "archivePolicy": "soft-delete",
-      "ttlColumn": "expires_at"
+      "table": "admin_action_audit",
+      "retentionClass": "long-term-7yr",
+      "retentionDays": 2555,
+      "archivePolicy": "append-only",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "cold"
     },
     {
-      "family": "admin_action_audit",
+      "table": "admin_action_confirmations",
+      "retentionClass": "long-term-7yr",
+      "retentionDays": 2555,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": "cooldown_expires_at",
+      "expectedRowGrowth": "medium",
+      "hotCold": "cold"
+    },
+    {
+      "table": "admin_role_permissions",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "admin_safety_actions",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "admin_sessions",
+      "retentionClass": "short-90d",
+      "retentionDays": 90,
+      "archivePolicy": "ttl-purge",
+      "ttlColumn": "expires_at",
+      "expectedRowGrowth": "medium",
+      "hotCold": "hot"
+    },
+    {
+      "table": "cloud_admin_role_assignments",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "cloud_admin_roles",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "advisor_action_queue",
+      "retentionClass": "short-90d",
+      "retentionDays": 90,
+      "archivePolicy": "hard-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "hot"
+    },
+    {
+      "table": "advisor_agents",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "advisor_autonomy_policies",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "advisor_board_actions",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "advisor_board_memory",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": "expires_at",
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "advisor_board_recommendations",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "advisor_board_reflections",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "advisor_board_tool_executions",
+      "retentionClass": "medium-1yr",
       "retentionDays": 365,
       "archivePolicy": "append-only",
-      "ttlColumn": null
+      "ttlColumn": null,
+      "expectedRowGrowth": "high",
+      "hotCold": "warm"
     },
     {
-      "family": "account_deletion_requests",
-      "retentionDays": 30,
-      "archivePolicy": "hard-delete",
-      "ttlColumn": "scheduled_purge_at"
-    },
-    {
-      "family": "ai_budget_alerts",
-      "retentionDays": 30,
+      "table": "advisor_feedback",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
       "archivePolicy": "soft-delete",
-      "ttlColumn": "expires_at"
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "advisor_knowledge",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "advisor_memories",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "advisor_profiles",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "simulations",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "ai_inference_receipts",
+      "retentionClass": "medium-1yr",
+      "retentionDays": 365,
+      "archivePolicy": "append-only",
+      "ttlColumn": "expires_at",
+      "expectedRowGrowth": "very-high",
+      "hotCold": "warm"
+    },
+    {
+      "table": "ai_workforce_approval_queue",
+      "retentionClass": "short-90d",
+      "retentionDays": 90,
+      "archivePolicy": "hard-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "hot"
+    },
+    {
+      "table": "ai_workforce_budget_classes",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "ai_workforce_cached_outputs",
+      "retentionClass": "transient-30d",
+      "retentionDays": 30,
+      "archivePolicy": "ttl-purge",
+      "ttlColumn": "expires_at",
+      "expectedRowGrowth": "medium",
+      "hotCold": "hot"
+    },
+    {
+      "table": "ai_workforce_invocations",
+      "retentionClass": "short-90d",
+      "retentionDays": 90,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "very-high",
+      "hotCold": "warm"
+    },
+    {
+      "table": "ai_workforce_launch_honesty",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "ai_workforce_outputs",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "ai_workforce_recommendation_scores",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "ai_workforce_recommendations",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "ai_workforce_role_health",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "ai_workforce_role_task_permissions",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "ai_workforce_roles",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "ai_workforce_task_types",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "biometric_credentials",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "onboarding_sessions",
+      "retentionClass": "short-90d",
+      "retentionDays": 90,
+      "archivePolicy": "ttl-purge",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "hot"
+    },
+    {
+      "table": "org_members",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "organizations",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "profiles",
+      "retentionClass": "medium-1yr",
+      "retentionDays": 365,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "user_roles",
+      "retentionClass": "long-term-7yr",
+      "retentionDays": 2555,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "cold"
+    },
+    {
+      "table": "boardroom_decision_receipts",
+      "retentionClass": "long-term-7yr",
+      "retentionDays": 2555,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "cold"
+    },
+    {
+      "table": "boardroom_evidence",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "boardroom_items",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "boardroom_recommendations",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "boardroom_sessions",
+      "retentionClass": "short-90d",
+      "retentionDays": 90,
+      "archivePolicy": "ttl-purge",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "hot"
+    },
+    {
+      "table": "appointments",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "client_capability_matrix",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "crm_automations",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "crm_communications",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "crm_companies",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "crm_contact_company",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "crm_contacts",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "crm_import_jobs",
+      "retentionClass": "short-90d",
+      "retentionDays": 90,
+      "archivePolicy": "hard-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "hot"
+    },
+    {
+      "table": "crm_merge_log",
+      "retentionClass": "medium-1yr",
+      "retentionDays": 365,
+      "archivePolicy": "append-only",
+      "ttlColumn": null,
+      "expectedRowGrowth": "high",
+      "hotCold": "warm"
+    },
+    {
+      "table": "crm_notes",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "crm_opportunities",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "crm_pipeline_stages",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "crm_segments",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "crm_tags",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "crm_tasks",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "lead_inbox_items",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "leads",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "cloud_abuse_events",
+      "retentionClass": "medium-1yr",
+      "retentionDays": 365,
+      "archivePolicy": "append-only",
+      "ttlColumn": null,
+      "expectedRowGrowth": "high",
+      "hotCold": "warm"
+    },
+    {
+      "table": "cloud_account_closure_requests",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "cloud_activity_journal",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "cloud_archive_jobs",
+      "retentionClass": "short-90d",
+      "retentionDays": 90,
+      "archivePolicy": "hard-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "hot"
+    },
+    {
+      "table": "cloud_audit_events",
+      "retentionClass": "long-term-7yr",
+      "retentionDays": 2555,
+      "archivePolicy": "append-only",
+      "ttlColumn": null,
+      "expectedRowGrowth": "very-high",
+      "hotCold": "cold"
+    },
+    {
+      "table": "cloud_backup_snapshots",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "cloud_blobs",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "cloud_bootstrap_markers",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "cloud_compliance_hooks",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "cloud_conflicts",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "cloud_device_sessions",
+      "retentionClass": "short-90d",
+      "retentionDays": 90,
+      "archivePolicy": "ttl-purge",
+      "ttlColumn": "expires_at",
+      "expectedRowGrowth": "medium",
+      "hotCold": "hot"
+    },
+    {
+      "table": "cloud_devices",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "cloud_feature_flags",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "cloud_file_versions",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "cloud_files",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "cloud_folders",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "cloud_import_export_jobs",
+      "retentionClass": "short-90d",
+      "retentionDays": 90,
+      "archivePolicy": "hard-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "hot"
+    },
+    {
+      "table": "cloud_lifecycle_rules",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "cloud_maintenance_modes",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "cloud_metrics_snapshots",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "cloud_namespace_registry",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "cloud_plans",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "cloud_policies",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "cloud_preview_jobs",
+      "retentionClass": "short-90d",
+      "retentionDays": 90,
+      "archivePolicy": "hard-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "hot"
+    },
+    {
+      "table": "cloud_reconciliation_runs",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "cloud_search_index",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "cloud_shared_workspaces",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "cloud_shares",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "cloud_storage_providers",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "cloud_storage_tiers",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "cloud_storage_usage",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "cloud_support_sessions",
+      "retentionClass": "short-90d",
+      "retentionDays": 90,
+      "archivePolicy": "ttl-purge",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "hot"
+    },
+    {
+      "table": "cloud_sync_changes",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "cloud_sync_checkpoints",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "cloud_sync_jobs",
+      "retentionClass": "short-90d",
+      "retentionDays": 90,
+      "archivePolicy": "hard-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "hot"
+    },
+    {
+      "table": "cloud_sync_objects",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "cloud_tenant_memberships",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "cloud_tenant_plans",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "cloud_tenant_policies",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "cloud_tenant_quotas",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "cloud_tenants",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "cloud_trash",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "cloud_user_plans",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "cloud_worker_jobs",
+      "retentionClass": "short-90d",
+      "retentionDays": 90,
+      "archivePolicy": "hard-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "hot"
+    },
+    {
+      "table": "incidents",
+      "retentionClass": "medium-1yr",
+      "retentionDays": 365,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "high",
+      "hotCold": "warm"
+    },
+    {
+      "table": "connector_oauth_flows",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "connector_sync_runs",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "connector_tokens",
+      "retentionClass": "short-90d",
+      "retentionDays": 90,
+      "archivePolicy": "ttl-purge",
+      "ttlColumn": "expires_at",
+      "expectedRowGrowth": "medium",
+      "hotCold": "hot"
+    },
+    {
+      "table": "notification_delivery_receipts",
+      "retentionClass": "long-term-7yr",
+      "retentionDays": 2555,
+      "archivePolicy": "append-only",
+      "ttlColumn": null,
+      "expectedRowGrowth": "very-high",
+      "hotCold": "cold"
+    },
+    {
+      "table": "notification_preferences",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "notifications",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "platform_notifications",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "vapid_keys",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "command_memory",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "command_routing_decisions",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "command_steps",
+      "retentionClass": "medium-1yr",
+      "retentionDays": 365,
+      "archivePolicy": "append-only",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "device_attestations",
+      "retentionClass": "medium-1yr",
+      "retentionDays": 365,
+      "archivePolicy": "append-only",
+      "ttlColumn": null,
+      "expectedRowGrowth": "high",
+      "hotCold": "warm"
+    },
+    {
+      "table": "device_mesh_peers",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "device_ownership",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "os_audit_events",
+      "retentionClass": "long-term-7yr",
+      "retentionDays": 2555,
+      "archivePolicy": "append-only",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "cold"
+    },
+    {
+      "table": "os_auth_methods",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "os_capabilities",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "os_command_events",
+      "retentionClass": "medium-1yr",
+      "retentionDays": 365,
+      "archivePolicy": "append-only",
+      "ttlColumn": null,
+      "expectedRowGrowth": "very-high",
+      "hotCold": "warm"
+    },
+    {
+      "table": "os_commands",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "os_elevation_tokens",
+      "retentionClass": "short-90d",
+      "retentionDays": 90,
+      "archivePolicy": "ttl-purge",
+      "ttlColumn": "expires_at",
+      "expectedRowGrowth": "medium",
+      "hotCold": "hot"
+    },
+    {
+      "table": "os_keyrings",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "os_policies",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "os_role_capabilities",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "os_secrets_metadata",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "os_service_identities",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "os_sessions",
+      "retentionClass": "short-90d",
+      "retentionDays": 90,
+      "archivePolicy": "ttl-purge",
+      "ttlColumn": "expires_at",
+      "expectedRowGrowth": "medium",
+      "hotCold": "hot"
+    },
+    {
+      "table": "os_user_accounts",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "runtime_agents",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "api_gateway_routes",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "approval_decisions",
+      "retentionClass": "long-term-7yr",
+      "retentionDays": 2555,
+      "archivePolicy": "append-only",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "cold"
+    },
+    {
+      "table": "business_health_scores",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "calendar_events",
+      "retentionClass": "medium-1yr",
+      "retentionDays": 365,
+      "archivePolicy": "append-only",
+      "ttlColumn": null,
+      "expectedRowGrowth": "high",
+      "hotCold": "warm"
+    },
+    {
+      "table": "concierge_automations",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "concierge_errands",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "concierge_recurring_obligations",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "config_change_history",
+      "retentionClass": "medium-1yr",
+      "retentionDays": 365,
+      "archivePolicy": "append-only",
+      "ttlColumn": null,
+      "expectedRowGrowth": "high",
+      "hotCold": "warm"
+    },
+    {
+      "table": "context_graph_snapshots",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "domain_ownership_registry",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "dual_authority_challenges",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "ecosystem_commands",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "ecosystem_contracts",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "ecosystem_events",
+      "retentionClass": "medium-1yr",
+      "retentionDays": 365,
+      "archivePolicy": "append-only",
+      "ttlColumn": null,
+      "expectedRowGrowth": "very-high",
+      "hotCold": "warm"
+    },
+    {
+      "table": "environment_configs",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "flagship_loops",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "founder_directives",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "gift_tracker",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "graph_edges",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "grocery_items",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "grocery_lists",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "health_validation_results",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "layer_health_snapshots",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "license_activations",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "license_audit_log",
+      "retentionClass": "long-term-7yr",
+      "retentionDays": 2555,
+      "archivePolicy": "append-only",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "cold"
+    },
+    {
+      "table": "licenses",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "managed_apps",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "outcome_verifications",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "plane_service_assignments",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "platform_planes",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "platform_runbooks",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "profit_signals",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "read_model_snapshots",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "recommendation_execution_bindings",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "recommendation_execution_events",
+      "retentionClass": "medium-1yr",
+      "retentionDays": 365,
+      "archivePolicy": "append-only",
+      "ttlColumn": null,
+      "expectedRowGrowth": "high",
+      "hotCold": "warm"
+    },
+    {
+      "table": "recommendation_learning_signals",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "recommendation_outcome_verifications",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "release_compatibility_matrix",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "remediation_programs",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "remediation_tasks",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "rollback_events",
+      "retentionClass": "medium-1yr",
+      "retentionDays": 365,
+      "archivePolicy": "append-only",
+      "ttlColumn": null,
+      "expectedRowGrowth": "high",
+      "hotCold": "warm"
+    },
+    {
+      "table": "school_activities",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "service_identity_registry",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "service_providers_list",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "support_access_grants",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "support_case_events",
+      "retentionClass": "medium-1yr",
+      "retentionDays": 365,
+      "archivePolicy": "append-only",
+      "ttlColumn": null,
+      "expectedRowGrowth": "high",
+      "hotCold": "warm"
+    },
+    {
+      "table": "support_cases",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "system_guarantees",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "system_slots",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "timeline_events",
+      "retentionClass": "medium-1yr",
+      "retentionDays": 365,
+      "archivePolicy": "append-only",
+      "ttlColumn": null,
+      "expectedRowGrowth": "very-high",
+      "hotCold": "warm"
+    },
+    {
+      "table": "token_classes",
+      "retentionClass": "short-90d",
+      "retentionDays": 90,
+      "archivePolicy": "ttl-purge",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "hot"
+    },
+    {
+      "table": "travel_plans",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "update_boot_attempts",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "update_catalog",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "update_channels",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "update_history",
+      "retentionClass": "medium-1yr",
+      "retentionDays": 365,
+      "archivePolicy": "append-only",
+      "ttlColumn": null,
+      "expectedRowGrowth": "high",
+      "hotCold": "warm"
+    },
+    {
+      "table": "update_preflight_results",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "update_staging",
+      "retentionClass": "short-90d",
+      "retentionDays": 90,
+      "archivePolicy": "hard-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "hot"
+    },
+    {
+      "table": "business_onboarding",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "communication_metrics",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "concierge_documents",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "onboarding_choices",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "onboarding_completion_markers",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "onboarding_hardware_detection",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "onboarding_restore_sources",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
+    },
+    {
+      "table": "onboarding_steps",
+      "retentionClass": "permanent",
+      "retentionDays": -1,
+      "archivePolicy": "soft-delete",
+      "ttlColumn": null,
+      "expectedRowGrowth": "medium",
+      "hotCold": "warm"
     }
   ]
 }

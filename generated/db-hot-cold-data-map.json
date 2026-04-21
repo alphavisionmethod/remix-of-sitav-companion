@@ -1,0 +1,1015 @@
+{
+  "generatedAt": "2026-04-21T00:18:47.113Z",
+  "summary": {
+    "warm": 173,
+    "cold": 9,
+    "hot": 19
+  },
+  "entries": [
+    {
+      "table": "action_safety_classifications",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "admin_action_audit",
+      "hotCold": "cold",
+      "retentionClass": "long-term-7yr"
+    },
+    {
+      "table": "admin_action_confirmations",
+      "hotCold": "cold",
+      "retentionClass": "long-term-7yr"
+    },
+    {
+      "table": "admin_role_permissions",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "admin_safety_actions",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "admin_sessions",
+      "hotCold": "hot",
+      "retentionClass": "short-90d"
+    },
+    {
+      "table": "cloud_admin_role_assignments",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "cloud_admin_roles",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "advisor_action_queue",
+      "hotCold": "hot",
+      "retentionClass": "short-90d"
+    },
+    {
+      "table": "advisor_agents",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "advisor_autonomy_policies",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "advisor_board_actions",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "advisor_board_memory",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "advisor_board_recommendations",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "advisor_board_reflections",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "advisor_board_tool_executions",
+      "hotCold": "warm",
+      "retentionClass": "medium-1yr"
+    },
+    {
+      "table": "advisor_feedback",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "advisor_knowledge",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "advisor_memories",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "advisor_profiles",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "simulations",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "ai_inference_receipts",
+      "hotCold": "warm",
+      "retentionClass": "medium-1yr"
+    },
+    {
+      "table": "ai_workforce_approval_queue",
+      "hotCold": "hot",
+      "retentionClass": "short-90d"
+    },
+    {
+      "table": "ai_workforce_budget_classes",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "ai_workforce_cached_outputs",
+      "hotCold": "hot",
+      "retentionClass": "transient-30d"
+    },
+    {
+      "table": "ai_workforce_invocations",
+      "hotCold": "warm",
+      "retentionClass": "short-90d"
+    },
+    {
+      "table": "ai_workforce_launch_honesty",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "ai_workforce_outputs",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "ai_workforce_recommendation_scores",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "ai_workforce_recommendations",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "ai_workforce_role_health",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "ai_workforce_role_task_permissions",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "ai_workforce_roles",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "ai_workforce_task_types",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "biometric_credentials",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "onboarding_sessions",
+      "hotCold": "hot",
+      "retentionClass": "short-90d"
+    },
+    {
+      "table": "org_members",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "organizations",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "profiles",
+      "hotCold": "warm",
+      "retentionClass": "medium-1yr"
+    },
+    {
+      "table": "user_roles",
+      "hotCold": "cold",
+      "retentionClass": "long-term-7yr"
+    },
+    {
+      "table": "boardroom_decision_receipts",
+      "hotCold": "cold",
+      "retentionClass": "long-term-7yr"
+    },
+    {
+      "table": "boardroom_evidence",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "boardroom_items",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "boardroom_recommendations",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "boardroom_sessions",
+      "hotCold": "hot",
+      "retentionClass": "short-90d"
+    },
+    {
+      "table": "appointments",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "client_capability_matrix",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "crm_automations",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "crm_communications",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "crm_companies",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "crm_contact_company",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "crm_contacts",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "crm_import_jobs",
+      "hotCold": "hot",
+      "retentionClass": "short-90d"
+    },
+    {
+      "table": "crm_merge_log",
+      "hotCold": "warm",
+      "retentionClass": "medium-1yr"
+    },
+    {
+      "table": "crm_notes",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "crm_opportunities",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "crm_pipeline_stages",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "crm_segments",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "crm_tags",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "crm_tasks",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "lead_inbox_items",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "leads",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "cloud_abuse_events",
+      "hotCold": "warm",
+      "retentionClass": "medium-1yr"
+    },
+    {
+      "table": "cloud_account_closure_requests",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "cloud_activity_journal",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "cloud_archive_jobs",
+      "hotCold": "hot",
+      "retentionClass": "short-90d"
+    },
+    {
+      "table": "cloud_audit_events",
+      "hotCold": "cold",
+      "retentionClass": "long-term-7yr"
+    },
+    {
+      "table": "cloud_backup_snapshots",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "cloud_blobs",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "cloud_bootstrap_markers",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "cloud_compliance_hooks",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "cloud_conflicts",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "cloud_device_sessions",
+      "hotCold": "hot",
+      "retentionClass": "short-90d"
+    },
+    {
+      "table": "cloud_devices",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "cloud_feature_flags",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "cloud_file_versions",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "cloud_files",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "cloud_folders",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "cloud_import_export_jobs",
+      "hotCold": "hot",
+      "retentionClass": "short-90d"
+    },
+    {
+      "table": "cloud_lifecycle_rules",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "cloud_maintenance_modes",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "cloud_metrics_snapshots",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "cloud_namespace_registry",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "cloud_plans",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "cloud_policies",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "cloud_preview_jobs",
+      "hotCold": "hot",
+      "retentionClass": "short-90d"
+    },
+    {
+      "table": "cloud_reconciliation_runs",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "cloud_search_index",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "cloud_shared_workspaces",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "cloud_shares",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "cloud_storage_providers",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "cloud_storage_tiers",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "cloud_storage_usage",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "cloud_support_sessions",
+      "hotCold": "hot",
+      "retentionClass": "short-90d"
+    },
+    {
+      "table": "cloud_sync_changes",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "cloud_sync_checkpoints",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "cloud_sync_jobs",
+      "hotCold": "hot",
+      "retentionClass": "short-90d"
+    },
+    {
+      "table": "cloud_sync_objects",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "cloud_tenant_memberships",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "cloud_tenant_plans",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "cloud_tenant_policies",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "cloud_tenant_quotas",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "cloud_tenants",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "cloud_trash",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "cloud_user_plans",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "cloud_worker_jobs",
+      "hotCold": "hot",
+      "retentionClass": "short-90d"
+    },
+    {
+      "table": "incidents",
+      "hotCold": "warm",
+      "retentionClass": "medium-1yr"
+    },
+    {
+      "table": "connector_oauth_flows",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "connector_sync_runs",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "connector_tokens",
+      "hotCold": "hot",
+      "retentionClass": "short-90d"
+    },
+    {
+      "table": "notification_delivery_receipts",
+      "hotCold": "cold",
+      "retentionClass": "long-term-7yr"
+    },
+    {
+      "table": "notification_preferences",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "notifications",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "platform_notifications",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "vapid_keys",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "command_memory",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "command_routing_decisions",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "command_steps",
+      "hotCold": "warm",
+      "retentionClass": "medium-1yr"
+    },
+    {
+      "table": "device_attestations",
+      "hotCold": "warm",
+      "retentionClass": "medium-1yr"
+    },
+    {
+      "table": "device_mesh_peers",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "device_ownership",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "os_audit_events",
+      "hotCold": "cold",
+      "retentionClass": "long-term-7yr"
+    },
+    {
+      "table": "os_auth_methods",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "os_capabilities",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "os_command_events",
+      "hotCold": "warm",
+      "retentionClass": "medium-1yr"
+    },
+    {
+      "table": "os_commands",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "os_elevation_tokens",
+      "hotCold": "hot",
+      "retentionClass": "short-90d"
+    },
+    {
+      "table": "os_keyrings",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "os_policies",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "os_role_capabilities",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "os_secrets_metadata",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "os_service_identities",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "os_sessions",
+      "hotCold": "hot",
+      "retentionClass": "short-90d"
+    },
+    {
+      "table": "os_user_accounts",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "runtime_agents",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "api_gateway_routes",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "approval_decisions",
+      "hotCold": "cold",
+      "retentionClass": "long-term-7yr"
+    },
+    {
+      "table": "business_health_scores",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "calendar_events",
+      "hotCold": "warm",
+      "retentionClass": "medium-1yr"
+    },
+    {
+      "table": "concierge_automations",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "concierge_errands",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "concierge_recurring_obligations",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "config_change_history",
+      "hotCold": "warm",
+      "retentionClass": "medium-1yr"
+    },
+    {
+      "table": "context_graph_snapshots",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "domain_ownership_registry",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "dual_authority_challenges",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "ecosystem_commands",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "ecosystem_contracts",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "ecosystem_events",
+      "hotCold": "warm",
+      "retentionClass": "medium-1yr"
+    },
+    {
+      "table": "environment_configs",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "flagship_loops",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "founder_directives",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "gift_tracker",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "graph_edges",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "grocery_items",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "grocery_lists",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "health_validation_results",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "layer_health_snapshots",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "license_activations",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "license_audit_log",
+      "hotCold": "cold",
+      "retentionClass": "long-term-7yr"
+    },
+    {
+      "table": "licenses",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "managed_apps",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "outcome_verifications",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "plane_service_assignments",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "platform_planes",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "platform_runbooks",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "profit_signals",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "read_model_snapshots",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "recommendation_execution_bindings",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "recommendation_execution_events",
+      "hotCold": "warm",
+      "retentionClass": "medium-1yr"
+    },
+    {
+      "table": "recommendation_learning_signals",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "recommendation_outcome_verifications",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "release_compatibility_matrix",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "remediation_programs",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "remediation_tasks",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "rollback_events",
+      "hotCold": "warm",
+      "retentionClass": "medium-1yr"
+    },
+    {
+      "table": "school_activities",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "service_identity_registry",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "service_providers_list",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "support_access_grants",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "support_case_events",
+      "hotCold": "warm",
+      "retentionClass": "medium-1yr"
+    },
+    {
+      "table": "support_cases",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "system_guarantees",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "system_slots",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "timeline_events",
+      "hotCold": "warm",
+      "retentionClass": "medium-1yr"
+    },
+    {
+      "table": "token_classes",
+      "hotCold": "hot",
+      "retentionClass": "short-90d"
+    },
+    {
+      "table": "travel_plans",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "update_boot_attempts",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "update_catalog",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "update_channels",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "update_history",
+      "hotCold": "warm",
+      "retentionClass": "medium-1yr"
+    },
+    {
+      "table": "update_preflight_results",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "update_staging",
+      "hotCold": "hot",
+      "retentionClass": "short-90d"
+    },
+    {
+      "table": "business_onboarding",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "communication_metrics",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "concierge_documents",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "onboarding_choices",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "onboarding_completion_markers",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "onboarding_hardware_detection",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "onboarding_restore_sources",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    },
+    {
+      "table": "onboarding_steps",
+      "hotCold": "warm",
+      "retentionClass": "permanent"
+    }
+  ]
+}

@@ -1,0 +1,660 @@
+{
+  "generatedAt": "2026-04-21T00:18:47.113Z",
+  "totalTables": 201,
+  "consistent": 108,
+  "inconsistent": 93,
+  "patternContracts": 13,
+  "issues": [
+    {
+      "table": "action_safety_classifications",
+      "pattern": "user_id_match",
+      "classification": "control-plane-config",
+      "consistent": false,
+      "issue": "Pattern 'user_id_match' not typical for classification 'control-plane-config'"
+    },
+    {
+      "table": "admin_action_confirmations",
+      "pattern": "admin_permission",
+      "classification": "lifecycle-state",
+      "consistent": false,
+      "issue": "Pattern 'admin_permission' not typical for classification 'lifecycle-state'"
+    },
+    {
+      "table": "admin_sessions",
+      "pattern": "admin_role",
+      "classification": "lifecycle-state",
+      "consistent": false,
+      "issue": "Pattern 'admin_role' not typical for classification 'lifecycle-state'"
+    },
+    {
+      "table": "advisor_autonomy_policies",
+      "pattern": "user_id_match",
+      "classification": "control-plane-config",
+      "consistent": false,
+      "issue": "Pattern 'user_id_match' not typical for classification 'control-plane-config'"
+    },
+    {
+      "table": "ai_inference_receipts",
+      "pattern": "user_id_match",
+      "classification": "receipt-proof",
+      "consistent": false,
+      "issue": "Pattern 'user_id_match' not typical for classification 'receipt-proof'"
+    },
+    {
+      "table": "ai_workforce_cached_outputs",
+      "pattern": "user_id_match",
+      "classification": "cache-temporary",
+      "consistent": false,
+      "issue": "Pattern 'user_id_match' not typical for classification 'cache-temporary'"
+    },
+    {
+      "table": "ai_workforce_recommendation_scores",
+      "pattern": "user_id_match",
+      "classification": "projection-read-model",
+      "consistent": false,
+      "issue": "Pattern 'user_id_match' not typical for classification 'projection-read-model'"
+    },
+    {
+      "table": "ai_workforce_role_health",
+      "pattern": "user_id_match",
+      "classification": "projection-read-model",
+      "consistent": false,
+      "issue": "Pattern 'user_id_match' not typical for classification 'projection-read-model'"
+    },
+    {
+      "table": "ai_workforce_role_task_permissions",
+      "pattern": "user_id_match",
+      "classification": "control-plane-config",
+      "consistent": false,
+      "issue": "Pattern 'user_id_match' not typical for classification 'control-plane-config'"
+    },
+    {
+      "table": "api_gateway_routes",
+      "pattern": "admin_role",
+      "classification": "lifecycle-state",
+      "consistent": false,
+      "issue": "Pattern 'admin_role' not typical for classification 'lifecycle-state'"
+    },
+    {
+      "table": "boardroom_decision_receipts",
+      "pattern": "user_id_match",
+      "classification": "receipt-proof",
+      "consistent": false,
+      "issue": "Pattern 'user_id_match' not typical for classification 'receipt-proof'"
+    },
+    {
+      "table": "business_health_scores",
+      "pattern": "user_id_match",
+      "classification": "projection-read-model",
+      "consistent": false,
+      "issue": "Pattern 'user_id_match' not typical for classification 'projection-read-model'"
+    },
+    {
+      "table": "client_capability_matrix",
+      "pattern": "admin_permission",
+      "classification": "lifecycle-state",
+      "consistent": false,
+      "issue": "Pattern 'admin_permission' not typical for classification 'lifecycle-state'"
+    },
+    {
+      "table": "cloud_abuse_events",
+      "pattern": "admin_role",
+      "classification": "event-ledger",
+      "consistent": false,
+      "issue": "Pattern 'admin_role' not typical for classification 'event-ledger'"
+    },
+    {
+      "table": "cloud_account_closure_requests",
+      "pattern": "admin_role",
+      "classification": "lifecycle-state",
+      "consistent": false,
+      "issue": "Pattern 'admin_role' not typical for classification 'lifecycle-state'"
+    },
+    {
+      "table": "cloud_activity_journal",
+      "pattern": "admin_role",
+      "classification": "lifecycle-state",
+      "consistent": false,
+      "issue": "Pattern 'admin_role' not typical for classification 'lifecycle-state'"
+    },
+    {
+      "table": "cloud_admin_role_assignments",
+      "pattern": "admin_role",
+      "classification": "lifecycle-state",
+      "consistent": false,
+      "issue": "Pattern 'admin_role' not typical for classification 'lifecycle-state'"
+    },
+    {
+      "table": "cloud_admin_roles",
+      "pattern": "admin_role",
+      "classification": "lifecycle-state",
+      "consistent": false,
+      "issue": "Pattern 'admin_role' not typical for classification 'lifecycle-state'"
+    },
+    {
+      "table": "cloud_archive_jobs",
+      "pattern": "admin_role",
+      "classification": "queue-retry",
+      "consistent": false,
+      "issue": "Pattern 'admin_role' not typical for classification 'queue-retry'"
+    },
+    {
+      "table": "cloud_backup_snapshots",
+      "pattern": "admin_role",
+      "classification": "projection-read-model",
+      "consistent": false,
+      "issue": "Pattern 'admin_role' not typical for classification 'projection-read-model'"
+    },
+    {
+      "table": "cloud_blobs",
+      "pattern": "admin_role",
+      "classification": "lifecycle-state",
+      "consistent": false,
+      "issue": "Pattern 'admin_role' not typical for classification 'lifecycle-state'"
+    },
+    {
+      "table": "cloud_bootstrap_markers",
+      "pattern": "admin_role",
+      "classification": "lifecycle-state",
+      "consistent": false,
+      "issue": "Pattern 'admin_role' not typical for classification 'lifecycle-state'"
+    },
+    {
+      "table": "cloud_compliance_hooks",
+      "pattern": "admin_role",
+      "classification": "lifecycle-state",
+      "consistent": false,
+      "issue": "Pattern 'admin_role' not typical for classification 'lifecycle-state'"
+    },
+    {
+      "table": "cloud_conflicts",
+      "pattern": "admin_role",
+      "classification": "lifecycle-state",
+      "consistent": false,
+      "issue": "Pattern 'admin_role' not typical for classification 'lifecycle-state'"
+    },
+    {
+      "table": "cloud_device_sessions",
+      "pattern": "admin_role",
+      "classification": "lifecycle-state",
+      "consistent": false,
+      "issue": "Pattern 'admin_role' not typical for classification 'lifecycle-state'"
+    },
+    {
+      "table": "cloud_devices",
+      "pattern": "admin_role",
+      "classification": "lifecycle-state",
+      "consistent": false,
+      "issue": "Pattern 'admin_role' not typical for classification 'lifecycle-state'"
+    },
+    {
+      "table": "cloud_file_versions",
+      "pattern": "admin_role",
+      "classification": "lifecycle-state",
+      "consistent": false,
+      "issue": "Pattern 'admin_role' not typical for classification 'lifecycle-state'"
+    },
+    {
+      "table": "cloud_files",
+      "pattern": "admin_role",
+      "classification": "lifecycle-state",
+      "consistent": false,
+      "issue": "Pattern 'admin_role' not typical for classification 'lifecycle-state'"
+    },
+    {
+      "table": "cloud_folders",
+      "pattern": "admin_role",
+      "classification": "lifecycle-state",
+      "consistent": false,
+      "issue": "Pattern 'admin_role' not typical for classification 'lifecycle-state'"
+    },
+    {
+      "table": "cloud_import_export_jobs",
+      "pattern": "admin_role",
+      "classification": "queue-retry",
+      "consistent": false,
+      "issue": "Pattern 'admin_role' not typical for classification 'queue-retry'"
+    },
+    {
+      "table": "cloud_maintenance_modes",
+      "pattern": "admin_role",
+      "classification": "lifecycle-state",
+      "consistent": false,
+      "issue": "Pattern 'admin_role' not typical for classification 'lifecycle-state'"
+    },
+    {
+      "table": "cloud_metrics_snapshots",
+      "pattern": "admin_role",
+      "classification": "projection-read-model",
+      "consistent": false,
+      "issue": "Pattern 'admin_role' not typical for classification 'projection-read-model'"
+    },
+    {
+      "table": "cloud_plans",
+      "pattern": "admin_role",
+      "classification": "lifecycle-state",
+      "consistent": false,
+      "issue": "Pattern 'admin_role' not typical for classification 'lifecycle-state'"
+    },
+    {
+      "table": "cloud_preview_jobs",
+      "pattern": "admin_role",
+      "classification": "queue-retry",
+      "consistent": false,
+      "issue": "Pattern 'admin_role' not typical for classification 'queue-retry'"
+    },
+    {
+      "table": "cloud_reconciliation_runs",
+      "pattern": "admin_role",
+      "classification": "lifecycle-state",
+      "consistent": false,
+      "issue": "Pattern 'admin_role' not typical for classification 'lifecycle-state'"
+    },
+    {
+      "table": "cloud_search_index",
+      "pattern": "admin_role",
+      "classification": "lifecycle-state",
+      "consistent": false,
+      "issue": "Pattern 'admin_role' not typical for classification 'lifecycle-state'"
+    },
+    {
+      "table": "cloud_shared_workspaces",
+      "pattern": "admin_role",
+      "classification": "lifecycle-state",
+      "consistent": false,
+      "issue": "Pattern 'admin_role' not typical for classification 'lifecycle-state'"
+    },
+    {
+      "table": "cloud_shares",
+      "pattern": "admin_role",
+      "classification": "lifecycle-state",
+      "consistent": false,
+      "issue": "Pattern 'admin_role' not typical for classification 'lifecycle-state'"
+    },
+    {
+      "table": "cloud_storage_providers",
+      "pattern": "admin_role",
+      "classification": "lifecycle-state",
+      "consistent": false,
+      "issue": "Pattern 'admin_role' not typical for classification 'lifecycle-state'"
+    },
+    {
+      "table": "cloud_storage_tiers",
+      "pattern": "admin_role",
+      "classification": "lifecycle-state",
+      "consistent": false,
+      "issue": "Pattern 'admin_role' not typical for classification 'lifecycle-state'"
+    },
+    {
+      "table": "cloud_storage_usage",
+      "pattern": "admin_role",
+      "classification": "lifecycle-state",
+      "consistent": false,
+      "issue": "Pattern 'admin_role' not typical for classification 'lifecycle-state'"
+    },
+    {
+      "table": "cloud_support_sessions",
+      "pattern": "admin_role",
+      "classification": "support-debug",
+      "consistent": false,
+      "issue": "Pattern 'admin_role' not typical for classification 'support-debug'"
+    },
+    {
+      "table": "cloud_sync_changes",
+      "pattern": "admin_role",
+      "classification": "lifecycle-state",
+      "consistent": false,
+      "issue": "Pattern 'admin_role' not typical for classification 'lifecycle-state'"
+    },
+    {
+      "table": "cloud_sync_checkpoints",
+      "pattern": "admin_role",
+      "classification": "lifecycle-state",
+      "consistent": false,
+      "issue": "Pattern 'admin_role' not typical for classification 'lifecycle-state'"
+    },
+    {
+      "table": "cloud_sync_jobs",
+      "pattern": "admin_role",
+      "classification": "queue-retry",
+      "consistent": false,
+      "issue": "Pattern 'admin_role' not typical for classification 'queue-retry'"
+    },
+    {
+      "table": "cloud_sync_objects",
+      "pattern": "admin_role",
+      "classification": "lifecycle-state",
+      "consistent": false,
+      "issue": "Pattern 'admin_role' not typical for classification 'lifecycle-state'"
+    },
+    {
+      "table": "cloud_tenant_memberships",
+      "pattern": "admin_role",
+      "classification": "lifecycle-state",
+      "consistent": false,
+      "issue": "Pattern 'admin_role' not typical for classification 'lifecycle-state'"
+    },
+    {
+      "table": "cloud_tenant_plans",
+      "pattern": "admin_role",
+      "classification": "lifecycle-state",
+      "consistent": false,
+      "issue": "Pattern 'admin_role' not typical for classification 'lifecycle-state'"
+    },
+    {
+      "table": "cloud_tenant_quotas",
+      "pattern": "admin_role",
+      "classification": "lifecycle-state",
+      "consistent": false,
+      "issue": "Pattern 'admin_role' not typical for classification 'lifecycle-state'"
+    },
+    {
+      "table": "cloud_tenants",
+      "pattern": "admin_role",
+      "classification": "lifecycle-state",
+      "consistent": false,
+      "issue": "Pattern 'admin_role' not typical for classification 'lifecycle-state'"
+    },
+    {
+      "table": "cloud_trash",
+      "pattern": "admin_role",
+      "classification": "lifecycle-state",
+      "consistent": false,
+      "issue": "Pattern 'admin_role' not typical for classification 'lifecycle-state'"
+    },
+    {
+      "table": "cloud_user_plans",
+      "pattern": "admin_role",
+      "classification": "lifecycle-state",
+      "consistent": false,
+      "issue": "Pattern 'admin_role' not typical for classification 'lifecycle-state'"
+    },
+    {
+      "table": "cloud_worker_jobs",
+      "pattern": "admin_role",
+      "classification": "queue-retry",
+      "consistent": false,
+      "issue": "Pattern 'admin_role' not typical for classification 'queue-retry'"
+    },
+    {
+      "table": "config_change_history",
+      "pattern": "admin_permission",
+      "classification": "event-ledger",
+      "consistent": false,
+      "issue": "Pattern 'admin_permission' not typical for classification 'event-ledger'"
+    },
+    {
+      "table": "context_graph_snapshots",
+      "pattern": "user_id_match",
+      "classification": "projection-read-model",
+      "consistent": false,
+      "issue": "Pattern 'user_id_match' not typical for classification 'projection-read-model'"
+    },
+    {
+      "table": "device_ownership",
+      "pattern": "admin_role",
+      "classification": "lifecycle-state",
+      "consistent": false,
+      "issue": "Pattern 'admin_role' not typical for classification 'lifecycle-state'"
+    },
+    {
+      "table": "ecosystem_commands",
+      "pattern": "user_id_match",
+      "classification": "projection-read-model",
+      "consistent": false,
+      "issue": "Pattern 'user_id_match' not typical for classification 'projection-read-model'"
+    },
+    {
+      "table": "ecosystem_contracts",
+      "pattern": "user_id_match",
+      "classification": "projection-read-model",
+      "consistent": false,
+      "issue": "Pattern 'user_id_match' not typical for classification 'projection-read-model'"
+    },
+    {
+      "table": "health_validation_results",
+      "pattern": "user_id_match",
+      "classification": "projection-read-model",
+      "consistent": false,
+      "issue": "Pattern 'user_id_match' not typical for classification 'projection-read-model'"
+    },
+    {
+      "table": "layer_health_snapshots",
+      "pattern": "user_id_match",
+      "classification": "projection-read-model",
+      "consistent": false,
+      "issue": "Pattern 'user_id_match' not typical for classification 'projection-read-model'"
+    },
+    {
+      "table": "license_activations",
+      "pattern": "authenticated_all",
+      "classification": "lifecycle-state",
+      "consistent": false,
+      "issue": "Pattern 'authenticated_all' not typical for classification 'lifecycle-state'"
+    },
+    {
+      "table": "notification_delivery_receipts",
+      "pattern": "user_id_match",
+      "classification": "receipt-proof",
+      "consistent": false,
+      "issue": "Pattern 'user_id_match' not typical for classification 'receipt-proof'"
+    },
+    {
+      "table": "notification_preferences",
+      "pattern": "user_id_match",
+      "classification": "control-plane-config",
+      "consistent": false,
+      "issue": "Pattern 'user_id_match' not typical for classification 'control-plane-config'"
+    },
+    {
+      "table": "onboarding_choices",
+      "pattern": "authenticated_all",
+      "classification": "lifecycle-state",
+      "consistent": false,
+      "issue": "Pattern 'authenticated_all' not typical for classification 'lifecycle-state'"
+    },
+    {
+      "table": "onboarding_completion_markers",
+      "pattern": "authenticated_all",
+      "classification": "lifecycle-state",
+      "consistent": false,
+      "issue": "Pattern 'authenticated_all' not typical for classification 'lifecycle-state'"
+    },
+    {
+      "table": "onboarding_hardware_detection",
+      "pattern": "authenticated_all",
+      "classification": "lifecycle-state",
+      "consistent": false,
+      "issue": "Pattern 'authenticated_all' not typical for classification 'lifecycle-state'"
+    },
+    {
+      "table": "onboarding_restore_sources",
+      "pattern": "authenticated_all",
+      "classification": "lifecycle-state",
+      "consistent": false,
+      "issue": "Pattern 'authenticated_all' not typical for classification 'lifecycle-state'"
+    },
+    {
+      "table": "onboarding_steps",
+      "pattern": "authenticated_all",
+      "classification": "lifecycle-state",
+      "consistent": false,
+      "issue": "Pattern 'authenticated_all' not typical for classification 'lifecycle-state'"
+    },
+    {
+      "table": "os_audit_events",
+      "pattern": "user_id_match",
+      "classification": "append-only-audit",
+      "consistent": false,
+      "issue": "Audit table 'os_audit_events' should not allow UPDATE/DELETE"
+    },
+    {
+      "table": "os_auth_methods",
+      "pattern": "user_id_match",
+      "classification": "projection-read-model",
+      "consistent": false,
+      "issue": "Pattern 'user_id_match' not typical for classification 'projection-read-model'"
+    },
+    {
+      "table": "os_capabilities",
+      "pattern": "user_id_match",
+      "classification": "projection-read-model",
+      "consistent": false,
+      "issue": "Pattern 'user_id_match' not typical for classification 'projection-read-model'"
+    },
+    {
+      "table": "os_commands",
+      "pattern": "user_id_match",
+      "classification": "projection-read-model",
+      "consistent": false,
+      "issue": "Pattern 'user_id_match' not typical for classification 'projection-read-model'"
+    },
+    {
+      "table": "os_elevation_tokens",
+      "pattern": "user_id_match",
+      "classification": "projection-read-model",
+      "consistent": false,
+      "issue": "Pattern 'user_id_match' not typical for classification 'projection-read-model'"
+    },
+    {
+      "table": "os_keyrings",
+      "pattern": "user_id_match",
+      "classification": "projection-read-model",
+      "consistent": false,
+      "issue": "Pattern 'user_id_match' not typical for classification 'projection-read-model'"
+    },
+    {
+      "table": "os_policies",
+      "pattern": "user_id_match",
+      "classification": "control-plane-config",
+      "consistent": false,
+      "issue": "Pattern 'user_id_match' not typical for classification 'control-plane-config'"
+    },
+    {
+      "table": "os_role_capabilities",
+      "pattern": "user_id_match",
+      "classification": "projection-read-model",
+      "consistent": false,
+      "issue": "Pattern 'user_id_match' not typical for classification 'projection-read-model'"
+    },
+    {
+      "table": "os_secrets_metadata",
+      "pattern": "user_id_match",
+      "classification": "projection-read-model",
+      "consistent": false,
+      "issue": "Pattern 'user_id_match' not typical for classification 'projection-read-model'"
+    },
+    {
+      "table": "os_service_identities",
+      "pattern": "user_id_match",
+      "classification": "projection-read-model",
+      "consistent": false,
+      "issue": "Pattern 'user_id_match' not typical for classification 'projection-read-model'"
+    },
+    {
+      "table": "os_sessions",
+      "pattern": "user_id_match",
+      "classification": "projection-read-model",
+      "consistent": false,
+      "issue": "Pattern 'user_id_match' not typical for classification 'projection-read-model'"
+    },
+    {
+      "table": "os_user_accounts",
+      "pattern": "user_id_match",
+      "classification": "projection-read-model",
+      "consistent": false,
+      "issue": "Pattern 'user_id_match' not typical for classification 'projection-read-model'"
+    },
+    {
+      "table": "plane_service_assignments",
+      "pattern": "admin_role",
+      "classification": "lifecycle-state",
+      "consistent": false,
+      "issue": "Pattern 'admin_role' not typical for classification 'lifecycle-state'"
+    },
+    {
+      "table": "platform_notifications",
+      "pattern": "admin_permission",
+      "classification": "lifecycle-state",
+      "consistent": false,
+      "issue": "Pattern 'admin_permission' not typical for classification 'lifecycle-state'"
+    },
+    {
+      "table": "platform_planes",
+      "pattern": "admin_role",
+      "classification": "lifecycle-state",
+      "consistent": false,
+      "issue": "Pattern 'admin_role' not typical for classification 'lifecycle-state'"
+    },
+    {
+      "table": "read_model_snapshots",
+      "pattern": "admin_permission",
+      "classification": "projection-read-model",
+      "consistent": false,
+      "issue": "Pattern 'admin_permission' not typical for classification 'projection-read-model'"
+    },
+    {
+      "table": "release_compatibility_matrix",
+      "pattern": "admin_permission",
+      "classification": "projection-read-model",
+      "consistent": false,
+      "issue": "Pattern 'admin_permission' not typical for classification 'projection-read-model'"
+    },
+    {
+      "table": "support_access_grants",
+      "pattern": "admin_role",
+      "classification": "support-debug",
+      "consistent": false,
+      "issue": "Pattern 'admin_role' not typical for classification 'support-debug'"
+    },
+    {
+      "table": "support_case_events",
+      "pattern": "admin_permission",
+      "classification": "event-ledger",
+      "consistent": false,
+      "issue": "Pattern 'admin_permission' not typical for classification 'event-ledger'"
+    },
+    {
+      "table": "support_cases",
+      "pattern": "admin_permission",
+      "classification": "support-debug",
+      "consistent": false,
+      "issue": "Pattern 'admin_permission' not typical for classification 'support-debug'"
+    },
+    {
+      "table": "system_guarantees",
+      "pattern": "user_id_match",
+      "classification": "projection-read-model",
+      "consistent": false,
+      "issue": "Pattern 'user_id_match' not typical for classification 'projection-read-model'"
+    },
+    {
+      "table": "system_slots",
+      "pattern": "user_id_match",
+      "classification": "projection-read-model",
+      "consistent": false,
+      "issue": "Pattern 'user_id_match' not typical for classification 'projection-read-model'"
+    },
+    {
+      "table": "token_classes",
+      "pattern": "admin_role",
+      "classification": "lifecycle-state",
+      "consistent": false,
+      "issue": "Pattern 'admin_role' not typical for classification 'lifecycle-state'"
+    },
+    {
+      "table": "update_catalog",
+      "pattern": "read_only",
+      "classification": "lifecycle-state",
+      "consistent": false,
+      "issue": "Pattern 'read_only' not typical for classification 'lifecycle-state'"
+    },
+    {
+      "table": "vapid_keys",
+      "pattern": "admin_role",
+      "classification": "lifecycle-state",
+      "consistent": false,
+      "issue": "Pattern 'admin_role' not typical for classification 'lifecycle-state'"
+    }
+  ]
+}
