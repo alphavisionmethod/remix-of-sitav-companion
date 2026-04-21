@@ -14,6 +14,8 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { HeroCard, SummaryCard, ComparisonCard, ProofCard, AdvisorCard, QueueCard } from "@/components/sita/cards";
+import { AdvisorPortrait } from "@/components/advisors/AdvisorPortrait";
+import { PROMO_IMAGES } from "@/lib/advisors/advisor-responsive-assets";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { BoardroomCinematic } from "@/components/sita/motion/AppTransitions";
 import { SitaTabs } from "@/components/sita/SitaComponents";
@@ -103,17 +105,24 @@ const GlobalBoardroom = () => {
               {/* Business */}
               <motion.div
                 initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
-                className="p-5 rounded-2xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_100%/0.02)] cursor-pointer hover:bg-[hsl(0_0%_100%/0.04)] transition-colors"
+                className="relative overflow-hidden p-5 rounded-2xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_100%/0.02)] cursor-pointer hover:bg-[hsl(0_0%_100%/0.04)] transition-colors"
                 onClick={() => { window.dispatchEvent(new CustomEvent("sita-open-business", { detail: { module: "boardroom" } })); }}
               >
+                <img
+                  src={PROMO_IMAGES.heroBusiness.src}
+                  srcSet={PROMO_IMAGES.heroBusiness.srcSet}
+                  sizes="(max-width: 768px) 480px, 768px"
+                  alt=""
+                  className="absolute inset-0 w-full h-full object-cover opacity-[0.07] dark:opacity-[0.12] pointer-events-none"
+                  loading="lazy"
+                  decoding="async"
+                />
                 <div className="flex items-center gap-3 mb-3">
-                  <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[hsl(265_55%_58%)] to-[hsl(285_50%_48%)] flex items-center justify-center">
-                    <Briefcase className="h-4 w-4 text-[hsl(0_0%_100%/0.95)]" />
-                  </div>
+                  <AdvisorPortrait domain="business" size="sm" />
                   <div className="flex-1">
-                    <p className="text-sm font-semibold text-foreground">Business OS</p>
+                    <p className="relative text-sm font-semibold text-foreground">Business OS</p>
                   </div>
-                  <ArrowRight className="h-4 w-4 text-muted-foreground" />
+                  <ArrowRight className="relative h-4 w-4 text-muted-foreground" />
                 </div>
                 <div className="grid grid-cols-2 gap-2 text-[11px]">
                   <div><span className="text-muted-foreground">Customers</span><p className="font-semibold text-foreground">{customers.length}</p></div>
@@ -125,15 +134,22 @@ const GlobalBoardroom = () => {
               {/* Finance */}
               <motion.div
                 initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }}
-                className="p-5 rounded-2xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_100%/0.02)] cursor-pointer hover:bg-[hsl(0_0%_100%/0.04)] transition-colors"
+                className="relative overflow-hidden p-5 rounded-2xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_100%/0.02)] cursor-pointer hover:bg-[hsl(0_0%_100%/0.04)] transition-colors"
                 onClick={() => { window.dispatchEvent(new CustomEvent("sita-open-finance", { detail: { module: "boardroom" } })); }}
               >
+                <img
+                  src={PROMO_IMAGES.heroMoney.src}
+                  srcSet={PROMO_IMAGES.heroMoney.srcSet}
+                  sizes="(max-width: 768px) 480px, 768px"
+                  alt=""
+                  className="absolute inset-0 w-full h-full object-cover opacity-[0.07] dark:opacity-[0.12] pointer-events-none"
+                  loading="lazy"
+                  decoding="async"
+                />
                 <div className="flex items-center gap-3 mb-3">
-                  <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[hsl(152_55%_48%)] to-[hsl(165_50%_42%)] flex items-center justify-center">
-                    <DollarSign className="h-4 w-4 text-[hsl(0_0%_100%/0.95)]" />
-                  </div>
-                  <div className="flex-1"><p className="text-sm font-semibold text-foreground">Finance OS</p></div>
-                  <ArrowRight className="h-4 w-4 text-muted-foreground" />
+                  <AdvisorPortrait domain="money" size="sm" />
+                  <div className="flex-1"><p className="relative text-sm font-semibold text-foreground">Finance OS</p></div>
+                  <ArrowRight className="relative h-4 w-4 text-muted-foreground" />
                 </div>
                 <div className="grid grid-cols-2 gap-2 text-[11px]">
                   <div><span className="text-muted-foreground">Balance</span><p className="font-semibold text-foreground">${k.totalBalance.toLocaleString()}</p></div>
@@ -145,15 +161,22 @@ const GlobalBoardroom = () => {
               {/* Concierge */}
               <motion.div
                 initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
-                className="p-5 rounded-2xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_100%/0.02)] cursor-pointer hover:bg-[hsl(0_0%_100%/0.04)] transition-colors"
+                className="relative overflow-hidden p-5 rounded-2xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_100%/0.02)] cursor-pointer hover:bg-[hsl(0_0%_100%/0.04)] transition-colors"
                 onClick={() => window.dispatchEvent(new CustomEvent("sita-open-concierge", { detail: { module: "boardroom" } }))}
               >
+                <img
+                  src={PROMO_IMAGES.heroConcierge.src}
+                  srcSet={PROMO_IMAGES.heroConcierge.srcSet}
+                  sizes="(max-width: 768px) 480px, 768px"
+                  alt=""
+                  className="absolute inset-0 w-full h-full object-cover opacity-[0.07] dark:opacity-[0.12] pointer-events-none"
+                  loading="lazy"
+                  decoding="async"
+                />
                 <div className="flex items-center gap-3 mb-3">
-                  <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[hsl(285_55%_55%)] to-[hsl(310_50%_48%)] flex items-center justify-center">
-                    <Headphones className="h-4 w-4 text-[hsl(0_0%_100%/0.95)]" />
-                  </div>
-                  <div className="flex-1"><p className="text-sm font-semibold text-foreground">Concierge</p></div>
-                  <ArrowRight className="h-4 w-4 text-muted-foreground" />
+                  <AdvisorPortrait domain="concierge" size="sm" />
+                  <div className="flex-1"><p className="relative text-sm font-semibold text-foreground">Concierge</p></div>
+                  <ArrowRight className="relative h-4 w-4 text-muted-foreground" />
                 </div>
                 <div className="grid grid-cols-2 gap-2 text-[11px]">
                   <div><span className="text-muted-foreground">Upcoming</span><p className="font-semibold text-foreground">—</p></div>
