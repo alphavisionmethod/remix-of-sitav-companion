@@ -7,6 +7,7 @@ import {
   Moon, Sun, Bell, Palette, Monitor, Eye, Globe, Check, ChevronRight, Lock,
   Type, Accessibility, Activity, Clock, Home as HomeIcon, Layout,
 } from "lucide-react";
+import { RotateCcw, Trash2, Download, Star } from "lucide-react";
 import { VStack, HStack, Divider } from "@/platform/nova-sdk/ui/layout";
 import {
   NovaText, NovaButton, NovaCard, NovaSectionLabel,
@@ -15,7 +16,8 @@ import {
 import { cn } from "@/lib/utils";
 import { useSettingsValue } from "@/hooks/use-settings-value";
 import { toast } from "sonner";
-import { SettingRow, ResetSectionButton } from "./shared";
+import { SettingRow } from "./shared";
+import { SettingsService } from "@/platform/nova-sdk/services/settings-service";
 import { useOSOrchestration } from "@/hooks/useOSOrchestration";
 import { Link as LinkIcon } from "lucide-react";
 
