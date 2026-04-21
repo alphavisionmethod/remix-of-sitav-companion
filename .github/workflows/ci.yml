@@ -222,6 +222,9 @@ jobs:
         run: npx tsx scripts/root/check-docker-hardening.ts
       - name: Deployment readiness gate
         run: npx tsx scripts/root/check-deployment-readiness.ts
+      - name: Workflow governance
+        run: npx tsx scripts/root/check-workflow-governance.ts
+        continue-on-error: true
       - uses: actions/upload-artifact@v4
         if: always()
         with:
