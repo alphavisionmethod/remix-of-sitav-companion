@@ -5,6 +5,10 @@ import { useAuth } from "@/contexts/AuthContext";
 import { Shield, Brain, Wallet, Briefcase, Sparkles, Receipt, Lock, Eye, ArrowRight } from "lucide-react";
 import { motion, useInView } from "framer-motion";
 
+import heroBusinessAdvisor from "@/assets/promo/hero-business-advisor.jpg";
+import heroMoneyAdvisor from "@/assets/promo/hero-money-advisor.jpg";
+import heroConciergeAdvisor from "@/assets/promo/hero-concierge-advisor.jpg";
+
 const spring = { type: "spring", mass: 1, stiffness: 100, damping: 15 };
 
 const FadeInSection = React.forwardRef<HTMLDivElement, { children: React.ReactNode; className?: string; delay?: number }>(
@@ -122,29 +126,43 @@ const LandingPage = React.forwardRef<HTMLDivElement>((props, ref) => {
               title: "Business OS",
               description: "CRM, leads, invoices, revenue autopilot, and AI-driven customer intelligence — all governed by your policies.",
               delay: 0.1,
+              heroImage: heroBusinessAdvisor,
             },
             {
               icon: Wallet,
               title: "Finance OS",
               description: "Cashflow forecasting, tax estimation, burn rate analysis, and safe-to-spend — with every calculation receipted.",
               delay: 0.2,
+              heroImage: heroMoneyAdvisor,
             },
             {
               icon: Brain,
               title: "Concierge OS",
               description: "AI advisors that learn your preferences, execute within trust boundaries, and explain every decision they make.",
               delay: 0.3,
+              heroImage: heroConciergeAdvisor,
             },
-          ].map(({ icon: Icon, title, description, delay }) => (
+          ].map(({ icon: Icon, title, description, delay, heroImage }) => (
             <FadeInSection key={title} delay={delay}>
-              <div className="group relative rounded-2xl border border-border/30 bg-card/40 backdrop-blur-2xl p-7 transition-all duration-500 hover:border-primary/25 hover:bg-card/60 hover:-translate-y-1 hover:shadow-card-hover">
-                <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                  style={{ background: "radial-gradient(ellipse at 50% 0%, hsl(265 55% 58% / 0.04) 0%, transparent 70%)" }} />
-                <div className="relative">
-                  <div className="h-11 w-11 rounded-xl bg-primary/10 flex items-center justify-center mb-5 group-hover:bg-primary/15 transition-colors">
-                    <Icon className="h-5 w-5 text-primary" />
+              <div className="group relative rounded-2xl border border-border/30 bg-card/40 backdrop-blur-2xl overflow-hidden transition-all duration-500 hover:border-primary/25 hover:bg-card/60 hover:-translate-y-1 hover:shadow-card-hover">
+                <div className="relative h-40 overflow-hidden">
+                  <img
+                    src={heroImage}
+                    alt={`${title} advisor`}
+                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    loading="lazy"
+                    width={1280}
+                    height={720}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-card/90 via-card/30 to-transparent" />
+                  <div className="absolute bottom-3 left-4">
+                    <div className="h-9 w-9 rounded-xl bg-background/80 backdrop-blur-sm flex items-center justify-center border border-border/30">
+                      <Icon className="h-4 w-4 text-primary" />
+                    </div>
                   </div>
-                  <h3 className="text-lg font-semibold font-display tracking-[-0.01em] mb-2">{title}</h3>
+                </div>
+                <div className="relative p-6 pt-4">
+                  <h3 className="text-lg font-semibold font-display tracking-[-0.01em] mb-2 group-hover:text-primary transition-colors">{title}</h3>
                   <p className="text-sm text-muted-foreground leading-relaxed">{description}</p>
                 </div>
               </div>
