@@ -96,14 +96,97 @@ function ChoiceRow({ label, options, value, onChange }: {
 }
 
 export function GeneralContent() {
+  return <GeneralContentFull />;
+}
+
+function GeneralSelect({ value, onChange, options, className }: {
+  value: string; onChange: (v: string) => void;
+  options: { value: string; label: string }[];
+  className?: string;
+}) {
+  return (
+    <select
+      value={value}
+      onChange={(e) => onChange(e.target.value)}
+      className={cn(
+        "text-[10px] bg-[hsl(0_0%_100%/0.06)] border border-border/30 rounded-md px-2 py-1 text-foreground min-w-[100px]",
+        className
+      )}
+    >
+      {options.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
+    </select>
+  );
+}
+
+function SectionHeader({ title, description }: { title: string; description?: string }) {
+  return (
+    <div className="mb-1">
+      <NovaSectionLabel className="!px-0 !text-[9px] !tracking-wider">{title}</NovaSectionLabel>
+      {description && <NovaText variant="label" muted className="!text-[9px] !mt-0.5 !px-0">{description}</NovaText>}
+    </div>
+  );
+}
+
+function DeepLink({ label, section }: { label: string; section: string }) {
+  return (
+    <button
+      type="button"
+      onClick={() => {
+        window.dispatchEvent(new CustomEvent("sita-settings-navigate", { detail: { section } }));
+      }}
+      className="inline-flex items-center gap-1 text-[9px] text-[hsl(var(--primary))] hover:underline mt-0.5"
+    >
+      {label}
+      <ChevronRight className="h-2.5 w-2.5" />
+    </button>
+  );
+}
+
+function GeneralContentFull() {
+  // ── Section 1: Everyday Preferences ──
   const [theme, setTheme] = useSettingsValue("appearance.theme", "dark");
   const darkMode = theme === "dark";
   const [uiSounds, setUiSounds] = useSettingsValue("sound.uiSounds", true);
   const [reducedMotion, setReducedMotion] = useSettingsValue("appearance.reduceMotion", false);
+  const [language, setLanguage] = useSettingsValue("general.language", "en");
+
+  // ── Section 2: Region & Formatting ──
+  const [region, setRegion] = useSettingsValue("general.region", "US");
+  const [currency, setCurrency] = useSettingsValue("general.currency", "USD");
+  const [measurementUnits, setMeasurementUnits] = useSettingsValue("general.measurementUnits", "metric");
+  const [numberFormat, setNumberFormat] = useSettingsValue("general.numberFormat", "comma-dot");
+  const [weekStartsOn, setWeekStartsOn] = useSettingsValue("general.weekStartsOn", "monday");
+
+  // ── Section 3: Date & Time ──
   const [dateFormat, setDateFormat] = useSettingsValue("general.dateFormat", "mdy");
   const [timeFormat, setTimeFormat] = useSettingsValue("general.timeFormat", "12h");
-  const [timezone, setTimezone] = useSettingsValue("general.timezone", Intl.DateTimeFormat().resolvedOptions().timeZone);
+  const [timezone] = useSettingsValue("general.timezone", Intl.DateTimeFormat().resolvedOptions().timeZone);
+  const [calendarView, setCalendarView] = useSettingsValue("general.defaultCalendarView", "week");
+
+  // ── Section 4: Startup & Session ──
   const [startup, setStartup] = useSettingsValue("general.startupBehavior", "lastState");
+  const [restoreSession, setRestoreSession] = useSettingsValue("general.restoreLastSession", true);
+  const [reopenPanels, setReopenPanels] = useSettingsValue("general.reopenPanels", true);
+  const [resumeTasks, setResumeTasks] = useSettingsValue("general.resumePendingTasks", false);
+
+  // ── Section 5: Navigation & Behavior ──
+  const [navPref, setNavPref] = useSettingsValue("general.navigationPreference", "expanded");
+  const [rememberPanels, setRememberPanels] = useSettingsValue("general.rememberLastOpenPanels", true);
+  const [confirmLeave, setConfirmLeave] = useSettingsValue("general.confirmBeforeLeaving", true);
+  const [openLinksIn, setOpenLinksIn] = useSettingsValue("general.openLinksIn", "same");
+
+  // ── Section 6: Personalization ──
+  const [displayName, setDisplayName] = useSettingsValue("general.displayName", "");
+  const [focusDomain, setFocusDomain] = useSettingsValue("general.defaultFocusDomain", "mixed");
+
+  // ── Section 7: Guidance & Recommendations ──
+  const [guidanceLevel, setGuidanceLevel] = useSettingsValue("general.guidanceLevel", "standard");
+  const [featureTips, setFeatureTips] = useSettingsValue("general.showNewFeatureTips", true);
+  const [updateHighlights, setUpdateHighlights] = useSettingsValue("general.showUpdateHighlights", true);
+  const [setupRecs, setSetupRecs] = useSettingsValue("general.showSetupRecommendations", true);
+
+  // ── Section 8: Approval Experience ──
+  const [approvalStyle, setApprovalStyle] = useSettingsValue("general.approvalStyle", "ask-as-needed");
 
   const toggleDark = useCallback((v: boolean) => {
     const newTheme = v ? "dark" : "light";
@@ -113,70 +196,239 @@ export function GeneralContent() {
 
   return (
     <VStack spacing="tight">
+      {/* ── SECTION 1: Everyday Preferences ── */}
       <NovaCard>
         <VStack spacing="tight">
-          <SettingRow label="Dark Mode" description="System-wide dark theme" icon={<Moon className="h-3.5 w-3.5" />}>
+          <SectionHeader title="Everyday Preferences" description="Core system-wide defaults" />
+          <SettingRow label="Dark Mode" description="Use the system-wide dark theme across SITA OS" icon={<Moon className="h-3.5 w-3.5" />}>
             <NovaToggle checked={darkMode} onChange={toggleDark} />
           </SettingRow>
           <Divider />
-          <SettingRow label="UI Sounds" description="Play interface sounds" icon={<Bell className="h-3.5 w-3.5" />}>
+          <SettingRow label="UI Sounds" description="Play subtle interface sounds for actions and confirmations" icon={<Bell className="h-3.5 w-3.5" />}>
             <NovaToggle checked={uiSounds} onChange={setUiSounds} />
           </SettingRow>
           <Divider />
-          <SettingRow label="Reduced Motion" description="Minimize animations" icon={<Eye className="h-3.5 w-3.5" />}>
+          <SettingRow label="Reduced Motion" description="Minimize animations and motion across the interface" icon={<Eye className="h-3.5 w-3.5" />}>
             <NovaToggle checked={reducedMotion} onChange={setReducedMotion} />
+          </SettingRow>
+          <Divider />
+          <SettingRow label="Language" description="Primary language for SITA OS" icon={<Globe className="h-3.5 w-3.5" />}>
+            <GeneralSelect value={language} onChange={(v) => setLanguage(v as any)} options={[
+              { value: "en", label: "English" },
+              { value: "es", label: "Español" },
+              { value: "pt", label: "Português" },
+              { value: "fr", label: "Français" },
+              { value: "de", label: "Deutsch" },
+            ]} />
+          </SettingRow>
+          <DeepLink label="More appearance controls" section="appearance" />
+          <DeepLink label="More accessibility controls" section="accessibility" />
+        </VStack>
+      </NovaCard>
+
+      {/* ── SECTION 2: Region & Formatting ── */}
+      <NovaCard>
+        <VStack spacing="tight">
+          <SectionHeader title="Region & Formatting" description="Influences finance, planning, and display formatting" />
+          <SettingRow label="Region" description="Local formatting, planning, and system defaults" icon={<Globe className="h-3.5 w-3.5" />}>
+            <GeneralSelect value={region} onChange={(v) => setRegion(v as any)} options={[
+              { value: "US", label: "United States" },
+              { value: "CO", label: "Colombia" },
+              { value: "GB", label: "United Kingdom" },
+              { value: "DE", label: "Germany" },
+              { value: "FR", label: "France" },
+              { value: "BR", label: "Brazil" },
+              { value: "MX", label: "Mexico" },
+              { value: "ES", label: "Spain" },
+              { value: "JP", label: "Japan" },
+              { value: "AU", label: "Australia" },
+            ]} />
+          </SettingRow>
+          <Divider />
+          <SettingRow label="Currency" description="Default currency for financial views and budgeting" icon={<Activity className="h-3.5 w-3.5" />}>
+            <GeneralSelect value={currency} onChange={(v) => setCurrency(v as any)} options={[
+              { value: "USD", label: "USD ($)" },
+              { value: "COP", label: "COP ($)" },
+              { value: "EUR", label: "EUR (€)" },
+              { value: "GBP", label: "GBP (£)" },
+              { value: "BRL", label: "BRL (R$)" },
+              { value: "MXN", label: "MXN ($)" },
+              { value: "JPY", label: "JPY (¥)" },
+              { value: "AUD", label: "AUD ($)" },
+            ]} />
+          </SettingRow>
+          <Divider />
+          <SettingRow label="Measurement Units" description="How measurements are shown across the system">
+            <GeneralSelect value={measurementUnits} onChange={(v) => setMeasurementUnits(v as any)} options={[
+              { value: "metric", label: "Metric" },
+              { value: "imperial", label: "Imperial" },
+            ]} />
+          </SettingRow>
+          <Divider />
+          <SettingRow label="Number Format" description="How numbers and decimals are displayed">
+            <GeneralSelect value={numberFormat} onChange={(v) => setNumberFormat(v as any)} options={[
+              { value: "comma-dot", label: "1,234.56" },
+              { value: "dot-comma", label: "1.234,56" },
+            ]} />
+          </SettingRow>
+          <Divider />
+          <SettingRow label="Week Starts On" description="First day of the week for calendars and planning">
+            <GeneralSelect value={weekStartsOn} onChange={(v) => setWeekStartsOn(v as any)} options={[
+              { value: "sunday", label: "Sunday" },
+              { value: "monday", label: "Monday" },
+            ]} />
           </SettingRow>
         </VStack>
       </NovaCard>
 
+      {/* ── SECTION 3: Date & Time ── */}
       <NovaCard>
         <VStack spacing="tight">
-          <NovaSectionLabel className="!px-0">Date & Time</NovaSectionLabel>
+          <SectionHeader title="Date & Time" />
           <SettingRow label="Date Format" icon={<Clock className="h-3.5 w-3.5" />}>
-            <select
-              value={dateFormat}
-              onChange={(e) => setDateFormat(e.target.value as any)}
-              className="text-[10px] bg-[hsl(0_0%_100%/0.06)] border border-border/30 rounded-md px-2 py-1 text-foreground"
-            >
-              <option value="mdy">MM/DD/YYYY</option>
-              <option value="dmy">DD/MM/YYYY</option>
-              <option value="ymd">YYYY-MM-DD</option>
-            </select>
+            <GeneralSelect value={dateFormat} onChange={(v) => setDateFormat(v as any)} options={[
+              { value: "mdy", label: "MM/DD/YYYY" },
+              { value: "dmy", label: "DD/MM/YYYY" },
+              { value: "ymd", label: "YYYY-MM-DD" },
+            ]} />
           </SettingRow>
           <Divider />
           <SettingRow label="Time Format" icon={<Clock className="h-3.5 w-3.5" />}>
-            <select
-              value={timeFormat}
-              onChange={(e) => setTimeFormat(e.target.value as any)}
-              className="text-[10px] bg-[hsl(0_0%_100%/0.06)] border border-border/30 rounded-md px-2 py-1 text-foreground"
-            >
-              <option value="12h">12-hour</option>
-              <option value="24h">24-hour</option>
-            </select>
+            <GeneralSelect value={timeFormat} onChange={(v) => setTimeFormat(v as any)} options={[
+              { value: "12h", label: "12-hour" },
+              { value: "24h", label: "24-hour" },
+            ]} />
           </SettingRow>
           <Divider />
-          <SettingRow label="Timezone" icon={<Globe className="h-3.5 w-3.5" />}>
+          <SettingRow label="Timezone" description={timezone} icon={<Globe className="h-3.5 w-3.5" />}>
             <NovaText variant="label" muted className="!text-[10px]">{timezone}</NovaText>
+          </SettingRow>
+          <Divider />
+          <SettingRow label="Default Calendar View" description="Planning view to open by default">
+            <GeneralSelect value={calendarView} onChange={(v) => setCalendarView(v as any)} options={[
+              { value: "day", label: "Day" },
+              { value: "week", label: "Week" },
+              { value: "month", label: "Month" },
+              { value: "agenda", label: "Agenda" },
+            ]} />
           </SettingRow>
         </VStack>
       </NovaCard>
 
+      {/* ── SECTION 4: Startup & Session ── */}
       <NovaCard>
-        <ChoiceRow label="Startup Behavior" value={startup} onChange={(v) => setStartup(v as any)} options={[
-          { key: "lastState", label: "Last State", desc: "Resume where you left off" },
-          { key: "home", label: "Home", desc: "Start at home screen" },
-          { key: "dashboard", label: "Dashboard", desc: "Open main dashboard" },
-        ]} />
+        <VStack spacing="tight">
+          <SectionHeader title="Startup & Session" description="How SITA behaves when launched or reopened" />
+          <ChoiceRow label="Startup Behavior" value={startup} onChange={(v) => setStartup(v as any)} options={[
+            { key: "lastState", label: "Last State", desc: "Resume where you left off" },
+            { key: "home", label: "Home", desc: "Start at home screen" },
+            { key: "dashboard", label: "Dashboard", desc: "Open main dashboard" },
+          ]} />
+          <Divider />
+          <SettingRow label="Restore Last Session" description="Reopen your last active workspace and context" icon={<Layout className="h-3.5 w-3.5" />}>
+            <NovaToggle checked={restoreSession} onChange={setRestoreSession} />
+          </SettingRow>
+          <Divider />
+          <SettingRow label="Reopen Panels & Widgets" description="Restore panels and widgets from your previous session">
+            <NovaToggle checked={reopenPanels} onChange={setReopenPanels} />
+          </SettingRow>
+          <Divider />
+          <SettingRow label="Resume Pending Tasks" description="Bring unfinished tasks back into view when you return">
+            <NovaToggle checked={resumeTasks} onChange={setResumeTasks} />
+          </SettingRow>
+        </VStack>
       </NovaCard>
 
+      {/* ── SECTION 5: Navigation & Behavior ── */}
       <NovaCard>
-        <SettingRow label="Language" icon={<Globe className="h-3.5 w-3.5" />}>
-          <HStack spacing="tight" align="center">
-            <NovaText variant="label" muted>English</NovaText>
-            <ChevronRight className="h-3 w-3 text-[hsl(0_0%_50%)]" />
-          </HStack>
-        </SettingRow>
+        <VStack spacing="tight">
+          <SectionHeader title="Navigation & Behavior" />
+          <ChoiceRow label="Navigation Preference" value={navPref} onChange={(v) => setNavPref(v as any)} options={[
+            { key: "expanded", label: "Expanded", desc: "Full sidebar visible" },
+            { key: "collapsed", label: "Collapsed", desc: "Icons only" },
+            { key: "minimal", label: "Minimal", desc: "Hidden until hover" },
+          ]} />
+          <Divider />
+          <SettingRow label="Remember Last Open Panels" description="Keep recently used panels ready when you return">
+            <NovaToggle checked={rememberPanels} onChange={setRememberPanels} />
+          </SettingRow>
+          <Divider />
+          <SettingRow label="Confirm Before Leaving" description="Ask before leaving screens with unsaved work" icon={<Lock className="h-3.5 w-3.5" />}>
+            <NovaToggle checked={confirmLeave} onChange={setConfirmLeave} />
+          </SettingRow>
+          <Divider />
+          <SettingRow label="Open Links In" description="How internal links open by default">
+            <GeneralSelect value={openLinksIn} onChange={(v) => setOpenLinksIn(v as any)} options={[
+              { value: "same", label: "Same Workspace" },
+              { value: "new", label: "New Workspace" },
+              { value: "ask", label: "Ask Each Time" },
+            ]} />
+          </SettingRow>
+        </VStack>
       </NovaCard>
+
+      {/* ── SECTION 6: Personalization ── */}
+      <NovaCard>
+        <VStack spacing="tight">
+          <SectionHeader title="Personalization" description="Lightweight defaults for your experience" />
+          <SettingRow label="Display Name" description="How your name appears across the system" icon={<Monitor className="h-3.5 w-3.5" />}>
+            <input
+              type="text"
+              value={displayName}
+              onChange={(e) => setDisplayName(e.target.value as any)}
+              placeholder="Your name…"
+              className="text-[10px] bg-[hsl(0_0%_100%/0.06)] border border-border/30 rounded-md px-2 py-1 text-foreground w-[140px] placeholder:text-[hsl(0_0%_40%)] focus:outline-none focus:border-[hsl(var(--primary))]/40"
+            />
+          </SettingRow>
+          <Divider />
+          <ChoiceRow label="Default Focus Domain" value={focusDomain} onChange={(v) => setFocusDomain(v as any)} options={[
+            { key: "business", label: "Business", desc: "Emphasize business tools" },
+            { key: "household", label: "Household", desc: "Home & family focus" },
+            { key: "planning", label: "Planning", desc: "Calendars & goals" },
+            { key: "mixed", label: "Mixed", desc: "Balanced experience" },
+          ]} />
+        </VStack>
+      </NovaCard>
+
+      {/* ── SECTION 7: Guidance & Recommendations ── */}
+      <NovaCard>
+        <VStack spacing="tight">
+          <SectionHeader title="Guidance & Recommendations" description="Control in-product guidance" />
+          <ChoiceRow label="Guidance Level" value={guidanceLevel} onChange={(v) => setGuidanceLevel(v as any)} options={[
+            { key: "minimal", label: "Minimal", desc: "Less help, more space" },
+            { key: "standard", label: "Standard", desc: "Balanced guidance" },
+            { key: "guided", label: "Guided", desc: "Full onboarding cues" },
+          ]} />
+          <Divider />
+          <SettingRow label="Show New Feature Tips" description="Highlight newly available tools as they are added">
+            <NovaToggle checked={featureTips} onChange={setFeatureTips} />
+          </SettingRow>
+          <Divider />
+          <SettingRow label="Show Update Highlights" description="Summary of what changed after major updates">
+            <NovaToggle checked={updateHighlights} onChange={setUpdateHighlights} />
+          </SettingRow>
+          <Divider />
+          <SettingRow label="Show Setup Recommendations" description="Suggest configuration improvements as your system evolves">
+            <NovaToggle checked={setupRecs} onChange={setSetupRecs} />
+          </SettingRow>
+          <DeepLink label="More AI & advisor controls" section="advisors" />
+        </VStack>
+      </NovaCard>
+
+      {/* ── SECTION 8: Approval Experience ── */}
+      <NovaCard>
+        <VStack spacing="tight">
+          <SectionHeader title="Approval Experience" description="How SITA presents approvals for important actions" />
+          <ChoiceRow label="Approval Style" value={approvalStyle} onChange={(v) => setApprovalStyle(v as any)} options={[
+            { key: "ask-as-needed", label: "Ask as Needed", desc: "Prompt close to each action" },
+            { key: "batch-reviews", label: "Batch Reviews", desc: "Group approvals into digests" },
+            { key: "minimal-interruptions", label: "Minimal", desc: "Only high-signal approvals" },
+          ]} />
+          <DeepLink label="More trust & security controls" section="trustsec" />
+        </VStack>
+      </NovaCard>
+
+      {/* ── SECTION 9: Reset & Restore ── */}
       <ResetSectionButton sectionId="general" />
     </VStack>
   );
