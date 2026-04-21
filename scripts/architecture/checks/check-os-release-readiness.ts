@@ -378,6 +378,11 @@ const REQUIRED_GATES = [
   "support-platform-coverage",
   // Wave 21 — Recovery Architecture Closure (1 BLOCK gate)
   "recovery-architecture-closure",
+  // Phase 12 — Multi-target release readiness (4 gates)
+  "web-release-readiness",
+  "ios-release-readiness",
+  "android-release-readiness",
+  "iso-vmware-release-readiness",
 ];
 
 // Mobile Deployment Closure — RETIRED (2026-04-19)
