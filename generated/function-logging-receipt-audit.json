@@ -1,0 +1,572 @@
+{
+  "generatedAt": "2026-04-21T00:28:18.524Z",
+  "functions": [
+    {
+      "name": "admin-ai-workforce-run",
+      "sideEffectClass": "high",
+      "auditLogPolicy": "unknown",
+      "rateLimitPolicy": "unknown",
+      "idempotencyPolicy": "unknown"
+    },
+    {
+      "name": "admin-bff-gateway",
+      "sideEffectClass": "low",
+      "auditLogPolicy": "unknown",
+      "rateLimitPolicy": "unknown",
+      "idempotencyPolicy": "unknown"
+    },
+    {
+      "name": "admin-intelligence",
+      "sideEffectClass": "low",
+      "auditLogPolicy": "unknown",
+      "rateLimitPolicy": "unknown",
+      "idempotencyPolicy": "unknown"
+    },
+    {
+      "name": "admin-users",
+      "sideEffectClass": "high",
+      "auditLogPolicy": "unknown",
+      "rateLimitPolicy": "unknown",
+      "idempotencyPolicy": "unknown"
+    },
+    {
+      "name": "advisor-agent-loop",
+      "sideEffectClass": "high",
+      "auditLogPolicy": "unknown",
+      "rateLimitPolicy": "unknown",
+      "idempotencyPolicy": "unknown"
+    },
+    {
+      "name": "advisor-avatar-generate",
+      "sideEffectClass": "low",
+      "auditLogPolicy": "unknown",
+      "rateLimitPolicy": "unknown",
+      "idempotencyPolicy": "unknown"
+    },
+    {
+      "name": "advisor-conversation",
+      "sideEffectClass": "medium",
+      "auditLogPolicy": "unknown",
+      "rateLimitPolicy": "unknown",
+      "idempotencyPolicy": "unknown"
+    },
+    {
+      "name": "advisor-deep-intelligence",
+      "sideEffectClass": "medium",
+      "auditLogPolicy": "unknown",
+      "rateLimitPolicy": "unknown",
+      "idempotencyPolicy": "unknown"
+    },
+    {
+      "name": "advisor-knowledge-manage",
+      "sideEffectClass": "medium",
+      "auditLogPolicy": "unknown",
+      "rateLimitPolicy": "unknown",
+      "idempotencyPolicy": "unknown"
+    },
+    {
+      "name": "advisor-weekly-report",
+      "sideEffectClass": "low",
+      "auditLogPolicy": "unknown",
+      "rateLimitPolicy": "unknown",
+      "idempotencyPolicy": "unknown"
+    },
+    {
+      "name": "agent-executor",
+      "sideEffectClass": "high",
+      "auditLogPolicy": "unknown",
+      "rateLimitPolicy": "unknown",
+      "idempotencyPolicy": "unknown"
+    },
+    {
+      "name": "agent-heartbeat",
+      "sideEffectClass": "low",
+      "auditLogPolicy": "unknown",
+      "rateLimitPolicy": "unknown",
+      "idempotencyPolicy": "unknown"
+    },
+    {
+      "name": "agent-intelligence",
+      "sideEffectClass": "low",
+      "auditLogPolicy": "unknown",
+      "rateLimitPolicy": "unknown",
+      "idempotencyPolicy": "unknown"
+    },
+    {
+      "name": "agent-scheduler",
+      "sideEffectClass": "medium",
+      "auditLogPolicy": "unknown",
+      "rateLimitPolicy": "unknown",
+      "idempotencyPolicy": "unknown"
+    },
+    {
+      "name": "agent-signal",
+      "sideEffectClass": "medium",
+      "auditLogPolicy": "unknown",
+      "rateLimitPolicy": "unknown",
+      "idempotencyPolicy": "unknown"
+    },
+    {
+      "name": "ai-gateway",
+      "sideEffectClass": "medium",
+      "auditLogPolicy": "unknown",
+      "rateLimitPolicy": "unknown",
+      "idempotencyPolicy": "unknown"
+    },
+    {
+      "name": "ai-health",
+      "sideEffectClass": "none",
+      "auditLogPolicy": "unknown",
+      "rateLimitPolicy": "unknown",
+      "idempotencyPolicy": "unknown"
+    },
+    {
+      "name": "check-ai-budget",
+      "sideEffectClass": "none",
+      "auditLogPolicy": "unknown",
+      "rateLimitPolicy": "unknown",
+      "idempotencyPolicy": "unknown"
+    },
+    {
+      "name": "ambient-os-operations",
+      "sideEffectClass": "high",
+      "auditLogPolicy": "unknown",
+      "rateLimitPolicy": "unknown",
+      "idempotencyPolicy": "unknown"
+    },
+    {
+      "name": "user-bff-gateway",
+      "sideEffectClass": "low",
+      "auditLogPolicy": "unknown",
+      "rateLimitPolicy": "unknown",
+      "idempotencyPolicy": "unknown"
+    },
+    {
+      "name": "intelligence-api",
+      "sideEffectClass": "low",
+      "auditLogPolicy": "unknown",
+      "rateLimitPolicy": "unknown",
+      "idempotencyPolicy": "unknown"
+    },
+    {
+      "name": "support-gateway",
+      "sideEffectClass": "low",
+      "auditLogPolicy": "unknown",
+      "rateLimitPolicy": "unknown",
+      "idempotencyPolicy": "unknown"
+    },
+    {
+      "name": "license-gateway",
+      "sideEffectClass": "low",
+      "auditLogPolicy": "unknown",
+      "rateLimitPolicy": "unknown",
+      "idempotencyPolicy": "unknown"
+    },
+    {
+      "name": "booking-manage",
+      "sideEffectClass": "high",
+      "auditLogPolicy": "unknown",
+      "rateLimitPolicy": "unknown",
+      "idempotencyPolicy": "unknown"
+    },
+    {
+      "name": "get-weather",
+      "sideEffectClass": "none",
+      "auditLogPolicy": "unknown",
+      "rateLimitPolicy": "unknown",
+      "idempotencyPolicy": "unknown"
+    },
+    {
+      "name": "chat-advisor",
+      "sideEffectClass": "low",
+      "auditLogPolicy": "unknown",
+      "rateLimitPolicy": "unknown",
+      "idempotencyPolicy": "unknown"
+    },
+    {
+      "name": "personal-brain",
+      "sideEffectClass": "medium",
+      "auditLogPolicy": "unknown",
+      "rateLimitPolicy": "unknown",
+      "idempotencyPolicy": "unknown"
+    },
+    {
+      "name": "tasks-workflow-api",
+      "sideEffectClass": "high",
+      "auditLogPolicy": "unknown",
+      "rateLimitPolicy": "unknown",
+      "idempotencyPolicy": "unknown"
+    },
+    {
+      "name": "communications-api",
+      "sideEffectClass": "high",
+      "auditLogPolicy": "unknown",
+      "rateLimitPolicy": "unknown",
+      "idempotencyPolicy": "unknown"
+    },
+    {
+      "name": "app-store-api",
+      "sideEffectClass": "medium",
+      "auditLogPolicy": "unknown",
+      "rateLimitPolicy": "unknown",
+      "idempotencyPolicy": "unknown"
+    },
+    {
+      "name": "business-board-api",
+      "sideEffectClass": "high",
+      "auditLogPolicy": "unknown",
+      "rateLimitPolicy": "unknown",
+      "idempotencyPolicy": "unknown"
+    },
+    {
+      "name": "business-advisor-intelligence",
+      "sideEffectClass": "medium",
+      "auditLogPolicy": "unknown",
+      "rateLimitPolicy": "unknown",
+      "idempotencyPolicy": "unknown"
+    },
+    {
+      "name": "brain-core",
+      "sideEffectClass": "high",
+      "auditLogPolicy": "unknown",
+      "rateLimitPolicy": "unknown",
+      "idempotencyPolicy": "unknown"
+    },
+    {
+      "name": "cashflow-calculate",
+      "sideEffectClass": "low",
+      "auditLogPolicy": "unknown",
+      "rateLimitPolicy": "unknown",
+      "idempotencyPolicy": "unknown"
+    },
+    {
+      "name": "cost-alert",
+      "sideEffectClass": "medium",
+      "auditLogPolicy": "unknown",
+      "rateLimitPolicy": "unknown",
+      "idempotencyPolicy": "unknown"
+    },
+    {
+      "name": "invoice-generate",
+      "sideEffectClass": "medium",
+      "auditLogPolicy": "unknown",
+      "rateLimitPolicy": "unknown",
+      "idempotencyPolicy": "unknown"
+    },
+    {
+      "name": "msa-operations",
+      "sideEffectClass": "medium",
+      "auditLogPolicy": "unknown",
+      "rateLimitPolicy": "unknown",
+      "idempotencyPolicy": "unknown"
+    },
+    {
+      "name": "payment-process",
+      "sideEffectClass": "high",
+      "auditLogPolicy": "unknown",
+      "rateLimitPolicy": "unknown",
+      "idempotencyPolicy": "unknown"
+    },
+    {
+      "name": "payment-kill-switch",
+      "sideEffectClass": "high",
+      "auditLogPolicy": "unknown",
+      "rateLimitPolicy": "unknown",
+      "idempotencyPolicy": "unknown"
+    },
+    {
+      "name": "revenue-caller",
+      "sideEffectClass": "low",
+      "auditLogPolicy": "unknown",
+      "rateLimitPolicy": "unknown",
+      "idempotencyPolicy": "unknown"
+    },
+    {
+      "name": "tax-estimate",
+      "sideEffectClass": "low",
+      "auditLogPolicy": "unknown",
+      "rateLimitPolicy": "unknown",
+      "idempotencyPolicy": "unknown"
+    },
+    {
+      "name": "investment-portfolio-api",
+      "sideEffectClass": "medium",
+      "auditLogPolicy": "unknown",
+      "rateLimitPolicy": "unknown",
+      "idempotencyPolicy": "unknown"
+    },
+    {
+      "name": "cloud-admin-api",
+      "sideEffectClass": "high",
+      "auditLogPolicy": "unknown",
+      "rateLimitPolicy": "unknown",
+      "idempotencyPolicy": "unknown"
+    },
+    {
+      "name": "cloud-device-api",
+      "sideEffectClass": "high",
+      "auditLogPolicy": "unknown",
+      "rateLimitPolicy": "unknown",
+      "idempotencyPolicy": "unknown"
+    },
+    {
+      "name": "cloud-lifecycle-api",
+      "sideEffectClass": "high",
+      "auditLogPolicy": "unknown",
+      "rateLimitPolicy": "unknown",
+      "idempotencyPolicy": "unknown"
+    },
+    {
+      "name": "cloud-storage-api",
+      "sideEffectClass": "medium",
+      "auditLogPolicy": "unknown",
+      "rateLimitPolicy": "unknown",
+      "idempotencyPolicy": "unknown"
+    },
+    {
+      "name": "cloud-sync-api",
+      "sideEffectClass": "high",
+      "auditLogPolicy": "unknown",
+      "rateLimitPolicy": "unknown",
+      "idempotencyPolicy": "unknown"
+    },
+    {
+      "name": "cloud-tenant-api",
+      "sideEffectClass": "high",
+      "auditLogPolicy": "unknown",
+      "rateLimitPolicy": "unknown",
+      "idempotencyPolicy": "unknown"
+    },
+    {
+      "name": "cloud-worker-api",
+      "sideEffectClass": "high",
+      "auditLogPolicy": "unknown",
+      "rateLimitPolicy": "unknown",
+      "idempotencyPolicy": "unknown"
+    },
+    {
+      "name": "connector-batch",
+      "sideEffectClass": "high",
+      "auditLogPolicy": "unknown",
+      "rateLimitPolicy": "unknown",
+      "idempotencyPolicy": "unknown"
+    },
+    {
+      "name": "connector-discover",
+      "sideEffectClass": "low",
+      "auditLogPolicy": "unknown",
+      "rateLimitPolicy": "unknown",
+      "idempotencyPolicy": "unknown"
+    },
+    {
+      "name": "connector-health",
+      "sideEffectClass": "none",
+      "auditLogPolicy": "unknown",
+      "rateLimitPolicy": "unknown",
+      "idempotencyPolicy": "unknown"
+    },
+    {
+      "name": "connector-oauth",
+      "sideEffectClass": "high",
+      "auditLogPolicy": "unknown",
+      "rateLimitPolicy": "unknown",
+      "idempotencyPolicy": "unknown"
+    },
+    {
+      "name": "connector-operations",
+      "sideEffectClass": "high",
+      "auditLogPolicy": "unknown",
+      "rateLimitPolicy": "unknown",
+      "idempotencyPolicy": "unknown"
+    },
+    {
+      "name": "connector-proxy",
+      "sideEffectClass": "medium",
+      "auditLogPolicy": "unknown",
+      "rateLimitPolicy": "unknown",
+      "idempotencyPolicy": "unknown"
+    },
+    {
+      "name": "connector-sync",
+      "sideEffectClass": "high",
+      "auditLogPolicy": "unknown",
+      "rateLimitPolicy": "unknown",
+      "idempotencyPolicy": "unknown"
+    },
+    {
+      "name": "connector-transform",
+      "sideEffectClass": "low",
+      "auditLogPolicy": "unknown",
+      "rateLimitPolicy": "unknown",
+      "idempotencyPolicy": "unknown"
+    },
+    {
+      "name": "crm-sync",
+      "sideEffectClass": "high",
+      "auditLogPolicy": "unknown",
+      "rateLimitPolicy": "unknown",
+      "idempotencyPolicy": "unknown"
+    },
+    {
+      "name": "provider-family-operations",
+      "sideEffectClass": "medium",
+      "auditLogPolicy": "unknown",
+      "rateLimitPolicy": "unknown",
+      "idempotencyPolicy": "unknown"
+    },
+    {
+      "name": "os-command",
+      "sideEffectClass": "high",
+      "auditLogPolicy": "unknown",
+      "rateLimitPolicy": "unknown",
+      "idempotencyPolicy": "unknown"
+    },
+    {
+      "name": "os-status",
+      "sideEffectClass": "none",
+      "auditLogPolicy": "unknown",
+      "rateLimitPolicy": "unknown",
+      "idempotencyPolicy": "unknown"
+    },
+    {
+      "name": "os-agent-channel",
+      "sideEffectClass": "medium",
+      "auditLogPolicy": "unknown",
+      "rateLimitPolicy": "unknown",
+      "idempotencyPolicy": "unknown"
+    },
+    {
+      "name": "runtime-probes",
+      "sideEffectClass": "none",
+      "auditLogPolicy": "unknown",
+      "rateLimitPolicy": "unknown",
+      "idempotencyPolicy": "unknown"
+    },
+    {
+      "name": "db-truth-introspect",
+      "sideEffectClass": "none",
+      "auditLogPolicy": "unknown",
+      "rateLimitPolicy": "unknown",
+      "idempotencyPolicy": "unknown"
+    },
+    {
+      "name": "device-telemetry",
+      "sideEffectClass": "low",
+      "auditLogPolicy": "unknown",
+      "rateLimitPolicy": "unknown",
+      "idempotencyPolicy": "unknown"
+    },
+    {
+      "name": "system-updates",
+      "sideEffectClass": "medium",
+      "auditLogPolicy": "unknown",
+      "rateLimitPolicy": "unknown",
+      "idempotencyPolicy": "unknown"
+    },
+    {
+      "name": "self-healing",
+      "sideEffectClass": "high",
+      "auditLogPolicy": "unknown",
+      "rateLimitPolicy": "unknown",
+      "idempotencyPolicy": "unknown"
+    },
+    {
+      "name": "ecosystem-operations",
+      "sideEffectClass": "high",
+      "auditLogPolicy": "unknown",
+      "rateLimitPolicy": "unknown",
+      "idempotencyPolicy": "unknown"
+    },
+    {
+      "name": "event-processor",
+      "sideEffectClass": "high",
+      "auditLogPolicy": "unknown",
+      "rateLimitPolicy": "unknown",
+      "idempotencyPolicy": "unknown"
+    },
+    {
+      "name": "scheduler-dispatch",
+      "sideEffectClass": "high",
+      "auditLogPolicy": "unknown",
+      "rateLimitPolicy": "unknown",
+      "idempotencyPolicy": "unknown"
+    },
+    {
+      "name": "digital-twin-engine",
+      "sideEffectClass": "medium",
+      "auditLogPolicy": "unknown",
+      "rateLimitPolicy": "unknown",
+      "idempotencyPolicy": "unknown"
+    },
+    {
+      "name": "simulation-engine-api",
+      "sideEffectClass": "medium",
+      "auditLogPolicy": "unknown",
+      "rateLimitPolicy": "unknown",
+      "idempotencyPolicy": "unknown"
+    },
+    {
+      "name": "file-ingestion",
+      "sideEffectClass": "high",
+      "auditLogPolicy": "unknown",
+      "rateLimitPolicy": "unknown",
+      "idempotencyPolicy": "unknown"
+    },
+    {
+      "name": "seed-user-data",
+      "sideEffectClass": "high",
+      "auditLogPolicy": "unknown",
+      "rateLimitPolicy": "unknown",
+      "idempotencyPolicy": "unknown"
+    },
+    {
+      "name": "health-check",
+      "sideEffectClass": "none",
+      "auditLogPolicy": "unknown",
+      "rateLimitPolicy": "unknown",
+      "idempotencyPolicy": "unknown"
+    },
+    {
+      "name": "push-dispatch",
+      "sideEffectClass": "medium",
+      "auditLogPolicy": "unknown",
+      "rateLimitPolicy": "unknown",
+      "idempotencyPolicy": "unknown"
+    },
+    {
+      "name": "push-track",
+      "sideEffectClass": "low",
+      "auditLogPolicy": "unknown",
+      "rateLimitPolicy": "unknown",
+      "idempotencyPolicy": "unknown"
+    },
+    {
+      "name": "vapid-public-key",
+      "sideEffectClass": "none",
+      "auditLogPolicy": "unknown",
+      "rateLimitPolicy": "unknown",
+      "idempotencyPolicy": "unknown"
+    },
+    {
+      "name": "gdpr-delete",
+      "sideEffectClass": "high",
+      "auditLogPolicy": "unknown",
+      "rateLimitPolicy": "unknown",
+      "idempotencyPolicy": "unknown"
+    },
+    {
+      "name": "gdpr-export",
+      "sideEffectClass": "medium",
+      "auditLogPolicy": "unknown",
+      "rateLimitPolicy": "unknown",
+      "idempotencyPolicy": "unknown"
+    },
+    {
+      "name": "verification-recorder",
+      "sideEffectClass": "medium",
+      "auditLogPolicy": "unknown",
+      "rateLimitPolicy": "unknown",
+      "idempotencyPolicy": "unknown"
+    }
+  ]
+}

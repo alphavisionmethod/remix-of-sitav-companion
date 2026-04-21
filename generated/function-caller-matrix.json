@@ -1,13 +1,884 @@
 {
-  "generatedAt": "2026-04-20T21:27:50.034Z",
-  "gate": "function-caller-matrix",
-  "callerClasses": [
-    "browser",
-    "admin-ui",
-    "edge-function",
-    "pg-cron",
-    "webhook"
-  ],
-  "totalMappings": 193,
-  "unmappedCallers": 0
+  "generatedAt": "2026-04-21T00:28:18.524Z",
+  "functions": [
+    {
+      "name": "admin-ai-workforce-run",
+      "allowedCallers": [
+        "admin-bff",
+        "frontend-admin"
+      ],
+      "authModel": "jwt",
+      "adminOnly": true,
+      "sourceRoutes": [
+        "ai.workforce-run"
+      ]
+    },
+    {
+      "name": "admin-bff-gateway",
+      "allowedCallers": [
+        "frontend-admin"
+      ],
+      "authModel": "jwt",
+      "adminOnly": true,
+      "sourceRoutes": [
+        "admin.bff-gateway",
+        "admin.kill-switch"
+      ]
+    },
+    {
+      "name": "admin-intelligence",
+      "allowedCallers": [
+        "admin-bff"
+      ],
+      "authModel": "jwt",
+      "adminOnly": true,
+      "sourceRoutes": [
+        "admin.intelligence"
+      ]
+    },
+    {
+      "name": "admin-users",
+      "allowedCallers": [
+        "admin-bff"
+      ],
+      "authModel": "jwt",
+      "adminOnly": true,
+      "sourceRoutes": [
+        "admin.users"
+      ]
+    },
+    {
+      "name": "advisor-agent-loop",
+      "allowedCallers": [
+        "scheduler",
+        "service-internal"
+      ],
+      "authModel": "jwt",
+      "adminOnly": false,
+      "sourceRoutes": [
+        "ai.advisor-loop"
+      ]
+    },
+    {
+      "name": "advisor-avatar-generate",
+      "allowedCallers": [
+        "public-bff",
+        "frontend-user"
+      ],
+      "authModel": "jwt",
+      "adminOnly": false,
+      "sourceRoutes": [
+        "ai.advisor-avatar"
+      ]
+    },
+    {
+      "name": "advisor-conversation",
+      "allowedCallers": [
+        "public-bff",
+        "frontend-user"
+      ],
+      "authModel": "jwt",
+      "adminOnly": false,
+      "sourceRoutes": [
+        "ai.advisor-conversation"
+      ]
+    },
+    {
+      "name": "advisor-deep-intelligence",
+      "allowedCallers": [
+        "scheduler",
+        "service-internal"
+      ],
+      "authModel": "jwt",
+      "adminOnly": false,
+      "sourceRoutes": [
+        "ai.deep-intelligence"
+      ]
+    },
+    {
+      "name": "advisor-knowledge-manage",
+      "allowedCallers": [
+        "public-bff",
+        "frontend-user"
+      ],
+      "authModel": "jwt",
+      "adminOnly": false,
+      "sourceRoutes": [
+        "ai.knowledge-manage"
+      ]
+    },
+    {
+      "name": "advisor-weekly-report",
+      "allowedCallers": [
+        "scheduler",
+        "public-bff"
+      ],
+      "authModel": "jwt",
+      "adminOnly": false,
+      "sourceRoutes": [
+        "ai.weekly-report"
+      ]
+    },
+    {
+      "name": "agent-executor",
+      "allowedCallers": [
+        "orchestration-function",
+        "service-internal",
+        "scheduler"
+      ],
+      "authModel": "service-role",
+      "adminOnly": false,
+      "sourceRoutes": [
+        "ai.agent-executor"
+      ]
+    },
+    {
+      "name": "agent-heartbeat",
+      "allowedCallers": [
+        "external-webhook",
+        "service-internal"
+      ],
+      "authModel": "service-role",
+      "adminOnly": false,
+      "sourceRoutes": []
+    },
+    {
+      "name": "agent-intelligence",
+      "allowedCallers": [
+        "orchestration-function",
+        "service-internal"
+      ],
+      "authModel": "service-role",
+      "adminOnly": false,
+      "sourceRoutes": [
+        "ai.agent-intelligence"
+      ]
+    },
+    {
+      "name": "agent-scheduler",
+      "allowedCallers": [
+        "scheduler",
+        "service-internal"
+      ],
+      "authModel": "service-role",
+      "adminOnly": false,
+      "sourceRoutes": []
+    },
+    {
+      "name": "agent-signal",
+      "allowedCallers": [
+        "service-internal",
+        "external-webhook"
+      ],
+      "authModel": "service-role",
+      "adminOnly": false,
+      "sourceRoutes": []
+    },
+    {
+      "name": "ai-gateway",
+      "allowedCallers": [
+        "any-authenticated",
+        "service-internal",
+        "domain-function",
+        "orchestration-function"
+      ],
+      "authModel": "jwt",
+      "adminOnly": false,
+      "sourceRoutes": [
+        "ai.invoke"
+      ]
+    },
+    {
+      "name": "ai-health",
+      "allowedCallers": [
+        "any-authenticated",
+        "external-webhook"
+      ],
+      "authModel": "anon",
+      "adminOnly": false,
+      "sourceRoutes": []
+    },
+    {
+      "name": "check-ai-budget",
+      "allowedCallers": [
+        "service-internal",
+        "domain-function"
+      ],
+      "authModel": "jwt",
+      "adminOnly": false,
+      "sourceRoutes": []
+    },
+    {
+      "name": "ambient-os-operations",
+      "allowedCallers": [
+        "service-internal",
+        "kernel"
+      ],
+      "authModel": "service-role",
+      "adminOnly": false,
+      "sourceRoutes": [
+        "runtime.ambient-ops"
+      ]
+    },
+    {
+      "name": "user-bff-gateway",
+      "allowedCallers": [
+        "frontend-user"
+      ],
+      "authModel": "jwt",
+      "adminOnly": false,
+      "sourceRoutes": [
+        "runtime.user-bff"
+      ]
+    },
+    {
+      "name": "intelligence-api",
+      "allowedCallers": [
+        "frontend-user",
+        "frontend-admin"
+      ],
+      "authModel": "jwt",
+      "adminOnly": false,
+      "sourceRoutes": [
+        "ai.intelligence-api"
+      ]
+    },
+    {
+      "name": "support-gateway",
+      "allowedCallers": [
+        "frontend-user"
+      ],
+      "authModel": "jwt",
+      "adminOnly": false,
+      "sourceRoutes": []
+    },
+    {
+      "name": "license-gateway",
+      "allowedCallers": [
+        "frontend-user",
+        "frontend-admin"
+      ],
+      "authModel": "jwt",
+      "adminOnly": false,
+      "sourceRoutes": []
+    },
+    {
+      "name": "booking-manage",
+      "allowedCallers": [
+        "public-bff",
+        "frontend-user"
+      ],
+      "authModel": "jwt",
+      "adminOnly": false,
+      "sourceRoutes": []
+    },
+    {
+      "name": "get-weather",
+      "allowedCallers": [
+        "public-bff",
+        "frontend-user"
+      ],
+      "authModel": "anon",
+      "adminOnly": false,
+      "sourceRoutes": []
+    },
+    {
+      "name": "chat-advisor",
+      "allowedCallers": [
+        "public-bff",
+        "frontend-user"
+      ],
+      "authModel": "jwt",
+      "adminOnly": false,
+      "sourceRoutes": []
+    },
+    {
+      "name": "personal-brain",
+      "allowedCallers": [
+        "public-bff",
+        "frontend-user"
+      ],
+      "authModel": "jwt",
+      "adminOnly": false,
+      "sourceRoutes": []
+    },
+    {
+      "name": "tasks-workflow-api",
+      "allowedCallers": [
+        "public-bff",
+        "frontend-user"
+      ],
+      "authModel": "jwt",
+      "adminOnly": false,
+      "sourceRoutes": []
+    },
+    {
+      "name": "communications-api",
+      "allowedCallers": [
+        "public-bff",
+        "frontend-user"
+      ],
+      "authModel": "jwt",
+      "adminOnly": false,
+      "sourceRoutes": [
+        "comms.send-email",
+        "comms.send-sms"
+      ]
+    },
+    {
+      "name": "app-store-api",
+      "allowedCallers": [
+        "public-bff",
+        "frontend-user"
+      ],
+      "authModel": "jwt",
+      "adminOnly": false,
+      "sourceRoutes": []
+    },
+    {
+      "name": "business-board-api",
+      "allowedCallers": [
+        "public-bff",
+        "frontend-user"
+      ],
+      "authModel": "jwt",
+      "adminOnly": false,
+      "sourceRoutes": []
+    },
+    {
+      "name": "business-advisor-intelligence",
+      "allowedCallers": [
+        "public-bff",
+        "service-internal"
+      ],
+      "authModel": "jwt",
+      "adminOnly": false,
+      "sourceRoutes": []
+    },
+    {
+      "name": "brain-core",
+      "allowedCallers": [
+        "public-bff",
+        "service-internal",
+        "orchestration-function"
+      ],
+      "authModel": "jwt",
+      "adminOnly": false,
+      "sourceRoutes": [
+        "ai.brain-core"
+      ]
+    },
+    {
+      "name": "cashflow-calculate",
+      "allowedCallers": [
+        "public-bff",
+        "frontend-user",
+        "service-internal"
+      ],
+      "authModel": "jwt",
+      "adminOnly": false,
+      "sourceRoutes": []
+    },
+    {
+      "name": "cost-alert",
+      "allowedCallers": [
+        "scheduler",
+        "service-internal"
+      ],
+      "authModel": "service-role",
+      "adminOnly": false,
+      "sourceRoutes": []
+    },
+    {
+      "name": "invoice-generate",
+      "allowedCallers": [
+        "public-bff",
+        "frontend-user"
+      ],
+      "authModel": "jwt",
+      "adminOnly": false,
+      "sourceRoutes": []
+    },
+    {
+      "name": "msa-operations",
+      "allowedCallers": [
+        "public-bff",
+        "frontend-user"
+      ],
+      "authModel": "jwt",
+      "adminOnly": false,
+      "sourceRoutes": []
+    },
+    {
+      "name": "payment-process",
+      "allowedCallers": [
+        "public-bff",
+        "frontend-user"
+      ],
+      "authModel": "jwt",
+      "adminOnly": false,
+      "sourceRoutes": [
+        "payments.process"
+      ]
+    },
+    {
+      "name": "payment-kill-switch",
+      "allowedCallers": [
+        "admin-bff",
+        "service-internal"
+      ],
+      "authModel": "jwt",
+      "adminOnly": true,
+      "sourceRoutes": [
+        "payments.kill-switch"
+      ]
+    },
+    {
+      "name": "revenue-caller",
+      "allowedCallers": [
+        "public-bff",
+        "service-internal"
+      ],
+      "authModel": "jwt",
+      "adminOnly": false,
+      "sourceRoutes": []
+    },
+    {
+      "name": "tax-estimate",
+      "allowedCallers": [
+        "public-bff",
+        "frontend-user"
+      ],
+      "authModel": "jwt",
+      "adminOnly": false,
+      "sourceRoutes": []
+    },
+    {
+      "name": "investment-portfolio-api",
+      "allowedCallers": [
+        "public-bff",
+        "frontend-user"
+      ],
+      "authModel": "jwt",
+      "adminOnly": false,
+      "sourceRoutes": []
+    },
+    {
+      "name": "cloud-admin-api",
+      "allowedCallers": [
+        "admin-bff"
+      ],
+      "authModel": "jwt",
+      "adminOnly": true,
+      "sourceRoutes": [
+        "admin.cloud-control"
+      ]
+    },
+    {
+      "name": "cloud-device-api",
+      "allowedCallers": [
+        "public-bff",
+        "admin-bff",
+        "frontend-user"
+      ],
+      "authModel": "jwt",
+      "adminOnly": false,
+      "sourceRoutes": []
+    },
+    {
+      "name": "cloud-lifecycle-api",
+      "allowedCallers": [
+        "admin-bff"
+      ],
+      "authModel": "jwt",
+      "adminOnly": true,
+      "sourceRoutes": []
+    },
+    {
+      "name": "cloud-storage-api",
+      "allowedCallers": [
+        "public-bff",
+        "frontend-user"
+      ],
+      "authModel": "jwt",
+      "adminOnly": false,
+      "sourceRoutes": []
+    },
+    {
+      "name": "cloud-sync-api",
+      "allowedCallers": [
+        "service-internal",
+        "frontend-user"
+      ],
+      "authModel": "jwt",
+      "adminOnly": false,
+      "sourceRoutes": []
+    },
+    {
+      "name": "cloud-tenant-api",
+      "allowedCallers": [
+        "admin-bff"
+      ],
+      "authModel": "jwt",
+      "adminOnly": true,
+      "sourceRoutes": []
+    },
+    {
+      "name": "cloud-worker-api",
+      "allowedCallers": [
+        "service-internal",
+        "kernel"
+      ],
+      "authModel": "service-role",
+      "adminOnly": false,
+      "sourceRoutes": []
+    },
+    {
+      "name": "connector-batch",
+      "allowedCallers": [
+        "scheduler",
+        "service-internal"
+      ],
+      "authModel": "jwt",
+      "adminOnly": false,
+      "sourceRoutes": []
+    },
+    {
+      "name": "connector-discover",
+      "allowedCallers": [
+        "public-bff",
+        "frontend-user"
+      ],
+      "authModel": "jwt",
+      "adminOnly": false,
+      "sourceRoutes": [
+        "connectors.discover"
+      ]
+    },
+    {
+      "name": "connector-health",
+      "allowedCallers": [
+        "public-bff",
+        "admin-bff",
+        "scheduler"
+      ],
+      "authModel": "jwt",
+      "adminOnly": false,
+      "sourceRoutes": [
+        "connectors.health"
+      ]
+    },
+    {
+      "name": "connector-oauth",
+      "allowedCallers": [
+        "frontend-user",
+        "external-webhook"
+      ],
+      "authModel": "jwt",
+      "adminOnly": false,
+      "sourceRoutes": [
+        "connectors.oauth"
+      ]
+    },
+    {
+      "name": "connector-operations",
+      "allowedCallers": [
+        "public-bff",
+        "frontend-user"
+      ],
+      "authModel": "jwt",
+      "adminOnly": false,
+      "sourceRoutes": []
+    },
+    {
+      "name": "connector-proxy",
+      "allowedCallers": [
+        "service-internal",
+        "domain-function",
+        "connector-webhook"
+      ],
+      "authModel": "jwt",
+      "adminOnly": false,
+      "sourceRoutes": []
+    },
+    {
+      "name": "connector-sync",
+      "allowedCallers": [
+        "scheduler",
+        "service-internal",
+        "external-webhook"
+      ],
+      "authModel": "jwt",
+      "adminOnly": false,
+      "sourceRoutes": [
+        "connectors.sync"
+      ]
+    },
+    {
+      "name": "connector-transform",
+      "allowedCallers": [
+        "service-internal",
+        "connector-webhook"
+      ],
+      "authModel": "jwt",
+      "adminOnly": false,
+      "sourceRoutes": []
+    },
+    {
+      "name": "crm-sync",
+      "allowedCallers": [
+        "scheduler",
+        "service-internal"
+      ],
+      "authModel": "jwt",
+      "adminOnly": false,
+      "sourceRoutes": []
+    },
+    {
+      "name": "provider-family-operations",
+      "allowedCallers": [
+        "admin-bff",
+        "service-internal"
+      ],
+      "authModel": "jwt",
+      "adminOnly": false,
+      "sourceRoutes": []
+    },
+    {
+      "name": "os-command",
+      "allowedCallers": [
+        "kernel",
+        "service-internal"
+      ],
+      "authModel": "jwt",
+      "adminOnly": true,
+      "sourceRoutes": [
+        "runtime.os-command"
+      ]
+    },
+    {
+      "name": "os-status",
+      "allowedCallers": [
+        "kernel",
+        "external-webhook",
+        "service-internal"
+      ],
+      "authModel": "anon",
+      "adminOnly": false,
+      "sourceRoutes": []
+    },
+    {
+      "name": "os-agent-channel",
+      "allowedCallers": [
+        "kernel",
+        "service-internal"
+      ],
+      "authModel": "service-role",
+      "adminOnly": false,
+      "sourceRoutes": []
+    },
+    {
+      "name": "runtime-probes",
+      "allowedCallers": [
+        "kernel",
+        "external-webhook"
+      ],
+      "authModel": "anon",
+      "adminOnly": false,
+      "sourceRoutes": []
+    },
+    {
+      "name": "db-truth-introspect",
+      "allowedCallers": [
+        "admin-bff",
+        "frontend-admin"
+      ],
+      "authModel": "jwt",
+      "adminOnly": true,
+      "sourceRoutes": []
+    },
+    {
+      "name": "device-telemetry",
+      "allowedCallers": [
+        "kernel",
+        "external-webhook"
+      ],
+      "authModel": "jwt",
+      "adminOnly": false,
+      "sourceRoutes": []
+    },
+    {
+      "name": "system-updates",
+      "allowedCallers": [
+        "kernel",
+        "scheduler"
+      ],
+      "authModel": "service-role",
+      "adminOnly": false,
+      "sourceRoutes": []
+    },
+    {
+      "name": "self-healing",
+      "allowedCallers": [
+        "kernel",
+        "scheduler",
+        "service-internal"
+      ],
+      "authModel": "service-role",
+      "adminOnly": false,
+      "sourceRoutes": []
+    },
+    {
+      "name": "ecosystem-operations",
+      "allowedCallers": [
+        "admin-bff",
+        "scheduler"
+      ],
+      "authModel": "jwt",
+      "adminOnly": false,
+      "sourceRoutes": []
+    },
+    {
+      "name": "event-processor",
+      "allowedCallers": [
+        "service-internal",
+        "external-webhook",
+        "scheduler"
+      ],
+      "authModel": "service-role",
+      "adminOnly": false,
+      "sourceRoutes": []
+    },
+    {
+      "name": "scheduler-dispatch",
+      "allowedCallers": [
+        "scheduler",
+        "service-internal"
+      ],
+      "authModel": "service-role",
+      "adminOnly": false,
+      "sourceRoutes": []
+    },
+    {
+      "name": "digital-twin-engine",
+      "allowedCallers": [
+        "public-bff",
+        "service-internal"
+      ],
+      "authModel": "jwt",
+      "adminOnly": false,
+      "sourceRoutes": []
+    },
+    {
+      "name": "simulation-engine-api",
+      "allowedCallers": [
+        "public-bff",
+        "service-internal"
+      ],
+      "authModel": "jwt",
+      "adminOnly": false,
+      "sourceRoutes": []
+    },
+    {
+      "name": "file-ingestion",
+      "allowedCallers": [
+        "public-bff",
+        "frontend-user"
+      ],
+      "authModel": "jwt",
+      "adminOnly": false,
+      "sourceRoutes": []
+    },
+    {
+      "name": "seed-user-data",
+      "allowedCallers": [
+        "admin-bff",
+        "service-internal"
+      ],
+      "authModel": "jwt",
+      "adminOnly": true,
+      "sourceRoutes": []
+    },
+    {
+      "name": "health-check",
+      "allowedCallers": [
+        "external-webhook",
+        "any-authenticated",
+        "kernel"
+      ],
+      "authModel": "anon",
+      "adminOnly": false,
+      "sourceRoutes": []
+    },
+    {
+      "name": "push-dispatch",
+      "allowedCallers": [
+        "service-internal",
+        "domain-function",
+        "scheduler"
+      ],
+      "authModel": "service-role",
+      "adminOnly": false,
+      "sourceRoutes": [
+        "push.dispatch"
+      ]
+    },
+    {
+      "name": "push-track",
+      "allowedCallers": [
+        "public-bff",
+        "frontend-user",
+        "external-webhook"
+      ],
+      "authModel": "jwt",
+      "adminOnly": false,
+      "sourceRoutes": [
+        "push.track"
+      ]
+    },
+    {
+      "name": "vapid-public-key",
+      "allowedCallers": [
+        "public-bff",
+        "frontend-user"
+      ],
+      "authModel": "anon",
+      "adminOnly": false,
+      "sourceRoutes": []
+    },
+    {
+      "name": "gdpr-delete",
+      "allowedCallers": [
+        "admin-bff",
+        "frontend-user"
+      ],
+      "authModel": "jwt",
+      "adminOnly": false,
+      "sourceRoutes": [
+        "gdpr.delete"
+      ]
+    },
+    {
+      "name": "gdpr-export",
+      "allowedCallers": [
+        "admin-bff",
+        "frontend-user"
+      ],
+      "authModel": "jwt",
+      "adminOnly": false,
+      "sourceRoutes": [
+        "gdpr.export"
+      ]
+    },
+    {
+      "name": "verification-recorder",
+      "allowedCallers": [
+        "service-internal",
+        "domain-function"
+      ],
+      "authModel": "jwt",
+      "adminOnly": false,
+      "sourceRoutes": []
+    }
+  ]
 }

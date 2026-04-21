@@ -1,0 +1,1130 @@
+{
+  "generatedAt": "2026-04-21T00:28:18.524Z",
+  "tables": {
+    "ai_workforce_roles": {
+      "readers": [
+        "admin-ai-workforce-run"
+      ],
+      "writers": []
+    },
+    "ai_workforce_task_types": {
+      "readers": [
+        "admin-ai-workforce-run"
+      ],
+      "writers": []
+    },
+    "ai_usage_ledger": {
+      "readers": [
+        "ai-health",
+        "check-ai-budget",
+        "cost-alert"
+      ],
+      "writers": [
+        "admin-ai-workforce-run",
+        "ai-gateway"
+      ]
+    },
+    "ai_workforce_approval_queue": {
+      "readers": [],
+      "writers": [
+        "admin-ai-workforce-run"
+      ]
+    },
+    "ai_workforce_invocations": {
+      "readers": [],
+      "writers": [
+        "admin-ai-workforce-run"
+      ]
+    },
+    "ai_workforce_outputs": {
+      "readers": [],
+      "writers": [
+        "admin-ai-workforce-run"
+      ]
+    },
+    "ai_workforce_role_health": {
+      "readers": [],
+      "writers": [
+        "admin-ai-workforce-run"
+      ]
+    },
+    "admin_safety_actions": {
+      "readers": [
+        "admin-bff-gateway"
+      ],
+      "writers": []
+    },
+    "cloud_audit_events": {
+      "readers": [
+        "admin-bff-gateway"
+      ],
+      "writers": [
+        "admin-bff-gateway"
+      ]
+    },
+    "cloud_blobs": {
+      "readers": [
+        "admin-bff-gateway",
+        "cloud-admin-api"
+      ],
+      "writers": [
+        "cloud-storage-api"
+      ]
+    },
+    "cloud_conflicts": {
+      "readers": [
+        "admin-bff-gateway",
+        "cloud-admin-api"
+      ],
+      "writers": [
+        "cloud-sync-api"
+      ]
+    },
+    "cloud_devices": {
+      "readers": [
+        "admin-bff-gateway",
+        "user-bff-gateway",
+        "cloud-admin-api",
+        "cloud-device-api"
+      ],
+      "writers": [
+        "cloud-device-api"
+      ]
+    },
+    "cloud_sync_jobs": {
+      "readers": [
+        "admin-bff-gateway"
+      ],
+      "writers": [
+        "cloud-admin-api"
+      ]
+    },
+    "cloud_worker_jobs": {
+      "readers": [
+        "admin-bff-gateway",
+        "cloud-worker-api"
+      ],
+      "writers": [
+        "cloud-worker-api"
+      ]
+    },
+    "platform_notifications": {
+      "readers": [
+        "admin-bff-gateway",
+        "user-bff-gateway"
+      ],
+      "writers": [
+        "file-ingestion"
+      ]
+    },
+    "profiles": {
+      "readers": [
+        "admin-bff-gateway",
+        "user-bff-gateway",
+        "runtime-probes",
+        "digital-twin-engine",
+        "gdpr-delete",
+        "gdpr-export"
+      ],
+      "writers": []
+    },
+    "support_cases": {
+      "readers": [
+        "admin-bff-gateway",
+        "user-bff-gateway",
+        "support-gateway"
+      ],
+      "writers": [
+        "support-gateway"
+      ]
+    },
+    "admin_action_audit": {
+      "readers": [
+        "admin-intelligence"
+      ],
+      "writers": [
+        "admin-users",
+        "support-gateway",
+        "booking-manage",
+        "invoice-generate",
+        "payment-process",
+        "payment-kill-switch",
+        "connector-batch",
+        "connector-discover",
+        "connector-transform",
+        "crm-sync",
+        "os-command",
+        "seed-user-data",
+        "gdpr-delete",
+        "gdpr-export"
+      ]
+    },
+    "advisor_responses": {
+      "readers": [
+        "admin-intelligence",
+        "agent-intelligence"
+      ],
+      "writers": [
+        "chat-advisor",
+        "brain-core"
+      ]
+    },
+    "user_roles": {
+      "readers": [
+        "admin-users"
+      ],
+      "writers": [
+        "admin-users"
+      ]
+    },
+    "advisor_agents": {
+      "readers": [
+        "advisor-agent-loop",
+        "advisor-conversation",
+        "advisor-deep-intelligence",
+        "advisor-weekly-report",
+        "chat-advisor"
+      ],
+      "writers": []
+    },
+    "advisor_autonomy_policies": {
+      "readers": [
+        "advisor-agent-loop",
+        "business-board-api"
+      ],
+      "writers": []
+    },
+    "advisor_board_memory": {
+      "readers": [
+        "advisor-agent-loop",
+        "advisor-deep-intelligence"
+      ],
+      "writers": [
+        "advisor-agent-loop",
+        "advisor-deep-intelligence"
+      ]
+    },
+    "advisor_memories": {
+      "readers": [
+        "advisor-agent-loop",
+        "advisor-conversation",
+        "advisor-weekly-report"
+      ],
+      "writers": [
+        "advisor-agent-loop",
+        "advisor-conversation"
+      ]
+    },
+    "advisor_board_actions": {
+      "readers": [
+        "business-board-api"
+      ],
+      "writers": [
+        "advisor-agent-loop"
+      ]
+    },
+    "advisor_profiles": {
+      "readers": [
+        "advisor-avatar-generate"
+      ],
+      "writers": [
+        "advisor-avatar-generate"
+      ]
+    },
+    "advisor_knowledge": {
+      "readers": [
+        "advisor-deep-intelligence",
+        "advisor-knowledge-manage"
+      ],
+      "writers": [
+        "advisor-knowledge-manage"
+      ]
+    },
+    "advisor_board_recommendations": {
+      "readers": [
+        "business-board-api"
+      ],
+      "writers": [
+        "advisor-deep-intelligence",
+        "advisor-weekly-report",
+        "business-board-api"
+      ]
+    },
+    "timeline_events": {
+      "readers": [
+        "advisor-weekly-report",
+        "event-processor"
+      ],
+      "writers": [
+        "agent-executor",
+        "cost-alert",
+        "event-processor",
+        "digital-twin-engine",
+        "simulation-engine-api"
+      ]
+    },
+    "agent_action_receipts": {
+      "readers": [
+        "agent-executor",
+        "agent-intelligence"
+      ],
+      "writers": [
+        "agent-executor"
+      ]
+    },
+    "agent_schedules": {
+      "readers": [
+        "agent-executor",
+        "agent-scheduler",
+        "runtime-probes",
+        "scheduler-dispatch"
+      ],
+      "writers": [
+        "agent-scheduler",
+        "scheduler-dispatch"
+      ]
+    },
+    "agent_signals": {
+      "readers": [
+        "agent-executor",
+        "agent-intelligence",
+        "agent-signal"
+      ],
+      "writers": [
+        "agent-executor",
+        "agent-signal",
+        "os-command"
+      ]
+    },
+    "agent_telemetry": {
+      "readers": [
+        "agent-executor",
+        "agent-intelligence"
+      ],
+      "writers": [
+        "agent-executor",
+        "agent-heartbeat",
+        "self-healing"
+      ]
+    },
+    "command_steps": {
+      "readers": [
+        "agent-executor"
+      ],
+      "writers": [
+        "agent-executor",
+        "event-processor",
+        "scheduler-dispatch"
+      ]
+    },
+    "runtime_agents": {
+      "readers": [
+        "agent-executor"
+      ],
+      "writers": []
+    },
+    "ai_cost_ledger": {
+      "readers": [],
+      "writers": [
+        "agent-executor"
+      ]
+    },
+    "ai_budget_alerts": {
+      "readers": [],
+      "writers": [
+        "ai-gateway"
+      ]
+    },
+    "ai_fallback_events": {
+      "readers": [],
+      "writers": [
+        "ai-gateway"
+      ]
+    },
+    "ai_inference_receipts": {
+      "readers": [
+        "ai-health"
+      ],
+      "writers": [
+        "ai-gateway",
+        "business-advisor-intelligence"
+      ]
+    },
+    "ai_receipt_records": {
+      "readers": [],
+      "writers": [
+        "ai-gateway"
+      ]
+    },
+    "ai_workforce_budget_classes": {
+      "readers": [
+        "check-ai-budget"
+      ],
+      "writers": []
+    },
+    "connected_devices": {
+      "readers": [
+        "ambient-os-operations"
+      ],
+      "writers": [
+        "ambient-os-operations"
+      ]
+    },
+    "device_families": {
+      "readers": [
+        "ambient-os-operations"
+      ],
+      "writers": [
+        "ambient-os-operations"
+      ]
+    },
+    "device_trust_records": {
+      "readers": [
+        "ambient-os-operations"
+      ],
+      "writers": [
+        "ambient-os-operations"
+      ]
+    },
+    "interruption_policies": {
+      "readers": [
+        "ambient-os-operations"
+      ],
+      "writers": []
+    },
+    "presence_states": {
+      "readers": [
+        "ambient-os-operations"
+      ],
+      "writers": [
+        "ambient-os-operations"
+      ]
+    },
+    "readiness_states": {
+      "readers": [
+        "ambient-os-operations"
+      ],
+      "writers": [
+        "ambient-os-operations"
+      ]
+    },
+    "user_device_graph_edges": {
+      "readers": [
+        "ambient-os-operations"
+      ],
+      "writers": [
+        "ambient-os-operations"
+      ]
+    },
+    "wearable_providers": {
+      "readers": [
+        "ambient-os-operations"
+      ],
+      "writers": [
+        "ambient-os-operations"
+      ]
+    },
+    "wearable_signals": {
+      "readers": [
+        "ambient-os-operations"
+      ],
+      "writers": []
+    },
+    "ambient_launch_readiness": {
+      "readers": [],
+      "writers": [
+        "ambient-os-operations"
+      ]
+    },
+    "ambient_notification_routes": {
+      "readers": [],
+      "writers": [
+        "ambient-os-operations"
+      ]
+    },
+    "assistant_role_presences": {
+      "readers": [],
+      "writers": [
+        "ambient-os-operations"
+      ]
+    },
+    "handoff_sessions": {
+      "readers": [],
+      "writers": [
+        "ambient-os-operations"
+      ]
+    },
+    "support_case_events": {
+      "readers": [],
+      "writers": [
+        "user-bff-gateway",
+        "support-gateway"
+      ]
+    },
+    "ai_efficiency_scores": {
+      "readers": [
+        "intelligence-api"
+      ],
+      "writers": []
+    },
+    "engine_events": {
+      "readers": [
+        "intelligence-api"
+      ],
+      "writers": [
+        "intelligence-api"
+      ]
+    },
+    "intelligence_assets_library": {
+      "readers": [
+        "intelligence-api"
+      ],
+      "writers": []
+    },
+    "ai_learning_patterns": {
+      "readers": [],
+      "writers": [
+        "intelligence-api"
+      ]
+    },
+    "ai_prompt_families": {
+      "readers": [],
+      "writers": [
+        "intelligence-api"
+      ]
+    },
+    "license_activations": {
+      "readers": [
+        "license-gateway"
+      ],
+      "writers": [
+        "license-gateway"
+      ]
+    },
+    "license_audit_log": {
+      "readers": [],
+      "writers": [
+        "license-gateway"
+      ]
+    },
+    "appointments": {
+      "readers": [
+        "booking-manage"
+      ],
+      "writers": [
+        "booking-manage",
+        "seed-user-data"
+      ]
+    },
+    "receipts": {
+      "readers": [],
+      "writers": [
+        "booking-manage",
+        "invoice-generate",
+        "payment-process"
+      ]
+    },
+    "communication_log": {
+      "readers": [
+        "communications-api"
+      ],
+      "writers": [
+        "communications-api",
+        "invoice-generate",
+        "revenue-caller",
+        "seed-user-data"
+      ]
+    },
+    "advisor_requests": {
+      "readers": [
+        "brain-core"
+      ],
+      "writers": [
+        "brain-core"
+      ]
+    },
+    "command_memory": {
+      "readers": [
+        "brain-core"
+      ],
+      "writers": [
+        "brain-core"
+      ]
+    },
+    "approval_decisions": {
+      "readers": [],
+      "writers": [
+        "brain-core",
+        "payment-process",
+        "event-processor",
+        "seed-user-data"
+      ]
+    },
+    "financial_accounts": {
+      "readers": [
+        "cashflow-calculate",
+        "tax-estimate"
+      ],
+      "writers": []
+    },
+    "invoices": {
+      "readers": [
+        "cashflow-calculate",
+        "invoice-generate",
+        "tax-estimate"
+      ],
+      "writers": [
+        "invoice-generate",
+        "seed-user-data"
+      ]
+    },
+    "shell_implementations": {
+      "readers": [
+        "msa-operations"
+      ],
+      "writers": [
+        "msa-operations"
+      ]
+    },
+    "surface_adapters": {
+      "readers": [
+        "msa-operations"
+      ],
+      "writers": [
+        "msa-operations"
+      ]
+    },
+    "surface_readiness_records": {
+      "readers": [
+        "msa-operations"
+      ],
+      "writers": [
+        "msa-operations"
+      ]
+    },
+    "surface_types": {
+      "readers": [
+        "msa-operations"
+      ],
+      "writers": [
+        "msa-operations"
+      ]
+    },
+    "architecture_boundary_records": {
+      "readers": [],
+      "writers": [
+        "msa-operations"
+      ]
+    },
+    "capability_definitions": {
+      "readers": [],
+      "writers": [
+        "msa-operations"
+      ]
+    },
+    "capability_surface_bindings": {
+      "readers": [],
+      "writers": [
+        "msa-operations"
+      ]
+    },
+    "experience_grammars": {
+      "readers": [],
+      "writers": [
+        "msa-operations"
+      ]
+    },
+    "cloud_files": {
+      "readers": [
+        "cloud-admin-api",
+        "cloud-storage-api"
+      ],
+      "writers": [
+        "cloud-storage-api"
+      ]
+    },
+    "cloud_storage_usage": {
+      "readers": [
+        "cloud-admin-api"
+      ],
+      "writers": [
+        "cloud-admin-api",
+        "cloud-storage-api"
+      ]
+    },
+    "cloud_sync_changes": {
+      "readers": [
+        "cloud-admin-api"
+      ],
+      "writers": [
+        "cloud-sync-api"
+      ]
+    },
+    "cloud_trash": {
+      "readers": [
+        "cloud-admin-api"
+      ],
+      "writers": [
+        "cloud-storage-api"
+      ]
+    },
+    "cloud_user_plans": {
+      "readers": [],
+      "writers": [
+        "cloud-admin-api"
+      ]
+    },
+    "cloud_device_sessions": {
+      "readers": [],
+      "writers": [
+        "cloud-device-api"
+      ]
+    },
+    "cloud_account_closure_requests": {
+      "readers": [],
+      "writers": [
+        "cloud-lifecycle-api"
+      ]
+    },
+    "cloud_archive_jobs": {
+      "readers": [],
+      "writers": [
+        "cloud-lifecycle-api"
+      ]
+    },
+    "cloud_compliance_hooks": {
+      "readers": [],
+      "writers": [
+        "cloud-lifecycle-api"
+      ]
+    },
+    "cloud_import_export_jobs": {
+      "readers": [],
+      "writers": [
+        "cloud-lifecycle-api"
+      ]
+    },
+    "cloud_reconciliation_runs": {
+      "readers": [],
+      "writers": [
+        "cloud-lifecycle-api"
+      ]
+    },
+    "cloud_folders": {
+      "readers": [
+        "cloud-storage-api"
+      ],
+      "writers": [
+        "cloud-storage-api"
+      ]
+    },
+    "cloud_file_versions": {
+      "readers": [],
+      "writers": [
+        "cloud-storage-api"
+      ]
+    },
+    "cloud_sync_checkpoints": {
+      "readers": [],
+      "writers": [
+        "cloud-sync-api"
+      ]
+    },
+    "cloud_sync_objects": {
+      "readers": [],
+      "writers": [
+        "cloud-sync-api"
+      ]
+    },
+    "cloud_tenant_memberships": {
+      "readers": [
+        "cloud-tenant-api"
+      ],
+      "writers": [
+        "cloud-tenant-api"
+      ]
+    },
+    "cloud_shared_workspaces": {
+      "readers": [],
+      "writers": [
+        "cloud-tenant-api"
+      ]
+    },
+    "cloud_tenant_policies": {
+      "readers": [],
+      "writers": [
+        "cloud-tenant-api"
+      ]
+    },
+    "cloud_tenant_quotas": {
+      "readers": [],
+      "writers": [
+        "cloud-tenant-api"
+      ]
+    },
+    "cloud_tenants": {
+      "readers": [],
+      "writers": [
+        "cloud-tenant-api"
+      ]
+    },
+    "connector_tokens": {
+      "readers": [
+        "connector-batch",
+        "connector-health",
+        "connector-proxy",
+        "connector-sync"
+      ],
+      "writers": [
+        "connector-oauth"
+      ]
+    },
+    "connector_sync_runs": {
+      "readers": [
+        "connector-operations"
+      ],
+      "writers": [
+        "connector-batch",
+        "connector-operations",
+        "connector-sync"
+      ]
+    },
+    "connector_accounts": {
+      "readers": [
+        "connector-discover",
+        "connector-health",
+        "connector-operations",
+        "connector-proxy",
+        "connector-sync"
+      ],
+      "writers": [
+        "connector-oauth",
+        "connector-operations"
+      ]
+    },
+    "connector_configs": {
+      "readers": [
+        "connector-discover"
+      ],
+      "writers": []
+    },
+    "connector_registry": {
+      "readers": [
+        "connector-discover",
+        "connector-operations"
+      ],
+      "writers": [
+        "connector-operations"
+      ]
+    },
+    "connector_health_records": {
+      "readers": [],
+      "writers": [
+        "connector-health",
+        "connector-operations"
+      ]
+    },
+    "connector_oauth_flows": {
+      "readers": [
+        "connector-oauth"
+      ],
+      "writers": [
+        "connector-oauth"
+      ]
+    },
+    "connector_oauth_tokens": {
+      "readers": [
+        "connector-operations"
+      ],
+      "writers": [
+        "connector-oauth",
+        "connector-operations"
+      ]
+    },
+    "connector_receipts": {
+      "readers": [],
+      "writers": [
+        "connector-oauth",
+        "connector-operations",
+        "connector-proxy"
+      ]
+    },
+    "consent_ledger": {
+      "readers": [],
+      "writers": [
+        "connector-oauth"
+      ]
+    },
+    "consent_scope_records": {
+      "readers": [],
+      "writers": [
+        "connector-oauth"
+      ]
+    },
+    "connector_demo_bindings": {
+      "readers": [],
+      "writers": [
+        "connector-operations"
+      ]
+    },
+    "connector_launch_readiness": {
+      "readers": [],
+      "writers": [
+        "connector-operations"
+      ]
+    },
+    "connector_policies": {
+      "readers": [],
+      "writers": [
+        "connector-operations"
+      ]
+    },
+    "customers": {
+      "readers": [
+        "crm-sync"
+      ],
+      "writers": [
+        "crm-sync",
+        "seed-user-data"
+      ]
+    },
+    "leads": {
+      "readers": [
+        "crm-sync",
+        "seed-user-data"
+      ],
+      "writers": [
+        "crm-sync",
+        "seed-user-data"
+      ]
+    },
+    "opportunities": {
+      "readers": [
+        "crm-sync"
+      ],
+      "writers": [
+        "crm-sync",
+        "seed-user-data"
+      ]
+    },
+    "connected_service_links": {
+      "readers": [
+        "provider-family-operations"
+      ],
+      "writers": []
+    },
+    "identity_provider_links": {
+      "readers": [
+        "provider-family-operations"
+      ],
+      "writers": []
+    },
+    "provider_capabilities": {
+      "readers": [
+        "provider-family-operations"
+      ],
+      "writers": [
+        "provider-family-operations"
+      ]
+    },
+    "provider_families": {
+      "readers": [
+        "provider-family-operations"
+      ],
+      "writers": [
+        "provider-family-operations"
+      ]
+    },
+    "scope_policy_matrix": {
+      "readers": [
+        "provider-family-operations"
+      ],
+      "writers": [
+        "provider-family-operations"
+      ]
+    },
+    "unified_account_edges": {
+      "readers": [
+        "provider-family-operations"
+      ],
+      "writers": []
+    },
+    "unified_account_nodes": {
+      "readers": [
+        "provider-family-operations"
+      ],
+      "writers": []
+    },
+    "integration_launch_honesty": {
+      "readers": [],
+      "writers": [
+        "provider-family-operations"
+      ]
+    },
+    "oauth_client_registry": {
+      "readers": [],
+      "writers": [
+        "provider-family-operations"
+      ]
+    },
+    "permission_drift_records": {
+      "readers": [],
+      "writers": [
+        "provider-family-operations"
+      ]
+    },
+    "scope_recommendations": {
+      "readers": [],
+      "writers": [
+        "provider-family-operations"
+      ]
+    },
+    "os_commands": {
+      "readers": [
+        "os-command"
+      ],
+      "writers": [
+        "os-command"
+      ]
+    },
+    "os_command_events": {
+      "readers": [],
+      "writers": [
+        "os-command",
+        "os-agent-channel"
+      ]
+    },
+    "device_statuses": {
+      "readers": [
+        "os-status"
+      ],
+      "writers": [
+        "os-status",
+        "device-telemetry"
+      ]
+    },
+    "cloud_activity_journal": {
+      "readers": [],
+      "writers": [
+        "os-agent-channel"
+      ]
+    },
+    "communication_metrics": {
+      "readers": [],
+      "writers": [
+        "os-agent-channel"
+      ]
+    },
+    "system_update_devices": {
+      "readers": [],
+      "writers": [
+        "device-telemetry"
+      ]
+    },
+    "system_update_log": {
+      "readers": [],
+      "writers": [
+        "system-updates"
+      ]
+    },
+    "incidents": {
+      "readers": [],
+      "writers": [
+        "self-healing"
+      ]
+    },
+    "ecosystem_devices": {
+      "readers": [
+        "ecosystem-operations"
+      ],
+      "writers": [
+        "ecosystem-operations"
+      ]
+    },
+    "ecosystem_health_consents": {
+      "readers": [
+        "ecosystem-operations"
+      ],
+      "writers": [
+        "ecosystem-operations"
+      ]
+    },
+    "ecosystem_launch_readiness": {
+      "readers": [
+        "ecosystem-operations"
+      ],
+      "writers": [
+        "ecosystem-operations"
+      ]
+    },
+    "ecosystem_push_routes": {
+      "readers": [
+        "ecosystem-operations"
+      ],
+      "writers": [
+        "ecosystem-operations"
+      ]
+    },
+    "ecosystem_trust_records": {
+      "readers": [
+        "ecosystem-operations"
+      ],
+      "writers": [
+        "ecosystem-operations"
+      ]
+    },
+    "ecosystem_wearable_configs": {
+      "readers": [
+        "ecosystem-operations"
+      ],
+      "writers": [
+        "ecosystem-operations"
+      ]
+    },
+    "file_metadata": {
+      "readers": [],
+      "writers": [
+        "file-ingestion"
+      ]
+    },
+    "tasks_workflow": {
+      "readers": [],
+      "writers": [
+        "seed-user-data"
+      ]
+    },
+    "device_push_tokens": {
+      "readers": [
+        "push-dispatch"
+      ],
+      "writers": [
+        "push-dispatch"
+      ]
+    },
+    "notification_delivery_receipts": {
+      "readers": [],
+      "writers": [
+        "push-dispatch",
+        "push-track"
+      ]
+    },
+    "verification_blockers": {
+      "readers": [],
+      "writers": [
+        "verification-recorder"
+      ]
+    },
+    "verification_evidence": {
+      "readers": [],
+      "writers": [
+        "verification-recorder"
+      ]
+    },
+    "verification_runs": {
+      "readers": [],
+      "writers": [
+        "verification-recorder"
+      ]
+    }
+  }
+}

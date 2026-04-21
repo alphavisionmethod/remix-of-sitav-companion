@@ -1,0 +1,572 @@
+{
+  "generatedAt": "2026-04-21T00:28:18.524Z",
+  "functions": [
+    {
+      "name": "admin-ai-workforce-run",
+      "replayKind": "job-dead-letter",
+      "replayMechanism": "AI workforce job dead-letter requeue",
+      "fallbackAvailable": null,
+      "severity": null
+    },
+    {
+      "name": "admin-bff-gateway",
+      "replayKind": null,
+      "replayMechanism": null,
+      "fallbackAvailable": false,
+      "severity": "high"
+    },
+    {
+      "name": "admin-intelligence",
+      "replayKind": null,
+      "replayMechanism": null,
+      "fallbackAvailable": null,
+      "severity": null
+    },
+    {
+      "name": "admin-users",
+      "replayKind": null,
+      "replayMechanism": null,
+      "fallbackAvailable": null,
+      "severity": null
+    },
+    {
+      "name": "advisor-agent-loop",
+      "replayKind": "workflow-replay",
+      "replayMechanism": "advisor loop checkpoint resume",
+      "fallbackAvailable": null,
+      "severity": null
+    },
+    {
+      "name": "advisor-avatar-generate",
+      "replayKind": null,
+      "replayMechanism": null,
+      "fallbackAvailable": null,
+      "severity": null
+    },
+    {
+      "name": "advisor-conversation",
+      "replayKind": null,
+      "replayMechanism": null,
+      "fallbackAvailable": true,
+      "severity": "medium"
+    },
+    {
+      "name": "advisor-deep-intelligence",
+      "replayKind": "command-replay",
+      "replayMechanism": "deep-reasoning command bus replay",
+      "fallbackAvailable": null,
+      "severity": null
+    },
+    {
+      "name": "advisor-knowledge-manage",
+      "replayKind": null,
+      "replayMechanism": null,
+      "fallbackAvailable": null,
+      "severity": null
+    },
+    {
+      "name": "advisor-weekly-report",
+      "replayKind": null,
+      "replayMechanism": null,
+      "fallbackAvailable": null,
+      "severity": null
+    },
+    {
+      "name": "agent-executor",
+      "replayKind": "command-replay",
+      "replayMechanism": "command-bus replay via api-gateway",
+      "fallbackAvailable": null,
+      "severity": null
+    },
+    {
+      "name": "agent-heartbeat",
+      "replayKind": "idempotent-retry",
+      "replayMechanism": "heartbeat Idempotency-Key + last-seen upsert",
+      "fallbackAvailable": null,
+      "severity": null
+    },
+    {
+      "name": "agent-intelligence",
+      "replayKind": null,
+      "replayMechanism": null,
+      "fallbackAvailable": null,
+      "severity": null
+    },
+    {
+      "name": "agent-scheduler",
+      "replayKind": "job-dead-letter",
+      "replayMechanism": "scheduler tick replay via cloud_worker_jobs",
+      "fallbackAvailable": null,
+      "severity": null
+    },
+    {
+      "name": "agent-signal",
+      "replayKind": "command-replay",
+      "replayMechanism": "signal-bus command-replay route",
+      "fallbackAvailable": null,
+      "severity": null
+    },
+    {
+      "name": "ai-gateway",
+      "replayKind": null,
+      "replayMechanism": null,
+      "fallbackAvailable": true,
+      "severity": "critical"
+    },
+    {
+      "name": "ai-health",
+      "replayKind": null,
+      "replayMechanism": null,
+      "fallbackAvailable": null,
+      "severity": null
+    },
+    {
+      "name": "check-ai-budget",
+      "replayKind": null,
+      "replayMechanism": null,
+      "fallbackAvailable": null,
+      "severity": null
+    },
+    {
+      "name": "ambient-os-operations",
+      "replayKind": null,
+      "replayMechanism": null,
+      "fallbackAvailable": null,
+      "severity": null
+    },
+    {
+      "name": "user-bff-gateway",
+      "replayKind": null,
+      "replayMechanism": null,
+      "fallbackAvailable": false,
+      "severity": "high"
+    },
+    {
+      "name": "intelligence-api",
+      "replayKind": null,
+      "replayMechanism": null,
+      "fallbackAvailable": null,
+      "severity": null
+    },
+    {
+      "name": "support-gateway",
+      "replayKind": null,
+      "replayMechanism": null,
+      "fallbackAvailable": null,
+      "severity": null
+    },
+    {
+      "name": "license-gateway",
+      "replayKind": null,
+      "replayMechanism": null,
+      "fallbackAvailable": null,
+      "severity": null
+    },
+    {
+      "name": "booking-manage",
+      "replayKind": null,
+      "replayMechanism": null,
+      "fallbackAvailable": null,
+      "severity": null
+    },
+    {
+      "name": "get-weather",
+      "replayKind": null,
+      "replayMechanism": null,
+      "fallbackAvailable": true,
+      "severity": "low"
+    },
+    {
+      "name": "chat-advisor",
+      "replayKind": null,
+      "replayMechanism": null,
+      "fallbackAvailable": null,
+      "severity": null
+    },
+    {
+      "name": "personal-brain",
+      "replayKind": null,
+      "replayMechanism": null,
+      "fallbackAvailable": null,
+      "severity": null
+    },
+    {
+      "name": "tasks-workflow-api",
+      "replayKind": null,
+      "replayMechanism": null,
+      "fallbackAvailable": null,
+      "severity": null
+    },
+    {
+      "name": "communications-api",
+      "replayKind": null,
+      "replayMechanism": null,
+      "fallbackAvailable": null,
+      "severity": null
+    },
+    {
+      "name": "app-store-api",
+      "replayKind": null,
+      "replayMechanism": null,
+      "fallbackAvailable": null,
+      "severity": null
+    },
+    {
+      "name": "business-board-api",
+      "replayKind": null,
+      "replayMechanism": null,
+      "fallbackAvailable": null,
+      "severity": null
+    },
+    {
+      "name": "business-advisor-intelligence",
+      "replayKind": null,
+      "replayMechanism": null,
+      "fallbackAvailable": null,
+      "severity": null
+    },
+    {
+      "name": "brain-core",
+      "replayKind": "workflow-replay",
+      "replayMechanism": "WorkflowReplayEngine snapshot resume",
+      "fallbackAvailable": true,
+      "severity": "high"
+    },
+    {
+      "name": "cashflow-calculate",
+      "replayKind": null,
+      "replayMechanism": null,
+      "fallbackAvailable": false,
+      "severity": "medium"
+    },
+    {
+      "name": "cost-alert",
+      "replayKind": null,
+      "replayMechanism": null,
+      "fallbackAvailable": false,
+      "severity": "medium"
+    },
+    {
+      "name": "invoice-generate",
+      "replayKind": null,
+      "replayMechanism": null,
+      "fallbackAvailable": false,
+      "severity": "medium"
+    },
+    {
+      "name": "msa-operations",
+      "replayKind": null,
+      "replayMechanism": null,
+      "fallbackAvailable": null,
+      "severity": null
+    },
+    {
+      "name": "payment-process",
+      "replayKind": "idempotent-retry",
+      "replayMechanism": "Stripe Idempotency-Key + payment_intents dedupe",
+      "fallbackAvailable": false,
+      "severity": "critical"
+    },
+    {
+      "name": "payment-kill-switch",
+      "replayKind": null,
+      "replayMechanism": null,
+      "fallbackAvailable": null,
+      "severity": null
+    },
+    {
+      "name": "revenue-caller",
+      "replayKind": null,
+      "replayMechanism": null,
+      "fallbackAvailable": null,
+      "severity": null
+    },
+    {
+      "name": "tax-estimate",
+      "replayKind": null,
+      "replayMechanism": null,
+      "fallbackAvailable": null,
+      "severity": null
+    },
+    {
+      "name": "investment-portfolio-api",
+      "replayKind": null,
+      "replayMechanism": null,
+      "fallbackAvailable": null,
+      "severity": null
+    },
+    {
+      "name": "cloud-admin-api",
+      "replayKind": null,
+      "replayMechanism": null,
+      "fallbackAvailable": null,
+      "severity": null
+    },
+    {
+      "name": "cloud-device-api",
+      "replayKind": null,
+      "replayMechanism": null,
+      "fallbackAvailable": null,
+      "severity": null
+    },
+    {
+      "name": "cloud-lifecycle-api",
+      "replayKind": null,
+      "replayMechanism": null,
+      "fallbackAvailable": null,
+      "severity": null
+    },
+    {
+      "name": "cloud-storage-api",
+      "replayKind": null,
+      "replayMechanism": null,
+      "fallbackAvailable": null,
+      "severity": null
+    },
+    {
+      "name": "cloud-sync-api",
+      "replayKind": null,
+      "replayMechanism": null,
+      "fallbackAvailable": null,
+      "severity": null
+    },
+    {
+      "name": "cloud-tenant-api",
+      "replayKind": null,
+      "replayMechanism": null,
+      "fallbackAvailable": null,
+      "severity": null
+    },
+    {
+      "name": "cloud-worker-api",
+      "replayKind": null,
+      "replayMechanism": null,
+      "fallbackAvailable": null,
+      "severity": null
+    },
+    {
+      "name": "connector-batch",
+      "replayKind": "idempotent-retry",
+      "replayMechanism": "batch Idempotency-Key + connector_sync_runs dedupe",
+      "fallbackAvailable": null,
+      "severity": null
+    },
+    {
+      "name": "connector-discover",
+      "replayKind": "idempotent-retry",
+      "replayMechanism": "discover Idempotency-Key dedupe",
+      "fallbackAvailable": null,
+      "severity": null
+    },
+    {
+      "name": "connector-health",
+      "replayKind": "idempotent-retry",
+      "replayMechanism": "health probe Idempotency-Key + last-result cache",
+      "fallbackAvailable": null,
+      "severity": null
+    },
+    {
+      "name": "connector-oauth",
+      "replayKind": "webhook-redelivery",
+      "replayMechanism": "OAuth callback redelivery + state-token dedupe",
+      "fallbackAvailable": false,
+      "severity": "high"
+    },
+    {
+      "name": "connector-operations",
+      "replayKind": "idempotent-retry",
+      "replayMechanism": "operation Idempotency-Key + connector_operations_log",
+      "fallbackAvailable": null,
+      "severity": null
+    },
+    {
+      "name": "connector-proxy",
+      "replayKind": "idempotent-retry",
+      "replayMechanism": "proxy Idempotency-Key passthrough + dedupe ring",
+      "fallbackAvailable": null,
+      "severity": null
+    },
+    {
+      "name": "connector-sync",
+      "replayKind": "idempotent-retry",
+      "replayMechanism": "sync run Idempotency-Key + connector_sync_runs dedupe",
+      "fallbackAvailable": null,
+      "severity": null
+    },
+    {
+      "name": "connector-transform",
+      "replayKind": "idempotent-retry",
+      "replayMechanism": "transform Idempotency-Key + content-hash dedupe",
+      "fallbackAvailable": null,
+      "severity": null
+    },
+    {
+      "name": "crm-sync",
+      "replayKind": "webhook-redelivery",
+      "replayMechanism": "CRM provider redelivery + record-id dedupe",
+      "fallbackAvailable": null,
+      "severity": null
+    },
+    {
+      "name": "provider-family-operations",
+      "replayKind": "idempotent-retry",
+      "replayMechanism": "family-op Idempotency-Key + provider_family_ops_log dedupe",
+      "fallbackAvailable": null,
+      "severity": null
+    },
+    {
+      "name": "os-command",
+      "replayKind": "command-replay",
+      "replayMechanism": "kernel command-bus replay via api-gateway",
+      "fallbackAvailable": null,
+      "severity": null
+    },
+    {
+      "name": "os-status",
+      "replayKind": null,
+      "replayMechanism": null,
+      "fallbackAvailable": null,
+      "severity": null
+    },
+    {
+      "name": "os-agent-channel",
+      "replayKind": null,
+      "replayMechanism": null,
+      "fallbackAvailable": null,
+      "severity": null
+    },
+    {
+      "name": "runtime-probes",
+      "replayKind": null,
+      "replayMechanism": null,
+      "fallbackAvailable": true,
+      "severity": "low"
+    },
+    {
+      "name": "db-truth-introspect",
+      "replayKind": null,
+      "replayMechanism": null,
+      "fallbackAvailable": null,
+      "severity": null
+    },
+    {
+      "name": "device-telemetry",
+      "replayKind": null,
+      "replayMechanism": null,
+      "fallbackAvailable": null,
+      "severity": null
+    },
+    {
+      "name": "system-updates",
+      "replayKind": "job-dead-letter",
+      "replayMechanism": "update job dead-letter requeue",
+      "fallbackAvailable": null,
+      "severity": null
+    },
+    {
+      "name": "self-healing",
+      "replayKind": "job-dead-letter",
+      "replayMechanism": "self-heal job dead-letter requeue",
+      "fallbackAvailable": false,
+      "severity": "high"
+    },
+    {
+      "name": "ecosystem-operations",
+      "replayKind": "workflow-replay",
+      "replayMechanism": "ecosystem orchestration snapshot resume",
+      "fallbackAvailable": null,
+      "severity": null
+    },
+    {
+      "name": "event-processor",
+      "replayKind": "job-dead-letter",
+      "replayMechanism": "event-bus dead-letter retry with backoff",
+      "fallbackAvailable": false,
+      "severity": "high"
+    },
+    {
+      "name": "scheduler-dispatch",
+      "replayKind": "job-dead-letter",
+      "replayMechanism": "cloud_worker_jobs dead-letter requeue",
+      "fallbackAvailable": false,
+      "severity": "high"
+    },
+    {
+      "name": "digital-twin-engine",
+      "replayKind": "workflow-replay",
+      "replayMechanism": "twin simulation snapshot resume",
+      "fallbackAvailable": null,
+      "severity": null
+    },
+    {
+      "name": "simulation-engine-api",
+      "replayKind": "idempotent-retry",
+      "replayMechanism": "Idempotency-Key dedupe + deterministic seed replay",
+      "fallbackAvailable": null,
+      "severity": null
+    },
+    {
+      "name": "file-ingestion",
+      "replayKind": "idempotent-retry",
+      "replayMechanism": "ingestion Idempotency-Key + file content-hash dedupe",
+      "fallbackAvailable": null,
+      "severity": null
+    },
+    {
+      "name": "seed-user-data",
+      "replayKind": null,
+      "replayMechanism": null,
+      "fallbackAvailable": true,
+      "severity": "low"
+    },
+    {
+      "name": "health-check",
+      "replayKind": null,
+      "replayMechanism": null,
+      "fallbackAvailable": null,
+      "severity": null
+    },
+    {
+      "name": "push-dispatch",
+      "replayKind": "idempotent-retry",
+      "replayMechanism": "push Idempotency-Key + push_deliveries dedupe",
+      "fallbackAvailable": true,
+      "severity": "medium"
+    },
+    {
+      "name": "push-track",
+      "replayKind": null,
+      "replayMechanism": null,
+      "fallbackAvailable": null,
+      "severity": null
+    },
+    {
+      "name": "vapid-public-key",
+      "replayKind": null,
+      "replayMechanism": null,
+      "fallbackAvailable": true,
+      "severity": "low"
+    },
+    {
+      "name": "gdpr-delete",
+      "replayKind": "job-dead-letter",
+      "replayMechanism": "GDPR delete job dead-letter requeue",
+      "fallbackAvailable": false,
+      "severity": "critical"
+    },
+    {
+      "name": "gdpr-export",
+      "replayKind": "job-dead-letter",
+      "replayMechanism": "GDPR export job dead-letter requeue",
+      "fallbackAvailable": false,
+      "severity": "high"
+    },
+    {
+      "name": "verification-recorder",
+      "replayKind": null,
+      "replayMechanism": null,
+      "fallbackAvailable": false,
+      "severity": "medium"
+    }
+  ]
+}

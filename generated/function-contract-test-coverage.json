@@ -1,0 +1,436 @@
+{
+  "generatedAt": "2026-04-21T00:28:18.524Z",
+  "familyCoverage": {
+    "admin-gateway-contract": {
+      "total": 4,
+      "tested": 0
+    },
+    "orchestration-step-contract": {
+      "total": 6,
+      "tested": 4
+    },
+    "domain-function": {
+      "total": 9,
+      "tested": 5
+    },
+    "runtime-system": {
+      "total": 2,
+      "tested": 1
+    },
+    "bff-contract": {
+      "total": 6,
+      "tested": 0
+    },
+    "verifier-output": {
+      "total": 1,
+      "tested": 0
+    }
+  },
+  "functions": [
+    {
+      "name": "admin-ai-workforce-run",
+      "family": "admin-gateway-contract",
+      "hasOnDiskTest": false
+    },
+    {
+      "name": "admin-bff-gateway",
+      "family": "admin-gateway-contract",
+      "hasOnDiskTest": false
+    },
+    {
+      "name": "admin-intelligence",
+      "family": null,
+      "hasOnDiskTest": true
+    },
+    {
+      "name": "admin-users",
+      "family": "admin-gateway-contract",
+      "hasOnDiskTest": false
+    },
+    {
+      "name": "advisor-agent-loop",
+      "family": "orchestration-step-contract",
+      "hasOnDiskTest": false
+    },
+    {
+      "name": "advisor-avatar-generate",
+      "family": null,
+      "hasOnDiskTest": false
+    },
+    {
+      "name": "advisor-conversation",
+      "family": "domain-function",
+      "hasOnDiskTest": false
+    },
+    {
+      "name": "advisor-deep-intelligence",
+      "family": null,
+      "hasOnDiskTest": false
+    },
+    {
+      "name": "advisor-knowledge-manage",
+      "family": null,
+      "hasOnDiskTest": false
+    },
+    {
+      "name": "advisor-weekly-report",
+      "family": null,
+      "hasOnDiskTest": false
+    },
+    {
+      "name": "agent-executor",
+      "family": "orchestration-step-contract",
+      "hasOnDiskTest": true
+    },
+    {
+      "name": "agent-heartbeat",
+      "family": null,
+      "hasOnDiskTest": true
+    },
+    {
+      "name": "agent-intelligence",
+      "family": null,
+      "hasOnDiskTest": false
+    },
+    {
+      "name": "agent-scheduler",
+      "family": null,
+      "hasOnDiskTest": false
+    },
+    {
+      "name": "agent-signal",
+      "family": null,
+      "hasOnDiskTest": false
+    },
+    {
+      "name": "ai-gateway",
+      "family": "domain-function",
+      "hasOnDiskTest": true
+    },
+    {
+      "name": "ai-health",
+      "family": "runtime-system",
+      "hasOnDiskTest": true
+    },
+    {
+      "name": "check-ai-budget",
+      "family": null,
+      "hasOnDiskTest": false
+    },
+    {
+      "name": "ambient-os-operations",
+      "family": null,
+      "hasOnDiskTest": false
+    },
+    {
+      "name": "user-bff-gateway",
+      "family": "bff-contract",
+      "hasOnDiskTest": false
+    },
+    {
+      "name": "intelligence-api",
+      "family": "bff-contract",
+      "hasOnDiskTest": false
+    },
+    {
+      "name": "support-gateway",
+      "family": "bff-contract",
+      "hasOnDiskTest": false
+    },
+    {
+      "name": "license-gateway",
+      "family": "bff-contract",
+      "hasOnDiskTest": false
+    },
+    {
+      "name": "booking-manage",
+      "family": null,
+      "hasOnDiskTest": true
+    },
+    {
+      "name": "get-weather",
+      "family": null,
+      "hasOnDiskTest": false
+    },
+    {
+      "name": "chat-advisor",
+      "family": null,
+      "hasOnDiskTest": true
+    },
+    {
+      "name": "personal-brain",
+      "family": null,
+      "hasOnDiskTest": false
+    },
+    {
+      "name": "tasks-workflow-api",
+      "family": null,
+      "hasOnDiskTest": false
+    },
+    {
+      "name": "communications-api",
+      "family": null,
+      "hasOnDiskTest": false
+    },
+    {
+      "name": "app-store-api",
+      "family": "bff-contract",
+      "hasOnDiskTest": false
+    },
+    {
+      "name": "business-board-api",
+      "family": null,
+      "hasOnDiskTest": false
+    },
+    {
+      "name": "business-advisor-intelligence",
+      "family": null,
+      "hasOnDiskTest": false
+    },
+    {
+      "name": "brain-core",
+      "family": "orchestration-step-contract",
+      "hasOnDiskTest": true
+    },
+    {
+      "name": "cashflow-calculate",
+      "family": "domain-function",
+      "hasOnDiskTest": true
+    },
+    {
+      "name": "cost-alert",
+      "family": null,
+      "hasOnDiskTest": false
+    },
+    {
+      "name": "invoice-generate",
+      "family": "domain-function",
+      "hasOnDiskTest": true
+    },
+    {
+      "name": "msa-operations",
+      "family": null,
+      "hasOnDiskTest": false
+    },
+    {
+      "name": "payment-process",
+      "family": "domain-function",
+      "hasOnDiskTest": true
+    },
+    {
+      "name": "payment-kill-switch",
+      "family": null,
+      "hasOnDiskTest": false
+    },
+    {
+      "name": "revenue-caller",
+      "family": null,
+      "hasOnDiskTest": false
+    },
+    {
+      "name": "tax-estimate",
+      "family": null,
+      "hasOnDiskTest": true
+    },
+    {
+      "name": "investment-portfolio-api",
+      "family": null,
+      "hasOnDiskTest": false
+    },
+    {
+      "name": "cloud-admin-api",
+      "family": "admin-gateway-contract",
+      "hasOnDiskTest": false
+    },
+    {
+      "name": "cloud-device-api",
+      "family": null,
+      "hasOnDiskTest": false
+    },
+    {
+      "name": "cloud-lifecycle-api",
+      "family": null,
+      "hasOnDiskTest": false
+    },
+    {
+      "name": "cloud-storage-api",
+      "family": null,
+      "hasOnDiskTest": false
+    },
+    {
+      "name": "cloud-sync-api",
+      "family": null,
+      "hasOnDiskTest": false
+    },
+    {
+      "name": "cloud-tenant-api",
+      "family": null,
+      "hasOnDiskTest": false
+    },
+    {
+      "name": "cloud-worker-api",
+      "family": null,
+      "hasOnDiskTest": false
+    },
+    {
+      "name": "connector-batch",
+      "family": null,
+      "hasOnDiskTest": true
+    },
+    {
+      "name": "connector-discover",
+      "family": null,
+      "hasOnDiskTest": true
+    },
+    {
+      "name": "connector-health",
+      "family": null,
+      "hasOnDiskTest": false
+    },
+    {
+      "name": "connector-oauth",
+      "family": "domain-function",
+      "hasOnDiskTest": false
+    },
+    {
+      "name": "connector-operations",
+      "family": null,
+      "hasOnDiskTest": false
+    },
+    {
+      "name": "connector-proxy",
+      "family": null,
+      "hasOnDiskTest": true
+    },
+    {
+      "name": "connector-sync",
+      "family": null,
+      "hasOnDiskTest": false
+    },
+    {
+      "name": "connector-transform",
+      "family": null,
+      "hasOnDiskTest": true
+    },
+    {
+      "name": "crm-sync",
+      "family": null,
+      "hasOnDiskTest": true
+    },
+    {
+      "name": "provider-family-operations",
+      "family": null,
+      "hasOnDiskTest": false
+    },
+    {
+      "name": "os-command",
+      "family": null,
+      "hasOnDiskTest": false
+    },
+    {
+      "name": "os-status",
+      "family": null,
+      "hasOnDiskTest": true
+    },
+    {
+      "name": "os-agent-channel",
+      "family": "bff-contract",
+      "hasOnDiskTest": false
+    },
+    {
+      "name": "runtime-probes",
+      "family": "runtime-system",
+      "hasOnDiskTest": false
+    },
+    {
+      "name": "db-truth-introspect",
+      "family": null,
+      "hasOnDiskTest": false
+    },
+    {
+      "name": "device-telemetry",
+      "family": null,
+      "hasOnDiskTest": false
+    },
+    {
+      "name": "system-updates",
+      "family": null,
+      "hasOnDiskTest": false
+    },
+    {
+      "name": "self-healing",
+      "family": "orchestration-step-contract",
+      "hasOnDiskTest": true
+    },
+    {
+      "name": "ecosystem-operations",
+      "family": null,
+      "hasOnDiskTest": false
+    },
+    {
+      "name": "event-processor",
+      "family": "orchestration-step-contract",
+      "hasOnDiskTest": true
+    },
+    {
+      "name": "scheduler-dispatch",
+      "family": "orchestration-step-contract",
+      "hasOnDiskTest": false
+    },
+    {
+      "name": "digital-twin-engine",
+      "family": null,
+      "hasOnDiskTest": false
+    },
+    {
+      "name": "simulation-engine-api",
+      "family": null,
+      "hasOnDiskTest": false
+    },
+    {
+      "name": "file-ingestion",
+      "family": null,
+      "hasOnDiskTest": true
+    },
+    {
+      "name": "seed-user-data",
+      "family": null,
+      "hasOnDiskTest": false
+    },
+    {
+      "name": "health-check",
+      "family": null,
+      "hasOnDiskTest": false
+    },
+    {
+      "name": "push-dispatch",
+      "family": "domain-function",
+      "hasOnDiskTest": true
+    },
+    {
+      "name": "push-track",
+      "family": null,
+      "hasOnDiskTest": true
+    },
+    {
+      "name": "vapid-public-key",
+      "family": null,
+      "hasOnDiskTest": true
+    },
+    {
+      "name": "gdpr-delete",
+      "family": "domain-function",
+      "hasOnDiskTest": false
+    },
+    {
+      "name": "gdpr-export",
+      "family": "domain-function",
+      "hasOnDiskTest": false
+    },
+    {
+      "name": "verification-recorder",
+      "family": "verifier-output",
+      "hasOnDiskTest": false
+    }
+  ]
+}

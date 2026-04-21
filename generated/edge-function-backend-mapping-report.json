@@ -1,0 +1,543 @@
+{
+  "generatedAt": "2026-04-21T00:28:36.253Z",
+  "gate": "edge-function-backend-mapping",
+  "ok": true,
+  "warningCount": 107,
+  "issues": [
+    {
+      "fn": "account-delete",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "ai-receipt-completeness-snapshot",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "ai-runtime-nightly-verify",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "alert-actions",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "alert-ingest",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "alert-route",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "alert-router",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "app-ingest-pwa",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "app-ingest-web",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "app-install",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "app-launch-resolve",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "app-manifest-sync",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "app-manifest-verifier",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "app-permissions-sync",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "app-screenshot-capture",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "app-store-catalog",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "app-uninstall",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "app-update-check",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "attestation-packet-builder",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "audit-export-bundler",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "audit-log-export",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "beta-apply",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "boardroom-cockpit-telemetry",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "boardroom-followthrough-dispatch",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "boardroom-followthrough-sla",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "boardroom-outcome-record",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "boardroom-replay",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "boardroom-session",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "canary-chaos-cron",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "compliance-evidence-collector",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "compliance-evidence-cron",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "connector-reauth-tracker",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "connector-refresh-nightly-verify",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "connector-token-refresh",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "crash-report-ingest",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "cron-receipt-collector",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "data-cleanup",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "data-export",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "desktop-update-manifest",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "dr-drill-cron",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "dr-drill-executor",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "dr-drill-runner",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "error-ingest",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "evidence-graph-builder",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "external-workforce-api",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "external-workforce-webhook-dispatcher",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "federated-knowledge-aggregator",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "health-beat",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "health-cron",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "health-live",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "health-ready",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "internal-agent-canary-runner",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "internal-agent-chaos-scheduler",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "internal-agent-consensus-engine",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "internal-agent-cost-optimizer",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "internal-agent-dependency-scanner",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "internal-agent-execute-action",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "internal-agent-loop",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "internal-agent-policy-architect",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "internal-agent-reflect",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "internal-agent-self-healer",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "internal-agent-slo-evaluator",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "internal-agent-suggestion-generator",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "internal-agent-tenant-federation",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "internal-agent-trust-evaluator",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "internal-agent-weekly-digest",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "investor-request",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "kill-switch-state",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "kill-switch-toggle",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "mobile-deferral-attestor",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "oauth-refresh-probe",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "onboarding-branch-tracker",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "onboarding-resume-checkpoint",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "os-update-manifest",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "owner-copilot-bff",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "owner-copilot-session-tracker",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "package-verify",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "press-inquiry",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "production-launch-attestor",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "prompt-versioning",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "recovery-evidence-ingest",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "release-artifact-signer",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "release-artifact-verifier",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "release-evidence-graph-snapshot",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "routing-policy-update",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "runbook-drill",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "secret-rotation-orchestrator",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "security-anomaly-rotation-trigger",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "security-council-tick",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "security-fabric-runtime-probe",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "security-kill-switch-recommender",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "seed-advisor-registry",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "seed-connector-registry",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "tenant-self-service-bff",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "trace-ingest",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "uptime-rollup",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "waitlist-signup",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "waitlist-stats",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "webauthn-challenge",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "webhook-ingest",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "webhook-process",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "webhook-replay",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "webhook-retry-processor",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "workflow-execute",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "workflow-repair",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "workflow-replay",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    },
+    {
+      "fn": "workflow-stuck-detector",
+      "severity": "warning",
+      "message": "On-disk function not in registry"
+    }
+  ]
+}

@@ -1,0 +1,653 @@
+{
+  "generatedAt": "2026-04-21T00:28:18.524Z",
+  "functions": [
+    {
+      "name": "admin-ai-workforce-run",
+      "authModel": "jwt",
+      "requiresUserContext": true,
+      "adminOnly": true,
+      "hasAuthMapEntry": true,
+      "consistent": true
+    },
+    {
+      "name": "admin-bff-gateway",
+      "authModel": "jwt",
+      "requiresUserContext": true,
+      "adminOnly": true,
+      "hasAuthMapEntry": true,
+      "consistent": true
+    },
+    {
+      "name": "admin-intelligence",
+      "authModel": "jwt",
+      "requiresUserContext": true,
+      "adminOnly": true,
+      "hasAuthMapEntry": true,
+      "consistent": true
+    },
+    {
+      "name": "admin-users",
+      "authModel": "jwt",
+      "requiresUserContext": true,
+      "adminOnly": true,
+      "hasAuthMapEntry": true,
+      "consistent": true
+    },
+    {
+      "name": "advisor-agent-loop",
+      "authModel": "jwt",
+      "requiresUserContext": true,
+      "adminOnly": false,
+      "hasAuthMapEntry": true,
+      "consistent": true
+    },
+    {
+      "name": "advisor-avatar-generate",
+      "authModel": "jwt",
+      "requiresUserContext": true,
+      "adminOnly": false,
+      "hasAuthMapEntry": true,
+      "consistent": true
+    },
+    {
+      "name": "advisor-conversation",
+      "authModel": "jwt",
+      "requiresUserContext": true,
+      "adminOnly": false,
+      "hasAuthMapEntry": true,
+      "consistent": true
+    },
+    {
+      "name": "advisor-deep-intelligence",
+      "authModel": "jwt",
+      "requiresUserContext": true,
+      "adminOnly": false,
+      "hasAuthMapEntry": true,
+      "consistent": true
+    },
+    {
+      "name": "advisor-knowledge-manage",
+      "authModel": "jwt",
+      "requiresUserContext": true,
+      "adminOnly": false,
+      "hasAuthMapEntry": true,
+      "consistent": true
+    },
+    {
+      "name": "advisor-weekly-report",
+      "authModel": "jwt",
+      "requiresUserContext": true,
+      "adminOnly": false,
+      "hasAuthMapEntry": true,
+      "consistent": true
+    },
+    {
+      "name": "agent-executor",
+      "authModel": "service-role",
+      "requiresUserContext": false,
+      "adminOnly": false,
+      "hasAuthMapEntry": true,
+      "consistent": true
+    },
+    {
+      "name": "agent-heartbeat",
+      "authModel": "service-role",
+      "requiresUserContext": false,
+      "adminOnly": false,
+      "hasAuthMapEntry": true,
+      "consistent": true
+    },
+    {
+      "name": "agent-intelligence",
+      "authModel": "service-role",
+      "requiresUserContext": false,
+      "adminOnly": false,
+      "hasAuthMapEntry": true,
+      "consistent": true
+    },
+    {
+      "name": "agent-scheduler",
+      "authModel": "service-role",
+      "requiresUserContext": false,
+      "adminOnly": false,
+      "hasAuthMapEntry": true,
+      "consistent": true
+    },
+    {
+      "name": "agent-signal",
+      "authModel": "service-role",
+      "requiresUserContext": false,
+      "adminOnly": false,
+      "hasAuthMapEntry": true,
+      "consistent": true
+    },
+    {
+      "name": "ai-gateway",
+      "authModel": "jwt",
+      "requiresUserContext": true,
+      "adminOnly": false,
+      "hasAuthMapEntry": true,
+      "consistent": true
+    },
+    {
+      "name": "ai-health",
+      "authModel": "anon",
+      "requiresUserContext": false,
+      "adminOnly": false,
+      "hasAuthMapEntry": true,
+      "consistent": true
+    },
+    {
+      "name": "check-ai-budget",
+      "authModel": "jwt",
+      "requiresUserContext": true,
+      "adminOnly": false,
+      "hasAuthMapEntry": true,
+      "consistent": true
+    },
+    {
+      "name": "ambient-os-operations",
+      "authModel": "service-role",
+      "requiresUserContext": false,
+      "adminOnly": false,
+      "hasAuthMapEntry": true,
+      "consistent": true
+    },
+    {
+      "name": "user-bff-gateway",
+      "authModel": "jwt",
+      "requiresUserContext": true,
+      "adminOnly": false,
+      "hasAuthMapEntry": true,
+      "consistent": true
+    },
+    {
+      "name": "intelligence-api",
+      "authModel": "jwt",
+      "requiresUserContext": true,
+      "adminOnly": false,
+      "hasAuthMapEntry": true,
+      "consistent": true
+    },
+    {
+      "name": "support-gateway",
+      "authModel": "jwt",
+      "requiresUserContext": true,
+      "adminOnly": false,
+      "hasAuthMapEntry": true,
+      "consistent": true
+    },
+    {
+      "name": "license-gateway",
+      "authModel": "jwt",
+      "requiresUserContext": true,
+      "adminOnly": false,
+      "hasAuthMapEntry": true,
+      "consistent": true
+    },
+    {
+      "name": "booking-manage",
+      "authModel": "jwt",
+      "requiresUserContext": true,
+      "adminOnly": false,
+      "hasAuthMapEntry": true,
+      "consistent": true
+    },
+    {
+      "name": "get-weather",
+      "authModel": "anon",
+      "requiresUserContext": false,
+      "adminOnly": false,
+      "hasAuthMapEntry": true,
+      "consistent": true
+    },
+    {
+      "name": "chat-advisor",
+      "authModel": "jwt",
+      "requiresUserContext": true,
+      "adminOnly": false,
+      "hasAuthMapEntry": true,
+      "consistent": true
+    },
+    {
+      "name": "personal-brain",
+      "authModel": "jwt",
+      "requiresUserContext": true,
+      "adminOnly": false,
+      "hasAuthMapEntry": true,
+      "consistent": true
+    },
+    {
+      "name": "tasks-workflow-api",
+      "authModel": "jwt",
+      "requiresUserContext": true,
+      "adminOnly": false,
+      "hasAuthMapEntry": true,
+      "consistent": true
+    },
+    {
+      "name": "communications-api",
+      "authModel": "jwt",
+      "requiresUserContext": true,
+      "adminOnly": false,
+      "hasAuthMapEntry": true,
+      "consistent": true
+    },
+    {
+      "name": "app-store-api",
+      "authModel": "jwt",
+      "requiresUserContext": true,
+      "adminOnly": false,
+      "hasAuthMapEntry": true,
+      "consistent": true
+    },
+    {
+      "name": "business-board-api",
+      "authModel": "jwt",
+      "requiresUserContext": true,
+      "adminOnly": false,
+      "hasAuthMapEntry": true,
+      "consistent": true
+    },
+    {
+      "name": "business-advisor-intelligence",
+      "authModel": "jwt",
+      "requiresUserContext": true,
+      "adminOnly": false,
+      "hasAuthMapEntry": true,
+      "consistent": true
+    },
+    {
+      "name": "brain-core",
+      "authModel": "jwt",
+      "requiresUserContext": true,
+      "adminOnly": false,
+      "hasAuthMapEntry": true,
+      "consistent": true
+    },
+    {
+      "name": "cashflow-calculate",
+      "authModel": "jwt",
+      "requiresUserContext": true,
+      "adminOnly": false,
+      "hasAuthMapEntry": true,
+      "consistent": true
+    },
+    {
+      "name": "cost-alert",
+      "authModel": "service-role",
+      "requiresUserContext": false,
+      "adminOnly": false,
+      "hasAuthMapEntry": true,
+      "consistent": true
+    },
+    {
+      "name": "invoice-generate",
+      "authModel": "jwt",
+      "requiresUserContext": true,
+      "adminOnly": false,
+      "hasAuthMapEntry": true,
+      "consistent": true
+    },
+    {
+      "name": "msa-operations",
+      "authModel": "jwt",
+      "requiresUserContext": true,
+      "adminOnly": false,
+      "hasAuthMapEntry": true,
+      "consistent": true
+    },
+    {
+      "name": "payment-process",
+      "authModel": "jwt",
+      "requiresUserContext": true,
+      "adminOnly": false,
+      "hasAuthMapEntry": true,
+      "consistent": true
+    },
+    {
+      "name": "payment-kill-switch",
+      "authModel": "jwt",
+      "requiresUserContext": true,
+      "adminOnly": true,
+      "hasAuthMapEntry": true,
+      "consistent": true
+    },
+    {
+      "name": "revenue-caller",
+      "authModel": "jwt",
+      "requiresUserContext": true,
+      "adminOnly": false,
+      "hasAuthMapEntry": true,
+      "consistent": true
+    },
+    {
+      "name": "tax-estimate",
+      "authModel": "jwt",
+      "requiresUserContext": true,
+      "adminOnly": false,
+      "hasAuthMapEntry": true,
+      "consistent": true
+    },
+    {
+      "name": "investment-portfolio-api",
+      "authModel": "jwt",
+      "requiresUserContext": true,
+      "adminOnly": false,
+      "hasAuthMapEntry": true,
+      "consistent": true
+    },
+    {
+      "name": "cloud-admin-api",
+      "authModel": "jwt",
+      "requiresUserContext": true,
+      "adminOnly": true,
+      "hasAuthMapEntry": true,
+      "consistent": true
+    },
+    {
+      "name": "cloud-device-api",
+      "authModel": "jwt",
+      "requiresUserContext": true,
+      "adminOnly": false,
+      "hasAuthMapEntry": true,
+      "consistent": true
+    },
+    {
+      "name": "cloud-lifecycle-api",
+      "authModel": "jwt",
+      "requiresUserContext": true,
+      "adminOnly": true,
+      "hasAuthMapEntry": true,
+      "consistent": true
+    },
+    {
+      "name": "cloud-storage-api",
+      "authModel": "jwt",
+      "requiresUserContext": true,
+      "adminOnly": false,
+      "hasAuthMapEntry": true,
+      "consistent": true
+    },
+    {
+      "name": "cloud-sync-api",
+      "authModel": "jwt",
+      "requiresUserContext": true,
+      "adminOnly": false,
+      "hasAuthMapEntry": true,
+      "consistent": true
+    },
+    {
+      "name": "cloud-tenant-api",
+      "authModel": "jwt",
+      "requiresUserContext": true,
+      "adminOnly": true,
+      "hasAuthMapEntry": true,
+      "consistent": true
+    },
+    {
+      "name": "cloud-worker-api",
+      "authModel": "service-role",
+      "requiresUserContext": false,
+      "adminOnly": false,
+      "hasAuthMapEntry": true,
+      "consistent": true
+    },
+    {
+      "name": "connector-batch",
+      "authModel": "jwt",
+      "requiresUserContext": true,
+      "adminOnly": false,
+      "hasAuthMapEntry": true,
+      "consistent": true
+    },
+    {
+      "name": "connector-discover",
+      "authModel": "jwt",
+      "requiresUserContext": true,
+      "adminOnly": false,
+      "hasAuthMapEntry": true,
+      "consistent": true
+    },
+    {
+      "name": "connector-health",
+      "authModel": "jwt",
+      "requiresUserContext": true,
+      "adminOnly": false,
+      "hasAuthMapEntry": true,
+      "consistent": true
+    },
+    {
+      "name": "connector-oauth",
+      "authModel": "jwt",
+      "requiresUserContext": true,
+      "adminOnly": false,
+      "hasAuthMapEntry": true,
+      "consistent": true
+    },
+    {
+      "name": "connector-operations",
+      "authModel": "jwt",
+      "requiresUserContext": true,
+      "adminOnly": false,
+      "hasAuthMapEntry": true,
+      "consistent": true
+    },
+    {
+      "name": "connector-proxy",
+      "authModel": "jwt",
+      "requiresUserContext": true,
+      "adminOnly": false,
+      "hasAuthMapEntry": true,
+      "consistent": true
+    },
+    {
+      "name": "connector-sync",
+      "authModel": "jwt",
+      "requiresUserContext": true,
+      "adminOnly": false,
+      "hasAuthMapEntry": true,
+      "consistent": true
+    },
+    {
+      "name": "connector-transform",
+      "authModel": "jwt",
+      "requiresUserContext": true,
+      "adminOnly": false,
+      "hasAuthMapEntry": true,
+      "consistent": true
+    },
+    {
+      "name": "crm-sync",
+      "authModel": "jwt",
+      "requiresUserContext": true,
+      "adminOnly": false,
+      "hasAuthMapEntry": true,
+      "consistent": true
+    },
+    {
+      "name": "provider-family-operations",
+      "authModel": "jwt",
+      "requiresUserContext": true,
+      "adminOnly": false,
+      "hasAuthMapEntry": true,
+      "consistent": true
+    },
+    {
+      "name": "os-command",
+      "authModel": "jwt",
+      "requiresUserContext": true,
+      "adminOnly": true,
+      "hasAuthMapEntry": true,
+      "consistent": true
+    },
+    {
+      "name": "os-status",
+      "authModel": "anon",
+      "requiresUserContext": false,
+      "adminOnly": false,
+      "hasAuthMapEntry": true,
+      "consistent": true
+    },
+    {
+      "name": "os-agent-channel",
+      "authModel": "service-role",
+      "requiresUserContext": false,
+      "adminOnly": false,
+      "hasAuthMapEntry": true,
+      "consistent": true
+    },
+    {
+      "name": "runtime-probes",
+      "authModel": "anon",
+      "requiresUserContext": false,
+      "adminOnly": false,
+      "hasAuthMapEntry": true,
+      "consistent": true
+    },
+    {
+      "name": "db-truth-introspect",
+      "authModel": "jwt",
+      "requiresUserContext": true,
+      "adminOnly": true,
+      "hasAuthMapEntry": true,
+      "consistent": true
+    },
+    {
+      "name": "device-telemetry",
+      "authModel": "jwt",
+      "requiresUserContext": true,
+      "adminOnly": false,
+      "hasAuthMapEntry": true,
+      "consistent": true
+    },
+    {
+      "name": "system-updates",
+      "authModel": "service-role",
+      "requiresUserContext": false,
+      "adminOnly": false,
+      "hasAuthMapEntry": true,
+      "consistent": true
+    },
+    {
+      "name": "self-healing",
+      "authModel": "service-role",
+      "requiresUserContext": false,
+      "adminOnly": false,
+      "hasAuthMapEntry": true,
+      "consistent": true
+    },
+    {
+      "name": "ecosystem-operations",
+      "authModel": "jwt",
+      "requiresUserContext": true,
+      "adminOnly": false,
+      "hasAuthMapEntry": true,
+      "consistent": true
+    },
+    {
+      "name": "event-processor",
+      "authModel": "service-role",
+      "requiresUserContext": false,
+      "adminOnly": false,
+      "hasAuthMapEntry": true,
+      "consistent": true
+    },
+    {
+      "name": "scheduler-dispatch",
+      "authModel": "service-role",
+      "requiresUserContext": false,
+      "adminOnly": false,
+      "hasAuthMapEntry": true,
+      "consistent": true
+    },
+    {
+      "name": "digital-twin-engine",
+      "authModel": "jwt",
+      "requiresUserContext": true,
+      "adminOnly": false,
+      "hasAuthMapEntry": true,
+      "consistent": true
+    },
+    {
+      "name": "simulation-engine-api",
+      "authModel": "jwt",
+      "requiresUserContext": true,
+      "adminOnly": false,
+      "hasAuthMapEntry": true,
+      "consistent": true
+    },
+    {
+      "name": "file-ingestion",
+      "authModel": "jwt",
+      "requiresUserContext": true,
+      "adminOnly": false,
+      "hasAuthMapEntry": true,
+      "consistent": true
+    },
+    {
+      "name": "seed-user-data",
+      "authModel": "jwt",
+      "requiresUserContext": true,
+      "adminOnly": true,
+      "hasAuthMapEntry": true,
+      "consistent": true
+    },
+    {
+      "name": "health-check",
+      "authModel": "anon",
+      "requiresUserContext": false,
+      "adminOnly": false,
+      "hasAuthMapEntry": true,
+      "consistent": true
+    },
+    {
+      "name": "push-dispatch",
+      "authModel": "service-role",
+      "requiresUserContext": false,
+      "adminOnly": false,
+      "hasAuthMapEntry": true,
+      "consistent": true
+    },
+    {
+      "name": "push-track",
+      "authModel": "jwt",
+      "requiresUserContext": true,
+      "adminOnly": false,
+      "hasAuthMapEntry": true,
+      "consistent": true
+    },
+    {
+      "name": "vapid-public-key",
+      "authModel": "anon",
+      "requiresUserContext": false,
+      "adminOnly": false,
+      "hasAuthMapEntry": true,
+      "consistent": true
+    },
+    {
+      "name": "gdpr-delete",
+      "authModel": "jwt",
+      "requiresUserContext": true,
+      "adminOnly": false,
+      "hasAuthMapEntry": true,
+      "consistent": true
+    },
+    {
+      "name": "gdpr-export",
+      "authModel": "jwt",
+      "requiresUserContext": true,
+      "adminOnly": false,
+      "hasAuthMapEntry": true,
+      "consistent": true
+    },
+    {
+      "name": "verification-recorder",
+      "authModel": "jwt",
+      "requiresUserContext": true,
+      "adminOnly": false,
+      "hasAuthMapEntry": true,
+      "consistent": true
+    }
+  ]
+}

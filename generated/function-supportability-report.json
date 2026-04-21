@@ -1,0 +1,572 @@
+{
+  "generatedAt": "2026-04-21T00:28:18.524Z",
+  "functions": [
+    {
+      "name": "admin-ai-workforce-run",
+      "hasSupportDiagnostics": true,
+      "runbookRef": "RB-002-ADMIN",
+      "onCall": "pd:admin-governance-oncall",
+      "blastRadius": null
+    },
+    {
+      "name": "admin-bff-gateway",
+      "hasSupportDiagnostics": true,
+      "runbookRef": "RB-002-ADMIN",
+      "onCall": "pd:admin-governance-oncall",
+      "blastRadius": "domain"
+    },
+    {
+      "name": "admin-intelligence",
+      "hasSupportDiagnostics": false,
+      "runbookRef": "RB-002-ADMIN",
+      "onCall": "pd:admin-governance-oncall",
+      "blastRadius": null
+    },
+    {
+      "name": "admin-users",
+      "hasSupportDiagnostics": false,
+      "runbookRef": "RB-002-ADMIN",
+      "onCall": "pd:admin-governance-oncall",
+      "blastRadius": null
+    },
+    {
+      "name": "advisor-agent-loop",
+      "hasSupportDiagnostics": true,
+      "runbookRef": "RB-003-ADVISOR",
+      "onCall": "pd:advisor-oncall",
+      "blastRadius": null
+    },
+    {
+      "name": "advisor-avatar-generate",
+      "hasSupportDiagnostics": false,
+      "runbookRef": "RB-003-ADVISOR",
+      "onCall": "pd:advisor-oncall",
+      "blastRadius": null
+    },
+    {
+      "name": "advisor-conversation",
+      "hasSupportDiagnostics": true,
+      "runbookRef": "RB-003-ADVISOR",
+      "onCall": "pd:advisor-oncall",
+      "blastRadius": "feature"
+    },
+    {
+      "name": "advisor-deep-intelligence",
+      "hasSupportDiagnostics": false,
+      "runbookRef": "RB-003-ADVISOR",
+      "onCall": "pd:advisor-oncall",
+      "blastRadius": null
+    },
+    {
+      "name": "advisor-knowledge-manage",
+      "hasSupportDiagnostics": false,
+      "runbookRef": "RB-003-ADVISOR",
+      "onCall": "pd:advisor-oncall",
+      "blastRadius": null
+    },
+    {
+      "name": "advisor-weekly-report",
+      "hasSupportDiagnostics": false,
+      "runbookRef": "RB-003-ADVISOR",
+      "onCall": "pd:advisor-oncall",
+      "blastRadius": null
+    },
+    {
+      "name": "agent-executor",
+      "hasSupportDiagnostics": true,
+      "runbookRef": "RB-004-AGENT-RUNTIME",
+      "onCall": "pd:agent-runtime-oncall",
+      "blastRadius": null
+    },
+    {
+      "name": "agent-heartbeat",
+      "hasSupportDiagnostics": false,
+      "runbookRef": "RB-004-AGENT-RUNTIME",
+      "onCall": "pd:agent-runtime-oncall",
+      "blastRadius": null
+    },
+    {
+      "name": "agent-intelligence",
+      "hasSupportDiagnostics": false,
+      "runbookRef": "RB-004-AGENT-RUNTIME",
+      "onCall": "pd:agent-runtime-oncall",
+      "blastRadius": null
+    },
+    {
+      "name": "agent-scheduler",
+      "hasSupportDiagnostics": false,
+      "runbookRef": "RB-004-AGENT-RUNTIME",
+      "onCall": "pd:agent-runtime-oncall",
+      "blastRadius": null
+    },
+    {
+      "name": "agent-signal",
+      "hasSupportDiagnostics": false,
+      "runbookRef": "RB-004-AGENT-RUNTIME",
+      "onCall": "pd:agent-runtime-oncall",
+      "blastRadius": null
+    },
+    {
+      "name": "ai-gateway",
+      "hasSupportDiagnostics": true,
+      "runbookRef": "RB-006-AI-ENGINEERING",
+      "onCall": "pd:ai-engineering-oncall",
+      "blastRadius": "system-wide"
+    },
+    {
+      "name": "ai-health",
+      "hasSupportDiagnostics": false,
+      "runbookRef": "RB-006-AI-ENGINEERING",
+      "onCall": "pd:ai-engineering-oncall",
+      "blastRadius": null
+    },
+    {
+      "name": "check-ai-budget",
+      "hasSupportDiagnostics": false,
+      "runbookRef": "RB-006-AI-ENGINEERING",
+      "onCall": "pd:ai-engineering-oncall",
+      "blastRadius": null
+    },
+    {
+      "name": "ambient-os-operations",
+      "hasSupportDiagnostics": false,
+      "runbookRef": "RB-010-OS-KERNEL",
+      "onCall": "pd:os-kernel-oncall",
+      "blastRadius": null
+    },
+    {
+      "name": "user-bff-gateway",
+      "hasSupportDiagnostics": true,
+      "runbookRef": "RB-012-USER-EXPERIENCE",
+      "onCall": "pd:user-experience-oncall",
+      "blastRadius": "domain"
+    },
+    {
+      "name": "intelligence-api",
+      "hasSupportDiagnostics": true,
+      "runbookRef": "RB-006-AI-ENGINEERING",
+      "onCall": "pd:ai-engineering-oncall",
+      "blastRadius": null
+    },
+    {
+      "name": "support-gateway",
+      "hasSupportDiagnostics": false,
+      "runbookRef": "RB-012-USER-EXPERIENCE",
+      "onCall": "pd:user-experience-oncall",
+      "blastRadius": null
+    },
+    {
+      "name": "license-gateway",
+      "hasSupportDiagnostics": false,
+      "runbookRef": "RB-012-USER-EXPERIENCE",
+      "onCall": "pd:user-experience-oncall",
+      "blastRadius": null
+    },
+    {
+      "name": "booking-manage",
+      "hasSupportDiagnostics": false,
+      "runbookRef": "RB-012-USER-EXPERIENCE",
+      "onCall": "pd:user-experience-oncall",
+      "blastRadius": null
+    },
+    {
+      "name": "get-weather",
+      "hasSupportDiagnostics": false,
+      "runbookRef": "RB-012-USER-EXPERIENCE",
+      "onCall": "pd:user-experience-oncall",
+      "blastRadius": "isolated"
+    },
+    {
+      "name": "chat-advisor",
+      "hasSupportDiagnostics": false,
+      "runbookRef": "RB-003-ADVISOR",
+      "onCall": "pd:advisor-oncall",
+      "blastRadius": null
+    },
+    {
+      "name": "personal-brain",
+      "hasSupportDiagnostics": false,
+      "runbookRef": "RB-006-AI-ENGINEERING",
+      "onCall": "pd:ai-engineering-oncall",
+      "blastRadius": null
+    },
+    {
+      "name": "tasks-workflow-api",
+      "hasSupportDiagnostics": false,
+      "runbookRef": "RB-012-USER-EXPERIENCE",
+      "onCall": "pd:user-experience-oncall",
+      "blastRadius": null
+    },
+    {
+      "name": "communications-api",
+      "hasSupportDiagnostics": false,
+      "runbookRef": "RB-012-USER-EXPERIENCE",
+      "onCall": "pd:user-experience-oncall",
+      "blastRadius": null
+    },
+    {
+      "name": "app-store-api",
+      "hasSupportDiagnostics": false,
+      "runbookRef": "RB-012-USER-EXPERIENCE",
+      "onCall": "pd:user-experience-oncall",
+      "blastRadius": null
+    },
+    {
+      "name": "business-board-api",
+      "hasSupportDiagnostics": false,
+      "runbookRef": "RB-003-ADVISOR",
+      "onCall": "pd:advisor-oncall",
+      "blastRadius": null
+    },
+    {
+      "name": "business-advisor-intelligence",
+      "hasSupportDiagnostics": false,
+      "runbookRef": "RB-003-ADVISOR",
+      "onCall": "pd:advisor-oncall",
+      "blastRadius": null
+    },
+    {
+      "name": "brain-core",
+      "hasSupportDiagnostics": true,
+      "runbookRef": "RB-006-AI-ENGINEERING",
+      "onCall": "pd:ai-engineering-oncall",
+      "blastRadius": "domain"
+    },
+    {
+      "name": "cashflow-calculate",
+      "hasSupportDiagnostics": false,
+      "runbookRef": "RB-005-AUTH",
+      "onCall": "pd:finance-engine-oncall",
+      "blastRadius": "feature"
+    },
+    {
+      "name": "cost-alert",
+      "hasSupportDiagnostics": false,
+      "runbookRef": "RB-005-AUTH",
+      "onCall": "pd:finance-engine-oncall",
+      "blastRadius": "feature"
+    },
+    {
+      "name": "invoice-generate",
+      "hasSupportDiagnostics": false,
+      "runbookRef": "RB-005-AUTH",
+      "onCall": "pd:finance-engine-oncall",
+      "blastRadius": "feature"
+    },
+    {
+      "name": "msa-operations",
+      "hasSupportDiagnostics": false,
+      "runbookRef": "RB-005-AUTH",
+      "onCall": "pd:finance-engine-oncall",
+      "blastRadius": null
+    },
+    {
+      "name": "payment-process",
+      "hasSupportDiagnostics": true,
+      "runbookRef": "RB-005-AUTH",
+      "onCall": "pd:finance-engine-oncall",
+      "blastRadius": "feature"
+    },
+    {
+      "name": "payment-kill-switch",
+      "hasSupportDiagnostics": false,
+      "runbookRef": "RB-005-AUTH",
+      "onCall": "pd:finance-engine-oncall",
+      "blastRadius": null
+    },
+    {
+      "name": "revenue-caller",
+      "hasSupportDiagnostics": false,
+      "runbookRef": "RB-005-AUTH",
+      "onCall": "pd:finance-engine-oncall",
+      "blastRadius": null
+    },
+    {
+      "name": "tax-estimate",
+      "hasSupportDiagnostics": false,
+      "runbookRef": "RB-005-AUTH",
+      "onCall": "pd:finance-engine-oncall",
+      "blastRadius": null
+    },
+    {
+      "name": "investment-portfolio-api",
+      "hasSupportDiagnostics": false,
+      "runbookRef": "RB-005-AUTH",
+      "onCall": "pd:finance-engine-oncall",
+      "blastRadius": null
+    },
+    {
+      "name": "cloud-admin-api",
+      "hasSupportDiagnostics": false,
+      "runbookRef": "RB-007-CLOUD-INFRA",
+      "onCall": "pd:cloud-infra-oncall",
+      "blastRadius": null
+    },
+    {
+      "name": "cloud-device-api",
+      "hasSupportDiagnostics": false,
+      "runbookRef": "RB-007-CLOUD-INFRA",
+      "onCall": "pd:cloud-infra-oncall",
+      "blastRadius": null
+    },
+    {
+      "name": "cloud-lifecycle-api",
+      "hasSupportDiagnostics": false,
+      "runbookRef": "RB-007-CLOUD-INFRA",
+      "onCall": "pd:cloud-infra-oncall",
+      "blastRadius": null
+    },
+    {
+      "name": "cloud-storage-api",
+      "hasSupportDiagnostics": false,
+      "runbookRef": "RB-007-CLOUD-INFRA",
+      "onCall": "pd:cloud-infra-oncall",
+      "blastRadius": null
+    },
+    {
+      "name": "cloud-sync-api",
+      "hasSupportDiagnostics": false,
+      "runbookRef": "RB-007-CLOUD-INFRA",
+      "onCall": "pd:cloud-infra-oncall",
+      "blastRadius": null
+    },
+    {
+      "name": "cloud-tenant-api",
+      "hasSupportDiagnostics": false,
+      "runbookRef": "RB-007-CLOUD-INFRA",
+      "onCall": "pd:cloud-infra-oncall",
+      "blastRadius": null
+    },
+    {
+      "name": "cloud-worker-api",
+      "hasSupportDiagnostics": false,
+      "runbookRef": "RB-007-CLOUD-INFRA",
+      "onCall": "pd:cloud-infra-oncall",
+      "blastRadius": null
+    },
+    {
+      "name": "connector-batch",
+      "hasSupportDiagnostics": false,
+      "runbookRef": "RB-008-CONNECTORS",
+      "onCall": "pd:connectors-oncall",
+      "blastRadius": null
+    },
+    {
+      "name": "connector-discover",
+      "hasSupportDiagnostics": false,
+      "runbookRef": "RB-008-CONNECTORS",
+      "onCall": "pd:connectors-oncall",
+      "blastRadius": null
+    },
+    {
+      "name": "connector-health",
+      "hasSupportDiagnostics": false,
+      "runbookRef": "RB-008-CONNECTORS",
+      "onCall": "pd:connectors-oncall",
+      "blastRadius": null
+    },
+    {
+      "name": "connector-oauth",
+      "hasSupportDiagnostics": true,
+      "runbookRef": "RB-008-CONNECTORS",
+      "onCall": "pd:connectors-oncall",
+      "blastRadius": "feature"
+    },
+    {
+      "name": "connector-operations",
+      "hasSupportDiagnostics": false,
+      "runbookRef": "RB-008-CONNECTORS",
+      "onCall": "pd:connectors-oncall",
+      "blastRadius": null
+    },
+    {
+      "name": "connector-proxy",
+      "hasSupportDiagnostics": false,
+      "runbookRef": "RB-008-CONNECTORS",
+      "onCall": "pd:connectors-oncall",
+      "blastRadius": null
+    },
+    {
+      "name": "connector-sync",
+      "hasSupportDiagnostics": true,
+      "runbookRef": "RB-008-CONNECTORS",
+      "onCall": "pd:connectors-oncall",
+      "blastRadius": null
+    },
+    {
+      "name": "connector-transform",
+      "hasSupportDiagnostics": false,
+      "runbookRef": "RB-008-CONNECTORS",
+      "onCall": "pd:connectors-oncall",
+      "blastRadius": null
+    },
+    {
+      "name": "crm-sync",
+      "hasSupportDiagnostics": false,
+      "runbookRef": "RB-008-CONNECTORS",
+      "onCall": "pd:connectors-oncall",
+      "blastRadius": null
+    },
+    {
+      "name": "provider-family-operations",
+      "hasSupportDiagnostics": false,
+      "runbookRef": "RB-008-CONNECTORS",
+      "onCall": "pd:connectors-oncall",
+      "blastRadius": null
+    },
+    {
+      "name": "os-command",
+      "hasSupportDiagnostics": false,
+      "runbookRef": "RB-010-OS-KERNEL",
+      "onCall": "pd:os-kernel-oncall",
+      "blastRadius": null
+    },
+    {
+      "name": "os-status",
+      "hasSupportDiagnostics": false,
+      "runbookRef": "RB-010-OS-KERNEL",
+      "onCall": "pd:os-kernel-oncall",
+      "blastRadius": null
+    },
+    {
+      "name": "os-agent-channel",
+      "hasSupportDiagnostics": false,
+      "runbookRef": "RB-010-OS-KERNEL",
+      "onCall": "pd:os-kernel-oncall",
+      "blastRadius": null
+    },
+    {
+      "name": "runtime-probes",
+      "hasSupportDiagnostics": false,
+      "runbookRef": "RB-010-OS-KERNEL",
+      "onCall": "pd:os-kernel-oncall",
+      "blastRadius": "isolated"
+    },
+    {
+      "name": "db-truth-introspect",
+      "hasSupportDiagnostics": false,
+      "runbookRef": "RB-001-PLATFORM-CORE",
+      "onCall": "pd:platform-core-oncall",
+      "blastRadius": null
+    },
+    {
+      "name": "device-telemetry",
+      "hasSupportDiagnostics": false,
+      "runbookRef": "RB-007-CLOUD-INFRA",
+      "onCall": "pd:cloud-infra-oncall",
+      "blastRadius": null
+    },
+    {
+      "name": "system-updates",
+      "hasSupportDiagnostics": false,
+      "runbookRef": "RB-010-OS-KERNEL",
+      "onCall": "pd:os-kernel-oncall",
+      "blastRadius": null
+    },
+    {
+      "name": "self-healing",
+      "hasSupportDiagnostics": true,
+      "runbookRef": "RB-010-OS-KERNEL",
+      "onCall": "pd:os-kernel-oncall",
+      "blastRadius": "system-wide"
+    },
+    {
+      "name": "ecosystem-operations",
+      "hasSupportDiagnostics": false,
+      "runbookRef": "RB-001-PLATFORM-CORE",
+      "onCall": "pd:platform-core-oncall",
+      "blastRadius": null
+    },
+    {
+      "name": "event-processor",
+      "hasSupportDiagnostics": true,
+      "runbookRef": "RB-001-PLATFORM-CORE",
+      "onCall": "pd:platform-core-oncall",
+      "blastRadius": "domain"
+    },
+    {
+      "name": "scheduler-dispatch",
+      "hasSupportDiagnostics": true,
+      "runbookRef": "RB-001-PLATFORM-CORE",
+      "onCall": "pd:platform-core-oncall",
+      "blastRadius": "domain"
+    },
+    {
+      "name": "digital-twin-engine",
+      "hasSupportDiagnostics": false,
+      "runbookRef": "RB-006-AI-ENGINEERING",
+      "onCall": "pd:ai-engineering-oncall",
+      "blastRadius": null
+    },
+    {
+      "name": "simulation-engine-api",
+      "hasSupportDiagnostics": false,
+      "runbookRef": "RB-006-AI-ENGINEERING",
+      "onCall": "pd:ai-engineering-oncall",
+      "blastRadius": null
+    },
+    {
+      "name": "file-ingestion",
+      "hasSupportDiagnostics": false,
+      "runbookRef": "RB-001-PLATFORM-CORE",
+      "onCall": "pd:platform-core-oncall",
+      "blastRadius": null
+    },
+    {
+      "name": "seed-user-data",
+      "hasSupportDiagnostics": false,
+      "runbookRef": "RB-001-PLATFORM-CORE",
+      "onCall": "pd:platform-core-oncall",
+      "blastRadius": "isolated"
+    },
+    {
+      "name": "health-check",
+      "hasSupportDiagnostics": false,
+      "runbookRef": "RB-001-PLATFORM-CORE",
+      "onCall": "pd:platform-core-oncall",
+      "blastRadius": null
+    },
+    {
+      "name": "push-dispatch",
+      "hasSupportDiagnostics": true,
+      "runbookRef": "RB-009-NOTIFICATIONS",
+      "onCall": "pd:notifications-oncall",
+      "blastRadius": "feature"
+    },
+    {
+      "name": "push-track",
+      "hasSupportDiagnostics": false,
+      "runbookRef": "RB-009-NOTIFICATIONS",
+      "onCall": "pd:notifications-oncall",
+      "blastRadius": null
+    },
+    {
+      "name": "vapid-public-key",
+      "hasSupportDiagnostics": false,
+      "runbookRef": "RB-009-NOTIFICATIONS",
+      "onCall": "pd:notifications-oncall",
+      "blastRadius": "isolated"
+    },
+    {
+      "name": "gdpr-delete",
+      "hasSupportDiagnostics": true,
+      "runbookRef": "RB-011-SECURITY",
+      "onCall": "pd:security-oncall",
+      "blastRadius": "feature"
+    },
+    {
+      "name": "gdpr-export",
+      "hasSupportDiagnostics": true,
+      "runbookRef": "RB-011-SECURITY",
+      "onCall": "pd:security-oncall",
+      "blastRadius": "feature"
+    },
+    {
+      "name": "verification-recorder",
+      "hasSupportDiagnostics": true,
+      "runbookRef": "RB-011-SECURITY",
+      "onCall": "pd:security-oncall",
+      "blastRadius": "feature"
+    }
+  ]
+}

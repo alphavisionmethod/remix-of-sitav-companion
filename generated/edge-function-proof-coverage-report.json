@@ -1,0 +1,192 @@
+{
+  "generatedAt": "2026-04-21T00:29:21.564Z",
+  "gate": "edge-function-proof-coverage",
+  "ok": true,
+  "criticalFunctions": 36,
+  "covered": 0,
+  "coveragePercent": 0,
+  "errorCount": 0,
+  "warningCount": 36,
+  "issues": [
+    {
+      "fn": "admin-ai-workforce-run",
+      "severity": "warning",
+      "message": "Missing proof: receipt/audit-log, kill-switch-ref"
+    },
+    {
+      "fn": "admin-users",
+      "severity": "warning",
+      "message": "Missing proof: receipt/audit-log, replay-entry, kill-switch-ref"
+    },
+    {
+      "fn": "advisor-agent-loop",
+      "severity": "warning",
+      "message": "Missing proof: receipt/audit-log, kill-switch-ref"
+    },
+    {
+      "fn": "advisor-deep-intelligence",
+      "severity": "warning",
+      "message": "Missing proof: receipt/audit-log, kill-switch-ref"
+    },
+    {
+      "fn": "agent-executor",
+      "severity": "warning",
+      "message": "Missing proof: receipt/audit-log"
+    },
+    {
+      "fn": "agent-scheduler",
+      "severity": "warning",
+      "message": "Missing proof: receipt/audit-log, kill-switch-ref"
+    },
+    {
+      "fn": "agent-signal",
+      "severity": "warning",
+      "message": "Missing proof: receipt/audit-log, kill-switch-ref"
+    },
+    {
+      "fn": "ambient-os-operations",
+      "severity": "warning",
+      "message": "Missing proof: receipt/audit-log, replay-entry, kill-switch-ref"
+    },
+    {
+      "fn": "booking-manage",
+      "severity": "warning",
+      "message": "Missing proof: receipt/audit-log, replay-entry, kill-switch-ref"
+    },
+    {
+      "fn": "tasks-workflow-api",
+      "severity": "warning",
+      "message": "Missing proof: receipt/audit-log, replay-entry, kill-switch-ref"
+    },
+    {
+      "fn": "communications-api",
+      "severity": "warning",
+      "message": "Missing proof: receipt/audit-log, replay-entry, kill-switch-ref"
+    },
+    {
+      "fn": "business-board-api",
+      "severity": "warning",
+      "message": "Missing proof: receipt/audit-log, replay-entry, kill-switch-ref"
+    },
+    {
+      "fn": "brain-core",
+      "severity": "warning",
+      "message": "Missing proof: receipt/audit-log, kill-switch-ref"
+    },
+    {
+      "fn": "payment-process",
+      "severity": "warning",
+      "message": "Missing proof: receipt/audit-log"
+    },
+    {
+      "fn": "payment-kill-switch",
+      "severity": "warning",
+      "message": "Missing proof: receipt/audit-log, replay-entry"
+    },
+    {
+      "fn": "cloud-admin-api",
+      "severity": "warning",
+      "message": "Missing proof: receipt/audit-log, replay-entry, kill-switch-ref"
+    },
+    {
+      "fn": "cloud-device-api",
+      "severity": "warning",
+      "message": "Missing proof: receipt/audit-log, replay-entry, kill-switch-ref"
+    },
+    {
+      "fn": "cloud-lifecycle-api",
+      "severity": "warning",
+      "message": "Missing proof: receipt/audit-log, replay-entry, kill-switch-ref"
+    },
+    {
+      "fn": "cloud-sync-api",
+      "severity": "warning",
+      "message": "Missing proof: receipt/audit-log, replay-entry, kill-switch-ref"
+    },
+    {
+      "fn": "cloud-tenant-api",
+      "severity": "warning",
+      "message": "Missing proof: receipt/audit-log, replay-entry, kill-switch-ref"
+    },
+    {
+      "fn": "cloud-worker-api",
+      "severity": "warning",
+      "message": "Missing proof: receipt/audit-log, replay-entry, kill-switch-ref"
+    },
+    {
+      "fn": "connector-batch",
+      "severity": "warning",
+      "message": "Missing proof: receipt/audit-log, kill-switch-ref"
+    },
+    {
+      "fn": "connector-oauth",
+      "severity": "warning",
+      "message": "Missing proof: receipt/audit-log"
+    },
+    {
+      "fn": "connector-operations",
+      "severity": "warning",
+      "message": "Missing proof: receipt/audit-log, kill-switch-ref"
+    },
+    {
+      "fn": "connector-sync",
+      "severity": "warning",
+      "message": "Missing proof: receipt/audit-log, kill-switch-ref"
+    },
+    {
+      "fn": "crm-sync",
+      "severity": "warning",
+      "message": "Missing proof: receipt/audit-log, kill-switch-ref"
+    },
+    {
+      "fn": "os-command",
+      "severity": "warning",
+      "message": "Missing proof: receipt/audit-log, kill-switch-ref"
+    },
+    {
+      "fn": "self-healing",
+      "severity": "warning",
+      "message": "Missing proof: receipt/audit-log, kill-switch-ref"
+    },
+    {
+      "fn": "ecosystem-operations",
+      "severity": "warning",
+      "message": "Missing proof: receipt/audit-log, kill-switch-ref"
+    },
+    {
+      "fn": "event-processor",
+      "severity": "warning",
+      "message": "Missing proof: receipt/audit-log, kill-switch-ref"
+    },
+    {
+      "fn": "scheduler-dispatch",
+      "severity": "warning",
+      "message": "Missing proof: receipt/audit-log, kill-switch-ref"
+    },
+    {
+      "fn": "digital-twin-engine",
+      "severity": "warning",
+      "message": "Missing proof: receipt/audit-log, kill-switch-ref"
+    },
+    {
+      "fn": "simulation-engine-api",
+      "severity": "warning",
+      "message": "Missing proof: receipt/audit-log, kill-switch-ref"
+    },
+    {
+      "fn": "file-ingestion",
+      "severity": "warning",
+      "message": "Missing proof: receipt/audit-log, kill-switch-ref"
+    },
+    {
+      "fn": "seed-user-data",
+      "severity": "warning",
+      "message": "Missing proof: receipt/audit-log, replay-entry, kill-switch-ref"
+    },
+    {
+      "fn": "gdpr-delete",
+      "severity": "warning",
+      "message": "Missing proof: receipt/audit-log, kill-switch-ref"
+    }
+  ]
+}
