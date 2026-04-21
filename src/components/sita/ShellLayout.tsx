@@ -52,12 +52,15 @@ import { ShortcutsDialog } from "./shell/ShortcutsDialog";
 import { LockScreenOverlay } from "./shell/LockScreenOverlay";
 import { useGlobalShortcuts } from "@/hooks/useGlobalShortcuts";
 import { initZoomFromStorage } from "@/lib/system-menu/menu-actions";
+import { useRoutePerformance } from "@/hooks/useRoutePerformance";
 
 const SystemMenuBarLazy = lazy(() => import("./shell/SystemMenuBar").then(m => ({ default: m.SystemMenuBar })));
 
 export const ShellLayout = ({ children }: { children: ReactNode }) => {
   // Runtime mode enforcement — tags <body>, window globals, analytics
   useDemoModeRuntimeEnforcement();
+  // Performance measurement — tracks cold start + route navigation latency
+  useRoutePerformance();
   const [chatOpen, setChatOpen] = useState(false);
   const [notifOpen, setNotifOpen] = useState(false);
   const [timelineOpen, setTimelineOpen] = useState(false);
