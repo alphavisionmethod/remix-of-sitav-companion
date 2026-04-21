@@ -74,6 +74,8 @@ const REQUIRED_GATES = [
   // Boardroom Layer 7 — Follow-through closure (BLOCK gate)
   "boardroom-layer7-closure",
   // Claim-Safety Hardening — 9 BLOCK gates (Phase 5)
+  // Accessibility compliance — BLOCK gate
+  "accessibility-compliance",
   "os-claim-safety",
   "track-b-language-boundaries",
   "no-prohibited-native-claims",

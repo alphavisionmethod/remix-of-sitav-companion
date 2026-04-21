@@ -100,8 +100,9 @@ fs.writeFileSync("generated/accessibility-summary.json", JSON.stringify({
   version: "1.1.0",
   generatedAt: now,
   totalRoutes: a11yChecks.length,
-  compliant: a11yChecks.length,
-  nonCompliant: 0,
+  compliant: compliantCount,
+  nonCompliant: a11yChecks.length - compliantCount,
+  compliantRoutes: compliantCount,
   checks: a11yChecks,
 }, null, 2));
 
