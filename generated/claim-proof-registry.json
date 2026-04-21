@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-21T04:55:39.353Z",
+  "generatedAt": "2026-04-21T06:33:54.354Z",
   "gate": "truth-governance",
   "totalClaims": 14,
   "claimsWithFullProof": 11,
@@ -37,7 +37,7 @@
         "ai_capability_routing schema change",
         "nightly run failure"
       ],
-      "lastVerified": "2026-04-21T04:55:39.353Z",
+      "lastVerified": "2026-04-21T06:33:54.353Z",
       "currentVerdict": "CONDITIONALLY_READY",
       "proofPresent": [
         "generated/ai-live-provider-nightly-report.json",
@@ -88,7 +88,7 @@
         "new advisor added without identity",
         "policy file modification"
       ],
-      "lastVerified": "2026-04-21T04:55:39.353Z",
+      "lastVerified": "2026-04-21T06:33:54.354Z",
       "currentVerdict": "READY",
       "proofPresent": [
         "generated/advisor-boardroom-proof/advisor-identity-closure-check.json",
@@ -138,7 +138,7 @@
         "encryption policy change",
         "token refresh failure"
       ],
-      "lastVerified": "2026-04-21T04:55:39.353Z",
+      "lastVerified": "2026-04-21T06:33:54.354Z",
       "currentVerdict": "TRUST_GAP_OPEN",
       "proofPresent": [
         "generated/connector-refresh-streak-report.json",
@@ -175,7 +175,7 @@
         "lifecycle-manager.ts modification",
         "new app state added"
       ],
-      "lastVerified": "2026-04-21T04:55:39.353Z",
+      "lastVerified": "2026-04-21T06:33:54.354Z",
       "currentVerdict": "READY",
       "proofPresent": [],
       "proofMissing": [
@@ -209,7 +209,7 @@
         "runbook registry change",
         "kill-switch addition"
       ],
-      "lastVerified": "2026-04-21T04:55:39.353Z",
+      "lastVerified": "2026-04-21T06:33:54.354Z",
       "currentVerdict": "CONDITIONALLY_READY",
       "proofPresent": [
         "generated/admin-top-task-discoverability-report.json",
@@ -243,7 +243,7 @@
         "duplicate family detected",
         "dead page detected"
       ],
-      "lastVerified": "2026-04-21T04:55:39.353Z",
+      "lastVerified": "2026-04-21T06:33:54.354Z",
       "currentVerdict": "CONDITIONALLY_READY",
       "proofPresent": [
         "generated/component-canonicalization-report.json",
@@ -276,7 +276,7 @@
         "page deletion",
         "navigation change"
       ],
-      "lastVerified": "2026-04-21T04:55:39.353Z",
+      "lastVerified": "2026-04-21T06:33:54.354Z",
       "currentVerdict": "CONDITIONALLY_READY",
       "proofPresent": [
         "generated/no-shell-only-production-pages-report.json"
@@ -309,7 +309,7 @@
         "mobile re-scoping decision",
         "native mobile claim reintroduction"
       ],
-      "lastVerified": "2026-04-21T04:55:39.353Z",
+      "lastVerified": "2026-04-21T06:33:54.354Z",
       "currentVerdict": "DISTRIBUTION_BLOCKED",
       "proofPresent": [],
       "proofMissing": [
@@ -347,7 +347,7 @@
         "secret rotation failure",
         "new table without RLS"
       ],
-      "lastVerified": "2026-04-21T04:55:39.353Z",
+      "lastVerified": "2026-04-21T06:33:54.354Z",
       "currentVerdict": "TRUST_GAP_OPEN",
       "proofPresent": [
         "generated/secret-rotation-cadence-report.json",
@@ -378,7 +378,7 @@
         "signing certificate expiry",
         "notarization status change"
       ],
-      "lastVerified": "2026-04-21T04:55:39.353Z",
+      "lastVerified": "2026-04-21T06:33:54.354Z",
       "currentVerdict": "DISTRIBUTION_BLOCKED",
       "proofPresent": [
         "generated/electron-signing-readiness-report.json"
@@ -409,7 +409,7 @@
         "certificate rotation",
         "notarization completion"
       ],
-      "lastVerified": "2026-04-21T04:55:39.353Z",
+      "lastVerified": "2026-04-21T06:33:54.354Z",
       "currentVerdict": "DISTRIBUTION_BLOCKED",
       "proofPresent": [
         "generated/electron-signing-readiness-report.json"
@@ -441,7 +441,7 @@
         "boot sequence change",
         "recovery flow modification"
       ],
-      "lastVerified": "2026-04-21T04:55:39.353Z",
+      "lastVerified": "2026-04-21T06:33:54.354Z",
       "currentVerdict": "BEHAVIORALLY_PARTIAL",
       "proofPresent": [
         "generated/os-boot-recovery-closure-report.json",
@@ -471,7 +471,7 @@
         "CI pipeline change",
         "boot image modification"
       ],
-      "lastVerified": "2026-04-21T04:55:39.353Z",
+      "lastVerified": "2026-04-21T06:33:54.354Z",
       "currentVerdict": "DEFERRED",
       "proofPresent": [
         "generated/qemu-vm-readiness-report.json"
@@ -503,7 +503,7 @@
         "advisory count > 5000",
         "stale evidence"
       ],
-      "lastVerified": "2026-04-21T04:55:39.353Z",
+      "lastVerified": "2026-04-21T06:33:54.354Z",
       "currentVerdict": "CONDITIONALLY_READY",
       "proofPresent": [
         "generated/os-release-readiness-report.json"
