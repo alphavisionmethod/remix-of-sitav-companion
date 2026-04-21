@@ -7,7 +7,7 @@
 // Generates 10 proof artifacts in generated/
 // ═══════════════════════════════════════════════════════════════
 
-import { writeFileSync, mkdirSync, existsSync, statSync } from "node:fs";
+import { writeFileSync, mkdirSync, existsSync, statSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 
 import {
@@ -150,12 +150,11 @@ writeFileSync(join(GEN, "proof-gap-register.json"), JSON.stringify({
 
 // ─── 5. Advisory-Heavy Readiness Report ──────────────────────
 
-// Estimate advisory count from existing readiness report
 let advisoryCount = 0;
 try {
   const readinessPath = join(GEN, "os-release-readiness-report.json");
   if (existsSync(readinessPath)) {
-    const report = JSON.parse(require("fs").readFileSync(readinessPath, "utf8"));
+    const report = JSON.parse(readFileSync(readinessPath, "utf8"));
     advisoryCount = report.totalWarnings ?? 0;
   }
 } catch { /* ignore */ }
@@ -272,7 +271,7 @@ writeFileSync(join(GEN, "structural-vs-behavioral-gap-report.json"), JSON.string
 const languageViolations: Array<{ file: string; matchedSynonym: string; forVerdict: string }> = [];
 const summaryPath = join(GEN, "os-release-readiness-summary.md");
 if (existsSync(summaryPath)) {
-  const content = require("fs").readFileSync(summaryPath, "utf8");
+  const content = readFileSync(summaryPath, "utf8");
   for (const entry of STATUS_LANGUAGE_POLICY) {
     for (const syn of entry.prohibitedSynonyms) {
       // Only flag if used without proper qualification
