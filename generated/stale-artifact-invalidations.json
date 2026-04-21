@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-21T06:33:54.354Z",
+  "generatedAt": "2026-04-21T06:35:49.235Z",
   "gate": "truth-governance",
   "totalRules": 10,
   "validCount": 9,
@@ -83,7 +83,7 @@
       "maxAgeHours": 168,
       "concreteArtifact": "generated/truth-governance-report.json",
       "state": "valid",
-      "ageHours": 0.6,
+      "ageHours": 0,
       "acknowledged": false
     },
     {
