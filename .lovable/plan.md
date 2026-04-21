@@ -1,171 +1,100 @@
 
 
-# SITA OS — Repository-Wide Implementation and Hardening Plan
+# Archive and AI Workspace Cleanup Plan
 
-## Scope Assessment
+## Summary
 
-This repository contains **~9,500 files** across 30+ domains, ~200 edge functions, ~420 database tables, 18 CI workflows, 2 standalone service manifests, and extensive OS/desktop/mobile layers. A single implementation pass cannot safely touch all systems simultaneously without regression risk. This plan prioritizes the **highest-impact, safest changes** organized into implementable batches.
-
----
-
-## Batch 1 — Root Infrastructure Hardening
-
-### 1.1 Service Manifest Standardization
-- Add missing `dev`, `lint`, `typecheck`, `test`, `clean`, `health-check` scripts to `deploy/api-gateway/package.json` and `deploy/brain-core/package.json`
-- Add `nats` dependency to `deploy/brain-core/package.json` (currently dynamically imported but not declared)
-- Fix `remotion/package.json` React 19 conflict — pin to React 18 to match root
-
-### 1.2 Deploy Service Hardening
-- **api-gateway/server.ts**: Add graceful shutdown handler (SIGTERM/SIGINT), structured JSON logging, startup env validation (fail-fast on missing SUPABASE_ANON_KEY), and a `/ready` endpoint distinct from `/health`
-- **brain-core/server.ts**: Same graceful shutdown, env validation, `/ready` endpoint, and NATS connection state in readiness check
-
-### 1.3 Root Config Strengthening
-- Add `typecheck` and `clean` scripts to root `package.json`
-- Add `.env.production.example` with all production-required vars documented (currently exists but may be incomplete — will verify and sync with `docker-compose.yml` env references)
-- Harden `Dockerfile`: add `HEALTHCHECK` instruction, non-root user, and `.dockerignore` if missing
-
-### 1.4 ESLint Config Fix
-- Change `eslint src/ --max-warnings 0 || true` in CI to actually report (the `|| true` swallows all failures)
+After inspecting every file in `.lovable/` and `archive/`, and searching the entire active codebase for references, the archive layer contains significant dead residue that should be removed. A small set of sentinel files are actively referenced by validators and compliance maps and must remain. The `.lovable/` directory contains a single stale plan file that needs governance.
 
 ---
 
-## Batch 2 — Edge Function Governance and Consolidation
+## Classification Results
 
-### 2.1 Shared Utilities Consolidation
-- Audit `supabase/functions/_shared/` for duplicate CORS, auth, and validation helpers
-- Ensure all edge functions import CORS from the shared location (not inline definitions)
-- Add a shared `validate-service-role.ts` helper to deduplicate admin auth checks across `admin-reset-user-setup`, `admin-revoke-session`, `webhook-replay`, `generate-support-bundle`, and `release-env-gate`
+### Files to DELETE (dead residue, no live references)
 
-### 2.2 Edge Function Health Standardization
-- Add structured error response schemas to `health-check`, `health-ready`, `health-live` functions
-- Ensure `health-ready` checks actual DB connectivity (not just function startup)
+| Path | Reason |
+|---|---|
+| `archive/generated/**` (35+ files) | Stale JSON/MD proof artifacts not produced by any active script. Create false readiness signals. |
+| `archive/android-templates/**` | Dead Android template tree (build.gradle, proguard, google-services template). No active generator references it. |
+| `archive/ios-templates/**` | Dead iOS template tree (Podfile, App shell). No active generator references it. |
+| `archive/mobile-platform-native/**` (26 files) | Dead Capacitor/native adapter TS code. Never imported by active code. |
+| `archive/src/**` (15+ files) | Dead admin pages, mobile clients, mobile-platform runtime, planes barrel. No active imports. |
+| `archive/scripts/**` (18 files) | Dead mobile validation scripts. Not called by any CI workflow or npm script. |
+| `archive/workflows/**` (4 files) | Dead GitHub Actions workflows for iOS/Android bootstrap and release. |
 
----
+### Files to KEEP (actively referenced by validators, compliance maps, or governance docs)
 
-## Batch 3 — Frontend Canonicalization
-
-### 3.1 Service Layer Deduplication
-- `src/lib/services/` has **200+ directories** while the architecture targets **45 canonical services**
-- Identify the top 20 duplicate/near-empty service directories and consolidate or mark as deprecated barrel re-exports
-- Verify `src/services/index.ts` facade actually resolves all four layers without import errors
-
-### 3.2 Context Provider Audit
-- Verify all 22 React contexts in `src/contexts/` are actually consumed
-- Identify unused providers and remove from the App.tsx provider tree if dead
-
-### 3.3 Component Primitives Check
-- Verify `src/components/primitives/` exists and contains the canonical base components (BaseCard, StatusBadge, etc.)
-- Ensure no domain components duplicate primitive functionality
-
----
-
-## Batch 4 — Database and Security
-
-### 4.1 RLS Coverage Validation
-- Run the Supabase linter to check for tables without RLS
-- Review any new tables created by recent migrations for proper policies
-
-### 4.2 Admin Audit Table Hardening
-- Verify `admin_action_audit` table has append-only trigger (no UPDATE/DELETE policies for non-service roles)
+| Path | Referenced by |
+|---|---|
+| `archive/mobile/ARCHIVED.md` | `check-mobile-deferral-attestation.ts`, `demo-only-surface-registry.ts`, `MOBILE_HONESTY.md` |
+| `archive/capacitor/capacitor.config.ts` | `check-mobile-manifest-archive-classification.ts`, `emit-mobile-scope-artifacts.ts`, `mobile-platform-compliance-map.ts` |
+| `archive/infra/mobile.yaml` | `check-mobile-manifest-archive-classification.ts`, `emit-mobile-scope-artifacts.ts`, `PLATFORM_SCOPE.md` |
+| `archive/mobile/ios/*` | `mobile-platform-compliance-map.ts` (PrivacyInfo, Info.plist, SIGNING.md) |
+| `archive/mobile/android/*` | `mobile-platform-compliance-map.ts` (TARGET_SDK_POLICY, SIGNING, FCM) |
+| `archive/mobile/store-metadata/*` | `mobile-platform-compliance-map.ts` (data-safety, listings) |
+| `archive/mobile/icons/` | Needed for mobile reactivation path |
+| `archive/README.md` | Referenced by `PLATFORM_SCOPE.md`, `SITA_OS_NATIVE_DEPLOYMENT_AUDIT.md` |
 
 ---
 
-## Batch 5 — Operational Layers
+## Changes
 
-### 5.1 Support Bundle Edge Function Hardening
-- Verify `generate-support-bundle` redacts PII fields
-- Add timeout handling for long-running bundle generation
+### 1. Delete stale archive content
+Remove the 7 dead subtrees listed above (~100 files total). These are verified to have zero active imports, zero CI references, and zero workflow references.
 
-### 5.2 Release Gate Integration
-- Wire `release-env-gate` into the CI pipeline (`release-gates.yml`) as a required check
-- Add the env gate as a pre-deploy step in `deploy-backend.yml`
+### 2. Update `archive/README.md`
+Rewrite to reflect the cleaned state -- only `mobile/`, `capacitor/`, and `infra/` remain. Remove references to deleted directories.
 
-### 5.3 Missing Validators
-- Create `scripts/root/check-service-manifest-completeness.ts` — validates all `deploy/*/package.json` files have required scripts
-- Create `scripts/root/check-env-contract-completeness.ts` — validates `.env.example` covers all vars referenced in `docker-compose.yml`
+### 3. Create `archive/POLICY.md`
+Defines: what belongs in archive, what must never accumulate (generated artifacts, dead template trees, dead source code), retention rules, and the boundary between archive and active truth.
 
----
+### 4. Create `.lovable/README.md`
+Declares the `.lovable/` directory as an internal AI planning workspace -- non-canonical, non-runtime, non-release-truth. Prevents it from being confused with product truth.
 
-## Batch 6 — Deployment Honesty
+### 5. Clean `.lovable/plan.md`
+Replace with a minimal stub noting the plan has been fully implemented. The current 171-line plan document describes work that is already complete.
 
-### 6.1 Docker Compose Modernization
-- Change `version: "3.8"` to remove the deprecated version key (Compose V2 ignores it)
-- Add missing healthcheck for `sita-supabase-storage`
+### 6. Create `scripts/root/check-archive-boundary.ts`
+Validator that enforces:
+- No generated JSON/MD artifacts under `archive/`
+- No `.ts`/`.tsx` source files under `archive/` except the capacitor config sentinel
+- No `node_modules` or `package.json` under `archive/`
+- All archive sentinel files (ARCHIVED.md, capacitor.config.ts, mobile.yaml) are present
 
-### 6.2 .dockerignore Creation
-- Create `.dockerignore` excluding `node_modules/`, `.git/`, `dist/`, `coverage/`, `generated/`, `archive/`, `docs/`, `backups/`
-
-### 6.3 Stale Root File Cleanup
-- Archive `WAVE2_ADVISORY_DISPOSITION.md`, `WAVE5_PRODUCTION_HARDENING.md`, `WAVE6_ISO_OVA_RAW_PRODUCTION.md`, `WAVE7_STUB_HARDENING.md` to `docs/waves/` — these are historical planning docs cluttering root
-
----
-
-## Batch 7 — Test and Proof Infrastructure
-
-### 7.1 Vitest Coverage Thresholds
-- Current thresholds are very low (lines: 40%, branches: 30%). Add a ratchet mechanism that prevents regression below current actuals.
-
-### 7.2 Edge Function Test Runner Integration
-- Add a CI job that runs `supabase test` for all edge function `_test.ts` files
-- Wire this into `ci.yml` as a non-blocking advisory job initially
-
----
-
-## Implementation Priority Order
-
-| Priority | Batch | Risk | Impact |
-|----------|-------|------|--------|
-| 1 | Batch 1 (Root Infra) | Low | High — fixes deployment fundamentals |
-| 2 | Batch 6 (Deploy Honesty) | Low | Medium — Docker/cleanup |
-| 3 | Batch 2 (Edge Functions) | Medium | High — reduces duplication |
-| 4 | Batch 5 (Operational) | Low | Medium — adds missing safety nets |
-| 5 | Batch 4 (DB Security) | Medium | High — security critical |
-| 6 | Batch 3 (Frontend) | High | Medium — large surface area |
-| 7 | Batch 7 (Tests) | Low | Medium — quality baseline |
-
----
-
-## What Remains Intentionally Blocked
-
-- **Desktop signing (macOS/Windows)**: Requires external Apple/Microsoft certificates. Closure path exists via `DesktopUpdateContract`.
-- **Mobile native distribution**: Deferred per `PLATFORM_SCOPE.md`. PWA surface is active.
-- **Full service consolidation (200 to 45)**: Requires extensive caller migration across 9,500 files. This plan addresses the top 20 duplicates; the remaining 135 require a dedicated consolidation sprint.
-- **AI provider live verification**: Requires real API keys for nightly truth probes. Gated behind secrets configuration.
+### 7. Stale reference in `public/generated/`
+Verify and clean `public/generated/mobile-identity-reconciliation/` -- this mirrors stale archive content in the public-facing generated directory.
 
 ---
 
 ## Technical Details
 
-### Graceful Shutdown Pattern (api-gateway & brain-core)
+### Validator logic (`check-archive-boundary.ts`)
 ```text
-SIGTERM → stop accepting new connections
-       → drain in-flight requests (10s timeout)
-       → close NATS connection (brain-core)
-       → close rate-limit cleanup interval
-       → process.exit(0)
+PASS conditions:
+  - archive/mobile/ARCHIVED.md exists
+  - archive/capacitor/capacitor.config.ts exists
+  - archive/infra/mobile.yaml exists
+  - No *.json files under archive/generated/
+  - No *.ts/*.tsx files under archive/ except capacitor.config.ts
+  - No package.json under archive/
+
+FAIL: any violation above
+Output: generated/archive-boundary-report.json
 ```
 
-### Env Validation Pattern (fail-fast)
-```text
-On startup:
-  - Check all required env vars are non-empty
-  - Validate URL format for SUPABASE_URL, BRAIN_CORE_URL
-  - Validate numeric format for PORT, RATE_LIMIT_MAX
-  - If any fail → log structured error → exit(1)
-```
+### Files deleted (~100 files across 7 subtrees)
+- `archive/generated/` -- 35+ stale proof reports
+- `archive/android-templates/` -- 6 files
+- `archive/ios-templates/` -- 4 files
+- `archive/mobile-platform-native/` -- 26 files
+- `archive/src/` -- 15+ files
+- `archive/scripts/` -- 18 files
+- `archive/workflows/` -- 4 files
 
-### .dockerignore Contents
-```text
-node_modules/
-.git/
-dist/
-coverage/
-generated/
-archive/
-docs/
-backups/
-*.md
-.env
-.env.*
-```
+### Files kept (minimal governed set)
+- `archive/README.md` (updated)
+- `archive/POLICY.md` (new)
+- `archive/mobile/` (ARCHIVED.md, ios/, android/, store-metadata/, icons/)
+- `archive/capacitor/capacitor.config.ts`
+- `archive/infra/mobile.yaml`
 
