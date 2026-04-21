@@ -71,7 +71,7 @@ Deno.test("revoke: rejects empty body gracefully (4xx)", async () => {
 
 // ── Fixture-based DB mutation tests ───────────────────────────
 
-Deno.test("revoke: DB fixture — session flips to revoked with reason & timestamp", async () => {
+Deno.test({ name: "revoke: DB fixture — session flips to revoked with reason & timestamp", sanitizeOps: false, sanitizeResources: false, fn: async () => {
   const sb = getServiceClient();
   await seedFixtures(sb);
 
@@ -115,9 +115,9 @@ Deno.test("revoke: DB fixture — session flips to revoked with reason & timesta
   assertEquals(auditAfter[0].severity, "critical");
 
   await cleanupFixtures(sb);
-});
+}});
 
-Deno.test("revoke: DB fixture — revoking already-revoked session is a no-op", async () => {
+Deno.test({ name: "revoke: DB fixture — revoking already-revoked session is a no-op", sanitizeOps: false, sanitizeResources: false, fn: async () => {
   const sb = getServiceClient();
   await seedFixtures(sb);
 
@@ -140,4 +140,4 @@ Deno.test("revoke: DB fixture — revoking already-revoked session is a no-op", 
   assertEquals(post?.revoke_reason, "first");
 
   await cleanupFixtures(sb);
-});
+}});

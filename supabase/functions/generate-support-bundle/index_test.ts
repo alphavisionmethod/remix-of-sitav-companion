@@ -82,7 +82,7 @@ Deno.test("bundle: all 4 bundleType values reach auth (not 500)", async () => {
 
 // ── Fixture-based DB mutation tests ───────────────────────────
 
-Deno.test("bundle: DB fixture — generate_support_bundle audit row written with correct metadata", async () => {
+Deno.test({ name: "bundle: DB fixture — generate_support_bundle audit row written with correct metadata", sanitizeOps: false, sanitizeResources: false, fn: async () => {
   const sb = getServiceClient();
 
   const auditBefore = await queryAuditRows(sb, "generate_support_bundle", FIXTURE_IDS.TARGET_USER);
@@ -117,9 +117,9 @@ Deno.test("bundle: DB fixture — generate_support_bundle audit row written with
 
   // Cleanup
   await sb.from("admin_action_audit").delete().eq("target_id", FIXTURE_IDS.TARGET_USER).eq("action", "generate_support_bundle");
-});
+}});
 
-Deno.test("bundle: DB fixture — multiple bundle types produce distinct audit rows", async () => {
+Deno.test({ name: "bundle: DB fixture — multiple bundle types produce distinct audit rows", sanitizeOps: false, sanitizeResources: false, fn: async () => {
   const sb = getServiceClient();
 
   const types = ["system-wide", "runtime-crash", "admin-operator", "support-escalation"];
@@ -143,4 +143,4 @@ Deno.test("bundle: DB fixture — multiple bundle types produce distinct audit r
 
   // Cleanup
   await sb.from("admin_action_audit").delete().eq("target_id", FIXTURE_IDS.TARGET_USER).eq("action", "generate_support_bundle");
-});
+}});

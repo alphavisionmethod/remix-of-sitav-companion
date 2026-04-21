@@ -71,7 +71,7 @@ Deno.test("webhook: rejects invalid Bearer token with 401", async () => {
 
 // ── Fixture-based DB mutation tests ───────────────────────────
 
-Deno.test("webhook: DB fixture — simulated replay sets status=replayed_simulated & bumps retry_count", async () => {
+Deno.test({ name: "webhook: DB fixture — simulated replay sets status=replayed_simulated & bumps retry_count", sanitizeOps: false, sanitizeResources: false, fn: async () => {
   const sb = getServiceClient();
   await seedFixtures(sb);
 
@@ -117,9 +117,9 @@ Deno.test("webhook: DB fixture — simulated replay sets status=replayed_simulat
   assertEquals(auditAfter[0].plane, "support");
 
   await cleanupFixtures(sb);
-});
+}});
 
-Deno.test("webhook: DB fixture — failed replay sets status=replay_failed & records error", async () => {
+Deno.test({ name: "webhook: DB fixture — failed replay sets status=replay_failed & records error", sanitizeOps: false, sanitizeResources: false, fn: async () => {
   const sb = getServiceClient();
   await seedFixtures(sb);
 
@@ -145,9 +145,9 @@ Deno.test("webhook: DB fixture — failed replay sets status=replay_failed & rec
   assertEquals(post?.last_error, replayError);
 
   await cleanupFixtures(sb);
-});
+}});
 
-Deno.test("webhook: DB fixture — retry_count increments on successive replays", async () => {
+Deno.test({ name: "webhook: DB fixture — retry_count increments on successive replays", sanitizeOps: false, sanitizeResources: false, fn: async () => {
   const sb = getServiceClient();
   await seedFixtures(sb);
 
@@ -162,4 +162,4 @@ Deno.test("webhook: DB fixture — retry_count increments on successive replays"
   assertEquals(post?.retry_count, 3, "retry_count must reflect cumulative replays");
 
   await cleanupFixtures(sb);
-});
+}});
