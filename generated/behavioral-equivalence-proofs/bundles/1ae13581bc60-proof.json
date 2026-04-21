@@ -1,0 +1,102 @@
+{
+  "pairId": "1ae13581bc60",
+  "generatedAt": "2026-04-21T21:32:19.800Z",
+  "fingerprint": "4fe30fb97bcd",
+  "canonical": {
+    "filePath": "src/lib/core-services/conscience-gate/conscience-gate.ts",
+    "exists": true,
+    "sha256": "dedec6dacbafc24f95c6c97cd47e2017dad60364097d2b0398b67848843f6baa",
+    "lineCount": 251,
+    "byteSize": 9200,
+    "exports": [
+      {
+        "name": "ConscienceGateService",
+        "kind": "class",
+        "isDefault": false,
+        "line": 67
+      },
+      {
+        "name": "conscienceGate",
+        "kind": "const",
+        "isDefault": false,
+        "line": 249
+      },
+      {
+        "name": "GateDecision",
+        "kind": "type",
+        "isDefault": false,
+        "line": 12
+      },
+      {
+        "name": "EvidenceState",
+        "kind": "interface",
+        "isDefault": false,
+        "line": 14
+      },
+      {
+        "name": "BudgetState",
+        "kind": "interface",
+        "isDefault": false,
+        "line": 21
+      },
+      {
+        "name": "RoutingHints",
+        "kind": "interface",
+        "isDefault": false,
+        "line": 29
+      },
+      {
+        "name": "GateVerdict",
+        "kind": "interface",
+        "isDefault": false,
+        "line": 37
+      },
+      {
+        "name": "GateRequest",
+        "kind": "interface",
+        "isDefault": false,
+        "line": 55
+      }
+    ],
+    "sideEffects": [],
+    "receipts": []
+  },
+  "retired": {
+    "filePath": "src/lib/services/conscience-gate/conscience-gate.ts",
+    "exists": false,
+    "sha256": "",
+    "lineCount": 0,
+    "byteSize": 0,
+    "exports": [],
+    "sideEffects": [],
+    "receipts": []
+  },
+  "diff": {
+    "exportsAdded": [
+      "ConscienceGateService",
+      "conscienceGate",
+      "GateDecision",
+      "EvidenceState",
+      "BudgetState",
+      "RoutingHints",
+      "GateVerdict",
+      "GateRequest"
+    ],
+    "exportsRemoved": [],
+    "exportsCommon": [],
+    "apiSurfaceMatch": false,
+    "sideEffectDelta": {
+      "onlyInCanonical": [],
+      "onlyInRetired": []
+    },
+    "receiptDelta": {
+      "onlyInCanonical": [],
+      "onlyInRetired": []
+    },
+    "sideEffectsEquivalent": true,
+    "receiptsEquivalent": true
+  },
+  "verdict": "equivalent",
+  "verdictReason": "Byte-identical files",
+  "proofHash": "2dbb57340d4219648483cc8911046cccaec7167fee5159ebefa2046a35368927"
+}

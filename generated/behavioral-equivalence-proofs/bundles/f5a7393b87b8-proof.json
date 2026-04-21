@@ -1,0 +1,116 @@
+{
+  "pairId": "f5a7393b87b8",
+  "generatedAt": "2026-04-21T21:32:19.799Z",
+  "fingerprint": "4a83048285ac",
+  "canonical": {
+    "filePath": "src/lib/core-services/brain-core/orchestrate-intent.ts",
+    "exists": true,
+    "sha256": "d31f1e2338c4bce151096c03c873ae8b7fb6159d9653831ae61f1efc88ef2d97",
+    "lineCount": 132,
+    "byteSize": 5029,
+    "exports": [
+      {
+        "name": "parseIntent",
+        "kind": "function",
+        "isDefault": false,
+        "line": 54
+      },
+      {
+        "name": "chooseExecutionMode",
+        "kind": "function",
+        "isDefault": false,
+        "line": 87
+      },
+      {
+        "name": "buildOrchestrationPlan",
+        "kind": "function",
+        "isDefault": false,
+        "line": 99
+      },
+      {
+        "name": "buildExplanation",
+        "kind": "function",
+        "isDefault": false,
+        "line": 122
+      },
+      {
+        "name": "IntentType",
+        "kind": "type",
+        "isDefault": false,
+        "line": 6
+      },
+      {
+        "name": "BrainExecutionMode",
+        "kind": "type",
+        "isDefault": false,
+        "line": 7
+      },
+      {
+        "name": "ParsedIntent",
+        "kind": "interface",
+        "isDefault": false,
+        "line": 9
+      },
+      {
+        "name": "OrchestrationPlan",
+        "kind": "interface",
+        "isDefault": false,
+        "line": 20
+      },
+      {
+        "name": "OrchestrationStep",
+        "kind": "interface",
+        "isDefault": false,
+        "line": 32
+      },
+      {
+        "name": "OrchestrationResult",
+        "kind": "interface",
+        "isDefault": false,
+        "line": 42
+      }
+    ],
+    "sideEffects": [],
+    "receipts": []
+  },
+  "retired": {
+    "filePath": "src/lib/services/brain-core/orchestrate-intent.ts",
+    "exists": false,
+    "sha256": "",
+    "lineCount": 0,
+    "byteSize": 0,
+    "exports": [],
+    "sideEffects": [],
+    "receipts": []
+  },
+  "diff": {
+    "exportsAdded": [
+      "parseIntent",
+      "chooseExecutionMode",
+      "buildOrchestrationPlan",
+      "buildExplanation",
+      "IntentType",
+      "BrainExecutionMode",
+      "ParsedIntent",
+      "OrchestrationPlan",
+      "OrchestrationStep",
+      "OrchestrationResult"
+    ],
+    "exportsRemoved": [],
+    "exportsCommon": [],
+    "apiSurfaceMatch": false,
+    "sideEffectDelta": {
+      "onlyInCanonical": [],
+      "onlyInRetired": []
+    },
+    "receiptDelta": {
+      "onlyInCanonical": [],
+      "onlyInRetired": []
+    },
+    "sideEffectsEquivalent": true,
+    "receiptsEquivalent": true
+  },
+  "verdict": "equivalent",
+  "verdictReason": "Byte-identical files",
+  "proofHash": "79b6aba52a56345482e58290cfcec9da7da211b6443bb1c6769c5bd61b474968"
+}

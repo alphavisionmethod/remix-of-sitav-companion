@@ -1,0 +1,102 @@
+{
+  "pairId": "146c4a3d05c4",
+  "generatedAt": "2026-04-21T21:32:19.801Z",
+  "fingerprint": "32755ff41cc3",
+  "canonical": {
+    "filePath": "src/lib/core-services/conscience-gate/critique-loop.ts",
+    "exists": true,
+    "sha256": "77763189d2cea31209ec5c9a0d7f17e31dc71c8a0d499abd2ad393b351685706",
+    "lineCount": 267,
+    "byteSize": 9280,
+    "exports": [
+      {
+        "name": "runCritique",
+        "kind": "function",
+        "isDefault": false,
+        "line": 43
+      },
+      {
+        "name": "logCritique",
+        "kind": "function",
+        "isDefault": false,
+        "line": 239
+      },
+      {
+        "name": "getCritiqueLog",
+        "kind": "function",
+        "isDefault": false,
+        "line": 244
+      },
+      {
+        "name": "getCritiqueStats",
+        "kind": "function",
+        "isDefault": false,
+        "line": 249
+      },
+      {
+        "name": "CritiqueRecommendation",
+        "kind": "type",
+        "isDefault": false,
+        "line": 10
+      },
+      {
+        "name": "CritiqueIssue",
+        "kind": "interface",
+        "isDefault": false,
+        "line": 12
+      },
+      {
+        "name": "CritiqueResult",
+        "kind": "interface",
+        "isDefault": false,
+        "line": 19
+      },
+      {
+        "name": "EvidenceSource",
+        "kind": "interface",
+        "isDefault": false,
+        "line": 34
+      }
+    ],
+    "sideEffects": [],
+    "receipts": []
+  },
+  "retired": {
+    "filePath": "src/lib/services/conscience-gate/critique-loop.ts",
+    "exists": false,
+    "sha256": "",
+    "lineCount": 0,
+    "byteSize": 0,
+    "exports": [],
+    "sideEffects": [],
+    "receipts": []
+  },
+  "diff": {
+    "exportsAdded": [
+      "runCritique",
+      "logCritique",
+      "getCritiqueLog",
+      "getCritiqueStats",
+      "CritiqueRecommendation",
+      "CritiqueIssue",
+      "CritiqueResult",
+      "EvidenceSource"
+    ],
+    "exportsRemoved": [],
+    "exportsCommon": [],
+    "apiSurfaceMatch": false,
+    "sideEffectDelta": {
+      "onlyInCanonical": [],
+      "onlyInRetired": []
+    },
+    "receiptDelta": {
+      "onlyInCanonical": [],
+      "onlyInRetired": []
+    },
+    "sideEffectsEquivalent": true,
+    "receiptsEquivalent": true
+  },
+  "verdict": "equivalent",
+  "verdictReason": "Byte-identical files",
+  "proofHash": "e8d2c2f54853fdda9fa8ee3a04b0476d8e8d9ea7806b3795db2c16554c41e9db"
+}

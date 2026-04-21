@@ -1,0 +1,67 @@
+{
+  "pairId": "32c5954796dc",
+  "generatedAt": "2026-04-21T21:32:19.797Z",
+  "fingerprint": "60031ab0fd30",
+  "canonical": {
+    "filePath": "src/lib/core-services/brain-core/choose-execution-mode.ts",
+    "exists": true,
+    "sha256": "a95f331e854b0544e5021297116332626b72f0711a74708f61bfecf6134ae5bf",
+    "lineCount": 68,
+    "byteSize": 2826,
+    "exports": [
+      {
+        "name": "selectExecutionMode",
+        "kind": "function",
+        "isDefault": false,
+        "line": 26
+      },
+      {
+        "name": "canBypassApproval",
+        "kind": "function",
+        "isDefault": false,
+        "line": 62
+      },
+      {
+        "name": "ExecutionModeDecision",
+        "kind": "interface",
+        "isDefault": false,
+        "line": 8
+      }
+    ],
+    "sideEffects": [],
+    "receipts": []
+  },
+  "retired": {
+    "filePath": "src/lib/services/brain-core/choose-execution-mode.ts",
+    "exists": false,
+    "sha256": "",
+    "lineCount": 0,
+    "byteSize": 0,
+    "exports": [],
+    "sideEffects": [],
+    "receipts": []
+  },
+  "diff": {
+    "exportsAdded": [
+      "selectExecutionMode",
+      "canBypassApproval",
+      "ExecutionModeDecision"
+    ],
+    "exportsRemoved": [],
+    "exportsCommon": [],
+    "apiSurfaceMatch": false,
+    "sideEffectDelta": {
+      "onlyInCanonical": [],
+      "onlyInRetired": []
+    },
+    "receiptDelta": {
+      "onlyInCanonical": [],
+      "onlyInRetired": []
+    },
+    "sideEffectsEquivalent": true,
+    "receiptsEquivalent": true
+  },
+  "verdict": "equivalent",
+  "verdictReason": "Byte-identical files",
+  "proofHash": "a391d6bfe950e8aa3ddc0993dce067b9ff32f40b4122ac8a93ce0ced7d93f8e1"
+}
