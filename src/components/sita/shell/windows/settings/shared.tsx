@@ -44,7 +44,16 @@ export function SettingsSearch({ value, onChange }: { value: string; onChange: (
 }
 
 const SECTION_KEYS: Record<string, (keyof SettingsSchema)[]> = {
-  general: ["appearance.theme", "sound.uiSounds", "appearance.reduceMotion", "general.dateFormat", "general.timeFormat", "general.timezone", "general.startupBehavior"],
+  general: [
+    "appearance.theme", "sound.uiSounds", "appearance.reduceMotion",
+    "general.language", "general.region", "general.currency", "general.measurementUnits", "general.numberFormat", "general.weekStartsOn",
+    "general.dateFormat", "general.timeFormat", "general.timezone", "general.defaultCalendarView",
+    "general.startupBehavior", "general.restoreLastSession", "general.reopenPanels", "general.resumePendingTasks",
+    "general.navigationPreference", "general.rememberLastOpenPanels", "general.confirmBeforeLeaving", "general.openLinksIn",
+    "general.displayName", "general.defaultFocusDomain",
+    "general.guidanceLevel", "general.showNewFeatureTips", "general.showUpdateHighlights", "general.showSetupRecommendations",
+    "general.approvalStyle",
+  ],
   appearance: ["appearance.accentColor", "appearance.reduceTransparency", "appearance.wallpaper"],
   display: ["display.brightness", "display.nightShift", "display.resolution", "display.scaling", "display.nightShiftIntensity", "display.autoBrightness", "display.trueTone", "display.refreshRate"],
   sound: ["sound.volume", "sound.mute", "sound.alertVolume", "sound.alertSound", "sound.uiSounds"],
