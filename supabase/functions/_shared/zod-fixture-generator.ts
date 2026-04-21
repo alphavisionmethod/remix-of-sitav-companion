@@ -340,11 +340,20 @@ function generateEnum(
     }
   }
 
-  // Deduplicate invalid (some may overlap with valid)
-  const validSet = new Set(values);
-  const deduped = [...new Set(invalid.map(v => JSON.stringify(v)))].map(v => JSON.parse(v)).filter(
-    (v) => !validSet.has(v)
-  );
+  // Deduplicate invalid (some may overlap with valid), handling undefined/Symbol/BigInt safely
+  const validSet = new Set(values as unknown[]);
+  const seen = new Set<string>();
+  const deduped: unknown[] = [];
+  for (const v of invalid) {
+    if (validSet.has(v)) continue;
+    const key = typeof v === "symbol" ? v.toString()
+      : typeof v === "bigint" ? `bigint:${v}`
+      : typeof v === "undefined" ? "@@undefined"
+      : JSON.stringify(v);
+    if (seen.has(key)) continue;
+    seen.add(key);
+    deduped.push(v);
+  }
 
   return { field: fieldName, zodType: "ZodEnum", valid, invalid: deduped };
 }
