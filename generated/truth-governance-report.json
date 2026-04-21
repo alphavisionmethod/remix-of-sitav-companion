@@ -1,12 +1,10 @@
 {
-  "generatedAt": "2026-04-21T04:57:51.283Z",
+  "generatedAt": "2026-04-21T05:03:11.730Z",
   "gate": "truth-governance",
   "level": "block",
   "ok": true,
   "errors": [],
-  "warnings": [
-    "1 artifact(s) in INVALID state without acknowledgment"
-  ],
+  "warnings": [],
   "summary": {
     "dimensions": 5,
     "subsystems": 8,
@@ -15,9 +13,9 @@
     "openContradictions": 3,
     "highSeverityOpen": true,
     "invalidationRules": 10,
-    "proofGaps": 17,
+    "proofGaps": 15,
     "advisoryEffect": "conditional",
-    "languageViolations": 2
+    "languageViolations": 3
   },
   "artifactsGenerated": [
     "readiness-dimension-scoreboard.json",

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-21T04:57:51.283Z",
+  "generatedAt": "2026-04-21T05:03:11.730Z",
   "gate": "truth-governance",
   "totalClaims": 14,
   "byConfidence": {
@@ -58,7 +58,7 @@
         "behavioral"
       ],
       "currentVerdict": "READY",
-      "proofCoverage": 0
+      "proofCoverage": 100
     },
     {
       "claimId": "CLM-ADMIN-001",
