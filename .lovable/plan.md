@@ -1,136 +1,69 @@
 
 
-# Enhanced OSAUDIT.md — Comprehensive Repository Truth Audit v2
+# Enhanced OSAUDIT.md — Add 14 New Sections + Layer Analysis
 
 ## What This Does
 
-Regenerate `/mnt/documents/OSAUDIT.md` as a significantly expanded document (~2,500+ lines) with all 10 original sections preserved but dramatically enhanced with deeper detail, exact file paths, live-verified counts, and brutally honest gap analysis.
+Append 14 new major sections to the existing `/mnt/documents/OSAUDIT.md` (currently 1,643 lines), expanding it to ~4,000+ lines with layer-by-layer analysis, maturity scoring, innovation proposals, technical debt surfacing, and a best-in-class roadmap.
 
-## Fresh Live-Verified Data (Updated Counts)
+## New Sections to Append
 
-| Metric | Count | Source |
-|---|---|---|
-| Database tables (public) | 420 | Live SQL query |
-| RLS policies | 934 (100% coverage) | Live SQL query |
-| Database functions | 85 | Live SQL query |
-| Database views | 11 | Live SQL query |
-| Database migrations | 233 | `supabase/migrations/` |
-| Edge functions | 193 (deployed) | `supabase/functions/*/index.ts` |
-| React pages | 1,079 | `src/pages/` |
-| React components | 979 | `src/components/` |
-| TypeScript files (total) | 5,114 | `src/` |
-| Custom hooks | 179 | `src/hooks/` |
-| React contexts | 22 | `src/contexts/` |
-| Services directories | 227 | `src/lib/services/` |
-| Lib modules | 98 | `src/lib/` |
-| Packages | 37 | `src/packages/` |
-| Experience contracts | 18 | `src/platform/experience/` |
-| Generated artifacts | 992 JSON | `generated/` |
-| Generated reports | 569 | `generated/*-report.json` |
-| Validator scripts | 646 | `scripts/check-*` |
-| Generator scripts | 82 | `scripts/generate-*` |
-| Drill scripts | 10 | `scripts/*drill*` |
-| E2E test specs | 58 | `tests/e2e/*.spec.ts` |
-| Unit/integration tests | 5 | `tests/integration/` |
-| CI gate registry | 477 lines | `src/lib/ci/ci-gate-registry.ts` |
-| Admin pages | 565 | `src/pages/admin/` |
-| OS build scripts | 56 | `os/*.sh` |
-| GitHub workflows | 17 | `.github/workflows/` |
-| Documentation (MD) | 168 | `docs/` |
-| Archived files | 209 | `archive/` |
-| Kill switch tables | 7 | Live SQL query |
+### PART 11 — Eight-Layer Repository Evaluation
+For each of these 8 layers, provide strengths, weaknesses, duplication, technical debt, missing capabilities, and next improvements:
+- **Code Layer**: 5,114 TS files, 979 components, 179 hooks, 27 contexts. Strengths: typed contracts, barrel exports. Weaknesses: 209 service dirs (4.6x budget), 0.1% test ratio.
+- **Architecture Layer**: 18 experience contracts, 285 platform files, 81 runtime files. Strengths: 5-plane model, tier honesty. Weaknesses: service sprawl, concept overlap in advisors.
+- **Product Layer**: 1,079 pages, app-in-OS paradigm, 29-screen onboarding. Strengths: domain shells, state persistence. Weaknesses: no universal object identity, no shared timeline.
+- **Runtime Layer**: 4-tier model, 8-surface capability, Nova SDK kernel. Strengths: launch honesty, capability fallbacks. Weaknesses: desktop/appliance tiers unproven in CI.
+- **Operational Layer**: kill switches, runbooks, Sentry, alert-router. Strengths: 18 kill switches, error monitoring wired. Weaknesses: no drill execution evidence, no incident automation.
+- **Release Layer**: 233 migrations, 17 workflows, 250 gates. Strengths: gate density, provenance contracts. Weaknesses: no staged rollout evidence, no canary deployment.
+- **Trust/Safety Layer**: 934 RLS policies, AI output firewall, session threat detector. Strengths: 100% RLS, epistemic firewall. Weaknesses: no penetration test evidence, no SAST/DAST.
+- **Future Extensibility Layer**: plugin architecture, connector catalog, federation contracts. Strengths: SDK bridge, event bus. Weaknesses: no public API versioning, no tenant isolation runtime.
 
-## Key Corrections from Previous Audit
+### PART 12 — Maturity Scoring Matrix
+For each of 20 major subsystems, score 1-10 across 5 dimensions: Maturity, Maintainability, Extensibility, Operational Readiness, Innovation Opportunity.
 
-1. **Error monitoring EXISTS** — `src/lib/services/error-monitoring-service.ts` (123 lines) with Sentry integration at `src/lib/observability/sentry.ts`. DSN-gated, production-ready. Previous audit incorrectly listed this as "missing."
-2. **E2E tests EXIST** — 58 Playwright specs in `tests/e2e/` with Playwright config, global setup/teardown, custom reporter. Previous audit incorrectly listed as "missing."
-3. **AdminShell is already a shim** — `AdminShell.tsx` forwards to `AdminControlPlaneShell`. Migration is effectively complete.
-4. **Service count is 227** (not 224) — more directory-level services than previously counted.
-5. **Kill switch tables are 7** in the database (not just documented).
+### PART 13 — Subsystem Action Classification
+For every subsystem, classify into: ADD, IMPROVE, DELETE, CONSOLIDATE, DEPRECATE, AUTOMATE, VALIDATE, FUTURE_ENHANCEMENT with exact file targets.
 
-## Enhanced Section Details
+### PART 14 — Advanced Feature Opportunities
+High-leverage new capabilities: universal workspace primitives, automation builder, shared timeline/history, unified command/action center, universal object identity, smart recovery UX, explainability UX, enterprise admin controls, advanced support diagnostics, simulation/sandbox features, collaboration/multi-user workflows.
 
-### PART 1 — Executive Truth Verdict (Enhanced)
-- Updated readiness scores reflecting corrected findings (error monitoring exists, E2E exists)
-- Revised Operational Readiness from 75→82 (error monitoring found)
-- Revised Behavioral Readiness from 82→85 (58 E2E specs found)
-- Added per-dimension drill-down with exact file evidence for each score
-- Added "Honest Delta" subsection explaining what separates structural from behavioral proof
-- Added "What '100% Complete' Would Actually Require" checklist
+### PART 15 — Architectural Modernization Opportunities
+Systems that work but should be modernized: service directory consolidation, contract-first API generation, event sourcing for audit trail, CQRS for high-write domains, micro-frontend isolation for domain shells.
 
-### PART 2 — Full Repository Closure Matrix (Enhanced)
-- Expand from 10 categories to 16 categories (add: Hooks/State Management, Context Architecture, Package Contracts, CI/CD Pipeline, Documentation, Testing Infrastructure)
-- Each row includes: canonical location, duplicate/shadow systems, implementation status, wiring status, validator name, proof artifact, failure/recovery coverage, operational support, release gate, and verdict
-- Add sub-tables for each major domain: AI (8 subsystems), Admin (6 subsystems), Windowing (4 subsystems), Frontend (5 subsystems), Backend (6 subsystems)
-- Include exact validator script paths and generated report filenames
+### PART 16 — Technical Debt and Simplification Opportunities
+Hidden debt: 209 service directories, concept duplication across advisor/boardroom/brain, weak abstractions in connector layer, high-maintenance generated artifact sprawl (992 files), validator gaps, naming inconsistencies.
 
-### PART 3 — Exact File Evidence (Enhanced)
-- **3.1** Experience contracts: all 18 files listed with line counts
-- **3.2** Validator scripts: expand from truncated list to categorized breakdown (646 scripts across 17 domains with counts per domain)
-- **3.3** Generated artifacts: categorized by type (569 reports, 423 other) with domain breakdown
-- **3.4** Edge functions: all 193 listed with role classification
-- **3.5** Kill switch tables: all 7 tables listed with row counts
-- **3.6** Duplicate/shadow services: expanded from 5 pairs to full 7-domain analysis (boardroom: 3 entries, connector: 5 entries, fleet: 3, identity: 2, observability: 2, security: 2, trust: 4)
-- **3.7** React contexts: all 22 listed with purpose
-- **3.8** Custom hooks: 179 hooks categorized by domain
-- **3.9** E2E test specs: all 58 specs listed by journey category
-- **3.10** Archived systems: 10 archive directories with file counts
+### PART 17 — Innovation Ideas (World-Class Platform Architect Perspective)
+Missing product primitives, cross-domain abstractions, AI/operator augmentation, UX cohesion, trust/safety upgrades, automation opportunities.
 
-### PART 4 — What Is Missing Right Now (Enhanced)
-- Remove false gaps (error monitoring, E2E tests, admin shell migration — all exist)
-- Add newly discovered real gaps:
-  - **Unit test coverage** — only 5 integration tests vs 5,114 TS files (ratio: 0.1%)
-  - **Service sprawl** — 227 service directories vs 45 canonical budget
-  - **pg_cron retention enforcement** — only referenced in migrations, no evidence of active cleanup jobs
-  - **Kill switch drill execution evidence** — 7 tables exist but `generated/kill-switch-drill-*.json` artifacts absent
-  - **Accessibility validation** — no axe-core integration despite 979 components
-  - **Chaos/game-day drill evidence** — drill scripts exist but no recorded results
-  - **Incident response automation** — no PagerDuty/Opsgenie integration
-- Each gap includes: severity (CRITICAL/HIGH/MEDIUM), exact files involved, wiring gaps, proof gaps, operational risk, and estimated effort to close
+### PART 18 — Best-in-Class Roadmap
+What would make this world-class beyond closure: developer experience (SDK docs, playground), operator experience (live topology, dependency graph UI), product intelligence (behavioral analytics, recommendation engine).
 
-### PART 5 — What Should Be Added Next (Enhanced)
-- Prioritized by impact score (1-10)
-- Each item includes: why it matters, system improved, files to create/modify, dependencies, expected benefit, estimated effort
-- Items: unit test expansion, service consolidation, accessibility pipeline, chaos drill framework, incident response integration, OpenTelemetry distributed tracing, dependency security scanning, performance regression CI, multi-region edge deployment
+### PART 19 — Top 25 Highest-Leverage Recommendations
+Ranked by impact/difficulty/risk with classification (critical/strategic/optional) and value dimension (user/operator/developer/release confidence).
 
-### PART 6 — What Should Be Improved Next (Enhanced)
-- Each item includes: current weakness with exact file evidence, enhancement path, files to modify, expected improvement, risk if not improved
-- Items: service sprawl consolidation (227→45), experience contract runtime hooks, edge function error standardization, PWA Workbox upgrade, advisor table bounded context documentation, duplicate design token type consolidation, E2E test coverage expansion (58→100+)
+### PART 20 — "If I Wanted Best-in-Class" Analysis
+Advanced improvements beyond audit gaps that would materially strengthen the repository.
 
-### PART 7 — What Should Be Deleted or Consolidated (Enhanced)
-- Expanded duplicate service analysis with exact directory pairs across 7 domains (21 total directories that should collapse to 7)
-- Each item includes: why consolidate, exact files/directories, canonical replacement, migration path, consumer impact assessment
-- Add stale generated artifact detection strategy
-- Add archive governance rules
+### PART 21 — Product-System Opportunities
+Missing product-system primitives with impact assessment.
 
-### PART 8 — Future Advanced Roadmap (Enhanced)
-- 4-phase roadmap with exact timelines, dependencies, and impact scores
-- Each item links to specific files, tables, and systems
-- Phase 1 (Week 1-2): service consolidation, unit test expansion, kill switch drill execution
-- Phase 2 (Week 3-4): accessibility pipeline, experience runtime hooks, chaos drill
-- Phase 3 (Month 2-3): OpenTelemetry, performance CI, multi-region
-- Phase 4 (Quarter 2+): federated advisor architecture, hardware-in-the-loop CI, native mobile reactivation assessment
+### PART 22 — Prioritized Recommendation Detail
+Every recommendation tagged with: impact (1-10), difficulty (1-10), risk (L/M/H), dependencies, classification, value dimension.
 
-### PART 9 — Exact Order of Execution (Enhanced)
-- Step-by-step with exact commands, file paths, and verification criteria for each step
-- Each step includes: what to do, why, files involved, success criteria, verification command
+### PART 23 — Roadmap Horizons
+Organized into: Immediate Critical (week 1), Short-Term (weeks 2-4), Medium-Term Strategic (months 2-3), Long-Term Excellence (quarter 2+).
 
-### PART 10 — Final Direct Answer (Enhanced)
-- Corrected percentages: ~92% structurally complete, ~85% operationally ready
-- Exact blockers list with severity and effort estimates
-- "Total effort to reach 95%" calculation updated
-- Added "What honest 100% looks like" definition
-
-### NEW Appendices
-- **Appendix D**: Full service sprawl map (227 services categorized)
-- **Appendix E**: Complete E2E test spec inventory (58 specs by journey)
-- **Appendix F**: Context and hook architecture summary
-- **Appendix G**: Package contract inventory (37 packages)
+### PART 24 — Final Enhanced Direct Answer
+Updated completion assessment incorporating all new analysis.
 
 ## Implementation
 
-1. Write Python generation script to `/tmp/gen_audit_v2.py`
-2. Script performs live filesystem inspection to populate all sections with real data
-3. Output to `/mnt/documents/OSAUDIT.md` (replaces existing)
-4. QA by checking line count (target: 2,500+ lines) and section completeness
+1. Write a Python script to `/tmp/gen_audit_enhanced.py` that:
+   - Reads the existing `/mnt/documents/OSAUDIT.md`
+   - Appends all 14 new sections with real data from filesystem inspection
+   - Outputs updated file to `/mnt/documents/OSAUDIT.md`
+2. Target: 4,000+ total lines
+3. QA: verify all 24 parts present and populated
 
