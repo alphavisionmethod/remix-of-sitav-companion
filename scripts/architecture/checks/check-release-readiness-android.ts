@@ -70,14 +70,14 @@ function checkKeystore() {
   }
 }
 
-// ── 5. Config separation (no production secrets in source) ─
+// ── 5. Config separation (deep secret scan) ─────────────────
+import { scanForSecrets } from "../../../scripts/release/lib/secret-scanner";
+
 function checkConfigSeparation() {
-  const capFiles = ["capacitor.config.ts", "capacitor.config.json"].filter((f) => existsSync(join(ROOT, f)));
-  for (const f of capFiles) {
-    const content = readFileSync(join(ROOT, f), "utf-8");
-    if (/sk_live|secret_key|password/i.test(content)) {
-      error("config-separation", `Production secrets detected in ${f}`);
-    }
+  const findings = scanForSecrets(ROOT, ["android", "src", "supabase/functions"]);
+  for (const f of findings) {
+    if (f.severity === "error") error(f.area, f.message);
+    else warn(f.area, f.message);
   }
 }
 

@@ -97,6 +97,17 @@ function checkCriticalAssets() {
 }
 
 // ── 7. SPA routing / config.toml ─────────────────────────
+// ── 8. Config separation (deep secret scan) ─────────────────
+import { scanForSecrets } from "../../../scripts/release/lib/secret-scanner";
+
+function checkConfigSeparation() {
+  const findings = scanForSecrets(ROOT, ["src", "supabase/functions", "scripts"]);
+  for (const f of findings) {
+    if (f.severity === "error") error(f.area, f.message);
+    else warn(f.area, f.message);
+  }
+}
+
 function checkConfigToml() {
   const configToml = join(ROOT, "supabase/config.toml");
   if (!existsSync(configToml)) {
@@ -111,6 +122,7 @@ checkSupabaseClient();
 checkMigrations();
 checkEntryPoint();
 checkCriticalAssets();
+checkConfigSeparation();
 checkConfigToml();
 
 const errorCount = issues.filter((i) => i.severity === "error").length;
