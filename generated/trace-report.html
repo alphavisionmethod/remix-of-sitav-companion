@@ -1,0 +1,2047 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SITA OS — Trace Report</title>
+  <style>
+    :root { --bg: #0f1117; --surface: #1a1d27; --border: #2a2d3a; --text: #e4e4e7; --muted: #71717a;
+      --red: #ef4444; --amber: #f59e0b; --green: #22c55e; --blue: #3b82f6; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', -apple-system, sans-serif; background: var(--bg); color: var(--text);
+      line-height: 1.6; padding: 2rem; max-width: 1400px; margin: 0 auto; }
+    h1 { font-size: 1.75rem; margin-bottom: 0.5rem; }
+    h2 { font-size: 1.25rem; margin-bottom: 0.75rem; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; }
+    h3 { font-size: 1rem; margin: 1rem 0 0.5rem; color: var(--muted); }
+    .header { margin-bottom: 2rem; }
+    .header-meta { color: var(--muted); font-size: 0.85rem; }
+    .header-status { display: inline-block; padding: 0.25rem 0.75rem; border-radius: 6px; font-weight: 600;
+      font-size: 0.9rem; margin-top: 0.5rem; }
+    .header-status.pass { background: rgba(34,197,94,0.15); color: var(--green); }
+    .header-status.fail { background: rgba(239,68,68,0.15); color: var(--red); }
+    .report-section { background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+      padding: 1.5rem; margin-bottom: 1.5rem; }
+    .summary-bar { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 1rem; }
+    .stat { background: rgba(59,130,246,0.1); color: var(--blue); padding: 0.25rem 0.75rem;
+      border-radius: 6px; font-size: 0.85rem; font-weight: 500; }
+    table { width: 100%; border-collapse: collapse; margin: 0.5rem 0; font-size: 0.85rem; }
+    th { text-align: left; padding: 0.5rem; background: rgba(255,255,255,0.03); border-bottom: 1px solid var(--border);
+      color: var(--muted); font-weight: 600; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.05em; }
+    td { padding: 0.5rem; border-bottom: 1px solid rgba(255,255,255,0.03); vertical-align: top; }
+    tr.row-error { background: rgba(239,68,68,0.05); }
+    tr.row-warn { background: rgba(245,158,11,0.05); }
+    .badge { padding: 0.15rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; }
+    .badge-error { background: rgba(239,68,68,0.15); color: var(--red); }
+    .badge-warn { background: rgba(245,158,11,0.15); color: var(--amber); }
+    .badge-info { background: rgba(59,130,246,0.15); color: var(--blue); }
+    .file-link { font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--blue);
+      cursor: pointer; text-decoration: underline; text-decoration-style: dotted; }
+    .issue { margin: 0.25rem 0; padding: 0.25rem 0.5rem; background: rgba(239,68,68,0.08);
+      border-left: 3px solid var(--red); border-radius: 0 4px 4px 0; font-size: 0.8rem; }
+    details { margin-top: 1rem; }
+    summary { cursor: pointer; color: var(--muted); font-weight: 500; padding: 0.5rem 0; }
+    summary:hover { color: var(--text); }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>🔍 SITA OS Trace Report</h1>
+    <div class="header-meta">Generated: 2026-04-21T18:42:08.789Z · 2 report sources</div>
+    <div class="header-status fail">ISSUES DETECTED · 141 errors · 115 warnings</div>
+  </div>
+  <section class="report-section">
+    <h2>🔐 Edge Function Auth/RLS Extraction</h2>
+    <div class="summary-bar">
+      <span class="stat">199 functions</span>
+      <span class="stat">158 with issues</span>
+      <span class="stat">141 errors</span>
+      <span class="stat">115 warnings</span>
+    </div><h3>❌ Broken Traces (158)</h3><table>
+      <tr><th>Function</th><th>Declared Auth</th><th>Detected</th><th>DB Writes</th><th>Issues</th></tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/account-delete/index.ts">supabase/functions/account-delete/index.ts</span></td>
+        <td>none</td>
+        <td>service-role-key</td>
+        <td>update(×1), upsert(×1)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/admin-api/index.ts">supabase/functions/admin-api/index.ts</span></td>
+        <td>jwt 🛡️admin</td>
+        <td>service-role-key</td>
+        <td>insert(×7), update(×6), delete(×2)</td>
+        <td><div class="issue">MISSING_JWT_CHECK: Declared as JWT-auth but no JWT validation found in code</div><div class="issue">MISSING_ADMIN_GUARD: Declared adminOnly but no admin role check found</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/admin-bff-gateway/index.ts">supabase/functions/admin-bff-gateway/index.ts</span></td>
+        <td>jwt 🛡️admin</td>
+        <td>admin-role-check, service-role-key</td>
+        <td>insert(×2), rpc(×1)</td>
+        <td><div class="issue">MISSING_JWT_CHECK: Declared as JWT-auth but no JWT validation found in code</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/admin-intelligence/index.ts">supabase/functions/admin-intelligence/index.ts</span></td>
+        <td>jwt 🛡️admin</td>
+        <td>service-role-key</td>
+        <td>—</td>
+        <td><div class="issue">MISSING_JWT_CHECK: Declared as JWT-auth but no JWT validation found in code</div><div class="issue">MISSING_ADMIN_GUARD: Declared adminOnly but no admin role check found</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/admin-reset-user-setup/index.ts">supabase/functions/admin-reset-user-setup/index.ts</span></td>
+        <td>none</td>
+        <td>jwt-getUser, admin-role-check, service-role-key</td>
+        <td>insert(×1), update(×1)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/admin-revoke-session/index.ts">supabase/functions/admin-revoke-session/index.ts</span></td>
+        <td>none</td>
+        <td>jwt-getUser, admin-role-check, service-role-key</td>
+        <td>insert(×1), update(×1)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/admin-users/index.ts">supabase/functions/admin-users/index.ts</span></td>
+        <td>jwt 🛡️admin</td>
+        <td>admin-role-check</td>
+        <td>insert(×2), delete(×1), upsert(×1)</td>
+        <td><div class="issue">MISSING_JWT_CHECK: Declared as JWT-auth but no JWT validation found in code</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/advisor-knowledge-manage/index.ts">supabase/functions/advisor-knowledge-manage/index.ts</span></td>
+        <td>jwt</td>
+        <td>—</td>
+        <td>insert(×1), delete(×1)</td>
+        <td><div class="issue">MISSING_JWT_CHECK: Declared as JWT-auth but no JWT validation found in code</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/ai-receipt-completeness-snapshot/index.ts">supabase/functions/ai-receipt-completeness-snapshot/index.ts</span></td>
+        <td>none</td>
+        <td>service-role-key</td>
+        <td>insert(×1)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/ai-runtime-nightly-verify/index.ts">supabase/functions/ai-runtime-nightly-verify/index.ts</span></td>
+        <td>none</td>
+        <td>jwt-header-extract, admin-role-check, service-role-key</td>
+        <td>insert(×6), delete(×1)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/alert-actions/index.ts">supabase/functions/alert-actions/index.ts</span></td>
+        <td>none</td>
+        <td>admin-role-check, service-role-key</td>
+        <td>update(×1), rpc(×1)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/alert-ingest/index.ts">supabase/functions/alert-ingest/index.ts</span></td>
+        <td>none</td>
+        <td>service-role-key</td>
+        <td>insert(×1), update(×1)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/alert-route/index.ts">supabase/functions/alert-route/index.ts</span></td>
+        <td>none</td>
+        <td>service-role-key</td>
+        <td>insert(×1)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/alert-router/index.ts">supabase/functions/alert-router/index.ts</span></td>
+        <td>none</td>
+        <td>service-role-key</td>
+        <td>insert(×1)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/apm-metrics-ingest/index.ts">supabase/functions/apm-metrics-ingest/index.ts</span></td>
+        <td>none</td>
+        <td>service-role-key</td>
+        <td>insert(×1)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/app-ingest-pwa/index.ts">supabase/functions/app-ingest-pwa/index.ts</span></td>
+        <td>none</td>
+        <td>admin-role-check, service-role-key</td>
+        <td>insert(×3), update(×2), rpc(×1)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/app-ingest-web/index.ts">supabase/functions/app-ingest-web/index.ts</span></td>
+        <td>none</td>
+        <td>admin-role-check, service-role-key</td>
+        <td>insert(×4), update(×2), rpc(×1)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/app-install/index.ts">supabase/functions/app-install/index.ts</span></td>
+        <td>none</td>
+        <td>jwt-getUser</td>
+        <td>upsert(×1)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/app-launch-resolve/index.ts">supabase/functions/app-launch-resolve/index.ts</span></td>
+        <td>none</td>
+        <td>jwt-getUser</td>
+        <td>insert(×1), update(×1), upsert(×1)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/app-manifest-sync/index.ts">supabase/functions/app-manifest-sync/index.ts</span></td>
+        <td>none</td>
+        <td>admin-role-check, service-role-key</td>
+        <td>update(×1), upsert(×2)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/app-manifest-verifier/index.ts">supabase/functions/app-manifest-verifier/index.ts</span></td>
+        <td>none</td>
+        <td>service-role-key</td>
+        <td>insert(×1)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/app-permissions-sync/index.ts">supabase/functions/app-permissions-sync/index.ts</span></td>
+        <td>none</td>
+        <td>jwt-getUser</td>
+        <td>upsert(×1)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/app-screenshot-capture/index.ts">supabase/functions/app-screenshot-capture/index.ts</span></td>
+        <td>none</td>
+        <td>admin-role-check, service-role-key</td>
+        <td>insert(×2), update(×3), rpc(×1)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/app-store-api/index.ts">supabase/functions/app-store-api/index.ts</span></td>
+        <td>jwt</td>
+        <td>—</td>
+        <td>update(×1), upsert(×2)</td>
+        <td><div class="issue">MISSING_JWT_CHECK: Declared as JWT-auth but no JWT validation found in code</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/app-store-catalog/index.ts">supabase/functions/app-store-catalog/index.ts</span></td>
+        <td>none</td>
+        <td>—</td>
+        <td>—</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/app-uninstall/index.ts">supabase/functions/app-uninstall/index.ts</span></td>
+        <td>none</td>
+        <td>jwt-getUser</td>
+        <td>delete(×1), upsert(×1)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/app-update-check/index.ts">supabase/functions/app-update-check/index.ts</span></td>
+        <td>none</td>
+        <td>jwt-getUser</td>
+        <td>—</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/attestation-packet-builder/index.ts">supabase/functions/attestation-packet-builder/index.ts</span></td>
+        <td>none</td>
+        <td>admin-role-check, service-role-key</td>
+        <td>upsert(×1)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/audit-export-bundler/index.ts">supabase/functions/audit-export-bundler/index.ts</span></td>
+        <td>none</td>
+        <td>admin-role-check, service-role-key, webhook-secret</td>
+        <td>upsert(×1)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/audit-log-export/index.ts">supabase/functions/audit-log-export/index.ts</span></td>
+        <td>none</td>
+        <td>admin-role-check, service-role-key</td>
+        <td>rpc(×1)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/beta-apply/index.ts">supabase/functions/beta-apply/index.ts</span></td>
+        <td>none</td>
+        <td>service-role-key</td>
+        <td>insert(×1)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/boardroom-cockpit-telemetry/index.ts">supabase/functions/boardroom-cockpit-telemetry/index.ts</span></td>
+        <td>none</td>
+        <td>jwt-getUser, service-role-key</td>
+        <td>insert(×1)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/boardroom-followthrough-dispatch/index.ts">supabase/functions/boardroom-followthrough-dispatch/index.ts</span></td>
+        <td>none</td>
+        <td>jwt-header-extract, service-role-key</td>
+        <td>insert(×4), update(×3)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/boardroom-followthrough-sla/index.ts">supabase/functions/boardroom-followthrough-sla/index.ts</span></td>
+        <td>none</td>
+        <td>jwt-header-extract, service-role-key</td>
+        <td>insert(×1)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/boardroom-outcome-record/index.ts">supabase/functions/boardroom-outcome-record/index.ts</span></td>
+        <td>none</td>
+        <td>admin-role-check, service-role-key</td>
+        <td>insert(×2), update(×2)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/boardroom-replay/index.ts">supabase/functions/boardroom-replay/index.ts</span></td>
+        <td>none</td>
+        <td>jwt-getUser</td>
+        <td>—</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/boardroom-session/index.ts">supabase/functions/boardroom-session/index.ts</span></td>
+        <td>none</td>
+        <td>jwt-getUser</td>
+        <td>insert(×5), update(×3)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/booking-manage/index.ts">supabase/functions/booking-manage/index.ts</span></td>
+        <td>jwt</td>
+        <td>—</td>
+        <td>insert(×6), update(×3)</td>
+        <td><div class="issue">MISSING_JWT_CHECK: Declared as JWT-auth but no JWT validation found in code</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/canary-chaos-cron/index.ts">supabase/functions/canary-chaos-cron/index.ts</span></td>
+        <td>none</td>
+        <td>jwt-header-extract, service-role-key</td>
+        <td>—</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/cashflow-calculate/index.ts">supabase/functions/cashflow-calculate/index.ts</span></td>
+        <td>jwt</td>
+        <td>—</td>
+        <td>—</td>
+        <td><div class="issue">MISSING_JWT_CHECK: Declared as JWT-auth but no JWT validation found in code</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/chaos-drill-runner/index.ts">supabase/functions/chaos-drill-runner/index.ts</span></td>
+        <td>none</td>
+        <td>service-role-key</td>
+        <td>insert(×1)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/check-ai-budget/index.ts">supabase/functions/check-ai-budget/index.ts</span></td>
+        <td>jwt</td>
+        <td>service-role-key</td>
+        <td>—</td>
+        <td><div class="issue">MISSING_JWT_CHECK: Declared as JWT-auth but no JWT validation found in code</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/cloud-admin-api/index.ts">supabase/functions/cloud-admin-api/index.ts</span></td>
+        <td>jwt 🛡️admin</td>
+        <td>—</td>
+        <td>insert(×1), update(×4), upsert(×1)</td>
+        <td><div class="issue">MISSING_JWT_CHECK: Declared as JWT-auth but no JWT validation found in code</div><div class="issue">MISSING_ADMIN_GUARD: Declared adminOnly but no admin role check found</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/cloud-device-api/index.ts">supabase/functions/cloud-device-api/index.ts</span></td>
+        <td>jwt</td>
+        <td>—</td>
+        <td>insert(×2), update(×5)</td>
+        <td><div class="issue">MISSING_JWT_CHECK: Declared as JWT-auth but no JWT validation found in code</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/cloud-lifecycle-api/index.ts">supabase/functions/cloud-lifecycle-api/index.ts</span></td>
+        <td>jwt 🛡️admin</td>
+        <td>—</td>
+        <td>insert(×8), update(×2)</td>
+        <td><div class="issue">MISSING_JWT_CHECK: Declared as JWT-auth but no JWT validation found in code</div><div class="issue">MISSING_ADMIN_GUARD: Declared adminOnly but no admin role check found</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/cloud-storage-api/index.ts">supabase/functions/cloud-storage-api/index.ts</span></td>
+        <td>jwt</td>
+        <td>—</td>
+        <td>insert(×5), update(×7), delete(×4), upsert(×1)</td>
+        <td><div class="issue">MISSING_JWT_CHECK: Declared as JWT-auth but no JWT validation found in code</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/cloud-sync-api/index.ts">supabase/functions/cloud-sync-api/index.ts</span></td>
+        <td>jwt</td>
+        <td>—</td>
+        <td>insert(×3), update(×2), upsert(×1)</td>
+        <td><div class="issue">MISSING_JWT_CHECK: Declared as JWT-auth but no JWT validation found in code</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/cloud-tenant-api/index.ts">supabase/functions/cloud-tenant-api/index.ts</span></td>
+        <td>jwt 🛡️admin</td>
+        <td>—</td>
+        <td>insert(×5), upsert(×1)</td>
+        <td><div class="issue">MISSING_JWT_CHECK: Declared as JWT-auth but no JWT validation found in code</div><div class="issue">MISSING_ADMIN_GUARD: Declared adminOnly but no admin role check found</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/communications-api/index.ts">supabase/functions/communications-api/index.ts</span></td>
+        <td>jwt</td>
+        <td>—</td>
+        <td>insert(×1), update(×1)</td>
+        <td><div class="issue">MISSING_JWT_CHECK: Declared as JWT-auth but no JWT validation found in code</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/compliance-evidence-collector/index.ts">supabase/functions/compliance-evidence-collector/index.ts</span></td>
+        <td>none</td>
+        <td>admin-role-check, service-role-key</td>
+        <td>insert(×1)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/compliance-evidence-cron/index.ts">supabase/functions/compliance-evidence-cron/index.ts</span></td>
+        <td>none</td>
+        <td>admin-role-check, service-role-key</td>
+        <td>insert(×1), rpc(×1)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/connector-batch/index.ts">supabase/functions/connector-batch/index.ts</span></td>
+        <td>jwt</td>
+        <td>—</td>
+        <td>insert(×6)</td>
+        <td><div class="issue">MISSING_JWT_CHECK: Declared as JWT-auth but no JWT validation found in code</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/connector-discover/index.ts">supabase/functions/connector-discover/index.ts</span></td>
+        <td>jwt</td>
+        <td>—</td>
+        <td>insert(×1)</td>
+        <td><div class="issue">MISSING_JWT_CHECK: Declared as JWT-auth but no JWT validation found in code</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/connector-health/index.ts">supabase/functions/connector-health/index.ts</span></td>
+        <td>jwt</td>
+        <td>—</td>
+        <td>—</td>
+        <td><div class="issue">MISSING_JWT_CHECK: Declared as JWT-auth but no JWT validation found in code</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/connector-oauth/index.ts">supabase/functions/connector-oauth/index.ts</span></td>
+        <td>jwt</td>
+        <td>service-role-key</td>
+        <td>insert(×7), update(×5), delete(×1), upsert(×2)</td>
+        <td><div class="issue">MISSING_JWT_CHECK: Declared as JWT-auth but no JWT validation found in code</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/connector-reauth-tracker/index.ts">supabase/functions/connector-reauth-tracker/index.ts</span></td>
+        <td>none</td>
+        <td>—</td>
+        <td>insert(×1), update(×1)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/connector-refresh-nightly-verify/index.ts">supabase/functions/connector-refresh-nightly-verify/index.ts</span></td>
+        <td>none</td>
+        <td>jwt-header-extract, admin-role-check, service-role-key</td>
+        <td>insert(×1), update(×1)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/connector-token-refresh/index.ts">supabase/functions/connector-token-refresh/index.ts</span></td>
+        <td>none</td>
+        <td>service-role-key</td>
+        <td>insert(×2), update(×3)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/connector-transform/index.ts">supabase/functions/connector-transform/index.ts</span></td>
+        <td>jwt</td>
+        <td>—</td>
+        <td>insert(×1)</td>
+        <td><div class="issue">MISSING_JWT_CHECK: Declared as JWT-auth but no JWT validation found in code</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/crash-report-ingest/index.ts">supabase/functions/crash-report-ingest/index.ts</span></td>
+        <td>none</td>
+        <td>service-role-key</td>
+        <td>insert(×1)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/crm-sync/index.ts">supabase/functions/crm-sync/index.ts</span></td>
+        <td>jwt</td>
+        <td>—</td>
+        <td>insert(×4), upsert(×2)</td>
+        <td><div class="issue">MISSING_JWT_CHECK: Declared as JWT-auth but no JWT validation found in code</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/cron-receipt-collector/index.ts">supabase/functions/cron-receipt-collector/index.ts</span></td>
+        <td>none</td>
+        <td>service-role-key</td>
+        <td>insert(×1)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/data-cleanup/index.ts">supabase/functions/data-cleanup/index.ts</span></td>
+        <td>none</td>
+        <td>service-role-key</td>
+        <td>insert(×1), delete(×1)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/data-export/index.ts">supabase/functions/data-export/index.ts</span></td>
+        <td>none</td>
+        <td>service-role-key</td>
+        <td>insert(×1), update(×1)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/db-truth-introspect/index.ts">supabase/functions/db-truth-introspect/index.ts</span></td>
+        <td>jwt 🛡️admin</td>
+        <td>—</td>
+        <td>rpc(×1)</td>
+        <td><div class="issue">MISSING_JWT_CHECK: Declared as JWT-auth but no JWT validation found in code</div><div class="issue">MISSING_ADMIN_GUARD: Declared adminOnly but no admin role check found</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/desktop-update-manifest/index.ts">supabase/functions/desktop-update-manifest/index.ts</span></td>
+        <td>none</td>
+        <td>—</td>
+        <td>—</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/device-telemetry/index.ts">supabase/functions/device-telemetry/index.ts</span></td>
+        <td>jwt</td>
+        <td>service-role-key</td>
+        <td>upsert(×2)</td>
+        <td><div class="issue">MISSING_JWT_CHECK: Declared as JWT-auth but no JWT validation found in code</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/digital-twin-engine/index.ts">supabase/functions/digital-twin-engine/index.ts</span></td>
+        <td>jwt</td>
+        <td>—</td>
+        <td>insert(×1), upsert(×1)</td>
+        <td><div class="issue">MISSING_JWT_CHECK: Declared as JWT-auth but no JWT validation found in code</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/dr-drill-cron/index.ts">supabase/functions/dr-drill-cron/index.ts</span></td>
+        <td>none</td>
+        <td>service-role-key</td>
+        <td>insert(×1)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/dr-drill-executor/index.ts">supabase/functions/dr-drill-executor/index.ts</span></td>
+        <td>none</td>
+        <td>jwt-getUser, admin-role-check, service-role-key</td>
+        <td>insert(×1)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/dr-drill-runner/index.ts">supabase/functions/dr-drill-runner/index.ts</span></td>
+        <td>none</td>
+        <td>admin-role-check, service-role-key</td>
+        <td>insert(×1)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/ecosystem-operations/index.ts">supabase/functions/ecosystem-operations/index.ts</span></td>
+        <td>jwt</td>
+        <td>service-role-key</td>
+        <td>insert(×1), update(×1), upsert(×17)</td>
+        <td><div class="issue">MISSING_JWT_CHECK: Declared as JWT-auth but no JWT validation found in code</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/error-ingest/index.ts">supabase/functions/error-ingest/index.ts</span></td>
+        <td>none</td>
+        <td>service-role-key</td>
+        <td>insert(×1), update(×1)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/escalation-engine/index.ts">supabase/functions/escalation-engine/index.ts</span></td>
+        <td>none</td>
+        <td>service-role-key</td>
+        <td>insert(×2), update(×1)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/evidence-graph-builder/index.ts">supabase/functions/evidence-graph-builder/index.ts</span></td>
+        <td>none</td>
+        <td>service-role-key</td>
+        <td>upsert(×4)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/external-workforce-api/index.ts">supabase/functions/external-workforce-api/index.ts</span></td>
+        <td>none</td>
+        <td>service-role-key, api-key-check</td>
+        <td>update(×1)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/external-workforce-webhook-dispatcher/index.ts">supabase/functions/external-workforce-webhook-dispatcher/index.ts</span></td>
+        <td>none</td>
+        <td>service-role-key, webhook-secret</td>
+        <td>insert(×1), update(×1), rpc(×1)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/federated-knowledge-aggregator/index.ts">supabase/functions/federated-knowledge-aggregator/index.ts</span></td>
+        <td>none</td>
+        <td>jwt-getUser</td>
+        <td>insert(×1), rpc(×1)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/gdpr-delete/index.ts">supabase/functions/gdpr-delete/index.ts</span></td>
+        <td>jwt</td>
+        <td>service-role-key</td>
+        <td>insert(×1), delete(×1)</td>
+        <td><div class="issue">MISSING_JWT_CHECK: Declared as JWT-auth but no JWT validation found in code</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/gdpr-export/index.ts">supabase/functions/gdpr-export/index.ts</span></td>
+        <td>jwt</td>
+        <td>—</td>
+        <td>—</td>
+        <td><div class="issue">MISSING_JWT_CHECK: Declared as JWT-auth but no JWT validation found in code</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/generate-support-bundle/index.ts">supabase/functions/generate-support-bundle/index.ts</span></td>
+        <td>none</td>
+        <td>jwt-getUser, service-role-key</td>
+        <td>insert(×1)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/health-beat/index.ts">supabase/functions/health-beat/index.ts</span></td>
+        <td>none</td>
+        <td>service-role-key</td>
+        <td>insert(×1)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/health-check/index.ts">supabase/functions/health-check/index.ts</span></td>
+        <td>anon</td>
+        <td>service-role-key</td>
+        <td>—</td>
+        <td><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/health-cron/index.ts">supabase/functions/health-cron/index.ts</span></td>
+        <td>none</td>
+        <td>service-role-key</td>
+        <td>insert(×1)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/health-live/index.ts">supabase/functions/health-live/index.ts</span></td>
+        <td>none</td>
+        <td>—</td>
+        <td>—</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/health-ready/index.ts">supabase/functions/health-ready/index.ts</span></td>
+        <td>none</td>
+        <td>service-role-key</td>
+        <td>—</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/internal-agent-canary-runner/index.ts">supabase/functions/internal-agent-canary-runner/index.ts</span></td>
+        <td>none</td>
+        <td>service-role-key</td>
+        <td>insert(×2), rpc(×1)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/internal-agent-chaos-scheduler/index.ts">supabase/functions/internal-agent-chaos-scheduler/index.ts</span></td>
+        <td>none</td>
+        <td>service-role-key</td>
+        <td>insert(×1), update(×2)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/internal-agent-consensus-engine/index.ts">supabase/functions/internal-agent-consensus-engine/index.ts</span></td>
+        <td>none</td>
+        <td>service-role-key</td>
+        <td>rpc(×3)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/internal-agent-cost-optimizer/index.ts">supabase/functions/internal-agent-cost-optimizer/index.ts</span></td>
+        <td>none</td>
+        <td>service-role-key</td>
+        <td>rpc(×2)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/internal-agent-dependency-scanner/index.ts">supabase/functions/internal-agent-dependency-scanner/index.ts</span></td>
+        <td>none</td>
+        <td>service-role-key</td>
+        <td>update(×1), upsert(×1), rpc(×1)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/internal-agent-execute-action/index.ts">supabase/functions/internal-agent-execute-action/index.ts</span></td>
+        <td>none</td>
+        <td>admin-role-check, service-role-key</td>
+        <td>insert(×9), update(×9), rpc(×2)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/internal-agent-loop/index.ts">supabase/functions/internal-agent-loop/index.ts</span></td>
+        <td>none</td>
+        <td>jwt-getUser, jwt-header-extract, service-role-key</td>
+        <td>insert(×6), update(×6), rpc(×3)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/internal-agent-policy-architect/index.ts">supabase/functions/internal-agent-policy-architect/index.ts</span></td>
+        <td>none</td>
+        <td>jwt-getUser, admin-role-check, service-role-key</td>
+        <td>insert(×1), rpc(×2)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/internal-agent-reflect/index.ts">supabase/functions/internal-agent-reflect/index.ts</span></td>
+        <td>none</td>
+        <td>service-role-key</td>
+        <td>rpc(×1)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/internal-agent-self-healer/index.ts">supabase/functions/internal-agent-self-healer/index.ts</span></td>
+        <td>none</td>
+        <td>service-role-key</td>
+        <td>rpc(×1)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/internal-agent-slo-evaluator/index.ts">supabase/functions/internal-agent-slo-evaluator/index.ts</span></td>
+        <td>none</td>
+        <td>service-role-key</td>
+        <td>insert(×2)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/internal-agent-suggestion-generator/index.ts">supabase/functions/internal-agent-suggestion-generator/index.ts</span></td>
+        <td>none</td>
+        <td>service-role-key</td>
+        <td>rpc(×1)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/internal-agent-tenant-federation/index.ts">supabase/functions/internal-agent-tenant-federation/index.ts</span></td>
+        <td>none</td>
+        <td>jwt-getUser</td>
+        <td>upsert(×3), rpc(×1)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/internal-agent-trust-evaluator/index.ts">supabase/functions/internal-agent-trust-evaluator/index.ts</span></td>
+        <td>none</td>
+        <td>jwt-getUser, admin-role-check, service-role-key</td>
+        <td>rpc(×3)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/internal-agent-weekly-digest/index.ts">supabase/functions/internal-agent-weekly-digest/index.ts</span></td>
+        <td>none</td>
+        <td>service-role-key</td>
+        <td>upsert(×1)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/investment-portfolio-api/index.ts">supabase/functions/investment-portfolio-api/index.ts</span></td>
+        <td>jwt</td>
+        <td>—</td>
+        <td>insert(×1)</td>
+        <td><div class="issue">MISSING_JWT_CHECK: Declared as JWT-auth but no JWT validation found in code</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/investor-request/index.ts">supabase/functions/investor-request/index.ts</span></td>
+        <td>none</td>
+        <td>service-role-key</td>
+        <td>insert(×1)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/invoice-generate/index.ts">supabase/functions/invoice-generate/index.ts</span></td>
+        <td>jwt</td>
+        <td>—</td>
+        <td>insert(×7), update(×3)</td>
+        <td><div class="issue">MISSING_JWT_CHECK: Declared as JWT-auth but no JWT validation found in code</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/kill-switch-state/index.ts">supabase/functions/kill-switch-state/index.ts</span></td>
+        <td>none</td>
+        <td>—</td>
+        <td>—</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/kill-switch-toggle/index.ts">supabase/functions/kill-switch-toggle/index.ts</span></td>
+        <td>none</td>
+        <td>service-role-key</td>
+        <td>insert(×1), update(×1)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/license-gateway/index.ts">supabase/functions/license-gateway/index.ts</span></td>
+        <td>jwt</td>
+        <td>admin-role-check, service-role-key, webhook-secret</td>
+        <td>insert(×9), update(×5), rpc(×2)</td>
+        <td><div class="issue">MISSING_JWT_CHECK: Declared as JWT-auth but no JWT validation found in code</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/mobile-deferral-attestor/index.ts">supabase/functions/mobile-deferral-attestor/index.ts</span></td>
+        <td>none</td>
+        <td>jwt-getUser, admin-role-check, service-role-key</td>
+        <td>insert(×1)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/msa-operations/index.ts">supabase/functions/msa-operations/index.ts</span></td>
+        <td>jwt</td>
+        <td>service-role-key</td>
+        <td>insert(×1), delete(×1), upsert(×8)</td>
+        <td><div class="issue">MISSING_JWT_CHECK: Declared as JWT-auth but no JWT validation found in code</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/oauth-refresh-probe/index.ts">supabase/functions/oauth-refresh-probe/index.ts</span></td>
+        <td>none</td>
+        <td>jwt-header-extract, service-role-key</td>
+        <td>insert(×1), update(×1)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/onboarding-branch-tracker/index.ts">supabase/functions/onboarding-branch-tracker/index.ts</span></td>
+        <td>none</td>
+        <td>jwt-getUser, service-role-key</td>
+        <td>insert(×1)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/onboarding-resume-checkpoint/index.ts">supabase/functions/onboarding-resume-checkpoint/index.ts</span></td>
+        <td>none</td>
+        <td>service-role-key</td>
+        <td>upsert(×1)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/os-command/index.ts">supabase/functions/os-command/index.ts</span></td>
+        <td>jwt 🛡️admin</td>
+        <td>—</td>
+        <td>insert(×2)</td>
+        <td><div class="issue">MISSING_JWT_CHECK: Declared as JWT-auth but no JWT validation found in code</div><div class="issue">MISSING_ADMIN_GUARD: Declared adminOnly but no admin role check found</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/os-status/index.ts">supabase/functions/os-status/index.ts</span></td>
+        <td>anon</td>
+        <td>service-role-key</td>
+        <td>upsert(×1)</td>
+        <td><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/os-update-manifest/index.ts">supabase/functions/os-update-manifest/index.ts</span></td>
+        <td>none</td>
+        <td>service-role-key</td>
+        <td>insert(×1)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/owner-copilot-bff/index.ts">supabase/functions/owner-copilot-bff/index.ts</span></td>
+        <td>none</td>
+        <td>jwt-getUser</td>
+        <td>rpc(×1)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/owner-copilot-session-tracker/index.ts">supabase/functions/owner-copilot-session-tracker/index.ts</span></td>
+        <td>none</td>
+        <td>jwt-getUser, service-role-key</td>
+        <td>insert(×1), update(×1)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/package-verify/index.ts">supabase/functions/package-verify/index.ts</span></td>
+        <td>none</td>
+        <td>service-role-key</td>
+        <td>insert(×1)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/payment-kill-switch/index.ts">supabase/functions/payment-kill-switch/index.ts</span></td>
+        <td>jwt 🛡️admin</td>
+        <td>—</td>
+        <td>insert(×1)</td>
+        <td><div class="issue">MISSING_JWT_CHECK: Declared as JWT-auth but no JWT validation found in code</div><div class="issue">MISSING_ADMIN_GUARD: Declared adminOnly but no admin role check found</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/payment-process/index.ts">supabase/functions/payment-process/index.ts</span></td>
+        <td>jwt</td>
+        <td>—</td>
+        <td>insert(×5), update(×2)</td>
+        <td><div class="issue">MISSING_JWT_CHECK: Declared as JWT-auth but no JWT validation found in code</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/press-inquiry/index.ts">supabase/functions/press-inquiry/index.ts</span></td>
+        <td>none</td>
+        <td>service-role-key</td>
+        <td>insert(×1)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/production-launch-attestor/index.ts">supabase/functions/production-launch-attestor/index.ts</span></td>
+        <td>none</td>
+        <td>jwt-getUser, admin-role-check, service-role-key</td>
+        <td>insert(×1)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/prompt-versioning/index.ts">supabase/functions/prompt-versioning/index.ts</span></td>
+        <td>none</td>
+        <td>admin-role-check, service-role-key</td>
+        <td>insert(×1), update(×6), rpc(×1)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/provider-family-operations/index.ts">supabase/functions/provider-family-operations/index.ts</span></td>
+        <td>jwt</td>
+        <td>service-role-key</td>
+        <td>insert(×3), update(×1), upsert(×6)</td>
+        <td><div class="issue">MISSING_JWT_CHECK: Declared as JWT-auth but no JWT validation found in code</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/push-track/index.ts">supabase/functions/push-track/index.ts</span></td>
+        <td>jwt</td>
+        <td>service-role-key</td>
+        <td>update(×1)</td>
+        <td><div class="issue">MISSING_JWT_CHECK: Declared as JWT-auth but no JWT validation found in code</div><div class="issue">UNSCOPED_DB_WRITE: DB writes detected without user_id scoping in user-context function</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/recovery-evidence-ingest/index.ts">supabase/functions/recovery-evidence-ingest/index.ts</span></td>
+        <td>none</td>
+        <td>service-role-key</td>
+        <td>insert(×1)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/release-artifact-signer/index.ts">supabase/functions/release-artifact-signer/index.ts</span></td>
+        <td>none</td>
+        <td>admin-role-check, webhook-secret</td>
+        <td>insert(×1), rpc(×1)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/release-artifact-verifier/index.ts">supabase/functions/release-artifact-verifier/index.ts</span></td>
+        <td>none</td>
+        <td>admin-role-check, service-role-key</td>
+        <td>update(×1)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/release-evidence-graph-snapshot/index.ts">supabase/functions/release-evidence-graph-snapshot/index.ts</span></td>
+        <td>none</td>
+        <td>service-role-key</td>
+        <td>insert(×1)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/routing-policy-update/index.ts">supabase/functions/routing-policy-update/index.ts</span></td>
+        <td>none</td>
+        <td>admin-role-check, service-role-key</td>
+        <td>insert(×1), upsert(×1), rpc(×1)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/runbook-drill/index.ts">supabase/functions/runbook-drill/index.ts</span></td>
+        <td>none</td>
+        <td>jwt-getUser, service-role-key</td>
+        <td>insert(×4)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/secret-rotation-orchestrator/index.ts">supabase/functions/secret-rotation-orchestrator/index.ts</span></td>
+        <td>none</td>
+        <td>admin-role-check, service-role-key</td>
+        <td>insert(×2), rpc(×1)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/security-anomaly-rotation-trigger/index.ts">supabase/functions/security-anomaly-rotation-trigger/index.ts</span></td>
+        <td>none</td>
+        <td>jwt-header-extract, service-role-key</td>
+        <td>rpc(×1)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/security-council-tick/index.ts">supabase/functions/security-council-tick/index.ts</span></td>
+        <td>none</td>
+        <td>admin-role-check, service-role-key</td>
+        <td>rpc(×3)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/security-fabric-runtime-probe/index.ts">supabase/functions/security-fabric-runtime-probe/index.ts</span></td>
+        <td>none</td>
+        <td>service-role-key</td>
+        <td>insert(×1)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/security-kill-switch-recommender/index.ts">supabase/functions/security-kill-switch-recommender/index.ts</span></td>
+        <td>none</td>
+        <td>service-role-key</td>
+        <td>rpc(×1)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/seed-advisor-registry/index.ts">supabase/functions/seed-advisor-registry/index.ts</span></td>
+        <td>none</td>
+        <td>service-role-key</td>
+        <td>upsert(×1)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/seed-connector-registry/index.ts">supabase/functions/seed-connector-registry/index.ts</span></td>
+        <td>none</td>
+        <td>service-role-key</td>
+        <td>upsert(×1)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/seed-user-data/index.ts">supabase/functions/seed-user-data/index.ts</span></td>
+        <td>jwt 🛡️admin</td>
+        <td>service-role-key</td>
+        <td>insert(×25), update(×1)</td>
+        <td><div class="issue">MISSING_JWT_CHECK: Declared as JWT-auth but no JWT validation found in code</div><div class="issue">MISSING_ADMIN_GUARD: Declared adminOnly but no admin role check found</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/simulation-engine-api/index.ts">supabase/functions/simulation-engine-api/index.ts</span></td>
+        <td>jwt</td>
+        <td>—</td>
+        <td>insert(×2), update(×1)</td>
+        <td><div class="issue">MISSING_JWT_CHECK: Declared as JWT-auth but no JWT validation found in code</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/sla-evaluator/index.ts">supabase/functions/sla-evaluator/index.ts</span></td>
+        <td>none</td>
+        <td>service-role-key</td>
+        <td>insert(×1)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/tasks-workflow-api/index.ts">supabase/functions/tasks-workflow-api/index.ts</span></td>
+        <td>jwt</td>
+        <td>—</td>
+        <td>insert(×1), update(×1)</td>
+        <td><div class="issue">MISSING_JWT_CHECK: Declared as JWT-auth but no JWT validation found in code</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/tax-estimate/index.ts">supabase/functions/tax-estimate/index.ts</span></td>
+        <td>jwt</td>
+        <td>—</td>
+        <td>—</td>
+        <td><div class="issue">MISSING_JWT_CHECK: Declared as JWT-auth but no JWT validation found in code</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/tenant-self-service-bff/index.ts">supabase/functions/tenant-self-service-bff/index.ts</span></td>
+        <td>none</td>
+        <td>—</td>
+        <td>insert(×1), update(×1)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/trace-ingest/index.ts">supabase/functions/trace-ingest/index.ts</span></td>
+        <td>none</td>
+        <td>service-role-key</td>
+        <td>insert(×1)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/uptime-rollup/index.ts">supabase/functions/uptime-rollup/index.ts</span></td>
+        <td>none</td>
+        <td>service-role-key</td>
+        <td>delete(×1)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/verification-recorder/index.ts">supabase/functions/verification-recorder/index.ts</span></td>
+        <td>jwt</td>
+        <td>service-role-key</td>
+        <td>insert(×3), update(×1)</td>
+        <td><div class="issue">MISSING_JWT_CHECK: Declared as JWT-auth but no JWT validation found in code</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/waitlist-signup/index.ts">supabase/functions/waitlist-signup/index.ts</span></td>
+        <td>none</td>
+        <td>service-role-key</td>
+        <td>insert(×1), update(×1), rpc(×1)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/waitlist-stats/index.ts">supabase/functions/waitlist-stats/index.ts</span></td>
+        <td>none</td>
+        <td>service-role-key</td>
+        <td>—</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/webauthn-challenge/index.ts">supabase/functions/webauthn-challenge/index.ts</span></td>
+        <td>none</td>
+        <td>—</td>
+        <td>insert(×3), update(×3)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/webhook-ingest/index.ts">supabase/functions/webhook-ingest/index.ts</span></td>
+        <td>none</td>
+        <td>service-role-key, webhook-secret</td>
+        <td>insert(×1)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/webhook-process/index.ts">supabase/functions/webhook-process/index.ts</span></td>
+        <td>none</td>
+        <td>service-role-key</td>
+        <td>insert(×1), update(×2)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/webhook-replay/index.ts">supabase/functions/webhook-replay/index.ts</span></td>
+        <td>none</td>
+        <td>jwt-getUser, admin-role-check, service-role-key</td>
+        <td>insert(×1), update(×1)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/webhook-retry-processor/index.ts">supabase/functions/webhook-retry-processor/index.ts</span></td>
+        <td>none</td>
+        <td>service-role-key, webhook-secret</td>
+        <td>update(×2)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/workflow-execute/index.ts">supabase/functions/workflow-execute/index.ts</span></td>
+        <td>none</td>
+        <td>service-role-key</td>
+        <td>insert(×5), update(×3)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/workflow-repair/index.ts">supabase/functions/workflow-repair/index.ts</span></td>
+        <td>none</td>
+        <td>admin-role-check, service-role-key</td>
+        <td>insert(×2), update(×1)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/workflow-replay/index.ts">supabase/functions/workflow-replay/index.ts</span></td>
+        <td>none</td>
+        <td>jwt-header-extract, admin-role-check, service-role-key</td>
+        <td>insert(×2)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div></td>
+      </tr><tr class="row-error">
+        <td><span class="file-link" title="supabase/functions/workflow-stuck-detector/index.ts">supabase/functions/workflow-stuck-detector/index.ts</span></td>
+        <td>none</td>
+        <td>service-role-key</td>
+        <td>insert(×3), update(×1)</td>
+        <td><div class="issue">NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map</div><div class="issue">SERVICE_ROLE_LEAK: Uses service-role key without JWT validation</div></td>
+      </tr></table><details><summary>✅ Passing (41)</summary><table>
+      <tr><th>Function</th><th>Auth</th><th>Patterns</th><th>DB Writes</th></tr><tr>
+        <td><span class="file-link" title="supabase/functions/admin-ai-workforce-run/index.ts">supabase/functions/admin-ai-workforce-run/index.ts</span></td>
+        <td>jwt</td>
+        <td>jwt-header-extract, admin-role-check, service-role-key</td>
+        <td>insert(×6), update(×4), upsert(×3)</td>
+      </tr><tr>
+        <td><span class="file-link" title="supabase/functions/admin-gateway/index.ts">supabase/functions/admin-gateway/index.ts</span></td>
+        <td>jwt</td>
+        <td>jwt-getUser, admin-role-check, service-role-key</td>
+        <td>insert(×2), rpc(×2)</td>
+      </tr><tr>
+        <td><span class="file-link" title="supabase/functions/advisor-agent-loop/index.ts">supabase/functions/advisor-agent-loop/index.ts</span></td>
+        <td>jwt</td>
+        <td>jwt-header-extract, service-role-key</td>
+        <td>insert(×1), update(×1)</td>
+      </tr><tr>
+        <td><span class="file-link" title="supabase/functions/advisor-avatar-generate/index.ts">supabase/functions/advisor-avatar-generate/index.ts</span></td>
+        <td>jwt</td>
+        <td>jwt-header-extract, service-role-key</td>
+        <td>upsert(×1)</td>
+      </tr><tr>
+        <td><span class="file-link" title="supabase/functions/advisor-conversation/index.ts">supabase/functions/advisor-conversation/index.ts</span></td>
+        <td>jwt</td>
+        <td>jwt-header-extract</td>
+        <td>—</td>
+      </tr><tr>
+        <td><span class="file-link" title="supabase/functions/advisor-deep-intelligence/index.ts">supabase/functions/advisor-deep-intelligence/index.ts</span></td>
+        <td>jwt</td>
+        <td>jwt-header-extract, service-role-key</td>
+        <td>insert(×2)</td>
+      </tr><tr>
+        <td><span class="file-link" title="supabase/functions/advisor-weekly-report/index.ts">supabase/functions/advisor-weekly-report/index.ts</span></td>
+        <td>jwt</td>
+        <td>jwt-header-extract</td>
+        <td>—</td>
+      </tr><tr>
+        <td><span class="file-link" title="supabase/functions/agent-executor/index.ts">supabase/functions/agent-executor/index.ts</span></td>
+        <td>service-role</td>
+        <td>jwt-header-extract, service-role-key</td>
+        <td>insert(×9), update(×7)</td>
+      </tr><tr>
+        <td><span class="file-link" title="supabase/functions/agent-heartbeat/index.ts">supabase/functions/agent-heartbeat/index.ts</span></td>
+        <td>service-role</td>
+        <td>jwt-getUser, service-role-key</td>
+        <td>insert(×1)</td>
+      </tr><tr>
+        <td><span class="file-link" title="supabase/functions/agent-intelligence/index.ts">supabase/functions/agent-intelligence/index.ts</span></td>
+        <td>service-role</td>
+        <td>jwt-getUser, service-role-key</td>
+        <td>—</td>
+      </tr><tr>
+        <td><span class="file-link" title="supabase/functions/agent-scheduler/index.ts">supabase/functions/agent-scheduler/index.ts</span></td>
+        <td>service-role</td>
+        <td>jwt-getUser, jwt-header-extract, service-role-key</td>
+        <td>upsert(×1)</td>
+      </tr><tr>
+        <td><span class="file-link" title="supabase/functions/agent-signal/index.ts">supabase/functions/agent-signal/index.ts</span></td>
+        <td>service-role</td>
+        <td>jwt-getUser, service-role-key</td>
+        <td>insert(×1), update(×1)</td>
+      </tr><tr>
+        <td><span class="file-link" title="supabase/functions/ai-gateway/index.ts">supabase/functions/ai-gateway/index.ts</span></td>
+        <td>jwt</td>
+        <td>jwt-getUser, jwt-header-extract, service-role-key</td>
+        <td>insert(×14), rpc(×1)</td>
+      </tr><tr>
+        <td><span class="file-link" title="supabase/functions/ai-health/index.ts">supabase/functions/ai-health/index.ts</span></td>
+        <td>anon</td>
+        <td>jwt-header-extract, service-role-key</td>
+        <td>—</td>
+      </tr><tr>
+        <td><span class="file-link" title="supabase/functions/ambient-os-operations/index.ts">supabase/functions/ambient-os-operations/index.ts</span></td>
+        <td>service-role</td>
+        <td>jwt-getUser, service-role-key</td>
+        <td>insert(×7), update(×2), upsert(×5)</td>
+      </tr><tr>
+        <td><span class="file-link" title="supabase/functions/api-gateway/index.ts">supabase/functions/api-gateway/index.ts</span></td>
+        <td>api-key</td>
+        <td>jwt-getUser</td>
+        <td>insert(×12), update(×12), upsert(×1)</td>
+      </tr><tr>
+        <td><span class="file-link" title="supabase/functions/brain-core/index.ts">supabase/functions/brain-core/index.ts</span></td>
+        <td>jwt</td>
+        <td>jwt-header-extract, service-role-key</td>
+        <td>insert(×4), update(×1), rpc(×1)</td>
+      </tr><tr>
+        <td><span class="file-link" title="supabase/functions/business-advisor-intelligence/index.ts">supabase/functions/business-advisor-intelligence/index.ts</span></td>
+        <td>jwt</td>
+        <td>jwt-getUser, jwt-header-extract</td>
+        <td>insert(×1)</td>
+      </tr><tr>
+        <td><span class="file-link" title="supabase/functions/business-board-api/index.ts">supabase/functions/business-board-api/index.ts</span></td>
+        <td>jwt</td>
+        <td>jwt-getUser, service-role-key</td>
+        <td>insert(×7), update(×8), upsert(×1)</td>
+      </tr><tr>
+        <td><span class="file-link" title="supabase/functions/chat-advisor/index.ts">supabase/functions/chat-advisor/index.ts</span></td>
+        <td>jwt</td>
+        <td>jwt-header-extract, service-role-key</td>
+        <td>insert(×3), rpc(×1)</td>
+      </tr><tr>
+        <td><span class="file-link" title="supabase/functions/cloud-worker-api/index.ts">supabase/functions/cloud-worker-api/index.ts</span></td>
+        <td>service-role</td>
+        <td>—</td>
+        <td>insert(×1), update(×4)</td>
+      </tr><tr>
+        <td><span class="file-link" title="supabase/functions/connector-operations/index.ts">supabase/functions/connector-operations/index.ts</span></td>
+        <td>jwt</td>
+        <td>jwt-getUser, service-role-key</td>
+        <td>insert(×10), update(×1), delete(×1), upsert(×6)</td>
+      </tr><tr>
+        <td><span class="file-link" title="supabase/functions/connector-proxy/index.ts">supabase/functions/connector-proxy/index.ts</span></td>
+        <td>jwt</td>
+        <td>jwt-getUser, jwt-header-extract, service-role-key</td>
+        <td>insert(×2), update(×1)</td>
+      </tr><tr>
+        <td><span class="file-link" title="supabase/functions/connector-sync/index.ts">supabase/functions/connector-sync/index.ts</span></td>
+        <td>jwt</td>
+        <td>jwt-getUser, service-role-key</td>
+        <td>insert(×4), update(×2), upsert(×1)</td>
+      </tr><tr>
+        <td><span class="file-link" title="supabase/functions/cost-alert/index.ts">supabase/functions/cost-alert/index.ts</span></td>
+        <td>service-role</td>
+        <td>service-role-key</td>
+        <td>—</td>
+      </tr><tr>
+        <td><span class="file-link" title="supabase/functions/event-processor/index.ts">supabase/functions/event-processor/index.ts</span></td>
+        <td>service-role</td>
+        <td>service-role-key</td>
+        <td>insert(×5), update(×1), upsert(×2)</td>
+      </tr><tr>
+        <td><span class="file-link" title="supabase/functions/file-ingestion/index.ts">supabase/functions/file-ingestion/index.ts</span></td>
+        <td>jwt</td>
+        <td>jwt-header-extract, service-role-key</td>
+        <td>insert(×2)</td>
+      </tr><tr>
+        <td><span class="file-link" title="supabase/functions/get-weather/index.ts">supabase/functions/get-weather/index.ts</span></td>
+        <td>anon</td>
+        <td>—</td>
+        <td>—</td>
+      </tr><tr>
+        <td><span class="file-link" title="supabase/functions/intelligence-api/index.ts">supabase/functions/intelligence-api/index.ts</span></td>
+        <td>jwt</td>
+        <td>jwt-header-extract, service-role-key</td>
+        <td>insert(×7), update(×1)</td>
+      </tr><tr>
+        <td><span class="file-link" title="supabase/functions/main/index.ts">supabase/functions/main/index.ts</span></td>
+        <td>anon</td>
+        <td>—</td>
+        <td>—</td>
+      </tr><tr>
+        <td><span class="file-link" title="supabase/functions/os-agent-channel/index.ts">supabase/functions/os-agent-channel/index.ts</span></td>
+        <td>service-role</td>
+        <td>service-role-key</td>
+        <td>insert(×7), update(×3), upsert(×1)</td>
+      </tr><tr>
+        <td><span class="file-link" title="supabase/functions/personal-brain/index.ts">supabase/functions/personal-brain/index.ts</span></td>
+        <td>jwt</td>
+        <td>jwt-header-extract, service-role-key</td>
+        <td>insert(×1), rpc(×1)</td>
+      </tr><tr>
+        <td><span class="file-link" title="supabase/functions/push-dispatch/index.ts">supabase/functions/push-dispatch/index.ts</span></td>
+        <td>service-role</td>
+        <td>jwt-header-extract, service-role-key</td>
+        <td>insert(×1), update(×4)</td>
+      </tr><tr>
+        <td><span class="file-link" title="supabase/functions/revenue-caller/index.ts">supabase/functions/revenue-caller/index.ts</span></td>
+        <td>jwt</td>
+        <td>jwt-getUser</td>
+        <td>insert(×2)</td>
+      </tr><tr>
+        <td><span class="file-link" title="supabase/functions/runtime-probes/index.ts">supabase/functions/runtime-probes/index.ts</span></td>
+        <td>anon</td>
+        <td>jwt-header-extract, service-role-key</td>
+        <td>—</td>
+      </tr><tr>
+        <td><span class="file-link" title="supabase/functions/scheduler-dispatch/index.ts">supabase/functions/scheduler-dispatch/index.ts</span></td>
+        <td>service-role</td>
+        <td>jwt-header-extract, service-role-key</td>
+        <td>insert(×2), update(×2)</td>
+      </tr><tr>
+        <td><span class="file-link" title="supabase/functions/self-healing/index.ts">supabase/functions/self-healing/index.ts</span></td>
+        <td>service-role</td>
+        <td>jwt-getUser, service-role-key</td>
+        <td>insert(×2), update(×1)</td>
+      </tr><tr>
+        <td><span class="file-link" title="supabase/functions/support-gateway/index.ts">supabase/functions/support-gateway/index.ts</span></td>
+        <td>jwt</td>
+        <td>jwt-getUser, service-role-key</td>
+        <td>insert(×2), rpc(×2)</td>
+      </tr><tr>
+        <td><span class="file-link" title="supabase/functions/system-updates/index.ts">supabase/functions/system-updates/index.ts</span></td>
+        <td>service-role</td>
+        <td>service-role-key</td>
+        <td>insert(×1), upsert(×1)</td>
+      </tr><tr>
+        <td><span class="file-link" title="supabase/functions/user-bff-gateway/index.ts">supabase/functions/user-bff-gateway/index.ts</span></td>
+        <td>jwt</td>
+        <td>jwt-getUser</td>
+        <td>insert(×2)</td>
+      </tr><tr>
+        <td><span class="file-link" title="supabase/functions/vapid-public-key/index.ts">supabase/functions/vapid-public-key/index.ts</span></td>
+        <td>anon</td>
+        <td>—</td>
+        <td>—</td>
+      </tr></table></details></section><section class="report-section">
+    <h2>📊 UI-Action Backend Coverage</h2>
+    <div class="summary-bar">
+      <span class="stat">258 total calls</span>
+      <span class="stat">206 unique targets</span>
+      <span class="stat">0% covered</span>
+    </div><h3>⚠️ Uncovered in CI (206)</h3><table>
+      <tr><th>Target</th><th>Type</th><th>UI Sources</th></tr><tr class="row-warn">
+        <td><strong>acknowledge_security_finding</strong></td>
+        <td>rpc</td>
+        <td><span class="file-link" title="src/pages/admin/ai-runtime/SecurityCouncilBoard.tsx">src/pages/admin/ai-runtime/SecurityCouncilBoard.tsx:175</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>admin-reset-user-setup</strong></td>
+        <td>function-invoke</td>
+        <td><span class="file-link" title="src/pages/admin/support/AdminRecoveryOperations.tsx">src/pages/admin/support/AdminRecoveryOperations.tsx:114</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>admin-revoke-session</strong></td>
+        <td>function-invoke</td>
+        <td><span class="file-link" title="src/pages/admin/support/AdminRecoveryOperations.tsx">src/pages/admin/support/AdminRecoveryOperations.tsx:140</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>admin-users</strong></td>
+        <td>function-invoke</td>
+        <td><span class="file-link" title="src/pages/admin/UserManagement.tsx">src/pages/admin/UserManagement.tsx:34</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>advisor_action_queue</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/components/advisors/AdvisorTimelineView.tsx">src/components/advisors/AdvisorTimelineView.tsx:32</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>advisor_feedback</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/components/advisors/AdvisorDetailDrawer.tsx">src/components/advisors/AdvisorDetailDrawer.tsx:198</span><br><span class="file-link" title="src/components/advisors/AdvisorDetailDrawer.tsx">src/components/advisors/AdvisorDetailDrawer.tsx:222</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>advisor_feedback</strong></td>
+        <td>db-write</td>
+        <td><span class="file-link" title="src/components/advisors/AdvisorDetailDrawer.tsx">src/components/advisors/AdvisorDetailDrawer.tsx:212</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>advisor_knowledge</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/components/advisors/AdvisorKnowledgePanel.tsx">src/components/advisors/AdvisorKnowledgePanel.tsx:49</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>advisor_knowledge</strong></td>
+        <td>db-write</td>
+        <td><span class="file-link" title="src/components/advisors/AdvisorKnowledgePanel.tsx">src/components/advisors/AdvisorKnowledgePanel.tsx:70</span><br><span class="file-link" title="src/components/advisors/AdvisorKnowledgePanel.tsx">src/components/advisors/AdvisorKnowledgePanel.tsx:96</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>advisor_memories</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/files/FilesMemoryReview.tsx">src/pages/files/FilesMemoryReview.tsx:23</span><br><span class="file-link" title="src/components/advisors/AdvisorDetailDrawer.tsx">src/components/advisors/AdvisorDetailDrawer.tsx:144</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>advisor_performance</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/admin/AdminDashboard.tsx">src/pages/admin/AdminDashboard.tsx:134</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>advisor_profiles</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/components/advisors/AdvisorMeetingRoom.tsx">src/components/advisors/AdvisorMeetingRoom.tsx:40</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>advisor-avatar-generate</strong></td>
+        <td>function-invoke</td>
+        <td><span class="file-link" title="src/components/advisors/AdvisorMeetingRoom.tsx">src/components/advisors/AdvisorMeetingRoom.tsx:61</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>advisor-conversation</strong></td>
+        <td>function-invoke</td>
+        <td><span class="file-link" title="src/components/business/advisor-board/AdvisorConversation.tsx">src/components/business/advisor-board/AdvisorConversation.tsx:73</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>advisor-knowledge-manage</strong></td>
+        <td>function-invoke</td>
+        <td><span class="file-link" title="src/components/advisors/AdvisorKnowledgePanel.tsx">src/components/advisors/AdvisorKnowledgePanel.tsx:41</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>advisor-weekly-report</strong></td>
+        <td>function-invoke</td>
+        <td><span class="file-link" title="src/components/business/advisor-board/WeeklyExecutiveReport.tsx">src/components/business/advisor-board/WeeklyExecutiveReport.tsx:82</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>agent-intelligence</strong></td>
+        <td>function-invoke</td>
+        <td><span class="file-link" title="src/pages/advisors/AdvisorCouncilDashboard.tsx">src/pages/advisors/AdvisorCouncilDashboard.tsx:142</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>ai_budget_decision_receipts</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/components/admin/ai-runtime/EconomicTrustFutureTruthPanel.tsx">src/components/admin/ai-runtime/EconomicTrustFutureTruthPanel.tsx:49</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>ai_capability_routing</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/admin/AIG04BudgetCenter.tsx">src/pages/admin/AIG04BudgetCenter.tsx:65</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>ai_implementation_suggestions</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/admin/ai-runtime/SuggestionsBoard.tsx">src/pages/admin/ai-runtime/SuggestionsBoard.tsx:82</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>ai_inference_receipts</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/admin/AIG09RuntimeVerification.tsx">src/pages/admin/AIG09RuntimeVerification.tsx:111</span><br><span class="file-link" title="src/pages/admin/ConscienceGateDashboard.tsx">src/pages/admin/ConscienceGateDashboard.tsx:113</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>ai_launch_honesty</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/admin/AIG04BudgetCenter.tsx">src/pages/admin/AIG04BudgetCenter.tsx:76</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>ai_model_registry</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/admin/AIG04BudgetCenter.tsx">src/pages/admin/AIG04BudgetCenter.tsx:58</span><br><span class="file-link" title="src/pages/admin/AIG09RuntimeVerification.tsx">src/pages/admin/AIG09RuntimeVerification.tsx:183</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>ai_provider_health</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/admin/AIG09RuntimeVerification.tsx">src/pages/admin/AIG09RuntimeVerification.tsx:106</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>ai_provider_registry</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/admin/AIG04BudgetCenter.tsx">src/pages/admin/AIG04BudgetCenter.tsx:51</span><br><span class="file-link" title="src/pages/admin/AIG09RuntimeVerification.tsx">src/pages/admin/AIG09RuntimeVerification.tsx:103</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>ai_receipt_records</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/admin/AIG09RuntimeVerification.tsx">src/pages/admin/AIG09RuntimeVerification.tsx:342</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>ai_token_usage</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/admin/AdminDashboard.tsx">src/pages/admin/AdminDashboard.tsx:84</span><br><span class="file-link" title="src/pages/admin/TeamManagement.tsx">src/pages/admin/TeamManagement.tsx:95</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>ai_usage_ledger</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/admin/AIG09RuntimeVerification.tsx">src/pages/admin/AIG09RuntimeVerification.tsx:270</span><br><span class="file-link" title="src/pages/admin/AIG09RuntimeVerification.tsx">src/pages/admin/AIG09RuntimeVerification.tsx:321</span><br><span class="file-link" title="src/domains/customer-journey/ai-journey-classifier.ts">src/domains/customer-journey/ai-journey-classifier.ts:28</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>ai_workforce_approval_queue</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/ActivityStream.tsx">src/pages/ActivityStream.tsx:293</span><br><span class="file-link" title="src/pages/admin/AdminDashboard.tsx">src/pages/admin/AdminDashboard.tsx:97</span><br><span class="file-link" title="src/pages/admin/HQApprovalQueue.tsx">src/pages/admin/HQApprovalQueue.tsx:81</span><br><span class="file-link" title="src/pages/admin/HQApprovalQueue.tsx">src/pages/admin/HQApprovalQueue.tsx:448</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>ai_workforce_launch_honesty</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/admin/AdvisorBoardCatalog.tsx">src/pages/admin/AdvisorBoardCatalog.tsx:70</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>ai_workforce_recommendations</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/components/advisors/AdvisorTimelineView.tsx">src/components/advisors/AdvisorTimelineView.tsx:38</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>ai-gateway</strong></td>
+        <td>function-invoke</td>
+        <td><span class="file-link" title="src/components/sita/CommandPalette.tsx">src/components/sita/CommandPalette.tsx:194</span><br><span class="file-link" title="src/components/sita/RuntimeTruthProbe.tsx">src/components/sita/RuntimeTruthProbe.tsx:55</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>alert_dedup_log</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/components/admin/alerts/AlertDedupStats.tsx">src/components/admin/alerts/AlertDedupStats.tsx:29</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>alert_suppression_rules</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/components/admin/alerts/AlertSuppressionRulesPanel.tsx">src/components/admin/alerts/AlertSuppressionRulesPanel.tsx:46</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>alert_suppression_rules</strong></td>
+        <td>db-write</td>
+        <td><span class="file-link" title="src/components/admin/alerts/AlertSuppressionRulesPanel.tsx">src/components/admin/alerts/AlertSuppressionRulesPanel.tsx:62</span><br><span class="file-link" title="src/components/admin/alerts/AlertSuppressionRulesPanel.tsx">src/components/admin/alerts/AlertSuppressionRulesPanel.tsx:84</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>alerts</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/admin/AdminOperationsHub.tsx">src/pages/admin/AdminOperationsHub.tsx:81</span><br><span class="file-link" title="src/pages/admin/AlertTriageBoard.tsx">src/pages/admin/AlertTriageBoard.tsx:63</span><br><span class="file-link" title="src/components/admin/runbooks/RunbookViewer.tsx">src/components/admin/runbooks/RunbookViewer.tsx:197</span><br><span class="file-link" title="src/components/admin/shells/NoSilentFailureAlerts.tsx">src/components/admin/shells/NoSilentFailureAlerts.tsx:61</span><br><span class="file-link" title="src/components/observability/AlertsLivePanel.tsx">src/components/observability/AlertsLivePanel.tsx:42</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>app_assets</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/components/app-store/AppAssetGallery.tsx">src/components/app-store/AppAssetGallery.tsx:37</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>attestation_packets</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/admin/ai-runtime/ComplianceAttestationBoard.tsx">src/pages/admin/ai-runtime/ComplianceAttestationBoard.tsx:32</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>attestation-packet-builder</strong></td>
+        <td>function-invoke</td>
+        <td><span class="file-link" title="src/pages/admin/ai-runtime/ComplianceAttestationBoard.tsx">src/pages/admin/ai-runtime/ComplianceAttestationBoard.tsx:48</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>audit_export_bundles</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/admin/ai-runtime/SovereignDeploymentDRBoard.tsx">src/pages/admin/ai-runtime/SovereignDeploymentDRBoard.tsx:51</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>audit_logs</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/admin/AdminDashboard.tsx">src/pages/admin/AdminDashboard.tsx:121</span><br><span class="file-link" title="src/pages/admin/ConnectorGovernanceCenter.tsx">src/pages/admin/ConnectorGovernanceCenter.tsx:64</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>audit-export-bundler</strong></td>
+        <td>function-invoke</td>
+        <td><span class="file-link" title="src/pages/admin/ai-runtime/SovereignDeploymentDRBoard.tsx">src/pages/admin/ai-runtime/SovereignDeploymentDRBoard.tsx:68</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>automation_kill_switches</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/admin/health/ErrorPatrolBoard.tsx">src/pages/admin/health/ErrorPatrolBoard.tsx:101</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>beta-apply</strong></td>
+        <td>function-invoke</td>
+        <td><span class="file-link" title="src/components/marketing/BetaForm.tsx">src/components/marketing/BetaForm.tsx:53</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>boardroom_followthrough_dispatches</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/admin/ai-runtime/BoardroomSLADrillDown.tsx">src/pages/admin/ai-runtime/BoardroomSLADrillDown.tsx:37</span><br><span class="file-link" title="src/components/admin/boardroom/Layer7FollowthroughBoard.tsx">src/components/admin/boardroom/Layer7FollowthroughBoard.tsx:48</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>boardroom_items</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/components/sita/apps/boardroom/BoardroomFollowthroughView.tsx">src/components/sita/apps/boardroom/BoardroomFollowthroughView.tsx:63</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>boardroom-followthrough-dispatch</strong></td>
+        <td>function-invoke</td>
+        <td><span class="file-link" title="src/components/admin/boardroom/Layer7FollowthroughBoard.tsx">src/components/admin/boardroom/Layer7FollowthroughBoard.tsx:93</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>brain-core</strong></td>
+        <td>function-invoke</td>
+        <td><span class="file-link" title="src/pages/admin/AIT04to08Boards.tsx">src/pages/admin/AIT04to08Boards.tsx:280</span><br><span class="file-link" title="src/pages/admin/AIT04to08Boards.tsx">src/pages/admin/AIT04to08Boards.tsx:488</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>chaos-drill-runner</strong></td>
+        <td>function-invoke</td>
+        <td><span class="file-link" title="src/pages/admin/SRE05ChaosTestingFramework.tsx">src/pages/admin/SRE05ChaosTestingFramework.tsx:66</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>chat-advisor</strong></td>
+        <td>function-invoke</td>
+        <td><span class="file-link" title="src/components/advisors/AdvisorMeetingRoom.tsx">src/components/advisors/AdvisorMeetingRoom.tsx:104</span><br><span class="file-link" title="src/components/advisors/AdvisorMeetingRoom.tsx">src/components/advisors/AdvisorMeetingRoom.tsx:133</span><br><span class="file-link" title="src/components/advisors/AskAdvisorChat.tsx">src/components/advisors/AskAdvisorChat.tsx:52</span><br><span class="file-link" title="src/domains/simulation/market-intelligence.ts">src/domains/simulation/market-intelligence.ts:63</span><br><span class="file-link" title="src/domains/simulation/market-intelligence.ts">src/domains/simulation/market-intelligence.ts:154</span><br><span class="file-link" title="src/domains/simulation/market-intelligence.ts">src/domains/simulation/market-intelligence.ts:186</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>client_capability_matrix</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/admin/cloud/ClientCapabilityAdmin.tsx">src/pages/admin/cloud/ClientCapabilityAdmin.tsx:49</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>cloud-lifecycle-api</strong></td>
+        <td>function-invoke</td>
+        <td><span class="file-link" title="src/components/cloud/CloudImportExport.tsx">src/components/cloud/CloudImportExport.tsx:54</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>cloud-storage-api</strong></td>
+        <td>function-invoke</td>
+        <td><span class="file-link" title="src/components/cloud/CloudFileBrowser.tsx">src/components/cloud/CloudFileBrowser.tsx:74</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>cloud-storage-api?action=create-folder</strong></td>
+        <td>function-invoke</td>
+        <td><span class="file-link" title="src/components/cloud/CloudFileBrowser.tsx">src/components/cloud/CloudFileBrowser.tsx:115</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>cloud-storage-api?action=delete</strong></td>
+        <td>function-invoke</td>
+        <td><span class="file-link" title="src/components/cloud/CloudFileBrowser.tsx">src/components/cloud/CloudFileBrowser.tsx:163</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>cloud-storage-api?action=download-url</strong></td>
+        <td>function-invoke</td>
+        <td><span class="file-link" title="src/components/cloud/CloudFileBrowser.tsx">src/components/cloud/CloudFileBrowser.tsx:171</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>cloud-storage-api?action=list&amp;folder_id=</strong></td>
+        <td>function-invoke</td>
+        <td><span class="file-link" title="src/components/cloud/CloudFileBrowser.tsx">src/components/cloud/CloudFileBrowser.tsx:80</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>cloud-storage-api?action=purge</strong></td>
+        <td>function-invoke</td>
+        <td><span class="file-link" title="src/components/cloud/CloudTrashManager.tsx">src/components/cloud/CloudTrashManager.tsx:47</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>cloud-storage-api?action=rename</strong></td>
+        <td>function-invoke</td>
+        <td><span class="file-link" title="src/components/cloud/CloudFileBrowser.tsx">src/components/cloud/CloudFileBrowser.tsx:182</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>cloud-storage-api?action=restore</strong></td>
+        <td>function-invoke</td>
+        <td><span class="file-link" title="src/components/cloud/CloudTrashManager.tsx">src/components/cloud/CloudTrashManager.tsx:41</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>cloud-storage-api?action=trash</strong></td>
+        <td>function-invoke</td>
+        <td><span class="file-link" title="src/components/cloud/CloudTrashManager.tsx">src/components/cloud/CloudTrashManager.tsx:32</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>cloud-storage-api?action=upload-finalize</strong></td>
+        <td>function-invoke</td>
+        <td><span class="file-link" title="src/components/cloud/CloudFileBrowser.tsx">src/components/cloud/CloudFileBrowser.tsx:151</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>cloud-storage-api?action=upload-init</strong></td>
+        <td>function-invoke</td>
+        <td><span class="file-link" title="src/components/cloud/CloudFileBrowser.tsx">src/components/cloud/CloudFileBrowser.tsx:131</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>cloud-storage-api?action=versions</strong></td>
+        <td>function-invoke</td>
+        <td><span class="file-link" title="src/components/cloud/CloudVersionHistory.tsx">src/components/cloud/CloudVersionHistory.tsx:40</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>compliance_controls</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/admin/ai-runtime/ComplianceAttestationBoard.tsx">src/pages/admin/ai-runtime/ComplianceAttestationBoard.tsx:29</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>compliance_evidence</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/admin/ai-runtime/ComplianceAttestationBoard.tsx">src/pages/admin/ai-runtime/ComplianceAttestationBoard.tsx:30</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>compliance-evidence-collector</strong></td>
+        <td>function-invoke</td>
+        <td><span class="file-link" title="src/pages/admin/ai-runtime/ComplianceAttestationBoard.tsx">src/pages/admin/ai-runtime/ComplianceAttestationBoard.tsx:43</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>connected_service_links</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/admin/ISA02ConnectorProviderRegistryBoard.tsx">src/pages/admin/ISA02ConnectorProviderRegistryBoard.tsx:42</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>connector_oauth_tokens</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/components/admin/integrations/IntegrationReceiptDrawer.tsx">src/components/admin/integrations/IntegrationReceiptDrawer.tsx:95</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>connector-batch</strong></td>
+        <td>function-invoke</td>
+        <td><span class="file-link" title="src/pages/ConnectorHub.tsx">src/pages/ConnectorHub.tsx:289</span><br><span class="file-link" title="src/pages/admin/ConnectorGovernanceCenter.tsx">src/pages/admin/ConnectorGovernanceCenter.tsx:113</span><br><span class="file-link" title="src/pages/admin/ConnectorGovernanceCenter.tsx">src/pages/admin/ConnectorGovernanceCenter.tsx:127</span><br><span class="file-link" title="src/components/sita/ConnectorSyncDashboard.tsx">src/components/sita/ConnectorSyncDashboard.tsx:62</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>connector-discover</strong></td>
+        <td>function-invoke</td>
+        <td><span class="file-link" title="src/pages/ConnectorHub.tsx">src/pages/ConnectorHub.tsx:138</span><br><span class="file-link" title="src/pages/admin/ConnectorGovernanceCenter.tsx">src/pages/admin/ConnectorGovernanceCenter.tsx:104</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>connector-oauth</strong></td>
+        <td>function-invoke</td>
+        <td><span class="file-link" title="src/pages/ConnectorHub.tsx">src/pages/ConnectorHub.tsx:64</span><br><span class="file-link" title="src/pages/admin/CN01ConnectorRealityOverview.tsx">src/pages/admin/CN01ConnectorRealityOverview.tsx:70</span><br><span class="file-link" title="src/pages/admin/CN01ConnectorRealityOverview.tsx">src/pages/admin/CN01ConnectorRealityOverview.tsx:246</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>consent_ledger</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/admin/ISA04ConsentLedgerExplorer.tsx">src/pages/admin/ISA04ConsentLedgerExplorer.tsx:29</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>consent_revocations</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/admin/ISA04ConsentLedgerExplorer.tsx">src/pages/admin/ISA04ConsentLedgerExplorer.tsx:51</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>consent_upgrades</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/admin/ISA04ConsentLedgerExplorer.tsx">src/pages/admin/ISA04ConsentLedgerExplorer.tsx:40</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>crm_communications</strong></td>
+        <td>db-write</td>
+        <td><span class="file-link" title="src/components/business/crm/CRMDuplicateReview.tsx">src/components/business/crm/CRMDuplicateReview.tsx:80</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>crm_contacts</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/components/business/CRMImportWizard.tsx">src/components/business/CRMImportWizard.tsx:206</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>crm_contacts</strong></td>
+        <td>db-write</td>
+        <td><span class="file-link" title="src/components/business/CRMImportWizard.tsx">src/components/business/CRMImportWizard.tsx:264</span><br><span class="file-link" title="src/components/business/CRMImportWizard.tsx">src/components/business/CRMImportWizard.tsx:268</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>crm_merge_log</strong></td>
+        <td>db-write</td>
+        <td><span class="file-link" title="src/components/business/crm/CRMDuplicateReview.tsx">src/components/business/crm/CRMDuplicateReview.tsx:87</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>crm_notes</strong></td>
+        <td>db-write</td>
+        <td><span class="file-link" title="src/components/business/crm/CRMDuplicateReview.tsx">src/components/business/crm/CRMDuplicateReview.tsx:81</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>crm_segments</strong></td>
+        <td>db-write</td>
+        <td><span class="file-link" title="src/pages/business/CRMSegments.tsx">src/pages/business/CRMSegments.tsx:115</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>crm_tasks</strong></td>
+        <td>db-write</td>
+        <td><span class="file-link" title="src/components/business/crm/CRMDuplicateReview.tsx">src/components/business/crm/CRMDuplicateReview.tsx:82</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>customer_journey_blockers</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/domains/customer-journey/journey-hooks.ts">src/domains/customer-journey/journey-hooks.ts:52</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>customer_journey_runs</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/domains/customer-journey/journey-hooks.ts">src/domains/customer-journey/journey-hooks.ts:26</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>customer_journey_runs</strong></td>
+        <td>db-write</td>
+        <td><span class="file-link" title="src/domains/customer-journey/journey-hooks.ts">src/domains/customer-journey/journey-hooks.ts:96</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>customer_journey_steps</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/domains/customer-journey/journey-hooks.ts">src/domains/customer-journey/journey-hooks.ts:40</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>customer_journeys</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/domains/customer-journey/journey-hooks.ts">src/domains/customer-journey/journey-hooks.ts:15</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>customer_journeys</strong></td>
+        <td>db-write</td>
+        <td><span class="file-link" title="src/domains/customer-journey/journey-hooks.ts">src/domains/customer-journey/journey-hooks.ts:74</span><br><span class="file-link" title="src/domains/customer-journey/journey-hooks.ts">src/domains/customer-journey/journey-hooks.ts:101</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>data_retention_runs</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/admin/DataRetentionDashboard.tsx">src/pages/admin/DataRetentionDashboard.tsx:71</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>data-cleanup</strong></td>
+        <td>function-invoke</td>
+        <td><span class="file-link" title="src/pages/admin/DataRetentionDashboard.tsx">src/pages/admin/DataRetentionDashboard.tsx:89</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>dependency_upgrade_findings</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/admin/ai-runtime/DependencyFindingsBoard.tsx">src/pages/admin/ai-runtime/DependencyFindingsBoard.tsx:59</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>domain_ownership_registry</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/admin/DomainRealityBoard.tsx">src/pages/admin/DomainRealityBoard.tsx:41</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>dr_drills</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/admin/ai-runtime/SovereignDeploymentDRBoard.tsx">src/pages/admin/ai-runtime/SovereignDeploymentDRBoard.tsx:49</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>dr-drill-runner</strong></td>
+        <td>function-invoke</td>
+        <td><span class="file-link" title="src/pages/admin/ai-runtime/SovereignDeploymentDRBoard.tsx">src/pages/admin/ai-runtime/SovereignDeploymentDRBoard.tsx:61</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>drill_cadence_registry</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/components/admin/DrillCadenceBoard.tsx">src/components/admin/DrillCadenceBoard.tsx:38</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>error_events</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/admin/ErrorEventsExplorer.tsx">src/pages/admin/ErrorEventsExplorer.tsx:50</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>error_patrol_detections</strong></td>
+        <td>db-write</td>
+        <td><span class="file-link" title="src/pages/admin/health/ErrorPatrolBoard.tsx">src/pages/admin/health/ErrorPatrolBoard.tsx:160</span><br><span class="file-link" title="src/pages/admin/health/ErrorPatrolBoard.tsx">src/pages/admin/health/ErrorPatrolBoard.tsx:172</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>events</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/ActivityStream.tsx">src/pages/ActivityStream.tsx:279</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>external_workforce_api_keys</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/admin/ai-runtime/ExternalWorkforceApiBoard.tsx">src/pages/admin/ai-runtime/ExternalWorkforceApiBoard.tsx:36</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>external_workforce_subscriptions</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/admin/ai-runtime/ExternalWorkforceApiBoard.tsx">src/pages/admin/ai-runtime/ExternalWorkforceApiBoard.tsx:37</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>external_workforce_webhook_deliveries</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/admin/ai-runtime/ExternalWorkforceApiBoard.tsx">src/pages/admin/ai-runtime/ExternalWorkforceApiBoard.tsx:38</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>federated_knowledge_shares</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/admin/ai-runtime/KnowledgeFederationBoard.tsx">src/pages/admin/ai-runtime/KnowledgeFederationBoard.tsx:37</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>federated_pattern_aggregates</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/admin/ai-runtime/KnowledgeFederationBoard.tsx">src/pages/admin/ai-runtime/KnowledgeFederationBoard.tsx:38</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>federated-knowledge-aggregator</strong></td>
+        <td>function-invoke</td>
+        <td><span class="file-link" title="src/pages/admin/ai-runtime/KnowledgeFederationBoard.tsx">src/pages/admin/ai-runtime/KnowledgeFederationBoard.tsx:54</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>file_metadata</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/files/FilesProcessing.tsx">src/pages/files/FilesProcessing.tsx:39</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>gdpr-delete</strong></td>
+        <td>function-invoke</td>
+        <td><span class="file-link" title="src/pages/SovereignExportPage.tsx">src/pages/SovereignExportPage.tsx:80</span><br><span class="file-link" title="src/components/sita/shell/windows/settings/PrivacyTrustSections.tsx">src/components/sita/shell/windows/settings/PrivacyTrustSections.tsx:139</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>gdpr-export</strong></td>
+        <td>function-invoke</td>
+        <td><span class="file-link" title="src/pages/SovereignExportPage.tsx">src/pages/SovereignExportPage.tsx:41</span><br><span class="file-link" title="src/components/sita/shell/windows/settings/PrivacyTrustSections.tsx">src/components/sita/shell/windows/settings/PrivacyTrustSections.tsx:121</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>generate-support-bundle</strong></td>
+        <td>function-invoke</td>
+        <td><span class="file-link" title="src/pages/admin/support/AdminRecoveryOperations.tsx">src/pages/admin/support/AdminRecoveryOperations.tsx:221</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>get_db_truth_snapshot</strong></td>
+        <td>rpc</td>
+        <td><span class="file-link" title="src/pages/admin/DomainRealityBoard.tsx">src/pages/admin/DomainRealityBoard.tsx:44</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>hardware_certification_runs</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/components/admin/ai-runtime/HardwareAndOperatorTruthPanel.tsx">src/components/admin/ai-runtime/HardwareAndOperatorTruthPanel.tsx:61</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>health-check</strong></td>
+        <td>function-invoke</td>
+        <td><span class="file-link" title="src/pages/admin/releases/EnvironmentConfigVerification.tsx">src/pages/admin/releases/EnvironmentConfigVerification.tsx:64</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>identity_provider_links</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/admin/ISA01IdentityProviderRegistryBoard.tsx">src/pages/admin/ISA01IdentityProviderRegistryBoard.tsx:44</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>incidents</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/admin/AdminDashboard.tsx">src/pages/admin/AdminDashboard.tsx:109</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>internal_agent_action_intents</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/admin/ai-runtime/InternalAgentIntentTimeline.tsx">src/pages/admin/ai-runtime/InternalAgentIntentTimeline.tsx:134</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>internal_agent_anomaly_signals</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/admin/ai-runtime/SLOObservabilityBoard.tsx">src/pages/admin/ai-runtime/SLOObservabilityBoard.tsx:46</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>internal_agent_assurance_reports</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/admin/ai-runtime/AssuranceChaosBoard.tsx">src/pages/admin/ai-runtime/AssuranceChaosBoard.tsx:39</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>internal_agent_auto_rollback_events</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/admin/ai-runtime/AssuranceChaosBoard.tsx">src/pages/admin/ai-runtime/AssuranceChaosBoard.tsx:40</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>internal_agent_canary_runs</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/admin/ai-runtime/SLOObservabilityBoard.tsx">src/pages/admin/ai-runtime/SLOObservabilityBoard.tsx:48</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>internal_agent_chaos_drills</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/admin/ai-runtime/AssuranceChaosBoard.tsx">src/pages/admin/ai-runtime/AssuranceChaosBoard.tsx:38</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>internal_agent_consensus_sessions</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/admin/ai-runtime/CrossCouncilBoard.tsx">src/pages/admin/ai-runtime/CrossCouncilBoard.tsx:82</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>internal_agent_cost_proposals</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/admin/ai-runtime/CrossCouncilBoard.tsx">src/pages/admin/ai-runtime/CrossCouncilBoard.tsx:87</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>internal_agent_cost_proposals</strong></td>
+        <td>db-write</td>
+        <td><span class="file-link" title="src/pages/admin/ai-runtime/CrossCouncilBoard.tsx">src/pages/admin/ai-runtime/CrossCouncilBoard.tsx:132</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>internal_agent_drift_findings</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/admin/ai-runtime/SLOObservabilityBoard.tsx">src/pages/admin/ai-runtime/SLOObservabilityBoard.tsx:47</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>internal_agent_policy_drafts</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/admin/ai-runtime/PolicyDraftReviewBoard.tsx">src/pages/admin/ai-runtime/PolicyDraftReviewBoard.tsx:74</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>internal_agent_reflections</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/admin/ai-runtime/ReflectionBoard.tsx">src/pages/admin/ai-runtime/ReflectionBoard.tsx:109</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>internal_agent_runbook_executions</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/admin/ai-runtime/CrossCouncilBoard.tsx">src/pages/admin/ai-runtime/CrossCouncilBoard.tsx:92</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>internal_agent_slo_snapshots</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/admin/ai-runtime/SLOObservabilityBoard.tsx">src/pages/admin/ai-runtime/SLOObservabilityBoard.tsx:45</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>internal_agent_tenant_kill_switches</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/admin/ai-runtime/TenantFederationBoard.tsx">src/pages/admin/ai-runtime/TenantFederationBoard.tsx:31</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>internal_agent_tenant_quotas</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/admin/ai-runtime/TenantFederationBoard.tsx">src/pages/admin/ai-runtime/TenantFederationBoard.tsx:30</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>internal_agent_tenant_scopes</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/admin/ai-runtime/TenantFederationBoard.tsx">src/pages/admin/ai-runtime/TenantFederationBoard.tsx:29</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>internal_agent_weekly_digests</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/admin/ai-runtime/WeeklyDigestBoard.tsx">src/pages/admin/ai-runtime/WeeklyDigestBoard.tsx:45</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>internal-agent-canary-runner</strong></td>
+        <td>function-invoke</td>
+        <td><span class="file-link" title="src/pages/admin/ai-runtime/AssuranceChaosBoard.tsx">src/pages/admin/ai-runtime/AssuranceChaosBoard.tsx:50</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>internal-agent-chaos-scheduler</strong></td>
+        <td>function-invoke</td>
+        <td><span class="file-link" title="src/pages/admin/ai-runtime/AssuranceChaosBoard.tsx">src/pages/admin/ai-runtime/AssuranceChaosBoard.tsx:54</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>internal-agent-cost-optimizer</strong></td>
+        <td>function-invoke</td>
+        <td><span class="file-link" title="src/pages/admin/ai-runtime/CrossCouncilBoard.tsx">src/pages/admin/ai-runtime/CrossCouncilBoard.tsx:115</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>internal-agent-execute-action</strong></td>
+        <td>function-invoke</td>
+        <td><span class="file-link" title="src/pages/admin/ai-runtime/InternalAgentIntentTimeline.tsx">src/pages/admin/ai-runtime/InternalAgentIntentTimeline.tsx:197</span><br><span class="file-link" title="src/pages/admin/health/ErrorPatrolBoard.tsx">src/pages/admin/health/ErrorPatrolBoard.tsx:129</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>internal-agent-policy-architect</strong></td>
+        <td>function-invoke</td>
+        <td><span class="file-link" title="src/pages/admin/ai-runtime/PolicyDraftReviewBoard.tsx">src/pages/admin/ai-runtime/PolicyDraftReviewBoard.tsx:92</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>internal-agent-reflect</strong></td>
+        <td>function-invoke</td>
+        <td><span class="file-link" title="src/pages/admin/ai-runtime/ReflectionBoard.tsx">src/pages/admin/ai-runtime/ReflectionBoard.tsx:133</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>internal-agent-slo-evaluator</strong></td>
+        <td>function-invoke</td>
+        <td><span class="file-link" title="src/pages/admin/ai-runtime/SLOObservabilityBoard.tsx">src/pages/admin/ai-runtime/SLOObservabilityBoard.tsx:59</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>internal-agent-suggestion-generator</strong></td>
+        <td>function-invoke</td>
+        <td><span class="file-link" title="src/pages/admin/ai-runtime/SuggestionsBoard.tsx">src/pages/admin/ai-runtime/SuggestionsBoard.tsx:107</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>internal-agent-trust-evaluator</strong></td>
+        <td>function-invoke</td>
+        <td><span class="file-link" title="src/pages/admin/ai-runtime/TrustLadderBoard.tsx">src/pages/admin/ai-runtime/TrustLadderBoard.tsx:113</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>internal-agent-weekly-digest</strong></td>
+        <td>function-invoke</td>
+        <td><span class="file-link" title="src/pages/admin/ai-runtime/WeeklyDigestBoard.tsx">src/pages/admin/ai-runtime/WeeklyDigestBoard.tsx:71</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>investor-request</strong></td>
+        <td>function-invoke</td>
+        <td><span class="file-link" title="src/components/marketing/InvestorForm.tsx">src/components/marketing/InvestorForm.tsx:32</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>is_tenant_admin</strong></td>
+        <td>rpc</td>
+        <td><span class="file-link" title="src/pages/tenant/TenantSelfServiceConsole.tsx">src/pages/tenant/TenantSelfServiceConsole.tsx:41</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>journey_verification_runs</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/admin/FL01FlagshipLoopsExecutive.tsx">src/pages/admin/FL01FlagshipLoopsExecutive.tsx:95</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>notifications</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/NotificationCenter.tsx">src/pages/NotificationCenter.tsx:176</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>notifications_queue</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/NotificationCenter.tsx">src/pages/NotificationCenter.tsx:162</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>oauth_client_registry</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/admin/ISA01IdentityProviderRegistryBoard.tsx">src/pages/admin/ISA01IdentityProviderRegistryBoard.tsx:54</span><br><span class="file-link" title="src/pages/admin/ISA03OAuthClientRegistryConsole.tsx">src/pages/admin/ISA03OAuthClientRegistryConsole.tsx:31</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>oauth_refresh_probe_results</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/components/admin/OAuthRefreshHealthBoard.tsx">src/components/admin/OAuthRefreshHealthBoard.tsx:36</span><br><span class="file-link" title="src/components/admin/integrations/IntegrationReceiptDrawer.tsx">src/components/admin/integrations/IntegrationReceiptDrawer.tsx:84</span><br><span class="file-link" title="src/components/admin/integrations/IntegrationStreakPanel.tsx">src/components/admin/integrations/IntegrationStreakPanel.tsx:76</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>oauth-refresh-probe</strong></td>
+        <td>function-invoke</td>
+        <td><span class="file-link" title="src/components/admin/OAuthRefreshHealthBoard.tsx">src/components/admin/OAuthRefreshHealthBoard.tsx:49</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>operating_modes</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/components/sita/RuntimeTruthProbe.tsx">src/components/sita/RuntimeTruthProbe.tsx:44</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>operator_drill_executions</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/components/admin/ai-runtime/HardwareAndOperatorTruthPanel.tsx">src/components/admin/ai-runtime/HardwareAndOperatorTruthPanel.tsx:66</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>os_action_lineage</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/admin/implementation-truth/ITC10RuntimeEvidence.tsx">src/pages/admin/implementation-truth/ITC10RuntimeEvidence.tsx:51</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>os_event_log</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/admin/implementation-truth/ITC10RuntimeEvidence.tsx">src/pages/admin/implementation-truth/ITC10RuntimeEvidence.tsx:35</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>os_memory_scoped</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/admin/implementation-truth/ITC10RuntimeEvidence.tsx">src/pages/admin/implementation-truth/ITC10RuntimeEvidence.tsx:59</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>owner_copilot_sessions</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/admin/ai-runtime/OwnerCopilotSessionConsole.tsx">src/pages/admin/ai-runtime/OwnerCopilotSessionConsole.tsx:38</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>owner-copilot-bff?op=handoff</strong></td>
+        <td>function-invoke</td>
+        <td><span class="file-link" title="src/pages/admin/ai-runtime/OwnerCopilotBriefings.tsx">src/pages/admin/ai-runtime/OwnerCopilotBriefings.tsx:35</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>owner-copilot-bff?op=list</strong></td>
+        <td>function-invoke</td>
+        <td><span class="file-link" title="src/pages/admin/ai-runtime/OwnerCopilotBriefings.tsx">src/pages/admin/ai-runtime/OwnerCopilotBriefings.tsx:27</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>owner-copilot-session-tracker</strong></td>
+        <td>function-invoke</td>
+        <td><span class="file-link" title="src/pages/admin/ai-runtime/OwnerCopilotSessionConsole.tsx">src/pages/admin/ai-runtime/OwnerCopilotSessionConsole.tsx:50</span><br><span class="file-link" title="src/pages/admin/ai-runtime/OwnerCopilotSessionConsole.tsx">src/pages/admin/ai-runtime/OwnerCopilotSessionConsole.tsx:62</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>personal-brain</strong></td>
+        <td>function-invoke</td>
+        <td><span class="file-link" title="src/pages/PersonalBrain.tsx">src/pages/PersonalBrain.tsx:59</span><br><span class="file-link" title="src/components/sita/CopilotBar.tsx">src/components/sita/CopilotBar.tsx:26</span><br><span class="file-link" title="src/components/sita/shell/UniversalCommandSurface.tsx">src/components/sita/shell/UniversalCommandSurface.tsx:522</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>policy_as_code_rules</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/admin/ai-runtime/ComplianceAttestationBoard.tsx">src/pages/admin/ai-runtime/ComplianceAttestationBoard.tsx:31</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>press-inquiry</strong></td>
+        <td>function-invoke</td>
+        <td><span class="file-link" title="src/components/marketing/PressForm.tsx">src/components/marketing/PressForm.tsx:17</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>production_launch_attestations</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/admin/ai-runtime/ProductionLaunchAttestationConsole.tsx">src/pages/admin/ai-runtime/ProductionLaunchAttestationConsole.tsx:57</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>production-launch-attestor</strong></td>
+        <td>function-invoke</td>
+        <td><span class="file-link" title="src/pages/admin/ai-runtime/ProductionLaunchAttestationConsole.tsx">src/pages/admin/ai-runtime/ProductionLaunchAttestationConsole.tsx:74</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>profiles</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/NotificationSettingsPage.tsx">src/pages/NotificationSettingsPage.tsx:110</span><br><span class="file-link" title="src/pages/NotificationSettingsPage.tsx">src/pages/NotificationSettingsPage.tsx:150</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>prompt-versioning</strong></td>
+        <td>function-invoke</td>
+        <td><span class="file-link" title="src/pages/admin/AIPromptFamiliesExplorer.tsx">src/pages/admin/AIPromptFamiliesExplorer.tsx:67</span><br><span class="file-link" title="src/pages/admin/AIPromptFamiliesExplorer.tsx">src/pages/admin/AIPromptFamiliesExplorer.tsx:80</span><br><span class="file-link" title="src/pages/admin/AIPromptFamiliesExplorer.tsx">src/pages/admin/AIPromptFamiliesExplorer.tsx:92</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>proof_records</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/ActivityStream.tsx">src/pages/ActivityStream.tsx:312</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>provider_capabilities</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/admin/ISA02ConnectorProviderRegistryBoard.tsx">src/pages/admin/ISA02ConnectorProviderRegistryBoard.tsx:32</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>provider_families</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/admin/ISA01IdentityProviderRegistryBoard.tsx">src/pages/admin/ISA01IdentityProviderRegistryBoard.tsx:33</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>public_donations_wall</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/marketing/Proof.tsx">src/pages/marketing/Proof.tsx:12</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>record_implementation_suggestion_decision</strong></td>
+        <td>rpc</td>
+        <td><span class="file-link" title="src/pages/admin/ai-runtime/SuggestionsBoard.tsx">src/pages/admin/ai-runtime/SuggestionsBoard.tsx:149</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>record_policy_draft_decision</strong></td>
+        <td>rpc</td>
+        <td><span class="file-link" title="src/pages/admin/ai-runtime/PolicyDraftReviewBoard.tsx">src/pages/admin/ai-runtime/PolicyDraftReviewBoard.tsx:105</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>release_artifacts</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/DownloadPage.tsx">src/pages/DownloadPage.tsx:42</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>reserves</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/money/ReservesSavings.tsx">src/pages/money/ReservesSavings.tsx:33</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>revenue-caller</strong></td>
+        <td>function-invoke</td>
+        <td><span class="file-link" title="src/pages/RevenueCallingPage.tsx">src/pages/RevenueCallingPage.tsx:339</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>runtime-probes</strong></td>
+        <td>function-invoke</td>
+        <td><span class="file-link" title="src/pages/admin/BrainCoreDashboard.tsx">src/pages/admin/BrainCoreDashboard.tsx:67</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>scope_policy_matrix</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/admin/ISA05ScopePolicyMatrixBoard.tsx">src/pages/admin/ISA05ScopePolicyMatrixBoard.tsx:33</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>security_council_findings</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/admin/ai-runtime/SecurityCouncilBoard.tsx">src/pages/admin/ai-runtime/SecurityCouncilBoard.tsx:99</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>security-council-tick</strong></td>
+        <td>function-invoke</td>
+        <td><span class="file-link" title="src/pages/admin/ai-runtime/SecurityCouncilBoard.tsx">src/pages/admin/ai-runtime/SecurityCouncilBoard.tsx:124</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>seed-user-data</strong></td>
+        <td>function-invoke</td>
+        <td><span class="file-link" title="src/pages/admin/UserSeedHealth.tsx">src/pages/admin/UserSeedHealth.tsx:73</span><br><span class="file-link" title="src/components/sita/OSSetupExperience.tsx">src/components/sita/OSSetupExperience.tsx:719</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>signed_release_artifacts</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/admin/ai-runtime/SovereignDeploymentDRBoard.tsx">src/pages/admin/ai-runtime/SovereignDeploymentDRBoard.tsx:50</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>sita_receipts</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/admin/implementation-truth/ITC10RuntimeEvidence.tsx">src/pages/admin/implementation-truth/ITC10RuntimeEvidence.tsx:43</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>sla_breach_contributing_events</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/components/admin/alerts/SLABreachContributorsPanel.tsx">src/components/admin/alerts/SLABreachContributorsPanel.tsx:37</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>summarize_implementation_suggestions</strong></td>
+        <td>rpc</td>
+        <td><span class="file-link" title="src/pages/admin/ai-runtime/SuggestionsBoard.tsx">src/pages/admin/ai-runtime/SuggestionsBoard.tsx:86</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>summarize_internal_agent_learning</strong></td>
+        <td>rpc</td>
+        <td><span class="file-link" title="src/pages/admin/ai-runtime/ReflectionBoard.tsx">src/pages/admin/ai-runtime/ReflectionBoard.tsx:107</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>summarize_policy_draft_health</strong></td>
+        <td>rpc</td>
+        <td><span class="file-link" title="src/pages/admin/ai-runtime/PolicyDraftReviewBoard.tsx">src/pages/admin/ai-runtime/PolicyDraftReviewBoard.tsx:78</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>summarize_security_council</strong></td>
+        <td>rpc</td>
+        <td><span class="file-link" title="src/pages/admin/ai-runtime/SecurityCouncilBoard.tsx">src/pages/admin/ai-runtime/SecurityCouncilBoard.tsx:103</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>summarize_trust_ladder</strong></td>
+        <td>rpc</td>
+        <td><span class="file-link" title="src/pages/admin/ai-runtime/TrustLadderBoard.tsx">src/pages/admin/ai-runtime/TrustLadderBoard.tsx:95</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>tenant_federation_optins</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/admin/ai-runtime/KnowledgeFederationBoard.tsx">src/pages/admin/ai-runtime/KnowledgeFederationBoard.tsx:36</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>tenant_kill_switches</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/tenant/TenantSelfServiceConsole.tsx">src/pages/tenant/TenantSelfServiceConsole.tsx:54</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>tenant_kill_switches</strong></td>
+        <td>db-write</td>
+        <td><span class="file-link" title="src/pages/tenant/TenantSelfServiceConsole.tsx">src/pages/tenant/TenantSelfServiceConsole.tsx:97</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>tenant-self-service-bff</strong></td>
+        <td>function-invoke</td>
+        <td><span class="file-link" title="src/pages/tenant/TenantSelfServiceConsole.tsx">src/pages/tenant/TenantSelfServiceConsole.tsx:47</span><br><span class="file-link" title="src/pages/tenant/TenantSelfServiceConsole.tsx">src/pages/tenant/TenantSelfServiceConsole.tsx:70</span><br><span class="file-link" title="src/pages/tenant/TenantSelfServiceConsole.tsx">src/pages/tenant/TenantSelfServiceConsole.tsx:74</span><br><span class="file-link" title="src/pages/tenant/TenantSelfServiceConsole.tsx">src/pages/tenant/TenantSelfServiceConsole.tsx:108</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>trace_spans</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/components/observability/TracesPanel.tsx">src/components/observability/TracesPanel.tsx:53</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>trust_weighted_actions</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/UserProfilePage.tsx">src/pages/UserProfilePage.tsx:53</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>unified_account_edges</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/admin/ISA06UnifiedAccountGraphExplorer.tsx">src/pages/admin/ISA06UnifiedAccountGraphExplorer.tsx:41</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>unified_account_nodes</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/admin/ISA06UnifiedAccountGraphExplorer.tsx">src/pages/admin/ISA06UnifiedAccountGraphExplorer.tsx:30</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>uptime_heartbeats</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/components/observability/UptimePanel.tsx">src/components/observability/UptimePanel.tsx:52</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>user_memory</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/MemoryCenter.tsx">src/pages/MemoryCenter.tsx:66</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>user_seed_runs</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/admin/UserSeedHealth.tsx">src/pages/admin/UserSeedHealth.tsx:44</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>waitlist-signup</strong></td>
+        <td>function-invoke</td>
+        <td><span class="file-link" title="src/components/marketing/WaitlistForm.tsx">src/components/marketing/WaitlistForm.tsx:21</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>waitlist-stats</strong></td>
+        <td>function-invoke</td>
+        <td><span class="file-link" title="src/pages/marketing/Waitlist.tsx">src/pages/marketing/Waitlist.tsx:14</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>webhook-replay</strong></td>
+        <td>function-invoke</td>
+        <td><span class="file-link" title="src/pages/admin/support/AdminRecoveryOperations.tsx">src/pages/admin/support/AdminRecoveryOperations.tsx:167</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>webhook-replay?action=replay</strong></td>
+        <td>function-invoke</td>
+        <td><span class="file-link" title="src/pages/admin/support/AdminRecoveryOperations.tsx">src/pages/admin/support/AdminRecoveryOperations.tsx:172</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>workflow_runs</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/RecoveryCenter.tsx">src/pages/RecoveryCenter.tsx:49</span><br><span class="file-link" title="src/pages/admin/WorkflowReplayAudit.tsx">src/pages/admin/WorkflowReplayAudit.tsx:73</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>workflow_steps</strong></td>
+        <td>db-read</td>
+        <td><span class="file-link" title="src/pages/admin/WorkflowReplayAudit.tsx">src/pages/admin/WorkflowReplayAudit.tsx:85</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>workflow-repair</strong></td>
+        <td>function-invoke</td>
+        <td><span class="file-link" title="src/pages/admin/WorkflowReplayAudit.tsx">src/pages/admin/WorkflowReplayAudit.tsx:99</span></td>
+      </tr><tr class="row-warn">
+        <td><strong>workflow-replay</strong></td>
+        <td>function-invoke</td>
+        <td><span class="file-link" title="src/pages/admin/WorkflowReplayAudit.tsx">src/pages/admin/WorkflowReplayAudit.tsx:115</span></td>
+      </tr></table></section>
+</body>
+</html>
