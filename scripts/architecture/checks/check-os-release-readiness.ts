@@ -374,6 +374,8 @@ const REQUIRED_GATES = [
   "truth-governance",
   // Wave 20 — Supportability Platform Closure (1 BLOCK gate)
   "support-platform-coverage",
+  // Wave 21 — Recovery Architecture Closure (1 BLOCK gate)
+  "recovery-architecture-closure",
 ];
 
 // Mobile Deployment Closure — RETIRED (2026-04-19)
