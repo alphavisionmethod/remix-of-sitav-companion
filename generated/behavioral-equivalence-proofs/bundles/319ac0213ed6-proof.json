@@ -1,0 +1,81 @@
+{
+  "pairId": "319ac0213ed6",
+  "generatedAt": "2026-04-21T21:32:19.790Z",
+  "fingerprint": "a18d52ccb045",
+  "canonical": {
+    "filePath": "src/lib/core-services/approval-engine/approval-routing.service.ts",
+    "exists": true,
+    "sha256": "70acf4460a83c3e5b7438927037a39365acaef4d18b984c34e7d3877c2ee304c",
+    "lineCount": 74,
+    "byteSize": 3401,
+    "exports": [
+      {
+        "name": "routeApproval",
+        "kind": "function",
+        "isDefault": false,
+        "line": 34
+      },
+      {
+        "name": "canDelegate",
+        "kind": "function",
+        "isDefault": false,
+        "line": 65
+      },
+      {
+        "name": "getNextDelegate",
+        "kind": "function",
+        "isDefault": false,
+        "line": 69
+      },
+      {
+        "name": "ApproverRule",
+        "kind": "interface",
+        "isDefault": false,
+        "line": 6
+      },
+      {
+        "name": "RoutingResult",
+        "kind": "interface",
+        "isDefault": false,
+        "line": 15
+      }
+    ],
+    "sideEffects": [],
+    "receipts": []
+  },
+  "retired": {
+    "filePath": "src/lib/services/approval-engine/approval-routing.service.ts",
+    "exists": false,
+    "sha256": "",
+    "lineCount": 0,
+    "byteSize": 0,
+    "exports": [],
+    "sideEffects": [],
+    "receipts": []
+  },
+  "diff": {
+    "exportsAdded": [
+      "routeApproval",
+      "canDelegate",
+      "getNextDelegate",
+      "ApproverRule",
+      "RoutingResult"
+    ],
+    "exportsRemoved": [],
+    "exportsCommon": [],
+    "apiSurfaceMatch": false,
+    "sideEffectDelta": {
+      "onlyInCanonical": [],
+      "onlyInRetired": []
+    },
+    "receiptDelta": {
+      "onlyInCanonical": [],
+      "onlyInRetired": []
+    },
+    "sideEffectsEquivalent": true,
+    "receiptsEquivalent": true
+  },
+  "verdict": "equivalent",
+  "verdictReason": "Byte-identical files",
+  "proofHash": "83fa6ce7d8978baa85613e3f880785296d0270e169eccd181c13fc8fb83533b5"
+}

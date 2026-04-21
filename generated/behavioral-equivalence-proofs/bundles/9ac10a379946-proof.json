@@ -1,0 +1,74 @@
+{
+  "pairId": "9ac10a379946",
+  "generatedAt": "2026-04-21T21:32:19.792Z",
+  "fingerprint": "5a6407006bca",
+  "canonical": {
+    "filePath": "src/lib/core-services/brain-core/build-approval-package.ts",
+    "exists": true,
+    "sha256": "5a579cedf5fe0d9cf867f6d27125acf6cacd47f9dabeb7a7053b5a1fb962b5b7",
+    "lineCount": 79,
+    "byteSize": 3047,
+    "exports": [
+      {
+        "name": "buildApprovalPackage",
+        "kind": "function",
+        "isDefault": false,
+        "line": 38
+      },
+      {
+        "name": "ApprovalPackage",
+        "kind": "interface",
+        "isDefault": false,
+        "line": 8
+      },
+      {
+        "name": "ApprovalEvidence",
+        "kind": "interface",
+        "isDefault": false,
+        "line": 24
+      },
+      {
+        "name": "RiskAssessment",
+        "kind": "interface",
+        "isDefault": false,
+        "line": 31
+      }
+    ],
+    "sideEffects": [],
+    "receipts": []
+  },
+  "retired": {
+    "filePath": "src/lib/services/brain-core/build-approval-package.ts",
+    "exists": false,
+    "sha256": "",
+    "lineCount": 0,
+    "byteSize": 0,
+    "exports": [],
+    "sideEffects": [],
+    "receipts": []
+  },
+  "diff": {
+    "exportsAdded": [
+      "buildApprovalPackage",
+      "ApprovalPackage",
+      "ApprovalEvidence",
+      "RiskAssessment"
+    ],
+    "exportsRemoved": [],
+    "exportsCommon": [],
+    "apiSurfaceMatch": false,
+    "sideEffectDelta": {
+      "onlyInCanonical": [],
+      "onlyInRetired": []
+    },
+    "receiptDelta": {
+      "onlyInCanonical": [],
+      "onlyInRetired": []
+    },
+    "sideEffectsEquivalent": true,
+    "receiptsEquivalent": true
+  },
+  "verdict": "equivalent",
+  "verdictReason": "Byte-identical files",
+  "proofHash": "8d3b0c83a49ddac71b57ac09686707d85089e5f4f4a33b45ce0fe4641eacca75"
+}

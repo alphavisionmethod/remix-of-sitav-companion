@@ -1,0 +1,67 @@
+{
+  "pairId": "7c58947f44d5",
+  "generatedAt": "2026-04-21T21:32:19.793Z",
+  "fingerprint": "b8fcb0dce40c",
+  "canonical": {
+    "filePath": "src/lib/core-services/brain-core/build-boardroom-request.ts",
+    "exists": true,
+    "sha256": "7bc69212f14393d22f0902cff402449e9ab9ffcf75d266326c417127e46b069a",
+    "lineCount": 95,
+    "byteSize": 3209,
+    "exports": [
+      {
+        "name": "buildBoardroomRequest",
+        "kind": "function",
+        "isDefault": false,
+        "line": 30
+      },
+      {
+        "name": "BoardroomRequest",
+        "kind": "interface",
+        "isDefault": false,
+        "line": 9
+      },
+      {
+        "name": "AgendaItem",
+        "kind": "interface",
+        "isDefault": false,
+        "line": 19
+      }
+    ],
+    "sideEffects": [],
+    "receipts": []
+  },
+  "retired": {
+    "filePath": "src/lib/services/brain-core/build-boardroom-request.ts",
+    "exists": false,
+    "sha256": "",
+    "lineCount": 0,
+    "byteSize": 0,
+    "exports": [],
+    "sideEffects": [],
+    "receipts": []
+  },
+  "diff": {
+    "exportsAdded": [
+      "buildBoardroomRequest",
+      "BoardroomRequest",
+      "AgendaItem"
+    ],
+    "exportsRemoved": [],
+    "exportsCommon": [],
+    "apiSurfaceMatch": false,
+    "sideEffectDelta": {
+      "onlyInCanonical": [],
+      "onlyInRetired": []
+    },
+    "receiptDelta": {
+      "onlyInCanonical": [],
+      "onlyInRetired": []
+    },
+    "sideEffectsEquivalent": true,
+    "receiptsEquivalent": true
+  },
+  "verdict": "equivalent",
+  "verdictReason": "Byte-identical files",
+  "proofHash": "f5245886aaf5b5d38d90ec7b17f0bd85fddae5528279103b01347fb1e2caaf56"
+}

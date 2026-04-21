@@ -1,0 +1,88 @@
+{
+  "pairId": "3db298e2e6af",
+  "generatedAt": "2026-04-21T21:32:19.791Z",
+  "fingerprint": "ab7a3637fe90",
+  "canonical": {
+    "filePath": "src/lib/core-services/approval-engine/escalation-rules.service.ts",
+    "exists": true,
+    "sha256": "69c02a8e847c9bf02a715ad66d599942cca95a91d399df402a65adf92756fdf9",
+    "lineCount": 79,
+    "byteSize": 3778,
+    "exports": [
+      {
+        "name": "getEscalationConfig",
+        "kind": "function",
+        "isDefault": false,
+        "line": 24
+      },
+      {
+        "name": "shouldEscalate",
+        "kind": "function",
+        "isDefault": false,
+        "line": 28
+      },
+      {
+        "name": "getNextEscalationTarget",
+        "kind": "function",
+        "isDefault": false,
+        "line": 37
+      },
+      {
+        "name": "createMultiStepApproval",
+        "kind": "function",
+        "isDefault": false,
+        "line": 42
+      },
+      {
+        "name": "advanceMultiStep",
+        "kind": "function",
+        "isDefault": false,
+        "line": 59
+      },
+      {
+        "name": "EscalationConfig",
+        "kind": "interface",
+        "isDefault": false,
+        "line": 8
+      }
+    ],
+    "sideEffects": [],
+    "receipts": []
+  },
+  "retired": {
+    "filePath": "src/lib/services/approval-engine/escalation-rules.service.ts",
+    "exists": false,
+    "sha256": "",
+    "lineCount": 0,
+    "byteSize": 0,
+    "exports": [],
+    "sideEffects": [],
+    "receipts": []
+  },
+  "diff": {
+    "exportsAdded": [
+      "getEscalationConfig",
+      "shouldEscalate",
+      "getNextEscalationTarget",
+      "createMultiStepApproval",
+      "advanceMultiStep",
+      "EscalationConfig"
+    ],
+    "exportsRemoved": [],
+    "exportsCommon": [],
+    "apiSurfaceMatch": false,
+    "sideEffectDelta": {
+      "onlyInCanonical": [],
+      "onlyInRetired": []
+    },
+    "receiptDelta": {
+      "onlyInCanonical": [],
+      "onlyInRetired": []
+    },
+    "sideEffectsEquivalent": true,
+    "receiptsEquivalent": true
+  },
+  "verdict": "equivalent",
+  "verdictReason": "Byte-identical files",
+  "proofHash": "101f2d258d57bd6bf7e7f9c34d66929f5b68a2b87a8bddc5749bcfb696d87464"
+}

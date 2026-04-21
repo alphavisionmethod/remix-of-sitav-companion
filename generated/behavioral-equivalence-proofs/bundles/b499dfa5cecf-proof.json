@@ -1,0 +1,74 @@
+{
+  "pairId": "b499dfa5cecf",
+  "generatedAt": "2026-04-21T21:32:19.795Z",
+  "fingerprint": "4a4ecb2981e5",
+  "canonical": {
+    "filePath": "src/lib/core-services/brain-core/build-simulation-request.ts",
+    "exists": true,
+    "sha256": "42896a93ee98a3634156bf7573f780b88eb08ffc7161cc0f48f7b4f67c19958a",
+    "lineCount": 83,
+    "byteSize": 3216,
+    "exports": [
+      {
+        "name": "buildSimulationRequest",
+        "kind": "function",
+        "isDefault": false,
+        "line": 32
+      },
+      {
+        "name": "SimulationRequest",
+        "kind": "interface",
+        "isDefault": false,
+        "line": 8
+      },
+      {
+        "name": "SimulationParameter",
+        "kind": "interface",
+        "isDefault": false,
+        "line": 18
+      },
+      {
+        "name": "SimulationScenario",
+        "kind": "interface",
+        "isDefault": false,
+        "line": 25
+      }
+    ],
+    "sideEffects": [],
+    "receipts": []
+  },
+  "retired": {
+    "filePath": "src/lib/services/brain-core/build-simulation-request.ts",
+    "exists": false,
+    "sha256": "",
+    "lineCount": 0,
+    "byteSize": 0,
+    "exports": [],
+    "sideEffects": [],
+    "receipts": []
+  },
+  "diff": {
+    "exportsAdded": [
+      "buildSimulationRequest",
+      "SimulationRequest",
+      "SimulationParameter",
+      "SimulationScenario"
+    ],
+    "exportsRemoved": [],
+    "exportsCommon": [],
+    "apiSurfaceMatch": false,
+    "sideEffectDelta": {
+      "onlyInCanonical": [],
+      "onlyInRetired": []
+    },
+    "receiptDelta": {
+      "onlyInCanonical": [],
+      "onlyInRetired": []
+    },
+    "sideEffectsEquivalent": true,
+    "receiptsEquivalent": true
+  },
+  "verdict": "equivalent",
+  "verdictReason": "Byte-identical files",
+  "proofHash": "e2a74e76f207274855cecf222c776eb6ecc692b35a7074c2893670d454dbb272"
+}

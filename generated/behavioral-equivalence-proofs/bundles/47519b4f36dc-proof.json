@@ -1,0 +1,67 @@
+{
+  "pairId": "47519b4f36dc",
+  "generatedAt": "2026-04-21T21:32:19.794Z",
+  "fingerprint": "3024ba206e92",
+  "canonical": {
+    "filePath": "src/lib/core-services/brain-core/build-explanation.ts",
+    "exists": true,
+    "sha256": "5a736d1f7fb853b7bb8a6a26f1106b3b8c138929a15ccb834a47fd53a7c4f6eb",
+    "lineCount": 62,
+    "byteSize": 2432,
+    "exports": [
+      {
+        "name": "buildExplanationPackage",
+        "kind": "function",
+        "isDefault": false,
+        "line": 17
+      },
+      {
+        "name": "formatDuration",
+        "kind": "function",
+        "isDefault": false,
+        "line": 56
+      },
+      {
+        "name": "ExplanationPackage",
+        "kind": "interface",
+        "isDefault": false,
+        "line": 8
+      }
+    ],
+    "sideEffects": [],
+    "receipts": []
+  },
+  "retired": {
+    "filePath": "src/lib/services/brain-core/build-explanation.ts",
+    "exists": false,
+    "sha256": "",
+    "lineCount": 0,
+    "byteSize": 0,
+    "exports": [],
+    "sideEffects": [],
+    "receipts": []
+  },
+  "diff": {
+    "exportsAdded": [
+      "buildExplanationPackage",
+      "formatDuration",
+      "ExplanationPackage"
+    ],
+    "exportsRemoved": [],
+    "exportsCommon": [],
+    "apiSurfaceMatch": false,
+    "sideEffectDelta": {
+      "onlyInCanonical": [],
+      "onlyInRetired": []
+    },
+    "receiptDelta": {
+      "onlyInCanonical": [],
+      "onlyInRetired": []
+    },
+    "sideEffectsEquivalent": true,
+    "receiptsEquivalent": true
+  },
+  "verdict": "equivalent",
+  "verdictReason": "Byte-identical files",
+  "proofHash": "48498d40a81747af56fce17ae643d3382a3904d3effe4a5bf36df6dd1826918e"
+}

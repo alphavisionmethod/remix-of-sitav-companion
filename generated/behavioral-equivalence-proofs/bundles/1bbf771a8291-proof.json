@@ -1,0 +1,74 @@
+{
+  "pairId": "1bbf771a8291",
+  "generatedAt": "2026-04-21T21:32:19.788Z",
+  "fingerprint": "bb7d389e6e2a",
+  "canonical": {
+    "filePath": "src/lib/core-services/approval-engine/approval-history.service.ts",
+    "exists": true,
+    "sha256": "48f6347c818a42658fb8c851574bf8e821da8a4371ba2e250665695ae0fa453f",
+    "lineCount": 83,
+    "byteSize": 3110,
+    "exports": [
+      {
+        "name": "recordApproval",
+        "kind": "function",
+        "isDefault": false,
+        "line": 21
+      },
+      {
+        "name": "getApprovalHistory",
+        "kind": "function",
+        "isDefault": false,
+        "line": 25
+      },
+      {
+        "name": "computeMetrics",
+        "kind": "function",
+        "isDefault": false,
+        "line": 43
+      },
+      {
+        "name": "ApprovalMetrics",
+        "kind": "interface",
+        "isDefault": false,
+        "line": 8
+      }
+    ],
+    "sideEffects": [],
+    "receipts": []
+  },
+  "retired": {
+    "filePath": "src/lib/services/approval-engine/approval-history.service.ts",
+    "exists": false,
+    "sha256": "",
+    "lineCount": 0,
+    "byteSize": 0,
+    "exports": [],
+    "sideEffects": [],
+    "receipts": []
+  },
+  "diff": {
+    "exportsAdded": [
+      "recordApproval",
+      "getApprovalHistory",
+      "computeMetrics",
+      "ApprovalMetrics"
+    ],
+    "exportsRemoved": [],
+    "exportsCommon": [],
+    "apiSurfaceMatch": false,
+    "sideEffectDelta": {
+      "onlyInCanonical": [],
+      "onlyInRetired": []
+    },
+    "receiptDelta": {
+      "onlyInCanonical": [],
+      "onlyInRetired": []
+    },
+    "sideEffectsEquivalent": true,
+    "receiptsEquivalent": true
+  },
+  "verdict": "equivalent",
+  "verdictReason": "Byte-identical files",
+  "proofHash": "ae06d7eac762166c8289cf54af4e7091f3f29daa05c04d48ce377c3558138fdb"
+}

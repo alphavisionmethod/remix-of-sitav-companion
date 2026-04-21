@@ -1,0 +1,107 @@
+{
+  "generatedAt": "2026-04-21T21:32:19.801Z",
+  "totalPairs": 14,
+  "equivalent": 14,
+  "drifted": 0,
+  "skipped": 0,
+  "bundles": [
+    {
+      "pairId": "1bbf771a8291",
+      "canonical": "src/lib/core-services/approval-engine/approval-history.service.ts",
+      "retired": "src/lib/services/approval-engine/approval-history.service.ts",
+      "verdict": "equivalent",
+      "bundlePath": "generated/behavioral-equivalence-proofs/bundles/1bbf771a8291-proof.json"
+    },
+    {
+      "pairId": "319ac0213ed6",
+      "canonical": "src/lib/core-services/approval-engine/approval-routing.service.ts",
+      "retired": "src/lib/services/approval-engine/approval-routing.service.ts",
+      "verdict": "equivalent",
+      "bundlePath": "generated/behavioral-equivalence-proofs/bundles/319ac0213ed6-proof.json"
+    },
+    {
+      "pairId": "3db298e2e6af",
+      "canonical": "src/lib/core-services/approval-engine/escalation-rules.service.ts",
+      "retired": "src/lib/services/approval-engine/escalation-rules.service.ts",
+      "verdict": "equivalent",
+      "bundlePath": "generated/behavioral-equivalence-proofs/bundles/3db298e2e6af-proof.json"
+    },
+    {
+      "pairId": "9ac10a379946",
+      "canonical": "src/lib/core-services/brain-core/build-approval-package.ts",
+      "retired": "src/lib/services/brain-core/build-approval-package.ts",
+      "verdict": "equivalent",
+      "bundlePath": "generated/behavioral-equivalence-proofs/bundles/9ac10a379946-proof.json"
+    },
+    {
+      "pairId": "7c58947f44d5",
+      "canonical": "src/lib/core-services/brain-core/build-boardroom-request.ts",
+      "retired": "src/lib/services/brain-core/build-boardroom-request.ts",
+      "verdict": "equivalent",
+      "bundlePath": "generated/behavioral-equivalence-proofs/bundles/7c58947f44d5-proof.json"
+    },
+    {
+      "pairId": "47519b4f36dc",
+      "canonical": "src/lib/core-services/brain-core/build-explanation.ts",
+      "retired": "src/lib/services/brain-core/build-explanation.ts",
+      "verdict": "equivalent",
+      "bundlePath": "generated/behavioral-equivalence-proofs/bundles/47519b4f36dc-proof.json"
+    },
+    {
+      "pairId": "b499dfa5cecf",
+      "canonical": "src/lib/core-services/brain-core/build-simulation-request.ts",
+      "retired": "src/lib/services/brain-core/build-simulation-request.ts",
+      "verdict": "equivalent",
+      "bundlePath": "generated/behavioral-equivalence-proofs/bundles/b499dfa5cecf-proof.json"
+    },
+    {
+      "pairId": "cbaaf3105a80",
+      "canonical": "src/lib/core-services/brain-core/choose-advisors.ts",
+      "retired": "src/lib/services/brain-core/choose-advisors.ts",
+      "verdict": "equivalent",
+      "bundlePath": "generated/behavioral-equivalence-proofs/bundles/cbaaf3105a80-proof.json"
+    },
+    {
+      "pairId": "32c5954796dc",
+      "canonical": "src/lib/core-services/brain-core/choose-execution-mode.ts",
+      "retired": "src/lib/services/brain-core/choose-execution-mode.ts",
+      "verdict": "equivalent",
+      "bundlePath": "generated/behavioral-equivalence-proofs/bundles/32c5954796dc-proof.json"
+    },
+    {
+      "pairId": "7cb5f88c3fe6",
+      "canonical": "src/lib/core-services/brain-core/councils.ts",
+      "retired": "src/lib/services/brain-core/councils.ts",
+      "verdict": "equivalent",
+      "bundlePath": "generated/behavioral-equivalence-proofs/bundles/7cb5f88c3fe6-proof.json"
+    },
+    {
+      "pairId": "22e3ecca4a79",
+      "canonical": "src/lib/core-services/brain-core/model-router.ts",
+      "retired": "src/lib/services/brain-core/model-router.ts",
+      "verdict": "equivalent",
+      "bundlePath": "generated/behavioral-equivalence-proofs/bundles/22e3ecca4a79-proof.json"
+    },
+    {
+      "pairId": "f5a7393b87b8",
+      "canonical": "src/lib/core-services/brain-core/orchestrate-intent.ts",
+      "retired": "src/lib/services/brain-core/orchestrate-intent.ts",
+      "verdict": "equivalent",
+      "bundlePath": "generated/behavioral-equivalence-proofs/bundles/f5a7393b87b8-proof.json"
+    },
+    {
+      "pairId": "1ae13581bc60",
+      "canonical": "src/lib/core-services/conscience-gate/conscience-gate.ts",
+      "retired": "src/lib/services/conscience-gate/conscience-gate.ts",
+      "verdict": "equivalent",
+      "bundlePath": "generated/behavioral-equivalence-proofs/bundles/1ae13581bc60-proof.json"
+    },
+    {
+      "pairId": "146c4a3d05c4",
+      "canonical": "src/lib/core-services/conscience-gate/critique-loop.ts",
+      "retired": "src/lib/services/conscience-gate/critique-loop.ts",
+      "verdict": "equivalent",
+      "bundlePath": "generated/behavioral-equivalence-proofs/bundles/146c4a3d05c4-proof.json"
+    }
+  ]
+}

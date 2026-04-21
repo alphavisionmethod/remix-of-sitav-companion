@@ -1,0 +1,88 @@
+{
+  "pairId": "7cb5f88c3fe6",
+  "generatedAt": "2026-04-21T21:32:19.797Z",
+  "fingerprint": "14f17e5a645e",
+  "canonical": {
+    "filePath": "src/lib/core-services/brain-core/councils.ts",
+    "exists": true,
+    "sha256": "fa04046290b622d74b4e37b7f9a477b41fb2ea5b1c2fb5b76dedd502a8539aa9",
+    "lineCount": 75,
+    "byteSize": 3279,
+    "exports": [
+      {
+        "name": "runBusinessCouncil",
+        "kind": "function",
+        "isDefault": false,
+        "line": 26
+      },
+      {
+        "name": "runFinanceCouncil",
+        "kind": "function",
+        "isDefault": false,
+        "line": 34
+      },
+      {
+        "name": "runConciergeCouncil",
+        "kind": "function",
+        "isDefault": false,
+        "line": 42
+      },
+      {
+        "name": "runMetaCouncil",
+        "kind": "function",
+        "isDefault": false,
+        "line": 49
+      },
+      {
+        "name": "CouncilVote",
+        "kind": "interface",
+        "isDefault": false,
+        "line": 6
+      },
+      {
+        "name": "CouncilDecision",
+        "kind": "interface",
+        "isDefault": false,
+        "line": 15
+      }
+    ],
+    "sideEffects": [],
+    "receipts": []
+  },
+  "retired": {
+    "filePath": "src/lib/services/brain-core/councils.ts",
+    "exists": false,
+    "sha256": "",
+    "lineCount": 0,
+    "byteSize": 0,
+    "exports": [],
+    "sideEffects": [],
+    "receipts": []
+  },
+  "diff": {
+    "exportsAdded": [
+      "runBusinessCouncil",
+      "runFinanceCouncil",
+      "runConciergeCouncil",
+      "runMetaCouncil",
+      "CouncilVote",
+      "CouncilDecision"
+    ],
+    "exportsRemoved": [],
+    "exportsCommon": [],
+    "apiSurfaceMatch": false,
+    "sideEffectDelta": {
+      "onlyInCanonical": [],
+      "onlyInRetired": []
+    },
+    "receiptDelta": {
+      "onlyInCanonical": [],
+      "onlyInRetired": []
+    },
+    "sideEffectsEquivalent": true,
+    "receiptsEquivalent": true
+  },
+  "verdict": "equivalent",
+  "verdictReason": "Byte-identical files",
+  "proofHash": "8d9ef45cc6cd889ecbf90b311b48641dc2419339fffa41a5c78734f4e9ea3b4e"
+}

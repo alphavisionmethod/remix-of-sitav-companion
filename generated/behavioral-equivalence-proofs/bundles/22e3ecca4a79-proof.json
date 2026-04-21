@@ -1,0 +1,116 @@
+{
+  "pairId": "22e3ecca4a79",
+  "generatedAt": "2026-04-21T21:32:19.798Z",
+  "fingerprint": "73680c48aef6",
+  "canonical": {
+    "filePath": "src/lib/core-services/brain-core/model-router.ts",
+    "exists": true,
+    "sha256": "a376ce7a0afdd81b9f03305947fd7c5f6d076926b9eb0626579a217d788f0320",
+    "lineCount": 237,
+    "byteSize": 8036,
+    "exports": [
+      {
+        "name": "routeToModel",
+        "kind": "function",
+        "isDefault": false,
+        "line": 118
+      },
+      {
+        "name": "recordModelSpend",
+        "kind": "function",
+        "isDefault": false,
+        "line": 169
+      },
+      {
+        "name": "getModelBudgetStatus",
+        "kind": "function",
+        "isDefault": false,
+        "line": 177
+      },
+      {
+        "name": "setModelBudget",
+        "kind": "function",
+        "isDefault": false,
+        "line": 205
+      },
+      {
+        "name": "resetDailySpend",
+        "kind": "function",
+        "isDefault": false,
+        "line": 212
+      },
+      {
+        "name": "BrainModelTier",
+        "kind": "type",
+        "isDefault": false,
+        "line": 9
+      },
+      {
+        "name": "DomainRiskClass",
+        "kind": "type",
+        "isDefault": false,
+        "line": 11
+      },
+      {
+        "name": "IntentComplexity",
+        "kind": "type",
+        "isDefault": false,
+        "line": 13
+      },
+      {
+        "name": "BrainModelRoutingDecision",
+        "kind": "interface",
+        "isDefault": false,
+        "line": 15
+      },
+      {
+        "name": "ModelBudgetStatus",
+        "kind": "interface",
+        "isDefault": false,
+        "line": 24
+      }
+    ],
+    "sideEffects": [],
+    "receipts": []
+  },
+  "retired": {
+    "filePath": "src/lib/services/brain-core/model-router.ts",
+    "exists": false,
+    "sha256": "",
+    "lineCount": 0,
+    "byteSize": 0,
+    "exports": [],
+    "sideEffects": [],
+    "receipts": []
+  },
+  "diff": {
+    "exportsAdded": [
+      "routeToModel",
+      "recordModelSpend",
+      "getModelBudgetStatus",
+      "setModelBudget",
+      "resetDailySpend",
+      "BrainModelTier",
+      "DomainRiskClass",
+      "IntentComplexity",
+      "BrainModelRoutingDecision",
+      "ModelBudgetStatus"
+    ],
+    "exportsRemoved": [],
+    "exportsCommon": [],
+    "apiSurfaceMatch": false,
+    "sideEffectDelta": {
+      "onlyInCanonical": [],
+      "onlyInRetired": []
+    },
+    "receiptDelta": {
+      "onlyInCanonical": [],
+      "onlyInRetired": []
+    },
+    "sideEffectsEquivalent": true,
+    "receiptsEquivalent": true
+  },
+  "verdict": "equivalent",
+  "verdictReason": "Byte-identical files",
+  "proofHash": "4b6ff0eac8955331c779efaf39f563bef09a5fa110d7afcd1eed3d69eaa79cd5"
+}
