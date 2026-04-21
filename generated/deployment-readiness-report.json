@@ -1,0 +1,54 @@
+{
+  "generatedAt": "2026-04-21T23:28:06.005Z",
+  "totalGates": 9,
+  "passed": 9,
+  "failed": 0,
+  "gates": [
+    {
+      "gate": "Root scripts",
+      "passed": true,
+      "detail": "All present"
+    },
+    {
+      "gate": "Service manifests",
+      "passed": true,
+      "detail": "Complete"
+    },
+    {
+      "gate": "Docker hardening",
+      "passed": true,
+      "detail": "All hardened"
+    },
+    {
+      "gate": ".dockerignore",
+      "passed": true,
+      "detail": "Present"
+    },
+    {
+      "gate": "Docker Compose",
+      "passed": true,
+      "detail": "Present"
+    },
+    {
+      "gate": "Env example",
+      "passed": true,
+      "detail": "Present"
+    },
+    {
+      "gate": "Shared CORS",
+      "passed": true,
+      "detail": "Present"
+    },
+    {
+      "gate": "Shared auth",
+      "passed": true,
+      "detail": "Present"
+    },
+    {
+      "gate": "Shared service-role",
+      "passed": true,
+      "detail": "Present"
+    }
+  ],
+  "deploymentReady": true
+}
