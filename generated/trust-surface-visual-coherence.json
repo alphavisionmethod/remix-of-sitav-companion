@@ -1,0 +1,38 @@
+{
+  "generatedAt": "2026-04-21T08:36:57.713Z",
+  "gate": "trust-surface-visual-coherence",
+  "ok": true,
+  "trustLevelCount": 6,
+  "levels": [
+    {
+      "level": "verified",
+      "intent": "success",
+      "component": "TrustBadge / TrustStateBadge"
+    },
+    {
+      "level": "ai-generated",
+      "intent": "ai",
+      "component": "AIConfidenceDisclosure / SourceOfTruthDisclosure"
+    },
+    {
+      "level": "user-provided",
+      "intent": "neutral",
+      "component": "TrustBadge"
+    },
+    {
+      "level": "external",
+      "intent": "info",
+      "component": "TrustBadge / ProvenanceChip"
+    },
+    {
+      "level": "simulated",
+      "intent": "warning",
+      "component": "TrustBadge / SurfaceTrustStrip"
+    },
+    {
+      "level": "unverified",
+      "intent": "destructive",
+      "component": "TrustBadge / SurfaceTrustStrip"
+    }
+  ]
+}

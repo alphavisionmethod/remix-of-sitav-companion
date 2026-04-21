@@ -1,0 +1,27 @@
+{
+  "generatedAt": "2026-04-21T08:36:57.713Z",
+  "gate": "os-app-experience-closure",
+  "ok": true,
+  "totalSurfaces": 23,
+  "shellSurfaceCount": 10,
+  "appSurfaceCount": 6,
+  "sharedSurfaceCount": 7,
+  "mergeRuleCount": 6,
+  "contextHandoffCount": 5,
+  "embeddingRuleCount": 8,
+  "mergeRules": [
+    "fullscreen-yield",
+    "notification-routing",
+    "command-merge",
+    "focus-transfer",
+    "depth-layer-respect",
+    "search-scoping"
+  ],
+  "contextHandoffs": [
+    "app-launch",
+    "app-close",
+    "notification-click",
+    "search-navigate",
+    "settings-navigate"
+  ]
+}
