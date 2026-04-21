@@ -34,16 +34,22 @@ export function DemoDock({ openApps, minimizedWindows, onLaunch, onRestore, onDo
 
   return (
     <div ref={dockRef}
-      className="absolute bottom-2 left-1/2 -translate-x-1/2 z-50 flex items-end gap-1 px-3 py-1.5 rounded-2xl"
-      style={{ background: "rgba(20,20,30,0.65)", backdropFilter: "blur(30px)", WebkitBackdropFilter: "blur(30px)", border: "1px solid rgba(255,255,255,0.1)" }}>
+      className="absolute bottom-2 left-1/2 -translate-x-1/2 z-50 flex items-end gap-1.5 px-4 py-2 rounded-2xl"
+      style={{
+        background: "linear-gradient(180deg, rgba(25,25,38,0.75), rgba(18,18,28,0.7))",
+        backdropFilter: "blur(40px) saturate(1.5)",
+        WebkitBackdropFilter: "blur(40px) saturate(1.5)",
+        border: "1px solid rgba(255,255,255,0.08)",
+        boxShadow: "0 8px 32px -8px rgba(0,0,0,0.5), inset 0 1px 0 0 rgba(255,255,255,0.05)",
+      }}>
       {/* App icons */}
       {DEMO_APPS.map((app) => {
         const isOpen = openApps.includes(app.id);
         return (
           <button key={app.id} onClick={() => onLaunch(app.id)}
-            className="group flex flex-col items-center gap-0.5 transition-transform hover:scale-125 duration-200">
+            className="group flex flex-col items-center gap-0.5 transition-all hover:scale-125 hover:-translate-y-1 duration-200">
             <AppIconRenderer appId={app.id} size={44} />
-            {isOpen && <div className="w-1 h-1 rounded-full bg-white/70" />}
+            {isOpen && <div className="w-1 h-1 rounded-full bg-white/80 shadow-[0_0_4px_rgba(255,255,255,0.4)]" />}
           </button>
         );
       })}
