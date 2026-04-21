@@ -1,65 +1,65 @@
 
 
-# Premium Advisor Board Redesign
+# Post-Onboarding Environment Shaping for Business OS
 
-Three interconnected upgrades: enhanced visual effects on all advisor cards, a mobile-first advisor experience with tap-to-expand, and an immersive boardroom council overhaul using holographic components.
+After completing the 21-screen business formation, nothing visibly changes in the OS. The onboarding data gets saved but is never consumed. This plan wires the onboarding output into every surface the user sees after completing formation.
 
 ---
 
-## 1. Premium Neon Rings, HUD Animations, and Hover Tilt
+## Problem Summary
 
-**Files modified:** `boardroom-primitives.tsx`, `AdvisorShowcaseCard.tsx`, `AdvisorPortrait.tsx`, `ImmersiveBoardroomCouncil.tsx`
+1. **Broken navigation**: RevealScreen navigates to `/revenue-office/boardroom` (a page route), which does not open inside the windowed Business OS app. The user lands on a standalone page instead of their new environment.
+2. **Disconnected data**: `AdaptiveBusinessHome` reads from `useBusinessProfile()` (archetype weights), but the detailed onboarding state (business name, types, priorities, bottlenecks, revenue sources, team size, automation level, first wins) is never consumed by the home screen or any post-formation surface.
+3. **No environment shaping**: After formation, the user sees the same generic adaptive home with demo/default data. No first-win activation, no personalized modules, no priority-driven layout.
 
-- **NeonRing upgrade**: Replace the single pulsing `boxShadow` with a layered triple-ring effect (inner sharp glow + mid diffuse + outer ambient). Add a slow rotating gradient border using `conic-gradient` animated via CSS `@keyframes`. The ring intensity scales with advisor confidence (dim below 60%, bright above 80%).
-- **HolographicGauge upgrade**: Add a sweeping radial "scan line" animation that rotates behind the gauge arc. The gauge value text gets a counting-up number animation using `useSpring` from framer-motion. Add subtle tick marks around the circumference with opacity pulse on the active segment.
-- **Consensus HUD**: The central HUD in `ImmersiveBoardroomCouncil` gets a breathing glow effect that changes color based on consensus level (red < 50, amber 50-75, green > 75). Add particle dots that orbit between the two gauges.
-- **Hover tilt on all cards**: Replace the simple `whileHover: { y: -8 }` in `AdvisorShowcaseCard` with a proper 3D perspective tilt using `onMouseMove` to calculate `rotateX`/`rotateY` from cursor position relative to card center. Add a moving highlight gradient that follows the cursor. Apply the same tilt system to `MobileAdvisorBoard` cards (touch-compatible via `onTouchMove`).
-- **FloatingMetricCard**: Add a subtle floating bob animation (`translateY` oscillation over 3s) and entry blur-to-sharp transition.
+---
 
-## 2. Mobile Advisor Board with Full-Screen Expand
+## 1. Fix Post-Onboarding Navigation
 
-**Files modified:** `MobileAdvisorBoard.tsx` | **New file:** `MobileAdvisorDetailView.tsx`
+**Files modified:** `RevealScreen.tsx`, `BusinessAppShell.tsx`
 
-- **Horizontal showcase cards**: Redesign cards from the current 200px fixed-width to responsive `85vw` snap cards with:
-  - Domain-colored gradient header strip
-  - Larger portrait (xl size) with the upgraded neon ring
-  - Mini bar chart visualization (reuse from `AdvisorShowcaseCard`)
-  - Swipe indicator dots at the bottom
-  - Card entrance: staggered scale-up from center with blur fade
-- **Full-screen tap-to-expand** (`MobileAdvisorDetailView.tsx`):
-  - Triggered by tapping any card; uses `AnimatePresence` with a `layoutId` shared transition so the portrait morphs from card position to full-screen header
-  - Full-screen overlay with `CinematicBackground`
-  - Top section: large portrait with animated neon ring, name, role, domain badge
-  - Middle section: holographic confidence gauge (large, 160px) + key metric cards in a 2x2 grid
-  - Bottom section: scrollable area with mission text, special ability, and quick-action buttons (Ask, View Timeline)
-  - Close via swipe-down gesture (using `drag="y"` with `dragConstraints` and `onDragEnd` threshold) or X button
-  - Hardware back button / gesture support via `popstate` listener
-- **Integration**: Wire `MobileAdvisorBoard` into the `AdvisorCouncilShell` by detecting mobile viewport (`useIsMobile`) and rendering the mobile board instead of the desktop grid in the "council" and "boardroom" tabs.
+- Remove the `navigate("/revenue-office/boardroom")` calls from RevealScreen. Instead, call `markComplete(state)` and then call the `onComplete` callback (passed through from FormationShell), which sets `formationDone = true` in BusinessAppShell, naturally revealing the main shell.
+- After `formationDone` transitions to true, set `activeModule` to `"adaptive-home"` (already the default) so the user lands on their personalized home.
+- Add a brief post-formation arrival ceremony (a 2-second fade transition with "Your Revenue Office is ready" before the home appears).
 
-## 3. Immersive Boardroom Council Redesign
+## 2. Bridge Onboarding State into Business Profile
 
-**Files modified:** `ImmersiveBoardroomCouncil.tsx`, `boardroom-primitives.tsx`, `AdvisorCouncilShell.tsx`
+**Files modified:** `BusinessAppShell.tsx`, `AdaptiveBusinessHome.tsx`, new hook `useOnboardingBridge.ts`
 
-- **Semicircular layout fix**: The current positioning math produces cramped layouts. Recalculate using proper trigonometric spacing with `radiusX` and `radiusY` scaled to container width via `useRef` + `ResizeObserver`. Each advisor seat gets a subtle connecting line (SVG path) back to the central HUD.
-- **Central HUD redesign**:
-  - Replace the plain `GlassPanel` wrapper with a hexagonal glass frame
-  - Add animated connection lines (SVG) from HUD to each advisor position, with data-pulse dots traveling along the paths
-  - The SITA Intelligence badge gets a slow-rotating ring animation
-- **Advisor seats**:
-  - Each seat shows the upgraded `NeonRing` + `AdvisorPortrait`
-  - On hover, the seat expands to show the `FloatingMetricCard` with the bob animation; non-hovered seats slightly dim (opacity 0.6)
-  - Active/thinking status shown via ring animation speed (thinking = fast pulse, active = slow breathe)
-  - Click opens the `AdvisorDetailDrawer`
-- **New primitive: `DataPulseLine`** in `boardroom-primitives.tsx`: An SVG line component with an animated dot traveling along it, used for HUD-to-advisor connections.
-- **Ambient effects**: Add 2-3 slowly drifting bokeh circles in the background (large, very low opacity radial gradients) that move on a 20s loop.
+- Create `src/hooks/useOnboardingBridge.ts`: reads from `useBusinessOnboarding().savedState` and maps onboarding answers to `BusinessProfileContext` overrides:
+  - `businessTypes` array maps to archetype weight boosts (e.g., "service" type boosts service archetype)
+  - `teamSize` maps to employee-based weight
+  - `revenueSources` influences ecommerce/service/appointment weights
+  - `automationLevel` sets operating flags
+- Call this bridge in `BusinessAppShellInner` after formation completes, so the archetype engine recalculates with real onboarding data.
+- This makes `AdaptiveBusinessHome` automatically show the correct greeting, widgets, quick actions, and stat cards based on what the user told us.
 
-## 4. Wiring and Consistency
+## 3. Build Post-Formation Home Sections
 
-**Files modified:** `AdvisorCouncilShell.tsx`
+**Files modified:** `AdaptiveBusinessHome.tsx`
 
-- Add `useIsMobile()` detection to `AdvisorCouncilShell` to auto-switch between desktop `ImmersiveBoardroomCouncil` and `MobileAdvisorBoard` for the boardroom tab.
-- Ensure the mobile board's `onAdvisorClick` opens the new `MobileAdvisorDetailView` (full-screen) instead of the desktop `AdvisorDetailDrawer`.
-- Apply the upgraded `NeonRing` consistently to all surfaces: `AdvisorShowcaseCard`, `ImmersiveBoardroomCouncil`, `MobileAdvisorBoard`, and `AdvisorDetailDrawer` header portrait.
+Add three new sections that consume onboarding state directly:
+
+- **Business Twin Card**: Show the business name, type, team size, revenue model, and automation level the user selected. Include an "Edit" link back to formation.
+- **Priority-Driven Module Grid**: Read `savedState.orderedPriorities` and render the top 4-6 priorities as actionable module cards (Revenue, Customers, Operations, Finance) ordered by the user's ranking. Each card links to the relevant Business OS module.
+- **First Win Activation Strip**: Read `savedState.selectedFirstWins` and show 1-3 active first-win cards with progress indicators and "Start" buttons. These are the quick wins the user chose during onboarding.
+- **Bottleneck Alerts**: Read `savedState.growthBottlenecks` and show 2-3 flagged areas as amber alert cards with "Investigate" actions linking to the relevant modules (Leak Detector, Conversion Lab, etc.).
+
+## 4. Calibrate Advisors from Onboarding
+
+**Files modified:** `AdaptiveBusinessHome.tsx`, advisor data layer
+
+- Read the onboarding `automationLevel` to set initial advisor autonomy display (show "Trust Level: Supervised" or "Trust Level: Guided" badge).
+- Read `savedState.activeAdvisors` (if populated during AdvisorActivationScreen) to show which advisors are "online" in the home header.
+- Show a mini advisor signal strip on the home page with the 2-3 most relevant advisor insights based on the user's business type and bottlenecks.
+
+## 5. Persist and Hydrate on Return
+
+**Files modified:** `BusinessAppShell.tsx`
+
+- When `onboardingCompleted` is true (returning user), hydrate the archetype bridge immediately on mount so the adaptive home is personalized from the first frame.
+- Ensure `localStorage` fallback (`sita_onboarding_state`) is read if the database fetch fails, so the experience degrades gracefully.
+- Add a "Your Business OS was shaped by your formation answers" subtle banner on the home page (dismissible) that links to re-running formation.
 
 ---
 
@@ -67,11 +67,8 @@ Three interconnected upgrades: enhanced visual effects on all advisor cards, a m
 
 | File | Action |
 |------|--------|
-| `src/components/advisors/boardroom-primitives.tsx` | Upgrade NeonRing, HolographicGauge, FloatingMetricCard; add DataPulseLine |
-| `src/components/advisors/AdvisorShowcaseCard.tsx` | Add 3D cursor-tilt, highlight gradient, upgraded ring |
-| `src/components/advisors/AdvisorPortrait.tsx` | Integrate upgraded NeonRing rendering |
-| `src/components/advisors/MobileAdvisorBoard.tsx` | Redesign horizontal cards, add swipe dots, larger portraits |
-| `src/components/advisors/MobileAdvisorDetailView.tsx` | New: full-screen expand view with shared layout animation |
-| `src/components/advisors/ImmersiveBoardroomCouncil.tsx` | Redesign layout, HUD, connection lines, ambient effects |
-| `src/components/advisors/AdvisorCouncilShell.tsx` | Add mobile detection, wire mobile board + detail view |
+| `src/pages/revenue-office/onboarding/screens/RevealScreen.tsx` | Remove route navigation; use onComplete callback instead |
+| `src/hooks/useOnboardingBridge.ts` | New: maps onboarding state to archetype weights |
+| `src/components/sita/apps/business/BusinessAppShell.tsx` | Wire bridge, add arrival ceremony, fix post-formation flow |
+| `src/components/business/adaptive/AdaptiveBusinessHome.tsx` | Add Business Twin card, priority grid, first wins, bottleneck alerts |
 
