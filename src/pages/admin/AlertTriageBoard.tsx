@@ -129,7 +129,7 @@ const AlertTriageBoard = () => {
             <div className="flex items-center gap-2 flex-wrap">
               {a.runbook_id && (
                 <Button variant="outline" size="sm" className="h-6 text-[10px]" asChild>
-                  <a href={`/admin/runbooks/${a.runbook_id}`}><Play className="h-3 w-3 mr-1" /> Runbook</a>
+                  <a href={`/admin/support/runbooks/${a.runbook_id}`}><Play className="h-3 w-3 mr-1" /> Runbook</a>
                 </Button>
               )}
               {a.status === "active" && (
