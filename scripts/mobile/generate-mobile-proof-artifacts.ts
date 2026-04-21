@@ -1,0 +1,27 @@
+#!/usr/bin/env node
+import { mkdirSync, writeFileSync } from "node:fs";
+import { MOBILE_READINESS } from "../../src/lib/mobile/mobile-readiness-contract";
+import { STORE_READINESS_REGISTRY } from "../../src/lib/mobile/mobile-distribution-status";
+import { MOBILE_SIGNING_POLICIES } from "../../src/lib/mobile/mobile-signing-provisioning-policy";
+import { PUSH_CERT_REGISTRY } from "../../src/lib/mobile/mobile-push-cert-lifecycle";
+import { MOBILE_OFFLINE_SURFACES } from "../../src/lib/mobile/mobile-offline-policy";
+import { MOBILE_SUPPORT_SCENARIOS } from "../../src/lib/mobile/mobile-support-pack-builder";
+import { MOBILE_COMPLIANCE_REQUIREMENTS } from "../../src/lib/mobile/mobile-platform-compliance-map";
+import { MOBILE_RUNTIME_FEATURES } from "../../src/lib/mobile/mobile-runtime-proof-map";
+import { STORE_REVIEW_REQUIREMENTS } from "../../src/lib/mobile/mobile-store-review-policy";
+import { MOBILE_RELEASE_CHANNELS } from "../../src/lib/mobile/mobile-release-channel-map";
+const now = new Date().toISOString();
+mkdirSync("generated", { recursive: true });
+const w = (p: string, d: unknown) => { writeFileSync(p, JSON.stringify(d, null, 2)); console.log("  ✅ " + p); };
+console.log("═══ Generating Mobile Proof Artifacts ═══\n");
+w("generated/mobile-readiness-pack.json", { generatedAt: now, ...MOBILE_READINESS });
+w("generated/mobile-deferment-honesty-report.json", { generatedAt: now, honestyState: MOBILE_READINESS.honestyState, isProductionReady: false, isDeferredHonestly: true, activeSurfaces: MOBILE_READINESS.activeSurfaces, archivedSurfaces: MOBILE_READINESS.archivedSurfaces, blockedDimensions: MOBILE_READINESS.dimensions.filter(d => d.status === "blocked").length, partialDimensions: MOBILE_READINESS.dimensions.filter(d => d.status === "partial").length, distributionBlockers: MOBILE_READINESS.distributionBlockers, closurePath: MOBILE_READINESS.closurePath, verdict: "Mobile is honestly DEFERRED. PWA fallback active. Native distribution blocked on external account provisioning." });
+w("generated/mobile-signing-proof.json", { generatedAt: now, policies: MOBILE_SIGNING_POLICIES, allReady: false, blockers: MOBILE_SIGNING_POLICIES.flatMap(p => p.missingCredentials.map(c => `${p.platform}: ${c}`)) });
+w("generated/mobile-push-cert-status.json", { generatedAt: now, transports: PUSH_CERT_REGISTRY, activeCount: PUSH_CERT_REGISTRY.filter(p => p.status === "active").length, deferredCount: PUSH_CERT_REGISTRY.filter(p => p.status === "deferred").length });
+w("generated/mobile-offline-policy-report.json", { generatedAt: now, surfaces: MOBILE_OFFLINE_SURFACES, offlineCapable: MOBILE_OFFLINE_SURFACES.filter(s => s.offlineMode !== "blocked").length, blocked: MOBILE_OFFLINE_SURFACES.filter(s => s.offlineMode === "blocked").length });
+w("generated/mobile-supportability-report.json", { generatedAt: now, scenarios: MOBILE_SUPPORT_SCENARIOS, diagnosticCoverage: MOBILE_SUPPORT_SCENARIOS.filter(s => s.diagnosticAvailable).length, total: MOBILE_SUPPORT_SCENARIOS.length });
+w("generated/mobile-platform-compliance-report.json", { generatedAt: now, requirements: MOBILE_COMPLIANCE_REQUIREMENTS, deferred: MOBILE_COMPLIANCE_REQUIREMENTS.filter(r => r.status === "deferred").length, compliant: MOBILE_COMPLIANCE_REQUIREMENTS.filter(r => r.status === "compliant").length });
+w("generated/mobile-runtime-proof-report.json", { generatedAt: now, features: MOBILE_RUNTIME_FEATURES, browserCompatible: MOBILE_RUNTIME_FEATURES.filter(f => f.browserMobile === "browser-compatible" || f.browserMobile === "pwa-enhanced").length, nativeOnly: MOBILE_RUNTIME_FEATURES.filter(f => f.nativeMobile === "native-only").length, total: MOBILE_RUNTIME_FEATURES.length });
+w("generated/mobile-store-review-readiness.json", { generatedAt: now, requirements: STORE_REVIEW_REQUIREMENTS, met: STORE_REVIEW_REQUIREMENTS.filter(r => r.met).length, unmet: STORE_REVIEW_REQUIREMENTS.filter(r => !r.met).length, storeReadiness: STORE_READINESS_REGISTRY });
+w("generated/mobile-release-channel-status.json", { generatedAt: now, channels: MOBILE_RELEASE_CHANNELS, active: MOBILE_RELEASE_CHANNELS.filter(c => c.status === "active").length, blocked: MOBILE_RELEASE_CHANNELS.filter(c => c.status === "blocked").length });
+console.log("\n✅ All 10 mobile proof artifacts generated.");
