@@ -1,0 +1,11 @@
+// SITA OS — Mobile Push Certificate Lifecycle
+export type PushTransport = "vapid-web" | "apns" | "fcm";
+export type PushCertStatus = "active" | "deferred" | "expired" | "not-provisioned";
+export interface PushCertLifecycle { readonly transport: PushTransport; readonly platform: string; readonly status: PushCertStatus; readonly credentialType: string; readonly expiryPolicy: string; readonly renewalProcess: string; readonly failureRetryBehavior: string; readonly storeDependency: string; readonly runbookRef: string; readonly blockers: string[]; }
+export const PUSH_CERT_REGISTRY: readonly PushCertLifecycle[] = [
+  { transport: "vapid-web", platform: "All browsers", status: "active", credentialType: "VAPID key pair", expiryPolicy: "Keys do not expire; rotate on compromise", renewalProcess: "Generate new pair, update config, re-subscribe clients", failureRetryBehavior: "Exponential backoff 3 retries; dead-letter after 72h", storeDependency: "None", runbookRef: "docs/runbooks/push-failure.md", blockers: [] },
+  { transport: "apns", platform: "iOS native only", status: "deferred", credentialType: "APNs Auth Key (.p8)", expiryPolicy: ".p8 keys do not expire", renewalProcess: "Generate in Apple Developer Console", failureRetryBehavior: "Retry with backoff; respect 410 unregistered", storeDependency: "Apple Developer Program", runbookRef: "docs/runbooks/push-failure.md", blockers: ["Apple Developer Program not enrolled", "No native iOS app"] },
+  { transport: "fcm", platform: "Android native only", status: "deferred", credentialType: "Firebase Service Account JSON", expiryPolicy: "Rotate per org policy", renewalProcess: "Generate in Firebase Console", failureRetryBehavior: "Retry with backoff; respect 404 unregistered", storeDependency: "Firebase project + Play Console", runbookRef: "docs/runbooks/push-failure.md", blockers: ["Play Console not enrolled", "No Firebase project", "No native Android app"] },
+];
+export function getActivePushTransports(): PushCertLifecycle[] { return PUSH_CERT_REGISTRY.filter(p => p.status === "active"); }
+export function getDeferredPushTransports(): PushCertLifecycle[] { return PUSH_CERT_REGISTRY.filter(p => p.status === "deferred"); }
