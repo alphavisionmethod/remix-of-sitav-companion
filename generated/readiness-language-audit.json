@@ -1,14 +1,9 @@
 {
-  "generatedAt": "2026-04-21T04:53:01.698Z",
+  "generatedAt": "2026-04-21T04:55:39.353Z",
   "gate": "truth-governance",
   "filesAudited": 1,
-  "violationsFound": 3,
+  "violationsFound": 2,
   "violations": [
-    {
-      "file": "generated/os-release-readiness-summary.md",
-      "matchedSynonym": "green",
-      "forVerdict": "CONDITIONALLY_READY"
-    },
     {
       "file": "generated/os-release-readiness-summary.md",
       "matchedSynonym": "operational",
