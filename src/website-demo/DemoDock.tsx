@@ -1,6 +1,6 @@
 import React from "react";
-import { DEMO_APPS, APP_ICON_MAP, type DemoAppId } from "./demo-data";
-import { cn } from "@/lib/utils";
+import { DEMO_APPS, type DemoAppId } from "./demo-data";
+import { AppIconRenderer } from "./AppIconRenderer";
 
 interface Props {
   openApps: DemoAppId[];
@@ -13,13 +13,10 @@ export function DemoDock({ openApps, onLaunch }: Props) {
       style={{ background: "rgba(20,20,30,0.65)", backdropFilter: "blur(30px)", WebkitBackdropFilter: "blur(30px)", border: "1px solid rgba(255,255,255,0.1)" }}>
       {DEMO_APPS.map((app) => {
         const isOpen = openApps.includes(app.id);
-        const iconSrc = APP_ICON_MAP[app.id];
         return (
           <button key={app.id} onClick={() => onLaunch(app.id)}
             className="group flex flex-col items-center gap-0.5 transition-transform hover:scale-125 duration-200">
-            <div className="w-11 h-11 rounded-xl flex items-center justify-center overflow-hidden bg-black/80 shadow-lg">
-              <img src={iconSrc} alt={app.label} className="w-full h-full object-cover" loading="lazy" width={44} height={44} />
-            </div>
+            <AppIconRenderer appId={app.id} size={44} />
             {isOpen && <div className="w-1 h-1 rounded-full bg-white/70" />}
           </button>
         );
