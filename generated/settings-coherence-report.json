@@ -1,8 +1,12 @@
 {
-  "generatedAt": "2026-04-21T07:58:22.639Z",
+  "generatedAt": "2026-04-21T07:59:56.654Z",
   "gate": "settings-coherence",
   "ok": true,
-  "errorCount": 0,
-  "warningCount": 0,
-  "issues": []
+  "totalSettings": 10,
+  "byLevel": {
+    "user": 6,
+    "domain": 1,
+    "operator": 2,
+    "system": 1
+  }
 }
