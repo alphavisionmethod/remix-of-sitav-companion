@@ -15,6 +15,8 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { ackAlert, suppressAlert, resolveAlert } from "@/lib/services/alerting/alert-client";
 import { useToast } from "@/hooks/use-toast";
+import { AlertSuppressionRulesPanel } from "@/components/admin/alerts/AlertSuppressionRulesPanel";
+import { AlertDedupStats } from "@/components/admin/alerts/AlertDedupStats";
 
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.05 } } };
@@ -250,15 +252,23 @@ const AlertTriageBoard = () => {
         </TabsContent>
 
         <TabsContent value="suppression" className="mt-4">
-          {suppressed.length === 0 ? (
-            <div className="text-center py-8 text-muted-foreground text-sm">
-              <VolumeX className="h-8 w-8 mx-auto mb-2 opacity-30" /> No suppressed alerts
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            <div className="lg:col-span-2 space-y-3">
+              {suppressed.length === 0 ? (
+                <div className="text-center py-8 text-muted-foreground text-sm">
+                  <VolumeX className="h-8 w-8 mx-auto mb-2 opacity-30" /> No suppressed alerts
+                </div>
+              ) : (
+                <motion.div variants={stagger} initial="hidden" animate="show" className="space-y-2">
+                  {suppressed.map(renderAlertCard)}
+                </motion.div>
+              )}
             </div>
-          ) : (
-            <motion.div variants={stagger} initial="hidden" animate="show" className="space-y-2">
-              {suppressed.map(renderAlertCard)}
-            </motion.div>
-          )}
+            <div className="space-y-4">
+              <AlertSuppressionRulesPanel />
+              <AlertDedupStats />
+            </div>
+          </div>
         </TabsContent>
 
         <TabsContent value="ownership" className="mt-4 space-y-4">
