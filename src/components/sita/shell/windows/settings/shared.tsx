@@ -12,7 +12,7 @@ import { SettingsService } from "@/platform/nova-sdk/services/settings-service";
 import type { SettingsSchema } from "@/platform/nova-sdk/services/settings-service";
 
 export function SettingRow({ label, description, icon, children }: {
-  label: string; description?: string; icon?: React.ReactNode; children: React.ReactNode;
+  label: string; description?: React.ReactNode; icon?: React.ReactNode; children: React.ReactNode;
 }) {
   return (
     <HStack spacing="normal" justify="between" align="center" className="min-h-[36px]">
