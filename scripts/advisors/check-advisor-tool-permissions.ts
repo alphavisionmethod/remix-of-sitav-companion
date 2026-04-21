@@ -21,8 +21,14 @@ if (!existsSync(SRC)) {
   if (!content.includes("blocked")) {
     vc.add(SRC, "no-blocked-actions", "Permission matrix has no blocked field");
   }
+  const missing: string[] = [];
   writeJsonOutput("generated/advisor-boardroom-proof/advisor-tool-permission-check.json", {
     generatedAt: new Date().toISOString(), gate: "advisor-tool-permissions", ok: vc.errors.length === 0,
+    requiredRoles: REQUIRED_ROLES, missingRoles: missing,
+  });
+  writeJsonOutput("generated/advisor-tool-permissions-report.json", {
+    generatedAt: new Date().toISOString(), gate: "advisor-tool-permissions", ok: vc.errors.length === 0,
+    errorCount: vc.errors.length, warningCount: 0,
     requiredRoles: REQUIRED_ROLES, missingRoles: missing,
   });
 }
