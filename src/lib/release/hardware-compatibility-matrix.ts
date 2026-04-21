@@ -1,0 +1,229 @@
+// ═══════════════════════════════════════════════════════════════
+// SITA OS — Hardware Compatibility Matrix
+// Explicit compatibility coverage per target environment.
+// ═══════════════════════════════════════════════════════════════
+
+export type CompatStatus = "tested" | "expected-compatible" | "untested" | "known-incompatible";
+
+export interface HardwareEnvironment {
+  readonly environmentId: string;
+  readonly label: string;
+  readonly category: "vm" | "bare-metal" | "cloud" | "hypervisor";
+  readonly arch: string;
+  readonly status: CompatStatus;
+  readonly testedBy: string;
+  readonly notes: string;
+  readonly requirements: {
+    readonly tpm: boolean;
+    readonly secureBoot: boolean;
+    readonly uefi: boolean;
+    readonly minRamMb: number;
+    readonly minDiskGb: number;
+    readonly gpu: string;
+    readonly network: string;
+  };
+}
+
+export interface TargetCompatibility {
+  readonly targetId: string;
+  readonly environments: readonly HardwareEnvironment[];
+}
+
+export const HARDWARE_COMPATIBILITY_MATRIX: readonly TargetCompatibility[] = [
+  {
+    targetId: "desktop",
+    environments: [
+      {
+        environmentId: "desktop-linux-x64",
+        label: "Linux x86_64 (Ubuntu 22.04+, Fedora 38+, Debian 12+)",
+        category: "bare-metal",
+        arch: "x64",
+        status: "tested",
+        testedBy: "CI: release-electron.yml (ubuntu-latest)",
+        notes: "Primary desktop platform; Electron runs on any modern Linux with glibc 2.31+",
+        requirements: { tpm: false, secureBoot: false, uefi: false, minRamMb: 2048, minDiskGb: 2, gpu: "Any (software rendering fallback)", network: "Optional" },
+      },
+      {
+        environmentId: "desktop-macos-x64",
+        label: "macOS x86_64 (Catalina 10.15+)",
+        category: "bare-metal",
+        arch: "x64",
+        status: "tested",
+        testedBy: "CI: release-electron.yml (macos-14)",
+        notes: "Gatekeeper warnings until notarization is completed",
+        requirements: { tpm: false, secureBoot: false, uefi: false, minRamMb: 2048, minDiskGb: 2, gpu: "Metal-capable preferred", network: "Optional" },
+      },
+      {
+        environmentId: "desktop-macos-arm64",
+        label: "macOS ARM64 (Apple Silicon M1+)",
+        category: "bare-metal",
+        arch: "arm64",
+        status: "expected-compatible",
+        testedBy: "Cross-compiled in CI; manual verification on Apple Silicon",
+        notes: "Rosetta 2 fallback available for x64 build; native arm64 build planned",
+        requirements: { tpm: false, secureBoot: false, uefi: false, minRamMb: 2048, minDiskGb: 2, gpu: "Apple GPU", network: "Optional" },
+      },
+      {
+        environmentId: "desktop-windows-x64",
+        label: "Windows 10/11 x86_64",
+        category: "bare-metal",
+        arch: "x64",
+        status: "tested",
+        testedBy: "CI: release-electron.yml (windows-latest)",
+        notes: "SmartScreen warning until Authenticode signing + reputation is established",
+        requirements: { tpm: false, secureBoot: false, uefi: false, minRamMb: 2048, minDiskGb: 2, gpu: "DirectX 11+ preferred", network: "Optional" },
+      },
+    ],
+  },
+  {
+    targetId: "os-iso",
+    environments: [
+      {
+        environmentId: "os-qemu-kvm",
+        label: "QEMU/KVM x86_64",
+        category: "vm",
+        arch: "x64",
+        status: "tested",
+        testedBy: "CI: os-build-iso.yml (smoke-test job, QEMU + OVMF)",
+        notes: "Primary validation environment; UEFI via OVMF firmware",
+        requirements: { tpm: false, secureBoot: false, uefi: true, minRamMb: 4096, minDiskGb: 32, gpu: "VGA (serial console primary)", network: "virtio-net" },
+      },
+      {
+        environmentId: "os-vmware-esxi",
+        label: "VMware ESXi 7.0+",
+        category: "hypervisor",
+        arch: "x64",
+        status: "expected-compatible",
+        testedBy: "Manual verification; ESXi readiness check: scripts/release/vmware/verify-esxi-readiness.ts",
+        notes: "OVA format optimized for ESXi; ISO also bootable on ESXi",
+        requirements: { tpm: false, secureBoot: false, uefi: true, minRamMb: 4096, minDiskGb: 32, gpu: "SVGA", network: "vmxnet3" },
+      },
+      {
+        environmentId: "os-virtualbox",
+        label: "VirtualBox 7.0+",
+        category: "vm",
+        arch: "x64",
+        status: "expected-compatible",
+        testedBy: "Manual verification",
+        notes: "UEFI mode required; enable EFI in VM settings",
+        requirements: { tpm: false, secureBoot: false, uefi: true, minRamMb: 4096, minDiskGb: 32, gpu: "VBoxSVGA", network: "NAT or Bridged" },
+      },
+      {
+        environmentId: "os-bare-metal-uefi",
+        label: "Bare-metal x86_64 UEFI",
+        category: "bare-metal",
+        arch: "x64",
+        status: "expected-compatible",
+        testedBy: "Manual verification (hybrid BIOS+UEFI ISO)",
+        notes: "Hybrid ISO supports both BIOS and UEFI boot; UEFI recommended",
+        requirements: { tpm: false, secureBoot: false, uefi: false, minRamMb: 4096, minDiskGb: 32, gpu: "Any VESA-compatible", network: "Ethernet recommended" },
+      },
+      {
+        environmentId: "os-arm64",
+        label: "ARM64 (Raspberry Pi, cloud ARM instances)",
+        category: "bare-metal",
+        arch: "arm64",
+        status: "known-incompatible",
+        testedBy: "Not tested",
+        notes: "ARM64 build not yet implemented; x86_64 only",
+        requirements: { tpm: false, secureBoot: false, uefi: false, minRamMb: 0, minDiskGb: 0, gpu: "n/a", network: "n/a" },
+      },
+    ],
+  },
+  {
+    targetId: "os-ova",
+    environments: [
+      {
+        environmentId: "ova-esxi",
+        label: "VMware ESXi 7.0+",
+        category: "hypervisor",
+        arch: "x64",
+        status: "expected-compatible",
+        testedBy: "ESXi readiness check + manual import",
+        notes: "Primary OVA deployment target",
+        requirements: { tpm: false, secureBoot: false, uefi: true, minRamMb: 4096, minDiskGb: 32, gpu: "SVGA", network: "vmxnet3" },
+      },
+      {
+        environmentId: "ova-workstation",
+        label: "VMware Workstation 17+",
+        category: "vm",
+        arch: "x64",
+        status: "expected-compatible",
+        testedBy: "Manual verification",
+        notes: "Development/testing use",
+        requirements: { tpm: false, secureBoot: false, uefi: true, minRamMb: 4096, minDiskGb: 32, gpu: "Host GPU passthrough optional", network: "NAT or Bridged" },
+      },
+      {
+        environmentId: "ova-fusion",
+        label: "VMware Fusion 13+",
+        category: "vm",
+        arch: "x64",
+        status: "expected-compatible",
+        testedBy: "Manual verification",
+        notes: "macOS host development use",
+        requirements: { tpm: false, secureBoot: false, uefi: true, minRamMb: 4096, minDiskGb: 32, gpu: "Host GPU", network: "NAT or Bridged" },
+      },
+      {
+        environmentId: "ova-hyperv",
+        label: "Hyper-V",
+        category: "hypervisor",
+        arch: "x64",
+        status: "known-incompatible",
+        testedBy: "Not tested",
+        notes: "OVA format not natively supported by Hyper-V; use ISO instead",
+        requirements: { tpm: false, secureBoot: false, uefi: false, minRamMb: 0, minDiskGb: 0, gpu: "n/a", network: "n/a" },
+      },
+    ],
+  },
+  {
+    targetId: "os-raw-img",
+    environments: [
+      {
+        environmentId: "raw-bare-metal",
+        label: "Bare-metal x86_64 (dd flash)",
+        category: "bare-metal",
+        arch: "x64",
+        status: "expected-compatible",
+        testedBy: "Manual verification",
+        notes: "Direct disk flash via dd if=/path/to/img of=/dev/sdX",
+        requirements: { tpm: false, secureBoot: false, uefi: true, minRamMb: 4096, minDiskGb: 32, gpu: "Any", network: "Ethernet" },
+      },
+      {
+        environmentId: "raw-cloud-aws",
+        label: "AWS EC2 (raw import via vmimport)",
+        category: "cloud",
+        arch: "x64",
+        status: "untested",
+        testedBy: "Not yet tested",
+        notes: "Requires S3 upload + vm-import-export service role",
+        requirements: { tpm: false, secureBoot: false, uefi: true, minRamMb: 4096, minDiskGb: 32, gpu: "n/a", network: "VPC" },
+      },
+      {
+        environmentId: "raw-cloud-gcp",
+        label: "GCP Compute Engine (raw import)",
+        category: "cloud",
+        arch: "x64",
+        status: "untested",
+        testedBy: "Not yet tested",
+        notes: "Requires GCS upload + gcloud compute images import",
+        requirements: { tpm: false, secureBoot: false, uefi: true, minRamMb: 4096, minDiskGb: 32, gpu: "n/a", network: "VPC" },
+      },
+    ],
+  },
+];
+
+export function getCompatibility(targetId: string): TargetCompatibility | undefined {
+  return HARDWARE_COMPATIBILITY_MATRIX.find((c) => c.targetId === targetId);
+}
+
+export function getTestedEnvironments(): HardwareEnvironment[] {
+  return HARDWARE_COMPATIBILITY_MATRIX.flatMap((c) => c.environments.filter((e) => e.status === "tested"));
+}
+
+export function getIncompatibleEnvironments(): HardwareEnvironment[] {
+  return HARDWARE_COMPATIBILITY_MATRIX.flatMap((c) => c.environments.filter((e) => e.status === "known-incompatible"));
+}
+
+export function getUntestedEnvironments(): HardwareEnvironment[] {
+  return HARDWARE_COMPATIBILITY_MATRIX.flatMap((c) => c.environments.filter((e) => e.status === "untested"));
+}
