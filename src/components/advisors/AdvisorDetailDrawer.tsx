@@ -8,9 +8,11 @@ import { ConfidenceBar } from "@/components/sita/primitives/ConfidenceBar";
 import { AdvisorKnowledgePanel } from "@/components/advisors/AdvisorKnowledgePanel";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { Brain, BookOpen, History, MessageSquare, ThumbsUp, ThumbsDown, Star, Sparkles } from "lucide-react";
+import { Brain, BookOpen, History, MessageSquare, ThumbsUp, ThumbsDown, Star, Sparkles, Upload, Trash2, RefreshCw, ImageIcon } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import type { AdvisorConfig } from "./AdvisorCouncilShell";
+import { useAdvisorPortraits } from "@/hooks/use-advisor-portraits";
+import { toast } from "sonner";
 
 interface AdvisorDetailDrawerProps {
   advisor: AdvisorConfig | null;
@@ -37,6 +39,7 @@ export const AdvisorDetailDrawer = ({ advisor, open, onOpenChange }: AdvisorDeta
         <Tabs defaultValue="overview" className="mt-2">
           <TabsList className="w-full bg-muted/50 text-[11px]">
             <TabsTrigger value="overview" className="text-[11px] gap-1"><Brain className="h-3 w-3" />Overview</TabsTrigger>
+            <TabsTrigger value="portrait" className="text-[11px] gap-1"><ImageIcon className="h-3 w-3" />Portrait</TabsTrigger>
             <TabsTrigger value="knowledge" className="text-[11px] gap-1"><BookOpen className="h-3 w-3" />Knowledge</TabsTrigger>
             <TabsTrigger value="memory" className="text-[11px] gap-1"><History className="h-3 w-3" />Memory</TabsTrigger>
             <TabsTrigger value="feedback" className="text-[11px] gap-1"><MessageSquare className="h-3 w-3" />Feedback</TabsTrigger>
@@ -44,6 +47,9 @@ export const AdvisorDetailDrawer = ({ advisor, open, onOpenChange }: AdvisorDeta
 
           <TabsContent value="overview">
             <OverviewTab advisor={advisor} />
+          </TabsContent>
+          <TabsContent value="portrait">
+            <PortraitTab advisor={advisor} />
           </TabsContent>
           <TabsContent value="knowledge">
             <div className="mt-3">
