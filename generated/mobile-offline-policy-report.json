@@ -1,14 +1,8 @@
 {
-  "generatedAt": "2026-04-21T06:24:59.860Z",
+  "generatedAt": "2026-04-21T06:25:57.959Z",
   "gate": "mobile-offline-policy",
-  "ok": false,
-  "errorCount": 1,
+  "ok": true,
+  "errorCount": 0,
   "warningCount": 0,
-  "issues": [
-    {
-      "severity": "error",
-      "area": "mobile-offline-policy",
-      "message": "Missing: generated/mobile-offline-policy.json"
-    }
-  ]
+  "issues": []
 }
