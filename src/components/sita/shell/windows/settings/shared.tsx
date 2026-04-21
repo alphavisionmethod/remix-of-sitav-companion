@@ -51,6 +51,7 @@ const SECTION_KEYS: Record<string, (keyof SettingsSchema)[]> = {
     "general.startupBehavior", "general.restoreLastSession", "general.reopenPanels", "general.resumePendingTasks",
     "general.navigationPreference", "general.rememberLastOpenPanels", "general.confirmBeforeLeaving", "general.openLinksIn",
     "general.displayName", "general.defaultFocusDomain",
+    "general.quickAccessFavorites",
     "general.guidanceLevel", "general.showNewFeatureTips", "general.showUpdateHighlights", "general.showSetupRecommendations",
     "general.approvalStyle",
   ],

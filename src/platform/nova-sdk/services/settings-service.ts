@@ -502,7 +502,6 @@ class SettingsServiceClass implements SystemService {
     this.constraints.set("general.openLinksIn", { enum: ["same", "new", "ask"] });
     this.constraints.set("general.defaultFocusDomain", { enum: ["business", "household", "planning", "mixed"] });
     this.constraints.set("general.guidanceLevel", { enum: ["minimal", "standard", "guided"] });
-    this.constraints.set("general.guidanceLevel", { enum: ["minimal", "standard", "guided"] });
     this.constraints.set("general.approvalStyle", { enum: ["ask-as-needed", "batch-reviews", "minimal-interruptions"] });
     this.constraints.set("privacy.docRetention", { enum: ["1year", "7years", "forever"] });
     this.constraints.set("privacy.trackingPrevention", { enum: ["standard", "strict", "off"] });
