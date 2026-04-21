@@ -1,0 +1,11 @@
+{
+  "generatedAt": "2026-04-21T05:26:22.360Z",
+  "sessionTracerPresent": true,
+  "trackedActions": [
+    "recordAction",
+    "recordBundle",
+    "recordEscalation",
+    "consultRunbook",
+    "suggestKillSwitch"
+  ]
+}

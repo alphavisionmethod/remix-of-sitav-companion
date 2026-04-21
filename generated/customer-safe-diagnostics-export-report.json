@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-21T05:26:22.360Z",
+  "exportPresent": true,
+  "internalOnlyPacksStripped": [
+    "admin-operator-state",
+    "security-audit",
+    "kill-switch-state",
+    "internal-metrics",
+    "agent-memory"
+  ],
+  "redactionVerification": true
+}

@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-21T05:26:22.360Z",
+  "suggesterPresent": true,
+  "usesIncidentClassifier": true,
+  "dualAdminSwitches": [
+    "KS-PAYMENTS",
+    "KS-PAYMENTS-AUTH",
+    "KS-MODEL-PROVIDERS",
+    "KS-AI-GATEWAY",
+    "KS-RELEASE-PIPELINE"
+  ]
+}

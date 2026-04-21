@@ -1,0 +1,21 @@
+{
+  "generatedAt": "2026-04-21T05:26:22.360Z",
+  "bundleTypesGoverned": 13,
+  "bundleTypes": [
+    "runtime-crash",
+    "auth-account",
+    "onboarding",
+    "app-lifecycle",
+    "advisor-boardroom",
+    "integration-provider",
+    "workflow-failure",
+    "payment-proof",
+    "support-escalation",
+    "admin-operator",
+    "os-recovery",
+    "environment",
+    "system-wide"
+  ],
+  "builderPresent": true,
+  "contractPresent": true
+}

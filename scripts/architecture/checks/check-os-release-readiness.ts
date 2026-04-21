@@ -372,6 +372,8 @@ const REQUIRED_GATES = [
   "advisor-reversibility",
   // Wave 19 — Truth Governance & Contradiction Management (1 BLOCK gate)
   "truth-governance",
+  // Wave 20 — Supportability Platform Closure (1 BLOCK gate)
+  "support-platform-coverage",
 ];
 
 // Mobile Deployment Closure — RETIRED (2026-04-19)
