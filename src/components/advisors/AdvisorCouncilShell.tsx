@@ -10,6 +10,10 @@ import { AskAdvisorChat } from "./AskAdvisorChat";
 import { AdvisorTimelineView } from "./AdvisorTimelineView";
 import { AdvisorDetailDrawer } from "./AdvisorDetailDrawer";
 import { AdvisorMeetingRoom } from "./AdvisorMeetingRoom";
+import { AdvisorShowcaseCard } from "./AdvisorShowcaseCard";
+import { ImmersiveBoardroomCouncil } from "./ImmersiveBoardroomCouncil";
+import { GlassPanel, CinematicBackground } from "./boardroom-primitives";
+import { Brain } from "lucide-react";
 
 export interface AdvisorConfig {
   id: string;
@@ -32,7 +36,8 @@ interface AdvisorCouncilShellProps {
 }
 
 const viewModes = [
-  { key: "council", label: "Council", icon: LayoutGrid },
+  { key: "boardroom", label: "Boardroom", icon: Brain },
+  { key: "council", label: "Showcase", icon: LayoutGrid },
   { key: "debate", label: "Debate", icon: Swords },
   { key: "ask", label: "Ask", icon: MessageCircle },
   { key: "timeline", label: "Timeline", icon: Clock },
@@ -52,43 +57,9 @@ export const AdvisorCouncilShell = ({ advisors, domainLabel, children, className
 
   return (
     <div className={cn("space-y-4", className)}>
-      {/* Confidence Heatmap Bar */}
-      <motion.div
-        className="rounded-xl border border-border/50 bg-card/80 backdrop-blur-sm p-3"
-        initial={{ opacity: 0, y: -8 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.3 }}
-      >
-        <div className="flex items-center justify-between mb-2">
-          <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">
-            {domainLabel} Council — {advisors.length} Advisors
-          </p>
-          <span className="text-[10px] font-medium text-muted-foreground">
-            Avg Confidence: {avgConfidence}%
-          </span>
-        </div>
-        <div className="flex gap-1 h-2 rounded-full overflow-hidden">
-          {advisors.map((a) => (
-            <motion.div
-              key={a.id}
-              className={cn(
-                "h-full rounded-full cursor-pointer transition-all hover:scale-y-150",
-                a.confidence >= 80 ? "bg-[hsl(var(--trust-safe))]" :
-                a.confidence >= 60 ? "bg-amber-500" :
-                a.confidence >= 40 ? "bg-orange-500" : "bg-destructive"
-              )}
-              style={{ flex: 1 }}
-              title={`${a.name}: ${a.confidence}%`}
-              whileHover={{ scaleY: 1.5 }}
-              onClick={() => handleAdvisorClick(a)}
-            />
-          ))}
-        </div>
-      </motion.div>
-
       {/* Tabbed Views */}
-      <Tabs defaultValue="council" className="w-full">
-        <TabsList className="bg-muted/50 backdrop-blur-sm">
+      <Tabs defaultValue="boardroom" className="w-full">
+        <TabsList className="bg-white/[0.04] backdrop-blur-sm border border-white/[0.08]">
           {viewModes.map(({ key, label, icon: Icon }) => (
             <TabsTrigger key={key} value={key} className="gap-1.5 text-xs">
               <Icon className="h-3.5 w-3.5" />
@@ -97,22 +68,28 @@ export const AdvisorCouncilShell = ({ advisors, domainLabel, children, className
           ))}
         </TabsList>
 
-        {/* Council Grid */}
+        {/* Immersive Boardroom */}
+        <TabsContent value="boardroom">
+          <ImmersiveBoardroomCouncil advisors={advisors} className="mt-3" />
+        </TabsContent>
+
+        {/* Showcase Cards */}
         <TabsContent value="council">
-          <motion.div
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mt-3"
-            initial="hidden"
-            animate="visible"
-            variants={{ visible: { transition: { staggerChildren: 0.05 } } }}
-          >
-            {advisors.map((advisor) => (
-              <AdvisorCouncilCard
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-3">
+            {advisors.map((advisor, i) => (
+              <motion.div
                 key={advisor.id}
-                advisor={advisor}
-                onClick={() => handleAdvisorClick(advisor)}
-              />
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.06 }}
+              >
+                <AdvisorShowcaseCard
+                  advisor={advisor}
+                  onClick={() => handleAdvisorClick(advisor)}
+                />
+              </motion.div>
             ))}
-          </motion.div>
+          </div>
           {children}
         </TabsContent>
 
