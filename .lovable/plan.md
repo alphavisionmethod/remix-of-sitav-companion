@@ -1,42 +1,145 @@
 
 
-# SITA OS — Ultra-Realistic Device Mockup Images
+# Production Operations Readiness — Full Implementation Plan
 
 ## Summary
 
-Generate 4 premium, product-launch-quality mockup images of the SITA OS mobile app displayed on flagship iPhone and Android devices. Each image uses a different environment and angle, with authentic SITA OS UI screens rendered inside the devices. Images are generated via the AI image generation skill (Nano banana pro for highest quality) and output as PNGs to `/mnt/documents/`.
+Close the four remaining production-operations gaps: (1) wire real Sentry/APM integration end-to-end, (2) build automated incident escalation with PagerDuty-style policies, (3) create a live SLA monitoring dashboard backed by real DB data, and (4) produce verifiable chaos/game-day drill evidence.
 
-## What You Get
+---
 
-Four 4K-class images, each a distinct composition:
+## What Already Exists
 
-1. **Dual Front View** -- iPhone 16 Pro and Pixel 9 Pro side by side on a soft gradient background. iPhone shows dark-mode dashboard (glassmorphic cards, purple/green domain accents). Android shows light-mode variant with Material You styling. Floating with subtle reflections below.
+- **Sentry SDK** initialized in `src/lib/observability/sentry.ts` (DSN-gated, no-op without `VITE_SENTRY_DSN`)
+- **Error ingest** edge function writing to `error_events` table with spike detection
+- **Alert pipeline**: `alert-ingest` -> `alert-route` (ui/webhook/push/email/sms fan-out)
+- **Incident management service** (`src/lib/services/incident-management/`) with full lifecycle but in-memory only
+- **SLA dashboard** in Enterprise Control Plane with hardcoded demo data
+- **Chaos Testing page** (`SRE05ChaosTestingFramework`) with simulated experiments, no DB persistence
+- **DB tables**: `alerts`, `incidents`, `error_events`, `chaos_drill_results`, `uptime_status`, `observability_metrics`, `council_escalations`, `uptime_heartbeats`
+- **Chaos types** defined in `src/packages/simulation-contracts/chaos-types.ts` including `GameDay` interface
 
-2. **Perspective Tilt -- Business App** -- Single iPhone at a slight 3D tilt showing the SITA OS Business domain dashboard (purple accent, glassmorphic panels, KPI cards). Minimal desk environment with soft natural lighting, shallow depth of field, marble/aluminum surface.
+---
 
-3. **Hand-Held Lifestyle -- Finance App** -- Hand holding an Android device displaying the Money OS / Finance screen (green accent, portfolio charts, glassmorphic cards). Lifestyle context with blurred background, warm ambient light.
+## Part 1: Production APM / Error Monitoring Integration
 
-4. **Studio Float -- AI Boardroom** -- Both devices floating on a dark gradient, showing the AI Boardroom / Concierge interface. Studio-quality lighting, soft reflections, cinematic depth. Premium glass-and-aluminum device materials visible.
+### 1A. Sentry DSN secret setup
+- Use `add_secret` tool to prompt for `VITE_SENTRY_DSN`
+- Sentry init already handles DSN-gated activation; no code change needed there
 
-## Design Specifications
+### 1B. APM metrics edge function
+- Create `supabase/functions/apm-metrics-ingest/index.ts` — receives batched frontend performance spans (from existing `startSpanExporter()`) and writes to `observability_metrics` table with metric keys like `web.lcp`, `web.fid`, `web.cls`, `web.ttfb`, `api.latency.p95`
+- Modify `src/lib/observability/apm.ts` to POST spans to this edge function (currently the span exporter exists but has no backend target)
 
-- **Color palette**: SITA OS tokens -- near-black background `hsl(0,0%,6%)`, glassmorphic white overlays `rgba(255,255,255,0.06)`, domain accents (Business purple `hsl(265,55%,58%)`, Finance green `hsl(152,55%,48%)`, Concierge magenta `hsl(285,55%,55%)`, Investment blue `hsl(210,80%,55%)`, Trust gold `hsl(38,85%,58%)`)
-- **Typography on screens**: Space Grotesk headings, Inter body, JetBrains Mono for data
-- **Device models**: iPhone 16 Pro (titanium, edge-to-edge, Dynamic Island), Pixel 9 Pro (glass back, rounded corners)
-- **UI on screens**: Glassmorphic cards with frosted-glass borders, subtle gradient orbs behind panels, clean metric typography
+### 1C. Error monitoring bridge
+- Update `src/lib/services/error-monitoring-service.ts` to forward fatal/error events to both `error-ingest` edge function AND Sentry (when active), ensuring dual-write for redundancy
+- Add correlation: attach Sentry event ID to `error_events` rows via existing `sentry_event_id` column
 
-## Technical Approach
+---
 
-1. Copy `lovable_ai.py` script to `/tmp/`
-2. Generate each image using `google/gemini-3-pro-image-preview` model with detailed prompts describing the exact device, environment, angle, UI content, and SITA OS design language
-3. Inspect each output image for quality (device proportions, text legibility, realistic lighting)
-4. Re-generate any that don't meet premium quality bar
-5. Save all 4 final PNGs to `/mnt/documents/`
+## Part 2: Automated Incident Escalation
 
-## Output Files
+### 2A. Escalation policies table
+- Migration: create `escalation_policies` table:
+  - `id`, `name`, `severity_match` (text[]), `auto_escalate_after_minutes` (int), `escalation_targets` (jsonb — array of {channel, target, delay_minutes}), `enabled` (bool), `created_at`, `updated_at`
+- Seed 3 default policies: Critical (immediate page + webhook), High (10min auto-escalate), Medium (30min auto-escalate)
 
-- `/mnt/documents/sita_mockup_dual_front.png`
-- `/mnt/documents/sita_mockup_iphone_desk.png`
-- `/mnt/documents/sita_mockup_android_lifestyle.png`
-- `/mnt/documents/sita_mockup_studio_float.png`
+### 2B. Escalation engine edge function
+- Create `supabase/functions/escalation-engine/index.ts`
+  - Called by `health-cron` on each tick (or standalone pg_cron every 2 minutes)
+  - Scans `alerts` where status = 'active' AND age > policy threshold AND no escalation sent
+  - For matching alerts: creates row in `incidents` table (auto-declare), invokes `alert-route` with escalated severity, writes to `council_escalations`
+  - Supports multi-tier escalation: L1 (webhook/push) -> L2 (email to owner) -> L3 (all-hands page)
+
+### 2C. Incident auto-declaration
+- When escalation triggers, auto-create `incidents` row with linked `alert_id`, severity, affected services from alert metadata, and attach matching runbook IDs from kill-switch registry
+
+### 2D. Wire to existing incident management service
+- Update `IncidentDashboardPage.tsx` to read from both `incident_classifications` AND `incidents` table
+- Add escalation timeline: show escalation events from `council_escalations` in the incident timeline view
+
+---
+
+## Part 3: Live SLA Monitoring Dashboard
+
+### 3A. SLA definitions table
+- Migration: create `sla_definitions` table:
+  - `id`, `name`, `metric_key` (text), `target_value` (numeric), `unit` (text), `window` (text — '24h'/'7d'/'30d'), `breach_severity` (text), `enabled` (bool)
+- Seed with 6 SLA definitions: Uptime (99.9%), API p95 latency (<200ms), Error rate (<0.1%), Incident MTTR (<4hrs), Data recovery RTO (<1hr), Alert response time (<5min)
+
+### 3B. SLA evaluator edge function
+- Create `supabase/functions/sla-evaluator/index.ts`
+  - Runs on pg_cron every 5 minutes
+  - For each SLA definition: queries source tables (`uptime_status`, `observability_metrics`, `incidents`, `alerts`) to compute current value
+  - Writes results to new `sla_snapshots` table: `id`, `sla_id`, `current_value`, `target_value`, `met` (bool), `window_start`, `window_end`, `computed_at`
+  - On breach: calls `alert-ingest` with severity from SLA definition
+
+### 3C. Live SLA dashboard page
+- Create `src/pages/admin/SLAMonitoringDashboard.tsx`
+  - Real-time: subscribes to `sla_snapshots` via Supabase realtime
+  - Shows each SLA as a card with: current value, target, trend sparkline (last 24 data points), breach/met badge
+  - Summary KPIs: SLAs met ratio, current uptime, MTTR, error rate
+  - Breach history table: past SLA violations with timestamps, duration, linked incidents
+  - Time range selector: 24h / 7d / 30d
+- Replace hardcoded `DEMO_SLA_METRICS` in Enterprise Control Plane with data from `sla_snapshots`
+- Add route at `/admin/sla-monitoring`
+
+---
+
+## Part 4: Chaos / Game-Day Drill Evidence
+
+### 4A. Executable chaos drill runner
+- Create `supabase/functions/chaos-drill-runner/index.ts`
+  - Accepts drill definition (scenario ID, blast radius, safety checks)
+  - Executes drill steps: inject fault (simulated) -> verify detection (check if alert raised within N seconds) -> verify recovery (check service health restored) -> record evidence
+  - Writes results to existing `chaos_drill_results` table with: detection_seconds, recovery_seconds, outcome, evidence JSON (timestamps, alert IDs, screenshots)
+  - Safety interlock: checks kill-switch `KS-CHAOS` before executing; refuses if not enabled
+
+### 4B. Game-day orchestrator
+- Create `src/lib/services/game-day-orchestrator.ts`
+  - Defines game-day scenarios using existing `GameDay` interface from chaos-types
+  - 6 canonical scenarios: (1) Database latency spike, (2) Auth service degradation, (3) Event bus failure, (4) Edge function timeout cascade, (5) Storage write failure, (6) Full network partition
+  - Each scenario links to: kill-switch to test, runbook to validate, expected detection time, expected recovery time
+
+### 4C. Game-day evidence dashboard
+- Extend `SRE05ChaosTestingFramework.tsx` with a "Game Day Evidence" tab
+  - Reads from `chaos_drill_results` and `dr_drill_executions` tables
+  - Shows drill history with pass/fail, detection time vs target, recovery time vs target
+  - Evidence packet: downloadable JSON with all drill results, timestamps, linked alert IDs
+  - "Run Drill" button that invokes `chaos-drill-runner` edge function
+
+### 4D. Evidence generation script
+- Create `scripts/validation/generate-chaos-drill-evidence.ts`
+  - Queries `chaos_drill_results` from DB
+  - Produces `generated/chaos-drill-evidence-report.json` with: total drills run, pass rate, mean detection time, mean recovery time, last drill date, scenario coverage map
+  - Fails gate if fewer than 6 scenarios have been drilled or if any critical scenario has 0 passes
+
+---
+
+## Database Migrations (in order)
+
+1. `escalation_policies` table + seed data
+2. `sla_definitions` table + seed data  
+3. `sla_snapshots` table with realtime enabled
+4. Add `escalation_count` and `last_escalated_at` columns to `alerts` table
+5. RLS policies: admin read/write on all new tables, authenticated read on `sla_snapshots`
+
+## New Edge Functions
+
+1. `apm-metrics-ingest` — frontend span receiver
+2. `escalation-engine` — automated alert escalation
+3. `sla-evaluator` — SLA computation on cron
+4. `chaos-drill-runner` — executable drill with evidence
+
+## New/Modified Pages
+
+1. `SLAMonitoringDashboard.tsx` — new admin page at `/admin/sla-monitoring`
+2. `IncidentDashboardPage.tsx` — add escalation timeline, real incidents table
+3. `SRE05ChaosTestingFramework.tsx` — add Game Day Evidence tab
+4. `EnterpriseControlPlane.tsx` — replace demo SLA data with live queries
+
+## Route Registration
+
+- `/admin/sla-monitoring` — SLA Monitoring Dashboard (maintenance.view)
+- Update admin nav to include SLA Monitoring link
 
