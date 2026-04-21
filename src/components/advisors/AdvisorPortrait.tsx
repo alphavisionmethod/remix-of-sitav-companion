@@ -90,7 +90,7 @@ export const AdvisorPortrait = ({
   // Fallback to icon avatar
   if (!resolvedUrl || imgState === "error") {
     return (
-      <div className={cn("relative", className)}>
+      <div data-testid="advisor-portrait" className={cn("relative", className)}>
         {imgState === "error" ? (
           <button
             onClick={handleRetry}
@@ -114,7 +114,7 @@ export const AdvisorPortrait = ({
   }
 
   return (
-    <div className={cn("relative", className)}>
+    <div data-testid="advisor-portrait" className={cn("relative", className)}>
       {/* Gradient border ring */}
       <div className={cn("rounded-full p-[2px] bg-gradient-to-br", gradient, s.container)}>
         {/* Skeleton shimmer while loading */}
