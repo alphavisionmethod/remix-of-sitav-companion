@@ -16,13 +16,13 @@ export function FinanceQuickTransfer() {
   const [selected, setSelected] = useState(0);
 
   return (
-    <div className="rounded-2xl p-5 bg-[#12121e] border border-[#1a1a2e] space-y-4">
-      <p className="text-sm font-semibold text-white/80">Quick Transfer</p>
+    <div className="rounded-2xl p-5 card-vibrant card-vibrant-purple space-y-4">
+      <p className="text-sm font-semibold text-foreground">Quick Transfer</p>
 
       {/* Account type */}
       <div className="flex items-center gap-2">
-        <span className="text-[11px] text-white/40">Account:</span>
-        <select className="bg-white/[0.05] border border-white/10 rounded-lg px-2 py-1 text-[11px] text-white/70 outline-none">
+        <span className="text-[11px] text-muted-foreground">Account:</span>
+        <select className="bg-secondary/50 border border-border/50 rounded-lg px-2 py-1 text-[11px] text-secondary-foreground outline-none">
           <option>Debit ••4285</option>
           <option>Credit ••7812</option>
         </select>
@@ -59,7 +59,7 @@ export function FinanceQuickTransfer() {
         />
       </div>
 
-      <Button className="w-full bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 border-0">
+      <Button className="w-full bg-trust-safe/20 text-trust-safe hover:bg-trust-safe/30 border-0 shadow-[0_0_16px_hsl(152_55%_48%/0.15)]">
         <Send className="h-4 w-4 mr-2" />
         Send Money
       </Button>
