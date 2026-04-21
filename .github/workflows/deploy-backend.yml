@@ -30,6 +30,9 @@ jobs:
       - name: Pre-deploy env gate
         run: npx tsx scripts/root/check-env-contract-completeness.ts
 
+      - name: Pre-deploy readiness gate
+        run: npx tsx scripts/root/check-deployment-readiness.ts
+
       - name: Deploy edge functions
         run: supabase functions deploy --project-ref ${{ secrets.SUPABASE_PROJECT_REF }}
         env:

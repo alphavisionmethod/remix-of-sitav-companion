@@ -349,16 +349,16 @@ async function connectNats() {
       // Stream may already exist
     }
     natsJetStream = nc.jetstream();
-    console.log(`[Brain Core] NATS connected: ${NATS_URL}`);
+    log("info", "NATS connected", { url: NATS_URL });
 
     (async () => {
       for await (const s of (nc as { status(): AsyncIterable<{ type: string }> }).status()) {
-        if (s.type === "disconnect") { natsConnected = false; console.warn("[Brain Core] NATS disconnected"); }
-        if (s.type === "reconnect") { natsConnected = true; console.log("[Brain Core] NATS reconnected"); }
+        if (s.type === "disconnect") { natsConnected = false; log("warn", "NATS disconnected"); }
+        if (s.type === "reconnect") { natsConnected = true; log("info", "NATS reconnected"); }
       }
     })();
   } catch (err) {
-    console.warn(`[Brain Core] NATS connection failed (will retry): ${err instanceof Error ? err.message : err}`);
+    log("warn", "NATS connection failed (will retry)", { error: err instanceof Error ? err.message : String(err) });
     natsConnected = false;
     setTimeout(connectNats, 5000);
   }
@@ -370,7 +370,7 @@ async function publishEvent(subject: string, data: unknown) {
     const js = natsJetStream as { publish(subj: string, data: Uint8Array): Promise<unknown> };
     await js.publish(subject, new TextEncoder().encode(JSON.stringify(data)));
   } catch (err) {
-    console.warn(`[Brain Core] NATS publish failed: ${err instanceof Error ? err.message : err}`);
+    log("warn", "NATS publish failed", { subject, error: err instanceof Error ? err.message : String(err) });
   }
 }
 
@@ -379,7 +379,7 @@ async function publishEvent(subject: string, data: unknown) {
 let supabaseAdmin: SupabaseClient | null = null;
 if (SUPABASE_URL && SUPABASE_SERVICE_KEY) {
   supabaseAdmin = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY);
-  console.log("[Brain Core] Supabase service client initialized");
+  log("info", "Supabase service client initialized");
 }
 
 // ── App ──────────────────────────────────────────────────────
@@ -510,7 +510,7 @@ app.post("/brain/approval", async (c) => {
 
 app.notFound((c) => c.json({ error: "Not Found", path: c.req.path, service: "sita-brain-core" }, 404));
 app.onError((err, c) => {
-  console.error("[Brain Core Error]", err.message);
+  log("error", "Unhandled request error", { error: err.message, path: c.req.path, method: c.req.method });
   return c.json({ error: "Internal Server Error", message: process.env.NODE_ENV === "production" ? "Unexpected error" : err.message }, 500);
 });
 

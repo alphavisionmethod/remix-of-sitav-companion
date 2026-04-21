@@ -329,7 +329,7 @@ app.notFound((c) => {
 // ── Global Error Handler ────────────────────────────────────
 
 app.onError((err, c) => {
-  console.error("[API Gateway Error]", err.message);
+  log("error", "Unhandled request error", { error: err.message, path: c.req.path, method: c.req.method });
   return c.json(
     {
       error: "Internal Server Error",
