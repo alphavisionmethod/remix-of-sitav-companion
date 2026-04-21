@@ -1,41 +1,32 @@
-import { MobileShell } from "@/components/mobile/MobileShell";
-import { Calendar, ShoppingCart, RotateCcw, FileText, ArrowRight, CheckCircle2, Clock } from "lucide-react";
+// ═══════════════════════════════════════════════════════════════
+// SITA OS — Mobile Concierge (wired to appointments, errands, obligations)
+// ═══════════════════════════════════════════════════════════════
 
-const sections = [
-  {
-    title: "Today's Schedule",
-    icon: Calendar,
-    items: [
-      { label: "Dentist — Dr. Park", detail: "10:30 AM · Downtown", status: "upcoming" },
-      { label: "Grocery pickup", detail: "2:00 PM · Whole Foods", status: "upcoming" },
-      { label: "Soccer practice (kids)", detail: "4:30 PM · Field B", status: "upcoming" },
-    ],
-  },
-  {
-    title: "Errands",
-    icon: ShoppingCart,
-    items: [
-      { label: "Dry cleaning pickup", detail: "Ready since yesterday", status: "pending" },
-      { label: "Pharmacy refill", detail: "Auto-ordered, pickup today", status: "done" },
-      { label: "Return Amazon package", detail: "UPS drop-off by Friday", status: "pending" },
-    ],
-  },
-  {
-    title: "Recurring Obligations",
-    icon: RotateCcw,
-    items: [
-      { label: "Car insurance renewal", detail: "Due in 5 days", status: "pending" },
-      { label: "Quarterly tax filing", detail: "Due Apr 15", status: "pending" },
-      { label: "Annual physical exam", detail: "Scheduled May 2", status: "done" },
-    ],
-  },
-];
+import { MobileShell } from "@/components/mobile/MobileShell";
+import { Calendar, ShoppingCart, RotateCcw, ArrowRight, CheckCircle2, Clock, Loader2 } from "lucide-react";
+import { useMobileConciergeData } from "@/hooks/use-mobile-data";
+
+const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
+  Calendar, ShoppingCart, RotateCcw,
+};
 
 const MobileConcierge = () => {
+  const { data: sections, isLoading, isDemo } = useMobileConciergeData();
+
   return (
     <MobileShell title="Concierge">
+      {isLoading && (
+        <div className="flex items-center justify-center py-6">
+          <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
+        </div>
+      )}
+
+      {isDemo && (
+        <p className="text-[10px] text-muted-foreground text-center mb-3 italic">Demo data — sign in for your real schedule</p>
+      )}
+
       {sections.map((section) => {
-        const SectionIcon = section.icon;
+        const SectionIcon = ICON_MAP[section.iconName] ?? Calendar;
         return (
           <div key={section.title} className="mb-5">
             <div className="flex items-center gap-2 mb-2">
@@ -46,7 +37,7 @@ const MobileConcierge = () => {
               {section.items.map((item, i) => (
                 <div key={i} className="flex items-center gap-3 px-3 py-3 rounded-xl border border-border/20 bg-card/50">
                   {item.status === "done" ? (
-                    <CheckCircle2 className="h-4 w-4 text-green-500 shrink-0" />
+                    <CheckCircle2 className="h-4 w-4 text-[hsl(var(--trust-safe))] shrink-0" />
                   ) : (
                     <Clock className="h-4 w-4 text-muted-foreground shrink-0" />
                   )}
@@ -61,6 +52,13 @@ const MobileConcierge = () => {
           </div>
         );
       })}
+
+      {!isLoading && sections.length === 0 && (
+        <div className="text-center py-8">
+          <p className="text-sm text-muted-foreground">No schedule items yet</p>
+          <p className="text-xs text-muted-foreground mt-1">Your appointments, errands, and obligations will appear here</p>
+        </div>
+      )}
     </MobileShell>
   );
 };

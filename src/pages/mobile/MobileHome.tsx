@@ -1,39 +1,59 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Mobile Trusted Device: Home (Pulse Summary)
+// Wired to live DB data via useMobileHome* hooks
 // ═══════════════════════════════════════════════════════════════
 
 import { MobileShell } from "@/components/mobile/MobileShell";
 import { PulseCard } from "@/components/mobile/PulseCard";
 import { useNavigate } from "react-router-dom";
-import { Heart, TrendingUp, Shield, Wallet, Calendar, Users, ArrowRight } from "lucide-react";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { Heart, TrendingUp, Shield, Wallet, Calendar, Users, ArrowRight, Loader2 } from "lucide-react";
+import { useMobileHomePulse, useMobileHomeQuickActions, useMobileHomeActivity } from "@/hooks/use-mobile-data";
 
-const quickActions = [
-  { label: "Approvals", path: "/mobile/approvals", count: 3 },
-  { label: "Alerts", path: "/mobile/alerts", count: 5 },
-  { label: "Proof Log", path: "/mobile/proof", count: 12 },
-  { label: "Boardroom", path: "/mobile/boardroom", count: 0 },
-];
+const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
+  Heart, TrendingUp, Shield, Wallet, Calendar, Users,
+};
 
 const MobileHome = () => {
   const navigate = useNavigate();
+  const pulse = useMobileHomePulse();
+  const quickActions = useMobileHomeQuickActions();
+  const activity = useMobileHomeActivity();
+
+  const isLoading = pulse.isLoading || quickActions.isLoading;
 
   return (
     <MobileShell title="Pulse">
-{/* Health summary */}
+      {isLoading && (
+        <div className="flex items-center justify-center py-4">
+          <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
+        </div>
+      )}
+
+      {/* Health summary */}
       <div className="grid grid-cols-2 gap-2 mb-4">
-        <PulseCard icon={Heart} label="System Health" value="97%" trend="up" accent="green" />
-        <PulseCard icon={TrendingUp} label="Revenue MTD" value="$42.8K" trend="up" accent="purple" />
-        <PulseCard icon={Shield} label="Trust Score" value="94/100" trend="stable" accent="green" />
-        <PulseCard icon={Wallet} label="Safe to Spend" value="$8,240" trend="down" accent="amber" />
-        <PulseCard icon={Calendar} label="Tasks Today" value="6 items" accent="purple" />
-        <PulseCard icon={Users} label="Active Leads" value="23" trend="up" accent="green" />
+        {pulse.data.map((metric) => {
+          const Icon = ICON_MAP[metric.icon] ?? Heart;
+          return (
+            <PulseCard
+              key={metric.label}
+              icon={Icon}
+              label={metric.label}
+              value={metric.value}
+              trend={metric.trend}
+              accent={metric.accent}
+            />
+          );
+        })}
       </div>
+
+      {pulse.isDemo && (
+        <p className="text-[10px] text-muted-foreground text-center mb-3 italic">Demo data — sign in to see live metrics</p>
+      )}
 
       {/* Quick actions */}
       <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">Quick Actions</h2>
       <div className="space-y-1.5">
-        {quickActions.map((action) => (
+        {quickActions.data.map((action) => (
           <button
             key={action.path}
             onClick={() => navigate(action.path)}
@@ -55,12 +75,7 @@ const MobileHome = () => {
       {/* Recent activity */}
       <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mt-6 mb-2">Latest Activity</h2>
       <div className="space-y-2">
-        {[
-          { time: "2m ago", action: "Invoice #1042 payment received", domain: "business" },
-          { time: "15m ago", action: "Reserve contribution auto-executed", domain: "finance" },
-          { time: "1h ago", action: "Grocery list generated for the week", domain: "concierge" },
-          { time: "3h ago", action: "Lead scoring recalculated — 4 promoted", domain: "business" },
-        ].map((item, i) => (
+        {activity.data.map((item, i) => (
           <div key={i} className="flex items-start gap-3 p-3 rounded-xl border border-border/20 bg-card/50">
             <div className="h-1.5 w-1.5 rounded-full bg-primary mt-1.5 shrink-0" />
             <div className="min-w-0 flex-1">
