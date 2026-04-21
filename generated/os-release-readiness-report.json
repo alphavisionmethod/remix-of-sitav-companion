@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-21T04:53:37.487Z",
+  "generatedAt": "2026-04-21T05:26:31.116Z",
   "gate": "os-release-readiness",
   "phase": "phase-12-native-deployability",
   "inputs": [
@@ -1826,6 +1826,13 @@
     {
       "file": "generated/truth-governance-report.json",
       "gate": "truth-governance",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/support-platform-coverage-report.json",
+      "gate": "support-platform-coverage",
       "ok": true,
       "errors": 0,
       "warnings": 0

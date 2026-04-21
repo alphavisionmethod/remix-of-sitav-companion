@@ -1,14 +1,14 @@
 # SITA OS — Release Readiness Report
 
-> Generated: 2026-04-21T04:53:37.487Z
+> Generated: 2026-04-21T05:26:31.116Z
 > Verdict: **RED** ❌
 
 ## Summary
 
 | Metric | Value |
 |---|---|
-| Gates required | 266 |
-| Gates present  | 390 |
+| Gates required | 267 |
+| Gates present  | 391 |
 | Gates missing  | 5 |
 | Total errors   | 0 |
 | Total warnings | 4252 |
@@ -280,6 +280,7 @@
 | `route-metadata-closure` | ✅ | 0 | 0 |
 | `component-canonicalization` | ✅ | 0 | 0 |
 | `truth-governance` | ✅ | 0 | 0 |
+| `support-platform-coverage` | ✅ | 0 | 0 |
 | `ai-engineer-tab-registry (warn)` | ✅ | 0 | 0 |
 | `ai-engineer-wiring-coverage (warn)` | ✅ | 0 | 68 |
 | `ai-engineer-primitive-coverage (warn)` | ✅ | 0 | 72 |
