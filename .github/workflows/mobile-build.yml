@@ -20,6 +20,9 @@ on:
         type: boolean
         default: false
 
+permissions:
+  contents: read
+
 concurrency:
   group: mobile-build-${{ github.ref }}
   cancel-in-progress: true

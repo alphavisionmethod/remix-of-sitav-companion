@@ -40,6 +40,13 @@ on:
         default: false
         type: boolean
 
+permissions:
+  contents: read
+
+concurrency:
+  group: customer-journey-manual-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   manual-verification:
     runs-on: ubuntu-latest
