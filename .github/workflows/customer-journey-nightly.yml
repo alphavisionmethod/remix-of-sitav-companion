@@ -5,6 +5,9 @@ on:
     - cron: '0 6,18 * * *'  # 6am and 6pm UTC
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   nightly-verification:
     runs-on: ubuntu-latest

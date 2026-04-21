@@ -12,6 +12,13 @@ on:
 permissions:
   contents: read
 
+permissions:
+  contents: read
+
+concurrency:
+  group: release-electron-redirect-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   redirect:
     name: Redirect to canonical desktop-build
