@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   # ── Traefik Reverse Proxy (TLS Termination) ────────────────────
   sita-traefik:
@@ -452,6 +450,12 @@ services:
     depends_on:
       sita-supabase-db:
         condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:5000/status > /dev/null || true"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
     restart: unless-stopped
     deploy:
       resources:

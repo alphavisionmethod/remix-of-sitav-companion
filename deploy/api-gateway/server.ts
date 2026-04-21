@@ -22,6 +22,35 @@ const RATE_LIMIT_MAX = parseInt(process.env.RATE_LIMIT_MAX || "500", 10);
 const RATE_LIMIT_WINDOW_MS = parseInt(process.env.RATE_LIMIT_WINDOW_MS || "60000", 10);
 
 const startedAt = Date.now();
+let serverRef: { close: () => void } | null = null;
+let rateLimitCleanupInterval: ReturnType<typeof setInterval> | null = null;
+let shuttingDown = false;
+
+// ── Structured Logger ───────────────────────────────────────
+
+function log(level: "info" | "warn" | "error", msg: string, extra?: Record<string, unknown>) {
+  const entry = { ts: new Date().toISOString(), level, service: "sita-api-gateway", msg, ...extra };
+  if (level === "error") console.error(JSON.stringify(entry));
+  else if (level === "warn") console.warn(JSON.stringify(entry));
+  else console.log(JSON.stringify(entry));
+}
+
+// ── Env Validation (fail-fast) ──────────────────────────────
+
+function validateEnv() {
+  const errors: string[] = [];
+  if (!SUPABASE_ANON_KEY) errors.push("SUPABASE_ANON_KEY is required");
+  if (SUPABASE_URL && !/^https?:\/\/.+/.test(SUPABASE_URL)) errors.push(`SUPABASE_URL invalid format: ${SUPABASE_URL}`);
+  if (BRAIN_CORE_URL && !/^https?:\/\/.+/.test(BRAIN_CORE_URL)) errors.push(`BRAIN_CORE_URL invalid format: ${BRAIN_CORE_URL}`);
+  if (isNaN(PORT) || PORT < 1 || PORT > 65535) errors.push(`PORT invalid: ${process.env.PORT}`);
+  if (isNaN(RATE_LIMIT_MAX) || RATE_LIMIT_MAX < 1) errors.push(`RATE_LIMIT_MAX invalid: ${process.env.RATE_LIMIT_MAX}`);
+  if (errors.length > 0) {
+    for (const e of errors) log("error", e);
+    log("error", "Env validation failed — exiting");
+    process.exit(1);
+  }
+  log("info", "Env validation passed");
+}
 
 // ── Rate Limiter (in-memory) ────────────────────────────────
 
@@ -33,7 +62,7 @@ interface RateLimitEntry {
 const rateLimitStore = new Map<string, RateLimitEntry>();
 
 // Clean up expired entries every 5 minutes
-setInterval(() => {
+rateLimitCleanupInterval = setInterval(() => {
   const now = Date.now();
   for (const [key, entry] of rateLimitStore) {
     if (entry.resetAt <= now) {
@@ -112,6 +141,24 @@ app.use("*", async (c, next) => {
 });
 
 // ── Health ───────────────────────────────────────────────────
+
+app.get("/ready", (c) => {
+  if (shuttingDown) {
+    return c.json({ ready: false, reason: "shutting_down" }, 503);
+  }
+  const checks = {
+    supabase_configured: !!SUPABASE_ANON_KEY,
+    brain_core_url_set: !!BRAIN_CORE_URL,
+  };
+  const allReady = Object.values(checks).every(Boolean);
+  return c.json({
+    ready: allReady,
+    service: "sita-api-gateway",
+    checks,
+    uptime: Math.floor((Date.now() - startedAt) / 1000),
+    timestamp: new Date().toISOString(),
+  }, allReady ? 200 : 503);
+});
 
 app.get("/health", (c) => {
   return c.json({
@@ -293,12 +340,29 @@ app.onError((err, c) => {
   );
 });
 
+// ── Graceful Shutdown ───────────────────────────────────────
+
+function shutdown(signal: string) {
+  if (shuttingDown) return;
+  shuttingDown = true;
+  log("info", `${signal} received — draining connections`, { signal });
+  if (serverRef) { try { serverRef.close(); } catch { /* already closed */ } }
+  if (rateLimitCleanupInterval) clearInterval(rateLimitCleanupInterval);
+  setTimeout(() => { log("info", "Drain timeout reached — exiting"); process.exit(0); }, 10_000);
+}
+
+process.on("SIGTERM", () => shutdown("SIGTERM"));
+process.on("SIGINT", () => shutdown("SIGINT"));
+
 // ── Start ───────────────────────────────────────────────────
 
-console.log(`[SITA API Gateway] Starting on port ${PORT}...`);
-serve({ fetch: app.fetch, port: PORT }, (info) => {
-  console.log(`[SITA API Gateway] Listening on http://0.0.0.0:${info.port}`);
-  console.log(`[SITA API Gateway] Brain Core URL: ${BRAIN_CORE_URL}`);
-  console.log(`[SITA API Gateway] Supabase URL: ${SUPABASE_URL}`);
-  console.log(`[SITA API Gateway] Rate Limit: ${RATE_LIMIT_MAX} req/${RATE_LIMIT_WINDOW_MS}ms`);
-});
+validateEnv();
+log("info", "Starting API Gateway", { port: PORT });
+serverRef = serve({ fetch: app.fetch, port: PORT }, (info) => {
+  log("info", "Listening", {
+    url: `http://0.0.0.0:${info.port}`,
+    brainCoreUrl: BRAIN_CORE_URL,
+    supabaseUrl: SUPABASE_URL,
+    rateLimit: `${RATE_LIMIT_MAX} req/${RATE_LIMIT_WINDOW_MS}ms`,
+  });
+}) as unknown as { close: () => void };

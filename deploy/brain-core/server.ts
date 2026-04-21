@@ -301,6 +301,34 @@ const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY || "";
 const NATS_URL = process.env.NATS_URL || "nats://sita-nats:4222";
 
 const startedAt = Date.now();
+let serverRef: { close: () => void } | null = null;
+let shuttingDown = false;
+
+// ── Structured Logger ───────────────────────────────────────
+
+function log(level: "info" | "warn" | "error", msg: string, extra?: Record<string, unknown>) {
+  const entry = { ts: new Date().toISOString(), level, service: "sita-brain-core", msg, ...extra };
+  if (level === "error") console.error(JSON.stringify(entry));
+  else if (level === "warn") console.warn(JSON.stringify(entry));
+  else console.log(JSON.stringify(entry));
+}
+
+// ── Env Validation (fail-fast) ──────────────────────────────
+
+function validateEnv() {
+  const errors: string[] = [];
+  if (!SUPABASE_URL) errors.push("SUPABASE_URL is required");
+  if (!SUPABASE_SERVICE_KEY) errors.push("SUPABASE_SERVICE_KEY is required");
+  if (SUPABASE_URL && !/^https?:\/\/.+/.test(SUPABASE_URL)) errors.push(`SUPABASE_URL invalid format: ${SUPABASE_URL}`);
+  if (NATS_URL && !/^nats:\/\/.+/.test(NATS_URL)) errors.push(`NATS_URL invalid format: ${NATS_URL}`);
+  if (isNaN(PORT) || PORT < 1 || PORT > 65535) errors.push(`PORT invalid: ${process.env.PORT}`);
+  if (errors.length > 0) {
+    for (const e of errors) log("error", e);
+    log("error", "Env validation failed — exiting");
+    process.exit(1);
+  }
+  log("info", "Env validation passed");
+}
 
 // ── NATS Connection ─────────────────────────────────────────
 
@@ -371,6 +399,26 @@ app.get("/health", (c) => {
     supabase_connected: !!supabaseAdmin,
     timestamp: new Date().toISOString(),
   });
+});
+
+// ── Readiness Endpoint ──────────────────────────────────────
+
+app.get("/ready", (c) => {
+  if (shuttingDown) {
+    return c.json({ ready: false, reason: "shutting_down" }, 503);
+  }
+  const checks = {
+    nats_connected: natsConnected,
+    supabase_configured: !!supabaseAdmin,
+  };
+  const allReady = Object.values(checks).every(Boolean);
+  return c.json({
+    ready: allReady,
+    service: "sita-brain-core",
+    checks,
+    uptime: Math.floor((Date.now() - startedAt) / 1000),
+    timestamp: new Date().toISOString(),
+  }, allReady ? 200 : 503);
 });
 
 // ── Intent Orchestration ────────────────────────────────────
@@ -466,11 +514,42 @@ app.onError((err, c) => {
   return c.json({ error: "Internal Server Error", message: process.env.NODE_ENV === "production" ? "Unexpected error" : err.message }, 500);
 });
 
+// ── Graceful Shutdown ───────────────────────────────────────
+
+async function shutdown(signal: string) {
+  if (shuttingDown) return;
+  shuttingDown = true;
+  log("info", `${signal} received — draining connections`, { signal });
+
+  // Stop accepting new connections
+  if (serverRef) {
+    try { serverRef.close(); } catch { /* already closed */ }
+  }
+
+  // Close NATS connection
+  if (natsConnection) {
+    try {
+      await (natsConnection as { drain(): Promise<void> }).drain();
+      log("info", "NATS connection drained");
+    } catch { /* best effort */ }
+  }
+
+  // Allow 10s for in-flight requests
+  setTimeout(() => {
+    log("info", "Drain timeout reached — exiting");
+    process.exit(0);
+  }, 10_000);
+}
+
+process.on("SIGTERM", () => { shutdown("SIGTERM"); });
+process.on("SIGINT", () => { shutdown("SIGINT"); });
+
 // ── Start ───────────────────────────────────────────────────
 
+validateEnv();
 connectNats();
 
-console.log(`[SITA Brain Core] Starting on port ${PORT}...`);
-serve({ fetch: app.fetch, port: PORT }, (info) => {
-  console.log(`[SITA Brain Core] Listening on http://0.0.0.0:${info.port}`);
-});
+log("info", "Starting Brain Core", { port: PORT });
+serverRef = serve({ fetch: app.fetch, port: PORT }, (info) => {
+  log("info", "Listening", { url: `http://0.0.0.0:${info.port}` });
+}) as unknown as { close: () => void };
