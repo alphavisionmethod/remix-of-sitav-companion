@@ -173,6 +173,7 @@ export const ImmersiveBoardroomCouncil = ({ advisors, onAdvisorClick, className 
                     name={advisor.name}
                     status={advisor.status}
                     size="lg"
+                    avatarUrl={advisor.avatarUrl}
                   />
                 </NeonRing>
                 <div className="text-center">
