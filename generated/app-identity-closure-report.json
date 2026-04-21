@@ -1,0 +1,8 @@
+{
+  "gate": "app-identity-closure",
+  "tier": "BLOCK",
+  "ok": false,
+  "errors": 4,
+  "warnings": 0,
+  "checkedAt": "2026-04-21T05:00:30.954Z"
+}
