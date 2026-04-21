@@ -1,161 +1,144 @@
 
 
-## Wave 14 — Workflow Proof Closure and Provider Truth Closure
+## Wave 15 — Database Governance Layer
 
 ### Summary
 
-The project has a strong canonical workflow engine (`src/lib/core-services/workflow-engine.ts`, 749 lines, 11-state machine with replay, recovery, timeout, verification hooks) and a canonical connector system (12 providers in `src/lib/connectors/providers.ts`, 6-state grammar, auth/health/truth services). What is missing: workflow proof registry mapping workflow families to evidence/owners/rollback, provider contract registry with lifecycle/diagnostics/security closure, and all associated validators and generated proof artifacts. Two existing validator stubs (`scripts/integrations/check-oauth-security-closure.ts`, `check-provider-refresh-closure.ts`) only check file existence.
+The project has a strong canonical DB truth layer in `src/lib/db/` (13 files: schema-registry, rls-policy-registry, migration-registry, tenancy-boundary-map, table-ownership-map, db-truth-registry, db-audit-registry, db-runtime-consequence-map, db-dependency-map, db-health-engine, table-writer-reader-map, non-edge-table-io-sources, cross-domain-write-exemptions). What is missing: table classification (state vs event vs audit vs receipt), retention/TTL governance, index coverage audit, query-plan baselines, bounded-context map artifact, support-view registry, repair-procedure map, partition strategy, and policy-pattern audit. The existing `scripts/db/checks/check-index-and-retention-coverage.ts` is a stub that writes a hardcoded JSON.
 
-This wave creates the workflow and integration governance layers by extending existing systems, not duplicating them.
+This wave extends the existing `src/lib/db/` canonical system with governance registries and replaces stubs with real validators. No second DB governance platform.
 
 ---
 
-### Phase A — Workflow Proof Registry and Contracts (6 files)
+### Phase A — Table Classification and Bounded-Context Map (3 files)
 
-**1. `src/lib/workflows/workflow-proof-registry.ts`**
-- Registry of 12 workflow families (auth, onboarding, app-lifecycle, advisor, boardroom, payment, CRM/connector, file, desktop-recovery, OS-recovery, operator-incident, support-bundle)
-- Each entry: `familyId`, `owner`, `intent`, `scope`, `stepIds[]`, `evidenceSources[]`, `replayable`, `rollbackSemantics`, `failureInjectionPoints[]`, `dashboardRoute`, `runbookRef`, `killSwitchBinding`, `goldenPathRef`
-- Cross-references existing golden path IDs and kill-switch IDs
+**1. `src/lib/db/table-classification-map.ts`**
+- Imports `DB_SCHEMA_REGISTRY` and classifies every table into: `lifecycle-state`, `event-ledger`, `append-only-audit`, `receipt-proof`, `projection-read-model`, `control-plane-config`, `support-debug`, `cache-temporary`, `ttl-governed`, `queue-retry`
+- Uses existing `schemaClass` (write/read/log/config/system) as input signal plus table naming conventions (e.g., `*_receipts` = receipt-proof, `*_audit` = append-only-audit, `*_logs` = event-ledger)
+- Exports `TABLE_CLASSIFICATION_MAP: Record<string, TableClassification>`
 
-**2. `src/lib/workflows/workflow-step-contracts.ts`**
-- Typed step contract interface: `stepId`, `sourceState`, `targetState`, `requiredInputs[]`, `sideEffects[]`, `persistenceReqs`, `evidenceReqs`, `rollbackEligible`, `failureModes[]`, `retryPolicy`, `operatorVisible`
-- Pre-defined step contracts for all 12 families (~60 steps total)
-- Maps to `ServiceWorkflowState` from existing workflow engine
+**2. `src/lib/db/bounded-context-map.ts`**
+- Thin projection from `DB_SCHEMA_REGISTRY` + `DOMAIN_TO_OWNER` + `TABLE_CLASSIFICATION_MAP`
+- Exports `BOUNDED_CONTEXT_MAP` with per-table: `tableName`, `boundedContext` (= domain), `owner`, `tableRole`, `classification`, `retentionCategory`, `supportImportance`
+- Generates `generated/db-bounded-context-map.json` via generator script
 
-**3. `src/lib/workflows/workflow-evidence-builder.ts`**
-- `buildWorkflowEvidenceBundle(familyId, run)` function
-- Produces `WorkflowEvidenceBundle` containing: metadata, execution lineage, receipts, decision points, retries, failures, rollback outcomes, proof of final state
-- Leverages existing `WorkflowInstance.eventLog` from core-services engine
+**3. `src/lib/db/schema-authority-registry.ts`**
+- Extends `DB_TRUTH_REGISTRY` with full authority typing per table
+- Each entry: `table`, `authorityType` (source-of-truth | derived | event | append-only-audit | receipt | queue | support | config), `criticality`, `tenantScope`, `rlsRequired`, `lifecycleExpectation`
+- Covers all tables in `DB_SCHEMA_REGISTRY`, cross-referencing `DB_TRUTH_REGISTRY` for concept mapping
+- Generates `generated/db-authority-map.json`
 
-**4. `src/lib/workflows/workflow-replay-engine.ts`**
-- Thin wrapper around existing `WorkflowReplayEngine` from `core-services/workflow-engine.ts`
-- Adds family-level replay declarations: which families are replayable, replay safety rules, non-replayable sensitive paths
-- No duplication — imports and extends existing replay engine
+### Phase B — Retention, TTL, Hot/Cold, and Partition Governance (3 files)
 
-**5. `src/lib/workflows/workflow-failure-injection.ts`**
-- Declares per-family failure injection points
-- `InjectionPoint` type: `familyId`, `stepId`, `faultType` (timeout, error, partial, permission-denied), `severity`
-- `injectFault(familyId, stepId, faultType)` function for test harnesses
+**4. `src/lib/db/retention-policy-registry.ts`**
+- Extends existing `DB_AUDIT_REGISTRY` retention data to all table families
+- Per-table: `retentionClass` (permanent | long-term-7yr | medium-1yr | short-90d | transient-30d | session), `archivePolicy` (append-only | soft-delete | hard-delete | ttl-purge), `purgeRules`, `ttlColumn` if applicable, `expectedRowGrowth` (low | medium | high | very-high), `hotCold` (hot | warm | cold)
+- Generates `generated/db-retention-policy-matrix.json` and `generated/db-hot-cold-data-map.json`
 
-**6. `src/lib/workflows/workflow-rollback-map.ts`**
-- Per-family rollback semantics: reversible steps, irreversible steps, compensating actions, escalation rules, runbook linkage
-- Cross-references existing runbook registry IDs
+**5. `src/lib/db/ttl-governance-map.ts`**
+- Scans `DB_SCHEMA_REGISTRY` for tables with known TTL patterns (expires_at, cooldown_expires_at, scheduled_purge_at, muted_until)
+- Declares TTL column, expected cleanup mechanism, index requirement
+- Generates `generated/db-ttl-governance-report.json`
 
-### Phase B — Provider Contract Registry and Lifecycle (7 files)
+**6. `src/lib/db/partitioning-strategy-map.ts`**
+- Per high-growth table family: partition recommendation or explicit non-partition rationale
+- Covers: timeline_events, audit_logs, ai_inference_receipts, sync_logs, tenant_firewall_logs, ai_workforce_invocations
+- Generates `generated/db-partition-strategy-report.json`
 
-**7. `src/lib/integrations/provider-contract-registry.ts`**
-- Registry of all 12 catalog providers (gmail, google-calendar, google-drive, plaid, stripe, quickbooks, twilio, sendgrid, instacart, hubspot, slack, dropbox) plus 3 system providers (AI-gateway, storage, auth)
-- Each entry: `providerId`, `providerType`, `owner`, `credentialModel`, `environments[]`, `refreshPolicy`, `retryPolicy`, `rateLimitPolicy`, `outagePolicy`, `degradedUxBehavior`, `killSwitchBinding`, `runbookRef`, `webhookBehavior`, `retentionPolicy`, `diagnosticsSupport`
-- Extends existing `CONNECTOR_PROVIDER_REGISTRY` — does not replace it
+### Phase C — Index and Query-Plan Governance (2 files)
 
-**8. `src/lib/integrations/provider-lifecycle-manager.ts`**
-- Canonical lifecycle state machine: `initial-connect → auth-issued → active → refresh → expiring → expired → reauth → disabled → recovered`
-- `advanceProviderLifecycle(providerId, event)` function
-- Integrates with existing `ConnectorAuthState` from `connector-auth.service.ts`
-- Extends existing `ConnectorState` from `connector-state-grammar.ts`
+**7. `src/lib/db/index-coverage-registry.ts`**
+- Declares expected indexes per table family: FK indexes, TTL/expires_at indexes, status/workflow columns, composite operational patterns
+- Flags missing indexes as governance gaps
+- Generates `generated/db-index-coverage.json` (replaces current stub output)
 
-**9. `src/lib/integrations/provider-health-model.ts`**
-- Canonical health model: `healthy | degraded | partial-outage | full-outage | maintenance | unknown`
-- `assessProviderHealth(providerId, signals)` function
-- Integrates with existing `fetchConnectorHealth()` from `connector-health-service.ts`
+**8. `src/lib/db/query-plan-governance.ts`**
+- Declares critical query families (auth lookup, onboarding resume, app install, advisor lookup, boardroom item, payment receipt, connector health, file lineage, kill-switch, support bundle)
+- Per query family: expected table, required index support, high-risk scan patterns, structural prerequisites
+- Generates `generated/db-query-plan-baseline.json`
 
-**10. `src/lib/integrations/provider-diagnostics.ts`**
-- `generateProviderDiagnostics(providerId)` — returns structured diagnostic bundle
-- Covers: credential status, last refresh, error history, latency, rate-limit state, webhook delivery status
-- Integrates with existing `getOAuthFlows()` and `getSyncJobs()` from `connector-truth-service.ts`
+### Phase D — Policy Pattern and Tenant Isolation (2 files)
 
-**11. `src/lib/integrations/provider-kill-switch-map.ts`**
-- Maps providers to kill-switch IDs from existing `KILL_SWITCH_REGISTRY`
-- Maps providers to runbook IDs from existing `RUNBOOK_REGISTRY`
-- E.g. `stripe → KS-PAYMENTS`, `gmail → KS-CONNECTORS`
+**9. `src/lib/db/policy-pattern-registry.ts`**
+- Standardizes the 12 `RlsPattern` types from `rls-policy-registry.ts` into canonical pattern contracts
+- Per pattern: description, expected USING clause shape, expected WITH CHECK shape, applicable table classes, security requirements
+- Audits all tables for pattern consistency
+- Generates `generated/db-policy-pattern-audit.json`
 
-**12. `src/lib/integrations/provider-retention-policy.ts`**
-- Per-provider data retention rules: token TTL, sync data retention, audit log retention, replay data policy, environment separation (sandbox vs prod)
+**10. `src/lib/db/tenant-isolation-map.ts`**
+- Extends `TENANCY_BOUNDARY_MAP` with isolation proof metadata
+- Per tenant-scoped table: isolation mechanism, policy mechanism, actor classes, support override path, evidence source
+- Generates `generated/db-tenant-isolation-proof.json`
 
-**13. `src/lib/integrations/oauth-security-closure.ts`**
-- Declares OAuth token encryption-at-rest policy
-- Token access auditing requirements
-- Key rotation compatibility declarations
-- Expiry/indexing coverage
-- Support-safe redaction rules
-- Generates `generated/oauth-security-closure.json`
+### Phase E — Support, Repair, and Migration Governance (3 files)
 
-### Phase C — Supporting Provider Policies (4 files)
+**11. `src/lib/db/support-view-registry.ts`**
+- Declares support/debug data access patterns for critical workflows
+- Per workflow: tables involved, join pattern, key filters, operator access level, redaction rules
+- Covers: auth/session, onboarding, app install, advisor/boardroom, payment, connector, file, kill-switch, support bundle
+- Generates `generated/db-support-views-map.json`
 
-**14. `src/lib/integrations/provider-refresh-policy.ts`**
-- Per-provider refresh cadence, retry backoff, max retries, refresh window
+**12. `src/lib/db/data-repair-procedure-map.ts`**
+- Per critical domain: repairable failure types, repair procedure ID, manual vs automated, preconditions, audit requirements, rollback safety, runbook linkage
+- Covers: stuck workflows, orphaned installs, broken permissions, receipt mismatch, connector token cleanup, session corruption, queue repair
+- Generates `generated/db-repair-procedure-coverage.json`
 
-**15. `src/lib/integrations/provider-rate-limit-policy.ts`**
-- Per-provider rate limits, backoff strategy, burst handling, queue behavior
+**13. Generator: `scripts/db/generate/generate-db-governance-artifacts.ts`**
+- Single script that imports all new registries and generates all 15 artifacts into `generated/`
+- Generates: db-bounded-context-map.json, db-authority-map.json, db-table-classification.json, db-retention-policy-matrix.json, db-hot-cold-data-map.json, db-ttl-governance-report.json, db-partition-strategy-report.json, db-index-coverage.json, db-query-plan-baseline.json, db-policy-pattern-audit.json, db-tenant-isolation-proof.json, db-support-views-map.json, db-repair-procedure-coverage.json, db-schema-ownership-map.json, db-migration-governance-report.json
 
-**16. `src/lib/integrations/provider-webhook-replay-policy.ts`**
-- Webhook replay rules, deduplication, idempotency keys, DLQ behavior
+### Phase F — Validators (9 scripts)
 
-**17. `src/lib/integrations/provider-conflict-resolution-policy.ts`**
-- CRM/sync conflict detection, resolution strategy (last-write-wins, merge, manual), operator escalation
+Replace the existing stub `check-index-and-retention-coverage.ts` and add 8 new validators:
 
-### Phase D — Validators (10 scripts)
+**14. `scripts/db/checks/check-db-authority-map.ts`** -- BLOCK. Verify every table has authority classification, owner, and context.
 
-Replace the 2 existing stubs and add 8 new validators:
+**15. `scripts/db/checks/check-db-index-coverage.ts`** -- REPLACE existing stub. Real validation: TTL columns indexed, FK indexes present, high-volume tables covered.
 
-**18. `scripts/workflows/check-workflow-proof-closure.ts`** — BLOCK. Verify all 12 families registered, step contracts defined, evidence sources declared.
+**16. `scripts/db/checks/check-db-retention-and-ttl.ts`** -- ADVISORY. Verify retention/TTL/hot-cold declared for key families.
 
-**19. `scripts/workflows/check-workflow-step-contracts.ts`** — ADVISORY. Verify step contracts cover all declared steps.
+**17. `scripts/db/checks/check-db-query-plan-prereqs.ts`** -- ADVISORY. Verify critical query families have structural prerequisites.
 
-**20. `scripts/workflows/check-workflow-replayability.ts`** — ADVISORY. Verify replayable families have replay safety rules.
+**18. `scripts/db/checks/check-db-policy-patterns.ts`** -- ADVISORY. Verify RLS policies match canonical patterns.
 
-**21. `scripts/workflows/check-workflow-failure-injection.ts`** — ADVISORY. Verify injection points declared for critical families.
+**19. `scripts/db/checks/check-db-tenant-isolation.ts`** -- BLOCK. Verify tenant-scoped tables declare isolation and policy coverage.
 
-**22. `scripts/workflows/check-workflow-rollback-coverage.ts`** — ADVISORY. Verify rollback semantics declared for reversible families.
+**20. `scripts/db/checks/check-db-support-view-coverage.ts`** -- ADVISORY. Verify critical workflows have support/debug visibility.
 
-**23. `scripts/integrations/check-provider-contract-closure.ts`** — BLOCK. Verify all 15 providers registered with full contracts.
+**21. `scripts/db/checks/check-db-repair-coverage.ts`** -- ADVISORY. Verify critical repair procedures declared.
 
-**24. `scripts/integrations/check-oauth-security-closure.ts`** — REPLACE existing stub. Real validation: check oauth-security-closure.json completeness.
+**22. `scripts/db/checks/check-db-migration-governance.ts`** -- ADVISORY. Verify migrations map to contexts and risky churn surfaced.
 
-**25. `scripts/integrations/check-provider-refresh-closure.ts`** — REPLACE existing stub. Real validation: check all providers have refresh policies.
+### Phase G — Barrel Export and Gate Registration
 
-**26. `scripts/integrations/check-provider-diagnostics-closure.ts`** — ADVISORY. Verify diagnostics coverage.
-
-**27. `scripts/integrations/check-provider-webhook-replay.ts`** — ADVISORY. Verify webhook replay policy exists for webhook providers.
-
-### Phase E — Generated Proof Artifacts
-
-- `generated/workflow-proof-bundles/workflow-closure-matrix.json` — all 12 families with step/evidence/replay/rollback coverage
-- `generated/workflow-proof-bundles/workflow-replayability-report.json`
-- `generated/workflow-proof-bundles/workflow-rollback-coverage.json`
-- `generated/integration-proof-bundles/provider-contract-closure.json` — all 15 providers with lifecycle/health/diagnostics coverage
-- `generated/oauth-security-closure.json` — OAuth token security posture
-- `generated/token-encryption-rotation-proof.json` — encryption-at-rest + rotation evidence
-- `generated/provider-refresh-closure.json` — refresh policy coverage
-- `generated/provider-rate-limit-coverage.json`
-- `generated/provider-webhook-replay-audit.json`
-- `generated/provider-conflict-resolution-report.json`
-
-### Phase F — Gate Registration and Verification
-
-- Register `workflow-proof-closure` as BLOCK gate in `check-os-release-readiness.ts`
-- Register `provider-contract-closure` as BLOCK gate
-- Register 8 ADVISORY gates for remaining validators
-- `npx tsc --noEmit` — zero errors
-- Run all 10 new validators — all green
+- Update `src/lib/db/index.ts` to export all new registries
+- Register `db-authority-map` and `db-tenant-isolation` as BLOCK gates in `check-os-release-readiness.ts`
+- Register 7 ADVISORY gates for remaining validators
+- `npx tsc --noEmit` -- zero errors
+- Run all 9 new validators -- all green
 
 ### No-Duplication Enforcement
 
-- Workflow proof registry imports from existing `WorkflowEngine`, `WorkflowReplayEngine`, `WorkflowRecoveryManager` in `core-services/workflow-engine.ts` — no second engine
-- Provider contract registry extends existing `CONNECTOR_PROVIDER_REGISTRY` and `CONNECTOR_STATE_GRAMMAR` — no second connector system
-- Provider lifecycle manager extends existing `ConnectorAuthState` — no second auth model
-- Provider health model wraps existing `fetchConnectorHealth()` — no second health service
+- All new registries import from existing `DB_SCHEMA_REGISTRY`, `DOMAIN_TO_OWNER`, `TENANCY_BOUNDARY_MAP`, `RLS_POLICY_REGISTRY`, `DB_AUDIT_REGISTRY`, `DB_TRUTH_REGISTRY` -- no second schema registry
+- `check-db-index-coverage.ts` replaces existing stub `check-index-and-retention-coverage.ts`
+- `schema-authority-registry.ts` extends `DB_TRUTH_REGISTRY` -- no second truth system
+- `retention-policy-registry.ts` extends `DB_AUDIT_REGISTRY` retention data -- no second audit system
 
 ### Deployment Closure Checklist
 
-- [ ] 12 workflow families registered with proof closure
-- [ ] ~60 step contracts defined across all families
-- [ ] Evidence builder, replay declarations, failure injection, rollback map complete
-- [ ] 15 providers registered with full contract
-- [ ] OAuth security closure artifact generated
-- [ ] Token encryption rotation proof generated
-- [ ] 10 validator scripts passing
-- [ ] 2 BLOCK gates + 8 ADVISORY gates registered
+- [ ] All ~420 tables classified (state/event/audit/receipt/config/support)
+- [ ] Bounded-context map covers all tables with owner and role
+- [ ] Authority registry with criticality and lifecycle for all tables
+- [ ] Retention/TTL/hot-cold governance for all table families
+- [ ] Index coverage audit with TTL and FK gap detection
+- [ ] Query-plan baselines for 11 critical query families
+- [ ] Policy pattern standards for all 12 RLS patterns
+- [ ] Tenant isolation proof for all tenant-scoped tables
+- [ ] Support-view registry for 9 critical workflows
+- [ ] Repair procedure map for 7 critical domains
+- [ ] Migration governance report for 233 migrations
+- [ ] 15 generated proof artifacts
+- [ ] 9 validator scripts passing (2 BLOCK + 7 ADVISORY)
 - [ ] TypeScript builds with 0 errors
-- [ ] No duplicate workflow or integration systems
+- [ ] No duplicate DB governance systems
 
