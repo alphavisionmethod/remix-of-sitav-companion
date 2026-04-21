@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-20T19:11:21.145Z",
+  "generatedAt": "2026-04-21T04:53:37.487Z",
   "gate": "os-release-readiness",
   "phase": "phase-12-native-deployability",
   "inputs": [
@@ -1740,6 +1740,97 @@
       "warnings": 0
     },
     {
+      "file": "generated/runtime-authority-report.json",
+      "gate": "runtime-authority",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/os-boot-recovery-closure-report.json",
+      "gate": "os-boot-recovery-closure",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/route-plane-runtime-profile-consistency-report.json",
+      "gate": "route-plane-runtime-profile-consistency",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/truth-surface-coverage-report.json",
+      "gate": "truth-surface-coverage",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/provider-refresh-closure-report.json",
+      "gate": "provider-refresh-closure",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/oauth-security-closure-report.json",
+      "gate": "oauth-security-closure",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/ai-capability-proof-report.json",
+      "gate": "ai-capability-proof",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/runbook-linkage-report.json",
+      "gate": "runbook-linkage",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/artifact-proof-closure-report.json",
+      "gate": "artifact-proof-closure",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/evidence-graph-completeness-v2-report.json",
+      "gate": "evidence-graph-completeness-v2",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/route-metadata-closure-report.json",
+      "gate": "route-metadata-closure",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/component-canonicalization-report.json",
+      "gate": "component-canonicalization",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/truth-governance-report.json",
+      "gate": "truth-governance",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
       "file": "generated/ai-engineer-tab-registry-report.json",
       "gate": "ai-engineer-tab-registry (warn)",
       "ok": true,
@@ -1766,6 +1857,48 @@
       "ok": true,
       "errors": 0,
       "warnings": 18
+    },
+    {
+      "file": "generated/truth-primitive-coverage-report.json",
+      "gate": "truth-primitive-coverage (warn)",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/frontend-page-state-coverage-report.json",
+      "gate": "frontend-page-state-coverage (warn)",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/layout-grammar-coverage-report.json",
+      "gate": "layout-grammar-coverage (warn)",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/accessibility-baseline-report.json",
+      "gate": "accessibility-baseline (warn)",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/mobile-adaptive-coverage-report.json",
+      "gate": "mobile-adaptive-coverage (warn)",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    {
+      "file": "generated/page-performance-budget-report.json",
+      "gate": "page-performance-budget (warn)",
+      "ok": true,
+      "errors": 0,
+      "warnings": 0
     },
     {
       "file": "generated/action-envelope-boundary-report.json",
@@ -2603,7 +2736,13 @@
   ],
   "totalErrors": 0,
   "totalWarnings": 4252,
-  "missingGates": [],
-  "ok": true,
-  "verdict": "GREEN"
+  "missingGates": [
+    "app-identity-closure",
+    "app-lifecycle-coverage",
+    "advisor-identity-closure",
+    "advisor-tool-permissions",
+    "advisor-reversibility"
+  ],
+  "ok": false,
+  "verdict": "RED"
 }
