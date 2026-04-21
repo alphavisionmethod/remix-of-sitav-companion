@@ -1,0 +1,119 @@
+// ═══════════════════════════════════════════════════════════════
+// SITA OS — OS Boot Validation Policy
+// Defines boot validation coverage for each OS image format.
+// ═══════════════════════════════════════════════════════════════
+
+export interface BootValidationEntry {
+  readonly format: "ISO" | "OVA" | "RAW" | "IMG";
+  readonly profiles: string[];
+  readonly ciWorkflow: string;
+  readonly ciJobId: string;
+  readonly bootCriteria: string[];
+  readonly failureDetectionCriteria: string[];
+  readonly safeModeRecovery: boolean;
+  readonly postBootVerification: string[];
+  readonly evidenceEmitted: string[];
+  readonly coveredInCI: boolean;
+  readonly notes: string;
+}
+
+export const OS_BOOT_VALIDATION_MATRIX: readonly BootValidationEntry[] = [
+  {
+    format: "ISO",
+    profiles: ["user", "operator"],
+    ciWorkflow: ".github/workflows/os-build-iso.yml",
+    ciJobId: "smoke-test",
+    bootCriteria: [
+      "GRUB/systemd-boot menu loads within 30s",
+      "Kernel boots without panic",
+      "systemd reaches multi-user.target",
+      "Login prompt appears on serial console",
+      "Shell is responsive to commands",
+    ],
+    failureDetectionCriteria: [
+      "QEMU serial console timeout (180s default)",
+      "No login prompt detected",
+      "Kernel panic string on console output",
+      "systemd emergency.target reached",
+      "qemu-validate.sh exits non-zero",
+    ],
+    safeModeRecovery: true,
+    postBootVerification: [
+      "Runtime health check via os/diagnostics/collect-runtime-health.sh",
+      "Service status verification via os/diagnostics/collect-service-health.sh",
+      "Boot target verification via os/diagnostics/check-boot-target.sh",
+      "Update health via os/diagnostics/collect-update-health.sh",
+    ],
+    evidenceEmitted: [
+      "out/qemu-validation-report.json",
+      "out/qemu-validation.log",
+      "out/qemu-validation-report.md",
+    ],
+    coveredInCI: true,
+    notes: "Both user and operator profiles tested in parallel matrix jobs",
+  },
+  {
+    format: "OVA",
+    profiles: ["user"],
+    ciWorkflow: ".github/workflows/os-build-iso.yml",
+    ciJobId: "build-ova",
+    bootCriteria: [
+      "OVA file is valid tar archive with OVF descriptor",
+      "VMDK conversion succeeds from QEMU qcow2",
+      "OVA manifest checksum matches",
+    ],
+    failureDetectionCriteria: [
+      "build-ova.sh exits non-zero",
+      "VMDK conversion produces zero-byte file",
+      "OVA manifest checksum mismatch",
+    ],
+    safeModeRecovery: false,
+    postBootVerification: [
+      "OVA artifact presence check via check-ova-artifact-presence.ts",
+      "SHA-256 checksum file emitted alongside .ova",
+    ],
+    evidenceEmitted: [
+      "out/*.ova.manifest.json",
+      "out/*.ova.sha256",
+    ],
+    coveredInCI: true,
+    notes: "OVA wraps user-profile ISO; operator profile uses ISO directly",
+  },
+  {
+    format: "RAW",
+    profiles: ["user"],
+    ciWorkflow: ".github/workflows/os-build-iso.yml",
+    ciJobId: "build (user)",
+    bootCriteria: [
+      "Raw IMG file produced with valid partition table",
+      "Image is dd-flashable to block device",
+      "SHA-256 checksum file emitted",
+    ],
+    failureDetectionCriteria: [
+      "build-raw-img.sh exits non-zero",
+      "Output file is zero bytes or missing",
+    ],
+    safeModeRecovery: false,
+    postBootVerification: [
+      "Raw IMG artifact presence check via check-raw-img-artifact-presence.ts",
+    ],
+    evidenceEmitted: [
+      "out/*.img",
+      "out/*.img.sha256",
+    ],
+    coveredInCI: true,
+    notes: "Raw IMG for cloud imports and bare-metal flash; boot validation inherited from ISO QEMU test",
+  },
+];
+
+export function getBootValidationForFormat(format: string): BootValidationEntry | undefined {
+  return OS_BOOT_VALIDATION_MATRIX.find((e) => e.format === format);
+}
+
+export function getAllCIBootCoveredFormats(): string[] {
+  return OS_BOOT_VALIDATION_MATRIX.filter((e) => e.coveredInCI).map((e) => e.format);
+}
+
+export function getUncoveredFormats(): string[] {
+  return OS_BOOT_VALIDATION_MATRIX.filter((e) => !e.coveredInCI).map((e) => e.format);
+}
