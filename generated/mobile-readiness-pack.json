@@ -1,19 +1,123 @@
 {
-  "generatedAt": "2026-04-20T21:20:30.255Z",
-  "codeReadiness": {
-    "capacitorShell": "deferred",
-    "reactNativeShell": "deferred",
-    "pwaSupport": "implemented"
-  },
-  "storeReadiness": {
-    "appStore": "not-submitted",
-    "playStore": "not-submitted"
-  },
-  "distributionBlockers": [
-    "No Apple Developer account enrolled",
-    "No Google Play Developer account enrolled",
-    "No native shell built",
-    "No store listing created"
+  "generatedAt": "2026-04-21T06:24:05.700Z",
+  "honestyState": "DEFERRED",
+  "overallReadiness": "archived-with-pwa-fallback",
+  "activeSurfaces": [
+    "web-spa-responsive",
+    "pwa-installable",
+    "web-push-vapid"
   ],
-  "closurePath": "Complete Capacitor shell → enroll developer accounts → build → submit → review"
+  "archivedSurfaces": [
+    "native-ios-app",
+    "native-android-app",
+    "app-store-listing",
+    "play-store-listing",
+    "apns-push",
+    "fcm-push",
+    "capacitor-wrapper"
+  ],
+  "dimensions": [
+    {
+      "dimension": "code-readiness",
+      "status": "partial",
+      "evidence": "PWA implemented; native Capacitor shell archived",
+      "blockers": [
+        "Native shell not in active codebase"
+      ]
+    },
+    {
+      "dimension": "runtime-readiness",
+      "status": "partial",
+      "evidence": "Responsive web works on mobile browsers",
+      "blockers": [
+        "No native runtime active"
+      ]
+    },
+    {
+      "dimension": "distribution-readiness",
+      "status": "blocked",
+      "evidence": "No store accounts enrolled",
+      "blockers": [
+        "Apple Developer Program not enrolled",
+        "Google Play Console not enrolled"
+      ]
+    },
+    {
+      "dimension": "store-readiness",
+      "status": "blocked",
+      "evidence": "Store metadata archived",
+      "blockers": [
+        "No active store listings"
+      ]
+    },
+    {
+      "dimension": "signing-readiness",
+      "status": "blocked",
+      "evidence": "Signing docs archived",
+      "blockers": [
+        "No signing certificates provisioned"
+      ]
+    },
+    {
+      "dimension": "push-readiness",
+      "status": "partial",
+      "evidence": "Web Push (VAPID) active; APNs/FCM deferred",
+      "blockers": [
+        "APNs not provisioned",
+        "FCM not provisioned"
+      ]
+    },
+    {
+      "dimension": "compliance-readiness",
+      "status": "partial",
+      "evidence": "Privacy manifest archived",
+      "blockers": [
+        "No active store compliance review"
+      ]
+    },
+    {
+      "dimension": "supportability-readiness",
+      "status": "partial",
+      "evidence": "Web support covers mobile browser",
+      "blockers": [
+        "No native crash reporting"
+      ]
+    },
+    {
+      "dimension": "offline-readiness",
+      "status": "partial",
+      "evidence": "PWA service worker provides basic offline",
+      "blockers": [
+        "No native offline sync"
+      ]
+    },
+    {
+      "dimension": "release-channel-readiness",
+      "status": "blocked",
+      "evidence": "No active mobile release channels",
+      "blockers": [
+        "No TestFlight/Play Console configured"
+      ]
+    }
+  ],
+  "distributionBlockers": [
+    "Apple Developer Program not enrolled",
+    "Google Play Console not enrolled",
+    "No native shell active",
+    "No signing credentials",
+    "No APNs/FCM credentials",
+    "No store listings"
+  ],
+  "closurePath": [
+    "1. Enroll Apple Developer Program",
+    "2. Enroll Google Play Console",
+    "3. Restore Capacitor from archive/",
+    "4. Provision signing certs",
+    "5. Provision push certs",
+    "6. Create store listings",
+    "7. Submit for review",
+    "8. Pass all mobile validators"
+  ],
+  "reactivationDoc": "generated/mobile-scope-closure/MOBILE_REACTIVATION_CONDITIONS.md",
+  "honestyDoc": "docs/MOBILE_HONESTY.md"
 }

@@ -1,0 +1,135 @@
+{
+  "generatedAt": "2026-04-21T06:24:05.700Z",
+  "requirements": [
+    {
+      "requirementId": "sr-ios-privacy",
+      "platform": "ios",
+      "category": "privacy",
+      "label": "Privacy Policy URL",
+      "met": false,
+      "evidence": "Needs public URL",
+      "actionIfUnmet": "Publish privacy policy"
+    },
+    {
+      "requirementId": "sr-ios-screenshots",
+      "platform": "ios",
+      "category": "assets",
+      "label": "App Store Screenshots",
+      "met": false,
+      "evidence": "Matrix at archive/mobile/store-metadata/ios.screenshots.json",
+      "actionIfUnmet": "Generate screenshots"
+    },
+    {
+      "requirementId": "sr-ios-description",
+      "platform": "ios",
+      "category": "metadata",
+      "label": "App description",
+      "met": false,
+      "evidence": "Draft at archive/mobile/store-metadata/ios.json",
+      "actionIfUnmet": "Finalize in App Store Connect"
+    },
+    {
+      "requirementId": "sr-ios-age-rating",
+      "platform": "ios",
+      "category": "content",
+      "label": "Age rating",
+      "met": false,
+      "evidence": "Not completed",
+      "actionIfUnmet": "Complete in App Store Connect"
+    },
+    {
+      "requirementId": "sr-ios-export",
+      "platform": "ios",
+      "category": "legal",
+      "label": "Export compliance",
+      "met": false,
+      "evidence": "HTTPS-only",
+      "actionIfUnmet": "Complete export questionnaire"
+    },
+    {
+      "requirementId": "sr-android-privacy",
+      "platform": "android",
+      "category": "privacy",
+      "label": "Privacy Policy URL",
+      "met": false,
+      "evidence": "Needs public URL",
+      "actionIfUnmet": "Publish privacy policy"
+    },
+    {
+      "requirementId": "sr-android-data-safety",
+      "platform": "android",
+      "category": "privacy",
+      "label": "Data Safety declaration",
+      "met": false,
+      "evidence": "Draft at archive/mobile/store-metadata/android.data-safety.json",
+      "actionIfUnmet": "Submit via Play Console"
+    },
+    {
+      "requirementId": "sr-android-screenshots",
+      "platform": "android",
+      "category": "assets",
+      "label": "Play Store Screenshots",
+      "met": false,
+      "evidence": "Not generated",
+      "actionIfUnmet": "Generate screenshots"
+    },
+    {
+      "requirementId": "sr-android-iarc",
+      "platform": "android",
+      "category": "content",
+      "label": "IARC Content Rating",
+      "met": false,
+      "evidence": "Not completed",
+      "actionIfUnmet": "Complete in Play Console"
+    },
+    {
+      "requirementId": "sr-android-target-api",
+      "platform": "android",
+      "category": "sdk",
+      "label": "Target API level",
+      "met": false,
+      "evidence": "Policy at archive/mobile/android/TARGET_SDK_POLICY.md",
+      "actionIfUnmet": "Set targetSdkVersion"
+    }
+  ],
+  "met": 0,
+  "unmet": 10,
+  "storeReadiness": [
+    {
+      "platform": "ios",
+      "accountStatus": "not-enrolled",
+      "listingStatus": "not-enrolled",
+      "binaryStatus": "not-enrolled",
+      "reviewStatus": "not-enrolled",
+      "blockers": [
+        "Apple Developer Program not active",
+        "No signed IPA"
+      ],
+      "closurePath": [
+        "Enroll Apple Developer Program",
+        "Create listing from archive/mobile/store-metadata/ios.json",
+        "Build signed IPA",
+        "Submit for review"
+      ],
+      "metadataArchivePath": "archive/mobile/store-metadata/ios.json"
+    },
+    {
+      "platform": "android",
+      "accountStatus": "not-enrolled",
+      "listingStatus": "not-enrolled",
+      "binaryStatus": "not-enrolled",
+      "reviewStatus": "not-enrolled",
+      "blockers": [
+        "Google Play Console not enrolled",
+        "No signed AAB"
+      ],
+      "closurePath": [
+        "Enroll Google Play Console",
+        "Create listing from archive/mobile/store-metadata/android.json",
+        "Build signed AAB",
+        "Submit for review"
+      ],
+      "metadataArchivePath": "archive/mobile/store-metadata/android.json"
+    }
+  ]
+}
