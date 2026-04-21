@@ -1,8 +1,9 @@
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { motion } from "framer-motion";
-import { Sparkles, DollarSign, Users, Settings, PiggyBank } from "lucide-react";
+import { Sparkles, DollarSign, Users, Settings, PiggyBank, Target, AlertCircle } from "lucide-react";
 import { OnboardingShell } from "@/components/onboarding/OnboardingShell";
 import { PriorityReorderStrip } from "@/components/onboarding/PriorityReorderStrip";
+import { OnboardingFooterNav } from "@/components/onboarding/OnboardingFooterNav";
 import type { ScreenProps } from "../types";
 
 /* ── Priority definitions ─────────────────────────────────── */
@@ -95,10 +96,12 @@ function InsightCallout({ count }: { count: number }) {
 
 /* ── Main screen ──────────────────────────────────────────── */
 
-export default function PrioritiesScreen({ state, setState }: ScreenProps) {
+export default function PrioritiesScreen({ state, setState, onNext, onBack }: ScreenProps) {
   const selected = state.businessPriorities;
+  const [validationError, setValidationError] = useState(false);
 
   const togglePriority = useCallback((id: string) => {
+    setValidationError(false);
     setState(prev => {
       const cur = prev.businessPriorities;
       if (cur.includes(id)) {
@@ -118,6 +121,15 @@ export default function PrioritiesScreen({ state, setState }: ScreenProps) {
       businessPriorities: prev.businessPriorities.filter(p => p !== id),
     }));
   }, [setState]);
+
+  const handleNext = useCallback(() => {
+    if (selected.length === 0) {
+      setValidationError(true);
+      return;
+    }
+    setValidationError(false);
+    onNext();
+  }, [selected.length, onNext]);
 
   const selectedItems = useMemo(
     () => selected.map(id => OPTIONS_MAP[id]).filter(Boolean) as PriorityOption[],
@@ -192,9 +204,46 @@ export default function PrioritiesScreen({ state, setState }: ScreenProps) {
         })}
       </div>
 
-      {/* Reorder strip */}
+      {/* Empty state */}
+      {selectedItems.length === 0 && (
+        <motion.div
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          className={`flex flex-col items-center gap-3 py-8 rounded-xl border border-dashed transition-colors ${
+            validationError
+              ? "border-destructive/50 bg-destructive/5"
+              : "border-border/40 bg-muted/10"
+          }`}
+        >
+          <div className={`w-12 h-12 rounded-full flex items-center justify-center ${
+            validationError ? "bg-destructive/10" : "bg-primary/10"
+          }`}>
+            <Target className={`h-6 w-6 ${validationError ? "text-destructive" : "text-primary/60"}`} />
+          </div>
+          <div className="text-center px-4">
+            <p className={`text-sm font-medium ${validationError ? "text-destructive" : "text-muted-foreground"}`}>
+              {validationError ? "Select at least one priority to continue" : "No priorities selected yet"}
+            </p>
+            <p className="text-xs text-muted-foreground mt-1 max-w-xs mx-auto">
+              Tap any item above to mark it as a priority. Your first pick gets the most weight.
+            </p>
+          </div>
+          {validationError && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="flex items-center gap-1.5 text-[11px] text-destructive font-medium"
+            >
+              <AlertCircle className="h-3.5 w-3.5" />
+              Required — please choose what matters most
+            </motion.div>
+          )}
+        </motion.div>
+      )}
+
+      {/* Reorder strip + insight */}
       {selectedItems.length > 0 && (
-        <div className="sticky bottom-0 bg-background/95 backdrop-blur-md rounded-xl border border-border/30 p-3 space-y-2">
+        <div className="sticky bottom-0 bg-background/95 backdrop-blur-md rounded-xl border border-border/30 p-3 space-y-2 z-10">
           <PriorityReorderStrip
             items={selectedItems}
             onReorder={handleReorder}
@@ -206,6 +255,14 @@ export default function PrioritiesScreen({ state, setState }: ScreenProps) {
           </p>
         </div>
       )}
+
+      {/* Footer navigation with validation */}
+      <OnboardingFooterNav
+        onBack={onBack}
+        onNext={handleNext}
+        nextDisabled={false}
+        nextLabel={selected.length === 0 ? "Select priorities" : `Continue (${selected.length})`}
+      />
     </OnboardingShell>
   );
 }
