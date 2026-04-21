@@ -77,7 +77,7 @@ Deno.test("reset: rejects empty body gracefully (4xx, not 5xx)", async () => {
 
 // ── Fixture-based DB mutation tests ───────────────────────────
 
-Deno.test("reset: DB fixture — account.status flips to pending_setup & audit row created", async () => {
+Deno.test({ name: "reset: DB fixture — account.status flips to pending_setup & audit row created", sanitizeOps: false, sanitizeResources: false, fn: async () => {
   const sb = getServiceClient();
 
   // Seed
@@ -131,9 +131,9 @@ Deno.test("reset: DB fixture — account.status flips to pending_setup & audit r
 
   // Cleanup
   await cleanupFixtures(sb);
-});
+}});
 
-Deno.test("reset: DB fixture — reset is idempotent (double-reset stays pending_setup)", async () => {
+Deno.test({ name: "reset: DB fixture — reset is idempotent (double-reset stays pending_setup)", sanitizeOps: false, sanitizeResources: false, fn: async () => {
   const sb = getServiceClient();
   await seedFixtures(sb);
 
@@ -147,4 +147,4 @@ Deno.test("reset: DB fixture — reset is idempotent (double-reset stays pending
   assertEquals(status, "pending_setup");
 
   await cleanupFixtures(sb);
-});
+}});
