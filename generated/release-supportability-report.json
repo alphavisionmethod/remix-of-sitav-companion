@@ -1,0 +1,121 @@
+{
+  "generatedAt": "2026-04-21T06:08:56.044Z",
+  "targets": [
+    {
+      "targetId": "desktop-linux-x64",
+      "runbookIds": [
+        "RB-DESKTOP-HOST-BRIDGE",
+        "RB-RELEASE-ROLLBACK"
+      ],
+      "recoveryPaths": [
+        "Auto-update rollback channel",
+        "Manual re-install from archive"
+      ],
+      "supportBundleIncluded": true,
+      "readiness": "production-ready"
+    },
+    {
+      "targetId": "desktop-darwin-x64",
+      "runbookIds": [
+        "RB-DESKTOP-HOST-BRIDGE",
+        "RB-RELEASE-ROLLBACK"
+      ],
+      "recoveryPaths": [
+        "Auto-update rollback channel",
+        "Manual re-install from archive"
+      ],
+      "supportBundleIncluded": true,
+      "readiness": "deferred-on-external"
+    },
+    {
+      "targetId": "desktop-darwin-arm64",
+      "runbookIds": [
+        "RB-DESKTOP-HOST-BRIDGE",
+        "RB-RELEASE-ROLLBACK"
+      ],
+      "recoveryPaths": [
+        "Auto-update rollback channel",
+        "Manual re-install from archive"
+      ],
+      "supportBundleIncluded": true,
+      "readiness": "deferred-on-external"
+    },
+    {
+      "targetId": "desktop-win32-x64",
+      "runbookIds": [
+        "RB-DESKTOP-HOST-BRIDGE",
+        "RB-RELEASE-ROLLBACK"
+      ],
+      "recoveryPaths": [
+        "Auto-update rollback channel",
+        "Manual re-install from archive"
+      ],
+      "supportBundleIncluded": true,
+      "readiness": "deferred-on-external"
+    },
+    {
+      "targetId": "os-iso-user",
+      "runbookIds": [
+        "RB-VMWARE-BOOT",
+        "RB-RELEASE-ROLLBACK",
+        "RB-SETUP-CHECKPOINT-CORRUPTION"
+      ],
+      "recoveryPaths": [
+        "Recovery partition",
+        "OTA rollback via sita-ota-agent.sh",
+        "Fresh re-install from ISO"
+      ],
+      "supportBundleIncluded": true,
+      "readiness": "production-ready"
+    },
+    {
+      "targetId": "os-iso-operator",
+      "runbookIds": [
+        "RB-VMWARE-BOOT",
+        "RB-RELEASE-ROLLBACK",
+        "RB-SETUP-CHECKPOINT-CORRUPTION"
+      ],
+      "recoveryPaths": [
+        "Recovery partition",
+        "OTA rollback via sita-ota-agent.sh",
+        "Fresh re-install from ISO"
+      ],
+      "supportBundleIncluded": true,
+      "readiness": "production-ready"
+    },
+    {
+      "targetId": "os-ova",
+      "runbookIds": [
+        "RB-VMWARE-BOOT",
+        "RB-RELEASE-ROLLBACK",
+        "RB-ESXI-TPM-PROVISIONING"
+      ],
+      "recoveryPaths": [
+        "VMware snapshot rollback",
+        "OTA rollback via sita-ota-agent.sh",
+        "Fresh OVA re-deploy"
+      ],
+      "supportBundleIncluded": true,
+      "readiness": "production-ready"
+    },
+    {
+      "targetId": "os-raw-img",
+      "runbookIds": [
+        "RB-RELEASE-ROLLBACK"
+      ],
+      "recoveryPaths": [
+        "Re-flash from latest raw image",
+        "OTA rollback via sita-ota-agent.sh"
+      ],
+      "supportBundleIncluded": true,
+      "readiness": "production-ready"
+    }
+  ],
+  "runbooks": [
+    "docs/runbooks/release-rollback.md",
+    "docs/runbooks/vmware-boot-failure.md",
+    "docs/runbooks/desktop-host-bridge-failure.md",
+    "docs/runbooks/DESKTOP_SIGNING_PROVISIONING.md",
+    "docs/runbooks/APPLIANCE_ESXI_TPM_PROVISIONING.md"
+  ]
+}

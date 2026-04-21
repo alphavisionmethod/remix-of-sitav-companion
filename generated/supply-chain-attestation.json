@@ -1,0 +1,92 @@
+{
+  "attestationId": "sca-1776751736051",
+  "format": "sita-attestation-v1",
+  "generatedAt": "2026-04-21T06:08:56.051Z",
+  "targets": [
+    {
+      "targetId": "desktop-linux-x64",
+      "provenanceAvailable": true,
+      "signedArtifact": true,
+      "checksumPublished": true,
+      "sbomAvailable": false,
+      "reproducibleBuild": false,
+      "transparencyLogEntry": false,
+      "integrityScore": 90
+    },
+    {
+      "targetId": "desktop-darwin-x64",
+      "provenanceAvailable": true,
+      "signedArtifact": false,
+      "checksumPublished": true,
+      "sbomAvailable": false,
+      "reproducibleBuild": false,
+      "transparencyLogEntry": false,
+      "integrityScore": 60
+    },
+    {
+      "targetId": "desktop-darwin-arm64",
+      "provenanceAvailable": true,
+      "signedArtifact": false,
+      "checksumPublished": true,
+      "sbomAvailable": false,
+      "reproducibleBuild": false,
+      "transparencyLogEntry": false,
+      "integrityScore": 60
+    },
+    {
+      "targetId": "desktop-win32-x64",
+      "provenanceAvailable": true,
+      "signedArtifact": false,
+      "checksumPublished": true,
+      "sbomAvailable": false,
+      "reproducibleBuild": false,
+      "transparencyLogEntry": false,
+      "integrityScore": 60
+    },
+    {
+      "targetId": "os-iso-user",
+      "provenanceAvailable": true,
+      "signedArtifact": true,
+      "checksumPublished": true,
+      "sbomAvailable": true,
+      "reproducibleBuild": true,
+      "transparencyLogEntry": false,
+      "integrityScore": 90
+    },
+    {
+      "targetId": "os-iso-operator",
+      "provenanceAvailable": true,
+      "signedArtifact": true,
+      "checksumPublished": true,
+      "sbomAvailable": true,
+      "reproducibleBuild": true,
+      "transparencyLogEntry": false,
+      "integrityScore": 90
+    },
+    {
+      "targetId": "os-ova",
+      "provenanceAvailable": true,
+      "signedArtifact": true,
+      "checksumPublished": true,
+      "sbomAvailable": true,
+      "reproducibleBuild": true,
+      "transparencyLogEntry": false,
+      "integrityScore": 90
+    },
+    {
+      "targetId": "os-raw-img",
+      "provenanceAvailable": true,
+      "signedArtifact": true,
+      "checksumPublished": true,
+      "sbomAvailable": true,
+      "reproducibleBuild": true,
+      "transparencyLogEntry": false,
+      "integrityScore": 90
+    }
+  ],
+  "overallIntegrity": "partial",
+  "sbomsCovered": 4,
+  "sbomsTotal": 8,
+  "signingCoverage": 63,
+  "provenanceCoverage": 100
+}

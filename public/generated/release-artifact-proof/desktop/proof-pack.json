@@ -1,0 +1,97 @@
+{
+  "generatedAt": "2026-04-21T06:08:56.046Z",
+  "packType": "desktop",
+  "targets": [
+    {
+      "targetId": "desktop-linux-x64",
+      "artifactType": "electron-tar-gz",
+      "readiness": "production-ready",
+      "signingState": "not-applicable",
+      "notarizationState": "not-applicable",
+      "checksumPublished": true,
+      "provenanceAvailable": true,
+      "bootValidationCovered": false,
+      "firstBootCertified": false,
+      "lifecyclePathsCovered": 6,
+      "hardwareEnvsTested": 3,
+      "runbookLinked": true,
+      "gaps": []
+    },
+    {
+      "targetId": "desktop-darwin-x64",
+      "artifactType": "electron-tar-gz",
+      "readiness": "deferred-on-external",
+      "signingState": "deferred-on-cert",
+      "notarizationState": "deferred-on-cert",
+      "checksumPublished": true,
+      "provenanceAvailable": true,
+      "bootValidationCovered": false,
+      "firstBootCertified": false,
+      "lifecyclePathsCovered": 6,
+      "hardwareEnvsTested": 3,
+      "runbookLinked": true,
+      "gaps": [
+        "Signing deferred: Apple Developer Program enrollment pending",
+        "Notarization deferred: Apple Developer Program enrollment pending",
+        "Readiness blocked on external credential provisioning"
+      ]
+    },
+    {
+      "targetId": "desktop-darwin-arm64",
+      "artifactType": "electron-tar-gz",
+      "readiness": "deferred-on-external",
+      "signingState": "deferred-on-cert",
+      "notarizationState": "deferred-on-cert",
+      "checksumPublished": true,
+      "provenanceAvailable": true,
+      "bootValidationCovered": false,
+      "firstBootCertified": false,
+      "lifecyclePathsCovered": 6,
+      "hardwareEnvsTested": 3,
+      "runbookLinked": true,
+      "gaps": [
+        "Signing deferred: Apple Developer Program enrollment pending",
+        "Notarization deferred: Apple Developer Program enrollment pending",
+        "Readiness blocked on external credential provisioning"
+      ]
+    },
+    {
+      "targetId": "desktop-win32-x64",
+      "artifactType": "electron-zip",
+      "readiness": "deferred-on-external",
+      "signingState": "deferred-on-cert",
+      "notarizationState": "not-applicable",
+      "checksumPublished": true,
+      "provenanceAvailable": true,
+      "bootValidationCovered": false,
+      "firstBootCertified": false,
+      "lifecyclePathsCovered": 6,
+      "hardwareEnvsTested": 3,
+      "runbookLinked": true,
+      "gaps": [
+        "Signing deferred: EV/OV code-signing certificate procurement pending",
+        "Readiness blocked on external credential provisioning"
+      ]
+    }
+  ],
+  "overallReadiness": "deferred-on-external",
+  "signingClosure": "pending-credentials",
+  "bootValidationClosure": "not-applicable",
+  "lifecycleClosure": "declared",
+  "hardwareCompatClosure": "tested-in-ci",
+  "firstBootClosure": "not-applicable",
+  "channelClosure": "defined",
+  "provenanceClosure": "emitted-per-build",
+  "checksumClosure": "emitted-per-build",
+  "supportLinkage": "linked",
+  "gaps": [
+    "Signing deferred: Apple Developer Program enrollment pending",
+    "Notarization deferred: Apple Developer Program enrollment pending",
+    "Readiness blocked on external credential provisioning",
+    "Signing deferred: Apple Developer Program enrollment pending",
+    "Notarization deferred: Apple Developer Program enrollment pending",
+    "Readiness blocked on external credential provisioning",
+    "Signing deferred: EV/OV code-signing certificate procurement pending",
+    "Readiness blocked on external credential provisioning"
+  ]
+}
