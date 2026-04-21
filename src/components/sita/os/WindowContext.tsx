@@ -27,6 +27,7 @@ interface OSWindowContextType {
   maximizeWindow: (id: string) => void;
   focusWindow: (id: string) => void;
   updateWindowPosition: (id: string, position: { x: number; y: number }) => void;
+  updateWindowGeometry: (id: string, position: { x: number; y: number }, size: { width: number; height: number }) => void;
   snapWindow: (id: string, dir: SnapDirection) => void;
   togglePinned: (id: string) => void;
 }
@@ -151,6 +152,15 @@ export function OSWindowProvider({ children }: { children: ReactNode }) {
     []
   );
 
+  const updateWindowGeometry = useCallback(
+    (id: string, position: { x: number; y: number }, size: { width: number; height: number }) => {
+      setOpenWindows((prev) =>
+        prev.map((w) => (w.id === id ? { ...w, position, size } : w))
+      );
+    },
+    []
+  );
+
   const snapWindow = useCallback((id: string, dir: SnapDirection) => {
     const vw = typeof window !== "undefined" ? window.innerWidth : 1280;
     const vh = typeof window !== "undefined" ? window.innerHeight : 800;
@@ -203,6 +213,7 @@ export function OSWindowProvider({ children }: { children: ReactNode }) {
         maximizeWindow,
         focusWindow,
         updateWindowPosition,
+        updateWindowGeometry,
         snapWindow,
         togglePinned,
       }}
