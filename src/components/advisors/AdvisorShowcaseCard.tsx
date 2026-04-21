@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useCallback } from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { AdvisorPortrait } from "./AdvisorPortrait";
@@ -41,26 +41,59 @@ interface AdvisorShowcaseCardProps {
 
 export const AdvisorShowcaseCard = ({ advisor, onClick, className }: AdvisorShowcaseCardProps) => {
   const [hovered, setHovered] = useState(false);
+  const [tilt, setTilt] = useState({ rotateX: 0, rotateY: 0 });
+  const [highlight, setHighlight] = useState({ x: 50, y: 50 });
+  const cardRef = useRef<HTMLDivElement>(null);
   const aura = domainAuras[advisor.domain] || domainAuras.general;
   const title = domainTitles[advisor.domain] || "Advisor";
 
+  const handleMouseMove = useCallback((e: React.MouseEvent) => {
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+    const px = (e.clientX - cx) / (rect.width / 2);
+    const py = (e.clientY - cy) / (rect.height / 2);
+    setTilt({ rotateX: -py * 8, rotateY: px * 8 });
+    setHighlight({
+      x: ((e.clientX - rect.left) / rect.width) * 100,
+      y: ((e.clientY - rect.top) / rect.height) * 100,
+    });
+  }, []);
+
+  const handleMouseLeave = () => {
+    setHovered(false);
+    setTilt({ rotateX: 0, rotateY: 0 });
+  };
+
   return (
     <motion.div
+      ref={cardRef}
       className={cn("group cursor-pointer", className)}
       onClick={onClick}
       onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      whileHover={{ y: -8 }}
-      transition={{ type: "spring", stiffness: 300, damping: 25 }}
+      onMouseLeave={handleMouseLeave}
+      onMouseMove={handleMouseMove}
       style={{ perspective: 800 }}
     >
       <motion.div
-        animate={{ rotateY: hovered ? 3 : 0 }}
-        transition={{ type: "spring", stiffness: 200 }}
+        animate={{ rotateX: tilt.rotateX, rotateY: tilt.rotateY }}
+        transition={{ type: "spring", stiffness: 300, damping: 25 }}
+        style={{ transformStyle: "preserve-3d" }}
       >
         <GlassPanel className="relative overflow-hidden p-5 h-[340px] flex flex-col items-center justify-between">
           {/* Aura glow */}
           <div className={cn("absolute inset-0 bg-gradient-radial", aura, "opacity-60 pointer-events-none")} />
+
+          {/* Cursor highlight gradient */}
+          {hovered && (
+            <div
+              className="absolute inset-0 pointer-events-none opacity-30 transition-opacity"
+              style={{
+                background: `radial-gradient(circle at ${highlight.x}% ${highlight.y}%, rgba(255,255,255,0.15), transparent 60%)`,
+              }}
+            />
+          )}
 
           {/* Portrait */}
           <div className="relative z-10 flex flex-col items-center gap-3 pt-4">
