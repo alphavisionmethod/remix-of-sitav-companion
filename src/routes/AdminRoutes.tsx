@@ -185,6 +185,7 @@ const ApprovalsHome = lazy(() => import("@/pages/admin/approvals/ApprovalsHome")
 const EnvironmentsHome = lazy(() => import("@/pages/admin/environments/EnvironmentsHome"));
 const ReleasesHome = lazy(() => import("@/pages/admin/releases/ReleasesHome"));
 const SupportHome = lazy(() => import("@/pages/admin/support/SupportHome"));
+const AdminRecoveryOperations = lazy(() => import("@/pages/admin/support/AdminRecoveryOperations"));
 const HealthHome = lazy(() => import("@/pages/admin/health/HealthHome"));
 const ErrorPatrolBoard = lazy(() => import("@/pages/admin/health/ErrorPatrolBoard"));
 const TrustSecurityHome = lazy(() => import("@/pages/admin/trust-security/TrustSecurityHome"));
@@ -304,6 +305,7 @@ export function getAdminRoutes() {
     <Route key="ws-support-cases" path="/admin/support/cases" element={<Navigate to="/admin/mc/support" replace />} />,
     <Route key="ws-support-replay" path="/admin/support/replay" element={gated("support.view", <WorkflowStepStub domain="support" heading="Session Replay" intent="Replay an environment session for diagnosis." />)} />,
     <Route key="ws-support-recovery" path="/admin/support/recovery" element={gated("support.view", <MCFailureRecovery />)} />,
+    <Route key="ws-support-recovery-ops" path="/admin/support/recovery-ops" element={gated("support.view", <AdminRecoveryOperations />)} />,
     <Route key="ws-rel-mobile" path="/admin/releases/mobile-parity" element={<Navigate to="/admin/web/deployability" replace />} />,
     <Route key="ws-rel-rings" path="/admin/releases/deployment-rings" element={gated("flags.rollout", <AdminDeploymentRings />)} />,
     <Route key="ws-rel-rollback" path="/admin/releases/rollback" element={<Navigate to="/admin/engineering/rollback" replace />} />,
