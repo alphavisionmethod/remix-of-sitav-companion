@@ -1,8 +1,10 @@
 {
-  "generatedAt": "2026-04-21T08:48:05.658Z",
+  "generatedAt": "2026-04-21T08:48:39.417Z",
   "gate": "component-tier-drift",
   "ok": true,
-  "totalFamilies": 25,
-  "familiesWithVariants": 3,
-  "unmappedFamilies": []
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "taxonomyFamilies": 25,
+  "tierMappedFamilies": 25
 }
