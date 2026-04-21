@@ -1,0 +1,76 @@
+# ═══════════════════════════════════════════════════════════════════
+# SITA OS — Workflow Governance
+# Validates all workflows and CODEOWNERS for production-grade standards
+# on every PR that touches .github/ and weekly on schedule.
+# ═══════════════════════════════════════════════════════════════════
+name: Workflow Governance
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/**"
+  push:
+    branches: [main]
+    paths:
+      - ".github/**"
+      - "scripts/root/check-workflow-governance.ts"
+  schedule:
+    - cron: "0 4 * * 1" # Weekly Monday 4am UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: workflow-governance-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  governance:
+    name: Workflow & CODEOWNERS Audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+
+      - run: npm ci
+
+      - name: Run workflow governance validator
+        run: npx tsx scripts/root/check-workflow-governance.ts
+
+      - name: Run CODEOWNERS coverage validator
+        run: npx tsx scripts/root/check-codeowners-coverage.ts
+
+      - name: Generate governance summary
+        if: always()
+        run: |
+          echo "## 🏛️ Workflow Governance Report" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [ -f generated/workflow-governance-report.json ]; then
+            ERRORS=$(node -e "console.log(JSON.parse(require('fs').readFileSync('generated/workflow-governance-report.json','utf8')).errors)")
+            WARNINGS=$(node -e "console.log(JSON.parse(require('fs').readFileSync('generated/workflow-governance-report.json','utf8')).warnings)")
+            echo "| Metric | Count |" >> $GITHUB_STEP_SUMMARY
+            echo "|--------|-------|" >> $GITHUB_STEP_SUMMARY
+            echo "| Errors | $ERRORS |" >> $GITHUB_STEP_SUMMARY
+            echo "| Warnings | $WARNINGS |" >> $GITHUB_STEP_SUMMARY
+          fi
+          if [ -f generated/codeowners-coverage-report.json ]; then
+            COVERAGE=$(node -e "console.log(JSON.parse(require('fs').readFileSync('generated/codeowners-coverage-report.json','utf8')).coveragePct)")
+            echo "| CODEOWNERS Coverage | ${COVERAGE}% |" >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: governance-reports
+          path: |
+            generated/workflow-governance-report.json
+            generated/codeowners-coverage-report.json
+          retention-days: 30
+          if-no-files-found: warn
