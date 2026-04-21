@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-04-21T23:35:37.404Z",
+  "generatedAt": "2026-04-21T23:36:06.820Z",
   "totalWorkflows": 18,
-  "violations": 10,
-  "errors": 2,
-  "warnings": 8,
+  "violations": 5,
+  "errors": 0,
+  "warnings": 5,
   "details": [
     {
       "file": "ci.yml",
@@ -15,12 +15,6 @@
       "file": "ci.yml",
       "rule": "excessive-failure-swallowing",
       "detail": "17 bare '|| true' patterns — prefer continue-on-error for visibility",
-      "severity": "warning"
-    },
-    {
-      "file": "customer-journey-nightly.yml",
-      "rule": "permissions-declared",
-      "detail": "Missing top-level `permissions:` — runs with default (broad) token scope",
       "severity": "warning"
     },
     {
@@ -36,33 +30,9 @@
       "severity": "warning"
     },
     {
-      "file": "native-readiness.yml",
-      "rule": "permissions-declared",
-      "detail": "Missing top-level `permissions:` — runs with default (broad) token scope",
-      "severity": "warning"
-    },
-    {
       "file": "os-build-iso.yml",
       "rule": "excessive-failure-swallowing",
       "detail": "4 bare '|| true' patterns — prefer continue-on-error for visibility",
-      "severity": "warning"
-    },
-    {
-      "file": "release-electron.yml",
-      "rule": "concurrency-on-deploy",
-      "detail": "Deploy/release workflow missing `concurrency:` controls",
-      "severity": "error"
-    },
-    {
-      "file": "release-gates.yml",
-      "rule": "concurrency-on-deploy",
-      "detail": "Deploy/release workflow missing `concurrency:` controls",
-      "severity": "error"
-    },
-    {
-      "file": "sentry-release.yml",
-      "rule": "permissions-declared",
-      "detail": "Missing top-level `permissions:` — runs with default (broad) token scope",
       "severity": "warning"
     }
   ]
