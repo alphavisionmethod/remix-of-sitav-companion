@@ -250,11 +250,15 @@ const PlatformReadinessScorecard = lazy(() => import("@/pages/admin/PlatformRead
 const IncidentDashboardPage = lazy(() => import("@/pages/admin/IncidentDashboardPage"));
 const SLAMonitoringDashboard = lazy(() => import("@/pages/admin/SLAMonitoringDashboard"));
 
+// ── Alert Simulation Lab ──
+const AlertSimulationLab = lazy(() => import("@/pages/admin/AlertSimulationLab"));
+
 export function getAdminRoutes() {
   return [
     // ── Phase 3: Canonical Domain Hubs (12-domain IA) ──
     <Route key="hub-overview" path="/admin/overview" element={<OverviewHome />} />,
     <Route key="hub-alerts" path="/admin/alerts" element={<AlertsHome />} />,
+    <Route key="alert-sim-lab" path="/admin/alerts/simulation" element={<AlertSimulationLab />} />,
     <Route key="hub-approvals" path="/admin/approvals" element={gated("support.grant", <ApprovalsHome />)} />,
     <Route key="hub-environments" path="/admin/environments" element={gated("users.view", <EnvironmentsHome />)} />,
     <Route key="hub-releases" path="/admin/releases" element={gated("audit.view", <ReleasesHome />)} />,
