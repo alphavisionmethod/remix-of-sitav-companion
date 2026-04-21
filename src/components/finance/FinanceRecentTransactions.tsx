@@ -17,10 +17,10 @@ const statusStyles: Record<string, string> = {
 
 export function FinanceRecentTransactions() {
   return (
-    <div className="rounded-2xl p-5 bg-[#12121e] border border-[#1a1a2e]">
+    <div className="rounded-2xl p-5 card-vibrant card-vibrant-cyan">
       <div className="flex items-center justify-between mb-4">
-        <p className="text-sm font-semibold text-white/80">Recent Transactions</p>
-        <button className="text-[11px] text-emerald-400 hover:text-emerald-300 transition-colors">View all</button>
+        <p className="text-sm font-semibold text-foreground">Recent Transactions</p>
+        <button className="text-[11px] text-trust-safe hover:text-trust-verified transition-colors">View all</button>
       </div>
 
       <div className="space-y-1">
@@ -33,10 +33,10 @@ export function FinanceRecentTransactions() {
               <tx.icon className="h-4 w-4" />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-[13px] text-white/80 font-medium truncate">{tx.name}</p>
-              <p className="text-[10px] text-white/30">{tx.category} · {tx.date}</p>
+              <p className="text-[13px] text-foreground/90 font-medium truncate">{tx.name}</p>
+              <p className="text-[10px] text-muted-foreground">{tx.category} · {tx.date}</p>
             </div>
-            <p className={`text-sm font-semibold tabular-nums ${tx.amount > 0 ? "text-emerald-400" : "text-white/70"}`}>
+            <p className={`text-sm font-semibold tabular-nums ${tx.amount > 0 ? "text-trust-safe" : "text-foreground/70"}`}>
               {tx.amount > 0 ? "+" : ""}${Math.abs(tx.amount).toFixed(2)}
             </p>
             <Badge className={`text-[9px] px-1.5 py-0 h-4 ${statusStyles[tx.status]}`}>

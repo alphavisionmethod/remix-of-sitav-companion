@@ -20,23 +20,24 @@ export function SummaryCard({ title, kpis, className, icon }: SummaryCardProps) 
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.25 }}
       className={cn(
-        "rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4",
-        "shadow-[0_1px_4px_hsl(0_0%_0%/0.06)]",
+        "rounded-2xl border border-border/50 bg-card p-5 card-vibrant",
+        "shadow-card hover:shadow-card-hover transition-all duration-300",
+        "group",
         className
       )}
     >
-      <div className="flex items-center gap-2 mb-3">
+      <div className="flex items-center gap-2 mb-4">
         {icon}
-        <h4 className={cn(SITA_TYPE.microLabel, "text-[hsl(0_0%_50%)]")}>{title}</h4>
+        <h4 className={cn(SITA_TYPE.microLabel, "text-muted-foreground group-hover:text-secondary-foreground transition-colors")}>{title}</h4>
       </div>
       <div className="grid grid-cols-2 gap-3">
         {kpis.map(k => (
           <div key={k.label}>
-            <p className={cn("text-[20px] font-semibold tabular-nums text-[hsl(0_0%_92%)]")}>{k.value}</p>
+            <p className="text-xl font-bold tabular-nums text-foreground">{k.value}</p>
             <div className="flex items-center gap-1 mt-0.5">
-              {k.trend === "up" && <TrendingUp className="h-3 w-3 text-[hsl(152_55%_48%)]" />}
-              {k.trend === "down" && <TrendingDown className="h-3 w-3 text-[hsl(0_70%_55%)]" />}
-              {k.trend === "flat" && <Minus className="h-3 w-3 text-[hsl(0_0%_50%)]" />}
+              {k.trend === "up" && <TrendingUp className="h-3 w-3 text-trust-safe" />}
+              {k.trend === "down" && <TrendingDown className="h-3 w-3 text-destructive" />}
+              {k.trend === "flat" && <Minus className="h-3 w-3 text-muted-foreground" />}
               <span className={cn(SITA_TYPE.timelineMeta)}>{k.label}</span>
             </div>
           </div>
