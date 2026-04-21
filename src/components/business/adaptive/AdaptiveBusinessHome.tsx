@@ -5,7 +5,7 @@ import {
   BarChart3, Calendar, Clock, Users, Heart, FileText, Phone,
   RefreshCw, Shield, Activity, Zap, CheckCircle, Package,
   Building2, ArrowRight, Headphones, MapPin, XCircle, Star,
-  ClipboardList, Truck,
+  ClipboardList, Truck, AlertTriangle, Rocket, Brain, Pencil,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
@@ -13,6 +13,7 @@ import { getTopWidgets, type HomeWidget } from "./BusinessHomeWidgetRegistry";
 import { getQuickActionsForProfile, getStatCardsForProfile } from "./AdaptiveCRMConfig";
 import { getIdentityLayer, getTimeAwareGreeting } from "@/domains/engines/business-identity-layers";
 import AdaptiveSmartSuggestions from "./AdaptiveSmartSuggestions";
+import { useBusinessOnboarding } from "@/hooks/useBusinessOnboarding";
 
 const ICON_MAP: Record<string, React.ElementType> = {
   TrendingUp, ShoppingCart, LineChart, Banknote, Target, Receipt,
@@ -39,6 +40,7 @@ const ARCHETYPE_LABELS: Record<string, string> = {
 
 export default function AdaptiveBusinessHome() {
   const { weights, primaryMode, operatingFlags, adaptations } = useBusinessProfile();
+  const { isCompleted: onboardingDone, savedState: obs } = useBusinessOnboarding();
   const topWidgets = getTopWidgets(weights as unknown as Record<string, number>, 8);
   const quickActions = getQuickActionsForProfile(primaryMode, 4);
   const statCards = getStatCardsForProfile(primaryMode);
@@ -112,6 +114,107 @@ export default function AdaptiveBusinessHome() {
 
       {/* Smart Suggestions */}
       <AdaptiveSmartSuggestions />
+
+      {/* ── Post-Formation Sections (only when onboarding completed) ── */}
+      {onboardingDone && obs.businessName && (
+        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.12 }} className="space-y-4">
+
+          {/* Business Twin Card */}
+          <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center gap-2">
+                <Brain size={14} className="text-primary" />
+                <p className="text-[11px] font-semibold text-foreground/80">Business Twin</p>
+              </div>
+              <button className="text-[9px] text-primary/60 hover:text-primary flex items-center gap-1 transition-colors">
+                <Pencil size={9} /> Edit
+              </button>
+            </div>
+            <div className="grid grid-cols-3 md:grid-cols-6 gap-3 text-[10px]">
+              <div><p className="text-foreground/30 mb-0.5">Name</p><p className="font-medium text-foreground/70">{obs.businessName}</p></div>
+              <div><p className="text-foreground/30 mb-0.5">Type</p><p className="font-medium text-foreground/70">{obs.businessTypes.join(", ") || "—"}</p></div>
+              <div><p className="text-foreground/30 mb-0.5">Revenue</p><p className="font-medium text-foreground/70">{obs.revenueSources.slice(0, 2).join(", ") || "—"}</p></div>
+              <div><p className="text-foreground/30 mb-0.5">Team</p><p className="font-medium text-foreground/70 capitalize">{obs.teamSize}</p></div>
+              <div><p className="text-foreground/30 mb-0.5">Trust</p><p className="font-medium text-foreground/70 capitalize">{obs.automationLevel.replace(/_/g, " ")}</p></div>
+              <div><p className="text-foreground/30 mb-0.5">Stage</p><p className="font-medium text-foreground/70 capitalize">{obs.businessStage || "—"}</p></div>
+            </div>
+          </div>
+
+          {/* Priority-Driven Module Grid */}
+          {obs.businessPriorities.length > 0 && (
+            <div>
+              <p className="text-[9px] font-bold uppercase tracking-[0.15em] text-foreground/25 mb-2">Your Priorities</p>
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+                {obs.businessPriorities.slice(0, 6).map((priority, i) => (
+                  <button
+                    key={priority}
+                    className="flex items-center gap-2.5 p-3 rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_100%/0.02)] hover:bg-[hsl(0_0%_100%/0.05)] transition-colors text-left"
+                  >
+                    <span className="w-5 h-5 rounded-md bg-primary/10 flex items-center justify-center text-[9px] font-bold text-primary shrink-0">
+                      {i + 1}
+                    </span>
+                    <span className="text-[11px] font-medium text-foreground/60 capitalize truncate">
+                      {priority.replace(/_/g, " ")}
+                    </span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* First Win Activation Strip */}
+          {obs.selectedFirstWins.length > 0 && (
+            <div className="rounded-xl border border-[hsl(var(--trust-safe))]/15 bg-[hsl(var(--trust-safe))]/5 p-4">
+              <div className="flex items-center gap-2 mb-3">
+                <Rocket size={13} className="text-[hsl(var(--trust-safe))]" />
+                <p className="text-[11px] font-semibold text-foreground/80">First Wins — Active</p>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
+                {obs.selectedFirstWins.slice(0, 3).map((win) => (
+                  <div key={win} className="flex items-center gap-2.5 p-2.5 rounded-lg bg-[hsl(var(--trust-safe))]/5 border border-[hsl(var(--trust-safe))]/10">
+                    <div className="w-6 h-6 rounded-md bg-[hsl(var(--trust-safe))]/10 flex items-center justify-center">
+                      <Zap size={11} className="text-[hsl(var(--trust-safe))]" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-[10px] font-medium text-foreground/70 capitalize truncate">{win.replace(/_/g, " ")}</p>
+                      <p className="text-[8px] text-foreground/30">Ready to start</p>
+                    </div>
+                    <button className="text-[9px] font-semibold text-[hsl(var(--trust-safe))] hover:underline shrink-0">Start</button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Bottleneck Alerts */}
+          {obs.growthBottlenecks.length > 0 && (
+            <div>
+              <p className="text-[9px] font-bold uppercase tracking-[0.15em] text-foreground/25 mb-2">Flagged Bottlenecks</p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                {obs.growthBottlenecks.slice(0, 4).map((bottleneck) => (
+                  <div key={bottleneck} className="flex items-center gap-2.5 p-3 rounded-xl border border-[hsl(var(--sita-gold))]/15 bg-[hsl(var(--sita-gold))]/5">
+                    <AlertTriangle size={12} className="text-[hsl(var(--sita-gold))] shrink-0" />
+                    <p className="text-[10px] font-medium text-foreground/60 capitalize flex-1 truncate">{bottleneck.replace(/_/g, " ")}</p>
+                    <button className="text-[9px] font-semibold text-[hsl(var(--sita-gold))] hover:underline shrink-0">Investigate</button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Advisor Trust Level */}
+          {obs.automationLevel && (
+            <div className="flex items-center gap-2 text-[10px]">
+              <Shield size={11} className="text-primary/50" />
+              <span className="text-foreground/40">Advisor Trust:</span>
+              <span className="font-semibold text-primary/70 capitalize">{obs.automationLevel.replace(/_/g, " ")}</span>
+              {obs.activeAdvisors.length > 0 && (
+                <span className="text-foreground/30 ml-2">{obs.activeAdvisors.length} advisor{obs.activeAdvisors.length > 1 ? "s" : ""} online</span>
+              )}
+            </div>
+          )}
+        </motion.div>
+      )}
 
       {/* KPIs bar */}
       <motion.div
