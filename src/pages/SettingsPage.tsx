@@ -10,6 +10,8 @@ import { Link } from "react-router-dom";
 import { MFAService } from "@/lib/services/identity-auth/mfa.service";
 import { WebAuthnService } from "@/lib/services/identity-auth/webauthn.service";
 import { useAuth } from "@/contexts/AuthContext";
+import { AdvisorAvatarPreview } from "@/components/settings/AdvisorAvatarPreview";
+import { AdvisorAvatarUpload } from "@/components/settings/AdvisorAvatarUpload";
 
 interface SecurityStatus {
   mfaEnrolled: boolean;
@@ -133,6 +135,12 @@ const SettingsPage = () => {
             </Link>
           ))}
         </div>
+      </section>
+
+      {/* Advisor Avatar Preview & Upload */}
+      <section className="w-full max-w-2xl space-y-6 mt-6">
+        <AdvisorAvatarPreview />
+        <AdvisorAvatarUpload />
       </section>
     </motion.div>
   );
