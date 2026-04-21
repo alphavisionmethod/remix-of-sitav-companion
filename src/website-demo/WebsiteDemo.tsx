@@ -2,6 +2,7 @@ import React, { useCallback, useMemo, useState } from "react";
 import { DemoMenuBar } from "./DemoMenuBar";
 import { DemoDock } from "./DemoDock";
 import { DemoDesktopIcons } from "./DemoDesktopIcons";
+import { DemoDesktopWidgets } from "./DemoDesktopWidgets";
 import { DemoWindowManager, type DemoWindow } from "./DemoWindowManager";
 import { DEMO_APPS, type DemoAppId } from "./demo-data";
 import { DemoBusinessApp } from "./apps/DemoBusinessApp";
@@ -103,6 +104,7 @@ export function WebsiteDemo() {
       <DemoMenuBar focusedApp={focusedApp} />
 
       <div className="relative flex-1" style={{ height: "calc(100% - 28px)" }}>
+        <DemoDesktopWidgets />
         <DemoDesktopIcons onOpen={launch} />
         <DemoWindowManager windows={windows} onClose={close} onFocus={focus}
           onMinimize={minimize} onMaximize={maximize} renderContent={renderApp} />
