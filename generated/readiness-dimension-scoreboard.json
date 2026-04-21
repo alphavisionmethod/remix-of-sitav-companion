@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-21T06:38:40.336Z",
+  "generatedAt": "2026-04-21T06:41:16.661Z",
   "gate": "truth-governance",
   "dimensions": [
     "structural",
@@ -59,7 +59,7 @@
         }
       ],
       "overallVerdict": "DISTRIBUTION_BLOCKED",
-      "lastEvaluated": "2026-04-21T06:38:40.337Z"
+      "lastEvaluated": "2026-04-21T06:41:16.662Z"
     },
     {
       "subsystem": "advisor-boardroom",
@@ -111,7 +111,7 @@
         }
       ],
       "overallVerdict": "DISTRIBUTION_BLOCKED",
-      "lastEvaluated": "2026-04-21T06:38:40.337Z"
+      "lastEvaluated": "2026-04-21T06:41:16.662Z"
     },
     {
       "subsystem": "connector-oauth",
@@ -163,7 +163,7 @@
         }
       ],
       "overallVerdict": "DISTRIBUTION_BLOCKED",
-      "lastEvaluated": "2026-04-21T06:38:40.337Z"
+      "lastEvaluated": "2026-04-21T06:41:16.662Z"
     },
     {
       "subsystem": "app-platform",
@@ -215,7 +215,7 @@
         }
       ],
       "overallVerdict": "DISTRIBUTION_BLOCKED",
-      "lastEvaluated": "2026-04-21T06:38:40.337Z"
+      "lastEvaluated": "2026-04-21T06:41:16.662Z"
     },
     {
       "subsystem": "admin-operator",
@@ -267,7 +267,7 @@
         }
       ],
       "overallVerdict": "DISTRIBUTION_BLOCKED",
-      "lastEvaluated": "2026-04-21T06:38:40.337Z"
+      "lastEvaluated": "2026-04-21T06:41:16.662Z"
     },
     {
       "subsystem": "frontend-ux",
@@ -319,7 +319,7 @@
         }
       ],
       "overallVerdict": "DISTRIBUTION_BLOCKED",
-      "lastEvaluated": "2026-04-21T06:38:40.337Z"
+      "lastEvaluated": "2026-04-21T06:41:16.662Z"
     },
     {
       "subsystem": "mobile-distribution",
@@ -371,7 +371,7 @@
         }
       ],
       "overallVerdict": "DISTRIBUTION_BLOCKED",
-      "lastEvaluated": "2026-04-21T06:38:40.338Z"
+      "lastEvaluated": "2026-04-21T06:41:16.662Z"
     },
     {
       "subsystem": "security-trust",
@@ -423,7 +423,7 @@
         }
       ],
       "overallVerdict": "DISTRIBUTION_BLOCKED",
-      "lastEvaluated": "2026-04-21T06:38:40.338Z"
+      "lastEvaluated": "2026-04-21T06:41:16.662Z"
     }
   ]
 }
