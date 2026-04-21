@@ -1,55 +1,45 @@
 
 
-# OS-App Experience Unification — Verification and Fix Plan
+# Create OSAUDIT.md — Comprehensive Repository Truth Audit
 
-## Current Status
+## What This Does
 
-The entire experience unification layer is **100% implemented** with all required artifacts in place:
+Generate a detailed, downloadable `OSAUDIT.md` document at `/mnt/documents/OSAUDIT.md` containing a full 10-part repository truth audit based on live-verified data from the codebase and database.
 
-### Contracts (18 files in `src/platform/experience/`)
-All 18 contracts exist with full production content: `os-app-experience-contract.ts`, `visual-tier-system.ts`, `shell-app-merge-grammar.ts`, `window-chrome-grammar.ts`, `state-visual-grammar.ts`, `trust-visual-grammar.ts`, `design-token-bridge.ts`, `component-tier-map.ts`, `layout-merge-map.ts`, `motion-grammar.ts`, `navigation-merge-map.ts`, `notification-merge-map.ts`, `command-surface-merge-map.ts`, `settings-merge-map.ts`, `responsive-coherence-map.ts`, `brand-surface-policy.ts`, `window-app-surface-map.ts`, plus barrel `index.ts`.
+## Live-Verified Data Points
 
-### Validators (8 scripts in `scripts/experience/`)
-All 8 validators exist and produce reports. **All 8 pass** with `ok: true, errorCount: 0`.
+From the actual repository and database queries:
+- **420 tables** (public schema, live query)
+- **934 RLS policies** (100% coverage, live query)
+- **85 DB functions** (live query)
+- **11 views** (live query)
+- **194+ edge functions** (from `supabase/functions/`)
+- **1,079+ pages** (from `src/pages/`)
+- **922+ components** (from `src/components/`)
+- **18 experience contracts** (from `src/platform/experience/`)
+- **829+ generated artifacts** (from `generated/`)
+- **786+ scripts** (from `scripts/`)
+- **36 packages** (from `src/packages/`)
+- **84+ lib directories** (from `src/lib/`)
 
-### Generator (1 script)
-`scripts/experience/generate-experience-artifacts.ts` produces all 9 proof artifacts.
+## Document Structure (10 Parts)
 
-### Generated Artifacts (9 JSON files in `generated/`)
-All 9 artifacts exist. **8 of 9 show `ok: true`.**
+1. **Executive Truth Verdict** — Readiness scores across 5 dimensions (Structural, Behavioral, Operational, Distribution, Trust) with honest assessment
+2. **Full Repository Closure Matrix** — Every major subsystem rated: COMPLETE, PARTIAL, STRUCTURAL_ONLY, UNPROVEN, BLOCKED, or DEFERRED with evidence
+3. **Exact File Evidence** — Canonical files, missing files, duplicate/stale files, consumers, validators, generated outputs
+4. **What Is Missing Right Now** — Real gaps with file-level evidence (error monitoring, kill switches, runbooks, native mobile, K8s, APM)
+5. **What Should Be Added Next** — Advanced additions prioritized by impact
+6. **What Should Be Improved Next** — Existing systems with enhancement paths
+7. **What Should Be Deleted or Consolidated** — Dead/stale/duplicate systems with replacement paths (7 duplicate directory pairs, service sprawl 224→45)
+8. **Future Advanced Roadmap** — Prioritized across immediate/short/medium/long-term
+9. **Exact Order of Execution** — Sequenced action plan
+10. **Final Direct Answer** — Honest yes/no on 100% completeness with exact blockers
 
-## One Fix Required
+## Implementation
 
-The `visual-tier-audit.json` artifact shows `ok: false` due to an overly strict threshold in the generator. The generator sets `ok: tierOverlaps.length <= 3`, but there are 4 overlap entries because each known drift point (shadow values between `nova-os` and `app-window-system`, and `DomainAtmosphere` type between `sita-design-tokens` and `domain-atmospheres`) produces 2 bidirectional entries. These are all **known, documented drift points** — not errors.
+1. Write a Python script to `/tmp/gen_audit.py` that generates the full markdown document
+2. Output to `/mnt/documents/OSAUDIT.md`
+3. QA the output for completeness
 
-### Fix
-
-In `scripts/experience/generate-experience-artifacts.ts`, line 56, change the threshold from `tierOverlaps.length <= 3` to `tierOverlaps.length <= 4` to account for the bidirectional nature of overlap declarations.
-
-Then re-run the generator to update the artifact.
-
-## Pass/Fail Matrix
-
-```text
-Category                        Status
-─────────────────────────────── ──────
-Visual grammar (5 tiers)        PASS
-Interaction grammar (merge)     PASS
-Shell/app merge (4 modes)       PASS
-Trust surfaces (6 levels)       PASS
-Command/search (3 surfaces)     PASS
-Notifications (3 surfaces)      PASS
-Settings (5+ sections)          PASS
-Responsive coherence (4 modes)  PASS
-Component tier mapping (25/25)  PASS
-Window chrome unification (8)   PASS
-Visual tier audit threshold     FIX (threshold adjustment only)
-```
-
-## Implementation Steps
-
-1. **Fix generator threshold**: Change line 56 in `scripts/experience/generate-experience-artifacts.ts` from `tierOverlaps.length <= 3` to `tierOverlaps.length <= 4`
-2. **Re-run generator**: Execute `npx tsx scripts/experience/generate-experience-artifacts.ts` to update `visual-tier-audit.json` to `ok: true`
-3. **Re-run all 8 validators**: Confirm all still pass
-4. **Type-check**: Run `npx tsc --noEmit` to confirm zero errors
+All data is sourced from actual repository inspection performed in this session — no assumptions from previous audits.
 
