@@ -1,107 +1,14 @@
 {
-  "generatedAt": "2026-04-21T06:24:05.700Z",
-  "features": [
+  "generatedAt": "2026-04-21T06:24:36.718Z",
+  "gate": "mobile-runtime-proof",
+  "ok": false,
+  "errorCount": 1,
+  "warningCount": 0,
+  "issues": [
     {
-      "featureId": "auth",
-      "label": "Authentication",
-      "browserMobile": "browser-compatible",
-      "nativeMobile": "deferred",
-      "offlineSupport": false,
-      "pushDependency": false,
-      "evidenceSource": "src/integrations/supabase/client.ts"
-    },
-    {
-      "featureId": "dashboard",
-      "label": "Dashboard",
-      "browserMobile": "browser-compatible",
-      "nativeMobile": "deferred",
-      "offlineSupport": true,
-      "pushDependency": false,
-      "evidenceSource": "src/pages/Index.tsx"
-    },
-    {
-      "featureId": "files",
-      "label": "File Management",
-      "browserMobile": "browser-compatible",
-      "nativeMobile": "deferred",
-      "offlineSupport": true,
-      "pushDependency": false,
-      "evidenceSource": "src/pages/files/"
-    },
-    {
-      "featureId": "ai-advisors",
-      "label": "AI Advisors",
-      "browserMobile": "browser-compatible",
-      "nativeMobile": "deferred",
-      "offlineSupport": false,
-      "pushDependency": false,
-      "evidenceSource": "src/pages/advisors/"
-    },
-    {
-      "featureId": "notifications",
-      "label": "Push Notifications",
-      "browserMobile": "pwa-enhanced",
-      "nativeMobile": "deferred",
-      "offlineSupport": false,
-      "pushDependency": true,
-      "evidenceSource": "public/sw.js"
-    },
-    {
-      "featureId": "biometrics",
-      "label": "Biometric Auth",
-      "browserMobile": "browser-compatible",
-      "nativeMobile": "native-only",
-      "offlineSupport": false,
-      "pushDependency": false,
-      "evidenceSource": "src/lib/devices/biometric-capability-map.ts"
-    },
-    {
-      "featureId": "camera",
-      "label": "Camera",
-      "browserMobile": "browser-compatible",
-      "nativeMobile": "deferred",
-      "offlineSupport": false,
-      "pushDependency": false,
-      "evidenceSource": "navigator.mediaDevices"
-    },
-    {
-      "featureId": "offline-cache",
-      "label": "Offline Caching",
-      "browserMobile": "pwa-enhanced",
-      "nativeMobile": "deferred",
-      "offlineSupport": true,
-      "pushDependency": false,
-      "evidenceSource": "public/sw.js"
-    },
-    {
-      "featureId": "deep-links",
-      "label": "Deep Linking",
-      "browserMobile": "blocked",
-      "nativeMobile": "deferred",
-      "offlineSupport": false,
-      "pushDependency": false,
-      "evidenceSource": "N/A"
-    },
-    {
-      "featureId": "background-sync",
-      "label": "Background Sync",
-      "browserMobile": "pwa-enhanced",
-      "nativeMobile": "deferred",
-      "offlineSupport": true,
-      "pushDependency": false,
-      "evidenceSource": "BackgroundSyncManager"
-    },
-    {
-      "featureId": "share",
-      "label": "Native Share",
-      "browserMobile": "browser-compatible",
-      "nativeMobile": "deferred",
-      "offlineSupport": false,
-      "pushDependency": false,
-      "evidenceSource": "navigator.share"
+      "severity": "error",
+      "area": "mobile-runtime-proof",
+      "message": "Missing: generated/mobile-runtime-proof.json"
     }
-  ],
-  "browserCompatible": 10,
-  "nativeOnly": 1,
-  "total": 11
+  ]
 }
