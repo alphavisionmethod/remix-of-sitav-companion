@@ -101,6 +101,7 @@ export const MobileAdvisorBoard = ({ advisors, onAdvisorClick, className }: Mobi
                           name={advisor.name}
                           status={advisor.status}
                           size="xl"
+                          avatarUrl={advisor.avatarUrl}
                         />
                       </motion.div>
                     </NeonRing>

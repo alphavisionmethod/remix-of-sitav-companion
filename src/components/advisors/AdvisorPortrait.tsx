@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { AdvisorAvatar } from "@/components/sita/primitives/AdvisorAvatar";
 import { getDefaultAdvisorAvatar } from "@/lib/advisors/advisor-avatar-assets";
+import { Skeleton } from "@/components/ui/skeleton";
+import { RefreshCw } from "lucide-react";
 
 type AdvisorDomain = "business" | "money" | "concierge" | "family" | "growth" | "trust" | "opportunity" | "recovery" | "boardroom" | "general";
 
@@ -36,6 +38,10 @@ const sizes = {
   xl: { container: "h-[120px] w-[120px]", ring: "ring-4", speaking: "ring-[5px]" },
 };
 
+const IMG_SIZES: Record<string, number> = { sm: 32, md: 48, lg: 80, xl: 120 };
+const MAX_RETRIES = 3;
+const RETRY_DELAYS = [800, 1500, 3000];
+
 export const AdvisorPortrait = ({
   domain,
   name,
@@ -45,16 +51,45 @@ export const AdvisorPortrait = ({
   size = "md",
   className,
 }: AdvisorPortraitProps) => {
-  const [imgError, setImgError] = useState(false);
+  const [imgState, setImgState] = useState<"loading" | "loaded" | "error">("loading");
+  const [retries, setRetries] = useState(0);
   const s = sizes[size];
   const gradient = domainGradients[domain];
   const resolvedUrl = avatarUrl || getDefaultAdvisorAvatar(domain);
+  const px = IMG_SIZES[size] || 48;
 
-  // If no avatar URL and no default, fall back to icon avatar
-  if (!resolvedUrl || imgError) {
+  const handleError = useCallback(() => {
+    if (retries < MAX_RETRIES) {
+      setTimeout(() => setRetries((r) => r + 1), RETRY_DELAYS[retries] ?? 3000);
+    } else {
+      setImgState("error");
+    }
+  }, [retries]);
+
+  const handleRetry = useCallback(() => {
+    setRetries(0);
+    setImgState("loading");
+  }, []);
+
+  const imgSrc = resolvedUrl
+    ? retries > 0 ? `${resolvedUrl}${resolvedUrl.includes("?") ? "&" : "?"}r=${retries}` : resolvedUrl
+    : null;
+
+  // Fallback to icon avatar
+  if (!resolvedUrl || imgState === "error") {
     return (
       <div className={cn("relative", className)}>
-        <AdvisorAvatar domain={domain} name={name} status={status} size={size === "xl" ? "lg" : size === "lg" ? "lg" : size} />
+        {imgState === "error" ? (
+          <button
+            onClick={handleRetry}
+            className={cn("rounded-full p-[2px] bg-gradient-to-br flex items-center justify-center group cursor-pointer", gradient, s.container)}
+            title="Retry loading portrait"
+          >
+            <RefreshCw className="h-1/3 w-1/3 text-white/60 group-hover:text-white transition-colors" />
+          </button>
+        ) : (
+          <AdvisorAvatar domain={domain} name={name} avatarUrl={avatarUrl} status={status} size={size === "xl" ? "lg" : size === "lg" ? "lg" : size} />
+        )}
         {speaking && (
           <motion.div
             className={cn("absolute inset-0 rounded-full ring-primary/60", s.speaking)}
@@ -70,13 +105,25 @@ export const AdvisorPortrait = ({
     <div className={cn("relative", className)}>
       {/* Gradient border ring */}
       <div className={cn("rounded-full p-[2px] bg-gradient-to-br", gradient, s.container)}>
-      <motion.img
-          src={resolvedUrl!}
+        {/* Skeleton shimmer while loading */}
+        {imgState === "loading" && (
+          <Skeleton className="absolute inset-[2px] rounded-full z-10" />
+        )}
+        <motion.img
+          src={imgSrc!}
           alt={name || "Advisor"}
-          className={cn("rounded-full object-cover w-full h-full bg-card dark:bg-card")}
-          onError={() => setImgError(true)}
+          width={px}
+          height={px}
+          className={cn(
+            "rounded-full object-cover w-full h-full bg-card dark:bg-card transition-opacity duration-300",
+            imgState === "loaded" ? "opacity-100" : "opacity-0"
+          )}
+          onLoad={() => setImgState("loaded")}
+          onError={handleError}
           whileHover={{ scale: 1.05 }}
           transition={{ type: "spring", stiffness: 300 }}
+          loading="lazy"
+          decoding="async"
         />
       </div>
 

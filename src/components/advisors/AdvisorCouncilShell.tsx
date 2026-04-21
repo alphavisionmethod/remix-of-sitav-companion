@@ -28,6 +28,7 @@ export interface AdvisorConfig {
   mission?: string;
   specialAbility?: string;
   advisorId?: string;
+  avatarUrl?: string | null;
 }
 
 interface AdvisorCouncilShellProps {

@@ -106,6 +106,7 @@ export const AdvisorShowcaseCard = ({ advisor, onClick, className }: AdvisorShow
                 name={advisor.name}
                 status={advisor.status}
                 size="xl"
+                avatarUrl={advisor.avatarUrl}
               />
             </motion.div>
             <div className="text-center">
