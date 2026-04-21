@@ -462,6 +462,69 @@
     pointer-events: none;
   }
 
+  /* ===================== PREMIUM VIBRANT CARDS ===================== */
+  .card-vibrant {
+    position: relative;
+    border-radius: 1.25rem;
+    overflow: hidden;
+    border: 1px solid hsl(0 0% 100% / 0.08);
+    background: hsl(225 12% 8%);
+  }
+  .card-vibrant::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(ellipse 80% 60% at 30% 20%, var(--card-glow, hsl(265 55% 58% / 0.12)) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .card-vibrant-green { --card-glow: hsl(152 70% 48% / 0.14); }
+  .card-vibrant-purple { --card-glow: hsl(265 65% 58% / 0.14); }
+  .card-vibrant-amber { --card-glow: hsl(38 90% 58% / 0.12); }
+  .card-vibrant-cyan { --card-glow: hsl(190 70% 50% / 0.12); }
+  .card-vibrant-rose { --card-glow: hsl(350 70% 55% / 0.12); }
+
+  /* ===================== GLOWING RING CHART ===================== */
+  @keyframes glow-ring-pulse {
+    0%, 100% { filter: drop-shadow(0 0 6px var(--ring-glow-color, hsl(152 70% 48% / 0.4))); }
+    50% { filter: drop-shadow(0 0 16px var(--ring-glow-color, hsl(152 70% 48% / 0.6))); }
+  }
+  .glow-ring {
+    animation: glow-ring-pulse 3s ease-in-out infinite;
+  }
+
+  /* ===================== GRADIENT TEXT UTILITIES ===================== */
+  .text-gradient-green {
+    background: linear-gradient(135deg, hsl(152 70% 55%), hsl(180 60% 50%));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .text-gradient-purple {
+    background: linear-gradient(135deg, hsl(265 65% 65%), hsl(285 55% 60%));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .text-gradient-amber {
+    background: linear-gradient(135deg, hsl(38 90% 60%), hsl(25 85% 55%));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* ===================== VIBRANT BAR CHART ===================== */
+  .bar-positive {
+    background: linear-gradient(180deg, hsl(170 70% 50%), hsl(152 65% 42%));
+    border-radius: 3px 3px 0 0;
+    box-shadow: 0 0 8px hsl(165 70% 50% / 0.3);
+  }
+  .bar-negative {
+    background: linear-gradient(180deg, hsl(350 70% 55%), hsl(340 60% 45%));
+    border-radius: 3px 3px 0 0;
+    box-shadow: 0 0 8px hsl(350 70% 55% / 0.3);
+  }
+
   /* ===================== SURFACE LAYERS ===================== */
   .surface-0 { background: hsl(var(--surface-0)); }
   .surface-1 { background: hsl(var(--surface-1)); }
