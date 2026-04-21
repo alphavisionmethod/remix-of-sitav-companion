@@ -1,0 +1,69 @@
+{
+  "generatedAt": "2026-04-21T23:35:37.404Z",
+  "totalWorkflows": 18,
+  "violations": 10,
+  "errors": 2,
+  "warnings": 8,
+  "details": [
+    {
+      "file": "ci.yml",
+      "rule": "job-timeout",
+      "detail": "Job 'pr-summary' missing timeout-minutes",
+      "severity": "warning"
+    },
+    {
+      "file": "ci.yml",
+      "rule": "excessive-failure-swallowing",
+      "detail": "17 bare '|| true' patterns — prefer continue-on-error for visibility",
+      "severity": "warning"
+    },
+    {
+      "file": "customer-journey-nightly.yml",
+      "rule": "permissions-declared",
+      "detail": "Missing top-level `permissions:` — runs with default (broad) token scope",
+      "severity": "warning"
+    },
+    {
+      "file": "deploy.yml",
+      "rule": "job-timeout",
+      "detail": "Job 'notify' missing timeout-minutes",
+      "severity": "warning"
+    },
+    {
+      "file": "mobile-build.yml",
+      "rule": "excessive-failure-swallowing",
+      "detail": "5 bare '|| true' patterns — prefer continue-on-error for visibility",
+      "severity": "warning"
+    },
+    {
+      "file": "native-readiness.yml",
+      "rule": "permissions-declared",
+      "detail": "Missing top-level `permissions:` — runs with default (broad) token scope",
+      "severity": "warning"
+    },
+    {
+      "file": "os-build-iso.yml",
+      "rule": "excessive-failure-swallowing",
+      "detail": "4 bare '|| true' patterns — prefer continue-on-error for visibility",
+      "severity": "warning"
+    },
+    {
+      "file": "release-electron.yml",
+      "rule": "concurrency-on-deploy",
+      "detail": "Deploy/release workflow missing `concurrency:` controls",
+      "severity": "error"
+    },
+    {
+      "file": "release-gates.yml",
+      "rule": "concurrency-on-deploy",
+      "detail": "Deploy/release workflow missing `concurrency:` controls",
+      "severity": "error"
+    },
+    {
+      "file": "sentry-release.yml",
+      "rule": "permissions-declared",
+      "detail": "Missing top-level `permissions:` — runs with default (broad) token scope",
+      "severity": "warning"
+    }
+  ]
+}
