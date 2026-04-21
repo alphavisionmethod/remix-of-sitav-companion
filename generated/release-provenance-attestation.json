@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-21T06:26:42.116Z",
+  "generatedAt": "2026-04-21T06:36:44.202Z",
   "format": "sita-provenance-v1",
   "surfaces": {
     "web": {
@@ -62,9 +62,9 @@
     "appliance": "OTA rollback via sita-ota-agent.sh + A/B partition"
   },
   "supplyChain": {
-    "attestationId": "sca-1776752802123",
+    "attestationId": "sca-1776753404210",
     "format": "sita-attestation-v1",
-    "generatedAt": "2026-04-21T06:26:42.123Z",
+    "generatedAt": "2026-04-21T06:36:44.210Z",
     "targets": [
       {
         "targetId": "desktop-linux-x64",
