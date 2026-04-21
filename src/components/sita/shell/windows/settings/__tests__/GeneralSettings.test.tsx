@@ -92,9 +92,9 @@ describe("GeneralContent", () => {
 
   it("renders quick access favorites grid", () => {
     render(<GeneralContent />);
-    expect(screen.getByText("Boardroom")).toBeInTheDocument();
-    expect(screen.getByText("Finance")).toBeInTheDocument();
-    expect(screen.getByText("Business")).toBeInTheDocument();
+    expect(screen.getByText("Launchpad")).toBeInTheDocument();
+    expect(screen.getByText("Notifications")).toBeInTheDocument();
+    expect(screen.getAllByText("Business").length).toBeGreaterThanOrEqual(2);
   });
 
   it("currency change persists to SettingsService", () => {
