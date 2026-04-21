@@ -366,6 +366,10 @@ const REQUIRED_GATES = [
   "route-metadata-closure",
   // Wave 13 — Frontend Canonicalization Closure (1 BLOCK gate)
   "component-canonicalization",
+  // Wave 18 — Advisor Boardroom Behavioral Closure (3 BLOCK gates)
+  "advisor-identity-closure",
+  "advisor-tool-permissions",
+  "advisor-reversibility",
 ];
 
 // Mobile Deployment Closure — RETIRED (2026-04-19)
