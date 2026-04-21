@@ -425,8 +425,8 @@ function generateUnion(schema: z.ZodTypeAny, fieldName: string, typeName: string
     valid.push(...sub.valid.slice(0, 1));
   }
 
-  // Things unlikely to match any branch
-  invalid.push(Symbol("bad"), "@@UNION_MISS@@", -999999);
+  // Things unlikely to match any branch (avoid Symbol — not JSON-serializable)
+  invalid.push("@@UNION_MISS@@", -999999, { __invalid: true });
 
   return { field: fieldName, zodType: typeName, valid, invalid };
 }
