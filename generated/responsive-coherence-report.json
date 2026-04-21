@@ -1,28 +1,9 @@
 {
-  "generatedAt": "2026-04-21T08:46:08.804Z",
+  "generatedAt": "2026-04-21T08:46:37.761Z",
   "gate": "responsive-coherence",
   "ok": true,
-  "modeCount": 4,
-  "modes": [
-    {
-      "mode": "desktop-windowed",
-      "shellBehavior": "Full shell: menu bar, dock, window compositor, desktop canvas",
-      "chromeReduction": "None — full chrome"
-    },
-    {
-      "mode": "desktop-fullscreen",
-      "shellBehavior": "Menu bar persists; dock auto-hides; desktop hidden",
-      "chromeReduction": "Window chrome removed; dock auto-hides"
-    },
-    {
-      "mode": "browser-web",
-      "shellBehavior": "No shell chrome; route-based rendering",
-      "chromeReduction": "All shell chrome removed"
-    },
-    {
-      "mode": "mobile",
-      "shellBehavior": "No shell chrome",
-      "chromeReduction": "Maximum — no window chrome, no sidebar, no dock"
-    }
-  ]
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "modeCount": 4
 }
