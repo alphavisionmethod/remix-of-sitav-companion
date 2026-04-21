@@ -1,209 +1,218 @@
 
 
-# Zero-Regression Architecture Cleanup: Service Consolidation, Archive Resolution, and Domain Boundary Enforcement
+# SITA OS Three-Pillar Innovation: Explainability UX, Unified Command Palette, Simulation/Sandbox
 
 ## Summary
 
-Three workstreams executed in 5 phases to safely consolidate 37 duplicate service pairs between `src/lib/core-services/` and `src/lib/services/`, resolve ~38 wrapper/deprecated files (19 migrated-wrapper files in `src/domains/types/` plus deprecated service artifacts), and formalize the Advisor/Boardroom/Brain boundary across 30 directories that currently scatter these concepts.
+Elevate three existing but scattered capabilities into unified, system-wide primitives. The project already has: a full Explainability Engine (`src/lib/services/explainability/`), an ExplainabilityDrawer, BoardroomExplainability, ScoreExplainabilityDrawer, and WhyThisResult; a 970-line UniversalCommandSurface with 200+ commands, live Supabase entity search, intent detection, capture mode, and AI ask mode; and a Monte Carlo simulation engine with particle canvas, market intelligence grounding, and scenario comparison. The work is to unify, cross-wire, and elevate these into coherent system-wide primitives.
 
 ---
 
-## Workstream A -- Consolidate 37 Duplicate Service Pairs
+## Pillar 1 -- Explainability UX (Unify and Elevate)
 
-### Current State
+### What Already Exists
+- `src/lib/services/explainability/index.ts` -- Full engine with 7 explanation types, reasoning chains, sources, alternatives, feedback
+- `src/components/intelligence/ExplainabilityDrawer.tsx` -- Sheet drawer with reasoning chain, sources, alternatives, feedback buttons
+- `src/components/sita/apps/boardroom/BoardroomExplainability.tsx` -- 8 rich explainable questions (Why/What/Who/How)
+- `src/components/business/lead-inbox/ScoreExplainabilityDrawer.tsx` -- Lead scoring breakdown
+- `src/components/sita/shell/WhyThisResult.tsx` -- Compact result-level reasoning indicator
+- `src/components/ai/AIEmbeddedRecommendation.tsx` -- Inline AI recommendation card
 
-37 directory names appear in both `src/lib/core-services/` and `src/lib/services/` (e.g., `brain-core`, `policy-engine`, `workflow-engine`, `receipt-service`, `memory-service`). Per the existing Service Constitution, `core-services/` is the canonical authority layer; `services/` contains the duplicate. Additionally, 19 migrated-wrapper files exist in `src/domains/types/` re-exporting from `src/lib/types/`.
+### What to Build
 
-### Deliverables
+**New shared components** (`src/components/explainability/`):
 
-**New files:**
+- `ExplainabilityCard.tsx` -- Compact inline card showing recommendation summary, confidence badge, and "Why?" toggle. Reusable across Advisory, Boardroom, Simulation results, CRM recommendations. Wraps the existing `Explanation` type.
+- `TradeoffExplorer.tsx` -- Side-by-side comparison of alternatives with confidence/risk deltas. Consumes `explanation.alternatives` plus structured tradeoff metadata.
+- `ConfidenceRiskMeter.tsx` -- Unified visual showing confidence % and risk level with color bands (green/amber/red). Replaces ad-hoc confidence displays.
+- `ReasoningChainTimeline.tsx` -- Vertical timeline rendering of `explanation.reasoningChain` with step numbering and source links. Extracts the pattern from ExplainabilityDrawer into a standalone reusable.
+- `WhatWouldChangePanel.tsx` -- Lists conditions that would alter the recommendation. Powered by a new `invalidators` field on the Explanation type.
+- `ExplainabilityTrigger.tsx` -- Small "Why?" button that opens the ExplainabilityDrawer for any entity. Drop-in for any card/row.
 
-- `src/lib/architecture/duplicate-service-registry.ts` -- Registry of all 37 pairs with fields: `coreServicesPath`, `servicesPath`, `overlapType` (full/partial/wrapper/naming-only), `canonicalChoice`, `callerCount`, `importers`, `testCoverage`, `riskLevel`, `migrationPhase`, `equivalenceStatus`.
-- `src/lib/architecture/service-equivalence-reports.ts` -- For each of the 37 pairs: public API diff, export comparison, side-effect analysis, behavioral equivalence verdict (identical/compatible/divergent).
-- `scripts/architecture/checks/check-duplicate-service-pairs.ts` -- CI gate that scans both directories, detects new undeclared overlaps, and blocks merge if an unknown pair appears.
-- `scripts/architecture/consolidation/generate-service-wrappers.ts` -- Script that for each validated pair: (1) confirms hash equivalence, (2) replaces the `services/` copy with a `@lovable:migrated-wrapper` re-export pointing to `core-services/`, (3) logs the operation.
-- `scripts/architecture/consolidation/verify-no-dangling-imports.ts` -- Post-consolidation verifier that searches the entire codebase for imports of removed paths.
+**Extend the Explainability Engine** (`src/lib/services/explainability/index.ts`):
 
-**Modified files:**
+- Add `tradeoffs: Array<{option: string; pros: string[]; cons: string[]; confidence: number}>` to `Explanation`
+- Add `invalidators: string[]` (conditions that would change the recommendation)
+- Add `receiptId?: string` linking explanation to a trust receipt
+- Add `explainSimulation(scenarioId, result, variables)` method for simulation-originated explanations
 
-- `src/platform/architecture/component-duplication-map.ts` -- Extend `DUPLICATE_FAMILIES` to include service-level pairs (not just component-level).
-- `src/lib/architecture/service-inventory.ts` -- Update sample inventory to reflect actual 37 pairs with correct classification and wave assignment.
+**Wire into existing surfaces:**
 
-**Migration model per pair:**
-
-1. Hash-compare canonical (`core-services/X`) vs duplicate (`services/X`)
-2. If identical: replace `services/X/index.ts` with wrapper re-export
-3. If divergent: document differences, choose canonical behavior, add adapter
-4. Search all importers of `services/X`, verify they work through wrapper
-5. Add/verify tests around the canonical path
-6. After validation window: delete wrapper, update all importers to canonical path
-7. Update docs and architecture maps
-
-### Phases
-
-- Wave 1 (low risk, hash-identical): ~20 pairs where files are likely byte-identical wrappers already
-- Wave 2 (medium risk, compatible API): ~10 pairs with minor differences
-- Wave 3 (high risk, divergent): ~7 pairs requiring behavioral analysis and adapter layers
-
----
-
-## Workstream B -- Resolve Wrapper/Deprecated Files and Define Retention Policy
-
-### Current State
-
-- 19 `@lovable:migrated-wrapper` files in `src/domains/types/` re-exporting from `src/lib/types/`
-- 8 `@deprecated` marked files in `src/lib/`
-- 6 files in `scripts/legacy/`
-- Component duplication map tracks 14 families (7 MIGRATING, 3 FALSE_POSITIVE, 2 WRAPPED)
-
-### Deliverables
-
-**New files:**
-
-- `src/lib/architecture/archive-inventory.ts` -- Complete inventory of every wrapper, deprecated, and legacy file with fields: `path`, `category` (migrated-wrapper/deprecated/legacy-script/false-positive), `lastModified`, `importerCount`, `safeToDelete`, `retentionReason`, `retentionDeadline`.
-- `src/lib/architecture/archive-retention-policy.ts` -- Formal policy defining: retention categories (active-wrapper/deprecated-pending/historical-reference/compliance-hold), maximum retention periods, deletion approval requirements, metadata requirements, naming conventions.
-- `scripts/architecture/checks/check-archive-health.ts` -- CI gate tracking: total archived count, files past retention deadline, unresolved items, deletion eligibility.
-- `scripts/architecture/consolidation/batch-delete-archived.ts` -- Safe batch deletion script that: validates zero importers via code search, runs build check after each batch, logs every deletion, supports dry-run mode.
-
-**Resolution plan for 19 domain/types wrappers:**
-
-1. Search all importers of each `src/domains/types/*.ts` wrapper
-2. For wrappers with zero importers: delete immediately
-3. For wrappers with importers: update importers to point to `src/lib/types/` directly, then delete wrapper
-4. Validate build after each batch of 5
-
-**Resolution plan for legacy scripts:**
-
-1. `scripts/legacy/migration-tools/consolidate-services.js` -- retain as reference until service consolidation complete, then delete
-2. `scripts/legacy/archived-phase-scripts/RENAMING_MAP.md` -- migrate useful content to docs, delete file
-3. `scripts/legacy/wrappers/` -- audit contents, delete if empty or superseded
+- Boardroom: Replace inline question data with calls to explainability engine; connect "Explain" tab to new shared components
+- Advisory pages: Add ExplainabilityTrigger to every advisor recommendation card
+- AI Chat: Add collapsible "Why this answer?" section using ExplainabilityCard
+- Simulation Results: Generate explanation after each simulation run linking variables, assumptions, and confidence
+- Command Palette: Show ExplainabilityTrigger on advisor-suggested results (already tagged via WhyThisResult)
 
 ---
 
-## Workstream C -- Formalize Advisor / Boardroom / Brain Boundaries
+## Pillar 2 -- Unified Command Palette (Consolidate and Extend)
 
-### Current State
+### What Already Exists
+- `src/components/sita/shell/UniversalCommandSurface.tsx` -- 970-line fully functional command surface with 200+ commands, 6 categories (capture/action/navigate/advisor/system), live Supabase entity search, AI ask mode, intent detection, keyboard navigation, recent commands, context suggestions
+- `src/components/admin/AdminCommandPalette.tsx` -- Separate admin-only Cmd-K palette using shadcn CommandDialog
+- `src/components/business/adaptive/AdaptiveCommandPalette.tsx` -- Business app-specific palette
+- `src/shell-runtime/command-profile.ts` -- Profile-based command filtering (user/operator)
+- `src/shell-runtime/launcher-profile.ts` -- App filtering for command palette
 
-30 directories scatter advisor/boardroom/brain logic across 8 top-level locations: `src/components/`, `src/domains/`, `src/features/`, `src/lib/`, `src/lib/services/`, `src/lib/core-services/`, `src/packages/`, `src/pages/`. The existing `ai-domain-model.ts` defines correct conceptual boundaries but the code does not follow them.
+### What to Build
 
-### Deliverables
+**Consolidate into one system** -- The UniversalCommandSurface is already the superior implementation. Extend it rather than maintaining three separate palettes.
 
-**New files:**
+**New command categories to add to COMMAND_INDEX:**
 
-- `src/lib/architecture/advisor-boardroom-brain-audit.ts` -- Maps all 30 directories to their canonical domain assignment (advisor/boardroom/brain/cross-cutting) with current vs. target location, rename/merge/keep recommendation, and migration priority.
-- `docs/ADVISOR_BOARDROOM_BRAIN_BOUNDARY.md` -- Authoritative boundary document with: definitions, ownership rules, what-belongs-where examples, anti-examples, decision tree, public vs. internal terminology guide, route ownership map, service ownership map, component ownership map.
-- `src/lib/architecture/ai-concept-decision-tree.ts` -- Programmatic decision framework exported as a typed function that engineers call to classify new AI features.
+- `simulate` category: "Run business simulation", "Run finance scenario", "Test a decision", "Compare scenarios"
+- `explain` category: "Why was this recommended?", "Show reasoning for last action", "View explanation history"
+- Quick-launch simulation scenarios from command palette (navigate to SimulationEnginePage with preset)
 
-**Modified files:**
+**New file: `src/lib/command-registry/action-registry.ts`**
 
-- `src/lib/architecture/ai-domain-model.ts` -- Expand with: code/route mapping audit results, rename/refactor recommendations list, public/internal language alignment map.
-
-**Audit results structure (30 directories mapped):**
-
-```text
-ADVISOR domain (canonical home: src/lib/advisors/, src/packages/advisor-*)
-  Keep:  src/lib/advisors/
-         src/packages/advisor-config/
-         src/packages/advisor-runtime-contracts/
-         src/packages/contracts/advisor/
-         src/pages/advisors/
-         src/components/advisors/
-  Merge: src/lib/services/advisor-feedback/    -> src/lib/advisors/feedback/
-         src/lib/services/advisor-knowledge/   -> src/lib/advisors/knowledge/
-         src/lib/services/advisor-memory/      -> src/lib/advisors/memory/
-         src/lib/advisor-intelligence/         -> src/lib/advisors/intelligence/
-         src/lib/advisor-protocol/             -> src/lib/advisors/protocol/
-         src/features/advisors/                -> src/lib/advisors/features/
-         src/domains/advisors/                 -> src/lib/advisors/domain/
-
-BOARDROOM domain (canonical home: src/lib/boardroom/)
-  Keep:  src/lib/boardroom/
-         src/packages/boardroom-contracts/
-         src/pages/boardroom/
-         src/components/sita/apps/boardroom/
-  Merge: src/lib/services/boardroom/           -> src/lib/boardroom/services/
-         src/lib/services/boardroom-service/   -> src/lib/boardroom/service/
-         src/features/boardroom/               -> src/lib/boardroom/features/
-         src/domains/boardroom/                -> src/lib/boardroom/domain/
-         src/lib/hooks/boardroom/              -> src/lib/boardroom/hooks/
-
-BRAIN domain (canonical home: src/lib/core-services/brain-core/)
-  Keep:  src/lib/core-services/brain-core/
-  Merge: src/lib/services/brain-core/          -> wrapper to core-services/brain-core/
+Typed action registry replacing the inline `COMMAND_INDEX` array:
+```
+ActionEntry {
+  id, label, sublabel, icon, category, domain,
+  keywords, path?, action?, riskLevel?,
+  requiredPermission?, profiles?: DeploymentProfileKey[],
+  sensitivity?: "public" | "internal" | "restricted",
+  analyticsEvent?: string
+}
 ```
 
-**Rename recommendations for alignment:**
+Move the 200+ commands from inline JSX into this registry. Wire `filterCommandsForProfile` (already exists in `command-profile.ts`) into the UniversalCommandSurface so it respects user/operator deployment profiles.
 
-- `src/components/business/advisor-board/` -- Rename to `advisor-panel/` (it is single-advisor, not boardroom)
-- `src/components/admin/boardroom/` -- Keep (admin analytics for boardroom)
-- `src/lib/services/boardroom/` vs `src/lib/services/boardroom-service/` -- Consolidate into one
+**Extend UniversalCommandSurface:**
+
+- Add `simulate` intent detection: queries starting with "what if", "test", "simulate", "scenario" route to simulation launch
+- Add `explain` intent detection: queries starting with "why", "explain", "reasoning" open explainability history or trigger explanation for last action
+- Add role-aware filtering using existing `filterCommandsForProfile`
+- Add simulation quick-launch: selecting a simulate command opens SimulationEnginePage with the relevant preset
+- Add command analytics: track which commands are used most (localStorage-based initially)
+
+**Remove duplicate palettes:**
+
+- `AdminCommandPalette` -- Merge its admin-specific routes into the action registry with `profiles: ["operator"]`
+- `AdaptiveCommandPalette` -- Merge business-specific commands with `domain: "business"`
+- Both become thin wrappers that render UniversalCommandSurface with filtered context
 
 ---
 
-## Phase Plan
+## Pillar 3 -- Simulation / Sandbox (Extend and Cross-Wire)
 
-### Phase 1 -- Discovery and Safety Net
+### What Already Exists
+- `src/domains/simulation/monte-carlo-engine.ts` -- Full Monte Carlo engine: Box-Muller, batched execution, histograms, VaR, CVaR, sensitivity analysis, convergence detection, 576 lines
+- `src/domains/simulation/market-intelligence.ts` -- Market data grounding for simulation variables
+- `src/pages/SimulationEnginePage.tsx` -- Full cinematic page with canvas, controls, results, intelligence panel, comparison overlay
+- `src/components/simulation/` -- 7 components (Canvas, Controls, Results, Advisor, CustomScenarioBuilder, MarketIntelligence, Comparison)
+- `src/hooks/useSimulationEngine.ts` -- Hook wrapping scenario packs, dry runs, what-if, chaos, digital twins
+- `src/lib/operations/recovery-simulation-policy.ts` -- 10 operational simulation scenarios (AI outage, DB failover, etc.)
+- `SIMULATION_PRESETS` in monte-carlo-engine -- Existing presets for financial scenarios
 
-- Generate all three registries/inventories (duplicate pairs, archive inventory, AI concept audit)
-- Add CI gates for duplicate detection and archive health
-- Add tests around the 10 highest-traffic canonical services before any consolidation
-- No destructive changes
+### What to Build
 
-### Phase 2 -- Model Clarification
+**New domain scenario presets** (`src/domains/simulation/domain-scenarios.ts`):
 
-- Publish `ADVISOR_BOARDROOM_BRAIN_BOUNDARY.md`
-- Finalize canonical service targets for all 37 pairs
-- Define archive retention policy
-- Ship decision tree for engineers
+Add three flagship scenario families to SIMULATION_PRESETS:
 
-### Phase 3 -- Low-Risk Cleanup
+1. **Business Scenarios**: "Delay this hire", "Cut SaaS spend", "Restructure payment timing", "Adopt SITA as operating layer", "Slip this obligation"
+2. **Concierge/Life Scenarios**: "Shift these obligations", "Automate more approvals", "What conflicts disappear?", "Delegate this to SITA"
+3. **Finance/Planning Scenarios**: "Accelerate debt paydown", "Change loan term", "Compare mortgage paths", "Rebalance allocation", "Change budget rule"
 
-- Consolidate Wave 1 duplicate pairs (~20 hash-identical)
-- Delete zero-importer domain/types wrappers
-- Validate build/tests after each batch
+Each scenario: id, label, domain, variables with sensible defaults, output formula, description.
 
-### Phase 4 -- Medium/High-Risk Cleanup
+**New component: `src/components/simulation/SimulationScenarioPicker.tsx`**
 
-- Consolidate Wave 2-3 duplicate pairs with adapters where needed
-- Resolve remaining archive items
-- Begin advisor/boardroom directory consolidation (move scattered services into canonical homes)
+Premium scenario selection grid showing the three domain families with:
+- Domain-colored cards (business/concierge/finance)
+- Scenario description and variable count
+- "Quick Run" and "Customize" buttons
+- Recent simulations section
 
-### Phase 5 -- Hardening
+**New component: `src/components/simulation/ScenarioDeltaView.tsx`**
 
-- Remove all compatibility wrappers after validation window
-- Enforce new architecture rules via CI
-- Publish final cleanup summary with before/after metrics
+Before/after comparison showing:
+- Baseline state (current metrics)
+- Hypothetical change (what the scenario modifies)
+- Modeled outcome (simulation result summary)
+- Risk shift meter
+- Recommendation from simulation
+
+**New component: `src/components/simulation/SimulationMemoCard.tsx`**
+
+Saveable summary card for a completed simulation:
+- Scenario summary, key outcomes, confidence
+- "Save to Boardroom" action (creates a boardroom intake item)
+- "Generate Receipt" action (links to trust/proof)
+- "Share with Advisor" action
+
+**Boardroom integration:**
+
+- New Boardroom tab or section: "Simulation Lab" -- run scenarios directly from within a boardroom session
+- When a simulation completes inside the Boardroom, auto-generate an explainability entry
+- Boardroom advisors can "interpret" simulation results (using existing advisor consultation patterns)
+
+**Command Palette integration:**
+
+- "what if I delay this hire?" in the command palette triggers intent=simulate, opens SimulationEnginePage with the relevant business preset
+- "run a scenario" lists available scenario families
+
+**Explainability integration:**
+
+- Every completed simulation auto-generates an Explanation via `explainSimulation()` with the variables, assumptions, and confidence as the reasoning chain
+- SimulationResults shows an ExplainabilityTrigger linking to the full explanation
+
+---
+
+## Cross-Wiring: How the Three Work Together
+
+```text
+Command Palette ──→ "what if I cut SaaS spend?" ──→ Simulation Engine
+                                                         │
+                                                         ▼
+                                                   SimulationResults
+                                                         │
+                                                         ▼
+                                                ExplainabilityCard
+                                                  (Why this outcome?)
+                                                         │
+                                                         ▼
+                                              Save to Boardroom ──→ Advisor interpretation
+                                                         │
+                                                         ▼
+                                                    Receipt emitted
+```
 
 ---
 
 ## Technical Details
 
-### New Files (~10)
+### New Files (~12)
 
-- `src/lib/architecture/duplicate-service-registry.ts`
-- `src/lib/architecture/service-equivalence-reports.ts`
-- `src/lib/architecture/archive-inventory.ts`
-- `src/lib/architecture/archive-retention-policy.ts`
-- `src/lib/architecture/advisor-boardroom-brain-audit.ts`
-- `src/lib/architecture/ai-concept-decision-tree.ts`
-- `docs/ADVISOR_BOARDROOM_BRAIN_BOUNDARY.md`
-- `scripts/architecture/checks/check-duplicate-service-pairs.ts`
-- `scripts/architecture/checks/check-archive-health.ts`
-- `scripts/architecture/consolidation/generate-service-wrappers.ts`
-- `scripts/architecture/consolidation/verify-no-dangling-imports.ts`
-- `scripts/architecture/consolidation/batch-delete-archived.ts`
+- `src/lib/command-registry/action-registry.ts` -- Typed action registry (extracted from UniversalCommandSurface)
+- `src/components/explainability/ExplainabilityCard.tsx`
+- `src/components/explainability/TradeoffExplorer.tsx`
+- `src/components/explainability/ConfidenceRiskMeter.tsx`
+- `src/components/explainability/ReasoningChainTimeline.tsx`
+- `src/components/explainability/WhatWouldChangePanel.tsx`
+- `src/components/explainability/ExplainabilityTrigger.tsx`
+- `src/domains/simulation/domain-scenarios.ts`
+- `src/components/simulation/SimulationScenarioPicker.tsx`
+- `src/components/simulation/ScenarioDeltaView.tsx`
+- `src/components/simulation/SimulationMemoCard.tsx`
 
-### Modified Files
+### Modified Files (~6)
 
-- `src/platform/architecture/component-duplication-map.ts`
-- `src/lib/architecture/service-inventory.ts`
-- `src/lib/architecture/ai-domain-model.ts`
+- `src/lib/services/explainability/index.ts` -- Add tradeoffs, invalidators, receiptId, explainSimulation
+- `src/components/sita/shell/UniversalCommandSurface.tsx` -- Add simulate/explain intents, wire action registry, add profile filtering
+- `src/pages/SimulationEnginePage.tsx` -- Add ScenarioPicker, MemoCard, explainability trigger
+- `src/components/sita/apps/boardroom/BoardroomAppShell.tsx` -- Add "Simulation" tab wiring
+- `src/domains/simulation/monte-carlo-engine.ts` -- Export domain scenario presets
+- `src/components/simulation/SimulationResults.tsx` -- Add ExplainabilityTrigger after completion
 
 ### No Database Changes Required
 
-This is purely codebase structure and documentation work.
+All three pillars use existing client-side services and patterns. The explainability engine persists via `universal-service-persistence`. Simulation uses the existing Monte Carlo engine. Command registry is static TypeScript.
 
 ### Design Direction
 
-All new registries follow existing patterns (`ServiceEntry`, `DuplicateFamily`) with typed enums, exhaustive classification, and exported query functions for CI consumption. CI gates use the established `ViolationCollector` pattern.
+All new components follow the existing glassmorphic, dark-theme, premium aesthetic. Explainability components use the established confidence color bands (green >= 80%, amber >= 60%, red < 60%). Simulation scenario cards use domain-specific accent colors matching the existing Business/Finance/Concierge palette. The command palette retains its current premium overlay treatment.
 
