@@ -1,144 +1,116 @@
 
 
-## Wave 15 — Database Governance Layer
+## Wave 16 — Edge Function Canonical Reduction and Proof Closure
 
 ### Summary
 
-The project has a strong canonical DB truth layer in `src/lib/db/` (13 files: schema-registry, rls-policy-registry, migration-registry, tenancy-boundary-map, table-ownership-map, db-truth-registry, db-audit-registry, db-runtime-consequence-map, db-dependency-map, db-health-engine, table-writer-reader-map, non-edge-table-io-sources, cross-domain-write-exemptions). What is missing: table classification (state vs event vs audit vs receipt), retention/TTL governance, index coverage audit, query-plan baselines, bounded-context map artifact, support-view registry, repair-procedure map, partition strategy, and policy-pattern audit. The existing `scripts/db/checks/check-index-and-retention-coverage.ts` is a stub that writes a hardcoded JSON.
+The project already has a strong edge function governance layer in `src/lib/backend-topology/` (14 files: registry with 11-field topology for ~193 functions, auth-map, contract-map, table-io-map, replay-map, policy-map, owner-map with kill-switch/runbook refs, runtime-consequence-map, migration-map, frontend-action-api-map, bounded-contexts, categories, topology-validator). Shared helpers exist in `supabase/functions/_shared/` (19 files: function-role-contract, auth, cors, logger, policy, rate-limit, kill-switch, tracing, validate, zod-validate, audit-logger, ai-budget-check, etc.).
 
-This wave extends the existing `src/lib/db/` canonical system with governance registries and replaces stubs with real validators. No second DB governance platform.
+What is missing: caller-class contract in `_shared/`, support-diagnostics hook, contract-test registry, and 11 generated proof artifacts plus 7 validators that enforce closure across role purity, caller matrix, backend mapping, proof coverage, kill-switch/retry/fallback, auth patterns, and contract tests.
+
+This wave extends the existing canonical system. No second governance platform.
 
 ---
 
-### Phase A — Table Classification and Bounded-Context Map (3 files)
+### Phase A — Caller, Support, and Test Contracts in _shared (3 files)
 
-**1. `src/lib/db/table-classification-map.ts`**
-- Imports `DB_SCHEMA_REGISTRY` and classifies every table into: `lifecycle-state`, `event-ledger`, `append-only-audit`, `receipt-proof`, `projection-read-model`, `control-plane-config`, `support-debug`, `cache-temporary`, `ttl-governed`, `queue-retry`
-- Uses existing `schemaClass` (write/read/log/config/system) as input signal plus table naming conventions (e.g., `*_receipts` = receipt-proof, `*_audit` = append-only-audit, `*_logs` = event-ledger)
-- Exports `TABLE_CLASSIFICATION_MAP: Record<string, TableClassification>`
+**1. `supabase/functions/_shared/function-caller-contract.ts`**
+- Imports `CallerClass` type from the registry (duplicated locally for Deno runtime since _shared cannot import from src/)
+- Declares canonical caller-class taxonomy (12 classes matching `CallerClass` in registry)
+- Exports `validateCallerClass(req, allowedCallers)` helper that checks request origin headers and JWT claims against allowed callers
+- Returns structured rejection with caller-class mismatch diagnostics
 
-**2. `src/lib/db/bounded-context-map.ts`**
-- Thin projection from `DB_SCHEMA_REGISTRY` + `DOMAIN_TO_OWNER` + `TABLE_CLASSIFICATION_MAP`
-- Exports `BOUNDED_CONTEXT_MAP` with per-table: `tableName`, `boundedContext` (= domain), `owner`, `tableRole`, `classification`, `retentionCategory`, `supportImportance`
-- Generates `generated/db-bounded-context-map.json` via generator script
+**2. `supabase/functions/_shared/function-support-diagnostics.ts`**
+- Exports `emitSupportDiagnostic(functionName, correlationId, input, output, duration, error?)` helper
+- Applies redaction rules (strips PII, tokens, secrets from input/output snapshots)
+- Produces structured diagnostic envelope with trace linkage, timestamp, and incident-ready format
+- Exports `SUPPORT_DIAGNOSTIC_FUNCTIONS` set listing the ~30 critical functions that must always emit diagnostics
 
-**3. `src/lib/db/schema-authority-registry.ts`**
-- Extends `DB_TRUTH_REGISTRY` with full authority typing per table
-- Each entry: `table`, `authorityType` (source-of-truth | derived | event | append-only-audit | receipt | queue | support | config), `criticality`, `tenantScope`, `rlsRequired`, `lifecycleExpectation`
-- Covers all tables in `DB_SCHEMA_REGISTRY`, cross-referencing `DB_TRUTH_REGISTRY` for concept mapping
-- Generates `generated/db-authority-map.json`
+**3. `supabase/functions/_shared/function-contract-test-registry.ts`**
+- Declares contract-test families: `bff-contract`, `admin-gateway-contract`, `orchestration-step-contract`, `webhook-validation`, `runtime-system`, `verifier-output`, `support-tool`, `domain-function`
+- Maps each function to its test family
+- Exports `getContractTestFamily(functionName)` and `CONTRACT_TEST_FAMILIES` registry
+- Used by validator to check coverage
 
-### Phase B — Retention, TTL, Hot/Cold, and Partition Governance (3 files)
+### Phase B — Generated Proof Artifacts (1 generator script)
 
-**4. `src/lib/db/retention-policy-registry.ts`**
-- Extends existing `DB_AUDIT_REGISTRY` retention data to all table families
-- Per-table: `retentionClass` (permanent | long-term-7yr | medium-1yr | short-90d | transient-30d | session), `archivePolicy` (append-only | soft-delete | hard-delete | ttl-purge), `purgeRules`, `ttlColumn` if applicable, `expectedRowGrowth` (low | medium | high | very-high), `hotCold` (hot | warm | cold)
-- Generates `generated/db-retention-policy-matrix.json` and `generated/db-hot-cold-data-map.json`
+**4. `scripts/edge-functions/generate-edge-function-proof-artifacts.ts`**
+- Single generator that imports from `src/lib/backend-topology/` (registry, auth-map, contract-map, table-io-map, replay-map, policy-map, owner-map, runtime-consequence-map, frontend-action-api-map)
+- Generates 11 artifacts into `generated/`:
 
-**5. `src/lib/db/ttl-governance-map.ts`**
-- Scans `DB_SCHEMA_REGISTRY` for tables with known TTL patterns (expires_at, cooldown_expires_at, scheduled_purge_at, muted_until)
-- Declares TTL column, expected cleanup mechanism, index requirement
-- Generates `generated/db-ttl-governance-report.json`
+  - `edge-function-topology-v2.json` -- REPLACE existing stub with real topology from registry (role distribution, receipt coverage, per-function entries)
+  - `function-caller-matrix.json` -- per-function: allowed callers, auth pattern, admin-only flag, source routes (from frontend-action-api-map)
+  - `function-proof-coverage.json` -- per-function: has receipts, has logging, has support diagnostics, has kill-switch ref, has retry policy, has fallback, has contract test family
+  - `function-domain-map.json` -- per-function: bounded context, owner team, dependent tables (reads/writes)
+  - `function-dependent-table-map.json` -- inverse: per-table, which functions read/write it
+  - `function-kill-switch-coverage.json` -- per-function: kill-switch ref from owner-map, coverage status
+  - `function-retry-fallback-audit.json` -- per-function: replay-map entry, fallback available from runtime-consequence-map
+  - `function-supportability-report.json` -- per-function: has support diagnostics, has runbook ref, has on-call, blast radius
+  - `function-contract-test-coverage.json` -- per-function: test family assignment, has on-disk test file
+  - `function-auth-pattern-audit.json` -- per-function: auth model, requires user context, admin-only, consistency check
+  - `function-logging-receipt-audit.json` -- per-function: audit-log policy from policy-map, side-effect class, receipt expectations
 
-**6. `src/lib/db/partitioning-strategy-map.ts`**
-- Per high-growth table family: partition recommendation or explicit non-partition rationale
-- Covers: timeline_events, audit_logs, ai_inference_receipts, sync_logs, tenant_firewall_logs, ai_workforce_invocations
-- Generates `generated/db-partition-strategy-report.json`
+### Phase C — Validators (7 scripts)
 
-### Phase C — Index and Query-Plan Governance (2 files)
+**5. `scripts/edge-functions/checks/check-edge-function-role-purity.ts`** -- BLOCK
+- Verifies every active function in registry has exactly one canonical category
+- Flags deprecated/wrapper functions that still receive direct traffic
+- Checks role matches allowed-callers consistency (e.g., PUBLIC_BFF must allow frontend-user)
 
-**7. `src/lib/db/index-coverage-registry.ts`**
-- Declares expected indexes per table family: FK indexes, TTL/expires_at indexes, status/workflow columns, composite operational patterns
-- Flags missing indexes as governance gaps
-- Generates `generated/db-index-coverage.json` (replaces current stub output)
+**6. `scripts/edge-functions/checks/check-edge-function-caller-matrix.ts`** -- ADVISORY
+- Verifies every active function declares at least one allowed caller
+- Flags functions with overly permissive "any-authenticated" without justification
+- Cross-references frontend-action-api-map to ensure UI actions target real functions
 
-**8. `src/lib/db/query-plan-governance.ts`**
-- Declares critical query families (auth lookup, onboarding resume, app install, advisor lookup, boardroom item, payment receipt, connector health, file lineage, kill-switch, support bundle)
-- Per query family: expected table, required index support, high-risk scan patterns, structural prerequisites
-- Generates `generated/db-query-plan-baseline.json`
+**7. `scripts/edge-functions/checks/check-edge-function-backend-mapping.ts`** -- ADVISORY
+- Verifies every active function has bounded-context and owner in registry
+- Verifies table-io-map coverage for non-wrapper functions
+- Flags orphan functions (on-disk but not in registry)
 
-### Phase D — Policy Pattern and Tenant Isolation (2 files)
+**8. `scripts/edge-functions/checks/check-edge-function-proof-coverage.ts`** -- BLOCK
+- Verifies high-side-effect and critical functions have: receipt expectations, replay entry, kill-switch ref where applicable
+- Computes proof coverage percentage; blocks if below 80% for critical functions
 
-**9. `src/lib/db/policy-pattern-registry.ts`**
-- Standardizes the 12 `RlsPattern` types from `rls-policy-registry.ts` into canonical pattern contracts
-- Per pattern: description, expected USING clause shape, expected WITH CHECK shape, applicable table classes, security requirements
-- Audits all tables for pattern consistency
-- Generates `generated/db-policy-pattern-audit.json`
+**9. `scripts/edge-functions/checks/check-edge-function-kill-switch-retry.ts`** -- ADVISORY
+- Verifies orchestration and webhook functions have replay-map entries
+- Verifies critical functions have kill-switch refs
+- Flags functions with `fallbackAvailable: false` and no retry mechanism
 
-**10. `src/lib/db/tenant-isolation-map.ts`**
-- Extends `TENANCY_BOUNDARY_MAP` with isolation proof metadata
-- Per tenant-scoped table: isolation mechanism, policy mechanism, actor classes, support override path, evidence source
-- Generates `generated/db-tenant-isolation-proof.json`
+**10. `scripts/edge-functions/checks/check-edge-function-auth-patterns.ts`** -- ADVISORY
+- Verifies auth-map coverage matches registry (every active function has auth entry)
+- Flags admin functions without `adminOnly: true`
+- Flags anon functions that write to sensitive tables
 
-### Phase E — Support, Repair, and Migration Governance (3 files)
+**11. `scripts/edge-functions/checks/check-edge-function-contract-tests.ts`** -- ADVISORY
+- Scans `supabase/functions/*/` for `*_test.ts` or `*.test.ts` files
+- Cross-references contract-test-registry for family coverage
+- Reports per-family coverage percentage
 
-**11. `src/lib/db/support-view-registry.ts`**
-- Declares support/debug data access patterns for critical workflows
-- Per workflow: tables involved, join pattern, key filters, operator access level, redaction rules
-- Covers: auth/session, onboarding, app install, advisor/boardroom, payment, connector, file, kill-switch, support bundle
-- Generates `generated/db-support-views-map.json`
+### Phase D — Barrel, Gate Registration, and Verification
 
-**12. `src/lib/db/data-repair-procedure-map.ts`**
-- Per critical domain: repairable failure types, repair procedure ID, manual vs automated, preconditions, audit requirements, rollback safety, runbook linkage
-- Covers: stuck workflows, orphaned installs, broken permissions, receipt mismatch, connector token cleanup, session corruption, queue repair
-- Generates `generated/db-repair-procedure-coverage.json`
-
-**13. Generator: `scripts/db/generate/generate-db-governance-artifacts.ts`**
-- Single script that imports all new registries and generates all 15 artifacts into `generated/`
-- Generates: db-bounded-context-map.json, db-authority-map.json, db-table-classification.json, db-retention-policy-matrix.json, db-hot-cold-data-map.json, db-ttl-governance-report.json, db-partition-strategy-report.json, db-index-coverage.json, db-query-plan-baseline.json, db-policy-pattern-audit.json, db-tenant-isolation-proof.json, db-support-views-map.json, db-repair-procedure-coverage.json, db-schema-ownership-map.json, db-migration-governance-report.json
-
-### Phase F — Validators (9 scripts)
-
-Replace the existing stub `check-index-and-retention-coverage.ts` and add 8 new validators:
-
-**14. `scripts/db/checks/check-db-authority-map.ts`** -- BLOCK. Verify every table has authority classification, owner, and context.
-
-**15. `scripts/db/checks/check-db-index-coverage.ts`** -- REPLACE existing stub. Real validation: TTL columns indexed, FK indexes present, high-volume tables covered.
-
-**16. `scripts/db/checks/check-db-retention-and-ttl.ts`** -- ADVISORY. Verify retention/TTL/hot-cold declared for key families.
-
-**17. `scripts/db/checks/check-db-query-plan-prereqs.ts`** -- ADVISORY. Verify critical query families have structural prerequisites.
-
-**18. `scripts/db/checks/check-db-policy-patterns.ts`** -- ADVISORY. Verify RLS policies match canonical patterns.
-
-**19. `scripts/db/checks/check-db-tenant-isolation.ts`** -- BLOCK. Verify tenant-scoped tables declare isolation and policy coverage.
-
-**20. `scripts/db/checks/check-db-support-view-coverage.ts`** -- ADVISORY. Verify critical workflows have support/debug visibility.
-
-**21. `scripts/db/checks/check-db-repair-coverage.ts`** -- ADVISORY. Verify critical repair procedures declared.
-
-**22. `scripts/db/checks/check-db-migration-governance.ts`** -- ADVISORY. Verify migrations map to contexts and risky churn surfaced.
-
-### Phase G — Barrel Export and Gate Registration
-
-- Update `src/lib/db/index.ts` to export all new registries
-- Register `db-authority-map` and `db-tenant-isolation` as BLOCK gates in `check-os-release-readiness.ts`
-- Register 7 ADVISORY gates for remaining validators
-- `npx tsc --noEmit` -- zero errors
-- Run all 9 new validators -- all green
+- Create `scripts/edge-functions/checks/` directory structure
+- Register `edge-function-role-purity` and `edge-function-proof-coverage` as BLOCK gates in release readiness
+- Register 5 ADVISORY gates
+- Run `npx tsc --noEmit` -- zero errors
+- Run all 7 validators -- all green
+- Verify 11 generated artifacts are structurally complete
 
 ### No-Duplication Enforcement
 
-- All new registries import from existing `DB_SCHEMA_REGISTRY`, `DOMAIN_TO_OWNER`, `TENANCY_BOUNDARY_MAP`, `RLS_POLICY_REGISTRY`, `DB_AUDIT_REGISTRY`, `DB_TRUTH_REGISTRY` -- no second schema registry
-- `check-db-index-coverage.ts` replaces existing stub `check-index-and-retention-coverage.ts`
-- `schema-authority-registry.ts` extends `DB_TRUTH_REGISTRY` -- no second truth system
-- `retention-policy-registry.ts` extends `DB_AUDIT_REGISTRY` retention data -- no second audit system
+- All generators import from existing `src/lib/backend-topology/` registries -- no second registry
+- `function-caller-contract.ts` in `_shared/` mirrors `CallerClass` from registry for Deno runtime but is the canonical runtime enforcer
+- `edge-function-topology-v2.json` replaces existing stub in `public/generated/`
+- No new maps duplicate existing `edge-function-auth-map`, `edge-function-policy-map`, `edge-function-replay-map`, or `edge-function-owner-map`
+- Validators consume the same registries used by existing `edge-function-topology-validator.ts`
 
 ### Deployment Closure Checklist
 
-- [ ] All ~420 tables classified (state/event/audit/receipt/config/support)
-- [ ] Bounded-context map covers all tables with owner and role
-- [ ] Authority registry with criticality and lifecycle for all tables
-- [ ] Retention/TTL/hot-cold governance for all table families
-- [ ] Index coverage audit with TTL and FK gap detection
-- [ ] Query-plan baselines for 11 critical query families
-- [ ] Policy pattern standards for all 12 RLS patterns
-- [ ] Tenant isolation proof for all tenant-scoped tables
-- [ ] Support-view registry for 9 critical workflows
-- [ ] Repair procedure map for 7 critical domains
-- [ ] Migration governance report for 233 migrations
-- [ ] 15 generated proof artifacts
-- [ ] 9 validator scripts passing (2 BLOCK + 7 ADVISORY)
+- [ ] ~193 functions have canonical role in registry (already done)
+- [ ] Caller-class contract helper in `_shared/`
+- [ ] Support diagnostics helper in `_shared/`
+- [ ] Contract-test registry in `_shared/`
+- [ ] 11 generated proof artifacts covering role, caller, domain, tables, kill-switch, retry, auth, receipts, support, tests
+- [ ] 7 validator scripts (2 BLOCK + 5 ADVISORY) all green
 - [ ] TypeScript builds with 0 errors
-- [ ] No duplicate DB governance systems
+- [ ] No duplicate edge function governance systems
 
