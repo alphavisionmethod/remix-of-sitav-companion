@@ -4,8 +4,6 @@
 // and expected database side effects.
 // ═══════════════════════════════════════════════════════════════
 
-import { loadSync } from "https://deno.land/std@0.224.0/dotenv/mod.ts";
-loadSync({ export: true, allowEmptyValues: true });
 import {
   assertEquals,
   assertExists,
