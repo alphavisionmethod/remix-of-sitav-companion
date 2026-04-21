@@ -1,0 +1,17 @@
+{
+  "generatedAt": "2026-04-21T07:48:18.926Z",
+  "gate": "notification-center",
+  "ok": true,
+  "modelDefined": true,
+  "hookCount": 5,
+  "categories": [
+    "alert",
+    "reminder",
+    "approval",
+    "ai-recommendation",
+    "integration",
+    "runtime",
+    "informational",
+    "completion"
+  ]
+}

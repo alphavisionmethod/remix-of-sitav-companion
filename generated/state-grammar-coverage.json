@@ -1,0 +1,21 @@
+{
+  "generatedAt": "2026-04-21T07:48:18.926Z",
+  "gate": "state-grammar",
+  "ok": true,
+  "totalStates": 13,
+  "states": [
+    "loading",
+    "empty",
+    "error",
+    "blocked",
+    "degraded",
+    "recovering",
+    "ready",
+    "attention-required",
+    "stale-data",
+    "permission-required",
+    "evidence-required",
+    "offline",
+    "maintenance"
+  ]
+}

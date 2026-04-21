@@ -1,0 +1,108 @@
+{
+  "generatedAt": "2026-04-21T07:48:18.926Z",
+  "gate": "subsystem-proof-readiness",
+  "ok": false,
+  "subsystems": [
+    {
+      "subsystem": "ai-runtime",
+      "score": 78,
+      "language": "beta",
+      "blocking": []
+    },
+    {
+      "subsystem": "advisor-boardroom",
+      "score": 73,
+      "language": "beta",
+      "blocking": [
+        "RECOVERY"
+      ]
+    },
+    {
+      "subsystem": "connectors",
+      "score": 73,
+      "language": "beta",
+      "blocking": [
+        "RECOVERY"
+      ]
+    },
+    {
+      "subsystem": "app-platform",
+      "score": 88,
+      "language": "release-candidate",
+      "blocking": []
+    },
+    {
+      "subsystem": "frontend",
+      "score": 78,
+      "language": "beta",
+      "blocking": []
+    },
+    {
+      "subsystem": "mobile",
+      "score": 78,
+      "language": "beta",
+      "blocking": []
+    },
+    {
+      "subsystem": "desktop",
+      "score": 60,
+      "language": "alpha",
+      "blocking": [
+        "FAILURE",
+        "RECOVERY"
+      ]
+    },
+    {
+      "subsystem": "os-runtime",
+      "score": 73,
+      "language": "beta",
+      "blocking": [
+        "RECOVERY"
+      ]
+    },
+    {
+      "subsystem": "security",
+      "score": 88,
+      "language": "release-candidate",
+      "blocking": []
+    },
+    {
+      "subsystem": "admin",
+      "score": 73,
+      "language": "beta",
+      "blocking": [
+        "RECOVERY"
+      ]
+    },
+    {
+      "subsystem": "release",
+      "score": 88,
+      "language": "release-candidate",
+      "blocking": []
+    },
+    {
+      "subsystem": "truth-governance",
+      "score": 88,
+      "language": "release-candidate",
+      "blocking": []
+    },
+    {
+      "subsystem": "notifications",
+      "score": 60,
+      "language": "alpha",
+      "blocking": [
+        "FAILURE",
+        "RECOVERY"
+      ]
+    },
+    {
+      "subsystem": "search",
+      "score": 60,
+      "language": "alpha",
+      "blocking": [
+        "FAILURE",
+        "RECOVERY"
+      ]
+    }
+  ]
+}

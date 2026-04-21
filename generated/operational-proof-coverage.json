@@ -1,0 +1,71 @@
+{
+  "generatedAt": "2026-04-21T07:48:18.926Z",
+  "gate": "operational-proof",
+  "category": "OPERATIONAL",
+  "ok": true,
+  "totalSubsystems": 14,
+  "present": 11,
+  "partial": 3,
+  "missing": 0,
+  "entries": [
+    {
+      "subsystem": "ai-runtime",
+      "status": "present"
+    },
+    {
+      "subsystem": "advisor-boardroom",
+      "status": "present"
+    },
+    {
+      "subsystem": "connectors",
+      "status": "present"
+    },
+    {
+      "subsystem": "app-platform",
+      "status": "present"
+    },
+    {
+      "subsystem": "frontend",
+      "status": "present"
+    },
+    {
+      "subsystem": "mobile",
+      "status": "present"
+    },
+    {
+      "subsystem": "desktop",
+      "status": "partial",
+      "notes": "Basic logging, no structured diagnostics"
+    },
+    {
+      "subsystem": "os-runtime",
+      "status": "present"
+    },
+    {
+      "subsystem": "security",
+      "status": "present"
+    },
+    {
+      "subsystem": "admin",
+      "status": "present"
+    },
+    {
+      "subsystem": "release",
+      "status": "present"
+    },
+    {
+      "subsystem": "truth-governance",
+      "status": "present"
+    },
+    {
+      "subsystem": "notifications",
+      "status": "partial",
+      "notes": "Basic logging only"
+    },
+    {
+      "subsystem": "search",
+      "status": "partial",
+      "notes": "Basic logging only"
+    }
+  ]
+}

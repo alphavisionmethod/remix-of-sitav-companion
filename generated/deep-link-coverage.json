@@ -1,0 +1,48 @@
+{
+  "generatedAt": "2026-04-21T07:48:18.926Z",
+  "gate": "deep-link",
+  "ok": true,
+  "totalLinks": 8,
+  "links": [
+    {
+      "id": "business.client",
+      "domain": "business",
+      "template": "/business/clients/:id"
+    },
+    {
+      "id": "business.invoice",
+      "domain": "finance",
+      "template": "/finance/invoices/:id"
+    },
+    {
+      "id": "admin.user",
+      "domain": "admin",
+      "template": "/admin/users/:id"
+    },
+    {
+      "id": "ai.advisor",
+      "domain": "ai",
+      "template": "/ai/advisors/:advisorId"
+    },
+    {
+      "id": "integrations.connector",
+      "domain": "integrations",
+      "template": "/integrations/:connectorId"
+    },
+    {
+      "id": "support.ticket",
+      "domain": "support",
+      "template": "/support/tickets/:id"
+    },
+    {
+      "id": "settings.section",
+      "domain": "settings",
+      "template": "/settings/:section"
+    },
+    {
+      "id": "workflows.run",
+      "domain": "workflows",
+      "template": "/workflows/runs/:runId"
+    }
+  ]
+}

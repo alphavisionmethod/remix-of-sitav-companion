@@ -1,0 +1,49 @@
+{
+  "generatedAt": "2026-04-21T07:48:18.926Z",
+  "gate": "proof-threshold",
+  "ok": true,
+  "thresholds": [
+    {
+      "category": "IMPLEMENTATION",
+      "minimumStatus": "present",
+      "minimumEvidenceCount": 1,
+      "requiredForLanguage": "alpha"
+    },
+    {
+      "category": "WIRING",
+      "minimumStatus": "present",
+      "minimumEvidenceCount": 1,
+      "requiredForLanguage": "alpha"
+    },
+    {
+      "category": "BEHAVIOR",
+      "minimumStatus": "present",
+      "minimumEvidenceCount": 1,
+      "requiredForLanguage": "beta"
+    },
+    {
+      "category": "FAILURE",
+      "minimumStatus": "partial",
+      "minimumEvidenceCount": 1,
+      "requiredForLanguage": "release-candidate"
+    },
+    {
+      "category": "RECOVERY",
+      "minimumStatus": "partial",
+      "minimumEvidenceCount": 1,
+      "requiredForLanguage": "release-candidate"
+    },
+    {
+      "category": "OPERATIONAL",
+      "minimumStatus": "partial",
+      "minimumEvidenceCount": 1,
+      "requiredForLanguage": "beta"
+    },
+    {
+      "category": "RELEASE",
+      "minimumStatus": "present",
+      "minimumEvidenceCount": 1,
+      "requiredForLanguage": "beta"
+    }
+  ]
+}

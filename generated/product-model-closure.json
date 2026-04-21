@@ -1,0 +1,79 @@
+{
+  "generatedAt": "2026-04-21T07:48:18.926Z",
+  "gate": "product-model-closure",
+  "ok": true,
+  "totalSystems": 14,
+  "implementedCount": 14,
+  "coverage": [
+    {
+      "system": "user-model-contract",
+      "fileExists": true,
+      "status": "implemented"
+    },
+    {
+      "system": "navigation-model",
+      "fileExists": true,
+      "status": "implemented"
+    },
+    {
+      "system": "task-action-model",
+      "fileExists": true,
+      "status": "implemented"
+    },
+    {
+      "system": "notification-center-model",
+      "fileExists": true,
+      "status": "implemented"
+    },
+    {
+      "system": "command-search-model",
+      "fileExists": true,
+      "status": "implemented"
+    },
+    {
+      "system": "deep-link-registry",
+      "fileExists": true,
+      "status": "implemented"
+    },
+    {
+      "system": "state-grammar",
+      "fileExists": true,
+      "status": "implemented"
+    },
+    {
+      "system": "trust-explanation-layer",
+      "fileExists": true,
+      "status": "implemented"
+    },
+    {
+      "system": "offline-degraded-matrix",
+      "fileExists": true,
+      "status": "implemented"
+    },
+    {
+      "system": "settings-coherence-map",
+      "fileExists": true,
+      "status": "implemented"
+    },
+    {
+      "system": "domain-boundary-map",
+      "fileExists": true,
+      "status": "implemented"
+    },
+    {
+      "system": "recent-history-model",
+      "fileExists": true,
+      "status": "implemented"
+    },
+    {
+      "system": "permission-explanation-policy",
+      "fileExists": true,
+      "status": "implemented"
+    },
+    {
+      "system": "evidence-disclosure-map",
+      "fileExists": true,
+      "status": "implemented"
+    }
+  ]
+}

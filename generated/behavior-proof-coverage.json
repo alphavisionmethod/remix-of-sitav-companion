@@ -1,0 +1,135 @@
+{
+  "generatedAt": "2026-04-21T07:48:18.926Z",
+  "gate": "behavior-proof",
+  "category": "BEHAVIOR",
+  "ok": true,
+  "totalSubsystems": 14,
+  "present": 4,
+  "partial": 10,
+  "missing": 0,
+  "entries": [
+    {
+      "subsystem": "ai-runtime",
+      "status": "partial",
+      "notes": "E2E coverage partial"
+    },
+    {
+      "subsystem": "advisor-boardroom",
+      "status": "partial",
+      "notes": "UI renders, e2e action flow partial"
+    },
+    {
+      "subsystem": "connectors",
+      "status": "partial",
+      "notes": "Sync flows partial"
+    },
+    {
+      "subsystem": "app-platform",
+      "status": "present"
+    },
+    {
+      "subsystem": "frontend",
+      "status": "partial",
+      "notes": "1,079 pages exist, e2e coverage partial"
+    },
+    {
+      "subsystem": "mobile",
+      "status": "partial",
+      "notes": "PWA mode, native untested"
+    },
+    {
+      "subsystem": "desktop",
+      "status": "partial",
+      "notes": "Electron shell exists, e2e incomplete"
+    },
+    {
+      "subsystem": "os-runtime",
+      "status": "partial",
+      "notes": "Tier 1/2 tested, Tier 3/4 simulated"
+    },
+    {
+      "subsystem": "security",
+      "status": "present"
+    },
+    {
+      "subsystem": "admin",
+      "status": "partial",
+      "notes": "Admin pages render, action flows partial"
+    },
+    {
+      "subsystem": "release",
+      "status": "present"
+    },
+    {
+      "subsystem": "truth-governance",
+      "status": "present"
+    },
+    {
+      "subsystem": "notifications",
+      "status": "partial",
+      "notes": "Hook renders, push untested in production"
+    },
+    {
+      "subsystem": "search",
+      "status": "partial",
+      "notes": "Palette renders, cross-domain search partial"
+    }
+  ],
+  "behaviorMap": [
+    {
+      "subsystem": "ai-runtime",
+      "type": "runtime-probe",
+      "automated": true
+    },
+    {
+      "subsystem": "ai-runtime",
+      "type": "nightly-run",
+      "automated": true
+    },
+    {
+      "subsystem": "app-platform",
+      "type": "integration-test",
+      "automated": true
+    },
+    {
+      "subsystem": "security",
+      "type": "integration-test",
+      "automated": true
+    },
+    {
+      "subsystem": "release",
+      "type": "nightly-run",
+      "automated": true
+    },
+    {
+      "subsystem": "truth-governance",
+      "type": "nightly-run",
+      "automated": true
+    },
+    {
+      "subsystem": "frontend",
+      "type": "manual-verification",
+      "automated": false
+    },
+    {
+      "subsystem": "mobile",
+      "type": "manual-verification",
+      "automated": false
+    },
+    {
+      "subsystem": "desktop",
+      "type": "manual-verification",
+      "automated": false
+    },
+    {
+      "subsystem": "notifications",
+      "type": "manual-verification",
+      "automated": false
+    },
+    {
+      "subsystem": "search",
+      "type": "manual-verification",
+      "automated": false
+    }
+  ]
+}

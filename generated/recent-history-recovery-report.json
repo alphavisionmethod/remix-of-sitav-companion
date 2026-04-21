@@ -1,0 +1,13 @@
+{
+  "generatedAt": "2026-04-21T07:48:18.926Z",
+  "gate": "recent-history-recovery",
+  "ok": true,
+  "config": {
+    "maxEntries": 50,
+    "retentionDays": 30,
+    "storageKey": "sita-os-recent-history",
+    "crossAppRecovery": true,
+    "trackScrollPosition": true,
+    "trackFormState": false
+  }
+}

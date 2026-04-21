@@ -1,0 +1,14 @@
+{
+  "generatedAt": "2026-04-21T07:48:18.926Z",
+  "gate": "trust-explanation",
+  "ok": true,
+  "badgeLevels": [
+    "verified",
+    "ai-generated",
+    "user-provided",
+    "external",
+    "simulated",
+    "unverified"
+  ],
+  "disclosureRequirements": 8
+}
