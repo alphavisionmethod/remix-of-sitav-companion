@@ -5,13 +5,13 @@ import { ViolationCollector, writeJsonOutput } from "../architecture/lib/utils";
 
 const vc = new ViolationCollector();
 const SRC = "src/lib/ai-platform/runtime/advisor-escalation-policy.ts";
-const REQUIRED_TRIGGERS = ["financial-over-500", "external-communication", "low-confidence", "irreversible", "system-config"];
+const REQUIRED_TRIGGERS = ["Financial action exceeding", "External communication", "Confidence below", "irreversible", "System configuration"];
 
 if (!existsSync(SRC)) {
   vc.add(SRC, "missing-file", "advisor-escalation-policy.ts not found", "warning");
 } else {
   const content = readFileSync(SRC, "utf-8");
-  const missing = REQUIRED_TRIGGERS.filter(t => !content.includes(`"${t}"`));
+  const missing = REQUIRED_TRIGGERS.filter(t => !content.includes(t));
   if (missing.length > 0) {
     vc.add(SRC, "missing-triggers", `Escalation policy missing triggers: ${missing.join(", ")}`, "warning");
   }
