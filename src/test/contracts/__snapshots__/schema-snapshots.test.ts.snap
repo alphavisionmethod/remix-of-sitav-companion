@@ -1,0 +1,547 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Zod Schema Snapshots — drift detection > snapshot: admin-reset-user-setup 1`] = `
+{
+  "_type": "object",
+  "keys": {
+    "target_user_id": {
+      "_type": "string",
+    },
+  },
+}
+`;
+
+exports[`Zod Schema Snapshots — drift detection > snapshot: admin-revoke-session 1`] = `
+{
+  "_type": "object",
+  "keys": {
+    "reason": {
+      "_type": "optional",
+      "inner": {
+        "_type": "string",
+      },
+    },
+    "target_user_id": {
+      "_type": "string",
+    },
+  },
+}
+`;
+
+exports[`Zod Schema Snapshots — drift detection > snapshot: admin-users 1`] = `
+{
+  "_type": "object",
+  "keys": {
+    "action": {
+      "_type": "enum",
+      "values": [
+        "assign_role",
+        "revoke_role",
+        "suspend",
+        "unsuspend",
+      ],
+    },
+    "role": {
+      "_type": "optional",
+      "inner": {
+        "_type": "string",
+      },
+    },
+    "target_user_id": {
+      "_type": "string",
+    },
+  },
+}
+`;
+
+exports[`Zod Schema Snapshots — drift detection > snapshot: alert-ingest 1`] = `
+{
+  "_type": "object",
+  "keys": {
+    "dedup_key": {
+      "_type": "optional",
+      "inner": {
+        "_type": "nullable",
+        "inner": {
+          "_type": "string",
+        },
+      },
+    },
+    "description": {
+      "_type": "optional",
+      "inner": {
+        "_type": "string",
+      },
+    },
+    "fingerprint": {
+      "_type": "optional",
+      "inner": {
+        "_type": "string",
+      },
+    },
+    "metadata": {
+      "_type": "optional",
+      "inner": {
+        "_type": "record",
+      },
+    },
+    "related_incident_id": {
+      "_type": "optional",
+      "inner": {
+        "_type": "nullable",
+        "inner": {
+          "_type": "string",
+        },
+      },
+    },
+    "runbook_id": {
+      "_type": "optional",
+      "inner": {
+        "_type": "nullable",
+        "inner": {
+          "_type": "string",
+        },
+      },
+    },
+    "severity": {
+      "_type": "enum",
+      "values": [
+        "critical",
+        "high",
+        "info",
+        "low",
+        "medium",
+      ],
+    },
+    "source": {
+      "_type": "string",
+    },
+    "subsystem": {
+      "_type": "string",
+    },
+    "title": {
+      "_type": "string",
+    },
+  },
+}
+`;
+
+exports[`Zod Schema Snapshots — drift detection > snapshot: boardroom-session 1`] = `
+{
+  "_type": "object",
+  "keys": {
+    "action": {
+      "_type": "enum",
+      "values": [
+        "add-evidence",
+        "add-item",
+        "adjourn",
+        "assemble",
+        "decide",
+        "recommend",
+        "vote",
+      ],
+    },
+    "item_id": {
+      "_type": "optional",
+      "inner": {
+        "_type": "string",
+      },
+    },
+    "payload": {
+      "_type": "optional",
+      "inner": {
+        "_type": "record",
+      },
+    },
+    "recommendation_id": {
+      "_type": "optional",
+      "inner": {
+        "_type": "string",
+      },
+    },
+    "session_id": {
+      "_type": "optional",
+      "inner": {
+        "_type": "string",
+      },
+    },
+  },
+}
+`;
+
+exports[`Zod Schema Snapshots — drift detection > snapshot: brain-core 1`] = `
+{
+  "_type": "object",
+  "keys": {
+    "advisor": {
+      "_type": "enum",
+      "values": [
+        "business",
+        "concierge",
+        "family",
+        "general",
+        "growth",
+        "money",
+      ],
+    },
+    "context": {
+      "_type": "default",
+      "inner": {
+        "_type": "optional",
+        "inner": {
+          "_type": "record",
+        },
+      },
+    },
+    "intent": {
+      "_type": "string",
+    },
+    "secondary_advisor": {
+      "_type": "optional",
+      "inner": {
+        "_type": "enum",
+        "values": [
+          "business",
+          "concierge",
+          "family",
+          "general",
+          "growth",
+          "money",
+        ],
+      },
+    },
+    "stream": {
+      "_type": "default",
+      "inner": {
+        "_type": "optional",
+        "inner": {
+          "_type": "boolean",
+        },
+      },
+    },
+  },
+}
+`;
+
+exports[`Zod Schema Snapshots — drift detection > snapshot: chat-advisor 1`] = `
+{
+  "_type": "object",
+  "keys": {
+    "advisor": {
+      "_type": "default",
+      "inner": {
+        "_type": "optional",
+        "inner": {
+          "_type": "string",
+        },
+      },
+    },
+    "context": {
+      "_type": "optional",
+      "inner": {
+        "_type": "record",
+      },
+    },
+    "messages": {
+      "_type": "array",
+      "element": {
+        "_type": "object",
+        "keys": {
+          "content": {
+            "_type": "string",
+          },
+          "role": {
+            "_type": "enum",
+            "values": [
+              "assistant",
+              "system",
+              "user",
+            ],
+          },
+        },
+      },
+    },
+  },
+}
+`;
+
+exports[`Zod Schema Snapshots — drift detection > snapshot: cloud-sync-push 1`] = `
+{
+  "_type": "object",
+  "keys": {
+    "content_hash": {
+      "_type": "optional",
+      "inner": {
+        "_type": "string",
+      },
+    },
+    "device_id": {
+      "_type": "optional",
+      "inner": {
+        "_type": "string",
+      },
+    },
+    "namespace": {
+      "_type": "string",
+    },
+    "payload": {
+      "_type": "optional",
+      "inner": {
+        "_type": "record",
+      },
+    },
+    "type": {
+      "_type": "string",
+    },
+  },
+}
+`;
+
+exports[`Zod Schema Snapshots — drift detection > snapshot: connector-batch 1`] = `
+{
+  "_type": "object",
+  "keys": {
+    "action": {
+      "_type": "literal",
+      "value": "submit",
+    },
+    "connector_type": {
+      "_type": "optional",
+      "inner": {
+        "_type": "string",
+      },
+    },
+    "operations": {
+      "_type": "array",
+      "element": {
+        "_type": "object",
+        "keys": {
+          "connector_type": {
+            "_type": "optional",
+            "inner": {
+              "_type": "string",
+            },
+          },
+          "payload": {
+            "_type": "optional",
+            "inner": {
+              "_type": "record",
+            },
+          },
+          "type": {
+            "_type": "string",
+          },
+        },
+      },
+    },
+  },
+}
+`;
+
+exports[`Zod Schema Snapshots — drift detection > snapshot: connector-oauth-check-config 1`] = `
+{
+  "_type": "object",
+  "keys": {
+    "action": {
+      "_type": "literal",
+      "value": "check_config",
+    },
+  },
+}
+`;
+
+exports[`Zod Schema Snapshots — drift detection > snapshot: connector-oauth-disconnect 1`] = `
+{
+  "_type": "object",
+  "keys": {
+    "account_id": {
+      "_type": "string",
+    },
+    "action": {
+      "_type": "literal",
+      "value": "disconnect",
+    },
+  },
+}
+`;
+
+exports[`Zod Schema Snapshots — drift detection > snapshot: connector-oauth-initiate 1`] = `
+{
+  "_type": "object",
+  "keys": {
+    "action": {
+      "_type": "literal",
+      "value": "initiate",
+    },
+    "connector_id": {
+      "_type": "string",
+    },
+    "redirect_uri": {
+      "_type": "optional",
+      "inner": {
+        "_type": "string",
+      },
+    },
+    "scopes": {
+      "_type": "optional",
+      "inner": {
+        "_type": "array",
+        "element": {
+          "_type": "string",
+        },
+      },
+    },
+  },
+}
+`;
+
+exports[`Zod Schema Snapshots — drift detection > snapshot: connector-oauth-reconnect 1`] = `
+{
+  "_type": "object",
+  "keys": {
+    "account_id": {
+      "_type": "string",
+    },
+    "action": {
+      "_type": "literal",
+      "value": "reconnect",
+    },
+  },
+}
+`;
+
+exports[`Zod Schema Snapshots — drift detection > snapshot: kill-switch-toggle 1`] = `
+{
+  "_type": "object",
+  "keys": {
+    "approvalId": {
+      "_type": "optional",
+      "inner": {
+        "_type": "string",
+      },
+    },
+    "enable": {
+      "_type": "boolean",
+    },
+    "expiresInMinutes": {
+      "_type": "optional",
+      "inner": {
+        "_type": "number",
+      },
+    },
+    "reason": {
+      "_type": "string",
+    },
+    "severity": {
+      "_type": "optional",
+      "inner": {
+        "_type": "string",
+      },
+    },
+    "switchId": {
+      "_type": "string",
+    },
+  },
+}
+`;
+
+exports[`Zod Schema Snapshots — drift detection > snapshot: os-command 1`] = `
+{
+  "_type": "object",
+  "keys": {
+    "command": {
+      "_type": "enum",
+      "values": [
+        "clear-cache",
+        "health-check",
+        "restart-service",
+        "rotate-certs",
+        "run-backup",
+        "update-now",
+      ],
+    },
+    "device_id": {
+      "_type": "string",
+    },
+    "params": {
+      "_type": "optional",
+      "inner": {
+        "_type": "record",
+      },
+    },
+  },
+}
+`;
+
+exports[`Zod Schema Snapshots — drift detection > snapshot: personal-brain 1`] = `
+{
+  "_type": "object",
+  "keys": {
+    "messages": {
+      "_type": "array",
+      "element": {
+        "_type": "object",
+        "keys": {
+          "content": {
+            "_type": "string",
+          },
+          "role": {
+            "_type": "enum",
+            "values": [
+              "assistant",
+              "system",
+              "user",
+            ],
+          },
+        },
+      },
+    },
+    "mode": {
+      "_type": "default",
+      "inner": {
+        "_type": "optional",
+        "inner": {
+          "_type": "enum",
+          "values": [
+            "build",
+            "create",
+            "learn",
+            "think",
+          ],
+        },
+      },
+    },
+  },
+}
+`;
+
+exports[`Zod Schema Snapshots — drift detection > snapshot: production-launch-attestor 1`] = `
+{
+  "_type": "object",
+  "keys": {
+    "justification": {
+      "_type": "optional",
+      "inner": {
+        "_type": "string",
+      },
+    },
+    "posture": {
+      "_type": "optional",
+      "inner": {
+        "_type": "enum",
+        "values": [
+          "archived",
+          "deferred",
+          "green",
+          "red",
+          "yellow",
+        ],
+      },
+    },
+    "surface_key": {
+      "_type": "string",
+    },
+  },
+}
+`;
