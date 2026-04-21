@@ -1,0 +1,14 @@
+{
+  "generatedAt": "2026-04-21T02:27:02.033Z",
+  "gate": "advisor-escalation-coverage",
+  "advisory": true,
+  "ok": true,
+  "requiredTriggers": [
+    "Financial action exceeding",
+    "External communication",
+    "Confidence below",
+    "irreversible",
+    "System configuration"
+  ],
+  "warnings": 0
+}

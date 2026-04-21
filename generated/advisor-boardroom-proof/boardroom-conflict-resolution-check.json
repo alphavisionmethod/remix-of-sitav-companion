@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-21T02:25:47.536Z",
+  "gate": "boardroom-conflict-resolution",
+  "advisory": true,
+  "ok": true,
+  "requiredStrategies": [
+    "higher-confidence-wins",
+    "domain-authority-wins",
+    "owner-decides"
+  ],
+  "warnings": 0
+}

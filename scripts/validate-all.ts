@@ -180,6 +180,22 @@ const validators: Record<string, string[]> = {
   "governance": [
     "scripts/architecture/checks/check-its-real-gate.ts",
   ],
+
+  // ── Advisors (Wave 18 — Behavioral Closure) ──
+  "advisors": [
+    "scripts/advisors/check-advisor-identity-closure.ts",
+    "scripts/advisors/check-advisor-persona-boundaries.ts",
+    "scripts/advisors/check-advisor-tool-permissions.ts",
+    "scripts/advisors/check-advisor-confidence-governance.ts",
+    "scripts/advisors/check-advisor-escalation-coverage.ts",
+    "scripts/advisors/check-advisor-reversibility.ts",
+    "scripts/advisors/check-advisor-memory-aging.ts",
+    "scripts/advisors/check-advisor-reflection-policy-loop.ts",
+    "scripts/advisors/check-advisor-disablement-modes.ts",
+    "scripts/advisors/check-advisor-override-model.ts",
+    "scripts/advisors/check-advisor-supportability.ts",
+    "scripts/advisors/check-boardroom-conflict-resolution.ts",
+  ],
 };
 
 // Parse CLI args for domain filtering

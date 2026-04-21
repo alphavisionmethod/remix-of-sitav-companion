@@ -1,0 +1,13 @@
+{
+  "generatedAt": "2026-04-21T02:25:38.000Z",
+  "gate": "advisor-supportability",
+  "advisory": true,
+  "ok": true,
+  "requiredSections": [
+    "snapshot",
+    "recentReflections",
+    "policyAdjustments",
+    "escalationHistory"
+  ],
+  "warnings": 0
+}

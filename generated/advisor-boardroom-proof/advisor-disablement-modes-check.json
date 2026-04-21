@@ -1,0 +1,15 @@
+{
+  "generatedAt": "2026-04-21T02:24:58.189Z",
+  "gate": "advisor-disablement-modes",
+  "advisory": true,
+  "ok": true,
+  "requiredReasons": [
+    "owner-paused",
+    "budget-exhausted",
+    "kill-switch",
+    "trust-degraded",
+    "error-rate-exceeded",
+    "maintenance"
+  ],
+  "warnings": 0
+}

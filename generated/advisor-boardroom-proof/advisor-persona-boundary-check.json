@@ -1,0 +1,13 @@
+{
+  "generatedAt": "2026-04-21T02:25:23.649Z",
+  "gate": "advisor-persona-boundaries",
+  "advisory": true,
+  "ok": true,
+  "highRiskChecked": [
+    "money-advisor",
+    "legal-advisor",
+    "tax-advisor",
+    "security-advisor"
+  ],
+  "warnings": 0
+}
