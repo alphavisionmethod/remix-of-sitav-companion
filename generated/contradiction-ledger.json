@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-21T04:52:25.190Z",
+  "generatedAt": "2026-04-21T04:53:01.698Z",
   "gate": "truth-governance",
   "totalContradictions": 7,
   "openCount": 3,
@@ -26,7 +26,7 @@
       "owner": "platform-engineering",
       "mitigationPath": "Complete Apple Developer enrollment and notarization workflow. Gate electron-signing-readiness already tracks this. Distribution verdict must remain DISTRIBUTION_BLOCKED until resolved.",
       "status": "open",
-      "lastVerified": "2026-04-21T04:52:25.189Z"
+      "lastVerified": "2026-04-21T04:53:01.698Z"
     },
     {
       "contradictionId": "CTR-002",
@@ -46,7 +46,7 @@
       "owner": "security-engineering",
       "mitigationPath": "Implement pgcrypto column-level encryption for access_token and refresh_token columns in connector_tokens. Update oauth-security-closure validator to verify encryption. Trust verdict must show TRUST_GAP_OPEN until resolved.",
       "status": "open",
-      "lastVerified": "2026-04-21T04:52:25.189Z"
+      "lastVerified": "2026-04-21T04:53:01.698Z"
     },
     {
       "contradictionId": "CTR-003",
@@ -66,7 +66,7 @@
       "owner": "os-engineering",
       "mitigationPath": "Implement CI-based QEMU boot validation or explicitly downgrade OS behavioral readiness to BEHAVIORALLY_PARTIAL. Structural readiness is unaffected.",
       "status": "open",
-      "lastVerified": "2026-04-21T04:52:25.189Z"
+      "lastVerified": "2026-04-21T04:53:01.698Z"
     },
     {
       "contradictionId": "CTR-004",
@@ -85,7 +85,7 @@
       "owner": "frontend-engineering",
       "mitigationPath": "Consolidate duplicate families via component-canonicalization validator. Structural score receives 5-point penalty per unresolved duplicate family but does not block release.",
       "status": "accepted",
-      "lastVerified": "2026-04-21T04:52:25.189Z"
+      "lastVerified": "2026-04-21T04:53:01.698Z"
     },
     {
       "contradictionId": "CTR-005",
@@ -104,7 +104,7 @@
       "owner": "frontend-engineering",
       "mitigationPath": "Remove or archive dead pages. Validator no-shell-only-production-pages tracks this. 2-point structural penalty per dead page, non-blocking.",
       "status": "accepted",
-      "lastVerified": "2026-04-21T04:52:25.189Z"
+      "lastVerified": "2026-04-21T04:53:01.698Z"
     },
     {
       "contradictionId": "CTR-006",
@@ -123,7 +123,7 @@
       "owner": "platform-engineering",
       "mitigationPath": "Mobile scope closure gates (5 BLOCK) enforce honest classification. Mobile distribution verdict is explicitly DISTRIBUTION_BLOCKED. No action needed unless mobile is re-scoped.",
       "status": "mitigated",
-      "lastVerified": "2026-04-21T04:52:25.189Z"
+      "lastVerified": "2026-04-21T04:53:01.698Z"
     },
     {
       "contradictionId": "CTR-007",
@@ -142,7 +142,7 @@
       "owner": "release-engineering",
       "mitigationPath": "Advisory interpretation policy defines thresholds: >5000 advisories forces CONDITIONALLY_READY, >2000 adds operational caveat. Current 4,252 triggers caveat but not downgrade. Warn-ratchet prevents growth.",
       "status": "accepted",
-      "lastVerified": "2026-04-21T04:52:25.189Z"
+      "lastVerified": "2026-04-21T04:53:01.698Z"
     }
   ]
 }

@@ -1,0 +1,34 @@
+{
+  "generatedAt": "2026-04-21T04:53:01.698Z",
+  "gate": "truth-governance",
+  "level": "block",
+  "ok": true,
+  "errors": [],
+  "warnings": [
+    "2 artifact(s) in INVALID state without acknowledgment"
+  ],
+  "summary": {
+    "dimensions": 5,
+    "subsystems": 8,
+    "totalClaims": 14,
+    "totalContradictions": 7,
+    "openContradictions": 3,
+    "highSeverityOpen": true,
+    "invalidationRules": 10,
+    "proofGaps": 17,
+    "advisoryEffect": "conditional",
+    "languageViolations": 3
+  },
+  "artifactsGenerated": [
+    "readiness-dimension-scoreboard.json",
+    "contradiction-ledger.json",
+    "claim-proof-registry.json",
+    "proof-gap-register.json",
+    "advisory-heavy-readiness-report.json",
+    "stale-artifact-invalidations.json",
+    "structural-vs-behavioral-gap-report.json",
+    "readiness-language-audit.json",
+    "claim-confidence-report.json",
+    "truth-governance-report.json"
+  ]
+}

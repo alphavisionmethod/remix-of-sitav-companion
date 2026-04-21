@@ -1,0 +1,180 @@
+{
+  "generatedAt": "2026-04-21T04:53:01.698Z",
+  "gate": "truth-governance",
+  "totalClaims": 14,
+  "byConfidence": {
+    "high": 6,
+    "medium": 5,
+    "low": 3,
+    "unverified": 0
+  },
+  "claims": [
+    {
+      "claimId": "CLM-AI-001",
+      "claim": "AI Runtime is production-ready",
+      "subsystem": "ai-runtime",
+      "confidence": "high",
+      "dimensions": [
+        "structural",
+        "behavioral",
+        "operational",
+        "trust"
+      ],
+      "currentVerdict": "CONDITIONALLY_READY",
+      "proofCoverage": 100
+    },
+    {
+      "claimId": "CLM-ADVISOR-001",
+      "claim": "Advisor layer is behaviorally closed",
+      "subsystem": "advisor-boardroom",
+      "confidence": "high",
+      "dimensions": [
+        "structural",
+        "behavioral",
+        "trust"
+      ],
+      "currentVerdict": "READY",
+      "proofCoverage": 23
+    },
+    {
+      "claimId": "CLM-OAUTH-001",
+      "claim": "Connector OAuth is secure",
+      "subsystem": "connector-oauth",
+      "confidence": "medium",
+      "dimensions": [
+        "behavioral",
+        "trust"
+      ],
+      "currentVerdict": "TRUST_GAP_OPEN",
+      "proofCoverage": 100
+    },
+    {
+      "claimId": "CLM-APP-001",
+      "claim": "App Platform lifecycle is closed",
+      "subsystem": "app-platform",
+      "confidence": "high",
+      "dimensions": [
+        "structural",
+        "behavioral"
+      ],
+      "currentVerdict": "READY",
+      "proofCoverage": 0
+    },
+    {
+      "claimId": "CLM-ADMIN-001",
+      "claim": "Admin operator surfaces are production-ready",
+      "subsystem": "admin-operator",
+      "confidence": "high",
+      "dimensions": [
+        "structural",
+        "operational"
+      ],
+      "currentVerdict": "CONDITIONALLY_READY",
+      "proofCoverage": 100
+    },
+    {
+      "claimId": "CLM-FRONTEND-001",
+      "claim": "Frontend component layer is structurally sound",
+      "subsystem": "frontend-ux",
+      "confidence": "medium",
+      "dimensions": [
+        "structural"
+      ],
+      "currentVerdict": "CONDITIONALLY_READY",
+      "proofCoverage": 100
+    },
+    {
+      "claimId": "CLM-FRONTEND-002",
+      "claim": "Frontend has no dead or orphaned pages",
+      "subsystem": "frontend-ux",
+      "confidence": "medium",
+      "dimensions": [
+        "structural"
+      ],
+      "currentVerdict": "CONDITIONALLY_READY",
+      "proofCoverage": 100
+    },
+    {
+      "claimId": "CLM-MOBILE-001",
+      "claim": "Mobile is honestly classified as out-of-scope",
+      "subsystem": "mobile-distribution",
+      "confidence": "high",
+      "dimensions": [
+        "distribution"
+      ],
+      "currentVerdict": "DISTRIBUTION_BLOCKED",
+      "proofCoverage": 0
+    },
+    {
+      "claimId": "CLM-TRUST-001",
+      "claim": "Security trust layer is production-grade",
+      "subsystem": "security-trust",
+      "confidence": "medium",
+      "dimensions": [
+        "trust",
+        "operational"
+      ],
+      "currentVerdict": "TRUST_GAP_OPEN",
+      "proofCoverage": 100
+    },
+    {
+      "claimId": "CLM-DIST-001",
+      "claim": "Desktop distribution is production-ready",
+      "subsystem": "mobile-distribution",
+      "confidence": "low",
+      "dimensions": [
+        "distribution"
+      ],
+      "currentVerdict": "DISTRIBUTION_BLOCKED",
+      "proofCoverage": 100
+    },
+    {
+      "claimId": "CLM-ELECTRON-001",
+      "claim": "Electron app identity and signing are complete",
+      "subsystem": "mobile-distribution",
+      "confidence": "low",
+      "dimensions": [
+        "distribution",
+        "trust"
+      ],
+      "currentVerdict": "DISTRIBUTION_BLOCKED",
+      "proofCoverage": 100
+    },
+    {
+      "claimId": "CLM-OS-001",
+      "claim": "OS boot and recovery are production-ready",
+      "subsystem": "ai-runtime",
+      "confidence": "medium",
+      "dimensions": [
+        "structural",
+        "behavioral"
+      ],
+      "currentVerdict": "BEHAVIORALLY_PARTIAL",
+      "proofCoverage": 100
+    },
+    {
+      "claimId": "CLM-BEHAVIORAL-001",
+      "claim": "E2E boot-to-login validation exists",
+      "subsystem": "ai-runtime",
+      "confidence": "low",
+      "dimensions": [
+        "behavioral"
+      ],
+      "currentVerdict": "DEFERRED",
+      "proofCoverage": 100
+    },
+    {
+      "claimId": "CLM-RELEASE-001",
+      "claim": "Release is cuttable (all BLOCK gates pass)",
+      "subsystem": "admin-operator",
+      "confidence": "high",
+      "dimensions": [
+        "structural",
+        "behavioral",
+        "operational"
+      ],
+      "currentVerdict": "CONDITIONALLY_READY",
+      "proofCoverage": 100
+    }
+  ]
+}

@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-04-21T04:52:25.190Z",
+  "generatedAt": "2026-04-21T04:53:01.698Z",
   "gate": "truth-governance",
-  "advisoryCount": 0,
-  "advisoryEffect": "no-impact",
-  "advisoryDescription": "Healthy advisory range. No impact on verdicts.",
+  "advisoryCount": 4252,
+  "advisoryEffect": "conditional",
+  "advisoryDescription": "Advisory burden is significant. Release is conditional on advisory review.",
   "activeTriggers": [
     {
       "dimension": "distribution",
