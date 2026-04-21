@@ -1,0 +1,14 @@
+{
+  "generatedAt": "2026-04-21T00:28:28.729Z",
+  "gate": "edge-function-role-purity",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 1,
+  "issues": [
+    {
+      "fn": "api-gateway",
+      "severity": "warning",
+      "message": "Deprecated/wrapper function still allows frontend-user callers"
+    }
+  ]
+}
