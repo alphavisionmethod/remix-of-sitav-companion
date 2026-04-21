@@ -23,6 +23,10 @@ if (!existsSync(SRC)) {
     generatedAt: new Date().toISOString(), gate: "advisor-reversibility", ok: vc.errors.length === 0,
     entryCount, requiredClassifications: REQUIRED_CLASSIFICATIONS, missingClassifications: missing,
   });
+  writeJsonOutput("generated/advisor-reversibility-report.json", {
+    generatedAt: new Date().toISOString(), gate: "advisor-reversibility", ok: vc.errors.length === 0,
+    errorCount: vc.errors.length, warningCount: vc.warnings.length, issues: vc.violations,
+  });
 }
 
 vc.report("check-advisor-reversibility");
