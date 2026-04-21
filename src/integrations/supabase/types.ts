@@ -17695,6 +17695,57 @@ export type Database = {
         }
         Relationships: []
       }
+      recovery_jobs: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          error: string | null
+          error_stack: string | null
+          id: string
+          is_dry_run: boolean
+          label: string
+          parameters: Json | null
+          progress: number
+          result: Json | null
+          started_at: string
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          error?: string | null
+          error_stack?: string | null
+          id?: string
+          is_dry_run?: boolean
+          label: string
+          parameters?: Json | null
+          progress?: number
+          result?: Json | null
+          started_at?: string
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          error?: string | null
+          error_stack?: string | null
+          id?: string
+          is_dry_run?: boolean
+          label?: string
+          parameters?: Json | null
+          progress?: number
+          result?: Json | null
+          started_at?: string
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       recovery_snapshots: {
         Row: {
           completed_at: string | null
