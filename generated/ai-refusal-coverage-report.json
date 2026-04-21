@@ -1,0 +1,9 @@
+{
+  "generatedAt": "2026-04-21T00:51:36.738Z",
+  "gate": "ai-refusal-coverage",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "issues": [],
+  "coveragePct": 100
+}
