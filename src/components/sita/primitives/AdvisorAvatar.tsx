@@ -1,12 +1,15 @@
+import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { Brain, Briefcase, DollarSign, Headphones, Heart, Shield, Sparkles, TrendingUp, Scale } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
+import { getDefaultAdvisorAvatar } from "@/lib/advisors/advisor-avatar-assets";
 
 type AdvisorDomain = "business" | "money" | "concierge" | "family" | "growth" | "trust" | "opportunity" | "recovery" | "boardroom" | "general";
 
 interface AdvisorAvatarProps {
   domain: AdvisorDomain;
   name?: string;
+  avatarUrl?: string | null;
   status?: "active" | "thinking" | "idle" | "offline";
   size?: "sm" | "md" | "lg";
   showLabel?: boolean;
@@ -40,20 +43,35 @@ const statusColors = {
   offline: "bg-muted-foreground/20",
 };
 
-export const AdvisorAvatar = ({ domain, name, status = "active", size = "md", showLabel = false, confidence, className }: AdvisorAvatarProps) => {
+export const AdvisorAvatar = ({ domain, name, avatarUrl, status = "active", size = "md", showLabel = false, confidence, className }: AdvisorAvatarProps) => {
+  const [imgError, setImgError] = useState(false);
   const config = domainConfig[domain];
   const s = sizes[size];
   const Icon = config.icon;
+  const resolvedAvatar = avatarUrl || getDefaultAdvisorAvatar(domain);
+  const showImage = resolvedAvatar && !imgError;
 
   return (
     <div className={cn("flex items-center gap-2", className)}>
       <div className="relative">
-        <div className={cn(
-          "flex items-center justify-center rounded-full bg-gradient-to-br shadow-sm",
-          s.container, config.gradient
-        )}>
-          <Icon className={cn(s.icon, "text-white")} strokeWidth={2} />
-        </div>
+        {showImage ? (
+          <div className={cn("rounded-full p-[2px] bg-gradient-to-br shadow-sm", config.gradient, s.container)}>
+            <img
+              src={resolvedAvatar}
+              alt={name || config.label}
+              className="rounded-full object-cover w-full h-full bg-card"
+              onError={() => setImgError(true)}
+              loading="lazy"
+            />
+          </div>
+        ) : (
+          <div className={cn(
+            "flex items-center justify-center rounded-full bg-gradient-to-br shadow-sm",
+            s.container, config.gradient
+          )}>
+            <Icon className={cn(s.icon, "text-white")} strokeWidth={2} />
+          </div>
+        )}
         {status && (
           <div className={cn(
             "absolute rounded-full border-2 border-card",
