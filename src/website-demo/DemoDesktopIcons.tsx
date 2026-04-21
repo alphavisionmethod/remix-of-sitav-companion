@@ -12,7 +12,6 @@ export function DemoDesktopIcons({ onOpen }: Props) {
   return (
     <div className="absolute top-10 right-6 flex flex-col gap-5 z-10">
       {DEMO_APPS.map((app) => {
-        const Icon = ICON_MAP[app.icon];
         return (
           <button key={app.id}
             onClick={() => setSelected(app.id)}
