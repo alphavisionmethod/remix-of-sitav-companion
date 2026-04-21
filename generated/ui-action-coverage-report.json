@@ -1,0 +1,2972 @@
+{
+  "generatedAt": "2026-04-21T18:42:04.294Z",
+  "gate": "ui-action-coverage",
+  "ok": true,
+  "totalUiBackendCalls": 258,
+  "uniqueTargets": 206,
+  "coveredInCI": 0,
+  "uncoveredInCI": 206,
+  "coveragePct": 0,
+  "byType": {
+    "rpc": {
+      "total": 10,
+      "covered": 0,
+      "uncovered": 10
+    },
+    "function-invoke": {
+      "total": 70,
+      "covered": 0,
+      "uncovered": 70
+    },
+    "db-read": {
+      "total": 112,
+      "covered": 0,
+      "uncovered": 112
+    },
+    "db-write": {
+      "total": 14,
+      "covered": 0,
+      "uncovered": 14
+    }
+  },
+  "entries": [
+    {
+      "target": "acknowledge_security_finding",
+      "callType": "rpc",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/ai-runtime/SecurityCouncilBoard.tsx",
+          "line": 175,
+          "operation": "rpc"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "admin-reset-user-setup",
+      "callType": "function-invoke",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/support/AdminRecoveryOperations.tsx",
+          "line": 114,
+          "operation": "invoke"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "admin-revoke-session",
+      "callType": "function-invoke",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/support/AdminRecoveryOperations.tsx",
+          "line": 140,
+          "operation": "invoke"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "admin-users",
+      "callType": "function-invoke",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/UserManagement.tsx",
+          "line": 34,
+          "operation": "invoke"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "advisor_action_queue",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/components/advisors/AdvisorTimelineView.tsx",
+          "line": 32,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "advisor_feedback",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/components/advisors/AdvisorDetailDrawer.tsx",
+          "line": 198,
+          "operation": "select"
+        },
+        {
+          "file": "src/components/advisors/AdvisorDetailDrawer.tsx",
+          "line": 222,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "advisor_feedback",
+      "callType": "db-write",
+      "uiSources": [
+        {
+          "file": "src/components/advisors/AdvisorDetailDrawer.tsx",
+          "line": 212,
+          "operation": "insert"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "advisor_knowledge",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/components/advisors/AdvisorKnowledgePanel.tsx",
+          "line": 49,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "advisor_knowledge",
+      "callType": "db-write",
+      "uiSources": [
+        {
+          "file": "src/components/advisors/AdvisorKnowledgePanel.tsx",
+          "line": 70,
+          "operation": "insert"
+        },
+        {
+          "file": "src/components/advisors/AdvisorKnowledgePanel.tsx",
+          "line": 96,
+          "operation": "delete"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "advisor_memories",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/files/FilesMemoryReview.tsx",
+          "line": 23,
+          "operation": "select"
+        },
+        {
+          "file": "src/components/advisors/AdvisorDetailDrawer.tsx",
+          "line": 144,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "advisor_performance",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/AdminDashboard.tsx",
+          "line": 134,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "advisor_profiles",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/components/advisors/AdvisorMeetingRoom.tsx",
+          "line": 40,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "advisor-avatar-generate",
+      "callType": "function-invoke",
+      "uiSources": [
+        {
+          "file": "src/components/advisors/AdvisorMeetingRoom.tsx",
+          "line": 61,
+          "operation": "invoke"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "advisor-conversation",
+      "callType": "function-invoke",
+      "uiSources": [
+        {
+          "file": "src/components/business/advisor-board/AdvisorConversation.tsx",
+          "line": 73,
+          "operation": "invoke"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "advisor-knowledge-manage",
+      "callType": "function-invoke",
+      "uiSources": [
+        {
+          "file": "src/components/advisors/AdvisorKnowledgePanel.tsx",
+          "line": 41,
+          "operation": "invoke"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "advisor-weekly-report",
+      "callType": "function-invoke",
+      "uiSources": [
+        {
+          "file": "src/components/business/advisor-board/WeeklyExecutiveReport.tsx",
+          "line": 82,
+          "operation": "invoke"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "agent-intelligence",
+      "callType": "function-invoke",
+      "uiSources": [
+        {
+          "file": "src/pages/advisors/AdvisorCouncilDashboard.tsx",
+          "line": 142,
+          "operation": "invoke"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "ai_budget_decision_receipts",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/components/admin/ai-runtime/EconomicTrustFutureTruthPanel.tsx",
+          "line": 49,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "ai_capability_routing",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/AIG04BudgetCenter.tsx",
+          "line": 65,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "ai_implementation_suggestions",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/ai-runtime/SuggestionsBoard.tsx",
+          "line": 82,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "ai_inference_receipts",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/AIG09RuntimeVerification.tsx",
+          "line": 111,
+          "operation": "select"
+        },
+        {
+          "file": "src/pages/admin/ConscienceGateDashboard.tsx",
+          "line": 113,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "ai_launch_honesty",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/AIG04BudgetCenter.tsx",
+          "line": 76,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "ai_model_registry",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/AIG04BudgetCenter.tsx",
+          "line": 58,
+          "operation": "select"
+        },
+        {
+          "file": "src/pages/admin/AIG09RuntimeVerification.tsx",
+          "line": 183,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "ai_provider_health",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/AIG09RuntimeVerification.tsx",
+          "line": 106,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "ai_provider_registry",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/AIG04BudgetCenter.tsx",
+          "line": 51,
+          "operation": "select"
+        },
+        {
+          "file": "src/pages/admin/AIG09RuntimeVerification.tsx",
+          "line": 103,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "ai_receipt_records",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/AIG09RuntimeVerification.tsx",
+          "line": 342,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "ai_token_usage",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/AdminDashboard.tsx",
+          "line": 84,
+          "operation": "select"
+        },
+        {
+          "file": "src/pages/admin/TeamManagement.tsx",
+          "line": 95,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "ai_usage_ledger",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/AIG09RuntimeVerification.tsx",
+          "line": 270,
+          "operation": "select"
+        },
+        {
+          "file": "src/pages/admin/AIG09RuntimeVerification.tsx",
+          "line": 321,
+          "operation": "select"
+        },
+        {
+          "file": "src/domains/customer-journey/ai-journey-classifier.ts",
+          "line": 28,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "ai_workforce_approval_queue",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/ActivityStream.tsx",
+          "line": 293,
+          "operation": "select"
+        },
+        {
+          "file": "src/pages/admin/AdminDashboard.tsx",
+          "line": 97,
+          "operation": "select"
+        },
+        {
+          "file": "src/pages/admin/HQApprovalQueue.tsx",
+          "line": 81,
+          "operation": "select"
+        },
+        {
+          "file": "src/pages/admin/HQApprovalQueue.tsx",
+          "line": 448,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "ai_workforce_launch_honesty",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/AdvisorBoardCatalog.tsx",
+          "line": 70,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "ai_workforce_recommendations",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/components/advisors/AdvisorTimelineView.tsx",
+          "line": 38,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "ai-gateway",
+      "callType": "function-invoke",
+      "uiSources": [
+        {
+          "file": "src/components/sita/CommandPalette.tsx",
+          "line": 194,
+          "operation": "invoke"
+        },
+        {
+          "file": "src/components/sita/RuntimeTruthProbe.tsx",
+          "line": 55,
+          "operation": "invoke"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "alert_dedup_log",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/components/admin/alerts/AlertDedupStats.tsx",
+          "line": 29,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "alert_suppression_rules",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/components/admin/alerts/AlertSuppressionRulesPanel.tsx",
+          "line": 46,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "alert_suppression_rules",
+      "callType": "db-write",
+      "uiSources": [
+        {
+          "file": "src/components/admin/alerts/AlertSuppressionRulesPanel.tsx",
+          "line": 62,
+          "operation": "insert"
+        },
+        {
+          "file": "src/components/admin/alerts/AlertSuppressionRulesPanel.tsx",
+          "line": 84,
+          "operation": "update"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "alerts",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/AdminOperationsHub.tsx",
+          "line": 81,
+          "operation": "select"
+        },
+        {
+          "file": "src/pages/admin/AlertTriageBoard.tsx",
+          "line": 63,
+          "operation": "select"
+        },
+        {
+          "file": "src/components/admin/runbooks/RunbookViewer.tsx",
+          "line": 197,
+          "operation": "select"
+        },
+        {
+          "file": "src/components/admin/shells/NoSilentFailureAlerts.tsx",
+          "line": 61,
+          "operation": "select"
+        },
+        {
+          "file": "src/components/observability/AlertsLivePanel.tsx",
+          "line": 42,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "app_assets",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/components/app-store/AppAssetGallery.tsx",
+          "line": 37,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "attestation_packets",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/ai-runtime/ComplianceAttestationBoard.tsx",
+          "line": 32,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "attestation-packet-builder",
+      "callType": "function-invoke",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/ai-runtime/ComplianceAttestationBoard.tsx",
+          "line": 48,
+          "operation": "invoke"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "audit_export_bundles",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/ai-runtime/SovereignDeploymentDRBoard.tsx",
+          "line": 51,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "audit_logs",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/AdminDashboard.tsx",
+          "line": 121,
+          "operation": "select"
+        },
+        {
+          "file": "src/pages/admin/ConnectorGovernanceCenter.tsx",
+          "line": 64,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "audit-export-bundler",
+      "callType": "function-invoke",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/ai-runtime/SovereignDeploymentDRBoard.tsx",
+          "line": 68,
+          "operation": "invoke"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "automation_kill_switches",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/health/ErrorPatrolBoard.tsx",
+          "line": 101,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "beta-apply",
+      "callType": "function-invoke",
+      "uiSources": [
+        {
+          "file": "src/components/marketing/BetaForm.tsx",
+          "line": 53,
+          "operation": "invoke"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "boardroom_followthrough_dispatches",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/ai-runtime/BoardroomSLADrillDown.tsx",
+          "line": 37,
+          "operation": "select"
+        },
+        {
+          "file": "src/components/admin/boardroom/Layer7FollowthroughBoard.tsx",
+          "line": 48,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "boardroom_items",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/components/sita/apps/boardroom/BoardroomFollowthroughView.tsx",
+          "line": 63,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "boardroom-followthrough-dispatch",
+      "callType": "function-invoke",
+      "uiSources": [
+        {
+          "file": "src/components/admin/boardroom/Layer7FollowthroughBoard.tsx",
+          "line": 93,
+          "operation": "invoke"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "brain-core",
+      "callType": "function-invoke",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/AIT04to08Boards.tsx",
+          "line": 280,
+          "operation": "invoke"
+        },
+        {
+          "file": "src/pages/admin/AIT04to08Boards.tsx",
+          "line": 488,
+          "operation": "invoke"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "chaos-drill-runner",
+      "callType": "function-invoke",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/SRE05ChaosTestingFramework.tsx",
+          "line": 66,
+          "operation": "invoke"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "chat-advisor",
+      "callType": "function-invoke",
+      "uiSources": [
+        {
+          "file": "src/components/advisors/AdvisorMeetingRoom.tsx",
+          "line": 104,
+          "operation": "invoke"
+        },
+        {
+          "file": "src/components/advisors/AdvisorMeetingRoom.tsx",
+          "line": 133,
+          "operation": "invoke"
+        },
+        {
+          "file": "src/components/advisors/AskAdvisorChat.tsx",
+          "line": 52,
+          "operation": "invoke"
+        },
+        {
+          "file": "src/domains/simulation/market-intelligence.ts",
+          "line": 63,
+          "operation": "invoke"
+        },
+        {
+          "file": "src/domains/simulation/market-intelligence.ts",
+          "line": 154,
+          "operation": "invoke"
+        },
+        {
+          "file": "src/domains/simulation/market-intelligence.ts",
+          "line": 186,
+          "operation": "invoke"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "client_capability_matrix",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/cloud/ClientCapabilityAdmin.tsx",
+          "line": 49,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "cloud-lifecycle-api",
+      "callType": "function-invoke",
+      "uiSources": [
+        {
+          "file": "src/components/cloud/CloudImportExport.tsx",
+          "line": 54,
+          "operation": "invoke"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "cloud-storage-api",
+      "callType": "function-invoke",
+      "uiSources": [
+        {
+          "file": "src/components/cloud/CloudFileBrowser.tsx",
+          "line": 74,
+          "operation": "invoke"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "cloud-storage-api?action=create-folder",
+      "callType": "function-invoke",
+      "uiSources": [
+        {
+          "file": "src/components/cloud/CloudFileBrowser.tsx",
+          "line": 115,
+          "operation": "invoke"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "cloud-storage-api?action=delete",
+      "callType": "function-invoke",
+      "uiSources": [
+        {
+          "file": "src/components/cloud/CloudFileBrowser.tsx",
+          "line": 163,
+          "operation": "invoke"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "cloud-storage-api?action=download-url",
+      "callType": "function-invoke",
+      "uiSources": [
+        {
+          "file": "src/components/cloud/CloudFileBrowser.tsx",
+          "line": 171,
+          "operation": "invoke"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "cloud-storage-api?action=list&folder_id=",
+      "callType": "function-invoke",
+      "uiSources": [
+        {
+          "file": "src/components/cloud/CloudFileBrowser.tsx",
+          "line": 80,
+          "operation": "invoke"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "cloud-storage-api?action=purge",
+      "callType": "function-invoke",
+      "uiSources": [
+        {
+          "file": "src/components/cloud/CloudTrashManager.tsx",
+          "line": 47,
+          "operation": "invoke"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "cloud-storage-api?action=rename",
+      "callType": "function-invoke",
+      "uiSources": [
+        {
+          "file": "src/components/cloud/CloudFileBrowser.tsx",
+          "line": 182,
+          "operation": "invoke"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "cloud-storage-api?action=restore",
+      "callType": "function-invoke",
+      "uiSources": [
+        {
+          "file": "src/components/cloud/CloudTrashManager.tsx",
+          "line": 41,
+          "operation": "invoke"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "cloud-storage-api?action=trash",
+      "callType": "function-invoke",
+      "uiSources": [
+        {
+          "file": "src/components/cloud/CloudTrashManager.tsx",
+          "line": 32,
+          "operation": "invoke"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "cloud-storage-api?action=upload-finalize",
+      "callType": "function-invoke",
+      "uiSources": [
+        {
+          "file": "src/components/cloud/CloudFileBrowser.tsx",
+          "line": 151,
+          "operation": "invoke"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "cloud-storage-api?action=upload-init",
+      "callType": "function-invoke",
+      "uiSources": [
+        {
+          "file": "src/components/cloud/CloudFileBrowser.tsx",
+          "line": 131,
+          "operation": "invoke"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "cloud-storage-api?action=versions",
+      "callType": "function-invoke",
+      "uiSources": [
+        {
+          "file": "src/components/cloud/CloudVersionHistory.tsx",
+          "line": 40,
+          "operation": "invoke"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "compliance_controls",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/ai-runtime/ComplianceAttestationBoard.tsx",
+          "line": 29,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "compliance_evidence",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/ai-runtime/ComplianceAttestationBoard.tsx",
+          "line": 30,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "compliance-evidence-collector",
+      "callType": "function-invoke",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/ai-runtime/ComplianceAttestationBoard.tsx",
+          "line": 43,
+          "operation": "invoke"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "connected_service_links",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/ISA02ConnectorProviderRegistryBoard.tsx",
+          "line": 42,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "connector_oauth_tokens",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/components/admin/integrations/IntegrationReceiptDrawer.tsx",
+          "line": 95,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "connector-batch",
+      "callType": "function-invoke",
+      "uiSources": [
+        {
+          "file": "src/pages/ConnectorHub.tsx",
+          "line": 289,
+          "operation": "invoke"
+        },
+        {
+          "file": "src/pages/admin/ConnectorGovernanceCenter.tsx",
+          "line": 113,
+          "operation": "invoke"
+        },
+        {
+          "file": "src/pages/admin/ConnectorGovernanceCenter.tsx",
+          "line": 127,
+          "operation": "invoke"
+        },
+        {
+          "file": "src/components/sita/ConnectorSyncDashboard.tsx",
+          "line": 62,
+          "operation": "invoke"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "connector-discover",
+      "callType": "function-invoke",
+      "uiSources": [
+        {
+          "file": "src/pages/ConnectorHub.tsx",
+          "line": 138,
+          "operation": "invoke"
+        },
+        {
+          "file": "src/pages/admin/ConnectorGovernanceCenter.tsx",
+          "line": 104,
+          "operation": "invoke"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "connector-oauth",
+      "callType": "function-invoke",
+      "uiSources": [
+        {
+          "file": "src/pages/ConnectorHub.tsx",
+          "line": 64,
+          "operation": "invoke"
+        },
+        {
+          "file": "src/pages/admin/CN01ConnectorRealityOverview.tsx",
+          "line": 70,
+          "operation": "invoke"
+        },
+        {
+          "file": "src/pages/admin/CN01ConnectorRealityOverview.tsx",
+          "line": 246,
+          "operation": "invoke"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "consent_ledger",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/ISA04ConsentLedgerExplorer.tsx",
+          "line": 29,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "consent_revocations",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/ISA04ConsentLedgerExplorer.tsx",
+          "line": 51,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "consent_upgrades",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/ISA04ConsentLedgerExplorer.tsx",
+          "line": 40,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "crm_communications",
+      "callType": "db-write",
+      "uiSources": [
+        {
+          "file": "src/components/business/crm/CRMDuplicateReview.tsx",
+          "line": 80,
+          "operation": "update"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "crm_contacts",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/components/business/CRMImportWizard.tsx",
+          "line": 206,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "crm_contacts",
+      "callType": "db-write",
+      "uiSources": [
+        {
+          "file": "src/components/business/CRMImportWizard.tsx",
+          "line": 264,
+          "operation": "update"
+        },
+        {
+          "file": "src/components/business/CRMImportWizard.tsx",
+          "line": 268,
+          "operation": "insert"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "crm_merge_log",
+      "callType": "db-write",
+      "uiSources": [
+        {
+          "file": "src/components/business/crm/CRMDuplicateReview.tsx",
+          "line": 87,
+          "operation": "insert"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "crm_notes",
+      "callType": "db-write",
+      "uiSources": [
+        {
+          "file": "src/components/business/crm/CRMDuplicateReview.tsx",
+          "line": 81,
+          "operation": "update"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "crm_segments",
+      "callType": "db-write",
+      "uiSources": [
+        {
+          "file": "src/pages/business/CRMSegments.tsx",
+          "line": 115,
+          "operation": "insert"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "crm_tasks",
+      "callType": "db-write",
+      "uiSources": [
+        {
+          "file": "src/components/business/crm/CRMDuplicateReview.tsx",
+          "line": 82,
+          "operation": "update"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "customer_journey_blockers",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/domains/customer-journey/journey-hooks.ts",
+          "line": 52,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "customer_journey_runs",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/domains/customer-journey/journey-hooks.ts",
+          "line": 26,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "customer_journey_runs",
+      "callType": "db-write",
+      "uiSources": [
+        {
+          "file": "src/domains/customer-journey/journey-hooks.ts",
+          "line": 96,
+          "operation": "insert"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "customer_journey_steps",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/domains/customer-journey/journey-hooks.ts",
+          "line": 40,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "customer_journeys",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/domains/customer-journey/journey-hooks.ts",
+          "line": 15,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "customer_journeys",
+      "callType": "db-write",
+      "uiSources": [
+        {
+          "file": "src/domains/customer-journey/journey-hooks.ts",
+          "line": 74,
+          "operation": "upsert"
+        },
+        {
+          "file": "src/domains/customer-journey/journey-hooks.ts",
+          "line": 101,
+          "operation": "update"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "data_retention_runs",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/DataRetentionDashboard.tsx",
+          "line": 71,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "data-cleanup",
+      "callType": "function-invoke",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/DataRetentionDashboard.tsx",
+          "line": 89,
+          "operation": "invoke"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "dependency_upgrade_findings",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/ai-runtime/DependencyFindingsBoard.tsx",
+          "line": 59,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "domain_ownership_registry",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/DomainRealityBoard.tsx",
+          "line": 41,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "dr_drills",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/ai-runtime/SovereignDeploymentDRBoard.tsx",
+          "line": 49,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "dr-drill-runner",
+      "callType": "function-invoke",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/ai-runtime/SovereignDeploymentDRBoard.tsx",
+          "line": 61,
+          "operation": "invoke"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "drill_cadence_registry",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/components/admin/DrillCadenceBoard.tsx",
+          "line": 38,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "error_events",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/ErrorEventsExplorer.tsx",
+          "line": 50,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "error_patrol_detections",
+      "callType": "db-write",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/health/ErrorPatrolBoard.tsx",
+          "line": 160,
+          "operation": "update"
+        },
+        {
+          "file": "src/pages/admin/health/ErrorPatrolBoard.tsx",
+          "line": 172,
+          "operation": "update"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "events",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/ActivityStream.tsx",
+          "line": 279,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "external_workforce_api_keys",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/ai-runtime/ExternalWorkforceApiBoard.tsx",
+          "line": 36,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "external_workforce_subscriptions",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/ai-runtime/ExternalWorkforceApiBoard.tsx",
+          "line": 37,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "external_workforce_webhook_deliveries",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/ai-runtime/ExternalWorkforceApiBoard.tsx",
+          "line": 38,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "federated_knowledge_shares",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/ai-runtime/KnowledgeFederationBoard.tsx",
+          "line": 37,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "federated_pattern_aggregates",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/ai-runtime/KnowledgeFederationBoard.tsx",
+          "line": 38,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "federated-knowledge-aggregator",
+      "callType": "function-invoke",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/ai-runtime/KnowledgeFederationBoard.tsx",
+          "line": 54,
+          "operation": "invoke"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "file_metadata",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/files/FilesProcessing.tsx",
+          "line": 39,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "gdpr-delete",
+      "callType": "function-invoke",
+      "uiSources": [
+        {
+          "file": "src/pages/SovereignExportPage.tsx",
+          "line": 80,
+          "operation": "invoke"
+        },
+        {
+          "file": "src/components/sita/shell/windows/settings/PrivacyTrustSections.tsx",
+          "line": 139,
+          "operation": "invoke"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "gdpr-export",
+      "callType": "function-invoke",
+      "uiSources": [
+        {
+          "file": "src/pages/SovereignExportPage.tsx",
+          "line": 41,
+          "operation": "invoke"
+        },
+        {
+          "file": "src/components/sita/shell/windows/settings/PrivacyTrustSections.tsx",
+          "line": 121,
+          "operation": "invoke"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "generate-support-bundle",
+      "callType": "function-invoke",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/support/AdminRecoveryOperations.tsx",
+          "line": 221,
+          "operation": "invoke"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "get_db_truth_snapshot",
+      "callType": "rpc",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/DomainRealityBoard.tsx",
+          "line": 44,
+          "operation": "rpc"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "hardware_certification_runs",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/components/admin/ai-runtime/HardwareAndOperatorTruthPanel.tsx",
+          "line": 61,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "health-check",
+      "callType": "function-invoke",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/releases/EnvironmentConfigVerification.tsx",
+          "line": 64,
+          "operation": "invoke"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "identity_provider_links",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/ISA01IdentityProviderRegistryBoard.tsx",
+          "line": 44,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "incidents",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/AdminDashboard.tsx",
+          "line": 109,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "internal_agent_action_intents",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/ai-runtime/InternalAgentIntentTimeline.tsx",
+          "line": 134,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "internal_agent_anomaly_signals",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/ai-runtime/SLOObservabilityBoard.tsx",
+          "line": 46,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "internal_agent_assurance_reports",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/ai-runtime/AssuranceChaosBoard.tsx",
+          "line": 39,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "internal_agent_auto_rollback_events",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/ai-runtime/AssuranceChaosBoard.tsx",
+          "line": 40,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "internal_agent_canary_runs",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/ai-runtime/SLOObservabilityBoard.tsx",
+          "line": 48,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "internal_agent_chaos_drills",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/ai-runtime/AssuranceChaosBoard.tsx",
+          "line": 38,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "internal_agent_consensus_sessions",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/ai-runtime/CrossCouncilBoard.tsx",
+          "line": 82,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "internal_agent_cost_proposals",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/ai-runtime/CrossCouncilBoard.tsx",
+          "line": 87,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "internal_agent_cost_proposals",
+      "callType": "db-write",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/ai-runtime/CrossCouncilBoard.tsx",
+          "line": 132,
+          "operation": "update"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "internal_agent_drift_findings",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/ai-runtime/SLOObservabilityBoard.tsx",
+          "line": 47,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "internal_agent_policy_drafts",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/ai-runtime/PolicyDraftReviewBoard.tsx",
+          "line": 74,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "internal_agent_reflections",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/ai-runtime/ReflectionBoard.tsx",
+          "line": 109,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "internal_agent_runbook_executions",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/ai-runtime/CrossCouncilBoard.tsx",
+          "line": 92,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "internal_agent_slo_snapshots",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/ai-runtime/SLOObservabilityBoard.tsx",
+          "line": 45,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "internal_agent_tenant_kill_switches",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/ai-runtime/TenantFederationBoard.tsx",
+          "line": 31,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "internal_agent_tenant_quotas",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/ai-runtime/TenantFederationBoard.tsx",
+          "line": 30,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "internal_agent_tenant_scopes",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/ai-runtime/TenantFederationBoard.tsx",
+          "line": 29,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "internal_agent_weekly_digests",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/ai-runtime/WeeklyDigestBoard.tsx",
+          "line": 45,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "internal-agent-canary-runner",
+      "callType": "function-invoke",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/ai-runtime/AssuranceChaosBoard.tsx",
+          "line": 50,
+          "operation": "invoke"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "internal-agent-chaos-scheduler",
+      "callType": "function-invoke",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/ai-runtime/AssuranceChaosBoard.tsx",
+          "line": 54,
+          "operation": "invoke"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "internal-agent-cost-optimizer",
+      "callType": "function-invoke",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/ai-runtime/CrossCouncilBoard.tsx",
+          "line": 115,
+          "operation": "invoke"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "internal-agent-execute-action",
+      "callType": "function-invoke",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/ai-runtime/InternalAgentIntentTimeline.tsx",
+          "line": 197,
+          "operation": "invoke"
+        },
+        {
+          "file": "src/pages/admin/health/ErrorPatrolBoard.tsx",
+          "line": 129,
+          "operation": "invoke"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "internal-agent-policy-architect",
+      "callType": "function-invoke",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/ai-runtime/PolicyDraftReviewBoard.tsx",
+          "line": 92,
+          "operation": "invoke"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "internal-agent-reflect",
+      "callType": "function-invoke",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/ai-runtime/ReflectionBoard.tsx",
+          "line": 133,
+          "operation": "invoke"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "internal-agent-slo-evaluator",
+      "callType": "function-invoke",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/ai-runtime/SLOObservabilityBoard.tsx",
+          "line": 59,
+          "operation": "invoke"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "internal-agent-suggestion-generator",
+      "callType": "function-invoke",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/ai-runtime/SuggestionsBoard.tsx",
+          "line": 107,
+          "operation": "invoke"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "internal-agent-trust-evaluator",
+      "callType": "function-invoke",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/ai-runtime/TrustLadderBoard.tsx",
+          "line": 113,
+          "operation": "invoke"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "internal-agent-weekly-digest",
+      "callType": "function-invoke",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/ai-runtime/WeeklyDigestBoard.tsx",
+          "line": 71,
+          "operation": "invoke"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "investor-request",
+      "callType": "function-invoke",
+      "uiSources": [
+        {
+          "file": "src/components/marketing/InvestorForm.tsx",
+          "line": 32,
+          "operation": "invoke"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "is_tenant_admin",
+      "callType": "rpc",
+      "uiSources": [
+        {
+          "file": "src/pages/tenant/TenantSelfServiceConsole.tsx",
+          "line": 41,
+          "operation": "rpc"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "journey_verification_runs",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/FL01FlagshipLoopsExecutive.tsx",
+          "line": 95,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "notifications",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/NotificationCenter.tsx",
+          "line": 176,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "notifications_queue",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/NotificationCenter.tsx",
+          "line": 162,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "oauth_client_registry",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/ISA01IdentityProviderRegistryBoard.tsx",
+          "line": 54,
+          "operation": "select"
+        },
+        {
+          "file": "src/pages/admin/ISA03OAuthClientRegistryConsole.tsx",
+          "line": 31,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "oauth_refresh_probe_results",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/components/admin/OAuthRefreshHealthBoard.tsx",
+          "line": 36,
+          "operation": "select"
+        },
+        {
+          "file": "src/components/admin/integrations/IntegrationReceiptDrawer.tsx",
+          "line": 84,
+          "operation": "select"
+        },
+        {
+          "file": "src/components/admin/integrations/IntegrationStreakPanel.tsx",
+          "line": 76,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "oauth-refresh-probe",
+      "callType": "function-invoke",
+      "uiSources": [
+        {
+          "file": "src/components/admin/OAuthRefreshHealthBoard.tsx",
+          "line": 49,
+          "operation": "invoke"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "operating_modes",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/components/sita/RuntimeTruthProbe.tsx",
+          "line": 44,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "operator_drill_executions",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/components/admin/ai-runtime/HardwareAndOperatorTruthPanel.tsx",
+          "line": 66,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "os_action_lineage",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/implementation-truth/ITC10RuntimeEvidence.tsx",
+          "line": 51,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "os_event_log",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/implementation-truth/ITC10RuntimeEvidence.tsx",
+          "line": 35,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "os_memory_scoped",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/implementation-truth/ITC10RuntimeEvidence.tsx",
+          "line": 59,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "owner_copilot_sessions",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/ai-runtime/OwnerCopilotSessionConsole.tsx",
+          "line": 38,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "owner-copilot-bff?op=handoff",
+      "callType": "function-invoke",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/ai-runtime/OwnerCopilotBriefings.tsx",
+          "line": 35,
+          "operation": "invoke"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "owner-copilot-bff?op=list",
+      "callType": "function-invoke",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/ai-runtime/OwnerCopilotBriefings.tsx",
+          "line": 27,
+          "operation": "invoke"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "owner-copilot-session-tracker",
+      "callType": "function-invoke",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/ai-runtime/OwnerCopilotSessionConsole.tsx",
+          "line": 50,
+          "operation": "invoke"
+        },
+        {
+          "file": "src/pages/admin/ai-runtime/OwnerCopilotSessionConsole.tsx",
+          "line": 62,
+          "operation": "invoke"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "personal-brain",
+      "callType": "function-invoke",
+      "uiSources": [
+        {
+          "file": "src/pages/PersonalBrain.tsx",
+          "line": 59,
+          "operation": "invoke"
+        },
+        {
+          "file": "src/components/sita/CopilotBar.tsx",
+          "line": 26,
+          "operation": "invoke"
+        },
+        {
+          "file": "src/components/sita/shell/UniversalCommandSurface.tsx",
+          "line": 522,
+          "operation": "invoke"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "policy_as_code_rules",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/ai-runtime/ComplianceAttestationBoard.tsx",
+          "line": 31,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "press-inquiry",
+      "callType": "function-invoke",
+      "uiSources": [
+        {
+          "file": "src/components/marketing/PressForm.tsx",
+          "line": 17,
+          "operation": "invoke"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "production_launch_attestations",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/ai-runtime/ProductionLaunchAttestationConsole.tsx",
+          "line": 57,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "production-launch-attestor",
+      "callType": "function-invoke",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/ai-runtime/ProductionLaunchAttestationConsole.tsx",
+          "line": 74,
+          "operation": "invoke"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "profiles",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/NotificationSettingsPage.tsx",
+          "line": 110,
+          "operation": "select"
+        },
+        {
+          "file": "src/pages/NotificationSettingsPage.tsx",
+          "line": 150,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "prompt-versioning",
+      "callType": "function-invoke",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/AIPromptFamiliesExplorer.tsx",
+          "line": 67,
+          "operation": "invoke"
+        },
+        {
+          "file": "src/pages/admin/AIPromptFamiliesExplorer.tsx",
+          "line": 80,
+          "operation": "invoke"
+        },
+        {
+          "file": "src/pages/admin/AIPromptFamiliesExplorer.tsx",
+          "line": 92,
+          "operation": "invoke"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "proof_records",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/ActivityStream.tsx",
+          "line": 312,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "provider_capabilities",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/ISA02ConnectorProviderRegistryBoard.tsx",
+          "line": 32,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "provider_families",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/ISA01IdentityProviderRegistryBoard.tsx",
+          "line": 33,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "public_donations_wall",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/marketing/Proof.tsx",
+          "line": 12,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "record_implementation_suggestion_decision",
+      "callType": "rpc",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/ai-runtime/SuggestionsBoard.tsx",
+          "line": 149,
+          "operation": "rpc"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "record_policy_draft_decision",
+      "callType": "rpc",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/ai-runtime/PolicyDraftReviewBoard.tsx",
+          "line": 105,
+          "operation": "rpc"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "release_artifacts",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/DownloadPage.tsx",
+          "line": 42,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "reserves",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/money/ReservesSavings.tsx",
+          "line": 33,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "revenue-caller",
+      "callType": "function-invoke",
+      "uiSources": [
+        {
+          "file": "src/pages/RevenueCallingPage.tsx",
+          "line": 339,
+          "operation": "invoke"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "runtime-probes",
+      "callType": "function-invoke",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/BrainCoreDashboard.tsx",
+          "line": 67,
+          "operation": "invoke"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "scope_policy_matrix",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/ISA05ScopePolicyMatrixBoard.tsx",
+          "line": 33,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "security_council_findings",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/ai-runtime/SecurityCouncilBoard.tsx",
+          "line": 99,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "security-council-tick",
+      "callType": "function-invoke",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/ai-runtime/SecurityCouncilBoard.tsx",
+          "line": 124,
+          "operation": "invoke"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "seed-user-data",
+      "callType": "function-invoke",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/UserSeedHealth.tsx",
+          "line": 73,
+          "operation": "invoke"
+        },
+        {
+          "file": "src/components/sita/OSSetupExperience.tsx",
+          "line": 719,
+          "operation": "invoke"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "signed_release_artifacts",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/ai-runtime/SovereignDeploymentDRBoard.tsx",
+          "line": 50,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "sita_receipts",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/implementation-truth/ITC10RuntimeEvidence.tsx",
+          "line": 43,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "sla_breach_contributing_events",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/components/admin/alerts/SLABreachContributorsPanel.tsx",
+          "line": 37,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "summarize_implementation_suggestions",
+      "callType": "rpc",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/ai-runtime/SuggestionsBoard.tsx",
+          "line": 86,
+          "operation": "rpc"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "summarize_internal_agent_learning",
+      "callType": "rpc",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/ai-runtime/ReflectionBoard.tsx",
+          "line": 107,
+          "operation": "rpc"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "summarize_policy_draft_health",
+      "callType": "rpc",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/ai-runtime/PolicyDraftReviewBoard.tsx",
+          "line": 78,
+          "operation": "rpc"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "summarize_security_council",
+      "callType": "rpc",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/ai-runtime/SecurityCouncilBoard.tsx",
+          "line": 103,
+          "operation": "rpc"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "summarize_trust_ladder",
+      "callType": "rpc",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/ai-runtime/TrustLadderBoard.tsx",
+          "line": 95,
+          "operation": "rpc"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "tenant_federation_optins",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/ai-runtime/KnowledgeFederationBoard.tsx",
+          "line": 36,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "tenant_kill_switches",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/tenant/TenantSelfServiceConsole.tsx",
+          "line": 54,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "tenant_kill_switches",
+      "callType": "db-write",
+      "uiSources": [
+        {
+          "file": "src/pages/tenant/TenantSelfServiceConsole.tsx",
+          "line": 97,
+          "operation": "upsert"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "tenant-self-service-bff",
+      "callType": "function-invoke",
+      "uiSources": [
+        {
+          "file": "src/pages/tenant/TenantSelfServiceConsole.tsx",
+          "line": 47,
+          "operation": "invoke"
+        },
+        {
+          "file": "src/pages/tenant/TenantSelfServiceConsole.tsx",
+          "line": 70,
+          "operation": "invoke"
+        },
+        {
+          "file": "src/pages/tenant/TenantSelfServiceConsole.tsx",
+          "line": 74,
+          "operation": "invoke"
+        },
+        {
+          "file": "src/pages/tenant/TenantSelfServiceConsole.tsx",
+          "line": 108,
+          "operation": "invoke"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "trace_spans",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/components/observability/TracesPanel.tsx",
+          "line": 53,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "trust_weighted_actions",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/UserProfilePage.tsx",
+          "line": 53,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "unified_account_edges",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/ISA06UnifiedAccountGraphExplorer.tsx",
+          "line": 41,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "unified_account_nodes",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/ISA06UnifiedAccountGraphExplorer.tsx",
+          "line": 30,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "uptime_heartbeats",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/components/observability/UptimePanel.tsx",
+          "line": 52,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "user_memory",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/MemoryCenter.tsx",
+          "line": 66,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "user_seed_runs",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/UserSeedHealth.tsx",
+          "line": 44,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "waitlist-signup",
+      "callType": "function-invoke",
+      "uiSources": [
+        {
+          "file": "src/components/marketing/WaitlistForm.tsx",
+          "line": 21,
+          "operation": "invoke"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "waitlist-stats",
+      "callType": "function-invoke",
+      "uiSources": [
+        {
+          "file": "src/pages/marketing/Waitlist.tsx",
+          "line": 14,
+          "operation": "invoke"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "webhook-replay",
+      "callType": "function-invoke",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/support/AdminRecoveryOperations.tsx",
+          "line": 167,
+          "operation": "invoke"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "webhook-replay?action=replay",
+      "callType": "function-invoke",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/support/AdminRecoveryOperations.tsx",
+          "line": 172,
+          "operation": "invoke"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "workflow_runs",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/RecoveryCenter.tsx",
+          "line": 49,
+          "operation": "select"
+        },
+        {
+          "file": "src/pages/admin/WorkflowReplayAudit.tsx",
+          "line": 73,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "workflow_steps",
+      "callType": "db-read",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/WorkflowReplayAudit.tsx",
+          "line": 85,
+          "operation": "select"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "workflow-repair",
+      "callType": "function-invoke",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/WorkflowReplayAudit.tsx",
+          "line": 99,
+          "operation": "invoke"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    },
+    {
+      "target": "workflow-replay",
+      "callType": "function-invoke",
+      "uiSources": [
+        {
+          "file": "src/pages/admin/WorkflowReplayAudit.tsx",
+          "line": 115,
+          "operation": "invoke"
+        }
+      ],
+      "ciInvocationCount": 0,
+      "covered": false
+    }
+  ]
+}
