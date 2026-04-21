@@ -5,7 +5,13 @@
   "private": true,
   "scripts": {
     "build": "tsc",
-    "start": "node dist/server.js"
+    "start": "node dist/server.js",
+    "dev": "npx tsx --watch server.ts",
+    "typecheck": "tsc --noEmit",
+    "lint": "npx eslint server.ts",
+    "clean": "rm -rf dist",
+    "health-check": "curl -sf http://localhost:3000/health || exit 1",
+    "ready-check": "curl -sf http://localhost:3000/ready || exit 1"
   },
   "dependencies": {
     "hono": "^4.4.0",
