@@ -38,6 +38,7 @@ import { AppShellBreadcrumb, useNavigationHistory } from "@/components/sita/shel
 import { useBusinessOnboarding } from "@/hooks/useBusinessOnboarding";
 import { getVisibleSidebarItems } from "@/lib/business-journey-config";
 import BusinessSettingsPage from "@/pages/business/BusinessSettingsPage";
+import { useOnboardingBridge } from "@/hooks/useOnboardingBridge";
 // ── Page imports ──────────────────────────────────────────────
 import BusinessOverview from "@/pages/business/BusinessOverview";
 import LeadsInbox from "@/pages/business/LeadsInbox";
@@ -465,6 +466,19 @@ function BusinessAppShellInner({ initialModule }: { initialModule?: string }) {
   const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
   const [showOnboarding, setShowOnboarding] = useState(() => !isAdapted);
   const [formationDone, setFormationDone] = useState(false);
+  const [showArrival, setShowArrival] = useState(false);
+
+  // Bridge onboarding data → archetype weights
+  useOnboardingBridge();
+
+  // Arrival ceremony after formation completes
+  useEffect(() => {
+    if (formationDone && !showArrival) {
+      setShowArrival(true);
+      const t = setTimeout(() => setShowArrival(false), 2500);
+      return () => clearTimeout(t);
+    }
+  }, [formationDone]);
 
   // Journey-aware visible items
   const journeyVisibleItems = useMemo(
@@ -597,7 +611,48 @@ function BusinessAppShellInner({ initialModule }: { initialModule?: string }) {
   if (showFormation) {
     return (
       <BusinessNavigationContext.Provider value={{ navigateTo, activeModule }}>
-        <FormationShell onComplete={() => setFormationDone(true)} />
+        <FormationShell onComplete={() => {
+          setFormationDone(true);
+          setActiveModule("adaptive-home");
+        }} />
+      </BusinessNavigationContext.Provider>
+    );
+  }
+
+  if (showArrival) {
+    return (
+      <BusinessNavigationContext.Provider value={{ navigateTo, activeModule }}>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="h-full flex flex-col items-center justify-center bg-[hsl(220_15%_6%)] gap-4"
+        >
+          <motion.div
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ type: "spring", damping: 15 }}
+            className="w-16 h-16 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center"
+          >
+            <CheckCircle className="h-8 w-8 text-primary" />
+          </motion.div>
+          <motion.p
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="text-lg font-bold text-foreground"
+          >
+            Your Revenue Office is ready
+          </motion.p>
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.6 }}
+            className="text-sm text-muted-foreground"
+          >
+            {onboardingState.businessName ? `Personalized for ${onboardingState.businessName}` : "Shaped around your business"}
+          </motion.p>
+        </motion.div>
       </BusinessNavigationContext.Provider>
     );
   }
