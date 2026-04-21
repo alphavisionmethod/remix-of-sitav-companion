@@ -1,0 +1,44 @@
+name: "Run Validators"
+description: >
+  Composite action: runs a list of TypeScript validator scripts via tsx.
+  Each script is run independently; failures are collected and reported.
+inputs:
+  scripts:
+    description: "Newline-separated list of script paths relative to repo root"
+    required: true
+  fail-on-error:
+    description: "Exit non-zero if any script fails (default: false = advisory)"
+    required: false
+    default: "false"
+runs:
+  using: "composite"
+  steps:
+    - name: Run validator scripts
+      shell: bash
+      env:
+        SCRIPTS: ${{ inputs.scripts }}
+        FAIL_ON_ERROR: ${{ inputs.fail-on-error }}
+      run: |
+        FAIL=0
+        PASSED=0
+        FAILED_LIST=""
+        while IFS= read -r script; do
+          script="$(echo "$script" | xargs)"
+          [ -z "$script" ] && continue
+          echo "── Running: $script ──"
+          if npx tsx "$script"; then
+            PASSED=$((PASSED + 1))
+          else
+            FAIL=$((FAIL + 1))
+            FAILED_LIST="$FAILED_LIST\n  - $script"
+          fi
+          echo ""
+        done <<< "$SCRIPTS"
+
+        echo "✅ Passed: $PASSED | ❌ Failed: $FAIL"
+        if [ $FAIL -gt 0 ]; then
+          echo -e "Failed scripts:$FAILED_LIST"
+          if [ "$FAIL_ON_ERROR" = "true" ]; then
+            exit 1
+          fi
+        fi
