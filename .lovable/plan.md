@@ -1,109 +1,101 @@
 
 
-## Wave 20 — Supportability Platform Closure
+## Wave 21 — Recovery Architecture Closure
 
 ### Summary
 
-The support layer currently has **runbook infrastructure** (19 runbooks, resolver, subsystem map, drill status) and an **app-platform support bundle** (`app-support-bundle.ts`), plus an OS-level shell script (`os/scripts/generate-support-bundle.sh`), an ops diagnostic bundle builder (`scripts/support/diagnostics/ops-build-diagnostic-bundle.ts`), a `support-gateway` edge function, and an `incident-classifier` with DB-backed runbook + kill-switch linkage. What is missing: a **unified client-side support bundle builder** spanning all domains, formal redaction policy, environment fingerprinting, runtime crash packs, integration health packs, escalation packaging, session traceability, bundle expiry governance, customer-safe export, and kill-switch suggestion engine. This wave creates 12 source files in `src/lib/support/`, 1 edge function, 1 validator, and 12 generated proof artifacts.
+The recovery layer has a **runbook registry** (22 entries in `src/lib/support/runbook-registry.ts`), a basic **recovery execution engine** (`src/lib/operations/recovery-execution-engine.ts` — step sequencing with receipt emission), **drill status infrastructure** (`src/lib/support/runbook-drill-status.ts` — DB-backed via `runbook_drill_results`), an **incident classifier** (DB-backed subsystem→runbook+kill-switch mapping), and a **runbook subsystem map** (20 mandatory subsystems). What is missing: a formal recovery state machine, dependency graph, drill runner with simulation, metrics model, freshness policy, operator confirmation contracts, postmortem builder, system coverage map, and automation safety governance. This wave creates 10 source files in `src/lib/operations/`, 1 validator, and 11 generated proof artifacts.
 
 ### What Already Exists (Preserve, Extend)
 
 | System | Location | Action |
 |--------|----------|--------|
-| Runbook registry (19 entries) | `src/lib/support/runbook-registry.ts` | Preserve |
-| Runbook resolver (alert→runbook) | `src/lib/support/runbook-resolver.ts` | Preserve; consumed by issue linkage |
-| Runbook subsystem map | `src/lib/support/runbook-subsystem-map.ts` | Preserve |
-| Runbook drill status | `src/lib/support/runbook-drill-status.ts` | Preserve |
-| Incident classifier (DB-backed) | `src/lib/incidents/incident-classifier.ts` | Preserve; consumed by kill-switch suggester |
-| App support bundle (per-app + system) | `src/lib/app-platform/app-support-bundle.ts` | Preserve; wrapped by unified builder |
-| OS support bundle shell script | `os/scripts/generate-support-bundle.sh` | Preserve (OS-tier, not client) |
-| Ops diagnostic bundle | `scripts/support/diagnostics/ops-build-diagnostic-bundle.ts` | Preserve (CI/ops tier) |
-| Support gateway edge function | `supabase/functions/support-gateway/index.ts` | Preserve; extend with bundle generation route |
-| Workflow step contracts (support-bundle family) | `src/lib/workflows/workflow-step-contracts.ts` | Preserve |
-| Workflow proof registry (support-bundle) | `src/lib/workflows/workflow-proof-registry.ts` | Preserve |
-| Support view registry | `src/lib/db/support-view-registry.ts` | Preserve |
-| Sensitive doc redaction | `src/lib/services/policy-engine/sensitive-doc-policy.service.ts` | Preserve; referenced by redaction policy |
-| Check runbook linkage validator | `scripts/support/check-runbook-linkage.ts` | Preserve |
+| Runbook registry (22 entries) | `src/lib/support/runbook-registry.ts` | Preserve — canonical source of runbook truth |
+| Runbook types | `src/lib/support/runbook-types.ts` | Preserve |
+| Runbook subsystem map (20 mandatory) | `src/lib/support/runbook-subsystem-map.ts` | Preserve; consumed by system coverage map |
+| Runbook resolver (alert→runbook) | `src/lib/support/runbook-resolver.ts` | Preserve |
+| Runbook drill status (DB-backed) | `src/lib/support/runbook-drill-status.ts` | Preserve; consumed by drill runner and freshness |
+| Recovery execution engine | `src/lib/operations/recovery-execution-engine.ts` | **Extend** — add state machine, operator confirmation, metrics, postmortem hooks |
+| Incident classifier (DB-backed) | `src/lib/incidents/incident-classifier.ts` | Preserve; consumed by simulation and dependency graph |
+| Drill freshness check (advisory) | `scripts/support/check-recovery-drill-freshness.ts` | Preserve (advisory tier) |
+| Operations barrel | `src/lib/operations/index.ts` | Extend with new exports |
 
-No duplicates identified — all systems are complementary.
+No duplicates identified.
 
-### Part 1 — New Source Files (`src/lib/support/`)
+### Part 1 — New/Extended Source Files (`src/lib/operations/`)
 
 | # | File | Purpose |
 |---|------|---------|
-| 1 | `support-bundle-contract.ts` | Types: `SupportBundle`, `BundlePack`, `BundleType`, `RedactionStatus`, `ExpiryPolicy`, `EscalationPackage`, `SupportSession` |
-| 2 | `support-redaction-policy.ts` | Canonical redaction rules for tokens, emails, payment data, provider credentials, prompts, device IDs. Deterministic masking with audit trail of redacted field names |
-| 3 | `support-bundle-expiry-policy.ts` | TTL rules per bundle type (24h for customer export, 7d for operator, 30d for escalation). Archival and purge expectations |
-| 4 | `environment-fingerprint-builder.ts` | Captures: runtime surface, app version, deployment profile, feature flags, integration status summaries, browser/Electron info, route context. No sensitive data |
-| 5 | `runtime-crash-pack-builder.ts` | Captures: recent crash metadata from app-platform observability, restart attempts, recovery state, runtime health signals, linked runbooks |
-| 6 | `integration-health-pack-builder.ts` | Captures: per-provider health state, last success/failure, refresh/retry/webhook status, redacted credential state, degraded UX flags, linked runbooks |
-| 7 | `support-bundle-builder.ts` | Canonical unified builder. Assembles bundles from domain-specific packs (environment, crash, integration, app-platform, custom). Enforces redaction before output. Links runbooks and kill-switch suggestions |
-| 8 | `escalation-package-builder.ts` | Builds escalation packages: issue summary + fingerprint + diagnostics + incidents + runbooks + kill-switch suggestions + session history + severity + action history |
-| 9 | `support-session-trace.ts` | In-memory session model: session ID, actor, issue ref, generated bundles, actions taken, escalations, runbooks consulted, closure state |
-| 10 | `support-issue-linkage.ts` | Deterministic issue→runbook linkage using runbook-resolver + subsystem map. Returns linked runbooks, workflows, escalation paths, diagnostics packs per issue classification |
-| 11 | `support-kill-switch-suggester.ts` | Consumes incident-classifier to produce structured kill-switch suggestions with confidence, linked runbook, required approval level, and actionable vs informational classification |
-| 12 | `customer-safe-export.ts` | Applies redaction policy, strips internal-only content, preserves trace IDs, enforces expiry-limited delivery, labels omissions |
+| 1 | `runbook-execution-contract.ts` | Canonical execution state machine: 13 states (REGISTERED → READY → TRIAGED → EXECUTION_PENDING → AWAITING_CONFIRMATION → AUTOMATED_STEP_RUNNING → MANUAL_STEP_REQUIRED → PARTIALLY_REMEDIATED → RECOVERED → FAILED → ESCALATED → POSTMORTEM_PENDING → CLOSED). Step contract types with inputs, preconditions, automation status, safety constraints, rollback semantics |
+| 2 | `recovery-execution-engine.ts` | **Extend existing** — add state machine progression, operator confirmation gate, metrics emission, postmortem trigger, escalation path, abort/rollback. Preserve existing `executeRecoveryPlan` signature as a compatibility wrapper |
+| 3 | `recovery-dependency-graph.ts` | Directed graph of recovery dependencies per critical subsystem: upstream/downstream services, external providers, kill-switch interactions, sequence constraints. Static declaration consumed by drill runner and postmortem |
+| 4 | `recovery-drill-runner.ts` | Simulation drill runner: loads runbook steps, runs in dry-run or live mode, emits typed `DrillReceipt` (drill ID, scenario, timing, confirmations, skipped steps, findings). Wraps `triggerRunbookDrill` from drill-status for DB persistence |
+| 5 | `recovery-metrics.ts` | Time-to-recovery metric model: triage, first-remediation, partial-recovery, full-recovery, closure durations. Computed from execution receipts. Includes drill-vs-live distinction |
+| 6 | `runbook-freshness-policy.ts` | Per-subsystem freshness windows (critical: 7d, high: 14d, medium: 30d, low: 90d). Stale detection based on last-drilled timestamp from `runbook-drill-status.ts`. Dependency-change invalidation rules |
+| 7 | `recovery-operator-confirmation.ts` | Confirmation contract: which steps require confirmation, required roles, dual-control flag, timeout, rationale recording, escalation path on timeout. Mapped to runbook steps by destructive/critical classification |
+| 8 | `recovery-postmortem-builder.ts` | Structured postmortem artifact builder: incident/drill ID, impacted systems, timeline, runbook path, step results, metrics, operator actions, follow-up items, evidence references. Generates typed `PostmortemArtifact` |
+| 9 | `recovery-simulation-policy.ts` | Simulation scenario registry: 13 canonical scenarios (provider outage, DB degradation, kill-switch incident, shell failure, stuck workflow, connector token, release rollback, config corruption, support pipeline, auth outage, RLS breach, ingress failure, payment auth). Maps each to runbook(s) and required test assertions |
+| 10 | `recovery-system-coverage-map.ts` | Maps 13 critical system families (auth, onboarding, app-lifecycle, advisors, AI runtime, payments, connectors, files, desktop, OS/appliance, control-plane, support, release) to their covering runbook(s), gaps, and coverage percentage. Consumes runbook-registry and subsystem-map |
 
-Update `src/lib/support/index.ts` barrel to re-export all new modules.
+### Part 2 — Extend Existing Engine
 
-### Part 2 — Edge Function
+The existing `recovery-execution-engine.ts` will be extended (not replaced) with:
+- Import and use the new state machine from `runbook-execution-contract.ts`
+- Add `executeRecoveryWithGovernance()` — full-lifecycle executor that progresses through the state machine, pauses at `AWAITING_CONFIRMATION` for operator gates, emits metrics, and triggers postmortem on completion
+- Preserve `executeRecoveryPlan()` as a lightweight compatibility wrapper
+- Add `abortRecovery()` and `escalateRecovery()` functions
 
-`supabase/functions/generate-support-bundle/index.ts`:
-- Accepts typed bundle request (bundle type, scope, entity IDs)
-- Validates caller via `has_admin_permission` check for `support.view`
-- Assembles bundle server-side (queries relevant tables for crash data, integration health, incidents)
-- Applies redaction
-- Returns bundle JSON with audit trace ID
-- Logs to `admin_action_audit`
+### Part 3 — Validator
 
-### Part 3 — Validator Script
+`scripts/operations/check-recovery-architecture-closure.ts` — BLOCK-tier validator:
+- Verifies all 10 source files exist
+- Verifies execution contract defines all 13 states
+- Verifies dependency graph covers critical-incident subsystems (7 subsystems from subsystem map)
+- Verifies simulation policy covers at least 10 scenarios
+- Verifies system coverage map covers all mandatory subsystems
+- Verifies freshness policy defines windows for all severity tiers
+- Verifies operator confirmation covers destructive steps
+- Emits `generated/recovery-architecture-closure-report.json`
 
-`scripts/support/check-support-platform-coverage.ts` — BLOCK-tier validator:
-- Verifies all 12 source files exist
-- Verifies edge function exists
-- Verifies redaction policy covers required categories (tokens, emails, payment, credentials, prompts)
-- Verifies expiry policy covers all bundle types
-- Verifies kill-switch suggester references incident-classifier
-- Verifies issue linkage references runbook-resolver
-- Emits `generated/support-platform-coverage-report.json`
-
-### Part 4 — Generated Proof Artifacts (12 files in `generated/`)
+### Part 4 — Generated Proof Artifacts (11 files in `generated/`)
 
 | # | File |
 |---|------|
-| 1 | `support-readiness-report.json` |
-| 2 | `support-bundle-coverage.json` |
-| 3 | `support-redaction-coverage.json` |
-| 4 | `support-expiry-policy-report.json` |
-| 5 | `support-escalation-coverage.json` |
-| 6 | `support-session-traceability.json` |
-| 7 | `support-runbook-linkage.json` |
-| 8 | `support-kill-switch-suggestion-coverage.json` |
-| 9 | `customer-safe-diagnostics-export-report.json` |
-| 10 | `environment-fingerprint-coverage.json` |
-| 11 | `runtime-crash-pack-coverage.json` |
-| 12 | `integration-health-pack-coverage.json` |
+| 1 | `recovery-architecture-closure-report.json` |
+| 2 | `runbook-execution-model.json` |
+| 3 | `recovery-dependency-graph.json` |
+| 4 | `recovery-metrics-report.json` |
+| 5 | `runbook-freshness-report.json` |
+| 6 | `recovery-simulation-coverage.json` |
+| 7 | `recovery-operator-confirmation-coverage.json` |
+| 8 | `recovery-postmortem-coverage.json` |
+| 9 | `recovery-system-coverage.json` |
+| 10 | `runbook-coverage-gaps.json` |
+| 11 | `recovery-automation-safety-report.json` |
 
 All generated by the validator script in a single pass.
 
 ### Part 5 — Integration
 
-1. Register `support-platform-coverage` as a BLOCK gate in `check-os-release-readiness.ts` REQUIRED_GATES
-2. Update `src/lib/support/index.ts` barrel with all new exports
+1. Register `recovery-architecture-closure` as a BLOCK gate in `check-os-release-readiness.ts` REQUIRED_GATES
+2. Update `src/lib/operations/index.ts` barrel with all new exports
+3. Recovery engine wraps existing `runbook-drill-status.ts` for DB persistence of drill results
+4. System coverage map consumes existing `runbook-subsystem-map.ts` for mandatory subsystem list
+5. Freshness policy consumes existing `runbook-drill-status.ts` for last-drilled timestamps
 
 ### Part 6 — Key Design Decisions
 
-- **Single builder pattern**: `SupportBundleBuilder` is a fluent builder that accepts domain packs. No second bundle system.
-- **Redaction before output**: The builder enforces redaction as a mandatory step before `build()` returns.
-- **Incident classifier reuse**: The kill-switch suggester wraps the existing DB-backed `incident-classifier.ts` rather than duplicating classification logic.
-- **Runbook resolver reuse**: Issue linkage wraps the existing `runbook-resolver.ts` rather than reimplementing source-to-subsystem mapping.
-- **App-platform bundle wrapping**: The unified builder can include `app-support-bundle.ts` output as a pack, not replace it.
+- **Single execution engine**: The existing `recovery-execution-engine.ts` is extended, not replaced. The new `executeRecoveryWithGovernance()` wraps the existing step executor with state machine, confirmations, and metrics.
+- **Runbook registry stays in `src/lib/support/`**: The canonical runbook data stays where it is. The new operations files consume it — no second registry.
+- **Drill runner wraps drill-status**: The new `recovery-drill-runner.ts` delegates DB persistence to the existing `triggerRunbookDrill()` in `runbook-drill-status.ts`. No duplicate drill storage.
+- **Static dependency graph**: Dependencies are declared statically (not discovered at runtime) to ensure they are reviewable and auditable.
+- **Metrics are computed, not sampled**: Time-to-recovery metrics are derived from execution receipts, not from external monitoring.
 
 ### Verification
 
-- All 12 source files + 1 edge function compile with 0 errors
+- All 10 source files compile with 0 errors
 - Validator passes with GREEN
-- 12 generated artifacts produced
+- 11 generated artifacts produced
 - BLOCK gate registered in aggregator
 - Production build succeeds
 
