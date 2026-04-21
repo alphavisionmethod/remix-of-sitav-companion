@@ -4,8 +4,10 @@
 // Asserts Zod-valid responses and expected behavior.
 // ═══════════════════════════════════════════════════════════════
 
-import "https://deno.land/std@0.224.0/dotenv/load.ts";
+import { loadSync } from "https://deno.land/std@0.224.0/dotenv/mod.ts";
 import { assertEquals, assertExists } from "https://deno.land/std@0.224.0/assert/mod.ts";
+
+try { loadSync({ allowEmptyValues: true, export: true }); } catch { /* ok if .env missing */ }
 
 const SUPABASE_URL = Deno.env.get("VITE_SUPABASE_URL") ?? Deno.env.get("SUPABASE_URL")!;
 const ANON_KEY = Deno.env.get("VITE_SUPABASE_PUBLISHABLE_KEY") ?? Deno.env.get("SUPABASE_ANON_KEY")!;
