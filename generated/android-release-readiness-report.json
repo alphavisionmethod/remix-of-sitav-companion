@@ -1,0 +1,41 @@
+{
+  "generatedAt": "2026-04-21T16:44:13.446Z",
+  "gate": "android-release-readiness",
+  "target": "android",
+  "ok": false,
+  "errorCount": 4,
+  "warningCount": 2,
+  "verdict": "RED",
+  "issues": [
+    {
+      "severity": "error",
+      "area": "capacitor-config",
+      "message": "No capacitor.config.ts or capacitor.config.json found"
+    },
+    {
+      "severity": "error",
+      "area": "dependencies",
+      "message": "Missing required dependency: @capacitor/core"
+    },
+    {
+      "severity": "error",
+      "area": "dependencies",
+      "message": "Missing required dependency: @capacitor/cli"
+    },
+    {
+      "severity": "error",
+      "area": "dependencies",
+      "message": "Missing required dependency: @capacitor/android"
+    },
+    {
+      "severity": "warning",
+      "area": "android-platform",
+      "message": "android/ directory not found — run 'npx cap add android' before building"
+    },
+    {
+      "severity": "warning",
+      "area": "signing",
+      "message": "android/gradle.properties not found — signing config may be missing"
+    }
+  ]
+}
