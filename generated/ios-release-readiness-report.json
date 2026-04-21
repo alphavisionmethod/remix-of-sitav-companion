@@ -1,0 +1,41 @@
+{
+  "generatedAt": "2026-04-21T16:44:09.347Z",
+  "gate": "ios-release-readiness",
+  "target": "ios",
+  "ok": false,
+  "errorCount": 4,
+  "warningCount": 2,
+  "verdict": "RED",
+  "issues": [
+    {
+      "severity": "error",
+      "area": "capacitor-config",
+      "message": "No capacitor.config.ts or capacitor.config.json found — Capacitor not initialized"
+    },
+    {
+      "severity": "error",
+      "area": "dependencies",
+      "message": "Missing required dependency: @capacitor/core"
+    },
+    {
+      "severity": "error",
+      "area": "dependencies",
+      "message": "Missing required dependency: @capacitor/cli"
+    },
+    {
+      "severity": "error",
+      "area": "dependencies",
+      "message": "Missing required dependency: @capacitor/ios"
+    },
+    {
+      "severity": "warning",
+      "area": "ios-platform",
+      "message": "ios/ directory not found — run 'npx cap add ios' before building"
+    },
+    {
+      "severity": "warning",
+      "area": "signing",
+      "message": "ios/App/App/Info.plist not found — iOS project may not be set up"
+    }
+  ]
+}
