@@ -67,6 +67,7 @@ export interface OnboardingState {
   multiClient: boolean;
   // First wins
   selectedFirstWins: string[];
+  businessPriorities: string[];
 }
 
 export const defaultOnboardingState: OnboardingState = {
@@ -114,6 +115,7 @@ export const defaultOnboardingState: OnboardingState = {
   multiBrand: false,
   multiClient: false,
   selectedFirstWins: [],
+  businessPriorities: [],
 };
 
 export interface ScreenProps {
@@ -126,6 +128,7 @@ export interface ScreenProps {
 export const STAGES = [
   { id: "ceremony", label: "Welcome", chapter: "Formation" },
   { id: "identity", label: "Business Identity", chapter: "Formation" },
+  { id: "priorities", label: "Priorities", chapter: "Formation" },
   { id: "revenue_model", label: "Revenue Model", chapter: "Engine" },
   { id: "acquisition", label: "Acquisition", chapter: "Engine" },
   { id: "conversion", label: "Conversion", chapter: "Engine" },

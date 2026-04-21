@@ -18,6 +18,7 @@ import { useBusinessOnboarding } from "@/hooks/useBusinessOnboarding";
 
 import CeremonyScreen from "./screens/CeremonyScreen";
 import IdentityScreen from "./screens/IdentityScreen";
+import PrioritiesScreen from "./screens/PrioritiesScreen";
 import RevenueModelScreen from "./screens/RevenueModelScreen";
 import AcquisitionScreen from "./screens/AcquisitionScreen";
 import ConversionScreen from "./screens/ConversionScreen";
@@ -40,6 +41,7 @@ import RevealScreen from "./screens/RevealScreen";
 const screenMap: Record<StageId, React.ComponentType<any>> = {
   ceremony: CeremonyScreen,
   identity: IdentityScreen,
+  priorities: PrioritiesScreen,
   revenue_model: RevenueModelScreen,
   acquisition: AcquisitionScreen,
   conversion: ConversionScreen,
