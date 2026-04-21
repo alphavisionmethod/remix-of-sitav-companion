@@ -111,6 +111,98 @@ const StatCard = ({ label, value }: { label: string; value: string }) => (
   </div>
 );
 
+/* ── Portrait Tab ── */
+const PortraitTab = ({ advisor }: { advisor: AdvisorConfig }) => {
+  const { getPortraitUrl, uploadPortrait, removePortrait, uploading } = useAdvisorPortraits();
+  const advisorId = advisor.advisorId || advisor.domain;
+  const customUrl = getPortraitUrl(advisorId);
+
+  const handleUpload = () => {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = "image/png,image/jpeg,image/webp";
+    input.onchange = async () => {
+      const file = input.files?.[0];
+      if (!file) return;
+      await uploadPortrait(advisorId, file);
+    };
+    input.click();
+  };
+
+  const handleRemove = async () => {
+    await removePortrait(advisorId);
+  };
+
+  return (
+    <div className="space-y-5 mt-4">
+      {/* Preview */}
+      <div className="flex flex-col items-center gap-4 py-4">
+        <div className="relative">
+          <AdvisorPortrait
+            domain={advisor.domain}
+            name={advisor.name}
+            avatarUrl={customUrl || undefined}
+            status={advisor.status}
+            size="xl"
+          />
+          {customUrl && (
+            <span className="absolute -top-1 -right-1 text-[8px] font-bold bg-primary text-primary-foreground px-1.5 py-0.5 rounded-full">
+              Custom
+            </span>
+          )}
+        </div>
+        <div className="text-center">
+          <p className="text-sm font-semibold text-foreground">{advisor.name}</p>
+          <p className="text-[10px] text-muted-foreground mt-0.5">
+            {customUrl ? "Custom portrait active" : "Using default portrait"}
+          </p>
+        </div>
+      </div>
+
+      {/* Actions */}
+      <div className="space-y-2">
+        <Button
+          variant="outline"
+          size="sm"
+          className="w-full text-xs gap-2"
+          onClick={handleUpload}
+          disabled={uploading}
+        >
+          {uploading ? (
+            <RefreshCw className="h-3 w-3 animate-spin" />
+          ) : (
+            <Upload className="h-3 w-3" />
+          )}
+          {customUrl ? "Replace Portrait" : "Upload Custom Portrait"}
+        </Button>
+
+        {customUrl && (
+          <Button
+            variant="ghost"
+            size="sm"
+            className="w-full text-xs gap-2 text-destructive hover:text-destructive"
+            onClick={handleRemove}
+          >
+            <Trash2 className="h-3 w-3" />
+            Remove Custom Portrait
+          </Button>
+        )}
+      </div>
+
+      {/* Guidelines */}
+      <div className="rounded-lg bg-muted/30 p-3 space-y-1.5">
+        <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">Portrait Guidelines</p>
+        <ul className="text-[10px] text-muted-foreground/80 space-y-1 list-disc list-inside">
+          <li>PNG, JPG, or WebP format</li>
+          <li>Maximum 5 MB file size</li>
+          <li>Between 64×64 and 2048×2048 pixels</li>
+          <li>Square images work best</li>
+        </ul>
+      </div>
+    </div>
+  );
+};
+
 /* ── Confidence Gauge SVG ── */
 const ConfidenceGauge = ({ value }: { value: number }) => {
   const radius = 50;
