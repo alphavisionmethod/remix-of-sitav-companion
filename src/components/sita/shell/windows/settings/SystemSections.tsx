@@ -211,7 +211,7 @@ function GeneralContentFull() {
       <NovaCard>
         <VStack spacing="tight">
           <SectionHeader title="Everyday Preferences" description="Core system-wide defaults" />
-          <SettingRow label="Dark Mode" description="Use the system-wide dark theme across SITA OS" icon={<Moon className="h-3.5 w-3.5" />}>
+          <SettingRow label="Dark Mode" description={<>Use the system-wide dark theme across SITA OS <ManagedBadge source="Appearance" /></>} icon={<Moon className="h-3.5 w-3.5" />}>
             <NovaToggle checked={darkMode} onChange={toggleDark} />
           </SettingRow>
           <Divider />
@@ -219,7 +219,7 @@ function GeneralContentFull() {
             <NovaToggle checked={uiSounds} onChange={setUiSounds} />
           </SettingRow>
           <Divider />
-          <SettingRow label="Reduced Motion" description="Minimize animations and motion across the interface" icon={<Eye className="h-3.5 w-3.5" />}>
+          <SettingRow label="Reduced Motion" description={<>Minimize animations and motion across the interface <ManagedBadge source="Accessibility" /></>} icon={<Eye className="h-3.5 w-3.5" />}>
             <NovaToggle checked={reducedMotion} onChange={setReducedMotion} />
           </SettingRow>
           <Divider />
