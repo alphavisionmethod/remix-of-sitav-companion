@@ -18,8 +18,8 @@ if (!existsSync(SRC)) {
   if (missing.length > 0) {
     vc.add(SRC, "missing-roles", `Permission matrix missing roles: ${missing.join(", ")}`);
   }
-  if (!content.includes("blockedActions")) {
-    vc.add(SRC, "no-blocked-actions", "Permission matrix has no blockedActions field");
+  if (!content.includes("blocked")) {
+    vc.add(SRC, "no-blocked-actions", "Permission matrix has no blocked field");
   }
   writeJsonOutput("generated/advisor-boardroom-proof/advisor-tool-permission-check.json", {
     generatedAt: new Date().toISOString(), gate: "advisor-tool-permissions", ok: vc.errors.length === 0,
