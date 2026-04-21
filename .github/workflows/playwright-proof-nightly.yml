@@ -7,14 +7,17 @@ name: Playwright Proof (Nightly)
 
 on:
   schedule:
-    - cron: '0 6 * * *'   # 6am UTC
-    - cron: '0 18 * * *'  # 6pm UTC
+    - cron: '30 5 * * *'  # 5:30am UTC (staggered from customer-journey at 6am/6pm)
+    - cron: '30 17 * * *' # 5:30pm UTC
   workflow_dispatch:
     inputs:
       subset:
         description: 'Test subset (leave empty for all)'
         required: false
         default: ''
+
+permissions:
+  contents: read
 
 env:
   NODE_VERSION: "20"
@@ -23,6 +26,7 @@ jobs:
   nightly-proof:
     name: Nightly Behavioral Proof
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
 

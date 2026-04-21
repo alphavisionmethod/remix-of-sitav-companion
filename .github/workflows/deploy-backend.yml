@@ -6,6 +6,9 @@ on:
       - "backend/edge-functions/**"
       - "supabase/functions/**"
 
+permissions:
+  contents: read
+
 concurrency:
   group: deploy-backend-${{ github.ref }}
   cancel-in-progress: false
@@ -13,6 +16,7 @@ concurrency:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
       

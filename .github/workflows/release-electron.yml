@@ -1,144 +1,34 @@
-# ═══════════════════════════════════════════════════════════════
-# SITA OS — Electron Desktop Release Pipeline
-# Cross-platform matrix build → tar.gz / zip artifacts.
-# ═══════════════════════════════════════════════════════════════
-name: Release · Electron
+# ═══════════════════════════════════════════════════════════════════
+# SITA OS — Release · Electron (CONSOLIDATED)
+# This workflow is now SUPERSEDED by desktop-build.yml which handles
+# the full cross-platform matrix build with signing and manifests.
+# Kept as a thin redirect to avoid breaking existing tag-based refs.
+# ═══════════════════════════════════════════════════════════════════
+name: "Release · Electron (→ Desktop Matrix)"
 
 on:
   workflow_dispatch:
-  push:
-    tags:
-      - "v*-desktop"
-      - "v*"
+
+permissions:
+  contents: read
+
+permissions:
+  contents: read
 
 concurrency:
-  group: release-electron-${{ github.ref }}
-  cancel-in-progress: false
+  group: release-electron-redirect-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  build-electron:
-    name: Build Electron (${{ matrix.platform }})
-    runs-on: ${{ matrix.os }}
-    timeout-minutes: 60
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - platform: linux
-            os: ubuntu-latest
-            arch: x64
-          - platform: darwin
-            os: macos-14
-            arch: x64
-          - platform: win32
-            os: windows-latest
-            arch: x64
+  redirect:
+    name: Redirect to canonical desktop-build
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
     steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-          cache: npm
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Verify launch gate
-        shell: bash
+      - name: Notice
         run: |
-          if [ -f generated/ci-launch-gate-report.json ]; then
-            STATE=$(node -e "console.log(JSON.parse(require('fs').readFileSync('generated/ci-launch-gate-report.json','utf-8')).launch_state || 'unknown')")
-            echo "Launch state: $STATE"
-            if [ "$STATE" = "blocked" ]; then
-              echo "::warning::Launch gate is blocked — proceeding with desktop build at lower confidence"
-            fi
-          fi
-
-      - name: Build web bundle
-        run: npm run build
-        env:
-          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL || 'http://localhost:8000' }}
-          VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY || 'dummy' }}
-          VITE_SUPABASE_PROJECT_ID: ${{ secrets.VITE_SUPABASE_PROJECT_ID || 'ci' }}
-
-      - name: Package Electron
-        shell: bash
-        env:
-          PLATFORM: ${{ matrix.platform }}
-          ARCH: ${{ matrix.arch }}
-        run: |
-          if [ -f scripts/release/desktop/build-electron.sh ]; then
-            bash scripts/release/desktop/build-electron.sh
-          else
-            npx --yes @electron/packager . "SITA-OS" \
-              --platform="$PLATFORM" --arch="$ARCH" \
-              --out=electron-release --overwrite \
-              --ignore='node_modules' --ignore='^/src' --ignore='^/public' --ignore='^/electron-release'
-          fi
-
-      - name: Archive (linux/macos)
-        if: ${{ matrix.platform != 'win32' }}
-        shell: bash
-        run: |
-          mkdir -p generated
-          OUT_DIR=$(ls -d electron-release/SITA-OS-* 2>/dev/null | head -n1 || true)
-          if [ -n "$OUT_DIR" ]; then
-            tar czf "generated/SITA-OS-${{ matrix.platform }}-${{ matrix.arch }}.tar.gz" -C "$(dirname $OUT_DIR)" "$(basename $OUT_DIR)"
-          else
-            echo "::warning::No Electron output dir found"
-          fi
-
-      - name: Archive (windows)
-        if: ${{ matrix.platform == 'win32' }}
-        shell: pwsh
-        run: |
-          New-Item -ItemType Directory -Force -Path generated | Out-Null
-          $dir = Get-ChildItem electron-release -Directory | Select-Object -First 1
-          if ($dir) {
-            Compress-Archive -Path $dir.FullName -DestinationPath "generated/SITA-OS-win32-x64.zip" -Force
-          } else {
-            Write-Host "::warning::No Electron output dir found"
-          }
-
-      - name: Emit release manifest
-        shell: bash
-        env:
-          PLATFORM: ${{ matrix.platform }}
-          ARCH: ${{ matrix.arch }}
-        run: |
-          node -e "
-          const fs = require('fs'), crypto = require('crypto'), path = require('path');
-          const dir = 'generated';
-          const artifacts = [];
-          if (fs.existsSync(dir)) {
-            for (const f of fs.readdirSync(dir)) {
-              if (/SITA-OS-.*\.(tar\.gz|zip)$/.test(f)) {
-                const p = path.join(dir, f);
-                const buf = fs.readFileSync(p);
-                artifacts.push({ name: f, sha256: crypto.createHash('sha256').update(buf).digest('hex'), bytes: buf.length });
-              }
-            }
-          }
-          const manifest = {
-            platform: process.env.PLATFORM,
-            arch: process.env.ARCH,
-            commit: (process.env.GITHUB_SHA || 'local').slice(0, 12),
-            generatedAt: new Date().toISOString(),
-            signingStatus: 'unsigned',
-            artifacts,
-          };
-          fs.writeFileSync('generated/release-electron-' + process.env.PLATFORM + '-manifest.json', JSON.stringify(manifest, null, 2));
-          console.log(manifest);
-          "
-
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: electron-${{ matrix.platform }}-${{ matrix.arch }}
-          path: |
-            generated/SITA-OS-*.tar.gz
-            generated/SITA-OS-*.zip
-            generated/release-electron-*-manifest.json
-          retention-days: 30
-          if-no-files-found: warn
+          echo "::notice::This workflow is superseded by 'Release · Desktop Matrix' (desktop-build.yml)."
+          echo "::notice::Use workflow_dispatch on desktop-build.yml or push a v*-desktop tag."
+          echo "## ℹ️ Consolidated" >> $GITHUB_STEP_SUMMARY
+          echo "Desktop builds are now handled by **desktop-build.yml**." >> $GITHUB_STEP_SUMMARY
+          echo "Trigger via \`workflow_dispatch\` or push a \`v*-desktop\` tag." >> $GITHUB_STEP_SUMMARY

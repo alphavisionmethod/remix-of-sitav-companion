@@ -15,7 +15,12 @@ on:
         type: choice
         options: [dev, internal, beta, production]
   push:
-    tags: ["v*-desktop"]
+    tags:
+      - "v*-desktop"
+      - "v*"
+
+permissions:
+  contents: read
 
 concurrency:
   group: desktop-matrix-${{ github.ref }}

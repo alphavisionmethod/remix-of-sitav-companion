@@ -12,6 +12,9 @@ on:
     branches: [main]
     tags: ["v*"]
 
+permissions:
+  contents: read
+
 concurrency:
   group: sentry-release-${{ github.ref }}
   cancel-in-progress: false

@@ -1,0 +1,39 @@
+{
+  "generatedAt": "2026-04-21T23:36:06.820Z",
+  "totalWorkflows": 18,
+  "violations": 5,
+  "errors": 0,
+  "warnings": 5,
+  "details": [
+    {
+      "file": "ci.yml",
+      "rule": "job-timeout",
+      "detail": "Job 'pr-summary' missing timeout-minutes",
+      "severity": "warning"
+    },
+    {
+      "file": "ci.yml",
+      "rule": "excessive-failure-swallowing",
+      "detail": "17 bare '|| true' patterns — prefer continue-on-error for visibility",
+      "severity": "warning"
+    },
+    {
+      "file": "deploy.yml",
+      "rule": "job-timeout",
+      "detail": "Job 'notify' missing timeout-minutes",
+      "severity": "warning"
+    },
+    {
+      "file": "mobile-build.yml",
+      "rule": "excessive-failure-swallowing",
+      "detail": "5 bare '|| true' patterns — prefer continue-on-error for visibility",
+      "severity": "warning"
+    },
+    {
+      "file": "os-build-iso.yml",
+      "rule": "excessive-failure-swallowing",
+      "detail": "4 bare '|| true' patterns — prefer continue-on-error for visibility",
+      "severity": "warning"
+    }
+  ]
+}
