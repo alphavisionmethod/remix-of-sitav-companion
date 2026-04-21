@@ -1,0 +1,33 @@
+{
+  "generatedAt": "2026-04-21T08:36:57.713Z",
+  "gate": "command-notification-settings-coherence",
+  "ok": true,
+  "commandSurfaces": 3,
+  "notificationSurfaces": 6,
+  "settingsSections": 10,
+  "commandEntries": [
+    "global-command-palette",
+    "domain-command-palette",
+    "universal-search"
+  ],
+  "notificationEntries": [
+    "notification-center",
+    "notification-dropdown",
+    "desktop-notifications",
+    "notification-panel",
+    "in-app-toast",
+    "action-center"
+  ],
+  "settingsEntries": [
+    "appearance",
+    "accessibility",
+    "notifications",
+    "dock-launcher",
+    "privacy-security",
+    "domain-prefs",
+    "advisor-config",
+    "integrations",
+    "admin-policies",
+    "admin-safety"
+  ]
+}

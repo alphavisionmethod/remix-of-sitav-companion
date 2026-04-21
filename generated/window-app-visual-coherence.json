@@ -1,0 +1,56 @@
+{
+  "generatedAt": "2026-04-21T08:36:57.713Z",
+  "gate": "window-app-visual-coherence",
+  "ok": true,
+  "chromeSurfaceCount": 8,
+  "sharedDefaults": {
+    "defaultCornerRadius": 16,
+    "defaultToolbarHeight": 36,
+    "defaultTitleBarHeight": 40,
+    "trafficLightSize": 12,
+    "trafficLightSpacing": 8,
+    "accentStripHeight": 2
+  },
+  "surfaces": [
+    {
+      "type": "window",
+      "radius": 16,
+      "titleBar": 40
+    },
+    {
+      "type": "panel",
+      "radius": 16,
+      "titleBar": null
+    },
+    {
+      "type": "modal",
+      "radius": 16,
+      "titleBar": null
+    },
+    {
+      "type": "drawer",
+      "radius": 16,
+      "titleBar": null
+    },
+    {
+      "type": "dock",
+      "radius": 20,
+      "titleBar": null
+    },
+    {
+      "type": "menu-bar",
+      "radius": 0,
+      "titleBar": 28
+    },
+    {
+      "type": "context-menu",
+      "radius": 12,
+      "titleBar": null
+    },
+    {
+      "type": "overlay",
+      "radius": 16,
+      "titleBar": null
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "generatedAt": "2026-04-21T08:36:57.713Z",
+  "gate": "visual-tier-audit",
+  "ok": false,
+  "tierCount": 5,
+  "tiers": [
+    {
+      "id": "TIER_SYSTEM_SHELL",
+      "tokenSources": 2,
+      "shared": 5
+    },
+    {
+      "id": "TIER_PRODUCT_APP",
+      "tokenSources": 2,
+      "shared": 5
+    },
+    {
+      "id": "TIER_OPERATOR_ADMIN",
+      "tokenSources": 2,
+      "shared": 3
+    },
+    {
+      "id": "TIER_SUPPORT_TRUST",
+      "tokenSources": 3,
+      "shared": 2
+    },
+    {
+      "id": "TIER_DEGRADED_RECOVERY",
+      "tokenSources": 2,
+      "shared": 2
+    }
+  ],
+  "tokenBridgeEntries": 7,
+  "knownOverlaps": [
+    {
+      "source": "nova-os",
+      "overlapsWith": [
+        "app-window-system (shadow values)"
+      ]
+    },
+    {
+      "source": "app-window-system",
+      "overlapsWith": [
+        "nova-os (shadow values)"
+      ]
+    },
+    {
+      "source": "sita-design-tokens",
+      "overlapsWith": [
+        "domain-atmospheres (DomainAtmosphere type overlap)"
+      ]
+    },
+    {
+      "source": "domain-atmospheres",
+      "overlapsWith": [
+        "sita-design-tokens (DomainAtmosphere type overlap — known drift point)"
+      ]
+    }
+  ]
+}

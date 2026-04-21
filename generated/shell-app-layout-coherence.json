@@ -1,0 +1,58 @@
+{
+  "generatedAt": "2026-04-21T08:36:57.713Z",
+  "gate": "shell-app-layout-coherence",
+  "ok": true,
+  "layoutMergeCount": 10,
+  "patterns": [
+    {
+      "id": "landing",
+      "shellChrome": false,
+      "nav": "app"
+    },
+    {
+      "id": "auth",
+      "shellChrome": false,
+      "nav": "none"
+    },
+    {
+      "id": "onboarding",
+      "shellChrome": false,
+      "nav": "none"
+    },
+    {
+      "id": "workspace",
+      "shellChrome": true,
+      "nav": "both"
+    },
+    {
+      "id": "admin-operator",
+      "shellChrome": true,
+      "nav": "both"
+    },
+    {
+      "id": "desktop-os",
+      "shellChrome": true,
+      "nav": "shell"
+    },
+    {
+      "id": "app-detail",
+      "shellChrome": true,
+      "nav": "app"
+    },
+    {
+      "id": "settings",
+      "shellChrome": true,
+      "nav": "both"
+    },
+    {
+      "id": "marketing",
+      "shellChrome": false,
+      "nav": "app"
+    },
+    {
+      "id": "mobile-optimized",
+      "shellChrome": false,
+      "nav": "app"
+    }
+  ]
+}

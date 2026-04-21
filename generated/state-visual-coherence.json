@@ -1,0 +1,86 @@
+{
+  "generatedAt": "2026-04-21T08:36:57.713Z",
+  "gate": "state-visual-coherence",
+  "ok": true,
+  "stateCount": 13,
+  "states": [
+    {
+      "state": "loading",
+      "color": "muted",
+      "surface": "skeleton",
+      "component": "PageSkeleton / SectionSkeleton"
+    },
+    {
+      "state": "empty",
+      "color": "muted",
+      "surface": "full-page",
+      "component": "EmptyState / EmptyStateCTA"
+    },
+    {
+      "state": "error",
+      "color": "error",
+      "surface": "bordered-card",
+      "component": "ErrorBoundary"
+    },
+    {
+      "state": "blocked",
+      "color": "warning",
+      "surface": "bordered-card",
+      "component": "DegradedStatePanel"
+    },
+    {
+      "state": "degraded",
+      "color": "warning",
+      "surface": "inline-banner",
+      "component": "DegradedStateBanner"
+    },
+    {
+      "state": "recovering",
+      "color": "info",
+      "surface": "inline-banner",
+      "component": "DegradedStateBanner (recovering)"
+    },
+    {
+      "state": "ready",
+      "color": "success",
+      "surface": "muted-bg",
+      "component": "(normal render)"
+    },
+    {
+      "state": "attention-required",
+      "color": "accent",
+      "surface": "inline-banner",
+      "component": "InlineBanner"
+    },
+    {
+      "state": "stale-data",
+      "color": "muted",
+      "surface": "inline-banner",
+      "component": "StaleBanner"
+    },
+    {
+      "state": "permission-required",
+      "color": "warning",
+      "surface": "bordered-card",
+      "component": "PermissionGate"
+    },
+    {
+      "state": "evidence-required",
+      "color": "accent",
+      "surface": "bordered-card",
+      "component": "EvidenceRequiredPanel"
+    },
+    {
+      "state": "offline",
+      "color": "warning",
+      "surface": "overlay",
+      "component": "OfflineBanner"
+    },
+    {
+      "state": "maintenance",
+      "color": "info",
+      "surface": "full-page",
+      "component": "MaintenancePage"
+    }
+  ]
+}
