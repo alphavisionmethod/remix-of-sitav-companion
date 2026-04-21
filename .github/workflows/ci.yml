@@ -203,6 +203,10 @@ jobs:
         run: npx tsx scripts/root/check-service-manifest-completeness.ts
       - name: Env contract completeness
         run: npx tsx scripts/root/check-env-contract-completeness.ts
+      - name: Docker hardening
+        run: npx tsx scripts/root/check-docker-hardening.ts
+      - name: Deployment readiness gate
+        run: npx tsx scripts/root/check-deployment-readiness.ts
       - uses: actions/upload-artifact@v4
         if: always()
         with:
