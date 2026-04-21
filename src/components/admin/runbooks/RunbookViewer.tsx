@@ -10,6 +10,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { SitaCard } from "@/components/sita/SitaCard";
 import { getRunbookEntry, loadRunbookMarkdown } from "@/lib/support/runbook-loader";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 
 const SEVERITY_VARIANT: Record<string, "default" | "destructive" | "secondary" | "outline"> = {
   critical: "destructive",
@@ -160,6 +162,9 @@ export function RunbookViewer({ runbookId }: { runbookId: string }) {
         )}
       </SitaCard>
 
+      {/* Linked Alerts */}
+      <LinkedAlertsSection runbookId={runbookId} />
+
       <SitaCard className="p-6">
         {html ? (
           <article className="prose prose-sm max-w-none text-foreground" dangerouslySetInnerHTML={{ __html: html }} />
@@ -181,5 +186,53 @@ export function RunbookViewer({ runbookId }: { runbookId: string }) {
         )}
       </SitaCard>
     </div>
+  );
+}
+
+function LinkedAlertsSection({ runbookId }: { runbookId: string }) {
+  const { data: alerts = [] } = useQuery({
+    queryKey: ["runbook-linked-alerts", runbookId],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("alerts")
+        .select("id, title, severity, status, subsystem, last_seen_at")
+        .eq("runbook_id", runbookId)
+        .order("last_seen_at", { ascending: false })
+        .limit(20);
+      if (error) throw error;
+      return data ?? [];
+    },
+  });
+
+  if (alerts.length === 0) return null;
+
+  const sevColor: Record<string, string> = {
+    critical: "text-red-500", high: "text-orange-500", medium: "text-amber-500", low: "text-blue-500",
+  };
+
+  return (
+    <SitaCard className="p-6">
+      <h2 className="text-sm font-semibold mb-3 flex items-center gap-2">
+        <AlertTriangle className="h-4 w-4 text-amber-500" /> Linked Alerts ({alerts.length})
+      </h2>
+      <div className="space-y-1.5">
+        {alerts.map((a: any) => (
+          <Link
+            key={a.id}
+            to={`/admin/alerts?focus=${a.id}`}
+            className="flex items-center justify-between p-2 rounded hover:bg-muted/30 transition-colors text-xs"
+          >
+            <div className="flex items-center gap-2">
+              <span className={`font-medium ${sevColor[a.severity] ?? "text-muted-foreground"}`}>{a.severity}</span>
+              <span>{a.title}</span>
+            </div>
+            <div className="flex items-center gap-2 text-muted-foreground">
+              <Badge variant="outline" className="text-[9px]">{a.status}</Badge>
+              <span className="text-[10px]">{new Date(a.last_seen_at).toLocaleString()}</span>
+            </div>
+          </Link>
+        ))}
+      </div>
+    </SitaCard>
   );
 }
