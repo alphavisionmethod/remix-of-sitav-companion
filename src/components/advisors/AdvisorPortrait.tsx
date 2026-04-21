@@ -17,16 +17,16 @@ interface AdvisorPortraitProps {
 }
 
 const domainGradients: Record<AdvisorDomain, string> = {
-  money: "from-emerald-500 to-emerald-300",
-  business: "from-purple-600 to-purple-400",
-  concierge: "from-amber-500 to-amber-300",
-  growth: "from-blue-500 to-cyan-400",
-  trust: "from-teal-500 to-teal-300",
-  opportunity: "from-orange-500 to-yellow-400",
-  recovery: "from-slate-500 to-slate-400",
-  boardroom: "from-indigo-600 to-purple-500",
-  family: "from-rose-500 to-pink-400",
-  general: "from-purple-500 to-amber-400",
+  money: "from-emerald-500 to-emerald-300 dark:from-emerald-400 dark:to-emerald-200",
+  business: "from-purple-600 to-purple-400 dark:from-purple-500 dark:to-purple-300",
+  concierge: "from-amber-500 to-amber-300 dark:from-amber-400 dark:to-amber-200",
+  growth: "from-blue-500 to-cyan-400 dark:from-blue-400 dark:to-cyan-300",
+  trust: "from-teal-500 to-teal-300 dark:from-teal-400 dark:to-teal-200",
+  opportunity: "from-orange-500 to-yellow-400 dark:from-orange-400 dark:to-yellow-300",
+  recovery: "from-slate-500 to-slate-400 dark:from-slate-400 dark:to-slate-300",
+  boardroom: "from-indigo-600 to-purple-500 dark:from-indigo-500 dark:to-purple-400",
+  family: "from-rose-500 to-pink-400 dark:from-rose-400 dark:to-pink-300",
+  general: "from-purple-500 to-amber-400 dark:from-purple-400 dark:to-amber-300",
 };
 
 const sizes = {
@@ -73,7 +73,7 @@ export const AdvisorPortrait = ({
       <motion.img
           src={resolvedUrl!}
           alt={name || "Advisor"}
-          className={cn("rounded-full object-cover w-full h-full bg-card")}
+          className={cn("rounded-full object-cover w-full h-full bg-card dark:bg-card")}
           onError={() => setImgError(true)}
           whileHover={{ scale: 1.05 }}
           transition={{ type: "spring", stiffness: 300 }}

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { AdvisorAvatar } from "@/components/sita/primitives/AdvisorAvatar";
+import { AdvisorPortrait } from "./AdvisorPortrait";
 import { ConfidenceBar } from "@/components/sita/primitives/ConfidenceBar";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Users, Swords, MessageCircle, Clock, LayoutGrid, Video } from "lucide-react";
