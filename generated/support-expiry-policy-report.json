@@ -1,0 +1,11 @@
+{
+  "generatedAt": "2026-04-21T05:26:22.360Z",
+  "bundleTypesWithExpiry": 13,
+  "expiryClasses": [
+    "customer",
+    "operator",
+    "escalation",
+    "archive"
+  ],
+  "policyPresent": true
+}

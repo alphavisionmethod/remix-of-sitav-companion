@@ -1,13 +1,11 @@
 {
-  "generatedAt": "2026-04-20T21:20:30.255Z",
-  "bundleBuilderImplemented": true,
-  "bundleVersion": "1.0",
-  "redactionEnabled": true,
-  "sections": [
-    "browser",
-    "storage",
-    "timestamp",
-    "context"
-  ],
-  "file": "src/platform/support/support-bundle-builder.ts"
+  "generatedAt": "2026-04-21T05:26:22.360Z",
+  "gate": "support-platform-coverage",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "sourceFilesPresent": 12,
+  "sourceFilesRequired": 12,
+  "edgeFunctionPresent": true,
+  "issues": []
 }
