@@ -3,7 +3,7 @@
 // Single source of truth for ALL settings — 26 sections, 8 groups
 // ═══════════════════════════════════════════════════════════════
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import {
   User, Shield, Key, Settings, Palette, Monitor, Eye, Lock, Bell, Volume2,
   Wifi, Bluetooth, Cloud, Globe, Keyboard, Brain, DollarSign, BellOff,
@@ -110,6 +110,19 @@ export function SettingsWindow() {
   const [search, setSearch] = useState("");
   const Content = CONTENT[active] || ProfileContent;
   const activeSection = SECTIONS.find(s => s.id === active);
+
+  // Deep link navigation: listen for sita-settings-navigate events from DeepLink buttons
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const section = (e as CustomEvent).detail?.section;
+      if (section && CONTENT[section]) {
+        setActive(section);
+        setSearch("");
+      }
+    };
+    window.addEventListener("sita-settings-navigate", handler);
+    return () => window.removeEventListener("sita-settings-navigate", handler);
+  }, []);
 
   const filteredSections = useMemo(() => {
     if (!search.trim()) return null;

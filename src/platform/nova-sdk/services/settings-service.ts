@@ -135,6 +135,7 @@ export interface SettingsSchema {
   // General — Personalization
   "general.displayName": string;
   "general.defaultFocusDomain": "business" | "household" | "planning" | "mixed";
+  "general.quickAccessFavorites": string[];
 
   // General — Guidance
   "general.guidanceLevel": "minimal" | "standard" | "guided";
@@ -441,6 +442,7 @@ class SettingsServiceClass implements SystemService {
     // General — Personalization
     d.set("general.displayName", "");
     d.set("general.defaultFocusDomain", "mixed");
+    d.set("general.quickAccessFavorites", ["home", "dashboard", "boardroom", "finance"]);
     // General — Guidance
     d.set("general.guidanceLevel", "standard");
     d.set("general.showNewFeatureTips", true);

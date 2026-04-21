@@ -12,7 +12,7 @@ import { SettingsService } from "@/platform/nova-sdk/services/settings-service";
 import type { SettingsSchema } from "@/platform/nova-sdk/services/settings-service";
 
 export function SettingRow({ label, description, icon, children }: {
-  label: string; description?: string; icon?: React.ReactNode; children: React.ReactNode;
+  label: string; description?: React.ReactNode; icon?: React.ReactNode; children: React.ReactNode;
 }) {
   return (
     <HStack spacing="normal" justify="between" align="center" className="min-h-[36px]">
@@ -51,6 +51,7 @@ const SECTION_KEYS: Record<string, (keyof SettingsSchema)[]> = {
     "general.startupBehavior", "general.restoreLastSession", "general.reopenPanels", "general.resumePendingTasks",
     "general.navigationPreference", "general.rememberLastOpenPanels", "general.confirmBeforeLeaving", "general.openLinksIn",
     "general.displayName", "general.defaultFocusDomain",
+    "general.quickAccessFavorites",
     "general.guidanceLevel", "general.showNewFeatureTips", "general.showUpdateHighlights", "general.showSetupRecommendations",
     "general.approvalStyle",
   ],
