@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { DEMO_APPS, APP_ICON_MAP, type DemoAppId } from "./demo-data";
+import { DEMO_APPS, type DemoAppId } from "./demo-data";
+import { AppIconRenderer } from "./AppIconRenderer";
 import { cn } from "@/lib/utils";
 
 interface Props {
@@ -18,10 +19,10 @@ export function DemoDesktopIcons({ onOpen }: Props) {
             onDoubleClick={() => onOpen(app.id)}
             className="flex flex-col items-center gap-1 group">
             <div className={cn(
-              "w-14 h-14 rounded-xl flex items-center justify-center overflow-hidden bg-black/80 shadow-lg transition-all",
+              "rounded-[22%] transition-all",
               selected === app.id && "ring-2 ring-blue-400/80",
             )}>
-              <img src={APP_ICON_MAP[app.id]} alt={app.label} className="w-full h-full object-cover" loading="lazy" width={56} height={56} />
+              <AppIconRenderer appId={app.id} size={60} glowOnHover />
             </div>
             <span className={cn(
               "text-[10px] text-white/80 font-medium px-1 rounded",
