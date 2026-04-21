@@ -203,7 +203,14 @@ function GeneralContentFull() {
     const newTheme = v ? "dark" : "light";
     setTheme(newTheme as any);
     document.documentElement.classList.toggle("dark", v);
+    trackSettingChange("appearance.theme", darkMode ? "dark" : "light", newTheme);
   }, [setTheme]);
+
+  // Analytics-wrapped setters
+  const trackAndSet = useCallback(<T,>(key: string, setter: (v: T) => void, oldVal: T) => (newVal: T) => {
+    setter(newVal);
+    trackSettingChange(key, oldVal, newVal);
+  }, []);
 
   return (
     <VStack spacing="tight">
