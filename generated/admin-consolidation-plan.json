@@ -1,0 +1,46 @@
+{
+  "generatedAt": "2026-04-21T00:00:00.000Z",
+  "generatedBy": "admin-consolidation-explorer",
+  "totalAdminPages": 12,
+  "summary": "Analyzed 12 admin surfaces. 2 merge candidates, 1 deprecation, 1 archive.",
+  "recommendations": [
+    {
+      "sourceId": "trust-security",
+      "sourceRoute": "/admin/trust-security",
+      "action": "merge",
+      "targetId": "verification-center",
+      "targetRoute": "/admin/verification",
+      "reason": "Trust & Security overlaps significantly with Verification Center (shared data sources, similar domain). Merge tabs into the more-used surface.",
+      "impactLevel": "medium",
+      "breakingChange": true
+    },
+    {
+      "sourceId": "environments-panel",
+      "sourceRoute": "/admin/environments",
+      "action": "deprecate",
+      "targetId": "release-center",
+      "targetRoute": "/admin/releases",
+      "reason": "Environments Panel used monthly and overlaps with Release Center. Deprecate in favor of consolidated view.",
+      "impactLevel": "low",
+      "breakingChange": false
+    },
+    {
+      "sourceId": "alerts-center",
+      "sourceRoute": "/admin/alerts",
+      "action": "merge",
+      "targetId": "health-dashboard",
+      "targetRoute": "/admin/health",
+      "reason": "Alerts Center shares operational domain and data sources with Health Dashboard. Consolidate alert tabs into Health.",
+      "impactLevel": "medium",
+      "breakingChange": true
+    }
+  ],
+  "routeRemaps": [
+    { "oldRoute": "/admin/trust-security", "newRoute": "/admin/verification", "redirectType": "permanent" },
+    { "oldRoute": "/admin/environments", "newRoute": "/admin/releases", "redirectType": "temporary" }
+  ],
+  "keepCount": 9,
+  "mergeCount": 2,
+  "archiveCount": 0,
+  "deprecateCount": 1
+}
