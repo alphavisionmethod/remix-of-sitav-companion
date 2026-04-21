@@ -25,6 +25,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { DEMO_COMPLIANCE_ITEMS, DEMO_DEPLOYMENTS, DEMO_ENT_CAPABILITIES as DEMO_CAPABILITIES, DEMO_ROLES, DEMO_SLA_METRICS, DEMO_TEAM_MEMBERS } from "@/data/seed/enterprise";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useEffect } from "react";
 
 
 
@@ -81,7 +82,29 @@ const EnterpriseControlPlane = () => {
 
   const TEAM_MEMBERS = isDemoMode ? DEMO_TEAM_MEMBERS : (realTeamMembers?.length ? realTeamMembers : DEMO_TEAM_MEMBERS);
   const COMPLIANCE_ITEMS = DEMO_COMPLIANCE_ITEMS; // Compliance is config-driven, keep as reference data
-  const SLA_METRICS = DEMO_SLA_METRICS; // SLA targets are config, not user data
+
+  // Live SLA data from sla_snapshots
+  const { data: liveSlaData } = useQuery({
+    queryKey: ["enterprise-sla-live", user?.id],
+    enabled: !!user,
+    queryFn: async () => {
+      const { data: defs } = await fromTable("sla_definitions").select("*").eq("enabled", true);
+      const { data: snaps } = await fromTable("sla_snapshots").select("*").order("computed_at", { ascending: false }).limit(100);
+      if (!defs || !snaps) return null;
+      return (defs as any[]).map((def: any) => {
+        const latest = (snaps as any[]).find((s: any) => s.sla_id === def.id);
+        return {
+          name: def.name,
+          actual: latest ? Number(latest.current_value) : def.target_value,
+          target: Number(def.target_value),
+          unit: def.unit,
+        };
+      });
+    },
+    refetchInterval: 60_000,
+  });
+
+  const SLA_METRICS = liveSlaData && liveSlaData.length > 0 ? liveSlaData : DEMO_SLA_METRICS;
   const DEPLOYMENTS = isDemoMode ? DEMO_DEPLOYMENTS : (realAuditLogs?.length ? realAuditLogs : DEMO_DEPLOYMENTS);
 
   const togglePermission = (role: string, cap: string) => {
