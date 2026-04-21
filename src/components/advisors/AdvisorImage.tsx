@@ -1,0 +1,156 @@
+// ═══════════════════════════════════════════════════════════════
+// SITA OS — Advisor Image with retry + skeleton loading
+// Gracefully handles failed loads with retry logic and shimmer.
+// ═══════════════════════════════════════════════════════════════
+
+import { useState, useCallback, useEffect } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
+import { RefreshCw, User } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/contexts/AuthContext";
+
+// Default advisor portraits
+import businessAdvisor from "@/assets/advisors/business-advisor.png";
+import moneyAdvisor from "@/assets/advisors/money-advisor.png";
+import conciergeAdvisor from "@/assets/advisors/concierge-advisor.png";
+import generalAdvisor from "@/assets/advisors/general-advisor.png";
+import trustAdvisor from "@/assets/advisors/trust-advisor.png";
+import growthAdvisor from "@/assets/advisors/growth-advisor.png";
+import familyAdvisor from "@/assets/advisors/family-advisor.png";
+import opportunityAdvisor from "@/assets/advisors/opportunity-advisor.png";
+import recoveryAdvisor from "@/assets/advisors/recovery-advisor.png";
+import boardroomAdvisor from "@/assets/advisors/boardroom-advisor.png";
+
+export type AdvisorDomain =
+  | "business" | "money" | "concierge" | "general" | "trust"
+  | "growth" | "family" | "opportunity" | "recovery" | "boardroom";
+
+const DEFAULT_PORTRAITS: Record<AdvisorDomain, string> = {
+  business: businessAdvisor,
+  money: moneyAdvisor,
+  concierge: conciergeAdvisor,
+  general: generalAdvisor,
+  trust: trustAdvisor,
+  growth: growthAdvisor,
+  family: familyAdvisor,
+  opportunity: opportunityAdvisor,
+  recovery: recoveryAdvisor,
+  boardroom: boardroomAdvisor,
+};
+
+const MAX_RETRIES = 3;
+const RETRY_DELAYS = [1000, 2000, 4000];
+
+interface AdvisorImageProps {
+  domain: AdvisorDomain;
+  size?: "sm" | "md" | "lg" | "xl";
+  className?: string;
+  /** Override the src entirely */
+  src?: string;
+}
+
+const SIZE_MAP = {
+  sm: "h-8 w-8",
+  md: "h-12 w-12",
+  lg: "h-16 w-16",
+  xl: "h-24 w-24",
+};
+
+export function useCustomAdvisorAvatar(domain: AdvisorDomain) {
+  const { user } = useAuth();
+  const [customUrl, setCustomUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!user?.id) return;
+    const path = `${user.id}/${domain}.png`;
+    const { data } = supabase.storage
+      .from("advisor-avatars")
+      .getPublicUrl(path);
+    // Check if the file actually exists by attempting a HEAD-like fetch
+    fetch(data.publicUrl, { method: "HEAD" })
+      .then((res) => {
+        if (res.ok) setCustomUrl(data.publicUrl);
+      })
+      .catch(() => {});
+  }, [user?.id, domain]);
+
+  return customUrl;
+}
+
+export function AdvisorImage({ domain, size = "md", className, src }: AdvisorImageProps) {
+  const customUrl = useCustomAdvisorAvatar(domain);
+  const resolvedSrc = src ?? customUrl ?? DEFAULT_PORTRAITS[domain] ?? DEFAULT_PORTRAITS.general;
+
+  const [state, setState] = useState<"loading" | "loaded" | "error">("loading");
+  const [retryCount, setRetryCount] = useState(0);
+  const [currentSrc, setCurrentSrc] = useState(resolvedSrc);
+
+  // Reset when resolvedSrc changes
+  useEffect(() => {
+    setCurrentSrc(resolvedSrc);
+    setState("loading");
+    setRetryCount(0);
+  }, [resolvedSrc]);
+
+  const handleLoad = useCallback(() => setState("loaded"), []);
+
+  const handleError = useCallback(() => {
+    if (retryCount < MAX_RETRIES) {
+      const delay = RETRY_DELAYS[retryCount] ?? 4000;
+      setTimeout(() => {
+        setCurrentSrc(`${resolvedSrc}${resolvedSrc.includes("?") ? "&" : "?"}retry=${retryCount + 1}`);
+        setRetryCount((c) => c + 1);
+      }, delay);
+    } else {
+      setState("error");
+    }
+  }, [retryCount, resolvedSrc]);
+
+  const handleRetry = useCallback(() => {
+    setRetryCount(0);
+    setState("loading");
+    setCurrentSrc(`${resolvedSrc}${resolvedSrc.includes("?") ? "&" : "?"}t=${Date.now()}`);
+  }, [resolvedSrc]);
+
+  const sizeClass = SIZE_MAP[size];
+
+  if (state === "error") {
+    return (
+      <button
+        onClick={handleRetry}
+        className={cn(
+          sizeClass,
+          "rounded-full bg-muted/60 border border-border/30 flex items-center justify-center group cursor-pointer transition-colors hover:bg-muted",
+          className,
+        )}
+        title="Retry loading portrait"
+      >
+        <RefreshCw className="h-1/3 w-1/3 text-muted-foreground group-hover:text-foreground transition-colors" />
+      </button>
+    );
+  }
+
+  return (
+    <div className={cn(sizeClass, "relative rounded-full overflow-hidden", className)}>
+      {state === "loading" && (
+        <Skeleton className="absolute inset-0 rounded-full" />
+      )}
+      <img
+        src={currentSrc}
+        alt={`${domain} advisor`}
+        className={cn(
+          "h-full w-full object-cover rounded-full transition-opacity duration-300",
+          state === "loaded" ? "opacity-100" : "opacity-0",
+        )}
+        onLoad={handleLoad}
+        onError={handleError}
+        loading="lazy"
+      />
+    </div>
+  );
+}
+
+export function getDefaultPortrait(domain: AdvisorDomain): string {
+  return DEFAULT_PORTRAITS[domain] ?? DEFAULT_PORTRAITS.general;
+}
