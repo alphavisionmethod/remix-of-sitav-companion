@@ -1,0 +1,68 @@
+{
+  "generatedAt": "2026-04-21T04:52:25.190Z",
+  "gate": "truth-governance",
+  "totalGaps": 17,
+  "subsystemsWithGaps": 3,
+  "gaps": [
+    {
+      "claimId": "CLM-ADVISOR-001",
+      "claim": "Advisor layer is behaviorally closed",
+      "subsystem": "advisor-boardroom",
+      "missingProofs": [
+        "generated/advisor-boardroom-proof/advisor-confidence-gates.json",
+        "generated/advisor-boardroom-proof/advisor-persona-boundaries.json",
+        "generated/advisor-boardroom-proof/advisor-escalation-policy.json",
+        "generated/advisor-boardroom-proof/advisor-memory-aging.json",
+        "generated/advisor-boardroom-proof/advisor-debate-orchestration.json",
+        "generated/advisor-boardroom-proof/advisor-reflection-policy.json",
+        "generated/advisor-boardroom-proof/advisor-disablement-policy.json",
+        "generated/advisor-boardroom-proof/advisor-override-scopes.json",
+        "generated/advisor-boardroom-proof/advisor-diagnostic-snapshot.json",
+        "generated/advisor-boardroom-proof/advisor-edge-function-governance.json"
+      ],
+      "existingProofs": [
+        "generated/advisor-boardroom-proof/advisor-identity-closure-check.json",
+        "generated/advisor-boardroom-proof/advisor-tool-permission-check.json",
+        "generated/advisor-boardroom-proof/advisor-reversibility-check.json"
+      ],
+      "confidencePenalty": 50,
+      "impactedDimensions": [
+        "structural",
+        "behavioral",
+        "trust"
+      ]
+    },
+    {
+      "claimId": "CLM-APP-001",
+      "claim": "App Platform lifecycle is closed",
+      "subsystem": "app-platform",
+      "missingProofs": [
+        "generated/app-identity-closure-report.json",
+        "generated/app-lifecycle-coverage-report.json"
+      ],
+      "existingProofs": [],
+      "confidencePenalty": 10,
+      "impactedDimensions": [
+        "structural",
+        "behavioral"
+      ]
+    },
+    {
+      "claimId": "CLM-MOBILE-001",
+      "claim": "Mobile is honestly classified as out-of-scope",
+      "subsystem": "mobile-distribution",
+      "missingProofs": [
+        "generated/mobile-scope-closure/mobile-native-out-of-scope-truth-report.json",
+        "generated/mobile-scope-closure/no-active-native-mobile-claims-report.json",
+        "generated/mobile-scope-closure/install-page-mobile-honesty-report.json",
+        "generated/mobile-scope-closure/mobile-manifest-archive-classification-report.json",
+        "generated/mobile-scope-closure/generated-mobile-truth-consistency-report.json"
+      ],
+      "existingProofs": [],
+      "confidencePenalty": 25,
+      "impactedDimensions": [
+        "distribution"
+      ]
+    }
+  ]
+}

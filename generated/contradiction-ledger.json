@@ -1,0 +1,148 @@
+{
+  "generatedAt": "2026-04-21T04:52:25.190Z",
+  "gate": "truth-governance",
+  "totalContradictions": 7,
+  "openCount": 3,
+  "mitigatedCount": 1,
+  "acceptedCount": 3,
+  "closedCount": 0,
+  "hasUnmitigatedHighSeverity": true,
+  "entries": [
+    {
+      "contradictionId": "CTR-001",
+      "title": "GREEN release vs Apple notarization pending",
+      "description": "Release readiness reports GREEN but macOS desktop distribution requires Apple notarization which is not yet completed. Electron builds cannot be distributed via standard macOS channels without notarization.",
+      "involvedClaims": [
+        "CLM-DIST-001",
+        "CLM-ELECTRON-001"
+      ],
+      "conflictingEvidence": [
+        "generated/electron-signing-readiness-report.json"
+      ],
+      "impactedDimensions": [
+        "distribution"
+      ],
+      "severity": "high",
+      "owner": "platform-engineering",
+      "mitigationPath": "Complete Apple Developer enrollment and notarization workflow. Gate electron-signing-readiness already tracks this. Distribution verdict must remain DISTRIBUTION_BLOCKED until resolved.",
+      "status": "open",
+      "lastVerified": "2026-04-21T04:52:25.189Z"
+    },
+    {
+      "contradictionId": "CTR-002",
+      "title": "GREEN integration vs OAuth tokens unencrypted at rest",
+      "description": "Connector OAuth integration reports GREEN but token encryption at rest (AES-256-GCM) is defined in policy but not yet enforced at the database layer. Tokens are stored in connector_tokens table without column-level encryption.",
+      "involvedClaims": [
+        "CLM-TRUST-001",
+        "CLM-OAUTH-001"
+      ],
+      "conflictingEvidence": [
+        "generated/oauth-security-closure-report.json"
+      ],
+      "impactedDimensions": [
+        "trust"
+      ],
+      "severity": "high",
+      "owner": "security-engineering",
+      "mitigationPath": "Implement pgcrypto column-level encryption for access_token and refresh_token columns in connector_tokens. Update oauth-security-closure validator to verify encryption. Trust verdict must show TRUST_GAP_OPEN until resolved.",
+      "status": "open",
+      "lastVerified": "2026-04-21T04:52:25.189Z"
+    },
+    {
+      "contradictionId": "CTR-003",
+      "title": "GREEN OS vs E2E boot validation roadmap-only",
+      "description": "OS readiness reports GREEN but end-to-end boot validation (QEMU/ISO boot → login → shell) is classified as roadmap/deferred. No actual boot-to-login E2E test has executed in CI.",
+      "involvedClaims": [
+        "CLM-OS-001",
+        "CLM-BEHAVIORAL-001"
+      ],
+      "conflictingEvidence": [
+        "generated/qemu-vm-readiness-report.json"
+      ],
+      "impactedDimensions": [
+        "behavioral"
+      ],
+      "severity": "medium",
+      "owner": "os-engineering",
+      "mitigationPath": "Implement CI-based QEMU boot validation or explicitly downgrade OS behavioral readiness to BEHAVIORALLY_PARTIAL. Structural readiness is unaffected.",
+      "status": "open",
+      "lastVerified": "2026-04-21T04:52:25.189Z"
+    },
+    {
+      "contradictionId": "CTR-004",
+      "title": "GREEN frontend vs 13 duplicate component families",
+      "description": "Frontend structural readiness reports GREEN but 13 component families have duplicate implementations (e.g., multiple card components, multiple modal implementations). This inflates component count and creates maintenance burden.",
+      "involvedClaims": [
+        "CLM-FRONTEND-001"
+      ],
+      "conflictingEvidence": [
+        "generated/component-canonicalization-report.json"
+      ],
+      "impactedDimensions": [
+        "structural"
+      ],
+      "severity": "low",
+      "owner": "frontend-engineering",
+      "mitigationPath": "Consolidate duplicate families via component-canonicalization validator. Structural score receives 5-point penalty per unresolved duplicate family but does not block release.",
+      "status": "accepted",
+      "lastVerified": "2026-04-21T04:52:25.189Z"
+    },
+    {
+      "contradictionId": "CTR-005",
+      "title": "GREEN frontend vs 12 dead pages",
+      "description": "Frontend readiness reports GREEN but 12 pages are classified as dead (no inbound navigation, no route-guard, orphaned). These pages consume bundle size and create confusion.",
+      "involvedClaims": [
+        "CLM-FRONTEND-002"
+      ],
+      "conflictingEvidence": [
+        "generated/no-shell-only-production-pages-report.json"
+      ],
+      "impactedDimensions": [
+        "structural"
+      ],
+      "severity": "low",
+      "owner": "frontend-engineering",
+      "mitigationPath": "Remove or archive dead pages. Validator no-shell-only-production-pages tracks this. 2-point structural penalty per dead page, non-blocking.",
+      "status": "accepted",
+      "lastVerified": "2026-04-21T04:52:25.189Z"
+    },
+    {
+      "contradictionId": "CTR-006",
+      "title": "GREEN mobile vs distribution-blocked (archived)",
+      "description": "Mobile scope is archived and honestly classified as out-of-scope, but legacy mobile readiness claims may still appear in generated artifacts. Distribution dimension must show DISTRIBUTION_BLOCKED for mobile subsystem.",
+      "involvedClaims": [
+        "CLM-MOBILE-001"
+      ],
+      "conflictingEvidence": [
+        "generated/mobile-scope-closure/mobile-native-out-of-scope-truth-report.json"
+      ],
+      "impactedDimensions": [
+        "distribution"
+      ],
+      "severity": "medium",
+      "owner": "platform-engineering",
+      "mitigationPath": "Mobile scope closure gates (5 BLOCK) enforce honest classification. Mobile distribution verdict is explicitly DISTRIBUTION_BLOCKED. No action needed unless mobile is re-scoped.",
+      "status": "mitigated",
+      "lastVerified": "2026-04-21T04:52:25.189Z"
+    },
+    {
+      "contradictionId": "CTR-007",
+      "title": "GREEN aggregate vs 4,252 advisory warnings",
+      "description": "Release aggregator reports GREEN (all BLOCK gates pass) but 4,252 advisory warnings exist across WARN-tier validators. This volume of advisories may mask emerging structural or behavioral issues.",
+      "involvedClaims": [
+        "CLM-RELEASE-001"
+      ],
+      "conflictingEvidence": [
+        "generated/os-release-readiness-report.json"
+      ],
+      "impactedDimensions": [
+        "operational"
+      ],
+      "severity": "medium",
+      "owner": "release-engineering",
+      "mitigationPath": "Advisory interpretation policy defines thresholds: >5000 advisories forces CONDITIONALLY_READY, >2000 adds operational caveat. Current 4,252 triggers caveat but not downgrade. Warn-ratchet prevents growth.",
+      "status": "accepted",
+      "lastVerified": "2026-04-21T04:52:25.189Z"
+    }
+  ]
+}
