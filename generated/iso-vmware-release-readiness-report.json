@@ -1,0 +1,10 @@
+{
+  "generatedAt": "2026-04-21T16:44:01.898Z",
+  "gate": "iso-vmware-release-readiness",
+  "target": "iso-vmware",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "verdict": "GREEN",
+  "issues": []
+}
