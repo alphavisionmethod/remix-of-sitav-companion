@@ -9,7 +9,9 @@ import { useNavigate } from "react-router-dom";
 import { Heart, TrendingUp, Shield, Wallet, Calendar, Users, ArrowRight, Loader2 } from "lucide-react";
 import { useMobileHomePulse, useMobileHomeQuickActions, useMobileHomeActivity } from "@/hooks/use-mobile-data";
 
-const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
+import type { LucideIcon } from "lucide-react";
+
+const ICON_MAP: Record<string, LucideIcon> = {
   Heart, TrendingUp, Shield, Wallet, Calendar, Users,
 };
 
