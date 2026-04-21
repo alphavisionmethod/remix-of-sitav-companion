@@ -1,74 +1,89 @@
 
 
-# Post-Onboarding Environment Shaping for Business OS
+# iOS-Inspired Desktop Icons and Widgets Redesign
 
-After completing the 21-screen business formation, nothing visibly changes in the OS. The onboarding data gets saved but is never consumed. This plan wires the onboarding output into every surface the user sees after completing formation.
+## Overview
 
----
-
-## Problem Summary
-
-1. **Broken navigation**: RevealScreen navigates to `/revenue-office/boardroom` (a page route), which does not open inside the windowed Business OS app. The user lands on a standalone page instead of their new environment.
-2. **Disconnected data**: `AdaptiveBusinessHome` reads from `useBusinessProfile()` (archetype weights), but the detailed onboarding state (business name, types, priorities, bottlenecks, revenue sources, team size, automation level, first wins) is never consumed by the home screen or any post-formation surface.
-3. **No environment shaping**: After formation, the user sees the same generic adaptive home with demo/default data. No first-win activation, no personalized modules, no priority-driven layout.
+Redesign the website demo desktop to feature vibrant, polished iOS-style app icons and add interactive desktop widgets (like the "Today" tasks widget in the reference). The icons will be generated programmatically as rich SVG-based components with bold gradients and clean glyphs, and widgets will appear on the desktop surface alongside the existing icon grid.
 
 ---
 
-## 1. Fix Post-Onboarding Navigation
+## Changes
 
-**Files modified:** `RevealScreen.tsx`, `BusinessAppShell.tsx`
+### 1. Generate New App Icons as SVG Components
 
-- Remove the `navigate("/revenue-office/boardroom")` calls from RevealScreen. Instead, call `markComplete(state)` and then call the `onComplete` callback (passed through from FormationShell), which sets `formationDone = true` in BusinessAppShell, naturally revealing the main shell.
-- After `formationDone` transitions to true, set `activeModule` to `"adaptive-home"` (already the default) so the user lands on their personalized home.
-- Add a brief post-formation arrival ceremony (a 2-second fade transition with "Your Revenue Office is ready" before the home appears).
+**New file: `src/website-demo/AppIconRenderer.tsx`**
 
-## 2. Bridge Onboarding State into Business Profile
+Replace the current PNG-based icons with a React component that renders vibrant, iOS-style icons using SVG. Each icon gets:
+- Bold, saturated dual-tone gradient background (not the current dark/neon style)
+- A clean white glyph/symbol centered inside (using Lucide icons rendered in white)
+- Large rounded corners (squircle-like via `rounded-[22%]`)
+- Subtle inner shadow and highlight for depth
 
-**Files modified:** `BusinessAppShell.tsx`, `AdaptiveBusinessHome.tsx`, new hook `useOnboardingBridge.ts`
+Icon color mapping (inspired by iOS but original):
+- **Business**: Deep blue to sky-blue gradient, Briefcase glyph
+- **Finance**: Green to emerald gradient, DollarSign glyph
+- **Concierge**: Violet to magenta gradient, Sparkles glyph
+- **Boardroom**: Warm amber to orange gradient, Users glyph
+- **Investment**: Lime to green gradient, BarChart3 glyph
+- **Files**: Gold to yellow gradient, Folder glyph
+- **Notes**: Warm yellow to light amber gradient, PenLine glyph
+- **Settings**: Cool gray gradient, Settings glyph (keeping the uploaded gear as fallback)
 
-- Create `src/hooks/useOnboardingBridge.ts`: reads from `useBusinessOnboarding().savedState` and maps onboarding answers to `BusinessProfileContext` overrides:
-  - `businessTypes` array maps to archetype weight boosts (e.g., "service" type boosts service archetype)
-  - `teamSize` maps to employee-based weight
-  - `revenueSources` influences ecommerce/service/appointment weights
-  - `automationLevel` sets operating flags
-- Call this bridge in `BusinessAppShellInner` after formation completes, so the archetype engine recalculates with real onboarding data.
-- This makes `AdaptiveBusinessHome` automatically show the correct greeting, widgets, quick actions, and stat cards based on what the user told us.
+### 2. Update Desktop Icons Component
 
-## 3. Build Post-Formation Home Sections
+**Edit: `src/website-demo/DemoDesktopIcons.tsx`**
 
-**Files modified:** `AdaptiveBusinessHome.tsx`
+- Use the new `AppIconRenderer` instead of `<img>` tags
+- Increase icon size slightly (56px to 60px) for visual impact
+- Add a subtle shadow glow matching each icon's dominant color on hover
 
-Add three new sections that consume onboarding state directly:
+### 3. Update Dock Component
 
-- **Business Twin Card**: Show the business name, type, team size, revenue model, and automation level the user selected. Include an "Edit" link back to formation.
-- **Priority-Driven Module Grid**: Read `savedState.orderedPriorities` and render the top 4-6 priorities as actionable module cards (Revenue, Customers, Operations, Finance) ordered by the user's ranking. Each card links to the relevant Business OS module.
-- **First Win Activation Strip**: Read `savedState.selectedFirstWins` and show 1-3 active first-win cards with progress indicators and "Start" buttons. These are the quick wins the user chose during onboarding.
-- **Bottleneck Alerts**: Read `savedState.growthBottlenecks` and show 2-3 flagged areas as amber alert cards with "Investigate" actions linking to the relevant modules (Leak Detector, Conversion Lab, etc.).
+**Edit: `src/website-demo/DemoDock.tsx`**
 
-## 4. Calibrate Advisors from Onboarding
+- Use the same `AppIconRenderer` at 44px size
+- Remove the `bg-black/80` container since icons now carry their own gradient backgrounds
 
-**Files modified:** `AdaptiveBusinessHome.tsx`, advisor data layer
+### 4. Add Desktop Widgets
 
-- Read the onboarding `automationLevel` to set initial advisor autonomy display (show "Trust Level: Supervised" or "Trust Level: Guided" badge).
-- Read `savedState.activeAdvisors` (if populated during AdvisorActivationScreen) to show which advisors are "online" in the home header.
-- Show a mini advisor signal strip on the home page with the 2-3 most relevant advisor insights based on the user's business type and bottlenecks.
+**New file: `src/website-demo/DemoDesktopWidgets.tsx`**
 
-## 5. Persist and Hydrate on Return
+Add two glassmorphic widgets to the desktop surface (positioned on the left side, opposite the icon grid on the right):
 
-**Files modified:** `BusinessAppShell.tsx`
+**Today Widget** (inspired by reference):
+- Frosted glass card with rounded corners
+- Star icon + "Today" header with date
+- 4 task items from `CONCIERGE_DATA.tasks` with checkbox circles
+- Priority tags (color-coded)
+- Small "+" button in corner
 
-- When `onboardingCompleted` is true (returning user), hydrate the archetype bridge immediately on mount so the adaptive home is personalized from the first frame.
-- Ensure `localStorage` fallback (`sita_onboarding_state`) is read if the database fetch fails, so the experience degrades gracefully.
-- Add a "Your Business OS was shaped by your formation answers" subtle banner on the home page (dismissible) that links to re-running formation.
+**Quick Stats Widget**:
+- Compact card showing 2 KPIs from `BUSINESS_DATA.kpis` (Revenue + Pipeline)
+- Mini sparkline from `BUSINESS_DATA.chartData`
+- Frosted glass styling matching the Today widget
+
+Both widgets use the existing glassmorphic style (`rgba(20,20,30,0.65)` + backdrop blur) with `border-white/10`.
+
+### 5. Wire Widgets into Desktop
+
+**Edit: `src/website-demo/WebsiteDemo.tsx`**
+
+- Import and render `DemoDesktopWidgets` inside the desktop area, positioned at `top-10 left-6` (mirroring the icons on the right)
+
+### 6. Update Settings App Icon
+
+**Edit: `src/website-demo/apps/DemoSettingsApp.tsx`**
+
+- Use the new `AppIconRenderer` for the settings icon in the app header instead of the PNG import
 
 ---
 
-## Summary of Changes
+## Technical Details
 
-| File | Action |
-|------|--------|
-| `src/pages/revenue-office/onboarding/screens/RevealScreen.tsx` | Remove route navigation; use onComplete callback instead |
-| `src/hooks/useOnboardingBridge.ts` | New: maps onboarding state to archetype weights |
-| `src/components/sita/apps/business/BusinessAppShell.tsx` | Wire bridge, add arrival ceremony, fix post-formation flow |
-| `src/components/business/adaptive/AdaptiveBusinessHome.tsx` | Add Business Twin card, priority grid, first wins, bottleneck alerts |
+- Icons are pure React/SVG -- no image generation or external assets needed for the new style
+- The uploaded `settings.png` remains in `src/assets/app-icons/` as a fallback but the demo surface switches to the new rendered icons
+- `APP_ICON_MAP` in `demo-data.ts` stays unchanged (used elsewhere); the demo components simply stop using it for rendering
+- Widgets are static/decorative with toggle interactivity on checkboxes
+- No new dependencies required
 
