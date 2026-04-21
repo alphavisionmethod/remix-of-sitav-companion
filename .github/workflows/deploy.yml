@@ -216,6 +216,7 @@ jobs:
   notify:
     name: Deploy Summary
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     needs: [verify-ci, build-deploy-artifact, deploy-staging, deploy-production, post-deploy-smoke]
     if: always()
     steps:

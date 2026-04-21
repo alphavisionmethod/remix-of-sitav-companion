@@ -12,6 +12,7 @@ on:
     branches: [main]
   schedule:
     - cron: '0 3 * * *'
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -485,6 +486,7 @@ jobs:
   pr-summary:
     name: PR Summary
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     needs: [typecheck, lint, unit-tests, integration-tests, build, bundle-size, e2e-p0, docker-build, security-scan, architecture-validation, launch-gate]
     if: always() && github.event_name == 'pull_request'
     steps:
