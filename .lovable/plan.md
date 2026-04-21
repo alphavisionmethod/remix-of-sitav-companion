@@ -1,99 +1,105 @@
 
 
-## Update FEATURES_OS.md — Investor-Grade Showcase Additions
+## Wave 18 — Advisor Boardroom Behavioral Closure Validators
 
 ### Summary
 
-Add 7 new sections and expand 3 existing sections in the FEATURES_OS.md document with the most differentiated, investor-compelling features discovered in the codebase but not yet documented. Regenerate the file at `/mnt/documents/FEATURES_OS.md` as v2.
+The advisor and boardroom governance layer is already **comprehensively implemented** across 13 canonical policy files, a unified runtime contracts package, edge function governance, and 13 proof artifacts. No new policy files, registries, identity contracts, or governance logic need to be created — all 19 steps from the prompt are already addressed by existing canonical implementations.
 
-### New Sections to Add
+The single remaining gap is **validation scripts** — dedicated validators that verify the governance contracts are complete, consistent, and deployment-ready. Currently only `check-advisor-registry.ts` exists. This wave creates 12 focused validators in `scripts/advisors/` and registers them in the release-readiness aggregator.
 
-**Section 15 — Ambient Intelligence (The OS That Thinks While You Sleep)**
-- Ambient Context Engine: activity graph tracking page visits, dwell time, clipboard state for instant context restoration
-- Predictive Prefetch: learns navigation patterns, pre-loads likely next routes, hover-intent preloading at 100ms
-- Routine Detection: detects app co-launch sequences and time-of-day correlations, suggests multi-app routines ("Start your morning?")
-- Background Intelligence: idle-time task runner performing memory cleanup, storage pruning, system health monitoring while you are away
-- Zero-Latency Perception: `startViewTransition` API, instant visual feedback under 16ms for all interactive elements
+### Part 1 — Canonical Systems to Preserve (No Changes)
 
-**Section 16 — Self-Healing Infrastructure (The OS That Fixes Itself)**
-- Immune Controller: quarantine records, immune rules, automated recovery
-- Error Patrol: autonomous detection and triage across all domains, operator escalation board
-- Self-Healing Dashboard: real-time incident resolution tracking, healing capability map
-- Escalation Rules and Degraded Modes: automatic fallback postures when subsystems fail
-- Fleet Health Service: multi-device health monitoring and aggregate scoring
+These files are complete and require no modification:
 
-**Section 17 — Life Shock Simulator (Stress-Test Your Entire Life)**
-- Simulate financial shocks (job loss, market crash, medical emergency, divorce, lawsuit)
-- See cascading impact across Business, Money, Concierge, and Investment domains simultaneously
-- Shock Impact Reports with domain-by-domain severity and recovery timeline
-- Not a toy — used by the OS itself to pre-compute resilience scores
+**Policy Files (src/lib/advisors/):**
+- `advisor-identity-registry.ts` — 34 advisors with full governance fields
+- `advisor-persona-boundary-map.ts` — 7 high-risk advisor boundaries
+- `advisor-confidence-policy.ts` — 8 confidence gates
+- `advisor-debate-orchestrator.ts` — debate policy with consensus/majority/escalation
+- `advisor-conflict-resolution-policy.ts` — 6 conflict resolution rules
+- `advisor-disablement-policy.ts` — 6 disablement reasons with fallback behaviors
+- `advisor-memory-aging-policy.ts` — 4-layer memory aging
+- `advisor-reflection-policy-loop.ts` — reflection-to-policy adjustments
+- `advisor-override-model.ts` — 7 override scopes with audit requirements
+- `advisor-support-diagnostics.ts` — 16-field diagnostic snapshots
 
-**Section 18 — The Cinematic Experience (Beauty as a Feature)**
-- Living Wallpaper: particle-driven ambient canvas that responds to system state (calm, alert, focused, celebration)
-- Desktop Entry Ceremony: phased reveal animation (wallpaper → topbar → sidebar → content)
-- Boardroom Entry Ceremony: dramatic entrance with type-specific staging
-- War Room Entry Ceremony: immersive tactical briefing room entrance
-- Lock Screen: full OS-grade lock with PIN, biometric readiness, pending approval badges, next-event preview
-- Holographic Advisors: animated, domain-colored advisor avatars with reaction states (nod, think, concern, agree, surprise)
-- Talking Avatars: lip-sync animated advisor heads in boardroom discussions
-- Confidence Radar: real-time radar visualization of advisor agreement levels
-- Disagreement Theater: structured visual debate between advisors with resolution tracking
+**Runtime Contracts (src/lib/ai-platform/runtime/):**
+- `advisor-permission-matrix.ts` — 6-role permission matrix
+- `advisor-escalation-policy.ts` — 8 escalation rules
+- `advisor-reversibility-map.ts` — 12 action type reversibility entries
 
-**Section 19 — NLP Companion (Talk to Your OS)**
-- Natural language command processing across all domains
-- Intent parsing: "show me overdue invoices" → navigates to the right surface with the right filter
-- Inline booking flows triggered from conversation
-- Feature proposal panel from companion bar
-- Context-aware suggestions based on ambient activity graph
+**Unified Package (src/packages/advisor-runtime-contracts/):**
+- `types.ts` — AdvisorRuntimeContext combining all contracts
+- `resolver.ts` — resolveAdvisorContext() assembling full governance
+- `index.ts` — barrel re-exporting all contracts
 
-**Section 20 — Marketing, Crowdfunding, and Community**
-- Public marketing site with interactive demo (3-tier: inline loop, guided walkthrough, full sandbox)
-- Waitlist with referral mechanics
-- Beta application with automated scoring
-- Investor track with signed-token gated deal-room access
-- Crowdfunding engine with 6-tier pledge system ($25 to $25,000+)
-- Proof Wall: every donation mints a deterministic receipt-chain hash, publicly verifiable at /proof
-- "Proof over promise" — the same receipt primitive that powers the OS powers public transparency
+**Edge Function Governance:**
+- `supabase/functions/_shared/advisor-governance.ts` — consumed by 4 edge functions
 
-**Section 21 — Revenue Intelligence Deep-Dive (Investor Numbers)**
-- 10 Money Modes (Stable, Tighten, Recovery, Growth, Expansion, Debt Attack, Tax Protection, Founder Conservation, Household Protection, Launch) — each changes advisor tone, warning thresholds, reserve targets, and safe-to-spend posture
-- Growth Operating Modes with KPI tracking, automation suggestions, and transition rules
-- What Breaks Growth analysis: system-by-system fragility scoring with resilience mapping
-- Revenue Decision Theater: draft → review → approved → executed lifecycle for revenue strategy changes
-- Collections Command Center, Deal Room, Strategic Account Room, Relationship Dossier — each a full sub-application
+**Proof Artifacts (generated/advisor-boardroom-proof/):**
+- 13 proof JSON files covering all governance dimensions
 
-### Expansions to Existing Sections
+### Part 2 — Duplicates (None Found)
 
-**Section 8 — AI Advisor Council (expand)**
-- Add: Holographic Advisors with reaction animations
-- Add: Talking Avatars with lip-sync in boardroom
-- Add: Confidence Radar (canvas-rendered real-time radar)
-- Add: Disagreement Theater (structured visual AI debate)
-- Add: 5 interaction modes (Roundtable, Ask One, Synthesis, Debate, Evidence)
+No duplicate advisor registries, persona configs, or governance logic found. The `src/lib/advisors/index.ts` barrel and `src/packages/advisor-runtime-contracts/index.ts` both re-export from the same canonical sources — this is intentional layered access, not duplication.
 
-**Section 9 — Desktop Experience (expand)**
-- Add: Living Wallpaper (particle system responsive to OS state)
-- Add: Desktop Entry Ceremony (cinematic phased reveal)
-- Add: Enhanced Lock Screen (pending approvals, next event, alerts while locked)
+### Part 3 — What Will Be Created: 12 Validator Scripts
 
-**Section 14 — What Makes SITA OS Different (expand for investors)**
-- Add: "No other product simulates life shocks across domains"
-- Add: "No other product has AI advisors that visually debate each other"
-- Add: "No other product mints cryptographic receipts for every donation and every AI action using the same primitive"
-- Add: "10 financial operating modes — not one dashboard fits all"
-- Add: "Self-healing infrastructure — the OS fixes itself before you notice"
-- Add: Competitive comparison table (SITA OS vs. Notion vs. Quickbooks vs. Wealthfront vs. Monday.com — showing cross-domain synthesis as unique)
-- Add: By-the-numbers update with expanded metrics
+All validators will be created in `scripts/advisors/` following the existing `ViolationCollector` pattern used by `scripts/architecture/checks/`.
 
-### Implementation
+Each validator:
+- Inspects real source files and generated proof artifacts
+- Classifies findings as BLOCK or ADVISORY
+- Emits a generated report
+- Exits non-zero on BLOCK violations
 
-1. Write a script that generates the complete updated markdown to `/mnt/documents/FEATURES_OS.md` (overwrite v1 content with v2)
-2. Deliver as downloadable artifact
+| # | Validator | Level | What It Checks |
+|---|-----------|-------|----------------|
+| 1 | `check-advisor-identity-closure.ts` | BLOCK | Every advisor in registry has id, display name, domain scope, trust floor/ceiling, disabled fallback |
+| 2 | `check-advisor-persona-boundaries.ts` | ADVISORY | High-risk advisors (money, legal, tax, security) have explicit persona boundaries |
+| 3 | `check-advisor-tool-permissions.ts` | BLOCK | Every advisor role has a permission entry; no advisor role is unmapped |
+| 4 | `check-advisor-confidence-governance.ts` | ADVISORY | Confidence gates exist for all 8 action classes |
+| 5 | `check-advisor-escalation-coverage.ts` | ADVISORY | Escalation rules cover financial, external, low-confidence, irreversible, system-config |
+| 6 | `check-advisor-reversibility.ts` | BLOCK | All action types have reversibility classification |
+| 7 | `check-advisor-memory-aging.ts` | ADVISORY | All 4 memory layers have aging rules |
+| 8 | `check-advisor-reflection-policy-loop.ts` | ADVISORY | Reflection signals produce policy adjustments for rejection/acceptance/fitness |
+| 9 | `check-advisor-disablement-modes.ts` | ADVISORY | All 6 disablement reasons have fallback behavior |
+| 10 | `check-advisor-override-model.ts` | ADVISORY | All 7 override scopes have audit and approval requirements |
+| 11 | `check-advisor-supportability.ts` | ADVISORY | Diagnostic snapshot has all 16 fields; support bundle has 4 sections |
+| 12 | `check-boardroom-conflict-resolution.ts` | ADVISORY | Conflict resolution rules cover same-domain, cross-domain, safety, irreversible, low-confidence |
 
-### Verification
+### Part 4 — Integration
 
-- All 21+ sections present with no stubs
-- Investor-grade language throughout
-- Competitive differentiation explicit
-- Every feature traceable to real codebase components
+1. **Register in `scripts/validate-all.ts`** — add `"advisors"` category with all 12 validators
+2. **Register BLOCK validators in release-readiness aggregator** — `check-advisor-identity-closure.ts`, `check-advisor-tool-permissions.ts`, and `check-advisor-reversibility.ts` as BLOCK gates
+3. **Regenerate proof artifacts** — update timestamps in all 13 `generated/advisor-boardroom-proof/` files
+
+### Part 5 — Verification
+
+- Run all 12 validators and confirm they pass (3 BLOCK, 9 ADVISORY)
+- TypeScript build verification with 0 errors
+- No new files created in `src/lib/advisors/` or `src/packages/advisor-runtime-contracts/` (all governance is already complete)
+
+### Deployment Closure Checklist
+
+All items already satisfied by existing implementation:
+- [x] 34 advisor identities with full governance fields
+- [x] 7 high-risk persona boundaries
+- [x] 6-role permission matrix with blocked/allowed/approval categories
+- [x] Debate orchestrator with consensus/majority/escalation/tiebreaker
+- [x] 6 conflict resolution rules
+- [x] 8 confidence gates with below-threshold behaviors
+- [x] 8 escalation rules with priority and destination
+- [x] 12 action type reversibility entries
+- [x] 4-layer memory aging with promotion/expiry
+- [x] Reflection-to-policy feedback loop with 3 adjustment paths
+- [x] 6 disablement policies with auto-reenable conditions
+- [x] 7 override scopes with dual-approval requirements
+- [x] 16-field diagnostic snapshots with support bundles
+- [x] Edge function governance mirroring client contracts
+- [x] Unified runtime contracts package with resolver
+- [x] 13 proof artifacts
+- [ ] 12 dedicated validator scripts (this wave)
+- [ ] Validators registered in release-readiness aggregator (this wave)
 
