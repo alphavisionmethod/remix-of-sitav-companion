@@ -1,36 +1,49 @@
-name: Check Architecture Boundaries
+# ═══════════════════════════════════════════════════════════════════
+# SITA OS — Architecture Boundary Checks
+# Runs plane boundary and import boundary validators on PR and push.
+# Uses npm (canonical package manager for this repo).
+# ═══════════════════════════════════════════════════════════════════
+name: Architecture Boundaries
+
 on:
   pull_request:
     branches: [main, develop]
   push:
     branches: [main]
 
+permissions:
+  contents: read
+
+concurrency:
+  group: boundaries-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   boundary-check:
+    name: Boundary Validation
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
-      
-      - uses: pnpm/action-setup@v2
-        with:
-          version: 9
-      
+
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
-          cache: pnpm
-      
-      - run: pnpm install --frozen-lockfile
-      
+          node-version: "20"
+          cache: npm
+
+      - run: npm ci
+
       - name: Run architecture boundary checker
         run: npx tsx scripts/architecture/check-plane-boundaries.ts
-      
+
       - name: Run import boundary checker
         run: npx tsx scripts/check-import-boundaries.ts
-      
+
       - name: Upload boundary report
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: boundary-report
           path: generated/boundary-check-report.json
+          retention-days: 14
+          if-no-files-found: warn

@@ -1,49 +1,34 @@
-name: Build All Planes
+# ═══════════════════════════════════════════════════════════════════
+# SITA OS — Build All Planes (Future Monorepo)
+# Currently DEFERRED — the repo is a single Vite app using npm.
+# This workflow will activate when the repo migrates to a pnpm
+# workspace with per-plane build targets.
+# CI typecheck + build coverage is handled by ci.yml.
+# ═══════════════════════════════════════════════════════════════════
+name: Build All Planes (Deferred)
+
 on:
-  pull_request:
-    branches: [main, develop]
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: "Confirm monorepo migration is complete"
+        required: true
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
 
 jobs:
-  build:
+  check-readiness:
+    name: Verify Monorepo Structure
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        plane:
-          - { name: "product-shell", filter: "@sita/product-shell" }
-          - { name: "admin-console", filter: "@sita/admin-console" }
-          - { name: "founder-center", filter: "@sita/founder-center" }
-          - { name: "backend", filter: "@sita/backend" }
-          - { name: "os", filter: "@sita/os" }
+    timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
-      
-      - uses: pnpm/action-setup@v2
-        with:
-          version: 9
-      
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: pnpm
-      
-      - run: pnpm install --frozen-lockfile
-      
-      - name: Typecheck ${{ matrix.plane.name }}
-        run: pnpm --filter ${{ matrix.plane.filter }} typecheck
-      
-      - name: Build ${{ matrix.plane.name }}
-        run: pnpm --filter ${{ matrix.plane.filter }} build
-
-  typecheck-all:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v2
-        with:
-          version: 9
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: pnpm
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm run typecheck
+      - name: Check for monorepo structure
+        run: |
+          if [ ! -f "pnpm-workspace.yaml" ]; then
+            echo "::error::This workflow requires pnpm workspace. Typecheck/build runs via ci.yml for current single-app structure."
+            exit 1
+          fi
