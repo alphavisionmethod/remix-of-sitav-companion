@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { getDefaultAdvisorAvatar } from "@/lib/advisors/advisor-avatar-assets";
 import { getCachedPortraitUrl } from "@/hooks/use-advisor-portraits";
+import { getPortraitSrcSet } from "@/lib/advisors/advisor-responsive-assets";
 import { Skeleton } from "@/components/ui/skeleton";
 import { RefreshCw, Briefcase, DollarSign, Headphones, Heart, TrendingUp, Shield, Sparkles, Scale, Brain } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
@@ -55,6 +56,9 @@ const sizes = {
 };
 
 const IMG_SIZES: Record<string, number> = { sm: 32, md: 48, lg: 80, xl: 120 };
+const SIZES_ATTR: Record<string, string> = {
+  sm: "32px", md: "48px", lg: "80px", xl: "120px",
+};
 const MAX_RETRIES = 3;
 const RETRY_DELAYS = [800, 1500, 3000];
 
@@ -95,6 +99,11 @@ export const AdvisorPortrait = ({
     setRetries(0);
     setImgState("loading");
   }, []);
+
+  // Build responsive srcSet for default portraits (not custom uploads)
+  const isDefaultPortrait = !avatarUrl && (!advisorId || !getCachedPortraitUrl(advisorId));
+  const srcSet = isDefaultPortrait ? getPortraitSrcSet(domain) : undefined;
+  const sizesAttr = isDefaultPortrait ? SIZES_ATTR[size] : undefined;
 
   const imgSrc = resolvedUrl
     ? retries > 0 ? `${resolvedUrl}${resolvedUrl.includes("?") ? "&" : "?"}r=${retries}` : resolvedUrl
@@ -168,6 +177,8 @@ export const AdvisorPortrait = ({
           alt={name || "Advisor"}
           width={px}
           height={px}
+          srcSet={srcSet}
+          sizes={sizesAttr}
           className={cn(
             "rounded-full object-cover w-full h-full bg-card dark:bg-card transition-opacity duration-300",
             imgState === "loaded" ? "opacity-100" : "opacity-0"
