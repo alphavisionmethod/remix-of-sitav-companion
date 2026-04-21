@@ -97,19 +97,14 @@ function checkArtifactPipeline() {
   }
 }
 
-// ── 6. Config separation (no secrets in tracked files) ──
-function checkConfigSeparation() {
-  const sensitivePatterns = /PRIVATE_KEY|sk_live|secret_key|password\s*[:=]/i;
-  const filesToCheck = [
-    "infra/deploy/os-artifact.yaml",
-    "os/scripts/release.sh",
-  ].filter((f) => existsSync(join(ROOT, f)));
+// ── 6. Config separation (deep secret scan) ─────────────────
+import { scanForSecrets } from "../../../scripts/release/lib/secret-scanner";
 
-  for (const f of filesToCheck) {
-    const content = readFileSync(join(ROOT, f), "utf-8");
-    if (sensitivePatterns.test(content)) {
-      error("config-separation", `Potential production secrets detected in ${f} — use CI env vars`);
-    }
+function checkConfigSeparation() {
+  const findings = scanForSecrets(ROOT, ["os", "infra", "scripts"]);
+  for (const f of findings) {
+    if (f.severity === "error") error(f.area, f.message);
+    else warn(f.area, f.message);
   }
 }
 
