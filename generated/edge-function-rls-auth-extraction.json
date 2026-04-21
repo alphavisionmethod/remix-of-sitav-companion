@@ -1,0 +1,3929 @@
+{
+  "generatedAt": "2026-04-21T18:41:54.750Z",
+  "gate": "edge-function-rls-auth-extraction",
+  "ok": false,
+  "totalFunctions": 199,
+  "functionsWithIssues": 158,
+  "errorCount": 141,
+  "warningCount": 115,
+  "coverageByAuth": {
+    "unmapped": 114,
+    "jwt": 63,
+    "service-role": 14,
+    "anon": 7,
+    "api-key": 1
+  },
+  "traces": [
+    {
+      "functionName": "account-delete",
+      "filePath": "supabase/functions/account-delete/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "service-role"
+      ],
+      "dbWrites": [
+        "update(×1)",
+        "upsert(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "admin-ai-workforce-run",
+      "filePath": "supabase/functions/admin-ai-workforce-run/index.ts",
+      "declaredAuth": "jwt",
+      "declaredAdminOnly": true,
+      "detectedPatterns": [
+        "jwt-header-extract",
+        "admin-role-check",
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "jwt",
+        "admin-role",
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×6)",
+        "update(×4)",
+        "upsert(×3)"
+      ],
+      "hasUserScoping": true,
+      "issues": []
+    },
+    {
+      "functionName": "admin-api",
+      "filePath": "supabase/functions/admin-api/index.ts",
+      "declaredAuth": "jwt",
+      "declaredAdminOnly": true,
+      "detectedPatterns": [
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×7)",
+        "update(×6)",
+        "delete(×2)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "MISSING_JWT_CHECK: Declared as JWT-auth but no JWT validation found in code",
+        "MISSING_ADMIN_GUARD: Declared adminOnly but no admin role check found",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "admin-bff-gateway",
+      "filePath": "supabase/functions/admin-bff-gateway/index.ts",
+      "declaredAuth": "jwt",
+      "declaredAdminOnly": true,
+      "detectedPatterns": [
+        "admin-role-check",
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "admin-role",
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×2)",
+        "rpc(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "MISSING_JWT_CHECK: Declared as JWT-auth but no JWT validation found in code",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "admin-gateway",
+      "filePath": "supabase/functions/admin-gateway/index.ts",
+      "declaredAuth": "jwt",
+      "declaredAdminOnly": true,
+      "detectedPatterns": [
+        "jwt-getUser",
+        "admin-role-check",
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "jwt",
+        "admin-role",
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×2)",
+        "rpc(×2)"
+      ],
+      "hasUserScoping": true,
+      "issues": []
+    },
+    {
+      "functionName": "admin-intelligence",
+      "filePath": "supabase/functions/admin-intelligence/index.ts",
+      "declaredAuth": "jwt",
+      "declaredAdminOnly": true,
+      "detectedPatterns": [
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "service-role"
+      ],
+      "dbWrites": [],
+      "hasUserScoping": true,
+      "issues": [
+        "MISSING_JWT_CHECK: Declared as JWT-auth but no JWT validation found in code",
+        "MISSING_ADMIN_GUARD: Declared adminOnly but no admin role check found",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "admin-reset-user-setup",
+      "filePath": "supabase/functions/admin-reset-user-setup/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "jwt-getUser",
+        "admin-role-check",
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "jwt",
+        "admin-role",
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×1)",
+        "update(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map"
+      ]
+    },
+    {
+      "functionName": "admin-revoke-session",
+      "filePath": "supabase/functions/admin-revoke-session/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "jwt-getUser",
+        "admin-role-check",
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "jwt",
+        "admin-role",
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×1)",
+        "update(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map"
+      ]
+    },
+    {
+      "functionName": "admin-users",
+      "filePath": "supabase/functions/admin-users/index.ts",
+      "declaredAuth": "jwt",
+      "declaredAdminOnly": true,
+      "detectedPatterns": [
+        "admin-role-check"
+      ],
+      "detectedImplications": [
+        "admin-role"
+      ],
+      "dbWrites": [
+        "insert(×2)",
+        "delete(×1)",
+        "upsert(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "MISSING_JWT_CHECK: Declared as JWT-auth but no JWT validation found in code"
+      ]
+    },
+    {
+      "functionName": "advisor-agent-loop",
+      "filePath": "supabase/functions/advisor-agent-loop/index.ts",
+      "declaredAuth": "jwt",
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "jwt-header-extract",
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "jwt",
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×1)",
+        "update(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": []
+    },
+    {
+      "functionName": "advisor-avatar-generate",
+      "filePath": "supabase/functions/advisor-avatar-generate/index.ts",
+      "declaredAuth": "jwt",
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "jwt-header-extract",
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "jwt",
+        "service-role"
+      ],
+      "dbWrites": [
+        "upsert(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": []
+    },
+    {
+      "functionName": "advisor-conversation",
+      "filePath": "supabase/functions/advisor-conversation/index.ts",
+      "declaredAuth": "jwt",
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "jwt-header-extract"
+      ],
+      "detectedImplications": [
+        "jwt"
+      ],
+      "dbWrites": [],
+      "hasUserScoping": false,
+      "issues": []
+    },
+    {
+      "functionName": "advisor-deep-intelligence",
+      "filePath": "supabase/functions/advisor-deep-intelligence/index.ts",
+      "declaredAuth": "jwt",
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "jwt-header-extract",
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "jwt",
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×2)"
+      ],
+      "hasUserScoping": true,
+      "issues": []
+    },
+    {
+      "functionName": "advisor-knowledge-manage",
+      "filePath": "supabase/functions/advisor-knowledge-manage/index.ts",
+      "declaredAuth": "jwt",
+      "declaredAdminOnly": false,
+      "detectedPatterns": [],
+      "detectedImplications": [],
+      "dbWrites": [
+        "insert(×1)",
+        "delete(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "MISSING_JWT_CHECK: Declared as JWT-auth but no JWT validation found in code"
+      ]
+    },
+    {
+      "functionName": "advisor-weekly-report",
+      "filePath": "supabase/functions/advisor-weekly-report/index.ts",
+      "declaredAuth": "jwt",
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "jwt-header-extract"
+      ],
+      "detectedImplications": [
+        "jwt"
+      ],
+      "dbWrites": [],
+      "hasUserScoping": false,
+      "issues": []
+    },
+    {
+      "functionName": "agent-executor",
+      "filePath": "supabase/functions/agent-executor/index.ts",
+      "declaredAuth": "service-role",
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "jwt-header-extract",
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "jwt",
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×9)",
+        "update(×7)"
+      ],
+      "hasUserScoping": true,
+      "issues": []
+    },
+    {
+      "functionName": "agent-heartbeat",
+      "filePath": "supabase/functions/agent-heartbeat/index.ts",
+      "declaredAuth": "service-role",
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "jwt-getUser",
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "jwt",
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": []
+    },
+    {
+      "functionName": "agent-intelligence",
+      "filePath": "supabase/functions/agent-intelligence/index.ts",
+      "declaredAuth": "service-role",
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "jwt-getUser",
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "jwt",
+        "service-role"
+      ],
+      "dbWrites": [],
+      "hasUserScoping": true,
+      "issues": []
+    },
+    {
+      "functionName": "agent-scheduler",
+      "filePath": "supabase/functions/agent-scheduler/index.ts",
+      "declaredAuth": "service-role",
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "jwt-getUser",
+        "jwt-header-extract",
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "jwt",
+        "service-role"
+      ],
+      "dbWrites": [
+        "upsert(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": []
+    },
+    {
+      "functionName": "agent-signal",
+      "filePath": "supabase/functions/agent-signal/index.ts",
+      "declaredAuth": "service-role",
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "jwt-getUser",
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "jwt",
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×1)",
+        "update(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": []
+    },
+    {
+      "functionName": "ai-gateway",
+      "filePath": "supabase/functions/ai-gateway/index.ts",
+      "declaredAuth": "jwt",
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "jwt-getUser",
+        "jwt-header-extract",
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "jwt",
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×14)",
+        "rpc(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": []
+    },
+    {
+      "functionName": "ai-health",
+      "filePath": "supabase/functions/ai-health/index.ts",
+      "declaredAuth": "anon",
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "jwt-header-extract",
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "jwt",
+        "service-role"
+      ],
+      "dbWrites": [],
+      "hasUserScoping": true,
+      "issues": []
+    },
+    {
+      "functionName": "ai-receipt-completeness-snapshot",
+      "filePath": "supabase/functions/ai-receipt-completeness-snapshot/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×1)"
+      ],
+      "hasUserScoping": false,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "ai-runtime-nightly-verify",
+      "filePath": "supabase/functions/ai-runtime-nightly-verify/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "jwt-header-extract",
+        "admin-role-check",
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "jwt",
+        "admin-role",
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×6)",
+        "delete(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map"
+      ]
+    },
+    {
+      "functionName": "alert-actions",
+      "filePath": "supabase/functions/alert-actions/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "admin-role-check",
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "admin-role",
+        "service-role"
+      ],
+      "dbWrites": [
+        "update(×1)",
+        "rpc(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "alert-ingest",
+      "filePath": "supabase/functions/alert-ingest/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×1)",
+        "update(×1)"
+      ],
+      "hasUserScoping": false,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "alert-route",
+      "filePath": "supabase/functions/alert-route/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×1)"
+      ],
+      "hasUserScoping": false,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "alert-router",
+      "filePath": "supabase/functions/alert-router/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×1)"
+      ],
+      "hasUserScoping": false,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "ambient-os-operations",
+      "filePath": "supabase/functions/ambient-os-operations/index.ts",
+      "declaredAuth": "service-role",
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "jwt-getUser",
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "jwt",
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×7)",
+        "update(×2)",
+        "upsert(×5)"
+      ],
+      "hasUserScoping": true,
+      "issues": []
+    },
+    {
+      "functionName": "api-gateway",
+      "filePath": "supabase/functions/api-gateway/index.ts",
+      "declaredAuth": "api-key",
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "jwt-getUser"
+      ],
+      "detectedImplications": [
+        "jwt"
+      ],
+      "dbWrites": [
+        "insert(×12)",
+        "update(×12)",
+        "upsert(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": []
+    },
+    {
+      "functionName": "apm-metrics-ingest",
+      "filePath": "supabase/functions/apm-metrics-ingest/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×1)"
+      ],
+      "hasUserScoping": false,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "app-ingest-pwa",
+      "filePath": "supabase/functions/app-ingest-pwa/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "admin-role-check",
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "admin-role",
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×3)",
+        "update(×2)",
+        "rpc(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "app-ingest-web",
+      "filePath": "supabase/functions/app-ingest-web/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "admin-role-check",
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "admin-role",
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×4)",
+        "update(×2)",
+        "rpc(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "app-install",
+      "filePath": "supabase/functions/app-install/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "jwt-getUser"
+      ],
+      "detectedImplications": [
+        "jwt"
+      ],
+      "dbWrites": [
+        "upsert(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map"
+      ]
+    },
+    {
+      "functionName": "app-launch-resolve",
+      "filePath": "supabase/functions/app-launch-resolve/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "jwt-getUser"
+      ],
+      "detectedImplications": [
+        "jwt"
+      ],
+      "dbWrites": [
+        "insert(×1)",
+        "update(×1)",
+        "upsert(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map"
+      ]
+    },
+    {
+      "functionName": "app-manifest-sync",
+      "filePath": "supabase/functions/app-manifest-sync/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "admin-role-check",
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "admin-role",
+        "service-role"
+      ],
+      "dbWrites": [
+        "update(×1)",
+        "upsert(×2)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "app-manifest-verifier",
+      "filePath": "supabase/functions/app-manifest-verifier/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "app-permissions-sync",
+      "filePath": "supabase/functions/app-permissions-sync/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "jwt-getUser"
+      ],
+      "detectedImplications": [
+        "jwt"
+      ],
+      "dbWrites": [
+        "upsert(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map"
+      ]
+    },
+    {
+      "functionName": "app-screenshot-capture",
+      "filePath": "supabase/functions/app-screenshot-capture/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "admin-role-check",
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "admin-role",
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×2)",
+        "update(×3)",
+        "rpc(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "app-store-api",
+      "filePath": "supabase/functions/app-store-api/index.ts",
+      "declaredAuth": "jwt",
+      "declaredAdminOnly": false,
+      "detectedPatterns": [],
+      "detectedImplications": [],
+      "dbWrites": [
+        "update(×1)",
+        "upsert(×2)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "MISSING_JWT_CHECK: Declared as JWT-auth but no JWT validation found in code"
+      ]
+    },
+    {
+      "functionName": "app-store-catalog",
+      "filePath": "supabase/functions/app-store-catalog/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [],
+      "detectedImplications": [],
+      "dbWrites": [],
+      "hasUserScoping": false,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map"
+      ]
+    },
+    {
+      "functionName": "app-uninstall",
+      "filePath": "supabase/functions/app-uninstall/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "jwt-getUser"
+      ],
+      "detectedImplications": [
+        "jwt"
+      ],
+      "dbWrites": [
+        "delete(×1)",
+        "upsert(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map"
+      ]
+    },
+    {
+      "functionName": "app-update-check",
+      "filePath": "supabase/functions/app-update-check/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "jwt-getUser"
+      ],
+      "detectedImplications": [
+        "jwt"
+      ],
+      "dbWrites": [],
+      "hasUserScoping": true,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map"
+      ]
+    },
+    {
+      "functionName": "attestation-packet-builder",
+      "filePath": "supabase/functions/attestation-packet-builder/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "admin-role-check",
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "admin-role",
+        "service-role"
+      ],
+      "dbWrites": [
+        "upsert(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "audit-export-bundler",
+      "filePath": "supabase/functions/audit-export-bundler/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "admin-role-check",
+        "service-role-key",
+        "webhook-secret"
+      ],
+      "detectedImplications": [
+        "admin-role",
+        "service-role",
+        "webhook-secret"
+      ],
+      "dbWrites": [
+        "upsert(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "audit-log-export",
+      "filePath": "supabase/functions/audit-log-export/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "admin-role-check",
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "admin-role",
+        "service-role"
+      ],
+      "dbWrites": [
+        "rpc(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "beta-apply",
+      "filePath": "supabase/functions/beta-apply/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×1)"
+      ],
+      "hasUserScoping": false,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "boardroom-cockpit-telemetry",
+      "filePath": "supabase/functions/boardroom-cockpit-telemetry/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "jwt-getUser",
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "jwt",
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map"
+      ]
+    },
+    {
+      "functionName": "boardroom-followthrough-dispatch",
+      "filePath": "supabase/functions/boardroom-followthrough-dispatch/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "jwt-header-extract",
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "jwt",
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×4)",
+        "update(×3)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map"
+      ]
+    },
+    {
+      "functionName": "boardroom-followthrough-sla",
+      "filePath": "supabase/functions/boardroom-followthrough-sla/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "jwt-header-extract",
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "jwt",
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map"
+      ]
+    },
+    {
+      "functionName": "boardroom-outcome-record",
+      "filePath": "supabase/functions/boardroom-outcome-record/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "admin-role-check",
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "admin-role",
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×2)",
+        "update(×2)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "boardroom-replay",
+      "filePath": "supabase/functions/boardroom-replay/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "jwt-getUser"
+      ],
+      "detectedImplications": [
+        "jwt"
+      ],
+      "dbWrites": [],
+      "hasUserScoping": true,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map"
+      ]
+    },
+    {
+      "functionName": "boardroom-session",
+      "filePath": "supabase/functions/boardroom-session/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "jwt-getUser"
+      ],
+      "detectedImplications": [
+        "jwt"
+      ],
+      "dbWrites": [
+        "insert(×5)",
+        "update(×3)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map"
+      ]
+    },
+    {
+      "functionName": "booking-manage",
+      "filePath": "supabase/functions/booking-manage/index.ts",
+      "declaredAuth": "jwt",
+      "declaredAdminOnly": false,
+      "detectedPatterns": [],
+      "detectedImplications": [],
+      "dbWrites": [
+        "insert(×6)",
+        "update(×3)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "MISSING_JWT_CHECK: Declared as JWT-auth but no JWT validation found in code"
+      ]
+    },
+    {
+      "functionName": "brain-core",
+      "filePath": "supabase/functions/brain-core/index.ts",
+      "declaredAuth": "jwt",
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "jwt-header-extract",
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "jwt",
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×4)",
+        "update(×1)",
+        "rpc(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": []
+    },
+    {
+      "functionName": "business-advisor-intelligence",
+      "filePath": "supabase/functions/business-advisor-intelligence/index.ts",
+      "declaredAuth": "jwt",
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "jwt-getUser",
+        "jwt-header-extract"
+      ],
+      "detectedImplications": [
+        "jwt"
+      ],
+      "dbWrites": [
+        "insert(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": []
+    },
+    {
+      "functionName": "business-board-api",
+      "filePath": "supabase/functions/business-board-api/index.ts",
+      "declaredAuth": "jwt",
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "jwt-getUser",
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "jwt",
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×7)",
+        "update(×8)",
+        "upsert(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": []
+    },
+    {
+      "functionName": "canary-chaos-cron",
+      "filePath": "supabase/functions/canary-chaos-cron/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "jwt-header-extract",
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "jwt",
+        "service-role"
+      ],
+      "dbWrites": [],
+      "hasUserScoping": false,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map"
+      ]
+    },
+    {
+      "functionName": "cashflow-calculate",
+      "filePath": "supabase/functions/cashflow-calculate/index.ts",
+      "declaredAuth": "jwt",
+      "declaredAdminOnly": false,
+      "detectedPatterns": [],
+      "detectedImplications": [],
+      "dbWrites": [],
+      "hasUserScoping": true,
+      "issues": [
+        "MISSING_JWT_CHECK: Declared as JWT-auth but no JWT validation found in code"
+      ]
+    },
+    {
+      "functionName": "chaos-drill-runner",
+      "filePath": "supabase/functions/chaos-drill-runner/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×1)"
+      ],
+      "hasUserScoping": false,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "chat-advisor",
+      "filePath": "supabase/functions/chat-advisor/index.ts",
+      "declaredAuth": "jwt",
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "jwt-header-extract",
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "jwt",
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×3)",
+        "rpc(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": []
+    },
+    {
+      "functionName": "check-ai-budget",
+      "filePath": "supabase/functions/check-ai-budget/index.ts",
+      "declaredAuth": "jwt",
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "service-role"
+      ],
+      "dbWrites": [],
+      "hasUserScoping": true,
+      "issues": [
+        "MISSING_JWT_CHECK: Declared as JWT-auth but no JWT validation found in code",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "cloud-admin-api",
+      "filePath": "supabase/functions/cloud-admin-api/index.ts",
+      "declaredAuth": "jwt",
+      "declaredAdminOnly": true,
+      "detectedPatterns": [],
+      "detectedImplications": [],
+      "dbWrites": [
+        "insert(×1)",
+        "update(×4)",
+        "upsert(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "MISSING_JWT_CHECK: Declared as JWT-auth but no JWT validation found in code",
+        "MISSING_ADMIN_GUARD: Declared adminOnly but no admin role check found"
+      ]
+    },
+    {
+      "functionName": "cloud-device-api",
+      "filePath": "supabase/functions/cloud-device-api/index.ts",
+      "declaredAuth": "jwt",
+      "declaredAdminOnly": false,
+      "detectedPatterns": [],
+      "detectedImplications": [],
+      "dbWrites": [
+        "insert(×2)",
+        "update(×5)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "MISSING_JWT_CHECK: Declared as JWT-auth but no JWT validation found in code"
+      ]
+    },
+    {
+      "functionName": "cloud-lifecycle-api",
+      "filePath": "supabase/functions/cloud-lifecycle-api/index.ts",
+      "declaredAuth": "jwt",
+      "declaredAdminOnly": true,
+      "detectedPatterns": [],
+      "detectedImplications": [],
+      "dbWrites": [
+        "insert(×8)",
+        "update(×2)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "MISSING_JWT_CHECK: Declared as JWT-auth but no JWT validation found in code",
+        "MISSING_ADMIN_GUARD: Declared adminOnly but no admin role check found"
+      ]
+    },
+    {
+      "functionName": "cloud-storage-api",
+      "filePath": "supabase/functions/cloud-storage-api/index.ts",
+      "declaredAuth": "jwt",
+      "declaredAdminOnly": false,
+      "detectedPatterns": [],
+      "detectedImplications": [],
+      "dbWrites": [
+        "insert(×5)",
+        "update(×7)",
+        "delete(×4)",
+        "upsert(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "MISSING_JWT_CHECK: Declared as JWT-auth but no JWT validation found in code"
+      ]
+    },
+    {
+      "functionName": "cloud-sync-api",
+      "filePath": "supabase/functions/cloud-sync-api/index.ts",
+      "declaredAuth": "jwt",
+      "declaredAdminOnly": false,
+      "detectedPatterns": [],
+      "detectedImplications": [],
+      "dbWrites": [
+        "insert(×3)",
+        "update(×2)",
+        "upsert(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "MISSING_JWT_CHECK: Declared as JWT-auth but no JWT validation found in code"
+      ]
+    },
+    {
+      "functionName": "cloud-tenant-api",
+      "filePath": "supabase/functions/cloud-tenant-api/index.ts",
+      "declaredAuth": "jwt",
+      "declaredAdminOnly": true,
+      "detectedPatterns": [],
+      "detectedImplications": [],
+      "dbWrites": [
+        "insert(×5)",
+        "upsert(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "MISSING_JWT_CHECK: Declared as JWT-auth but no JWT validation found in code",
+        "MISSING_ADMIN_GUARD: Declared adminOnly but no admin role check found"
+      ]
+    },
+    {
+      "functionName": "cloud-worker-api",
+      "filePath": "supabase/functions/cloud-worker-api/index.ts",
+      "declaredAuth": "service-role",
+      "declaredAdminOnly": false,
+      "detectedPatterns": [],
+      "detectedImplications": [],
+      "dbWrites": [
+        "insert(×1)",
+        "update(×4)"
+      ],
+      "hasUserScoping": true,
+      "issues": []
+    },
+    {
+      "functionName": "communications-api",
+      "filePath": "supabase/functions/communications-api/index.ts",
+      "declaredAuth": "jwt",
+      "declaredAdminOnly": false,
+      "detectedPatterns": [],
+      "detectedImplications": [],
+      "dbWrites": [
+        "insert(×1)",
+        "update(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "MISSING_JWT_CHECK: Declared as JWT-auth but no JWT validation found in code"
+      ]
+    },
+    {
+      "functionName": "compliance-evidence-collector",
+      "filePath": "supabase/functions/compliance-evidence-collector/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "admin-role-check",
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "admin-role",
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "compliance-evidence-cron",
+      "filePath": "supabase/functions/compliance-evidence-cron/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "admin-role-check",
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "admin-role",
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×1)",
+        "rpc(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "connector-batch",
+      "filePath": "supabase/functions/connector-batch/index.ts",
+      "declaredAuth": "jwt",
+      "declaredAdminOnly": false,
+      "detectedPatterns": [],
+      "detectedImplications": [],
+      "dbWrites": [
+        "insert(×6)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "MISSING_JWT_CHECK: Declared as JWT-auth but no JWT validation found in code"
+      ]
+    },
+    {
+      "functionName": "connector-discover",
+      "filePath": "supabase/functions/connector-discover/index.ts",
+      "declaredAuth": "jwt",
+      "declaredAdminOnly": false,
+      "detectedPatterns": [],
+      "detectedImplications": [],
+      "dbWrites": [
+        "insert(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "MISSING_JWT_CHECK: Declared as JWT-auth but no JWT validation found in code"
+      ]
+    },
+    {
+      "functionName": "connector-health",
+      "filePath": "supabase/functions/connector-health/index.ts",
+      "declaredAuth": "jwt",
+      "declaredAdminOnly": false,
+      "detectedPatterns": [],
+      "detectedImplications": [],
+      "dbWrites": [],
+      "hasUserScoping": true,
+      "issues": [
+        "MISSING_JWT_CHECK: Declared as JWT-auth but no JWT validation found in code"
+      ]
+    },
+    {
+      "functionName": "connector-oauth",
+      "filePath": "supabase/functions/connector-oauth/index.ts",
+      "declaredAuth": "jwt",
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×7)",
+        "update(×5)",
+        "delete(×1)",
+        "upsert(×2)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "MISSING_JWT_CHECK: Declared as JWT-auth but no JWT validation found in code",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "connector-operations",
+      "filePath": "supabase/functions/connector-operations/index.ts",
+      "declaredAuth": "jwt",
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "jwt-getUser",
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "jwt",
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×10)",
+        "update(×1)",
+        "delete(×1)",
+        "upsert(×6)"
+      ],
+      "hasUserScoping": true,
+      "issues": []
+    },
+    {
+      "functionName": "connector-proxy",
+      "filePath": "supabase/functions/connector-proxy/index.ts",
+      "declaredAuth": "jwt",
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "jwt-getUser",
+        "jwt-header-extract",
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "jwt",
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×2)",
+        "update(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": []
+    },
+    {
+      "functionName": "connector-reauth-tracker",
+      "filePath": "supabase/functions/connector-reauth-tracker/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [],
+      "detectedImplications": [],
+      "dbWrites": [
+        "insert(×1)",
+        "update(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map"
+      ]
+    },
+    {
+      "functionName": "connector-refresh-nightly-verify",
+      "filePath": "supabase/functions/connector-refresh-nightly-verify/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "jwt-header-extract",
+        "admin-role-check",
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "jwt",
+        "admin-role",
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×1)",
+        "update(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map"
+      ]
+    },
+    {
+      "functionName": "connector-sync",
+      "filePath": "supabase/functions/connector-sync/index.ts",
+      "declaredAuth": "jwt",
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "jwt-getUser",
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "jwt",
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×4)",
+        "update(×2)",
+        "upsert(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": []
+    },
+    {
+      "functionName": "connector-token-refresh",
+      "filePath": "supabase/functions/connector-token-refresh/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×2)",
+        "update(×3)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "connector-transform",
+      "filePath": "supabase/functions/connector-transform/index.ts",
+      "declaredAuth": "jwt",
+      "declaredAdminOnly": false,
+      "detectedPatterns": [],
+      "detectedImplications": [],
+      "dbWrites": [
+        "insert(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "MISSING_JWT_CHECK: Declared as JWT-auth but no JWT validation found in code"
+      ]
+    },
+    {
+      "functionName": "cost-alert",
+      "filePath": "supabase/functions/cost-alert/index.ts",
+      "declaredAuth": "service-role",
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "service-role"
+      ],
+      "dbWrites": [],
+      "hasUserScoping": true,
+      "issues": []
+    },
+    {
+      "functionName": "crash-report-ingest",
+      "filePath": "supabase/functions/crash-report-ingest/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "crm-sync",
+      "filePath": "supabase/functions/crm-sync/index.ts",
+      "declaredAuth": "jwt",
+      "declaredAdminOnly": false,
+      "detectedPatterns": [],
+      "detectedImplications": [],
+      "dbWrites": [
+        "insert(×4)",
+        "upsert(×2)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "MISSING_JWT_CHECK: Declared as JWT-auth but no JWT validation found in code"
+      ]
+    },
+    {
+      "functionName": "cron-receipt-collector",
+      "filePath": "supabase/functions/cron-receipt-collector/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×1)"
+      ],
+      "hasUserScoping": false,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "data-cleanup",
+      "filePath": "supabase/functions/data-cleanup/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×1)",
+        "delete(×1)"
+      ],
+      "hasUserScoping": false,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "data-export",
+      "filePath": "supabase/functions/data-export/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×1)",
+        "update(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "db-truth-introspect",
+      "filePath": "supabase/functions/db-truth-introspect/index.ts",
+      "declaredAuth": "jwt",
+      "declaredAdminOnly": true,
+      "detectedPatterns": [],
+      "detectedImplications": [],
+      "dbWrites": [
+        "rpc(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "MISSING_JWT_CHECK: Declared as JWT-auth but no JWT validation found in code",
+        "MISSING_ADMIN_GUARD: Declared adminOnly but no admin role check found"
+      ]
+    },
+    {
+      "functionName": "desktop-update-manifest",
+      "filePath": "supabase/functions/desktop-update-manifest/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [],
+      "detectedImplications": [],
+      "dbWrites": [],
+      "hasUserScoping": false,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map"
+      ]
+    },
+    {
+      "functionName": "device-telemetry",
+      "filePath": "supabase/functions/device-telemetry/index.ts",
+      "declaredAuth": "jwt",
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "service-role"
+      ],
+      "dbWrites": [
+        "upsert(×2)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "MISSING_JWT_CHECK: Declared as JWT-auth but no JWT validation found in code",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "digital-twin-engine",
+      "filePath": "supabase/functions/digital-twin-engine/index.ts",
+      "declaredAuth": "jwt",
+      "declaredAdminOnly": false,
+      "detectedPatterns": [],
+      "detectedImplications": [],
+      "dbWrites": [
+        "insert(×1)",
+        "upsert(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "MISSING_JWT_CHECK: Declared as JWT-auth but no JWT validation found in code"
+      ]
+    },
+    {
+      "functionName": "dr-drill-cron",
+      "filePath": "supabase/functions/dr-drill-cron/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×1)"
+      ],
+      "hasUserScoping": false,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "dr-drill-executor",
+      "filePath": "supabase/functions/dr-drill-executor/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "jwt-getUser",
+        "admin-role-check",
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "jwt",
+        "admin-role",
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map"
+      ]
+    },
+    {
+      "functionName": "dr-drill-runner",
+      "filePath": "supabase/functions/dr-drill-runner/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "admin-role-check",
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "admin-role",
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "ecosystem-operations",
+      "filePath": "supabase/functions/ecosystem-operations/index.ts",
+      "declaredAuth": "jwt",
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×1)",
+        "update(×1)",
+        "upsert(×17)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "MISSING_JWT_CHECK: Declared as JWT-auth but no JWT validation found in code",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "error-ingest",
+      "filePath": "supabase/functions/error-ingest/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×1)",
+        "update(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "escalation-engine",
+      "filePath": "supabase/functions/escalation-engine/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×2)",
+        "update(×1)"
+      ],
+      "hasUserScoping": false,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "event-processor",
+      "filePath": "supabase/functions/event-processor/index.ts",
+      "declaredAuth": "service-role",
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×5)",
+        "update(×1)",
+        "upsert(×2)"
+      ],
+      "hasUserScoping": true,
+      "issues": []
+    },
+    {
+      "functionName": "evidence-graph-builder",
+      "filePath": "supabase/functions/evidence-graph-builder/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "service-role"
+      ],
+      "dbWrites": [
+        "upsert(×4)"
+      ],
+      "hasUserScoping": false,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "external-workforce-api",
+      "filePath": "supabase/functions/external-workforce-api/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "service-role-key",
+        "api-key-check"
+      ],
+      "detectedImplications": [
+        "service-role",
+        "api-key"
+      ],
+      "dbWrites": [
+        "update(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "external-workforce-webhook-dispatcher",
+      "filePath": "supabase/functions/external-workforce-webhook-dispatcher/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "service-role-key",
+        "webhook-secret"
+      ],
+      "detectedImplications": [
+        "service-role",
+        "webhook-secret"
+      ],
+      "dbWrites": [
+        "insert(×1)",
+        "update(×1)",
+        "rpc(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "federated-knowledge-aggregator",
+      "filePath": "supabase/functions/federated-knowledge-aggregator/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "jwt-getUser"
+      ],
+      "detectedImplications": [
+        "jwt"
+      ],
+      "dbWrites": [
+        "insert(×1)",
+        "rpc(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map"
+      ]
+    },
+    {
+      "functionName": "file-ingestion",
+      "filePath": "supabase/functions/file-ingestion/index.ts",
+      "declaredAuth": "jwt",
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "jwt-header-extract",
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "jwt",
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×2)"
+      ],
+      "hasUserScoping": true,
+      "issues": []
+    },
+    {
+      "functionName": "gdpr-delete",
+      "filePath": "supabase/functions/gdpr-delete/index.ts",
+      "declaredAuth": "jwt",
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×1)",
+        "delete(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "MISSING_JWT_CHECK: Declared as JWT-auth but no JWT validation found in code",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "gdpr-export",
+      "filePath": "supabase/functions/gdpr-export/index.ts",
+      "declaredAuth": "jwt",
+      "declaredAdminOnly": false,
+      "detectedPatterns": [],
+      "detectedImplications": [],
+      "dbWrites": [],
+      "hasUserScoping": true,
+      "issues": [
+        "MISSING_JWT_CHECK: Declared as JWT-auth but no JWT validation found in code"
+      ]
+    },
+    {
+      "functionName": "generate-support-bundle",
+      "filePath": "supabase/functions/generate-support-bundle/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "jwt-getUser",
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "jwt",
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map"
+      ]
+    },
+    {
+      "functionName": "get-weather",
+      "filePath": "supabase/functions/get-weather/index.ts",
+      "declaredAuth": "anon",
+      "declaredAdminOnly": false,
+      "detectedPatterns": [],
+      "detectedImplications": [],
+      "dbWrites": [],
+      "hasUserScoping": false,
+      "issues": []
+    },
+    {
+      "functionName": "health-beat",
+      "filePath": "supabase/functions/health-beat/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×1)"
+      ],
+      "hasUserScoping": false,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "health-check",
+      "filePath": "supabase/functions/health-check/index.ts",
+      "declaredAuth": "anon",
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "service-role"
+      ],
+      "dbWrites": [],
+      "hasUserScoping": false,
+      "issues": [
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "health-cron",
+      "filePath": "supabase/functions/health-cron/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×1)"
+      ],
+      "hasUserScoping": false,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "health-live",
+      "filePath": "supabase/functions/health-live/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [],
+      "detectedImplications": [],
+      "dbWrites": [],
+      "hasUserScoping": false,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map"
+      ]
+    },
+    {
+      "functionName": "health-ready",
+      "filePath": "supabase/functions/health-ready/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "service-role"
+      ],
+      "dbWrites": [],
+      "hasUserScoping": false,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "intelligence-api",
+      "filePath": "supabase/functions/intelligence-api/index.ts",
+      "declaredAuth": "jwt",
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "jwt-header-extract",
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "jwt",
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×7)",
+        "update(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": []
+    },
+    {
+      "functionName": "internal-agent-canary-runner",
+      "filePath": "supabase/functions/internal-agent-canary-runner/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×2)",
+        "rpc(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "internal-agent-chaos-scheduler",
+      "filePath": "supabase/functions/internal-agent-chaos-scheduler/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×1)",
+        "update(×2)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "internal-agent-consensus-engine",
+      "filePath": "supabase/functions/internal-agent-consensus-engine/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "service-role"
+      ],
+      "dbWrites": [
+        "rpc(×3)"
+      ],
+      "hasUserScoping": false,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "internal-agent-cost-optimizer",
+      "filePath": "supabase/functions/internal-agent-cost-optimizer/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "service-role"
+      ],
+      "dbWrites": [
+        "rpc(×2)"
+      ],
+      "hasUserScoping": false,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "internal-agent-dependency-scanner",
+      "filePath": "supabase/functions/internal-agent-dependency-scanner/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "service-role"
+      ],
+      "dbWrites": [
+        "update(×1)",
+        "upsert(×1)",
+        "rpc(×1)"
+      ],
+      "hasUserScoping": false,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "internal-agent-execute-action",
+      "filePath": "supabase/functions/internal-agent-execute-action/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "admin-role-check",
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "admin-role",
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×9)",
+        "update(×9)",
+        "rpc(×2)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "internal-agent-loop",
+      "filePath": "supabase/functions/internal-agent-loop/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "jwt-getUser",
+        "jwt-header-extract",
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "jwt",
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×6)",
+        "update(×6)",
+        "rpc(×3)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map"
+      ]
+    },
+    {
+      "functionName": "internal-agent-policy-architect",
+      "filePath": "supabase/functions/internal-agent-policy-architect/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "jwt-getUser",
+        "admin-role-check",
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "jwt",
+        "admin-role",
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×1)",
+        "rpc(×2)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map"
+      ]
+    },
+    {
+      "functionName": "internal-agent-reflect",
+      "filePath": "supabase/functions/internal-agent-reflect/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "service-role"
+      ],
+      "dbWrites": [
+        "rpc(×1)"
+      ],
+      "hasUserScoping": false,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "internal-agent-self-healer",
+      "filePath": "supabase/functions/internal-agent-self-healer/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "service-role"
+      ],
+      "dbWrites": [
+        "rpc(×1)"
+      ],
+      "hasUserScoping": false,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "internal-agent-slo-evaluator",
+      "filePath": "supabase/functions/internal-agent-slo-evaluator/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×2)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "internal-agent-suggestion-generator",
+      "filePath": "supabase/functions/internal-agent-suggestion-generator/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "service-role"
+      ],
+      "dbWrites": [
+        "rpc(×1)"
+      ],
+      "hasUserScoping": false,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "internal-agent-tenant-federation",
+      "filePath": "supabase/functions/internal-agent-tenant-federation/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "jwt-getUser"
+      ],
+      "detectedImplications": [
+        "jwt"
+      ],
+      "dbWrites": [
+        "upsert(×3)",
+        "rpc(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map"
+      ]
+    },
+    {
+      "functionName": "internal-agent-trust-evaluator",
+      "filePath": "supabase/functions/internal-agent-trust-evaluator/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "jwt-getUser",
+        "admin-role-check",
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "jwt",
+        "admin-role",
+        "service-role"
+      ],
+      "dbWrites": [
+        "rpc(×3)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map"
+      ]
+    },
+    {
+      "functionName": "internal-agent-weekly-digest",
+      "filePath": "supabase/functions/internal-agent-weekly-digest/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "service-role"
+      ],
+      "dbWrites": [
+        "upsert(×1)"
+      ],
+      "hasUserScoping": false,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "investment-portfolio-api",
+      "filePath": "supabase/functions/investment-portfolio-api/index.ts",
+      "declaredAuth": "jwt",
+      "declaredAdminOnly": false,
+      "detectedPatterns": [],
+      "detectedImplications": [],
+      "dbWrites": [
+        "insert(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "MISSING_JWT_CHECK: Declared as JWT-auth but no JWT validation found in code"
+      ]
+    },
+    {
+      "functionName": "investor-request",
+      "filePath": "supabase/functions/investor-request/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×1)"
+      ],
+      "hasUserScoping": false,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "invoice-generate",
+      "filePath": "supabase/functions/invoice-generate/index.ts",
+      "declaredAuth": "jwt",
+      "declaredAdminOnly": false,
+      "detectedPatterns": [],
+      "detectedImplications": [],
+      "dbWrites": [
+        "insert(×7)",
+        "update(×3)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "MISSING_JWT_CHECK: Declared as JWT-auth but no JWT validation found in code"
+      ]
+    },
+    {
+      "functionName": "kill-switch-state",
+      "filePath": "supabase/functions/kill-switch-state/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [],
+      "detectedImplications": [],
+      "dbWrites": [],
+      "hasUserScoping": false,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map"
+      ]
+    },
+    {
+      "functionName": "kill-switch-toggle",
+      "filePath": "supabase/functions/kill-switch-toggle/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×1)",
+        "update(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "license-gateway",
+      "filePath": "supabase/functions/license-gateway/index.ts",
+      "declaredAuth": "jwt",
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "admin-role-check",
+        "service-role-key",
+        "webhook-secret"
+      ],
+      "detectedImplications": [
+        "admin-role",
+        "service-role",
+        "webhook-secret"
+      ],
+      "dbWrites": [
+        "insert(×9)",
+        "update(×5)",
+        "rpc(×2)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "MISSING_JWT_CHECK: Declared as JWT-auth but no JWT validation found in code",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "main",
+      "filePath": "supabase/functions/main/index.ts",
+      "declaredAuth": "anon",
+      "declaredAdminOnly": false,
+      "detectedPatterns": [],
+      "detectedImplications": [],
+      "dbWrites": [],
+      "hasUserScoping": false,
+      "issues": []
+    },
+    {
+      "functionName": "mobile-deferral-attestor",
+      "filePath": "supabase/functions/mobile-deferral-attestor/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "jwt-getUser",
+        "admin-role-check",
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "jwt",
+        "admin-role",
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map"
+      ]
+    },
+    {
+      "functionName": "msa-operations",
+      "filePath": "supabase/functions/msa-operations/index.ts",
+      "declaredAuth": "jwt",
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×1)",
+        "delete(×1)",
+        "upsert(×8)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "MISSING_JWT_CHECK: Declared as JWT-auth but no JWT validation found in code",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "oauth-refresh-probe",
+      "filePath": "supabase/functions/oauth-refresh-probe/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "jwt-header-extract",
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "jwt",
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×1)",
+        "update(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map"
+      ]
+    },
+    {
+      "functionName": "onboarding-branch-tracker",
+      "filePath": "supabase/functions/onboarding-branch-tracker/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "jwt-getUser",
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "jwt",
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map"
+      ]
+    },
+    {
+      "functionName": "onboarding-resume-checkpoint",
+      "filePath": "supabase/functions/onboarding-resume-checkpoint/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "service-role"
+      ],
+      "dbWrites": [
+        "upsert(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "os-agent-channel",
+      "filePath": "supabase/functions/os-agent-channel/index.ts",
+      "declaredAuth": "service-role",
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×7)",
+        "update(×3)",
+        "upsert(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": []
+    },
+    {
+      "functionName": "os-command",
+      "filePath": "supabase/functions/os-command/index.ts",
+      "declaredAuth": "jwt",
+      "declaredAdminOnly": true,
+      "detectedPatterns": [],
+      "detectedImplications": [],
+      "dbWrites": [
+        "insert(×2)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "MISSING_JWT_CHECK: Declared as JWT-auth but no JWT validation found in code",
+        "MISSING_ADMIN_GUARD: Declared adminOnly but no admin role check found"
+      ]
+    },
+    {
+      "functionName": "os-status",
+      "filePath": "supabase/functions/os-status/index.ts",
+      "declaredAuth": "anon",
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "service-role"
+      ],
+      "dbWrites": [
+        "upsert(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "os-update-manifest",
+      "filePath": "supabase/functions/os-update-manifest/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "owner-copilot-bff",
+      "filePath": "supabase/functions/owner-copilot-bff/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "jwt-getUser"
+      ],
+      "detectedImplications": [
+        "jwt"
+      ],
+      "dbWrites": [
+        "rpc(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map"
+      ]
+    },
+    {
+      "functionName": "owner-copilot-session-tracker",
+      "filePath": "supabase/functions/owner-copilot-session-tracker/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "jwt-getUser",
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "jwt",
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×1)",
+        "update(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map"
+      ]
+    },
+    {
+      "functionName": "package-verify",
+      "filePath": "supabase/functions/package-verify/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×1)"
+      ],
+      "hasUserScoping": false,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "payment-kill-switch",
+      "filePath": "supabase/functions/payment-kill-switch/index.ts",
+      "declaredAuth": "jwt",
+      "declaredAdminOnly": true,
+      "detectedPatterns": [],
+      "detectedImplications": [],
+      "dbWrites": [
+        "insert(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "MISSING_JWT_CHECK: Declared as JWT-auth but no JWT validation found in code",
+        "MISSING_ADMIN_GUARD: Declared adminOnly but no admin role check found"
+      ]
+    },
+    {
+      "functionName": "payment-process",
+      "filePath": "supabase/functions/payment-process/index.ts",
+      "declaredAuth": "jwt",
+      "declaredAdminOnly": false,
+      "detectedPatterns": [],
+      "detectedImplications": [],
+      "dbWrites": [
+        "insert(×5)",
+        "update(×2)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "MISSING_JWT_CHECK: Declared as JWT-auth but no JWT validation found in code"
+      ]
+    },
+    {
+      "functionName": "personal-brain",
+      "filePath": "supabase/functions/personal-brain/index.ts",
+      "declaredAuth": "jwt",
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "jwt-header-extract",
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "jwt",
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×1)",
+        "rpc(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": []
+    },
+    {
+      "functionName": "press-inquiry",
+      "filePath": "supabase/functions/press-inquiry/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×1)"
+      ],
+      "hasUserScoping": false,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "production-launch-attestor",
+      "filePath": "supabase/functions/production-launch-attestor/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "jwt-getUser",
+        "admin-role-check",
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "jwt",
+        "admin-role",
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map"
+      ]
+    },
+    {
+      "functionName": "prompt-versioning",
+      "filePath": "supabase/functions/prompt-versioning/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "admin-role-check",
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "admin-role",
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×1)",
+        "update(×6)",
+        "rpc(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "provider-family-operations",
+      "filePath": "supabase/functions/provider-family-operations/index.ts",
+      "declaredAuth": "jwt",
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×3)",
+        "update(×1)",
+        "upsert(×6)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "MISSING_JWT_CHECK: Declared as JWT-auth but no JWT validation found in code",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "push-dispatch",
+      "filePath": "supabase/functions/push-dispatch/index.ts",
+      "declaredAuth": "service-role",
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "jwt-header-extract",
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "jwt",
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×1)",
+        "update(×4)"
+      ],
+      "hasUserScoping": true,
+      "issues": []
+    },
+    {
+      "functionName": "push-track",
+      "filePath": "supabase/functions/push-track/index.ts",
+      "declaredAuth": "jwt",
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "service-role"
+      ],
+      "dbWrites": [
+        "update(×1)"
+      ],
+      "hasUserScoping": false,
+      "issues": [
+        "MISSING_JWT_CHECK: Declared as JWT-auth but no JWT validation found in code",
+        "UNSCOPED_DB_WRITE: DB writes detected without user_id scoping in user-context function",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "recovery-evidence-ingest",
+      "filePath": "supabase/functions/recovery-evidence-ingest/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "release-artifact-signer",
+      "filePath": "supabase/functions/release-artifact-signer/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "admin-role-check",
+        "webhook-secret"
+      ],
+      "detectedImplications": [
+        "admin-role",
+        "webhook-secret"
+      ],
+      "dbWrites": [
+        "insert(×1)",
+        "rpc(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map"
+      ]
+    },
+    {
+      "functionName": "release-artifact-verifier",
+      "filePath": "supabase/functions/release-artifact-verifier/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "admin-role-check",
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "admin-role",
+        "service-role"
+      ],
+      "dbWrites": [
+        "update(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "release-evidence-graph-snapshot",
+      "filePath": "supabase/functions/release-evidence-graph-snapshot/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×1)"
+      ],
+      "hasUserScoping": false,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "revenue-caller",
+      "filePath": "supabase/functions/revenue-caller/index.ts",
+      "declaredAuth": "jwt",
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "jwt-getUser"
+      ],
+      "detectedImplications": [
+        "jwt"
+      ],
+      "dbWrites": [
+        "insert(×2)"
+      ],
+      "hasUserScoping": true,
+      "issues": []
+    },
+    {
+      "functionName": "routing-policy-update",
+      "filePath": "supabase/functions/routing-policy-update/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "admin-role-check",
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "admin-role",
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×1)",
+        "upsert(×1)",
+        "rpc(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "runbook-drill",
+      "filePath": "supabase/functions/runbook-drill/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "jwt-getUser",
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "jwt",
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×4)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map"
+      ]
+    },
+    {
+      "functionName": "runtime-probes",
+      "filePath": "supabase/functions/runtime-probes/index.ts",
+      "declaredAuth": "anon",
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "jwt-header-extract",
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "jwt",
+        "service-role"
+      ],
+      "dbWrites": [],
+      "hasUserScoping": false,
+      "issues": []
+    },
+    {
+      "functionName": "scheduler-dispatch",
+      "filePath": "supabase/functions/scheduler-dispatch/index.ts",
+      "declaredAuth": "service-role",
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "jwt-header-extract",
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "jwt",
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×2)",
+        "update(×2)"
+      ],
+      "hasUserScoping": true,
+      "issues": []
+    },
+    {
+      "functionName": "secret-rotation-orchestrator",
+      "filePath": "supabase/functions/secret-rotation-orchestrator/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "admin-role-check",
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "admin-role",
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×2)",
+        "rpc(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "security-anomaly-rotation-trigger",
+      "filePath": "supabase/functions/security-anomaly-rotation-trigger/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "jwt-header-extract",
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "jwt",
+        "service-role"
+      ],
+      "dbWrites": [
+        "rpc(×1)"
+      ],
+      "hasUserScoping": false,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map"
+      ]
+    },
+    {
+      "functionName": "security-council-tick",
+      "filePath": "supabase/functions/security-council-tick/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "admin-role-check",
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "admin-role",
+        "service-role"
+      ],
+      "dbWrites": [
+        "rpc(×3)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "security-fabric-runtime-probe",
+      "filePath": "supabase/functions/security-fabric-runtime-probe/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×1)"
+      ],
+      "hasUserScoping": false,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "security-kill-switch-recommender",
+      "filePath": "supabase/functions/security-kill-switch-recommender/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "service-role"
+      ],
+      "dbWrites": [
+        "rpc(×1)"
+      ],
+      "hasUserScoping": false,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "seed-advisor-registry",
+      "filePath": "supabase/functions/seed-advisor-registry/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "service-role"
+      ],
+      "dbWrites": [
+        "upsert(×1)"
+      ],
+      "hasUserScoping": false,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "seed-connector-registry",
+      "filePath": "supabase/functions/seed-connector-registry/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "service-role"
+      ],
+      "dbWrites": [
+        "upsert(×1)"
+      ],
+      "hasUserScoping": false,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "seed-user-data",
+      "filePath": "supabase/functions/seed-user-data/index.ts",
+      "declaredAuth": "jwt",
+      "declaredAdminOnly": true,
+      "detectedPatterns": [
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×25)",
+        "update(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "MISSING_JWT_CHECK: Declared as JWT-auth but no JWT validation found in code",
+        "MISSING_ADMIN_GUARD: Declared adminOnly but no admin role check found",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "self-healing",
+      "filePath": "supabase/functions/self-healing/index.ts",
+      "declaredAuth": "service-role",
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "jwt-getUser",
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "jwt",
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×2)",
+        "update(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": []
+    },
+    {
+      "functionName": "simulation-engine-api",
+      "filePath": "supabase/functions/simulation-engine-api/index.ts",
+      "declaredAuth": "jwt",
+      "declaredAdminOnly": false,
+      "detectedPatterns": [],
+      "detectedImplications": [],
+      "dbWrites": [
+        "insert(×2)",
+        "update(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "MISSING_JWT_CHECK: Declared as JWT-auth but no JWT validation found in code"
+      ]
+    },
+    {
+      "functionName": "sla-evaluator",
+      "filePath": "supabase/functions/sla-evaluator/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×1)"
+      ],
+      "hasUserScoping": false,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "support-gateway",
+      "filePath": "supabase/functions/support-gateway/index.ts",
+      "declaredAuth": "jwt",
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "jwt-getUser",
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "jwt",
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×2)",
+        "rpc(×2)"
+      ],
+      "hasUserScoping": true,
+      "issues": []
+    },
+    {
+      "functionName": "system-updates",
+      "filePath": "supabase/functions/system-updates/index.ts",
+      "declaredAuth": "service-role",
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×1)",
+        "upsert(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": []
+    },
+    {
+      "functionName": "tasks-workflow-api",
+      "filePath": "supabase/functions/tasks-workflow-api/index.ts",
+      "declaredAuth": "jwt",
+      "declaredAdminOnly": false,
+      "detectedPatterns": [],
+      "detectedImplications": [],
+      "dbWrites": [
+        "insert(×1)",
+        "update(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "MISSING_JWT_CHECK: Declared as JWT-auth but no JWT validation found in code"
+      ]
+    },
+    {
+      "functionName": "tax-estimate",
+      "filePath": "supabase/functions/tax-estimate/index.ts",
+      "declaredAuth": "jwt",
+      "declaredAdminOnly": false,
+      "detectedPatterns": [],
+      "detectedImplications": [],
+      "dbWrites": [],
+      "hasUserScoping": true,
+      "issues": [
+        "MISSING_JWT_CHECK: Declared as JWT-auth but no JWT validation found in code"
+      ]
+    },
+    {
+      "functionName": "tenant-self-service-bff",
+      "filePath": "supabase/functions/tenant-self-service-bff/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [],
+      "detectedImplications": [],
+      "dbWrites": [
+        "insert(×1)",
+        "update(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map"
+      ]
+    },
+    {
+      "functionName": "trace-ingest",
+      "filePath": "supabase/functions/trace-ingest/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "uptime-rollup",
+      "filePath": "supabase/functions/uptime-rollup/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "service-role"
+      ],
+      "dbWrites": [
+        "delete(×1)"
+      ],
+      "hasUserScoping": false,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "user-bff-gateway",
+      "filePath": "supabase/functions/user-bff-gateway/index.ts",
+      "declaredAuth": "jwt",
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "jwt-getUser"
+      ],
+      "detectedImplications": [
+        "jwt"
+      ],
+      "dbWrites": [
+        "insert(×2)"
+      ],
+      "hasUserScoping": true,
+      "issues": []
+    },
+    {
+      "functionName": "vapid-public-key",
+      "filePath": "supabase/functions/vapid-public-key/index.ts",
+      "declaredAuth": "anon",
+      "declaredAdminOnly": false,
+      "detectedPatterns": [],
+      "detectedImplications": [],
+      "dbWrites": [],
+      "hasUserScoping": false,
+      "issues": []
+    },
+    {
+      "functionName": "verification-recorder",
+      "filePath": "supabase/functions/verification-recorder/index.ts",
+      "declaredAuth": "jwt",
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×3)",
+        "update(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "MISSING_JWT_CHECK: Declared as JWT-auth but no JWT validation found in code",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "waitlist-signup",
+      "filePath": "supabase/functions/waitlist-signup/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×1)",
+        "update(×1)",
+        "rpc(×1)"
+      ],
+      "hasUserScoping": false,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "waitlist-stats",
+      "filePath": "supabase/functions/waitlist-stats/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "service-role"
+      ],
+      "dbWrites": [],
+      "hasUserScoping": false,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "webauthn-challenge",
+      "filePath": "supabase/functions/webauthn-challenge/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [],
+      "detectedImplications": [],
+      "dbWrites": [
+        "insert(×3)",
+        "update(×3)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map"
+      ]
+    },
+    {
+      "functionName": "webhook-ingest",
+      "filePath": "supabase/functions/webhook-ingest/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "service-role-key",
+        "webhook-secret"
+      ],
+      "detectedImplications": [
+        "service-role",
+        "webhook-secret"
+      ],
+      "dbWrites": [
+        "insert(×1)"
+      ],
+      "hasUserScoping": false,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "webhook-process",
+      "filePath": "supabase/functions/webhook-process/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×1)",
+        "update(×2)"
+      ],
+      "hasUserScoping": false,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "webhook-replay",
+      "filePath": "supabase/functions/webhook-replay/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "jwt-getUser",
+        "admin-role-check",
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "jwt",
+        "admin-role",
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×1)",
+        "update(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map"
+      ]
+    },
+    {
+      "functionName": "webhook-retry-processor",
+      "filePath": "supabase/functions/webhook-retry-processor/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "service-role-key",
+        "webhook-secret"
+      ],
+      "detectedImplications": [
+        "service-role",
+        "webhook-secret"
+      ],
+      "dbWrites": [
+        "update(×2)"
+      ],
+      "hasUserScoping": false,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "workflow-execute",
+      "filePath": "supabase/functions/workflow-execute/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×5)",
+        "update(×3)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "workflow-repair",
+      "filePath": "supabase/functions/workflow-repair/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "admin-role-check",
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "admin-role",
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×2)",
+        "update(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    },
+    {
+      "functionName": "workflow-replay",
+      "filePath": "supabase/functions/workflow-replay/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "jwt-header-extract",
+        "admin-role-check",
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "jwt",
+        "admin-role",
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×2)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map"
+      ]
+    },
+    {
+      "functionName": "workflow-stuck-detector",
+      "filePath": "supabase/functions/workflow-stuck-detector/index.ts",
+      "declaredAuth": null,
+      "declaredAdminOnly": false,
+      "detectedPatterns": [
+        "service-role-key"
+      ],
+      "detectedImplications": [
+        "service-role"
+      ],
+      "dbWrites": [
+        "insert(×3)",
+        "update(×1)"
+      ],
+      "hasUserScoping": true,
+      "issues": [
+        "NO_AUTH_MAP_ENTRY: Function not declared in edge-function-auth-map",
+        "SERVICE_ROLE_LEAK: Uses service-role key without JWT validation"
+      ]
+    }
+  ]
+}
