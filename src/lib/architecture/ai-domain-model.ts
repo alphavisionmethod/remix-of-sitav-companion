@@ -118,3 +118,55 @@ export function classifyAIConcern(
   if (isSingleDomain) return "advisor";
   return "brain"; // default to infrastructure
 }
+
+// ── Code/Route Mapping Audit Results (Workstream C) ──
+
+export interface AICodeMapping {
+  currentPath: string;
+  currentDomain: "advisor" | "boardroom" | "brain" | "ambiguous";
+  correctDomain: "advisor" | "boardroom" | "brain";
+  action: "keep" | "move" | "rename" | "consolidate";
+  notes: string;
+}
+
+export const AI_CODE_ROUTE_AUDIT: readonly AICodeMapping[] = [
+  // Correctly placed
+  { currentPath: "src/lib/advisors/", currentDomain: "advisor", correctDomain: "advisor", action: "keep", notes: "Canonical advisor home" },
+  { currentPath: "src/lib/boardroom/", currentDomain: "boardroom", correctDomain: "boardroom", action: "keep", notes: "Canonical boardroom home" },
+  { currentPath: "src/lib/core-services/brain-core/", currentDomain: "brain", correctDomain: "brain", action: "keep", notes: "Canonical brain home" },
+
+  // Misplaced — rename
+  { currentPath: "src/components/business/advisor-board/", currentDomain: "ambiguous", correctDomain: "advisor", action: "rename", notes: "Rename to advisor-panel — single-advisor, not boardroom" },
+
+  // Misplaced — consolidate duplicates
+  { currentPath: "src/lib/services/boardroom/", currentDomain: "boardroom", correctDomain: "boardroom", action: "consolidate", notes: "Merge with boardroom-service into src/lib/boardroom/" },
+  { currentPath: "src/lib/services/boardroom-service/", currentDomain: "boardroom", correctDomain: "boardroom", action: "consolidate", notes: "Merge with boardroom/ into src/lib/boardroom/" },
+  { currentPath: "src/lib/services/brain-core/", currentDomain: "brain", correctDomain: "brain", action: "consolidate", notes: "Wrapper → core-services/brain-core (DSP-030)" },
+
+  // Scattered advisor logic
+  { currentPath: "src/lib/advisor-intelligence/", currentDomain: "advisor", correctDomain: "advisor", action: "move", notes: "Move to src/lib/advisors/intelligence/" },
+  { currentPath: "src/lib/advisor-protocol/", currentDomain: "advisor", correctDomain: "advisor", action: "move", notes: "Move to src/lib/advisors/protocol/" },
+  { currentPath: "src/lib/services/advisor-feedback/", currentDomain: "advisor", correctDomain: "advisor", action: "move", notes: "Move to src/lib/advisors/feedback/" },
+  { currentPath: "src/lib/services/advisor-knowledge/", currentDomain: "advisor", correctDomain: "advisor", action: "move", notes: "Move to src/lib/advisors/knowledge/" },
+  { currentPath: "src/lib/services/advisor-memory/", currentDomain: "advisor", correctDomain: "advisor", action: "move", notes: "Move to src/lib/advisors/memory/" },
+] as const;
+
+// ── Public/Internal Language Alignment ──
+
+export const AI_TERMINOLOGY_MAP = {
+  public: {
+    advisor: "Your [Domain] Advisor",
+    boardroom: "Boardroom Session",
+    brain: null, // Brain is not a public-facing term
+  },
+  internal: {
+    advisor: "advisor-service, advisor-agent",
+    boardroom: "boardroom-service, boardroom-session",
+    brain: "brain-core, model-router, inference-gateway",
+  },
+  antiPatterns: [
+    { wrong: "advisor-board", correct: "advisor-panel (single) or boardroom (multi)" },
+    { wrong: "brain meeting", correct: "boardroom session" },
+    { wrong: "the business brain", correct: "Your Business Advisor" },
+  ],
+} as const;
