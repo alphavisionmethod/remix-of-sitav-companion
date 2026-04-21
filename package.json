@@ -18,6 +18,7 @@
     "check:consolidation-waves": "npx tsx scripts/architecture/checks/check-consolidation-wave-regression.ts",
     "check:ai-domains": "npx tsx scripts/architecture/checks/check-ai-domain-boundaries.ts",
     "check:ai-domains:strict": "npx tsx scripts/architecture/checks/check-ai-domain-boundaries.ts --strict",
+    "generate:equivalence-proofs": "npx tsx scripts/architecture/generate-behavioral-equivalence-proofs.ts",
     "validate:all": "npx tsx scripts/validate-all.ts",
     "validate:architecture": "npx tsx scripts/validate-all.ts architecture",
     "validate:contracts": "npx tsx scripts/validate-all.ts contracts",
