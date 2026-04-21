@@ -3,11 +3,13 @@
 // Renders the bundled markdown for a runbook with metadata header.
 // ═══════════════════════════════════════════════════════════════
 
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft, BookOpen, Shield, AlertTriangle } from "lucide-react";
+import { ArrowLeft, BookOpen, Shield, AlertTriangle, Filter } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { SitaCard } from "@/components/sita/SitaCard";
 import { getRunbookEntry, loadRunbookMarkdown } from "@/lib/support/runbook-loader";
 import { useQuery } from "@tanstack/react-query";
@@ -190,6 +192,10 @@ export function RunbookViewer({ runbookId }: { runbookId: string }) {
 }
 
 function LinkedAlertsSection({ runbookId }: { runbookId: string }) {
+  const [sevFilter, setSevFilter] = useState<string>("all");
+  const [serviceFilter, setServiceFilter] = useState("");
+  const [timeRange, setTimeRange] = useState<string>("all");
+
   const { data: alerts = [] } = useQuery({
     queryKey: ["runbook-linked-alerts", runbookId],
     queryFn: async () => {
@@ -198,11 +204,25 @@ function LinkedAlertsSection({ runbookId }: { runbookId: string }) {
         .select("id, title, severity, status, subsystem, last_seen_at")
         .eq("runbook_id", runbookId)
         .order("last_seen_at", { ascending: false })
-        .limit(20);
+        .limit(100);
       if (error) throw error;
       return data ?? [];
     },
   });
+
+  const filtered = useMemo(() => {
+    let list = alerts;
+    if (sevFilter !== "all") list = list.filter((a: any) => a.severity === sevFilter);
+    if (serviceFilter) list = list.filter((a: any) => (a.subsystem ?? "").toLowerCase().includes(serviceFilter.toLowerCase()));
+    if (timeRange !== "all") {
+      const cutoff = new Date();
+      if (timeRange === "1h") cutoff.setHours(cutoff.getHours() - 1);
+      else if (timeRange === "24h") cutoff.setHours(cutoff.getHours() - 24);
+      else if (timeRange === "7d") cutoff.setDate(cutoff.getDate() - 7);
+      list = list.filter((a: any) => new Date(a.last_seen_at) >= cutoff);
+    }
+    return list;
+  }, [alerts, sevFilter, serviceFilter, timeRange]);
 
   if (alerts.length === 0) return null;
 
@@ -213,10 +233,43 @@ function LinkedAlertsSection({ runbookId }: { runbookId: string }) {
   return (
     <SitaCard className="p-6">
       <h2 className="text-sm font-semibold mb-3 flex items-center gap-2">
-        <AlertTriangle className="h-4 w-4 text-amber-500" /> Linked Alerts ({alerts.length})
+        <AlertTriangle className="h-4 w-4 text-amber-500" /> Linked Alerts ({filtered.length}/{alerts.length})
       </h2>
+
+      <div className="flex flex-wrap items-center gap-2 mb-3">
+        <Filter className="h-3.5 w-3.5 text-muted-foreground" />
+        <Select value={sevFilter} onValueChange={setSevFilter}>
+          <SelectTrigger className="h-7 w-[110px] text-xs"><SelectValue placeholder="Severity" /></SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All Severity</SelectItem>
+            <SelectItem value="critical">Critical</SelectItem>
+            <SelectItem value="high">High</SelectItem>
+            <SelectItem value="medium">Medium</SelectItem>
+            <SelectItem value="low">Low</SelectItem>
+          </SelectContent>
+        </Select>
+        <Input
+          placeholder="Service…"
+          className="h-7 w-[140px] text-xs"
+          value={serviceFilter}
+          onChange={(e) => setServiceFilter(e.target.value)}
+        />
+        <Select value={timeRange} onValueChange={setTimeRange}>
+          <SelectTrigger className="h-7 w-[100px] text-xs"><SelectValue placeholder="Time" /></SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All Time</SelectItem>
+            <SelectItem value="1h">Last 1h</SelectItem>
+            <SelectItem value="24h">Last 24h</SelectItem>
+            <SelectItem value="7d">Last 7d</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+
       <div className="space-y-1.5">
-        {alerts.map((a: any) => (
+        {filtered.length === 0 && (
+          <p className="text-xs text-muted-foreground text-center py-3">No alerts match current filters</p>
+        )}
+        {filtered.map((a: any) => (
           <Link
             key={a.id}
             to={`/admin/alerts?focus=${a.id}`}

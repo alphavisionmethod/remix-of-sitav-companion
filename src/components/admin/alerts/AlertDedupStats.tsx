@@ -7,7 +7,9 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Layers, Loader2, GitMerge, VolumeX } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Layers, Loader2, GitMerge, VolumeX, Download } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 interface DedupEntry {
   id: string;
@@ -17,9 +19,13 @@ interface DedupEntry {
   was_suppressed: boolean;
   original_severity: string;
   created_at: string;
+  dedup_key?: string | null;
+  alert_id?: string | null;
+  suppression_rule_id?: string | null;
 }
 
 export function AlertDedupStats() {
+  const { toast } = useToast();
   const { data: entries = [], isLoading } = useQuery({
     queryKey: ["alert-dedup-log"],
     queryFn: async () => {
@@ -43,6 +49,27 @@ export function AlertDedupStats() {
   const dedupRate = total > 0 ? Math.round((deduped / total) * 100) : 0;
   const suppressRate = total > 0 ? Math.round((suppressed / total) * 100) : 0;
 
+  function exportCsv() {
+    if (entries.length === 0) return;
+    const headers = ["id","fingerprint","dedup_key","alert_id","occurrence_count","was_deduplicated","was_suppressed","original_severity","suppression_rule_id","created_at"];
+    const rows = entries.map((e: any) =>
+      headers.map((h) => {
+        const v = e[h] ?? "";
+        const s = String(v);
+        return s.includes(",") || s.includes('"') ? `"${s.replace(/"/g, '""')}"` : s;
+      }).join(",")
+    );
+    const csv = [headers.join(","), ...rows].join("\n");
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `alert-dedup-log-${new Date().toISOString().slice(0, 10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+    toast({ title: "Exported", description: `${entries.length} dedup log entries downloaded as CSV.` });
+  }
+
   // Group by fingerprint for top-deduped
   const fpMap = new Map<string, { count: number; totalOccurrences: number }>();
   for (const e of entries) {
@@ -58,9 +85,16 @@ export function AlertDedupStats() {
   return (
     <Card>
       <CardHeader className="pb-3">
-        <CardTitle className="text-sm flex items-center gap-2">
-          <Layers className="h-4 w-4 text-muted-foreground" /> Deduplication Stats
-        </CardTitle>
+        <div className="flex items-center justify-between">
+          <CardTitle className="text-sm flex items-center gap-2">
+            <Layers className="h-4 w-4 text-muted-foreground" /> Deduplication Stats
+          </CardTitle>
+          {entries.length > 0 && (
+            <Button variant="outline" size="sm" className="h-7 text-xs gap-1" onClick={exportCsv}>
+              <Download className="h-3 w-3" /> Export CSV
+            </Button>
+          )}
+        </div>
       </CardHeader>
       <CardContent>
         {isLoading ? (
