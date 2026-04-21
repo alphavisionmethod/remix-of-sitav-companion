@@ -25,6 +25,11 @@ if (!existsSync(SRC)) {
     generatedAt: new Date().toISOString(), gate: "advisor-tool-permissions", ok: vc.errors.length === 0,
     requiredRoles: REQUIRED_ROLES, missingRoles: missing,
   });
+  writeJsonOutput("generated/advisor-tool-permissions-report.json", {
+    generatedAt: new Date().toISOString(), gate: "advisor-tool-permissions", ok: vc.errors.length === 0,
+    errorCount: vc.errors.length, warningCount: 0,
+    requiredRoles: REQUIRED_ROLES, missingRoles: missing,
+  });
 }
 
 vc.report("check-advisor-tool-permissions");

@@ -1,0 +1,8 @@
+{
+  "gate": "app-lifecycle-coverage",
+  "tier": "BLOCK",
+  "ok": true,
+  "errors": 0,
+  "warnings": 0,
+  "checkedAt": "2026-04-21T05:01:15.603Z"
+}

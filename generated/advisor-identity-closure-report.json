@@ -1,0 +1,19 @@
+{
+  "generatedAt": "2026-04-21T05:00:18.909Z",
+  "gate": "advisor-identity-closure",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "advisorCount": 34,
+  "requiredFields": [
+    "advisorId",
+    "displayName",
+    "personaDescription",
+    "voiceTone",
+    "domainAuthority",
+    "trustFloor",
+    "trustCeiling",
+    "disabledFallback"
+  ],
+  "missingFields": []
+}

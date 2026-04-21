@@ -1,0 +1,15 @@
+{
+  "generatedAt": "2026-04-21T05:00:26.157Z",
+  "gate": "advisor-reversibility",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "entryCount": 12,
+  "requiredClassifications": [
+    "fully-reversible",
+    "partially-reversible",
+    "irreversible",
+    "time-limited"
+  ],
+  "missingClassifications": []
+}
