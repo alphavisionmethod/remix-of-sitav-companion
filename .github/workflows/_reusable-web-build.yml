@@ -1,0 +1,63 @@
+# ═══════════════════════════════════════════════════════════════
+# SITA OS — Reusable Web Build
+# Shared build step used by ci.yml, mobile-build.yml, deploy.yml
+# to avoid duplicating checkout→setup→install→build logic.
+# ═══════════════════════════════════════════════════════════════
+name: _reusable-web-build
+
+on:
+  workflow_call:
+    inputs:
+      node-version:
+        type: string
+        default: "20"
+      upload-artifact:
+        type: boolean
+        default: true
+      artifact-name:
+        type: string
+        default: "web-dist"
+      retention-days:
+        type: number
+        default: 7
+      vite-env:
+        description: "JSON object of extra VITE_ env vars"
+        type: string
+        default: "{}"
+    secrets:
+      VITE_SUPABASE_URL:
+        required: false
+      VITE_SUPABASE_PUBLISHABLE_KEY:
+        required: false
+      VITE_SUPABASE_PROJECT_ID:
+        required: false
+
+jobs:
+  build:
+    name: Web Build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ inputs.node-version }}
+          cache: npm
+
+      - run: npm ci
+
+      - name: Build
+        run: npm run build
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL || 'http://localhost:8000' }}
+          VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY || 'ci-key' }}
+          VITE_SUPABASE_PROJECT_ID: ${{ secrets.VITE_SUPABASE_PROJECT_ID || 'ci-project' }}
+
+      - name: Upload dist artifact
+        if: ${{ inputs.upload-artifact }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ inputs.artifact-name }}
+          path: dist/
+          retention-days: ${{ inputs.retention-days }}

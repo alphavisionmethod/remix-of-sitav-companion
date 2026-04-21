@@ -29,6 +29,30 @@
 | Release readiness | `generated/ci-launch-gate-report.json` |
 | Support bundle generator | `supabase/functions/generate-support-bundle` |
 
+## Escalation Matrix
+
+| Severity | Description | Response Target | Escalation Path |
+|----------|-------------|----------------|-----------------|
+| **P0 — Outage** | Production down, data loss risk | 15 min | On-call → platform-core → CTO |
+| **P1 — Critical** | Major feature broken, no workaround | 1 hour | GitHub Issue → platform-core |
+| **P2 — High** | Feature degraded, workaround exists | 4 hours | GitHub Issue → domain owner |
+| **P3 — Medium** | Minor bug, cosmetic issue | 1 business day | GitHub Issue → triage |
+| **P4 — Low** | Enhancement, nice-to-have | Best effort | GitHub Issue → backlog |
+
+## Generating a Support Bundle
+
+For backend issues, generate a diagnostic bundle:
+
+```bash
+# Via edge function (requires service role)
+curl -X POST "$SUPABASE_URL/functions/v1/generate-support-bundle" \
+  -H "Authorization: Bearer $SERVICE_ROLE_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"user_id": "<affected-user-id>"}'
+```
+
+Include the bundle ID in your support request for faster resolution.
+
 ## Support Channels
 
 | Channel | Use For | SLA |

@@ -13,9 +13,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     env:
-      SUPABASE_URL: https://fctupowhcljejygjfpty.supabase.co
+      SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
       SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
-      VITE_SUPABASE_URL: https://fctupowhcljejygjfpty.supabase.co
+      VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
