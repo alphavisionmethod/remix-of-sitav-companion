@@ -1,0 +1,79 @@
+{
+  "generatedAt": "2026-04-21T06:24:05.700Z",
+  "requirements": [
+    {
+      "requirementId": "mc-privacy-manifest",
+      "platform": "ios",
+      "category": "privacy",
+      "label": "iOS Privacy Manifest",
+      "status": "deferred",
+      "evidence": "Archived at archive/mobile/ios/PrivacyInfo.xcprivacy",
+      "actionRequired": "Include when native app reactivated"
+    },
+    {
+      "requirementId": "mc-data-safety",
+      "platform": "android",
+      "category": "privacy",
+      "label": "Play Data Safety Declaration",
+      "status": "deferred",
+      "evidence": "Archived at archive/mobile/store-metadata/android.data-safety.json",
+      "actionRequired": "Submit via Play Console when listing created"
+    },
+    {
+      "requirementId": "mc-ats",
+      "platform": "ios",
+      "category": "network",
+      "label": "App Transport Security",
+      "status": "deferred",
+      "evidence": "ATS-strict in archive/mobile/ios/Info.plist.template",
+      "actionRequired": "Verify no exceptions needed"
+    },
+    {
+      "requirementId": "mc-notification-perm",
+      "platform": "both",
+      "category": "permissions",
+      "label": "Notification permission disclosure",
+      "status": "compliant",
+      "evidence": "Browser-native prompt with clear context",
+      "actionRequired": "None for PWA"
+    },
+    {
+      "requirementId": "mc-background",
+      "platform": "ios",
+      "category": "behavior",
+      "label": "iOS Background Modes",
+      "status": "deferred",
+      "evidence": "Declared in archive Info.plist",
+      "actionRequired": "Include when reactivated"
+    },
+    {
+      "requirementId": "mc-target-sdk",
+      "platform": "android",
+      "category": "sdk",
+      "label": "Target SDK compliance",
+      "status": "deferred",
+      "evidence": "Policy at archive/mobile/android/TARGET_SDK_POLICY.md",
+      "actionRequired": "Set targetSdkVersion when reactivated"
+    },
+    {
+      "requirementId": "mc-payment",
+      "platform": "both",
+      "category": "payments",
+      "label": "In-app purchase policy",
+      "status": "not-applicable",
+      "evidence": "SaaS/web-based payments",
+      "actionRequired": "Re-evaluate if native app offers digital goods"
+    },
+    {
+      "requirementId": "mc-deep-links",
+      "platform": "both",
+      "category": "navigation",
+      "label": "Universal/App Links",
+      "status": "deferred",
+      "evidence": "Scheme in archive/capacitor/capacitor.config.ts",
+      "actionRequired": "Deploy verification files when reactivated"
+    }
+  ],
+  "deferred": 6,
+  "compliant": 1
+}

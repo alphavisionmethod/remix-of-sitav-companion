@@ -1,1 +1,41 @@
-{"generatedAt":"2026-04-20T21:20:30.255Z","verdict":"honestly-deferred","reason":"Distribution signing and store accounts not enrolled","codeReady":true,"storeReady":false,"blockers":["apple-developer-enrollment","google-play-enrollment","native-shell-build","store-listing-creation"],"estimatedClosurePath":"4-6 weeks after enrollment"}
+{
+  "generatedAt": "2026-04-21T06:24:05.700Z",
+  "honestyState": "DEFERRED",
+  "isProductionReady": false,
+  "isDeferredHonestly": true,
+  "activeSurfaces": [
+    "web-spa-responsive",
+    "pwa-installable",
+    "web-push-vapid"
+  ],
+  "archivedSurfaces": [
+    "native-ios-app",
+    "native-android-app",
+    "app-store-listing",
+    "play-store-listing",
+    "apns-push",
+    "fcm-push",
+    "capacitor-wrapper"
+  ],
+  "blockedDimensions": 4,
+  "partialDimensions": 6,
+  "distributionBlockers": [
+    "Apple Developer Program not enrolled",
+    "Google Play Console not enrolled",
+    "No native shell active",
+    "No signing credentials",
+    "No APNs/FCM credentials",
+    "No store listings"
+  ],
+  "closurePath": [
+    "1. Enroll Apple Developer Program",
+    "2. Enroll Google Play Console",
+    "3. Restore Capacitor from archive/",
+    "4. Provision signing certs",
+    "5. Provision push certs",
+    "6. Create store listings",
+    "7. Submit for review",
+    "8. Pass all mobile validators"
+  ],
+  "verdict": "Mobile is honestly DEFERRED. PWA fallback active. Native distribution blocked on external account provisioning."
+}

@@ -1,0 +1,77 @@
+{
+  "generatedAt": "2026-04-21T06:24:05.700Z",
+  "policies": [
+    {
+      "platform": "ios",
+      "signingRequired": true,
+      "signingMechanism": "Apple Distribution Certificate + Provisioning Profile",
+      "currentReadiness": "blocked",
+      "requiredCredentials": [
+        "APPLE_TEAM_ID",
+        "APPLE_DISTRIBUTION_CERT_P12_BASE64",
+        "APPLE_DISTRIBUTION_CERT_PASSWORD",
+        "APPLE_PROVISIONING_PROFILE_BASE64",
+        "APP_STORE_CONNECT_API_KEY_ID",
+        "APP_STORE_CONNECT_API_ISSUER_ID",
+        "APP_STORE_CONNECT_API_KEY_P8_BASE64"
+      ],
+      "missingCredentials": [
+        "APPLE_TEAM_ID",
+        "APPLE_DISTRIBUTION_CERT_P12_BASE64",
+        "APPLE_DISTRIBUTION_CERT_PASSWORD",
+        "APPLE_PROVISIONING_PROFILE_BASE64",
+        "APP_STORE_CONNECT_API_KEY_ID",
+        "APP_STORE_CONNECT_API_ISSUER_ID",
+        "APP_STORE_CONNECT_API_KEY_P8_BASE64"
+      ],
+      "releaseGateBehavior": "block",
+      "closurePath": [
+        "Activate Apple Developer Program",
+        "Create Distribution Certificate",
+        "Export .p12 and base64-encode",
+        "Create provisioning profile",
+        "Add 7 secrets to GitHub Actions"
+      ],
+      "runbook": "archive/mobile/ios/SIGNING.md"
+    },
+    {
+      "platform": "android",
+      "signingRequired": true,
+      "signingMechanism": "Android Keystore (JKS/PKCS12)",
+      "currentReadiness": "blocked",
+      "requiredCredentials": [
+        "ANDROID_KEYSTORE_BASE64",
+        "ANDROID_KEYSTORE_PASSWORD",
+        "ANDROID_KEY_ALIAS",
+        "ANDROID_KEY_PASSWORD"
+      ],
+      "missingCredentials": [
+        "ANDROID_KEYSTORE_BASE64",
+        "ANDROID_KEYSTORE_PASSWORD",
+        "ANDROID_KEY_ALIAS",
+        "ANDROID_KEY_PASSWORD"
+      ],
+      "releaseGateBehavior": "block",
+      "closurePath": [
+        "Generate keystore",
+        "Base64-encode",
+        "Add 4 secrets to GitHub Actions"
+      ],
+      "runbook": "archive/mobile/android/SIGNING.md"
+    }
+  ],
+  "allReady": false,
+  "blockers": [
+    "ios: APPLE_TEAM_ID",
+    "ios: APPLE_DISTRIBUTION_CERT_P12_BASE64",
+    "ios: APPLE_DISTRIBUTION_CERT_PASSWORD",
+    "ios: APPLE_PROVISIONING_PROFILE_BASE64",
+    "ios: APP_STORE_CONNECT_API_KEY_ID",
+    "ios: APP_STORE_CONNECT_API_ISSUER_ID",
+    "ios: APP_STORE_CONNECT_API_KEY_P8_BASE64",
+    "android: ANDROID_KEYSTORE_BASE64",
+    "android: ANDROID_KEYSTORE_PASSWORD",
+    "android: ANDROID_KEY_ALIAS",
+    "android: ANDROID_KEY_PASSWORD"
+  ]
+}

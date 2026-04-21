@@ -1,0 +1,70 @@
+{
+  "generatedAt": "2026-04-21T06:24:05.700Z",
+  "scenarios": [
+    {
+      "scenarioId": "mob-launch-fail",
+      "label": "App fails to launch on mobile browser",
+      "category": "launch",
+      "diagnosticAvailable": true,
+      "diagnosticSource": "Browser console + SW status",
+      "runbookRef": "docs/runbooks/runtime-probe-failure.md",
+      "customerSafeExport": true
+    },
+    {
+      "scenarioId": "mob-push-fail",
+      "label": "Push notifications not received",
+      "category": "push",
+      "diagnosticAvailable": true,
+      "diagnosticSource": "Web Push subscription status",
+      "runbookRef": "docs/runbooks/push-failure.md",
+      "customerSafeExport": true
+    },
+    {
+      "scenarioId": "mob-offline-stuck",
+      "label": "Stuck in offline mode",
+      "category": "offline",
+      "diagnosticAvailable": true,
+      "diagnosticSource": "SW cache status + navigator.onLine",
+      "runbookRef": "docs/runbooks/sync-lag.md",
+      "customerSafeExport": true
+    },
+    {
+      "scenarioId": "mob-auth-loop",
+      "label": "Auth redirect loop on mobile",
+      "category": "auth",
+      "diagnosticAvailable": true,
+      "diagnosticSource": "Auth session + cookie inspection",
+      "runbookRef": "docs/runbooks/auth-outage.md",
+      "customerSafeExport": true
+    },
+    {
+      "scenarioId": "mob-pwa-install",
+      "label": "PWA install prompt not appearing",
+      "category": "install",
+      "diagnosticAvailable": true,
+      "diagnosticSource": "beforeinstallprompt + manifest validity",
+      "runbookRef": "docs/runbooks/runtime-probe-failure.md",
+      "customerSafeExport": true
+    },
+    {
+      "scenarioId": "mob-perf",
+      "label": "Performance degraded on mobile",
+      "category": "performance",
+      "diagnosticAvailable": true,
+      "diagnosticSource": "Performance API metrics",
+      "runbookRef": "docs/runbooks/runtime-probe-failure.md",
+      "customerSafeExport": false
+    },
+    {
+      "scenarioId": "mob-native-ask",
+      "label": "User asks about native app",
+      "category": "distribution",
+      "diagnosticAvailable": false,
+      "diagnosticSource": "N/A",
+      "runbookRef": "docs/MOBILE_HONESTY.md",
+      "customerSafeExport": false
+    }
+  ],
+  "diagnosticCoverage": 6,
+  "total": 7
+}
