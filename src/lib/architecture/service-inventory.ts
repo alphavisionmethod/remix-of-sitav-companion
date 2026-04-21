@@ -77,6 +77,17 @@ export const SERVICE_INVENTORY_SAMPLE: readonly ServiceEntry[] = [
   { directory: "os-kernel", classification: "core-domain", targetDomain: "os-platform", action: "keep", priority: "keep", notes: "OS substrate" },
 ] as const;
 
+// ── Duplicate service pairs (from Workstream A registry) ──
+export const DUPLICATE_PAIR_ENTRIES: readonly ServiceEntry[] = [
+  { directory: "core-services/ai-gateway ↔ services/ai-gateway", classification: "duplicate", targetDomain: "ai-orchestration", action: "merge", priority: "wave-1", notes: "DSP-001: Full duplicate — consolidate to core-services" },
+  { directory: "core-services/brain-core ↔ services/brain-core", classification: "duplicate", targetDomain: "ai-orchestration", action: "merge", priority: "wave-3", notes: "DSP-030: Complex pair — Brain substrate" },
+  { directory: "core-services/workflow-engine ↔ services/workflow-engine", classification: "duplicate", targetDomain: "workflow-engine", action: "merge", priority: "wave-3", notes: "DSP-036: High-traffic workflow engine" },
+  { directory: "core-services/policy-engine ↔ services/policy-engine", classification: "duplicate", targetDomain: "trust-receipts-audit", action: "merge", priority: "wave-3", notes: "DSP-033: Governance critical" },
+  { directory: "core-services/receipt-service ↔ services/receipt-service", classification: "duplicate", targetDomain: "trust-receipts-audit", action: "merge", priority: "wave-3", notes: "DSP-034: Trust critical" },
+  { directory: "core-services/event-bus ↔ services/event-bus", classification: "duplicate", targetDomain: "os-platform", action: "merge", priority: "wave-1", notes: "DSP-006: Core eventing" },
+  { directory: "core-services/memory-service ↔ services/memory-service", classification: "duplicate", targetDomain: "ai-orchestration", action: "merge", priority: "wave-2", notes: "DSP-026: Memory infrastructure" },
+] as const;
+
 export function getConsolidationStats() {
   const inventory = SERVICE_INVENTORY_SAMPLE;
   const total = inventory.length;
@@ -84,7 +95,7 @@ export function getConsolidationStats() {
   const mergeCount = inventory.filter((s) => s.action === "merge").length;
   const deleteCount = inventory.filter((s) => s.action === "delete" || s.action === "archive").length;
   return {
-    currentCount: 209, // from audit
+    currentCount: 209, // from audit — includes 38 duplicate pairs
     sampleMapped: total,
     targetCount: 45,
     keepCount,

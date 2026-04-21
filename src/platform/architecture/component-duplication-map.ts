@@ -145,3 +145,24 @@ export function allCanonicalPaths(): string[] {
 export function allKnownNameCollisions(): string[] {
   return DUPLICATE_FAMILIES.flatMap(f => [f.canonical, ...f.wrappers]);
 }
+
+// ── Service-level duplicate families (from Workstream A consolidation) ──
+
+export interface ServiceDuplicateFamily {
+  id: string;
+  description: string;
+  canonical: string;
+  duplicate: string;
+  status: DuplicateStatus;
+  wave: "wave-1" | "wave-2" | "wave-3";
+}
+
+export const SERVICE_DUPLICATE_FAMILIES: ServiceDuplicateFamily[] = [
+  { id: "svc-ai-gateway", description: "AI gateway service", canonical: "src/lib/core-services/ai-gateway", duplicate: "src/lib/services/ai-gateway", status: "MIGRATING", wave: "wave-1" },
+  { id: "svc-brain-core", description: "Brain core substrate", canonical: "src/lib/core-services/brain-core", duplicate: "src/lib/services/brain-core", status: "MIGRATING", wave: "wave-3" },
+  { id: "svc-workflow-engine", description: "Workflow execution engine", canonical: "src/lib/core-services/workflow-engine", duplicate: "src/lib/services/workflow-engine", status: "MIGRATING", wave: "wave-3" },
+  { id: "svc-policy-engine", description: "Policy enforcement engine", canonical: "src/lib/core-services/policy-engine", duplicate: "src/lib/services/policy-engine", status: "MIGRATING", wave: "wave-3" },
+  { id: "svc-receipt-service", description: "Receipt generation & audit", canonical: "src/lib/core-services/receipt-service", duplicate: "src/lib/services/receipt-service", status: "MIGRATING", wave: "wave-3" },
+  { id: "svc-event-bus", description: "Event bus / pub-sub", canonical: "src/lib/core-services/event-bus", duplicate: "src/lib/services/event-bus", status: "MIGRATING", wave: "wave-1" },
+  { id: "svc-memory-service", description: "Memory persistence", canonical: "src/lib/core-services/memory-service", duplicate: "src/lib/services/memory-service", status: "MIGRATING", wave: "wave-2" },
+];
