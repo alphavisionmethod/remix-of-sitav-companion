@@ -1,95 +1,118 @@
 
 
-# Real AI-Generated Advisor Portraits for Concierge, Business, and Finance
+# Immersive Advisor Board UI Redesign
 
 ## Summary
 
-Generate production-quality, photorealistic AI advisor portraits for the three core advisors (Concierge, Business, Finance/Money) using the Lovable AI image generation API, then embed them as default fallback avatars throughout all advisor surfaces (Boardroom, Council Shell, Meeting Room, Mobile, Timeline). Currently, all advisors show generic Lucide icon circles -- this replaces them with real character portraits.
+Transform the advisor frontend across OS Desktop and Mobile App to match the reference images: a dark, cinematic glassmorphic boardroom with holographic advisor cards, floating consensus/confidence HUDs, and glowing neon-accented portraits. The current implementation uses standard card grids with muted styling -- this redesign replaces it with a premium, immersive executive boardroom aesthetic.
 
 ## What Changes
 
-### Part 1 -- Generate Three Hero Advisor Portraits
+### Part 1 -- Immersive Boardroom Council View (Desktop)
 
-Use `google/gemini-3-pro-image-preview` (highest quality) via a script to generate three cinematic, photorealistic advisor portraits:
+**New component: `src/components/advisors/ImmersiveBoardroomCouncil.tsx`**
 
-- **Business Advisor** -- Distinguished executive in deep purple/indigo palette, authoritative presence, tailored suit, studio-lit headshot
-- **Money/Finance Advisor** -- Sharp financial professional in emerald green palette, confident analytical gaze, modern corporate style
-- **Concierge Advisor** -- Polished hospitality professional in warm gold/amber tones, welcoming expression, elegant attire
+A full-viewport dark boardroom scene inspired by Image 1 (the round-table council). Features:
 
-Each image saved to `src/assets/advisors/` as `business-advisor.png`, `money-advisor.png`, `concierge-advisor.png`.
+- Dark gradient background simulating a premium executive room (`bg-gradient-to-b from-[#0a0a14] via-[#10101f] to-[#0d0d18]`)
+- Advisors arranged in a semicircular/oval layout using CSS transforms, each seat with:
+  - Large `AdvisorPortrait` (xl size) with domain-colored glowing ring
+  - Glassmorphic data card floating beside each advisor showing their key metric (e.g., `$3,800`, `+12%`, `Confidence 78%`)
+  - Speaking/active state with animated neon pulse
+- Center holographic HUD panel showing:
+  - **Consensus** gauge (circular progress ring)
+  - **Confidence** aggregate gauge
+  - SITA logo centered
+- Horizontal glassmorphic header: "EXECUTIVE'S BOARDROOM" with session counter
 
-### Part 2 -- Create Advisor Avatar Asset Registry
+### Part 2 -- Advisor Personality Showcase Cards
 
-New file: `src/lib/advisors/advisor-avatar-assets.ts`
+**New component: `src/components/advisors/AdvisorShowcaseCard.tsx`**
 
-Maps domain keys to their static imported avatar images:
+Inspired by Image 3 (the four personality cards). Each card is a tall glassmorphic panel:
 
-```typescript
-import businessAvatar from "@/assets/advisors/business-advisor.png";
-import moneyAvatar from "@/assets/advisors/money-advisor.png";
-import conciergeAvatar from "@/assets/advisors/concierge-advisor.png";
+- Top half: Large advisor portrait with ethereal/abstract gradient aura behind it
+- Advisor title below portrait (e.g., "Financial Strategist", "Business Growth Advisor", "Concierge Planner")
+- Bottom half: A miniature domain-relevant visualization (sparkline chart, calendar grid, or world map)
+- Glass material: `bg-white/[0.04] backdrop-blur-xl border border-white/[0.08]`
+- Perspective tilt on hover using CSS `transform: perspective(800px) rotateY()`
+- Used in the "Council" tab as the default view
 
-export const DEFAULT_ADVISOR_AVATARS: Partial<Record<string, string>> = {
-  business: businessAvatar,
-  money: moneyAvatar,
-  concierge: conciergeAvatar,
-};
+### Part 3 -- Debate Mode View Redesign
 
-export function getDefaultAdvisorAvatar(domain: string): string | null {
-  return DEFAULT_ADVISOR_AVATARS[domain] ?? null;
-}
-```
+**Modify: `src/components/advisors/AdvisorDebateView.tsx`**
 
-### Part 3 -- Update AdvisorAvatar Primitive to Support Image Mode
+Inspired by Image 2 (dual-advisor debate). Replace the current basic card layout:
 
-Modify `src/components/sita/primitives/AdvisorAvatar.tsx`:
+- Split-screen dark layout with two advisor portraits facing each other
+- Left advisor: warm gold/amber accent glow; Right advisor: cool blue/teal accent glow
+- Between them: Large convergence score gauge (circular, animated)
+- Each side shows:
+  - Glassmorphic "Evidence" panel with structured findings
+  - Confidence progress bar with percentage
+  - "Counterpoints" section
+- Dark background with subtle particle/grid effects
 
-- Add optional `avatarUrl` prop
-- Import `getDefaultAdvisorAvatar` from the asset registry
-- When `avatarUrl` is provided OR a default avatar exists for the domain, render a circular `<img>` with the domain gradient border ring instead of the Lucide icon
-- Fall back to the existing icon rendering when no image is available
-- Add `onError` handler that falls back to icon mode
+### Part 4 -- AdvisorWorkspace Page Redesign
 
-### Part 4 -- Update AdvisorPortrait to Use Default Avatars
+**Modify: `src/pages/advisors/AdvisorWorkspace.tsx`**
 
-Modify `src/components/advisors/AdvisorPortrait.tsx`:
+- Replace the `MainGuideHeader` with a cinematic dark header bar matching the reference OS chrome (back arrow, "ADVISORS" breadcrumb, "EXECUTIVE'S BOARDROOM" title, session counter)
+- Replace `CouncilGrid` with the new `ImmersiveBoardroomCouncil` for the boardroom mode and `AdvisorShowcaseCard` grid for the council/daily-pulse mode
+- Replace the tab bar with a sleek glassmorphic pill selector
+- Dark theme enforcement: wrap the advisor workspace in a dark-mode container (`dark` class) so it renders in the cinematic dark palette regardless of system theme
 
-- Import `getDefaultAdvisorAvatar`
-- Before falling back to icon mode, check if a default static avatar exists for the domain
-- Use that as the image source when no user-generated `avatarUrl` is passed
+### Part 5 -- Mobile App Advisor View
 
-### Part 5 -- Wire Avatars Into All Advisor Surfaces
+**New component: `src/components/advisors/MobileAdvisorBoard.tsx`**
 
-Update these components to pass through avatar data:
+Mobile-optimized version of the showcase:
 
-- **AdvisorCouncilShell.tsx** -- Use `AdvisorPortrait` (with image support) instead of bare `AdvisorAvatar` for council cards
-- **BoardroomPulseView.tsx** -- Pass default avatars to the advisor avatars shown in pulse view
-- **AdvisorTimelineView.tsx** -- Use image-capable avatar in timeline entries
-- **AdvisorDebateView.tsx** -- Ensure debate participants show portraits
+- Horizontal scroll of advisor personality cards (compact version of Part 2)
+- Tappable cards that expand to full-screen advisor detail
+- Bottom consensus bar showing aggregate confidence
+- Swipeable debate view for mobile
 
-### Part 6 -- QA Generated Images
+**Modify: Mobile routes** to use the new component when navigating to advisors from the mobile app
 
-Inspect each generated portrait for quality, verify they render correctly at sm/md/lg/xl sizes, check dark/light mode contrast, and confirm fallback behavior when images fail to load.
+### Part 6 -- Shared Glassmorphic Primitives
+
+**New file: `src/components/advisors/boardroom-primitives.tsx`**
+
+Shared building blocks used across Parts 1-5:
+
+- `GlassPanel` -- Standard glassmorphic container with configurable blur, opacity, and border glow
+- `HolographicGauge` -- Circular animated gauge for consensus/confidence (SVG-based with gradient strokes)
+- `NeonRing` -- Animated glowing ring component for advisor portraits
+- `FloatingMetricCard` -- Small glassmorphic data readout that hovers near an advisor
+- `CinematicBackground` -- Dark gradient with optional grid/particle overlay
+
+### Part 7 -- Generate Additional Advisor Portraits
+
+Generate portraits for the remaining advisor domains (Growth, Trust, Opportunity, Recovery, Boardroom, Family, General) using the AI image generation API, and register them in `advisor-avatar-assets.ts`. This ensures every advisor seat shows a real portrait, not a fallback icon.
 
 ## Technical Details
 
-- Image generation uses `google/gemini-3-pro-image-preview` for maximum quality
-- Images are base64-decoded and saved as PNG files in `src/assets/advisors/`
-- Vite handles static image imports natively -- no special loader needed
-- The `AdvisorAvatar` primitive gains image support without breaking any existing consumer (backward compatible -- `avatarUrl` is optional)
-- The `AdvisorPortrait` component already supports `avatarUrl` -- it just needs to check the default registry when none is provided
-- All 34 files currently importing `AdvisorAvatar` continue working unchanged
+- All new components use Framer Motion for animations (spring physics, stagger reveals, pulse effects)
+- Dark theme is scoped using a `dark` class wrapper on the advisor workspace, not changing the global theme
+- Glassmorphic materials use `backdrop-blur-xl`, `bg-white/[0.03-0.06]`, `border-white/[0.06-0.12]`
+- The semicircular advisor layout uses absolute positioning with trigonometric placement (`Math.cos`/`Math.sin` for seat positions around an ellipse)
+- Advisor portraits use the existing `AdvisorPortrait` component with the generated PNGs from `advisor-avatar-assets.ts`
+- The `HolographicGauge` uses SVG `<circle>` with `stroke-dasharray`/`stroke-dashoffset` animation
+- Mobile view uses `snap-x` scroll containers and `Intersection Observer` for visibility-based animations
+- No new backend dependencies -- all data comes from existing hooks (`useAdvisorStatuses`, mock data, Supabase queries)
 
 ## Files Created
-- `src/assets/advisors/business-advisor.png`
-- `src/assets/advisors/money-advisor.png`
-- `src/assets/advisors/concierge-advisor.png`
-- `src/lib/advisors/advisor-avatar-assets.ts`
+- `src/components/advisors/boardroom-primitives.tsx`
+- `src/components/advisors/ImmersiveBoardroomCouncil.tsx`
+- `src/components/advisors/AdvisorShowcaseCard.tsx`
+- `src/components/advisors/MobileAdvisorBoard.tsx`
+- Additional advisor portrait PNGs in `src/assets/advisors/`
 
 ## Files Modified
-- `src/components/sita/primitives/AdvisorAvatar.tsx`
-- `src/components/advisors/AdvisorPortrait.tsx`
-- `src/components/advisors/AdvisorCouncilShell.tsx`
-- `src/components/sita/apps/boardroom/BoardroomPulseView.tsx`
-- `src/components/advisors/AdvisorTimelineView.tsx`
+- `src/components/advisors/AdvisorDebateView.tsx` -- Complete redesign to cinematic split-screen
+- `src/pages/advisors/AdvisorWorkspace.tsx` -- Wire new components, dark theme wrapper, cinematic header
+- `src/components/advisors/AdvisorCouncilShell.tsx` -- Update council tab to use showcase cards
+- `src/lib/advisors/advisor-avatar-assets.ts` -- Register all new domain portraits
+- Mobile route files as needed to integrate `MobileAdvisorBoard`
 
