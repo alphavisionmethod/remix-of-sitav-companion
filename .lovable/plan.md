@@ -1,69 +1,99 @@
 
 
-# Enhanced OSAUDIT.md — Add 14 New Sections + Layer Analysis
+# OSAUDIT.md v3.0 — Deep Enhancement Pass
 
-## What This Does
+## Summary
 
-Append 14 new major sections to the existing `/mnt/documents/OSAUDIT.md` (currently 1,643 lines), expanding it to ~4,000+ lines with layer-by-layer analysis, maturity scoring, innovation proposals, technical debt surfacing, and a best-in-class roadmap.
+Regenerate `/mnt/documents/OSAUDIT.md` as a single unified document (~4,500+ lines) where every section from Parts 1-24 is significantly expanded with deeper detail, more file-level evidence, and additional subsections. Updated metrics reflect latest counts (227 service dirs, 193 edge functions, 5,114 TS files, etc.).
 
-## New Sections to Append
+## What Changes
 
-### PART 11 — Eight-Layer Repository Evaluation
-For each of these 8 layers, provide strengths, weaknesses, duplication, technical debt, missing capabilities, and next improvements:
-- **Code Layer**: 5,114 TS files, 979 components, 179 hooks, 27 contexts. Strengths: typed contracts, barrel exports. Weaknesses: 209 service dirs (4.6x budget), 0.1% test ratio.
-- **Architecture Layer**: 18 experience contracts, 285 platform files, 81 runtime files. Strengths: 5-plane model, tier honesty. Weaknesses: service sprawl, concept overlap in advisors.
-- **Product Layer**: 1,079 pages, app-in-OS paradigm, 29-screen onboarding. Strengths: domain shells, state persistence. Weaknesses: no universal object identity, no shared timeline.
-- **Runtime Layer**: 4-tier model, 8-surface capability, Nova SDK kernel. Strengths: launch honesty, capability fallbacks. Weaknesses: desktop/appliance tiers unproven in CI.
-- **Operational Layer**: kill switches, runbooks, Sentry, alert-router. Strengths: 18 kill switches, error monitoring wired. Weaknesses: no drill execution evidence, no incident automation.
-- **Release Layer**: 233 migrations, 17 workflows, 250 gates. Strengths: gate density, provenance contracts. Weaknesses: no staged rollout evidence, no canary deployment.
-- **Trust/Safety Layer**: 934 RLS policies, AI output firewall, session threat detector. Strengths: 100% RLS, epistemic firewall. Weaknesses: no penetration test evidence, no SAST/DAST.
-- **Future Extensibility Layer**: plugin architecture, connector catalog, federation contracts. Strengths: SDK bridge, event bus. Weaknesses: no public API versioning, no tenant isolation runtime.
+### Parts 1-10 (Original Sections) — Enhanced
+- **Part 1**: Add per-dimension drill-down tables with 5+ evidence files per score. Add "What 100% Would Require" checklist with exact effort per item.
+- **Part 2**: Expand from 10 to 20 subsystem rows. Add sub-matrices for AI (8 subsystems), Admin (6), Windowing (4), Frontend (5), Backend (6). Each row gets validator script path and proof artifact filename.
+- **Part 3**: Expand all 10 evidence subsections. List all 18 experience contracts with line counts. Categorize 646 validators by domain. List all 193 edge functions by role. List all 27 contexts with purpose. Categorize 179 hooks by domain.
+- **Part 4**: Update with corrected gaps only. Each gap gets severity, exact files, wiring gaps, proof gaps, operational risk, estimated effort.
+- **Part 5-7**: Expand each item with files to create/modify, dependencies, success criteria.
+- **Part 8-9**: Add exact commands and verification criteria per step.
+- **Part 10**: Update percentages and effort calculations.
 
-### PART 12 — Maturity Scoring Matrix
-For each of 20 major subsystems, score 1-10 across 5 dimensions: Maturity, Maintainability, Extensibility, Operational Readiness, Innovation Opportunity.
+### Parts 11-24 (Enhanced Sections) — Significantly Deepened
 
-### PART 13 — Subsystem Action Classification
-For every subsystem, classify into: ADD, IMPROVE, DELETE, CONSOLIDATE, DEPRECATE, AUTOMATE, VALIDATE, FUTURE_ENHANCEMENT with exact file targets.
+**Part 11 (Eight-Layer Evaluation)** — Currently ~350 lines, target ~600 lines:
+- Each layer gets: 8+ strengths (up from 6), 8+ weaknesses (up from 5), expanded duplication tables, 6+ technical debt items, 8+ missing capabilities, 8+ next improvements
+- Add exact file paths for every strength/weakness claim
+- Add "What Next" subsections per layer covering: next-stage enhancements, architectural upgrades, DX improvements, operator improvements, performance improvements, enterprise-readiness, future-proofing
 
-### PART 14 — Advanced Feature Opportunities
-High-leverage new capabilities: universal workspace primitives, automation builder, shared timeline/history, unified command/action center, universal object identity, smart recovery UX, explainability UX, enterprise admin controls, advanced support diagnostics, simulation/sandbox features, collaboration/multi-user workflows.
+**Part 12 (Maturity Scoring)** — Currently 35 lines, target ~120 lines:
+- Expand from 20 to 30 subsystems (add: Orchestration, Nova SDK, Domain Manifests, Windowing Sessions, App Store, Deep Linking, Workflow Engine, Boarding Ceremony, Mobile Platform, Desktop Host)
+- Add per-subsystem commentary explaining each score
+- Add radar chart data format for visualization
+- Add "maturity gap analysis" identifying which subsystems drag down the average
 
-### PART 15 — Architectural Modernization Opportunities
-Systems that work but should be modernized: service directory consolidation, contract-first API generation, event sourcing for audit trail, CQRS for high-write domains, micro-frontend isolation for domain shells.
+**Part 13 (Action Classification)** — Currently 25 lines, target ~200 lines:
+- Break out of single table into per-subsystem detail blocks
+- Each subsystem gets: exact file targets for ADD/IMPROVE/DELETE/CONSOLIDATE/DEPRECATE/AUTOMATE/VALIDATE/FUTURE_ENHANCEMENT
+- Add effort estimate and priority for each action
 
-### PART 16 — Technical Debt and Simplification Opportunities
-Hidden debt: 209 service directories, concept duplication across advisor/boardroom/brain, weak abstractions in connector layer, high-maintenance generated artifact sprawl (992 files), validator gaps, naming inconsistencies.
+**Part 14 (Advanced Features)** — Currently ~110 lines, target ~250 lines:
+- Expand each of the 11 opportunities with: implementation architecture, database tables needed, edge functions needed, UI components needed, integration points, risk assessment
+- Add 4 more opportunities: Intelligent Notifications, Data Visualization Framework, Workflow Templates, Plugin SDK
 
-### PART 17 — Innovation Ideas (World-Class Platform Architect Perspective)
-Missing product primitives, cross-domain abstractions, AI/operator augmentation, UX cohesion, trust/safety upgrades, automation opportunities.
+**Part 15 (Architectural Modernization)** — Currently ~40 lines, target ~150 lines:
+- Expand each of the 5 opportunities with: current file evidence, migration strategy, rollback plan, dependency graph, consumer impact
+- Add 4 more: OpenTelemetry migration, Edge Function Gateway pattern, Database connection pooling, Type-safe RPC layer
 
-### PART 18 — Best-in-Class Roadmap
-What would make this world-class beyond closure: developer experience (SDK docs, playground), operator experience (live topology, dependency graph UI), product intelligence (behavioral analytics, recommendation engine).
+**Part 16 (Technical Debt)** — Currently ~40 lines, target ~200 lines:
+- Expand each subsection with exact file lists and line counts
+- Add new subsections: Systems too coupled to evolve, Validator gaps (which subsystems lack validators), Poor naming/ownership boundaries, Under-tested critical paths
+- Add "debt heat map" showing which directories carry the most debt
 
-### PART 19 — Top 25 Highest-Leverage Recommendations
-Ranked by impact/difficulty/risk with classification (critical/strategic/optional) and value dimension (user/operator/developer/release confidence).
+**Part 17 (Innovation Ideas)** — Currently ~40 lines, target ~200 lines:
+- Expand each of the 5 categories with 8+ items (up from 5)
+- Add new categories: Trust/Safety Upgrades, Monetization/Enterprise Opportunities, Cross-Domain Abstractions
+- Each idea gets: impact, difficulty, dependencies, expected benefit
 
-### PART 20 — "If I Wanted Best-in-Class" Analysis
-Advanced improvements beyond audit gaps that would materially strengthen the repository.
+**Part 18 (Best-in-Class Roadmap)** — Currently ~30 lines, target ~120 lines:
+- Expand each tier with 8+ items and exact file/system targets
+- Add "If I Wanted Best-in-Class" detailed narrative per dimension
+- Add comparison to industry benchmarks
 
-### PART 21 — Product-System Opportunities
-Missing product-system primitives with impact assessment.
+**Part 19 (Top 25)** — Currently ~30 lines, target ~100 lines:
+- Expand each recommendation with 2-3 line rationale
+- Add dependency chains between recommendations
+- Add "quick wins" vs "strategic investments" classification
 
-### PART 22 — Prioritized Recommendation Detail
-Every recommendation tagged with: impact (1-10), difficulty (1-10), risk (L/M/H), dependencies, classification, value dimension.
+**Part 20 (Best-in-Class Analysis)** — Currently ~40 lines, target ~150 lines:
+- Expand each gap area with industry comparison, exact improvement path, files to modify
+- Add new sections: Performance/Scalability, Monetization Readiness, Multi-Tenant Architecture
 
-### PART 23 — Roadmap Horizons
-Organized into: Immediate Critical (week 1), Short-Term (weeks 2-4), Medium-Term Strategic (months 2-3), Long-Term Excellence (quarter 2+).
+**Part 21 (Product-System Opportunities)** — Currently ~15 lines, target ~100 lines:
+- Expand each of 11 opportunities with implementation detail, database design, component architecture
+- Add 4 more: Audit Trail Explorer, Health Score Dashboard, Compliance Center, API Playground
 
-### PART 24 — Final Enhanced Direct Answer
-Updated completion assessment incorporating all new analysis.
+**Part 22 (Prioritized Detail)** — Currently ~50 lines, target ~150 lines:
+- Add rationale paragraph for each recommendation
+- Add dependency graph showing which recommendations unlock others
+- Add "value chain" analysis
+
+**Part 23 (Roadmap Horizons)** — Currently ~40 lines, target ~120 lines:
+- Each item gets: exact files, success criteria, verification command, dependencies, risk
+- Add milestone markers and checkpoint criteria
+
+**Part 24 (Final Answer)** — Currently ~50 lines, target ~120 lines:
+- Add "Honest Delta" subsection explaining structural vs behavioral gap
+- Add per-layer grade breakdown (8 layers)
+- Add "What the next 30 days should look like" tactical plan
+
+### New Appendices
+- **Appendix H**: Full 227-service sprawl inventory categorized by domain
+- **Appendix I**: Complete edge function inventory (193 functions by role)
+- **Appendix J**: Database table inventory by domain (420 tables)
+- **Appendix K**: Innovation opportunity scoring matrix
 
 ## Implementation
 
-1. Write a Python script to `/tmp/gen_audit_enhanced.py` that:
-   - Reads the existing `/mnt/documents/OSAUDIT.md`
-   - Appends all 14 new sections with real data from filesystem inspection
-   - Outputs updated file to `/mnt/documents/OSAUDIT.md`
-2. Target: 4,000+ total lines
-3. QA: verify all 24 parts present and populated
+1. Write Python generation script to `/tmp/gen_audit_v3.py` that performs live filesystem inspection
+2. Generate complete unified document (not append — full regeneration) to `/mnt/documents/OSAUDIT.md`
+3. QA: verify all 24 parts present, line count exceeds 4,000, all requested analysis dimensions covered
 
