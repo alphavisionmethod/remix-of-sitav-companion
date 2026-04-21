@@ -3092,9 +3092,11 @@ export type Database = {
           created_at: string
           dedup_key: string | null
           description: string
+          escalation_count: number
           fingerprint: string
           first_seen_at: string
           id: string
+          last_escalated_at: string | null
           last_seen_at: string
           metadata: Json
           related_incident_id: string | null
@@ -3117,9 +3119,11 @@ export type Database = {
           created_at?: string
           dedup_key?: string | null
           description?: string
+          escalation_count?: number
           fingerprint: string
           first_seen_at?: string
           id?: string
+          last_escalated_at?: string | null
           last_seen_at?: string
           metadata?: Json
           related_incident_id?: string | null
@@ -3142,9 +3146,11 @@ export type Database = {
           created_at?: string
           dedup_key?: string | null
           description?: string
+          escalation_count?: number
           fingerprint?: string
           first_seen_at?: string
           id?: string
+          last_escalated_at?: string | null
           last_seen_at?: string
           metadata?: Json
           related_incident_id?: string | null
@@ -19139,6 +19145,89 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      sla_definitions: {
+        Row: {
+          breach_severity: string
+          created_at: string
+          enabled: boolean
+          id: string
+          metric_key: string
+          name: string
+          target_value: number
+          time_window: string
+          unit: string
+          updated_at: string
+        }
+        Insert: {
+          breach_severity?: string
+          created_at?: string
+          enabled?: boolean
+          id?: string
+          metric_key: string
+          name: string
+          target_value: number
+          time_window?: string
+          unit?: string
+          updated_at?: string
+        }
+        Update: {
+          breach_severity?: string
+          created_at?: string
+          enabled?: boolean
+          id?: string
+          metric_key?: string
+          name?: string
+          target_value?: number
+          time_window?: string
+          unit?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      sla_snapshots: {
+        Row: {
+          computed_at: string
+          created_at: string
+          current_value: number
+          id: string
+          met: boolean
+          sla_id: string
+          target_value: number
+          window_end: string
+          window_start: string
+        }
+        Insert: {
+          computed_at?: string
+          created_at?: string
+          current_value: number
+          id?: string
+          met?: boolean
+          sla_id: string
+          target_value: number
+          window_end: string
+          window_start: string
+        }
+        Update: {
+          computed_at?: string
+          created_at?: string
+          current_value?: number
+          id?: string
+          met?: boolean
+          sla_id?: string
+          target_value?: number
+          window_end?: string
+          window_start?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sla_snapshots_sla_id_fkey"
+            columns: ["sla_id"]
+            isOneToOne: false
+            referencedRelation: "sla_definitions"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       subscriptions: {
         Row: {

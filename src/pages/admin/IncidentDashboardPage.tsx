@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { supabase } from "@/integrations/supabase/client";
-import { AlertTriangle, ShieldAlert, Activity, Clock, RefreshCw } from "lucide-react";
+import { AlertTriangle, ShieldAlert, Activity, Clock, RefreshCw, ArrowUpRight } from "lucide-react";
 
 interface IncidentRow {
   id: string;
@@ -27,6 +27,17 @@ interface KillSwitchAuditRow {
   metadata: Record<string, unknown> | null;
 }
 
+interface EscalationRow {
+  id: string;
+  source_agent_id: string;
+  target_council: string;
+  severity: string;
+  reason: string;
+  status: string;
+  created_at: string;
+  evidence: Record<string, unknown> | null;
+}
+
 const sevTone = (s: string) =>
   s === "critical" || s === "severe" ? "destructive"
   : s === "error" ? "destructive"
@@ -36,13 +47,14 @@ const sevTone = (s: string) =>
 export default function IncidentDashboardPage() {
   const [incidents, setIncidents] = useState<IncidentRow[]>([]);
   const [audit, setAudit] = useState<KillSwitchAuditRow[]>([]);
+  const [escalations, setEscalations] = useState<EscalationRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [lastFetch, setLastFetch] = useState<Date | null>(null);
 
   async function load() {
     setLoading(true);
     try {
-      const [incRes, ksRes] = await Promise.all([
+      const [incRes, ksRes, escRes] = await Promise.all([
         supabase
           .from("incident_classifications" as never)
           .select("*")
@@ -53,9 +65,15 @@ export default function IncidentDashboardPage() {
           .select("*")
           .order("created_at", { ascending: false })
           .limit(100) as unknown as Promise<{ data: KillSwitchAuditRow[] | null; error: unknown }>,
+        supabase
+          .from("council_escalations" as never)
+          .select("*")
+          .order("created_at", { ascending: false })
+          .limit(50) as unknown as Promise<{ data: EscalationRow[] | null; error: unknown }>,
       ]);
       if (incRes.data) setIncidents(incRes.data);
       if (ksRes.data) setAudit(ksRes.data);
+      if (escRes.data) setEscalations(escRes.data);
       setLastFetch(new Date());
     } finally {
       setLoading(false);
@@ -122,6 +140,7 @@ export default function IncidentDashboardPage() {
         <TabsList>
           <TabsTrigger value="incidents">Incidents ({incidents.length})</TabsTrigger>
           <TabsTrigger value="switches">Kill-switch audit ({audit.length})</TabsTrigger>
+          <TabsTrigger value="escalations">Escalations ({escalations.length})</TabsTrigger>
         </TabsList>
         <TabsContent value="incidents">
           <Card>
@@ -189,6 +208,41 @@ export default function IncidentDashboardPage() {
                         <div className="text-xs text-muted-foreground flex items-center gap-1 shrink-0">
                           <Clock className="h-3 w-3" />
                           {new Date(a.created_at).toLocaleString()}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </ScrollArea>
+            </CardContent>
+          </Card>
+        </TabsContent>
+        <TabsContent value="escalations">
+          <Card>
+            <CardContent className="p-0">
+              <ScrollArea className="h-[480px]">
+                <div className="divide-y">
+                  {escalations.length === 0 && (
+                    <div className="p-8 text-center text-muted-foreground">
+                      No escalations recorded yet.
+                    </div>
+                  )}
+                  {escalations.map((e) => (
+                    <div key={e.id} className="p-4 hover:bg-accent/30 transition-colors">
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2">
+                            <ArrowUpRight className="h-4 w-4 text-amber-400 shrink-0" />
+                            <Badge variant={sevTone(e.severity)}>{e.severity}</Badge>
+                            <span className="font-medium text-sm">{e.source_agent_id}</span>
+                            <span className="text-muted-foreground">→</span>
+                            <span className="text-sm">{e.target_council}</span>
+                          </div>
+                          <p className="mt-1 text-sm text-muted-foreground">{e.reason}</p>
+                        </div>
+                        <div className="text-xs text-muted-foreground flex items-center gap-1 shrink-0">
+                          <Clock className="h-3 w-3" />
+                          {new Date(e.created_at).toLocaleString()}
                         </div>
                       </div>
                     </div>

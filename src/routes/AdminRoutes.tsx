@@ -246,6 +246,7 @@ const UserSeedHealth = lazy(() => import("@/pages/admin/UserSeedHealth"));
 // ── Phase 33: Platform Readiness + Live Incident Dashboard ──
 const PlatformReadinessScorecard = lazy(() => import("@/pages/admin/PlatformReadinessScorecard"));
 const IncidentDashboardPage = lazy(() => import("@/pages/admin/IncidentDashboardPage"));
+const SLAMonitoringDashboard = lazy(() => import("@/pages/admin/SLAMonitoringDashboard"));
 
 export function getAdminRoutes() {
   return [
@@ -317,6 +318,7 @@ export function getAdminRoutes() {
     // ── Phase 33: Platform Readiness Scorecard + Live Incident Dashboard ──
     <Route key="phase33-readiness" path="/admin/readiness" element={gated("audit.view", <PlatformReadinessScorecard />)} />,
     <Route key="phase33-incidents-dashboard" path="/admin/incidents/dashboard" element={gated("maintenance.view", <IncidentDashboardPage />)} />,
+    <Route key="sla-monitoring" path="/admin/sla-monitoring" element={gated("maintenance.view", <SLAMonitoringDashboard />)} />,
 
     // ── Phase 7: Meta-Architecture Surfaces ──
     <Route key="meta-arch-root" path="/admin/meta-arch" element={<Navigate to="/admin/meta-arch/atlas" replace />} />,
