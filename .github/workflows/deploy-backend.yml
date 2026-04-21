@@ -20,6 +20,16 @@ jobs:
         with:
           version: latest
       
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci --ignore-scripts
+
+      - name: Pre-deploy env gate
+        run: npx tsx scripts/root/check-env-contract-completeness.ts
+
       - name: Deploy edge functions
         run: supabase functions deploy --project-ref ${{ secrets.SUPABASE_PROJECT_REF }}
         env:
