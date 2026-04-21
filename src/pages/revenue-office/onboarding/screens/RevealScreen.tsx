@@ -2,7 +2,6 @@ import { useMemo, useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { useNavigate } from "react-router-dom";
 import { Sparkles, Brain, Target, ArrowRight, AlertTriangle, CheckCircle, BarChart3, Zap, Phone, FileText, Heart, Search, TrendingUp, Rocket, Loader2, DollarSign } from "lucide-react";
 import type { ScreenProps } from "../types";
 
@@ -19,11 +18,13 @@ const REVENUE_ESTIMATES: Record<string, number> = {
   onboarding: 3800,
 };
 
-type RevealScreenProps = ScreenProps & { markComplete?: (state: ScreenProps["state"]) => Promise<void> };
+type RevealScreenProps = ScreenProps & {
+  markComplete?: (state: ScreenProps["state"]) => Promise<void>;
+  onComplete?: () => void;
+};
 
-export default function RevealScreen({ state, onBack, ...props }: RevealScreenProps) {
+export default function RevealScreen({ state, onBack, onComplete, ...props }: RevealScreenProps) {
   const markComplete = (props as { markComplete?: (state: ScreenProps["state"]) => Promise<void> }).markComplete;
-  const navigate = useNavigate();
   const [phase, setPhase] = useState<"building" | "revealing" | "ready">("building");
   const [revealedCount, setRevealedCount] = useState(0);
 
@@ -171,7 +172,7 @@ export default function RevealScreen({ state, onBack, ...props }: RevealScreenPr
             <button onClick={async () => {
               if (markComplete) await markComplete(state);
               try { localStorage.setItem("sita_onboarding_state", JSON.stringify(state)); } catch {}
-              navigate("/revenue-office/boardroom");
+              onComplete?.();
             }} disabled={phase !== "ready"}
               className="w-full p-4 rounded-xl bg-primary text-primary-foreground text-sm font-semibold flex items-center justify-center gap-2 hover:bg-primary/90 transition-colors disabled:opacity-50">
               Enter Your Revenue Office <ArrowRight className="h-4 w-4" />
@@ -184,7 +185,7 @@ export default function RevealScreen({ state, onBack, ...props }: RevealScreenPr
               <button onClick={async () => {
                 if (markComplete) await markComplete(state);
                 try { localStorage.setItem("sita_onboarding_state", JSON.stringify(state)); } catch {}
-                navigate("/revenue-office/boardroom");
+                onComplete?.();
               }} disabled={phase !== "ready"}
                 className="flex-1 p-3 rounded-xl text-sm text-muted-foreground hover:text-foreground transition-colors disabled:opacity-50">
                 Continue imports later

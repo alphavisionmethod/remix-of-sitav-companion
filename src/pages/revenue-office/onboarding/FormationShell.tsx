@@ -222,7 +222,7 @@ export default function FormationShell({ onComplete }: FormationShellProps) {
         <div className="flex-1 min-w-0">
           <AnimatePresence mode="wait">
             <motion.div key={STAGES[stage].id} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.25 }}>
-              <Screen state={state} setState={setState} onNext={next} onBack={back} markComplete={markComplete} />
+              <Screen state={state} setState={setState} onNext={next} onBack={back} markComplete={markComplete} onComplete={onComplete} />
             </motion.div>
           </AnimatePresence>
 
