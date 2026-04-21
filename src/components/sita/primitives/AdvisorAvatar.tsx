@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { cn } from "@/lib/utils";
-import { Brain, Briefcase, DollarSign, Headphones, Heart, Shield, Sparkles, TrendingUp, Scale } from "lucide-react";
+import { Brain, Briefcase, DollarSign, Headphones, Heart, Shield, Sparkles, TrendingUp, Scale, RefreshCw } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { getDefaultAdvisorAvatar } from "@/lib/advisors/advisor-avatar-assets";
+import { Skeleton } from "@/components/ui/skeleton";
 
 type AdvisorDomain = "business" | "money" | "concierge" | "family" | "growth" | "trust" | "opportunity" | "recovery" | "boardroom" | "general";
 
@@ -43,27 +44,67 @@ const statusColors = {
   offline: "bg-muted-foreground/20",
 };
 
+const MAX_RETRIES = 2;
+
 export const AdvisorAvatar = ({ domain, name, avatarUrl, status = "active", size = "md", showLabel = false, confidence, className }: AdvisorAvatarProps) => {
-  const [imgError, setImgError] = useState(false);
+  const [imgState, setImgState] = useState<"loading" | "loaded" | "error">("loading");
+  const [retries, setRetries] = useState(0);
   const config = domainConfig[domain];
   const s = sizes[size];
   const Icon = config.icon;
   const resolvedAvatar = avatarUrl || getDefaultAdvisorAvatar(domain);
-  const showImage = resolvedAvatar && !imgError;
+  const hasImage = !!resolvedAvatar && imgState !== "error";
+
+  const handleError = useCallback(() => {
+    if (retries < MAX_RETRIES) {
+      setTimeout(() => setRetries((r) => r + 1), 1000 * (retries + 1));
+    } else {
+      setImgState("error");
+    }
+  }, [retries]);
+
+  const handleRetry = useCallback(() => {
+    setRetries(0);
+    setImgState("loading");
+  }, []);
+
+  // Build cache-busted src for retries
+  const imgSrc = resolvedAvatar
+    ? retries > 0 ? `${resolvedAvatar}${resolvedAvatar.includes("?") ? "&" : "?"}r=${retries}` : resolvedAvatar
+    : null;
 
   return (
     <div className={cn("flex items-center gap-2", className)}>
       <div className="relative">
-        {showImage ? (
+        {hasImage && imgSrc ? (
           <div className={cn("rounded-full p-[2px] bg-gradient-to-br shadow-sm", config.gradient, s.container)}>
+            {imgState === "loading" && (
+              <Skeleton className="absolute inset-[2px] rounded-full z-10" />
+            )}
             <img
-              src={resolvedAvatar}
+              src={imgSrc}
               alt={name || config.label}
-              className="rounded-full object-cover w-full h-full bg-card"
-              onError={() => setImgError(true)}
+              className={cn(
+                "rounded-full object-cover w-full h-full bg-card transition-opacity duration-300",
+                imgState === "loaded" ? "opacity-100" : "opacity-0"
+              )}
+              onLoad={() => setImgState("loaded")}
+              onError={handleError}
               loading="lazy"
+              decoding="async"
             />
           </div>
+        ) : imgState === "error" ? (
+          <button
+            onClick={handleRetry}
+            className={cn(
+              "flex items-center justify-center rounded-full bg-gradient-to-br shadow-sm group cursor-pointer",
+              s.container, config.gradient
+            )}
+            title="Retry loading avatar"
+          >
+            <RefreshCw className={cn(s.icon, "text-white/70 group-hover:text-white transition-colors")} strokeWidth={2} />
+          </button>
         ) : (
           <div className={cn(
             "flex items-center justify-center rounded-full bg-gradient-to-br shadow-sm",
