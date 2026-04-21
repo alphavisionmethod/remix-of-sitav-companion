@@ -1,6 +1,21 @@
 {
-  "generatedAt": "2026-04-20T21:27:50.034Z",
-  "gate": "runbook-coverage-gaps",
-  "systemsWithoutRunbooks": [],
-  "coveragePct": 100
+  "generatedAt": "2026-04-21T05:40:42.242Z",
+  "gaps": [
+    {
+      "family": "app-lifecycle",
+      "issue": "No dedicated app-lifecycle recovery runbook"
+    },
+    {
+      "family": "files",
+      "issue": "No file-processing recovery runbook"
+    },
+    {
+      "family": "advisors",
+      "issue": "Boardroom follow-through recovery not explicit"
+    },
+    {
+      "family": "os-appliance",
+      "issue": "OS-level verity failure not covered"
+    }
+  ]
 }

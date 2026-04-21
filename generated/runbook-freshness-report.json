@@ -1,0 +1,11 @@
+{
+  "generatedAt": "2026-04-21T05:40:42.242Z",
+  "severityTiers": 4,
+  "windows": {
+    "critical": "7d",
+    "high": "14d",
+    "medium": "30d",
+    "low": "90d"
+  },
+  "invalidators": 9
+}
