@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { AdvisorAvatar } from "@/components/sita/primitives/AdvisorAvatar";
+import { AdvisorPortrait } from "@/components/advisors/AdvisorPortrait";
 import { ConfidenceBar } from "@/components/sita/primitives/ConfidenceBar";
 import { AdvisorKnowledgePanel } from "@/components/advisors/AdvisorKnowledgePanel";
 import { supabase } from "@/integrations/supabase/client";
@@ -26,7 +26,7 @@ export const AdvisorDetailDrawer = ({ advisor, open, onOpenChange }: AdvisorDeta
       <SheetContent side="right" className="w-full sm:max-w-md overflow-y-auto">
         <SheetHeader className="pb-4">
           <div className="flex items-center gap-3">
-            <AdvisorAvatar domain={advisor.domain} size="lg" status={advisor.status} showLabel={false} />
+            <AdvisorPortrait domain={advisor.domain} name={advisor.name} status={advisor.status} size="lg" />
             <div>
               <SheetTitle className="text-base">{advisor.name}</SheetTitle>
               <SheetDescription className="text-xs">{advisor.role}</SheetDescription>
