@@ -1,16 +1,8 @@
-# ═══════════════════════════════════════════════════════════════════
-# SITA OS — Release · Electron (CONSOLIDATED)
-# This workflow is now SUPERSEDED by desktop-build.yml which handles
-# the full cross-platform matrix build with signing and manifests.
-# Kept as a thin redirect to avoid breaking existing tag-based refs.
-# ═══════════════════════════════════════════════════════════════════
-name: "Release · Electron (→ Desktop Matrix)"
+# SUPERSEDED — use desktop-build.yml (Release · Desktop Matrix)
+name: "Release · Electron (deprecated → desktop-build.yml)"
 
 on:
   workflow_dispatch:
-
-permissions:
-  contents: read
 
 permissions:
   contents: read

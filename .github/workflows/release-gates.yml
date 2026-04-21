@@ -1,10 +1,21 @@
-name: Release Readiness Gates
+name: Release Gates
 
 on:
   pull_request:
     branches: [main]
+    paths:
+      - "scripts/release/**"
+      - "scripts/root/**"
+      - "scripts/architecture/**"
+      - "package.json"
   push:
     branches: [main]
+    paths:
+      - "scripts/release/**"
+      - "scripts/root/**"
+      - "scripts/architecture/**"
+      - "package.json"
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -32,8 +43,17 @@ jobs:
       - name: Install dependencies
         run: npm ci --ignore-scripts
 
-      - name: Run all release readiness gates
-        run: npm run release:all-targets
+      - name: Run release readiness gates
+        run: |
+          npm run release:all-targets
+          echo "## 🚦 Release Gates" >> $GITHUB_STEP_SUMMARY
+          for f in generated/*-release-readiness-report.json; do
+            [ -f "$f" ] || continue
+            NAME=$(basename "$f" .json)
+            READY=$(node -e "console.log(JSON.parse(require('fs').readFileSync('$f','utf8')).deploymentReady || false)")
+            ICON=$( [ "$READY" = "true" ] && echo "✅" || echo "❌" )
+            echo "| $NAME | $ICON $READY |" >> $GITHUB_STEP_SUMMARY
+          done
 
       - name: Upload readiness reports
         if: always()
