@@ -1,124 +1,77 @@
 
 
-# Redesign: Business Priorities Screen with Ordered Multi-Select
+# Premium Advisor Board Redesign
 
-## Summary
-
-Add a new "What Matters Most" screen as the third step (after Identity, before Revenue Model) in the business onboarding flow. This screen replaces the generic growth goals concept with a premium, ordered multi-select of real business priorities that personalizes the entire SITA experience.
+Three interconnected upgrades: enhanced visual effects on all advisor cards, a mobile-first advisor experience with tap-to-expand, and an immersive boardroom council overhaul using holographic components.
 
 ---
 
-## What Changes
+## 1. Premium Neon Rings, HUD Animations, and Hover Tilt
 
-### New File: `src/pages/revenue-office/onboarding/screens/PrioritiesScreen.tsx`
+**Files modified:** `boardroom-primitives.tsx`, `AdvisorShowcaseCard.tsx`, `AdvisorPortrait.tsx`, `ImmersiveBoardroomCouncil.tsx`
 
-A new onboarding screen with:
+- **NeonRing upgrade**: Replace the single pulsing `boxShadow` with a layered triple-ring effect (inner sharp glow + mid diffuse + outer ambient). Add a slow rotating gradient border using `conic-gradient` animated via CSS `@keyframes`. The ring intensity scales with advisor confidence (dim below 60%, bright above 80%).
+- **HolographicGauge upgrade**: Add a sweeping radial "scan line" animation that rotates behind the gauge arc. The gauge value text gets a counting-up number animation using `useSpring` from framer-motion. Add subtle tick marks around the circumference with opacity pulse on the active segment.
+- **Consensus HUD**: The central HUD in `ImmersiveBoardroomCouncil` gets a breathing glow effect that changes color based on consensus level (red < 50, amber 50-75, green > 75). Add particle dots that orbit between the two gauges.
+- **Hover tilt on all cards**: Replace the simple `whileHover: { y: -8 }` in `AdvisorShowcaseCard` with a proper 3D perspective tilt using `onMouseMove` to calculate `rotateX`/`rotateY` from cursor position relative to card center. Add a moving highlight gradient that follows the cursor. Apply the same tilt system to `MobileAdvisorBoard` cards (touch-compatible via `onTouchMove`).
+- **FloatingMetricCard**: Add a subtle floating bob animation (`translateY` oscillation over 3s) and entry blur-to-sharp transition.
 
-**Headline**: "What matters most in your business right now?"
-**Subtext**: "Select as many as apply, in order of importance. Your priorities shape your dashboard, advisors, and recommendations from day one."
+## 2. Mobile Advisor Board with Full-Screen Expand
 
-**18 business-grounded options organized into 4 visual groups:**
+**Files modified:** `MobileAdvisorBoard.tsx` | **New file:** `MobileAdvisorDetailView.tsx`
 
-Revenue and Sales:
-- Sales follow-up and closing
-- Recovering lost leads / abandoned opportunities
-- Invoicing and getting paid
-- Collections / overdue payments
-- Pricing and profitability visibility
+- **Horizontal showcase cards**: Redesign cards from the current 200px fixed-width to responsive `85vw` snap cards with:
+  - Domain-colored gradient header strip
+  - Larger portrait (xl size) with the upgraded neon ring
+  - Mini bar chart visualization (reuse from `AdvisorShowcaseCard`)
+  - Swipe indicator dots at the bottom
+  - Card entrance: staggered scale-up from center with blur fade
+- **Full-screen tap-to-expand** (`MobileAdvisorDetailView.tsx`):
+  - Triggered by tapping any card; uses `AnimatePresence` with a `layoutId` shared transition so the portrait morphs from card position to full-screen header
+  - Full-screen overlay with `CinematicBackground`
+  - Top section: large portrait with animated neon ring, name, role, domain badge
+  - Middle section: holographic confidence gauge (large, 160px) + key metric cards in a 2x2 grid
+  - Bottom section: scrollable area with mission text, special ability, and quick-action buttons (Ask, View Timeline)
+  - Close via swipe-down gesture (using `drag="y"` with `dragConstraints` and `onDragEnd` threshold) or X button
+  - Hardware back button / gesture support via `popstate` listener
+- **Integration**: Wire `MobileAdvisorBoard` into the `AdvisorCouncilShell` by detecting mobile viewport (`useIsMobile`) and rendering the mobile board instead of the desktop grid in the "council" and "boardroom" tabs.
 
-Customers:
-- Customer service and support
-- Client communication and updates
-- Retention and repeat business
-- Customer onboarding
-- Reviews and reputation
+## 3. Immersive Boardroom Council Redesign
 
-Operations:
-- Scheduling and appointments
-- Inventory and fulfillment
-- Order management
-- Workflow automation and admin reduction
+**Files modified:** `ImmersiveBoardroomCouncil.tsx`, `boardroom-primitives.tsx`, `AdvisorCouncilShell.tsx`
 
-Finance and Planning:
-- Budgeting and cash flow
-- Business accounts management
-- Imports / exports and logistics
-- Financial reporting and compliance
+- **Semicircular layout fix**: The current positioning math produces cramped layouts. Recalculate using proper trigonometric spacing with `radiusX` and `radiusY` scaled to container width via `useRef` + `ResizeObserver`. Each advisor seat gets a subtle connecting line (SVG path) back to the central HUD.
+- **Central HUD redesign**:
+  - Replace the plain `GlassPanel` wrapper with a hexagonal glass frame
+  - Add animated connection lines (SVG) from HUD to each advisor position, with data-pulse dots traveling along the paths
+  - The SITA Intelligence badge gets a slow-rotating ring animation
+- **Advisor seats**:
+  - Each seat shows the upgraded `NeonRing` + `AdvisorPortrait`
+  - On hover, the seat expands to show the `FloatingMetricCard` with the bob animation; non-hovered seats slightly dim (opacity 0.6)
+  - Active/thinking status shown via ring animation speed (thinking = fast pulse, active = slow breathe)
+  - Click opens the `AdvisorDetailDrawer`
+- **New primitive: `DataPulseLine`** in `boardroom-primitives.tsx`: An SVG line component with an animated dot traveling along it, used for HUD-to-advisor connections.
+- **Ambient effects**: Add 2-3 slowly drifting bokeh circles in the background (large, very low opacity radial gradients) that move on a 20s loop.
 
-**Interaction design:**
-- Cards in a grouped grid layout with category headers
-- Tapping a card selects it and assigns it the next priority number (1, 2, 3...)
-- Selected cards show a numbered badge (priority position) instead of just a checkmark
-- A "Your Priorities" summary strip appears below the grid showing selected items in order as small reorderable chips
-- Drag-to-reorder on the summary strip (using pointer events, mobile-friendly)
-- Tapping a selected card again deselects it and renumbers remaining
-- Minimum 1 selection required to proceed; no maximum
+## 4. Wiring and Consistency
 
-**SITA Insight callouts:**
-- At 1 selection: "Got it -- SITA will focus here first."
-- At 3+ selections: "SITA will weight these in order -- your first pick drives the most emphasis."
-- At 5+ selections: "Ambitious operator detected -- SITA will build a phased plan across all of these."
+**Files modified:** `AdvisorCouncilShell.tsx`
 
-**Contextual helper**: "We use your priorities to shape your business dashboard, advisors, and recommendations from day one."
-
-### Modified: `src/pages/revenue-office/onboarding/types.ts`
-
-Add to `OnboardingState`:
-```
-businessPriorities: string[];  // ordered array -- index = priority rank
-```
-
-Add to `defaultOnboardingState`:
-```
-businessPriorities: []
-```
-
-Add new stage entry to `STAGES` array (inserted at position 2, after "identity"):
-```
-{ id: "priorities", label: "Priorities", chapter: "Formation" }
-```
-
-Update the `StageId` type accordingly.
-
-### Modified: `src/pages/revenue-office/onboarding/FormationShell.tsx`
-
-- Import `PrioritiesScreen`
-- Add to `screenMap`: `priorities: PrioritiesScreen`
-- Screen order adjusts automatically via STAGES array
-
-### New Component: `src/components/onboarding/PriorityOrderChip.tsx`
-
-Small numbered chip showing priority position + label. Used in the "Your Priorities" summary strip. Supports drag handle for reordering.
-
-### New Component: `src/components/onboarding/PriorityReorderStrip.tsx`
-
-Horizontal scrollable strip of PriorityOrderChips. Implements pointer-event-based drag-to-reorder (no external drag library needed). Shows "Drag to reorder" hint when 2+ items selected.
+- Add `useIsMobile()` detection to `AdvisorCouncilShell` to auto-switch between desktop `ImmersiveBoardroomCouncil` and `MobileAdvisorBoard` for the boardroom tab.
+- Ensure the mobile board's `onAdvisorClick` opens the new `MobileAdvisorDetailView` (full-screen) instead of the desktop `AdvisorDetailDrawer`.
+- Apply the upgraded `NeonRing` consistently to all surfaces: `AdvisorShowcaseCard`, `ImmersiveBoardroomCouncil`, `MobileAdvisorBoard`, and `AdvisorDetailDrawer` header portrait.
 
 ---
 
-## Data Flow
+## Summary of Changes
 
-The `businessPriorities` array stores IDs in priority order. Index 0 = highest priority. This ordered array is saved via the existing `useBusinessOnboarding` hook alongside all other onboarding state. No database migration needed -- the state is stored as JSON in the existing `business_onboarding.onboarding_state` column.
-
-This priority data feeds into:
-- Advisor activation screen (pre-select relevant advisors)
-- Dashboard personalization (module ordering)
-- First-win recommendations (based on top priority)
-- Future simulation suggestions
-
----
-
-## Design Direction
-
-- Same glassmorphic card style as existing Toggle primitive but with numbered priority badges
-- Category group headers as subtle dividers (not heavy section breaks)
-- Summary strip uses the primary accent color with smooth reorder animations
-- Mobile: cards stack single-column, summary strip scrolls horizontally
-- Premium feel: motion on selection, smooth number transitions, calm spacing
-
----
-
-## No Database Migration Required
-
-Priority data is stored inside the existing `onboarding_state` JSONB column. No schema changes needed.
+| File | Action |
+|------|--------|
+| `src/components/advisors/boardroom-primitives.tsx` | Upgrade NeonRing, HolographicGauge, FloatingMetricCard; add DataPulseLine |
+| `src/components/advisors/AdvisorShowcaseCard.tsx` | Add 3D cursor-tilt, highlight gradient, upgraded ring |
+| `src/components/advisors/AdvisorPortrait.tsx` | Integrate upgraded NeonRing rendering |
+| `src/components/advisors/MobileAdvisorBoard.tsx` | Redesign horizontal cards, add swipe dots, larger portraits |
+| `src/components/advisors/MobileAdvisorDetailView.tsx` | New: full-screen expand view with shared layout animation |
+| `src/components/advisors/ImmersiveBoardroomCouncil.tsx` | Redesign layout, HUD, connection lines, ambient effects |
+| `src/components/advisors/AdvisorCouncilShell.tsx` | Add mobile detection, wire mobile board + detail view |
 
