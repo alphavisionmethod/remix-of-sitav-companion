@@ -84,6 +84,6 @@ export function getAuthorityForTable(table: string): SchemaAuthorityEntry | unde
   return SCHEMA_AUTHORITY_REGISTRY.find(e => e.table === table);
 }
 
-export function getCriticalTables(): readonly SchemaAuthorityEntry[] {
+export function getCriticalAuthorityTables(): readonly SchemaAuthorityEntry[] {
   return SCHEMA_AUTHORITY_REGISTRY.filter(e => e.criticality === "critical");
 }
