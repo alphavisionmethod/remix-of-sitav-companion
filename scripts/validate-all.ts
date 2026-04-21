@@ -65,6 +65,7 @@ const validators: Record<string, string[]> = {
     "scripts/architecture/checks/check-inline-mocks.ts",
     "scripts/architecture/checks/check-feature-governance.ts",
     "scripts/architecture/checks/check-delegation-receipts.ts",
+    "scripts/architecture/checks/check-ai-domain-boundaries.ts",
   ],
 
   // ── Contracts ──

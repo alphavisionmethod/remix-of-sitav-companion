@@ -16,6 +16,8 @@
     "test:e2e": "npx playwright test",
     "test:e2e:consolidation": "npx playwright test --project=consolidation-regression",
     "check:consolidation-waves": "npx tsx scripts/architecture/checks/check-consolidation-wave-regression.ts",
+    "check:ai-domains": "npx tsx scripts/architecture/checks/check-ai-domain-boundaries.ts",
+    "check:ai-domains:strict": "npx tsx scripts/architecture/checks/check-ai-domain-boundaries.ts --strict",
     "validate:all": "npx tsx scripts/validate-all.ts",
     "validate:architecture": "npx tsx scripts/validate-all.ts architecture",
     "validate:contracts": "npx tsx scripts/validate-all.ts contracts",
