@@ -1,105 +1,103 @@
 
 
-## Wave 18 — Advisor Boardroom Behavioral Closure Validators
+## Wave 19 — Truth Governance and Contradiction Management Layer
 
 ### Summary
 
-The advisor and boardroom governance layer is already **comprehensively implemented** across 13 canonical policy files, a unified runtime contracts package, edge function governance, and 13 proof artifacts. No new policy files, registries, identity contracts, or governance logic need to be created — all 19 steps from the prompt are already addressed by existing canonical implementations.
+The release-readiness aggregator currently produces a single flat GREEN/RED verdict across 250+ BLOCK gates. There is no formal system for tracking contradictions, mapping claims to proofs, separating readiness dimensions, interpreting advisory-heavy states, or invalidating stale artifacts semantically. This wave creates the `src/lib/truth/` package with 8 canonical policy files, a validator script, and 13 generated proof artifacts.
 
-The single remaining gap is **validation scripts** — dedicated validators that verify the governance contracts are complete, consistent, and deployment-ready. Currently only `check-advisor-registry.ts` exists. This wave creates 12 focused validators in `scripts/advisors/` and registers them in the release-readiness aggregator.
+### What Already Exists (Preserve, Do Not Duplicate)
 
-### Part 1 — Canonical Systems to Preserve (No Changes)
+- `scripts/architecture/checks/check-os-release-readiness.ts` — master aggregator (250+ BLOCK gates, WARN-tier advisory ingestion). **Extend** with dimensional breakdown, do not replace.
+- `scripts/architecture/checks/check-evidence-freshness.ts` — time-based staleness for 9 artifacts. **Extend** with semantic invalidation rules.
+- `src/lib/claim-safety/demo-only-surface-registry.ts` — existing claim safety for demo/future-vision routes. **Preserve** as-is; the new truth layer is complementary, not overlapping.
+- `docs/architecture/registry/truth-status.yaml` — staleness thresholds and downgrade behavior. **Reference** from the new invalidation rules.
+- `generated/validator-gate-map.json` — advisory classification map. **Consumed** by the new advisory interpretation policy.
 
-These files are complete and require no modification:
+### Part 1 — New Files to Create
 
-**Policy Files (src/lib/advisors/):**
-- `advisor-identity-registry.ts` — 34 advisors with full governance fields
-- `advisor-persona-boundary-map.ts` — 7 high-risk advisor boundaries
-- `advisor-confidence-policy.ts` — 8 confidence gates
-- `advisor-debate-orchestrator.ts` — debate policy with consensus/majority/escalation
-- `advisor-conflict-resolution-policy.ts` — 6 conflict resolution rules
-- `advisor-disablement-policy.ts` — 6 disablement reasons with fallback behaviors
-- `advisor-memory-aging-policy.ts` — 4-layer memory aging
-- `advisor-reflection-policy-loop.ts` — reflection-to-policy adjustments
-- `advisor-override-model.ts` — 7 override scopes with audit requirements
-- `advisor-support-diagnostics.ts` — 16-field diagnostic snapshots
+All in `src/lib/truth/`:
 
-**Runtime Contracts (src/lib/ai-platform/runtime/):**
-- `advisor-permission-matrix.ts` — 6-role permission matrix
-- `advisor-escalation-policy.ts` — 8 escalation rules
-- `advisor-reversibility-map.ts` — 12 action type reversibility entries
+| # | File | Purpose |
+|---|------|---------|
+| 1 | `readiness-claim-contract.ts` | TypeScript types for claims, proofs, dimensions, contradictions |
+| 2 | `readiness-dimension-model.ts` | 5-dimension model: structural, behavioral, distribution, operational, trust. Per-subsystem scoring with rollup |
+| 3 | `claim-proof-registry.ts` | 30+ major claims mapped to proof artifacts, evidence sources, invalidation conditions, owners |
+| 4 | `contradiction-ledger.ts` | Registry of known contradictions (green vs pending notarization, green vs unencrypted OAuth, green vs missing E2E boot, green vs duplicates/dead pages, green vs distribution-blocked mobile) |
+| 5 | `advisory-interpretation-policy.ts` | Rules: advisory count thresholds triggering conditional readiness, dimension-specific downgrade triggers, contradiction-forced claim downgrades |
+| 6 | `stale-artifact-invalidation.ts` | Semantic invalidation rules keyed by source-change categories (schema, routes, workflows, migrations), extending the time-based model in check-evidence-freshness.ts |
+| 7 | `status-language-policy.ts` | Approved status vocabulary: READY, CONDITIONALLY_READY, STRUCTURALLY_READY_ONLY, BEHAVIORALLY_PARTIAL, DISTRIBUTION_BLOCKED, OPERATIONALLY_DEFERRED, TRUST_GAP_OPEN, DEFERRED |
+| 8 | `index.ts` | Barrel re-export |
 
-**Unified Package (src/packages/advisor-runtime-contracts/):**
-- `types.ts` — AdvisorRuntimeContext combining all contracts
-- `resolver.ts` — resolveAdvisorContext() assembling full governance
-- `index.ts` — barrel re-exporting all contracts
+### Part 2 — Generated Artifacts
 
-**Edge Function Governance:**
-- `supabase/functions/_shared/advisor-governance.ts` — consumed by 4 edge functions
+All in `generated/`:
 
-**Proof Artifacts (generated/advisor-boardroom-proof/):**
-- 13 proof JSON files covering all governance dimensions
+| # | File | Contents |
+|---|------|----------|
+| 1 | `contradiction-ledger.json` | 5+ open contradictions with ids, severity, impacted dimensions, mitigation paths |
+| 2 | `claim-proof-registry.json` | 30+ claims with proof mappings, confidence scores, invalidation rules |
+| 3 | `readiness-dimension-scoreboard.json` | Per-dimension (structural/behavioral/distribution/operational/trust) scores for 8 major subsystems |
+| 4 | `advisory-heavy-readiness-report.json` | Advisory burden analysis: counts by category, dimensional impact, interpretation verdicts |
+| 5 | `stale-artifact-invalidations.json` | Current invalidation state for tracked artifacts |
+| 6 | `proof-gap-register.json` | Missing proofs per subsystem with confidence penalties |
+| 7 | `structural-vs-behavioral-gap-report.json` | Per-subsystem structural vs behavioral readiness comparison |
+| 8 | `readiness-language-audit.json` | Audit of status language used across generated artifacts against approved vocabulary |
+| 9 | `claim-confidence-report.json` | Per-claim confidence with dimensional breakdown |
 
-### Part 2 — Duplicates (None Found)
+### Part 3 — Validator Script
 
-No duplicate advisor registries, persona configs, or governance logic found. The `src/lib/advisors/index.ts` barrel and `src/packages/advisor-runtime-contracts/index.ts` both re-export from the same canonical sources — this is intentional layered access, not duplication.
-
-### Part 3 — What Will Be Created: 12 Validator Scripts
-
-All validators will be created in `scripts/advisors/` following the existing `ViolationCollector` pattern used by `scripts/architecture/checks/`.
-
-Each validator:
-- Inspects real source files and generated proof artifacts
-- Classifies findings as BLOCK or ADVISORY
-- Emits a generated report
-- Exits non-zero on BLOCK violations
-
-| # | Validator | Level | What It Checks |
-|---|-----------|-------|----------------|
-| 1 | `check-advisor-identity-closure.ts` | BLOCK | Every advisor in registry has id, display name, domain scope, trust floor/ceiling, disabled fallback |
-| 2 | `check-advisor-persona-boundaries.ts` | ADVISORY | High-risk advisors (money, legal, tax, security) have explicit persona boundaries |
-| 3 | `check-advisor-tool-permissions.ts` | BLOCK | Every advisor role has a permission entry; no advisor role is unmapped |
-| 4 | `check-advisor-confidence-governance.ts` | ADVISORY | Confidence gates exist for all 8 action classes |
-| 5 | `check-advisor-escalation-coverage.ts` | ADVISORY | Escalation rules cover financial, external, low-confidence, irreversible, system-config |
-| 6 | `check-advisor-reversibility.ts` | BLOCK | All action types have reversibility classification |
-| 7 | `check-advisor-memory-aging.ts` | ADVISORY | All 4 memory layers have aging rules |
-| 8 | `check-advisor-reflection-policy-loop.ts` | ADVISORY | Reflection signals produce policy adjustments for rejection/acceptance/fitness |
-| 9 | `check-advisor-disablement-modes.ts` | ADVISORY | All 6 disablement reasons have fallback behavior |
-| 10 | `check-advisor-override-model.ts` | ADVISORY | All 7 override scopes have audit and approval requirements |
-| 11 | `check-advisor-supportability.ts` | ADVISORY | Diagnostic snapshot has all 16 fields; support bundle has 4 sections |
-| 12 | `check-boardroom-conflict-resolution.ts` | ADVISORY | Conflict resolution rules cover same-domain, cross-domain, safety, irreversible, low-confidence |
+`scripts/truth/check-truth-governance.ts` — BLOCK-tier validator that:
+- Verifies all 5 readiness dimensions have scores
+- Verifies all open contradictions have mitigation paths
+- Verifies all major claims have proof mappings
+- Verifies no stale artifacts are in INVALID state without acknowledgment
+- Emits `generated/truth-governance-report.json`
 
 ### Part 4 — Integration
 
-1. **Register in `scripts/validate-all.ts`** — add `"advisors"` category with all 12 validators
-2. **Register BLOCK validators in release-readiness aggregator** — `check-advisor-identity-closure.ts`, `check-advisor-tool-permissions.ts`, and `check-advisor-reversibility.ts` as BLOCK gates
-3. **Regenerate proof artifacts** — update timestamps in all 13 `generated/advisor-boardroom-proof/` files
+1. Register `truth-governance` as a BLOCK gate in `check-os-release-readiness.ts` REQUIRED_GATES
+2. Add dimensional breakdown section to `os-release-readiness-summary.md` output
+3. Register in `scripts/validate-all.ts` under new `"truth"` category
 
-### Part 5 — Verification
+### Part 5 — Contradiction Ledger Initial Entries
 
-- Run all 12 validators and confirm they pass (3 BLOCK, 9 ADVISORY)
-- TypeScript build verification with 0 errors
-- No new files created in `src/lib/advisors/` or `src/packages/advisor-runtime-contracts/` (all governance is already complete)
+| ID | Contradiction | Severity | Dimension |
+|----|--------------|----------|-----------|
+| CTR-001 | GREEN release vs Apple notarization pending | high | distribution |
+| CTR-002 | GREEN integration vs OAuth tokens unencrypted at rest | high | trust |
+| CTR-003 | GREEN OS vs E2E boot validation roadmap-only | medium | behavioral |
+| CTR-004 | GREEN frontend vs 13 duplicate component families | low | structural |
+| CTR-005 | GREEN frontend vs 12 dead pages | low | structural |
+| CTR-006 | GREEN mobile vs distribution-blocked (archived) | medium | distribution |
+| CTR-007 | GREEN aggregate vs 4,252 advisory warnings | medium | operational |
 
-### Deployment Closure Checklist
+### Part 6 — Readiness Dimensions
 
-All items already satisfied by existing implementation:
-- [x] 34 advisor identities with full governance fields
-- [x] 7 high-risk persona boundaries
-- [x] 6-role permission matrix with blocked/allowed/approval categories
-- [x] Debate orchestrator with consensus/majority/escalation/tiebreaker
-- [x] 6 conflict resolution rules
-- [x] 8 confidence gates with below-threshold behaviors
-- [x] 8 escalation rules with priority and destination
-- [x] 12 action type reversibility entries
-- [x] 4-layer memory aging with promotion/expiry
-- [x] Reflection-to-policy feedback loop with 3 adjustment paths
-- [x] 6 disablement policies with auto-reenable conditions
-- [x] 7 override scopes with dual-approval requirements
-- [x] 16-field diagnostic snapshots with support bundles
-- [x] Edge function governance mirroring client contracts
-- [x] Unified runtime contracts package with resolver
-- [x] 13 proof artifacts
-- [ ] 12 dedicated validator scripts (this wave)
-- [ ] Validators registered in release-readiness aggregator (this wave)
+Each subsystem scored independently across:
+
+| Dimension | What It Measures |
+|-----------|-----------------|
+| Structural | Files exist, types compile, routes registered, tables created |
+| Behavioral | Runtime proof exists (receipts, nightly runs, E2E validation) |
+| Distribution | Can be packaged, signed, delivered to end users |
+| Operational | Runbooks, kill-switches, support diagnostics, DR drills proven |
+| Trust | RLS policies, encryption, claim honesty, evidence grading |
+
+### Part 7 — Claim-Proof Registry Sample Entries
+
+Each entry maps a claim to its proof chain:
+
+- "AI Runtime is production-ready" → `ai-live-provider-nightly-report.json` + `ai-receipt-persistence-report.json` + 4 more
+- "Advisor layer is behaviorally closed" → `advisor-boardroom-proof/` (13 files) + 3 BLOCK validators
+- "Connector OAuth is secure" → `connector-refresh-streak-report.json` + `oauth-security-closure-report.json`
+- "Mobile is honestly classified" → `mobile-scope-closure/` (5 BLOCK gates)
+
+### Verification
+
+- All 8 source files compile with 0 errors
+- Validator passes with GREEN
+- 9 generated artifacts produced
+- BLOCK gate registered in aggregator
+- Production build succeeds
 
