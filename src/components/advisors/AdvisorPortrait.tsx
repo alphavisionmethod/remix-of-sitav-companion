@@ -1,8 +1,10 @@
 import { useState, useCallback } from "react";
+import { useMemo } from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { AdvisorAvatar } from "@/components/sita/primitives/AdvisorAvatar";
 import { getDefaultAdvisorAvatar } from "@/lib/advisors/advisor-avatar-assets";
+import { getCachedPortraitUrl } from "@/hooks/use-advisor-portraits";
 import { Skeleton } from "@/components/ui/skeleton";
 import { RefreshCw } from "lucide-react";
 
@@ -12,6 +14,7 @@ interface AdvisorPortraitProps {
   domain: AdvisorDomain;
   name?: string;
   avatarUrl?: string | null;
+  advisorId?: string;
   status?: "active" | "thinking" | "idle" | "offline";
   speaking?: boolean;
   size?: "sm" | "md" | "lg" | "xl";
@@ -46,6 +49,7 @@ export const AdvisorPortrait = ({
   domain,
   name,
   avatarUrl,
+  advisorId,
   status = "active",
   speaking = false,
   size = "md",
@@ -55,7 +59,15 @@ export const AdvisorPortrait = ({
   const [retries, setRetries] = useState(0);
   const s = sizes[size];
   const gradient = domainGradients[domain];
-  const resolvedUrl = avatarUrl || getDefaultAdvisorAvatar(domain);
+  // Resolve URL: explicit prop → cached custom → default
+  const resolvedUrl = useMemo(() => {
+    if (avatarUrl) return avatarUrl;
+    if (advisorId) {
+      const cached = getCachedPortraitUrl(advisorId);
+      if (cached) return cached;
+    }
+    return getDefaultAdvisorAvatar(domain);
+  }, [avatarUrl, advisorId, domain]);
   const px = IMG_SIZES[size] || 48;
 
   const handleError = useCallback(() => {
