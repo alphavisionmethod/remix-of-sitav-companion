@@ -1,6 +1,8 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useMemo, useState, useRef } from "react";
 import { DemoMenuBar } from "./DemoMenuBar";
 import { DemoDock } from "./DemoDock";
+import type { MinimizedEntry } from "./DemoDock";
+import type { DockRect } from "./DemoWindowManager";
 import { DemoDesktopIcons } from "./DemoDesktopIcons";
 import { DemoDesktopWidgets } from "./DemoDesktopWidgets";
 import { DemoWindowManager, type DemoWindow } from "./DemoWindowManager";
@@ -54,8 +56,13 @@ let nextZ = 10;
 
 export function WebsiteDemo() {
   const [windows, setWindows] = useState<DemoWindow[]>([]);
+  const [dockRect, setDockRect] = useState<DockRect | null>(null);
 
   const openApps = useMemo(() => windows.map((w) => w.appId), [windows]);
+  const minimizedWindows = useMemo<MinimizedEntry[]>(
+    () => windows.filter((w) => w.minimized).map((w) => ({ id: w.id, appId: w.appId, title: w.title })),
+    [windows]
+  );
   const focusedApp = useMemo(() => {
     const visible = windows.filter((w) => !w.minimized);
     if (!visible.length) return null;
@@ -88,6 +95,9 @@ export function WebsiteDemo() {
   const close = useCallback((id: string) => setWindows((p) => p.filter((w) => w.id !== id)), []);
   const focus = useCallback((id: string) => setWindows((p) => p.map((w) => w.id === id ? { ...w, z: ++nextZ } : w)), []);
   const minimize = useCallback((id: string) => setWindows((p) => p.map((w) => w.id === id ? { ...w, minimized: true } : w)), []);
+  const restore = useCallback((id: string) => {
+    setWindows((p) => p.map((w) => w.id === id ? { ...w, minimized: false, z: ++nextZ } : w));
+  }, []);
   const maximize = useCallback((id: string) => setWindows((p) => p.map((w) => w.id === id ? { ...w, maximized: !w.maximized } : w)), []);
 
   return (
@@ -107,10 +117,12 @@ export function WebsiteDemo() {
         <DemoDesktopWidgets />
         <DemoDesktopIcons onOpen={launch} />
         <DemoWindowManager windows={windows} onClose={close} onFocus={focus}
-          onMinimize={minimize} onMaximize={maximize} renderContent={renderApp} />
+          onMinimize={minimize} onMaximize={maximize} renderContent={renderApp}
+          dockRect={dockRect} />
       </div>
 
-      <DemoDock openApps={openApps} onLaunch={launch} />
+      <DemoDock openApps={openApps} minimizedWindows={minimizedWindows}
+        onLaunch={launch} onRestore={restore} onDockRect={setDockRect} />
 
       {/* Mobile fallback */}
       <div className="lg:hidden absolute inset-0 bg-black/90 flex items-center justify-center z-[9999] p-8">

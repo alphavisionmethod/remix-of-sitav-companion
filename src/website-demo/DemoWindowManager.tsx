@@ -1,6 +1,5 @@
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useRef, useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Minus, Maximize2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { DemoAppId } from "./demo-data";
 
@@ -17,6 +16,9 @@ export interface DemoWindow {
   maximized: boolean;
 }
 
+/* Dock rect for minimize-to-dock animation target */
+export interface DockRect { x: number; y: number; w: number; h: number }
+
 interface Props {
   windows: DemoWindow[];
   onClose: (id: string) => void;
@@ -24,14 +26,16 @@ interface Props {
   onMinimize: (id: string) => void;
   onMaximize: (id: string) => void;
   renderContent: (appId: DemoAppId) => React.ReactNode;
+  dockRect?: DockRect | null;
 }
 
-export function DemoWindowManager({ windows, onClose, onFocus, onMinimize, onMaximize, renderContent }: Props) {
+export function DemoWindowManager({ windows, onClose, onFocus, onMinimize, onMaximize, renderContent, dockRect }: Props) {
   return (
     <AnimatePresence>
       {windows.filter((w) => !w.minimized).map((win) => (
         <DemoFloatingWindow key={win.id} win={win} onClose={onClose}
-          onFocus={onFocus} onMinimize={onMinimize} onMaximize={onMaximize}>
+          onFocus={onFocus} onMinimize={onMinimize} onMaximize={onMaximize}
+          dockRect={dockRect}>
           {renderContent(win.appId)}
         </DemoFloatingWindow>
       ))}
@@ -39,63 +43,201 @@ export function DemoWindowManager({ windows, onClose, onFocus, onMinimize, onMax
   );
 }
 
-function DemoFloatingWindow({ win, onClose, onFocus, onMinimize, onMaximize, children }: {
-  win: DemoWindow; children: React.ReactNode;
+/* ---------- Resize handle ---------- */
+type ResizeDir = "e" | "s" | "se";
+const RESIZE_CURSORS: Record<ResizeDir, string> = { e: "ew-resize", s: "ns-resize", se: "nwse-resize" };
+const MIN_W = 320;
+const MIN_H = 200;
+
+function ResizeHandle({ dir, onResizeStart }: { dir: ResizeDir; onResizeStart: (dir: ResizeDir, e: React.PointerEvent) => void }) {
+  const isCorner = dir === "se";
+  return (
+    <div
+      onPointerDown={(e) => { e.stopPropagation(); onResizeStart(dir, e); }}
+      className="absolute touch-none"
+      style={{
+        cursor: RESIZE_CURSORS[dir],
+        ...(dir === "e" ? { right: -4, top: 10, bottom: 10, width: 12 } : {}),
+        ...(dir === "s" ? { bottom: -4, left: 10, right: 10, height: 12 } : {}),
+        ...(isCorner ? { right: -4, bottom: -4, width: 20, height: 20 } : {}),
+      }}
+    >
+      {isCorner && (
+        <svg width="10" height="10" className="absolute bottom-1 right-1 text-white/20">
+          <line x1="0" y1="10" x2="10" y2="0" stroke="currentColor" strokeWidth="1" />
+          <line x1="4" y1="10" x2="10" y2="4" stroke="currentColor" strokeWidth="1" />
+        </svg>
+      )}
+    </div>
+  );
+}
+
+/* ---------- Floating Window ---------- */
+function DemoFloatingWindow({ win, onClose, onFocus, onMinimize, onMaximize, children, dockRect }: {
+  win: DemoWindow; children: React.ReactNode; dockRect?: DockRect | null;
   onClose: (id: string) => void; onFocus: (id: string) => void;
   onMinimize: (id: string) => void; onMaximize: (id: string) => void;
 }) {
   const [pos, setPos] = useState({ x: win.x, y: win.y });
+  const [size, setSize] = useState({ w: win.w, h: win.h });
   const dragging = useRef(false);
   const offset = useRef({ x: 0, y: 0 });
+  const velocity = useRef({ x: 0, y: 0 });
+  const lastPointer = useRef({ x: 0, y: 0, t: 0 });
+  const inertiaRaf = useRef<number>(0);
 
-  const handleMouseDown = useCallback((e: React.MouseEvent) => {
-    if ((e.target as HTMLElement).closest("button")) return;
+  /* --- Unified pointer drag (mouse + touch) --- */
+  const startDrag = useCallback((clientX: number, clientY: number) => {
     dragging.current = true;
-    offset.current = { x: e.clientX - pos.x, y: e.clientY - pos.y };
+    offset.current = { x: clientX - pos.x, y: clientY - pos.y };
+    lastPointer.current = { x: clientX, y: clientY, t: Date.now() };
+    velocity.current = { x: 0, y: 0 };
+    cancelAnimationFrame(inertiaRaf.current);
     onFocus(win.id);
-    const onMove = (ev: MouseEvent) => {
-      if (!dragging.current) return;
-      setPos({ x: ev.clientX - offset.current.x, y: ev.clientY - offset.current.y });
-    };
-    const onUp = () => { dragging.current = false; window.removeEventListener("mousemove", onMove); window.removeEventListener("mouseup", onUp); };
-    window.addEventListener("mousemove", onMove);
-    window.addEventListener("mouseup", onUp);
   }, [pos, win.id, onFocus]);
 
+  const moveDrag = useCallback((clientX: number, clientY: number) => {
+    if (!dragging.current) return;
+    const now = Date.now();
+    const dt = Math.max(now - lastPointer.current.t, 1);
+    velocity.current = {
+      x: (clientX - lastPointer.current.x) / dt * 16,
+      y: (clientY - lastPointer.current.y) / dt * 16,
+    };
+    lastPointer.current = { x: clientX, y: clientY, t: now };
+    setPos({ x: clientX - offset.current.x, y: clientY - offset.current.y });
+  }, []);
+
+  const endDrag = useCallback(() => {
+    dragging.current = false;
+    // Inertia
+    const vx = velocity.current.x;
+    const vy = velocity.current.y;
+    if (Math.abs(vx) > 0.5 || Math.abs(vy) > 0.5) {
+      let cvx = vx;
+      let cvy = vy;
+      const decay = 0.92;
+      const step = () => {
+        cvx *= decay;
+        cvy *= decay;
+        if (Math.abs(cvx) < 0.1 && Math.abs(cvy) < 0.1) return;
+        setPos((p) => ({ x: p.x + cvx, y: p.y + cvy }));
+        inertiaRaf.current = requestAnimationFrame(step);
+      };
+      inertiaRaf.current = requestAnimationFrame(step);
+    }
+  }, []);
+
+  const handlePointerDown = useCallback((e: React.PointerEvent) => {
+    if ((e.target as HTMLElement).closest("button")) return;
+    (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+    startDrag(e.clientX, e.clientY);
+  }, [startDrag]);
+
+  const handlePointerMove = useCallback((e: React.PointerEvent) => {
+    moveDrag(e.clientX, e.clientY);
+  }, [moveDrag]);
+
+  const handlePointerUp = useCallback((e: React.PointerEvent) => {
+    (e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId);
+    endDrag();
+  }, [endDrag]);
+
+  /* --- Resize --- */
+  const resizeStart = useRef<{ dir: ResizeDir; startX: number; startY: number; startW: number; startH: number } | null>(null);
+
+  const onResizeStart = useCallback((dir: ResizeDir, e: React.PointerEvent) => {
+    (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+    resizeStart.current = { dir, startX: e.clientX, startY: e.clientY, startW: size.w, startH: size.h };
+    onFocus(win.id);
+
+    const onMove = (ev: PointerEvent) => {
+      if (!resizeStart.current) return;
+      const rs = resizeStart.current;
+      const dx = ev.clientX - rs.startX;
+      const dy = ev.clientY - rs.startY;
+      setSize({
+        w: Math.max(MIN_W, rs.dir !== "s" ? rs.startW + dx : rs.startW),
+        h: Math.max(MIN_H, rs.dir !== "e" ? rs.startH + dy : rs.startH),
+      });
+    };
+    const onUp = () => {
+      resizeStart.current = null;
+      window.removeEventListener("pointermove", onMove);
+      window.removeEventListener("pointerup", onUp);
+    };
+    window.addEventListener("pointermove", onMove);
+    window.addEventListener("pointerup", onUp);
+  }, [size, win.id, onFocus]);
+
+  // Cleanup inertia on unmount
+  useEffect(() => () => cancelAnimationFrame(inertiaRaf.current), []);
+
   const isMax = win.maximized;
+
+  /* Minimize-to-dock exit target */
+  const dockTarget = dockRect
+    ? { x: dockRect.x + dockRect.w / 2 - size.w / 2, y: dockRect.y, scale: 0.05 }
+    : { x: pos.x, y: pos.y + 100, scale: 0.85 };
 
   return (
     <motion.div
       initial={{ scale: 0.9, opacity: 0 }}
-      animate={{ scale: 1, opacity: 1 }}
-      exit={{ scale: 0.9, opacity: 0 }}
-      transition={{ type: "spring", stiffness: 400, damping: 30 }}
-      className="absolute"
+      animate={{
+        scale: 1,
+        opacity: 1,
+        zIndex: win.z,
+      }}
+      exit={{
+        scale: dockTarget.scale,
+        opacity: 0,
+        x: dockTarget.x - pos.x,
+        y: dockTarget.y - pos.y,
+      }}
+      transition={{
+        type: "spring",
+        stiffness: 350,
+        damping: 28,
+        zIndex: { duration: 0.15 },
+      }}
+      className="absolute will-change-transform"
       style={{
         left: isMax ? 0 : pos.x,
         top: isMax ? 28 : pos.y,
-        width: isMax ? "100%" : win.w,
-        height: isMax ? "calc(100% - 28px - 72px)" : win.h,
+        width: isMax ? "100%" : size.w,
+        height: isMax ? "calc(100% - 28px - 72px)" : size.h,
         zIndex: win.z,
       }}
-      onMouseDown={() => onFocus(win.id)}
+      onPointerDown={() => onFocus(win.id)}
     >
       <div className="w-full h-full rounded-xl overflow-hidden border border-white/[0.12] shadow-2xl flex flex-col"
         style={{ background: "rgba(20,20,30,0.82)", backdropFilter: "blur(40px)", WebkitBackdropFilter: "blur(40px)" }}>
-        {/* Title bar */}
-        <div className="h-10 shrink-0 flex items-center px-3 gap-2 border-b border-white/[0.08] cursor-grab select-none"
-          onMouseDown={handleMouseDown}>
-          <div className="flex gap-1.5">
-            <button onClick={() => onClose(win.id)} className="w-3 h-3 rounded-full bg-[#ff5f57] hover:brightness-110 transition" />
-            <button onClick={() => onMinimize(win.id)} className="w-3 h-3 rounded-full bg-[#febc2e] hover:brightness-110 transition" />
-            <button onClick={() => onMaximize(win.id)} className="w-3 h-3 rounded-full bg-[#28c840] hover:brightness-110 transition" />
+        {/* Title bar — touch-friendly 44px hit target */}
+        <div
+          className="h-11 shrink-0 flex items-center px-3 gap-2 border-b border-white/[0.08] cursor-grab select-none touch-none"
+          onPointerDown={handlePointerDown}
+          onPointerMove={handlePointerMove}
+          onPointerUp={handlePointerUp}
+        >
+          <div className="flex gap-2">
+            <button onClick={() => onClose(win.id)} className="w-4 h-4 rounded-full bg-[#ff5f57] hover:brightness-110 transition active:scale-90" />
+            <button onClick={() => onMinimize(win.id)} className="w-4 h-4 rounded-full bg-[#febc2e] hover:brightness-110 transition active:scale-90" />
+            <button onClick={() => onMaximize(win.id)} className="w-4 h-4 rounded-full bg-[#28c840] hover:brightness-110 transition active:scale-90" />
           </div>
-          <span className="flex-1 text-center text-xs text-white/60 font-medium">{win.title}</span>
-          <div className="w-12" />
+          <span className="flex-1 text-center text-xs text-white/60 font-medium truncate">{win.title}</span>
+          <div className="w-14" />
         </div>
         {/* Content */}
-        <div className="flex-1 overflow-auto">{children}</div>
+        <div className="flex-1 overflow-auto overscroll-contain">{children}</div>
       </div>
+      {/* Resize handles */}
+      {!isMax && (
+        <>
+          <ResizeHandle dir="e" onResizeStart={onResizeStart} />
+          <ResizeHandle dir="s" onResizeStart={onResizeStart} />
+          <ResizeHandle dir="se" onResizeStart={onResizeStart} />
+        </>
+      )}
     </motion.div>
   );
 }
