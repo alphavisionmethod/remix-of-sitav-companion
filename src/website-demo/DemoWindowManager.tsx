@@ -211,20 +211,26 @@ function DemoFloatingWindow({ win, onClose, onFocus, onMinimize, onMaximize, chi
       onPointerDown={() => onFocus(win.id)}
     >
       <div className="w-full h-full rounded-xl overflow-hidden border border-white/[0.12] shadow-2xl flex flex-col"
-        style={{ background: "rgba(20,20,30,0.82)", backdropFilter: "blur(40px)", WebkitBackdropFilter: "blur(40px)" }}>
+        style={{
+          background: "linear-gradient(180deg, rgba(22,22,32,0.92), rgba(16,16,24,0.88))",
+          backdropFilter: "blur(50px) saturate(1.4)",
+          WebkitBackdropFilter: "blur(50px) saturate(1.4)",
+          boxShadow: "0 25px 60px -12px rgba(0,0,0,0.5), 0 0 1px 0 rgba(255,255,255,0.08), inset 0 1px 0 0 rgba(255,255,255,0.06)",
+        }}>
         {/* Title bar — touch-friendly 44px hit target */}
         <div
-          className="h-11 shrink-0 flex items-center px-3 gap-2 border-b border-white/[0.08] cursor-grab select-none touch-none"
+          className="h-11 shrink-0 flex items-center px-3 gap-2 border-b border-white/[0.06] cursor-grab select-none touch-none"
+          style={{ background: "linear-gradient(180deg, rgba(255,255,255,0.03), transparent)" }}
           onPointerDown={handlePointerDown}
           onPointerMove={handlePointerMove}
           onPointerUp={handlePointerUp}
         >
           <div className="flex gap-2">
-            <button onClick={() => onClose(win.id)} className="w-4 h-4 rounded-full bg-[#ff5f57] hover:brightness-110 transition active:scale-90" />
-            <button onClick={() => onMinimize(win.id)} className="w-4 h-4 rounded-full bg-[#febc2e] hover:brightness-110 transition active:scale-90" />
-            <button onClick={() => onMaximize(win.id)} className="w-4 h-4 rounded-full bg-[#28c840] hover:brightness-110 transition active:scale-90" />
+            <button onClick={() => onClose(win.id)} className="w-3.5 h-3.5 rounded-full bg-[#ff5f57] hover:brightness-110 transition-all active:scale-90 shadow-[0_0_4px_rgba(255,95,87,0.3)]" />
+            <button onClick={() => onMinimize(win.id)} className="w-3.5 h-3.5 rounded-full bg-[#febc2e] hover:brightness-110 transition-all active:scale-90 shadow-[0_0_4px_rgba(254,188,46,0.3)]" />
+            <button onClick={() => onMaximize(win.id)} className="w-3.5 h-3.5 rounded-full bg-[#28c840] hover:brightness-110 transition-all active:scale-90 shadow-[0_0_4px_rgba(40,200,64,0.3)]" />
           </div>
-          <span className="flex-1 text-center text-xs text-white/60 font-medium truncate">{win.title}</span>
+          <span className="flex-1 text-center text-[11px] text-white/50 font-semibold tracking-wide truncate">{win.title}</span>
           <div className="w-14" />
         </div>
         {/* Content */}

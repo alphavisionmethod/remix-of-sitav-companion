@@ -102,13 +102,15 @@ export function WebsiteDemo() {
 
   return (
     <div className="relative w-full h-screen overflow-hidden select-none"
-      style={{ background: "linear-gradient(135deg, hsl(230,25%,8%) 0%, hsl(250,20%,12%) 50%, hsl(220,25%,10%) 100%)" }}>
+      style={{ background: "linear-gradient(135deg, hsl(230,25%,7%) 0%, hsl(260,22%,10%) 40%, hsl(220,20%,8%) 100%)" }}>
       {/* Ambient glow */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full opacity-20 blur-[120px]"
-          style={{ background: "radial-gradient(circle, hsl(210,80%,50%), transparent)" }} />
-        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 rounded-full opacity-15 blur-[100px]"
-          style={{ background: "radial-gradient(circle, hsl(280,60%,50%), transparent)" }} />
+        <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] rounded-full opacity-15 blur-[140px]"
+          style={{ background: "radial-gradient(circle, hsl(265,55%,55%), transparent)" }} />
+        <div className="absolute bottom-1/3 right-1/4 w-96 h-96 rounded-full opacity-10 blur-[120px]"
+          style={{ background: "radial-gradient(circle, hsl(285,50%,50%), transparent)" }} />
+        <div className="absolute top-1/2 right-1/3 w-72 h-72 rounded-full opacity-8 blur-[100px]"
+          style={{ background: "radial-gradient(circle, hsl(38,80%,50%), transparent)" }} />
       </div>
 
       <DemoMenuBar focusedApp={focusedApp} />
