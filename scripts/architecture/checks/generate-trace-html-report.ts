@@ -26,6 +26,7 @@ const REPORT_FILES = [
   "ui-action-coverage-report.json",
   "edge-function-alerting-rules.json",
   "env-config-validation-report.json",
+  "edge-function-mutation-traceability.json",
 ];
 
 const reports: TraceSource[] = [];
