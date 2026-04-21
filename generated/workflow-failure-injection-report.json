@@ -1,14 +1,8 @@
 {
-  "generatedAt": "2026-04-20T23:58:23.605Z",
+  "generatedAt": "2026-04-21T00:01:55.420Z",
   "gate": "workflow-failure-injection",
-  "ok": false,
-  "errorCount": 1,
+  "ok": true,
+  "errorCount": 0,
   "warningCount": 0,
-  "issues": [
-    {
-      "severity": "error",
-      "area": "import",
-      "message": "Failed: ReferenceError: require is not defined"
-    }
-  ]
+  "issues": []
 }

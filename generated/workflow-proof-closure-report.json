@@ -1,14 +1,8 @@
 {
-  "generatedAt": "2026-04-20T23:58:27.639Z",
+  "generatedAt": "2026-04-21T00:01:58.992Z",
   "gate": "workflow-proof-closure",
-  "ok": false,
-  "errorCount": 1,
+  "ok": true,
+  "errorCount": 0,
   "warningCount": 0,
-  "issues": [
-    {
-      "severity": "error",
-      "area": "import",
-      "message": "Failed to import workflow modules: ReferenceError: require is not defined"
-    }
-  ]
+  "issues": []
 }
