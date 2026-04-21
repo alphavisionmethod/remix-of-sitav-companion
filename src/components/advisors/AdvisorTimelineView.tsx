@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { AdvisorAvatar } from "@/components/sita/primitives/AdvisorAvatar";
+import { AdvisorPortrait } from "./AdvisorPortrait";
 import { supabase } from "@/integrations/supabase/client";
 import { Clock, CheckCircle, AlertTriangle, Loader2 } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
@@ -110,7 +110,7 @@ export const AdvisorTimelineView = ({ advisors }: { advisors: AdvisorConfig[] })
             >
               {/* Avatar on timeline */}
               <div className="relative z-10 bg-background rounded-full">
-                <AdvisorAvatar domain={advisor.domain} size="sm" status="active" />
+                <AdvisorPortrait domain={advisor.domain} name={advisor.name} status="active" size="sm" />
               </div>
 
               <div className="flex-1 rounded-lg border border-border/40 bg-card/80 p-3 hover:bg-card transition-colors">
