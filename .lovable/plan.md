@@ -1,99 +1,84 @@
 
 
-# OSAUDIT.md v3.0 — Deep Enhancement Pass
+# Fix Accessibility to 100% Deployment-Ready (PROVEN Status)
 
-## Summary
+## Problem
 
-Regenerate `/mnt/documents/OSAUDIT.md` as a single unified document (~4,500+ lines) where every section from Parts 1-24 is significantly expanded with deeper detail, more file-level evidence, and additional subsections. Updated metrics reflect latest counts (227 service dirs, 193 edge functions, 5,114 TS files, etc.).
+The accessibility subsystem is marked **PARTIAL / UNPROVEN** in the audit because:
 
-## What Changes
+1. **Fake validator**: `generate-validation-summary.ts` (line 62) hardcodes `score: 100` and `status: "compliant"` for every route without actually inspecting ARIA attributes — it is a placeholder, not a real check.
+2. **No dedicated accessibility validator**: `check-accessibility-baseline.ts` only checks if the evidence JSON file exists and counts routes — it never inspects component source code for actual ARIA compliance.
+3. **No accessibility test suite**: Zero tests verify that components render correct ARIA attributes, roles, landmarks, focus management, or keyboard navigation.
+4. **Missing ARIA on key UI primitives**: Several shadcn/ui components (e.g., `progress.tsx`, `skeleton.tsx`, `switch.tsx`, `slider.tsx`, `textarea.tsx`, `input.tsx`) lack explicit ARIA attributes that WCAG 2.1 AA requires.
 
-### Parts 1-10 (Original Sections) — Enhanced
-- **Part 1**: Add per-dimension drill-down tables with 5+ evidence files per score. Add "What 100% Would Require" checklist with exact effort per item.
-- **Part 2**: Expand from 10 to 20 subsystem rows. Add sub-matrices for AI (8 subsystems), Admin (6), Windowing (4), Frontend (5), Backend (6). Each row gets validator script path and proof artifact filename.
-- **Part 3**: Expand all 10 evidence subsections. List all 18 experience contracts with line counts. Categorize 646 validators by domain. List all 193 edge functions by role. List all 27 contexts with purpose. Categorize 179 hooks by domain.
-- **Part 4**: Update with corrected gaps only. Each gap gets severity, exact files, wiring gaps, proof gaps, operational risk, estimated effort.
-- **Part 5-7**: Expand each item with files to create/modify, dependencies, success criteria.
-- **Part 8-9**: Add exact commands and verification criteria per step.
-- **Part 10**: Update percentages and effort calculations.
+## Plan
 
-### Parts 11-24 (Enhanced Sections) — Significantly Deepened
+### 1. Create a Real Accessibility Validator Script
 
-**Part 11 (Eight-Layer Evaluation)** — Currently ~350 lines, target ~600 lines:
-- Each layer gets: 8+ strengths (up from 6), 8+ weaknesses (up from 5), expanded duplication tables, 6+ technical debt items, 8+ missing capabilities, 8+ next improvements
-- Add exact file paths for every strength/weakness claim
-- Add "What Next" subsections per layer covering: next-stage enhancements, architectural upgrades, DX improvements, operator improvements, performance improvements, enterprise-readiness, future-proofing
+**New file**: `scripts/validation/check-accessibility-compliance.ts`
 
-**Part 12 (Maturity Scoring)** — Currently 35 lines, target ~120 lines:
-- Expand from 20 to 30 subsystems (add: Orchestration, Nova SDK, Domain Manifests, Windowing Sessions, App Store, Deep Linking, Workflow Engine, Boarding Ceremony, Mobile Platform, Desktop Host)
-- Add per-subsystem commentary explaining each score
-- Add radar chart data format for visualization
-- Add "maturity gap analysis" identifying which subsystems drag down the average
+- Scans all `.tsx` files under `src/components/ui/` (49 primitives) and `src/components/sita/` (shell surfaces)
+- For each file, checks for presence of: `role=`, `aria-label`, `aria-labelledby`, `aria-describedby`, `aria-live`, `aria-hidden`, `sr-only`, `tabIndex`, `aria-expanded`, `aria-controls`
+- Classifies components into categories: **interactive** (buttons, inputs, dialogs — must have ARIA labels), **decorative** (must have `aria-hidden`), **structural** (must have landmark roles)
+- Emits `generated/accessibility-compliance-report.json` via `emitGateReport`
+- Sets `ok: true` only when all interactive components have at least one ARIA attribute and all dialogs have focus-trap evidence
 
-**Part 13 (Action Classification)** — Currently 25 lines, target ~200 lines:
-- Break out of single table into per-subsystem detail blocks
-- Each subsystem gets: exact file targets for ADD/IMPROVE/DELETE/CONSOLIDATE/DEPRECATE/AUTOMATE/VALIDATE/FUTURE_ENHANCEMENT
-- Add effort estimate and priority for each action
+### 2. Fix the Fake Evidence Generator
 
-**Part 14 (Advanced Features)** — Currently ~110 lines, target ~250 lines:
-- Expand each of the 11 opportunities with: implementation architecture, database tables needed, edge functions needed, UI components needed, integration points, risk assessment
-- Add 4 more opportunities: Intelligent Notifications, Data Visualization Framework, Workflow Templates, Plugin SDK
+**Edit file**: `scripts/manifests/generate/generate-validation-summary.ts` (lines 59-74)
 
-**Part 15 (Architectural Modernization)** — Currently ~40 lines, target ~150 lines:
-- Expand each of the 5 opportunities with: current file evidence, migration strategy, rollback plan, dependency graph, consumer impact
-- Add 4 more: OpenTelemetry migration, Edge Function Gateway pattern, Database connection pooling, Type-safe RPC layer
+- Replace the hardcoded `score: 100` stub with actual per-route ARIA presence checks
+- Read each route's component file and scan for `aria-` attribute presence
+- Score based on actual findings: has landmarks, has labels, has focus management
+- Output honest compliance percentages
 
-**Part 16 (Technical Debt)** — Currently ~40 lines, target ~200 lines:
-- Expand each subsection with exact file lists and line counts
-- Add new subsections: Systems too coupled to evolve, Validator gaps (which subsystems lack validators), Poor naming/ownership boundaries, Under-tested critical paths
-- Add "debt heat map" showing which directories carry the most debt
+### 3. Wire Validator into Release Gate Aggregator
 
-**Part 17 (Innovation Ideas)** — Currently ~40 lines, target ~200 lines:
-- Expand each of the 5 categories with 8+ items (up from 5)
-- Add new categories: Trust/Safety Upgrades, Monetization/Enterprise Opportunities, Cross-Domain Abstractions
-- Each idea gets: impact, difficulty, dependencies, expected benefit
+**Edit file**: `scripts/architecture/checks/check-os-release-readiness.ts`
 
-**Part 18 (Best-in-Class Roadmap)** — Currently ~30 lines, target ~120 lines:
-- Expand each tier with 8+ items and exact file/system targets
-- Add "If I Wanted Best-in-Class" detailed narrative per dimension
-- Add comparison to industry benchmarks
+- Add `"accessibility-compliance"` to the gate list (currently only has `"accessibility-baseline"` which is advisory)
+- Promote from advisory to block-level gate
 
-**Part 19 (Top 25)** — Currently ~30 lines, target ~100 lines:
-- Expand each recommendation with 2-3 line rationale
-- Add dependency chains between recommendations
-- Add "quick wins" vs "strategic investments" classification
+### 4. Add ARIA Attributes to UI Primitives Missing Them
 
-**Part 20 (Best-in-Class Analysis)** — Currently ~40 lines, target ~150 lines:
-- Expand each gap area with industry comparison, exact improvement path, files to modify
-- Add new sections: Performance/Scalability, Monetization Readiness, Multi-Tenant Architecture
+**Files to edit** (adding missing ARIA):
 
-**Part 21 (Product-System Opportunities)** — Currently ~15 lines, target ~100 lines:
-- Expand each of 11 opportunities with implementation detail, database design, component architecture
-- Add 4 more: Audit Trail Explorer, Health Score Dashboard, Compliance Center, API Playground
+| Component | Fix |
+|---|---|
+| `src/components/ui/progress.tsx` | Add `role="progressbar"`, `aria-valuenow`, `aria-valuemin="0"`, `aria-valuemax="100"` |
+| `src/components/ui/skeleton.tsx` | Add `aria-hidden="true"`, `role="presentation"` |
+| `src/components/ui/input.tsx` | Add `aria-invalid` binding when used with form errors |
+| `src/components/ui/textarea.tsx` | Add `aria-invalid` binding when used with form errors |
+| `src/components/ui/switch.tsx` | Ensure `aria-checked` is explicitly bound (Radix may handle this but verify) |
+| `src/components/ui/slider.tsx` | Ensure `aria-valuemin`, `aria-valuemax`, `aria-valuenow` are present |
+| `src/components/ui/badge.tsx` | Add `role="status"` for status badges |
+| `src/components/ui/toast.tsx` | Ensure `role="alert"` and `aria-live="assertive"` |
+| `src/components/ui/tooltip.tsx` | Ensure `role="tooltip"` is present |
+| `src/components/ui/separator.tsx` | Add `aria-orientation` |
 
-**Part 22 (Prioritized Detail)** — Currently ~50 lines, target ~150 lines:
-- Add rationale paragraph for each recommendation
-- Add dependency graph showing which recommendations unlock others
-- Add "value chain" analysis
+### 5. Create Accessibility Test Suite
 
-**Part 23 (Roadmap Horizons)** — Currently ~40 lines, target ~120 lines:
-- Each item gets: exact files, success criteria, verification command, dependencies, risk
-- Add milestone markers and checkpoint criteria
+**New file**: `src/test/accessibility-compliance.test.ts`
 
-**Part 24 (Final Answer)** — Currently ~50 lines, target ~120 lines:
-- Add "Honest Delta" subsection explaining structural vs behavioral gap
-- Add per-layer grade breakdown (8 layers)
-- Add "What the next 30 days should look like" tactical plan
+- Tests that all 49 UI primitives in `src/components/ui/` render with correct ARIA semantics
+- Tests for: Dialog focus trap (`sr-only` Close button present), Alert has `role="alert"`, Carousel has `aria-roledescription`, Progress has `role="progressbar"`, interactive elements are keyboard-reachable
+- Tests that the `AccessibilityBaseline` contract covers all 6 page classes
+- Tests that `useReducedMotion` hook respects `prefers-reduced-motion`
 
-### New Appendices
-- **Appendix H**: Full 227-service sprawl inventory categorized by domain
-- **Appendix I**: Complete edge function inventory (193 functions by role)
-- **Appendix J**: Database table inventory by domain (420 tables)
-- **Appendix K**: Innovation opportunity scoring matrix
+### 6. Update OSAUDIT.md Evidence
 
-## Implementation
+**Edit file**: `/mnt/documents/OSAUDIT.md`
 
-1. Write Python generation script to `/tmp/gen_audit_v3.py` that performs live filesystem inspection
-2. Generate complete unified document (not append — full regeneration) to `/mnt/documents/OSAUDIT.md`
-3. QA: verify all 24 parts present, line count exceeds 4,000, all requested analysis dimensions covered
+- Update the accessibility row from `Partial | UNPROVEN` to `Complete | PROVEN`
+- Add the new validator script path and test file as evidence
+- Update compliance percentage
+
+## Outcome
+
+After implementation:
+- A **real** validator scans component source for ARIA compliance (not a hardcoded stub)
+- All 49 UI primitives have correct ARIA attributes per WCAG 2.1 AA
+- A dedicated test suite proves compliance in CI
+- The release gate aggregator blocks releases if accessibility regresses
+- The audit status moves from `PARTIAL/UNPROVEN` to `COMPLETE/PROVEN`
 
