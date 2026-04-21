@@ -1,0 +1,400 @@
+{
+  "generatedAt": "2026-04-21T18:59:42.049Z",
+  "gate": "kill-switch-e2e-drill",
+  "ok": false,
+  "totalDrillScenarios": 8,
+  "fullyCoveredDrills": 0,
+  "totalSuccessCriteria": 23,
+  "testableCriteria": 17,
+  "testabilityPct": 74,
+  "registrySwitchesWithoutDrills": [
+    "KS-ADVISORS",
+    "KS-OUTBOUND",
+    "KS-CONNECTORS",
+    "KS-SYNC",
+    "KS-PAYMENTS",
+    "KS-MOBILE-PUSH",
+    "KS-MODEL-PROVIDERS",
+    "KS-WORKFLOW",
+    "KS-SIMULATIONS",
+    "KS-AUTOMATIONS",
+    "KS-RELEASE-ROLLOUT",
+    "KS-APPLIANCE-UPDATE",
+    "KS-SELF-HEALING",
+    "KS-PROVIDER-INGESTION",
+    "KS-PAYMENTS-AUTH",
+    "KS-PAYMENTS-AUTH"
+  ],
+  "errorCount": 8,
+  "warningCount": 29,
+  "scenarios": [
+    {
+      "switchId": "KS-AI-ADVISORY",
+      "displayName": "AI Advisory Layer",
+      "registryMatch": false,
+      "consequenceMapMatch": false,
+      "gameDayMatch": false,
+      "affectedFunctionsExist": true,
+      "affectedFunctions": [],
+      "missingFunctions": [],
+      "affectedTables": [],
+      "successCriteria": [
+        {
+          "criterion": "No new ai_invocations created after activation",
+          "signalType": "db-query",
+          "verificationQuery": "SELECT count(*) FROM {table} WHERE created_at > '{drill_start}'",
+          "testable": true
+        },
+        {
+          "criterion": "User sees degradation notice within 2s",
+          "signalType": "ui-state",
+          "verificationQuery": "UI assertion: check for degradation banner component render",
+          "testable": true
+        },
+        {
+          "criterion": "Existing sessions gracefully conclude",
+          "signalType": "db-query",
+          "verificationQuery": "SELECT count(*) FROM {table} WHERE status IN ('completed','paused') AND updated_at > '{drill_start}'",
+          "testable": true
+        }
+      ],
+      "drillSteps": [
+        "STEP 1: Record baseline — snapshot affected tables: ",
+        "STEP 2: Activate kill switch 'KS-AI-ADVISORY' via dashboard with justification",
+        "STEP 3: Wait 5000ms for propagation",
+        "STEP 4: Assert effects — AI features show graceful degradation message, no new invocations created",
+        "STEP 5: Verify signal — [db-query] No new ai_invocations created after activation",
+        "STEP 6: Verify signal — [ui-state] User sees degradation notice within 2s",
+        "STEP 7: Verify signal — [db-query] Existing sessions gracefully conclude",
+        "STEP 8: Execute rollback — Re-enable switch; verify invocation pipeline resumes within 60s",
+        "STEP 9: Verify rollback — confirm service restoration within 10000ms",
+        "STEP 10: Record drill result to kill_switch_audit_log"
+      ],
+      "issues": [
+        "MISSING_REGISTRY: Switch 'KS-AI-ADVISORY' not in KILL_SWITCH_REGISTRY",
+        "MISSING_CONSEQUENCE: No runtime consequence mapping for 'KS-AI-ADVISORY'"
+      ]
+    },
+    {
+      "switchId": "KS-WORKFLOW-AUTO",
+      "displayName": "Workflow Automation",
+      "registryMatch": false,
+      "consequenceMapMatch": false,
+      "gameDayMatch": false,
+      "affectedFunctionsExist": true,
+      "affectedFunctions": [],
+      "missingFunctions": [],
+      "affectedTables": [],
+      "successCriteria": [
+        {
+          "criterion": "No new workflow_runs created",
+          "signalType": "db-query",
+          "verificationQuery": "SELECT count(*) FROM {table} WHERE created_at > '{drill_start}'",
+          "testable": true
+        },
+        {
+          "criterion": "In-progress runs pause after current step",
+          "signalType": null,
+          "verificationQuery": null,
+          "testable": false
+        },
+        {
+          "criterion": "Queue resumes cleanly on rollback",
+          "signalType": "db-query",
+          "verificationQuery": "SELECT count(*) FROM {table} WHERE status = 'active' AND updated_at > '{rollback_time}'",
+          "testable": true
+        }
+      ],
+      "drillSteps": [
+        "STEP 1: Record baseline — snapshot affected tables: ",
+        "STEP 2: Activate kill switch 'KS-WORKFLOW-AUTO' via dashboard with justification",
+        "STEP 3: Wait 3000ms for propagation",
+        "STEP 4: Assert effects — No new workflow runs started, in-progress runs complete current step then pause",
+        "STEP 5: Verify signal — [db-query] No new workflow_runs created",
+        "STEP 6: Verify signal — [db-query] Queue resumes cleanly on rollback",
+        "STEP 7: Execute rollback — Re-enable; queued triggers execute in order",
+        "STEP 8: Verify rollback — confirm service restoration within 6000ms",
+        "STEP 9: Record drill result to kill_switch_audit_log"
+      ],
+      "issues": [
+        "MISSING_REGISTRY: Switch 'KS-WORKFLOW-AUTO' not in KILL_SWITCH_REGISTRY",
+        "MISSING_CONSEQUENCE: No runtime consequence mapping for 'KS-WORKFLOW-AUTO'",
+        "UNTESTABLE_CRITERIA: 1 criteria lack signal mapping"
+      ]
+    },
+    {
+      "switchId": "KS-OUTBOUND-MSG",
+      "displayName": "Outbound Messaging",
+      "registryMatch": false,
+      "consequenceMapMatch": false,
+      "gameDayMatch": false,
+      "affectedFunctionsExist": true,
+      "affectedFunctions": [],
+      "missingFunctions": [],
+      "affectedTables": [],
+      "successCriteria": [
+        {
+          "criterion": "No outbound messages leave the system",
+          "signalType": null,
+          "verificationQuery": null,
+          "testable": false
+        },
+        {
+          "criterion": "Queue grows but does not drop messages",
+          "signalType": "queue-metric",
+          "verificationQuery": "SELECT count(*) FROM {table} WHERE status = 'queued' AND created_at > '{drill_start}'",
+          "testable": true
+        },
+        {
+          "criterion": "Delivery resumes on rollback",
+          "signalType": "db-query",
+          "verificationQuery": "SELECT count(*) FROM {table} WHERE status = 'active' AND updated_at > '{rollback_time}'",
+          "testable": true
+        }
+      ],
+      "drillSteps": [
+        "STEP 1: Record baseline — snapshot affected tables: ",
+        "STEP 2: Activate kill switch 'KS-OUTBOUND-MSG' via dashboard with justification",
+        "STEP 3: Wait 2000ms for propagation",
+        "STEP 4: Assert effects — Messages queued but not delivered; queue preserved for later flush",
+        "STEP 5: Verify signal — [queue-metric] Queue grows but does not drop messages",
+        "STEP 6: Verify signal — [db-query] Delivery resumes on rollback",
+        "STEP 7: Execute rollback — Re-enable; queue flushes automatically",
+        "STEP 8: Verify rollback — confirm service restoration within 4000ms",
+        "STEP 9: Record drill result to kill_switch_audit_log"
+      ],
+      "issues": [
+        "MISSING_REGISTRY: Switch 'KS-OUTBOUND-MSG' not in KILL_SWITCH_REGISTRY",
+        "MISSING_CONSEQUENCE: No runtime consequence mapping for 'KS-OUTBOUND-MSG'",
+        "UNTESTABLE_CRITERIA: 1 criteria lack signal mapping"
+      ]
+    },
+    {
+      "switchId": "KS-INVESTOR-ACCESS",
+      "displayName": "Investor Access Lockdown",
+      "registryMatch": false,
+      "consequenceMapMatch": false,
+      "gameDayMatch": false,
+      "affectedFunctionsExist": true,
+      "affectedFunctions": [],
+      "missingFunctions": [],
+      "affectedTables": [],
+      "successCriteria": [
+        {
+          "criterion": "All deal room routes return 403",
+          "signalType": "edge-call",
+          "verificationQuery": "HTTP {method} {endpoint} → expect status {code}",
+          "testable": true
+        },
+        {
+          "criterion": "No document downloads possible",
+          "signalType": "db-query",
+          "verificationQuery": "SELECT count(*) FROM {table} WHERE status = 'delivered' AND created_at > '{drill_start}'",
+          "testable": true
+        },
+        {
+          "criterion": "Access grants preserved for restoration",
+          "signalType": null,
+          "verificationQuery": null,
+          "testable": false
+        }
+      ],
+      "drillSteps": [
+        "STEP 1: Record baseline — snapshot affected tables: ",
+        "STEP 2: Activate kill switch 'KS-INVESTOR-ACCESS' via dashboard with justification",
+        "STEP 3: Wait 2000ms for propagation",
+        "STEP 4: Assert effects — All deal room pages return 403, download links disabled",
+        "STEP 5: Verify signal — [edge-call] All deal room routes return 403",
+        "STEP 6: Verify signal — [db-query] No document downloads possible",
+        "STEP 7: Execute rollback — Re-enable; existing access grants restored from audit log",
+        "STEP 8: Verify rollback — confirm service restoration within 4000ms",
+        "STEP 9: Record drill result to kill_switch_audit_log"
+      ],
+      "issues": [
+        "MISSING_REGISTRY: Switch 'KS-INVESTOR-ACCESS' not in KILL_SWITCH_REGISTRY",
+        "MISSING_CONSEQUENCE: No runtime consequence mapping for 'KS-INVESTOR-ACCESS'",
+        "UNTESTABLE_CRITERIA: 1 criteria lack signal mapping"
+      ]
+    },
+    {
+      "switchId": "KS-BUILD-DOWNLOAD",
+      "displayName": "Build/Download Suspension",
+      "registryMatch": false,
+      "consequenceMapMatch": false,
+      "gameDayMatch": false,
+      "affectedFunctionsExist": true,
+      "affectedFunctions": [],
+      "missingFunctions": [],
+      "affectedTables": [],
+      "successCriteria": [
+        {
+          "criterion": "Download endpoints return 503",
+          "signalType": "edge-call",
+          "verificationQuery": "HTTP {method} {endpoint} → expect status {code}",
+          "testable": true
+        },
+        {
+          "criterion": "User sees maintenance message",
+          "signalType": "ui-state",
+          "verificationQuery": "UI assertion: check for degradation banner component render",
+          "testable": true
+        },
+        {
+          "criterion": "No partial downloads served",
+          "signalType": "db-query",
+          "verificationQuery": "SELECT count(*) FROM {table} WHERE status = 'delivered' AND created_at > '{drill_start}'",
+          "testable": true
+        }
+      ],
+      "drillSteps": [
+        "STEP 1: Record baseline — snapshot affected tables: ",
+        "STEP 2: Activate kill switch 'KS-BUILD-DOWNLOAD' via dashboard with justification",
+        "STEP 3: Wait 1000ms for propagation",
+        "STEP 4: Assert effects — Download buttons disabled, links return 503 with maintenance message",
+        "STEP 5: Verify signal — [edge-call] Download endpoints return 503",
+        "STEP 6: Verify signal — [ui-state] User sees maintenance message",
+        "STEP 7: Verify signal — [db-query] No partial downloads served",
+        "STEP 8: Execute rollback — Re-enable; download links restore immediately",
+        "STEP 9: Verify rollback — confirm service restoration within 2000ms",
+        "STEP 10: Record drill result to kill_switch_audit_log"
+      ],
+      "issues": [
+        "MISSING_REGISTRY: Switch 'KS-BUILD-DOWNLOAD' not in KILL_SWITCH_REGISTRY",
+        "MISSING_CONSEQUENCE: No runtime consequence mapping for 'KS-BUILD-DOWNLOAD'"
+      ]
+    },
+    {
+      "switchId": "KS-PUBLIC-CHAT",
+      "displayName": "Public Chat Disable",
+      "registryMatch": false,
+      "consequenceMapMatch": false,
+      "gameDayMatch": false,
+      "affectedFunctionsExist": true,
+      "affectedFunctions": [],
+      "missingFunctions": [],
+      "affectedTables": [],
+      "successCriteria": [
+        {
+          "criterion": "Chat widget not rendered",
+          "signalType": "ui-state",
+          "verificationQuery": "UI assertion: component not in DOM",
+          "testable": true
+        },
+        {
+          "criterion": "No public AI invocations accepted",
+          "signalType": "db-query",
+          "verificationQuery": "SELECT count(*) FROM {table} WHERE status = 'delivered' AND created_at > '{drill_start}'",
+          "testable": true
+        }
+      ],
+      "drillSteps": [
+        "STEP 1: Record baseline — snapshot affected tables: ",
+        "STEP 2: Activate kill switch 'KS-PUBLIC-CHAT' via dashboard with justification",
+        "STEP 3: Wait 1000ms for propagation",
+        "STEP 4: Assert effects — Chat widget hidden or shows unavailable message",
+        "STEP 5: Verify signal — [ui-state] Chat widget not rendered",
+        "STEP 6: Verify signal — [db-query] No public AI invocations accepted",
+        "STEP 7: Execute rollback — Re-enable; chat widget reappears on next page load",
+        "STEP 8: Verify rollback — confirm service restoration within 2000ms",
+        "STEP 9: Record drill result to kill_switch_audit_log"
+      ],
+      "issues": [
+        "MISSING_REGISTRY: Switch 'KS-PUBLIC-CHAT' not in KILL_SWITCH_REGISTRY",
+        "MISSING_CONSEQUENCE: No runtime consequence mapping for 'KS-PUBLIC-CHAT'"
+      ]
+    },
+    {
+      "switchId": "KS-THIRD-PARTY",
+      "displayName": "Third-Party Integration Disconnect",
+      "registryMatch": false,
+      "consequenceMapMatch": false,
+      "gameDayMatch": false,
+      "affectedFunctionsExist": true,
+      "affectedFunctions": [],
+      "missingFunctions": [],
+      "affectedTables": [],
+      "successCriteria": [
+        {
+          "criterion": "No outbound third-party API calls",
+          "signalType": "db-query",
+          "verificationQuery": "SELECT count(*) FROM {table} WHERE status = 'delivered' AND created_at > '{drill_start}'",
+          "testable": true
+        },
+        {
+          "criterion": "Connectors show disconnected state",
+          "signalType": null,
+          "verificationQuery": null,
+          "testable": false
+        },
+        {
+          "criterion": "Re-auth triggers on rollback",
+          "signalType": null,
+          "verificationQuery": null,
+          "testable": false
+        }
+      ],
+      "drillSteps": [
+        "STEP 1: Record baseline — snapshot affected tables: ",
+        "STEP 2: Activate kill switch 'KS-THIRD-PARTY' via dashboard with justification",
+        "STEP 3: Wait 3000ms for propagation",
+        "STEP 4: Assert effects — All external API calls blocked, connectors show disconnected state",
+        "STEP 5: Verify signal — [db-query] No outbound third-party API calls",
+        "STEP 6: Execute rollback — Re-enable; connectors re-authenticate on next sync cycle",
+        "STEP 7: Verify rollback — confirm service restoration within 6000ms",
+        "STEP 8: Record drill result to kill_switch_audit_log"
+      ],
+      "issues": [
+        "MISSING_REGISTRY: Switch 'KS-THIRD-PARTY' not in KILL_SWITCH_REGISTRY",
+        "MISSING_CONSEQUENCE: No runtime consequence mapping for 'KS-THIRD-PARTY'",
+        "UNTESTABLE_CRITERIA: 2 criteria lack signal mapping"
+      ]
+    },
+    {
+      "switchId": "KS-CROWDFUND",
+      "displayName": "Payment/Crowdfund Freeze",
+      "registryMatch": false,
+      "consequenceMapMatch": false,
+      "gameDayMatch": false,
+      "affectedFunctionsExist": true,
+      "affectedFunctions": [],
+      "missingFunctions": [],
+      "affectedTables": [],
+      "successCriteria": [
+        {
+          "criterion": "No payment charges processed",
+          "signalType": "db-query",
+          "verificationQuery": "SELECT count(*) FROM {table} WHERE status = 'delivered' AND created_at > '{drill_start}'",
+          "testable": true
+        },
+        {
+          "criterion": "Pledge forms show paused state",
+          "signalType": null,
+          "verificationQuery": null,
+          "testable": false
+        },
+        {
+          "criterion": "Pending queue preserved",
+          "signalType": "queue-metric",
+          "verificationQuery": "SELECT count(*) FROM {table} WHERE status = 'queued' AND created_at > '{drill_start}'",
+          "testable": true
+        }
+      ],
+      "drillSteps": [
+        "STEP 1: Record baseline — snapshot affected tables: ",
+        "STEP 2: Activate kill switch 'KS-CROWDFUND' via dashboard with justification",
+        "STEP 3: Wait 2000ms for propagation",
+        "STEP 4: Assert effects — Payment forms disabled, pledge buttons show paused, no charges processed",
+        "STEP 5: Verify signal — [db-query] No payment charges processed",
+        "STEP 6: Verify signal — [queue-metric] Pending queue preserved",
+        "STEP 7: Execute rollback — Re-enable; pending pledges re-enter queue",
+        "STEP 8: Verify rollback — confirm service restoration within 4000ms",
+        "STEP 9: Record drill result to kill_switch_audit_log"
+      ],
+      "issues": [
+        "MISSING_REGISTRY: Switch 'KS-CROWDFUND' not in KILL_SWITCH_REGISTRY",
+        "MISSING_CONSEQUENCE: No runtime consequence mapping for 'KS-CROWDFUND'",
+        "UNTESTABLE_CRITERIA: 1 criteria lack signal mapping"
+      ]
+    }
+  ]
+}
