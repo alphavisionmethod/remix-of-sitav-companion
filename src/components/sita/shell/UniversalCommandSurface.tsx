@@ -28,6 +28,8 @@ import { toast } from "sonner";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { IntentRibbon } from "./IntentRibbon";
 import { WhyThisResult, type ResultReason } from "./WhyThisResult";
+import { detectIntent as detectExtendedIntent } from "@/lib/command-registry/action-registry";
+import { SIMULATION_ACTIONS, EXPLAINABILITY_ACTIONS } from "@/lib/command-registry/action-registry";
 
 // ── Command Index ────────────────────────────────────────────
 
@@ -232,6 +234,8 @@ const CATEGORY_CONFIG: Record<string, { label: string; color: string; order: num
   advisor: { label: "Advisors", color: "bg-primary/10 text-primary", order: 3 },
   system: { label: "System", color: "bg-secondary text-muted-foreground", order: 4 },
   entity: { label: "Results", color: "bg-[hsl(var(--trust-safe))]/10 text-[hsl(var(--trust-safe))]", order: 5 },
+  simulate: { label: "Simulate", color: "bg-[hsl(var(--sita-gold))]/10 text-[hsl(var(--sita-gold))]", order: 1.5 },
+  explain: { label: "Explain", color: "bg-primary/10 text-primary", order: 1.6 },
 };
 
 // ── Capture Detection ─────────────────────────────────────────
@@ -247,11 +251,14 @@ function detectCapture(query: string): { type: string; value: string } | null {
 
 // ── Natural Language Intent ─────────────────────────────────
 
-type IntentType = "ask" | "search" | "navigate" | "action" | "capture" | null;
+type IntentType = "ask" | "search" | "navigate" | "action" | "capture" | "simulate" | "explain" | null;
 
 function detectIntent(query: string): IntentType {
   const q = query.toLowerCase().trim();
   if (!q) return null;
+  // Check simulate/explain intents first
+  const extIntent = detectExtendedIntent(q);
+  if (extIntent) return extIntent;
   if (/^(what|how|why|when|who|show me|tell me|find|is there|are there|do i)/.test(q)) return "ask";
   if (/^(go to|open|navigate|jump|switch)/.test(q)) return "navigate";
   if (/^(create|add|new|start|launch|schedule|send|draft|upload|set)/.test(q)) return "action";
@@ -406,7 +413,20 @@ export function UniversalCommandSurface({ open, onClose, onSystemCommand }: Univ
   const filteredCommands = useMemo(() => {
     if (!query.trim()) return [];
     const q = query.toLowerCase().split(/\s+/);
-    return COMMAND_INDEX.filter(item => {
+    // Merge extended actions as CommandItems
+    const extendedItems: CommandItem[] = [...SIMULATION_ACTIONS, ...EXPLAINABILITY_ACTIONS].map(a => ({
+      id: a.id,
+      label: a.label,
+      sublabel: a.sublabel,
+      icon: Sparkles, // fallback icon for extended actions
+      path: a.path,
+      category: a.category as CommandItem["category"],
+      domain: a.domain,
+      keywords: a.keywords,
+      riskLevel: a.riskLevel,
+    }));
+    const allCommands = [...COMMAND_INDEX, ...extendedItems];
+    return allCommands.filter(item => {
       const searchable = [item.label, item.sublabel || "", ...item.keywords].join(" ").toLowerCase();
       return q.every(word => searchable.includes(word));
     });

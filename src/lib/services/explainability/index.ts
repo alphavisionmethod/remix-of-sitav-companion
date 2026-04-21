@@ -30,6 +30,9 @@ export interface Explanation {
   alternatives: string[];                 // what else could have happened
   timestamp: string;
   feedbackGiven?: "helpful" | "not_helpful" | null;
+  tradeoffs?: Array<{ option: string; pros: string[]; cons: string[]; confidence: number }>;
+  invalidators?: string[];                // conditions that would change this
+  receiptId?: string;                     // link to trust receipt
 }
 
 export interface ExplainabilityService {
@@ -46,6 +49,7 @@ export interface ExplainabilityService {
   giveFeedback(explanationId: string, feedback: "helpful" | "not_helpful"): void;
   clearHistory(): void;
   loadPersistedState(): Promise<void>;
+  explainSimulation(scenarioId: string, scenarioLabel: string, result: { mean: number; stdDev: number; var95: number }, variables: Array<{ label: string; mean: number }>): Explanation;
 }
 
 // ── Implementation ───────────────────────────────────────────────
@@ -209,6 +213,56 @@ export function createExplainability(): ExplainabilityService {
     });
   }
 
+  function explainSimulation(
+    scenarioId: string,
+    scenarioLabel: string,
+    result: { mean: number; stdDev: number; var95: number },
+    variables: Array<{ label: string; mean: number }>,
+  ): Explanation {
+    const isPositive = result.mean > 0;
+    const confidence = Math.min(1, Math.max(0.1, 1 - (result.stdDev / (Math.abs(result.mean) || 1))));
+    return addExplanation({
+      id: makeId(),
+      type: "recommendation",
+      entityId: scenarioId,
+      title: `Simulation: ${scenarioLabel}`,
+      summary: `Monte Carlo simulation produced a mean outcome of ${result.mean >= 0 ? "+" : ""}${result.mean.toFixed(0)} with ${(confidence * 100).toFixed(0)}% confidence. VaR-95: ${result.var95.toFixed(0)}.`,
+      reasoningChain: [
+        `Scenario "${scenarioLabel}" executed with ${variables.length} variable(s)`,
+        ...variables.map(v => `${v.label}: mean ${v.mean.toFixed(1)}`),
+        `Mean outcome: ${result.mean.toFixed(0)}`,
+        `Standard deviation: ${result.stdDev.toFixed(0)}`,
+        `Value at Risk (95%): ${result.var95.toFixed(0)}`,
+        isPositive ? "Outcome skews positive — proceed with monitoring" : "Outcome skews negative — review assumptions",
+      ],
+      sources: [
+        { system: "simulation-engine", component: "monte_carlo", confidence, data: { scenarioId, mean: result.mean } },
+      ],
+      confidence,
+      alternatives: ["Adjust variables and re-run", "Consult Boardroom advisors", "Save for later review"],
+      timestamp: new Date().toISOString(),
+      tradeoffs: [
+        {
+          option: "Proceed as modeled",
+          pros: isPositive ? ["Positive expected outcome", "Aligned with scenario assumptions"] : ["Quick resolution"],
+          cons: isPositive ? ["Tail risk exposure at VaR-95"] : ["Negative expected outcome", "High uncertainty"],
+          confidence,
+        },
+        {
+          option: "Defer and gather more data",
+          pros: ["Reduces uncertainty", "More informed decision"],
+          cons: ["Delays action", "Opportunity cost"],
+          confidence: 0.7,
+        },
+      ],
+      invalidators: [
+        "If key variable assumptions change significantly",
+        "If market conditions shift beyond modeled ranges",
+        "If new constraints or obligations emerge",
+      ],
+    });
+  }
+
   function getExplanation(id: string): Explanation | null {
     return history.find(e => e.id === id) ?? null;
   }
@@ -246,5 +300,6 @@ export function createExplainability(): ExplainabilityService {
     explainRecommendation, explainModeChange, explainSafetyGate,
     getExplanation, getExplanationHistory, getRecentExplanations,
     giveFeedback, clearHistory, loadPersistedState,
+    explainSimulation,
   };
 }
