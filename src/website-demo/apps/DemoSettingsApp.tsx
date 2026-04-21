@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { SETTINGS_DATA } from "../demo-data";
 import { MockToggle } from "../demo-primitives";
+import iconSettings from "@/assets/app-icons/settings.png";
 
 export function DemoSettingsApp() {
   const [state, setState] = useState(() =>
@@ -8,6 +9,10 @@ export function DemoSettingsApp() {
   );
   return (
     <div className="p-5 overflow-auto space-y-6 max-w-lg mx-auto">
+      <div className="flex items-center gap-3 mb-2">
+        <img src={iconSettings} alt="Settings" className="w-8 h-8 rounded-lg" width={32} height={32} />
+        <h2 className="text-base font-semibold text-white/90">Settings</h2>
+      </div>
       {SETTINGS_DATA.map((cat) => (
         <div key={cat.category}>
           <h3 className="text-xs text-white/50 uppercase tracking-wider mb-3">{cat.category}</h3>
