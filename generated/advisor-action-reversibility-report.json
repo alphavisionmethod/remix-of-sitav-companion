@@ -1,16 +1,106 @@
 {
-  "generatedAt": "2026-04-20T21:20:30.255Z",
-  "totalActionTypes": 12,
-  "fullyReversible": 6,
-  "partiallyReversible": 1,
-  "timeLimited": 2,
-  "irreversible": 1,
-  "confirmationRequired": [
-    "send-email",
-    "send-notification",
-    "execute-payment",
-    "delete-record",
-    "change-permission",
-    "toggle-kill-switch"
-  ]
+  "generatedAt": "2026-04-21T00:51:13.710Z",
+  "totalActions": 12,
+  "entries": [
+    {
+      "actionType": "draft-email",
+      "reversibility": "fully-reversible",
+      "undoMechanism": "Delete draft",
+      "undoWindowMs": null,
+      "dataLossOnUndo": false,
+      "requiresConfirmation": false
+    },
+    {
+      "actionType": "draft-recommendation",
+      "reversibility": "fully-reversible",
+      "undoMechanism": "Discard recommendation",
+      "undoWindowMs": null,
+      "dataLossOnUndo": false,
+      "requiresConfirmation": false
+    },
+    {
+      "actionType": "schedule-meeting",
+      "reversibility": "fully-reversible",
+      "undoMechanism": "Cancel meeting",
+      "undoWindowMs": null,
+      "dataLossOnUndo": false,
+      "requiresConfirmation": false
+    },
+    {
+      "actionType": "update-crm-field",
+      "reversibility": "fully-reversible",
+      "undoMechanism": "Revert to previous value",
+      "undoWindowMs": null,
+      "dataLossOnUndo": false,
+      "requiresConfirmation": false
+    },
+    {
+      "actionType": "send-email",
+      "reversibility": "time-limited",
+      "undoMechanism": "Recall (if within window)",
+      "undoWindowMs": 30000,
+      "dataLossOnUndo": false,
+      "requiresConfirmation": true
+    },
+    {
+      "actionType": "send-notification",
+      "reversibility": "irreversible",
+      "undoMechanism": null,
+      "undoWindowMs": null,
+      "dataLossOnUndo": false,
+      "requiresConfirmation": true
+    },
+    {
+      "actionType": "execute-payment",
+      "reversibility": "partially-reversible",
+      "undoMechanism": "Refund request",
+      "undoWindowMs": null,
+      "dataLossOnUndo": false,
+      "requiresConfirmation": true
+    },
+    {
+      "actionType": "create-invoice",
+      "reversibility": "fully-reversible",
+      "undoMechanism": "Void invoice",
+      "undoWindowMs": null,
+      "dataLossOnUndo": false,
+      "requiresConfirmation": false
+    },
+    {
+      "actionType": "delete-record",
+      "reversibility": "time-limited",
+      "undoMechanism": "Restore from soft-delete",
+      "undoWindowMs": 604800000,
+      "dataLossOnUndo": false,
+      "requiresConfirmation": true
+    },
+    {
+      "actionType": "archive-record",
+      "reversibility": "fully-reversible",
+      "undoMechanism": "Unarchive",
+      "undoWindowMs": null,
+      "dataLossOnUndo": false,
+      "requiresConfirmation": false
+    },
+    {
+      "actionType": "change-permission",
+      "reversibility": "fully-reversible",
+      "undoMechanism": "Revert permission",
+      "undoWindowMs": null,
+      "dataLossOnUndo": false,
+      "requiresConfirmation": true
+    },
+    {
+      "actionType": "toggle-kill-switch",
+      "reversibility": "fully-reversible",
+      "undoMechanism": "Toggle back",
+      "undoWindowMs": null,
+      "dataLossOnUndo": false,
+      "requiresConfirmation": true
+    }
+  ],
+  "irreversibleActions": [
+    "send-notification"
+  ],
+  "fullyReversible": 8
 }

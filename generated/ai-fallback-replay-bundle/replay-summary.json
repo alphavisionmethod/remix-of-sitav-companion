@@ -1,0 +1,112 @@
+{
+  "generatedAt": "2026-04-21T00:51:13.710Z",
+  "totalPolicies": 15,
+  "policies": [
+    {
+      "capabilityId": "advisor.money",
+      "primary": "google/gemini-2.5-flash",
+      "chainLength": 2,
+      "replayable": true,
+      "degradedExpectation": "refused"
+    },
+    {
+      "capabilityId": "advisor.business",
+      "primary": "google/gemini-2.5-flash",
+      "chainLength": 2,
+      "replayable": true,
+      "degradedExpectation": "simplified"
+    },
+    {
+      "capabilityId": "advisor.concierge",
+      "primary": "google/gemini-2.5-flash",
+      "chainLength": 1,
+      "replayable": true,
+      "degradedExpectation": "simplified"
+    },
+    {
+      "capabilityId": "advisor.strategy",
+      "primary": "google/gemini-2.5-pro",
+      "chainLength": 2,
+      "replayable": true,
+      "degradedExpectation": "refused"
+    },
+    {
+      "capabilityId": "advisor.security",
+      "primary": "google/gemini-2.5-pro",
+      "chainLength": 1,
+      "replayable": true,
+      "degradedExpectation": "refused"
+    },
+    {
+      "capabilityId": "advisor.legal",
+      "primary": "google/gemini-2.5-pro",
+      "chainLength": 1,
+      "replayable": true,
+      "degradedExpectation": "refused"
+    },
+    {
+      "capabilityId": "advisor.tax",
+      "primary": "google/gemini-2.5-pro",
+      "chainLength": 1,
+      "replayable": true,
+      "degradedExpectation": "refused"
+    },
+    {
+      "capabilityId": "boardroom.synthesis",
+      "primary": "google/gemini-2.5-pro",
+      "chainLength": 2,
+      "replayable": true,
+      "degradedExpectation": "refused"
+    },
+    {
+      "capabilityId": "boardroom.debate",
+      "primary": "google/gemini-2.5-pro",
+      "chainLength": 1,
+      "replayable": true,
+      "degradedExpectation": "refused"
+    },
+    {
+      "capabilityId": "simulation.monte-carlo",
+      "primary": "google/gemini-2.5-pro",
+      "chainLength": 1,
+      "replayable": true,
+      "degradedExpectation": "simplified"
+    },
+    {
+      "capabilityId": "brain.personal",
+      "primary": "google/gemini-2.5-flash-lite",
+      "chainLength": 1,
+      "replayable": false,
+      "degradedExpectation": "cached"
+    },
+    {
+      "capabilityId": "brain.core",
+      "primary": "google/gemini-2.5-flash-lite",
+      "chainLength": 1,
+      "replayable": false,
+      "degradedExpectation": "cached"
+    },
+    {
+      "capabilityId": "admin.intelligence",
+      "primary": "google/gemini-2.5-flash",
+      "chainLength": 1,
+      "replayable": true,
+      "degradedExpectation": "simplified"
+    },
+    {
+      "capabilityId": "gateway.general",
+      "primary": "google/gemini-2.5-flash",
+      "chainLength": 2,
+      "replayable": true,
+      "degradedExpectation": "simplified"
+    },
+    {
+      "capabilityId": "files.ai-processing",
+      "primary": "google/gemini-2.5-flash",
+      "chainLength": 1,
+      "replayable": true,
+      "degradedExpectation": "simplified"
+    }
+  ],
+  "actionBoundaryTests": 20
+}

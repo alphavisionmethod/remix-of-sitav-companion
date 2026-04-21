@@ -1,0 +1,1268 @@
+{
+  "generatedAt": "2026-04-21T00:51:13.710Z",
+  "totalScenarios": 6,
+  "scenarios": [
+    {
+      "scenarioId": "provider-unavailable",
+      "results": [
+        {
+          "scenarioId": "provider-unavailable",
+          "capabilityId": "advisor.money",
+          "fallbackResolution": {
+            "capabilityId": "advisor.money",
+            "originalModel": "google/gemini-2.5-flash",
+            "triggerReason": "error",
+            "nextModel": "google/gemini-2.5-flash-lite",
+            "degradedExpectation": null,
+            "noProviderBehavior": "refuse-with-receipt",
+            "chainExhausted": false,
+            "replayable": true
+          },
+          "handledGracefully": true
+        },
+        {
+          "scenarioId": "provider-unavailable",
+          "capabilityId": "advisor.business",
+          "fallbackResolution": {
+            "capabilityId": "advisor.business",
+            "originalModel": "google/gemini-2.5-flash",
+            "triggerReason": "error",
+            "nextModel": "google/gemini-2.5-flash-lite",
+            "degradedExpectation": null,
+            "noProviderBehavior": "degrade-gracefully",
+            "chainExhausted": false,
+            "replayable": true
+          },
+          "handledGracefully": true
+        },
+        {
+          "scenarioId": "provider-unavailable",
+          "capabilityId": "advisor.concierge",
+          "fallbackResolution": {
+            "capabilityId": "advisor.concierge",
+            "originalModel": "google/gemini-2.5-flash",
+            "triggerReason": "error",
+            "nextModel": "google/gemini-2.5-flash-lite",
+            "degradedExpectation": null,
+            "noProviderBehavior": "degrade-gracefully",
+            "chainExhausted": false,
+            "replayable": true
+          },
+          "handledGracefully": true
+        },
+        {
+          "scenarioId": "provider-unavailable",
+          "capabilityId": "advisor.strategy",
+          "fallbackResolution": {
+            "capabilityId": "advisor.strategy",
+            "originalModel": "google/gemini-2.5-pro",
+            "triggerReason": "error",
+            "nextModel": "google/gemini-2.5-flash",
+            "degradedExpectation": null,
+            "noProviderBehavior": "refuse-with-receipt",
+            "chainExhausted": false,
+            "replayable": true
+          },
+          "handledGracefully": true
+        },
+        {
+          "scenarioId": "provider-unavailable",
+          "capabilityId": "advisor.security",
+          "fallbackResolution": {
+            "capabilityId": "advisor.security",
+            "originalModel": "google/gemini-2.5-pro",
+            "triggerReason": "error",
+            "nextModel": "google/gemini-2.5-flash",
+            "degradedExpectation": null,
+            "noProviderBehavior": "refuse-with-receipt",
+            "chainExhausted": false,
+            "replayable": true
+          },
+          "handledGracefully": true
+        },
+        {
+          "scenarioId": "provider-unavailable",
+          "capabilityId": "advisor.legal",
+          "fallbackResolution": {
+            "capabilityId": "advisor.legal",
+            "originalModel": "google/gemini-2.5-pro",
+            "triggerReason": "error",
+            "nextModel": "openai/gpt-5",
+            "degradedExpectation": null,
+            "noProviderBehavior": "refuse-with-receipt",
+            "chainExhausted": false,
+            "replayable": true
+          },
+          "handledGracefully": true
+        },
+        {
+          "scenarioId": "provider-unavailable",
+          "capabilityId": "advisor.tax",
+          "fallbackResolution": {
+            "capabilityId": "advisor.tax",
+            "originalModel": "google/gemini-2.5-pro",
+            "triggerReason": "error",
+            "nextModel": "google/gemini-2.5-flash",
+            "degradedExpectation": null,
+            "noProviderBehavior": "refuse-with-receipt",
+            "chainExhausted": false,
+            "replayable": true
+          },
+          "handledGracefully": true
+        },
+        {
+          "scenarioId": "provider-unavailable",
+          "capabilityId": "boardroom.synthesis",
+          "fallbackResolution": {
+            "capabilityId": "boardroom.synthesis",
+            "originalModel": "google/gemini-2.5-pro",
+            "triggerReason": "error",
+            "nextModel": "google/gemini-2.5-flash",
+            "degradedExpectation": null,
+            "noProviderBehavior": "refuse-with-receipt",
+            "chainExhausted": false,
+            "replayable": true
+          },
+          "handledGracefully": true
+        },
+        {
+          "scenarioId": "provider-unavailable",
+          "capabilityId": "boardroom.debate",
+          "fallbackResolution": {
+            "capabilityId": "boardroom.debate",
+            "originalModel": "google/gemini-2.5-pro",
+            "triggerReason": "error",
+            "nextModel": "google/gemini-2.5-flash",
+            "degradedExpectation": null,
+            "noProviderBehavior": "refuse-with-receipt",
+            "chainExhausted": false,
+            "replayable": true
+          },
+          "handledGracefully": true
+        },
+        {
+          "scenarioId": "provider-unavailable",
+          "capabilityId": "simulation.monte-carlo",
+          "fallbackResolution": {
+            "capabilityId": "simulation.monte-carlo",
+            "originalModel": "google/gemini-2.5-pro",
+            "triggerReason": "error",
+            "nextModel": "google/gemini-2.5-flash",
+            "degradedExpectation": null,
+            "noProviderBehavior": "degrade-gracefully",
+            "chainExhausted": false,
+            "replayable": true
+          },
+          "handledGracefully": true
+        },
+        {
+          "scenarioId": "provider-unavailable",
+          "capabilityId": "brain.personal",
+          "fallbackResolution": {
+            "capabilityId": "brain.personal",
+            "originalModel": "google/gemini-2.5-flash-lite",
+            "triggerReason": "error",
+            "nextModel": "google/gemini-2.5-flash",
+            "degradedExpectation": null,
+            "noProviderBehavior": "cached-only",
+            "chainExhausted": false,
+            "replayable": false
+          },
+          "handledGracefully": true
+        },
+        {
+          "scenarioId": "provider-unavailable",
+          "capabilityId": "brain.core",
+          "fallbackResolution": {
+            "capabilityId": "brain.core",
+            "originalModel": "google/gemini-2.5-flash-lite",
+            "triggerReason": "error",
+            "nextModel": "openai/gpt-5-nano",
+            "degradedExpectation": null,
+            "noProviderBehavior": "cached-only",
+            "chainExhausted": false,
+            "replayable": false
+          },
+          "handledGracefully": true
+        },
+        {
+          "scenarioId": "provider-unavailable",
+          "capabilityId": "admin.intelligence",
+          "fallbackResolution": {
+            "capabilityId": "admin.intelligence",
+            "originalModel": "google/gemini-2.5-flash",
+            "triggerReason": "error",
+            "nextModel": "google/gemini-2.5-flash-lite",
+            "degradedExpectation": null,
+            "noProviderBehavior": "degrade-gracefully",
+            "chainExhausted": false,
+            "replayable": true
+          },
+          "handledGracefully": true
+        },
+        {
+          "scenarioId": "provider-unavailable",
+          "capabilityId": "gateway.general",
+          "fallbackResolution": {
+            "capabilityId": "gateway.general",
+            "originalModel": "google/gemini-2.5-flash",
+            "triggerReason": "error",
+            "nextModel": "google/gemini-2.5-flash-lite",
+            "degradedExpectation": null,
+            "noProviderBehavior": "degrade-gracefully",
+            "chainExhausted": false,
+            "replayable": true
+          },
+          "handledGracefully": true
+        },
+        {
+          "scenarioId": "provider-unavailable",
+          "capabilityId": "files.ai-processing",
+          "fallbackResolution": {
+            "capabilityId": "files.ai-processing",
+            "originalModel": "google/gemini-2.5-flash",
+            "triggerReason": "error",
+            "nextModel": "google/gemini-2.5-flash-lite",
+            "degradedExpectation": null,
+            "noProviderBehavior": "degrade-gracefully",
+            "chainExhausted": false,
+            "replayable": true
+          },
+          "handledGracefully": true
+        }
+      ]
+    },
+    {
+      "scenarioId": "model-unavailable",
+      "results": [
+        {
+          "scenarioId": "model-unavailable",
+          "capabilityId": "advisor.strategy",
+          "fallbackResolution": {
+            "capabilityId": "advisor.strategy",
+            "originalModel": "google/gemini-2.5-pro",
+            "triggerReason": "model-unavailable",
+            "nextModel": "google/gemini-2.5-flash",
+            "degradedExpectation": null,
+            "noProviderBehavior": "refuse-with-receipt",
+            "chainExhausted": false,
+            "replayable": true
+          },
+          "handledGracefully": true
+        },
+        {
+          "scenarioId": "model-unavailable",
+          "capabilityId": "advisor.security",
+          "fallbackResolution": {
+            "capabilityId": "advisor.security",
+            "originalModel": "google/gemini-2.5-pro",
+            "triggerReason": "model-unavailable",
+            "nextModel": "google/gemini-2.5-flash",
+            "degradedExpectation": null,
+            "noProviderBehavior": "refuse-with-receipt",
+            "chainExhausted": false,
+            "replayable": true
+          },
+          "handledGracefully": true
+        },
+        {
+          "scenarioId": "model-unavailable",
+          "capabilityId": "advisor.legal",
+          "fallbackResolution": {
+            "capabilityId": "advisor.legal",
+            "originalModel": "google/gemini-2.5-pro",
+            "triggerReason": "model-unavailable",
+            "nextModel": "openai/gpt-5",
+            "degradedExpectation": null,
+            "noProviderBehavior": "refuse-with-receipt",
+            "chainExhausted": false,
+            "replayable": true
+          },
+          "handledGracefully": true
+        },
+        {
+          "scenarioId": "model-unavailable",
+          "capabilityId": "advisor.tax",
+          "fallbackResolution": {
+            "capabilityId": "advisor.tax",
+            "originalModel": "google/gemini-2.5-pro",
+            "triggerReason": "model-unavailable",
+            "nextModel": "google/gemini-2.5-flash",
+            "degradedExpectation": null,
+            "noProviderBehavior": "refuse-with-receipt",
+            "chainExhausted": false,
+            "replayable": true
+          },
+          "handledGracefully": true
+        },
+        {
+          "scenarioId": "model-unavailable",
+          "capabilityId": "boardroom.synthesis",
+          "fallbackResolution": {
+            "capabilityId": "boardroom.synthesis",
+            "originalModel": "google/gemini-2.5-pro",
+            "triggerReason": "model-unavailable",
+            "nextModel": "google/gemini-2.5-flash",
+            "degradedExpectation": null,
+            "noProviderBehavior": "refuse-with-receipt",
+            "chainExhausted": false,
+            "replayable": true
+          },
+          "handledGracefully": true
+        },
+        {
+          "scenarioId": "model-unavailable",
+          "capabilityId": "boardroom.debate",
+          "fallbackResolution": {
+            "capabilityId": "boardroom.debate",
+            "originalModel": "google/gemini-2.5-pro",
+            "triggerReason": "model-unavailable",
+            "nextModel": "google/gemini-2.5-flash",
+            "degradedExpectation": null,
+            "noProviderBehavior": "refuse-with-receipt",
+            "chainExhausted": false,
+            "replayable": true
+          },
+          "handledGracefully": true
+        },
+        {
+          "scenarioId": "model-unavailable",
+          "capabilityId": "simulation.monte-carlo",
+          "fallbackResolution": {
+            "capabilityId": "simulation.monte-carlo",
+            "originalModel": "google/gemini-2.5-pro",
+            "triggerReason": "model-unavailable",
+            "nextModel": "google/gemini-2.5-flash",
+            "degradedExpectation": null,
+            "noProviderBehavior": "degrade-gracefully",
+            "chainExhausted": false,
+            "replayable": true
+          },
+          "handledGracefully": true
+        }
+      ]
+    },
+    {
+      "scenarioId": "timeout",
+      "results": [
+        {
+          "scenarioId": "timeout",
+          "capabilityId": "advisor.money",
+          "fallbackResolution": {
+            "capabilityId": "advisor.money",
+            "originalModel": "google/gemini-2.5-flash",
+            "triggerReason": "timeout",
+            "nextModel": "google/gemini-2.5-flash-lite",
+            "degradedExpectation": null,
+            "noProviderBehavior": "refuse-with-receipt",
+            "chainExhausted": false,
+            "replayable": true
+          },
+          "handledGracefully": true
+        },
+        {
+          "scenarioId": "timeout",
+          "capabilityId": "advisor.business",
+          "fallbackResolution": {
+            "capabilityId": "advisor.business",
+            "originalModel": "google/gemini-2.5-flash",
+            "triggerReason": "timeout",
+            "nextModel": "google/gemini-2.5-flash-lite",
+            "degradedExpectation": null,
+            "noProviderBehavior": "degrade-gracefully",
+            "chainExhausted": false,
+            "replayable": true
+          },
+          "handledGracefully": true
+        },
+        {
+          "scenarioId": "timeout",
+          "capabilityId": "advisor.concierge",
+          "fallbackResolution": {
+            "capabilityId": "advisor.concierge",
+            "originalModel": "google/gemini-2.5-flash",
+            "triggerReason": "timeout",
+            "nextModel": "google/gemini-2.5-flash-lite",
+            "degradedExpectation": null,
+            "noProviderBehavior": "degrade-gracefully",
+            "chainExhausted": false,
+            "replayable": true
+          },
+          "handledGracefully": true
+        },
+        {
+          "scenarioId": "timeout",
+          "capabilityId": "advisor.strategy",
+          "fallbackResolution": {
+            "capabilityId": "advisor.strategy",
+            "originalModel": "google/gemini-2.5-pro",
+            "triggerReason": "timeout",
+            "nextModel": "google/gemini-2.5-flash",
+            "degradedExpectation": null,
+            "noProviderBehavior": "refuse-with-receipt",
+            "chainExhausted": false,
+            "replayable": true
+          },
+          "handledGracefully": true
+        },
+        {
+          "scenarioId": "timeout",
+          "capabilityId": "advisor.security",
+          "fallbackResolution": {
+            "capabilityId": "advisor.security",
+            "originalModel": "google/gemini-2.5-pro",
+            "triggerReason": "timeout",
+            "nextModel": "google/gemini-2.5-flash",
+            "degradedExpectation": null,
+            "noProviderBehavior": "refuse-with-receipt",
+            "chainExhausted": false,
+            "replayable": true
+          },
+          "handledGracefully": true
+        },
+        {
+          "scenarioId": "timeout",
+          "capabilityId": "advisor.legal",
+          "fallbackResolution": {
+            "capabilityId": "advisor.legal",
+            "originalModel": "google/gemini-2.5-pro",
+            "triggerReason": "timeout",
+            "nextModel": "openai/gpt-5",
+            "degradedExpectation": null,
+            "noProviderBehavior": "refuse-with-receipt",
+            "chainExhausted": false,
+            "replayable": true
+          },
+          "handledGracefully": true
+        },
+        {
+          "scenarioId": "timeout",
+          "capabilityId": "advisor.tax",
+          "fallbackResolution": {
+            "capabilityId": "advisor.tax",
+            "originalModel": "google/gemini-2.5-pro",
+            "triggerReason": "timeout",
+            "nextModel": "google/gemini-2.5-flash",
+            "degradedExpectation": null,
+            "noProviderBehavior": "refuse-with-receipt",
+            "chainExhausted": false,
+            "replayable": true
+          },
+          "handledGracefully": true
+        },
+        {
+          "scenarioId": "timeout",
+          "capabilityId": "boardroom.synthesis",
+          "fallbackResolution": {
+            "capabilityId": "boardroom.synthesis",
+            "originalModel": "google/gemini-2.5-pro",
+            "triggerReason": "timeout",
+            "nextModel": "google/gemini-2.5-flash",
+            "degradedExpectation": null,
+            "noProviderBehavior": "refuse-with-receipt",
+            "chainExhausted": false,
+            "replayable": true
+          },
+          "handledGracefully": true
+        },
+        {
+          "scenarioId": "timeout",
+          "capabilityId": "boardroom.debate",
+          "fallbackResolution": {
+            "capabilityId": "boardroom.debate",
+            "originalModel": "google/gemini-2.5-pro",
+            "triggerReason": "timeout",
+            "nextModel": "google/gemini-2.5-flash",
+            "degradedExpectation": null,
+            "noProviderBehavior": "refuse-with-receipt",
+            "chainExhausted": false,
+            "replayable": true
+          },
+          "handledGracefully": true
+        },
+        {
+          "scenarioId": "timeout",
+          "capabilityId": "simulation.monte-carlo",
+          "fallbackResolution": {
+            "capabilityId": "simulation.monte-carlo",
+            "originalModel": "google/gemini-2.5-pro",
+            "triggerReason": "timeout",
+            "nextModel": "google/gemini-2.5-flash",
+            "degradedExpectation": null,
+            "noProviderBehavior": "degrade-gracefully",
+            "chainExhausted": false,
+            "replayable": true
+          },
+          "handledGracefully": true
+        },
+        {
+          "scenarioId": "timeout",
+          "capabilityId": "brain.personal",
+          "fallbackResolution": {
+            "capabilityId": "brain.personal",
+            "originalModel": "google/gemini-2.5-flash-lite",
+            "triggerReason": "timeout",
+            "nextModel": "google/gemini-2.5-flash",
+            "degradedExpectation": null,
+            "noProviderBehavior": "cached-only",
+            "chainExhausted": false,
+            "replayable": false
+          },
+          "handledGracefully": true
+        },
+        {
+          "scenarioId": "timeout",
+          "capabilityId": "brain.core",
+          "fallbackResolution": {
+            "capabilityId": "brain.core",
+            "originalModel": "google/gemini-2.5-flash-lite",
+            "triggerReason": "timeout",
+            "nextModel": "openai/gpt-5-nano",
+            "degradedExpectation": null,
+            "noProviderBehavior": "cached-only",
+            "chainExhausted": false,
+            "replayable": false
+          },
+          "handledGracefully": true
+        },
+        {
+          "scenarioId": "timeout",
+          "capabilityId": "admin.intelligence",
+          "fallbackResolution": {
+            "capabilityId": "admin.intelligence",
+            "originalModel": "google/gemini-2.5-flash",
+            "triggerReason": "timeout",
+            "nextModel": "google/gemini-2.5-flash-lite",
+            "degradedExpectation": null,
+            "noProviderBehavior": "degrade-gracefully",
+            "chainExhausted": false,
+            "replayable": true
+          },
+          "handledGracefully": true
+        },
+        {
+          "scenarioId": "timeout",
+          "capabilityId": "gateway.general",
+          "fallbackResolution": {
+            "capabilityId": "gateway.general",
+            "originalModel": "google/gemini-2.5-flash",
+            "triggerReason": "timeout",
+            "nextModel": "google/gemini-2.5-flash-lite",
+            "degradedExpectation": null,
+            "noProviderBehavior": "degrade-gracefully",
+            "chainExhausted": false,
+            "replayable": true
+          },
+          "handledGracefully": true
+        },
+        {
+          "scenarioId": "timeout",
+          "capabilityId": "files.ai-processing",
+          "fallbackResolution": {
+            "capabilityId": "files.ai-processing",
+            "originalModel": "google/gemini-2.5-flash",
+            "triggerReason": "timeout",
+            "nextModel": "google/gemini-2.5-flash-lite",
+            "degradedExpectation": null,
+            "noProviderBehavior": "degrade-gracefully",
+            "chainExhausted": false,
+            "replayable": true
+          },
+          "handledGracefully": true
+        }
+      ]
+    },
+    {
+      "scenarioId": "invalid-output",
+      "results": [
+        {
+          "scenarioId": "invalid-output",
+          "capabilityId": "advisor.money",
+          "fallbackResolution": {
+            "capabilityId": "advisor.money",
+            "originalModel": "google/gemini-2.5-flash",
+            "triggerReason": "invalid-output",
+            "nextModel": "google/gemini-2.5-flash-lite",
+            "degradedExpectation": null,
+            "noProviderBehavior": "refuse-with-receipt",
+            "chainExhausted": false,
+            "replayable": true
+          },
+          "handledGracefully": true
+        },
+        {
+          "scenarioId": "invalid-output",
+          "capabilityId": "advisor.business",
+          "fallbackResolution": {
+            "capabilityId": "advisor.business",
+            "originalModel": "google/gemini-2.5-flash",
+            "triggerReason": "invalid-output",
+            "nextModel": "google/gemini-2.5-flash-lite",
+            "degradedExpectation": null,
+            "noProviderBehavior": "degrade-gracefully",
+            "chainExhausted": false,
+            "replayable": true
+          },
+          "handledGracefully": true
+        },
+        {
+          "scenarioId": "invalid-output",
+          "capabilityId": "advisor.concierge",
+          "fallbackResolution": {
+            "capabilityId": "advisor.concierge",
+            "originalModel": "google/gemini-2.5-flash",
+            "triggerReason": "invalid-output",
+            "nextModel": "google/gemini-2.5-flash-lite",
+            "degradedExpectation": null,
+            "noProviderBehavior": "degrade-gracefully",
+            "chainExhausted": false,
+            "replayable": true
+          },
+          "handledGracefully": true
+        },
+        {
+          "scenarioId": "invalid-output",
+          "capabilityId": "advisor.strategy",
+          "fallbackResolution": {
+            "capabilityId": "advisor.strategy",
+            "originalModel": "google/gemini-2.5-pro",
+            "triggerReason": "invalid-output",
+            "nextModel": "google/gemini-2.5-flash",
+            "degradedExpectation": null,
+            "noProviderBehavior": "refuse-with-receipt",
+            "chainExhausted": false,
+            "replayable": true
+          },
+          "handledGracefully": true
+        },
+        {
+          "scenarioId": "invalid-output",
+          "capabilityId": "advisor.security",
+          "fallbackResolution": {
+            "capabilityId": "advisor.security",
+            "originalModel": "google/gemini-2.5-pro",
+            "triggerReason": "invalid-output",
+            "nextModel": "google/gemini-2.5-flash",
+            "degradedExpectation": null,
+            "noProviderBehavior": "refuse-with-receipt",
+            "chainExhausted": false,
+            "replayable": true
+          },
+          "handledGracefully": true
+        },
+        {
+          "scenarioId": "invalid-output",
+          "capabilityId": "advisor.legal",
+          "fallbackResolution": {
+            "capabilityId": "advisor.legal",
+            "originalModel": "google/gemini-2.5-pro",
+            "triggerReason": "invalid-output",
+            "nextModel": "openai/gpt-5",
+            "degradedExpectation": null,
+            "noProviderBehavior": "refuse-with-receipt",
+            "chainExhausted": false,
+            "replayable": true
+          },
+          "handledGracefully": true
+        },
+        {
+          "scenarioId": "invalid-output",
+          "capabilityId": "advisor.tax",
+          "fallbackResolution": {
+            "capabilityId": "advisor.tax",
+            "originalModel": "google/gemini-2.5-pro",
+            "triggerReason": "invalid-output",
+            "nextModel": "google/gemini-2.5-flash",
+            "degradedExpectation": null,
+            "noProviderBehavior": "refuse-with-receipt",
+            "chainExhausted": false,
+            "replayable": true
+          },
+          "handledGracefully": true
+        },
+        {
+          "scenarioId": "invalid-output",
+          "capabilityId": "boardroom.synthesis",
+          "fallbackResolution": {
+            "capabilityId": "boardroom.synthesis",
+            "originalModel": "google/gemini-2.5-pro",
+            "triggerReason": "invalid-output",
+            "nextModel": "google/gemini-2.5-flash",
+            "degradedExpectation": null,
+            "noProviderBehavior": "refuse-with-receipt",
+            "chainExhausted": false,
+            "replayable": true
+          },
+          "handledGracefully": true
+        },
+        {
+          "scenarioId": "invalid-output",
+          "capabilityId": "boardroom.debate",
+          "fallbackResolution": {
+            "capabilityId": "boardroom.debate",
+            "originalModel": "google/gemini-2.5-pro",
+            "triggerReason": "invalid-output",
+            "nextModel": "google/gemini-2.5-flash",
+            "degradedExpectation": null,
+            "noProviderBehavior": "refuse-with-receipt",
+            "chainExhausted": false,
+            "replayable": true
+          },
+          "handledGracefully": true
+        },
+        {
+          "scenarioId": "invalid-output",
+          "capabilityId": "simulation.monte-carlo",
+          "fallbackResolution": {
+            "capabilityId": "simulation.monte-carlo",
+            "originalModel": "google/gemini-2.5-pro",
+            "triggerReason": "invalid-output",
+            "nextModel": "google/gemini-2.5-flash",
+            "degradedExpectation": null,
+            "noProviderBehavior": "degrade-gracefully",
+            "chainExhausted": false,
+            "replayable": true
+          },
+          "handledGracefully": true
+        },
+        {
+          "scenarioId": "invalid-output",
+          "capabilityId": "brain.personal",
+          "fallbackResolution": {
+            "capabilityId": "brain.personal",
+            "originalModel": "google/gemini-2.5-flash-lite",
+            "triggerReason": "invalid-output",
+            "nextModel": "google/gemini-2.5-flash",
+            "degradedExpectation": null,
+            "noProviderBehavior": "cached-only",
+            "chainExhausted": false,
+            "replayable": false
+          },
+          "handledGracefully": true
+        },
+        {
+          "scenarioId": "invalid-output",
+          "capabilityId": "brain.core",
+          "fallbackResolution": {
+            "capabilityId": "brain.core",
+            "originalModel": "google/gemini-2.5-flash-lite",
+            "triggerReason": "invalid-output",
+            "nextModel": "openai/gpt-5-nano",
+            "degradedExpectation": null,
+            "noProviderBehavior": "cached-only",
+            "chainExhausted": false,
+            "replayable": false
+          },
+          "handledGracefully": true
+        },
+        {
+          "scenarioId": "invalid-output",
+          "capabilityId": "admin.intelligence",
+          "fallbackResolution": {
+            "capabilityId": "admin.intelligence",
+            "originalModel": "google/gemini-2.5-flash",
+            "triggerReason": "invalid-output",
+            "nextModel": "google/gemini-2.5-flash-lite",
+            "degradedExpectation": null,
+            "noProviderBehavior": "degrade-gracefully",
+            "chainExhausted": false,
+            "replayable": true
+          },
+          "handledGracefully": true
+        },
+        {
+          "scenarioId": "invalid-output",
+          "capabilityId": "gateway.general",
+          "fallbackResolution": {
+            "capabilityId": "gateway.general",
+            "originalModel": "google/gemini-2.5-flash",
+            "triggerReason": "invalid-output",
+            "nextModel": "google/gemini-2.5-flash-lite",
+            "degradedExpectation": null,
+            "noProviderBehavior": "degrade-gracefully",
+            "chainExhausted": false,
+            "replayable": true
+          },
+          "handledGracefully": true
+        },
+        {
+          "scenarioId": "invalid-output",
+          "capabilityId": "files.ai-processing",
+          "fallbackResolution": {
+            "capabilityId": "files.ai-processing",
+            "originalModel": "google/gemini-2.5-flash",
+            "triggerReason": "invalid-output",
+            "nextModel": "google/gemini-2.5-flash-lite",
+            "degradedExpectation": null,
+            "noProviderBehavior": "degrade-gracefully",
+            "chainExhausted": false,
+            "replayable": true
+          },
+          "handledGracefully": true
+        }
+      ]
+    },
+    {
+      "scenarioId": "fallback-chain-exhaustion",
+      "results": [
+        {
+          "scenarioId": "fallback-chain-exhaustion",
+          "capabilityId": "advisor.money",
+          "fallbackResolution": {
+            "capabilityId": "advisor.money",
+            "originalModel": "google/gemini-2.5-pro",
+            "triggerReason": "error",
+            "nextModel": "google/gemini-2.5-flash-lite",
+            "degradedExpectation": null,
+            "noProviderBehavior": "refuse-with-receipt",
+            "chainExhausted": false,
+            "replayable": true
+          },
+          "handledGracefully": true
+        },
+        {
+          "scenarioId": "fallback-chain-exhaustion",
+          "capabilityId": "advisor.business",
+          "fallbackResolution": {
+            "capabilityId": "advisor.business",
+            "originalModel": "google/gemini-2.5-pro",
+            "triggerReason": "error",
+            "nextModel": "google/gemini-2.5-flash-lite",
+            "degradedExpectation": null,
+            "noProviderBehavior": "degrade-gracefully",
+            "chainExhausted": false,
+            "replayable": true
+          },
+          "handledGracefully": true
+        },
+        {
+          "scenarioId": "fallback-chain-exhaustion",
+          "capabilityId": "advisor.concierge",
+          "fallbackResolution": {
+            "capabilityId": "advisor.concierge",
+            "originalModel": "google/gemini-2.5-flash",
+            "triggerReason": "error",
+            "nextModel": null,
+            "degradedExpectation": "simplified",
+            "noProviderBehavior": "degrade-gracefully",
+            "chainExhausted": true,
+            "replayable": true
+          },
+          "handledGracefully": true
+        },
+        {
+          "scenarioId": "fallback-chain-exhaustion",
+          "capabilityId": "advisor.strategy",
+          "fallbackResolution": {
+            "capabilityId": "advisor.strategy",
+            "originalModel": "google/gemini-2.5-pro",
+            "triggerReason": "error",
+            "nextModel": "google/gemini-2.5-flash",
+            "degradedExpectation": null,
+            "noProviderBehavior": "refuse-with-receipt",
+            "chainExhausted": false,
+            "replayable": true
+          },
+          "handledGracefully": true
+        },
+        {
+          "scenarioId": "fallback-chain-exhaustion",
+          "capabilityId": "advisor.security",
+          "fallbackResolution": {
+            "capabilityId": "advisor.security",
+            "originalModel": "google/gemini-2.5-pro",
+            "triggerReason": "error",
+            "nextModel": "google/gemini-2.5-flash",
+            "degradedExpectation": null,
+            "noProviderBehavior": "refuse-with-receipt",
+            "chainExhausted": false,
+            "replayable": true
+          },
+          "handledGracefully": true
+        },
+        {
+          "scenarioId": "fallback-chain-exhaustion",
+          "capabilityId": "advisor.legal",
+          "fallbackResolution": {
+            "capabilityId": "advisor.legal",
+            "originalModel": "google/gemini-2.5-pro",
+            "triggerReason": "error",
+            "nextModel": null,
+            "degradedExpectation": "refused",
+            "noProviderBehavior": "refuse-with-receipt",
+            "chainExhausted": true,
+            "replayable": true
+          },
+          "handledGracefully": false
+        },
+        {
+          "scenarioId": "fallback-chain-exhaustion",
+          "capabilityId": "advisor.tax",
+          "fallbackResolution": {
+            "capabilityId": "advisor.tax",
+            "originalModel": "google/gemini-2.5-pro",
+            "triggerReason": "error",
+            "nextModel": "google/gemini-2.5-flash",
+            "degradedExpectation": null,
+            "noProviderBehavior": "refuse-with-receipt",
+            "chainExhausted": false,
+            "replayable": true
+          },
+          "handledGracefully": true
+        },
+        {
+          "scenarioId": "fallback-chain-exhaustion",
+          "capabilityId": "boardroom.synthesis",
+          "fallbackResolution": {
+            "capabilityId": "boardroom.synthesis",
+            "originalModel": "google/gemini-2.5-pro",
+            "triggerReason": "error",
+            "nextModel": "google/gemini-2.5-flash",
+            "degradedExpectation": null,
+            "noProviderBehavior": "refuse-with-receipt",
+            "chainExhausted": false,
+            "replayable": true
+          },
+          "handledGracefully": true
+        },
+        {
+          "scenarioId": "fallback-chain-exhaustion",
+          "capabilityId": "boardroom.debate",
+          "fallbackResolution": {
+            "capabilityId": "boardroom.debate",
+            "originalModel": "google/gemini-2.5-pro",
+            "triggerReason": "error",
+            "nextModel": "google/gemini-2.5-flash",
+            "degradedExpectation": null,
+            "noProviderBehavior": "refuse-with-receipt",
+            "chainExhausted": false,
+            "replayable": true
+          },
+          "handledGracefully": true
+        },
+        {
+          "scenarioId": "fallback-chain-exhaustion",
+          "capabilityId": "simulation.monte-carlo",
+          "fallbackResolution": {
+            "capabilityId": "simulation.monte-carlo",
+            "originalModel": "google/gemini-2.5-pro",
+            "triggerReason": "error",
+            "nextModel": "google/gemini-2.5-flash",
+            "degradedExpectation": null,
+            "noProviderBehavior": "degrade-gracefully",
+            "chainExhausted": false,
+            "replayable": true
+          },
+          "handledGracefully": true
+        },
+        {
+          "scenarioId": "fallback-chain-exhaustion",
+          "capabilityId": "brain.personal",
+          "fallbackResolution": {
+            "capabilityId": "brain.personal",
+            "originalModel": "google/gemini-2.5-flash",
+            "triggerReason": "error",
+            "nextModel": null,
+            "degradedExpectation": "cached",
+            "noProviderBehavior": "cached-only",
+            "chainExhausted": true,
+            "replayable": false
+          },
+          "handledGracefully": true
+        },
+        {
+          "scenarioId": "fallback-chain-exhaustion",
+          "capabilityId": "brain.core",
+          "fallbackResolution": {
+            "capabilityId": "brain.core",
+            "originalModel": "google/gemini-2.5-flash",
+            "triggerReason": "error",
+            "nextModel": null,
+            "degradedExpectation": "cached",
+            "noProviderBehavior": "cached-only",
+            "chainExhausted": true,
+            "replayable": false
+          },
+          "handledGracefully": true
+        },
+        {
+          "scenarioId": "fallback-chain-exhaustion",
+          "capabilityId": "admin.intelligence",
+          "fallbackResolution": {
+            "capabilityId": "admin.intelligence",
+            "originalModel": "google/gemini-2.5-flash",
+            "triggerReason": "error",
+            "nextModel": "google/gemini-2.5-flash-lite",
+            "degradedExpectation": null,
+            "noProviderBehavior": "degrade-gracefully",
+            "chainExhausted": false,
+            "replayable": true
+          },
+          "handledGracefully": true
+        },
+        {
+          "scenarioId": "fallback-chain-exhaustion",
+          "capabilityId": "gateway.general",
+          "fallbackResolution": {
+            "capabilityId": "gateway.general",
+            "originalModel": "google/gemini-2.5-flash",
+            "triggerReason": "error",
+            "nextModel": null,
+            "degradedExpectation": "simplified",
+            "noProviderBehavior": "degrade-gracefully",
+            "chainExhausted": true,
+            "replayable": true
+          },
+          "handledGracefully": true
+        },
+        {
+          "scenarioId": "fallback-chain-exhaustion",
+          "capabilityId": "files.ai-processing",
+          "fallbackResolution": {
+            "capabilityId": "files.ai-processing",
+            "originalModel": "google/gemini-2.5-pro",
+            "triggerReason": "error",
+            "nextModel": "google/gemini-2.5-flash-lite",
+            "degradedExpectation": null,
+            "noProviderBehavior": "degrade-gracefully",
+            "chainExhausted": false,
+            "replayable": true
+          },
+          "handledGracefully": true
+        }
+      ]
+    },
+    {
+      "scenarioId": "degraded-safe-mode",
+      "results": [
+        {
+          "scenarioId": "degraded-safe-mode",
+          "capabilityId": "advisor.money",
+          "fallbackResolution": {
+            "capabilityId": "advisor.money",
+            "originalModel": "google/gemini-2.5-flash",
+            "triggerReason": "error",
+            "nextModel": "google/gemini-2.5-flash-lite",
+            "degradedExpectation": null,
+            "noProviderBehavior": "refuse-with-receipt",
+            "chainExhausted": false,
+            "replayable": true
+          },
+          "handledGracefully": true
+        },
+        {
+          "scenarioId": "degraded-safe-mode",
+          "capabilityId": "advisor.business",
+          "fallbackResolution": {
+            "capabilityId": "advisor.business",
+            "originalModel": "google/gemini-2.5-flash",
+            "triggerReason": "error",
+            "nextModel": "google/gemini-2.5-flash-lite",
+            "degradedExpectation": null,
+            "noProviderBehavior": "degrade-gracefully",
+            "chainExhausted": false,
+            "replayable": true
+          },
+          "handledGracefully": true
+        },
+        {
+          "scenarioId": "degraded-safe-mode",
+          "capabilityId": "advisor.concierge",
+          "fallbackResolution": {
+            "capabilityId": "advisor.concierge",
+            "originalModel": "google/gemini-2.5-flash",
+            "triggerReason": "error",
+            "nextModel": "google/gemini-2.5-flash-lite",
+            "degradedExpectation": null,
+            "noProviderBehavior": "degrade-gracefully",
+            "chainExhausted": false,
+            "replayable": true
+          },
+          "handledGracefully": true
+        },
+        {
+          "scenarioId": "degraded-safe-mode",
+          "capabilityId": "advisor.strategy",
+          "fallbackResolution": {
+            "capabilityId": "advisor.strategy",
+            "originalModel": "google/gemini-2.5-pro",
+            "triggerReason": "error",
+            "nextModel": "google/gemini-2.5-flash",
+            "degradedExpectation": null,
+            "noProviderBehavior": "refuse-with-receipt",
+            "chainExhausted": false,
+            "replayable": true
+          },
+          "handledGracefully": true
+        },
+        {
+          "scenarioId": "degraded-safe-mode",
+          "capabilityId": "advisor.security",
+          "fallbackResolution": {
+            "capabilityId": "advisor.security",
+            "originalModel": "google/gemini-2.5-pro",
+            "triggerReason": "error",
+            "nextModel": "google/gemini-2.5-flash",
+            "degradedExpectation": null,
+            "noProviderBehavior": "refuse-with-receipt",
+            "chainExhausted": false,
+            "replayable": true
+          },
+          "handledGracefully": true
+        },
+        {
+          "scenarioId": "degraded-safe-mode",
+          "capabilityId": "advisor.legal",
+          "fallbackResolution": {
+            "capabilityId": "advisor.legal",
+            "originalModel": "google/gemini-2.5-pro",
+            "triggerReason": "error",
+            "nextModel": "openai/gpt-5",
+            "degradedExpectation": null,
+            "noProviderBehavior": "refuse-with-receipt",
+            "chainExhausted": false,
+            "replayable": true
+          },
+          "handledGracefully": true
+        },
+        {
+          "scenarioId": "degraded-safe-mode",
+          "capabilityId": "advisor.tax",
+          "fallbackResolution": {
+            "capabilityId": "advisor.tax",
+            "originalModel": "google/gemini-2.5-pro",
+            "triggerReason": "error",
+            "nextModel": "google/gemini-2.5-flash",
+            "degradedExpectation": null,
+            "noProviderBehavior": "refuse-with-receipt",
+            "chainExhausted": false,
+            "replayable": true
+          },
+          "handledGracefully": true
+        },
+        {
+          "scenarioId": "degraded-safe-mode",
+          "capabilityId": "boardroom.synthesis",
+          "fallbackResolution": {
+            "capabilityId": "boardroom.synthesis",
+            "originalModel": "google/gemini-2.5-pro",
+            "triggerReason": "error",
+            "nextModel": "google/gemini-2.5-flash",
+            "degradedExpectation": null,
+            "noProviderBehavior": "refuse-with-receipt",
+            "chainExhausted": false,
+            "replayable": true
+          },
+          "handledGracefully": true
+        },
+        {
+          "scenarioId": "degraded-safe-mode",
+          "capabilityId": "boardroom.debate",
+          "fallbackResolution": {
+            "capabilityId": "boardroom.debate",
+            "originalModel": "google/gemini-2.5-pro",
+            "triggerReason": "error",
+            "nextModel": "google/gemini-2.5-flash",
+            "degradedExpectation": null,
+            "noProviderBehavior": "refuse-with-receipt",
+            "chainExhausted": false,
+            "replayable": true
+          },
+          "handledGracefully": true
+        },
+        {
+          "scenarioId": "degraded-safe-mode",
+          "capabilityId": "simulation.monte-carlo",
+          "fallbackResolution": {
+            "capabilityId": "simulation.monte-carlo",
+            "originalModel": "google/gemini-2.5-pro",
+            "triggerReason": "error",
+            "nextModel": "google/gemini-2.5-flash",
+            "degradedExpectation": null,
+            "noProviderBehavior": "degrade-gracefully",
+            "chainExhausted": false,
+            "replayable": true
+          },
+          "handledGracefully": true
+        },
+        {
+          "scenarioId": "degraded-safe-mode",
+          "capabilityId": "brain.personal",
+          "fallbackResolution": {
+            "capabilityId": "brain.personal",
+            "originalModel": "google/gemini-2.5-flash-lite",
+            "triggerReason": "error",
+            "nextModel": "google/gemini-2.5-flash",
+            "degradedExpectation": null,
+            "noProviderBehavior": "cached-only",
+            "chainExhausted": false,
+            "replayable": false
+          },
+          "handledGracefully": true
+        },
+        {
+          "scenarioId": "degraded-safe-mode",
+          "capabilityId": "brain.core",
+          "fallbackResolution": {
+            "capabilityId": "brain.core",
+            "originalModel": "google/gemini-2.5-flash-lite",
+            "triggerReason": "error",
+            "nextModel": "openai/gpt-5-nano",
+            "degradedExpectation": null,
+            "noProviderBehavior": "cached-only",
+            "chainExhausted": false,
+            "replayable": false
+          },
+          "handledGracefully": true
+        },
+        {
+          "scenarioId": "degraded-safe-mode",
+          "capabilityId": "admin.intelligence",
+          "fallbackResolution": {
+            "capabilityId": "admin.intelligence",
+            "originalModel": "google/gemini-2.5-flash",
+            "triggerReason": "error",
+            "nextModel": "google/gemini-2.5-flash-lite",
+            "degradedExpectation": null,
+            "noProviderBehavior": "degrade-gracefully",
+            "chainExhausted": false,
+            "replayable": true
+          },
+          "handledGracefully": true
+        },
+        {
+          "scenarioId": "degraded-safe-mode",
+          "capabilityId": "gateway.general",
+          "fallbackResolution": {
+            "capabilityId": "gateway.general",
+            "originalModel": "google/gemini-2.5-flash",
+            "triggerReason": "error",
+            "nextModel": "google/gemini-2.5-flash-lite",
+            "degradedExpectation": null,
+            "noProviderBehavior": "degrade-gracefully",
+            "chainExhausted": false,
+            "replayable": true
+          },
+          "handledGracefully": true
+        },
+        {
+          "scenarioId": "degraded-safe-mode",
+          "capabilityId": "files.ai-processing",
+          "fallbackResolution": {
+            "capabilityId": "files.ai-processing",
+            "originalModel": "google/gemini-2.5-flash",
+            "triggerReason": "error",
+            "nextModel": "google/gemini-2.5-flash-lite",
+            "degradedExpectation": null,
+            "noProviderBehavior": "degrade-gracefully",
+            "chainExhausted": false,
+            "replayable": true
+          },
+          "handledGracefully": true
+        }
+      ]
+    }
+  ],
+  "gracefulHandling": 81,
+  "totalResults": 82
+}

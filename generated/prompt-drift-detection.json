@@ -1,0 +1,96 @@
+{
+  "generatedAt": "2026-04-21T00:51:13.710Z",
+  "totalConfigs": 15,
+  "configs": [
+    {
+      "capabilityId": "advisor.money",
+      "method": "version-compare",
+      "alertRequired": true,
+      "dimensions": 3
+    },
+    {
+      "capabilityId": "advisor.business",
+      "method": "version-compare",
+      "alertRequired": true,
+      "dimensions": 2
+    },
+    {
+      "capabilityId": "advisor.concierge",
+      "method": "version-compare",
+      "alertRequired": true,
+      "dimensions": 2
+    },
+    {
+      "capabilityId": "advisor.strategy",
+      "method": "version-compare",
+      "alertRequired": true,
+      "dimensions": 4
+    },
+    {
+      "capabilityId": "advisor.security",
+      "method": "version-compare",
+      "alertRequired": true,
+      "dimensions": 3
+    },
+    {
+      "capabilityId": "advisor.legal",
+      "method": "version-compare",
+      "alertRequired": true,
+      "dimensions": 3
+    },
+    {
+      "capabilityId": "advisor.tax",
+      "method": "version-compare",
+      "alertRequired": true,
+      "dimensions": 3
+    },
+    {
+      "capabilityId": "boardroom.synthesis",
+      "method": "version-compare",
+      "alertRequired": true,
+      "dimensions": 4
+    },
+    {
+      "capabilityId": "boardroom.debate",
+      "method": "version-compare",
+      "alertRequired": true,
+      "dimensions": 2
+    },
+    {
+      "capabilityId": "simulation.monte-carlo",
+      "method": "output-sampling",
+      "alertRequired": true,
+      "dimensions": 2
+    },
+    {
+      "capabilityId": "brain.personal",
+      "method": "config-diff",
+      "alertRequired": false,
+      "dimensions": 2
+    },
+    {
+      "capabilityId": "brain.core",
+      "method": "config-diff",
+      "alertRequired": false,
+      "dimensions": 1
+    },
+    {
+      "capabilityId": "admin.intelligence",
+      "method": "version-compare",
+      "alertRequired": true,
+      "dimensions": 2
+    },
+    {
+      "capabilityId": "gateway.general",
+      "method": "config-diff",
+      "alertRequired": false,
+      "dimensions": 2
+    },
+    {
+      "capabilityId": "files.ai-processing",
+      "method": "config-diff",
+      "alertRequired": false,
+      "dimensions": 1
+    }
+  ]
+}
