@@ -2,6 +2,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { AdvisorAvatar } from "@/components/sita/primitives/AdvisorAvatar";
+import { getDefaultAdvisorAvatar } from "@/lib/advisors/advisor-avatar-assets";
 
 type AdvisorDomain = "business" | "money" | "concierge" | "family" | "growth" | "trust" | "opportunity" | "recovery" | "boardroom" | "general";
 
@@ -47,9 +48,10 @@ export const AdvisorPortrait = ({
   const [imgError, setImgError] = useState(false);
   const s = sizes[size];
   const gradient = domainGradients[domain];
+  const resolvedUrl = avatarUrl || getDefaultAdvisorAvatar(domain);
 
-  // If no avatar URL or image failed, fall back to icon avatar
-  if (!avatarUrl || imgError) {
+  // If no avatar URL and no default, fall back to icon avatar
+  if (!resolvedUrl || imgError) {
     return (
       <div className={cn("relative", className)}>
         <AdvisorAvatar domain={domain} name={name} status={status} size={size === "xl" ? "lg" : size === "lg" ? "lg" : size} />
@@ -68,8 +70,8 @@ export const AdvisorPortrait = ({
     <div className={cn("relative", className)}>
       {/* Gradient border ring */}
       <div className={cn("rounded-full p-[2px] bg-gradient-to-br", gradient, s.container)}>
-        <motion.img
-          src={avatarUrl}
+      <motion.img
+          src={resolvedUrl!}
           alt={name || "Advisor"}
           className={cn("rounded-full object-cover w-full h-full bg-card")}
           onError={() => setImgError(true)}
