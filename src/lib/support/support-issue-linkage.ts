@@ -6,6 +6,7 @@
 import {
   resolveRunbookForAlert,
   resolveRunbooksForIncident,
+  type ResolveAlertInput,
 } from "./runbook-resolver";
 import { RUNBOOK_SUBSYSTEM_REQUIREMENTS } from "./runbook-subsystem-map";
 import type { RunbookSubsystem } from "./runbook-types";
@@ -28,21 +29,20 @@ export function linkIssueToRunbooks(
   severity: "low" | "medium" | "high" | "critical" = "medium",
 ): IssueLinkageResult {
   // Try alert-based resolution first
-  const alertResult = resolveRunbookForAlert({
-    alertSource: classification.split(":")[0] ?? classification,
-    affectedServices,
+  const alertRunbookId = resolveRunbookForAlert({
+    source: classification.split(":")[0] ?? classification,
     severity,
   });
 
   // Try incident-based resolution
-  const incidentResults = resolveRunbooksForIncident({
+  const incidentResult = resolveRunbooksForIncident({
     affectedServices,
     severity,
   });
 
   const linkedRunbookIds = [
-    ...(alertResult ? [alertResult.runbookId] : []),
-    ...incidentResults.map((r) => r.runbookId),
+    ...(alertRunbookId ? [alertRunbookId] : []),
+    ...incidentResult.all,
   ];
   const uniqueIds = [...new Set(linkedRunbookIds)];
 
@@ -60,7 +60,7 @@ export function linkIssueToRunbooks(
     issueClassification: classification,
     subsystem: (subsystemMatch?.subsystem as RunbookSubsystem) ?? null,
     linkedRunbookIds: uniqueIds,
-    escalationPath: alertResult?.escalationTarget ?? "platform",
+    escalationPath: "platform",
     diagnosticsPackTypes,
   };
 }
