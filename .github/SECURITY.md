@@ -2,29 +2,79 @@
 
 ## Supported Versions
 
-| Version | Supported          |
-| ------- | ------------------ |
-| main    | :white_check_mark: |
-| develop | :white_check_mark: |
-| < main  | :x:                |
+| Branch | Supported | Notes |
+| ------- | --------- | ----- |
+| `main` | ✅ | Production-ready, receives security patches |
+| `develop` | ✅ | Pre-release, receives security patches |
+| Feature branches | ❌ | Not monitored for vulnerabilities |
+| Tags < latest | ❌ | Upgrade to latest release |
 
 ## Reporting a Vulnerability
 
-If you discover a security vulnerability, please report it responsibly:
+**⚠️ Do NOT open a public GitHub issue for security vulnerabilities.**
 
-1. **Do NOT** open a public GitHub issue.
-2. Email **security@sita.os** with:
-   - Description of the vulnerability
-   - Steps to reproduce
-   - Potential impact assessment
-3. You will receive an acknowledgment within **48 hours**.
-4. We aim to provide a fix or mitigation within **7 business days**.
+### Responsible Disclosure Process
 
-## Security Measures
+1. **Email** `security@sita.os` with:
+   - Clear description of the vulnerability
+   - Steps to reproduce (PoC if possible)
+   - Potential impact assessment (CVSS score if known)
+   - Affected component (frontend, edge function, database, AI, etc.)
 
-- All database tables require Row-Level Security (RLS) policies
-- Edge functions use shared authentication helpers
-- Admin actions require audit logging
-- Secrets are managed via environment variables, never committed
-- Dependencies are monitored via `npm audit` in CI
-- Architecture boundary checks prevent privilege escalation paths
+2. **Response timeline:**
+   | Stage | SLA |
+   |-------|-----|
+   | Acknowledgment | 48 hours |
+   | Severity classification | 72 hours |
+   | Fix for Critical/High | 7 business days |
+   | Fix for Medium/Low | 30 business days |
+   | Public disclosure (coordinated) | After fix deployed |
+
+3. **What to expect:**
+   - A tracking ID for your report
+   - Regular status updates until resolution
+   - Credit in the security advisory (if desired)
+
+## Security Architecture
+
+### Database Security
+- All tables require **Row-Level Security (RLS)** policies — enforced by CI (`check-rls-coverage.ts`)
+- User roles stored in dedicated `user_roles` table — never on `profiles`
+- Admin actions logged to append-only `admin_action_audit` table
+- Sensitive data redacted in support bundles
+
+### Authentication & Authorization
+- Edge functions use shared auth helpers (`_shared/validate-service-role.ts`)
+- Admin sessions with MFA verification and expiry
+- No anonymous sign-ups — email verification required
+- Service-role key usage audited
+
+### Secrets Management
+- No secrets committed to the repository
+- Runtime secrets managed via Lovable Cloud / environment variables
+- Secret rotation tracked via `secret-rotation-orchestrator` edge function
+- `.env.production.example` documents required variables without values
+
+### CI/CD Security
+- All workflows use `permissions:` least-privilege declarations
+- Dependency updates monitored via Dependabot
+- `npm audit` runs on every CI pipeline
+- Architecture boundary checks prevent privilege escalation imports
+- Sensitive document privacy validated in CI
+
+### AI Safety
+- Epistemic firewall on high-stakes AI outputs (finance, tax, boardroom)
+- Structured negative receipts for all blocked/refused actions
+- Budget enforcement prevents unbounded AI spend
+- Action proof packs for reversible AI-executed operations
+
+## Security-Related CI Gates
+
+| Gate | Script | Blocking? |
+|------|--------|-----------|
+| RLS Coverage | `scripts/check-rls-coverage.ts` | Advisory |
+| Sensitive Doc Privacy | `scripts/architecture/check-sensitive-document-privacy.ts` | Advisory |
+| Edge Function Health | `scripts/check-edge-function-health.ts` | Advisory |
+| npm Audit | `npm audit --audit-level=critical` | Advisory |
+| Architecture Boundaries | `scripts/architecture/check-plane-boundaries.ts` | Blocking |
+| Workflow Governance | `scripts/root/check-workflow-governance.ts` | Advisory |
