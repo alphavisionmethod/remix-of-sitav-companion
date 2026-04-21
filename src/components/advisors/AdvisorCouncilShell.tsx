@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { AdvisorAvatar } from "@/components/sita/primitives/AdvisorAvatar";
@@ -13,6 +14,7 @@ import { AdvisorDetailDrawer } from "./AdvisorDetailDrawer";
 import { AdvisorMeetingRoom } from "./AdvisorMeetingRoom";
 import { AdvisorShowcaseCard } from "./AdvisorShowcaseCard";
 import { ImmersiveBoardroomCouncil } from "./ImmersiveBoardroomCouncil";
+import { MobileAdvisorBoard } from "./MobileAdvisorBoard";
 import { GlassPanel, CinematicBackground } from "./boardroom-primitives";
 import { Brain } from "lucide-react";
 
@@ -48,6 +50,7 @@ const viewModes = [
 export const AdvisorCouncilShell = ({ advisors, domainLabel, children, className }: AdvisorCouncilShellProps) => {
   const [selectedAdvisor, setSelectedAdvisor] = useState<AdvisorConfig | null>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const isMobile = useIsMobile();
 
   const handleAdvisorClick = (advisor: AdvisorConfig) => {
     setSelectedAdvisor(advisor);
@@ -71,11 +74,18 @@ export const AdvisorCouncilShell = ({ advisors, domainLabel, children, className
 
         {/* Immersive Boardroom */}
         <TabsContent value="boardroom">
-          <ImmersiveBoardroomCouncil advisors={advisors} className="mt-3" />
+          {isMobile ? (
+            <MobileAdvisorBoard advisors={advisors} onAdvisorClick={handleAdvisorClick} className="mt-3" />
+          ) : (
+            <ImmersiveBoardroomCouncil advisors={advisors} onAdvisorClick={handleAdvisorClick} className="mt-3" />
+          )}
         </TabsContent>
 
         {/* Showcase Cards */}
         <TabsContent value="council">
+          {isMobile ? (
+            <MobileAdvisorBoard advisors={advisors} onAdvisorClick={handleAdvisorClick} className="mt-3" />
+          ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-3">
             {advisors.map((advisor, i) => (
               <motion.div
@@ -91,6 +101,7 @@ export const AdvisorCouncilShell = ({ advisors, domainLabel, children, className
               </motion.div>
             ))}
           </div>
+          )}
           {children}
         </TabsContent>
 
