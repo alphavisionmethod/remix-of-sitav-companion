@@ -146,7 +146,7 @@ export function generateFieldMutationFixtures<T extends ZodRawShape>(
       fixtures.push({
         label: `${label}: null for '${key}'`,
         payload: { ...basePayload, [key]: null },
-        expectValid: isOptional, // optional fields may accept null depending on schema
+        expectValid: false, // Zod optional ≠ nullable; null always fails unless ZodNullable
       });
     }
   }
