@@ -1,0 +1,410 @@
+{
+  "generatedAt": "2026-04-21T00:28:18.524Z",
+  "functions": [
+    {
+      "name": "admin-ai-workforce-run",
+      "killSwitchRef": null,
+      "covered": false
+    },
+    {
+      "name": "admin-bff-gateway",
+      "killSwitchRef": null,
+      "covered": false
+    },
+    {
+      "name": "admin-intelligence",
+      "killSwitchRef": null,
+      "covered": false
+    },
+    {
+      "name": "admin-users",
+      "killSwitchRef": null,
+      "covered": false
+    },
+    {
+      "name": "advisor-agent-loop",
+      "killSwitchRef": null,
+      "covered": false
+    },
+    {
+      "name": "advisor-avatar-generate",
+      "killSwitchRef": null,
+      "covered": false
+    },
+    {
+      "name": "advisor-conversation",
+      "killSwitchRef": null,
+      "covered": false
+    },
+    {
+      "name": "advisor-deep-intelligence",
+      "killSwitchRef": null,
+      "covered": false
+    },
+    {
+      "name": "advisor-knowledge-manage",
+      "killSwitchRef": null,
+      "covered": false
+    },
+    {
+      "name": "advisor-weekly-report",
+      "killSwitchRef": null,
+      "covered": false
+    },
+    {
+      "name": "agent-executor",
+      "killSwitchRef": "KS-AGENT-RUNTIME",
+      "covered": true
+    },
+    {
+      "name": "agent-heartbeat",
+      "killSwitchRef": null,
+      "covered": false
+    },
+    {
+      "name": "agent-intelligence",
+      "killSwitchRef": null,
+      "covered": false
+    },
+    {
+      "name": "agent-scheduler",
+      "killSwitchRef": null,
+      "covered": false
+    },
+    {
+      "name": "agent-signal",
+      "killSwitchRef": null,
+      "covered": false
+    },
+    {
+      "name": "ai-gateway",
+      "killSwitchRef": "KS-AI-GATEWAY",
+      "covered": true
+    },
+    {
+      "name": "ai-health",
+      "killSwitchRef": "KS-AI-GATEWAY",
+      "covered": true
+    },
+    {
+      "name": "check-ai-budget",
+      "killSwitchRef": null,
+      "covered": false
+    },
+    {
+      "name": "ambient-os-operations",
+      "killSwitchRef": null,
+      "covered": false
+    },
+    {
+      "name": "user-bff-gateway",
+      "killSwitchRef": null,
+      "covered": false
+    },
+    {
+      "name": "intelligence-api",
+      "killSwitchRef": null,
+      "covered": false
+    },
+    {
+      "name": "support-gateway",
+      "killSwitchRef": null,
+      "covered": false
+    },
+    {
+      "name": "license-gateway",
+      "killSwitchRef": null,
+      "covered": false
+    },
+    {
+      "name": "booking-manage",
+      "killSwitchRef": null,
+      "covered": false
+    },
+    {
+      "name": "get-weather",
+      "killSwitchRef": null,
+      "covered": false
+    },
+    {
+      "name": "chat-advisor",
+      "killSwitchRef": null,
+      "covered": false
+    },
+    {
+      "name": "personal-brain",
+      "killSwitchRef": null,
+      "covered": false
+    },
+    {
+      "name": "tasks-workflow-api",
+      "killSwitchRef": null,
+      "covered": false
+    },
+    {
+      "name": "communications-api",
+      "killSwitchRef": null,
+      "covered": false
+    },
+    {
+      "name": "app-store-api",
+      "killSwitchRef": null,
+      "covered": false
+    },
+    {
+      "name": "business-board-api",
+      "killSwitchRef": null,
+      "covered": false
+    },
+    {
+      "name": "business-advisor-intelligence",
+      "killSwitchRef": null,
+      "covered": false
+    },
+    {
+      "name": "brain-core",
+      "killSwitchRef": null,
+      "covered": false
+    },
+    {
+      "name": "cashflow-calculate",
+      "killSwitchRef": null,
+      "covered": false
+    },
+    {
+      "name": "cost-alert",
+      "killSwitchRef": null,
+      "covered": false
+    },
+    {
+      "name": "invoice-generate",
+      "killSwitchRef": null,
+      "covered": false
+    },
+    {
+      "name": "msa-operations",
+      "killSwitchRef": null,
+      "covered": false
+    },
+    {
+      "name": "payment-process",
+      "killSwitchRef": "KS-PAYMENTS-AUTH",
+      "covered": true
+    },
+    {
+      "name": "payment-kill-switch",
+      "killSwitchRef": "KS-PAYMENTS-AUTH",
+      "covered": true
+    },
+    {
+      "name": "revenue-caller",
+      "killSwitchRef": null,
+      "covered": false
+    },
+    {
+      "name": "tax-estimate",
+      "killSwitchRef": null,
+      "covered": false
+    },
+    {
+      "name": "investment-portfolio-api",
+      "killSwitchRef": null,
+      "covered": false
+    },
+    {
+      "name": "cloud-admin-api",
+      "killSwitchRef": null,
+      "covered": false
+    },
+    {
+      "name": "cloud-device-api",
+      "killSwitchRef": null,
+      "covered": false
+    },
+    {
+      "name": "cloud-lifecycle-api",
+      "killSwitchRef": null,
+      "covered": false
+    },
+    {
+      "name": "cloud-storage-api",
+      "killSwitchRef": null,
+      "covered": false
+    },
+    {
+      "name": "cloud-sync-api",
+      "killSwitchRef": null,
+      "covered": false
+    },
+    {
+      "name": "cloud-tenant-api",
+      "killSwitchRef": null,
+      "covered": false
+    },
+    {
+      "name": "cloud-worker-api",
+      "killSwitchRef": null,
+      "covered": false
+    },
+    {
+      "name": "connector-batch",
+      "killSwitchRef": null,
+      "covered": false
+    },
+    {
+      "name": "connector-discover",
+      "killSwitchRef": null,
+      "covered": false
+    },
+    {
+      "name": "connector-health",
+      "killSwitchRef": null,
+      "covered": false
+    },
+    {
+      "name": "connector-oauth",
+      "killSwitchRef": "KS-CONNECTORS",
+      "covered": true
+    },
+    {
+      "name": "connector-operations",
+      "killSwitchRef": null,
+      "covered": false
+    },
+    {
+      "name": "connector-proxy",
+      "killSwitchRef": null,
+      "covered": false
+    },
+    {
+      "name": "connector-sync",
+      "killSwitchRef": null,
+      "covered": false
+    },
+    {
+      "name": "connector-transform",
+      "killSwitchRef": null,
+      "covered": false
+    },
+    {
+      "name": "crm-sync",
+      "killSwitchRef": null,
+      "covered": false
+    },
+    {
+      "name": "provider-family-operations",
+      "killSwitchRef": null,
+      "covered": false
+    },
+    {
+      "name": "os-command",
+      "killSwitchRef": null,
+      "covered": false
+    },
+    {
+      "name": "os-status",
+      "killSwitchRef": null,
+      "covered": false
+    },
+    {
+      "name": "os-agent-channel",
+      "killSwitchRef": null,
+      "covered": false
+    },
+    {
+      "name": "runtime-probes",
+      "killSwitchRef": null,
+      "covered": false
+    },
+    {
+      "name": "db-truth-introspect",
+      "killSwitchRef": null,
+      "covered": false
+    },
+    {
+      "name": "device-telemetry",
+      "killSwitchRef": null,
+      "covered": false
+    },
+    {
+      "name": "system-updates",
+      "killSwitchRef": null,
+      "covered": false
+    },
+    {
+      "name": "self-healing",
+      "killSwitchRef": null,
+      "covered": false
+    },
+    {
+      "name": "ecosystem-operations",
+      "killSwitchRef": null,
+      "covered": false
+    },
+    {
+      "name": "event-processor",
+      "killSwitchRef": null,
+      "covered": false
+    },
+    {
+      "name": "scheduler-dispatch",
+      "killSwitchRef": null,
+      "covered": false
+    },
+    {
+      "name": "digital-twin-engine",
+      "killSwitchRef": null,
+      "covered": false
+    },
+    {
+      "name": "simulation-engine-api",
+      "killSwitchRef": null,
+      "covered": false
+    },
+    {
+      "name": "file-ingestion",
+      "killSwitchRef": null,
+      "covered": false
+    },
+    {
+      "name": "seed-user-data",
+      "killSwitchRef": null,
+      "covered": false
+    },
+    {
+      "name": "health-check",
+      "killSwitchRef": null,
+      "covered": false
+    },
+    {
+      "name": "push-dispatch",
+      "killSwitchRef": "KS-NOTIFICATIONS",
+      "covered": true
+    },
+    {
+      "name": "push-track",
+      "killSwitchRef": null,
+      "covered": false
+    },
+    {
+      "name": "vapid-public-key",
+      "killSwitchRef": null,
+      "covered": false
+    },
+    {
+      "name": "gdpr-delete",
+      "killSwitchRef": null,
+      "covered": false
+    },
+    {
+      "name": "gdpr-export",
+      "killSwitchRef": null,
+      "covered": false
+    },
+    {
+      "name": "verification-recorder",
+      "killSwitchRef": null,
+      "covered": false
+    }
+  ]
+}

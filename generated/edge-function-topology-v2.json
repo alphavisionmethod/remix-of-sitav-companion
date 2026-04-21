@@ -1,20 +1,21 @@
 {
-  "generatedAt": "2026-04-20T21:27:50.034Z",
+  "generatedAt": "2026-04-21T00:28:18.524Z",
   "gate": "edge-function-topology-v2",
-  "totalFunctions": 193,
+  "totalFunctions": 85,
   "roleDistribution": {
-    "PUBLIC_BFF": 42,
-    "ADMIN_BFF": 18,
-    "DOMAIN": 55,
-    "ORCHESTRATION": 22,
-    "WEBHOOK": 15,
-    "RUNTIME_SYSTEM": 24,
-    "VERIFIER": 12,
-    "SUPPORT": 5
+    "ORCHESTRATION_FUNCTION": 12,
+    "WRAPPER_ONLY": 3,
+    "ADMIN_BFF": 1,
+    "DOMAIN_FUNCTION": 45,
+    "CONNECTOR_WEBHOOK_FUNCTION": 11,
+    "SPLIT_REQUIRED": 1,
+    "DEPRECATE_AND_REDIRECT": 1,
+    "PUBLIC_BFF": 4,
+    "RUNTIME_SYSTEM_FUNCTION": 7
   },
   "receiptCoverage": {
-    "emitting": 145,
-    "notEmitting": 48,
-    "coveragePct": 75
+    "emitting": 0,
+    "notEmitting": 85,
+    "coveragePct": 0
   }
 }
