@@ -1,0 +1,4089 @@
+{
+  "generatedAt": "2026-04-21T16:05:52.013Z",
+  "gate": "ui-backend-traceability",
+  "ok": false,
+  "errorCount": 14,
+  "warningCount": 126,
+  "issues": [
+    {
+      "severity": "warning",
+      "area": "advisor-avatar-generate/user-files",
+      "message": "Edge fn \"advisor-avatar-generate\" references table \"user-files\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "chat-advisor/user_ai_budgets",
+      "message": "Edge fn \"chat-advisor\" references table \"user_ai_budgets\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "chat-advisor/ai_token_usage",
+      "message": "Edge fn \"chat-advisor\" references table \"ai_token_usage\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "chat-advisor/advisor_responses",
+      "message": "Edge fn \"chat-advisor\" references table \"advisor_responses\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "chat-advisor/user_ai_budgets",
+      "message": "Edge fn \"chat-advisor\" references table \"user_ai_budgets\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "chat-advisor/ai_token_usage",
+      "message": "Edge fn \"chat-advisor\" references table \"ai_token_usage\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "chat-advisor/advisor_responses",
+      "message": "Edge fn \"chat-advisor\" references table \"advisor_responses\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "chat-advisor/user_ai_budgets",
+      "message": "Edge fn \"chat-advisor\" references table \"user_ai_budgets\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "chat-advisor/ai_token_usage",
+      "message": "Edge fn \"chat-advisor\" references table \"ai_token_usage\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "chat-advisor/advisor_responses",
+      "message": "Edge fn \"chat-advisor\" references table \"advisor_responses\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "cloud-storage-api/user-files",
+      "message": "Edge fn \"cloud-storage-api\" references table \"user-files\" not in typed schema"
+    },
+    {
+      "severity": "error",
+      "area": "os-desktop/cloud-storage-api?action=list&folder_id=",
+      "message": "UI invokes \"cloud-storage-api?action=list&folder_id=\" at src/components/cloud/CloudFileBrowser.tsx:80 but no edge function found"
+    },
+    {
+      "severity": "error",
+      "area": "os-desktop/cloud-storage-api?action=create-folder",
+      "message": "UI invokes \"cloud-storage-api?action=create-folder\" at src/components/cloud/CloudFileBrowser.tsx:115 but no edge function found"
+    },
+    {
+      "severity": "error",
+      "area": "os-desktop/cloud-storage-api?action=upload-init",
+      "message": "UI invokes \"cloud-storage-api?action=upload-init\" at src/components/cloud/CloudFileBrowser.tsx:131 but no edge function found"
+    },
+    {
+      "severity": "error",
+      "area": "os-desktop/cloud-storage-api?action=upload-finalize",
+      "message": "UI invokes \"cloud-storage-api?action=upload-finalize\" at src/components/cloud/CloudFileBrowser.tsx:151 but no edge function found"
+    },
+    {
+      "severity": "error",
+      "area": "os-desktop/cloud-storage-api?action=delete",
+      "message": "UI invokes \"cloud-storage-api?action=delete\" at src/components/cloud/CloudFileBrowser.tsx:163 but no edge function found"
+    },
+    {
+      "severity": "error",
+      "area": "os-desktop/cloud-storage-api?action=download-url",
+      "message": "UI invokes \"cloud-storage-api?action=download-url\" at src/components/cloud/CloudFileBrowser.tsx:171 but no edge function found"
+    },
+    {
+      "severity": "error",
+      "area": "os-desktop/cloud-storage-api?action=rename",
+      "message": "UI invokes \"cloud-storage-api?action=rename\" at src/components/cloud/CloudFileBrowser.tsx:182 but no edge function found"
+    },
+    {
+      "severity": "error",
+      "area": "os-desktop/cloud-storage-api?action=trash",
+      "message": "UI invokes \"cloud-storage-api?action=trash\" at src/components/cloud/CloudTrashManager.tsx:32 but no edge function found"
+    },
+    {
+      "severity": "error",
+      "area": "os-desktop/cloud-storage-api?action=restore",
+      "message": "UI invokes \"cloud-storage-api?action=restore\" at src/components/cloud/CloudTrashManager.tsx:41 but no edge function found"
+    },
+    {
+      "severity": "error",
+      "area": "os-desktop/cloud-storage-api?action=purge",
+      "message": "UI invokes \"cloud-storage-api?action=purge\" at src/components/cloud/CloudTrashManager.tsx:47 but no edge function found"
+    },
+    {
+      "severity": "error",
+      "area": "os-desktop/cloud-storage-api?action=versions",
+      "message": "UI invokes \"cloud-storage-api?action=versions\" at src/components/cloud/CloudVersionHistory.tsx:40 but no edge function found"
+    },
+    {
+      "severity": "warning",
+      "area": "personal-brain/ai_token_usage",
+      "message": "Edge fn \"personal-brain\" references table \"ai_token_usage\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "seed-user-data/events",
+      "message": "Edge fn \"seed-user-data\" references table \"events\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "seed-user-data/opportunities",
+      "message": "Edge fn \"seed-user-data\" references table \"opportunities\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "seed-user-data/tasks",
+      "message": "Edge fn \"seed-user-data\" references table \"tasks\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "seed-user-data/goals",
+      "message": "Edge fn \"seed-user-data\" references table \"goals\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "seed-user-data/approval_queue",
+      "message": "Edge fn \"seed-user-data\" references table \"approval_queue\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "personal-brain/ai_token_usage",
+      "message": "Edge fn \"personal-brain\" references table \"ai_token_usage\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "seed-user-data/events",
+      "message": "Edge fn \"seed-user-data\" references table \"events\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "seed-user-data/opportunities",
+      "message": "Edge fn \"seed-user-data\" references table \"opportunities\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "seed-user-data/tasks",
+      "message": "Edge fn \"seed-user-data\" references table \"tasks\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "seed-user-data/goals",
+      "message": "Edge fn \"seed-user-data\" references table \"goals\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "seed-user-data/approval_queue",
+      "message": "Edge fn \"seed-user-data\" references table \"approval_queue\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "chat-advisor/user_ai_budgets",
+      "message": "Edge fn \"chat-advisor\" references table \"user_ai_budgets\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "chat-advisor/ai_token_usage",
+      "message": "Edge fn \"chat-advisor\" references table \"ai_token_usage\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "chat-advisor/advisor_responses",
+      "message": "Edge fn \"chat-advisor\" references table \"advisor_responses\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "chat-advisor/user_ai_budgets",
+      "message": "Edge fn \"chat-advisor\" references table \"user_ai_budgets\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "chat-advisor/ai_token_usage",
+      "message": "Edge fn \"chat-advisor\" references table \"ai_token_usage\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "chat-advisor/advisor_responses",
+      "message": "Edge fn \"chat-advisor\" references table \"advisor_responses\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "chat-advisor/user_ai_budgets",
+      "message": "Edge fn \"chat-advisor\" references table \"user_ai_budgets\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "chat-advisor/ai_token_usage",
+      "message": "Edge fn \"chat-advisor\" references table \"ai_token_usage\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "chat-advisor/advisor_responses",
+      "message": "Edge fn \"chat-advisor\" references table \"advisor_responses\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "admin-api/device_statuses",
+      "message": "Edge fn \"admin-api\" references table \"device_statuses\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "admin-api/council_decisions",
+      "message": "Edge fn \"admin-api\" references table \"council_decisions\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "admin-api/ai_cost_ledger",
+      "message": "Edge fn \"admin-api\" references table \"ai_cost_ledger\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "admin-api/agent_action_receipts",
+      "message": "Edge fn \"admin-api\" references table \"agent_action_receipts\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "admin-api/advisor_requests",
+      "message": "Edge fn \"admin-api\" references table \"advisor_requests\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "admin-api/advisor_responses",
+      "message": "Edge fn \"admin-api\" references table \"advisor_responses\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "admin-api/approval_queue",
+      "message": "Edge fn \"admin-api\" references table \"approval_queue\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "admin-api/user_memory",
+      "message": "Edge fn \"admin-api\" references table \"user_memory\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "admin-api/trust_state_events",
+      "message": "Edge fn \"admin-api\" references table \"trust_state_events\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "admin-api/proof_records",
+      "message": "Edge fn \"admin-api\" references table \"proof_records\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "admin-api/trust_state",
+      "message": "Edge fn \"admin-api\" references table \"trust_state\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "admin-api/capabilities",
+      "message": "Edge fn \"admin-api\" references table \"capabilities\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "admin-api/metrics_snapshots",
+      "message": "Edge fn \"admin-api\" references table \"metrics_snapshots\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "admin-intelligence/advisor_responses",
+      "message": "Edge fn \"admin-intelligence\" references table \"advisor_responses\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "admin-intelligence/admin_incidents",
+      "message": "Edge fn \"admin-intelligence\" references table \"admin_incidents\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "admin-intelligence/advisor_responses",
+      "message": "Edge fn \"admin-intelligence\" references table \"advisor_responses\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "admin-intelligence/admin_incidents",
+      "message": "Edge fn \"admin-intelligence\" references table \"admin_incidents\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "admin-intelligence/advisor_responses",
+      "message": "Edge fn \"admin-intelligence\" references table \"advisor_responses\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "admin-intelligence/admin_incidents",
+      "message": "Edge fn \"admin-intelligence\" references table \"admin_incidents\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "brain-core/user_memory",
+      "message": "Edge fn \"brain-core\" references table \"user_memory\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "brain-core/advisor_configs",
+      "message": "Edge fn \"brain-core\" references table \"advisor_configs\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "brain-core/advisor_requests",
+      "message": "Edge fn \"brain-core\" references table \"advisor_requests\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "brain-core/advisor_responses",
+      "message": "Edge fn \"brain-core\" references table \"advisor_responses\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "brain-core/proof_records",
+      "message": "Edge fn \"brain-core\" references table \"proof_records\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "brain-core/approval_queue",
+      "message": "Edge fn \"brain-core\" references table \"approval_queue\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "cashflow-calculate/financial_accounts",
+      "message": "Edge fn \"cashflow-calculate\" references table \"financial_accounts\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "ecosystem-operations/ecosystem_devices",
+      "message": "Edge fn \"ecosystem-operations\" references table \"ecosystem_devices\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "ecosystem-operations/ecosystem_trust_records",
+      "message": "Edge fn \"ecosystem-operations\" references table \"ecosystem_trust_records\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "ecosystem-operations/ecosystem_health_consents",
+      "message": "Edge fn \"ecosystem-operations\" references table \"ecosystem_health_consents\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "ecosystem-operations/ecosystem_wearable_configs",
+      "message": "Edge fn \"ecosystem-operations\" references table \"ecosystem_wearable_configs\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "ecosystem-operations/ecosystem_push_routes",
+      "message": "Edge fn \"ecosystem-operations\" references table \"ecosystem_push_routes\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "ecosystem-operations/ecosystem_launch_readiness",
+      "message": "Edge fn \"ecosystem-operations\" references table \"ecosystem_launch_readiness\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "api-gateway/cloud_sync_ledger",
+      "message": "Edge fn \"api-gateway\" references table \"cloud_sync_ledger\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "api-gateway/cloud_sync_conflicts",
+      "message": "Edge fn \"api-gateway\" references table \"cloud_sync_conflicts\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "connector-operations/connector_policies",
+      "message": "Edge fn \"connector-operations\" references table \"connector_policies\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "connector-operations/connector_launch_readiness",
+      "message": "Edge fn \"connector-operations\" references table \"connector_launch_readiness\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "connector-operations/connector_demo_bindings",
+      "message": "Edge fn \"connector-operations\" references table \"connector_demo_bindings\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "connector-operations/connector_health_records",
+      "message": "Edge fn \"connector-operations\" references table \"connector_health_records\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "connector-operations/connector_policies",
+      "message": "Edge fn \"connector-operations\" references table \"connector_policies\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "connector-operations/connector_launch_readiness",
+      "message": "Edge fn \"connector-operations\" references table \"connector_launch_readiness\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "connector-operations/connector_demo_bindings",
+      "message": "Edge fn \"connector-operations\" references table \"connector_demo_bindings\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "connector-operations/connector_health_records",
+      "message": "Edge fn \"connector-operations\" references table \"connector_health_records\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "connector-oauth/consent_ledger",
+      "message": "Edge fn \"connector-oauth\" references table \"consent_ledger\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "connector-oauth/consent_ledger",
+      "message": "Edge fn \"connector-oauth\" references table \"consent_ledger\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "runtime-probes/agent_schedules",
+      "message": "Edge fn \"runtime-probes\" references table \"agent_schedules\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "runtime-probes/notifications_queue",
+      "message": "Edge fn \"runtime-probes\" references table \"notifications_queue\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "runtime-probes/device_push_tokens",
+      "message": "Edge fn \"runtime-probes\" references table \"device_push_tokens\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "runtime-probes/ai_budget_policies",
+      "message": "Edge fn \"runtime-probes\" references table \"ai_budget_policies\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "chat-advisor/user_ai_budgets",
+      "message": "Edge fn \"chat-advisor\" references table \"user_ai_budgets\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "chat-advisor/ai_token_usage",
+      "message": "Edge fn \"chat-advisor\" references table \"ai_token_usage\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "chat-advisor/advisor_responses",
+      "message": "Edge fn \"chat-advisor\" references table \"advisor_responses\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "brain-core/user_memory",
+      "message": "Edge fn \"brain-core\" references table \"user_memory\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "brain-core/advisor_configs",
+      "message": "Edge fn \"brain-core\" references table \"advisor_configs\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "brain-core/advisor_requests",
+      "message": "Edge fn \"brain-core\" references table \"advisor_requests\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "brain-core/advisor_responses",
+      "message": "Edge fn \"brain-core\" references table \"advisor_responses\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "brain-core/proof_records",
+      "message": "Edge fn \"brain-core\" references table \"proof_records\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "brain-core/approval_queue",
+      "message": "Edge fn \"brain-core\" references table \"approval_queue\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "app-ingest-web/app-assets",
+      "message": "Edge fn \"app-ingest-web\" references table \"app-assets\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "app-ingest-pwa/app-assets",
+      "message": "Edge fn \"app-ingest-pwa\" references table \"app-assets\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "app-screenshot-capture/app-assets",
+      "message": "Edge fn \"app-screenshot-capture\" references table \"app-assets\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "device-telemetry/device_statuses",
+      "message": "Edge fn \"device-telemetry\" references table \"device_statuses\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "device-telemetry/system_update_devices",
+      "message": "Edge fn \"device-telemetry\" references table \"system_update_devices\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "connector-oauth/consent_ledger",
+      "message": "Edge fn \"connector-oauth\" references table \"consent_ledger\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "personal-brain/ai_token_usage",
+      "message": "Edge fn \"personal-brain\" references table \"ai_token_usage\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "revenue-caller/communication_log",
+      "message": "Edge fn \"revenue-caller\" references table \"communication_log\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "brain-core/user_memory",
+      "message": "Edge fn \"brain-core\" references table \"user_memory\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "brain-core/advisor_configs",
+      "message": "Edge fn \"brain-core\" references table \"advisor_configs\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "brain-core/advisor_requests",
+      "message": "Edge fn \"brain-core\" references table \"advisor_requests\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "brain-core/advisor_responses",
+      "message": "Edge fn \"brain-core\" references table \"advisor_responses\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "brain-core/proof_records",
+      "message": "Edge fn \"brain-core\" references table \"proof_records\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "brain-core/approval_queue",
+      "message": "Edge fn \"brain-core\" references table \"approval_queue\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "brain-core/user_memory",
+      "message": "Edge fn \"brain-core\" references table \"user_memory\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "brain-core/advisor_configs",
+      "message": "Edge fn \"brain-core\" references table \"advisor_configs\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "brain-core/advisor_requests",
+      "message": "Edge fn \"brain-core\" references table \"advisor_requests\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "brain-core/advisor_responses",
+      "message": "Edge fn \"brain-core\" references table \"advisor_responses\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "brain-core/proof_records",
+      "message": "Edge fn \"brain-core\" references table \"proof_records\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "brain-core/approval_queue",
+      "message": "Edge fn \"brain-core\" references table \"approval_queue\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "runtime-probes/agent_schedules",
+      "message": "Edge fn \"runtime-probes\" references table \"agent_schedules\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "runtime-probes/notifications_queue",
+      "message": "Edge fn \"runtime-probes\" references table \"notifications_queue\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "runtime-probes/device_push_tokens",
+      "message": "Edge fn \"runtime-probes\" references table \"device_push_tokens\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "runtime-probes/ai_budget_policies",
+      "message": "Edge fn \"runtime-probes\" references table \"ai_budget_policies\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "connector-oauth/consent_ledger",
+      "message": "Edge fn \"connector-oauth\" references table \"consent_ledger\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "connector-oauth/consent_ledger",
+      "message": "Edge fn \"connector-oauth\" references table \"consent_ledger\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "seed-user-data/events",
+      "message": "Edge fn \"seed-user-data\" references table \"events\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "seed-user-data/opportunities",
+      "message": "Edge fn \"seed-user-data\" references table \"opportunities\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "seed-user-data/tasks",
+      "message": "Edge fn \"seed-user-data\" references table \"tasks\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "seed-user-data/goals",
+      "message": "Edge fn \"seed-user-data\" references table \"goals\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "seed-user-data/approval_queue",
+      "message": "Edge fn \"seed-user-data\" references table \"approval_queue\" not in typed schema"
+    },
+    {
+      "severity": "error",
+      "area": "admin/owner-copilot-bff?op=list",
+      "message": "UI invokes \"owner-copilot-bff?op=list\" at src/pages/admin/ai-runtime/OwnerCopilotBriefings.tsx:27 but no edge function found"
+    },
+    {
+      "severity": "error",
+      "area": "admin/owner-copilot-bff?op=handoff",
+      "message": "UI invokes \"owner-copilot-bff?op=handoff\" at src/pages/admin/ai-runtime/OwnerCopilotBriefings.tsx:35 but no edge function found"
+    },
+    {
+      "severity": "error",
+      "area": "admin/webhook-replay?action=replay",
+      "message": "UI invokes \"webhook-replay?action=replay\" at src/pages/admin/support/AdminRecoveryOperations.tsx:183 but no edge function found"
+    },
+    {
+      "severity": "warning",
+      "area": "generate-support-bundle/kill_switches",
+      "message": "Edge fn \"generate-support-bundle\" references table \"kill_switches\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "agent-intelligence/agent_telemetry",
+      "message": "Edge fn \"agent-intelligence\" references table \"agent_telemetry\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "agent-intelligence/agent_action_receipts",
+      "message": "Edge fn \"agent-intelligence\" references table \"agent_action_receipts\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "agent-intelligence/agent_signals",
+      "message": "Edge fn \"agent-intelligence\" references table \"agent_signals\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "agent-intelligence/advisor_responses",
+      "message": "Edge fn \"agent-intelligence\" references table \"advisor_responses\" not in typed schema"
+    },
+    {
+      "severity": "warning",
+      "area": "orphan-functions",
+      "message": "98 edge functions have no direct UI caller: account-delete, admin-bff-gateway, admin-gateway, agent-executor, agent-heartbeat, agent-scheduler, agent-signal, ai-health, ai-receipt-completeness-snapshot, alert-route…"
+    }
+  ],
+  "totalTraces": 152,
+  "brokenTraces": 56,
+  "intactTraces": 96,
+  "uniqueInvokedFns": 104,
+  "deployedFns": 199,
+  "orphanCount": 98,
+  "orphans": [
+    "account-delete",
+    "admin-bff-gateway",
+    "admin-gateway",
+    "agent-executor",
+    "agent-heartbeat",
+    "agent-scheduler",
+    "agent-signal",
+    "ai-health",
+    "ai-receipt-completeness-snapshot",
+    "alert-route",
+    "alert-router",
+    "ambient-os-operations",
+    "apm-metrics-ingest",
+    "app-manifest-sync",
+    "app-manifest-verifier",
+    "app-store-api",
+    "app-store-catalog",
+    "audit-log-export",
+    "boardroom-cockpit-telemetry",
+    "boardroom-followthrough-sla",
+    "boardroom-outcome-record",
+    "boardroom-replay",
+    "boardroom-session",
+    "booking-manage",
+    "business-advisor-intelligence",
+    "cloud-admin-api",
+    "cloud-device-api",
+    "cloud-sync-api",
+    "cloud-tenant-api",
+    "cloud-worker-api"
+  ],
+  "platformBreakdown": {
+    "admin": {
+      "total": 47,
+      "broken": 10,
+      "uniqueFns": 40
+    },
+    "os-desktop": {
+      "total": 49,
+      "broken": 27,
+      "uniqueFns": 34
+    },
+    "shared": {
+      "total": 56,
+      "broken": 19,
+      "uniqueFns": 40
+    }
+  },
+  "traces": [
+    {
+      "platform": "admin",
+      "ui": "src/components/admin/OAuthRefreshHealthBoard.tsx:49",
+      "fn": "oauth-refresh-probe",
+      "fnExists": true,
+      "tables": [
+        "connector_tokens",
+        "oauth_refresh_probe_results",
+        "drill_cadence_registry"
+      ],
+      "tablesValid": [
+        true,
+        true,
+        true
+      ],
+      "webhook": false,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "admin",
+      "ui": "src/components/admin/boardroom/Layer7FollowthroughBoard.tsx:93",
+      "fn": "boardroom-followthrough-dispatch",
+      "fnExists": true,
+      "tables": [
+        "boardroom_items",
+        "boardroom_followthrough_dispatches",
+        "os_commands",
+        "command_steps",
+        "timeline_events"
+      ],
+      "tablesValid": [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "webhook": true,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "os-desktop",
+      "ui": "src/components/advisors/AdvisorKnowledgePanel.tsx:41",
+      "fn": "advisor-knowledge-manage",
+      "fnExists": true,
+      "tables": [
+        "advisor_knowledge"
+      ],
+      "tablesValid": [
+        true
+      ],
+      "webhook": false,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "os-desktop",
+      "ui": "src/components/advisors/AdvisorMeetingRoom.tsx:61",
+      "fn": "advisor-avatar-generate",
+      "fnExists": true,
+      "tables": [
+        "user-files",
+        "advisor_profiles"
+      ],
+      "tablesValid": [
+        false,
+        true
+      ],
+      "webhook": true,
+      "event": false,
+      "breaks": [
+        "table-not-in-schema:user-files"
+      ]
+    },
+    {
+      "platform": "os-desktop",
+      "ui": "src/components/advisors/AdvisorMeetingRoom.tsx:104",
+      "fn": "chat-advisor",
+      "fnExists": true,
+      "tables": [
+        "advisor_knowledge",
+        "advisor_memories",
+        "advisor_feedback",
+        "user_ai_budgets",
+        "ai_token_usage",
+        "advisor_responses"
+      ],
+      "tablesValid": [
+        true,
+        true,
+        true,
+        false,
+        false,
+        false
+      ],
+      "webhook": false,
+      "event": true,
+      "breaks": [
+        "table-not-in-schema:user_ai_budgets",
+        "table-not-in-schema:ai_token_usage",
+        "table-not-in-schema:advisor_responses"
+      ]
+    },
+    {
+      "platform": "os-desktop",
+      "ui": "src/components/advisors/AdvisorMeetingRoom.tsx:133",
+      "fn": "chat-advisor",
+      "fnExists": true,
+      "tables": [
+        "advisor_knowledge",
+        "advisor_memories",
+        "advisor_feedback",
+        "user_ai_budgets",
+        "ai_token_usage",
+        "advisor_responses"
+      ],
+      "tablesValid": [
+        true,
+        true,
+        true,
+        false,
+        false,
+        false
+      ],
+      "webhook": false,
+      "event": true,
+      "breaks": [
+        "table-not-in-schema:user_ai_budgets",
+        "table-not-in-schema:ai_token_usage",
+        "table-not-in-schema:advisor_responses"
+      ]
+    },
+    {
+      "platform": "os-desktop",
+      "ui": "src/components/advisors/AskAdvisorChat.tsx:52",
+      "fn": "chat-advisor",
+      "fnExists": true,
+      "tables": [
+        "advisor_knowledge",
+        "advisor_memories",
+        "advisor_feedback",
+        "user_ai_budgets",
+        "ai_token_usage",
+        "advisor_responses"
+      ],
+      "tablesValid": [
+        true,
+        true,
+        true,
+        false,
+        false,
+        false
+      ],
+      "webhook": false,
+      "event": true,
+      "breaks": [
+        "table-not-in-schema:user_ai_budgets",
+        "table-not-in-schema:ai_token_usage",
+        "table-not-in-schema:advisor_responses"
+      ]
+    },
+    {
+      "platform": "os-desktop",
+      "ui": "src/components/business/advisor-board/AdvisorConversation.tsx:73",
+      "fn": "advisor-conversation",
+      "fnExists": true,
+      "tables": [],
+      "tablesValid": [],
+      "webhook": false,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "os-desktop",
+      "ui": "src/components/business/advisor-board/WeeklyExecutiveReport.tsx:82",
+      "fn": "advisor-weekly-report",
+      "fnExists": true,
+      "tables": [],
+      "tablesValid": [],
+      "webhook": false,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "os-desktop",
+      "ui": "src/components/cloud/CloudFileBrowser.tsx:74",
+      "fn": "cloud-storage-api",
+      "fnExists": true,
+      "tables": [
+        "cloud_folders",
+        "cloud_files",
+        "cloud_storage_usage",
+        "cloud_blobs",
+        "cloud_file_versions",
+        "cloud_trash",
+        "user-files"
+      ],
+      "tablesValid": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        false
+      ],
+      "webhook": false,
+      "event": false,
+      "breaks": [
+        "table-not-in-schema:user-files"
+      ]
+    },
+    {
+      "platform": "os-desktop",
+      "ui": "src/components/cloud/CloudFileBrowser.tsx:80",
+      "fn": "cloud-storage-api?action=list&folder_id=",
+      "fnExists": false,
+      "tables": [],
+      "tablesValid": [],
+      "webhook": false,
+      "event": false,
+      "breaks": [
+        "edge-fn-missing:cloud-storage-api?action=list&folder_id="
+      ]
+    },
+    {
+      "platform": "os-desktop",
+      "ui": "src/components/cloud/CloudFileBrowser.tsx:115",
+      "fn": "cloud-storage-api?action=create-folder",
+      "fnExists": false,
+      "tables": [],
+      "tablesValid": [],
+      "webhook": false,
+      "event": false,
+      "breaks": [
+        "edge-fn-missing:cloud-storage-api?action=create-folder"
+      ]
+    },
+    {
+      "platform": "os-desktop",
+      "ui": "src/components/cloud/CloudFileBrowser.tsx:131",
+      "fn": "cloud-storage-api?action=upload-init",
+      "fnExists": false,
+      "tables": [],
+      "tablesValid": [],
+      "webhook": false,
+      "event": false,
+      "breaks": [
+        "edge-fn-missing:cloud-storage-api?action=upload-init"
+      ]
+    },
+    {
+      "platform": "os-desktop",
+      "ui": "src/components/cloud/CloudFileBrowser.tsx:151",
+      "fn": "cloud-storage-api?action=upload-finalize",
+      "fnExists": false,
+      "tables": [],
+      "tablesValid": [],
+      "webhook": false,
+      "event": false,
+      "breaks": [
+        "edge-fn-missing:cloud-storage-api?action=upload-finalize"
+      ]
+    },
+    {
+      "platform": "os-desktop",
+      "ui": "src/components/cloud/CloudFileBrowser.tsx:163",
+      "fn": "cloud-storage-api?action=delete",
+      "fnExists": false,
+      "tables": [],
+      "tablesValid": [],
+      "webhook": false,
+      "event": false,
+      "breaks": [
+        "edge-fn-missing:cloud-storage-api?action=delete"
+      ]
+    },
+    {
+      "platform": "os-desktop",
+      "ui": "src/components/cloud/CloudFileBrowser.tsx:171",
+      "fn": "cloud-storage-api?action=download-url",
+      "fnExists": false,
+      "tables": [],
+      "tablesValid": [],
+      "webhook": false,
+      "event": false,
+      "breaks": [
+        "edge-fn-missing:cloud-storage-api?action=download-url"
+      ]
+    },
+    {
+      "platform": "os-desktop",
+      "ui": "src/components/cloud/CloudFileBrowser.tsx:182",
+      "fn": "cloud-storage-api?action=rename",
+      "fnExists": false,
+      "tables": [],
+      "tablesValid": [],
+      "webhook": false,
+      "event": false,
+      "breaks": [
+        "edge-fn-missing:cloud-storage-api?action=rename"
+      ]
+    },
+    {
+      "platform": "os-desktop",
+      "ui": "src/components/cloud/CloudImportExport.tsx:54",
+      "fn": "cloud-lifecycle-api",
+      "fnExists": true,
+      "tables": [
+        "cloud_reconciliation_runs",
+        "cloud_blobs",
+        "cloud_compliance_hooks",
+        "cloud_archive_jobs",
+        "cloud_import_export_jobs",
+        "cloud_account_closure_requests"
+      ],
+      "tablesValid": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "webhook": false,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "os-desktop",
+      "ui": "src/components/cloud/CloudTrashManager.tsx:32",
+      "fn": "cloud-storage-api?action=trash",
+      "fnExists": false,
+      "tables": [],
+      "tablesValid": [],
+      "webhook": false,
+      "event": false,
+      "breaks": [
+        "edge-fn-missing:cloud-storage-api?action=trash"
+      ]
+    },
+    {
+      "platform": "os-desktop",
+      "ui": "src/components/cloud/CloudTrashManager.tsx:41",
+      "fn": "cloud-storage-api?action=restore",
+      "fnExists": false,
+      "tables": [],
+      "tablesValid": [],
+      "webhook": false,
+      "event": false,
+      "breaks": [
+        "edge-fn-missing:cloud-storage-api?action=restore"
+      ]
+    },
+    {
+      "platform": "os-desktop",
+      "ui": "src/components/cloud/CloudTrashManager.tsx:47",
+      "fn": "cloud-storage-api?action=purge",
+      "fnExists": false,
+      "tables": [],
+      "tablesValid": [],
+      "webhook": false,
+      "event": false,
+      "breaks": [
+        "edge-fn-missing:cloud-storage-api?action=purge"
+      ]
+    },
+    {
+      "platform": "os-desktop",
+      "ui": "src/components/cloud/CloudVersionHistory.tsx:40",
+      "fn": "cloud-storage-api?action=versions",
+      "fnExists": false,
+      "tables": [],
+      "tablesValid": [],
+      "webhook": false,
+      "event": false,
+      "breaks": [
+        "edge-fn-missing:cloud-storage-api?action=versions"
+      ]
+    },
+    {
+      "platform": "os-desktop",
+      "ui": "src/components/marketing/BetaForm.tsx:53",
+      "fn": "beta-apply",
+      "fnExists": true,
+      "tables": [
+        "beta_applications"
+      ],
+      "tablesValid": [
+        true
+      ],
+      "webhook": false,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "os-desktop",
+      "ui": "src/components/marketing/InvestorForm.tsx:32",
+      "fn": "investor-request",
+      "fnExists": true,
+      "tables": [
+        "investor_requests"
+      ],
+      "tablesValid": [
+        true
+      ],
+      "webhook": false,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "os-desktop",
+      "ui": "src/components/marketing/PressForm.tsx:17",
+      "fn": "press-inquiry",
+      "fnExists": true,
+      "tables": [
+        "press_inquiries"
+      ],
+      "tablesValid": [
+        true
+      ],
+      "webhook": false,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "os-desktop",
+      "ui": "src/components/marketing/WaitlistForm.tsx:21",
+      "fn": "waitlist-signup",
+      "fnExists": true,
+      "tables": [
+        "waitlist_signups"
+      ],
+      "tablesValid": [
+        true
+      ],
+      "webhook": false,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "os-desktop",
+      "ui": "src/components/sita/CommandPalette.tsx:194",
+      "fn": "ai-gateway",
+      "fnExists": true,
+      "tables": [
+        "ai_prompt_versions",
+        "ai_prompt_invocations",
+        "ai_capability_routing",
+        "ai_model_registry",
+        "ai_routing_policies",
+        "ai_usage_ledger",
+        "ai_budget_alerts",
+        "ai_inference_receipts",
+        "ai_fallback_events",
+        "ai_receipt_records"
+      ],
+      "tablesValid": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "webhook": false,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "os-desktop",
+      "ui": "src/components/sita/ConnectorSyncDashboard.tsx:62",
+      "fn": "connector-batch",
+      "fnExists": true,
+      "tables": [
+        "audit_logs",
+        "connector_registry",
+        "connector_accounts"
+      ],
+      "tablesValid": [
+        true,
+        true,
+        true
+      ],
+      "webhook": true,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "os-desktop",
+      "ui": "src/components/sita/CopilotBar.tsx:26",
+      "fn": "personal-brain",
+      "fnExists": true,
+      "tables": [
+        "advisor_memories",
+        "ai_token_usage"
+      ],
+      "tablesValid": [
+        true,
+        false
+      ],
+      "webhook": false,
+      "event": false,
+      "breaks": [
+        "table-not-in-schema:ai_token_usage"
+      ]
+    },
+    {
+      "platform": "os-desktop",
+      "ui": "src/components/sita/OSSetupExperience.tsx:719",
+      "fn": "seed-user-data",
+      "fnExists": true,
+      "tables": [
+        "profiles",
+        "user_seed_runs",
+        "leads",
+        "customers",
+        "events",
+        "bills",
+        "invoices",
+        "subscriptions",
+        "reserves",
+        "quotes",
+        "deals",
+        "opportunities",
+        "tasks",
+        "household_tasks",
+        "policies",
+        "workflows",
+        "notifications",
+        "bookings",
+        "goals",
+        "approval_queue",
+        "audit_logs",
+        "connector_configs",
+        "communications",
+        "budgets"
+      ],
+      "tablesValid": [
+        true,
+        true,
+        true,
+        true,
+        false,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        false,
+        false,
+        true,
+        true,
+        true,
+        true,
+        true,
+        false,
+        false,
+        true,
+        true,
+        true,
+        true
+      ],
+      "webhook": false,
+      "event": false,
+      "breaks": [
+        "table-not-in-schema:events",
+        "table-not-in-schema:opportunities",
+        "table-not-in-schema:tasks",
+        "table-not-in-schema:goals",
+        "table-not-in-schema:approval_queue"
+      ]
+    },
+    {
+      "platform": "os-desktop",
+      "ui": "src/components/sita/RuntimeTruthProbe.tsx:55",
+      "fn": "ai-gateway",
+      "fnExists": true,
+      "tables": [
+        "ai_prompt_versions",
+        "ai_prompt_invocations",
+        "ai_capability_routing",
+        "ai_model_registry",
+        "ai_routing_policies",
+        "ai_usage_ledger",
+        "ai_budget_alerts",
+        "ai_inference_receipts",
+        "ai_fallback_events",
+        "ai_receipt_records"
+      ],
+      "tablesValid": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "webhook": false,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "os-desktop",
+      "ui": "src/components/sita/shell/UniversalCommandSurface.tsx:502",
+      "fn": "personal-brain",
+      "fnExists": true,
+      "tables": [
+        "advisor_memories",
+        "ai_token_usage"
+      ],
+      "tablesValid": [
+        true,
+        false
+      ],
+      "webhook": false,
+      "event": false,
+      "breaks": [
+        "table-not-in-schema:ai_token_usage"
+      ]
+    },
+    {
+      "platform": "os-desktop",
+      "ui": "src/components/sita/shell/windows/settings/PrivacyTrustSections.tsx:121",
+      "fn": "gdpr-export",
+      "fnExists": true,
+      "tables": [],
+      "tablesValid": [],
+      "webhook": true,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "os-desktop",
+      "ui": "src/components/sita/shell/windows/settings/PrivacyTrustSections.tsx:139",
+      "fn": "gdpr-delete",
+      "fnExists": true,
+      "tables": [
+        "data_retention_runs"
+      ],
+      "tablesValid": [
+        true
+      ],
+      "webhook": true,
+      "event": true,
+      "breaks": []
+    },
+    {
+      "platform": "os-desktop",
+      "ui": "src/contexts/AuthContext.tsx:78",
+      "fn": "seed-user-data",
+      "fnExists": true,
+      "tables": [
+        "profiles",
+        "user_seed_runs",
+        "leads",
+        "customers",
+        "events",
+        "bills",
+        "invoices",
+        "subscriptions",
+        "reserves",
+        "quotes",
+        "deals",
+        "opportunities",
+        "tasks",
+        "household_tasks",
+        "policies",
+        "workflows",
+        "notifications",
+        "bookings",
+        "goals",
+        "approval_queue",
+        "audit_logs",
+        "connector_configs",
+        "communications",
+        "budgets"
+      ],
+      "tablesValid": [
+        true,
+        true,
+        true,
+        true,
+        false,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        false,
+        false,
+        true,
+        true,
+        true,
+        true,
+        true,
+        false,
+        false,
+        true,
+        true,
+        true,
+        true
+      ],
+      "webhook": false,
+      "event": false,
+      "breaks": [
+        "table-not-in-schema:events",
+        "table-not-in-schema:opportunities",
+        "table-not-in-schema:tasks",
+        "table-not-in-schema:goals",
+        "table-not-in-schema:approval_queue"
+      ]
+    },
+    {
+      "platform": "os-desktop",
+      "ui": "src/domains/simulation/market-intelligence.ts:63",
+      "fn": "chat-advisor",
+      "fnExists": true,
+      "tables": [
+        "advisor_knowledge",
+        "advisor_memories",
+        "advisor_feedback",
+        "user_ai_budgets",
+        "ai_token_usage",
+        "advisor_responses"
+      ],
+      "tablesValid": [
+        true,
+        true,
+        true,
+        false,
+        false,
+        false
+      ],
+      "webhook": false,
+      "event": true,
+      "breaks": [
+        "table-not-in-schema:user_ai_budgets",
+        "table-not-in-schema:ai_token_usage",
+        "table-not-in-schema:advisor_responses"
+      ]
+    },
+    {
+      "platform": "os-desktop",
+      "ui": "src/domains/simulation/market-intelligence.ts:154",
+      "fn": "chat-advisor",
+      "fnExists": true,
+      "tables": [
+        "advisor_knowledge",
+        "advisor_memories",
+        "advisor_feedback",
+        "user_ai_budgets",
+        "ai_token_usage",
+        "advisor_responses"
+      ],
+      "tablesValid": [
+        true,
+        true,
+        true,
+        false,
+        false,
+        false
+      ],
+      "webhook": false,
+      "event": true,
+      "breaks": [
+        "table-not-in-schema:user_ai_budgets",
+        "table-not-in-schema:ai_token_usage",
+        "table-not-in-schema:advisor_responses"
+      ]
+    },
+    {
+      "platform": "os-desktop",
+      "ui": "src/domains/simulation/market-intelligence.ts:186",
+      "fn": "chat-advisor",
+      "fnExists": true,
+      "tables": [
+        "advisor_knowledge",
+        "advisor_memories",
+        "advisor_feedback",
+        "user_ai_budgets",
+        "ai_token_usage",
+        "advisor_responses"
+      ],
+      "tablesValid": [
+        true,
+        true,
+        true,
+        false,
+        false,
+        false
+      ],
+      "webhook": false,
+      "event": true,
+      "breaks": [
+        "table-not-in-schema:user_ai_budgets",
+        "table-not-in-schema:ai_token_usage",
+        "table-not-in-schema:advisor_responses"
+      ]
+    },
+    {
+      "platform": "shared",
+      "ui": "src/hooks/use-admin-data.ts:22",
+      "fn": "admin-api",
+      "fnExists": true,
+      "tables": [
+        "audit_logs",
+        "incidents",
+        "policies",
+        "device_statuses",
+        "council_decisions",
+        "ai_cost_ledger",
+        "agent_action_receipts",
+        "advisor_requests",
+        "advisor_responses",
+        "workflow_runs",
+        "connector_configs",
+        "approval_queue",
+        "user_memory",
+        "trust_state_events",
+        "proof_records",
+        "trust_state",
+        "capabilities",
+        "metrics_snapshots",
+        "workflow_steps"
+      ],
+      "tablesValid": [
+        true,
+        true,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true
+      ],
+      "webhook": true,
+      "event": false,
+      "breaks": [
+        "table-not-in-schema:device_statuses",
+        "table-not-in-schema:council_decisions",
+        "table-not-in-schema:ai_cost_ledger",
+        "table-not-in-schema:agent_action_receipts",
+        "table-not-in-schema:advisor_requests",
+        "table-not-in-schema:advisor_responses",
+        "table-not-in-schema:approval_queue",
+        "table-not-in-schema:user_memory",
+        "table-not-in-schema:trust_state_events",
+        "table-not-in-schema:proof_records",
+        "table-not-in-schema:trust_state",
+        "table-not-in-schema:capabilities",
+        "table-not-in-schema:metrics_snapshots"
+      ]
+    },
+    {
+      "platform": "shared",
+      "ui": "src/hooks/use-admin-data.ts:386",
+      "fn": "admin-intelligence",
+      "fnExists": true,
+      "tables": [
+        "advisor_responses",
+        "admin_incidents",
+        "workflow_runs"
+      ],
+      "tablesValid": [
+        false,
+        false,
+        true
+      ],
+      "webhook": true,
+      "event": false,
+      "breaks": [
+        "table-not-in-schema:advisor_responses",
+        "table-not-in-schema:admin_incidents"
+      ]
+    },
+    {
+      "platform": "shared",
+      "ui": "src/hooks/use-admin-data.ts:387",
+      "fn": "admin-intelligence",
+      "fnExists": true,
+      "tables": [
+        "advisor_responses",
+        "admin_incidents",
+        "workflow_runs"
+      ],
+      "tablesValid": [
+        false,
+        false,
+        true
+      ],
+      "webhook": true,
+      "event": false,
+      "breaks": [
+        "table-not-in-schema:advisor_responses",
+        "table-not-in-schema:admin_incidents"
+      ]
+    },
+    {
+      "platform": "shared",
+      "ui": "src/hooks/use-admin-data.ts:388",
+      "fn": "admin-intelligence",
+      "fnExists": true,
+      "tables": [
+        "advisor_responses",
+        "admin_incidents",
+        "workflow_runs"
+      ],
+      "tablesValid": [
+        false,
+        false,
+        true
+      ],
+      "webhook": true,
+      "event": false,
+      "breaks": [
+        "table-not-in-schema:advisor_responses",
+        "table-not-in-schema:admin_incidents"
+      ]
+    },
+    {
+      "platform": "shared",
+      "ui": "src/hooks/use-advisor-agents.ts:227",
+      "fn": "advisor-agent-loop",
+      "fnExists": true,
+      "tables": [
+        "advisor_agents",
+        "advisor_action_queue"
+      ],
+      "tablesValid": [
+        true,
+        true
+      ],
+      "webhook": true,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "shared",
+      "ui": "src/hooks/use-backend-actions.ts:277",
+      "fn": "brain-core",
+      "fnExists": true,
+      "tables": [
+        "user_memory",
+        "policies",
+        "advisor_configs",
+        "advisor_requests",
+        "advisor_knowledge",
+        "advisor_responses",
+        "proof_records",
+        "approval_queue"
+      ],
+      "tablesValid": [
+        false,
+        true,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false
+      ],
+      "webhook": false,
+      "event": false,
+      "breaks": [
+        "table-not-in-schema:user_memory",
+        "table-not-in-schema:advisor_configs",
+        "table-not-in-schema:advisor_requests",
+        "table-not-in-schema:advisor_responses",
+        "table-not-in-schema:proof_records",
+        "table-not-in-schema:approval_queue"
+      ]
+    },
+    {
+      "platform": "shared",
+      "ui": "src/hooks/use-sita-data.ts:142",
+      "fn": "cashflow-calculate",
+      "fnExists": true,
+      "tables": [
+        "financial_accounts",
+        "invoices"
+      ],
+      "tablesValid": [
+        false,
+        true
+      ],
+      "webhook": false,
+      "event": false,
+      "breaks": [
+        "table-not-in-schema:financial_accounts"
+      ]
+    },
+    {
+      "platform": "shared",
+      "ui": "src/hooks/useBusinessAdvisorBoard.ts:223",
+      "fn": "advisor-deep-intelligence",
+      "fnExists": true,
+      "tables": [
+        "advisor_board_memory",
+        "advisor_board_recommendations"
+      ],
+      "tablesValid": [
+        true,
+        true
+      ],
+      "webhook": true,
+      "event": true,
+      "breaks": []
+    },
+    {
+      "platform": "shared",
+      "ui": "src/hooks/useEcosystemDevices.ts:108",
+      "fn": "ecosystem-operations",
+      "fnExists": true,
+      "tables": [
+        "ecosystem_devices",
+        "ecosystem_trust_records",
+        "ecosystem_health_consents",
+        "ecosystem_wearable_configs",
+        "ecosystem_push_routes",
+        "ecosystem_launch_readiness"
+      ],
+      "tablesValid": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "webhook": true,
+      "event": true,
+      "breaks": [
+        "table-not-in-schema:ecosystem_devices",
+        "table-not-in-schema:ecosystem_trust_records",
+        "table-not-in-schema:ecosystem_health_consents",
+        "table-not-in-schema:ecosystem_wearable_configs",
+        "table-not-in-schema:ecosystem_push_routes",
+        "table-not-in-schema:ecosystem_launch_readiness"
+      ]
+    },
+    {
+      "platform": "shared",
+      "ui": "src/lib/admin-ai/admin-ai-workforce-client.ts:118",
+      "fn": "admin-ai-workforce-run",
+      "fnExists": true,
+      "tables": [
+        "ai_workforce_roles",
+        "ai_workforce_task_types",
+        "ai_workforce_role_task_permissions",
+        "ai_workforce_invocations",
+        "ai_workforce_cached_outputs",
+        "ai_workforce_role_health",
+        "ai_workforce_outputs",
+        "ai_workforce_recommendations",
+        "ai_workforce_approval_queue",
+        "ai_inference_receipts"
+      ],
+      "tablesValid": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "webhook": false,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "shared",
+      "ui": "src/lib/ai-platform/gateway/budget-gate.ts:45",
+      "fn": "check-ai-budget",
+      "fnExists": true,
+      "tables": [],
+      "tablesValid": [],
+      "webhook": false,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "shared",
+      "ui": "src/lib/api/os-api-client.ts:133",
+      "fn": "api-gateway",
+      "fnExists": true,
+      "tables": [
+        "profiles",
+        "user_roles",
+        "cloud_devices",
+        "os_commands",
+        "client_capability_matrix",
+        "os_command_events",
+        "ai_workforce_recommendations",
+        "ai_inference_receipts",
+        "cloud_abuse_events",
+        "ai_workforce_invocations",
+        "cloud_activity_journal",
+        "cloud_sync_ledger",
+        "cloud_sync_conflicts",
+        "admin_action_confirmations",
+        "cloud_audit_events",
+        "platform_notifications",
+        "notification_preferences",
+        "admin_action_audit",
+        "os_policies",
+        "managed_apps"
+      ],
+      "tablesValid": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        false,
+        false,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "webhook": true,
+      "event": true,
+      "breaks": [
+        "table-not-in-schema:cloud_sync_ledger",
+        "table-not-in-schema:cloud_sync_conflicts"
+      ]
+    },
+    {
+      "platform": "shared",
+      "ui": "src/lib/backend-topology/edge-function-health-source.ts:93",
+      "fn": "db-truth-introspect",
+      "fnExists": true,
+      "tables": [],
+      "tablesValid": [],
+      "webhook": false,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "shared",
+      "ui": "src/lib/capabilities/admin-capabilities.ts:204",
+      "fn": "connector-sync",
+      "fnExists": true,
+      "tables": [
+        "connector_receipts",
+        "connector_accounts",
+        "connector_sync_cursors",
+        "connector_sync_runs"
+      ],
+      "tablesValid": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "webhook": false,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "shared",
+      "ui": "src/lib/capabilities/connector-capability.ts:15",
+      "fn": "connector-operations",
+      "fnExists": true,
+      "tables": [
+        "connector_registry",
+        "connector_policies",
+        "connector_launch_readiness",
+        "connector_demo_bindings",
+        "connector_accounts",
+        "connector_sync_runs",
+        "connector_health_records",
+        "connector_receipts",
+        "connector_oauth_tokens"
+      ],
+      "tablesValid": [
+        true,
+        false,
+        false,
+        false,
+        true,
+        true,
+        false,
+        true,
+        true
+      ],
+      "webhook": true,
+      "event": false,
+      "breaks": [
+        "table-not-in-schema:connector_policies",
+        "table-not-in-schema:connector_launch_readiness",
+        "table-not-in-schema:connector_demo_bindings",
+        "table-not-in-schema:connector_health_records"
+      ]
+    },
+    {
+      "platform": "shared",
+      "ui": "src/lib/capabilities/connector-capability.ts:32",
+      "fn": "connector-operations",
+      "fnExists": true,
+      "tables": [
+        "connector_registry",
+        "connector_policies",
+        "connector_launch_readiness",
+        "connector_demo_bindings",
+        "connector_accounts",
+        "connector_sync_runs",
+        "connector_health_records",
+        "connector_receipts",
+        "connector_oauth_tokens"
+      ],
+      "tablesValid": [
+        true,
+        false,
+        false,
+        false,
+        true,
+        true,
+        false,
+        true,
+        true
+      ],
+      "webhook": true,
+      "event": false,
+      "breaks": [
+        "table-not-in-schema:connector_policies",
+        "table-not-in-schema:connector_launch_readiness",
+        "table-not-in-schema:connector_demo_bindings",
+        "table-not-in-schema:connector_health_records"
+      ]
+    },
+    {
+      "platform": "shared",
+      "ui": "src/lib/capabilities/system-capabilities.ts:157",
+      "fn": "connector-oauth",
+      "fnExists": true,
+      "tables": [
+        "connector_oauth_flows",
+        "connector_registry",
+        "connector_accounts",
+        "connector_oauth_tokens",
+        "consent_scope_records",
+        "connector_receipts",
+        "consent_ledger"
+      ],
+      "tablesValid": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        false
+      ],
+      "webhook": false,
+      "event": false,
+      "breaks": [
+        "table-not-in-schema:consent_ledger"
+      ]
+    },
+    {
+      "platform": "shared",
+      "ui": "src/lib/capabilities/system-capabilities.ts:165",
+      "fn": "connector-oauth",
+      "fnExists": true,
+      "tables": [
+        "connector_oauth_flows",
+        "connector_registry",
+        "connector_accounts",
+        "connector_oauth_tokens",
+        "consent_scope_records",
+        "connector_receipts",
+        "consent_ledger"
+      ],
+      "tablesValid": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        false
+      ],
+      "webhook": false,
+      "event": false,
+      "breaks": [
+        "table-not-in-schema:consent_ledger"
+      ]
+    },
+    {
+      "platform": "shared",
+      "ui": "src/lib/control-plane/kill-switch-db-client.ts:91",
+      "fn": "kill-switch-toggle",
+      "fnExists": true,
+      "tables": [
+        "kill_switch_approvals"
+      ],
+      "tablesValid": [
+        true
+      ],
+      "webhook": false,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "shared",
+      "ui": "src/lib/core-services/inference-gateway/inference-gateway.ts:121",
+      "fn": "ai-gateway",
+      "fnExists": true,
+      "tables": [
+        "ai_prompt_versions",
+        "ai_prompt_invocations",
+        "ai_capability_routing",
+        "ai_model_registry",
+        "ai_routing_policies",
+        "ai_usage_ledger",
+        "ai_budget_alerts",
+        "ai_inference_receipts",
+        "ai_fallback_events",
+        "ai_receipt_records"
+      ],
+      "tablesValid": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "webhook": false,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "shared",
+      "ui": "src/lib/internal-agents/runtime/nightly-truth-data.ts:110",
+      "fn": "ai-runtime-nightly-verify",
+      "fnExists": true,
+      "tables": [
+        "ai_runtime_nightly_runs",
+        "ai_invocations",
+        "ai_usage_ledger",
+        "ai_inference_receipts",
+        "ai_fallback_events",
+        "ai_workforce_budget_classes",
+        "ai_budget_alerts"
+      ],
+      "tablesValid": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "webhook": true,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "shared",
+      "ui": "src/lib/internal-agents/runtime/supervisor-actions.ts:196",
+      "fn": "internal-agent-loop",
+      "fnExists": true,
+      "tables": [
+        "automation_kill_switches",
+        "internal_agent_actions",
+        "internal_agent_runtime_state",
+        "council_escalations",
+        "ai_workforce_invocations",
+        "ai_workforce_approval_queue",
+        "ai_budget_alerts",
+        "internal_agent_definitions"
+      ],
+      "tablesValid": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "webhook": true,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "shared",
+      "ui": "src/lib/observability/apm.ts:70",
+      "fn": "trace-ingest",
+      "fnExists": true,
+      "tables": [
+        "trace_spans"
+      ],
+      "tablesValid": [
+        true
+      ],
+      "webhook": false,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "shared",
+      "ui": "src/lib/observability/health-probes.ts:61",
+      "fn": "health-check",
+      "fnExists": true,
+      "tables": [
+        "error_events",
+        "profiles"
+      ],
+      "tablesValid": [
+        true,
+        true
+      ],
+      "webhook": true,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "shared",
+      "ui": "src/lib/observability/perf-budget.ts:47",
+      "fn": "alert-ingest",
+      "fnExists": true,
+      "tables": [
+        "alerts"
+      ],
+      "tablesValid": [
+        true
+      ],
+      "webhook": true,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "shared",
+      "ui": "src/lib/observability/uptime.ts:15",
+      "fn": "health-beat",
+      "fnExists": true,
+      "tables": [
+        "uptime_heartbeats"
+      ],
+      "tablesValid": [
+        true
+      ],
+      "webhook": false,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "shared",
+      "ui": "src/lib/observability/use-observability.ts:39",
+      "fn": "runtime-probes",
+      "fnExists": true,
+      "tables": [
+        "profiles",
+        "agent_schedules",
+        "notifications_queue",
+        "device_push_tokens",
+        "ai_budget_policies",
+        "audit_logs"
+      ],
+      "tablesValid": [
+        true,
+        false,
+        false,
+        false,
+        false,
+        true
+      ],
+      "webhook": true,
+      "event": true,
+      "breaks": [
+        "table-not-in-schema:agent_schedules",
+        "table-not-in-schema:notifications_queue",
+        "table-not-in-schema:device_push_tokens",
+        "table-not-in-schema:ai_budget_policies"
+      ]
+    },
+    {
+      "platform": "shared",
+      "ui": "src/lib/services/advisor-memory/summarizer.ts:42",
+      "fn": "chat-advisor",
+      "fnExists": true,
+      "tables": [
+        "advisor_knowledge",
+        "advisor_memories",
+        "advisor_feedback",
+        "user_ai_budgets",
+        "ai_token_usage",
+        "advisor_responses"
+      ],
+      "tablesValid": [
+        true,
+        true,
+        true,
+        false,
+        false,
+        false
+      ],
+      "webhook": false,
+      "event": true,
+      "breaks": [
+        "table-not-in-schema:user_ai_budgets",
+        "table-not-in-schema:ai_token_usage",
+        "table-not-in-schema:advisor_responses"
+      ]
+    },
+    {
+      "platform": "shared",
+      "ui": "src/lib/services/ai-gateway/callable.ts:91",
+      "fn": "brain-core",
+      "fnExists": true,
+      "tables": [
+        "user_memory",
+        "policies",
+        "advisor_configs",
+        "advisor_requests",
+        "advisor_knowledge",
+        "advisor_responses",
+        "proof_records",
+        "approval_queue"
+      ],
+      "tablesValid": [
+        false,
+        true,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false
+      ],
+      "webhook": false,
+      "event": false,
+      "breaks": [
+        "table-not-in-schema:user_memory",
+        "table-not-in-schema:advisor_configs",
+        "table-not-in-schema:advisor_requests",
+        "table-not-in-schema:advisor_responses",
+        "table-not-in-schema:proof_records",
+        "table-not-in-schema:approval_queue"
+      ]
+    },
+    {
+      "platform": "shared",
+      "ui": "src/lib/services/ai-gateway/callable.ts:113",
+      "fn": "ai-gateway",
+      "fnExists": true,
+      "tables": [
+        "ai_prompt_versions",
+        "ai_prompt_invocations",
+        "ai_capability_routing",
+        "ai_model_registry",
+        "ai_routing_policies",
+        "ai_usage_ledger",
+        "ai_budget_alerts",
+        "ai_inference_receipts",
+        "ai_fallback_events",
+        "ai_receipt_records"
+      ],
+      "tablesValid": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "webhook": false,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "shared",
+      "ui": "src/lib/services/ai-gateway/invoke.ts:3",
+      "fn": "ai-gateway",
+      "fnExists": true,
+      "tables": [
+        "ai_prompt_versions",
+        "ai_prompt_invocations",
+        "ai_capability_routing",
+        "ai_model_registry",
+        "ai_routing_policies",
+        "ai_usage_ledger",
+        "ai_budget_alerts",
+        "ai_inference_receipts",
+        "ai_fallback_events",
+        "ai_receipt_records"
+      ],
+      "tablesValid": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "webhook": false,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "shared",
+      "ui": "src/lib/services/ai-gateway/invoke.ts:73",
+      "fn": "ai-gateway",
+      "fnExists": true,
+      "tables": [
+        "ai_prompt_versions",
+        "ai_prompt_invocations",
+        "ai_capability_routing",
+        "ai_model_registry",
+        "ai_routing_policies",
+        "ai_usage_ledger",
+        "ai_budget_alerts",
+        "ai_inference_receipts",
+        "ai_fallback_events",
+        "ai_receipt_records"
+      ],
+      "tablesValid": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "webhook": false,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "shared",
+      "ui": "src/lib/services/alerting/alert-client.ts:51",
+      "fn": "alert-ingest",
+      "fnExists": true,
+      "tables": [
+        "alerts"
+      ],
+      "tablesValid": [
+        true
+      ],
+      "webhook": true,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "shared",
+      "ui": "src/lib/services/alerting/alert-client.ts:80",
+      "fn": "alert-actions",
+      "fnExists": true,
+      "tables": [
+        "alerts"
+      ],
+      "tablesValid": [
+        true
+      ],
+      "webhook": true,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "shared",
+      "ui": "src/lib/services/alerting/alert-client.ts:86",
+      "fn": "alert-actions",
+      "fnExists": true,
+      "tables": [
+        "alerts"
+      ],
+      "tablesValid": [
+        true
+      ],
+      "webhook": true,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "shared",
+      "ui": "src/lib/services/alerting/alert-client.ts:92",
+      "fn": "alert-actions",
+      "fnExists": true,
+      "tables": [
+        "alerts"
+      ],
+      "tablesValid": [
+        true
+      ],
+      "webhook": true,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "shared",
+      "ui": "src/lib/services/alerting/alert-client.ts:98",
+      "fn": "alert-actions",
+      "fnExists": true,
+      "tables": [
+        "alerts"
+      ],
+      "tablesValid": [
+        true
+      ],
+      "webhook": true,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "shared",
+      "ui": "src/lib/services/app-ingestion/ingestion.service.ts:59",
+      "fn": "app-ingest-web",
+      "fnExists": true,
+      "tables": [
+        "app-assets",
+        "app_ingestion_jobs",
+        "app_assets"
+      ],
+      "tablesValid": [
+        false,
+        true,
+        true
+      ],
+      "webhook": true,
+      "event": false,
+      "breaks": [
+        "table-not-in-schema:app-assets"
+      ]
+    },
+    {
+      "platform": "shared",
+      "ui": "src/lib/services/app-ingestion/ingestion.service.ts:65",
+      "fn": "app-ingest-pwa",
+      "fnExists": true,
+      "tables": [
+        "app-assets",
+        "app_ingestion_jobs",
+        "app_assets"
+      ],
+      "tablesValid": [
+        false,
+        true,
+        true
+      ],
+      "webhook": true,
+      "event": false,
+      "breaks": [
+        "table-not-in-schema:app-assets"
+      ]
+    },
+    {
+      "platform": "shared",
+      "ui": "src/lib/services/app-ingestion/ingestion.service.ts:71",
+      "fn": "app-screenshot-capture",
+      "fnExists": true,
+      "tables": [
+        "app_ingestion_jobs",
+        "app-assets",
+        "app_assets"
+      ],
+      "tablesValid": [
+        true,
+        false,
+        true
+      ],
+      "webhook": false,
+      "event": false,
+      "breaks": [
+        "table-not-in-schema:app-assets"
+      ]
+    },
+    {
+      "platform": "shared",
+      "ui": "src/lib/services/app-ingestion/ingestion.service.ts:88",
+      "fn": "package-verify",
+      "fnExists": true,
+      "tables": [
+        "app_packages",
+        "publisher_keys",
+        "app_signatures"
+      ],
+      "tablesValid": [
+        true,
+        true,
+        true
+      ],
+      "webhook": false,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "shared",
+      "ui": "src/lib/services/app-store/install.service.ts:48",
+      "fn": "app-install",
+      "fnExists": true,
+      "tables": [
+        "apps",
+        "installed_apps"
+      ],
+      "tablesValid": [
+        true,
+        true
+      ],
+      "webhook": false,
+      "event": true,
+      "breaks": []
+    },
+    {
+      "platform": "shared",
+      "ui": "src/lib/services/app-store/install.service.ts:56",
+      "fn": "app-uninstall",
+      "fnExists": true,
+      "tables": [
+        "apps",
+        "installed_apps"
+      ],
+      "tablesValid": [
+        true,
+        true
+      ],
+      "webhook": false,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "shared",
+      "ui": "src/lib/services/app-store/launch.service.ts:82",
+      "fn": "app-launch-resolve",
+      "fnExists": true,
+      "tables": [
+        "apps",
+        "installed_apps",
+        "app_launch_events"
+      ],
+      "tablesValid": [
+        true,
+        true,
+        true
+      ],
+      "webhook": false,
+      "event": true,
+      "breaks": []
+    },
+    {
+      "platform": "shared",
+      "ui": "src/lib/services/app-store/permissions.service.ts:34",
+      "fn": "app-permissions-sync",
+      "fnExists": true,
+      "tables": [
+        "app_permissions_overrides"
+      ],
+      "tablesValid": [
+        true
+      ],
+      "webhook": false,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "shared",
+      "ui": "src/lib/services/app-store/update.service.ts:20",
+      "fn": "app-update-check",
+      "fnExists": true,
+      "tables": [
+        "installed_apps",
+        "apps"
+      ],
+      "tablesValid": [
+        true,
+        true
+      ],
+      "webhook": false,
+      "event": true,
+      "breaks": []
+    },
+    {
+      "platform": "shared",
+      "ui": "src/lib/services/board-api-client.ts:9",
+      "fn": "business-board-api",
+      "fnExists": true,
+      "tables": [
+        "advisor_board_recommendations",
+        "advisor_board_actions",
+        "business_health_scores",
+        "profit_signals",
+        "advisor_autonomy_policies",
+        "advisor_board_memory",
+        "advisor_board_reflections",
+        "advisor_board_tool_executions"
+      ],
+      "tablesValid": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "webhook": false,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "shared",
+      "ui": "src/lib/services/connector-control-plane/connector-fake-mode.service.ts:132",
+      "fn": "alert-ingest",
+      "fnExists": true,
+      "tables": [
+        "alerts"
+      ],
+      "tablesValid": [
+        true
+      ],
+      "webhook": true,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "shared",
+      "ui": "src/lib/services/connector-health-service.ts:29",
+      "fn": "connector-health",
+      "fnExists": true,
+      "tables": [
+        "connector_configs"
+      ],
+      "tablesValid": [
+        true
+      ],
+      "webhook": false,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "shared",
+      "ui": "src/lib/services/device-presence-service.ts:59",
+      "fn": "device-telemetry",
+      "fnExists": true,
+      "tables": [
+        "device_statuses",
+        "system_update_devices"
+      ],
+      "tablesValid": [
+        false,
+        false
+      ],
+      "webhook": false,
+      "event": true,
+      "breaks": [
+        "table-not-in-schema:device_statuses",
+        "table-not-in-schema:system_update_devices"
+      ]
+    },
+    {
+      "platform": "shared",
+      "ui": "src/lib/services/error-monitoring-service.ts:62",
+      "fn": "error-ingest",
+      "fnExists": true,
+      "tables": [
+        "error_events"
+      ],
+      "tablesValid": [
+        true
+      ],
+      "webhook": true,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "shared",
+      "ui": "src/lib/services/identity-auth/webauthn.service.ts:59",
+      "fn": "webauthn-challenge",
+      "fnExists": true,
+      "tables": [
+        "webauthn_challenges",
+        "user_passkeys"
+      ],
+      "tablesValid": [
+        true,
+        true
+      ],
+      "webhook": false,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "shared",
+      "ui": "src/lib/services/identity-auth/webauthn.service.ts:95",
+      "fn": "webauthn-challenge",
+      "fnExists": true,
+      "tables": [
+        "webauthn_challenges",
+        "user_passkeys"
+      ],
+      "tablesValid": [
+        true,
+        true
+      ],
+      "webhook": false,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "shared",
+      "ui": "src/lib/services/identity-auth/webauthn.service.ts:107",
+      "fn": "webauthn-challenge",
+      "fnExists": true,
+      "tables": [
+        "webauthn_challenges",
+        "user_passkeys"
+      ],
+      "tablesValid": [
+        true,
+        true
+      ],
+      "webhook": false,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "shared",
+      "ui": "src/lib/services/identity-auth/webauthn.service.ts:137",
+      "fn": "webauthn-challenge",
+      "fnExists": true,
+      "tables": [
+        "webauthn_challenges",
+        "user_passkeys"
+      ],
+      "tablesValid": [
+        true,
+        true
+      ],
+      "webhook": false,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "shared",
+      "ui": "src/lib/support/runbook-drill-status.ts:96",
+      "fn": "runbook-drill",
+      "fnExists": true,
+      "tables": [
+        "runbook_drill_results",
+        "operator_drill_executions"
+      ],
+      "tablesValid": [
+        true,
+        true
+      ],
+      "webhook": true,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "os-desktop",
+      "ui": "src/pages/ConnectorHub.tsx:64",
+      "fn": "connector-oauth",
+      "fnExists": true,
+      "tables": [
+        "connector_oauth_flows",
+        "connector_registry",
+        "connector_accounts",
+        "connector_oauth_tokens",
+        "consent_scope_records",
+        "connector_receipts",
+        "consent_ledger"
+      ],
+      "tablesValid": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        false
+      ],
+      "webhook": false,
+      "event": false,
+      "breaks": [
+        "table-not-in-schema:consent_ledger"
+      ]
+    },
+    {
+      "platform": "os-desktop",
+      "ui": "src/pages/ConnectorHub.tsx:138",
+      "fn": "connector-discover",
+      "fnExists": true,
+      "tables": [
+        "connector_registry",
+        "connector_accounts",
+        "connector_configs",
+        "audit_logs"
+      ],
+      "tablesValid": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "webhook": true,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "os-desktop",
+      "ui": "src/pages/ConnectorHub.tsx:289",
+      "fn": "connector-batch",
+      "fnExists": true,
+      "tables": [
+        "audit_logs",
+        "connector_registry",
+        "connector_accounts"
+      ],
+      "tablesValid": [
+        true,
+        true,
+        true
+      ],
+      "webhook": true,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "os-desktop",
+      "ui": "src/pages/PersonalBrain.tsx:59",
+      "fn": "personal-brain",
+      "fnExists": true,
+      "tables": [
+        "advisor_memories",
+        "ai_token_usage"
+      ],
+      "tablesValid": [
+        true,
+        false
+      ],
+      "webhook": false,
+      "event": false,
+      "breaks": [
+        "table-not-in-schema:ai_token_usage"
+      ]
+    },
+    {
+      "platform": "os-desktop",
+      "ui": "src/pages/RevenueCallingPage.tsx:339",
+      "fn": "revenue-caller",
+      "fnExists": true,
+      "tables": [
+        "communication_log"
+      ],
+      "tablesValid": [
+        false
+      ],
+      "webhook": false,
+      "event": true,
+      "breaks": [
+        "table-not-in-schema:communication_log"
+      ]
+    },
+    {
+      "platform": "os-desktop",
+      "ui": "src/pages/SovereignExportPage.tsx:41",
+      "fn": "gdpr-export",
+      "fnExists": true,
+      "tables": [],
+      "tablesValid": [],
+      "webhook": true,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "os-desktop",
+      "ui": "src/pages/SovereignExportPage.tsx:80",
+      "fn": "gdpr-delete",
+      "fnExists": true,
+      "tables": [
+        "data_retention_runs"
+      ],
+      "tablesValid": [
+        true
+      ],
+      "webhook": true,
+      "event": true,
+      "breaks": []
+    },
+    {
+      "platform": "admin",
+      "ui": "src/pages/admin/AIPromptFamiliesExplorer.tsx:67",
+      "fn": "prompt-versioning",
+      "fnExists": true,
+      "tables": [
+        "ai_prompt_versions",
+        "ai_prompt_families"
+      ],
+      "tablesValid": [
+        true,
+        true
+      ],
+      "webhook": false,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "admin",
+      "ui": "src/pages/admin/AIPromptFamiliesExplorer.tsx:80",
+      "fn": "prompt-versioning",
+      "fnExists": true,
+      "tables": [
+        "ai_prompt_versions",
+        "ai_prompt_families"
+      ],
+      "tablesValid": [
+        true,
+        true
+      ],
+      "webhook": false,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "admin",
+      "ui": "src/pages/admin/AIPromptFamiliesExplorer.tsx:92",
+      "fn": "prompt-versioning",
+      "fnExists": true,
+      "tables": [
+        "ai_prompt_versions",
+        "ai_prompt_families"
+      ],
+      "tablesValid": [
+        true,
+        true
+      ],
+      "webhook": false,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "admin",
+      "ui": "src/pages/admin/AIT04to08Boards.tsx:280",
+      "fn": "brain-core",
+      "fnExists": true,
+      "tables": [
+        "user_memory",
+        "policies",
+        "advisor_configs",
+        "advisor_requests",
+        "advisor_knowledge",
+        "advisor_responses",
+        "proof_records",
+        "approval_queue"
+      ],
+      "tablesValid": [
+        false,
+        true,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false
+      ],
+      "webhook": false,
+      "event": false,
+      "breaks": [
+        "table-not-in-schema:user_memory",
+        "table-not-in-schema:advisor_configs",
+        "table-not-in-schema:advisor_requests",
+        "table-not-in-schema:advisor_responses",
+        "table-not-in-schema:proof_records",
+        "table-not-in-schema:approval_queue"
+      ]
+    },
+    {
+      "platform": "admin",
+      "ui": "src/pages/admin/AIT04to08Boards.tsx:488",
+      "fn": "brain-core",
+      "fnExists": true,
+      "tables": [
+        "user_memory",
+        "policies",
+        "advisor_configs",
+        "advisor_requests",
+        "advisor_knowledge",
+        "advisor_responses",
+        "proof_records",
+        "approval_queue"
+      ],
+      "tablesValid": [
+        false,
+        true,
+        false,
+        false,
+        true,
+        false,
+        false,
+        false
+      ],
+      "webhook": false,
+      "event": false,
+      "breaks": [
+        "table-not-in-schema:user_memory",
+        "table-not-in-schema:advisor_configs",
+        "table-not-in-schema:advisor_requests",
+        "table-not-in-schema:advisor_responses",
+        "table-not-in-schema:proof_records",
+        "table-not-in-schema:approval_queue"
+      ]
+    },
+    {
+      "platform": "admin",
+      "ui": "src/pages/admin/BrainCoreDashboard.tsx:67",
+      "fn": "runtime-probes",
+      "fnExists": true,
+      "tables": [
+        "profiles",
+        "agent_schedules",
+        "notifications_queue",
+        "device_push_tokens",
+        "ai_budget_policies",
+        "audit_logs"
+      ],
+      "tablesValid": [
+        true,
+        false,
+        false,
+        false,
+        false,
+        true
+      ],
+      "webhook": true,
+      "event": true,
+      "breaks": [
+        "table-not-in-schema:agent_schedules",
+        "table-not-in-schema:notifications_queue",
+        "table-not-in-schema:device_push_tokens",
+        "table-not-in-schema:ai_budget_policies"
+      ]
+    },
+    {
+      "platform": "admin",
+      "ui": "src/pages/admin/CN01ConnectorRealityOverview.tsx:70",
+      "fn": "connector-oauth",
+      "fnExists": true,
+      "tables": [
+        "connector_oauth_flows",
+        "connector_registry",
+        "connector_accounts",
+        "connector_oauth_tokens",
+        "consent_scope_records",
+        "connector_receipts",
+        "consent_ledger"
+      ],
+      "tablesValid": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        false
+      ],
+      "webhook": false,
+      "event": false,
+      "breaks": [
+        "table-not-in-schema:consent_ledger"
+      ]
+    },
+    {
+      "platform": "admin",
+      "ui": "src/pages/admin/CN01ConnectorRealityOverview.tsx:246",
+      "fn": "connector-oauth",
+      "fnExists": true,
+      "tables": [
+        "connector_oauth_flows",
+        "connector_registry",
+        "connector_accounts",
+        "connector_oauth_tokens",
+        "consent_scope_records",
+        "connector_receipts",
+        "consent_ledger"
+      ],
+      "tablesValid": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        false
+      ],
+      "webhook": false,
+      "event": false,
+      "breaks": [
+        "table-not-in-schema:consent_ledger"
+      ]
+    },
+    {
+      "platform": "admin",
+      "ui": "src/pages/admin/ConnectorGovernanceCenter.tsx:104",
+      "fn": "connector-discover",
+      "fnExists": true,
+      "tables": [
+        "connector_registry",
+        "connector_accounts",
+        "connector_configs",
+        "audit_logs"
+      ],
+      "tablesValid": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "webhook": true,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "admin",
+      "ui": "src/pages/admin/ConnectorGovernanceCenter.tsx:113",
+      "fn": "connector-batch",
+      "fnExists": true,
+      "tables": [
+        "audit_logs",
+        "connector_registry",
+        "connector_accounts"
+      ],
+      "tablesValid": [
+        true,
+        true,
+        true
+      ],
+      "webhook": true,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "admin",
+      "ui": "src/pages/admin/ConnectorGovernanceCenter.tsx:127",
+      "fn": "connector-batch",
+      "fnExists": true,
+      "tables": [
+        "audit_logs",
+        "connector_registry",
+        "connector_accounts"
+      ],
+      "tablesValid": [
+        true,
+        true,
+        true
+      ],
+      "webhook": true,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "admin",
+      "ui": "src/pages/admin/DataRetentionDashboard.tsx:89",
+      "fn": "data-cleanup",
+      "fnExists": true,
+      "tables": [
+        "data_retention_runs"
+      ],
+      "tablesValid": [
+        true
+      ],
+      "webhook": true,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "admin",
+      "ui": "src/pages/admin/SRE05ChaosTestingFramework.tsx:66",
+      "fn": "chaos-drill-runner",
+      "fnExists": true,
+      "tables": [
+        "automation_kill_switches",
+        "alerts",
+        "chaos_drill_results"
+      ],
+      "tablesValid": [
+        true,
+        true,
+        true
+      ],
+      "webhook": false,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "admin",
+      "ui": "src/pages/admin/UserManagement.tsx:34",
+      "fn": "admin-users",
+      "fnExists": true,
+      "tables": [
+        "user_roles",
+        "audit_logs"
+      ],
+      "tablesValid": [
+        true,
+        true
+      ],
+      "webhook": true,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "admin",
+      "ui": "src/pages/admin/UserSeedHealth.tsx:73",
+      "fn": "seed-user-data",
+      "fnExists": true,
+      "tables": [
+        "profiles",
+        "user_seed_runs",
+        "leads",
+        "customers",
+        "events",
+        "bills",
+        "invoices",
+        "subscriptions",
+        "reserves",
+        "quotes",
+        "deals",
+        "opportunities",
+        "tasks",
+        "household_tasks",
+        "policies",
+        "workflows",
+        "notifications",
+        "bookings",
+        "goals",
+        "approval_queue",
+        "audit_logs",
+        "connector_configs",
+        "communications",
+        "budgets"
+      ],
+      "tablesValid": [
+        true,
+        true,
+        true,
+        true,
+        false,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        false,
+        false,
+        true,
+        true,
+        true,
+        true,
+        true,
+        false,
+        false,
+        true,
+        true,
+        true,
+        true
+      ],
+      "webhook": false,
+      "event": false,
+      "breaks": [
+        "table-not-in-schema:events",
+        "table-not-in-schema:opportunities",
+        "table-not-in-schema:tasks",
+        "table-not-in-schema:goals",
+        "table-not-in-schema:approval_queue"
+      ]
+    },
+    {
+      "platform": "admin",
+      "ui": "src/pages/admin/WorkflowReplayAudit.tsx:99",
+      "fn": "workflow-repair",
+      "fnExists": true,
+      "tables": [
+        "user_roles",
+        "workflow_runs",
+        "workflow_state_transitions",
+        "workflow_receipts"
+      ],
+      "tablesValid": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "webhook": false,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "admin",
+      "ui": "src/pages/admin/WorkflowReplayAudit.tsx:115",
+      "fn": "workflow-replay",
+      "fnExists": true,
+      "tables": [
+        "user_roles",
+        "workflow_runs",
+        "workflow_state_transitions"
+      ],
+      "tablesValid": [
+        true,
+        true,
+        true
+      ],
+      "webhook": false,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "admin",
+      "ui": "src/pages/admin/ai-runtime/AssuranceChaosBoard.tsx:50",
+      "fn": "internal-agent-canary-runner",
+      "fnExists": true,
+      "tables": [
+        "internal_agent_slo_snapshots",
+        "internal_agent_canary_runs",
+        "internal_agent_auto_rollback_events"
+      ],
+      "tablesValid": [
+        true,
+        true,
+        true
+      ],
+      "webhook": false,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "admin",
+      "ui": "src/pages/admin/ai-runtime/AssuranceChaosBoard.tsx:54",
+      "fn": "internal-agent-chaos-scheduler",
+      "fnExists": true,
+      "tables": [
+        "internal_agent_chaos_drills",
+        "internal_agent_auto_rollback_events",
+        "internal_agent_assurance_reports"
+      ],
+      "tablesValid": [
+        true,
+        true,
+        true
+      ],
+      "webhook": false,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "admin",
+      "ui": "src/pages/admin/ai-runtime/ComplianceAttestationBoard.tsx:43",
+      "fn": "compliance-evidence-collector",
+      "fnExists": true,
+      "tables": [
+        "admin_action_audit",
+        "audit_export_bundles",
+        "dr_drills",
+        "user_roles",
+        "compliance_controls",
+        "compliance_evidence"
+      ],
+      "tablesValid": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "webhook": true,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "admin",
+      "ui": "src/pages/admin/ai-runtime/ComplianceAttestationBoard.tsx:48",
+      "fn": "attestation-packet-builder",
+      "fnExists": true,
+      "tables": [
+        "user_roles",
+        "compliance_controls",
+        "compliance_evidence",
+        "attestation_packets"
+      ],
+      "tablesValid": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "webhook": false,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "admin",
+      "ui": "src/pages/admin/ai-runtime/CrossCouncilBoard.tsx:115",
+      "fn": "internal-agent-cost-optimizer",
+      "fnExists": true,
+      "tables": [
+        "ai_usage_ledger"
+      ],
+      "tablesValid": [
+        true
+      ],
+      "webhook": true,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "admin",
+      "ui": "src/pages/admin/ai-runtime/InternalAgentIntentTimeline.tsx:197",
+      "fn": "internal-agent-execute-action",
+      "fnExists": true,
+      "tables": [
+        "user_roles",
+        "internal_agent_action_intents",
+        "ai_workforce_approval_queue",
+        "internal_agent_actions",
+        "ai_action_receipts",
+        "internal_agent_runtime_state",
+        "timeline_events",
+        "error_patrol_detections",
+        "workflow_runs",
+        "connector_accounts",
+        "incidents"
+      ],
+      "tablesValid": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "webhook": true,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "admin",
+      "ui": "src/pages/admin/ai-runtime/KnowledgeFederationBoard.tsx:54",
+      "fn": "federated-knowledge-aggregator",
+      "fnExists": true,
+      "tables": [
+        "tenant_federation_optins",
+        "federated_knowledge_shares",
+        "federated_pattern_aggregates"
+      ],
+      "tablesValid": [
+        true,
+        true,
+        true
+      ],
+      "webhook": false,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "admin",
+      "ui": "src/pages/admin/ai-runtime/OwnerCopilotBriefings.tsx:27",
+      "fn": "owner-copilot-bff?op=list",
+      "fnExists": false,
+      "tables": [],
+      "tablesValid": [],
+      "webhook": false,
+      "event": false,
+      "breaks": [
+        "edge-fn-missing:owner-copilot-bff?op=list"
+      ]
+    },
+    {
+      "platform": "admin",
+      "ui": "src/pages/admin/ai-runtime/OwnerCopilotBriefings.tsx:35",
+      "fn": "owner-copilot-bff?op=handoff",
+      "fnExists": false,
+      "tables": [],
+      "tablesValid": [],
+      "webhook": false,
+      "event": false,
+      "breaks": [
+        "edge-fn-missing:owner-copilot-bff?op=handoff"
+      ]
+    },
+    {
+      "platform": "admin",
+      "ui": "src/pages/admin/ai-runtime/OwnerCopilotSessionConsole.tsx:50",
+      "fn": "owner-copilot-session-tracker",
+      "fnExists": true,
+      "tables": [
+        "owner_copilot_sessions"
+      ],
+      "tablesValid": [
+        true
+      ],
+      "webhook": false,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "admin",
+      "ui": "src/pages/admin/ai-runtime/OwnerCopilotSessionConsole.tsx:62",
+      "fn": "owner-copilot-session-tracker",
+      "fnExists": true,
+      "tables": [
+        "owner_copilot_sessions"
+      ],
+      "tablesValid": [
+        true
+      ],
+      "webhook": false,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "admin",
+      "ui": "src/pages/admin/ai-runtime/PolicyDraftReviewBoard.tsx:92",
+      "fn": "internal-agent-policy-architect",
+      "fnExists": true,
+      "tables": [
+        "user_roles",
+        "internal_agent_policy_drafts"
+      ],
+      "tablesValid": [
+        true,
+        true
+      ],
+      "webhook": true,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "admin",
+      "ui": "src/pages/admin/ai-runtime/ProductionLaunchAttestationConsole.tsx:74",
+      "fn": "production-launch-attestor",
+      "fnExists": true,
+      "tables": [
+        "user_roles",
+        "production_launch_attestations"
+      ],
+      "tablesValid": [
+        true,
+        true
+      ],
+      "webhook": false,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "admin",
+      "ui": "src/pages/admin/ai-runtime/ReflectionBoard.tsx:133",
+      "fn": "internal-agent-reflect",
+      "fnExists": true,
+      "tables": [
+        "internal_agent_action_intents",
+        "internal_agent_reflections"
+      ],
+      "tablesValid": [
+        true,
+        true
+      ],
+      "webhook": true,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "admin",
+      "ui": "src/pages/admin/ai-runtime/SLOObservabilityBoard.tsx:59",
+      "fn": "internal-agent-slo-evaluator",
+      "fnExists": true,
+      "tables": [
+        "ai_action_receipts",
+        "internal_agent_slo_snapshots",
+        "internal_agent_anomaly_signals"
+      ],
+      "tablesValid": [
+        true,
+        true,
+        true
+      ],
+      "webhook": true,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "admin",
+      "ui": "src/pages/admin/ai-runtime/SecurityCouncilBoard.tsx:124",
+      "fn": "security-council-tick",
+      "fnExists": true,
+      "tables": [
+        "admin_action_audit",
+        "user_roles",
+        "internal_agent_runtime_state",
+        "ai_invocations",
+        "ai_inference_receipts"
+      ],
+      "tablesValid": [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "webhook": true,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "admin",
+      "ui": "src/pages/admin/ai-runtime/SovereignDeploymentDRBoard.tsx:61",
+      "fn": "dr-drill-runner",
+      "fnExists": true,
+      "tables": [
+        "user_roles",
+        "dr_drills"
+      ],
+      "tablesValid": [
+        true,
+        true
+      ],
+      "webhook": false,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "admin",
+      "ui": "src/pages/admin/ai-runtime/SovereignDeploymentDRBoard.tsx:68",
+      "fn": "audit-export-bundler",
+      "fnExists": true,
+      "tables": [
+        "user_roles",
+        "admin_action_audit",
+        "audit_export_bundles"
+      ],
+      "tablesValid": [
+        true,
+        true,
+        true
+      ],
+      "webhook": false,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "admin",
+      "ui": "src/pages/admin/ai-runtime/SuggestionsBoard.tsx:107",
+      "fn": "internal-agent-suggestion-generator",
+      "fnExists": true,
+      "tables": [
+        "error_patrol_detections",
+        "internal_agent_reflections",
+        "ai_budget_alerts",
+        "internal_agent_consensus_sessions",
+        "internal_agent_policy_drafts"
+      ],
+      "tablesValid": [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "webhook": true,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "admin",
+      "ui": "src/pages/admin/ai-runtime/TrustLadderBoard.tsx:113",
+      "fn": "internal-agent-trust-evaluator",
+      "fnExists": true,
+      "tables": [
+        "internal_agent_reflections"
+      ],
+      "tablesValid": [
+        true
+      ],
+      "webhook": true,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "admin",
+      "ui": "src/pages/admin/ai-runtime/WeeklyDigestBoard.tsx:71",
+      "fn": "internal-agent-weekly-digest",
+      "fnExists": true,
+      "tables": [
+        "error_patrol_detections",
+        "ai_implementation_suggestions",
+        "internal_agent_reflections",
+        "internal_agent_runtime_state",
+        "internal_agent_action_intents",
+        "ai_budget_alerts",
+        "internal_agent_consensus_sessions",
+        "internal_agent_weekly_digests"
+      ],
+      "tablesValid": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "webhook": true,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "admin",
+      "ui": "src/pages/admin/health/ErrorPatrolBoard.tsx:129",
+      "fn": "internal-agent-execute-action",
+      "fnExists": true,
+      "tables": [
+        "user_roles",
+        "internal_agent_action_intents",
+        "ai_workforce_approval_queue",
+        "internal_agent_actions",
+        "ai_action_receipts",
+        "internal_agent_runtime_state",
+        "timeline_events",
+        "error_patrol_detections",
+        "workflow_runs",
+        "connector_accounts",
+        "incidents"
+      ],
+      "tablesValid": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "webhook": true,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "admin",
+      "ui": "src/pages/admin/releases/EnvironmentConfigVerification.tsx:64",
+      "fn": "health-check",
+      "fnExists": true,
+      "tables": [
+        "error_events",
+        "profiles"
+      ],
+      "tablesValid": [
+        true,
+        true
+      ],
+      "webhook": true,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "admin",
+      "ui": "src/pages/admin/support/AdminRecoveryOperations.tsx:30",
+      "fn": "admin-reset-user-setup",
+      "fnExists": true,
+      "tables": [
+        "user_roles",
+        "accounts",
+        "admin_action_audit"
+      ],
+      "tablesValid": [
+        true,
+        true,
+        true
+      ],
+      "webhook": false,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "admin",
+      "ui": "src/pages/admin/support/AdminRecoveryOperations.tsx:90",
+      "fn": "admin-revoke-session",
+      "fnExists": true,
+      "tables": [
+        "user_roles",
+        "admin_sessions",
+        "admin_action_audit"
+      ],
+      "tablesValid": [
+        true,
+        true,
+        true
+      ],
+      "webhook": false,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "admin",
+      "ui": "src/pages/admin/support/AdminRecoveryOperations.tsx:171",
+      "fn": "webhook-replay",
+      "fnExists": true,
+      "tables": [
+        "user_roles",
+        "webhook_delivery_log",
+        "admin_action_audit"
+      ],
+      "tablesValid": [
+        true,
+        true,
+        true
+      ],
+      "webhook": true,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "admin",
+      "ui": "src/pages/admin/support/AdminRecoveryOperations.tsx:183",
+      "fn": "webhook-replay?action=replay",
+      "fnExists": false,
+      "tables": [],
+      "tablesValid": [],
+      "webhook": false,
+      "event": false,
+      "breaks": [
+        "edge-fn-missing:webhook-replay?action=replay"
+      ]
+    },
+    {
+      "platform": "admin",
+      "ui": "src/pages/admin/support/AdminRecoveryOperations.tsx:282",
+      "fn": "generate-support-bundle",
+      "fnExists": true,
+      "tables": [
+        "admin_role_permissions",
+        "admin_action_audit",
+        "kill_switches"
+      ],
+      "tablesValid": [
+        true,
+        true,
+        false
+      ],
+      "webhook": true,
+      "event": false,
+      "breaks": [
+        "table-not-in-schema:kill_switches"
+      ]
+    },
+    {
+      "platform": "os-desktop",
+      "ui": "src/pages/advisors/AdvisorCouncilDashboard.tsx:142",
+      "fn": "agent-intelligence",
+      "fnExists": true,
+      "tables": [
+        "agent_telemetry",
+        "agent_action_receipts",
+        "agent_signals",
+        "advisor_responses"
+      ],
+      "tablesValid": [
+        false,
+        false,
+        false,
+        false
+      ],
+      "webhook": false,
+      "event": false,
+      "breaks": [
+        "table-not-in-schema:agent_telemetry",
+        "table-not-in-schema:agent_action_receipts",
+        "table-not-in-schema:agent_signals",
+        "table-not-in-schema:advisor_responses"
+      ]
+    },
+    {
+      "platform": "os-desktop",
+      "ui": "src/pages/marketing/Waitlist.tsx:14",
+      "fn": "waitlist-stats",
+      "fnExists": true,
+      "tables": [
+        "waitlist_signups"
+      ],
+      "tablesValid": [
+        true
+      ],
+      "webhook": false,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "os-desktop",
+      "ui": "src/pages/tenant/TenantSelfServiceConsole.tsx:47",
+      "fn": "tenant-self-service-bff",
+      "fnExists": true,
+      "tables": [
+        "tenant_self_service_actions",
+        "tenant_quotas"
+      ],
+      "tablesValid": [
+        true,
+        true
+      ],
+      "webhook": true,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "os-desktop",
+      "ui": "src/pages/tenant/TenantSelfServiceConsole.tsx:70",
+      "fn": "tenant-self-service-bff",
+      "fnExists": true,
+      "tables": [
+        "tenant_self_service_actions",
+        "tenant_quotas"
+      ],
+      "tablesValid": [
+        true,
+        true
+      ],
+      "webhook": true,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "os-desktop",
+      "ui": "src/pages/tenant/TenantSelfServiceConsole.tsx:74",
+      "fn": "tenant-self-service-bff",
+      "fnExists": true,
+      "tables": [
+        "tenant_self_service_actions",
+        "tenant_quotas"
+      ],
+      "tablesValid": [
+        true,
+        true
+      ],
+      "webhook": true,
+      "event": false,
+      "breaks": []
+    },
+    {
+      "platform": "os-desktop",
+      "ui": "src/pages/tenant/TenantSelfServiceConsole.tsx:108",
+      "fn": "tenant-self-service-bff",
+      "fnExists": true,
+      "tables": [
+        "tenant_self_service_actions",
+        "tenant_quotas"
+      ],
+      "tablesValid": [
+        true,
+        true
+      ],
+      "webhook": true,
+      "event": false,
+      "breaks": []
+    }
+  ]
+}
