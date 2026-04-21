@@ -130,6 +130,14 @@ function SectionHeader({ title, description }: { title: string; description?: st
   );
 }
 
+function ManagedBadge({ source }: { source: string }) {
+  return (
+    <span className="inline-flex items-center gap-0.5 text-[8px] font-medium text-[hsl(var(--primary))]/70 bg-[hsl(var(--primary))]/8 border border-[hsl(var(--primary))]/15 rounded-full px-1.5 py-0.5 ml-1">
+      Synced with {source}
+    </span>
+  );
+}
+
 function DeepLink({ label, section }: { label: string; section: string }) {
   return (
     <button
