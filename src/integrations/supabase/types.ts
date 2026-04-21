@@ -20853,6 +20853,45 @@ export type Database = {
         }
         Relationships: []
       }
+      webhook_delivery_log: {
+        Row: {
+          created_at: string
+          event_type: string | null
+          id: string
+          last_error: string | null
+          payload: Json | null
+          retry_count: number
+          source: string | null
+          status: string
+          target_url: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          event_type?: string | null
+          id?: string
+          last_error?: string | null
+          payload?: Json | null
+          retry_count?: number
+          source?: string | null
+          status?: string
+          target_url?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          event_type?: string | null
+          id?: string
+          last_error?: string | null
+          payload?: Json | null
+          retry_count?: number
+          source?: string | null
+          status?: string
+          target_url?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       webhook_events: {
         Row: {
           created_at: string
