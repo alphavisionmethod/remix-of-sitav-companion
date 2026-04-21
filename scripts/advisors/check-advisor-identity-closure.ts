@@ -25,6 +25,10 @@ if (!existsSync(SRC)) {
     generatedAt: new Date().toISOString(), gate: "advisor-identity-closure", ok: vc.errors.length === 0,
     advisorCount: count, requiredFields, missingFields: requiredFields.filter(f => !content.includes(f)),
   });
+  writeJsonOutput("generated/advisor-identity-closure-report.json", {
+    generatedAt: new Date().toISOString(), gate: "advisor-identity-closure", ok: vc.errors.length === 0,
+    errorCount: vc.errors.length, warningCount: vc.warnings.length, issues: vc.violations,
+  });
 }
 
 vc.report("check-advisor-identity-closure");
