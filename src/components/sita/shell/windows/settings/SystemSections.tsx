@@ -17,6 +17,7 @@ import { cn } from "@/lib/utils";
 import { useSettingsValue } from "@/hooks/use-settings-value";
 import { toast } from "sonner";
 import { SettingRow } from "./shared";
+import { ResetSectionButton } from "./shared";
 import { SettingsService } from "@/platform/nova-sdk/services/settings-service";
 import { useOSOrchestration } from "@/hooks/useOSOrchestration";
 import { Link as LinkIcon } from "lucide-react";
