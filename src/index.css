@@ -355,6 +355,50 @@
   .scrollbar-none::-webkit-scrollbar { display: none; }
   .scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
 
+  /* OS Window scrollbar — macOS/Windows hybrid overlay style */
+  .os-window-scrollable {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--muted-foreground) / 0.25) transparent;
+    scroll-behavior: smooth;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+  .os-window-scrollable::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+    background: transparent;
+  }
+  .os-window-scrollable::-webkit-scrollbar-track {
+    background: transparent;
+    margin: 2px 0;
+  }
+  .os-window-scrollable::-webkit-scrollbar-thumb {
+    background: hsl(var(--muted-foreground) / 0.18);
+    border-radius: 100px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+    min-height: 40px;
+    transition: background 0.2s ease;
+  }
+  .os-window-scrollable:hover::-webkit-scrollbar-thumb {
+    background: hsl(var(--muted-foreground) / 0.35);
+    border: 2px solid transparent;
+    background-clip: padding-box;
+  }
+  .os-window-scrollable::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--muted-foreground) / 0.5);
+    border: 2px solid transparent;
+    background-clip: padding-box;
+  }
+  .os-window-scrollable::-webkit-scrollbar-thumb:active {
+    background: hsl(var(--muted-foreground) / 0.6);
+    border: 2px solid transparent;
+    background-clip: padding-box;
+  }
+  .os-window-scrollable::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+
   /* Text gradient utility */
   .text-gradient {
     background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--accent)) 100%);
