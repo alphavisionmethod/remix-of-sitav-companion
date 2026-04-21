@@ -1,0 +1,15 @@
+{
+  "generatedAt": "2026-04-21T05:40:42.242Z",
+  "metricsModeled": true,
+  "dimensions": [
+    "triageMs",
+    "firstRemediationMs",
+    "partialRecoveryMs",
+    "fullRecoveryMs",
+    "closureMs"
+  ],
+  "sourceDistinction": [
+    "drill",
+    "live"
+  ]
+}

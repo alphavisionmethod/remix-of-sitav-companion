@@ -1,0 +1,20 @@
+{
+  "generatedAt": "2026-04-21T05:40:42.242Z",
+  "subsystems": 13,
+  "criticalSubsystems": 7,
+  "nodes": [
+    "auth",
+    "db",
+    "ai-providers",
+    "connectors",
+    "release",
+    "payments-auth",
+    "rls",
+    "workflow",
+    "sync",
+    "desktop-host",
+    "proof",
+    "ingress",
+    "support-escalation"
+  ]
+}

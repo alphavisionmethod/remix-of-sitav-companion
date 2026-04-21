@@ -1,0 +1,11 @@
+{
+  "generatedAt": "2026-04-21T05:40:42.242Z",
+  "safetyLevels": 4,
+  "levels": [
+    "safe",
+    "requires-confirmation",
+    "destructive",
+    "irreversible"
+  ],
+  "destructiveRequiresDualControl": true
+}

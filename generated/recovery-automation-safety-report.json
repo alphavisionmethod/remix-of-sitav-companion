@@ -1,0 +1,26 @@
+{
+  "generatedAt": "2026-04-21T05:40:42.242Z",
+  "automationPolicy": {
+    "safe": {
+      "automated": true,
+      "confirmationRequired": false
+    },
+    "requires-confirmation": {
+      "automated": true,
+      "confirmationRequired": true,
+      "dualControl": false
+    },
+    "destructive": {
+      "automated": false,
+      "confirmationRequired": true,
+      "dualControl": true
+    },
+    "irreversible": {
+      "automated": false,
+      "confirmationRequired": true,
+      "dualControl": true
+    }
+  },
+  "rateLimits": "Enforced per CONFIRMATION_POLICY timeouts",
+  "blastRadiusConstraints": "Destructive steps require dual-control approval"
+}

@@ -1,0 +1,20 @@
+{
+  "generatedAt": "2026-04-21T05:40:42.242Z",
+  "systemFamilies": 13,
+  "criticalFamilies": 11,
+  "families": [
+    "auth",
+    "onboarding",
+    "app-lifecycle",
+    "advisors",
+    "ai-runtime",
+    "payments",
+    "connectors",
+    "files",
+    "desktop",
+    "os-appliance",
+    "control-plane",
+    "support",
+    "release"
+  ]
+}

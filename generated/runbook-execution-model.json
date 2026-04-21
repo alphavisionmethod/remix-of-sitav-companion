@@ -1,0 +1,20 @@
+{
+  "generatedAt": "2026-04-21T05:40:42.242Z",
+  "states": 13,
+  "transitions": "defined",
+  "model": [
+    "REGISTERED",
+    "READY",
+    "TRIAGED",
+    "EXECUTION_PENDING",
+    "AWAITING_CONFIRMATION",
+    "AUTOMATED_STEP_RUNNING",
+    "MANUAL_STEP_REQUIRED",
+    "PARTIALLY_REMEDIATED",
+    "RECOVERED",
+    "FAILED",
+    "ESCALATED",
+    "POSTMORTEM_PENDING",
+    "CLOSED"
+  ]
+}
