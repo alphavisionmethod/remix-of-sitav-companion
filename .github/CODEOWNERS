@@ -1,13 +1,65 @@
-# ════════════════════════════════════════════════════════════════════
-# SITA OS — CODEOWNERS
+# ═══════════════════════════════════════════════════════════════════════
+# SITA OS — CODEOWNERS (Production Governance)
 # Routes pull-request reviews to the team that owns each path.
 # Mirrors src/lib/backend-topology/edge-function-owner-map.ts
-# (EDGE_FUNCTION_OWNERSHIP_MANIFEST.reviewerCodeOwners).
 # Enforced by BLOCK gate #26 (check-edge-function-ownership-completeness).
-# ════════════════════════════════════════════════════════════════════
+# ═══════════════════════════════════════════════════════════════════════
 
 # Default catch-all
 *                                                @sita/platform-core
+
+# ── Root configs (changes require platform-core review) ──────────────
+package.json                                     @sita/platform-core
+tsconfig*.json                                   @sita/platform-core
+vite.config.*                                    @sita/platform-core
+tailwind.config.*                                @sita/platform-core
+Dockerfile                                       @sita/platform-core @sita/cloud-infrastructure
+docker-compose*.yml                              @sita/platform-core @sita/cloud-infrastructure
+.dockerignore                                    @sita/platform-core
+.env.production.example                          @sita/platform-core
+Makefile                                         @sita/platform-core
+
+# ── CI/CD and GitHub governance ──────────────────────────────────────
+/.github/                                        @sita/platform-core
+/.github/workflows/                              @sita/platform-core @sita/cloud-infrastructure
+/.github/CODEOWNERS                              @sita/platform-core
+
+# ── Frontend application ────────────────────────────────────────────
+/src/components/                                 @sita/user-experience
+/src/pages/                                      @sita/user-experience
+/src/contexts/                                   @sita/user-experience
+/src/hooks/                                      @sita/user-experience
+/src/routes/                                     @sita/user-experience
+/src/platform/                                   @sita/platform-core
+/src/lib/                                        @sita/platform-core
+/src/services/                                   @sita/platform-core
+/src/integrations/                               @sita/platform-core
+
+# ── Deploy services ─────────────────────────────────────────────────
+/deploy/api-gateway/                             @sita/cloud-infrastructure
+/deploy/brain-core/                              @sita/cloud-infrastructure @sita/ai-engineering
+
+# ── Scripts and validators ──────────────────────────────────────────
+/scripts/                                        @sita/platform-core
+/scripts/architecture/                           @sita/platform-core
+/scripts/release/                                @sita/platform-core @sita/compliance-security
+/scripts/validation/                             @sita/platform-core
+/scripts/db/                                     @sita/platform-core @sita/compliance-security
+
+# ── OS / Desktop / Native ──────────────────────────────────────────
+/os/                                             @sita/os-kernel
+/electron/                                       @sita/app-platform
+/mobile/                                         @sita/app-platform
+
+# ── Database migrations ─────────────────────────────────────────────
+/supabase/migrations/                            @sita/platform-core @sita/compliance-security
+/supabase/config.toml                            @sita/platform-core
+
+# ── Generated artifacts (review not required, ownership tracked) ────
+/generated/                                      @sita/platform-core
+
+# ── Documentation ───────────────────────────────────────────────────
+/docs/                                           @sita/platform-core
 
 # ── Edge functions (per-team patterns) ───────────────────────────────
 /supabase/functions/admin-*/                     @sita/admin-governance
