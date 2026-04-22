@@ -40,6 +40,20 @@ export default defineConfig({
       timeout: 60_000,
       retries: 2,
     },
+    {
+      name: "visual-regression",
+      testMatch: "visual-regression-panels.spec.ts",
+      use: {
+        ...devices["Desktop Chrome"],
+      },
+      timeout: 60_000,
+      retries: 0,
+    },
+    {
+      name: "edge-contracts",
+      testMatch: "edge-function-contracts.spec.ts",
+      use: { ...devices["Desktop Chrome"] },
+    },
   ],
   webServer: process.env.CI
     ? undefined
