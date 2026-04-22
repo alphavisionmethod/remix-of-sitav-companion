@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-04-22T00:24:18.424Z",
+  "timestamp": "2026-04-22T00:24:54.763Z",
   "totalRoutePageSources": 27,
   "totalPageOwnerEntries": 26,
   "totalFeatures": 30,
@@ -34,18 +34,6 @@
       "rule": "page-owner-has-route",
       "item": "src/pages/admin/AdminRunbookViewerPage.tsx",
       "detail": "PAGE_OWNER_MAP page \"src/pages/admin/AdminRunbookViewerPage.tsx\" is not referenced by any route in ROUTE_METADATA_REGISTRY",
-      "severity": "warn"
-    },
-    {
-      "rule": "route-has-feature-owner",
-      "item": "auth-login (/login)",
-      "detail": "Route \"/login\" is not claimed by any feature in FEATURE_REGISTRY",
-      "severity": "warn"
-    },
-    {
-      "rule": "route-has-feature-owner",
-      "item": "auth-register (/register)",
-      "detail": "Route \"/register\" is not claimed by any feature in FEATURE_REGISTRY",
       "severity": "warn"
     },
     {
