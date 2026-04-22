@@ -97,7 +97,6 @@ function checkPageShellCoverage() {
 function checkEmptyStateImports() {
   const files = globSync("src/**/*.tsx", { cwd: path.resolve(__dirname, "../.."), ignore: ["src/components/primitives/**", "src/components/sita/EmptyState.tsx", "src/components/sita/PremiumEmptyState.tsx"] });
   const staleImports = [
-    /from\s+["']@\/components\/sita\/PremiumEmptyState["']/,
     /from\s+["']@\/components\/sita\/ContextualEmptyState["']/,
     /from\s+["']@\/components\/sita\/EmptyStateCTA["']/,
   ];

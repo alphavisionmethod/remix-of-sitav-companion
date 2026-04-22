@@ -5,7 +5,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { ReactNode } from "react";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 export type PageWidth = "narrow" | "standard" | "wide" | "full";
@@ -34,7 +34,9 @@ const containerVariants = {
 };
 
 export const PageShell = ({ children, width = "wide", className, instant }: PageShellProps) => {
-  if (instant) {
+  const shouldReduceMotion = useReducedMotion();
+
+  if (instant || shouldReduceMotion) {
     return (
       <main className={cn("mx-auto space-y-6 p-4 md:p-6", WIDTH_MAP[width], className)}>
         {children}
