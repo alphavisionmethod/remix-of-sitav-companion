@@ -25,6 +25,7 @@ interface Props {
 
 export function DiagnosticExportAuditPanel({ operatorId, canExecute }: Props) {
   const { isDemoMode } = useDataMode();
+  const { user } = useAuth();
   const { toast } = useToast();
 
   const { data: liveAudits } = useQuery({
