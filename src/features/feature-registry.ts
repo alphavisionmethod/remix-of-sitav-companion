@@ -203,7 +203,7 @@ export const FEATURE_REGISTRY: readonly FeatureSurfaceEntry[] = [
   {
     featureId: "revenue-office", name: "Revenue Office", canonicalImport: "@/features/revenue-office",
     domain: "finance", riskTier: "R2", status: "alpha",
-    ownedRoutes: ["/revenue"], ownedApps: [],
+    ownedRoutes: ["/revenue", "/revenue-office"], ownedApps: [],
     runtimeSupport: [...WEB_DESKTOP], stateGrammar: [...CORE_STATES],
     proofCoverage: PARTIAL_PROOF, supportIntegrated: false, trustIntegrated: false,
   },
