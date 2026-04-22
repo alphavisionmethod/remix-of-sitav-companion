@@ -29,9 +29,9 @@ const DOMAIN_HEALTH: Record<PulseDomain, number> = {
 };
 
 const DOMAIN_HEALTH_COLORS: Record<PulseDomain, string> = {
-  business: "hsl(var(--hud-ring-active))",
-  finance: "hsl(var(--hud-gauge-start))",
-  concierge: "hsl(var(--hud-gauge-consensus-start))",
+  business: "hsl(280, 50%, 60%)",
+  finance: "hsl(145, 60%, 45%)",
+  concierge: "hsl(40, 90%, 55%)",
 };
 
 const PULSE_DATA: Record<PulseDomain, {
@@ -130,8 +130,8 @@ export function BoardroomPulseView({ scope, onNavigate }: Props) {
               className={cn(
                 "flex items-center gap-2 px-4 py-2 rounded-xl text-[12px] font-semibold transition-all",
                 domain === tab.id
-                  ? "bg-hud-ring-active/10 text-hud-ring-active border border-hud-ring-active/20"
-                  : "text-hud-text-muted hover:text-hud-text-secondary border border-transparent",
+                  ? "bg-[hsl(280_40%_50%/0.1)] text-[hsl(280_50%_75%)] border border-[hsl(280_50%_50%/0.2)]"
+                  : "text-[hsl(0_0%_100%/0.4)] hover:text-[hsl(0_0%_100%/0.7)] border border-transparent",
               )}
             >
               <tab.icon size={14} />
@@ -162,7 +162,7 @@ export function BoardroomPulseView({ scope, onNavigate }: Props) {
             >
               {/* Flash highlight on change */}
               <motion.div
-                className="absolute inset-0 bg-hud-ring-active/[0.08] pointer-events-none"
+                className="absolute inset-0 bg-[hsl(280_50%_50%/0.08)] pointer-events-none"
                 initial={{ opacity: 1 }}
                 animate={{ opacity: 0 }}
                 transition={{ duration: 0.8 }}
@@ -184,7 +184,7 @@ export function BoardroomPulseView({ scope, onNavigate }: Props) {
 
       {/* Priorities */}
       <div>
-        <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-hud-text-label mb-3">
+        <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[hsl(280_50%_65%/0.5)] mb-3">
           Top Priorities
         </p>
         <div className="space-y-2">
@@ -208,7 +208,7 @@ export function BoardroomPulseView({ scope, onNavigate }: Props) {
 
       {/* Advisor stances — speech bubble style */}
       <div>
-        <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-hud-text-label mb-3">
+        <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[hsl(280_50%_65%/0.5)] mb-3">
           Advisor Stances
         </p>
         <div className="space-y-2">
@@ -240,14 +240,14 @@ export function BoardroomPulseView({ scope, onNavigate }: Props) {
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
-                      <p className="text-[12px] font-bold text-hud-text-primary">{topAdv.name}</p>
+                      <p className="text-[12px] font-bold text-[hsl(0_0%_100%/0.8)]">{topAdv.name}</p>
                       <span className="text-[9px] font-medium" style={{ color: topAdv.accentColor }}>{topAdv.role}</span>
                     </div>
                     {/* Speech bubble */}
                     <div className="relative rounded-lg bg-[hsl(0_0%_100%/0.03)] border border-[hsl(0_0%_100%/0.06)] p-2.5">
-                      <div className="absolute -left-1.5 top-3 w-2.5 h-2.5 bg-hud-glass-highlight border-l border-b border-hud-glass-border rotate-45" />
-                      <p className="text-[11px] text-hud-text-secondary italic flex items-start gap-1.5 relative z-10">
-                        <MessageCircle size={10} className="shrink-0 mt-0.5 text-hud-ring-active/40" />
+                      <div className="absolute -left-1.5 top-3 w-2.5 h-2.5 bg-[hsl(0_0%_100%/0.03)] border-l border-b border-[hsl(0_0%_100%/0.06)] rotate-45" />
+                      <p className="text-[11px] text-[hsl(0_0%_100%/0.55)] italic flex items-start gap-1.5 relative z-10">
+                        <MessageCircle size={10} className="shrink-0 mt-0.5 text-[hsl(280_50%_55%/0.4)]" />
                         "{stance}"
                       </p>
                     </div>

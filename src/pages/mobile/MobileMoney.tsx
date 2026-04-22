@@ -5,29 +5,25 @@
 import { MobileShell } from "@/components/mobile/MobileShell";
 import { ArrowUpRight, ArrowDownLeft, Wallet } from "lucide-react";
 import { useMobileMoneyAccounts, useMobileMoneyTransactions } from "@/hooks/use-mobile-data";
-import { MobileEmptyState, MobileSectionError } from "@/components/mobile/MobileEmptyState";
+import { MobileEmptyState, MobileErrorState } from "@/components/mobile/MobileEmptyState";
 import { SafeToSpendSkeleton, AccountListSkeleton, TransactionListSkeleton } from "@/components/mobile/MobileSectionSkeleton";
 
 const MobileMoney = () => {
   const accountData = useMobileMoneyAccounts();
   const txData = useMobileMoneyTransactions();
 
+  const hasError = accountData.error || txData.error;
   const { safeToSpend, accounts } = accountData.data;
   const transactions = txData.data;
 
   return (
     <MobileShell title="Money">
-      <>
+      {hasError ? (
+        <MobileErrorState onRetry={() => { accountData.refetch(); txData.refetch(); }} />
+      ) : (
+        <>
           {/* Safe to spend */}
-          {accountData.error ? (
-            <div className="mb-4">
-              <MobileSectionError
-                section="Accounts"
-                onRetry={accountData.refetch}
-                skeleton={<><SafeToSpendSkeleton /><AccountListSkeleton /></>}
-              />
-            </div>
-          ) : accountData.isLoading ? (
+          {accountData.isLoading ? (
             <SafeToSpendSkeleton />
           ) : (
             <div className="p-4 rounded-2xl bg-primary/10 border border-primary/20 mb-4 text-center">
@@ -67,13 +63,7 @@ const MobileMoney = () => {
 
           {/* Transactions */}
           <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">Recent Transactions</h2>
-          {txData.error ? (
-            <MobileSectionError
-              section="Transactions"
-              onRetry={txData.refetch}
-              skeleton={<TransactionListSkeleton />}
-            />
-          ) : txData.isLoading ? (
+          {txData.isLoading ? (
             <TransactionListSkeleton />
           ) : transactions.length === 0 ? (
             <MobileEmptyState
@@ -96,7 +86,8 @@ const MobileMoney = () => {
               ))}
             </div>
           )}
-      </>
+        </>
+      )}
     </MobileShell>
   );
 };

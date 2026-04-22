@@ -61,10 +61,6 @@ function ParticleCanvas() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
-    // Respect reduced-motion preference
-    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    if (mq.matches) return;
-
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
@@ -72,12 +68,11 @@ function ParticleCanvas() {
 
     let animId: number;
     const particles: { x: number; y: number; vx: number; vy: number; r: number; a: number }[] = [];
-    const COUNT = 16; // reduced from 30 for perf
+    const COUNT = 30;
 
     const resize = () => {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      canvas.width = canvas.offsetWidth * dpr;
-      canvas.height = canvas.offsetHeight * dpr;
+      canvas.width = canvas.offsetWidth * 2;
+      canvas.height = canvas.offsetHeight * 2;
     };
     resize();
     window.addEventListener("resize", resize);
@@ -93,30 +88,21 @@ function ParticleCanvas() {
       });
     }
 
-    // Throttle to ~30fps for lower GPU load
-    let lastTime = 0;
-    const FRAME_INTERVAL = 1000 / 30;
-
     const draw = () => {
-      animId = requestAnimationFrame(draw);
-      const now = performance.now();
-      if (now - lastTime < FRAME_INTERVAL) return;
-      lastTime = now;
-
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      for (let i = 0; i < particles.length; i++) {
-        const p = particles[i];
+      for (const p of particles) {
         p.x += p.vx;
         p.y += p.vy;
         if (p.x < 0) p.x = canvas.width;
-        else if (p.x > canvas.width) p.x = 0;
+        if (p.x > canvas.width) p.x = 0;
         if (p.y < 0) p.y = canvas.height;
-        else if (p.y > canvas.height) p.y = 0;
+        if (p.y > canvas.height) p.y = 0;
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
         ctx.fillStyle = `rgba(180, 140, 255, ${p.a})`;
         ctx.fill();
       }
+      animId = requestAnimationFrame(draw);
     };
     draw();
 

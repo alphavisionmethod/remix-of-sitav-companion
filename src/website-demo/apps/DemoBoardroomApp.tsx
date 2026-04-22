@@ -18,8 +18,8 @@ export function DemoBoardroomApp() {
                 <span className="text-[12px] text-white/90 font-semibold text-center">{a.name}</span>
                 <span className="text-[9px] text-white/30 uppercase tracking-wider">{a.domain}</span>
                 <div className="w-full h-1.5 rounded-full bg-white/[0.06] overflow-hidden">
-                  <div className="h-full rounded-full transition-all duration-700 bg-gradient-to-r from-hud-confidence-start to-hud-confidence-end"
-                    style={{ width: `${a.confidence}%`, boxShadow: "0 0 6px hsl(var(--hud-confidence-fill-start) / 0.3)" }} />
+                  <div className="h-full rounded-full transition-all duration-700"
+                    style={{ width: `${a.confidence}%`, background: "linear-gradient(90deg, hsl(152 55% 48%), hsl(160 60% 55%))", boxShadow: "0 0 6px hsl(152 55% 48% / 0.3)" }} />
                 </div>
                 <span className="text-[9px] text-white/25 font-mono">{a.confidence}%</span>
               </div>

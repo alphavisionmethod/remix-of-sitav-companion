@@ -117,39 +117,6 @@ export default {
           admin: "hsl(var(--domain-admin))",
           files: "hsl(var(--domain-files))",
         },
-        hud: {
-          ring: {
-            active: "hsl(var(--hud-ring-active))",
-            idle: "hsl(var(--hud-ring-idle))",
-            speaking: "hsl(var(--hud-ring-speaking))",
-            selected: "hsl(var(--hud-ring-selected))",
-          },
-          glass: {
-            bg: "hsl(var(--hud-glass-bg))",
-            border: "hsl(var(--hud-glass-border))",
-            "border-hover": "hsl(var(--hud-glass-border-hover))",
-            highlight: "hsl(var(--hud-glass-highlight))",
-            "highlight-hover": "hsl(var(--hud-glass-highlight-hover))",
-          },
-          gauge: {
-            start: "hsl(var(--hud-gauge-start))",
-            end: "hsl(var(--hud-gauge-end))",
-            track: "hsl(var(--hud-gauge-track))",
-            "consensus-start": "hsl(var(--hud-gauge-consensus-start))",
-            "consensus-end": "hsl(var(--hud-gauge-consensus-end))",
-          },
-          confidence: {
-            start: "hsl(var(--hud-confidence-fill-start))",
-            end: "hsl(var(--hud-confidence-fill-end))",
-            track: "hsl(var(--hud-confidence-track))",
-          },
-          text: {
-            primary: "hsl(var(--hud-text-primary))",
-            secondary: "hsl(var(--hud-text-secondary))",
-            muted: "hsl(var(--hud-text-muted))",
-            label: "hsl(var(--hud-text-label))",
-          },
-        },
         surface: {
           "0": "hsl(var(--surface-0))",
           "1": "hsl(var(--surface-1))",

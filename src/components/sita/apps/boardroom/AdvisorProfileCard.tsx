@@ -59,8 +59,8 @@ export function AdvisorProfileCard({
       className={cn(
         "rounded-2xl border p-4 text-left transition-all duration-300 relative group backdrop-blur-md overflow-hidden",
         selected
-          ? "border-hud-ring-selected/35 bg-hud-ring-active/10 shadow-[0_0_30px_hsl(var(--hud-ring-active)/0.1)]"
-          : "border-hud-glass-border bg-hud-glass-highlight hover:bg-hud-glass-highlight-hover hover:border-hud-glass-border-hover",
+          ? "border-[hsl(280_50%_55%/0.35)] bg-[hsl(280_40%_50%/0.1)] shadow-[0_0_30px_hsl(280_50%_50%/0.1)]"
+          : "border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_100%/0.02)] hover:bg-[hsl(0_0%_100%/0.05)] hover:border-[hsl(0_0%_100%/0.14)]",
         className,
       )}
     >

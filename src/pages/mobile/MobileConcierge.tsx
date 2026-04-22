@@ -5,7 +5,7 @@
 import { MobileShell } from "@/components/mobile/MobileShell";
 import { Calendar, ShoppingCart, RotateCcw, ArrowRight, CheckCircle2, Clock, CalendarCheck } from "lucide-react";
 import { useMobileConciergeData } from "@/hooks/use-mobile-data";
-import { MobileEmptyState, MobileSectionError } from "@/components/mobile/MobileEmptyState";
+import { MobileEmptyState, MobileErrorState } from "@/components/mobile/MobileEmptyState";
 import { ConciergeSectionSkeleton } from "@/components/mobile/MobileSectionSkeleton";
 
 const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
@@ -18,11 +18,7 @@ const MobileConcierge = () => {
   return (
     <MobileShell title="Concierge">
       {error ? (
-        <MobileSectionError
-          section="Concierge"
-          onRetry={refetch}
-          skeleton={<ConciergeSectionSkeleton />}
-        />
+        <MobileErrorState onRetry={refetch} />
       ) : isLoading ? (
         <ConciergeSectionSkeleton />
       ) : (

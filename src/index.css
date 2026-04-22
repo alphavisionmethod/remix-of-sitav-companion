@@ -98,44 +98,6 @@
     --domain-admin: 220 8% 50%;
     --domain-files: 190 60% 50%;
 
-    /* ===================== HUD / NEON BOARDROOM ===================== */
-    /* Ring colors — neon accent rings around advisor avatars */
-    --hud-ring-active: 280 50% 55%;
-    --hud-ring-idle: 220 15% 40%;
-    --hud-ring-speaking: 152 55% 55%;
-    --hud-ring-selected: 265 55% 62%;
-
-    /* Glass — panel and card glass surfaces */
-    --hud-glass-bg: 225 10% 10% / 0.72;
-    --hud-glass-border: 0 0% 100% / 0.06;
-    --hud-glass-border-hover: 0 0% 100% / 0.14;
-    --hud-glass-highlight: 0 0% 100% / 0.03;
-    --hud-glass-highlight-hover: 0 0% 100% / 0.05;
-
-    /* Gauge gradients — arc/radial gauge fills */
-    --hud-gauge-start: 152 55% 48%;
-    --hud-gauge-end: 160 60% 55%;
-    --hud-gauge-track: 0 0% 100% / 0.06;
-    --hud-gauge-consensus-start: 45 80% 55%;
-    --hud-gauge-consensus-end: 38 85% 58%;
-
-    /* Neon glow intensities */
-    --hud-glow-sm: 0 0 6px;
-    --hud-glow-md: 0 0 16px;
-    --hud-glow-lg: 0 0 30px;
-    --hud-glow-xl: 0 0 56px;
-
-    /* Confidence bar */
-    --hud-confidence-fill-start: 152 55% 48%;
-    --hud-confidence-fill-end: 160 60% 55%;
-    --hud-confidence-track: 0 0% 100% / 0.06;
-
-    /* Label opacity tiers */
-    --hud-text-primary: 0 0% 100% / 0.9;
-    --hud-text-secondary: 0 0% 100% / 0.55;
-    --hud-text-muted: 0 0% 100% / 0.30;
-    --hud-text-label: 280 50% 65% / 0.5;
-
     /* ===================== SURFACE LAYERS ===================== */
     --surface-0: 225 12% 7%;
     --surface-1: 225 10% 9.5%;
@@ -214,35 +176,6 @@
     --chart-3: 38 85% 52%;
     --chart-4: 190 60% 45%;
     --chart-5: 25 90% 50%;
-  }
-
-  .light {
-    /* HUD tokens — adjusted for light mode legibility */
-    --hud-ring-active: 280 45% 50%;
-    --hud-ring-idle: 220 15% 65%;
-    --hud-ring-speaking: 152 50% 42%;
-    --hud-ring-selected: 265 50% 55%;
-
-    --hud-glass-bg: 220 15% 96% / 0.82;
-    --hud-glass-border: 220 15% 20% / 0.08;
-    --hud-glass-border-hover: 220 15% 20% / 0.16;
-    --hud-glass-highlight: 220 15% 20% / 0.02;
-    --hud-glass-highlight-hover: 220 15% 20% / 0.05;
-
-    --hud-gauge-start: 152 50% 42%;
-    --hud-gauge-end: 160 55% 48%;
-    --hud-gauge-track: 220 15% 20% / 0.08;
-    --hud-gauge-consensus-start: 45 75% 48%;
-    --hud-gauge-consensus-end: 38 80% 52%;
-
-    --hud-confidence-fill-start: 152 50% 42%;
-    --hud-confidence-fill-end: 160 55% 48%;
-    --hud-confidence-track: 220 15% 20% / 0.08;
-
-    --hud-text-primary: 225 20% 12% / 0.9;
-    --hud-text-secondary: 225 20% 12% / 0.6;
-    --hud-text-muted: 225 20% 12% / 0.35;
-    --hud-text-label: 280 45% 45% / 0.6;
   }
 }
 
@@ -483,33 +416,6 @@
   }
   .os-window-scrollable::-webkit-scrollbar-corner {
     background: transparent;
-  }
-
-  /* ── Boardroom animation keyframes (GPU-friendly CSS) ── */
-  @keyframes orbit {
-    from { offset-distance: 0%; }
-    to { offset-distance: 100%; }
-  }
-  @keyframes sonar-inner {
-    0%, 100% { transform: scale(1); opacity: 0.6; }
-    50% { transform: scale(1.18); opacity: 0.2; }
-  }
-  @keyframes sonar-outer {
-    0%, 100% { transform: scale(1); opacity: 0.3; }
-    50% { transform: scale(1.25); opacity: 0.08; }
-  }
-  @keyframes idle-breathe {
-    0%, 100% { transform: scale(1); opacity: 0.3; }
-    50% { transform: scale(1.03); opacity: 0.7; }
-  }
-
-  /* Reduce motion for accessibility and low-end devices */
-  @media (prefers-reduced-motion: reduce) {
-    .will-change-transform,
-    [style*="animation"] {
-      animation: none !important;
-      transition: none !important;
-    }
   }
 
   /* Text gradient utility */
