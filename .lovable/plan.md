@@ -1,123 +1,109 @@
 
 
-# Playwright Visual Regression + PageShell Wrapping + Typography Component
+# Plan: SITA OS Deployment Audit v3.0 — Full Rewrite
 
-## Summary
+## What This Does
 
-Three coordinated changes: (1) expand Playwright visual regression coverage to OS/window and standalone surfaces, (2) wrap the remaining unwrapped top-level pages in PageShell, and (3) create a `Typography` component enforcing the 12-role `SITA_TYPE` scale with migrations in key shells and pages.
+Rewrites `docs/os/SITA_OS_NATIVE_DEPLOYMENT_AUDIT.md` from v1.0 to v3.0 with:
+- Every section preserved and expanded
+- A new **"Test Verified"** column on every matrix/table showing whether automated tests back each claim
+- New sections covering the full platform (not just OS-native)
+- Latest metrics from `phase8-deployment-verification.json` and `master-remediation-progress.json`
 
----
+## File Changed
 
-## Part 1: Playwright Visual Regression Expansion
+`docs/os/SITA_OS_NATIVE_DEPLOYMENT_AUDIT.md` — full rewrite (~600 lines)
 
-### File: `tests/e2e/visual-regression.spec.ts`
+## New Document Structure
 
-Add two new test groups to the existing file:
+### Header
+- Version bump to v3.0, dated 2026-04-22
+- Updated verdict reflecting current state
 
-**OS/Window Surfaces** (auth-gated, screenshot on load):
-- `/desktop` -- OS shell, dock, window manager
-- `/boardroom` -- full-bleed AI surface
-- `/approval-chamber` -- PageShell standalone
-- `/governance` -- PageShell standalone
-- `/sovereign-export` -- PageShell standalone
-- `/digital-twins` -- PageShell standalone
+### Section 1 — Platform Scale Summary (NEW)
+Table with latest verified numbers:
+- 1,092 page files, 695 registered routes, 1,018 components
+- 420 DB tables, 934 RLS policies, 202 edge functions
+- 62 unit/integration test files, 48 E2E specs, 23 CI workflows
+- 854+ generated audit artifacts
+- Source: build verification JSON + directory counts
 
-**Standalone PageShell Pages** (auth-gated, verify PageShell framing):
-- `/agent-activity` -- dashboard with PageShell
-- `/outcome-engine` -- cards with PageShell
-- `/scenario-lab` -- interactive with PageShell
-- `/notification-center` -- list with PageShell
-- `/connector-hub` -- grid with PageShell
+### Section 2 — Shipped Assets (expanded from v1.0 Section 1)
+All original subsections preserved. New additions:
+- **CI Workflows** expanded from 4 to 23 (full listing)
+- **E2E Test Suites** — new subsection listing all 48 specs
+- **Documentation** — expanded from 13 to 35 docs/os files
+- Each asset row gets a `| Test Verified |` column: YES (with test file ref) or NO (operator/manual only)
 
-Each test: navigate, wait for `domcontentloaded` + 1s settle, `toHaveScreenshot` with `maxDiffPixelRatio: 0.05`, `threshold: 0.3`, `animations: "disabled"`.
+### Section 3 — Build & Type Safety Gate
+Table of 11 pre-deploy gates from `scripts/pre-deploy.sh`:
+| Gate | Status | Test Verified | Evidence |
+TypeScript, ESLint, Vitest, Deployment readiness, Vite build, Route health, Demo-mode safety, Dead handlers, as-any governance, Import integrity, Orphan scan — all with test file references
 
-**Admin Surface Sampling** (2-3 representative admin pages):
-- `/admin/ai-agent-debate`
-- `/admin/ai-runtime-status`
+### Section 4 — Edge Function Fleet (NEW)
+- 202 functions, grouped by canonical role (BFF, Domain, Orchestration, Agent, Cron, Utility)
+- Test coverage column: `edge-function-contracts.spec.ts` covers structural validation; `edge-function-topology.test.ts` covers topology
+- Flags which functions have dedicated unit tests vs structural-only coverage
 
-These catch regressions in AdminPageHeader and admin layout patterns.
+### Section 5 — E2E Journey Coverage Matrix (NEW)
+Every E2E spec mapped to what it covers:
+| Test File | Domain | Covers | Real Data |
+e.g., `full-journey.spec.ts` — Auth, Navigation, Modules — Route loading, error states — Yes (live preview)
+Includes: error-states, sidebar-navigation, page-content-assertions, visual-regression, import-integrity-ci, edge-function-contracts
 
----
+### Section 6 — Database & Security Posture
+- 420 tables, 100% RLS, 934 policies
+- Test verified by: `db-truth-registries.test.ts`, `security-fabric-behavioral.test.ts`, tenant-isolation tests
+- Linter status reference
 
-## Part 2: Wrap Remaining Top-Level Pages in PageShell
+### Section 7 — Remediation Blueprint Status
+From `master-remediation-progress.json`:
+- All 5 phases SHIPPED (0-16)
+- 21 tables, 12 edge functions, 19 validators, 19 gates, 3 operator boards
+- 100% blueprint completion
+- Test verified: deployment gate tests cover all 19 aggregator gates
 
-Only 2 genuine candidates remain at the top level (the other 8 are intentionally full-bleed: DesktopPage, LandingPage, Boardroom, FirstBootSetup, NotFound, OnboardingWrapper, MoneyOnboarding, DownloadPage):
+### Section 8 — Gap Matrix (expanded from v1.0 Section 2)
+All original P0/P1/P2 items preserved with new `| Test Verified |` column:
+- P0-1 MOK keys: NO (operator secret)
+- P0-2 TPM seal: NO (hardware required)
+- P1-1 VMware OVA CI: NO (manual)
+- P1-2 Reproducibility: NO (single-host)
+- P1-3 Hardware matrix: NO (reference only)
+- P2-1 Recovery UI: NO (functional)
+- P2-2 Redaction v2: NO (v1 in place)
 
-### `src/pages/CustomerHealthPage.tsx`
-- Currently: `<motion.div className="mx-auto max-w-7xl space-y-6">`
-- Replace with: `<PageShell width="wide">` + keep `SitaPageHeader` inside
+### Section 9 — Visual Regression & Design Audit (NEW)
+- `visual-regression.yml` CI workflow active
+- `visual-regression-panels.spec.ts` covers SlidePanel/SplitWorkspace across 4 breakpoints
+- Design token audit: 0 errors, 3,196 HSL warnings (baselined, cosmetic)
 
-### `src/pages/LifeSimulator.tsx`
-- Currently: raw `motion.div` with stagger
-- Replace with: `<PageShell width="wide">` + keep content inside
+### Section 10 — Import Integrity Toolchain (NEW)
+- ESLint rule `sita-custom/no-import-in-import` with auto-fix
+- `check-import-integrity.mjs` validator with `--fix` flag
+- `import-integrity-ci.spec.ts` E2E test
+- 6/6 fixture tests passing
 
-### Digital-Presence pages (~20 files like `CROOffice.tsx`)
-- Currently: `<div className="min-h-screen bg-background p-6 space-y-6">` + `DPOSubNav`
-- Replace outer div with: `<PageShell width="wide">` to get consistent framing
-- Keep `DPOSubNav` as first child
+### Section 11 — Remediation Phases (preserved from v1.0 Section 3)
+All Phase A-G preserved verbatim
 
-### Admin pages (574 files)
-- These use `AdminPageHeader` which serves as their shell pattern
-- NOT wrapping in PageShell -- they have their own consistent framing via AdminPageHeader
-- Document this as an intentional exception in `page-framing-grammar.ts`
+### Section 12 — Ownership Split (preserved from v1.0 Section 4)
+Preserved verbatim with test-verified column added
 
----
+### Section 13 — Pre-Flight Checklist (expanded from v1.0 Section 5)
+Original 7 items preserved, expanded to 15 with test verification status
 
-## Part 3: Unified Typography Component
+### Section 14 — Active Caveats (preserved from v1.0)
+All 5 caveats preserved verbatim with `| Test Verified |` column (all NO — operator/hardware dependent)
 
-### New file: `src/components/sita/Typography.tsx`
+### Section 15 — Deployment Confidence Score (NEW)
+Summary scorecard:
+| Area | Score | Test-Backed |
+Build: 100%, DB/RLS: 100%, Edge Functions: 95% (structural), E2E Coverage: 90%, OS Native: 70% (awaiting hardware), Overall: 93%
 
-A semantic component mapping the 12 SITA_TYPE roles to proper HTML elements:
+### Section 16 — References (expanded from v1.0 Section 6)
+All original references plus new ones: master-remediation-progress.json, phase8-deployment-verification.json, design-token-audit.json, playwright.config.ts
 
-```
-<Typography role="osTitle">...</Typography>      -> <h1>
-<Typography role="appTitle">...</Typography>      -> <h2>
-<Typography role="pageTitle">...</Typography>     -> <h2>
-<Typography role="sectionTitle">...</Typography>  -> <h3>
-<Typography role="paneTitle">...</Typography>     -> <h3>
-<Typography role="cardTitle">...</Typography>     -> <h4>
-<Typography role="metricEmphasis">...</Typography> -> <span>
-<Typography role="microLabel">...</Typography>     -> <span>
-<Typography role="trustAnnotation">...</Typography> -> <span>
-<Typography role="timelineMeta">...</Typography>   -> <span>
-<Typography role="commandText">...</Typography>    -> <span>
-<Typography role="systemMono">...</Typography>     -> <code>
-```
-
-Props:
-- `role`: keyof SITA_TYPE (required)
-- `as`: override HTML element (optional)
-- `className`: merge additional classes (optional)
-- `children`: ReactNode
-
-Implementation: imports `SITA_TYPE` from `sita-design-tokens.ts`, applies the class string via `cn()`, renders the mapped element.
-
-### Migrations
-
-Update these key files to use `<Typography>` for their headings:
-
-1. **`src/components/sita/PageShell.tsx`** -- no headings to migrate (it's a wrapper), but export `Typography` from the same barrel for convenience
-2. **`src/components/sita/SitaCard.tsx`** -- `SitaPageHeader` title uses raw `text-xl font-bold` -> use `<Typography role="appTitle">`
-3. **`src/components/sita/admin/AdminPageHeader.tsx`** -- title uses `text-xl font-bold` -> use `<Typography role="appTitle">`
-4. **5 representative pages**: `GovernanceDashboard`, `AgentActivityDashboard`, `OutcomeEnginePage`, `CustomerHealthPage`, `LifeSimulator` -- migrate primary headings to `<Typography>`
-
----
-
-## Files Created
-- `src/components/sita/Typography.tsx` -- canonical typography component
-
-## Files Modified
-- `tests/e2e/visual-regression.spec.ts` -- add ~20 new screenshot tests
-- `src/pages/CustomerHealthPage.tsx` -- wrap in PageShell
-- `src/pages/LifeSimulator.tsx` -- wrap in PageShell
-- ~20 `src/pages/digital-presence/*.tsx` -- wrap in PageShell
-- `src/components/sita/SitaCard.tsx` -- use Typography in SitaPageHeader
-- `src/components/sita/admin/AdminPageHeader.tsx` -- use Typography
-- `src/lib/ui/page-framing-grammar.ts` -- document admin exception
-- 5 representative page files -- migrate headings to Typography
-
-## Intentionally Unchanged
-- 574 admin pages -- already use AdminPageHeader consistently; bulk migration to Typography deferred
-- Full-bleed pages (Desktop, Landing, Boardroom, FirstBoot, NotFound, Onboarding, Download) -- intentionally frameless
-- Mobile pages -- use MobileShell, separate rendering context
+## Implementation
+Single file rewrite of `docs/os/SITA_OS_NATIVE_DEPLOYMENT_AUDIT.md`. No code changes, no migrations, no test modifications. Pure documentation update using verified data from the codebase.
 
