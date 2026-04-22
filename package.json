@@ -23,6 +23,7 @@
     "pre-deploy": "bash scripts/pre-deploy.sh",
     "ci": "npm run typecheck && npm run lint && npm run test && npm run build",
     "clean:generated": "bash scripts/clean-generated.sh",
+    "validate:governance": "bash scripts/validators/check-no-as-any-pages.sh && bash scripts/validators/check-orphan-pages.sh && bash scripts/validators/check-service-consumers.sh",
     "test:coverage-ratchet": "npx tsx scripts/root/coverage-ratchet.ts",
     "check:consolidation-waves": "npx tsx scripts/architecture/checks/check-consolidation-wave-regression.ts",
     "check:ai-domains": "npx tsx scripts/architecture/checks/check-ai-domain-boundaries.ts",
