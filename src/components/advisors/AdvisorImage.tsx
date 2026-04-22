@@ -61,12 +61,14 @@ import { getAvatarCache, setAvatarCache, avatarCacheKey } from "@/lib/advisors/a
 import { sanitizeAvatarUrl } from "@/lib/advisors/avatar-url-validation";
 import { logPortraitFailure } from "@/lib/advisors/portrait-failure-logger";
 
+const DEMO_USER_ID = "00000000-0000-0000-0000-000000000000";
+
 export function useCustomAdvisorAvatar(domain: AdvisorDomain) {
   const { user } = useAuth();
   const [customUrl, setCustomUrl] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!user?.id) return;
+    if (!user?.id || user.id === DEMO_USER_ID) return;
     const cKey = avatarCacheKey(user.id, domain);
     const cached = getAvatarCache(cKey);
     if (cached) {
