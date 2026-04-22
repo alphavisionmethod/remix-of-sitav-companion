@@ -283,3 +283,27 @@ export function useCustomerProfileSnapshots(customerId?: string) {
     },
   });
 }
+
+export function useRevenueLeaks() {
+  const uid = useUserId();
+  return useQuery({
+    queryKey: ["revenue-leaks", uid],
+    enabled: !!uid,
+    queryFn: async () => {
+      const { data } = await fromTable("revenue_leaks").select("*").eq("user_id", uid!).order("created_at", { ascending: false });
+      return data ?? [];
+    },
+  });
+}
+
+export function useAdvisorBoardRecommendations() {
+  const uid = useUserId();
+  return useQuery({
+    queryKey: ["advisor-board-recommendations", uid],
+    enabled: !!uid,
+    queryFn: async () => {
+      const { data } = await fromTable("advisor_board_recommendations").select("*").eq("user_id", uid!).order("created_at", { ascending: false });
+      return data ?? [];
+    },
+  });
+}

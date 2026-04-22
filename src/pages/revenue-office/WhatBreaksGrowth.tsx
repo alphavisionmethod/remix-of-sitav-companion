@@ -54,7 +54,7 @@ export default function WhatBreaksGrowth() {
   const { isDemo: isDemoMode } = useAuth();
   const [tab, setTab] = useState("fragility");
   const { data: liveRiskAreas } = useRevenueRiskAreas();
-  const riskAreas = isDemoMode ? DEMO_riskAreas : (liveRiskAreas && liveRiskAreas.length > 0 ? DEMO_riskAreas : DEMO_riskAreas);
+  const riskAreas = isDemoMode ? DEMO_riskAreas : (liveRiskAreas && liveRiskAreas.length > 0 ? liveRiskAreas : []);
   const totalRisks = riskAreas.reduce((a, r) => a + r.risks.length, 0);
   const highSeverity = riskAreas.reduce((a, r) => a + r.risks.filter(x => x.severity === "high").length, 0);
   const avgFragility = Math.round(FRAGILITY_MATRIX.reduce((a, f) => a + f.fragility, 0) / FRAGILITY_MATRIX.length);

@@ -18755,6 +18755,54 @@ export type Database = {
         }
         Relationships: []
       }
+      revenue_leaks: {
+        Row: {
+          amount_at_risk: number
+          created_at: string
+          description: string
+          detected_at: string
+          id: string
+          leak_type: string
+          resolved_at: string | null
+          severity: string
+          source: string | null
+          stage: string
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          amount_at_risk?: number
+          created_at?: string
+          description?: string
+          detected_at?: string
+          id?: string
+          leak_type?: string
+          resolved_at?: string | null
+          severity?: string
+          source?: string | null
+          stage?: string
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          amount_at_risk?: number
+          created_at?: string
+          description?: string
+          detected_at?: string
+          id?: string
+          leak_type?: string
+          resolved_at?: string | null
+          severity?: string
+          source?: string | null
+          stage?: string
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       revenue_risk_areas: {
         Row: {
           area_name: string

@@ -66,7 +66,7 @@ export function executeAction(params: {
     envelope.status = "completed";
     envelope.output = { simulated: true, projectedResult: "success", confidence: 0.85 };
     envelope.completedAt = new Date().toISOString();
-    envelope.durationMs = Math.floor(Math.random() * 200) + 50;
+    envelope.durationMs = 0;
   } else {
     // Live execution: record to database and return real envelope
     const startMs = performance.now();

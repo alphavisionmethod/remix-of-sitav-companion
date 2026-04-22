@@ -1,4 +1,7 @@
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/contexts/AuthContext";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -7,8 +10,8 @@ import type { DiagnosticExportAudit as AuditEntry } from "@/lib/recovery-ops/typ
 import { FileDown, FileText, Download } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
-// Mock audit entries
-const MOCK_AUDITS: AuditEntry[] = [
+// Demo audit entries
+const DEMO_AUDITS: AuditEntry[] = [
   { id: "DEA-001", exportedAt: "2026-04-21T10:00:00Z", exportedBy: "admin@sita.os", parameters: { scope: "full", redacted: true }, resultStatus: "success", fileSize: 2450000, bundleId: "BND-042", downloadUrl: "#" },
   { id: "DEA-002", exportedAt: "2026-04-20T16:30:00Z", exportedBy: "ops@sita.os", parameters: { scope: "ai-runtime", redacted: true }, resultStatus: "success", fileSize: 890000, bundleId: "BND-041", downloadUrl: "#" },
   { id: "DEA-003", exportedAt: "2026-04-19T09:15:00Z", exportedBy: "admin@sita.os", parameters: { scope: "full", redacted: false }, resultStatus: "partial", fileSize: 1200000, bundleId: "BND-040", downloadUrl: "#" },
@@ -21,7 +24,22 @@ interface Props {
 
 export function DiagnosticExportAuditPanel({ operatorId, canExecute }: Props) {
   const { toast } = useToast();
-  const [audits] = useState<AuditEntry[]>(MOCK_AUDITS);
+  const { user, isDemo: isDemoMode } = useAuth();
+
+  const { data: liveAudits } = useQuery({
+    queryKey: ["diagnostic-export-audits", user?.id],
+    enabled: !!user && !isDemoMode,
+    queryFn: async () => {
+      const { data } = await supabase.from("audit_export_bundles").select("*").order("created_at", { ascending: false }).limit(20);
+      return (data ?? []).map((a: any) => ({
+        id: a.id, exportedAt: a.created_at, exportedBy: a.exported_by || user!.email,
+        parameters: a.parameters || {}, resultStatus: a.status || "success",
+        fileSize: a.file_size || null, bundleId: a.bundle_id || a.id, downloadUrl: a.download_url || null,
+      }));
+    },
+  });
+
+  const audits = isDemoMode ? DEMO_AUDITS : (liveAudits ?? []);
 
   const exportBundle = () => {
     if (!canExecute) {

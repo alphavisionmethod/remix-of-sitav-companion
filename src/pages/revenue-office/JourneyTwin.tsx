@@ -5,7 +5,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { DEMO_JOURNEY_STAGES } from "@/data/seed/revenue-office";
-import { useState } from "react";
+import { useState, useMemo } from "react";
+import { useCustomerJourneyStages } from "@/hooks/use-revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
@@ -42,7 +43,12 @@ const statusBg = (s: string) => s === "active" ? "bg-[hsl(var(--trust-safe))]/10
 
 export default function JourneyTwin() {
   const { isDemo: isDemoMode } = useAuth();
-  const JOURNEY_STAGES = isDemoMode ? DEMO_JOURNEY_STAGES : DEMO_JOURNEY_STAGES;
+  const { data: liveJourneyStages } = useCustomerJourneyStages();
+  const JOURNEY_STAGES = isDemoMode ? DEMO_JOURNEY_STAGES : (liveJourneyStages && liveJourneyStages.length > 0 ? liveJourneyStages.map((s: any) => ({
+    stage: s.stage_name || s.name || "Unknown",
+    metrics: { entered: s.entered_count || 0, conversion: `${s.conversion_rate || 0}%`, exited: s.exited_count || 0 },
+    touchpoints: (s.touchpoints as any[]) || [],
+  })) : DEMO_JOURNEY_STAGES);
   const [expanded, setExpanded] = useState<string | null>(null);
 
   const totalEntered = JOURNEY_STAGES[0]?.metrics.entered ?? 0;

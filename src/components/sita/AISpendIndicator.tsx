@@ -1,4 +1,7 @@
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/contexts/AuthContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { Zap, ChevronDown, ChevronUp, TrendingUp, Brain, FileText, Workflow, X } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -10,7 +13,7 @@ interface SpendCategory {
   percentage: number;
 }
 
-const MOCK_SPEND = {
+const DEMO_SPEND = {
   budget: 50,
   spent: 4.32,
   categories: [
@@ -24,7 +27,19 @@ const MOCK_SPEND = {
 
 export const AISpendIndicator = () => {
   const [expanded, setExpanded] = useState(false);
-  const { budget, spent, categories, forecast } = MOCK_SPEND;
+  const { user, isDemo: isDemoMode } = useAuth();
+
+  const { data: liveSpend } = useQuery({
+    queryKey: ["ai-spend-summary", user?.id],
+    enabled: !!user && !isDemoMode,
+    queryFn: async () => {
+      const { data } = await supabase.from("ai_usage_ledger").select("estimated_cost_usd").eq("user_id", user!.id);
+      const totalSpent = (data ?? []).reduce((sum, r) => sum + (Number(r.estimated_cost_usd) || 0), 0);
+      return { budget: 50, spent: totalSpent, categories: DEMO_SPEND.categories, forecast: totalSpent * 2.5 };
+    },
+  });
+
+  const { budget, spent, categories, forecast } = isDemoMode ? DEMO_SPEND : (liveSpend ?? DEMO_SPEND);
   const pct = Math.round((spent / budget) * 100);
   const barColor = pct <= 50 ? "bg-trust-safe" : pct <= 80 ? "bg-accent" : "bg-destructive";
   const textColor = pct <= 50 ? "text-trust-safe" : pct <= 80 ? "text-accent" : "text-destructive";

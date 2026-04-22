@@ -9,6 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useRevenueOfficeMode } from "@/contexts/RevenueOfficeModeContext";
 import { RevenueOfficeModeToggle } from "@/components/revenue-office/RevenueOfficeModeToggle";
 import { useRevenueLeakItems } from "@/hooks/use-revenue-office";
+import { useRevenueLeaks } from "@/hooks/use-revenue-office";
 import { Skeleton } from "@/components/ui/skeleton";
 import { DEMO_REV_LEAKS_LEAK_DETECTOR as DEMO_LEAKS, DEMO_LEAK_REPAIR_TRACKING, DEMO_LEAK_TRENDS } from "@/data/seed/revenue-office";
 import { useState } from "react";
@@ -18,10 +19,19 @@ import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 export default function LeakDetector() {
   const { isDemo: isDemoMode } = useAuth();
   const { isBeginner } = useRevenueOfficeMode();
-  const { data: liveLeaks, isLoading } = useRevenueLeakItems();
+  const { data: liveLeaks, isLoading } = useRevenueLeaks();
   const [tab, setTab] = useState("active");
 
-  const LEAKS = isDemoMode ? DEMO_LEAKS : DEMO_LEAKS;
+  const LEAKS = isDemoMode ? DEMO_LEAKS : (liveLeaks && liveLeaks.length > 0 ? liveLeaks.map((l: any) => ({
+    category: l.leak_type || "Unknown",
+    severity: l.severity || "medium",
+    revenue: `$${Number(l.amount_at_risk || 0).toLocaleString()}`,
+    items: 1,
+    description: l.description || "",
+    icon: AlertTriangle,
+    action: "Investigate",
+    details: [],
+  })) : []);
   const totalLeakage = LEAKS.reduce((s, l) => s + parseInt(l.revenue.replace(/[^0-9]/g, "")), 0);
   const totalRecovered = DEMO_LEAK_REPAIR_TRACKING.reduce((s, r) => s + parseInt(r.recoveredRevenue.replace(/[^0-9]/g, "")), 0);
   const recoveryRate = totalLeakage > 0 ? Math.round((totalRecovered / (totalLeakage + totalRecovered)) * 100) : 0;

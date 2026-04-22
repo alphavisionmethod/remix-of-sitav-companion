@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { useCustomers } from "@/hooks/use-revenue-office";
+import { useCustomerLifecycleStages } from "@/hooks/use-revenue-office";
 import { Skeleton } from "@/components/ui/skeleton";
 import { EmptyState } from "@/components/sita/EmptyState";
 import { DEMO_CONTACTS, DEMO_LIFECYCLE_STAGES, DEMO_NEXT_BEST_ACTIONS, DEMO_CONVERSATION_HISTORY, DEMO_RELATIONSHIP_GRAPH } from "@/data/seed/revenue-office";
@@ -19,9 +20,14 @@ import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 export default function RelationshipCenter() {
   const { isDemo: isDemoMode } = useAuth();
   const { data: liveContacts, isLoading } = useCustomers();
+  const { data: liveLifecycleStages } = useCustomerLifecycleStages();
   const [tab, setTab] = useState("contacts");
 
-  const LIFECYCLE_STAGES = isDemoMode ? DEMO_LIFECYCLE_STAGES : DEMO_LIFECYCLE_STAGES;
+  const LIFECYCLE_STAGES = isDemoMode ? DEMO_LIFECYCLE_STAGES : (liveLifecycleStages && liveLifecycleStages.length > 0 ? liveLifecycleStages.map((s: any) => ({
+    label: s.stage_name || s.name || "Unknown",
+    count: s.contact_count || 0,
+    color: s.color || "bg-primary",
+  })) : DEMO_LIFECYCLE_STAGES);
   const CONTACTS = isDemoMode ? DEMO_CONTACTS : (liveContacts?.map((c: Record<string, any>) => ({
     name: c.name || "Unknown", company: c.company || "", stage: c.lifecycle_stage || "Lead",
     health: c.health_score || 50, ltv: `$${c.ltv || 0}`, lastContact: c.last_contact_at ? new Date(c.last_contact_at).toLocaleDateString() : "Never",
