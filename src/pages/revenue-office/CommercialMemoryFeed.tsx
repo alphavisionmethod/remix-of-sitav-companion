@@ -1,3 +1,4 @@
+import { Typography } from "@/components/sita/Typography";
 import { useAuth } from "@/contexts/AuthContext";
 import { useState } from "react";
 import { motion } from "framer-motion";
@@ -9,7 +10,6 @@ import { Activity, TrendingUp, TrendingDown, Users, Star, Zap, Calendar, Package
 import { DEMO_MEMORY_PINNED } from "@/data/seed/revenue-office";
 import { useCommercialMemoryEvents } from "@/hooks/use-revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { Typography } from "@/components/sita/Typography";
 const typeLabels: Record<string, string> = { campaign: "Campaign", reputation: "Reputation", crm: "CRM", booking: "Booking", advisor: "Advisor", funnel: "Funnel", membership: "Membership", offer: "Offer" };
 const allDomains = Object.keys(typeLabels);
 

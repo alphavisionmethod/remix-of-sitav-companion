@@ -1,3 +1,4 @@
+import { Typography } from "@/components/sita/Typography";
 import { useAuth } from "@/contexts/AuthContext";
 import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -9,7 +10,6 @@ import { DEMO_OPPORTUNITY_THEMES } from "@/data/seed/revenue-office";
 import { useState, useMemo } from "react";
 import { useDeals } from "@/hooks/use-revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { Typography } from "@/components/sita/Typography";
 const categoryColors: Record<string, string> = {
   Conversion: "bg-blue-500/10 text-blue-400",
   Upsell: "bg-emerald-500/10 text-emerald-400",

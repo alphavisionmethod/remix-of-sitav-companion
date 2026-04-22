@@ -1,3 +1,4 @@
+import { Typography } from "@/components/sita/Typography";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,7 +8,6 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { GraduationCap, Users, BookOpen, PlayCircle, Star, TrendingUp, AlertTriangle, Clock, Calendar, BarChart3, Zap } from "lucide-react";
 import { DEMO_courses, DEMO_DRIP_SCHEDULE, DEMO_ENGAGEMENT_HEATMAP } from "@/data/seed/revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { Typography } from "@/components/sita/Typography";
 const memberships = [
   { tier: "Premium", members: 156, mrr: 7800, churn: 3.2, retention: 96.8, trend: "up" },
   { tier: "Professional", members: 89, mrr: 2670, churn: 5.1, retention: 94.9, trend: "stable" },

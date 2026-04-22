@@ -1,3 +1,4 @@
+import { Typography } from "@/components/sita/Typography";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -15,7 +16,6 @@ import {
 import AutomationSubNav from "./AutomationSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { DEMO_humanVsAI, DEMO_policies, DEMO_trustLevels,
-import { Typography } from "@/components/sita/Typography";
   DEMO_COMMERCIAL_CONSTITUTION, DEMO_NO_GUESS_RULES,
   DEMO_PAUSE_ROLLBACK, DEMO_HANDOFF_SIGNALS
 } from "@/data/seed/revenue-office";
