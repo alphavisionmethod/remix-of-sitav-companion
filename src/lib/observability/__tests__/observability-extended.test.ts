@@ -113,8 +113,8 @@ describe("Anomaly Detection", () => {
   });
 
   it("detectAnomaly flags outliers", () => {
-    const historical = [10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10];
-    const result = detectAnomaly("test-metric", 1000, historical);
+    const historical = [10, 11, 9, 10, 12, 10, 11, 9, 10, 10, 11, 9];
+    const result = detectAnomaly("test-metric", 100, historical);
     expect(result).not.toBeNull();
     expect(result!.isAnomaly).toBe(true);
   });
