@@ -43,8 +43,8 @@ export default function GrowthBoardroom() {
   const { data: liveLeakItems } = useRevenueLeakItems();
 
   const PIPELINE_STAGES = isDemoMode ? DEMO_PIPELINE_STAGES : (liveDeals && liveDeals.length > 0 ? DEMO_PIPELINE_STAGES : []);
-  const LEAKS = isDemoMode ? DEMO_LEAKS : (liveLeakItems && liveLeakItems.length > 0 ? DEMO_LEAKS : []);
-  const ADVISOR_SIGNALS = isDemoMode ? DEMO_ADVISOR_SIGNALS : DEMO_ADVISOR_SIGNALS; // sourced from advisor_board_recommendations
+  const LEAKS = isDemoMode ? DEMO_LEAKS : (liveLeakItems && liveLeakItems.length > 0 ? liveLeakItems : []);
+  const ADVISOR_SIGNALS = isDemoMode ? DEMO_ADVISOR_SIGNALS : DEMO_ADVISOR_SIGNALS;
 
   if (!isDemoMode && isLoading) {
     return <div className="min-h-screen bg-background p-6 space-y-6">
