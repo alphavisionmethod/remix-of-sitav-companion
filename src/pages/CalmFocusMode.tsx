@@ -9,7 +9,7 @@ const CalmFocusMode = () => {
   const { mode, setMode, isFocus, isCalm, toggleFocus, toggleCalm } = useDisplayMode();
 
   return (
-    <div className="space-y-6 p-6 max-w-3xl mx-auto">
+    <PageShell width="narrow">
       <div>
         <h1 className="text-2xl font-bold tracking-tight text-foreground">Display Modes</h1>
         <p className="text-muted-foreground mt-1">

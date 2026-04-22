@@ -39,7 +39,7 @@ export default function PlanningCanvas() {
   const [cards] = useState(mockCards);
 
   return (
-    <div className="space-y-6 p-6 max-w-7xl mx-auto">
+    <PageShell width="wide">
       <SitaPageHeader
         icon={<PenTool className="h-6 w-6" />}
         title="Planning Canvas"
