@@ -112,17 +112,11 @@ export function getOSRoutes() {
       <Route path="/ai-workforce" element={<AIWorkforcePage />} />
       <Route path="/capital-allocation" element={<CapitalAllocationPage />} />
       <Route path="/sovereign-export" element={<SovereignExportPage />} />
-      <Route path="/communications" element={<CommunicationsPage />} />
       <Route path="/notifications/settings" element={<NotificationSettingsPage />} />
       <Route path="/settings/notifications" element={<NotificationPreferences />} />
       <Route path="/notifications" element={<NotificationCenter />} />
 
-      {/* Settings */}
-      <Route path="/settings" element={<SettingsPage />} />
-      <Route path="/settings/trust" element={<SettingsPage />} />
-      <Route path="/settings/profile" element={<SettingsPage />} />
-      <Route path="/settings/connectors" element={<SettingsPage />} />
-      <Route path="/settings/permissions" element={<SettingsPage />} />
+      {/* Settings — canonical routes in settings-routes.tsx */}
       <Route path="/settings/billing" element={<SettingsPage />} />
       <Route path="/settings/privacy" element={<SettingsPage />} />
       <Route path="/settings/appearance" element={<SettingsPage />} />
