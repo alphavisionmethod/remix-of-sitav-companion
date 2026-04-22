@@ -176,7 +176,16 @@ vi.mock("@/contexts/SitaKernelContext", () => ({
 
 // Mock OS runtime
 vi.mock("@/hooks/useOSRuntime", () => ({
-  useOSRuntime: () => ({ ready: true }),
+  useOSRuntime: () => ({
+    ready: true,
+    engines: {
+      revenue: {
+        detectLeakage: vi.fn(),
+        getLedger: vi.fn().mockReturnValue({ entries: [], total: 0 }),
+        getMetrics: vi.fn().mockReturnValue({}),
+      },
+    },
+  }),
   OSRuntimeProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
 }));
 
