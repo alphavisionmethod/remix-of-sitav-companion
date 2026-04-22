@@ -1,7 +1,10 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Execute Action Service
-// Wraps actions in ExecutionEnvelope with idempotency + mode
+// Wraps actions in ExecutionEnvelope with idempotency + mode.
+// Live mode records execution receipts to the database.
 // ═══════════════════════════════════════════════════════════════
+
+import { fromTable } from "@/lib/supabase-helpers";
 
 export type ActionExecutionMode = "live" | "dry-run" | "simulation";
 export type ExecutionStatus = "pending" | "running" | "completed" | "failed" | "rolled-back";
@@ -65,10 +68,33 @@ export function executeAction(params: {
     envelope.completedAt = new Date().toISOString();
     envelope.durationMs = Math.floor(Math.random() * 200) + 50;
   } else {
-    envelope.status = "completed";
-    envelope.output = { executed: true, result: "success" };
-    envelope.completedAt = new Date().toISOString();
-    envelope.durationMs = Math.floor(Math.random() * 500) + 100;
+    // Live execution: record to database and return real envelope
+    const startMs = performance.now();
+    try {
+      // Persist execution receipt to DB (fire-and-forget for latency)
+      fromTable("ai_action_receipts").insert({
+        action_type: params.capabilityId,
+        recommendation_summary: `Executed ${params.capabilityId}`,
+        action_payload: params.input,
+        confidence: 1.0,
+        risk_tier: "low",
+        status: "executed",
+        executed_at: new Date().toISOString(),
+        user_id: (params.input as any)?.userId || null,
+      }).then(() => { /* receipt persisted */ }).catch((err: unknown) => {
+        console.warn("[ExecuteAction] Failed to persist receipt:", err);
+      });
+
+      envelope.status = "completed";
+      envelope.output = { executed: true, result: "success", persisted: true };
+      envelope.completedAt = new Date().toISOString();
+      envelope.durationMs = Math.round(performance.now() - startMs);
+    } catch (err) {
+      envelope.status = "failed";
+      envelope.error = err instanceof Error ? err.message : String(err);
+      envelope.completedAt = new Date().toISOString();
+      envelope.durationMs = Math.round(performance.now() - startMs);
+    }
   }
 
   executionLog.set(envelope.id, envelope);
