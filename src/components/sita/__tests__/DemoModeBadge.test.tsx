@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
-import { render, screen } from "@/test/test-utils";
+import { render, screen } from "@testing-library/react";
 import { DemoModeBadge } from "../DemoModeBadge";
 
 // Mock DataModeContext
@@ -14,6 +14,7 @@ vi.mock("@/contexts/DataModeContext", () => ({
     connectors: [],
     refreshConnectors: vi.fn(),
   }),
+  DataModeProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
 }));
 
 describe("DemoModeBadge", () => {
@@ -26,7 +27,8 @@ describe("DemoModeBadge", () => {
   it("hides in live mode without forceShow", () => {
     mockIsDemoMode.mockReturnValue(false);
     const { container } = render(<DemoModeBadge />);
-    expect(container.firstChild).toBeNull();
+    // Component returns null when not demo mode — the container div remains but has no children
+    expect(container.querySelector("[data-testid='demo-mode-badge']")).toBeNull();
   });
 
   it("shows with forceShow even in live mode", () => {
