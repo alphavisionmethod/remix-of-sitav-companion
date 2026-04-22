@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { getAvatarCache, setAvatarCache, invalidateAvatarCache, avatarCacheKey } from "@/lib/advisors/avatar-url-cache";
+import { sanitizeAvatarUrl } from "@/lib/advisors/avatar-url-validation";
 
 // ── Validation constants ──────────────────────────────────────
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
@@ -181,7 +182,7 @@ export function useAdvisorPortraits(): AdvisorPortraitState {
   }, []);
 
   const getPortraitUrl = useCallback((advisorId: string): string | null => {
-    return customUrls[advisorId] || portraitUrlCache.get(advisorId) || null;
+    return sanitizeAvatarUrl(customUrls[advisorId]) ?? sanitizeAvatarUrl(portraitUrlCache.get(advisorId)) ?? null;
   }, [customUrls]);
 
   return { customUrls, uploading, uploadPortrait, removePortrait, getPortraitUrl };

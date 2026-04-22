@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { getDefaultAdvisorAvatar } from "@/lib/advisors/advisor-avatar-assets";
 import { getCachedPortraitUrl } from "@/hooks/use-advisor-portraits";
 import { getPortraitSrcSet } from "@/lib/advisors/advisor-responsive-assets";
+import { sanitizeAvatarUrl } from "@/lib/advisors/avatar-url-validation";
 import { Skeleton } from "@/components/ui/skeleton";
 import { RefreshCw, Briefcase, DollarSign, Headphones, Heart, TrendingUp, Shield, Sparkles, Scale, Brain } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
@@ -78,10 +79,12 @@ export const AdvisorPortrait = ({
   const gradient = domainGradients[domain];
   // Resolve URL: explicit prop → cached custom → default
   const resolvedUrl = useMemo(() => {
-    if (avatarUrl) return avatarUrl;
+    const safeAvatar = sanitizeAvatarUrl(avatarUrl);
+    if (safeAvatar) return safeAvatar;
     if (advisorId) {
       const cached = getCachedPortraitUrl(advisorId);
-      if (cached) return cached;
+      const safeCached = sanitizeAvatarUrl(cached);
+      if (safeCached) return safeCached;
     }
     return getDefaultAdvisorAvatar(domain);
   }, [avatarUrl, advisorId, domain]);
