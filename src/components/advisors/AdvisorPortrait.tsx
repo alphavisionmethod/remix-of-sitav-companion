@@ -224,7 +224,6 @@ export const AdvisorPortrait = ({
           whileHover={{ scale: 1.05 }}
           transition={{ type: "spring", stiffness: 300 }}
           loading={loading}
-          // @ts-expect-error — fetchPriority is valid HTML but not yet in React's types for motion.img
           fetchPriority={fetchPriority}
           decoding="async"
         />
