@@ -409,7 +409,7 @@ export function BoardroomApprovalView({ scope, onNavigate }: Props) {
                 description={ap.description}
                 riskLevel={ap.riskLevel}
                 onApprove={() => handleApprove(ap.title)}
-                onReject={() => {}}
+                onReject={() => toast.info(`"${ap.title}" rejected`)}
                 onSimulate={() => onNavigate("simulation")}
               />
             </motion.div>
