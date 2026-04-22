@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-04-22T22:00:10.890Z",
+  "updated_at": "2026-04-22T22:08:25.969Z",
   "description": "Accepted design audit errors. Only NEW errors not in this list will fail CI.",
   "error_count": 0,
   "fingerprints": []

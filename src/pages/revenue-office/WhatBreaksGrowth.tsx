@@ -14,6 +14,7 @@ import {
 import { DEMO_ADVISOR_INVALIDATION } from "@/data/seed/revenue-office";
 import { useRevenueRiskAreas } from "@/hooks/use-revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { Typography } from "@/components/sita/Typography";
 const FRAGILITY_MATRIX = [
   { system: "Lead Capture → Nurture", fragility: 32, bottleneck: "Form abandonment at 41%", resilience: "Backup: SMS opt-in added", status: "moderate" as const },
   { system: "Nurture → Appointment", fragility: 58, bottleneck: "Email 4 drop-off at 40%", resilience: "No alternative path", status: "fragile" as const },
@@ -59,7 +60,7 @@ export default function WhatBreaksGrowth() {
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 p-6">
 <div>
-        <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><ShieldAlert className="w-6 h-6 text-amber-400" /> What Breaks Growth?</h1>
+        <Typography role="appTitle" className="flex items-center gap-2"><ShieldAlert className="w-6 h-6 text-amber-400" /> What Breaks Growth?</Typography>
         <p className="text-muted-foreground">Reverse-analysis of weak assumptions, delivery risks, fragility points, stress tests, and dependency mapping</p>
       </div>
 

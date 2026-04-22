@@ -9,6 +9,8 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 import { DEMO_SCORING_RULES, DEMO_TOP_LEADS } from "@/data/seed/revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageShell } from "@/components/sita/PageShell";
+import { Typography } from "@/components/sita/Typography";
 
 // Production fallback — seed data removed
 const DEMO_SEGMENTS: any[] = [];
@@ -17,11 +19,11 @@ export default function SegmentationEngine() {
   const [tab, setTab] = useState("segments");
 
   return (
-    <div className="min-h-screen bg-background p-6 space-y-6">
+    <PageShell width="wide" className="space-y-6">
 <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-foreground">Segmentation & Lead Scoring</h1>
+            <Typography role="appTitle">Segmentation & Lead Scoring</Typography>
             <p className="text-sm text-muted-foreground">Dynamic audience segments, behavioral scoring, and conversion intelligence</p>
           </div>
           <Button size="sm" className="gap-1.5"><Plus className="w-3.5 h-3.5" />New Segment</Button>
@@ -133,6 +135,6 @@ export default function SegmentationEngine() {
           </TabsContent>
         </div>
       </Tabs>
-    </div>
+    </PageShell>
   );
 }

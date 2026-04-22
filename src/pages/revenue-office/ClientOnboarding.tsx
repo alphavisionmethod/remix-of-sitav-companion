@@ -9,17 +9,19 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 import { DEMO_ACTIVE_CLIENTS, DEMO_JOURNEYS } from "@/data/seed/revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageShell } from "@/components/sita/PageShell";
+import { Typography } from "@/components/sita/Typography";
 const stepTypeIcons: Record<string, typeof Mail> = { email: Mail, form: FileText, booking: Calendar, meeting: Calendar, payment: Package, access: Settings, delivery: Package, document: FileText };
 
 export default function ClientOnboarding() {
   const [tab, setTab] = useState("journeys");
 
   return (
-    <div className="min-h-screen bg-background p-6 space-y-6">
+    <PageShell width="wide" className="space-y-6">
 <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-foreground">Client Onboarding Journeys</h1>
+            <Typography role="appTitle">Client Onboarding Journeys</Typography>
             <p className="text-sm text-muted-foreground">Structured onboarding flows, progress tracking, and drop-off prevention</p>
           </div>
           <Button size="sm" className="gap-1.5"><Plus className="w-3.5 h-3.5" />New Journey</Button>
@@ -134,6 +136,6 @@ export default function ClientOnboarding() {
           </TabsContent>
         </div>
       </Tabs>
-    </div>
+    </PageShell>
   );
 }

@@ -8,6 +8,8 @@ import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { DEMO_FUNNELS, DEMO_FUNNEL_STEP_ANALYTICS, DEMO_FUNNEL_TRIGGERS } from "@/data/seed/revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageShell } from "@/components/sita/PageShell";
+import { Typography } from "@/components/sita/Typography";
 const STEP_TYPES = [
   { type: "page", label: "Landing Page", icon: Eye },
   { type: "form", label: "Form / Lead Magnet", icon: Layers },
@@ -22,11 +24,11 @@ export default function FunnelBuilder() {
   const [selectedFunnel, setSelectedFunnel] = useState(0);
 
   return (
-    <div className="min-h-screen bg-background p-6 space-y-6">
+    <PageShell width="wide" className="space-y-6">
 <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-foreground">Funnel & Journey Studio</h1>
+            <Typography role="appTitle">Funnel & Journey Studio</Typography>
             <p className="text-sm text-muted-foreground">Visual conversion journeys with step-by-step analytics and leak detection</p>
           </div>
           <Button className="gap-2"><Plus className="w-4 h-4" /> New Funnel</Button>
@@ -216,6 +218,6 @@ export default function FunnelBuilder() {
           </TabsContent>
         </div>
       </Tabs>
-    </div>
+    </PageShell>
   );
 }

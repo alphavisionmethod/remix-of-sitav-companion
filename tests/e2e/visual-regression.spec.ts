@@ -54,6 +54,31 @@ test.describe("Visual Regression — Public Pages", () => {
   }
 });
 
+// ── Revenue Office Surface Screenshots ──────────────────────────
+const REVENUE_PAGES = [
+  { name: "growth-boardroom", path: "/revenue-office/growth-boardroom" },
+  { name: "booking-center", path: "/revenue-office/booking-center" },
+  { name: "pipeline-studio", path: "/revenue-office/pipeline-studio" },
+  { name: "conversion-lab", path: "/revenue-office/conversion-lab" },
+  { name: "offers-workspace", path: "/revenue-office/offers-workspace" },
+  { name: "leak-detector", path: "/revenue-office/leak-detector" },
+];
+
+test.describe("Visual Regression — Revenue Office", () => {
+  for (const pg of REVENUE_PAGES) {
+    test(`${pg.name} renders with PageShell framing`, async ({ page }) => {
+      await page.goto(pg.path);
+      await page.waitForLoadState("domcontentloaded");
+      await page.waitForTimeout(1000);
+      await expect(page).toHaveScreenshot(`revenue-${pg.name}.png`, {
+        maxDiffPixelRatio: 0.05,
+        threshold: 0.3,
+        animations: "disabled",
+      });
+    });
+  }
+});
+
 test.describe("Visual Regression — OS/Window Surfaces", () => {
   for (const pg of OS_WINDOW_SURFACES) {
     test(`${pg.name} layout snapshot`, async ({ page }) => {

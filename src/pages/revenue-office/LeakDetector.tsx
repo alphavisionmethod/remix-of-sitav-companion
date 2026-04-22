@@ -15,6 +15,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useState } from "react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { PremiumEmptyState } from "@/components/sita/PremiumEmptyState";
+import { PageShell } from "@/components/sita/PageShell";
+import { Typography } from "@/components/sita/Typography";
 
 export default function LeakDetector() {
   const { isBeginner } = useRevenueOfficeMode();
@@ -37,12 +39,12 @@ export default function LeakDetector() {
   const trendDelta = 0;
 
   if (isLoading) {
-    return <div className="min-h-screen bg-background p-6 space-y-6">
-<Skeleton className="h-8 w-48" /><Skeleton className="h-32 rounded-xl" /><Skeleton className="h-48 rounded-xl" /></div>;
+    return <PageShell width="wide" className="space-y-6">
+<Skeleton className="h-8 w-48" /><Skeleton className="h-32 rounded-xl" /><Skeleton className="h-48 rounded-xl" /></PageShell>;
   }
 
   return (
-    <div className="min-h-screen bg-background p-6 space-y-6">
+    <PageShell width="wide" className="space-y-6">
 <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="flex items-start justify-between">
         <div>
           <h1 className="text-2xl font-bold text-foreground flex items-center gap-2">
@@ -162,6 +164,6 @@ export default function LeakDetector() {
           />
         </TabsContent>
       </Tabs>
-    </div>
+    </PageShell>
   );
 }

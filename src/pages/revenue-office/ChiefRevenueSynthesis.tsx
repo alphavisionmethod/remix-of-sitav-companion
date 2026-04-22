@@ -7,6 +7,7 @@ import { Progress } from "@/components/ui/progress";
 import { useNavigate } from "react-router-dom";
 import { DEMO_CHIEF_HISTORICAL } from "@/data/seed/revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { Typography } from "@/components/sita/Typography";
 const synthesis = {
   confidence: 76,
   biggestLeak: "45% of leads receive no follow-up within 24hrs — estimated $12,400/mo leakage",
@@ -34,7 +35,7 @@ export default function ChiefRevenueSynthesis() {
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 p-6">
 <div>
-        <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><Crown className="h-6 w-6 text-amber-400" /> Chief Revenue Synthesis</h1>
+        <Typography role="appTitle" className="flex items-center gap-2"><Crown className="h-6 w-6 text-amber-400" /> Chief Revenue Synthesis</Typography>
         <p className="text-muted-foreground">Executive summary — where advisors align, disagree, and what matters most</p>
       </div>
 

@@ -15,6 +15,7 @@ import {
 import AutomationSubNav from "./AutomationSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { DEMO_humanVsAI, DEMO_policies, DEMO_trustLevels,
+import { Typography } from "@/components/sita/Typography";
   DEMO_COMMERCIAL_CONSTITUTION, DEMO_NO_GUESS_RULES,
   DEMO_PAUSE_ROLLBACK, DEMO_HANDOFF_SIGNALS
 } from "@/data/seed/revenue-office";
@@ -76,7 +77,7 @@ export default function AutomationPolicy() {
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 p-6">
 <AutomationSubNav />
       <div>
-        <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><ShieldCheck className="h-6 w-6 text-emerald-400" />Automation Policy Center</h1>
+        <Typography role="appTitle" className="flex items-center gap-2"><ShieldCheck className="h-6 w-6 text-emerald-400" />Automation Policy Center</Typography>
         <p className="text-muted-foreground">Trust boundaries, constitution, no-guess mode, pause/rollback, human handoff, safety rules, and audit trail</p>
       </div>
 

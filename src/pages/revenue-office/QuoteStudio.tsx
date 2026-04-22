@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { DEMO_pricingInsights, DEMO_quoteStats, DEMO_quotes, DEMO_upsellSuggestions } from "@/data/seed/revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { Typography } from "@/components/sita/Typography";
 const statusColors: Record<string, string> = {
   draft: "bg-muted text-muted-foreground",
   sent: "bg-blue-500/10 text-blue-400",
@@ -26,7 +27,7 @@ export default function QuoteStudio() {
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 p-6">
 <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><FileText className="h-6 w-6 text-blue-400" />Quote Studio</h1>
+          <Typography role="appTitle" className="flex items-center gap-2"><FileText className="h-6 w-6 text-blue-400" />Quote Studio</Typography>
           <p className="text-muted-foreground">Generate, send, track, and automate proposals with AI-powered pricing, upsell suggestions, and follow-up</p>
         </div>
         <div className="flex gap-2">

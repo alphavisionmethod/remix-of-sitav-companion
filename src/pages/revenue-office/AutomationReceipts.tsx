@@ -13,6 +13,7 @@ import { useState } from "react";
 import AutomationSubNav from "./AutomationSubNav";
 import { DEMO_receipts, DEMO_WHY_SENT } from "@/data/seed/revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { Typography } from "@/components/sita/Typography";
 const categoryIcons: Record<string, typeof Mail> = {
   "Lead Recovery": Users, Sales: FileText, Booking: Phone, Reputation: Star,
   Onboarding: UserPlus, Operations: Target, Retention: Heart, Growth: RefreshCw, Revenue: DollarSign,
@@ -37,7 +38,7 @@ export default function AutomationReceipts() {
 <AutomationSubNav />
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><Receipt className="h-6 w-6 text-blue-400" />Automation Receipts & History</h1>
+          <Typography role="appTitle" className="flex items-center gap-2"><Receipt className="h-6 w-6 text-blue-400" />Automation Receipts & History</Typography>
           <p className="text-muted-foreground">Full audit trail — who created, what happened, which contacts affected, outcomes, and rollback options</p>
         </div>
         <div className="flex gap-1.5">

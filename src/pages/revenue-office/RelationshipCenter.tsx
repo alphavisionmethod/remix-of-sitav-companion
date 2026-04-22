@@ -15,6 +15,8 @@ import { EmptyState } from "@/components/sita/EmptyState";
 import { DEMO_CONTACTS, DEMO_LIFECYCLE_STAGES, DEMO_NEXT_BEST_ACTIONS, DEMO_CONVERSATION_HISTORY, DEMO_RELATIONSHIP_GRAPH } from "@/data/seed/revenue-office";
 import { clientSentimentService } from "@/lib/services/client-sentiment";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageShell } from "@/components/sita/PageShell";
+import { Typography } from "@/components/sita/Typography";
 
 
 export default function RelationshipCenter() {
@@ -36,27 +38,27 @@ export default function RelationshipCenter() {
 
   if (!isDemoMode && isLoading) {
     return (
-      <div className="min-h-screen bg-background p-6 space-y-6">
+      <PageShell width="wide" className="space-y-6">
 <Skeleton className="h-8 w-48" />
         <div className="flex gap-2">{[1,2,3,4].map(i => <Skeleton key={i} className="h-16 w-36 rounded-xl" />)}</div>
         <Skeleton className="h-32 rounded-xl" />
-      </div>
+      </PageShell>
     );
   }
 
   if (!isDemoMode && CONTACTS.length === 0) {
     return (
-      <div className="min-h-screen bg-background p-6 space-y-6">
-<h1 className="text-2xl font-bold text-foreground">Relationship Center</h1>
+      <PageShell width="wide" className="space-y-6">
+<Typography role="appTitle">Relationship Center</Typography>
         <EmptyState icon={Users} title="No contacts yet" description="Add your first contact to start managing relationships." />
-      </div>
+      </PageShell>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background p-6 space-y-6">
+    <PageShell width="wide" className="space-y-6">
 <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
-        <h1 className="text-2xl font-bold text-foreground">Relationship Center</h1>
+        <Typography role="appTitle">Relationship Center</Typography>
         <p className="text-sm text-muted-foreground">Lifecycle-aware CRM with relationship intelligence, scoring, and next-best-action</p>
       </motion.div>
 
@@ -276,6 +278,6 @@ export default function RelationshipCenter() {
           </TabsContent>
         </div>
       </Tabs>
-    </div>
+    </PageShell>
   );
 }

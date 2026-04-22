@@ -9,6 +9,7 @@ import { Activity, TrendingUp, TrendingDown, Users, Star, Zap, Calendar, Package
 import { DEMO_MEMORY_PINNED } from "@/data/seed/revenue-office";
 import { useCommercialMemoryEvents } from "@/hooks/use-revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { Typography } from "@/components/sita/Typography";
 const typeLabels: Record<string, string> = { campaign: "Campaign", reputation: "Reputation", crm: "CRM", booking: "Booking", advisor: "Advisor", funnel: "Funnel", membership: "Membership", offer: "Offer" };
 const allDomains = Object.keys(typeLabels);
 
@@ -24,7 +25,7 @@ export default function CommercialMemoryFeed() {
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 p-6">
 <div>
-        <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><Activity className="w-6 h-6 text-primary" /> Commercial Memory Feed</h1>
+        <Typography role="appTitle" className="flex items-center gap-2"><Activity className="w-6 h-6 text-primary" /> Commercial Memory Feed</Typography>
         <p className="text-muted-foreground">A living stream with acknowledgment, pinning, task conversion, and domain filtering</p>
       </div>
 

@@ -7,6 +7,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { GraduationCap, Users, BookOpen, PlayCircle, Star, TrendingUp, AlertTriangle, Clock, Calendar, BarChart3, Zap } from "lucide-react";
 import { DEMO_courses, DEMO_DRIP_SCHEDULE, DEMO_ENGAGEMENT_HEATMAP } from "@/data/seed/revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { Typography } from "@/components/sita/Typography";
 const memberships = [
   { tier: "Premium", members: 156, mrr: 7800, churn: 3.2, retention: 96.8, trend: "up" },
   { tier: "Professional", members: 89, mrr: 2670, churn: 5.1, retention: 94.9, trend: "stable" },
@@ -25,7 +26,7 @@ export default function MembershipCourseOffice() {
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 p-6">
 <div>
-        <h1 className="text-2xl font-bold text-foreground">Membership & Course Office</h1>
+        <Typography role="appTitle">Membership & Course Office</Typography>
         <p className="text-muted-foreground">Courses, memberships, engagement, retention, and student journey intelligence</p>
       </div>
 

@@ -9,6 +9,8 @@ import { useRevenueOfficeMode } from "@/contexts/RevenueOfficeModeContext";
 import { RevenueOfficeModeToggle } from "@/components/revenue-office/RevenueOfficeModeToggle";
 import { DEMO_COHORT_DATA, DEMO_LEAKAGE, DEMO_REVENUE_STREAMS } from "@/data/seed/revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageShell } from "@/components/sita/PageShell";
+import { Typography } from "@/components/sita/Typography";
 const UNIT_ECONOMICS = [
   { metric: "Customer Acquisition Cost (CAC)", value: "$142", trend: "-8%", status: "improving" },
   { metric: "Lifetime Value (LTV)", value: "$2,840", trend: "+12%", status: "strong" },
@@ -31,10 +33,10 @@ export default function RevenueIntelligence() {
   const totalLeakage = ([] as typeof DEMO_LEAKAGE).reduce((s, l) => s + parseInt(l.value.replace(/[^0-9]/g, "")), 0);
 
   return (
-    <div className="min-h-screen bg-background p-6 space-y-6">
+    <PageShell width="wide" className="space-y-6">
 <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="flex items-start justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-foreground">{isBeginner ? "Revenue Overview" : "Revenue Intelligence"}</h1>
+          <Typography role="appTitle">{isBeginner ? "Revenue Overview" : "Revenue Intelligence"}</Typography>
           <p className="text-sm text-muted-foreground">{isBeginner ? "How your business makes money and where you can improve" : "Forecasting, unit economics, cohort analysis, LTV, and leakage detection"}</p>
         </div>
         <RevenueOfficeModeToggle />
@@ -196,6 +198,6 @@ export default function RevenueIntelligence() {
           </TabsContent>
         </div>
       </Tabs>
-    </div>
+    </PageShell>
   );
 }

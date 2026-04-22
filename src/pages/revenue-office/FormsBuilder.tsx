@@ -8,6 +8,8 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 import { DEMO_FIELD_TYPES, DEMO_FORMS, DEMO_SAMPLE_FIELDS } from "@/data/seed/revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageShell } from "@/components/sita/PageShell";
+import { Typography } from "@/components/sita/Typography";
 
 // Production fallback — seed data removed
 const DEMO_STATS: any[] = [];
@@ -17,11 +19,11 @@ export default function FormsBuilder() {
   const [selectedForm, setSelectedForm] = useState<string | null>(null);
 
   return (
-    <div className="min-h-screen bg-background p-6 space-y-6">
+    <PageShell width="wide" className="space-y-6">
 <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-foreground">Forms Builder</h1>
+            <Typography role="appTitle">Forms Builder</Typography>
             <p className="text-sm text-muted-foreground">Lead capture forms, surveys, applications with drag-and-drop builder</p>
           </div>
           <Button size="sm" className="gap-1.5"><Plus className="w-3.5 h-3.5" />New Form</Button>
@@ -193,6 +195,6 @@ export default function FormsBuilder() {
           </TabsContent>
         </div>
       </Tabs>
-    </div>
+    </PageShell>
   );
 }
