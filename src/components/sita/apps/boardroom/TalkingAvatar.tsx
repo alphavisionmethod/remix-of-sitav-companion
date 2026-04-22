@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
-import { motion, AnimatePresence } from "framer-motion";
-import { useState, useEffect, useRef } from "react";
+import { motion } from "framer-motion";
+import { useState, useEffect, useRef, useMemo } from "react";
 
 interface TalkingAvatarProps {
   speaking: boolean;
@@ -14,22 +14,21 @@ interface TalkingAvatarProps {
 
 // Orbiting particles
 function ParticleField({ color, size, active }: { color: string; size: number; active: boolean }) {
+  if (!active) return null;
+
+  // Reduced from 5 to 3 particles; use CSS animation instead of framer-motion
   const particles = [
     { radius: size / 2 + 14, speed: 8, delay: 0, dotSize: 2.5 },
-    { radius: size / 2 + 20, speed: 12, delay: 1.5, dotSize: 2 },
-    { radius: size / 2 + 10, speed: 6, delay: 3, dotSize: 3 },
-    { radius: size / 2 + 18, speed: 10, delay: 0.8, dotSize: 1.5 },
-    { radius: size / 2 + 24, speed: 14, delay: 2.2, dotSize: 2 },
+    { radius: size / 2 + 18, speed: 11, delay: 1.2, dotSize: 2 },
+    { radius: size / 2 + 22, speed: 14, delay: 2.5, dotSize: 1.5 },
   ];
-
-  if (!active) return null;
 
   return (
     <>
       {particles.map((p, i) => (
-        <motion.div
+        <div
           key={i}
-          className="absolute rounded-full pointer-events-none"
+          className="absolute rounded-full pointer-events-none will-change-transform"
           style={{
             width: p.dotSize,
             height: p.dotSize,
@@ -39,29 +38,10 @@ function ParticleField({ color, size, active }: { color: string; size: number; a
             marginLeft: -p.dotSize / 2,
             marginTop: -p.dotSize / 2,
             boxShadow: `0 0 6px ${color}`,
-          }}
-          animate={{
-            x: [
-              Math.cos(0) * p.radius,
-              Math.cos(Math.PI * 0.5) * p.radius,
-              Math.cos(Math.PI) * p.radius,
-              Math.cos(Math.PI * 1.5) * p.radius,
-              Math.cos(Math.PI * 2) * p.radius,
-            ],
-            y: [
-              Math.sin(0) * p.radius,
-              Math.sin(Math.PI * 0.5) * p.radius,
-              Math.sin(Math.PI) * p.radius,
-              Math.sin(Math.PI * 1.5) * p.radius,
-              Math.sin(Math.PI * 2) * p.radius,
-            ],
-            opacity: [0.3, 0.8, 0.4, 0.9, 0.3],
-          }}
-          transition={{
-            repeat: Infinity,
-            duration: p.speed,
-            delay: p.delay,
-            ease: "linear",
+            offsetPath: `path("M ${p.radius} 0 A ${p.radius} ${p.radius} 0 1 1 ${p.radius} -0.01 Z")`,
+            offsetRotate: "0deg",
+            animation: `orbit ${p.speed}s linear ${p.delay}s infinite`,
+            opacity: 0.6,
           }}
         />
       ))}
@@ -76,8 +56,8 @@ function SonarRings({ color, size, active }: { color: string; size: number; acti
   return (
     <>
       {/* Fast inner ring */}
-      <motion.div
-        className="absolute rounded-full pointer-events-none"
+      <div
+        className="absolute rounded-full pointer-events-none will-change-transform"
         style={{
           width: size + 16,
           height: size + 16,
@@ -85,16 +65,11 @@ function SonarRings({ color, size, active }: { color: string; size: number; acti
           top: -8,
           border: `2px solid ${color}`,
           boxShadow: `0 0 20px ${color}40, inset 0 0 20px ${color}15`,
+          animation: "sonar-inner 1.8s ease-in-out infinite",
         }}
-        animate={{
-          scale: [1, 1.18, 1],
-          opacity: [0.6, 0.2, 0.6],
-        }}
-        transition={{ repeat: Infinity, duration: 1.8, ease: "easeInOut" }}
       />
-      {/* Slow outer ring */}
-      <motion.div
-        className="absolute rounded-full pointer-events-none"
+      <div
+        className="absolute rounded-full pointer-events-none will-change-transform"
         style={{
           width: size + 32,
           height: size + 32,
@@ -102,12 +77,8 @@ function SonarRings({ color, size, active }: { color: string; size: number; acti
           top: -16,
           border: `1.5px solid ${color}60`,
           boxShadow: `0 0 30px ${color}20`,
+          animation: "sonar-outer 2.8s ease-in-out 0.4s infinite",
         }}
-        animate={{
-          scale: [1, 1.25, 1],
-          opacity: [0.3, 0.08, 0.3],
-        }}
-        transition={{ repeat: Infinity, duration: 2.8, ease: "easeInOut", delay: 0.4 }}
       />
     </>
   );
@@ -172,16 +143,15 @@ function RotatingBorder({ color, size, active }: { color: string; size: number; 
 // Holographic shimmer
 function HolographicShimmer({ size, active }: { size: number; active: boolean }) {
   return (
-    <motion.div
-      className="absolute inset-0 rounded-full pointer-events-none z-[5] overflow-hidden"
+    <div
+      className="absolute inset-0 rounded-full pointer-events-none z-[5] overflow-hidden will-change-transform"
       style={{
         width: size,
         height: size,
         background: "conic-gradient(from 0deg, transparent, rgba(255,255,255,0.06), transparent 40%, rgba(255,255,255,0.04), transparent 80%)",
         mixBlendMode: "overlay",
+        animation: `spin ${active ? 6 : 16}s linear infinite`,
       }}
-      animate={{ rotate: 360 }}
-      transition={{ repeat: Infinity, duration: active ? 6 : 16, ease: "linear" }}
     />
   );
 }
@@ -280,8 +250,8 @@ function EnhancedMouth({ size, speaking }: { size: number; speaking: boolean }) 
 // Idle breathing glow ring
 function IdleBreathingGlow({ color, size }: { color: string; size: number }) {
   return (
-    <motion.div
-      className="absolute rounded-full pointer-events-none -z-[1]"
+    <div
+      className="absolute rounded-full pointer-events-none -z-[1] will-change-transform"
       style={{
         width: size + 10,
         height: size + 10,
@@ -289,12 +259,8 @@ function IdleBreathingGlow({ color, size }: { color: string; size: number }) {
         top: -5,
         border: `1px solid ${color}25`,
         boxShadow: `0 0 12px ${color}10`,
+        animation: "idle-breathe 3s ease-in-out infinite",
       }}
-      animate={{
-        opacity: [0.3, 0.7, 0.3],
-        scale: [1, 1.03, 1],
-      }}
-      transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
     />
   );
 }
