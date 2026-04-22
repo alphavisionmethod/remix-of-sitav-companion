@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
-import { render, screen, act } from "@/test/test-utils";
+import { render, screen, act } from "@testing-library/react";
 import { DemoModeProvider, useDemoMode } from "../DemoModeProvider";
 
 // Mock DataModeContext
