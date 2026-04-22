@@ -1,3 +1,4 @@
+import { PageShell } from "@/components/sita/PageShell";
 import { motion } from "framer-motion";
 import { Palette, Type, Image, Sparkles, Download, Eye, Layout, Paintbrush } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -14,7 +15,7 @@ export default function BrandStudio() {
   const [logoPrompt, setLogoPrompt] = useState("");
 
   return (
-    <div className="min-h-screen bg-background p-6 space-y-6">
+    <PageShell width="wide">
       <DPOSubNav />
 <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="text-2xl font-bold text-foreground">Brand Studio</h1>
@@ -139,6 +140,6 @@ export default function BrandStudio() {
           </div>
         </CardContent>
       </Card>
-    </div>
+    </PageShell>
   );
 }

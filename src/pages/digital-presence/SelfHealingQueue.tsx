@@ -1,3 +1,4 @@
+import { PageShell } from "@/components/sita/PageShell";
 import { motion } from "framer-motion";
 import { Wrench, CheckCircle, AlertTriangle, Shield, Eye, Play, Clock, ArrowRight, Sparkles, RotateCcw } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -52,7 +53,7 @@ export default function SelfHealingQueue() {
   const sevColor = (s: string) => s === "critical" ? "text-red-400" : s === "high" ? "text-amber-400" : s === "medium" ? "text-yellow-400" : "text-muted-foreground";
 
   return (
-    <div className="min-h-screen bg-background p-6 space-y-6">
+    <PageShell width="wide">
       <DPOSubNav />
 <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="text-2xl font-bold text-foreground">Self-Healing Queue / Patch Center</h1>
@@ -168,6 +169,6 @@ export default function SelfHealingQueue() {
           ))}
         </CardContent>
       </Card>
-    </div>
+    </PageShell>
   );
 }

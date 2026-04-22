@@ -1,3 +1,4 @@
+import { PageShell } from "@/components/sita/PageShell";
 import { motion } from "framer-motion";
 import { AlertTriangle, Link2, Image, Clock, MousePointer, Shield, Smartphone, ShoppingCart, FileText, Sparkles } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -8,7 +9,7 @@ import DPOSubNav from "./DPOSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 export default function ErrorRadar() {
   return (
-    <div className="min-h-screen bg-background p-6 space-y-6">
+    <PageShell width="wide">
       <DPOSubNav />
 <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="text-2xl font-bold text-foreground">Error & Opportunity Radar</h1>
@@ -75,6 +76,6 @@ export default function ErrorRadar() {
           ))}
         </CardContent>
       </Card>
-    </div>
+    </PageShell>
   );
 }

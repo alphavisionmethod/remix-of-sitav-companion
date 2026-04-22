@@ -1,3 +1,4 @@
+import { PageShell } from "@/components/sita/PageShell";
 import { motion } from "framer-motion";
 import { BarChart3, TrendingUp, Eye, ShoppingCart, Calendar, Globe, ArrowUpRight, ArrowDownRight, Users, Sparkles, Target } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -10,7 +11,7 @@ import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 export default function PresenceAnalytics() {
   const { data: liveData, isLoading } = useSeoReports();
   return (
-    <div className="min-h-screen bg-background p-6 space-y-6">
+    <PageShell width="wide">
       <DPOSubNav />
 <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="text-2xl font-bold text-foreground">Presence Analytics & Insight Review</h1>
@@ -142,6 +143,6 @@ export default function PresenceAnalytics() {
           </CardContent>
         </Card>
       </div>
-    </div>
+    </PageShell>
   );
 }

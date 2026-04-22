@@ -1,3 +1,4 @@
+import { PageShell } from "@/components/sita/PageShell";
 import { motion } from "framer-motion";
 import { Globe, Palette, ShoppingCart, BarChart3, Rocket, Wrench, ArrowRight, Sparkles, Layout, Monitor, Store, Megaphone, Shield, Smartphone, Server } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
@@ -81,6 +82,6 @@ export default function PresenceGate() {
           <Wrench className="w-3.5 h-3.5 mr-1.5" /> Run Diagnostics
         </Button>
       </div>
-    </div>
+    </PageShell>
   );
 }

@@ -1,3 +1,4 @@
+import { PageShell } from "@/components/sita/PageShell";
 import { motion } from "framer-motion";
 import { Globe, Link2, RefreshCw, Shield, AlertTriangle, CheckCircle, Plus, Settings, Activity } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -14,7 +15,7 @@ const DEMO_PLATFORMS: any[] = [];
 export default function ConnectedSites() {
   const { data: liveData, isLoading } = useSites();
   return (
-    <div className="min-h-screen bg-background p-6 space-y-6">
+    <PageShell width="wide">
       <DPOSubNav />
 <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="text-2xl font-bold text-foreground">Connected Website Manager</h1>
@@ -96,6 +97,6 @@ export default function ConnectedSites() {
           </CardContent>
         </Card>
       </div>
-    </div>
+    </PageShell>
   );
 }

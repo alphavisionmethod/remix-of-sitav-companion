@@ -1,3 +1,4 @@
+import { PageShell } from "@/components/sita/PageShell";
 import { motion } from "framer-motion";
 import { Store, Package, ShoppingCart, TrendingDown, Star, Layers, Tag, AlertTriangle, Sparkles, Loader2 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -20,7 +21,7 @@ export default function EcommerceOffice() {
   const hasShopifyCollections = shopifyCollections && shopifyCollections.length > 0;
 
   return (
-    <div className="min-h-screen bg-background p-6 space-y-6">
+    <PageShell width="wide">
       <DPOSubNav />
 <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="text-2xl font-bold text-foreground">Ecommerce / Merchandising Office</h1>
@@ -167,6 +168,6 @@ export default function EcommerceOffice() {
           </CardContent>
         </Card>
       </div>
-    </div>
+    </PageShell>
   );
 }

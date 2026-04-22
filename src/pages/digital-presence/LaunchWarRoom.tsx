@@ -1,3 +1,4 @@
+import { PageShell } from "@/components/sita/PageShell";
 import { motion } from "framer-motion";
 import { Rocket, CheckCircle, AlertTriangle, Clock, Layout, FileText, Eye, ShoppingCart, BarChart3, Undo2 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -13,7 +14,7 @@ const DEMO_READINESS_CHECKS: any[] = [];
 export default function LaunchWarRoom() {
   const overallScore = Math.round(([] as typeof DEMO_READINESS_CHECKS).reduce((sum, c) => sum + c.score, 0) / Math.max(([] as typeof DEMO_READINESS_CHECKS).length, 1));
   return (
-    <div className="min-h-screen bg-background p-6 space-y-6">
+    <PageShell width="wide">
       <DPOSubNav />
 <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="text-2xl font-bold text-foreground">Launch War Room</h1>
@@ -88,6 +89,6 @@ export default function LaunchWarRoom() {
           <Badge variant="default" className="text-[10px]"><CheckCircle className="w-3 h-3 mr-1" /> Ready</Badge>
         </CardContent>
       </Card>
-    </div>
+    </PageShell>
   );
 }
