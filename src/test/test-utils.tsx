@@ -149,11 +149,11 @@ vi.mock("@/contexts/InspectorContext", () => ({
 // Mock app platform
 vi.mock("@/contexts/AppPlatformContext", () => ({
   useAppPlatform: () => ({
-    apps: [], installApp: vi.fn(), uninstallApp: vi.fn(), loading: false,
+    apps: [], installApp: vi.fn(), uninstallApp: vi.fn(), loading: false, receipts: [],
     getApp: vi.fn().mockReturnValue(null),
     getLiveApp: vi.fn().mockReturnValue(null),
-    browser: { tabs: [], activeTab: null },
-    installedApps: [],
+    browser: { tabs: [], activeTab: null, openTab: vi.fn(), closeTab: vi.fn() },
+    installedApps: [], updates: [], defaultApps: {},
   }),
   AppPlatformProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
 }));
