@@ -146,6 +146,18 @@ vi.mock("@/contexts/InspectorContext", () => ({
   InspectorProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
 }));
 
+// Mock app platform
+vi.mock("@/contexts/AppPlatformContext", () => ({
+  useAppPlatform: () => ({
+    apps: [], installApp: vi.fn(), uninstallApp: vi.fn(), loading: false,
+    getApp: vi.fn().mockReturnValue(null),
+    getLiveApp: vi.fn().mockReturnValue(null),
+    browser: { tabs: [], activeTab: null },
+    installedApps: [],
+  }),
+  AppPlatformProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+}));
+
 // Mock kernel
 vi.mock("@/contexts/SitaKernelContext", () => ({
   useSitaKernel: () => ({ ready: true }),
@@ -155,6 +167,10 @@ vi.mock("@/contexts/SitaKernelContext", () => ({
   useEntityScoped: () => ({}),
   useCloudControlPlane: () => ({ status: "healthy", actions: [] }),
   useLifeSimulator: () => ({ scenarios: [], run: vi.fn() }),
+  useLifeSimulatorEngine: () => ({ simulator: { getShockTypes: () => [], run: vi.fn(), getResults: () => [] } }),
+  useKernelStatus: () => ({ status: "ready", health: "healthy" }),
+  useSearchFabric: () => ({ search: vi.fn().mockResolvedValue([]), results: [], loading: false, addBatch: vi.fn() }),
+  useWebsiteManager: () => ({ sites: [], createSite: vi.fn(), deleteSite: vi.fn(), loading: false }),
   SitaKernelProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
 }));
 
@@ -174,6 +190,7 @@ vi.mock("@/contexts/SitaOSContext", () => ({
     attentionOS: {
       getAttentionStack: () => [],
       getCognitiveLoad: () => ({ score: 0.2 }),
+      getInterfaceState: () => ({ focused: true, mode: "default" }),
     },
     relationships: { getMeetingPrep: vi.fn().mockReturnValue({}) },
     personalGraph: {
@@ -203,6 +220,9 @@ vi.mock("@/contexts/SitaOSContext", () => ({
     explainability: { explain: vi.fn().mockReturnValue(""), getExplanationHistory: () => [], clearHistory: vi.fn() },
     workspaceIntelligence: { getAvailableWorkspaces: () => [], getWorkspaceUsageStats: () => ({}), suggestWorkspace: () => null },
     briefing: { generateBriefing: vi.fn().mockReturnValue({}) },
+    engines: {
+      revenue: { getLedger: vi.fn().mockReturnValue({ entries: [], total: 0 }), getMetrics: vi.fn().mockReturnValue({}) },
+    },
   }),
   SitaOSProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
 }));
