@@ -36,6 +36,10 @@ interface AdvisorPortraitProps {
   speaking?: boolean;
   size?: "sm" | "md" | "lg" | "xl";
   className?: string;
+  /** Image loading strategy — set "eager" for above-the-fold hero portraits */
+  loading?: "lazy" | "eager";
+  /** Fetch priority hint — set "high" for the first visible portrait */
+  fetchPriority?: "high" | "low" | "auto";
 }
 
 const domainGradients: Record<AdvisorDomain, string> = {
@@ -74,6 +78,8 @@ export const AdvisorPortrait = ({
   speaking = false,
   size = "md",
   className,
+  loading = "lazy",
+  fetchPriority = "auto",
 }: AdvisorPortraitProps) => {
   const [imgState, setImgState] = useState<"loading" | "loaded" | "error">("loading");
   const [retries, setRetries] = useState(0);
@@ -217,7 +223,8 @@ export const AdvisorPortrait = ({
           onError={handleError}
           whileHover={{ scale: 1.05 }}
           transition={{ type: "spring", stiffness: 300 }}
-          loading="lazy"
+          loading={loading}
+          fetchPriority={fetchPriority}
           decoding="async"
         />
       </div>

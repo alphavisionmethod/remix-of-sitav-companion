@@ -174,6 +174,8 @@ export const ImmersiveBoardroomCouncil = ({ advisors, onAdvisorClick, className 
                     status={advisor.status}
                     size="lg"
                     avatarUrl={advisor.avatarUrl}
+                    loading={index === 0 ? "eager" : "lazy"}
+                    fetchPriority={index === 0 ? "high" : "auto"}
                   />
                 </NeonRing>
                 <div className="text-center">

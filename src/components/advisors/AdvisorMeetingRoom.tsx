@@ -244,6 +244,8 @@ export const AdvisorMeetingRoom = ({ advisors, domainLabel }: AdvisorMeetingRoom
                         status={response?.status === "thinking" ? "thinking" : advisor.status}
                         speaking={isActive}
                         size="lg"
+                        loading={i === 0 ? "eager" : "lazy"}
+                        fetchPriority={i === 0 ? "high" : "auto"}
                       />
                       {isActive && (
                         <motion.div
