@@ -81,7 +81,7 @@ describe("Health Index", () => {
   });
 
   it("computeHealthIndex returns valid index", () => {
-    const index = computeHealthIndex({});
+    const index = computeHealthIndex([], [], []);
     expect(index).toBeDefined();
     expect(index.overallScore).toBeGreaterThanOrEqual(0);
     expect(index.overallScore).toBeLessThanOrEqual(100);
@@ -96,9 +96,9 @@ describe("SLO Tracking", () => {
 
   it("computeSLOStatus returns valid status", () => {
     const slo = SITA_SLOS[0];
-    const status = computeSLOStatus(slo, 99.9);
+    const status = computeSLOStatus(slo, 999, 1000);
     expect(status).toBeDefined();
-    expect(typeof status.met).toBe("boolean");
+    expect(typeof status.isMet).toBe("boolean");
   });
 });
 
@@ -113,9 +113,10 @@ describe("Anomaly Detection", () => {
   });
 
   it("detectAnomaly flags outliers", () => {
-    const data = [10, 10, 10, 10, 10, 100];
-    const result = detectAnomaly(data);
-    expect(result.isAnomaly).toBe(true);
+    const historical = [10, 10, 10, 10, 10, 10, 10, 10, 10, 10];
+    const result = detectAnomaly("test-metric", 100, historical);
+    expect(result).not.toBeNull();
+    expect(result!.isAnomaly).toBe(true);
   });
 });
 
