@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import {
   Briefcase, DollarSign, Sparkles, Users,
   TrendingUp, FolderOpen, FileText, Settings
@@ -64,10 +64,11 @@ export function AppIconRenderer({ appId, size = 56, className = "", glowOnHover 
   if (!config) return null;
   const { gradient, Icon, shadow } = config;
   const iconSize = Math.round(size * 0.48);
-  const gradientId = `icon-grad-${appId}`;
+  const ref = useRef<HTMLDivElement>(null);
 
   return (
     <div
+      ref={ref}
       className={`relative flex items-center justify-center overflow-hidden ${className}`}
       style={{
         width: size,
@@ -75,17 +76,26 @@ export function AppIconRenderer({ appId, size = 56, className = "", glowOnHover 
         borderRadius: "22%",
         background: `linear-gradient(135deg, ${gradient[0]}, ${gradient[1]})`,
         boxShadow: glowOnHover ? undefined : `0 4px 14px -2px ${shadow}`,
-        transition: "box-shadow 0.2s, transform 0.2s",
+        transition: "box-shadow 0.25s cubic-bezier(.4,0,.2,1), transform 0.25s cubic-bezier(.4,0,.2,1), filter 0.25s ease",
+        willChange: "transform, box-shadow, filter",
       }}
       onMouseEnter={(e) => {
-        if (glowOnHover) {
-          (e.currentTarget as HTMLDivElement).style.boxShadow = `0 6px 24px -2px ${shadow}`;
-        }
+        const el = e.currentTarget;
+        el.style.transform = "translateY(-4px) scale(1.08) rotate(-2deg)";
+        el.style.filter = "brightness(1.15)";
+        el.style.boxShadow = `0 8px 28px -2px ${shadow}, 0 0 0 2px rgba(255,255,255,0.12)`;
       }}
       onMouseLeave={(e) => {
-        if (glowOnHover) {
-          (e.currentTarget as HTMLDivElement).style.boxShadow = `0 4px 14px -2px ${shadow}`;
-        }
+        const el = e.currentTarget;
+        el.style.transform = "";
+        el.style.filter = "";
+        el.style.boxShadow = glowOnHover ? "" : `0 4px 14px -2px ${shadow}`;
+      }}
+      onPointerDown={(e) => {
+        e.currentTarget.style.transform = "translateY(-1px) scale(1.02) rotate(0deg)";
+      }}
+      onPointerUp={(e) => {
+        e.currentTarget.style.transform = "translateY(-4px) scale(1.08) rotate(-2deg)";
       }}
     >
       {/* highlight overlay */}
