@@ -10,6 +10,7 @@ import { AdminRoute } from "@/components/auth/AdminRoute";
 
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
+import { PortraitPerfHud } from "@/components/settings/PortraitPerfHud";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { ConnectivityProvider } from "@/contexts/ConnectivityContext";
@@ -220,6 +221,7 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
+      <PortraitPerfHud />
       <BrowserRouter>
         <AuthProvider>
           <ConnectivityProvider>

@@ -13,6 +13,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { AdvisorAvatarPreview } from "@/components/settings/AdvisorAvatarPreview";
 import { AdvisorAvatarUpload } from "@/components/settings/AdvisorAvatarUpload";
 import { AvatarDebugToggle } from "@/components/settings/AvatarDebugToggle";
+import { PerfHudToggle } from "@/components/settings/PerfHudToggle";
 
 interface SecurityStatus {
   mfaEnrolled: boolean;
@@ -143,6 +144,7 @@ const SettingsPage = () => {
         <AdvisorAvatarPreview />
         <AdvisorAvatarUpload />
         <AvatarDebugToggle />
+        <PerfHudToggle />
       </section>
     </motion.div>
   );
