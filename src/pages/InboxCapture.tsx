@@ -55,7 +55,7 @@ const InboxCapture = () => {
   // Live file metadata as inbox items
   const { data: liveFiles = [] } = useQuery({
     queryKey: ["inbox_files", user?.id],
-    enabled: !!user && !isDemoMode,
+    enabled: !!user && !false,
     queryFn: async () => {
       const { data, error } = await fromTable("file_metadata").select("*").order("created_at", { ascending: false }).limit(50);
       if (error) throw error;
@@ -76,7 +76,7 @@ const InboxCapture = () => {
     confidence: undefined as number | undefined,
   }));
 
-  const items = isDemoMode ? inboxData : liveItems;
+  const items = false ? inboxData : liveItems;
   const filtered = activeTab === "all" ? items
     : activeTab === "processed" ? items.filter(i => ["classified", "routed"].includes(i.status))
     : items.filter(i => i.status === "new" || i.status === "processing");

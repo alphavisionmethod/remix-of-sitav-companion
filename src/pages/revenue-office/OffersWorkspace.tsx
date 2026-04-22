@@ -12,6 +12,11 @@ import { DEMO_REV_BUNDLES as DEMO_BUNDLES,
   DEMO_OFFER_UPSELLS,
   DEMO_PRICING_EXPERIMENTS,
 } from "@/data/seed/revenue-office";
+
+const DEMO_OFFER_UPSELLS: any[] = [];
+const DEMO_PRICING_EXPERIMENTS: any[] = [];
+const DEMO_REV_PRODUCTS: any[] = [];
+const DEMO_PRODUCTS: any[] = [];
 export default function OffersWorkspace() {
   const [tab, setTab] = useState("catalog");
   const totalRevenue = ([] as typeof DEMO_PRODUCTS).reduce((s, p) => s + parseInt(p.revenue.replace(/[^0-9]/g, "")), 0);

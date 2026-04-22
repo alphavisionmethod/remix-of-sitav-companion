@@ -62,7 +62,7 @@ const NotesWorkspace = () => {
   const notes: Note[] = useMemo(() => {
     if (!liveNotes?.length) return [];
     return liveNotes.map(mapDbNote);
-  }, [isDemoMode, liveNotes]);
+  }, [false, liveNotes]);
 
   const [search, setSearch] = useState("");
   const [activeFolder, setActiveFolder] = useState<string | null>(null);
@@ -134,7 +134,7 @@ const NotesWorkspace = () => {
         </Card>
       )}
 
-      {!isDemoMode && notes.length === 0 ? (
+      {!false && notes.length === 0 ? (
         <Card className="border-border/40">
           <CardContent className="p-8 text-center">
             <FileText className="h-10 w-10 text-muted-foreground mx-auto mb-3" />

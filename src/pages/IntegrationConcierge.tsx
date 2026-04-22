@@ -18,6 +18,8 @@ import { useOSRuntime } from "@/hooks/useOSRuntime";
 import type { ConnectorUseCase } from "@/domains/engines/connector-concierge";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
+const DEMO_CATEGORIES: any[] = [];
+
 // Production fallback — seed data removed
 const DEMO_BUNDLES: any[] = [];
 

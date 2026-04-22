@@ -18,6 +18,11 @@ import { DEMO_humanVsAI, DEMO_policies, DEMO_trustLevels,
   DEMO_COMMERCIAL_CONSTITUTION, DEMO_NO_GUESS_RULES,
   DEMO_PAUSE_ROLLBACK, DEMO_HANDOFF_SIGNALS
 } from "@/data/seed/revenue-office";
+
+const DEMO_COMMERCIAL_CONSTITUTION: any[] = [];
+const DEMO_HANDOFF_SIGNALS: any[] = [];
+const DEMO_PAUSE_ROLLBACK: any[] = [];
+const DEMO_NO_GUESS_RULES: any[] = [];
 const ESCALATION_RULES = [
   { trigger: "Automation failure rate > 20%", action: "Pause automation, notify owner, create incident", severity: "critical" as const, lastTriggered: "Never", cooldown: "1hr" },
   { trigger: "Contact receives > 5 messages in 48hrs", action: "Activate fatigue circuit breaker, suppress non-critical", severity: "high" as const, lastTriggered: "3 days ago", cooldown: "48hr" },

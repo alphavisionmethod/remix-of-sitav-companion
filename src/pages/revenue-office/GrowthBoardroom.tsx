@@ -19,6 +19,9 @@ import { useRevenueWhatChanged } from "@/hooks/use-revenue-memory";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { useDataMode } from "@/contexts/DataModeContext";
 
+const DEMO_PIPELINE_STAGES: any[] = [];
+const DEMO_ADVISOR_SIGNALS: any[] = [];
+
 
 
 

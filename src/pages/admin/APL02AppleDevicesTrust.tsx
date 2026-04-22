@@ -9,6 +9,8 @@ import { DEMO_ESCALATION_RULES } from "@/data/seed/admin-platform";
 import APLSubNav from "@/components/admin/APLSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
+const DEMO_VERIFICATION_EVENTS: any[] = [];
+
 // Production fallback — seed data removed
 const DEMO_TRUST_CLASSES: any[] = [];
 

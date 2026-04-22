@@ -26,6 +26,8 @@ import { DEMO_RISK_TIERS } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { useDataMode } from "@/contexts/DataModeContext";
 
+const DEMO_STATUSES: any[] = [];
+
 
 
 
