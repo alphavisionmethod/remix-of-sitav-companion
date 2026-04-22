@@ -19,6 +19,9 @@ jobs:
 
       - run: npm ci
 
+      - name: Import integrity check
+        run: node scripts/validators/check-import-integrity.mjs
+
       - name: Run design coherence audit
         id: audit
         run: |
