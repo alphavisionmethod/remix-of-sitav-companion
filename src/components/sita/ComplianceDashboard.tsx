@@ -4,6 +4,9 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useMemo } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/contexts/AuthContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
@@ -49,9 +52,9 @@ interface RiskItem {
   status: "open" | "mitigated" | "accepted";
 }
 
-// ── Mock Data ───────────────────────────────────────────────────
+// ── Demo Data ───────────────────────────────────────────────────
 
-const MOCK_CONTROLS: ComplianceControl[] = [
+const DEMO_CONTROLS: ComplianceControl[] = [
   { id: "c-1", framework: "ISO 27001", controlId: "A.5.1", title: "Information Security Policies", description: "Management direction for information security", status: "compliant", evidence: ["Policy document v3.2", "Board approval minutes"], lastAuditedAt: Date.now() - 86400000 * 7, owner: "CISO", category: "Governance" },
   { id: "c-2", framework: "ISO 27001", controlId: "A.6.1", title: "Organization of Information Security", description: "Internal organization security roles and responsibilities", status: "compliant", evidence: ["RACI matrix", "Role definitions"], lastAuditedAt: Date.now() - 86400000 * 14, owner: "CISO", category: "Governance" },
   { id: "c-3", framework: "ISO 27001", controlId: "A.8.1", title: "Asset Management", description: "Responsibility for assets and classification", status: "compliant", evidence: ["Asset inventory", "Classification schema"], lastAuditedAt: Date.now() - 86400000 * 5, owner: "IT Ops", category: "Asset Management" },
@@ -68,7 +71,7 @@ const MOCK_CONTROLS: ComplianceControl[] = [
   { id: "c-14", framework: "NIST 800-53", controlId: "RA-5", title: "Vulnerability Scanning", description: "Scan for vulnerabilities and remediate", status: "partial", evidence: ["Dependency scanning", "Missing: infra scanning"], lastAuditedAt: Date.now() - 86400000 * 15, owner: "Security", category: "Risk Assessment" },
 ];
 
-const MOCK_SLAS: SLAMetric[] = [
+const DEMO_SLAS: SLAMetric[] = [
   { name: "System Uptime", target: 99.95, actual: 99.98, unit: "%", status: "met", trend: "stable" },
   { name: "Incident Response (P0)", target: 5, actual: 3.2, unit: "min", status: "met", trend: "improving" },
   { name: "Incident Response (P1)", target: 15, actual: 12, unit: "min", status: "met", trend: "stable" },
@@ -79,7 +82,7 @@ const MOCK_SLAS: SLAMetric[] = [
   { name: "Vulnerability Remediation", target: 7, actual: 12, unit: "days", status: "breached", trend: "declining" },
 ];
 
-const MOCK_RISKS: RiskItem[] = [
+const DEMO_RISKS: RiskItem[] = [
   { id: "r-1", title: "Third-party connector API deprecation", likelihood: 3, impact: 4, category: "Vendor", mitigations: ["Multi-provider fallback", "API version monitoring"], owner: "Engineering", status: "mitigated" },
   { id: "r-2", title: "AI model hallucination in financial advice", likelihood: 2, impact: 5, category: "AI Safety", mitigations: ["Sovereign calculation engine", "Human-in-loop for high-value", "Confidence thresholds"], owner: "AI Safety", status: "mitigated" },
   { id: "r-3", title: "Permission drift allowing unauthorized actions", likelihood: 2, impact: 4, category: "Security", mitigations: ["Permission drift agent", "Immutable audit log", "Autonomy ceilings"], owner: "Security", status: "mitigated" },
