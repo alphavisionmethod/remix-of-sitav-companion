@@ -10396,6 +10396,66 @@ export type Database = {
         }
         Relationships: []
       }
+      digital_twin_snapshots: {
+        Row: {
+          created_at: string
+          id: string
+          label: string
+          snapshot_type: string
+          state_snapshot: Json
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          label?: string
+          snapshot_type?: string
+          state_snapshot?: Json
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          label?: string
+          snapshot_type?: string
+          state_snapshot?: Json
+          user_id?: string
+        }
+        Relationships: []
+      }
+      digital_twin_state: {
+        Row: {
+          created_at: string
+          health_score: number | null
+          id: string
+          last_simulation_at: string | null
+          parameters: Json
+          simulation_config: Json
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          health_score?: number | null
+          id?: string
+          last_simulation_at?: string | null
+          parameters?: Json
+          simulation_config?: Json
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          health_score?: number | null
+          id?: string
+          last_simulation_at?: string | null
+          parameters?: Json
+          simulation_config?: Json
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       domain_ownership_registry: {
         Row: {
           api_surface: Json | null
