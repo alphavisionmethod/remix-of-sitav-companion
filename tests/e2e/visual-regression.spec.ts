@@ -16,6 +16,30 @@ const AUTH_PAGES = [
   { name: "advisor", path: "/advisor" },
 ];
 
+const OS_WINDOW_SURFACES = [
+  { name: "desktop", path: "/desktop" },
+  { name: "boardroom-full", path: "/boardroom" },
+  { name: "approval-chamber", path: "/approval-chamber" },
+  { name: "governance", path: "/governance" },
+  { name: "sovereign-export", path: "/sovereign-export" },
+  { name: "digital-twins", path: "/digital-twins" },
+];
+
+const PAGESHELL_SURFACES = [
+  { name: "agent-activity", path: "/agent-activity" },
+  { name: "outcome-engine", path: "/outcome-engine" },
+  { name: "scenario-lab", path: "/scenario-lab" },
+  { name: "notification-center", path: "/notification-center" },
+  { name: "connector-hub", path: "/connector-hub" },
+  { name: "customer-health", path: "/customer-health" },
+  { name: "life-simulator", path: "/life-simulator" },
+];
+
+const ADMIN_SURFACES = [
+  { name: "admin-ai-debate", path: "/admin/ai-agent-debate" },
+  { name: "admin-runtime-status", path: "/admin/ai-runtime-status" },
+];
+
 test.describe("Visual Regression — Public Pages", () => {
   for (const pg of VISUAL_PAGES) {
     test(`${pg.name} visual snapshot`, async ({ page }) => {
@@ -24,6 +48,51 @@ test.describe("Visual Regression — Public Pages", () => {
       await expect(page).toHaveScreenshot(`${pg.name}.png`, {
         maxDiffPixelRatio: 0.02,
         threshold: 0.2,
+        animations: "disabled",
+      });
+    });
+  }
+});
+
+test.describe("Visual Regression — OS/Window Surfaces", () => {
+  for (const pg of OS_WINDOW_SURFACES) {
+    test(`${pg.name} layout snapshot`, async ({ page }) => {
+      await page.goto(pg.path);
+      await page.waitForLoadState("domcontentloaded");
+      await page.waitForTimeout(1000);
+      await expect(page).toHaveScreenshot(`${pg.name}-surface.png`, {
+        maxDiffPixelRatio: 0.05,
+        threshold: 0.3,
+        animations: "disabled",
+      });
+    });
+  }
+});
+
+test.describe("Visual Regression — PageShell Standalone Pages", () => {
+  for (const pg of PAGESHELL_SURFACES) {
+    test(`${pg.name} framing snapshot`, async ({ page }) => {
+      await page.goto(pg.path);
+      await page.waitForLoadState("domcontentloaded");
+      await page.waitForTimeout(1000);
+      await expect(page).toHaveScreenshot(`${pg.name}-pageshell.png`, {
+        maxDiffPixelRatio: 0.05,
+        threshold: 0.3,
+        animations: "disabled",
+      });
+    });
+  }
+});
+
+test.describe("Visual Regression — Admin Surfaces", () => {
+  for (const pg of ADMIN_SURFACES) {
+    test(`${pg.name} layout snapshot`, async ({ page }) => {
+      await page.goto(pg.path);
+      await page.waitForLoadState("domcontentloaded");
+      await page.waitForTimeout(1000);
+      await expect(page).toHaveScreenshot(`${pg.name}-admin.png`, {
+        maxDiffPixelRatio: 0.05,
+        threshold: 0.3,
         animations: "disabled",
       });
     });

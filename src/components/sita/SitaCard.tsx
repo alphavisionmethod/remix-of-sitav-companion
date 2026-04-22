@@ -1,6 +1,7 @@
 import { cn } from "@/lib/utils";
 import { ReactNode } from "react";
 import { motion } from "framer-motion";
+import { Typography } from "@/components/sita/Typography";
 
 const appleSpring = { type: "spring", mass: 1, stiffness: 120, damping: 14 };
 
@@ -89,7 +90,7 @@ export const SitaSectionHeader = ({ title, subtitle, action, className }: { titl
 export const SitaPageHeader = ({ title, subtitle, actions, className }: { title: string; subtitle?: string; actions?: ReactNode; className?: string }) => (
   <div role="banner" className={cn("flex flex-col sm:flex-row sm:items-start justify-between gap-3 sm:gap-4", className)}>
     <div className="min-w-0">
-      <h1 className="font-display text-xl sm:text-[1.75rem] font-bold tracking-[-0.025em] text-foreground">{title}</h1>
+      <Typography role="appTitle" as="h1" className="text-xl sm:text-[1.75rem]">{title}</Typography>
       {subtitle && <p className="mt-1 text-xs sm:text-sm text-muted-foreground max-w-lg tracking-[-0.01em]">{subtitle}</p>}
     </div>
     {actions && <div className="flex items-center gap-2 shrink-0 flex-wrap">{actions}</div>}
