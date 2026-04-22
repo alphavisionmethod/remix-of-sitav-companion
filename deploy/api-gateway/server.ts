@@ -9,6 +9,7 @@ import { cors } from "hono/cors";
 import { logger } from "hono/logger";
 import { serve } from "@hono/node-server";
 import { createClient } from "@supabase/supabase-js";
+import { randomUUID } from "crypto";
 
 // ── Config ───────────────────────────────────────────────────
 
@@ -20,11 +21,17 @@ const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY || "";
 const SITE_URL = process.env.SITE_URL || "http://localhost:8080";
 const RATE_LIMIT_MAX = parseInt(process.env.RATE_LIMIT_MAX || "500", 10);
 const RATE_LIMIT_WINDOW_MS = parseInt(process.env.RATE_LIMIT_WINDOW_MS || "60000", 10);
+const REQUEST_TIMEOUT_MS = parseInt(process.env.REQUEST_TIMEOUT_MS || "30000", 10);
+const MAX_BODY_BYTES = parseInt(process.env.MAX_BODY_BYTES || "1048576", 10); // 1 MB
 
 const startedAt = Date.now();
 let serverRef: { close: () => void } | null = null;
 let rateLimitCleanupInterval: ReturnType<typeof setInterval> | null = null;
 let shuttingDown = false;
+
+// ── In-memory metrics ───────────────────────────────────────
+
+const metrics = { totalRequests: 0, totalErrors: 0, status2xx: 0, status4xx: 0, status5xx: 0 };
 
 // ── Structured Logger ───────────────────────────────────────
 
@@ -85,6 +92,36 @@ const app = new Hono();
 
 // Global middleware
 app.use("*", logger());
+
+// Request-ID middleware — generate or accept X-Request-Id
+app.use("*", async (c, next) => {
+  const requestId = c.req.header("X-Request-Id") || randomUUID();
+  c.set("requestId" as never, requestId as never);
+  c.header("X-Request-Id", requestId);
+  await next();
+});
+
+// Body size limiting middleware
+app.use("*", async (c, next) => {
+  if (c.req.method !== "GET" && c.req.method !== "HEAD" && c.req.method !== "OPTIONS") {
+    const contentLength = c.req.header("Content-Length");
+    if (contentLength && parseInt(contentLength, 10) > MAX_BODY_BYTES) {
+      return c.json({ error: "Payload Too Large", maxBytes: MAX_BODY_BYTES }, 413);
+    }
+  }
+  await next();
+});
+
+// Metrics tracking middleware
+app.use("*", async (c, next) => {
+  metrics.totalRequests++;
+  await next();
+  const status = c.res.status;
+  if (status >= 200 && status < 300) metrics.status2xx++;
+  else if (status >= 400 && status < 500) metrics.status4xx++;
+  else if (status >= 500) { metrics.status5xx++; metrics.totalErrors++; }
+});
+
 app.use(
   "*",
   cors({
@@ -141,6 +178,16 @@ app.use("*", async (c, next) => {
 });
 
 // ── Health ───────────────────────────────────────────────────
+
+app.get("/metrics", (c) => {
+  return c.json({
+    service: "sita-api-gateway",
+    uptime: Math.floor((Date.now() - startedAt) / 1000),
+    ...metrics,
+    rateLimitStoreSize: rateLimitStore.size,
+    timestamp: new Date().toISOString(),
+  });
+});
 
 app.get("/ready", (c) => {
   if (shuttingDown) {
@@ -208,7 +255,7 @@ app.use("/api/*", async (c, next) => {
 // ── Brain Core Proxy ────────────────────────────────────────
 
 async function proxyToBrain(
-  c: { req: { raw: Request }; json: (data: unknown, status?: number) => Response },
+  c: { req: { raw: Request; header: (name: string) => string | undefined }; json: (data: unknown, status?: number) => Response },
   brainPath: string
 ) {
   try {
@@ -216,22 +263,31 @@ async function proxyToBrain(
     const method = c.req.raw.method;
     const headers: Record<string, string> = {
       "Content-Type": "application/json",
+      "X-Request-Id": c.req.header("X-Request-Id") || randomUUID(),
     };
 
-    const init: RequestInit = { method, headers };
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+
+    const init: RequestInit = { method, headers, signal: controller.signal };
     if (method !== "GET" && method !== "HEAD") {
       init.body = await c.req.raw.text();
     }
 
-    const response = await fetch(url, init);
-    const data = await response.json();
-    return c.json(data, response.status as 200);
+    try {
+      const response = await fetch(url, init);
+      clearTimeout(timeout);
+      const data = await response.json();
+      return c.json(data, response.status as 200);
+    } finally {
+      clearTimeout(timeout);
+    }
   } catch (err) {
+    if (err instanceof Error && err.name === "AbortError") {
+      return c.json({ error: "Gateway Timeout", message: "Brain core did not respond in time", brainPath, _requestId: c.req.header("X-Request-Id") }, 504);
+    }
     const message = err instanceof Error ? err.message : "Brain core unreachable";
-    return c.json(
-      { error: "Brain Core Error", message, brainPath },
-      502
-    );
+    return c.json({ error: "Brain Core Error", message, brainPath, _requestId: c.req.header("X-Request-Id") }, 502);
   }
 }
 
@@ -329,12 +385,14 @@ app.notFound((c) => {
 // ── Global Error Handler ────────────────────────────────────
 
 app.onError((err, c) => {
-  log("error", "Unhandled request error", { error: err.message, path: c.req.path, method: c.req.method });
+  const requestId = c.req.header("X-Request-Id") || "unknown";
+  log("error", "Unhandled request error", { error: err.message, path: c.req.path, method: c.req.method, requestId });
   return c.json(
     {
       error: "Internal Server Error",
       message: process.env.NODE_ENV === "production" ? "An unexpected error occurred" : err.message,
       service: "sita-api-gateway",
+      _requestId: requestId,
     },
     500
   );
@@ -353,6 +411,13 @@ function shutdown(signal: string) {
 
 process.on("SIGTERM", () => shutdown("SIGTERM"));
 process.on("SIGINT", () => shutdown("SIGINT"));
+process.on("unhandledRejection", (reason) => {
+  log("error", "Unhandled rejection", { error: reason instanceof Error ? reason.message : String(reason) });
+});
+process.on("uncaughtException", (err) => {
+  log("error", "Uncaught exception — shutting down", { error: err.message, stack: err.stack });
+  shutdown("uncaughtException");
+});
 
 // ── Start ───────────────────────────────────────────────────
 
