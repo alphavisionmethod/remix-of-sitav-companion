@@ -29,9 +29,9 @@ const DOMAIN_HEALTH: Record<PulseDomain, number> = {
 };
 
 const DOMAIN_HEALTH_COLORS: Record<PulseDomain, string> = {
-  business: "hsl(280, 50%, 60%)",
-  finance: "hsl(145, 60%, 45%)",
-  concierge: "hsl(40, 90%, 55%)",
+  business: "hsl(var(--hud-ring-active))",
+  finance: "hsl(var(--hud-gauge-start))",
+  concierge: "hsl(var(--hud-gauge-consensus-start))",
 };
 
 const PULSE_DATA: Record<PulseDomain, {
@@ -130,8 +130,8 @@ export function BoardroomPulseView({ scope, onNavigate }: Props) {
               className={cn(
                 "flex items-center gap-2 px-4 py-2 rounded-xl text-[12px] font-semibold transition-all",
                 domain === tab.id
-                  ? "bg-[hsl(280_40%_50%/0.1)] text-[hsl(280_50%_75%)] border border-[hsl(280_50%_50%/0.2)]"
-                  : "text-[hsl(0_0%_100%/0.4)] hover:text-[hsl(0_0%_100%/0.7)] border border-transparent",
+                  ? "bg-hud-ring-active/10 text-hud-ring-active border border-hud-ring-active/20"
+                  : "text-hud-text-muted hover:text-hud-text-secondary border border-transparent",
               )}
             >
               <tab.icon size={14} />
