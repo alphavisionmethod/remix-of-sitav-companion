@@ -1,3 +1,4 @@
+import { toast } from "sonner";
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Money Office: Debt, Credit & Liability Office
 // ═══════════════════════════════════════════════════════════════
@@ -108,7 +109,7 @@ const DebtCreditOffice = () => {
             domain="finance"
             insight={`Focus on ${profile.payoffPlan.milestones[0]?.accountName || "highest rate"} first. Current interest drag is ${fmt(profile.interestDragMonthlyCents)}/mo.`}
             confidence={88}
-            actions={[{ label: "View Plan", onClick: () => {} }]}
+            actions={[{ label: "View Plan", onClick: () => toast.info("Debt plan coming soon") }]}
           />
 
           <div className="rounded-xl border border-[hsl(38_85%_58%/0.2)] bg-[hsl(38_85%_58%/0.05)] p-4">

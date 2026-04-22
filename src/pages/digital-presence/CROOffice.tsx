@@ -1,3 +1,4 @@
+import { toast } from "sonner";
 import { motion } from "framer-motion";
 import { Target, MousePointer, Shield, Smartphone, FormInput, TrendingUp, AlertTriangle, Sparkles, ArrowRight } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -22,7 +23,7 @@ export default function CROOffice() {
           domain="business"
           title="Conversion analytics not connected"
           description="Connect your website analytics to see CTA performance, trust gaps, funnel leaks, form friction, and mobile UX issues."
-          actions={[{ label: "Connect Analytics", onClick: () => {} }]}
+          actions={[{ label: "Connect Analytics", onClick: () => toast.info("Analytics connection coming soon") }]}
         />
       </div>
     </div>

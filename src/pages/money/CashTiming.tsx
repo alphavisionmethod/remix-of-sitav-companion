@@ -1,3 +1,4 @@
+import { toast } from "sonner";
 import { HeroCard, SummaryCard, StatusCard, TimelineCard } from "@/components/sita/cards";
 import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvisorInsight";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
@@ -125,7 +126,7 @@ const CashTiming = () => {
         domain="finance"
         insight={`${stressWindows.length} stress window${stressWindows.length !== 1 ? "s" : ""} in the next 15 days. Projected minimum balance: $${minBalance.toLocaleString()}.`}
         confidence={stressWindows.length === 0 ? 92 : 68}
-        actions={[{ label: "View Forecast", onClick: () => {} }]}
+        actions={[{ label: "View Forecast", onClick: () => toast.info("Forecast view coming soon") }]}
       />
     </motion.div>
   );

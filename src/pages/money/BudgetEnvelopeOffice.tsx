@@ -1,3 +1,4 @@
+import { toast } from "sonner";
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Money Office: Budget & Envelope Office
 // ═══════════════════════════════════════════════════════════════
@@ -129,7 +130,7 @@ const BudgetEnvelopeOffice = () => {
         domain="finance"
         insight={`Spending pace is ${budget.paceStatus}. ${overspentEnvelopes.length > 0 ? `${overspentEnvelopes.length} envelope(s) overspent — consider reallocating.` : "All envelopes on track."}`}
         confidence={85}
-        actions={[{ label: "Reallocate", onClick: () => {} }]}
+        actions={[{ label: "Reallocate", onClick: () => toast.info("Budget reallocation coming soon") }]}
       />
     </motion.div>
   );

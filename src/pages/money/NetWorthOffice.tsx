@@ -1,3 +1,4 @@
+import { toast } from "sonner";
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Money Office: Net Worth & Balance Sheet
 // ═══════════════════════════════════════════════════════════════
@@ -71,7 +72,7 @@ const NetWorthOffice = () => {
               domain="finance"
               title="No asset accounts yet"
               description="Connect your bank, brokerage, or retirement accounts to see your full balance sheet."
-              actions={[{ label: "Connect Account", onClick: () => {} }]}
+              actions={[{ label: "Connect Account", onClick: () => toast.info("Account connection coming soon") }]}
             />
           )}
           {analysis.assets.map(a => {
