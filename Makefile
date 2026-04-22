@@ -123,6 +123,20 @@ test-health: ## Quick health check of all endpoints
 	@curl -sf http://localhost:8080/ && echo " ✅ Web" || echo " ❌ Web"
 	@curl -sf http://localhost:9999/health && echo " ✅ Auth" || echo " ❌ Auth"
 
+preflight: ## Run all deployment readiness checks
+	@echo "═══ SITA OS Preflight Checks ═══"
+	@echo "── 1. Service manifest completeness ──"
+	@bash scripts/validators/check-deploy-service-completeness.sh || true
+	@echo ""
+	@echo "── 2. Docker Compose references ──"
+	@bash scripts/validators/check-docker-compose-references.sh || true
+	@echo ""
+	@echo "── 3. TypeScript compilation ──"
+	@cd deploy/api-gateway && npm run typecheck 2>/dev/null && echo "  ✅ api-gateway typecheck" || echo "  ❌ api-gateway typecheck"
+	@cd deploy/brain-core && npm run typecheck 2>/dev/null && echo "  ✅ brain-core typecheck" || echo "  ❌ brain-core typecheck"
+	@echo ""
+	@echo "═══ Preflight Complete ═══"
+
 # ── Security ─────────────────────────────────────────────────
 
 rotate-secrets: ## Rotate JWT_SECRET and POSTGRES_PASSWORD

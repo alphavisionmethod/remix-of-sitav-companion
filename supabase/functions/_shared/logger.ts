@@ -53,4 +53,13 @@ export class EdgeLogger {
   child(correlationId: string): EdgeLogger {
     return new EdgeLogger(this.fn, correlationId);
   }
+
+  /** Start a timer — call the returned function to log elapsed time */
+  timer(label: string): () => void {
+    const start = performance.now();
+    return () => {
+      const elapsed = Math.round(performance.now() - start);
+      this.info(`${label} completed`, { latencyMs: elapsed });
+    };
+  }
 }
