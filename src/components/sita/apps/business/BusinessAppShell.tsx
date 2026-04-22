@@ -611,8 +611,9 @@ function BusinessAppShellInner({ initialModule }: { initialModule?: string }) {
   if (showFormation) {
     return (
       <BusinessNavigationContext.Provider value={{ navigateTo, activeModule }}>
-        <FormationShell onComplete={() => {
-          applyBridge(onboardingState);
+        <FormationShell onComplete={(finalState) => {
+          if (finalState) applyBridge(finalState);
+          else applyBridge(onboardingState);
           setFormationDone(true);
           setActiveModule("adaptive-home");
         }} />
