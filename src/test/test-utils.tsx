@@ -106,13 +106,13 @@ vi.mock("@/contexts/AuthContext", () => {
 
 // Mock data mode
 vi.mock("@/contexts/DataModeContext", () => ({
-  useDataMode: () => ({ isDemoMode: true, setDemoMode: vi.fn() }),
+  useDataMode: () => ({ isDemoMode: true, isLiveMode: false, mode: "demo", setDemoMode: vi.fn(), setMode: vi.fn(), toggleMode: vi.fn(), connectors: [{ id: "c1", name: "Demo Connector", status: "connected", type: "custom" }], refreshConnectors: vi.fn() }),
   DataModeProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
 }));
 
 // Mock demo mode
 vi.mock("@/contexts/DemoModeProvider", () => ({
-  useDemoMode: () => ({ isDemoMode: true, toggleDemoMode: vi.fn() }),
+  useDemoMode: () => ({ isDemoMode: true, toggleDemoMode: vi.fn(), registerSurface: vi.fn(), getSurfaces: () => [], demoSurfaceCount: 0, realSurfaceCount: 0, dataIntegrityScore: 0, isSurfaceDemo: () => true }),
   DemoModeProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
 }));
 

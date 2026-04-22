@@ -13,7 +13,7 @@ describe("manifest-schema", () => {
 
   it("rejects unknown app_type", () => {
     const r = safeValidateManifest({
-      app_id: "x", slug: "x", name: "X",
+      app_id: "xx", slug: "xx", name: "X",
       app_type: "alien" as unknown,
       launch_strategy: "internal_route",
       launch_target: {},
@@ -23,7 +23,7 @@ describe("manifest-schema", () => {
 
   it("rejects unknown launch_strategy", () => {
     const r = safeValidateManifest({
-      app_id: "x", slug: "x", name: "X",
+      app_id: "xx", slug: "xx", name: "X",
       app_type: "internal", launch_strategy: "telepathy" as unknown,
       launch_target: {},
     });
@@ -32,7 +32,7 @@ describe("manifest-schema", () => {
 
   it("applies defaults", () => {
     const m = AppManifestSchema.parse({
-      app_id: "x", slug: "x", name: "X",
+      app_id: "xx", slug: "xx", name: "X",
       app_type: "web", launch_strategy: "embedded_webview",
       launch_target: { url: "https://example.com" },
     });
