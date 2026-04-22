@@ -1,97 +1,232 @@
 
-# Fix All Tests to 100% Green with Real Data
+
+# Design System Unification and Visual Coherence Plan
 
 ## Summary
-Replace weak structural tests (file-existence checks) with behavioral and contract-level verification. Add missing live backend smoke tests. Run the full suite, fix failures iteratively until 100% green. Generate a downloadable verification report.
 
-## Phase 1: Replace Weak Structural Tests (15 files)
+The repository has a strong canonical design system foundation but suffers from **component duplication**, **inconsistent empty state rendering**, **two parallel badge systems**, **two parallel card systems**, and **only 12% of standalone pages using the PageShell wrapper**. The design token layer is well-structured. The primary work is consolidation and enforcement, not creation.
 
-The following test files currently only check `fs.existsSync()` or line counts. Each will be rewritten to verify real behavior, contracts, or live backend data.
+---
 
-### 1.1 Recovery System (`src/__tests__/recovery/recovery-system.test.ts`)
-- Replace file-existence checks with: import and render `RecoveryCenter`, verify kill-switch hook returns valid state, verify evidence_graph_nodes table has correct schema via `supabase.read_query`.
+## Key Findings
 
-### 1.2 Notification System (`src/__tests__/notifications/notification-system.test.ts`)
-- Replace with: render `NotificationInbox` in test harness, verify platform notification contract types export correctly, verify push-dispatch edge function responds to OPTIONS.
+### 1. Duplicate Component Systems
 
-### 1.3 Advisor System (`src/__tests__/advisors/advisor-system-integrity.test.ts`)
-- Replace with: verify advisor registry has 34 entries, verify AdvisorCouncilShell renders with mock data, verify boardroom-session edge function boots (use `curl_edge_functions`).
+| Concept | Canonical Location | Duplicate(s) | Usage |
+|---|---|---|---|
+| Empty State | `primitives/feedback/EmptyState` | `sita/EmptyState` (4 variants), `sita/PremiumEmptyState` (9 variants), `sita/ContextualEmptyState`, `sita/EmptyStateCTA` | 30+ files import from 4 different sources |
+| Trust Badge | `primitives/status/TrustBadge` (4 states) | `sita/TrustBadge` (9 trust levels), `sita/TrustStateBadge`, `sita/truth/TruthBadge` | ~100 files use `sita/TrustBadge`, primitives version barely used |
+| Card | `primitives/display/BaseCard` | `sita/SitaCard` (with motion), `sita/cards/*` (9 card types) | 140+ files use `SitaCard`, `BaseCard` rarely used directly |
+| Page Header | `sita/SitaPageHeader` (icon variant) | `SitaCard.SitaPageHeader` (text-only) | Both in wide use, different APIs |
+| Domain Atmosphere | `sita-design-tokens.ts` (DomainAtmosphere) | `domain-atmospheres.ts` (separate DomainAtmosphere type) | Both imported in different contexts |
 
-### 1.4 Feature System (`src/__tests__/features/feature-system-coverage.test.ts`)
-- Replace with: verify route registry covers all page directories, verify domain page components export default, verify app-store-api edge function responds.
+### 2. Page Shell Coverage Gap
 
-### 1.5 Deploy/CI (`src/__tests__/deploy/deploy-ci-integrity.test.ts`)
-- Replace with: verify `ci` script chain resolves all referenced commands, verify validator scripts parse without syntax errors, verify pre-deploy.sh is executable.
+Only 12 out of 100+ standalone pages use `PageShell`. Most domain pages (Business, Money, Concierge) are redirect shims to windowed apps, which is correct. But ~40 non-redirecting pages render content without consistent framing (max-width, padding, entrance animation).
 
-### 1.6 Integration System (`src/__tests__/integrations/integration-system.test.ts`)
-- Replace with: verify Supabase client initializes without error, verify edge function index files all parse as valid TypeScript, verify connector-token-refresh function boots.
+### 3. Design Token Layer: Strong but Fragmented
 
-### 1.7 Permission System (`src/__tests__/permissions/permission-system.test.ts`)
-- Add: query `admin_role_permissions` table via read_query to verify schema, verify `has_role` RPC function exists in types, verify AdminRoute renders redirect for unauthenticated.
+Three overlapping typography systems:
+- `SITA_TYPE` (12 roles) in `sita-design-tokens.ts`
+- `APP_TYPE` (4 roles) in `app-window-system.ts`
+- `TYPE` (raw numeric values) in `app-window-system.ts`
 
-### 1.8 Shell/Window System (`src/__tests__/shell/shell-window-system.test.ts`)
-- Add: verify window components render without crash (batch render test), verify MobileShell wrapper renders, verify AppLauncherPanel exports.
+Surface hierarchy is defined in three places:
+- CSS variables (`--surface-0` through `--surface-3`)
+- `SURFACE_TOKENS` in `sita-design-tokens.ts`
+- `LEVEL_CLASSES` in `AppSurface.tsx`
 
-## Phase 2: Add Live Backend Smoke Tests (new files)
+### 4. State Language: Well-Defined but Inconsistently Applied
 
-### 2.1 `src/__tests__/db/live-backend-smoke.test.ts`
-- Query database via `supabase` client: `SELECT count(*) FROM information_schema.tables WHERE table_schema='public'`
-- Verify table count >= 200
-- Verify RLS is enabled on all public tables
-- Verify `has_role` function exists
+`state-visual-grammar.ts` defines 13 canonical states with component refs, but many pages use ad-hoc loading/empty/error patterns instead of referencing the canonical components.
 
-### 2.2 `src/__tests__/edge-functions/ef-live-smoke.test.ts`
-- Call `health-beat`, `health-ready`, `vapid-public-key` via `supabase.functions.invoke()`
-- Verify 200 responses with valid JSON
-- Conditional skip if no SUPABASE_URL configured
+### 5. Trust/Evidence Surfaces: Complete but Fragmented
 
-### 2.3 `src/__tests__/auth/auth-live-contract.test.ts`
-- Verify `supabase.auth.getSession()` returns a valid response shape
-- Verify `supabase.auth.signInWithPassword()` with bad credentials returns expected error
-- Verify auth state change listener fires
+The `sita/truth/` directory has 17 trust components. The `trust-visual-grammar.ts` defines 6 trust levels. The `sita/TrustBadge` has 9 levels. These overlap but aren't unified.
 
-### 2.4 `src/__tests__/security/rls-live-verification.test.ts`
-- Query `pg_policies` to verify policy count >= 300
-- Verify no tables in public schema have RLS disabled
-- Cross-check against schema registry
+---
 
-## Phase 3: Fix Existing Failures
+## Phase 1: Consolidate Duplicate Components
 
-### 3.1 Run full suite, capture JSON output
-- Execute `npx vitest run --reporter=json`
-- Parse failures, fix each one
+### 1.1 Unify Empty State to `sita/PremiumEmptyState`
+- `sita/PremiumEmptyState` is the most capable (9 variants, domain-aware, animated)
+- Rename it to `sita/EmptyState` (replace the current one)
+- Add backward-compatible props for the simpler variants
+- Update `sita/ContextualEmptyState` to be a thin wrapper
+- Update `primitives/feedback/EmptyState` to import and re-export (maintain barrel)
+- Migrate 30+ consumer files to unified import path
 
-### 3.2 Common expected failure patterns
-- `deploy-ci-integrity.test.ts` line 11: checks for `verify` script which may not exist -- add script alias
-- `schema-live-sync.test.ts`: registry counts may have drifted -- update registries to match current DB
-- Edge function smoke tests: some critical functions may not exist on disk -- adjust threshold or list
+### 1.2 Unify Trust Badge to `sita/TrustBadge`
+- The `sita/TrustBadge` with 9 trust levels is the real production component
+- The `primitives/status/TrustBadge` with 4 states is a simplified version nobody uses at scale
+- Keep `sita/TrustBadge` as canonical, update primitives barrel to re-export it
+- Consolidate `TrustStateBadge` into `TrustBadge` as a variant
 
-### 3.3 Iterative fix loop
-- After each fix, re-run failed test file individually
-- Continue until 0 failures
+### 1.3 Consolidate Card Hierarchy
+- `SitaCard` (motion-enabled, 140+ consumers) stays as the primary domain card
+- `BaseCard` in primitives stays as the no-motion structural primitive
+- `sita/cards/*` family stays (they compose domain-specific layouts)
+- Add a `@deprecated` comment to any card that duplicates another
+- Ensure all `sita/cards/*` compose either `SitaCard` or `BaseCard` internally
 
-## Phase 4: Generate Verification Report
+### 1.4 Unify Page Header
+- Merge `SitaPageHeader` (two versions: one in `SitaCard.tsx` exports, one in `SitaPageHeader.tsx`)
+- The `SitaCard.SitaPageHeader` (text + actions) is used by 50+ pages
+- The standalone `SitaPageHeader.tsx` (icon + title) is used by fewer pages
+- Create a single `SitaPageHeader` that handles both modes via optional `icon` prop
 
-- Run `npx vitest run --reporter=json > /tmp/results.json`
-- Parse results with Python script
-- Generate `/mnt/documents/SITA_OS_Test_Verification_Report.md` with:
-  - Total tests, pass rate, duration
-  - Per-domain breakdown (24 domains)
-  - Each test file with status, test count, and what was verified
-  - Live backend verification results
-  - Deployment readiness verdict
+### 1.5 Merge Domain Atmosphere Definitions
+- `domain-atmospheres.ts` and `sita-design-tokens.ts` both define `DomainAtmosphere`
+- Merge into `sita-design-tokens.ts` (the richer definition)
+- Update `atmosphereToCSSVars` to use the merged type
+- Delete `domain-atmospheres.ts`
 
-## Technical Details
+---
 
-**Test framework**: Vitest 3.x with jsdom, `@testing-library/react`
-**Live backend access**: Via `supabase` client from `@/integrations/supabase/client` (anon key, no service role)
-**Edge function testing**: Via `supabase.functions.invoke()` or direct fetch to `VITE_SUPABASE_URL/functions/v1/`
-**Conditional skips**: Auth-protected E2E tests skip when `TEST_USER_EMAIL` is not set, but this is reported in the verification document
-**Registry updates**: `src/lib/db/schema-registry.ts`, `rls-policy-registry.ts`, `tenancy-boundary-map.ts` may need count updates to match current DB state
+## Phase 2: Strengthen Page Framing
 
-## Files Modified (estimated)
-- 8 existing test files rewritten
-- 4 new test files created
-- 1-3 registry files updated for count alignment
-- `package.json` (add `verify` script alias if missing)
-- `/mnt/documents/SITA_OS_Test_Verification_Report.md` generated
+### 2.1 Wrap Remaining Standalone Pages in PageShell
+- Identify ~40 pages that render content directly without PageShell or domain redirect
+- Add `PageShell` wrapper with appropriate width variant
+- This gives consistent max-width, padding, and entrance animation
+
+### 2.2 Standardize Page Structure
+- Every standalone page follows: `PageShell > SitaPageHeader > content`
+- Every domain page follows: `DomainAppShell > AppSurface > content`
+- Document this in a `PAGE_FRAMING_GRAMMAR` constant
+
+---
+
+## Phase 3: Enforce State Language
+
+### 3.1 Create `StateRenderer` Component
+- A single component that takes a `ProductState` and renders the canonical visual
+- References `state-visual-grammar.ts` for color, surface, animation
+- Replaces ad-hoc loading/empty/error blocks in pages
+
+### 3.2 Standardize Loading States
+- `PageSkeleton` and `SectionSkeleton` exist but aren't used consistently
+- Add a `DataLoadingWrapper` that auto-renders skeleton/empty/error based on query state
+- Many pages already have `DataLoadingWrapper` -- ensure it references canonical state grammar
+
+---
+
+## Phase 4: Unify Typography System
+
+### 4.1 Create Unified Type Scale
+- Merge `SITA_TYPE`, `APP_TYPE`, and `TYPE` into a single `SITA_TYPE` export
+- `APP_TYPE` values map 1:1 to `SITA_TYPE` entries (label, body, title, heading)
+- Keep `APP_TYPE` as a re-export alias for backward compatibility
+- Document the 12-role type scale as the canonical reference
+
+---
+
+## Phase 5: Surface Hierarchy Alignment
+
+### 5.1 Align AppSurface with CSS Variables
+- `AppSurface.tsx` hardcodes `hsl(0_0%_6%)` etc. instead of using `--surface-0` variables
+- Rewrite `LEVEL_CLASSES` to use `bg-[hsl(var(--surface-0))]` etc.
+- This ensures light/dark mode works correctly through the same component
+
+### 5.2 Ensure `getSurfaceClasses()` Uses Tailwind Variables
+- Currently references `bg-surface-0` etc. which are defined in CSS
+- Verify these classes exist in CSS and match the variable definitions
+
+---
+
+## Phase 6: Visual Polish Pass
+
+### 6.1 Card Hover and Focus Consistency
+- Ensure all interactive cards use `micro-hover-lift` or `card-hover-lift` from the CSS utilities
+- Ensure all interactive cards have `focus-visible` ring treatment
+- Remove inline `whileHover` framer-motion where CSS hover is sufficient (reduces JS)
+
+### 6.2 Empty State Elevation
+- Replace remaining raw "No data" strings with `PremiumEmptyState`
+- Ensure every domain surface has a domain-aware empty state
+
+### 6.3 Form Field Consistency
+- Audit form pages for consistent use of shadcn `Input`, `Select`, `Textarea`
+- Ensure validation messaging uses canonical error styling
+
+---
+
+## Phase 7: Accessibility Hardening
+
+### 7.1 Focus Management
+- Ensure all modals/drawers trap focus
+- Ensure `PageShell` applies `role="main"` or wraps a `<main>` element
+- Ensure `SitaPageHeader` uses proper `<h1>` (already does)
+
+### 7.2 Reduced Motion
+- The CSS already has `prefers-reduced-motion: reduce` that kills all animations
+- Ensure framer-motion components also respect this via `useReducedMotion()`
+
+### 7.3 Color Contrast
+- Trust badge colors meet WCAG AA on dark backgrounds (verified: the HSL values have sufficient lightness)
+- Add `aria-label` to any badge using only color to communicate state (most already have this)
+
+---
+
+## Phase 8: Design Governance
+
+### 8.1 Create Design Audit Script
+- `scripts/design/check-visual-coherence.ts`
+- Scans for: raw color values outside design tokens, duplicate component imports, pages without PageShell, empty state variants not using canonical component
+
+### 8.2 Generate Design Token Audit Artifact
+- `generated/design-token-audit.json` documenting: token coverage, drift points, deprecated aliases
+
+---
+
+## Files Modified (Estimated)
+
+**Consolidated/Deleted:**
+- `src/platform/design-system/domain-atmospheres.ts` (merged into `sita-design-tokens.ts`)
+- `src/components/sita/EmptyState.tsx` (replaced by enhanced `PremiumEmptyState`)
+- `src/components/sita/ContextualEmptyState.tsx` (thin wrapper updated)
+- `src/components/sita/EmptyStateCTA.tsx` (consolidated)
+
+**Modified:**
+- `src/components/sita/PremiumEmptyState.tsx` (becomes canonical, renamed)
+- `src/components/sita/SitaCard.tsx` (merged page header)
+- `src/components/sita/SitaPageHeader.tsx` (merged into SitaCard export)
+- `src/components/sita/surfaces/AppSurface.tsx` (use CSS variables)
+- `src/platform/design-system/sita-design-tokens.ts` (absorb atmospheres)
+- `src/components/primitives/feedback/EmptyState.tsx` (re-export canonical)
+- `src/components/primitives/status/TrustBadge.tsx` (re-export canonical)
+- `src/components/primitives/index.ts` (update exports)
+- ~40 standalone page files (wrap in PageShell)
+- ~30 files importing duplicate empty states (update imports)
+
+**Created:**
+- `src/lib/ui/page-framing-grammar.ts` (canonical page structure rules)
+- `src/lib/ui/state-renderer.tsx` (canonical state-to-visual component)
+- `scripts/design/check-visual-coherence.ts` (governance script)
+
+**Intentionally Unchanged:**
+- `src/index.css` (the 1005-line CSS is well-structured; no additions needed)
+- `tailwind.config.ts` (token layer is complete)
+- `src/components/ui/*` (shadcn primitives are canonical, not modified)
+- `src/components/sita/cards/*` (domain cards are well-composed)
+- `src/platform/experience/*` (grammar files are documentation/contract, not visual)
+
+---
+
+## What Remains Intentionally Flexible
+
+1. **Domain-specific card variants** (`sita/cards/*`) -- domains need visual personality differences, governed by `DOMAIN_ATMOSPHERE`
+2. **OS shell components** (`sita/shell/*`) -- these are a separate rendering context (windowed) with their own chrome, correctly isolated
+3. **Mobile shell** -- mobile layout patterns are intentionally different from desktop
+4. **Light mode polish** -- the `.light` CSS class exists but the product is dark-mode primary; light mode is secondary
+
+---
+
+## Recommended Next Steps (Post-Implementation)
+
+**Immediate:** Run the design audit script to find remaining raw color values and fix them.
+
+**Medium-term:** Extract the 12-role typography scale into a `Typography` component that enforces semantic usage (prevents `text-[14px]` scattered across pages).
+
+**Long-term:** Build a visual regression test suite using Playwright screenshots of key surfaces, compared against golden files.
+
