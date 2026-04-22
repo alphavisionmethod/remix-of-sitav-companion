@@ -1,120 +1,75 @@
 
 
-# Fix 10 Partial Systems + Build Error — Deployment Readiness
+# Fix All Build Errors — isDemoMode/user Scope Issues
 
-## Priority 0: Fix Build Error
+## Problem Summary
 
-`src/pages/SystemStatus.tsx` line 119 has a corrupted line from the automated mock-gating pass:
-```
-const SeverityBadge = ({
-  const { isDemoMode } = useDataMode(); severity }: { severity: string }) => {
-```
-The `useDataMode()` call was injected into the wrong location. Fix: move it inside the component body or remove it (SeverityBadge is a presentational component that receives data via props — it does not need demo mode gating).
+The automated mock-gating pass injected `useDataMode()` calls in wrong locations across ~20 files, creating three classes of errors:
 
----
+1. **Hook called inside nested function** (violates React rules of hooks) — 4 files
+2. **`isDemoMode` referenced but never declared** — 4 hook files (~90 error lines)
+3. **`user` referenced but never declared** — 2 component files
+4. **Duplicate `isDemoMode` declarations** — 3 component files
+5. **Missing import** — 1 file
 
-## System 1: Receipt Emission (0% of edge functions emit receipts)
+## Fixes (file-by-file)
 
-**Current state:** Receipt types and tables exist (`ai_action_receipts`, `notification_delivery_receipts`). `push-dispatch` already writes delivery receipts. `receipt-builder.ts` constructs receipt objects. But most edge functions do not persist receipts.
+### Category 1: Hook called inside nested function (move to component/hook top level)
 
-**Fix:** Add a shared `emitReceipt()` helper in `supabase/functions/_shared/receipt-emitter.ts` that inserts into `ai_action_receipts`. Then add receipt emission to the 10 highest-traffic edge functions: `brain-core`, `advisor-agent-loop`, `agent-executor`, `workflow-execute`, `scheduler-dispatch`, `event-processor`, `intelligence-api`, `routing-policy-update`, `connector-sync`, `self-healing`.
+**`src/components/admin/shells/SimulationPreview.tsx`** (line 87)
+- `useDataMode()` is inside `handleRun()` — move to top of `SimulationPreview` component body (line 83)
 
-**Test:** Deploy and call each function via `curl_edge_functions`, verify receipts appear in `ai_action_receipts`.
+**`src/components/sita/shell/windows/CodeEditorWindow.tsx`** (line 107)
+- `useDataMode()` is inside `openFile()` — add import for `useDataMode` from `@/contexts/DataModeContext`, move call to top of parent component
 
----
+**`src/components/sita/AgentAuditLog.tsx`** (line 242)
+- `useDataMode()` is inside `handleExport()` — move to top of `AgentAuditLog` component (line 207)
 
-## System 2: Advisor Debate (no execution evidence)
+**`src/components/sita/CABWorkflow.tsx`** (line 388)
+- `useDataMode()` is inside `handleExport()` — move to top of parent component
 
-**Current state:** `advisor-debate-orchestrator.ts` has types + `resolveDebate()` function. No tests, no DB persistence of debate outcomes.
+### Category 2: `isDemoMode` never declared in hook functions
 
-**Fix:**
-1. Add `resolveDebate` result persistence — write debate rounds to `advisor_board_recommendations` with type `debate_outcome`.
-2. Create `src/lib/advisors/__tests__/advisor-debate-orchestrator.test.ts` covering: consensus, majority, dissent, escalation, tiebreaker, and insufficient participants.
+**`src/hooks/use-admin-data.ts`** — Only `useAdminIncidents` (line 46) declares `isDemoMode`. All other exported hooks (`useAdminPolicies`, `useAdminDevices`, etc.) reference `isDemoMode` without declaring it. Fix: add `const { isDemoMode } = useDataMode();` at the top of every exported hook function that uses it.
 
----
+**`src/hooks/use-backend-actions.ts`** — `isDemoMode` used in `useCashflowForecast`, `useSafeToSpend`, `useBurnRate` without declaration. Fix: add `const { isDemoMode } = useDataMode();` to each.
 
-## System 3: Desktop Runtime (no host binary)
+**`src/hooks/use-compute-governance.ts`** — `isDemoMode` used in `useAISpendSummary` and other hooks without declaration. Fix: add `const { isDemoMode } = useDataMode();` to each hook function.
 
-**Current state:** Full contract layer exists (`desktop-host-contract.ts`, `electron-bridge-contract.ts`, detection, security boundaries). `electron/main.cjs` exists. No packaged binary in the repo (expected — binaries are CI artifacts).
+**`src/hooks/use-ai-engineering-data.ts`** — `isDemoMode` used in the main data hook without declaration. Fix: add `const { isDemoMode } = useDataMode();` at the start of the function body.
 
-**Fix:** This is correctly partial by design — the binary is produced by CI, not stored in repo. What's missing is a **smoke test** that validates the contracts match the Electron main process. Create `src/runtimes/desktop/__tests__/desktop-runtime-contract.test.ts` to verify contract completeness and detection logic.
+### Category 3: `user` never declared
 
----
+**`src/components/admin/recovery/DiagnosticExportAudit.tsx`** (lines 31, 32, 36)
+- `user` referenced but only `isDemoMode` is destructured from `useDataMode()`. Missing `const { user } = useAuth();`. Fix: add `const { user } = useAuth();` after line 27.
 
-## System 4: Appliance Runtime (no CI-verified image)
+**`src/components/sita/AISpendIndicator.tsx`** (lines 33, 34, 36)
+- `user` and `isDemoMode` both used but neither declared. Fix: add `const { isDemoMode } = useDataMode();` and `const { user } = useAuth();` at top of component.
 
-**Current state:** Contracts, ISO scripts, OVA build scripts all exist and are GA per `PLATFORM_SCOPE.md`. Images are CI artifacts.
+### Category 4: Duplicate declarations
 
-**Fix:** Same as desktop — add `src/runtimes/appliance/__tests__/appliance-runtime-contract.test.ts` to verify the contract types, capability entries, and first-boot phase completeness.
+**`src/components/sita/DataLoadingWrapper.tsx`** — `isDemoMode` is both a prop and destructured from useDataMode. Fix: remove the useDataMode import and call; use the prop.
 
----
+**`src/components/sita/apps/boardroom/BoardroomApprovalView.tsx`** — `isDemoMode` comes from `useBoardroomLiveData()` (line 252) and is also declared elsewhere. Fix: remove the duplicate declaration, keep the one from the hook.
 
-## System 5: Mobile Runtime (archived)
+**`src/components/sita/apps/boardroom/BoardroomExecutiveView.tsx`** — same pattern. Fix: remove duplicate.
 
-**Current state:** Archived per `PLATFORM_SCOPE.md`. Not active scope.
+### Category 5: Missing import
 
-**Fix:** No action needed. This is correctly inactive. Verify the archive contract test exists; if not, add a minimal `src/runtimes/__tests__/mobile-archive-assertion.test.ts` that asserts mobile is not in active scope.
+**`src/components/sita/shell/windows/CodeEditorWindow.tsx`** — `useDataMode` not imported. Fix: add import.
 
----
+### Webhook Replay Panel
 
-## System 6: Sync Engine (no conflict resolution tests)
+**`src/components/admin/recovery/WebhookReplayPanel.tsx`** (lines 25, 43)
+- `isDemoMode` used at module scope (line 25, computing `EVENT_TYPES`) and inside `useMemo` but never declared. Fix: move `EVENT_TYPES` computation inside the component after `useDataMode()` call; add hook call at component top level.
 
-**Current state:** `sync-protocol.ts` has full types (SyncConflict, ConflictResolution, SyncRepairRequest, etc.). One integration test exists in `cloud-sync-updates.integration.test.ts` with a basic conflict resolution case.
+## Verification
 
-**Fix:** Create `src/packages/protocols/__tests__/sync-protocol.test.ts` with unit tests for: all 5 conflict resolution strategies (server_wins, client_wins, merge, manual, newest_wins), sync state transitions, repair request validation, checkpoint integrity, and reconciliation logic.
+After all fixes, run `npx tsc --noEmit` to confirm zero errors, then `bun run build:dev` for clean build.
 
----
+## Estimated Scope
 
-## System 7: Notification Delivery (no delivery confirmation tracking)
-
-**Current state:** `push-dispatch` already writes to `notification_delivery_receipts` table (exists in DB). It updates `notifications_queue` status to `delivered` or `failed`.
-
-**Fix:** This is actually more complete than reported. What's missing is a **confirmation callback** for async delivery (e.g., FCM delivery receipts). Add a `delivery-confirmation` webhook handler in push-dispatch that updates receipt status from `sent` to `confirmed` when platform callbacks arrive. Add test coverage.
-
----
-
-## System 8: Offline Queue (no replay tests)
-
-**Current state:** `OfflineQueueService` is fully implemented with enqueue, replay (with retry + max 5 attempts), persistence, and online event listener.
-
-**Fix:** Create `src/lib/services/offline-queue/__tests__/offline-queue.test.ts` testing: enqueue, replay success, replay failure with retry, max retries exceeded, queue persistence, clear, and online event trigger.
-
----
-
-## System 9: Search Fabric (no index management, no relevance tests)
-
-**Current state:** `SearchFabricService` exists with add/remove/search. Extensive tests already exist in 3 test files covering indexing, domain filtering, sensitivity filtering, and facets.
-
-**Fix:** The test coverage is actually good. What's missing is **index management** (rebuild, clear, stats). Add `rebuildIndex()`, `clearIndex()`, and `getIndexStats()` methods. Add relevance scoring tests that verify title matches rank higher than body matches.
-
----
-
-## System 10: Digital Twins (no twin state verification)
-
-**Current state:** `digital-twin-engine` edge function exists and queries `digital_twin_state` and `digital_twin_snapshots` tables. But these tables do not exist in the database yet.
-
-**Fix:**
-1. Create migration for `digital_twin_state` and `digital_twin_snapshots` tables with RLS.
-2. Deploy `digital-twin-engine` edge function.
-3. Test via `curl_edge_functions`.
-
----
-
-## Execution Order
-
-| Phase | Systems | Files Changed |
-|---|---|---|
-| 0 | Build error fix | 1 file |
-| 1 | DB migration (digital twin tables) | 1 migration |
-| 2 | Shared receipt emitter + wire 10 edge functions | 11 files |
-| 3 | Advisor debate tests + persistence | 2 files |
-| 4 | Sync protocol tests | 1 file |
-| 5 | Offline queue tests | 1 file |
-| 6 | Search fabric index management | 2 files |
-| 7 | Desktop + appliance contract tests | 2 files |
-| 8 | Notification delivery confirmation | 1 file |
-| 9 | Digital twin deploy + test | 1 edge function |
-| 10 | Run all tests, verify green | 0 files |
-
-**Total: ~22 files, 1 migration, ~10 edge function updates**
+- ~20 files modified
+- No new files, no DB changes
+- Pure scope/declaration fixes
 
