@@ -43,7 +43,7 @@ export default function BookingCenter() {
 <Skeleton className="h-8 w-48" />
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">{[1,2,3,4].map(i => <Skeleton key={i} className="h-20 rounded-xl" />)}</div>
         <Skeleton className="h-48 rounded-xl" />
-      </div>
+      </PageShell>
     );
   }
 
@@ -52,7 +52,7 @@ export default function BookingCenter() {
       <PageShell width="wide" className="space-y-6">
 <h1 className="text-2xl font-bold text-foreground">Booking Center</h1>
         <EmptyState icon={Calendar} title="No bookings yet" description="Set up your services and start accepting bookings." />
-      </div>
+      </PageShell>
     );
   }
 
@@ -247,6 +247,6 @@ export default function BookingCenter() {
           </TabsContent>
         </div>
       </Tabs>
-    </div>
+    </PageShell>
   );
 }

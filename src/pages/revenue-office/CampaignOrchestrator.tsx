@@ -59,7 +59,7 @@ export default function CampaignOrchestrator() {
 <Skeleton className="h-8 w-64" />
         <div className="flex gap-3">{[1,2,3].map(i => <Skeleton key={i} className="h-16 w-36 rounded-xl" />)}</div>
         <Skeleton className="h-32 rounded-xl" />
-      </div>
+      </PageShell>
     );
   }
 
@@ -68,7 +68,7 @@ export default function CampaignOrchestrator() {
       <PageShell width="wide" className="space-y-6">
 <h1 className="text-2xl font-bold text-foreground">Campaign Orchestrator</h1>
         <EmptyState icon={Zap} title="No campaigns yet" description="Create your first campaign to start automating growth." />
-      </div>
+      </PageShell>
     );
   }
 
@@ -246,6 +246,6 @@ export default function CampaignOrchestrator() {
           </TabsContent>
         </div>
       </Tabs>
-    </div>
+    </PageShell>
   );
 }

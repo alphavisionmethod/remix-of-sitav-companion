@@ -277,6 +277,6 @@ export default function ReputationEngine() {
           </TabsContent>
         </div>
       </Tabs>
-    </div>
+    </PageShell>
   );
 }

@@ -428,6 +428,6 @@ export default function GrowthAdvisorBoard() {
           </TabsContent>
         </div>
       </Tabs>
-    </div>
+    </PageShell>
   );
 }

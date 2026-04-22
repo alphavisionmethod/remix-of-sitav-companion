@@ -184,6 +184,6 @@ export default function RevenueGate() {
           </div>
         </CardContent>
       </Card>
-    </div>
+    </PageShell>
   );
 }

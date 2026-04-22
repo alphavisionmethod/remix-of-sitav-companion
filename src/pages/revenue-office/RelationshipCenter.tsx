@@ -41,7 +41,7 @@ export default function RelationshipCenter() {
 <Skeleton className="h-8 w-48" />
         <div className="flex gap-2">{[1,2,3,4].map(i => <Skeleton key={i} className="h-16 w-36 rounded-xl" />)}</div>
         <Skeleton className="h-32 rounded-xl" />
-      </div>
+      </PageShell>
     );
   }
 
@@ -50,7 +50,7 @@ export default function RelationshipCenter() {
       <PageShell width="wide" className="space-y-6">
 <h1 className="text-2xl font-bold text-foreground">Relationship Center</h1>
         <EmptyState icon={Users} title="No contacts yet" description="Add your first contact to start managing relationships." />
-      </div>
+      </PageShell>
     );
   }
 
@@ -277,6 +277,6 @@ export default function RelationshipCenter() {
           </TabsContent>
         </div>
       </Tabs>
-    </div>
+    </PageShell>
   );
 }

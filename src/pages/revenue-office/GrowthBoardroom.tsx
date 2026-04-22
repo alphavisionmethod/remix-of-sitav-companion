@@ -279,6 +279,6 @@ export default function GrowthBoardroom() {
           </CardContent>
         </Card>
       </div>
-    </div>
+    </PageShell>
   );
 }

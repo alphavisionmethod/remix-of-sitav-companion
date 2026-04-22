@@ -134,6 +134,6 @@ export default function SegmentationEngine() {
           </TabsContent>
         </div>
       </Tabs>
-    </div>
+    </PageShell>
   );
 }

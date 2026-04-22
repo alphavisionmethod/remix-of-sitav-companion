@@ -194,6 +194,6 @@ export default function FormsBuilder() {
           </TabsContent>
         </div>
       </Tabs>
-    </div>
+    </PageShell>
   );
 }

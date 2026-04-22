@@ -217,6 +217,6 @@ export default function FunnelBuilder() {
           </TabsContent>
         </div>
       </Tabs>
-    </div>
+    </PageShell>
   );
 }

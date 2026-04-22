@@ -246,6 +246,6 @@ export default function ConversionLab() {
           ))}
         </TabsContent>
       </Tabs>
-    </div>
+    </PageShell>
   );
 }

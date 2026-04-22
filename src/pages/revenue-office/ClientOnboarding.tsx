@@ -135,6 +135,6 @@ export default function ClientOnboarding() {
           </TabsContent>
         </div>
       </Tabs>
-    </div>
+    </PageShell>
   );
 }

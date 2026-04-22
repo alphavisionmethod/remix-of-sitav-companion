@@ -163,6 +163,6 @@ export default function LeakDetector() {
           />
         </TabsContent>
       </Tabs>
-    </div>
+    </PageShell>
   );
 }

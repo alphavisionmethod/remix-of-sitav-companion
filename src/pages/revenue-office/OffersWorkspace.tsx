@@ -223,6 +223,6 @@ export default function OffersWorkspace() {
           </TabsContent>
         </div>
       </Tabs>
-    </div>
+    </PageShell>
   );
 }

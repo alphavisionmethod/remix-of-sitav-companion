@@ -46,7 +46,7 @@ export default function PipelineStudio() {
           {[1,2,3,4,5].map(i => <Skeleton key={i} className="h-16 rounded-xl" />)}
         </div>
         <Skeleton className="h-64 rounded-xl" />
-      </div>
+      </PageShell>
     );
   }
 
@@ -55,7 +55,7 @@ export default function PipelineStudio() {
       <PageShell width="wide" className="space-y-6">
 <h1 className="text-2xl font-bold text-foreground">Pipeline Studio</h1>
         <EmptyState icon={Target} title="No deals yet" description="Create your first deal to start tracking your pipeline." />
-      </div>
+      </PageShell>
     );
   }
 
@@ -235,6 +235,6 @@ export default function PipelineStudio() {
           </TabsContent>
         </div>
       </Tabs>
-    </div>
+    </PageShell>
   );
 }

@@ -197,6 +197,6 @@ export default function RevenueIntelligence() {
           </TabsContent>
         </div>
       </Tabs>
-    </div>
+    </PageShell>
   );
 }

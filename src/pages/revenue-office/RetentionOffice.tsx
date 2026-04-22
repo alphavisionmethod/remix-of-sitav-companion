@@ -191,6 +191,6 @@ export default function RetentionOffice() {
           ))}
         </TabsContent>
       </Tabs>
-    </div>
+    </PageShell>
   );
 }

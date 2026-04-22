@@ -232,6 +232,6 @@ export default function JourneyTwin() {
           </div>
         </CardContent>
       </Card>
-    </div>
+    </PageShell>
   );
 }
