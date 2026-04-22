@@ -3,6 +3,8 @@ import { Landmark, Shield, TrendingUp, Wallet, Zap, Calendar, Target, Coins } fr
 import { useCapitalPurposeBuckets } from "@/hooks/use-investment-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
+const DEMO_RULES: any[] = [];
+
 // Production fallback — seed data removed
 const DEMO_PURPOSES: any[] = [];
 

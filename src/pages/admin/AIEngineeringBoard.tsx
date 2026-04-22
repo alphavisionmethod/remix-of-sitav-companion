@@ -25,6 +25,17 @@ import { DEMO_ADMIN_ENVIRONMENTS as DEMO_ENVIRONMENTS,
   DEMO_OVERVIEW_BAND,
   DEMO_RECENT_HEALS,
 } from "@/data/seed/admin-platform";
+
+const DEMO_LEARNING_HIGHLIGHTS: any[] = [];
+const DEMO_CHANGES: any[] = [];
+const DEMO_RELEASE_GATES: any[] = [];
+const DEMO_MISSIONS: any[] = [];
+const DEMO_ADMIN_MISSIONS: any[] = [];
+const DEMO_AGENT_SIGNALS: any[] = [];
+const DEMO_RECENT_HEALS: any[] = [];
+const DEMO_ATTENTION_ITEMS: any[] = [];
+const DEMO_OVERVIEW_BAND: any[] = [];
+const DEMO_ADMIN_RELEASE_GATES: any[] = [];
 const HEAL_STATS = { attempted: 12, verified: 11, blocked: 3, rolledBack: 1 };
 
 const typeDotColor = (type: string) =>

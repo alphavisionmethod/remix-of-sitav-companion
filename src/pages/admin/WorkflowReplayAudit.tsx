@@ -10,6 +10,8 @@ import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
+const DEMO_RUNS: any[] = [];
+
 
 interface RunRow {
   id: string;

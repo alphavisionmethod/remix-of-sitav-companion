@@ -21,6 +21,17 @@ import {
 import AutomationSubNav from "./AutomationSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
+const DEMO_atRiskAutomations: any[] = [];
+const DEMO_SHADOW_BOARD: any[] = [];
+const DEMO_leakRepairOpportunities: any[] = [];
+const DEMO_AUTOMATION_SURFACE_MAP: any[] = [];
+const DEMO_activeAutomations: any[] = [];
+const DEMO_PROMISES: any[] = [];
+const DEMO_AUTOMATION_OS_CONNECTIONS: any[] = [];
+const DEMO_automationStats: any[] = [];
+const DEMO_advisorRecommendations: any[] = [];
+const DEMO_AUTOMATION_QUALITY_SCORES: any[] = [];
+
 
 const levelColors: Record<string, string> = {
   "Auto-run (L3)": "bg-emerald-500/10 text-emerald-400",

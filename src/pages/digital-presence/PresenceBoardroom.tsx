@@ -9,6 +9,8 @@ import { DEMO_LIVE_PROMOTIONS, DEMO_TOP_PAGES, DEMO_WEAK_PAGES } from "@/data/se
 import DPOSubNav from "./DPOSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
+const DEMO_METRICS: any[] = [];
+
 // Production fallback — seed data removed
 const DEMO_ADVISOR_SIGNALS: any[] = [];
 

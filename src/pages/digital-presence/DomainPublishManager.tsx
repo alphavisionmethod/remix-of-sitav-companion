@@ -10,6 +10,8 @@ import { DEMO_PUBLISH_HISTORY, DEMO_PUBLISH_RULES } from "@/data/seed/digital-pr
 import DPOSubNav from "./DPOSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
+const DEMO_ENVIRONMENTS: any[] = [];
+
 // Production fallback — seed data removed
 const DEMO_DOMAINS: any[] = [];
 

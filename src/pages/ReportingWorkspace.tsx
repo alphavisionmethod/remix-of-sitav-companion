@@ -56,7 +56,7 @@ const ReportingWorkspace = () => {
   // Live query example — workflow completion rate
   const { data: liveWorkflowStats } = useQuery({
     queryKey: ["reporting-workflows", user?.id, period],
-    enabled: !!user && !isDemoMode,
+    enabled: !!user && !false,
     queryFn: async () => {
       const { data } = await fromTable("workflow_runs").select("status").limit(500);
       if (!data) return null;
@@ -69,7 +69,7 @@ const ReportingWorkspace = () => {
   // Live query — approval stats
   const { data: liveApprovalStats } = useQuery({
     queryKey: ["reporting-approvals", user?.id],
-    enabled: !!user && !isDemoMode,
+    enabled: !!user && !false,
     queryFn: async () => {
       const { data } = await fromTable("approval_queue").select("status").limit(500);
       if (!data) return null;
@@ -120,7 +120,7 @@ const ReportingWorkspace = () => {
                 { label: "Total Revenue", value: "$295K", icon: DollarSign, change: "+12%", up: true },
                 { label: "Pipeline Value", value: "$540K", icon: Target, change: "+8%", up: true },
                 { label: "Clients", value: "47", icon: Users, change: "+3 new", up: true },
-                { label: "Task Completion", value: isDemoMode ? "87%" : `${liveWorkflowStats?.rate ?? 0}%`, icon: Activity, change: "+5%", up: true },
+                { label: "Task Completion", value: false ? "87%" : `${liveWorkflowStats?.rate ?? 0}%`, icon: Activity, change: "+5%", up: true },
               ].map(kpi => (
                 <Card key={kpi.label} className="bg-card border-border/40">
                   <CardContent className="p-4">
@@ -248,10 +248,10 @@ const ReportingWorkspace = () => {
         <TabsContent value="operations" className="mt-4 space-y-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {[
-              { label: "Workflows Run", value: isDemoMode ? "138" : String(liveWorkflowStats?.total ?? 0), icon: RotateCcw },
-              { label: "Completion Rate", value: isDemoMode ? "87%" : `${liveWorkflowStats?.rate ?? 0}%`, icon: CheckCircle2 },
-              { label: "Approvals Pending", value: isDemoMode ? "5" : String(liveApprovalStats?.pending ?? 0), icon: Clock },
-              { label: "Failed", value: isDemoMode ? "3" : "0", icon: AlertTriangle },
+              { label: "Workflows Run", value: false ? "138" : String(liveWorkflowStats?.total ?? 0), icon: RotateCcw },
+              { label: "Completion Rate", value: false ? "87%" : `${liveWorkflowStats?.rate ?? 0}%`, icon: CheckCircle2 },
+              { label: "Approvals Pending", value: false ? "5" : String(liveApprovalStats?.pending ?? 0), icon: Clock },
+              { label: "Failed", value: false ? "3" : "0", icon: AlertTriangle },
             ].map(kpi => (
               <Card key={kpi.label} className="border-border/40">
                 <CardContent className="p-4 flex items-center gap-3">
@@ -285,7 +285,7 @@ const ReportingWorkspace = () => {
         <TabsContent value="trust" className="mt-4 space-y-4">
           <div className="grid grid-cols-3 gap-3">
             {[
-              { label: "Approvals", value: isDemoMode ? "112" : String(liveApprovalStats?.total ?? 0), icon: CheckCircle2, color: "text-emerald-400" },
+              { label: "Approvals", value: false ? "112" : String(liveApprovalStats?.total ?? 0), icon: CheckCircle2, color: "text-emerald-400" },
               { label: "Proof Receipts", value: "91", icon: Shield, color: "text-primary" },
               { label: "Rollbacks", value: "4", icon: RotateCcw, color: "text-amber-400" },
             ].map(kpi => (

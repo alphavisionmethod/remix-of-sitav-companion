@@ -40,7 +40,7 @@ const AutomationCenter = () => {
   // Live workflows as automation rules
   const { data: liveWorkflows = [] } = useQuery({
     queryKey: ["workflows_automation", user?.id],
-    enabled: !!user && !isDemoMode,
+    enabled: !!user && !false,
     queryFn: async () => {
       const { data, error } = await fromTable("workflows").select("*").order("created_at", { ascending: false });
       if (error) throw error;
@@ -51,7 +51,7 @@ const AutomationCenter = () => {
   // Live workflow runs for execution stats
   const { data: runs = [] } = useQuery({
     queryKey: ["workflow_runs_stats", user?.id],
-    enabled: !!user && !isDemoMode,
+    enabled: !!user && !false,
     queryFn: async () => {
       const { data, error } = await fromTable("workflow_runs").select("status, completed_at").limit(200);
       if (error) throw error;
@@ -64,7 +64,7 @@ const AutomationCenter = () => {
     invalidateKeys: [["workflows_automation"]],
   });
 
-  const rules = isDemoMode ? MOCK_AUTOMATION_RULES : liveWorkflows.map(w => ({
+  const rules = false ? MOCK_AUTOMATION_RULES : liveWorkflows.map(w => ({
     id: w.id,
     name: w.name,
     trigger_event: w.trigger_type || "unknown",
@@ -87,15 +87,15 @@ const AutomationCenter = () => {
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <KPITile label="Active Rules" value={rules.filter(r => 'active' in r ? r.active : ('enabled' in r ? r.enabled : false)).length} icon={Zap} />
-        <KPITile label="Total Runs" value={isDemoMode ? 124 : totalRuns} trend="up" icon={CheckCircle} />
-        <KPITile label="Success Rate" value={isDemoMode ? "97.2%" : `${successRate}%`} trend="up" icon={Shield} />
+        <KPITile label="Total Runs" value={false ? 124 : totalRuns} trend="up" icon={CheckCircle} />
+        <KPITile label="Success Rate" value={false ? "97.2%" : `${successRate}%`} trend="up" icon={Shield} />
         <KPITile label="Rules" value={rules.length} icon={Settings} />
       </div>
 
       <SitaTabs
         tabs={[
           { key: "rules", label: "Rules", count: rules.length },
-          { key: "delegations", label: "Delegations", count: (isDemoMode ? MOCK_DELEGATIONS : [] as typeof MOCK_DELEGATIONS).length },
+          { key: "delegations", label: "Delegations", count: (false ? MOCK_DELEGATIONS : [] as typeof MOCK_DELEGATIONS).length },
           { key: "trust", label: "Trust Levels" },
         ]}
         active={activeTab}
@@ -131,7 +131,7 @@ const AutomationCenter = () => {
                   </div>
                   <div className="flex items-center gap-2">
                     <TrustBadge level={rule.active ? "verified" : "low-confidence"} label={rule.active ? "Active" : "Paused"} size="sm" />
-                    {!isDemoMode && (
+                    {!false && (
                       <button
                         onClick={() => toggleWorkflow.mutate({ id: rule.id, active: !rule.active })}
                         className="text-muted-foreground hover:text-foreground transition-colors"
@@ -149,7 +149,7 @@ const AutomationCenter = () => {
 
       {activeTab === "delegations" && (
         <div className="space-y-2">
-          {(isDemoMode ? MOCK_DELEGATIONS : [] as typeof MOCK_DELEGATIONS).map((d, i) => (
+          {(false ? MOCK_DELEGATIONS : [] as typeof MOCK_DELEGATIONS).map((d, i) => (
             <SitaCard key={i} hover={false} className="p-4">
               <div className="flex items-center justify-between">
                 <div>

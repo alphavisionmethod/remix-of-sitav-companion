@@ -18,6 +18,8 @@ import type { MockReplacement } from "@/data/persistence/mock-replacement-persis
 import { DEMO_MOCK_TYPES, DEMO_PRIORITIES } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
+const DEMO_STATUSES: any[] = [];
+
 
 // Production fallback — seed data removed
 const DEMO_CUSTOMERS: any[] = [];

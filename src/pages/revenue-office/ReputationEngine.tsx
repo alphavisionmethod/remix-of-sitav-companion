@@ -12,6 +12,13 @@ import { DEMO_RATING_DIST, DEMO_REVIEWS, DEMO_REV_CAMPAIGNS_REPUTATION_ENGINE as
   DEMO_REV_PLATFORMS as DEMO_PLATFORMS, DEMO_REV_STATS_REPUTATION_ENGINE as DEMO_STATS,
   DEMO_TESTIMONIALS, DEMO_SENTIMENT_TREND,
 } from "@/data/seed/revenue-office";
+
+const DEMO_PLATFORMS: any[] = [];
+const DEMO_SENTIMENT_TREND: any[] = [];
+const DEMO_REV_STATS_REPUTATION_ENGINE: any[] = [];
+const DEMO_STATS: any[] = [];
+const DEMO_REV_PLATFORMS: any[] = [];
+const DEMO_TESTIMONIALS: any[] = [];
 export default function ReputationEngine() {
   const [tab, setTab] = useState("reviews");
 

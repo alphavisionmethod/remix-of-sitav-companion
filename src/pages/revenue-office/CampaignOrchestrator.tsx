@@ -20,6 +20,14 @@ import {
 } from "@/data/seed/revenue-office";
 import { useDataMode } from "@/contexts/DataModeContext";
 
+const DEMO_CAMPAIGNS: any[] = [];
+const DEMO_SEGMENTS: any[] = [];
+const DEMO_REV_SEGMENTS: any[] = [];
+const DEMO_DELIVERABILITY: any[] = [];
+const DEMO_CAMPAIGN_FATIGUE: any[] = [];
+const DEMO_REV_CAMPAIGNS: any[] = [];
+const DEMO_CAMPAIGN_ATTRIBUTION: any[] = [];
+
 
 interface AttributionRow {
   campaign: string;

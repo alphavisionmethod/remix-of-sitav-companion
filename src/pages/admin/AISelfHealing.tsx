@@ -8,6 +8,8 @@ import { useAIEngDomain } from "@/hooks/use-ai-engineering-data";
 import { DEMO_BLOCKED, DEMO_HEALED } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
+const DEMO_RULES: any[] = [];
+
 // Production fallback — seed data removed
 const DEMO_PATTERNS: any[] = [];
 
