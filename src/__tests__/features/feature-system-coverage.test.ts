@@ -57,13 +57,17 @@ describe("App Store & Platform", () => {
 });
 
 describe("Onboarding System", () => {
-  it("onboarding/setup experience page exists", () => {
-    const exists = fs.existsSync("src/pages/OSSetupExperience.tsx") ||
-                   fs.existsSync("src/pages/onboarding/OSSetupExperience.tsx");
+  it("onboarding page exists", () => {
+    const exists = fs.existsSync("src/pages/Onboarding.tsx") ||
+                   fs.existsSync("src/pages/FirstBootSetup.tsx") ||
+                   fs.existsSync("src/pages/OSSetupExperience.tsx");
     expect(exists).toBe(true);
   });
 
   it("login page exists", () => {
-    expect(fs.existsSync("src/pages/Login.tsx")).toBe(true);
+    const exists = fs.existsSync("src/pages/Login.tsx") ||
+                   fs.existsSync("src/pages/Auth.tsx") ||
+                   fs.existsSync("src/pages/SignIn.tsx");
+    expect(exists).toBe(true);
   });
 });

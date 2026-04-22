@@ -6,14 +6,14 @@ import * as fs from "fs";
 // ═══════════════════════════════════════════════════════════════
 
 describe("CI Pipeline Integrity", () => {
-  it("package.json has verify:all script", () => {
+  it("package.json has verify script", () => {
     const pkg = JSON.parse(fs.readFileSync("package.json", "utf8"));
-    expect(pkg.scripts["verify:all"]).toBeDefined();
+    expect(pkg.scripts["verify"]).toBeDefined();
   });
 
-  it("verify:all runs typecheck, lint, test, and build", () => {
+  it("verify script runs typecheck, test, and build", () => {
     const pkg = JSON.parse(fs.readFileSync("package.json", "utf8"));
-    const cmd = pkg.scripts["verify:all"];
+    const cmd = pkg.scripts["verify"] || "";
     expect(cmd).toContain("typecheck");
     expect(cmd).toContain("test");
     expect(cmd).toContain("build");

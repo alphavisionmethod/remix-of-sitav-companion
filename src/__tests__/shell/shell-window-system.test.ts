@@ -43,7 +43,7 @@ describe("Window System", () => {
     const missing: string[] = [];
     for (const f of windowFiles) {
       const content = fs.readFileSync(path.join(WINDOWS_DIR, f), "utf8");
-      if (!content.includes("export default") && !content.includes("export {")) {
+      if (!content.includes("export default") && !content.includes("export {") && !content.includes("export const") && !content.includes("export function")) {
         missing.push(f);
       }
     }

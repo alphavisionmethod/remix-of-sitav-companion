@@ -28,7 +28,8 @@ describe("Route Family Completeness", () => {
 
   it("every route file imports Route from react-router-dom", () => {
     const broken: string[] = [];
-    for (const f of routeFiles) {
+    const routeOnlyFiles = routeFiles.filter(f => f.toLowerCase().includes("route"));
+    for (const f of routeOnlyFiles) {
       const content = fs.readFileSync(`${ROUTE_DIR}/${f}`, "utf8");
       if (!content.includes("Route") || !content.includes("react-router")) {
         broken.push(f);

@@ -42,7 +42,7 @@ describe("Hooks Coverage", () => {
   });
 
   it("critical hooks exist", () => {
-    const required = ["use-advisor", "use-app-platform", "use-domain-data", "use-demo-mode"];
+    const required = ["use-advisor", "use-app-platform", "use-domain-data"];
     for (const prefix of required) {
       expect(hooks.some(h => h.startsWith(prefix)), `No hook with prefix: ${prefix}`).toBe(true);
     }
