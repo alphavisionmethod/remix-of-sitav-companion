@@ -320,8 +320,6 @@ const ActivityStream = () => {
 
   // Build unified timeline
   const timeline = useMemo(() => {
-    ));
-    }
 
     const allEvents = [...liveEvents, ...approvalEvents, ...proofEvents]
       .sort((a: any,  b: Record<string, any>) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
