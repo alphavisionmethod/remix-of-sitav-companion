@@ -6,6 +6,19 @@ vi.mock("react-router-dom", async () => {
   return { ...actual, useNavigate: () => vi.fn(), useParams: () => ({ id: "test" }), useSearchParams: () => [new URLSearchParams(), vi.fn()] };
 });
 
+vi.mock("@/contexts/SitaOSContext", () => ({
+  useSitaOS: () => ({
+    explainability: { clearHistory: vi.fn(), getExplanationHistory: () => [], loadPersistedState: vi.fn() },
+    workspaceIntelligence: { getAvailableWorkspaces: () => [], getWorkspaceUsageStats: () => ({}), loadPersistedState: vi.fn() },
+    deviceMesh: { getDevices: () => [], loadPersistedState: vi.fn() },
+    contextGraph: { getNodes: () => [], loadPersistedState: vi.fn() },
+    universalStateSync: { loadPersistedState: vi.fn() },
+    actionSafety: { loadPersistedState: vi.fn() },
+    bootPhase: "ready",
+  }),
+  SitaOSProvider: ({ children }: any) => children,
+}));
+
 const pages = [
   ["CalmAssistantChat", () => import("@/pages/advisors/CalmAssistantChat")],
   ["AppReceiptDetailPage", () => import("@/pages/app-platform/AppReceiptDetailPage")],
