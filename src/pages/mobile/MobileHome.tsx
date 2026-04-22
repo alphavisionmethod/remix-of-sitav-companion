@@ -8,7 +8,7 @@ import { PulseCard } from "@/components/mobile/PulseCard";
 import { useNavigate } from "react-router-dom";
 import { Heart, TrendingUp, Shield, Wallet, Calendar, Users, ArrowRight, BarChart3 } from "lucide-react";
 import { useMobileHomePulse, useMobileHomeQuickActions, useMobileHomeActivity } from "@/hooks/use-mobile-data";
-import { MobileEmptyState, MobileErrorState } from "@/components/mobile/MobileEmptyState";
+import { MobileEmptyState, MobileSectionError } from "@/components/mobile/MobileEmptyState";
 import { PulseGridSkeleton, QuickActionsSkeleton, ActivityFeedSkeleton } from "@/components/mobile/MobileSectionSkeleton";
 
 import type { LucideIcon } from "lucide-react";
@@ -23,18 +23,21 @@ const MobileHome = () => {
   const quickActions = useMobileHomeQuickActions();
   const activity = useMobileHomeActivity();
 
-  const hasError = pulse.error || quickActions.error;
-
   return (
     <MobileShell title="Pulse">
-      {hasError ? (
-        <MobileErrorState
-          onRetry={() => { pulse.refetch(); quickActions.refetch(); activity.refetch(); }}
-        />
-      ) : (
+      {/* Each section handles its own error/loading/empty independently */}
+      <>
         <>
           {/* Health summary */}
-          {pulse.isLoading ? (
+          {pulse.error ? (
+            <div className="mb-4">
+              <MobileSectionError
+                section="Pulse Metrics"
+                onRetry={pulse.refetch}
+                skeleton={<PulseGridSkeleton />}
+              />
+            </div>
+          ) : pulse.isLoading ? (
             <PulseGridSkeleton />
           ) : pulse.data.length === 0 ? (
             <MobileEmptyState
@@ -66,7 +69,13 @@ const MobileHome = () => {
 
           {/* Quick actions */}
           <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">Quick Actions</h2>
-          {quickActions.isLoading ? (
+          {quickActions.error ? (
+            <MobileSectionError
+              section="Quick Actions"
+              onRetry={quickActions.refetch}
+              skeleton={<QuickActionsSkeleton />}
+            />
+          ) : quickActions.isLoading ? (
             <QuickActionsSkeleton />
           ) : (
             <div className="space-y-1.5">
@@ -92,7 +101,13 @@ const MobileHome = () => {
 
           {/* Recent activity */}
           <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mt-6 mb-2">Latest Activity</h2>
-          {activity.isLoading ? (
+          {activity.error ? (
+            <MobileSectionError
+              section="Activity Feed"
+              onRetry={activity.refetch}
+              skeleton={<ActivityFeedSkeleton />}
+            />
+          ) : activity.isLoading ? (
             <ActivityFeedSkeleton />
           ) : activity.data.length === 0 ? (
             <MobileEmptyState
@@ -116,7 +131,7 @@ const MobileHome = () => {
             </div>
           )}
         </>
-      )}
+      </>
     </MobileShell>
   );
 };
