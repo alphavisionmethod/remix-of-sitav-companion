@@ -150,7 +150,7 @@ const CommunicationsCenter = () => {
             <AppSurface level={2} className="p-4 space-y-3">
               <div className="flex items-center justify-between">
                 <span className="text-[12px] font-semibold text-[hsl(0_0%_85%)]">New Communication</span>
-                <button onClick={resetForm} className="text-[hsl(0_0%_50%)] hover:text-[hsl(0_0%_80%)]"><X className="h-4 w-4" /></button>
+                <button onClick={resetForm} aria-label="Close" className="text-[hsl(0_0%_50%)] hover:text-[hsl(0_0%_80%)]"><X className="h-4 w-4" /></button>
               </div>
               <input className="w-full rounded-lg border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_100%/0.04)] px-3 py-2 text-sm text-[hsl(0_0%_85%)] placeholder:text-[hsl(0_0%_40%)] focus:outline-none focus:ring-1 focus:ring-[hsl(265_55%_58%/0.3)]" placeholder="Customer name" value={form.customer_name} onChange={e => setForm(f => ({ ...f, customer_name: e.target.value }))} />
               <input className="w-full rounded-lg border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_100%/0.04)] px-3 py-2 text-sm text-[hsl(0_0%_85%)] placeholder:text-[hsl(0_0%_40%)] focus:outline-none focus:ring-1 focus:ring-[hsl(265_55%_58%/0.3)]" placeholder="Subject" value={form.subject} onChange={e => setForm(f => ({ ...f, subject: e.target.value }))} />

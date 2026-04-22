@@ -138,8 +138,7 @@ const MemoryCenter = () => {
           onChange={e => setSearch(e.target.value)}
         />
         {search && (
-          <button onClick={() => setSearch("")} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
-            <X className="h-4 w-4" />
+          <button onClick={() => setSearch("")} aria-label="Close" className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"><X className="h-4 w-4" />
           </button>
         )}
       </div>
@@ -166,7 +165,7 @@ const MemoryCenter = () => {
                           autoFocus
                         />
                         <button onClick={() => updateMutation.mutate({ id: m.id, value: editValue })} className="rounded-md p-1 text-primary hover:bg-primary/10"><Check className="h-4 w-4" /></button>
-                        <button onClick={() => setEditingId(null)} className="rounded-md p-1 text-muted-foreground hover:bg-secondary"><X className="h-4 w-4" /></button>
+                        <button onClick={() => setEditingId(null)} aria-label="Close" className="rounded-md p-1 text-muted-foreground hover:bg-secondary"><X className="h-4 w-4" /></button>
                       </div>
                     ) : (
                       <p className="text-sm text-foreground">{formatValue(m.value)}</p>

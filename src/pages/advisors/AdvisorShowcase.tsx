@@ -176,8 +176,7 @@ function DebateOverlay({ advisor, onClose }: { advisor: typeof ADVISORS[0]; onCl
         transition={{ type: "spring", stiffness: 200, damping: 25 }}
       >
         {/* close */}
-        <button onClick={onClose} className="absolute -top-3 -right-3 z-20 rounded-full bg-white/10 p-2 backdrop-blur-sm border border-white/10 hover:bg-white/20 transition-colors">
-          <X className="h-4 w-4 text-foreground" />
+        <button onClick={onClose} aria-label="Close" className="absolute -top-3 -right-3 z-20 rounded-full bg-white/10 p-2 backdrop-blur-sm border border-white/10 hover:bg-white/20 transition-colors"><X className="h-4 w-4 text-foreground" />
         </button>
 
         {/* title */}

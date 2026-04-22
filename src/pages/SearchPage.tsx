@@ -410,8 +410,7 @@ const SearchPage = () => {
                       <p className="text-[11px] text-muted-foreground">{selectedResult.subtitle}</p>
                     </div>
                   </div>
-                  <button onClick={() => setSelectedResult(null)} className="text-muted-foreground hover:text-foreground">
-                    <X className="h-4 w-4" />
+                  <button onClick={() => setSelectedResult(null)} aria-label="Close" className="text-muted-foreground hover:text-foreground"><X className="h-4 w-4" />
                   </button>
                 </div>
 
