@@ -331,7 +331,7 @@ export default function TasksWorkflowsCenter() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              {"Invoice Approval Pipeline", status: "running", step: "3/5", trigger: "event" },
+              {[{ name: "Invoice Approval Pipeline", status: "running", step: "3/5", trigger: "event" },
                     { name: "New Lead Nurture Sequence", status: "completed", step: "5/5", trigger: "webhook" },
                     { name: "Quarterly Report Generation", status: "pending", step: "0/4", trigger: "schedule" },
                   ].map((wf, i) => (
