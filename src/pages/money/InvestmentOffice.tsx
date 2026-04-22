@@ -145,6 +145,7 @@ const PortfolioView = () => {
     </div>
   </div>
 );
+};
 
 const RegimeView = () => (
   <div className="space-y-4">
@@ -172,7 +173,6 @@ const RegimeView = () => (
     </SitaCard>
   </div>
 );
-};
 
 const RiskView = () => (
   <div className="space-y-4">
@@ -242,6 +242,7 @@ const ThesisVault = () => {
     })}
   </div>
 );
+};
 
 const CommitteeView = () => {
   const { isDemoMode } = useDataMode();
