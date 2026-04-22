@@ -91,9 +91,15 @@ const ConditionalAdminTools = () => {
   useEffect(() => {
     if (isDemo) { setIsAdmin(true); return; }
     if (!user) return;
-    supabase.rpc("has_role", { _user_id: user.id, _role: "admin" })
-      .then(({ data }) => setIsAdmin(!!data))
-      .catch(() => {});
+    const checkRole = async () => {
+      try {
+        const { data } = await supabase.rpc("has_role", { _user_id: user.id, _role: "admin" });
+        setIsAdmin(!!data);
+      } catch {
+        // silently fail — non-admin
+      }
+    };
+    checkRole();
   }, [user, isDemo]);
   if (!isAdmin) return null;
   return <><AdminCommandPaletteWrapper /><AdminKeyboardShortcutsWrapper /></>;
