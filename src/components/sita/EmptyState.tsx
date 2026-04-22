@@ -24,12 +24,10 @@ export interface EmptyStateAction {
 export interface EmptyStateProps {
   /** Visual variant */
   variant?: "default" | "card" | "contextual" | "cta";
-  icon?: LucideIcon;
+  icon?: LucideIcon | React.ReactNode;
   title?: string;
   description?: string;
   className?: string;
-  /** Legacy: pass a ReactNode icon element directly */
-  iconElement?: React.ReactNode;
 
   // Simple action (default & card variants)
   actionLabel?: string;
