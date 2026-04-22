@@ -1,6 +1,10 @@
 import { describe, it, expect, vi } from "vitest";
 import { render } from "@/test/test-utils";
 
+beforeAll(() => {
+  Element.prototype.scrollTo = vi.fn();
+});
+
 vi.mock("react-router-dom", async () => {
   const actual = await vi.importActual("react-router-dom");
   return { ...actual, useNavigate: () => vi.fn(), useParams: () => ({ id: "test" }), useSearchParams: () => [new URLSearchParams(), vi.fn()] };
@@ -8,15 +12,33 @@ vi.mock("react-router-dom", async () => {
 
 vi.mock("@/contexts/SitaOSContext", () => ({
   useSitaOS: () => ({
-    explainability: { clearHistory: vi.fn(), getExplanationHistory: () => [], loadPersistedState: vi.fn() },
-    workspaceIntelligence: { getAvailableWorkspaces: () => [], getWorkspaceUsageStats: () => ({}), loadPersistedState: vi.fn() },
-    deviceMesh: { getDevices: () => [], loadPersistedState: vi.fn() },
-    contextGraph: { getNodes: () => [], loadPersistedState: vi.fn() },
-    universalStateSync: { loadPersistedState: vi.fn() },
-    actionSafety: { loadPersistedState: vi.fn() },
+    explainability: { clearHistory: vi.fn(), getExplanationHistory: () => [], explain: vi.fn(), loadPersistedState: vi.fn() },
+    workspaceIntelligence: { getAvailableWorkspaces: () => [], getWorkspaceUsageStats: () => ({}), suggestWorkspace: () => null, loadPersistedState: vi.fn() },
+    deviceMesh: { getDevices: () => [], getDeviceCount: () => 0, getMeshHealth: () => ({ devices: [], connectedCount: 0, totalCount: 0, healthScore: 100 }), loadPersistedState: vi.fn() },
+    contextGraph: { getNodes: () => [], getEdges: () => [], loadPersistedState: vi.fn() },
+    universalStateSync: { getState: () => ({}), loadPersistedState: vi.fn() },
+    actionSafety: { checkAction: vi.fn(), loadPersistedState: vi.fn() },
     bootPhase: "ready",
   }),
   SitaOSProvider: ({ children }: any) => children,
+}));
+
+vi.mock("@/contexts/AppPlatformContext", () => ({
+  useAppPlatform: () => ({
+    receipts: [],
+    apps: [],
+    getReceipt: () => null,
+    loadPersistedState: vi.fn(),
+  }),
+  AppPlatformProvider: ({ children }: any) => children,
+}));
+
+vi.mock("@/hooks/useOSOrchestration", () => ({
+  useOSOrchestration: () => ({
+    suggestWorkspace: () => null,
+    getRecommendations: () => [],
+    orchestrate: vi.fn(),
+  }),
 }));
 
 const pages = [
