@@ -1,5 +1,4 @@
-import { useState, useCallback } from "react";
-import { useMemo } from "react";
+import { useState, useCallback, useRef, useMemo } from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { getDefaultAdvisorAvatar } from "@/lib/advisors/advisor-avatar-assets";
@@ -8,6 +7,7 @@ import { getPortraitSrcSet } from "@/lib/advisors/advisor-responsive-assets";
 import { sanitizeAvatarUrl } from "@/lib/advisors/avatar-url-validation";
 import { logPortraitFailure } from "@/lib/advisors/portrait-failure-logger";
 import { isAvatarDebugActive, BROKEN_AVATAR_URL } from "@/lib/advisors/avatar-debug";
+import { isPerfHudActive, recordLoadMetric, measureDecodeTime, startJankObserver } from "@/lib/advisors/portrait-perf-metrics";
 import { Skeleton } from "@/components/ui/skeleton";
 import { RefreshCw, Briefcase, DollarSign, Headphones, Heart, TrendingUp, Shield, Sparkles, Scale, Brain } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
@@ -77,6 +77,7 @@ export const AdvisorPortrait = ({
 }: AdvisorPortraitProps) => {
   const [imgState, setImgState] = useState<"loading" | "loaded" | "error">("loading");
   const [retries, setRetries] = useState(0);
+  const loadStartRef = useRef<number>(performance.now());
   const s = sizes[size];
   const gradient = domainGradients[domain];
   // Resolve URL: explicit prop → cached custom → default
@@ -196,7 +197,23 @@ export const AdvisorPortrait = ({
             "rounded-full object-cover w-full h-full bg-card dark:bg-card transition-opacity duration-300",
             imgState === "loaded" ? "opacity-100" : "opacity-0"
           )}
-          onLoad={() => setImgState("loaded")}
+          onLoad={() => {
+            setImgState("loaded");
+            if (isPerfHudActive() && imgSrc) {
+              const loadTimeMs = Math.round(performance.now() - loadStartRef.current);
+              measureDecodeTime(imgSrc).then((decodeTimeMs) => {
+                recordLoadMetric({
+                  domain,
+                  advisorId,
+                  url: imgSrc,
+                  loadTimeMs,
+                  decodeTimeMs,
+                  retryCount: retries,
+                  timestamp: Date.now(),
+                });
+              });
+            }
+          }}
           onError={handleError}
           whileHover={{ scale: 1.05 }}
           transition={{ type: "spring", stiffness: 300 }}
