@@ -14,6 +14,7 @@ import { Shield, Plus, Edit, Trash2, ToggleLeft, ToggleRight, ChevronRight, Play
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { useDraftAutosave } from "@/hooks/useDraftAutosave";
 import { useEffect } from "react";
+import { PageShell } from "@/components/sita/PageShell";
 
 // Production fallback — seed data removed
 const DEMO_CATEGORIES: any[] = [];
@@ -56,6 +57,7 @@ const PolicyEditor = () => {
   const activeCount = policies.filter(p => p.active).length;
 
   return (
+    <PageShell>
     <motion.div className="mx-auto max-w-6xl space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
 <SitaPageHeader
         title="Policy Engine"
@@ -164,6 +166,7 @@ const PolicyEditor = () => {
         </div>
       )}
     </motion.div>
+    </PageShell>
   );
 };
 

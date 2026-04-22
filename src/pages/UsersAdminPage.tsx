@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { useAdminUsers } from "@/hooks/use-domain-data";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageShell } from "@/components/sita/PageShell";
 
 export default function UsersAdminPage() {
   const { data: mockUsers = [] } = useAdminUsers();
@@ -28,6 +29,7 @@ export default function UsersAdminPage() {
   );
 
   return (
+    <PageShell>
     <div className="max-w-[1400px] mx-auto space-y-5">
 <AdminPageHeader icon={Users} title="Users & Organizations" subtitle="User roster, trust state, connector health, and support diagnostics">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 w-full mt-5">
@@ -131,5 +133,6 @@ export default function UsersAdminPage() {
         </div>
       </div>
     </div>
+    </PageShell>
   );
 }

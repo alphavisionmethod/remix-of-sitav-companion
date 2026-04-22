@@ -15,6 +15,7 @@ import { cn } from "@/lib/utils";
 import { useOSRuntime } from "@/hooks/useOSRuntime";
 import { useCountUpFormatted } from "@/hooks/useCountUp";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageShell } from "@/components/sita/PageShell";
 
 // ── Seed demo recovered values ─────────────────────────────────
 function useDemoRecoveries() {
@@ -53,12 +54,14 @@ function useDemoRecoveries() {
 const RecoveredKPI = ({ label, value, color, delay }: { label: string; value: string | number; color: string; delay: number }) => {
   const animated = useCountUpFormatted(value);
   return (
+    <PageShell>
     <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay }}
       className="rounded-xl border border-border/30 bg-card/60 p-3 text-center"
     >
 <p className={cn("text-xl font-bold font-display tabular-nums", color)}>{animated}</p>
       <p className="text-[9px] text-muted-foreground">{label}</p>
     </motion.div>
+    </PageShell>
   );
 };
 

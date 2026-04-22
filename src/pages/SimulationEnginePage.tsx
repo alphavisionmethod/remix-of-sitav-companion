@@ -25,6 +25,7 @@ import {
   applyIntelligenceToVariables,
   type IntelligenceReport,
 } from "@/domains/simulation/market-intelligence";
+import { PageShell } from "@/components/sita/PageShell";
 
 type RightTab = "results" | "intelligence";
 
@@ -110,6 +111,7 @@ export default function SimulationEnginePage() {
   }, [result, currentScenarioLabel]);
 
   return (
+    <PageShell>
     <div className="flex flex-col h-full min-h-0">
       <SitaPageHeader
         icon={<Atom className="h-6 w-6" />}
@@ -272,5 +274,6 @@ export default function SimulationEnginePage() {
         </AnimatePresence>
       </div>
     </div>
+    </PageShell>
   );
 }

@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageShell } from "@/components/sita/PageShell";
 
 interface Template { id: string; title: string; description: string; category: string; domain: string; usageCount: number; starred: boolean; }
 
@@ -37,6 +38,7 @@ const TemplateCenter = () => {
   });
 
   return (
+    <PageShell>
     <div className="min-h-screen pb-12">
 <SitaPageHeader title="Template Center" subtitle="Reusable structures for documents, workflows, and communications" actions={
         <Button size="sm" variant="outline" className="gap-1.5 text-xs border-border/50"><Plus className="w-3.5 h-3.5" /> Create Template</Button>
@@ -82,6 +84,7 @@ const TemplateCenter = () => {
         })}
       </div>
     </div>
+    </PageShell>
   );
 };
 

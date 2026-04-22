@@ -16,6 +16,7 @@ import { ConfirmationDialog } from "@/components/sita/ConfirmationDialog";
 import { DataFreshnessBadge } from "@/components/sita/DataFreshnessBadge";
 import { useQueryFreshness } from "@/hooks/use-query-freshness";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageShell } from "@/components/sita/PageShell";
 
 const statusToState = (status: string): ExecutionState => {
   const map: Record<string, ExecutionState> = {
@@ -94,6 +95,7 @@ const WorkflowsCenter = () => {
   };
 
   return (
+    <PageShell>
     <div className="mx-auto max-w-7xl space-y-6">
 <ConfirmationDialog state={confirmation} />
       <SitaPageHeader title="Workflows" subtitle="Actions, approvals, and execution tracking — live from workflow engine"
@@ -221,6 +223,7 @@ const WorkflowsCenter = () => {
         </div>
       )}
     </div>
+    </PageShell>
   );
 };
 

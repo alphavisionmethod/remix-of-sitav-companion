@@ -11,6 +11,7 @@ import {
   AlertCircle, Sparkles, ArrowRight, ChevronDown, Eye
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { PageShell } from "@/components/sita/PageShell";
 
 // ─── Demo Data ───
 const PAST_DECISIONS = [
@@ -68,6 +69,7 @@ function TimelineNode({ decision, index, isSelected, onSelect }: {
   const Icon = outcomeIcons[decision.outcome as keyof typeof outcomeIcons];
 
   return (
+    <PageShell>
     <motion.div
       initial={{ opacity: 0, x: -20 }}
       animate={{ opacity: 1, x: 0 }}
@@ -134,6 +136,7 @@ function TimelineNode({ decision, index, isSelected, onSelect }: {
         </AnimatePresence>
       </div>
     </motion.div>
+    </PageShell>
   );
 }
 

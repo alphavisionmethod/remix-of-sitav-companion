@@ -26,6 +26,7 @@ import {
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip, BarChart, Bar, PieChart as RechartsPie, Pie, Cell, LineChart, Line, CartesianGrid } from "recharts";
 import { DEMO_COMPLETION_TREND, DEMO_DOMAIN_BREAKDOWN, DEMO_PIPELINE_DATA, DEMO_REVENUE_DATA } from "@/data/seed/core-pages";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageShell } from "@/components/sita/PageShell";
 const fadeUp = { hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0, transition: { duration: 0.3 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.06 } } };
 
@@ -86,6 +87,7 @@ const ReportingWorkspace = () => {
   const handleSaveReport = () => toast.success("Report saved to library");
 
   return (
+    <PageShell>
     <div className="space-y-6 p-6 max-w-7xl mx-auto">
       <SitaPageHeader
         icon={<BarChart3 className="h-6 w-6" />}
@@ -349,6 +351,7 @@ const ReportingWorkspace = () => {
         </TabsContent>
       </Tabs>
     </div>
+    </PageShell>
   );
 };
 

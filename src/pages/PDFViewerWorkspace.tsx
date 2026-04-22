@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Slider } from "@/components/ui/slider";
 import { motion } from "framer-motion";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageShell } from "@/components/sita/PageShell";
 
 type AnnotationType = "highlight" | "comment" | "signature" | "bookmark";
 
@@ -55,6 +56,7 @@ const PDFViewerWorkspace = () => {
   };
 
   return (
+    <PageShell>
     <div className="mx-auto max-w-7xl space-y-4">
 <SitaPageHeader icon={<FileText className="h-6 w-6" />} title="PDF Viewer" subtitle="View, annotate, highlight, and sign documents">
         <div className="flex items-center gap-2">
@@ -249,6 +251,7 @@ const PDFViewerWorkspace = () => {
         </div>
       )}
     </div>
+    </PageShell>
   );
 };
 

@@ -19,6 +19,7 @@ import { useUpdateDaemon } from "@/hooks/useUpdateDaemon";
 import { UpdateSlotVisualization } from "@/components/sita/os/UpdateSlotVisualization";
 import { UpdateProgressOverlay } from "@/components/sita/os/UpdateProgressOverlay";
 import type { CatalogEntry, UpdateChannel } from "@/lib/services/update-daemon";
+import { PageShell } from "@/components/sita/PageShell";
 
 const formatBytes = (b: number) => {
   if (b >= 1_000_000_000) return `${(b / 1_000_000_000).toFixed(1)} GB`;
@@ -88,6 +89,7 @@ export default function UpdateCenter() {
   const hasUpdates = ud.catalog.length > 0;
 
   return (
+    <PageShell>
     <div className="p-4 md:p-6 max-w-[1400px] mx-auto space-y-6">
       <SitaPageHeader
         icon={<Download className="h-6 w-6" />}
@@ -446,6 +448,7 @@ export default function UpdateCenter() {
         </CardContent>
       </Card>
     </div>
+    </PageShell>
   );
 }
 

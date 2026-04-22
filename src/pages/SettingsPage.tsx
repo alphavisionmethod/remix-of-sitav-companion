@@ -14,6 +14,7 @@ import { AdvisorAvatarPreview } from "@/components/settings/AdvisorAvatarPreview
 import { AdvisorAvatarUpload } from "@/components/settings/AdvisorAvatarUpload";
 import { AvatarDebugToggle } from "@/components/settings/AvatarDebugToggle";
 import { PerfHudToggle } from "@/components/settings/PerfHudToggle";
+import { PageShell } from "@/components/sita/PageShell";
 
 interface SecurityStatus {
   mfaEnrolled: boolean;
@@ -81,6 +82,7 @@ const SettingsPage = () => {
   ] as const;
 
   return (
+    <PageShell>
     <motion.div
       className="flex flex-col items-center justify-center min-h-[60vh] gap-6 px-4 py-8"
       initial={{ opacity: 0 }}
@@ -147,6 +149,7 @@ const SettingsPage = () => {
         <PerfHudToggle />
       </section>
     </motion.div>
+    </PageShell>
   );
 };
 

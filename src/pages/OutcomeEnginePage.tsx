@@ -19,6 +19,7 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useOutcomes } from "@/hooks/use-live-data";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageShell } from "@/components/sita/PageShell";
 export default function OutcomeEnginePage() {
   const { isDemo } = useAuth();
   const { data: liveOutcomes } = useOutcomes();
@@ -46,6 +47,7 @@ export default function OutcomeEnginePage() {
     : 0;
 
   return (
+    <PageShell>
     <div className="space-y-8 p-6 max-w-7xl mx-auto">
 {/* Header */}
       <motion.div
@@ -181,5 +183,6 @@ export default function OutcomeEnginePage() {
         </TabsContent>
       </Tabs>
     </div>
+    </PageShell>
   );
 }

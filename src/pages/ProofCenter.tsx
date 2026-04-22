@@ -26,6 +26,7 @@ import {
   Link2, Search, ChevronDown, ChevronRight, Shield, CheckCircle, XCircle,
   DollarSign, Briefcase, Home, Zap, Hash, Download, Layers
 } from "lucide-react";
+import { PageShell } from "@/components/sita/PageShell";
 type FilterType = "all" | "verified" | "pending" | "failed" | "rolled-back";
 type DomainFilter = "all" | "finance" | "business" | "household" | "system" | "workflow";
 type DetailViewId = string | null;
@@ -62,6 +63,7 @@ const ReceiptDetailPanel = ({ item, onClose }: { item: any; onClose: () => void 
   const hash = generateHash(item.id || "unknown");
 
   return (
+    <PageShell>
     <motion.div
       initial={{ opacity: 0, x: 20 }}
       animate={{ opacity: 1, x: 0 }}
@@ -152,6 +154,7 @@ const ReceiptDetailPanel = ({ item, onClose }: { item: any; onClose: () => void 
         </SitaButton>
       </div>
     </motion.div>
+    </PageShell>
   );
 };
 

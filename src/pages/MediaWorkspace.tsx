@@ -25,6 +25,7 @@ import {
 } from "lucide-react";
 import { type DemoMediaItem as MediaItem, DEMO_MEDIA } from "@/data/seed/media";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageShell } from "@/components/sita/PageShell";
 const MediaWorkspace = () => {
   const { user, isDemo } = useAuth();
   const [search, setSearch] = useState("");
@@ -90,6 +91,7 @@ const MediaWorkspace = () => {
   }, [handleUpload]);
 
   return (
+    <PageShell>
     <div className="space-y-6 p-6 max-w-7xl mx-auto"
       onDragOver={e => { e.preventDefault(); setIsDragOver(true); }}
       onDragLeave={() => setIsDragOver(false)}
@@ -250,6 +252,7 @@ const MediaWorkspace = () => {
         </div>
       )}
     </div>
+    </PageShell>
   );
 };
 

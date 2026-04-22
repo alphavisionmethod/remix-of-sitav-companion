@@ -25,6 +25,7 @@ import {
   ArrowRight, Users, RotateCcw, Filter, Workflow, ChevronRight, Eye,
   GitBranch, Kanban, ListOrdered, Target, Flame, Pause, Play,
 } from "lucide-react";
+import { PageShell } from "@/components/sita/PageShell";
 // ── Demo Data ──────────────────────────────────────────────────
 type TaskPriority = "critical" | "high" | "medium" | "low";
 type TaskStatus = "todo" | "in-progress" | "waiting" | "blocked" | "done" | "cancelled";
@@ -124,6 +125,7 @@ export default function TasksWorkflowsCenter() {
   const recurringCount = tasks.filter(t => t.recurring).length;
 
   return (
+    <PageShell>
     <motion.div
       className="space-y-6 p-6 max-w-7xl mx-auto"
       initial={{ opacity: 0, y: 12 }}
@@ -390,6 +392,7 @@ export default function TasksWorkflowsCenter() {
         </TabsContent>
       </Tabs>
     </motion.div>
+    </PageShell>
   );
 }
 

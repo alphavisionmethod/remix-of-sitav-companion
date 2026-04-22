@@ -11,6 +11,7 @@ import ReactMarkdown from "react-markdown";
 import { useOSOrchestration } from "@/hooks/useOSOrchestration";
 import { useExperienceSignature } from "@/hooks/useExperienceSignature";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageShell } from "@/components/sita/PageShell";
 
 
 
@@ -91,6 +92,7 @@ function PersonalBrainInner() {
   };
 
   return (
+    <PageShell>
     <div className="flex flex-col h-[calc(100vh-4rem)] max-w-[900px] mx-auto">
 {/* Header */}
       <div className="p-4 border-b border-border">
@@ -194,6 +196,7 @@ function PersonalBrainInner() {
         </div>
       </div>
     </div>
+    </PageShell>
   );
 }
 

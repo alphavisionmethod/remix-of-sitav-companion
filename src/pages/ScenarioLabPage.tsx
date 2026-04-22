@@ -18,6 +18,7 @@ import { useOSRuntime } from "@/hooks/useOSRuntime";
 import type { ScenarioTemplate, ScenarioSimulation, ScenarioOutcome } from "@/packages/contracts";
 import type { RealityLane, ConfidenceScore, SimulationResult } from "@/packages/reality-contracts";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageShell } from "@/components/sita/PageShell";
 
 // ── Template Card ──────────────────────────────────────────────
 function TemplateCard({ template, onRun }: { template: ScenarioTemplate; onRun: () => void }) {
@@ -30,6 +31,7 @@ function TemplateCard({ template, onRun }: { template: ScenarioTemplate; onRun: 
   const Icon = typeIcons[template.type] || FlaskConical;
 
   return (
+    <PageShell>
     <motion.div
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
@@ -59,6 +61,7 @@ function TemplateCard({ template, onRun }: { template: ScenarioTemplate; onRun: 
         </div>
       </div>
     </motion.div>
+    </PageShell>
   );
 }
 

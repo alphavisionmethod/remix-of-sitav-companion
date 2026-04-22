@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageShell } from "@/components/sita/PageShell";
 
 // ── Service Module Definitions ─────────────────────────────────
 
@@ -169,6 +170,7 @@ export default function ServiceArchitectureDashboard() {
   }), []);
 
   return (
+    <PageShell>
     <div className="min-h-screen p-6 space-y-6">
 {/* Header */}
       <div className="flex items-center justify-between">
@@ -426,5 +428,6 @@ export default function ServiceArchitectureDashboard() {
         </TabsContent>
       </Tabs>
     </div>
+    </PageShell>
   );
 }

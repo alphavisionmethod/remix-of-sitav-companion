@@ -29,6 +29,7 @@ import { toast } from "sonner";
 import { type DemoApprovalItem as ApprovalItem } from "@/data/seed/approval-chamber";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { EmptyState } from "@/components/sita/EmptyState";
+import { PageShell } from "@/components/sita/PageShell";
 // ── Risk Styling ─────────────────────────────────────────────
 
 const riskStyles = {
@@ -76,6 +77,7 @@ const ImpactPanel = ({ items, confidence }: { items: string[]; confidence: numbe
 const TrustedDeviceSign = ({ required, onSign }: { required: boolean; onSign: () => void }) => {
   if (!required) return null;
   return (
+    <PageShell>
     <div className="rounded-lg border border-primary/20 bg-primary/5 p-3 space-y-2">
       <div className="flex items-center gap-2">
         <Fingerprint className="h-4 w-4 text-primary" />
@@ -92,6 +94,7 @@ const TrustedDeviceSign = ({ required, onSign }: { required: boolean; onSign: ()
         Authenticate & Sign
       </button>
     </div>
+    </PageShell>
   );
 };
 

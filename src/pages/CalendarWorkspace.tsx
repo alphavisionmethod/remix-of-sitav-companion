@@ -20,6 +20,7 @@ import { useRealityProvider } from "@/hooks/useRealityProvider";
 import { useCreateCalendarEvent, useUpdateCalendarEvent, useDeleteCalendarEvent } from "@/hooks/use-calendar-mutations";
 import { useBookingList, useBookingCreate, useBookingCancel } from "@/hooks/use-backend-actions";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageShell } from "@/components/sita/PageShell";
 type CalView = "day" | "week" | "month" | "agenda";
 
 const DOMAIN_COLORS: Record<string, string> = {
@@ -96,6 +97,7 @@ const CalendarWorkspace = () => {
   const monthDays = eachDayOfInterval({ start: startOfWeek(monthStart, { weekStartsOn: 1 }), end: addDays(endOfMonth(selectedDate), 6 - endOfMonth(selectedDate).getDay()) });
 
   return (
+    <PageShell>
     <div className="min-h-screen pb-12">
 <SitaPageHeader title="Calendar" subtitle="Your time across life, business, and household" actions={
         <div className="flex gap-2">
@@ -454,6 +456,7 @@ const CalendarWorkspace = () => {
         </DialogContent>
       </Dialog>
     </div>
+    </PageShell>
   );
 };
 
