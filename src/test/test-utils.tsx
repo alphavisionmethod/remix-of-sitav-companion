@@ -198,6 +198,7 @@ vi.mock("@/contexts/SitaOSContext", () => ({
     contextGraph: {
       getCurrentContext: () => ({}),
       updateSignal: vi.fn(),
+      getContextSignals: () => [],
     },
     explainability: { explain: vi.fn().mockReturnValue(""), getExplanationHistory: () => [], clearHistory: vi.fn() },
     workspaceIntelligence: { getAvailableWorkspaces: () => [], getWorkspaceUsageStats: () => ({}), suggestWorkspace: () => null },
