@@ -16779,6 +16779,45 @@ export type Database = {
         }
         Relationships: []
       }
+      portrait_load_failures: {
+        Row: {
+          advisor_id: string | null
+          created_at: string
+          domain: string
+          error_type: string
+          id: string
+          retry_count: number
+          status_code: number | null
+          url: string
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          advisor_id?: string | null
+          created_at?: string
+          domain: string
+          error_type?: string
+          id?: string
+          retry_count?: number
+          status_code?: number | null
+          url: string
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          advisor_id?: string | null
+          created_at?: string
+          domain?: string
+          error_type?: string
+          id?: string
+          retry_count?: number
+          status_code?: number | null
+          url?: string
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       positions: {
         Row: {
           closed_at: string | null

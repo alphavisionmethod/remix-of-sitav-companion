@@ -6,6 +6,7 @@ import { getDefaultAdvisorAvatar } from "@/lib/advisors/advisor-avatar-assets";
 import { getCachedPortraitUrl } from "@/hooks/use-advisor-portraits";
 import { getPortraitSrcSet } from "@/lib/advisors/advisor-responsive-assets";
 import { sanitizeAvatarUrl } from "@/lib/advisors/avatar-url-validation";
+import { logPortraitFailure } from "@/lib/advisors/portrait-failure-logger";
 import { Skeleton } from "@/components/ui/skeleton";
 import { RefreshCw, Briefcase, DollarSign, Headphones, Heart, TrendingUp, Shield, Sparkles, Scale, Brain } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
@@ -95,6 +96,13 @@ export const AdvisorPortrait = ({
       setTimeout(() => setRetries((r) => r + 1), RETRY_DELAYS[retries] ?? 3000);
     } else {
       setImgState("error");
+      logPortraitFailure({
+        domain,
+        advisor_id: advisorId,
+        url: resolvedUrl || "",
+        error_type: "load_exhausted",
+        retry_count: MAX_RETRIES,
+      });
     }
   }, [retries]);
 
