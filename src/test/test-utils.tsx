@@ -4,22 +4,67 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { MemoryRouter } from "react-router-dom";
 import { vi } from "vitest";
 
+// ── Mock user for authenticated test rendering ──
+const MOCK_USER = {
+  id: "test-user-000",
+  aud: "authenticated",
+  role: "authenticated",
+  email: "test@sita.os",
+  email_confirmed_at: new Date().toISOString(),
+  created_at: new Date().toISOString(),
+  updated_at: new Date().toISOString(),
+  app_metadata: { provider: "email" },
+  user_metadata: { full_name: "Test User" },
+  identities: [],
+};
+
+const MOCK_SESSION = {
+  access_token: "test-access-token",
+  refresh_token: "test-refresh-token",
+  expires_in: 3600,
+  token_type: "bearer",
+  user: MOCK_USER,
+};
+
+// Track current auth mode so the mock can read it
+let _authMode: "anonymous" | "authenticated" = "anonymous";
+
 // Mock Supabase globally
 vi.mock("@/integrations/supabase/client", () => ({
   supabase: {
     from: () => ({
-      select: () => ({ eq: () => ({ data: [], error: null }), data: [], error: null }),
+      select: () => ({
+        eq: () => ({
+          data: [],
+          error: null,
+          maybeSingle: () => Promise.resolve({ data: null, error: null }),
+        }),
+        data: [],
+        error: null,
+        maybeSingle: () => Promise.resolve({ data: null, error: null }),
+      }),
       insert: () => ({ data: null, error: null }),
-      update: () => ({ eq: () => ({ data: null, error: null }) }),
-      delete: () => ({ eq: () => ({ data: null, error: null }) }),
+      update: () => ({ eq: () => ({ data: null, error: null }), data: null, error: null }),
+      upsert: () => ({ data: null, error: null }),
+      delete: () => ({ eq: () => ({ data: null, error: null }), data: null, error: null }),
     }),
     auth: {
-      getSession: () => Promise.resolve({ data: { session: null }, error: null }),
-      getUser: () => Promise.resolve({ data: { user: null }, error: null }),
+      getSession: () => Promise.resolve({
+        data: { session: _authMode === "authenticated" ? MOCK_SESSION : null },
+        error: null,
+      }),
+      getUser: () => Promise.resolve({
+        data: { user: _authMode === "authenticated" ? MOCK_USER : null },
+        error: null,
+      }),
       onAuthStateChange: () => ({ data: { subscription: { unsubscribe: () => {} } } }),
       signInWithPassword: () => Promise.resolve({ data: {}, error: null }),
       signUp: () => Promise.resolve({ data: {}, error: null }),
       signOut: () => Promise.resolve({ error: null }),
+      mfa: {
+        getAuthenticatorAssuranceLevel: () => Promise.resolve({ data: { currentLevel: "aal1", nextLevel: "aal1" }, error: null }),
+        listFactors: () => Promise.resolve({ data: { totp: [] }, error: null }),
+      },
     },
     storage: {
       from: () => ({
@@ -37,16 +82,27 @@ vi.mock("@/integrations/supabase/client", () => ({
 }));
 
 // Mock auth context
-vi.mock("@/contexts/AuthContext", () => ({
-  useAuth: () => ({
-    user: null,
-    session: null,
-    loading: false,
-    isAuthenticated: false,
-    signOut: vi.fn(),
-  }),
-  AuthProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
-}));
+vi.mock("@/contexts/AuthContext", () => {
+  return {
+    useAuth: () => ({
+      user: _authMode === "authenticated" ? MOCK_USER : null,
+      session: _authMode === "authenticated" ? MOCK_SESSION : null,
+      loading: false,
+      isDemo: _authMode === "authenticated",
+      requiresMFA: false,
+      mfaFactorId: null,
+      signUp: vi.fn().mockResolvedValue({ error: null }),
+      signIn: vi.fn().mockResolvedValue({ error: null }),
+      signInAsDemo: vi.fn(),
+      signOut: vi.fn().mockResolvedValue(undefined),
+      resetPassword: vi.fn().mockResolvedValue({ error: null }),
+      updatePassword: vi.fn().mockResolvedValue({ error: null }),
+      verifyMFA: vi.fn().mockResolvedValue({ error: null }),
+      cancelMFA: vi.fn().mockResolvedValue(undefined),
+    }),
+    AuthProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+  };
+});
 
 // Mock data mode
 vi.mock("@/contexts/DataModeContext", () => ({
@@ -195,10 +251,19 @@ function AllProviders({ children }: AllProvidersProps) {
   );
 }
 
+interface CustomRenderOptions extends RenderOptions {
+  authenticated?: boolean;
+}
+
 const customRender = (
   ui: ReactElement,
-  options?: RenderOptions
-) => render(ui, { wrapper: AllProviders, ...options });
+  options?: CustomRenderOptions
+) => {
+  _authMode = options?.authenticated ? "authenticated" : "anonymous";
+  const { authenticated, ...renderOptions } = options ?? {};
+  const result = render(ui, { wrapper: AllProviders, ...renderOptions });
+  return result;
+};
 
 export * from "@testing-library/react";
-export { customRender as render };
+export { customRender as render, MOCK_USER, MOCK_SESSION };
