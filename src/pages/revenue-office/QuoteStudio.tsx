@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { DEMO_pricingInsights, DEMO_quoteStats, DEMO_quotes, DEMO_upsellSuggestions } from "@/data/seed/revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const statusColors: Record<string, string> = {
   draft: "bg-muted text-muted-foreground",
@@ -21,6 +22,7 @@ const statusColors: Record<string, string> = {
 };
 
 export default function QuoteStudio() {
+  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("pipeline");
 
   return (
@@ -37,7 +39,7 @@ export default function QuoteStudio() {
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
-        {DEMO_quoteStats.map((s) => (
+        {(isDemoMode ? DEMO_quoteStats : [] as typeof DEMO_quoteStats).map((s) => (
           <Card key={s.label} className="bg-card/50 border-border/50">
             <CardContent className="p-3">
               <div className="flex items-center gap-1.5 mb-1"><s.icon className={`h-3.5 w-3.5 ${s.color}`} /><p className="text-[10px] text-muted-foreground">{s.label}</p></div>
@@ -50,14 +52,14 @@ export default function QuoteStudio() {
 
       <Tabs value={tab} onValueChange={setTab}>
         <TabsList className="bg-card/50">
-          <TabsTrigger value="pipeline">Pipeline ({DEMO_quotes.length})</TabsTrigger>
-          <TabsTrigger value="upsells">Upsell Suggestions ({DEMO_upsellSuggestions.length})</TabsTrigger>
-          <TabsTrigger value="insights">Pricing Insights ({DEMO_pricingInsights.length})</TabsTrigger>
+          <TabsTrigger value="pipeline">Pipeline ({(isDemoMode ? DEMO_quotes : [] as typeof DEMO_quotes).length})</TabsTrigger>
+          <TabsTrigger value="upsells">Upsell Suggestions ({(isDemoMode ? DEMO_upsellSuggestions : [] as typeof DEMO_upsellSuggestions).length})</TabsTrigger>
+          <TabsTrigger value="insights">Pricing Insights ({(isDemoMode ? DEMO_pricingInsights : [] as typeof DEMO_pricingInsights).length})</TabsTrigger>
           <TabsTrigger value="features">Capabilities</TabsTrigger>
         </TabsList>
 
         <TabsContent value="pipeline" className="space-y-3">
-          {DEMO_quotes.map((q) => (
+          {(isDemoMode ? DEMO_quotes : [] as typeof DEMO_quotes).map((q) => (
             <Card key={q.client} className="bg-card/50 border-border/50 hover:border-primary/20 transition-colors cursor-pointer">
               <CardContent className="p-4">
                 <div className="flex items-center justify-between mb-2">
@@ -95,7 +97,7 @@ export default function QuoteStudio() {
         </TabsContent>
 
         <TabsContent value="upsells" className="space-y-3">
-          {DEMO_upsellSuggestions.map((u, i) => (
+          {(isDemoMode ? DEMO_upsellSuggestions : [] as typeof DEMO_upsellSuggestions).map((u, i) => (
             <Card key={i} className="bg-card/50 border-border/50">
               <CardContent className="p-4 flex items-center justify-between">
                 <div className="flex-1">
@@ -115,7 +117,7 @@ export default function QuoteStudio() {
         </TabsContent>
 
         <TabsContent value="insights" className="space-y-3">
-          {DEMO_pricingInsights.map((p, i) => (
+          {(isDemoMode ? DEMO_pricingInsights : [] as typeof DEMO_pricingInsights).map((p, i) => (
             <Card key={i} className="bg-card/50 border-border/50">
               <CardContent className="p-4 flex items-center justify-between">
                 <div className="flex items-start gap-2 flex-1">

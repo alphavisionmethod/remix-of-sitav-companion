@@ -6,6 +6,7 @@ import { INVESTMENT_ADVISORS, SAMPLE_ORDERS, SAMPLE_SCENARIOS } from "@/hooks/us
 import { useInvestmentDecisions } from "@/hooks/use-investment-office";
 import { DEMO_READINESS_DIMENSIONS } from "@/data/seed/investment";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 // Advisor votes for the cinematic voting panel
 const ADVISOR_VOTES: Record<string, "approve" | "reject" | "abstain"> = {
@@ -39,6 +40,7 @@ function AdvisorVotingPanel() {
   const [allRevealed, setAllRevealed] = useState(false);
 
   const revealAll = () => {
+  const { isDemoMode } = useDataMode();
     INVESTMENT_ADVISORS.slice(0, 5).forEach((adv, i) => {
       setTimeout(() => {
         setRevealed(prev => new Set([...prev, adv.id]));
@@ -202,7 +204,7 @@ export default function DecisionTheater() {
   const navigate = useNavigate();
   const [spotlightActive, setSpotlightActive] = useState(false);
   const order = SAMPLE_ORDERS[0];
-  const overallReadiness = Math.round(DEMO_READINESS_DIMENSIONS.reduce((s, d) => s + d.score, 0) / DEMO_READINESS_DIMENSIONS.length);
+  const overallReadiness = Math.round((isDemoMode ? DEMO_READINESS_DIMENSIONS : [] as typeof DEMO_READINESS_DIMENSIONS).reduce((s, d) => s + d.score, 0) / (isDemoMode ? DEMO_READINESS_DIMENSIONS : [] as typeof DEMO_READINESS_DIMENSIONS).length);
   const readinessLabel = overallReadiness >= 80 ? "Ready" : overallReadiness >= 65 ? "Needs Review" : overallReadiness >= 50 ? "Simulate First" : "Wait";
 
   return (
@@ -273,7 +275,7 @@ export default function DecisionTheater() {
           </div>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-          {DEMO_READINESS_DIMENSIONS.map(d => (
+          {(isDemoMode ? DEMO_READINESS_DIMENSIONS : [] as typeof DEMO_READINESS_DIMENSIONS).map(d => (
             <div key={d.label} className="rounded-xl border border-border bg-secondary/20 p-3 space-y-2">
               <p className="text-[10px] font-medium text-muted-foreground">{d.label}</p>
               <div className="h-1.5 rounded-full bg-secondary overflow-hidden">

@@ -11,6 +11,7 @@ import {
   MessageSquare, User, MapPin, RefreshCw, Sparkles,
   ChevronRight, UserCheck, XCircle, Send, Bell
 } from "lucide-react";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 type ConfirmationStatus = "confirmed" | "pending" | "unconfirmed" | "cancelled" | "no-show";
 
@@ -56,10 +57,11 @@ const riskConfig: Record<string, string> = {
 };
 
 const KPIStrip = () => {
-  const upcoming = DEMO_APPOINTMENTS.filter(a => ["Today", "Tomorrow", "Wed"].includes(a.date) && a.status !== "no-show" && a.status !== "cancelled").length;
-  const needsConfirm = DEMO_APPOINTMENTS.filter(a => a.status === "pending" || a.status === "unconfirmed").length;
-  const highRisk = DEMO_APPOINTMENTS.filter(a => a.noShowRisk === "high" && a.status !== "no-show" && a.status !== "cancelled").length;
-  const noShows = DEMO_APPOINTMENTS.filter(a => a.status === "no-show").length;
+  const { isDemoMode } = useDataMode();
+  const upcoming = (isDemoMode ? DEMO_APPOINTMENTS : [] as typeof DEMO_APPOINTMENTS).filter(a => ["Today", "Tomorrow", "Wed"].includes(a.date) && a.status !== "no-show" && a.status !== "cancelled").length;
+  const needsConfirm = (isDemoMode ? DEMO_APPOINTMENTS : [] as typeof DEMO_APPOINTMENTS).filter(a => a.status === "pending" || a.status === "unconfirmed").length;
+  const highRisk = (isDemoMode ? DEMO_APPOINTMENTS : [] as typeof DEMO_APPOINTMENTS).filter(a => a.noShowRisk === "high" && a.status !== "no-show" && a.status !== "cancelled").length;
+  const noShows = (isDemoMode ? DEMO_APPOINTMENTS : [] as typeof DEMO_APPOINTMENTS).filter(a => a.status === "no-show").length;
 
   const kpis = [
     { label: "Upcoming", value: upcoming, icon: <CalendarDays className="h-4 w-4" />, accent: "text-primary" },
@@ -148,10 +150,10 @@ const AppointmentsScheduling = () => {
   const [activeTab, setActiveTab] = useState("upcoming");
 
   const filterApts = (tab: string) => {
-    if (tab === "upcoming") return DEMO_APPOINTMENTS.filter(a => ["Today", "Tomorrow", "Wed"].includes(a.date) && a.status !== "no-show" && a.status !== "cancelled");
-    if (tab === "needs-confirm") return DEMO_APPOINTMENTS.filter(a => a.status === "pending" || a.status === "unconfirmed");
-    if (tab === "no-show") return DEMO_APPOINTMENTS.filter(a => a.status === "no-show");
-    if (tab === "follow-up") return DEMO_APPOINTMENTS.filter(a => a.isFollowUp || a.status === "no-show");
+    if (tab === "upcoming") return (isDemoMode ? DEMO_APPOINTMENTS : [] as typeof DEMO_APPOINTMENTS).filter(a => ["Today", "Tomorrow", "Wed"].includes(a.date) && a.status !== "no-show" && a.status !== "cancelled");
+    if (tab === "needs-confirm") return (isDemoMode ? DEMO_APPOINTMENTS : [] as typeof DEMO_APPOINTMENTS).filter(a => a.status === "pending" || a.status === "unconfirmed");
+    if (tab === "no-show") return (isDemoMode ? DEMO_APPOINTMENTS : [] as typeof DEMO_APPOINTMENTS).filter(a => a.status === "no-show");
+    if (tab === "follow-up") return (isDemoMode ? DEMO_APPOINTMENTS : [] as typeof DEMO_APPOINTMENTS).filter(a => a.isFollowUp || a.status === "no-show");
     return DEMO_APPOINTMENTS;
   };
 
@@ -224,7 +226,7 @@ const AppointmentsScheduling = () => {
               <CardTitle className="text-sm">Today's Schedule</CardTitle>
             </CardHeader>
             <CardContent className="space-y-2">
-              {DEMO_APPOINTMENTS.filter(a => a.date === "Today").map(a => (
+              {(isDemoMode ? DEMO_APPOINTMENTS : [] as typeof DEMO_APPOINTMENTS).filter(a => a.date === "Today").map(a => (
                 <div key={a.id} className="flex items-center justify-between text-xs py-1.5 border-b border-border/30 last:border-0">
                   <div>
                     <p className="font-medium text-foreground">{a.time}</p>

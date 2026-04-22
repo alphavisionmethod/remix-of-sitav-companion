@@ -18,6 +18,7 @@ import type { RealityClassification } from "@/data/persistence/reality-classific
 import { SCOPE_LEVELS, EVIDENCE_SIGNALS, PROGRESSION_REQUIREMENTS, type ScopeLevel, type LaunchImpact } from "@/data/persistence/reality-classification-persistence";
 import { DEMO_CONTRACT_STATUSES } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const CLASSIFICATION_CONFIG = {
   presentational: { label: "Presentational", color: "bg-muted text-muted-foreground", icon: Eye, description: "UI shell — no backing logic or data truth" },
@@ -76,7 +77,8 @@ const EMPTY: FormData = {
 function FormDialog({ trigger, initial, onSave }: { trigger: React.ReactNode; initial?: FormData; onSave: (d: any) => void }) {
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState<FormData>(initial ?? EMPTY);
-  const handleOpen = (v: boolean) => { if (v) setForm(initial ?? EMPTY); setOpen(v); };
+  const handleOpen = (v: boolean) => {
+  const { isDemoMode } = useDataMode(); if (v) setForm(initial ?? EMPTY); setOpen(v); };
 
   const toggleEvidence = (sig: string) => {
     setForm(f => ({
@@ -180,7 +182,7 @@ function FormDialog({ trigger, initial, onSave }: { trigger: React.ReactNode; in
               <Label>Contract Status</Label>
               <Select value={form.contract_status} onValueChange={v => setForm(f => ({ ...f, contract_status: v as never }))}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
-                <SelectContent>{DEMO_CONTRACT_STATUSES.map(s => <SelectItem key={s} value={s} className="capitalize">{s}</SelectItem>)}</SelectContent>
+                <SelectContent>{(isDemoMode ? DEMO_CONTRACT_STATUSES : [] as typeof DEMO_CONTRACT_STATUSES).map(s => <SelectItem key={s} value={s} className="capitalize">{s}</SelectItem>)}</SelectContent>
               </Select>
             </div>
             <div><Label>Backend Target</Label><Input value={form.backend_target} onChange={e => setForm(f => ({ ...f, backend_target: e.target.value }))} placeholder="supabase.customers + RLS" /></div>

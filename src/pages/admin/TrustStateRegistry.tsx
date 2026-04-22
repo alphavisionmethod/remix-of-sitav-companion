@@ -7,6 +7,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { Shield, CheckCircle, AlertTriangle, XCircle, Eye, RefreshCw, Link2, Globe, Layers, Search } from "lucide-react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.05 } } };
@@ -59,6 +60,7 @@ const DEMO_DEGRADED = [
 ];
 
 const statusIcon = (s: TrustStatus) => {
+  const { isDemoMode } = useDataMode();
   switch (s) {
     case "verified": return <CheckCircle className="h-3.5 w-3.5 text-emerald-500" />;
     case "degraded": return <AlertTriangle className="h-3.5 w-3.5 text-amber-500" />;
@@ -79,8 +81,8 @@ const statusBadge = (s: TrustStatus) => {
 
 const TrustStateRegistry = () => {
   const [tab, setTab] = useState("domains");
-  const overallScore = Math.round(DEMO_DOMAINS.reduce((sum, d) => sum + d.proofCoverage, 0) / DEMO_DOMAINS.length);
-  const verifiedCount = DEMO_DOMAINS.filter(d => d.status === "verified").length;
+  const overallScore = Math.round((isDemoMode ? DEMO_DOMAINS : [] as typeof DEMO_DOMAINS).reduce((sum, d) => sum + d.proofCoverage, 0) / (isDemoMode ? DEMO_DOMAINS : [] as typeof DEMO_DOMAINS).length);
+  const verifiedCount = (isDemoMode ? DEMO_DOMAINS : [] as typeof DEMO_DOMAINS).filter(d => d.status === "verified").length;
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
@@ -98,9 +100,9 @@ const TrustStateRegistry = () => {
       <motion.div variants={stagger} initial="hidden" animate="show" className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {[
           { label: "Overall Trust Score", value: `${overallScore}%`, color: overallScore > 85 ? "text-emerald-500" : "text-amber-500" },
-          { label: "Domains Verified", value: `${verifiedCount}/${DEMO_DOMAINS.length}`, color: "text-foreground" },
-          { label: "Proof Links Active", value: String(DEMO_PROOF_NODES.filter(n => n.status === "verified").length), color: "text-emerald-500" },
-          { label: "Degraded Surfaces", value: String(DEMO_DEGRADED.length), color: DEMO_DEGRADED.length > 0 ? "text-amber-500" : "text-emerald-500" },
+          { label: "Domains Verified", value: `${verifiedCount}/${(isDemoMode ? DEMO_DOMAINS : [] as typeof DEMO_DOMAINS).length}`, color: "text-foreground" },
+          { label: "Proof Links Active", value: String((isDemoMode ? DEMO_PROOF_NODES : [] as typeof DEMO_PROOF_NODES).filter(n => n.status === "verified").length), color: "text-emerald-500" },
+          { label: "Degraded Surfaces", value: String((isDemoMode ? DEMO_DEGRADED : [] as typeof DEMO_DEGRADED).length), color: (isDemoMode ? DEMO_DEGRADED : [] as typeof DEMO_DEGRADED).length > 0 ? "text-amber-500" : "text-emerald-500" },
         ].map(m => (
           <motion.div key={m.label} variants={fadeUp}>
             <Card className="hover:-translate-y-0.5 transition-transform">
@@ -123,7 +125,7 @@ const TrustStateRegistry = () => {
 
         {/* Domains */}
         <TabsContent value="domains" className="mt-4 space-y-3">
-          {DEMO_DOMAINS.map(d => (
+          {(isDemoMode ? DEMO_DOMAINS : [] as typeof DEMO_DOMAINS).map(d => (
             <Card key={d.domain} className="hover:bg-muted/20 transition-colors">
               <CardContent className="p-4">
                 <div className="flex items-center justify-between mb-2">
@@ -166,7 +168,7 @@ const TrustStateRegistry = () => {
           <Card>
             <CardHeader className="pb-3"><CardTitle className="text-sm font-semibold flex items-center gap-2"><Link2 className="h-4 w-4 text-primary" /> Approval/Receipt Link Graph</CardTitle></CardHeader>
             <CardContent className="space-y-2">
-              {DEMO_PROOF_NODES.map(node => (
+              {(isDemoMode ? DEMO_PROOF_NODES : [] as typeof DEMO_PROOF_NODES).map(node => (
                 <div key={node.id} className="p-3 rounded-lg border hover:bg-muted/20 transition-colors">
                   <div className="flex items-center justify-between mb-1">
                     <div className="flex items-center gap-2">
@@ -189,10 +191,10 @@ const TrustStateRegistry = () => {
 
         {/* Degraded State Map */}
         <TabsContent value="degraded" className="mt-4 space-y-3">
-          {DEMO_DEGRADED.length === 0 ? (
+          {(isDemoMode ? DEMO_DEGRADED : [] as typeof DEMO_DEGRADED).length === 0 ? (
             <Card><CardContent className="p-8 text-center text-muted-foreground text-sm">No degraded surfaces detected. All systems operating at full truth fidelity.</CardContent></Card>
           ) : (
-            DEMO_DEGRADED.map((d, i) => (
+            (isDemoMode ? DEMO_DEGRADED : [] as typeof DEMO_DEGRADED).map((d, i) => (
               <Card key={i} className="border-amber-500/20 bg-amber-500/5">
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between mb-2">
@@ -216,7 +218,7 @@ const TrustStateRegistry = () => {
           <Card>
             <CardHeader className="pb-3"><CardTitle className="text-sm font-semibold flex items-center gap-2"><Globe className="h-4 w-4 text-primary" /> Cross-Domain Trust Ribbon State</CardTitle></CardHeader>
             <CardContent className="space-y-3">
-              {DEMO_DOMAINS.map(d => (
+              {(isDemoMode ? DEMO_DOMAINS : [] as typeof DEMO_DOMAINS).map(d => (
                 <div key={d.domain} className="flex items-center justify-between p-2 rounded-lg hover:bg-muted/20 transition-colors">
                   <div className="flex items-center gap-2">
                     {statusIcon(d.status)}

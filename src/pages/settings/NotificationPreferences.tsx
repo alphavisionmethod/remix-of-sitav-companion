@@ -12,10 +12,12 @@ import { fromTable } from "@/lib/supabase-helpers";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { DEMO_CORE_CATEGORIES_NOTIFICATION_PREFERENCES as DEMO_CATEGORIES } from "@/data/seed/core-pages";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 
 
 export default function NotificationPreferences() {
+  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
   const queryClient = useQueryClient();
   const { isSupported, isRegistered, permissionState, requestPermission, unregister, isLoading: pushLoading } = usePushNotifications();
@@ -105,7 +107,7 @@ export default function NotificationPreferences() {
           <CardDescription>Choose which categories send push vs in-app only</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          {DEMO_CATEGORIES.map((cat) => {
+          {(isDemoMode ? DEMO_CATEGORIES : [] as typeof DEMO_CATEGORIES).map((cat) => {
             const pref = getPref(cat.key);
             return (
               <div key={cat.key} className="flex items-center justify-between p-3 rounded-lg bg-muted/30 border border-border">

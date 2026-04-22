@@ -6,10 +6,12 @@ import { Badge } from "@/components/ui/badge";
 import { useGeneratedTruthImpacts } from "@/hooks/use-fip-data";
 import { DEMO_GENERATED_ARTIFACTS } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 
 
 const FIPGeneratedTruthBoard = () => {
+  const { isDemoMode } = useDataMode();
   const { data: impacts = [], isLoading } = useGeneratedTruthImpacts();
 
   const verified = impacts.filter((i: Record<string, any>) => i.verified).length;
@@ -27,14 +29,14 @@ const FIPGeneratedTruthBoard = () => {
         <Card><CardContent className="pt-4"><p className="text-2xl font-bold">{impacts.length}</p><p className="text-xs text-muted-foreground">Total Impacts</p></CardContent></Card>
         <Card><CardContent className="pt-4"><p className="text-2xl font-bold text-green-500">{verified}</p><p className="text-xs text-muted-foreground">Verified</p></CardContent></Card>
         <Card><CardContent className="pt-4"><p className="text-2xl font-bold text-destructive">{missing}</p><p className="text-xs text-muted-foreground">Missing Updates</p></CardContent></Card>
-        <Card><CardContent className="pt-4"><p className="text-2xl font-bold">{DEMO_GENERATED_ARTIFACTS.length}</p><p className="text-xs text-muted-foreground">Artifact Types</p></CardContent></Card>
+        <Card><CardContent className="pt-4"><p className="text-2xl font-bold">{(isDemoMode ? DEMO_GENERATED_ARTIFACTS : [] as typeof DEMO_GENERATED_ARTIFACTS).length}</p><p className="text-xs text-muted-foreground">Artifact Types</p></CardContent></Card>
       </div>
 
       <Card>
         <CardHeader><CardTitle className="text-base">Generated Artifact Matrix</CardTitle></CardHeader>
         <CardContent>
           <div className="grid grid-cols-3 gap-3">
-            {DEMO_GENERATED_ARTIFACTS.map(artifact => {
+            {(isDemoMode ? DEMO_GENERATED_ARTIFACTS : [] as typeof DEMO_GENERATED_ARTIFACTS).map(artifact => {
               const relatedImpacts = impacts.filter((i: Record<string, any>) => i.artifact_path === artifact);
               const allVerified = relatedImpacts.length > 0 && relatedImpacts.every((i: Record<string, any>) => i.verified);
               const hasMissing = relatedImpacts.some((i: Record<string, any>) => i.current_state === 'missing');

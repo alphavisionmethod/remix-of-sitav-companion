@@ -21,6 +21,7 @@ import {
   type SimulationResult,
   type MockCustomer,
 } from "@/lib/domain-engines/playbook-simulator";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 // ── Icon map ─────────────────────────────────────────────────────
 
@@ -49,7 +50,8 @@ const CustomerChip = ({ customer, filtered }: { customer: MockCustomer; filtered
 
 // ── Step outcome card ────────────────────────────────────────────
 
-const StepOutcomeCard = ({ outcome, isActive, stepNumber }: { outcome: StepOutcome; isActive: boolean; stepNumber: number }) => {
+const StepOutcomeCard = ({
+  const { isDemoMode } = useDataMode(); outcome, isActive, stepNumber }: { outcome: StepOutcome; isActive: boolean; stepNumber: number }) => {
   const Icon = outcome.action
     ? ACTION_ICONS[outcome.action] || Zap
     : STEP_ICONS[outcome.stepType] || Zap;
@@ -283,14 +285,14 @@ interface PlaybookSimulatorProps {
 }
 
 const PlaybookSimulator = ({ draft, onBack, onActivate }: PlaybookSimulatorProps) => {
-  const [selectedCustomerIds, setSelectedCustomerIds] = useState<string[]>(MOCK_CUSTOMERS.map(c => c.id));
+  const [selectedCustomerIds, setSelectedCustomerIds] = useState<string[]>((isDemoMode ? MOCK_CUSTOMERS : [] as typeof MOCK_CUSTOMERS).map(c => c.id));
   const [currentStep, setCurrentStep] = useState(-1); // -1 = not started
   const [autoPlay, setAutoPlay] = useState(false);
   const [result, setResult] = useState<SimulationResult | null>(null);
   const [showSummary, setShowSummary] = useState(false);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  const selectedCustomers = MOCK_CUSTOMERS.filter(c => selectedCustomerIds.includes(c.id));
+  const selectedCustomers = (isDemoMode ? MOCK_CUSTOMERS : [] as typeof MOCK_CUSTOMERS).filter(c => selectedCustomerIds.includes(c.id));
 
   // Run simulation
   useEffect(() => {

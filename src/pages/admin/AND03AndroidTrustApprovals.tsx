@@ -28,7 +28,7 @@ const AND03AndroidTrustApprovals = () => (
 
       <TabsContent value="classes">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {DEMO_TRUST_CLASSES.map((t) => (
+          {(isDemoMode ? DEMO_TRUST_CLASSES : [] as typeof DEMO_TRUST_CLASSES).map((t) => (
             <Card key={t.cls}>
               <CardHeader className="pb-2">
                 <div className="flex items-center justify-between">
@@ -62,7 +62,7 @@ const AND03AndroidTrustApprovals = () => (
             <table className="w-full text-xs">
               <thead><tr className="border-b"><th className="text-left p-2">Risk</th><th className="text-left p-2">Action</th><th className="p-2">Biometric</th><th className="p-2">Escalates</th></tr></thead>
               <tbody>
-                {DEMO_ESCALATION_MATRIX.map((r) => (
+                {(isDemoMode ? DEMO_ESCALATION_MATRIX : [] as typeof DEMO_ESCALATION_MATRIX).map((r) => (
                   <tr key={r.risk} className="border-b hover:bg-muted/30">
                     <td className="p-2"><Badge variant={r.risk === "Critical" ? "destructive" : r.risk === "High" ? "default" : "secondary"}>{r.risk}</Badge></td>
                     <td className="p-2">{r.action}</td>
@@ -98,7 +98,7 @@ const AND03AndroidTrustApprovals = () => (
             <table className="w-full text-xs">
               <thead><tr className="border-b"><th className="text-left p-2">Event</th><th className="text-left p-2">Method</th><th className="p-2">Frequency</th></tr></thead>
               <tbody>
-                {DEMO_VERIFICATION_EVENTS.map((v) => (
+                {(isDemoMode ? DEMO_VERIFICATION_EVENTS : [] as typeof DEMO_VERIFICATION_EVENTS).map((v) => (
                   <tr key={v.event} className="border-b hover:bg-muted/30">
                     <td className="p-2 font-medium">{v.event}</td>
                     <td className="p-2"><Badge variant="outline">{v.method}</Badge></td>

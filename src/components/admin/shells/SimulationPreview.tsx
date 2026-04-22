@@ -9,6 +9,7 @@ import {
   CheckCircle, Sparkles, BarChart3, ChevronDown, RefreshCw,
   DollarSign, Activity, Shield, Users, Zap
 } from "lucide-react";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 interface SimulationMetric {
   label: string;
@@ -83,6 +84,7 @@ export function SimulationPreview({ compact = false }: SimulationPreviewProps) {
   const [running, setRunning] = useState(false);
 
   const handleRun = (id: string) => {
+  const { isDemoMode } = useDataMode();
     setRunning(true);
     setActiveScenario(id);
     setTimeout(() => setRunning(false), 1500);
@@ -97,7 +99,7 @@ export function SimulationPreview({ compact = false }: SimulationPreviewProps) {
       </div>
 
       <div className="space-y-2">
-        {DEMO_SCENARIOS.map((scenario) => {
+        {(isDemoMode ? DEMO_SCENARIOS : [] as typeof DEMO_SCENARIOS).map((scenario) => {
           const isActive = activeScenario === scenario.id;
           return (
             <div key={scenario.id} className={cn(

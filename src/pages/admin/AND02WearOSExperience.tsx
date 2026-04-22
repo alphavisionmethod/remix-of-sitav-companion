@@ -28,7 +28,7 @@ const AND02WearOSExperience = () => (
 
       <TabsContent value="tiles">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {DEMO_TILES.map((tile) => (
+          {(isDemoMode ? DEMO_TILES : [] as typeof DEMO_TILES).map((tile) => (
             <Card key={tile.id} className="hover:shadow-md transition-shadow">
               <CardHeader className="pb-2">
                 <div className="flex items-center justify-between">
@@ -63,7 +63,7 @@ const AND02WearOSExperience = () => (
                 <th className="p-2">Feedback</th>
               </tr></thead>
               <tbody>
-                {DEMO_MICRO_ACTIONS.map((a) => (
+                {(isDemoMode ? DEMO_MICRO_ACTIONS : [] as typeof DEMO_MICRO_ACTIONS).map((a) => (
                   <tr key={a.action} className="border-b hover:bg-muted/30">
                     <td className="p-2 font-medium">{a.action}</td>
                     <td className="p-2 text-center"><Badge variant={a.riskCeiling === "medium" ? "default" : "secondary"}>{a.riskCeiling}</Badge></td>
@@ -84,7 +84,7 @@ const AND02WearOSExperience = () => (
           <CardHeader><CardTitle className="text-sm">Complication Registry</CardTitle></CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {DEMO_COMPLICATIONS.map((c) => (
+              {(isDemoMode ? DEMO_COMPLICATIONS : [] as typeof DEMO_COMPLICATIONS).map((c) => (
                 <div key={c.name} className="p-4 rounded-lg border space-y-2">
                   <div className="text-sm font-medium">{c.name}</div>
                   <div className="flex gap-2 text-xs">

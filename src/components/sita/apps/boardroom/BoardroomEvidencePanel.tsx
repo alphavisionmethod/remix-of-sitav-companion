@@ -10,6 +10,7 @@ import {
   X, CheckCircle, AlertTriangle, HelpCircle, Brain,
   Clock, Link2, ShieldCheck, ShieldAlert, Eye, FileText,
 } from "lucide-react";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 interface Props {
   open: boolean;
@@ -89,7 +90,7 @@ export function BoardroomEvidencePanel({ open, onClose }: Props) {
 
   const filtered = activeFilter === "all"
     ? DEMO_EVIDENCE
-    : DEMO_EVIDENCE.filter(e => e.sourceType === activeFilter);
+    : (isDemoMode ? DEMO_EVIDENCE : [] as typeof DEMO_EVIDENCE).filter(e => e.sourceType === activeFilter);
 
   return (
     <AnimatePresence>
@@ -135,7 +136,7 @@ export function BoardroomEvidencePanel({ open, onClose }: Props) {
               <div className="flex items-center gap-2 mb-2">
                 {(["verified", "inferred", "assumption", "stale"] as EvidenceType[]).map(t => {
                   const cfg = typeConfig[t];
-                  const count = DEMO_EVIDENCE.filter(e => e.sourceType === t).length;
+                  const count = (isDemoMode ? DEMO_EVIDENCE : [] as typeof DEMO_EVIDENCE).filter(e => e.sourceType === t).length;
                   return (
                     <div key={t} className={cn("flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-semibold", cfg.bg, cfg.color)}>
                       {count} {cfg.label}

@@ -10,6 +10,7 @@ import {
   Grid3X3, Maximize2, X, ChevronLeft, ChevronRight, SlidersHorizontal,
   Info, Image, Sun, Contrast, Droplets, Play
 } from "lucide-react";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 interface Photo {
   id: string;
@@ -50,7 +51,7 @@ export function PhotoViewerWindow() {
       {/* Toolbar */}
       <div className="flex items-center gap-2 px-3 py-1.5 border-b border-[hsl(0_0%_12%)]">
         <Grid3X3 className="h-3.5 w-3.5 text-[hsl(0_0%_40%)]" />
-        <span className="text-[11px] text-[hsl(0_0%_50%)]">{MOCK_PHOTOS.length} photos</span>
+        <span className="text-[11px] text-[hsl(0_0%_50%)]">{(isDemoMode ? MOCK_PHOTOS : [] as typeof MOCK_PHOTOS).length} photos</span>
         <div className="flex-1" />
         <button onClick={() => setShowFilters(!showFilters)} className={cn("p-1 rounded transition-colors", showFilters ? "text-[hsl(265_55%_65%)]" : "text-[hsl(0_0%_40%)] hover:text-[hsl(0_0%_60%)]")}>
           <SlidersHorizontal className="h-3.5 w-3.5" />
@@ -62,7 +63,7 @@ export function PhotoViewerWindow() {
         {/* Gallery Grid */}
         {selectedIdx === null ? (
           <div className="grid grid-cols-4 gap-1 p-1 overflow-y-auto h-full scrollbar-thin">
-            {MOCK_PHOTOS.map((p, i) => (
+            {(isDemoMode ? MOCK_PHOTOS : [] as typeof MOCK_PHOTOS).map((p, i) => (
               <motion.button
                 key={p.id}
                 initial={{ opacity: 0, scale: 0.9 }}
@@ -83,13 +84,13 @@ export function PhotoViewerWindow() {
             <div className="flex-1 relative flex items-center justify-center p-4">
               {/* Navigation */}
               <button
-                onClick={() => setSelectedIdx(i => i !== null ? (i > 0 ? i - 1 : MOCK_PHOTOS.length - 1) : null)}
+                onClick={() => setSelectedIdx(i => i !== null ? (i > 0 ? i - 1 : (isDemoMode ? MOCK_PHOTOS : [] as typeof MOCK_PHOTOS).length - 1) : null)}
                 className="absolute left-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-[hsl(0_0%_0%/0.5)] hover:bg-[hsl(0_0%_0%/0.7)] transition-colors z-10"
               >
                 <ChevronLeft className="h-4 w-4" />
               </button>
               <button
-                onClick={() => setSelectedIdx(i => i !== null ? (i + 1) % MOCK_PHOTOS.length : null)}
+                onClick={() => setSelectedIdx(i => i !== null ? (i + 1) % (isDemoMode ? MOCK_PHOTOS : [] as typeof MOCK_PHOTOS).length : null)}
                 className="absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-[hsl(0_0%_0%/0.5)] hover:bg-[hsl(0_0%_0%/0.7)] transition-colors z-10"
               >
                 <ChevronRight className="h-4 w-4" />
@@ -122,7 +123,7 @@ export function PhotoViewerWindow() {
 
               {/* Counter */}
               <div className="absolute bottom-2 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-[hsl(0_0%_0%/0.5)] text-[10px] tabular-nums">
-                {selectedIdx + 1} / {MOCK_PHOTOS.length}
+                {selectedIdx + 1} / {(isDemoMode ? MOCK_PHOTOS : [] as typeof MOCK_PHOTOS).length}
               </div>
             </div>
 

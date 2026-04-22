@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { exportAuditLog } from "@/lib/export-engine";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 // ── Types ───────────────────────────────────────────────────────
 
@@ -208,7 +209,7 @@ export function AgentAuditLog() {
   const [actionFilter, setActionFilter] = useState<string>("all");
   const [performerFilter, setPerformerFilter] = useState<string>("all");
 
-  const performers = useMemo(() => [...new Set(MOCK_AUDIT.map(a => a.performedBy))], []);
+  const performers = useMemo(() => [...new Set((isDemoMode ? MOCK_AUDIT : [] as typeof MOCK_AUDIT).map(a => a.performedBy))], []);
 
   const filtered = useMemo(() => {
     let result = MOCK_AUDIT;
@@ -231,13 +232,14 @@ export function AgentAuditLog() {
   }, [actionFilter, performerFilter, searchQuery]);
 
   const stats = useMemo(() => ({
-    total: MOCK_AUDIT.length,
-    manual: MOCK_AUDIT.filter(a => !a.performedBy.includes("system")).length,
-    automated: MOCK_AUDIT.filter(a => a.performedBy.includes("system")).length,
-    bulkOps: MOCK_AUDIT.filter(a => a.bulk).length,
+    total: (isDemoMode ? MOCK_AUDIT : [] as typeof MOCK_AUDIT).length,
+    manual: (isDemoMode ? MOCK_AUDIT : [] as typeof MOCK_AUDIT).filter(a => !a.performedBy.includes("system")).length,
+    automated: (isDemoMode ? MOCK_AUDIT : [] as typeof MOCK_AUDIT).filter(a => a.performedBy.includes("system")).length,
+    bulkOps: (isDemoMode ? MOCK_AUDIT : [] as typeof MOCK_AUDIT).filter(a => a.bulk).length,
   }), []);
 
   const handleExport = () => {
+  const { isDemoMode } = useDataMode();
     exportAuditLog(filtered);
     toast.success("Audit log exported", { description: "CSV file downloaded with full audit trail" });
   };

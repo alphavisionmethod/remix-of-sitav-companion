@@ -7,8 +7,10 @@ import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { useComputeSnapshots } from "@/hooks/useIntelligencePersistence";
 import { DEMO_DEFAULT_CATEGORIES } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const PortfolioAllocationDashboard = () => {
+  const { isDemoMode } = useDataMode();
   const { isAdmin, loading: authLoading } = useRequireAdmin();
   const { snapshots, latest, loading: dataLoading } = useComputeSnapshots({ limit: 30 });
 
@@ -18,7 +20,7 @@ const PortfolioAllocationDashboard = () => {
   const modelMix = (latest?.model_mix as Record<string, number>) || {};
   const totalSpent = latest?.used_cents ?? 0;
 
-  const cats = DEMO_DEFAULT_CATEGORIES.map(c => {
+  const cats = (isDemoMode ? DEMO_DEFAULT_CATEGORIES : [] as typeof DEMO_DEFAULT_CATEGORIES).map(c => {
     const actual = modelMix[c.cat] ?? c.target;
     const spent = Math.round(totalSpent * (actual / 100));
     return { ...c, actual, spent };

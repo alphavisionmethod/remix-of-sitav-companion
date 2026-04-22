@@ -115,7 +115,7 @@ function ActiveDialer({ contact, onEnd, onSkip }: { contact: Contact; onEnd: () 
     setTimeout(() => setState("connected"), 3000);
     return () => clearInterval(timer);
   });
-  const script = isDemoMode ? (MOCK_SCRIPTS.find(s => s.stage === contact.stage) || MOCK_SCRIPTS[0]) : null;
+  const script = isDemoMode ? ((isDemoMode ? MOCK_SCRIPTS : [] as typeof MOCK_SCRIPTS).find(s => s.stage === contact.stage) || MOCK_SCRIPTS[0]) : null;
 
   const handleEndCall = () => {
     setState("wrapping-up");
@@ -490,7 +490,7 @@ const RevenueCallingPage = () => {
               <p className="text-sm font-medium text-foreground">No Scripts Configured</p>
               <p className="text-xs text-muted-foreground mt-1">Call scripts activate when configured. Switch to demo mode to preview.</p>
             </SitaCard>
-          ) : MOCK_SCRIPTS.map(script => (
+          ) : (isDemoMode ? MOCK_SCRIPTS : [] as typeof MOCK_SCRIPTS).map(script => (
             <SitaCard key={script.id} className="p-4">
               <div className="space-y-3">
                 <div className="flex items-center gap-2">

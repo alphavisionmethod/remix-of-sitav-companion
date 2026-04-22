@@ -83,6 +83,7 @@ const STEP_TYPES: { type: BuilderStep["type"]; label: string; icon: typeof Zap; 
 
 import { OPERATORS, DELAY_OPTIONS } from "@/lib/constants/ui-config";
 import { DEMO_BIZ_CATEGORIES as DEMO_CATEGORIES, DEMO_CONDITION_FIELDS, DEMO_TRIGGER_EVENTS } from "@/data/seed/business";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 // ── Helpers ──────────────────────────────────────────────────────
 
@@ -252,7 +253,7 @@ const StepCard = ({
                             onUpdate({ ...step, conditions: updated });
                           }}
                             className="flex-1 rounded-lg border border-border bg-secondary/50 px-2 py-1.5 text-[11px] text-foreground focus:outline-none">
-                            {DEMO_CONDITION_FIELDS.map(f => <option key={f.value} value={f.value}>{f.label}</option>)}
+                            {(isDemoMode ? DEMO_CONDITION_FIELDS : [] as typeof DEMO_CONDITION_FIELDS).map(f => <option key={f.value} value={f.value}>{f.label}</option>)}
                           </select>
                           <select value={cond.operator} onChange={e => {
                             const updated = [...step.conditions];
@@ -383,7 +384,7 @@ const TriggerPanel = ({ trigger, onChange }: { trigger: BuilderTrigger; onChange
       {trigger.type === "event" && (
         <select value={trigger.event || ""} onChange={e => onChange({ ...trigger, event: e.target.value })}
           className="w-full rounded-lg border border-border bg-secondary/50 px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-primary/50">
-          {DEMO_TRIGGER_EVENTS.map(te => <option key={te.value} value={te.value}>{te.label}</option>)}
+          {(isDemoMode ? DEMO_TRIGGER_EVENTS : [] as typeof DEMO_TRIGGER_EVENTS).map(te => <option key={te.value} value={te.value}>{te.label}</option>)}
         </select>
       )}
 
@@ -402,7 +403,7 @@ const TriggerPanel = ({ trigger, onChange }: { trigger: BuilderTrigger; onChange
         <div className="flex items-center gap-2">
           <select value={trigger.threshold?.field || "customer.ltv"} onChange={e => onChange({ ...trigger, threshold: { ...trigger.threshold!, field: e.target.value, operator: trigger.threshold?.operator || "gt", value: trigger.threshold?.value || "" } })}
             className="flex-1 rounded-lg border border-border bg-secondary/50 px-2 py-1.5 text-[11px] text-foreground focus:outline-none">
-            {DEMO_CONDITION_FIELDS.map(f => <option key={f.value} value={f.value}>{f.label}</option>)}
+            {(isDemoMode ? DEMO_CONDITION_FIELDS : [] as typeof DEMO_CONDITION_FIELDS).map(f => <option key={f.value} value={f.value}>{f.label}</option>)}
           </select>
           <select value={trigger.threshold?.operator || "gt"} onChange={e => onChange({ ...trigger, threshold: { ...trigger.threshold!, operator: e.target.value } })}
             className="w-16 rounded-lg border border-border bg-secondary/50 px-2 py-1.5 text-[11px] text-foreground text-center focus:outline-none">
@@ -424,9 +425,10 @@ const TriggerPanel = ({ trigger, onChange }: { trigger: BuilderTrigger; onChange
 
 // ── Preview Panel ────────────────────────────────────────────────
 
-const PreviewPanel = ({ draft }: { draft: PlaybookDraft }) => {
+const PreviewPanel = ({
+  const { isDemoMode } = useDataMode(); draft }: { draft: PlaybookDraft }) => {
   const triggerLabel = draft.trigger.type === "event"
-    ? DEMO_TRIGGER_EVENTS.find(e => e.value === draft.trigger.event)?.label || draft.trigger.event
+    ? (isDemoMode ? DEMO_TRIGGER_EVENTS : [] as typeof DEMO_TRIGGER_EVENTS).find(e => e.value === draft.trigger.event)?.label || draft.trigger.event
     : draft.trigger.type === "schedule" ? draft.trigger.schedule
     : draft.trigger.type === "threshold" ? `${draft.trigger.threshold?.field} ${draft.trigger.threshold?.operator} ${draft.trigger.threshold?.value}`
     : "Manual trigger";
@@ -577,7 +579,7 @@ const [draft, setDraft] = useState<PlaybookDraft>(defaultDraft);
               <div>
                 <label className="text-[10px] font-semibold text-muted-foreground uppercase">Category</label>
                 <div className="mt-1.5 flex gap-2">
-                  {DEMO_CATEGORIES.map(c => (
+                  {(isDemoMode ? DEMO_CATEGORIES : [] as typeof DEMO_CATEGORIES).map(c => (
                     <button key={c.value} onClick={() => setDraft(d => ({ ...d, category: c.value }))}
                       className={`px-3 py-1.5 rounded-lg text-[11px] font-medium capitalize transition-all ${
                         draft.category === c.value ? `${c.color} ring-1 ring-current/20` : "bg-secondary text-muted-foreground hover:text-foreground"

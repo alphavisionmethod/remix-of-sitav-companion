@@ -6,8 +6,10 @@ import { PORTFOLIO } from "@/hooks/useInvestmentOfficeData";
 import { useCapitalPurposeBuckets } from "@/hooks/use-investment-office";
 import { DEMO_INV_PURPOSES_CAPITAL_TWIN as DEMO_PURPOSES, DEMO_SHOCK_ZONES } from "@/data/seed/investment";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function CapitalTwin() {
+  const { isDemoMode } = useDataMode();
   const { data: liveData, isLoading } = useCapitalPurposeBuckets();
   const navigate = useNavigate();
   const [view, setView] = useState<"purpose" | "exposure" | "readiness">("purpose");
@@ -51,7 +53,7 @@ export default function CapitalTwin() {
 
       {view === "purpose" && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {DEMO_PURPOSES.map((p, i) => {
+          {(isDemoMode ? DEMO_PURPOSES : [] as typeof DEMO_PURPOSES).map((p, i) => {
             const overTarget = p.allocated > p.target;
             return (
               <motion.div key={p.id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.04 }}
@@ -87,7 +89,7 @@ export default function CapitalTwin() {
             <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">Correlated Shock Zones</p>
             <p className="text-xs text-muted-foreground">Areas where a single event could create cascading impact across your portfolio</p>
           </div>
-          {DEMO_SHOCK_ZONES.map((sz, i) => (
+          {(isDemoMode ? DEMO_SHOCK_ZONES : [] as typeof DEMO_SHOCK_ZONES).map((sz, i) => (
             <motion.div key={i} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}
               className={`rounded-2xl border p-5 space-y-3 ${
                 sz.severity === "high" ? "border-destructive/20 bg-destructive/5" :

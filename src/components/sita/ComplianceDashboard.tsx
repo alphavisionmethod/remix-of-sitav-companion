@@ -16,6 +16,7 @@ import {
   Lock, Eye, Activity, Database, Users, Server, Key,
   BarChart3, Target, Gauge, ChevronRight, Radio,
 } from "lucide-react";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 // ── Types ───────────────────────────────────────────────────────
 
@@ -141,21 +142,21 @@ export function ComplianceDashboard() {
 
   const filteredControls = useMemo(() => {
     if (frameworkFilter === "all") return DEMO_CONTROLS;
-    return DEMO_CONTROLS.filter(c => c.framework === frameworkFilter);
+    return (isDemoMode ? DEMO_CONTROLS : [] as typeof DEMO_CONTROLS).filter(c => c.framework === frameworkFilter);
   }, [frameworkFilter]);
 
   const stats = useMemo(() => {
-    const compliant = DEMO_CONTROLS.filter(c => c.status === "compliant").length;
-    const partial = DEMO_CONTROLS.filter(c => c.status === "partial").length;
-    const nonCompliant = DEMO_CONTROLS.filter(c => c.status === "non-compliant").length;
-    const score = Math.round((compliant / DEMO_CONTROLS.length) * 100);
-    return { compliant, partial, nonCompliant, total: DEMO_CONTROLS.length, score };
+    const compliant = (isDemoMode ? DEMO_CONTROLS : [] as typeof DEMO_CONTROLS).filter(c => c.status === "compliant").length;
+    const partial = (isDemoMode ? DEMO_CONTROLS : [] as typeof DEMO_CONTROLS).filter(c => c.status === "partial").length;
+    const nonCompliant = (isDemoMode ? DEMO_CONTROLS : [] as typeof DEMO_CONTROLS).filter(c => c.status === "non-compliant").length;
+    const score = Math.round((compliant / (isDemoMode ? DEMO_CONTROLS : [] as typeof DEMO_CONTROLS).length) * 100);
+    return { compliant, partial, nonCompliant, total: (isDemoMode ? DEMO_CONTROLS : [] as typeof DEMO_CONTROLS).length, score };
   }, []);
 
   const slaStats = useMemo(() => ({
-    met: DEMO_SLAS.filter(s => s.status === "met").length,
-    atRisk: DEMO_SLAS.filter(s => s.status === "at-risk").length,
-    breached: DEMO_SLAS.filter(s => s.status === "breached").length,
+    met: (isDemoMode ? DEMO_SLAS : [] as typeof DEMO_SLAS).filter(s => s.status === "met").length,
+    atRisk: (isDemoMode ? DEMO_SLAS : [] as typeof DEMO_SLAS).filter(s => s.status === "at-risk").length,
+    breached: (isDemoMode ? DEMO_SLAS : [] as typeof DEMO_SLAS).filter(s => s.status === "breached").length,
   }), []);
 
   return (
@@ -190,7 +191,7 @@ export function ComplianceDashboard() {
           { label: "Partial", value: stats.partial, color: "text-accent" },
           { label: "SLAs Met", value: slaStats.met, color: "text-trust-safe" },
           { label: "SLAs At Risk", value: slaStats.atRisk, color: "text-accent" },
-          { label: "Risks Open", value: DEMO_RISKS.filter(r => r.status === "open").length, color: "text-destructive" },
+          { label: "Risks Open", value: (isDemoMode ? DEMO_RISKS : [] as typeof DEMO_RISKS).filter(r => r.status === "open").length, color: "text-destructive" },
         ].map(m => (
           <div key={m.label} className="rounded-xl border border-border/40 bg-card/40 p-2 text-center">
             <p className={cn("font-display text-lg font-bold", m.color)}>{m.value}</p>
@@ -234,7 +235,7 @@ export function ComplianceDashboard() {
 
         {selectedView === "sla" && (
           <motion.div key="sla" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-2">
-            {DEMO_SLAS.map(sla => (
+            {(isDemoMode ? DEMO_SLAS : [] as typeof DEMO_SLAS).map(sla => (
               <div key={sla.name} className={cn(
                 "rounded-lg border p-3 flex items-center gap-3",
                 sla.status === "breached" ? "border-destructive/20 bg-destructive/3" :
@@ -270,7 +271,7 @@ export function ComplianceDashboard() {
 
         {selectedView === "risks" && (
           <motion.div key="risks" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-3">
-            {DEMO_RISKS.sort((a, b) => (b.likelihood * b.impact) - (a.likelihood * a.impact)).map(risk => (
+            {(isDemoMode ? DEMO_RISKS : [] as typeof DEMO_RISKS).sort((a, b) => (b.likelihood * b.impact) - (a.likelihood * a.impact)).map(risk => (
               <div key={risk.id} className={cn(
                 "rounded-xl border p-4",
                 risk.status === "open" ? "border-destructive/20 bg-destructive/3" : "border-border/40 bg-card/40"

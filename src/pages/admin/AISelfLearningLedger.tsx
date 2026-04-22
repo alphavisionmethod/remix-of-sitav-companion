@@ -19,9 +19,9 @@ const AISelfLearningLedger = () => {
       <div className="grid grid-cols-4 gap-3">
         {[
           { l: "Active Patterns", v: patterns.filter((p: any) => p.status === "active").length },
-          { l: "Behavior Changes", v: DEMO_BEHAVIOR_CHANGES.length },
+          { l: "Behavior Changes", v: (isDemoMode ? DEMO_BEHAVIOR_CHANGES : [] as typeof DEMO_BEHAVIOR_CHANGES).length },
           { l: "Avg Pattern Confidence", v: `${Math.round(patterns.reduce((a: number, p: any) => a + (p.confidence || 0), 0) / Math.max(patterns.length, 1))}%` },
-          { l: "Top Agent Weight", v: Math.max(...DEMO_ROUTING_WEIGHTS.map(w => w.weight)).toFixed(2) },
+          { l: "Top Agent Weight", v: Math.max(...(isDemoMode ? DEMO_ROUTING_WEIGHTS : [] as typeof DEMO_ROUTING_WEIGHTS).map(w => w.weight)).toFixed(2) },
         ].map(c => (
           <div key={c.l} className="rounded-xl border border-border/40 bg-card p-4 text-center">
             <p className="text-xl font-bold">{c.v}</p>
@@ -62,7 +62,7 @@ const AISelfLearningLedger = () => {
         </TabsContent>
 
         <TabsContent value="behavior" className="space-y-2 mt-4">
-          {DEMO_BEHAVIOR_CHANGES.map((b, i) => (
+          {(isDemoMode ? DEMO_BEHAVIOR_CHANGES : [] as typeof DEMO_BEHAVIOR_CHANGES).map((b, i) => (
             <div key={i} className="rounded-xl border border-border/40 bg-card p-4">
               <p className="text-sm font-medium mb-1">{b.change}</p>
               <div className="rounded-lg bg-muted/30 p-2 mb-2">
@@ -77,7 +77,7 @@ const AISelfLearningLedger = () => {
         </TabsContent>
 
         <TabsContent value="routing" className="space-y-2 mt-4">
-          {DEMO_ROUTING_WEIGHTS.map((w, i) => (
+          {(isDemoMode ? DEMO_ROUTING_WEIGHTS : [] as typeof DEMO_ROUTING_WEIGHTS).map((w, i) => (
             <div key={i} className="rounded-xl border border-border/40 bg-card p-4 flex items-center gap-3">
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-1">

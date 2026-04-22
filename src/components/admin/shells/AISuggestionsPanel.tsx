@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { WhyTooltip } from "./WhyTooltip";
 import { Brain, Lightbulb, Play, Eye, X, ChevronDown, ChevronUp } from "lucide-react";
 import { toast } from "sonner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 interface AISuggestion {
   id: string;
@@ -55,7 +56,7 @@ export function AISuggestionsPanel() {
   const [dismissed, setDismissed] = useState<Set<string>>(new Set());
   const [expanded, setExpanded] = useState<string | null>(null);
 
-  const visible = DEMO_SUGGESTIONS.filter(s => !dismissed.has(s.id));
+  const visible = (isDemoMode ? DEMO_SUGGESTIONS : [] as typeof DEMO_SUGGESTIONS).filter(s => !dismissed.has(s.id));
 
   return (
     <div className="space-y-3">

@@ -12,8 +12,10 @@ import type { AppDefinition } from "@/domains/apps/types";
 import { DEMO_COMPARE_PAIRS } from "@/data/seed/core-pages";
 import { toast } from "sonner";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const AppComparePage = () => {
+  const { isDemoMode } = useDataMode();
   const navigate = useNavigate();
   const { apps, installApp, pinToDock } = useAppPlatform();
   const [searchParams] = useSearchParams();
@@ -61,7 +63,7 @@ const AppComparePage = () => {
 
       {/* Quick Pairs */}
       <div className="flex gap-2 overflow-x-auto pb-1">
-        {DEMO_COMPARE_PAIRS.map(p => (
+        {(isDemoMode ? DEMO_COMPARE_PAIRS : [] as typeof DEMO_COMPARE_PAIRS).map(p => (
           <button key={p.label} onClick={() => navigate(`/app-store/compare?apps=${p.ids.join(",")}`)}
             className={cn("shrink-0 rounded-lg px-3 py-2 text-xs font-medium transition-all",
               JSON.stringify(ids) === JSON.stringify(p.ids) ? "bg-primary text-primary-foreground" : "bg-secondary text-muted-foreground hover:text-foreground")}>

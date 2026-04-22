@@ -173,12 +173,12 @@ const ReportingWorkspace = () => {
                       <ResponsiveContainer width={160} height={160}>
                         <RechartsPie>
                           <Pie data={DEMO_DOMAIN_BREAKDOWN} dataKey="value" cx="50%" cy="50%" innerRadius={45} outerRadius={70} paddingAngle={3} strokeWidth={0}>
-                            {DEMO_DOMAIN_BREAKDOWN.map((entry, i) => <Cell key={i} fill={entry.color} />)}
+                            {(isDemoMode ? DEMO_DOMAIN_BREAKDOWN : [] as typeof DEMO_DOMAIN_BREAKDOWN).map((entry, i) => <Cell key={i} fill={entry.color} />)}
                           </Pie>
                         </RechartsPie>
                       </ResponsiveContainer>
                       <div className="space-y-2">
-                        {DEMO_DOMAIN_BREAKDOWN.map(d => (
+                        {(isDemoMode ? DEMO_DOMAIN_BREAKDOWN : [] as typeof DEMO_DOMAIN_BREAKDOWN).map(d => (
                           <div key={d.name} className="flex items-center gap-2">
                             <div className="w-2.5 h-2.5 rounded-full" style={{ background: d.color }} />
                             <span className="text-xs text-muted-foreground">{d.name}</span>
@@ -331,7 +331,7 @@ const ReportingWorkspace = () => {
               </div>
             </CardHeader>
             <CardContent className="space-y-2">
-              {DEMO_SAVED_REPORTS.map(r => (
+              {(isDemoMode ? DEMO_SAVED_REPORTS : [] as typeof DEMO_SAVED_REPORTS).map(r => (
                 <div key={r.id} className="flex items-center gap-3 p-3 rounded-lg border border-border/30 hover:bg-accent/20 transition-colors cursor-pointer">
                   <FileText className="h-4 w-4 text-muted-foreground shrink-0" />
                   <div className="flex-1 min-w-0">

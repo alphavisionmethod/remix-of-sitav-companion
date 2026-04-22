@@ -11,6 +11,7 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchScopedMemory, getScopedMemoryStats, forgetScopedMemory, type PersistedScopedMemory } from "@/data/persistence";
 import { DEMO_ADMIN_SCOPES_MEMORY_CONTINUITY_CENTER as DEMO_SCOPES, DEMO_PRIVACY_TIERS } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const fade = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0 } };
 
@@ -20,6 +21,7 @@ function PrivacyBadge({ tier }: { tier: string }) {
 }
 
 export default function MemoryContinuityCenter() {
+  const { isDemoMode } = useDataMode();
   const [scopeFilter, setScopeFilter] = useState<string>("all");
   const [privacyFilter, setPrivacyFilter] = useState<string>("all");
   const [selectedEntry, setSelectedEntry] = useState<PersistedScopedMemory | null>(null);
@@ -71,7 +73,7 @@ export default function MemoryContinuityCenter() {
           <Card className="border-border/50 bg-card/50">
             <CardHeader className="pb-2"><CardTitle className="text-sm flex items-center gap-2"><Shield className="h-4 w-4 text-primary" />Privacy Distribution</CardTitle></CardHeader>
             <CardContent className="flex gap-6">
-              {DEMO_PRIVACY_TIERS.map(tier => {
+              {(isDemoMode ? DEMO_PRIVACY_TIERS : [] as typeof DEMO_PRIVACY_TIERS).map(tier => {
                 const count = (stats?.byPrivacy?.[tier] as number) ?? 0;
                 const pct = stats?.total ? (count / stats.total) * 100 : 0;
                 return (
@@ -94,14 +96,14 @@ export default function MemoryContinuityCenter() {
             <SelectTrigger className="w-40"><SelectValue placeholder="Scope" /></SelectTrigger>
             <SelectContent>
               <SelectItem value="all">All Scopes</SelectItem>
-              {DEMO_SCOPES.map(s => <SelectItem key={s} value={s} className="capitalize">{s}</SelectItem>)}
+              {(isDemoMode ? DEMO_SCOPES : [] as typeof DEMO_SCOPES).map(s => <SelectItem key={s} value={s} className="capitalize">{s}</SelectItem>)}
             </SelectContent>
           </Select>
           <Select value={privacyFilter} onValueChange={setPrivacyFilter}>
             <SelectTrigger className="w-40"><SelectValue placeholder="Privacy" /></SelectTrigger>
             <SelectContent>
               <SelectItem value="all">All Privacy</SelectItem>
-              {DEMO_PRIVACY_TIERS.map(t => <SelectItem key={t} value={t} className="capitalize">{t}</SelectItem>)}
+              {(isDemoMode ? DEMO_PRIVACY_TIERS : [] as typeof DEMO_PRIVACY_TIERS).map(t => <SelectItem key={t} value={t} className="capitalize">{t}</SelectItem>)}
             </SelectContent>
           </Select>
           <Button variant="outline" size="sm" onClick={() => refetch()}><RefreshCw className="h-3 w-3 mr-1" />Refresh</Button>

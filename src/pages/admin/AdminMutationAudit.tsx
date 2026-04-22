@@ -8,6 +8,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Database, CheckCircle, AlertTriangle, XCircle, Clock, Shield, RefreshCw, Eye, Undo2, GitBranch, Layers, ArrowRight, FileCheck } from "lucide-react";
 import { DEMO_MUTATIONS, type DemoMutationRecord, type DurabilityStatus } from "@/data/seed/durability";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.05 } } };
@@ -36,14 +37,15 @@ const LINEAGE_GAPS = [
 ];
 
 const AdminDurabilityBoard = () => {
+  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("mutations");
   const [mutFilter, setMutFilter] = useState("all");
   const [selectedMutation, setSelectedMutation] = useState<DemoMutationRecord | null>(null);
 
-  const filtered = mutFilter === "all" ? DEMO_MUTATIONS : DEMO_MUTATIONS.filter(m => m.durabilityStatus === mutFilter);
-  const persistedPct = Math.round((DEMO_MUTATIONS.filter(m => m.durabilityStatus === "persisted").length / DEMO_MUTATIONS.length) * 100);
-  const lineagePct = Math.round((DEMO_MUTATIONS.filter(m => m.lineageComplete).length / DEMO_MUTATIONS.length) * 100);
-  const canonicalPct = Math.round((DEMO_MUTATIONS.filter(m => m.canonicalWritePath).length / DEMO_MUTATIONS.length) * 100);
+  const filtered = mutFilter === "all" ? DEMO_MUTATIONS : (isDemoMode ? DEMO_MUTATIONS : [] as typeof DEMO_MUTATIONS).filter(m => m.durabilityStatus === mutFilter);
+  const persistedPct = Math.round(((isDemoMode ? DEMO_MUTATIONS : [] as typeof DEMO_MUTATIONS).filter(m => m.durabilityStatus === "persisted").length / (isDemoMode ? DEMO_MUTATIONS : [] as typeof DEMO_MUTATIONS).length) * 100);
+  const lineagePct = Math.round(((isDemoMode ? DEMO_MUTATIONS : [] as typeof DEMO_MUTATIONS).filter(m => m.lineageComplete).length / (isDemoMode ? DEMO_MUTATIONS : [] as typeof DEMO_MUTATIONS).length) * 100);
+  const canonicalPct = Math.round(((isDemoMode ? DEMO_MUTATIONS : [] as typeof DEMO_MUTATIONS).filter(m => m.canonicalWritePath).length / (isDemoMode ? DEMO_MUTATIONS : [] as typeof DEMO_MUTATIONS).length) * 100);
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">

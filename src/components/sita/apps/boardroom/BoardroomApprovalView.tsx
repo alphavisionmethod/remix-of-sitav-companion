@@ -255,7 +255,7 @@ export function BoardroomApprovalView({ scope, onNavigate }: Props) {
 
   const handleApprove = (title: string) => {
     // Find which domain this approval belongs to
-    const approval = MOCK_APPROVALS.find(a => a.title === title);
+    const approval = (isDemoMode ? MOCK_APPROVALS : [] as typeof MOCK_APPROVALS).find(a => a.title === title);
     const targetDomain = (scope as string) === "global" ? "business" : scope;
 
     setShowSignature(true);
@@ -366,7 +366,7 @@ export function BoardroomApprovalView({ scope, onNavigate }: Props) {
           Pending Approvals
         </p>
         <div className="space-y-3">
-          {MOCK_APPROVALS.map((ap, i) => (
+          {(isDemoMode ? MOCK_APPROVALS : [] as typeof MOCK_APPROVALS).map((ap, i) => (
             <motion.div
               key={ap.id}
               initial={{ opacity: 0, y: 8 }}
@@ -422,7 +422,7 @@ export function BoardroomApprovalView({ scope, onNavigate }: Props) {
           Recent Decision Seals
         </p>
         <div className="space-y-3">
-          {MOCK_SEALED.map((seal, i) => (
+          {(isDemoMode ? MOCK_SEALED : [] as typeof MOCK_SEALED).map((seal, i) => (
             <motion.div
               key={seal.receiptHash}
               initial={{ opacity: 0, y: 8 }}
@@ -441,7 +441,7 @@ export function BoardroomApprovalView({ scope, onNavigate }: Props) {
           Proof & Receipts
         </p>
         <div className="space-y-3">
-          {MOCK_RECEIPTS.map((r, i) => (
+          {(isDemoMode ? MOCK_RECEIPTS : [] as typeof MOCK_RECEIPTS).map((r, i) => (
             <motion.div
               key={r.hash}
               initial={{ opacity: 0, y: 8 }}

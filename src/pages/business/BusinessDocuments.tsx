@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 type Tab = "all" | "quotes" | "invoices" | "contracts" | "attachments" | "images";
 type ViewMode = "grid" | "list";
@@ -41,6 +42,7 @@ const DEMO_DOCUMENTS: BusinessDocument[] = [
 ];
 
 const typeIcon = (type: BusinessDocument["type"]) => {
+  const { isDemoMode } = useDataMode();
   switch (type) { case "pdf": return FileText; case "doc": return File; case "image": return Image; default: return File; }
 };
 
@@ -61,9 +63,9 @@ const BusinessDocuments = () => {
   const [viewMode, setViewMode] = useState<ViewMode>("list");
   const [search, setSearch] = useState("");
   const [selectedId, setSelectedId] = useState<string | null>(null);
-  const [starredIds, setStarredIds] = useState<Set<string>>(new Set(DEMO_DOCUMENTS.filter(d => d.starred).map(d => d.id)));
+  const [starredIds, setStarredIds] = useState<Set<string>>(new Set((isDemoMode ? DEMO_DOCUMENTS : [] as typeof DEMO_DOCUMENTS).filter(d => d.starred).map(d => d.id)));
 
-  const filtered = DEMO_DOCUMENTS.filter(doc => {
+  const filtered = (isDemoMode ? DEMO_DOCUMENTS : [] as typeof DEMO_DOCUMENTS).filter(doc => {
     if (tab === "quotes") return doc.category === "quote" || doc.category === "proposal";
     if (tab === "invoices") return doc.category === "invoice" || doc.category === "receipt";
     if (tab === "contracts") return doc.category === "contract";
@@ -72,11 +74,11 @@ const BusinessDocuments = () => {
     return true;
   }).filter(doc => !search || doc.name.toLowerCase().includes(search.toLowerCase()) || doc.linkedEntity?.toLowerCase().includes(search.toLowerCase()));
 
-  const selected = DEMO_DOCUMENTS.find(d => d.id === selectedId);
+  const selected = (isDemoMode ? DEMO_DOCUMENTS : [] as typeof DEMO_DOCUMENTS).find(d => d.id === selectedId);
   const toggleStar = (id: string) => setStarredIds(prev => { const n = new Set(prev); n.has(id) ? n.delete(id) : n.add(id); return n; });
 
   const tabs = [
-    { key: "all", label: `All (${DEMO_DOCUMENTS.length})` },
+    { key: "all", label: `All (${(isDemoMode ? DEMO_DOCUMENTS : [] as typeof DEMO_DOCUMENTS).length})` },
     { key: "quotes", label: "Quotes" },
     { key: "invoices", label: "Invoices" },
     { key: "contracts", label: "Contracts" },
@@ -206,7 +208,7 @@ const BusinessDocuments = () => {
       <ModuleAdvisorInsight
         advisorName="Document Advisor"
         domain="business"
-        insight={`${DEMO_DOCUMENTS.filter(d => d.status === "expired").length} expired document(s) need attention. ${DEMO_DOCUMENTS.filter(d => d.status === "signed").length} contracts fully signed.`}
+        insight={`${(isDemoMode ? DEMO_DOCUMENTS : [] as typeof DEMO_DOCUMENTS).filter(d => d.status === "expired").length} expired document(s) need attention. ${(isDemoMode ? DEMO_DOCUMENTS : [] as typeof DEMO_DOCUMENTS).filter(d => d.status === "signed").length} contracts fully signed.`}
         confidence={85}
       />
     </motion.div>

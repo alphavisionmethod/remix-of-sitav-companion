@@ -10,6 +10,7 @@ import {
   FileQuestion, Tag, Repeat, Eye, Clock, DollarSign, ShieldCheck
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 type IssueType = "mismatch" | "uncategorized" | "recurring-change" | "duplicate" | "missing-receipt";
 type ReviewStatus = "open" | "investigating" | "resolved" | "deferred";
@@ -51,18 +52,19 @@ const SEVERITY_DOT: Record<string, string> = {
 };
 
 const ReconciliationReview = () => {
+  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("all");
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
   const filtered = tab === "all" ? DEMO_ITEMS
-    : tab === "resolved" ? DEMO_ITEMS.filter(i => i.status === "resolved")
-    : DEMO_ITEMS.filter(i => i.issueType === tab && i.status !== "resolved");
+    : tab === "resolved" ? (isDemoMode ? DEMO_ITEMS : [] as typeof DEMO_ITEMS).filter(i => i.status === "resolved")
+    : (isDemoMode ? DEMO_ITEMS : [] as typeof DEMO_ITEMS).filter(i => i.issueType === tab && i.status !== "resolved");
 
-  const selected = DEMO_ITEMS.find(i => i.id === selectedId);
-  const openCount = DEMO_ITEMS.filter(i => i.status !== "resolved").length;
-  const mismatchCount = DEMO_ITEMS.filter(i => i.issueType === "mismatch" && i.status !== "resolved").length;
-  const uncatCount = DEMO_ITEMS.filter(i => i.issueType === "uncategorized" && i.status !== "resolved").length;
-  const recurringCount = DEMO_ITEMS.filter(i => i.issueType === "recurring-change" && i.status !== "resolved").length;
+  const selected = (isDemoMode ? DEMO_ITEMS : [] as typeof DEMO_ITEMS).find(i => i.id === selectedId);
+  const openCount = (isDemoMode ? DEMO_ITEMS : [] as typeof DEMO_ITEMS).filter(i => i.status !== "resolved").length;
+  const mismatchCount = (isDemoMode ? DEMO_ITEMS : [] as typeof DEMO_ITEMS).filter(i => i.issueType === "mismatch" && i.status !== "resolved").length;
+  const uncatCount = (isDemoMode ? DEMO_ITEMS : [] as typeof DEMO_ITEMS).filter(i => i.issueType === "uncategorized" && i.status !== "resolved").length;
+  const recurringCount = (isDemoMode ? DEMO_ITEMS : [] as typeof DEMO_ITEMS).filter(i => i.issueType === "recurring-change" && i.status !== "resolved").length;
 
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
@@ -77,11 +79,11 @@ const ReconciliationReview = () => {
 
       <SitaTabs
         tabs={[
-          { key: "all", label: "All", count: DEMO_ITEMS.filter(i => i.status !== "resolved").length },
+          { key: "all", label: "All", count: (isDemoMode ? DEMO_ITEMS : [] as typeof DEMO_ITEMS).filter(i => i.status !== "resolved").length },
           { key: "mismatch", label: "Mismatches", count: mismatchCount },
           { key: "uncategorized", label: "Uncategorized", count: uncatCount },
           { key: "recurring-change", label: "Recurring Changes", count: recurringCount },
-          { key: "resolved", label: "Resolved", count: DEMO_ITEMS.filter(i => i.status === "resolved").length },
+          { key: "resolved", label: "Resolved", count: (isDemoMode ? DEMO_ITEMS : [] as typeof DEMO_ITEMS).filter(i => i.status === "resolved").length },
         ]}
         active={tab}
         onChange={setTab}
@@ -186,7 +188,7 @@ const ReconciliationReview = () => {
       <ModuleAdvisorInsight
         advisorName="Reconciliation Advisor"
         domain="finance"
-        insight={`${openCount} items need review. Priority: ${mismatchCount} balance mismatches totaling $${DEMO_ITEMS.filter(i => i.issueType === "mismatch" && i.status !== "resolved").reduce((s, i) => s + i.amount, 0).toLocaleString()}.`}
+        insight={`${openCount} items need review. Priority: ${mismatchCount} balance mismatches totaling $${(isDemoMode ? DEMO_ITEMS : [] as typeof DEMO_ITEMS).filter(i => i.issueType === "mismatch" && i.status !== "resolved").reduce((s, i) => s + i.amount, 0).toLocaleString()}.`}
         confidence={82}
       />
     </motion.div>

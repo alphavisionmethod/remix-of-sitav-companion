@@ -9,10 +9,12 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 import { DEMO_ACTIVE_CLIENTS, DEMO_JOURNEYS } from "@/data/seed/revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const stepTypeIcons: Record<string, typeof Mail> = { email: Mail, form: FileText, booking: Calendar, meeting: Calendar, payment: Package, access: Settings, delivery: Package, document: FileText };
 
 export default function ClientOnboarding() {
+  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("journeys");
 
   return (
@@ -29,10 +31,10 @@ export default function ClientOnboarding() {
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         {[
-          { label: "Active Journeys", value: DEMO_JOURNEYS.filter(j => j.status === "active").length },
-          { label: "Clients Onboarding", value: DEMO_ACTIVE_CLIENTS.filter(c => c.status !== "completed").length },
+          { label: "Active Journeys", value: (isDemoMode ? DEMO_JOURNEYS : [] as typeof DEMO_JOURNEYS).filter(j => j.status === "active").length },
+          { label: "Clients Onboarding", value: (isDemoMode ? DEMO_ACTIVE_CLIENTS : [] as typeof DEMO_ACTIVE_CLIENTS).filter(c => c.status !== "completed").length },
           { label: "Avg. Completion", value: "82%" },
-          { label: "Delayed", value: DEMO_ACTIVE_CLIENTS.filter(c => c.status === "delayed").length, color: "text-amber-400" },
+          { label: "Delayed", value: (isDemoMode ? DEMO_ACTIVE_CLIENTS : [] as typeof DEMO_ACTIVE_CLIENTS).filter(c => c.status === "delayed").length, color: "text-amber-400" },
         ].map((k, i) => (
           <Card key={i} className="bg-card/50 border-border/50">
             <CardContent className="p-3 text-center">
@@ -56,7 +58,7 @@ export default function ClientOnboarding() {
         <div className="mt-4">
           <TabsContent value="journeys">
             <div className="space-y-4">
-              {DEMO_JOURNEYS.map(journey => (
+              {(isDemoMode ? DEMO_JOURNEYS : [] as typeof DEMO_JOURNEYS).map(journey => (
                 <Card key={journey.id} className="bg-card/50 border-border/50">
                   <CardHeader className="pb-3">
                     <div className="flex items-center justify-between">
@@ -111,7 +113,7 @@ export default function ClientOnboarding() {
 
           <TabsContent value="active">
             <div className="space-y-3">
-              {DEMO_ACTIVE_CLIENTS.map((client, i) => (
+              {(isDemoMode ? DEMO_ACTIVE_CLIENTS : [] as typeof DEMO_ACTIVE_CLIENTS).map((client, i) => (
                 <Card key={i} className={cn("bg-card/50 border-border/50", client.status === "delayed" && "border-amber-500/30")}>
                   <CardContent className="p-4">
                     <div className="flex items-center justify-between mb-3">

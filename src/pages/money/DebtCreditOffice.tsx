@@ -10,6 +10,7 @@ import { motion } from "framer-motion";
 import { useState, useMemo } from "react";
 import { computeDebtProfile, simulateDebtPayoff } from "@/lib/services/finance-os/debt-analyzer.service";
 import type { DebtAccount } from "@/packages/finance-contracts";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const DEMO_ACCOUNTS: DebtAccount[] = [
   { id: "cc1", name: "Visa Platinum", type: "credit-card", balanceCents: 485000, limitCents: 2000000, interestRate: 22.99, minimumPaymentCents: 14500, dueDate: "2026-04-28", utilizationPercent: 24.25, monthlyInterestCents: 9283, payoffMonths: 48, isAutoPay: true, institution: "Chase" },
@@ -19,6 +20,7 @@ const DEMO_ACCOUNTS: DebtAccount[] = [
 ];
 
 const DebtCreditOffice = () => {
+  const { isDemoMode } = useDataMode();
   const [strategy, setStrategy] = useState<"avalanche" | "snowball">("avalanche");
   const [extraPayment] = useState(20000);
 

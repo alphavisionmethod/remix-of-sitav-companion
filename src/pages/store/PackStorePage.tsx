@@ -13,13 +13,15 @@ import {
 import {
   PACK_CATALOG, INTERNAL_APPS, STORE_CATEGORIES,
   getFeaturedPacks, getInstalledPacks, getPacksWithUpdates, getRecommendedPacks,
-  MOCK_INSTALL_STATES, type StoreCategory, type PackManifest,
+  DEMO_INSTALL_STATES, type StoreCategory, type PackManifest,
 } from "@/lib/pack-store";
 import { ArrowRight, Package, RefreshCw, Sparkles, TrendingUp } from "lucide-react";
 import { usePackInstalls } from "@/hooks/use-live-data";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const PackStorePage = () => {
+  const { isDemoMode } = useDataMode();
   const navigate = useNavigate();
   const { data: liveInstalls } = usePackInstalls();
   const [activeCategory, setActiveCategory] = useState<string>("all");

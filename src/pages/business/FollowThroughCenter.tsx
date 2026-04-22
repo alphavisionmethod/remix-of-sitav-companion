@@ -13,6 +13,7 @@ import {
   Phone, Mail, Clock, AlertCircle, SkipForward, AlarmClock,
   FileText, DollarSign, Users, CheckCircle
 } from "lucide-react";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 type QueueTab = "callbacks" | "no-touch" | "waiting" | "drafts" | "overdue" | "recovery";
 
@@ -62,6 +63,7 @@ const TAB_DATA: Record<QueueTab, { items: QueueItem[]; label: string }> = {
 };
 
 const FollowThroughCenter = () => {
+  const { isDemoMode } = useDataMode();
   const { primaryMode } = useBusinessProfile();
   const moduleConfig = getModuleAdaptation("follow-through", primaryMode);
   const [activeTab, setActiveTab] = useState<QueueTab>("callbacks");

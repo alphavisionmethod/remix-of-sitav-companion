@@ -30,7 +30,7 @@ const APL04AppleIdentityAccounts = () => (
           <CardHeader><CardTitle className="text-sm">Sign in with Apple — Architecture</CardTitle></CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              {DEMO_IDENTITY_ARCHITECTURE.map((item) => (
+              {(isDemoMode ? DEMO_IDENTITY_ARCHITECTURE : [] as typeof DEMO_IDENTITY_ARCHITECTURE).map((item) => (
                 <div key={item.field} className="flex items-center justify-between p-3 rounded border text-xs">
                   <span className="font-medium">{item.field}</span>
                   <Badge variant={item.badge === "primary" ? "default" : "outline"}>{item.value}</Badge>
@@ -45,7 +45,7 @@ const APL04AppleIdentityAccounts = () => (
         <Card>
           <CardHeader><CardTitle className="text-sm">Identity Link Flow</CardTitle></CardHeader>
           <CardContent className="space-y-3">
-            {DEMO_LINK_FLOW_STEPS.map((s, i) => (
+            {(isDemoMode ? DEMO_LINK_FLOW_STEPS : [] as typeof DEMO_LINK_FLOW_STEPS).map((s, i) => (
               <div key={s.step} className="flex items-start gap-3">
                 <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
                   <s.icon className="h-4 w-4 text-primary" />
@@ -72,7 +72,7 @@ const APL04AppleIdentityAccounts = () => (
                   <th className="p-2">Severity</th>
                 </tr></thead>
                 <tbody>
-                  {DEMO_SECURITY_POLICIES.map((p) => (
+                  {(isDemoMode ? DEMO_SECURITY_POLICIES : [] as typeof DEMO_SECURITY_POLICIES).map((p) => (
                     <tr key={p.policy} className="border-b hover:bg-muted/30">
                       <td className="p-2 font-medium">{p.policy}</td>
                       <td className="p-2 text-muted-foreground">{p.value}</td>

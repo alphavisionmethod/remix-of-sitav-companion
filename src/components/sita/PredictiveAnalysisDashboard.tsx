@@ -19,6 +19,7 @@ import {
   ArrowUpRight, ArrowDownRight, Minus, RefreshCw, Cpu,
   Flame, Thermometer, Radio, ChevronRight,
 } from "lucide-react";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 // ── Types ───────────────────────────────────────────────────────
 
@@ -252,11 +253,11 @@ export function PredictiveAnalysisDashboard() {
   const trendData = useMemo(() => generateTrendData(), []);
 
   const stats = useMemo(() => ({
-    totalPredictions: MOCK_PREDICTIONS.length,
-    highRisk: MOCK_PREDICTIONS.filter(p => p.probability > 0.7).length,
-    avgConfidence: Math.round(MOCK_PREDICTIONS.reduce((s, p) => s + p.confidence, 0) / MOCK_PREDICTIONS.length * 100),
-    anomaliesDetected: MOCK_ANOMALIES.length,
-    autoResolved: MOCK_ANOMALIES.filter(a => a.autoResolved).length,
+    totalPredictions: (isDemoMode ? MOCK_PREDICTIONS : [] as typeof MOCK_PREDICTIONS).length,
+    highRisk: (isDemoMode ? MOCK_PREDICTIONS : [] as typeof MOCK_PREDICTIONS).filter(p => p.probability > 0.7).length,
+    avgConfidence: Math.round((isDemoMode ? MOCK_PREDICTIONS : [] as typeof MOCK_PREDICTIONS).reduce((s, p) => s + p.confidence, 0) / (isDemoMode ? MOCK_PREDICTIONS : [] as typeof MOCK_PREDICTIONS).length * 100),
+    anomaliesDetected: (isDemoMode ? MOCK_ANOMALIES : [] as typeof MOCK_ANOMALIES).length,
+    autoResolved: (isDemoMode ? MOCK_ANOMALIES : [] as typeof MOCK_ANOMALIES).filter(a => a.autoResolved).length,
   }), []);
 
   return (
@@ -324,7 +325,7 @@ export function PredictiveAnalysisDashboard() {
           <motion.div key="predictions" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
             className="space-y-3"
           >
-            {MOCK_PREDICTIONS.sort((a, b) => b.probability - a.probability).map(p => (
+            {(isDemoMode ? MOCK_PREDICTIONS : [] as typeof MOCK_PREDICTIONS).sort((a, b) => b.probability - a.probability).map(p => (
               <PredictionCard key={p.id} signal={p} />
             ))}
           </motion.div>
@@ -403,7 +404,7 @@ export function PredictiveAnalysisDashboard() {
                 Events with deviation &gt;3σ are flagged. Auto-resolution triggers when metrics return to 1σ within 15 minutes.
               </p>
             </div>
-            {MOCK_ANOMALIES.map(a => <AnomalyRow key={a.id} anomaly={a} />)}
+            {(isDemoMode ? MOCK_ANOMALIES : [] as typeof MOCK_ANOMALIES).map(a => <AnomalyRow key={a.id} anomaly={a} />)}
           </motion.div>
         )}
       </AnimatePresence>

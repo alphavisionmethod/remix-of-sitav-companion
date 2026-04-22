@@ -5,6 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Cloud, Sun, CloudRain, Wind, Droplets, Thermometer, Newspaper, TrendingUp, Clock, ExternalLink, Eye, MapPin, Sunrise, Sunset } from "lucide-react";
 import { DEMO_forecast, DEMO_newsArticles } from "@/data/seed/apps";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.06 } } };
@@ -18,6 +19,7 @@ const categoryColors: Record<string, string> = {
 };
 
 export default function WeatherNewsApp() {
+  const { isDemoMode } = useDataMode();
   const current = DEMO_forecast[0];
 
   return (
@@ -79,8 +81,8 @@ export default function WeatherNewsApp() {
             </CardHeader>
             <CardContent>
               <div className="space-y-2">
-                {DEMO_forecast.map((day, i) => (
-                  <div key={day.day} className={`flex items-center justify-between py-2 ${i < DEMO_forecast.length - 1 ? "border-b border-border" : ""}`}>
+                {(isDemoMode ? DEMO_forecast : [] as typeof DEMO_forecast).map((day, i) => (
+                  <div key={day.day} className={`flex items-center justify-between py-2 ${i < (isDemoMode ? DEMO_forecast : [] as typeof DEMO_forecast).length - 1 ? "border-b border-border" : ""}`}>
                     <span className={`text-sm w-12 ${i === 0 ? "font-semibold text-foreground" : "text-foreground"}`}>{day.day}</span>
                     <day.icon className="h-5 w-5 text-muted-foreground" />
                     <div className="flex items-center gap-1 w-16">
@@ -100,7 +102,7 @@ export default function WeatherNewsApp() {
 
         <TabsContent value="news" className="mt-4 space-y-3">
           <motion.div variants={stagger} initial="hidden" animate="show" className="space-y-3">
-            {DEMO_newsArticles.map((article, i) => (
+            {(isDemoMode ? DEMO_newsArticles : [] as typeof DEMO_newsArticles).map((article, i) => (
               <motion.div key={i} variants={fadeUp}>
                 <Card className="hover:shadow-sm transition-shadow cursor-pointer group">
                   <CardContent className="p-4">

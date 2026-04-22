@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const IS_DEV = import.meta.env.DEV || import.meta.env.VITE_DEMO_MODE === "true";
 
@@ -45,6 +46,7 @@ export function AccountEnvironmentStep({ onNext, onPrev, onPathChange, selectedP
   const [showRestore, setShowRestore] = useState(false);
 
   const handleSelectPath = (path: AccountPath) => {
+  const { isDemoMode } = useDataMode();
     onPathChange(path);
     if (path === "signin") setSubView("signin-form");
     else if (path === "create") setSubView("create-form");

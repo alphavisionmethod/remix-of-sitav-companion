@@ -11,6 +11,7 @@ import {
   Shield, Lock, Sparkles, ArrowUpRight,
 } from "lucide-react";
 import { ConfidenceBar } from "@/components/sita/primitives";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 interface IssueFrameItem {
   title: string;

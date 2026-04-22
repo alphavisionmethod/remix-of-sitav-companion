@@ -16,6 +16,7 @@ import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { DEMO_auditTimeline, DEMO_connectors } from "@/data/seed/atlas";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const now = new Date();
 const h = (hours: number) => new Date(now.getTime() - hours * 3600000).toISOString();
@@ -23,24 +24,25 @@ const h = (hours: number) => new Date(now.getTime() - hours * 3600000).toISOStri
 const lifecycleStates = ["registered", "configured", "active", "paused", "error", "disabled", "decommissioned"];
 
 export default function ConnectorControlCenter() {
+  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("overview");
-  const healthy = DEMO_connectors.filter(c => c.status === "active").length;
+  const healthy = (isDemoMode ? DEMO_connectors : [] as typeof DEMO_connectors).filter(c => c.status === "active").length;
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mx-auto max-w-7xl space-y-6 p-6">
 <SitaPageHeader title="Connector Control Center" subtitle="Connector lifecycle, health matrix, capability registry, audit lineage, and failure recovery" />
 
-      {DEMO_connectors.some(c => c.status === "error") && (
-        <DegradedStateBanner severity="warning" reason={`${DEMO_connectors.filter(c => c.status === "error").length} connector(s) in error state`} impact="Data sync affected for failed connectors" affectedCapabilities={DEMO_connectors.filter(c => c.status === "error").flatMap(c => c.capabilities)} dismissible />
+      {(isDemoMode ? DEMO_connectors : [] as typeof DEMO_connectors).some(c => c.status === "error") && (
+        <DegradedStateBanner severity="warning" reason={`${(isDemoMode ? DEMO_connectors : [] as typeof DEMO_connectors).filter(c => c.status === "error").length} connector(s) in error state`} impact="Data sync affected for failed connectors" affectedCapabilities={(isDemoMode ? DEMO_connectors : [] as typeof DEMO_connectors).filter(c => c.status === "error").flatMap(c => c.capabilities)} dismissible />
       )}
 
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
         {[
           { label: "Active", value: healthy, color: "text-green-400" },
-          { label: "Error", value: DEMO_connectors.filter(c => c.status === "error").length, color: DEMO_connectors.some(c => c.status === "error") ? "text-red-400" : "text-green-400" },
-          { label: "Paused", value: DEMO_connectors.filter(c => c.status === "paused").length, color: "text-amber-400" },
-          { label: "Avg Health", value: `${Math.round(DEMO_connectors.reduce((s, c) => s + c.health, 0) / DEMO_connectors.length)}%`, color: "text-blue-400" },
-          { label: "Total Capabilities", value: DEMO_connectors.reduce((s, c) => s + c.capabilities.length, 0), color: "text-foreground" },
+          { label: "Error", value: (isDemoMode ? DEMO_connectors : [] as typeof DEMO_connectors).filter(c => c.status === "error").length, color: (isDemoMode ? DEMO_connectors : [] as typeof DEMO_connectors).some(c => c.status === "error") ? "text-red-400" : "text-green-400" },
+          { label: "Paused", value: (isDemoMode ? DEMO_connectors : [] as typeof DEMO_connectors).filter(c => c.status === "paused").length, color: "text-amber-400" },
+          { label: "Avg Health", value: `${Math.round((isDemoMode ? DEMO_connectors : [] as typeof DEMO_connectors).reduce((s, c) => s + c.health, 0) / (isDemoMode ? DEMO_connectors : [] as typeof DEMO_connectors).length)}%`, color: "text-blue-400" },
+          { label: "Total Capabilities", value: (isDemoMode ? DEMO_connectors : [] as typeof DEMO_connectors).reduce((s, c) => s + c.capabilities.length, 0), color: "text-foreground" },
         ].map((k, i) => (
           <Card key={i} className="bg-card/50 border-border/50">
             <CardContent className="p-3 text-center">
@@ -67,7 +69,7 @@ export default function ConnectorControlCenter() {
 
         <div className="mt-4 space-y-3">
           <TabsContent value="overview">
-            {DEMO_connectors.map(c => (
+            {(isDemoMode ? DEMO_connectors : [] as typeof DEMO_connectors).map(c => (
               <div key={c.id} className="flex items-center justify-between p-3 bg-muted/20 rounded-lg mb-2">
                 <div className="flex items-center gap-3">
                   <div className={cn("w-2.5 h-2.5 rounded-full", c.status === "active" ? "bg-green-400" : c.status === "error" ? "bg-red-400" : "bg-amber-400")} />
@@ -87,7 +89,7 @@ export default function ConnectorControlCenter() {
           </TabsContent>
 
           <TabsContent value="lifecycle">
-            {DEMO_connectors.map(c => (
+            {(isDemoMode ? DEMO_connectors : [] as typeof DEMO_connectors).map(c => (
               <Card key={c.id} className="bg-card/50 border-border/50 mb-2">
                 <CardContent className="p-3">
                   <p className="text-xs font-medium text-foreground mb-2">{c.name}</p>
@@ -109,7 +111,7 @@ export default function ConnectorControlCenter() {
           </TabsContent>
 
           <TabsContent value="health">
-            {DEMO_connectors.map(c => (
+            {(isDemoMode ? DEMO_connectors : [] as typeof DEMO_connectors).map(c => (
               <div key={c.id} className="flex items-center justify-between p-3 bg-muted/20 rounded-lg mb-2">
                 <div className="flex items-center gap-3">
                   <Activity className={cn("w-3.5 h-3.5", c.health > 90 ? "text-green-400" : c.health > 50 ? "text-amber-400" : "text-red-400")} />
@@ -127,7 +129,7 @@ export default function ConnectorControlCenter() {
           </TabsContent>
 
           <TabsContent value="capabilities">
-            {DEMO_connectors.map(c => (
+            {(isDemoMode ? DEMO_connectors : [] as typeof DEMO_connectors).map(c => (
               <Card key={c.id} className="bg-card/50 border-border/50 mb-2">
                 <CardContent className="p-3">
                   <div className="flex items-center justify-between mb-2">
@@ -146,7 +148,7 @@ export default function ConnectorControlCenter() {
 
           <TabsContent value="audit">
             <div className="relative pl-4 border-l border-border/40 space-y-2">
-              {DEMO_auditTimeline.map((e, i) => (
+              {(isDemoMode ? DEMO_auditTimeline : [] as typeof DEMO_auditTimeline).map((e, i) => (
                 <div key={i} className="relative">
                   <div className="absolute -left-[21px] w-2.5 h-2.5 rounded-full border-2 bg-primary border-primary/50" />
                   <div className="p-2.5 bg-muted/20 rounded-lg flex items-center justify-between">
@@ -165,7 +167,7 @@ export default function ConnectorControlCenter() {
           </TabsContent>
 
           <TabsContent value="recovery">
-            {DEMO_connectors.filter(c => c.status === "error" || c.failureCount > 0).map(c => (
+            {(isDemoMode ? DEMO_connectors : [] as typeof DEMO_connectors).filter(c => c.status === "error" || c.failureCount > 0).map(c => (
               <Card key={c.id} className={cn("border-border/50 mb-2", c.status === "error" ? "bg-red-500/5 border-red-500/20" : "bg-card/50")}>
                 <CardContent className="p-3 space-y-2">
                   <div className="flex items-center justify-between">
@@ -183,7 +185,7 @@ export default function ConnectorControlCenter() {
                 </CardContent>
               </Card>
             ))}
-            {DEMO_connectors.filter(c => c.status === "error" || c.failureCount > 0).length === 0 && (
+            {(isDemoMode ? DEMO_connectors : [] as typeof DEMO_connectors).filter(c => c.status === "error" || c.failureCount > 0).length === 0 && (
               <div className="p-6 text-center bg-green-500/5 border border-green-500/20 rounded-lg">
                 <CheckCircle className="w-6 h-6 text-green-400 mx-auto mb-2" />
                 <p className="text-sm text-green-400">All connectors healthy — no recovery needed</p>

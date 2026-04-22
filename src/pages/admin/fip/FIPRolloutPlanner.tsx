@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { useRolloutRecords } from "@/hooks/use-fip-data";
 import { DEMO_KILL_CLASSES, DEMO_ROLLOUT_RINGS } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 
 
@@ -17,6 +18,7 @@ const ringColors: Record<string, string> = {
 };
 
 const FIPRolloutPlanner = () => {
+  const { isDemoMode } = useDataMode();
   const { data: rollouts = [], isLoading } = useRolloutRecords();
 
   return (
@@ -38,7 +40,7 @@ const FIPRolloutPlanner = () => {
         <CardHeader><CardTitle className="text-base">Rollout Ring Distribution</CardTitle></CardHeader>
         <CardContent>
           <div className="flex gap-2">
-            {DEMO_ROLLOUT_RINGS.map(ring => {
+            {(isDemoMode ? DEMO_ROLLOUT_RINGS : [] as typeof DEMO_ROLLOUT_RINGS).map(ring => {
               const count = rollouts.filter((r: Record<string, any>) => r.current_ring === ring).length;
               return (
                 <div key={ring} className={`flex-1 text-center p-3 rounded-lg border ${count > 0 ? 'border-primary/30' : ''}`}>

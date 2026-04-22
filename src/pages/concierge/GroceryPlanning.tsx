@@ -9,6 +9,7 @@ import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
 import { useGroceryLists } from "@/hooks/use-concierge-data";
 import { DEMO_CONC_categories as DEMO_categories, DEMO_recurringSupplies, DEMO_stores } from "@/data/seed/concierge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 interface GroceryItem {
   id: string; name: string; category: string; quantity: string; estimated: string;
@@ -35,6 +36,7 @@ const initialItems: GroceryItem[] = [
 type GroceryView = "shopping" | "recurring" | "by-store" | "urgency" | "event-prep";
 
 const GroceryPlanning = () => {
+  const { isDemoMode } = useDataMode();
   const [items, setItems] = useState(initialItems);
   const [view, setView] = useState<GroceryView>("shopping");
   const [newItem, setNewItem] = useState("");
@@ -46,7 +48,7 @@ const GroceryPlanning = () => {
   const remainingEstimate = items.filter(i => !i.checked).reduce((sum, i) => sum + parseFloat(i.estimated.replace("$", "")), 0);
   const urgentCount = items.filter(i => i.urgent).length;
 
-  const groupedByStore = DEMO_stores.reduce((acc, store) => {
+  const groupedByStore = (isDemoMode ? DEMO_stores : [] as typeof DEMO_stores).reduce((acc, store) => {
     acc[store!] = items.filter(i => i.store === store && !i.checked);
     return acc;
   }, {} as Record<string, GroceryItem[]>);
@@ -80,7 +82,7 @@ const GroceryPlanning = () => {
           {view === "recurring" && (
             <div className="space-y-3">
               <h3 className="text-[10px] font-semibold uppercase tracking-[0.08em] text-[hsl(0_0%_50%)]">Recurring Supply Status</h3>
-              {DEMO_recurringSupplies.map((s, i) => (
+              {(isDemoMode ? DEMO_recurringSupplies : [] as typeof DEMO_recurringSupplies).map((s, i) => (
                 <GroceryContinuityCard key={i} item={s.item} lastPurchased={s.lastPurchased} cycle={s.cycle} status={s.status} />
               ))}
             </div>
@@ -88,7 +90,7 @@ const GroceryPlanning = () => {
 
           {view === "by-store" && (
             <div className="space-y-5">
-              {DEMO_stores.map((store) => {
+              {(isDemoMode ? DEMO_stores : [] as typeof DEMO_stores).map((store) => {
                 const storeItems = groupedByStore[store!] || [];
                 if (storeItems.length === 0) return null;
                 return (
@@ -153,7 +155,7 @@ const GroceryPlanning = () => {
           {(view === "shopping" || view === "urgency") && items.filter(i => view === "urgency" ? (i.urgent || i.note?.toLowerCase().includes("low") || i.note?.toLowerCase().includes("out")) : true).length === 0 && (
             <ConciergeEmptyState domain="grocery" icon={ShoppingCart} />
           )}
-          {(view === "shopping" || view === "urgency") && DEMO_categories.map((cat) => {
+          {(view === "shopping" || view === "urgency") && (isDemoMode ? DEMO_categories : [] as typeof DEMO_categories).map((cat) => {
             let catItems = items.filter(i => i.category === cat);
             if (view === "urgency") catItems = catItems.filter(i => i.urgent || i.note?.toLowerCase().includes("low") || i.note?.toLowerCase().includes("out"));
             if (catItems.length === 0) return null;
@@ -220,7 +222,7 @@ const GroceryPlanning = () => {
           <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift">
             <h4 className="text-[13px] font-semibold text-[hsl(0_0%_85%)] mb-3">Optimized Store Route</h4>
             <div className="space-y-2">
-              {DEMO_stores.map((store, i) => {
+              {(isDemoMode ? DEMO_stores : [] as typeof DEMO_stores).map((store, i) => {
                 const count = items.filter(it => it.store === store && !it.checked).length;
                 if (count === 0) return null;
                 return (

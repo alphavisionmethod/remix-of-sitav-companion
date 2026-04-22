@@ -34,7 +34,8 @@ const MOCK_FILES: FileNode[] = [
           { name: "api.ts", type: "file", language: "ts", content: `const BASE_URL = "/api/v1";\n\nexport async function fetchMetrics() {\n  const res = await fetch(\`\${BASE_URL}/metrics\`);\n  return res.json();\n}\n\nexport async function updateConfig(config: Config) {\n  return fetch(\`\${BASE_URL}/config\`, {\n    method: "PUT",\n    body: JSON.stringify(config),\n  });\n}` },
         ]
       },
-      { name: "main.tsx", type: "file", language: "tsx", content: `import { createRoot } from "react-dom/client";\nimport { App } from "./components/App";\nimport "./index.css";\n\ncreateRoot(\n  document.getElementById("root")!\n).render(<App />);` },
+      { name: "main.tsx", type: "file", language: "tsx", content: `import { createRoot } from "react-dom/client";\nimport {
+import { useDataMode } from "@/contexts/DataModeContext"; App } from "./components/App";\nimport "./index.css";\n\ncreateRoot(\n  document.getElementById("root")!\n).render(<App />);` },
     ]
   },
   { name: "package.json", type: "file", language: "json", content: `{\n  "name": "nova-project",\n  "version": "1.0.0",\n  "scripts": {\n    "dev": "vite",\n    "build": "vite build"\n  }\n}` },
@@ -103,6 +104,7 @@ export function CodeEditorWindow() {
   const lines = (activeFile?.content || "").split("\n");
 
   const openFile = (node: FileNode) => {
+  const { isDemoMode } = useDataMode();
     if (node.type === "folder") return;
     const existing = openFiles.findIndex(f => f.name === node.name);
     if (existing >= 0) { setActiveIdx(existing); return; }
@@ -126,7 +128,7 @@ export function CodeEditorWindow() {
           <span className="text-[10px] text-[hsl(0_0%_35%)] uppercase tracking-wider font-semibold">Explorer</span>
         </div>
         <div className="flex-1 overflow-y-auto scrollbar-thin p-1">
-          {MOCK_FILES.map(f => (
+          {(isDemoMode ? MOCK_FILES : [] as typeof MOCK_FILES).map(f => (
             <FileTreeItem key={f.name} node={f} activeFile={activeFile?.name || ""} onSelect={openFile} />
           ))}
         </div>

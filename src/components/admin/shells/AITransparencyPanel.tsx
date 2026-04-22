@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { MultiAITeamPanel } from "./MultiAITeamPanel";
 import { AIConversationMode } from "./AIConversationMode";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 interface AITask {
   id: string;
@@ -147,7 +148,7 @@ export function AITransparencyPanel({ collapsed, onToggle }: { collapsed: boolea
               <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider">Active Tasks</span>
             </div>
             <div className="px-3 space-y-1.5 pb-3">
-              {DEMO_TASKS.map(task => (
+              {(isDemoMode ? DEMO_TASKS : [] as typeof DEMO_TASKS).map(task => (
                 <div key={task.id} className="p-2 rounded-lg bg-muted/10 border border-border/10 space-y-1">
                   <div className="flex items-center gap-2">
                     {statusIcon[task.status]}
@@ -179,7 +180,7 @@ export function AITransparencyPanel({ collapsed, onToggle }: { collapsed: boolea
               </div>
             </div>
             <div className="px-3 space-y-1.5 pb-3">
-              {DEMO_SUGGESTIONS.map(suggestion => (
+              {(isDemoMode ? DEMO_SUGGESTIONS : [] as typeof DEMO_SUGGESTIONS).map(suggestion => (
                 <div key={suggestion.id} className="group">
                   <button
                     onClick={() => setExpandedSuggestion(expandedSuggestion === suggestion.id ? null : suggestion.id)}

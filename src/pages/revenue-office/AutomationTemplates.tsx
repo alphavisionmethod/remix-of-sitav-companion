@@ -14,6 +14,7 @@ import {
 import AutomationSubNav from "./AutomationSubNav";
 import { DEMO_REV_categories as DEMO_categories, DEMO_templates } from "@/data/seed/revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const RECENTLY_USED = [
   { name: "Stale Lead Recovery", lastUsed: "3 days ago", timesUsed: 12, avgImpact: "$1,200/use" },
@@ -28,9 +29,10 @@ const TEMPLATE_COMBOS = [
 ];
 
 export default function AutomationTemplates() {
+  const { isDemoMode } = useDataMode();
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [tab, setTab] = useState("gallery");
-  const filtered = selectedCategory === "All" ? DEMO_templates : DEMO_templates.filter(t => t.category === selectedCategory);
+  const filtered = selectedCategory === "All" ? DEMO_templates : (isDemoMode ? DEMO_templates : [] as typeof DEMO_templates).filter(t => t.category === selectedCategory);
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 p-6">
@@ -43,8 +45,8 @@ export default function AutomationTemplates() {
       </div>
 
       <div className="grid grid-cols-3 md:grid-cols-5 gap-3">
-        <Card className="bg-card/50 border-border/50"><CardContent className="p-3 text-center"><p className="text-2xl font-bold text-foreground">{DEMO_templates.length}</p><p className="text-[10px] text-muted-foreground">Templates</p></CardContent></Card>
-        <Card className="bg-card/50 border-border/50"><CardContent className="p-3 text-center"><p className="text-2xl font-bold text-emerald-400">{DEMO_categories.length - 1}</p><p className="text-[10px] text-muted-foreground">Categories</p></CardContent></Card>
+        <Card className="bg-card/50 border-border/50"><CardContent className="p-3 text-center"><p className="text-2xl font-bold text-foreground">{(isDemoMode ? DEMO_templates : [] as typeof DEMO_templates).length}</p><p className="text-[10px] text-muted-foreground">Templates</p></CardContent></Card>
+        <Card className="bg-card/50 border-border/50"><CardContent className="p-3 text-center"><p className="text-2xl font-bold text-emerald-400">{(isDemoMode ? DEMO_categories : [] as typeof DEMO_categories).length - 1}</p><p className="text-[10px] text-muted-foreground">Categories</p></CardContent></Card>
         <Card className="bg-card/50 border-border/50"><CardContent className="p-3 text-center"><p className="text-2xl font-bold text-blue-400">6.1</p><p className="text-[10px] text-muted-foreground">Avg Steps</p></CardContent></Card>
         <Card className="bg-card/50 border-border/50"><CardContent className="p-3 text-center"><p className="text-2xl font-bold text-purple-400">4.8 min</p><p className="text-[10px] text-muted-foreground">Avg Setup</p></CardContent></Card>
         <Card className="bg-card/50 border-border/50"><CardContent className="p-3 text-center"><p className="text-2xl font-bold text-amber-400">$82K</p><p className="text-[10px] text-muted-foreground">Total Impact/mo</p></CardContent></Card>
@@ -61,7 +63,7 @@ export default function AutomationTemplates() {
         <TabsContent value="gallery" className="space-y-4 mt-4">
           {/* Category Filter */}
           <div className="flex flex-wrap gap-1.5">
-            {DEMO_categories.map((cat) => (
+            {(isDemoMode ? DEMO_categories : [] as typeof DEMO_categories).map((cat) => (
               <button key={cat} onClick={() => setSelectedCategory(cat)} className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${selectedCategory === cat ? "bg-primary text-primary-foreground" : "bg-secondary text-secondary-foreground hover:bg-primary/10"}`}>{cat}</button>
             ))}
           </div>

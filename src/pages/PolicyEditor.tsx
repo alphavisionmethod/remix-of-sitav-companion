@@ -15,8 +15,10 @@ import { DEMO_CORE_CATEGORIES_POLICY_EDITOR as DEMO_CATEGORIES } from "@/data/se
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { useDraftAutosave } from "@/hooks/useDraftAutosave";
 import { useEffect } from "react";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const PolicyEditor = () => {
+  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
   const qc = useQueryClient();
   const [category, setCategory] = useState("all");
@@ -69,7 +71,7 @@ const PolicyEditor = () => {
       </div>
 
       <SitaTabs
-        tabs={[{ key: "all", label: "All", count: policies.length }, ...DEMO_CATEGORIES.map(c => ({ key: c, label: c.charAt(0).toUpperCase() + c.slice(1), count: policies.filter(p => p.category === c).length }))]}
+        tabs={[{ key: "all", label: "All", count: policies.length }, ...(isDemoMode ? DEMO_CATEGORIES : [] as typeof DEMO_CATEGORIES).map(c => ({ key: c, label: c.charAt(0).toUpperCase() + c.slice(1), count: policies.filter(p => p.category === c).length }))]}
         active={category}
         onChange={setCategory}
       />
@@ -80,7 +82,7 @@ const PolicyEditor = () => {
           <div className="mt-3 space-y-3">
             <input className="w-full rounded-xl border border-border bg-secondary/40 px-4 py-2.5 text-sm text-foreground" placeholder="Policy name" value={newName} onChange={e => setNewName(e.target.value)} />
             <select className="w-full rounded-xl border border-border bg-secondary/40 px-4 py-2.5 text-sm text-foreground" value={newCategory} onChange={e => setNewCategory(e.target.value)}>
-              {DEMO_CATEGORIES.map(c => <option key={c} value={c}>{c.charAt(0).toUpperCase() + c.slice(1)}</option>)}
+              {(isDemoMode ? DEMO_CATEGORIES : [] as typeof DEMO_CATEGORIES).map(c => <option key={c} value={c}>{c.charAt(0).toUpperCase() + c.slice(1)}</option>)}
             </select>
             <label className="flex items-center gap-2 text-sm text-foreground">
               <input type="checkbox" checked={newApproval} onChange={e => setNewApproval(e.target.checked)} className="rounded border-border" />

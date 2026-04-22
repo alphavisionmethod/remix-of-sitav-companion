@@ -5,8 +5,10 @@ import { Shield, ArrowRightLeft, CheckCircle2, AlertTriangle, ArrowRight } from 
 import { DEMO_SECURE_ACTIONS, DEMO_CONTINUITY_FLOWS, DEMO_TRUST_CONTINUITY } from "@/data/seed/native-shell";
 import NSSSubNav from "@/components/admin/NSSSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const NSS03TrustContinuity = () => {
+  const { isDemoMode } = useDataMode();
   const secureActions = DEMO_SECURE_ACTIONS;
   const continuityFlows = DEMO_CONTINUITY_FLOWS;
   const trustContinuity = DEMO_TRUST_CONTINUITY;

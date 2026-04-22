@@ -10,8 +10,10 @@ import { useAppPlatform } from "@/contexts/AppPlatformContext";
 import { AppIcon } from "@/components/sita/app-platform/AppStoreComponents";
 import { DEMO_PERMISSION_DOMAINS } from "@/data/seed/core-pages";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const AppPermissionsCenterPage = () => {
+  const { isDemoMode } = useDataMode();
   const { apps, togglePermission } = useAppPlatform();
   const navigate = useNavigate();
   const [activeDomain, setActiveDomain] = useState("files");
@@ -20,7 +22,7 @@ const AppPermissionsCenterPage = () => {
     app.permissions.some(p => p.domain === activeDomain)
   );
 
-  const activeDomainInfo = DEMO_PERMISSION_DOMAINS.find(d => d.id === activeDomain)!;
+  const activeDomainInfo = (isDemoMode ? DEMO_PERMISSION_DOMAINS : [] as typeof DEMO_PERMISSION_DOMAINS).find(d => d.id === activeDomain)!;
 
   return (
     <div className="mx-auto max-w-4xl space-y-6">
@@ -35,7 +37,7 @@ const AppPermissionsCenterPage = () => {
 
       {/* Permission Domain Tabs */}
       <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-thin">
-        {DEMO_PERMISSION_DOMAINS.map(d => {
+        {(isDemoMode ? DEMO_PERMISSION_DOMAINS : [] as typeof DEMO_PERMISSION_DOMAINS).map(d => {
           const Icon = d.icon;
           const count = apps.filter(a => a.permissions.some(p => p.domain === d.id)).length;
           return (

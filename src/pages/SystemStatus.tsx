@@ -27,6 +27,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { DEMO_ENGINE_CONNECTORS, DEMO_FALLBACK_APPROVALS } from "@/data/seed/core-pages";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 // ── Initialize services with demo data ──────────────────────────
 
@@ -114,7 +115,8 @@ function useSelfHealingDemo() {
 
 // ── Severity Badge ──────────────────────────────────────────────
 
-const SeverityBadge = ({ severity }: { severity: string }) => {
+const SeverityBadge = ({
+  const { isDemoMode } = useDataMode(); severity }: { severity: string }) => {
   const colors: Record<string, string> = {
     P0: "bg-destructive text-destructive-foreground",
     P1: "bg-destructive/80 text-destructive-foreground",
@@ -282,7 +284,7 @@ const SystemStatus = () => {
             </div>
 
             <SitaSectionHeader title="Recent Approvals" />
-            {DEMO_FALLBACK_APPROVALS.map((a, i) => (
+            {(isDemoMode ? DEMO_FALLBACK_APPROVALS : [] as typeof DEMO_FALLBACK_APPROVALS).map((a, i) => (
               <SitaCard key={i} hover={false} className="p-3">
                 <div className="flex items-center justify-between gap-2">
                   <div className="min-w-0">
@@ -693,7 +695,7 @@ const SystemStatus = () => {
 
       {activeTab === "history" && (
         <div className="space-y-3">
-          {[...DEMO_FALLBACK_APPROVALS.map((a, i) => ({
+          {[...(isDemoMode ? DEMO_FALLBACK_APPROVALS : [] as typeof DEMO_FALLBACK_APPROVALS).map((a, i) => ({
             id: `approval-${i}`,
             type: "approval" as const,
             title: a.action,
@@ -728,7 +730,7 @@ const SystemStatus = () => {
             <div className="flex items-center justify-between">
               <p className="text-sm font-medium text-foreground">Execution Summary</p>
               <div className="flex items-center gap-4 text-xs text-muted-foreground">
-                <span>{DEMO_FALLBACK_APPROVALS.length} approvals</span>
+                <span>{(isDemoMode ? DEMO_FALLBACK_APPROVALS : [] as typeof DEMO_FALLBACK_APPROVALS).length} approvals</span>
                 <span>{incidents.length} incidents</span>
                 <span className="text-trust-safe">{incidents.filter(i => i.state === "resolved").length} resolved</span>
               </div>

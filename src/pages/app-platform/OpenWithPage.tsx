@@ -11,8 +11,10 @@ import { AppIcon, VerificationBadge } from "@/components/sita/app-platform/AppSt
 import { DEMO_FILES } from "@/data/seed/core-pages";
 import { toast } from "sonner";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const OpenWithPage = () => {
+  const { isDemoMode } = useDataMode();
   const navigate = useNavigate();
   const { apps, setDefaultApp } = useAppPlatform();
   const [selectedFile, setSelectedFile] = useState(DEMO_FILES[0]);
@@ -47,7 +49,7 @@ const OpenWithPage = () => {
 
       {/* File Selection */}
       <div className="flex gap-2 overflow-x-auto pb-1">
-        {DEMO_FILES.map(f => (
+        {(isDemoMode ? DEMO_FILES : [] as typeof DEMO_FILES).map(f => (
           <button key={f.name} onClick={() => { setSelectedFile(f); setSelectedApp(null); }}
             className={cn("shrink-0 flex items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-medium transition-all",
               selectedFile.name === f.name ? "bg-primary text-primary-foreground" : "bg-secondary text-muted-foreground hover:text-foreground")}>

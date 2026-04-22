@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useState } from "react";
 import { DEMO_BRANDS, DEMO_PARTNERS, DEMO_SPLITS } from "@/data/seed/revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const CLIENT_HEALTH_BY_PARTNER = [
   { partner: "Apex Growth", clients: [{ name: "TechFlow", health: 92, trend: "up", revenue: "$4,200/mo" }, { name: "HealthFirst", health: 78, trend: "stable", revenue: "$3,100/mo" }] },
@@ -21,9 +22,10 @@ const REPUTATION_CROSS_CLIENT = [
 ];
 
 const WhiteLabelOffice = () => {
+  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("partners");
-  const total = DEMO_PARTNERS.reduce((a, p) => a + p.revenue, 0);
-  const avgHealth = Math.round(DEMO_PARTNERS.reduce((a, p) => a + p.health, 0) / DEMO_PARTNERS.length);
+  const total = (isDemoMode ? DEMO_PARTNERS : [] as typeof DEMO_PARTNERS).reduce((a, p) => a + p.revenue, 0);
+  const avgHealth = Math.round((isDemoMode ? DEMO_PARTNERS : [] as typeof DEMO_PARTNERS).reduce((a, p) => a + p.health, 0) / (isDemoMode ? DEMO_PARTNERS : [] as typeof DEMO_PARTNERS).length);
 
   return (
     <div className="space-y-6 p-6">
@@ -31,11 +33,11 @@ const WhiteLabelOffice = () => {
 
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
         {[
-          { l: "Active Partners", v: DEMO_PARTNERS.filter(p => p.status === "active").length, c: "text-primary" },
-          { l: "Total Clients", v: DEMO_PARTNERS.reduce((a, p) => a + p.clients, 0), c: "text-foreground" },
+          { l: "Active Partners", v: (isDemoMode ? DEMO_PARTNERS : [] as typeof DEMO_PARTNERS).filter(p => p.status === "active").length, c: "text-primary" },
+          { l: "Total Clients", v: (isDemoMode ? DEMO_PARTNERS : [] as typeof DEMO_PARTNERS).reduce((a, p) => a + p.clients, 0), c: "text-foreground" },
           { l: "Partner Revenue", v: `$${(total / 1000).toFixed(1)}k`, c: "text-[hsl(var(--trust-safe))]" },
           { l: "Avg Health", v: `${avgHealth}/100`, c: avgHealth >= 70 ? "text-[hsl(var(--trust-safe))]" : "text-orange-400" },
-          { l: "Brand Kits", v: DEMO_BRANDS.length, c: "text-purple-400" },
+          { l: "Brand Kits", v: (isDemoMode ? DEMO_BRANDS : [] as typeof DEMO_BRANDS).length, c: "text-purple-400" },
         ].map(m => (
           <div key={m.l} className="rounded-xl border border-border/40 bg-card p-3 text-center">
             <p className="text-xs text-muted-foreground">{m.l}</p>
@@ -55,7 +57,7 @@ const WhiteLabelOffice = () => {
         </TabsList>
 
         <TabsContent value="partners" className="space-y-2 mt-4">
-          {DEMO_PARTNERS.map(p => (
+          {(isDemoMode ? DEMO_PARTNERS : [] as typeof DEMO_PARTNERS).map(p => (
             <div key={p.name} className="rounded-xl border border-border/40 bg-card p-4">
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-2"><span className="text-sm font-semibold">{p.name}</span><Badge variant="outline">{p.type}</Badge><Badge variant={p.status === "active" ? "default" : "secondary"}>{p.status}</Badge></div>
@@ -119,7 +121,7 @@ const WhiteLabelOffice = () => {
         </TabsContent>
 
         <TabsContent value="branding" className="space-y-3 mt-4">
-          {DEMO_BRANDS.map(b => (
+          {(isDemoMode ? DEMO_BRANDS : [] as typeof DEMO_BRANDS).map(b => (
             <div key={b.name} className="rounded-xl border border-border/40 bg-card p-4">
               <div className="flex items-center justify-between mb-2"><span className="text-sm font-semibold">{b.name}</span><Badge variant={b.status === "live" ? "default" : "outline"}>{b.status}</Badge></div>
               <p className="text-xs text-muted-foreground mb-2">Partner: {b.partner} · Domain: {b.domain}</p>
@@ -132,7 +134,7 @@ const WhiteLabelOffice = () => {
           <div className="rounded-xl border border-border/40 bg-card overflow-hidden">
             <table className="w-full text-xs">
               <thead><tr className="border-b border-border/40 bg-muted/30"><th className="text-left p-3">Partner</th><th className="text-right p-3">Gross</th><th className="text-right p-3">Theirs</th><th className="text-right p-3">Yours</th><th className="text-center p-3">Split</th><th className="text-right p-3">Pending</th></tr></thead>
-              <tbody>{DEMO_SPLITS.map(r => <tr key={r.partner} className="border-b border-border/20"><td className="p-3 font-medium">{r.partner}</td><td className="p-3 text-right">${r.gross.toLocaleString()}</td><td className="p-3 text-right">${r.theirs.toLocaleString()}</td><td className="p-3 text-right font-semibold text-[hsl(var(--trust-safe))]">${r.yours.toLocaleString()}</td><td className="p-3 text-center"><Badge variant="outline">{r.split}</Badge></td><td className="p-3 text-right">{r.pending > 0 ? `$${r.pending.toLocaleString()}` : "—"}</td></tr>)}</tbody>
+              <tbody>{(isDemoMode ? DEMO_SPLITS : [] as typeof DEMO_SPLITS).map(r => <tr key={r.partner} className="border-b border-border/20"><td className="p-3 font-medium">{r.partner}</td><td className="p-3 text-right">${r.gross.toLocaleString()}</td><td className="p-3 text-right">${r.theirs.toLocaleString()}</td><td className="p-3 text-right font-semibold text-[hsl(var(--trust-safe))]">${r.yours.toLocaleString()}</td><td className="p-3 text-center"><Badge variant="outline">{r.split}</Badge></td><td className="p-3 text-right">{r.pending > 0 ? `$${r.pending.toLocaleString()}` : "—"}</td></tr>)}</tbody>
             </table>
           </div>
         </TabsContent>

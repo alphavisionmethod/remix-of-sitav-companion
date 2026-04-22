@@ -327,7 +327,7 @@ const ActivityStream = () => {
   // Build unified timeline
   const timeline = useMemo(() => {
     if (isDemoMode) {
-      return DEMO_ACTIVITY_TIMELINE.map((ev: any, i: number) => ({
+      return (isDemoMode ? DEMO_ACTIVITY_TIMELINE : [] as typeof DEMO_ACTIVITY_TIMELINE).map((ev: any, i: number) => ({
         ...ev,
         id: i,
         type: ev.type || "system.event",

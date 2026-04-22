@@ -12,6 +12,7 @@ import { motion } from "framer-motion";
 import { useState, useMemo } from "react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvisorInsight";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 interface DemoTx {
   id: string; date: string; description: string; merchant: string; amountCents: number; category: string;
@@ -33,6 +34,7 @@ const DEMO_TXS: DemoTx[] = [
 ];
 
 const TransactionIntelligence = () => {
+  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -47,11 +49,11 @@ const TransactionIntelligence = () => {
   }, [tab, searchTerm]);
 
   const stats = useMemo(() => {
-    const total = DEMO_TXS.length;
-    const aiCategorized = DEMO_TXS.filter(t => t.categorizedBy === "ai").length;
-    const flagged = DEMO_TXS.filter(t => t.flags.length > 0).length;
-    const recurring = DEMO_TXS.filter(t => t.isRecurring).length;
-    const avgConfidence = DEMO_TXS.reduce((s, t) => s + t.confidence, 0) / total;
+    const total = (isDemoMode ? DEMO_TXS : [] as typeof DEMO_TXS).length;
+    const aiCategorized = (isDemoMode ? DEMO_TXS : [] as typeof DEMO_TXS).filter(t => t.categorizedBy === "ai").length;
+    const flagged = (isDemoMode ? DEMO_TXS : [] as typeof DEMO_TXS).filter(t => t.flags.length > 0).length;
+    const recurring = (isDemoMode ? DEMO_TXS : [] as typeof DEMO_TXS).filter(t => t.isRecurring).length;
+    const avgConfidence = (isDemoMode ? DEMO_TXS : [] as typeof DEMO_TXS).reduce((s, t) => s + t.confidence, 0) / total;
     return { total, aiCategorized, flagged, recurring, avgConfidence };
   }, []);
 

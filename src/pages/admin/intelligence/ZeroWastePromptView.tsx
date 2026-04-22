@@ -10,15 +10,17 @@ import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { DEMO_PROFILES } from "@/data/seed/admin-intelligence";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const offenders = DEMO_PROFILES
   .filter(p => p.redundancy > 20)
   .sort((a, b) => b.redundancy - a.redundancy);
 
-const avgCostReduction = Math.round(DEMO_PROFILES.reduce((s, p) => s + p.costReduction, 0) / DEMO_PROFILES.length);
-const packetDrivenPct = Math.round((DEMO_PROFILES.filter(p => p.packetDriven).length / DEMO_PROFILES.length) * 100);
+const avgCostReduction = Math.round((isDemoMode ? DEMO_PROFILES : [] as typeof DEMO_PROFILES).reduce((s, p) => s + p.costReduction, 0) / (isDemoMode ? DEMO_PROFILES : [] as typeof DEMO_PROFILES).length);
+const packetDrivenPct = Math.round(((isDemoMode ? DEMO_PROFILES : [] as typeof DEMO_PROFILES).filter(p => p.packetDriven).length / (isDemoMode ? DEMO_PROFILES : [] as typeof DEMO_PROFILES).length) * 100);
 
 const ZeroWastePromptView = () => {
+  const { isDemoMode } = useDataMode();
   const { isAdmin, loading } = useRequireAdmin();
   if (loading || !isAdmin) return null;
 
@@ -32,7 +34,7 @@ const ZeroWastePromptView = () => {
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {[
-          { label: "Prompt Profiles", value: String(DEMO_PROFILES.length) },
+          { label: "Prompt Profiles", value: String((isDemoMode ? DEMO_PROFILES : [] as typeof DEMO_PROFILES).length) },
           { label: "Avg Cost Reduction", value: `${avgCostReduction}%`, color: "text-emerald-400" },
           { label: "Packet-Driven", value: `${packetDrivenPct}%` },
           { label: "Offenders", value: String(offenders.length), color: offenders.length > 0 ? "text-amber-400" : "text-emerald-400" },
@@ -65,7 +67,7 @@ const ZeroWastePromptView = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {DEMO_PROFILES.map((p, i) => (
+              {(isDemoMode ? DEMO_PROFILES : [] as typeof DEMO_PROFILES).map((p, i) => (
                 <TableRow key={i}>
                   <TableCell className="text-xs font-medium text-foreground">{p.domain}</TableCell>
                   <TableCell className="text-xs text-muted-foreground">{p.taskType}</TableCell>
@@ -110,7 +112,7 @@ const ZeroWastePromptView = () => {
         <CardHeader className="pb-2"><CardTitle className="text-sm">Redundancy by Domain</CardTitle></CardHeader>
         <CardContent className="space-y-2">
           {Object.entries(
-            DEMO_PROFILES.reduce<Record<string, number[]>>((acc, p) => {
+            (isDemoMode ? DEMO_PROFILES : [] as typeof DEMO_PROFILES).reduce<Record<string, number[]>>((acc, p) => {
               if (!acc[p.domain]) acc[p.domain] = [];
               acc[p.domain].push(p.redundancy);
               return acc;

@@ -10,6 +10,7 @@ import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { DEMO_INTEL_DIFFS as DEMO_DIFFS } from "@/data/seed/admin-intelligence";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const actionColors: Record<string, string> = {
   "reuse-as-is": "text-emerald-400 bg-emerald-500/10",
@@ -19,15 +20,16 @@ const actionColors: Record<string, string> = {
 };
 
 const DifferentialReasoningExplorer = () => {
+  const { isDemoMode } = useDataMode();
   const { isAdmin, loading } = useRequireAdmin();
   if (loading || !isAdmin) return null;
 
-  const totalSaved = DEMO_DIFFS.reduce((s, d) => s + (d.costFull - d.costActual), 0);
-  const reuseCount = DEMO_DIFFS.filter(d => d.action === "reuse-as-is").length;
-  const partialCount = DEMO_DIFFS.filter(d => d.action === "partial-update").length;
-  const fullCount = DEMO_DIFFS.filter(d => d.action === "full-reanalysis").length;
-  const totalPreserved = DEMO_DIFFS.reduce((s, d) => s + d.preserved, 0);
-  const totalInvalidated = DEMO_DIFFS.reduce((s, d) => s + d.invalidated, 0);
+  const totalSaved = (isDemoMode ? DEMO_DIFFS : [] as typeof DEMO_DIFFS).reduce((s, d) => s + (d.costFull - d.costActual), 0);
+  const reuseCount = (isDemoMode ? DEMO_DIFFS : [] as typeof DEMO_DIFFS).filter(d => d.action === "reuse-as-is").length;
+  const partialCount = (isDemoMode ? DEMO_DIFFS : [] as typeof DEMO_DIFFS).filter(d => d.action === "partial-update").length;
+  const fullCount = (isDemoMode ? DEMO_DIFFS : [] as typeof DEMO_DIFFS).filter(d => d.action === "full-reanalysis").length;
+  const totalPreserved = (isDemoMode ? DEMO_DIFFS : [] as typeof DEMO_DIFFS).reduce((s, d) => s + d.preserved, 0);
+  const totalInvalidated = (isDemoMode ? DEMO_DIFFS : [] as typeof DEMO_DIFFS).reduce((s, d) => s + d.invalidated, 0);
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
@@ -76,7 +78,7 @@ const DifferentialReasoningExplorer = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {DEMO_DIFFS.map(d => (
+              {(isDemoMode ? DEMO_DIFFS : [] as typeof DEMO_DIFFS).map(d => (
                 <TableRow key={d.id}>
                   <TableCell className="text-xs font-medium text-foreground">{d.domain}</TableCell>
                   <TableCell className="text-xs text-muted-foreground max-w-[200px] truncate">{d.desc}</TableCell>
@@ -104,7 +106,7 @@ const DifferentialReasoningExplorer = () => {
       <Card className="bg-card/80 border-border/50">
         <CardHeader className="pb-2"><CardTitle className="text-sm">Detected Changes by Domain</CardTitle></CardHeader>
         <CardContent className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {DEMO_DIFFS.filter(d => d.changes.length > 0).map(d => (
+          {(isDemoMode ? DEMO_DIFFS : [] as typeof DEMO_DIFFS).filter(d => d.changes.length > 0).map(d => (
             <div key={d.id} className="p-3 rounded-lg bg-secondary/20 space-y-2">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-medium text-foreground">{d.domain}</span>

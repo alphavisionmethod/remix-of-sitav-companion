@@ -6,10 +6,12 @@ import { useAssistantRolePresences } from "@/hooks/use-notification-calm-data";
 import { DEMO_CALM_PRINCIPLES, DEMO_INTERVENTION_SCENARIOS } from "@/data/seed/notification-calm";
 import NRCSubNav from "@/components/admin/NRCSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 
 
 const NRC02CalmnessCenter = () => {
+  const { isDemoMode } = useDataMode();
   const { data: roles, isLoading } = useAssistantRolePresences();
   const calmPrinciples = DEMO_CALM_PRINCIPLES;
   const principleIcons = [Eye, Zap, MessageSquare, Shield, Heart, Users];

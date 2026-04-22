@@ -33,10 +33,10 @@ export default function LeakDetector() {
     details: [],
   })) : []);
   const totalLeakage = LEAKS.reduce((s, l) => s + parseInt(l.revenue.replace(/[^0-9]/g, "")), 0);
-  const totalRecovered = DEMO_LEAK_REPAIR_TRACKING.reduce((s, r) => s + parseInt(r.recoveredRevenue.replace(/[^0-9]/g, "")), 0);
+  const totalRecovered = (isDemoMode ? DEMO_LEAK_REPAIR_TRACKING : [] as typeof DEMO_LEAK_REPAIR_TRACKING).reduce((s, r) => s + parseInt(r.recoveredRevenue.replace(/[^0-9]/g, "")), 0);
   const recoveryRate = totalLeakage > 0 ? Math.round((totalRecovered / (totalLeakage + totalRecovered)) * 100) : 0;
-  const latestTrend = DEMO_LEAK_TRENDS[DEMO_LEAK_TRENDS.length - 1];
-  const prevTrend = DEMO_LEAK_TRENDS[DEMO_LEAK_TRENDS.length - 2];
+  const latestTrend = DEMO_LEAK_TRENDS[(isDemoMode ? DEMO_LEAK_TRENDS : [] as typeof DEMO_LEAK_TRENDS).length - 1];
+  const prevTrend = DEMO_LEAK_TRENDS[(isDemoMode ? DEMO_LEAK_TRENDS : [] as typeof DEMO_LEAK_TRENDS).length - 2];
   const trendDelta = prevTrend ? Math.round(((prevTrend.net - latestTrend.net) / prevTrend.net) * 100) : 0;
 
   if (!isDemoMode && isLoading) {
@@ -134,10 +134,10 @@ export default function LeakDetector() {
           <div className="rounded-xl border border-[hsl(var(--trust-safe))]/30 bg-[hsl(var(--trust-safe))]/5 p-4 text-center">
             <p className="text-sm text-[hsl(var(--trust-safe))] font-medium">Total Revenue Recovered</p>
             <p className="text-3xl font-bold text-[hsl(var(--trust-safe))] mt-1">${totalRecovered.toLocaleString()}</p>
-            <p className="text-xs text-muted-foreground mt-1">{DEMO_LEAK_REPAIR_TRACKING.filter(r => r.status === "repaired").length} leaks fully repaired</p>
+            <p className="text-xs text-muted-foreground mt-1">{(isDemoMode ? DEMO_LEAK_REPAIR_TRACKING : [] as typeof DEMO_LEAK_REPAIR_TRACKING).filter(r => r.status === "repaired").length} leaks fully repaired</p>
           </div>
 
-          {DEMO_LEAK_REPAIR_TRACKING.map((repair, i) => (
+          {(isDemoMode ? DEMO_LEAK_REPAIR_TRACKING : [] as typeof DEMO_LEAK_REPAIR_TRACKING).map((repair, i) => (
             <Card key={i} className="bg-card/50 border-border/50">
               <CardContent className="p-4">
                 <div className="flex items-center justify-between mb-2">
@@ -170,8 +170,8 @@ export default function LeakDetector() {
             <CardHeader className="pb-2"><CardTitle className="text-sm font-medium">Monthly Leakage vs Recovery</CardTitle></CardHeader>
             <CardContent>
               <div className="space-y-3">
-                {DEMO_LEAK_TRENDS.map((t, i) => {
-                  const maxVal = Math.max(...DEMO_LEAK_TRENDS.map(tt => tt.totalLeakage));
+                {(isDemoMode ? DEMO_LEAK_TRENDS : [] as typeof DEMO_LEAK_TRENDS).map((t, i) => {
+                  const maxVal = Math.max(...(isDemoMode ? DEMO_LEAK_TRENDS : [] as typeof DEMO_LEAK_TRENDS).map(tt => tt.totalLeakage));
                   return (
                     <div key={t.month} className="space-y-1.5">
                       <div className="flex items-center justify-between text-xs">
@@ -186,7 +186,7 @@ export default function LeakDetector() {
                         <div className="absolute inset-y-0 left-0 bg-red-400/30 rounded-full" style={{ width: `${(t.totalLeakage / maxVal) * 100}%` }} />
                         <div className="absolute inset-y-0 left-0 bg-[hsl(var(--trust-safe))]/50 rounded-full" style={{ width: `${(t.repaired / maxVal) * 100}%` }} />
                       </div>
-                      {i < DEMO_LEAK_TRENDS.length - 1 && (() => {
+                      {i < (isDemoMode ? DEMO_LEAK_TRENDS : [] as typeof DEMO_LEAK_TRENDS).length - 1 && (() => {
                         const next = DEMO_LEAK_TRENDS[i + 1];
                         const delta = Math.round(((t.net - next.net) / t.net) * 100);
                         return delta > 0 ? (

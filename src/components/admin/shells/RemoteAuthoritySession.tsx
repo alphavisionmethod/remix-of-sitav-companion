@@ -11,6 +11,7 @@ import {
   Monitor, Shield, Clock, CheckCircle, AlertTriangle, Terminal,
   XCircle, Lock, Eye, Radio, ArrowRight
 } from "lucide-react";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 interface RemoteCommand {
   id: string;

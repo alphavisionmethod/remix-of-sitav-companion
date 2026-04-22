@@ -10,14 +10,16 @@ import { DEMO_CONSENT_CATEGORIES, DEMO_REVOCATION_ACTIONS } from "@/data/seed/he
 import { DEMO_PRINCIPLES } from "@/data/seed/admin-platform";
 import HRSSubNav from "@/components/admin/HRSSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 
 
 const ICON_MAP: Record<string, any> = { ingestion: Eye, routing: ShieldCheck, boardroom: FileText, assistant: Heart };
 
 const HRS01HealthConsentCenter = () => {
+  const { isDemoMode } = useDataMode();
   const [enabledCats, setEnabledCats] = useState<Record<string, boolean>>(
-    Object.fromEntries(DEMO_CONSENT_CATEGORIES.map(c => [c.key, false]))
+    Object.fromEntries((isDemoMode ? DEMO_CONSENT_CATEGORIES : [] as typeof DEMO_CONSENT_CATEGORIES).map(c => [c.key, false]))
   );
   const { data: dbConsents, isLoading } = useHealthSignalConsents();
   const toggleConsent = useToggleSignalConsent();
@@ -26,7 +28,7 @@ const HRS01HealthConsentCenter = () => {
   useEffect(() => {
     if (dbConsents?.length) {
       const fromDb: Record<string, boolean> = {};
-      DEMO_CONSENT_CATEGORIES.forEach(c => {
+      (isDemoMode ? DEMO_CONSENT_CATEGORIES : [] as typeof DEMO_CONSENT_CATEGORIES).forEach(c => {
         const match = dbConsents.find((dc: Record<string, any>) => dc.consent_scope === c.key && dc.read_permission && !dc.revoked_at);
         fromDb[c.key] = !!match;
       });
@@ -56,7 +58,7 @@ const HRS01HealthConsentCenter = () => {
 
         <TabsContent value="categories">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {DEMO_CONSENT_CATEGORIES.map((c) => {
+            {(isDemoMode ? DEMO_CONSENT_CATEGORIES : [] as typeof DEMO_CONSENT_CATEGORIES).map((c) => {
               const Icon = ICON_MAP[c.key] || Eye;
               return (
                 <Card key={c.key} className="hover:shadow-md transition-shadow">
@@ -119,7 +121,7 @@ const HRS01HealthConsentCenter = () => {
           <Card>
             <CardHeader><CardTitle className="text-sm flex items-center gap-2"><Lock className="h-4 w-4" />Core Consent Principles</CardTitle></CardHeader>
             <CardContent className="space-y-2">
-              {DEMO_PRINCIPLES.map((p, i) => (
+              {(isDemoMode ? DEMO_PRINCIPLES : [] as typeof DEMO_PRINCIPLES).map((p, i) => (
                 <div key={i} className="flex items-start gap-2 p-2 rounded border text-xs"><CheckCircle2 className="h-3 w-3 text-green-500 shrink-0 mt-0.5" />{p}</div>
               ))}
             </CardContent>
@@ -134,7 +136,7 @@ const HRS01HealthConsentCenter = () => {
               <table className="w-full text-xs">
                 <thead><tr className="border-b"><th className="text-left p-2">Action</th><th className="text-left p-2">Effect</th><th className="p-2">Timeline</th><th className="text-left p-2">Cascade</th></tr></thead>
                 <tbody>
-                  {DEMO_REVOCATION_ACTIONS.map((r) => (
+                  {(isDemoMode ? DEMO_REVOCATION_ACTIONS : [] as typeof DEMO_REVOCATION_ACTIONS).map((r) => (
                     <tr key={r.action} className="border-b hover:bg-muted/30">
                       <td className="p-2 font-medium">{r.action}</td>
                       <td className="p-2 text-muted-foreground">{r.effect}</td>

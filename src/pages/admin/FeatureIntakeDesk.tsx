@@ -15,10 +15,12 @@ import { toast } from "sonner";
 import { classifyFeatureDomain } from "@/lib/delivery-methodology/feature-factory";
 import { DEMO_ADMIN_ARCHETYPES as DEMO_ARCHETYPES } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 
 
 const FeatureIntakeDesk = () => {
+  const { isDemoMode } = useDataMode();
   const queryClient = useQueryClient();
   const [form, setForm] = useState({
     title: "", description: "", userIntent: "", domain: "", archetypeKey: "dashboard",
@@ -79,7 +81,7 @@ const FeatureIntakeDesk = () => {
                 <label className="text-sm font-medium">Archetype</label>
                 <Select value={form.archetypeKey} onValueChange={v => setForm({ ...form, archetypeKey: v })}>
                   <SelectTrigger><SelectValue /></SelectTrigger>
-                  <SelectContent>{DEMO_ARCHETYPES.map(a => <SelectItem key={a} value={a}>{a}</SelectItem>)}</SelectContent>
+                  <SelectContent>{(isDemoMode ? DEMO_ARCHETYPES : [] as typeof DEMO_ARCHETYPES).map(a => <SelectItem key={a} value={a}>{a}</SelectItem>)}</SelectContent>
                 </Select>
               </div>
               <div>

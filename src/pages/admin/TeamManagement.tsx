@@ -25,6 +25,7 @@ import { ConfirmationDialog } from "@/components/sita/ConfirmationDialog";
 import { toast } from "sonner";
 import { DEMO_ADVISOR_TYPE_OPTIONS, DEMO_DOMAIN_OPTIONS } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.04 } } };
@@ -59,6 +60,7 @@ const EMPTY_FORM: AdvisorFormData = {
 };
 
 export default function TeamManagement() {
+  const { isDemoMode } = useDataMode();
   const [search, setSearch] = useState("");
   const [selectedAdvisor, setSelectedAdvisor] = useState<string | null>(null);
   const [formDialog, setFormDialog] = useState<{ open: boolean; mode: "create" | "edit"; data: AdvisorFormData; editId?: string }>({
@@ -428,14 +430,14 @@ export default function TeamManagement() {
                 <Label className="text-xs">Domain</Label>
                 <Select value={formDialog.data.domain} onValueChange={v => updateForm({ domain: v })}>
                   <SelectTrigger><SelectValue /></SelectTrigger>
-                  <SelectContent>{DEMO_DOMAIN_OPTIONS.map(d => <SelectItem key={d} value={d} className="capitalize">{d}</SelectItem>)}</SelectContent>
+                  <SelectContent>{(isDemoMode ? DEMO_DOMAIN_OPTIONS : [] as typeof DEMO_DOMAIN_OPTIONS).map(d => <SelectItem key={d} value={d} className="capitalize">{d}</SelectItem>)}</SelectContent>
                 </Select>
               </div>
               <div className="space-y-1.5">
                 <Label className="text-xs">Advisor Type</Label>
                 <Select value={formDialog.data.advisor_type} onValueChange={v => updateForm({ advisor_type: v })}>
                   <SelectTrigger><SelectValue /></SelectTrigger>
-                  <SelectContent>{DEMO_ADVISOR_TYPE_OPTIONS.map(t => <SelectItem key={t} value={t} className="capitalize">{t}</SelectItem>)}</SelectContent>
+                  <SelectContent>{(isDemoMode ? DEMO_ADVISOR_TYPE_OPTIONS : [] as typeof DEMO_ADVISOR_TYPE_OPTIONS).map(t => <SelectItem key={t} value={t} className="capitalize">{t}</SelectItem>)}</SelectContent>
                 </Select>
               </div>
             </div>

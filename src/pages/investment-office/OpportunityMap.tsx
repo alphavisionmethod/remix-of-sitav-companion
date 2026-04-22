@@ -6,8 +6,10 @@ import { INSTRUMENTS } from "@/hooks/useInvestmentOfficeData";
 import { useMarketWatchlistItems } from "@/hooks/use-investment-office";
 import { DEMO_THEMES } from "@/data/seed/investment";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function OpportunityMap() {
+  const { isDemoMode } = useDataMode();
   const { data: liveData, isLoading } = useMarketWatchlistItems();
   const navigate = useNavigate();
   const [selectedTheme, setSelectedTheme] = useState(DEMO_THEMES[0]);
@@ -21,7 +23,7 @@ export default function OpportunityMap() {
 
       {/* Theme Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
-        {DEMO_THEMES.map((theme, i) => (
+        {(isDemoMode ? DEMO_THEMES : [] as typeof DEMO_THEMES).map((theme, i) => (
           <motion.button key={theme.id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.03 }}
             onClick={() => setSelectedTheme(theme)}
             className={`rounded-2xl border p-4 text-left transition-all ${

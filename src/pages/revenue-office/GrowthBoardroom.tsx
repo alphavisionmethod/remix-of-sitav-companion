@@ -201,7 +201,7 @@ export default function GrowthBoardroom() {
         <Card className="bg-card/50 border-border/50">
           <CardHeader className="pb-3"><CardTitle className="text-sm font-medium flex items-center gap-2"><RefreshCw className="w-4 h-4 text-primary" /> What Changed</CardTitle></CardHeader>
           <CardContent className="space-y-3">
-            {DEMO_WHAT_CHANGED.map((w, i) => (
+            {(isDemoMode ? DEMO_WHAT_CHANGED : [] as typeof DEMO_WHAT_CHANGED).map((w, i) => (
               <div key={i} className="flex items-start gap-2">
                 <div className={`w-1.5 h-1.5 rounded-full mt-2 flex-shrink-0 ${w.type === "positive" ? "bg-green-400" : w.type === "warning" ? "bg-yellow-400" : "bg-red-400"}`} />
                 <div className="flex-1">

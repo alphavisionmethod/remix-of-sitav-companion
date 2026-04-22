@@ -33,7 +33,7 @@ const TravelPlanning = () => {
   const [view, setView] = useState<TravelView>("trips");
   const [selectedTrip, setSelectedTrip] = useState(trips[1]);
 
-  const prepQueueItems = DEMO_preTripChecklist.flatMap((section, si) =>
+  const prepQueueItems = (isDemoMode ? DEMO_preTripChecklist : [] as typeof DEMO_preTripChecklist).flatMap((section, si) =>
     section.items.map((item, ii) => ({
       id: `prep-${si}-${ii}`,
       label: item,
@@ -42,7 +42,7 @@ const TravelPlanning = () => {
     }))
   ).slice(0, 8);
 
-  const itineraryEvents = DEMO_itinerary.map((day, i) => ({
+  const itineraryEvents = (isDemoMode ? DEMO_itinerary : [] as typeof DEMO_itinerary).map((day, i) => ({
     id: `day-${i}`,
     title: day.day,
     timestamp: `${day.items.length} activities`,
@@ -94,7 +94,7 @@ const TravelPlanning = () => {
           {view === "logistics" && (
             <div className="space-y-2">
               <h4 className={cn(SITA_TYPE.microLabel, "text-[hsl(0_0%_50%)]")}>Household Spillover</h4>
-              {DEMO_householdSpillover.map((item, i) => (
+              {(isDemoMode ? DEMO_householdSpillover : [] as typeof DEMO_householdSpillover).map((item, i) => (
                 <StatusCard key={i} label={item.item} status={item.urgency === "high" ? "degraded" : "healthy"} lastChecked={item.cost || undefined} icon={<Home className="h-3.5 w-3.5" />} />
               ))}
             </div>
@@ -103,7 +103,7 @@ const TravelPlanning = () => {
           {view === "post-trip" && (
             <QueueCard
               title="Post-Trip Recovery"
-              items={DEMO_postTripTasks.map((task, i) => ({ id: `pt-${i}`, label: task, urgency: "normal" as const }))}
+              items={(isDemoMode ? DEMO_postTripTasks : [] as typeof DEMO_postTripTasks).map((task, i) => ({ id: `pt-${i}`, label: task, urgency: "normal" as const }))}
               maxVisible={10}
             />
           )}

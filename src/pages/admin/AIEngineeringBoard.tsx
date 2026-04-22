@@ -136,7 +136,7 @@ const AIEngineeringBoard = () => {
 
       {/* A. Engineering Overview Band */}
       <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-2">
-        {DEMO_OVERVIEW_BAND.map(c => (
+        {(isDemoMode ? DEMO_OVERVIEW_BAND : [] as typeof DEMO_OVERVIEW_BAND).map(c => (
           <div key={c.label} className="rounded-xl border border-border/40 bg-card p-3 text-center">
             <div className={`mx-auto mb-1.5 flex h-8 w-8 items-center justify-center rounded-lg ${c.bg}`}>
               <c.icon className={`h-3.5 w-3.5 ${c.color}`} />
@@ -164,10 +164,10 @@ const AIEngineeringBoard = () => {
           <div className="rounded-xl border border-destructive/20 bg-destructive/5 p-4 space-y-2">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2 text-sm font-semibold text-destructive">
-                <AlertTriangle className="h-4 w-4" /> Needs Attention ({DEMO_ATTENTION_ITEMS.length})
+                <AlertTriangle className="h-4 w-4" /> Needs Attention ({(isDemoMode ? DEMO_ATTENTION_ITEMS : [] as typeof DEMO_ATTENTION_ITEMS).length})
               </div>
             </div>
-            {DEMO_ATTENTION_ITEMS.map((item, i) => (
+            {(isDemoMode ? DEMO_ATTENTION_ITEMS : [] as typeof DEMO_ATTENTION_ITEMS).map((item, i) => (
               <div key={i} className={`rounded-lg border p-3 ${attentionColor(item.severity)}`}>
                 <div className="flex items-center justify-between mb-0.5">
                   <span className="text-sm font-medium">{item.title}</span>
@@ -229,7 +229,7 @@ const AIEngineeringBoard = () => {
               ))}
             </div>
             <div className="space-y-1">
-              {DEMO_RECENT_HEALS.map((h, i) => (
+              {(isDemoMode ? DEMO_RECENT_HEALS : [] as typeof DEMO_RECENT_HEALS).map((h, i) => (
                 <div key={i} className="flex items-center gap-2 py-1.5 border-b border-border/10 last:border-0">
                   <CheckCircle2 className="h-3.5 w-3.5 text-[hsl(var(--trust-safe))] shrink-0" />
                   <span className="text-xs flex-1 truncate">{h.action}</span>
@@ -246,7 +246,7 @@ const AIEngineeringBoard = () => {
               <Link to="/admin/ai-learning" className="text-xs text-primary hover:underline flex items-center gap-1">Learning Center <ArrowUpRight className="h-3 w-3" /></Link>
             </div>
             <div className="space-y-2">
-              {DEMO_LEARNING_HIGHLIGHTS.map((l, i) => (
+              {(isDemoMode ? DEMO_LEARNING_HIGHLIGHTS : [] as typeof DEMO_LEARNING_HIGHLIGHTS).map((l, i) => (
                 <div key={i} className="rounded-lg bg-muted/20 p-2.5 flex items-start gap-2">
                   <Badge variant="outline" className="text-[9px] shrink-0 mt-0.5">{l.type}</Badge>
                   <div className="flex-1"><p className="text-xs">{l.detail}</p></div>
@@ -263,7 +263,7 @@ const AIEngineeringBoard = () => {
               <Link to="/admin/ai-time-machine" className="text-xs text-primary hover:underline flex items-center gap-1">Time Machine <ArrowUpRight className="h-3 w-3" /></Link>
             </div>
             <div className="space-y-1">
-              {DEMO_CHANGES.slice(0, 6).map((a, i) => (
+              {(isDemoMode ? DEMO_CHANGES : [] as typeof DEMO_CHANGES).slice(0, 6).map((a, i) => (
                 <div key={i} className="flex items-center gap-3 py-2 border-b border-border/20 last:border-0">
                   <div className={`h-2 w-2 rounded-full shrink-0 ${typeDotColor(a.type)}`} />
                   <div className="flex-1 min-w-0">
@@ -280,11 +280,11 @@ const AIEngineeringBoard = () => {
         {/* ── TAB 2: AI TEAM ── */}
         <TabsContent value="team" className="mt-4">
           <div className="flex items-center justify-between mb-3">
-            <p className="text-sm text-muted-foreground">{DEMO_AGENT_SIGNALS.length} specialists · {DEMO_AGENT_SIGNALS.filter(t => t.escalation).length} escalated</p>
+            <p className="text-sm text-muted-foreground">{(isDemoMode ? DEMO_AGENT_SIGNALS : [] as typeof DEMO_AGENT_SIGNALS).length} specialists · {(isDemoMode ? DEMO_AGENT_SIGNALS : [] as typeof DEMO_AGENT_SIGNALS).filter(t => t.escalation).length} escalated</p>
             <Link to="/admin/ai-team-roster" className="text-xs text-primary hover:underline flex items-center gap-1">Full Roster <ArrowUpRight className="h-3 w-3" /></Link>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-            {DEMO_AGENT_SIGNALS.map(t => (
+            {(isDemoMode ? DEMO_AGENT_SIGNALS : [] as typeof DEMO_AGENT_SIGNALS).map(t => (
               <div key={t.name} className={`rounded-xl border p-3 flex items-center gap-3 ${t.escalation ? "border-amber-500/30 bg-amber-500/5" : "border-border/40 bg-card"}`}>
                 <div className={`h-2 w-2 rounded-full shrink-0 ${t.escalation ? "bg-amber-500" : t.tasks > 0 ? "bg-[hsl(var(--trust-safe))]" : "bg-muted-foreground/30"}`} />
                 <div className="flex-1 min-w-0">
@@ -378,7 +378,7 @@ const AIEngineeringBoard = () => {
             ))}
           </div>
           <div className="space-y-2">
-            {DEMO_RECENT_HEALS.map((h, i) => (
+            {(isDemoMode ? DEMO_RECENT_HEALS : [] as typeof DEMO_RECENT_HEALS).map((h, i) => (
               <div key={i} className="rounded-xl border border-border/40 bg-card p-3 flex items-center gap-3">
                 <CheckCircle2 className="h-4 w-4 text-[hsl(var(--trust-safe))] shrink-0" />
                 <div className="flex-1 min-w-0">
@@ -394,7 +394,7 @@ const AIEngineeringBoard = () => {
         {/* ── TAB 6: RELEASES ── */}
         <TabsContent value="releases" className="space-y-4 mt-4">
           <div className="space-y-2">
-            {DEMO_ENVIRONMENTS.map(e => (
+            {(isDemoMode ? DEMO_ENVIRONMENTS : [] as typeof DEMO_ENVIRONMENTS).map(e => (
               <div key={e.env} className="rounded-xl border border-border/40 bg-card p-4">
                 <div className="flex items-center justify-between mb-1">
                   <div className="flex items-center gap-2">
@@ -411,7 +411,7 @@ const AIEngineeringBoard = () => {
           <div className="rounded-xl border border-border/40 bg-card p-4">
             <div className="flex items-center gap-2 mb-3"><Shield className="h-4 w-4 text-primary" /><span className="text-sm font-semibold">Release Gates</span></div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
-              {DEMO_RELEASE_GATES.map(g => (
+              {(isDemoMode ? DEMO_RELEASE_GATES : [] as typeof DEMO_RELEASE_GATES).map(g => (
                 <div key={g.gate} className={`rounded-lg border p-3 ${g.status === "pass" ? "border-[hsl(var(--trust-safe))]/20 bg-[hsl(var(--trust-safe))]/5" : "border-amber-500/20 bg-amber-500/5"}`}>
                   <div className="flex items-center gap-1.5 mb-1">
                     {g.status === "pass" ? <CheckCircle2 className="h-3.5 w-3.5 text-[hsl(var(--trust-safe))]" /> : <AlertTriangle className="h-3.5 w-3.5 text-amber-500" />}

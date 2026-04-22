@@ -20,6 +20,7 @@ import {
 import { DEMO_ADMIN_PROVIDER_CAPS_A_P_L01_APPLE_ECOSYSTEM_CENTER as DEMO_PROVIDER_CAPS } from "@/data/seed/admin-platform";
 import APLSubNav from "@/components/admin/APLSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const SURFACE_META: Record<string, { title: string; icon: any; desc: string; tech: string[]; capabilities: string[] }> = {
   iphone: { title: "iPhone Shell", icon: Smartphone, desc: "Primary mobile — task, approval, advisor", tech: ["Swift/SwiftUI", "WebView hybrid"], capabilities: ["push", "biometric", "camera", "haptic"] },
@@ -30,6 +31,7 @@ const SURFACE_META: Record<string, { title: string; icon: any; desc: string; tec
 };
 
 const APL01AppleEcosystemCenter = () => {
+  const { isDemoMode } = useDataMode();
   const [showDependencies, setShowDependencies] = useState(false);
   const [showAddDevice, setShowAddDevice] = useState(false);
   const [newDevice, setNewDevice] = useState({ surface: "iphone", device_model: "", os_version: "" });
@@ -182,7 +184,7 @@ const APL01AppleEcosystemCenter = () => {
                     <th className="p-2">Priority</th>
                   </tr></thead>
                   <tbody>
-                    {DEMO_PROVIDER_CAPS.map((cap) => {
+                    {(isDemoMode ? DEMO_PROVIDER_CAPS : [] as typeof DEMO_PROVIDER_CAPS).map((cap) => {
                       const matchingLaunch = launchData?.find((r: Record<string, any>) => r.target.includes(cap.key.replace("apple_", "")));
                       const status = matchingLaunch?.launch_stage || "planned";
                       return (

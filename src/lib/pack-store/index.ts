@@ -405,9 +405,9 @@ export const PACK_CATALOG: PackManifest[] = [
   },
 ];
 
-// ── Install State Mock ──────────────────────────────────────────
+// ── Install State (Demo Fallback) ──────────────────────────────
 
-export const MOCK_INSTALL_STATES: InstallState[] = [
+export const DEMO_INSTALL_STATES: InstallState[] = [
   { pack_id: "pack-founder-boardroom", status: "installed", installed_at: Date.now() - 30 * 86400000, version_installed: "2.1.0", setup_completed: true, connectors_linked: ["stripe"], updated_at: Date.now() - 2 * 86400000 },
   { pack_id: "pack-collections", status: "installed", installed_at: Date.now() - 14 * 86400000, version_installed: "1.9.0", setup_completed: true, connectors_linked: ["stripe", "quickbooks"], updated_at: Date.now() - 7 * 86400000 },
   { pack_id: "pack-family-coo", status: "trial-active", trial_started_at: Date.now() - 3 * 86400000, trial_ends_at: Date.now() + 11 * 86400000, version_installed: "1.8.0", setup_completed: true, connectors_linked: ["google-calendar"] },
@@ -425,7 +425,7 @@ export function getFeaturedPacks(): PackManifest[] {
 }
 
 export function getInstallState(packId: string): InstallState | undefined {
-  return MOCK_INSTALL_STATES.find(s => s.pack_id === packId);
+  return DEMO_INSTALL_STATES.find(s => s.pack_id === packId);
 }
 
 export function isInstalled(packId: string): boolean {
@@ -434,7 +434,7 @@ export function isInstalled(packId: string): boolean {
 }
 
 export function getInstalledPacks(): (PackManifest & { installState: InstallState })[] {
-  return MOCK_INSTALL_STATES
+  return DEMO_INSTALL_STATES
     .map(s => {
       const pack = PACK_CATALOG.find(p => p.pack_id === s.pack_id);
       return pack ? { ...pack, installState: s } : null;

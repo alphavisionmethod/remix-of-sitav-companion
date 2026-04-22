@@ -9,6 +9,7 @@ import { Globe, Sparkles, CheckCircle, Search, Zap, Shield, Play, ArrowRight, Al
 import { Input } from "@/components/ui/input";
 import { DEMO_USE_CASES } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.05 } } };
@@ -36,9 +37,10 @@ const DEMO_SIMULATIONS = [
 ];
 
 const IntegrationConciergePage = () => {
+  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("discover");
   const [search, setSearch] = useState("");
-  const filtered = DEMO_USE_CASES.filter(uc => uc.title.toLowerCase().includes(search.toLowerCase()));
+  const filtered = (isDemoMode ? DEMO_USE_CASES : [] as typeof DEMO_USE_CASES).filter(uc => uc.title.toLowerCase().includes(search.toLowerCase()));
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
@@ -121,7 +123,7 @@ const IntegrationConciergePage = () => {
           <Card>
             <CardHeader className="pb-3"><CardTitle className="text-sm font-semibold flex items-center gap-2"><Sparkles className="h-4 w-4 text-primary" /> Connector Recommendations</CardTitle></CardHeader>
             <CardContent className="space-y-2">
-              {DEMO_RECOMMENDATIONS.map(r => (
+              {(isDemoMode ? DEMO_RECOMMENDATIONS : [] as typeof DEMO_RECOMMENDATIONS).map(r => (
                 <div key={r.id} className="p-3 rounded-lg border hover:bg-muted/20 transition-colors">
                   <div className="flex items-center justify-between mb-1">
                     <div className="flex items-center gap-2">
@@ -139,7 +141,7 @@ const IntegrationConciergePage = () => {
         </TabsContent>
 
         <TabsContent value="workflows" className="mt-4 space-y-3">
-          {DEMO_WORKFLOWS.map(wf => (
+          {(isDemoMode ? DEMO_WORKFLOWS : [] as typeof DEMO_WORKFLOWS).map(wf => (
             <Card key={wf.id} className="hover:bg-muted/20 transition-colors">
               <CardContent className="p-4">
                 <div className="flex items-center justify-between mb-3">
@@ -167,7 +169,7 @@ const IntegrationConciergePage = () => {
         </TabsContent>
 
         <TabsContent value="simulations" className="mt-4 space-y-3">
-          {DEMO_SIMULATIONS.map(sim => (
+          {(isDemoMode ? DEMO_SIMULATIONS : [] as typeof DEMO_SIMULATIONS).map(sim => (
             <Card key={sim.id} className={`hover:bg-muted/20 transition-colors ${sim.result !== "success" ? "border-amber-500/20" : ""}`}>
               <CardContent className="p-4">
                 <div className="flex items-center justify-between mb-2">

@@ -9,6 +9,7 @@ import {
   CheckCircle, AlertTriangle, Lock, ArrowRight
 } from "lucide-react";
 import { WhyTooltip } from "./WhyTooltip";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 interface AdaptationRule {
   id: string;
@@ -177,7 +178,7 @@ export function PlatformAdaptationRules() {
                     </tr>
                   </thead>
                   <tbody>
-                    {DEMO_RULES.map((rule, i) => (
+                    {(isDemoMode ? DEMO_RULES : [] as typeof DEMO_RULES).map((rule, i) => (
                       <tr key={rule.id} className={cn("border-b border-white/[0.04]", i % 2 === 0 && "bg-white/[0.01]")}>
                         <td className="px-4 py-2.5 font-medium text-foreground whitespace-nowrap">{rule.category}</td>
                         <td className="px-4 py-2.5 text-blue-300/80">{rule.osRule}</td>

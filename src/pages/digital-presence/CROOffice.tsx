@@ -6,8 +6,10 @@ import { Progress } from "@/components/ui/progress";
 import { DEMO_CTA_ANALYSIS, DEMO_FORM_FRICTION, DEMO_FUNNEL_LEAKS, DEMO_MOBILE_ISSUES, DEMO_TRUST_GAPS } from "@/data/seed/digital-presence";
 import DPOSubNav from "./DPOSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function CROOffice() {
+  const { isDemoMode } = useDataMode();
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
       <DPOSubNav />
@@ -21,7 +23,7 @@ export default function CROOffice() {
         <Card className="bg-card/50 border-border/50">
           <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><MousePointer className="w-4 h-4 text-blue-400" /> CTA Analysis</CardTitle></CardHeader>
           <CardContent className="space-y-3">
-            {DEMO_CTA_ANALYSIS.map(c => (
+            {(isDemoMode ? DEMO_CTA_ANALYSIS : [] as typeof DEMO_CTA_ANALYSIS).map(c => (
               <div key={c.page + c.cta} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
                 <div>
                   <span className="text-xs font-medium text-foreground">{c.cta}</span>
@@ -41,7 +43,7 @@ export default function CROOffice() {
         <Card className="bg-card/50 border-border/50">
           <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><Shield className="w-4 h-4 text-amber-400" /> Trust Gaps</CardTitle></CardHeader>
           <CardContent className="space-y-3">
-            {DEMO_TRUST_GAPS.map(t => (
+            {(isDemoMode ? DEMO_TRUST_GAPS : [] as typeof DEMO_TRUST_GAPS).map(t => (
               <div key={t.page + t.gap} className="p-3 bg-muted/30 rounded-lg">
                 <div className="flex items-center justify-between mb-1">
                   <span className="text-xs font-medium text-foreground">{t.page}</span>
@@ -58,7 +60,7 @@ export default function CROOffice() {
         <Card className="bg-card/50 border-border/50">
           <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><TrendingUp className="w-4 h-4 text-red-400" /> Funnel Leaks</CardTitle></CardHeader>
           <CardContent className="space-y-3">
-            {DEMO_FUNNEL_LEAKS.map(f => (
+            {(isDemoMode ? DEMO_FUNNEL_LEAKS : [] as typeof DEMO_FUNNEL_LEAKS).map(f => (
               <div key={f.step} className="p-3 bg-muted/30 rounded-lg">
                 <div className="flex items-center justify-between mb-1">
                   <span className="text-xs font-medium text-foreground flex items-center gap-1">{f.step.split(" → ").join(" ")} <ArrowRight className="w-3 h-3 inline" /> {""}</span>
@@ -74,7 +76,7 @@ export default function CROOffice() {
         <Card className="bg-card/50 border-border/50">
           <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><FormInput className="w-4 h-4 text-purple-400" /> Form Friction</CardTitle></CardHeader>
           <CardContent className="space-y-3">
-            {DEMO_FORM_FRICTION.map(f => (
+            {(isDemoMode ? DEMO_FORM_FRICTION : [] as typeof DEMO_FORM_FRICTION).map(f => (
               <div key={f.page} className="p-3 bg-muted/30 rounded-lg">
                 <div className="flex items-center justify-between mb-1">
                   <span className="text-xs font-medium text-foreground">{f.page} Form</span>
@@ -92,7 +94,7 @@ export default function CROOffice() {
           <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><Smartphone className="w-4 h-4 text-cyan-400" /> Mobile UX Issues</CardTitle></CardHeader>
           <CardContent>
             <div className="grid md:grid-cols-2 gap-3">
-              {DEMO_MOBILE_ISSUES.map(m => (
+              {(isDemoMode ? DEMO_MOBILE_ISSUES : [] as typeof DEMO_MOBILE_ISSUES).map(m => (
                 <div key={m.page + m.issue} className="p-3 bg-muted/30 rounded-lg">
                   <div className="flex items-center justify-between mb-1">
                     <span className="text-xs font-mono text-muted-foreground">{m.page}</span>

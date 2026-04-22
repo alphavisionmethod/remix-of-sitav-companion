@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { RefreshCw, CheckCircle2, Database, Layers, Shield, FileCheck, GitBranch, Loader2 } from "lucide-react";
 import { DEMO_ADMIN_CORE_SERVICES as DEMO_CORE_SERVICES } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 interface ServiceStatus {
   name: string;
@@ -86,10 +87,11 @@ function useRecentWrites() {
 }
 
 export default function PersistenceStatus() {
+  const { isDemoMode } = useDataMode();
   const { data: stats, isLoading: statsLoading, refetch: refetchStats } = useSubstrateStats();
   const { data: recentWrites, isLoading: writesLoading, refetch: refetchWrites, isFetching } = useRecentWrites();
 
-  const allWired = DEMO_CORE_SERVICES.every(s => s.wired);
+  const allWired = (isDemoMode ? DEMO_CORE_SERVICES : [] as typeof DEMO_CORE_SERVICES).every(s => s.wired);
 
   return (
     <div className="space-y-6 p-6">
@@ -113,7 +115,7 @@ export default function PersistenceStatus() {
               {allWired ? "All Core Services Wired to Persistence" : "Partial Wiring"}
             </span>
             <p className="text-sm text-muted-foreground mt-0.5">
-              {DEMO_CORE_SERVICES.filter(s => s.wired).length}/{DEMO_CORE_SERVICES.length} services durably backed
+              {(isDemoMode ? DEMO_CORE_SERVICES : [] as typeof DEMO_CORE_SERVICES).filter(s => s.wired).length}/{(isDemoMode ? DEMO_CORE_SERVICES : [] as typeof DEMO_CORE_SERVICES).length} services durably backed
             </p>
           </div>
         </CardContent>
@@ -138,7 +140,7 @@ export default function PersistenceStatus() {
                   </tr>
                 </thead>
                 <tbody>
-                  {DEMO_CORE_SERVICES.map((svc) => {
+                  {(isDemoMode ? DEMO_CORE_SERVICES : [] as typeof DEMO_CORE_SERVICES).map((svc) => {
                     const count = stats ? (
                       svc.name === "EventBus" ? stats.events :
                       svc.name === "MemoryService" ? stats.memory :

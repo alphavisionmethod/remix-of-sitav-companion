@@ -80,7 +80,7 @@ const FamilyBoardroom = () => {
           </div>
           <div className="space-y-2">
             <p className="text-xs font-medium text-foreground">🔑 Top 3 for Today</p>
-            {DEMO_priorities.slice(0, 3).map((p, i) => (
+            {(isDemoMode ? DEMO_priorities : [] as typeof DEMO_priorities).slice(0, 3).map((p, i) => (
               <div key={i} className="flex items-center gap-2 rounded-lg bg-secondary/30 px-3 py-2">
                 <span className="text-xs font-bold text-primary">{i + 1}</span>
                 <span className="text-xs text-foreground">{p.item}</span>
@@ -134,7 +134,7 @@ const FamilyBoardroom = () => {
         <div className="lg:col-span-2 space-y-6">
           {/* This Week's Priorities */}
           <BoardroomSection title="This Week's Priorities" icon={Target}>
-            {DEMO_priorities.map((p, i) => (
+            {(isDemoMode ? DEMO_priorities : [] as typeof DEMO_priorities).map((p, i) => (
               <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift" key={i} >
                 <div className="flex items-start gap-3">
                   <div className="flex h-7 w-7 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary shrink-0">{i + 1}</div>
@@ -154,7 +154,7 @@ const FamilyBoardroom = () => {
 
           {/* Schedule Conflicts */}
           <BoardroomSection title="Schedule Conflicts" icon={AlertCircle}>
-            {DEMO_scheduleConflicts.map((c, i) => (
+            {(isDemoMode ? DEMO_scheduleConflicts : [] as typeof DEMO_scheduleConflicts).map((c, i) => (
               <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift" key={i} >
                 <p className="text-sm font-medium text-foreground">{c.conflict}</p>
                 <div className="mt-2 rounded-lg bg-accent/5 border border-accent/10 px-3 py-2">
@@ -166,7 +166,7 @@ const FamilyBoardroom = () => {
 
           {/* Recommended Next Moves */}
           <BoardroomSection title="Recommended Next Moves" icon={ArrowRight}>
-            {DEMO_nextMoves.map((m, i) => (
+            {(isDemoMode ? DEMO_nextMoves : [] as typeof DEMO_nextMoves).map((m, i) => (
               <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift" key={i} >
                 <div className="flex items-start gap-3">
                   <ArrowRight className="h-4 w-4 text-primary mt-0.5 shrink-0" />
@@ -182,7 +182,7 @@ const FamilyBoardroom = () => {
 
           {/* Carryover */}
           <BoardroomSection title="Carryover Items" icon={Clock}>
-            {DEMO_carryover.map((item, i) => (
+            {(isDemoMode ? DEMO_carryover : [] as typeof DEMO_carryover).map((item, i) => (
               <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-3.5 micro-hover-lift border-amber-500/15" key={i} >
                 <div className="flex items-center gap-3">
                   <Clock className="h-3.5 w-3.5 text-amber-500 shrink-0" />
@@ -203,7 +203,7 @@ const FamilyBoardroom = () => {
               <h4 className="text-[13px] font-semibold text-[hsl(0_0%_85%)]">Proof Summary</h4>
             </div>
             <div className="space-y-2">
-              {DEMO_proofSummary.map((p, i) => (
+              {(isDemoMode ? DEMO_proofSummary : [] as typeof DEMO_proofSummary).map((p, i) => (
                 <div key={i} className="flex items-center gap-2">
                   <p.icon className="h-3 w-3 text-muted-foreground" />
                   <span className="text-xs text-foreground">{p.action}</span>

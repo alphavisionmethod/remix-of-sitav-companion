@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { DEMO_ROUTES } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 type LaunchHonesty = "truthful" | "demo-backed" | "mixed" | "overstated" | "blocked";
 
@@ -38,17 +39,18 @@ const honestyConfig: Record<LaunchHonesty, { label: string; color: string; icon:
 };
 
 export default function RouteSourceDiagnostics() {
+  const { isDemoMode } = useDataMode();
   const [search, setSearch] = useState("");
 
   const filtered = useMemo(() => {
     if (!search) return DEMO_ROUTES;
     const q = search.toLowerCase();
-    return DEMO_ROUTES.filter(r => r.path.includes(q) || r.pageName.toLowerCase().includes(q) || r.domain.toLowerCase().includes(q));
+    return (isDemoMode ? DEMO_ROUTES : [] as typeof DEMO_ROUTES).filter(r => r.path.includes(q) || r.pageName.toLowerCase().includes(q) || r.domain.toLowerCase().includes(q));
   }, [search]);
 
-  const truthful = DEMO_ROUTES.filter(r => r.launchHonesty === "truthful").length;
-  const demoBacked = DEMO_ROUTES.filter(r => r.launchHonesty === "demo-backed").length;
-  const mixed = DEMO_ROUTES.filter(r => r.launchHonesty === "mixed").length;
+  const truthful = (isDemoMode ? DEMO_ROUTES : [] as typeof DEMO_ROUTES).filter(r => r.launchHonesty === "truthful").length;
+  const demoBacked = (isDemoMode ? DEMO_ROUTES : [] as typeof DEMO_ROUTES).filter(r => r.launchHonesty === "demo-backed").length;
+  const mixed = (isDemoMode ? DEMO_ROUTES : [] as typeof DEMO_ROUTES).filter(r => r.launchHonesty === "mixed").length;
 
   return (
     <div className="mx-auto max-w-7xl space-y-6 p-6">

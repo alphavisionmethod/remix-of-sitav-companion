@@ -7,6 +7,7 @@ import { Progress } from "@/components/ui/progress";
 import { useNavigate } from "react-router-dom";
 import { DEMO_CHIEF_HISTORICAL } from "@/data/seed/revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const synthesis = {
   confidence: 76,
@@ -30,6 +31,7 @@ const synthesis = {
 };
 
 export default function ChiefRevenueSynthesis() {
+  const { isDemoMode } = useDataMode();
   const navigate = useNavigate();
 
   return (
@@ -105,7 +107,7 @@ export default function ChiefRevenueSynthesis() {
       <Card className="bg-card/50 border-border/50">
         <CardHeader><CardTitle className="text-sm flex items-center gap-2"><Clock className="h-4 w-4 text-purple-400" /> Historical Synthesis Comparison</CardTitle></CardHeader>
         <CardContent className="space-y-3">
-          {DEMO_CHIEF_HISTORICAL.map((h, i) => (
+          {(isDemoMode ? DEMO_CHIEF_HISTORICAL : [] as typeof DEMO_CHIEF_HISTORICAL).map((h, i) => (
             <div key={i} className="p-4 rounded-xl border border-border/40 bg-card">
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-2">

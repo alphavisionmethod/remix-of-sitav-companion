@@ -11,6 +11,7 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import type { AvailablePlatform, PlatformType } from "@/domains/investment/types";
 import { cn } from "@/lib/utils";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const STATUS_CONFIG = {
   connected: { icon: CheckCircle2, color: "text-[hsl(var(--trust-safe))]", bg: "bg-[hsl(var(--trust-safe))]/10" },
@@ -40,6 +41,7 @@ const CATEGORY_TABS: { value: string; label: string; types: PlatformType[] }[] =
 ];
 
 export default function PlatformConnections() {
+  const { isDemoMode } = useDataMode();
   const { data: liveData, isLoading } = useMarketWatchlistItems();
   const [category, setCategory] = useState("all");
   const [search, setSearch] = useState("");

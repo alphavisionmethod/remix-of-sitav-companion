@@ -8,6 +8,7 @@ import {
   RotateCcw, Shield, ChevronDown, ChevronRight, Target, XCircle,
   Sparkles, FileText, ArrowRight, Loader2
 } from "lucide-react";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 export interface TimelineEvent {
   id: string;

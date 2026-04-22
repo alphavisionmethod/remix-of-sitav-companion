@@ -10,12 +10,14 @@ import { useMemo } from "react";
 import { toast } from "sonner";
 import { DEMO_CORE_CONNECTORS as DEMO_CONNECTORS } from "@/data/seed/core-pages";
 import { AdvisorKnowledgePanel } from "@/components/advisors/AdvisorKnowledgePanel";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const iconMap: Record<string, typeof Shield> = {
   Shield, Bell, DollarSign, PiggyBank, CreditCard, Zap, AlertTriangle, Settings,
 };
 
 const MoneySettings = () => {
+  const { isDemoMode } = useDataMode();
   const { data: policies = [], isLoading } = useMoneyPolicies();
   const toggleMut = useToggleMoneyPolicy();
 
@@ -77,7 +79,7 @@ const MoneySettings = () => {
         <div className="space-y-6">
           <div className="space-y-3">
             <h3 className={SITA_TYPE.microLabel + " text-[hsl(0_0%_50%)] uppercase tracking-wider"}>Connected Services</h3>
-            {DEMO_CONNECTORS.map((c, i) => (
+            {(isDemoMode ? DEMO_CONNECTORS : [] as typeof DEMO_CONNECTORS).map((c, i) => (
               <StatusCard
                 key={i}
                 label={c.name}

@@ -7,8 +7,10 @@ import { useState } from "react";
 import { DEMO_TIMELINE_EVENTS } from "@/data/seed/digital-presence";
 import DPOSubNav from "./DPOSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function PresenceTimeMachine() {
+  const { isDemoMode } = useDataMode();
   const [selectedIdx, setSelectedIdx] = useState(0);
   const selected = DEMO_TIMELINE_EVENTS[selectedIdx];
 
@@ -27,12 +29,12 @@ export default function PresenceTimeMachine() {
             <CardTitle className="text-sm flex items-center gap-2"><Clock className="w-4 h-4 text-sky-400" /> Change Timeline</CardTitle>
             <div className="flex gap-1">
               <Button variant="ghost" size="sm" className="h-6 w-6 p-0" onClick={() => setSelectedIdx(Math.max(0, selectedIdx - 1))} disabled={selectedIdx === 0}><ArrowLeft className="w-3 h-3" /></Button>
-              <Button variant="ghost" size="sm" className="h-6 w-6 p-0" onClick={() => setSelectedIdx(Math.min(DEMO_TIMELINE_EVENTS.length - 1, selectedIdx + 1))} disabled={selectedIdx === DEMO_TIMELINE_EVENTS.length - 1}><ArrowRight className="w-3 h-3" /></Button>
+              <Button variant="ghost" size="sm" className="h-6 w-6 p-0" onClick={() => setSelectedIdx(Math.min((isDemoMode ? DEMO_TIMELINE_EVENTS : [] as typeof DEMO_TIMELINE_EVENTS).length - 1, selectedIdx + 1))} disabled={selectedIdx === (isDemoMode ? DEMO_TIMELINE_EVENTS : [] as typeof DEMO_TIMELINE_EVENTS).length - 1}><ArrowRight className="w-3 h-3" /></Button>
             </div>
           </div>
         </CardHeader>
         <CardContent className="space-y-1">
-          {DEMO_TIMELINE_EVENTS.map((e, i) => (
+          {(isDemoMode ? DEMO_TIMELINE_EVENTS : [] as typeof DEMO_TIMELINE_EVENTS).map((e, i) => (
             <button
               key={i}
               onClick={() => setSelectedIdx(i)}

@@ -8,6 +8,7 @@ import { useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Briefcase, DollarSign, Home, Brain, ShoppingCart, Users } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 interface DesktopNotification {
   id: string;
@@ -44,7 +45,7 @@ export function DesktopNotifications() {
   // Stagger demo notifications
   useEffect(() => {
     if (!isDesktop) return;
-    const timers = DEMO_NOTIFICATIONS.map((notif, i) =>
+    const timers = (isDemoMode ? DEMO_NOTIFICATIONS : [] as typeof DEMO_NOTIFICATIONS).map((notif, i) =>
       setTimeout(() => {
         setNotifications(prev => [notif, ...prev].slice(0, MAX_VISIBLE + 2));
       }, 2000 + i * STAGGER_DELAY_MS)

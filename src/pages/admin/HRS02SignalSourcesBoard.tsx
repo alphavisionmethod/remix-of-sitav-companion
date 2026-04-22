@@ -7,10 +7,12 @@ import { useWearableProviders } from "@/hooks/use-health-signal-data";
 import { DEMO_SIGNAL_PROVIDERS } from "@/data/seed/health-signals";
 import HRSSubNav from "@/components/admin/HRSSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 
 
 const HRS02SignalSourcesBoard = () => {
+  const { isDemoMode } = useDataMode();
   const { data: providers, isLoading } = useWearableProviders();
 
   // Use DB data if available, map to display shape; else use demo

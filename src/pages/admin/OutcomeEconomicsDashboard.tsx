@@ -12,6 +12,7 @@ import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { cn } from "@/lib/utils";
 import type { OutcomeCategory } from "@/lib/intelligence-architecture/outcome-economics-engine";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 /* ── Demo Data ─────────────────────────────────────────────── */
 
@@ -101,7 +102,8 @@ const recColors: Record<string, string> = {
   eliminate: "bg-destructive/15 text-destructive",
 };
 
-const TrendIcon = ({ trend }: { trend: "up" | "down" | "flat" }) => {
+const TrendIcon = ({
+  const { isDemoMode } = useDataMode(); trend }: { trend: "up" | "down" | "flat" }) => {
   if (trend === "up") return <ArrowUpRight className="h-3.5 w-3.5 text-trust-safe" />;
   if (trend === "down") return <ArrowDownRight className="h-3.5 w-3.5 text-destructive" />;
   return <Minus className="h-3.5 w-3.5 text-muted-foreground" />;
@@ -113,9 +115,9 @@ const OutcomeEconomicsDashboard = () => {
   useRequireAdmin();
   const [period, setPeriod] = useState("30d");
 
-  const totalCost = DEMO_OUTCOMES.reduce((s, o) => s + o.totalCost, 0);
-  const totalValue = DEMO_OUTCOMES.reduce((s, o) => s + o.totalValue, 0);
-  const totalOutcomes = DEMO_OUTCOMES.reduce((s, o) => s + o.outcomes, 0);
+  const totalCost = (isDemoMode ? DEMO_OUTCOMES : [] as typeof DEMO_OUTCOMES).reduce((s, o) => s + o.totalCost, 0);
+  const totalValue = (isDemoMode ? DEMO_OUTCOMES : [] as typeof DEMO_OUTCOMES).reduce((s, o) => s + o.totalValue, 0);
+  const totalOutcomes = (isDemoMode ? DEMO_OUTCOMES : [] as typeof DEMO_OUTCOMES).reduce((s, o) => s + o.outcomes, 0);
   const overallPayback = totalValue / totalCost;
 
   return (
@@ -168,7 +170,7 @@ const OutcomeEconomicsDashboard = () => {
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-2">
-          {DEMO_OUTCOMES.map((o) => (
+          {(isDemoMode ? DEMO_OUTCOMES : [] as typeof DEMO_OUTCOMES).map((o) => (
             <div key={o.category} className="flex items-center gap-3 p-2.5 rounded-lg bg-secondary/20 hover:bg-secondary/30 transition-colors">
               <div className="w-36 shrink-0">
                 <p className="text-xs font-semibold text-foreground">{o.label}</p>
@@ -203,7 +205,7 @@ const OutcomeEconomicsDashboard = () => {
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-2">
-            {DEMO_PATHS.map((p) => (
+            {(isDemoMode ? DEMO_PATHS : [] as typeof DEMO_PATHS).map((p) => (
               <div key={p.path} className="p-2.5 rounded-lg bg-secondary/20 space-y-1.5">
                 <div className="flex items-center justify-between">
                   <p className="text-xs font-semibold text-foreground">{p.path}</p>
@@ -232,7 +234,7 @@ const OutcomeEconomicsDashboard = () => {
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-2">
-            {DEMO_INCIDENTS.map((inc) => (
+            {(isDemoMode ? DEMO_INCIDENTS : [] as typeof DEMO_INCIDENTS).map((inc) => (
               <div key={inc.type} className="flex items-center gap-3 p-2.5 rounded-lg bg-secondary/20">
                 <div className="flex-1">
                   <p className="text-xs font-semibold text-foreground">{inc.type}</p>
@@ -261,7 +263,7 @@ const OutcomeEconomicsDashboard = () => {
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-            {DEMO_BENCHMARKS.map((b) => {
+            {(isDemoMode ? DEMO_BENCHMARKS : [] as typeof DEMO_BENCHMARKS).map((b) => {
               const pct = b.unit === "%" ? b.current : Math.min((b.current / b.target) * 100, 100);
               const beating = b.current >= b.industry;
               return (

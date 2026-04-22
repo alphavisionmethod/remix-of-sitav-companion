@@ -11,6 +11,7 @@ import {
   Search, Pencil, MoreHorizontal, Paperclip, Reply, Forward,
   ChevronDown, Circle, Mail
 } from "lucide-react";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 interface Email {
   id: string;
@@ -55,8 +56,8 @@ export function MailClientWindow() {
   const [selectedId, setSelectedId] = useState<string | null>("1");
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
 
-  const filtered = MOCK_EMAILS.filter(e => activeCategory ? e.category === activeCategory : true);
-  const selected = MOCK_EMAILS.find(e => e.id === selectedId);
+  const filtered = (isDemoMode ? MOCK_EMAILS : [] as typeof MOCK_EMAILS).filter(e => activeCategory ? e.category === activeCategory : true);
+  const selected = (isDemoMode ? MOCK_EMAILS : [] as typeof MOCK_EMAILS).find(e => e.id === selectedId);
 
   return (
     <div className="flex h-[420px] bg-[hsl(0_0%_6%)] text-[hsl(0_0%_85%)] rounded-b-xl overflow-hidden">

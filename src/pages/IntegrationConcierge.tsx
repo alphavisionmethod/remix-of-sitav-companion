@@ -18,6 +18,7 @@ import { useOSRuntime } from "@/hooks/useOSRuntime";
 import type { ConnectorUseCase } from "@/domains/engines/connector-concierge";
 import { DEMO_CORE_BUNDLES as DEMO_BUNDLES, DEMO_CORE_CATEGORIES as DEMO_CATEGORIES } from "@/data/seed/core-pages";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 // ── Category Config ────────────────────────────────────────────
 // ── Use Case Card ──────────────────────────────────────────────
@@ -290,6 +291,7 @@ function ConnectedPanel() {
 
 // ── Main Page ──────────────────────────────────────────────────
 export default function IntegrationConcierge() {
+  const { isDemoMode } = useDataMode();
   const { engines } = useOSRuntime();
   const [category, setCategory] = useState("all");
   const [activeUseCase, setActiveUseCase] = useState<ConnectorUseCase | null>(null);
@@ -349,7 +351,7 @@ export default function IntegrationConcierge() {
         <TabsContent value="use-cases" className="mt-5">
           {/* Category Filter */}
           <div className="flex gap-1.5 mb-5 flex-wrap">
-            {DEMO_CATEGORIES.map(cat => (
+            {(isDemoMode ? DEMO_CATEGORIES : [] as typeof DEMO_CATEGORIES).map(cat => (
               <button
                 key={cat.id}
                 onClick={() => setCategory(cat.id)}
@@ -374,7 +376,7 @@ export default function IntegrationConcierge() {
         </TabsContent>
 
         <TabsContent value="bundles" className="mt-5 space-y-4">
-          {DEMO_BUNDLES.map(b => (
+          {(isDemoMode ? DEMO_BUNDLES : [] as typeof DEMO_BUNDLES).map(b => (
             <BundleCard key={b.id} bundle={b} onSelect={() => {
               const firstUc = engines.integrations.getUseCase(b.useCases[0]);
               if (firstUc) setActiveUseCase(firstUc);

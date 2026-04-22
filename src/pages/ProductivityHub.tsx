@@ -7,6 +7,7 @@ import { lazy, Suspense } from "react";
 import { FileText, Table2, Presentation, Sparkles, Clock, Star, Plus } from "lucide-react";
 import { DEMO_RECENT_DOCS } from "@/data/seed/core-pages";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const DocsWorkspace = lazy(() => import("./workspace/DocsWorkspace"));
 const SheetsWorkspace = lazy(() => import("./workspace/SheetsWorkspace"));
@@ -22,6 +23,7 @@ const subpageFromPath = (path: string): SubPage => {
 };
 
 const OverviewPage = () => {
+  const { isDemoMode } = useDataMode();
   const navigate = useNavigate();
   return (
     <div className="space-y-6">
@@ -55,7 +57,7 @@ const OverviewPage = () => {
       </div>
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-        {DEMO_RECENT_DOCS.map(doc => (
+        {(isDemoMode ? DEMO_RECENT_DOCS : [] as typeof DEMO_RECENT_DOCS).map(doc => (
           <SitaCard key={doc.id} className="p-4 cursor-pointer group">
             <div className="flex items-start gap-3">
               <div className="rounded-lg bg-secondary p-2">

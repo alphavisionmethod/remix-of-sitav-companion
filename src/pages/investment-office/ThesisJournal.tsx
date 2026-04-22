@@ -4,15 +4,17 @@ import { SAMPLE_THESES, getInstrument } from "@/hooks/useInvestmentOfficeData";
 import { useInvestmentThesisEntries } from "@/hooks/use-investment-office";
 import { DEMO_JOURNAL_ENTRIES } from "@/data/seed/investment";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function ThesisJournal() {
+  const { isDemoMode } = useDataMode();
   const { data: liveData, isLoading } = useInvestmentThesisEntries();
   const navigate = useNavigate();
 
-  const thesisDrivenCount = DEMO_JOURNAL_ENTRIES.filter(e => e.convictionType === "thesis-driven").length;
-  const fomoCount = DEMO_JOURNAL_ENTRIES.filter(e => e.fomoFlag).length;
-  const avgConfidence = (DEMO_JOURNAL_ENTRIES.reduce((s, e) => s + e.confidence, 0) / DEMO_JOURNAL_ENTRIES.length).toFixed(1);
-  const stressCounts = { low: DEMO_JOURNAL_ENTRIES.filter(e => e.stressLevel === "low").length, moderate: DEMO_JOURNAL_ENTRIES.filter(e => e.stressLevel === "moderate").length, high: DEMO_JOURNAL_ENTRIES.filter(e => e.stressLevel === "high").length };
+  const thesisDrivenCount = (isDemoMode ? DEMO_JOURNAL_ENTRIES : [] as typeof DEMO_JOURNAL_ENTRIES).filter(e => e.convictionType === "thesis-driven").length;
+  const fomoCount = (isDemoMode ? DEMO_JOURNAL_ENTRIES : [] as typeof DEMO_JOURNAL_ENTRIES).filter(e => e.fomoFlag).length;
+  const avgConfidence = ((isDemoMode ? DEMO_JOURNAL_ENTRIES : [] as typeof DEMO_JOURNAL_ENTRIES).reduce((s, e) => s + e.confidence, 0) / (isDemoMode ? DEMO_JOURNAL_ENTRIES : [] as typeof DEMO_JOURNAL_ENTRIES).length).toFixed(1);
+  const stressCounts = { low: (isDemoMode ? DEMO_JOURNAL_ENTRIES : [] as typeof DEMO_JOURNAL_ENTRIES).filter(e => e.stressLevel === "low").length, moderate: (isDemoMode ? DEMO_JOURNAL_ENTRIES : [] as typeof DEMO_JOURNAL_ENTRIES).filter(e => e.stressLevel === "moderate").length, high: (isDemoMode ? DEMO_JOURNAL_ENTRIES : [] as typeof DEMO_JOURNAL_ENTRIES).filter(e => e.stressLevel === "high").length };
   const dominantStress = Object.entries(stressCounts).sort((a, b) => b[1] - a[1])[0][0];
 
   return (
@@ -39,7 +41,7 @@ export default function ThesisJournal() {
           </div>
           <div className="rounded-xl bg-card border border-border p-3">
             <p className="text-[9px] font-semibold text-muted-foreground uppercase">Thesis-Driven</p>
-            <p className="text-xl font-bold text-[hsl(var(--trust-safe))]">{thesisDrivenCount}<span className="text-xs text-muted-foreground">/{DEMO_JOURNAL_ENTRIES.length}</span></p>
+            <p className="text-xl font-bold text-[hsl(var(--trust-safe))]">{thesisDrivenCount}<span className="text-xs text-muted-foreground">/{(isDemoMode ? DEMO_JOURNAL_ENTRIES : [] as typeof DEMO_JOURNAL_ENTRIES).length}</span></p>
           </div>
           <div className="rounded-xl bg-card border border-border p-3">
             <p className="text-[9px] font-semibold text-muted-foreground uppercase">FOMO Detections</p>
@@ -56,7 +58,7 @@ export default function ThesisJournal() {
       <div className="space-y-4">
         {SAMPLE_THESES.map(th => {
           const inst = getInstrument(th.instrumentId);
-          const emotionalTag = DEMO_JOURNAL_ENTRIES.find(e => e.symbol === inst?.symbol);
+          const emotionalTag = (isDemoMode ? DEMO_JOURNAL_ENTRIES : [] as typeof DEMO_JOURNAL_ENTRIES).find(e => e.symbol === inst?.symbol);
           return (
             <div key={th.id} className="rounded-2xl border border-border bg-card p-6 space-y-4">
               <div className="flex items-start gap-4">

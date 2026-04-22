@@ -14,6 +14,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DEMO_CATEGORY_REVENUE, DEMO_RETENTION_DATA, DEMO_REVENUE_TREND } from "@/data/seed/core-pages";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 // ── Mock Analytics Data ─────────────────────────────────────────
 
@@ -28,6 +29,7 @@ const PACK_ANALYTICS: PackAnalytics[] = [
 ];
 
 const StoreAnalyticsPage = () => {
+  const { isDemoMode } = useDataMode();
   const [activeTab, setActiveTab] = useState("overview");
 
   const totalRevenue = PACK_ANALYTICS.reduce((s, a) => s + a.revenue_generated, 0);
@@ -96,7 +98,7 @@ const StoreAnalyticsPage = () => {
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
                     <Pie data={DEMO_CATEGORY_REVENUE} cx="50%" cy="50%" innerRadius={50} outerRadius={90} paddingAngle={3} dataKey="value">
-                      {DEMO_CATEGORY_REVENUE.map((entry, i) => <Cell key={i} fill={entry.color} />)}
+                      {(isDemoMode ? DEMO_CATEGORY_REVENUE : [] as typeof DEMO_CATEGORY_REVENUE).map((entry, i) => <Cell key={i} fill={entry.color} />)}
                     </Pie>
                     <Tooltip formatter={(v: number) => `$${(v / 1000).toFixed(1)}k`} contentStyle={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: 12, fontSize: 12 }} />
                     <Legend wrapperStyle={{ fontSize: 11 }} />

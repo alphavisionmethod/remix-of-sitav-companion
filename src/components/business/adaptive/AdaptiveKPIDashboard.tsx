@@ -13,6 +13,7 @@ import {
 import { cn } from "@/lib/utils";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
 import { getIdentityLayer } from "@/domains/engines/business-identity-layers";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 interface KPIMetric {
   id: string;
@@ -106,6 +107,7 @@ function MiniSparkline({ data, color }: { data: number[]; color: string }) {
 }
 
 export default function AdaptiveKPIDashboard() {
+  const { isDemoMode } = useDataMode();
   const { primaryMode, adaptations } = useBusinessProfile();
   const identity = getIdentityLayer(primaryMode);
   const kpis = DEMO_KPIS[primaryMode] || DEMO_KPIS.service;

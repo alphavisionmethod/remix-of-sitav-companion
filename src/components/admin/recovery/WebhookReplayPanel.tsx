@@ -9,6 +9,7 @@ import type { WebhookEvent, WebhookFilterState } from "@/lib/recovery-ops/types"
 import { createRecoveryJob } from "@/lib/recovery-ops/recovery-job-service";
 import { RefreshCw, Filter, Send } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 // Mock webhook events for demonstration
 const MOCK_EVENTS: WebhookEvent[] = [
@@ -21,7 +22,7 @@ const MOCK_EVENTS: WebhookEvent[] = [
   { id: "wh-007", eventType: "payment.completed", status: "replayed", timestamp: "2026-04-20T20:00:00Z", payload: { amount: 200 }, errorMessage: null, provider: "stripe", retryCount: 1 },
 ];
 
-const EVENT_TYPES = [...new Set(MOCK_EVENTS.map((e) => e.eventType))];
+const EVENT_TYPES = [...new Set((isDemoMode ? MOCK_EVENTS : [] as typeof MOCK_EVENTS).map((e) => e.eventType))];
 
 interface Props {
   operatorId: string;
@@ -39,7 +40,7 @@ export function WebhookReplayPanel({ operatorId, canExecute }: Props) {
   const [selected, setSelected] = useState<Set<string>>(new Set());
 
   const filtered = useMemo(() => {
-    return MOCK_EVENTS.filter((e) => {
+    return (isDemoMode ? MOCK_EVENTS : [] as typeof MOCK_EVENTS).filter((e) => {
       if (filters.eventType && e.eventType !== filters.eventType) return false;
       if (filters.status && e.status !== filters.status) return false;
       if (filters.dateFrom && e.timestamp < filters.dateFrom) return false;
@@ -51,6 +52,7 @@ export function WebhookReplayPanel({ operatorId, canExecute }: Props) {
   const failedFiltered = filtered.filter((e) => e.status === "failed");
 
   const toggleSelect = (id: string) => {
+  const { isDemoMode } = useDataMode();
     setSelected((prev) => {
       const next = new Set(prev);
       if (next.has(id)) next.delete(id);

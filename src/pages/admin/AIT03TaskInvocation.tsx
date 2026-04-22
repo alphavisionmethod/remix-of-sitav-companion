@@ -22,8 +22,10 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { DEMO_BUDGET_POSTURES, DEMO_SCOPE_DOMAINS, DEMO_TASK_TYPES } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function AIT03TaskInvocation() {
+  const { isDemoMode } = useDataMode();
 const [selectedRole, setSelectedRole] = useState("");
   const [selectedTask, setSelectedTask] = useState("");
   const [budgetPosture, setBudgetPosture] = useState("economy_admin");
@@ -39,8 +41,8 @@ const [selectedRole, setSelectedRole] = useState("");
 
   const { data: roles = [] } = useQuery({ queryKey: ["ai-workforce-roles"], queryFn: getWorkforceRoles });
 
-  const selectedBudget = DEMO_BUDGET_POSTURES.find(b => b.key === budgetPosture);
-  const selectedTaskMeta = DEMO_TASK_TYPES.find(t => t.key === selectedTask);
+  const selectedBudget = (isDemoMode ? DEMO_BUDGET_POSTURES : [] as typeof DEMO_BUDGET_POSTURES).find(b => b.key === budgetPosture);
+  const selectedTaskMeta = (isDemoMode ? DEMO_TASK_TYPES : [] as typeof DEMO_TASK_TYPES).find(t => t.key === selectedTask);
   const selectedRoleMeta = roles.find(r => r.role_key === selectedRole);
   const isApprovalNeeded = selectedRoleMeta?.approval_required || selectedTask === "propose";
 
@@ -127,7 +129,7 @@ const [selectedRole, setSelectedRole] = useState("");
                   <Select value={selectedTask} onValueChange={setSelectedTask}>
                     <SelectTrigger><SelectValue placeholder="Select task..." /></SelectTrigger>
                     <SelectContent>
-                      {DEMO_TASK_TYPES.map(t => <SelectItem key={t.key} value={t.key}>{t.label} — {t.desc}</SelectItem>)}
+                      {(isDemoMode ? DEMO_TASK_TYPES : [] as typeof DEMO_TASK_TYPES).map(t => <SelectItem key={t.key} value={t.key}>{t.label} — {t.desc}</SelectItem>)}
                     </SelectContent>
                   </Select>
                 </div>
@@ -136,7 +138,7 @@ const [selectedRole, setSelectedRole] = useState("");
                   <Select value={budgetPosture} onValueChange={setBudgetPosture}>
                     <SelectTrigger><SelectValue /></SelectTrigger>
                     <SelectContent>
-                      {DEMO_BUDGET_POSTURES.map(b => <SelectItem key={b.key} value={b.key}>{b.icon} {b.label} ({b.costBand})</SelectItem>)}
+                      {(isDemoMode ? DEMO_BUDGET_POSTURES : [] as typeof DEMO_BUDGET_POSTURES).map(b => <SelectItem key={b.key} value={b.key}>{b.icon} {b.label} ({b.costBand})</SelectItem>)}
                     </SelectContent>
                   </Select>
                 </div>
@@ -149,7 +151,7 @@ const [selectedRole, setSelectedRole] = useState("");
                   <Select value={scopeDomain} onValueChange={setScopeDomain}>
                     <SelectTrigger><SelectValue placeholder="Optional scope..." /></SelectTrigger>
                     <SelectContent>
-                      {DEMO_SCOPE_DOMAINS.map(d => <SelectItem key={d} value={d}>{d}</SelectItem>)}
+                      {(isDemoMode ? DEMO_SCOPE_DOMAINS : [] as typeof DEMO_SCOPE_DOMAINS).map(d => <SelectItem key={d} value={d}>{d}</SelectItem>)}
                     </SelectContent>
                   </Select>
                 </div>

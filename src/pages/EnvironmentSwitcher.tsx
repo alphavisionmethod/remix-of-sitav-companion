@@ -9,6 +9,7 @@ import { Globe, CheckCircle, Shield, Download, Upload, Clock, RefreshCw, Plus, A
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 interface Environment {
   id: string;
@@ -39,6 +40,7 @@ const TYPE_STYLES = {
 };
 
 export default function EnvironmentSwitcher() {
+  const { isDemoMode } = useDataMode();
 
   return (
     <div className="p-4 md:p-6 max-w-[1400px] mx-auto space-y-6">
@@ -52,7 +54,7 @@ export default function EnvironmentSwitcher() {
       {/* Environments */}
       <div className="space-y-3">
         <h2 className="text-sm font-semibold">Your Environments</h2>
-        {MOCK_ENVIRONMENTS.map(env => (
+        {(isDemoMode ? MOCK_ENVIRONMENTS : [] as typeof MOCK_ENVIRONMENTS).map(env => (
           <Card key={env.id} className={cn(env.isCurrent && "ring-1 ring-primary/30")}>
             <CardContent className="p-4">
               <div className="flex items-center justify-between">

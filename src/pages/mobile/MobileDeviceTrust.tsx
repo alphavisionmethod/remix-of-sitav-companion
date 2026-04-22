@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { toast } from "sonner";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 type TrustLevel = "hardware-attested" | "verified" | "basic" | "untrusted";
 
@@ -124,6 +125,7 @@ const DeviceCard = ({ device, onRevoke, onReEnroll }: { device: DeviceInfo; onRe
 };
 
 export default function MobileDeviceTrust() {
+  const { isDemoMode } = useDataMode();
   const [devices] = useState<DeviceInfo[]>(MOCK_DEVICES);
 
   const handleRevoke = (id: string) => {

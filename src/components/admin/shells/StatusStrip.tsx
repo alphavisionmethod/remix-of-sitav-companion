@@ -8,6 +8,7 @@ import {
   Activity, AlertTriangle, Rocket, Clock, DollarSign, Beaker,
   Server, CheckCircle, Monitor, Smartphone, Shield
 } from "lucide-react";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 interface StatusItem {
   label: string;
@@ -40,7 +41,7 @@ export function StatusStrip() {
         <div className="h-3 w-px bg-border/30 shrink-0" />
 
         {/* Status Items */}
-        {DEMO_STATUS.map(item => (
+        {(isDemoMode ? DEMO_STATUS : [] as typeof DEMO_STATUS).map(item => (
           <div key={item.label} className="flex items-center gap-1.5 shrink-0">
             <item.icon className={cn("h-3 w-3", item.color)} />
             <span className="text-[10px] text-muted-foreground">{item.label}:</span>
