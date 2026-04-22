@@ -90,7 +90,7 @@ export function DesktopContextMenu({ x, y, onClose }: DesktopContextMenuProps) {
                 "text-[12px] font-medium",
                 "text-[hsl(0_0%_20%)] dark:text-[hsl(0_0%_85%)]",
                 "hover:bg-[hsl(210_80%_60%/0.12)] dark:hover:bg-[hsl(210_80%_60%/0.18)]",
-                "transition-colors duration-[80ms] cursor-default"
+                "transition-colors duration-100 cursor-default"
               )}
             >
               <Icon className="w-3.5 h-3.5 text-[hsl(0_0%_40%)] dark:text-[hsl(0_0%_65%)]" />

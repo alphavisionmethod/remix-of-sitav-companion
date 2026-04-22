@@ -626,13 +626,13 @@ export const DesktopDock = ({ onLaunchApp, windowManager, mood = "serene", hasMa
               <div className="p-1.5">
                 <button
                   onClick={() => { launchApp(contextMenu.app); setContextMenu(null); }}
-                  className="w-full text-left px-3 py-2 rounded-lg text-[12px] font-medium text-[hsl(0_0%_20%)] dark:text-[hsl(0_0%_85%)] hover:bg-[hsl(210_80%_60%/0.12)] transition-colors duration-[80ms]"
+                  className="w-full text-left px-3 py-2 rounded-lg text-[12px] font-medium text-[hsl(0_0%_20%)] dark:text-[hsl(0_0%_85%)] hover:bg-[hsl(210_80%_60%/0.12)] transition-colors duration-100"
                 >
                   Open {contextMenu.app.name}
                 </button>
                 <button
                   onClick={() => { navigate(`/app-store/app/${contextMenu.app.id}`); setContextMenu(null); }}
-                  className="w-full text-left px-3 py-2 rounded-lg text-[12px] text-[hsl(0_0%_35%)] dark:text-[hsl(0_0%_65%)] hover:bg-[hsl(210_80%_60%/0.12)] transition-colors duration-[80ms]"
+                  className="w-full text-left px-3 py-2 rounded-lg text-[12px] text-[hsl(0_0%_35%)] dark:text-[hsl(0_0%_65%)] hover:bg-[hsl(210_80%_60%/0.12)] transition-colors duration-100"
                 >
                   App Info
                 </button>
@@ -640,14 +640,14 @@ export const DesktopDock = ({ onLaunchApp, windowManager, mood = "serene", hasMa
                 {contextMenu.section === "core" ? (
                   <button
                     onClick={() => { unpinApp(contextMenu.app.id); setContextMenu(null); }}
-                    className="w-full text-left px-3 py-2 rounded-lg text-[12px] text-[hsl(0_0%_45%)] dark:text-[hsl(0_0%_55%)] hover:bg-[hsl(0_80%_60%/0.12)] transition-colors duration-[80ms]"
+                    className="w-full text-left px-3 py-2 rounded-lg text-[12px] text-[hsl(0_0%_45%)] dark:text-[hsl(0_0%_55%)] hover:bg-[hsl(0_80%_60%/0.12)] transition-colors duration-100"
                   >
                     Unpin from Dock
                   </button>
                 ) : (
                   <button
                     onClick={() => { pinApp(contextMenu.app.id); setContextMenu(null); }}
-                    className="w-full text-left px-3 py-2 rounded-lg text-[12px] text-[hsl(0_0%_45%)] dark:text-[hsl(0_0%_55%)] hover:bg-[hsl(210_80%_60%/0.12)] transition-colors duration-[80ms]"
+                    className="w-full text-left px-3 py-2 rounded-lg text-[12px] text-[hsl(0_0%_45%)] dark:text-[hsl(0_0%_55%)] hover:bg-[hsl(210_80%_60%/0.12)] transition-colors duration-100"
                   >
                     Keep in Dock
                   </button>

@@ -81,7 +81,7 @@ const SidebarGroup = ({ group, activePage, onNavigate, domain, defaultOpen }: {
                   key={tab.key}
                   onClick={() => onNavigate(tab.key)}
                   className={cn(
-                    "flex items-center gap-2 w-full px-3 py-[7px] rounded-lg text-[12px] transition-all duration-[80ms] cursor-default",
+                    "flex items-center gap-2 w-full px-3 py-[7px] rounded-lg text-[12px] transition-all duration-100 cursor-default",
                     isActive
                       ? "font-medium"
                       : "text-[hsl(0_0%_65%)] hover:bg-[hsl(0_0%_100%/0.06)]"
