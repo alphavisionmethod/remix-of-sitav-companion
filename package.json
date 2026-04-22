@@ -20,6 +20,7 @@
     "test:e2e:smoke": "npx playwright test smoke-flows.spec.ts",
     "test:e2e:a11y": "npx playwright test accessibility.spec.ts",
     "test:e2e:visual": "npx playwright test visual-regression.spec.ts",
+    "test:deployment-readiness": "vitest run src/__tests__/deployment/ src/__tests__/meta/ src/__tests__/ci/ src/__tests__/security/security-fabric-behavioral.test.ts",
     "pre-deploy": "bash scripts/pre-deploy.sh",
     "ci": "npm run typecheck && npm run lint && npm run test && npm run build",
     "clean:generated": "bash scripts/clean-generated.sh",
