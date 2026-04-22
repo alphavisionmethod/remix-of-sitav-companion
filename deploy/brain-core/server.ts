@@ -10,9 +10,10 @@ import { serve } from "@hono/node-server";
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 
 // ── Inline brain-core logic ─────────────────────────────────
-// The brain-core modules are client-side TS with no external deps,
-// so we inline the core logic here for the standalone server.
-// This avoids complex path aliasing in the Docker build.
+// CANONICAL SERVER-SIDE IMPLEMENTATION
+// The client-side equivalent lives at src/lib/services/brain-core/index.ts
+// for demo/offline mode. This server-side version is the production authority.
+// Changes here must be reflected in the client-side implementation and vice versa.
 
 // --- Intent Parsing ---
 
@@ -299,10 +300,16 @@ const PORT = parseInt(process.env.PORT || "3001", 10);
 const SUPABASE_URL = process.env.SUPABASE_URL || "";
 const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY || "";
 const NATS_URL = process.env.NATS_URL || "nats://sita-nats:4222";
+const REQUEST_TIMEOUT_MS = parseInt(process.env.REQUEST_TIMEOUT_MS || "30000", 10);
+const MAX_BODY_BYTES = parseInt(process.env.MAX_BODY_BYTES || "1048576", 10);
 
 const startedAt = Date.now();
 let serverRef: { close: () => void } | null = null;
 let shuttingDown = false;
+
+// ── In-memory metrics ───────────────────────────────────────
+
+const metrics = { totalRequests: 0, totalErrors: 0, intents: 0, councils: 0, modelRoutes: 0 };
 
 // ── Structured Logger ───────────────────────────────────────
 
@@ -387,7 +394,43 @@ if (SUPABASE_URL && SUPABASE_SERVICE_KEY) {
 const app = new Hono();
 app.use("*", logger());
 
+// Request-ID propagation
+app.use("*", async (c, next) => {
+  const requestId = c.req.header("X-Request-Id") || `bc-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+  c.header("X-Request-Id", requestId);
+  await next();
+});
+
+// Body size limiting
+app.use("*", async (c, next) => {
+  if (c.req.method !== "GET" && c.req.method !== "HEAD" && c.req.method !== "OPTIONS") {
+    const contentLength = c.req.header("Content-Length");
+    if (contentLength && parseInt(contentLength, 10) > MAX_BODY_BYTES) {
+      return c.json({ error: "Payload Too Large", maxBytes: MAX_BODY_BYTES }, 413);
+    }
+  }
+  await next();
+});
+
+// Metrics
+app.use("*", async (c, next) => {
+  metrics.totalRequests++;
+  await next();
+  if (c.res.status >= 500) metrics.totalErrors++;
+});
+
 // ── Health ───────────────────────────────────────────────────
+
+app.get("/metrics", (c) => {
+  return c.json({
+    service: "sita-brain-core",
+    uptime: Math.floor((Date.now() - startedAt) / 1000),
+    nats_connected: natsConnected,
+    budget: getModelBudgetStatus(),
+    ...metrics,
+    timestamp: new Date().toISOString(),
+  });
+});
 
 app.get("/health", (c) => {
   return c.json({
@@ -424,14 +467,18 @@ app.get("/ready", (c) => {
 // ── Intent Orchestration ────────────────────────────────────
 
 app.post("/brain/intent", async (c) => {
-  const body = await c.req.json<{ input: string }>();
-  if (!body.input) return c.json({ error: "Missing 'input' field" }, 400);
+  let body: { input?: string };
+  try { body = await c.req.json(); } catch { return c.json({ error: "Invalid JSON body" }, 400); }
+  if (!body.input || typeof body.input !== "string" || body.input.length > 10000) {
+    return c.json({ error: "Missing or invalid 'input' field (string, max 10000 chars)" }, 400);
+  }
 
   const intent = parseIntent(body.input);
   const plan = buildOrchestrationPlan(intent);
   const advisors = chooseAdvisors(intent);
 
   await publishEvent("brain.intent.parsed", { intent, plan });
+  metrics.intents++;
 
   return c.json({ intent, plan, advisors });
 });
@@ -439,11 +486,14 @@ app.post("/brain/intent", async (c) => {
 // ── Council ─────────────────────────────────────────────────
 
 app.post("/brain/council", async (c) => {
-  const body = await c.req.json<{ councilType: string; topic: string }>();
-  if (!body.councilType || !body.topic) return c.json({ error: "Missing 'councilType' or 'topic'" }, 400);
+  let body: { councilType?: string; topic?: string };
+  try { body = await c.req.json(); } catch { return c.json({ error: "Invalid JSON body" }, 400); }
+  if (!body.councilType || typeof body.councilType !== "string") return c.json({ error: "Missing or invalid 'councilType'" }, 400);
+  if (!body.topic || typeof body.topic !== "string" || body.topic.length > 5000) return c.json({ error: "Missing or invalid 'topic'" }, 400);
 
   const decision = runCouncil(body.councilType, body.topic);
   await publishEvent("brain.council.decided", decision);
+  metrics.councils++;
 
   return c.json({ decision });
 });
@@ -451,11 +501,14 @@ app.post("/brain/council", async (c) => {
 // ── Model Router ────────────────────────────────────────────
 
 app.post("/brain/model/route", async (c) => {
-  const body = await c.req.json<{ complexity: string; riskClass: string; isSimulation?: boolean }>();
-  if (!body.complexity || !body.riskClass) return c.json({ error: "Missing 'complexity' or 'riskClass'" }, 400);
+  let body: { complexity?: string; riskClass?: string; isSimulation?: boolean };
+  try { body = await c.req.json(); } catch { return c.json({ error: "Invalid JSON body" }, 400); }
+  if (!body.complexity || typeof body.complexity !== "string") return c.json({ error: "Missing or invalid 'complexity'" }, 400);
+  if (!body.riskClass || typeof body.riskClass !== "string") return c.json({ error: "Missing or invalid 'riskClass'" }, 400);
 
   const routing = routeToModel(body);
   await publishEvent("brain.model.routed", routing);
+  metrics.modelRoutes++;
 
   return c.json({ routing });
 });
@@ -467,8 +520,9 @@ app.get("/brain/model/budget", (c) => {
 // ── Advisors ────────────────────────────────────────────────
 
 app.post("/brain/advisors", async (c) => {
-  const body = await c.req.json<{ input: string }>();
-  if (!body.input) return c.json({ error: "Missing 'input' field" }, 400);
+  let body: { input?: string };
+  try { body = await c.req.json(); } catch { return c.json({ error: "Invalid JSON body" }, 400); }
+  if (!body.input || typeof body.input !== "string") return c.json({ error: "Missing or invalid 'input'" }, 400);
 
   const intent = parseIntent(body.input);
   const result = chooseAdvisors(intent);
@@ -479,8 +533,9 @@ app.post("/brain/advisors", async (c) => {
 // ── Simulation ──────────────────────────────────────────────
 
 app.post("/brain/simulation", async (c) => {
-  const body = await c.req.json<{ input: string }>();
-  if (!body.input) return c.json({ error: "Missing 'input' field" }, 400);
+  let body: { input?: string };
+  try { body = await c.req.json(); } catch { return c.json({ error: "Invalid JSON body" }, 400); }
+  if (!body.input || typeof body.input !== "string") return c.json({ error: "Missing or invalid 'input'" }, 400);
 
   const intent = parseIntent(body.input);
   const plan = buildOrchestrationPlan(intent);
@@ -494,8 +549,9 @@ app.post("/brain/simulation", async (c) => {
 // ── Approval ────────────────────────────────────────────────
 
 app.post("/brain/approval", async (c) => {
-  const body = await c.req.json<{ input: string }>();
-  if (!body.input) return c.json({ error: "Missing 'input' field" }, 400);
+  let body: { input?: string };
+  try { body = await c.req.json(); } catch { return c.json({ error: "Invalid JSON body" }, 400); }
+  if (!body.input || typeof body.input !== "string") return c.json({ error: "Missing or invalid 'input'" }, 400);
 
   const intent = parseIntent(body.input);
   const plan = buildOrchestrationPlan(intent);
@@ -508,10 +564,11 @@ app.post("/brain/approval", async (c) => {
 
 // ── 404 / Error ─────────────────────────────────────────────
 
-app.notFound((c) => c.json({ error: "Not Found", path: c.req.path, service: "sita-brain-core" }, 404));
+app.notFound((c) => c.json({ error: "Not Found", path: c.req.path, service: "sita-brain-core", _requestId: c.req.header("X-Request-Id") }, 404));
 app.onError((err, c) => {
-  log("error", "Unhandled request error", { error: err.message, path: c.req.path, method: c.req.method });
-  return c.json({ error: "Internal Server Error", message: process.env.NODE_ENV === "production" ? "Unexpected error" : err.message }, 500);
+  const requestId = c.req.header("X-Request-Id") || "unknown";
+  log("error", "Unhandled request error", { error: err.message, path: c.req.path, method: c.req.method, requestId });
+  return c.json({ error: "Internal Server Error", message: process.env.NODE_ENV === "production" ? "Unexpected error" : err.message, _requestId: requestId }, 500);
 });
 
 // ── Graceful Shutdown ───────────────────────────────────────
@@ -543,6 +600,13 @@ async function shutdown(signal: string) {
 
 process.on("SIGTERM", () => { shutdown("SIGTERM"); });
 process.on("SIGINT", () => { shutdown("SIGINT"); });
+process.on("unhandledRejection", (reason) => {
+  log("error", "Unhandled rejection", { error: reason instanceof Error ? reason.message : String(reason) });
+});
+process.on("uncaughtException", (err) => {
+  log("error", "Uncaught exception — shutting down", { error: err.message, stack: err.stack });
+  shutdown("uncaughtException");
+});
 
 // ── Start ───────────────────────────────────────────────────
 
