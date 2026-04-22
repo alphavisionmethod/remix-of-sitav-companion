@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 import { APP_MATERIALS, APP_SHADOWS } from "@/platform/design-system/app-window-system";
 import { atmosphereToCSSVars, APP_TYPE } from "@/platform/design-system/sita-design-tokens";
 import { ChevronDown } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { useState, useEffect, useCallback } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { AppToolbar } from "./AppToolbar";
@@ -89,6 +89,7 @@ const MobileNav = ({ domain, tabGroups, activePage, onNavigate }: {
 /* ── Main Shell ── */
 export function DomainAppShell({ domain, children, activePage, onNavigate, tabGroups, toolbarActions, commands = [] }: DomainAppShellProps) {
   const isMobile = useIsMobile();
+  const shouldReduceMotion = useReducedMotion();
   const Icon = domain.icon;
   const [cmdOpen, setCmdOpen] = useState(false);
 
@@ -120,7 +121,7 @@ export function DomainAppShell({ domain, children, activePage, onNavigate, tabGr
   // AppOpenCeremony: fire once per domain per session
   const [showCeremony] = useState(() => {
     const key = `sita-app-opened-${domain.id}`;
-    if (sessionStorage.getItem(key)) return false;
+    if (shouldReduceMotion || sessionStorage.getItem(key)) return false;
     sessionStorage.setItem(key, "1");
     return true;
   });

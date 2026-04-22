@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 import { ReactNode } from "react";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { Typography } from "@/components/sita/Typography";
 
 const appleSpring = { type: "spring", mass: 1, stiffness: 120, damping: 14 };
@@ -17,34 +17,37 @@ interface SitaCardProps {
   selected?: boolean;
 }
 
-export const SitaCard = ({ children, className, glow, hover = true, elevated, glass, lane, onClick, selected }: SitaCardProps) => (
-  <motion.div
-    role="article"
-    initial={{ opacity: 0, y: 6 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
-    whileHover={hover ? { y: -2, transition: appleSpring } : undefined}
-    whileTap={hover ? { scale: 0.98, transition: { duration: 0.1 } } : undefined}
-    onClick={onClick}
-    className={cn(
-      "rounded-2xl border border-border/50 bg-card transition-all duration-300 touch-manipulation",
-      elevated ? "bg-card-elevated" : "",
-      hover && "cursor-pointer hover:shadow-card-hover hover:border-border/80",
-      glass && "backdrop-blur-2xl bg-card/60 border-border/30",
-      glow && "shadow-glow-purple border-primary/20",
-      selected && "border-primary/40 shadow-glow-purple ring-1 ring-primary/20",
-      lane === "action" && "lane-action",
-      lane === "opportunity" && "lane-opportunity",
-      lane === "unresolved" && "lane-unresolved",
-      lane === "changed" && "lane-changed",
-      !className?.includes("p-") && "p-5",
-      className
-    )}
-    style={!glow && !selected ? { boxShadow: "inset 0 1px 0 hsl(0 0% 100% / 0.03), var(--shadow-card)" } : undefined}
-  >
-    {children}
-  </motion.div>
-);
+export const SitaCard = ({ children, className, glow, hover = true, elevated, glass, lane, onClick, selected }: SitaCardProps) => {
+  const shouldReduceMotion = useReducedMotion();
+  return (
+    <motion.div
+      role="article"
+      initial={shouldReduceMotion ? false : { opacity: 0, y: 6 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+      whileHover={hover && !shouldReduceMotion ? { y: -2, transition: appleSpring } : undefined}
+      whileTap={hover && !shouldReduceMotion ? { scale: 0.98, transition: { duration: 0.1 } } : undefined}
+      onClick={onClick}
+      className={cn(
+        "rounded-2xl border border-border/50 bg-card transition-all duration-300 touch-manipulation",
+        elevated ? "bg-card-elevated" : "",
+        hover && "cursor-pointer hover:shadow-card-hover hover:border-border/80",
+        glass && "backdrop-blur-2xl bg-card/60 border-border/30",
+        glow && "shadow-glow-purple border-primary/20",
+        selected && "border-primary/40 shadow-glow-purple ring-1 ring-primary/20",
+        lane === "action" && "lane-action",
+        lane === "opportunity" && "lane-opportunity",
+        lane === "unresolved" && "lane-unresolved",
+        lane === "changed" && "lane-changed",
+        !className?.includes("p-") && "p-5",
+        className
+      )}
+      style={!glow && !selected ? { boxShadow: "inset 0 1px 0 hsl(0 0% 100% / 0.03), var(--shadow-card)" } : undefined}
+    >
+      {children}
+    </motion.div>
+  );
+};
 
 export const SitaCardHeader = ({ children, className }: { children: ReactNode; className?: string }) => (
   <div className={cn("mb-3 flex items-center justify-between", className)}>{children}</div>
