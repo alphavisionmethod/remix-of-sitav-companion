@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { DEMO_pendingDecisions, DEMO_SCENARIO_CARDS } from "@/data/seed/revenue-office";
 import { useState } from "react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { Typography } from "@/components/sita/Typography";
 type DecisionState = "draft" | "review" | "approved" | "executed";
 
 export default function DecisionTheater() {
