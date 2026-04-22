@@ -4,6 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useMemo } from "react";
+import { useDataMode } from "@/contexts/DataModeContext";
 import { cn } from "@/lib/utils";
 import {
   FileCode, Folder, FolderOpen, ChevronRight, ChevronDown,
