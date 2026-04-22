@@ -531,8 +531,6 @@ function QuickAccessFavorites() {
   );
 }
 
-function trackSettingChange(key: string, oldValue: unknown, newValue: unknown) {
-
 // ── Timezone Picker ──
 
 const ALL_TIMEZONES = (() => {
