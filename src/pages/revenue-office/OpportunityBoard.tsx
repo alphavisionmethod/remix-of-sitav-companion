@@ -6,7 +6,9 @@ import { Lightbulb, TrendingUp, UserPlus, Star, RefreshCw, DollarSign, ArrowRigh
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { DEMO_opportunities, DEMO_OPPORTUNITY_THEMES } from "@/data/seed/revenue-office";
-import { useState } from "react";
+import { useState, useMemo } from "react";
+import { useDeals } from "@/hooks/use-revenue-office";
+import { useAuth } from "@/contexts/AuthContext";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
@@ -23,7 +25,17 @@ const effortScore = (e: string) => e === "Low" ? 1 : e === "Medium" ? 2 : 3;
 
 export default function OpportunityBoard() {
   const { isDemo: isDemoMode } = useAuth();
-  const opportunities = isDemoMode ? DEMO_opportunities : DEMO_opportunities;
+  const { data: liveDeals } = useDeals();
+  const opportunities = isDemoMode ? DEMO_opportunities : (liveDeals && liveDeals.length > 0 ? liveDeals.map((d: any) => ({
+    title: d.name || "Untitled Deal",
+    category: d.source || "Conversion",
+    confidence: d.probability || 50,
+    impact: `$${Number(d.value || 0).toLocaleString()}`,
+    effort: "Medium",
+    advisor: "Revenue Advisor",
+    why: d.next_action || "Opportunity identified from pipeline data",
+    icon: TrendingUp,
+  })) : []);
   const [tab, setTab] = useState("ranked");
   const [watchlist, setWatchlist] = useState<Set<number>>(new Set());
 

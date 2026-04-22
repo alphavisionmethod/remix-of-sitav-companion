@@ -22,7 +22,10 @@ export default function RelationshipCenter() {
   const [tab, setTab] = useState("contacts");
 
   const LIFECYCLE_STAGES = isDemoMode ? DEMO_LIFECYCLE_STAGES : DEMO_LIFECYCLE_STAGES;
-  const CONTACTS = isDemoMode ? DEMO_CONTACTS : (liveContacts?.map((c: Record<string, any>) => ({
+  const { data: liveLifecycleStages } = (() => {
+    const hook = require("@/hooks/use-revenue-office");
+    return hook.useCustomerLifecycleStages();
+  })();
     name: c.name || "Unknown", company: c.company || "", stage: c.lifecycle_stage || "Lead",
     health: c.health_score || 50, ltv: `$${c.ltv || 0}`, lastContact: c.last_contact_at ? new Date(c.last_contact_at).toLocaleDateString() : "Never",
     tags: c.tags || [],
