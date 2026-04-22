@@ -1,0 +1,17 @@
+{
+  "generatedAt": "2026-04-22T12:00:00.000Z",
+  "gate": "visual-regression-baseline",
+  "totalComponents": 10,
+  "components": [
+    { "name": "Button", "category": "shell", "roleCount": 1, "verified": true },
+    { "name": "Card", "category": "dashboard", "roleCount": 0, "verified": true },
+    { "name": "Badge", "category": "shell", "roleCount": 0, "verified": true },
+    { "name": "Input", "category": "shell", "roleCount": 1, "verified": true },
+    { "name": "Skeleton", "category": "shell", "roleCount": 0, "verified": true },
+    { "name": "Avatar", "category": "navigation", "roleCount": 0, "verified": true },
+    { "name": "Switch", "category": "shell", "roleCount": 1, "verified": true },
+    { "name": "Separator", "category": "shell", "roleCount": 1, "verified": true },
+    { "name": "Progress", "category": "dashboard", "roleCount": 1, "verified": true },
+    { "name": "Textarea", "category": "shell", "roleCount": 1, "verified": true }
+  ]
+}
