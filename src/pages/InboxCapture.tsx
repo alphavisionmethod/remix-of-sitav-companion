@@ -34,6 +34,7 @@ const InboxCapture = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { user , isDemo} = useAuth();
+  const isDemoMode = false;
   const qc = useQueryClient();
   const [quickInput, setQuickInput] = useState("");
   // Phase T: federated search across all domains for capture matching.
