@@ -38,7 +38,6 @@ vi.mock("@/hooks/useOSOrchestration", () => ({
     suggestWorkspace: () => null,
     getRecommendations: () => [],
     orchestrate: vi.fn(),
-    getMeshTopology: () => ({ nodes: [], edges: [], clusters: [] }),
     getMeshTopology: () => ({ peers: [], connections: [], healthScore: 1, nodes: [], edges: [], clusters: [] }),
     getCurrentContext: () => ({ workspace: null, domain: null, signals: [] }),
     getOnlinePeers: () => [],
