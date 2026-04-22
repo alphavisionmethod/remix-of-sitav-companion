@@ -1,142 +1,72 @@
 
 
-# Complete Behavioral Test Suite — 5 Remaining Domains to 100/100
+# Run and Fix All Tests to 100/100
 
-## Summary
+## Problem
 
-Five system domains lack behavioral tests: Orchestration (1 test file), Release (0), Runtime/SDK (1), Connectors (1 integration test), and Observability (1 test file with partial coverage). This plan adds 10 new test files covering every exported function and class across all five domains.
+The full test suite (273 unit/integration + 68 E2E files = 341 total) exceeds the sandbox timeout when run as a single command. Tests must be run in targeted batches, failures identified, and fixes applied iteratively.
 
----
+## Approach
 
-## 1. Orchestration — Pipeline E2E and Receipt Chain Tests
+Run tests in 10 focused batches by domain, fix any failures in each batch before moving to the next.
 
-### File: `src/platform/orchestration/__tests__/facade-e2e.test.ts`
-- Test `OrchestrationFacade.processIntent()` end-to-end: Intent → Planning → Execution → Proof
-- Test query intent produces completed result with receipt
-- Test financial intent triggers elevated risk tier
-- Test simulation mode skips execution layer
-- Test approval-required flow returns `approval_pending`
-- Test policy denial at intent gate returns `refused`
-- Test error during execution still produces proof record
-- Verify `getLastResult()` and `getLastTruthRecord()` return valid objects
+### Batch 1: Core Infrastructure
+- `src/lib/__tests__/` (kernel, cross-domain, event-bus, policy-engine, etc.)
+- `src/lib/core-services/__tests__/` (event-bus, policy-engine, receipt, workflow, etc.)
 
-### File: `src/platform/orchestration/__tests__/receipt-chain.test.ts`
-- Test `buildReceipt()` produces all required fields from a completed envelope
-- Test `buildAuditTrail()` captures full layer traversal
-- Test `buildEventLineage()` produces valid parent-child chain
-- Test `buildApprovalProof()` with approved and not-required states
-- Test `buildReversibilityRecord()` with reversible and irreversible effects
-- Test `buildTruthRecord()` composes all sub-records into unified truth object
+### Batch 2: Orchestration Pipeline
+- `src/platform/orchestration/__tests__/` (facade-e2e, intent, planning, receipt-chain)
+- `src/platform/orchestration/execution/__tests__/` (rollback-engine)
 
-### File: `src/platform/orchestration/__tests__/intent-orchestrator.test.ts`
-- Test all 10 classification patterns map to correct intent type and domain
-- Test fallback to "query"/"cross-domain" for unmatched input
-- Test risk assessment: financial → elevated, approval → elevated, query → low
-- Test envelope mutation: intentState populated with all fields
+### Batch 3: Runtime, Release, Observability, Connectors
+- `src/runtimes/__tests__/`
+- `src/lib/release/__tests__/`
+- `src/lib/observability/__tests__/`
+- `src/lib/connectors/__tests__/`
 
-### File: `src/platform/orchestration/__tests__/planning-orchestrator.test.ts`
-- Test plan construction from resolved intent
-- Test approval determination based on risk tier
-- Test simulation mode produces simulationResult
-- Test dependency graph resolution
+### Batch 4: Nova SDK Kernel
+- `src/platform/nova-sdk/kernel/__tests__/` (scheduler, syscall, memory, crash, power, fs)
+- `src/platform/nova-sdk/runtime/__tests__/`
+- `src/platform/nova-sdk/services/__tests__/`
 
----
+### Batch 5: Components and UI Primitives
+- `src/components/__tests__/`
+- `src/components/sita/__tests__/`
+- `src/__tests__/components/`
+- `src/lib/ux-trust/__tests__/`
 
-## 2. Release System — Gate Evidence and Policy Tests
+### Batch 6: Page Smoke Tests (Admin)
+- `src/pages/__tests__/admin-pages-batch*.test.tsx`
+- `src/pages/__tests__/admin-subdirs-batch*.test.tsx`
 
-### File: `src/lib/release/__tests__/release-system.test.ts`
-- Test `ARTIFACT_PROOF_REGISTRY` contains entries for all target IDs
-- Test `getArtifactProof()` returns valid record for known targets
-- Test `getDesktopTargets()` and `getOsTargets()` return non-empty sets
-- Test `getTargetsWithSigningBlockers()` identifies unsigned targets
-- Test `getProductionReadyTargets()` vs `getDeferredTargets()` are disjoint
-- Test `DESKTOP_SIGNING_POLICIES` covers all desktop platforms
-- Test `isDesktopSigningFullyReady()` and `isDesktopNotarizationFullyReady()`
-- Test `OS_BOOT_VALIDATION_MATRIX` covers ISO, OVA, RAW formats
-- Test `getBootValidationForFormat()` returns valid entries
-- Test `INSTALL_UPGRADE_ROLLBACK_MATRIX` lifecycle paths are complete
-- Test `getUnvalidatedPaths()` returns expected unvalidated entries
-- Test `RELEASE_CHANNEL_POLICIES` cover dev/internal/beta/production
-- Test `CHECKSUM_PUBLICATION_REGISTRY` has entries for all artifacts
+### Batch 7: Page Smoke Tests (Domain)
+- `src/pages/__tests__/` (business, money, mobile, concierge, intelligence, investment, etc.)
 
----
+### Batch 8: Contexts, Hooks, Services
+- `src/contexts/__tests__/`
+- `src/hooks/__tests__/`
+- `src/lib/services/__tests__/`
 
-## 3. Runtime/SDK — Boot Sequence, Detection, and Context Tests
+### Batch 9: Test Suite (src/test/)
+- `src/test/*.test.ts` and `src/test/*.test.tsx`
+- `src/test/contracts/`
+- `src/test/integration/`
 
-### File: `src/runtimes/__tests__/runtime-boot-and-detection.test.ts`
-- Test `probeRuntimeTier()` returns valid `RuntimeTierProbe` with tier and evidence
-- Test tier detection defaults to `WEB_APP` in jsdom/browser environment
-- Test `RuntimeTierProvider` renders children and exposes context
-- Test `resolveCapability()` returns valid `TierAvailability` for known IDs
-- Test `resolveFeature()` delegates to `resolveFeatureTierAvailability()`
-- Test `useRuntimeTier()` hook returns current tier string
-- Test `getWebCapability()` returns entries for known web capabilities
-- Test `getApplianceCapability()` returns entries for appliance capabilities
-- Test `probeDesktopCapabilities()` returns a Map
-- Test `FEATURE_RUNTIME_TIER_MAPPING` has unique IDs (already partially covered, extend)
+### Batch 10: DB, Edge Functions, E2E
+- `src/__tests__/db/`
+- `src/__tests__/edge-functions/`
+- `tests/integration/`
 
----
+## Execution Strategy
 
-## 4. Connectors — State Grammar, Registry, and Capability Tests
+For each batch:
+1. Run with `npx vitest run <glob> --reporter=verbose` (120s timeout)
+2. Capture failures
+3. Fix root causes (missing mocks, import errors, stale assertions)
+4. Re-run to confirm green
+5. Move to next batch
 
-### File: `src/lib/connectors/__tests__/connector-system.test.ts`
-- Test `CONNECTOR_STATE_GRAMMAR` has entries for all 6 states
-- Test each state has valid label, tone, description, and nextAction
-- Test state ordering: demo_simulated → manual → reauth_required → failing → degraded → connected
-- Test `getConnector()` returns entry for each of 12 connectors (dropbox through twilio)
-- Test `getConnector()` returns undefined for unknown ID
-- Test `listConnectors()` returns 12 entries with capability and client
-- Test each capability file exports valid `ConnectorCapability` shape
-- Test `CONNECTOR_CAPABILITIES` array has no duplicate IDs
-- Test `CONNECTOR_CLIENTS` map has entries for all declared capabilities
+## Expected Outcome
 
----
-
-## 5. Observability — Logger, APM, and Cost Governance Tests
-
-### File: `src/lib/observability/__tests__/observability-extended.test.ts`
-- Test `StructuredLogger`: setMinLogLevel filters correctly, log buffer respects MAX_BUFFER
-- Test `setCorrelationId` propagates to all log entries
-- Test `clearLogBuffer` resets buffer
-- Test `performanceBaselines`: baseline entries exist for critical paths
-- Test `costGovernance`: cost model entries cover all AI capability classes
-- Test `requestContext`: creates and retrieves valid context with correlation ID
-- Test `runtimeErrorContext`: captures error with stack, domain, and surface
-- Test `releaseTag`: returns valid semver-format tag
-- Test `apm`: performance marks and measures work correctly
-- Test `perfBudget`: budget definitions exist for key routes
-- Test `uptimeTracker`: records and queries uptime samples
-
----
-
-## Technical Details
-
-All tests use Vitest with `describe`/`it`/`expect`. Component tests (RuntimeTierProvider) use `@testing-library/react`. Pure logic tests use direct imports. No database or edge function changes required.
-
-### Files Created
-
-| File | Domain | Test Count |
-|---|---|---|
-| `src/platform/orchestration/__tests__/facade-e2e.test.ts` | Orchestration | ~8 |
-| `src/platform/orchestration/__tests__/receipt-chain.test.ts` | Orchestration | ~6 |
-| `src/platform/orchestration/__tests__/intent-orchestrator.test.ts` | Orchestration | ~4 |
-| `src/platform/orchestration/__tests__/planning-orchestrator.test.ts` | Orchestration | ~4 |
-| `src/lib/release/__tests__/release-system.test.ts` | Release | ~13 |
-| `src/runtimes/__tests__/runtime-boot-and-detection.test.ts` | Runtime/SDK | ~10 |
-| `src/lib/connectors/__tests__/connector-system.test.ts` | Connectors | ~9 |
-| `src/lib/observability/__tests__/observability-extended.test.ts` | Observability | ~11 |
-
-**Total: 8 new test files, ~65 test cases**
-
-After creation, each file will be run individually and any failures fixed until all pass.
-
-### Expected Outcome
-
-| Domain | Before (Behavioral) | After |
-|---|---|---|
-| Orchestration | 5% | 100% |
-| Release System | 20% | 100% |
-| Runtime/SDK | 5% | 100% |
-| Connectors | 8% | 100% |
-| Observability | 10% | 100% |
+All 273 unit/integration test files passing. Any previously unknown failures will be fixed in-place. No test file skipped.
 
