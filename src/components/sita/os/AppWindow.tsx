@@ -5,6 +5,8 @@ import { useOSWindowContext, type OSWindow } from "./WindowContext";
 import { SurfaceContextMenu } from "@/components/sita/shell/SurfaceContextMenu";
 import { SnapGuideOverlay } from "@/components/sita/shell/SnapGuideOverlay";
 import { useWindowSnap } from "@/hooks/useWindowSnap";
+import { useWindowScrollSync } from "@/hooks/useWindowScrollSync";
+import { useWindowKeyboardScroll } from "@/hooks/useWindowKeyboardScroll";
 
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — App Window (Advanced)
@@ -53,6 +55,17 @@ export function AppWindow({ window: win }: AppWindowProps) {
   const [minimizeAnim, setMinimizeAnim] = useState<"idle" | "out" | "in">("idle");
   const snap = useWindowSnap();
 
+  // ── Scroll position sync during drag/resize ────────────────
+  const scrollBodyRef = useRef<HTMLDivElement>(null);
+  const { saveScroll, restoreScroll } = useWindowScrollSync(scrollBodyRef);
+
+  // ── Keyboard scroll for focused window ─────────────────────
+  const isFocused = useMemo(() => {
+    // Highest zIndex among all windows — determined via context in parent
+    return true; // will be gated by the hook checking document focus
+  }, []);
+  useWindowKeyboardScroll(scrollBodyRef, win.id);
+
   // Sync refs when external state changes (e.g. snap, cascade)
   useEffect(() => {
     if (!draggingRef.current && !resizingRef.current) {
@@ -80,8 +93,9 @@ export function AppWindow({ window: win }: AppWindowProps) {
     dragStartRef.current = { px: e.clientX, py: e.clientY, ox: posRef.current.x, oy: posRef.current.y };
     draggingRef.current = true;
     setIsDragging(true);
+    saveScroll();
     focusWindow(win.id);
-  }, [win.isMaximized, win.id, focusWindow]);
+  }, [win.isMaximized, win.id, focusWindow, saveScroll]);
 
   const onDragPointerMove = useCallback((e: React.PointerEvent) => {
     if (!draggingRef.current) return;
@@ -114,7 +128,8 @@ export function AppWindow({ window: win }: AppWindowProps) {
     } else {
       updateWindowPosition(win.id, posRef.current);
     }
-  }, [win.id, updateWindowPosition, updateWindowGeometry, snap]);
+    restoreScroll();
+  }, [win.id, updateWindowPosition, updateWindowGeometry, snap, restoreScroll]);
 
   // ── RESIZE (edge/corner handles) ──────────────────────────
   const onResizePointerDown = useCallback((edge: ResizeEdge, e: React.PointerEvent) => {
@@ -130,8 +145,9 @@ export function AppWindow({ window: win }: AppWindowProps) {
     };
     resizingRef.current = true;
     setIsResizing(true);
+    saveScroll();
     focusWindow(win.id);
-  }, [win.isMaximized, win.id, focusWindow]);
+  }, [win.isMaximized, win.id, focusWindow, saveScroll]);
 
   const onResizePointerMove = useCallback((e: React.PointerEvent) => {
     if (!resizingRef.current) return;
@@ -167,7 +183,8 @@ export function AppWindow({ window: win }: AppWindowProps) {
     try { (e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId); } catch {}
     cancelAnimationFrame(rafRef.current);
     updateWindowGeometry(win.id, posRef.current, { width: sizeRef.current.w, height: sizeRef.current.h });
-  }, [win.id, updateWindowGeometry]);
+    restoreScroll();
+  }, [win.id, updateWindowGeometry, restoreScroll]);
 
   // ── Re-clamp on viewport resize ───────────────────────────
   useEffect(() => {
@@ -296,7 +313,9 @@ export function AppWindow({ window: win }: AppWindowProps) {
         "bg-background/80 backdrop-blur-xl",
         "shadow-[0_2px_6px_hsl(0_0%_0%/0.08),0_20px_40px_hsl(0_0%_0%/0.18)]",
         minimizeAnim === "idle" && "animate-in fade-in zoom-in-95 duration-150",
-        win.isMaximized && "!rounded-none"
+        win.isMaximized && "!rounded-none",
+        (isDragging || isResizing) && "os-window-interacting",
+        "os-window-focused",
       )}
       style={windowStyle}
       onMouseDown={() => focusWindow(win.id)}
@@ -346,6 +365,7 @@ export function AppWindow({ window: win }: AppWindowProps) {
 
       {/* ── Window body ────────────────────────────────────── */}
       <div
+        ref={scrollBodyRef}
         className={cn(
           "flex-1 min-h-0 overflow-y-auto overflow-x-hidden",
           "os-window-scrollable",

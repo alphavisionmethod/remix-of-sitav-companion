@@ -363,6 +363,25 @@
     overscroll-behavior: contain;
     -webkit-overflow-scrolling: touch;
   }
+
+  /* Momentum/inertia tuning — consistent cross-platform scroll feel */
+  .os-window-scrollable.os-scroll-locked {
+    overflow: hidden !important;
+    scroll-behavior: auto;
+  }
+
+  /* Focused window keyboard scroll indicator */
+  .os-window-focused .os-window-scrollable {
+    scroll-behavior: smooth;
+  }
+
+  /* During drag/resize: suppress smooth scroll to prevent jumps */
+  .os-window-interacting .os-window-scrollable {
+    scroll-behavior: auto !important;
+    pointer-events: none;
+    user-select: none;
+  }
+
   .os-window-scrollable::-webkit-scrollbar {
     width: 8px;
     height: 8px;
