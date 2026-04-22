@@ -7,7 +7,7 @@ import {
   Moon, Sun, Bell, Palette, Monitor, Eye, Globe, Check, ChevronRight, Lock,
   Type, Accessibility, Activity, Clock, Home as HomeIcon, Layout,
 } from "lucide-react";
-import { RotateCcw, Trash2, Download, Star } from "lucide-react";
+import { RotateCcw, Trash2, Download, Star, Search, X, AlertTriangle } from "lucide-react";
 import { VStack, HStack, Divider } from "@/platform/nova-sdk/ui/layout";
 import {
   NovaText, NovaButton, NovaCard, NovaSectionLabel,
@@ -198,6 +198,25 @@ function GeneralContentFull() {
 
   // ── Section 8: Approval Experience ──
   const [approvalStyle, setApprovalStyle] = useSettingsValue("general.approvalStyle", "ask-as-needed");
+
+  // ── Accessibility Sync ──
+  const [syncAccessibility, setSyncAccessibility] = useSettingsValue("general.syncAccessibility", true);
+  const [a11yReduceMotion, setA11yReduceMotion] = useSettingsValue("appearance.reduceMotion", false);
+  const [a11yFocusIndicators, setA11yFocusIndicators] = useSettingsValue("accessibility.focusIndicators", true);
+  const [a11yFullKbNav, setA11yFullKbNav] = useSettingsValue("accessibility.fullKeyboardNav", true);
+
+  // When sync is on and reducedMotion changes, mirror to accessibility
+  useEffect(() => {
+    if (!syncAccessibility) return;
+    SettingsService.set("accessibility.reduceAutoPlayEffects", a11yReduceMotion);
+  }, [a11yReduceMotion, syncAccessibility]);
+
+  // When sync is on and focus settings change, mirror to accessibility
+  useEffect(() => {
+    if (!syncAccessibility) return;
+    SettingsService.set("accessibility.focusIndicators", a11yFocusIndicators);
+    SettingsService.set("accessibility.fullKeyboardNav", a11yFullKbNav);
+  }, [a11yFocusIndicators, a11yFullKbNav, syncAccessibility]);
 
   const toggleDark = useCallback((v: boolean) => {
     const newTheme = v ? "dark" : "light";
