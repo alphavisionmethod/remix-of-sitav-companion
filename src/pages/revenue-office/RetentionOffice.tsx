@@ -8,11 +8,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DEMO_AT_RISK, DEMO_HEALTH_SEGMENTS, DEMO_WIN_BACK, DEMO_CHURN_PREDICTION, DEMO_NPS_DATA } from "@/data/seed/revenue-office";
 import { useState } from "react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageShell } from "@/components/sita/PageShell";
 export default function RetentionOffice() {
   const [tab, setTab] = useState("overview");
 
   return (
-    <div className="min-h-screen bg-background p-6 space-y-6">
+    <PageShell width="wide" className="space-y-6">
 <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><Heart className="w-6 h-6 text-pink-400" /> Retention Office</h1>
         <p className="text-sm text-muted-foreground">Churn prediction, NPS tracking, re-engagement workflows, and engagement health</p>

@@ -17,6 +17,7 @@ import { competitiveIntelligenceService, type CompetitivePosition } from "@/lib/
 import { useOSRuntime } from "@/hooks/useOSRuntime";
 import { useRevenueWhatChanged } from "@/hooks/use-revenue-memory";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageShell } from "@/components/sita/PageShell";
 
 const DEMO_PIPELINE_STAGES: any[] = [];
 const DEMO_ADVISOR_SIGNALS: any[] = [];
@@ -52,12 +53,12 @@ export default function GrowthBoardroom() {
   const ADVISOR_SIGNALS = DEMO_ADVISOR_SIGNALS;
 
   if (!isDemoMode && isLoading) {
-    return <div className="min-h-screen bg-background p-6 space-y-6">
+    return <PageShell width="wide" className="space-y-6">
 <Skeleton className="h-8 w-48" /><div className="grid grid-cols-2 lg:grid-cols-4 gap-4">{[1, 2, 3, 4].map(i => <Skeleton key={i} className="h-24 rounded-xl" />)}</div></div>;
   }
 
   return (
-    <div className="min-h-screen bg-background p-6 space-y-6">
+    <PageShell width="wide" className="space-y-6">
 <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <div className="flex items-center justify-between">
           <div>

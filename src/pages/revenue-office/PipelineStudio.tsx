@@ -14,6 +14,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { EmptyState } from "@/components/sita/EmptyState";
 import { DEMO_STAGES, DEMO_VELOCITY } from "@/data/seed/revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageShell } from "@/components/sita/PageShell";
 
 
 type Deal = { id: string; name: string; value: number; probability: number; age: number; owner: string; contact: string; nextAction?: string; nextActionDate?: string; source: string; tags: string[] };
@@ -39,7 +40,7 @@ export default function PipelineStudio() {
 
   if (!isDemoMode && isLoading) {
     return (
-      <div className="min-h-screen bg-background p-6 space-y-6">
+      <PageShell width="wide" className="space-y-6">
 <Skeleton className="h-8 w-48" />
         <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
           {[1,2,3,4,5].map(i => <Skeleton key={i} className="h-16 rounded-xl" />)}
@@ -51,7 +52,7 @@ export default function PipelineStudio() {
 
   if (!isDemoMode && (!liveDeals || liveDeals.length === 0)) {
     return (
-      <div className="min-h-screen bg-background p-6 space-y-6">
+      <PageShell width="wide" className="space-y-6">
 <h1 className="text-2xl font-bold text-foreground">Pipeline Studio</h1>
         <EmptyState icon={Target} title="No deals yet" description="Create your first deal to start tracking your pipeline." />
       </div>
@@ -59,7 +60,7 @@ export default function PipelineStudio() {
   }
 
   return (
-    <div className="min-h-screen bg-background p-6 space-y-6">
+    <PageShell width="wide" className="space-y-6">
 <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <div className="flex items-center justify-between">
           <div>

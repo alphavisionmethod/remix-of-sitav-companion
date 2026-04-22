@@ -11,6 +11,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { DEMO_QUICK_ACTIONS } from "@/data/seed/revenue-office";
 import { useState } from "react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageShell } from "@/components/sita/PageShell";
 
 
 const CONNECTION_HEALTH = [
@@ -36,7 +37,7 @@ export default function RevenueGate() {
   const advisorPreview = [];
 
   return (
-    <div className="min-h-screen bg-background p-6 space-y-6">
+    <PageShell width="wide" className="space-y-6">
 <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <div className="flex items-center justify-between mb-2">
           <div>

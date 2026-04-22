@@ -11,6 +11,7 @@ import { useCampaigns } from "@/hooks/use-revenue-office";
 import { Skeleton } from "@/components/ui/skeleton";
 import { EmptyState } from "@/components/sita/EmptyState";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageShell } from "@/components/sita/PageShell";
 import {
   DEMO_REV_CAMPAIGNS as DEMO_CAMPAIGNS,
   DEMO_REV_SEGMENTS as DEMO_SEGMENTS,
@@ -54,7 +55,7 @@ export default function CampaignOrchestrator() {
 
   if (!isDemoMode && isLoading) {
     return (
-      <div className="min-h-screen bg-background p-6 space-y-6">
+      <PageShell width="wide" className="space-y-6">
 <Skeleton className="h-8 w-64" />
         <div className="flex gap-3">{[1,2,3].map(i => <Skeleton key={i} className="h-16 w-36 rounded-xl" />)}</div>
         <Skeleton className="h-32 rounded-xl" />
@@ -64,7 +65,7 @@ export default function CampaignOrchestrator() {
 
   if (!isDemoMode && CAMPAIGNS.length === 0) {
     return (
-      <div className="min-h-screen bg-background p-6 space-y-6">
+      <PageShell width="wide" className="space-y-6">
 <h1 className="text-2xl font-bold text-foreground">Campaign Orchestrator</h1>
         <EmptyState icon={Zap} title="No campaigns yet" description="Create your first campaign to start automating growth." />
       </div>
@@ -72,7 +73,7 @@ export default function CampaignOrchestrator() {
   }
 
   return (
-    <div className="min-h-screen bg-background p-6 space-y-6">
+    <PageShell width="wide" className="space-y-6">
 <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <div className="flex items-center justify-between">
           <div>

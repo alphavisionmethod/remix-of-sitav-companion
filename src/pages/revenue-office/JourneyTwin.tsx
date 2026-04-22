@@ -8,6 +8,7 @@ import { DEMO_JOURNEY_STAGES } from "@/data/seed/revenue-office";
 import { useState, useMemo } from "react";
 import { useCustomerJourneyStages } from "@/hooks/use-revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageShell } from "@/components/sita/PageShell";
 const AUTOMATION_OVERLAY = [
   { stage: "Awareness", automations: [{ name: "Lead Magnet Delivery", status: "active", coverage: 94 }, { name: "Welcome Email Sequence", status: "active", coverage: 87 }] },
   { stage: "Interest", automations: [{ name: "Nurture Drip (5-part)", status: "active", coverage: 72 }, { name: "Retarget Pixel", status: "degraded", coverage: 45 }] },
@@ -55,7 +56,7 @@ export default function JourneyTwin() {
   const totalAdvocateRevenue = ADVOCATE_TRACKING.reduce((a, ad) => a + parseInt(ad.revenueGenerated.replace(/[^0-9]/g, "")), 0);
 
   return (
-    <div className="min-h-screen bg-background p-6 space-y-6">
+    <PageShell width="wide" className="space-y-6">
 <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="text-2xl font-bold text-foreground flex items-center gap-2">
           <Route className="w-6 h-6 text-primary" /> Customer Journey Twin
