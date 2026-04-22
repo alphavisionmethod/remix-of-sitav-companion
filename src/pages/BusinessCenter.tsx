@@ -59,7 +59,6 @@ const subpageFromPath = (path: string): string => {
 const BusinessCenter = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const wm = useWindowManagerContext();
 
   useEffect(() => {
     const module = subpageFromPath(location.pathname);
