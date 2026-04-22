@@ -6,9 +6,12 @@ import { Watch, ArrowRight, Clock, Zap, Eye, Smartphone, AlertTriangle, Vibrate 
 import { DEMO_COMPLICATIONS, DEMO_MICRO_ACTIONS, DEMO_TILES } from "@/data/seed/admin-platform";
 import ANDSubNav from "@/components/admin/ANDSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
-const AND02WearOSExperience = () => (
-  <div className="p-6 max-w-[1400px] mx-auto space-y-6">
+const AND02WearOSExperience = () => {
+  const { isDemoMode } = useDataMode();
+  return (
+    <div className="p-6 max-w-[1400px] mx-auto space-y-6">
 <ANDSubNav />
     <div className="flex items-center gap-3">
       <div className="p-2 rounded-lg bg-primary/10"><Watch className="h-8 w-8 text-primary" /></div>
@@ -141,6 +144,7 @@ const AND02WearOSExperience = () => (
       </TabsContent>
     </Tabs>
   </div>
-);
+  );
+};
 
 export default AND02WearOSExperience;
