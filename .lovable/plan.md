@@ -1,166 +1,201 @@
 
 
-# Repository-Wide Implementation and Integration Plan
+# Frontend Excellence Pass — Phased Implementation Plan
 
-## Overview
-
-This is a massive codebase (~1000+ source files, ~200 edge functions, 850+ generated artifacts, 375 files with `isDemoMode`, 285 pages with `DEMO_` constants). A single pass cannot address all 22 scopes listed. This plan prioritizes by impact and safety, organized into implementable batches.
+This plan covers the complete frontend audit, migration, and polish across 8 sequential phases. Each phase must reach 100% completion before the next begins.
 
 ---
 
-## Batch 1: Demo-Mode Production Truth Migration (Highest Impact)
+## Phase 1: Demo-to-Production Truth Migration (226 pages)
 
-375 files still use `isDemoMode` with the pattern `isDemoMode ? DEMO_X : ([] as typeof DEMO_X)`. This means in live mode, users see empty arrays everywhere -- broken UX.
+**Problem**: 226 pages use `isDemoMode ? DEMO_X : ([] as typeof DEMO_X)`, meaning in production mode every user sees completely empty surfaces. This is the single largest UX defect.
 
-### Action: Migrate top-traffic pages to production-truth patterns
+**Action**: For each of the 226 pages, replace every `isDemoMode ? DEMO_X` ternary with the correct production behavior:
 
-For each page in `src/pages/`:
-1. Remove `isDemoMode` ternaries and `DEMO_*` imports
-2. Replace with the correct production behavior:
-   - **Real data**: Wire to existing hooks (e.g., `useRevenueLeaks`, `useFinancialAccounts`)
-   - **Empty state**: Use `<EmptyState>` or `<PremiumEmptyState>` (both already exist in `src/components/sita/`)
-   - **Setup state**: Use `<PremiumEmptyState variant="first-use">` with setup CTA
-   - **Loading**: Use `<Skeleton>` patterns already in the codebase
+- **Real data path**: Wire to existing query hooks (`useRevenueLeaks`, `useFinancialAccounts`, `usePositions`, etc.) where the backend table exists
+- **Empty state**: Replace `[] as typeof DEMO_X` with `<PremiumEmptyState variant="no-data">` using the canonical component already at `src/components/sita/PremiumEmptyState.tsx`
+- **First-use state**: For surfaces requiring setup (connectors, integrations, team), use `<PremiumEmptyState variant="first-use">` with a setup CTA
+- **Connect-to-activate**: For surfaces needing an external provider, use `<PremiumEmptyState variant="connect-to-activate">`
+- **Loading/error**: Wrap data fetches in proper `isLoading ? <Skeleton /> : isError ? <PremiumEmptyState variant="degraded"> : <RealContent>` patterns
 
-### Priority pages (most visible surfaces):
-- `src/pages/money/NetWorthOffice.tsx` -- has hooks, needs demo removal
-- `src/pages/revenue-office/LeakDetector.tsx` -- has `useRevenueLeaks` hook
-- `src/pages/digital-presence/CROOffice.tsx` -- full demo dependency
-- `src/pages/digital-presence/SiteBuilder.tsx` -- full demo dependency
-- `src/pages/admin/fip/FIPBuilderConsole.tsx` -- demo builder steps
-- All remaining `src/pages/**` files with `isDemoMode` (est. ~280 files)
+**Batch order** (by domain directory):
+1. `src/pages/admin/` (~120 files) -- admin surfaces, mostly table/dashboard pages
+2. `src/pages/revenue-office/` (~20 files) -- revenue domain
+3. `src/pages/money/` (~15 files) -- finance domain (5 already done)
+4. `src/pages/business/`, `src/pages/boardroom/`, `src/pages/concierge/` (~20 files)
+5. `src/pages/digital-presence/`, `src/pages/investment-office/` (~15 files, 4 already done)
+6. Remaining root-level pages (~36 files: Boardroom.tsx, ActivityStream.tsx, etc.)
 
-### Supporting cleanup:
-- `src/data/seed/*.ts` -- keep files but stop importing from pages
-- `src/lib/demo-scenarios/` -- preserve for sandbox/demo mode toggle only
-- `src/contexts/DataModeContext.tsx` -- keep as bridge, but pages should not branch on it
+**Per-file pattern**:
+```typescript
+// BEFORE:
+const isDemoMode = isDemo;
+const data = isDemoMode ? DEMO_ITEMS : ([] as typeof DEMO_ITEMS);
 
----
+// AFTER:
+const { data, isLoading, isError } = useRealDataHook();
+if (isLoading) return <PageSkeleton rows={3} />;
+if (!data?.length) return (
+  <PremiumEmptyState
+    variant="no-data"
+    title="No items yet"
+    description="Create your first item to get started."
+    actions={[{ label: "Create Item", onClick: handleCreate, variant: "primary" }]}
+    domain="business"
+  />
+);
+```
 
-## Batch 2: Test Suite Stabilization
-
-### Action: Fix all Vitest failures
-- Run full suite, fix broken imports/mocks in batches
-- Fix `BusinessCenter.test.tsx` nested Router issue
-- Update `src/test/demo-scenarios.test.ts` to match post-migration state
-- Remove `demo-mode-resolution.integration.test.ts` or update for sandbox-only mode
-- Update `tests/integration/demo-mode-runtime-enforcement.test.ts`
-
-### Action: Fix Playwright E2E suite
-- Update `tests/e2e/demo-mode.spec.ts` and `desktop-widgets-live-vs-demo.spec.ts`
-- Verify all route-health and auth-journey specs pass
-
----
-
-## Batch 3: Duplicate Component Consolidation
-
-### EmptyState family (already partially consolidated):
-- `EmptyState` (canonical) -- keep
-- `EmptyStateCard` (re-export wrapper) -- keep for backward compat
-- `ContextualEmptyState` (re-export wrapper) -- keep for backward compat
-- `PremiumEmptyState` -- evaluate if this should merge with `EmptyState`
-- `ModuleEmptyState` -- domain-specific, keep
-
-### Action: Audit and deduplicate across:
-- Trust/explanation components in `src/components/explainability/` vs `src/lib/ux-trust/`
-- Shell/chrome components for overlapping layout patterns
-- Admin tool components for repeated patterns
+**Completion criteria**: Zero files matching `grep -r "isDemoMode ? DEMO_" src/pages/`. Every surface shows either real data, a proper empty state, or a setup prompt.
 
 ---
 
-## Batch 4: Root Config and Build Hardening
+## Phase 2: State Grammar Enforcement (All 1,092 pages)
 
-### TypeScript strictness:
-- `tsconfig.json` has `strictNullChecks: false` and `noImplicitAny: false` -- these are weak for a production OS
-- Action: Enable `strictNullChecks` in `tsconfig.app.json` incrementally (add `// @ts-expect-error` where needed to avoid blocking)
+**Problem**: Many pages lack loading, error, empty, degraded, or unauthorized states. Users encounter blank screens or cryptic errors.
 
-### Build config:
-- `vite.config.ts` is solid with chunk splitting, health.json, Sentry -- no changes needed
-- `Dockerfile` is clean multi-stage -- no changes needed
-- `vitest.config.ts` coverage thresholds (40/30/35/40) are low -- raise after test fixes
+**Action**: Audit every page for the 5 required states and add missing ones using canonical components:
+- `<PageSkeleton>` for loading
+- `<PremiumEmptyState variant="no-data">` for empty
+- `<PremiumEmptyState variant="degraded">` for error/degraded
+- `<PremiumEmptyState variant="blocked">` for unauthorized
+- `<PremiumEmptyState variant="first-use">` for first-run
 
-### Package hygiene:
-- Both `bun.lock` and `package-lock.json` exist -- consolidate to one lockfile
-- Add `.npmrc` or document canonical package manager
+**Priority**: Pages reachable from main navigation (Desktop, Business, Money, Concierge, Boardroom, Files, Settings, Admin) first, then deep/experimental pages.
 
----
-
-## Batch 5: Edge Function Governance
-
-~200 edge functions exist. Many share patterns but are individually maintained.
-
-### Action:
-- Verify `supabase/functions/_shared/test-harness.ts` is consumed by all test files
-- Ensure all edge functions have CORS headers (import from `@supabase/supabase-js/cors`)
-- Verify `_owners.json` covers all functions
-- Run edge function tests via `supabase--test_edge_functions` tool
+**Completion criteria**: Every page accessible from a route has at minimum loading + empty + error state handling.
 
 ---
 
-## Batch 6: Generated Artifacts Cleanup
+## Phase 3: CTA and Action Wiring Verification
 
-850+ files in `generated/` directory. Many are audit/report JSON files that appear to be historical.
+**Problem**: Many buttons, menu items, and card actions render but do nothing (dead buttons). Forms may not submit. Wizards may not complete.
 
-### Action:
-- Add `generated/` to `.gitignore` if not already (it's in `.dockerignore`)
-- Or create `generated/.gitkeep` and exclude individual reports
-- Ensure `scripts/generate-all.ts` produces only needed artifacts
-- Remove stale/duplicate reports
+**Action**:
+1. Audit all `onClick` handlers across pages for `() => {}`, `console.log`, `toast("Coming soon")`, or missing handlers
+2. For each dead CTA, determine the correct behavior:
+   - If the backend/service exists: wire it
+   - If setup is required: navigate to setup
+   - If the feature is not ready: replace with a disabled button + tooltip explaining status
+3. Verify all form submissions call real mutations or show proper validation
+4. Verify all wizard/stepper flows can complete start-to-finish
+5. Verify all modal/drawer open-close cycles work
 
----
+**Key surfaces to verify**:
+- Business Center tabs (leads, customers, invoices, quotes, CRM)
+- Money Center tabs (accounts, transactions, budgets)
+- Concierge Center (tasks, requests)
+- Settings pages (profile save, preferences save, MFA enrollment)
+- Admin actions (session revoke, user reset, deployment gates)
+- App Store (install, open, uninstall)
+- Boardroom (start meeting, AI invocation)
 
-## Batch 7: Service and Architecture Wiring
-
-### Verify canonical facades are consumed:
-- `src/services/index.ts` exports 4 layers -- verify pages import through this
-- `src/contexts/RuntimeProvider.tsx` composes 5 providers -- verify boot order works
-
-### Missing operational layers to add:
-- `src/lib/env-validation.ts` -- validate required VITE_ vars at boot
-- Strengthen `src/components/sita/GlobalErrorBoundary.tsx` with recovery options
-
----
-
-## Batch 8: Supportability and Recovery
-
-### Action:
-- Verify `supabase/functions/generate-support-bundle/` produces real output
-- Verify `supabase/functions/support-recovery-api/` has working endpoints
-- Add admin UI surface for support bundle download if missing
-- Verify runbook drill scripts in `scripts/support/drills/` are executable
+**Completion criteria**: No `onClick={() => {}}` or `toast("Coming soon")` patterns remain on primary CTAs. Every primary action either works or is honestly disabled with explanation.
 
 ---
 
-## Implementation Order
+## Phase 4: Visual Coherence and Design Polish
 
-1. **Batch 1** (Demo migration) -- largest UX impact, ~280 files
-2. **Batch 2** (Test stabilization) -- validates Batch 1
-3. **Batch 4** (Root config) -- quick wins, low risk
-4. **Batch 6** (Generated cleanup) -- reduces repo noise
-5. **Batch 3** (Component dedup) -- medium effort
-6. **Batch 5** (Edge functions) -- verify existing work
-7. **Batch 7** (Service wiring) -- architecture integrity
-8. **Batch 8** (Supportability) -- operational readiness
+**Problem**: With 1,016 components and 1,092 pages, visual drift is inevitable. Spacing, typography, elevation, and color usage vary across surfaces.
+
+**Action**:
+1. Ensure all pages use `DomainAppShell` or `CenterPageShell` for consistent framing
+2. Standardize page header patterns (title, description, breadcrumb, actions toolbar)
+3. Verify all pages use design tokens from `src/platform/design-system/sita-design-tokens.ts`
+4. Check card/panel components use consistent border-radius, padding, elevation
+5. Verify empty states use `PremiumEmptyState` with correct domain color accents
+6. Check tab bars, toolbars, and action bars for consistent height/spacing
+7. Verify glassmorphic depth and gradient usage follows `DOMAIN_ATMOSPHERE` tokens
+
+**Key visual fixes**:
+- Consistent page padding (p-4 md:p-6)
+- Consistent max-width containers (max-w-[1400px])
+- Consistent card spacing (gap-4 or gap-6)
+- Typography hierarchy using `SITA_TYPE` tokens
+- Consistent icon sizes and button variants
+
+**Completion criteria**: All primary surfaces visually match the established glassmorphic design system. No raw/unstyled pages remain in navigation-reachable routes.
 
 ---
 
-## What Will NOT Be Done (Honest Blockers)
+## Phase 5: Shell/App/OS Surface Alignment
 
-- **Full `strictNullChecks` enablement**: Would require touching 1000+ files; will be incremental
-- **Mobile native closure**: Intentionally deferred per `mem://architecture/os-core-and-runtime`
-- **Desktop code signing**: Requires external Apple/Microsoft credentials
-- **OS ISO build verification**: Requires QEMU/hardware environment
-- **Full 285-page demo removal in one pass**: Will be done in priority batches across multiple sessions
+**Problem**: Desktop shell, app windows, mobile views, and settings must feel like one product, not separate applications.
+
+**Action**:
+1. Verify `ShellLayout` wraps all authenticated desktop routes consistently
+2. Verify dock/taskbar items match actual available apps
+3. Verify command palette (`CommandPalette.tsx`) indexes all navigable routes
+4. Verify notification center renders real notifications (or proper empty state)
+5. Verify window manager can open/close/resize app windows
+6. Verify mobile routes (`/mobile/*`) provide equivalent functionality to desktop counterparts
+7. Verify settings shell provides consistent navigation sidebar
+8. Verify admin shell (Mission Control) provides consistent navigation
+
+**Completion criteria**: Navigation between shell, apps, settings, and admin feels seamless. Command palette finds all surfaces. Mobile provides honest degraded/deferred views where desktop features are not available.
 
 ---
 
-## Estimated Scope Per Session
+## Phase 6: Flow Completion and End-to-End Verification
 
-Each implementation session can realistically handle:
-- ~20-30 page demo migrations (with proper empty states)
-- ~10 test fixes
-- 1-2 config/infra hardening tasks
-- 1 edge function verification batch
+**Problem**: Multi-step workflows (onboarding, setup, AI interactions, financial operations) may break mid-flow.
 
-Total estimated sessions for full closure: 12-15
+**Action**: Verify and fix these critical flows:
+1. **Auth flow**: Login -> Signup -> Email verification -> Onboarding -> Desktop
+2. **Onboarding flow**: All 29 screens complete start-to-finish
+3. **Business setup**: Create first customer, first invoice, first quote
+4. **Money setup**: Connect first account, view first transaction
+5. **App install flow**: Browse store -> Install -> Open -> Use
+6. **Settings flow**: Update profile -> Save -> Confirmation feedback
+7. **Admin flow**: View dashboard -> Take action -> See result
+8. **Advisor/Boardroom flow**: Open boardroom -> Start session -> Get recommendation
+
+**Completion criteria**: All critical flows complete without errors. Success/failure feedback is shown at every step.
+
+---
+
+## Phase 7: Accessibility and Interaction Quality
+
+**Problem**: Keyboard navigation, focus management, screen reader support, and touch targets may be incomplete.
+
+**Action**:
+1. Verify all interactive elements have proper `aria-label` or visible text
+2. Verify focus order follows visual order on all pages
+3. Verify modals/drawers trap focus correctly
+4. Verify all forms have proper `<label>` associations
+5. Verify color contrast meets WCAG 2.1 AA (4.5:1 for text)
+6. Verify all buttons have minimum 44x44px touch targets on mobile
+7. Verify `prefers-reduced-motion` is respected in animations
+8. Add `role` attributes where semantic HTML is not used
+
+**Completion criteria**: No accessibility violations on primary surfaces. All interactive elements are keyboard-navigable.
+
+---
+
+## Phase 8: Duplicate Removal, Governance, and Deployment Verification
+
+**Problem**: Duplicate components, dead routes, orphan pages, and stale code reduce maintainability.
+
+**Action**:
+1. Identify and consolidate duplicate empty-state, error-state, and loading-state components
+2. Remove pages not reachable from any route
+3. Remove components not imported anywhere
+4. Verify route registry completeness (every route in App.tsx has a real page)
+5. Run `npx vite build` to confirm zero build errors
+6. Run `npx vitest run` to confirm test suite passes
+7. Create a generated `route-health-report.json` listing all routes and their state (complete/stub/deferred)
+8. Verify `generated/` directory contains only current artifacts
+
+**Completion criteria**: Clean build, passing tests, no orphan pages, no duplicate systems, honest route health report.
+
+---
+
+## Execution Contract
+
+- Each phase completes fully before the next begins
+- Each phase ends with a verification step (build check, grep check, or test run)
+- Changes stay within existing architectural patterns (no new frameworks, no new providers)
+- All 226 demo-dependent pages will be migrated using `PremiumEmptyState` as the canonical empty/setup/degraded component
+- Realistic scope per session: ~25-30 page migrations, or ~10 flow fixes, or ~1 full phase of smaller scope
+- Estimated total: 10-12 implementation sessions across all 8 phases
 
