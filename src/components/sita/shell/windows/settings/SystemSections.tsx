@@ -249,6 +249,14 @@ function GeneralContentFull() {
             <NovaToggle checked={reducedMotion} onChange={setReducedMotion} />
           </SettingRow>
           <Divider />
+          <SettingRow
+            label="Sync to Accessibility"
+            description={<>Automatically mirror Reduced Motion and focus behavior changes into Accessibility settings</>}
+            icon={<Accessibility className="h-3.5 w-3.5" />}
+          >
+            <NovaToggle checked={syncAccessibility} onChange={setSyncAccessibility} />
+          </SettingRow>
+          <Divider />
           <SettingRow label="Language" description="Primary language for SITA OS" icon={<Globe className="h-3.5 w-3.5" />}>
             <GeneralSelect value={language} onChange={(v) => setLanguage(v as any)} options={[
               { value: "en", label: "English" },
