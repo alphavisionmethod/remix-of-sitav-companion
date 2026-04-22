@@ -1,207 +1,217 @@
 
 
-# Backend / Runtime / Service Hardening Plan
+# Phase-by-Phase Deployment-Readiness Verification System
 
-This is a 13-phase implementation plan to harden, canonicalize, and production-ready the backend, service, runtime, database, and deployment layers.
-
----
-
-## Phase 1 — Standardize Deploy Service Manifests
-
-**Goal:** Ensure all deployable service manifests are complete and consistent.
-
-**Files to modify:**
-- `deploy/api-gateway/package.json` — add missing `dev`, `test`, `smoke` scripts; pin dependency versions to match brain-core
-- `deploy/brain-core/package.json` — add missing `test`, `smoke` scripts; align dependency versions with api-gateway
-- Create `deploy/shared/service-baseline.md` — document the canonical script contract (`build`, `start`, `dev`, `typecheck`, `lint`, `clean`, `health-check`, `ready-check`, `test`, `smoke`)
-
-**Details:**
-- Both services already have `build`, `start`, `dev`, `typecheck`, `lint`, `clean`, `health-check`, `ready-check` — good baseline
-- Add `"test": "echo 'No tests yet' && exit 0"` and `"smoke": "curl -sf http://localhost:$PORT/health || exit 1"` to both
-- Align hono/supabase-js versions across both manifests (currently identical — verify stays that way)
+This plan adds only the missing or materially insufficient tests identified after a full inventory of the existing 360 test files, 695 check-* validators, 32 assert-* scripts, and 66 E2E specs. No duplication of existing strong coverage.
 
 ---
 
-## Phase 2 — Harden API Gateway Server (`deploy/api-gateway/server.ts`)
+## Phase 1: Edge Function Coverage Expansion
 
-**Goal:** Production-grade hardening of the gateway entry point.
+**Problem**: Only 7 of 203 edge functions have tests (3.4%). This is the single largest coverage gap.
 
-**Changes:**
-- Add request-ID propagation (`X-Request-Id` header generation + forwarding to brain-core proxy)
-- Add timeout handling on brain-core and Supabase proxy calls (currently no `AbortController` timeout — add 30s default)
-- Add request body size limiting middleware (reject bodies > 1MB)
-- Add `/metrics` endpoint stub (request count, error count, latency percentiles — in-memory)
-- Improve error response normalization — ensure all error paths include `_requestId`
-- Add `process.on('unhandledRejection')` and `process.on('uncaughtException')` handlers with structured logging
+**Files to create:**
+- `src/__tests__/edge-functions/ef-critical-smoke.test.ts` — Smoke-level structural tests for the 20 highest-priority edge functions (ai-gateway, boardroom-session, brain-core, admin-gateway, agent-executor, advisor-conversation, webhook-retry-processor, alert-router, app-store-api, cashflow-calculate, etc.). Validates: index.ts exists, has Deno.serve, has CORS, has error handling try/catch, has input validation patterns, has proper createClient usage.
+- `src/__tests__/edge-functions/ef-cron-schedule-verification.test.ts` — Validates all cron-wired edge functions (referenced in `_owners.json` or function names ending in `-cron`, `-nightly`) actually exist on disk and have proper scheduling metadata.
+- `src/__tests__/edge-functions/ef-auth-model-verification.test.ts` — Cross-references the edge function registry's authModel field against actual code: service-role functions use SERVICE_ROLE_KEY, anon functions don't require auth headers, jwt-verified functions check Authorization.
+- `src/__tests__/edge-functions/ef-receipt-emission.test.ts` — Validates that functions tagged with `emitsReceipt: true` in the registry actually import and call receipt emission helpers from `_shared/`.
 
----
-
-## Phase 3 — Harden Brain Core Server (`deploy/brain-core/server.ts`)
-
-**Goal:** Production-grade hardening of the brain core entry point.
-
-**Changes:**
-- Add request-ID propagation (accept from gateway, generate if missing)
-- Add timeout handling on Supabase calls
-- Add `/metrics` endpoint stub
-- Add request body size limiting
-- Add `process.on('unhandledRejection')` / `process.on('uncaughtException')` handlers
-- Add NATS health check to `/health` endpoint (currently present but could include last-publish latency)
-- Add model budget persistence — currently in-memory (`budgetSpentCents` resets on restart); add Supabase persistence for budget state
-- Add input validation (use inline Zod-like validation for all POST endpoints)
+**Existing coverage retained**: ef-structural-verification.test.ts, ef-contract-consistency.test.ts, ef-registry-completeness.test.ts, ef-topology-integrity.test.ts — all strong, not duplicated.
 
 ---
 
-## Phase 4 — Create Missing `docker-compose.yml` Base Completeness Checks
+## Phase 2: Page Completeness and Route Truth
 
-**Goal:** Ensure the Docker Compose stack is self-consistent.
+**Problem**: 1092 pages exist but no test validates they all export a valid default React component. Existing page tests cover specific batches but not universal export validation.
 
-**Changes:**
-- `docker-compose.yml` lines 80+ reference `sita-supabase-db` as dependency but API gateway should also depend on brain-core being healthy
-- Add explicit `depends_on` with `service_healthy` for brain-core in api-gateway (currently only depends on db)
-- Validate all referenced config files exist: `deploy/traefik/traefik.yml`, `deploy/traefik/dynamic.yml`, `nginx/default.conf`
-- Create missing Traefik config files if absent (`deploy/traefik/traefik.yml`, `deploy/traefik/dynamic.yml`)
+**Files to create:**
+- `src/__tests__/pages/page-export-completeness.test.ts` — Scans all `src/pages/**/*.tsx` files, dynamically imports each, asserts `module.default` is a function. Uses tolerance for known exceptions (index re-exports, layout wrappers). This is the "no stub/dead page" gate.
+- `src/__tests__/routes/route-page-alignment.test.ts` — Cross-references all route definitions in `src/routes/*.tsx` against actual page files to detect orphan routes (route with no page) and orphan pages (page with no route). Improves on existing `check-orphan-pages.sh` by running in Vitest with structured output.
 
----
-
-## Phase 5 — Consolidate `src/lib/services/` Sprawl
-
-**Goal:** Reduce 200+ service directories to governed, domain-canonical groupings.
-
-**Approach:** This is the largest phase. Rather than mass-rename/delete (which would break hundreds of imports), we:
-
-1. **Create `src/lib/services/README.md`** — document the canonical domain taxonomy:
-   - Core Platform: `brain-core`, `policy-engine`, `approval-engine`, `capability-router`, `executor-service`, `receipt-service`, `verification-engine`, `event-bus`
-   - Trust & Security: `trust-governor`, `keyvault`, `duress-detection`, `emergency-halt`, `injection-firewall`, `tenant-firewall`, `trusted-device`
-   - AI & Intelligence: `ai-workforce`, `ai-economics`, `model-router`, `inference-gateway`, `council-orchestrator`, `boardroom-service`
-   - Business/Finance/Concierge: `business-os`, `finance-os`, `concierge-os`
-   - Communications: `communication-service`, `messaging-gateway`, `notifications`, `push-notification`
-   - Platform Infrastructure: `realtime-gateway`, `service-registry`, `database`, `degraded-mode`, `observability`
-   - Connectors: `connector-control-plane`, `connector-engine`, `connector-runners`, `connector-truth`
-   - Support/Recovery: `support-diagnostics`, `self-healing`, `incident-management`
-
-2. **Add `src/lib/services/_domain-ownership.ts`** — a typed registry mapping every service directory to its canonical domain, owner, and status (active/deprecated/experimental)
-
-3. **Create validator `scripts/validators/check-service-domain-ownership.sh`** — ensures every directory under `src/lib/services/` has an entry in the domain ownership registry
+**Existing coverage retained**: route-truth.test.ts, route-coverage.test.ts, pages-structure.test.ts, all admin-pages-batch*.test.tsx — strong, not duplicated.
 
 ---
 
-## Phase 6 — Harden Edge Function Shared Code
+## Phase 3: Deployment Meta-Gate Test
 
-**Goal:** Ensure `supabase/functions/_shared/` is production-grade.
+**Problem**: No single test aggregates all deployment gates (build, typecheck, validators, architecture, security) into a unified pass/fail with structured output.
 
-**Changes:**
-- `_shared/auth.ts` — add timeout to `getUser()` call; add rate-limit-aware error messages
-- `_shared/cors.ts` — already excellent with `withCors` wrapper; no changes needed
-- `_shared/logger.ts` — add `timer()` method for latency tracking convenience
-- `_shared/rate-limit.ts` — verify it uses Supabase-backed state (not in-memory, since edge functions are ephemeral)
-- `_shared/validate.ts` / `_shared/zod-validate.ts` — consolidate if both exist and overlap; ensure single canonical validation path
-- `_shared/error-sink.ts` — verify it emits structured errors; add dead-letter queue tracking if missing
-- `_shared/tracing.ts` — verify it generates/propagates correlation IDs; add parent-span support if missing
-- Create `_shared/health.ts` — standardized health response builder for edge functions that expose health endpoints
+**Files to create:**
+- `src/__tests__/deployment/deployment-readiness-gate.test.ts` — Master aggregation test that:
+  1. Validates `generated/deployment-readiness-report.json` exists and has `deploymentReady: true`
+  2. Validates all required generated artifacts exist (service-manifest.json, route-manifest.json, capability-index.json, validation-summary.json)
+  3. Validates no generated artifact is older than 7 days (staleness gate)
+  4. Checks package.json has all required CI scripts (build, test, typecheck, lint, ci, pre-deploy)
+  5. Validates tsconfig.json/tsconfig.app.json exist and have strict mode
+  6. Validates vite.config.ts exists
+  7. Validates all CI workflow files are valid YAML (parse test)
 
----
-
-## Phase 7 — Add Backend Validators and Governance Scripts
-
-**Goal:** CI-runnable validators that catch backend drift.
-
-**New files:**
-- `scripts/validators/check-edge-function-shared-imports.sh` — verify all edge functions import from `_shared/` for cors/auth/logging (no inline reimplementations)
-- `scripts/validators/check-deploy-service-completeness.sh` — verify all `deploy/*/package.json` have required scripts
-- `scripts/validators/check-docker-compose-references.sh` — verify all referenced config files and Dockerfiles exist
-- Update `scripts/root/check-service-manifest-completeness.ts` — already exists, verify it catches the test/smoke gaps
+**Existing coverage retained**: check-deployment-readiness.ts script, pre-deploy.sh — retained as runtime validators. This test adds Vitest-level CI-gate verification.
 
 ---
 
-## Phase 8 — Strengthen Database Governance Layer
+## Phase 4: Environment and Configuration Contract Tests
 
-**Goal:** Ensure DB functions, migrations, and RLS posture are governed.
+**Problem**: No Vitest test validates the env contract (required VITE_ variables, .env structure, config.toml integrity).
 
-**Changes:**
-- All existing DB functions are already `SECURITY DEFINER` with `search_path = 'public'` — verified good
-- All use `has_role()` for admin gating — verified good
-- Create `scripts/db/check-function-security-posture.sh` — verify all public functions use `SECURITY DEFINER` + `SET search_path`
-- Create `scripts/db/check-rls-coverage.sh` — verify no public tables have RLS disabled (complement the existing `get_db_truth_snapshot('drift')` RPC)
-- Verify `supabase/functions/_shared/kill-switch-db.ts` vs `_shared/kill-switch.ts` are not duplicative — consolidate if overlapping
+**Files to create:**
+- `src/__tests__/config/env-config-contract.test.ts` — Validates:
+  1. All `import.meta.env.VITE_*` references across src/ resolve to declared variables
+  2. supabase/config.toml exists and has valid project_id
+  3. No hardcoded Supabase URLs or keys in source (except test fixtures)
+  4. package.json engine field and Node version alignment
+  5. TypeScript strict mode is enabled
+  6. All `tsconfig*.json` files parse correctly
 
----
-
-## Phase 9 — AI / Advisor / Boardroom Orchestration Hardening
-
-**Goal:** Ensure AI invocation paths are safe, explainable, and non-duplicative.
-
-**Changes:**
-- `src/lib/services/brain-core/index.ts` (client-side) vs `deploy/brain-core/server.ts` (server-side) — these inline the same logic. Document this as intentional (client-side for demo mode, server-side for production). Add a comment block in both files cross-referencing the other.
-- Verify `src/lib/services/council-orchestrator/` and `src/lib/services/boardroom-service/` are not duplicating `deploy/brain-core/server.ts` council logic — document canonical source
-- Ensure `src/lib/services/ai-gateway/` forwards to the `ai-gateway` edge function and does not contain inline AI provider calls
-- Verify `src/lib/services/inference-gateway/` vs `src/lib/services/ai-gateway/` are complementary, not duplicative — document roles in `_domain-ownership.ts`
+**Existing coverage retained**: check-env-contract-completeness.ts — script-level validator retained. This adds Vitest gate.
 
 ---
 
-## Phase 10 — Recovery / Supportability / Proof Depth
+## Phase 5: Migration and Database Contract Tests
 
-**Goal:** Ensure support bundles, runbooks, and recovery paths are real.
+**Problem**: Existing migration tests check sequence and ownership but not rollback safety or naming convention enforcement.
 
-**Changes:**
-- Verify `supabase/functions/generate-support-bundle/` produces actionable output (not just metadata)
-- Verify `supabase/functions/runbook-drill/` executes real checks
-- Verify `supabase/functions/workflow-repair/` and `workflow-replay/` have real repair logic
-- Verify `supabase/functions/self-healing/` has real remediation paths
-- Add `supabase/functions/_shared/function-support-diagnostics.ts` — already exists; verify it produces structured diagnostics for every function call
+**Files to create:**
+- `src/__tests__/db/migration-safety.test.ts` — Validates:
+  1. No migration contains `DROP TABLE` without `IF EXISTS`
+  2. No migration contains `ALTER DATABASE`
+  3. No migration modifies reserved schemas (auth, storage, realtime, supabase_functions, vault)
+  4. All migrations follow timestamp naming convention
+  5. No duplicate migration timestamps
+  6. No migration references tables not yet created (forward-reference detection via ordered scan)
 
----
-
-## Phase 11 — Deployment Honesty and Release Evidence
-
-**Goal:** Ensure deployment artifacts and readiness gates are honest.
-
-**Changes:**
-- Verify `scripts/root/check-deployment-readiness.ts` checks all required artifacts
-- Verify `scripts/root/check-env-contract-completeness.ts` checks all edge function secrets
-- Create/verify `.env.example` at project root with all required env vars documented
-- Verify `Makefile` targets match real `docker-compose.yml` service names
-- Add `make preflight` target — runs all readiness checks before deploy
+**Existing coverage improved**: migration-sequence-integrity.test.ts and migration-ownership-integrity.test.ts remain. This adds safety-specific checks they lack.
 
 ---
 
-## Phase 12 — Add Smoke Test Coverage
+## Phase 6: Connector and Provider Behavioral Tests
 
-**Goal:** Every deployable service has a minimal smoke test.
+**Problem**: No Vitest test validates OAuth token structures, refresh patterns, or degraded provider handling.
 
-**New files:**
-- `deploy/api-gateway/smoke.test.ts` — start server, hit `/health`, `/ready`, verify JSON structure
-- `deploy/brain-core/smoke.test.ts` — start server, hit `/health`, `/ready`, `/brain/intent` with test payload
+**Files to create:**
+- `src/__tests__/connectors/connector-behavioral.test.ts` — Validates:
+  1. Connector registry exports have required fields (id, name, provider, authType, status)
+  2. OAuth connectors declare refreshEndpoint and tokenExpiryField
+  3. All connectors have a degraded/offline fallback mode declared
+  4. Connector client registry aligns with connector catalog (no orphan clients)
+  5. Webhook-capable connectors declare ingest endpoint and retry policy
 
----
-
-## Phase 13 — Delete / Consolidate Dead or Duplicate Backend Code
-
-**Goal:** Remove genuine dead code; consolidate duplicates.
-
-**Actions:**
-- Audit `src/lib/services/boardroom/` vs `src/lib/services/boardroom-service/` — if one is deprecated, remove it and redirect imports
-- Audit `src/lib/services/api-gateway/` vs `deploy/api-gateway/` — the former is a client-side service abstraction, the latter is the real server; document this, ensure no confusion
-- Audit `src/lib/services/brain-core/` vs `deploy/brain-core/` — same pattern as above
-- Audit `src/lib/services/security/` vs `src/lib/services/security-privacy/` — consolidate if overlapping
-- Audit `src/lib/services/observability/` vs `src/lib/services/observability-hub/` — consolidate if overlapping
-- Audit `src/lib/services/fleet/` vs `src/lib/services/fleet-health/` vs `src/lib/services/fleet-ota/` — verify they are complementary
-- Remove any truly dead service directories (no imports, no exports consumed)
+**Existing coverage retained**: connector-system.test.ts, check-connector-catalog.ts, check-connector-reality.ts — retained and not duplicated. This adds behavioral contract validation they lack.
 
 ---
 
-## Technical Summary
+## Phase 7: Security and Trust Behavioral Tests
 
-| Layer | Current State | After Plan |
-|---|---|---|
-| Deploy manifests | Missing test/smoke scripts | Complete operational scripts |
-| Service entrypoints | Good baseline, missing timeouts/request-IDs | Production-grade with observability |
-| Service sprawl (200+ dirs) | Ungoverned | Domain-owned registry + validator |
-| Edge function shared code | Good (withCors, auth, logger) | Consolidated + health helper |
-| Database governance | Strong (SECURITY DEFINER, has_role) | Validator-backed |
-| AI orchestration | Dual client/server implementations | Documented canonical sources |
-| Recovery/support | Functions exist | Verified real logic |
-| Deployment readiness | CI gates exist | Preflight Makefile target |
-| Smoke tests | Missing | 2 service smoke tests |
-| Dead code | Potential duplicates | Audited and consolidated |
+**Problem**: Existing security tests cover RLS and auth contracts but lack kill-switch toggle behavioral validation and admin boundary enforcement testing.
+
+**Files to create:**
+- `src/__tests__/security/security-fabric-behavioral.test.ts` — Validates:
+  1. All kill-switch IDs are unique and have valid enforcement layer references
+  2. Admin-only routes are wrapped in PermissionGatedRoute (import scan)
+  3. No page in src/pages/admin/ is accessible without auth guard (import pattern check)
+  4. All storage bucket references use the hardened 'app-assets' bucket name
+  5. No `as any` assertions exist in src/pages/ (reinforces type-safety gate)
+  6. No localStorage/sessionStorage used for role/permission checks
+
+**Existing coverage retained**: kill-switch-enforcement.test.ts, auth-contracts.test.ts, rls-policy-behavioral.test.ts — all retained. This adds fabric-level behavioral checks.
+
+---
+
+## Phase 8: AI, Advisor, and Boardroom Behavioral Tests
+
+**Problem**: Existing tests cover advisor identity and escalation but lack AI budget enforcement behavioral testing and advisor fallback/degraded mode testing.
+
+**Files to create:**
+- `src/__tests__/ai/ai-behavioral-safety.test.ts` — Validates:
+  1. AI refusal policy registry covers all 15 declared capabilities
+  2. Budget enforcement config has valid cost caps per tier
+  3. Model router has fallback chains for every primary model
+  4. Advisor identity registry has all 34 advisors with required fields
+  5. Boardroom consensus requires minimum quorum (configurable, default 3)
+  6. Receipt/provenance emission is declared for all AI action types
+  7. Degraded AI runtime has honest "limited capability" messaging
+
+**Existing coverage retained**: advisor-council-protocol.test.ts, advisor-escalation.test.ts, boardroom.test.ts, model-router.test.ts, refusal-receipts.test.ts, no-hallucination*.test.ts — all retained. This adds budget and degraded-mode gaps.
+
+---
+
+## Phase 9: CI Workflow Integrity Tests
+
+**Problem**: No test validates that all 21 CI workflow YAML files parse correctly and reference existing scripts.
+
+**Files to create:**
+- `src/__tests__/ci/workflow-integrity.test.ts` — Validates:
+  1. All `.github/workflows/*.yml` files parse as valid YAML
+  2. Referenced npm scripts exist in package.json
+  3. No workflow references a Node version below 20
+  4. All workflows have timeout-minutes set (no runaway jobs)
+  5. All workflows have concurrency groups (no duplicate runs)
+  6. Composite actions in `.github/actions/` parse correctly
+
+**No existing equivalent**: check-workflow-governance.ts is advisory-only and doesn't validate YAML parsing or script references.
+
+---
+
+## Phase 10: Wiring and Meta-Regression Prevention
+
+**Problem**: Need validators to prevent regressions on test coverage itself and generated artifact drift.
+
+**Files to create:**
+- `src/__tests__/meta/test-coverage-regression.test.ts` — Validates:
+  1. Minimum test file count baseline (currently 360, gate at 350)
+  2. Minimum E2E spec count baseline (currently 66, gate at 60)
+  3. Minimum check-* validator count baseline (currently 695, gate at 680)
+  4. All test directories have at least 1 test file (no empty __tests__ dirs)
+  5. No test file is empty (>10 lines each)
+  6. Generated artifacts directory exists with minimum file count
+
+- `src/__tests__/meta/generated-artifact-freshness.test.ts` — Validates:
+  1. All JSON files in generated/ parse correctly
+  2. No generated file has `ok: false` (aggregated truth gate)
+  3. Key artifacts exist: deployment-readiness-report.json, service-manifest.json
+
+**Wiring**: Add a `test:deployment-readiness` script to package.json:
+```
+"test:deployment-readiness": "vitest run src/__tests__/deployment/ src/__tests__/meta/ src/__tests__/ci/ src/__tests__/security/security-fabric-behavioral.test.ts"
+```
+
+---
+
+## Summary: What Gets Added
+
+| Phase | Files | Purpose |
+|-------|-------|---------|
+| 1 | 4 test files | Edge function coverage from 3.4% to ~15% structural |
+| 2 | 2 test files | Universal page export + route alignment validation |
+| 3 | 1 test file | Deployment meta-gate aggregation |
+| 4 | 1 test file | Env/config contract in Vitest |
+| 5 | 1 test file | Migration safety checks |
+| 6 | 1 test file | Connector behavioral contracts |
+| 7 | 1 test file | Security fabric behavioral validation |
+| 8 | 1 test file | AI/advisor behavioral safety |
+| 9 | 1 test file | CI workflow YAML integrity |
+| 10 | 2 test files + 1 script | Meta-regression prevention + wiring |
+
+**Total**: 15 new test files, 1 new npm script. Zero duplication of existing strong coverage.
+
+## Externally Blocked Coverage
+
+- **Live RLS policy testing**: Requires running database — verified structurally via registry, not at runtime
+- **Edge function HTTP smoke tests**: Require deployed functions with valid credentials — deferred to Playwright E2E
+- **OAuth token refresh**: Requires real provider credentials — connector registry contract tested structurally
+- **Desktop/mobile native builds**: Require platform toolchains — readiness gates exist as script validators
+- **SAST/DAST scanning**: Requires external security tooling — npm audit and RLS checks serve as proxy
+
+## How to Run
+
+```bash
+# Full deployment readiness (new)
+npm run test:deployment-readiness
+
+# Existing full suite (unchanged)
+npm run ci
+npm run validate:all
+npm run release:readiness:full
+npm run pre-deploy
+```
 
