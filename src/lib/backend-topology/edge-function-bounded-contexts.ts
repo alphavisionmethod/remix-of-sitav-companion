@@ -1,37 +1,33 @@
-// ═══════════════════════════════════════════════════════════════
-// SITA OS — Edge Function Bounded Contexts
-// Maps each function to its owning bounded context/domain
-// ═══════════════════════════════════════════════════════════════
+// Edge Function Bounded Contexts
 
 export type BoundedContext =
-  | "cloud-control-plane"
-  | "device-experience"
-  | "owner-experience"
-  | "onboarding"
-  | "observability"
-  | "compliance"
-  | "app-ecosystem"
-  | "workflow-engine"
-  | "release-pipeline"
-  | "security"
-  | "webhook-pipeline"
-  | "scheduler"
-  | "reliability"
-  | "connector-mesh"
-  | "boardroom"
   | "admin-plane"
   | "advisor-council"
   | "agent-runtime"
   | "ai-gateway"
-  | "cloud-infrastructure"
-  | "connector-fabric"
-  | "finance-engine"
-  | "notification-dispatch"
   | "os-kernel"
   | "platform-services"
   | "user-experience"
+  | "intelligence-pipeline"
+  | "finance-engine"
+  | "cloud-infrastructure"
+  | "connector-fabric"
   | "compliance-privacy"
-  | "intelligence-pipeline";
+  | "notification-dispatch"
+  | "observability"
+  | "app-ecosystem"
+  | "release-pipeline"
+  | "compliance"
+  | "boardroom"
+  | "reliability"
+  | "scheduler"
+  | "connector-mesh"
+  | "device-experience"
+  | "webhook-pipeline"
+  | "onboarding"
+  | "owner-experience"
+  | "security"
+  | "workflow-engine";
 
 export const EDGE_FUNCTION_BOUNDED_CONTEXTS: Record<string, BoundedContext> = {
   "admin-ai-workforce-run": "admin-plane",
@@ -119,17 +115,7 @@ export const EDGE_FUNCTION_BOUNDED_CONTEXTS: Record<string, BoundedContext> = {
   "user-bff-gateway": "user-experience",
   "vapid-public-key": "notification-dispatch",
   "verification-recorder": "compliance-privacy",
-} as const;
-
-export function getFunctionsByContext(context: BoundedContext): string[] {
-  return Object.entries(EDGE_FUNCTION_BOUNDED_CONTEXTS)
-    .filter(([, ctx]) => ctx === context)
-    .map(([name]) => name);
-}
-
-export function getContextForFunction(name: string): BoundedContext | undefined {
-  return EDGE_FUNCTION_BOUNDED_CONTEXTS[name];
-}  "account-delete": "platform-services",
+  "account-delete": "platform-services",
   "admin-reset-user-setup": "admin-plane",
   "admin-revoke-session": "admin-plane",
   "ai-receipt-completeness-snapshot": "ai-gateway",
@@ -246,4 +232,4 @@ export function getContextForFunction(name: string): BoundedContext | undefined 
   "workflow-repair": "workflow-engine",
   "workflow-replay": "workflow-engine",
   "workflow-stuck-detector": "workflow-engine",
-
+};
