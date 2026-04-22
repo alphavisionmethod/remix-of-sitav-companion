@@ -140,7 +140,7 @@ export const FEATURE_REGISTRY: readonly FeatureSurfaceEntry[] = [
   {
     featureId: "integrations", name: "Integrations", canonicalImport: "@/features/integrations",
     domain: "system", riskTier: "R2", status: "beta",
-    ownedRoutes: ["/integrations"], ownedApps: [],
+    ownedRoutes: ["/integrations", "/connectors"], ownedApps: [],
     runtimeSupport: [...ALL_TIERS], stateGrammar: [...CORE_STATES],
     proofCoverage: PARTIAL_PROOF, supportIntegrated: true, trustIntegrated: false,
   },
