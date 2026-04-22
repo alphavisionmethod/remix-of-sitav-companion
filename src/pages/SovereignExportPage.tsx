@@ -11,6 +11,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 import { DEMO_EXPORTABLE_TABLES, DEMO_PAST_EXPORTS } from "@/data/seed/core-pages";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageShell } from "@/components/sita/PageShell";
 export default function SovereignExportPage() {
   
   const { user, isDemo } = useAuth();
@@ -90,6 +91,7 @@ export default function SovereignExportPage() {
   };
 
   return (
+    <PageShell>
     <div className="space-y-6 p-6">
 <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><FileArchive className="h-6 w-6 text-primary" /> Sovereign Data Export</h1>
@@ -173,5 +175,6 @@ export default function SovereignExportPage() {
         </div>
       </div>
     </div>
+    </PageShell>
   );
 }

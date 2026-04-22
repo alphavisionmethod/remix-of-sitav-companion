@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageShell } from "@/components/sita/PageShell";
 
 
 const fadeUp = { hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0, transition: { duration: 0.25 } } };
@@ -97,6 +98,7 @@ const PeopleWorkspace = () => {
   }, [displayPeople]);
 
   return (
+    <PageShell>
     <div className="min-h-screen pb-12">
 <SitaPageHeader title="People" subtitle="Relationships across business, household, and personal life" actions={
         <Button size="sm" variant="outline" className="gap-1.5 border-border/50"><Plus className="w-3.5 h-3.5" /> Add Person</Button>
@@ -201,6 +203,7 @@ const PeopleWorkspace = () => {
         </div>
       </div>
     </div>
+    </PageShell>
   );
 };
 

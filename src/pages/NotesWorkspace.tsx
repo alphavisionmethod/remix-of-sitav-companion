@@ -25,6 +25,7 @@ import {
   ListTodo, Users, Briefcase, Workflow, FileBox, Sparkles,
   MessageSquare, Calendar,
 } from "lucide-react";
+import { PageShell } from "@/components/sita/PageShell";
 const TYPE_ICONS: Record<string, React.ElementType> = { note: FileText, meeting: Brain, checklist: CheckSquare, voice: Mic, knowledge: Bookmark };
 const fadeUp = { hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0, transition: { duration: 0.25 } } };
 
@@ -103,6 +104,7 @@ const NotesWorkspace = () => {
   };
 
   return (
+    <PageShell>
     <div className="space-y-6 p-6 max-w-7xl mx-auto">
 <SitaPageHeader
         icon={<FileText className="h-6 w-6" />}
@@ -307,6 +309,7 @@ const NotesWorkspace = () => {
         </div>
       )}
     </div>
+    </PageShell>
   );
 };
 

@@ -12,6 +12,7 @@ import {
   ArrowRight, AlertTriangle, CreditCard, Home, Headphones
 } from "lucide-react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageShell } from "@/components/sita/PageShell";
 
 const OpportunityEngine = () => {
   const { user } = useAuth();
@@ -97,6 +98,7 @@ const OpportunityEngine = () => {
   ].filter(s => s.items.length > 0);
 
   return (
+    <PageShell>
     <motion.div className="mx-auto max-w-5xl space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
 <SitaPageHeader
         title="Opportunity Engine"
@@ -144,6 +146,7 @@ const OpportunityEngine = () => {
         ))
       )}
     </motion.div>
+    </PageShell>
   );
 };
 

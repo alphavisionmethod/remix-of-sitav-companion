@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageShell } from "@/components/sita/PageShell";
 
 interface TeamMember { id: string; name: string; role: string; activeTasks: number; completedThisWeek: number; overdue: number; load: "light" | "normal" | "heavy" | "overloaded"; avatar: string; }
 interface Delegation { id: string; task: string; from: string; to: string; status: "pending" | "accepted" | "in-progress" | "completed"; dueDate: string; priority: string; }
@@ -32,6 +33,7 @@ const TeamWorkspace = () => {
   const [tab, setTab] = useState("workload");
 
   return (
+    <PageShell>
     <div className="min-h-screen pb-12">
 <SitaPageHeader title="Team & Delegation" subtitle="Assign, track, and balance workload" actions={
         <div className="flex gap-2">
@@ -115,6 +117,7 @@ const TeamWorkspace = () => {
         <EmptyState icon={BarChart3} title="Team Activity" description="Recent team actions and handoffs will appear here as your team gets active" />
       )}
     </div>
+    </PageShell>
   );
 };
 

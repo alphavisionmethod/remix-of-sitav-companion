@@ -4,6 +4,7 @@ import { LearnLaterHub } from "@/components/sita/onboarding/LearnLaterHub";
 import { motion } from "framer-motion";
 import { BookOpen } from "lucide-react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageShell } from "@/components/sita/PageShell";
 
 export default function LearnLaterPage() {
   const [deferredConnections, setDeferredConnections] = useState<string[]>([]);
@@ -23,6 +24,7 @@ export default function LearnLaterPage() {
   const totalDeferred = deferredConnections.length + skippedPhases.length;
 
   return (
+    <PageShell>
     <motion.div
       className="mx-auto max-w-5xl space-y-6 p-6"
       initial={{ opacity: 0, y: 16 }}
@@ -50,5 +52,6 @@ export default function LearnLaterPage() {
 
       <LearnLaterHub />
     </motion.div>
+    </PageShell>
   );
 }

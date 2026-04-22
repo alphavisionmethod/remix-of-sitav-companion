@@ -11,6 +11,7 @@ import {
   Reply, Forward, ChevronDown, Filter, Inbox, Tag, CalendarClock,
   StarOff, MailOpen, Users, ShoppingBag, Megaphone, ArrowLeft
 } from "lucide-react";
+import { PageShell } from "@/components/sita/PageShell";
 
 interface Message {
   id: string;
@@ -103,6 +104,7 @@ const CommunicationInbox = () => {
   const channelCounts = { email: messages.filter(m => m.channel === 'email').length, message: messages.filter(m => m.channel === 'message').length, system: messages.filter(m => m.channel === 'system').length };
 
   return (
+    <PageShell>
     <div className="h-full flex flex-col">
       {/* Header */}
       <div className="px-4 pt-4 pb-3 border-b border-border/30 bg-card/30 backdrop-blur-sm">
@@ -279,6 +281,7 @@ const CommunicationInbox = () => {
         </div>
       </div>
     </div>
+    </PageShell>
   );
 };
 

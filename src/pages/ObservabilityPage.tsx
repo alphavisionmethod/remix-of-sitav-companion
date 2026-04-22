@@ -36,16 +36,19 @@ import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { TracesPanel } from "@/components/observability/TracesPanel";
 import { UptimePanel } from "@/components/observability/UptimePanel";
 import { AlertsLivePanel } from "@/components/observability/AlertsLivePanel";
+import { PageShell } from "@/components/sita/PageShell";
 
 /* Count-up KPI tile for observability */
 const ObsKPITile = ({ label, value, ok, icon: Icon }: { label: string; value: string; ok: boolean; icon: React.ElementType }) => {
   const animated = useCountUpFormatted(value);
   return (
+    <PageShell>
     <div className={cn("rounded-xl border px-3 py-2.5 text-center", ok ? "border-border bg-card/50" : "border-accent/20 bg-accent/5")}>
 <Icon className={cn("h-4 w-4 mx-auto mb-1", ok ? "text-muted-foreground" : "text-accent")} />
       <p className={cn("font-display text-sm font-bold tabular-nums", ok ? "text-foreground" : "text-accent")}>{animated}</p>
       <p className="text-[9px] text-muted-foreground">{label}</p>
     </div>
+    </PageShell>
   );
 };
 

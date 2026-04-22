@@ -12,6 +12,7 @@ import {
   PiggyBank, CreditCard, Building2, BarChart3, Zap
 } from "lucide-react";
 import { useCountUp } from "@/hooks/useCountUp";
+import { PageShell } from "@/components/sita/PageShell";
 
 // ─── Simulated data ───
 const ACCOUNTS = [
@@ -59,6 +60,7 @@ function NetWorthTicker({ value }: { value: number }) {
   const formatted = displayed.toLocaleString();
 
   return (
+    <PageShell>
     <div className="text-center">
       <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground mb-2">Total Net Worth</p>
       <motion.div
@@ -84,6 +86,7 @@ function NetWorthTicker({ value }: { value: number }) {
         <span className="text-sm text-muted-foreground">+$32,400</span>
       </motion.div>
     </div>
+    </PageShell>
   );
 }
 

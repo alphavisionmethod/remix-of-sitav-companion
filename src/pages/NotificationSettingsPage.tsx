@@ -13,6 +13,7 @@ import { dbAny as db } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
 import { useActionFn } from "@/hooks/use-action";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageShell } from "@/components/sita/PageShell";
 
 interface NotificationChannel {
   id: string;
@@ -172,6 +173,7 @@ export default function NotificationSettingsPage() {
   }, [user, categories, quietHoursEnabled, quietStart, quietEnd, digestFrequency, saveNotifPrefs]);
 
   return (
+    <PageShell>
     <div className="space-y-6 p-6 max-w-3xl" data-testid="notification-settings-page">
 <div className="flex items-center justify-between">
         <div>
@@ -262,5 +264,6 @@ export default function NotificationSettingsPage() {
         })}
       </div>
     </div>
+    </PageShell>
   );
 }

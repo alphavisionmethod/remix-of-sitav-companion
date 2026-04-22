@@ -28,6 +28,7 @@ import type { CallingContact as Contact, CallingCallLog as CallLog, CallingCallS
 import { useCallingContactsData } from "@/hooks/use-business-data";
 import { useCallingContacts, useCallLogs } from "@/hooks/use-live-data";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageShell } from "@/components/sita/PageShell";
 type DialerState = "idle" | "dialing" | "connected" | "wrapping-up";
 
 // ── Helpers ─────────────────────────────────────────────────────
@@ -73,6 +74,7 @@ function CallStats({ contacts, callLogs }: { contacts: Contact[]; callLogs: Call
   const connectRate = week.length > 0 ? Math.round(week.filter(l => l.status === "completed").length / week.length * 100) : 0;
 
   return (
+    <PageShell>
     <div className="grid grid-cols-2 md:grid-cols-6 gap-2">
       {[
         { label: "Calls Today", value: today.length.toString(), icon: Phone, color: "text-primary" },
@@ -91,6 +93,7 @@ function CallStats({ contacts, callLogs }: { contacts: Contact[]; callLogs: Call
         </div>
       ))}
     </div>
+    </PageShell>
   );
 }
 

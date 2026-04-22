@@ -16,6 +16,7 @@ import { AutonomyLadder } from "@/components/sita/primitives/AutonomyLadder";
 import { SectionSkeleton } from "@/components/sita/SectionSkeleton";
 import { DEMO_ACTIVE_SPILLOVERS, DEMO_TOP_INTERVENTIONS } from "@/data/seed/core-pages";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageShell } from "@/components/sita/PageShell";
 
 
 // Production fallback — seed data removed
@@ -75,6 +76,7 @@ export default function SpilloverDashboard() {
   const medCount = ([] as typeof DEMO_ACTIVE_SPILLOVERS).filter(s => s.impact === "medium").length;
 
   return (
+    <PageShell>
     <div className="space-y-8 p-6 max-w-7xl mx-auto">
 {/* Header */}
       <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }}>
@@ -154,5 +156,6 @@ export default function SpilloverDashboard() {
         </div>
       </div>
     </div>
+    </PageShell>
   );
 }
