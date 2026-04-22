@@ -8,7 +8,6 @@ import { Progress } from "@/components/ui/progress";
 import { DEMO_opportunities, DEMO_OPPORTUNITY_THEMES } from "@/data/seed/revenue-office";
 import { useState, useMemo } from "react";
 import { useDeals } from "@/hooks/use-revenue-office";
-import { useAuth } from "@/contexts/AuthContext";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
