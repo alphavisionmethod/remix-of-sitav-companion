@@ -243,7 +243,9 @@ const ThesisVault = () => {
   </div>
 );
 
-const CommitteeView = () => (
+const CommitteeView = () => {
+  const { isDemoMode } = useDataMode();
+  return (
   <div className="space-y-4">
     <SitaCard>
       <SitaCardTitle sub="Synthesized investment committee perspective">Committee Summary</SitaCardTitle>
@@ -272,6 +274,7 @@ const CommitteeView = () => (
   </div>
 );
 
+};
 };
 
 // ── NEW: Opportunities Tab ──────────────────────────────────────
