@@ -7,6 +7,7 @@ import {
   PenTool, Plus, Layout, Workflow, Calendar, Users, Target,
   Lightbulb, GripVertical, Palette, Link2,
 } from "lucide-react";
+import { PageShell } from "@/components/sita/PageShell";
 
 type CanvasZone = "ideas" | "planning" | "in-progress" | "done";
 
