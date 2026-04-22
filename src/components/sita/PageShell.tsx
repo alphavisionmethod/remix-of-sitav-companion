@@ -58,14 +58,18 @@ export const PageShell = ({ children, width = "wide", className, instant }: Page
 };
 
 /** Animated section for stagger entrance */
-export const PageSection = ({ children, className }: { children: ReactNode; className?: string }) => (
-  <motion.div
-    variants={{
-      hidden: { opacity: 0, y: 12 },
-      visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 120, damping: 16 } },
-    }}
-    className={className}
-  >
-    {children}
-  </motion.div>
-);
+export const PageSection = ({ children, className }: { children: ReactNode; className?: string }) => {
+  const reducedMotion = useReducedMotion();
+  if (reducedMotion) return <div className={className}>{children}</div>;
+  return (
+    <motion.div
+      variants={{
+        hidden: { opacity: 0, y: 12 },
+        visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 120, damping: 16 } },
+      }}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  );
+};
