@@ -1,286 +1,21 @@
 {
-  "timestamp": "2026-04-22T00:22:24.569Z",
-  "totalRoutePageSources": 30,
-  "totalPageOwnerEntries": 29,
+  "timestamp": "2026-04-22T00:24:18.424Z",
+  "totalRoutePageSources": 27,
+  "totalPageOwnerEntries": 26,
   "totalFeatures": 30,
   "totalRoutes": 30,
-  "errors": [
-    {
-      "rule": "route-page-exists",
-      "item": "src/pages/LoginPage.tsx",
-      "detail": "Route references pageSource \"src/pages/LoginPage.tsx\" but file does not exist on disk",
-      "severity": "error"
-    },
-    {
-      "rule": "route-page-exists",
-      "item": "src/pages/RegisterPage.tsx",
-      "detail": "Route references pageSource \"src/pages/RegisterPage.tsx\" but file does not exist on disk",
-      "severity": "error"
-    },
-    {
-      "rule": "route-page-exists",
-      "item": "src/pages/BusinessShellPage.tsx",
-      "detail": "Route references pageSource \"src/pages/BusinessShellPage.tsx\" but file does not exist on disk",
-      "severity": "error"
-    },
-    {
-      "rule": "route-page-exists",
-      "item": "src/pages/MoneyShellPage.tsx",
-      "detail": "Route references pageSource \"src/pages/MoneyShellPage.tsx\" but file does not exist on disk",
-      "severity": "error"
-    },
-    {
-      "rule": "route-page-exists",
-      "item": "src/pages/ConciergeShellPage.tsx",
-      "detail": "Route references pageSource \"src/pages/ConciergeShellPage.tsx\" but file does not exist on disk",
-      "severity": "error"
-    },
-    {
-      "rule": "route-page-exists",
-      "item": "src/pages/BoardroomPage.tsx",
-      "detail": "Route references pageSource \"src/pages/BoardroomPage.tsx\" but file does not exist on disk",
-      "severity": "error"
-    },
-    {
-      "rule": "route-page-exists",
-      "item": "src/pages/FilesPage.tsx",
-      "detail": "Route references pageSource \"src/pages/FilesPage.tsx\" but file does not exist on disk",
-      "severity": "error"
-    },
-    {
-      "rule": "route-page-exists",
-      "item": "src/pages/RevenueOfficeShellPage.tsx",
-      "detail": "Route references pageSource \"src/pages/RevenueOfficeShellPage.tsx\" but file does not exist on disk",
-      "severity": "error"
-    },
-    {
-      "rule": "route-page-exists",
-      "item": "src/pages/DigitalPresenceShellPage.tsx",
-      "detail": "Route references pageSource \"src/pages/DigitalPresenceShellPage.tsx\" but file does not exist on disk",
-      "severity": "error"
-    },
-    {
-      "rule": "route-page-exists",
-      "item": "src/pages/ConnectorsPage.tsx",
-      "detail": "Route references pageSource \"src/pages/ConnectorsPage.tsx\" but file does not exist on disk",
-      "severity": "error"
-    },
-    {
-      "rule": "route-page-exists",
-      "item": "src/pages/AdvisorsPage.tsx",
-      "detail": "Route references pageSource \"src/pages/AdvisorsPage.tsx\" but file does not exist on disk",
-      "severity": "error"
-    },
-    {
-      "rule": "route-page-exists",
-      "item": "src/pages/WorkspacePage.tsx",
-      "detail": "Route references pageSource \"src/pages/WorkspacePage.tsx\" but file does not exist on disk",
-      "severity": "error"
-    },
-    {
-      "rule": "route-page-exists",
-      "item": "src/pages/NotificationsPage.tsx",
-      "detail": "Route references pageSource \"src/pages/NotificationsPage.tsx\" but file does not exist on disk",
-      "severity": "error"
-    },
-    {
-      "rule": "route-page-exists",
-      "item": "src/pages/OnboardingPage.tsx",
-      "detail": "Route references pageSource \"src/pages/OnboardingPage.tsx\" but file does not exist on disk",
-      "severity": "error"
-    },
-    {
-      "rule": "route-page-exists",
-      "item": "src/pages/GovernancePage.tsx",
-      "detail": "Route references pageSource \"src/pages/GovernancePage.tsx\" but file does not exist on disk",
-      "severity": "error"
-    },
-    {
-      "rule": "route-page-exists",
-      "item": "src/pages/EnterprisePage.tsx",
-      "detail": "Route references pageSource \"src/pages/EnterprisePage.tsx\" but file does not exist on disk",
-      "severity": "error"
-    },
-    {
-      "rule": "route-page-exists",
-      "item": "src/pages/PoliciesPage.tsx",
-      "detail": "Route references pageSource \"src/pages/PoliciesPage.tsx\" but file does not exist on disk",
-      "severity": "error"
-    },
-    {
-      "rule": "route-page-exists",
-      "item": "src/pages/owner/OwnerDashboard.tsx",
-      "detail": "Route references pageSource \"src/pages/owner/OwnerDashboard.tsx\" but file does not exist on disk",
-      "severity": "error"
-    },
-    {
-      "rule": "route-page-exists",
-      "item": "src/pages/admin/MissionControlPage.tsx",
-      "detail": "Route references pageSource \"src/pages/admin/MissionControlPage.tsx\" but file does not exist on disk",
-      "severity": "error"
-    },
-    {
-      "rule": "route-page-exists",
-      "item": "src/pages/NovaDesktopPage.tsx",
-      "detail": "Route references pageSource \"src/pages/NovaDesktopPage.tsx\" but file does not exist on disk",
-      "severity": "error"
-    },
-    {
-      "rule": "route-page-exists",
-      "item": "src/pages/Index.tsx",
-      "detail": "Route references pageSource \"src/pages/Index.tsx\" but file does not exist on disk",
-      "severity": "error"
-    },
-    {
-      "rule": "route-page-exists",
-      "item": "src/pages/AuthCallbackPage.tsx",
-      "detail": "Route references pageSource \"src/pages/AuthCallbackPage.tsx\" but file does not exist on disk",
-      "severity": "error"
-    },
-    {
-      "rule": "page-owner-exists",
-      "item": "src/pages/LoginPage.tsx",
-      "detail": "PAGE_OWNER_MAP references \"src/pages/LoginPage.tsx\" but file does not exist on disk",
-      "severity": "error"
-    },
-    {
-      "rule": "page-owner-exists",
-      "item": "src/pages/RegisterPage.tsx",
-      "detail": "PAGE_OWNER_MAP references \"src/pages/RegisterPage.tsx\" but file does not exist on disk",
-      "severity": "error"
-    },
-    {
-      "rule": "page-owner-exists",
-      "item": "src/pages/FilesPage.tsx",
-      "detail": "PAGE_OWNER_MAP references \"src/pages/FilesPage.tsx\" but file does not exist on disk",
-      "severity": "error"
-    },
-    {
-      "rule": "page-owner-exists",
-      "item": "src/pages/BoardroomPage.tsx",
-      "detail": "PAGE_OWNER_MAP references \"src/pages/BoardroomPage.tsx\" but file does not exist on disk",
-      "severity": "error"
-    },
-    {
-      "rule": "page-owner-exists",
-      "item": "src/pages/admin/KillSwitchesPage.tsx",
-      "detail": "PAGE_OWNER_MAP references \"src/pages/admin/KillSwitchesPage.tsx\" but file does not exist on disk",
-      "severity": "error"
-    },
-    {
-      "rule": "page-owner-exists",
-      "item": "src/pages/admin/RunbooksPage.tsx",
-      "detail": "PAGE_OWNER_MAP references \"src/pages/admin/RunbooksPage.tsx\" but file does not exist on disk",
-      "severity": "error"
-    },
-    {
-      "rule": "page-owner-exists",
-      "item": "src/pages/BusinessShellPage.tsx",
-      "detail": "PAGE_OWNER_MAP references \"src/pages/BusinessShellPage.tsx\" but file does not exist on disk",
-      "severity": "error"
-    },
-    {
-      "rule": "page-owner-exists",
-      "item": "src/pages/MoneyShellPage.tsx",
-      "detail": "PAGE_OWNER_MAP references \"src/pages/MoneyShellPage.tsx\" but file does not exist on disk",
-      "severity": "error"
-    },
-    {
-      "rule": "page-owner-exists",
-      "item": "src/pages/ConciergeShellPage.tsx",
-      "detail": "PAGE_OWNER_MAP references \"src/pages/ConciergeShellPage.tsx\" but file does not exist on disk",
-      "severity": "error"
-    },
-    {
-      "rule": "page-owner-exists",
-      "item": "src/pages/RevenueOfficeShellPage.tsx",
-      "detail": "PAGE_OWNER_MAP references \"src/pages/RevenueOfficeShellPage.tsx\" but file does not exist on disk",
-      "severity": "error"
-    },
-    {
-      "rule": "page-owner-exists",
-      "item": "src/pages/DigitalPresenceShellPage.tsx",
-      "detail": "PAGE_OWNER_MAP references \"src/pages/DigitalPresenceShellPage.tsx\" but file does not exist on disk",
-      "severity": "error"
-    },
-    {
-      "rule": "page-owner-exists",
-      "item": "src/pages/ConnectorsPage.tsx",
-      "detail": "PAGE_OWNER_MAP references \"src/pages/ConnectorsPage.tsx\" but file does not exist on disk",
-      "severity": "error"
-    },
-    {
-      "rule": "page-owner-exists",
-      "item": "src/pages/AdvisorsPage.tsx",
-      "detail": "PAGE_OWNER_MAP references \"src/pages/AdvisorsPage.tsx\" but file does not exist on disk",
-      "severity": "error"
-    },
-    {
-      "rule": "page-owner-exists",
-      "item": "src/pages/WorkspacePage.tsx",
-      "detail": "PAGE_OWNER_MAP references \"src/pages/WorkspacePage.tsx\" but file does not exist on disk",
-      "severity": "error"
-    },
-    {
-      "rule": "page-owner-exists",
-      "item": "src/pages/GovernancePage.tsx",
-      "detail": "PAGE_OWNER_MAP references \"src/pages/GovernancePage.tsx\" but file does not exist on disk",
-      "severity": "error"
-    },
-    {
-      "rule": "page-owner-exists",
-      "item": "src/pages/EnterprisePage.tsx",
-      "detail": "PAGE_OWNER_MAP references \"src/pages/EnterprisePage.tsx\" but file does not exist on disk",
-      "severity": "error"
-    },
-    {
-      "rule": "page-owner-exists",
-      "item": "src/pages/PoliciesPage.tsx",
-      "detail": "PAGE_OWNER_MAP references \"src/pages/PoliciesPage.tsx\" but file does not exist on disk",
-      "severity": "error"
-    },
-    {
-      "rule": "page-owner-exists",
-      "item": "src/pages/NotificationsPage.tsx",
-      "detail": "PAGE_OWNER_MAP references \"src/pages/NotificationsPage.tsx\" but file does not exist on disk",
-      "severity": "error"
-    },
-    {
-      "rule": "page-owner-exists",
-      "item": "src/pages/OnboardingPage.tsx",
-      "detail": "PAGE_OWNER_MAP references \"src/pages/OnboardingPage.tsx\" but file does not exist on disk",
-      "severity": "error"
-    },
-    {
-      "rule": "page-owner-exists",
-      "item": "src/pages/owner/OwnerDashboard.tsx",
-      "detail": "PAGE_OWNER_MAP references \"src/pages/owner/OwnerDashboard.tsx\" but file does not exist on disk",
-      "severity": "error"
-    },
-    {
-      "rule": "page-owner-exists",
-      "item": "src/pages/admin/MissionControlPage.tsx",
-      "detail": "PAGE_OWNER_MAP references \"src/pages/admin/MissionControlPage.tsx\" but file does not exist on disk",
-      "severity": "error"
-    },
-    {
-      "rule": "page-owner-exists",
-      "item": "src/pages/NovaDesktopPage.tsx",
-      "detail": "PAGE_OWNER_MAP references \"src/pages/NovaDesktopPage.tsx\" but file does not exist on disk",
-      "severity": "error"
-    }
-  ],
+  "errors": [],
   "warnings": [
     {
       "rule": "route-page-has-owner",
-      "item": "src/pages/Index.tsx",
-      "detail": "Route pageSource \"src/pages/Index.tsx\" has no entry in PAGE_OWNER_MAP",
+      "item": "src/pages/ProductivityHub.tsx",
+      "detail": "Route pageSource \"src/pages/ProductivityHub.tsx\" has no entry in PAGE_OWNER_MAP",
       "severity": "warn"
     },
     {
       "rule": "route-page-has-owner",
-      "item": "src/pages/AuthCallbackPage.tsx",
-      "detail": "Route pageSource \"src/pages/AuthCallbackPage.tsx\" has no entry in PAGE_OWNER_MAP",
+      "item": "src/pages/LandingPage.tsx",
+      "detail": "Route pageSource \"src/pages/LandingPage.tsx\" has no entry in PAGE_OWNER_MAP",
       "severity": "warn"
     },
     {
@@ -291,14 +26,14 @@
     },
     {
       "rule": "page-owner-has-route",
-      "item": "src/pages/admin/KillSwitchesPage.tsx",
-      "detail": "PAGE_OWNER_MAP page \"src/pages/admin/KillSwitchesPage.tsx\" is not referenced by any route in ROUTE_METADATA_REGISTRY",
+      "item": "src/pages/admin/AdminKillSwitches.tsx",
+      "detail": "PAGE_OWNER_MAP page \"src/pages/admin/AdminKillSwitches.tsx\" is not referenced by any route in ROUTE_METADATA_REGISTRY",
       "severity": "warn"
     },
     {
       "rule": "page-owner-has-route",
-      "item": "src/pages/admin/RunbooksPage.tsx",
-      "detail": "PAGE_OWNER_MAP page \"src/pages/admin/RunbooksPage.tsx\" is not referenced by any route in ROUTE_METADATA_REGISTRY",
+      "item": "src/pages/admin/AdminRunbookViewerPage.tsx",
+      "detail": "PAGE_OWNER_MAP page \"src/pages/admin/AdminRunbookViewerPage.tsx\" is not referenced by any route in ROUTE_METADATA_REGISTRY",
       "severity": "warn"
     },
     {
@@ -386,5 +121,5 @@
       "severity": "warn"
     }
   ],
-  "compliant": false
+  "compliant": true
 }
