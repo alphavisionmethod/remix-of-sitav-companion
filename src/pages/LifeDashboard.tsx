@@ -17,6 +17,7 @@ import {
   PolarRadiusAxis, Radar as RechartsRadar, AreaChart, Area
 } from "recharts";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageShell } from "@/components/sita/PageShell";
 
 // ── Animation Variants ──────────────────────────────────────────
 
@@ -121,6 +122,7 @@ const LifeDashboard = () => {
   // ── Render ────────────────────────────────────────────────────
 
   return (
+    <PageShell>
     <motion.div variants={stagger} initial="hidden" animate="show" className="space-y-6 max-w-[1600px] mx-auto">
 {/* Header */}
       <motion.div variants={fadeUp}>
@@ -572,6 +574,7 @@ const LifeDashboard = () => {
         </div>
       </motion.div>
     </motion.div>
+    </PageShell>
   );
 };
 

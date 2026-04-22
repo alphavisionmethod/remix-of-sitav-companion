@@ -23,6 +23,7 @@ import {
   ArrowRight, Volume2, VolumeX, Pin, XCircle, AlertCircle, Sparkles,
   MessageSquare, Calendar, Settings, Activity
 } from "lucide-react";
+import { PageShell } from "@/components/sita/PageShell";
 type UrgencyLevel = "critical" | "high" | "normal" | "low";
 type NotifCategory = "all" | "action" | "approval" | "finance" | "business" | "household" | "system" | "resolved";
 
@@ -51,6 +52,7 @@ const NotificationCard = ({ notif, onMarkRead, onDismiss, onAction }: {
   const isRead = notif.read_at || notif.read;
 
   return (
+    <PageShell>
     <motion.div
       initial={{ opacity: 0, y: 4 }}
       animate={{ opacity: 1, y: 0 }}
@@ -130,6 +132,7 @@ const NotificationCard = ({ notif, onMarkRead, onDismiss, onAction }: {
         </div>
       </div>
     </motion.div>
+    </PageShell>
   );
 };
 

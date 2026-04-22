@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { motion, AnimatePresence } from "framer-motion";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageShell } from "@/components/sita/PageShell";
 
 type ClipType = "text" | "image" | "link" | "file";
 
@@ -58,6 +59,7 @@ const ClipboardHistory = () => {
   const removeClip = (id: string) => setClips(clips.filter(c => c.id !== id));
 
   return (
+    <PageShell>
     <div className="mx-auto max-w-3xl space-y-4">
 <SitaPageHeader icon={<Clipboard className="h-6 w-6" />} title="Clipboard History" subtitle="Recent copies across all workspaces — search, pin, and reuse">
         <Button variant="outline" size="sm" onClick={() => setClips(clips.filter(c => c.pinned))}>
@@ -123,6 +125,7 @@ const ClipboardHistory = () => {
         )}
       </div>
     </div>
+    </PageShell>
   );
 };
 

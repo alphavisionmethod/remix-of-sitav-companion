@@ -22,6 +22,7 @@ import { fromTable } from "@/lib/supabase-helpers";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageShell } from "@/components/sita/PageShell";
 const CHANNEL_ICONS: Record<ChannelType, typeof Mail> = { email: Mail, sms: MessageSquare, call: Phone, chat: Send };
 const STATUS_STYLES: Record<MessageStatus, { color: string; icon: typeof CheckCircle2 }> = {
   sent: { color: "text-muted-foreground", icon: Clock },
@@ -90,6 +91,7 @@ export default function CommunicationsPage() {
   };
 
   return (
+    <PageShell>
     <div className="space-y-6 p-6 max-w-7xl mx-auto">
 <SitaPageHeader
         icon={<MessageSquare className="h-6 w-6" />}
@@ -326,5 +328,6 @@ export default function CommunicationsPage() {
         </TabsContent>
       </Tabs>
     </div>
+    </PageShell>
   );
 }

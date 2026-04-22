@@ -19,6 +19,7 @@ import {
   ArrowRight, Zap, ShieldCheck, Database, Globe, Key, GitBranch,
 } from "lucide-react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageShell } from "@/components/sita/PageShell";
 
 
 
@@ -26,6 +27,7 @@ import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 function SLOCard({ slo }: { slo: { id: string; name: string; target: number; currentValue: number; budget: number; budgetConsumed: number; status: string; window: string } }) {
   const statusColor = { met: "text-trust-safe", "at-risk": "text-accent", breached: "text-destructive" };
   return (
+    <PageShell>
     <div className="rounded-xl border border-border/40 bg-card/60 p-4">
 <div className="flex items-center justify-between mb-2">
         <span className="text-xs font-semibold text-foreground">{slo.name}</span>
@@ -44,6 +46,7 @@ function SLOCard({ slo }: { slo: { id: string; name: string; target: number; cur
       </div>
       <span className="text-[9px] text-muted-foreground mt-1 block">Window: {slo.window}</span>
     </div>
+    </PageShell>
   );
 }
 

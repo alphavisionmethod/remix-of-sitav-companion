@@ -17,6 +17,7 @@ import { cn } from "@/lib/utils";
 import { useOSRuntime } from "@/hooks/useOSRuntime";
 import type { TwinType } from "@/packages/contracts";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageShell } from "@/components/sita/PageShell";
 
 // ── Seed Demo Twins ────────────────────────────────────────────
 function useDemoTwins() {
@@ -70,6 +71,7 @@ function TwinDetailView({ twinType }: { twinType: TwinType }) {
   const trendIcon = { improving: TrendingUp, stable: Minus, worsening: TrendingDown };
 
   return (
+    <PageShell>
     <div className="space-y-5">
 {/* Health Hero */}
       <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
@@ -187,6 +189,7 @@ function TwinDetailView({ twinType }: { twinType: TwinType }) {
         </div>
       )}
     </div>
+    </PageShell>
   );
 }
 

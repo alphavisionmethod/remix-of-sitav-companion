@@ -16,6 +16,7 @@ import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { useLoopEmitter } from "@/hooks/use-flagship-loop-proof";
+import { PageShell } from "@/components/sita/PageShell";
 
 
 
@@ -120,6 +121,7 @@ const ConnectorHub = () => {
   const isGoogleConfigured = oauthConfig?.google_oauth_configured === true;
 
   return (
+    <PageShell>
     <motion.div className="mx-auto max-w-6xl space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
 <SitaPageHeader title="Connector Hub" subtitle="Manage integrations, health status, and sync history" />
 
@@ -306,6 +308,7 @@ const ConnectorHub = () => {
         </div>
       )}
     </motion.div>
+    </PageShell>
   );
 };
 

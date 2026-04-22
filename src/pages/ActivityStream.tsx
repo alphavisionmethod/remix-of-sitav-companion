@@ -24,6 +24,7 @@ import {
 
 import { DEMO_ACTIVITY_TIMELINE } from "@/data/fixtures/demo-data";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageShell } from "@/components/sita/PageShell";
 // ── Category System ──────────────────────────────────────────
 type FeedCategory = "all" | "actions" | "approvals" | "proof" | "workflows" | "finance" | "communications" | "household" | "system";
 
@@ -100,6 +101,7 @@ const FeedEventCard = ({ event, index, expanded, onToggle }: {
   const catCfg = categoryConfig[domain];
 
   return (
+    <PageShell>
     <motion.div
       initial={{ opacity: 0, x: -6 }}
       animate={{ opacity: 1, x: 0 }}
@@ -205,6 +207,7 @@ const FeedEventCard = ({ event, index, expanded, onToggle }: {
         </div>
       </div>
     </motion.div>
+    </PageShell>
   );
 };
 
