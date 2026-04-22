@@ -7,6 +7,7 @@ import { getCachedPortraitUrl } from "@/hooks/use-advisor-portraits";
 import { getPortraitSrcSet } from "@/lib/advisors/advisor-responsive-assets";
 import { sanitizeAvatarUrl } from "@/lib/advisors/avatar-url-validation";
 import { logPortraitFailure } from "@/lib/advisors/portrait-failure-logger";
+import { isAvatarDebugActive, BROKEN_AVATAR_URL } from "@/lib/advisors/avatar-debug";
 import { Skeleton } from "@/components/ui/skeleton";
 import { RefreshCw, Briefcase, DollarSign, Headphones, Heart, TrendingUp, Shield, Sparkles, Scale, Brain } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
@@ -80,6 +81,7 @@ export const AdvisorPortrait = ({
   const gradient = domainGradients[domain];
   // Resolve URL: explicit prop → cached custom → default
   const resolvedUrl = useMemo(() => {
+    if (isAvatarDebugActive()) return BROKEN_AVATAR_URL;
     const safeAvatar = sanitizeAvatarUrl(avatarUrl);
     if (safeAvatar) return safeAvatar;
     if (advisorId) {

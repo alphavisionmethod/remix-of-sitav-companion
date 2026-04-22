@@ -12,6 +12,7 @@ import { WebAuthnService } from "@/lib/services/identity-auth/webauthn.service";
 import { useAuth } from "@/contexts/AuthContext";
 import { AdvisorAvatarPreview } from "@/components/settings/AdvisorAvatarPreview";
 import { AdvisorAvatarUpload } from "@/components/settings/AdvisorAvatarUpload";
+import { AvatarDebugToggle } from "@/components/settings/AvatarDebugToggle";
 
 interface SecurityStatus {
   mfaEnrolled: boolean;
@@ -141,6 +142,7 @@ const SettingsPage = () => {
       <section className="w-full max-w-2xl space-y-6 mt-6">
         <AdvisorAvatarPreview />
         <AdvisorAvatarUpload />
+        <AvatarDebugToggle />
       </section>
     </motion.div>
   );
