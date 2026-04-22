@@ -1,6 +1,7 @@
 import React, { useRef, useCallback, useState, useEffect, useMemo } from "react";
 import { Minus, Square, X, Maximize2 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { hapticTap, hapticHeavy } from "@/lib/utils/haptics";
 import { useOSWindowContext, type OSWindow } from "./WindowContext";
 import { SurfaceContextMenu } from "@/components/sita/shell/SurfaceContextMenu";
 import { SnapGuideOverlay } from "@/components/sita/shell/SnapGuideOverlay";
@@ -24,6 +25,7 @@ const MENU_BAR_HEIGHT = 28;
 const MIN_WIDTH = 320;
 const MIN_HEIGHT = 200;
 const RESIZE_HANDLE_SIZE = 6;
+const TOUCH_RESIZE_HANDLE_SIZE = 14;
 
 type ResizeEdge = "n" | "s" | "e" | "w" | "ne" | "nw" | "se" | "sw";
 
@@ -53,6 +55,9 @@ export function AppWindow({ window: win }: AppWindowProps) {
   const [isDragging, setIsDragging] = useState(false);
   const [isResizing, setIsResizing] = useState(false);
   const [minimizeAnim, setMinimizeAnim] = useState<"idle" | "out" | "in">("idle");
+  const [focusPulse, setFocusPulse] = useState(false);
+  const [activeEdge, setActiveEdge] = useState<ResizeEdge | null>(null);
+  const [isTouch, setIsTouch] = useState(false);
   const snap = useWindowSnap();
 
   // ── Scroll position sync during drag/resize ────────────────
@@ -65,6 +70,19 @@ export function AppWindow({ window: win }: AppWindowProps) {
     return true; // will be gated by the hook checking document focus
   }, []);
   useWindowKeyboardScroll(scrollBodyRef, win.id);
+
+  // Detect coarse pointer (touch) once
+  useEffect(() => {
+    setIsTouch(window.matchMedia("(pointer: coarse)").matches);
+  }, []);
+
+  // Focus pulse helper
+  const triggerFocusPulse = useCallback(() => {
+    setFocusPulse(true);
+    hapticTap();
+    const t = setTimeout(() => setFocusPulse(false), 200);
+    return () => clearTimeout(t);
+  }, []);
 
   // Sync refs when external state changes (e.g. snap, cascade)
   useEffect(() => {
@@ -145,6 +163,7 @@ export function AppWindow({ window: win }: AppWindowProps) {
     };
     resizingRef.current = true;
     setIsResizing(true);
+    setActiveEdge(edge);
     saveScroll();
     focusWindow(win.id);
   }, [win.isMaximized, win.id, focusWindow, saveScroll]);
@@ -180,6 +199,7 @@ export function AppWindow({ window: win }: AppWindowProps) {
     if (!resizingRef.current) return;
     resizingRef.current = false;
     setIsResizing(false);
+    setActiveEdge(null);
     try { (e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId); } catch {}
     cancelAnimationFrame(rafRef.current);
     updateWindowGeometry(win.id, posRef.current, { width: sizeRef.current.w, height: sizeRef.current.h });
@@ -202,6 +222,7 @@ export function AppWindow({ window: win }: AppWindowProps) {
 
   // ── Minimize animation ────────────────────────────────────
   const handleMinimize = useCallback(() => {
+    hapticHeavy();
     setMinimizeAnim("out");
     setTimeout(() => {
       minimizeWindow(win.id);
@@ -212,7 +233,8 @@ export function AppWindow({ window: win }: AppWindowProps) {
   // ── Resize handle component ───────────────────────────────
   const ResizeHandle = useCallback(({ edge }: { edge: ResizeEdge }) => {
     const isCorner = edge.length === 2;
-    const sz = isCorner ? RESIZE_HANDLE_SIZE * 2.5 : RESIZE_HANDLE_SIZE;
+    const handleSize = isTouch ? TOUCH_RESIZE_HANDLE_SIZE : RESIZE_HANDLE_SIZE;
+    const sz = isCorner ? handleSize * 2.5 : handleSize;
 
     const style: React.CSSProperties = {
       position: "absolute",
@@ -221,25 +243,61 @@ export function AppWindow({ window: win }: AppWindowProps) {
     };
 
     // Position the handle
-    if (edge === "n")  Object.assign(style, { top: 0, left: sz, right: sz, height: RESIZE_HANDLE_SIZE });
-    if (edge === "s")  Object.assign(style, { bottom: 0, left: sz, right: sz, height: RESIZE_HANDLE_SIZE });
-    if (edge === "e")  Object.assign(style, { right: 0, top: sz, bottom: sz, width: RESIZE_HANDLE_SIZE });
-    if (edge === "w")  Object.assign(style, { left: 0, top: sz, bottom: sz, width: RESIZE_HANDLE_SIZE });
+    if (edge === "n")  Object.assign(style, { top: 0, left: sz, right: sz, height: handleSize });
+    if (edge === "s")  Object.assign(style, { bottom: 0, left: sz, right: sz, height: handleSize });
+    if (edge === "e")  Object.assign(style, { right: 0, top: sz, bottom: sz, width: handleSize });
+    if (edge === "w")  Object.assign(style, { left: 0, top: sz, bottom: sz, width: handleSize });
     if (edge === "nw") Object.assign(style, { top: 0, left: 0, width: sz, height: sz });
     if (edge === "ne") Object.assign(style, { top: 0, right: 0, width: sz, height: sz });
     if (edge === "sw") Object.assign(style, { bottom: 0, left: 0, width: sz, height: sz });
     if (edge === "se") Object.assign(style, { bottom: 0, right: 0, width: sz, height: sz });
 
+    const isActive = activeEdge === edge;
+
     return (
       <div
         style={style}
+        className="group/handle"
         onPointerDown={(e) => onResizePointerDown(edge, e)}
         onPointerMove={onResizePointerMove}
         onPointerUp={onResizePointerUp}
         onPointerCancel={onResizePointerUp}
-      />
+      >
+        {/* Visual feedback indicator */}
+        {isCorner ? (
+          <div
+            className={cn(
+              "absolute rounded-full transition-all duration-150",
+              "w-1.5 h-1.5",
+              edge === "nw" && "top-0.5 left-0.5",
+              edge === "ne" && "top-0.5 right-0.5",
+              edge === "sw" && "bottom-0.5 left-0.5",
+              edge === "se" && "bottom-0.5 right-0.5",
+              isActive
+                ? "bg-primary/60 scale-150"
+                : "bg-transparent group-hover/handle:bg-primary/40"
+            )}
+          />
+        ) : (
+          <div
+            className={cn(
+              "absolute transition-all duration-150",
+              (edge === "n" || edge === "s")
+                ? "left-1/2 -translate-x-1/2 w-8 h-0.5 rounded-full"
+                : "top-1/2 -translate-y-1/2 h-8 w-0.5 rounded-full",
+              edge === "n" && "top-0",
+              edge === "s" && "bottom-0",
+              edge === "e" && "right-0",
+              edge === "w" && "left-0",
+              isActive
+                ? "bg-primary/60"
+                : "bg-transparent group-hover/handle:bg-primary/40"
+            )}
+          />
+        )}
+      </div>
     );
-  }, [onResizePointerDown, onResizePointerMove, onResizePointerUp]);
+  }, [onResizePointerDown, onResizePointerMove, onResizePointerUp, isTouch, activeEdge]);
 
   // ── Traffic light button ──────────────────────────────────
   const TrafficLight = useMemo(() => {
@@ -315,10 +373,11 @@ export function AppWindow({ window: win }: AppWindowProps) {
         minimizeAnim === "idle" && "animate-in fade-in zoom-in-95 duration-150",
         win.isMaximized && "!rounded-none",
         (isDragging || isResizing) && "os-window-interacting",
-        "os-window-focused",
+        "os-window-focused transition-shadow duration-200",
+        focusPulse && "ring-2 ring-primary/30",
       )}
       style={windowStyle}
-      onMouseDown={() => focusWindow(win.id)}
+      onMouseDown={() => { focusWindow(win.id); triggerFocusPulse(); }}
     >
       {/* ── Resize handles (hidden when maximized) ─────────── */}
       {!win.isMaximized && (
