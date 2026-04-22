@@ -278,7 +278,7 @@ export const ROUTE_METADATA_REGISTRY: readonly RouteMetadata[] = [
     supportedRuntimes: ALL_RUNTIMES, degradedRuntimes: NO_RUNTIMES, blockedRuntimes: NO_RUNTIMES,
     profiles: ["user"], authRequired: true, authLevel: "authenticated", requiredCapabilities: [],
     shell: "ShellLayout", lazyEntry: true, pageSource: "src/pages/InvestmentShellPage.tsx",
-*** this hunk is wrong, let me fix
+    shell: "ShellLayout", lazyEntry: true, pageSource: "src/pages/investment-office/InvestmentShellPage.tsx",
     backendSources: ["DOMAIN_FUNCTION", "EXTERNAL_PROVIDER"], dataDependencies: ["portfolios", "holdings"],
     truthPrimitives: ["STATUS", "PROVENANCE", "EVIDENCE", "AI_DISCLOSURE"],
     supportMapping: { runbookRef: "RB-INVEST-001", killSwitchRef: null, escalationPath: "engineering", diagnosticEntry: null },
