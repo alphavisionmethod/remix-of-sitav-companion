@@ -1,23 +1,11 @@
 {
-  "timestamp": "2026-04-22T05:27:30.599Z",
+  "timestamp": "2026-04-22T05:33:44.116Z",
   "totalRoutePageSources": 27,
-  "totalPageOwnerEntries": 26,
-  "totalFeatures": 30,
+  "totalPageOwnerEntries": 28,
+  "totalFeatures": 35,
   "totalRoutes": 30,
   "errors": [],
   "warnings": [
-    {
-      "rule": "route-page-has-owner",
-      "item": "src/pages/ProductivityHub.tsx",
-      "detail": "Route pageSource \"src/pages/ProductivityHub.tsx\" has no entry in PAGE_OWNER_MAP",
-      "severity": "warn"
-    },
-    {
-      "rule": "route-page-has-owner",
-      "item": "src/pages/LandingPage.tsx",
-      "detail": "Route pageSource \"src/pages/LandingPage.tsx\" has no entry in PAGE_OWNER_MAP",
-      "severity": "warn"
-    },
     {
       "rule": "route-page-has-owner",
       "item": "supabase/functions",
@@ -34,78 +22,6 @@
       "rule": "page-owner-has-route",
       "item": "src/pages/admin/AdminRunbookViewerPage.tsx",
       "detail": "PAGE_OWNER_MAP page \"src/pages/admin/AdminRunbookViewerPage.tsx\" is not referenced by any route in ROUTE_METADATA_REGISTRY",
-      "severity": "warn"
-    },
-    {
-      "rule": "route-has-feature-owner",
-      "item": "desktop-home (/desktop)",
-      "detail": "Route \"/desktop\" is not claimed by any feature in FEATURE_REGISTRY",
-      "severity": "warn"
-    },
-    {
-      "rule": "route-has-feature-owner",
-      "item": "revenue-office (/revenue-office)",
-      "detail": "Route \"/revenue-office\" is not claimed by any feature in FEATURE_REGISTRY",
-      "severity": "warn"
-    },
-    {
-      "rule": "route-has-feature-owner",
-      "item": "investment-office (/investment-office)",
-      "detail": "Route \"/investment-office\" is not claimed by any feature in FEATURE_REGISTRY",
-      "severity": "warn"
-    },
-    {
-      "rule": "route-has-feature-owner",
-      "item": "connectors (/connectors)",
-      "detail": "Route \"/connectors\" is not claimed by any feature in FEATURE_REGISTRY",
-      "severity": "warn"
-    },
-    {
-      "rule": "route-has-feature-owner",
-      "item": "apps (/apps)",
-      "detail": "Route \"/apps\" is not claimed by any feature in FEATURE_REGISTRY",
-      "severity": "warn"
-    },
-    {
-      "rule": "route-has-feature-owner",
-      "item": "search (/search)",
-      "detail": "Route \"/search\" is not claimed by any feature in FEATURE_REGISTRY",
-      "severity": "warn"
-    },
-    {
-      "rule": "route-has-feature-owner",
-      "item": "governance (/governance)",
-      "detail": "Route \"/governance\" is not claimed by any feature in FEATURE_REGISTRY",
-      "severity": "warn"
-    },
-    {
-      "rule": "route-has-feature-owner",
-      "item": "policies (/policies)",
-      "detail": "Route \"/policies\" is not claimed by any feature in FEATURE_REGISTRY",
-      "severity": "warn"
-    },
-    {
-      "rule": "route-has-feature-owner",
-      "item": "observability (/observability)",
-      "detail": "Route \"/observability\" is not claimed by any feature in FEATURE_REGISTRY",
-      "severity": "warn"
-    },
-    {
-      "rule": "route-has-feature-owner",
-      "item": "admin (/admin)",
-      "detail": "Route \"/admin\" is not claimed by any feature in FEATURE_REGISTRY",
-      "severity": "warn"
-    },
-    {
-      "rule": "route-has-feature-owner",
-      "item": "nova-desktop (/nova-desktop)",
-      "detail": "Route \"/nova-desktop\" is not claimed by any feature in FEATURE_REGISTRY",
-      "severity": "warn"
-    },
-    {
-      "rule": "route-has-feature-owner",
-      "item": "api (/api)",
-      "detail": "Route \"/api\" is not claimed by any feature in FEATURE_REGISTRY",
       "severity": "warn"
     }
   ],
