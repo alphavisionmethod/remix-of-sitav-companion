@@ -24,7 +24,7 @@ export default function ProviderDetail() {
   const provider = getProviderById(providerId || "");
   if (!provider) return <div className="p-6 text-muted-foreground">Provider not found</div>;
 
-  const existingConnection = isDemoMode ? DEMO_CONNECTIONS.find(c => c.providerId === provider.id) : null;
+  const existingConnection = null;
   const readCaps = provider.capabilities.filter(c => c.type === "read");
   const writeCaps = provider.capabilities.filter(c => c.type === "write");
 

@@ -115,7 +115,7 @@ export default function PersistenceStatus() {
               {allWired ? "All Core Services Wired to Persistence" : "Partial Wiring"}
             </span>
             <p className="text-sm text-muted-foreground mt-0.5">
-              {([] as typeof DEMO_CORE_SERVICES).filter(s => s.wired).length}/{(isDemoMode ? DEMO_CORE_SERVICES : [] as typeof DEMO_CORE_SERVICES).length} services durably backed
+              {([] as typeof DEMO_CORE_SERVICES).filter(s => s.wired).length}/{([] as typeof DEMO_CORE_SERVICES).length} services durably backed
             </p>
           </div>
         </CardContent>

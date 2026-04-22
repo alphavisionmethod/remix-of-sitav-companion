@@ -282,7 +282,7 @@ const AIEngineeringBoard = () => {
         {/* ── TAB 2: AI TEAM ── */}
         <TabsContent value="team" className="mt-4">
           <div className="flex items-center justify-between mb-3">
-            <p className="text-sm text-muted-foreground">{([] as typeof DEMO_AGENT_SIGNALS).length} specialists · {(isDemoMode ? DEMO_AGENT_SIGNALS : [] as typeof DEMO_AGENT_SIGNALS).filter(t => t.escalation).length} escalated</p>
+            <p className="text-sm text-muted-foreground">{([] as typeof DEMO_AGENT_SIGNALS).length} specialists · {([] as typeof DEMO_AGENT_SIGNALS).filter(t => t.escalation).length} escalated</p>
             <Link to="/admin/ai-team-roster" className="text-xs text-primary hover:underline flex items-center gap-1">Full Roster <ArrowUpRight className="h-3 w-3" /></Link>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-2">

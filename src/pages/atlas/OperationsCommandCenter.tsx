@@ -34,7 +34,7 @@ export default function OperationsCommandCenter() {
 
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
         {[
-          { label: "Services Healthy", value: `${([] as typeof DEMO_services).filter(s => s.status === "healthy").length}/${(isDemoMode ? DEMO_services : [] as typeof DEMO_services).length}`, color: ([] as typeof DEMO_services).every(s => s.status === "healthy") ? "text-green-400" : "text-amber-400" },
+          { label: "Services Healthy", value: `${([] as typeof DEMO_services).filter(s => s.status === "healthy").length}/${([] as typeof DEMO_services).length}`, color: ([] as typeof DEMO_services).every(s => s.status === "healthy") ? "text-green-400" : "text-amber-400" },
           { label: "SLO Budget Avg", value: `${Math.round(([] as typeof DEMO_slos).reduce((s, l) => s + l.budget, 0) / ([] as typeof DEMO_slos).length)}%`, color: "text-green-400" },
           { label: "Active Alerts", value: ([] as typeof DEMO_alerts).filter(a => !a.acknowledged).length, color: ([] as typeof DEMO_alerts).some(a => !a.acknowledged) ? "text-amber-400" : "text-green-400" },
           { label: "Active Incidents", value: ([] as typeof DEMO_incidents).filter(i => i.status !== "resolved").length, color: ([] as typeof DEMO_incidents).some(i => i.status !== "resolved") ? "text-amber-400" : "text-green-400" },

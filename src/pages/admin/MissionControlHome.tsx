@@ -77,7 +77,7 @@ const MissionControlHome = () => {
   });
 
   const healthyCount = ([] as typeof DEMO_SERVICES).filter(s => s.status === "healthy").length;
-  const overallHealth: HealthStatus = ([] as typeof DEMO_SERVICES).some(s => s.status === "critical") ? "critical" : (isDemoMode ? DEMO_SERVICES : [] as typeof DEMO_SERVICES).some(s => s.status === "degraded") ? "degraded" : (isDemoMode ? DEMO_SERVICES : [] as typeof DEMO_SERVICES).some(s => s.status === "warning") ? "warning" : "healthy";
+  const overallHealth: HealthStatus = ([] as typeof DEMO_SERVICES).some(s => s.status === "critical") ? "critical" : ([] as typeof DEMO_SERVICES).some(s => s.status === "degraded") ? "degraded" : ([] as typeof DEMO_SERVICES).some(s => s.status === "warning") ? "warning" : "healthy";
   const healthScore = overallHealth === "healthy" ? 98 : overallHealth === "warning" ? 85 : overallHealth === "degraded" ? 68 : 42;
   const pendingMutations = ([] as typeof DEMO_MUTATIONS).filter(m => m.durabilityStatus === "pending").length;
   const failedMutations = ([] as typeof DEMO_MUTATIONS).filter(m => m.durabilityStatus === "failed").length;

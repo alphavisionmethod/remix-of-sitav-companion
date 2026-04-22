@@ -70,7 +70,7 @@ const PlatformTruthRegistry = () => {
         <motion.div variants={fadeUp} className="grid grid-cols-2 md:grid-cols-4 gap-3">
           <Card><CardContent className="p-4"><p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-1">Verified Claims</p><p className="text-2xl font-bold text-emerald-500">{verified}/{([] as typeof DEMO_CLAIMS).length}</p></CardContent></Card>
           <Card><CardContent className="p-4"><p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-1">Drift Detected</p><p className="text-2xl font-bold text-red-500">{drifts}</p></CardContent></Card>
-          <Card><CardContent className="p-4"><p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-1">Manifests Aligned</p><p className="text-2xl font-bold text-emerald-500">{([] as typeof DEMO_MANIFESTS).filter(m => m.status === "aligned").length}/{(isDemoMode ? DEMO_MANIFESTS : [] as typeof DEMO_MANIFESTS).length}</p></CardContent></Card>
+          <Card><CardContent className="p-4"><p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-1">Manifests Aligned</p><p className="text-2xl font-bold text-emerald-500">{([] as typeof DEMO_MANIFESTS).filter(m => m.status === "aligned").length}/{([] as typeof DEMO_MANIFESTS).length}</p></CardContent></Card>
           <Card><CardContent className="p-4"><p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-1">Docs Drift Issues</p><p className="text-2xl font-bold text-amber-500">{([] as typeof DEMO_DOCS_DRIFT).filter(d => !d.acknowledged).length}</p></CardContent></Card>
         </motion.div>
 

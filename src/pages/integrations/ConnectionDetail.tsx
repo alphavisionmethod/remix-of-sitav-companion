@@ -17,7 +17,7 @@ export default function ConnectionDetail() {
   const { connectionId } = useParams();
   const navigate = useNavigate();
 
-  const conn = isDemoMode ? DEMO_CONNECTIONS.find(c => c.id === connectionId) : null;
+  const conn = null;
 
   if (!conn && isDemoMode) return <div className="p-6 text-muted-foreground">Connection not found</div>;
   if (!isDemoMode) return (

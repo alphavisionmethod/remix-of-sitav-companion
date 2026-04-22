@@ -138,7 +138,7 @@ const AIReleasesCenter = () => {
           </div>
           <div className={`rounded-xl border p-4 text-center ${([] as typeof DEMO_PROMOTION_EVIDENCE).every(p => p.met) ? "border-[hsl(var(--trust-safe))]/30 bg-[hsl(var(--trust-safe))]/5" : "border-destructive/30 bg-destructive/5"}`}>
             <p className={`text-sm font-semibold ${([] as typeof DEMO_PROMOTION_EVIDENCE).every(p => p.met) ? "text-[hsl(var(--trust-safe))]" : "text-destructive"}`}>
-              {([] as typeof DEMO_PROMOTION_EVIDENCE).every(p => p.met) ? "✓ Ready to promote" : `⚠ ${(isDemoMode ? DEMO_PROMOTION_EVIDENCE : [] as typeof DEMO_PROMOTION_EVIDENCE).filter(p => !p.met).length} checks not met — promotion blocked`}
+              {([] as typeof DEMO_PROMOTION_EVIDENCE).every(p => p.met) ? "✓ Ready to promote" : `⚠ ${([] as typeof DEMO_PROMOTION_EVIDENCE).filter(p => !p.met).length} checks not met — promotion blocked`}
             </p>
           </div>
         </TabsContent>

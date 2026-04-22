@@ -85,7 +85,7 @@ const ConciergeRuntimeBoard = () => {
             { label: "Broken Continuity", value: String(brokenCount), color: brokenCount > 0 ? "text-red-500" : "text-emerald-500" },
             { label: "Promises Tracked", value: String(([] as typeof DEMO_PROMISES).length), color: "text-primary" },
             { label: "Active Travel", value: String(([] as typeof DEMO_TRAVEL).filter(t => t.status === "active").length), color: "text-blue-500" },
-            { label: "Promise Fulfillment", value: `${Math.round((([] as typeof DEMO_PROMISES).filter(p => p.status === "completed").length / (isDemoMode ? DEMO_PROMISES : [] as typeof DEMO_PROMISES).length) * 100)}%`, color: "text-amber-500" },
+            { label: "Promise Fulfillment", value: `${Math.round((([] as typeof DEMO_PROMISES).filter(p => p.status === "completed").length / ([] as typeof DEMO_PROMISES).length) * 100)}%`, color: "text-amber-500" },
           ].map(m => (
             <Card key={m.label}><CardContent className="p-3.5">
               <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-1">{m.label}</p>

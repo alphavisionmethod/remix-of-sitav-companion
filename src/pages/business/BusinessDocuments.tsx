@@ -209,7 +209,7 @@ const BusinessDocuments = () => {
       <ModuleAdvisorInsight
         advisorName="Document Advisor"
         domain="business"
-        insight={`${([] as typeof DEMO_DOCUMENTS).filter(d => d.status === "expired").length} expired document(s) need attention. ${(isDemoMode ? DEMO_DOCUMENTS : [] as typeof DEMO_DOCUMENTS).filter(d => d.status === "signed").length} contracts fully signed.`}
+        insight={`${([] as typeof DEMO_DOCUMENTS).filter(d => d.status === "expired").length} expired document(s) need attention. ${([] as typeof DEMO_DOCUMENTS).filter(d => d.status === "signed").length} contracts fully signed.`}
         confidence={85}
       />
     </motion.div>

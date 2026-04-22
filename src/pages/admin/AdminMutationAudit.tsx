@@ -43,9 +43,9 @@ const AdminDurabilityBoard = () => {
   const [selectedMutation, setSelectedMutation] = useState<DemoMutationRecord | null>(null);
 
   const filtered = mutFilter === "all" ? DEMO_MUTATIONS : ([] as typeof DEMO_MUTATIONS).filter(m => m.durabilityStatus === mutFilter);
-  const persistedPct = Math.round((([] as typeof DEMO_MUTATIONS).filter(m => m.durabilityStatus === "persisted").length / (isDemoMode ? DEMO_MUTATIONS : [] as typeof DEMO_MUTATIONS).length) * 100);
-  const lineagePct = Math.round((([] as typeof DEMO_MUTATIONS).filter(m => m.lineageComplete).length / (isDemoMode ? DEMO_MUTATIONS : [] as typeof DEMO_MUTATIONS).length) * 100);
-  const canonicalPct = Math.round((([] as typeof DEMO_MUTATIONS).filter(m => m.canonicalWritePath).length / (isDemoMode ? DEMO_MUTATIONS : [] as typeof DEMO_MUTATIONS).length) * 100);
+  const persistedPct = Math.round((([] as typeof DEMO_MUTATIONS).filter(m => m.durabilityStatus === "persisted").length / ([] as typeof DEMO_MUTATIONS).length) * 100);
+  const lineagePct = Math.round((([] as typeof DEMO_MUTATIONS).filter(m => m.lineageComplete).length / ([] as typeof DEMO_MUTATIONS).length) * 100);
+  const canonicalPct = Math.round((([] as typeof DEMO_MUTATIONS).filter(m => m.canonicalWritePath).length / ([] as typeof DEMO_MUTATIONS).length) * 100);
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">

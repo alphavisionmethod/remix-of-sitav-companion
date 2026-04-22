@@ -117,7 +117,7 @@ export default function SovereignExportPage() {
           <CardHeader className="flex flex-row items-center justify-between">
             <CardTitle className="text-sm">Select Data to Export</CardTitle>
             <Button variant="ghost" size="sm" onClick={() => setSelectedTables(
-              selectedTables.length === ([] as typeof DEMO_EXPORTABLE_TABLES).length ? [] : (isDemoMode ? DEMO_EXPORTABLE_TABLES : [] as typeof DEMO_EXPORTABLE_TABLES).map(t => t.name)
+              selectedTables.length === ([] as typeof DEMO_EXPORTABLE_TABLES).length ? [] : ([] as typeof DEMO_EXPORTABLE_TABLES).map(t => t.name)
             )}>{selectedTables.length === ([] as typeof DEMO_EXPORTABLE_TABLES).length ? "Deselect All" : "Select All"}</Button>
           </CardHeader>
           <CardContent className="space-y-3">

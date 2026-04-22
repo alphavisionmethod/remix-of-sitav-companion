@@ -114,10 +114,10 @@ const OperationsCommandCenter = () => {
       <motion.div variants={stagger} initial="hidden" animate="show" className="space-y-4">
         <motion.div variants={fadeUp} className="grid grid-cols-2 md:grid-cols-5 gap-3">
           {[
-            { label: "Services Healthy", value: `${([] as typeof DEMO_SERVICES).filter(s => s.status === "healthy").length}/${(isDemoMode ? DEMO_SERVICES : [] as typeof DEMO_SERVICES).length}`, icon: Server, color: "text-emerald-500" },
+            { label: "Services Healthy", value: `${([] as typeof DEMO_SERVICES).filter(s => s.status === "healthy").length}/${([] as typeof DEMO_SERVICES).length}`, icon: Server, color: "text-emerald-500" },
             { label: "Active Alerts", value: String(liveAlerts.filter(a => a.status === "active").length), icon: Bell, color: "text-amber-500" },
             { label: "Open Incidents", value: String(incidentCount ?? ([] as typeof DEMO_INCIDENTS).length), icon: AlertTriangle, color: "text-red-500" },
-            { label: "SLO Budget OK", value: `${([] as typeof DEMO_SLOS).filter(s => s.burnRate < 1).length}/${(isDemoMode ? DEMO_SLOS : [] as typeof DEMO_SLOS).length}`, icon: Target, color: "text-emerald-500" },
+            { label: "SLO Budget OK", value: `${([] as typeof DEMO_SLOS).filter(s => s.burnRate < 1).length}/${([] as typeof DEMO_SLOS).length}`, icon: Target, color: "text-emerald-500" },
             { label: "Queue Pressure", value: ([] as typeof DEMO_QUEUES).some(q => q.pressure === "high") ? "Elevated" : "Normal", icon: Gauge, color: ([] as typeof DEMO_QUEUES).some(q => q.pressure === "high") ? "text-amber-500" : "text-emerald-500" },
           ].map(m => (
             <Card key={m.label} className="hover:-translate-y-0.5 transition-transform">

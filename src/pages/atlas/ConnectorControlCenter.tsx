@@ -33,7 +33,7 @@ export default function ConnectorControlCenter() {
 <SitaPageHeader title="Connector Control Center" subtitle="Connector lifecycle, health matrix, capability registry, audit lineage, and failure recovery" />
 
       {([] as typeof DEMO_connectors).some(c => c.status === "error") && (
-        <DegradedStateBanner severity="warning" reason={`${([] as typeof DEMO_connectors).filter(c => c.status === "error").length} connector(s) in error state`} impact="Data sync affected for failed connectors" affectedCapabilities={(isDemoMode ? DEMO_connectors : [] as typeof DEMO_connectors).filter(c => c.status === "error").flatMap(c => c.capabilities)} dismissible />
+        <DegradedStateBanner severity="warning" reason={`${([] as typeof DEMO_connectors).filter(c => c.status === "error").length} connector(s) in error state`} impact="Data sync affected for failed connectors" affectedCapabilities={([] as typeof DEMO_connectors).filter(c => c.status === "error").flatMap(c => c.capabilities)} dismissible />
       )}
 
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
