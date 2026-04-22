@@ -386,9 +386,9 @@ export const KILL_SWITCH_REGISTRY: readonly KillSwitchEntry[] = [
     ownerTeam: "finance-team",
   },
   {
-    switchId: "KS-PAYMENTS-AUTH",
-    target: "payment-auth",
-    displayName: "Payment Authentication Kill Switch",
+    switchId: "KS-PAYMENTS-SCA",
+    target: "payment-sca",
+    displayName: "Payment SCA/3DS Kill Switch",
     description:
       "Refuses new card-on-file authorizations and SCA/3DS challenges while leaving captures, refunds, and reconciliation untouched. Used during identity-provider or 3DS gateway incidents.",
     impactLevel: "severe",
