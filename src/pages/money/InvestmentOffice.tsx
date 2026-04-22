@@ -145,6 +145,7 @@ const PortfolioView = () => {
     </div>
   </div>
 );
+};
 
 const RegimeView = () => (
   <div className="space-y-4">
