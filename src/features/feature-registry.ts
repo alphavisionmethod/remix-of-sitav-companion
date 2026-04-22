@@ -235,6 +235,41 @@ export const FEATURE_REGISTRY: readonly FeatureSurfaceEntry[] = [
     runtimeSupport: [...ALL_TIERS], stateGrammar: [...CORE_STATES],
     proofCoverage: PARTIAL_PROOF, supportIntegrated: false, trustIntegrated: false,
   },
+  {
+    featureId: "search", name: "Search", canonicalImport: "@/features/search",
+    domain: "system", riskTier: "R0", status: "beta",
+    ownedRoutes: ["/search"], ownedApps: [],
+    runtimeSupport: [...ALL_TIERS], stateGrammar: [...CORE_STATES],
+    proofCoverage: PARTIAL_PROOF, supportIntegrated: false, trustIntegrated: false,
+  },
+  {
+    featureId: "governance", name: "Governance", canonicalImport: "@/features/governance",
+    domain: "compliance", riskTier: "R1", status: "beta",
+    ownedRoutes: ["/governance", "/policies"], ownedApps: [],
+    runtimeSupport: [...ALL_TIERS], stateGrammar: [...CORE_STATES],
+    proofCoverage: PARTIAL_PROOF, supportIntegrated: true, trustIntegrated: false,
+  },
+  {
+    featureId: "observability", name: "Observability", canonicalImport: "@/features/observability",
+    domain: "system", riskTier: "R1", status: "beta",
+    ownedRoutes: ["/observability"], ownedApps: [],
+    runtimeSupport: [...ALL_TIERS], stateGrammar: [...CORE_STATES],
+    proofCoverage: PARTIAL_PROOF, supportIntegrated: true, trustIntegrated: false,
+  },
+  {
+    featureId: "admin", name: "Admin", canonicalImport: "@/features/admin",
+    domain: "system", riskTier: "R3", status: "beta",
+    ownedRoutes: ["/admin"], ownedApps: [],
+    runtimeSupport: [...WEB_DESKTOP], stateGrammar: [...FULL_STATES],
+    proofCoverage: CORE_PROOF, supportIntegrated: true, trustIntegrated: true,
+  },
+  {
+    featureId: "api", name: "Backend API", canonicalImport: "@/features/api",
+    domain: "system", riskTier: "R2", status: "beta",
+    ownedRoutes: ["/api"], ownedApps: [],
+    runtimeSupport: [...ALL_TIERS], stateGrammar: [...CORE_STATES],
+    proofCoverage: PARTIAL_PROOF, supportIntegrated: true, trustIntegrated: false,
+  },
 ];
 
 // ── Lookup Helpers ─────────────────────────────────────────────
