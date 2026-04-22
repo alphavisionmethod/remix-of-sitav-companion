@@ -2,6 +2,7 @@ import { ReactNode } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { EmptyState } from "./EmptyState";
 import { LucideIcon } from "lucide-react";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 interface DataLoadingWrapperProps {
   isLoading: boolean;
@@ -24,6 +25,7 @@ export function DataLoadingWrapper({
   emptyDescription,
   skeletonCount = 3,
 }: DataLoadingWrapperProps) {
+  const { isDemoMode } = useDataMode();
   if (!isDemoMode && isLoading) {
     return (
       <div className="space-y-4 p-6">

@@ -4,6 +4,7 @@ import { useBrainCore, useDemoMode } from "@/hooks/use-brain-core";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Brain, Sparkles, RefreshCw, AlertTriangle, CheckCircle, Cpu, Zap } from "lucide-react";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 interface LiveAdvisorCardProps {
   advisor: "money" | "business" | "concierge" | "general";

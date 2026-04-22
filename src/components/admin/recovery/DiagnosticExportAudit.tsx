@@ -9,6 +9,7 @@ import { createRecoveryJob } from "@/lib/recovery-ops/recovery-job-service";
 import type { DiagnosticExportAudit as AuditEntry } from "@/lib/recovery-ops/types";
 import { FileDown, FileText, Download } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 // Demo audit entries
 const DEMO_AUDITS: AuditEntry[] = [
@@ -23,6 +24,7 @@ interface Props {
 }
 
 export function DiagnosticExportAuditPanel({ operatorId, canExecute }: Props) {
+  const { isDemoMode } = useDataMode();
   const { toast } = useToast();
   const { user, isDemo: isDemoMode } = useAuth();
 

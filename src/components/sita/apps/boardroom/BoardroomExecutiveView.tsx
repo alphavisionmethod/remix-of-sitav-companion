@@ -16,6 +16,7 @@ import { useBoardroomLiveData } from "@/hooks/useBoardroomLiveData";
 import { getSynthesisForDomain } from "@/lib/services/orchestration-pipeline/app-board-synthesizer";
 import { getTransmissionLog } from "@/lib/services/orchestration-pipeline/signal-emitter";
 import type { Domain } from "@/lib/services/orchestration-pipeline/types";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 interface Props {
   scope: "global" | "business" | "finance" | "concierge";
@@ -196,6 +197,7 @@ function PriorityHeatStrip({ items }: { items: { id: string; urgency: string; he
 }
 
 export function BoardroomExecutiveView({ scope, onNavigate }: Props) {
+  const { isDemoMode } = useDataMode();
   const { items, isDemoMode } = useBoardroomLiveData();
   const [activeAgenda, setActiveAgenda] = useState<string | null>(null);
 

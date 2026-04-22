@@ -5,6 +5,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { Zap, ChevronDown, ChevronUp, TrendingUp, Brain, FileText, Workflow, X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 interface SpendCategory {
   label: string;

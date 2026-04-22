@@ -23,6 +23,7 @@ import { getConciergeAdaptation } from "@/domains/engines/cross-os-integration";
 import { CrossOSLinksPanel } from "@/components/sita/cross-os/CrossOSLinksPanel";
 import { CrossDomainIntelligenceBridge } from "@/components/sita/cross-os/CrossDomainIntelligenceBridge";
 import { AppShellBreadcrumb, useNavigationHistory } from "@/components/sita/shell/AppShellBreadcrumb";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 // Lazy-load all 19 page components
 const ConciergeOverview = lazy(() => import("@/pages/concierge/ConciergeOverview"));
@@ -158,6 +159,7 @@ function BoardroomStatusStrip({ pendingCount, decisionCount, synthesisScore }: {
 
 // ── Domain Boardroom View ──
 function DomainBoardroomView({ domain }: { domain: "business" | "finance" | "concierge" }) {
+  const { isDemoMode } = useDataMode();
   const { escalations, decisions, escalate, isDemoMode, synthesis } = useBoardroomBridge(domain);
   return (
     <div className="space-y-4 p-4">
