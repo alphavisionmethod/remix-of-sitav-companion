@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
-import { render, screen } from "@/test/test-utils";
+import { render, screen } from "@testing-library/react";
 import { DemoModeBadge } from "../DemoModeBadge";
 
 // Mock DataModeContext
@@ -14,6 +14,7 @@ vi.mock("@/contexts/DataModeContext", () => ({
     connectors: [],
     refreshConnectors: vi.fn(),
   }),
+  DataModeProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
 }));
 
 describe("DemoModeBadge", () => {
