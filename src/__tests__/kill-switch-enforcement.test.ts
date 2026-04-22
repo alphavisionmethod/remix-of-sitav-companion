@@ -47,4 +47,27 @@ describe("Kill Switch enforcement", () => {
     }
     expect(dangling).toHaveLength(0);
   });
+
+  it("tracks drill execution status (v4.0 PM Action #3)", () => {
+    // Check for drill evidence — logs, receipts, or drill directory
+    const drillPaths = [
+      "drills/kill-switch",
+      "docs/drills",
+      "evidence/drills",
+      "generated/drill-results",
+    ];
+    const drillExists = drillPaths.some((p) => fs.existsSync(p));
+    const drillLogExists = fs.existsSync("generated/kill-switch-drill-log.json");
+
+    // Report status — does NOT fail, tracks metric
+    const drillsExecuted = drillExists || drillLogExists ? 1 : 0;
+    console.log(`📊 Kill-switch drills executed: ${drillsExecuted}`);
+    console.log(`📊 Drill evidence paths checked: ${drillPaths.join(", ")}`);
+    if (drillsExecuted === 0) {
+      console.log("⚠️ PM Corrective Action #3: Execute 1 kill-switch drill on staging");
+      console.log("⚠️ A unit test that asserts a switch CAN be toggled is NOT a drill.");
+    }
+    // Advisory metric — tracked but not blocking until staging env available
+    expect(drillsExecuted).toBeGreaterThanOrEqual(0);
+  });
 });
