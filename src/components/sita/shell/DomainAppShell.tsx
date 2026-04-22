@@ -5,8 +5,8 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { cn } from "@/lib/utils";
-import { APP_MATERIALS, APP_SHADOWS, APP_TYPE } from "@/platform/design-system/app-window-system";
-import { atmosphereToCSSVars } from "@/platform/design-system/domain-atmospheres";
+import { APP_MATERIALS, APP_SHADOWS } from "@/platform/design-system/app-window-system";
+import { atmosphereToCSSVars, APP_TYPE } from "@/platform/design-system/sita-design-tokens";
 import { ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect, useCallback } from "react";

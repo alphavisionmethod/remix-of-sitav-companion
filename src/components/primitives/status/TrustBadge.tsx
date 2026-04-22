@@ -1,44 +1,16 @@
-import { Shield } from "lucide-react";
-import { StatusBadge, type StatusSize } from "./StatusBadge";
+// ═══════════════════════════════════════════════════════════════
+// DEPRECATED — Re-exports from canonical sita/TrustBadge.
+// The primitives barrel maintains this for backward compatibility.
+// New code should import from "@/components/sita/TrustBadge".
+// ═══════════════════════════════════════════════════════════════
 
-/**
- * TrustBadge — canonical trust state indicator.
- * Composes StatusBadge with trust-specific tone mapping.
- * Class: PRIMITIVE.
- */
-export type TrustState = "verified" | "pending" | "failed" | "unknown";
-
-const TRUST_LABELS: Record<TrustState, string> = {
-  verified: "Verified",
-  pending:  "Pending",
-  failed:   "Failed",
-  unknown:  "Unknown",
-};
-
-const TRUST_TONES: Record<TrustState, "verified" | "pending" | "failed" | "muted"> = {
-  verified: "verified",
-  pending:  "pending",
-  failed:   "failed",
-  unknown:  "muted",
-};
+export { TrustBadge } from "@/components/sita/TrustBadge";
+export type { TrustLevel as TrustState } from "@/components/sita/TrustBadge";
 
 export interface TrustBadgeProps {
-  state: TrustState;
-  size?: StatusSize;
+  state: import("@/components/sita/TrustBadge").TrustLevel;
+  size?: "sm" | "default";
   showIcon?: boolean;
   label?: string;
   className?: string;
-}
-
-export function TrustBadge({ state, size = "sm", showIcon = true, label, className }: TrustBadgeProps) {
-  return (
-    <StatusBadge
-      tone={TRUST_TONES[state]}
-      size={size}
-      icon={showIcon ? <Shield className="h-3 w-3" /> : undefined}
-      className={className}
-    >
-      {label ?? TRUST_LABELS[state]}
-    </StatusBadge>
-  );
 }
