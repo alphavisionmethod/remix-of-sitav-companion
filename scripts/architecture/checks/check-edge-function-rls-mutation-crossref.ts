@@ -180,7 +180,106 @@ for (const fnName of fnDirs) {
   });
 }
 
-// ── Summary ────────────────────────────────────────────────────
+// ── Op-level coverage matrix ──────────────────────────────────
+// Per-table view: which ops (insert/update/delete/upsert/select) are
+// covered by RLS policies, and which edge functions touch each op.
+// Per-function view: for each function, which table×op pairs have
+// RLS coverage and which are gaps.
+
+const OPS: OpKind[] = ["select", "insert", "update", "delete", "upsert"];
+
+interface TableOpCoverage {
+  table: string;
+  rlsPattern: string;
+  policyCount: number;
+  ops: Record<OpKind, {
+    rlsCovered: boolean;
+    functions: string[];
+  }>;
+  totalGaps: number;
+}
+
+interface FunctionOpCoverage {
+  fn: string;
+  tableOps: Array<{
+    table: string;
+    op: OpKind;
+    rlsCovered: boolean;
+    rlsPattern: string | null;
+    usesServiceRole: boolean;
+  }>;
+  coveredCount: number;
+  uncoveredCount: number;
+  coveragePct: number;
+}
+
+// Build per-table coverage
+const tableMap = new Map<string, TableOpCoverage>();
+
+for (const t of traces) {
+  for (const op of t.ops) {
+    if (!tableMap.has(op.table)) {
+      const rls = RLS_POLICY_REGISTRY[op.table];
+      const entry: TableOpCoverage = {
+        table: op.table,
+        rlsPattern: rls?.pattern ?? "unknown",
+        policyCount: rls?.policyCount ?? 0,
+        ops: {
+          select:  { rlsCovered: rls?.selectPolicy ?? false, functions: [] },
+          insert:  { rlsCovered: rls?.insertPolicy ?? false, functions: [] },
+          update:  { rlsCovered: rls?.updatePolicy ?? false, functions: [] },
+          delete:  { rlsCovered: rls?.deletePolicy ?? false, functions: [] },
+          upsert:  { rlsCovered: rls?.insertPolicy ?? false, functions: [] }, // upsert → insert
+        },
+        totalGaps: 0,
+      };
+      tableMap.set(op.table, entry);
+    }
+    const te = tableMap.get(op.table)!;
+    if (!te.ops[op.op].functions.includes(t.fn)) {
+      te.ops[op.op].functions.push(t.fn);
+    }
+  }
+}
+
+// Count gaps per table
+for (const te of tableMap.values()) {
+  for (const opKey of OPS) {
+    const o = te.ops[opKey];
+    if (o.functions.length > 0 && !o.rlsCovered) {
+      te.totalGaps++;
+    }
+  }
+}
+
+const tableCoverage = [...tableMap.values()].sort((a, b) => b.totalGaps - a.totalGaps);
+
+// Build per-function coverage
+const fnCoverage: FunctionOpCoverage[] = traces.map(t => {
+  const tableOps = t.ops.map(op => {
+    const rls = RLS_POLICY_REGISTRY[op.table];
+    const rlsField = OP_TO_RLS[op.op] as keyof typeof rls | undefined;
+    const rlsCovered = rls && rlsField ? (rls[rlsField] as boolean) : false;
+    return {
+      table: op.table,
+      op: op.op,
+      rlsCovered,
+      rlsPattern: rls?.pattern ?? null,
+      usesServiceRole: t.authDetected.serviceRole,
+    };
+  });
+  const covered = tableOps.filter(o => o.rlsCovered || o.usesServiceRole).length;
+  const uncovered = tableOps.length - covered;
+  return {
+    fn: t.fn,
+    tableOps,
+    coveredCount: covered,
+    uncoveredCount: uncovered,
+    coveragePct: tableOps.length > 0 ? Math.round((covered / tableOps.length) * 100) : 100,
+  };
+}).sort((a, b) => a.coveragePct - b.coveragePct);
+
+// ── Summary stats ──────────────────────────────────────────────
 
 const total = traces.length;
 const withGaps = traces.filter(t => t.gaps.length > 0);
@@ -191,6 +290,16 @@ for (const t of withGaps) {
   }
 }
 
+const tablesWithGaps = tableCoverage.filter(t => t.totalGaps > 0);
+const totalTableOpsTracked = tableCoverage.reduce(
+  (s, t) => s + OPS.filter(o => t.ops[o].functions.length > 0).length, 0,
+);
+const totalTableOpsCovered = tableCoverage.reduce(
+  (s, t) => s + OPS.filter(o => t.ops[o].functions.length > 0 && t.ops[o].rlsCovered).length, 0,
+);
+const overallCoveragePct = totalTableOpsTracked > 0
+  ? Math.round((totalTableOpsCovered / totalTableOpsTracked) * 100) : 100;
+
 writeJsonOutput(OUT_PATH, {
   generatedAt: new Date().toISOString(),
   gate: "edge-function-rls-mutation-crossref",
@@ -200,6 +309,15 @@ writeJsonOutput(OUT_PATH, {
   errorCount: vc.errors.length,
   warningCount: vc.warnings.length,
   gapsByCode,
+  opLevelCoverage: {
+    totalTablesTracked: tableCoverage.length,
+    tablesWithOpGaps: tablesWithGaps.length,
+    totalTableOpsTracked,
+    totalTableOpsCovered,
+    overallCoveragePct,
+    perTable: tableCoverage,
+    perFunction: fnCoverage,
+  },
   traces: withGaps.map(t => ({
     fn: t.fn,
     authDeclared: t.authDeclared,
@@ -214,6 +332,31 @@ vc.report("check-edge-function-rls-mutation-crossref");
 console.log(`\n📊 RLS↔Mutation Cross-Ref: ${total} functions scanned`);
 console.log(`   Functions with gaps: ${withGaps.length}`);
 console.log(`   Gap breakdown: ${JSON.stringify(gapsByCode)}`);
+
+console.log(`\n📋 Op-Level RLS Coverage Matrix:`);
+console.log(`   Tables tracked: ${tableCoverage.length} | With op-gaps: ${tablesWithGaps.length}`);
+console.log(`   Table×Op pairs: ${totalTableOpsTracked} covered by RLS: ${totalTableOpsCovered} (${overallCoveragePct}%)`);
+
+if (tablesWithGaps.length > 0) {
+  console.log(`\n   ⚠️  Tables with uncovered ops (top 15):`);
+  for (const t of tablesWithGaps.slice(0, 15)) {
+    const missing = OPS.filter(o => t.ops[o].functions.length > 0 && !t.ops[o].rlsCovered);
+    console.log(`     ${t.table} [${t.rlsPattern}] — missing: ${missing.join(", ")} — used by: ${
+      [...new Set(missing.flatMap(o => t.ops[o].functions))].slice(0, 3).join(", ")
+    }${missing.flatMap(o => t.ops[o].functions).length > 3 ? " …" : ""}`);
+  }
+}
+
+const lowCoverageFns = fnCoverage.filter(f => f.coveragePct < 100).slice(0, 10);
+if (lowCoverageFns.length > 0) {
+  console.log(`\n   ⚠️  Functions with incomplete op-level RLS (top 10):`);
+  for (const f of lowCoverageFns) {
+    const uncov = f.tableOps.filter(o => !o.rlsCovered && !o.usesServiceRole);
+    console.log(`     ${f.fn} — ${f.coveragePct}% covered — uncovered: ${
+      uncov.map(o => `${o.table}.${o.op}`).slice(0, 4).join(", ")
+    }${uncov.length > 4 ? " …" : ""}`);
+  }
+}
 
 if (vc.errors.length > 0) {
   console.log(`\n❌ ${vc.errors.length} RLS/auth enforcement gaps detected`);
