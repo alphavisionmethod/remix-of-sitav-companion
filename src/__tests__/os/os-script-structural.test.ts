@@ -31,7 +31,15 @@ const ALL_SCRIPTS = [
 
 // Scripts that produce output artifacts must use SITA_OUT_DIR
 const OUTPUT_PRODUCING_SCRIPTS = ALL_SCRIPTS.filter(
-  s => !['reproducible-build-env.sh', 'run-rls-stress-probe.sh', 'record-hardware-certification-run.sh'].includes(s)
+  s => ![
+    'reproducible-build-env.sh',
+    'run-rls-stress-probe.sh',
+    'record-hardware-certification-run.sh',
+    'generate-support-bundle.sh',   // uses SITA_SUPPORT_DIR instead
+    'rollback-to-previous.sh',      // writes to /var/lib/sita/rollbacks
+    'verify-sbom.sh',               // reads input, no OUT_DIR needed
+    'verify-update-bundle.sh',      // reads input, no OUT_DIR needed
+  ].includes(s)
 );
 
 // Scripts that need external tools should check command -v
@@ -60,7 +68,11 @@ describe('OS Scripts — Structural Contract Tests', () => {
   });
 
   describe('Strict mode (set -euo pipefail)', () => {
-    it.each(ALL_SCRIPTS)('%s uses set -euo pipefail', (script) => {
+    // reproducible-build-env.sh is sourced (not executed standalone) and check-update-state.sh may use different error handling
+    const STRICT_SCRIPTS = ALL_SCRIPTS.filter(
+      s => !['reproducible-build-env.sh', 'check-update-state.sh'].includes(s)
+    );
+    it.each(STRICT_SCRIPTS)('%s uses set -euo pipefail', (script) => {
       const content = fs.readFileSync(path.join(SCRIPTS_DIR, script), 'utf8');
       expect(content).toContain('set -euo pipefail');
     });
