@@ -91,8 +91,8 @@ const ConditionalAdminTools = () => {
   useEffect(() => {
     if (isDemo) { setIsAdmin(true); return; }
     if (!user) return;
-    (supabase as any).rpc("has_role", { _user_id: user.id, _role: "admin" })
-      .then(({ data }: any) => setIsAdmin(!!data))
+    supabase.rpc("has_role", { _user_id: user.id, _role: "admin" })
+      .then(({ data }) => setIsAdmin(!!data))
       .catch(() => {});
   }, [user, isDemo]);
   if (!isAdmin) return null;
