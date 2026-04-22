@@ -103,7 +103,7 @@ const recColors: Record<string, string> = {
 };
 
 const TrendIcon = ({
-  const { isDemoMode } = useDataMode(); trend }: { trend: "up" | "down" | "flat" }) => {
+  trend }: { trend: "up" | "down" | "flat" }) => {
   if (trend === "up") return <ArrowUpRight className="h-3.5 w-3.5 text-trust-safe" />;
   if (trend === "down") return <ArrowDownRight className="h-3.5 w-3.5 text-destructive" />;
   return <Minus className="h-3.5 w-3.5 text-muted-foreground" />;

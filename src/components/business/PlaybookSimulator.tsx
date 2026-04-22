@@ -51,7 +51,7 @@ const CustomerChip = ({ customer, filtered }: { customer: MockCustomer; filtered
 // ── Step outcome card ────────────────────────────────────────────
 
 const StepOutcomeCard = ({
-  const { isDemoMode } = useDataMode(); outcome, isActive, stepNumber }: { outcome: StepOutcome; isActive: boolean; stepNumber: number }) => {
+  outcome, isActive, stepNumber }: { outcome: StepOutcome; isActive: boolean; stepNumber: number }) => {
   const Icon = outcome.action
     ? ACTION_ICONS[outcome.action] || Zap
     : STEP_ICONS[outcome.stepType] || Zap;

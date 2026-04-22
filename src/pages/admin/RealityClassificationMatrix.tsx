@@ -78,7 +78,7 @@ function FormDialog({ trigger, initial, onSave }: { trigger: React.ReactNode; in
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState<FormData>(initial ?? EMPTY);
   const handleOpen = (v: boolean) => {
-  const { isDemoMode } = useDataMode(); if (v) setForm(initial ?? EMPTY); setOpen(v); };
+    if (v) setForm(initial ?? EMPTY); setOpen(v); };
 
   const toggleEvidence = (sig: string) => {
     setForm(f => ({
