@@ -24,7 +24,7 @@ export interface EmptyStateAction {
 export interface EmptyStateProps {
   /** Visual variant */
   variant?: "default" | "card" | "contextual" | "cta";
-  icon?: LucideIcon;
+  icon?: LucideIcon | React.ReactNode;
   title?: string;
   description?: string;
   className?: string;
@@ -48,7 +48,7 @@ export interface EmptyStateProps {
 
 export function EmptyState({
   variant = "default",
-  icon: Icon = Inbox,
+  icon: iconProp = Inbox,
   title = "No data yet",
   description = "Data will appear here once you start using this feature.",
   className,
@@ -59,15 +59,20 @@ export function EmptyState({
   tip,
   mode,
 }: EmptyStateProps) {
-  if (variant === "card") return <CardVariant icon={Icon} title={title} description={description} actionLabel={actionLabel} onAction={onAction} ctaPath={ctaPath} className={className} />;
-  if (variant === "contextual") return <ContextualVariant icon={Icon} title={title} description={description} tip={tip} actions={actions} className={className} />;
-  if (variant === "cta") return <CTAVariant icon={Icon} title={title} description={description} actions={actions} tip={tip} mode={mode} className={className} />;
+  // Support both LucideIcon components and ReactNode elements
+  const isComponent = typeof iconProp === "function" || (typeof iconProp === "object" && iconProp !== null && "$$typeof" in (iconProp as any) && "render" in (iconProp as any));
+  const Icon = isComponent ? (iconProp as LucideIcon) : Inbox;
+  const iconElement = !isComponent && iconProp !== Inbox ? (iconProp as React.ReactNode) : null;
+
+  if (variant === "card") return <CardVariant icon={Icon} iconElement={iconElement} title={title} description={description} actionLabel={actionLabel} onAction={onAction} ctaPath={ctaPath} className={className} />;
+  if (variant === "contextual") return <ContextualVariant icon={Icon} iconElement={iconElement} title={title} description={description} tip={tip} actions={actions} className={className} />;
+  if (variant === "cta") return <CTAVariant icon={Icon} iconElement={iconElement} title={title} description={description} actions={actions} tip={tip} mode={mode} className={className} />;
 
   // Default variant
   return (
     <div className={cn("flex flex-col items-center justify-center py-16 px-4 text-center", className)}>
       <div className="p-4 rounded-2xl bg-muted/30 mb-4">
-        <Icon className="h-8 w-8 text-muted-foreground/60" />
+        {iconElement || <Icon className="h-8 w-8 text-muted-foreground/60" />}
       </div>
       <h3 className="text-lg font-semibold text-foreground mb-1">{title}</h3>
       <p className="text-sm text-muted-foreground max-w-sm">{description}</p>
