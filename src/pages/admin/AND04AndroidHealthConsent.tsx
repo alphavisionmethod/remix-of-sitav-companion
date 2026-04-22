@@ -4,11 +4,8 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Switch } from "@/components/ui/switch";
 import { Heart, ShieldCheck, Eye, EyeOff, Lock, Clock, Activity, Trash2, CheckCircle2, AlertTriangle } from "lucide-react";
-import { DEMO_ADMIN_SIGNALS as DEMO_SIGNALS } from "@/data/seed/admin-platform";
 import ANDSubNav from "@/components/admin/ANDSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 type ConsentMap = Record<string, { read: boolean; routing: boolean; assistant: boolean }>;
 
 const AND04AndroidHealthConsent = () => {

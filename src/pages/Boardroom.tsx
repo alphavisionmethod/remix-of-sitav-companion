@@ -57,11 +57,6 @@ import { useBoardroomData } from "@/hooks/use-boardroom-data";
 import { useOpportunitySignals, usePriorityStacks, useDigestCompilations } from "@/hooks/useCAIData";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { BoardroomSeedSampleButton } from "@/components/sita/BoardroomSeedSampleButton";
-import { useDataMode } from "@/contexts/DataModeContext";
-
-
-
-
 // ── Section Renderers (preserved from original) ───────────────
 
 const MetricCardGrid = ({ data, title }: { data: MetricCardData[]; title: string }) => {

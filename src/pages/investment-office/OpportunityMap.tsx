@@ -6,8 +6,6 @@ import { INSTRUMENTS } from "@/hooks/useInvestmentOfficeData";
 import { useMarketWatchlistItems } from "@/hooks/use-investment-office";
 import { DEMO_THEMES } from "@/data/seed/investment";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 export default function OpportunityMap() {
   const { data: liveData, isLoading } = useMarketWatchlistItems();
   const navigate = useNavigate();

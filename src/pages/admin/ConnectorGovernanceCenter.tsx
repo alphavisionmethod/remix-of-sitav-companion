@@ -14,12 +14,8 @@ import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
 import { ConnectorSyncDashboard } from "@/components/sita/ConnectorSyncDashboard";
 import { toast } from "sonner";
-import { DEMO_ADMIN_CONNECTORS as DEMO_CONNECTORS, DEMO_FALLBACK_SYNC_HISTORY, DEMO_POLICIES } from "@/data/seed/admin-platform";
+import { DEMO_FALLBACK_SYNC_HISTORY, DEMO_POLICIES } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
-
-
 interface ConnectorStatus {
   id: string;
   name: string;

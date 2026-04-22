@@ -4,11 +4,8 @@ import { CheckCircle2, AlertTriangle, XCircle, ShieldCheck, Layers } from "lucid
 import { getRegisteredDomains, type ProviderDomain } from "@/lib/dual-reality/mode-aware-provider";
 import { registerAllProviders } from "@/lib/dual-reality/providers";
 import { CILaunchGateWidget } from "@/components/sita/CILaunchGateWidget";
-import { DEMO_ADMIN_ALL_DOMAINS_D_R_S10_DUAL_REALITY_LAUNCH_GATE as DEMO_ALL_DOMAINS } from "@/data/seed/admin-platform";
 import DRSSubNav from "@/components/admin/DRSSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 interface GateCheck {
   label: string;
   status: "pass" | "warn" | "fail";

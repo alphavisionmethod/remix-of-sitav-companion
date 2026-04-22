@@ -9,8 +9,6 @@ import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { DEMO_ESCALATIONS } from "@/data/seed/admin-intelligence";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 const triggerColors: Record<string, string> = {
   low_confidence: "text-amber-400 bg-amber-500/10",
   high_stakes: "text-rose-400 bg-rose-500/10",

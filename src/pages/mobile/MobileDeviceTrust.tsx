@@ -9,8 +9,6 @@ import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { toast } from "sonner";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 type TrustLevel = "hardware-attested" | "verified" | "basic" | "untrusted";
 
 interface DeviceInfo {

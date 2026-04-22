@@ -7,8 +7,6 @@ import { BookOpen, TrendingUp, CheckCircle2, AlertTriangle, RotateCcw, Brain, Ta
 import { useAIEngDomain } from "@/hooks/use-ai-engineering-data";
 import { DEMO_BEHAVIOR_CHANGES, DEMO_LEARNED_PATTERNS, DEMO_ROUTING_WEIGHTS } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 const AISelfLearningLedger = () => {
   const { data: patterns, isDemo } = useAIEngDomain("learningPatterns", DEMO_LEARNED_PATTERNS);
   const [tab, setTab] = useState("patterns");

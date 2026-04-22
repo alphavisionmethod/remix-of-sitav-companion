@@ -8,8 +8,6 @@ import { useToast } from "@/hooks/use-toast";
 import { useVaultItems } from "@/hooks/use-apps-data";
 import { DEMO_ENTRIES } from "@/data/seed/apps";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 interface VaultEntry {
   id: string;
   name: string;

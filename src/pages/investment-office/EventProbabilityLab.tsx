@@ -4,8 +4,6 @@ import { FlaskConical, TrendingUp, TrendingDown, AlertTriangle, ChevronRight } f
 import { useMarketWatchlistItems } from "@/hooks/use-investment-office";
 import { DEMO_EVENTS } from "@/data/seed/investment";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 export default function EventProbabilityLab() {
   const { data: liveData, isLoading } = useMarketWatchlistItems();
   const [selected, setSelected] = useState(DEMO_EVENTS[0]);

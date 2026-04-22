@@ -6,10 +6,6 @@ import { useInterruptionPosture } from "@/hooks/use-health-signal-data";
 import { DEMO_SUPPRESSION_RULES, DEMO_TIMING_RULES, DEMO_OVERRIDE_MATRIX } from "@/data/seed/notification-calm";
 import HRSSubNav from "@/components/admin/HRSSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
-
-
 const HRS04NotificationInfluence = () => {
   const { data: posture, isLoading } = useInterruptionPosture();
   const suppressionRules = (posture as never[])?.length ? posture : DEMO_SUPPRESSION_RULES;

@@ -1,10 +1,7 @@
 import { motion } from "framer-motion";
 import { GitCompareArrows, AlertTriangle, Check, HelpCircle } from "lucide-react";
 import { useInvestmentDecisions } from "@/hooks/use-investment-office";
-import { DEMO_INV_DISAGREEMENTS as DEMO_DISAGREEMENTS } from "@/data/seed/investment";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 export default function DisagreementEngine() {
   const { data: liveData, isLoading } = useInvestmentDecisions();
   return (

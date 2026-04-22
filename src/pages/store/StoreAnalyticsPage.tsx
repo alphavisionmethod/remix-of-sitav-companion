@@ -14,8 +14,6 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DEMO_CATEGORY_REVENUE, DEMO_RETENTION_DATA, DEMO_REVENUE_TREND } from "@/data/seed/core-pages";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 // ── Mock Analytics Data ─────────────────────────────────────────
 
 const PACK_ANALYTICS: PackAnalytics[] = [

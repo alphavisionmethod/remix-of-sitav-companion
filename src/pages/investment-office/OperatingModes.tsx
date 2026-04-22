@@ -4,8 +4,6 @@ import { Settings2, Eye, Search, Zap, Calendar, Activity, Shield } from "lucide-
 import { useInvestmentStrategyRecords } from "@/hooks/use-investment-office";
 import { DEMO_MODES } from "@/data/seed/investment";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 export default function OperatingModes() {
   const { data: liveData, isLoading } = useInvestmentStrategyRecords();
   const [activeMode, setActiveMode] = useState("quiet");

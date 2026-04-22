@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { fromTable } from "@/lib/supabase-helpers";
-import { DEMO_ADMIN_SERVICES_MISSION_CONTROL_HOME as DEMO_SERVICES, DEMO_URGENT_ACTIONS } from "@/data/seed/admin-platform";
+import { DEMO_URGENT_ACTIONS } from "@/data/seed/admin-platform";
 import { DEMO_MUTATIONS } from "@/data/seed/durability";
 import {
   RevenueSummaryPanel,
@@ -35,7 +35,6 @@ import { ContinuousVerificationPanel } from "@/components/admin/shells/Continuou
 import { ExplainSimplyToggle } from "@/components/admin/shells/ExplainSimplyToggle";
 import { SurfaceAuthorityMatrix } from "@/components/admin/shells/SurfaceAuthorityMatrix";
 import { StateAuthorityMap } from "@/components/admin/shells/StateAuthorityMap";
-import { useDataMode } from "@/contexts/DataModeContext";
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.05 } } };
 

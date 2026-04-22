@@ -11,8 +11,6 @@ import { cn } from "@/lib/utils";
 import { useReceiptVerification, useSharedMemory } from "@/contexts/SitaKernelContext";
 import { DEMO_PROOFS } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 interface ProofRecord {
   id: string;
   type: "action" | "approval" | "verification" | "rollback" | "payment" | "system";

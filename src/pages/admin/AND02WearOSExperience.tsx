@@ -6,8 +6,6 @@ import { Watch, ArrowRight, Clock, Zap, Eye, Smartphone, AlertTriangle, Vibrate 
 import { DEMO_COMPLICATIONS, DEMO_MICRO_ACTIONS, DEMO_TILES } from "@/data/seed/admin-platform";
 import ANDSubNav from "@/components/admin/ANDSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 const AND02WearOSExperience = () => {
   return (
     <div className="p-6 max-w-[1400px] mx-auto space-y-6">

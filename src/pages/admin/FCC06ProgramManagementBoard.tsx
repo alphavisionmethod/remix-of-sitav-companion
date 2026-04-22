@@ -16,8 +16,6 @@ import {
   ChevronDown, ChevronRight, Zap, Shield, Gauge, Terminal, GitBranch,
   Flag, BarChart3, Link2, XCircle
 } from "lucide-react";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 interface Objective {
   id: string;
   title: string;

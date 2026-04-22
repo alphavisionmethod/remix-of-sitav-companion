@@ -5,7 +5,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState } from "react";
 import { Target, Clock, CheckCircle2, AlertTriangle, Pause, RotateCcw, Sparkles, Shield, FileCheck, ArrowRight, Eye, Users, Bug, Wrench } from "lucide-react";
 import { useAIEngDomain } from "@/hooks/use-ai-engineering-data";
-import { DEMO_ADMIN_MISSIONS_A_I_MISSION_CENTER as DEMO_MISSIONS } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const statusConfig: Record<string, { label: string; color: string; icon: typeof Clock }> = {

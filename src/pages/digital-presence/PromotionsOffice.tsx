@@ -7,8 +7,6 @@ import { useSites } from "@/hooks/use-digital-presence";
 import { DEMO_ACTIVE_PROMOTIONS, DEMO_EMAIL_SMS_SYNC, DEMO_PROMO_CALENDAR } from "@/data/seed/digital-presence";
 import DPOSubNav from "./DPOSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 export default function PromotionsOffice() {
   const { data: liveData, isLoading } = useSites();
   return (

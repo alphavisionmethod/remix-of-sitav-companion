@@ -7,10 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
-import { DEMO_REV_SEGMENTS_SEGMENTATION_ENGINE as DEMO_SEGMENTS, DEMO_SCORING_RULES, DEMO_TOP_LEADS } from "@/data/seed/revenue-office";
+import { DEMO_SCORING_RULES, DEMO_TOP_LEADS } from "@/data/seed/revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 export default function SegmentationEngine() {
   const [tab, setTab] = useState("segments");
 

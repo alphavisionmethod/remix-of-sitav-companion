@@ -13,8 +13,6 @@ import {
   DEMO_OFFER_UPSELLS,
   DEMO_PRICING_EXPERIMENTS,
 } from "@/data/seed/revenue-office";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 export default function OffersWorkspace() {
   const [tab, setTab] = useState("catalog");
   const totalRevenue = ([] as typeof DEMO_PRODUCTS).reduce((s, p) => s + parseInt(p.revenue.replace(/[^0-9]/g, "")), 0);

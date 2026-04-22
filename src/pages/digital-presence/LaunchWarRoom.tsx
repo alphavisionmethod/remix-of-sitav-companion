@@ -3,12 +3,9 @@ import { Rocket, CheckCircle, AlertTriangle, Clock, Layout, FileText, Eye, Shopp
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { DEMO_DPO_READINESS_CHECKS as DEMO_READINESS_CHECKS, DEMO_LAUNCH_TIMELINE } from "@/data/seed/digital-presence";
+import { DEMO_LAUNCH_TIMELINE } from "@/data/seed/digital-presence";
 import DPOSubNav from "./DPOSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
-
 export default function LaunchWarRoom() {
   const overallScore = Math.round(([] as typeof DEMO_READINESS_CHECKS).reduce((sum, c) => sum + c.score, 0) / Math.max(([] as typeof DEMO_READINESS_CHECKS).length, 1));
   return (

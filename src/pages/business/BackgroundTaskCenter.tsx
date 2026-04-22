@@ -5,8 +5,6 @@ import {
   Zap, Download, Loader2, XCircle, BarChart3
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 interface BGTask {
   id: string;
   title: string;

@@ -6,10 +6,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
-import { DEMO_FIELD_TYPES, DEMO_FORMS, DEMO_REV_STATS_FORMS_BUILDER as DEMO_STATS, DEMO_SAMPLE_FIELDS } from "@/data/seed/revenue-office";
+import { DEMO_FIELD_TYPES, DEMO_FORMS, DEMO_SAMPLE_FIELDS } from "@/data/seed/revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 export default function FormsBuilder() {
   const [tab, setTab] = useState("forms");
   const [selectedForm, setSelectedForm] = useState<string | null>(null);

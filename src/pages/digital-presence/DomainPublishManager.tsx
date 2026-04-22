@@ -6,11 +6,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { useWebsiteManager } from "@/contexts/SitaKernelContext";
-import { DEMO_DPO_DOMAINS as DEMO_DOMAINS, DEMO_DPO_ENVIRONMENTS as DEMO_ENVIRONMENTS, DEMO_PUBLISH_HISTORY, DEMO_PUBLISH_RULES } from "@/data/seed/digital-presence";
+import { DEMO_PUBLISH_HISTORY, DEMO_PUBLISH_RULES } from "@/data/seed/digital-presence";
 import DPOSubNav from "./DPOSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 export default function DomainPublishManager() {
   const { pages: managedPages, domains: managedDomains, getStats: getWebsiteStats } = useWebsiteManager();
   const [newDomain, setNewDomain] = useState("");

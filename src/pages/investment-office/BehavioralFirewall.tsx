@@ -5,8 +5,6 @@ import { useBehavioralSignals, useInvestmentConstitution } from "@/hooks/use-inv
 import { assessBehavioralFirewall } from "@/lib/services/finance-os/investment-memory.service";
 import { DEMO_BEHAVIORAL_SIGNALS } from "@/data/seed/investment";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 const FIREWALL_STATUS = {
   overallHealth: 85,
   label: "Disciplined",

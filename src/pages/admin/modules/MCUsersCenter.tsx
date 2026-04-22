@@ -9,8 +9,6 @@ import {
   Calendar, CreditCard, Smartphone, TrendingUp, UserCheck, UserX
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.3 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.04 } } };
 

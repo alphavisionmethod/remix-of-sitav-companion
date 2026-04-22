@@ -4,7 +4,6 @@ import { Progress } from "@/components/ui/progress";
 import { useState } from "react";
 import { Eye, CheckCircle2, ArrowRight, Palette, Layout, Accessibility, Moon, Type, Move } from "lucide-react";
 import { useAIEngDomain } from "@/hooks/use-ai-engineering-data";
-import { DEMO_ADMIN_DIFFS as DEMO_DIFFS } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const AIDesignDiffTheater = () => {

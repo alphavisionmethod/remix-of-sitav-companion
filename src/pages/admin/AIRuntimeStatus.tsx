@@ -7,8 +7,6 @@ import { RefreshCw, CheckCircle2, XCircle, AlertTriangle, Loader2, Activity, Zap
 import { DEMO_AI_FEATURES } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { EmptyState } from "@/components/primitives/feedback/EmptyState";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 const statusColors = {
   healthy: "bg-green-500/20 text-green-400 border-green-500/30",
   degraded: "bg-yellow-500/20 text-yellow-400 border-yellow-500/30",

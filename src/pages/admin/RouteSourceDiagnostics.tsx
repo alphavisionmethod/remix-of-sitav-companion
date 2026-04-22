@@ -14,8 +14,6 @@ import {
 } from "lucide-react";
 import { DEMO_ROUTES } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 type LaunchHonesty = "truthful" | "demo-backed" | "mixed" | "overstated" | "blocked";
 
 interface RouteSource {

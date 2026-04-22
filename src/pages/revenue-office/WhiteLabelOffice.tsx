@@ -7,8 +7,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useState } from "react";
 import { DEMO_BRANDS, DEMO_PARTNERS, DEMO_SPLITS } from "@/data/seed/revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 const CLIENT_HEALTH_BY_PARTNER = [
   { partner: "Apex Growth", clients: [{ name: "TechFlow", health: 92, trend: "up", revenue: "$4,200/mo" }, { name: "HealthFirst", health: 78, trend: "stable", revenue: "$3,100/mo" }] },
   { partner: "Beacon Digital", clients: [{ name: "Nova Digital", health: 85, trend: "up", revenue: "$2,800/mo" }, { name: "Carter Legal", health: 58, trend: "down", revenue: "$4,100/mo" }] },

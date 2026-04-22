@@ -12,8 +12,6 @@ import { Shield, FileText, Download, Search, Filter, ChevronRight, CheckCircle, 
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 type AuditCategory = "all" | "operator" | "system" | "trust" | "data" | "auth";
 
 interface AuditRecord {

@@ -10,8 +10,6 @@ import {
   ArrowRight, BarChart3, RefreshCw, DollarSign, Bell, FileText, CreditCard, Eye
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 type AutoStatus = "active" | "suggested" | "paused" | "failed";
 type TrustLevel = "full" | "threshold" | "approval-required" | "draft-only";
 

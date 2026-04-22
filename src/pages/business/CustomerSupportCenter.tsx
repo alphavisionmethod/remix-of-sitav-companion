@@ -14,8 +14,6 @@ import {
   HeadphonesIcon, AlertTriangle, Clock, CheckCircle2, MessageSquare, User, ShieldAlert,
   Timer, TrendingDown, Mail, Phone, FileText, RotateCcw
 } from "lucide-react";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 type Severity = "critical" | "high" | "medium" | "low";
 type IssueStatus = "open" | "waiting-on-us" | "waiting-on-customer" | "escalated" | "resolved";
 

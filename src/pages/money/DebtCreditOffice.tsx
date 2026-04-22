@@ -10,8 +10,6 @@ import { motion } from "framer-motion";
 import { useState, useMemo } from "react";
 import { computeDebtProfile, simulateDebtPayoff } from "@/lib/services/finance-os/debt-analyzer.service";
 import type { DebtAccount } from "@/packages/finance-contracts";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 const DEMO_ACCOUNTS: DebtAccount[] = [
   { id: "cc1", name: "Visa Platinum", type: "credit-card", balanceCents: 485000, limitCents: 2000000, interestRate: 22.99, minimumPaymentCents: 14500, dueDate: "2026-04-28", utilizationPercent: 24.25, monthlyInterestCents: 9283, payoffMonths: 48, isAutoPay: true, institution: "Chase" },
   { id: "cc2", name: "Amex Gold", type: "credit-card", balanceCents: 128000, limitCents: 500000, interestRate: 18.99, minimumPaymentCents: 3840, dueDate: "2026-05-02", utilizationPercent: 25.6, monthlyInterestCents: 2025, payoffMonths: 42, isAutoPay: true, institution: "American Express" },

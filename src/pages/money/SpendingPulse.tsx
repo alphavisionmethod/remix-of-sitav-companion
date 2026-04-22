@@ -14,8 +14,6 @@ import { SplitWorkspace } from "@/components/sita/surfaces/SplitWorkspace";
 import { AppSurface } from "@/components/sita/surfaces/AppSurface";
 import { ListReveal, ListRevealItem } from "@/components/sita/motion/AppTransitions";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 type PulseState = "all-normal" | "review-needed" | "attention";
 
 interface SpendingCategory {

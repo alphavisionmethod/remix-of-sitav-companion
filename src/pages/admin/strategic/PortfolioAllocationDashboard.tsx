@@ -7,8 +7,6 @@ import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { useComputeSnapshots } from "@/hooks/useIntelligencePersistence";
 import { DEMO_DEFAULT_CATEGORIES } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 const PortfolioAllocationDashboard = () => {
   const { isAdmin, loading: authLoading } = useRequireAdmin();
   const { snapshots, latest, loading: dataLoading } = useComputeSnapshots({ limit: 30 });

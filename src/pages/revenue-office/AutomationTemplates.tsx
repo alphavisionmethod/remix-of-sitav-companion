@@ -12,10 +12,8 @@ import {
   Eye, Search, TrendingUp, BarChart3
 } from "lucide-react";
 import AutomationSubNav from "./AutomationSubNav";
-import { DEMO_REV_categories as DEMO_categories, DEMO_templates } from "@/data/seed/revenue-office";
+import { DEMO_templates } from "@/data/seed/revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 const RECENTLY_USED = [
   { name: "Stale Lead Recovery", lastUsed: "3 days ago", timesUsed: 12, avgImpact: "$1,200/use" },
   { name: "Post-Service Review Request", lastUsed: "Yesterday", timesUsed: 34, avgImpact: "+3 reviews/use" },

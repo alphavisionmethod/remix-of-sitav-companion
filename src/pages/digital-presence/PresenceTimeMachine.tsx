@@ -7,8 +7,6 @@ import { useState } from "react";
 import { DEMO_TIMELINE_EVENTS } from "@/data/seed/digital-presence";
 import DPOSubNav from "./DPOSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 export default function PresenceTimeMachine() {
   const [selectedIdx, setSelectedIdx] = useState(0);
   const selected = DEMO_TIMELINE_EVENTS[selectedIdx];

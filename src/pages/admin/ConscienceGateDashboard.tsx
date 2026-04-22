@@ -20,8 +20,6 @@ import {
 import type { GateDecision, GateVerdict, EvidenceState, BudgetState, RoutingHints } from "@/lib/core-services/conscience-gate/conscience-gate";
 import { DEMO_CONSCIENCE_VERDICTS } from "@/data/fixtures/mock-data/conscience-gate";
 import { supabase } from "@/integrations/supabase/client";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 // Local row type used by this dashboard — keeps a stable `id` for table keys.
 type DashboardVerdict = GateVerdict & { id: string };
 

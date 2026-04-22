@@ -4,13 +4,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Brain, ArrowRight, AlertTriangle, CheckCircle2, Loader2 } from "lucide-react";
 import { useReadinessStates } from "@/hooks/use-health-signal-data";
 import { DEMO_READINESS_FACTORS } from "@/data/seed/health-signals";
-import { DEMO_ADMIN_PIPELINE_STAGES as DEMO_PIPELINE_STAGES, DEMO_COMBINE_STRATEGIES } from "@/data/seed/admin-platform";
+import { DEMO_COMBINE_STRATEGIES } from "@/data/seed/admin-platform";
 import HRSSubNav from "@/components/admin/HRSSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
-
-
 const HRS03ReadinessExplanation = () => {
   const { data: dbReadiness, isLoading } = useReadinessStates(10);
 

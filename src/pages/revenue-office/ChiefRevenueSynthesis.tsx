@@ -7,8 +7,6 @@ import { Progress } from "@/components/ui/progress";
 import { useNavigate } from "react-router-dom";
 import { DEMO_CHIEF_HISTORICAL } from "@/data/seed/revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 const synthesis = {
   confidence: 76,
   biggestLeak: "45% of leads receive no follow-up within 24hrs — estimated $12,400/mo leakage",

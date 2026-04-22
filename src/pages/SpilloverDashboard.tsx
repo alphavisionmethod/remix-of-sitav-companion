@@ -14,7 +14,7 @@ import { KPITile, SectionHeader } from "@/components/sita/SitaComponents";
 import { ConfidenceBar } from "@/components/sita/primitives/ConfidenceBar";
 import { AutonomyLadder } from "@/components/sita/primitives/AutonomyLadder";
 import { SectionSkeleton } from "@/components/sita/SectionSkeleton";
-import { DEMO_ACTIVE_SPILLOVERS, DEMO_CORE_DOMAINS as DEMO_DOMAINS, DEMO_TOP_INTERVENTIONS } from "@/data/seed/core-pages";
+import { DEMO_ACTIVE_SPILLOVERS, DEMO_TOP_INTERVENTIONS } from "@/data/seed/core-pages";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { useDataMode } from "@/contexts/DataModeContext";
 

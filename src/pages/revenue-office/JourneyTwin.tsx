@@ -8,9 +8,6 @@ import { DEMO_JOURNEY_STAGES } from "@/data/seed/revenue-office";
 import { useState, useMemo } from "react";
 import { useCustomerJourneyStages } from "@/hooks/use-revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
-
 const AUTOMATION_OVERLAY = [
   { stage: "Awareness", automations: [{ name: "Lead Magnet Delivery", status: "active", coverage: 94 }, { name: "Welcome Email Sequence", status: "active", coverage: 87 }] },
   { stage: "Interest", automations: [{ name: "Nurture Drip (5-part)", status: "active", coverage: 72 }, { name: "Retarget Pixel", status: "degraded", coverage: 45 }] },

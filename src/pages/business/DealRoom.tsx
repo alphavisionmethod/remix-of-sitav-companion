@@ -6,8 +6,6 @@ import {
   BarChart3, ArrowUpRight, Star, Briefcase, Zap
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 const DEMO_DEALS = [
   { id: "1", name: "NovaTech Enterprise License", value: "$85,000", stage: "Negotiation", probability: 75, daysInStage: 8, contacts: 3, nextAction: "Send revised pricing", health: "good" },
   { id: "2", name: "DataFlow API Integration", value: "$42,000", stage: "Proposal", probability: 60, daysInStage: 12, contacts: 2, nextAction: "Follow up on proposal", health: "warning" },

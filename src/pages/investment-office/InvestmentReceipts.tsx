@@ -4,11 +4,8 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
-import { DEMO_RECEIPTS } from "@/data/seed/investment";
 import { POST_TRADE_REVIEWS } from "@/domains/investment/mock-data";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 interface Receipt {
   id: string;
   type: "trade" | "approval" | "thesis" | "risk-change" | "rebalance" | "advisor-snapshot";
@@ -49,7 +46,7 @@ export default function InvestmentReceipts() {
     },
   });
 
-  const receipts = (realReceipts ?? DEMO_RECEIPTS);
+  const receipts = (realReceipts ?? []);
 
   return (
     <div className="mx-auto max-w-6xl space-y-6">

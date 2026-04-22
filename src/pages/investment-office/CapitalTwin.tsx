@@ -4,10 +4,8 @@ import { motion } from "framer-motion";
 import { Layers, Shield, TrendingUp, Zap, DollarSign, Target, AlertTriangle, ChevronRight } from "lucide-react";
 import { PORTFOLIO } from "@/hooks/useInvestmentOfficeData";
 import { useCapitalPurposeBuckets } from "@/hooks/use-investment-office";
-import { DEMO_INV_PURPOSES_CAPITAL_TWIN as DEMO_PURPOSES, DEMO_SHOCK_ZONES } from "@/data/seed/investment";
+import { DEMO_SHOCK_ZONES } from "@/data/seed/investment";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 export default function CapitalTwin() {
   const { data: liveData, isLoading } = useCapitalPurposeBuckets();
   const navigate = useNavigate();

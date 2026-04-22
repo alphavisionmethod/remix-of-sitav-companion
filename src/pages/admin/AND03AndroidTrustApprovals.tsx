@@ -3,11 +3,9 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { Shield, Fingerprint, Smartphone, Watch, Lock, CheckCircle2, XCircle, ArrowRight, AlertTriangle, Key } from "lucide-react";
-import { DEMO_ADMIN_TRUST_CLASSES as DEMO_TRUST_CLASSES, DEMO_ADMIN_VERIFICATION_EVENTS as DEMO_VERIFICATION_EVENTS, DEMO_ESCALATION_MATRIX } from "@/data/seed/admin-platform";
+import { DEMO_ESCALATION_MATRIX } from "@/data/seed/admin-platform";
 import ANDSubNav from "@/components/admin/ANDSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 const AND03AndroidTrustApprovals = () => {
   return (
     <div className="p-6 max-w-[1400px] mx-auto space-y-6">

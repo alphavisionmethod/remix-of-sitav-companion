@@ -7,15 +7,9 @@ import { Upload, FileText, Image, Table2, FileSpreadsheet, Download, ArrowUpFrom
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { DEMO_UPLOADS, DEMO_EXPORTS, type DemoUploadItem as UploadItem, type DemoExportItem as ExportItem } from "@/data/seed/import-export";
+import { type DemoUploadItem as UploadItem, type DemoExportItem as ExportItem } from "@/data/seed/import-export";
 import { useImportExportJobs } from "@/hooks/use-live-data";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
-
-
-
-
 const STATUS_STYLES = { uploading: "text-primary", processing: "text-amber-400", complete: "text-emerald-400", failed: "text-red-400", generating: "text-amber-400", ready: "text-emerald-400", expired: "text-muted-foreground", pending: "text-amber-400" };
 const STATUS_ICONS = { uploading: Clock, processing: Clock, complete: CheckCircle2, failed: AlertTriangle, generating: Clock, ready: CheckCircle2, expired: AlertTriangle, pending: Clock };
 
@@ -26,7 +20,6 @@ const ImportExportCenter = () => {
   const { data: liveJobs } = useImportExportJobs();
 
   const uploads = useMemo(() => {
-    if (isDemoMode) return DEMO_UPLOADS;
     if (!liveJobs?.length) return [];
     return liveJobs.filter((j: Record<string, any>) => j.job_type === "import").map((j: Record<string, any>) => ({
       id: j.id,
@@ -40,7 +33,6 @@ const ImportExportCenter = () => {
   }, [isDemoMode, liveJobs]);
 
   const exports = useMemo(() => {
-    if (isDemoMode) return DEMO_EXPORTS;
     if (!liveJobs?.length) return [];
     return liveJobs.filter((j: Record<string, any>) => j.job_type === "export").map((j: Record<string, any>) => ({
       id: j.id,

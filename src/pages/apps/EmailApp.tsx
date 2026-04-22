@@ -7,8 +7,6 @@ import { Mail, Inbox, Send, Star, Trash2, Archive, Search, Plus, Paperclip, Chev
 import { useState } from "react";
 import { DEMO_EMAILS } from "@/data/seed/apps";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 interface Email {
   id: string;
   from: string;

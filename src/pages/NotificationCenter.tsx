@@ -23,12 +23,6 @@ import {
   ArrowRight, Volume2, VolumeX, Pin, XCircle, AlertCircle, Sparkles,
   MessageSquare, Calendar, Settings, Activity
 } from "lucide-react";
-import { useDataMode } from "@/contexts/DataModeContext";
-
-
-
-
-
 type UrgencyLevel = "critical" | "high" | "normal" | "low";
 type NotifCategory = "all" | "action" | "approval" | "finance" | "business" | "household" | "system" | "resolved";
 

@@ -16,13 +16,7 @@ import {
   DollarSign, Briefcase, Home, Mail, Calendar, AlertTriangle, RefreshCw, Pause, Play,
   Plus, ToggleLeft, ToggleRight, Trash2
 } from "lucide-react";
-import { DEMO_AUTOMATION_RULES, DEMO_DELEGATIONS } from "@/data/fixtures/demo-data";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
-
-
-
 const AutomationCenter = () => {
   const location = useLocation();
   const navigate = useNavigate();

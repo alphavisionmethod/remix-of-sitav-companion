@@ -9,8 +9,6 @@ import { useRevenueOfficeMode } from "@/contexts/RevenueOfficeModeContext";
 import { RevenueOfficeModeToggle } from "@/components/revenue-office/RevenueOfficeModeToggle";
 import { DEMO_COHORT_DATA, DEMO_LEAKAGE, DEMO_REVENUE_STREAMS } from "@/data/seed/revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 const UNIT_ECONOMICS = [
   { metric: "Customer Acquisition Cost (CAC)", value: "$142", trend: "-8%", status: "improving" },
   { metric: "Lifetime Value (LTV)", value: "$2,840", trend: "+12%", status: "strong" },

@@ -12,12 +12,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 
 import { ASSET_COLORS } from "@/lib/constants/ui-config";
-import { DEMO_ALLOCATIONS } from "@/data/seed/core-pages";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
-
-
 export default function CapitalAllocationPage() {
   const { user , isDemo} = useAuth();
   const { data: realAllocations } = useQuery({
@@ -43,7 +38,7 @@ export default function CapitalAllocationPage() {
     },
   });
 
-  const allocations = (realAllocations ?? DEMO_ALLOCATIONS);
+  const allocations = (realAllocations ?? []);
   const totalValue = allocations.reduce((s, a) => s + a.value, 0);
 
   return (

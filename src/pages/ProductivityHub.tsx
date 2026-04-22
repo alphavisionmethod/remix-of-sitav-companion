@@ -7,8 +7,6 @@ import { lazy, Suspense } from "react";
 import { FileText, Table2, Presentation, Sparkles, Clock, Star, Plus } from "lucide-react";
 import { DEMO_RECENT_DOCS } from "@/data/seed/core-pages";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 const DocsWorkspace = lazy(() => import("./workspace/DocsWorkspace"));
 const SheetsWorkspace = lazy(() => import("./workspace/SheetsWorkspace"));
 const SlidesWorkspace = lazy(() => import("./workspace/SlidesWorkspace"));

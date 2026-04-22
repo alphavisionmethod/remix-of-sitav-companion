@@ -11,11 +11,6 @@ import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { DEMO_CORE_CATEGORIES_NOTIFICATION_PREFERENCES as DEMO_CATEGORIES } from "@/data/seed/core-pages";
-import { useDataMode } from "@/contexts/DataModeContext";
-
-
-
 export default function NotificationPreferences() {
   const { user } = useAuth();
   const queryClient = useQueryClient();

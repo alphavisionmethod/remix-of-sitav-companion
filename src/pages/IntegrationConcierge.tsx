@@ -16,10 +16,7 @@ import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
 import { useOSRuntime } from "@/hooks/useOSRuntime";
 import type { ConnectorUseCase } from "@/domains/engines/connector-concierge";
-import { DEMO_CORE_BUNDLES as DEMO_BUNDLES, DEMO_CORE_CATEGORIES as DEMO_CATEGORIES } from "@/data/seed/core-pages";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 // ── Category Config ────────────────────────────────────────────
 // ── Use Case Card ──────────────────────────────────────────────
 function UseCaseCard({ useCase, onSelect }: { useCase: ConnectorUseCase; onSelect: () => void }) {

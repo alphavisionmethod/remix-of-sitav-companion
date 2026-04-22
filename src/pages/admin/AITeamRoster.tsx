@@ -9,11 +9,7 @@ import {
   Rocket, Sparkles, TrendingUp, Users, Eye, AlertTriangle, Activity
 } from "lucide-react";
 import { useAIEngDomain } from "@/hooks/use-ai-engineering-data";
-import { DEMO_ADMIN_AGENTS as DEMO_AGENTS } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
-
 const autonomyColors: Record<string, string> = {
   "auto-low-risk": "bg-[hsl(var(--trust-safe))]/10 text-[hsl(var(--trust-safe))]",
   "supervised": "bg-primary/10 text-primary",

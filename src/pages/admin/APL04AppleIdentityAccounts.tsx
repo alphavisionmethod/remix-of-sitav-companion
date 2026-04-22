@@ -5,8 +5,6 @@ import { KeyRound, Link, User, Shield, ArrowRight, CheckCircle2, AlertTriangle, 
 import { DEMO_IDENTITY_ARCHITECTURE, DEMO_LINK_FLOW_STEPS, DEMO_SECURITY_POLICIES } from "@/data/seed/admin-platform";
 import APLSubNav from "@/components/admin/APLSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 const APL04AppleIdentityAccounts = () => {
   return (
   <div className="p-6 max-w-[1400px] mx-auto space-y-6">

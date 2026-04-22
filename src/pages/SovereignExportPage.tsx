@@ -11,10 +11,6 @@ import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 import { DEMO_EXPORTABLE_TABLES, DEMO_PAST_EXPORTS } from "@/data/seed/core-pages";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
-
-
 export default function SovereignExportPage() {
   
   const { user, isDemo } = useAuth();

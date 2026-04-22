@@ -8,8 +8,6 @@ import { useState } from "react";
 import { DEMO_EXISTING_EXPERIENCES, DEMO_EXPERIENCE_TYPES, DEMO_PORTAL_FEATURES, DEMO_PWA_SETTINGS } from "@/data/seed/digital-presence";
 import DPOSubNav from "./DPOSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 export default function AppExperienceStudio() {
   const [aiPrompt, setAiPrompt] = useState("");
 

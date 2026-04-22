@@ -10,9 +10,6 @@ import { Progress } from "@/components/ui/progress";
 import { ArrowLeft, CheckCircle, Shield, Zap, Globe, ExternalLink, BookOpen, AlertTriangle, ArrowRight } from "lucide-react";
 import { getProviderById } from "@/data/seed/integrations";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
-
 export default function ProviderDetail() {
   
   const { providerId } = useParams();

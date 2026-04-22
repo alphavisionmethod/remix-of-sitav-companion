@@ -8,8 +8,6 @@ import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { Users, DollarSign, PiggyBank, Target, Home, BarChart3 } from "lucide-react";
 import { motion } from "framer-motion";
 import type { HouseholdFinanceSummary } from "@/packages/finance-contracts";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 const DEMO_HOUSEHOLD: HouseholdFinanceSummary = {
   householdId: "hh-1", memberCount: 2, totalIncomeCents: 1700000, totalExpensesCents: 1150000,
   sharedGoals: [

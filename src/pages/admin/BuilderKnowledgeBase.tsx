@@ -10,8 +10,6 @@ import { CANONICAL_DOMAIN_PACKS } from "@/lib/delivery-methodology/domain-packs"
 import { LIFECYCLE_STAGES, getStageLabel } from "@/lib/delivery-methodology/feature-lifecycle";
 import { DEMO_ARCHETYPE_DOCS } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 const BuilderKnowledgeBase = () => {
   const { data: archetypes } = useQuery({
     queryKey: ["kb-archetypes"],

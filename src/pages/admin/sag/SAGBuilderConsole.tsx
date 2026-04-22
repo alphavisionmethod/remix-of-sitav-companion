@@ -6,11 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useModelRegistry, usePromptFamilies, useRoutingPolicies, useTaskRequests } from "@/hooks/use-sag-data";
 import { TASK_CLASSES, MODEL_CLASSES } from "@/lib/sovereign-ai-gateway/types";
-import { DEMO_ADMIN_BUILDER_STEPS_S_A_G_BUILDER_CONSOLE as DEMO_BUILDER_STEPS } from "@/data/seed/admin-platform";
 import SAGSubNav from "@/components/admin/SAGSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 const SAGBuilderConsole = () => {
   const { data: models = [] } = useModelRegistry();
   const { data: prompts = [] } = usePromptFamilies();
