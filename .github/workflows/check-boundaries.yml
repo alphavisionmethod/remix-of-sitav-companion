@@ -46,7 +46,7 @@ jobs:
 
       - name: Upload mutation traceability report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: mutation-traceability-report
           path: generated/edge-function-mutation-traceability.json
@@ -55,7 +55,7 @@ jobs:
 
       - name: Upload boundary report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: boundary-report
           path: generated/boundary-check-report.json

@@ -75,13 +75,13 @@ jobs:
       - name: Coverage ratchet check
         run: npx tsx scripts/root/coverage-ratchet.ts
         continue-on-error: true
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: unit-test-results
           path: coverage/
           retention-days: 14
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: coverage-summary
@@ -151,7 +151,7 @@ jobs:
           fs.writeFileSync('generated/ci-security-report.json', JSON.stringify(report, null, 2));
           console.log('✅ Security scan complete');
           "
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: security-report
           path: generated/ci-security-report.json
@@ -176,7 +176,7 @@ jobs:
           VITE_SUPABASE_URL: http://localhost:8000
           VITE_SUPABASE_PUBLISHABLE_KEY: dummy-key-for-ci
           VITE_SUPABASE_PROJECT_ID: ci-project
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: dist
           path: dist/
@@ -226,7 +226,7 @@ jobs:
       - name: Workflow governance
         run: npx tsx scripts/root/check-workflow-governance.ts
         continue-on-error: true
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: architecture-report
@@ -273,19 +273,19 @@ jobs:
           VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}
           TEST_USER_EMAIL: ${{ secrets.TEST_USER_EMAIL }}
           TEST_USER_PASSWORD: ${{ secrets.TEST_USER_PASSWORD }}
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: playwright-report
           path: playwright-report/
           retention-days: 14
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: playwright-screenshots
           path: test-results/
           retention-days: 14
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: journey-proof-reports
@@ -366,7 +366,7 @@ jobs:
         run: npx tsx scripts/release/release-launch-truth-audit.ts || true
       - name: Final "It's Real" Gate (Checklist 27 — 13-clause aggregator, blocker)
         run: npx tsx scripts/architecture/checks/check-its-real-gate.ts
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: its-real-gate-report
@@ -437,7 +437,7 @@ jobs:
             console.log('✅ Launch gate CLEAR — all jobs passed');
           }
           "
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: launch-gate-report
           path: |
@@ -562,7 +562,7 @@ jobs:
       - name: Env contract completeness
         run: npx tsx scripts/root/check-env-contract-completeness.ts
         continue-on-error: true
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: nightly-validation

@@ -39,7 +39,7 @@ jobs:
           node-version: '20'
       - run: npm ci --no-audit --no-fund
       - run: npm run build
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: web-dist
           path: dist
@@ -100,7 +100,7 @@ jobs:
             android/app/build/outputs/bundle/release/app-release.aab \
             "$ANDROID_KEY_ALIAS"
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: sita-os-android-aab
           path: android/app/build/outputs/bundle/release/*.aab
@@ -152,7 +152,7 @@ jobs:
           # Without signing we cannot produce a real .ipa — we ship the .xcarchive
           ditto -c -k --sequesterRsrc --keepParent build/App.xcarchive build/ipa/sita-os-unsigned.xcarchive.zip
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: sita-os-ios-archive
           path: ios/App/build/ipa/*
@@ -172,7 +172,7 @@ jobs:
       - run: npm ci --no-audit --no-fund
       - run: npx tsx scripts/architecture/checks/check-mobile-store-readiness.ts
       - run: npx tsx scripts/architecture/checks/check-mobile-build-pipeline.ts
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: mobile-readiness-reports
           path: |
