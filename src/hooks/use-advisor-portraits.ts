@@ -3,6 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { getAvatarCache, setAvatarCache, invalidateAvatarCache, avatarCacheKey } from "@/lib/advisors/avatar-url-cache";
 import { sanitizeAvatarUrl } from "@/lib/advisors/avatar-url-validation";
+import { cropAndResizePortrait } from "@/lib/advisors/portrait-crop-resize";
 
 // ── Validation constants ──────────────────────────────────────
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
@@ -49,7 +50,12 @@ function getImageDimensions(file: File): Promise<{ width: number; height: number
 }
 
 // ── URL cache backed by shared two-tier cache ─────────────────
-const portraitUrlCache = new Map<string, string>(); // keep for sync reads
+const portraitUrlCache = new Map<string, { url: string; ts: number }>(); // TTL-aware sync reads
+const PORTRAIT_CACHE_TTL = 10 * 60 * 1000; // 10 minutes
+
+// BroadcastChannel for cross-tab invalidation
+let bc: BroadcastChannel | null = null;
+try { bc = new BroadcastChannel("sita:portrait-cache"); } catch { /* unsupported */ }
 
 interface AdvisorPortraitState {
   customUrls: Record<string, string>;
@@ -77,7 +83,7 @@ export function useAdvisorPortraits(): AdvisorPortraitState {
         data.forEach((p) => {
           if (p.avatar_url) {
             urls[p.advisor_id] = p.avatar_url;
-            portraitUrlCache.set(p.advisor_id, p.avatar_url);
+            portraitUrlCache.set(p.advisor_id, { url: p.avatar_url, ts: Date.now() });
             setAvatarCache(avatarCacheKey(user.id, p.advisor_id), p.avatar_url, "hit");
           }
         });
@@ -85,7 +91,18 @@ export function useAdvisorPortraits(): AdvisorPortraitState {
       }
     };
     load();
-  }, []);
+    // Listen for cross-tab invalidations
+    const handler = (e: MessageEvent) => {
+      if (e.data?.type === "invalidate") {
+        const { advisorId: aid } = e.data;
+        portraitUrlCache.delete(aid);
+        setCustomUrls(prev => { const n = { ...prev }; delete n[aid]; return n; });
+        load(); // re-fetch
+      }
+    };
+    bc?.addEventListener("message", handler);
+    return () => { bc?.removeEventListener("message", handler); };
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const uploadPortrait = useCallback(async (advisorId: string, file: File): Promise<string | null> => {
     // Client-side validation
@@ -101,12 +118,14 @@ export function useAdvisorPortraits(): AdvisorPortraitState {
       if (!user) throw new Error("Not authenticated");
 
       const ext = file.name.split(".").pop() || "png";
-      const path = `${user.id}/${advisorId}.${ext}`;
+      // Crop & resize to square before upload
+      const processed = await cropAndResizePortrait(file);
+      const path = `${user.id}/${advisorId}.png`;
 
       // Upload to storage
       const { error: uploadError } = await supabase.storage
         .from("advisor-portraits")
-        .upload(path, file, { upsert: true });
+        .upload(path, processed, { upsert: true });
       if (uploadError) throw uploadError;
 
       // Get public URL
@@ -138,13 +157,14 @@ export function useAdvisorPortraits(): AdvisorPortraitState {
       }
 
       setCustomUrls(prev => ({ ...prev, [advisorId]: publicUrl }));
-      portraitUrlCache.set(advisorId, publicUrl);
+      portraitUrlCache.set(advisorId, { url: publicUrl, ts: Date.now() });
       // Invalidate & re-set shared cache
       const { data: { user: u2 } } = await supabase.auth.getUser();
       if (u2) {
         invalidateAvatarCache(avatarCacheKey(u2.id, advisorId));
         setAvatarCache(avatarCacheKey(u2.id, advisorId), publicUrl, "hit");
       }
+      bc?.postMessage({ type: "invalidate", advisorId });
       toast.success("Portrait updated successfully");
       return publicUrl;
     } catch (err) {
@@ -174,6 +194,7 @@ export function useAdvisorPortraits(): AdvisorPortraitState {
       });
       portraitUrlCache.delete(advisorId);
       invalidateAvatarCache(avatarCacheKey(user.id, advisorId));
+      bc?.postMessage({ type: "invalidate", advisorId });
       toast.success("Portrait removed — using default");
     } catch (err) {
       console.error("Portrait removal error:", err);
@@ -182,7 +203,9 @@ export function useAdvisorPortraits(): AdvisorPortraitState {
   }, []);
 
   const getPortraitUrl = useCallback((advisorId: string): string | null => {
-    return sanitizeAvatarUrl(customUrls[advisorId]) ?? sanitizeAvatarUrl(portraitUrlCache.get(advisorId)) ?? null;
+    const cached = portraitUrlCache.get(advisorId);
+    const cachedUrl = cached && (Date.now() - cached.ts < PORTRAIT_CACHE_TTL) ? cached.url : null;
+    return sanitizeAvatarUrl(customUrls[advisorId]) ?? sanitizeAvatarUrl(cachedUrl) ?? null;
   }, [customUrls]);
 
   return { customUrls, uploading, uploadPortrait, removePortrait, getPortraitUrl };
@@ -193,5 +216,11 @@ export function useAdvisorPortraits(): AdvisorPortraitState {
  * Useful for memoized rendering in lists.
  */
 export function getCachedPortraitUrl(advisorId: string): string | null {
-  return portraitUrlCache.get(advisorId) || null;
+  const entry = portraitUrlCache.get(advisorId);
+  if (!entry) return null;
+  if (Date.now() - entry.ts > PORTRAIT_CACHE_TTL) {
+    portraitUrlCache.delete(advisorId);
+    return null;
+  }
+  return entry.url;
 }

@@ -11,6 +11,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { AdvisorImage, type AdvisorDomain } from "@/components/advisors/AdvisorImage";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
+import { cropAndResizePortrait } from "@/lib/advisors/portrait-crop-resize";
 
 const DOMAINS: { domain: AdvisorDomain; label: string }[] = [
   { domain: "business", label: "Business" },
@@ -56,10 +57,11 @@ export function AdvisorAvatarUpload() {
 
     setUploading(activeDomain);
     try {
+      const processed = await cropAndResizePortrait(file);
       const path = `${user.id}/${activeDomain}.png`;
       const { error } = await supabase.storage
         .from("advisor-avatars")
-        .upload(path, file, { upsert: true, contentType: file.type });
+        .upload(path, processed, { upsert: true, contentType: "image/png" });
 
       if (error) throw error;
 
@@ -97,6 +99,7 @@ export function AdvisorAvatarUpload() {
         accept="image/png,image/jpeg,image/webp"
         className="hidden"
         onChange={handleFileChange}
+        aria-label="Choose portrait image file"
       />
       <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
         {DOMAINS.map(({ domain, label }) => {
@@ -105,10 +108,18 @@ export function AdvisorAvatarUpload() {
           return (
             <div key={domain} className="flex flex-col items-center gap-2">
               <div className="relative">
-                <AdvisorImage domain={domain} size="lg" />
+                <AdvisorImage domain={domain} size="lg" aria-hidden="true" />
                 <button
                   onClick={() => handleUploadClick(domain)}
                   disabled={isUploading}
+                  aria-label={
+                    isUploading
+                      ? `Uploading ${label} advisor portrait`
+                      : isUploaded
+                        ? `${label} advisor portrait uploaded — click to replace`
+                        : `Upload custom ${label} advisor portrait`
+                  }
+                  aria-describedby={`avatar-status-${domain}`}
                   className={cn(
                     "absolute -bottom-1 -right-1 h-6 w-6 rounded-full flex items-center justify-center border-2 border-background transition-colors",
                     isUploaded
@@ -125,7 +136,7 @@ export function AdvisorAvatarUpload() {
                   )}
                 </button>
               </div>
-              <span className="text-[10px] text-muted-foreground font-medium">{label}</span>
+              <span id={`avatar-status-${domain}`} className="text-[10px] text-muted-foreground font-medium">{label}</span>
             </div>
           );
         })}
