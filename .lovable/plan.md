@@ -4,64 +4,53 @@
 
 ## Part 1: Fix InvestmentOffice.tsx Build Error (Line 279)
 
-The `TS1128: Declaration or statement expected` at line 279 is caused by a stale artifact — the code structure is syntactically correct (`CommitteeView` closes properly at line 278, `OpportunitiesView` starts at line 282). The fix is to rewrite lines 276–280 cleanly to eliminate any hidden/invisible characters:
+The `TS1128: Declaration or statement expected` at line 279 is caused by an invisible/hidden character on the blank line between `CommitteeView`'s closing `};` (line 278) and the `// ── NEW: Opportunities Tab` comment (line 280). The code structure itself is correct — all 10 sub-components and the main component are properly scoped and closed.
 
-```
+**Fix**: Rewrite lines 276–280 by deleting and re-typing the blank line to eliminate any non-printing characters. The content stays the same:
+
+```typescript
 );
+
 };
 
 // ── NEW: Opportunities Tab ──────────────────────────────────────
 ```
 
-## Part 2: Run All Vitest Unit Tests (70+ files)
+## Part 2: Run Full Vitest Suite (~70 test files)
 
-Run the full Vitest suite (`npx vitest run`) and fix failures in batches. The test files span:
+After the build fix, run `npx vitest run` and fix failures in batches. The test files include:
 
-- **`src/test/*.test.ts`** — ~55 unit test files covering boardroom, core-services, policy engine, advisors, domain engines, governance, financial formulas, search fabric, workflow, etc.
-- **`src/test/contracts/*.test.ts`** — 8 contract/schema snapshot tests
-- **`src/test/integration/*.test.ts`** — 14 integration tests (auth flow, AI gateway, connectors, etc.)
-- **`src/test/script-system/`** — script validation tests
-- **`tests/e2e/degraded-mode.spec.ts`** — runs via Vitest (not Playwright)
+- **55 unit tests** in `src/test/*.test.ts` (boardroom, policy, advisors, domain engines, governance, formulas, search, workflow, etc.)
+- **8 contract tests** in `src/test/contracts/` (schema snapshots, edge function schemas)
+- **14 integration tests** in `src/test/integration/` (auth flow, AI gateway, connectors, capability registry, etc.)
+- **1 script-system test** in `src/test/script-system/`
 
-Common failure patterns to fix:
-1. **Missing exports** — test imports functions/classes that were renamed or moved during consolidation
-2. **isDemoMode scoping** — test files importing from modules that still have broken scope
-3. **Mock data shape mismatches** — types changed but test fixtures not updated
-4. **Missing modules** — tests import files that don't exist yet
-
-For each failing test file, the fix will be one of:
-- Add missing import/export
-- Update mock data to match current type shapes
+For each failing test, apply one of:
+- Add missing import/export to source modules
+- Update mock data shapes to match current types
 - Stub missing modules with minimal implementations
-- Fix hook/context references
+- Fix hook/context references (e.g. `isDemoMode` scoping)
 
-## Part 3: Run All Playwright E2E Tests (38 spec files)
+## Part 3: Run Playwright E2E Suite (38 spec files)
 
-Run `npx playwright test` for the 38 E2E spec files covering:
-- Auth journeys, demo mode, admin boards
-- Business/money/advisor/concierge/files/settings journeys
-- Desktop shell, navigation, responsive, route health
-- Customer journey boards, verification boards
-
-These are primarily auth-redirect tests (verify unauthenticated users redirect to `/login`) and basic page-render smoke tests. Failures here typically mean:
-- Route path changed but test not updated
-- Page crashes on render (missing component/hook)
+Run `npx playwright test` covering auth journeys, demo mode, admin boards, business/money/advisor journeys, desktop shell, navigation, route health, and verification boards. Fix any route or render issues.
 
 ## Execution Order
 
-1. Fix `InvestmentOffice.tsx` line 279 (clean rewrite of the blank line area)
-2. Run `npx vitest run` — capture all failures
-3. Fix failures in batches of 5–10 files per pass
-4. Re-run until 100% pass
-5. Run `npx playwright test` — capture failures
-6. Fix any route/render issues
-7. Re-run until 100% pass
-8. Final `bun run build:dev` to confirm clean build
+1. Rewrite lines 276–280 of `InvestmentOffice.tsx` to clear hidden chars
+2. Verify build passes (`npx vite build`)
+3. Run `npx vitest run` — capture all failures
+4. Fix failures in batches of 5–10 files per pass
+5. Re-run Vitest until 100% pass
+6. Run `npx playwright test` — capture failures
+7. Fix route/render issues
+8. Re-run Playwright until 100% pass
+9. Final build verification
 
 ## Scope
 
-- ~1 file syntax fix (InvestmentOffice.tsx)
-- Estimated 10–30 test files needing import/mock/stub fixes
-- No new database changes
-- No new features — purely fixing existing test infrastructure
+- 1 file syntax fix (InvestmentOffice.tsx — hidden character removal)
+- Estimated 10–30 test file fixes (imports, mocks, stubs)
+- No database changes
+- No new features — purely test infrastructure fixes
 
