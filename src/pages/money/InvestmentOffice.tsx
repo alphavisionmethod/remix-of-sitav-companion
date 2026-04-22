@@ -276,7 +276,6 @@ const CommitteeView = () => {
 );
 
 };
-};
 
 // ── NEW: Opportunities Tab ──────────────────────────────────────
 
