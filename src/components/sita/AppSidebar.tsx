@@ -344,7 +344,7 @@ export const AppSidebar = memo(function AppSidebar() {
   return (
     <Sidebar
       collapsible="icon"
-      className="border-r border-sidebar-border/40 transition-[width] duration-300 ease-[cubic-bezier(0.25,0.1,0.25,1)]"
+      className="border-r border-sidebar-border/40 transition-[width] duration-300 ease-in-out"
       style={{
         background: "hsl(var(--sidebar-background) / 0.85)",
         backdropFilter: "blur(32px) saturate(1.4)",

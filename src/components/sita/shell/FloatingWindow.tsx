@@ -680,7 +680,7 @@ export function FloatingWindow({
         className={cn(
           isMaximized ? "fixed inset-0 flex flex-col" : "absolute overflow-hidden",
           !isMaximized && "overflow-hidden",
-          "backdrop-blur-2xl transition-[box-shadow,border-color,filter] duration-[120ms]",
+          "backdrop-blur-2xl transition-[box-shadow,border-color,filter] duration-100",
           isFocused
             ? cn(
                 "bg-[hsl(0_0%_100%/0.72)] dark:bg-[hsl(0_0%_0%/0.62)]",

@@ -76,7 +76,7 @@ export const APP_CHROME = {
 
 export const APP_COMPONENTS = {
   button: {
-    base: "rounded-lg px-3 py-1.5 text-[12px] font-medium transition-all duration-[120ms] active:scale-[0.98]",
+    base: "rounded-lg px-3 py-1.5 text-[12px] font-medium transition-all duration-100 active:scale-[0.98]",
     primary:
       "bg-[hsl(210_80%_55%)] text-[hsl(0_0%_100%)] hover:bg-[hsl(210_80%_50%)]",
     secondary:
@@ -91,7 +91,7 @@ export const APP_COMPONENTS = {
     base: "rounded-xl border border-[hsl(0_0%_0%/0.06)] dark:border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_0%/0.02)] dark:bg-[hsl(0_0%_100%/0.03)] p-4",
   },
   listItem: {
-    base: "flex items-center gap-2 px-3 py-2 rounded-lg text-[12px] transition-colors duration-[80ms] cursor-default",
+    base: "flex items-center gap-2 px-3 py-2 rounded-lg text-[12px] transition-colors duration-100 cursor-default",
     active: "bg-[hsl(210_80%_55%/0.12)] text-[hsl(210_80%_45%)] dark:text-[hsl(210_80%_65%)] font-medium",
     inactive: "text-[hsl(0_0%_35%)] dark:text-[hsl(0_0%_65%)] hover:bg-[hsl(0_0%_0%/0.04)] dark:hover:bg-[hsl(0_0%_100%/0.06)]",
   },
