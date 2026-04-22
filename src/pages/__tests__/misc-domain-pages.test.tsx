@@ -34,28 +34,20 @@ vi.mock("@/contexts/AppPlatformContext", () => ({
 }));
 
 vi.mock("@/hooks/useOSOrchestration", () => ({
-  useOSOrchestration: () => ({
-    suggestWorkspace: () => null,
-    getRecommendations: () => [],
-    orchestrate: vi.fn(),
-    getMeshTopology: () => ({ peers: [], connections: [], healthScore: 1, nodes: [], edges: [], clusters: [] }),
-    getCurrentContext: () => ({ workspace: null, domain: null, signals: [] }),
-    getOnlinePeers: () => [],
-    getActionSafetyStats: () => ({ total: 0, allowed: 0, blocked: 0 }),
-    getDeviceMeshStatus: () => ({ devices: [], healthScore: 100 }),
-    getWorkspaceSuggestions: () => [],
-    getRecentExplanations: () => [],
-    getCognitiveLoad: () => ({ score: 0.2, level: "low" }),
-    getCurrentMode: () => "default",
-    getActiveAlerts: () => [],
-    getSystemHealth: () => ({ status: "healthy", score: 1 }),
-    getActiveInterventions: () => [],
-    getAttentionStack: () => [],
-    getDigest: () => ({}),
-    getBriefing: () => ({}),
-    getTrustScore: () => 1,
+  useOSOrchestration: () => new Proxy({}, {
+    get: (_target, prop) => {
+      const defaults: Record<string, any> = {
+        getMeshTopology: () => ({ peers: [], connections: [], healthScore: 1, nodes: [], edges: [], clusters: [] }),
+        getCurrentContext: () => ({ workspace: null, domain: null, signals: [], activeDomains: [] }),
+        getCognitiveLoad: () => ({ score: 0.2, level: "low" }),
+        getSystemHealth: () => ({ status: "healthy", score: 1 }),
+        getCurrentMode: () => "default",
+        getTrustScore: () => 1,
+      };
+      if (prop in defaults) return defaults[prop as string];
+      return () => [];
+    },
   }),
-  default: { useOSOrchestration: () => new Proxy({}, { get: () => () => [] }) },
 }));
 
 const pages = [
