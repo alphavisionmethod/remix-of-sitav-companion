@@ -27,7 +27,6 @@ const AutomationCenter = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { user , isDemo} = useAuth();
-  const { isDemoMode } = useDataMode();
   const isDemoMode = isDemo;
   const qc = useQueryClient();
   const { data: MOCK_AUTOMATION_RULES = [] } = useAutomationRules();

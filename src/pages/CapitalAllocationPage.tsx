@@ -19,7 +19,6 @@ import { useDataMode } from "@/contexts/DataModeContext";
 
 
 export default function CapitalAllocationPage() {
-  const { isDemoMode } = useDataMode();
   const { user , isDemo} = useAuth();
 
   const isDemoMode = isDemo;

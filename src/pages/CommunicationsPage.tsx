@@ -57,7 +57,6 @@ const URGENCY_COLORS = {
 };
 
 export default function CommunicationsPage() {
-  const { isDemoMode } = useDataMode();
   const [activeTab, setActiveTab] = useState("overview");
   const [channelFilter, setChannelFilter] = useState("all");
   const [search, setSearch] = useState("");

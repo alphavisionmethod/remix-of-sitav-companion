@@ -55,7 +55,6 @@ const SOURCE_BADGE: Record<string, { label: string; style: string }> = {
 };
 
 export default function MCKnowledgeBase() {
-  const { isDemoMode } = useDataMode();
   const { isDemo } = useAuth();
   const isDemoMode = isDemo;
   const [search, setSearch] = useState("");

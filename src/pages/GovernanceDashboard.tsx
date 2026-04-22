@@ -25,7 +25,6 @@ import { useDataMode } from "@/contexts/DataModeContext";
 const DEFAULT_SCOPE = { ownerId: "current-user", visibility: "private" as const };
 
 export default function GovernanceDashboard() {
-  const { isDemoMode } = useDataMode();
   const { isDemo } = useAuth();
   const isDemoMode = isDemo;
   const { data: gov, isLoading } = useGovernanceSummary();

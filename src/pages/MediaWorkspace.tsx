@@ -28,7 +28,6 @@ import { useDataMode } from "@/contexts/DataModeContext";
 
 const MediaWorkspace = () => {
   const { user, isDemo } = useAuth();
-  const { isDemoMode } = useDataMode();
   const isDemoMode = isDemo;
   const [search, setSearch] = useState("");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");

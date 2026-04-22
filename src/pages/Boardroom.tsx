@@ -216,7 +216,6 @@ const ConfidencePill = ({ value }: { value: number }) => {
 
 const AdvisorVoiceTrack = ({ type }: { type: BoardroomType }) => {
   const { isDemo } = useAuth();
-  const { isDemoMode } = useDataMode();
   const isDemoMode = isDemo;
   
   if (!isDemoMode) {

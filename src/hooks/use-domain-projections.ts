@@ -174,7 +174,6 @@ function buildDemoBusiness(): BusinessProjection {
 }
 
 export function useBusinessProjection() {
-  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
 
   return useQuery<BusinessProjection>({
@@ -241,7 +240,6 @@ export interface ConciergeProjection {
 }
 
 export function useConciergeProjection() {
-  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
 
   return useQuery<ConciergeProjection>({

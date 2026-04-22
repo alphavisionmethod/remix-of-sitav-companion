@@ -22,7 +22,6 @@ import { useDataMode } from "@/contexts/DataModeContext";
 
 const ApprovalsCenter = () => {
   const { isDemo } = useAuth();
-  const { isDemoMode } = useDataMode();
   const isDemoMode = isDemo;
   const { data: approvals = [], isLoading } = useApprovals();
   const { approve, reject } = useApprovalQueue();

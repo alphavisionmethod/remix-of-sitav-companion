@@ -42,7 +42,6 @@ const DEMO_LOGS: AuditEntry[] = [
 ];
 
 export default function MCLogsAudit() {
-  const { isDemoMode } = useDataMode();
   const { isDemo } = useAuth();
   const isDemoMode = isDemo;
   const [search, setSearch] = useState("");

@@ -164,7 +164,6 @@ const ReceiptDetailPanel = ({ item, onClose }: { item: any; onClose: () => void 
 // ── Main Component ───────────────────────────────────────────
 const ProofCenter = () => {
   const { data: proofRecords = [], isLoading } = useProofRecords();
-  const { isDemoMode } = useDataMode();
   const { receipts: kernelReceipts, chainValid, chainLength } = useProofTimeline();
   const kernelStatus = useKernelStatus();
   const { user, isDemo } = useAuth();

@@ -25,7 +25,6 @@ export function useAttentionDecisions() {
 }
 
 export function useFatigueProfiles() {
-  const { isDemoMode } = useDataMode();
   return useQuery({
     queryKey: ["fatigue-profiles", isDemoMode],
     queryFn: () => fetchFatigueProfiles(isDemoMode),
@@ -33,7 +32,6 @@ export function useFatigueProfiles() {
 }
 
 export function useAssistantRolePresences() {
-  const { isDemoMode } = useDataMode();
   return useQuery({
     queryKey: ["assistant-role-presences", isDemoMode],
     queryFn: () => fetchAssistantRolePresences(isDemoMode),
@@ -41,7 +39,6 @@ export function useAssistantRolePresences() {
 }
 
 export function useAssistantRoleStates() {
-  const { isDemoMode } = useDataMode();
   return useQuery({
     queryKey: ["assistant-role-states", isDemoMode],
     queryFn: () => fetchAssistantRoleStates(isDemoMode),
@@ -49,7 +46,6 @@ export function useAssistantRoleStates() {
 }
 
 export function useInterruptionPolicies() {
-  const { isDemoMode } = useDataMode();
   return useQuery({
     queryKey: ["interruption-policies", isDemoMode],
     queryFn: () => fetchInterruptionPolicies(isDemoMode),
@@ -57,7 +53,6 @@ export function useInterruptionPolicies() {
 }
 
 export function useNrcLaunchReadiness() {
-  const { isDemoMode } = useDataMode();
   return useQuery({
     queryKey: ["nrc-launch-readiness", isDemoMode],
     queryFn: () => fetchNrcLaunchReadiness(isDemoMode),
@@ -65,7 +60,6 @@ export function useNrcLaunchReadiness() {
 }
 
 export function useDeliveryRules() {
-  const { isDemoMode } = useDataMode();
   return useQuery({
     queryKey: ["delivery-rules", isDemoMode],
     queryFn: () => fetchDeliveryRules(isDemoMode),
@@ -73,7 +67,6 @@ export function useDeliveryRules() {
 }
 
 export function useCrossDeviceSurfaces() {
-  const { isDemoMode } = useDataMode();
   return useQuery({
     queryKey: ["cross-device-surfaces", isDemoMode],
     queryFn: () => fetchCrossDeviceSurfaces(isDemoMode),
@@ -81,7 +74,6 @@ export function useCrossDeviceSurfaces() {
 }
 
 export function useHandoffFlows() {
-  const { isDemoMode } = useDataMode();
   return useQuery({
     queryKey: ["handoff-flows", isDemoMode],
     queryFn: () => fetchHandoffFlows(isDemoMode),

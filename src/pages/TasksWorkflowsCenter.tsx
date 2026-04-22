@@ -92,7 +92,6 @@ const DOMAIN_COLORS: Record<TaskDomain, string> = {
 };
 
 export default function TasksWorkflowsCenter() {
-  const { isDemoMode } = useDataMode();
   const { user , isDemo} = useAuth();
   const isDemoMode = isDemo;
   const os = useOSOrchestration();

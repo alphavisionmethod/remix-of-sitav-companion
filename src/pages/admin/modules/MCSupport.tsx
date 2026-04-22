@@ -45,7 +45,6 @@ const DEMO_CASES: SupportCase[] = [
 ];
 
 export default function MCSupport() {
-  const { isDemoMode } = useDataMode();
   const { isDemo } = useAuth();
   const isDemoMode = isDemo;
   const [search, setSearch] = useState("");

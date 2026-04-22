@@ -41,7 +41,6 @@ const SUBSYSTEMS: Subsystem[] = [
 ];
 
 export default function MCSystemHealth() {
-  const { isDemoMode } = useDataMode();
   const { isDemo } = useAuth();
   const isDemoMode = isDemo;
   const [selectedId, setSelectedId] = useState<string | null>(null);

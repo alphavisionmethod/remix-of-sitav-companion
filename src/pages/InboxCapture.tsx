@@ -34,7 +34,6 @@ const routeColors: Record<string, string> = {
 
 const InboxCapture = () => {
   const { data: inboxData = [] } = useInboxItems();
-  const { isDemoMode } = useDataMode();
 
   const location = useLocation();
   const navigate = useNavigate();

@@ -19,7 +19,6 @@ export function useNativeShellPlatforms() {
 }
 
 export function useCapabilitySurfaceBindings() {
-  const { isDemoMode } = useDataMode();
   return useQuery({
     queryKey: ["capability-surface-bindings", isDemoMode],
     queryFn: () => fetchCapabilitySurfaceBindings(isDemoMode),
@@ -27,7 +26,6 @@ export function useCapabilitySurfaceBindings() {
 }
 
 export function useNssLaunchReadiness() {
-  const { isDemoMode } = useDataMode();
   return useQuery({
     queryKey: ["nss-launch-readiness", isDemoMode],
     queryFn: () => fetchNssLaunchReadiness(isDemoMode),

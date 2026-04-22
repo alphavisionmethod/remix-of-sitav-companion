@@ -29,7 +29,6 @@ import { useDataMode } from "@/contexts/DataModeContext";
 
 
 export default function OutcomeEnginePage() {
-  const { isDemoMode } = useDataMode();
   const { isDemo } = useAuth();
   const isDemoMode = isDemo;
   const { data: liveOutcomes } = useOutcomes();

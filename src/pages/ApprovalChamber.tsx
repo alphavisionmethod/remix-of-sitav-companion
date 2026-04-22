@@ -303,7 +303,6 @@ const ApprovalCard = ({ item, onAction }: { item: ApprovalItem; onAction: (id: s
 
 const ApprovalChamber = () => {
   const { isDemo } = useAuth();
-  const { isDemoMode } = useDataMode();
   const isDemoMode = isDemo;
   const isAdmin = useIsAdmin();
   const { data: dbApprovals = [], isLoading } = useApprovals();
