@@ -19,7 +19,7 @@ import { ArrowRight, Package, RefreshCw, Sparkles, TrendingUp } from "lucide-rea
 import { usePackInstalls } from "@/hooks/use-live-data";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
-const DEMO_INSTALL_STATES: any[] = [];
+
 
 
 const PackStorePage = () => {

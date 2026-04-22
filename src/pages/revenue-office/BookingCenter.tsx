@@ -22,9 +22,7 @@ import {
 import { useDataMode } from "@/contexts/DataModeContext";
 
 
-const DEMO_REV_SERVICES: any[] = [];
-const DEMO_REV_STATS: any[] = [];
-const DEMO_BOOKING_ANALYTICS: any[] = [];
+
 
 
 
