@@ -11,7 +11,7 @@ import { useDataMode } from "@/contexts/DataModeContext";
 
 const AIReleasesCenter = () => {
   const { isDemo } = useAIEngDomain("efficiencyScores", DEMO_RELEASE_GATES);
-  const { isDemoMode } = useDataMode();
+  
   const [tab, setTab] = useState("readiness");
   const passCount = ([] as typeof DEMO_RELEASE_GATES).filter(g => g.status === "pass").length;
   const totalRequired = ([] as typeof DEMO_RELEASE_GATES).filter(g => g.required).length;

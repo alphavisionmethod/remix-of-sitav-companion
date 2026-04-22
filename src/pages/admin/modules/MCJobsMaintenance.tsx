@@ -32,7 +32,7 @@ const statusConfig: Record<string, { icon: React.ElementType; color: string; bgC
 };
 
 const MCJobsMaintenance = () => {
-  const { isDemo } = useAuth();
+  ;
 
   const running = JOBS.filter(j => j.status === "running").length;
   const stuck = JOBS.filter(j => j.status === "stuck").length;

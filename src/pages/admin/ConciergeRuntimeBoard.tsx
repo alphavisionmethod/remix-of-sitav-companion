@@ -56,7 +56,7 @@ const DEMO_SLA = [
 ];
 
 const ConciergeRuntimeBoard = () => {
-  const { isDemoMode } = useDataMode();
+  
   const [tab, setTab] = useState("tasks");
   const { data: householdTasks } = useQuery({
     queryKey: ["concierge-household-tasks"],

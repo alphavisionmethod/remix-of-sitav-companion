@@ -16,7 +16,7 @@ import { useDataMode } from "@/contexts/DataModeContext";
 
 
 export default function SovereignExportPage() {
-  const { isDemoMode } = useDataMode();
+  
   const { user, isDemo } = useAuth();
   const [selectedTables, setSelectedTables] = useState<string[]>(([] as typeof DEMO_EXPORTABLE_TABLES).map(t => t.name));
   const [exporting, setExporting] = useState(false);

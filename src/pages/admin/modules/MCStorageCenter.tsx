@@ -40,7 +40,7 @@ const LIFECYCLE_JOBS = [
 ];
 
 const MCStorageCenter = () => {
-  const { isDemo } = useAuth();
+  ;
   const usagePercent = (STORAGE_METRICS.totalUsedGB / STORAGE_METRICS.totalCapacityGB) * 100;
 
   return (

@@ -57,7 +57,7 @@ const RECENT_CHANGES = [
 ];
 
 const MissionControlHome = () => {
-  const { isDemoMode } = useDataMode();
+  
   const [lastRefresh, setLastRefresh] = useState(new Date());
 
   const { data: incidentCount } = useQuery({

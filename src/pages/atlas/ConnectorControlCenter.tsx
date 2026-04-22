@@ -24,7 +24,7 @@ const h = (hours: number) => new Date(now.getTime() - hours * 3600000).toISOStri
 const lifecycleStates = ["registered", "configured", "active", "paused", "error", "disabled", "decommissioned"];
 
 export default function ConnectorControlCenter() {
-  const { isDemoMode } = useDataMode();
+  
   const [tab, setTab] = useState("overview");
   const healthy = ([] as typeof DEMO_connectors).filter(c => c.status === "active").length;
 

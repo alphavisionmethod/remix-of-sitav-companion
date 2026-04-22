@@ -45,7 +45,7 @@ const DEMO_CASES: SupportCase[] = [
 ];
 
 export default function MCSupport() {
-  const { isDemo } = useAuth();
+  ;
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<CaseStatus | "all">("all");
   const [selectedId, setSelectedId] = useState<string | null>(null);

@@ -37,7 +37,7 @@ const LINEAGE_GAPS = [
 ];
 
 const AdminDurabilityBoard = () => {
-  const { isDemoMode } = useDataMode();
+  
   const [tab, setTab] = useState("mutations");
   const [mutFilter, setMutFilter] = useState("all");
   const [selectedMutation, setSelectedMutation] = useState<DemoMutationRecord | null>(null);

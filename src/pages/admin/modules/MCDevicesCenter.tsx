@@ -45,7 +45,7 @@ const trustIcon: Record<string, React.ElementType> = {
 };
 
 const MCDevicesCenter = () => {
-  const { isDemo } = useAuth();
+  ;
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState<string>("all");
 

@@ -21,7 +21,7 @@ const now = new Date();
 const h = (hours: number) => new Date(now.getTime() - hours * 3600000).toISOString();
 
 export default function OperationsCommandCenter() {
-  const { isDemoMode } = useDataMode();
+  
   const [tab, setTab] = useState("health");
 
   return (

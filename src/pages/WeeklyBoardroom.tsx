@@ -26,7 +26,7 @@ const MOCK_WEEK = {
 };
 
 const statusIcon = (status: string) => {
-  const { isDemoMode } = useDataMode();
+  
   if (status === "urgent") return <AlertTriangle className="h-4 w-4 text-destructive" />;
   if (status === "needs-attention") return <AlertTriangle className="h-4 w-4 text-amber-500" />;
   return <CheckCircle2 className="h-4 w-4 text-emerald-500" />;

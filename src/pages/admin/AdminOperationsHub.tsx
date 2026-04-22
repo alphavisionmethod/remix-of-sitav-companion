@@ -64,7 +64,7 @@ const pressureColor: Record<string, string> = {
 };
 
 const OperationsCommandCenter = () => {
-  const { isDemoMode } = useDataMode();
+  
   const [tab, setTab] = useState("health");
 
   const { data: incidentCount } = useQuery({

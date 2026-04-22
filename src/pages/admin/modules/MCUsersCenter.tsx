@@ -24,7 +24,7 @@ const DEMO_USERS = [
 ];
 
 const MCUsersCenter = () => {
-  const { isDemo } = useAuth();
+  ;
   const [search, setSearch] = useState("");
   const [planFilter, setPlanFilter] = useState("all");
 

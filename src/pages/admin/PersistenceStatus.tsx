@@ -87,7 +87,7 @@ function useRecentWrites() {
 }
 
 export default function PersistenceStatus() {
-  const { isDemoMode } = useDataMode();
+  
   const { data: stats, isLoading: statsLoading, refetch: refetchStats } = useSubstrateStats();
   const { data: recentWrites, isLoading: writesLoading, refetch: refetchWrites, isFetching } = useRecentWrites();
 

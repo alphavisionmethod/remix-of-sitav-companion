@@ -49,7 +49,7 @@ const manifestStatusColor: Record<string, string> = {
 };
 
 const PlatformTruthRegistry = () => {
-  const { isDemoMode } = useDataMode();
+  
   const [tab, setTab] = useState("claims");
   const verified = ([] as typeof DEMO_CLAIMS).filter(c => c.status === "verified").length;
   const drifts = ([] as typeof DEMO_CLAIMS).filter(c => c.status === "drift").length;

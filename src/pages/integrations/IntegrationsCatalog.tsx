@@ -8,7 +8,6 @@ import { Input } from "@/components/ui/input";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Search, Plug, Shield, Zap, Globe, ArrowRight, CheckCircle, AlertTriangle } from "lucide-react";
 import { INTEGRATION_PROVIDERS, PROVIDER_CATEGORIES } from "@/data/seed/integrations";
-import { DEMO_CONNECTIONS } from "@/data/seed/integrations";
 import { useNavigate } from "react-router-dom";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { useDataMode } from "@/contexts/DataModeContext";

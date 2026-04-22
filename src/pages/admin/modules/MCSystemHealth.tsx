@@ -41,8 +41,8 @@ const SUBSYSTEMS: Subsystem[] = [
 ];
 
 export default function MCSystemHealth() {
-  const { isDemo } = useAuth();
-  const isDemoMode = isDemo;
+  ;
+  
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const overallScore = Math.round(SUBSYSTEMS.reduce((s, sub) => s + sub.score, 0) / SUBSYSTEMS.length * 10) / 10;
   const healthyCount = SUBSYSTEMS.filter(s => s.state === "healthy").length;

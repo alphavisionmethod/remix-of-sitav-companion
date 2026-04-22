@@ -18,7 +18,7 @@ const offenders = DEMO_PROFILES
 
 
 const ZeroWastePromptView = () => {
-  const { isDemoMode } = useDataMode();
+  
   const avgCostReduction = Math.round(([] as typeof DEMO_PROFILES).reduce((s, p) => s + p.costReduction, 0) / Math.max(([] as typeof DEMO_PROFILES).length, 1));
   const packetDrivenPct = Math.round((([] as typeof DEMO_PROFILES).filter(p => p.packetDriven).length / Math.max(([] as typeof DEMO_PROFILES).length, 1)) * 100);
   const { isAdmin, loading } = useRequireAdmin();
