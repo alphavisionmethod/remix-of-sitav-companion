@@ -4,6 +4,7 @@
 // draft center, reply-gap detection, and thread context.
 // ═══════════════════════════════════════════════════════════════
 
+import { PageSkeleton } from "@/components/sita/PageSkeleton";
 import { useState, useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";

@@ -4,6 +4,7 @@
 // entity linking, and Supabase storage integration.
 // ═══════════════════════════════════════════════════════════════
 
+import { PageSkeleton } from "@/components/sita/PageSkeleton";
 import { useState, useMemo, useCallback } from "react";
 import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";

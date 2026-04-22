@@ -2,6 +2,7 @@
 // SITA OS — Trust Center (App-in-OS Shell)
 // ═══════════════════════════════════════════════════════════════
 
+import { PageSkeleton } from "@/components/sita/PageSkeleton";
 import { DomainAppShell } from "@/components/sita/shell/DomainAppShell";
 import type { DomainConfig } from "@/components/sita/shell/DomainAppShell";
 import type { NavTabGroup } from "@/components/sita/shell/AppSidebarNav";

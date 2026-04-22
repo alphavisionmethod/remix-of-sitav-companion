@@ -1,3 +1,4 @@
+import { PageSkeleton } from "@/components/sita/PageSkeleton";
 import { useAction } from "@/hooks/use-action";
 import { SitaPageHeader, SitaCard, SitaButton } from "@/components/sita/SitaCard";
 import { useInboxItems } from "@/hooks/use-domain-data";

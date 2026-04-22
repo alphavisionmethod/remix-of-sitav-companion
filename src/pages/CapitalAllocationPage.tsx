@@ -1,3 +1,4 @@
+import { PageSkeleton } from "@/components/sita/PageSkeleton";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { PieChart, TrendingUp, ArrowUpDown, Shield, DollarSign, BarChart3, RefreshCw } from "lucide-react";
