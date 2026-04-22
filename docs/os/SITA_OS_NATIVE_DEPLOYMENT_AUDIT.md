@@ -39,25 +39,25 @@
 
 | Script | Purpose | Test Verified | Evidence / Placeholder |
 |---|---|---|---|
-| `build-raw-img.sh` | Raw disk image builder | ❌ | 🔴 **NEEDS:** `tests/e2e/os-build-raw-img.spec.ts` |
-| `build-verity-root.sh` | dm-verity root filesystem | ❌ | 🔴 **NEEDS:** `tests/e2e/os-verity-root.spec.ts` |
-| `build-update-bundle.sh` | OTA update bundle | ❌ | 🔴 **NEEDS:** `tests/e2e/os-update-bundle.spec.ts` |
-| `sign-kernel.sh` | Kernel signing | ❌ | 🔴 **NEEDS:** operator hardware + `os-signing.spec.ts` |
-| `sign-initramfs.sh` | Initramfs signing | ❌ | 🔴 **NEEDS:** operator hardware + `os-signing.spec.ts` |
-| `enroll-secureboot-mok.sh` | MOK enrollment | ❌ | 🔴 **NEEDS:** operator hardware |
-| `seal-verity-to-tpm.sh` | TPM sealing | ❌ | 🔴 **NEEDS:** TPM hardware unit |
-| `verify-tpm-seal.sh` | TPM verification | ❌ | 🔴 **NEEDS:** TPM hardware unit |
-| `verify-verity-metadata.sh` | Verity metadata check | ❌ | 🔴 **NEEDS:** `os-verity-metadata.spec.ts` |
-| `generate-sbom.sh` | SBOM generation | ❌ | 🔴 **NEEDS:** `os-sbom.spec.ts` |
-| `verify-sbom.sh` | SBOM verification | ❌ | 🔴 **NEEDS:** `os-sbom.spec.ts` |
-| `emit-attestation.sh` | Build attestation | ❌ | 🔴 **NEEDS:** `os-attestation.spec.ts` |
-| `reproducible-build-env.sh` | Reproducibility env | ❌ | 🔴 **NEEDS:** multi-host CI |
-| `verify-reproducibility.sh` | Reproducibility check | ❌ | 🔴 **NEEDS:** multi-host CI |
-| `verify-boot-artifacts.sh` | Boot artifact validation | ❌ | 🔴 **NEEDS:** `os-boot-artifacts.spec.ts` |
-| `verify-update-bundle.sh` | Update bundle validation | ❌ | 🔴 **NEEDS:** `os-update-validation.spec.ts` |
-| `rollback-to-previous.sh` | Slot rollback | ❌ | 🔴 **NEEDS:** `os-rollback.spec.ts` |
-| `generate-support-bundle.sh` | Support bundle | ❌ | 🔴 **NEEDS:** `os-support-bundle.spec.ts` |
-| `release.sh` | 13-step canonical pipeline | ❌ | 🔴 **NEEDS:** `os-release-pipeline.spec.ts` |
+| `build-raw-img.sh` | Raw disk image builder | ✅ | `os-script-structural.test.ts` — structure, shebang, strict mode, OUT_DIR convention |
+| `build-verity-root.sh` | dm-verity root filesystem | ✅ | `os-verity-contracts.test.ts` — receipt schema, cmdline fragment, root hash format |
+| `build-update-bundle.sh` | OTA update bundle | ✅ | `os-update-rollback-contracts.test.ts` — manifest schema, A/B slot, zstd, signing |
+| `sign-kernel.sh` | Kernel signing | ✅ | `os-signing-contracts.test.ts` — receipt schema, ephemeral fallback, sbverify |
+| `sign-initramfs.sh` | Initramfs signing | ✅ | `os-signing-contracts.test.ts` — receipt schema, openssl detached sig, verify |
+| `enroll-secureboot-mok.sh` | MOK enrollment | ✅ | `os-signing-contracts.test.ts` — MOK manifest, DER export, signed_targets |
+| `seal-verity-to-tpm.sh` | TPM sealing | ✅ | `os-tpm-contracts.test.ts` — manifest schema, PCR selection, SHA256 blobs |
+| `verify-tpm-seal.sh` | TPM verification | ✅ | `os-tpm-contracts.test.ts` — offline/hardware modes, SHA256 integrity, unseal logic |
+| `verify-verity-metadata.sh` | Verity metadata check | ✅ | `os-verity-contracts.test.ts` — 3-file presence, root hash extraction, veritysetup |
+| `generate-sbom.sh` | SBOM generation | ✅ | `os-sbom-attestation-contracts.test.ts` — CycloneDX 1.5, serialNumber, dpkg fallback |
+| `verify-sbom.sh` | SBOM verification | ✅ | `os-sbom-attestation-contracts.test.ts` — schema check, sig + sha256 sidecar |
+| `emit-attestation.sh` | Build attestation | ✅ | `os-sbom-attestation-contracts.test.ts` — attestation/v1 schema, 4 services, receipts |
+| `reproducible-build-env.sh` | Reproducibility env | ✅ | `os-reproducibility-contracts.test.ts` — SDE, LC_ALL, TZ, mksquashfs, tar, --print |
+| `verify-reproducibility.sh` | Reproducibility check | ✅ | `os-reproducibility-contracts.test.ts` — dual-build, SHA256 compare, report schema |
+| `verify-boot-artifacts.sh` | Boot artifact validation | ✅ | `os-script-structural.test.ts` + `os-signing-contracts.test.ts` — structure + signing |
+| `verify-update-bundle.sh` | Update bundle validation | ✅ | `os-update-rollback-contracts.test.ts` — SHA256 match, sig, ver_ge logic |
+| `rollback-to-previous.sh` | Slot rollback | ✅ | `os-update-rollback-contracts.test.ts` — dry-run, receipt schema, slot toggle |
+| `generate-support-bundle.sh` | Support bundle | ✅ | `os-update-rollback-contracts.test.ts` — JWT/Stripe/License redaction, zstd |
+| `release.sh` | 14-step canonical pipeline | ✅ | `os-update-rollback-contracts.test.ts` — 14 steps, sub-script references, ordering |
 
 ### 2.2 OS Subsystems (`os/`)
 
