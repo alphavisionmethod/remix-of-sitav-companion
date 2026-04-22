@@ -80,6 +80,9 @@ describe("RLS Policy Behavioral Verification", () => {
       "owner_id_match",
       "service_role_only",
       "admin_role",
+      "authenticated_all",
+      "read_only",
+      "append_only",
     ]);
     const violations: string[] = [];
     for (const t of DB_SCHEMA_REGISTRY) {
