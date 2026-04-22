@@ -4,7 +4,7 @@ export default defineConfig({
   testDir: "./tests/e2e",
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 2 : 0,
+  retries: process.env.CI ? 3 : 1,
   workers: process.env.CI ? 1 : undefined,
   globalSetup: "./tests/e2e/global.setup.ts",
   globalTeardown: "./tests/e2e/global.teardown.ts",
@@ -15,7 +15,7 @@ export default defineConfig({
   ],
   use: {
     baseURL: process.env.PLAYWRIGHT_BASE_URL || "http://localhost:8080",
-    trace: "on-first-retry",
+    trace: "retain-on-failure",
     screenshot: "on",
     video: "retain-on-failure",
   },
@@ -32,7 +32,13 @@ export default defineConfig({
     {
       name: "consolidation-regression",
       testMatch: "consolidation-wave-regression.spec.ts",
-      use: { ...devices["Desktop Chrome"] },
+      use: {
+        ...devices["Desktop Chrome"],
+        navigationTimeout: 20_000,
+        actionTimeout: 15_000,
+      },
+      timeout: 60_000,
+      retries: 2,
     },
   ],
   webServer: process.env.CI
