@@ -1,23 +1,19 @@
-// ═══════════════════════════════════════════════════════════════
-// SITA OS — Investment Office / Family Office Workspace
-// 10 tabs: Capital Map, Portfolio, Regime, Risk, Theses, Committee,
-// Opportunities, Execution Review, Proof, Settings
-// ═══════════════════════════════════════════════════════════════
+// SITA OS - Investment Office / Family Office Workspace
+// Production-truth: all data from hooks, empty states when no records
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { SitaPageHeader, SitaCard, SitaCardTitle } from "@/components/sita/SitaCard";
 import { SitaTabs, KPITile } from "@/components/sita/SitaComponents";
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { motion } from "framer-motion";
 import {
-  Building2, Shield, TrendingUp, AlertTriangle, BarChart3,
-  Target, Eye, DollarSign, Activity, Lock, Layers, FileCheck, Wallet,
-  ArrowUpRight, Settings, Search, Zap, CheckCircle2, XCircle, Clock,
-  Scale, BookOpen
+  AlertTriangle, Target, Eye, Lock, FileCheck, Wallet,
+  Search, Zap, CheckCircle2, XCircle, Clock, Scale, BookOpen,
+  Inbox
 } from "lucide-react";
 import {
   buildCapitalMap, analyzePortfolioRisk, detectRegime, runStressScenarios,
-  evaluateThesis, calculatePositionSize,
+  evaluateThesis,
   type Position, type CapitalBucket, type Thesis,
 } from "@/lib/domain-engines/investment-office";
 import {
