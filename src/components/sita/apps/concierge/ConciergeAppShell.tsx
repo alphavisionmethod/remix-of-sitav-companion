@@ -159,7 +159,6 @@ function BoardroomStatusStrip({ pendingCount, decisionCount, synthesisScore }: {
 
 // ── Domain Boardroom View ──
 function DomainBoardroomView({ domain }: { domain: "business" | "finance" | "concierge" }) {
-  const { isDemoMode } = useDataMode();
   const { escalations, decisions, escalate, isDemoMode, synthesis } = useBoardroomBridge(domain);
   return (
     <div className="space-y-4 p-4">
