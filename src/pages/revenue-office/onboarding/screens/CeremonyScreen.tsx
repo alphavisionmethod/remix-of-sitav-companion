@@ -1,44 +1,33 @@
 import { motion } from "framer-motion";
-import { Crown, ArrowRight, Zap, BarChart3, Target, Brain, Search, FileText, Phone, TrendingUp, Layers, Sparkles, Shield, Activity } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
+import { ArrowRight, Zap, BarChart3, Target, Brain, Search, FileText, Phone, TrendingUp, Layers, Shield } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { CHAPTERS, type ScreenProps } from "../types";
+import sitaLogo from "@/assets/logo.webp";
 
 const floatingNodes = [
-  { icon: BarChart3, label: "Boardroom", x: -80, y: -60, delay: 1.2 },
-  { icon: Target, label: "Journey", x: 80, y: -40, delay: 1.4 },
-  { icon: Brain, label: "Advisors", x: -70, y: 50, delay: 1.6 },
-  { icon: Search, label: "Leaks", x: 90, y: 60, delay: 1.8 },
-  { icon: FileText, label: "Quotes", x: -40, y: -90, delay: 2.0 },
-  { icon: Phone, label: "Calls", x: 50, y: 90, delay: 2.2 },
-  { icon: TrendingUp, label: "Growth", x: 0, y: -100, delay: 2.4 },
+  { icon: BarChart3, label: "Boardroom", x: -80, y: -60, delay: 1.2, accent: "from-violet-500/20 to-blue-500/20" },
+  { icon: Target, label: "Journey", x: 80, y: -40, delay: 1.4, accent: "from-emerald-500/20 to-teal-500/20" },
+  { icon: Brain, label: "Advisors", x: -70, y: 50, delay: 1.6, accent: "from-rose-500/20 to-pink-500/20" },
+  { icon: Search, label: "Leaks", x: 90, y: 60, delay: 1.8, accent: "from-amber-500/20 to-orange-500/20" },
+  { icon: FileText, label: "Quotes", x: -40, y: -90, delay: 2.0, accent: "from-cyan-500/20 to-sky-500/20" },
+  { icon: Phone, label: "Calls", x: 50, y: 90, delay: 2.2, accent: "from-blue-500/20 to-indigo-500/20" },
+  { icon: TrendingUp, label: "Growth", x: 0, y: -100, delay: 2.4, accent: "from-yellow-500/20 to-amber-500/20" },
 ];
 
 const depthOptions = [
-  { id: "deep" as const, label: "Deep Setup", desc: "Full business formation — every signal, every module", time: "~12 min", icon: Layers, primary: true },
-  { id: "balanced" as const, label: "Balanced Setup", desc: "Core business model + key integrations + advisors", time: "~8 min", icon: Shield, primary: false },
-  { id: "quick" as const, label: "Faster Setup", desc: "Essentials only — refine later inside Revenue Office", time: "~5 min", icon: Zap, primary: false },
-];
-
-const previewModules = [
-  { label: "Revenue Boardroom", icon: BarChart3, status: "waiting" },
-  { label: "Customer Journey Twin", icon: Target, status: "waiting" },
-  { label: "Growth Advisor Board", icon: Brain, status: "waiting" },
-  { label: "Revenue Leak Detector", icon: Search, status: "waiting" },
-  { label: "Automation Office", icon: Activity, status: "waiting" },
-  { label: "Opportunity Engine", icon: TrendingUp, status: "waiting" },
+  { id: "deep" as const, label: "Deep Setup", desc: "Full business formation — every signal, every module", time: "~12 min", icon: Layers, primary: true, gradient: "from-violet-500 to-blue-500" },
+  { id: "balanced" as const, label: "Balanced Setup", desc: "Core business model + key integrations + advisors", time: "~8 min", icon: Shield, primary: false, gradient: "from-blue-500 to-cyan-500" },
+  { id: "quick" as const, label: "Faster Setup", desc: "Essentials only — refine later inside Revenue Office", time: "~5 min", icon: Zap, primary: false, gradient: "from-amber-500 to-yellow-500" },
 ];
 
 export default function CeremonyScreen({ state, setState, onNext }: ScreenProps) {
   return (
-    <div className="grid lg:grid-cols-[1fr_320px] gap-8">
-      {/* Main Content */}
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8 }} className="text-center py-8 max-w-lg mx-auto">
         <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ delay: 0.3, duration: 0.6 }}>
           <div className="relative mx-auto w-20 h-20 mb-6">
-            <div className="absolute inset-0 bg-primary/20 rounded-2xl blur-xl animate-pulse" />
-            <div className="relative w-20 h-20 bg-primary/10 border border-primary/20 rounded-2xl flex items-center justify-center z-10">
-              <Crown className="h-10 w-10 text-primary" />
+            <div className="absolute inset-0 bg-gradient-to-br from-violet-500/30 to-blue-500/20 rounded-2xl blur-xl animate-pulse" />
+            <div className="relative w-20 h-20 bg-gradient-to-br from-primary/10 to-violet-500/10 border border-primary/20 rounded-2xl flex items-center justify-center z-10">
+              <img src={sitaLogo} alt="SITA" className="h-12 w-12 object-contain" />
             </div>
             {floatingNodes.map((node, i) => (
               <motion.div
@@ -48,8 +37,8 @@ export default function CeremonyScreen({ state, setState, onNext }: ScreenProps)
                 transition={{ delay: node.delay, duration: 1.2, ease: "easeOut" }}
                 className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center gap-0.5"
               >
-                <div className="p-1.5 rounded-lg bg-primary/10 border border-primary/15">
-                  <node.icon className="h-3 w-3 text-primary/60" />
+                <div className={`p-1.5 rounded-lg bg-gradient-to-br ${node.accent} border border-primary/15`}>
+                  <node.icon className="h-3 w-3 text-foreground/60" />
                 </div>
                 <span className="text-[7px] text-muted-foreground/50">{node.label}</span>
                 <motion.div
@@ -83,7 +72,7 @@ export default function CeremonyScreen({ state, setState, onNext }: ScreenProps)
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 1.0 + i * 0.08 }}
-                className="p-2.5 rounded-lg bg-card/50 border border-border/30"
+                className="p-2.5 rounded-lg bg-card/50 border border-border/30 hover:border-primary/30 transition-colors"
               >
                 <span className="text-primary font-semibold">{i + 1}.</span> {ch}
               </motion.div>
@@ -99,15 +88,15 @@ export default function CeremonyScreen({ state, setState, onNext }: ScreenProps)
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 1.3 + i * 0.1 }}
                 onClick={() => { setState(p => ({ ...p, setupDepth: opt.id })); onNext(); }}
-                className={`w-full p-3.5 rounded-xl border text-left transition-all group hover:border-primary/30 ${
+                className={`w-full p-3.5 rounded-xl border text-left transition-all group hover:shadow-lg hover:-translate-y-0.5 ${
                   opt.primary
-                    ? "bg-primary/5 border-primary/20 hover:bg-primary/10"
-                    : "bg-card/50 border-border/50 hover:bg-card/80"
+                    ? "bg-primary/5 border-primary/20 hover:bg-primary/10 hover:shadow-violet-500/10"
+                    : "bg-card/50 border-border/50 hover:bg-card/80 hover:border-primary/30"
                 }`}
               >
                 <div className="flex items-center gap-3">
-                  <div className={`p-2 rounded-lg ${opt.primary ? "bg-primary/20" : "bg-muted"}`}>
-                    <opt.icon className={`h-4 w-4 ${opt.primary ? "text-primary" : "text-muted-foreground"}`} />
+                  <div className={`p-2 rounded-lg ${opt.primary ? "bg-gradient-to-br from-violet-500/20 to-blue-500/20" : "bg-muted"}`}>
+                    <opt.icon className={`h-4 w-4 ${opt.primary ? "text-violet-400" : "text-muted-foreground"}`} />
                   </div>
                   <div className="flex-1 text-left">
                     <div className="flex items-center gap-2">
@@ -124,73 +113,5 @@ export default function CeremonyScreen({ state, setState, onNext }: ScreenProps)
           </div>
         </motion.div>
       </motion.div>
-
-      {/* Right Panel — Live Revenue Office Preview */}
-      <motion.div
-        initial={{ opacity: 0, x: 30 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ delay: 1.5, duration: 0.6 }}
-        className="hidden lg:block"
-      >
-        <div className="sticky top-8 space-y-4">
-          <Card className="bg-card/40 border-border/30 backdrop-blur-sm overflow-hidden">
-            <CardContent className="p-4">
-              <div className="flex items-center gap-2 mb-4">
-                <div className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
-                <p className="text-[11px] font-semibold text-foreground">Revenue Office Preview</p>
-                <Badge className="bg-muted text-muted-foreground text-[8px] ml-auto">Waiting</Badge>
-              </div>
-
-              {/* Mini boardroom wireframe */}
-              <div className="rounded-xl border border-border/30 bg-muted/20 p-3 mb-4">
-                <div className="grid grid-cols-3 gap-1.5 mb-2">
-                  {[...Array(3)].map((_, i) => (
-                    <motion.div key={i} initial={{ opacity: 0 }} animate={{ opacity: 0.3 }} transition={{ delay: 2 + i * 0.2 }}
-                      className="h-10 rounded-lg bg-primary/5 border border-primary/10" />
-                  ))}
-                </div>
-                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 0.3 }} transition={{ delay: 2.6 }}
-                  className="h-16 rounded-lg bg-primary/5 border border-primary/10 mb-1.5" />
-                <div className="grid grid-cols-2 gap-1.5">
-                  {[...Array(2)].map((_, i) => (
-                    <motion.div key={i} initial={{ opacity: 0 }} animate={{ opacity: 0.2 }} transition={{ delay: 2.8 + i * 0.15 }}
-                      className="h-8 rounded-lg bg-muted/30 border border-border/20" />
-                  ))}
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                {previewModules.map((m, i) => (
-                  <motion.div
-                    key={m.label}
-                    initial={{ opacity: 0, x: 8 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 1.8 + i * 0.12 }}
-                    className="flex items-center gap-2.5 p-2 rounded-lg bg-muted/10"
-                  >
-                    <div className="p-1 rounded bg-muted/30">
-                      <m.icon className="h-3 w-3 text-muted-foreground/40" />
-                    </div>
-                    <p className="text-[10px] text-muted-foreground/50 flex-1">{m.label}</p>
-                    <div className="w-1.5 h-1.5 rounded-full bg-muted-foreground/20" />
-                  </motion.div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-card/30 border-border/20">
-            <CardContent className="p-3">
-              <div className="flex items-center gap-2">
-                <Sparkles className="h-3 w-3 text-primary/50" />
-                <p className="text-[9px] text-muted-foreground/60 leading-relaxed">
-                  This preview will transform as you answer — modules activate, advisors appear, and your commercial office takes shape in real time.
-                </p>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      </motion.div>
-    </div>
   );
 }

@@ -11,6 +11,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { ArrowLeft, ArrowRight, Check, Waves } from "lucide-react";
+import sitaLogo from "@/assets/logo.webp";
+import { chapterColor } from "./primitives";
 
 import { STAGES, CHAPTERS, defaultOnboardingState, type OnboardingState, type StageId } from "./types";
 import LiveOfficeSidebar from "./LiveOfficeSidebar";
@@ -161,40 +163,69 @@ export default function FormationShell({ onComplete }: FormationShellProps) {
       <h1 className="sr-only">Business Formation</h1>
       {/* Background blobs — contained within the window */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
-        <div className="absolute top-1/4 left-1/4 h-96 w-96 rounded-full blur-[160px] transition-opacity duration-1000"
-          style={{ background: "hsl(var(--primary) / 0.03)", opacity: stage > 0 ? 1 : 0.5 }} />
-        <div className="absolute bottom-1/3 right-1/4 h-64 w-64 rounded-full blur-[120px] transition-opacity duration-1000"
-          style={{ background: "hsl(var(--sita-gold) / 0.02)", opacity: stage > 5 ? 1 : 0 }} />
+        <motion.div
+          animate={{ opacity: stage > 0 ? 0.8 : 0.4 }}
+          transition={{ duration: 1.5 }}
+          className="absolute top-1/4 left-1/4 h-96 w-96 rounded-full blur-[160px]"
+          style={{ background: "hsl(270 60% 50% / 0.04)" }}
+        />
+        <motion.div
+          animate={{ opacity: stage > 5 ? 0.7 : 0 }}
+          transition={{ duration: 1.5 }}
+          className="absolute bottom-1/3 right-1/4 h-64 w-64 rounded-full blur-[120px]"
+          style={{ background: "hsl(150 60% 50% / 0.03)" }}
+        />
+        <motion.div
+          animate={{ opacity: stage > 10 ? 0.6 : 0 }}
+          transition={{ duration: 1.5 }}
+          className="absolute top-1/2 right-1/3 h-48 w-48 rounded-full blur-[100px]"
+          style={{ background: "hsl(200 70% 50% / 0.03)" }}
+        />
       </div>
 
       {/* Chapter transition overlay — contained within window */}
       <AnimatePresence>
         {showChapterTransition && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-            className="absolute inset-0 z-50 bg-background flex items-center justify-center">
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }}
+            className="absolute inset-0 z-50 bg-gradient-to-br from-background via-background to-primary/5 flex items-center justify-center">
             <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 1.1, opacity: 0 }}>
               <p className="text-2xl font-bold text-foreground text-center">{STAGES[nextStage(stage)]?.chapter}</p>
-              <div className="flex justify-center mt-3"><Waves className="h-5 w-5 text-primary animate-pulse" /></div>
+              <div className="flex justify-center mt-3">
+                <Waves className="h-5 w-5 text-primary animate-pulse" />
+              </div>
             </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* Progress bar — normal flow, not sticky */}
-      {stage > 0 && (
-        <div className="z-10 bg-background/95 backdrop-blur-md border-b border-border/30 px-6 py-3 shrink-0">
-          <div className="w-full">
-            <div className="flex items-center justify-between mb-2">
+      {/* SITA Logo Header + Progress */}
+      <div className="z-10 bg-background/95 backdrop-blur-md border-b border-border/30 px-6 py-2 shrink-0">
+        <div className="flex items-center gap-2.5 mb-1">
+          <img src={sitaLogo} alt="SITA" className="h-7 w-7 object-contain" />
+          <div>
+            <span className="text-sm font-bold bg-gradient-to-r from-primary to-violet-400 bg-clip-text text-transparent">SITA OS</span>
+            <span className="text-[9px] text-muted-foreground ml-1.5">Business Formation</span>
+          </div>
+        </div>
+        {stage > 0 && (
+          <div className="w-full mt-1">
+            <div className="flex items-center justify-between mb-1.5">
               <div className="flex items-center gap-2">
-                <Badge className="bg-primary/10 text-primary text-[9px]">{currentChapter}</Badge>
+                {(() => { const c = chapterColor(currentChapter); return <Badge className={`${c.bg} ${c.text} text-[9px]`}>{currentChapter}</Badge>; })()}
                 <p className="text-[10px] text-muted-foreground">Step {stage} of {STAGES.length - 1}</p>
                 {state.setupDepth && (
                   <Badge className="bg-muted text-muted-foreground text-[8px] capitalize">{state.setupDepth} mode</Badge>
                 )}
               </div>
-              <p className="text-[10px] text-muted-foreground">{Math.round(pct)}%</p>
+              <p className="text-[10px] text-muted-foreground font-medium">{Math.round(pct)}%</p>
             </div>
-            <Progress value={pct} className="h-1.5 mb-2" />
+            <div className="relative h-1.5 rounded-full bg-muted/50 overflow-hidden mb-2">
+              <motion.div
+                className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-violet-500 via-primary to-emerald-500"
+                animate={{ width: `${pct}%` }}
+                transition={{ duration: 0.5, ease: "easeOut" }}
+              />
+            </div>
             <div className="flex items-center gap-0.5 overflow-x-auto pb-1 scrollbar-none">
               {STAGES.slice(1).map((s, i) => {
                 const idx = i + 1;
@@ -214,8 +245,8 @@ export default function FormationShell({ onComplete }: FormationShellProps) {
               })}
             </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
 
       {/* Main content — scrollable within window */}
       <div className="relative z-[1] flex-1 overflow-y-auto px-6 py-8 flex gap-8">
