@@ -7,12 +7,24 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useFeatureIntakes, useCapabilities, useFeatureSpecs, useComplianceRecords, useRolloutRecords } from "@/hooks/use-fip-data";
 import { READINESS_STAGES } from "@/lib/fip/types";
-import { DEMO_ADMIN_BUILDER_STEPS as DEMO_BUILDER_STEPS, DEMO_DOMAIN_PACKS } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PremiumEmptyState } from "@/components/sita/PremiumEmptyState";
+
+/* Static workflow steps — these are canonical methodology, not user data */
+const BUILDER_STEPS = [
+  { step: 1, label: "Intake", icon: FileText, description: "Answer protocol intake questions" },
+  { step: 2, label: "Owner", icon: Shield, description: "Confirm owner boundary" },
+  { step: 3, label: "Capability", icon: Layers, description: "Define capability contracts" },
+  { step: 4, label: "Spec", icon: FileText, description: "Write feature specification" },
+  { step: 5, label: "Safety", icon: Shield, description: "Assess safety and trust requirements" },
+  { step: 6, label: "Build", icon: Zap, description: "Implement the feature" },
+  { step: 7, label: "Test", icon: CheckCircle2, description: "Run integration and E2E tests" },
+  { step: 8, label: "Compliance", icon: Shield, description: "Complete compliance review" },
+  { step: 9, label: "Rollout", icon: Rocket, description: "Plan staged rollout" },
+  { step: 10, label: "Launch", icon: Rocket, description: "Execute launch gate" },
+];
 
 const FIPBuilderConsole = () => {
-  const { isDemoMode } = useDataMode();
   const { data: intakes = [] } = useFeatureIntakes();
   const { data: caps = [] } = useCapabilities();
   const { data: specs = [] } = useFeatureSpecs();
@@ -40,7 +52,7 @@ const FIPBuilderConsole = () => {
         <CardHeader><CardTitle className="text-base">Builder Workflow — Feature Methodology Steps</CardTitle></CardHeader>
         <CardContent>
           <div className="flex gap-1">
-            {(isDemoMode ? DEMO_BUILDER_STEPS : [] as typeof DEMO_BUILDER_STEPS).map((s, i) => (
+            {BUILDER_STEPS.map((s, i) => (
               <button key={s.step} onClick={() => setActiveStep(s.step)}
                 className={`flex-1 p-3 rounded-lg border text-center transition-colors ${activeStep === s.step ? 'border-primary bg-primary/5' : 'border-border hover:border-primary/30'}`}>
                 <s.icon className={`h-4 w-4 mx-auto mb-1 ${activeStep === s.step ? 'text-primary' : 'text-muted-foreground'}`} />
@@ -49,8 +61,8 @@ const FIPBuilderConsole = () => {
             ))}
           </div>
           <div className="mt-4 p-4 bg-muted/30 rounded-lg">
-            <h3 className="font-medium text-sm mb-1">Step {activeStep}: {DEMO_BUILDER_STEPS[activeStep - 1].label}</h3>
-            <p className="text-sm text-muted-foreground">{DEMO_BUILDER_STEPS[activeStep - 1].description}</p>
+            <h3 className="font-medium text-sm mb-1">Step {activeStep}: {BUILDER_STEPS[activeStep - 1].label}</h3>
+            <p className="text-sm text-muted-foreground">{BUILDER_STEPS[activeStep - 1].description}</p>
             <div className="mt-3 flex gap-2">
               <Button variant="outline" size="sm" disabled={activeStep === 1} onClick={() => setActiveStep(p => p - 1)}>Previous</Button>
               <Button size="sm" disabled={activeStep === 10} onClick={() => setActiveStep(p => p + 1)}>Next Step <ArrowRight className="h-3 w-3 ml-1" /></Button>
@@ -62,16 +74,12 @@ const FIPBuilderConsole = () => {
       <Card>
         <CardHeader><CardTitle className="text-base">Domain Methodology Packs</CardTitle></CardHeader>
         <CardContent>
-          <div className="grid grid-cols-5 gap-3">
-            {(isDemoMode ? DEMO_DOMAIN_PACKS : [] as typeof DEMO_DOMAIN_PACKS).map(pack => (
-              <div key={pack.id} className="p-3 border rounded-lg hover:border-primary/30 transition-colors cursor-pointer">
-                <Badge className={`text-xs mb-2 ${pack.color}`}>{pack.name}</Badge>
-                <div className="space-y-1">
-                  {pack.features.map(f => <p key={f} className="text-xs text-muted-foreground">• {f}</p>)}
-                </div>
-              </div>
-            ))}
-          </div>
+          <PremiumEmptyState
+            variant="no-data"
+            domain="business"
+            title="No methodology packs loaded"
+            description="Domain packs will be available once the FIP system is fully configured."
+          />
         </CardContent>
       </Card>
 

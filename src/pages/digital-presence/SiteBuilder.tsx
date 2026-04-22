@@ -6,13 +6,18 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { useSites } from "@/hooks/use-digital-presence";
-import { DEMO_EXISTING_PAGES, DEMO_PAGE_TYPES } from "@/data/seed/digital-presence";
 import DPOSubNav from "./DPOSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PremiumEmptyState } from "@/components/sita/PremiumEmptyState";
+
+const PAGE_TYPES = [
+  { type: "Landing Page", desc: "High-converting campaign or product page", icon: Rocket, color: "text-blue-400" },
+  { type: "Service Page", desc: "Describe and sell a service offering", icon: FileText, color: "text-green-400" },
+  { type: "Booking Page", desc: "Let clients book appointments", icon: Calendar, color: "text-purple-400" },
+  { type: "Checkout / Store", desc: "Sell products with checkout flow", icon: ShoppingCart, color: "text-amber-400" },
+];
 
 export default function SiteBuilder() {
-  const { isDemoMode } = useDataMode();
   const { data: liveData, isLoading } = useSites();
   const [search, setSearch] = useState("");
 
@@ -29,7 +34,7 @@ export default function SiteBuilder() {
         <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><Plus className="w-4 h-4 text-primary" /> Create New</CardTitle></CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-            {(isDemoMode ? DEMO_PAGE_TYPES : [] as typeof DEMO_PAGE_TYPES).map(pt => (
+            {PAGE_TYPES.map(pt => (
               <button key={pt.type} className="p-4 bg-muted/30 rounded-lg hover:bg-muted/50 transition-colors text-left group">
                 <pt.icon className={`w-5 h-5 ${pt.color} mb-2`} />
                 <h3 className="text-sm font-semibold text-foreground group-hover:text-primary transition-colors">{pt.type}</h3>
@@ -88,19 +93,26 @@ export default function SiteBuilder() {
           </div>
         </CardHeader>
         <CardContent className="space-y-2">
-          {(isDemoMode ? DEMO_EXISTING_PAGES : [] as typeof DEMO_EXISTING_PAGES).filter(p => !search || p.name.toLowerCase().includes(search.toLowerCase())).map(p => (
-            <div key={p.name} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg hover:bg-muted/40 cursor-pointer transition-colors">
-              <div>
-                <span className="text-sm font-medium text-foreground">{p.name}</span>
-                <span className="text-[10px] text-muted-foreground ml-2">{p.type}</span>
+          {(!liveData || liveData.length === 0) ? (
+            <PremiumEmptyState
+              variant="no-data"
+              domain="business"
+              title="No pages created yet"
+              description="Use the creator above or the AI Page Generator to build your first page."
+            />
+          ) : (
+            liveData.filter((p: any) => !search || (p.name || "").toLowerCase().includes(search.toLowerCase())).map((p: any) => (
+              <div key={p.id} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg hover:bg-muted/40 cursor-pointer transition-colors">
+                <div>
+                  <span className="text-sm font-medium text-foreground">{p.name || p.title}</span>
+                  <span className="text-[10px] text-muted-foreground ml-2">{p.type || "page"}</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Badge variant={p.status === "published" ? "default" : "secondary"} className="text-[10px]">{p.status || "draft"}</Badge>
+                </div>
               </div>
-              <div className="flex items-center gap-3">
-                <div className="flex items-center gap-1"><Eye className="w-3 h-3 text-muted-foreground" /><span className="text-[10px] text-muted-foreground">{p.views.toLocaleString()}</span></div>
-                <span className="text-[10px] text-muted-foreground">{p.lastEdit}</span>
-                <Badge variant={p.status === "published" ? "default" : "secondary"} className="text-[10px]">{p.status}</Badge>
-              </div>
-            </div>
-          ))}
+            ))
+          )}
         </CardContent>
       </Card>
     </div>
