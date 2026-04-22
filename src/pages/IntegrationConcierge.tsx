@@ -17,6 +17,10 @@ import { cn } from "@/lib/utils";
 import { useOSRuntime } from "@/hooks/useOSRuntime";
 import type { ConnectorUseCase } from "@/domains/engines/connector-concierge";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+
+// Production fallback — seed data removed
+const DEMO_BUNDLES: any[] = [];
+
 // ── Category Config ────────────────────────────────────────────
 // ── Use Case Card ──────────────────────────────────────────────
 function UseCaseCard({ useCase, onSelect }: { useCase: ConnectorUseCase; onSelect: () => void }) {

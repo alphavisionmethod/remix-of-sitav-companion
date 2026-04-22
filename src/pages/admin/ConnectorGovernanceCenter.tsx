@@ -16,6 +16,10 @@ import { ConnectorSyncDashboard } from "@/components/sita/ConnectorSyncDashboard
 import { toast } from "sonner";
 import { DEMO_FALLBACK_SYNC_HISTORY, DEMO_POLICIES } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+
+// Production fallback — seed data removed
+const DEMO_CONNECTORS: any[] = [];
+
 interface ConnectorStatus {
   id: string;
   name: string;

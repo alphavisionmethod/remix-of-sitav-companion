@@ -19,6 +19,10 @@ import {
 } from "@/hooks/useEcosystemDevices";
 import APLSubNav from "@/components/admin/APLSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+
+// Production fallback — seed data removed
+const DEMO_PROVIDER_CAPS: any[] = [];
+
 const SURFACE_META: Record<string, { title: string; icon: any; desc: string; tech: string[]; capabilities: string[] }> = {
   iphone: { title: "iPhone Shell", icon: Smartphone, desc: "Primary mobile — task, approval, advisor", tech: ["Swift/SwiftUI", "WebView hybrid"], capabilities: ["push", "biometric", "camera", "haptic"] },
   ipad: { title: "iPad Shell", icon: Monitor, desc: "Tablet — expanded layouts, sidebar", tech: ["SwiftUI", "Sidebar layout"], capabilities: ["multitask", "pencil", "drag_drop"] },

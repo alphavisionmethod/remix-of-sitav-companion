@@ -11,6 +11,10 @@ import {
 } from "lucide-react";
 import { DEMO_ACTIONS, DEMO_CUSTOMERS_DATA, DEMO_DOCUMENTS } from "@/data/seed/core-pages";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+
+// Production fallback — seed data removed
+const DEMO_TIMELINE: any[] = [];
+
 // Mock customer data keyed by ID
 const CustomerDetail = ({
   customerId: propId }: { customerId?: string }) => {

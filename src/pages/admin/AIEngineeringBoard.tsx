@@ -16,6 +16,10 @@ import { getIntegrationHealthSummary } from "@/lib/ai-engineering/platform-integ
 import { useAIEngineeringData } from "@/hooks/use-ai-engineering-data";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import {
+
+// Production fallback — seed data removed
+const DEMO_ADMIN_ENVIRONMENTS: any[] = [];
+
   DEMO_ADMIN_ENVIRONMENTS as DEMO_ENVIRONMENTS,
   DEMO_ADMIN_MISSIONS as DEMO_MISSIONS,
   DEMO_ADMIN_RELEASE_GATES as DEMO_RELEASE_GATES,

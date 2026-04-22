@@ -18,6 +18,10 @@ import type { MockReplacement } from "@/data/persistence/mock-replacement-persis
 import { DEMO_MOCK_TYPES, DEMO_PRIORITIES } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
+
+// Production fallback — seed data removed
+const DEMO_CUSTOMERS: any[] = [];
+
 const STATUS_CONFIG: Record<MockReplacement["migration_status"], { label: string; color: string; icon: any }> = {
   identified: { label: "Identified", color: "bg-muted text-muted-foreground", icon: CircleDot },
   planned: { label: "Planned", color: "bg-blue-500/20 text-blue-400", icon: Clock },

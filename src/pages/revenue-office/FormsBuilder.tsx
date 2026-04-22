@@ -8,6 +8,10 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 import { DEMO_FIELD_TYPES, DEMO_FORMS, DEMO_SAMPLE_FIELDS } from "@/data/seed/revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+
+// Production fallback — seed data removed
+const DEMO_STATS: any[] = [];
+
 export default function FormsBuilder() {
   const [tab, setTab] = useState("forms");
   const [selectedForm, setSelectedForm] = useState<string | null>(null);

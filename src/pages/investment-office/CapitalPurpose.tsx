@@ -2,6 +2,10 @@ import { motion } from "framer-motion";
 import { Landmark, Shield, TrendingUp, Wallet, Zap, Calendar, Target, Coins } from "lucide-react";
 import { useCapitalPurposeBuckets } from "@/hooks/use-investment-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+
+// Production fallback — seed data removed
+const DEMO_PURPOSES: any[] = [];
+
 const fmt = (n: number) => n >= 1e6 ? `$${(n / 1e6).toFixed(2)}M` : `$${(n / 1e3).toFixed(1)}K`;
 
 export default function CapitalPurpose() {

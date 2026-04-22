@@ -6,6 +6,10 @@ import { Eye, CheckCircle2, ArrowRight, Palette, Layout, Accessibility, Moon, Ty
 import { useAIEngDomain } from "@/hooks/use-ai-engineering-data";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
+
+// Production fallback — seed data removed
+const DEMO_DIFFS: any[] = [];
+
 const AIDesignDiffTheater = () => {
   const { data: diffs, isDemo } = useAIEngDomain("designDiffs", DEMO_DIFFS);
   const [expanded, setExpanded] = useState<number | null>(1);

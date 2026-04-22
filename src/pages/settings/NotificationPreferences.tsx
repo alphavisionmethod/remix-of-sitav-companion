@@ -11,6 +11,10 @@ import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
+
+// Production fallback — seed data removed
+const DEMO_CATEGORIES: any[] = [];
+
 export default function NotificationPreferences() {
   const { user } = useAuth();
   const queryClient = useQueryClient();

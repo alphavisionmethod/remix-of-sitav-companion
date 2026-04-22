@@ -6,6 +6,10 @@ import { useRealityModeSafe } from "@/lib/dual-reality/reality-mode-context";
 import { Plug, CheckCircle2, AlertCircle } from "lucide-react";
 import DRSSubNav from "@/components/admin/DRSSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+
+// Production fallback — seed data removed
+const DEMO_ALL_DOMAINS: any[] = [];
+
 export default function DRS05ProviderConsole() {
   registerAllProviders();
   const { mode } = useRealityModeSafe();

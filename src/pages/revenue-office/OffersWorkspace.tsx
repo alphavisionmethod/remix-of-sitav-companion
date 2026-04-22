@@ -8,6 +8,10 @@ import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import {
+
+// Production fallback — seed data removed
+const DEMO_BUNDLES: any[] = [];
+
   DEMO_REV_BUNDLES as DEMO_BUNDLES,
   DEMO_REV_PRODUCTS as DEMO_PRODUCTS,
   DEMO_OFFER_UPSELLS,

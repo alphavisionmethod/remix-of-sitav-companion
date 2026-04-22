@@ -5,6 +5,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Rocket, CheckCircle2, XCircle, AlertTriangle, ArrowRight, Clock } from "lucide-react";
 import ANDSubNav from "@/components/admin/ANDSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+
+// Production fallback — seed data removed
+const DEMO_TARGETS: any[] = [];
+
 const AND05AndroidLaunchReadiness = () => {
   const overall = Math.round(([] as typeof DEMO_TARGETS).reduce((s, t) => s + t.readiness, 0) / ([] as typeof DEMO_TARGETS).length);
 

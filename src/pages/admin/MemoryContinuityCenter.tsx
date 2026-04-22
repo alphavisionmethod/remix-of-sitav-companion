@@ -11,6 +11,10 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchScopedMemory, getScopedMemoryStats, forgetScopedMemory, type PersistedScopedMemory } from "@/data/persistence";
 import { DEMO_PRIVACY_TIERS } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+
+// Production fallback — seed data removed
+const DEMO_SCOPES: any[] = [];
+
 const fade = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0 } };
 
 function PrivacyBadge({ tier }: { tier: string }) {

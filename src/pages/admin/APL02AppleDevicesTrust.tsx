@@ -8,6 +8,10 @@ import { Shield, Smartphone, Watch, Monitor, Fingerprint, Lock, ArrowRight, Aler
 import { DEMO_ESCALATION_RULES } from "@/data/seed/admin-platform";
 import APLSubNav from "@/components/admin/APLSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+
+// Production fallback — seed data removed
+const DEMO_TRUST_CLASSES: any[] = [];
+
 const APL02AppleDevicesTrust = () => {
   const [selectedClass, setSelectedClass] = useState<string | null>(null);
 

@@ -19,6 +19,10 @@ import {
   DEMO_DELIVERABILITY,
 } from "@/data/seed/revenue-office";
 import { useDataMode } from "@/contexts/DataModeContext";
+
+// Production fallback — seed data removed
+const DEMO_CAMPAIGNS: any[] = [];
+
 interface AttributionRow {
   campaign: string;
   channel: string;

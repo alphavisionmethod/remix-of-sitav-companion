@@ -20,6 +20,10 @@ import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 
+
+// Production fallback — seed data removed
+const DEMO_PIPELINE_STAGES: any[] = [];
+
 const CAMPAIGN_HEALTH = [
   { name: "Summer Accelerator", status: "active", performance: 78, leads: 42, spend: "$2,400" },
   { name: "Referral Sprint", status: "active", performance: 92, leads: 18, spend: "$800" },

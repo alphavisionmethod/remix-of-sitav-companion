@@ -4,6 +4,10 @@ import { ScrollText, Shield, Check, AlertTriangle, Settings, Lock } from "lucide
 import { useInvestmentStrategyRecords } from "@/hooks/use-investment-office";
 import { DEMO_CONSTITUTION_RULES, DEMO_CURRENT_VIOLATIONS } from "@/data/seed/investment";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+
+// Production fallback — seed data removed
+const DEMO_CATEGORIES: any[] = [];
+
 interface Rule {
   id: string;
   label: string;

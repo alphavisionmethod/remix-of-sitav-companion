@@ -8,6 +8,10 @@ import { useNavigate } from "react-router-dom";
 import { DEMO_LIVE_PROMOTIONS, DEMO_TOP_PAGES, DEMO_WEAK_PAGES } from "@/data/seed/digital-presence";
 import DPOSubNav from "./DPOSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+
+// Production fallback — seed data removed
+const DEMO_ADVISOR_SIGNALS: any[] = [];
+
 export default function PresenceBoardroom() {
   const navigate = useNavigate();
   return (

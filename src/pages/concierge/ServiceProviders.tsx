@@ -10,6 +10,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useInspector } from "@/contexts/InspectorContext";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { useServiceProvidersList } from "@/hooks/use-concierge-data";
+
+// Production fallback — seed data removed
+const DEMO_categories: any[] = [];
+
 interface ServiceRecord {
   date: string;
   description: string;

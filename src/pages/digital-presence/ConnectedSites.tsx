@@ -7,6 +7,10 @@ import { useSites } from "@/hooks/use-digital-presence";
 import { DEMO_AI_RECOMMENDATIONS, DEMO_AUDIT_FINDINGS } from "@/data/seed/digital-presence";
 import DPOSubNav from "./DPOSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+
+// Production fallback — seed data removed
+const DEMO_PLATFORMS: any[] = [];
+
 export default function ConnectedSites() {
   const { data: liveData, isLoading } = useSites();
   return (

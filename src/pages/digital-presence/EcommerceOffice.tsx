@@ -7,6 +7,10 @@ import { DEMO_CART_DIAGNOSTICS, DEMO_COLLECTIONS, DEMO_MERCHANDISING_OPS } from 
 import { useShopifyProducts, useShopifyCollections } from "@/hooks/useShopifyData";
 import DPOSubNav from "./DPOSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+
+// Production fallback — seed data removed
+const DEMO_PRODUCTS: any[] = [];
+
 export default function EcommerceOffice() {
   const { data: liveData, isLoading } = useSites();
   const { data: shopifyProducts, isLoading: productsLoading } = useShopifyProducts(20);

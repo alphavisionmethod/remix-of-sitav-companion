@@ -5,6 +5,10 @@ import { Progress } from "@/components/ui/progress";
 import { Server, CheckCircle, ArrowRight, Database, Shield, Zap } from "lucide-react";
 import CPSSubNav from "@/components/admin/CPSSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+
+// Production fallback — seed data removed
+const DEMO_SERVICES: any[] = [];
+
 const fade = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0 } };
 
 const PHASE_COLORS: Record<string, string> = {

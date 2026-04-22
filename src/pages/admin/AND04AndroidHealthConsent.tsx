@@ -6,6 +6,10 @@ import { Switch } from "@/components/ui/switch";
 import { Heart, ShieldCheck, Eye, EyeOff, Lock, Clock, Activity, Trash2, CheckCircle2, AlertTriangle } from "lucide-react";
 import ANDSubNav from "@/components/admin/ANDSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+
+// Production fallback — seed data removed
+const DEMO_SIGNALS: any[] = [];
+
 type ConsentMap = Record<string, { read: boolean; routing: boolean; assistant: boolean }>;
 
 const AND04AndroidHealthConsent = () => {

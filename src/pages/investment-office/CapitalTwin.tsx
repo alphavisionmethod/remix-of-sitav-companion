@@ -6,6 +6,10 @@ import { PORTFOLIO } from "@/hooks/useInvestmentOfficeData";
 import { useCapitalPurposeBuckets } from "@/hooks/use-investment-office";
 import { DEMO_SHOCK_ZONES } from "@/data/seed/investment";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+
+// Production fallback — seed data removed
+const DEMO_PURPOSES: any[] = [];
+
 export default function CapitalTwin() {
   const { data: liveData, isLoading } = useCapitalPurposeBuckets();
   const navigate = useNavigate();

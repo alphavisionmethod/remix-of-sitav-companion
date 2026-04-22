@@ -6,6 +6,10 @@ import { Shield, Fingerprint, Smartphone, Watch, Lock, CheckCircle2, XCircle, Ar
 import { DEMO_ESCALATION_MATRIX } from "@/data/seed/admin-platform";
 import ANDSubNav from "@/components/admin/ANDSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+
+// Production fallback — seed data removed
+const DEMO_TRUST_CLASSES: any[] = [];
+
 const AND03AndroidTrustApprovals = () => {
   return (
     <div className="p-6 max-w-[1400px] mx-auto space-y-6">

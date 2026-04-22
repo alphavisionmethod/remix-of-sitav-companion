@@ -6,6 +6,10 @@ import { Progress } from "@/components/ui/progress";
 import { DEMO_LAUNCH_TIMELINE } from "@/data/seed/digital-presence";
 import DPOSubNav from "./DPOSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+
+// Production fallback — seed data removed
+const DEMO_READINESS_CHECKS: any[] = [];
+
 export default function LaunchWarRoom() {
   const overallScore = Math.round(([] as typeof DEMO_READINESS_CHECKS).reduce((sum, c) => sum + c.score, 0) / Math.max(([] as typeof DEMO_READINESS_CHECKS).length, 1));
   return (

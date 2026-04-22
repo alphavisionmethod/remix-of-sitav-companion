@@ -28,6 +28,10 @@ import { useDataMode } from "@/contexts/DataModeContext";
 
 
 
+
+// Production fallback — seed data removed
+const DEMO_DOMAINS: any[] = [];
+
 // ── Types ──
 // Aligned to canonical `ai_workforce_approval_queue` schema.
 // Legacy fields (risk_tier, severity, impacted_domain, ...) are derived

@@ -14,6 +14,10 @@ import { Shield, Plus, Edit, Trash2, ToggleLeft, ToggleRight, ChevronRight, Play
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { useDraftAutosave } from "@/hooks/useDraftAutosave";
 import { useEffect } from "react";
+
+// Production fallback — seed data removed
+const DEMO_CATEGORIES: any[] = [];
+
 const PolicyEditor = () => {
   const { user } = useAuth();
   const qc = useQueryClient();

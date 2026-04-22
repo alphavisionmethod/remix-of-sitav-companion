@@ -7,6 +7,10 @@ import { Heart, ShieldCheck, Eye, EyeOff, Lock, AlertTriangle, CheckCircle2, Clo
 import { Button } from "@/components/ui/button";
 import APLSubNav from "@/components/admin/APLSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+
+// Production fallback — seed data removed
+const DEMO_SIGNALS: any[] = [];
+
 type ConsentState = Record<string, { read: boolean; routing: boolean; boardroom: boolean; assistant: boolean }>;
 
 const APL05AppleHealthConsent = () => {

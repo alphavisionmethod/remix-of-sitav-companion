@@ -9,6 +9,10 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "
 import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+
+// Production fallback — seed data removed
+const DEMO_RUNS: any[] = [];
+
 interface RunRow {
   id: string;
   workflow_id: string;
