@@ -173,7 +173,7 @@ export default function AITSetupChecklist() {
                 <div className="flex items-start gap-3">
                   <div className="pt-0.5">
                     {item.autoCheck ? (
-                      <div className={`h-5 w-5 rounded-full flex items-center justify-center text-xs font-bold ${checked ? "bg-emerald-500 text-white" : "bg-muted text-muted-foreground"}`}>
+                      <div className={`h-5 w-5 rounded-full flex items-center justify-center text-xs font-bold ${checked ? "bg-emerald-500 text-foreground" : "bg-muted text-muted-foreground"}`}>
                         {checked ? "✓" : item.step}
                       </div>
                     ) : (

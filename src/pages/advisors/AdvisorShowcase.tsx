@@ -177,7 +177,7 @@ function DebateOverlay({ advisor, onClose }: { advisor: typeof ADVISORS[0]; onCl
       >
         {/* close */}
         <button onClick={onClose} className="absolute -top-3 -right-3 z-20 rounded-full bg-white/10 p-2 backdrop-blur-sm border border-white/10 hover:bg-white/20 transition-colors">
-          <X className="h-4 w-4 text-white" />
+          <X className="h-4 w-4 text-foreground" />
         </button>
 
         {/* title */}
@@ -255,7 +255,7 @@ export default function AdvisorShowcase() {
   const [active, setActive] = useState<typeof ADVISORS[0] | null>(null);
 
   return (
-    <div className="relative min-h-screen w-full overflow-hidden flex flex-col items-center justify-center text-white">
+    <div className="relative min-h-screen w-full overflow-hidden flex flex-col items-center justify-center text-foreground">
       {/* BG */}
       <div
         className="absolute inset-0 z-0"

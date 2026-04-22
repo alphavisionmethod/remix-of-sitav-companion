@@ -150,10 +150,10 @@ const StoreCategoryPage = () => {
         <div className="relative z-10">
           <div className="flex items-center gap-3 mb-4">
             <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/15 backdrop-blur-sm">
-              <Icon className="h-6 w-6 text-white" />
+              <Icon className="h-6 w-6 text-foreground" />
             </div>
             <div>
-              <h1 className="font-display text-2xl font-bold text-white">{config.title}</h1>
+              <h1 className="font-display text-2xl font-bold text-foreground">{config.title}</h1>
               <p className="text-white/70 text-sm">{config.subtitle}</p>
             </div>
           </div>
@@ -165,7 +165,7 @@ const StoreCategoryPage = () => {
               <motion.div key={i} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.05 }}
                 className="rounded-xl bg-white/10 backdrop-blur-sm border border-white/10 px-3 py-2.5 text-center"
               >
-                <p className="font-display text-lg font-bold text-white">{o.value}</p>
+                <p className="font-display text-lg font-bold text-foreground">{o.value}</p>
                 <p className="text-[10px] text-white/60">{o.label}</p>
               </motion.div>
             ))}

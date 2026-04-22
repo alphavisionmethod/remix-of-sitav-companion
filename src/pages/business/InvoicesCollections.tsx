@@ -205,7 +205,7 @@ const InvoicesCollections = () => {
           <button
             onClick={() => addInvoice.mutate({ invoice_number: form.invoice_number.trim(), amount: parseFloat(form.amount), due_date: form.due_date, notes: form.notes || null, status: "draft" })}
             disabled={addInvoice.isPending || !form.invoice_number.trim() || !form.amount || !form.due_date}
-            className="w-full px-4 py-2.5 rounded-lg bg-[hsl(265_55%_58%)] hover:bg-[hsl(265_55%_52%)] disabled:opacity-50 text-white text-[13px] font-medium transition-colors"
+            className="w-full px-4 py-2.5 rounded-lg bg-[hsl(265_55%_58%)] hover:bg-[hsl(265_55%_52%)] disabled:opacity-50 text-foreground text-[13px] font-medium transition-colors"
           >
             {addInvoice.isPending ? "Creating..." : "Create Invoice"}
           </button>

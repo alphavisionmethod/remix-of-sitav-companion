@@ -59,7 +59,7 @@ const HouseholdCommandCenter = () => {
     <ConciergePageWrapper className="mx-auto max-w-5xl space-y-6">
       <PageTruthBanner />
       <div className="flex items-center justify-end">
-        <button className="micro-press flex items-center gap-1.5 rounded-lg bg-[hsl(265_55%_58%)] px-3 py-1.5 text-xs font-medium text-white hover:bg-[hsl(265_55%_52%)] transition-colors" onClick={() => setShowCreate(true)}>
+        <button className="micro-press flex items-center gap-1.5 rounded-lg bg-[hsl(265_55%_58%)] px-3 py-1.5 text-xs font-medium text-foreground hover:bg-[hsl(265_55%_52%)] transition-colors" onClick={() => setShowCreate(true)}>
           <Plus className="h-4 w-4" /> New Household
         </button>
       </div>

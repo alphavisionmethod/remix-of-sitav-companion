@@ -146,7 +146,7 @@ const WebAppInstallPage = () => {
                     <button onClick={() => setConfig(prev => ({ ...prev, [opt.key]: !prev[opt.key as keyof typeof prev] }))}
                       className={cn("relative h-6 w-11 rounded-full transition-colors",
                         config[opt.key as keyof typeof config] ? "bg-[hsl(var(--trust-safe))]" : "bg-muted")}>
-                      <div className={cn("absolute top-0.5 h-5 w-5 rounded-full bg-white shadow transition-transform",
+                      <div className={cn("absolute top-0.5 h-5 w-5 rounded-full bg-card shadow transition-transform",
                         config[opt.key as keyof typeof config] ? "translate-x-5" : "translate-x-0.5")} />
                     </button>
                   </div>

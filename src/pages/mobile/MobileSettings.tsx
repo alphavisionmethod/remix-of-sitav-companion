@@ -39,7 +39,7 @@ const ToggleRow = ({ icon: Icon, label, description, controlled, value, onToggle
         isOn ? "bg-primary" : "bg-muted"
       )}>
         <div className={cn(
-          "h-5 w-5 rounded-full bg-white transition-transform",
+          "h-5 w-5 rounded-full bg-card transition-transform",
           isOn ? "translate-x-4" : "translate-x-0"
         )} />
       </div>

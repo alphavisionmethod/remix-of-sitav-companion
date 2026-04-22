@@ -117,7 +117,7 @@ const SchoolActivities = () => {
                 <p className="text-[11px] text-[hsl(0_0%_65%)]">{selected.notes}</p>
               </AppSurface>
             )}
-            <button className="w-full px-3 py-2 rounded-lg bg-[hsl(285_55%_55%)] text-white text-[11px] font-medium hover:bg-[hsl(285_55%_48%)] transition-colors micro-press">
+            <button className="w-full px-3 py-2 rounded-lg bg-[hsl(285_55%_55%)] text-foreground text-[11px] font-medium hover:bg-[hsl(285_55%_48%)] transition-colors micro-press">
               Mark Complete
             </button>
           </div>

@@ -99,7 +99,7 @@ function MetricCard({ title, value, subtitle, icon: Icon, trend }: {
         <div className="flex items-start justify-between">
           <div className="space-y-1">
             <p className="text-[11px] text-white/50 uppercase tracking-wider">{title}</p>
-            <p className="text-2xl font-bold text-white">{value}</p>
+            <p className="text-2xl font-bold text-foreground">{value}</p>
             {subtitle && <p className="text-xs text-white/40">{subtitle}</p>}
           </div>
           <div className="p-2 rounded-lg bg-white/[0.05]">
@@ -154,7 +154,7 @@ function SafetyDistributionBar() {
                 <div className={`h-2 w-2 rounded-full ${seg.color}`} />
                 <span className="text-[10px] text-white/50">{seg.label}</span>
               </div>
-              <span className="text-sm font-semibold text-white">{seg.count}</span>
+              <span className="text-sm font-semibold text-foreground">{seg.count}</span>
             </div>
           ))}
         </div>
@@ -280,11 +280,11 @@ function WorkspaceIntelligenceStats() {
       <CardContent className="space-y-3">
         <div className="grid grid-cols-2 gap-3">
           <div className="text-center p-3 rounded-lg bg-white/[0.03]">
-            <p className="text-xl font-bold text-white">{workspaceMetrics.activeWorkspaces}</p>
+            <p className="text-xl font-bold text-foreground">{workspaceMetrics.activeWorkspaces}</p>
             <p className="text-[10px] text-white/40">Active Workspaces</p>
           </div>
           <div className="text-center p-3 rounded-lg bg-white/[0.03]">
-            <p className="text-xl font-bold text-white">{workspaceMetrics.automationsConfigured}</p>
+            <p className="text-xl font-bold text-foreground">{workspaceMetrics.automationsConfigured}</p>
             <p className="text-[10px] text-white/40">Automations</p>
           </div>
         </div>
@@ -312,12 +312,12 @@ export default function IntelligenceLayerAdmin() {
   const [tab, setTab] = useState("overview");
 
   return (
-    <div className="min-h-screen bg-[hsl(220_18%_4%)] text-white p-6">
+    <div className="min-h-screen bg-[hsl(220_18%_4%)] text-foreground p-6">
       <div className="max-w-7xl mx-auto space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-white flex items-center gap-3">
+            <h1 className="text-2xl font-bold text-foreground flex items-center gap-3">
               <div className="p-2 rounded-xl bg-gradient-to-br from-sita-purple/20 to-blue-500/20 border border-white/[0.06]">
                 <Brain className="h-6 w-6 text-sita-purple" />
               </div>
@@ -405,7 +405,7 @@ export default function IntelligenceLayerAdmin() {
                 <CardContent>
                   <div className="grid grid-cols-4 gap-4">
                     <div className="text-center p-4 rounded-lg bg-white/[0.03]">
-                      <p className="text-3xl font-bold text-white">{decisionMetrics.totalDecisions.toLocaleString()}</p>
+                      <p className="text-3xl font-bold text-foreground">{decisionMetrics.totalDecisions.toLocaleString()}</p>
                       <p className="text-[10px] text-white/40 mt-1">Total Decisions</p>
                     </div>
                     <div className="text-center p-4 rounded-lg bg-white/[0.03]">
@@ -427,7 +427,7 @@ export default function IntelligenceLayerAdmin() {
                 <Card key={d.domain} className="bg-white/[0.03] border-white/[0.06] backdrop-blur-xl">
                   <CardContent className="p-4">
                     <div className="flex items-center justify-between mb-3">
-                      <h3 className="text-sm font-medium text-white capitalize">{d.domain}</h3>
+                      <h3 className="text-sm font-medium text-foreground capitalize">{d.domain}</h3>
                       <Badge variant="outline" className="border-white/10 text-white/50">{d.decisions} decisions</Badge>
                     </div>
                     <div className="space-y-2">
@@ -457,7 +457,7 @@ export default function IntelligenceLayerAdmin() {
                 <CardContent className="space-y-4">
                   <div className="grid grid-cols-2 gap-3">
                     <div className="text-center p-4 rounded-lg bg-white/[0.03]">
-                      <p className="text-2xl font-bold text-white">{contextMetrics.snapshotsToday}</p>
+                      <p className="text-2xl font-bold text-foreground">{contextMetrics.snapshotsToday}</p>
                       <p className="text-[10px] text-white/40">Snapshots Today</p>
                     </div>
                     <div className="text-center p-4 rounded-lg bg-white/[0.03]">
@@ -493,7 +493,7 @@ export default function IntelligenceLayerAdmin() {
                 <CardContent className="space-y-3">
                   <div className="grid grid-cols-3 gap-3">
                     <div className="text-center p-3 rounded-lg bg-white/[0.03]">
-                      <p className="text-xl font-bold text-white">{meshMetrics.activeMeshes}</p>
+                      <p className="text-xl font-bold text-foreground">{meshMetrics.activeMeshes}</p>
                       <p className="text-[10px] text-white/40">Active Meshes</p>
                     </div>
                     <div className="text-center p-3 rounded-lg bg-white/[0.03]">
@@ -549,7 +549,7 @@ export default function IntelligenceLayerAdmin() {
                            <XCircle className="h-3.5 w-3.5 text-red-400" />}
                           <span className="text-xs text-white/60">{item.label}</span>
                         </div>
-                        <span className="text-sm font-semibold text-white">{item.value}</span>
+                        <span className="text-sm font-semibold text-foreground">{item.value}</span>
                       </div>
                     ))}
                   </div>

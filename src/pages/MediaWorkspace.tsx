@@ -148,7 +148,7 @@ const MediaWorkspace = () => {
                   <div className={cn("aspect-square bg-gradient-to-br flex items-center justify-center relative group", item.preview)}>
                     <ImageIcon className="w-8 h-8 text-white/30" />
                     <button onClick={e => { e.stopPropagation(); setSelectedMedia(item); setLightboxOpen(true); }} className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
-                      <ZoomIn className="w-6 h-6 text-white" />
+                      <ZoomIn className="w-6 h-6 text-foreground" />
                     </button>
                   </div>
                   <div className="p-2.5 bg-card/40 backdrop-blur-sm">

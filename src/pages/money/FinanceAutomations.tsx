@@ -58,7 +58,7 @@ const FinanceAutomations = () => {
 
       <div className="flex items-center justify-between">
         <div />
-        <button className="micro-press flex items-center gap-1.5 rounded-lg bg-[hsl(265_55%_58%)] px-3 py-1.5 text-xs font-medium text-white hover:bg-[hsl(265_55%_52%)] transition-colors">
+        <button className="micro-press flex items-center gap-1.5 rounded-lg bg-[hsl(265_55%_58%)] px-3 py-1.5 text-xs font-medium text-foreground hover:bg-[hsl(265_55%_52%)] transition-colors">
           <Zap className="h-3.5 w-3.5" /> Create Rule
         </button>
       </div>

@@ -36,7 +36,7 @@ const PackInstalledPage = () => {
               <div key={pack.pack_id} className="flex items-center justify-between rounded-xl border border-primary/20 bg-primary/5 p-4">
                 <div className="flex items-center gap-3">
                   <div className={cn("flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br", pack.gradient)}>
-                    <Icon className="h-5 w-5 text-white" />
+                    <Icon className="h-5 w-5 text-foreground" />
                   </div>
                   <div>
                     <p className="text-sm font-semibold text-foreground">{pack.name}</p>
@@ -66,7 +66,7 @@ const PackInstalledPage = () => {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className={cn("flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br", pack.gradient)}>
-                    <Icon className="h-5 w-5 text-white" />
+                    <Icon className="h-5 w-5 text-foreground" />
                   </div>
                   <div>
                     <div className="flex items-center gap-2">

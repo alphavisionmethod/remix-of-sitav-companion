@@ -19,7 +19,7 @@ const STATE_COLORS: Record<string, string> = {
   simulated: "bg-purple-500/20 text-purple-400", approval_requested: "bg-amber-500/20 text-amber-400", approved: "bg-emerald-500/20 text-emerald-400",
   rejected: "bg-red-500/20 text-red-400", queued: "bg-sky-500/20 text-sky-400", executing: "bg-orange-500/20 text-orange-400",
   partially_completed: "bg-yellow-500/20 text-yellow-400", completed: "bg-green-500/20 text-green-400", verified: "bg-teal-500/20 text-teal-400",
-  failed: "bg-red-500/20 text-red-400", rolled_back: "bg-pink-500/20 text-pink-400", escalated: "bg-rose-500/20 text-rose-400", archived: "bg-gray-500/20 text-gray-400",
+  failed: "bg-red-500/20 text-red-400", rolled_back: "bg-pink-500/20 text-pink-400", escalated: "bg-rose-500/20 text-rose-400", archived: "bg-gray-500/20 text-muted-foreground",
 };
 
 export default function ActionLineageExplorer() {

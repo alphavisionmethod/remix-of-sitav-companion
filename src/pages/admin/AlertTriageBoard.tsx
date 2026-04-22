@@ -168,7 +168,7 @@ const AlertTriageBoard = () => {
           </p>
         </div>
         <div className="flex items-center gap-2">
-          {criticalCount > 0 && <Badge className="bg-red-500 text-white animate-pulse">{criticalCount} Critical</Badge>}
+          {criticalCount > 0 && <Badge className="bg-red-500 text-foreground animate-pulse">{criticalCount} Critical</Badge>}
           <Button variant="outline" size="sm" onClick={() => refetch()} disabled={isFetching}>
             {isFetching ? <Loader2 className="h-3.5 w-3.5 mr-1.5 animate-spin" /> : <RefreshCw className="h-3.5 w-3.5 mr-1.5" />} Refresh
           </Button>

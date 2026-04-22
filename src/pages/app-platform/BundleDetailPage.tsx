@@ -94,7 +94,7 @@ const BundleDetailPage = () => {
             </div>
             <div>
               <span className="text-[10px] font-bold uppercase tracking-wider text-white/60">Starter Pack</span>
-              <h1 className="font-display text-2xl font-bold text-white">{bundle.name}</h1>
+              <h1 className="font-display text-2xl font-bold text-foreground">{bundle.name}</h1>
               <p className="text-sm text-white/70">{bundle.subtitle}</p>
             </div>
           </div>

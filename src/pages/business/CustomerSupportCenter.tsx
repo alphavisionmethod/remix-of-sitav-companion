@@ -140,7 +140,7 @@ const CustomerSupportCenter = () => {
             </AppSurface>
 
             <div className="flex gap-2">
-              <button className="flex-1 px-3 py-2 rounded-lg bg-[hsl(265_55%_58%)] text-white text-[11px] font-medium hover:bg-[hsl(265_55%_50%)] transition-colors micro-press">Reply</button>
+              <button className="flex-1 px-3 py-2 rounded-lg bg-[hsl(265_55%_58%)] text-foreground text-[11px] font-medium hover:bg-[hsl(265_55%_50%)] transition-colors micro-press">Reply</button>
               <button className="px-3 py-2 rounded-lg bg-[hsl(0_0%_100%/0.06)] text-[hsl(0_0%_70%)] text-[11px] hover:bg-[hsl(0_0%_100%/0.10)] transition-colors micro-press">Assign</button>
             </div>
           </div>
