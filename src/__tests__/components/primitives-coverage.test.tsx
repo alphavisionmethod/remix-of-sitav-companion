@@ -32,7 +32,7 @@ describe("Canonical Primitives Coverage", () => {
   });
 
   it("StatusBadge renders", () => {
-    const { container } = render(<StatusBadge status="active" />);
+    const { container } = render(<StatusBadge tone="success">Active</StatusBadge>);
     expect(container.firstChild).not.toBeNull();
   });
 

@@ -63,6 +63,10 @@ const TEAM_PROFILES: Record<OwnerTeam, TeamProfile> = {
   "compliance-security":      { primaryContact: "@sita/compliance-security",   escalationContact: "pd:security-oncall",            slackChannel: "#compliance-security",   reviewerCodeOwners: "@sita/compliance-security",   defaultRunbookRef: "RB-011-SECURITY" },
   "user-experience":          { primaryContact: "@sita/user-experience",       escalationContact: "pd:user-experience-oncall",     slackChannel: "#user-experience",       reviewerCodeOwners: "@sita/user-experience",       defaultRunbookRef: "RB-012-USER-EXPERIENCE" },
   "app-platform":             { primaryContact: "@sita/app-platform",          escalationContact: "pd:app-platform-oncall",        slackChannel: "#app-platform",          reviewerCodeOwners: "@sita/app-platform",          defaultRunbookRef: "RB-013-APP-PLATFORM" },
+};
+
+// ── Auto-generated entries (moved from TEAM_PROFILES) ──
+const _AUTO_OWNER_ENTRIES: Record<string, OwnerTeam> = {
   "account-delete": "platform-core",
   "admin-reset-user-setup": "admin-governance",
   "admin-revoke-session": "admin-governance",
