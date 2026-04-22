@@ -43,7 +43,7 @@ describe("Edge Function Auth Model Verification", () => {
   });
 
   describe("anon functions", () => {
-    const anonFns = entries.filter(e => e.authModel === "anon" || e.authModel === "none");
+    const anonFns = entries.filter(e => (e.authModel as string) === "anon" || (e.authModel as string) === "none");
 
     it("anon functions do not enforce auth headers", () => {
       const violators = anonFns.filter(e => {
