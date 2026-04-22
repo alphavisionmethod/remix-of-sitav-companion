@@ -220,8 +220,7 @@ export default function ExecutionDesk() {
                   Edit
                 </button>
                 <button onClick={handleExecute}
-                  className="flex-1 rounded-xl bg-primary py-2.5 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition-colors flex items-center justify-center gap-2">
-                  <Check className="h-4 w-4" /> Execute
+                  aria-label="Mark as read" className="flex-1 rounded-xl bg-primary py-2.5 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition-colors flex items-center justify-center gap-2"><Check className="h-4 w-4" /> Execute
                 </button>
               </div>
             </>

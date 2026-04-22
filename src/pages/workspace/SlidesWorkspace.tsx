@@ -110,8 +110,7 @@ const SlidesWorkspace = () => {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <button onClick={closeDeck} className="rounded-lg p-1.5 text-muted-foreground hover:bg-secondary transition-colors">
-              <X className="h-4 w-4" />
+            <button onClick={closeDeck} aria-label="Close" className="rounded-lg p-1.5 text-muted-foreground hover:bg-secondary transition-colors"><X className="h-4 w-4" />
             </button>
             <Presentation className="h-5 w-5 text-primary" />
             <div>

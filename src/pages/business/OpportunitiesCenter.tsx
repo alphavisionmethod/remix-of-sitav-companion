@@ -98,7 +98,7 @@ const OpportunitiesCenter = () => {
         {showAdd && (
           <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }}>
             <SitaCard className="p-5">
-              <div className="flex items-center justify-between mb-4"><SitaCardTitle>New Opportunity</SitaCardTitle><button onClick={() => setShowAdd(false)} className="text-muted-foreground hover:text-foreground"><X className="h-4 w-4" /></button></div>
+              <div className="flex items-center justify-between mb-4"><SitaCardTitle>New Opportunity</SitaCardTitle><button onClick={() => setShowAdd(false)} aria-label="Close" className="text-muted-foreground hover:text-foreground"><X className="h-4 w-4" /></button></div>
               <div className="grid gap-3 sm:grid-cols-2">
                 <input value={form.title} onChange={e => setForm({ ...form, title: e.target.value })} placeholder="Opportunity title *" className="col-span-2 rounded-lg border border-border/50 bg-secondary/20 px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary/30" />
                 <input type="number" value={form.value} onChange={e => setForm({ ...form, value: e.target.value })} placeholder="Value ($)" className="rounded-lg border border-border/50 bg-secondary/20 px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary/30" />

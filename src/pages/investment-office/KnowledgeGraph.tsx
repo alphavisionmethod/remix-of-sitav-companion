@@ -390,8 +390,7 @@ export default function KnowledgeGraph() {
                       <p className="text-[10px] text-muted-foreground capitalize">{selectedNode.type}</p>
                     </div>
                   </div>
-                  <button onClick={() => setSelectedNode(null)} className="p-1 rounded-lg hover:bg-secondary transition-colors">
-                    <X className="h-4 w-4 text-muted-foreground" />
+                  <button onClick={() => setSelectedNode(null)} aria-label="Close" className="p-1 rounded-lg hover:bg-secondary transition-colors"><X className="h-4 w-4 text-muted-foreground" />
                   </button>
                 </div>
 

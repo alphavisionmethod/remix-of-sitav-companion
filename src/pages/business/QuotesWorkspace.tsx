@@ -99,7 +99,7 @@ const QuotesWorkspace = () => {
             <AppSurface level={2} className="p-4 space-y-3">
               <div className="flex items-center justify-between">
                 <span className="text-[12px] font-semibold text-[hsl(0_0%_85%)]">New Quote</span>
-                <button onClick={() => setShowAdd(false)} className="text-[hsl(0_0%_50%)]"><X className="h-4 w-4" /></button>
+                <button onClick={() => setShowAdd(false)} aria-label="Close" className="text-[hsl(0_0%_50%)]"><X className="h-4 w-4" /></button>
               </div>
               <input value={form.title} onChange={e => { const v = e.target.value; setForm(f => ({ ...f, title: v })); updateDraft({ title: v }); }} placeholder="Quote title *" className="w-full rounded-lg border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_100%/0.04)] px-3 py-2 text-sm text-[hsl(0_0%_85%)] placeholder:text-[hsl(0_0%_40%)] focus:outline-none focus:ring-1 focus:ring-[hsl(265_55%_58%/0.3)]" />
               <div className="grid grid-cols-2 gap-3">
