@@ -5,7 +5,7 @@
 import * as fs from "fs";
 import * as path from "path";
 
-const REQUIRED_SCRIPTS = ["build", "start", "typecheck", "clean", "health-check"];
+const REQUIRED_SCRIPTS = ["build", "start", "typecheck", "clean", "health-check", "ready-check", "test", "smoke"];
 const DEPLOY_DIR = path.resolve("deploy");
 
 interface ManifestResult {
