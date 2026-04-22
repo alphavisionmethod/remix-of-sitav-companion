@@ -222,7 +222,7 @@ export function CloudSharingAdmin() {
               ].map((p, i) => (
                 <div key={i} className="flex items-center justify-between p-3 rounded-lg bg-muted/20 border border-border/30">
                   <div className="flex items-center gap-3">
-                    <div className="h-8 w-8 rounded-full flex items-center justify-center text-xs font-bold text-white" style={{ backgroundColor: p.color }}>
+                    <div className="h-8 w-8 rounded-full flex items-center justify-center text-xs font-bold text-foreground" style={{ backgroundColor: p.color }}>
                       {p.user[0]}
                     </div>
                     <div>

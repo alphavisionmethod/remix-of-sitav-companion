@@ -170,7 +170,7 @@ export default function MembershipCourseOffice() {
                             return (
                               <td key={j} className="p-2 text-center">
                                 <div className="flex items-center justify-center gap-1">
-                                  <div className={`w-6 h-6 rounded ${color} flex items-center justify-center text-[10px] font-bold text-white`} style={{ opacity: Math.max(0.3, opacity) }}>
+                                  <div className={`w-6 h-6 rounded ${color} flex items-center justify-center text-[10px] font-bold text-foreground`} style={{ opacity: Math.max(0.3, opacity) }}>
                                     {val}
                                   </div>
                                 </div>

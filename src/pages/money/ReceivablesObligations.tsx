@@ -146,7 +146,7 @@ const ReceivablesObligations = () => {
                     const pct = totalReceivable > 0 ? (total / totalReceivable) * 100 : 0;
                     if (pct === 0) return null;
                     return (
-                      <div key={bucket} className={`${BUCKET_COLORS[bucket]} flex items-center justify-center text-[10px] font-bold text-white`} style={{ width: `${pct}%` }}>
+                      <div key={bucket} className={`${BUCKET_COLORS[bucket]} flex items-center justify-center text-[10px] font-bold text-foreground`} style={{ width: `${pct}%` }}>
                         {pct > 10 && `${bucket === "current" ? "Current" : bucket + "d"}`}
                       </div>
                     );

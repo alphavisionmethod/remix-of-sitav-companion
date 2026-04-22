@@ -168,7 +168,7 @@ const CommunicationInbox = () => {
                 <div onClick={() => handleSelect(msg.id)} className={`flex gap-3 px-4 py-3 cursor-pointer transition-colors border-b border-border/10 ${selectedId === msg.id ? 'bg-primary/5' : msg.read ? 'hover:bg-muted/20' : 'bg-muted/10 hover:bg-muted/30'}`}>
                   {/* Avatar */}
                   <div className={`w-9 h-9 rounded-full ${avatarColors[msg.from.charCodeAt(0) % avatarColors.length]} flex items-center justify-center flex-shrink-0`}>
-                    <span className="text-[11px] font-bold text-white">{msg.avatar}</span>
+                    <span className="text-[11px] font-bold text-foreground">{msg.avatar}</span>
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between gap-2">
@@ -206,7 +206,7 @@ const CommunicationInbox = () => {
                 <div className="flex items-center gap-2 mb-2">
                   <Button variant="ghost" size="icon" className="h-7 w-7 md:hidden" onClick={() => setSelectedId(null)}><ArrowLeft className="h-4 w-4" /></Button>
                   <div className={`w-8 h-8 rounded-full ${avatarColors[selected.from.charCodeAt(0) % avatarColors.length]} flex items-center justify-center`}>
-                    <span className="text-[10px] font-bold text-white">{selected.avatar}</span>
+                    <span className="text-[10px] font-bold text-foreground">{selected.avatar}</span>
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-semibold text-foreground">{selected.from}</p>

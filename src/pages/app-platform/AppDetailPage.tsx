@@ -83,7 +83,7 @@ const AppDetailPage = () => {
         <div className="relative z-10 flex items-start gap-5">
           <AppIcon icon={app.icon} iconBg="from-white/20 to-white/10" size="lg" />
           <div className="flex-1 min-w-0">
-            <h1 className="font-display text-2xl font-bold text-white">{app.name}</h1>
+            <h1 className="font-display text-2xl font-bold text-foreground">{app.name}</h1>
             <p className="text-sm text-white/70">{app.publisher}</p>
             <div className="flex items-center gap-3 mt-2">
               <VerificationBadge level={app.trustLevel} size="md" />
@@ -96,7 +96,7 @@ const AppDetailPage = () => {
                   <button onClick={() => {
                     if (app.routePath) navigate(app.routePath);
                     else if (app.externalUrl) window.open(app.externalUrl, '_blank', 'noopener');
-                  }} className="rounded-xl bg-white/20 backdrop-blur-sm px-6 py-2.5 text-sm font-semibold text-white hover:bg-white/30 transition-colors flex items-center gap-2">
+                  }} className="rounded-xl bg-white/20 backdrop-blur-sm px-6 py-2.5 text-sm font-semibold text-foreground hover:bg-white/30 transition-colors flex items-center gap-2">
                     <Check className="h-4 w-4" /> Open
                   </button>
                   <button onClick={() => navigate(`/app-store/manage/${app.id}`)}
@@ -106,7 +106,7 @@ const AppDetailPage = () => {
                 </>
               ) : (
                 <button onClick={() => setShowInstall(true)}
-                  className="rounded-xl bg-white px-6 py-2.5 text-sm font-semibold text-gray-900 hover:bg-white/90 transition-colors flex items-center gap-2">
+                  className="rounded-xl bg-card px-6 py-2.5 text-sm font-semibold text-foreground hover:bg-white/90 transition-colors flex items-center gap-2">
                   <Download className="h-4 w-4" /> Install
                 </button>
               )}

@@ -261,7 +261,7 @@ const ApprovalCard = ({ item, onAction }: { item: ApprovalItem; onAction: (id: s
                   className={cn(
                     "inline-flex items-center gap-2 rounded-lg px-4 py-2.5 text-[12px] font-semibold transition-all",
                     confirmingApprove
-                      ? "bg-[hsl(var(--destructive))] text-white animate-pulse"
+                      ? "bg-[hsl(var(--destructive))] text-foreground animate-pulse"
                       : "bg-[hsl(var(--trust-safe))]/15 text-[hsl(var(--trust-safe))] hover:bg-[hsl(var(--trust-safe))]/25"
                   )}
                 >

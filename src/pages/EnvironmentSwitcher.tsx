@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { PageShell } from "@/components/sita/PageShell";
 
 interface Environment {
   id: string;
@@ -43,7 +44,7 @@ export default function EnvironmentSwitcher() {
   const { isDemoMode } = useDataMode();
 
   return (
-    <div className="p-4 md:p-6 max-w-[1400px] mx-auto space-y-6">
+    <PageShell width="full">
       <SitaPageHeader
         icon={<Globe className="h-6 w-6" />}
         title="Environment Manager"
@@ -136,6 +137,6 @@ export default function EnvironmentSwitcher() {
           </div>
         </CardContent>
       </Card>
-    </div>
+    </PageShell>
   );
 }

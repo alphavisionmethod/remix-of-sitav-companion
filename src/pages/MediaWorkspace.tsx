@@ -148,7 +148,7 @@ const MediaWorkspace = () => {
                   <div className={cn("aspect-square bg-gradient-to-br flex items-center justify-center relative group", item.preview)}>
                     <ImageIcon className="w-8 h-8 text-white/30" />
                     <button onClick={e => { e.stopPropagation(); setSelectedMedia(item); setLightboxOpen(true); }} className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
-                      <ZoomIn className="w-6 h-6 text-white" />
+                      <ZoomIn className="w-6 h-6 text-foreground" />
                     </button>
                   </div>
                   <div className="p-2.5 bg-card/40 backdrop-blur-sm">
@@ -243,7 +243,7 @@ const MediaWorkspace = () => {
       {/* Lightbox */}
       {lightboxOpen && selectedMedia && (
         <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center" onClick={() => setLightboxOpen(false)}>
-          <button className="absolute top-4 right-4 text-white/60 hover:text-white"><X className="h-6 w-6" /></button>
+          <button className="absolute top-4 right-4 text-white/60 hover:text-foreground"><X className="h-6 w-6" /></button>
           <div className={cn("w-[80vw] max-w-3xl aspect-video rounded-xl bg-gradient-to-br flex items-center justify-center", selectedMedia.preview)} onClick={e => e.stopPropagation()}>
             <ImageIcon className="w-20 h-20 text-white/30" />
           </div>

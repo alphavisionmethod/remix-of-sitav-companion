@@ -94,7 +94,7 @@ const FilesSettings = () => {
                     onClick={() => toggle(s.key)}
                     className={`h-5 w-9 rounded-full ${settings[s.key] ? "bg-primary" : "bg-muted"} relative cursor-pointer transition-colors`}
                   >
-                    <div className={`absolute top-0.5 h-4 w-4 rounded-full bg-white shadow transition-transform ${settings[s.key] ? "translate-x-4" : "translate-x-0.5"}`} />
+                    <div className={`absolute top-0.5 h-4 w-4 rounded-full bg-card shadow transition-transform ${settings[s.key] ? "translate-x-4" : "translate-x-0.5"}`} />
                   </button>
                 </div>
               ))}

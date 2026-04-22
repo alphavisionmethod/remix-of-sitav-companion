@@ -149,7 +149,7 @@ export default function ExecutionDesk() {
                 <button key={a} onClick={() => setAction(a)}
                   className={`flex-1 rounded-xl py-2.5 text-sm font-medium transition-colors capitalize ${
                     action === a
-                      ? a === "buy" ? "bg-trust-safe text-white" : "bg-destructive text-white"
+                      ? a === "buy" ? "bg-trust-safe text-foreground" : "bg-destructive text-foreground"
                       : "bg-secondary text-muted-foreground hover:text-foreground"
                   }`}>{a}</button>
               ))}

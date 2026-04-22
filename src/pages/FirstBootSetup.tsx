@@ -69,7 +69,7 @@ function ToggleRow({ label, description, enabled, onChange, icon: Icon }: {
         </div>
       </div>
       <button onClick={onChange} className={cn("relative h-6 w-11 rounded-full transition-colors", enabled ? "bg-primary" : "bg-muted")}>
-        <span className="absolute top-0.5 h-5 w-5 rounded-full bg-white shadow transition-transform left-0.5"
+        <span className="absolute top-0.5 h-5 w-5 rounded-full bg-card shadow transition-transform left-0.5"
           style={{ transform: enabled ? "translateX(20px)" : "translateX(0)" }} />
       </button>
     </div>
@@ -515,7 +515,7 @@ export default function FirstBootSetupExperience() {
             <div className="text-center space-y-2">
               <motion.div initial={{ scale: 0.8 }} animate={{ scale: 1 }} transition={{ type: "spring", stiffness: 200 }}
                 className="h-16 w-16 rounded-2xl bg-gradient-to-br from-primary to-[hsl(var(--trust-safe))] flex items-center justify-center mx-auto shadow-xl shadow-primary/25">
-                <Shield className="h-8 w-8 text-white" />
+                <Shield className="h-8 w-8 text-foreground" />
               </motion.div>
               <h2 className="text-2xl font-display font-bold">Device Protection</h2>
               <p className="text-sm text-muted-foreground">Your first line of defense, configured intelligently</p>
@@ -548,7 +548,7 @@ export default function FirstBootSetupExperience() {
                     </div>
                     <button onClick={() => setProtection(p => ({ ...p, [item.key]: !p[item.key as keyof typeof p] }))}
                       className={cn("relative h-6 w-11 rounded-full transition-colors shrink-0 mt-1", item.value ? "bg-[hsl(var(--trust-safe))]" : "bg-muted")}>
-                      <span className="absolute top-0.5 h-5 w-5 rounded-full bg-white shadow transition-transform left-0.5"
+                      <span className="absolute top-0.5 h-5 w-5 rounded-full bg-card shadow transition-transform left-0.5"
                         style={{ transform: item.value ? "translateX(20px)" : "translateX(0)" }} />
                     </button>
                   </div>
@@ -565,7 +565,7 @@ export default function FirstBootSetupExperience() {
             <div className="text-center space-y-3">
               <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: "spring", stiffness: 150, delay: 0.1 }}
                 className="h-20 w-20 rounded-3xl bg-gradient-to-br from-[hsl(var(--trust-safe))] to-primary flex items-center justify-center mx-auto shadow-xl">
-                <CheckCircle className="h-10 w-10 text-white" />
+                <CheckCircle className="h-10 w-10 text-foreground" />
               </motion.div>
               <h2 className="text-2xl font-display font-bold">You're All Set</h2>
               <p className="text-sm text-muted-foreground">Your environment is configured and protected</p>
@@ -611,7 +611,7 @@ export default function FirstBootSetupExperience() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}
                 onClick={handleFinish}
-                className="w-full rounded-2xl bg-gradient-to-r from-primary to-[hsl(var(--trust-safe))] text-white font-bold py-4 text-sm shadow-xl shadow-primary/20 hover:shadow-primary/30 transition-all hover:scale-[1.01]"
+                className="w-full rounded-2xl bg-gradient-to-r from-primary to-[hsl(var(--trust-safe))] text-foreground font-bold py-4 text-sm shadow-xl shadow-primary/20 hover:shadow-primary/30 transition-all hover:scale-[1.01]"
               >
                 <span className="flex items-center justify-center gap-2">
                   <Sparkles className="h-4 w-4" /> Launch SITA OS
@@ -711,7 +711,7 @@ export default function FirstBootSetupExperience() {
 
           {ob.currentStep?.id === "finish" ? (
             <button onClick={handleFinish}
-              className="flex items-center gap-2 px-6 py-2.5 rounded-xl bg-gradient-to-r from-primary to-[hsl(var(--trust-safe))] text-white text-sm font-bold shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all">
+              className="flex items-center gap-2 px-6 py-2.5 rounded-xl bg-gradient-to-r from-primary to-[hsl(var(--trust-safe))] text-foreground text-sm font-bold shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all">
               <Sparkles className="h-4 w-4" /> Launch
             </button>
           ) : (

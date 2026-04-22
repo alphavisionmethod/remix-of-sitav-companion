@@ -17,6 +17,7 @@ import { getBluetoothDaemon } from "@/lib/os-services/btd";
 import { getPowerDaemon } from "@/lib/os-services/powerd";
 import { getSearchIndexer } from "@/lib/os-services/search-indexer";
 import { getHelpEngine } from "@/lib/os-services/help-engine";
+import { PageShell } from "@/components/sita/PageShell";
 
 export default function NetworkUtility() {
   const wifi = getWifiDaemon().getState();
@@ -47,7 +48,7 @@ export default function NetworkUtility() {
   ];
 
   return (
-    <div className="space-y-6 p-6 max-w-6xl mx-auto">
+    <PageShell width="wide">
       <SitaPageHeader
         icon={<Wifi className="h-6 w-6" />}
         title="Network & Connectivity Center"
@@ -309,6 +310,6 @@ export default function NetworkUtility() {
           </div>
         </TabsContent>
       </Tabs>
-    </div>
+    </PageShell>
   );
 }

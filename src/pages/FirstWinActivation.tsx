@@ -223,7 +223,7 @@ function ActivationSequence({
               transition={{ type: "spring", delay: 0.2, damping: 15 }}
               className="inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-[hsl(var(--trust-safe))] to-[hsl(var(--trust-safe))]/60 shadow-lg shadow-[hsl(var(--trust-safe))]/20 mb-4"
             >
-              <Sparkles className="h-7 w-7 text-white" />
+              <Sparkles className="h-7 w-7 text-foreground" />
             </motion.div>
             <p className="text-lg font-bold text-foreground">Your first win is ready</p>
             <p className="text-sm text-muted-foreground mt-1">Entering your operating environment…</p>

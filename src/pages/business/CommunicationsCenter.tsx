@@ -156,7 +156,7 @@ const CommunicationsCenter = () => {
               <input className="w-full rounded-lg border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_100%/0.04)] px-3 py-2 text-sm text-[hsl(0_0%_85%)] placeholder:text-[hsl(0_0%_40%)] focus:outline-none focus:ring-1 focus:ring-[hsl(265_55%_58%/0.3)]" placeholder="Subject" value={form.subject} onChange={e => setForm(f => ({ ...f, subject: e.target.value }))} />
               <textarea className="w-full rounded-lg border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_100%/0.04)] px-3 py-2 text-sm text-[hsl(0_0%_85%)] placeholder:text-[hsl(0_0%_40%)] focus:outline-none focus:ring-1 focus:ring-[hsl(265_55%_58%/0.3)]" placeholder="Message body..." rows={4} value={form.body} onChange={e => setForm(f => ({ ...f, body: e.target.value }))} />
               <div className="flex gap-2">
-                <button onClick={handleSubmit} className="px-4 py-2 rounded-lg bg-[hsl(265_55%_58%)] text-white text-xs font-medium hover:bg-[hsl(265_55%_50%)] transition-colors micro-press">Create</button>
+                <button onClick={handleSubmit} className="px-4 py-2 rounded-lg bg-[hsl(265_55%_58%)] text-foreground text-xs font-medium hover:bg-[hsl(265_55%_50%)] transition-colors micro-press">Create</button>
                 <button onClick={resetForm} className="px-4 py-2 rounded-lg border border-[hsl(0_0%_100%/0.06)] text-[hsl(0_0%_60%)] text-xs hover:bg-[hsl(0_0%_100%/0.04)] transition-colors">Cancel</button>
               </div>
             </AppSurface>
@@ -219,7 +219,7 @@ const CommunicationsCenter = () => {
 
       <div className="flex gap-2">
         {["draft", "review"].includes(selected.status) && (
-          <button onClick={() => handleSend(selected.id)} className="flex-1 flex items-center justify-center gap-1.5 rounded-lg bg-[hsl(265_55%_58%)] px-3 py-2 text-xs font-medium text-white hover:bg-[hsl(265_55%_50%)] transition-colors micro-press">
+          <button onClick={() => handleSend(selected.id)} className="flex-1 flex items-center justify-center gap-1.5 rounded-lg bg-[hsl(265_55%_58%)] px-3 py-2 text-xs font-medium text-foreground hover:bg-[hsl(265_55%_50%)] transition-colors micro-press">
             <Send className="h-3.5 w-3.5" /> Send
           </button>
         )}

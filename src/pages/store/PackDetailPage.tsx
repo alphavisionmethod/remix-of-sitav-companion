@@ -72,10 +72,10 @@ const PackDetailPage = () => {
           <div>
             <div className="flex items-center gap-3 mb-4">
               <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white/15 backdrop-blur-sm">
-                <Icon className="h-7 w-7 text-white" />
+                <Icon className="h-7 w-7 text-foreground" />
               </div>
               <div>
-                <h1 className="font-display text-2xl font-bold text-white">{pack.name}</h1>
+                <h1 className="font-display text-2xl font-bold text-foreground">{pack.name}</h1>
                 <p className="text-sm text-white/70">{pack.subtitle}</p>
               </div>
             </div>
@@ -102,19 +102,19 @@ const PackDetailPage = () => {
             {installed ? (
               <div className="flex flex-col items-end gap-2">
                 <PackStatusBadge status={state!.status} />
-                <button className="text-xs text-white/70 hover:text-white">Manage</button>
+                <button className="text-xs text-white/70 hover:text-foreground">Manage</button>
               </div>
             ) : installing ? (
-              <div className="rounded-lg bg-white/15 backdrop-blur-sm px-4 py-2 text-xs font-medium text-white animate-pulse">
+              <div className="rounded-lg bg-white/15 backdrop-blur-sm px-4 py-2 text-xs font-medium text-foreground animate-pulse">
                 Installing…
               </div>
             ) : (
               <div className="flex flex-col gap-2">
-                <button onClick={handleInstall} className="flex items-center gap-2 rounded-lg bg-white px-5 py-2.5 text-sm font-bold text-gray-900 hover:bg-white/90 transition-colors shadow-lg">
+                <button onClick={handleInstall} className="flex items-center gap-2 rounded-lg bg-card px-5 py-2.5 text-sm font-bold text-foreground hover:bg-white/90 transition-colors shadow-lg">
                   <Download className="h-4 w-4" /> Install Pack
                 </button>
                 {pack.trial_supported && (
-                  <button className="text-xs text-white/70 hover:text-white text-center">
+                  <button className="text-xs text-white/70 hover:text-foreground text-center">
                     or start {pack.trial_days}-day free trial
                   </button>
                 )}

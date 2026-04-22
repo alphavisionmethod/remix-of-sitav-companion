@@ -56,7 +56,7 @@ const MoneySettings = () => {
                             onClick={() => handleToggle(policy.id, policy.enabled)}
                             className={`relative h-5 w-9 rounded-full transition-colors cursor-pointer ${policy.enabled ? "bg-[hsl(152_55%_48%)]" : "bg-[hsl(0_0%_25%)]"}`}
                           >
-                            <div className={`absolute top-0.5 h-4 w-4 rounded-full bg-white shadow transition-transform ${policy.enabled ? "translate-x-4" : "translate-x-0.5"}`} />
+                            <div className={`absolute top-0.5 h-4 w-4 rounded-full bg-card shadow transition-transform ${policy.enabled ? "translate-x-4" : "translate-x-0.5"}`} />
                           </button>
                         </div>
                         <p className={SITA_TYPE.timelineMeta + " mt-0.5"}>{policy.description}</p>

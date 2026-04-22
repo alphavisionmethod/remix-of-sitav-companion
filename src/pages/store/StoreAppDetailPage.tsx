@@ -42,10 +42,10 @@ const AppDetailPage = () => {
         <div className="relative z-10">
           <div className="flex items-center gap-4 mb-4">
             <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-white/15 backdrop-blur-sm">
-              <Icon className="h-8 w-8 text-white" />
+              <Icon className="h-8 w-8 text-foreground" />
             </div>
             <div>
-              <h1 className="font-display text-2xl font-bold text-white">{app.name}</h1>
+              <h1 className="font-display text-2xl font-bold text-foreground">{app.name}</h1>
               <p className="text-sm text-white/70">{app.subtitle}</p>
               <div className="flex items-center gap-2 mt-1">
                 <span className="text-[10px] text-white/50 capitalize">{app.domain} domain</span>

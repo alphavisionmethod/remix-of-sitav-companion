@@ -4,14 +4,15 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useDisplayMode } from "@/contexts/AppearanceContext";
 import { Moon, Sun, Eye, Volume2, VolumeX, Minimize2, Maximize2 } from "lucide-react";
+import { PageShell } from "@/components/sita/PageShell";
 
 const CalmFocusMode = () => {
   const { mode, setMode, isFocus, isCalm, toggleFocus, toggleCalm } = useDisplayMode();
 
   return (
-    <div className="space-y-6 p-6 max-w-3xl mx-auto">
+    <PageShell width="narrow">
       <div>
-        <h1 className="text-2xl font-bold tracking-tight text-foreground">Display Modes</h1>
+        <h1 className="text-xl sm:text-2xl font-semibold tracking-tight text-foreground">Display Modes</h1>
         <p className="text-muted-foreground mt-1">
           Control how SITA presents information. Choose a mode that matches your current state.
         </p>
@@ -98,7 +99,7 @@ const CalmFocusMode = () => {
           </div>
         </CardContent>
       </Card>
-    </div>
+    </PageShell>
   );
 };
 

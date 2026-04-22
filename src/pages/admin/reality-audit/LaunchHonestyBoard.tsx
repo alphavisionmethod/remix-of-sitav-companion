@@ -70,7 +70,7 @@ const LaunchHonestyBoard = () => {
               const pct = (dist[s] / summary.total) * 100;
               const bg = { presentational: "bg-red-500", simulated: "bg-amber-500", persisted: "bg-blue-500", proven: "bg-emerald-500" }[s];
               return pct > 0 ? (
-                <div key={s} className={`${bg} flex items-center justify-center text-[10px] font-bold text-white`} style={{ width: `${pct}%` }}>
+                <div key={s} className={`${bg} flex items-center justify-center text-[10px] font-bold text-foreground`} style={{ width: `${pct}%` }}>
                   {dist[s]}
                 </div>
               ) : null;

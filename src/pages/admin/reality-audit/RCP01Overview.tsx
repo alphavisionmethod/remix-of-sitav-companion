@@ -59,7 +59,7 @@ const RCP01Overview = () => {
             {(["presentational", "simulated", "persisted", "proven"] as RealityState[]).map(s => {
               const pct = (stats.distribution[s] / stats.totalFeatures) * 100;
               return pct > 0 ? (
-                <div key={s} className={`${stateColors[s]} flex items-center justify-center text-xs font-bold text-white`} style={{ width: `${pct}%` }}>
+                <div key={s} className={`${stateColors[s]} flex items-center justify-center text-xs font-bold text-foreground`} style={{ width: `${pct}%` }}>
                   {stats.distribution[s]}
                 </div>
               ) : null;

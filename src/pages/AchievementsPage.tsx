@@ -77,7 +77,7 @@ function XPBar() {
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-3">
           <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-[hsl(var(--sita-gold))] to-orange-400 flex items-center justify-center shadow-lg">
-            <Star className="h-6 w-6 text-white" />
+            <Star className="h-6 w-6 text-foreground" />
           </div>
           <div>
             <p className="text-xs text-muted-foreground">Founder Level</p>
@@ -167,7 +167,7 @@ function AchievementCard({ achievement, index }: { achievement: Achievement; ind
             : "bg-muted/40"
         )}>
           {achievement.unlocked ? (
-            <Icon className="h-5 w-5 text-white" />
+            <Icon className="h-5 w-5 text-foreground" />
           ) : (
             <Lock className="h-4 w-4 text-muted-foreground" />
           )}
@@ -215,7 +215,7 @@ export default function AchievementsPage() {
         {/* Header */}
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex items-center gap-3">
           <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-[hsl(var(--sita-gold))] to-orange-400 flex items-center justify-center">
-            <Trophy className="h-5 w-5 text-white" />
+            <Trophy className="h-5 w-5 text-foreground" />
           </div>
           <div>
             <h1 className="text-xl font-semibold text-foreground">Achievements</h1>

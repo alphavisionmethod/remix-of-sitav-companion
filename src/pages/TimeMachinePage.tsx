@@ -257,7 +257,7 @@ export default function TimeMachinePage() {
         <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
           <div className="flex items-center gap-3 mb-2">
             <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-[hsl(var(--sita-purple))] to-[hsl(var(--sita-gold))] flex items-center justify-center">
-              <Clock className="h-5 w-5 text-white" />
+              <Clock className="h-5 w-5 text-foreground" />
             </div>
             <div>
               <h1 className="text-xl font-semibold text-foreground">Time Machine</h1>

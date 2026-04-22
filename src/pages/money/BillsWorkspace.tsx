@@ -360,7 +360,7 @@ const BillsWorkspace = () => {
             <textarea className="mt-1 w-full rounded-lg border border-[hsl(0_0%_100%/0.08)] bg-[hsl(0_0%_100%/0.04)] px-3 py-2.5 text-sm text-[hsl(0_0%_90%)] resize-none" rows={3} value={form.notes} onChange={e => setForm({ ...form, notes: e.target.value })} />
           </div>
           <div className="flex gap-2 pt-2">
-            <button type="submit" className="flex-1 px-4 py-2.5 rounded-lg bg-[hsl(152_55%_48%)] hover:bg-[hsl(152_55%_42%)] text-white text-[13px] font-medium transition-colors">{editId ? "Update Bill" : "Create Bill"}</button>
+            <button type="submit" className="flex-1 px-4 py-2.5 rounded-lg bg-[hsl(152_55%_48%)] hover:bg-[hsl(152_55%_42%)] text-foreground text-[13px] font-medium transition-colors">{editId ? "Update Bill" : "Create Bill"}</button>
             <button type="button" onClick={() => { setShowForm(false); setEditId(null); }} className="px-4 py-2.5 rounded-lg bg-[hsl(0_0%_100%/0.06)] hover:bg-[hsl(0_0%_100%/0.10)] text-[hsl(0_0%_70%)] text-[13px] transition-colors">Cancel</button>
           </div>
         </form>

@@ -129,7 +129,7 @@ const PackStorePage = () => {
             {installed.map(pack => (
               <div key={pack.pack_id} onClick={() => navigate(`/store/packs/${pack.pack_id}`)} className="flex items-center gap-3 rounded-xl border border-border bg-card p-3 cursor-pointer transition-all hover:shadow-card-hover">
                 <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br ${pack.gradient}`}>
-                  {(() => { const Icon = resolveIcon(pack.icon); return <Icon className="h-4 w-4 text-white" />; })()}
+                  {(() => { const Icon = resolveIcon(pack.icon); return <Icon className="h-4 w-4 text-foreground" />; })()}
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium text-foreground truncate">{pack.name}</p>

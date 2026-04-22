@@ -7,6 +7,7 @@ import {
   PenTool, Plus, Layout, Workflow, Calendar, Users, Target,
   Lightbulb, GripVertical, Palette, Link2,
 } from "lucide-react";
+import { PageShell } from "@/components/sita/PageShell";
 
 type CanvasZone = "ideas" | "planning" | "in-progress" | "done";
 
@@ -39,7 +40,7 @@ export default function PlanningCanvas() {
   const [cards] = useState(mockCards);
 
   return (
-    <div className="space-y-6 p-6 max-w-7xl mx-auto">
+    <PageShell width="wide">
       <SitaPageHeader
         icon={<PenTool className="h-6 w-6" />}
         title="Planning Canvas"
@@ -133,6 +134,6 @@ export default function PlanningCanvas() {
           </div>
         </CardContent>
       </Card>
-    </div>
+    </PageShell>
   );
 }

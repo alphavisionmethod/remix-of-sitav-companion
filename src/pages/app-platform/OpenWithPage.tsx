@@ -102,7 +102,7 @@ const OpenWithPage = () => {
         </div>
         <button onClick={() => setAlwaysUse(!alwaysUse)}
           className={cn("relative h-6 w-11 rounded-full transition-colors", alwaysUse ? "bg-[hsl(var(--trust-safe))]" : "bg-muted")}>
-          <div className={cn("absolute top-0.5 h-5 w-5 rounded-full bg-white shadow transition-transform", alwaysUse ? "translate-x-5" : "translate-x-0.5")} />
+          <div className={cn("absolute top-0.5 h-5 w-5 rounded-full bg-card shadow transition-transform", alwaysUse ? "translate-x-5" : "translate-x-0.5")} />
         </button>
       </div>
 
