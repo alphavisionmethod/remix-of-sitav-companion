@@ -389,7 +389,7 @@ export default function TasksWorkflowsCenter() {
           </Card>
         </TabsContent>
       </Tabs>
-    </div>
+    </motion.div>
   );
 }
 
