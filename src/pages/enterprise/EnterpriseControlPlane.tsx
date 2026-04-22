@@ -94,8 +94,8 @@ const EnterpriseControlPlane = () => {
       const { data: defs } = await fromTable("sla_definitions").select("*").eq("enabled", true);
       const { data: snaps } = await fromTable("sla_snapshots").select("*").order("computed_at", { ascending: false }).limit(100);
       if (!defs || !snaps) return null;
-      return (defs as any[]).map((def: any) => {
-        const latest = (snaps as any[]).find((s: any) => s.sla_id === def.id);
+      return defs.map((def) => {
+        const latest = snaps.find((s) => s.sla_id === def.id);
         return {
           name: def.name,
           actual: latest ? Number(latest.current_value) : def.target_value,

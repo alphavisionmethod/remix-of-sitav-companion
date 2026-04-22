@@ -24,7 +24,7 @@ export default function OwnerCopilotBriefings() {
 
   async function load() {
     setLoading(true);
-    const { data, error } = await supabase.functions.invoke("owner-copilot-bff?op=list", { method: "GET" } as any);
+    const { data, error } = await supabase.functions.invoke("owner-copilot-bff", { body: { op: "list" } });
     if (error) toast.error(error.message);
     setItems((data?.briefings as Briefing[]) ?? []);
     setLoading(false);
@@ -33,7 +33,7 @@ export default function OwnerCopilotBriefings() {
 
   async function decide(briefing_id: string, decision: "approved" | "declined" | "more_info") {
     const { error } = await supabase.functions.invoke("owner-copilot-bff?op=handoff", {
-      method: "POST" as any,
+      method: "POST",
       body: { briefing_id, decision, rationale: rationale[briefing_id] ?? null },
     });
     if (error) toast.error(error.message);

@@ -32,9 +32,9 @@ export default function TenantFederationBoard() {
       ]);
       const firstError = s.error ?? q.error ?? k.error;
       if (firstError) throw firstError;
-      setScopes((s.data as any) ?? []);
-      setQuotas((q.data as any) ?? []);
-      setKills((k.data as any) ?? []);
+      setScopes((s.data ?? []) as typeof scopes);
+      setQuotas((q.data ?? []) as typeof quotas);
+      setKills((k.data ?? []) as typeof kills);
     } catch (e) {
       setError(e instanceof Error ? e.message : String(e));
     } finally {

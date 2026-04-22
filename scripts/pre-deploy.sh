@@ -24,6 +24,17 @@ step "Dead handlers"
 DEAD=$(grep -rn 'onClick={() => {}}' src/pages/ 2>/dev/null | wc -l | tr -d ' ')
 if [ "$DEAD" -gt 0 ]; then fail "$DEAD dead onClick handlers"; else pass "No dead handlers"; fi
 
+step "as-any governance"
+if bash scripts/validators/check-no-as-any-pages.sh 2>&1; then pass "Zero as-any in pages"; else fail "as-any violations in pages"; fi
+
+step "Orphan page scan"
+bash scripts/validators/check-orphan-pages.sh 2>&1 || true
+pass "Orphan scan complete (advisory)"
+
+step "Service consumer scan"
+bash scripts/validators/check-service-consumers.sh 2>&1 || true
+pass "Service scan complete (advisory)"
+
 echo -e "\n══════ PRE-DEPLOY REPORT ══════"
 echo -e "$REPORT"
 if [ "$ERRORS" -gt 0 ]; then echo "🚫 BLOCKED — $ERRORS failures"; exit 1; else echo "✅ ALL PASSED"; exit 0; fi

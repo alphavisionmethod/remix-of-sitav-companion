@@ -318,10 +318,10 @@ export default function SLAMonitoringDashboard() {
                         <div className="flex-1">
                           <div className="flex items-center gap-2">
                             <AlertTriangle className="h-4 w-4 text-destructive shrink-0" />
-                            <span className="font-medium text-sm">{(b as any).name}</span>
+                            <span className="font-medium text-sm">{b.name}</span>
                           </div>
                           <p className="text-xs text-muted-foreground mt-1">
-                            Value: {b.current_value}{(b as any).unit} — Target: {b.target_value}{(b as any).unit}
+                            Value: {b.current_value}{b.unit} — Target: {b.target_value}{b.unit}
                           </p>
                         </div>
                         <div className="text-xs text-muted-foreground flex items-center gap-1 shrink-0">

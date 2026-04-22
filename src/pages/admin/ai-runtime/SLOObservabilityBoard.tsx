@@ -47,10 +47,10 @@ export default function SLOObservabilityBoard() {
       supabase.from("internal_agent_drift_findings").select("*").order("created_at", { ascending: false }).limit(20),
       supabase.from("internal_agent_canary_runs").select("*").order("started_at", { ascending: false }).limit(20),
     ]);
-    setSlos((s.data as any) ?? []);
-    setAnomalies((a.data as any) ?? []);
-    setDrift((d.data as any) ?? []);
-    setCanaries((c.data as any) ?? []);
+    setSlos((s.data ?? []) as typeof slos);
+    setAnomalies((a.data ?? []) as typeof anomalies);
+    setDrift((d.data ?? []) as typeof drift);
+    setCanaries((c.data ?? []) as typeof canaries);
     setLoading(false);
   }
   useEffect(() => { refresh(); }, []);

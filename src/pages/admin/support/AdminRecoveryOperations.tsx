@@ -52,9 +52,9 @@ function useRecoveryGate() {
     queryKey: ["recovery_role_check", user?.id],
     enabled: !!user,
     queryFn: async () => {
-      const { data, error } = await supabase.from("user_roles" as any).select("role").eq("user_id", user!.id);
+      const { data, error } = await supabase.from("user_roles").select("role").eq("user_id", user!.id);
       if (error) return [];
-      return (data as any[]).map((r: any) => String(r.role));
+      return (data ?? []).map((r) => String(r.role));
     },
     staleTime: 60_000,
   });

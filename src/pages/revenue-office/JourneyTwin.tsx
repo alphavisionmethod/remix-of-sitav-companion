@@ -44,7 +44,7 @@ export default function JourneyTwin() {
   const JOURNEY_STAGES = (liveJourneyStages && liveJourneyStages.length > 0 ? liveJourneyStages.map((s: any) => ({
     stage: s.stage_name || s.name || "Unknown",
     metrics: { entered: s.entered_count || 0, conversion: `${s.conversion_rate || 0}%`, exited: s.exited_count || 0 },
-    touchpoints: (s.touchpoints as any[]) || [],
+    touchpoints: (Array.isArray(s.touchpoints) ? s.touchpoints : []) as string[],
   })) : DEMO_JOURNEY_STAGES);
   const [expanded, setExpanded] = useState<string | null>(null);
 
