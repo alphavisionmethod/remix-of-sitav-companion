@@ -24,7 +24,7 @@ export const PAGE_OWNER_MAP: readonly PageOwnerEntry[] = [
   { page: "src/pages/MoneyShellPage.tsx", domain: "money", owner: "finance", riskTier: "R3" },
   { page: "src/pages/ConciergeShellPage.tsx", domain: "concierge", owner: "intelligence", riskTier: "R2" },
   { page: "src/pages/RevenueOfficeShellPage.tsx", domain: "revenue", owner: "finance", riskTier: "R2" },
-  { page: "src/pages/InvestmentShellPage.tsx", domain: "investment", owner: "finance", riskTier: "R3" },
+  { page: "src/pages/investment-office/InvestmentShellPage.tsx", domain: "investment", owner: "finance", riskTier: "R3" },
   { page: "src/pages/DigitalPresenceShellPage.tsx", domain: "digital-presence", owner: "marketing", riskTier: "R1" },
   { page: "src/pages/ConnectorsPage.tsx", domain: "connectors", owner: "integrations", riskTier: "R2" },
   { page: "src/pages/AdvisorsPage.tsx", domain: "advisors", owner: "intelligence", riskTier: "R2" },
