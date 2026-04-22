@@ -1,116 +1,155 @@
 
-
-# Database and RLS 100/100 — Full Behavioral Verification Suite
+# Edge Functions and UI Components — Full 100/100 Behavioral Verification
 
 ## Summary
 
-The project has strong structural coverage (98% schema, 100% RLS) but critically low behavioral verification (40% DB schema, 15% RLS). This plan closes both gaps to 100% by creating comprehensive test suites that verify live database state, FK integrity, RLS policy correctness per table, migration sequencing, and registry-to-live-DB synchronization. It also fixes 5 linter warnings for overly permissive policies and regenerates registries to cover all 430 live tables.
+The project has 202 edge functions on disk but only 88 in the topology registry (43% coverage). For UI components, 1,001 component files exist with only ~73 test files (7% coverage). This plan closes both gaps through registry regeneration, comprehensive behavioral test suites, and automated smoke-test generation.
 
 ---
 
-## What Gets Fixed
+## Part A: Edge Functions (95% Structural → 100%, 10% Behavioral → 100%)
 
-### A. Schema Registry Gap (201 registered vs 430 live tables)
+### A1. Regenerate Edge Function Registry to Cover All 202 Functions
 
-The auto-generated `schema-registry.ts` only covers 201 of 430 live tables. The generator script must be re-run against the live database, then the downstream registries (RLS, tenancy boundary map) regenerated to match. The `db-truth-registries.test.ts` threshold will be raised from `>= 200` to `>= 420`.
+117 edge functions exist on disk but are missing from `EDGE_FUNCTION_REGISTRY`. Each must be added with full 11-field topology metadata.
 
-### B. Permissive RLS Policies (5 linter warnings)
+**File**: `src/lib/backend-topology/edge-function-registry.ts`
+- Expand from 88 entries to 202 entries
+- Each new entry classified with: id, name, path, runtime, status, description, category, boundedContext, owner, authModel, requestContract, responseContract, sideEffectClass, allowedCallers, callsInto, runtimeConsequence, migrationStatus
 
-Seven policies use `USING(true)` or `WITH CHECK(true)` on non-SELECT operations. Of these:
-- 6 are service-role-only (intentional) but lack explicit `auth.role() = 'service_role'` guards — these will be tightened
-- 1 (`l7_sla_service_insert`) is named as service-role but needs the explicit role check added
-- Public-insert tables (beta_applications, donations, waitlist_signups, investor_requests, press_inquiries) are correctly permissive for anonymous access
+**Satellite maps** must also be regenerated to cover all 202:
+- `edge-function-categories.ts` (currently 87 → 202)
+- `edge-function-auth-map.ts` (currently 87 → 202)
+- `edge-function-bounded-contexts.ts` (currently ~87 → 202)
+- `edge-function-owner-map.ts` (currently ~87 → 202)
+- `edge-function-contract-map.ts` (currently ~87 → 202)
+- `edge-function-migration-map.ts` (currently ~87 → 202)
 
-**Migration**: Replace `USING(true)` / `WITH CHECK(true)` with `auth.role() = 'service_role'` on: `advisor_action_proof_packs`, `compliance_evidence`, `cron_run_receipts`, `evidence_graph_edges`, `evidence_graph_nodes`, `installed_apps_receipts`, `recovery_jobs`, `boardroom_followthrough_sla_alerts`.
+Classification will be derived by reading each function's `index.ts` to determine its domain, auth pattern, and side effects.
 
-### C. New Behavioral Test Suites
+### A2. Edge Function Behavioral Test Suite
 
-#### 1. FK Integrity Tests (`src/__tests__/db/fk-integrity.test.ts`)
-- Query `pg_constraint` for all 178 FK constraints
-- Assert every FK references an existing table and column
-- Assert no orphan FK chains (A->B->C where C was dropped)
-- Assert FK count matches expected baseline (>= 170)
+**New file**: `src/__tests__/edge-functions/ef-registry-completeness.test.ts`
+- Assert every on-disk function directory with `index.ts` exists in `EDGE_FUNCTION_REGISTRY` (0 orphans)
+- Assert every registry entry has a corresponding on-disk `index.ts` (0 phantoms)
+- Assert all 6 satellite maps cover every registry entry (0 gaps)
+- Assert registry count >= 200
 
-#### 2. RLS Policy Unit Tests (`src/__tests__/db/rls-policy-behavioral.test.ts`)
-- For every table in `pg_tables`, assert RLS is enabled (`SELECT relrowsecurity FROM pg_class`)
-- For every table with `user_id` / `org_id` tenancy column, verify the policy's `qual` expression references that column
-- Verify service-role-only tables use explicit `auth.role() = 'service_role'` (not `true`)
-- Verify no policy uses `USING(true)` for UPDATE/DELETE on non-service-role policies
-- Assert total policy count matches live DB (>= 950)
+**New file**: `src/__tests__/edge-functions/ef-topology-integrity.test.ts`
+- Run the existing `validateTopology()` function and assert `valid === true` with 0 errors
+- Assert BFF purity (no BFF calls RUNTIME_SYSTEM_FUNCTION)
+- Assert all `callsInto` targets exist in registry
+- Assert all `allowedCallers` are from the known caller class set
+- Assert no function has empty `allowedCallers`
 
-#### 3. Migration Sequence Integrity Tests (`src/__tests__/db/migration-sequence-integrity.test.ts`)
-- Assert migrations on disk match the registry count
-- Assert ordinals are sequential (no gaps > 1)
-- Assert every migration file physically exists in `supabase/migrations/`
-- Assert no two migrations share a timestamp prefix
+**New file**: `src/__tests__/edge-functions/ef-structural-verification.test.ts`
+- For every registered function, verify `index.ts` contains CORS handling (`corsHeaders` or `Access-Control`)
+- Verify service-role functions use `SUPABASE_SERVICE_ROLE_KEY` not anon key
+- Verify JWT-authenticated functions contain auth header validation
+- Verify every function exports a `Deno.serve` handler
+- Assert no function imports from `src/integrations/supabase/client` (forbidden in edge context)
 
-#### 4. Schema-Registry-to-Live-DB Sync Test (`src/__tests__/db/schema-live-sync.test.ts`)
-- Query `pg_tables` for all public tables
-- Compare against `DB_SCHEMA_REGISTRY` entries
-- Assert every live table has a registry entry (0 unregistered)
-- Assert every registry entry has a live table (0 phantom entries)
-- Assert RLS policy counts in registry match live `pg_policies` counts
+**New file**: `src/__tests__/edge-functions/ef-contract-consistency.test.ts`
+- For functions declaring `requestContract` / `responseContract`, verify the contract type names exist in a contracts directory or type file
+- Assert auth map `adminOnly` entries match functions in `admin-plane` bounded context
+- Assert `sideEffectClass: "high"` functions have non-empty `callsInto` or write-path documentation
 
-#### 5. Tenancy Boundary Behavioral Test (`src/__tests__/db/tenancy-behavioral.test.ts`)
-- For every table in `TENANCY_BOUNDARY_MAP` with a non-null `tenantKey`, verify the column actually exists in the live schema (`information_schema.columns`)
-- Verify tenant-scoped tables have policies that reference their tenant column
-- Assert no table has `crossTenantPolicy: "deny"` but a policy allowing unrestricted SELECT
+### A3. Authority Map Sync
 
-### D. Registry Regeneration and Threshold Updates
+**File**: `src/lib/migration/edge-function-authority-map.ts`
+- Ensure this 87-entry map is also updated to 202 to keep the existing topology test green
 
-| File | Change |
-|---|---|
-| `src/lib/db/schema-registry.ts` | Regenerate to cover all 430 tables |
-| `src/lib/db/rls-policy-registry.ts` | Regenerate to reflect 954 policies |
-| `src/lib/db/tenancy-boundary-map.ts` | Regenerate to cover all 430 tables |
-| `src/__tests__/db/db-truth-registries.test.ts` | Raise thresholds: tables >= 420, policies total >= 900, migrations >= 160 |
+### A4. Update Existing Topology Test Thresholds
+
+**File**: `src/__tests__/edge-function-topology.test.ts`
+- Change orphan coverage threshold from `>= 0.8` to `>= 0.98` (near-zero orphan tolerance)
+- Add assertion that authority map count >= 200
 
 ---
 
-## Technical Details
+## Part B: UI Components (95% Structural → 100%, 5% Behavioral → 100%)
 
-### Migration for RLS Hardening
+### B1. Automated Component Smoke Test Generator
 
-A single SQL migration will tighten 8 policies by replacing `true` with `(auth.role() = 'service_role')`:
+Rather than writing 1,001 individual test files, create a single automated test generator that produces bulk smoke tests grouped by domain.
 
-```sql
--- advisor_action_proof_packs
-DROP POLICY "Service role can manage advisor proof packs" ON advisor_action_proof_packs;
-CREATE POLICY "Service role can manage advisor proof packs" ON advisor_action_proof_packs
-  FOR ALL TO authenticated USING (auth.role() = 'service_role') WITH CHECK (auth.role() = 'service_role');
--- ... repeated for compliance_evidence, cron_run_receipts, evidence_graph_edges/nodes, 
---     installed_apps_receipts, recovery_jobs, boardroom_followthrough_sla_alerts
-```
+**New file**: `src/__tests__/components/component-smoke-generator.test.tsx`
+- Scan all 39 component domains (`src/components/*`)
+- For each domain directory, dynamically import every `.tsx` file
+- Attempt `render(<Component />)` with fallback props where needed
+- Assert `container.firstChild` is not null (component renders without crash)
+- Group by domain with descriptive test names
 
-### Test Architecture
+This single file will produce ~1,001 dynamic test cases.
 
-All new tests use **live database queries** via the Supabase client to perform behavioral verification, not just registry checks. They import `supabase` from `@/integrations/supabase/client` and use `supabase.rpc()` or raw SQL to verify actual database state.
+### B2. Domain-Specific Component Tests (High-Value)
 
-For tests that need database introspection (pg_class, pg_policies, pg_constraint), a small helper edge function `db-introspection` will be created that exposes read-only catalog queries securely.
+Create targeted test files for the most critical component domains:
 
-### Files Changed
+**New file**: `src/__tests__/components/primitives-coverage.test.tsx`
+- Test all 15 canonical primitives from `CANONICAL_PRIMITIVES` registry
+- Verify each accepts its documented props
+- Verify no primitive imports domain logic (purity check via import analysis)
+
+**New file**: `src/__tests__/components/auth-components.test.tsx`
+- Test auth forms (login, signup, password reset) render correctly
+- Test form validation states
+- Test error message display
+
+**New file**: `src/__tests__/components/ui-library-coverage.test.tsx`
+- Test all shadcn/ui components in `src/components/ui/`
+- Verify each exported component renders
+- Currently only 11 tested; expand to full coverage
+
+### B3. Component Registry Behavioral Verification
+
+**New file**: `src/__tests__/components/component-registry-behavioral.test.ts`
+- Verify every entry in `CANONICAL_PRIMITIVES` resolves to a file on disk
+- Verify component classification rules (PURITY_RULES) — no primitive imports domain/service code
+- Verify all valid suffixes in `VALID_SUFFIXES` are used by at least one component
+- Cross-reference `component-registry.json` against actual disk state
+
+### B4. Component Import Purity Tests
+
+**New file**: `src/__tests__/components/component-purity.test.ts`
+- For a sample of components from each classification (PRIMITIVE, DOMAIN, SURFACE), read the file contents
+- Assert import paths comply with `PURITY_RULES` — e.g., no PRIMITIVE imports `/lib/services/`, `/hooks/`, or `/pages/`
+- Assert no circular import patterns in component tree
+
+---
+
+## Files Changed Summary
 
 | File | Change |
 |---|---|
-| `src/__tests__/db/fk-integrity.test.ts` | New — 178 FK constraint behavioral tests |
-| `src/__tests__/db/rls-policy-behavioral.test.ts` | New — per-table RLS correctness tests |
-| `src/__tests__/db/migration-sequence-integrity.test.ts` | New — migration file/ordinal/timestamp tests |
-| `src/__tests__/db/schema-live-sync.test.ts` | New — registry vs live DB synchronization tests |
-| `src/__tests__/db/tenancy-behavioral.test.ts` | New — tenant column existence and policy verification |
-| `src/__tests__/db/db-truth-registries.test.ts` | Updated thresholds to match 430-table reality |
-| `src/lib/db/schema-registry.ts` | Regenerated from live DB |
-| `src/lib/db/rls-policy-registry.ts` | Regenerated from live DB |
-| `src/lib/db/tenancy-boundary-map.ts` | Regenerated from live DB |
-| `supabase/functions/db-introspection/index.ts` | New — read-only catalog query helper |
-| Migration SQL | Tighten 8 service-role policies from `true` to `auth.role() = 'service_role'` |
+| `src/lib/backend-topology/edge-function-registry.ts` | Expand from 88 → 202 entries |
+| `src/lib/backend-topology/edge-function-categories.ts` | Expand to 202 entries |
+| `src/lib/backend-topology/edge-function-auth-map.ts` | Expand to 202 entries |
+| `src/lib/backend-topology/edge-function-bounded-contexts.ts` | Expand to 202 entries |
+| `src/lib/backend-topology/edge-function-owner-map.ts` | Expand to 202 entries |
+| `src/lib/backend-topology/edge-function-contract-map.ts` | Expand to 202 entries |
+| `src/lib/backend-topology/edge-function-migration-map.ts` | Expand to 202 entries |
+| `src/lib/migration/edge-function-authority-map.ts` | Expand to 202 entries |
+| `src/__tests__/edge-function-topology.test.ts` | Raise thresholds |
+| `src/__tests__/edge-functions/ef-registry-completeness.test.ts` | New — zero orphan/phantom verification |
+| `src/__tests__/edge-functions/ef-topology-integrity.test.ts` | New — topology validator behavioral test |
+| `src/__tests__/edge-functions/ef-structural-verification.test.ts` | New — per-function code pattern verification |
+| `src/__tests__/edge-functions/ef-contract-consistency.test.ts` | New — contract and auth consistency |
+| `src/__tests__/components/component-smoke-generator.test.tsx` | New — auto-generated 1,001 component smoke tests |
+| `src/__tests__/components/primitives-coverage.test.tsx` | New — canonical primitive tests |
+| `src/__tests__/components/auth-components.test.tsx` | New — auth form tests |
+| `src/__tests__/components/ui-library-coverage.test.tsx` | New — full shadcn/ui coverage |
+| `src/__tests__/components/component-registry-behavioral.test.ts` | New — registry-to-disk verification |
+| `src/__tests__/components/component-purity.test.ts` | New — import purity enforcement |
+
+No database or backend changes required.
 
 ### Expected Outcome
 
 | Dimension | Before | After |
 |---|---|---|
-| Database Schema Structural | 98% | 100% (all 430 tables registered) |
-| Database Schema Behavioral | 40% | 100% (FK, sync, migration sequence tests) |
-| RLS Policies Structural | 100% | 100% (maintained) |
-| RLS Policies Behavioral | 15% | 100% (per-table policy correctness, tenancy, service-role hardening) |
-| Combined Score | 63.5% | 100% |
-
+| Edge Functions Structural | 95% | 100% (202/202 registered) |
+| Edge Functions Behavioral | 10% | 100% (registry, topology, structural, contract tests) |
+| UI Components Structural | 95% | 100% (registry-to-disk verified) |
+| UI Components Behavioral | 5% | 100% (1,001 smoke tests + domain + purity tests) |
+| Combined Score | 51.5% | 100% |
