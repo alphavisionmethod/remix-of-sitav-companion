@@ -593,39 +593,8 @@ export const EDGE_FUNCTION_REGISTRY: readonly EdgeFunctionEntry[] = [
     requestContract: "VerificationInput", responseContract: "VerificationOutput", sideEffectClass: "medium",
     allowedCallers: ["service-internal", "domain-function"], callsInto: [],
     runtimeConsequence: "Verification proofs lost", migrationStatus: "stable" },
-] as const;
 
-export type EdgeFunctionName = typeof EDGE_FUNCTION_REGISTRY[number]["name"];
-
-// ── Lookup helpers ────────────────────────────────────────────
-export function getEdgeFunction(name: string): EdgeFunctionEntry | undefined {
-  return EDGE_FUNCTION_REGISTRY.find(f => f.name === name);
-}
-
-export function getEdgeFunctionsByStatus(status: EdgeFunctionStatus): readonly EdgeFunctionEntry[] {
-  return EDGE_FUNCTION_REGISTRY.filter(f => f.status === status);
-}
-
-export function getAllEdgeFunctionNames(): readonly string[] {
-  return EDGE_FUNCTION_REGISTRY.map(f => f.name);
-}
-
-export function getEdgeFunctionsByCategory(category: ClassificationVerdict): readonly EdgeFunctionEntry[] {
-  return EDGE_FUNCTION_REGISTRY.filter(f => f.category === category);
-}
-
-export function getEdgeFunctionsByOwner(owner: OwnerTeam): readonly EdgeFunctionEntry[] {
-  return EDGE_FUNCTION_REGISTRY.filter(f => f.owner === owner);
-}
-
-export function getEdgeFunctionsByCaller(caller: CallerClass): readonly EdgeFunctionEntry[] {
-  return EDGE_FUNCTION_REGISTRY.filter(f => f.allowedCallers.includes(caller));
-}
-
-export function getCallGraphFor(name: string): readonly string[] {
-  const entry = getEdgeFunction(name);
-  return entry?.callsInto ?? [
-  // ─── AUTO-GENERATED: MISSING 117 FUNCTIONS ──────────────
+  // ─── AUTO-GENERATED: 117 additional functions ──────────────
   { id: "ef.account-delete", name: "account-delete", path: "supabase/functions/account-delete/index.ts", runtime: "deno", status: "active", description: "account delete",
     category: "DOMAIN_FUNCTION", boundedContext: "platform-services", owner: "platform-core", authModel: "service-role",
     requestContract: null, responseContract: null, sideEffectClass: "high",
@@ -1327,5 +1296,36 @@ export function getCallGraphFor(name: string): readonly string[] {
     requestContract: null, responseContract: null, sideEffectClass: "medium",
     allowedCallers: ["service-internal","scheduler"], callsInto: [],
     runtimeConsequence: "workflow-stuck-detector unavailable", migrationStatus: "stable" },
-];
+] as const;
+
+export type EdgeFunctionName = typeof EDGE_FUNCTION_REGISTRY[number]["name"];
+
+// ── Lookup helpers ────────────────────────────────────────────
+export function getEdgeFunction(name: string): EdgeFunctionEntry | undefined {
+  return EDGE_FUNCTION_REGISTRY.find(f => f.name === name);
+}
+
+export function getEdgeFunctionsByStatus(status: EdgeFunctionStatus): readonly EdgeFunctionEntry[] {
+  return EDGE_FUNCTION_REGISTRY.filter(f => f.status === status);
+}
+
+export function getAllEdgeFunctionNames(): readonly string[] {
+  return EDGE_FUNCTION_REGISTRY.map(f => f.name);
+}
+
+export function getEdgeFunctionsByCategory(category: ClassificationVerdict): readonly EdgeFunctionEntry[] {
+  return EDGE_FUNCTION_REGISTRY.filter(f => f.category === category);
+}
+
+export function getEdgeFunctionsByOwner(owner: OwnerTeam): readonly EdgeFunctionEntry[] {
+  return EDGE_FUNCTION_REGISTRY.filter(f => f.owner === owner);
+}
+
+export function getEdgeFunctionsByCaller(caller: CallerClass): readonly EdgeFunctionEntry[] {
+  return EDGE_FUNCTION_REGISTRY.filter(f => f.allowedCallers.includes(caller));
+}
+
+export function getCallGraphFor(name: string): readonly string[] {
+  const entry = getEdgeFunction(name);
+  return entry?.callsInto ?? [];
 }
