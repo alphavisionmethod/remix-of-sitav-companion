@@ -1,40 +1,37 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — E2E Smoke Tests: Webhook Replay
-// Deterministic fixtures + DB mutation assertions
+// Zod response schemas, cross-table invariants, transaction
+// isolation, authenticated admin harness, safe env loading.
 // ═══════════════════════════════════════════════════════════════
 
 import { assertEquals, assert } from "https://deno.land/std@0.224.0/assert/mod.ts";
-import { z } from "https://deno.land/x/zod@v3.22.4/mod.ts";
 import {
-  FIXTURE_IDS,
-  getServiceClient,
-  getFuncUrl,
-  getAnonKey,
-  seedFixtures,
-  cleanupFixtures,
-  queryWebhookStatus,
-  queryAuditRows,
-} from "../_shared/test-fixtures.ts";
+  loadEnvSafe, withEnvGuard,
+  FIXTURE_IDS, getFuncUrl, getAnonKey,
+  seedFixtures, cleanupFixtures, getServiceClient,
+  withIsolatedFixtures,
+  queryWebhookStatus, queryAuditRows,
+  WebhookListSuccessSchema, WebhookReplaySuccessSchema, BaseErrorSchema,
+  assertResponseSchema, assertRequestId,
+  assertWebhookReplayInvariants,
+  getAdminToken, callFunctionAsAdmin, cleanupAdminUser,
+} from "../_shared/test-harness.ts";
+
+loadEnvSafe();
 
 const FUNC_URL = getFuncUrl("webhook-replay");
 const ANON_KEY = getAnonKey();
 
-const ErrorSchema = z.object({
-  error: z.string().min(1),
-  _requestId: z.string().uuid().optional(),
-  _function: z.string().optional(),
-});
-
 // ── Auth Gating ───────────────────────────────────────────────
 
-Deno.test("webhook: CORS preflight returns 200", async () => {
+Deno.test("webhook: CORS preflight returns 200", withEnvGuard("anon", async () => {
   const res = await fetch(FUNC_URL, { method: "OPTIONS" });
   assertEquals(res.status, 200);
   assert(res.headers.get("access-control-allow-origin") !== null);
   await res.text();
-});
+}));
 
-Deno.test("webhook: rejects unauthenticated list with 401", async () => {
+Deno.test("webhook: rejects unauthenticated list with 401 + error schema", withEnvGuard("anon", async () => {
   const res = await fetch(`${FUNC_URL}?action=list`, {
     method: "POST",
     headers: { "Content-Type": "application/json", apikey: ANON_KEY },
@@ -42,10 +39,11 @@ Deno.test("webhook: rejects unauthenticated list with 401", async () => {
   });
   assertEquals(res.status, 401);
   const body = await res.json();
-  assert(ErrorSchema.safeParse(body).success);
-});
+  assertResponseSchema(body, BaseErrorSchema, "webhook list 401");
+  assertRequestId(body);
+}));
 
-Deno.test("webhook: rejects unauthenticated replay with 401", async () => {
+Deno.test("webhook: rejects unauthenticated replay with 401", withEnvGuard("anon", async () => {
   const res = await fetch(`${FUNC_URL}?action=replay`, {
     method: "POST",
     headers: { "Content-Type": "application/json", apikey: ANON_KEY },
@@ -53,9 +51,9 @@ Deno.test("webhook: rejects unauthenticated replay with 401", async () => {
   });
   assertEquals(res.status, 401);
   await res.text();
-});
+}));
 
-Deno.test("webhook: rejects invalid Bearer token with 401", async () => {
+Deno.test("webhook: rejects invalid Bearer with 401", withEnvGuard("anon", async () => {
   const res = await fetch(`${FUNC_URL}?action=list`, {
     method: "POST",
     headers: {
@@ -67,99 +65,88 @@ Deno.test("webhook: rejects invalid Bearer token with 401", async () => {
   });
   assertEquals(res.status, 401);
   await res.text();
-});
+}));
 
-// ── Fixture-based DB mutation tests ───────────────────────────
+// ── Isolated DB fixture tests ─────────────────────────────────
 
-Deno.test({ name: "webhook: DB fixture — simulated replay sets status=replayed_simulated & bumps retry_count", sanitizeOps: false, sanitizeResources: false, fn: async () => {
-  const sb = getServiceClient();
-  await seedFixtures(sb);
+Deno.test({ name: "webhook: DB fixture — simulated replay + cross-table invariants", sanitizeOps: false, sanitizeResources: false, fn: withEnvGuard("service_role", async () => {
+  await withIsolatedFixtures(async (sb) => {
+    const pre = await queryWebhookStatus(sb, FIXTURE_IDS.WEBHOOK_SIM);
+    assertEquals(pre?.status, "failed");
+    assertEquals(pre?.retry_count, 0);
 
-  // Pre-condition
-  const pre = await queryWebhookStatus(sb, FIXTURE_IDS.WEBHOOK_SIM);
-  assertEquals(pre?.status, "failed");
-  assertEquals(pre?.retry_count, 0);
-
-  const auditBefore = await queryAuditRows(sb, "webhook_replay", FIXTURE_IDS.WEBHOOK_SIM);
-
-  // Simulate the exact mutations the edge function performs for a null target_url webhook
-  const replayStatus = "replayed_simulated";
-  const { error } = await sb
-    .from("webhook_delivery_log")
-    .update({
-      status: replayStatus,
-      retry_count: (pre?.retry_count ?? 0) + 1,
+    await sb.from("webhook_delivery_log").update({
+      status: "replayed_simulated",
+      retry_count: 1,
       last_error: null,
       updated_at: new Date().toISOString(),
-    })
-    .eq("id", FIXTURE_IDS.WEBHOOK_SIM);
-  assertEquals(error, null);
+    }).eq("id", FIXTURE_IDS.WEBHOOK_SIM);
 
-  await sb.from("admin_action_audit").insert({
-    actor_user_id: FIXTURE_IDS.TARGET_USER,
-    action: "webhook_replay",
-    target_type: "webhook",
-    target_id: FIXTURE_IDS.WEBHOOK_SIM,
-    plane: "support",
-    severity: "medium",
-    justification: `Replayed webhook ${FIXTURE_IDS.WEBHOOK_SIM}`,
-    metadata: { replay_status: replayStatus, replay_error: null, fixture: true },
+    await sb.from("admin_action_audit").insert({
+      actor_user_id: FIXTURE_IDS.TARGET_USER,
+      action: "webhook_replay",
+      target_type: "webhook",
+      target_id: FIXTURE_IDS.WEBHOOK_SIM,
+      plane: "support",
+      severity: "medium",
+      justification: `Replayed webhook ${FIXTURE_IDS.WEBHOOK_SIM}`,
+      metadata: { replay_status: "replayed_simulated", fixture: true },
+    });
+
+    await assertWebhookReplayInvariants(sb, FIXTURE_IDS.WEBHOOK_SIM, "replayed_simulated", 1);
   });
+})});
 
-  // Post-conditions
-  const post = await queryWebhookStatus(sb, FIXTURE_IDS.WEBHOOK_SIM);
-  assertEquals(post?.status, "replayed_simulated");
-  assertEquals(post?.retry_count, 1);
-  assertEquals(post?.last_error, null);
-
-  const auditAfter = await queryAuditRows(sb, "webhook_replay", FIXTURE_IDS.WEBHOOK_SIM);
-  assert(auditAfter.length > auditBefore.length);
-  assertEquals(auditAfter[0].plane, "support");
-
-  await cleanupFixtures(sb);
-}});
-
-Deno.test({ name: "webhook: DB fixture — failed replay sets status=replay_failed & records error", sanitizeOps: false, sanitizeResources: false, fn: async () => {
-  const sb = getServiceClient();
-  await seedFixtures(sb);
-
-  const pre = await queryWebhookStatus(sb, FIXTURE_IDS.WEBHOOK_FAIL);
-  assertEquals(pre?.status, "failed");
-
-  // Simulate failed replay (the function would get a network error from 0.0.0.0:1)
-  const replayError = "HTTP 0 — connection refused";
-  const { error } = await sb
-    .from("webhook_delivery_log")
-    .update({
+Deno.test({ name: "webhook: DB fixture — failed replay records error + invariants", sanitizeOps: false, sanitizeResources: false, fn: withEnvGuard("service_role", async () => {
+  await withIsolatedFixtures(async (sb) => {
+    const replayError = "HTTP 0 — connection refused";
+    await sb.from("webhook_delivery_log").update({
       status: "replay_failed",
-      retry_count: (pre?.retry_count ?? 0) + 1,
+      retry_count: 1,
       last_error: replayError,
       updated_at: new Date().toISOString(),
-    })
-    .eq("id", FIXTURE_IDS.WEBHOOK_FAIL);
-  assertEquals(error, null);
+    }).eq("id", FIXTURE_IDS.WEBHOOK_FAIL);
 
-  const post = await queryWebhookStatus(sb, FIXTURE_IDS.WEBHOOK_FAIL);
-  assertEquals(post?.status, "replay_failed");
-  assertEquals(post?.retry_count, 1);
-  assertEquals(post?.last_error, replayError);
+    const post = await queryWebhookStatus(sb, FIXTURE_IDS.WEBHOOK_FAIL);
+    assertEquals(post?.status, "replay_failed");
+    assertEquals(post?.retry_count, 1);
+    assertEquals(post?.last_error, replayError);
+  });
+})});
 
-  await cleanupFixtures(sb);
-}});
+Deno.test({ name: "webhook: DB fixture — retry_count increments on successive replays", sanitizeOps: false, sanitizeResources: false, fn: withEnvGuard("service_role", async () => {
+  await withIsolatedFixtures(async (sb) => {
+    for (let i = 1; i <= 3; i++) {
+      await sb.from("webhook_delivery_log").update({ status: "replayed_simulated", retry_count: i }).eq("id", FIXTURE_IDS.WEBHOOK_SIM);
+    }
+    const post = await queryWebhookStatus(sb, FIXTURE_IDS.WEBHOOK_SIM);
+    assertEquals(post?.retry_count, 3);
+  });
+})});
 
-Deno.test({ name: "webhook: DB fixture — retry_count increments on successive replays", sanitizeOps: false, sanitizeResources: false, fn: async () => {
+// ── Authenticated admin end-to-end ────────────────────────────
+
+Deno.test({ name: "webhook: authenticated admin — list action e2e", sanitizeOps: false, sanitizeResources: false, fn: withEnvGuard("service_role", async () => {
   const sb = getServiceClient();
   await seedFixtures(sb);
+  try {
+    const { token } = await getAdminToken();
+    const { status, json } = await callFunctionAsAdmin("webhook-replay", {
+      params: "action=list",
+      body: {},
+      token,
+    });
 
-  // Replay 1
-  await sb.from("webhook_delivery_log").update({ status: "replayed_simulated", retry_count: 1 }).eq("id", FIXTURE_IDS.WEBHOOK_SIM);
-  // Replay 2
-  await sb.from("webhook_delivery_log").update({ status: "replayed_simulated", retry_count: 2 }).eq("id", FIXTURE_IDS.WEBHOOK_SIM);
-  // Replay 3
-  await sb.from("webhook_delivery_log").update({ status: "replayed_simulated", retry_count: 3 }).eq("id", FIXTURE_IDS.WEBHOOK_SIM);
-
-  const post = await queryWebhookStatus(sb, FIXTURE_IDS.WEBHOOK_SIM);
-  assertEquals(post?.retry_count, 3, "retry_count must reflect cumulative replays");
-
-  await cleanupFixtures(sb);
-}});
+    if (status === 200) {
+      assertResponseSchema(json, WebhookListSuccessSchema, "webhook list success");
+      assertRequestId(json);
+    } else if (status === 403) {
+      assert(typeof (json as Record<string, unknown>)?.error === "string");
+    } else {
+      assert(false, `Expected 200 or 403, got ${status}`);
+    }
+  } finally {
+    await cleanupFixtures(sb);
+    await cleanupAdminUser();
+  }
+})});

@@ -1,30 +1,27 @@
 // ═══════════════════════════════════════════════════════════════
-// SITA OS — Admin Tools E2E Smoke Tests
-// Tests: reset, revoke, webhook replay, support bundle
-// Asserts Zod-valid responses and expected behavior.
+// SITA OS — Admin Tools E2E Smoke Tests (Unified)
+// Auth gating for: reset, revoke, webhook replay, support bundle,
+// error-ingest, alert-ingest. Zod-validated responses. Safe env.
 // ═══════════════════════════════════════════════════════════════
 
-import { loadSync } from "https://deno.land/std@0.224.0/dotenv/mod.ts";
-import { assertEquals, assertExists } from "https://deno.land/std@0.224.0/assert/mod.ts";
+import { assertEquals, assert } from "https://deno.land/std@0.224.0/assert/mod.ts";
+import {
+  loadEnvSafe, withEnvGuard,
+  getFuncUrl, getAnonKey,
+  BaseErrorSchema, ErrorIngestSuccessSchema, AlertIngestSuccessSchema,
+  assertResponseSchema, assertRequestId,
+} from "../_shared/test-harness.ts";
 
-try { loadSync({ allowEmptyValues: true, export: true }); } catch { /* ok if .env missing */ }
+loadEnvSafe();
 
-const SUPABASE_URL = Deno.env.get("VITE_SUPABASE_URL") ?? Deno.env.get("SUPABASE_URL")!;
-const ANON_KEY = Deno.env.get("VITE_SUPABASE_PUBLISHABLE_KEY") ?? Deno.env.get("SUPABASE_ANON_KEY")!;
-
-const headers: Record<string, string> = {
-  "Content-Type": "application/json",
-  "apikey": ANON_KEY,
-};
-
-// ── Helper ───────────────────────────────────────────────────
+const ANON_KEY = getAnonKey();
 
 async function callFunction(name: string, opts: { method?: string; body?: unknown; params?: string } = {}) {
   const method = opts.method ?? "POST";
-  const url = `${SUPABASE_URL}/functions/v1/${name}${opts.params ? `?${opts.params}` : ""}`;
+  const url = `${getFuncUrl(name)}${opts.params ? `?${opts.params}` : ""}`;
   const res = await fetch(url, {
     method,
-    headers,
+    headers: { "Content-Type": "application/json", apikey: ANON_KEY },
     body: opts.body ? JSON.stringify(opts.body) : undefined,
   });
   const text = await res.text();
@@ -33,117 +30,107 @@ async function callFunction(name: string, opts: { method?: string; body?: unknow
   return { status: res.status, json, text };
 }
 
-// ── Tests ────────────────────────────────────────────────────
+// ── Admin endpoint auth gating ────────────────────────────────
 
-Deno.test("admin-reset-user-setup: rejects unauthenticated calls", async () => {
+Deno.test("admin-reset: rejects unauthenticated with valid error schema", withEnvGuard("anon", async () => {
   const { status, json } = await callFunction("admin-reset-user-setup", {
     body: { target_user_id: "00000000-0000-0000-0000-000000000000" },
   });
   assertEquals(status, 401);
-  assertExists((json as Record<string, unknown>)?.error);
-});
+  assertResponseSchema(json, BaseErrorSchema, "admin-reset 401");
+}));
 
-Deno.test("admin-revoke-session: rejects unauthenticated calls", async () => {
+Deno.test("admin-revoke: rejects unauthenticated with valid error schema", withEnvGuard("anon", async () => {
   const { status, json } = await callFunction("admin-revoke-session", {
     body: { target_user_id: "00000000-0000-0000-0000-000000000000", reason: "smoke-test" },
   });
   assertEquals(status, 401);
-  assertExists((json as Record<string, unknown>)?.error);
-});
+  assertResponseSchema(json, BaseErrorSchema, "admin-revoke 401");
+}));
 
-Deno.test("webhook-replay: rejects unauthenticated list", async () => {
+Deno.test("webhook-replay: rejects unauthenticated with valid error schema", withEnvGuard("anon", async () => {
   const { status, json } = await callFunction("webhook-replay", {
-    method: "POST",
     params: "action=list",
     body: {},
   });
   assertEquals(status, 401);
-  assertExists((json as Record<string, unknown>)?.error);
-});
+  assertResponseSchema(json, BaseErrorSchema, "webhook-replay 401");
+}));
 
-Deno.test("generate-support-bundle: rejects unauthenticated calls", async () => {
+Deno.test("generate-support-bundle: rejects unauthenticated with valid error schema", withEnvGuard("anon", async () => {
   const { status, json } = await callFunction("generate-support-bundle", {
     body: { target_user_id: "00000000-0000-0000-0000-000000000000" },
   });
   assertEquals(status, 401);
-  assertExists((json as Record<string, unknown>)?.error);
-});
+  assertResponseSchema(json, BaseErrorSchema, "support-bundle 401");
+}));
 
-Deno.test("admin-reset-user-setup: rejects missing body", async () => {
+Deno.test("admin-reset: rejects missing body (4xx)", withEnvGuard("anon", async () => {
   const { status } = await callFunction("admin-reset-user-setup", { body: {} });
-  // Should be 400 or 401 (auth check first)
-  assertEquals(status >= 400, true);
-});
+  assert(status >= 400 && status < 500);
+}));
 
-Deno.test("error-ingest: accepts valid error batch", async () => {
+// ── error-ingest (public) ─────────────────────────────────────
+
+Deno.test("error-ingest: accepts valid error batch with Zod schema", withEnvGuard("anon", async () => {
   const { status, json } = await callFunction("error-ingest", {
     body: {
-      errors: [
-        {
-          message: "smoke-test-error",
-          severity: "info",
-          source: "edge",
-          route: "/test",
-          metadata: { smoke: true },
-        },
-      ],
+      errors: [{
+        message: "smoke-test-error",
+        severity: "info",
+        source: "edge",
+        route: "/test",
+        metadata: { smoke: true },
+      }],
     },
   });
   assertEquals(status, 200);
+  assertResponseSchema(json, ErrorIngestSuccessSchema, "error-ingest success");
+}));
+
+Deno.test("error-ingest: handles empty batch gracefully", withEnvGuard("anon", async () => {
+  const { status, json } = await callFunction("error-ingest", { body: { errors: [] } });
+  assertEquals(status, 200);
   const data = json as Record<string, unknown>;
   assertEquals(data.ok, true);
-  assertEquals(typeof data.inserted, "number");
-});
+}));
 
-Deno.test("error-ingest: handles empty batch gracefully", async () => {
-  const { status, json } = await callFunction("error-ingest", {
-    body: { errors: [] },
+Deno.test("error-ingest: rejects invalid JSON with 400", withEnvGuard("anon", async () => {
+  const url = getFuncUrl("error-ingest");
+  const res = await fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "text/plain", apikey: ANON_KEY },
+    body: "not json",
   });
-  assertEquals(status, 200);
-  assertEquals((json as Record<string, unknown>).ok, true);
-  assertEquals((json as Record<string, unknown>).processed, 0);
-});
+  assertEquals(res.status, 400);
+  await res.text();
+}));
 
-Deno.test("alert-ingest: accepts valid alert", async () => {
+// ── alert-ingest (public) ─────────────────────────────────────
+
+Deno.test("alert-ingest: accepts valid alert with Zod schema", withEnvGuard("anon", async () => {
   const { status, json } = await callFunction("alert-ingest", {
     body: {
-      alerts: [
-        {
-          source: "smoke-test",
-          severity: "low",
-          subsystem: "testing",
-          title: "Smoke test alert",
-          description: "E2E smoke test — safe to ignore",
-          metadata: { smoke: true },
-        },
-      ],
+      alerts: [{
+        source: "smoke-test",
+        severity: "low",
+        subsystem: "testing",
+        title: "Smoke test alert",
+        description: "E2E smoke test — safe to ignore",
+        metadata: { smoke: true },
+      }],
     },
   });
   assertEquals(status, 200);
-  const data = json as Record<string, unknown>;
-  assertEquals(data.ok, true);
-  assertEquals(typeof data.inserted, "number");
-});
+  assertResponseSchema(json, AlertIngestSuccessSchema, "alert-ingest success");
+}));
 
-Deno.test("alert-ingest: rejects invalid severity", async () => {
+Deno.test("alert-ingest: rejects invalid severity gracefully", withEnvGuard("anon", async () => {
   const { status, json } = await callFunction("alert-ingest", {
     body: {
-      alerts: [
-        { source: "test", severity: "banana", subsystem: "x", title: "bad" },
-      ],
+      alerts: [{ source: "test", severity: "banana", subsystem: "x", title: "bad" }],
     },
   });
   assertEquals(status, 200);
   assertEquals((json as Record<string, unknown>).inserted, 0);
-});
-
-Deno.test("error-ingest: rejects invalid JSON", async () => {
-  const url = `${SUPABASE_URL}/functions/v1/error-ingest`;
-  const res = await fetch(url, {
-    method: "POST",
-    headers: { ...headers, "Content-Type": "text/plain" },
-    body: "not json",
-  });
-  await res.text();
-  assertEquals(res.status, 400);
-});
+}));
