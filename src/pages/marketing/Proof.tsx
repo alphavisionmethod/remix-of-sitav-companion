@@ -9,11 +9,11 @@ export default function MarketingProof() {
   const [rows, setRows] = useState<DonationRow[]>([]);
 
   useEffect(() => {
-    (supabase as any).from("public_donations_wall")
+    supabase.from("public_donations_wall")
       .select("id, tier, donor_name, message, receipt_hash, paid_at")
       .order("paid_at", { ascending: false })
       .limit(50)
-      .then(({ data }: any) => setRows(data ?? []));
+      .then(({ data }: { data: DonationRow[] | null }) => setRows(data ?? []));
   }, []);
 
   return (
