@@ -23,7 +23,7 @@ const HRS02SignalSourcesBoard = () => {
         signals: p.categories || p.signals || [],
         platform: p.platform || "Cloud",
       }))
-    : (providers as typeof DEMO_SIGNAL_PROVIDERS) ?? DEMO_SIGNAL_PROVIDERS;
+    : (providers as typeof DEMO_SIGNAL_PROVIDERS) ?? [];
 
   return (
     <div className="p-6 max-w-[1400px] mx-auto space-y-6">
