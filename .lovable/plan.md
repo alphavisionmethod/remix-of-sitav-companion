@@ -1,217 +1,207 @@
 
+# Frontend Page System Audit, Fix, and Hardening Plan
 
-# Phase-by-Phase Deployment-Readiness Verification System
+## Architecture Summary (from inspection)
 
-This plan adds only the missing or materially insufficient tests identified after a full inventory of the existing 360 test files, 695 check-* validators, 32 assert-* scripts, and 66 E2E specs. No duplication of existing strong coverage.
-
----
-
-## Phase 1: Edge Function Coverage Expansion
-
-**Problem**: Only 7 of 203 edge functions have tests (3.4%). This is the single largest coverage gap.
-
-**Files to create:**
-- `src/__tests__/edge-functions/ef-critical-smoke.test.ts` — Smoke-level structural tests for the 20 highest-priority edge functions (ai-gateway, boardroom-session, brain-core, admin-gateway, agent-executor, advisor-conversation, webhook-retry-processor, alert-router, app-store-api, cashflow-calculate, etc.). Validates: index.ts exists, has Deno.serve, has CORS, has error handling try/catch, has input validation patterns, has proper createClient usage.
-- `src/__tests__/edge-functions/ef-cron-schedule-verification.test.ts` — Validates all cron-wired edge functions (referenced in `_owners.json` or function names ending in `-cron`, `-nightly`) actually exist on disk and have proper scheduling metadata.
-- `src/__tests__/edge-functions/ef-auth-model-verification.test.ts` — Cross-references the edge function registry's authModel field against actual code: service-role functions use SERVICE_ROLE_KEY, anon functions don't require auth headers, jwt-verified functions check Authorization.
-- `src/__tests__/edge-functions/ef-receipt-emission.test.ts` — Validates that functions tagged with `emitsReceipt: true` in the registry actually import and call receipt emission helpers from `_shared/`.
-
-**Existing coverage retained**: ef-structural-verification.test.ts, ef-contract-consistency.test.ts, ef-registry-completeness.test.ts, ef-topology-integrity.test.ts — all strong, not duplicated.
+- **1,092 page files** across 56 directories
+- **574 admin pages**, 49 business, 34 money, 25 mobile, 12 atlas, plus concierge/investment/revenue-office/store/workspace/apps/intelligence domains
+- **Route families**: 14 route files producing ~695 registered routes
+- **Hub pattern**: Major domains (Business, Money, Concierge, App Store, Admin) use "redirect shim" pages that dispatch a window-open event and redirect to `/desktop`
+- **31 ultra-small pages** (<=20 lines) — all are legitimate thin wrappers or re-export shims
+- **14 "Coming Soon" pages** with placeholder sections inside otherwise real pages
+- **197 pages** referencing "placeholder" text (mostly input placeholders, not stub pages)
+- **688 pages** without loading/skeleton states (but most are demo-mode static renders)
+- **365 pages** without design system shell wrappers (PageTruthBanner, SitaPageHeader, etc.)
+- **334 pages** without framer-motion animation
+- **2 pages** with TODO/FIXME markers
+- **10 marketing pages** — disconnected from routes (by design, per code comment)
 
 ---
 
-## Phase 2: Page Completeness and Route Truth
+## Phase 1: Fix Critical Page Defects
 
-**Problem**: 1092 pages exist but no test validates they all export a valid default React component. Existing page tests cover specific batches but not universal export validation.
+### 1A. Remove `as any` from App.tsx ConditionalAdminTools (Lines 94-96)
+The `(supabase as any).rpc(...)` violates the zero `as any` policy. Replace with properly typed supabase client call.
 
-**Files to create:**
-- `src/__tests__/pages/page-export-completeness.test.ts` — Scans all `src/pages/**/*.tsx` files, dynamically imports each, asserts `module.default` is a function. Uses tolerance for known exceptions (index re-exports, layout wrappers). This is the "no stub/dead page" gate.
-- `src/__tests__/routes/route-page-alignment.test.ts` — Cross-references all route definitions in `src/routes/*.tsx` against actual page files to detect orphan routes (route with no page) and orphan pages (page with no route). Improves on existing `check-orphan-pages.sh` by running in Vitest with structured output.
+### 1B. Fix Coming Soon placeholder sections in 14 pages
+These pages have real implementations but contain "Coming Soon" badges/sections for sub-features. For each:
+- Replace "Coming Soon" text with honest "Planned" status using the design system's `StatusBadge` or `ExecutionBadge`
+- Add a gated/deferred pattern instead of misleading placeholder copy
 
-**Existing coverage retained**: route-truth.test.ts, route-coverage.test.ts, pages-structure.test.ts, all admin-pages-batch*.test.tsx — strong, not duplicated.
+**Files**: `RevenueCallingPage.tsx`, `CollectionsCommandCenter.tsx`, `CommunicationsCenter.tsx`, `CustomerSupportCenter.tsx`, `QuotesWorkspace.tsx`, `ConciergeBoardroom.tsx`, `CROOffice.tsx`, `Donate.tsx`, `BudgetEnvelopeOffice.tsx`, `CashTiming.tsx`, `DebtCreditOffice.tsx`, `FinanceBoardroom.tsx`, `NetWorthOffice.tsx`, `LeakDetector.tsx`
 
----
-
-## Phase 3: Deployment Meta-Gate Test
-
-**Problem**: No single test aggregates all deployment gates (build, typecheck, validators, architecture, security) into a unified pass/fail with structured output.
-
-**Files to create:**
-- `src/__tests__/deployment/deployment-readiness-gate.test.ts` — Master aggregation test that:
-  1. Validates `generated/deployment-readiness-report.json` exists and has `deploymentReady: true`
-  2. Validates all required generated artifacts exist (service-manifest.json, route-manifest.json, capability-index.json, validation-summary.json)
-  3. Validates no generated artifact is older than 7 days (staleness gate)
-  4. Checks package.json has all required CI scripts (build, test, typecheck, lint, ci, pre-deploy)
-  5. Validates tsconfig.json/tsconfig.app.json exist and have strict mode
-  6. Validates vite.config.ts exists
-  7. Validates all CI workflow files are valid YAML (parse test)
-
-**Existing coverage retained**: check-deployment-readiness.ts script, pre-deploy.sh — retained as runtime validators. This test adds Vitest-level CI-gate verification.
+### 1C. Fix TODO/FIXME markers
+- `DocumentEditor.tsx` — resolve or remove TODO
+- `revenue-office/PipelineStudio.tsx` — resolve or remove FIXME
 
 ---
 
-## Phase 4: Environment and Configuration Contract Tests
+## Phase 2: Complete State Grammar for Critical Pages
 
-**Problem**: No Vitest test validates the env contract (required VITE_ variables, .env structure, config.toml integrity).
+Add loading/empty/error state handling to the 20 highest-traffic pages that currently lack it. These pages should use the canonical `PageSkeleton` and the existing empty-state components.
 
-**Files to create:**
-- `src/__tests__/config/env-config-contract.test.ts` — Validates:
-  1. All `import.meta.env.VITE_*` references across src/ resolve to declared variables
-  2. supabase/config.toml exists and has valid project_id
-  3. No hardcoded Supabase URLs or keys in source (except test fixtures)
-  4. package.json engine field and Node version alignment
-  5. TypeScript strict mode is enabled
-  6. All `tsconfig*.json` files parse correctly
+**Priority pages** (all currently missing loading states):
+1. `DailyPulse.tsx` — main dashboard
+2. `PersonalBrain.tsx` — AI hub
+3. `Boardroom.tsx` — already complex, needs error boundary
+4. `SettingsPage.tsx` — settings hub
+5. `NotificationCenter.tsx`
+6. `SearchPage.tsx`
+7. `TrustCenter.tsx`
+8. `ProofCenter.tsx`
+9. `RecoveryCenter.tsx`
+10. `TasksWorkflowsCenter.tsx`
 
-**Existing coverage retained**: check-env-contract-completeness.ts — script-level validator retained. This adds Vitest gate.
-
----
-
-## Phase 5: Migration and Database Contract Tests
-
-**Problem**: Existing migration tests check sequence and ownership but not rollback safety or naming convention enforcement.
-
-**Files to create:**
-- `src/__tests__/db/migration-safety.test.ts` — Validates:
-  1. No migration contains `DROP TABLE` without `IF EXISTS`
-  2. No migration contains `ALTER DATABASE`
-  3. No migration modifies reserved schemas (auth, storage, realtime, supabase_functions, vault)
-  4. All migrations follow timestamp naming convention
-  5. No duplicate migration timestamps
-  6. No migration references tables not yet created (forward-reference detection via ordered scan)
-
-**Existing coverage improved**: migration-sequence-integrity.test.ts and migration-ownership-integrity.test.ts remain. This adds safety-specific checks they lack.
+For each page, add:
+- `Suspense` wrapper with `PageSkeleton` fallback (where not already present)
+- Empty state using `SitaEmptyState` when data array is empty
+- Error boundary wrapper using `RouteErrorBoundary`
 
 ---
 
-## Phase 6: Connector and Provider Behavioral Tests
+## Phase 3: Design System Alignment for Top Pages
 
-**Problem**: No Vitest test validates OAuth token structures, refresh patterns, or degraded provider handling.
+Add design system consistency to the 30 most important pages missing `SitaPageHeader` or `AppSurface` wrappers.
 
-**Files to create:**
-- `src/__tests__/connectors/connector-behavioral.test.ts` — Validates:
-  1. Connector registry exports have required fields (id, name, provider, authType, status)
-  2. OAuth connectors declare refreshEndpoint and tokenExpiryField
-  3. All connectors have a degraded/offline fallback mode declared
-  4. Connector client registry aligns with connector catalog (no orphan clients)
-  5. Webhook-capable connectors declare ingest endpoint and retry policy
-
-**Existing coverage retained**: connector-system.test.ts, check-connector-catalog.ts, check-connector-reality.ts — retained and not duplicated. This adds behavioral contract validation they lack.
-
----
-
-## Phase 7: Security and Trust Behavioral Tests
-
-**Problem**: Existing security tests cover RLS and auth contracts but lack kill-switch toggle behavioral validation and admin boundary enforcement testing.
-
-**Files to create:**
-- `src/__tests__/security/security-fabric-behavioral.test.ts` — Validates:
-  1. All kill-switch IDs are unique and have valid enforcement layer references
-  2. Admin-only routes are wrapped in PermissionGatedRoute (import scan)
-  3. No page in src/pages/admin/ is accessible without auth guard (import pattern check)
-  4. All storage bucket references use the hardened 'app-assets' bucket name
-  5. No `as any` assertions exist in src/pages/ (reinforces type-safety gate)
-  6. No localStorage/sessionStorage used for role/permission checks
-
-**Existing coverage retained**: kill-switch-enforcement.test.ts, auth-contracts.test.ts, rls-policy-behavioral.test.ts — all retained. This adds fabric-level behavioral checks.
-
----
-
-## Phase 8: AI, Advisor, and Boardroom Behavioral Tests
-
-**Problem**: Existing tests cover advisor identity and escalation but lack AI budget enforcement behavioral testing and advisor fallback/degraded mode testing.
-
-**Files to create:**
-- `src/__tests__/ai/ai-behavioral-safety.test.ts` — Validates:
-  1. AI refusal policy registry covers all 15 declared capabilities
-  2. Budget enforcement config has valid cost caps per tier
-  3. Model router has fallback chains for every primary model
-  4. Advisor identity registry has all 34 advisors with required fields
-  5. Boardroom consensus requires minimum quorum (configurable, default 3)
-  6. Receipt/provenance emission is declared for all AI action types
-  7. Degraded AI runtime has honest "limited capability" messaging
-
-**Existing coverage retained**: advisor-council-protocol.test.ts, advisor-escalation.test.ts, boardroom.test.ts, model-router.test.ts, refusal-receipts.test.ts, no-hallucination*.test.ts — all retained. This adds budget and degraded-mode gaps.
-
----
-
-## Phase 9: CI Workflow Integrity Tests
-
-**Problem**: No test validates that all 21 CI workflow YAML files parse correctly and reference existing scripts.
-
-**Files to create:**
-- `src/__tests__/ci/workflow-integrity.test.ts` — Validates:
-  1. All `.github/workflows/*.yml` files parse as valid YAML
-  2. Referenced npm scripts exist in package.json
-  3. No workflow references a Node version below 20
-  4. All workflows have timeout-minutes set (no runaway jobs)
-  5. All workflows have concurrency groups (no duplicate runs)
-  6. Composite actions in `.github/actions/` parse correctly
-
-**No existing equivalent**: check-workflow-governance.ts is advisory-only and doesn't validate YAML parsing or script references.
-
----
-
-## Phase 10: Wiring and Meta-Regression Prevention
-
-**Problem**: Need validators to prevent regressions on test coverage itself and generated artifact drift.
-
-**Files to create:**
-- `src/__tests__/meta/test-coverage-regression.test.ts` — Validates:
-  1. Minimum test file count baseline (currently 360, gate at 350)
-  2. Minimum E2E spec count baseline (currently 66, gate at 60)
-  3. Minimum check-* validator count baseline (currently 695, gate at 680)
-  4. All test directories have at least 1 test file (no empty __tests__ dirs)
-  5. No test file is empty (>10 lines each)
-  6. Generated artifacts directory exists with minimum file count
-
-- `src/__tests__/meta/generated-artifact-freshness.test.ts` — Validates:
-  1. All JSON files in generated/ parse correctly
-  2. No generated file has `ok: false` (aggregated truth gate)
-  3. Key artifacts exist: deployment-readiness-report.json, service-manifest.json
-
-**Wiring**: Add a `test:deployment-readiness` script to package.json:
-```
-"test:deployment-readiness": "vitest run src/__tests__/deployment/ src/__tests__/meta/ src/__tests__/ci/ src/__tests__/security/security-fabric-behavioral.test.ts"
+**Pattern to apply**:
+```tsx
+<motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
+  <SitaPageHeader title="..." subtitle="..." />
+  {/* page content */}
+</motion.div>
 ```
 
+**Target pages**: All root-level pages (`*.tsx` in `src/pages/`) that render direct content (not redirect shims) and currently lack motion entrance animation and header components. Approximately 30 pages including: `AchievementsPage`, `AgentActivityDashboard`, `AIEconomicsPage`, `AIWorkforcePage`, `AutomationCenter`, `CalmFocusMode`, `CommandHistory`, `DigitalTwinsPage`, etc.
+
 ---
 
-## Summary: What Gets Added
+## Phase 4: Fix Mobile Page Completeness
 
-| Phase | Files | Purpose |
-|-------|-------|---------|
-| 1 | 4 test files | Edge function coverage from 3.4% to ~15% structural |
-| 2 | 2 test files | Universal page export + route alignment validation |
-| 3 | 1 test file | Deployment meta-gate aggregation |
-| 4 | 1 test file | Env/config contract in Vitest |
-| 5 | 1 test file | Migration safety checks |
-| 6 | 1 test file | Connector behavioral contracts |
-| 7 | 1 test file | Security fabric behavioral validation |
-| 8 | 1 test file | AI/advisor behavioral safety |
-| 9 | 1 test file | CI workflow YAML integrity |
-| 10 | 2 test files + 1 script | Meta-regression prevention + wiring |
+The 25 mobile pages are real but several are thin. Strengthen the weakest:
 
-**Total**: 15 new test files, 1 new npm script. Zero duplication of existing strong coverage.
+- `MobileBoardroom.tsx` (23 lines) — add summary card and session list
+- `MobileProof.tsx` (27 lines) — add proof summary with receipts
+- `MobileAlerts.tsx` (30 lines) — add alert categories and actions
+- `MobileApprovals.tsx` (37 lines) — add approval queue with swipe actions
 
-## Externally Blocked Coverage
+Each should follow the mobile card pattern already established in `MobileHome.tsx` and `MobileMoney.tsx`.
 
-- **Live RLS policy testing**: Requires running database — verified structurally via registry, not at runtime
-- **Edge function HTTP smoke tests**: Require deployed functions with valid credentials — deferred to Playwright E2E
-- **OAuth token refresh**: Requires real provider credentials — connector registry contract tested structurally
-- **Desktop/mobile native builds**: Require platform toolchains — readiness gates exist as script validators
-- **SAST/DAST scanning**: Requires external security tooling — npm audit and RLS checks serve as proxy
+---
 
-## How to Run
+## Phase 5: Route-Page Alignment Governance
 
-```bash
-# Full deployment readiness (new)
-npm run test:deployment-readiness
+### 5A. Create `generated/page-route-audit.json`
+A governance artifact mapping every route to its page file, classification (canonical/shim/redirect), and domain owner. Generated by a new validator script.
 
-# Existing full suite (unchanged)
-npm run ci
-npm run validate:all
-npm run release:readiness:full
-npm run pre-deploy
-```
+### 5B. Create `scripts/validators/check-page-completeness.sh`
+Validates:
+- All pages export a default function component
+- No page file is empty (<5 lines excluding comments)
+- No page contains "Coming Soon" without an explicit `[deferred]` annotation
+- All route-referenced pages exist on disk
 
+### 5C. Strengthen `src/__tests__/routes/route-page-alignment.test.ts`
+The existing test checks orphans. Add:
+- Verify all redirect shim pages (BusinessCenter, MoneyCenter, AppStoreCenter, AdminCenter, ConciergeCenter) actually dispatch the correct custom event
+- Verify all route families return valid JSX Route elements
+
+---
+
+## Phase 6: Remove Dead/Orphan Pages
+
+### 6A. Marketing pages (10 files)
+Already disconnected from routes per code comment. These should either:
+- Stay as-is with a clear `// NOT ROUTED — marketing site template only` header (current state is adequate)
+- Or be moved to `archive/` if they cause confusion
+
+**Recommendation**: Leave as-is since they serve as templates for a separate marketing build.
+
+### 6B. Orphan pages from deployment report
+4 orphan pages identified in `phase8-deployment-verification.json`:
+- `ConnectorHub.tsx` — verify if any route references it; if not, redirect to canonical connector page or remove
+- `CustomerDetail.tsx` — check if used by dynamic route `/business/customers/:id`
+- `CustomerHealthPage.tsx` — check if routed
+- `EnterpriseMaturityDashboard.tsx` — check if routed
+
+For each: either wire into a route or remove.
+
+---
+
+## Phase 7: Admin Page System Cleanup
+
+### 7A. Verify all 574 admin pages are reachable
+Admin uses a redirect-shim pattern (AdminCenter dispatches `sita-open-mission-control` event). Verify the Mission Control windowed app's internal router covers all 574 admin page paths.
+
+### 7B. Consolidate admin re-export shims
+20+ admin pages are pure re-export shims (e.g., `V02InteractionCoverageBoard.tsx` just re-exports from `@/admin/modules/...`). These are legitimate architecture but should be verified they resolve correctly.
+
+### 7C. Ensure no admin page renders without PermissionGatedRoute
+The `AdminRoutes.tsx` uses `gated()` wrapper for most routes. Verify 100% coverage — no admin route should be accessible without permission check.
+
+---
+
+## Phase 8: Accessibility Hardening for Critical Surfaces
+
+Add ARIA and keyboard improvements to the 10 most critical interactive pages:
+
+1. **Login/Signup** — ensure form labels, error announcements, focus management
+2. **Onboarding (OSSetupExperience)** — step announcements, keyboard navigation
+3. **DesktopPage** — landmark roles, skip navigation
+4. **DailyPulse** — dashboard landmark structure
+5. **Boardroom** — live region for AI responses
+6. **SettingsPage** — form group labels
+7. **NotFound** — already good, verify
+8. **SearchPage** — combobox ARIA pattern
+9. **NotificationCenter** — notification list ARIA
+10. **BusinessCenter/MoneyCenter** — verify redirect shims have loading announcements
+
+---
+
+## Phase 9: Page Governance Validators
+
+### 9A. Create `src/__tests__/pages/page-design-system-coverage.test.ts`
+Validates that pages above a line-count threshold (>50 lines) use at least one design system primitive (SitaPageHeader, AppSurface, HeroCard, StatusCard, etc.).
+
+### 9B. Create `src/__tests__/pages/page-state-grammar.test.ts`
+Scans pages with data hooks (`useQuery`, `useMemo` with fetch patterns) and validates they reference at least one loading/error handling pattern.
+
+### 9C. Wire into `test:deployment-readiness`
+Add the new page governance tests to the deployment readiness gate script.
+
+---
+
+## Phase 10: Visual Polish Pass
+
+### 10A. NotFound page enhancement
+Current page is already well-designed. Minor improvement: add suggested destinations based on last visited route.
+
+### 10B. Redirect shim loading states
+The 5 redirect shim pages (BusinessCenter, MoneyCenter, ConciergeCenter, AppStoreCenter, AdminCenter) show brief flash content before redirecting to `/desktop`. Unify their loading message with the design system's `PageSkeleton` and branded animation.
+
+### 10C. Consistent page max-width
+Ensure all content pages use `max-w-7xl` or `max-w-[1400px]` consistently. Several pages use `max-w-5xl` or no max-width.
+
+---
+
+## Summary
+
+| Phase | Scope | Files Affected |
+|-------|-------|---------------|
+| 1 | Critical defects (as any, Coming Soon, TODOs) | ~17 files |
+| 2 | State grammar for top 10 pages | 10 files |
+| 3 | Design system alignment for top 30 pages | ~30 files |
+| 4 | Mobile page completeness | 4 files |
+| 5 | Route-page governance artifacts | 3 new files |
+| 6 | Dead/orphan page cleanup | 4 files |
+| 7 | Admin page system verification | Audit + fixes |
+| 8 | Accessibility hardening | 10 files |
+| 9 | Page governance test suite | 2 new test files |
+| 10 | Visual polish | ~8 files |
+
+**Total**: ~80-90 file modifications, 5 new governance/test files.
+
+## Externally Blocked
+
+- **Playwright E2E for page flows**: Requires browser automation environment
+- **Live data wiring verification**: Pages use demo mode; real data requires DB connection
+- **Mobile native rendering**: Pages are responsive web, not native — testing requires device
