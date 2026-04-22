@@ -18,3 +18,5 @@ export { DataLoadingWrapper } from "@/components/sita/DataLoadingWrapper";
 export { StateBadge } from "@/components/sita/StateBadge";
 export { TrustBadge } from "@/components/sita/TrustBadge";
 export { TrustStateBadge } from "@/components/sita/TrustStateBadge";
+export { Typography } from "@/components/sita/Typography";
+export type { TypographyRole } from "@/components/sita/Typography";
