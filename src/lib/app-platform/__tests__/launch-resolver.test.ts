@@ -44,7 +44,7 @@ describe("launch-resolver", () => {
     const m: AppManifest = {
       ...baseManifest,
       app_type: "external_desktop", launch_strategy: "native_binary",
-      installability: "desktop_only",
+      installability: "preinstalled",
       launch_target: { darwin: "/Applications/X.app", fallback_url: "https://x.com" },
     };
     const r = resolveLaunch(m, { runtime: baseRuntime, isAuthenticated: true });
@@ -57,7 +57,7 @@ describe("launch-resolver", () => {
     const m: AppManifest = {
       ...baseManifest,
       app_type: "external_desktop", launch_strategy: "native_binary",
-      installability: "desktop_only",
+      installability: "preinstalled",
       launch_target: { darwin: "/Applications/X.app" },
     };
     const r = resolveLaunch(m, {
