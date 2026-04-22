@@ -27,7 +27,7 @@ describe("RLS pattern integrity", () => {
     for (const t of tenantTables) {
       const rls = RLS_POLICY_REGISTRY[t.name];
       if (!rls) continue;
-      if (rls.pattern === "no_policies" || rls.pattern === "public_read") {
+      if (rls.pattern === "public_read") {
         violations.push(`${t.name} → ${rls.pattern}`);
       }
     }

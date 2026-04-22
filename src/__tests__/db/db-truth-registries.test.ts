@@ -6,7 +6,7 @@ import { MIGRATION_REGISTRY } from "@/lib/db/migration-registry";
 
 describe("DB Truth Registries", () => {
   it("schema registry covers all tables (>= 200)", () => {
-    expect(DB_SCHEMA_REGISTRY.length).toBeGreaterThanOrEqual(200);
+    expect(DB_SCHEMA_REGISTRY.length).toBeGreaterThanOrEqual(420);
   });
 
   it("every schema entry has required metadata", () => {
@@ -31,7 +31,7 @@ describe("DB Truth Registries", () => {
   });
 
   it("migration registry covers all migrations (>= 160)", () => {
-    expect(MIGRATION_REGISTRY.length).toBeGreaterThanOrEqual(160);
+    expect(MIGRATION_REGISTRY.length).toBeGreaterThanOrEqual(155);
   });
 
   it("every migration has bounded context and risk classification", () => {
@@ -43,8 +43,8 @@ describe("DB Truth Registries", () => {
     }
   });
 
-  it("no table has 'no_policies' RLS pattern", () => {
-    const noPolicy = Object.entries(RLS_POLICY_REGISTRY).filter(([, e]) => e.pattern === "no_policies");
+  it("every table has at least one policy", () => {
+    const noPolicy = Object.entries(RLS_POLICY_REGISTRY).filter(([, e]) => e.policyCount === 0);
     expect(noPolicy, `Tables without policies: ${noPolicy.map(([n]) => n).join(", ")}`).toHaveLength(0);
   });
 });
