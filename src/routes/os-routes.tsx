@@ -38,7 +38,6 @@ const SpilloverDashboard = lazy(() => import("@/pages/SpilloverDashboard"));
 const AIWorkforcePage = lazy(() => import("@/pages/AIWorkforcePage"));
 const CapitalAllocationPage = lazy(() => import("@/pages/CapitalAllocationPage"));
 const SovereignExportPage = lazy(() => import("@/pages/SovereignExportPage"));
-const CommunicationsPage = lazy(() => import("@/pages/CommunicationsPage"));
 const NotificationSettingsPage = lazy(() => import("@/pages/NotificationSettingsPage"));
 const NotificationCenter = lazy(() => import("@/pages/NotificationCenter"));
 const NotificationPreferences = lazy(() => import("@/pages/settings/NotificationPreferences"));
