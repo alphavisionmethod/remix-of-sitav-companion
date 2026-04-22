@@ -29,7 +29,7 @@ export default function InvestmentReceipts() {
 
   const { data: realReceipts } = useQuery({
     queryKey: ["investment-receipts", user?.id],
-    enabled: !!user && !isDemoMode,
+    enabled: !!user && !false,
     queryFn: async () => {
       const { data } = await fromTable("proof_records").select("*").eq("user_id", user!.id).eq("domain", "investment").order("created_at", { ascending: false }).limit(50);
       if (!data?.length) return null;

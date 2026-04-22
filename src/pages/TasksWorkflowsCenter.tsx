@@ -99,7 +99,7 @@ export default function TasksWorkflowsCenter() {
   // Supabase queries for live mode
   const { data: liveWorkflows } = useQuery({
     queryKey: ["workflow_runs", user?.id],
-    enabled: !!user && !isDemoMode,
+    enabled: !!user && !false,
     queryFn: async () => {
       const { data } = await fromTable("workflow_runs").select("*, workflows(name, trigger_event)").order("created_at", { ascending: false }).limit(20);
       return data ?? [];
@@ -108,7 +108,7 @@ export default function TasksWorkflowsCenter() {
 
   const tasks: DemoTask[] = useMemo(() => {
     return []; // Live mode would pull from a tasks table
-  }, [isDemoMode]);
+  }, [false]);
 
   const filtered = useMemo(() => {
     let result = tasks;
@@ -331,10 +331,7 @@ export default function TasksWorkflowsCenter() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              {isDemoMode ? (
-                <div className="space-y-2">
-                  {[
-                    { name: "Invoice Approval Pipeline", status: "running", step: "3/5", trigger: "event" },
+              {"Invoice Approval Pipeline", status: "running", step: "3/5", trigger: "event" },
                     { name: "New Lead Nurture Sequence", status: "completed", step: "5/5", trigger: "webhook" },
                     { name: "Quarterly Report Generation", status: "pending", step: "0/4", trigger: "schedule" },
                   ].map((wf, i) => (

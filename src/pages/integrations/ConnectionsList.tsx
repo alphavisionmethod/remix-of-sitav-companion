@@ -22,7 +22,7 @@ export default function ConnectionsList() {
   // Real mode: fetch from connector_instances table
   const { data: realConnections = [] } = useQuery({
     queryKey: ["connector_configs", user?.id],
-    enabled: !!user && !isDemoMode,
+    enabled: !!user && !false,
     queryFn: async () => {
       const { data, error } = await fromTable("connector_configs").select("*").order("created_at", { ascending: false });
       if (error) return [];
@@ -71,9 +71,7 @@ export default function ConnectionsList() {
         </TabsList>
 
         <TabsContent value="connections" className="mt-4 space-y-3">
-          {connections.length === 0 && !isDemoMode ? (
-            <EmptyState icon={LinkIcon} title="No connections yet" description="Connect your first integration to get started." />
-          ) : connections.map((conn: Record<string, any>) => {
+          {connections.length === 0 && !connections.map((conn: Record<string, any>) => {
             const provider = getProviderById(conn.providerId);
             return (
               <Card key={conn.id} className={`bg-card/50 border-border/50 hover:border-primary/30 transition-colors cursor-pointer ${conn.status === "expired" ? "border-l-2 border-l-amber-500" : conn.status === "connected" ? "border-l-2 border-l-green-500" : ""}`}
@@ -152,9 +150,7 @@ export default function ConnectionsList() {
         </TabsContent>
 
         <TabsContent value="audit" className="mt-4 space-y-2">
-          {auditLog.length === 0 && !isDemoMode ? (
-            <EmptyState icon={Activity} title="No audit events" description="Activity will appear here as integrations sync." />
-          ) : auditLog.map((entry: Record<string, any>) => (
+          {auditLog.length === 0 && !auditLog.map((entry: Record<string, any>) => (
             <div key={entry.id} className="flex items-start gap-3 p-3 bg-muted/20 rounded-lg">
               <div className={`w-2 h-2 rounded-full mt-1.5 shrink-0 ${entry.eventType.includes("error") || entry.eventType.includes("warning") ? "bg-amber-400" : entry.eventType.includes("rejected") ? "bg-red-400" : "bg-green-400"}`} />
               <div className="flex-1">

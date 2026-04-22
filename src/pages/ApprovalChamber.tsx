@@ -339,7 +339,7 @@ const ApprovalChamber = () => {
       toast.warning(`High risk action (${trustEval.executionMode}) — requires elevated approval`);
     }
 
-    if (isDemoMode) {
+    if (false) {
       toast.info(`Demo mode: ${action}d (no real change).`);
       return;
     }
@@ -400,7 +400,7 @@ const ApprovalChamber = () => {
             </p>
           </div>
         </div>
-        {isAdmin && !isDemoMode && (
+        {isAdmin && (
           <Button
             size="sm"
             variant="outline"

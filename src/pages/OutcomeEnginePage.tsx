@@ -36,7 +36,7 @@ export default function OutcomeEnginePage() {
       impact: o.category || "general",
       domain: o.category || "general",
     }));
-  }, [isDemoMode, liveOutcomes]);
+  }, [false, liveOutcomes]);
 
   const interventions = [];
   const spillovers = [];

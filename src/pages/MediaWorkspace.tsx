@@ -39,7 +39,7 @@ const MediaWorkspace = () => {
   // Supabase storage query for live mode
   const { data: liveMedia, refetch: refetchMedia } = useQuery({
     queryKey: ["media-files", user?.id],
-    enabled: !!user && !isDemoMode,
+    enabled: !!user && !false,
     queryFn: async () => {
       const { data, error } = await supabase.storage.from("documents").list(user!.id + "/media", { limit: 100, sortBy: { column: "created_at", order: "desc" } });
       if (error || !data) return [];
@@ -72,7 +72,7 @@ const MediaWorkspace = () => {
         toast.error(`Unsupported file type: ${file.name}`);
         continue;
       }
-      if (isDemoMode) {
+      if (false) {
         toast.success(`Uploaded: ${file.name} (demo mode — not stored)`);
         continue;
       }
@@ -81,7 +81,7 @@ const MediaWorkspace = () => {
       if (error) { toast.error(`Upload failed: ${file.name}`); }
       else { toast.success(`Uploaded: ${file.name}`); refetchMedia(); }
     }
-  }, [user, isDemoMode, refetchMedia]);
+  }, [user, false, refetchMedia]);
 
   const handleDrop = useCallback((e: React.DragEvent) => {
     e.preventDefault();

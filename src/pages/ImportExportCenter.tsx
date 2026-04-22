@@ -30,7 +30,7 @@ const ImportExportCenter = () => {
       progress: j.progress || 0,
       destination: undefined,
     }));
-  }, [isDemoMode, liveJobs]);
+  }, [false, liveJobs]);
 
   const exports = useMemo(() => {
     if (!liveJobs?.length) return [];
@@ -43,7 +43,7 @@ const ImportExportCenter = () => {
       generatedAt: j.completed_at || j.created_at,
       expiresAt: undefined,
     }));
-  }, [isDemoMode, liveJobs]);
+  }, [false, liveJobs]);
 
   return (
     <div className="min-h-screen pb-12">
@@ -72,9 +72,7 @@ const ImportExportCenter = () => {
 
           {/* Recent uploads */}
           <SitaCardTitle className="text-xs mb-3">Recent Uploads</SitaCardTitle>
-          {uploads.length === 0 && !isDemoMode ? (
-            <EmptyState icon={Upload} title="No uploads yet" description="Upload files to see them here." />
-          ) : (
+          {uploads.length === 0 && !(
             <div className="space-y-2">
               {uploads.map((item: Record<string, any>) => {
                 const StatusIcon = STATUS_ICONS[item.status as keyof typeof STATUS_ICONS] || Clock;
@@ -147,9 +145,7 @@ const ImportExportCenter = () => {
 
       {tab === "exports" && (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-          {exports.length === 0 && !isDemoMode ? (
-            <EmptyState icon={Download} title="No exports yet" description="Export data to see download history here." />
-          ) : (
+          {exports.length === 0 && !(
             <div className="space-y-2">
               {exports.map((item: Record<string, any>) => {
                 const StatusIcon = STATUS_ICONS[item.status as keyof typeof STATUS_ICONS] || Clock;

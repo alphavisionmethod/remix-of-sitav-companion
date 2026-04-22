@@ -20,7 +20,7 @@ export default function AIWorkforcePage() {
   const { user , isDemo} = useAuth();
   const { data: realAgents = [] } = useQuery({
     queryKey: ["ai_workforce_agents", user?.id],
-    enabled: !!user && !isDemoMode,
+    enabled: !!user && !false,
     queryFn: async () => {
       const { data } = await fromTable("advisor_registry").select("*").eq("active", true);
       return (data ?? []).map((a: Record<string, any>) => ({
