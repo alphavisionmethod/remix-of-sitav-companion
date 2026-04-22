@@ -59,6 +59,7 @@ const SIZE_MAP = {
 
 import { getAvatarCache, setAvatarCache, avatarCacheKey } from "@/lib/advisors/avatar-url-cache";
 import { sanitizeAvatarUrl } from "@/lib/advisors/avatar-url-validation";
+import { logPortraitFailure } from "@/lib/advisors/portrait-failure-logger";
 
 export function useCustomAdvisorAvatar(domain: AdvisorDomain) {
   const { user } = useAuth();
@@ -120,6 +121,12 @@ export function AdvisorImage({ domain, size = "md", className, src }: AdvisorIma
       }, delay);
     } else {
       setState("error");
+      logPortraitFailure({
+        domain,
+        url: resolvedSrc,
+        error_type: "load_exhausted",
+        retry_count: MAX_RETRIES,
+      });
     }
   }, [retryCount, resolvedSrc]);
 
