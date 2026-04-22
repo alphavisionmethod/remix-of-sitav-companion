@@ -23,8 +23,6 @@ import { useDataMode } from "@/contexts/DataModeContext";
 
 
 
-// Production fallback — seed data removed
-const DEMO_BOOKING_ANALYTICS: any[] = [];
 
 export default function BookingCenter() {
   const { isDemoMode } = useDataMode();

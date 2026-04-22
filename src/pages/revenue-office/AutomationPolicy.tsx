@@ -14,12 +14,7 @@ import {
 } from "lucide-react";
 import AutomationSubNav from "./AutomationSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import {
-
-// Production fallback — seed data removed
-const DEMO_COMMERCIAL_CONSTITUTION: any[] = [];
-
-  DEMO_humanVsAI, DEMO_policies, DEMO_trustLevels,
+import { DEMO_humanVsAI, DEMO_policies, DEMO_trustLevels,
   DEMO_COMMERCIAL_CONSTITUTION, DEMO_NO_GUESS_RULES,
   DEMO_PAUSE_ROLLBACK, DEMO_HANDOFF_SIGNALS
 } from "@/data/seed/revenue-office";

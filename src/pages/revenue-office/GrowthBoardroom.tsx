@@ -21,8 +21,6 @@ import { useDataMode } from "@/contexts/DataModeContext";
 
 
 
-// Production fallback — seed data removed
-const DEMO_PIPELINE_STAGES: any[] = [];
 
 const CAMPAIGN_HEALTH = [
   { name: "Summer Accelerator", status: "active", performance: 78, leads: 42, spend: "$2,400" },

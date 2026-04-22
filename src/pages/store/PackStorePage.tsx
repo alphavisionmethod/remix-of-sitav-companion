@@ -19,8 +19,6 @@ import { ArrowRight, Package, RefreshCw, Sparkles, TrendingUp } from "lucide-rea
 import { usePackInstalls } from "@/hooks/use-live-data";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
-// Production fallback — seed data removed
-const DEMO_INSTALL_STATES: any[] = [];
 
 const PackStorePage = () => {
   const navigate = useNavigate();

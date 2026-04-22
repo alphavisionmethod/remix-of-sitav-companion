@@ -21,8 +21,6 @@ import {
 import AutomationSubNav from "./AutomationSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
-// Production fallback — seed data removed
-const DEMO_AUTOMATION_OS_CONNECTIONS: any[] = [];
 
 const levelColors: Record<string, string> = {
   "Auto-run (L3)": "bg-emerald-500/10 text-emerald-400",

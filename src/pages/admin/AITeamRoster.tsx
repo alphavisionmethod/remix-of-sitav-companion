@@ -11,8 +11,6 @@ import {
 import { useAIEngDomain } from "@/hooks/use-ai-engineering-data";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
-// Production fallback — seed data removed
-const DEMO_AGENTS: any[] = [];
 
 const autonomyColors: Record<string, string> = {
   "auto-low-risk": "bg-[hsl(var(--trust-safe))]/10 text-[hsl(var(--trust-safe))]",
