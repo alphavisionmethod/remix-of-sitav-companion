@@ -5,9 +5,34 @@
 //            non-canonical empty states, hardcoded HSL values
 // ═══════════════════════════════════════════════════════════════
 
-import fs from "fs";
-import path from "path";
-import { globSync } from "glob";
+import fs from "node:fs";
+import path from "node:path";
+
+function globSync(pattern: string, opts: { cwd: string; ignore?: string[] }): string[] {
+  const results: string[] = [];
+  function walk(dir: string) {
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      const full = path.join(dir, entry.name);
+      const rel = path.relative(opts.cwd, full);
+      if (entry.isDirectory()) {
+        if (entry.name === "node_modules" || entry.name === ".git") continue;
+        if (opts.ignore?.some(ig => rel.startsWith(ig.replace("/**", "")))) continue;
+        walk(full);
+      } else if (entry.isFile()) {
+        // Simple glob match: check if rel matches the pattern
+        const patternParts = pattern.split("**/");
+        const prefix = patternParts[0] || "";
+        const suffix = patternParts[patternParts.length - 1]?.replace("*", "") || "";
+        if (rel.startsWith(prefix.replace(/\/$/, "")) && rel.endsWith(suffix.replace("*", ""))) {
+          if (opts.ignore?.some(ig => rel.startsWith(ig.replace("/**", "")))) continue;
+          results.push(rel);
+        }
+      }
+    }
+  }
+  walk(opts.cwd);
+  return results;
+}
 
 interface Finding {
   file: string;
