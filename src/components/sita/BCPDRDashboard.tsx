@@ -449,9 +449,9 @@ function DRTestCard({ test }: { test: DRTest }) {
 
 export function BCPDRDashboard() {
   const [activeView, setActiveView] = useState<"overview" | "objectives" | "failover" | "tests">("overview");
+  const { isDemoMode } = useDataMode();
 
   const handleExport = () => {
-  const { isDemoMode } = useDataMode();
     const headers = ["Service", "Category", "RPO Target (min)", "RPO Actual (min)", "RTO Target (min)", "RTO Actual (min)", "Status", "Backup Method", "Last Tested"];
     const rows = (isDemoMode ? MOCK_OBJECTIVES : [] as typeof MOCK_OBJECTIVES).map(o => [
       o.service, o.category, o.rpo.toString(), o.actualRpo.toString(),

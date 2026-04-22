@@ -312,6 +312,7 @@ export function useDeleteSpec() {
 }
 
 export function useWiringEdges(specId: string) {
+  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
 
   return useQuery({

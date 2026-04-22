@@ -356,6 +356,7 @@ function ChangeRequestCard({ cr }: { cr: ChangeRequest }) {
 // ── Main Component ──────────────────────────────────────────────
 
 export function CABWorkflow() {
+  const { isDemoMode } = useDataMode();
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [typeFilter, setTypeFilter] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState("");
@@ -385,7 +386,6 @@ export function CABWorkflow() {
   }), []);
 
   const handleExport = () => {
-  const { isDemoMode } = useDataMode();
     const headers = ["ID", "Title", "Type", "Status", "Priority", "Risk Level", "Risk Score", "Requester", "Assignee", "Created", "Impact Areas"];
     const rows = filtered.map(c => [
       c.id, c.title, c.type, c.status, c.priority, c.riskLevel,

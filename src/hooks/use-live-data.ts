@@ -44,6 +44,7 @@ export function useCreateNote() {
 // ── Outcome Tracking ──────────────────────────────────────────
 
 export function useOutcomes() {
+  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
   return useQuery({
     queryKey: ["outcomes", user?.id, isDemoMode],
@@ -64,6 +65,7 @@ export function useOutcomes() {
 // ── Import/Export Jobs ────────────────────────────────────────
 
 export function useImportExportJobs() {
+  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
   return useQuery({
     queryKey: ["import-export-jobs", user?.id, isDemoMode],
@@ -85,6 +87,7 @@ export function useImportExportJobs() {
 // ── Calling Contacts ──────────────────────────────────────────
 
 export function useCallingContacts() {
+  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
   return useQuery({
     queryKey: ["calling-contacts", user?.id, isDemoMode],
@@ -105,6 +108,7 @@ export function useCallingContacts() {
 // ── Call Logs ─────────────────────────────────────────────────
 
 export function useCallLogs() {
+  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
   return useQuery({
     queryKey: ["call-logs", user?.id, isDemoMode],
@@ -126,6 +130,7 @@ export function useCallLogs() {
 // ── Pack Installs ─────────────────────────────────────────────
 
 export function usePackInstalls() {
+  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
   return useQuery({
     queryKey: ["pack-installs", user?.id, isDemoMode],

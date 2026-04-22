@@ -23,6 +23,7 @@ export function useWearableProviders() {
 }
 
 export function useHealthSignalConsents() {
+  const { isDemoMode } = useDataMode();
   return useQuery({
     queryKey: ["health-signal-consents", isDemoMode],
     queryFn: () => fetchHealthSignalConsents(isDemoMode),
@@ -30,6 +31,7 @@ export function useHealthSignalConsents() {
 }
 
 export function useWearableSignals(limit?: number) {
+  const { isDemoMode } = useDataMode();
   return useQuery({
     queryKey: ["wearable-signals", isDemoMode, limit],
     queryFn: () => fetchWearableSignals(isDemoMode, limit),
@@ -37,6 +39,7 @@ export function useWearableSignals(limit?: number) {
 }
 
 export function useReadinessStates(limit?: number) {
+  const { isDemoMode } = useDataMode();
   return useQuery({
     queryKey: ["readiness-states", isDemoMode, limit],
     queryFn: () => fetchReadinessStates(isDemoMode, limit),
@@ -44,6 +47,7 @@ export function useReadinessStates(limit?: number) {
 }
 
 export function useSignalSubsystemReadiness() {
+  const { isDemoMode } = useDataMode();
   return useQuery({
     queryKey: ["signal-subsystem-readiness", isDemoMode],
     queryFn: () => fetchSignalSubsystemReadiness(isDemoMode),
@@ -51,6 +55,7 @@ export function useSignalSubsystemReadiness() {
 }
 
 export function useInterruptionPosture() {
+  const { isDemoMode } = useDataMode();
   return useQuery({
     queryKey: ["interruption-posture", isDemoMode],
     queryFn: () => fetchInterruptionPosture(isDemoMode),
@@ -58,6 +63,7 @@ export function useInterruptionPosture() {
 }
 
 export function useVisibilityPolicies() {
+  const { isDemoMode } = useDataMode();
   return useQuery({
     queryKey: ["visibility-policies", isDemoMode],
     queryFn: () => fetchVisibilityPolicies(isDemoMode),
