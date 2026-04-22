@@ -5,10 +5,9 @@
 
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft, BookOpen, Shield, AlertTriangle, Filter } from "lucide-react";
+import { ArrowLeft, BookOpen, Shield, AlertTriangle, Filter, Download } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { SitaCard } from "@/components/sita/SitaCard";
 import { getRunbookEntry, loadRunbookMarkdown } from "@/lib/support/runbook-loader";
@@ -193,7 +192,7 @@ export function RunbookViewer({ runbookId }: { runbookId: string }) {
 
 function LinkedAlertsSection({ runbookId }: { runbookId: string }) {
   const [sevFilter, setSevFilter] = useState<string>("all");
-  const [serviceFilter, setServiceFilter] = useState("");
+  const [serviceFilter, setServiceFilter] = useState<string>("all");
   const [timeRange, setTimeRange] = useState<string>("all");
 
   const { data: alerts = [] } = useQuery({
@@ -210,10 +209,23 @@ function LinkedAlertsSection({ runbookId }: { runbookId: string }) {
     },
   });
 
+  // Derive unique severity and subsystem values from result set
+  const severityOptions = useMemo(() => {
+    const set = new Set<string>();
+    alerts.forEach((a: any) => { if (a.severity) set.add(a.severity); });
+    return Array.from(set).sort();
+  }, [alerts]);
+
+  const serviceOptions = useMemo(() => {
+    const set = new Set<string>();
+    alerts.forEach((a: any) => { if (a.subsystem) set.add(a.subsystem); });
+    return Array.from(set).sort();
+  }, [alerts]);
+
   const filtered = useMemo(() => {
     let list = alerts;
     if (sevFilter !== "all") list = list.filter((a: any) => a.severity === sevFilter);
-    if (serviceFilter) list = list.filter((a: any) => (a.subsystem ?? "").toLowerCase().includes(serviceFilter.toLowerCase()));
+    if (serviceFilter !== "all") list = list.filter((a: any) => a.subsystem === serviceFilter);
     if (timeRange !== "all") {
       const cutoff = new Date();
       if (timeRange === "1h") cutoff.setHours(cutoff.getHours() - 1);
@@ -224,6 +236,21 @@ function LinkedAlertsSection({ runbookId }: { runbookId: string }) {
     return list;
   }, [alerts, sevFilter, serviceFilter, timeRange]);
 
+  function exportCsv() {
+    const header = "ID,Title,Severity,Status,Subsystem,Last Seen";
+    const rows = filtered.map((a: any) =>
+      [a.id, `"${(a.title ?? "").replace(/"/g, '""')}"`, a.severity, a.status, a.subsystem ?? "", a.last_seen_at].join(",")
+    );
+    const csv = [header, ...rows].join("\n");
+    const blob = new Blob([csv], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `runbook-${runbookId}-alerts.csv`;
+    link.click();
+    URL.revokeObjectURL(url);
+  }
+
   if (alerts.length === 0) return null;
 
   const sevColor: Record<string, string> = {
@@ -232,9 +259,14 @@ function LinkedAlertsSection({ runbookId }: { runbookId: string }) {
 
   return (
     <SitaCard className="p-6">
-      <h2 className="text-sm font-semibold mb-3 flex items-center gap-2">
-        <AlertTriangle className="h-4 w-4 text-amber-500" /> Linked Alerts ({filtered.length}/{alerts.length})
-      </h2>
+      <div className="flex items-center justify-between mb-3">
+        <h2 className="text-sm font-semibold flex items-center gap-2">
+          <AlertTriangle className="h-4 w-4 text-amber-500" /> Linked Alerts ({filtered.length}/{alerts.length})
+        </h2>
+        <Button variant="outline" size="sm" className="h-7 text-xs gap-1" onClick={exportCsv} disabled={filtered.length === 0}>
+          <Download className="h-3 w-3" /> Export CSV
+        </Button>
+      </div>
 
       <div className="flex flex-wrap items-center gap-2 mb-3">
         <Filter className="h-3.5 w-3.5 text-muted-foreground" />
@@ -242,18 +274,20 @@ function LinkedAlertsSection({ runbookId }: { runbookId: string }) {
           <SelectTrigger className="h-7 w-[110px] text-xs"><SelectValue placeholder="Severity" /></SelectTrigger>
           <SelectContent>
             <SelectItem value="all">All Severity</SelectItem>
-            <SelectItem value="critical">Critical</SelectItem>
-            <SelectItem value="high">High</SelectItem>
-            <SelectItem value="medium">Medium</SelectItem>
-            <SelectItem value="low">Low</SelectItem>
+            {severityOptions.map((s) => (
+              <SelectItem key={s} value={s}>{s.charAt(0).toUpperCase() + s.slice(1)}</SelectItem>
+            ))}
           </SelectContent>
         </Select>
-        <Input
-          placeholder="Service…"
-          className="h-7 w-[140px] text-xs"
-          value={serviceFilter}
-          onChange={(e) => setServiceFilter(e.target.value)}
-        />
+        <Select value={serviceFilter} onValueChange={setServiceFilter}>
+          <SelectTrigger className="h-7 w-[140px] text-xs"><SelectValue placeholder="Service" /></SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All Services</SelectItem>
+            {serviceOptions.map((s) => (
+              <SelectItem key={s} value={s}>{s}</SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
         <Select value={timeRange} onValueChange={setTimeRange}>
           <SelectTrigger className="h-7 w-[100px] text-xs"><SelectValue placeholder="Time" /></SelectTrigger>
           <SelectContent>
