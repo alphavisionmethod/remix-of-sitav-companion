@@ -12,9 +12,9 @@ export default function PresenceGate() {
   const navigate = useNavigate();
 
   return (
-    <PageShell width="wide">
+    <PageShell width="wide" className="space-y-8">
       <DPOSubNav />
-<motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
+      <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <div className="flex items-center gap-3 mb-1">
           <Globe className="w-7 h-7 text-primary" />
           <h1 className="text-2xl font-bold text-foreground">Digital Presence Office</h1>

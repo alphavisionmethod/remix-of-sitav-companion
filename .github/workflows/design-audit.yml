@@ -1,0 +1,70 @@
+name: Design Coherence Audit
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'src/**'
+
+jobs:
+  design-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - run: npm ci
+
+      - name: Run design coherence audit
+        id: audit
+        run: |
+          set +e
+          npx tsx scripts/design/check-visual-coherence.ts > /tmp/audit-output.txt 2>&1
+          EXIT_CODE=$?
+          set -e
+
+          # Compare against baseline
+          node scripts/design/compare-baseline.mjs /tmp/audit-output.txt
+          BASELINE_EXIT=$?
+
+          echo "exit_code=$BASELINE_EXIT" >> "$GITHUB_OUTPUT"
+
+          # Build PR comment
+          SUMMARY=$(head -8 /tmp/audit-output.txt)
+          NEW_FINDINGS=$(cat /tmp/audit-new-findings.txt 2>/dev/null || echo "None")
+
+          {
+            echo 'comment<<EOF'
+            echo '## 🎨 Design Coherence Audit'
+            echo ''
+            echo '```'
+            echo "$SUMMARY"
+            echo '```'
+            echo ''
+            if [ "$BASELINE_EXIT" -ne 0 ]; then
+              echo '### ❌ New findings (not in baseline)'
+              echo '```'
+              echo "$NEW_FINDINGS"
+              echo '```'
+            else
+              echo '✅ No new design violations introduced.'
+            fi
+            echo 'EOF'
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Post PR comment
+        if: always()
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: design-audit
+          message: ${{ steps.audit.outputs.comment }}
+
+      - name: Fail on new violations
+        if: steps.audit.outputs.exit_code != '0'
+        run: |
+          echo "New design violations found. See PR comment for details."
+          exit 1
