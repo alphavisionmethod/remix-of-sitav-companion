@@ -119,7 +119,7 @@ const RCP08ContractReadiness = () => {
             ]).map(seg => {
               const pct = (seg.count / stats.total) * 100;
               return pct > 0 ? (
-                <div key={seg.label} className={`${seg.bg} flex items-center justify-center text-xs font-bold text-white`} style={{ width: `${pct}%` }}>
+                <div key={seg.label} className={`${seg.bg} flex items-center justify-center text-xs font-bold text-foreground`} style={{ width: `${pct}%` }}>
                   {seg.count}
                 </div>
               ) : null;

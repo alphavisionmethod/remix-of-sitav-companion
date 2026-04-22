@@ -102,7 +102,7 @@ const PackDetailPage = () => {
             {installed ? (
               <div className="flex flex-col items-end gap-2">
                 <PackStatusBadge status={state!.status} />
-                <button className="text-xs text-white/70 hover:text-white">Manage</button>
+                <button className="text-xs text-white/70 hover:text-foreground">Manage</button>
               </div>
             ) : installing ? (
               <div className="rounded-lg bg-white/15 backdrop-blur-sm px-4 py-2 text-xs font-medium text-foreground animate-pulse">
@@ -114,7 +114,7 @@ const PackDetailPage = () => {
                   <Download className="h-4 w-4" /> Install Pack
                 </button>
                 {pack.trial_supported && (
-                  <button className="text-xs text-white/70 hover:text-white text-center">
+                  <button className="text-xs text-white/70 hover:text-foreground text-center">
                     or start {pack.trial_days}-day free trial
                   </button>
                 )}

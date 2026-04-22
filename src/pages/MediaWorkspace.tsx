@@ -243,7 +243,7 @@ const MediaWorkspace = () => {
       {/* Lightbox */}
       {lightboxOpen && selectedMedia && (
         <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center" onClick={() => setLightboxOpen(false)}>
-          <button className="absolute top-4 right-4 text-white/60 hover:text-white"><X className="h-6 w-6" /></button>
+          <button className="absolute top-4 right-4 text-white/60 hover:text-foreground"><X className="h-6 w-6" /></button>
           <div className={cn("w-[80vw] max-w-3xl aspect-video rounded-xl bg-gradient-to-br flex items-center justify-center", selectedMedia.preview)} onClick={e => e.stopPropagation()}>
             <ImageIcon className="w-20 h-20 text-white/30" />
           </div>

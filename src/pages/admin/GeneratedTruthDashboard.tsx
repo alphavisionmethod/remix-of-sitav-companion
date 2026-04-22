@@ -160,7 +160,7 @@ function ScorecardsTab() {
               const pct = (count / os.totalServices) * 100;
               const colors: Record<string, string> = { healthy: "bg-green-500", fair: "bg-amber-500", degraded: "bg-orange-500", critical: "bg-red-500" };
               return (
-                <div key={grade} className={`${colors[grade] ?? "bg-muted"} flex items-center justify-center text-[10px] font-bold text-white`} style={{ width: `${pct}%` }}>
+                <div key={grade} className={`${colors[grade] ?? "bg-muted"} flex items-center justify-center text-[10px] font-bold text-foreground`} style={{ width: `${pct}%` }}>
                   {count}
                 </div>
               );
