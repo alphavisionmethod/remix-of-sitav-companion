@@ -6,6 +6,7 @@ import {
   BarChart3, ArrowUpRight, Star, Briefcase, Zap
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const DEMO_DEALS = [
   { id: "1", name: "NovaTech Enterprise License", value: "$85,000", stage: "Negotiation", probability: 75, daysInStage: 8, contacts: 3, nextAction: "Send revised pricing", health: "good" },
@@ -60,6 +61,7 @@ const roleColors: Record<string, string> = {
 };
 
 export default function DealRoom() {
+  const { isDemoMode } = useDataMode();
   const [selectedDeal, setSelectedDeal] = useState(DEMO_DEALS[0]);
   const [activeTab, setActiveTab] = useState<"overview" | "stakeholders" | "playbook" | "scenarios">("overview");
 

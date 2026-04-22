@@ -14,6 +14,7 @@ import {
   XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine,
 } from "recharts";
 import {
+import { useDataMode } from "@/contexts/DataModeContext";
   TrendingUp, TrendingDown, AlertTriangle, Activity, Brain,
   Zap, Clock, Shield, Eye, Target, Gauge, BarChart3,
   ArrowUpRight, ArrowDownRight, Minus, RefreshCw, Cpu,

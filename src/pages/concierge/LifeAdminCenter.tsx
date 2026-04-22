@@ -10,6 +10,7 @@ import { LifeAdminQueueCard } from "@/components/concierge";
 import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
 import { cn } from "@/lib/utils";
 import {
+import { useDataMode } from "@/contexts/DataModeContext";
   FileText, Calendar, Wrench, RefreshCw, Clock, CheckCircle,
   Shield, Phone, Timer, Package, ClipboardList
 } from "lucide-react";
@@ -70,6 +71,7 @@ const TAB_DATA: Record<AdminTab, { items: AdminItem[]; label: string }> = {
 const urgencyMap = { high: "critical" as const, medium: "high" as const, low: "normal" as const };
 
 const LifeAdminCenter = () => {
+  const { isDemoMode } = useDataMode();
   const [activeTab, setActiveTab] = useState<AdminTab>("aging");
   const [selectedId, setSelectedId] = useState<string | null>(null);
 

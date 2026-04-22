@@ -16,8 +16,10 @@ import type { AppDefinition } from "@/domains/apps/types";
 import { DEMO_DETECTED_SITES } from "@/data/seed/core-pages";
 import { toast } from "sonner";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const WebAppInstallPage = () => {
+  const { isDemoMode } = useDataMode();
   const navigate = useNavigate();
   const { apps, installApp, pinToDock, setNotificationEnabled, setStartupBehavior } = useAppPlatform();
   const [selectedSite, setSelectedSite] = useState<typeof DEMO_DETECTED_SITES[0] | null>(null);

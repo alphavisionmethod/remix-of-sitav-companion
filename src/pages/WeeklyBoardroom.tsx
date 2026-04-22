@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Calendar, TrendingUp, AlertTriangle, CheckCircle2, ArrowRight } from "lucide-react";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const MOCK_WEEK = {
   focus: "Revenue pipeline and household logistics",
@@ -25,6 +26,7 @@ const MOCK_WEEK = {
 };
 
 const statusIcon = (status: string) => {
+  const { isDemoMode } = useDataMode();
   if (status === "urgent") return <AlertTriangle className="h-4 w-4 text-destructive" />;
   if (status === "needs-attention") return <AlertTriangle className="h-4 w-4 text-amber-500" />;
   return <CheckCircle2 className="h-4 w-4 text-emerald-500" />;

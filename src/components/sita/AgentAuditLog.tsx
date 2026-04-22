@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { exportAuditLog } from "@/lib/export-engine";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 // ── Types ───────────────────────────────────────────────────────
 
@@ -238,6 +239,7 @@ export function AgentAuditLog() {
   }), []);
 
   const handleExport = () => {
+  const { isDemoMode } = useDataMode();
     exportAuditLog(filtered);
     toast.success("Audit log exported", { description: "CSV file downloaded with full audit trail" });
   };

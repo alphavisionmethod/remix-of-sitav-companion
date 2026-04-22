@@ -9,8 +9,10 @@ import { useFeatureIntakes, useCapabilities, useFeatureSpecs, useComplianceRecor
 import { READINESS_STAGES } from "@/lib/fip/types";
 import { DEMO_ADMIN_BUILDER_STEPS as DEMO_BUILDER_STEPS, DEMO_DOMAIN_PACKS } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const FIPBuilderConsole = () => {
+  const { isDemoMode } = useDataMode();
   const { data: intakes = [] } = useFeatureIntakes();
   const { data: caps = [] } = useCapabilities();
   const { data: specs = [] } = useFeatureSpecs();

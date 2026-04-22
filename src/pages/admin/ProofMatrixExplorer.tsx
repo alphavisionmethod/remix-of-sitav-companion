@@ -11,6 +11,7 @@ import { cn } from "@/lib/utils";
 import { useReceiptVerification, useSharedMemory } from "@/contexts/SitaKernelContext";
 import { DEMO_PROOFS } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 interface ProofRecord {
   id: string;
@@ -52,6 +53,7 @@ function timeAgo(d: string) {
 }
 
 export default function ProofMatrixExplorer() {
+  const { isDemoMode } = useDataMode();
   const { verifyIntegrity, validateChain, detectTamper } = useReceiptVerification();
   const { entries: sharedMemoryEntries } = useSharedMemory("proof-context");
   const [tab, setTab] = useState("proofs");

@@ -10,6 +10,7 @@ import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { DEMO_INTEL_DIFFS as DEMO_DIFFS } from "@/data/seed/admin-intelligence";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const actionColors: Record<string, string> = {
   "reuse-as-is": "text-emerald-400 bg-emerald-500/10",
@@ -19,6 +20,7 @@ const actionColors: Record<string, string> = {
 };
 
 const DifferentialReasoningExplorer = () => {
+  const { isDemoMode } = useDataMode();
   const { isAdmin, loading } = useRequireAdmin();
   if (loading || !isAdmin) return null;
 

@@ -16,6 +16,7 @@ import { ConnectorSyncDashboard } from "@/components/sita/ConnectorSyncDashboard
 import { toast } from "sonner";
 import { DEMO_ADMIN_CONNECTORS as DEMO_CONNECTORS, DEMO_FALLBACK_SYNC_HISTORY, DEMO_POLICIES } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 
 
@@ -51,6 +52,7 @@ const CRED_CONFIG: Record<string, { color: string }> = {
 };
 
 export default function ConnectorGovernanceCenter() {
+  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("connectors");
   const { user } = useAuth();
   const queryClient = useQueryClient();

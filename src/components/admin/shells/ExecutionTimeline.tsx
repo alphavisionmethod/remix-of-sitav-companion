@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
+import { useDataMode } from "@/contexts/DataModeContext";
   MessageSquare, CheckCircle, AlertTriangle, Clock, Zap, Eye, Play,
   RotateCcw, Shield, ChevronDown, ChevronRight, Target, XCircle,
   Sparkles, FileText, ArrowRight, Loader2

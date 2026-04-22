@@ -20,6 +20,7 @@ import { appGovernance } from "@/platform/sync-engine/governance/app-governance"
 import { trustScoring, type TrustState } from "@/platform/sync-engine/governance/trust-scoring";
 import { complianceEngine } from "@/platform/sync-engine/governance/compliance-engine";
 import { abusePrevention } from "@/platform/sync-engine/operations/abuse-prevention";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const DEMO_TRUST_DEVICES = [
   { id: "d1", name: "MacBook Pro", state: "trusted" as TrustState, score: 92, platform: "macOS" },

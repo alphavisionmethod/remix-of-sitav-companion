@@ -7,10 +7,12 @@ import { Heart, ShieldCheck, Eye, EyeOff, Lock, Clock, Activity, Trash2, CheckCi
 import { DEMO_ADMIN_SIGNALS as DEMO_SIGNALS } from "@/data/seed/admin-platform";
 import ANDSubNav from "@/components/admin/ANDSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 type ConsentMap = Record<string, { read: boolean; routing: boolean; assistant: boolean }>;
 
 const AND04AndroidHealthConsent = () => {
+  const { isDemoMode } = useDataMode();
   const [consents, setConsents] = useState<ConsentMap>(
     Object.fromEntries(DEMO_SIGNALS.map(s => [s.key, { read: false, routing: false, assistant: false }]))
   );

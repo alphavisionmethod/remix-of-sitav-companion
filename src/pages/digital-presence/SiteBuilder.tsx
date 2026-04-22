@@ -9,8 +9,10 @@ import { useSites } from "@/hooks/use-digital-presence";
 import { DEMO_EXISTING_PAGES, DEMO_PAGE_TYPES } from "@/data/seed/digital-presence";
 import DPOSubNav from "./DPOSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function SiteBuilder() {
+  const { isDemoMode } = useDataMode();
   const { data: liveData, isLoading } = useSites();
   const [search, setSearch] = useState("");
 

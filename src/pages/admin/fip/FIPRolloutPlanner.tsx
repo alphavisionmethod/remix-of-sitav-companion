@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { useRolloutRecords } from "@/hooks/use-fip-data";
 import { DEMO_KILL_CLASSES, DEMO_ROLLOUT_RINGS } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 
 
@@ -17,6 +18,7 @@ const ringColors: Record<string, string> = {
 };
 
 const FIPRolloutPlanner = () => {
+  const { isDemoMode } = useDataMode();
   const { data: rollouts = [], isLoading } = useRolloutRecords();
 
   return (

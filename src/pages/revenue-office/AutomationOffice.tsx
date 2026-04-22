@@ -20,6 +20,7 @@ import {
 } from "@/data/seed/revenue-office";
 import AutomationSubNav from "./AutomationSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const levelColors: Record<string, string> = {
   "Auto-run (L3)": "bg-emerald-500/10 text-emerald-400",
@@ -64,6 +65,7 @@ const promiseStatusColors: Record<string, string> = {
 };
 
 export default function AutomationOffice() {
+  const { isDemoMode } = useDataMode();
   const navigate = useNavigate();
   const [selectedTab, setSelectedTab] = useState("overview");
 

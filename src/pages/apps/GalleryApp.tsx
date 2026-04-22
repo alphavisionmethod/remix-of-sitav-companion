@@ -7,6 +7,7 @@ import { Image, Upload, Search, Grid3X3, LayoutList, Calendar, Tag, FolderOpen, 
 import { useState } from "react";
 import { DEMO_PHOTOS, DEMO_albums, DEMO_placeholderColors } from "@/data/seed/apps";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 interface Photo {
   id: string;
@@ -19,6 +20,7 @@ interface Photo {
 }
 
 export default function GalleryApp() {
+  const { isDemoMode } = useDataMode();
   const [search, setSearch] = useState("");
   const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
   const [album, setAlbum] = useState("All");

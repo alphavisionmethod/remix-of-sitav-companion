@@ -83,6 +83,7 @@ const STEP_TYPES: { type: BuilderStep["type"]; label: string; icon: typeof Zap; 
 
 import { OPERATORS, DELAY_OPTIONS } from "@/lib/constants/ui-config";
 import { DEMO_BIZ_CATEGORIES as DEMO_CATEGORIES, DEMO_CONDITION_FIELDS, DEMO_TRIGGER_EVENTS } from "@/data/seed/business";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 // ── Helpers ──────────────────────────────────────────────────────
 
@@ -424,7 +425,8 @@ const TriggerPanel = ({ trigger, onChange }: { trigger: BuilderTrigger; onChange
 
 // ── Preview Panel ────────────────────────────────────────────────
 
-const PreviewPanel = ({ draft }: { draft: PlaybookDraft }) => {
+const PreviewPanel = ({
+  const { isDemoMode } = useDataMode(); draft }: { draft: PlaybookDraft }) => {
   const triggerLabel = draft.trigger.type === "event"
     ? DEMO_TRIGGER_EVENTS.find(e => e.value === draft.trigger.event)?.label || draft.trigger.event
     : draft.trigger.type === "schedule" ? draft.trigger.schedule

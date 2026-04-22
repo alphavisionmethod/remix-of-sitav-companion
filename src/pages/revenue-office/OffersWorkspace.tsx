@@ -8,6 +8,7 @@ import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import {
+import { useDataMode } from "@/contexts/DataModeContext";
   DEMO_REV_BUNDLES as DEMO_BUNDLES,
   DEMO_REV_PRODUCTS as DEMO_PRODUCTS,
   DEMO_OFFER_UPSELLS,
@@ -15,6 +16,7 @@ import {
 } from "@/data/seed/revenue-office";
 
 export default function OffersWorkspace() {
+  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("catalog");
   const totalRevenue = DEMO_PRODUCTS.reduce((s, p) => s + parseInt(p.revenue.replace(/[^0-9]/g, "")), 0);
   const activeProd = DEMO_PRODUCTS.filter(p => p.status === "active").length;

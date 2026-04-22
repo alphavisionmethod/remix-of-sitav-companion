@@ -12,8 +12,10 @@ import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { DEMO_INTEL_PACKETS as DEMO_PACKETS } from "@/data/seed/admin-intelligence";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const IntelligencePacketInspector = () => {
+  const { isDemoMode } = useDataMode();
   const { isAdmin, loading } = useRequireAdmin();
   const [selected, setSelected] = useState<string | null>(null);
   if (loading || !isAdmin) return null;

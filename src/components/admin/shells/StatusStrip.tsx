@@ -5,6 +5,7 @@ import { SafeModeBadge } from "./SafeModeBadge";
 import { SafeModeDrawer } from "./SafeModeDrawer";
 import { RolloutStatusBanner } from "./RolloutStatusBanner";
 import {
+import { useDataMode } from "@/contexts/DataModeContext";
   Activity, AlertTriangle, Rocket, Clock, DollarSign, Beaker,
   Server, CheckCircle, Monitor, Smartphone, Shield
 } from "lucide-react";

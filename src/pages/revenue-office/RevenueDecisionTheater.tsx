@@ -8,10 +8,12 @@ import { Button } from "@/components/ui/button";
 import { DEMO_pendingDecisions, DEMO_SCENARIO_CARDS } from "@/data/seed/revenue-office";
 import { useState } from "react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 type DecisionState = "draft" | "review" | "approved" | "executed";
 
 export default function DecisionTheater() {
+  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("decisions");
   const [decisionStates, setDecisionStates] = useState<Record<number, DecisionState>>({});
   const [scenarioStates, setScenarioStates] = useState<Record<number, "pending" | "approved" | "rejected">>({});

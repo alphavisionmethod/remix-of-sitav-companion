@@ -24,6 +24,7 @@ import {
 } from "lucide-react";
 import { DEMO_ADMIN_DOMAINS_H_Q_APPROVAL_QUEUE as DEMO_DOMAINS, DEMO_ADMIN_STATUSES as DEMO_STATUSES, DEMO_RECOMMENDATION_TYPES, DEMO_RISK_TIERS } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 
 
@@ -150,6 +151,7 @@ const severityColor = (sev: string) =>
 // Main Page
 // ════════════════════════════════════════════════════════════════
 export default function HQApprovalQueue() {
+  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("overview");
 
   return (

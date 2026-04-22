@@ -8,6 +8,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Lock, Shield, CheckCircle, AlertTriangle, XCircle, RefreshCw, Key, Database, Server, Eye, Fingerprint, Clock } from "lucide-react";
 import { DEMO_POSTURE } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.05 } } };
@@ -39,6 +40,7 @@ const DEMO_KEY_ROTATION = [
 ];
 
 const SecurityPostureBoard = () => {
+  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("overview");
   const fullEncryption = DEMO_POSTURE.filter(p => p.encryption === "full").length;
   const allRls = DEMO_POSTURE.filter(p => p.rlsEnabled).length;

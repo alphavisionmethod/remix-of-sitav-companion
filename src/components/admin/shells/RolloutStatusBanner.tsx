@@ -4,6 +4,7 @@ import { Rocket, AlertTriangle, ChevronDown, ChevronUp, ExternalLink } from "luc
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 interface RolloutState {
   active: boolean;

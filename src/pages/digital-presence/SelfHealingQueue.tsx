@@ -8,6 +8,7 @@ import { useState } from "react";
 import { DEMO_DPO_STATS as DEMO_STATS } from "@/data/seed/digital-presence";
 import DPOSubNav from "./DPOSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 type PatchStatus = "pending" | "approved" | "applied" | "rejected" | "verified";
 
@@ -37,6 +38,7 @@ const INITIAL_PATCHES: Patch[] = [
 ];
 
 export default function SelfHealingQueue() {
+  const { isDemoMode } = useDataMode();
   const [patches, setPatches] = useState(INITIAL_PATCHES);
 
   const updateStatus = (id: string, status: PatchStatus) => {

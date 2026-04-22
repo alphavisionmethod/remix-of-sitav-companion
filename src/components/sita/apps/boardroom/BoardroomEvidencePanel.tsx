@@ -7,6 +7,7 @@ import React, { useState } from "react";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 import {
+import { useDataMode } from "@/contexts/DataModeContext";
   X, CheckCircle, AlertTriangle, HelpCircle, Brain,
   Clock, Link2, ShieldCheck, ShieldAlert, Eye, FileText,
 } from "lucide-react";

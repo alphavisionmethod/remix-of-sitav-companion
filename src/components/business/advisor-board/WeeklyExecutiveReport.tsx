@@ -16,6 +16,7 @@ import type { ProfitabilityBrief } from "@/domains/engines/business-profitabilit
 import type { ProfitLoopSummary } from "@/domains/engines/continuous-profit-engine";
 import type { ReflectionSummary } from "@/domains/engines/advisor-reflection-engine";
 import ReactMarkdown from "react-markdown";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 interface Props {
   brief: ProfitabilityBrief;

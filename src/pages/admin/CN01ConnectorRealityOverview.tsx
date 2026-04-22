@@ -14,6 +14,7 @@ import CNSubNav from "@/components/admin/CNSubNav";
 import { DEMO_ADMIN_CAPABILITIES as DEMO_CAPABILITIES, DEMO_VERIFICATION_CHECKS } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { ConnectorStateBadge } from "@/components/primitives/status/ConnectorStateBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 
 
@@ -30,6 +31,7 @@ interface VerificationCheck {
 }
 
 export default function CN01ConnectorRealityOverview() {
+  const { isDemoMode } = useDataMode();
   const queryClient = useQueryClient();
 
   const { data: registry = [] } = useQuery({

@@ -10,8 +10,10 @@ import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { DEMO_DIGESTS } from "@/data/seed/admin-intelligence";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const SmartDigestCenter = () => {
+  const { isDemoMode } = useDataMode();
   const { isAdmin, loading } = useRequireAdmin();
   if (loading || !isAdmin) return null;
 

@@ -10,8 +10,10 @@ import { useAppPlatform } from "@/contexts/AppPlatformContext";
 import { AppIcon } from "@/components/sita/app-platform/AppStoreComponents";
 import { DEMO_APP_SLOTS, DEMO_FILE_TYPES } from "@/data/seed/core-pages";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const AppAssociationsPage = () => {
+  const { isDemoMode } = useDataMode();
   const { apps, defaultApps, setDefaultApp } = useAppPlatform();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<"defaults" | "files" | "protocols">("defaults");

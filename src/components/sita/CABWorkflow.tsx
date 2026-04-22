@@ -13,6 +13,7 @@ import { cn } from "@/lib/utils";
 import { exportToCSV } from "@/lib/export-engine";
 import { toast } from "sonner";
 import {
+import { useDataMode } from "@/contexts/DataModeContext";
   FileText, AlertTriangle, CheckCircle, XCircle, Clock, Users,
   Shield, ChevronRight, ChevronDown, Download, Plus, Eye,
   ThumbsUp, ThumbsDown, MessageSquare, BarChart3, Target,
@@ -384,6 +385,7 @@ export function CABWorkflow() {
   }), []);
 
   const handleExport = () => {
+  const { isDemoMode } = useDataMode();
     const headers = ["ID", "Title", "Type", "Status", "Priority", "Risk Level", "Risk Score", "Requester", "Assignee", "Created", "Impact Areas"];
     const rows = filtered.map(c => [
       c.id, c.title, c.type, c.status, c.priority, c.riskLevel,

@@ -22,8 +22,10 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { DEMO_BUDGET_POSTURES, DEMO_SCOPE_DOMAINS, DEMO_TASK_TYPES } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function AIT03TaskInvocation() {
+  const { isDemoMode } = useDataMode();
 const [selectedRole, setSelectedRole] = useState("");
   const [selectedTask, setSelectedTask] = useState("");
   const [budgetPosture, setBudgetPosture] = useState("economy_admin");

@@ -10,6 +10,7 @@ import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { DEMO_PROFILES } from "@/data/seed/admin-intelligence";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const offenders = DEMO_PROFILES
   .filter(p => p.redundancy > 20)
@@ -19,6 +20,7 @@ const avgCostReduction = Math.round(DEMO_PROFILES.reduce((s, p) => s + p.costRed
 const packetDrivenPct = Math.round((DEMO_PROFILES.filter(p => p.packetDriven).length / DEMO_PROFILES.length) * 100);
 
 const ZeroWastePromptView = () => {
+  const { isDemoMode } = useDataMode();
   const { isAdmin, loading } = useRequireAdmin();
   if (loading || !isAdmin) return null;
 

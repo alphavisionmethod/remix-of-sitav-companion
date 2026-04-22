@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
+import { useDataMode } from "@/contexts/DataModeContext";
   CalendarDays, Clock, CheckCircle2, AlertTriangle, Phone,
   MessageSquare, User, MapPin, RefreshCw, Sparkles,
   ChevronRight, UserCheck, XCircle, Send, Bell
@@ -56,6 +57,7 @@ const riskConfig: Record<string, string> = {
 };
 
 const KPIStrip = () => {
+  const { isDemoMode } = useDataMode();
   const upcoming = DEMO_APPOINTMENTS.filter(a => ["Today", "Tomorrow", "Wed"].includes(a.date) && a.status !== "no-show" && a.status !== "cancelled").length;
   const needsConfirm = DEMO_APPOINTMENTS.filter(a => a.status === "pending" || a.status === "unconfirmed").length;
   const highRisk = DEMO_APPOINTMENTS.filter(a => a.noShowRisk === "high" && a.status !== "no-show" && a.status !== "cancelled").length;

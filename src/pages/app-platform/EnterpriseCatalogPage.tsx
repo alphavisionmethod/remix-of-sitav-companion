@@ -10,6 +10,7 @@ import { AppIcon, VerificationBadge } from "@/components/sita/app-platform/AppSt
 import { DEMO_ENTERPRISE_APPS } from "@/data/seed/core-pages";
 import { toast } from "sonner";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const statusConfig: Record<string, { label: string; color: string; icon: typeof Check }> = {
   available: { label: "Install", color: "bg-primary text-primary-foreground hover:bg-primary/90", icon: Download },
@@ -19,6 +20,7 @@ const statusConfig: Record<string, { label: string; color: string; icon: typeof 
 };
 
 const EnterpriseCatalogPage = () => {
+  const { isDemoMode } = useDataMode();
   const navigate = useNavigate();
   const { installApp } = useAppPlatform();
 

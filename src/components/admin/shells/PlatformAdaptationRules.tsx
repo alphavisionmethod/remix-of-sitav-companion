@@ -9,6 +9,7 @@ import {
   CheckCircle, AlertTriangle, Lock, ArrowRight
 } from "lucide-react";
 import { WhyTooltip } from "./WhyTooltip";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 interface AdaptationRule {
   id: string;

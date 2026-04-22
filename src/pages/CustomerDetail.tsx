@@ -11,9 +11,11 @@ import {
 } from "lucide-react";
 import { DEMO_ACTIONS, DEMO_CORE_TIMELINE as DEMO_TIMELINE, DEMO_CUSTOMERS_DATA, DEMO_DOCUMENTS } from "@/data/seed/core-pages";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 // Mock customer data keyed by ID
-const CustomerDetail = ({ customerId: propId }: { customerId?: string }) => {
+const CustomerDetail = ({
+  const { isDemoMode } = useDataMode(); customerId: propId }: { customerId?: string }) => {
   const params = useParams<{ id: string }>();
   const id = propId || params.id;
   const { navigateTo } = useBusinessNavigation();

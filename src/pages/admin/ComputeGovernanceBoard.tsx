@@ -23,6 +23,7 @@ import { classColors, tierColors, budgetStatusColors, fmt } from "@/components/a
 import { useComputeBudgetStatus, useAISpendSummary, useModelRoutingStats, useMarginSnapshot } from "@/hooks/use-compute-governance";
 import { DEMO_AGENT_SPEND, DEMO_ANOMALIES, DEMO_BUDGETS, DEMO_DEEP_JOBS, DEMO_ROUTING_EVENTS, DEMO_TENANT_SPEND } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 // ── Mock Data ───────────────────────────────────────────────
 
@@ -48,6 +49,7 @@ const sevColors: Record<string, string> = { critical: "text-rose-400", warning: 
 // ── Component ───────────────────────────────────────────────
 
 const ComputeGovernanceBoard = () => {
+  const { isDemoMode } = useDataMode();
   const [activeTab, setActiveTab] = useState("overview");
 
   const { data: tokenUsage } = useQuery({

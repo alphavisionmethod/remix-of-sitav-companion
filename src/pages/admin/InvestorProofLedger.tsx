@@ -7,6 +7,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Layers, CheckCircle, AlertTriangle, Download, RefreshCw, GitBranch, Shield, Undo2, FileText, Eye, Scale, Clock } from "lucide-react";
 import { DEMO_PROOF_ENTRIES } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.05 } } };
@@ -39,6 +40,7 @@ const DEMO_COMPLIANCE = [
 ];
 
 const InvestorProofLedger = () => {
+  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("ledger");
   const fullProof = DEMO_PROOF_ENTRIES.filter(p => p.proofChain.every(s => s.status === "verified")).length;
 

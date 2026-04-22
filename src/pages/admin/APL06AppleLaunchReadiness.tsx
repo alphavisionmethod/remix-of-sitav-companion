@@ -9,8 +9,10 @@ import { fromTable } from "@/lib/supabase-helpers";
 import { DEMO_ADMIN_TARGETS_A_P_L06_APPLE_LAUNCH_READINESS as DEMO_TARGETS } from "@/data/seed/admin-platform";
 import APLSubNav from "@/components/admin/APLSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const APL06AppleLaunchReadiness = () => {
+  const { isDemoMode } = useDataMode();
   const { data: dbTargets } = useQuery({
     queryKey: ["apl-launch-readiness"],
     queryFn: async () => {

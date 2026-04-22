@@ -5,6 +5,7 @@ import { Brain, ChevronDown, ChevronRight, FileCheck, MessageCircle, AlertTriang
 import { ConfidenceBar } from "@/components/sita/primitives";
 import { ADVISOR_ROSTERS, type AdvisorRole } from "@/domains/advisors/topology";
 import { TalkingAvatar } from "./TalkingAvatar";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 interface Props {
   scope: "global" | "business" | "finance" | "concierge";

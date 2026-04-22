@@ -9,6 +9,7 @@ import { Terminal, Search, Play, Clock, ArrowRight, Trash2, Filter } from "lucid
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 interface CommandRecord {
   id: string;
@@ -38,6 +39,7 @@ const MODE_STYLES = {
 };
 
 export default function CommandHistory() {
+  const { isDemoMode } = useDataMode();
   const [filter, setFilter] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState("");
 

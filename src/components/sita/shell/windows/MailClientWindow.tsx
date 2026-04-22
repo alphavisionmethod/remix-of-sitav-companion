@@ -7,6 +7,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import {
+import { useDataMode } from "@/contexts/DataModeContext";
   Inbox, Send, FileText, Star, Trash2, Archive, Tag,
   Search, Pencil, MoreHorizontal, Paperclip, Reply, Forward,
   ChevronDown, Circle, Mail

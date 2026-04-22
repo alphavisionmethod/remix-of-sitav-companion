@@ -7,8 +7,10 @@ import { useSites } from "@/hooks/use-digital-presence";
 import { DEMO_AI_RECOMMENDATIONS, DEMO_AUDIT_FINDINGS, DEMO_DPO_PLATFORMS as DEMO_PLATFORMS } from "@/data/seed/digital-presence";
 import DPOSubNav from "./DPOSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function ConnectedSites() {
+  const { isDemoMode } = useDataMode();
   const { data: liveData, isLoading } = useSites();
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">

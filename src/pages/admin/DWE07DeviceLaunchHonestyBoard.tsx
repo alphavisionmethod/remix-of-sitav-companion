@@ -11,8 +11,10 @@ import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { DemoOnlyBanner } from "@/components/claim-safety/DemoOnlyBanner";
 import { FutureVisionBadge } from "@/components/claim-safety/FutureVisionBadge";
 import { getDemoOnlySurfacesByContainment, DEMO_ONLY_SURFACE_COUNT } from "@/lib/claim-safety/demo-only-surface-registry";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function DWE07DeviceLaunchHonestyBoard() {
+  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
 
   const { data: readiness = [] } = useQuery<AmbientLaunchReadinessRow[]>({

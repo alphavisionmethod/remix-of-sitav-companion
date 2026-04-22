@@ -8,6 +8,7 @@ import { useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Briefcase, DollarSign, Home, Brain, ShoppingCart, Users } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 interface DesktopNotification {
   id: string;

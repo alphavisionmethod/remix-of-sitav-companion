@@ -6,6 +6,7 @@ import { useReadinessStates } from "@/hooks/use-health-signal-data";
 import { DEMO_TIMING_RULES, DEMO_BRIEFING_WINDOWS, DEMO_HOLD_VS_ACT } from "@/data/seed/health-signals";
 import HRSSubNav from "@/components/admin/HRSSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 
 
@@ -13,6 +14,7 @@ const BRIEFING_WINDOWS = DEMO_BRIEFING_WINDOWS;
 const HOLD_VS_ACT = DEMO_HOLD_VS_ACT;
 
 const HRS05AssistantTimingBoard = () => {
+  const { isDemoMode } = useDataMode();
   const { data: dbReadiness, isLoading } = useReadinessStates(5);
 
   return (

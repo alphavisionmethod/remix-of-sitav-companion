@@ -10,6 +10,7 @@ import { getDuplicateActionPatterns, getRoutesWithShadowRisk } from "@/lib/core-
 import { AlertTriangle, Copy, Ghost, Shield, CheckCircle, ArrowRight } from "lucide-react";
 import { DEMO_SHADOW_PATTERNS } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 interface ShadowPattern {
   pattern: string;
@@ -78,6 +79,7 @@ function ClusterResolutionCard({ cluster }: { cluster: ClusterResolution }) {
 }
 
 export default function SERV04ServiceDuplication() {
+  const { isDemoMode } = useDataMode();
   const duplicateActions = getDuplicateActionPatterns();
   const shadowRoutes = getRoutesWithShadowRisk();
   const highRiskDomains = SERVICE_OWNERSHIP_REGISTRY.filter(

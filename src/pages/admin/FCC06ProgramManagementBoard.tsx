@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
+import { useDataMode } from "@/contexts/DataModeContext";
   Target, CheckCircle2, Clock, AlertTriangle, Play, Users, Brain,
   ChevronDown, ChevronRight, Zap, Shield, Gauge, Terminal, GitBranch,
   Flag, BarChart3, Link2, XCircle
@@ -161,6 +162,7 @@ function getObjectiveProgress(obj: Objective): number {
 }
 
 export default function FCC06ProgramManagementBoard() {
+  const { isDemoMode } = useDataMode();
   const [expandedObj, setExpandedObj] = useState<Set<string>>(new Set(["obj-1"]));
   const [expandedMs, setExpandedMs] = useState<Set<string>>(new Set(["ms-1b"]));
 

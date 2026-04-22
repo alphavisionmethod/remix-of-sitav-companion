@@ -5,6 +5,7 @@ import {
   Zap, Download, Loader2, XCircle, BarChart3
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 interface BGTask {
   id: string;
@@ -41,6 +42,7 @@ const statusConfig: Record<string, { icon: React.ElementType; color: string; bg:
 };
 
 export default function BackgroundTaskCenter() {
+  const { isDemoMode } = useDataMode();
   const [filter, setFilter] = useState<"all" | "running" | "completed" | "failed">("all");
 
   const filtered = DEMO_TASKS.filter(t => filter === "all" || t.status === filter);

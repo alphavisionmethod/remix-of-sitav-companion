@@ -6,8 +6,10 @@ import { Rocket, CheckCircle2, XCircle, AlertTriangle, ArrowRight, Clock } from 
 import { DEMO_ADMIN_TARGETS as DEMO_TARGETS } from "@/data/seed/admin-platform";
 import ANDSubNav from "@/components/admin/ANDSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const AND05AndroidLaunchReadiness = () => {
+  const { isDemoMode } = useDataMode();
   const overall = Math.round(DEMO_TARGETS.reduce((s, t) => s + t.readiness, 0) / DEMO_TARGETS.length);
 
   return (

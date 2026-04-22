@@ -8,8 +8,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DEMO_AT_RISK, DEMO_HEALTH_SEGMENTS, DEMO_WIN_BACK, DEMO_CHURN_PREDICTION, DEMO_NPS_DATA } from "@/data/seed/revenue-office";
 import { useState } from "react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function RetentionOffice() {
+  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("overview");
 
   return (

@@ -6,10 +6,12 @@ import { useRoutingPolicies } from "@/hooks/use-sag-data";
 import { DEMO_EXAMPLE_STAGES } from "@/data/seed/admin-platform";
 import SAGSubNav from "@/components/admin/SAGSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 
 
 const SAGMultiStageExplorer = () => {
+  const { isDemoMode } = useDataMode();
   const { data: policies = [] } = useRoutingPolicies();
 
   return (

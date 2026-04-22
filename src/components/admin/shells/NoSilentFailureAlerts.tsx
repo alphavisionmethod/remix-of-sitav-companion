@@ -15,6 +15,7 @@ import {
   Server, Database, Zap, Loader2, Activity,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 interface FailureAlert {
   id: string;

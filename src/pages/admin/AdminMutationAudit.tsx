@@ -8,6 +8,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Database, CheckCircle, AlertTriangle, XCircle, Clock, Shield, RefreshCw, Eye, Undo2, GitBranch, Layers, ArrowRight, FileCheck } from "lucide-react";
 import { DEMO_MUTATIONS, type DemoMutationRecord, type DurabilityStatus } from "@/data/seed/durability";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.05 } } };
@@ -36,6 +37,7 @@ const LINEAGE_GAPS = [
 ];
 
 const AdminDurabilityBoard = () => {
+  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("mutations");
   const [mutFilter, setMutFilter] = useState("all");
   const [selectedMutation, setSelectedMutation] = useState<DemoMutationRecord | null>(null);

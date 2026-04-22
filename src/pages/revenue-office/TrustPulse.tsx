@@ -7,10 +7,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useState } from "react";
 import { DEMO_CLIENTS, DEMO_REV_ALERTS as DEMO_ALERTS, DEMO_TRUST_DIMENSIONS, DEMO_SENTIMENT_TREND } from "@/data/seed/revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const ti = (t: string) => t === "up" ? <TrendingUp className="h-3.5 w-3.5 text-[hsl(var(--trust-safe))]" /> : t === "down" ? <TrendingDown className="h-3.5 w-3.5 text-destructive" /> : <span className="text-muted-foreground">—</span>;
 
 const TrustPulse = () => {
+  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("dimensions");
   const avg = Math.round(DEMO_CLIENTS.reduce((a, c) => a + c.score, 0) / DEMO_CLIENTS.length);
   const dimAvg = Math.round(DEMO_TRUST_DIMENSIONS.reduce((a, d) => a + d.score, 0) / DEMO_TRUST_DIMENSIONS.length);

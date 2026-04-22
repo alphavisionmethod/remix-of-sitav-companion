@@ -8,6 +8,7 @@ import {
   Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription,
 } from "@/components/ui/sheet";
 import {
+import { useDataMode } from "@/contexts/DataModeContext";
   Monitor, Shield, Clock, CheckCircle, AlertTriangle, Terminal,
   XCircle, Lock, Eye, Radio, ArrowRight
 } from "lucide-react";

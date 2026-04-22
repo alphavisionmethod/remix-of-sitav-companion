@@ -8,10 +8,12 @@ import { Button } from "@/components/ui/button";
 import { DEMO_ADMIN_SIGNALS_A_P_L05_APPLE_HEALTH_CONSENT as DEMO_SIGNALS } from "@/data/seed/admin-platform";
 import APLSubNav from "@/components/admin/APLSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 type ConsentState = Record<string, { read: boolean; routing: boolean; boardroom: boolean; assistant: boolean }>;
 
 const APL05AppleHealthConsent = () => {
+  const { isDemoMode } = useDataMode();
   const [consents, setConsents] = useState<ConsentState>(
     Object.fromEntries(DEMO_SIGNALS.map(s => [s.key, { read: false, routing: false, boardroom: false, assistant: false }]))
   );

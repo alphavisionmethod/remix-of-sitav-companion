@@ -9,6 +9,7 @@ import { useQuery } from "@tanstack/react-query";
 import { fromTable } from "@/lib/supabase-helpers";
 import { DEMO_TASKS } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.05 } } };
@@ -55,6 +56,7 @@ const DEMO_SLA = [
 ];
 
 const ConciergeRuntimeBoard = () => {
+  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("tasks");
   const { data: householdTasks } = useQuery({
     queryKey: ["concierge-household-tasks"],

@@ -4,6 +4,7 @@ import { Calendar, Zap, AlertTriangle, Clock, Target, TrendingUp } from "lucide-
 import { useRiskScenarios } from "@/hooks/use-investment-office";
 import { DEMO_CATALYST_EVENTS } from "@/data/seed/investment";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const TYPE_COLORS: Record<string, string> = {
   macro: "bg-primary/10 text-primary",
@@ -13,6 +14,7 @@ const TYPE_COLORS: Record<string, string> = {
 };
 
 export default function CatalystWarRoom() {
+  const { isDemoMode } = useDataMode();
   const { data: liveData, isLoading } = useRiskScenarios();
   const [filter, setFilter] = useState<string>("all");
   const sorted = [...DEMO_CATALYST_EVENTS]

@@ -18,6 +18,7 @@ import type { RealityClassification } from "@/data/persistence/reality-classific
 import { SCOPE_LEVELS, EVIDENCE_SIGNALS, PROGRESSION_REQUIREMENTS, type ScopeLevel, type LaunchImpact } from "@/data/persistence/reality-classification-persistence";
 import { DEMO_CONTRACT_STATUSES } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const CLASSIFICATION_CONFIG = {
   presentational: { label: "Presentational", color: "bg-muted text-muted-foreground", icon: Eye, description: "UI shell — no backing logic or data truth" },
@@ -76,7 +77,8 @@ const EMPTY: FormData = {
 function FormDialog({ trigger, initial, onSave }: { trigger: React.ReactNode; initial?: FormData; onSave: (d: any) => void }) {
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState<FormData>(initial ?? EMPTY);
-  const handleOpen = (v: boolean) => { if (v) setForm(initial ?? EMPTY); setOpen(v); };
+  const handleOpen = (v: boolean) => {
+  const { isDemoMode } = useDataMode(); if (v) setForm(initial ?? EMPTY); setOpen(v); };
 
   const toggleEvidence = (sig: string) => {
     setForm(f => ({

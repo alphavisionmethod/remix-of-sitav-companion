@@ -15,8 +15,10 @@ import { DEMO_CORE_CATEGORIES_POLICY_EDITOR as DEMO_CATEGORIES } from "@/data/se
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { useDraftAutosave } from "@/hooks/useDraftAutosave";
 import { useEffect } from "react";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const PolicyEditor = () => {
+  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
   const qc = useQueryClient();
   const [category, setCategory] = useState("all");

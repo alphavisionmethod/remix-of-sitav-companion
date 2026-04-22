@@ -11,6 +11,7 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchScopedMemory, getScopedMemoryStats, forgetScopedMemory, type PersistedScopedMemory } from "@/data/persistence";
 import { DEMO_ADMIN_SCOPES_MEMORY_CONTINUITY_CENTER as DEMO_SCOPES, DEMO_PRIVACY_TIERS } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const fade = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0 } };
 
@@ -20,6 +21,7 @@ function PrivacyBadge({ tier }: { tier: string }) {
 }
 
 export default function MemoryContinuityCenter() {
+  const { isDemoMode } = useDataMode();
   const [scopeFilter, setScopeFilter] = useState<string>("all");
   const [privacyFilter, setPrivacyFilter] = useState<string>("all");
   const [selectedEntry, setSelectedEntry] = useState<PersistedScopedMemory | null>(null);

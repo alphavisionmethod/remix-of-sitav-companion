@@ -6,10 +6,12 @@ import { Progress } from "@/components/ui/progress";
 import { DEMO_DPO_READINESS_CHECKS as DEMO_READINESS_CHECKS, DEMO_LAUNCH_TIMELINE } from "@/data/seed/digital-presence";
 import DPOSubNav from "./DPOSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const overallScore = Math.round(DEMO_READINESS_CHECKS.reduce((sum, c) => sum + c.score, 0) / DEMO_READINESS_CHECKS.length);
 
 export default function LaunchWarRoom() {
+  const { isDemoMode } = useDataMode();
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
       <DPOSubNav />

@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { sharingEngine } from "@/platform/sync-engine/collaboration/sharing-engine";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const DEMO_SHARES = [
   { id: "1", objectName: "Q4 Business Plan.pdf", sharedWith: 3, permission: "edit" as const, linkActive: true, createdAt: "2026-04-14T10:00:00Z" },

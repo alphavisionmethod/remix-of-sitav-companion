@@ -7,6 +7,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { Shield, CheckCircle, AlertTriangle, XCircle, Eye, RefreshCw, Link2, Globe, Layers, Search } from "lucide-react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.05 } } };
@@ -59,6 +60,7 @@ const DEMO_DEGRADED = [
 ];
 
 const statusIcon = (s: TrustStatus) => {
+  const { isDemoMode } = useDataMode();
   switch (s) {
     case "verified": return <CheckCircle className="h-3.5 w-3.5 text-emerald-500" />;
     case "degraded": return <AlertTriangle className="h-3.5 w-3.5 text-amber-500" />;

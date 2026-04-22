@@ -8,8 +8,10 @@ import { useNavigate } from "react-router-dom";
 import { DEMO_DPO_ADVISOR_SIGNALS as DEMO_ADVISOR_SIGNALS, DEMO_DPO_METRICS as DEMO_METRICS, DEMO_LIVE_PROMOTIONS, DEMO_TOP_PAGES, DEMO_WEAK_PAGES } from "@/data/seed/digital-presence";
 import DPOSubNav from "./DPOSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function PresenceBoardroom() {
+  const { isDemoMode } = useDataMode();
   const navigate = useNavigate();
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">

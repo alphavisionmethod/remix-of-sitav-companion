@@ -9,6 +9,7 @@ import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { DEMO_ESCALATIONS } from "@/data/seed/admin-intelligence";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const triggerColors: Record<string, string> = {
   low_confidence: "text-amber-400 bg-amber-500/10",
@@ -27,6 +28,7 @@ const outcomeColors: Record<string, string> = {
 };
 
 const EscalationControlCenter = () => {
+  const { isDemoMode } = useDataMode();
   const { isAdmin, loading } = useRequireAdmin();
   if (loading || !isAdmin) return null;
 

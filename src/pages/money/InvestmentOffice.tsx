@@ -28,6 +28,7 @@ import { useCapitalBuckets, usePositions, useTheses } from "@/hooks/use-investme
 import { MOCK_CAPITAL_BUCKETS, MOCK_POSITIONS as FALLBACK_POSITIONS, MOCK_THESES as FALLBACK_THESES } from "@/data/fixtures/mock-data/investment";
 import { INVESTMENT_POLICY_RULES } from "@/data/seed/investment";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 // ── Derived Data (computed from hook data in main component, passed via context) ──
 // Module-level fallback for sub-components that render before hooks resolve
@@ -41,6 +42,7 @@ let riskMetrics = analyzePortfolioRisk(DEMO_INV_POSITIONS, capitalMap.reserveCap
 let stressScenarios = runStressScenarios(DEMO_INV_POSITIONS, capitalMap.reserveCapital);
 
 const regimeColor = (value: string) => {
+  const { isDemoMode } = useDataMode();
   if (["extreme", "crisis", "flight-to-safety", "stressed", "dislocating", "strong-down"].includes(value)) return "text-destructive bg-destructive/10";
   if (["elevated", "fragile", "risk-off", "tightening", "high", "down"].includes(value)) return "text-amber-600 bg-amber-500/10";
   if (["compressed", "risk-on", "abundant", "strong-up", "stable", "low"].includes(value)) return "text-primary bg-primary/10";

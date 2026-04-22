@@ -9,6 +9,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "
 import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 interface RunRow {
   id: string;
@@ -57,6 +58,7 @@ const STEP_ICONS: Record<string, typeof Play> = {
 };
 
 export default function WorkflowReplayAudit() {
+  const { isDemoMode } = useDataMode();
   const [runs, setRuns] = useState<RunRow[]>([]);
   const [steps, setSteps] = useState<Record<string, StepRow[]>>({});
   const [search, setSearch] = useState("");

@@ -9,8 +9,10 @@ import { TASK_CLASSES, MODEL_CLASSES } from "@/lib/sovereign-ai-gateway/types";
 import { DEMO_ADMIN_BUILDER_STEPS_S_A_G_BUILDER_CONSOLE as DEMO_BUILDER_STEPS } from "@/data/seed/admin-platform";
 import SAGSubNav from "@/components/admin/SAGSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const SAGBuilderConsole = () => {
+  const { isDemoMode } = useDataMode();
   const { data: models = [] } = useModelRegistry();
   const { data: prompts = [] } = usePromptFamilies();
   const { data: policies = [] } = useRoutingPolicies();

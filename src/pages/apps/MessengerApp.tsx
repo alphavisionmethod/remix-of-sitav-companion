@@ -6,6 +6,7 @@ import { MessageSquare, Send, Search, Plus, Paperclip, Smile, Phone, Video, More
 import { useState } from "react";
 import { DEMO_CHATS, DEMO_MESSAGES } from "@/data/seed/apps";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 interface Chat {
   id: string;
@@ -27,6 +28,7 @@ interface Message {
 }
 
 export default function MessengerApp() {
+  const { isDemoMode } = useDataMode();
   const [selectedChat, setSelectedChat] = useState<Chat | null>(DEMO_CHATS[0]);
   const [message, setMessage] = useState("");
   const [search, setSearch] = useState("");

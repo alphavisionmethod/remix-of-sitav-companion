@@ -7,8 +7,10 @@ import { useSeoReports } from "@/hooks/use-digital-presence";
 import { DEMO_AGENT_CONFIDENCE, DEMO_OVERVIEW_METRICS, DEMO_PAGE_IMPACT, DEMO_PROMO_PERFORMANCE, DEMO_SOURCE_PERFORMANCE } from "@/data/seed/digital-presence";
 import DPOSubNav from "./DPOSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function PresenceAnalytics() {
+  const { isDemoMode } = useDataMode();
   const { data: liveData, isLoading } = useSeoReports();
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">

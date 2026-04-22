@@ -7,6 +7,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import {
+import { useDataMode } from "@/contexts/DataModeContext";
   Grid3X3, Maximize2, X, ChevronLeft, ChevronRight, SlidersHorizontal,
   Info, Image, Sun, Contrast, Droplets, Play
 } from "lucide-react";

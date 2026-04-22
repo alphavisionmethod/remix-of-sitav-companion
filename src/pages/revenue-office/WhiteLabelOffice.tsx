@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useState } from "react";
 import { DEMO_BRANDS, DEMO_PARTNERS, DEMO_SPLITS } from "@/data/seed/revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const CLIENT_HEALTH_BY_PARTNER = [
   { partner: "Apex Growth", clients: [{ name: "TechFlow", health: 92, trend: "up", revenue: "$4,200/mo" }, { name: "HealthFirst", health: 78, trend: "stable", revenue: "$3,100/mo" }] },
@@ -21,6 +22,7 @@ const REPUTATION_CROSS_CLIENT = [
 ];
 
 const WhiteLabelOffice = () => {
+  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("partners");
   const total = DEMO_PARTNERS.reduce((a, p) => a + p.revenue, 0);
   const avgHealth = Math.round(DEMO_PARTNERS.reduce((a, p) => a + p.health, 0) / DEMO_PARTNERS.length);

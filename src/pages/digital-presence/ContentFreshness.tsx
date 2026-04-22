@@ -6,8 +6,10 @@ import { Progress } from "@/components/ui/progress";
 import { DEMO_EXPIRED_OFFERS, DEMO_INCONSISTENCIES, DEMO_STALE_INFO, DEMO_STALE_PAGES } from "@/data/seed/digital-presence";
 import DPOSubNav from "./DPOSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function ContentFreshness() {
+  const { isDemoMode } = useDataMode();
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
       <DPOSubNav />

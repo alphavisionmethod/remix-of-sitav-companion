@@ -8,6 +8,7 @@ import { Progress } from "@/components/ui/progress";
 import { useState } from "react";
 import { DEMO_DECISIONS, DEMO_PERIODS, DEMO_WHATIF, DEMO_CHIEF_HISTORICAL } from "@/data/seed/revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const ti = (t: string) => t === "up" ? <TrendingUp className="h-3.5 w-3.5 text-[hsl(var(--trust-safe))]" /> : t === "down" ? <TrendingDown className="h-3.5 w-3.5 text-destructive" /> : <span className="text-muted-foreground">—</span>;
 
@@ -24,6 +25,7 @@ const LESSONS_CAPTURED = [
 ];
 
 const BusinessTimeMachine = () => {
+  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("timeline");
   const [lessonInput, setLessonInput] = useState("");
   const [savedLessons, setSavedLessons] = useState<string[]>([]);

@@ -11,6 +11,7 @@ import { SlidePanel } from "@/components/sita/surfaces/SlidePanel";
 import { AppSurface } from "@/components/sita/surfaces/AppSurface";
 import { cn } from "@/lib/utils";
 import {
+import { useDataMode } from "@/contexts/DataModeContext";
   HeadphonesIcon, AlertTriangle, Clock, CheckCircle2, MessageSquare, User, ShieldAlert,
   Timer, TrendingDown, Mail, Phone, FileText, RotateCcw
 } from "lucide-react";
@@ -38,6 +39,7 @@ const DEMO_ISSUES: SupportIssue[] = [
 const urgencyMap: Record<Severity, "critical" | "high" | "normal" | "low"> = { critical: "critical", high: "high", medium: "normal", low: "low" };
 
 const CustomerSupportCenter = () => {
+  const { isDemoMode } = useDataMode();
   const { primaryMode } = useBusinessProfile();
   const moduleConfig = getModuleAdaptation("support", primaryMode);
   const [activeTab, setActiveTab] = useState("all");

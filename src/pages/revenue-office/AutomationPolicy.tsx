@@ -15,6 +15,7 @@ import {
 import AutomationSubNav from "./AutomationSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import {
+import { useDataMode } from "@/contexts/DataModeContext";
   DEMO_humanVsAI, DEMO_policies, DEMO_trustLevels,
   DEMO_COMMERCIAL_CONSTITUTION, DEMO_NO_GUESS_RULES,
   DEMO_PAUSE_ROLLBACK, DEMO_HANDOFF_SIGNALS
@@ -70,6 +71,7 @@ const handoffSeverityColors: Record<string, string> = {
 };
 
 export default function AutomationPolicy() {
+  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("trust");
 
   return (

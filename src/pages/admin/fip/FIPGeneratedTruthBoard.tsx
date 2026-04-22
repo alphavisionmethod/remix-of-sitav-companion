@@ -6,10 +6,12 @@ import { Badge } from "@/components/ui/badge";
 import { useGeneratedTruthImpacts } from "@/hooks/use-fip-data";
 import { DEMO_GENERATED_ARTIFACTS } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 
 
 const FIPGeneratedTruthBoard = () => {
+  const { isDemoMode } = useDataMode();
   const { data: impacts = [], isLoading } = useGeneratedTruthImpacts();
 
   const verified = impacts.filter((i: Record<string, any>) => i.verified).length;

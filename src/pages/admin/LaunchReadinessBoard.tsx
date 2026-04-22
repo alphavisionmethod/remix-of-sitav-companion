@@ -9,6 +9,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 import { DEMO_ADMIN_READINESS_CHECKS as DEMO_READINESS_CHECKS, DEMO_BLOCKERS } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 type BlockerSeverity = "critical" | "high" | "medium" | "low";
 type BlockerStatus = "open" | "in-progress" | "resolved" | "accepted-risk";
@@ -54,6 +55,7 @@ const CHECK_ICON: Record<string, { icon: typeof CheckCircle; color: string }> = 
 };
 
 export default function LaunchReadinessBoard() {
+  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("blockers");
 
   const openBlockers = DEMO_BLOCKERS.filter(b => b.status === "open").length;

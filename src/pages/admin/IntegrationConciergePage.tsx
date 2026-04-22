@@ -9,6 +9,7 @@ import { Globe, Sparkles, CheckCircle, Search, Zap, Shield, Play, ArrowRight, Al
 import { Input } from "@/components/ui/input";
 import { DEMO_USE_CASES } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.05 } } };
@@ -36,6 +37,7 @@ const DEMO_SIMULATIONS = [
 ];
 
 const IntegrationConciergePage = () => {
+  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("discover");
   const [search, setSearch] = useState("");
   const filtered = DEMO_USE_CASES.filter(uc => uc.title.toLowerCase().includes(search.toLowerCase()));

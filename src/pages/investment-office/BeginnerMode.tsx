@@ -6,6 +6,7 @@ import { PORTFOLIO } from "@/hooks/useInvestmentOfficeData";
 import { useInvestmentStrategyRecords } from "@/hooks/use-investment-office";
 import { DEMO_LEARN_TOPICS } from "@/data/seed/investment";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const fmt = (n: number) => n >= 1e6 ? `$${(n / 1e6).toFixed(1)}M` : n >= 1e3 ? `$${(n / 1e3).toFixed(1)}K` : `$${n.toFixed(2)}`;
 
@@ -17,6 +18,7 @@ const WIZARD_STEPS = [
 ];
 
 export default function BeginnerMode() {
+  const { isDemoMode } = useDataMode();
   const { data: liveData, isLoading } = useInvestmentStrategyRecords();
   const navigate = useNavigate();
   const p = PORTFOLIO;

@@ -35,6 +35,7 @@ import { ContinuousVerificationPanel } from "@/components/admin/shells/Continuou
 import { ExplainSimplyToggle } from "@/components/admin/shells/ExplainSimplyToggle";
 import { SurfaceAuthorityMatrix } from "@/components/admin/shells/SurfaceAuthorityMatrix";
 import { StateAuthorityMap } from "@/components/admin/shells/StateAuthorityMap";
+import { useDataMode } from "@/contexts/DataModeContext";
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.05 } } };
 
@@ -56,6 +57,7 @@ const RECENT_CHANGES = [
 ];
 
 const MissionControlHome = () => {
+  const { isDemoMode } = useDataMode();
   const [lastRefresh, setLastRefresh] = useState(new Date());
 
   const { data: incidentCount } = useQuery({

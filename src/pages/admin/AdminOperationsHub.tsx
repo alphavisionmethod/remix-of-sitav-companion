@@ -11,6 +11,7 @@ import { fromTable } from "@/lib/supabase-helpers";
 import { DEMO_RUNBOOKS, DEMO_SLOS } from "@/data/seed/admin-platform";
 import { supabase } from "@/integrations/supabase/client";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.05 } } };
@@ -63,6 +64,7 @@ const pressureColor: Record<string, string> = {
 };
 
 const OperationsCommandCenter = () => {
+  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("health");
 
   const { data: incidentCount } = useQuery({

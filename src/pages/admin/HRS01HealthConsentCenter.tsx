@@ -10,12 +10,14 @@ import { DEMO_CONSENT_CATEGORIES, DEMO_REVOCATION_ACTIONS } from "@/data/seed/he
 import { DEMO_PRINCIPLES } from "@/data/seed/admin-platform";
 import HRSSubNav from "@/components/admin/HRSSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 
 
 const ICON_MAP: Record<string, any> = { ingestion: Eye, routing: ShieldCheck, boardroom: FileText, assistant: Heart };
 
 const HRS01HealthConsentCenter = () => {
+  const { isDemoMode } = useDataMode();
   const [enabledCats, setEnabledCats] = useState<Record<string, boolean>>(
     Object.fromEntries(DEMO_CONSENT_CATEGORIES.map(c => [c.key, false]))
   );

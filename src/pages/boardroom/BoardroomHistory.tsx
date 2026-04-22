@@ -13,10 +13,12 @@ import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { DEMO_SESSIONS } from "@/data/seed/core-pages";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 
 
 export default function BoardroomHistory() {
+  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
   const navigate = useNavigate();
 

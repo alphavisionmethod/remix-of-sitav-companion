@@ -7,8 +7,10 @@ import { Watch, Vibrate, CheckCircle, ArrowRight, Clock, Zap, Eye, AlertTriangle
 import { DEMO_GLANCE_CARDS, DEMO_HAPTIC_PATTERNS, DEMO_MICRO_CONSTRAINTS } from "@/data/seed/admin-platform";
 import APLSubNav from "@/components/admin/APLSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const APL03AppleWatchExperience = () => {
+  const { isDemoMode } = useDataMode();
   const [selectedCard, setSelectedCard] = useState<string | null>(null);
 
   return (

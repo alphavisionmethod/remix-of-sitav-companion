@@ -8,6 +8,7 @@ import { useState } from "react";
 import { useHealthLogs } from "@/hooks/use-apps-data";
 import { DEMO_sleepData, DEMO_stepsData, DEMO_waterData } from "@/data/seed/apps";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.06 } } };
@@ -21,6 +22,7 @@ const moodEmojis = [
 
 const weekDays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 export default function HealthApp() {
+  const { isDemoMode } = useDataMode();
   const { data: liveData, isLoading } = useHealthLogs();
   const [selectedMood, setSelectedMood] = useState(2);
   const lifeScore = 78;

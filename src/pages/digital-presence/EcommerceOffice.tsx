@@ -7,8 +7,10 @@ import { DEMO_CART_DIAGNOSTICS, DEMO_COLLECTIONS, DEMO_DPO_PRODUCTS as DEMO_PROD
 import { useShopifyProducts, useShopifyCollections } from "@/hooks/useShopifyData";
 import DPOSubNav from "./DPOSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function EcommerceOffice() {
+  const { isDemoMode } = useDataMode();
   const { data: liveData, isLoading } = useSites();
   const { data: shopifyProducts, isLoading: productsLoading } = useShopifyProducts(20);
   const { data: shopifyCollections, isLoading: collectionsLoading } = useShopifyCollections(10);

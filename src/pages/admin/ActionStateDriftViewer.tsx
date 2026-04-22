@@ -7,6 +7,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { Activity, CheckCircle, AlertTriangle, XCircle, Zap, RefreshCw, Clock, Search, GitBranch } from "lucide-react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.05 } } };
@@ -51,6 +52,7 @@ const DEMO_ACTIONS: ActionRecord[] = [
 ];
 
 const ActionStateDriftViewer = () => {
+  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("all");
   const nonCanonical = DEMO_ACTIONS.filter(a => !a.canonical);
   const stuck = DEMO_ACTIONS.filter(a => a.stuckSince);

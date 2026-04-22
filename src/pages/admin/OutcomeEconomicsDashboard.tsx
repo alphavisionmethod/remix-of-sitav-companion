@@ -12,6 +12,7 @@ import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { cn } from "@/lib/utils";
 import type { OutcomeCategory } from "@/lib/intelligence-architecture/outcome-economics-engine";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 /* ── Demo Data ─────────────────────────────────────────────── */
 
@@ -101,7 +102,8 @@ const recColors: Record<string, string> = {
   eliminate: "bg-destructive/15 text-destructive",
 };
 
-const TrendIcon = ({ trend }: { trend: "up" | "down" | "flat" }) => {
+const TrendIcon = ({
+  const { isDemoMode } = useDataMode(); trend }: { trend: "up" | "down" | "flat" }) => {
   if (trend === "up") return <ArrowUpRight className="h-3.5 w-3.5 text-trust-safe" />;
   if (trend === "down") return <ArrowDownRight className="h-3.5 w-3.5 text-destructive" />;
   return <Minus className="h-3.5 w-3.5 text-muted-foreground" />;

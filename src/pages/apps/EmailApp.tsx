@@ -7,6 +7,7 @@ import { Mail, Inbox, Send, Star, Trash2, Archive, Search, Plus, Paperclip, Chev
 import { useState } from "react";
 import { DEMO_EMAILS } from "@/data/seed/apps";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 interface Email {
   id: string;
@@ -28,6 +29,7 @@ const categoryColors: Record<string, string> = {
 };
 
 export default function EmailApp() {
+  const { isDemoMode } = useDataMode();
   const [search, setSearch] = useState("");
   const [selectedEmail, setSelectedEmail] = useState<Email | null>(null);
   const unread = DEMO_EMAILS.filter(e => !e.read).length;

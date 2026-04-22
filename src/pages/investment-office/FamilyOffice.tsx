@@ -3,10 +3,12 @@ import { Users, Shield, Landmark, Heart, GraduationCap, Home, Check, AlertTriang
 import { useCapitalPurposeBuckets } from "@/hooks/use-investment-office";
 import { DEMO_FAMILY_GOALS, DEMO_FAMILY_MEMBERS, DEMO_FAMILY_RULES } from "@/data/seed/investment";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const fmt = (n: number) => n >= 1e6 ? `$${(n / 1e6).toFixed(2)}M` : `$${(n / 1e3).toFixed(0)}K`;
 
 export default function FamilyOffice() {
+  const { isDemoMode } = useDataMode();
   const { data: liveData, isLoading } = useCapitalPurposeBuckets();
   return (
     <div className="mx-auto max-w-5xl space-y-6">

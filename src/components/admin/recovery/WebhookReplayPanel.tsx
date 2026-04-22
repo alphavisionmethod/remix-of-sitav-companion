@@ -9,6 +9,7 @@ import type { WebhookEvent, WebhookFilterState } from "@/lib/recovery-ops/types"
 import { createRecoveryJob } from "@/lib/recovery-ops/recovery-job-service";
 import { RefreshCw, Filter, Send } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 // Mock webhook events for demonstration
 const MOCK_EVENTS: WebhookEvent[] = [
@@ -51,6 +52,7 @@ export function WebhookReplayPanel({ operatorId, canExecute }: Props) {
   const failedFiltered = filtered.filter((e) => e.status === "failed");
 
   const toggleSelect = (id: string) => {
+  const { isDemoMode } = useDataMode();
     setSelected((prev) => {
       const next = new Set(prev);
       if (next.has(id)) next.delete(id);

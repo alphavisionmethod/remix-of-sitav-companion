@@ -20,6 +20,7 @@ import {
 import type { GateDecision, GateVerdict, EvidenceState, BudgetState, RoutingHints } from "@/lib/core-services/conscience-gate/conscience-gate";
 import { DEMO_CONSCIENCE_VERDICTS } from "@/data/fixtures/mock-data/conscience-gate";
 import { supabase } from "@/integrations/supabase/client";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 // Local row type used by this dashboard — keeps a stable `id` for table keys.
 type DashboardVerdict = GateVerdict & { id: string };
@@ -100,6 +101,7 @@ const DECISION_ICONS: Record<GateDecision, React.ReactNode> = {
 };
 
 export default function ConscienceGateDashboard() {
+  const { isDemoMode } = useDataMode();
   const { isAdmin, loading } = useRequireAdmin();
   const [tab, setTab] = useState("verdicts");
   const [liveVerdicts, setLiveVerdicts] = useState<DashboardVerdict[]>([]);

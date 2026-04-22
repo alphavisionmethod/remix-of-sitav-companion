@@ -14,6 +14,7 @@ import { SplitWorkspace } from "@/components/sita/surfaces/SplitWorkspace";
 import { AppSurface } from "@/components/sita/surfaces/AppSurface";
 import { ListReveal, ListRevealItem } from "@/components/sita/motion/AppTransitions";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 type PulseState = "all-normal" | "review-needed" | "attention";
 
@@ -45,6 +46,7 @@ const DEMO_RECURRING = [
 ];
 
 const SpendingPulse = () => {
+  const { isDemoMode } = useDataMode();
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const flaggedCount = DEMO_CATEGORIES.filter(c => c.flagged).length;
   const pulseState: PulseState = flaggedCount >= 3 ? "attention" : flaggedCount > 0 ? "review-needed" : "all-normal";

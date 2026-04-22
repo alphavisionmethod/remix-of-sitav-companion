@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { DEMO_DRAFTS } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 interface PolicyDraft {
   id: string;
@@ -66,6 +67,7 @@ const STATUS_CONFIG: Record<string, { color: string }> = {
 };
 
 export default function PolicySimulator() {
+  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("drafts");
   const [selectedPolicy, setSelectedPolicy] = useState<string | null>("POL-001");
   const [undoStack] = useState<string[]>(["Initial draft"]);

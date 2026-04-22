@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useInvoices, useBills } from "@/hooks/use-sita-data";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const DEMO_RECEIVABLES = [
   { id: "DR01", source: "Acme Corp", initials: "AC", amount: 4200, invoiceNum: "INV-1042", daysOverdue: 45, status: "overdue" as const, lastContact: "Mar 28", remindersSent: 2, contactName: "Sarah Chen", contactEmail: "sarah@acme.co", notes: "Promised payment by Apr 15" },
@@ -41,6 +42,7 @@ const BUCKET_COLORS: Record<AgingBucket, string> = {
 };
 
 const ReceivablesObligations = () => {
+  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState<ViewTab>("receivables");
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const { data: invoices = [], isLoading: invLoading } = useInvoices();

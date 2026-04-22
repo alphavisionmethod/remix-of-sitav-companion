@@ -14,6 +14,7 @@ import {
   ChevronRight, Sparkles
 } from "lucide-react";
 import {
+import { useDataMode } from "@/contexts/DataModeContext";
   simulatePlaybook,
   MOCK_CUSTOMERS,
   type PlaybookDraftSim,
@@ -49,7 +50,8 @@ const CustomerChip = ({ customer, filtered }: { customer: MockCustomer; filtered
 
 // ── Step outcome card ────────────────────────────────────────────
 
-const StepOutcomeCard = ({ outcome, isActive, stepNumber }: { outcome: StepOutcome; isActive: boolean; stepNumber: number }) => {
+const StepOutcomeCard = ({
+  const { isDemoMode } = useDataMode(); outcome, isActive, stepNumber }: { outcome: StepOutcome; isActive: boolean; stepNumber: number }) => {
   const Icon = outcome.action
     ? ACTION_ICONS[outcome.action] || Zap
     : STEP_ICONS[outcome.stepType] || Zap;

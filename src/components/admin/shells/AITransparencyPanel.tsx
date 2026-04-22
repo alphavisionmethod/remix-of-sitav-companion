@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { MultiAITeamPanel } from "./MultiAITeamPanel";
 import { AIConversationMode } from "./AIConversationMode";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 interface AITask {
   id: string;

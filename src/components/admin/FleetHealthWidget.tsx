@@ -17,6 +17,7 @@ import type {
 
 // ── Demo fleet data (shared module) ─────────────────────────────
 import { DEMO_FLEET_SERVICES } from "@/data/fixtures/mock-data/fleet-health";
+import { useDataMode } from "@/contexts/DataModeContext";
 const DEMO_SERVICES = [...DEMO_FLEET_SERVICES];
 
 interface AutoIncident {
@@ -65,6 +66,7 @@ function inferRootCause(metrics: { errorRate: number; p99LatencyMs: number; upti
 // ── Widget Component ────────────────────────────────────────────
 
 export default function FleetHealthWidget() {
+  const { isDemoMode } = useDataMode();
   const [fleet, setFleet] = useState<FleetHealthService | null>(null);
   const [services, setServices] = useState<ServiceHealthRecord[]>([]);
   const [degraded, setDegraded] = useState<DegradedService[]>([]);

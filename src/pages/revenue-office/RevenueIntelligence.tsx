@@ -9,6 +9,7 @@ import { useRevenueOfficeMode } from "@/contexts/RevenueOfficeModeContext";
 import { RevenueOfficeModeToggle } from "@/components/revenue-office/RevenueOfficeModeToggle";
 import { DEMO_COHORT_DATA, DEMO_LEAKAGE, DEMO_REVENUE_STREAMS } from "@/data/seed/revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const UNIT_ECONOMICS = [
   { metric: "Customer Acquisition Cost (CAC)", value: "$142", trend: "-8%", status: "improving" },
@@ -27,6 +28,7 @@ const FORECAST = [
 ];
 
 export default function RevenueIntelligence() {
+  const { isDemoMode } = useDataMode();
   const { isBeginner } = useRevenueOfficeMode();
   const [tab, setTab] = useState("streams");
   const totalLeakage = DEMO_LEAKAGE.reduce((s, l) => s + parseInt(l.value.replace(/[^0-9]/g, "")), 0);

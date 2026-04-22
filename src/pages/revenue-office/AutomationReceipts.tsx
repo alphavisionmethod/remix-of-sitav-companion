@@ -13,6 +13,7 @@ import { useState } from "react";
 import AutomationSubNav from "./AutomationSubNav";
 import { DEMO_receipts, DEMO_WHY_SENT } from "@/data/seed/revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const categoryIcons: Record<string, typeof Mail> = {
   "Lead Recovery": Users, Sales: FileText, Booking: Phone, Reputation: Star,
@@ -27,6 +28,7 @@ const IMPACT_SUMMARY = [
 ];
 
 export default function AutomationReceipts() {
+  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("all");
   const [timeFilter, setTimeFilter] = useState("48h");
   const [viewMode, setViewMode] = useState<"receipts" | "why">("receipts");

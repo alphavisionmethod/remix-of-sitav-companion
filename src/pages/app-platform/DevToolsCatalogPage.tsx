@@ -12,8 +12,10 @@ import { AppCard, BundleCard, AppIcon } from "@/components/sita/app-platform/App
 import type { AppDefinition } from "@/domains/apps/types";
 import { DEMO_DEV_CATEGORIES } from "@/data/seed/core-pages";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const DevToolsCatalogPage = () => {
+  const { isDemoMode } = useDataMode();
   const navigate = useNavigate();
   const { apps } = useAppPlatform();
   const [activeCat, setActiveCat] = useState("all");

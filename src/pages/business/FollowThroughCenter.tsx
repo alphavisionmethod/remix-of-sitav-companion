@@ -10,6 +10,7 @@ import { SitaTabs } from "@/components/sita/SitaComponents";
 import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
 import { cn } from "@/lib/utils";
 import {
+import { useDataMode } from "@/contexts/DataModeContext";
   Phone, Mail, Clock, AlertCircle, SkipForward, AlarmClock,
   FileText, DollarSign, Users, CheckCircle
 } from "lucide-react";
@@ -62,6 +63,7 @@ const TAB_DATA: Record<QueueTab, { items: QueueItem[]; label: string }> = {
 };
 
 const FollowThroughCenter = () => {
+  const { isDemoMode } = useDataMode();
   const { primaryMode } = useBusinessProfile();
   const moduleConfig = getModuleAdaptation("follow-through", primaryMode);
   const [activeTab, setActiveTab] = useState<QueueTab>("callbacks");

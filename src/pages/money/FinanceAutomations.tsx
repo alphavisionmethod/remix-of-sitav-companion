@@ -10,6 +10,7 @@ import {
   ArrowRight, BarChart3, RefreshCw, DollarSign, Bell, FileText, CreditCard, Eye
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 type AutoStatus = "active" | "suggested" | "paused" | "failed";
 type TrustLevel = "full" | "threshold" | "approval-required" | "draft-only";
@@ -42,6 +43,7 @@ const TRUST_LABELS: Record<TrustLevel, string> = {
 };
 
 const FinanceAutomations = () => {
+  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("active");
   const [selectedId, setSelectedId] = useState<string | null>(null);
 

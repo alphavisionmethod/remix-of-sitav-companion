@@ -27,6 +27,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { DEMO_ENGINE_CONNECTORS, DEMO_FALLBACK_APPROVALS } from "@/data/seed/core-pages";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 // ── Initialize services with demo data ──────────────────────────
 
@@ -114,7 +115,8 @@ function useSelfHealingDemo() {
 
 // ── Severity Badge ──────────────────────────────────────────────
 
-const SeverityBadge = ({ severity }: { severity: string }) => {
+const SeverityBadge = ({
+  const { isDemoMode } = useDataMode(); severity }: { severity: string }) => {
   const colors: Record<string, string> = {
     P0: "bg-destructive text-destructive-foreground",
     P1: "bg-destructive/80 text-destructive-foreground",

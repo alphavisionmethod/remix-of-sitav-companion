@@ -17,6 +17,7 @@ import {
   type EvolutionInsight,
 } from "@/domains/engines/profile-evolution-engine";
 import type { ProfileArchetype } from "@/domains/engines/business-profile-engine";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const ARCHETYPE_LABELS: Record<string, string> = {
   ecommerce: "E-Commerce", "brick-and-mortar": "Brick & Mortar", service: "Service",
@@ -38,6 +39,7 @@ const MOCK_TIMELINE = [
 ];
 
 export default function ProfileEvolutionTimeline() {
+  const { isDemoMode } = useDataMode();
   const { profile, primaryMode, updateOverrides } = useBusinessProfile();
   const identity = getIdentityLayer(primaryMode);
   const [dismissedIds, setDismissedIds] = useState<Set<string>>(new Set());

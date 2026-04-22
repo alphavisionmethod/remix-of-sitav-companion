@@ -7,10 +7,12 @@ import { useNativeShellPlatforms } from "@/hooks/use-native-shell-data";
 import { DEMO_STRATEGY_PRINCIPLES, DEMO_ARCHITECTURE_LAYERS } from "@/data/seed/native-shell";
 import NSSSubNav from "@/components/admin/NSSSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 
 
 const NSS01StrategyBoard = () => {
+  const { isDemoMode } = useDataMode();
   const { data: platforms, isLoading } = useNativeShellPlatforms();
   const items = platforms ?? [];
 

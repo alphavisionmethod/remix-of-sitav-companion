@@ -3,8 +3,10 @@ import { Gauge, AlertTriangle, Check } from "lucide-react";
 import { usePortfolioPositions } from "@/hooks/use-investment-office";
 import { DEMO_DIMS, DEMO_POSITIONS } from "@/data/seed/investment";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function ConvictionEngine() {
+  const { isDemoMode } = useDataMode();
   const { data: liveData, isLoading } = usePortfolioPositions();
   return (
     <div className="mx-auto max-w-6xl space-y-6">

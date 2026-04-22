@@ -11,6 +11,7 @@ import {
   Lock, Unlock, Wifi, WifiOff, HelpCircle
 } from "lucide-react";
 import { WhyTooltip } from "./WhyTooltip";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 export type CommandOrigin = "os_local" | "app_remote" | "admin_control_plane";
 

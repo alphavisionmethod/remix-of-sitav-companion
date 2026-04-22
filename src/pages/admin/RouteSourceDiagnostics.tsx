@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { DEMO_ROUTES } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 type LaunchHonesty = "truthful" | "demo-backed" | "mixed" | "overstated" | "blocked";
 
@@ -38,6 +39,7 @@ const honestyConfig: Record<LaunchHonesty, { label: string; color: string; icon:
 };
 
 export default function RouteSourceDiagnostics() {
+  const { isDemoMode } = useDataMode();
   const [search, setSearch] = useState("");
 
   const filtered = useMemo(() => {

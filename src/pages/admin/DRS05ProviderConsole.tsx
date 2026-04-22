@@ -7,8 +7,10 @@ import { Plug, CheckCircle2, AlertCircle } from "lucide-react";
 import { DEMO_ADMIN_ALL_DOMAINS as DEMO_ALL_DOMAINS } from "@/data/seed/admin-platform";
 import DRSSubNav from "@/components/admin/DRSSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function DRS05ProviderConsole() {
+  const { isDemoMode } = useDataMode();
   registerAllProviders();
   const { mode } = useRealityModeSafe();
   const registered = getRegisteredDomains();

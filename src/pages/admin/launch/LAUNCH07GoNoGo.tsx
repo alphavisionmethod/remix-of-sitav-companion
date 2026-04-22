@@ -7,6 +7,7 @@ import { Gavel, CheckCircle, XCircle, Clock } from "lucide-react";
 import { computeLaunchReadiness, getGoNoGoConditions, type LaunchReadinessResult, type GoNoGoCondition, type LaunchMode } from "@/lib/core-services/launch-readiness/launch-readiness-engine";
 import { cn } from "@/lib/utils";
 import { DEMO_MODE_ORDER } from "@/data/seed/admin-platform";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const MODE_LABELS: Record<LaunchMode, string> = {
   not_launch_safe: "Not Launch Safe",
@@ -18,6 +19,7 @@ const MODE_LABELS: Record<LaunchMode, string> = {
 };
 
 export default function LAUNCH07GoNoGo() {
+  const { isDemoMode } = useDataMode();
   const [result, setResult] = useState<LaunchReadinessResult | null>(null);
   const [conditions, setConditions] = useState<GoNoGoCondition[]>([]);
 

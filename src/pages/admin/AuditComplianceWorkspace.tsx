@@ -12,6 +12,7 @@ import { Shield, FileText, Download, Search, Filter, ChevronRight, CheckCircle, 
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 type AuditCategory = "all" | "operator" | "system" | "trust" | "data" | "auth";
 
@@ -58,6 +59,7 @@ const ACTOR_ICONS = {
 };
 
 export default function AuditComplianceWorkspace() {
+  const { isDemoMode } = useDataMode();
   const [category, setCategory] = useState<AuditCategory>("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [expandedId, setExpandedId] = useState<string | null>(null);

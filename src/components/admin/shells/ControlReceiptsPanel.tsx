@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { WhyTooltip } from "./WhyTooltip";
 import type { CommandOrigin } from "./SurfaceAuthorityMatrix";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 interface ControlReceipt {
   id: string;

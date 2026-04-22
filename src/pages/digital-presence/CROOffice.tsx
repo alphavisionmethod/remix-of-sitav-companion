@@ -6,8 +6,10 @@ import { Progress } from "@/components/ui/progress";
 import { DEMO_CTA_ANALYSIS, DEMO_FORM_FRICTION, DEMO_FUNNEL_LEAKS, DEMO_MOBILE_ISSUES, DEMO_TRUST_GAPS } from "@/data/seed/digital-presence";
 import DPOSubNav from "./DPOSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function CROOffice() {
+  const { isDemoMode } = useDataMode();
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
       <DPOSubNav />

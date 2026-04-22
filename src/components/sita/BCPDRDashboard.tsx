@@ -18,6 +18,7 @@ import {
   HardDrive, Globe, Users, Eye, Radio, RotateCcw, Gauge,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 // ── Types ───────────────────────────────────────────────────────
 
@@ -450,6 +451,7 @@ export function BCPDRDashboard() {
   const [activeView, setActiveView] = useState<"overview" | "objectives" | "failover" | "tests">("overview");
 
   const handleExport = () => {
+  const { isDemoMode } = useDataMode();
     const headers = ["Service", "Category", "RPO Target (min)", "RPO Actual (min)", "RTO Target (min)", "RTO Actual (min)", "Status", "Backup Method", "Last Tested"];
     const rows = MOCK_OBJECTIVES.map(o => [
       o.service, o.category, o.rpo.toString(), o.actualRpo.toString(),

@@ -6,6 +6,7 @@ import { Server, CheckCircle, ArrowRight, Database, Shield, Zap } from "lucide-r
 import { DEMO_ADMIN_SERVICES as DEMO_SERVICES } from "@/data/seed/admin-platform";
 import CPSSubNav from "@/components/admin/CPSSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const fade = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0 } };
 
@@ -32,6 +33,7 @@ const ADAPTER_STATUS_COLORS: Record<string, string> = {
 };
 
 export default function CoreServiceMigrationBoard() {
+  const { isDemoMode } = useDataMode();
   const completed = DEMO_SERVICES.filter(s => s.phase === "complete").length;
   const pct = (completed / DEMO_SERVICES.length) * 100;
 

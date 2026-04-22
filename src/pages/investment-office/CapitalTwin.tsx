@@ -6,8 +6,10 @@ import { PORTFOLIO } from "@/hooks/useInvestmentOfficeData";
 import { useCapitalPurposeBuckets } from "@/hooks/use-investment-office";
 import { DEMO_INV_PURPOSES_CAPITAL_TWIN as DEMO_PURPOSES, DEMO_SHOCK_ZONES } from "@/data/seed/investment";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function CapitalTwin() {
+  const { isDemoMode } = useDataMode();
   const { data: liveData, isLoading } = useCapitalPurposeBuckets();
   const navigate = useNavigate();
   const [view, setView] = useState<"purpose" | "exposure" | "readiness">("purpose");

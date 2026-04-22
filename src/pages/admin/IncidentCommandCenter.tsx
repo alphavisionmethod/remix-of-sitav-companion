@@ -15,6 +15,7 @@ import { useIncidentManagement, useEntityScoped } from "@/contexts/SitaKernelCon
 import { DEMO_INCIDENTS, type DemoIncident as Incident, type Severity, type IncidentStatus } from "@/data/seed/incidents";
 import { anomalyAlertSystem, type Anomaly } from "@/lib/services/anomaly-alert";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const SEVERITY_CONFIG: Record<Severity, { color: string; bg: string; border: string }> = {
   critical: { color: "text-red-400", bg: "bg-red-500/10", border: "border-red-500/30" },
@@ -42,6 +43,7 @@ function timeAgo(d: string) {
 }
 
 export default function IncidentCommandCenter() {
+  const { isDemoMode } = useDataMode();
   const { getActiveIncidents: getKernelIncidents, getIncidentMetrics, getDemoIncidents } = useIncidentManagement();
   const { entityId, entityType, tenantId } = useEntityScoped();
   const [tab, setTab] = useState("active");

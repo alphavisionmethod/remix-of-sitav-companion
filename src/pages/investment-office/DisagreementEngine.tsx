@@ -3,8 +3,10 @@ import { GitCompareArrows, AlertTriangle, Check, HelpCircle } from "lucide-react
 import { useInvestmentDecisions } from "@/hooks/use-investment-office";
 import { DEMO_INV_DISAGREEMENTS as DEMO_DISAGREEMENTS } from "@/data/seed/investment";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function DisagreementEngine() {
+  const { isDemoMode } = useDataMode();
   const { data: liveData, isLoading } = useInvestmentDecisions();
   return (
     <div className="mx-auto max-w-5xl space-y-6">

@@ -7,10 +7,12 @@ import { PROVIDERS } from "@/lib/sovereign-ai-gateway/types";
 import { DEMO_FALLBACK_STRATEGIES } from "@/data/seed/admin-platform";
 import SAGSubNav from "@/components/admin/SAGSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 
 
 const SAGFallbackCenter = () => {
+  const { isDemoMode } = useDataMode();
   const { data: policies = [] } = useRoutingPolicies();
   const { data: health = [] } = useProviderHealth();
   const { data: tasks = [] } = useTaskRequests();

@@ -7,8 +7,10 @@ import { useNavigate } from "react-router-dom";
 import { DEMO_HEALTH_STATS, DEMO_WORKSPACES } from "@/data/seed/digital-presence";
 import DPOSubNav from "./DPOSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function PresenceGate() {
+  const { isDemoMode } = useDataMode();
   const navigate = useNavigate();
 
   return (

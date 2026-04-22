@@ -9,6 +9,7 @@ import { useState } from "react";
 import { DEMO_DPO_DISAGREEMENTS as DEMO_DISAGREEMENTS } from "@/data/seed/digital-presence";
 import DPOSubNav from "./DPOSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 type Intensity = "quiet" | "balanced" | "proactive";
 type AgentStatus = "active" | "inactive" | "watching";
@@ -250,6 +251,7 @@ function AgentDetailPanel({ agent }: { agent: AgentProfile }) {
 }
 
 export default function AIWebTeam() {
+  const { isDemoMode } = useDataMode();
   const [expandedAgent, setExpandedAgent] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState("team");
   const [intensities, setIntensities] = useState<Record<string, Intensity>>(

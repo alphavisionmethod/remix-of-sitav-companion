@@ -7,6 +7,7 @@ import { Progress } from "@/components/ui/progress";
 import { useNavigate } from "react-router-dom";
 import { DEMO_CHIEF_HISTORICAL } from "@/data/seed/revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const synthesis = {
   confidence: 76,
@@ -30,6 +31,7 @@ const synthesis = {
 };
 
 export default function ChiefRevenueSynthesis() {
+  const { isDemoMode } = useDataMode();
   const navigate = useNavigate();
 
   return (

@@ -9,6 +9,7 @@ import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
 import { useGroceryLists } from "@/hooks/use-concierge-data";
 import { DEMO_CONC_categories as DEMO_categories, DEMO_recurringSupplies, DEMO_stores } from "@/data/seed/concierge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 interface GroceryItem {
   id: string; name: string; category: string; quantity: string; estimated: string;
@@ -35,6 +36,7 @@ const initialItems: GroceryItem[] = [
 type GroceryView = "shopping" | "recurring" | "by-store" | "urgency" | "event-prep";
 
 const GroceryPlanning = () => {
+  const { isDemoMode } = useDataMode();
   const [items, setItems] = useState(initialItems);
   const [view, setView] = useState<GroceryView>("shopping");
   const [newItem, setNewItem] = useState("");

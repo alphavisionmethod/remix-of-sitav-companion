@@ -13,6 +13,7 @@ import { AppSurface } from "@/components/sita/surfaces/AppSurface";
 import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
 import { cn } from "@/lib/utils";
 import {
+import { useDataMode } from "@/contexts/DataModeContext";
   Layers, AlertTriangle, Users, Clock, Zap, ShieldAlert, GitBranch, Timer,
   CheckCircle, ArrowRight, Activity, TrendingDown, BarChart3, Target, Truck,
   UserCheck, Package, RefreshCw, ChevronRight, Star, Flame
@@ -51,6 +52,7 @@ const TEAM_MEMBERS = [
 const urgencyMap = { critical: "critical" as const, high: "high" as const, medium: "normal" as const, low: "low" as const };
 
 const BusinessOperations = () => {
+  const { isDemoMode } = useDataMode();
   const { primaryMode } = useBusinessProfile();
   const moduleConfig = getModuleAdaptation("operations", primaryMode);
   const [tab, setTab] = useState<Tab>("all");

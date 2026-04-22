@@ -4,6 +4,7 @@ import { useMarketMemoryEvents, useAdvisorObservations, useCatalystEvents, useBe
 import { computeWhatChanged } from "@/lib/services/finance-os/investment-memory.service";
 import { DEMO_MEMORY_EVENTS } from "@/data/seed/investment";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const SEVERITY_STYLES: Record<string, string> = {
   alert: "border-destructive/20 bg-destructive/5",
@@ -13,6 +14,7 @@ const SEVERITY_STYLES: Record<string, string> = {
 };
 
 export default function MarketMemoryFeed() {
+  const { isDemoMode } = useDataMode();
   const { data: liveMemoryEvents } = useMarketMemoryEvents();
   const { data: liveObservations } = useAdvisorObservations();
   const { data: liveCatalysts } = useCatalystEvents();

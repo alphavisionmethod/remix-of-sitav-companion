@@ -12,6 +12,7 @@ import { Shield, Brain, Plug, Monitor, Eye, Layers, RefreshCw, Activity, Smartph
 import { Button } from "@/components/ui/button";
 import { DEMO_INDEX_CONFIG } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 function getScoreColor(score: number): string {
   if (score >= 90) return "text-emerald-400";
@@ -28,6 +29,7 @@ function getScoreBadgeVariant(score: number): "default" | "secondary" | "destruc
 }
 
 export default function TruthIndexDashboard() {
+  const { isDemoMode } = useDataMode();
   const { data: indices, isLoading, refetch } = useQuery({
     queryKey: ["truth-indices"],
     queryFn: computeTruthIndices,

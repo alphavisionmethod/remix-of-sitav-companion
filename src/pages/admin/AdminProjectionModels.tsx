@@ -8,6 +8,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { BarChart3, CheckCircle, AlertTriangle, Clock, RefreshCw, Database, Layers, XCircle, Zap, Eye, ArrowRight, Activity } from "lucide-react";
 import { DEMO_MODELS } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.05 } } };
@@ -53,6 +54,7 @@ const REBUILD_HISTORY = [
 ];
 
 const ProjectionControlCenter = () => {
+  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("inventory");
   const freshCount = DEMO_MODELS.filter(m => m.freshness === "fresh").length;
   const avgLag = Math.round(DEMO_MODELS.reduce((s, m) => s + m.lagMs, 0) / DEMO_MODELS.length);

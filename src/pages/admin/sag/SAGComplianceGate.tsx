@@ -7,6 +7,7 @@ import type { ComplianceGate, TenantFirewallRule, SecurityIncident } from "@/pac
 import { DEMO_VIOLATION_TYPES } from "@/data/seed/admin-platform";
 import SAGSubNav from "@/components/admin/SAGSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 
 
@@ -18,6 +19,7 @@ const sevColors: Record<string, string> = {
 };
 
 const SAGComplianceGate = () => {
+  const { isDemoMode } = useDataMode();
   const { data: violations = [], isLoading } = useComplianceViolations();
   const { data: stats } = useGatewayStats();
   const s = stats || { totalRequests: 0, violations: 0 };

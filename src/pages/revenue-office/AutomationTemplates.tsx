@@ -14,6 +14,7 @@ import {
 import AutomationSubNav from "./AutomationSubNav";
 import { DEMO_REV_categories as DEMO_categories, DEMO_templates } from "@/data/seed/revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const RECENTLY_USED = [
   { name: "Stale Lead Recovery", lastUsed: "3 days ago", timesUsed: 12, avgImpact: "$1,200/use" },
@@ -28,6 +29,7 @@ const TEMPLATE_COMBOS = [
 ];
 
 export default function AutomationTemplates() {
+  const { isDemoMode } = useDataMode();
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [tab, setTab] = useState("gallery");
   const filtered = selectedCategory === "All" ? DEMO_templates : DEMO_templates.filter(t => t.category === selectedCategory);

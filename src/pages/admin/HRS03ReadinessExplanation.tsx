@@ -7,10 +7,12 @@ import { DEMO_READINESS_FACTORS } from "@/data/seed/health-signals";
 import { DEMO_ADMIN_PIPELINE_STAGES as DEMO_PIPELINE_STAGES, DEMO_COMBINE_STRATEGIES } from "@/data/seed/admin-platform";
 import HRSSubNav from "@/components/admin/HRSSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 
 
 const HRS03ReadinessExplanation = () => {
+  const { isDemoMode } = useDataMode();
   const { data: dbReadiness, isLoading } = useReadinessStates(10);
 
   return (

@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Smartphone, Monitor, Tablet, Shield, Trash2, Clock } from "lucide-react";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const MOCK_DEVICES = [
   { id: "1", name: "This Device", type: "desktop" as const, lastActive: "Now", trusted: true, current: true },
@@ -10,6 +11,7 @@ const MOCK_DEVICES = [
 ];
 
 const deviceIcon = (type: "desktop" | "phone" | "tablet") => {
+  const { isDemoMode } = useDataMode();
   if (type === "phone") return <Smartphone className="h-5 w-5" />;
   if (type === "tablet") return <Tablet className="h-5 w-5" />;
   return <Monitor className="h-5 w-5" />;

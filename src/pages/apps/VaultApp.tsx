@@ -8,6 +8,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useVaultItems } from "@/hooks/use-apps-data";
 import { DEMO_ENTRIES } from "@/data/seed/apps";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 interface VaultEntry {
   id: string;
@@ -24,6 +25,7 @@ const categoryIcons: Record<string, React.ElementType> = { login: Globe, card: C
 const strengthColors: Record<string, string> = { strong: "text-emerald-500", medium: "text-amber-500", weak: "text-red-500" };
 
 export default function VaultApp() {
+  const { isDemoMode } = useDataMode();
   const { data: liveData, isLoading } = useVaultItems();
   const [search, setSearch] = useState("");
   const [showPasswords, setShowPasswords] = useState<Record<string, boolean>>({});

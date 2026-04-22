@@ -8,8 +8,10 @@ import { Shield, Smartphone, Watch, Monitor, Fingerprint, Lock, ArrowRight, Aler
 import { DEMO_ADMIN_TRUST_CLASSES_A_P_L02_APPLE_DEVICES_TRUST as DEMO_TRUST_CLASSES, DEMO_ADMIN_VERIFICATION_EVENTS_A_P_L02_APPLE_DEVICES_TRUST as DEMO_VERIFICATION_EVENTS, DEMO_ESCALATION_RULES } from "@/data/seed/admin-platform";
 import APLSubNav from "@/components/admin/APLSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const APL02AppleDevicesTrust = () => {
+  const { isDemoMode } = useDataMode();
   const [selectedClass, setSelectedClass] = useState<string | null>(null);
 
   return (

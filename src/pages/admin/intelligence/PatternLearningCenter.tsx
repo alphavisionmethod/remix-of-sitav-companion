@@ -10,6 +10,7 @@ import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { DEMO_INTEL_PATTERNS_PATTERN_LEARNING_CENTER as DEMO_PATTERNS } from "@/data/seed/admin-intelligence";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const privacyBadges: Record<string, { icon: typeof Globe; color: string }> = {
   public_safe: { icon: Globe, color: "text-emerald-400" },
@@ -18,6 +19,7 @@ const privacyBadges: Record<string, { icon: typeof Globe; color: string }> = {
 };
 
 const PatternLearningCenter = () => {
+  const { isDemoMode } = useDataMode();
   const { isAdmin, loading } = useRequireAdmin();
   if (loading || !isAdmin) return null;
 

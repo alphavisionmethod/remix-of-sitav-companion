@@ -2,6 +2,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Clock, Filter, Receipt, CheckCircle, Zap, FileText, DollarSign, Briefcase, Home } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 interface TimelineEntry {
   id: string;
@@ -33,7 +34,8 @@ interface UniversalTimelineProps {
   onClose: () => void;
 }
 
-export const UniversalTimeline = ({ isOpen, onClose }: UniversalTimelineProps) => {
+export const UniversalTimeline = ({
+  const { isDemoMode } = useDataMode(); isOpen, onClose }: UniversalTimelineProps) => {
   const [filter, setFilter] = useState<string>("all");
 
   const filtered = filter === "all" ? MOCK_TIMELINE : MOCK_TIMELINE.filter(e => e.domain === filter);

@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { RefreshCw, CheckCircle2, Database, Layers, Shield, FileCheck, GitBranch, Loader2 } from "lucide-react";
 import { DEMO_ADMIN_CORE_SERVICES as DEMO_CORE_SERVICES } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 interface ServiceStatus {
   name: string;
@@ -86,6 +87,7 @@ function useRecentWrites() {
 }
 
 export default function PersistenceStatus() {
+  const { isDemoMode } = useDataMode();
   const { data: stats, isLoading: statsLoading, refetch: refetchStats } = useSubstrateStats();
   const { data: recentWrites, isLoading: writesLoading, refetch: refetchWrites, isFetching } = useRecentWrites();
 

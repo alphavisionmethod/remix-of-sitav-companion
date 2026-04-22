@@ -16,6 +16,7 @@ import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { DEMO_auditTimeline, DEMO_connectors } from "@/data/seed/atlas";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const now = new Date();
 const h = (hours: number) => new Date(now.getTime() - hours * 3600000).toISOString();
@@ -23,6 +24,7 @@ const h = (hours: number) => new Date(now.getTime() - hours * 3600000).toISOStri
 const lifecycleStates = ["registered", "configured", "active", "paused", "error", "disabled", "decommissioned"];
 
 export default function ConnectorControlCenter() {
+  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("overview");
   const healthy = DEMO_connectors.filter(c => c.status === "active").length;
 
