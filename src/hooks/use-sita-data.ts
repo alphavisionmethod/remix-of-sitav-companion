@@ -90,6 +90,7 @@ export function useSubscriptions() {
 }
 
 export function useReserves() {
+  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
   const mockReserves = [
     { id: "R-001", name: "Emergency Fund", current_amount: 12000, target_amount: 15000, category: "emergency", contribution_amount: 500, auto_contribute: true, priority: 1 },
@@ -128,6 +129,7 @@ export function useFinancialDocuments() {
 }
 
 export function useCashFlow() {
+  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
   return useQuery({
     queryKey: ["cash-flow", isDemoMode, user?.id],
@@ -225,6 +227,7 @@ export function useActivityStream() {
 }
 
 export function useOpportunityInsights() {
+  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
   return useQuery({
     queryKey: ["opportunity-insights", isDemoMode, user?.id],
@@ -288,6 +291,7 @@ export function useAutomationRules() {
 }
 
 export function useSystemConnectors() {
+  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
   return useQuery({
     queryKey: ["system-connectors", isDemoMode, user?.id],
@@ -302,6 +306,7 @@ export function useSystemConnectors() {
 }
 
 export function useAITeam() {
+  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
   return useQuery({
     queryKey: ["ai-team", isDemoMode, user?.id],
@@ -319,6 +324,7 @@ export function useIncidents() {
 }
 
 export function useCosts() {
+  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
   return useQuery({
     queryKey: ["costs", isDemoMode, user?.id],
@@ -340,6 +346,7 @@ export function useCosts() {
 
 // ── Approvals (live-only, from existing hook) ──
 export function useApprovals() {
+  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
 
   const mockApprovals = [
@@ -400,6 +407,7 @@ export function useApprovals() {
 
 // ── Proof Records ──
 export function useProofRecords() {
+  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
 
   const mockProof = [

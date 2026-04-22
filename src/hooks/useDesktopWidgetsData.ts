@@ -148,6 +148,7 @@ export function useWhatMattersData() {
 }
 
 export function useBusinessKPIData() {
+  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
   const q = useQuery({
     queryKey: ["desktop-business-kpi", user?.id],
@@ -174,6 +175,7 @@ export function useBusinessKPIData() {
 }
 
 export function useFinanceSnapshotData() {
+  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
   const q = useQuery({
     queryKey: ["desktop-finance-snapshot", user?.id],
@@ -196,6 +198,7 @@ export function useFinanceSnapshotData() {
 }
 
 export function useConciergeTasksData() {
+  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
   const q = useQuery({
     queryKey: ["desktop-concierge-tasks", user?.id],
@@ -223,6 +226,7 @@ export function useConciergeTasksData() {
 }
 
 export function useBoardroomBriefData() {
+  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
   const q = useQuery({
     queryKey: ["desktop-boardroom-brief", user?.id],
@@ -248,6 +252,7 @@ export function useBoardroomBriefData() {
 }
 
 export function useCRMPipelineData() {
+  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
   const q = useQuery({
     queryKey: ["desktop-crm-pipeline", user?.id],
@@ -270,6 +275,7 @@ export function useCRMPipelineData() {
 }
 
 export function useLeadsRecoveredData() {
+  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
   const q = useQuery({
     queryKey: ["desktop-leads-recovered", user?.id],
@@ -293,6 +299,7 @@ export function useLeadsRecoveredData() {
 }
 
 export function useInvestmentPulseData() {
+  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
   const q = useQuery({
     queryKey: ["desktop-investment-pulse", user?.id],
@@ -322,6 +329,7 @@ export function useInvestmentPulseData() {
 }
 
 export function useCalendarTodayData() {
+  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
   const q = useQuery({
     queryKey: ["desktop-calendar-today", user?.id],
@@ -343,6 +351,7 @@ export function useCalendarTodayData() {
 }
 
 export function useAdvisorCouncilData() {
+  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
   const q = useQuery({
     queryKey: ["desktop-advisor-council", user?.id],
@@ -371,6 +380,7 @@ export function useAdvisorCouncilData() {
 }
 
 export function useNotificationsFeedData() {
+  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
   const q = useQuery({
     queryKey: ["desktop-notifications-feed", user?.id],
@@ -393,6 +403,7 @@ export function useNotificationsFeedData() {
 
 export function useBusinessPulseData() {
   // Powers DesktopNotificationsWidget (mislabeled — it's actually a stock-ticker style view)
+  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
   const q = useQuery({
     queryKey: ["desktop-business-pulse", user?.id],
@@ -421,6 +432,7 @@ export function useBusinessPulseData() {
 }
 
 export function usePortfolioMapData() {
+  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
   const q = useQuery({
     queryKey: ["desktop-portfolio-map", user?.id],

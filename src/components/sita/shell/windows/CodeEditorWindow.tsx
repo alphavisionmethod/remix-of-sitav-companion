@@ -94,6 +94,7 @@ function FileTreeItem({ node, depth = 0, activeFile, onSelect }: {
 }
 
 export function CodeEditorWindow() {
+  const { isDemoMode } = useDataMode();
   const [openFiles, setOpenFiles] = useState<FileNode[]>([
     MOCK_FILES[0].children![0].children![0], // App.tsx
   ]);
@@ -104,7 +105,6 @@ export function CodeEditorWindow() {
   const lines = (activeFile?.content || "").split("\n");
 
   const openFile = (node: FileNode) => {
-  const { isDemoMode } = useDataMode();
     if (node.type === "folder") return;
     const existing = openFiles.findIndex(f => f.name === node.name);
     if (existing >= 0) { setActiveIdx(existing); return; }
