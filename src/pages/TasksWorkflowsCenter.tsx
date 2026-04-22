@@ -331,26 +331,22 @@ export default function TasksWorkflowsCenter() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              {[{ name: "Invoice Approval Pipeline", status: "running", step: "3/5", trigger: "event" },
-                    { name: "New Lead Nurture Sequence", status: "completed", step: "5/5", trigger: "webhook" },
-                    { name: "Quarterly Report Generation", status: "pending", step: "0/4", trigger: "schedule" },
-                  ].map((wf, i) => (
-                    <div key={i} className="flex items-center gap-3 p-3 rounded-lg border border-border/30 bg-card/30">
-                      <div className={cn("h-2.5 w-2.5 rounded-full shrink-0", wf.status === "running" ? "bg-primary animate-pulse" : wf.status === "completed" ? "bg-emerald-500" : "bg-muted-foreground")} />
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium">{wf.name}</p>
-                        <p className="text-xs text-muted-foreground">Step {wf.step} · {wf.trigger} trigger</p>
-                      </div>
-                      <Badge variant="outline" className="text-[10px] capitalize">{wf.status}</Badge>
-                      <ChevronRight className="h-3.5 w-3.5 text-muted-foreground" />
+              <div className="space-y-2">
+                {[{ name: "Invoice Approval Pipeline", status: "running", step: "3/5", trigger: "event" },
+                  { name: "New Lead Nurture Sequence", status: "completed", step: "5/5", trigger: "webhook" },
+                  { name: "Quarterly Report Generation", status: "pending", step: "0/4", trigger: "schedule" },
+                ].map((wf, i) => (
+                  <div key={i} className="flex items-center gap-3 p-3 rounded-lg border border-border/30 bg-card/30">
+                    <div className={cn("h-2.5 w-2.5 rounded-full shrink-0", wf.status === "running" ? "bg-primary animate-pulse" : wf.status === "completed" ? "bg-emerald-500" : "bg-muted-foreground")} />
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium">{wf.name}</p>
+                      <p className="text-xs text-muted-foreground">Step {wf.step} · {wf.trigger} trigger</p>
                     </div>
-                  ))}
-                </div>
-              ) : (
-                <p className="text-sm text-muted-foreground">
-                  View active workflows in the dedicated <a href="/workflows" className="text-primary hover:underline">Workflows Center</a>.
-                </p>
-              )}
+                    <Badge variant="outline" className="text-[10px] capitalize">{wf.status}</Badge>
+                    <ChevronRight className="h-3.5 w-3.5 text-muted-foreground" />
+                  </div>
+                ))}
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
