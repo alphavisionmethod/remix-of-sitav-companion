@@ -23,7 +23,7 @@ export const FEATURE_REGISTRY: readonly FeatureSurfaceEntry[] = [
   {
     featureId: "auth", name: "Authentication", canonicalImport: "@/features/auth",
     domain: "system", riskTier: "R4", status: "ga",
-    ownedRoutes: ["/auth", "/auth/login", "/auth/register", "/auth/reset-password"],
+    ownedRoutes: ["/auth", "/auth/login", "/auth/register", "/auth/reset-password", "/login", "/register"],
     ownedApps: [], runtimeSupport: [...ALL_TIERS], stateGrammar: [...FULL_STATES],
     proofCoverage: { ...CORE_PROOF, behavior: "covered", failure: "covered", recovery: "covered", operational: "partial", release: "partial" },
     supportIntegrated: true, trustIntegrated: true,
