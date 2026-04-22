@@ -50,11 +50,10 @@ export interface EmptyStateProps {
 
 export function EmptyState({
   variant = "default",
-  icon: Icon = Inbox,
+  icon: iconProp = Inbox,
   title = "No data yet",
   description = "Data will appear here once you start using this feature.",
   className,
-  iconElement,
   actionLabel,
   onAction,
   ctaPath,
@@ -63,15 +62,20 @@ export function EmptyState({
   tip,
   mode,
 }: EmptyStateProps) {
-  if (variant === "card") return <CardVariant icon={Icon} title={title} description={description} actionLabel={actionLabel} onAction={onAction} ctaPath={ctaPath} className={className} />;
-  if (variant === "contextual") return <ContextualVariant icon={Icon} title={title} description={description} tip={tip} actions={actions} className={className} />;
-  if (variant === "cta") return <CTAVariant icon={Icon} title={title} description={description} actions={actions} tip={tip} mode={mode} className={className} />;
+  // Resolve icon: accept LucideIcon component or ReactNode element
+  const isIconComponent = typeof iconProp === "function";
+  const IconComp = isIconComponent ? (iconProp as LucideIcon) : Inbox;
+  const iconNode = !isIconComponent ? (iconProp as React.ReactNode) : null;
+
+  if (variant === "card") return <CardVariant icon={IconComp} title={title} description={description} actionLabel={actionLabel} onAction={onAction} ctaPath={ctaPath} className={className} />;
+  if (variant === "contextual") return <ContextualVariant icon={IconComp} title={title} description={description} tip={tip} actions={actions} className={className} />;
+  if (variant === "cta") return <CTAVariant icon={IconComp} title={title} description={description} actions={actions} tip={tip} mode={mode} className={className} />;
 
   // Default variant
   return (
     <div className={cn("flex flex-col items-center justify-center py-16 px-4 text-center", className)}>
       <div className="p-4 rounded-2xl bg-muted/30 mb-4">
-        {iconElement ?? <Icon className="h-8 w-8 text-muted-foreground/60" />}
+        {iconNode ?? <IconComp className="h-8 w-8 text-muted-foreground/60" />}
       </div>
       <h3 className="text-lg font-semibold text-foreground mb-1">{title}</h3>
       <p className="text-sm text-muted-foreground max-w-sm">{description}</p>
