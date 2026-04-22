@@ -1,3 +1,4 @@
+import { Typography } from "@/components/sita/Typography";
 import { useAuth } from "@/contexts/AuthContext";
 import { motion } from "framer-motion";
 import { useState } from "react";
@@ -14,7 +15,6 @@ import {
 import { DEMO_ADVISOR_INVALIDATION } from "@/data/seed/revenue-office";
 import { useRevenueRiskAreas } from "@/hooks/use-revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { Typography } from "@/components/sita/Typography";
 const FRAGILITY_MATRIX = [
   { system: "Lead Capture → Nurture", fragility: 32, bottleneck: "Form abandonment at 41%", resilience: "Backup: SMS opt-in added", status: "moderate" as const },
   { system: "Nurture → Appointment", fragility: 58, bottleneck: "Email 4 drop-off at 40%", resilience: "No alternative path", status: "fragile" as const },
