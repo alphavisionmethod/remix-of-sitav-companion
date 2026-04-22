@@ -6,6 +6,10 @@ vi.mock("react-router-dom", async () => {
   return { ...actual, useNavigate: () => vi.fn(), useParams: () => ({ id: "test" }), useSearchParams: () => [new URLSearchParams(), vi.fn()] };
 });
 
+beforeAll(() => {
+  Element.prototype.scrollTo = vi.fn();
+});
+
 const pages = [
   ["MobileAIChat", () => import("@/pages/mobile/MobileAIChat")],
   ["MobileBusiness", () => import("@/pages/mobile/MobileBusiness")],
