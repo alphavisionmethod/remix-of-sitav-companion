@@ -3,17 +3,19 @@
 // Real-time SLA snapshots with trend sparklines, breach history
 // ═══════════════════════════════════════════════════════════════
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Progress } from "@/components/ui/progress";
+import { Input } from "@/components/ui/input";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { supabase } from "@/integrations/supabase/client";
 import {
-  Activity, CheckCircle, XCircle, TrendingUp, RefreshCw, Clock,
-  AlertTriangle, Shield, ArrowUpRight, ArrowDownRight,
+  Activity, CheckCircle, XCircle, TrendingUp, RefreshCw, Clock, Calendar,
+  AlertTriangle, Shield, ArrowUpRight, ArrowDownRight, Download,
 } from "lucide-react";
 import { AdminPageHeader } from "@/components/sita/admin/AdminPageHeader";
 import { motion } from "framer-motion";
@@ -49,15 +51,31 @@ interface SLACardData {
 export default function SLAMonitoringDashboard() {
   const [slaCards, setSlaCards] = useState<SLACardData[]>([]);
   const [loading, setLoading] = useState(true);
-  const [timeRange, setTimeRange] = useState<"24h" | "7d" | "30d">("24h");
+  const [timeRange, setTimeRange] = useState<"24h" | "7d" | "30d" | "custom">("24h");
+  const [customStart, setCustomStart] = useState("");
+  const [customEnd, setCustomEnd] = useState("");
   const [lastRefresh, setLastRefresh] = useState<Date | null>(null);
 
   async function loadData() {
     setLoading(true);
     try {
+      let snapsQuery = supabase.from("sla_snapshots" as never).select("*").order("computed_at", { ascending: false }).limit(500);
+
+      // Apply time window filter server-side
+      if (timeRange === "custom" && customStart) {
+        snapsQuery = snapsQuery.gte("computed_at", new Date(customStart).toISOString()) as typeof snapsQuery;
+        if (customEnd) snapsQuery = snapsQuery.lte("computed_at", new Date(customEnd + "T23:59:59").toISOString()) as typeof snapsQuery;
+      } else if (timeRange !== "custom") {
+        const cutoff = new Date();
+        if (timeRange === "24h") cutoff.setHours(cutoff.getHours() - 24);
+        else if (timeRange === "7d") cutoff.setDate(cutoff.getDate() - 7);
+        else if (timeRange === "30d") cutoff.setDate(cutoff.getDate() - 30);
+        snapsQuery = snapsQuery.gte("computed_at", cutoff.toISOString()) as typeof snapsQuery;
+      }
+
       const [defsRes, snapsRes] = await Promise.all([
         supabase.from("sla_definitions" as never).select("*").eq("enabled", true) as unknown as Promise<{ data: SLADefinition[] | null }>,
-        supabase.from("sla_snapshots" as never).select("*").order("computed_at", { ascending: false }).limit(500) as unknown as Promise<{ data: SLASnapshot[] | null }>,
+        snapsQuery as unknown as Promise<{ data: SLASnapshot[] | null }>,
       ]);
 
       const defs = defsRes.data ?? [];
@@ -85,7 +103,7 @@ export default function SLAMonitoringDashboard() {
     void loadData();
     const interval = setInterval(loadData, 60_000);
     return () => clearInterval(interval);
-  }, [timeRange]);
+  }, [timeRange, customStart, customEnd]);
 
   // Subscribe to realtime updates
   useEffect(() => {
@@ -139,7 +157,7 @@ export default function SLAMonitoringDashboard() {
       </div>
 
       <div className="flex items-center justify-between">
-        <div className="flex gap-2">
+        <div className="flex items-center gap-2">
           {(["24h", "7d", "30d"] as const).map((r) => (
             <Button
               key={r}
@@ -151,12 +169,34 @@ export default function SLAMonitoringDashboard() {
               {r}
             </Button>
           ))}
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button variant={timeRange === "custom" ? "default" : "outline"} size="sm" className="text-xs gap-1">
+                <Calendar className="h-3 w-3" /> Custom
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-64 space-y-2 p-3" align="start">
+              <label className="text-[10px] text-muted-foreground">Start date</label>
+              <Input type="date" className="h-7 text-xs" value={customStart} onChange={(e) => setCustomStart(e.target.value)} />
+              <label className="text-[10px] text-muted-foreground">End date</label>
+              <Input type="date" className="h-7 text-xs" value={customEnd} onChange={(e) => setCustomEnd(e.target.value)} />
+              <Button size="sm" className="w-full text-xs" onClick={() => { if (customStart) setTimeRange("custom"); }}>
+                Apply
+              </Button>
+            </PopoverContent>
+          </Popover>
         </div>
         <Button variant="outline" size="sm" onClick={() => void loadData()} disabled={loading}>
           <RefreshCw className={`mr-2 h-4 w-4 ${loading ? "animate-spin" : ""}`} />
           Refresh
         </Button>
       </div>
+
+      {timeRange === "custom" && customStart && (
+        <p className="text-[10px] text-muted-foreground">
+          Showing: {customStart} → {customEnd || "now"}
+        </p>
+      )}
 
       <Tabs defaultValue="metrics">
         <TabsList>
