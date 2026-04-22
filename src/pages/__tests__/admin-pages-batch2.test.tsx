@@ -49,7 +49,7 @@ describe("Admin Pages Batch 2", () => {
     it(`${name} renders without crashing`, async () => {
       const mod: any = await loader();
       const Component = getComponent(mod);
-      const { container } = render(<Component />);
+      const { container } = render(<Component />, { authenticated: true });
       expect(container).toBeTruthy();
     });
   });

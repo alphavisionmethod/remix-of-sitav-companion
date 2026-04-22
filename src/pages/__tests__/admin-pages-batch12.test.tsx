@@ -44,7 +44,7 @@ describe("Admin Pages Batch 12", () => {
     it(`${name} renders without crashing`, async () => {
       const mod: any = await loader();
       const Component = mod.default || Object.values(mod).find((v: any) => typeof v === "function");
-      const { container } = render(<Component />);
+      const { container } = render(<Component />, { authenticated: true });
       expect(container).toBeTruthy();
     });
   });
