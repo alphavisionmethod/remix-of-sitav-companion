@@ -17,7 +17,7 @@ const SHOCK_ICONS: Record<ShockType, typeof AlertTriangle> = {
 };
 
 import { SEVERITY_COLORS } from "@/lib/constants/ui-config";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageShell } from "@/components/sita/PageShell";
 
 const stagger = { hidden: { opacity: 0 }, show: { opacity: 1, transition: { staggerChildren: 0.06 } } };
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
@@ -42,7 +42,7 @@ const LifeSimulator = () => {
   };
 
   return (
-    <motion.div variants={stagger} initial="hidden" animate="show" className="space-y-6 max-w-[1600px] mx-auto">
+    <PageShell width="full">
 <motion.div variants={fadeUp}>
         <SitaPageHeader
           title="Life Simulator"
@@ -179,7 +179,7 @@ const LifeSimulator = () => {
           </div>
         </motion.div>
       )}
-    </motion.div>
+    </PageShell>
   );
 };
 
