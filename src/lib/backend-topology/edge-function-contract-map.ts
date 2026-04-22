@@ -222,4 +222,4 @@ export function getFunctionsWithoutInputSchema(): string[] {
   return Object.entries(EDGE_FUNCTION_CONTRACT_MAP)
     .filter(([, c]) => c.inputSchema === null)
     .map(([name]) => name);
-}  "account-delete": { inputSchema: null, outputSchema: null, errorSchema: "StandardError" },
+}
