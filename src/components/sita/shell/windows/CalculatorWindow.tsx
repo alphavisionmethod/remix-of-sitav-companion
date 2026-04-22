@@ -181,17 +181,17 @@ export function CalculatorWindow() {
               <CalcButton label="AC" onClick={clear} variant="fn" />
               <CalcButton label="±" onClick={negate} variant="fn" />
               <CalcButton label="%" onClick={percent} variant="fn" />
-              <CalcButton label=")" onClick={() => {}} variant="fn" />
+              <CalcButton label=")" onClick={() => inputDigit(")")} variant="fn" />
               <CalcButton label="÷" onClick={() => inputOp("÷")} variant="op" />
               {["7", "8", "9"].map(d => <CalcButton key={d} label={d} onClick={() => inputDigit(d)} />)}
               <CalcButton label="×" onClick={() => inputOp("×")} variant="op" />
               <CalcButton label="^" onClick={() => inputOp("^")} variant="fn" />
               {["4", "5", "6"].map(d => <CalcButton key={d} label={d} onClick={() => inputDigit(d)} />)}
               <CalcButton label="−" onClick={() => inputOp("−")} variant="op" />
-              <CalcButton label="!" onClick={() => {}} variant="fn" />
+              <CalcButton label="!" onClick={() => scientificFn("!")} variant="fn" />
               {["1", "2", "3"].map(d => <CalcButton key={d} label={d} onClick={() => inputDigit(d)} />)}
               <CalcButton label="+" onClick={() => inputOp("+")} variant="op" />
-              <CalcButton label="Rad" onClick={() => {}} variant="fn" />
+              <CalcButton label="Rad" onClick={() => scientificFn("rad")} variant="fn" />
               <CalcButton label="0" onClick={() => inputDigit("0")} span={2} />
               <CalcButton label="." onClick={dot} />
               <CalcButton label="=" onClick={equals} variant="eq" />

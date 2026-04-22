@@ -486,10 +486,10 @@ export function CRMContactDetail({ contact, companies = [], onClose, onEdit }: C
                 prepType="meeting"
               />
               <div className="grid grid-cols-2 gap-2">
-                <Button variant="outline" size="sm" className="text-xs gap-1.5" onClick={() => {}}>
+                <Button variant="outline" size="sm" className="text-xs gap-1.5" onClick={() => toast.info("Call prep coming soon")}>
                   <Phone className="h-3 w-3" /> Call Prep
                 </Button>
-                <Button variant="outline" size="sm" className="text-xs gap-1.5" onClick={() => {}}>
+                <Button variant="outline" size="sm" className="text-xs gap-1.5" onClick={() => toast.info("Meeting prep coming soon")}>
                   <Video className="h-3 w-3" /> Meeting Prep
                 </Button>
               </div>
