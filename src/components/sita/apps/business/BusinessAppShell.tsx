@@ -469,7 +469,7 @@ function BusinessAppShellInner({ initialModule }: { initialModule?: string }) {
   const [showArrival, setShowArrival] = useState(false);
 
   // Bridge onboarding data → archetype weights
-  useOnboardingBridge();
+  const { applyNow: applyBridge } = useOnboardingBridge();
 
   // Arrival ceremony after formation completes
   useEffect(() => {
@@ -611,7 +611,9 @@ function BusinessAppShellInner({ initialModule }: { initialModule?: string }) {
   if (showFormation) {
     return (
       <BusinessNavigationContext.Provider value={{ navigateTo, activeModule }}>
-        <FormationShell onComplete={() => {
+        <FormationShell onComplete={(finalState) => {
+          if (finalState) applyBridge(finalState);
+          else applyBridge(onboardingState);
           setFormationDone(true);
           setActiveModule("adaptive-home");
         }} />

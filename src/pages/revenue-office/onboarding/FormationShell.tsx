@@ -63,7 +63,7 @@ const screenMap: Record<StageId, React.ComponentType<any>> = {
 };
 
 interface FormationShellProps {
-  onComplete?: () => void;
+  onComplete?: (finalState?: OnboardingState) => void;
 }
 
 export default function FormationShell({ onComplete }: FormationShellProps) {
@@ -76,7 +76,7 @@ export default function FormationShell({ onComplete }: FormationShellProps) {
   // If already completed, call onComplete
   useEffect(() => {
     if (!isLoading && isCompleted && onComplete) {
-      onComplete();
+      onComplete(savedState);
     }
   }, [isLoading, isCompleted, onComplete]);
 
