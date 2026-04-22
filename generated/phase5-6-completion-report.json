@@ -1,0 +1,46 @@
+{
+  "phase": "5-6-completion",
+  "generated_at": "2026-04-22",
+  "phase_5_services": {
+    "total_services": 18,
+    "orphan_services": 1,
+    "orphan_fixed": "connector-notification-honesty-seed.ts \u2014 removed dead `as any` alias",
+    "deploy_services": {
+      "api-gateway": {
+        "health_endpoint": true,
+        "ready_endpoint": true,
+        "graceful_shutdown": true
+      },
+      "brain-core": {
+        "health_endpoint": true,
+        "ready_endpoint": true,
+        "graceful_shutdown": true
+      }
+    },
+    "edge_functions": 203
+  },
+  "phase_6_ai_proof": {
+    "direct_ai_provider_imports_outside_gateway": 0,
+    "ai_action_receipt_references": 18,
+    "proof_display_pages": [
+      "ProofMatrixExplorer",
+      "TrustStateRegistry",
+      "AdminMutationAudit",
+      "SecurityPostureBoard"
+    ],
+    "boardroom_demo_fallback": "Properly gated \u2014 falls back to DEMO_SESSIONS only when DB returns empty",
+    "admin_support_pages": [
+      "AdminRecoveryOperations",
+      "SupportHome"
+    ],
+    "support_wiring": "AdminRecoveryOperations uses real supabase queries for role checks and recovery ops"
+  },
+  "final_metrics": {
+    "typescript_errors": 0,
+    "production_build": "PASS",
+    "as_any_in_pages": 0,
+    "dead_onClick_handlers": 0,
+    "dead_onApprove_handlers": 0,
+    "governance_validators": "3 scripts, all passing"
+  }
+}
