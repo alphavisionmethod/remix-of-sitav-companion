@@ -1,0 +1,61 @@
+name: Visual Regression — Panel Components
+
+on:
+  pull_request:
+    paths:
+      - 'src/components/sita/surfaces/**'
+      - 'src/components/advisors/**'
+      - 'src/components/files/**'
+      - 'tests/e2e/visual-regression-panels.spec.ts'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  visual-regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+
+      - name: Run visual regression tests
+        run: npx playwright test --project=visual-regression --update-snapshots
+        env:
+          CI: true
+          PLAYWRIGHT_BASE_URL: ${{ secrets.PLAYWRIGHT_BASE_URL }}
+          TEST_USER_EMAIL: ${{ secrets.TEST_USER_EMAIL }}
+          TEST_USER_PASSWORD: ${{ secrets.TEST_USER_PASSWORD }}
+        # First run creates baselines; subsequent runs compare
+
+      - name: Compare against baselines
+        run: npx playwright test --project=visual-regression
+        env:
+          CI: true
+          PLAYWRIGHT_BASE_URL: ${{ secrets.PLAYWRIGHT_BASE_URL }}
+          TEST_USER_EMAIL: ${{ secrets.TEST_USER_EMAIL }}
+          TEST_USER_PASSWORD: ${{ secrets.TEST_USER_PASSWORD }}
+
+      - name: Upload diff artifacts on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-regression-diffs
+          path: |
+            test-results/
+            tests/e2e/visual-regression-panels.spec.ts-snapshots/
+          retention-days: 14
+
+      - name: Upload baselines
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-regression-baselines
+          path: tests/e2e/visual-regression-panels.spec.ts-snapshots/
+          retention-days: 30

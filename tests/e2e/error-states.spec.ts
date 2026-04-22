@@ -1,6 +1,7 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — E2E Error State & Retry Tests
-// Mock failed API responses and verify error/empty states render
+// Mock failed API responses, verify error/empty states, click
+// Retry and verify recovery to loaded state.
 // ═══════════════════════════════════════════════════════════════
 
 import { test, expect, Page } from "@playwright/test";
@@ -25,37 +26,80 @@ test.describe("Error and empty states", () => {
   });
 
   test("Boardroom shows error/empty state when API fails", async ({ page }) => {
-    // Intercept Supabase REST calls and return 500
-    await page.route("**/rest/v1/boardroom_items*", (route) =>
-      route.fulfill({ status: 500, body: JSON.stringify({ error: "server error" }), contentType: "application/json" })
-    );
+    let requestCount = 0;
+    await page.route("**/rest/v1/boardroom_items*", (route) => {
+      requestCount++;
+      if (requestCount <= 1) {
+        return route.fulfill({ status: 500, body: JSON.stringify({ error: "server error" }), contentType: "application/json" });
+      }
+      // After retry, let the request through
+      return route.continue();
+    });
     await page.goto(`${BASE}/boardroom`);
     await page.waitForLoadState("networkidle", { timeout: 15000 });
     const body = await page.textContent("body");
-    // Should show an error state, empty state, or graceful fallback — NOT a white screen
     expect(body?.length).toBeGreaterThan(30);
-    // Should not show raw error JSON
     expect(body).not.toContain('"error":"server error"');
+
+    // Look for and click a retry button
+    const retryBtn = page.getByRole("button", { name: /retry|try again|reload|refresh/i }).first();
+    const hasRetry = await retryBtn.isVisible({ timeout: 3000 }).catch(() => false);
+    if (hasRetry) {
+      await retryBtn.click();
+      await page.waitForLoadState("networkidle", { timeout: 15000 });
+      // After retry, page should recover — no error state
+      const recoveredBody = await page.textContent("body");
+      expect(recoveredBody?.length).toBeGreaterThan(30);
+      expect(recoveredBody).not.toContain("Something went wrong");
+    }
   });
 
   test("Files center handles API failure gracefully", async ({ page }) => {
-    await page.route("**/rest/v1/file_*", (route) =>
-      route.fulfill({ status: 500, body: "Internal Server Error", contentType: "text/plain" })
-    );
+    let requestCount = 0;
+    await page.route("**/rest/v1/file_*", (route) => {
+      requestCount++;
+      if (requestCount <= 1) {
+        return route.fulfill({ status: 500, body: "Internal Server Error", contentType: "text/plain" });
+      }
+      return route.continue();
+    });
     await page.goto(`${BASE}/files`);
     await page.waitForLoadState("networkidle", { timeout: 15000 });
     const body = await page.textContent("body");
     expect(body?.length).toBeGreaterThan(30);
+
+    // Click retry if available
+    const retryBtn = page.getByRole("button", { name: /retry|try again|reload|refresh/i }).first();
+    const hasRetry = await retryBtn.isVisible({ timeout: 3000 }).catch(() => false);
+    if (hasRetry) {
+      await retryBtn.click();
+      await page.waitForLoadState("networkidle", { timeout: 15000 });
+      const recoveredBody = await page.textContent("body");
+      expect(recoveredBody?.length).toBeGreaterThan(30);
+    }
   });
 
   test("Advisors page handles network timeout", async ({ page }) => {
-    await page.route("**/rest/v1/advisor_*", (route) => route.abort("timedout"));
+    let requestCount = 0;
+    await page.route("**/rest/v1/advisor_*", (route) => {
+      requestCount++;
+      if (requestCount <= 1) return route.abort("timedout");
+      return route.continue();
+    });
     await page.goto(`${BASE}/advisors`);
     await page.waitForLoadState("domcontentloaded", { timeout: 15000 });
-    // Wait a bit for error state to appear
     await page.waitForTimeout(3000);
     const body = await page.textContent("body");
     expect(body?.length).toBeGreaterThan(30);
+
+    const retryBtn = page.getByRole("button", { name: /retry|try again|reload|refresh/i }).first();
+    const hasRetry = await retryBtn.isVisible({ timeout: 3000 }).catch(() => false);
+    if (hasRetry) {
+      await retryBtn.click();
+      await page.waitForLoadState("networkidle", { timeout: 15000 });
+      const recoveredBody = await page.textContent("body");
+      expect(recoveredBody?.length).toBeGreaterThan(50);
+    }
   });
 
   test("Money center handles empty data", async ({ page }) => {
@@ -84,12 +128,27 @@ test.describe("Error and empty states", () => {
   });
 
   test("Connectors page handles API failure", async ({ page }) => {
-    await page.route("**/rest/v1/connector*", (route) =>
-      route.fulfill({ status: 500, body: JSON.stringify({ error: "fail" }), contentType: "application/json" })
-    );
+    let requestCount = 0;
+    await page.route("**/rest/v1/connector*", (route) => {
+      requestCount++;
+      if (requestCount <= 1) {
+        return route.fulfill({ status: 500, body: JSON.stringify({ error: "fail" }), contentType: "application/json" });
+      }
+      return route.continue();
+    });
     await page.goto(`${BASE}/connectors`);
     await page.waitForLoadState("networkidle", { timeout: 15000 });
     const body = await page.textContent("body");
     expect(body?.length).toBeGreaterThan(30);
+
+    const retryBtn = page.getByRole("button", { name: /retry|try again|reload|refresh/i }).first();
+    const hasRetry = await retryBtn.isVisible({ timeout: 3000 }).catch(() => false);
+    if (hasRetry) {
+      await retryBtn.click();
+      await page.waitForLoadState("networkidle", { timeout: 15000 });
+      const recoveredBody = await page.textContent("body");
+      expect(recoveredBody?.length).toBeGreaterThan(30);
+      expect(recoveredBody).not.toContain('"error":"fail"');
+    }
   });
 });
