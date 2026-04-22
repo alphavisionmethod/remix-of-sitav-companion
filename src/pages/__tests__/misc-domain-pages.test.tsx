@@ -46,6 +46,9 @@ vi.mock("@/hooks/useOSOrchestration", () => ({
     getWorkspaceSuggestions: () => [],
     getRecentExplanations: () => [],
     getCognitiveLoad: () => ({ score: 0.2, level: "low" }),
+    getCurrentMode: () => "default",
+    getActiveAlerts: () => [],
+    getSystemHealth: () => ({ status: "healthy", score: 1 }),
   }),
 }));
 
