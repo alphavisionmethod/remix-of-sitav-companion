@@ -49,7 +49,13 @@ vi.mock("@/hooks/useOSOrchestration", () => ({
     getCurrentMode: () => "default",
     getActiveAlerts: () => [],
     getSystemHealth: () => ({ status: "healthy", score: 1 }),
+    getActiveInterventions: () => [],
+    getAttentionStack: () => [],
+    getDigest: () => ({}),
+    getBriefing: () => ({}),
+    getTrustScore: () => 1,
   }),
+  default: { useOSOrchestration: () => new Proxy({}, { get: () => () => [] }) },
 }));
 
 const pages = [
