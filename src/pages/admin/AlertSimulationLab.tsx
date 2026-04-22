@@ -4,17 +4,18 @@
 // suppression windows, and audit logs in real time.
 // ═══════════════════════════════════════════════════════════════
 
-import { useState, useCallback, useRef } from "react";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useState, useCallback, useRef, useMemo } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { useToast } from "@/hooks/use-toast";
 import { AlertDedupStats } from "@/components/admin/alerts/AlertDedupStats";
-import { Play, Pause, Trash2, Zap, Activity, Radio } from "lucide-react";
+import { Play, Pause, Trash2, Zap, Activity, Radio, Save, History, RotateCcw } from "lucide-react";
 
 interface SimEvent {
   ts: number;
@@ -33,6 +34,19 @@ const SAMPLE_FINGERPRINTS = [
   "disk-usage-critical-storage",
 ];
 
+interface SimRun {
+  id: string;
+  name: string;
+  interval_ms: number;
+  burst_size: number;
+  severity: string;
+  suppression_window_ms: number;
+  event_count: number;
+  dedup_count: number;
+  suppress_count: number;
+  created_at: string;
+}
+
 export default function AlertSimulationLab() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
@@ -41,10 +55,10 @@ export default function AlertSimulationLab() {
   const [intervalMs, setIntervalMs] = useState(1000);
   const [burstSize, setBurstSize] = useState(5);
   const [severity, setSeverity] = useState("medium");
+  const [suppressionWindowMs, setSuppressionWindowMs] = useState(10_000);
+  const [runName, setRunName] = useState("");
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  // Simple client-side dedup: suppress if same fingerprint within 10 seconds
-  const suppressionWindowMs = 10_000;
   const recentMap = useRef(new Map<string, number>());
 
   const emitEvent = useCallback(() => {
@@ -80,10 +94,49 @@ export default function AlertSimulationLab() {
     recentMap.current.clear();
   }
 
+  // ── Saved runs query ──
+  const { data: savedRuns = [] } = useQuery<SimRun[]>({
+    queryKey: ["alert-simulation-runs"],
+    queryFn: async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return [];
+      const { data } = await supabase
+        .from("alert_simulation_runs")
+        .select("*")
+        .eq("user_id", user.id)
+        .order("created_at", { ascending: false })
+        .limit(20);
+      return (data as SimRun[] | null) ?? [];
+    },
+  });
+
   // Write simulated events to DB for persistence
   async function persistToDb() {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) { toast({ title: "Auth required", variant: "destructive" }); return; }
+
+    // 1. Save the simulation run config
+    const { data: run, error: runErr } = await supabase
+      .from("alert_simulation_runs")
+      .insert({
+        user_id: user.id,
+        name: runName || `Run ${new Date().toLocaleTimeString()}`,
+        interval_ms: intervalMs,
+        burst_size: burstSize,
+        severity,
+        suppression_window_ms: suppressionWindowMs,
+        event_count: totalEvents,
+        dedup_count: dedupCount,
+        suppress_count: suppressCount,
+      } as any)
+      .select("id")
+      .single();
+    if (runErr || !run) {
+      toast({ title: "Failed to save run config", description: runErr?.message, variant: "destructive" });
+      return;
+    }
+
+    // 2. Persist events linked to the run
     const rows = events.slice(0, 50).map((e) => ({
       user_id: user.id,
       fingerprint: e.fingerprint,
@@ -91,11 +144,22 @@ export default function AlertSimulationLab() {
       occurrence_count: 1,
       was_deduplicated: e.deduplicated,
       was_suppressed: e.suppressed,
+      simulation_run_id: (run as any).id,
     }));
     const { error } = await supabase.from("alert_dedup_log").insert(rows);
-    if (error) { toast({ title: "Insert failed", description: error.message, variant: "destructive" }); return; }
-    toast({ title: "Persisted", description: `${rows.length} events saved to dedup log.` });
+    if (error) { toast({ title: "Events insert failed", description: error.message, variant: "destructive" }); return; }
+    toast({ title: "Persisted", description: `Run config + ${rows.length} events saved.` });
     queryClient.invalidateQueries({ queryKey: ["alert-dedup-log"] });
+    queryClient.invalidateQueries({ queryKey: ["alert-simulation-runs"] });
+  }
+
+  function restoreRun(run: SimRun) {
+    setIntervalMs(run.interval_ms);
+    setBurstSize(run.burst_size);
+    setSeverity(run.severity);
+    setSuppressionWindowMs(run.suppression_window_ms);
+    setRunName(run.name);
+    toast({ title: "Restored", description: `Loaded parameters from "${run.name}"` });
   }
 
   const totalEvents = events.length;
@@ -137,6 +201,14 @@ export default function AlertSimulationLab() {
                 </SelectContent>
               </Select>
             </div>
+            <div className="space-y-1">
+              <label className="text-[10px] text-muted-foreground">Suppression (ms)</label>
+              <Input type="number" className="h-7 w-24 text-xs" value={suppressionWindowMs} onChange={(e) => setSuppressionWindowMs(Number(e.target.value) || 5000)} />
+            </div>
+            <div className="space-y-1">
+              <label className="text-[10px] text-muted-foreground">Run Name</label>
+              <Input className="h-7 w-36 text-xs" placeholder="Optional label…" value={runName} onChange={(e) => setRunName(e.target.value)} />
+            </div>
           </div>
           <div className="flex flex-wrap gap-2">
             {!isStreaming ? (
@@ -145,11 +217,44 @@ export default function AlertSimulationLab() {
               <Button size="sm" variant="secondary" className="gap-1" onClick={stopStream}><Pause className="h-3 w-3" /> Stop</Button>
             )}
             <Button size="sm" variant="outline" className="gap-1" onClick={fireBurst}><Zap className="h-3 w-3" /> Fire Burst</Button>
-            <Button size="sm" variant="outline" className="gap-1" onClick={persistToDb}><Activity className="h-3 w-3" /> Persist to DB</Button>
+            <Button size="sm" variant="outline" className="gap-1" onClick={persistToDb} disabled={events.length === 0}><Save className="h-3 w-3" /> Save Run</Button>
             <Button size="sm" variant="ghost" className="gap-1 text-destructive" onClick={clearLog}><Trash2 className="h-3 w-3" /> Clear</Button>
           </div>
         </CardContent>
       </Card>
+
+      {/* Saved runs */}
+      {savedRuns.length > 0 && (
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm flex items-center gap-2">
+              <History className="h-4 w-4" /> Saved Simulation Runs ({savedRuns.length})
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ScrollArea className="max-h-[200px]">
+              <div className="space-y-1">
+                {savedRuns.map((run) => (
+                  <div key={run.id} className="flex items-center justify-between p-2 rounded hover:bg-muted/30 transition-colors text-xs">
+                    <div className="flex items-center gap-3">
+                      <span className="font-medium truncate max-w-[160px]">{run.name || "Unnamed"}</span>
+                      <span className="text-muted-foreground">{run.interval_ms}ms · burst {run.burst_size}</span>
+                      <Badge variant="outline" className="text-[9px]">{run.severity}</Badge>
+                      <span className="text-muted-foreground">{run.event_count} events</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-[10px] text-muted-foreground">{new Date(run.created_at).toLocaleDateString()}</span>
+                      <Button variant="ghost" size="sm" className="h-6 px-2 text-xs gap-1" onClick={() => restoreRun(run)}>
+                        <RotateCcw className="h-3 w-3" /> Restore
+                      </Button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </ScrollArea>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Stats row */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
