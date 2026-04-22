@@ -23,12 +23,13 @@ export function AdvisorDetailSheet({ advisor, recommendation, onClose }: Props) 
         {/* Header */}
         <div className="flex items-center justify-between mb-5">
           <div className="flex items-center gap-3">
-            <AdvisorImage
-              domain={(advisor as any).domain ?? "business"}
-              src={advisor.portraitUrl}
-              size="lg"
-              className="border-2 rounded-full [border-color:var(--accent-color)]"
-            />
+            <div className="rounded-full border-2" style={{ borderColor: `hsl(${advisor.colorAccent})` }}>
+              <AdvisorImage
+                domain={(advisor as any).domain ?? "business"}
+                src={advisor.portraitUrl}
+                size="lg"
+              />
+            </div>
             <div>
               <h3 className="text-sm font-display font-bold text-foreground">{advisor.displayName}</h3>
               <p className="text-[10px] text-muted-foreground">{advisor.role}</p>
