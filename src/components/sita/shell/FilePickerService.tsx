@@ -242,7 +242,7 @@ function FilePickerDialog({
               icon={<Star className="h-4 w-4" />}
               label="Favorites"
               active={false}
-              onClick={() => {}}
+              onClick={() => console.log("[FilePicker] Favorites selected")}
             />
           </div>
 
