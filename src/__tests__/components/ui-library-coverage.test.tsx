@@ -76,6 +76,8 @@ const UI_COMPONENTS = [
     return <Skeleton className="h-4 w-20" />;
   }},
   { name: "Slider", path: "@/components/ui/slider", render: async () => {
+    // Slider uses ResizeObserver which isn't available in jsdom
+    globalThis.ResizeObserver = globalThis.ResizeObserver || class { observe() {} unobserve() {} disconnect() {} };
     const { Slider } = await import("@/components/ui/slider");
     return <Slider defaultValue={[50]} max={100} />;
   }},

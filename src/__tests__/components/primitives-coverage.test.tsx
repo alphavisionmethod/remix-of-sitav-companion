@@ -23,25 +23,29 @@ describe("Canonical Primitives Coverage", () => {
   });
 
   it("BaseCard renders", async () => {
-    const { default: BaseCard } = await import("@/components/primitives/display/BaseCard");
+    const mod = await import("@/components/primitives/display/BaseCard");
+    const BaseCard = mod.default || mod.BaseCard;
     const { container } = render(<BaseCard>Content</BaseCard>);
     expect(container.firstChild).not.toBeNull();
   });
 
   it("StatusBadge renders", async () => {
-    const { default: StatusBadge } = await import("@/components/primitives/status/StatusBadge");
+    const mod = await import("@/components/primitives/status/StatusBadge");
+    const StatusBadge = mod.default || mod.StatusBadge;
     const { container } = render(<StatusBadge status="active" />);
     expect(container.firstChild).not.toBeNull();
   });
 
   it("EmptyState renders", async () => {
-    const { default: EmptyState } = await import("@/components/primitives/feedback/EmptyState");
+    const mod = await import("@/components/primitives/feedback/EmptyState");
+    const EmptyState = mod.default || mod.EmptyState;
     const { container } = render(<EmptyState title="Nothing" />);
     expect(container.firstChild).not.toBeNull();
   });
 
   it("Panel renders", async () => {
-    const { default: Panel } = await import("@/components/primitives/display/Panel");
+    const mod = await import("@/components/primitives/display/Panel");
+    const Panel = mod.default || mod.Panel;
     const { container } = render(<Panel>Content</Panel>);
     expect(container.firstChild).not.toBeNull();
   });
