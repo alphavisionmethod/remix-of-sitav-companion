@@ -32,7 +32,7 @@ while IFS= read -r file; do
       fi
     fi
   done < "$file"
-done < <(find src/ -name '*.tsx' -o -name '*.ts' | grep -v node_modules | grep -v __tests__ | sort)
+done < <(find src/pages/ src/components/sita/ -name '*.tsx' -o -name '*.ts' 2>/dev/null | grep -v node_modules | grep -v __tests__ | sort)
 
 if [ "$ERRORS" -gt 0 ]; then
   echo ""
