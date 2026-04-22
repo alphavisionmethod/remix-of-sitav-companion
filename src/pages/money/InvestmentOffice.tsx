@@ -42,7 +42,6 @@ let riskMetrics = analyzePortfolioRisk(DEMO_INV_POSITIONS, capitalMap.reserveCap
 let stressScenarios = runStressScenarios(DEMO_INV_POSITIONS, capitalMap.reserveCapital);
 
 const regimeColor = (value: string) => {
-  const { isDemoMode } = useDataMode();
   if (["extreme", "crisis", "flight-to-safety", "stressed", "dislocating", "strong-down"].includes(value)) return "text-destructive bg-destructive/10";
   if (["elevated", "fragile", "risk-off", "tightening", "high", "down"].includes(value)) return "text-amber-600 bg-amber-500/10";
   if (["compressed", "risk-on", "abundant", "strong-up", "stable", "low"].includes(value)) return "text-primary bg-primary/10";
@@ -51,7 +50,9 @@ const regimeColor = (value: string) => {
 
 // ── Sub-Pages (existing 6) ──────────────────────────────────────
 
-const CapitalMapView = () => (
+const CapitalMapView = () => {
+  const { isDemoMode } = useDataMode();
+  return (
   <div className="space-y-4">
     <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
       <KPITile label="Total Capital" value={`$${Math.round(capitalMap.totalCapital).toLocaleString()}`} sub={`${Object.keys(capitalMap.byEntity).length} entities`} />
@@ -104,7 +105,11 @@ const CapitalMapView = () => (
   </div>
 );
 
-const PortfolioView = () => (
+};
+
+const PortfolioView = () => {
+  const { isDemoMode } = useDataMode();
+  return (
   <div className="space-y-4">
     <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
       <KPITile label="Portfolio Value" value={`$${Math.round(riskMetrics.totalValue).toLocaleString()}`} sub="All positions" />
@@ -167,6 +172,7 @@ const RegimeView = () => (
     </SitaCard>
   </div>
 );
+};
 
 const RiskView = () => (
   <div className="space-y-4">
@@ -200,7 +206,9 @@ const RiskView = () => (
   </div>
 );
 
-const ThesisVault = () => (
+const ThesisVault = () => {
+  const { isDemoMode } = useDataMode();
+  return (
   <div className="space-y-4">
     {(isDemoMode ? DEMO_INV_THESES : [] as typeof DEMO_INV_THESES).map((thesis, i) => {
       const eval_ = evaluateThesis(thesis, DEMO_REGIME);
@@ -235,7 +243,9 @@ const ThesisVault = () => (
   </div>
 );
 
-const CommitteeView = () => (
+const CommitteeView = () => {
+  const { isDemoMode } = useDataMode();
+  return (
   <div className="space-y-4">
     <SitaCard>
       <SitaCardTitle sub="Synthesized investment committee perspective">Committee Summary</SitaCardTitle>
@@ -263,6 +273,9 @@ const CommitteeView = () => (
     </SitaCard>
   </div>
 );
+
+};
+};
 
 // ── NEW: Opportunities Tab ──────────────────────────────────────
 

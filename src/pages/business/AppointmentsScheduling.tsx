@@ -151,7 +151,6 @@ const AppointmentsScheduling = () => {
   const [activeTab, setActiveTab] = useState("upcoming");
 
   const filterApts = (tab: string) => {
-    const { isDemoMode } = useDataMode();
     if (tab === "upcoming") return (isDemoMode ? DEMO_APPOINTMENTS : [] as typeof DEMO_APPOINTMENTS).filter(a => ["Today", "Tomorrow", "Wed"].includes(a.date) && a.status !== "no-show" && a.status !== "cancelled");
     if (tab === "needs-confirm") return (isDemoMode ? DEMO_APPOINTMENTS : [] as typeof DEMO_APPOINTMENTS).filter(a => a.status === "pending" || a.status === "unconfirmed");
     if (tab === "no-show") return (isDemoMode ? DEMO_APPOINTMENTS : [] as typeof DEMO_APPOINTMENTS).filter(a => a.status === "no-show");

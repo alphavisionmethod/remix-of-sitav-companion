@@ -84,6 +84,7 @@ const HeatmapGrid = ({ data }: { data: Record<string, number> }) => {
 
 const MyActivity = () => {
   const { user, isDemo } = useAuth();
+  const { isDemoMode } = useDataMode();
   const [heatmapData, setHeatmapData] = useState<Record<string, number>>({});
   const [featureUsage, setFeatureUsage] = useState<Record<string, number>>({});
   const [totalActions, setTotalActions] = useState(0);

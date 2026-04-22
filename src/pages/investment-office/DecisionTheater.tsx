@@ -200,6 +200,7 @@ function AudioWaveIndicator() {
 }
 
 export default function DecisionTheater() {
+  const { isDemoMode } = useDataMode();
   const { data: liveData, isLoading } = useInvestmentDecisions();
   const navigate = useNavigate();
   const [spotlightActive, setSpotlightActive] = useState(false);

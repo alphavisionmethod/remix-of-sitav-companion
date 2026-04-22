@@ -67,7 +67,6 @@ const BusinessDocuments = () => {
   const [starredIds, setStarredIds] = useState<Set<string>>(new Set((isDemoMode ? DEMO_DOCUMENTS : [] as typeof DEMO_DOCUMENTS).filter(d => d.starred).map(d => d.id)));
 
   const filtered = (isDemoMode ? DEMO_DOCUMENTS : [] as typeof DEMO_DOCUMENTS).filter(doc => {
-    const { isDemoMode } = useDataMode();
     if (tab === "quotes") return doc.category === "quote" || doc.category === "proposal";
     if (tab === "invoices") return doc.category === "invoice" || doc.category === "receipt";
     if (tab === "contracts") return doc.category === "contract";

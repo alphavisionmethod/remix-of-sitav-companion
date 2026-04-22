@@ -25,6 +25,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { DEMO_COMPLIANCE_ITEMS, DEMO_DEPLOYMENTS, DEMO_ENT_CAPABILITIES as DEMO_CAPABILITIES, DEMO_ROLES, DEMO_SLA_METRICS, DEMO_TEAM_MEMBERS } from "@/data/seed/enterprise";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 import { useEffect } from "react";
 
 
@@ -33,18 +34,18 @@ import { useEffect } from "react";
 
 
 // ── Demo Fallback Data ──────────────────────────────────────────
-const ROLE_PERMISSIONS: Record<string, Record<string, boolean>> = {
-  admin: Object.fromEntries((isDemoMode ? DEMO_CAPABILITIES : [] as typeof DEMO_CAPABILITIES).map(c => [c, true])),
+const ROLE_PERMISSIONS_DEMO: Record<string, Record<string, boolean>> = {
+  admin: Object.fromEntries(DEMO_CAPABILITIES.map(c => [c, true])),
   moderator: { "biz-crm-read": true, "biz-crm-write": true, "fin-accounts-read": true, "fin-payment-execute": false, "con-calendar-read": true, "con-booking-create": true, "plat-diagnostic": true, "plat-config-write": false },
   user: { "biz-crm-read": true, "biz-crm-write": false, "fin-accounts-read": true, "fin-payment-execute": false, "con-calendar-read": true, "con-booking-create": false, "plat-diagnostic": false, "plat-config-write": false },
 };
 
 const EnterpriseControlPlane = () => {
+  const { isDemoMode } = useDataMode();
   const [activeTab, setActiveTab] = useState("organization");
-  const [permissions, setPermissions] = useState(ROLE_PERMISSIONS);
+  const [permissions, setPermissions] = useState(isDemoMode ? ROLE_PERMISSIONS_DEMO : {});
   const [inviteEmail, setInviteEmail] = useState("");
   const { user, isDemo } = useAuth();
-  const isDemoMode = isDemo;
 
   // Real data queries
   const { data: realTeamMembers } = useQuery({

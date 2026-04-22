@@ -8,10 +8,10 @@ import DPOSubNav from "./DPOSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const overallScore = Math.round((isDemoMode ? DEMO_READINESS_CHECKS : [] as typeof DEMO_READINESS_CHECKS).reduce((sum, c) => sum + c.score, 0) / (isDemoMode ? DEMO_READINESS_CHECKS : [] as typeof DEMO_READINESS_CHECKS).length);
 
 export default function LaunchWarRoom() {
   const { isDemoMode } = useDataMode();
+  const overallScore = Math.round((isDemoMode ? DEMO_READINESS_CHECKS : [] as typeof DEMO_READINESS_CHECKS).reduce((sum, c) => sum + c.score, 0) / Math.max((isDemoMode ? DEMO_READINESS_CHECKS : [] as typeof DEMO_READINESS_CHECKS).length, 1));
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
       <DPOSubNav />
