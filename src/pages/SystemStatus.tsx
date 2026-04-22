@@ -116,7 +116,7 @@ function useSelfHealingDemo() {
 // ── Severity Badge ──────────────────────────────────────────────
 
 const SeverityBadge = ({
-  const { isDemoMode } = useDataMode(); severity }: { severity: string }) => {
+  severity }: { severity: string }) => {
   const colors: Record<string, string> = {
     P0: "bg-destructive text-destructive-foreground",
     P1: "bg-destructive/80 text-destructive-foreground",
