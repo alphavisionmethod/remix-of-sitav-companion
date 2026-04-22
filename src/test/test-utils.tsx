@@ -166,7 +166,42 @@ vi.mock("@/hooks/useOSRuntime", () => ({
 
 // Mock SitaOS context
 vi.mock("@/contexts/SitaOSContext", () => ({
-  useSitaOS: () => ({ kernel: { ready: true }, user: null }),
+  useSitaOS: () => ({
+    hydrated: true,
+    kernel: { ready: true },
+    user: null,
+    intentOrchestrator: { processIntent: vi.fn() },
+    attentionOS: {
+      getAttentionStack: () => [],
+      getCognitiveLoad: () => ({ score: 0.2 }),
+    },
+    relationships: { getMeetingPrep: vi.fn().mockReturnValue({}) },
+    personalGraph: {
+      getMeetingContext: vi.fn().mockReturnValue({}),
+      resolveCrossDomain: vi.fn().mockReturnValue({ touchedDomains: [], narrative: "" }),
+    },
+    digestEngine: {
+      generateDigest: vi.fn().mockReturnValue({}),
+      dailyPulse: vi.fn().mockReturnValue({}),
+    },
+    sitaModes: { getMode: () => "default", setMode: vi.fn() },
+    chiefOfStaff: {
+      getActiveInterventions: () => [],
+      acknowledgeIntervention: vi.fn(),
+    },
+    trustActions: { evaluateAction: vi.fn().mockReturnValue({ allowed: true }) },
+    deviceMesh: {
+      getMeshTopology: () => ({ devices: [] }),
+      getOnlinePeers: () => [],
+      setDeviceRole: vi.fn(),
+    },
+    contextGraph: {
+      getCurrentContext: () => ({}),
+      updateSignal: vi.fn(),
+    },
+    explainability: { explain: vi.fn().mockReturnValue("") },
+    briefing: { generateBriefing: vi.fn().mockReturnValue({}) },
+  }),
   SitaOSProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
 }));
 
