@@ -197,7 +197,6 @@ function PriorityHeatStrip({ items }: { items: { id: string; urgency: string; he
 }
 
 export function BoardroomExecutiveView({ scope, onNavigate }: Props) {
-  const { isDemoMode } = useDataMode();
   const { items, isDemoMode } = useBoardroomLiveData();
   const [activeAgenda, setActiveAgenda] = useState<string | null>(null);
 
