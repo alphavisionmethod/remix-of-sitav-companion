@@ -58,7 +58,7 @@ export default function MCSupport() {
     });
   }, [statusFilter, search]);
 
-  const selected = DEMO_CASES.find(c => c.id === selectedId);
+  const selected = (isDemoMode ? DEMO_CASES : [] as typeof DEMO_CASES).find(c => c.id === selectedId);
 
   return (
     <div className="p-6 space-y-6 max-w-7xl mx-auto">

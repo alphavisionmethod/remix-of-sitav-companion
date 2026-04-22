@@ -48,9 +48,9 @@ export default function RouteSourceDiagnostics() {
     return (isDemoMode ? DEMO_ROUTES : [] as typeof DEMO_ROUTES).filter(r => r.path.includes(q) || r.pageName.toLowerCase().includes(q) || r.domain.toLowerCase().includes(q));
   }, [search]);
 
-  const truthful = DEMO_ROUTES.filter(r => r.launchHonesty === "truthful").length;
-  const demoBacked = DEMO_ROUTES.filter(r => r.launchHonesty === "demo-backed").length;
-  const mixed = DEMO_ROUTES.filter(r => r.launchHonesty === "mixed").length;
+  const truthful = (isDemoMode ? DEMO_ROUTES : [] as typeof DEMO_ROUTES).filter(r => r.launchHonesty === "truthful").length;
+  const demoBacked = (isDemoMode ? DEMO_ROUTES : [] as typeof DEMO_ROUTES).filter(r => r.launchHonesty === "demo-backed").length;
+  const mixed = (isDemoMode ? DEMO_ROUTES : [] as typeof DEMO_ROUTES).filter(r => r.launchHonesty === "mixed").length;
 
   return (
     <div className="mx-auto max-w-7xl space-y-6 p-6">

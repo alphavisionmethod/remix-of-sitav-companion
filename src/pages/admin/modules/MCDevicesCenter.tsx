@@ -48,7 +48,7 @@ const MCDevicesCenter = () => {
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState<string>("all");
 
-  const filtered = DEMO_DEVICES.filter(d => {
+  const filtered = (isDemoMode ? DEMO_DEVICES : [] as typeof DEMO_DEVICES).filter(d => {
     if (filter !== "all" && d.trust !== filter) return false;
     if (search && !d.name.toLowerCase().includes(search.toLowerCase()) && !d.platform.toLowerCase().includes(search.toLowerCase())) return false;
     return true;

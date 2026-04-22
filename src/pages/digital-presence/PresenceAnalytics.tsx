@@ -45,7 +45,7 @@ export default function PresenceAnalytics() {
       <Card className="bg-card/50 border-border/50">
         <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><Globe className="w-4 h-4 text-blue-400" /> Source-to-Conversion Performance</CardTitle></CardHeader>
         <CardContent className="space-y-2">
-          {DEMO_SOURCE_PERFORMANCE.map(s => (
+          {(isDemoMode ? DEMO_SOURCE_PERFORMANCE : [] as typeof DEMO_SOURCE_PERFORMANCE).map(s => (
             <div key={s.source} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
               <div className="flex items-center gap-3 flex-1">
                 <span className="text-sm font-medium text-foreground w-32">{s.source}</span>

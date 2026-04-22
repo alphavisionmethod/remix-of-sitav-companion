@@ -16,9 +16,9 @@ const CrossTenantGovernance = () => {
   const { isAdmin, loading } = useRequireAdmin();
   if (loading || !isAdmin) return null;
 
-  const approved = DEMO_PATTERNS.filter(p => p.approved).length;
-  const pending = DEMO_PATTERNS.filter(p => !p.approved && p.tenants > 0).length;
-  const blocked = DEMO_PATTERNS.filter(p => p.tenants === 0).length;
+  const approved = (isDemoMode ? DEMO_PATTERNS : [] as typeof DEMO_PATTERNS).filter(p => p.approved).length;
+  const pending = (isDemoMode ? DEMO_PATTERNS : [] as typeof DEMO_PATTERNS).filter(p => !p.approved && p.tenants > 0).length;
+  const blocked = (isDemoMode ? DEMO_PATTERNS : [] as typeof DEMO_PATTERNS).filter(p => p.tenants === 0).length;
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">

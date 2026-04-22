@@ -20,7 +20,7 @@ const PortfolioAllocationDashboard = () => {
   const modelMix = (latest?.model_mix as Record<string, number>) || {};
   const totalSpent = latest?.used_cents ?? 0;
 
-  const cats = DEMO_DEFAULT_CATEGORIES.map(c => {
+  const cats = (isDemoMode ? DEMO_DEFAULT_CATEGORIES : [] as typeof DEMO_DEFAULT_CATEGORIES).map(c => {
     const actual = modelMix[c.cat] ?? c.target;
     const spent = Math.round(totalSpent * (actual / 100));
     return { ...c, actual, spent };

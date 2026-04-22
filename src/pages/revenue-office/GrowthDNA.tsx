@@ -16,7 +16,7 @@ const GrowthDNA = () => {
   const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("traits");
   const avg = Math.round((isDemoMode ? DEMO_GROWTH_TRAITS : [] as typeof DEMO_GROWTH_TRAITS).reduce((a, t) => a + t.score, 0) / (isDemoMode ? DEMO_GROWTH_TRAITS : [] as typeof DEMO_GROWTH_TRAITS).length);
-  const criticalAlerts = DEMO_GROWTH_FIREWALL_ALERTS.filter(a => a.severity === "critical").length;
+  const criticalAlerts = (isDemoMode ? DEMO_GROWTH_FIREWALL_ALERTS : [] as typeof DEMO_GROWTH_FIREWALL_ALERTS).filter(a => a.severity === "critical").length;
 
   return (
     <div className="space-y-6 p-6">

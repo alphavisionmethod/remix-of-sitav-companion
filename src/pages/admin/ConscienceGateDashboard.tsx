@@ -135,7 +135,7 @@ export default function ConscienceGateDashboard() {
   const stats = useMemo(() => {
     const counts: Record<GateDecision, number> = { pass: 0, caveat: 0, block: 0, refuse: 0 };
     (isDemoMode ? DEMO_VERDICTS : [] as typeof DEMO_VERDICTS).forEach((v) => counts[v.decision]++);
-    const total = DEMO_VERDICTS.length;
+    const total = (isDemoMode ? DEMO_VERDICTS : [] as typeof DEMO_VERDICTS).length;
     return { counts, total, passRate: total ? Math.round((counts.pass / total) * 100) : 0 };
   }, [DEMO_VERDICTS]);
 

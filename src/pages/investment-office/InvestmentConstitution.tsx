@@ -20,7 +20,7 @@ export default function InvestmentConstitution() {
   const { isDemoMode } = useDataMode();
   const { data: liveData, isLoading } = useInvestmentStrategyRecords();
   const [filter, setFilter] = useState("all");
-  const filtered = DEMO_CONSTITUTION_RULES.filter(r => filter === "all" || r.category === filter);
+  const filtered = (isDemoMode ? DEMO_CONSTITUTION_RULES : [] as typeof DEMO_CONSTITUTION_RULES).filter(r => filter === "all" || r.category === filter);
 
   return (
     <div className="mx-auto max-w-5xl space-y-6">
@@ -36,7 +36,7 @@ export default function InvestmentConstitution() {
             <AlertTriangle className="h-3 w-3" /> {(isDemoMode ? DEMO_CURRENT_VIOLATIONS : [] as typeof DEMO_CURRENT_VIOLATIONS).length} Active Violations
           </p>
           {(isDemoMode ? DEMO_CURRENT_VIOLATIONS : [] as typeof DEMO_CURRENT_VIOLATIONS).map(v => {
-            const rule = DEMO_CONSTITUTION_RULES.find(r => r.id === v.ruleId);
+            const rule = (isDemoMode ? DEMO_CONSTITUTION_RULES : [] as typeof DEMO_CONSTITUTION_RULES).find(r => r.id === v.ruleId);
             return (
               <div key={v.ruleId} className="flex items-start gap-2 text-sm text-foreground">
                 <AlertTriangle className="h-3.5 w-3.5 text-destructive shrink-0 mt-0.5" />
@@ -60,7 +60,7 @@ export default function InvestmentConstitution() {
       {/* Rules */}
       <div className="space-y-3">
         {filtered.map((rule, i) => {
-          const isViolated = DEMO_CURRENT_VIOLATIONS.some(v => v.ruleId === rule.id);
+          const isViolated = (isDemoMode ? DEMO_CURRENT_VIOLATIONS : [] as typeof DEMO_CURRENT_VIOLATIONS).some(v => v.ruleId === rule.id);
           return (
             <motion.div key={rule.id} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.03 }}
               className={`rounded-2xl border p-5 space-y-2 ${

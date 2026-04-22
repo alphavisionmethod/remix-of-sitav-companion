@@ -54,9 +54,9 @@ const DEMO_ACTIONS: ActionRecord[] = [
 const ActionStateDriftViewer = () => {
   const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("all");
-  const nonCanonical = DEMO_ACTIONS.filter(a => !a.canonical);
-  const stuck = DEMO_ACTIONS.filter(a => a.stuckSince);
-  const drifted = DEMO_ACTIONS.filter(a => a.driftReason);
+  const nonCanonical = (isDemoMode ? DEMO_ACTIONS : [] as typeof DEMO_ACTIONS).filter(a => !a.canonical);
+  const stuck = (isDemoMode ? DEMO_ACTIONS : [] as typeof DEMO_ACTIONS).filter(a => a.stuckSince);
+  const drifted = (isDemoMode ? DEMO_ACTIONS : [] as typeof DEMO_ACTIONS).filter(a => a.driftReason);
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">

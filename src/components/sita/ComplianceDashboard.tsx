@@ -146,9 +146,9 @@ export function ComplianceDashboard() {
   }, [frameworkFilter]);
 
   const stats = useMemo(() => {
-    const compliant = DEMO_CONTROLS.filter(c => c.status === "compliant").length;
-    const partial = DEMO_CONTROLS.filter(c => c.status === "partial").length;
-    const nonCompliant = DEMO_CONTROLS.filter(c => c.status === "non-compliant").length;
+    const compliant = (isDemoMode ? DEMO_CONTROLS : [] as typeof DEMO_CONTROLS).filter(c => c.status === "compliant").length;
+    const partial = (isDemoMode ? DEMO_CONTROLS : [] as typeof DEMO_CONTROLS).filter(c => c.status === "partial").length;
+    const nonCompliant = (isDemoMode ? DEMO_CONTROLS : [] as typeof DEMO_CONTROLS).filter(c => c.status === "non-compliant").length;
     const score = Math.round((compliant / (isDemoMode ? DEMO_CONTROLS : [] as typeof DEMO_CONTROLS).length) * 100);
     return { compliant, partial, nonCompliant, total: (isDemoMode ? DEMO_CONTROLS : [] as typeof DEMO_CONTROLS).length, score };
   }, []);

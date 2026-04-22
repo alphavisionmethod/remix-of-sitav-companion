@@ -33,7 +33,7 @@ export default function LeakDetector() {
     details: [],
   })) : []);
   const totalLeakage = LEAKS.reduce((s, l) => s + parseInt(l.revenue.replace(/[^0-9]/g, "")), 0);
-  const totalRecovered = DEMO_LEAK_REPAIR_TRACKING.reduce((s, r) => s + parseInt(r.recoveredRevenue.replace(/[^0-9]/g, "")), 0);
+  const totalRecovered = (isDemoMode ? DEMO_LEAK_REPAIR_TRACKING : [] as typeof DEMO_LEAK_REPAIR_TRACKING).reduce((s, r) => s + parseInt(r.recoveredRevenue.replace(/[^0-9]/g, "")), 0);
   const recoveryRate = totalLeakage > 0 ? Math.round((totalRecovered / (totalLeakage + totalRecovered)) * 100) : 0;
   const latestTrend = DEMO_LEAK_TRENDS[(isDemoMode ? DEMO_LEAK_TRENDS : [] as typeof DEMO_LEAK_TRENDS).length - 1];
   const prevTrend = DEMO_LEAK_TRENDS[(isDemoMode ? DEMO_LEAK_TRENDS : [] as typeof DEMO_LEAK_TRENDS).length - 2];

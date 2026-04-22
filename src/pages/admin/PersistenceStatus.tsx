@@ -91,7 +91,7 @@ export default function PersistenceStatus() {
   const { data: stats, isLoading: statsLoading, refetch: refetchStats } = useSubstrateStats();
   const { data: recentWrites, isLoading: writesLoading, refetch: refetchWrites, isFetching } = useRecentWrites();
 
-  const allWired = DEMO_CORE_SERVICES.every(s => s.wired);
+  const allWired = (isDemoMode ? DEMO_CORE_SERVICES : [] as typeof DEMO_CORE_SERVICES).every(s => s.wired);
 
   return (
     <div className="space-y-6 p-6">

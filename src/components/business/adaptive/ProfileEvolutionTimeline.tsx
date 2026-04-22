@@ -67,7 +67,7 @@ export default function ProfileEvolutionTimeline() {
   };
 
   // Generate timeline with current mode
-  const timeline = MOCK_TIMELINE.map(t => ({ ...t, mode: primaryMode }));
+  const timeline = (isDemoMode ? MOCK_TIMELINE : [] as typeof MOCK_TIMELINE).map(t => ({ ...t, mode: primaryMode }));
 
   return (
     <div className="p-5 space-y-5 max-w-3xl">

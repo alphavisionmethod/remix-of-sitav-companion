@@ -446,7 +446,7 @@ export function CABWorkflow() {
         <span className="text-[9px] font-semibold text-muted-foreground uppercase tracking-wider">Change Pipeline</span>
         <div className="flex items-center gap-1 mt-2 overflow-x-auto">
           {STATUS_FLOW.map((status, i) => {
-            const count = MOCK_CHANGES.filter(c => c.status === status).length;
+            const count = (isDemoMode ? MOCK_CHANGES : [] as typeof MOCK_CHANGES).filter(c => c.status === status).length;
             const meta = STATUS_META[status];
             return (
               <div key={status} className="flex items-center">

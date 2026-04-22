@@ -61,18 +61,18 @@ export default function ProofMatrixExplorer() {
   const [typeFilter, setTypeFilter] = useState("all");
   const [expanded, setExpanded] = useState<string | null>(null);
 
-  const filtered = DEMO_PROOFS.filter(p => {
+  const filtered = (isDemoMode ? DEMO_PROOFS : [] as typeof DEMO_PROOFS).filter(p => {
     if (typeFilter !== "all" && p.type !== typeFilter) return false;
     if (search && !p.action.toLowerCase().includes(search.toLowerCase())) return false;
     return true;
   });
 
-  const verifiedCount = DEMO_PROOFS.filter(p => p.verified).length;
-  const withReceipts = DEMO_PROOFS.filter(p => p.receiptId).length;
-  const totalEvidence = DEMO_PROOFS.reduce((s, p) => s + p.evidenceCount, 0);
+  const verifiedCount = (isDemoMode ? DEMO_PROOFS : [] as typeof DEMO_PROOFS).filter(p => p.verified).length;
+  const withReceipts = (isDemoMode ? DEMO_PROOFS : [] as typeof DEMO_PROOFS).filter(p => p.receiptId).length;
+  const totalEvidence = (isDemoMode ? DEMO_PROOFS : [] as typeof DEMO_PROOFS).reduce((s, p) => s + p.evidenceCount, 0);
 
   // Coverage by domain
-  const domainCoverage = DEMO_PROOFS.reduce((acc, p) => {
+  const domainCoverage = (isDemoMode ? DEMO_PROOFS : [] as typeof DEMO_PROOFS).reduce((acc, p) => {
     acc[p.domain] = (acc[p.domain] || 0) + 1;
     return acc;
   }, {} as Record<string, number>);
@@ -214,7 +214,7 @@ export default function ProofMatrixExplorer() {
               <CardHeader className="pb-2"><CardTitle className="text-xs">Finality Distribution</CardTitle></CardHeader>
               <CardContent className="space-y-2">
                 {(["tentative", "provisional", "committed", "finalized", "irreversible"] as const).map(f => {
-                  const count = DEMO_PROOFS.filter(p => p.finality === f).length;
+                  const count = (isDemoMode ? DEMO_PROOFS : [] as typeof DEMO_PROOFS).filter(p => p.finality === f).length;
                   return (
                     <div key={f} className="flex items-center gap-2">
                       <span className={cn("text-[10px] w-20 capitalize", FINALITY_CONFIG[f].color)}>{f}</span>

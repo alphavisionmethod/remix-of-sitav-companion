@@ -453,7 +453,7 @@ export function BCPDRDashboard() {
   const handleExport = () => {
   const { isDemoMode } = useDataMode();
     const headers = ["Service", "Category", "RPO Target (min)", "RPO Actual (min)", "RTO Target (min)", "RTO Actual (min)", "Status", "Backup Method", "Last Tested"];
-    const rows = MOCK_OBJECTIVES.map(o => [
+    const rows = (isDemoMode ? MOCK_OBJECTIVES : [] as typeof MOCK_OBJECTIVES).map(o => [
       o.service, o.category, o.rpo.toString(), o.actualRpo.toString(),
       o.rto.toString(), o.actualRto.toString(), o.status, o.backupMethod, formatDateShort(o.lastTested),
     ]);

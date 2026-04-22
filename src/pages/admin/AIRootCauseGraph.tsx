@@ -18,8 +18,8 @@ const typeStyles: Record<string, { icon: typeof Bug; color: string; bg: string }
 const AIRootCauseGraph = () => {
   const { isDemo } = useAIEngDomain("violations", DEMO_GRAPH_NODES);
   const [selectedNode, setSelectedNode] = useState<string | null>("root-1");
-  const selected = DEMO_GRAPH_NODES.find(n => n.id === selectedNode);
-  const connectedEdges = DEMO_GRAPH_EDGES.filter(e => e.from === selectedNode || e.to === selectedNode);
+  const selected = (isDemoMode ? DEMO_GRAPH_NODES : [] as typeof DEMO_GRAPH_NODES).find(n => n.id === selectedNode);
+  const connectedEdges = (isDemoMode ? DEMO_GRAPH_EDGES : [] as typeof DEMO_GRAPH_EDGES).filter(e => e.from === selectedNode || e.to === selectedNode);
   const connectedNodes = connectedEdges.map(e => e.from === selectedNode ? e.to : e.from);
 
   return (
@@ -30,7 +30,7 @@ const AIRootCauseGraph = () => {
         {/* Graph Visualization (structured list view) */}
         <div className="lg:col-span-2 space-y-4">
           {(["symptom", "service", "release", "config", "root_cause"] as const).map(type => {
-            const nodes = DEMO_GRAPH_NODES.filter(n => n.type === type);
+            const nodes = (isDemoMode ? DEMO_GRAPH_NODES : [] as typeof DEMO_GRAPH_NODES).filter(n => n.type === type);
             if (!nodes.length) return null;
             const style = typeStyles[type];
             return (
@@ -79,7 +79,7 @@ const AIRootCauseGraph = () => {
                 <p className="text-[10px] text-muted-foreground uppercase tracking-wider mb-2">Connections ({connectedEdges.length})</p>
                 <div className="space-y-2">
                   {connectedEdges.map((e, i) => {
-                    const other = DEMO_GRAPH_NODES.find(n => n.id === (e.from === selectedNode ? e.to : e.from));
+                    const other = (isDemoMode ? DEMO_GRAPH_NODES : [] as typeof DEMO_GRAPH_NODES).find(n => n.id === (e.from === selectedNode ? e.to : e.from));
                     const direction = e.from === selectedNode ? "→" : "←";
                     return (
                       <div key={i} className="flex items-center gap-2 text-xs">

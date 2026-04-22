@@ -29,7 +29,7 @@ const AIEvidenceBundleComposer = () => {
     setSelectedItems(prev => prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]);
   };
 
-  const selected = DEMO_BUNDLE_ITEMS.filter(b => selectedItems.includes(b.id));
+  const selected = (isDemoMode ? DEMO_BUNDLE_ITEMS : [] as typeof DEMO_BUNDLE_ITEMS).filter(b => selectedItems.includes(b.id));
   const totalEvidence = selected.reduce((a, b) => a + b.evidence.length, 0);
   const totalTests = selected.reduce((a, b) => a + b.tests.length, 0);
   const avgConfidence = selected.length > 0 ? Math.round(selected.reduce((a, b) => a + b.confidence, 0) / selected.length) : 0;

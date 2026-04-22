@@ -173,7 +173,7 @@ export default function FCC06ProgramManagementBoard() {
     setExpandedMs(prev => { const n = new Set(prev); n.has(id) ? n.delete(id) : n.add(id); return n; });
   }
 
-  const allTasks = DEMO_OBJECTIVES.flatMap(o => o.milestones.flatMap(m => m.tasks));
+  const allTasks = (isDemoMode ? DEMO_OBJECTIVES : [] as typeof DEMO_OBJECTIVES).flatMap(o => o.milestones.flatMap(m => m.tasks));
   const totalCompleted = allTasks.filter(t => t.status === "completed").length;
   const totalBlocked = allTasks.filter(t => t.status === "blocked").length;
 

@@ -58,10 +58,10 @@ const riskConfig: Record<string, string> = {
 
 const KPIStrip = () => {
   const { isDemoMode } = useDataMode();
-  const upcoming = DEMO_APPOINTMENTS.filter(a => ["Today", "Tomorrow", "Wed"].includes(a.date) && a.status !== "no-show" && a.status !== "cancelled").length;
-  const needsConfirm = DEMO_APPOINTMENTS.filter(a => a.status === "pending" || a.status === "unconfirmed").length;
-  const highRisk = DEMO_APPOINTMENTS.filter(a => a.noShowRisk === "high" && a.status !== "no-show" && a.status !== "cancelled").length;
-  const noShows = DEMO_APPOINTMENTS.filter(a => a.status === "no-show").length;
+  const upcoming = (isDemoMode ? DEMO_APPOINTMENTS : [] as typeof DEMO_APPOINTMENTS).filter(a => ["Today", "Tomorrow", "Wed"].includes(a.date) && a.status !== "no-show" && a.status !== "cancelled").length;
+  const needsConfirm = (isDemoMode ? DEMO_APPOINTMENTS : [] as typeof DEMO_APPOINTMENTS).filter(a => a.status === "pending" || a.status === "unconfirmed").length;
+  const highRisk = (isDemoMode ? DEMO_APPOINTMENTS : [] as typeof DEMO_APPOINTMENTS).filter(a => a.noShowRisk === "high" && a.status !== "no-show" && a.status !== "cancelled").length;
+  const noShows = (isDemoMode ? DEMO_APPOINTMENTS : [] as typeof DEMO_APPOINTMENTS).filter(a => a.status === "no-show").length;
 
   const kpis = [
     { label: "Upcoming", value: upcoming, icon: <CalendarDays className="h-4 w-4" />, accent: "text-primary" },

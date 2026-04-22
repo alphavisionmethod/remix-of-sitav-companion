@@ -41,8 +41,8 @@ const [selectedRole, setSelectedRole] = useState("");
 
   const { data: roles = [] } = useQuery({ queryKey: ["ai-workforce-roles"], queryFn: getWorkforceRoles });
 
-  const selectedBudget = DEMO_BUDGET_POSTURES.find(b => b.key === budgetPosture);
-  const selectedTaskMeta = DEMO_TASK_TYPES.find(t => t.key === selectedTask);
+  const selectedBudget = (isDemoMode ? DEMO_BUDGET_POSTURES : [] as typeof DEMO_BUDGET_POSTURES).find(b => b.key === budgetPosture);
+  const selectedTaskMeta = (isDemoMode ? DEMO_TASK_TYPES : [] as typeof DEMO_TASK_TYPES).find(t => t.key === selectedTask);
   const selectedRoleMeta = roles.find(r => r.role_key === selectedRole);
   const isApprovalNeeded = selectedRoleMeta?.approval_required || selectedTask === "propose";
 

@@ -11,9 +11,9 @@ import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 const AIReleasesCenter = () => {
   const { isDemo } = useAIEngDomain("efficiencyScores", DEMO_RELEASE_GATES);
   const [tab, setTab] = useState("readiness");
-  const passCount = DEMO_RELEASE_GATES.filter(g => g.status === "pass").length;
-  const totalRequired = DEMO_RELEASE_GATES.filter(g => g.required).length;
-  const requiredPass = DEMO_RELEASE_GATES.filter(g => g.required && g.status === "pass").length;
+  const passCount = (isDemoMode ? DEMO_RELEASE_GATES : [] as typeof DEMO_RELEASE_GATES).filter(g => g.status === "pass").length;
+  const totalRequired = (isDemoMode ? DEMO_RELEASE_GATES : [] as typeof DEMO_RELEASE_GATES).filter(g => g.required).length;
+  const requiredPass = (isDemoMode ? DEMO_RELEASE_GATES : [] as typeof DEMO_RELEASE_GATES).filter(g => g.required && g.status === "pass").length;
 
   return (
     <div className="space-y-6 p-6">

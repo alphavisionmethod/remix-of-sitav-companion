@@ -25,7 +25,7 @@ export default function GalleryApp() {
   const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
   const [album, setAlbum] = useState("All");
 
-  const filtered = DEMO_PHOTOS.filter(p => {
+  const filtered = (isDemoMode ? DEMO_PHOTOS : [] as typeof DEMO_PHOTOS).filter(p => {
     if (album !== "All" && p.album !== album) return false;
     if (search && !p.title.toLowerCase().includes(search.toLowerCase())) return false;
     return true;

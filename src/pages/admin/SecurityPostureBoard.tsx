@@ -42,10 +42,10 @@ const DEMO_KEY_ROTATION = [
 const SecurityPostureBoard = () => {
   const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("overview");
-  const fullEncryption = DEMO_POSTURE.filter(p => p.encryption === "full").length;
-  const allRls = DEMO_POSTURE.filter(p => p.rlsEnabled).length;
-  const totalGaps = DEMO_POSTURE.reduce((s, p) => s + p.gaps.length, 0);
-  const verifiedSecrets = DEMO_SECRETS.filter(s => s.status === "verified").length;
+  const fullEncryption = (isDemoMode ? DEMO_POSTURE : [] as typeof DEMO_POSTURE).filter(p => p.encryption === "full").length;
+  const allRls = (isDemoMode ? DEMO_POSTURE : [] as typeof DEMO_POSTURE).filter(p => p.rlsEnabled).length;
+  const totalGaps = (isDemoMode ? DEMO_POSTURE : [] as typeof DEMO_POSTURE).reduce((s, p) => s + p.gaps.length, 0);
+  const verifiedSecrets = (isDemoMode ? DEMO_SECRETS : [] as typeof DEMO_SECRETS).filter(s => s.status === "verified").length;
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">

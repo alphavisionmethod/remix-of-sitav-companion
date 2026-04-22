@@ -56,9 +56,9 @@ const CustomerSupportCenter = () => {
   };
 
   const filtered = filterIssues(activeTab);
-  const selected = DEMO_ISSUES.find(i => i.id === selectedId);
-  const criticalCount = DEMO_ISSUES.filter(i => i.severity === "critical" && i.status !== "resolved").length;
-  const breachedCount = DEMO_ISSUES.filter(i => i.hoursOpen > i.slaHours && i.status !== "resolved").length;
+  const selected = (isDemoMode ? DEMO_ISSUES : [] as typeof DEMO_ISSUES).find(i => i.id === selectedId);
+  const criticalCount = (isDemoMode ? DEMO_ISSUES : [] as typeof DEMO_ISSUES).filter(i => i.severity === "critical" && i.status !== "resolved").length;
+  const breachedCount = (isDemoMode ? DEMO_ISSUES : [] as typeof DEMO_ISSUES).filter(i => i.hoursOpen > i.slaHours && i.status !== "resolved").length;
 
   const handleSelect = (id: string) => { setSelectedId(id); setPanelOpen(true); };
 

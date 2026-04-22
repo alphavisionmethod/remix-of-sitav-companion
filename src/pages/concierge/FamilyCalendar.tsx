@@ -51,7 +51,7 @@ const FamilyCalendar = () => {
             <h4 className="text-[13px] font-semibold text-[hsl(0_0%_85%)] mb-3">This Week</h4>
             <div className="grid grid-cols-7 gap-1">
               {weekDays.map((day, i) => {
-                const dayEvents = DEMO_events.filter((_, ei) => ei % 7 === i).length;
+                const dayEvents = (isDemoMode ? DEMO_events : [] as typeof DEMO_events).filter((_, ei) => ei % 7 === i).length;
                 return (
                   <div key={day} className={`rounded-xl p-3 text-center transition-colors cursor-pointer hover:bg-secondary/60 ${i === today ? "bg-primary/10 ring-1 ring-primary/30" : "bg-secondary/30"}`}>
                     <p className={`text-[10px] font-medium ${i === today ? "text-primary" : "text-muted-foreground"}`}>{day}</p>

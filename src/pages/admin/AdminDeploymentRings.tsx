@@ -53,9 +53,9 @@ export default function DeploymentTruthCenter() {
   const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("rings");
 
-  const passedGates = DEMO_PROMOTION_GATES.filter(g => g.status === "passed").length;
-  const totalGates = DEMO_PROMOTION_GATES.length;
-  const blockers = DEMO_PROMOTION_GATES.filter(g => g.blocker && g.status !== "passed");
+  const passedGates = (isDemoMode ? DEMO_PROMOTION_GATES : [] as typeof DEMO_PROMOTION_GATES).filter(g => g.status === "passed").length;
+  const totalGates = (isDemoMode ? DEMO_PROMOTION_GATES : [] as typeof DEMO_PROMOTION_GATES).length;
+  const blockers = (isDemoMode ? DEMO_PROMOTION_GATES : [] as typeof DEMO_PROMOTION_GATES).filter(g => g.blocker && g.status !== "passed");
   const promotionReady = blockers.length === 0;
 
   return (

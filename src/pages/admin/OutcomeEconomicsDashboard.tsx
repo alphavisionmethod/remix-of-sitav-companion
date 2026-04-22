@@ -115,9 +115,9 @@ const OutcomeEconomicsDashboard = () => {
   useRequireAdmin();
   const [period, setPeriod] = useState("30d");
 
-  const totalCost = DEMO_OUTCOMES.reduce((s, o) => s + o.totalCost, 0);
-  const totalValue = DEMO_OUTCOMES.reduce((s, o) => s + o.totalValue, 0);
-  const totalOutcomes = DEMO_OUTCOMES.reduce((s, o) => s + o.outcomes, 0);
+  const totalCost = (isDemoMode ? DEMO_OUTCOMES : [] as typeof DEMO_OUTCOMES).reduce((s, o) => s + o.totalCost, 0);
+  const totalValue = (isDemoMode ? DEMO_OUTCOMES : [] as typeof DEMO_OUTCOMES).reduce((s, o) => s + o.totalValue, 0);
+  const totalOutcomes = (isDemoMode ? DEMO_OUTCOMES : [] as typeof DEMO_OUTCOMES).reduce((s, o) => s + o.outcomes, 0);
   const overallPayback = totalValue / totalCost;
 
   return (

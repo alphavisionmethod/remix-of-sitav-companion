@@ -5,7 +5,7 @@ import { DEMO_INV_PURPOSES as DEMO_PURPOSES, DEMO_INV_RULES as DEMO_RULES } from
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const TOTAL = DEMO_PURPOSES.reduce((s, p) => s + p.allocated, 0);
+const TOTAL = (isDemoMode ? DEMO_PURPOSES : [] as typeof DEMO_PURPOSES).reduce((s, p) => s + p.allocated, 0);
 const fmt = (n: number) => n >= 1e6 ? `$${(n / 1e6).toFixed(2)}M` : `$${(n / 1e3).toFixed(1)}K`;
 
 export default function CapitalPurpose() {

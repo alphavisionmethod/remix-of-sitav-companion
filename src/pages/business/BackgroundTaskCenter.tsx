@@ -45,8 +45,8 @@ export default function BackgroundTaskCenter() {
   const { isDemoMode } = useDataMode();
   const [filter, setFilter] = useState<"all" | "running" | "completed" | "failed">("all");
 
-  const filtered = DEMO_TASKS.filter(t => filter === "all" || t.status === filter);
-  const runningCount = DEMO_TASKS.filter(t => t.status === "running").length;
+  const filtered = (isDemoMode ? DEMO_TASKS : [] as typeof DEMO_TASKS).filter(t => filter === "all" || t.status === filter);
+  const runningCount = (isDemoMode ? DEMO_TASKS : [] as typeof DEMO_TASKS).filter(t => t.status === "running").length;
 
   return (
     <div className="p-6 space-y-5 max-w-4xl mx-auto">

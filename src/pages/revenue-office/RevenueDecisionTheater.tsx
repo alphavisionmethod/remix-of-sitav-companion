@@ -34,9 +34,9 @@ export default function DecisionTheater() {
       <div className="grid grid-cols-4 gap-3">
         {[
           { l: "Pending Decisions", v: (isDemoMode ? DEMO_pendingDecisions : [] as typeof DEMO_pendingDecisions).length, c: "text-purple-400" },
-          { l: "Scenarios to Review", v: DEMO_SCENARIO_CARDS.length, c: "text-primary" },
-          { l: "Avg Confidence", v: `${Math.round(DEMO_SCENARIO_CARDS.reduce((a, s) => a + s.confidence, 0) / DEMO_SCENARIO_CARDS.length)}%`, c: "text-[hsl(var(--trust-safe))]" },
-          { l: "Advisor Votes", v: DEMO_SCENARIO_CARDS.reduce((a, s) => a + s.advisorVotes.approve + s.advisorVotes.cautious + s.advisorVotes.oppose, 0), c: "text-foreground" },
+          { l: "Scenarios to Review", v: (isDemoMode ? DEMO_SCENARIO_CARDS : [] as typeof DEMO_SCENARIO_CARDS).length, c: "text-primary" },
+          { l: "Avg Confidence", v: `${Math.round((isDemoMode ? DEMO_SCENARIO_CARDS : [] as typeof DEMO_SCENARIO_CARDS).reduce((a, s) => a + s.confidence, 0) / (isDemoMode ? DEMO_SCENARIO_CARDS : [] as typeof DEMO_SCENARIO_CARDS).length)}%`, c: "text-[hsl(var(--trust-safe))]" },
+          { l: "Advisor Votes", v: (isDemoMode ? DEMO_SCENARIO_CARDS : [] as typeof DEMO_SCENARIO_CARDS).reduce((a, s) => a + s.advisorVotes.approve + s.advisorVotes.cautious + s.advisorVotes.oppose, 0), c: "text-foreground" },
         ].map(m => (
           <div key={m.l} className="rounded-xl border border-border/40 bg-card p-3 text-center">
             <p className="text-xs text-muted-foreground">{m.l}</p>
@@ -133,7 +133,7 @@ export default function DecisionTheater() {
 
         {/* Scenario Simulation */}
         <TabsContent value="scenarios" className="space-y-3 mt-4">
-          {DEMO_SCENARIO_CARDS.map((s, i) => {
+          {(isDemoMode ? DEMO_SCENARIO_CARDS : [] as typeof DEMO_SCENARIO_CARDS).map((s, i) => {
             const state = scenarioStates[i] || "pending";
             return (
               <Card key={i} className={`bg-card/50 ${state === "approved" ? "border-[hsl(var(--trust-safe))]/30" : state === "rejected" ? "border-destructive/30" : "border-border/50"}`}>
@@ -208,7 +208,7 @@ export default function DecisionTheater() {
                         </tr>
                       );
                     })}
-                    {DEMO_SCENARIO_CARDS.map((s, i) => {
+                    {(isDemoMode ? DEMO_SCENARIO_CARDS : [] as typeof DEMO_SCENARIO_CARDS).map((s, i) => {
                       const state = scenarioStates[i] || "pending";
                       return (
                         <tr key={`s${i}`} className="border-b border-border/20">

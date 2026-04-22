@@ -49,11 +49,11 @@ const TransactionIntelligence = () => {
   }, [tab, searchTerm]);
 
   const stats = useMemo(() => {
-    const total = DEMO_TXS.length;
-    const aiCategorized = DEMO_TXS.filter(t => t.categorizedBy === "ai").length;
-    const flagged = DEMO_TXS.filter(t => t.flags.length > 0).length;
-    const recurring = DEMO_TXS.filter(t => t.isRecurring).length;
-    const avgConfidence = DEMO_TXS.reduce((s, t) => s + t.confidence, 0) / total;
+    const total = (isDemoMode ? DEMO_TXS : [] as typeof DEMO_TXS).length;
+    const aiCategorized = (isDemoMode ? DEMO_TXS : [] as typeof DEMO_TXS).filter(t => t.categorizedBy === "ai").length;
+    const flagged = (isDemoMode ? DEMO_TXS : [] as typeof DEMO_TXS).filter(t => t.flags.length > 0).length;
+    const recurring = (isDemoMode ? DEMO_TXS : [] as typeof DEMO_TXS).filter(t => t.isRecurring).length;
+    const avgConfidence = (isDemoMode ? DEMO_TXS : [] as typeof DEMO_TXS).reduce((s, t) => s + t.confidence, 0) / total;
     return { total, aiCategorized, flagged, recurring, avgConfidence };
   }, []);
 

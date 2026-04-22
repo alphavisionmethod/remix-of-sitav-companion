@@ -70,10 +70,10 @@ const ComputeGovernanceBoard = () => {
   const totalSpend = spendRows?.reduce((s, r) => s + r.total_cost_usd, 0) ?? 1.49;
   const marginPct = marginData?.grossMarginPct ?? 67;
   const cacheHitRate = 64; // from token usage stats
-  const anomalyCount = DEMO_ANOMALIES.length;
-  const criticalCount = DEMO_ANOMALIES.filter(a => a.severity === "critical").length;
+  const anomalyCount = (isDemoMode ? DEMO_ANOMALIES : [] as typeof DEMO_ANOMALIES).length;
+  const criticalCount = (isDemoMode ? DEMO_ANOMALIES : [] as typeof DEMO_ANOMALIES).filter(a => a.severity === "critical").length;
 
-  const forecasts = DEMO_BUDGETS.filter(b => b.scope === "tenant").map(b => forecastSpend(b, 18, 30));
+  const forecasts = (isDemoMode ? DEMO_BUDGETS : [] as typeof DEMO_BUDGETS).filter(b => b.scope === "tenant").map(b => forecastSpend(b, 18, 30));
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">

@@ -56,9 +56,9 @@ const REBUILD_HISTORY = [
 const ProjectionControlCenter = () => {
   const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("inventory");
-  const freshCount = DEMO_MODELS.filter(m => m.freshness === "fresh").length;
+  const freshCount = (isDemoMode ? DEMO_MODELS : [] as typeof DEMO_MODELS).filter(m => m.freshness === "fresh").length;
   const avgLag = Math.round((isDemoMode ? DEMO_MODELS : [] as typeof DEMO_MODELS).reduce((s, m) => s + m.lagMs, 0) / (isDemoMode ? DEMO_MODELS : [] as typeof DEMO_MODELS).length);
-  const degradedCount = DEMO_MODELS.filter(m => m.freshness === "degraded" || m.freshness === "fallback").length;
+  const degradedCount = (isDemoMode ? DEMO_MODELS : [] as typeof DEMO_MODELS).filter(m => m.freshness === "degraded" || m.freshness === "fallback").length;
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">

@@ -64,7 +64,7 @@ export default function AuditComplianceWorkspace() {
   const [searchQuery, setSearchQuery] = useState("");
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
-  const filtered = DEMO_AUDIT_RECORDS.filter(r => {
+  const filtered = (isDemoMode ? DEMO_AUDIT_RECORDS : [] as typeof DEMO_AUDIT_RECORDS).filter(r => {
     if (category !== "all" && r.category !== category) return false;
     if (searchQuery && !r.action.toLowerCase().includes(searchQuery.toLowerCase()) && !r.actor.toLowerCase().includes(searchQuery.toLowerCase())) return false;
     return true;

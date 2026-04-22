@@ -40,7 +40,7 @@ const IntegrationConciergePage = () => {
   const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("discover");
   const [search, setSearch] = useState("");
-  const filtered = DEMO_USE_CASES.filter(uc => uc.title.toLowerCase().includes(search.toLowerCase()));
+  const filtered = (isDemoMode ? DEMO_USE_CASES : [] as typeof DEMO_USE_CASES).filter(uc => uc.title.toLowerCase().includes(search.toLowerCase()));
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">

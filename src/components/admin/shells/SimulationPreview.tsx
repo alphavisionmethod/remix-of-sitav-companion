@@ -99,7 +99,7 @@ export function SimulationPreview({ compact = false }: SimulationPreviewProps) {
       </div>
 
       <div className="space-y-2">
-        {DEMO_SCENARIOS.map((scenario) => {
+        {(isDemoMode ? DEMO_SCENARIOS : [] as typeof DEMO_SCENARIOS).map((scenario) => {
           const isActive = activeScenario === scenario.id;
           return (
             <div key={scenario.id} className={cn(

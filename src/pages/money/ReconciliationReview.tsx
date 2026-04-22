@@ -60,11 +60,11 @@ const ReconciliationReview = () => {
     : tab === "resolved" ? (isDemoMode ? DEMO_ITEMS : [] as typeof DEMO_ITEMS).filter(i => i.status === "resolved")
     : (isDemoMode ? DEMO_ITEMS : [] as typeof DEMO_ITEMS).filter(i => i.issueType === tab && i.status !== "resolved");
 
-  const selected = DEMO_ITEMS.find(i => i.id === selectedId);
-  const openCount = DEMO_ITEMS.filter(i => i.status !== "resolved").length;
-  const mismatchCount = DEMO_ITEMS.filter(i => i.issueType === "mismatch" && i.status !== "resolved").length;
-  const uncatCount = DEMO_ITEMS.filter(i => i.issueType === "uncategorized" && i.status !== "resolved").length;
-  const recurringCount = DEMO_ITEMS.filter(i => i.issueType === "recurring-change" && i.status !== "resolved").length;
+  const selected = (isDemoMode ? DEMO_ITEMS : [] as typeof DEMO_ITEMS).find(i => i.id === selectedId);
+  const openCount = (isDemoMode ? DEMO_ITEMS : [] as typeof DEMO_ITEMS).filter(i => i.status !== "resolved").length;
+  const mismatchCount = (isDemoMode ? DEMO_ITEMS : [] as typeof DEMO_ITEMS).filter(i => i.issueType === "mismatch" && i.status !== "resolved").length;
+  const uncatCount = (isDemoMode ? DEMO_ITEMS : [] as typeof DEMO_ITEMS).filter(i => i.issueType === "uncategorized" && i.status !== "resolved").length;
+  const recurringCount = (isDemoMode ? DEMO_ITEMS : [] as typeof DEMO_ITEMS).filter(i => i.issueType === "recurring-change" && i.status !== "resolved").length;
 
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>

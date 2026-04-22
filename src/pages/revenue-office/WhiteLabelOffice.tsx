@@ -24,7 +24,7 @@ const REPUTATION_CROSS_CLIENT = [
 const WhiteLabelOffice = () => {
   const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("partners");
-  const total = DEMO_PARTNERS.reduce((a, p) => a + p.revenue, 0);
+  const total = (isDemoMode ? DEMO_PARTNERS : [] as typeof DEMO_PARTNERS).reduce((a, p) => a + p.revenue, 0);
   const avgHealth = Math.round((isDemoMode ? DEMO_PARTNERS : [] as typeof DEMO_PARTNERS).reduce((a, p) => a + p.health, 0) / (isDemoMode ? DEMO_PARTNERS : [] as typeof DEMO_PARTNERS).length);
 
   return (

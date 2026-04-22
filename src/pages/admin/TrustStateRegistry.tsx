@@ -82,7 +82,7 @@ const statusBadge = (s: TrustStatus) => {
 const TrustStateRegistry = () => {
   const [tab, setTab] = useState("domains");
   const overallScore = Math.round((isDemoMode ? DEMO_DOMAINS : [] as typeof DEMO_DOMAINS).reduce((sum, d) => sum + d.proofCoverage, 0) / (isDemoMode ? DEMO_DOMAINS : [] as typeof DEMO_DOMAINS).length);
-  const verifiedCount = DEMO_DOMAINS.filter(d => d.status === "verified").length;
+  const verifiedCount = (isDemoMode ? DEMO_DOMAINS : [] as typeof DEMO_DOMAINS).filter(d => d.status === "verified").length;
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">

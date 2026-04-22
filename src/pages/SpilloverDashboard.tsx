@@ -27,8 +27,8 @@ const SpilloverGraph = () => (
     <svg viewBox="0 0 100 100" className="w-full h-full">
       {/* Connection lines */}
       {(isDemoMode ? DEMO_ACTIVE_SPILLOVERS : [] as typeof DEMO_ACTIVE_SPILLOVERS).map((s, i) => {
-        const from = DEMO_DOMAINS.find(d => d.id === s.from);
-        const to = DEMO_DOMAINS.find(d => d.id === s.to);
+        const from = (isDemoMode ? DEMO_DOMAINS : [] as typeof DEMO_DOMAINS).find(d => d.id === s.from);
+        const to = (isDemoMode ? DEMO_DOMAINS : [] as typeof DEMO_DOMAINS).find(d => d.id === s.to);
         if (!from || !to) return null;
         const opacity = s.impact === "high" ? 0.6 : s.impact === "medium" ? 0.35 : 0.15;
         const width = s.impact === "high" ? 1.5 : s.impact === "medium" ? 1 : 0.5;
@@ -65,8 +65,8 @@ const SpilloverGraph = () => (
 
 export default function SpilloverDashboard() {
   const { isDemoMode } = useDataMode();
-  const highCount = DEMO_ACTIVE_SPILLOVERS.filter(s => s.impact === "high").length;
-  const medCount = DEMO_ACTIVE_SPILLOVERS.filter(s => s.impact === "medium").length;
+  const highCount = (isDemoMode ? DEMO_ACTIVE_SPILLOVERS : [] as typeof DEMO_ACTIVE_SPILLOVERS).filter(s => s.impact === "high").length;
+  const medCount = (isDemoMode ? DEMO_ACTIVE_SPILLOVERS : [] as typeof DEMO_ACTIVE_SPILLOVERS).filter(s => s.impact === "medium").length;
 
   return (
     <div className="space-y-8 p-6 max-w-7xl mx-auto">

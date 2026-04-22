@@ -47,7 +47,7 @@ const statusColor: Record<string, string> = {
 export default function FleetHealthPage() {
   const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("inventory");
-  const healthyCount = DEMO_FLEET.filter(n => n.status === "healthy").length;
+  const healthyCount = (isDemoMode ? DEMO_FLEET : [] as typeof DEMO_FLEET).filter(n => n.status === "healthy").length;
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">

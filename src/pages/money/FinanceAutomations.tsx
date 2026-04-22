@@ -48,12 +48,12 @@ const FinanceAutomations = () => {
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
   const filtered = tab === "all" ? DEMO_AUTOMATIONS : (isDemoMode ? DEMO_AUTOMATIONS : [] as typeof DEMO_AUTOMATIONS).filter(a => a.status === tab);
-  const selected = DEMO_AUTOMATIONS.find(a => a.id === selectedId);
+  const selected = (isDemoMode ? DEMO_AUTOMATIONS : [] as typeof DEMO_AUTOMATIONS).find(a => a.id === selectedId);
 
-  const activeCount = DEMO_AUTOMATIONS.filter(a => a.status === "active").length;
-  const suggestedCount = DEMO_AUTOMATIONS.filter(a => a.status === "suggested").length;
-  const totalRuns = DEMO_AUTOMATIONS.reduce((s, a) => s + a.runsTotal, 0);
-  const totalProofs = DEMO_AUTOMATIONS.reduce((s, a) => s + a.proofCount, 0);
+  const activeCount = (isDemoMode ? DEMO_AUTOMATIONS : [] as typeof DEMO_AUTOMATIONS).filter(a => a.status === "active").length;
+  const suggestedCount = (isDemoMode ? DEMO_AUTOMATIONS : [] as typeof DEMO_AUTOMATIONS).filter(a => a.status === "suggested").length;
+  const totalRuns = (isDemoMode ? DEMO_AUTOMATIONS : [] as typeof DEMO_AUTOMATIONS).reduce((s, a) => s + a.runsTotal, 0);
+  const totalProofs = (isDemoMode ? DEMO_AUTOMATIONS : [] as typeof DEMO_AUTOMATIONS).reduce((s, a) => s + a.proofCount, 0);
 
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>

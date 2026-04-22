@@ -51,8 +51,8 @@ const manifestStatusColor: Record<string, string> = {
 const PlatformTruthRegistry = () => {
   const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("claims");
-  const verified = DEMO_CLAIMS.filter(c => c.status === "verified").length;
-  const drifts = DEMO_CLAIMS.filter(c => c.status === "drift").length;
+  const verified = (isDemoMode ? DEMO_CLAIMS : [] as typeof DEMO_CLAIMS).filter(c => c.status === "verified").length;
+  const drifts = (isDemoMode ? DEMO_CLAIMS : [] as typeof DEMO_CLAIMS).filter(c => c.status === "drift").length;
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">

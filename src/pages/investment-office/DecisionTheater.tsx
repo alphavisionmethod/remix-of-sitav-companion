@@ -275,7 +275,7 @@ export default function DecisionTheater() {
           </div>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-          {DEMO_READINESS_DIMENSIONS.map(d => (
+          {(isDemoMode ? DEMO_READINESS_DIMENSIONS : [] as typeof DEMO_READINESS_DIMENSIONS).map(d => (
             <div key={d.label} className="rounded-xl border border-border bg-secondary/20 p-3 space-y-2">
               <p className="text-[10px] font-medium text-muted-foreground">{d.label}</p>
               <div className="h-1.5 rounded-full bg-secondary overflow-hidden">

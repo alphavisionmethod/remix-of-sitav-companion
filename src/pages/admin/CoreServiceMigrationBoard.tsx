@@ -34,7 +34,7 @@ const ADAPTER_STATUS_COLORS: Record<string, string> = {
 
 export default function CoreServiceMigrationBoard() {
   const { isDemoMode } = useDataMode();
-  const completed = DEMO_SERVICES.filter(s => s.phase === "complete").length;
+  const completed = (isDemoMode ? DEMO_SERVICES : [] as typeof DEMO_SERVICES).filter(s => s.phase === "complete").length;
   const pct = (completed / (isDemoMode ? DEMO_SERVICES : [] as typeof DEMO_SERVICES).length) * 100;
 
   return (

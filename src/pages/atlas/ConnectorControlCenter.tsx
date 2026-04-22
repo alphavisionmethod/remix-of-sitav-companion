@@ -26,7 +26,7 @@ const lifecycleStates = ["registered", "configured", "active", "paused", "error"
 export default function ConnectorControlCenter() {
   const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("overview");
-  const healthy = DEMO_connectors.filter(c => c.status === "active").length;
+  const healthy = (isDemoMode ? DEMO_connectors : [] as typeof DEMO_connectors).filter(c => c.status === "active").length;
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mx-auto max-w-7xl space-y-6 p-6">

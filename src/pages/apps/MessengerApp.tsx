@@ -33,7 +33,7 @@ export default function MessengerApp() {
   const [message, setMessage] = useState("");
   const [search, setSearch] = useState("");
 
-  const filtered = DEMO_CHATS.filter(c => !search || c.name.toLowerCase().includes(search.toLowerCase()));
+  const filtered = (isDemoMode ? DEMO_CHATS : [] as typeof DEMO_CHATS).filter(c => !search || c.name.toLowerCase().includes(search.toLowerCase()));
 
   return (
     <div className="p-4 md:p-6 max-w-[1400px] mx-auto">

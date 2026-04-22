@@ -58,8 +58,8 @@ export default function LaunchReadinessBoard() {
   const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("blockers");
 
-  const openBlockers = DEMO_BLOCKERS.filter(b => b.status === "open").length;
-  const allChecks = DEMO_READINESS_CHECKS.flatMap(r => r.checks);
+  const openBlockers = (isDemoMode ? DEMO_BLOCKERS : [] as typeof DEMO_BLOCKERS).filter(b => b.status === "open").length;
+  const allChecks = (isDemoMode ? DEMO_READINESS_CHECKS : [] as typeof DEMO_READINESS_CHECKS).flatMap(r => r.checks);
   const passedChecks = allChecks.filter(c => c.status === "pass").length;
   const totalChecks = allChecks.length;
   const readinessScore = Math.round((passedChecks / totalChecks) * 100);

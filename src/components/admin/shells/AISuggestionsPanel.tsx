@@ -56,7 +56,7 @@ export function AISuggestionsPanel() {
   const [dismissed, setDismissed] = useState<Set<string>>(new Set());
   const [expanded, setExpanded] = useState<string | null>(null);
 
-  const visible = DEMO_SUGGESTIONS.filter(s => !dismissed.has(s.id));
+  const visible = (isDemoMode ? DEMO_SUGGESTIONS : [] as typeof DEMO_SUGGESTIONS).filter(s => !dismissed.has(s.id));
 
   return (
     <div className="space-y-3">

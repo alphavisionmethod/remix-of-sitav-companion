@@ -32,12 +32,12 @@ const EscalationControlCenter = () => {
   const { isAdmin, loading } = useRequireAdmin();
   if (loading || !isAdmin) return null;
 
-  const totalCost = DEMO_ESCALATIONS.reduce((s, e) => s + e.cost, 0);
-  const justified = DEMO_ESCALATIONS.filter(e => e.justified).length;
-  const unnecessary = DEMO_ESCALATIONS.filter(e => !e.justified).length;
-  const accepted = DEMO_ESCALATIONS.filter(e => e.outcome === "accepted").length;
+  const totalCost = (isDemoMode ? DEMO_ESCALATIONS : [] as typeof DEMO_ESCALATIONS).reduce((s, e) => s + e.cost, 0);
+  const justified = (isDemoMode ? DEMO_ESCALATIONS : [] as typeof DEMO_ESCALATIONS).filter(e => e.justified).length;
+  const unnecessary = (isDemoMode ? DEMO_ESCALATIONS : [] as typeof DEMO_ESCALATIONS).filter(e => !e.justified).length;
+  const accepted = (isDemoMode ? DEMO_ESCALATIONS : [] as typeof DEMO_ESCALATIONS).filter(e => e.outcome === "accepted").length;
 
-  const byTrigger = DEMO_ESCALATIONS.reduce<Record<string, { count: number; cost: number }>>((acc, e) => {
+  const byTrigger = (isDemoMode ? DEMO_ESCALATIONS : [] as typeof DEMO_ESCALATIONS).reduce<Record<string, { count: number; cost: number }>>((acc, e) => {
     if (!acc[e.trigger]) acc[e.trigger] = { count: 0, cost: 0 };
     acc[e.trigger].count++;
     acc[e.trigger].cost += e.cost;

@@ -22,7 +22,7 @@ const AppPermissionsCenterPage = () => {
     app.permissions.some(p => p.domain === activeDomain)
   );
 
-  const activeDomainInfo = DEMO_PERMISSION_DOMAINS.find(d => d.id === activeDomain)!;
+  const activeDomainInfo = (isDemoMode ? DEMO_PERMISSION_DOMAINS : [] as typeof DEMO_PERMISSION_DOMAINS).find(d => d.id === activeDomain)!;
 
   return (
     <div className="mx-auto max-w-4xl space-y-6">

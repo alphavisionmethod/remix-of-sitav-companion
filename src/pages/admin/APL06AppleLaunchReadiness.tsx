@@ -22,7 +22,7 @@ const APL06AppleLaunchReadiness = () => {
   });
 
   const overallReadiness = Math.round((isDemoMode ? DEMO_TARGETS : [] as typeof DEMO_TARGETS).reduce((s, t) => s + t.readiness, 0) / (isDemoMode ? DEMO_TARGETS : [] as typeof DEMO_TARGETS).length);
-  const totalBlockers = DEMO_TARGETS.reduce((s, t) => s + t.blockers.length, 0);
+  const totalBlockers = (isDemoMode ? DEMO_TARGETS : [] as typeof DEMO_TARGETS).reduce((s, t) => s + t.blockers.length, 0);
 
   return (
     <div className="p-6 max-w-[1400px] mx-auto space-y-6">

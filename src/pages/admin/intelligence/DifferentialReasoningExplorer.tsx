@@ -24,12 +24,12 @@ const DifferentialReasoningExplorer = () => {
   const { isAdmin, loading } = useRequireAdmin();
   if (loading || !isAdmin) return null;
 
-  const totalSaved = DEMO_DIFFS.reduce((s, d) => s + (d.costFull - d.costActual), 0);
-  const reuseCount = DEMO_DIFFS.filter(d => d.action === "reuse-as-is").length;
-  const partialCount = DEMO_DIFFS.filter(d => d.action === "partial-update").length;
-  const fullCount = DEMO_DIFFS.filter(d => d.action === "full-reanalysis").length;
-  const totalPreserved = DEMO_DIFFS.reduce((s, d) => s + d.preserved, 0);
-  const totalInvalidated = DEMO_DIFFS.reduce((s, d) => s + d.invalidated, 0);
+  const totalSaved = (isDemoMode ? DEMO_DIFFS : [] as typeof DEMO_DIFFS).reduce((s, d) => s + (d.costFull - d.costActual), 0);
+  const reuseCount = (isDemoMode ? DEMO_DIFFS : [] as typeof DEMO_DIFFS).filter(d => d.action === "reuse-as-is").length;
+  const partialCount = (isDemoMode ? DEMO_DIFFS : [] as typeof DEMO_DIFFS).filter(d => d.action === "partial-update").length;
+  const fullCount = (isDemoMode ? DEMO_DIFFS : [] as typeof DEMO_DIFFS).filter(d => d.action === "full-reanalysis").length;
+  const totalPreserved = (isDemoMode ? DEMO_DIFFS : [] as typeof DEMO_DIFFS).reduce((s, d) => s + d.preserved, 0);
+  const totalInvalidated = (isDemoMode ? DEMO_DIFFS : [] as typeof DEMO_DIFFS).reduce((s, d) => s + d.invalidated, 0);
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">

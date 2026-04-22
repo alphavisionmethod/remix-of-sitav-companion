@@ -48,7 +48,7 @@ const GroceryPlanning = () => {
   const remainingEstimate = items.filter(i => !i.checked).reduce((sum, i) => sum + parseFloat(i.estimated.replace("$", "")), 0);
   const urgentCount = items.filter(i => i.urgent).length;
 
-  const groupedByStore = DEMO_stores.reduce((acc, store) => {
+  const groupedByStore = (isDemoMode ? DEMO_stores : [] as typeof DEMO_stores).reduce((acc, store) => {
     acc[store!] = items.filter(i => i.store === store && !i.checked);
     return acc;
   }, {} as Record<string, GroceryItem[]>);

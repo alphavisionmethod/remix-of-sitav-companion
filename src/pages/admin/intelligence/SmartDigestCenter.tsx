@@ -17,11 +17,11 @@ const SmartDigestCenter = () => {
   const { isAdmin, loading } = useRequireAdmin();
   if (loading || !isAdmin) return null;
 
-  const freshCount = DEMO_DIGESTS.filter(d => d.fresh).length;
-  const staleCount = DEMO_DIGESTS.filter(d => !d.fresh).length;
+  const freshCount = (isDemoMode ? DEMO_DIGESTS : [] as typeof DEMO_DIGESTS).filter(d => d.fresh).length;
+  const staleCount = (isDemoMode ? DEMO_DIGESTS : [] as typeof DEMO_DIGESTS).filter(d => !d.fresh).length;
   const avgHitRate = Math.round((isDemoMode ? DEMO_DIGESTS : [] as typeof DEMO_DIGESTS).reduce((s, d) => s + d.hitRate, 0) / (isDemoMode ? DEMO_DIGESTS : [] as typeof DEMO_DIGESTS).length * 100);
-  const totalGenCost = DEMO_DIGESTS.reduce((s, d) => s + d.genCost, 0);
-  const totalAvoided = DEMO_DIGESTS.reduce((s, d) => s + d.avoidedSpend, 0);
+  const totalGenCost = (isDemoMode ? DEMO_DIGESTS : [] as typeof DEMO_DIGESTS).reduce((s, d) => s + d.genCost, 0);
+  const totalAvoided = (isDemoMode ? DEMO_DIGESTS : [] as typeof DEMO_DIGESTS).reduce((s, d) => s + d.avoidedSpend, 0);
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">

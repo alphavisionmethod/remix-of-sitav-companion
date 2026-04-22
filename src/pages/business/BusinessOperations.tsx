@@ -59,7 +59,7 @@ const BusinessOperations = () => {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [panelOpen, setPanelOpen] = useState(false);
 
-  const filtered = DEMO_ITEMS.filter(item => {
+  const filtered = (isDemoMode ? DEMO_ITEMS : [] as typeof DEMO_ITEMS).filter(item => {
     if (tab === "all") return true;
     if (tab === "queues") return item.category === "queue";
     if (tab === "escalations") return item.category === "escalation";
@@ -68,9 +68,9 @@ const BusinessOperations = () => {
     return true;
   });
 
-  const selected = DEMO_ITEMS.find(i => i.id === selectedId);
-  const criticalCount = DEMO_ITEMS.filter(i => i.urgency === "critical").length;
-  const totalCustomerImpact = DEMO_ITEMS.reduce((sum, i) => sum + i.customerImpact, 0);
+  const selected = (isDemoMode ? DEMO_ITEMS : [] as typeof DEMO_ITEMS).find(i => i.id === selectedId);
+  const criticalCount = (isDemoMode ? DEMO_ITEMS : [] as typeof DEMO_ITEMS).filter(i => i.urgency === "critical").length;
+  const totalCustomerImpact = (isDemoMode ? DEMO_ITEMS : [] as typeof DEMO_ITEMS).reduce((sum, i) => sum + i.customerImpact, 0);
 
   const handleSelectItem = (id: string) => {
     setSelectedId(id);

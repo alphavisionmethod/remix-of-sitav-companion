@@ -292,7 +292,7 @@ const PlaybookSimulator = ({ draft, onBack, onActivate }: PlaybookSimulatorProps
   const [showSummary, setShowSummary] = useState(false);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  const selectedCustomers = MOCK_CUSTOMERS.filter(c => selectedCustomerIds.includes(c.id));
+  const selectedCustomers = (isDemoMode ? MOCK_CUSTOMERS : [] as typeof MOCK_CUSTOMERS).filter(c => selectedCustomerIds.includes(c.id));
 
   // Run simulation
   useEffect(() => {

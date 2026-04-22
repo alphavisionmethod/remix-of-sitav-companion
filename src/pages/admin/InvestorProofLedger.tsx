@@ -42,7 +42,7 @@ const DEMO_COMPLIANCE = [
 const InvestorProofLedger = () => {
   const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("ledger");
-  const fullProof = DEMO_PROOF_ENTRIES.filter(p => p.proofChain.every(s => s.status === "verified")).length;
+  const fullProof = (isDemoMode ? DEMO_PROOF_ENTRIES : [] as typeof DEMO_PROOF_ENTRIES).filter(p => p.proofChain.every(s => s.status === "verified")).length;
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">

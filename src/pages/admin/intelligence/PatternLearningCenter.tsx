@@ -23,8 +23,8 @@ const PatternLearningCenter = () => {
   const { isAdmin, loading } = useRequireAdmin();
   if (loading || !isAdmin) return null;
 
-  const totalPatterns = DEMO_PATTERNS.length;
-  const reusableCount = DEMO_PATTERNS.filter(p => p.reusable).length;
+  const totalPatterns = (isDemoMode ? DEMO_PATTERNS : [] as typeof DEMO_PATTERNS).length;
+  const reusableCount = (isDemoMode ? DEMO_PATTERNS : [] as typeof DEMO_PATTERNS).filter(p => p.reusable).length;
   const avgConfidence = Math.round((isDemoMode ? DEMO_PATTERNS : [] as typeof DEMO_PATTERNS).reduce((s, p) => s + p.confidence, 0) / totalPatterns);
 
   return (

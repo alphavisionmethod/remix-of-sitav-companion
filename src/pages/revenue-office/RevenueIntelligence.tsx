@@ -31,7 +31,7 @@ export default function RevenueIntelligence() {
   const { isDemoMode } = useDataMode();
   const { isBeginner } = useRevenueOfficeMode();
   const [tab, setTab] = useState("streams");
-  const totalLeakage = DEMO_LEAKAGE.reduce((s, l) => s + parseInt(l.value.replace(/[^0-9]/g, "")), 0);
+  const totalLeakage = (isDemoMode ? DEMO_LEAKAGE : [] as typeof DEMO_LEAKAGE).reduce((s, l) => s + parseInt(l.value.replace(/[^0-9]/g, "")), 0);
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">

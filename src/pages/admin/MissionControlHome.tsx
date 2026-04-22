@@ -76,11 +76,11 @@ const MissionControlHome = () => {
     },
   });
 
-  const healthyCount = DEMO_SERVICES.filter(s => s.status === "healthy").length;
+  const healthyCount = (isDemoMode ? DEMO_SERVICES : [] as typeof DEMO_SERVICES).filter(s => s.status === "healthy").length;
   const overallHealth: HealthStatus = (isDemoMode ? DEMO_SERVICES : [] as typeof DEMO_SERVICES).some(s => s.status === "critical") ? "critical" : (isDemoMode ? DEMO_SERVICES : [] as typeof DEMO_SERVICES).some(s => s.status === "degraded") ? "degraded" : (isDemoMode ? DEMO_SERVICES : [] as typeof DEMO_SERVICES).some(s => s.status === "warning") ? "warning" : "healthy";
   const healthScore = overallHealth === "healthy" ? 98 : overallHealth === "warning" ? 85 : overallHealth === "degraded" ? 68 : 42;
-  const pendingMutations = DEMO_MUTATIONS.filter(m => m.durabilityStatus === "pending").length;
-  const failedMutations = DEMO_MUTATIONS.filter(m => m.durabilityStatus === "failed").length;
+  const pendingMutations = (isDemoMode ? DEMO_MUTATIONS : [] as typeof DEMO_MUTATIONS).filter(m => m.durabilityStatus === "pending").length;
+  const failedMutations = (isDemoMode ? DEMO_MUTATIONS : [] as typeof DEMO_MUTATIONS).filter(m => m.durabilityStatus === "failed").length;
 
   const KPI_STRIP = [
     { label: "Health", value: `${healthScore}%`, icon: Activity, color: healthScore >= 90 ? "text-emerald-500" : "text-amber-500", why: "Weighted average of all subsystem health scores: auth, sync, storage, trust, AI, releases, devices." },

@@ -18,9 +18,9 @@ import { useDataMode } from "@/contexts/DataModeContext";
 export default function OffersWorkspace() {
   const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("catalog");
-  const totalRevenue = DEMO_PRODUCTS.reduce((s, p) => s + parseInt(p.revenue.replace(/[^0-9]/g, "")), 0);
-  const activeProd = DEMO_PRODUCTS.filter(p => p.status === "active").length;
-  const totalSales = DEMO_PRODUCTS.reduce((s, p) => s + p.sales, 0);
+  const totalRevenue = (isDemoMode ? DEMO_PRODUCTS : [] as typeof DEMO_PRODUCTS).reduce((s, p) => s + parseInt(p.revenue.replace(/[^0-9]/g, "")), 0);
+  const activeProd = (isDemoMode ? DEMO_PRODUCTS : [] as typeof DEMO_PRODUCTS).filter(p => p.status === "active").length;
+  const totalSales = (isDemoMode ? DEMO_PRODUCTS : [] as typeof DEMO_PRODUCTS).reduce((s, p) => s + p.sales, 0);
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">

@@ -63,8 +63,8 @@ const ConciergeRuntimeBoard = () => {
     queryFn: async () => { const { data } = await fromTable("household_tasks").select("*").limit(5); return data || []; },
   });
 
-  const activeCount = DEMO_TASKS.filter(t => t.state === "active").length;
-  const brokenCount = DEMO_TASKS.filter(t => t.continuityBroken).length;
+  const activeCount = (isDemoMode ? DEMO_TASKS : [] as typeof DEMO_TASKS).filter(t => t.state === "active").length;
+  const brokenCount = (isDemoMode ? DEMO_TASKS : [] as typeof DEMO_TASKS).filter(t => t.continuityBroken).length;
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">

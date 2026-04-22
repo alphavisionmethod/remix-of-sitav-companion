@@ -48,14 +48,14 @@ const DEMO_RECURRING = [
 const SpendingPulse = () => {
   const { isDemoMode } = useDataMode();
   const [selectedId, setSelectedId] = useState<string | null>(null);
-  const flaggedCount = DEMO_CATEGORIES.filter(c => c.flagged).length;
+  const flaggedCount = (isDemoMode ? DEMO_CATEGORIES : [] as typeof DEMO_CATEGORIES).filter(c => c.flagged).length;
   const pulseState: PulseState = flaggedCount >= 3 ? "attention" : flaggedCount > 0 ? "review-needed" : "all-normal";
 
   const totalThisWeek = useMemo(() => (isDemoMode ? DEMO_CATEGORIES : [] as typeof DEMO_CATEGORIES).reduce((sum, c) => sum + c.thisWeek, 0), []);
   const totalLastWeek = useMemo(() => (isDemoMode ? DEMO_CATEGORIES : [] as typeof DEMO_CATEGORIES).reduce((sum, c) => sum + c.lastWeek, 0), []);
   const weekChange = totalLastWeek > 0 ? ((totalThisWeek - totalLastWeek) / totalLastWeek * 100) : 0;
 
-  const selectedCategory = DEMO_CATEGORIES.find(c => c.id === selectedId) || null;
+  const selectedCategory = (isDemoMode ? DEMO_CATEGORIES : [] as typeof DEMO_CATEGORIES).find(c => c.id === selectedId) || null;
 
   const listPane = (
     <div className="p-3 space-y-3">

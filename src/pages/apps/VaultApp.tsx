@@ -31,9 +31,9 @@ export default function VaultApp() {
   const [showPasswords, setShowPasswords] = useState<Record<string, boolean>>({});
   const { toast } = useToast();
 
-  const filtered = DEMO_ENTRIES.filter(e => !search || e.name.toLowerCase().includes(search.toLowerCase()));
-  const breachedCount = DEMO_ENTRIES.filter(e => e.breached).length;
-  const weakCount = DEMO_ENTRIES.filter(e => e.strength === "weak").length;
+  const filtered = (isDemoMode ? DEMO_ENTRIES : [] as typeof DEMO_ENTRIES).filter(e => !search || e.name.toLowerCase().includes(search.toLowerCase()));
+  const breachedCount = (isDemoMode ? DEMO_ENTRIES : [] as typeof DEMO_ENTRIES).filter(e => e.breached).length;
+  const weakCount = (isDemoMode ? DEMO_ENTRIES : [] as typeof DEMO_ENTRIES).filter(e => e.strength === "weak").length;
 
   const toggleShow = (id: string) => setShowPasswords(p => ({ ...p, [id]: !p[id] }));
   const copyToClipboard = (text: string) => {

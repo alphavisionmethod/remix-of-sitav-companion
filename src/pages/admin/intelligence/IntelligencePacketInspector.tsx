@@ -22,9 +22,9 @@ const IntelligencePacketInspector = () => {
 
   const avgCompression = DEMO_PACKETS.reduce((s, p) => s + p.compressionRatio, 0) / (isDemoMode ? DEMO_PACKETS : [] as typeof DEMO_PACKETS).length;
   const avgTokens = Math.round((isDemoMode ? DEMO_PACKETS : [] as typeof DEMO_PACKETS).reduce((s, p) => s + p.tokenCount, 0) / (isDemoMode ? DEMO_PACKETS : [] as typeof DEMO_PACKETS).length);
-  const freshCount = DEMO_PACKETS.filter(p => p.fresh).length;
-  const totalCompileCost = DEMO_PACKETS.reduce((s, p) => s + p.compileCost, 0);
-  const selectedPacket = DEMO_PACKETS.find(p => p.domain === selected);
+  const freshCount = (isDemoMode ? DEMO_PACKETS : [] as typeof DEMO_PACKETS).filter(p => p.fresh).length;
+  const totalCompileCost = (isDemoMode ? DEMO_PACKETS : [] as typeof DEMO_PACKETS).reduce((s, p) => s + p.compileCost, 0);
+  const selectedPacket = (isDemoMode ? DEMO_PACKETS : [] as typeof DEMO_PACKETS).find(p => p.domain === selected);
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">

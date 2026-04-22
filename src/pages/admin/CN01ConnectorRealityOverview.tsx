@@ -98,7 +98,7 @@ export default function CN01ConnectorRealityOverview() {
   const connectedAccounts = accounts.filter((a: Record<string, any>) => a.status === "connected" || a.status === "demo_simulated" || a.status === "internal_test");
 
   const verificationData = { registry, accounts, tokens, receipts, oauthConfig };
-  const passedChecks = DEMO_VERIFICATION_CHECKS.filter((c) => c.check(verificationData)).length;
+  const passedChecks = (isDemoMode ? DEMO_VERIFICATION_CHECKS : [] as typeof DEMO_VERIFICATION_CHECKS).filter((c) => c.check(verificationData)).length;
 
   const failureGroups = [
     { type: "Missing OAuth Config", count: oauthConfig?.google_oauth_configured ? 0 : 1, icon: <AlertTriangle className="h-3 w-3" /> },

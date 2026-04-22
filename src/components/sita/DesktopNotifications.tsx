@@ -45,7 +45,7 @@ export function DesktopNotifications() {
   // Stagger demo notifications
   useEffect(() => {
     if (!isDesktop) return;
-    const timers = DEMO_NOTIFICATIONS.map((notif, i) =>
+    const timers = (isDemoMode ? DEMO_NOTIFICATIONS : [] as typeof DEMO_NOTIFICATIONS).map((notif, i) =>
       setTimeout(() => {
         setNotifications(prev => [notif, ...prev].slice(0, MAX_VISIBLE + 2));
       }, 2000 + i * STAGGER_DELAY_MS)

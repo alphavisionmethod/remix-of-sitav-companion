@@ -31,7 +31,7 @@ export default function SimulatedCoreServicesBoard() {
 
       <div className="grid grid-cols-4 gap-4">
         {(["critical", "high", "medium", "low"] as const).map(sev => {
-          const count = DEMO_CORE_SERVICES.filter(s => s.stateLossSeverity === sev).length;
+          const count = (isDemoMode ? DEMO_CORE_SERVICES : [] as typeof DEMO_CORE_SERVICES).filter(s => s.stateLossSeverity === sev).length;
           return (
             <Card key={sev}>
               <CardContent className="p-4">

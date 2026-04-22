@@ -43,8 +43,8 @@ const DEMO_HEALTH = {
 const RevenueAutopilotMonitor = () => {
   const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("overview");
-  const totalRecovered = DEMO_RECOVERED.reduce((s, r) => s + r.value, 0);
-  const totalSaved = DEMO_SAVED_COSTS.reduce((s, c) => s + c.savedUsd, 0);
+  const totalRecovered = (isDemoMode ? DEMO_RECOVERED : [] as typeof DEMO_RECOVERED).reduce((s, r) => s + r.value, 0);
+  const totalSaved = (isDemoMode ? DEMO_SAVED_COSTS : [] as typeof DEMO_SAVED_COSTS).reduce((s, c) => s + c.savedUsd, 0);
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
