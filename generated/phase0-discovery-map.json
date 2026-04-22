@@ -1,0 +1,38 @@
+{
+  "phase": 0,
+  "generated_at": "2026-04-22T17:00:00Z",
+  "summary": {
+    "barrel_exports": 396,
+    "services_in_lib": 18,
+    "orphan_services": ["connector-notification-honesty-seed.ts"],
+    "pages_total": 1092,
+    "stub_pages_under_30_lines": 43,
+    "as_any_violations": 28,
+    "generated_artifacts": 1362,
+    "generated_size_mb": 14,
+    "lockfiles": ["bun.lock","bun.lockb","package-lock.json","deno.lock"],
+    "archive_files": 20,
+    "dead_onclick_handlers": 0,
+    "demo_mode_leaks": 0,
+    "route_files": 16
+  },
+  "classifications": {
+    "lockfiles": {
+      "bun.lock": "KEEP",
+      "bun.lockb": "DELETE_GITIGNORE",
+      "package-lock.json": "KEEP_FOR_CI",
+      "deno.lock": "DELETE_GITIGNORE"
+    },
+    "archive": {
+      "archive/capacitor/capacitor.config.ts": "DELETE",
+      "archive/mobile/android/": "DELETE",
+      "archive/mobile/ios/": "DELETE",
+      "archive/mobile/icons/": "KEEP",
+      "archive/mobile/store-metadata/": "KEEP",
+      "archive/infra/mobile.yaml": "DELETE"
+    },
+    "stub_pages": "43 stub pages requiring audit in Phase 4",
+    "as_any_violations": "28 violations requiring fix in Phase 4",
+    "orphan_services": "1 orphan service to delete in Phase 5"
+  }
+}
