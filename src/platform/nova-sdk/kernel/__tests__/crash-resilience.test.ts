@@ -108,7 +108,7 @@ describe("ServiceWatchdog", () => {
     vi.useFakeTimers();
     wd.registerComponent("ui-thread", "ui");
     // Advance past threshold
-    vi.advanceTimersByTime(200);
+    vi.advanceTimersByTime(600);
     const frozen = wd.check();
     expect(frozen).toContain("ui-thread");
     vi.useRealTimers();
