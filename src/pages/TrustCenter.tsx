@@ -62,7 +62,7 @@ const TAB_GROUPS: NavTabGroup[] = [
 /* ── Overview ── */
 const TrustOverviewPage = () => {
   const { user , isDemo} = useAuth();
-  const isDemoMode = isDemo;
+  const isDemoMode = false;
   const [automationsPaused, setAutomationsPaused] = useState(false);
   const [trustMode, setTrustMode] = useState<"suggest" | "approve-execute" | "autonomous">("approve-execute");
 
@@ -197,7 +197,7 @@ const TrustOverviewPage = () => {
 /* ── Devices Page ── */
 const TrustDevicesPage = () => {
   const { user , isDemo} = useAuth();
-  const isDemoMode = isDemo;
+  const isDemoMode = false;
   const { data: devices = [] } = useQuery({
     queryKey: ["trust_devices", user?.id],
     queryFn: async () => {

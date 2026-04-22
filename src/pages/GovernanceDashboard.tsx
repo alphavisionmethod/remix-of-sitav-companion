@@ -20,7 +20,7 @@ const DEFAULT_SCOPE = { ownerId: "current-user", visibility: "private" as const 
 
 export default function GovernanceDashboard() {
   const { isDemo } = useAuth();
-  const isDemoMode = isDemo;
+  const isDemoMode = false;
   const { data: gov, isLoading } = useGovernanceSummary();
   const { engines } = useOSRuntime();
 

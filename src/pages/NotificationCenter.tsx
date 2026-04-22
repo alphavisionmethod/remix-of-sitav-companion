@@ -136,7 +136,7 @@ const NotificationCard = ({ notif, onMarkRead, onDismiss, onAction }: {
 // ── Main Component ───────────────────────────────────────────
 const NotificationCenter = () => {
   const { user, isDemo } = useAuth();
-  const isDemoMode = isDemo;
+  const isDemoMode = false;
   const queryClient = useQueryClient();
   const interfaceState = useAdaptiveInterface();
   const os = useOSOrchestration();

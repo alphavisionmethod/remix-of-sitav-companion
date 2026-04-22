@@ -26,7 +26,7 @@ type BoardroomView = "synthesis" | "priorities" | "risks" | "advisors";
 
 const GlobalBoardroom = () => {
   const { isDemo, user } = useAuth();
-  const isDemoMode = isDemo;
+  const isDemoMode = false;
   const [view, setView] = useState<BoardroomView>("synthesis");
   const navigate = useNavigate();
   const { data: leads = [] } = useLeads();
