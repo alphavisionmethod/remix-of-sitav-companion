@@ -27,8 +27,7 @@ export function AdvisorDetailSheet({ advisor, recommendation, onClose }: Props) 
               domain={(advisor as any).domain ?? "business"}
               src={advisor.portraitUrl}
               size="lg"
-              className="border-2 rounded-full"
-              style={{ borderColor: `hsl(${advisor.colorAccent})` }}
+              className="border-2 rounded-full [border-color:var(--accent-color)]"
             />
             <div>
               <h3 className="text-sm font-display font-bold text-foreground">{advisor.displayName}</h3>
