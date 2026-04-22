@@ -162,7 +162,8 @@
     "release:ios": "npx tsx scripts/architecture/checks/check-release-readiness-ios.ts",
     "release:android": "npx tsx scripts/architecture/checks/check-release-readiness-android.ts",
     "release:iso-vmware": "npx tsx scripts/architecture/checks/check-release-readiness-iso-vmware.ts",
-    "release:all-targets": "npm run release:web && npm run release:ios && npm run release:android && npm run release:iso-vmware"
+    "release:all-targets": "npm run release:web && npm run release:ios && npm run release:android && npm run release:iso-vmware",
+    "verify": "npm run typecheck && npm run lint && npm run test && npm run test:deployment-readiness && npm run validate:governance && npm run build"
   },
   "dependencies": {
     "@electron/packager": "^18.3.6",
