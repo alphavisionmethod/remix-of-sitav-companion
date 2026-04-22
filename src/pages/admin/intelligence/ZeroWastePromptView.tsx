@@ -10,8 +10,6 @@ import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { DEMO_PROFILES } from "@/data/seed/admin-intelligence";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 const offenders = DEMO_PROFILES
   .filter(p => p.redundancy > 20)
   .sort((a, b) => b.redundancy - a.redundancy);

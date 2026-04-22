@@ -2,6 +2,7 @@
 // SITA OS — Trust Center (App-in-OS Shell)
 // ═══════════════════════════════════════════════════════════════
 
+import { PageSkeleton } from "@/components/sita/PageSkeleton";
 import { DomainAppShell } from "@/components/sita/shell/DomainAppShell";
 import type { DomainConfig } from "@/components/sita/shell/DomainAppShell";
 import type { NavTabGroup } from "@/components/sita/shell/AppSidebarNav";
@@ -29,12 +30,6 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { DomainAdvisorCard } from "@/components/advisors/DomainAdvisorCard";
-import { useDataMode } from "@/contexts/DataModeContext";
-
-
-
-
-
 const DOMAIN_CONFIG: DomainConfig = {
   id: "trust" as DomainConfig["id"],
   title: "Trust Center",

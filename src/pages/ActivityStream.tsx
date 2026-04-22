@@ -24,12 +24,6 @@ import {
 
 import { DEMO_ACTIVITY_TIMELINE } from "@/data/fixtures/demo-data";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
-
-
-
-
 // ── Category System ──────────────────────────────────────────
 type FeedCategory = "all" | "actions" | "approvals" | "proof" | "workflows" | "finance" | "communications" | "household" | "system";
 

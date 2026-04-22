@@ -16,8 +16,6 @@ import {
   Cpu, BarChart3, AlertTriangle, CheckCircle2, Zap, Server
 } from "lucide-react";
 import { founderOrchestrator, type PlatformCostSnapshot } from "@/lib/services/founder-orchestrator";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 interface CostBreakdownItem {
   label: string;
   value: number;

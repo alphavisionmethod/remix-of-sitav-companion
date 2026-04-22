@@ -5,10 +5,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useState } from "react";
-import { DEMO_GROWTH_TRAITS, DEMO_PLAYS, DEMO_REV_ARCHETYPES as DEMO_ARCHETYPES, DEMO_GROWTH_FIREWALL_ALERTS } from "@/data/seed/revenue-office";
+import { DEMO_GROWTH_TRAITS, DEMO_PLAYS, DEMO_GROWTH_FIREWALL_ALERTS } from "@/data/seed/revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 const statusColor = (s: string) => s === "strong" ? "text-[hsl(var(--trust-safe))]" : s === "moderate" ? "text-yellow-400" : s === "warning" ? "text-orange-400" : "text-destructive";
 const severityColor = (s: string) => s === "critical" ? "border-destructive/30 bg-destructive/5" : "border-orange-400/30 bg-orange-400/5";
 

@@ -7,10 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
-import { DEMO_ADMIN_ENVIRONMENTS_ADMIN_DEPLOYMENT_RINGS as DEMO_ENVIRONMENTS, DEMO_PROMOTION_GATES, DEMO_RINGS } from "@/data/seed/admin-platform";
+import { DEMO_PROMOTION_GATES, DEMO_RINGS } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 type GateStatus = "passed" | "failed" | "pending" | "skipped" | "blocked";
 type RingStatus = "deployed" | "canary" | "staging" | "blocked" | "pending";
 

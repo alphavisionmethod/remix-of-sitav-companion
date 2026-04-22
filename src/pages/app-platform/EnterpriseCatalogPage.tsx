@@ -10,8 +10,6 @@ import { AppIcon, VerificationBadge } from "@/components/sita/app-platform/AppSt
 import { DEMO_ENTERPRISE_APPS } from "@/data/seed/core-pages";
 import { toast } from "sonner";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 const statusConfig: Record<string, { label: string; color: string; icon: typeof Check }> = {
   available: { label: "Install", color: "bg-primary text-primary-foreground hover:bg-primary/90", icon: Download },
   installed: { label: "Installed", color: "bg-[hsl(var(--trust-safe))]/10 text-[hsl(var(--trust-safe))]", icon: Check },

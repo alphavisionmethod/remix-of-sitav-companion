@@ -5,13 +5,10 @@ import { Badge } from "@/components/ui/badge";
 import { Lightbulb, TrendingUp, UserPlus, Star, RefreshCw, DollarSign, ArrowRight, Layers, AlertTriangle, Clock } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
-import { DEMO_opportunities, DEMO_OPPORTUNITY_THEMES } from "@/data/seed/revenue-office";
+import { DEMO_OPPORTUNITY_THEMES } from "@/data/seed/revenue-office";
 import { useState, useMemo } from "react";
 import { useDeals } from "@/hooks/use-revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
-
 const categoryColors: Record<string, string> = {
   Conversion: "bg-blue-500/10 text-blue-400",
   Upsell: "bg-emerald-500/10 text-emerald-400",

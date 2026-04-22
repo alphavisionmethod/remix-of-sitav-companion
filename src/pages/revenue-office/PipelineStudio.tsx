@@ -12,7 +12,7 @@ import { useDeals, usePipelineStages } from "@/hooks/use-revenue-office";
 import { useRevenueLeakItems } from "@/hooks/use-revenue-office";
 import { Skeleton } from "@/components/ui/skeleton";
 import { EmptyState } from "@/components/sita/EmptyState";
-import { DEMO_REV_LEAKS_PIPELINE_STUDIO as DEMO_LEAKS, DEMO_STAGES, DEMO_VELOCITY } from "@/data/seed/revenue-office";
+import { DEMO_STAGES, DEMO_VELOCITY } from "@/data/seed/revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { useDataMode } from "@/contexts/DataModeContext";
 

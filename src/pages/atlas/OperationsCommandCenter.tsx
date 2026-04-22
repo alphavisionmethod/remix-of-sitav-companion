@@ -15,8 +15,6 @@ import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { DEMO_alerts, DEMO_incidents, DEMO_runbooks, DEMO_services, DEMO_slos } from "@/data/seed/atlas";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 const now = new Date();
 const h = (hours: number) => new Date(now.getTime() - hours * 3600000).toISOString();
 

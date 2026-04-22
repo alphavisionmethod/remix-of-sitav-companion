@@ -5,10 +5,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState } from "react";
 import { Sparkles, CheckCircle2, AlertTriangle, Shield, TrendingUp, Clock, RotateCcw, Eye, Settings } from "lucide-react";
 import { useAIEngDomain } from "@/hooks/use-ai-engineering-data";
-import { DEMO_ADMIN_PATTERNS_A_I_SELF_HEALING as DEMO_PATTERNS, DEMO_ADMIN_RULES as DEMO_RULES, DEMO_BLOCKED, DEMO_HEALED } from "@/data/seed/admin-platform";
+import { DEMO_BLOCKED, DEMO_HEALED } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 const AISelfHealing = () => {
   const { data: patterns, isDemo } = useAIEngDomain("learningPatterns", DEMO_PATTERNS);
   const [tab, setTab] = useState("recent");

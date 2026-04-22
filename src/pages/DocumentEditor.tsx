@@ -21,8 +21,6 @@ import {
   Undo2, Redo2, Strikethrough, Quote, Table, Minus, CheckSquare,
   Clock, Shield, Sparkles, FileBox, ChevronRight, Plus, Trash2,
 } from "lucide-react";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 // ── Templates ──────────────────────────────────────────────────
 const TEMPLATES = [
   { id: "blank", title: "Blank Document", description: "Start from scratch", content: "" },

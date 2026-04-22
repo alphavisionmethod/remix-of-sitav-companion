@@ -31,7 +31,7 @@ export default function BookingCenter() {
     client: b.client_name || "Unknown", type: b.service_type || "Meeting",
     time: new Date(b.start_time).toLocaleString(), duration: `${b.duration_minutes || 30} min`,
     mode: b.mode || "video", status: b.status || "pending",
-  })) ?? DEMO_UPCOMING);
+  })) ?? []);
 
   if (!isDemoMode && isLoading) {
     return (

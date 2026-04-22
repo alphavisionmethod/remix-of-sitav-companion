@@ -4,8 +4,6 @@ import { RotateCcw, TrendingUp, TrendingDown, Brain, Check, AlertTriangle, Arrow
 import { usePortfolioPositionsMemory, useExecutionRecords, useThesisRecords } from "@/hooks/use-investment-memory";
 import { DEMO_ACTIVE_POSITIONS } from "@/data/seed/investment";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 export default function PostTradeLoop() {
   const { data: livePositions } = usePortfolioPositionsMemory();
   const { data: liveExecutions } = useExecutionRecords();

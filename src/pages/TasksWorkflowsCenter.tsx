@@ -4,6 +4,7 @@
 // queue, dependency, and assigned views.
 // ═══════════════════════════════════════════════════════════════
 
+import { PageSkeleton } from "@/components/sita/PageSkeleton";
 import { useState, useMemo } from "react";
 import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -24,12 +25,6 @@ import {
   ArrowRight, Users, RotateCcw, Filter, Workflow, ChevronRight, Eye,
   GitBranch, Kanban, ListOrdered, Target, Flame, Pause, Play,
 } from "lucide-react";
-import { useDataMode } from "@/contexts/DataModeContext";
-
-
-
-
-
 // ── Demo Data ──────────────────────────────────────────────────
 type TaskPriority = "critical" | "high" | "medium" | "low";
 type TaskStatus = "todo" | "in-progress" | "waiting" | "blocked" | "done" | "cancelled";
@@ -112,7 +107,6 @@ export default function TasksWorkflowsCenter() {
   });
 
   const tasks: DemoTask[] = useMemo(() => {
-    if (isDemoMode) return DEMO_TASKS;
     return []; // Live mode would pull from a tasks table
   }, [isDemoMode]);
 

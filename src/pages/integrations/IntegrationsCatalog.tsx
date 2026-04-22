@@ -10,9 +10,6 @@ import { Search, Plug, Shield, Zap, Globe, ArrowRight, CheckCircle, AlertTriangl
 import { INTEGRATION_PROVIDERS, PROVIDER_CATEGORIES } from "@/data/seed/integrations";
 import { useNavigate } from "react-router-dom";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
-
 export default function IntegrationsCatalog() {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("all");

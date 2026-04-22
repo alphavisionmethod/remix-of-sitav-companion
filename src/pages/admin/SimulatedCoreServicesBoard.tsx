@@ -2,10 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Server, AlertTriangle, Database, Cpu } from "lucide-react";
-import { DEMO_ADMIN_CORE_SERVICES_SIMULATED_CORE_SERVICES_BOARD as DEMO_CORE_SERVICES } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 interface CoreService {
   name: string;
   backing: "memory-only" | "localStorage" | "demo" | "db" | "hybrid";

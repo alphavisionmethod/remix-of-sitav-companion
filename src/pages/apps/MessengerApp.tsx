@@ -6,8 +6,6 @@ import { MessageSquare, Send, Search, Plus, Paperclip, Smile, Phone, Video, More
 import { useState } from "react";
 import { DEMO_CHATS, DEMO_MESSAGES } from "@/data/seed/apps";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 interface Chat {
   id: string;
   name: string;

@@ -4,8 +4,6 @@ import { useMarketMemoryEvents, useAdvisorObservations, useCatalystEvents, useBe
 import { computeWhatChanged } from "@/lib/services/finance-os/investment-memory.service";
 import { DEMO_MEMORY_EVENTS } from "@/data/seed/investment";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 const SEVERITY_STYLES: Record<string, string> = {
   alert: "border-destructive/20 bg-destructive/5",
   warning: "border-[hsl(var(--trust-warn))]/15 bg-[hsl(var(--trust-warn))]/5",

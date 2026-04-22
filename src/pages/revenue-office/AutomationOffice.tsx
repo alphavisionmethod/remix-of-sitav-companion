@@ -20,8 +20,6 @@ import {
 } from "@/data/seed/revenue-office";
 import AutomationSubNav from "./AutomationSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 const levelColors: Record<string, string> = {
   "Auto-run (L3)": "bg-emerald-500/10 text-emerald-400",
   "Draft for review (L2)": "bg-blue-500/10 text-blue-400",

@@ -6,8 +6,6 @@ import { Button } from "@/components/ui/button";
 import { DEMO_ERRORS, DEMO_OPPORTUNITIES } from "@/data/seed/digital-presence";
 import DPOSubNav from "./DPOSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 export default function ErrorRadar() {
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">

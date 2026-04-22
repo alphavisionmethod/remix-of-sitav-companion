@@ -4,8 +4,6 @@ import { Clock, Brain, Check, X, AlertTriangle, ArrowRight, TrendingUp, Trending
 import { useTimeMachineSnapshots, useDecisionRecords, useAdvisorObservations } from "@/hooks/use-investment-memory";
 import { DEMO_PAST_DECISIONS } from "@/data/seed/investment";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 export default function TimeMachineReview() {
   const { data: liveSnapshots } = useTimeMachineSnapshots();
   const { data: liveDecisions } = useDecisionRecords();

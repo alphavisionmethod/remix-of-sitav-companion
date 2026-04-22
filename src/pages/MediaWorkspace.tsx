@@ -4,6 +4,7 @@
 // entity linking, and Supabase storage integration.
 // ═══════════════════════════════════════════════════════════════
 
+import { PageSkeleton } from "@/components/sita/PageSkeleton";
 import { useState, useMemo, useCallback } from "react";
 import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -22,10 +23,8 @@ import {
   Eye, Download, Tag, Link, Trash2, MoreHorizontal, Filter, FolderOpen,
   Plus, FileText, X, ZoomIn, ChevronLeft, ChevronRight, Edit3,
 } from "lucide-react";
-import { DEMO_MEDIA, type DemoMediaItem as MediaItem } from "@/data/seed/media";
+import { type DemoMediaItem as MediaItem, DEMO_MEDIA } from "@/data/seed/media";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 const MediaWorkspace = () => {
   const { user, isDemo } = useAuth();
   const [search, setSearch] = useState("");

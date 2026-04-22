@@ -1,3 +1,4 @@
+import { PageSkeleton } from "@/components/sita/PageSkeleton";
 import { useAction } from "@/hooks/use-action";
 import { SitaPageHeader, SitaCard, SitaButton } from "@/components/sita/SitaCard";
 import { useInboxItems } from "@/hooks/use-domain-data";
@@ -16,12 +17,7 @@ import {
   Inbox, FileText, Receipt, Camera, Mic, StickyNote, Mail, Clock,
   CheckCircle, ArrowRight, Sparkles, DollarSign, Send
 } from "lucide-react";
-import { DEMO_INBOX_ITEMS } from "@/data/fixtures/demo-data";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
-
-
 const typeIcons: Record<string, typeof FileText> = {
   note: StickyNote, receipt: Receipt, screenshot: Camera, voice: Mic,
   email: Mail, idea: Sparkles, reminder: Clock, bill: DollarSign,

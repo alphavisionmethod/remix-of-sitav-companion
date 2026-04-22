@@ -12,8 +12,6 @@ import type { AppDefinition } from "@/domains/apps/types";
 import { DEMO_COMPARE_PAIRS } from "@/data/seed/core-pages";
 import { toast } from "sonner";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 const AppComparePage = () => {
   const navigate = useNavigate();
   const { apps, installApp, pinToDock } = useAppPlatform();

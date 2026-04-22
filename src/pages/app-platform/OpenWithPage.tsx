@@ -11,8 +11,6 @@ import { AppIcon, VerificationBadge } from "@/components/sita/app-platform/AppSt
 import { DEMO_FILES } from "@/data/seed/core-pages";
 import { toast } from "sonner";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 const OpenWithPage = () => {
   const navigate = useNavigate();
   const { apps, setDefaultApp } = useAppPlatform();

@@ -8,10 +8,7 @@ import { motion } from "framer-motion";
 import { useMoneyPolicies, useToggleMoneyPolicy } from "@/hooks/use-domain-data";
 import { useMemo } from "react";
 import { toast } from "sonner";
-import { DEMO_CORE_CONNECTORS as DEMO_CONNECTORS } from "@/data/seed/core-pages";
 import { AdvisorKnowledgePanel } from "@/components/advisors/AdvisorKnowledgePanel";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 const iconMap: Record<string, typeof Shield> = {
   Shield, Bell, DollarSign, PiggyBank, CreditCard, Zap, AlertTriangle, Settings,
 };

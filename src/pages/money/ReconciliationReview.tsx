@@ -10,8 +10,6 @@ import {
   FileQuestion, Tag, Repeat, Eye, Clock, DollarSign, ShieldCheck
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 type IssueType = "mismatch" | "uncategorized" | "recurring-change" | "duplicate" | "missing-receipt";
 type ReviewStatus = "open" | "investigating" | "resolved" | "deferred";
 

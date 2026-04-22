@@ -2,8 +2,6 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Monitor, Battery, Wifi, HardDrive, Shield, Cpu, RefreshCw } from "lucide-react";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 const MOCK_DEVICE = {
   name: "SITA Environment — Primary",
   platform: navigator.platform,

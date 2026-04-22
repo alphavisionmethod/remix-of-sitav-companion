@@ -13,12 +13,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { classifyFeatureDomain } from "@/lib/delivery-methodology/feature-factory";
-import { DEMO_ADMIN_ARCHETYPES as DEMO_ARCHETYPES } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
-
-
 const FeatureIntakeDesk = () => {
   const queryClient = useQueryClient();
   const [form, setForm] = useState({

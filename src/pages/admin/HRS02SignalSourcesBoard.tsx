@@ -7,10 +7,6 @@ import { useWearableProviders } from "@/hooks/use-health-signal-data";
 import { DEMO_SIGNAL_PROVIDERS } from "@/data/seed/health-signals";
 import HRSSubNav from "@/components/admin/HRSSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
-
-
 const HRS02SignalSourcesBoard = () => {
   const { data: providers, isLoading } = useWearableProviders();
 
@@ -27,7 +23,7 @@ const HRS02SignalSourcesBoard = () => {
         signals: p.categories || p.signals || [],
         platform: p.platform || "Cloud",
       }))
-    : (providers as typeof DEMO_SIGNAL_PROVIDERS) ?? DEMO_SIGNAL_PROVIDERS;
+    : (providers as typeof DEMO_SIGNAL_PROVIDERS) ?? [];
 
   return (
     <div className="p-6 max-w-[1400px] mx-auto space-y-6">

@@ -10,8 +10,6 @@ import {
   Bug, Rocket, Shield, ChevronRight, Clock, Eye, Link2, Brain,
   Plus, Filter, Tag, Star, Archive, ExternalLink
 } from "lucide-react";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 type DocCategory = "all" | "architecture" | "runbook" | "incident" | "pattern" | "policy" | "release";
 
 interface KBArticle {

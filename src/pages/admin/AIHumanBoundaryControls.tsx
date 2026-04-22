@@ -6,8 +6,6 @@ import { Shield, Eye, FileEdit, Sparkles, CheckCircle2, Lock, AlertTriangle, Use
 import { useAIEngDomain } from "@/hooks/use-ai-engineering-data";
 import { DEMO_AGENT_BOUNDARIES, DEMO_CHANGE_TYPE_BOUNDARIES, DEMO_MISSION_BOUNDARIES } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 type AutonomyLevel = "observe_only" | "draft_only" | "safe_auto_heal" | "approval_required" | "never_automate";
 
 const AUTONOMY_LABELS: Record<AutonomyLevel, { label: string; icon: typeof Eye; color: string; bg: string; description: string }> = {

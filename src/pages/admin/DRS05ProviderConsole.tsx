@@ -4,11 +4,8 @@ import { getRegisteredDomains, getProviderMetadata, type ProviderDomain } from "
 import { registerAllProviders } from "@/lib/dual-reality/providers";
 import { useRealityModeSafe } from "@/lib/dual-reality/reality-mode-context";
 import { Plug, CheckCircle2, AlertCircle } from "lucide-react";
-import { DEMO_ADMIN_ALL_DOMAINS as DEMO_ALL_DOMAINS } from "@/data/seed/admin-platform";
 import DRSSubNav from "@/components/admin/DRSSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 export default function DRS05ProviderConsole() {
   registerAllProviders();
   const { mode } = useRealityModeSafe();

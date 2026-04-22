@@ -13,8 +13,6 @@ import {
   FileText, Calendar, Wrench, RefreshCw, Clock, CheckCircle,
   Shield, Phone, Timer, Package, ClipboardList
 } from "lucide-react";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 type AdminTab = "recurring" | "service" | "forms" | "upcoming" | "aging" | "bundles";
 
 interface AdminItem {

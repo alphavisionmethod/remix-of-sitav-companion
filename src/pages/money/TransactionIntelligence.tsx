@@ -12,8 +12,6 @@ import { motion } from "framer-motion";
 import { useState, useMemo } from "react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvisorInsight";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 interface DemoTx {
   id: string; date: string; description: string; merchant: string; amountCents: number; category: string;
   type: "debit" | "credit"; isRecurring: boolean; categorizedBy: "rule" | "ai" | "manual"; confidence: number;

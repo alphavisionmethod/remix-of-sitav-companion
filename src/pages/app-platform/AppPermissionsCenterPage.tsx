@@ -10,8 +10,6 @@ import { useAppPlatform } from "@/contexts/AppPlatformContext";
 import { AppIcon } from "@/components/sita/app-platform/AppStoreComponents";
 import { DEMO_PERMISSION_DOMAINS } from "@/data/seed/core-pages";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 const AppPermissionsCenterPage = () => {
   const { apps, togglePermission } = useAppPlatform();
   const navigate = useNavigate();

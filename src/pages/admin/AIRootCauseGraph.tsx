@@ -6,8 +6,6 @@ import { useAIEngDomain } from "@/hooks/use-ai-engineering-data";
 import { DEMO_GRAPH_EDGES, DEMO_GRAPH_NODES } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { EmptyState } from "@/components/sita/EmptyState";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 const typeStyles: Record<string, { icon: typeof Bug; color: string; bg: string }> = {
   symptom: { icon: AlertTriangle, color: "text-destructive", bg: "bg-destructive/10 border-destructive/20" },
   service: { icon: Server, color: "text-primary", bg: "bg-primary/10 border-primary/20" },

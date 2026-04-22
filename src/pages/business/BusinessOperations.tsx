@@ -17,8 +17,6 @@ import {
   CheckCircle, ArrowRight, Activity, TrendingDown, BarChart3, Target, Truck,
   UserCheck, Package, RefreshCw, ChevronRight, Star, Flame
 } from "lucide-react";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 type Tab = "all" | "queues" | "escalations" | "team" | "bottlenecks" | "delayed";
 
 interface OperationalItem {

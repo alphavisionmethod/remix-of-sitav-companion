@@ -4,8 +4,6 @@ import { ShieldCheck, AlertTriangle, Check, X, Clock, Search, Brain } from "luci
 import { useInvestmentDecisions } from "@/hooks/use-investment-office";
 import { DEMO_PENDING_DECISIONS } from "@/data/seed/investment";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 const VERDICT_CONFIG = {
   ready: { label: "Ready", color: "text-[hsl(var(--trust-safe))]", bg: "bg-[hsl(var(--trust-safe))]/10", icon: <Check className="h-5 w-5" /> },
   "needs-review": { label: "Needs Review", color: "text-[hsl(var(--trust-warn))]", bg: "bg-[hsl(var(--trust-warn))]/10", icon: <Search className="h-5 w-5" /> },

@@ -4,9 +4,6 @@ import { Ruler, AlertTriangle, Check, Info, Shield, Target } from "lucide-react"
 import { usePortfolioPositions } from "@/hooks/use-investment-office";
 import { DEMO_SIZING_SCENARIOS } from "@/data/seed/investment";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
-
 export default function PositionSizingCoach() {
   const { data: liveData, isLoading } = usePortfolioPositions();
   const [selectedIdx, setSelectedIdx] = useState(0);

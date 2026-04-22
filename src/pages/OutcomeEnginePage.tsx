@@ -17,24 +17,14 @@ import { ExecutionChainTimeline, buildDefaultChain } from "@/components/sita/pri
 import { KPITile, SectionHeader, EmptyState } from "@/components/sita/SitaComponents";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { DEMO_OUTCOMES, DEMO_INTERVENTIONS, DEMO_SPILLOVERS } from "@/data/seed/outcome-engine";
 import { useOutcomes } from "@/hooks/use-live-data";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
-
-
-
-
-
-
 export default function OutcomeEnginePage() {
   const { isDemo } = useAuth();
   const { data: liveOutcomes } = useOutcomes();
 
   // Map live data to demo shape or use demo data
   const outcomes = useMemo(() => {
-    if (isDemoMode) return DEMO_OUTCOMES;
     if (!liveOutcomes?.length) return [];
     return liveOutcomes.map((o: Record<string, any>) => ({
       id: o.id,

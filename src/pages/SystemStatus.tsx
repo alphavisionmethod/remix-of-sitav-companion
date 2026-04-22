@@ -27,8 +27,6 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { DEMO_ENGINE_CONNECTORS, DEMO_FALLBACK_APPROVALS } from "@/data/seed/core-pages";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 // ── Initialize services with demo data ──────────────────────────
 
 function useSelfHealingDemo() {

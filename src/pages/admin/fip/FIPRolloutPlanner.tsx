@@ -4,12 +4,8 @@ import { Rocket, Flag, Power, RotateCcw, ArrowUpRight, Shield, Target } from "lu
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useRolloutRecords } from "@/hooks/use-fip-data";
-import { DEMO_KILL_CLASSES, DEMO_ROLLOUT_RINGS } from "@/data/seed/admin-platform";
+import { DEMO_ROLLOUT_RINGS } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
-
-
 const ringColors: Record<string, string> = {
   dev: 'bg-muted text-muted-foreground', staging: 'bg-blue-500/10 text-blue-500',
   'internal-shadow': 'bg-purple-500/10 text-purple-500', 'internal-real': 'bg-indigo-500/10 text-indigo-500',

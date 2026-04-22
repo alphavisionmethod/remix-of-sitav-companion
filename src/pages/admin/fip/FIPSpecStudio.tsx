@@ -13,10 +13,6 @@ import { useFeatureSpecs, useCreateSpec } from "@/hooks/use-fip-data";
 import { COMPLIANCE_SECTIONS } from "@/lib/fip/types";
 import { DEMO_SPEC_SECTIONS } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
-
-
 const FIPSpecStudio = () => {
   const { data: specs = [], isLoading } = useFeatureSpecs();
   const createSpec = useCreateSpec();

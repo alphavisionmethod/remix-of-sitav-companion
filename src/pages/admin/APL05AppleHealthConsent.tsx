@@ -5,11 +5,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Switch } from "@/components/ui/switch";
 import { Heart, ShieldCheck, Eye, EyeOff, Lock, AlertTriangle, CheckCircle2, Clock, Activity, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { DEMO_ADMIN_SIGNALS_A_P_L05_APPLE_HEALTH_CONSENT as DEMO_SIGNALS } from "@/data/seed/admin-platform";
 import APLSubNav from "@/components/admin/APLSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 type ConsentState = Record<string, { read: boolean; routing: boolean; boardroom: boolean; assistant: boolean }>;
 
 const APL05AppleHealthConsent = () => {

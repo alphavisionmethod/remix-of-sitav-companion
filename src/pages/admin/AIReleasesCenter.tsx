@@ -5,10 +5,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState } from "react";
 import { Rocket, CheckCircle2, AlertTriangle, Shield, Clock, ArrowRight, RotateCcw, Activity, GitBranch, Eye, TrendingUp } from "lucide-react";
 import { useAIEngDomain } from "@/hooks/use-ai-engineering-data";
-import { DEMO_ADMIN_ENVIRONMENTS_A_I_RELEASES_CENTER as DEMO_ENVIRONMENTS, DEMO_ADMIN_RELEASE_GATES_A_I_RELEASES_CENTER as DEMO_RELEASE_GATES, DEMO_PROMOTION_EVIDENCE, DEMO_ROLLBACK_OPTIONS, DEMO_ROLLOUT_HISTORY } from "@/data/seed/admin-platform";
+import { DEMO_PROMOTION_EVIDENCE, DEMO_ROLLBACK_OPTIONS, DEMO_ROLLOUT_HISTORY } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 const AIReleasesCenter = () => {
   const { isDemo } = useAIEngDomain("efficiencyScores", DEMO_RELEASE_GATES);
   

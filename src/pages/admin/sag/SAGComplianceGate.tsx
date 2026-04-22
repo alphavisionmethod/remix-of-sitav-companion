@@ -7,10 +7,6 @@ import type { ComplianceGate, TenantFirewallRule, SecurityIncident } from "@/pac
 import { DEMO_VIOLATION_TYPES } from "@/data/seed/admin-platform";
 import SAGSubNav from "@/components/admin/SAGSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
-
-
 const sevColors: Record<string, string> = {
   critical: 'bg-destructive/10 text-destructive',
   high: 'bg-orange-500/10 text-orange-500',

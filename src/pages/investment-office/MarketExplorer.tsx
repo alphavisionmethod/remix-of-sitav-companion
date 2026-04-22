@@ -8,8 +8,6 @@ import { SPARKLINE_DATA } from "@/domains/investment/mock-data";
 import { useMarketWatchlistItems } from "@/hooks/use-investment-office";
 import { DEMO_CLASS_TABS } from "@/data/seed/investment";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 const pctFmt = (n: number) => `${n >= 0 ? "+" : ""}${n.toFixed(2)}%`;
 
 export default function MarketExplorer() {

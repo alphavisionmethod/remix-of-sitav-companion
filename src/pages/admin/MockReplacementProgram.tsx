@@ -15,7 +15,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { useMockReplacements, useUpsertMockReplacement, useUpdateMockStatus, useDeleteMockReplacement, useMockReplacementStats } from "@/hooks/useMockReplacements";
 import { Plus, Trash2, Search, ArrowRight, AlertTriangle, CheckCircle2, Clock, Ban, CircleDot, Pencil, BarChart3, Flame, GitBranch, ShieldCheck, Layers } from "lucide-react";
 import type { MockReplacement } from "@/data/persistence/mock-replacement-persistence";
-import { DEMO_ADMIN_STATUSES_MOCK_REPLACEMENT_PROGRAM as DEMO_STATUSES, DEMO_MOCK_TYPES, DEMO_PRIORITIES } from "@/data/seed/admin-platform";
+import { DEMO_MOCK_TYPES, DEMO_PRIORITIES } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const STATUS_CONFIG: Record<MockReplacement["migration_status"], { label: string; color: string; icon: any }> = {

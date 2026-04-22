@@ -1,3 +1,4 @@
+import { PageSkeleton } from "@/components/sita/PageSkeleton";
 import { useState, useMemo } from "react";
 import { SitaPageHeader, SitaCard, SitaCardTitle } from "@/components/sita/SitaCard";
 import { KPITile, EmptyState, SitaTabs } from "@/components/sita/SitaComponents";
@@ -14,15 +15,11 @@ import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
-import { DEMO_CALENDAR_EVENTS, type CalWorkspaceEvent as CalEvent } from "@/data/seed/calendar-workspace";
+import { type CalWorkspaceEvent as CalEvent } from "@/data/seed/calendar-workspace";
 import { useRealityProvider } from "@/hooks/useRealityProvider";
 import { useCreateCalendarEvent, useUpdateCalendarEvent, useDeleteCalendarEvent } from "@/hooks/use-calendar-mutations";
 import { useBookingList, useBookingCreate, useBookingCancel } from "@/hooks/use-backend-actions";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
-
-
 type CalView = "day" | "week" | "month" | "agenda";
 
 const DOMAIN_COLORS: Record<string, string> = {
@@ -81,7 +78,7 @@ const CalendarWorkspace = () => {
     },
   });
 
-  const allEvents: CalEvent[] = dbEvents ?? DEMO_CALENDAR_EVENTS;
+  const allEvents: CalEvent[] = dbEvents ?? [];
 
   const filteredEvents = useMemo(() =>
     allEvents.filter(e => domainFilter === "all" || e.domain === domainFilter),

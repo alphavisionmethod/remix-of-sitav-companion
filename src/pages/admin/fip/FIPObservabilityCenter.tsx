@@ -6,10 +6,6 @@ import { Badge } from "@/components/ui/badge";
 import { useComplianceRecords, useFeatureSpecs } from "@/hooks/use-fip-data";
 import { DEMO_OBSERVABILITY_FIELDS } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
-
-
 const FIPObservabilityCenter = () => {
   const { data: compliance = [] } = useComplianceRecords();
   const { data: specs = [] } = useFeatureSpecs();

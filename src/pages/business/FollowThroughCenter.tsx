@@ -13,8 +13,6 @@ import {
   Phone, Mail, Clock, AlertCircle, SkipForward, AlarmClock,
   FileText, DollarSign, Users, CheckCircle
 } from "lucide-react";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 type QueueTab = "callbacks" | "no-touch" | "waiting" | "drafts" | "overdue" | "recovery";
 
 interface QueueItem {

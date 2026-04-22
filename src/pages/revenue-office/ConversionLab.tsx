@@ -12,9 +12,6 @@ import { useConversionExperiments } from "@/hooks/use-revenue-office";
 import { Skeleton } from "@/components/ui/skeleton";
 import { EmptyState } from "@/components/sita/EmptyState";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
-
 const FUNNEL_BENCHMARKS = [
   { stage: "Landing Page → Form Start", current: 42, benchmark: 45, status: "near" as const },
   { stage: "Form Start → Form Complete", current: 68, benchmark: 75, status: "below" as const },

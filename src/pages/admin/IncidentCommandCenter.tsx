@@ -12,11 +12,9 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { useIncidentManagement, useEntityScoped } from "@/contexts/SitaKernelContext";
-import { DEMO_INCIDENTS, type DemoIncident as Incident, type Severity, type IncidentStatus } from "@/data/seed/incidents";
+import { type DemoIncident as Incident, type Severity, type IncidentStatus, DEMO_INCIDENTS } from "@/data/seed/incidents";
 import { anomalyAlertSystem, type Anomaly } from "@/lib/services/anomaly-alert";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 const SEVERITY_CONFIG: Record<Severity, { color: string; bg: string; border: string }> = {
   critical: { color: "text-red-400", bg: "bg-red-500/10", border: "border-red-500/30" },
   high: { color: "text-orange-400", bg: "bg-orange-500/10", border: "border-orange-500/30" },

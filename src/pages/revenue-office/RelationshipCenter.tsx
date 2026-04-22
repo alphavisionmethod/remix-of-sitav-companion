@@ -33,7 +33,7 @@ export default function RelationshipCenter() {
     name: c.name || "Unknown", company: c.company || "", stage: c.lifecycle_stage || "Lead",
     health: c.health_score || 50, ltv: `$${c.ltv || 0}`, lastContact: c.last_contact_at ? new Date(c.last_contact_at).toLocaleDateString() : "Never",
     tags: c.tags || [],
-  })) ?? DEMO_CONTACTS);
+  })) ?? []);
 
   if (!isDemoMode && isLoading) {
     return (

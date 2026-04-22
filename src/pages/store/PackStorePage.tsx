@@ -18,8 +18,6 @@ import {
 import { ArrowRight, Package, RefreshCw, Sparkles, TrendingUp } from "lucide-react";
 import { usePackInstalls } from "@/hooks/use-live-data";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 const PackStorePage = () => {
   const navigate = useNavigate();
   const { data: liveInstalls } = usePackInstalls();

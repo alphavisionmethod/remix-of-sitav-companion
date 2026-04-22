@@ -10,8 +10,6 @@ import {
   TrendingUp, TrendingDown, Clock, Eye, Bot, Lock, Bell, Layers,
   HardDrive, Zap, Cpu, Settings, Server
 } from "lucide-react";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 type HealthState = "healthy" | "degraded" | "unhealthy";
 interface Subsystem {
   id: string; name: string; icon: React.ElementType; score: number; state: HealthState;

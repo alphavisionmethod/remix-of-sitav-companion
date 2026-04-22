@@ -12,8 +12,6 @@ import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { cn } from "@/lib/utils";
 import type { OutcomeCategory } from "@/lib/intelligence-architecture/outcome-economics-engine";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 /* ── Demo Data ─────────────────────────────────────────────── */
 
 interface OutcomeROI {

@@ -1,3 +1,4 @@
+import { PageSkeleton } from "@/components/sita/PageSkeleton";
 import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader, SitaButton } from "@/components/sita/SitaCard";
 import { KPITile, SitaTabs, EmptyState } from "@/components/sita/SitaComponents";
 import { TrustBadge } from "@/components/sita/TrustBadge";
@@ -16,13 +17,7 @@ import {
   DollarSign, Briefcase, Home, Mail, Calendar, AlertTriangle, RefreshCw, Pause, Play,
   Plus, ToggleLeft, ToggleRight, Trash2
 } from "lucide-react";
-import { DEMO_AUTOMATION_RULES, DEMO_DELEGATIONS } from "@/data/fixtures/demo-data";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
-
-
-
 const AutomationCenter = () => {
   const location = useLocation();
   const navigate = useNavigate();

@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useNotes } from "@/hooks/use-live-data";
-import { DEMO_NOTES, type DemoNote as Note } from "@/data/seed/notes";
+import { type DemoNote as Note } from "@/data/seed/notes";
 import { motion, AnimatePresence } from "framer-motion";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
@@ -25,10 +25,6 @@ import {
   ListTodo, Users, Briefcase, Workflow, FileBox, Sparkles,
   MessageSquare, Calendar,
 } from "lucide-react";
-import { useDataMode } from "@/contexts/DataModeContext";
-
-
-
 const TYPE_ICONS: Record<string, React.ElementType> = { note: FileText, meeting: Brain, checklist: CheckSquare, voice: Mic, knowledge: Bookmark };
 const fadeUp = { hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0, transition: { duration: 0.25 } } };
 
@@ -64,7 +60,6 @@ const NotesWorkspace = () => {
   const { data: liveNotes } = useNotes();
 
   const notes: Note[] = useMemo(() => {
-    if (isDemoMode) return DEMO_NOTES;
     if (!liveNotes?.length) return [];
     return liveNotes.map(mapDbNote);
   }, [isDemoMode, liveNotes]);

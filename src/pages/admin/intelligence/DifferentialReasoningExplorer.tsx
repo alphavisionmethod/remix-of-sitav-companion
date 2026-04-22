@@ -8,10 +8,7 @@ import { Progress } from "@/components/ui/progress";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
-import { DEMO_INTEL_DIFFS as DEMO_DIFFS } from "@/data/seed/admin-intelligence";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 const actionColors: Record<string, string> = {
   "reuse-as-is": "text-emerald-400 bg-emerald-500/10",
   "partial-update": "text-blue-400 bg-blue-500/10",

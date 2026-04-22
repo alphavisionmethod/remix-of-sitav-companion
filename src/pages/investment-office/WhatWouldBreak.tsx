@@ -4,8 +4,6 @@ import { ShieldOff, AlertTriangle, Clock, Zap, TrendingDown, Globe } from "lucid
 import { useRiskScenarios } from "@/hooks/use-investment-office";
 import { DEMO_TRADES } from "@/data/seed/investment";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 export default function WhatWouldBreak() {
   const { data: liveData, isLoading } = useRiskScenarios();
   const [selected, setSelected] = useState(DEMO_TRADES[0]);

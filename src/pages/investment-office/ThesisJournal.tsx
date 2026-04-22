@@ -4,8 +4,6 @@ import { SAMPLE_THESES, getInstrument } from "@/hooks/useInvestmentOfficeData";
 import { useInvestmentThesisEntries } from "@/hooks/use-investment-office";
 import { DEMO_JOURNAL_ENTRIES } from "@/data/seed/investment";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 export default function ThesisJournal() {
   const { data: liveData, isLoading } = useInvestmentThesisEntries();
   const navigate = useNavigate();

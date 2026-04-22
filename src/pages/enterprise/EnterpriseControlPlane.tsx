@@ -23,7 +23,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
-import { DEMO_COMPLIANCE_ITEMS, DEMO_DEPLOYMENTS, DEMO_ENT_CAPABILITIES as DEMO_CAPABILITIES, DEMO_ROLES, DEMO_SLA_METRICS, DEMO_TEAM_MEMBERS } from "@/data/seed/enterprise";
+import { DEMO_COMPLIANCE_ITEMS, DEMO_DEPLOYMENTS, DEMO_ROLES, DEMO_SLA_METRICS, DEMO_TEAM_MEMBERS } from "@/data/seed/enterprise";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useEffect } from "react";

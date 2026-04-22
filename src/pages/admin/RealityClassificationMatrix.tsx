@@ -18,8 +18,6 @@ import type { RealityClassification } from "@/data/persistence/reality-classific
 import { SCOPE_LEVELS, EVIDENCE_SIGNALS, PROGRESSION_REQUIREMENTS, type ScopeLevel, type LaunchImpact } from "@/data/persistence/reality-classification-persistence";
 import { DEMO_CONTRACT_STATUSES } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 const CLASSIFICATION_CONFIG = {
   presentational: { label: "Presentational", color: "bg-muted text-muted-foreground", icon: Eye, description: "UI shell — no backing logic or data truth" },
   simulated: { label: "Simulated", color: "bg-yellow-500/20 text-yellow-400", icon: Cpu, description: "Mock/demo/in-memory logic, state dies on refresh" },
