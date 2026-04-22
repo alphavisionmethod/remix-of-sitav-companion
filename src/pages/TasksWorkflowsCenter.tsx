@@ -124,8 +124,13 @@ export default function TasksWorkflowsCenter() {
   const recurringCount = tasks.filter(t => t.recurring).length;
 
   return (
-    <div className="space-y-6 p-6 max-w-7xl mx-auto">
-<SitaPageHeader
+    <motion.div
+      className="space-y-6 p-6 max-w-7xl mx-auto"
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
+    >
+      <SitaPageHeader
         icon={<ListTodo className="h-6 w-6" />}
         title="Tasks & Workflows"
         subtitle="Your action engine — tasks, queues, dependencies, and workflows"
