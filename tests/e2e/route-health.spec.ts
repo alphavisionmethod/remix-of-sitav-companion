@@ -16,7 +16,7 @@ test.describe("Route Health — Public Routes (from route-registry)", () => {
   }
 });
 
-test.describe("Route Health — Protected Routes redirect unauthenticated", () => {
+test.describe("Route Health — Protected Routes redirect unauthenticated (from route-registry)", () => {
   for (const route of PROTECTED_ROUTE_SAMPLES) {
     test(`${route} redirects to /login when unauthenticated`, async ({ page }) => {
       await page.goto(route);
