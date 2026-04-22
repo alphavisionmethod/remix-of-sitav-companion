@@ -153,6 +153,8 @@ vi.mock("@/contexts/SitaKernelContext", () => ({
   useSharedMemory: () => ({ get: vi.fn(), set: vi.fn() }),
   useSharedTrust: () => ({ score: 1 }),
   useEntityScoped: () => ({}),
+  useCloudControlPlane: () => ({ status: "healthy", actions: [] }),
+  useLifeSimulator: () => ({ scenarios: [], run: vi.fn() }),
   SitaKernelProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
 }));
 
@@ -165,6 +167,7 @@ vi.mock("@/hooks/useOSRuntime", () => ({
 // Mock reality mode
 vi.mock("@/lib/dual-reality/reality-mode-context", () => ({
   useRealityMode: () => ({ mode: "real", setMode: vi.fn() }),
+  useRealityModeSafe: () => ({ mode: "real", setMode: vi.fn() }),
   RealityModeProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
 }));
 
