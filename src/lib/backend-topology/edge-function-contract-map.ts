@@ -9,7 +9,7 @@ export interface FunctionContract {
   readonly errorSchema: string;
 }
 
-export const EDGE_FUNCTION_CONTRACT_MAP: Record<string, FunctionContract> = {
+export const EDGE_FUNCTION_CONTRACT_MAP : Record<string, FunctionContract> = {
   "admin-ai-workforce-run": { inputSchema: "AdminWorkforceRunInput", outputSchema: "AdminWorkforceRunOutput", errorSchema: "StandardError" },
   "admin-api": { inputSchema: "AdminApiRequest", outputSchema: "AdminApiResponse", errorSchema: "StandardError" },
   "admin-bff-gateway": { inputSchema: "BffGatewayRequest", outputSchema: "BffGatewayResponse", errorSchema: "StandardError" },
@@ -95,19 +95,7 @@ export const EDGE_FUNCTION_CONTRACT_MAP: Record<string, FunctionContract> = {
   "user-bff-gateway": { inputSchema: "UserBffRequest", outputSchema: "UserBffResponse", errorSchema: "StandardError" },
   "vapid-public-key": { inputSchema: null, outputSchema: "VapidKeyResponse", errorSchema: "StandardError" },
   "verification-recorder": { inputSchema: "VerificationInput", outputSchema: "VerificationOutput", errorSchema: "StandardError" },
-};
-
-as const;
-
-export function getContractForFunction(name: string): FunctionContract | undefined {
-  return EDGE_FUNCTION_CONTRACT_MAP[name];
-}
-
-export function getFunctionsWithoutInputSchema(): string[] {
-  return Object.entries(EDGE_FUNCTION_CONTRACT_MAP)
-    .filter(([, c]) => c.inputSchema === null)
-    .map(([name]) => name);
-}  "account-delete": { inputSchema: null, outputSchema: null, errorSchema: "StandardError" },
+  "account-delete": { inputSchema: null, outputSchema: null, errorSchema: "StandardError" },
   "admin-reset-user-setup": { inputSchema: null, outputSchema: null, errorSchema: "StandardError" },
   "admin-revoke-session": { inputSchema: null, outputSchema: null, errorSchema: "StandardError" },
   "ai-receipt-completeness-snapshot": { inputSchema: null, outputSchema: null, errorSchema: "StandardError" },
@@ -224,3 +212,14 @@ export function getFunctionsWithoutInputSchema(): string[] {
   "workflow-repair": { inputSchema: null, outputSchema: null, errorSchema: "StandardError" },
   "workflow-replay": { inputSchema: null, outputSchema: null, errorSchema: "StandardError" },
   "workflow-stuck-detector": { inputSchema: null, outputSchema: null, errorSchema: "StandardError" },
+};
+
+export function getContractForFunction(name: string): FunctionContract | undefined {
+  return EDGE_FUNCTION_CONTRACT_MAP[name];
+}
+
+export function getFunctionsWithoutInputSchema(): string[] {
+  return Object.entries(EDGE_FUNCTION_CONTRACT_MAP)
+    .filter(([, c]) => c.inputSchema === null)
+    .map(([name]) => name);
+}  "account-delete": { inputSchema: null, outputSchema: null, errorSchema: "StandardError" },

@@ -8,7 +8,7 @@ export interface FunctionTableAccess {
   readonly writes: readonly string[];
 }
 
-export const EDGE_FUNCTION_MIGRATION_MAP: Record<string, FunctionTableAccess> = {
+export const EDGE_FUNCTION_MIGRATION_MAP : Record<string, FunctionTableAccess> = {
   "admin-ai-workforce-run": { reads: ["ai_workforce_roles", "ai_workforce_task_types", "ai_workforce_budget_classes"], writes: ["ai_workforce_invocations", "ai_workforce_outputs"] },
   "admin-api": { reads: ["profiles", "user_roles", "admin_action_audit"], writes: ["admin_action_audit"] },
   "admin-bff-gateway": { reads: ["profiles", "user_roles", "admin_sessions"], writes: [] },
@@ -94,31 +94,7 @@ export const EDGE_FUNCTION_MIGRATION_MAP: Record<string, FunctionTableAccess> = 
   "user-bff-gateway": { reads: ["profiles", "bookings", "deals", "budgets"], writes: [] },
   "vapid-public-key": { reads: ["vapid_keys"], writes: [] },
   "verification-recorder": { reads: [], writes: ["proof_records", "receipts"] },
-};
-
-as const;
-
-export function getTableAccessForFunction(name: string): FunctionTableAccess | undefined {
-  return EDGE_FUNCTION_MIGRATION_MAP[name];
-}
-
-export function getFunctionsThatWriteTable(table: string): string[] {
-  return Object.entries(EDGE_FUNCTION_MIGRATION_MAP)
-    .filter(([, access]) => access.writes.includes(table))
-    .map(([name]) => name);
-}
-
-export function getFunctionsThatReadTable(table: string): string[] {
-  return Object.entries(EDGE_FUNCTION_MIGRATION_MAP)
-    .filter(([, access]) => access.reads.includes(table))
-    .map(([name]) => name);
-}
-
-export function getOrphanFunctions(): string[] {
-  return Object.entries(EDGE_FUNCTION_MIGRATION_MAP)
-    .filter(([, access]) => access.reads.length === 0 && access.writes.length === 0)
-    .map(([name]) => name);
-}  "account-delete": { reads: [], writes: [] },
+  "account-delete": { reads: [], writes: [] },
   "admin-reset-user-setup": { reads: [], writes: [] },
   "admin-revoke-session": { reads: [], writes: [] },
   "ai-receipt-completeness-snapshot": { reads: [], writes: [] },
@@ -235,3 +211,26 @@ export function getOrphanFunctions(): string[] {
   "workflow-repair": { reads: [], writes: [] },
   "workflow-replay": { reads: [], writes: [] },
   "workflow-stuck-detector": { reads: [], writes: [] },
+};
+
+export function getTableAccessForFunction(name: string): FunctionTableAccess | undefined {
+  return EDGE_FUNCTION_MIGRATION_MAP[name];
+}
+
+export function getFunctionsThatWriteTable(table: string): string[] {
+  return Object.entries(EDGE_FUNCTION_MIGRATION_MAP)
+    .filter(([, access]) => access.writes.includes(table))
+    .map(([name]) => name);
+}
+
+export function getFunctionsThatReadTable(table: string): string[] {
+  return Object.entries(EDGE_FUNCTION_MIGRATION_MAP)
+    .filter(([, access]) => access.reads.includes(table))
+    .map(([name]) => name);
+}
+
+export function getOrphanFunctions(): string[] {
+  return Object.entries(EDGE_FUNCTION_MIGRATION_MAP)
+    .filter(([, access]) => access.reads.length === 0 && access.writes.length === 0)
+    .map(([name]) => name);
+}  "account-delete": { reads: [], writes: [] },
