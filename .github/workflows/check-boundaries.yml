@@ -39,6 +39,20 @@ jobs:
       - name: Run import boundary checker
         run: npx tsx scripts/check-import-boundaries.ts
 
+      - name: Run mutation traceability gate
+        env:
+          MUTATION_UNDECLARED_THRESHOLD: "0"
+        run: npx tsx scripts/architecture/checks/check-edge-function-mutation-traceability.ts
+
+      - name: Upload mutation traceability report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mutation-traceability-report
+          path: generated/edge-function-mutation-traceability.json
+          retention-days: 30
+          if-no-files-found: warn
+
       - name: Upload boundary report
         if: always()
         uses: actions/upload-artifact@v4
