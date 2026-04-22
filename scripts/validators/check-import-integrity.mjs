@@ -3,10 +3,19 @@
 // SITA OS — Import Integrity Validator
 // Detects malformed multi-line imports (import injected mid-block)
 // ═══════════════════════════════════════════════════════════════
-import { globSync } from "glob";
-import { readFileSync } from "fs";
+import { readFileSync, readdirSync, statSync } from "fs";
+import { join } from "path";
 
-const files = globSync("src/pages/**/*.tsx");
+function walk(dir, ext, out = []) {
+  for (const e of readdirSync(dir, { withFileTypes: true })) {
+    const p = join(dir, e.name);
+    if (e.isDirectory()) walk(p, ext, out);
+    else if (p.endsWith(ext)) out.push(p);
+  }
+  return out;
+}
+
+const files = walk("src/pages", ".tsx");
 let errors = 0;
 
 for (const file of files) {
