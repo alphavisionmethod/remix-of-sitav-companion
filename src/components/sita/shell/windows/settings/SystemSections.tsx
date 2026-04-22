@@ -532,6 +532,134 @@ function QuickAccessFavorites() {
 }
 
 function trackSettingChange(key: string, oldValue: unknown, newValue: unknown) {
+
+// ── Timezone Picker ──
+
+const ALL_TIMEZONES = (() => {
+  try {
+    return (Intl as any).supportedValuesOf("timeZone") as string[];
+  } catch {
+    return [
+      "America/New_York", "America/Chicago", "America/Denver", "America/Los_Angeles",
+      "America/Bogota", "America/Sao_Paulo", "America/Mexico_City", "America/Toronto",
+      "Europe/London", "Europe/Paris", "Europe/Berlin", "Europe/Madrid",
+      "Asia/Tokyo", "Asia/Shanghai", "Asia/Kolkata", "Asia/Dubai",
+      "Australia/Sydney", "Pacific/Auckland", "UTC",
+    ];
+  }
+})();
+
+function TimezonePicker() {
+  const [tz, setTz] = useSettingsValue("general.timezone", Intl.DateTimeFormat().resolvedOptions().timeZone);
+  const [favorites, setFavorites] = useSettingsValue("general.timezoneFavorites", [] as any);
+  const favList = (Array.isArray(favorites) ? favorites : []) as string[];
+  const [open, setOpen] = useState(false);
+  const [query, setQuery] = useState("");
+
+  const recentKey = "sita:tz-recent";
+  const [recents] = useState<string[]>(() => {
+    try { return JSON.parse(localStorage.getItem(recentKey) || "[]").slice(0, 5); } catch { return []; }
+  });
+
+  const filtered = query.trim()
+    ? ALL_TIMEZONES.filter(t => t.toLowerCase().includes(query.toLowerCase())).slice(0, 30)
+    : [];
+
+  const selectTz = useCallback((newTz: string) => {
+    setTz(newTz as any);
+    setOpen(false);
+    setQuery("");
+    try {
+      const prev = JSON.parse(localStorage.getItem(recentKey) || "[]") as string[];
+      const next = [newTz, ...prev.filter(t => t !== newTz)].slice(0, 5);
+      localStorage.setItem(recentKey, JSON.stringify(next));
+    } catch {}
+    trackSettingChange("general.timezone", tz, newTz);
+  }, [tz, setTz]);
+
+  const toggleFav = useCallback((tzId: string) => {
+    const next = favList.includes(tzId) ? favList.filter(f => f !== tzId) : [...favList, tzId].slice(0, 5);
+    setFavorites(next as any);
+  }, [favList, setFavorites]);
+
+  if (!open) {
+    return (
+      <SettingRow label="Timezone" description={tz} icon={<Globe className="h-3.5 w-3.5" />}>
+        <NovaButton variant="secondary" onClick={() => setOpen(true)} className="!text-[9px] !py-1 !px-2">
+          Change
+        </NovaButton>
+      </SettingRow>
+    );
+  }
+
+  return (
+    <VStack spacing="tight">
+      <HStack spacing="tight" align="center" justify="between">
+        <NovaSectionLabel className="!px-0 !text-[9px]">Select Timezone</NovaSectionLabel>
+        <button onClick={() => { setOpen(false); setQuery(""); }} className="text-muted-foreground hover:text-foreground">
+          <X className="h-3 w-3" />
+        </button>
+      </HStack>
+      <div className="relative">
+        <Search className="absolute left-2 top-1/2 -translate-y-1/2 h-3 w-3 text-muted-foreground" />
+        <input
+          autoFocus
+          value={query}
+          onChange={e => setQuery(e.target.value)}
+          placeholder="Search timezone…"
+          className="w-full text-[10px] bg-[hsl(0_0%_100%/0.06)] border border-border/30 rounded-md pl-6 pr-2 py-1.5 text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-[hsl(var(--primary))]/40"
+        />
+      </div>
+      {/* Favorites */}
+      {favList.length > 0 && !query && (
+        <VStack spacing="micro">
+          <NovaText variant="label" muted className="!text-[8px] !uppercase !tracking-wider">Favorites</NovaText>
+          {favList.map(f => (
+            <TzRow key={f} tz={f} active={tz === f} isFav onSelect={selectTz} onToggleFav={toggleFav} />
+          ))}
+        </VStack>
+      )}
+      {/* Recents */}
+      {recents.length > 0 && !query && (
+        <VStack spacing="micro">
+          <NovaText variant="label" muted className="!text-[8px] !uppercase !tracking-wider">Recent</NovaText>
+          {recents.filter(r => !favList.includes(r)).map(r => (
+            <TzRow key={r} tz={r} active={tz === r} isFav={false} onSelect={selectTz} onToggleFav={toggleFav} />
+          ))}
+        </VStack>
+      )}
+      {/* Search results */}
+      {query && (
+        <div className="max-h-36 overflow-y-auto space-y-0.5">
+          {filtered.length === 0 ? (
+            <NovaText variant="label" muted className="!text-[9px] py-2 text-center">No timezones match "{query}"</NovaText>
+          ) : filtered.map(t => (
+            <TzRow key={t} tz={t} active={tz === t} isFav={favList.includes(t)} onSelect={selectTz} onToggleFav={toggleFav} />
+          ))}
+        </div>
+      )}
+    </VStack>
+  );
+}
+
+function TzRow({ tz, active, isFav, onSelect, onToggleFav }: {
+  tz: string; active: boolean; isFav: boolean; onSelect: (tz: string) => void; onToggleFav: (tz: string) => void;
+}) {
+  return (
+    <div className={cn(
+      "flex items-center gap-1.5 rounded-md px-2 py-1 text-[10px] transition-colors cursor-pointer",
+      active ? "bg-[hsl(var(--primary))]/10 text-[hsl(var(--primary))]" : "hover:bg-[hsl(0_0%_100%/0.04)] text-foreground"
+    )}>
+      <button onClick={() => onSelect(tz)} className="flex-1 text-left truncate">{tz.replace(/_/g, " ")}</button>
+      <button onClick={(e) => { e.stopPropagation(); onToggleFav(tz); }} className="shrink-0" title={isFav ? "Remove from favorites" : "Add to favorites"}>
+        <Star className={cn("h-2.5 w-2.5", isFav ? "fill-[hsl(var(--primary))] text-[hsl(var(--primary))]" : "text-muted-foreground/40")} />
+      </button>
+      {active && <Check className="h-2.5 w-2.5 shrink-0" />}
+    </div>
+  );
+}
+
+function trackSettingChange(key: string, oldValue: unknown, newValue: unknown) {
   try {
     window.dispatchEvent(new CustomEvent("sita-analytics", {
       detail: {
