@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { getAvatarCache, setAvatarCache, invalidateAvatarCache, avatarCacheKey } from "@/lib/advisors/avatar-url-cache";
 
 // ── Validation constants ──────────────────────────────────────
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
@@ -46,8 +47,8 @@ function getImageDimensions(file: File): Promise<{ width: number; height: number
   });
 }
 
-// ── URL cache for cross-component memoization ─────────────────
-const portraitUrlCache = new Map<string, string>();
+// ── URL cache backed by shared two-tier cache ─────────────────
+const portraitUrlCache = new Map<string, string>(); // keep for sync reads
 
 interface AdvisorPortraitState {
   customUrls: Record<string, string>;
@@ -76,6 +77,7 @@ export function useAdvisorPortraits(): AdvisorPortraitState {
           if (p.avatar_url) {
             urls[p.advisor_id] = p.avatar_url;
             portraitUrlCache.set(p.advisor_id, p.avatar_url);
+            setAvatarCache(avatarCacheKey(user.id, p.advisor_id), p.avatar_url, "hit");
           }
         });
         setCustomUrls(urls);
@@ -136,6 +138,12 @@ export function useAdvisorPortraits(): AdvisorPortraitState {
 
       setCustomUrls(prev => ({ ...prev, [advisorId]: publicUrl }));
       portraitUrlCache.set(advisorId, publicUrl);
+      // Invalidate & re-set shared cache
+      const { data: { user: u2 } } = await supabase.auth.getUser();
+      if (u2) {
+        invalidateAvatarCache(avatarCacheKey(u2.id, advisorId));
+        setAvatarCache(avatarCacheKey(u2.id, advisorId), publicUrl, "hit");
+      }
       toast.success("Portrait updated successfully");
       return publicUrl;
     } catch (err) {
@@ -164,6 +172,7 @@ export function useAdvisorPortraits(): AdvisorPortraitState {
         return next;
       });
       portraitUrlCache.delete(advisorId);
+      invalidateAvatarCache(avatarCacheKey(user.id, advisorId));
       toast.success("Portrait removed — using default");
     } catch (err) {
       console.error("Portrait removal error:", err);
