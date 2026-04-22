@@ -128,7 +128,7 @@ describe("ServiceWatchdog", () => {
     vi.useFakeTimers();
     const restartFn = vi.fn();
     wd.registerComponent("svc", "service", restartFn, 3);
-    vi.advanceTimersByTime(600);
+    vi.advanceTimersByTime(1100);
     wd.check();
     expect(restartFn).toHaveBeenCalledTimes(1);
     vi.useRealTimers();
@@ -140,7 +140,7 @@ describe("ServiceWatchdog", () => {
     wd.registerComponent("svc", "service", restartFn, 2);
     // Trigger 3 checks beyond threshold
     for (let i = 0; i < 3; i++) {
-      vi.advanceTimersByTime(600);
+      vi.advanceTimersByTime(1100);
       wd.check();
     }
     expect(restartFn).toHaveBeenCalledTimes(2); // Only 2, not 3
@@ -152,7 +152,7 @@ describe("ServiceWatchdog", () => {
     const cb = vi.fn();
     wd.onFreeze(cb);
     wd.registerComponent("bg", "background");
-    vi.advanceTimersByTime(3000);
+    vi.advanceTimersByTime(5100);
     wd.check();
     expect(cb).toHaveBeenCalledWith("bg");
     vi.useRealTimers();
