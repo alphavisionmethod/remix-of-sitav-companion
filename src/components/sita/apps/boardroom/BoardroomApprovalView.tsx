@@ -248,7 +248,6 @@ function PostApprovalClosure({ receipt, onDismiss }: { receipt: { title: string;
 }
 
 export function BoardroomApprovalView({ scope, onNavigate }: Props) {
-  const { isDemoMode } = useDataMode();
   const { pendingApprovals } = useBoardroomData();
   const { createReceipt, createActionItem, isDemoMode } = useBoardroomLiveData();
   const [generatedReceipt, setGeneratedReceipt] = useState<null | { title: string; hash: string; time: string }>(null);

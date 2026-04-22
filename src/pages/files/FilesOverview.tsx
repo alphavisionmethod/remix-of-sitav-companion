@@ -74,7 +74,6 @@ const FilesOverview = () => {
 
   // Truth-banner derived state: live whenever an authenticated user is present —
   // empty real data is still "live" (it is the user's honest empty state).
-  const isDemoMode = !user;
 
   const recentEvents = [
     { id: "r1", title: "Contract uploaded & classified", timestamp: "2h ago", accentColor: "hsl(152 55% 48%)" },

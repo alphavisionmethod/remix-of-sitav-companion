@@ -30,7 +30,6 @@ const trips: Trip[] = [
 type TravelView = "trips" | "prep" | "itinerary" | "logistics" | "post-trip";
 
 const TravelPlanning = () => {
-  const { isDemo: isDemoMode } = useAuth();
   const { isDemoMode } = useDataMode();
   const [view, setView] = useState<TravelView>("trips");
   const [selectedTrip, setSelectedTrip] = useState(trips[1]);

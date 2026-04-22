@@ -24,7 +24,6 @@ import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function BookingCenter() {
   const { isDemoMode } = useDataMode();
-  const { isDemo: isDemoMode } = useAuth();
   const { data: liveBookings, isLoading } = useBookings();
   const [tab, setTab] = useState("upcoming");
 

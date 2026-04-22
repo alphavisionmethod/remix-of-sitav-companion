@@ -25,7 +25,6 @@ export function DataLoadingWrapper({
   emptyDescription,
   skeletonCount = 3,
 }: DataLoadingWrapperProps) {
-  const { isDemoMode } = useDataMode();
   if (!isDemoMode && isLoading) {
     return (
       <div className="space-y-4 p-6">

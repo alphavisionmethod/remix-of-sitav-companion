@@ -61,7 +61,6 @@ import {
 } from "@/lib/internal-agents/rights";
 import { validateLaunchReadiness, getCouncilSummary, getAllCouncilSummaries, ACTION_PIPELINE_STATES } from "@/lib/internal-agents/launch-readiness";
 import type { InternalAgentCouncil, InternalAgentDefinition } from "@/lib/internal-agents/types";
-  const { isDemo: isDemoMode } = useAuth();
   const toggleMode = () => {};
   const refreshConnectors = () => {};
   const connectors: Array<{ name: string; status: string; lastSync: string; type: string }> = [];
@@ -284,7 +283,6 @@ const OwnerCenter = () => {
   const openIncidents = incidents.filter((i: Record<string, any>) => i.status === "open").length;
 
   const goTo = (key: string) => {
-  const { isDemo: isDemoMode } = useAuth();
     const routeMap: Record<string, string> = {
       overview: "/owner", workforce: "/owner/internal-agents", incidents: "/owner/incidents",
       connectors: "/owner/connector-health", costs: "/owner/costs", policies: "/owner/policies",
@@ -1597,7 +1595,6 @@ const OwnerCenter = () => {
                 <SitaSectionHeader title="Watchdog Status" subtitle="Dedicated monitoring for critical system concerns" />
                 <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
                   {WATCHDOG_CONCERNS.map(w => {
-  const { isDemo: isDemoMode } = useAuth();
                     const agent = (workforceData?.agents || []).find((a: Record<string, any>) => a.agentId === w.agentId);
                     return (
                       <SitaCard key={w.concern} hover={false} className="p-4">

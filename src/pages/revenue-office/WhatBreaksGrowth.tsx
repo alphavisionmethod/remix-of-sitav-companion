@@ -53,7 +53,6 @@ const DEPENDENCY_RISKS = [
 
 export default function WhatBreaksGrowth() {
   const { isDemoMode } = useDataMode();
-  const { isDemo: isDemoMode } = useAuth();
   const [tab, setTab] = useState("fragility");
   const { data: liveRiskAreas } = useRevenueRiskAreas();
   const riskAreas = isDemoMode ? DEMO_riskAreas : (liveRiskAreas && liveRiskAreas.length > 0 ? liveRiskAreas : []);

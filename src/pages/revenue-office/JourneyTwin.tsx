@@ -44,7 +44,6 @@ const statusBg = (s: string) => s === "active" ? "bg-[hsl(var(--trust-safe))]/10
 
 export default function JourneyTwin() {
   const { isDemoMode } = useDataMode();
-  const { isDemo: isDemoMode } = useAuth();
   const { data: liveJourneyStages } = useCustomerJourneyStages();
   const JOURNEY_STAGES = isDemoMode ? DEMO_JOURNEY_STAGES : (liveJourneyStages && liveJourneyStages.length > 0 ? liveJourneyStages.map((s: any) => ({
     stage: s.stage_name || s.name || "Unknown",

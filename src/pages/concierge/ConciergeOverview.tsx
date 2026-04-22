@@ -23,7 +23,6 @@ import { useDataMode } from "@/contexts/DataModeContext";
 
 
 const ConciergeOverview = () => {
-  const { isDemo: isDemoMode } = useAuth();
   const { isDemoMode } = useDataMode();
   const { navigateTo } = useConciergeNavigation();
   const { data: tasks = [] } = useHouseholdTasks();

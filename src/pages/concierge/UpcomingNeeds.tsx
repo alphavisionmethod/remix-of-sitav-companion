@@ -40,7 +40,6 @@ const REVIEW_ITEMS: ReviewItem[] = [
 type UpcomingView = "today" | "3-day" | "week" | "burden";
 
 const UpcomingNeeds = () => {
-  const { isDemo: isDemoMode } = useAuth();
   const { isDemoMode } = useDataMode();
   const [view, setView] = useState<UpcomingView>("today");
 
@@ -49,7 +48,6 @@ const UpcomingNeeds = () => {
   const overdueCount = OBLIGATIONS.filter(o => o.dueLabel.includes("Overdue")).length;
 
   const filterForView = () => {
-  const { isDemo: isDemoMode } = useAuth();
     switch (view) {
       case "today": return todayItems;
       case "3-day": return threeDayItems;

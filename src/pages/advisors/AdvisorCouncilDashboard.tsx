@@ -158,7 +158,6 @@ function useAgentIntelligence(action: string) {
 
 export default function AdvisorCouncilDashboard() {
   const { isDemoMode } = useDataMode();
-  const { isDemo: isDemoMode } = useAuth();
   const [searchParams] = useSearchParams();
   const initialTab = searchParams.get("tab") || "scorecards";
   const [tab, setTab] = useState(initialTab);

@@ -16,7 +16,6 @@ import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function IntegrationsCatalog() {
   const { isDemoMode } = useDataMode();
-  const { isDemo: isDemoMode } = useAuth();
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("all");
   const navigate = useNavigate();

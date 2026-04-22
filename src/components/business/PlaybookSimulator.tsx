@@ -285,6 +285,7 @@ interface PlaybookSimulatorProps {
 }
 
 const PlaybookSimulator = ({ draft, onBack, onActivate }: PlaybookSimulatorProps) => {
+  const { isDemoMode } = useDataMode();
   const [selectedCustomerIds, setSelectedCustomerIds] = useState<string[]>((isDemoMode ? MOCK_CUSTOMERS : [] as typeof MOCK_CUSTOMERS).map(c => c.id));
   const [currentStep, setCurrentStep] = useState(-1); // -1 = not started
   const [autoPlay, setAutoPlay] = useState(false);
@@ -297,11 +298,6 @@ const PlaybookSimulator = ({ draft, onBack, onActivate }: PlaybookSimulatorProps
   // Run simulation
   useEffect(() => {
     if (selectedCustomers.length > 0) {
-  const { isDemoMode } = useDataMode();
-  const { isDemoMode } = useDataMode();
-  const { isDemoMode } = useDataMode();
-  const { isDemoMode } = useDataMode();
-  const { isDemoMode } = useDataMode();
       setResult(simulatePlaybook(draft, selectedCustomers));
     } else {
       setResult(null);

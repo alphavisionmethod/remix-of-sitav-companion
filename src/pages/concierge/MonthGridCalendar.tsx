@@ -24,7 +24,6 @@ interface CalendarEvent {
 
 function useCalendarData(year: number, month: number) {
   const { isDemoMode } = useDataMode();
-  const { user, isDemo: isDemoMode } = useAuth();
 
   return useQuery({
     queryKey: ["calendar-data", user?.id, year, month, isDemoMode],
@@ -59,7 +58,6 @@ import { useDataMode } from "@/contexts/DataModeContext";
 
 
 const MonthGridCalendar = () => {
-  const { isDemo: isDemoMode } = useAuth();
   const now = new Date();
   const [year, setYear] = useState(now.getFullYear());
   const [month, setMonth] = useState(now.getMonth());

@@ -16,7 +16,6 @@ import { useDataMode } from "@/contexts/DataModeContext";
 
 
 const FinancialHealthPulse = () => {
-  const { isDemo: isDemoMode } = useAuth();
   const { isDemoMode } = useDataMode();
 
   const health = useMemo(() => computeFinancialHealth({

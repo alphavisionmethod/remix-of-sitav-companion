@@ -20,7 +20,6 @@ import { useDataMode } from "@/contexts/DataModeContext";
 
 
 const NetWorthOffice = () => {
-  const { isDemo: isDemoMode } = useAuth();
   const { isDemoMode } = useDataMode();
   const { data: accounts = [] } = useFinancialAccounts();
   const { data: kpis } = useMoneyKPIs();

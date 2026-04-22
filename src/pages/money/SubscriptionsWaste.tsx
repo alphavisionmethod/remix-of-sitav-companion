@@ -31,7 +31,6 @@ interface SubForm { service_name: string; amount: string; billing_cycle: string;
 const emptyForm: SubForm = { service_name: "", amount: "", billing_cycle: "monthly", category: "", renewal_date: "", usage_level: "unknown", waste_flag: false, duplicate_of: "", notes: "" };
 
 const SubscriptionsWaste = () => {
-  const { isDemo: isDemoMode } = useAuth();
   const { isDemoMode } = useDataMode();
   const { user } = useAuth();
   const queryClient = useQueryClient();
@@ -63,7 +62,6 @@ const SubscriptionsWaste = () => {
   const selected = subscriptions.find(s => s.id === selectedId);
 
   const annualized = (amount: number, cycle: string | null) => {
-  const { isDemo: isDemoMode } = useAuth();
     const m = cycle === "weekly" ? 52 : cycle === "quarterly" ? 4 : cycle === "annually" ? 1 : 12;
     return amount * m;
   };
