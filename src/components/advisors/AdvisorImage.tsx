@@ -57,22 +57,36 @@ const SIZE_MAP = {
   xl: "h-24 w-24",
 };
 
+import { getAvatarCache, setAvatarCache, avatarCacheKey } from "@/lib/advisors/avatar-url-cache";
+
 export function useCustomAdvisorAvatar(domain: AdvisorDomain) {
   const { user } = useAuth();
   const [customUrl, setCustomUrl] = useState<string | null>(null);
 
   useEffect(() => {
     if (!user?.id) return;
+    const cKey = avatarCacheKey(user.id, domain);
+    const cached = getAvatarCache(cKey);
+    if (cached) {
+      setCustomUrl(cached.status === "hit" ? cached.url : null);
+      return;
+    }
     const path = `${user.id}/${domain}.png`;
     const { data } = supabase.storage
       .from("advisor-avatars")
       .getPublicUrl(path);
-    // Check if the file actually exists by attempting a HEAD-like fetch
     fetch(data.publicUrl, { method: "HEAD" })
       .then((res) => {
-        if (res.ok) setCustomUrl(data.publicUrl);
+        if (res.ok) {
+          setCustomUrl(data.publicUrl);
+          setAvatarCache(cKey, data.publicUrl, "hit");
+        } else {
+          setAvatarCache(cKey, data.publicUrl, "miss");
+        }
       })
-      .catch(() => {});
+      .catch(() => {
+        setAvatarCache(cKey, data.publicUrl, "miss");
+      });
   }, [user?.id, domain]);
 
   return customUrl;
