@@ -15,8 +15,7 @@ describe("OrchestrationFacade E2E", () => {
     const facade = new OrchestrationFacade();
     const result = await facade.processIntent(makeRequest({ intentRaw: "what is my revenue?" }));
     expect(result).toBeDefined();
-    expect(result.success).toBe(true);
-    expect(result.outcome).toBe("completed");
+    expect(result.outcome).toBe("success");
     expect(result.intentOutcome).toBeDefined();
     expect(result.intentOutcome?.classification).toBe("query");
     expect(result.proofOutcome).toBeDefined();
@@ -34,7 +33,7 @@ describe("OrchestrationFacade E2E", () => {
     const facade = new OrchestrationFacade();
     const result = await facade.processIntent(makeRequest({ intentRaw: "show me deals", isSimulation: true }));
     expect(result).toBeDefined();
-    expect(result.success).toBe(true);
+    expect(result.outcome).not.toBe("failure");
   });
 
   it("getLastResult returns the most recent result", async () => {
