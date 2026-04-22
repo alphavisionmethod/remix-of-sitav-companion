@@ -113,6 +113,7 @@ const TrendIcon = ({
 
 const OutcomeEconomicsDashboard = () => {
   useRequireAdmin();
+  const { isDemoMode } = useDataMode();
   const [period, setPeriod] = useState("30d");
 
   const totalCost = (isDemoMode ? DEMO_OUTCOMES : [] as typeof DEMO_OUTCOMES).reduce((s, o) => s + o.totalCost, 0);

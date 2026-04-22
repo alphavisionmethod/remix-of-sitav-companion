@@ -22,7 +22,10 @@ import { useDataMode } from "@/contexts/DataModeContext";
 
 // ── Spillover graph (simplified visual) ──────────────────────
 
-const SpilloverGraph = () => (
+const SpilloverGraph = () => {);
+}
+  const { isDemoMode } = useDataMode();
+  return (
   <div className="relative aspect-square max-w-[280px] mx-auto">
     <svg viewBox="0 0 100 100" className="w-full h-full">
       {/* Connection lines */}
