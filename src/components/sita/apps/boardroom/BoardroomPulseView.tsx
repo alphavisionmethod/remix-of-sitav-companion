@@ -162,7 +162,7 @@ export function BoardroomPulseView({ scope, onNavigate }: Props) {
             >
               {/* Flash highlight on change */}
               <motion.div
-                className="absolute inset-0 bg-[hsl(280_50%_50%/0.08)] pointer-events-none"
+                className="absolute inset-0 bg-hud-ring-active/[0.08] pointer-events-none"
                 initial={{ opacity: 1 }}
                 animate={{ opacity: 0 }}
                 transition={{ duration: 0.8 }}
@@ -184,7 +184,7 @@ export function BoardroomPulseView({ scope, onNavigate }: Props) {
 
       {/* Priorities */}
       <div>
-        <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[hsl(280_50%_65%/0.5)] mb-3">
+        <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-hud-text-label mb-3">
           Top Priorities
         </p>
         <div className="space-y-2">
@@ -208,7 +208,7 @@ export function BoardroomPulseView({ scope, onNavigate }: Props) {
 
       {/* Advisor stances — speech bubble style */}
       <div>
-        <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[hsl(280_50%_65%/0.5)] mb-3">
+        <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-hud-text-label mb-3">
           Advisor Stances
         </p>
         <div className="space-y-2">
@@ -240,14 +240,14 @@ export function BoardroomPulseView({ scope, onNavigate }: Props) {
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
-                      <p className="text-[12px] font-bold text-[hsl(0_0%_100%/0.8)]">{topAdv.name}</p>
+                      <p className="text-[12px] font-bold text-hud-text-primary">{topAdv.name}</p>
                       <span className="text-[9px] font-medium" style={{ color: topAdv.accentColor }}>{topAdv.role}</span>
                     </div>
                     {/* Speech bubble */}
                     <div className="relative rounded-lg bg-[hsl(0_0%_100%/0.03)] border border-[hsl(0_0%_100%/0.06)] p-2.5">
-                      <div className="absolute -left-1.5 top-3 w-2.5 h-2.5 bg-[hsl(0_0%_100%/0.03)] border-l border-b border-[hsl(0_0%_100%/0.06)] rotate-45" />
-                      <p className="text-[11px] text-[hsl(0_0%_100%/0.55)] italic flex items-start gap-1.5 relative z-10">
-                        <MessageCircle size={10} className="shrink-0 mt-0.5 text-[hsl(280_50%_55%/0.4)]" />
+                      <div className="absolute -left-1.5 top-3 w-2.5 h-2.5 bg-hud-glass-highlight border-l border-b border-hud-glass-border rotate-45" />
+                      <p className="text-[11px] text-hud-text-secondary italic flex items-start gap-1.5 relative z-10">
+                        <MessageCircle size={10} className="shrink-0 mt-0.5 text-hud-ring-active/40" />
                         "{stance}"
                       </p>
                     </div>
