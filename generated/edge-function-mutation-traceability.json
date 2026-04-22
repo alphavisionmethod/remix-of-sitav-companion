@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-04-22T00:31:23.857Z",
+  "generatedAt": "2026-04-22T00:31:31.334Z",
   "gate": "edge-function-mutation-traceability",
-  "ok": true,
-  "undeclaredWriteThreshold": 242,
-  "thresholdExceeded": false,
+  "ok": false,
+  "undeclaredWriteThreshold": 241,
+  "thresholdExceeded": true,
   "totalFunctions": 201,
   "functionsWithIssues": 161,
   "errorCount": 0,
