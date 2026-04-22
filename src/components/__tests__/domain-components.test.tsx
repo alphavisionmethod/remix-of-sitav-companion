@@ -31,7 +31,7 @@ describe("Component Smoke Tests - Domain Components", () => {
   it("RealityStateBadge renders", async () => {
     const Component = await getDefaultExport(() => import("@/components/reality/RealityStateBadge"));
     if (Component) {
-      const { container } = render(<Component />);
+      const { container } = render(<Component stateClass="demo" />);
       expect(container).toBeTruthy();
     }
   });
@@ -39,7 +39,7 @@ describe("Component Smoke Tests - Domain Components", () => {
   it("AIStateBadge renders", async () => {
     const Component = await getDefaultExport(() => import("@/components/ai/AIStateBadge"));
     if (Component) {
-      const { container } = render(<Component />);
+      const { container } = render(<Component state="healthy" />);
       expect(container).toBeTruthy();
     }
   });
