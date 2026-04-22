@@ -1,0 +1,1 @@
+const slack = "xoxb-1234567890-abcdefg";
