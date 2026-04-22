@@ -213,7 +213,7 @@ export function SecureInitCeremony({ onComplete, reducedMotion = false }: Secure
     >
       {/* Ambient glow */}
       <div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full pointer-events-none transition-all duration-[2000ms]"
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full pointer-events-none transition-all duration-[2s]"
         style={{
           width: 500,
           height: 500,
