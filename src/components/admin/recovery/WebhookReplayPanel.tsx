@@ -22,14 +22,13 @@ const MOCK_EVENTS: WebhookEvent[] = [
   { id: "wh-007", eventType: "payment.completed", status: "replayed", timestamp: "2026-04-20T20:00:00Z", payload: { amount: 200 }, errorMessage: null, provider: "stripe", retryCount: 1 },
 ];
 
-const EVENT_TYPES = [...new Set((isDemoMode ? MOCK_EVENTS : [] as typeof MOCK_EVENTS).map((e) => e.eventType))];
-
 interface Props {
   operatorId: string;
   canExecute: boolean;
 }
 
 export function WebhookReplayPanel({ operatorId, canExecute }: Props) {
+  const { isDemoMode } = useDataMode();
   const { toast } = useToast();
   const [filters, setFilters] = useState<WebhookFilterState>({
     eventType: "",
@@ -49,10 +48,10 @@ export function WebhookReplayPanel({ operatorId, canExecute }: Props) {
     });
   }, [filters]);
 
+  const eventTypes = [...new Set((isDemoMode ? MOCK_EVENTS : [] as typeof MOCK_EVENTS).map((e) => e.eventType))];
   const failedFiltered = filtered.filter((e) => e.status === "failed");
 
   const toggleSelect = (id: string) => {
-  const { isDemoMode } = useDataMode();
     setSelected((prev) => {
       const next = new Set(prev);
       if (next.has(id)) next.delete(id);
@@ -108,7 +107,7 @@ export function WebhookReplayPanel({ operatorId, canExecute }: Props) {
             <SelectTrigger className="h-7 w-40 text-xs"><SelectValue placeholder="Event type" /></SelectTrigger>
             <SelectContent>
               <SelectItem value="all">All types</SelectItem>
-              {EVENT_TYPES.map((t) => <SelectItem key={t} value={t}>{t}</SelectItem>)}
+               {eventTypes.map((t) => <SelectItem key={t} value={t}>{t}</SelectItem>)}
             </SelectContent>
           </Select>
           <Select value={filters.status} onValueChange={(v) => setFilters((f) => ({ ...f, status: v === "all" ? "" : v }))}>

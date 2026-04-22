@@ -208,6 +208,7 @@ export function AgentAuditLog() {
   const [searchQuery, setSearchQuery] = useState("");
   const [actionFilter, setActionFilter] = useState<string>("all");
   const [performerFilter, setPerformerFilter] = useState<string>("all");
+  const { isDemoMode } = useDataMode();
 
   const performers = useMemo(() => [...new Set((isDemoMode ? MOCK_AUDIT : [] as typeof MOCK_AUDIT).map(a => a.performedBy))], []);
 
@@ -239,7 +240,6 @@ export function AgentAuditLog() {
   }), []);
 
   const handleExport = () => {
-  const { isDemoMode } = useDataMode();
     exportAuditLog(filtered);
     toast.success("Audit log exported", { description: "CSV file downloaded with full audit trail" });
   };

@@ -82,9 +82,9 @@ interface SimulationPreviewProps {
 export function SimulationPreview({ compact = false }: SimulationPreviewProps) {
   const [activeScenario, setActiveScenario] = useState<string | null>(null);
   const [running, setRunning] = useState(false);
+  const { isDemoMode } = useDataMode();
 
   const handleRun = (id: string) => {
-  const { isDemoMode } = useDataMode();
     setRunning(true);
     setActiveScenario(id);
     setTimeout(() => setRunning(false), 1500);
