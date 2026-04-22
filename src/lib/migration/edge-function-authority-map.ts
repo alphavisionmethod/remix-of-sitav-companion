@@ -83,7 +83,7 @@ export interface EdgeFunctionAuthorityEntry {
   authJustification?: string;
 }
 
-export const EDGE_FUNCTION_AUTHORITY: readonly EdgeFunctionAuthorityEntry[
+export const EDGE_FUNCTION_AUTHORITY: readonly EdgeFunctionAuthorityEntry[] = [
   { name: "admin-ai-workforce-run", category: "admin-api", authClass: "admin-required", owner: "admin", riskTier: "R3", corsRequired: true, description: "Trigger AI workforce runs from admin console" },
   { name: "admin-api", category: "admin-api", authClass: "admin-required", owner: "admin", riskTier: "R4", corsRequired: true, description: "Admin operations API" },
   { name: "admin-bff-gateway", category: "admin-api", authClass: "admin-required", owner: "admin", riskTier: "R4", corsRequired: true, description: "Admin BFF gateway" },

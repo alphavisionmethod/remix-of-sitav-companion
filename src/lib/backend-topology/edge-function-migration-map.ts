@@ -233,4 +233,4 @@ export function getOrphanFunctions(): string[] {
   return Object.entries(EDGE_FUNCTION_MIGRATION_MAP)
     .filter(([, access]) => access.reads.length === 0 && access.writes.length === 0)
     .map(([name]) => name);
-}  "account-delete": { reads: [], writes: [] },
+}
