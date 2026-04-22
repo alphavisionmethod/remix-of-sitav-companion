@@ -167,8 +167,9 @@ vi.mock("@/contexts/SitaKernelContext", () => ({
   useEntityScoped: () => ({}),
   useCloudControlPlane: () => ({ status: "healthy", actions: [] }),
   useLifeSimulator: () => ({ scenarios: [], run: vi.fn() }),
+  useLifeSimulatorEngine: () => ({ simulator: { getShockTypes: () => [], run: vi.fn(), getResults: () => [] } }),
   useKernelStatus: () => ({ status: "ready", health: "healthy" }),
-  useSearchFabric: () => ({ search: vi.fn().mockResolvedValue([]), results: [], loading: false }),
+  useSearchFabric: () => ({ search: vi.fn().mockResolvedValue([]), results: [], loading: false, addBatch: vi.fn() }),
   useWebsiteManager: () => ({ sites: [], createSite: vi.fn(), deleteSite: vi.fn(), loading: false }),
   SitaKernelProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
 }));
