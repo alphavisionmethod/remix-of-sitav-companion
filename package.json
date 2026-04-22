@@ -17,6 +17,10 @@
     "test:integration": "vitest run src/test/integration/",
     "test:e2e": "npx playwright test",
     "test:e2e:consolidation": "npx playwright test --project=consolidation-regression",
+    "test:e2e:smoke": "npx playwright test smoke-flows.spec.ts",
+    "test:e2e:a11y": "npx playwright test accessibility.spec.ts",
+    "test:e2e:visual": "npx playwright test visual-regression.spec.ts",
+    "pre-deploy": "bash scripts/pre-deploy.sh",
     "test:coverage-ratchet": "npx tsx scripts/root/coverage-ratchet.ts",
     "check:consolidation-waves": "npx tsx scripts/architecture/checks/check-consolidation-wave-regression.ts",
     "check:ai-domains": "npx tsx scripts/architecture/checks/check-ai-domain-boundaries.ts",
@@ -157,6 +161,7 @@
     "release:all-targets": "npm run release:web && npm run release:ios && npm run release:android && npm run release:iso-vmware"
   },
   "dependencies": {
+    "@axe-core/playwright": "4.11.2",
     "@electron/packager": "^18.3.6",
     "@hello-pangea/dnd": "^18.0.1",
     "@hookform/resolvers": "^3.10.0",
