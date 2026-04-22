@@ -17,6 +17,7 @@ import { competitiveIntelligenceService, type CompetitivePosition } from "@/lib/
 import { useOSRuntime } from "@/hooks/useOSRuntime";
 import { useRevenueWhatChanged } from "@/hooks/use-revenue-memory";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 
 const CAMPAIGN_HEALTH = [
@@ -30,6 +31,7 @@ const REPUTATION_PULSE = { rating: 4.8, reviews: 127, responseRate: 96, nps: 72 
 const OPERATING_MODE = "Growth";
 
 export default function GrowthBoardroom() {
+  const { isDemoMode } = useDataMode();
   const { isDemo: isDemoMode } = useAuth();
   const { isBeginner } = useRevenueOfficeMode();
   const { data: liveDeals, isLoading } = useDeals();

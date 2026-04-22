@@ -145,6 +145,7 @@ const StateBadgeInline = ({ state }: { state: string }) => {
 
 const SystemStatus = () => {
   const { listRegions, getTopology, getDemoTopology } = useCloudControlPlane();
+  const { isDemoMode } = useDataMode();
   const location = useLocation();
   const navigate = useNavigate();
   const { data: slos } = useSLOs();

@@ -28,6 +28,7 @@ import type { CallingContact as Contact, CallingCallLog as CallLog, CallingCallS
 import { useCallingContactsData } from "@/hooks/use-business-data";
 import { useCallingContacts, useCallLogs } from "@/hooks/use-live-data";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 
 
@@ -100,6 +101,7 @@ function CallStats({ contacts, callLogs }: { contacts: Contact[]; callLogs: Call
 }
 
 function ActiveDialer({ contact, onEnd, onSkip }: { contact: Contact; onEnd: () => void; onSkip: () => void }) {
+  const { isDemoMode } = useDataMode();
   const { isDemo } = useAuth();
   const isDemoMode = isDemo;
   const [state, setState] = useState<DialerState>("dialing");

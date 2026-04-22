@@ -9,11 +9,13 @@ import { useFinancialAccounts, useMoneyKPIs } from "@/hooks/use-domain-data";
 import { DollarSign, Receipt, CreditCard } from "lucide-react";
 import { PremiumEmptyState } from "@/components/sita/PremiumEmptyState";
 import { useFinanceNavigation } from "@/contexts/FinanceNavigationContext";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 
 
 const MoneyOverview = () => {
   const { isDemo: isDemoMode } = useAuth();
+  const { isDemoMode } = useDataMode();
   const { navigateTo } = useFinanceNavigation();
   const { data: bills = [] } = useBills();
   const { data: subscriptions = [] } = useSubscriptions();

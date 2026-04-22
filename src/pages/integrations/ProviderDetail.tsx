@@ -11,9 +11,11 @@ import { ArrowLeft, CheckCircle, Shield, Zap, Globe, ExternalLink, BookOpen, Ale
 import { getProviderById } from "@/data/seed/integrations";
 import { DEMO_CONNECTIONS } from "@/data/seed/integrations";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 
 export default function ProviderDetail() {
+  const { isDemoMode } = useDataMode();
   const { isDemo: isDemoMode } = useAuth();
   const { providerId } = useParams();
   const navigate = useNavigate();

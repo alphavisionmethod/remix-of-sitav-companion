@@ -7,9 +7,11 @@ import { Sparkles, CheckCircle2, AlertTriangle, Shield, TrendingUp, Clock, Rotat
 import { useAIEngDomain } from "@/hooks/use-ai-engineering-data";
 import { DEMO_ADMIN_PATTERNS_A_I_SELF_HEALING as DEMO_PATTERNS, DEMO_ADMIN_RULES as DEMO_RULES, DEMO_BLOCKED, DEMO_HEALED } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const AISelfHealing = () => {
   const { data: patterns, isDemo } = useAIEngDomain("learningPatterns", DEMO_PATTERNS);
+  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("recent");
 
   return (

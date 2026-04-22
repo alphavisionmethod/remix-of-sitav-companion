@@ -15,11 +15,13 @@ import { useReservesSavings } from "@/hooks/use-domain-data";
 import { useConfirmation } from "@/hooks/use-confirmation";
 import { ConfirmationDialog } from "@/components/sita/ConfirmationDialog";
 import { useQueryFreshness } from "@/hooks/use-query-freshness";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 
 
 const ReservesSavings = () => {
   const { isDemo: isDemoMode } = useAuth();
+  const { isDemoMode } = useDataMode();
   const { data: reservesData = [] } = useReservesSavings();
   const { user } = useAuth();
   const queryClient = useQueryClient();

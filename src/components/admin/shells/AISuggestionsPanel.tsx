@@ -53,6 +53,7 @@ const DEMO_SUGGESTIONS: AISuggestion[] = [
 ];
 
 export function AISuggestionsPanel() {
+  const { isDemoMode } = useDataMode();
   const [dismissed, setDismissed] = useState<Set<string>>(new Set());
   const [expanded, setExpanded] = useState<string | null>(null);
 

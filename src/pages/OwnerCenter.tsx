@@ -36,6 +36,7 @@ interface SimResult {
 }
 const buildDemoSimResult = (simInput: { amount: number; [key: string]: unknown }): SimResult => ({
   simulation: {
+  const { isDemoMode } = useDataMode();
     input: simInput,
     final_effect: simInput.amount > 500 ? "deny" : "allow",
     evaluated_policies: 3,
@@ -80,6 +81,7 @@ import {
   Rocket, GitBranch, BookMarked, Headphones, FileCheck, Map, ExternalLink,
   CreditCard, Package
 } from "lucide-react";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 type OwnerPage = "overview" | "workforce" | "incidents" | "connectors" | "costs" | "policies" | "audit" | "fleet" | "intelligence" | "council"
   | "trust-center" | "releases" | "model-routing" | "knowledge" | "support" | "change-review" | "rollback-center" | "system-map" | "autopilot" | "billing" | "governance" | "approvals";

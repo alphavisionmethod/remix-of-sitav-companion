@@ -20,6 +20,7 @@ import {
   ChevronDown, ChevronUp,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 // ── Helpers ──────────────────────────────────────────────────
 
@@ -74,6 +75,7 @@ function usePulseLiveData(userId: string | undefined) {
 // ── Component ────────────────────────────────────────────────
 
 export default function DailyPulse() {
+  const { isDemoMode } = useDataMode();
   const { user, isDemo } = useAuth();
   const isDemoMode = isDemo;
   const navigate = useNavigate();

@@ -16,6 +16,7 @@ import type { ReadinessInput } from "@/domains/engines/readiness-engine";
 import { useOSRuntime } from "@/hooks/useOSRuntime";
 import { useMemo } from "react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 
 
@@ -24,6 +25,7 @@ import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 const DEFAULT_SCOPE = { ownerId: "current-user", visibility: "private" as const };
 
 export default function GovernanceDashboard() {
+  const { isDemoMode } = useDataMode();
   const { isDemo } = useAuth();
   const isDemoMode = isDemo;
   const { data: gov, isLoading } = useGovernanceSummary();

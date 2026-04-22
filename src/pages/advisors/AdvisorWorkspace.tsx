@@ -39,6 +39,7 @@ import type { AdvisorConfig, AdvisorId } from "@/packages/advisor-config";
 import type { ProofPack, TypedReceipt } from "@/packages/proof-model";
 import type { RefusalState, ContradictionReport } from "@/packages/policy-contracts";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 
 
@@ -65,6 +66,7 @@ const TRUST_PIPELINE: ExecutionState[] = [
 
 const MainGuideHeader = ({ mode, onModeChange }: { mode: CouncilMode; onModeChange: (m: CouncilMode) => void }) => {
   const { isDemo: isDemoMode } = useAuth();
+  const { isDemoMode } = useDataMode();
 const totalApprovals = isDemoMode ? mockAdvisors.reduce((s, a) => s + a.pendingApprovals, 0) : 0;
   const activeAdvisors = isDemoMode ? mockAdvisors.filter(a => a.status === "active").length : 0;
   const highImpact = isDemoMode ? mockRecommendations.filter(r => r.impact === "high").length : 0;

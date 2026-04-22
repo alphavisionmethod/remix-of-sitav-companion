@@ -29,6 +29,7 @@ import { toast } from "sonner";
 import { DEMO_APPROVAL_ITEMS, type DemoApprovalItem as ApprovalItem } from "@/data/seed/approval-chamber";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { EmptyState } from "@/components/sita/EmptyState";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 
 
@@ -302,6 +303,7 @@ const ApprovalCard = ({ item, onAction }: { item: ApprovalItem; onAction: (id: s
 
 const ApprovalChamber = () => {
   const { isDemo } = useAuth();
+  const { isDemoMode } = useDataMode();
   const isDemoMode = isDemo;
   const isAdmin = useIsAdmin();
   const { data: dbApprovals = [], isLoading } = useApprovals();

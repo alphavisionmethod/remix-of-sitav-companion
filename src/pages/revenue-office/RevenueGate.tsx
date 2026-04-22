@@ -11,6 +11,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { DEMO_ADVISOR_PREVIEW, DEMO_QUICK_ACTIONS, DEMO_REV_METRICS as DEMO_METRICS, DEMO_WHAT_CHANGED } from "@/data/seed/revenue-office";
 import { useState } from "react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 
 const CONNECTION_HEALTH = [
@@ -25,6 +26,7 @@ const CONNECTION_HEALTH = [
 const OPERATING_MODES = ["Growth", "Stability", "Recovery", "Launch"] as const;
 
 export default function RevenueGate() {
+  const { isDemoMode } = useDataMode();
   const { isDemo: isDemoMode } = useAuth();
   const navigate = useNavigate();
   const { data: liveDeals, isLoading } = useDeals();

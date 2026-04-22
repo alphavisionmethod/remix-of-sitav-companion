@@ -28,6 +28,7 @@ const DEMO_STATUS: StatusItem[] = [
 ];
 
 export function StatusStrip() {
+  const { isDemoMode } = useDataMode();
   const [safeModeDrawerOpen, setSafeModeDrawerOpen] = useState(false);
 
   return (

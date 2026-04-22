@@ -10,6 +10,7 @@ import {
   ChevronDown, Download, AlertTriangle, CheckCircle, XCircle,
   Settings, Link2, HelpCircle
 } from "lucide-react";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 type LogActor = "admin" | "ai_agent" | "system";
 type LogSeverity = "info" | "warning" | "error" | "critical";
@@ -41,6 +42,7 @@ const DEMO_LOGS: AuditEntry[] = [
 ];
 
 export default function MCLogsAudit() {
+  const { isDemoMode } = useDataMode();
   const { isDemo } = useAuth();
   const isDemoMode = isDemo;
   const [search, setSearch] = useState("");

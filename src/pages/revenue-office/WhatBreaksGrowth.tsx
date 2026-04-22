@@ -14,6 +14,7 @@ import {
 import { DEMO_riskAreas, DEMO_ADVISOR_INVALIDATION } from "@/data/seed/revenue-office";
 import { useRevenueRiskAreas } from "@/hooks/use-revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 
 const FRAGILITY_MATRIX = [
@@ -51,6 +52,7 @@ const DEPENDENCY_RISKS = [
 ];
 
 export default function WhatBreaksGrowth() {
+  const { isDemoMode } = useDataMode();
   const { isDemo: isDemoMode } = useAuth();
   const [tab, setTab] = useState("fragility");
   const { data: liveRiskAreas } = useRevenueRiskAreas();

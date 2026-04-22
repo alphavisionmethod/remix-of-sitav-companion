@@ -11,10 +11,12 @@ import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 import { DEMO_EXPORTABLE_TABLES, DEMO_PAST_EXPORTS } from "@/data/seed/core-pages";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 
 
 export default function SovereignExportPage() {
+  const { isDemoMode } = useDataMode();
   const { user, isDemo } = useAuth();
   const [selectedTables, setSelectedTables] = useState<string[]>((isDemoMode ? DEMO_EXPORTABLE_TABLES : [] as typeof DEMO_EXPORTABLE_TABLES).map(t => t.name));
   const [exporting, setExporting] = useState(false);

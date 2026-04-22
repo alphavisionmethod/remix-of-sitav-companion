@@ -19,10 +19,12 @@ import {
   CheckSquare, Calendar, AlertCircle, Heart, Clock, ShoppingCart,
   Plane, Headphones, ArrowRight, Home, Stethoscope, FileText
 } from "lucide-react";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 
 const ConciergeOverview = () => {
   const { isDemo: isDemoMode } = useAuth();
+  const { isDemoMode } = useDataMode();
   const { navigateTo } = useConciergeNavigation();
   const { data: tasks = [] } = useHouseholdTasks();
   const { data: events = [] } = useFamilyEvents();

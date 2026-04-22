@@ -15,11 +15,13 @@ import { motion } from "framer-motion";
 import { useMemo, useState } from "react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvisorInsight";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 
 
 const NetWorthOffice = () => {
   const { isDemo: isDemoMode } = useAuth();
+  const { isDemoMode } = useDataMode();
   const { data: accounts = [] } = useFinancialAccounts();
   const { data: kpis } = useMoneyKPIs();
   const { data: goals = [] } = useSavingsGoals();

@@ -7,6 +7,7 @@ import { useState } from "react";
 import { Shield, CheckCircle, Clock, FileText, ShoppingCart, Calendar, Wrench, GraduationCap, Plane, Gift } from "lucide-react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 
 interface ProofRecord {
@@ -34,6 +35,7 @@ const proofRecords: ProofRecord[] = [
 
 const ConciergeProof = () => {
   const { isDemo: isDemoMode } = useAuth();
+  const { isDemoMode } = useDataMode();
   const [view, setView] = useState("all");
   const verified = proofRecords.filter(p => p.verification === "verified").length;
   const pending = proofRecords.filter(p => p.verification === "pending").length;

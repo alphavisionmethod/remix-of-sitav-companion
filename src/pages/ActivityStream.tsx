@@ -24,6 +24,7 @@ import {
 
 import { DEMO_ACTIVITY_TIMELINE } from "@/data/fixtures/demo-data";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 
 
@@ -266,6 +267,7 @@ const CatchUpSummary = ({ events }: { events: any[] }) => {
 // ── Main Component ───────────────────────────────────────────
 const ActivityStream = () => {
   const { user, isDemo } = useAuth();
+  const { isDemoMode } = useDataMode();
   const isDemoMode = isDemo;
   const [category, setCategory] = useState<FeedCategory>("all");
   const [expandedId, setExpandedId] = useState<number | null>(null);

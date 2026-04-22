@@ -11,6 +11,7 @@ import { Shield, CheckCircle, XCircle, AlertTriangle, Clock, ArrowRight, Zap, Ey
 import { DEMO_ACTION_REQUESTS } from "@/data/seed/integrations";
 import type { DemoActionRequest } from "@/data/seed/integrations";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 
 const statusConfig: Record<string, { color: string; icon: any; label: string }> = {
@@ -23,6 +24,7 @@ const statusConfig: Record<string, { color: string; icon: any; label: string }> 
 };
 
 function ActionCard({ action, onApprove, onReject }: { action: DemoActionRequest; onApprove?: () => void; onReject?: () => void }) {
+  const { isDemoMode } = useDataMode();
   const { isDemo: isDemoMode } = useAuth();
   const [showDryRun, setShowDryRun] = useState(false);
   const config = statusConfig[action.status];

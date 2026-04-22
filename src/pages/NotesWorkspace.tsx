@@ -25,6 +25,7 @@ import {
   ListTodo, Users, Briefcase, Workflow, FileBox, Sparkles,
   MessageSquare, Calendar,
 } from "lucide-react";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 
 
@@ -60,6 +61,7 @@ const DEMO_LINKED_ENTITIES = [
 
 const NotesWorkspace = () => {
   const { isDemo } = useAuth();
+  const { isDemoMode } = useDataMode();
   const isDemoMode = isDemo;
   const { data: liveNotes } = useNotes();
 

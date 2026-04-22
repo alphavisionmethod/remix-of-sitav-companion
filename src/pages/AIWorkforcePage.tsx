@@ -14,10 +14,12 @@ import { useAuth } from "@/contexts/AuthContext";
 import { EmptyState } from "@/components/sita/SitaComponents";
 import { DEMO_CORE_AGENTS as DEMO_AGENTS } from "@/data/seed/core-pages";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const statusColor = { active: "bg-emerald-500", paused: "bg-amber-500", idle: "bg-muted" };
 
 export default function AIWorkforcePage() {
+  const { isDemoMode } = useDataMode();
   const [selectedTab, setSelectedTab] = useState("roster");
   const { user , isDemo} = useAuth();
 

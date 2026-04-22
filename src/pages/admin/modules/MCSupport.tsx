@@ -10,6 +10,7 @@ import {
   ChevronRight, MessageSquare, Wrench, Eye, ArrowUp,
   FileText, Activity, Zap
 } from "lucide-react";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 type CaseStatus = "open" | "investigating" | "waiting" | "resolved" | "escalated";
 type CasePriority = "low" | "medium" | "high" | "critical";
@@ -44,6 +45,7 @@ const DEMO_CASES: SupportCase[] = [
 ];
 
 export default function MCSupport() {
+  const { isDemoMode } = useDataMode();
   const { isDemo } = useAuth();
   const isDemoMode = isDemo;
   const [search, setSearch] = useState("");

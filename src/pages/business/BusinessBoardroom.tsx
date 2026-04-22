@@ -15,9 +15,11 @@ import { useLeads, useCustomers, useInvoices, useOpportunities } from "@/hooks/u
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
 import { getTopAdvisors } from "@/domains/engines/adaptive-advisor-roster";
 import { getBoardroomAgenda } from "@/domains/engines/adaptive-boardroom-framing";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const BusinessBoardroom = () => {
   const { isDemo: isDemoMode } = useAuth();
+  const { isDemoMode } = useDataMode();
 const [mode, setMode] = useState("weekly");
   const { profile } = useBusinessProfile();
   const adaptiveAdvisors = useMemo(() => {

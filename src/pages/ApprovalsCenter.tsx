@@ -14,6 +14,7 @@ import {
   Shield, CheckCircle, XCircle, Clock, AlertTriangle, Brain, Eye, Zap,
   ThumbsUp, ThumbsDown, MessageSquare, ChevronDown, ChevronUp
 } from "lucide-react";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 
 
@@ -21,6 +22,7 @@ import {
 
 const ApprovalsCenter = () => {
   const { isDemo } = useAuth();
+  const { isDemoMode } = useDataMode();
   const isDemoMode = isDemo;
   const { data: approvals = [], isLoading } = useApprovals();
   const { approve, reject } = useApprovalQueue();

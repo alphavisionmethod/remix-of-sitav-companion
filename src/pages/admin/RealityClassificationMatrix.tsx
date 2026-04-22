@@ -75,6 +75,7 @@ const EMPTY: FormData = {
 };
 
 function FormDialog({ trigger, initial, onSave }: { trigger: React.ReactNode; initial?: FormData; onSave: (d: any) => void }) {
+  const { isDemoMode } = useDataMode();
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState<FormData>(initial ?? EMPTY);
   const handleOpen = (v: boolean) => {

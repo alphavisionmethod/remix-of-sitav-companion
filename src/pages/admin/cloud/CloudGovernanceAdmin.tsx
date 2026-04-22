@@ -41,6 +41,7 @@ const TRUST_COLORS: Record<TrustState, string> = {
 };
 
 export function CloudGovernanceAdmin() {
+  const { isDemoMode } = useDataMode();
   const [section, setSection] = useState<"quotas" | "trust" | "compliance" | "abuse" | "selective">("quotas");
   const governanceReport = appGovernance.getGovernanceReport();
   const abuseStats = abusePrevention.getStats();

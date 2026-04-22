@@ -29,6 +29,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { DomainAdvisorCard } from "@/components/advisors/DomainAdvisorCard";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 
 
@@ -66,6 +67,7 @@ const TAB_GROUPS: NavTabGroup[] = [
 /* ── Overview ── */
 const TrustOverviewPage = () => {
   const { user , isDemo} = useAuth();
+  const { isDemoMode } = useDataMode();
   const isDemoMode = isDemo;
   const [automationsPaused, setAutomationsPaused] = useState(false);
   const [trustMode, setTrustMode] = useState<"suggest" | "approve-execute" | "autonomous">("approve-execute");

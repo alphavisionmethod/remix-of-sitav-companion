@@ -26,6 +26,7 @@ import { useActionFn } from "@/hooks/use-action";
 import { PlainEnglishPolicyEditor } from "@/components/sita/PlainEnglishPolicyEditor";
 import { DEMO_EXAMPLE_RULES } from "@/data/seed/core-pages";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 
 
@@ -198,6 +199,7 @@ function RuleCard({
 // ── Composer ────────────────────────────────────────────────────
 
 function RuleComposer({ onCompile }: { onCompile: (text: string) => void }) {
+  const { isDemoMode } = useDataMode();
   const [input, setInput] = useState("");
   const [showExamples, setShowExamples] = useState(false);
 

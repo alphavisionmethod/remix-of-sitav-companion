@@ -7,6 +7,7 @@ import { fromTable } from "@/lib/supabase-helpers";
 import { DEMO_RECEIPTS } from "@/data/seed/investment";
 import { POST_TRADE_REVIEWS } from "@/domains/investment/mock-data";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 interface Receipt {
   id: string;
@@ -25,6 +26,7 @@ const STATUS_COLORS: Record<string, string> = { completed: "text-[hsl(var(--trus
 const VERDICT_COLORS: Record<string, string> = { "well-executed": "bg-[hsl(var(--trust-safe))]/10 text-[hsl(var(--trust-safe))]", acceptable: "bg-primary/10 text-primary", caution: "bg-[hsl(var(--trust-warn))]/10 text-[hsl(var(--trust-warn))]", "needs-action": "bg-destructive/10 text-destructive" };
 
 export default function InvestmentReceipts() {
+  const { isDemoMode } = useDataMode();
   const { user, isDemo } = useAuth();
   const isDemoMode = isDemo;
   const [expandedId, setExpandedId] = useState<string | null>(null);

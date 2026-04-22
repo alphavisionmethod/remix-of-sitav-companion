@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import { DEMO_INBOX_ITEMS } from "@/data/fixtures/demo-data";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 
 
@@ -33,6 +34,7 @@ const routeColors: Record<string, string> = {
 
 const InboxCapture = () => {
   const { data: inboxData = [] } = useInboxItems();
+  const { isDemoMode } = useDataMode();
 
   const location = useLocation();
   const navigate = useNavigate();

@@ -11,9 +11,11 @@ import { INTEGRATION_PROVIDERS, PROVIDER_CATEGORIES } from "@/data/seed/integrat
 import { DEMO_CONNECTIONS } from "@/data/seed/integrations";
 import { useNavigate } from "react-router-dom";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 
 export default function IntegrationsCatalog() {
+  const { isDemoMode } = useDataMode();
   const { isDemo: isDemoMode } = useAuth();
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("all");

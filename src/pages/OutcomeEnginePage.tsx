@@ -20,6 +20,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DEMO_OUTCOMES, DEMO_INTERVENTIONS, DEMO_SPILLOVERS } from "@/data/seed/outcome-engine";
 import { useOutcomes } from "@/hooks/use-live-data";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 
 
@@ -28,6 +29,7 @@ import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 export default function OutcomeEnginePage() {
+  const { isDemoMode } = useDataMode();
   const { isDemo } = useAuth();
   const isDemoMode = isDemo;
   const { data: liveOutcomes } = useOutcomes();

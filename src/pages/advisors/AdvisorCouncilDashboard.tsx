@@ -25,6 +25,7 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { DEMO_ADVISOR_SCORECARDS, DEMO_ESCALATION_LOG, DEMO_HANDOFF_LOG } from "@/data/seed/core-pages";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 
 // ── Demo Data ────────────────────────────────────────────────
@@ -156,6 +157,7 @@ function useAgentIntelligence(action: string) {
 // ── Main Dashboard ───────────────────────────────────────────
 
 export default function AdvisorCouncilDashboard() {
+  const { isDemoMode } = useDataMode();
   const { isDemo: isDemoMode } = useAuth();
   const [searchParams] = useSearchParams();
   const initialTab = searchParams.get("tab") || "scorecards";

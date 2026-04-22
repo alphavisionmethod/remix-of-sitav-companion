@@ -19,9 +19,11 @@ import { cn } from "@/lib/utils";
 import { useAuth } from "@/contexts/AuthContext";
 import { useAction } from "@/hooks/use-action";
 import { useDraftAutosave } from "@/hooks/useDraftAutosave";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const QuotesWorkspace = () => {
   const { primaryMode } = useBusinessProfile();
+  const { isDemoMode } = useDataMode();
   const moduleConfig = getModuleAdaptation("quotes", primaryMode);
   const { user, isDemo: isDemoMode } = useAuth();
   const queryClient = useQueryClient();

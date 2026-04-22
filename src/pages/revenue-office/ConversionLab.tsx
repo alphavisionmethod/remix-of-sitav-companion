@@ -12,6 +12,7 @@ import { useConversionExperiments } from "@/hooks/use-revenue-office";
 import { Skeleton } from "@/components/ui/skeleton";
 import { EmptyState } from "@/components/sita/EmptyState";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 
 const FUNNEL_BENCHMARKS = [
@@ -47,6 +48,7 @@ const ADVISOR_CONVERSION_INSIGHTS = [
 ];
 
 export default function ConversionLab() {
+  const { isDemoMode } = useDataMode();
   const { isDemo: isDemoMode } = useAuth();
   const [tab, setTab] = useState("experiments");
   const { data: liveExperiments, isLoading } = useConversionExperiments();

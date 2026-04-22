@@ -18,6 +18,7 @@ import { motion } from "framer-motion";
 import { useConfirmation } from "@/hooks/use-confirmation";
 import { ConfirmationDialog } from "@/components/sita/ConfirmationDialog";
 import { useQueryFreshness } from "@/hooks/use-query-freshness";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 
 
@@ -31,6 +32,7 @@ const emptyForm: SubForm = { service_name: "", amount: "", billing_cycle: "month
 
 const SubscriptionsWaste = () => {
   const { isDemo: isDemoMode } = useAuth();
+  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
   const queryClient = useQueryClient();
   const { confirmation, confirm } = useConfirmation();

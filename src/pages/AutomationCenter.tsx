@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import { DEMO_AUTOMATION_RULES, DEMO_DELEGATIONS } from "@/data/fixtures/demo-data";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 
 
@@ -26,6 +27,7 @@ const AutomationCenter = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { user , isDemo} = useAuth();
+  const { isDemoMode } = useDataMode();
   const isDemoMode = isDemo;
   const qc = useQueryClient();
   const { data: MOCK_AUTOMATION_RULES = [] } = useAutomationRules();

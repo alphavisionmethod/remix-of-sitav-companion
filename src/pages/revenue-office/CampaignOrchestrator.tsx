@@ -18,6 +18,7 @@ import {
   DEMO_CAMPAIGN_FATIGUE,
   DEMO_DELIVERABILITY,
 } from "@/data/seed/revenue-office";
+import { useDataMode } from "@/contexts/DataModeContext";
 interface AttributionRow {
   campaign: string;
   channel: string;
@@ -38,6 +39,7 @@ interface AttributionRow {
 
 
 export default function CampaignOrchestrator() {
+  const { isDemoMode } = useDataMode();
   const { isDemo: isDemoMode } = useAuth();
   const { data: liveCampaigns, isLoading } = useCampaigns();
   const [tab, setTab] = useState("campaigns");

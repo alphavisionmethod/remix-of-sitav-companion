@@ -6,12 +6,14 @@ import { useAIEngDomain } from "@/hooks/use-ai-engineering-data";
 import { DEMO_ADMIN_TIMELINE as DEMO_TIMELINE } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { EmptyState } from "@/components/sita/EmptyState";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const typeIcons: Record<string, typeof GitBranch> = { deploy: GitBranch, config: Zap, rollback: RotateCcw };
 const impactColors: Record<string, string> = { positive: "text-[hsl(var(--trust-safe))]", negative: "text-destructive", mixed: "text-amber-500" };
 
 const AITimeMachine = () => {
   const { isDemo } = useAIEngDomain("auditTimeline", DEMO_TIMELINE);
+  const { isDemoMode } = useDataMode();
   const [selectedIdx, setSelectedIdx] = useState<number | null>(1);
 
   return (

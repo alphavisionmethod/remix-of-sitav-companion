@@ -26,6 +26,7 @@ import {
   DEMO_OVERVIEW_BAND,
   DEMO_RECENT_HEALS,
 } from "@/data/seed/admin-platform";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const HEAL_STATS = { attempted: 12, verified: 11, blocked: 3, rolledBack: 1 };
 
@@ -42,6 +43,7 @@ const attentionColor = (severity: string) =>
 
 const AIEngineeringBoard = () => {
   const { data: engData, isDemo } = useAIEngineeringData({
+  const { isDemoMode } = useDataMode();
     missions: DEMO_MISSIONS,
     fixes: [],
     changePlans: [],

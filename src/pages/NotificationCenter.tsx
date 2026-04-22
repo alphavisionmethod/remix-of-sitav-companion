@@ -23,6 +23,7 @@ import {
   ArrowRight, Volume2, VolumeX, Pin, XCircle, AlertCircle, Sparkles,
   MessageSquare, Calendar, Settings, Activity
 } from "lucide-react";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 
 
@@ -141,6 +142,7 @@ const NotificationCard = ({ notif, onMarkRead, onDismiss, onAction }: {
 // ── Main Component ───────────────────────────────────────────
 const NotificationCenter = () => {
   const { user, isDemo } = useAuth();
+  const { isDemoMode } = useDataMode();
   const isDemoMode = isDemo;
   const queryClient = useQueryClient();
   const interfaceState = useAdaptiveInterface();

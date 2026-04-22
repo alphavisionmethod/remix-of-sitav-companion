@@ -10,6 +10,7 @@ import {
   Wifi, WifiOff, Lock, Unlock, BarChart3, TrendingUp
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.3 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.04 } } };
@@ -45,6 +46,7 @@ const trustIcon: Record<string, React.ElementType> = {
 
 const MCDevicesCenter = () => {
   const { isDemo } = useAuth();
+  const { isDemoMode } = useDataMode();
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState<string>("all");
 

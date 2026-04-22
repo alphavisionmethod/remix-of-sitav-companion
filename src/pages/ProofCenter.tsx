@@ -26,6 +26,7 @@ import {
   Link2, Search, ChevronDown, ChevronRight, Shield, CheckCircle, XCircle,
   DollarSign, Briefcase, Home, Zap, Hash, Download, Layers
 } from "lucide-react";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 
 
@@ -163,6 +164,7 @@ const ReceiptDetailPanel = ({ item, onClose }: { item: any; onClose: () => void 
 // ── Main Component ───────────────────────────────────────────
 const ProofCenter = () => {
   const { data: proofRecords = [], isLoading } = useProofRecords();
+  const { isDemoMode } = useDataMode();
   const { receipts: kernelReceipts, chainValid, chainLength } = useProofTimeline();
   const kernelStatus = useKernelStatus();
   const { user, isDemo } = useAuth();

@@ -24,6 +24,7 @@ import {
   ArrowRight, Users, RotateCcw, Filter, Workflow, ChevronRight, Eye,
   GitBranch, Kanban, ListOrdered, Target, Flame, Pause, Play,
 } from "lucide-react";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 
 
@@ -91,6 +92,7 @@ const DOMAIN_COLORS: Record<TaskDomain, string> = {
 };
 
 export default function TasksWorkflowsCenter() {
+  const { isDemoMode } = useDataMode();
   const { user , isDemo} = useAuth();
   const isDemoMode = isDemo;
   const os = useOSOrchestration();
