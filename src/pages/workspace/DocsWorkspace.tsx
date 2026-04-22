@@ -7,7 +7,7 @@
 import { useState, useMemo } from "react";
 import { SitaPageHeader, SitaCard, SitaCardTitle } from "@/components/sita/SitaCard";
 import { SitaTabs } from "@/components/sita/SitaComponents";
-import { EmptyStateCTA } from "@/components/sita/EmptyStateCTA";
+import { EmptyState } from "@/components/sita/EmptyState";
 import { motion, AnimatePresence } from "framer-motion";
 import { useDocs } from "@/hooks/use-domain-data";
 import type { MockDoc } from "@/data/fixtures/mock-data/workspace";
@@ -400,7 +400,7 @@ const DocsWorkspace = () => {
         })}
 
         {filteredDocs.length === 0 && (
-          <EmptyStateCTA
+          <EmptyState variant="cta"
             icon={FileText}
             title="No Documents Yet"
             description="Create your first document to get started with the workspace."

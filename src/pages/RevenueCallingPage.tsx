@@ -7,7 +7,7 @@
 import { useState, useMemo, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader } from "@/components/sita/SitaCard";
-import { EmptyStateCTA } from "@/components/sita/EmptyStateCTA";
+import { EmptyState } from "@/components/sita/EmptyState";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -383,7 +383,7 @@ const RevenueCallingPage = () => {
       )}
 
       {activeView === "dialer" && !dialerContact && (
-        <EmptyStateCTA
+        <EmptyState variant="cta"
           icon={Phone}
           title="No Active Call"
           description="Select a contact from the queue or start the power dialer to begin outbound calling."
