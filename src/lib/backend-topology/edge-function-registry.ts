@@ -593,39 +593,8 @@ export const EDGE_FUNCTION_REGISTRY: readonly EdgeFunctionEntry[] = [
     requestContract: "VerificationInput", responseContract: "VerificationOutput", sideEffectClass: "medium",
     allowedCallers: ["service-internal", "domain-function"], callsInto: [],
     runtimeConsequence: "Verification proofs lost", migrationStatus: "stable" },
-] as const;
 
-export type EdgeFunctionName = typeof EDGE_FUNCTION_REGISTRY[number]["name"];
-
-// ── Lookup helpers ────────────────────────────────────────────
-export function getEdgeFunction(name: string): EdgeFunctionEntry | undefined {
-  return EDGE_FUNCTION_REGISTRY.find(f => f.name === name);
-}
-
-export function getEdgeFunctionsByStatus(status: EdgeFunctionStatus): readonly EdgeFunctionEntry[] {
-  return EDGE_FUNCTION_REGISTRY.filter(f => f.status === status);
-}
-
-export function getAllEdgeFunctionNames(): readonly string[] {
-  return EDGE_FUNCTION_REGISTRY.map(f => f.name);
-}
-
-export function getEdgeFunctionsByCategory(category: ClassificationVerdict): readonly EdgeFunctionEntry[] {
-  return EDGE_FUNCTION_REGISTRY.filter(f => f.category === category);
-}
-
-export function getEdgeFunctionsByOwner(owner: OwnerTeam): readonly EdgeFunctionEntry[] {
-  return EDGE_FUNCTION_REGISTRY.filter(f => f.owner === owner);
-}
-
-export function getEdgeFunctionsByCaller(caller: CallerClass): readonly EdgeFunctionEntry[] {
-  return EDGE_FUNCTION_REGISTRY.filter(f => f.allowedCallers.includes(caller));
-}
-
-export function getCallGraphFor(name: string): readonly string[] {
-  const entry = getEdgeFunction(name);
-  return entry?.callsInto ?? [
-  // ─── AUTO-GENERATED: MISSING 117 FUNCTIONS ──────────────
+  // ─── AUTO-GENERATED: 117 additional functions ──────────────
   { id: "ef.account-delete", name: "account-delete", path: "supabase/functions/account-delete/index.ts", runtime: "deno", status: "active", description: "account delete",
     category: "DOMAIN_FUNCTION", boundedContext: "platform-services", owner: "platform-core", authModel: "service-role",
     requestContract: null, responseContract: null, sideEffectClass: "high",
@@ -657,115 +626,115 @@ export function getCallGraphFor(name: string): readonly string[] {
     runtimeConsequence: "ai-runtime-nightly-verify unavailable", migrationStatus: "stable" },
 
   { id: "ef.alert-actions", name: "alert-actions", path: "supabase/functions/alert-actions/index.ts", runtime: "deno", status: "active", description: "alert actions",
-    category: "DOMAIN_FUNCTION", boundedContext: "observability", owner: "observability", authModel: "service-role",
+    category: "DOMAIN_FUNCTION", boundedContext: "observability", owner: "platform-core", authModel: "service-role",
     requestContract: null, responseContract: null, sideEffectClass: "medium",
     allowedCallers: ["service-internal","scheduler"], callsInto: [],
     runtimeConsequence: "alert-actions unavailable", migrationStatus: "stable" },
 
   { id: "ef.alert-ingest", name: "alert-ingest", path: "supabase/functions/alert-ingest/index.ts", runtime: "deno", status: "active", description: "alert ingest",
-    category: "DOMAIN_FUNCTION", boundedContext: "observability", owner: "observability", authModel: "service-role",
+    category: "DOMAIN_FUNCTION", boundedContext: "observability", owner: "platform-core", authModel: "service-role",
     requestContract: null, responseContract: null, sideEffectClass: "medium",
     allowedCallers: ["service-internal","scheduler"], callsInto: [],
     runtimeConsequence: "alert-ingest unavailable", migrationStatus: "stable" },
 
   { id: "ef.alert-route", name: "alert-route", path: "supabase/functions/alert-route/index.ts", runtime: "deno", status: "active", description: "alert route",
-    category: "DOMAIN_FUNCTION", boundedContext: "observability", owner: "observability", authModel: "service-role",
+    category: "DOMAIN_FUNCTION", boundedContext: "observability", owner: "platform-core", authModel: "service-role",
     requestContract: null, responseContract: null, sideEffectClass: "medium",
     allowedCallers: ["service-internal","scheduler"], callsInto: [],
     runtimeConsequence: "alert-route unavailable", migrationStatus: "stable" },
 
   { id: "ef.alert-router", name: "alert-router", path: "supabase/functions/alert-router/index.ts", runtime: "deno", status: "active", description: "alert router",
-    category: "DOMAIN_FUNCTION", boundedContext: "observability", owner: "observability", authModel: "service-role",
+    category: "DOMAIN_FUNCTION", boundedContext: "observability", owner: "platform-core", authModel: "service-role",
     requestContract: null, responseContract: null, sideEffectClass: "medium",
     allowedCallers: ["service-internal","scheduler"], callsInto: [],
     runtimeConsequence: "alert-router unavailable", migrationStatus: "stable" },
 
   { id: "ef.apm-metrics-ingest", name: "apm-metrics-ingest", path: "supabase/functions/apm-metrics-ingest/index.ts", runtime: "deno", status: "active", description: "apm metrics ingest",
-    category: "DOMAIN_FUNCTION", boundedContext: "observability", owner: "observability", authModel: "service-role",
+    category: "DOMAIN_FUNCTION", boundedContext: "observability", owner: "platform-core", authModel: "service-role",
     requestContract: null, responseContract: null, sideEffectClass: "medium",
     allowedCallers: ["service-internal","scheduler"], callsInto: [],
     runtimeConsequence: "apm-metrics-ingest unavailable", migrationStatus: "stable" },
 
   { id: "ef.app-ingest-pwa", name: "app-ingest-pwa", path: "supabase/functions/app-ingest-pwa/index.ts", runtime: "deno", status: "active", description: "app ingest pwa",
-    category: "DOMAIN_FUNCTION", boundedContext: "app-ecosystem", owner: "app-ecosystem", authModel: "service-role",
+    category: "DOMAIN_FUNCTION", boundedContext: "app-ecosystem", owner: "app-platform", authModel: "service-role",
     requestContract: null, responseContract: null, sideEffectClass: "medium",
     allowedCallers: ["service-internal","scheduler"], callsInto: [],
     runtimeConsequence: "app-ingest-pwa unavailable", migrationStatus: "stable" },
 
   { id: "ef.app-ingest-web", name: "app-ingest-web", path: "supabase/functions/app-ingest-web/index.ts", runtime: "deno", status: "active", description: "app ingest web",
-    category: "DOMAIN_FUNCTION", boundedContext: "app-ecosystem", owner: "app-ecosystem", authModel: "service-role",
+    category: "DOMAIN_FUNCTION", boundedContext: "app-ecosystem", owner: "app-platform", authModel: "service-role",
     requestContract: null, responseContract: null, sideEffectClass: "medium",
     allowedCallers: ["service-internal","scheduler"], callsInto: [],
     runtimeConsequence: "app-ingest-web unavailable", migrationStatus: "stable" },
 
   { id: "ef.app-install", name: "app-install", path: "supabase/functions/app-install/index.ts", runtime: "deno", status: "active", description: "app install",
-    category: "DOMAIN_FUNCTION", boundedContext: "app-ecosystem", owner: "app-ecosystem", authModel: "jwt",
+    category: "DOMAIN_FUNCTION", boundedContext: "app-ecosystem", owner: "app-platform", authModel: "jwt",
     requestContract: null, responseContract: null, sideEffectClass: "medium",
     allowedCallers: ["frontend-user","public-bff"], callsInto: [],
     runtimeConsequence: "app-install unavailable", migrationStatus: "stable" },
 
   { id: "ef.app-launch-resolve", name: "app-launch-resolve", path: "supabase/functions/app-launch-resolve/index.ts", runtime: "deno", status: "active", description: "app launch resolve",
-    category: "DOMAIN_FUNCTION", boundedContext: "app-ecosystem", owner: "app-ecosystem", authModel: "jwt",
+    category: "DOMAIN_FUNCTION", boundedContext: "app-ecosystem", owner: "app-platform", authModel: "jwt",
     requestContract: null, responseContract: null, sideEffectClass: "medium",
     allowedCallers: ["frontend-user","public-bff"], callsInto: [],
     runtimeConsequence: "app-launch-resolve unavailable", migrationStatus: "stable" },
 
   { id: "ef.app-manifest-sync", name: "app-manifest-sync", path: "supabase/functions/app-manifest-sync/index.ts", runtime: "deno", status: "active", description: "app manifest sync",
-    category: "DOMAIN_FUNCTION", boundedContext: "app-ecosystem", owner: "app-ecosystem", authModel: "service-role",
+    category: "DOMAIN_FUNCTION", boundedContext: "app-ecosystem", owner: "app-platform", authModel: "service-role",
     requestContract: null, responseContract: null, sideEffectClass: "none",
     allowedCallers: ["service-internal","scheduler"], callsInto: [],
     runtimeConsequence: "app-manifest-sync unavailable", migrationStatus: "stable" },
 
   { id: "ef.app-manifest-verifier", name: "app-manifest-verifier", path: "supabase/functions/app-manifest-verifier/index.ts", runtime: "deno", status: "active", description: "app manifest verifier",
-    category: "DOMAIN_FUNCTION", boundedContext: "app-ecosystem", owner: "app-ecosystem", authModel: "service-role",
+    category: "DOMAIN_FUNCTION", boundedContext: "app-ecosystem", owner: "app-platform", authModel: "service-role",
     requestContract: null, responseContract: null, sideEffectClass: "none",
     allowedCallers: ["service-internal","scheduler"], callsInto: [],
     runtimeConsequence: "app-manifest-verifier unavailable", migrationStatus: "stable" },
 
   { id: "ef.app-permissions-sync", name: "app-permissions-sync", path: "supabase/functions/app-permissions-sync/index.ts", runtime: "deno", status: "active", description: "app permissions sync",
-    category: "DOMAIN_FUNCTION", boundedContext: "app-ecosystem", owner: "app-ecosystem", authModel: "jwt",
+    category: "DOMAIN_FUNCTION", boundedContext: "app-ecosystem", owner: "app-platform", authModel: "jwt",
     requestContract: null, responseContract: null, sideEffectClass: "medium",
     allowedCallers: ["frontend-user","public-bff"], callsInto: [],
     runtimeConsequence: "app-permissions-sync unavailable", migrationStatus: "stable" },
 
   { id: "ef.app-screenshot-capture", name: "app-screenshot-capture", path: "supabase/functions/app-screenshot-capture/index.ts", runtime: "deno", status: "active", description: "app screenshot capture",
-    category: "DOMAIN_FUNCTION", boundedContext: "app-ecosystem", owner: "app-ecosystem", authModel: "service-role",
+    category: "DOMAIN_FUNCTION", boundedContext: "app-ecosystem", owner: "app-platform", authModel: "service-role",
     requestContract: null, responseContract: null, sideEffectClass: "medium",
     allowedCallers: ["service-internal","scheduler"], callsInto: [],
     runtimeConsequence: "app-screenshot-capture unavailable", migrationStatus: "stable" },
 
   { id: "ef.app-store-catalog", name: "app-store-catalog", path: "supabase/functions/app-store-catalog/index.ts", runtime: "deno", status: "active", description: "app store catalog",
-    category: "DOMAIN_FUNCTION", boundedContext: "app-ecosystem", owner: "app-ecosystem", authModel: "jwt",
+    category: "DOMAIN_FUNCTION", boundedContext: "app-ecosystem", owner: "app-platform", authModel: "jwt",
     requestContract: null, responseContract: null, sideEffectClass: "medium",
     allowedCallers: ["frontend-user","public-bff"], callsInto: [],
     runtimeConsequence: "app-store-catalog unavailable", migrationStatus: "stable" },
 
   { id: "ef.app-uninstall", name: "app-uninstall", path: "supabase/functions/app-uninstall/index.ts", runtime: "deno", status: "active", description: "app uninstall",
-    category: "DOMAIN_FUNCTION", boundedContext: "app-ecosystem", owner: "app-ecosystem", authModel: "jwt",
+    category: "DOMAIN_FUNCTION", boundedContext: "app-ecosystem", owner: "app-platform", authModel: "jwt",
     requestContract: null, responseContract: null, sideEffectClass: "medium",
     allowedCallers: ["frontend-user","public-bff"], callsInto: [],
     runtimeConsequence: "app-uninstall unavailable", migrationStatus: "stable" },
 
   { id: "ef.app-update-check", name: "app-update-check", path: "supabase/functions/app-update-check/index.ts", runtime: "deno", status: "active", description: "app update check",
-    category: "DOMAIN_FUNCTION", boundedContext: "app-ecosystem", owner: "app-ecosystem", authModel: "jwt",
+    category: "DOMAIN_FUNCTION", boundedContext: "app-ecosystem", owner: "app-platform", authModel: "jwt",
     requestContract: null, responseContract: null, sideEffectClass: "none",
     allowedCallers: ["frontend-user","public-bff"], callsInto: [],
     runtimeConsequence: "app-update-check unavailable", migrationStatus: "stable" },
 
   { id: "ef.attestation-packet-builder", name: "attestation-packet-builder", path: "supabase/functions/attestation-packet-builder/index.ts", runtime: "deno", status: "active", description: "attestation packet builder",
-    category: "DOMAIN_FUNCTION", boundedContext: "release-pipeline", owner: "release-engineering", authModel: "service-role",
+    category: "DOMAIN_FUNCTION", boundedContext: "release-pipeline", owner: "platform-core", authModel: "service-role",
     requestContract: null, responseContract: null, sideEffectClass: "medium",
     allowedCallers: ["service-internal","scheduler"], callsInto: [],
     runtimeConsequence: "attestation-packet-builder unavailable", migrationStatus: "stable" },
 
   { id: "ef.audit-export-bundler", name: "audit-export-bundler", path: "supabase/functions/audit-export-bundler/index.ts", runtime: "deno", status: "active", description: "audit export bundler",
-    category: "DOMAIN_FUNCTION", boundedContext: "compliance", owner: "compliance-engineering", authModel: "service-role",
+    category: "DOMAIN_FUNCTION", boundedContext: "compliance", owner: "compliance-security", authModel: "service-role",
     requestContract: null, responseContract: null, sideEffectClass: "medium",
     allowedCallers: ["service-internal","scheduler"], callsInto: [],
     runtimeConsequence: "audit-export-bundler unavailable", migrationStatus: "stable" },
 
   { id: "ef.audit-log-export", name: "audit-log-export", path: "supabase/functions/audit-log-export/index.ts", runtime: "deno", status: "active", description: "audit log export",
-    category: "DOMAIN_FUNCTION", boundedContext: "compliance", owner: "compliance-engineering", authModel: "service-role",
+    category: "DOMAIN_FUNCTION", boundedContext: "compliance", owner: "compliance-security", authModel: "service-role",
     requestContract: null, responseContract: null, sideEffectClass: "medium",
     allowedCallers: ["service-internal","scheduler"], callsInto: [],
     runtimeConsequence: "audit-log-export unavailable", migrationStatus: "stable" },
@@ -813,19 +782,19 @@ export function getCallGraphFor(name: string): readonly string[] {
     runtimeConsequence: "boardroom-session unavailable", migrationStatus: "stable" },
 
   { id: "ef.canary-chaos-cron", name: "canary-chaos-cron", path: "supabase/functions/canary-chaos-cron/index.ts", runtime: "deno", status: "active", description: "canary chaos cron",
-    category: "RUNTIME_SYSTEM_FUNCTION", boundedContext: "reliability", owner: "site-reliability", authModel: "service-role",
+    category: "RUNTIME_SYSTEM_FUNCTION", boundedContext: "reliability", owner: "platform-core", authModel: "service-role",
     requestContract: null, responseContract: null, sideEffectClass: "medium",
     allowedCallers: ["service-internal","scheduler"], callsInto: [],
     runtimeConsequence: "canary-chaos-cron unavailable", migrationStatus: "stable" },
 
   { id: "ef.chaos-drill-runner", name: "chaos-drill-runner", path: "supabase/functions/chaos-drill-runner/index.ts", runtime: "deno", status: "active", description: "chaos drill runner",
-    category: "RUNTIME_SYSTEM_FUNCTION", boundedContext: "reliability", owner: "site-reliability", authModel: "service-role",
+    category: "RUNTIME_SYSTEM_FUNCTION", boundedContext: "reliability", owner: "platform-core", authModel: "service-role",
     requestContract: null, responseContract: null, sideEffectClass: "medium",
     allowedCallers: ["service-internal","scheduler"], callsInto: [],
     runtimeConsequence: "chaos-drill-runner unavailable", migrationStatus: "stable" },
 
   { id: "ef.compliance-evidence-collector", name: "compliance-evidence-collector", path: "supabase/functions/compliance-evidence-collector/index.ts", runtime: "deno", status: "active", description: "compliance evidence collector",
-    category: "DOMAIN_FUNCTION", boundedContext: "compliance", owner: "compliance-engineering", authModel: "service-role",
+    category: "DOMAIN_FUNCTION", boundedContext: "compliance", owner: "compliance-security", authModel: "service-role",
     requestContract: null, responseContract: null, sideEffectClass: "medium",
     allowedCallers: ["service-internal","scheduler"], callsInto: [],
     runtimeConsequence: "compliance-evidence-collector unavailable", migrationStatus: "stable" },
@@ -837,25 +806,25 @@ export function getCallGraphFor(name: string): readonly string[] {
     runtimeConsequence: "compliance-evidence-cron unavailable", migrationStatus: "stable" },
 
   { id: "ef.connector-reauth-tracker", name: "connector-reauth-tracker", path: "supabase/functions/connector-reauth-tracker/index.ts", runtime: "deno", status: "active", description: "connector reauth tracker",
-    category: "CONNECTOR_WEBHOOK_FUNCTION", boundedContext: "connector-mesh", owner: "connector-engineering", authModel: "jwt",
+    category: "CONNECTOR_WEBHOOK_FUNCTION", boundedContext: "connector-mesh", owner: "connector-integrations", authModel: "jwt",
     requestContract: null, responseContract: null, sideEffectClass: "medium",
     allowedCallers: ["frontend-user","public-bff"], callsInto: [],
     runtimeConsequence: "connector-reauth-tracker unavailable", migrationStatus: "stable" },
 
   { id: "ef.connector-refresh-nightly-verify", name: "connector-refresh-nightly-verify", path: "supabase/functions/connector-refresh-nightly-verify/index.ts", runtime: "deno", status: "active", description: "connector refresh nightly verify",
-    category: "CONNECTOR_WEBHOOK_FUNCTION", boundedContext: "connector-mesh", owner: "connector-engineering", authModel: "service-role",
+    category: "CONNECTOR_WEBHOOK_FUNCTION", boundedContext: "connector-mesh", owner: "connector-integrations", authModel: "service-role",
     requestContract: null, responseContract: null, sideEffectClass: "medium",
     allowedCallers: ["service-internal","scheduler"], callsInto: [],
     runtimeConsequence: "connector-refresh-nightly-verify unavailable", migrationStatus: "stable" },
 
   { id: "ef.connector-token-refresh", name: "connector-token-refresh", path: "supabase/functions/connector-token-refresh/index.ts", runtime: "deno", status: "active", description: "connector token refresh",
-    category: "CONNECTOR_WEBHOOK_FUNCTION", boundedContext: "connector-mesh", owner: "connector-engineering", authModel: "service-role",
+    category: "CONNECTOR_WEBHOOK_FUNCTION", boundedContext: "connector-mesh", owner: "connector-integrations", authModel: "service-role",
     requestContract: null, responseContract: null, sideEffectClass: "medium",
     allowedCallers: ["service-internal","scheduler"], callsInto: [],
     runtimeConsequence: "connector-token-refresh unavailable", migrationStatus: "stable" },
 
   { id: "ef.crash-report-ingest", name: "crash-report-ingest", path: "supabase/functions/crash-report-ingest/index.ts", runtime: "deno", status: "active", description: "crash report ingest",
-    category: "DOMAIN_FUNCTION", boundedContext: "observability", owner: "observability", authModel: "service-role",
+    category: "DOMAIN_FUNCTION", boundedContext: "observability", owner: "platform-core", authModel: "service-role",
     requestContract: null, responseContract: null, sideEffectClass: "medium",
     allowedCallers: ["service-internal","scheduler"], callsInto: [],
     runtimeConsequence: "crash-report-ingest unavailable", migrationStatus: "stable" },
@@ -885,43 +854,43 @@ export function getCallGraphFor(name: string): readonly string[] {
     runtimeConsequence: "db-introspection unavailable", migrationStatus: "stable" },
 
   { id: "ef.desktop-update-manifest", name: "desktop-update-manifest", path: "supabase/functions/desktop-update-manifest/index.ts", runtime: "deno", status: "active", description: "desktop update manifest",
-    category: "DOMAIN_FUNCTION", boundedContext: "device-experience", owner: "device-engineering", authModel: "jwt",
+    category: "DOMAIN_FUNCTION", boundedContext: "device-experience", owner: "cloud-infrastructure", authModel: "jwt",
     requestContract: null, responseContract: null, sideEffectClass: "none",
     allowedCallers: ["frontend-user","public-bff"], callsInto: [],
     runtimeConsequence: "desktop-update-manifest unavailable", migrationStatus: "stable" },
 
   { id: "ef.dr-drill-cron", name: "dr-drill-cron", path: "supabase/functions/dr-drill-cron/index.ts", runtime: "deno", status: "active", description: "dr drill cron",
-    category: "RUNTIME_SYSTEM_FUNCTION", boundedContext: "reliability", owner: "site-reliability", authModel: "service-role",
+    category: "RUNTIME_SYSTEM_FUNCTION", boundedContext: "reliability", owner: "platform-core", authModel: "service-role",
     requestContract: null, responseContract: null, sideEffectClass: "medium",
     allowedCallers: ["service-internal","scheduler"], callsInto: [],
     runtimeConsequence: "dr-drill-cron unavailable", migrationStatus: "stable" },
 
   { id: "ef.dr-drill-executor", name: "dr-drill-executor", path: "supabase/functions/dr-drill-executor/index.ts", runtime: "deno", status: "active", description: "dr drill executor",
-    category: "RUNTIME_SYSTEM_FUNCTION", boundedContext: "reliability", owner: "site-reliability", authModel: "service-role",
+    category: "RUNTIME_SYSTEM_FUNCTION", boundedContext: "reliability", owner: "platform-core", authModel: "service-role",
     requestContract: null, responseContract: null, sideEffectClass: "medium",
     allowedCallers: ["service-internal","scheduler"], callsInto: [],
     runtimeConsequence: "dr-drill-executor unavailable", migrationStatus: "stable" },
 
   { id: "ef.dr-drill-runner", name: "dr-drill-runner", path: "supabase/functions/dr-drill-runner/index.ts", runtime: "deno", status: "active", description: "dr drill runner",
-    category: "RUNTIME_SYSTEM_FUNCTION", boundedContext: "reliability", owner: "site-reliability", authModel: "service-role",
+    category: "RUNTIME_SYSTEM_FUNCTION", boundedContext: "reliability", owner: "platform-core", authModel: "service-role",
     requestContract: null, responseContract: null, sideEffectClass: "medium",
     allowedCallers: ["service-internal","scheduler"], callsInto: [],
     runtimeConsequence: "dr-drill-runner unavailable", migrationStatus: "stable" },
 
   { id: "ef.error-ingest", name: "error-ingest", path: "supabase/functions/error-ingest/index.ts", runtime: "deno", status: "active", description: "error ingest",
-    category: "DOMAIN_FUNCTION", boundedContext: "observability", owner: "observability", authModel: "service-role",
+    category: "DOMAIN_FUNCTION", boundedContext: "observability", owner: "platform-core", authModel: "service-role",
     requestContract: null, responseContract: null, sideEffectClass: "medium",
     allowedCallers: ["service-internal","scheduler"], callsInto: [],
     runtimeConsequence: "error-ingest unavailable", migrationStatus: "stable" },
 
   { id: "ef.escalation-engine", name: "escalation-engine", path: "supabase/functions/escalation-engine/index.ts", runtime: "deno", status: "active", description: "escalation engine",
-    category: "DOMAIN_FUNCTION", boundedContext: "observability", owner: "observability", authModel: "service-role",
+    category: "DOMAIN_FUNCTION", boundedContext: "observability", owner: "platform-core", authModel: "service-role",
     requestContract: null, responseContract: null, sideEffectClass: "medium",
     allowedCallers: ["service-internal","scheduler"], callsInto: [],
     runtimeConsequence: "escalation-engine unavailable", migrationStatus: "stable" },
 
   { id: "ef.evidence-graph-builder", name: "evidence-graph-builder", path: "supabase/functions/evidence-graph-builder/index.ts", runtime: "deno", status: "active", description: "evidence graph builder",
-    category: "DOMAIN_FUNCTION", boundedContext: "compliance", owner: "compliance-engineering", authModel: "service-role",
+    category: "DOMAIN_FUNCTION", boundedContext: "compliance", owner: "compliance-security", authModel: "service-role",
     requestContract: null, responseContract: null, sideEffectClass: "medium",
     allowedCallers: ["service-internal","scheduler"], callsInto: [],
     runtimeConsequence: "evidence-graph-builder unavailable", migrationStatus: "stable" },
@@ -951,25 +920,25 @@ export function getCallGraphFor(name: string): readonly string[] {
     runtimeConsequence: "generate-support-bundle unavailable", migrationStatus: "stable" },
 
   { id: "ef.health-beat", name: "health-beat", path: "supabase/functions/health-beat/index.ts", runtime: "deno", status: "active", description: "health beat",
-    category: "RUNTIME_SYSTEM_FUNCTION", boundedContext: "reliability", owner: "site-reliability", authModel: "service-role",
+    category: "RUNTIME_SYSTEM_FUNCTION", boundedContext: "reliability", owner: "platform-core", authModel: "service-role",
     requestContract: null, responseContract: null, sideEffectClass: "none",
     allowedCallers: ["service-internal","scheduler"], callsInto: [],
     runtimeConsequence: "health-beat unavailable", migrationStatus: "stable" },
 
   { id: "ef.health-cron", name: "health-cron", path: "supabase/functions/health-cron/index.ts", runtime: "deno", status: "active", description: "health cron",
-    category: "RUNTIME_SYSTEM_FUNCTION", boundedContext: "reliability", owner: "site-reliability", authModel: "service-role",
+    category: "RUNTIME_SYSTEM_FUNCTION", boundedContext: "reliability", owner: "platform-core", authModel: "service-role",
     requestContract: null, responseContract: null, sideEffectClass: "none",
     allowedCallers: ["service-internal","scheduler"], callsInto: [],
     runtimeConsequence: "health-cron unavailable", migrationStatus: "stable" },
 
   { id: "ef.health-live", name: "health-live", path: "supabase/functions/health-live/index.ts", runtime: "deno", status: "active", description: "health live",
-    category: "RUNTIME_SYSTEM_FUNCTION", boundedContext: "reliability", owner: "site-reliability", authModel: "anon",
+    category: "RUNTIME_SYSTEM_FUNCTION", boundedContext: "reliability", owner: "platform-core", authModel: "anon",
     requestContract: null, responseContract: null, sideEffectClass: "none",
     allowedCallers: ["external-webhook","frontend-user"], callsInto: [],
     runtimeConsequence: "health-live unavailable", migrationStatus: "stable" },
 
   { id: "ef.health-ready", name: "health-ready", path: "supabase/functions/health-ready/index.ts", runtime: "deno", status: "active", description: "health ready",
-    category: "RUNTIME_SYSTEM_FUNCTION", boundedContext: "reliability", owner: "site-reliability", authModel: "service-role",
+    category: "RUNTIME_SYSTEM_FUNCTION", boundedContext: "reliability", owner: "platform-core", authModel: "service-role",
     requestContract: null, responseContract: null, sideEffectClass: "none",
     allowedCallers: ["service-internal","scheduler"], callsInto: [],
     runtimeConsequence: "health-ready unavailable", migrationStatus: "stable" },
@@ -1083,13 +1052,13 @@ export function getCallGraphFor(name: string): readonly string[] {
     runtimeConsequence: "kill-switch-toggle unavailable", migrationStatus: "stable" },
 
   { id: "ef.mobile-deferral-attestor", name: "mobile-deferral-attestor", path: "supabase/functions/mobile-deferral-attestor/index.ts", runtime: "deno", status: "active", description: "mobile deferral attestor",
-    category: "DOMAIN_FUNCTION", boundedContext: "device-experience", owner: "device-engineering", authModel: "service-role",
+    category: "DOMAIN_FUNCTION", boundedContext: "device-experience", owner: "cloud-infrastructure", authModel: "service-role",
     requestContract: null, responseContract: null, sideEffectClass: "medium",
     allowedCallers: ["service-internal","scheduler"], callsInto: [],
     runtimeConsequence: "mobile-deferral-attestor unavailable", migrationStatus: "stable" },
 
   { id: "ef.oauth-refresh-probe", name: "oauth-refresh-probe", path: "supabase/functions/oauth-refresh-probe/index.ts", runtime: "deno", status: "active", description: "oauth refresh probe",
-    category: "CONNECTOR_WEBHOOK_FUNCTION", boundedContext: "connector-mesh", owner: "connector-engineering", authModel: "service-role",
+    category: "CONNECTOR_WEBHOOK_FUNCTION", boundedContext: "connector-mesh", owner: "connector-integrations", authModel: "service-role",
     requestContract: null, responseContract: null, sideEffectClass: "medium",
     allowedCallers: ["service-internal","scheduler"], callsInto: [],
     runtimeConsequence: "oauth-refresh-probe unavailable", migrationStatus: "stable" },
@@ -1107,7 +1076,7 @@ export function getCallGraphFor(name: string): readonly string[] {
     runtimeConsequence: "onboarding-resume-checkpoint unavailable", migrationStatus: "stable" },
 
   { id: "ef.os-update-manifest", name: "os-update-manifest", path: "supabase/functions/os-update-manifest/index.ts", runtime: "deno", status: "active", description: "os update manifest",
-    category: "DOMAIN_FUNCTION", boundedContext: "device-experience", owner: "device-engineering", authModel: "service-role",
+    category: "DOMAIN_FUNCTION", boundedContext: "device-experience", owner: "cloud-infrastructure", authModel: "service-role",
     requestContract: null, responseContract: null, sideEffectClass: "none",
     allowedCallers: ["service-internal","scheduler"], callsInto: [],
     runtimeConsequence: "os-update-manifest unavailable", migrationStatus: "stable" },
@@ -1137,7 +1106,7 @@ export function getCallGraphFor(name: string): readonly string[] {
     runtimeConsequence: "press-inquiry unavailable", migrationStatus: "stable" },
 
   { id: "ef.production-launch-attestor", name: "production-launch-attestor", path: "supabase/functions/production-launch-attestor/index.ts", runtime: "deno", status: "active", description: "production launch attestor",
-    category: "DOMAIN_FUNCTION", boundedContext: "release-pipeline", owner: "release-engineering", authModel: "service-role",
+    category: "DOMAIN_FUNCTION", boundedContext: "release-pipeline", owner: "platform-core", authModel: "service-role",
     requestContract: null, responseContract: null, sideEffectClass: "medium",
     allowedCallers: ["service-internal","scheduler"], callsInto: [],
     runtimeConsequence: "production-launch-attestor unavailable", migrationStatus: "stable" },
@@ -1149,31 +1118,31 @@ export function getCallGraphFor(name: string): readonly string[] {
     runtimeConsequence: "prompt-versioning unavailable", migrationStatus: "stable" },
 
   { id: "ef.recovery-evidence-ingest", name: "recovery-evidence-ingest", path: "supabase/functions/recovery-evidence-ingest/index.ts", runtime: "deno", status: "active", description: "recovery evidence ingest",
-    category: "DOMAIN_FUNCTION", boundedContext: "compliance", owner: "compliance-engineering", authModel: "service-role",
+    category: "DOMAIN_FUNCTION", boundedContext: "compliance", owner: "compliance-security", authModel: "service-role",
     requestContract: null, responseContract: null, sideEffectClass: "medium",
     allowedCallers: ["service-internal","scheduler"], callsInto: [],
     runtimeConsequence: "recovery-evidence-ingest unavailable", migrationStatus: "stable" },
 
   { id: "ef.release-artifact-signer", name: "release-artifact-signer", path: "supabase/functions/release-artifact-signer/index.ts", runtime: "deno", status: "active", description: "release artifact signer",
-    category: "DOMAIN_FUNCTION", boundedContext: "release-pipeline", owner: "release-engineering", authModel: "jwt",
+    category: "DOMAIN_FUNCTION", boundedContext: "release-pipeline", owner: "platform-core", authModel: "jwt",
     requestContract: null, responseContract: null, sideEffectClass: "medium",
     allowedCallers: ["frontend-user","public-bff"], callsInto: [],
     runtimeConsequence: "release-artifact-signer unavailable", migrationStatus: "stable" },
 
   { id: "ef.release-artifact-verifier", name: "release-artifact-verifier", path: "supabase/functions/release-artifact-verifier/index.ts", runtime: "deno", status: "active", description: "release artifact verifier",
-    category: "DOMAIN_FUNCTION", boundedContext: "release-pipeline", owner: "release-engineering", authModel: "service-role",
+    category: "DOMAIN_FUNCTION", boundedContext: "release-pipeline", owner: "platform-core", authModel: "service-role",
     requestContract: null, responseContract: null, sideEffectClass: "medium",
     allowedCallers: ["service-internal","scheduler"], callsInto: [],
     runtimeConsequence: "release-artifact-verifier unavailable", migrationStatus: "stable" },
 
   { id: "ef.release-env-gate", name: "release-env-gate", path: "supabase/functions/release-env-gate/index.ts", runtime: "deno", status: "active", description: "release env gate",
-    category: "DOMAIN_FUNCTION", boundedContext: "release-pipeline", owner: "release-engineering", authModel: "service-role",
+    category: "DOMAIN_FUNCTION", boundedContext: "release-pipeline", owner: "platform-core", authModel: "service-role",
     requestContract: null, responseContract: null, sideEffectClass: "medium",
     allowedCallers: ["service-internal","scheduler"], callsInto: [],
     runtimeConsequence: "release-env-gate unavailable", migrationStatus: "stable" },
 
   { id: "ef.release-evidence-graph-snapshot", name: "release-evidence-graph-snapshot", path: "supabase/functions/release-evidence-graph-snapshot/index.ts", runtime: "deno", status: "active", description: "release evidence graph snapshot",
-    category: "DOMAIN_FUNCTION", boundedContext: "release-pipeline", owner: "release-engineering", authModel: "service-role",
+    category: "DOMAIN_FUNCTION", boundedContext: "release-pipeline", owner: "platform-core", authModel: "service-role",
     requestContract: null, responseContract: null, sideEffectClass: "medium",
     allowedCallers: ["service-internal","scheduler"], callsInto: [],
     runtimeConsequence: "release-evidence-graph-snapshot unavailable", migrationStatus: "stable" },
@@ -1191,25 +1160,25 @@ export function getCallGraphFor(name: string): readonly string[] {
     runtimeConsequence: "runbook-drill unavailable", migrationStatus: "stable" },
 
   { id: "ef.secret-rotation-orchestrator", name: "secret-rotation-orchestrator", path: "supabase/functions/secret-rotation-orchestrator/index.ts", runtime: "deno", status: "active", description: "secret rotation orchestrator",
-    category: "DOMAIN_FUNCTION", boundedContext: "security", owner: "security-engineering", authModel: "service-role",
+    category: "DOMAIN_FUNCTION", boundedContext: "security", owner: "compliance-security", authModel: "service-role",
     requestContract: null, responseContract: null, sideEffectClass: "medium",
     allowedCallers: ["service-internal","scheduler"], callsInto: [],
     runtimeConsequence: "secret-rotation-orchestrator unavailable", migrationStatus: "stable" },
 
   { id: "ef.security-anomaly-rotation-trigger", name: "security-anomaly-rotation-trigger", path: "supabase/functions/security-anomaly-rotation-trigger/index.ts", runtime: "deno", status: "active", description: "security anomaly rotation trigger",
-    category: "DOMAIN_FUNCTION", boundedContext: "security", owner: "security-engineering", authModel: "service-role",
+    category: "DOMAIN_FUNCTION", boundedContext: "security", owner: "compliance-security", authModel: "service-role",
     requestContract: null, responseContract: null, sideEffectClass: "medium",
     allowedCallers: ["service-internal","scheduler"], callsInto: [],
     runtimeConsequence: "security-anomaly-rotation-trigger unavailable", migrationStatus: "stable" },
 
   { id: "ef.security-council-tick", name: "security-council-tick", path: "supabase/functions/security-council-tick/index.ts", runtime: "deno", status: "active", description: "security council tick",
-    category: "DOMAIN_FUNCTION", boundedContext: "security", owner: "security-engineering", authModel: "service-role",
+    category: "DOMAIN_FUNCTION", boundedContext: "security", owner: "compliance-security", authModel: "service-role",
     requestContract: null, responseContract: null, sideEffectClass: "medium",
     allowedCallers: ["service-internal","scheduler"], callsInto: [],
     runtimeConsequence: "security-council-tick unavailable", migrationStatus: "stable" },
 
   { id: "ef.security-fabric-runtime-probe", name: "security-fabric-runtime-probe", path: "supabase/functions/security-fabric-runtime-probe/index.ts", runtime: "deno", status: "active", description: "security fabric runtime probe",
-    category: "RUNTIME_SYSTEM_FUNCTION", boundedContext: "reliability", owner: "site-reliability", authModel: "service-role",
+    category: "RUNTIME_SYSTEM_FUNCTION", boundedContext: "reliability", owner: "platform-core", authModel: "service-role",
     requestContract: null, responseContract: null, sideEffectClass: "medium",
     allowedCallers: ["service-internal","scheduler"], callsInto: [],
     runtimeConsequence: "security-fabric-runtime-probe unavailable", migrationStatus: "stable" },
@@ -1227,19 +1196,19 @@ export function getCallGraphFor(name: string): readonly string[] {
     runtimeConsequence: "seed-advisor-registry unavailable", migrationStatus: "stable" },
 
   { id: "ef.seed-connector-registry", name: "seed-connector-registry", path: "supabase/functions/seed-connector-registry/index.ts", runtime: "deno", status: "active", description: "seed connector registry",
-    category: "CONNECTOR_WEBHOOK_FUNCTION", boundedContext: "connector-mesh", owner: "connector-engineering", authModel: "service-role",
+    category: "CONNECTOR_WEBHOOK_FUNCTION", boundedContext: "connector-mesh", owner: "connector-integrations", authModel: "service-role",
     requestContract: null, responseContract: null, sideEffectClass: "medium",
     allowedCallers: ["service-internal","scheduler"], callsInto: [],
     runtimeConsequence: "seed-connector-registry unavailable", migrationStatus: "stable" },
 
   { id: "ef.sla-evaluator", name: "sla-evaluator", path: "supabase/functions/sla-evaluator/index.ts", runtime: "deno", status: "active", description: "sla evaluator",
-    category: "RUNTIME_SYSTEM_FUNCTION", boundedContext: "reliability", owner: "site-reliability", authModel: "service-role",
+    category: "RUNTIME_SYSTEM_FUNCTION", boundedContext: "reliability", owner: "platform-core", authModel: "service-role",
     requestContract: null, responseContract: null, sideEffectClass: "medium",
     allowedCallers: ["service-internal","scheduler"], callsInto: [],
     runtimeConsequence: "sla-evaluator unavailable", migrationStatus: "stable" },
 
   { id: "ef.support-recovery-api", name: "support-recovery-api", path: "supabase/functions/support-recovery-api/index.ts", runtime: "deno", status: "active", description: "support recovery api",
-    category: "DOMAIN_FUNCTION", boundedContext: "compliance", owner: "compliance-engineering", authModel: "service-role",
+    category: "DOMAIN_FUNCTION", boundedContext: "compliance", owner: "compliance-security", authModel: "service-role",
     requestContract: null, responseContract: null, sideEffectClass: "medium",
     allowedCallers: ["service-internal","scheduler"], callsInto: [],
     runtimeConsequence: "support-recovery-api unavailable", migrationStatus: "stable" },
@@ -1251,7 +1220,7 @@ export function getCallGraphFor(name: string): readonly string[] {
     runtimeConsequence: "tenant-self-service-bff unavailable", migrationStatus: "stable" },
 
   { id: "ef.trace-ingest", name: "trace-ingest", path: "supabase/functions/trace-ingest/index.ts", runtime: "deno", status: "active", description: "trace ingest",
-    category: "DOMAIN_FUNCTION", boundedContext: "observability", owner: "observability", authModel: "service-role",
+    category: "DOMAIN_FUNCTION", boundedContext: "observability", owner: "platform-core", authModel: "service-role",
     requestContract: null, responseContract: null, sideEffectClass: "medium",
     allowedCallers: ["service-internal","scheduler"], callsInto: [],
     runtimeConsequence: "trace-ingest unavailable", migrationStatus: "stable" },
@@ -1275,7 +1244,7 @@ export function getCallGraphFor(name: string): readonly string[] {
     runtimeConsequence: "waitlist-stats unavailable", migrationStatus: "stable" },
 
   { id: "ef.webauthn-challenge", name: "webauthn-challenge", path: "supabase/functions/webauthn-challenge/index.ts", runtime: "deno", status: "active", description: "webauthn challenge",
-    category: "DOMAIN_FUNCTION", boundedContext: "security", owner: "security-engineering", authModel: "jwt",
+    category: "DOMAIN_FUNCTION", boundedContext: "security", owner: "compliance-security", authModel: "jwt",
     requestContract: null, responseContract: null, sideEffectClass: "medium",
     allowedCallers: ["frontend-user","public-bff"], callsInto: [],
     runtimeConsequence: "webauthn-challenge unavailable", migrationStatus: "stable" },
@@ -1327,5 +1296,36 @@ export function getCallGraphFor(name: string): readonly string[] {
     requestContract: null, responseContract: null, sideEffectClass: "medium",
     allowedCallers: ["service-internal","scheduler"], callsInto: [],
     runtimeConsequence: "workflow-stuck-detector unavailable", migrationStatus: "stable" },
-];
+] as const;
+
+export type EdgeFunctionName = typeof EDGE_FUNCTION_REGISTRY[number]["name"];
+
+// ── Lookup helpers ────────────────────────────────────────────
+export function getEdgeFunction(name: string): EdgeFunctionEntry | undefined {
+  return EDGE_FUNCTION_REGISTRY.find(f => f.name === name);
+}
+
+export function getEdgeFunctionsByStatus(status: EdgeFunctionStatus): readonly EdgeFunctionEntry[] {
+  return EDGE_FUNCTION_REGISTRY.filter(f => f.status === status);
+}
+
+export function getAllEdgeFunctionNames(): readonly string[] {
+  return EDGE_FUNCTION_REGISTRY.map(f => f.name);
+}
+
+export function getEdgeFunctionsByCategory(category: ClassificationVerdict): readonly EdgeFunctionEntry[] {
+  return EDGE_FUNCTION_REGISTRY.filter(f => f.category === category);
+}
+
+export function getEdgeFunctionsByOwner(owner: OwnerTeam): readonly EdgeFunctionEntry[] {
+  return EDGE_FUNCTION_REGISTRY.filter(f => f.owner === owner);
+}
+
+export function getEdgeFunctionsByCaller(caller: CallerClass): readonly EdgeFunctionEntry[] {
+  return EDGE_FUNCTION_REGISTRY.filter(f => f.allowedCallers.includes(caller));
+}
+
+export function getCallGraphFor(name: string): readonly string[] {
+  const entry = getEdgeFunction(name);
+  return entry?.callsInto ?? [];
 }

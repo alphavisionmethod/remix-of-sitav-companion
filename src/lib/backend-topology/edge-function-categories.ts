@@ -343,6 +343,7 @@ export const EDGE_FUNCTION_CATEGORIES: Record<string, EdgeFunctionCategory> = {
   "connector-transform": "connector",
   "cost-alert": "finance",
   "crm-sync": "connector",
+  "db-truth-introspect": "platform",
   "device-telemetry": "cloud",
   "digital-twin-engine": "intelligence",
   "ecosystem-operations": "platform",
