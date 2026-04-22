@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { useBusinessNavigation } from "@/contexts/BusinessNavigationContext";
 import { getTopWidgets, type HomeWidget } from "./BusinessHomeWidgetRegistry";
 import { getQuickActionsForProfile, getStatCardsForProfile } from "./AdaptiveCRMConfig";
 import { getIdentityLayer, getTimeAwareGreeting } from "@/domains/engines/business-identity-layers";
@@ -41,11 +42,34 @@ const ARCHETYPE_LABELS: Record<string, string> = {
 export default function AdaptiveBusinessHome() {
   const { weights, primaryMode, operatingFlags, adaptations } = useBusinessProfile();
   const { isCompleted: onboardingDone, savedState: obs } = useBusinessOnboarding();
+  const { navigateTo } = useBusinessNavigation();
   const topWidgets = getTopWidgets(weights as unknown as Record<string, number>, 8);
   const quickActions = getQuickActionsForProfile(primaryMode, 4);
   const statCards = getStatCardsForProfile(primaryMode);
   const identity = getIdentityLayer(primaryMode);
   const greeting = getTimeAwareGreeting(primaryMode);
+
+  /* ── Priority → module routing map ── */
+  const PRIORITY_MODULE_MAP: Record<string, string> = {
+    sales_followup: "leads",
+    lost_leads: "lead-recovery",
+    invoicing: "invoices",
+    collections: "collections",
+    profitability: "revenue-impact",
+    customer_service: "support",
+    client_comms: "communications",
+    retention: "customer-health",
+    customer_onboarding: "customers",
+    reviews: "proof",
+    scheduling: "appointments",
+    inventory: "ecommerce",
+    order_mgmt: "operations",
+    workflow_auto: "revenue-autopilot",
+    budgeting: "revenue-forecast",
+    accounts_mgmt: "overview",
+    imports_exports: "operations",
+    reporting: "boardroom",
+  };
 
   return (
     <div className="p-5 space-y-5">
@@ -148,7 +172,8 @@ export default function AdaptiveBusinessHome() {
                 {obs.businessPriorities.slice(0, 6).map((priority, i) => (
                   <button
                     key={priority}
-                    className="flex items-center gap-2.5 p-3 rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_100%/0.02)] hover:bg-[hsl(0_0%_100%/0.05)] transition-colors text-left"
+                    onClick={() => navigateTo(PRIORITY_MODULE_MAP[priority] || "overview")}
+                    className="flex items-center gap-2.5 p-3 rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_100%/0.02)] hover:bg-[hsl(0_0%_100%/0.05)] transition-colors text-left group"
                   >
                     <span className="w-5 h-5 rounded-md bg-primary/10 flex items-center justify-center text-[9px] font-bold text-primary shrink-0">
                       {i + 1}

@@ -2,6 +2,18 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { defaultOnboardingState, type OnboardingState } from "@/pages/revenue-office/onboarding/types";
 
+const LS_KEY = "sita_onboarding_state";
+const LS_COMPLETED_KEY = "sita_onboarding_completed";
+
+function loadFromLocalStorage(): { state: OnboardingState; completed: boolean } | null {
+  try {
+    const raw = localStorage.getItem(LS_KEY);
+    const completed = localStorage.getItem(LS_COMPLETED_KEY) === "true";
+    if (raw) return { state: { ...defaultOnboardingState, ...JSON.parse(raw) }, completed };
+  } catch {}
+  return null;
+}
+
 interface UseBusinessOnboardingReturn {
   isLoading: boolean;
   isCompleted: boolean;
@@ -13,9 +25,16 @@ interface UseBusinessOnboardingReturn {
 }
 
 export function useBusinessOnboarding(): UseBusinessOnboardingReturn {
-  const [isLoading, setIsLoading] = useState(true);
-  const [isCompleted, setIsCompleted] = useState(false);
-  const [savedState, setSavedState] = useState<OnboardingState>(defaultOnboardingState);
+  // Hydrate immediately from localStorage so widgets render before server fetch
+  const [isLoading, setIsLoading] = useState(() => {
+    return !loadFromLocalStorage()?.completed;
+  });
+  const [isCompleted, setIsCompleted] = useState(() => {
+    return loadFromLocalStorage()?.completed ?? false;
+  });
+  const [savedState, setSavedState] = useState<OnboardingState>(() => {
+    return loadFromLocalStorage()?.state ?? defaultOnboardingState;
+  });
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
@@ -61,8 +80,11 @@ export function useBusinessOnboarding(): UseBusinessOnboardingReturn {
       );
     setSavedState(state);
     setIsCompleted(true);
-    // Also save to localStorage for offline/demo access
-    try { localStorage.setItem("sita_onboarding_state", JSON.stringify(state)); } catch {}
+    // Persist to localStorage for instant hydration on refresh
+    try {
+      localStorage.setItem(LS_KEY, JSON.stringify(state));
+      localStorage.setItem(LS_COMPLETED_KEY, "true");
+    } catch {}
   }, []);
 
   const clearCompletion = useCallback(async () => {
