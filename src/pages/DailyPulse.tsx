@@ -138,6 +138,19 @@ export default function DailyPulse() {
       <h1 className="sr-only">Daily Pulse</h1>
       <PageTruthBanner truthState={isDemoMode ? "demo" : "live"} />
 
+      {isLoading && (
+        <div className="space-y-4 animate-pulse" role="status" aria-label="Loading dashboard">
+          <div className="h-40 rounded-2xl bg-muted/50" />
+          <div className="grid gap-4 lg:grid-cols-3">
+            {[1, 2, 3].map(i => <div key={i} className="h-32 rounded-xl bg-muted/40" />)}
+          </div>
+          <div className="h-24 rounded-xl bg-muted/30" />
+        </div>
+      )}
+
+      {!isLoading && (
+      <>
+
       <HeroCard
         title={formatDate()}
         metric={`${getGreeting()}, ${firstName}`}
@@ -259,6 +272,8 @@ export default function DailyPulse() {
           </button>
         ))}
       </div>
+      </>
+      )}
     </div>
   );
 }
