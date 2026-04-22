@@ -42,6 +42,9 @@ function isImportOpen(stripped) {
 
 /** Detect if a stripped line closes a multi-line import */
 function isImportClose(stripped) {
+  // Must have } before `from "..."` AND must not start with `import`
+  // (an injected single-line import also has } and from, but starts with import)
+  if (/^import\s/.test(stripped)) return false;
   return stripped.includes("}") && /from\s+["']/.test(stripped);
 }
 
