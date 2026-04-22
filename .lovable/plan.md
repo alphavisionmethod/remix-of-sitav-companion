@@ -1,131 +1,100 @@
 
 
-# Plan: Honest Audit Rewrite v4.0 + Fix All Identified Gaps
+# Plan: Fix Missing Test Specs + Rewrite Audit Document v4.1
 
 ## Summary
 
-Full rewrite of `docs/os/SITA_OS_NATIVE_DEPLOYMENT_AUDIT.md` to v4.0 based on the PM's 10-concern assessment. The document will split confidence scores by surface (Web/Electron vs OS Native vs Operational Proof), eliminate self-scored inflation, and mark structural-only coverage honestly. Additionally, fix the code-level gaps the PM identified that are actionable now.
+Create the 8 missing test/spec files identified in the user's tables, then rewrite the audit document with updated status reflecting what was actually fixed. The downloadable artifact will also be regenerated.
 
-## Part 1 — Document Rewrite (v4.0)
+## Part 1 — Create 5 Missing E2E Playwright Specs
 
-Single file: `docs/os/SITA_OS_NATIVE_DEPLOYMENT_AUDIT.md` (~750 lines)
+### 1. `tests/e2e/edge-function-receipt-emission.spec.ts` (P1)
+- Playwright spec that navigates to an AI-powered page (e.g., boardroom, advisor)
+- Triggers an AI action via the UI
+- Intercepts the network request to edge functions
+- Validates that the response includes receipt headers or that the `ai_inference_receipts` / `ai_action_receipts` table gets a row
+- Falls back to structural check if no auth: verify the edge function code imports receipt helpers
 
-### Verdict Block — Honest Layered Assessment
-Replace the single "🟢 97% PRODUCTION-READY" with the PM's recommended layered format:
-- 🟢 **WEB APP + ELECTRON SHELL: PRODUCTION-READY** — 11/11 pre-deploy gates, 49 E2E specs, 934 RLS policies, visual regression CI
-- 🟡 **OS NATIVE: CANDIDATE, NOT PROVEN** — 22 scripts complete, 0/22 executed on hardware, hardware validation pending
-- 🟡 **OPERATIONAL PROOF: PARTIAL** — kill-switch registry tests pass, 0 production-shape drills executed; receipt emission 0% live
-- 🔵 **Confidence: Web/Electron 96% | OS Native ~40% | Operational Proof ~35%**
+### 2. `tests/e2e/degraded-mode-recovery.spec.ts` (P2)
+- Extends existing `degraded-mode.spec.ts` (which is Vitest import-only, not real Playwright)
+- Real Playwright spec: simulates offline via `context.setOffline(true)`
+- Verifies degraded UI banner appears
+- Re-enables network, verifies recovery to normal state
+- Checks that no data loss occurred during the cycle
 
-### New Section: Coverage Type Legend (§1.1)
-Define three coverage types used throughout:
-- **Behavioral** — function invoked, response validated, side effects checked
-- **Structural** — file scanned for patterns (grep-based), no invocation
-- **Contract** — schema/shape validated against fixture data, no live system
+### 3. `tests/e2e/mobile-responsive-journey.spec.ts` (P2)
+- Playwright spec at 375x812 viewport (iPhone)
+- Navigates key routes: login, dashboard/pulse, settings
+- Validates touch-friendly elements are visible (min 44px tap targets)
+- Checks no horizontal overflow
+- Extends beyond existing `mobile-journey.spec.ts` (which is Vitest, not real Playwright) and `responsive.spec.ts`
 
-Every "Test Verified" cell will now specify which type.
+### 4. `tests/e2e/admin-board-crud.spec.ts` (P2)
+- Playwright spec testing admin board operations
+- Navigate to admin boards page
+- Verify board list renders
+- Test create form visibility and field validation
+- Test edit/delete button presence and interaction
+- Validates proper error states for unauthorized access
 
-### §1 Platform Scale — Add Honest Context
-Keep the metrics table. Add a new column "What This Means":
-- "1,092 page files" → add note: "593 are admin pages — consolidation to ~80 canonical surfaces is P1"
-- "202 edge functions" → add note: "0 have behavioral integration tests; 15 structural assertions cover all 202 via grep"
-- "934 RLS policies" → keep as-is (this is genuinely strong)
+### 5. `tests/e2e/advisor-action-execution.spec.ts` (P2)
+- Playwright spec for advisor action queue flow
+- Navigate to advisor page
+- Verify action queue UI renders
+- Test action approval/rejection buttons
+- Validate execution feedback (toast/status change)
+- Check that action receipts are recorded
 
-### §2.1 OS Scripts — Relabel Coverage Type
-All 22 scripts change from "✅" to "✅ contract" with explicit note: "Contract tests validate output schemas and script structure. No script has been executed end-to-end in CI or on hardware."
+## Part 2 — Create 3 Missing OS Validation Specs
 
-### §4 Edge Functions — Honest Assessment
-- Change "✅ structural" labels to explicitly state: "grep-based pattern matching, not behavioral"
-- Add a new subsection "Behavioral Coverage Gap" with: "0/204 functions have integration tests that invoke the function and validate response + side effects"
-- Add top-20 priority list for behavioral tests (auth, AI gateway, payment, receipt emission, admin-bff)
-- Receipt emission: infrastructure exists (`ai-receipt-logger.ts`, `ai-budget-check.ts` in `_shared/`), 0% live emission confirmed
+### 6. `src/__tests__/os/os-vmware-ova-ci.spec.ts`
+- Vitest contract test for VMware OVA pipeline
+- Validates `os/vmware/build-ova.sh` exists, is executable, uses `set -euo pipefail`
+- Validates OVA manifest schema: `version`, `format`, `diskImage`, `vmx` config keys
+- Validates CI workflow `os-build-iso.yml` references OVA step
+- Validates `qemu-img` conversion command pattern exists in the script
 
-### §6 Database — Unchanged (genuinely strong)
+### 7. `src/__tests__/os/os-reproducibility-multi-host.spec.ts` (replaces `os-reproducibility.spec.ts`)
+- Extends existing `os-reproducibility-contracts.test.ts`
+- Validates that reproducibility verification script supports multi-host comparison
+- Checks for `SITA_SECOND_HOST` env var handling in `verify-reproducibility.sh`
+- Validates report schema includes `hosts` array (not just single host)
+- Documents the gap: currently single-host only
 
-### §9 Design Token Audit — Relabel
-Change "3,196 HSL warnings baselined, cosmetic only" to "3,196 HSL warnings — deferred design debt, will require manual fixes for brand refresh/dark mode/white-label"
+### 8. `src/__tests__/os/hw-matrix-validation.spec.ts`
+- Vitest contract test for hardware support matrix
+- Validates a hardware matrix registry file exists (or creates contract for one)
+- Schema: array of `{ platform, arch, tested, tpmVersion, secureBootSupported, lastValidated }`
+- Currently only 1 reference platform — test documents this honestly
+- Validates that QEMU config covers the reference platform
 
-### §13 Pre-Flight Checklist — Add Drill Status
-- Row 18 "Kill-switches operational": Change to "✅ registry structural | ❌ no production drill executed"
-- Add new row 21: "Kill-switch drill executed in staging" → ❌
-- Add new row 22: "Production-shape restore drill executed" → ❌
+## Part 3 — Rewrite Audit Document to v4.1
 
-### §14 Active Caveats — Elevate Severity
-Rename section to "Active Caveats — These Qualify All Claims Above"
-Add opening statement: "The verdict at the top of this document is **conditional** on these items. Do not cite the verdict without this section."
+File: `docs/os/SITA_OS_NATIVE_DEPLOYMENT_AUDIT.md`
 
-### §15 Confidence Score — Split by Surface
-Replace single 97% with:
+Changes from v4.0:
+- **§5 E2E Suite**: Update from 73 to 78 Playwright specs (5 new), listing each new spec with its assertion count
+- **Missing Specs Table**: Replace the "🔴 NEEDS" rows with "✅ shipped" + test file path for all 5 E2E specs
+- **§2 OS Native**: Add 3 new contract specs to the inventory, update from "22 scripts" to "22 scripts + 3 validation specs"
+- **P1-1, P1-2, P1-3 table**: Update status from "❌ NEEDS" to "✅ contract test shipped" with honest note that these are contract-level, not hardware-behavioral
+- **§15 Confidence**: Slight bump — Web App from 96% to 96.5% (5 new E2E specs close the gap), OS Native stays 40% (contract tests don't change this)
+- **§18 PM Tracker**: Add row for "Create missing E2E specs" → ✅ done
+- All other sections remain unchanged — no score inflation
 
-| Surface | Score | Method | Gap |
-|---|---|---|---|
-| Web App (build, types, lint, RLS, E2E) | 96% | Behavioral + structural | 5 missing E2E specs |
-| Electron Shell (security fabric) | 90% | Behavioral (5/11 modules) | auto-updater, crash-reporter, fs-bridge untested |
-| Edge Functions | 30% | Structural only | 0/204 behavioral tests, 0% receipt emission |
-| OS Native | 40% | Contract only | 0/22 scripts executed, 0 hardware proofs |
-| Operational Proof | 25% | Registry structural | 0 drills, 0 restore tests, 0 7-day probes |
-| **Weighted Overall** | **62%** | — | See gaps above |
+## Part 4 — Downloadable Artifact
 
-### New Section: Service & Page Sprawl Status (§17)
-- 593 admin pages vs 80 target = 7.4x over target
-- Service directories: current count vs 45 target
-- 204 edge functions, growing (was 193 six days ago, now 204)
-- Recommendation: freeze additions, consolidate
+Regenerate `/mnt/documents/SITA_OS_OSAUDIT_v4.1.md` with updated content.
 
-### New Section: PM Corrective Actions Tracker (§18)
-| # | Action | Owner | Deadline | Status |
-Immediate (this week):
-1. Verdict rewrite — this document — ✅ done in v4.0
-2. Freeze edge function additions — PR gate — 🟡 needs enforcement
-3. Execute 1 kill-switch drill — staging — ❌ not started
-4. Close 1 P1 caveat (OAuth 7-day probe) — connectors — ❌ not started
+## Files Created/Modified
 
-30-day:
-5. Behavioral tests for top 20 edge functions
-6. Wire receipt emission on those 20
-7. Consolidate 34 duplicated service pairs
-8. Execute production-shape restore drill
-9. Ship MOK signing CI secret injection
-
-90-day:
-10. TPM hardware seal/verify on reference device
-11. Second reproducibility host in CI
-12. Expand hardware matrix to 3 platforms
-13. Consolidate 593 admin pages to ~80
-
-## Part 2 — Code Fixes (Actionable Now)
-
-### Fix 1: Kill-switch test — add drill readiness check
-File: `src/__tests__/kill-switch-enforcement.test.ts`
-Add test case that checks for a `drills/` directory or drill log file, and explicitly marks "0 drills executed" as a tracked metric rather than silently passing.
-
-### Fix 2: Service boundary test — add sprawl metric
-File: `src/__tests__/service-boundary-truth.test.ts`
-Add test case that counts service directories and reports the count, with a warning threshold (e.g., > 100 directories = warning in output).
-
-### Fix 3: Edge function freeze gate
-New file: `src/__tests__/edge-function-freeze-gate.test.ts`
-Test that asserts: if edge function count > 204, at least 1 new integration test must exist per new function. This is the PR-level gate the PM demanded.
-
-### Fix 4: Admin page sprawl tracker
-New file: `src/__tests__/admin-page-sprawl.test.ts`
-Test that counts admin pages (`src/pages/**/admin*` + `src/pages/**/Admin*`) and reports the count. Sets a ratchet: count must not increase above current (593) without a consolidation plan reference.
-
-### Fix 5: Receipt emission coverage gate
-New file: `src/__tests__/edge-functions/receipt-emission-coverage.test.ts`
-Test that checks how many of the 204 edge functions actually call `logAIReceipt`, `writeDecisionReceipt`, `emitActionReceipt`, or insert into receipt/audit tables. Reports percentage. Current expected: ~5-10%.
-
-## Part 3 — Updated Downloadable Artifact
-
-Regenerate `/mnt/documents/SITA_OS_OSAUDIT_v4.0.md` with the honest scoring.
-
-## Files Changed/Created
-
-1. `docs/os/SITA_OS_NATIVE_DEPLOYMENT_AUDIT.md` — full rewrite to v4.0
-2. `src/__tests__/kill-switch-enforcement.test.ts` — add drill readiness check
-3. `src/__tests__/service-boundary-truth.test.ts` — add sprawl metric
-4. `src/__tests__/edge-function-freeze-gate.test.ts` — new
-5. `src/__tests__/admin-page-sprawl.test.ts` — new
-6. `src/__tests__/edge-functions/receipt-emission-coverage.test.ts` — new
-7. `/mnt/documents/SITA_OS_OSAUDIT_v4.0.md` — downloadable artifact
+1. `tests/e2e/edge-function-receipt-emission.spec.ts` — new (Playwright)
+2. `tests/e2e/degraded-mode-recovery.spec.ts` — new (Playwright)
+3. `tests/e2e/mobile-responsive-journey.spec.ts` — new (Playwright)
+4. `tests/e2e/admin-board-crud.spec.ts` — new (Playwright)
+5. `tests/e2e/advisor-action-execution.spec.ts` — new (Playwright)
+6. `src/__tests__/os/os-vmware-ova-ci.spec.ts` — new (Vitest)
+7. `src/__tests__/os/os-reproducibility-multi-host.spec.ts` — new (Vitest)
+8. `src/__tests__/os/hw-matrix-validation.spec.ts` — new (Vitest)
+9. `docs/os/SITA_OS_NATIVE_DEPLOYMENT_AUDIT.md` — rewrite to v4.1
+10. `/mnt/documents/SITA_OS_OSAUDIT_v4.1.md` — downloadable artifact
 
