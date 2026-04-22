@@ -37,6 +37,8 @@ export const PAGE_OWNER_MAP: readonly PageOwnerEntry[] = [
   { page: "src/pages/OwnerCenter.tsx", domain: "owner", owner: "operations", riskTier: "R4" },
   { page: "src/pages/mission-control/MissionControlPage.tsx", domain: "mission", owner: "operations", riskTier: "R3" },
   { page: "src/pages/SearchPage.tsx", domain: "search", owner: "platform", riskTier: "R0" },
+  { page: "src/pages/ProductivityHub.tsx", domain: "workspace", owner: "productivity", riskTier: "R0" },
+  { page: "src/pages/LandingPage.tsx", domain: "shell", owner: "platform", riskTier: "R0" },
 ];
 
 export function getPageOwner(pagePath: string): PageOwnerEntry | undefined {

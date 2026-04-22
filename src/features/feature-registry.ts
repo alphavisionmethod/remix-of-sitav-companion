@@ -61,7 +61,7 @@ export const FEATURE_REGISTRY: readonly FeatureSurfaceEntry[] = [
   {
     featureId: "investment-office", name: "Investment Office", canonicalImport: "@/features/investment-office",
     domain: "finance", riskTier: "R4", status: "beta",
-    ownedRoutes: ["/investment", "/investment/boardroom", "/investment/markets", "/investment/portfolio", "/investment/strategy", "/investment/execute", "/investment/research", "/investment/risk", "/investment/family-office"],
+    ownedRoutes: ["/investment", "/investment-office", "/investment/boardroom", "/investment/markets", "/investment/portfolio", "/investment/strategy", "/investment/execute", "/investment/research", "/investment/risk", "/investment/family-office"],
     ownedApps: ["investment-app"], runtimeSupport: [...ALL_TIERS], stateGrammar: [...FULL_STATES],
     proofCoverage: CORE_PROOF, supportIntegrated: true, trustIntegrated: true,
   },
@@ -98,7 +98,7 @@ export const FEATURE_REGISTRY: readonly FeatureSurfaceEntry[] = [
   {
     featureId: "apps", name: "Mini Apps", canonicalImport: "@/features/apps",
     domain: "system", riskTier: "R0", status: "beta",
-    ownedRoutes: ["/apps/email", "/apps/gallery", "/apps/health", "/apps/messenger", "/apps/vault", "/apps/weather"],
+    ownedRoutes: ["/apps", "/apps/email", "/apps/gallery", "/apps/health", "/apps/messenger", "/apps/vault", "/apps/weather"],
     ownedApps: [], runtimeSupport: [...WEB_DESKTOP], stateGrammar: [...CORE_STATES],
     proofCoverage: PARTIAL_PROOF, supportIntegrated: false, trustIntegrated: false,
   },
@@ -133,14 +133,14 @@ export const FEATURE_REGISTRY: readonly FeatureSurfaceEntry[] = [
   {
     featureId: "home", name: "Home", canonicalImport: "@/features/home",
     domain: "system", riskTier: "R0", status: "ga",
-    ownedRoutes: ["/", "/home"], ownedApps: [],
+    ownedRoutes: ["/", "/home", "/desktop", "/nova-desktop"], ownedApps: [],
     runtimeSupport: [...ALL_TIERS], stateGrammar: [...CORE_STATES],
     proofCoverage: CORE_PROOF, supportIntegrated: false, trustIntegrated: false,
   },
   {
     featureId: "integrations", name: "Integrations", canonicalImport: "@/features/integrations",
     domain: "system", riskTier: "R2", status: "beta",
-    ownedRoutes: ["/integrations"], ownedApps: [],
+    ownedRoutes: ["/integrations", "/connectors"], ownedApps: [],
     runtimeSupport: [...ALL_TIERS], stateGrammar: [...CORE_STATES],
     proofCoverage: PARTIAL_PROOF, supportIntegrated: true, trustIntegrated: false,
   },
@@ -203,7 +203,7 @@ export const FEATURE_REGISTRY: readonly FeatureSurfaceEntry[] = [
   {
     featureId: "revenue-office", name: "Revenue Office", canonicalImport: "@/features/revenue-office",
     domain: "finance", riskTier: "R2", status: "alpha",
-    ownedRoutes: ["/revenue"], ownedApps: [],
+    ownedRoutes: ["/revenue", "/revenue-office"], ownedApps: [],
     runtimeSupport: [...WEB_DESKTOP], stateGrammar: [...CORE_STATES],
     proofCoverage: PARTIAL_PROOF, supportIntegrated: false, trustIntegrated: false,
   },
@@ -234,6 +234,41 @@ export const FEATURE_REGISTRY: readonly FeatureSurfaceEntry[] = [
     ownedRoutes: ["/workspace"], ownedApps: [],
     runtimeSupport: [...ALL_TIERS], stateGrammar: [...CORE_STATES],
     proofCoverage: PARTIAL_PROOF, supportIntegrated: false, trustIntegrated: false,
+  },
+  {
+    featureId: "search", name: "Search", canonicalImport: "@/features/search",
+    domain: "system", riskTier: "R0", status: "beta",
+    ownedRoutes: ["/search"], ownedApps: [],
+    runtimeSupport: [...ALL_TIERS], stateGrammar: [...CORE_STATES],
+    proofCoverage: PARTIAL_PROOF, supportIntegrated: false, trustIntegrated: false,
+  },
+  {
+    featureId: "governance", name: "Governance", canonicalImport: "@/features/governance",
+    domain: "system", riskTier: "R1", status: "beta",
+    ownedRoutes: ["/governance", "/policies"], ownedApps: [],
+    runtimeSupport: [...ALL_TIERS], stateGrammar: [...CORE_STATES],
+    proofCoverage: PARTIAL_PROOF, supportIntegrated: true, trustIntegrated: false,
+  },
+  {
+    featureId: "observability", name: "Observability", canonicalImport: "@/features/observability",
+    domain: "system", riskTier: "R1", status: "beta",
+    ownedRoutes: ["/observability"], ownedApps: [],
+    runtimeSupport: [...ALL_TIERS], stateGrammar: [...CORE_STATES],
+    proofCoverage: PARTIAL_PROOF, supportIntegrated: true, trustIntegrated: false,
+  },
+  {
+    featureId: "admin", name: "Admin", canonicalImport: "@/features/admin",
+    domain: "system", riskTier: "R3", status: "beta",
+    ownedRoutes: ["/admin"], ownedApps: [],
+    runtimeSupport: [...WEB_DESKTOP], stateGrammar: [...FULL_STATES],
+    proofCoverage: CORE_PROOF, supportIntegrated: true, trustIntegrated: true,
+  },
+  {
+    featureId: "api", name: "Backend API", canonicalImport: "@/features/api",
+    domain: "system", riskTier: "R2", status: "beta",
+    ownedRoutes: ["/api"], ownedApps: [],
+    runtimeSupport: [...ALL_TIERS], stateGrammar: [...CORE_STATES],
+    proofCoverage: PARTIAL_PROOF, supportIntegrated: true, trustIntegrated: false,
   },
 ];
 
