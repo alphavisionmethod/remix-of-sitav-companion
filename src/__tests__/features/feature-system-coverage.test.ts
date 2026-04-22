@@ -67,7 +67,8 @@ describe("Onboarding System", () => {
   it("login page exists", () => {
     const exists = fs.existsSync("src/pages/Login.tsx") ||
                    fs.existsSync("src/pages/Auth.tsx") ||
-                   fs.existsSync("src/pages/SignIn.tsx");
+                   fs.existsSync("src/pages/SignIn.tsx") ||
+                   fs.existsSync("src/pages/auth/Login.tsx");
     expect(exists).toBe(true);
   });
 });
