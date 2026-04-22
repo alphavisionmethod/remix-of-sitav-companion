@@ -144,6 +144,7 @@ const AND03AndroidTrustApprovals = () => {
       </TabsContent>
     </Tabs>
   </div>
-);
+  );
+};
 
 export default AND03AndroidTrustApprovals;

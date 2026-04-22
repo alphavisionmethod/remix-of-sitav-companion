@@ -43,7 +43,6 @@ const attentionColor = (severity: string) =>
 
 const AIEngineeringBoard = () => {
   const { data: engData, isDemo } = useAIEngineeringData({
-  const { isDemoMode } = useDataMode();
     missions: DEMO_MISSIONS,
     fixes: [],
     changePlans: [],
