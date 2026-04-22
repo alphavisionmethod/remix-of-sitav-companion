@@ -45,6 +45,7 @@ vi.mock("@/hooks/useOSOrchestration", () => ({
     getDeviceMeshStatus: () => ({ devices: [], healthScore: 100 }),
     getWorkspaceSuggestions: () => [],
     getRecentExplanations: () => [],
+    getCognitiveLoad: () => ({ score: 0.2, level: "low" }),
   }),
 }));
 
