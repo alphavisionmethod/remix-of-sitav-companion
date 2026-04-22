@@ -38,11 +38,9 @@ const OUTPUT_PRODUCING_SCRIPTS = ALL_SCRIPTS.filter(
 const TOOL_DEPENDENT_SCRIPTS = [
   'build-verity-root.sh',    // veritysetup
   'sign-kernel.sh',          // sbsign
-  'sign-initramfs.sh',       // openssl
   'seal-verity-to-tpm.sh',   // tpm2_createpolicy
   'verify-tpm-seal.sh',      // jq
   'enroll-secureboot-mok.sh', // openssl, sbsign, sbverify
-  'verify-sbom.sh',          // node
   'build-raw-img.sh',        // sgdisk, parted, etc.
 ];
 
