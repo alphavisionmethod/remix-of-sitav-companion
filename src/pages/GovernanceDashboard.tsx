@@ -16,6 +16,7 @@ import type { ReadinessInput } from "@/domains/engines/readiness-engine";
 import { useOSRuntime } from "@/hooks/useOSRuntime";
 import { useMemo } from "react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageShell } from "@/components/sita/PageShell";
 const DEFAULT_SCOPE = { ownerId: "current-user", visibility: "private" as const };
 
 export default function GovernanceDashboard() {
@@ -44,6 +45,7 @@ export default function GovernanceDashboard() {
   };
 
   return (
+    <PageShell>
     <div className="space-y-6 pb-8">
 <SitaPageHeader
         title="Governance Dashboard"
@@ -113,5 +115,6 @@ export default function GovernanceDashboard() {
       <SitaSectionHeader title="Delegation Registry" />
       <DelegationRegistryTable />
     </div>
+    </PageShell>
   );
 }

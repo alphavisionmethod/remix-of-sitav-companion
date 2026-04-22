@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { useCountUp } from "@/hooks/useCountUp";
 import type { LucideIcon } from "lucide-react";
+import { PageShell } from "@/components/sita/PageShell";
 
 // ─── Demo data ───
 const USER_STATS = { xp: 4280, level: 12, streak: 7, totalDecisions: 156, platformsConnected: 8 };
@@ -69,6 +70,7 @@ function XPBar() {
   const pct = (USER_STATS.xp / XP_FOR_NEXT) * 100;
 
   return (
+    <PageShell>
     <motion.div
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
@@ -130,6 +132,7 @@ function XPBar() {
         ))}
       </div>
     </motion.div>
+    </PageShell>
   );
 }
 

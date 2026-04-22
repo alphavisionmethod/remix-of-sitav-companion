@@ -13,6 +13,7 @@ import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
 import { EmptyState } from "@/components/sita/SitaComponents";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageShell } from "@/components/sita/PageShell";
 const statusColor = { active: "bg-emerald-500", paused: "bg-amber-500", idle: "bg-muted" };
 
 export default function AIWorkforcePage() {
@@ -33,6 +34,7 @@ export default function AIWorkforcePage() {
   const agents = realAgents;
 
   return (
+    <PageShell>
     <div className="space-y-6 p-6">
 <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="flex items-center justify-between">
         <div>
@@ -169,5 +171,6 @@ export default function AIWorkforcePage() {
         </TabsContent>
       </Tabs>
     </div>
+    </PageShell>
   );
 }

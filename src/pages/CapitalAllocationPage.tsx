@@ -14,6 +14,7 @@ import { fromTable } from "@/lib/supabase-helpers";
 
 import { ASSET_COLORS } from "@/lib/constants/ui-config";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageShell } from "@/components/sita/PageShell";
 export default function CapitalAllocationPage() {
   const { user , isDemo} = useAuth();
   const { data: realAllocations } = useQuery({
@@ -43,6 +44,7 @@ export default function CapitalAllocationPage() {
   const totalValue = allocations.reduce((s, a) => s + a.value, 0);
 
   return (
+    <PageShell>
     <div className="space-y-6 p-6">
 <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="flex items-center justify-between">
         <div>
@@ -118,5 +120,6 @@ export default function CapitalAllocationPage() {
         </TabsContent>
       </Tabs>
     </div>
+    </PageShell>
   );
 }

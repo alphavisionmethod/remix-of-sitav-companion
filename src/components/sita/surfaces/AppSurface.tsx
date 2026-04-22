@@ -16,10 +16,10 @@ interface AppSurfaceProps {
 }
 
 const LEVEL_CLASSES: Record<SurfaceLevel, string> = {
-  0: "bg-[hsl(0_0%_6%)] border-[hsl(0_0%_100%/0.04)]",
-  1: "bg-[hsl(0_0%_9%)] border-[hsl(0_0%_100%/0.06)] shadow-[0_1px_2px_hsl(0_0%_0%/0.04)]",
-  2: "bg-[hsl(0_0%_12%)] border-[hsl(0_0%_100%/0.08)] shadow-[0_2px_8px_hsl(0_0%_0%/0.06),0_1px_2px_hsl(0_0%_0%/0.04)]",
-  3: "bg-[hsl(0_0%_14%)] border-[hsl(0_0%_100%/0.10)] shadow-[0_4px_16px_hsl(0_0%_0%/0.10),0_12px_32px_hsl(0_0%_0%/0.08)]",
+  0: "bg-surface-0 border-transparent",
+  1: "bg-surface-1 border-border-subtle shadow-xs",
+  2: "bg-surface-2 border-border shadow-card",
+  3: "bg-surface-3 border-border shadow-card-hover",
 };
 
 export function AppSurface({ level = 1, children, className, as: Tag = "div", style }: AppSurfaceProps) {

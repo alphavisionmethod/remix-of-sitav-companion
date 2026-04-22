@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils";
 import { type DemoUploadItem as UploadItem, type DemoExportItem as ExportItem } from "@/data/seed/import-export";
 import { useImportExportJobs } from "@/hooks/use-live-data";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageShell } from "@/components/sita/PageShell";
 const STATUS_STYLES = { uploading: "text-primary", processing: "text-amber-400", complete: "text-emerald-400", failed: "text-red-400", generating: "text-amber-400", ready: "text-emerald-400", expired: "text-muted-foreground", pending: "text-amber-400" };
 const STATUS_ICONS = { uploading: Clock, processing: Clock, complete: CheckCircle2, failed: AlertTriangle, generating: Clock, ready: CheckCircle2, expired: AlertTriangle, pending: Clock };
 
@@ -46,6 +47,7 @@ const ImportExportCenter = () => {
   }, [false, liveJobs]);
 
   return (
+    <PageShell>
     <div className="min-h-screen pb-12">
 <SitaPageHeader title="Upload & Export Center" subtitle="Import files, export reports, and manage data transfers" />
 
@@ -170,6 +172,7 @@ const ImportExportCenter = () => {
         </motion.div>
       )}
     </div>
+    </PageShell>
   );
 };
 

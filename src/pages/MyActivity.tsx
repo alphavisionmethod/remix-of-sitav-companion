@@ -7,6 +7,7 @@ import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
 import { DEMO_DAY_LABELS, DEMO_FEATURES } from "@/data/seed/core-pages";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageShell } from "@/components/sita/PageShell";
 
 
 
@@ -50,6 +51,7 @@ const HeatmapGrid = ({ data }: { data: Record<string, number> }) => {
   }
 
   return (
+    <PageShell>
     <div className="flex gap-1">
 {/* Day labels */}
       <div className="flex flex-col gap-[3px] mr-1 pt-5">
@@ -76,6 +78,7 @@ const HeatmapGrid = ({ data }: { data: Record<string, number> }) => {
         ))}
       </div>
     </div>
+    </PageShell>
   );
 };
 

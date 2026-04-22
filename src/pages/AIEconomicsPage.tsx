@@ -19,6 +19,7 @@ import {
   useModelRoutingStats,
   useComputeBudgetStatus,
 } from "@/hooks/use-compute-governance";
+import { PageShell } from "@/components/sita/PageShell";
 
 // ── Main Page ──────────────────────────────────────────────────
 export default function AIEconomicsPage() {
@@ -36,6 +37,7 @@ export default function AIEconomicsPage() {
   };
 
   return (
+    <PageShell>
     <div className="p-4 md:p-6 max-w-[1200px] mx-auto space-y-6">
 {/* Hero */}
       <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
@@ -237,5 +239,6 @@ export default function AIEconomicsPage() {
         </TabsContent>
       </Tabs>
     </div>
+    </PageShell>
   );
 }

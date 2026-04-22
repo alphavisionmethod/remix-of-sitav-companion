@@ -26,6 +26,7 @@ import { AIEmbeddedRecommendation } from "@/components/ai/AIEmbeddedRecommendati
 import { AIResponsePanel } from "@/components/ai/AIResponsePanel";
 import { DataLoadingWrapper } from "@/components/sita/DataLoadingWrapper";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageShell } from "@/components/sita/PageShell";
 
 // ── Fleet Overview Hero ─────────────────────────────────────────
 
@@ -40,6 +41,7 @@ function FleetHero() {
   const scoreColor = healthScore >= 90 ? "trust-safe" : healthScore >= 70 ? "accent" : "destructive";
 
   return (
+    <PageShell>
     <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
       className="relative overflow-hidden rounded-2xl border border-primary/15 bg-gradient-to-br from-primary/8 via-card to-card p-6"
     >
@@ -97,6 +99,7 @@ function FleetHero() {
 
       <div className="absolute -right-16 -top-16 h-48 w-48 rounded-full bg-primary/3 blur-3xl" />
     </motion.div>
+    </PageShell>
   );
 }
 
