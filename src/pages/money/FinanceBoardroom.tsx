@@ -125,7 +125,7 @@ const FinanceBoardroom = () => {
           insight={`Safe to spend: $${k.safeToSpend.toLocaleString()}. Reserve health at ${k.reserveHealth}%. ${wasteCount > 0 ? `${wasteCount} waste subscription(s) detected ($${k.estWaste}/mo).` : "No waste detected."}`}
           confidence={k.reserveHealth >= 80 ? 91 : 68}
           accentColor="hsl(160 60% 45%)"
-          action={wasteCount > 0 ? { label: "Clean Up", onClick: () => toast.info("Cleanup coming soon") } : undefined}
+          action={wasteCount > 0 ? { label: "Clean Up", onClick: () => toast.info("Cleanup planned — coming in a future update") } : undefined}
         />
       </div>
     </BoardroomCinematic>

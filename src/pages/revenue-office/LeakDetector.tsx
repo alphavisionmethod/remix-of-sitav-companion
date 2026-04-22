@@ -92,7 +92,7 @@ export default function LeakDetector() {
               domain="business"
               title="No revenue leaks detected"
               description="Connect your revenue sources to detect pricing gaps, churn risks, and billing errors."
-              actions={[{ label: "Connect Revenue Source", onClick: () => toast.info("Revenue source connection coming soon") }]}
+              actions={[{ label: "Connect Revenue Source", onClick: () => toast.info("Revenue source connection planned — coming in a future update") }]}
             />
           )}
 

@@ -1,5 +1,6 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { Loader2 } from "lucide-react";
 import { pathToModuleId } from "@/components/sita/apps/mission-control/MissionControlAppShell";
 
 /**
@@ -19,8 +20,11 @@ const AdminCenter = () => {
   }, [location.pathname, navigate]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <p className="text-muted-foreground text-sm animate-pulse">Opening Mission Control...</p>
+    <div className="min-h-screen flex items-center justify-center bg-background" role="status" aria-live="polite">
+      <div className="flex flex-col items-center gap-3 animate-fade-in">
+        <Loader2 className="h-6 w-6 animate-spin text-primary" />
+        <p className="text-muted-foreground text-sm">Opening Mission Control…</p>
+      </div>
     </div>
   );
 };

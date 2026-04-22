@@ -72,7 +72,7 @@ const NetWorthOffice = () => {
               domain="finance"
               title="No asset accounts yet"
               description="Connect your bank, brokerage, or retirement accounts to see your full balance sheet."
-              actions={[{ label: "Connect Account", onClick: () => toast.info("Account connection coming soon") }]}
+              actions={[{ label: "Connect Account", onClick: () => toast.info("Account connection planned — coming in a future update") }]}
             />
           )}
           {analysis.assets.map(a => {

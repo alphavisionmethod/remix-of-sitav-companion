@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useWindowManagerContext } from "@/contexts/WindowManagerContext";
+import { Loader2 } from "lucide-react";
 
 /**
  * BusinessCenter is now a redirect shim.
@@ -59,7 +59,6 @@ const subpageFromPath = (path: string): string => {
 const BusinessCenter = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const wm = useWindowManagerContext();
 
   useEffect(() => {
     const module = subpageFromPath(location.pathname);
@@ -70,8 +69,11 @@ const BusinessCenter = () => {
   }, [location.pathname, navigate]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <p className="text-muted-foreground text-sm animate-pulse">Opening Business OS...</p>
+    <div className="min-h-screen flex items-center justify-center bg-background" role="status" aria-live="polite">
+      <div className="flex flex-col items-center gap-3 animate-fade-in">
+        <Loader2 className="h-6 w-6 animate-spin text-primary" />
+        <p className="text-muted-foreground text-sm">Opening Business OS…</p>
+      </div>
     </div>
   );
 };

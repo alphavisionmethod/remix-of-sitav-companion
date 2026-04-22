@@ -23,7 +23,7 @@ export default function CROOffice() {
           domain="business"
           title="Conversion analytics not connected"
           description="Connect your website analytics to see CTA performance, trust gaps, funnel leaks, form friction, and mobile UX issues."
-          actions={[{ label: "Connect Analytics", onClick: () => toast.info("Analytics connection coming soon") }]}
+          actions={[{ label: "Connect Analytics", onClick: () => toast.info("Analytics connection planned — coming in a future update") }]}
         />
       </div>
     </div>
