@@ -277,7 +277,6 @@ export const ROUTE_METADATA_REGISTRY: readonly RouteMetadata[] = [
     owner: "finance", domain: "investment",
     supportedRuntimes: ALL_RUNTIMES, degradedRuntimes: NO_RUNTIMES, blockedRuntimes: NO_RUNTIMES,
     profiles: ["user"], authRequired: true, authLevel: "authenticated", requiredCapabilities: [],
-    shell: "ShellLayout", lazyEntry: true, pageSource: "src/pages/InvestmentShellPage.tsx",
     shell: "ShellLayout", lazyEntry: true, pageSource: "src/pages/investment-office/InvestmentShellPage.tsx",
     backendSources: ["DOMAIN_FUNCTION", "EXTERNAL_PROVIDER"], dataDependencies: ["portfolios", "holdings"],
     truthPrimitives: ["STATUS", "PROVENANCE", "EVIDENCE", "AI_DISCLOSURE"],
