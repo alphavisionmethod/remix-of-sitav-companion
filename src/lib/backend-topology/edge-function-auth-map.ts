@@ -97,23 +97,7 @@ export const EDGE_FUNCTION_AUTH_MAP: Record<string, EdgeFunctionAuthEntry> = {
   "user-bff-gateway": { auth: "jwt", requiresUserContext: true, adminOnly: false },
   "vapid-public-key": { auth: "anon", requiresUserContext: false, adminOnly: false },
   "verification-recorder": { auth: "jwt", requiresUserContext: true, adminOnly: false },
-} as const;
-
-export function getAuthForFunction(name: string): EdgeFunctionAuthEntry | undefined {
-  return EDGE_FUNCTION_AUTH_MAP[name];
-}
-
-export function getFunctionsByAuth(auth: AuthRequirement): string[] {
-  return Object.entries(EDGE_FUNCTION_AUTH_MAP)
-    .filter(([, entry]) => entry.auth === auth)
-    .map(([name]) => name);
-}
-
-export function getAdminOnlyFunctions(): string[] {
-  return Object.entries(EDGE_FUNCTION_AUTH_MAP)
-    .filter(([, entry]) => entry.adminOnly)
-    .map(([name]) => name);
-}  "account-delete": { auth: "service-role", requiresUserContext: false, adminOnly: false },
+  "account-delete": { auth: "service-role", requiresUserContext: false, adminOnly: false },
   "admin-reset-user-setup": { auth: "service-role", requiresUserContext: false, adminOnly: true },
   "admin-revoke-session": { auth: "service-role", requiresUserContext: false, adminOnly: true },
   "ai-receipt-completeness-snapshot": { auth: "service-role", requiresUserContext: false, adminOnly: false },
@@ -230,4 +214,5 @@ export function getAdminOnlyFunctions(): string[] {
   "workflow-repair": { auth: "service-role", requiresUserContext: false, adminOnly: false },
   "workflow-replay": { auth: "service-role", requiresUserContext: false, adminOnly: false },
   "workflow-stuck-detector": { auth: "service-role", requiresUserContext: false, adminOnly: false },
+};
 
