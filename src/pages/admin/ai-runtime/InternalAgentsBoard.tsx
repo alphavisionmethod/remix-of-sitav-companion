@@ -66,7 +66,7 @@ import {
   TrendingDown,
   Zap,
 } from "lucide-react";
-import { EmptyState } from "@/components/primitives/feedback/EmptyState";
+import { EmptyState } from "@/components/sita/EmptyState";
 
 const COUNCIL_LABEL: Record<string, string> = {
   "product-build": "Product Build",

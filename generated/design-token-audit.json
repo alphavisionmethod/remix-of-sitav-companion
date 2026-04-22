@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-04-22T21:46:50.469Z",
+  "generated_at": "2026-04-22T22:00:05.540Z",
   "summary": {
     "errors": 0,
     "warnings": 3196,
-    "info": 49,
-    "total": 3245
+    "info": 29,
+    "total": 3225
   },
   "findings": [
     {
@@ -22380,13 +22380,6 @@
       "severity": "warning"
     },
     {
-      "file": "src/pages/RevenueCallingPage.tsx",
-      "line": 10,
-      "rule": "canonical-empty-state",
-      "message": "Import from non-canonical empty state — use @/components/sita/EmptyState instead",
-      "severity": "info"
-    },
-    {
       "file": "src/pages/admin/fip/FIPBuilderConsole.tsx",
       "line": 11,
       "rule": "canonical-empty-state",
@@ -22493,14 +22486,14 @@
     },
     {
       "file": "src/pages/digital-presence/CROOffice.tsx",
-      "line": 9,
+      "line": 4,
       "rule": "canonical-empty-state",
       "message": "Import from non-canonical empty state — use @/components/sita/EmptyState instead",
       "severity": "info"
     },
     {
       "file": "src/pages/digital-presence/SiteBuilder.tsx",
-      "line": 11,
+      "line": 12,
       "rule": "canonical-empty-state",
       "message": "Import from non-canonical empty state — use @/components/sita/EmptyState instead",
       "severity": "info"
@@ -22583,141 +22576,8 @@
       "severity": "info"
     },
     {
-      "file": "src/pages/workspace/DocsWorkspace.tsx",
-      "line": 10,
-      "rule": "canonical-empty-state",
-      "message": "Import from non-canonical empty state — use @/components/sita/EmptyState instead",
-      "severity": "info"
-    },
-    {
       "file": "src/__tests__/components/primitives-coverage.test.tsx",
       "line": 7,
-      "rule": "no-deprecated-primitive",
-      "message": "Importing deprecated primitive re-export — import directly from sita/ canonical",
-      "severity": "info"
-    },
-    {
-      "file": "src/components/admin/ai-runtime/AIRuntimeDrilldownPanel.tsx",
-      "line": 27,
-      "rule": "no-deprecated-primitive",
-      "message": "Importing deprecated primitive re-export — import directly from sita/ canonical",
-      "severity": "info"
-    },
-    {
-      "file": "src/components/admin/ai-runtime/_shared/BoardSection.tsx",
-      "line": 17,
-      "rule": "no-deprecated-primitive",
-      "message": "Importing deprecated primitive re-export — import directly from sita/ canonical",
-      "severity": "info"
-    },
-    {
-      "file": "src/pages/admin/AIRuntimeStatus.tsx",
-      "line": 9,
-      "rule": "no-deprecated-primitive",
-      "message": "Importing deprecated primitive re-export — import directly from sita/ canonical",
-      "severity": "info"
-    },
-    {
-      "file": "src/pages/admin/ai-runtime/AssuranceChaosBoard.tsx",
-      "line": 13,
-      "rule": "no-deprecated-primitive",
-      "message": "Importing deprecated primitive re-export — import directly from sita/ canonical",
-      "severity": "info"
-    },
-    {
-      "file": "src/pages/admin/ai-runtime/ComplianceAttestationBoard.tsx",
-      "line": 12,
-      "rule": "no-deprecated-primitive",
-      "message": "Importing deprecated primitive re-export — import directly from sita/ canonical",
-      "severity": "info"
-    },
-    {
-      "file": "src/pages/admin/ai-runtime/CouncilsBoard.tsx",
-      "line": 31,
-      "rule": "no-deprecated-primitive",
-      "message": "Importing deprecated primitive re-export — import directly from sita/ canonical",
-      "severity": "info"
-    },
-    {
-      "file": "src/pages/admin/ai-runtime/CrossCouncilBoard.tsx",
-      "line": 16,
-      "rule": "no-deprecated-primitive",
-      "message": "Importing deprecated primitive re-export — import directly from sita/ canonical",
-      "severity": "info"
-    },
-    {
-      "file": "src/pages/admin/ai-runtime/DependencyFindingsBoard.tsx",
-      "line": 15,
-      "rule": "no-deprecated-primitive",
-      "message": "Importing deprecated primitive re-export — import directly from sita/ canonical",
-      "severity": "info"
-    },
-    {
-      "file": "src/pages/admin/ai-runtime/InternalAgentIntentTimeline.tsx",
-      "line": 44,
-      "rule": "no-deprecated-primitive",
-      "message": "Importing deprecated primitive re-export — import directly from sita/ canonical",
-      "severity": "info"
-    },
-    {
-      "file": "src/pages/admin/ai-runtime/InternalAgentsBoard.tsx",
-      "line": 69,
-      "rule": "no-deprecated-primitive",
-      "message": "Importing deprecated primitive re-export — import directly from sita/ canonical",
-      "severity": "info"
-    },
-    {
-      "file": "src/pages/admin/ai-runtime/PolicyDraftReviewBoard.tsx",
-      "line": 13,
-      "rule": "no-deprecated-primitive",
-      "message": "Importing deprecated primitive re-export — import directly from sita/ canonical",
-      "severity": "info"
-    },
-    {
-      "file": "src/pages/admin/ai-runtime/ReflectionBoard.tsx",
-      "line": 25,
-      "rule": "no-deprecated-primitive",
-      "message": "Importing deprecated primitive re-export — import directly from sita/ canonical",
-      "severity": "info"
-    },
-    {
-      "file": "src/pages/admin/ai-runtime/SLOObservabilityBoard.tsx",
-      "line": 12,
-      "rule": "no-deprecated-primitive",
-      "message": "Importing deprecated primitive re-export — import directly from sita/ canonical",
-      "severity": "info"
-    },
-    {
-      "file": "src/pages/admin/ai-runtime/SecurityCouncilBoard.tsx",
-      "line": 27,
-      "rule": "no-deprecated-primitive",
-      "message": "Importing deprecated primitive re-export — import directly from sita/ canonical",
-      "severity": "info"
-    },
-    {
-      "file": "src/pages/admin/ai-runtime/SovereignDeploymentDRBoard.tsx",
-      "line": 12,
-      "rule": "no-deprecated-primitive",
-      "message": "Importing deprecated primitive re-export — import directly from sita/ canonical",
-      "severity": "info"
-    },
-    {
-      "file": "src/pages/admin/ai-runtime/SuggestionsBoard.tsx",
-      "line": 20,
-      "rule": "no-deprecated-primitive",
-      "message": "Importing deprecated primitive re-export — import directly from sita/ canonical",
-      "severity": "info"
-    },
-    {
-      "file": "src/pages/admin/ai-runtime/TrustLadderBoard.tsx",
-      "line": 16,
-      "rule": "no-deprecated-primitive",
-      "message": "Importing deprecated primitive re-export — import directly from sita/ canonical",
-      "severity": "info"
-    },
-    {
-      "file": "src/pages/admin/ai-runtime/WeeklyDigestBoard.tsx",
-      "line": 14,
       "rule": "no-deprecated-primitive",
       "message": "Importing deprecated primitive re-export — import directly from sita/ canonical",
       "severity": "info"

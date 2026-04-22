@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Skeleton } from "@/components/ui/skeleton";
-import { EmptyState } from "@/components/primitives/feedback/EmptyState";
+import { EmptyState } from "@/components/sita/EmptyState";
 import { StatusBadge } from "@/components/primitives/status/StatusBadge";
 import { AITruthDisclosure } from "@/components/primitives/status/AITruthDisclosure";
 import { OperatorActionPanel } from "@/components/primitives/actions/OperatorActionPanel";

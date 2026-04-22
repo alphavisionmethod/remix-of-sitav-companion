@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { AdminControlPlaneShell } from "@/components/admin/shells/AdminControlPlaneShell";
 import { Activity, AlertTriangle, GitBranch, Target, RefreshCw } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
-import { EmptyState } from "@/components/primitives/feedback/EmptyState";
+import { EmptyState } from "@/components/sita/EmptyState";
 import { toast } from "sonner";
 
 interface SLOSnap {
