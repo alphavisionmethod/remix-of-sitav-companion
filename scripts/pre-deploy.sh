@@ -43,6 +43,9 @@ step "Orphan page scan"
 bash scripts/validators/check-orphan-pages.sh 2>&1 || true
 pass "Orphan scan complete (advisory)"
 
+step "Demo/Mock leak detection"
+if bash scripts/validators/check-demo-leaks.sh 2>&1; then pass "No MOCK_/DEMO_ leaks in production"; else fail "Direct MOCK_/DEMO_ usage in production files"; fi
+
 step "Service consumer scan"
 bash scripts/validators/check-service-consumers.sh 2>&1 || true
 pass "Service scan complete (advisory)"
