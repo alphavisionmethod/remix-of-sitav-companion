@@ -211,6 +211,7 @@ export const EDGE_FUNCTION_MIGRATION_MAP : Record<string, FunctionTableAccess> =
   "workflow-repair": { reads: [], writes: [] },
   "workflow-replay": { reads: [], writes: [] },
   "workflow-stuck-detector": { reads: [], writes: [] },
+"account-delete": { reads: [], writes: [] },,
 };
 
 export function getTableAccessForFunction(name: string): FunctionTableAccess | undefined {
