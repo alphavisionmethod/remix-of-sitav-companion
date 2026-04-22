@@ -213,10 +213,11 @@ export function SecureInitCeremony({ onComplete, reducedMotion = false }: Secure
     >
       {/* Ambient glow */}
       <div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full pointer-events-none transition-all duration-[2s]"
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full pointer-events-none transition-all"
         style={{
           width: 500,
           height: 500,
+          transitionDuration: "2000ms",
           background: `radial-gradient(circle, rgba(255,255,255,${0.01 + progress * 0.02}) 0%, transparent 70%)`,
         }}
       />

@@ -417,9 +417,10 @@ export function FirstBootScreen({ onComplete }: FirstBootScreenProps) {
       {!reducedMotion && (
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full transition-all duration-[2s]"
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full transition-all"
             style={{
               width: 600, height: 600,
+              transitionDuration: "2000ms",
               background: `radial-gradient(circle, rgba(255,255,255,${0.01 + progressFraction * 0.03}) 0%, transparent 70%)`,
             }}
           />

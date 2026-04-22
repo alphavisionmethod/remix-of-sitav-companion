@@ -148,8 +148,8 @@ export function SecureFoundationStep({ onNext, onPrev }: Props) {
   return (
     <div className="fixed inset-0 z-[200] select-none" style={{ backgroundColor: "#0A0A0A" }}>
       {/* Ambient glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full pointer-events-none transition-all duration-[2s]"
-        style={{ width: 500, height: 500, background: `radial-gradient(circle, rgba(255,255,255,${0.01 + progress * 0.02}) 0%, transparent 70%)` }} />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full pointer-events-none transition-all"
+        style={{ width: 500, height: 500, transitionDuration: "2000ms", background: `radial-gradient(circle, rgba(255,255,255,${0.01 + progress * 0.02}) 0%, transparent 70%)` }} />
 
       <div className="h-full flex items-center justify-center">
         <div className="flex flex-col lg:flex-row items-center lg:items-start gap-8 lg:gap-12 max-w-5xl w-full px-6 lg:px-8">
