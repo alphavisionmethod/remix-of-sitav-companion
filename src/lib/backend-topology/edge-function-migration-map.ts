@@ -94,7 +94,9 @@ export const EDGE_FUNCTION_MIGRATION_MAP: Record<string, FunctionTableAccess> = 
   "user-bff-gateway": { reads: ["profiles", "bookings", "deals", "budgets"], writes: [] },
   "vapid-public-key": { reads: ["vapid_keys"], writes: [] },
   "verification-recorder": { reads: [], writes: ["proof_records", "receipts"] },
-} as const;
+};
+
+as const;
 
 export function getTableAccessForFunction(name: string): FunctionTableAccess | undefined {
   return EDGE_FUNCTION_MIGRATION_MAP[name];
@@ -233,4 +235,3 @@ export function getOrphanFunctions(): string[] {
   "workflow-repair": { reads: [], writes: [] },
   "workflow-replay": { reads: [], writes: [] },
   "workflow-stuck-detector": { reads: [], writes: [] },
-

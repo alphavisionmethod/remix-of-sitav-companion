@@ -95,7 +95,9 @@ export const EDGE_FUNCTION_CONTRACT_MAP: Record<string, FunctionContract> = {
   "user-bff-gateway": { inputSchema: "UserBffRequest", outputSchema: "UserBffResponse", errorSchema: "StandardError" },
   "vapid-public-key": { inputSchema: null, outputSchema: "VapidKeyResponse", errorSchema: "StandardError" },
   "verification-recorder": { inputSchema: "VerificationInput", outputSchema: "VerificationOutput", errorSchema: "StandardError" },
-} as const;
+};
+
+as const;
 
 export function getContractForFunction(name: string): FunctionContract | undefined {
   return EDGE_FUNCTION_CONTRACT_MAP[name];
@@ -222,4 +224,3 @@ export function getFunctionsWithoutInputSchema(): string[] {
   "workflow-repair": { inputSchema: null, outputSchema: null, errorSchema: "StandardError" },
   "workflow-replay": { inputSchema: null, outputSchema: null, errorSchema: "StandardError" },
   "workflow-stuck-detector": { inputSchema: null, outputSchema: null, errorSchema: "StandardError" },
-
