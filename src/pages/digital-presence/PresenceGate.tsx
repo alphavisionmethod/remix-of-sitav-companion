@@ -12,7 +12,7 @@ export default function PresenceGate() {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-background p-6 space-y-8">
+    <PageShell width="wide">
       <DPOSubNav />
 <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <div className="flex items-center gap-3 mb-1">
