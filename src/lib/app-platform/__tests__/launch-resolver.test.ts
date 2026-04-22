@@ -16,7 +16,7 @@ const baseRuntime: RuntimeCapabilities = {
 };
 
 const baseManifest: AppManifest = {
-  app_id: "test", slug: "test", name: "Test",
+  app_id: "test-app", slug: "test-app", name: "Test",
   app_type: "internal", launch_strategy: "internal_route",
   launch_target: { route: "/test" },
   tags: [], screenshots: [], permissions_required: [],
@@ -44,7 +44,7 @@ describe("launch-resolver", () => {
     const m: AppManifest = {
       ...baseManifest,
       app_type: "external_desktop", launch_strategy: "native_binary",
-      installability: "desktop_only",
+      installability: "preinstalled",
       launch_target: { darwin: "/Applications/X.app", fallback_url: "https://x.com" },
     };
     const r = resolveLaunch(m, { runtime: baseRuntime, isAuthenticated: true });
@@ -57,7 +57,7 @@ describe("launch-resolver", () => {
     const m: AppManifest = {
       ...baseManifest,
       app_type: "external_desktop", launch_strategy: "native_binary",
-      installability: "desktop_only",
+      installability: "preinstalled",
       launch_target: { darwin: "/Applications/X.app" },
     };
     const r = resolveLaunch(m, {

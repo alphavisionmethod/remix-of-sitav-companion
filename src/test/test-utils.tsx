@@ -106,13 +106,13 @@ vi.mock("@/contexts/AuthContext", () => {
 
 // Mock data mode
 vi.mock("@/contexts/DataModeContext", () => ({
-  useDataMode: () => ({ isDemoMode: true, setDemoMode: vi.fn() }),
+  useDataMode: () => ({ isDemoMode: true, isLiveMode: false, mode: "demo", setDemoMode: vi.fn(), setMode: vi.fn(), toggleMode: vi.fn(), connectors: [{ id: "c1", name: "Demo Connector", status: "connected", type: "custom" }], refreshConnectors: vi.fn() }),
   DataModeProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
 }));
 
 // Mock demo mode
 vi.mock("@/contexts/DemoModeProvider", () => ({
-  useDemoMode: () => ({ isDemoMode: true, toggleDemoMode: vi.fn() }),
+  useDemoMode: () => ({ isDemoMode: true, toggleDemoMode: vi.fn(), registerSurface: vi.fn(), getSurfaces: () => [], demoSurfaceCount: 0, realSurfaceCount: 0, dataIntegrityScore: 0, isSurfaceDemo: () => true }),
   DemoModeProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
 }));
 
@@ -149,11 +149,11 @@ vi.mock("@/contexts/InspectorContext", () => ({
 // Mock app platform
 vi.mock("@/contexts/AppPlatformContext", () => ({
   useAppPlatform: () => ({
-    apps: [], installApp: vi.fn(), uninstallApp: vi.fn(), loading: false,
+    apps: [], installApp: vi.fn(), uninstallApp: vi.fn(), loading: false, receipts: [],
     getApp: vi.fn().mockReturnValue(null),
     getLiveApp: vi.fn().mockReturnValue(null),
-    browser: { tabs: [], activeTab: null },
-    installedApps: [],
+    browser: { tabs: [], activeTab: null, openTab: vi.fn(), closeTab: vi.fn() },
+    installedApps: [], updates: [], defaultApps: {},
   }),
   AppPlatformProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
 }));
@@ -171,12 +171,22 @@ vi.mock("@/contexts/SitaKernelContext", () => ({
   useKernelStatus: () => ({ status: "ready", health: "healthy" }),
   useSearchFabric: () => ({ search: vi.fn().mockResolvedValue([]), results: [], loading: false, addBatch: vi.fn() }),
   useWebsiteManager: () => ({ sites: [], createSite: vi.fn(), deleteSite: vi.fn(), loading: false }),
+  useAdaptiveInterface: () => ({ interfaceState: { focused: true, mode: "default" }, cognitiveLoad: 0.2 }),
   SitaKernelProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
 }));
 
 // Mock OS runtime
 vi.mock("@/hooks/useOSRuntime", () => ({
-  useOSRuntime: () => ({ ready: true }),
+  useOSRuntime: () => ({
+    ready: true,
+    engines: {
+      revenue: {
+        detectLeakage: vi.fn(),
+        getLedger: vi.fn().mockReturnValue({ entries: [], total: 0 }),
+        getMetrics: vi.fn().mockReturnValue({}),
+      },
+    },
+  }),
   OSRuntimeProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
 }));
 
