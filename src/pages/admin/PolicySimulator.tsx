@@ -91,7 +91,7 @@ export default function PolicySimulator() {
       <Tabs value={tab} onValueChange={setTab}>
         <TabsList className="bg-muted/30 border border-border/40 h-8 p-0.5 gap-0.5">
           {[
-            { value: "drafts", label: `Policies (${DEMO_DRAFTS.length})`, icon: FileText },
+            { value: "drafts", label: `Policies (${(isDemoMode ? DEMO_DRAFTS : [] as typeof DEMO_DRAFTS).length})`, icon: FileText },
             { value: "simulate", label: "Simulation Results", icon: Play },
             { value: "compose", label: "Compose", icon: GitBranch },
           ].map(t => (
@@ -102,7 +102,7 @@ export default function PolicySimulator() {
         <div className="mt-4">
           <TabsContent value="drafts">
             <div className="space-y-3">
-              {DEMO_DRAFTS.map((policy, idx) => {
+              {(isDemoMode ? DEMO_DRAFTS : [] as typeof DEMO_DRAFTS).map((policy, idx) => {
                 const riskCfg = RISK_CONFIG[policy.riskLevel];
                 const stCfg = STATUS_CONFIG[policy.status];
                 const isSelected = selectedPolicy === policy.id;

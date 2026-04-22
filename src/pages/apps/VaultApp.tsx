@@ -66,8 +66,8 @@ export default function VaultApp() {
       )}
 
       <div className="grid grid-cols-3 gap-3">
-        <Card><CardContent className="p-3 text-center"><p className="text-2xl font-bold text-foreground">{DEMO_ENTRIES.length}</p><p className="text-[10px] text-muted-foreground">Total Entries</p></CardContent></Card>
-        <Card><CardContent className="p-3 text-center"><p className="text-2xl font-bold text-emerald-500">{DEMO_ENTRIES.filter(e => e.strength === "strong").length}</p><p className="text-[10px] text-muted-foreground">Strong</p></CardContent></Card>
+        <Card><CardContent className="p-3 text-center"><p className="text-2xl font-bold text-foreground">{(isDemoMode ? DEMO_ENTRIES : [] as typeof DEMO_ENTRIES).length}</p><p className="text-[10px] text-muted-foreground">Total Entries</p></CardContent></Card>
+        <Card><CardContent className="p-3 text-center"><p className="text-2xl font-bold text-emerald-500">{(isDemoMode ? DEMO_ENTRIES : [] as typeof DEMO_ENTRIES).filter(e => e.strength === "strong").length}</p><p className="text-[10px] text-muted-foreground">Strong</p></CardContent></Card>
         <Card><CardContent className="p-3 text-center"><p className="text-2xl font-bold text-foreground">256-bit</p><p className="text-[10px] text-muted-foreground">Encryption</p></CardContent></Card>
       </div>
 

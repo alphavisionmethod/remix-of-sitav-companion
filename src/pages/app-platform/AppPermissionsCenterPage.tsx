@@ -37,7 +37,7 @@ const AppPermissionsCenterPage = () => {
 
       {/* Permission Domain Tabs */}
       <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-thin">
-        {DEMO_PERMISSION_DOMAINS.map(d => {
+        {(isDemoMode ? DEMO_PERMISSION_DOMAINS : [] as typeof DEMO_PERMISSION_DOMAINS).map(d => {
           const Icon = d.icon;
           const count = apps.filter(a => a.permissions.some(p => p.domain === d.id)).length;
           return (

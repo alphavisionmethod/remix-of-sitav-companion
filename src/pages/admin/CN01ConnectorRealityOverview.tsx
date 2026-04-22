@@ -125,14 +125,14 @@ export default function CN01ConnectorRealityOverview() {
           <CardTitle className="text-lg flex items-center gap-2">
             <Shield className="h-5 w-5 text-primary" />
             OAuth Runtime Verification Matrix
-            <Badge variant="outline" className={passedChecks === DEMO_VERIFICATION_CHECKS.length ? "bg-emerald-500/15 text-emerald-400" : "bg-amber-500/15 text-amber-400"}>
-              {passedChecks}/{DEMO_VERIFICATION_CHECKS.length} passed
+            <Badge variant="outline" className={passedChecks === (isDemoMode ? DEMO_VERIFICATION_CHECKS : [] as typeof DEMO_VERIFICATION_CHECKS).length ? "bg-emerald-500/15 text-emerald-400" : "bg-amber-500/15 text-amber-400"}>
+              {passedChecks}/{(isDemoMode ? DEMO_VERIFICATION_CHECKS : [] as typeof DEMO_VERIFICATION_CHECKS).length} passed
             </Badge>
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-            {DEMO_VERIFICATION_CHECKS.map((check) => {
+            {(isDemoMode ? DEMO_VERIFICATION_CHECKS : [] as typeof DEMO_VERIFICATION_CHECKS).map((check) => {
               const passed = check.check(verificationData);
               return (
                 <div key={check.label} className="flex items-center gap-2 p-2 rounded-lg bg-muted/30 border border-border">
@@ -192,7 +192,7 @@ export default function CN01ConnectorRealityOverview() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {DEMO_CAPABILITIES.map((cap) => {
+                  {(isDemoMode ? DEMO_CAPABILITIES : [] as typeof DEMO_CAPABILITIES).map((cap) => {
                     const capTokens = tokens.filter((t: Record<string, any>) => t.scopes?.some((s: string) => cap.scopes.some((cs) => s.includes(cs))));
                     const hasCallback = receipts.some((r: Record<string, any>) => r.event_type === "oauth_connect");
                     const hasDisconnect = receipts.some((r: Record<string, any>) => r.event_type === "disconnect");

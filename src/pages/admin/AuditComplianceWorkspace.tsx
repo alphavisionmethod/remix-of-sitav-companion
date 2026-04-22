@@ -114,10 +114,10 @@ export default function AuditComplianceWorkspace() {
       {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {[
-          { label: "Total Records", value: DEMO_AUDIT_RECORDS.length, color: "text-foreground" },
-          { label: "With Proof", value: DEMO_AUDIT_RECORDS.filter(r => r.proofHash).length, color: "text-[hsl(var(--trust-safe))]" },
-          { label: "Warnings", value: DEMO_AUDIT_RECORDS.filter(r => r.severity === "warning").length, color: "text-[hsl(var(--sita-gold))]" },
-          { label: "Critical", value: DEMO_AUDIT_RECORDS.filter(r => r.severity === "critical").length, color: "text-destructive" },
+          { label: "Total Records", value: (isDemoMode ? DEMO_AUDIT_RECORDS : [] as typeof DEMO_AUDIT_RECORDS).length, color: "text-foreground" },
+          { label: "With Proof", value: (isDemoMode ? DEMO_AUDIT_RECORDS : [] as typeof DEMO_AUDIT_RECORDS).filter(r => r.proofHash).length, color: "text-[hsl(var(--trust-safe))]" },
+          { label: "Warnings", value: (isDemoMode ? DEMO_AUDIT_RECORDS : [] as typeof DEMO_AUDIT_RECORDS).filter(r => r.severity === "warning").length, color: "text-[hsl(var(--sita-gold))]" },
+          { label: "Critical", value: (isDemoMode ? DEMO_AUDIT_RECORDS : [] as typeof DEMO_AUDIT_RECORDS).filter(r => r.severity === "critical").length, color: "text-destructive" },
         ].map(stat => (
           <Card key={stat.label}>
             <CardContent className="p-4 text-center">

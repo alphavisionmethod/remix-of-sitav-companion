@@ -40,7 +40,7 @@ const FIPBuilderConsole = () => {
         <CardHeader><CardTitle className="text-base">Builder Workflow — Feature Methodology Steps</CardTitle></CardHeader>
         <CardContent>
           <div className="flex gap-1">
-            {DEMO_BUILDER_STEPS.map((s, i) => (
+            {(isDemoMode ? DEMO_BUILDER_STEPS : [] as typeof DEMO_BUILDER_STEPS).map((s, i) => (
               <button key={s.step} onClick={() => setActiveStep(s.step)}
                 className={`flex-1 p-3 rounded-lg border text-center transition-colors ${activeStep === s.step ? 'border-primary bg-primary/5' : 'border-border hover:border-primary/30'}`}>
                 <s.icon className={`h-4 w-4 mx-auto mb-1 ${activeStep === s.step ? 'text-primary' : 'text-muted-foreground'}`} />
@@ -63,7 +63,7 @@ const FIPBuilderConsole = () => {
         <CardHeader><CardTitle className="text-base">Domain Methodology Packs</CardTitle></CardHeader>
         <CardContent>
           <div className="grid grid-cols-5 gap-3">
-            {DEMO_DOMAIN_PACKS.map(pack => (
+            {(isDemoMode ? DEMO_DOMAIN_PACKS : [] as typeof DEMO_DOMAIN_PACKS).map(pack => (
               <div key={pack.id} className="p-3 border rounded-lg hover:border-primary/30 transition-colors cursor-pointer">
                 <Badge className={`text-xs mb-2 ${pack.color}`}>{pack.name}</Badge>
                 <div className="space-y-1">

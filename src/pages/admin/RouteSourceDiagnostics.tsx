@@ -45,7 +45,7 @@ export default function RouteSourceDiagnostics() {
   const filtered = useMemo(() => {
     if (!search) return DEMO_ROUTES;
     const q = search.toLowerCase();
-    return DEMO_ROUTES.filter(r => r.path.includes(q) || r.pageName.toLowerCase().includes(q) || r.domain.toLowerCase().includes(q));
+    return (isDemoMode ? DEMO_ROUTES : [] as typeof DEMO_ROUTES).filter(r => r.path.includes(q) || r.pageName.toLowerCase().includes(q) || r.domain.toLowerCase().includes(q));
   }, [search]);
 
   const truthful = DEMO_ROUTES.filter(r => r.launchHonesty === "truthful").length;

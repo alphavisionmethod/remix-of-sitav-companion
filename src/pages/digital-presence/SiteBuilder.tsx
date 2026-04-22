@@ -29,7 +29,7 @@ export default function SiteBuilder() {
         <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><Plus className="w-4 h-4 text-primary" /> Create New</CardTitle></CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-            {DEMO_PAGE_TYPES.map(pt => (
+            {(isDemoMode ? DEMO_PAGE_TYPES : [] as typeof DEMO_PAGE_TYPES).map(pt => (
               <button key={pt.type} className="p-4 bg-muted/30 rounded-lg hover:bg-muted/50 transition-colors text-left group">
                 <pt.icon className={`w-5 h-5 ${pt.color} mb-2`} />
                 <h3 className="text-sm font-semibold text-foreground group-hover:text-primary transition-colors">{pt.type}</h3>
@@ -88,7 +88,7 @@ export default function SiteBuilder() {
           </div>
         </CardHeader>
         <CardContent className="space-y-2">
-          {DEMO_EXISTING_PAGES.filter(p => !search || p.name.toLowerCase().includes(search.toLowerCase())).map(p => (
+          {(isDemoMode ? DEMO_EXISTING_PAGES : [] as typeof DEMO_EXISTING_PAGES).filter(p => !search || p.name.toLowerCase().includes(search.toLowerCase())).map(p => (
             <div key={p.name} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg hover:bg-muted/40 cursor-pointer transition-colors">
               <div>
                 <span className="text-sm font-medium text-foreground">{p.name}</span>

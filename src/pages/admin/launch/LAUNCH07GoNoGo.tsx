@@ -54,7 +54,7 @@ export default function LAUNCH07GoNoGo() {
         </CardHeader>
         <CardContent>
           <div className="flex items-center gap-1">
-            {DEMO_MODE_ORDER.map((mode, idx) => (
+            {(isDemoMode ? DEMO_MODE_ORDER : [] as typeof DEMO_MODE_ORDER).map((mode, idx) => (
               <div key={mode} className={cn("flex-1 p-2 rounded text-center text-[9px]", idx <= currentModeIdx ? "bg-primary/15 text-primary border border-primary/30" : "bg-muted/30 text-muted-foreground")}>
                 {idx <= currentModeIdx && <CheckCircle className="h-3 w-3 mx-auto mb-0.5" />}
                 {MODE_LABELS[mode]}

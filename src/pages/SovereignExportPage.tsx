@@ -16,7 +16,7 @@ import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 export default function SovereignExportPage() {
   const { user, isDemo } = useAuth();
-  const [selectedTables, setSelectedTables] = useState<string[]>(DEMO_EXPORTABLE_TABLES.map(t => t.name));
+  const [selectedTables, setSelectedTables] = useState<string[]>((isDemoMode ? DEMO_EXPORTABLE_TABLES : [] as typeof DEMO_EXPORTABLE_TABLES).map(t => t.name));
   const [exporting, setExporting] = useState(false);
   const [exportProgress, setExportProgress] = useState(0);
   const [deleting, setDeleting] = useState(false);
@@ -115,11 +115,11 @@ export default function SovereignExportPage() {
           <CardHeader className="flex flex-row items-center justify-between">
             <CardTitle className="text-sm">Select Data to Export</CardTitle>
             <Button variant="ghost" size="sm" onClick={() => setSelectedTables(
-              selectedTables.length === DEMO_EXPORTABLE_TABLES.length ? [] : DEMO_EXPORTABLE_TABLES.map(t => t.name)
-            )}>{selectedTables.length === DEMO_EXPORTABLE_TABLES.length ? "Deselect All" : "Select All"}</Button>
+              selectedTables.length === (isDemoMode ? DEMO_EXPORTABLE_TABLES : [] as typeof DEMO_EXPORTABLE_TABLES).length ? [] : (isDemoMode ? DEMO_EXPORTABLE_TABLES : [] as typeof DEMO_EXPORTABLE_TABLES).map(t => t.name)
+            )}>{selectedTables.length === (isDemoMode ? DEMO_EXPORTABLE_TABLES : [] as typeof DEMO_EXPORTABLE_TABLES).length ? "Deselect All" : "Select All"}</Button>
           </CardHeader>
           <CardContent className="space-y-3">
-            {DEMO_EXPORTABLE_TABLES.map(table => (
+            {(isDemoMode ? DEMO_EXPORTABLE_TABLES : [] as typeof DEMO_EXPORTABLE_TABLES).map(table => (
               <div key={table.name} className="flex items-center justify-between p-2 rounded-lg hover:bg-muted/30 transition-colors">
                 <div className="flex items-center gap-3">
                   <Checkbox checked={selectedTables.includes(table.name)} onCheckedChange={() => toggleTable(table.name)} />
@@ -141,7 +141,7 @@ export default function SovereignExportPage() {
           <Card className="border-border/50">
             <CardHeader><CardTitle className="text-sm">Export History</CardTitle></CardHeader>
             <CardContent className="space-y-3">
-              {DEMO_PAST_EXPORTS.map(exp => (
+              {(isDemoMode ? DEMO_PAST_EXPORTS : [] as typeof DEMO_PAST_EXPORTS).map(exp => (
                 <div key={exp.id} className="flex items-center justify-between p-3 rounded-lg bg-muted/30">
                   <div className="flex items-center gap-3">
                     <CheckCircle className="h-4 w-4 text-emerald-500" />

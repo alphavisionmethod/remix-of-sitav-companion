@@ -58,7 +58,7 @@ export default function SimulatedCoreServicesBoard() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {DEMO_CORE_SERVICES.map(s => {
+              {(isDemoMode ? DEMO_CORE_SERVICES : [] as typeof DEMO_CORE_SERVICES).map(s => {
                 const Icon = BACKING_ICONS[s.backing] ?? Server;
                 return (
                   <TableRow key={s.name}>

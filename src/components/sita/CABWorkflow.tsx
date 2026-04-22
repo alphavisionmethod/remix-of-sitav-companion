@@ -375,13 +375,13 @@ export function CABWorkflow() {
   }, [statusFilter, typeFilter, searchQuery]);
 
   const stats = useMemo(() => ({
-    total: MOCK_CHANGES.length,
-    pending: MOCK_CHANGES.filter(c => ["submitted", "risk-review", "cab-review"].includes(c.status)).length,
-    approved: MOCK_CHANGES.filter(c => c.status === "approved" || c.status === "implementing").length,
-    closed: MOCK_CHANGES.filter(c => c.status === "closed").length,
-    emergency: MOCK_CHANGES.filter(c => c.type === "emergency").length,
-    avgRiskScore: Math.round(MOCK_CHANGES.reduce((s, c) => s + c.riskScore, 0) / MOCK_CHANGES.length),
-    pirComplete: MOCK_CHANGES.filter(c => c.pir !== null).length,
+    total: (isDemoMode ? MOCK_CHANGES : [] as typeof MOCK_CHANGES).length,
+    pending: (isDemoMode ? MOCK_CHANGES : [] as typeof MOCK_CHANGES).filter(c => ["submitted", "risk-review", "cab-review"].includes(c.status)).length,
+    approved: (isDemoMode ? MOCK_CHANGES : [] as typeof MOCK_CHANGES).filter(c => c.status === "approved" || c.status === "implementing").length,
+    closed: (isDemoMode ? MOCK_CHANGES : [] as typeof MOCK_CHANGES).filter(c => c.status === "closed").length,
+    emergency: (isDemoMode ? MOCK_CHANGES : [] as typeof MOCK_CHANGES).filter(c => c.type === "emergency").length,
+    avgRiskScore: Math.round((isDemoMode ? MOCK_CHANGES : [] as typeof MOCK_CHANGES).reduce((s, c) => s + c.riskScore, 0) / (isDemoMode ? MOCK_CHANGES : [] as typeof MOCK_CHANGES).length),
+    pirComplete: (isDemoMode ? MOCK_CHANGES : [] as typeof MOCK_CHANGES).filter(c => c.pir !== null).length,
   }), []);
 
   const handleExport = () => {
@@ -425,7 +425,7 @@ export function CABWorkflow() {
           { label: "Total Changes", value: stats.total, icon: FileText, color: "text-foreground" },
           { label: "Pending Review", value: stats.pending, icon: Clock, color: stats.pending > 0 ? "text-amber-500" : "text-trust-safe" },
           { label: "Approved/Implementing", value: stats.approved, icon: CheckCircle, color: "text-trust-safe" },
-          { label: "PIR Complete", value: `${stats.pirComplete}/${stats.closed + stats.pirComplete > 0 ? MOCK_CHANGES.filter(c => c.pir !== null || c.status === "closed").length : 0}`, icon: Eye, color: "text-primary" },
+          { label: "PIR Complete", value: `${stats.pirComplete}/${stats.closed + stats.pirComplete > 0 ? (isDemoMode ? MOCK_CHANGES : [] as typeof MOCK_CHANGES).filter(c => c.pir !== null || c.status === "closed").length : 0}`, icon: Eye, color: "text-primary" },
           { label: "Emergency Changes", value: stats.emergency, icon: Zap, color: stats.emergency > 0 ? "text-destructive" : "text-muted-foreground" },
           { label: "Avg Risk Score", value: `${stats.avgRiskScore}/25`, icon: Gauge, color: stats.avgRiskScore > 15 ? "text-destructive" : stats.avgRiskScore > 10 ? "text-amber-500" : "text-trust-safe" },
           { label: "Closed", value: stats.closed, icon: Lock, color: "text-muted-foreground" },

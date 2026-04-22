@@ -19,7 +19,7 @@ export default function OperatingModes() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {DEMO_MODES.map((mode, i) => {
+        {(isDemoMode ? DEMO_MODES : [] as typeof DEMO_MODES).map((mode, i) => {
           const isActive = activeMode === mode.id;
           return (
             <motion.button key={mode.id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.04 }}
@@ -56,9 +56,9 @@ export default function OperatingModes() {
       {/* Active Mode Detail */}
       <motion.div key={activeMode} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
         className="rounded-2xl border border-primary/15 bg-primary/5 p-6 text-center space-y-2">
-        <p className="text-3xl">{DEMO_MODES.find(m => m.id === activeMode)?.emoji}</p>
-        <p className="text-lg font-bold text-foreground">{DEMO_MODES.find(m => m.id === activeMode)?.label} Mode Active</p>
-        <p className="text-sm text-muted-foreground max-w-md mx-auto">{DEMO_MODES.find(m => m.id === activeMode)?.description}</p>
+        <p className="text-3xl">{(isDemoMode ? DEMO_MODES : [] as typeof DEMO_MODES).find(m => m.id === activeMode)?.emoji}</p>
+        <p className="text-lg font-bold text-foreground">{(isDemoMode ? DEMO_MODES : [] as typeof DEMO_MODES).find(m => m.id === activeMode)?.label} Mode Active</p>
+        <p className="text-sm text-muted-foreground max-w-md mx-auto">{(isDemoMode ? DEMO_MODES : [] as typeof DEMO_MODES).find(m => m.id === activeMode)?.description}</p>
       </motion.div>
     </div>
   );

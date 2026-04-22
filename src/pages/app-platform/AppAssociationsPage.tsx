@@ -47,7 +47,7 @@ const AppAssociationsPage = () => {
 
       {activeTab === "defaults" && (
         <div className="space-y-3">
-          {DEMO_APP_SLOTS.map(slot => {
+          {(isDemoMode ? DEMO_APP_SLOTS : [] as typeof DEMO_APP_SLOTS).map(slot => {
             const Icon = slot.icon;
             const currentAppId = defaultApps[slot.id] || slot.currentApp;
             const currentApp = currentAppId ? apps.find(a => a.id === currentAppId) : null;
@@ -104,7 +104,7 @@ const AppAssociationsPage = () => {
 
       {activeTab === "files" && (
         <div className="space-y-2">
-          {DEMO_FILE_TYPES.map(ft => {
+          {(isDemoMode ? DEMO_FILE_TYPES : [] as typeof DEMO_FILE_TYPES).map(ft => {
             const ftApps = ft.apps.map(id => apps.find(a => a.id === id)).filter(Boolean);
             return (
               <div key={ft.ext} className="rounded-xl border border-border bg-card p-3 flex items-center gap-3">

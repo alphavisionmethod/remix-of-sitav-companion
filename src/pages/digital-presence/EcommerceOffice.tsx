@@ -72,7 +72,7 @@ export default function EcommerceOffice() {
             </div>
           ) : (
             <div className="space-y-2">
-              {DEMO_PRODUCTS.map(p => (
+              {(isDemoMode ? DEMO_PRODUCTS : [] as typeof DEMO_PRODUCTS).map(p => (
                 <div key={p.name} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
                   <div className="flex-1">
                     <span className="text-sm font-medium text-foreground">{p.name}</span>
@@ -116,7 +116,7 @@ export default function EcommerceOffice() {
                 </div>
               ))
             ) : (
-              DEMO_COLLECTIONS.map(c => (
+              (isDemoMode ? DEMO_COLLECTIONS : [] as typeof DEMO_COLLECTIONS).map(c => (
                 <div key={c.name} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
                   <div>
                     <span className="text-sm font-medium text-foreground">{c.name}</span>
@@ -136,7 +136,7 @@ export default function EcommerceOffice() {
         <Card className="bg-card/50 border-border/50">
           <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><ShoppingCart className="w-4 h-4 text-red-400" /> Cart Abandonment Diagnostics</CardTitle></CardHeader>
           <CardContent className="space-y-3">
-            {DEMO_CART_DIAGNOSTICS.map(c => (
+            {(isDemoMode ? DEMO_CART_DIAGNOSTICS : [] as typeof DEMO_CART_DIAGNOSTICS).map(c => (
               <div key={c.issue} className="p-3 bg-muted/30 rounded-lg">
                 <div className="flex items-center justify-between mb-1">
                   <Badge variant={c.severity === "critical" ? "destructive" : c.severity === "opportunity" ? "default" : "secondary"} className="text-[10px]">{c.severity}</Badge>
@@ -153,7 +153,7 @@ export default function EcommerceOffice() {
           <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><Sparkles className="w-4 h-4 text-violet-400" /> AI Merchandising Suggestions</CardTitle></CardHeader>
           <CardContent>
             <div className="grid md:grid-cols-2 gap-3">
-              {DEMO_MERCHANDISING_OPS.map(m => (
+              {(isDemoMode ? DEMO_MERCHANDISING_OPS : [] as typeof DEMO_MERCHANDISING_OPS).map(m => (
                 <div key={m.action} className="p-3 bg-muted/30 rounded-lg">
                   <div className="flex items-center justify-between mb-1">
                     <Badge variant={m.type === "opportunity" ? "default" : "secondary"} className="text-[10px]">{m.type}</Badge>

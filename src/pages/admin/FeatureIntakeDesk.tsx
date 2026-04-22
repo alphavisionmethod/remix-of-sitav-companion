@@ -81,7 +81,7 @@ const FeatureIntakeDesk = () => {
                 <label className="text-sm font-medium">Archetype</label>
                 <Select value={form.archetypeKey} onValueChange={v => setForm({ ...form, archetypeKey: v })}>
                   <SelectTrigger><SelectValue /></SelectTrigger>
-                  <SelectContent>{DEMO_ARCHETYPES.map(a => <SelectItem key={a} value={a}>{a}</SelectItem>)}</SelectContent>
+                  <SelectContent>{(isDemoMode ? DEMO_ARCHETYPES : [] as typeof DEMO_ARCHETYPES).map(a => <SelectItem key={a} value={a}>{a}</SelectItem>)}</SelectContent>
                 </Select>
               </div>
               <div>

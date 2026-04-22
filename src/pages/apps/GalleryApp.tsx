@@ -37,7 +37,7 @@ export default function GalleryApp() {
         <div className="flex items-center gap-2">
           <Image className="h-6 w-6 text-primary" />
           <h1 className="text-xl font-bold text-foreground">Gallery</h1>
-          <Badge variant="secondary" className="text-xs">{DEMO_PHOTOS.length} items</Badge>
+          <Badge variant="secondary" className="text-xs">{(isDemoMode ? DEMO_PHOTOS : [] as typeof DEMO_PHOTOS).length} items</Badge>
         </div>
         <Button size="sm"><Upload className="h-3.5 w-3.5 mr-1.5" /> Upload</Button>
       </div>
@@ -50,7 +50,7 @@ export default function GalleryApp() {
       </div>
 
       <div className="flex gap-1.5 flex-wrap">
-        {DEMO_albums.map(a => (
+        {(isDemoMode ? DEMO_albums : [] as typeof DEMO_albums).map(a => (
           <Button key={a} variant={album === a ? "default" : "outline"} size="sm" className="text-xs" onClick={() => setAlbum(a)}>
             <FolderOpen className="h-3 w-3 mr-1" /> {a}
           </Button>
@@ -67,7 +67,7 @@ export default function GalleryApp() {
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
             {filtered.map((photo, i) => (
               <div key={photo.id} className="relative group cursor-pointer rounded-lg overflow-hidden aspect-square" onClick={() => setSelectedPhoto(photo)}>
-                <div className={`w-full h-full bg-gradient-to-br ${DEMO_placeholderColors[i % DEMO_placeholderColors.length]} flex items-center justify-center`}>
+                <div className={`w-full h-full bg-gradient-to-br ${DEMO_placeholderColors[i % (isDemoMode ? DEMO_placeholderColors : [] as typeof DEMO_placeholderColors).length]} flex items-center justify-center`}>
                   <Image className="h-8 w-8 text-foreground/20" />
                 </div>
                 <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-2">
@@ -93,7 +93,7 @@ export default function GalleryApp() {
                 <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">{period}</h3>
                 <div className="grid grid-cols-3 md:grid-cols-4 gap-1.5">
                   {photos.map((photo, i) => (
-                    <div key={photo.id} className={`rounded-lg overflow-hidden aspect-square bg-gradient-to-br ${DEMO_placeholderColors[parseInt(photo.id) % DEMO_placeholderColors.length]} flex items-center justify-center cursor-pointer hover:ring-2 ring-primary transition-all`} onClick={() => setSelectedPhoto(photo)}>
+                    <div key={photo.id} className={`rounded-lg overflow-hidden aspect-square bg-gradient-to-br ${DEMO_placeholderColors[parseInt(photo.id) % (isDemoMode ? DEMO_placeholderColors : [] as typeof DEMO_placeholderColors).length]} flex items-center justify-center cursor-pointer hover:ring-2 ring-primary transition-all`} onClick={() => setSelectedPhoto(photo)}>
                       <Image className="h-6 w-6 text-foreground/20" />
                     </div>
                   ))}
@@ -120,7 +120,7 @@ export default function GalleryApp() {
             </div>
           </div>
           <div className="flex-1 flex items-center justify-center p-8">
-            <div className={`w-full max-w-lg aspect-video rounded-xl bg-gradient-to-br ${DEMO_placeholderColors[parseInt(selectedPhoto.id) % DEMO_placeholderColors.length]} flex items-center justify-center`}>
+            <div className={`w-full max-w-lg aspect-video rounded-xl bg-gradient-to-br ${DEMO_placeholderColors[parseInt(selectedPhoto.id) % (isDemoMode ? DEMO_placeholderColors : [] as typeof DEMO_placeholderColors).length]} flex items-center justify-center`}>
               <Image className="h-16 w-16 text-foreground/20" />
             </div>
           </div>

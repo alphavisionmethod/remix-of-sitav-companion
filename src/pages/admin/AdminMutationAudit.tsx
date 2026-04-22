@@ -42,10 +42,10 @@ const AdminDurabilityBoard = () => {
   const [mutFilter, setMutFilter] = useState("all");
   const [selectedMutation, setSelectedMutation] = useState<DemoMutationRecord | null>(null);
 
-  const filtered = mutFilter === "all" ? DEMO_MUTATIONS : DEMO_MUTATIONS.filter(m => m.durabilityStatus === mutFilter);
-  const persistedPct = Math.round((DEMO_MUTATIONS.filter(m => m.durabilityStatus === "persisted").length / DEMO_MUTATIONS.length) * 100);
-  const lineagePct = Math.round((DEMO_MUTATIONS.filter(m => m.lineageComplete).length / DEMO_MUTATIONS.length) * 100);
-  const canonicalPct = Math.round((DEMO_MUTATIONS.filter(m => m.canonicalWritePath).length / DEMO_MUTATIONS.length) * 100);
+  const filtered = mutFilter === "all" ? DEMO_MUTATIONS : (isDemoMode ? DEMO_MUTATIONS : [] as typeof DEMO_MUTATIONS).filter(m => m.durabilityStatus === mutFilter);
+  const persistedPct = Math.round(((isDemoMode ? DEMO_MUTATIONS : [] as typeof DEMO_MUTATIONS).filter(m => m.durabilityStatus === "persisted").length / (isDemoMode ? DEMO_MUTATIONS : [] as typeof DEMO_MUTATIONS).length) * 100);
+  const lineagePct = Math.round(((isDemoMode ? DEMO_MUTATIONS : [] as typeof DEMO_MUTATIONS).filter(m => m.lineageComplete).length / (isDemoMode ? DEMO_MUTATIONS : [] as typeof DEMO_MUTATIONS).length) * 100);
+  const canonicalPct = Math.round(((isDemoMode ? DEMO_MUTATIONS : [] as typeof DEMO_MUTATIONS).filter(m => m.canonicalWritePath).length / (isDemoMode ? DEMO_MUTATIONS : [] as typeof DEMO_MUTATIONS).length) * 100);
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">

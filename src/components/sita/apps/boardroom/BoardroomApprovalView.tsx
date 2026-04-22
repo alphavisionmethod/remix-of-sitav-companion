@@ -366,7 +366,7 @@ export function BoardroomApprovalView({ scope, onNavigate }: Props) {
           Pending Approvals
         </p>
         <div className="space-y-3">
-          {MOCK_APPROVALS.map((ap, i) => (
+          {(isDemoMode ? MOCK_APPROVALS : [] as typeof MOCK_APPROVALS).map((ap, i) => (
             <motion.div
               key={ap.id}
               initial={{ opacity: 0, y: 8 }}
@@ -422,7 +422,7 @@ export function BoardroomApprovalView({ scope, onNavigate }: Props) {
           Recent Decision Seals
         </p>
         <div className="space-y-3">
-          {MOCK_SEALED.map((seal, i) => (
+          {(isDemoMode ? MOCK_SEALED : [] as typeof MOCK_SEALED).map((seal, i) => (
             <motion.div
               key={seal.receiptHash}
               initial={{ opacity: 0, y: 8 }}
@@ -441,7 +441,7 @@ export function BoardroomApprovalView({ scope, onNavigate }: Props) {
           Proof & Receipts
         </p>
         <div className="space-y-3">
-          {MOCK_RECEIPTS.map((r, i) => (
+          {(isDemoMode ? MOCK_RECEIPTS : [] as typeof MOCK_RECEIPTS).map((r, i) => (
             <motion.div
               key={r.hash}
               initial={{ opacity: 0, y: 8 }}

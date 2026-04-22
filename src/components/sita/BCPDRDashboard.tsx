@@ -532,7 +532,7 @@ export function BCPDRDashboard() {
           {/* Critical Services Quick View */}
           <div className="space-y-2">
             <span className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">Critical Services Status</span>
-            {MOCK_OBJECTIVES.filter(o => o.category === "critical").map(o => (
+            {(isDemoMode ? MOCK_OBJECTIVES : [] as typeof MOCK_OBJECTIVES).filter(o => o.category === "critical").map(o => (
               <div key={o.id} className="flex items-center gap-3 rounded-lg border border-border/30 bg-card/30 p-2.5">
                 <RPOStatusDot status={o.status} />
                 <span className="text-xs font-medium text-foreground flex-1">{o.service}</span>
@@ -546,7 +546,7 @@ export function BCPDRDashboard() {
           {/* Upcoming Tests */}
           <div className="space-y-2">
             <span className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">Upcoming DR Tests</span>
-            {MOCK_DR_TESTS.filter(t => t.status === "scheduled").map(t => (
+            {(isDemoMode ? MOCK_DR_TESTS : [] as typeof MOCK_DR_TESTS).filter(t => t.status === "scheduled").map(t => (
               <div key={t.id} className="flex items-center gap-3 rounded-lg border border-primary/15 bg-primary/3 p-2.5">
                 <Calendar className="h-3.5 w-3.5 text-primary" />
                 <span className="text-xs font-medium text-foreground flex-1">{t.name}</span>
@@ -561,21 +561,21 @@ export function BCPDRDashboard() {
       {/* RPO/RTO Objectives */}
       {activeView === "objectives" && (
         <div className="space-y-2">
-          {MOCK_OBJECTIVES.map(obj => <ObjectiveRow key={obj.id} obj={obj} />)}
+          {(isDemoMode ? MOCK_OBJECTIVES : [] as typeof MOCK_OBJECTIVES).map(obj => <ObjectiveRow key={obj.id} obj={obj} />)}
         </div>
       )}
 
       {/* Failover Procedures */}
       {activeView === "failover" && (
         <div className="space-y-2">
-          {MOCK_FAILOVER.map(proc => <FailoverCard key={proc.id} proc={proc} />)}
+          {(isDemoMode ? MOCK_FAILOVER : [] as typeof MOCK_FAILOVER).map(proc => <FailoverCard key={proc.id} proc={proc} />)}
         </div>
       )}
 
       {/* DR Tests */}
       {activeView === "tests" && (
         <div className="space-y-2">
-          {MOCK_DR_TESTS.map(test => <DRTestCard key={test.id} test={test} />)}
+          {(isDemoMode ? MOCK_DR_TESTS : [] as typeof MOCK_DR_TESTS).map(test => <DRTestCard key={test.id} test={test} />)}
         </div>
       )}
 

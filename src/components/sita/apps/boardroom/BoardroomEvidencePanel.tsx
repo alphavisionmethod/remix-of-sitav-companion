@@ -90,7 +90,7 @@ export function BoardroomEvidencePanel({ open, onClose }: Props) {
 
   const filtered = activeFilter === "all"
     ? DEMO_EVIDENCE
-    : DEMO_EVIDENCE.filter(e => e.sourceType === activeFilter);
+    : (isDemoMode ? DEMO_EVIDENCE : [] as typeof DEMO_EVIDENCE).filter(e => e.sourceType === activeFilter);
 
   return (
     <AnimatePresence>

@@ -15,7 +15,7 @@ export default function DisagreementEngine() {
         <p className="text-sm text-muted-foreground mt-0.5">Where advisors disagree, what assumptions conflict, and what evidence would resolve the debate</p>
       </div>
 
-      {DEMO_DISAGREEMENTS.map((d, di) => (
+      {(isDemoMode ? DEMO_DISAGREEMENTS : [] as typeof DEMO_DISAGREEMENTS).map((d, di) => (
         <motion.div key={d.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: di * 0.06 }}
           className="rounded-2xl border border-border bg-card p-6 space-y-4">
           <div className="flex items-center gap-3">

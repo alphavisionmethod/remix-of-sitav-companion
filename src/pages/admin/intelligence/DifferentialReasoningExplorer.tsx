@@ -78,7 +78,7 @@ const DifferentialReasoningExplorer = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {DEMO_DIFFS.map(d => (
+              {(isDemoMode ? DEMO_DIFFS : [] as typeof DEMO_DIFFS).map(d => (
                 <TableRow key={d.id}>
                   <TableCell className="text-xs font-medium text-foreground">{d.domain}</TableCell>
                   <TableCell className="text-xs text-muted-foreground max-w-[200px] truncate">{d.desc}</TableCell>
@@ -106,7 +106,7 @@ const DifferentialReasoningExplorer = () => {
       <Card className="bg-card/80 border-border/50">
         <CardHeader className="pb-2"><CardTitle className="text-sm">Detected Changes by Domain</CardTitle></CardHeader>
         <CardContent className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {DEMO_DIFFS.filter(d => d.changes.length > 0).map(d => (
+          {(isDemoMode ? DEMO_DIFFS : [] as typeof DEMO_DIFFS).filter(d => d.changes.length > 0).map(d => (
             <div key={d.id} className="p-3 rounded-lg bg-secondary/20 space-y-2">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-medium text-foreground">{d.domain}</span>

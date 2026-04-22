@@ -76,10 +76,10 @@ export function SurfaceAuthorityMatrix({ compact = false }: { compact?: boolean 
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [collapsed, setCollapsed] = useState(compact);
 
-  const domains = useMemo(() => [...new Set(DEMO_AUTHORITY_DATA.map(d => d.domain))], []);
+  const domains = useMemo(() => [...new Set((isDemoMode ? DEMO_AUTHORITY_DATA : [] as typeof DEMO_AUTHORITY_DATA).map(d => d.domain))], []);
 
   const filtered = useMemo(() => {
-    return DEMO_AUTHORITY_DATA.filter(e => {
+    return (isDemoMode ? DEMO_AUTHORITY_DATA : [] as typeof DEMO_AUTHORITY_DATA).filter(e => {
       if (domainFilter !== "all" && e.domain !== domainFilter) return false;
       if (search && !e.action.toLowerCase().includes(search.toLowerCase())) return false;
       return true;

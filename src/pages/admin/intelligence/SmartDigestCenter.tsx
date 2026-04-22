@@ -19,7 +19,7 @@ const SmartDigestCenter = () => {
 
   const freshCount = DEMO_DIGESTS.filter(d => d.fresh).length;
   const staleCount = DEMO_DIGESTS.filter(d => !d.fresh).length;
-  const avgHitRate = Math.round(DEMO_DIGESTS.reduce((s, d) => s + d.hitRate, 0) / DEMO_DIGESTS.length * 100);
+  const avgHitRate = Math.round((isDemoMode ? DEMO_DIGESTS : [] as typeof DEMO_DIGESTS).reduce((s, d) => s + d.hitRate, 0) / (isDemoMode ? DEMO_DIGESTS : [] as typeof DEMO_DIGESTS).length * 100);
   const totalGenCost = DEMO_DIGESTS.reduce((s, d) => s + d.genCost, 0);
   const totalAvoided = DEMO_DIGESTS.reduce((s, d) => s + d.avoidedSpend, 0);
 
@@ -33,7 +33,7 @@ const SmartDigestCenter = () => {
 
       <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
         {[
-          { label: "Total Digests", value: String(DEMO_DIGESTS.length) },
+          { label: "Total Digests", value: String((isDemoMode ? DEMO_DIGESTS : [] as typeof DEMO_DIGESTS).length) },
           { label: "Fresh", value: String(freshCount), color: "text-emerald-400" },
           { label: "Stale", value: String(staleCount), color: staleCount > 0 ? "text-amber-400" : "text-emerald-400" },
           { label: "Avg Hit Rate", value: `${avgHitRate}%` },
@@ -66,7 +66,7 @@ const SmartDigestCenter = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {DEMO_DIGESTS.sort((a, b) => b.hitRate - a.hitRate).map(d => (
+              {(isDemoMode ? DEMO_DIGESTS : [] as typeof DEMO_DIGESTS).sort((a, b) => b.hitRate - a.hitRate).map(d => (
                 <TableRow key={d.id}>
                   <TableCell className="text-xs font-medium text-foreground">{d.type.replace(/_/g, " ")}</TableCell>
                   <TableCell className="text-xs text-muted-foreground">{d.domain}</TableCell>
@@ -93,7 +93,7 @@ const SmartDigestCenter = () => {
         <Card className="bg-card/80 border-amber-500/20">
           <CardHeader className="pb-2"><CardTitle className="text-sm flex items-center gap-2"><AlertTriangle className="h-4 w-4 text-amber-400" /> Stale Digest Warnings</CardTitle></CardHeader>
           <CardContent className="space-y-2">
-            {DEMO_DIGESTS.filter(d => !d.fresh).map(d => (
+            {(isDemoMode ? DEMO_DIGESTS : [] as typeof DEMO_DIGESTS).filter(d => !d.fresh).map(d => (
               <div key={d.id} className="flex items-center justify-between p-3 rounded-lg bg-amber-500/5">
                 <div>
                   <p className="text-xs font-medium text-foreground">{d.type.replace(/_/g, " ")} — {d.domain}</p>
@@ -112,7 +112,7 @@ const SmartDigestCenter = () => {
         <CardContent>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
             {Object.entries(
-              DEMO_DIGESTS.reduce<Record<string, { avoided: number; genCost: number; count: number }>>((acc, d) => {
+              (isDemoMode ? DEMO_DIGESTS : [] as typeof DEMO_DIGESTS).reduce<Record<string, { avoided: number; genCost: number; count: number }>>((acc, d) => {
                 if (!acc[d.type]) acc[d.type] = { avoided: 0, genCost: 0, count: 0 };
                 acc[d.type].avoided += d.avoidedSpend;
                 acc[d.type].genCost += d.genCost;

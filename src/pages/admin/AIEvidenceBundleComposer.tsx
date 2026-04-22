@@ -22,7 +22,7 @@ const typeColors: Record<string, string> = {
 const AIEvidenceBundleComposer = () => {
   const { isDemo } = useAIEngDomain("missions", DEMO_BUNDLE_ITEMS);
   const [selectedMode, setSelectedMode] = useState<ExportMode>("markdown");
-  const [selectedItems, setSelectedItems] = useState<string[]>(DEMO_BUNDLE_ITEMS.map(b => b.id));
+  const [selectedItems, setSelectedItems] = useState<string[]>((isDemoMode ? DEMO_BUNDLE_ITEMS : [] as typeof DEMO_BUNDLE_ITEMS).map(b => b.id));
   const [tab, setTab] = useState("compose");
 
   const toggleItem = (id: string) => {
@@ -65,7 +65,7 @@ const AIEvidenceBundleComposer = () => {
           <div>
             <p className="text-[10px] text-muted-foreground uppercase tracking-wider mb-2">Export Format</p>
             <div className="grid grid-cols-5 gap-2">
-              {DEMO_EXPORT_MODES.map(m => (
+              {(isDemoMode ? DEMO_EXPORT_MODES : [] as typeof DEMO_EXPORT_MODES).map(m => (
                 <div
                   key={m.mode}
                   onClick={() => setSelectedMode(m.mode)}
@@ -85,7 +85,7 @@ const AIEvidenceBundleComposer = () => {
           <div>
             <p className="text-[10px] text-muted-foreground uppercase tracking-wider mb-2">Items to Include</p>
             <div className="space-y-2">
-              {DEMO_BUNDLE_ITEMS.map(b => (
+              {(isDemoMode ? DEMO_BUNDLE_ITEMS : [] as typeof DEMO_BUNDLE_ITEMS).map(b => (
                 <div
                   key={b.id}
                   onClick={() => toggleItem(b.id)}
@@ -232,7 +232,7 @@ const AIEvidenceBundleComposer = () => {
               <div className="rounded-xl border border-border/40 p-4">
                 <p className="text-sm font-semibold mb-1">Bundle Summary</p>
                 <div className="space-y-1 text-xs text-muted-foreground">
-                  <p>Format: <strong className="text-foreground">{DEMO_EXPORT_MODES.find(m => m.mode === selectedMode)?.label}</strong></p>
+                  <p>Format: <strong className="text-foreground">{(isDemoMode ? DEMO_EXPORT_MODES : [] as typeof DEMO_EXPORT_MODES).find(m => m.mode === selectedMode)?.label}</strong></p>
                   <p>Items: <strong className="text-foreground">{selected.length}</strong></p>
                   <p>Evidence: <strong className="text-foreground">{totalEvidence} pieces</strong></p>
                   <p>Tests: <strong className="text-foreground">{totalTests}</strong></p>
@@ -268,7 +268,7 @@ const AIEvidenceBundleComposer = () => {
               </p>
               <div className="flex justify-center gap-2 mt-3">
                 <Badge variant="outline" className="cursor-pointer hover:bg-primary/10 transition-colors px-3 py-1">
-                  <Download className="h-3 w-3 mr-1" /> Download {DEMO_EXPORT_MODES.find(m => m.mode === selectedMode)?.label}
+                  <Download className="h-3 w-3 mr-1" /> Download {(isDemoMode ? DEMO_EXPORT_MODES : [] as typeof DEMO_EXPORT_MODES).find(m => m.mode === selectedMode)?.label}
                 </Badge>
                 <Badge variant="outline" className="cursor-pointer hover:bg-primary/10 transition-colors px-3 py-1">
                   <Code className="h-3 w-3 mr-1" /> Copy to Clipboard

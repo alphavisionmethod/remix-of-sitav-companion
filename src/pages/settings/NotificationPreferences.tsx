@@ -107,7 +107,7 @@ export default function NotificationPreferences() {
           <CardDescription>Choose which categories send push vs in-app only</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          {DEMO_CATEGORIES.map((cat) => {
+          {(isDemoMode ? DEMO_CATEGORIES : [] as typeof DEMO_CATEGORIES).map((cat) => {
             const pref = getPref(cat.key);
             return (
               <div key={cat.key} className="flex items-center justify-between p-3 rounded-lg bg-muted/30 border border-border">

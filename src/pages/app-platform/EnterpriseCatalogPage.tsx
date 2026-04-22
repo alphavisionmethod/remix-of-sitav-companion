@@ -55,7 +55,7 @@ const EnterpriseCatalogPage = () => {
 
       {/* Apps */}
       <div className="space-y-3">
-        {DEMO_ENTERPRISE_APPS.map(app => {
+        {(isDemoMode ? DEMO_ENTERPRISE_APPS : [] as typeof DEMO_ENTERPRISE_APPS).map(app => {
           const st = statusConfig[app.status];
           const Icon = st.icon;
           return (

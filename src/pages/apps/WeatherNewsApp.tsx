@@ -81,8 +81,8 @@ export default function WeatherNewsApp() {
             </CardHeader>
             <CardContent>
               <div className="space-y-2">
-                {DEMO_forecast.map((day, i) => (
-                  <div key={day.day} className={`flex items-center justify-between py-2 ${i < DEMO_forecast.length - 1 ? "border-b border-border" : ""}`}>
+                {(isDemoMode ? DEMO_forecast : [] as typeof DEMO_forecast).map((day, i) => (
+                  <div key={day.day} className={`flex items-center justify-between py-2 ${i < (isDemoMode ? DEMO_forecast : [] as typeof DEMO_forecast).length - 1 ? "border-b border-border" : ""}`}>
                     <span className={`text-sm w-12 ${i === 0 ? "font-semibold text-foreground" : "text-foreground"}`}>{day.day}</span>
                     <day.icon className="h-5 w-5 text-muted-foreground" />
                     <div className="flex items-center gap-1 w-16">
@@ -102,7 +102,7 @@ export default function WeatherNewsApp() {
 
         <TabsContent value="news" className="mt-4 space-y-3">
           <motion.div variants={stagger} initial="hidden" animate="show" className="space-y-3">
-            {DEMO_newsArticles.map((article, i) => (
+            {(isDemoMode ? DEMO_newsArticles : [] as typeof DEMO_newsArticles).map((article, i) => (
               <motion.div key={i} variants={fadeUp}>
                 <Card className="hover:shadow-sm transition-shadow cursor-pointer group">
                   <CardContent className="p-4">

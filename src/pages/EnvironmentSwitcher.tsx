@@ -54,7 +54,7 @@ export default function EnvironmentSwitcher() {
       {/* Environments */}
       <div className="space-y-3">
         <h2 className="text-sm font-semibold">Your Environments</h2>
-        {MOCK_ENVIRONMENTS.map(env => (
+        {(isDemoMode ? MOCK_ENVIRONMENTS : [] as typeof MOCK_ENVIRONMENTS).map(env => (
           <Card key={env.id} className={cn(env.isCurrent && "ring-1 ring-primary/30")}>
             <CardContent className="p-4">
               <div className="flex items-center justify-between">

@@ -27,7 +27,7 @@ export default function AppExperienceStudio() {
         <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><Layers className="w-4 h-4 text-primary" /> Create New Experience</CardTitle></CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 mb-4">
-            {DEMO_EXPERIENCE_TYPES.map(e => (
+            {(isDemoMode ? DEMO_EXPERIENCE_TYPES : [] as typeof DEMO_EXPERIENCE_TYPES).map(e => (
               <button key={e.type} className="p-4 bg-muted/30 rounded-lg hover:bg-muted/50 transition-colors text-left group">
                 <e.icon className={`w-5 h-5 ${e.color} mb-2`} />
                 <h3 className="text-sm font-semibold text-foreground group-hover:text-primary transition-colors">{e.type}</h3>
@@ -46,7 +46,7 @@ export default function AppExperienceStudio() {
       <Card className="bg-card/50 border-border/50">
         <CardHeader className="pb-3"><CardTitle className="text-sm">Your Experiences</CardTitle></CardHeader>
         <CardContent className="space-y-2">
-          {DEMO_EXISTING_EXPERIENCES.map(e => (
+          {(isDemoMode ? DEMO_EXISTING_EXPERIENCES : [] as typeof DEMO_EXISTING_EXPERIENCES).map(e => (
             <div key={e.name} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg hover:bg-muted/40 cursor-pointer transition-colors">
               <div>
                 <span className="text-sm font-medium text-foreground">{e.name}</span>
@@ -71,7 +71,7 @@ export default function AppExperienceStudio() {
         <Card className="bg-card/50 border-border/50">
           <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><Globe className="w-4 h-4 text-green-400" /> PWA Configuration</CardTitle></CardHeader>
           <CardContent className="space-y-2">
-            {DEMO_PWA_SETTINGS.map(s => (
+            {(isDemoMode ? DEMO_PWA_SETTINGS : [] as typeof DEMO_PWA_SETTINGS).map(s => (
               <div key={s.setting} className="flex items-center justify-between p-2">
                 <span className="text-xs text-muted-foreground">{s.setting}</span>
                 <div className="flex items-center gap-2">
@@ -94,7 +94,7 @@ export default function AppExperienceStudio() {
         <Card className="bg-card/50 border-border/50">
           <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><Users className="w-4 h-4 text-purple-400" /> Portal Features</CardTitle></CardHeader>
           <CardContent className="space-y-2">
-            {DEMO_PORTAL_FEATURES.map(f => (
+            {(isDemoMode ? DEMO_PORTAL_FEATURES : [] as typeof DEMO_PORTAL_FEATURES).map(f => (
               <div key={f.feature} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
                 <div>
                   <span className="text-xs font-medium text-foreground">{f.feature}</span>

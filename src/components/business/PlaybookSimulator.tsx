@@ -285,7 +285,7 @@ interface PlaybookSimulatorProps {
 }
 
 const PlaybookSimulator = ({ draft, onBack, onActivate }: PlaybookSimulatorProps) => {
-  const [selectedCustomerIds, setSelectedCustomerIds] = useState<string[]>(MOCK_CUSTOMERS.map(c => c.id));
+  const [selectedCustomerIds, setSelectedCustomerIds] = useState<string[]>((isDemoMode ? MOCK_CUSTOMERS : [] as typeof MOCK_CUSTOMERS).map(c => c.id));
   const [currentStep, setCurrentStep] = useState(-1); // -1 = not started
   const [autoPlay, setAutoPlay] = useState(false);
   const [result, setResult] = useState<SimulationResult | null>(null);

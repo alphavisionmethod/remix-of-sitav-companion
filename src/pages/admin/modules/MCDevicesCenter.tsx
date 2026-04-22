@@ -92,9 +92,9 @@ const MCDevicesCenter = () => {
         {/* Trust Summary */}
         <motion.div variants={fadeUp} className="grid grid-cols-3 gap-3">
           {[
-            { label: "Verified", count: DEMO_DEVICES.filter(d => d.trust === "verified").length, total: DEMO_DEVICES.length, color: "text-emerald-400" },
-            { label: "Pending Review", count: DEMO_DEVICES.filter(d => d.trust === "pending").length, total: DEMO_DEVICES.length, color: "text-amber-400" },
-            { label: "Revoked", count: DEMO_DEVICES.filter(d => d.trust === "revoked").length, total: DEMO_DEVICES.length, color: "text-red-400" },
+            { label: "Verified", count: (isDemoMode ? DEMO_DEVICES : [] as typeof DEMO_DEVICES).filter(d => d.trust === "verified").length, total: (isDemoMode ? DEMO_DEVICES : [] as typeof DEMO_DEVICES).length, color: "text-emerald-400" },
+            { label: "Pending Review", count: (isDemoMode ? DEMO_DEVICES : [] as typeof DEMO_DEVICES).filter(d => d.trust === "pending").length, total: (isDemoMode ? DEMO_DEVICES : [] as typeof DEMO_DEVICES).length, color: "text-amber-400" },
+            { label: "Revoked", count: (isDemoMode ? DEMO_DEVICES : [] as typeof DEMO_DEVICES).filter(d => d.trust === "revoked").length, total: (isDemoMode ? DEMO_DEVICES : [] as typeof DEMO_DEVICES).length, color: "text-red-400" },
           ].map(s => (
             <Card key={s.label} className="hover:-translate-y-0.5 transition-transform">
               <CardContent className="p-4">

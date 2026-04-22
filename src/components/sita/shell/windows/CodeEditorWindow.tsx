@@ -128,7 +128,7 @@ export function CodeEditorWindow() {
           <span className="text-[10px] text-[hsl(0_0%_35%)] uppercase tracking-wider font-semibold">Explorer</span>
         </div>
         <div className="flex-1 overflow-y-auto scrollbar-thin p-1">
-          {MOCK_FILES.map(f => (
+          {(isDemoMode ? MOCK_FILES : [] as typeof MOCK_FILES).map(f => (
             <FileTreeItem key={f.name} node={f} activeFile={activeFile?.name || ""} onSelect={openFile} />
           ))}
         </div>

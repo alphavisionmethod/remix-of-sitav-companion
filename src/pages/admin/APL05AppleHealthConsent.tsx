@@ -15,7 +15,7 @@ type ConsentState = Record<string, { read: boolean; routing: boolean; boardroom:
 const APL05AppleHealthConsent = () => {
   const { isDemoMode } = useDataMode();
   const [consents, setConsents] = useState<ConsentState>(
-    Object.fromEntries(DEMO_SIGNALS.map(s => [s.key, { read: false, routing: false, boardroom: false, assistant: false }]))
+    Object.fromEntries((isDemoMode ? DEMO_SIGNALS : [] as typeof DEMO_SIGNALS).map(s => [s.key, { read: false, routing: false, boardroom: false, assistant: false }]))
   );
 
   const toggleConsent = (signal: string, scope: keyof ConsentState[string]) => {
@@ -35,7 +35,7 @@ const APL05AppleHealthConsent = () => {
             <p className="text-muted-foreground">HealthKit signal permissions, privacy controls, visibility policies</p>
           </div>
         </div>
-        <Badge variant={consentedCount > 0 ? "default" : "secondary"}>{consentedCount}/{DEMO_SIGNALS.length} consented</Badge>
+        <Badge variant={consentedCount > 0 ? "default" : "secondary"}>{consentedCount}/{(isDemoMode ? DEMO_SIGNALS : [] as typeof DEMO_SIGNALS).length} consented</Badge>
       </div>
 
       <Tabs defaultValue="matrix" className="space-y-4">
@@ -62,7 +62,7 @@ const APL05AppleHealthConsent = () => {
                     <th className="p-2"><Heart className="h-3 w-3 mx-auto" /> Assistant</th>
                   </tr></thead>
                   <tbody>
-                    {DEMO_SIGNALS.map((sig) => (
+                    {(isDemoMode ? DEMO_SIGNALS : [] as typeof DEMO_SIGNALS).map((sig) => (
                       <tr key={sig.key} className="border-b hover:bg-muted/30">
                         <td className="p-2 font-mono font-medium">{sig.key}</td>
                         <td className="p-2 text-center text-muted-foreground">{sig.unit}</td>
@@ -132,7 +132,7 @@ const APL05AppleHealthConsent = () => {
                     <th className="text-left p-2">Notes</th>
                   </tr></thead>
                   <tbody>
-                    {DEMO_SIGNALS.map((sig) => (
+                    {(isDemoMode ? DEMO_SIGNALS : [] as typeof DEMO_SIGNALS).map((sig) => (
                       <tr key={sig.key} className="border-b hover:bg-muted/30">
                         <td className="p-2 font-mono">{sig.key}</td>
                         <td className="p-2 text-center"><Badge variant={sig.sensitivity === "high" ? "destructive" : "secondary"}>{sig.sensitivity}</Badge></td>

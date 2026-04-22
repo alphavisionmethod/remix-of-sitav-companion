@@ -204,7 +204,7 @@ export default function DecisionTheater() {
   const navigate = useNavigate();
   const [spotlightActive, setSpotlightActive] = useState(false);
   const order = SAMPLE_ORDERS[0];
-  const overallReadiness = Math.round(DEMO_READINESS_DIMENSIONS.reduce((s, d) => s + d.score, 0) / DEMO_READINESS_DIMENSIONS.length);
+  const overallReadiness = Math.round((isDemoMode ? DEMO_READINESS_DIMENSIONS : [] as typeof DEMO_READINESS_DIMENSIONS).reduce((s, d) => s + d.score, 0) / (isDemoMode ? DEMO_READINESS_DIMENSIONS : [] as typeof DEMO_READINESS_DIMENSIONS).length);
   const readinessLabel = overallReadiness >= 80 ? "Ready" : overallReadiness >= 65 ? "Needs Review" : overallReadiness >= 50 ? "Simulate First" : "Wait";
 
   return (

@@ -160,7 +160,7 @@ export function CloudGovernanceAdmin() {
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-2">
-            {DEMO_TRUST_DEVICES.map(d => (
+            {(isDemoMode ? DEMO_TRUST_DEVICES : [] as typeof DEMO_TRUST_DEVICES).map(d => (
               <div key={d.id} className="flex items-center justify-between p-3 rounded-lg bg-muted/20 border border-border/30">
                 <div className="flex items-center gap-3">
                   <div className="h-10 w-10 rounded-lg bg-muted/30 flex items-center justify-center">

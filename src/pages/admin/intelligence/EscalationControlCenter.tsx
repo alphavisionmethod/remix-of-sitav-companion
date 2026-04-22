@@ -54,7 +54,7 @@ const EscalationControlCenter = () => {
 
       <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
         {[
-          { label: "Total Escalations", value: String(DEMO_ESCALATIONS.length), color: "text-foreground" },
+          { label: "Total Escalations", value: String((isDemoMode ? DEMO_ESCALATIONS : [] as typeof DEMO_ESCALATIONS).length), color: "text-foreground" },
           { label: "Total Cost", value: `$${(totalCost / 100).toFixed(0)}`, color: "text-foreground" },
           { label: "Justified", value: String(justified), color: "text-emerald-400" },
           { label: "Unnecessary", value: String(unnecessary), color: "text-amber-400" },
@@ -101,7 +101,7 @@ const EscalationControlCenter = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {DEMO_ESCALATIONS.map(e => (
+              {(isDemoMode ? DEMO_ESCALATIONS : [] as typeof DEMO_ESCALATIONS).map(e => (
                 <TableRow key={e.id}>
                   <TableCell className="text-xs font-medium text-foreground">{e.domain}</TableCell>
                   <TableCell className="text-xs text-muted-foreground max-w-[200px] truncate">{e.desc}</TableCell>
@@ -123,7 +123,7 @@ const EscalationControlCenter = () => {
         <Card className="bg-card/80 border-amber-500/20">
           <CardHeader className="pb-2"><CardTitle className="text-sm flex items-center gap-2"><AlertTriangle className="h-4 w-4 text-amber-400" /> Unnecessary Escalations — Optimization Opportunities</CardTitle></CardHeader>
           <CardContent className="space-y-2">
-            {DEMO_ESCALATIONS.filter(e => !e.justified).map(e => (
+            {(isDemoMode ? DEMO_ESCALATIONS : [] as typeof DEMO_ESCALATIONS).filter(e => !e.justified).map(e => (
               <div key={e.id} className="flex items-center justify-between p-3 rounded-lg bg-amber-500/5">
                 <div>
                   <p className="text-xs font-medium text-foreground">{e.desc}</p>

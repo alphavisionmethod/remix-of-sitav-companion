@@ -66,11 +66,11 @@ export function RelationshipGraphPanel({ customerName, customerId }: Relationshi
         </div>
       </div>
       <p className="text-center text-xs font-medium text-foreground mb-1">{customerName}</p>
-      <p className="text-center text-[10px] text-muted-foreground mb-4">Primary contact · {DEMO_RELATIONSHIPS.length} connections</p>
+      <p className="text-center text-[10px] text-muted-foreground mb-4">Primary contact · {(isDemoMode ? DEMO_RELATIONSHIPS : [] as typeof DEMO_RELATIONSHIPS).length} connections</p>
 
       {/* Connection Lines Visual */}
       <div className="space-y-2">
-        {DEMO_RELATIONSHIPS.map((node, index) => {
+        {(isDemoMode ? DEMO_RELATIONSHIPS : [] as typeof DEMO_RELATIONSHIPS).map((node, index) => {
           const config = nodeTypeConfig[node.type];
           const strength = strengthConfig[node.strength];
           const NodeIcon = config.icon;

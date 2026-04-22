@@ -170,7 +170,7 @@ const OutcomeEconomicsDashboard = () => {
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-2">
-          {DEMO_OUTCOMES.map((o) => (
+          {(isDemoMode ? DEMO_OUTCOMES : [] as typeof DEMO_OUTCOMES).map((o) => (
             <div key={o.category} className="flex items-center gap-3 p-2.5 rounded-lg bg-secondary/20 hover:bg-secondary/30 transition-colors">
               <div className="w-36 shrink-0">
                 <p className="text-xs font-semibold text-foreground">{o.label}</p>
@@ -205,7 +205,7 @@ const OutcomeEconomicsDashboard = () => {
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-2">
-            {DEMO_PATHS.map((p) => (
+            {(isDemoMode ? DEMO_PATHS : [] as typeof DEMO_PATHS).map((p) => (
               <div key={p.path} className="p-2.5 rounded-lg bg-secondary/20 space-y-1.5">
                 <div className="flex items-center justify-between">
                   <p className="text-xs font-semibold text-foreground">{p.path}</p>
@@ -234,7 +234,7 @@ const OutcomeEconomicsDashboard = () => {
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-2">
-            {DEMO_INCIDENTS.map((inc) => (
+            {(isDemoMode ? DEMO_INCIDENTS : [] as typeof DEMO_INCIDENTS).map((inc) => (
               <div key={inc.type} className="flex items-center gap-3 p-2.5 rounded-lg bg-secondary/20">
                 <div className="flex-1">
                   <p className="text-xs font-semibold text-foreground">{inc.type}</p>
@@ -263,7 +263,7 @@ const OutcomeEconomicsDashboard = () => {
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-            {DEMO_BENCHMARKS.map((b) => {
+            {(isDemoMode ? DEMO_BENCHMARKS : [] as typeof DEMO_BENCHMARKS).map((b) => {
               const pct = b.unit === "%" ? b.current : Math.min((b.current / b.target) * 100, 100);
               const beating = b.current >= b.industry;
               return (

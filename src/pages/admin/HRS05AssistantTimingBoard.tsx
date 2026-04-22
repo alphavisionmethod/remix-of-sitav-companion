@@ -44,7 +44,7 @@ const HRS05AssistantTimingBoard = () => {
               <table className="w-full text-xs">
                 <thead><tr className="border-b"><th className="text-left p-2">Rule</th><th className="text-left p-2">Context</th><th className="p-2">Priority</th><th className="p-2">Override</th><th className="p-2">Category</th></tr></thead>
                 <tbody>
-                  {DEMO_TIMING_RULES.map((r) => (
+                  {(isDemoMode ? DEMO_TIMING_RULES : [] as typeof DEMO_TIMING_RULES).map((r) => (
                     <tr key={r.rule} className="border-b hover:bg-muted/30">
                       <td className="p-2 font-medium">{r.rule}</td>
                       <td className="p-2"><Badge variant="outline" className="font-mono text-[10px]">{r.context}</Badge></td>

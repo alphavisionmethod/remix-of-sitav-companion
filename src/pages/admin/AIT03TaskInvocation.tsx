@@ -129,7 +129,7 @@ const [selectedRole, setSelectedRole] = useState("");
                   <Select value={selectedTask} onValueChange={setSelectedTask}>
                     <SelectTrigger><SelectValue placeholder="Select task..." /></SelectTrigger>
                     <SelectContent>
-                      {DEMO_TASK_TYPES.map(t => <SelectItem key={t.key} value={t.key}>{t.label} — {t.desc}</SelectItem>)}
+                      {(isDemoMode ? DEMO_TASK_TYPES : [] as typeof DEMO_TASK_TYPES).map(t => <SelectItem key={t.key} value={t.key}>{t.label} — {t.desc}</SelectItem>)}
                     </SelectContent>
                   </Select>
                 </div>
@@ -138,7 +138,7 @@ const [selectedRole, setSelectedRole] = useState("");
                   <Select value={budgetPosture} onValueChange={setBudgetPosture}>
                     <SelectTrigger><SelectValue /></SelectTrigger>
                     <SelectContent>
-                      {DEMO_BUDGET_POSTURES.map(b => <SelectItem key={b.key} value={b.key}>{b.icon} {b.label} ({b.costBand})</SelectItem>)}
+                      {(isDemoMode ? DEMO_BUDGET_POSTURES : [] as typeof DEMO_BUDGET_POSTURES).map(b => <SelectItem key={b.key} value={b.key}>{b.icon} {b.label} ({b.costBand})</SelectItem>)}
                     </SelectContent>
                   </Select>
                 </div>
@@ -151,7 +151,7 @@ const [selectedRole, setSelectedRole] = useState("");
                   <Select value={scopeDomain} onValueChange={setScopeDomain}>
                     <SelectTrigger><SelectValue placeholder="Optional scope..." /></SelectTrigger>
                     <SelectContent>
-                      {DEMO_SCOPE_DOMAINS.map(d => <SelectItem key={d} value={d}>{d}</SelectItem>)}
+                      {(isDemoMode ? DEMO_SCOPE_DOMAINS : [] as typeof DEMO_SCOPE_DOMAINS).map(d => <SelectItem key={d} value={d}>{d}</SelectItem>)}
                     </SelectContent>
                   </Select>
                 </div>

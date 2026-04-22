@@ -35,7 +35,7 @@ const ADAPTER_STATUS_COLORS: Record<string, string> = {
 export default function CoreServiceMigrationBoard() {
   const { isDemoMode } = useDataMode();
   const completed = DEMO_SERVICES.filter(s => s.phase === "complete").length;
-  const pct = (completed / DEMO_SERVICES.length) * 100;
+  const pct = (completed / (isDemoMode ? DEMO_SERVICES : [] as typeof DEMO_SERVICES).length) * 100;
 
   return (
     <div className="space-y-6 p-6 max-w-7xl mx-auto">
@@ -44,7 +44,7 @@ export default function CoreServiceMigrationBoard() {
         <motion.div variants={fade} className="flex items-center gap-3">
           <Server className="h-6 w-6 text-primary" />
           <h1 className="text-2xl font-bold text-foreground">Core Service Migration Board</h1>
-          <Badge>{completed}/{DEMO_SERVICES.length} complete</Badge>
+          <Badge>{completed}/{(isDemoMode ? DEMO_SERVICES : [] as typeof DEMO_SERVICES).length} complete</Badge>
         </motion.div>
 
         {/* Real Adapter Wiring Status */}
@@ -116,7 +116,7 @@ export default function CoreServiceMigrationBoard() {
                   </tr>
                 </thead>
                 <tbody>
-                  {DEMO_SERVICES.map(svc => (
+                  {(isDemoMode ? DEMO_SERVICES : [] as typeof DEMO_SERVICES).map(svc => (
                     <tr key={svc.name} className="border-b border-border/20 hover:bg-muted/30">
                       <td className="p-3 font-medium text-foreground">{svc.name}</td>
                       <td className="p-3"><Badge variant="outline" className="text-[10px]">{svc.currentBacking}</Badge></td>
@@ -143,9 +143,9 @@ export default function CoreServiceMigrationBoard() {
             </CardHeader>
             <CardContent className="grid grid-cols-1 md:grid-cols-3 gap-3">
               {[
-                { label: "Critical State Loss", count: DEMO_SERVICES.filter(s => s.phase === "not-started").length, color: "text-red-400" },
-                { label: "Partial Coverage", count: DEMO_SERVICES.filter(s => ["adapter-built", "wired"].includes(s.phase)).length, color: "text-amber-400" },
-                { label: "Fully Durable", count: DEMO_SERVICES.filter(s => ["validated", "complete"].includes(s.phase)).length, color: "text-emerald-400" },
+                { label: "Critical State Loss", count: (isDemoMode ? DEMO_SERVICES : [] as typeof DEMO_SERVICES).filter(s => s.phase === "not-started").length, color: "text-red-400" },
+                { label: "Partial Coverage", count: (isDemoMode ? DEMO_SERVICES : [] as typeof DEMO_SERVICES).filter(s => ["adapter-built", "wired"].includes(s.phase)).length, color: "text-amber-400" },
+                { label: "Fully Durable", count: (isDemoMode ? DEMO_SERVICES : [] as typeof DEMO_SERVICES).filter(s => ["validated", "complete"].includes(s.phase)).length, color: "text-emerald-400" },
               ].map(item => (
                 <div key={item.label} className="text-center p-3 bg-muted/20 rounded">
                   <p className={`text-2xl font-bold ${item.color}`}>{item.count}</p>

@@ -79,7 +79,7 @@ const MoneySettings = () => {
         <div className="space-y-6">
           <div className="space-y-3">
             <h3 className={SITA_TYPE.microLabel + " text-[hsl(0_0%_50%)] uppercase tracking-wider"}>Connected Services</h3>
-            {DEMO_CONNECTORS.map((c, i) => (
+            {(isDemoMode ? DEMO_CONNECTORS : [] as typeof DEMO_CONNECTORS).map((c, i) => (
               <StatusCard
                 key={i}
                 label={c.name}

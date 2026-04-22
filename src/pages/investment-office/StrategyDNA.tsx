@@ -33,7 +33,7 @@ export default function StrategyDNA() {
       <div className="rounded-2xl border border-border bg-card p-6 space-y-4">
         <h3 className="text-sm font-bold text-foreground">Your Strategy Profile</h3>
         <div className="space-y-3">
-          {DEMO_DNA_DIMENSIONS.map((d, i) => (
+          {(isDemoMode ? DEMO_DNA_DIMENSIONS : [] as typeof DEMO_DNA_DIMENSIONS).map((d, i) => (
             <motion.div key={d.label} initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.03 }}>
               <div className="flex items-center justify-between mb-1">
                 <p className="text-xs font-medium text-foreground">{d.label}</p>
@@ -57,7 +57,7 @@ export default function StrategyDNA() {
       {/* Suggestions */}
       <div className="rounded-2xl border border-border bg-card p-6 space-y-3">
         <h3 className="text-sm font-bold text-foreground">Advisor Suggestions Based on DNA</h3>
-        {DEMO_SUGGESTIONS.map((s, i) => (
+        {(isDemoMode ? DEMO_SUGGESTIONS : [] as typeof DEMO_SUGGESTIONS).map((s, i) => (
           <div key={i} className="flex items-start gap-2 text-sm text-foreground">
             <span className="text-primary font-bold shrink-0">→</span>
             <span>{s.suggestion}</span>

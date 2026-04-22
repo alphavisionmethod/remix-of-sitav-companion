@@ -39,7 +39,7 @@ const TrustedDeviceManager = () => {
       </Card>
 
       <div className="space-y-3">
-        {MOCK_DEVICES.map(device => (
+        {(isDemoMode ? MOCK_DEVICES : [] as typeof MOCK_DEVICES).map(device => (
           <Card key={device.id}>
             <CardContent className="pt-6 flex items-center gap-4">
               <div className="p-2 rounded-lg bg-muted">{deviceIcon(device.type)}</div>

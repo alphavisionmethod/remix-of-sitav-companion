@@ -47,7 +47,7 @@ const FinanceAutomations = () => {
   const [tab, setTab] = useState("active");
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
-  const filtered = tab === "all" ? DEMO_AUTOMATIONS : DEMO_AUTOMATIONS.filter(a => a.status === tab);
+  const filtered = tab === "all" ? DEMO_AUTOMATIONS : (isDemoMode ? DEMO_AUTOMATIONS : [] as typeof DEMO_AUTOMATIONS).filter(a => a.status === tab);
   const selected = DEMO_AUTOMATIONS.find(a => a.id === selectedId);
 
   const activeCount = DEMO_AUTOMATIONS.filter(a => a.status === "active").length;
@@ -77,9 +77,9 @@ const FinanceAutomations = () => {
         tabs={[
           { key: "active", label: "Active", count: activeCount },
           { key: "suggested", label: "Suggested", count: suggestedCount },
-          { key: "paused", label: "Paused", count: DEMO_AUTOMATIONS.filter(a => a.status === "paused").length },
-          { key: "failed", label: "Failed", count: DEMO_AUTOMATIONS.filter(a => a.status === "failed").length },
-          { key: "all", label: "All", count: DEMO_AUTOMATIONS.length },
+          { key: "paused", label: "Paused", count: (isDemoMode ? DEMO_AUTOMATIONS : [] as typeof DEMO_AUTOMATIONS).filter(a => a.status === "paused").length },
+          { key: "failed", label: "Failed", count: (isDemoMode ? DEMO_AUTOMATIONS : [] as typeof DEMO_AUTOMATIONS).filter(a => a.status === "failed").length },
+          { key: "all", label: "All", count: (isDemoMode ? DEMO_AUTOMATIONS : [] as typeof DEMO_AUTOMATIONS).length },
         ]}
         active={tab}
         onChange={setTab}

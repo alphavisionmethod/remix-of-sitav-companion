@@ -81,7 +81,7 @@ export default function CampaignOrchestrator() {
 
       {/* Segment Pills */}
       <div className="flex gap-3 overflow-x-auto pb-2">
-        {DEMO_SEGMENTS.map(s => (
+        {(isDemoMode ? DEMO_SEGMENTS : [] as typeof DEMO_SEGMENTS).map(s => (
           <Card key={s.name} className="bg-card/50 border-border/50 min-w-[150px] flex-shrink-0 cursor-pointer hover:border-primary/30 transition-colors">
             <CardContent className="p-3">
               <p className="text-xs text-muted-foreground">{s.name}</p>
@@ -150,7 +150,7 @@ export default function CampaignOrchestrator() {
           <TabsContent value="attribution">
             <div className="space-y-4">
               <h3 className="text-sm font-semibold text-foreground">Campaign Attribution & ROI</h3>
-              {DEMO_CAMPAIGN_ATTRIBUTION.map((a, i) => (
+              {(isDemoMode ? DEMO_CAMPAIGN_ATTRIBUTION : [] as typeof DEMO_CAMPAIGN_ATTRIBUTION).map((a, i) => (
                 <motion.div key={a.campaign} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}>
                   <Card className="bg-card/50 border-border/50">
                     <CardContent className="p-4">
@@ -199,7 +199,7 @@ export default function CampaignOrchestrator() {
               <h3 className="text-sm font-semibold text-foreground flex items-center gap-2">
                 <AlertTriangle className="w-4 h-4 text-amber-400" /> Audience Fatigue Monitor
               </h3>
-              {DEMO_CAMPAIGN_FATIGUE.map((f, i) => (
+              {(isDemoMode ? DEMO_CAMPAIGN_FATIGUE : [] as typeof DEMO_CAMPAIGN_FATIGUE).map((f, i) => (
                 <Card key={f.segment} className={`border-border/50 ${f.status === "over" ? "bg-red-500/5 border-red-500/20" : "bg-card/50"}`}>
                   <CardContent className="p-4">
                     <div className="flex items-center justify-between mb-2">
@@ -224,7 +224,7 @@ export default function CampaignOrchestrator() {
             <div className="space-y-4">
               <h3 className="text-sm font-semibold text-foreground">Email Deliverability Health</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {DEMO_DELIVERABILITY.map(d => (
+                {(isDemoMode ? DEMO_DELIVERABILITY : [] as typeof DEMO_DELIVERABILITY).map(d => (
                   <Card key={d.metric} className={`border-border/50 ${d.status === "warning" ? "bg-amber-500/5 border-amber-500/20" : "bg-card/50"}`}>
                     <CardContent className="p-4 text-center">
                       <p className="text-xs text-muted-foreground mb-1">{d.metric}</p>

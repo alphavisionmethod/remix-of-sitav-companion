@@ -1770,7 +1770,7 @@ const OwnerCenter = () => {
                 </div>
               </div>
             </SitaCard>
-            {DEMO_ENGINE_COSTS.map((c, i) => (
+            {(isDemoMode ? DEMO_ENGINE_COSTS : [] as typeof DEMO_ENGINE_COSTS).map((c, i) => (
               <SitaCard key={i} hover={false} className="p-4">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">

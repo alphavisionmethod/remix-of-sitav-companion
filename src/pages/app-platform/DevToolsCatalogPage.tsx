@@ -64,7 +64,7 @@ const DevToolsCatalogPage = () => {
 
       {/* Categories */}
       <div className="flex gap-2 overflow-x-auto pb-1">
-        {DEMO_DEV_CATEGORIES.map(c => {
+        {(isDemoMode ? DEMO_DEV_CATEGORIES : [] as typeof DEMO_DEV_CATEGORIES).map(c => {
           const Icon = c.icon;
           return (
             <button key={c.id} onClick={() => setActiveCat(c.id)}

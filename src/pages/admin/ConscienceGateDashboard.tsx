@@ -118,7 +118,7 @@ export default function ConscienceGateDashboard() {
         .limit(50);
       if (cancelled) return;
       if (error || !data || data.length === 0) {
-        setLiveVerdicts(DEMO_CONSCIENCE_VERDICTS.map(withDashboardId));
+        setLiveVerdicts((isDemoMode ? DEMO_CONSCIENCE_VERDICTS : [] as typeof DEMO_CONSCIENCE_VERDICTS).map(withDashboardId));
         setUsingFallback(true);
       } else {
         setLiveVerdicts(data.map(mapReceiptToVerdict));
@@ -130,11 +130,11 @@ export default function ConscienceGateDashboard() {
 
   const DEMO_VERDICTS: DashboardVerdict[] = liveVerdicts.length > 0
     ? liveVerdicts
-    : DEMO_CONSCIENCE_VERDICTS.map(withDashboardId);
+    : (isDemoMode ? DEMO_CONSCIENCE_VERDICTS : [] as typeof DEMO_CONSCIENCE_VERDICTS).map(withDashboardId);
 
   const stats = useMemo(() => {
     const counts: Record<GateDecision, number> = { pass: 0, caveat: 0, block: 0, refuse: 0 };
-    DEMO_VERDICTS.forEach((v) => counts[v.decision]++);
+    (isDemoMode ? DEMO_VERDICTS : [] as typeof DEMO_VERDICTS).forEach((v) => counts[v.decision]++);
     const total = DEMO_VERDICTS.length;
     return { counts, total, passRate: total ? Math.round((counts.pass / total) * 100) : 0 };
   }, [DEMO_VERDICTS]);
@@ -205,7 +205,7 @@ export default function ConscienceGateDashboard() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {DEMO_VERDICTS.map((v) => (
+                  {(isDemoMode ? DEMO_VERDICTS : [] as typeof DEMO_VERDICTS).map((v) => (
                     <TableRow key={v.id}>
                       <TableCell>
                         <Badge className={DECISION_COLORS[v.decision]}>{DECISION_ICONS[v.decision]} {v.decision}</Badge>
@@ -232,7 +232,7 @@ export default function ConscienceGateDashboard() {
               <CardDescription>Source sufficiency and missing evidence types</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              {DEMO_VERDICTS.map((v) => (
+              {(isDemoMode ? DEMO_VERDICTS : [] as typeof DEMO_VERDICTS).map((v) => (
                 <div key={v.id} className="rounded-lg border p-4 space-y-2">
                   <div className="flex items-center justify-between">
                     <span className="font-mono text-sm">{v.taskType}</span>
@@ -273,7 +273,7 @@ export default function ConscienceGateDashboard() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {DEMO_VERDICTS.map((v) => (
+                  {(isDemoMode ? DEMO_VERDICTS : [] as typeof DEMO_VERDICTS).map((v) => (
                     <TableRow key={v.id}>
                       <TableCell className="font-mono text-xs">{v.taskType}</TableCell>
                       <TableCell>
@@ -317,7 +317,7 @@ export default function ConscienceGateDashboard() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {DEMO_VERDICTS.map((v) => (
+                  {(isDemoMode ? DEMO_VERDICTS : [] as typeof DEMO_VERDICTS).map((v) => (
                     <TableRow key={v.id}>
                       <TableCell className="font-mono text-xs">{v.taskType}</TableCell>
                       <TableCell>{v.routingHints.preferredProvider ?? "—"}</TableCell>

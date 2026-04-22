@@ -189,7 +189,7 @@ export default function FCC06ProgramManagementBoard() {
       {/* Summary Strip */}
       <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
         {[
-          { label: "Objectives", value: DEMO_OBJECTIVES.length, color: "text-primary" },
+          { label: "Objectives", value: (isDemoMode ? DEMO_OBJECTIVES : [] as typeof DEMO_OBJECTIVES).length, color: "text-primary" },
           { label: "Total Tasks", value: allTasks.length, color: "text-foreground" },
           { label: "Completed", value: totalCompleted, color: "text-trust-safe" },
           { label: "In Progress", value: allTasks.filter(t => t.status === "in_progress").length, color: "text-sita-gold" },
@@ -208,7 +208,7 @@ export default function FCC06ProgramManagementBoard() {
 
       {/* Objectives */}
       <div className="space-y-4">
-        {DEMO_OBJECTIVES.map((obj, oi) => {
+        {(isDemoMode ? DEMO_OBJECTIVES : [] as typeof DEMO_OBJECTIVES).map((obj, oi) => {
           const expanded = expandedObj.has(obj.id);
           const progress = getObjectiveProgress(obj);
           return (

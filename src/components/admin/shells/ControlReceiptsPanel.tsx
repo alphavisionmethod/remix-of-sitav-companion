@@ -70,7 +70,7 @@ export function ControlReceiptsPanel() {
       </div>
 
       <div className="space-y-2">
-        {DEMO_RECEIPTS.map((receipt, i) => {
+        {(isDemoMode ? DEMO_RECEIPTS : [] as typeof DEMO_RECEIPTS).map((receipt, i) => {
           const ResultIcon = RESULT_CONFIG[receipt.result].icon;
           const OriginIcon = ORIGIN_CONFIG[receipt.origin].icon;
           const isExpanded = expandedId === receipt.id;

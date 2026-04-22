@@ -101,7 +101,7 @@ const AutomationCenter = () => {
       <SitaTabs
         tabs={[
           { key: "rules", label: "Rules", count: rules.length },
-          { key: "delegations", label: "Delegations", count: MOCK_DELEGATIONS.length },
+          { key: "delegations", label: "Delegations", count: (isDemoMode ? MOCK_DELEGATIONS : [] as typeof MOCK_DELEGATIONS).length },
           { key: "trust", label: "Trust Levels" },
         ]}
         active={activeTab}
@@ -155,7 +155,7 @@ const AutomationCenter = () => {
 
       {activeTab === "delegations" && (
         <div className="space-y-2">
-          {MOCK_DELEGATIONS.map((d, i) => (
+          {(isDemoMode ? MOCK_DELEGATIONS : [] as typeof MOCK_DELEGATIONS).map((d, i) => (
             <SitaCard key={i} hover={false} className="p-4">
               <div className="flex items-center justify-between">
                 <div>

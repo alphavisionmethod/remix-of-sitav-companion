@@ -49,7 +49,7 @@ export default function FunnelBuilder() {
           {/* Funnels Overview */}
           <TabsContent value="funnels">
             <div className="space-y-6">
-              {DEMO_FUNNELS.map((funnel, fi) => (
+              {(isDemoMode ? DEMO_FUNNELS : [] as typeof DEMO_FUNNELS).map((funnel, fi) => (
                 <motion.div key={funnel.name} initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: fi * 0.1 }}>
                   <Card className={`bg-card/50 border-border/50 ${selectedFunnel === fi ? "ring-1 ring-primary/30" : ""}`} onClick={() => setSelectedFunnel(fi)}>
                     <CardHeader className="pb-3">
@@ -113,7 +113,7 @@ export default function FunnelBuilder() {
           {/* Step Analytics with Leak Detection */}
           <TabsContent value="analytics">
             <div className="space-y-3">
-              {DEMO_FUNNEL_STEP_ANALYTICS.map((step, i) => (
+              {(isDemoMode ? DEMO_FUNNEL_STEP_ANALYTICS : [] as typeof DEMO_FUNNEL_STEP_ANALYTICS).map((step, i) => (
                 <Card key={i} className={`bg-card/50 border-border/50 ${step.dropoffPct > 50 ? "border-l-4 border-l-red-400" : step.dropoffPct > 25 ? "border-l-4 border-l-amber-400" : "border-l-4 border-l-emerald-400"}`}>
                   <CardContent className="p-4">
                     <div className="flex items-center justify-between mb-3 flex-wrap gap-2">
@@ -148,12 +148,12 @@ export default function FunnelBuilder() {
                   <AlertTriangle className="w-5 h-5 text-red-400" />
                   <span className="font-medium text-foreground">Funnel Leak Summary</span>
                 </div>
-                <p className="text-sm text-muted-foreground">Total visitors lost across all steps: <span className="text-red-400 font-bold">{DEMO_FUNNEL_STEP_ANALYTICS.reduce((s, a) => s + a.dropoff, 0).toLocaleString()}</span></p>
-                <p className="text-xs text-muted-foreground mt-1">Biggest leak: <span className="text-foreground font-medium">{DEMO_FUNNEL_STEP_ANALYTICS.sort((a, b) => b.dropoffPct - a.dropoffPct)[0]?.step}</span> at {DEMO_FUNNEL_STEP_ANALYTICS.sort((a, b) => b.dropoffPct - a.dropoffPct)[0]?.dropoffPct.toFixed(1)}% dropoff</p>
+                <p className="text-sm text-muted-foreground">Total visitors lost across all steps: <span className="text-red-400 font-bold">{(isDemoMode ? DEMO_FUNNEL_STEP_ANALYTICS : [] as typeof DEMO_FUNNEL_STEP_ANALYTICS).reduce((s, a) => s + a.dropoff, 0).toLocaleString()}</span></p>
+                <p className="text-xs text-muted-foreground mt-1">Biggest leak: <span className="text-foreground font-medium">{(isDemoMode ? DEMO_FUNNEL_STEP_ANALYTICS : [] as typeof DEMO_FUNNEL_STEP_ANALYTICS).sort((a, b) => b.dropoffPct - a.dropoffPct)[0]?.step}</span> at {(isDemoMode ? DEMO_FUNNEL_STEP_ANALYTICS : [] as typeof DEMO_FUNNEL_STEP_ANALYTICS).sort((a, b) => b.dropoffPct - a.dropoffPct)[0]?.dropoffPct.toFixed(1)}% dropoff</p>
               </CardContent>
             </Card>
             <div className="space-y-3">
-              {DEMO_FUNNEL_STEP_ANALYTICS.sort((a, b) => b.dropoffPct - a.dropoffPct).map((step, i) => (
+              {(isDemoMode ? DEMO_FUNNEL_STEP_ANALYTICS : [] as typeof DEMO_FUNNEL_STEP_ANALYTICS).sort((a, b) => b.dropoffPct - a.dropoffPct).map((step, i) => (
                 <Card key={i} className="bg-card/50 border-border/50">
                   <CardContent className="p-4 flex items-center justify-between flex-wrap gap-3">
                     <div>
@@ -173,7 +173,7 @@ export default function FunnelBuilder() {
           {/* A/B Tests */}
           <TabsContent value="ab">
             <div className="space-y-3">
-              {DEMO_FUNNEL_STEP_ANALYTICS.filter(s => s.abVariants.length > 0).map((step, i) => (
+              {(isDemoMode ? DEMO_FUNNEL_STEP_ANALYTICS : [] as typeof DEMO_FUNNEL_STEP_ANALYTICS).filter(s => s.abVariants.length > 0).map((step, i) => (
                 <Card key={i} className="bg-card/50 border-border/50">
                   <CardHeader className="pb-3">
                     <CardTitle className="text-sm flex items-center gap-2"><TestTube2 className="w-4 h-4 text-primary" /> {step.step}</CardTitle>
@@ -200,7 +200,7 @@ export default function FunnelBuilder() {
           {/* Triggers */}
           <TabsContent value="triggers">
             <div className="space-y-3">
-              {DEMO_FUNNEL_TRIGGERS.map((t, i) => (
+              {(isDemoMode ? DEMO_FUNNEL_TRIGGERS : [] as typeof DEMO_FUNNEL_TRIGGERS).map((t, i) => (
                 <Card key={i} className="bg-card/50 border-border/50">
                   <CardContent className="p-4 flex items-center justify-between flex-wrap gap-2">
                     <div className="flex items-center gap-3">

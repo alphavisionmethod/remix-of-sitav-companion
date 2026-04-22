@@ -93,7 +93,7 @@ export default function MessengerApp() {
                 </div>
               </div>
               <div className="flex-1 overflow-y-auto p-4 space-y-3">
-                {DEMO_MESSAGES.map(msg => (
+                {(isDemoMode ? DEMO_MESSAGES : [] as typeof DEMO_MESSAGES).map(msg => (
                   <div key={msg.id} className={`flex ${msg.sender === "me" ? "justify-end" : "justify-start"}`}>
                     <div className={`max-w-[75%] rounded-2xl px-4 py-2.5 ${msg.sender === "me" ? "bg-primary text-primary-foreground rounded-br-md" : "bg-muted text-foreground rounded-bl-md"}`}>
                       <p className="text-sm">{msg.text}</p>

@@ -57,8 +57,8 @@ const ReconciliationReview = () => {
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
   const filtered = tab === "all" ? DEMO_ITEMS
-    : tab === "resolved" ? DEMO_ITEMS.filter(i => i.status === "resolved")
-    : DEMO_ITEMS.filter(i => i.issueType === tab && i.status !== "resolved");
+    : tab === "resolved" ? (isDemoMode ? DEMO_ITEMS : [] as typeof DEMO_ITEMS).filter(i => i.status === "resolved")
+    : (isDemoMode ? DEMO_ITEMS : [] as typeof DEMO_ITEMS).filter(i => i.issueType === tab && i.status !== "resolved");
 
   const selected = DEMO_ITEMS.find(i => i.id === selectedId);
   const openCount = DEMO_ITEMS.filter(i => i.status !== "resolved").length;
@@ -79,11 +79,11 @@ const ReconciliationReview = () => {
 
       <SitaTabs
         tabs={[
-          { key: "all", label: "All", count: DEMO_ITEMS.filter(i => i.status !== "resolved").length },
+          { key: "all", label: "All", count: (isDemoMode ? DEMO_ITEMS : [] as typeof DEMO_ITEMS).filter(i => i.status !== "resolved").length },
           { key: "mismatch", label: "Mismatches", count: mismatchCount },
           { key: "uncategorized", label: "Uncategorized", count: uncatCount },
           { key: "recurring-change", label: "Recurring Changes", count: recurringCount },
-          { key: "resolved", label: "Resolved", count: DEMO_ITEMS.filter(i => i.status === "resolved").length },
+          { key: "resolved", label: "Resolved", count: (isDemoMode ? DEMO_ITEMS : [] as typeof DEMO_ITEMS).filter(i => i.status === "resolved").length },
         ]}
         active={tab}
         onChange={setTab}
@@ -188,7 +188,7 @@ const ReconciliationReview = () => {
       <ModuleAdvisorInsight
         advisorName="Reconciliation Advisor"
         domain="finance"
-        insight={`${openCount} items need review. Priority: ${mismatchCount} balance mismatches totaling $${DEMO_ITEMS.filter(i => i.issueType === "mismatch" && i.status !== "resolved").reduce((s, i) => s + i.amount, 0).toLocaleString()}.`}
+        insight={`${openCount} items need review. Priority: ${mismatchCount} balance mismatches totaling $${(isDemoMode ? DEMO_ITEMS : [] as typeof DEMO_ITEMS).filter(i => i.issueType === "mismatch" && i.status !== "resolved").reduce((s, i) => s + i.amount, 0).toLocaleString()}.`}
         confidence={82}
       />
     </motion.div>

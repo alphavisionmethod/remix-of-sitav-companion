@@ -38,7 +38,7 @@ export const UniversalTimeline = ({
   const { isDemoMode } = useDataMode(); isOpen, onClose }: UniversalTimelineProps) => {
   const [filter, setFilter] = useState<string>("all");
 
-  const filtered = filter === "all" ? MOCK_TIMELINE : MOCK_TIMELINE.filter(e => e.domain === filter);
+  const filtered = filter === "all" ? MOCK_TIMELINE : (isDemoMode ? MOCK_TIMELINE : [] as typeof MOCK_TIMELINE).filter(e => e.domain === filter);
 
   return (
     <AnimatePresence>

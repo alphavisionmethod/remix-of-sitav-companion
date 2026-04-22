@@ -51,7 +51,7 @@ export default function MCSupport() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
   const filtered = useMemo(() => {
-    return DEMO_CASES.filter(c => {
+    return (isDemoMode ? DEMO_CASES : [] as typeof DEMO_CASES).filter(c => {
       if (statusFilter !== "all" && c.status !== statusFilter) return false;
       if (search && !c.subject.toLowerCase().includes(search.toLowerCase()) && !c.id.toLowerCase().includes(search.toLowerCase())) return false;
       return true;
@@ -69,10 +69,10 @@ export default function MCSupport() {
 
       <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
         {[
-          { label: "Open Cases", value: DEMO_CASES.filter(c => c.status === "open" || c.status === "investigating").length, icon: MessageSquare, color: "text-blue-400" },
-          { label: "Escalated", value: DEMO_CASES.filter(c => c.status === "escalated").length, icon: ArrowUp, color: "text-red-400" },
-          { label: "Waiting", value: DEMO_CASES.filter(c => c.status === "waiting").length, icon: Clock, color: "text-muted-foreground" },
-          { label: "Resolved Today", value: DEMO_CASES.filter(c => c.status === "resolved").length, icon: CheckCircle, color: "text-emerald-400" },
+          { label: "Open Cases", value: (isDemoMode ? DEMO_CASES : [] as typeof DEMO_CASES).filter(c => c.status === "open" || c.status === "investigating").length, icon: MessageSquare, color: "text-blue-400" },
+          { label: "Escalated", value: (isDemoMode ? DEMO_CASES : [] as typeof DEMO_CASES).filter(c => c.status === "escalated").length, icon: ArrowUp, color: "text-red-400" },
+          { label: "Waiting", value: (isDemoMode ? DEMO_CASES : [] as typeof DEMO_CASES).filter(c => c.status === "waiting").length, icon: Clock, color: "text-muted-foreground" },
+          { label: "Resolved Today", value: (isDemoMode ? DEMO_CASES : [] as typeof DEMO_CASES).filter(c => c.status === "resolved").length, icon: CheckCircle, color: "text-emerald-400" },
           { label: "Avg Resolution", value: "4.2h", icon: Activity, color: "text-cyan-400" },
         ].map(kpi => (
           <div key={kpi.label} className="rounded-xl border border-border/30 bg-white/[0.02] p-3">

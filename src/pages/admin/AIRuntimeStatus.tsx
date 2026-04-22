@@ -162,7 +162,7 @@ export default function AIRuntimeStatus() {
                   </tr>
                 </thead>
                 <tbody>
-                  {DEMO_AI_FEATURES.map((feature) => {
+                  {(isDemoMode ? DEMO_AI_FEATURES : [] as typeof DEMO_AI_FEATURES).map((feature) => {
                     const fnHealthy = health?.checks.edge_functions_healthy?.[feature.fn];
                     const usesAI = feature.fn === "chat-advisor" || feature.fn === "brain-core" || feature.fn === "personal-brain";
                     const featureStatus = usesAI

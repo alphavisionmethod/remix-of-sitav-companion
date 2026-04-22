@@ -55,7 +55,7 @@ export default function MarketExplorer() {
       </div>
 
       <div className="flex gap-1.5 overflow-x-auto pb-1">
-        {DEMO_CLASS_TABS.map(tab => (
+        {(isDemoMode ? DEMO_CLASS_TABS : [] as typeof DEMO_CLASS_TABS).map(tab => (
           <button key={tab.value} onClick={() => setActiveClass(tab.value as typeof activeClass)}
             className={`shrink-0 rounded-lg px-3 py-2 text-xs font-medium transition-colors flex items-center gap-1.5 ${
               activeClass === tab.value ? "bg-primary text-primary-foreground" : "bg-secondary text-muted-foreground hover:text-foreground"

@@ -64,10 +64,10 @@ export default function FleetHealthPage() {
       <motion.div variants={stagger} initial="hidden" animate="show" className="space-y-4">
         <motion.div variants={fadeUp} className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {[
-            { label: "Fleet Healthy", value: `${healthyCount}/${DEMO_FLEET.length}`, color: healthyCount === DEMO_FLEET.length ? "text-emerald-500" : "text-amber-500" },
-            { label: "Active Anomalies", value: String(DEMO_ANOMALIES.length), color: DEMO_ANOMALIES.length === 0 ? "text-emerald-500" : "text-amber-500" },
-            { label: "Predicted Risks", value: String(DEMO_PREDICTIONS.length), color: DEMO_PREDICTIONS.length === 0 ? "text-emerald-500" : "text-orange-500" },
-            { label: "Pending Maintenance", value: String(DEMO_MAINTENANCE.filter(m => m.status === "pending").length), color: "text-blue-500" },
+            { label: "Fleet Healthy", value: `${healthyCount}/${(isDemoMode ? DEMO_FLEET : [] as typeof DEMO_FLEET).length}`, color: healthyCount === (isDemoMode ? DEMO_FLEET : [] as typeof DEMO_FLEET).length ? "text-emerald-500" : "text-amber-500" },
+            { label: "Active Anomalies", value: String((isDemoMode ? DEMO_ANOMALIES : [] as typeof DEMO_ANOMALIES).length), color: (isDemoMode ? DEMO_ANOMALIES : [] as typeof DEMO_ANOMALIES).length === 0 ? "text-emerald-500" : "text-amber-500" },
+            { label: "Predicted Risks", value: String((isDemoMode ? DEMO_PREDICTIONS : [] as typeof DEMO_PREDICTIONS).length), color: (isDemoMode ? DEMO_PREDICTIONS : [] as typeof DEMO_PREDICTIONS).length === 0 ? "text-emerald-500" : "text-orange-500" },
+            { label: "Pending Maintenance", value: String((isDemoMode ? DEMO_MAINTENANCE : [] as typeof DEMO_MAINTENANCE).filter(m => m.status === "pending").length), color: "text-blue-500" },
           ].map(m => (
             <Card key={m.label}><CardContent className="p-4">
               <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-1">{m.label}</p>
@@ -86,7 +86,7 @@ export default function FleetHealthPage() {
 
           <TabsContent value="inventory" className="mt-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-              {DEMO_FLEET.map(node => (
+              {(isDemoMode ? DEMO_FLEET : [] as typeof DEMO_FLEET).map(node => (
                 <Card key={node.id} className="hover:bg-muted/30 transition-colors">
                   <CardContent className="p-4">
                     <div className="flex items-center justify-between mb-2">
@@ -117,7 +117,7 @@ export default function FleetHealthPage() {
           </TabsContent>
 
           <TabsContent value="predictions" className="mt-4 space-y-2">
-            {DEMO_PREDICTIONS.map((p, i) => (
+            {(isDemoMode ? DEMO_PREDICTIONS : [] as typeof DEMO_PREDICTIONS).map((p, i) => (
               <Card key={i} className="border-orange-500/20">
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between mb-2">
@@ -139,7 +139,7 @@ export default function FleetHealthPage() {
           </TabsContent>
 
           <TabsContent value="anomalies" className="mt-4 space-y-2">
-            {DEMO_ANOMALIES.map(a => (
+            {(isDemoMode ? DEMO_ANOMALIES : [] as typeof DEMO_ANOMALIES).map(a => (
               <Card key={a.id} className={a.severity === "critical" ? "border-red-500/30" : ""}>
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between mb-2">
@@ -160,7 +160,7 @@ export default function FleetHealthPage() {
           </TabsContent>
 
           <TabsContent value="maintenance" className="mt-4 space-y-2">
-            {DEMO_MAINTENANCE.map(m => (
+            {(isDemoMode ? DEMO_MAINTENANCE : [] as typeof DEMO_MAINTENANCE).map(m => (
               <Card key={m.id}>
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between mb-2">

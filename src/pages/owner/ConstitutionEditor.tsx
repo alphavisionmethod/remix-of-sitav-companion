@@ -249,7 +249,7 @@ function RuleComposer({ onCompile }: { onCompile: (text: string) => void }) {
             className="overflow-hidden"
           >
             <div className="flex flex-wrap gap-1.5 mt-2">
-              {DEMO_EXAMPLE_RULES.map(ex => (
+              {(isDemoMode ? DEMO_EXAMPLE_RULES : [] as typeof DEMO_EXAMPLE_RULES).map(ex => (
                 <button
                   key={ex}
                   onClick={() => setInput(ex)}

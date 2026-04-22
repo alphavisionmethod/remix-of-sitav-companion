@@ -83,9 +83,9 @@ const ConciergeRuntimeBoard = () => {
           {[
             { label: "Active Tasks", value: String(activeCount), color: "text-blue-500" },
             { label: "Broken Continuity", value: String(brokenCount), color: brokenCount > 0 ? "text-red-500" : "text-emerald-500" },
-            { label: "Promises Tracked", value: String(DEMO_PROMISES.length), color: "text-primary" },
-            { label: "Active Travel", value: String(DEMO_TRAVEL.filter(t => t.status === "active").length), color: "text-blue-500" },
-            { label: "Promise Fulfillment", value: `${Math.round((DEMO_PROMISES.filter(p => p.status === "completed").length / DEMO_PROMISES.length) * 100)}%`, color: "text-amber-500" },
+            { label: "Promises Tracked", value: String((isDemoMode ? DEMO_PROMISES : [] as typeof DEMO_PROMISES).length), color: "text-primary" },
+            { label: "Active Travel", value: String((isDemoMode ? DEMO_TRAVEL : [] as typeof DEMO_TRAVEL).filter(t => t.status === "active").length), color: "text-blue-500" },
+            { label: "Promise Fulfillment", value: `${Math.round(((isDemoMode ? DEMO_PROMISES : [] as typeof DEMO_PROMISES).filter(p => p.status === "completed").length / (isDemoMode ? DEMO_PROMISES : [] as typeof DEMO_PROMISES).length) * 100)}%`, color: "text-amber-500" },
           ].map(m => (
             <Card key={m.label}><CardContent className="p-3.5">
               <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-1">{m.label}</p>
@@ -105,7 +105,7 @@ const ConciergeRuntimeBoard = () => {
           </TabsList>
 
           <TabsContent value="tasks" className="mt-4 space-y-2">
-            {DEMO_TASKS.map(t => {
+            {(isDemoMode ? DEMO_TASKS : [] as typeof DEMO_TASKS).map(t => {
               const DomainIcon = domainIcon[t.domain] || Activity;
               return (
                 <div key={t.id} className="p-3 rounded-lg border hover:bg-muted/30 transition-colors">
@@ -129,7 +129,7 @@ const ConciergeRuntimeBoard = () => {
           </TabsContent>
 
           <TabsContent value="travel" className="mt-4 space-y-2">
-            {DEMO_TRAVEL.map(t => (
+            {(isDemoMode ? DEMO_TRAVEL : [] as typeof DEMO_TRAVEL).map(t => (
               <Card key={t.id}>
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between mb-2">
@@ -149,7 +149,7 @@ const ConciergeRuntimeBoard = () => {
           </TabsContent>
 
           <TabsContent value="household" className="mt-4 space-y-2">
-            {DEMO_HOUSEHOLD.map(h => (
+            {(isDemoMode ? DEMO_HOUSEHOLD : [] as typeof DEMO_HOUSEHOLD).map(h => (
               <Card key={h.id}>
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between mb-2">
@@ -171,7 +171,7 @@ const ConciergeRuntimeBoard = () => {
           </TabsContent>
 
           <TabsContent value="promises" className="mt-4 space-y-2">
-            {DEMO_PROMISES.map(p => (
+            {(isDemoMode ? DEMO_PROMISES : [] as typeof DEMO_PROMISES).map(p => (
               <Card key={p.id} className={p.status === "broken" ? "border-red-500/30" : ""}>
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between mb-2">
@@ -195,7 +195,7 @@ const ConciergeRuntimeBoard = () => {
             <Card>
               <CardHeader className="pb-3"><CardTitle className="text-sm font-semibold">Concierge Receipt Feed</CardTitle></CardHeader>
               <CardContent className="space-y-2">
-                {DEMO_RECEIPTS.map(r => (
+                {(isDemoMode ? DEMO_RECEIPTS : [] as typeof DEMO_RECEIPTS).map(r => (
                   <div key={r.id} className="flex items-start gap-3 p-2.5 rounded border hover:bg-muted/20">
                     {r.outcome === "success" ? <CheckCircle className="h-3.5 w-3.5 mt-0.5 text-emerald-500" /> : <XCircle className="h-3.5 w-3.5 mt-0.5 text-red-500" />}
                     <div className="flex-1">
@@ -215,7 +215,7 @@ const ConciergeRuntimeBoard = () => {
             <Card>
               <CardHeader className="pb-3"><CardTitle className="text-sm font-semibold flex items-center gap-2"><Target className="h-4 w-4 text-primary" /> Concierge SLA Tracking</CardTitle></CardHeader>
               <CardContent className="space-y-3">
-                {DEMO_SLA.map(s => (
+                {(isDemoMode ? DEMO_SLA : [] as typeof DEMO_SLA).map(s => (
                   <div key={s.metric} className="p-3 rounded-lg border">
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-sm font-medium text-foreground">{s.metric}</span>

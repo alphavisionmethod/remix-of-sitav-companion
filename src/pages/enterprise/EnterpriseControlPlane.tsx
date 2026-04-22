@@ -34,7 +34,7 @@ import { useEffect } from "react";
 
 // ── Demo Fallback Data ──────────────────────────────────────────
 const ROLE_PERMISSIONS: Record<string, Record<string, boolean>> = {
-  admin: Object.fromEntries(DEMO_CAPABILITIES.map(c => [c, true])),
+  admin: Object.fromEntries((isDemoMode ? DEMO_CAPABILITIES : [] as typeof DEMO_CAPABILITIES).map(c => [c, true])),
   moderator: { "biz-crm-read": true, "biz-crm-write": true, "fin-accounts-read": true, "fin-payment-execute": false, "con-calendar-read": true, "con-booking-create": true, "plat-diagnostic": true, "plat-config-write": false },
   user: { "biz-crm-read": true, "biz-crm-write": false, "fin-accounts-read": true, "fin-payment-execute": false, "con-calendar-read": true, "con-booking-create": false, "plat-diagnostic": false, "plat-config-write": false },
 };
@@ -192,16 +192,16 @@ const EnterpriseControlPlane = () => {
               <thead>
                 <tr className="border-b border-border/30">
                   <th className="text-left py-2 px-3 font-semibold text-muted-foreground">Capability</th>
-                  {DEMO_ROLES.map(role => (
+                  {(isDemoMode ? DEMO_ROLES : [] as typeof DEMO_ROLES).map(role => (
                     <th key={role} className="text-center py-2 px-3 font-semibold text-muted-foreground capitalize">{role}</th>
                   ))}
                 </tr>
               </thead>
               <tbody>
-                {DEMO_CAPABILITIES.map(cap => (
+                {(isDemoMode ? DEMO_CAPABILITIES : [] as typeof DEMO_CAPABILITIES).map(cap => (
                   <tr key={cap} className="border-b border-border/10 hover:bg-secondary/20 transition-colors">
                     <td className="py-2 px-3 font-mono text-foreground">{cap}</td>
-                    {DEMO_ROLES.map(role => (
+                    {(isDemoMode ? DEMO_ROLES : [] as typeof DEMO_ROLES).map(role => (
                       <td key={role} className="text-center py-2 px-3">
                         <Switch
                           checked={permissions[role]?.[cap] ?? false}

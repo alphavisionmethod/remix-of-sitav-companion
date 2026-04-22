@@ -33,7 +33,7 @@ export default function DecisionTheater() {
       {/* Summary */}
       <div className="grid grid-cols-4 gap-3">
         {[
-          { l: "Pending Decisions", v: DEMO_pendingDecisions.length, c: "text-purple-400" },
+          { l: "Pending Decisions", v: (isDemoMode ? DEMO_pendingDecisions : [] as typeof DEMO_pendingDecisions).length, c: "text-purple-400" },
           { l: "Scenarios to Review", v: DEMO_SCENARIO_CARDS.length, c: "text-primary" },
           { l: "Avg Confidence", v: `${Math.round(DEMO_SCENARIO_CARDS.reduce((a, s) => a + s.confidence, 0) / DEMO_SCENARIO_CARDS.length)}%`, c: "text-[hsl(var(--trust-safe))]" },
           { l: "Advisor Votes", v: DEMO_SCENARIO_CARDS.reduce((a, s) => a + s.advisorVotes.approve + s.advisorVotes.cautious + s.advisorVotes.oppose, 0), c: "text-foreground" },
@@ -54,7 +54,7 @@ export default function DecisionTheater() {
 
         {/* Decisions */}
         <TabsContent value="decisions" className="space-y-4 mt-4">
-          {DEMO_pendingDecisions.map((d, i) => {
+          {(isDemoMode ? DEMO_pendingDecisions : [] as typeof DEMO_pendingDecisions).map((d, i) => {
             const state = decisionStates[i] || "draft";
             return (
               <Card key={i} className="bg-card/50 border-border/50">
@@ -190,7 +190,7 @@ export default function DecisionTheater() {
                 <table className="w-full text-xs">
                   <thead><tr className="border-b border-border/40 bg-muted/30"><th className="text-left p-3">Decision</th><th className="text-center p-3">Type</th><th className="text-center p-3">Advisors</th><th className="text-center p-3">Status</th><th className="text-center p-3">Proof</th></tr></thead>
                   <tbody>
-                    {DEMO_pendingDecisions.map((d, i) => {
+                    {(isDemoMode ? DEMO_pendingDecisions : [] as typeof DEMO_pendingDecisions).map((d, i) => {
                       const state = decisionStates[i] || "draft";
                       return (
                         <tr key={i} className="border-b border-border/20">

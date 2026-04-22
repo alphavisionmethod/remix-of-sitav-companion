@@ -62,8 +62,8 @@ const RevenueAutopilotMonitor = () => {
         {[
           { label: "Recovered Value", value: `$${totalRecovered.toLocaleString()}`, icon: DollarSign, color: "text-emerald-500" },
           { label: "Cost Saved", value: `$${totalSaved.toLocaleString()}`, icon: TrendingUp, color: "text-blue-500" },
-          { label: "Autopilot Actions", value: String(DEMO_AUTOPILOT_ACTIONS.length), icon: Zap, color: "text-primary" },
-          { label: "Win-Back Queue", value: String(DEMO_WINBACKS.length), icon: Target, color: "text-amber-500" },
+          { label: "Autopilot Actions", value: String((isDemoMode ? DEMO_AUTOPILOT_ACTIONS : [] as typeof DEMO_AUTOPILOT_ACTIONS).length), icon: Zap, color: "text-primary" },
+          { label: "Win-Back Queue", value: String((isDemoMode ? DEMO_WINBACKS : [] as typeof DEMO_WINBACKS).length), icon: Target, color: "text-amber-500" },
           { label: "Uptime", value: `${DEMO_HEALTH.automationUptime}%`, icon: Activity, color: "text-emerald-500" },
         ].map(m => (
           <motion.div key={m.label} variants={fadeUp}>
@@ -91,7 +91,7 @@ const RevenueAutopilotMonitor = () => {
           <Card>
             <CardHeader className="pb-3"><CardTitle className="text-sm font-semibold">Autopilot Actions</CardTitle></CardHeader>
             <CardContent className="space-y-2">
-              {DEMO_AUTOPILOT_ACTIONS.map(a => (
+              {(isDemoMode ? DEMO_AUTOPILOT_ACTIONS : [] as typeof DEMO_AUTOPILOT_ACTIONS).map(a => (
                 <div key={a.id} className="p-3 rounded-lg border hover:bg-muted/30 transition-colors">
                   <div className="flex items-center justify-between mb-1.5">
                     <span className="text-sm font-medium text-foreground">{a.action}</span>
@@ -109,7 +109,7 @@ const RevenueAutopilotMonitor = () => {
         </TabsContent>
 
         <TabsContent value="recovered" className="mt-4 space-y-3">
-          {DEMO_RECOVERED.map(r => (
+          {(isDemoMode ? DEMO_RECOVERED : [] as typeof DEMO_RECOVERED).map(r => (
             <Card key={r.id} className="hover:bg-muted/20 transition-colors">
               <CardContent className="p-4">
                 <div className="flex items-center justify-between mb-2">
@@ -131,7 +131,7 @@ const RevenueAutopilotMonitor = () => {
         </TabsContent>
 
         <TabsContent value="saved" className="mt-4 space-y-3">
-          {DEMO_SAVED_COSTS.map(c => (
+          {(isDemoMode ? DEMO_SAVED_COSTS : [] as typeof DEMO_SAVED_COSTS).map(c => (
             <Card key={c.id} className="hover:bg-muted/20 transition-colors">
               <CardContent className="p-4">
                 <div className="flex items-center justify-between mb-2">
@@ -155,7 +155,7 @@ const RevenueAutopilotMonitor = () => {
           <Card>
             <CardHeader className="pb-3"><CardTitle className="text-sm font-semibold">Win-Back Opportunities</CardTitle></CardHeader>
             <CardContent className="space-y-2">
-              {DEMO_WINBACKS.map(w => (
+              {(isDemoMode ? DEMO_WINBACKS : [] as typeof DEMO_WINBACKS).map(w => (
                 <div key={w.name} className="p-3 rounded-lg border hover:bg-muted/30 transition-colors flex items-center justify-between">
                   <div>
                     <p className="text-sm font-medium text-foreground">{w.name}</p>
@@ -201,7 +201,7 @@ const RevenueAutopilotMonitor = () => {
           <Card>
             <CardHeader className="pb-3"><CardTitle className="text-sm font-semibold flex items-center gap-2"><Shield className="h-4 w-4 text-primary" /> Revenue Action Proof</CardTitle></CardHeader>
             <CardContent className="space-y-2">
-              {DEMO_RECOVERED.map(r => (
+              {(isDemoMode ? DEMO_RECOVERED : [] as typeof DEMO_RECOVERED).map(r => (
                 <div key={r.id} className="p-3 rounded-lg border hover:bg-muted/20 transition-colors">
                   <div className="flex items-center justify-between mb-1">
                     <span className="text-xs font-medium text-foreground">{r.type} — {r.customer}</span>

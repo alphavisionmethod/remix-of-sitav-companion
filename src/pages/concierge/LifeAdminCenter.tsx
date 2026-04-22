@@ -97,7 +97,7 @@ const LifeAdminCenter = () => {
           { label: "Total", value: allItems.length, color: "text-[hsl(285_55%_65%)]" },
           { label: "Overdue", value: totalAging, color: "text-[hsl(0_70%_55%)]" },
           { label: "This Week", value: 3, color: "text-[hsl(38_85%_58%)]" },
-          { label: "Recurring", value: DEMO_RECURRING.length, color: "text-[hsl(265_55%_68%)]" },
+          { label: "Recurring", value: (isDemoMode ? DEMO_RECURRING : [] as typeof DEMO_RECURRING).length, color: "text-[hsl(265_55%_68%)]" },
         ].map(s => (
           <div key={s.label} className="rounded-lg bg-[hsl(0_0%_100%/0.03)] p-2 text-center">
             <p className={cn("text-lg font-bold", s.color)}>{s.value}</p>

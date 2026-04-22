@@ -101,7 +101,7 @@ export default function SERV04ServiceDuplication() {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <Card>
           <CardContent className="pt-4" data-testid="serv04-shadow-count">
-            <div className="text-2xl font-bold text-amber-400">{DEMO_SHADOW_PATTERNS.length}</div>
+            <div className="text-2xl font-bold text-amber-400">{(isDemoMode ? DEMO_SHADOW_PATTERNS : [] as typeof DEMO_SHADOW_PATTERNS).length}</div>
             <div className="text-xs text-muted-foreground">Known Shadow Patterns</div>
           </CardContent>
         </Card>
@@ -157,7 +157,7 @@ export default function SERV04ServiceDuplication() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {DEMO_SHADOW_PATTERNS.map((p) => (
+              {(isDemoMode ? DEMO_SHADOW_PATTERNS : [] as typeof DEMO_SHADOW_PATTERNS).map((p) => (
                 <TableRow key={p.pattern}>
                   <TableCell className="font-medium text-sm">{p.pattern}</TableCell>
                   <TableCell><Badge variant="outline">{p.domain}</Badge></TableCell>

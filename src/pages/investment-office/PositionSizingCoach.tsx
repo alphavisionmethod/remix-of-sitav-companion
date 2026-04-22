@@ -23,7 +23,7 @@ export default function PositionSizingCoach() {
 
       {/* Scenario Selector */}
       <div className="flex gap-2">
-        {DEMO_SIZING_SCENARIOS.map((s, i) => (
+        {(isDemoMode ? DEMO_SIZING_SCENARIOS : [] as typeof DEMO_SIZING_SCENARIOS).map((s, i) => (
           <button key={s.asset} onClick={() => setSelectedIdx(i)}
             className={`rounded-xl border px-4 py-3 flex items-center gap-2 transition-all ${selectedIdx === i ? "border-primary bg-primary/5" : "border-border bg-card hover:border-primary/20"}`}>
             <span className="text-lg">{s.icon}</span>

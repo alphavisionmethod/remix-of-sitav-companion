@@ -24,11 +24,11 @@ const FamilyCalendar = () => {
       <PageTruthBanner />
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
-        <KPITile label="Events This Week" value={String(DEMO_events.length)} icon={Calendar} />
+        <KPITile label="Events This Week" value={String((isDemoMode ? DEMO_events : [] as typeof DEMO_events).length)} icon={Calendar} />
         <KPITile label="Family Members" value="4" icon={Users} />
-        <KPITile label="Conflicts" value={String(DEMO_conflicts.length)} icon={AlertCircle} sub="Needs resolution" />
-        <KPITile label="Prep Items" value={String(DEMO_prepItems.length)} icon={Clock} sub="Before DEMO_events" />
-        <KPITile label="Transport Duties" value={String(DEMO_transportDuties.length)} icon={Car} sub="This week" />
+        <KPITile label="Conflicts" value={String((isDemoMode ? DEMO_conflicts : [] as typeof DEMO_conflicts).length)} icon={AlertCircle} sub="Needs resolution" />
+        <KPITile label="Prep Items" value={String((isDemoMode ? DEMO_prepItems : [] as typeof DEMO_prepItems).length)} icon={Clock} sub="Before DEMO_events" />
+        <KPITile label="Transport Duties" value={String((isDemoMode ? DEMO_transportDuties : [] as typeof DEMO_transportDuties).length)} icon={Car} sub="This week" />
       </div>
 
       <SitaTabs
@@ -68,10 +68,10 @@ const FamilyCalendar = () => {
           </div>
 
           {/* Conflicts */}
-          {(view === "week" || view === "conflicts") && DEMO_conflicts.length > 0 && (
+          {(view === "week" || view === "conflicts") && (isDemoMode ? DEMO_conflicts : [] as typeof DEMO_conflicts).length > 0 && (
             <div className="space-y-3">
               <h3 className="text-[10px] font-semibold uppercase tracking-[0.08em] text-[hsl(0_0%_50%)]">Schedule Conflicts</h3>
-              {DEMO_conflicts.map((c, i) => (
+              {(isDemoMode ? DEMO_conflicts : [] as typeof DEMO_conflicts).map((c, i) => (
                 <ConflictCard key={i} events={c.DEMO_events} resolution={c.resolution} />
               ))}
             </div>
@@ -81,7 +81,7 @@ const FamilyCalendar = () => {
           {(view === "week" || view === "day" || view === "family") && (
             <div className="space-y-3">
               <h3 className="text-[10px] font-semibold uppercase tracking-[0.08em] text-[hsl(0_0%_50%)]">Upcoming Events</h3>
-              {DEMO_events.map((e) => (
+              {(isDemoMode ? DEMO_events : [] as typeof DEMO_events).map((e) => (
                 <CalendarEventCard
                   key={e.id} title={e.title} time={e.time} who={e.who} location={e.location}
                   category={e.category} conflict={e.conflict} owner={e.owner} transportTime={e.transportTime}
@@ -94,7 +94,7 @@ const FamilyCalendar = () => {
           {view === "prep" && (
             <div className="space-y-3">
               <h3 className="text-[10px] font-semibold uppercase tracking-[0.08em] text-[hsl(0_0%_50%)]">Preparation Checklists</h3>
-              {DEMO_prepItems.map((p, i) => (
+              {(isDemoMode ? DEMO_prepItems : [] as typeof DEMO_prepItems).map((p, i) => (
                 <PrepCard key={i} title={p.title} linkedEvent={p.linkedEvent} items={p.items} owner={p.owner} dueIn={p.dueIn} />
               ))}
             </div>
@@ -103,7 +103,7 @@ const FamilyCalendar = () => {
           {view === "transport" && (
             <div className="space-y-3">
               <h3 className="text-[10px] font-semibold uppercase tracking-[0.08em] text-[hsl(0_0%_50%)]">Transport & Carpool Duties</h3>
-              {DEMO_transportDuties.map((t, i) => (
+              {(isDemoMode ? DEMO_transportDuties : [] as typeof DEMO_transportDuties).map((t, i) => (
                 <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift" key={i} >
                   <div className="flex items-start gap-3">
                     <div className="rounded-xl bg-primary/8 p-2 shrink-0"><Car className="h-4 w-4 text-primary" /></div>
@@ -125,7 +125,7 @@ const FamilyCalendar = () => {
           {/* Family Grid */}
           <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift">
             <h4 className="text-[13px] font-semibold text-[hsl(0_0%_85%)] mb-3">Family Members</h4>
-            {DEMO_familyMembers.map((m) => (
+            {(isDemoMode ? DEMO_familyMembers : [] as typeof DEMO_familyMembers).map((m) => (
               <div key={m.name} className="flex items-center gap-3 py-2.5 border-b border-border/30 last:border-0">
                 <MemberAvatar name={m.name} size="sm" />
                 <span className="text-sm text-foreground flex-1">{m.name}</span>

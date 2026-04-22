@@ -15,7 +15,7 @@ const severityColor = (s: string) => s === "critical" ? "border-destructive/30 b
 const GrowthDNA = () => {
   const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("traits");
-  const avg = Math.round(DEMO_GROWTH_TRAITS.reduce((a, t) => a + t.score, 0) / DEMO_GROWTH_TRAITS.length);
+  const avg = Math.round((isDemoMode ? DEMO_GROWTH_TRAITS : [] as typeof DEMO_GROWTH_TRAITS).reduce((a, t) => a + t.score, 0) / (isDemoMode ? DEMO_GROWTH_TRAITS : [] as typeof DEMO_GROWTH_TRAITS).length);
   const criticalAlerts = DEMO_GROWTH_FIREWALL_ALERTS.filter(a => a.severity === "critical").length;
 
   return (
@@ -26,10 +26,10 @@ const GrowthDNA = () => {
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
         {[
           { l: "Growth Health", v: `${avg}/100`, c: avg >= 70 ? "text-[hsl(var(--trust-safe))]" : "text-orange-400" },
-          { l: "Strong Traits", v: DEMO_GROWTH_TRAITS.filter(t => t.status === "strong").length, c: "text-[hsl(var(--trust-safe))]" },
-          { l: "Warning Traits", v: DEMO_GROWTH_TRAITS.filter(t => t.status === "warning").length, c: "text-orange-400" },
-          { l: "Firewall Alerts", v: DEMO_GROWTH_FIREWALL_ALERTS.length, c: criticalAlerts > 0 ? "text-destructive" : "text-orange-400" },
-          { l: "Active Plays", v: DEMO_PLAYS.filter(p => p.impact === "high").length, c: "text-primary" },
+          { l: "Strong Traits", v: (isDemoMode ? DEMO_GROWTH_TRAITS : [] as typeof DEMO_GROWTH_TRAITS).filter(t => t.status === "strong").length, c: "text-[hsl(var(--trust-safe))]" },
+          { l: "Warning Traits", v: (isDemoMode ? DEMO_GROWTH_TRAITS : [] as typeof DEMO_GROWTH_TRAITS).filter(t => t.status === "warning").length, c: "text-orange-400" },
+          { l: "Firewall Alerts", v: (isDemoMode ? DEMO_GROWTH_FIREWALL_ALERTS : [] as typeof DEMO_GROWTH_FIREWALL_ALERTS).length, c: criticalAlerts > 0 ? "text-destructive" : "text-orange-400" },
+          { l: "Active Plays", v: (isDemoMode ? DEMO_PLAYS : [] as typeof DEMO_PLAYS).filter(p => p.impact === "high").length, c: "text-primary" },
         ].map(m => (
           <div key={m.l} className="rounded-xl border border-border/40 bg-card p-3 text-center">
             <p className="text-xs text-muted-foreground">{m.l}</p>
@@ -39,13 +39,13 @@ const GrowthDNA = () => {
       </div>
 
       {/* Growth Firewall Alerts */}
-      {DEMO_GROWTH_FIREWALL_ALERTS.length > 0 && (
+      {(isDemoMode ? DEMO_GROWTH_FIREWALL_ALERTS : [] as typeof DEMO_GROWTH_FIREWALL_ALERTS).length > 0 && (
         <Card className="border-orange-400/30 bg-orange-500/5">
           <CardHeader className="pb-2">
             <CardTitle className="text-sm flex items-center gap-2"><Shield className="h-4 w-4 text-orange-400" /> Growth Firewall Alerts</CardTitle>
           </CardHeader>
           <CardContent className="space-y-2">
-            {DEMO_GROWTH_FIREWALL_ALERTS.map(alert => (
+            {(isDemoMode ? DEMO_GROWTH_FIREWALL_ALERTS : [] as typeof DEMO_GROWTH_FIREWALL_ALERTS).map(alert => (
               <div key={alert.ruleId} className={`p-3 rounded-lg border ${severityColor(alert.severity)}`}>
                 <div className="flex items-center justify-between mb-1">
                   <div className="flex items-center gap-2">
@@ -70,7 +70,7 @@ const GrowthDNA = () => {
         </TabsList>
 
         <TabsContent value="traits" className="space-y-2 mt-4">
-          {DEMO_GROWTH_TRAITS.map(t => (
+          {(isDemoMode ? DEMO_GROWTH_TRAITS : [] as typeof DEMO_GROWTH_TRAITS).map(t => (
             <div key={t.trait} className="rounded-xl border border-border/40 bg-card p-4">
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-2">
@@ -87,11 +87,11 @@ const GrowthDNA = () => {
         </TabsContent>
 
         <TabsContent value="archetype" className="space-y-3 mt-4">
-          {DEMO_ARCHETYPES.map(a => {
+          {(isDemoMode ? DEMO_ARCHETYPES : [] as typeof DEMO_ARCHETYPES).map(a => {
             const isTop = a.match > 70;
             // Check if any firewall alert relates to this archetype
             const conflictsWithFirewall = a.risks.some(r =>
-              DEMO_GROWTH_FIREWALL_ALERTS.some(alert => alert.description.toLowerCase().includes(r.toLowerCase().split(" ")[0]))
+              (isDemoMode ? DEMO_GROWTH_FIREWALL_ALERTS : [] as typeof DEMO_GROWTH_FIREWALL_ALERTS).some(alert => alert.description.toLowerCase().includes(r.toLowerCase().split(" ")[0]))
             );
             return (
               <div key={a.name} className={`rounded-xl border p-4 ${isTop ? "border-primary/50 bg-primary/5" : "border-border/40 bg-card"}`}>
@@ -118,7 +118,7 @@ const GrowthDNA = () => {
         </TabsContent>
 
         <TabsContent value="plays" className="space-y-3 mt-4">
-          {DEMO_PLAYS.map(p => (
+          {(isDemoMode ? DEMO_PLAYS : [] as typeof DEMO_PLAYS).map(p => (
             <div key={p.play} className="rounded-xl border border-border/40 bg-card p-4">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-sm font-semibold">{p.play}</span>

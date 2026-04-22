@@ -61,11 +61,11 @@ const InvestorProofLedger = () => {
 
       <motion.div variants={stagger} initial="hidden" animate="show" className="grid grid-cols-2 md:grid-cols-5 gap-3">
         {[
-          { label: "Full Proof", value: `${fullProof}/${DEMO_PROOF_ENTRIES.length}`, color: "text-emerald-500" },
-          { label: "Rollback Evidence", value: String(DEMO_PROOF_ENTRIES.filter(p => p.rollbackEvidence).length), color: "text-foreground" },
-          { label: "Exportable", value: String(DEMO_PROOF_ENTRIES.filter(p => p.exportable).length), color: "text-foreground" },
-          { label: "Evidence Bundles", value: String(DEMO_BUNDLES.length), color: "text-blue-500" },
-          { label: "Compliance Trails", value: String(DEMO_COMPLIANCE.filter(c => c.status === "compliant").length), color: "text-emerald-500" },
+          { label: "Full Proof", value: `${fullProof}/${(isDemoMode ? DEMO_PROOF_ENTRIES : [] as typeof DEMO_PROOF_ENTRIES).length}`, color: "text-emerald-500" },
+          { label: "Rollback Evidence", value: String((isDemoMode ? DEMO_PROOF_ENTRIES : [] as typeof DEMO_PROOF_ENTRIES).filter(p => p.rollbackEvidence).length), color: "text-foreground" },
+          { label: "Exportable", value: String((isDemoMode ? DEMO_PROOF_ENTRIES : [] as typeof DEMO_PROOF_ENTRIES).filter(p => p.exportable).length), color: "text-foreground" },
+          { label: "Evidence Bundles", value: String((isDemoMode ? DEMO_BUNDLES : [] as typeof DEMO_BUNDLES).length), color: "text-blue-500" },
+          { label: "Compliance Trails", value: String((isDemoMode ? DEMO_COMPLIANCE : [] as typeof DEMO_COMPLIANCE).filter(c => c.status === "compliant").length), color: "text-emerald-500" },
         ].map(m => (
           <motion.div key={m.label} variants={fadeUp}>
             <Card className="hover:-translate-y-0.5 transition-transform">
@@ -91,7 +91,7 @@ const InvestorProofLedger = () => {
           <Card>
             <CardHeader className="pb-3"><CardTitle className="text-sm font-semibold">Proof Ledger</CardTitle></CardHeader>
             <CardContent className="space-y-3">
-              {DEMO_PROOF_ENTRIES.map(p => (
+              {(isDemoMode ? DEMO_PROOF_ENTRIES : [] as typeof DEMO_PROOF_ENTRIES).map(p => (
                 <div key={p.id} className="p-4 rounded-lg border hover:bg-muted/30 transition-colors">
                   <div className="flex items-center justify-between mb-2">
                     <div>
@@ -123,7 +123,7 @@ const InvestorProofLedger = () => {
         </TabsContent>
 
         <TabsContent value="bundles" className="mt-4 space-y-3">
-          {DEMO_BUNDLES.map(b => (
+          {(isDemoMode ? DEMO_BUNDLES : [] as typeof DEMO_BUNDLES).map(b => (
             <Card key={b.id} className="hover:bg-muted/20 transition-colors">
               <CardContent className="p-4 flex items-center justify-between">
                 <div>
@@ -146,7 +146,7 @@ const InvestorProofLedger = () => {
         </TabsContent>
 
         <TabsContent value="migrations" className="mt-4 space-y-3">
-          {DEMO_MIGRATIONS.map(m => (
+          {(isDemoMode ? DEMO_MIGRATIONS : [] as typeof DEMO_MIGRATIONS).map(m => (
             <Card key={m.id} className="hover:bg-muted/20 transition-colors">
               <CardContent className="p-4">
                 <div className="flex items-center justify-between mb-2">
@@ -167,7 +167,7 @@ const InvestorProofLedger = () => {
         </TabsContent>
 
         <TabsContent value="rollback" className="mt-4 space-y-3">
-          {DEMO_ROLLBACK_EVIDENCE.map(r => (
+          {(isDemoMode ? DEMO_ROLLBACK_EVIDENCE : [] as typeof DEMO_ROLLBACK_EVIDENCE).map(r => (
             <Card key={r.id} className={`hover:bg-muted/20 transition-colors ${!r.verified ? "border-amber-500/20" : ""}`}>
               <CardContent className="p-4">
                 <div className="flex items-center justify-between mb-2">
@@ -187,7 +187,7 @@ const InvestorProofLedger = () => {
         </TabsContent>
 
         <TabsContent value="compliance" className="mt-4 space-y-3">
-          {DEMO_COMPLIANCE.map(c => (
+          {(isDemoMode ? DEMO_COMPLIANCE : [] as typeof DEMO_COMPLIANCE).map(c => (
             <Card key={c.id} className="hover:bg-muted/20 transition-colors">
               <CardContent className="p-4">
                 <div className="flex items-center justify-between mb-2">

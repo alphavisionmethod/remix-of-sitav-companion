@@ -18,7 +18,7 @@ export default function CrossAssetStoryEngine() {
         <p className="text-sm text-muted-foreground mt-0.5">Map narratives across markets — see what connects stocks, crypto, commodities, and events</p>
       </div>
 
-      {DEMO_NARRATIVES.map((n, ni) => (
+      {(isDemoMode ? DEMO_NARRATIVES : [] as typeof DEMO_NARRATIVES).map((n, ni) => (
         <motion.div key={n.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: ni * 0.06 }}
           className="rounded-2xl border border-border bg-card p-6 space-y-4">
           <div className="flex items-center gap-3">

@@ -60,7 +60,7 @@ const CapitalMapView = () => (
       <KPITile label="Ringfenced" value={`$${Math.round(capitalMap.restrictedCapital).toLocaleString()}`} sub="Protected capital" />
     </div>
     <div className="space-y-2">
-      {MOCK_CAPITAL_BUCKETS.map((b, i) => (
+      {(isDemoMode ? MOCK_CAPITAL_BUCKETS : [] as typeof MOCK_CAPITAL_BUCKETS).map((b, i) => (
         <motion.div key={b.id} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.02 }}>
           <SitaCard className="p-4" hover>
             <div className="flex items-center gap-4">
@@ -113,7 +113,7 @@ const PortfolioView = () => (
       <KPITile label="Cash" value={`${(riskMetrics.cashPct * 100).toFixed(0)}%`} sub="Portfolio cash allocation" />
     </div>
     <div className="space-y-2">
-      {DEMO_INV_POSITIONS.map((p, i) => {
+      {(isDemoMode ? DEMO_INV_POSITIONS : [] as typeof DEMO_INV_POSITIONS).map((p, i) => {
         const value = p.quantity * p.currentPrice;
         const pnl = (p.currentPrice - p.avgCostBasis) * p.quantity;
         const pnlPct = ((p.currentPrice - p.avgCostBasis) / p.avgCostBasis) * 100;
@@ -202,7 +202,7 @@ const RiskView = () => (
 
 const ThesisVault = () => (
   <div className="space-y-4">
-    {DEMO_INV_THESES.map((thesis, i) => {
+    {(isDemoMode ? DEMO_INV_THESES : [] as typeof DEMO_INV_THESES).map((thesis, i) => {
       const eval_ = evaluateThesis(thesis, DEMO_REGIME);
       return (
         <motion.div key={thesis.id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}>
@@ -243,7 +243,7 @@ const CommitteeView = () => (
         <p>Regime: <span className="font-semibold text-foreground capitalize">{DEMO_REGIME.riskAppetite.replace(/-/g, " ")}</span> · Volatility: <span className="font-semibold text-foreground capitalize">{DEMO_REGIME.volatility}</span></p>
         <p>Portfolio concentration risk: <span className="font-semibold text-foreground capitalize">{riskMetrics.concentrationRisk}</span></p>
         <p>Reserve coverage: <span className="font-semibold text-foreground">{riskMetrics.reserveCoverage.toFixed(1)} months</span></p>
-        <p>Active theses: <span className="font-semibold text-foreground">{DEMO_INV_THESES.filter(t => t.status === "active").length}</span> — {DEMO_INV_THESES.filter(t => evaluateThesis(t, DEMO_REGIME).stillValid).length} valid, {DEMO_INV_THESES.filter(t => !evaluateThesis(t, DEMO_REGIME).stillValid).length} need review</p>
+        <p>Active theses: <span className="font-semibold text-foreground">{(isDemoMode ? DEMO_INV_THESES : [] as typeof DEMO_INV_THESES).filter(t => t.status === "active").length}</span> — {(isDemoMode ? DEMO_INV_THESES : [] as typeof DEMO_INV_THESES).filter(t => evaluateThesis(t, DEMO_REGIME).stillValid).length} valid, {(isDemoMode ? DEMO_INV_THESES : [] as typeof DEMO_INV_THESES).filter(t => !evaluateThesis(t, DEMO_REGIME).stillValid).length} need review</p>
         <div className="mt-4 p-3 rounded-xl bg-secondary/50 border border-border">
           <p className="text-[11px] font-semibold text-foreground mb-1">System Posture</p>
           <p className="text-[11px]">Observe-only mode active. All recommendations require approval. No autonomous execution. Simulation-first for new positions.</p>
