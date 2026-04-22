@@ -41,7 +41,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
-import { EmptyState } from "@/components/primitives/feedback/EmptyState";
+import { EmptyState } from "@/components/sita/EmptyState";
 
 interface IntentRow {
   id: string;

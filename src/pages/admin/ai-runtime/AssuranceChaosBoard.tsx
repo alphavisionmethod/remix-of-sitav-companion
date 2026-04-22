@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { AdminControlPlaneShell } from "@/components/admin/shells/AdminControlPlaneShell";
 import { ShieldCheck, Zap, RotateCcw, RefreshCw } from "lucide-react";
 import { toast } from "sonner";
-import { EmptyState } from "@/components/primitives/feedback/EmptyState";
+import { EmptyState } from "@/components/sita/EmptyState";
 
 interface Drill { id: string; drill_key: string; scenario: string; status: string; blast_radius: number; last_run_at: string | null; }
 interface Report { id: string; period_start: string; period_end: string; assurance_score: number; breach_count: number; drill_count: number; summary: string | null; }

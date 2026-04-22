@@ -6,7 +6,7 @@ import { Progress } from "@/components/ui/progress";
 import { RefreshCw, CheckCircle2, XCircle, AlertTriangle, Loader2, Activity, Zap, Shield, DollarSign, Clock, Server, Inbox } from "lucide-react";
 import { DEMO_AI_FEATURES } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { EmptyState } from "@/components/primitives/feedback/EmptyState";
+import { EmptyState } from "@/components/sita/EmptyState";
 const statusColors = {
   healthy: "bg-green-500/20 text-green-400 border-green-500/30",
   degraded: "bg-yellow-500/20 text-yellow-400 border-yellow-500/30",

@@ -24,7 +24,7 @@ import {
   Shield, RefreshCw, ShieldAlert, ShieldCheck, ShieldX,
   Activity, Eye, BellOff, AlertTriangle, Clock, ExternalLink,
 } from "lucide-react";
-import { EmptyState } from "@/components/primitives/feedback/EmptyState";
+import { EmptyState } from "@/components/sita/EmptyState";
 import { Skeleton } from "@/components/primitives/feedback/Skeleton";
 import { StatusBadge } from "@/components/primitives/status/StatusBadge";
 import { AITruthDisclosure } from "@/components/primitives/status/AITruthDisclosure";

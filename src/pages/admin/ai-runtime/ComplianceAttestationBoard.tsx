@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { AdminControlPlaneShell } from "@/components/admin/shells/AdminControlPlaneShell";
 import { Scale, FileBadge, RefreshCw, Gavel } from "lucide-react";
 import { toast } from "sonner";
-import { EmptyState } from "@/components/primitives/feedback/EmptyState";
+import { EmptyState } from "@/components/sita/EmptyState";
 
 interface Control { id: string; framework: string; control_id: string; title: string; status: string; collection_cadence: string; }
 interface Evidence { id: string; control_id: string; collected_at: string; pass: boolean; failure_reason: string | null; }

@@ -28,7 +28,7 @@ import {
   escalateToMeta,
 } from "@/lib/internal-agents/runtime/supervisor-actions";
 import { ShieldAlert, ShieldCheck, Activity, Users, ArrowUp } from "lucide-react";
-import { EmptyState } from "@/components/primitives/feedback/EmptyState";
+import { EmptyState } from "@/components/sita/EmptyState";
 import { Skeleton } from "@/components/primitives/feedback/Skeleton";
 
 const COUNCIL_LABEL: Record<string, string> = {
