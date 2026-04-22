@@ -345,9 +345,7 @@ function GeneralContentFull() {
             ]} />
           </SettingRow>
           <Divider />
-          <SettingRow label="Timezone" description={timezone} icon={<Globe className="h-3.5 w-3.5" />}>
-            <NovaText variant="label" muted className="!text-[10px]">{timezone}</NovaText>
-          </SettingRow>
+          <TimezonePicker />
           <Divider />
           <SettingRow label="Default Calendar View" description="Planning view to open by default">
             <GeneralSelect value={calendarView} onChange={(v) => setCalendarView(v as any)} options={[
