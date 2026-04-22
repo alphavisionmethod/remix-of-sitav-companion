@@ -297,6 +297,11 @@ const PlaybookSimulator = ({ draft, onBack, onActivate }: PlaybookSimulatorProps
   // Run simulation
   useEffect(() => {
     if (selectedCustomers.length > 0) {
+  const { isDemoMode } = useDataMode();
+  const { isDemoMode } = useDataMode();
+  const { isDemoMode } = useDataMode();
+  const { isDemoMode } = useDataMode();
+  const { isDemoMode } = useDataMode();
       setResult(simulatePlaybook(draft, selectedCustomers));
     } else {
       setResult(null);
