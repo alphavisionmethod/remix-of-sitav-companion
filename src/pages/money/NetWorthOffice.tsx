@@ -15,12 +15,9 @@ import { motion } from "framer-motion";
 import { useMemo, useState } from "react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvisorInsight";
-import { useDataMode } from "@/contexts/DataModeContext";
-
-
+import { PremiumEmptyState } from "@/components/sita/PremiumEmptyState";
 
 const NetWorthOffice = () => {
-  const { isDemoMode } = useDataMode();
   const { data: accounts = [] } = useFinancialAccounts();
   const { data: kpis } = useMoneyKPIs();
   const { data: goals = [] } = useSavingsGoals();
@@ -69,9 +66,13 @@ const NetWorthOffice = () => {
         <div className="space-y-4">
           <SitaSectionHeader title="Assets" />
           {analysis.assets.length === 0 && (
-            <SitaCard hover={false} className="p-4 text-center text-muted-foreground text-sm">
-              No asset accounts connected yet
-            </SitaCard>
+            <PremiumEmptyState
+              variant="first-use"
+              domain="finance"
+              title="No asset accounts yet"
+              description="Connect your bank, brokerage, or retirement accounts to see your full balance sheet."
+              actions={[{ label: "Connect Account", onClick: () => {} }]}
+            />
           )}
           {analysis.assets.map(a => {
             const Icon = a.account_type === "savings" ? PiggyBank : a.account_type === "investment" ? Building : Wallet;
@@ -93,49 +94,15 @@ const NetWorthOffice = () => {
               </SitaCard>
             );
           })}
-          {isDemoMode && analysis.assets.length === 0 && (
-            <>
-              {[{ name: "Main Checking", type: "checking", bal: 1250000 }, { name: "Savings", type: "savings", bal: 3500000 }, { name: "Brokerage", type: "investment", bal: 8500000 }].map(d => (
-                <SitaCard key={d.name} hover className="p-4">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <Wallet className="h-4 w-4 text-primary" />
-                      <div>
-                        <p className="font-display text-sm font-semibold">{d.name}</p>
-                        <p className="text-xs text-muted-foreground capitalize">{d.type}</p>
-                      </div>
-                    </div>
-                    <p className="font-display text-sm font-bold text-trust-verified">{fmt(d.bal)}</p>
-                  </div>
-                </SitaCard>
-              ))}
-            </>
-          )}
         </div>
 
         {/* Liabilities Column */}
         <div className="space-y-4">
           <SitaSectionHeader title="Liabilities" />
-          {analysis.liabilities.length === 0 && isDemoMode && (
-            <>
-              {[{ name: "Visa Platinum", type: "credit", bal: 350000, util: 18 }, { name: "Student Loan", type: "loan", bal: 2400000, util: 60 }].map(d => (
-                <SitaCard key={d.name} hover className="p-4">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <CreditCard className="h-4 w-4 text-amber-500" />
-                      <div>
-                        <p className="font-display text-sm font-semibold">{d.name}</p>
-                        <p className="text-xs text-muted-foreground capitalize">{d.type} · {d.util}% util</p>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <p className="font-display text-sm font-bold text-amber-500">{fmt(d.bal)}</p>
-                      <ArrowDownRight className="h-3 w-3 text-amber-500 inline" />
-                    </div>
-                  </div>
-                </SitaCard>
-              ))}
-            </>
+          {analysis.liabilities.length === 0 && (
+            <SitaCard hover={false} className="p-4 text-center text-muted-foreground text-sm">
+              No liabilities recorded
+            </SitaCard>
           )}
           {analysis.liabilities.map(a => (
             <SitaCard key={a.id} hover className="p-4">
@@ -162,15 +129,7 @@ const NetWorthOffice = () => {
               <SitaCardTitle sub="Replay how your finances evolved">Historical Replay</SitaCardTitle>
             </div>
             {(() => {
-              const timeMachine = isDemoMode ? [
-                { month: "Nov", nw: 95000, event: null, debt: 32000, savings: 12000, burden: 48 },
-                { month: "Dec", nw: 102000, event: "Holiday bonus +$5K", debt: 30000, savings: 15000, burden: 46 },
-                { month: "Jan", nw: 108000, event: "Paid off credit card", debt: 24000, savings: 18000, burden: 42 },
-                { month: "Feb", nw: 112000, event: null, debt: 23000, savings: 20000, burden: 41 },
-                { month: "Mar", nw: 118000, event: "Tax refund +$3.2K", debt: 21500, savings: 24000, burden: 39 },
-                { month: "Apr", nw: 125000, event: "Salary increase +8%", debt: 20000, savings: 28000, burden: 36 },
-              ] : analysis.trend.map(t => ({ month: t.month, nw: t.netWorth / 100, event: null as string | null, debt: t.liabilities / 100, savings: (t.assets - t.liabilities) / 100, burden: Math.round((t.liabilities / Math.max(t.assets, 1)) * 100) }));
-
+              const timeMachine = analysis.trend.map(t => ({ month: t.month, nw: t.netWorth / 100, event: null as string | null, debt: t.liabilities / 100, savings: (t.assets - t.liabilities) / 100, burden: Math.round((t.liabilities / Math.max(t.assets, 1)) * 100) }));
               return (
                 <div className="space-y-2">
                   {timeMachine.map((t, i) => (

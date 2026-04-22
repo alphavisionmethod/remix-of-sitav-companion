@@ -11,19 +11,16 @@ import { RevenueOfficeModeToggle } from "@/components/revenue-office/RevenueOffi
 import { useRevenueLeakItems } from "@/hooks/use-revenue-office";
 import { useRevenueLeaks } from "@/hooks/use-revenue-office";
 import { Skeleton } from "@/components/ui/skeleton";
-import { DEMO_REV_LEAKS_LEAK_DETECTOR as DEMO_LEAKS, DEMO_LEAK_REPAIR_TRACKING, DEMO_LEAK_TRENDS } from "@/data/seed/revenue-office";
 import { useState } from "react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
-
+import { PremiumEmptyState } from "@/components/sita/PremiumEmptyState";
 
 export default function LeakDetector() {
-  const { isDemoMode } = useDataMode();
   const { isBeginner } = useRevenueOfficeMode();
   const { data: liveLeaks, isLoading } = useRevenueLeaks();
   const [tab, setTab] = useState("active");
 
-  const LEAKS = isDemoMode ? DEMO_LEAKS : (liveLeaks && liveLeaks.length > 0 ? liveLeaks.map((l: any) => ({
+  const LEAKS = (liveLeaks && liveLeaks.length > 0 ? liveLeaks.map((l: any) => ({
     category: l.leak_type || "Unknown",
     severity: l.severity || "medium",
     revenue: `$${Number(l.amount_at_risk || 0).toLocaleString()}`,
@@ -34,13 +31,11 @@ export default function LeakDetector() {
     details: [],
   })) : []);
   const totalLeakage = LEAKS.reduce((s, l) => s + parseInt(l.revenue.replace(/[^0-9]/g, "")), 0);
-  const totalRecovered = (isDemoMode ? DEMO_LEAK_REPAIR_TRACKING : [] as typeof DEMO_LEAK_REPAIR_TRACKING).reduce((s, r) => s + parseInt(r.recoveredRevenue.replace(/[^0-9]/g, "")), 0);
+  const totalRecovered = 0;
   const recoveryRate = totalLeakage > 0 ? Math.round((totalRecovered / (totalLeakage + totalRecovered)) * 100) : 0;
-  const latestTrend = DEMO_LEAK_TRENDS[(isDemoMode ? DEMO_LEAK_TRENDS : [] as typeof DEMO_LEAK_TRENDS).length - 1];
-  const prevTrend = DEMO_LEAK_TRENDS[(isDemoMode ? DEMO_LEAK_TRENDS : [] as typeof DEMO_LEAK_TRENDS).length - 2];
-  const trendDelta = prevTrend ? Math.round(((prevTrend.net - latestTrend.net) / prevTrend.net) * 100) : 0;
+  const trendDelta = 0;
 
-  if (!isDemoMode && isLoading) {
+  if (isLoading) {
     return <div className="min-h-screen bg-background p-6 space-y-6">
 <Skeleton className="h-8 w-48" /><Skeleton className="h-32 rounded-xl" /><Skeleton className="h-48 rounded-xl" /></div>;
   }
@@ -90,6 +85,16 @@ export default function LeakDetector() {
             </CardContent>
           </Card>
 
+          {LEAKS.length === 0 && (
+            <PremiumEmptyState
+              variant="no-data"
+              domain="business"
+              title="No revenue leaks detected"
+              description="Connect your revenue sources to detect pricing gaps, churn risks, and billing errors."
+              actions={[{ label: "Connect Revenue Source", onClick: () => {} }]}
+            />
+          )}
+
           {LEAKS.map((leak, i) => (
             <motion.div key={leak.category} initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.06 }}>
               <Card className="bg-card/50 border-border/50">
@@ -135,71 +140,25 @@ export default function LeakDetector() {
           <div className="rounded-xl border border-[hsl(var(--trust-safe))]/30 bg-[hsl(var(--trust-safe))]/5 p-4 text-center">
             <p className="text-sm text-[hsl(var(--trust-safe))] font-medium">Total Revenue Recovered</p>
             <p className="text-3xl font-bold text-[hsl(var(--trust-safe))] mt-1">${totalRecovered.toLocaleString()}</p>
-            <p className="text-xs text-muted-foreground mt-1">{(isDemoMode ? DEMO_LEAK_REPAIR_TRACKING : [] as typeof DEMO_LEAK_REPAIR_TRACKING).filter(r => r.status === "repaired").length} leaks fully repaired</p>
+            <p className="text-xs text-muted-foreground mt-1">0 leaks fully repaired</p>
           </div>
 
-          {(isDemoMode ? DEMO_LEAK_REPAIR_TRACKING : [] as typeof DEMO_LEAK_REPAIR_TRACKING).map((repair, i) => (
-            <Card key={i} className="bg-card/50 border-border/50">
-              <CardContent className="p-4">
-                <div className="flex items-center justify-between mb-2">
-                  <div className="flex items-center gap-2">
-                    {repair.status === "repaired" ? <CheckCircle className="w-4 h-4 text-[hsl(var(--trust-safe))]" /> : <Wrench className="w-4 h-4 text-orange-400" />}
-                    <span className="text-sm font-medium text-foreground">{repair.leak}</span>
-                    <Badge variant={repair.status === "repaired" ? "default" : "outline"} className="text-[10px]">{repair.status}</Badge>
-                  </div>
-                  <span className="text-xs text-muted-foreground">{repair.repairDate}</span>
-                </div>
-                <p className="text-xs text-muted-foreground mb-2">Method: {repair.method}</p>
-                <div className="flex items-center gap-4">
-                  <div className="flex-1">
-                    <div className="flex items-center justify-between text-[10px] mb-1">
-                      <span className="text-muted-foreground">Recovery</span>
-                      <span className="text-[hsl(var(--trust-safe))] font-medium">{repair.recoveredPct}%</span>
-                    </div>
-                    <Progress value={repair.recoveredPct} className="h-1.5" />
-                  </div>
-                  <span className="text-sm font-bold text-[hsl(var(--trust-safe))]">{repair.recoveredRevenue}</span>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+          <PremiumEmptyState
+            variant="no-data"
+            domain="business"
+            title="No repair records yet"
+            description="When leaks are detected and fixed, repair tracking data will appear here."
+          />
         </TabsContent>
 
         {/* Historical Trends */}
         <TabsContent value="trends" className="mt-4">
-          <Card className="bg-card/50 border-border/50">
-            <CardHeader className="pb-2"><CardTitle className="text-sm font-medium">Monthly Leakage vs Recovery</CardTitle></CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                {(isDemoMode ? DEMO_LEAK_TRENDS : [] as typeof DEMO_LEAK_TRENDS).map((t, i) => {
-                  const maxVal = Math.max(...(isDemoMode ? DEMO_LEAK_TRENDS : [] as typeof DEMO_LEAK_TRENDS).map(tt => tt.totalLeakage));
-                  return (
-                    <div key={t.month} className="space-y-1.5">
-                      <div className="flex items-center justify-between text-xs">
-                        <span className="font-medium text-foreground w-10">{t.month}</span>
-                        <div className="flex gap-4">
-                          <span className="text-red-400">Leaked: ${(t.totalLeakage / 1000).toFixed(1)}k</span>
-                          <span className="text-[hsl(var(--trust-safe))]">Repaired: ${(t.repaired / 1000).toFixed(1)}k</span>
-                          <span className="font-medium text-foreground">Net: ${(t.net / 1000).toFixed(1)}k</span>
-                        </div>
-                      </div>
-                      <div className="relative h-4 bg-muted/20 rounded-full overflow-hidden">
-                        <div className="absolute inset-y-0 left-0 bg-red-400/30 rounded-full" style={{ width: `${(t.totalLeakage / maxVal) * 100}%` }} />
-                        <div className="absolute inset-y-0 left-0 bg-[hsl(var(--trust-safe))]/50 rounded-full" style={{ width: `${(t.repaired / maxVal) * 100}%` }} />
-                      </div>
-                      {i < (isDemoMode ? DEMO_LEAK_TRENDS : [] as typeof DEMO_LEAK_TRENDS).length - 1 && (() => {
-                        const next = DEMO_LEAK_TRENDS[i + 1];
-                        const delta = Math.round(((t.net - next.net) / t.net) * 100);
-                        return delta > 0 ? (
-                          <p className="text-[10px] text-[hsl(var(--trust-safe))] flex items-center gap-1"><TrendingDown className="w-3 h-3" /> Net leakage ↓{delta}% next month</p>
-                        ) : null;
-                      })()}
-                    </div>
-                  );
-                })}
-              </div>
-            </CardContent>
-          </Card>
+          <PremiumEmptyState
+            variant="no-data"
+            domain="business"
+            title="Historical trends unavailable"
+            description="Trend data will accumulate as leaks are detected and repaired over time."
+          />
         </TabsContent>
       </Tabs>
     </div>
