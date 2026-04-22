@@ -116,6 +116,7 @@ export function useCreateIncident() {
 // ══════════════════════════════════════════════
 export function useAdminPolicies(domain?: string) {
   const { user } = useAuth();
+  const { isDemoMode } = useDataMode();
 
   return useQuery({
     queryKey: ["admin-policies", isDemoMode, user?.id, domain],
@@ -155,6 +156,7 @@ export function useSimulatePolicy() {
 // ══════════════════════════════════════════════
 export function useAdminAuditLogs(filters?: { action?: string; limit?: number }) {
   const { user } = useAuth();
+  const { isDemoMode } = useDataMode();
 
   return useQuery({
     queryKey: ["admin-audit-logs", isDemoMode, user?.id, filters],
@@ -181,6 +183,7 @@ export function useExportAuditLogs() {
 // ══════════════════════════════════════════════
 export function useFleetHealth() {
   const { user } = useAuth();
+  const { isDemoMode } = useDataMode();
 
   return useQuery({
     queryKey: ["admin-fleet", isDemoMode, user?.id],
@@ -222,6 +225,7 @@ export function useRestartDevice() {
 // ══════════════════════════════════════════════
 export function useCouncilDecisions() {
   const { user } = useAuth();
+  const { isDemoMode } = useDataMode();
   const qc = useQueryClient();
 
   // Realtime subscription for instant council vote updates
@@ -265,6 +269,7 @@ export function useCouncilVote() {
 // ══════════════════════════════════════════════
 export function useAdminIntelligence() {
   const { user } = useAuth();
+  const { isDemoMode } = useDataMode();
 
   return useQuery({
     queryKey: ["admin-intelligence", isDemoMode, user?.id],
@@ -426,6 +431,7 @@ export function useAdminIntelligence() {
 // INTERNAL AI WORKFORCE
 // ══════════════════════════════════════════════
 export function useInternalAgents() {
+  const { isDemoMode } = useDataMode();
 
   return useQuery({
     queryKey: ["internal-agents", isDemoMode],
@@ -490,6 +496,7 @@ export function useAgentControls() {
 // ══════════════════════════════════════════════
 
 export function useTrustCenter() {
+  const { isDemoMode } = useDataMode();
   return useQuery({
     queryKey: ["trust-center", isDemoMode],
     queryFn: async (): Promise<TrustCenterData> => {
@@ -501,6 +508,7 @@ export function useTrustCenter() {
 }
 
 export function useReleases() {
+  const { isDemoMode } = useDataMode();
   return useQuery({
     queryKey: ["releases", isDemoMode],
     queryFn: async (): Promise<ReleasesData> => {
@@ -512,6 +520,7 @@ export function useReleases() {
 }
 
 export function useModelRouting() {
+  const { isDemoMode } = useDataMode();
   return useQuery({
     queryKey: ["model-routing", isDemoMode],
     queryFn: async (): Promise<ModelRoutingData> => {
@@ -523,6 +532,7 @@ export function useModelRouting() {
 }
 
 export function useKnowledgeHealth() {
+  const { isDemoMode } = useDataMode();
   return useQuery({
     queryKey: ["knowledge-health", isDemoMode],
     queryFn: async (): Promise<KnowledgeHealthData> => {
@@ -534,6 +544,7 @@ export function useKnowledgeHealth() {
 }
 
 export function useSupportCases() {
+  const { isDemoMode } = useDataMode();
   return useQuery({
     queryKey: ["support-cases", isDemoMode],
     queryFn: async (): Promise<SupportCase[]> => {
@@ -545,6 +556,7 @@ export function useSupportCases() {
 }
 
 export function useChangeReview() {
+  const { isDemoMode } = useDataMode();
   return useQuery({
     queryKey: ["change-review", isDemoMode],
     queryFn: async (): Promise<ChangeReview[]> => {
@@ -556,6 +568,7 @@ export function useChangeReview() {
 }
 
 export function useRollbackCenter() {
+  const { isDemoMode } = useDataMode();
   return useQuery({
     queryKey: ["rollback-center", isDemoMode],
     queryFn: async (): Promise<RollbackCenterData> => {
@@ -567,6 +580,7 @@ export function useRollbackCenter() {
 }
 
 export function useServiceMap() {
+  const { isDemoMode } = useDataMode();
   return useQuery({
     queryKey: ["service-map", isDemoMode],
     queryFn: async (): Promise<ServiceMapData> => {
@@ -578,6 +592,7 @@ export function useServiceMap() {
 }
 
 export function useSLOs() {
+  const { isDemoMode } = useDataMode();
   return useQuery({
     queryKey: ["slos", isDemoMode],
     queryFn: async () => {
@@ -589,6 +604,7 @@ export function useSLOs() {
 }
 
 export function useArchGates() {
+  const { isDemoMode } = useDataMode();
   return useQuery({
     queryKey: ["arch-gates", isDemoMode],
     queryFn: async () => {
@@ -600,6 +616,7 @@ export function useArchGates() {
 }
 
 export function useDeploymentRings() {
+  const { isDemoMode } = useDataMode();
   return useQuery({
     queryKey: ["deployment-rings", isDemoMode],
     queryFn: async () => {
@@ -611,6 +628,7 @@ export function useDeploymentRings() {
 }
 
 export function useTestCoverage() {
+  const { isDemoMode } = useDataMode();
   return useQuery({
     queryKey: ["test-coverage", isDemoMode],
     queryFn: async () => {
