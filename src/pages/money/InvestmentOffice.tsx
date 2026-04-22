@@ -242,6 +242,7 @@ const ThesisVault = () => {
     })}
   </div>
 );
+};
 
 const CommitteeView = () => {
   const { isDemoMode } = useDataMode();
