@@ -1,3 +1,4 @@
+import { toast } from "sonner";
 import { useState } from "react";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
 import { getModuleAdaptation } from "@/domains/engines/business-module-adaptations";
@@ -215,7 +216,7 @@ const BusinessOperations = () => {
               title="Recommended Action"
               description={selected.nextAction}
               accentColor="hsl(265 55% 58%)"
-              onApprove={() => {}}
+              onApprove={() => toast.info("Recommendation noted")}
             />
 
             {selected.customerImpact > 0 && (

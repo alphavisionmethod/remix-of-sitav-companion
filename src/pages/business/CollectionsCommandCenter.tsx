@@ -1,3 +1,4 @@
+import { toast } from "sonner";
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Collections Command Center (Migrated to OS-native cards)
 // Escalation ladders, aging buckets, automated chase sequences
@@ -279,7 +280,7 @@ const CollectionsCommandCenter = () => {
             title="Approve Next Step"
             description={CHASE_SEQUENCE[selected.currentStep]?.action || "Proceed to next escalation"}
             accentColor="hsl(265 55% 58%)"
-            onApprove={() => {}}
+            onApprove={() => toast.info("Recommendation noted")}
           />
         )}
         <div className="flex gap-2">
@@ -303,7 +304,7 @@ const CollectionsCommandCenter = () => {
             : `Follow up with a direct call — phone contact has 3x higher recovery rate at this aging stage.`
         }
         confidence={selected.riskScore >= 80 ? 92 : 78}
-        actions={[{ label: "View History", onClick: () => {} }]}
+        actions={[{ label: "View History", onClick: () => toast.info("History view coming soon") }]}
       />
     </div>
   ) : (

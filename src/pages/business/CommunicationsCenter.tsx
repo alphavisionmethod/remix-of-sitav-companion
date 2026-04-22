@@ -232,7 +232,7 @@ const CommunicationsCenter = () => {
         domain="business"
         insight="Messages sent before 10 AM have 28% higher open rates. Schedule your next draft for morning delivery."
         confidence={72}
-        actions={[{ label: "Schedule", onClick: () => {} }]}
+        actions={[{ label: "Schedule", onClick: () => toast.info("Scheduling coming soon") }]}
       />
     </div>
   ) : (

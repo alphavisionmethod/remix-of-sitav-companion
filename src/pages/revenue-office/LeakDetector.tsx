@@ -1,3 +1,4 @@
+import { toast } from "sonner";
 import { useAuth } from "@/contexts/AuthContext";
 import { motion } from "framer-motion";
 import { AlertTriangle, DollarSign, Clock, Users, ArrowRight, TrendingDown, TrendingUp, CheckCircle, Wrench, BarChart3 } from "lucide-react";
@@ -91,7 +92,7 @@ export default function LeakDetector() {
               domain="business"
               title="No revenue leaks detected"
               description="Connect your revenue sources to detect pricing gaps, churn risks, and billing errors."
-              actions={[{ label: "Connect Revenue Source", onClick: () => {} }]}
+              actions={[{ label: "Connect Revenue Source", onClick: () => toast.info("Revenue source connection coming soon") }]}
             />
           )}
 

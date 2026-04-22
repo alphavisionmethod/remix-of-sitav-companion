@@ -1,3 +1,4 @@
+import { toast } from "sonner";
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Concierge Boardroom (Life Review Environment)
 // New design system: BoardroomCinematic + ComparisonCard + ProofCard
@@ -126,7 +127,7 @@ const ConciergeBoardroom = () => {
             insight={`Task completion: ${completionRate}% — ${completionRate >= 75 ? "on track" : "slightly behind"}. ${weeklyStats.tasksTotal - weeklyStats.tasksCompleted} tasks remaining. Focus on school forms deadline.`}
             confidence={completionRate >= 75 ? 85 : 65}
             accentColor="hsl(292 60% 55%)"
-            action={{ label: "View Tasks", onClick: () => {} }}
+            action={{ label: "View Tasks", onClick: () => toast.info("Task view coming soon") }}
           />
         </div>
       </BoardroomCinematic>

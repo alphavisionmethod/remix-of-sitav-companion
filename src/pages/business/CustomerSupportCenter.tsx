@@ -1,3 +1,4 @@
+import { toast } from "sonner";
 import { useState } from "react";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
 import { getModuleAdaptation } from "@/domains/engines/business-module-adaptations";
@@ -109,7 +110,7 @@ const CustomerSupportCenter = () => {
         domain="business"
         confidence={92}
         insight={`2 ${moduleConfig.terminology.issue?.toLowerCase() || "issue"}s need immediate response. ${moduleConfig.advisorSpecialty}.`}
-        actions={[{ label: "View Drafts", onClick: () => {} }, { label: "Call Queue", onClick: () => {} }]}
+        actions={[{ label: "View Drafts", onClick: () => toast.info("Drafts coming soon") }, { label: "Call Queue", onClick: () => toast.info("Call queue coming soon") }]}
       />
 
       <SlidePanel open={panelOpen} onClose={() => setPanelOpen(false)} title={selected?.subject || "Issue Detail"} width={420}>

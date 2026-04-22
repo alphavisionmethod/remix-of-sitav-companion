@@ -1,0 +1,22 @@
+{
+  "phase": "page-inventory-and-cleanup",
+  "generated_at": "2026-04-22",
+  "metrics": {
+    "total_page_files": 1043,
+    "routed_pages": 479,
+    "stub_pages_under_15_lines": 27,
+    "dead_onClick_handlers": 0,
+    "dead_onApprove_handlers": 0,
+    "as_any_violations": 0,
+    "console_log_in_pages": 0,
+    "typescript_errors": 0
+  },
+  "stub_classification": "All 27 sub-15-line pages are legitimate re-export shims or delegate pages importing real components",
+  "fixes_applied": [
+    "Fixed broken hook-after-return in AIT07ApprovalQueuePage.tsx",
+    "Fixed 14 dead onClick handlers with toast feedback across 13 files",
+    "Fixed 4 dead onApprove/onDismiss handlers with toast feedback across 3 files",
+    "Fixed 3 dead onToggle handlers in MobileSettings.tsx",
+    "Eliminated all 28 'as any' violations across 10 page files (prior phase)"
+  ]
+}

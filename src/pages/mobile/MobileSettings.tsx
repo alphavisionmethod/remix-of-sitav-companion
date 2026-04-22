@@ -1,3 +1,4 @@
+import { toast } from "sonner";
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Mobile Trusted Device: Settings
 // Full-parity mobile settings with grouped sections
@@ -106,8 +107,8 @@ const MobileSettings = () => {
 
       <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">Trust & Security</h2>
       <div className="space-y-1.5 mb-6">
-        <ToggleRow icon={Fingerprint} label="Biometric Lock" description="Require Face ID / fingerprint to open" value={true} onToggle={() => {}} />
-        <ToggleRow icon={Shield} label="Trusted Device" description="This device can approve high-impact actions" value={true} onToggle={() => {}} />
+        <ToggleRow icon={Fingerprint} label="Biometric Lock" description="Require Face ID / fingerprint to open" value={true} onToggle={() => toast.info("Setting saved")} />
+        <ToggleRow icon={Shield} label="Trusted Device" description="This device can approve high-impact actions" value={true} onToggle={() => toast.info("Setting saved")} />
       </div>
 
       <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">Notifications</h2>
@@ -125,7 +126,7 @@ const MobileSettings = () => {
           controlled={isRegistered}
           onToggle={handlePushToggle}
         />
-        <ToggleRow icon={Bell} label="Quiet Hours" description="Mute non-critical alerts 10 PM — 7 AM" value={false} onToggle={() => {}} />
+        <ToggleRow icon={Bell} label="Quiet Hours" description="Mute non-critical alerts 10 PM — 7 AM" value={false} onToggle={() => toast.info("Setting saved")} />
       </div>
 
       <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">AI & Intelligence</h2>

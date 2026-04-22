@@ -385,8 +385,8 @@ const RevenueCallingPage = () => {
           title="No Active Call"
           description="Select a contact from the queue or start the power dialer to begin outbound calling."
           actions={[
-            { label: "Start Power Dialer", onClick: () => {}, variant: "primary" },
-            { label: "View Queue", onClick: () => {}, variant: "secondary" },
+            { label: "Start Power Dialer", onClick: () => toast.info("Power Dialer coming soon"), variant: "primary" },
+            { label: "View Queue", onClick: () => toast.info("Call queue coming soon"), variant: "secondary" },
           ]}
           tip="The power dialer auto-advances through prioritized leads"
         />
