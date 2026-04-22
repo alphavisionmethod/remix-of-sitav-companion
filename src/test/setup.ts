@@ -1,5 +1,8 @@
 import "@testing-library/jest-dom";
 
+// Stub scrollIntoView (not implemented in jsdom)
+Element.prototype.scrollIntoView = () => {};
+
 Object.defineProperty(window, "matchMedia", {
   writable: true,
   value: (query: string) => ({

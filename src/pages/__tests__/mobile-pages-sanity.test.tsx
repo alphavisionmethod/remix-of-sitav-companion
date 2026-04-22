@@ -31,7 +31,7 @@ describe("Mobile Page Render Sanity", () => {
       const mod: any = await import(`@/pages/mobile/${name}`);
       const Component = mod.default ?? Object.values(mod).find((v: any) => typeof v === "function");
       expect(Component).toBeTruthy();
-      const { container } = render(<Component />);
+      const { container } = render(<Component />, { authenticated: true });
       expect(container.innerHTML.length).toBeGreaterThan(0);
     });
   });
