@@ -6,6 +6,7 @@ import {
   HardDrive, FileText, Image, Film, Archive, Trash2,
   TrendingUp, AlertTriangle, Shield,
 } from "lucide-react";
+import { PageShell } from "@/components/sita/PageShell";
 
 const storageBreakdown = [
   { domain: "Documents", icon: FileText, used: 2.4, color: "bg-blue-500" },

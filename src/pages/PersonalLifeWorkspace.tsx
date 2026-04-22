@@ -18,6 +18,7 @@ import { useQuery } from "@tanstack/react-query";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageShell } from "@/components/sita/PageShell";
 import {
   Heart, Sun, Moon, Target, RotateCcw, ListChecks, BookOpen,
   Calendar, Flame, CheckCircle2, Clock, AlertTriangle, Sparkles,
