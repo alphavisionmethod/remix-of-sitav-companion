@@ -205,3 +205,29 @@ const SURFACE_CLASS_MAP: Record<SurfaceLevel, string> = {
 export function getSurfaceClasses(level: SurfaceLevel): string {
   return SURFACE_CLASS_MAP[level];
 }
+
+// ── Atmosphere → CSS Variable Bridge ─────────────────────────
+// Merged from domain-atmospheres.ts — single source of truth
+
+/** Convert atmosphere to CSS custom properties for DomainAppShell */
+export function atmosphereToCSSVars(domain: string): Record<string, string> {
+  const atm = DOMAIN_ATMOSPHERE[domain as DomainId] ?? DOMAIN_ATMOSPHERE.business;
+  return {
+    "--domain-card-radius": atm.cardRadius,
+    "--domain-density": atm.density,
+    "--domain-motion-speed": atm.motionSpeed,
+    "--domain-contrast": "1",
+    "--domain-warmth": atm.surfaceWarmth,
+    "--domain-shadow": `0 2px 8px hsl(0 0% 0% / ${atm.borderStrength})`,
+    "--domain-hover-lift": "-2px",
+  };
+}
+
+// ── Re-export APP_TYPE as alias for backward compatibility ───
+
+export const APP_TYPE = {
+  label: SITA_TYPE.microLabel,
+  body: SITA_TYPE.commandText,
+  title: SITA_TYPE.pageTitle,
+  heading: SITA_TYPE.appTitle,
+} as const;
