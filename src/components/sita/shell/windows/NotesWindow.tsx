@@ -316,7 +316,7 @@ export function NotesWindow() {
                 });
               }}
               className={cn(
-                "flex items-center gap-1.5 w-full px-2 py-1 rounded-md text-[11px] transition-all duration-[80ms]",
+                "flex items-center gap-1.5 w-full px-2 py-1 rounded-md text-[11px] transition-all duration-100",
                 isActive
                   ? "bg-[hsl(var(--primary)/0.12)] text-[hsl(var(--primary))] font-medium"
                   : "text-[hsl(0_0%_45%)] dark:text-[hsl(0_0%_55%)] hover:bg-[hsl(0_0%_0%/0.04)] dark:hover:bg-[hsl(0_0%_100%/0.05)]"
@@ -351,7 +351,7 @@ export function NotesWindow() {
             key={note.id}
             onClick={() => selectNote(note.id)}
             className={cn(
-              "w-full text-left px-2 py-1.5 rounded-lg transition-all duration-[80ms] group",
+              "w-full text-left px-2 py-1.5 rounded-lg transition-all duration-100 group",
               note.id === activeId
                 ? "bg-[hsl(var(--primary)/0.1)] ring-1 ring-[hsl(var(--primary)/0.15)]"
                 : "hover:bg-[hsl(0_0%_0%/0.03)] dark:hover:bg-[hsl(0_0%_100%/0.04)]"

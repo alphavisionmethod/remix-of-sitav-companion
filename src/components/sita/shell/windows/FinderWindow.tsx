@@ -218,7 +218,7 @@ export function FinderWindow() {
           <button
             onClick={() => navigateTo(seg.path)}
             className={cn(
-              "text-[11px] font-medium tracking-wider transition-colors duration-[80ms] cursor-default",
+              "text-[11px] font-medium tracking-wider transition-colors duration-100 cursor-default",
               i === pathSegments.length - 1
                 ? "text-[hsl(0_0%_20%)] dark:text-[hsl(0_0%_80%)]"
                 : "text-[hsl(0_0%_50%)] hover:text-[hsl(0_0%_30%)] dark:hover:text-[hsl(0_0%_70%)]"
@@ -285,7 +285,7 @@ export function FinderWindow() {
                       if (node.type === "directory") navigateTo(node.path);
                     }}
                     className={cn(
-                      "cursor-default active:scale-[0.97] transition-all duration-[80ms]",
+                      "cursor-default active:scale-[0.97] transition-all duration-100",
                       node.type === "directory" && "cursor-pointer",
                       isDropTarget && "ring-2 ring-[hsl(var(--primary))] bg-[hsl(var(--primary)/0.06)] scale-105",
                     )}
