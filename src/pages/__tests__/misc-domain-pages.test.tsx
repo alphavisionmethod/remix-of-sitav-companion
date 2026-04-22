@@ -44,6 +44,7 @@ vi.mock("@/hooks/useOSOrchestration", () => ({
     getActionSafetyStats: () => ({ total: 0, allowed: 0, blocked: 0 }),
     getDeviceMeshStatus: () => ({ devices: [], healthScore: 100 }),
     getWorkspaceSuggestions: () => [],
+    getRecentExplanations: () => [],
   }),
 }));
 
