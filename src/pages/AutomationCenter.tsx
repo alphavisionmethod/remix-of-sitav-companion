@@ -39,7 +39,6 @@ const AutomationCenter = () => {
   })();
 
   const goTo = (key: string) => {
-  const { isDemo: isDemoMode } = useAuth();
     if (key === "rules") navigate("/automation");
     else navigate(`/automation/${key}`);
   };

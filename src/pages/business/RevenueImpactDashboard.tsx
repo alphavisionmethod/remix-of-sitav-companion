@@ -122,7 +122,6 @@ const RevenueImpactDashboard = () => {
   const revenueLabel = primaryMode === "ecommerce" ? "Store Revenue" : primaryMode === "appointment-based" ? "Booking Revenue" : primaryMode === "membership" ? "MRR Impact" : "Revenue";
   const [granularity, setGranularity] = useState<Granularity>("daily");
   const [chartType, setChartType] = useState<"area" | "bar">("area");
-  const { user, isDemo: isDemoMode } = useAuth();
 
   // Real data: aggregate from invoices + payment_transactions
   const { data: realRevenue } = useQuery({

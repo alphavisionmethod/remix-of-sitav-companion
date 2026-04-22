@@ -28,7 +28,6 @@ const DEMO_SPEND = {
 
 export const AISpendIndicator = () => {
   const [expanded, setExpanded] = useState(false);
-  const { user, isDemo: isDemoMode } = useAuth();
 
   const { data: liveSpend } = useQuery({
     queryKey: ["ai-spend-summary", user?.id],

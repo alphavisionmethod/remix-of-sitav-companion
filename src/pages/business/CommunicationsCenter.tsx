@@ -41,7 +41,6 @@ const CommunicationsCenter = () => {
   const { primaryMode } = useBusinessProfile();
   const { isDemoMode } = useDataMode();
   const moduleConfig = getModuleAdaptation("communications", primaryMode);
-  const { user, isDemo: isDemoMode } = useAuth();
   const queryClient = useQueryClient();
   const { data: dbComms = [] } = useCommunications();
   const { confirmation, confirm: confirmAction } = useConfirmation();
