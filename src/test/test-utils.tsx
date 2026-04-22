@@ -198,8 +198,10 @@ vi.mock("@/contexts/SitaOSContext", () => ({
     contextGraph: {
       getCurrentContext: () => ({}),
       updateSignal: vi.fn(),
+      getContextSignals: () => [],
     },
-    explainability: { explain: vi.fn().mockReturnValue("") },
+    explainability: { explain: vi.fn().mockReturnValue(""), getExplanationHistory: () => [], clearHistory: vi.fn() },
+    workspaceIntelligence: { getAvailableWorkspaces: () => [], getWorkspaceUsageStats: () => ({}), suggestWorkspace: () => null },
     briefing: { generateBriefing: vi.fn().mockReturnValue({}) },
   }),
   SitaOSProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,

@@ -1,10 +1,54 @@
 import { describe, it, expect, vi } from "vitest";
 import { render } from "@/test/test-utils";
 
+beforeAll(() => {
+  Element.prototype.scrollTo = vi.fn();
+});
+
 vi.mock("react-router-dom", async () => {
   const actual = await vi.importActual("react-router-dom");
   return { ...actual, useNavigate: () => vi.fn(), useParams: () => ({ id: "test" }), useSearchParams: () => [new URLSearchParams(), vi.fn()] };
 });
+
+vi.mock("@/contexts/SitaOSContext", () => ({
+  useSitaOS: () => ({
+    explainability: { clearHistory: vi.fn(), getExplanationHistory: () => [], explain: vi.fn(), loadPersistedState: vi.fn() },
+    workspaceIntelligence: { getAvailableWorkspaces: () => [], getWorkspaceUsageStats: () => ({}), suggestWorkspace: () => null, loadPersistedState: vi.fn() },
+    deviceMesh: { getDevices: () => [], getDeviceCount: () => 0, getMeshHealth: () => ({ devices: [], connectedCount: 0, totalCount: 0, healthScore: 100 }), loadPersistedState: vi.fn() },
+    contextGraph: { getNodes: () => [], getEdges: () => [], loadPersistedState: vi.fn() },
+    universalStateSync: { getState: () => ({}), loadPersistedState: vi.fn() },
+    actionSafety: { checkAction: vi.fn(), loadPersistedState: vi.fn() },
+    bootPhase: "ready",
+  }),
+  SitaOSProvider: ({ children }: any) => children,
+}));
+
+vi.mock("@/contexts/AppPlatformContext", () => ({
+  useAppPlatform: () => ({
+    receipts: [],
+    apps: [],
+    getReceipt: () => null,
+    loadPersistedState: vi.fn(),
+  }),
+  AppPlatformProvider: ({ children }: any) => children,
+}));
+
+vi.mock("@/hooks/useOSOrchestration", () => ({
+  useOSOrchestration: () => new Proxy({}, {
+    get: (_target, prop) => {
+      const defaults: Record<string, any> = {
+        getMeshTopology: () => ({ peers: [], connections: [], healthScore: 1, nodes: [], edges: [], clusters: [] }),
+        getCurrentContext: () => ({ workspace: null, domain: null, signals: [], activeDomains: [] }),
+        getCognitiveLoad: () => ({ score: 0.2, level: "low" }),
+        getSystemHealth: () => ({ status: "healthy", score: 1 }),
+        getCurrentMode: () => "default",
+        getTrustScore: () => 1,
+      };
+      if (prop in defaults) return defaults[prop as string];
+      return () => [];
+    },
+  }),
+}));
 
 const pages = [
   ["CalmAssistantChat", () => import("@/pages/advisors/CalmAssistantChat")],
