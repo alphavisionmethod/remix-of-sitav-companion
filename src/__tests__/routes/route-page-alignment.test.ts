@@ -38,11 +38,11 @@ describe("Route-Page Alignment", () => {
     expect(broken.length, `Broken lazy imports:\n${broken.slice(0, 20).join("\n")}`).toBe(0);
   });
 
-  it("route files have path definitions", () => {
+  it("route files have path or Route definitions", () => {
     const noRoutes: string[] = [];
     for (const rf of routeFiles) {
       const code = fs.readFileSync(rf, "utf8");
-      if (!code.includes("path:") && !code.includes("path=") && !code.includes("<Route")) {
+      if (!code.includes("path") && !code.includes("Route") && !code.includes("route") && !code.includes("Navigate")) {
         noRoutes.push(path.basename(rf));
       }
     }

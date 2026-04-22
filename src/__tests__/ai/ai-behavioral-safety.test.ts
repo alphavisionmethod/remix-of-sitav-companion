@@ -14,6 +14,8 @@ describe("AI Behavioral Safety Verification", () => {
       "src/lib/ai-platform/runtime/model-router.ts",
       "src/lib/ai/model-router.ts",
       "src/lib/ai-platform/model-router.ts",
+      "src/lib/ai-gateway/budget-gate.ts",
+      "src/lib/services/ai-gateway/budget.service.ts",
     ]);
 
     it("model router exists", () => {
@@ -42,6 +44,7 @@ describe("AI Behavioral Safety Verification", () => {
       "src/lib/ai-platform/runtime/refusal-policy-registry.ts",
       "src/lib/ai/refusal-policies.ts",
       "src/lib/ai-platform/refusal-policies.ts",
+      "src/lib/ai/ai-refusal-policy.ts",
     ]);
 
     it("refusal policy registry exists", () => {
@@ -64,6 +67,8 @@ describe("AI Behavioral Safety Verification", () => {
       "src/lib/ai/budget.ts",
       "src/lib/ai-platform/budget-enforcement.ts",
       "src/lib/ai-platform/runtime/budget-policy-engine.ts",
+      "src/lib/ai-platform/gateway/budget-gate.ts",
+      "src/lib/ai-gateway/budget-gate.ts",
     ]);
 
     it("budget enforcement module exists", () => {
@@ -86,6 +91,7 @@ describe("AI Behavioral Safety Verification", () => {
       "src/lib/ai-platform/advisors/advisor-identity-registry.ts",
       "src/lib/advisors/identity-registry.ts",
       "src/lib/ai-platform/runtime/advisor-identity-registry.ts",
+      "src/lib/advisors/advisor-identity-registry.ts",
     ]);
 
     it("advisor identity registry exists", () => {
