@@ -7,7 +7,7 @@ import {
   Moon, Sun, Bell, Palette, Monitor, Eye, Globe, Check, ChevronRight, Lock,
   Type, Accessibility, Activity, Clock, Home as HomeIcon, Layout,
 } from "lucide-react";
-import { RotateCcw, Trash2, Download, Star } from "lucide-react";
+import { RotateCcw, Trash2, Download, Star, Search, X, AlertTriangle } from "lucide-react";
 import { VStack, HStack, Divider } from "@/platform/nova-sdk/ui/layout";
 import {
   NovaText, NovaButton, NovaCard, NovaSectionLabel,
@@ -199,6 +199,25 @@ function GeneralContentFull() {
   // ── Section 8: Approval Experience ──
   const [approvalStyle, setApprovalStyle] = useSettingsValue("general.approvalStyle", "ask-as-needed");
 
+  // ── Accessibility Sync ──
+  const [syncAccessibility, setSyncAccessibility] = useSettingsValue("general.syncAccessibility", true);
+  const [a11yReduceMotion, setA11yReduceMotion] = useSettingsValue("appearance.reduceMotion", false);
+  const [a11yFocusIndicators, setA11yFocusIndicators] = useSettingsValue("accessibility.focusIndicators", true);
+  const [a11yFullKbNav, setA11yFullKbNav] = useSettingsValue("accessibility.fullKeyboardNav", true);
+
+  // When sync is on and reducedMotion changes, mirror to accessibility
+  useEffect(() => {
+    if (!syncAccessibility) return;
+    SettingsService.set("accessibility.reduceAutoPlayEffects", a11yReduceMotion);
+  }, [a11yReduceMotion, syncAccessibility]);
+
+  // When sync is on and focus settings change, mirror to accessibility
+  useEffect(() => {
+    if (!syncAccessibility) return;
+    SettingsService.set("accessibility.focusIndicators", a11yFocusIndicators);
+    SettingsService.set("accessibility.fullKeyboardNav", a11yFullKbNav);
+  }, [a11yFocusIndicators, a11yFullKbNav, syncAccessibility]);
+
   const toggleDark = useCallback((v: boolean) => {
     const newTheme = v ? "dark" : "light";
     setTheme(newTheme as any);
@@ -228,6 +247,14 @@ function GeneralContentFull() {
           <Divider />
           <SettingRow label="Reduced Motion" description={<>Minimize animations and motion across the interface <ManagedBadge source="Accessibility" /></>} icon={<Eye className="h-3.5 w-3.5" />}>
             <NovaToggle checked={reducedMotion} onChange={setReducedMotion} />
+          </SettingRow>
+          <Divider />
+          <SettingRow
+            label="Sync to Accessibility"
+            description={<>Automatically mirror Reduced Motion and focus behavior changes into Accessibility settings</>}
+            icon={<Accessibility className="h-3.5 w-3.5" />}
+          >
+            <NovaToggle checked={syncAccessibility} onChange={setSyncAccessibility} />
           </SettingRow>
           <Divider />
           <SettingRow label="Language" description="Primary language for SITA OS" icon={<Globe className="h-3.5 w-3.5" />}>
@@ -318,9 +345,7 @@ function GeneralContentFull() {
             ]} />
           </SettingRow>
           <Divider />
-          <SettingRow label="Timezone" description={timezone} icon={<Globe className="h-3.5 w-3.5" />}>
-            <NovaText variant="label" muted className="!text-[10px]">{timezone}</NovaText>
-          </SettingRow>
+          <TimezonePicker />
           <Divider />
           <SettingRow label="Default Calendar View" description="Planning view to open by default">
             <GeneralSelect value={calendarView} onChange={(v) => setCalendarView(v as any)} options={[
@@ -506,6 +531,132 @@ function QuickAccessFavorites() {
   );
 }
 
+// ── Timezone Picker ──
+
+const ALL_TIMEZONES = (() => {
+  try {
+    return (Intl as any).supportedValuesOf("timeZone") as string[];
+  } catch {
+    return [
+      "America/New_York", "America/Chicago", "America/Denver", "America/Los_Angeles",
+      "America/Bogota", "America/Sao_Paulo", "America/Mexico_City", "America/Toronto",
+      "Europe/London", "Europe/Paris", "Europe/Berlin", "Europe/Madrid",
+      "Asia/Tokyo", "Asia/Shanghai", "Asia/Kolkata", "Asia/Dubai",
+      "Australia/Sydney", "Pacific/Auckland", "UTC",
+    ];
+  }
+})();
+
+function TimezonePicker() {
+  const [tz, setTz] = useSettingsValue("general.timezone", Intl.DateTimeFormat().resolvedOptions().timeZone);
+  const [favorites, setFavorites] = useSettingsValue("general.timezoneFavorites", [] as any);
+  const favList = (Array.isArray(favorites) ? favorites : []) as string[];
+  const [open, setOpen] = useState(false);
+  const [query, setQuery] = useState("");
+
+  const recentKey = "sita:tz-recent";
+  const [recents] = useState<string[]>(() => {
+    try { return JSON.parse(localStorage.getItem(recentKey) || "[]").slice(0, 5); } catch { return []; }
+  });
+
+  const filtered = query.trim()
+    ? ALL_TIMEZONES.filter(t => t.toLowerCase().includes(query.toLowerCase())).slice(0, 30)
+    : [];
+
+  const selectTz = useCallback((newTz: string) => {
+    setTz(newTz as any);
+    setOpen(false);
+    setQuery("");
+    try {
+      const prev = JSON.parse(localStorage.getItem(recentKey) || "[]") as string[];
+      const next = [newTz, ...prev.filter(t => t !== newTz)].slice(0, 5);
+      localStorage.setItem(recentKey, JSON.stringify(next));
+    } catch {}
+    trackSettingChange("general.timezone", tz, newTz);
+  }, [tz, setTz]);
+
+  const toggleFav = useCallback((tzId: string) => {
+    const next = favList.includes(tzId) ? favList.filter(f => f !== tzId) : [...favList, tzId].slice(0, 5);
+    setFavorites(next as any);
+  }, [favList, setFavorites]);
+
+  if (!open) {
+    return (
+      <SettingRow label="Timezone" description={tz} icon={<Globe className="h-3.5 w-3.5" />}>
+        <NovaButton variant="secondary" onClick={() => setOpen(true)} className="!text-[9px] !py-1 !px-2">
+          Change
+        </NovaButton>
+      </SettingRow>
+    );
+  }
+
+  return (
+    <VStack spacing="tight">
+      <HStack spacing="tight" align="center" justify="between">
+        <NovaSectionLabel className="!px-0 !text-[9px]">Select Timezone</NovaSectionLabel>
+        <button onClick={() => { setOpen(false); setQuery(""); }} className="text-muted-foreground hover:text-foreground">
+          <X className="h-3 w-3" />
+        </button>
+      </HStack>
+      <div className="relative">
+        <Search className="absolute left-2 top-1/2 -translate-y-1/2 h-3 w-3 text-muted-foreground" />
+        <input
+          autoFocus
+          value={query}
+          onChange={e => setQuery(e.target.value)}
+          placeholder="Search timezone…"
+          className="w-full text-[10px] bg-[hsl(0_0%_100%/0.06)] border border-border/30 rounded-md pl-6 pr-2 py-1.5 text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-[hsl(var(--primary))]/40"
+        />
+      </div>
+      {/* Favorites */}
+      {favList.length > 0 && !query && (
+        <VStack spacing="micro">
+          <NovaText variant="label" muted className="!text-[8px] !uppercase !tracking-wider">Favorites</NovaText>
+          {favList.map(f => (
+            <TzRow key={f} tz={f} active={tz === f} isFav onSelect={selectTz} onToggleFav={toggleFav} />
+          ))}
+        </VStack>
+      )}
+      {/* Recents */}
+      {recents.length > 0 && !query && (
+        <VStack spacing="micro">
+          <NovaText variant="label" muted className="!text-[8px] !uppercase !tracking-wider">Recent</NovaText>
+          {recents.filter(r => !favList.includes(r)).map(r => (
+            <TzRow key={r} tz={r} active={tz === r} isFav={false} onSelect={selectTz} onToggleFav={toggleFav} />
+          ))}
+        </VStack>
+      )}
+      {/* Search results */}
+      {query && (
+        <div className="max-h-36 overflow-y-auto space-y-0.5">
+          {filtered.length === 0 ? (
+            <NovaText variant="label" muted className="!text-[9px] py-2 text-center">No timezones match "{query}"</NovaText>
+          ) : filtered.map(t => (
+            <TzRow key={t} tz={t} active={tz === t} isFav={favList.includes(t)} onSelect={selectTz} onToggleFav={toggleFav} />
+          ))}
+        </div>
+      )}
+    </VStack>
+  );
+}
+
+function TzRow({ tz, active, isFav, onSelect, onToggleFav }: {
+  tz: string; active: boolean; isFav: boolean; onSelect: (tz: string) => void; onToggleFav: (tz: string) => void;
+}) {
+  return (
+    <div className={cn(
+      "flex items-center gap-1.5 rounded-md px-2 py-1 text-[10px] transition-colors cursor-pointer",
+      active ? "bg-[hsl(var(--primary))]/10 text-[hsl(var(--primary))]" : "hover:bg-[hsl(0_0%_100%/0.04)] text-foreground"
+    )}>
+      <button onClick={() => onSelect(tz)} className="flex-1 text-left truncate">{tz.replace(/_/g, " ")}</button>
+      <button onClick={(e) => { e.stopPropagation(); onToggleFav(tz); }} className="shrink-0" title={isFav ? "Remove from favorites" : "Add to favorites"}>
+        <Star className={cn("h-2.5 w-2.5", isFav ? "fill-[hsl(var(--primary))] text-[hsl(var(--primary))]" : "text-muted-foreground/40")} />
+      </button>
+      {active && <Check className="h-2.5 w-2.5 shrink-0" />}
+    </div>
+  );
+}
+
 function trackSettingChange(key: string, oldValue: unknown, newValue: unknown) {
   try {
     window.dispatchEvent(new CustomEvent("sita-analytics", {
@@ -518,47 +669,41 @@ function trackSettingChange(key: string, oldValue: unknown, newValue: unknown) {
 }
 
 function GeneralResetActions() {
-  const [confirmState, setConfirmState] = useState<"idle" | "restore" | "reset" | "clear">("idle");
+  type Phase = "idle" | "preview-restore" | "preview-reset";
+  const [phase, setPhase] = useState<Phase>("idle");
 
-  useEffect(() => {
-    if (confirmState !== "idle") {
-      const t = setTimeout(() => setConfirmState("idle"), 4000);
-      return () => clearTimeout(t);
+  // Compute which user-layer general keys differ from defaults
+  const changedKeys = (() => {
+    const userNs = SettingsService.getNamespace("general.");
+    const diffs: { key: string; current: unknown; default_: unknown }[] = [];
+    // Also check cross-section keys managed from General
+    const crossKeys = ["appearance.theme", "sound.uiSounds", "appearance.reduceMotion"];
+    const allKeys = [...Object.keys(userNs), ...crossKeys];
+    for (const key of new Set(allKeys)) {
+      const layers = (SettingsService as any).layers as Record<string, Map<string, unknown>>;
+      if (!layers.user.has(key)) continue;
+      const userVal = layers.user.get(key);
+      const defVal = layers.default.get(key);
+      if (JSON.stringify(userVal) !== JSON.stringify(defVal)) {
+        diffs.push({ key, current: userVal, default_: defVal });
+      }
     }
-  }, [confirmState]);
+    return diffs;
+  })();
 
-  const doRestore = useCallback(() => {
-    if (confirmState !== "restore") { setConfirmState("restore"); return; }
-    // Delete all user-layer general keys → falls back to defaults
+  const executeReset = useCallback((mode: "restore" | "reset") => {
     const ns = SettingsService.getNamespace("general.");
     for (const key of Object.keys(ns)) SettingsService.delete(key as any, "user");
-    SettingsService.delete("appearance.theme", "user");
-    SettingsService.delete("sound.uiSounds", "user");
-    SettingsService.delete("appearance.reduceMotion", "user");
-    toast.success("Restored recommended defaults");
-    setConfirmState("idle");
-    trackSettingChange("general.*", "custom", "defaults");
+    if (mode === "restore") {
+      SettingsService.delete("appearance.theme", "user");
+      SettingsService.delete("sound.uiSounds", "user");
+      SettingsService.delete("appearance.reduceMotion", "user");
+    }
+    toast.success(mode === "restore" ? "Restored recommended defaults" : "General preferences reset");
+    setPhase("idle");
+    trackSettingChange("general.*", "custom", mode);
     window.dispatchEvent(new CustomEvent("nova-settings-reset", { detail: { section: "general" } }));
-  }, [confirmState]);
-
-  const doReset = useCallback(() => {
-    if (confirmState !== "reset") { setConfirmState("reset"); return; }
-    const ns = SettingsService.getNamespace("general.");
-    for (const key of Object.keys(ns)) SettingsService.delete(key as any, "user");
-    toast.success("General preferences reset");
-    setConfirmState("idle");
-    trackSettingChange("general.*", "custom", "reset");
-    window.dispatchEvent(new CustomEvent("nova-settings-reset", { detail: { section: "general" } }));
-  }, [confirmState]);
-
-  const doClear = useCallback(() => {
-    if (confirmState !== "clear") { setConfirmState("clear"); return; }
-    const ns = SettingsService.getNamespace("general.");
-    for (const key of Object.keys(ns)) SettingsService.delete(key as any, "user");
-    toast.success("Custom overrides cleared");
-    setConfirmState("idle");
-    trackSettingChange("general.*", "custom", "cleared");
-  }, [confirmState]);
+  }, []);
 
   const doExport = useCallback(() => {
     const snapshot = SettingsService.exportSettings();
@@ -569,9 +714,59 @@ function GeneralResetActions() {
     a.click();
     URL.revokeObjectURL(url);
     toast.success("Settings snapshot exported");
-    trackSettingChange("general.export", null, "exported");
   }, []);
 
+  // ── Step 2: Preview panel ──
+  if (phase === "preview-restore" || phase === "preview-reset") {
+    const mode = phase === "preview-restore" ? "restore" : "reset";
+    const label = mode === "restore" ? "Restore Defaults" : "Reset Preferences";
+    return (
+      <VStack spacing="tight">
+        <HStack spacing="tight" align="center" justify="between">
+          <div className="flex items-center gap-1.5">
+            <AlertTriangle className="h-3.5 w-3.5 text-[hsl(38_85%_50%)]" />
+            <NovaText variant="body" className="!font-semibold">{label}</NovaText>
+          </div>
+          <NovaButton variant="secondary" onClick={() => setPhase("idle")} className="!text-[9px] !py-1 !px-2">
+            Cancel
+          </NovaButton>
+        </HStack>
+        <NovaText variant="label" muted className="!text-[9px]">
+          {changedKeys.length === 0
+            ? "No custom overrides found — settings are already at defaults."
+            : `The following ${changedKeys.length} setting${changedKeys.length > 1 ? "s" : ""} will revert:`}
+        </NovaText>
+        {changedKeys.length > 0 && (
+          <div className="max-h-32 overflow-y-auto rounded-lg border border-border/30 bg-[hsl(0_0%_100%/0.02)]">
+            {changedKeys.map(({ key, current, default_ }) => (
+              <div key={key} className="flex items-center justify-between px-2.5 py-1.5 border-b border-border/10 last:border-b-0 text-[9px]">
+                <span className="text-foreground font-medium truncate max-w-[140px]" title={key}>
+                  {key.replace("general.", "").replace("appearance.", "").replace("sound.", "")}
+                </span>
+                <div className="flex items-center gap-1 shrink-0">
+                  <span className="text-destructive/70 line-through">{String(current)}</span>
+                  <span className="text-muted-foreground">→</span>
+                  <span className="text-[hsl(var(--trust-safe))]">{String(default_)}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+        {changedKeys.length > 0 && (
+          <NovaButton
+            variant="primary"
+            onClick={() => executeReset(mode)}
+            icon={<RotateCcw className="h-3 w-3" />}
+            className="!text-[9px] !py-1.5 !bg-[hsl(0_65%_50%)] hover:!bg-[hsl(0_65%_45%)] w-full"
+          >
+            Confirm — Revert {changedKeys.length} Setting{changedKeys.length > 1 ? "s" : ""}
+          </NovaButton>
+        )}
+      </VStack>
+    );
+  }
+
+  // ── Step 1: Action buttons ──
   return (
     <VStack spacing="tight">
       <HStack spacing="tight" justify="between" align="center">
@@ -579,13 +774,8 @@ function GeneralResetActions() {
           <NovaText variant="body">Restore Recommended Defaults</NovaText>
           <NovaText variant="label" muted className="!text-[9px]">Return to SITA's recommended configuration</NovaText>
         </VStack>
-        <NovaButton
-          variant={confirmState === "restore" ? "primary" : "secondary"}
-          onClick={doRestore}
-          icon={<RotateCcw className="h-3 w-3" />}
-          className={cn("!text-[9px] !py-1 !px-2.5", confirmState === "restore" && "!bg-[hsl(38_85%_50%)] hover:!bg-[hsl(38_85%_45%)]")}
-        >
-          {confirmState === "restore" ? "Confirm" : "Restore"}
+        <NovaButton variant="secondary" onClick={() => setPhase("preview-restore")} icon={<RotateCcw className="h-3 w-3" />} className="!text-[9px] !py-1 !px-2.5">
+          Restore
         </NovaButton>
       </HStack>
       <Divider />
@@ -594,28 +784,8 @@ function GeneralResetActions() {
           <NovaText variant="body">Reset General Preferences</NovaText>
           <NovaText variant="label" muted className="!text-[9px]">Clear all custom settings on this page</NovaText>
         </VStack>
-        <NovaButton
-          variant={confirmState === "reset" ? "primary" : "secondary"}
-          onClick={doReset}
-          icon={<Trash2 className="h-3 w-3" />}
-          className={cn("!text-[9px] !py-1 !px-2.5", confirmState === "reset" && "!bg-[hsl(0_65%_50%)] hover:!bg-[hsl(0_65%_45%)]")}
-        >
-          {confirmState === "reset" ? "Confirm Reset" : "Reset"}
-        </NovaButton>
-      </HStack>
-      <Divider />
-      <HStack spacing="tight" justify="between" align="center">
-        <VStack spacing="micro">
-          <NovaText variant="body">Clear Custom Overrides</NovaText>
-          <NovaText variant="label" muted className="!text-[9px]">Remove overrides while preserving account defaults</NovaText>
-        </VStack>
-        <NovaButton
-          variant={confirmState === "clear" ? "primary" : "secondary"}
-          onClick={doClear}
-          icon={<RotateCcw className="h-3 w-3" />}
-          className={cn("!text-[9px] !py-1 !px-2.5", confirmState === "clear" && "!bg-[hsl(0_65%_50%)] hover:!bg-[hsl(0_65%_45%)]")}
-        >
-          {confirmState === "clear" ? "Confirm" : "Clear"}
+        <NovaButton variant="secondary" onClick={() => setPhase("preview-reset")} icon={<Trash2 className="h-3 w-3" />} className="!text-[9px] !py-1 !px-2.5">
+          Reset
         </NovaButton>
       </HStack>
       <Divider />
