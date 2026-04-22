@@ -128,7 +128,7 @@ export default function AlertSimulationLab() {
         event_count: totalEvents,
         dedup_count: dedupCount,
         suppress_count: suppressCount,
-      } as Record<string, unknown>)
+      })
       .select("id")
       .single();
     if (runErr || !run) {
@@ -144,7 +144,7 @@ export default function AlertSimulationLab() {
       occurrence_count: 1,
       was_deduplicated: e.deduplicated,
       was_suppressed: e.suppressed,
-      simulation_run_id: (run as Record<string, unknown>).id,
+      simulation_run_id: run.id,
     }));
     const { error } = await supabase.from("alert_dedup_log").insert(rows);
     if (error) { toast({ title: "Events insert failed", description: error.message, variant: "destructive" }); return; }
