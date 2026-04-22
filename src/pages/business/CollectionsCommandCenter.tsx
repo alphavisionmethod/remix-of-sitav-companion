@@ -280,7 +280,7 @@ const CollectionsCommandCenter = () => {
             title="Approve Next Step"
             description={CHASE_SEQUENCE[selected.currentStep]?.action || "Proceed to next escalation"}
             accentColor="hsl(265 55% 58%)"
-            onApprove={() => {}}
+            onApprove={() => toast.info("Recommendation noted")}
           />
         )}
         <div className="flex gap-2">

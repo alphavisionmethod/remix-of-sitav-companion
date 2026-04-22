@@ -1,3 +1,4 @@
+import { toast } from "sonner";
 // ═══════════════════════════════════════════════════════════════
 // Concierge OS — Invisible Support Home
 // Soft, warm, relieving — gentlest motion + most breathing room
@@ -126,16 +127,16 @@ const ConciergeOverview = () => {
               title="Travel prep checklist for spring break"
               description="7-day trip checklist with pet sitter, packing, reservations"
               accentColor="hsl(285 55% 55%)"
-              onApprove={() => {}}
-              onDismiss={() => {}}
+              onApprove={() => toast.info("Recommendation noted")}
+              onDismiss={() => toast.info("Dismissed")}
               badge={<FreshnessBadge freshness="fresh" label="91% ready" />}
             />
             <ActionCard
               title="Plumber follow-up message draft"
               description="Requesting estimate timeline for kitchen leak repair"
               accentColor="hsl(285 55% 55%)"
-              onApprove={() => {}}
-              onDismiss={() => {}}
+              onApprove={() => toast.info("Recommendation noted")}
+              onDismiss={() => toast.info("Dismissed")}
             />
           </div>
         </ListRevealItem>
