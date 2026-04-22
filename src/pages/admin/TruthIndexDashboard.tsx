@@ -72,7 +72,7 @@ export default function TruthIndexDashboard() {
 
       {/* Individual Indices */}
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {(isDemoMode ? DEMO_INDEX_CONFIG : [] as typeof DEMO_INDEX_CONFIG).map(cfg => {
+        {(isDemoMode ? DEMO_INDEX_CONFIG : [] as unknown as typeof DEMO_INDEX_CONFIG).map(cfg => {
           const idx = indices?.[cfg.key as keyof TruthIndexSummary] as { score: number; label: string; detail: string } | undefined;
           const score = idx?.score ?? 0;
           return (

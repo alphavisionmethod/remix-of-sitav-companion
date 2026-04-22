@@ -135,6 +135,7 @@ const StepCard = ({
   step: BuilderStep; index: number; totalSteps: number;
   onUpdate: (s: BuilderStep) => void; onRemove: () => void; onDuplicate: () => void;
 }) => {
+  const { isDemoMode } = useDataMode();
   const [expanded, setExpanded] = useState(false);
   const actionMeta = step.action ? ACTION_TYPES.find(a => a.type === step.action) : null;
   const stepMeta = STEP_TYPES.find(s => s.type === step.type);
@@ -368,7 +369,9 @@ const AddStepMenu = ({ onAdd }: { onAdd: (type: BuilderStep["type"], action?: Au
 
 // ── Trigger Config Panel ─────────────────────────────────────────
 
-const TriggerPanel = ({ trigger, onChange }: { trigger: BuilderTrigger; onChange: (t: BuilderTrigger) => void }) => (
+const TriggerPanel = ({ trigger, onChange }: { trigger: BuilderTrigger; onChange: (t: BuilderTrigger) => void }) => {
+  const { isDemoMode } = useDataMode();
+  return (
   <SitaCard className="p-4" hover={false}>
     <SitaCardTitle sub="What starts this playbook">Trigger</SitaCardTitle>
     <div className="mt-3 space-y-3">
@@ -422,6 +425,7 @@ const TriggerPanel = ({ trigger, onChange }: { trigger: BuilderTrigger; onChange
     </div>
   </SitaCard>
 );
+};
 
 // ── Preview Panel ────────────────────────────────────────────────
 

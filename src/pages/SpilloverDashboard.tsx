@@ -22,8 +22,7 @@ import { useDataMode } from "@/contexts/DataModeContext";
 
 // ── Spillover graph (simplified visual) ──────────────────────
 
-const SpilloverGraph = () => {);
-}
+const SpilloverGraph = () => {
   const { isDemoMode } = useDataMode();
   return (
   <div className="relative aspect-square max-w-[280px] mx-auto">
@@ -65,6 +64,7 @@ const SpilloverGraph = () => {);
     ))}
   </div>
 );
+};
 
 export default function SpilloverDashboard() {
   const { isDemoMode } = useDataMode();

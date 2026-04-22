@@ -124,6 +124,7 @@ function ActionCard({ action, onApprove, onReject }: { action: DemoActionRequest
 }
 
 export default function ActionsApprovals() {
+  const { isDemoMode } = useDataMode();
   const [filter, setFilter] = useState("all");
   const navigate = useNavigate();
 

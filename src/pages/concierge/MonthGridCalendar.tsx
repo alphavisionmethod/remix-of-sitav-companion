@@ -12,6 +12,7 @@ import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
 import {
   Calendar, ChevronLeft, ChevronRight, Plus, Clock, Users, MapPin, CheckSquare
 } from "lucide-react";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 interface CalendarEvent {
   id: string;
@@ -24,6 +25,7 @@ interface CalendarEvent {
 
 function useCalendarData(year: number, month: number) {
   const { isDemoMode } = useDataMode();
+  const { user } = useAuth();
 
   return useQuery({
     queryKey: ["calendar-data", user?.id, year, month, isDemoMode],
@@ -54,7 +56,6 @@ function useCalendarData(year: number, month: number) {
 
 // Moved to shared constants
 import { MONTH_NAMES, DAY_NAMES } from "@/lib/constants/ui-config";
-import { useDataMode } from "@/contexts/DataModeContext";
 
 
 const MonthGridCalendar = () => {

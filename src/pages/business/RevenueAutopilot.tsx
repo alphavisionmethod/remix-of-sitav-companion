@@ -82,7 +82,9 @@ const LeakageRadar = () => {
   );
 };
 
-const RecoveryEngine = () => (
+const RecoveryEngine = () => {
+  const { isDemoMode } = useDataMode();
+  return (
   <div className="space-y-4">
     <div className="grid gap-3 sm:grid-cols-3">
       <KPITile label="Active Recoveries" value={String(SUMMARY.activeRecoveryActions)} sub="In progress" />
@@ -119,7 +121,11 @@ const RecoveryEngine = () => (
   </div>
 );
 
-const OpportunitiesRanked = () => (
+};
+
+const OpportunitiesRanked = () => {
+  const { isDemoMode } = useDataMode();
+  return (
   <div className="space-y-4">
     <div className="space-y-2">
       {(isDemoMode ? DEMO_OPPORTUNITIES : [] as typeof DEMO_OPPORTUNITIES).map((opp, i) => (
@@ -149,7 +155,10 @@ const OpportunitiesRanked = () => (
   </div>
 );
 
+};
+
 const RecoveredValueLedger = () => {
+  const { isDemoMode } = useDataMode();
   const summary = computeRecoveredValueSummary(DEMO_RECOVERED);
   return (
     <div className="space-y-4">

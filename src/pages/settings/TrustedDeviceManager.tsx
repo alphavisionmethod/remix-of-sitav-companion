@@ -11,13 +11,13 @@ const MOCK_DEVICES = [
 ];
 
 const deviceIcon = (type: "desktop" | "phone" | "tablet") => {
-  const { isDemoMode } = useDataMode();
   if (type === "phone") return <Smartphone className="h-5 w-5" />;
   if (type === "tablet") return <Tablet className="h-5 w-5" />;
   return <Monitor className="h-5 w-5" />;
 };
 
 const TrustedDeviceManager = () => {
+  const { isDemoMode } = useDataMode();
   return (
     <div className="space-y-6 p-6 max-w-3xl mx-auto">
       <div>
