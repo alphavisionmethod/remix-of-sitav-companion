@@ -2,8 +2,7 @@ import { useMemo } from "react";
 import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
-import { Gauge, Brain, Activity, CircleDot, Layers, MapPin, Heart, Phone, Users, AlertTriangle, Star, MessageSquare, TrendingUp, Link2, FileText, Target, DollarSign, ArrowRight } from "lucide-react";
+import { Gauge, Brain, Activity, CircleDot, Layers, MapPin, Heart, Phone, Users, AlertTriangle, Star, MessageSquare, TrendingUp, Link2, FileText, Target, DollarSign, ArrowRight, BarChart3, Search, Sparkles } from "lucide-react";
 import type { OnboardingState } from "./types";
 
 const BOTTLENECK_VALUES: Record<string, { label: string; value: number }> = {
@@ -87,7 +86,7 @@ export default function LiveOfficeSidebar({ state, stage }: { state: OnboardingS
     { name: "Automation Advisor", active: stage >= 16 },
   ], [state, stage]);
 
-  if (stage === 0 || stage >= 18) return null;
+  // Show on all stages with adapted content
 
   const colorMap = { detected: "bg-primary/10 text-primary", ready: "bg-blue-500/10 text-blue-400", warning: "bg-amber-500/10 text-amber-400", opportunity: "bg-emerald-500/10 text-emerald-400" };
   const iconColorMap = { detected: "text-primary", ready: "text-blue-400", warning: "text-amber-400", opportunity: "text-emerald-400" };
@@ -95,13 +94,68 @@ export default function LiveOfficeSidebar({ state, stage }: { state: OnboardingS
   return (
     <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="hidden lg:block w-72 flex-shrink-0">
       <div className="sticky top-28 space-y-4">
-        <Card className="bg-card/60 border-border/40 backdrop-blur-sm">
+        {/* Readiness gauge with circular ring */}
+        <Card className="bg-card/60 border-border/40 backdrop-blur-sm overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent pointer-events-none" />
           <CardContent className="p-4">
-            <div className="flex items-center gap-2 mb-2"><Gauge className="h-3.5 w-3.5 text-primary" /><p className="text-[11px] font-semibold text-foreground">Revenue Office Forming</p></div>
-            <Progress value={readiness} className="h-1.5 mb-1.5" />
-            <div className="flex items-center justify-between">
-              <p className="text-[10px] text-muted-foreground">{readiness}% personalized</p>
-              <Badge className="bg-primary/10 text-primary text-[8px]">{modulesActivated} modules</Badge>
+            <div className="flex items-center gap-3">
+              {/* Circular progress ring */}
+              <div className="relative w-12 h-12 flex-shrink-0">
+                <svg className="w-12 h-12 -rotate-90" viewBox="0 0 48 48">
+                  <circle cx="24" cy="24" r="20" fill="none" stroke="hsl(var(--muted))" strokeWidth="3" opacity="0.3" />
+                  <motion.circle
+                    cx="24" cy="24" r="20" fill="none"
+                    stroke={readiness > 70 ? "hsl(150 60% 50%)" : readiness > 40 ? "hsl(45 90% 50%)" : "hsl(var(--primary))"}
+                    strokeWidth="3" strokeLinecap="round"
+                    strokeDasharray={`${2 * Math.PI * 20}`}
+                    animate={{ strokeDashoffset: 2 * Math.PI * 20 * (1 - readiness / 100) }}
+                    transition={{ duration: 0.8, ease: "easeOut" }}
+                  />
+                </svg>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <span className="text-[10px] font-bold text-foreground">{readiness}%</span>
+                </div>
+              </div>
+              <div>
+                <p className="text-[11px] font-semibold text-foreground">
+                  {state.businessName ? state.businessName : "Revenue Office"}
+                </p>
+                <p className="text-[9px] text-muted-foreground">{stage === 0 ? "Waiting to begin…" : "Forming…"}</p>
+                <Badge className="bg-primary/10 text-primary text-[8px] mt-1">{modulesActivated} modules</Badge>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Module activation list */}
+        <Card className="bg-card/60 border-border/40 backdrop-blur-sm">
+          <CardContent className="p-3">
+            <div className="flex items-center gap-2 mb-2.5">
+              <Sparkles className="h-3 w-3 text-primary" />
+              <p className="text-[10px] font-semibold text-foreground">Modules</p>
+            </div>
+            <div className="space-y-1.5">
+              {[
+                { label: "Revenue Boardroom", icon: BarChart3, active: state.revenueSources.length > 0 },
+                { label: "Journey Twin", icon: Target, active: !!state.journeyTemplate },
+                { label: "Leak Detector", icon: Search, active: state.growthBottlenecks.length > 0 },
+                { label: "Advisor Board", icon: Brain, active: stage >= 3 },
+                { label: "Automation Office", icon: Activity, active: !!state.automationLevel },
+                { label: "Opportunity Engine", icon: TrendingUp, active: state.leadSources.length > 0 },
+              ].map((m, i) => (
+                <motion.div key={m.label} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: i * 0.05 }}
+                  className="flex items-center gap-2 p-1.5 rounded-lg transition-colors"
+                  style={{ background: m.active ? "hsl(var(--primary) / 0.05)" : "transparent" }}
+                >
+                  <div className={`p-1 rounded transition-colors ${m.active ? "bg-gradient-to-br from-primary/20 to-violet-500/10" : "bg-muted/30"}`}>
+                    <m.icon className={`h-3 w-3 ${m.active ? "text-primary" : "text-muted-foreground/30"}`} />
+                  </div>
+                  <p className={`text-[10px] flex-1 ${m.active ? "text-foreground" : "text-muted-foreground/40"}`}>{m.label}</p>
+                  <div className={`w-1.5 h-1.5 rounded-full transition-colors ${
+                    m.active ? "bg-emerald-400 shadow-sm shadow-emerald-400/50" : "bg-muted-foreground/15"
+                  }`} />
+                </motion.div>
+              ))}
             </div>
           </CardContent>
         </Card>
