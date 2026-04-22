@@ -3,6 +3,7 @@ import globals from "globals";
 import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
 import tseslint from "typescript-eslint";
+import noImportInImport from "./eslint-rules/no-import-in-import.js";
 
 export default tseslint.config(
   { ignores: ["dist"] },
@@ -16,11 +17,13 @@ export default tseslint.config(
     plugins: {
       "react-hooks": reactHooks,
       "react-refresh": reactRefresh,
+      "sita-custom": { rules: { "no-import-in-import": noImportInImport } },
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
       "react-refresh/only-export-components": ["warn", { allowConstantExport: true }],
       "@typescript-eslint/no-unused-vars": "off",
+      "sita-custom/no-import-in-import": "error",
       "no-restricted-imports": ["warn", {
         "patterns": [
           // ── Backend plane: core-services ──
