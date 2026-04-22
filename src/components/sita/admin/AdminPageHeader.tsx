@@ -5,6 +5,7 @@
 
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
+import { Typography } from "@/components/sita/Typography";
 
 interface AdminPageHeaderProps {
   icon: React.ElementType;
@@ -40,7 +41,7 @@ export function AdminPageHeader({ icon: Icon, title, subtitle, children, accent 
             <Icon className={cn("h-7 w-7", iconColor)} />
           </div>
           <div>
-            <h1 className="font-display text-xl font-bold text-foreground">{title}</h1>
+            <Typography role="appTitle" as="h1">{title}</Typography>
             <p className="text-sm text-muted-foreground">{subtitle}</p>
           </div>
         </div>

@@ -1,3 +1,4 @@
+import { PageShell } from "@/components/sita/PageShell";
 import { motion } from "framer-motion";
 import { Globe, Palette, ShoppingCart, BarChart3, Rocket, Wrench, ArrowRight, Sparkles, Layout, Monitor, Store, Megaphone, Shield, Smartphone, Server } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
@@ -11,7 +12,7 @@ export default function PresenceGate() {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-background p-6 space-y-8">
+    <PageShell width="wide">
       <DPOSubNav />
 <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <div className="flex items-center gap-3 mb-1">
@@ -81,6 +82,6 @@ export default function PresenceGate() {
           <Wrench className="w-3.5 h-3.5 mr-1.5" /> Run Diagnostics
         </Button>
       </div>
-    </div>
+    </PageShell>
   );
 }

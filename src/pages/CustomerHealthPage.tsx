@@ -1,13 +1,13 @@
 import { SitaPageHeader } from "@/components/sita/SitaCard";
-import { motion } from "framer-motion";
 import { CustomerHealthDashboard } from "@/components/business/CustomerHealthDashboard";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageShell } from "@/components/sita/PageShell";
+import { Typography } from "@/components/sita/Typography";
 
 const CustomerHealthPage = () => (
-  <motion.div className="mx-auto max-w-7xl space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
-<SitaPageHeader title="Customer Health" subtitle="Lifecycle stages, health scores, and churn risk across your portfolio" />
+  <PageShell width="wide">
+    <SitaPageHeader title="Customer Health" subtitle="Lifecycle stages, health scores, and churn risk across your portfolio" />
     <CustomerHealthDashboard />
-  </motion.div>
+  </PageShell>
 );
 
 export default CustomerHealthPage;

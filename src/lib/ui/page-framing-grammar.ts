@@ -40,4 +40,9 @@ export const PAGE_FRAMING_GRAMMAR = {
     examples: ["LandingPage", "OSDesktop", "OnboardingFlow", "NotFound"],
     note: "No shell — intentionally full viewport",
   },
+  admin: {
+    shell: "AdminPageHeader",
+    note: "Admin pages use AdminPageHeader as their shell pattern. NOT wrapped in PageShell — they have their own consistent framing.",
+    examples: ["All /admin/* routes, MissionControl sub-pages"],
+  },
 } as const;

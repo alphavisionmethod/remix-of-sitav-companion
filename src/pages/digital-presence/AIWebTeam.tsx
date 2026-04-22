@@ -1,3 +1,4 @@
+import { PageShell } from "@/components/sita/PageShell";
 import { motion, AnimatePresence } from "framer-motion";
 import { Sparkles, Globe, Palette, Target, Wrench, Search, Store, Megaphone, Settings, Eye, Layout, MessageSquare, ChevronDown, ChevronUp, AlertTriangle, CheckCircle, Brain, Users, Zap, TrendingUp, Shield, ArrowRight } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -271,7 +272,7 @@ export default function AIWebTeam() {
   const highImpactCount = AGENTS.reduce((sum, a) => sum + a.observations.filter(o => o.impact === "high").length, 0);
 
   return (
-    <div className="min-h-screen bg-background p-6 space-y-6">
+    <PageShell width="wide">
       <DPOSubNav />
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <div className="flex items-center gap-3 mb-1">
@@ -493,6 +494,6 @@ export default function AIWebTeam() {
           </Card>
         </TabsContent>
       </Tabs>
-    </div>
+    </PageShell>
   );
 }

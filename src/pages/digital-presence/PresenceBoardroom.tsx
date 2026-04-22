@@ -1,3 +1,4 @@
+import { PageShell } from "@/components/sita/PageShell";
 import { motion } from "framer-motion";
 import { BarChart3, Globe, TrendingUp, AlertTriangle, Eye, ShoppingCart, ArrowUpRight, ArrowDownRight, Sparkles, Clock, ArrowRight } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -17,7 +18,7 @@ const DEMO_ADVISOR_SIGNALS: any[] = [];
 export default function PresenceBoardroom() {
   const navigate = useNavigate();
   return (
-    <div className="min-h-screen bg-background p-6 space-y-6">
+    <PageShell width="wide">
       <DPOSubNav />
 <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="text-2xl font-bold text-foreground">Presence Boardroom</h1>
@@ -136,6 +137,6 @@ export default function PresenceBoardroom() {
           </div>
         </CardContent>
       </Card>
-    </div>
+    </PageShell>
   );
 }
