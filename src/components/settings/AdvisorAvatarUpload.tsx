@@ -11,6 +11,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { AdvisorImage, type AdvisorDomain } from "@/components/advisors/AdvisorImage";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
+import { cropAndResizePortrait } from "@/lib/advisors/portrait-crop-resize";
 
 const DOMAINS: { domain: AdvisorDomain; label: string }[] = [
   { domain: "business", label: "Business" },
@@ -56,10 +57,11 @@ export function AdvisorAvatarUpload() {
 
     setUploading(activeDomain);
     try {
+      const processed = await cropAndResizePortrait(file);
       const path = `${user.id}/${activeDomain}.png`;
       const { error } = await supabase.storage
         .from("advisor-avatars")
-        .upload(path, file, { upsert: true, contentType: file.type });
+        .upload(path, processed, { upsert: true, contentType: "image/png" });
 
       if (error) throw error;
 

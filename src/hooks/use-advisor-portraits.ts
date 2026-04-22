@@ -3,6 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { getAvatarCache, setAvatarCache, invalidateAvatarCache, avatarCacheKey } from "@/lib/advisors/avatar-url-cache";
 import { sanitizeAvatarUrl } from "@/lib/advisors/avatar-url-validation";
+import { cropAndResizePortrait } from "@/lib/advisors/portrait-crop-resize";
 
 // ── Validation constants ──────────────────────────────────────
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
@@ -117,12 +118,14 @@ export function useAdvisorPortraits(): AdvisorPortraitState {
       if (!user) throw new Error("Not authenticated");
 
       const ext = file.name.split(".").pop() || "png";
-      const path = `${user.id}/${advisorId}.${ext}`;
+      // Crop & resize to square before upload
+      const processed = await cropAndResizePortrait(file);
+      const path = `${user.id}/${advisorId}.png`;
 
       // Upload to storage
       const { error: uploadError } = await supabase.storage
         .from("advisor-portraits")
-        .upload(path, file, { upsert: true });
+        .upload(path, processed, { upsert: true });
       if (uploadError) throw uploadError;
 
       // Get public URL
