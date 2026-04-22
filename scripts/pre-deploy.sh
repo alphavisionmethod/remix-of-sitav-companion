@@ -8,6 +8,15 @@ pass() { REPORT="$REPORT\n✅ $1"; echo "✅ PASS: $1"; }
 step "TypeScript type-check"
 if npx tsc --noEmit 2>&1; then pass "TypeScript — zero errors"; else fail "TypeScript errors"; fi
 
+step "ESLint"
+if npx eslint . --max-warnings 0 2>&1; then pass "Lint — zero warnings"; else fail "Lint errors"; fi
+
+step "Unit tests"
+if npx vitest run 2>&1; then pass "Unit tests — all passed"; else fail "Unit tests failed"; fi
+
+step "Deployment readiness gate"
+if npx vitest run src/__tests__/deployment/ src/__tests__/meta/ src/__tests__/ci/ src/__tests__/security/security-fabric-behavioral.test.ts 2>&1; then pass "Deployment readiness gate — passed"; else fail "Deployment readiness gate failed"; fi
+
 step "Vite production build"
 if npx vite build 2>&1; then pass "Vite build — success"; else fail "Vite build failed"; fi
 
