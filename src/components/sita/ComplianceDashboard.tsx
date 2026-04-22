@@ -12,11 +12,11 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
 import {
-import { useDataMode } from "@/contexts/DataModeContext";
   Shield, CheckCircle, AlertTriangle, XCircle, Clock, FileText,
   Lock, Eye, Activity, Database, Users, Server, Key,
   BarChart3, Target, Gauge, ChevronRight, Radio,
 } from "lucide-react";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 // ── Types ───────────────────────────────────────────────────────
 

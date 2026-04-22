@@ -9,11 +9,11 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import {
-import { useDataMode } from "@/contexts/DataModeContext";
   DEMO_RATING_DIST, DEMO_REVIEWS, DEMO_REV_CAMPAIGNS_REPUTATION_ENGINE as DEMO_CAMPAIGNS,
   DEMO_REV_PLATFORMS as DEMO_PLATFORMS, DEMO_REV_STATS_REPUTATION_ENGINE as DEMO_STATS,
   DEMO_TESTIMONIALS, DEMO_SENTIMENT_TREND,
 } from "@/data/seed/revenue-office";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function ReputationEngine() {
   const { isDemoMode } = useDataMode();

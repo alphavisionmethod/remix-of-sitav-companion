@@ -7,11 +7,11 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
-import { useDataMode } from "@/contexts/DataModeContext";
   CalendarDays, Clock, CheckCircle2, AlertTriangle, Phone,
   MessageSquare, User, MapPin, RefreshCw, Sparkles,
   ChevronRight, UserCheck, XCircle, Send, Bell
 } from "lucide-react";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 type ConfirmationStatus = "confirmed" | "pending" | "unconfirmed" | "cancelled" | "no-show";
 

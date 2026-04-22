@@ -12,11 +12,11 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
-import { useDataMode } from "@/contexts/DataModeContext";
   Target, CheckCircle2, Clock, AlertTriangle, Play, Users, Brain,
   ChevronDown, ChevronRight, Zap, Shield, Gauge, Terminal, GitBranch,
   Flag, BarChart3, Link2, XCircle
 } from "lucide-react";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 interface Objective {
   id: string;

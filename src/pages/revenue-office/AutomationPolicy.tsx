@@ -15,11 +15,11 @@ import {
 import AutomationSubNav from "./AutomationSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import {
-import { useDataMode } from "@/contexts/DataModeContext";
   DEMO_humanVsAI, DEMO_policies, DEMO_trustLevels,
   DEMO_COMMERCIAL_CONSTITUTION, DEMO_NO_GUESS_RULES,
   DEMO_PAUSE_ROLLBACK, DEMO_HANDOFF_SIGNALS
 } from "@/data/seed/revenue-office";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const ESCALATION_RULES = [
   { trigger: "Automation failure rate > 20%", action: "Pause automation, notify owner, create incident", severity: "critical" as const, lastTriggered: "Never", cooldown: "1hr" },

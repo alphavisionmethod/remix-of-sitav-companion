@@ -5,11 +5,11 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import {
-import { useDataMode } from "@/contexts/DataModeContext";
   Eye, Play, TrendingUp, TrendingDown, Minus, AlertTriangle,
   CheckCircle, Sparkles, BarChart3, ChevronDown, RefreshCw,
   DollarSign, Activity, Shield, Users, Zap
 } from "lucide-react";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 interface SimulationMetric {
   label: string;

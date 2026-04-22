@@ -15,13 +15,13 @@ import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import {
-import { useDataMode } from "@/contexts/DataModeContext";
   FileText, Bold, Italic, Underline, List, ListOrdered, Link, Image as ImageIcon,
   Code, AlignLeft, AlignCenter, AlignRight, Heading1, Heading2, Heading3,
   Save, Download, Eye, Edit3, MessageSquare, History, Paperclip,
   Undo2, Redo2, Strikethrough, Quote, Table, Minus, CheckSquare,
   Clock, Shield, Sparkles, FileBox, ChevronRight, Plus, Trash2,
 } from "lucide-react";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 // ── Templates ──────────────────────────────────────────────────
 const TEMPLATES = [

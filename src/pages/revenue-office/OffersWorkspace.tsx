@@ -8,12 +8,12 @@ import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import {
-import { useDataMode } from "@/contexts/DataModeContext";
   DEMO_REV_BUNDLES as DEMO_BUNDLES,
   DEMO_REV_PRODUCTS as DEMO_PRODUCTS,
   DEMO_OFFER_UPSELLS,
   DEMO_PRICING_EXPERIMENTS,
 } from "@/data/seed/revenue-office";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function OffersWorkspace() {
   const { isDemoMode } = useDataMode();

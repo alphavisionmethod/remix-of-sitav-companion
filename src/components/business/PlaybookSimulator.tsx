@@ -14,7 +14,6 @@ import {
   ChevronRight, Sparkles
 } from "lucide-react";
 import {
-import { useDataMode } from "@/contexts/DataModeContext";
   simulatePlaybook,
   MOCK_CUSTOMERS,
   type PlaybookDraftSim,
@@ -22,6 +21,7 @@ import { useDataMode } from "@/contexts/DataModeContext";
   type SimulationResult,
   type MockCustomer,
 } from "@/lib/domain-engines/playbook-simulator";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 // ── Icon map ─────────────────────────────────────────────────────
 
