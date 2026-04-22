@@ -7,6 +7,7 @@ import { fromTable } from "@/lib/supabase-helpers";
 import { DEMO_RECEIPTS } from "@/data/seed/investment";
 import { POST_TRADE_REVIEWS } from "@/domains/investment/mock-data";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 interface Receipt {
   id: string;

@@ -26,6 +26,7 @@ import {
   DEMO_OVERVIEW_BAND,
   DEMO_RECENT_HEALS,
 } from "@/data/seed/admin-platform";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const HEAL_STATS = { attempted: 12, verified: 11, blocked: 3, rolledBack: 1 };
 
@@ -52,6 +53,7 @@ const AIEngineeringBoard = () => {
   const [tab, setTab] = useState("overview");
 
   type MissionRow = { title: string; status: string; confidence: number; progress: number; agent: string; blocker?: string };
+  const { isDemoMode } = useDataMode();
   const missionsList = (engData.missions ?? DEMO_MISSIONS) as MissionRow[];
   const activeMissions = missionsList.filter((m) => ["in_progress", "simulated", "ready_for_approval"].includes(m.status)).length;
   const blockedMissions = missionsList.filter((m) => m.status === "blocked").length;

@@ -10,6 +10,7 @@ import {
 } from "@/lib/core-services/policy-engine";
 import type { ReceiptService, Receipt } from "@/lib/core-services/receipt-service";
 import { useSitaKernel } from "@/contexts/SitaKernelContext";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 export interface AdvisorResponse {
   request_id: string;
@@ -139,6 +140,7 @@ export function useBrainCore({ advisor, secondaryAdvisor }: UseBrainCoreOptions)
 
 // ── Demo Mode Hook ──────────────────────────────────────────────────────────
 export function useDemoMode() {
+  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
   const queryClient = useQueryClient();
 

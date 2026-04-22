@@ -90,6 +90,7 @@ import RelationshipDossier from "@/pages/business/RelationshipDossier";
 import BackgroundTaskCenter from "@/pages/business/BackgroundTaskCenter";
 import BusinessAdvisorBoardPage from "@/pages/business/BusinessAdvisorBoardPage";
 import CustomerDetail from "@/pages/CustomerDetail";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 // ── Sidebar structure ─────────────────────────────────────────
 
@@ -298,6 +299,7 @@ function BoardroomStatusStrip({ pendingCount, decisionCount, synthesisScore }: {
 }
 
 function DomainBoardroomView({ domain }: { domain: "business" | "finance" | "concierge" }) {
+  const { isDemoMode } = useDataMode();
   const { escalations, decisions, escalate, isDemoMode, synthesis } = useBoardroomBridge(domain);
   return (
     <div className="space-y-4 p-4">

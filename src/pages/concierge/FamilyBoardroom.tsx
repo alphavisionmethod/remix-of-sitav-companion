@@ -15,6 +15,7 @@ import {
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
 import { DEMO_carryover, DEMO_nextMoves, DEMO_priorities, DEMO_proofSummary, DEMO_scheduleConflicts } from "@/data/seed/concierge";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 
 const weeklyStats = {
@@ -32,6 +33,7 @@ type BoardroomView = "daily" | "weekly" | "school" | "shopping" | "travel" | "mo
 
 const FamilyBoardroom = () => {
   const { isDemo: isDemoMode } = useAuth();
+  const { isDemoMode } = useDataMode();
   const [view, setView] = useState<BoardroomView>("daily");
 
   return (

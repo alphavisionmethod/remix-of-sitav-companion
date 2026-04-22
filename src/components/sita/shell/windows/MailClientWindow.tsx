@@ -52,6 +52,7 @@ const CATEGORIES = [
 ];
 
 export function MailClientWindow() {
+  const { isDemoMode } = useDataMode();
   const [activeFolder, setActiveFolder] = useState("inbox");
   const [selectedId, setSelectedId] = useState<string | null>("1");
   const [activeCategory, setActiveCategory] = useState<string | null>(null);

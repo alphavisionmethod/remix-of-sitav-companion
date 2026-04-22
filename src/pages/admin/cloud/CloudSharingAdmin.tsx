@@ -38,6 +38,7 @@ const PERMISSION_COLORS: Record<string, string> = {
 };
 
 export function CloudSharingAdmin() {
+  const { isDemoMode } = useDataMode();
   const [activeSection, setActiveSection] = useState<"shares" | "links" | "workspaces" | "presence">("shares");
   const stats = sharingEngine.getStats();
 

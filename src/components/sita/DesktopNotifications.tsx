@@ -38,6 +38,7 @@ const MAX_VISIBLE = 3;
 const STAGGER_DELAY_MS = 3000;
 
 export function DesktopNotifications() {
+  const { isDemoMode } = useDataMode();
   const location = useLocation();
   const isDesktop = location.pathname === "/" || location.pathname === "/home" || location.pathname === "/desktop";
   const [notifications, setNotifications] = useState<DesktopNotification[]>([]);

@@ -9,9 +9,11 @@ import { ArrowLeft, CheckCircle, AlertTriangle, RefreshCw, Trash2, Activity, Clo
 import { DEMO_CONNECTIONS } from "@/data/seed/integrations";
 import { getProviderById } from "@/data/seed/integrations";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 
 export default function ConnectionDetail() {
+  const { isDemoMode } = useDataMode();
   const { isDemo: isDemoMode } = useAuth();
   const { connectionId } = useParams();
   const navigate = useNavigate();

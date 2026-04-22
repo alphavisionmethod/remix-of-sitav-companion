@@ -15,7 +15,8 @@ import { useDataMode } from "@/contexts/DataModeContext";
 
 // Mock customer data keyed by ID
 const CustomerDetail = ({
-  const { isDemoMode } = useDataMode(); customerId: propId }: { customerId?: string }) => {
+  customerId: propId }: { customerId?: string }) => {
+  const { isDemoMode } = useDataMode();
   const params = useParams<{ id: string }>();
   const id = propId || params.id;
   const { navigateTo } = useBusinessNavigation();

@@ -16,6 +16,7 @@ import type { ReadinessInput } from "@/domains/engines/readiness-engine";
 import { useOSRuntime } from "@/hooks/useOSRuntime";
 import { useMemo } from "react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 
 

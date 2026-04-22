@@ -3,6 +3,7 @@ import { render, RenderOptions } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { MemoryRouter } from "react-router-dom";
 import { vi } from "vitest";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 // ── Mock user for authenticated test rendering ──
 const MOCK_USER = {

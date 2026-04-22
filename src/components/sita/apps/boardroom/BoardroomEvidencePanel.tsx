@@ -85,6 +85,7 @@ const TRUST_POSTURE = {
 };
 
 export function BoardroomEvidencePanel({ open, onClose }: Props) {
+  const { isDemoMode } = useDataMode();
   const [expandedLineage, setExpandedLineage] = useState<string | null>(null);
   const [activeFilter, setActiveFilter] = useState<EvidenceType | "all">("all");
 

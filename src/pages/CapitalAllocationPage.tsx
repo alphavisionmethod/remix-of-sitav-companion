@@ -14,6 +14,7 @@ import { fromTable } from "@/lib/supabase-helpers";
 import { ASSET_COLORS } from "@/lib/constants/ui-config";
 import { DEMO_ALLOCATIONS } from "@/data/seed/core-pages";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 
 

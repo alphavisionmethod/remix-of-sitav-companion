@@ -20,6 +20,7 @@ import {
   ChevronDown, ChevronUp,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 // ── Helpers ──────────────────────────────────────────────────
 

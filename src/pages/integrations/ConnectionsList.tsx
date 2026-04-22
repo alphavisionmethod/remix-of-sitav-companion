@@ -15,6 +15,7 @@ import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
 import { EmptyState } from "@/components/sita/SitaComponents";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function ConnectionsList() {
   const [tab, setTab] = useState("connections");

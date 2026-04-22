@@ -10,6 +10,7 @@ import {
   ChevronRight, MessageSquare, Wrench, Eye, ArrowUp,
   FileText, Activity, Zap
 } from "lucide-react";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 type CaseStatus = "open" | "investigating" | "waiting" | "resolved" | "escalated";
 type CasePriority = "low" | "medium" | "high" | "critical";

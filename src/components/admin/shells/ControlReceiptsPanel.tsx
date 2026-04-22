@@ -52,6 +52,7 @@ const DEMO_RECEIPTS: ControlReceipt[] = [
 ];
 
 export function ControlReceiptsPanel() {
+  const { isDemoMode } = useDataMode();
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
   return (

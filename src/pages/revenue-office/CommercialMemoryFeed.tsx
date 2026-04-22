@@ -9,12 +9,14 @@ import { Activity, TrendingUp, TrendingDown, Users, Star, Zap, Calendar, Package
 import { DEMO_memoryEvents, DEMO_MEMORY_PINNED } from "@/data/seed/revenue-office";
 import { useCommercialMemoryEvents } from "@/hooks/use-revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 
 const typeLabels: Record<string, string> = { campaign: "Campaign", reputation: "Reputation", crm: "CRM", booking: "Booking", advisor: "Advisor", funnel: "Funnel", membership: "Membership", offer: "Offer" };
 const allDomains = Object.keys(typeLabels);
 
 export default function CommercialMemoryFeed() {
+  const { isDemoMode } = useDataMode();
   const { isDemo: isDemoMode } = useAuth();
   const { data: liveMemoryEvents } = useCommercialMemoryEvents();
   const memoryEvents = isDemoMode ? DEMO_memoryEvents : (liveMemoryEvents && liveMemoryEvents.length > 0 ? liveMemoryEvents : []);

@@ -11,11 +11,13 @@ import { motion } from "framer-motion";
 import { useMemo } from "react";
 import { computeFinancialHealth } from "@/lib/services/finance-os/financial-health.service";
 import { computeIncomeQuality } from "@/lib/services/finance-os/income-quality.service";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 
 
 const FinancialHealthPulse = () => {
   const { isDemo: isDemoMode } = useAuth();
+  const { isDemoMode } = useDataMode();
 
   const health = useMemo(() => computeFinancialHealth({
     safeToSpendCents: 245000, monthlyIncomeCents: 850000, totalDebtCents: 4813000,

@@ -137,6 +137,7 @@ function RiskCell({ likelihood, impact }: { likelihood: number; impact: number }
 // ── Main Component ──────────────────────────────────────────────
 
 export function ComplianceDashboard() {
+  const { isDemoMode } = useDataMode();
   const [selectedView, setSelectedView] = useState<"controls" | "sla" | "risks">("controls");
   const [frameworkFilter, setFrameworkFilter] = useState<string>("all");
 

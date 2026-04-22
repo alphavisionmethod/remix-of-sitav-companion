@@ -24,6 +24,7 @@ import {
   ArrowRight, Users, RotateCcw, Filter, Workflow, ChevronRight, Eye,
   GitBranch, Kanban, ListOrdered, Target, Flame, Pause, Play,
 } from "lucide-react";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 
 

@@ -9,6 +9,7 @@ import { DEMO_opportunities, DEMO_OPPORTUNITY_THEMES } from "@/data/seed/revenue
 import { useState, useMemo } from "react";
 import { useDeals } from "@/hooks/use-revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 
 const categoryColors: Record<string, string> = {
@@ -23,6 +24,7 @@ const categoryColors: Record<string, string> = {
 const effortScore = (e: string) => e === "Low" ? 1 : e === "Medium" ? 2 : 3;
 
 export default function OpportunityBoard() {
+  const { isDemoMode } = useDataMode();
   const { isDemo: isDemoMode } = useAuth();
   const { data: liveDeals } = useDeals();
   const opportunities = isDemoMode ? DEMO_opportunities : (liveDeals && liveDeals.length > 0 ? liveDeals.map((d: any) => ({

@@ -23,6 +23,7 @@ import {
   ArrowRight, Volume2, VolumeX, Pin, XCircle, AlertCircle, Sparkles,
   MessageSquare, Calendar, Settings, Activity
 } from "lucide-react";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 
 

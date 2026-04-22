@@ -17,6 +17,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 type ViewVariant = "founder" | "household" | "finance" | "premium";
 
@@ -27,6 +28,7 @@ const sensitivityColor: Record<SensitivityLevel, string> = {
 
 const FilesOverview = () => {
   const { data: filesData = [] } = useFilesOverview();
+  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
   const queryClient = useQueryClient();
   const aiInsight = useAIInsight();

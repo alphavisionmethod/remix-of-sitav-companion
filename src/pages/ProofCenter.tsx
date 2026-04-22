@@ -26,6 +26,7 @@ import {
   Link2, Search, ChevronDown, ChevronRight, Shield, CheckCircle, XCircle,
   DollarSign, Briefcase, Home, Zap, Hash, Download, Layers
 } from "lucide-react";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 
 

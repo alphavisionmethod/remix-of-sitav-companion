@@ -44,6 +44,7 @@ const strengthConfig = {
 };
 
 export function RelationshipGraphPanel({ customerName, customerId }: RelationshipGraphPanelProps) {
+  const { isDemoMode } = useDataMode();
   return (
     <SitaCard hover={false} className="p-5">
       <div className="flex items-center justify-between mb-4">

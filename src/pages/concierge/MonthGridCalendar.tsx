@@ -23,6 +23,7 @@ interface CalendarEvent {
 }
 
 function useCalendarData(year: number, month: number) {
+  const { isDemoMode } = useDataMode();
   const { user, isDemo: isDemoMode } = useAuth();
 
   return useQuery({
@@ -54,6 +55,7 @@ function useCalendarData(year: number, month: number) {
 
 // Moved to shared constants
 import { MONTH_NAMES, DAY_NAMES } from "@/lib/constants/ui-config";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 
 const MonthGridCalendar = () => {

@@ -129,6 +129,7 @@ const APP_VISIBILITY: VisibilityItem[] = [
 ];
 
 export function PlatformAdaptationRules() {
+  const { isDemoMode } = useDataMode();
   return (
     <div className="space-y-6">
       <div>

@@ -11,6 +11,7 @@ import {
 import { useAIEngDomain } from "@/hooks/use-ai-engineering-data";
 import { DEMO_ADMIN_AGENTS as DEMO_AGENTS } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 
 const autonomyColors: Record<string, string> = {
@@ -24,6 +25,7 @@ const autonomyLevels = ["observe-only", "draft-only", "supervised", "auto-low-ri
 
 const AITeamRoster = () => {
   const { isDemo: isDemoMode } = useAuth();
+  const { isDemoMode } = useDataMode();
   const [selected, setSelected] = useState<string | null>("debugger");
   const [view, setView] = useState("roster");
   const [agentAutonomy, setAgentAutonomy] = useState<Record<string, string>>({});

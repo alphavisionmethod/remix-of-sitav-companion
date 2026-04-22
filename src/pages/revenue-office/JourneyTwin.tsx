@@ -8,6 +8,7 @@ import { DEMO_JOURNEY_STAGES } from "@/data/seed/revenue-office";
 import { useState, useMemo } from "react";
 import { useCustomerJourneyStages } from "@/hooks/use-revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 
 const AUTOMATION_OVERLAY = [
@@ -42,6 +43,7 @@ const statusColor = (s: string) => s === "active" ? "text-[hsl(var(--trust-safe)
 const statusBg = (s: string) => s === "active" ? "bg-[hsl(var(--trust-safe))]/10" : s === "degraded" ? "bg-orange-400/10" : "bg-muted/20";
 
 export default function JourneyTwin() {
+  const { isDemoMode } = useDataMode();
   const { isDemo: isDemoMode } = useAuth();
   const { data: liveJourneyStages } = useCustomerJourneyStages();
   const JOURNEY_STAGES = isDemoMode ? DEMO_JOURNEY_STAGES : (liveJourneyStages && liveJourneyStages.length > 0 ? liveJourneyStages.map((s: any) => ({

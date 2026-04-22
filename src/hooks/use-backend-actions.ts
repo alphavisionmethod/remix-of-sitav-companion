@@ -98,7 +98,6 @@ export function useCashflowAnalysis() {
 
 export function useCashflowForecast(horizonDays = 90) {
   const { user } = useAuth();
-  const { isDemoMode } = useDataMode();
   return useQuery<CashflowForecastResult>({
     queryKey: ["cashflow-forecast", user?.id, horizonDays],
     queryFn: () => invokeEdge("cashflow-calculate", { action: "forecast", horizon_days: horizonDays }),
@@ -118,7 +117,6 @@ export interface SafeToSpendResult {
 
 export function useSafeToSpend(reserveTargetCents = 0) {
   const { user } = useAuth();
-  const { isDemoMode } = useDataMode();
   return useQuery<SafeToSpendResult>({
     queryKey: ["safe-to-spend", user?.id, reserveTargetCents],
     queryFn: () => invokeEdge<SafeToSpendResult>("cashflow-calculate", { action: "safe-to-spend", reserve_target_cents: reserveTargetCents }),
@@ -137,7 +135,6 @@ export interface BurnRateResult {
 
 export function useBurnRate() {
   const { user } = useAuth();
-  const { isDemoMode } = useDataMode();
   return useQuery<BurnRateResult>({
     queryKey: ["burn-rate", user?.id],
     queryFn: () => invokeEdge<BurnRateResult>("cashflow-calculate", { action: "burn-rate" }),

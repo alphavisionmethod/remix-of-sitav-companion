@@ -132,7 +132,6 @@ export function useComputeBudgetStatus() {
 // ── Hook: AI Spend Summary ──────────────────────────────────
 
 export function useAISpendSummary() {
-  const { isDemoMode } = useDataMode();
 
   return useQuery<AISpendRow[]>({
     queryKey: ["ai-spend-summary", isDemoMode ? "demo" : "real"],
@@ -161,7 +160,6 @@ export function useAISpendSummary() {
 // ── Hook: Model Routing Stats ───────────────────────────────
 
 export function useModelRoutingStats() {
-  const { isDemoMode } = useDataMode();
 
   return useQuery<ModelRoutingStat[]>({
     queryKey: ["model-routing-stats", isDemoMode ? "demo" : "real"],
@@ -210,7 +208,6 @@ export function useModelRoutingStats() {
 // ── Hook: Live Margin Snapshot ──────────────────────────────
 
 export function useMarginSnapshot(planTier: PlanTier = "pro") {
-  const { isDemoMode } = useDataMode();
 
   return useQuery<LiveMarginSnapshot>({
     queryKey: ["margin-snapshot", planTier, isDemoMode ? "demo" : "real"],
@@ -277,7 +274,6 @@ export function useMarginSnapshot(planTier: PlanTier = "pro") {
 // ── Hook: Fair Use Status ───────────────────────────────────
 
 export function useFairUseStatus(planTier: PlanTier = "pro") {
-  const { isDemoMode } = useDataMode();
 
   return useQuery<FairUseEvaluation>({
     queryKey: ["fair-use-status", planTier, isDemoMode ? "demo" : "real"],
@@ -343,7 +339,6 @@ export interface MarginProtectionEvent {
 // ── Hook: Mission Cost Data ─────────────────────────────────
 
 export function useMissionCostData() {
-  const { isDemoMode } = useDataMode();
 
   return useQuery<MissionCostRow[]>({
     queryKey: ["mission-cost-data", isDemoMode ? "demo" : "real"],
@@ -411,7 +406,6 @@ export function useMissionCostData() {
 // ── Hook: Margin Protection Feed ────────────────────────────
 
 export function useMarginProtectionFeed() {
-  const { isDemoMode } = useDataMode();
 
   return useQuery<MarginProtectionEvent[]>({
     queryKey: ["margin-protection-feed", isDemoMode ? "demo" : "real"],

@@ -10,6 +10,7 @@ import {
 import { useAIEngDomain } from "@/hooks/use-ai-engineering-data";
 import { DEMO_BUNDLE_ITEMS, DEMO_EXPORT_MODES } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 type ExportMode = "json" | "markdown" | "approval" | "pr-ready" | "investor";
 
@@ -21,6 +22,7 @@ const typeColors: Record<string, string> = {
 
 const AIEvidenceBundleComposer = () => {
   const { isDemo } = useAIEngDomain("missions", DEMO_BUNDLE_ITEMS);
+  const { isDemoMode } = useDataMode();
   const [selectedMode, setSelectedMode] = useState<ExportMode>("markdown");
   const [selectedItems, setSelectedItems] = useState<string[]>((isDemoMode ? DEMO_BUNDLE_ITEMS : [] as typeof DEMO_BUNDLE_ITEMS).map(b => b.id));
   const [tab, setTab] = useState("compose");

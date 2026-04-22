@@ -56,6 +56,7 @@ const impactColor = { low: "text-emerald-400", medium: "text-amber-400", high: "
 type PanelTab = "tasks" | "team" | "chat";
 
 export function AITransparencyPanel({ collapsed, onToggle }: { collapsed: boolean; onToggle: () => void }) {
+  const { isDemoMode } = useDataMode();
   const [mode, setMode] = useState<"summary" | "detailed">("summary");
   const [expandedSuggestion, setExpandedSuggestion] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<PanelTab>("tasks");

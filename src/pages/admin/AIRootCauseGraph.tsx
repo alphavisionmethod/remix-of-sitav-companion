@@ -6,6 +6,7 @@ import { useAIEngDomain } from "@/hooks/use-ai-engineering-data";
 import { DEMO_GRAPH_EDGES, DEMO_GRAPH_NODES } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { EmptyState } from "@/components/sita/EmptyState";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const typeStyles: Record<string, { icon: typeof Bug; color: string; bg: string }> = {
   symptom: { icon: AlertTriangle, color: "text-destructive", bg: "bg-destructive/10 border-destructive/20" },
@@ -17,6 +18,7 @@ const typeStyles: Record<string, { icon: typeof Bug; color: string; bg: string }
 
 const AIRootCauseGraph = () => {
   const { isDemo } = useAIEngDomain("violations", DEMO_GRAPH_NODES);
+  const { isDemoMode } = useDataMode();
   const [selectedNode, setSelectedNode] = useState<string | null>("root-1");
   const selected = (isDemoMode ? DEMO_GRAPH_NODES : [] as typeof DEMO_GRAPH_NODES).find(n => n.id === selectedNode);
   const connectedEdges = (isDemoMode ? DEMO_GRAPH_EDGES : [] as typeof DEMO_GRAPH_EDGES).filter(e => e.from === selectedNode || e.to === selectedNode);

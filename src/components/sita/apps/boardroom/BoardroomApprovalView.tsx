@@ -13,6 +13,7 @@ import { useBoardroomData } from "@/hooks/use-boardroom-data";
 import { useBoardroomLiveData } from "@/hooks/useBoardroomLiveData";
 import { pushDecisionToApp } from "@/lib/services/boardroom-bridge";
 import { toast } from "sonner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 interface Props {
   scope: "global" | "business" | "finance" | "concierge";
@@ -247,6 +248,7 @@ function PostApprovalClosure({ receipt, onDismiss }: { receipt: { title: string;
 }
 
 export function BoardroomApprovalView({ scope, onNavigate }: Props) {
+  const { isDemoMode } = useDataMode();
   const { pendingApprovals } = useBoardroomData();
   const { createReceipt, createActionItem, isDemoMode } = useBoardroomLiveData();
   const [generatedReceipt, setGeneratedReceipt] = useState<null | { title: string; hash: string; time: string }>(null);

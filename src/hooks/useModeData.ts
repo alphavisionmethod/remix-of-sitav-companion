@@ -72,7 +72,6 @@ export function useModeData<T>(
  * For pages that don't have real data yet.
  */
 export function useModeGate<T>(demoData: T, emptyDefault: T): { data: T; isDemo: boolean; source: DataSource } {
-  const { isDemoMode } = useDataMode();
   return {
     data: isDemoMode ? demoData : emptyDefault,
     isDemo: isDemoMode,

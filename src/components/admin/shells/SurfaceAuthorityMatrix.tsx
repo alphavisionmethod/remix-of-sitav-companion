@@ -71,6 +71,7 @@ function BoolCell({ value }: { value: boolean }) {
 }
 
 export function SurfaceAuthorityMatrix({ compact = false }: { compact?: boolean }) {
+  const { isDemoMode } = useDataMode();
   const [search, setSearch] = useState("");
   const [domainFilter, setDomainFilter] = useState<string>("all");
   const [expandedId, setExpandedId] = useState<string | null>(null);

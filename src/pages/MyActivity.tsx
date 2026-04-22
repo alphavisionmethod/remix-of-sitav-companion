@@ -7,6 +7,7 @@ import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
 import { DEMO_DAY_LABELS, DEMO_FEATURES } from "@/data/seed/core-pages";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 
 
@@ -39,6 +40,7 @@ const intensityClass = (count: number): string => {
 const HeatmapGrid = ({ data }: { data: Record<string, number> }) => {
   const today = new Date();
   const cells: { date: string; count: number }[] = [];
+  const { isDemoMode } = useDataMode();
   for (let w = WEEKS - 1; w >= 0; w--) {
     for (let d = 0; d < DAYS; d++) {
       const date = new Date(today);

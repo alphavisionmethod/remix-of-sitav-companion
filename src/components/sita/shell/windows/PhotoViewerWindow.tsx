@@ -37,6 +37,7 @@ const MOCK_PHOTOS: Photo[] = [
 ];
 
 export function PhotoViewerWindow() {
+  const { isDemoMode } = useDataMode();
   const [selectedIdx, setSelectedIdx] = useState<number | null>(null);
   const [showInfo, setShowInfo] = useState(false);
   const [brightness, setBrightness] = useState(100);

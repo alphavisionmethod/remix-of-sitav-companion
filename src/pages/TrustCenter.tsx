@@ -29,6 +29,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { DomainAdvisorCard } from "@/components/advisors/DomainAdvisorCard";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 
 

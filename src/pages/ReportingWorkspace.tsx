@@ -25,6 +25,7 @@ import {
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip, BarChart, Bar, PieChart as RechartsPie, Pie, Cell, LineChart, Line, CartesianGrid } from "recharts";
 import { DEMO_COMPLETION_TREND, DEMO_DOMAIN_BREAKDOWN, DEMO_PIPELINE_DATA, DEMO_REVENUE_DATA } from "@/data/seed/core-pages";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 
 

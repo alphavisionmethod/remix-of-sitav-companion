@@ -249,6 +249,7 @@ function AnomalyRow({ anomaly }: { anomaly: AnomalyEvent }) {
 // ── Main Component ──────────────────────────────────────────────
 
 export function PredictiveAnalysisDashboard() {
+  const { isDemoMode } = useDataMode();
   const [selectedView, setSelectedView] = useState<"predictions" | "trends" | "anomalies">("predictions");
   const trendData = useMemo(() => generateTrendData(), []);
 

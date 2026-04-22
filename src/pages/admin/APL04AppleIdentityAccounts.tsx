@@ -5,8 +5,11 @@ import { KeyRound, Link, User, Shield, ArrowRight, CheckCircle2, AlertTriangle, 
 import { DEMO_IDENTITY_ARCHITECTURE, DEMO_LINK_FLOW_STEPS, DEMO_SECURITY_POLICIES } from "@/data/seed/admin-platform";
 import APLSubNav from "@/components/admin/APLSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
-const APL04AppleIdentityAccounts = () => (
+const APL04AppleIdentityAccounts = () => {
+  const { isDemoMode } = useDataMode();
+  return (
   <div className="p-6 max-w-[1400px] mx-auto space-y-6">
 <APLSubNav />
     <div className="flex items-center gap-3">
@@ -120,6 +123,7 @@ const APL04AppleIdentityAccounts = () => (
       </TabsContent>
     </Tabs>
   </div>
-);
+  );
+};
 
 export default APL04AppleIdentityAccounts;

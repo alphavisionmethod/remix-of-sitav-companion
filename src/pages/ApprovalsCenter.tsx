@@ -14,6 +14,7 @@ import {
   Shield, CheckCircle, XCircle, Clock, AlertTriangle, Brain, Eye, Zap,
   ThumbsUp, ThumbsDown, MessageSquare, ChevronDown, ChevronUp
 } from "lucide-react";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 
 

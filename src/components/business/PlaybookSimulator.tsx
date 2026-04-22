@@ -51,7 +51,7 @@ const CustomerChip = ({ customer, filtered }: { customer: MockCustomer; filtered
 // ── Step outcome card ────────────────────────────────────────────
 
 const StepOutcomeCard = ({
-  const { isDemoMode } = useDataMode(); outcome, isActive, stepNumber }: { outcome: StepOutcome; isActive: boolean; stepNumber: number }) => {
+  outcome, isActive, stepNumber }: { outcome: StepOutcome; isActive: boolean; stepNumber: number }) => {
   const Icon = outcome.action
     ? ACTION_ICONS[outcome.action] || Zap
     : STEP_ICONS[outcome.stepType] || Zap;
@@ -297,6 +297,11 @@ const PlaybookSimulator = ({ draft, onBack, onActivate }: PlaybookSimulatorProps
   // Run simulation
   useEffect(() => {
     if (selectedCustomers.length > 0) {
+  const { isDemoMode } = useDataMode();
+  const { isDemoMode } = useDataMode();
+  const { isDemoMode } = useDataMode();
+  const { isDemoMode } = useDataMode();
+  const { isDemoMode } = useDataMode();
       setResult(simulatePlaybook(draft, selectedCustomers));
     } else {
       setResult(null);

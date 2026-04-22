@@ -24,6 +24,7 @@ import {
 } from "lucide-react";
 import { DEMO_MEDIA, type DemoMediaItem as MediaItem } from "@/data/seed/media";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 const MediaWorkspace = () => {
   const { user, isDemo } = useAuth();

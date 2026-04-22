@@ -20,6 +20,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useActionFn } from "@/hooks/use-action";
 import { useConfirmation } from "@/hooks/use-confirmation";
 import { ConfirmationDialog } from "@/components/sita/ConfirmationDialog";
+import { useDataMode } from "@/contexts/DataModeContext";
 
 
 type CommStatus = "draft" | "review" | "approved" | "sent" | "delivered" | "opened" | "replied" | "failed";
@@ -38,6 +39,7 @@ const fallbackComms: Communication[] = [
 
 const CommunicationsCenter = () => {
   const { primaryMode } = useBusinessProfile();
+  const { isDemoMode } = useDataMode();
   const moduleConfig = getModuleAdaptation("communications", primaryMode);
   const { user, isDemo: isDemoMode } = useAuth();
   const queryClient = useQueryClient();
