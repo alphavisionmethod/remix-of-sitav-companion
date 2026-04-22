@@ -8,7 +8,7 @@ PROJECT = sita
 VERSION ?= 1.0.0
 
 .PHONY: help build up down restart logs status clean reset studio db-shell iso ova \
-        electron-linux electron-mac electron-win electron-all rotate-secrets
+        electron-linux electron-mac electron-win electron-all rotate-secrets preflight
 
 help: ## Show available commands
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | \
