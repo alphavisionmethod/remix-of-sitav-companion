@@ -39,7 +39,7 @@ export default function LeakDetector() {
 
   if (isLoading) {
     return <PageShell width="wide" className="space-y-6">
-<Skeleton className="h-8 w-48" /><Skeleton className="h-32 rounded-xl" /><Skeleton className="h-48 rounded-xl" /></div>;
+<Skeleton className="h-8 w-48" /><Skeleton className="h-32 rounded-xl" /><Skeleton className="h-48 rounded-xl" /></PageShell>;
   }
 
   return (

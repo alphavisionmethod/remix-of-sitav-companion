@@ -54,7 +54,7 @@ export default function GrowthBoardroom() {
 
   if (!isDemoMode && isLoading) {
     return <PageShell width="wide" className="space-y-6">
-<Skeleton className="h-8 w-48" /><div className="grid grid-cols-2 lg:grid-cols-4 gap-4">{[1, 2, 3, 4].map(i => <Skeleton key={i} className="h-24 rounded-xl" />)}</div></div>;
+<Skeleton className="h-8 w-48" /><div className="grid grid-cols-2 lg:grid-cols-4 gap-4">{[1, 2, 3, 4].map(i => <Skeleton key={i} className="h-24 rounded-xl" />)}</div></PageShell>;
   }
 
   return (
