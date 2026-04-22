@@ -3,6 +3,7 @@ import { X, MessageSquare, Shield, Brain } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { AdvisorPersona } from "@/domains/engines/business-advisor-personas";
 import type { AIRecommendation } from "@/hooks/useBusinessAdvisorBoard";
+import { AdvisorImage } from "@/components/advisors/AdvisorImage";
 
 interface Props {
   advisor: AdvisorPersona;
@@ -22,12 +23,13 @@ export function AdvisorDetailSheet({ advisor, recommendation, onClose }: Props) 
         {/* Header */}
         <div className="flex items-center justify-between mb-5">
           <div className="flex items-center gap-3">
-            <img
-              src={advisor.portraitUrl}
-              alt={advisor.displayName}
-              className="w-14 h-14 rounded-full border-2 object-cover"
-              style={{ borderColor: `hsl(${advisor.colorAccent})` }}
-            />
+            <div className="rounded-full border-2" style={{ borderColor: `hsl(${advisor.colorAccent})` }}>
+              <AdvisorImage
+                domain={(advisor as any).domain ?? "business"}
+                src={advisor.portraitUrl}
+                size="lg"
+              />
+            </div>
             <div>
               <h3 className="text-sm font-display font-bold text-foreground">{advisor.displayName}</h3>
               <p className="text-[10px] text-muted-foreground">{advisor.role}</p>

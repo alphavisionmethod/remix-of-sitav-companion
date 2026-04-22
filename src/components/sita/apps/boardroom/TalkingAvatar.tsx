@@ -1,6 +1,8 @@
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect, useRef } from "react";
+import { sanitizeAvatarUrl } from "@/lib/advisors/avatar-url-validation";
+import { isAvatarDebugActive, BROKEN_AVATAR_URL } from "@/lib/advisors/avatar-debug";
 
 interface TalkingAvatarProps {
   speaking: boolean;
@@ -309,6 +311,22 @@ export function TalkingAvatar({
   className,
 }: TalkingAvatarProps) {
   const [imgError, setImgError] = useState(false);
+  const [retries, setRetries] = useState(0);
+
+  const safeUrl = isAvatarDebugActive()
+    ? BROKEN_AVATAR_URL
+    : (sanitizeAvatarUrl(avatarUrl) ?? avatarUrl);
+  const imgSrc = safeUrl
+    ? (retries > 0 ? `${safeUrl}${safeUrl.includes("?") ? "&" : "?"}r=${retries}` : safeUrl)
+    : null;
+
+  const handleImgError = () => {
+    if (retries < 3) {
+      setTimeout(() => setRetries((r) => r + 1), [800, 1500, 3000][retries] ?? 3000);
+    } else {
+      setImgError(true);
+    }
+  };
 
   return (
     <motion.div
@@ -349,12 +367,13 @@ export function TalkingAvatar({
         className="rounded-full overflow-hidden relative"
         style={{ width: size, height: size }}
       >
-        {!imgError && avatarUrl ? (
+        {!imgError && imgSrc ? (
           <img
-            src={avatarUrl}
+            src={imgSrc}
             alt={name}
             className="w-full h-full object-cover"
-            onError={() => setImgError(true)}
+            onError={handleImgError}
+            loading="lazy"
           />
         ) : (
           <div

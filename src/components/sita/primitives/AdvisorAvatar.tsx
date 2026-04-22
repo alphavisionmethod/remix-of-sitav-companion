@@ -4,6 +4,9 @@ import { Brain, Briefcase, DollarSign, Headphones, Heart, Shield, Sparkles, Tren
 import type { LucideIcon } from "lucide-react";
 import { getDefaultAdvisorAvatar } from "@/lib/advisors/advisor-avatar-assets";
 import { Skeleton } from "@/components/ui/skeleton";
+import { sanitizeAvatarUrl } from "@/lib/advisors/avatar-url-validation";
+import { isAvatarDebugActive, BROKEN_AVATAR_URL } from "@/lib/advisors/avatar-debug";
+import { logPortraitFailure } from "@/lib/advisors/portrait-failure-logger";
 
 type AdvisorDomain = "business" | "money" | "concierge" | "family" | "growth" | "trust" | "opportunity" | "recovery" | "boardroom" | "general";
 
@@ -11,6 +14,7 @@ interface AdvisorAvatarProps {
   domain: AdvisorDomain;
   name?: string;
   avatarUrl?: string | null;
+  advisorId?: string;
   status?: "active" | "thinking" | "idle" | "offline";
   size?: "sm" | "md" | "lg";
   showLabel?: boolean;
@@ -44,24 +48,38 @@ const statusColors = {
   offline: "bg-muted-foreground/20",
 };
 
-const MAX_RETRIES = 2;
+const MAX_RETRIES = 3;
+const RETRY_DELAYS = [800, 1500, 3000];
 
-export const AdvisorAvatar = ({ domain, name, avatarUrl, status = "active", size = "md", showLabel = false, confidence, className }: AdvisorAvatarProps) => {
+export const AdvisorAvatar = ({ domain, name, avatarUrl, advisorId, status = "active", size = "md", showLabel = false, confidence, className }: AdvisorAvatarProps) => {
   const [imgState, setImgState] = useState<"loading" | "loaded" | "error">("loading");
   const [retries, setRetries] = useState(0);
   const config = domainConfig[domain];
   const s = sizes[size];
   const Icon = config.icon;
-  const resolvedAvatar = avatarUrl || getDefaultAdvisorAvatar(domain);
+
+  // Apply URL sanitization, debug override, and safe fallback
+  const safeCustom = sanitizeAvatarUrl(avatarUrl);
+  const resolvedAvatar = isAvatarDebugActive()
+    ? BROKEN_AVATAR_URL
+    : (safeCustom || getDefaultAdvisorAvatar(domain));
   const hasImage = !!resolvedAvatar && imgState !== "error";
 
   const handleError = useCallback(() => {
     if (retries < MAX_RETRIES) {
-      setTimeout(() => setRetries((r) => r + 1), 1000 * (retries + 1));
+      const delay = RETRY_DELAYS[retries] ?? 3000;
+      setTimeout(() => setRetries((r) => r + 1), delay);
     } else {
       setImgState("error");
+      logPortraitFailure({
+        domain,
+        advisor_id: advisorId,
+        url: resolvedAvatar,
+        error_type: "load_exhausted",
+        retry_count: MAX_RETRIES,
+      });
     }
-  }, [retries]);
+  }, [retries, domain, advisorId, resolvedAvatar]);
 
   const handleRetry = useCallback(() => {
     setRetries(0);
