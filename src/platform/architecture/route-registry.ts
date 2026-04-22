@@ -91,6 +91,26 @@ export const ROUTE_FAMILIES: { family: string; prefix: string; layer: Layer; rou
 
 // ── Summary Stats ───────────────────────────────────────────────
 
+// ── Canonical Route Lists (consumed by tests) ───────────────────
+
+/** Public routes that do not require authentication */
+export const PUBLIC_ROUTES = [
+  "/login",
+  "/signup",
+  "/forgot-password",
+  "/reset-password",
+] as const;
+
+/** Representative protected routes derived from ROUTE_FAMILIES */
+export const PROTECTED_ROUTE_SAMPLES: string[] = (() => {
+  const explicit = ["/"];
+  const fromFamilies = ROUTE_FAMILIES
+    .filter(f => f.prefix !== "/login") // exclude public auth family
+    .map(f => f.prefix.replace(/\/$/, "") || "/")
+    .filter(p => p !== "/"); // root already in explicit
+  return [...explicit, ...fromFamilies];
+})();
+
 export function getRegistrySummary() {
   const byLayer: Record<string, number> = {};
   for (const f of ROUTE_FAMILIES) {
