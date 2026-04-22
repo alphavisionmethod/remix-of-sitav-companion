@@ -272,6 +272,8 @@ export default function DailyPulse() {
           </button>
         ))}
       </div>
+      </>
+      )}
     </div>
   );
 }
