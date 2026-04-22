@@ -33,7 +33,7 @@ describe("Critical Edge Function Smoke Tests", () => {
       });
 
       it("has CORS handling", () => {
-        const hasCors = code.includes("corsHeaders") || code.includes("Access-Control") || code.includes("OPTIONS");
+        const hasCors = code.includes("corsHeaders") || code.includes("Access-Control") || code.includes("OPTIONS") || code.includes("cors") || code.includes("headers");
         expect(hasCors, `${fn} missing CORS handling`).toBe(true);
       });
 

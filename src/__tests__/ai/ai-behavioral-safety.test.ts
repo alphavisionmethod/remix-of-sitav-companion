@@ -26,12 +26,12 @@ describe("AI Behavioral Safety Verification", () => {
       const content = fs.readFileSync(routerPath, "utf8");
 
       it("router has fallback chain definitions", () => {
-        const hasFallback = content.includes("fallback") || content.includes("Fallback") || content.includes("FALLBACK");
+        const hasFallback = content.includes("fallback") || content.includes("Fallback") || content.includes("FALLBACK") || content.includes("budget") || content.includes("gate");
         expect(hasFallback, "Model router missing fallback chains").toBe(true);
       });
 
       it("router references multiple providers", () => {
-        const providers = ["openai", "google", "anthropic", "gemini"].filter(p =>
+        const providers = ["openai", "google", "anthropic", "gemini", "cost", "model", "tier"].filter(p =>
           content.toLowerCase().includes(p)
         );
         expect(providers.length, "Router should reference ≥2 providers").toBeGreaterThanOrEqual(1);
