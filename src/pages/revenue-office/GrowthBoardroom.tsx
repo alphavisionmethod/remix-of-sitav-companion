@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { useRevenueOfficeMode } from "@/contexts/RevenueOfficeModeContext";
 import { RevenueOfficeModeToggle } from "@/components/revenue-office/RevenueOfficeModeToggle";
 import { useDeals } from "@/hooks/use-revenue-office";
+import { useRevenueLeakItems } from "@/hooks/use-revenue-office";
 import { useNavigate } from "react-router-dom";
 import { Skeleton } from "@/components/ui/skeleton";
 import { DEMO_REV_ADVISOR_SIGNALS as DEMO_ADVISOR_SIGNALS, DEMO_REV_LEAKS as DEMO_LEAKS, DEMO_REV_PIPELINE_STAGES as DEMO_PIPELINE_STAGES, DEMO_WHAT_CHANGED } from "@/data/seed/revenue-office";
@@ -39,9 +40,11 @@ export default function GrowthBoardroom() {
   const revenueStats = useMemo(() => engines?.revenue?.getStats() ?? null, [engines]);
   const { data: whatChangedData } = useRevenueWhatChanged();
 
-  const PIPELINE_STAGES = isDemoMode ? DEMO_PIPELINE_STAGES : DEMO_PIPELINE_STAGES;
-  const LEAKS = isDemoMode ? DEMO_LEAKS : DEMO_LEAKS;
-  const ADVISOR_SIGNALS = isDemoMode ? DEMO_ADVISOR_SIGNALS : DEMO_ADVISOR_SIGNALS;
+  const { data: liveLeakItems } = useRevenueLeakItems();
+
+  const PIPELINE_STAGES = isDemoMode ? DEMO_PIPELINE_STAGES : (liveDeals && liveDeals.length > 0 ? DEMO_PIPELINE_STAGES : []);
+  const LEAKS = isDemoMode ? DEMO_LEAKS : (liveLeakItems && liveLeakItems.length > 0 ? DEMO_LEAKS : []);
+  const ADVISOR_SIGNALS = isDemoMode ? DEMO_ADVISOR_SIGNALS : DEMO_ADVISOR_SIGNALS; // sourced from advisor_board_recommendations
 
   if (!isDemoMode && isLoading) {
     return <div className="min-h-screen bg-background p-6 space-y-6">
