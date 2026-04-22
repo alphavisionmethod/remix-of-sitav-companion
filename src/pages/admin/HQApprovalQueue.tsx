@@ -182,6 +182,7 @@ export default function HQApprovalQueue() {
 // HQ01 — Queue Overview
 // ════════════════════════════════════════════════════════════════
 function HQ01Overview() {
+  const { isDemoMode } = useDataMode();
   const { data: allItems = [] } = useQuery({
     queryKey: ["hq-all-items"],
     queryFn: () => fetchQueue({ status: "all" }),
