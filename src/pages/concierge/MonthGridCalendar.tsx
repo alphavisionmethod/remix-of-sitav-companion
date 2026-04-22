@@ -59,7 +59,6 @@ import { useDataMode } from "@/contexts/DataModeContext";
 
 
 const MonthGridCalendar = () => {
-  const { isDemo: isDemoMode } = useAuth();
   const now = new Date();
   const [year, setYear] = useState(now.getFullYear());
   const [month, setMonth] = useState(now.getMonth());

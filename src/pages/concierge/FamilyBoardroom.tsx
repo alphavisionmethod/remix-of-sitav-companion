@@ -32,7 +32,6 @@ const familyWellness = {
 type BoardroomView = "daily" | "weekly" | "school" | "shopping" | "travel" | "monthly";
 
 const FamilyBoardroom = () => {
-  const { isDemo: isDemoMode } = useAuth();
   const { isDemoMode } = useDataMode();
   const [view, setView] = useState<BoardroomView>("daily");
 

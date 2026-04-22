@@ -17,7 +17,6 @@ const allDomains = Object.keys(typeLabels);
 
 export default function CommercialMemoryFeed() {
   const { isDemoMode } = useDataMode();
-  const { isDemo: isDemoMode } = useAuth();
   const { data: liveMemoryEvents } = useCommercialMemoryEvents();
   const memoryEvents = isDemoMode ? DEMO_memoryEvents : (liveMemoryEvents && liveMemoryEvents.length > 0 ? liveMemoryEvents : []);
   const pinnedItems = DEMO_MEMORY_PINNED;

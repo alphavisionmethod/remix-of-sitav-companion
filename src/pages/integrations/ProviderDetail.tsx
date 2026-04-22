@@ -16,7 +16,6 @@ import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function ProviderDetail() {
   const { isDemoMode } = useDataMode();
-  const { isDemo: isDemoMode } = useAuth();
   const { providerId } = useParams();
   const navigate = useNavigate();
   const [wizardStep, setWizardStep] = useState(0);
@@ -30,7 +29,6 @@ export default function ProviderDetail() {
   const writeCaps = provider.capabilities.filter(c => c.type === "write");
 
   const startConnect = () => {
-  const { isDemo: isDemoMode } = useAuth();
     setConnecting(true);
     setWizardStep(0);
   };

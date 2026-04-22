@@ -24,7 +24,6 @@ const autonomyColors: Record<string, string> = {
 const autonomyLevels = ["observe-only", "draft-only", "supervised", "auto-low-risk"] as const;
 
 const AITeamRoster = () => {
-  const { isDemo: isDemoMode } = useAuth();
   const { isDemoMode } = useDataMode();
   const [selected, setSelected] = useState<string | null>("debugger");
   const [view, setView] = useState("roster");

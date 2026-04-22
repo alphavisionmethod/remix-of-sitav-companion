@@ -20,7 +20,6 @@ import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function RelationshipCenter() {
   const { isDemoMode } = useDataMode();
-  const { isDemo: isDemoMode } = useAuth();
   const { data: liveContacts, isLoading } = useCustomers();
   const { data: liveLifecycleStages } = useCustomerLifecycleStages();
   const [tab, setTab] = useState("contacts");

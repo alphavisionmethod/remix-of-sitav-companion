@@ -21,7 +21,6 @@ type Deal = { id: string; name: string; value: number; probability: number; age:
 
 export default function PipelineStudio() {
   const { isDemoMode } = useDataMode();
-  const { isDemo: isDemoMode } = useAuth();
   const [tab, setTab] = useState("kanban");
   const [filter, setFilter] = useState<string | null>(null);
   const { data: liveDeals, isLoading } = useDeals();

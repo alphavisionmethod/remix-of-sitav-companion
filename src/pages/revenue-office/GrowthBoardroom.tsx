@@ -32,7 +32,6 @@ const OPERATING_MODE = "Growth";
 
 export default function GrowthBoardroom() {
   const { isDemoMode } = useDataMode();
-  const { isDemo: isDemoMode } = useAuth();
   const { isBeginner } = useRevenueOfficeMode();
   const { data: liveDeals, isLoading } = useDeals();
   const navigate = useNavigate();

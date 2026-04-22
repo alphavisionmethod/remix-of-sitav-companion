@@ -19,7 +19,6 @@ import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function LeakDetector() {
   const { isDemoMode } = useDataMode();
-  const { isDemo: isDemoMode } = useAuth();
   const { isBeginner } = useRevenueOfficeMode();
   const { data: liveLeaks, isLoading } = useRevenueLeaks();
   const [tab, setTab] = useState("active");

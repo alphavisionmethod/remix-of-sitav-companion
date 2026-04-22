@@ -20,7 +20,6 @@ import { useDataMode } from "@/contexts/DataModeContext";
 
 
 const ReservesSavings = () => {
-  const { isDemo: isDemoMode } = useAuth();
   const { isDemoMode } = useDataMode();
   const { data: reservesData = [] } = useReservesSavings();
   const { user } = useAuth();

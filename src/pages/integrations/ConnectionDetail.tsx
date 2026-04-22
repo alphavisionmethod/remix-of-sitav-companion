@@ -14,7 +14,6 @@ import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function ConnectionDetail() {
   const { isDemoMode } = useDataMode();
-  const { isDemo: isDemoMode } = useAuth();
   const { connectionId } = useParams();
   const navigate = useNavigate();
 

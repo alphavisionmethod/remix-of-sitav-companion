@@ -25,7 +25,6 @@ const effortScore = (e: string) => e === "Low" ? 1 : e === "Medium" ? 2 : 3;
 
 export default function OpportunityBoard() {
   const { isDemoMode } = useDataMode();
-  const { isDemo: isDemoMode } = useAuth();
   const { data: liveDeals } = useDeals();
   const opportunities = isDemoMode ? DEMO_opportunities : (liveDeals && liveDeals.length > 0 ? liveDeals.map((d: any) => ({
     title: d.name || "Untitled Deal",

@@ -49,7 +49,6 @@ const ADVISOR_CONVERSION_INSIGHTS = [
 
 export default function ConversionLab() {
   const { isDemoMode } = useDataMode();
-  const { isDemo: isDemoMode } = useAuth();
   const [tab, setTab] = useState("experiments");
   const { data: liveExperiments, isLoading } = useConversionExperiments();
   const EXPERIMENTS = isDemoMode ? DEMO_EXPERIMENTS : (liveExperiments && liveExperiments.length > 0 ? liveExperiments.map((e: any) => ({

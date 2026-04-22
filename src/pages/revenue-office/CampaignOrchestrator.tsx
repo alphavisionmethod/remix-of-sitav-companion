@@ -40,7 +40,6 @@ interface AttributionRow {
 
 export default function CampaignOrchestrator() {
   const { isDemoMode } = useDataMode();
-  const { isDemo: isDemoMode } = useAuth();
   const { data: liveCampaigns, isLoading } = useCampaigns();
   const [tab, setTab] = useState("campaigns");
 
