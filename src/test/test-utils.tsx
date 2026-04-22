@@ -164,6 +164,12 @@ vi.mock("@/hooks/useOSRuntime", () => ({
   OSRuntimeProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
 }));
 
+// Mock SitaOS context
+vi.mock("@/contexts/SitaOSContext", () => ({
+  useSitaOS: () => ({ kernel: { ready: true }, user: null }),
+  SitaOSProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+}));
+
 // Mock reality mode
 vi.mock("@/lib/dual-reality/reality-mode-context", () => ({
   useRealityMode: () => ({ mode: "real", setMode: vi.fn() }),
