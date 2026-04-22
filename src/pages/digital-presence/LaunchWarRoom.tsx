@@ -10,8 +10,7 @@ import { useDataMode } from "@/contexts/DataModeContext";
 
 
 export default function LaunchWarRoom() {
-  const { isDemoMode } = useDataMode();
-  const overallScore = Math.round((isDemoMode ? DEMO_READINESS_CHECKS : [] as typeof DEMO_READINESS_CHECKS).reduce((sum, c) => sum + c.score, 0) / Math.max((isDemoMode ? DEMO_READINESS_CHECKS : [] as typeof DEMO_READINESS_CHECKS).length, 1));
+  const overallScore = Math.round(([] as typeof DEMO_READINESS_CHECKS).reduce((sum, c) => sum + c.score, 0) / Math.max(([] as typeof DEMO_READINESS_CHECKS).length, 1));
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
       <DPOSubNav />
@@ -37,7 +36,7 @@ export default function LaunchWarRoom() {
         <Card className="bg-card/50 border-border/50">
           <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><Rocket className="w-4 h-4 text-pink-400" /> Readiness Checks</CardTitle></CardHeader>
           <CardContent className="space-y-2">
-            {(isDemoMode ? DEMO_READINESS_CHECKS : [] as typeof DEMO_READINESS_CHECKS).map(c => (
+            {([] as typeof DEMO_READINESS_CHECKS).map(c => (
               <div key={c.area} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
                 <div className="flex items-center gap-3">
                   {c.status === "ready" ? <CheckCircle className="w-4 h-4 text-green-400" /> : <AlertTriangle className="w-4 h-4 text-amber-400" />}
@@ -59,7 +58,7 @@ export default function LaunchWarRoom() {
         <Card className="bg-card/50 border-border/50">
           <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><Clock className="w-4 h-4 text-blue-400" /> Launch Timeline</CardTitle></CardHeader>
           <CardContent className="space-y-2">
-            {(isDemoMode ? DEMO_LAUNCH_TIMELINE : [] as typeof DEMO_LAUNCH_TIMELINE).map(t => (
+            {([] as typeof DEMO_LAUNCH_TIMELINE).map(t => (
               <div key={t.time} className="flex items-center gap-3 p-2">
                 <span className="text-xs font-mono text-muted-foreground w-12">{t.time}</span>
                 <div className="flex-1 flex items-center justify-between">

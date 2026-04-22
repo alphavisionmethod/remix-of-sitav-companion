@@ -61,7 +61,6 @@ const EFFICIENCY_METRICS = [
 ];
 
 export default function FCC07PlatformCostCapacity() {
-  const { isDemoMode } = useDataMode();
   return (
     <div className="space-y-6 p-6">
       <AdminPageHeader
@@ -73,7 +72,7 @@ export default function FCC07PlatformCostCapacity() {
 
       {/* Cost Overview Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        {(isDemoMode ? DEMO_COST_DATA : [] as typeof DEMO_COST_DATA).map((item, i) => {
+        {([] as typeof DEMO_COST_DATA).map((item, i) => {
           const Icon = item.icon;
           const usage = item.unit === "GB" ? (item.value / item.budget) * 100 : (item.value / item.budget) * 100;
           const isPositive = item.trend < 0;

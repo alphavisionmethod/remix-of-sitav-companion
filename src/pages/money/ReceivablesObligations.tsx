@@ -42,7 +42,6 @@ const BUCKET_COLORS: Record<AgingBucket, string> = {
 };
 
 const ReceivablesObligations = () => {
-  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState<ViewTab>("receivables");
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const { data: invoices = [], isLoading: invLoading } = useInvoices();

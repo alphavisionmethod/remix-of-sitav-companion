@@ -25,7 +25,6 @@ const DEMO_HOUSEHOLD: HouseholdFinanceSummary = {
 };
 
 const HouseholdMoneyOffice = () => {
-  const { isDemoMode } = useDataMode();
   const hh = DEMO_HOUSEHOLD;
   const fmt = (c: number) => `$${(Math.abs(c) / 100).toLocaleString()}`;
   const surplus = hh.totalIncomeCents - hh.totalExpensesCents;

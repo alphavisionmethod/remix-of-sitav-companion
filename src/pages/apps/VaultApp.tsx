@@ -25,15 +25,14 @@ const categoryIcons: Record<string, React.ElementType> = { login: Globe, card: C
 const strengthColors: Record<string, string> = { strong: "text-emerald-500", medium: "text-amber-500", weak: "text-red-500" };
 
 export default function VaultApp() {
-  const { isDemoMode } = useDataMode();
   const { data: liveData, isLoading } = useVaultItems();
   const [search, setSearch] = useState("");
   const [showPasswords, setShowPasswords] = useState<Record<string, boolean>>({});
   const { toast } = useToast();
 
-  const filtered = (isDemoMode ? DEMO_ENTRIES : [] as typeof DEMO_ENTRIES).filter(e => !search || e.name.toLowerCase().includes(search.toLowerCase()));
-  const breachedCount = (isDemoMode ? DEMO_ENTRIES : [] as typeof DEMO_ENTRIES).filter(e => e.breached).length;
-  const weakCount = (isDemoMode ? DEMO_ENTRIES : [] as typeof DEMO_ENTRIES).filter(e => e.strength === "weak").length;
+  const filtered = ([] as typeof DEMO_ENTRIES).filter(e => !search || e.name.toLowerCase().includes(search.toLowerCase()));
+  const breachedCount = ([] as typeof DEMO_ENTRIES).filter(e => e.breached).length;
+  const weakCount = ([] as typeof DEMO_ENTRIES).filter(e => e.strength === "weak").length;
 
   const toggleShow = (id: string) => setShowPasswords(p => ({ ...p, [id]: !p[id] }));
   const copyToClipboard = (text: string) => {
@@ -66,8 +65,8 @@ export default function VaultApp() {
       )}
 
       <div className="grid grid-cols-3 gap-3">
-        <Card><CardContent className="p-3 text-center"><p className="text-2xl font-bold text-foreground">{(isDemoMode ? DEMO_ENTRIES : [] as typeof DEMO_ENTRIES).length}</p><p className="text-[10px] text-muted-foreground">Total Entries</p></CardContent></Card>
-        <Card><CardContent className="p-3 text-center"><p className="text-2xl font-bold text-emerald-500">{(isDemoMode ? DEMO_ENTRIES : [] as typeof DEMO_ENTRIES).filter(e => e.strength === "strong").length}</p><p className="text-[10px] text-muted-foreground">Strong</p></CardContent></Card>
+        <Card><CardContent className="p-3 text-center"><p className="text-2xl font-bold text-foreground">{([] as typeof DEMO_ENTRIES).length}</p><p className="text-[10px] text-muted-foreground">Total Entries</p></CardContent></Card>
+        <Card><CardContent className="p-3 text-center"><p className="text-2xl font-bold text-emerald-500">{([] as typeof DEMO_ENTRIES).filter(e => e.strength === "strong").length}</p><p className="text-[10px] text-muted-foreground">Strong</p></CardContent></Card>
         <Card><CardContent className="p-3 text-center"><p className="text-2xl font-bold text-foreground">256-bit</p><p className="text-[10px] text-muted-foreground">Encryption</p></CardContent></Card>
       </div>
 

@@ -52,14 +52,13 @@ const TEAM_MEMBERS = [
 const urgencyMap = { critical: "critical" as const, high: "high" as const, medium: "normal" as const, low: "low" as const };
 
 const BusinessOperations = () => {
-  const { isDemoMode } = useDataMode();
   const { primaryMode } = useBusinessProfile();
   const moduleConfig = getModuleAdaptation("operations", primaryMode);
   const [tab, setTab] = useState<Tab>("all");
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [panelOpen, setPanelOpen] = useState(false);
 
-  const filtered = (isDemoMode ? DEMO_ITEMS : [] as typeof DEMO_ITEMS).filter(item => {
+  const filtered = ([] as typeof DEMO_ITEMS).filter(item => {
     if (tab === "all") return true;
     if (tab === "queues") return item.category === "queue";
     if (tab === "escalations") return item.category === "escalation";
@@ -68,9 +67,9 @@ const BusinessOperations = () => {
     return true;
   });
 
-  const selected = (isDemoMode ? DEMO_ITEMS : [] as typeof DEMO_ITEMS).find(i => i.id === selectedId);
-  const criticalCount = (isDemoMode ? DEMO_ITEMS : [] as typeof DEMO_ITEMS).filter(i => i.urgency === "critical").length;
-  const totalCustomerImpact = (isDemoMode ? DEMO_ITEMS : [] as typeof DEMO_ITEMS).reduce((sum, i) => sum + i.customerImpact, 0);
+  const selected = ([] as typeof DEMO_ITEMS).find(i => i.id === selectedId);
+  const criticalCount = ([] as typeof DEMO_ITEMS).filter(i => i.urgency === "critical").length;
+  const totalCustomerImpact = ([] as typeof DEMO_ITEMS).reduce((sum, i) => sum + i.customerImpact, 0);
 
   const handleSelectItem = (id: string) => {
     setSelectedId(id);
@@ -91,7 +90,7 @@ const BusinessOperations = () => {
 
       <HeroCard
         title={moduleConfig.title}
-        metric={`${(isDemoMode ? DEMO_ITEMS : [] as typeof DEMO_ITEMS).length} active ${moduleConfig.terminology.item?.toLowerCase() || "item"}s`}
+        metric={`${([] as typeof DEMO_ITEMS).length} active ${moduleConfig.terminology.item?.toLowerCase() || "item"}s`}
         subtitle={moduleConfig.subtitle}
         icon={<Layers className="h-5 w-5 text-[hsl(265_55%_68%)]" />}
         accentFrom="hsl(265 55% 58%)"
@@ -101,8 +100,8 @@ const BusinessOperations = () => {
       {/* KPI Strip */}
       <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
         <StatusCard label="Critical Items" status={criticalCount > 0 ? "down" : "healthy"} lastChecked={`${criticalCount} active`} icon={<Flame className="h-3.5 w-3.5" />} />
-        <StatusCard label="Escalations" status="degraded" lastChecked={`${(isDemoMode ? DEMO_ITEMS : [] as typeof DEMO_ITEMS).filter(i => i.category === "escalation").length} open`} icon={<ShieldAlert className="h-3.5 w-3.5" />} />
-        <StatusCard label="Bottlenecks" status="degraded" lastChecked={`${(isDemoMode ? DEMO_ITEMS : [] as typeof DEMO_ITEMS).filter(i => i.category === "bottleneck").length} blocking`} icon={<GitBranch className="h-3.5 w-3.5" />} />
+        <StatusCard label="Escalations" status="degraded" lastChecked={`${([] as typeof DEMO_ITEMS).filter(i => i.category === "escalation").length} open`} icon={<ShieldAlert className="h-3.5 w-3.5" />} />
+        <StatusCard label="Bottlenecks" status="degraded" lastChecked={`${([] as typeof DEMO_ITEMS).filter(i => i.category === "bottleneck").length} blocking`} icon={<GitBranch className="h-3.5 w-3.5" />} />
         <StatusCard label="Customer Impact" status={totalCustomerImpact > 20 ? "down" : "degraded"} lastChecked={`${totalCustomerImpact} affected`} icon={<Users className="h-3.5 w-3.5" />} />
       </div>
 
@@ -133,11 +132,11 @@ const BusinessOperations = () => {
 
       <SitaTabs
         tabs={[
-          { key: "all", label: "All", count: (isDemoMode ? DEMO_ITEMS : [] as typeof DEMO_ITEMS).length },
-          { key: "queues", label: "Queues", count: (isDemoMode ? DEMO_ITEMS : [] as typeof DEMO_ITEMS).filter(i => i.category === "queue").length },
-          { key: "escalations", label: "Escalations", count: (isDemoMode ? DEMO_ITEMS : [] as typeof DEMO_ITEMS).filter(i => i.category === "escalation").length },
-          { key: "bottlenecks", label: "Bottlenecks", count: (isDemoMode ? DEMO_ITEMS : [] as typeof DEMO_ITEMS).filter(i => i.category === "bottleneck").length },
-          { key: "delayed", label: "Delayed", count: (isDemoMode ? DEMO_ITEMS : [] as typeof DEMO_ITEMS).filter(i => i.category === "delayed" || i.category === "exception").length },
+          { key: "all", label: "All", count: ([] as typeof DEMO_ITEMS).length },
+          { key: "queues", label: "Queues", count: ([] as typeof DEMO_ITEMS).filter(i => i.category === "queue").length },
+          { key: "escalations", label: "Escalations", count: ([] as typeof DEMO_ITEMS).filter(i => i.category === "escalation").length },
+          { key: "bottlenecks", label: "Bottlenecks", count: ([] as typeof DEMO_ITEMS).filter(i => i.category === "bottleneck").length },
+          { key: "delayed", label: "Delayed", count: ([] as typeof DEMO_ITEMS).filter(i => i.category === "delayed" || i.category === "exception").length },
           { key: "team", label: "Team Activity" },
         ]}
         active={tab}

@@ -58,7 +58,6 @@ const STEP_ICONS: Record<string, typeof Play> = {
 };
 
 export default function WorkflowReplayAudit() {
-  const { isDemoMode } = useDataMode();
   const [runs, setRuns] = useState<RunRow[]>([]);
   const [steps, setSteps] = useState<Record<string, StepRow[]>>({});
   const [search, setSearch] = useState("");

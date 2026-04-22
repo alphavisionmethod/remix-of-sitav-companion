@@ -108,7 +108,6 @@ const providers: Provider[] = [
 ];
 
 const ServiceProviders = () => {
-  const { isDemoMode } = useDataMode();
   const [search, setSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [expandedId, setExpandedId] = useState<string | null>(null);
@@ -167,7 +166,7 @@ const ServiceProviders = () => {
         <KPITile label="Trusted" value={String(trustedCount)} icon={Shield} sub={`${Math.round((trustedCount / providers.length) * 100)}% verified`} />
         <KPITile label="Upcoming" value={String(upcomingCount)} icon={Calendar} sub="Scheduled services" />
         <KPITile label="Total Spent" value={`$${(totalSpent / 1000).toFixed(1)}K`} icon={DollarSign} sub="All time" />
-        <KPITile label="Categories" value={String((isDemoMode ? DEMO_categories : [] as typeof DEMO_categories).length)} icon={Star} />
+        <KPITile label="Categories" value={String(([] as typeof DEMO_categories).length)} icon={Star} />
       </div>
 
       {/* Search & Filter */}
@@ -184,7 +183,7 @@ const ServiceProviders = () => {
         </div>
         <div className="flex gap-1.5 flex-wrap">
           <button onClick={() => setSelectedCategory(null)} className={`rounded-lg px-3 py-1.5 text-xs font-medium transition-colors ${!selectedCategory ? "bg-primary/10 text-primary" : "bg-secondary/50 text-muted-foreground hover:bg-secondary"}`}>All</button>
-          {(isDemoMode ? DEMO_categories : [] as typeof DEMO_categories).map((c) => (
+          {([] as typeof DEMO_categories).map((c) => (
             <button key={c} onClick={() => setSelectedCategory(c)} className={`rounded-lg px-3 py-1.5 text-xs font-medium transition-colors ${selectedCategory === c ? "bg-primary/10 text-primary" : "bg-secondary/50 text-muted-foreground hover:bg-secondary"}`}>{c}</button>
           ))}
         </div>
@@ -322,7 +321,7 @@ const ServiceProviders = () => {
       {/* Provider Advisor */}
       <ConciergeAdvisorInsightCard insight={{
         role: "Provider Advisor",
-        message: `You have ${trustedCount} trusted providers across ${(isDemoMode ? DEMO_categories : [] as typeof DEMO_categories).length} categories. CleanPro has a reliability concern — consider finding an alternative. Elite Auto has an overdue oil change — recommend scheduling this week. Total service spend: $${(totalSpent / 1000).toFixed(1)}K all-time.`,
+        message: `You have ${trustedCount} trusted providers across ${([] as typeof DEMO_categories).length} categories. CleanPro has a reliability concern — consider finding an alternative. Elite Auto has an overdue oil change — recommend scheduling this week. Total service spend: $${(totalSpent / 1000).toFixed(1)}K all-time.`,
         linkedItems: ["CleanPro reliability issue", "Oil change overdue — Elite Auto", "Dr. Patel checkup Thursday"],
         confidence: "high",
       }} />

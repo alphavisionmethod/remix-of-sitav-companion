@@ -93,7 +93,6 @@ const DOMAIN_COLORS: Record<TaskDomain, string> = {
 
 export default function TasksWorkflowsCenter() {
   const { user , isDemo} = useAuth();
-  const isDemoMode = isDemo;
   const os = useOSOrchestration();
   const interfaceState = useAdaptiveInterface();
   const attentionStack = os.hydrated ? os.getAttentionStack() : { critical: [], active: [], queued: [], deferred: [] };

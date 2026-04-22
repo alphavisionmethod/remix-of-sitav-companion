@@ -15,7 +15,6 @@ const VERDICT_CONFIG = {
 };
 
 export default function DecisionReadiness() {
-  const { isDemoMode } = useDataMode();
   const { data: liveData, isLoading } = useInvestmentDecisions();
   const [selected, setSelected] = useState(DEMO_PENDING_DECISIONS[0]);
   const vc = VERDICT_CONFIG[selected.verdict];
@@ -28,7 +27,7 @@ export default function DecisionReadiness() {
       </div>
 
       <div className="flex gap-2 overflow-x-auto pb-1">
-        {(isDemoMode ? DEMO_PENDING_DECISIONS : [] as typeof DEMO_PENDING_DECISIONS).map(d => {
+        {([] as typeof DEMO_PENDING_DECISIONS).map(d => {
           const v = VERDICT_CONFIG[d.verdict];
           return (
             <button key={d.id} onClick={() => setSelected(d)}

@@ -6,7 +6,6 @@ import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function DisagreementEngine() {
-  const { isDemoMode } = useDataMode();
   const { data: liveData, isLoading } = useInvestmentDecisions();
   return (
     <div className="mx-auto max-w-5xl space-y-6">
@@ -15,7 +14,7 @@ export default function DisagreementEngine() {
         <p className="text-sm text-muted-foreground mt-0.5">Where advisors disagree, what assumptions conflict, and what evidence would resolve the debate</p>
       </div>
 
-      {(isDemoMode ? DEMO_DISAGREEMENTS : [] as typeof DEMO_DISAGREEMENTS).map((d, di) => (
+      {([] as typeof DEMO_DISAGREEMENTS).map((d, di) => (
         <motion.div key={d.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: di * 0.06 }}
           className="rounded-2xl border border-border bg-card p-6 space-y-4">
           <div className="flex items-center gap-3">

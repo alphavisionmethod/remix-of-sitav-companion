@@ -75,7 +75,6 @@ const EMPTY: FormData = {
 };
 
 function FormDialog({ trigger, initial, onSave }: { trigger: React.ReactNode; initial?: FormData; onSave: (d: any) => void }) {
-  const { isDemoMode } = useDataMode();
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState<FormData>(initial ?? EMPTY);
   const handleOpen = (v: boolean) => {
@@ -183,7 +182,7 @@ function FormDialog({ trigger, initial, onSave }: { trigger: React.ReactNode; in
               <Label>Contract Status</Label>
               <Select value={form.contract_status} onValueChange={v => setForm(f => ({ ...f, contract_status: v as never }))}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
-                <SelectContent>{(isDemoMode ? DEMO_CONTRACT_STATUSES : [] as unknown as typeof DEMO_CONTRACT_STATUSES).map(s => <SelectItem key={s} value={s} className="capitalize">{s}</SelectItem>)}</SelectContent>
+                <SelectContent>{([] as unknown as typeof DEMO_CONTRACT_STATUSES).map(s => <SelectItem key={s} value={s} className="capitalize">{s}</SelectItem>)}</SelectContent>
               </Select>
             </div>
             <div><Label>Backend Target</Label><Input value={form.backend_target} onChange={e => setForm(f => ({ ...f, backend_target: e.target.value }))} placeholder="supabase.customers + RLS" /></div>

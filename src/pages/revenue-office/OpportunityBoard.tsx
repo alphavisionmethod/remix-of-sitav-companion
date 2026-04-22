@@ -24,9 +24,8 @@ const categoryColors: Record<string, string> = {
 const effortScore = (e: string) => e === "Low" ? 1 : e === "Medium" ? 2 : 3;
 
 export default function OpportunityBoard() {
-  const { isDemoMode } = useDataMode();
   const { data: liveDeals } = useDeals();
-  const opportunities = isDemoMode ? DEMO_opportunities : (liveDeals && liveDeals.length > 0 ? liveDeals.map((d: any) => ({
+  const opportunities = (liveDeals && liveDeals.length > 0 ? liveDeals.map((d: any) => ({
     title: d.name || "Untitled Deal",
     category: d.source || "Conversion",
     confidence: d.probability || 50,
@@ -116,7 +115,7 @@ export default function OpportunityBoard() {
         </TabsContent>
 
         <TabsContent value="themes" className="space-y-3 mt-4">
-          {(isDemoMode ? DEMO_OPPORTUNITY_THEMES : [] as typeof DEMO_OPPORTUNITY_THEMES).map(theme => {
+          {([] as typeof DEMO_OPPORTUNITY_THEMES).map(theme => {
             const themeOpps = scored.filter(o => {
               if (theme.theme === "Conversion Optimization") return ["Conversion"].includes(o.category);
               if (theme.theme === "Revenue Expansion") return ["Upsell", "Packaging"].includes(o.category);

@@ -10,7 +10,6 @@ import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 const PortfolioAllocationDashboard = () => {
-  const { isDemoMode } = useDataMode();
   const { isAdmin, loading: authLoading } = useRequireAdmin();
   const { snapshots, latest, loading: dataLoading } = useComputeSnapshots({ limit: 30 });
 
@@ -20,7 +19,7 @@ const PortfolioAllocationDashboard = () => {
   const modelMix = (latest?.model_mix as Record<string, number>) || {};
   const totalSpent = latest?.used_cents ?? 0;
 
-  const cats = (isDemoMode ? DEMO_DEFAULT_CATEGORIES : [] as typeof DEMO_DEFAULT_CATEGORIES).map(c => {
+  const cats = ([] as typeof DEMO_DEFAULT_CATEGORIES).map(c => {
     const actual = modelMix[c.cat] ?? c.target;
     const spent = Math.round(totalSpent * (actual / 100));
     return { ...c, actual, spent };

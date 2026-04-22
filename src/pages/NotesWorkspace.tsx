@@ -61,7 +61,6 @@ const DEMO_LINKED_ENTITIES = [
 
 const NotesWorkspace = () => {
   const { isDemo } = useAuth();
-  const isDemoMode = isDemo;
   const { data: liveNotes } = useNotes();
 
   const notes: Note[] = useMemo(() => {
@@ -290,7 +289,7 @@ const NotesWorkspace = () => {
                 <CardContent className="p-3">
                   <h4 className="text-xs font-medium text-muted-foreground mb-2 flex items-center gap-1.5"><Link className="w-3 h-3" /> Linked Entities</h4>
                   <div className="space-y-1.5">
-                    {(isDemoMode ? DEMO_LINKED_ENTITIES : [] as typeof DEMO_LINKED_ENTITIES).map((ent, i) => (
+                    {([] as typeof DEMO_LINKED_ENTITIES).map((ent, i) => (
                       <a key={i} href={ent.path} className="flex items-center gap-2 p-2 rounded-lg hover:bg-accent/20 transition-colors text-xs">
                         <ent.icon className="w-3 h-3 text-primary shrink-0" />
                         <span className="truncate text-muted-foreground">{ent.label}</span>

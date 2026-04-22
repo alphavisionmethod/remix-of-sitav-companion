@@ -9,7 +9,6 @@ import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function ErrorRadar() {
-  const { isDemoMode } = useDataMode();
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
       <DPOSubNav />
@@ -39,7 +38,7 @@ export default function ErrorRadar() {
       <Card className="bg-card/50 border-border/50">
         <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><AlertTriangle className="w-4 h-4 text-red-400" /> Detected Issues</CardTitle></CardHeader>
         <CardContent className="space-y-2">
-          {(isDemoMode ? DEMO_ERRORS : [] as typeof DEMO_ERRORS).map((e, i) => (
+          {([] as typeof DEMO_ERRORS).map((e, i) => (
             <div key={i} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
               <div className="flex items-center gap-3 flex-1">
                 <e.icon className="w-4 h-4 text-muted-foreground shrink-0" />
@@ -64,7 +63,7 @@ export default function ErrorRadar() {
       <Card className="bg-card/50 border-border/50">
         <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><Sparkles className="w-4 h-4 text-green-400" /> Growth Opportunities</CardTitle></CardHeader>
         <CardContent className="space-y-2">
-          {(isDemoMode ? DEMO_OPPORTUNITIES : [] as typeof DEMO_OPPORTUNITIES).map(o => (
+          {([] as typeof DEMO_OPPORTUNITIES).map(o => (
             <div key={o.title} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
               <div>
                 <p className="text-xs font-medium text-foreground">{o.title}</p>

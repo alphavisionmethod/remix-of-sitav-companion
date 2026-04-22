@@ -41,7 +41,6 @@ const CATEGORY_TABS: { value: string; label: string; types: PlatformType[] }[] =
 ];
 
 export default function PlatformConnections() {
-  const { isDemoMode } = useDataMode();
   const { data: liveData, isLoading } = useMarketWatchlistItems();
   const [category, setCategory] = useState("all");
   const [search, setSearch] = useState("");

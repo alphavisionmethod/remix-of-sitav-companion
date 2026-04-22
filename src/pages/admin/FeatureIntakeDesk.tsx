@@ -20,7 +20,6 @@ import { useDataMode } from "@/contexts/DataModeContext";
 
 
 const FeatureIntakeDesk = () => {
-  const { isDemoMode } = useDataMode();
   const queryClient = useQueryClient();
   const [form, setForm] = useState({
     title: "", description: "", userIntent: "", domain: "", archetypeKey: "dashboard",
@@ -81,7 +80,7 @@ const FeatureIntakeDesk = () => {
                 <label className="text-sm font-medium">Archetype</label>
                 <Select value={form.archetypeKey} onValueChange={v => setForm({ ...form, archetypeKey: v })}>
                   <SelectTrigger><SelectValue /></SelectTrigger>
-                  <SelectContent>{(isDemoMode ? DEMO_ARCHETYPES : [] as typeof DEMO_ARCHETYPES).map(a => <SelectItem key={a} value={a}>{a}</SelectItem>)}</SelectContent>
+                  <SelectContent>{([] as typeof DEMO_ARCHETYPES).map(a => <SelectItem key={a} value={a}>{a}</SelectItem>)}</SelectContent>
                 </Select>
               </div>
               <div>

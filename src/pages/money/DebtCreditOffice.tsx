@@ -20,7 +20,6 @@ const DEMO_ACCOUNTS: DebtAccount[] = [
 ];
 
 const DebtCreditOffice = () => {
-  const { isDemoMode } = useDataMode();
   const [strategy, setStrategy] = useState<"avalanche" | "snowball">("avalanche");
   const [extraPayment] = useState(20000);
 

@@ -18,7 +18,6 @@ import { useDataMode } from "@/contexts/DataModeContext";
 
 
 export default function BoardroomHistory() {
-  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
   const navigate = useNavigate();
 

@@ -14,7 +14,6 @@ const SEVERITY_STYLES: Record<string, string> = {
 };
 
 export default function MarketMemoryFeed() {
-  const { isDemoMode } = useDataMode();
   const { data: liveMemoryEvents } = useMarketMemoryEvents();
   const { data: liveObservations } = useAdvisorObservations();
   const { data: liveCatalysts } = useCatalystEvents();
@@ -49,7 +48,7 @@ export default function MarketMemoryFeed() {
 
       {/* Feed */}
       <div className="space-y-2">
-        {(isDemoMode ? DEMO_MEMORY_EVENTS : [] as typeof DEMO_MEMORY_EVENTS).map((evt, i) => (
+        {([] as typeof DEMO_MEMORY_EVENTS).map((evt, i) => (
           <motion.div key={evt.id} initial={{ opacity: 0, x: -6 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.03 }}
             className={`rounded-xl border p-4 ${SEVERITY_STYLES[evt.severity] || SEVERITY_STYLES.info}`}>
             <div className="flex items-start gap-3">

@@ -55,11 +55,10 @@ const CHECK_ICON: Record<string, { icon: typeof CheckCircle; color: string }> = 
 };
 
 export default function LaunchReadinessBoard() {
-  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("blockers");
 
-  const openBlockers = (isDemoMode ? DEMO_BLOCKERS : [] as typeof DEMO_BLOCKERS).filter(b => b.status === "open").length;
-  const allChecks = (isDemoMode ? DEMO_READINESS_CHECKS : [] as typeof DEMO_READINESS_CHECKS).flatMap(r => r.checks);
+  const openBlockers = ([] as typeof DEMO_BLOCKERS).filter(b => b.status === "open").length;
+  const allChecks = ([] as typeof DEMO_READINESS_CHECKS).flatMap(r => r.checks);
   const passedChecks = allChecks.filter(c => c.status === "pass").length;
   const totalChecks = allChecks.length;
   const readinessScore = Math.round((passedChecks / totalChecks) * 100);
@@ -85,7 +84,7 @@ export default function LaunchReadinessBoard() {
           { label: "Readiness Score", value: `${readinessScore}%`, color: readinessScore >= 90 ? "text-emerald-400" : readinessScore >= 70 ? "text-amber-400" : "text-red-400" },
           { label: "Checks Passed", value: `${passedChecks}/${totalChecks}`, color: "text-foreground" },
           { label: "Open Blockers", value: openBlockers, color: openBlockers > 0 ? "text-red-400" : "text-emerald-400" },
-          { label: "Accepted Risks", value: (isDemoMode ? DEMO_BLOCKERS : [] as typeof DEMO_BLOCKERS).filter(b => b.status === "accepted-risk").length, color: "text-blue-400" },
+          { label: "Accepted Risks", value: ([] as typeof DEMO_BLOCKERS).filter(b => b.status === "accepted-risk").length, color: "text-blue-400" },
         ].map((k, i) => (
           <Card key={i} className="bg-card/50 border-border/50">
             <CardContent className="p-3 text-center">
@@ -101,7 +100,7 @@ export default function LaunchReadinessBoard() {
       <Tabs value={tab} onValueChange={setTab}>
         <TabsList className="bg-muted/30 border border-border/40 h-8 p-0.5 gap-0.5">
           {[
-            { value: "blockers", label: `Blockers (${(isDemoMode ? DEMO_BLOCKERS : [] as typeof DEMO_BLOCKERS).length})`, icon: AlertTriangle },
+            { value: "blockers", label: `Blockers (${([] as typeof DEMO_BLOCKERS).length})`, icon: AlertTriangle },
             { value: "readiness", label: "Readiness Checks", icon: CheckCircle },
           ].map(t => (
             <TabsTrigger key={t.value} value={t.value} className="text-[10px] h-7 px-2.5 gap-1"><t.icon className="h-3 w-3" />{t.label}</TabsTrigger>
@@ -111,7 +110,7 @@ export default function LaunchReadinessBoard() {
         <div className="mt-4">
           <TabsContent value="blockers">
             <div className="space-y-3">
-              {(isDemoMode ? DEMO_BLOCKERS : [] as typeof DEMO_BLOCKERS).map((blocker, idx) => {
+              {([] as typeof DEMO_BLOCKERS).map((blocker, idx) => {
                 const sevCfg = SEV_CONFIG[blocker.severity];
                 const stCfg = STATUS_ICON[blocker.status];
                 const StIcon = stCfg.icon;
@@ -161,7 +160,7 @@ export default function LaunchReadinessBoard() {
 
           <TabsContent value="readiness">
             <div className="space-y-4">
-              {(isDemoMode ? DEMO_READINESS_CHECKS : [] as typeof DEMO_READINESS_CHECKS).map(category => {
+              {([] as typeof DEMO_READINESS_CHECKS).map(category => {
                 const passed = category.checks.filter(c => c.status === "pass").length;
                 return (
                   <Card key={category.category} className="bg-card/50 border-border/50">

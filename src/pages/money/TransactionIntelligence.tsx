@@ -34,7 +34,6 @@ const DEMO_TXS: DemoTx[] = [
 ];
 
 const TransactionIntelligence = () => {
-  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -49,11 +48,11 @@ const TransactionIntelligence = () => {
   }, [tab, searchTerm]);
 
   const stats = useMemo(() => {
-    const total = (isDemoMode ? DEMO_TXS : [] as typeof DEMO_TXS).length;
-    const aiCategorized = (isDemoMode ? DEMO_TXS : [] as typeof DEMO_TXS).filter(t => t.categorizedBy === "ai").length;
-    const flagged = (isDemoMode ? DEMO_TXS : [] as typeof DEMO_TXS).filter(t => t.flags.length > 0).length;
-    const recurring = (isDemoMode ? DEMO_TXS : [] as typeof DEMO_TXS).filter(t => t.isRecurring).length;
-    const avgConfidence = (isDemoMode ? DEMO_TXS : [] as typeof DEMO_TXS).reduce((s, t) => s + t.confidence, 0) / total;
+    const total = ([] as typeof DEMO_TXS).length;
+    const aiCategorized = ([] as typeof DEMO_TXS).filter(t => t.categorizedBy === "ai").length;
+    const flagged = ([] as typeof DEMO_TXS).filter(t => t.flags.length > 0).length;
+    const recurring = ([] as typeof DEMO_TXS).filter(t => t.isRecurring).length;
+    const avgConfidence = ([] as typeof DEMO_TXS).reduce((s, t) => s + t.confidence, 0) / total;
     return { total, aiCategorized, flagged, recurring, avgConfidence };
   }, []);
 

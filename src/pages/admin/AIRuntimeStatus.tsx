@@ -42,7 +42,6 @@ function CheckRow({ label, ok, detail }: { label: string; ok: boolean | null; de
 }
 
 export default function AIRuntimeStatus() {
-  const { isDemoMode } = useDataMode();
   const { data: health, isLoading, refetch, isFetching } = useAIHealth();
 
   const status = health?.status || "unknown";
@@ -162,7 +161,7 @@ export default function AIRuntimeStatus() {
                   </tr>
                 </thead>
                 <tbody>
-                  {(isDemoMode ? DEMO_AI_FEATURES : [] as typeof DEMO_AI_FEATURES).map((feature) => {
+                  {([] as typeof DEMO_AI_FEATURES).map((feature) => {
                     const fnHealthy = health?.checks.edge_functions_healthy?.[feature.fn];
                     const usesAI = feature.fn === "chat-advisor" || feature.fn === "brain-core" || feature.fn === "personal-brain";
                     const featureStatus = usesAI

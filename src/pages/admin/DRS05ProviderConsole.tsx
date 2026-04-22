@@ -10,7 +10,6 @@ import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function DRS05ProviderConsole() {
-  const { isDemoMode } = useDataMode();
   registerAllProviders();
   const { mode } = useRealityModeSafe();
   const registered = getRegisteredDomains();
@@ -38,7 +37,7 @@ export default function DRS05ProviderConsole() {
                 </tr>
               </thead>
               <tbody>
-                {(isDemoMode ? DEMO_ALL_DOMAINS : [] as typeof DEMO_ALL_DOMAINS).map(domain => {
+                {([] as typeof DEMO_ALL_DOMAINS).map(domain => {
                   const isRegistered = registered.includes(domain);
                   const meta = isRegistered ? getProviderMetadata(domain, mode) : null;
                   return (

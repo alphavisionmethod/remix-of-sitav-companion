@@ -43,7 +43,6 @@ interface ChangeTypeBoundary {
 
 const AIHumanBoundaryControls = () => {
   const { isDemo } = useAIEngDomain("selfHealingRules", DEMO_AGENT_BOUNDARIES);
-  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("agents");
 
   return (
@@ -68,7 +67,7 @@ const AIHumanBoundaryControls = () => {
         </TabsList>
 
         <TabsContent value="agents" className="space-y-2 mt-4">
-          {(isDemoMode ? DEMO_AGENT_BOUNDARIES : [] as typeof DEMO_AGENT_BOUNDARIES).map(a => {
+          {([] as typeof DEMO_AGENT_BOUNDARIES).map(a => {
             const level = AUTONOMY_LABELS[a.autonomy];
             return (
               <div key={a.agent} className="rounded-xl border border-border/40 bg-card p-3 flex items-center gap-3">
@@ -87,7 +86,7 @@ const AIHumanBoundaryControls = () => {
         </TabsContent>
 
         <TabsContent value="missions" className="space-y-2 mt-4">
-          {(isDemoMode ? DEMO_MISSION_BOUNDARIES : [] as typeof DEMO_MISSION_BOUNDARIES).map(m => {
+          {([] as typeof DEMO_MISSION_BOUNDARIES).map(m => {
             const level = AUTONOMY_LABELS[m.defaultAutonomy];
             return (
               <div key={m.missionType} className="rounded-xl border border-border/40 bg-card p-3">
@@ -115,7 +114,7 @@ const AIHumanBoundaryControls = () => {
                 <th className="text-center p-3">Canary</th>
                 <th className="text-left p-3">Rationale</th>
               </tr></thead>
-              <tbody>{(isDemoMode ? DEMO_CHANGE_TYPE_BOUNDARIES : [] as typeof DEMO_CHANGE_TYPE_BOUNDARIES).map(c => {
+              <tbody>{([] as typeof DEMO_CHANGE_TYPE_BOUNDARIES).map(c => {
                 const level = AUTONOMY_LABELS[c.maxAutonomy];
                 return (
                   <tr key={c.changeType} className="border-b border-border/20">

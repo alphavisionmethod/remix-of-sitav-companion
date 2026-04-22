@@ -51,7 +51,7 @@ const COUNCIL_ICONS: Record<string, typeof Brain> = {
 function autonomyPct(level: string): number {
   const { isDemoMode } = useDataMode();
   const idx = DEMO_AUTONOMY_LEVELS.indexOf(level);
-  return idx >= 0 ? Math.round(((idx + 1) / (isDemoMode ? DEMO_AUTONOMY_LEVELS : [] as typeof DEMO_AUTONOMY_LEVELS).length) * 100) : 0;
+  return idx >= 0 ? Math.round(((idx + 1) / ([] as typeof DEMO_AUTONOMY_LEVELS).length) * 100) : 0;
 }
 
 // ── Detail Panel ────────────────────────────────────────────

@@ -13,7 +13,6 @@ import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 const BuilderKnowledgeBase = () => {
-  const { isDemoMode } = useDataMode();
   const { data: archetypes } = useQuery({
     queryKey: ["kb-archetypes"],
     queryFn: async () => {
@@ -42,7 +41,7 @@ const BuilderKnowledgeBase = () => {
 
         <TabsContent value="archetypes" className="space-y-4 mt-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {(isDemoMode ? DEMO_ARCHETYPE_DOCS : [] as typeof DEMO_ARCHETYPE_DOCS).map(arch => (
+            {([] as typeof DEMO_ARCHETYPE_DOCS).map(arch => (
               <Card key={arch.key}>
                 <CardHeader><CardTitle className="text-base">{arch.label}</CardTitle></CardHeader>
                 <CardContent className="space-y-3">

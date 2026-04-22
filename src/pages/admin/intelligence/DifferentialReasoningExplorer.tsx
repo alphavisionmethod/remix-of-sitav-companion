@@ -20,16 +20,15 @@ const actionColors: Record<string, string> = {
 };
 
 const DifferentialReasoningExplorer = () => {
-  const { isDemoMode } = useDataMode();
   const { isAdmin, loading } = useRequireAdmin();
   if (loading || !isAdmin) return null;
 
-  const totalSaved = (isDemoMode ? DEMO_DIFFS : [] as typeof DEMO_DIFFS).reduce((s, d) => s + (d.costFull - d.costActual), 0);
-  const reuseCount = (isDemoMode ? DEMO_DIFFS : [] as typeof DEMO_DIFFS).filter(d => d.action === "reuse-as-is").length;
-  const partialCount = (isDemoMode ? DEMO_DIFFS : [] as typeof DEMO_DIFFS).filter(d => d.action === "partial-update").length;
-  const fullCount = (isDemoMode ? DEMO_DIFFS : [] as typeof DEMO_DIFFS).filter(d => d.action === "full-reanalysis").length;
-  const totalPreserved = (isDemoMode ? DEMO_DIFFS : [] as typeof DEMO_DIFFS).reduce((s, d) => s + d.preserved, 0);
-  const totalInvalidated = (isDemoMode ? DEMO_DIFFS : [] as typeof DEMO_DIFFS).reduce((s, d) => s + d.invalidated, 0);
+  const totalSaved = ([] as typeof DEMO_DIFFS).reduce((s, d) => s + (d.costFull - d.costActual), 0);
+  const reuseCount = ([] as typeof DEMO_DIFFS).filter(d => d.action === "reuse-as-is").length;
+  const partialCount = ([] as typeof DEMO_DIFFS).filter(d => d.action === "partial-update").length;
+  const fullCount = ([] as typeof DEMO_DIFFS).filter(d => d.action === "full-reanalysis").length;
+  const totalPreserved = ([] as typeof DEMO_DIFFS).reduce((s, d) => s + d.preserved, 0);
+  const totalInvalidated = ([] as typeof DEMO_DIFFS).reduce((s, d) => s + d.invalidated, 0);
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
@@ -78,7 +77,7 @@ const DifferentialReasoningExplorer = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {(isDemoMode ? DEMO_DIFFS : [] as typeof DEMO_DIFFS).map(d => (
+              {([] as typeof DEMO_DIFFS).map(d => (
                 <TableRow key={d.id}>
                   <TableCell className="text-xs font-medium text-foreground">{d.domain}</TableCell>
                   <TableCell className="text-xs text-muted-foreground max-w-[200px] truncate">{d.desc}</TableCell>
@@ -106,7 +105,7 @@ const DifferentialReasoningExplorer = () => {
       <Card className="bg-card/80 border-border/50">
         <CardHeader className="pb-2"><CardTitle className="text-sm">Detected Changes by Domain</CardTitle></CardHeader>
         <CardContent className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {(isDemoMode ? DEMO_DIFFS : [] as typeof DEMO_DIFFS).filter(d => d.changes.length > 0).map(d => (
+          {([] as typeof DEMO_DIFFS).filter(d => d.changes.length > 0).map(d => (
             <div key={d.id} className="p-3 rounded-lg bg-secondary/20 space-y-2">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-medium text-foreground">{d.domain}</span>

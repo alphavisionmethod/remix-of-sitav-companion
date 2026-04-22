@@ -62,8 +62,6 @@ export default function CommunicationsPage() {
   const [search, setSearch] = useState("");
   const [selectedComm, setSelectedComm] = useState<CommunicationEntry | null>(null);
   const { user , isDemo} = useAuth();
-
-  const isDemoMode = isDemo;
   const { data: realComms } = useQuery({
     queryKey: ["communications", user?.id],
     enabled: !!user && !isDemoMode,
@@ -79,7 +77,7 @@ export default function CommunicationsPage() {
     },
   });
 
-  const communications = isDemoMode ? DEMO_COMMUNICATIONS : (realComms ?? DEMO_COMMUNICATIONS);
+  const communications = (realComms ?? DEMO_COMMUNICATIONS);
 
   const filtered = useMemo(() => {
     let result = communications;
@@ -91,8 +89,8 @@ export default function CommunicationsPage() {
   const stats = {
     totalToday: communications.length,
     needsReply: communications.filter(c => c.direction === "inbound" && c.status !== "read").length,
-    followUpRisks: (isDemoMode ? DEMO_FOLLOW_UPS : [] as typeof DEMO_FOLLOW_UPS).filter(f => f.urgency === "high").length,
-    draftsWaiting: (isDemoMode ? DEMO_DRAFTS : [] as typeof DEMO_DRAFTS).length,
+    followUpRisks: ([] as typeof DEMO_FOLLOW_UPS).filter(f => f.urgency === "high").length,
+    draftsWaiting: ([] as typeof DEMO_DRAFTS).length,
     failedToday: communications.filter(c => c.status === "failed").length,
   };
 
@@ -174,7 +172,7 @@ export default function CommunicationsPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-2">
-                {(isDemoMode ? DEMO_FOLLOW_UPS : [] as typeof DEMO_FOLLOW_UPS).filter(f => f.urgency !== "low").map(f => (
+                {([] as typeof DEMO_FOLLOW_UPS).filter(f => f.urgency !== "low").map(f => (
                   <div key={f.id} className="flex items-start gap-3 p-2 rounded-lg border border-border/30">
                     <Badge variant="outline" className={cn("text-[9px] shrink-0 mt-0.5", URGENCY_COLORS[f.urgency])}>{f.urgency}</Badge>
                     <div className="flex-1 min-w-0">
@@ -265,7 +263,7 @@ export default function CommunicationsPage() {
           <Card>
             <CardHeader><CardTitle className="text-base">Follow-up Queue</CardTitle></CardHeader>
             <CardContent className="space-y-3">
-              {(isDemoMode ? DEMO_FOLLOW_UPS : [] as typeof DEMO_FOLLOW_UPS).map(f => {
+              {([] as typeof DEMO_FOLLOW_UPS).map(f => {
                 const Icon = CHANNEL_ICONS[f.channel];
                 return (
                   <div key={f.id} className={cn("flex items-center gap-3 p-3 rounded-lg border", f.urgency === "high" ? "border-destructive/20 bg-destructive/5" : "border-border/30")}>
@@ -294,7 +292,7 @@ export default function CommunicationsPage() {
           <Card>
             <CardHeader><CardTitle className="text-base">Draft Center</CardTitle></CardHeader>
             <CardContent className="space-y-3">
-              {(isDemoMode ? DEMO_DRAFTS : [] as typeof DEMO_DRAFTS).map(d => (
+              {([] as typeof DEMO_DRAFTS).map(d => (
                 <div key={d.id} className="flex items-center gap-3 p-3 rounded-lg border border-border/30 hover:bg-accent/20 transition-colors cursor-pointer">
                   <Edit3 className="h-4 w-4 text-muted-foreground shrink-0" />
                   <div className="flex-1 min-w-0">

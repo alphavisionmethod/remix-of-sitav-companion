@@ -303,7 +303,6 @@ const ApprovalCard = ({ item, onAction }: { item: ApprovalItem; onAction: (id: s
 
 const ApprovalChamber = () => {
   const { isDemo } = useAuth();
-  const isDemoMode = isDemo;
   const isAdmin = useIsAdmin();
   const { data: dbApprovals = [], isLoading } = useApprovals();
   const { approve, reject } = useApprovalQueue();
@@ -341,7 +340,7 @@ const ApprovalChamber = () => {
     ].filter(Boolean) as string[],
     confidence: a.proposed_action?.confidence ?? 0.8,
   }));
-  const items: ApprovalItem[] = isDemoMode ? DEMO_APPROVAL_ITEMS : liveItems;
+  const items: ApprovalItem[] = liveItems;
 
   const handleAction = async (id: string, action: string) => {
     // Trust-weighted evaluation before execution

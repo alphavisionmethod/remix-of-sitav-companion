@@ -12,7 +12,6 @@ import { useDataMode } from "@/contexts/DataModeContext";
 
 
 const HRS02SignalSourcesBoard = () => {
-  const { isDemoMode } = useDataMode();
   const { data: providers, isLoading } = useWearableProviders();
 
   // Use DB data if available, map to display shape; else use demo

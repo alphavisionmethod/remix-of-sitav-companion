@@ -16,12 +16,11 @@ const FIREWALL_STATUS = {
 };
 
 export default function BehavioralFirewall() {
-  const { isDemoMode } = useDataMode();
   const { data: liveBehavioralSignals } = useBehavioralSignals();
   const { data: constitution } = useInvestmentConstitution();
   const firewallState = assessBehavioralFirewall(liveBehavioralSignals ?? [], constitution);
   const [filter, setFilter] = useState<string>("all");
-  const filtered = (isDemoMode ? DEMO_BEHAVIORAL_SIGNALS : [] as typeof DEMO_BEHAVIORAL_SIGNALS).filter(s => filter === "all" || s.type === filter);
+  const filtered = ([] as typeof DEMO_BEHAVIORAL_SIGNALS).filter(s => filter === "all" || s.type === filter);
 
   return (
     <div className="mx-auto max-w-5xl space-y-6">

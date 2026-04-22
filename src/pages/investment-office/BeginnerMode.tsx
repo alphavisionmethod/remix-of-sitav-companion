@@ -18,7 +18,6 @@ const WIZARD_STEPS = [
 ];
 
 export default function BeginnerMode() {
-  const { isDemoMode } = useDataMode();
   const { data: liveData, isLoading } = useInvestmentStrategyRecords();
   const navigate = useNavigate();
   const p = PORTFOLIO;
@@ -142,7 +141,7 @@ export default function BeginnerMode() {
       <div className="space-y-3">
         <h3 className="text-sm font-semibold text-foreground flex items-center gap-2"><HelpCircle className="h-4 w-4 text-primary" /> Learn the Basics</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-          {(isDemoMode ? DEMO_LEARN_TOPICS : [] as typeof DEMO_LEARN_TOPICS).map(t => (
+          {([] as typeof DEMO_LEARN_TOPICS).map(t => (
             <div key={t.title} className="rounded-2xl border border-border bg-card p-4 space-y-2 hover:border-primary/15 transition-all cursor-pointer">
               <span className="text-2xl">{t.icon}</span>
               <p className="text-xs font-semibold text-foreground">{t.title}</p>

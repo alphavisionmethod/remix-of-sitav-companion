@@ -7,7 +7,6 @@ import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function PostTradeLoop() {
-  const { isDemoMode } = useDataMode();
   const { data: livePositions } = usePortfolioPositionsMemory();
   const { data: liveExecutions } = useExecutionRecords();
   const { data: liveTheses } = useThesisRecords();
@@ -24,7 +23,7 @@ export default function PostTradeLoop() {
 
       {/* Position Selector */}
       <div className="flex gap-2 overflow-x-auto pb-1">
-        {(isDemoMode ? DEMO_ACTIVE_POSITIONS : [] as typeof DEMO_ACTIVE_POSITIONS).map(p => (
+        {([] as typeof DEMO_ACTIVE_POSITIONS).map(p => (
           <button key={p.id} onClick={() => setSelected(p)}
             className={`shrink-0 rounded-xl border px-4 py-3 flex items-center gap-2 transition-all ${selected.id === p.id ? "border-primary bg-primary/5" : "border-border bg-card hover:border-primary/20"}`}>
             <span className="text-lg">{p.icon}</span>

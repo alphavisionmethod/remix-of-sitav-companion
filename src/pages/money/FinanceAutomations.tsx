@@ -43,17 +43,16 @@ const TRUST_LABELS: Record<TrustLevel, string> = {
 };
 
 const FinanceAutomations = () => {
-  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("active");
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
-  const filtered = tab === "all" ? DEMO_AUTOMATIONS : (isDemoMode ? DEMO_AUTOMATIONS : [] as typeof DEMO_AUTOMATIONS).filter(a => a.status === tab);
-  const selected = (isDemoMode ? DEMO_AUTOMATIONS : [] as typeof DEMO_AUTOMATIONS).find(a => a.id === selectedId);
+  const filtered = tab === "all" ? DEMO_AUTOMATIONS : ([] as typeof DEMO_AUTOMATIONS).filter(a => a.status === tab);
+  const selected = ([] as typeof DEMO_AUTOMATIONS).find(a => a.id === selectedId);
 
-  const activeCount = (isDemoMode ? DEMO_AUTOMATIONS : [] as typeof DEMO_AUTOMATIONS).filter(a => a.status === "active").length;
-  const suggestedCount = (isDemoMode ? DEMO_AUTOMATIONS : [] as typeof DEMO_AUTOMATIONS).filter(a => a.status === "suggested").length;
-  const totalRuns = (isDemoMode ? DEMO_AUTOMATIONS : [] as typeof DEMO_AUTOMATIONS).reduce((s, a) => s + a.runsTotal, 0);
-  const totalProofs = (isDemoMode ? DEMO_AUTOMATIONS : [] as typeof DEMO_AUTOMATIONS).reduce((s, a) => s + a.proofCount, 0);
+  const activeCount = ([] as typeof DEMO_AUTOMATIONS).filter(a => a.status === "active").length;
+  const suggestedCount = ([] as typeof DEMO_AUTOMATIONS).filter(a => a.status === "suggested").length;
+  const totalRuns = ([] as typeof DEMO_AUTOMATIONS).reduce((s, a) => s + a.runsTotal, 0);
+  const totalProofs = ([] as typeof DEMO_AUTOMATIONS).reduce((s, a) => s + a.proofCount, 0);
 
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
@@ -77,9 +76,9 @@ const FinanceAutomations = () => {
         tabs={[
           { key: "active", label: "Active", count: activeCount },
           { key: "suggested", label: "Suggested", count: suggestedCount },
-          { key: "paused", label: "Paused", count: (isDemoMode ? DEMO_AUTOMATIONS : [] as typeof DEMO_AUTOMATIONS).filter(a => a.status === "paused").length },
-          { key: "failed", label: "Failed", count: (isDemoMode ? DEMO_AUTOMATIONS : [] as typeof DEMO_AUTOMATIONS).filter(a => a.status === "failed").length },
-          { key: "all", label: "All", count: (isDemoMode ? DEMO_AUTOMATIONS : [] as typeof DEMO_AUTOMATIONS).length },
+          { key: "paused", label: "Paused", count: ([] as typeof DEMO_AUTOMATIONS).filter(a => a.status === "paused").length },
+          { key: "failed", label: "Failed", count: ([] as typeof DEMO_AUTOMATIONS).filter(a => a.status === "failed").length },
+          { key: "all", label: "All", count: ([] as typeof DEMO_AUTOMATIONS).length },
         ]}
         active={tab}
         onChange={setTab}

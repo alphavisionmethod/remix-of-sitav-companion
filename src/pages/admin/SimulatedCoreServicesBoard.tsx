@@ -21,7 +21,6 @@ const BACKING_ICONS: Record<string, typeof Server> = { "memory-only": Cpu, local
 const STATUS_COLORS: Record<string, string> = { not_started: "bg-muted text-muted-foreground", planned: "bg-blue-500/20 text-blue-400", in_progress: "bg-yellow-500/20 text-yellow-400", completed: "bg-emerald-500/20 text-emerald-400" };
 
 export default function SimulatedCoreServicesBoard() {
-  const { isDemoMode } = useDataMode();
   return (
     <div className="space-y-6 p-6">
 <div>
@@ -31,7 +30,7 @@ export default function SimulatedCoreServicesBoard() {
 
       <div className="grid grid-cols-4 gap-4">
         {(["critical", "high", "medium", "low"] as const).map(sev => {
-          const count = (isDemoMode ? DEMO_CORE_SERVICES : [] as typeof DEMO_CORE_SERVICES).filter(s => s.stateLossSeverity === sev).length;
+          const count = ([] as typeof DEMO_CORE_SERVICES).filter(s => s.stateLossSeverity === sev).length;
           return (
             <Card key={sev}>
               <CardContent className="p-4">
@@ -58,7 +57,7 @@ export default function SimulatedCoreServicesBoard() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {(isDemoMode ? DEMO_CORE_SERVICES : [] as typeof DEMO_CORE_SERVICES).map(s => {
+              {([] as typeof DEMO_CORE_SERVICES).map(s => {
                 const Icon = BACKING_ICONS[s.backing] ?? Server;
                 return (
                   <TableRow key={s.name}>

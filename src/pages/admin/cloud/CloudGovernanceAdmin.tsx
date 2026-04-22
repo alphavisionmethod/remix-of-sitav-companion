@@ -41,7 +41,6 @@ const TRUST_COLORS: Record<TrustState, string> = {
 };
 
 export function CloudGovernanceAdmin() {
-  const { isDemoMode } = useDataMode();
   const [section, setSection] = useState<"quotas" | "trust" | "compliance" | "abuse" | "selective">("quotas");
   const governanceReport = appGovernance.getGovernanceReport();
   const abuseStats = abusePrevention.getStats();
@@ -161,7 +160,7 @@ export function CloudGovernanceAdmin() {
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-2">
-            {(isDemoMode ? DEMO_TRUST_DEVICES : [] as typeof DEMO_TRUST_DEVICES).map(d => (
+            {([] as typeof DEMO_TRUST_DEVICES).map(d => (
               <div key={d.id} className="flex items-center justify-between p-3 rounded-lg bg-muted/20 border border-border/30">
                 <div className="flex items-center gap-3">
                   <div className="h-10 w-10 rounded-lg bg-muted/30 flex items-center justify-center">

@@ -14,7 +14,6 @@ import { getDemoOnlySurfacesByContainment, DEMO_ONLY_SURFACE_COUNT } from "@/lib
 import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function DWE07DeviceLaunchHonestyBoard() {
-  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
 
   const { data: readiness = [] } = useQuery<AmbientLaunchReadinessRow[]>({

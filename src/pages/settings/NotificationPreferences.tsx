@@ -17,7 +17,6 @@ import { useDataMode } from "@/contexts/DataModeContext";
 
 
 export default function NotificationPreferences() {
-  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
   const queryClient = useQueryClient();
   const { isSupported, isRegistered, permissionState, requestPermission, unregister, isLoading: pushLoading } = usePushNotifications();
@@ -107,7 +106,7 @@ export default function NotificationPreferences() {
           <CardDescription>Choose which categories send push vs in-app only</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          {(isDemoMode ? DEMO_CATEGORIES : [] as typeof DEMO_CATEGORIES).map((cat) => {
+          {([] as typeof DEMO_CATEGORIES).map((cat) => {
             const pref = getPref(cat.key);
             return (
               <div key={cat.key} className="flex items-center justify-between p-3 rounded-lg bg-muted/30 border border-border">

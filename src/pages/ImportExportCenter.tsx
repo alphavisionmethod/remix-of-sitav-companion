@@ -21,7 +21,6 @@ const STATUS_ICONS = { uploading: Clock, processing: Clock, complete: CheckCircl
 
 const ImportExportCenter = () => {
   const { isDemo } = useAuth();
-  const isDemoMode = isDemo;
   const [tab, setTab] = useState("upload");
   const [isDragging, setIsDragging] = useState(false);
   const { data: liveJobs } = useImportExportJobs();

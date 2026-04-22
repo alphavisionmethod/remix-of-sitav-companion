@@ -12,7 +12,6 @@ import { useDataMode } from "@/contexts/DataModeContext";
 
 
 const SAGFallbackCenter = () => {
-  const { isDemoMode } = useDataMode();
   const { data: policies = [] } = useRoutingPolicies();
   const { data: health = [] } = useProviderHealth();
   const { data: tasks = [] } = useTaskRequests();
@@ -37,7 +36,7 @@ const SAGFallbackCenter = () => {
         <CardHeader><CardTitle className="text-base">Fallback Strategy Types</CardTitle></CardHeader>
         <CardContent>
           <div className="grid grid-cols-5 gap-3">
-            {(isDemoMode ? DEMO_FALLBACK_STRATEGIES : [] as typeof DEMO_FALLBACK_STRATEGIES).map(s => (
+            {([] as typeof DEMO_FALLBACK_STRATEGIES).map(s => (
               <div key={s.id} className="p-3 border rounded-lg text-center">
                 <span className="text-2xl">{s.icon}</span>
                 <p className="text-xs font-medium mt-1">{s.label}</p>

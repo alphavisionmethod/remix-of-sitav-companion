@@ -48,10 +48,9 @@ const ADVISOR_CONVERSION_INSIGHTS = [
 ];
 
 export default function ConversionLab() {
-  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("experiments");
   const { data: liveExperiments, isLoading } = useConversionExperiments();
-  const EXPERIMENTS = isDemoMode ? DEMO_EXPERIMENTS : (liveExperiments && liveExperiments.length > 0 ? liveExperiments.map((e: any) => ({
+  const EXPERIMENTS = (liveExperiments && liveExperiments.length > 0 ? liveExperiments.map((e: any) => ({
     name: e.name,
     status: e.status || "draft",
     startDate: e.started_at ? new Date(e.started_at).toLocaleDateString() : "—",

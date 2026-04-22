@@ -199,7 +199,6 @@ function RuleCard({
 // ── Composer ────────────────────────────────────────────────────
 
 function RuleComposer({ onCompile }: { onCompile: (text: string) => void }) {
-  const { isDemoMode } = useDataMode();
   const [input, setInput] = useState("");
   const [showExamples, setShowExamples] = useState(false);
 
@@ -251,7 +250,7 @@ function RuleComposer({ onCompile }: { onCompile: (text: string) => void }) {
             className="overflow-hidden"
           >
             <div className="flex flex-wrap gap-1.5 mt-2">
-              {(isDemoMode ? DEMO_EXAMPLE_RULES : [] as typeof DEMO_EXAMPLE_RULES).map(ex => (
+              {([] as typeof DEMO_EXAMPLE_RULES).map(ex => (
                 <button
                   key={ex}
                   onClick={() => setInput(ex)}

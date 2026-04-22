@@ -291,7 +291,6 @@ function ConnectedPanel() {
 
 // ── Main Page ──────────────────────────────────────────────────
 export default function IntegrationConcierge() {
-  const { isDemoMode } = useDataMode();
   const { engines } = useOSRuntime();
   const [category, setCategory] = useState("all");
   const [activeUseCase, setActiveUseCase] = useState<ConnectorUseCase | null>(null);
@@ -351,7 +350,7 @@ export default function IntegrationConcierge() {
         <TabsContent value="use-cases" className="mt-5">
           {/* Category Filter */}
           <div className="flex gap-1.5 mb-5 flex-wrap">
-            {(isDemoMode ? DEMO_CATEGORIES : [] as unknown as typeof DEMO_CATEGORIES).map(cat => (
+            {([] as unknown as typeof DEMO_CATEGORIES).map(cat => (
               <button
                 key={cat.id}
                 onClick={() => setCategory(cat.id)}
@@ -376,7 +375,7 @@ export default function IntegrationConcierge() {
         </TabsContent>
 
         <TabsContent value="bundles" className="mt-5 space-y-4">
-          {(isDemoMode ? DEMO_BUNDLES : [] as typeof DEMO_BUNDLES).map(b => (
+          {([] as typeof DEMO_BUNDLES).map(b => (
             <BundleCard key={b.id} bundle={b} onSelect={() => {
               const firstUc = engines.integrations.getUseCase(b.useCases[0]);
               if (firstUc) setActiveUseCase(firstUc);

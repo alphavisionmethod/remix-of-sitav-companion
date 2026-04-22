@@ -50,7 +50,6 @@ const TOOLBAR_GROUPS = [
 ];
 
 const DocumentEditor = () => {
-  const { isDemoMode } = useDataMode();
 const [mode, setMode] = useState<"edit" | "preview" | "review">("edit");
   const [title, setTitle] = useState("Untitled Document");
   const [content, setContent] = useState("Start writing your document here.\n\nThis editor supports headings, bold, italic, lists, links, images, code blocks, and more.\n\nSwitch between Edit, Preview, and Review modes.");
@@ -247,7 +246,7 @@ const [mode, setMode] = useState<"edit" | "preview" | "review">("edit");
                   <CardTitle className="text-sm flex items-center gap-2"><History className="h-3.5 w-3.5" /> Version History</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-2">
-                  {(isDemoMode ? DEMO_VERSIONS : [] as typeof DEMO_VERSIONS).map(v => (
+                  {([] as typeof DEMO_VERSIONS).map(v => (
                     <div key={v.id} className={cn("p-2 rounded-lg border transition-colors cursor-pointer hover:bg-accent/20", v.id === "v4" ? "border-primary/30 bg-primary/5" : "border-border/30")}>
                       <div className="flex items-center justify-between">
                         <span className="text-xs font-medium">{v.label}</span>

@@ -11,7 +11,6 @@ import { useDataMode } from "@/contexts/DataModeContext";
 
 
 const NRC02CalmnessCenter = () => {
-  const { isDemoMode } = useDataMode();
   const { data: roles, isLoading } = useAssistantRolePresences();
   const calmPrinciples = DEMO_CALM_PRINCIPLES;
   const principleIcons = [Eye, Zap, MessageSquare, Shield, Heart, Users];

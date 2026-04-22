@@ -32,9 +32,9 @@ export default function RevenueGate() {
   const [operatingMode, setOperatingMode] = useState<typeof OPERATING_MODES[number]>("Growth");
 
   // In live mode, show real data or empty states — never silently use demo data
-  const metrics = isDemoMode ? DEMO_METRICS : [];
-  const whatChanged = isDemoMode ? DEMO_WHAT_CHANGED : [];
-  const advisorPreview = isDemoMode ? DEMO_ADVISOR_PREVIEW : [];
+  const metrics = [];
+  const whatChanged = [];
+  const advisorPreview = [];
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
@@ -99,7 +99,7 @@ export default function RevenueGate() {
         <Card className="bg-card/50 border-border/50">
           <CardHeader className="pb-3"><CardTitle className="text-sm font-medium text-muted-foreground">Quick Navigation</CardTitle></CardHeader>
           <CardContent className="space-y-2">
-            {(isDemoMode ? DEMO_QUICK_ACTIONS : [] as typeof DEMO_QUICK_ACTIONS).map(a => (
+            {([] as typeof DEMO_QUICK_ACTIONS).map(a => (
               <Button key={a.label} variant="ghost" className="w-full justify-between text-foreground hover:bg-accent/50" onClick={() => navigate(a.path)}>
                 <span className="flex items-center gap-2"><a.icon className="w-4 h-4 text-primary" />{a.label}</span>
                 <ArrowRight className="w-3 h-3 text-muted-foreground" />

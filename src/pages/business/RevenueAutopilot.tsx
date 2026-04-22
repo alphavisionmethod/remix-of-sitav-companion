@@ -46,12 +46,12 @@ const LeakageRadar = () => {
   <div className="space-y-4">
     <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
       <KPITile label="Total Leakage Detected" value={`$${Math.round(SUMMARY.totalLeakageDetected).toLocaleString()}`} sub="Across all sources" trend="down" />
-      <KPITile label="Recoverable" value={`$${Math.round(SUMMARY.totalRecoverable).toLocaleString()}`} sub={`${(isDemoMode ? DEMO_LEAKAGE : [] as typeof DEMO_LEAKAGE).filter(l => l.recoverable).length} items`} />
-      <KPITile label="Critical Items" value={String((isDemoMode ? DEMO_LEAKAGE : [] as typeof DEMO_LEAKAGE).filter(l => l.severity === "critical").length)} sub="Need immediate action" trend="down" />
+      <KPITile label="Recoverable" value={`$${Math.round(SUMMARY.totalRecoverable).toLocaleString()}`} sub={`${([] as typeof DEMO_LEAKAGE).filter(l => l.recoverable).length} items`} />
+      <KPITile label="Critical Items" value={String(([] as typeof DEMO_LEAKAGE).filter(l => l.severity === "critical").length)} sub="Need immediate action" trend="down" />
       <KPITile label="Health Score" value={`${SUMMARY.healthScore}/100`} sub="Revenue health" trend="up" />
     </div>
     <div className="space-y-2">
-      {(isDemoMode ? DEMO_LEAKAGE : [] as typeof DEMO_LEAKAGE).map((item, i) => (
+      {([] as typeof DEMO_LEAKAGE).map((item, i) => (
         <motion.div key={item.id} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.03 }}>
           <SitaCard className="p-4" hover>
             <div className="flex items-center gap-4">
@@ -88,11 +88,11 @@ const RecoveryEngine = () => {
   <div className="space-y-4">
     <div className="grid gap-3 sm:grid-cols-3">
       <KPITile label="Active Recoveries" value={String(SUMMARY.activeRecoveryActions)} sub="In progress" />
-      <KPITile label="Suggested Actions" value={String((isDemoMode ? DEMO_RECOVERY_ACTIONS : [] as typeof DEMO_RECOVERY_ACTIONS).length)} sub="Ready to launch" />
-      <KPITile label="Approval Required" value={String((isDemoMode ? DEMO_RECOVERY_ACTIONS : [] as typeof DEMO_RECOVERY_ACTIONS).filter(r => r.approvalRequired).length)} sub="Need your OK" />
+      <KPITile label="Suggested Actions" value={String(([] as typeof DEMO_RECOVERY_ACTIONS).length)} sub="Ready to launch" />
+      <KPITile label="Approval Required" value={String(([] as typeof DEMO_RECOVERY_ACTIONS).filter(r => r.approvalRequired).length)} sub="Need your OK" />
     </div>
     <div className="space-y-2">
-      {(isDemoMode ? DEMO_RECOVERY_ACTIONS : [] as typeof DEMO_RECOVERY_ACTIONS).map((action, i) => (
+      {([] as typeof DEMO_RECOVERY_ACTIONS).map((action, i) => (
         <motion.div key={action.id} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.03 }}>
           <SitaCard className="p-4" hover>
             <div className="flex items-center gap-4">
@@ -128,7 +128,7 @@ const OpportunitiesRanked = () => {
   return (
   <div className="space-y-4">
     <div className="space-y-2">
-      {(isDemoMode ? DEMO_OPPORTUNITIES : [] as typeof DEMO_OPPORTUNITIES).map((opp, i) => (
+      {([] as typeof DEMO_OPPORTUNITIES).map((opp, i) => (
         <motion.div key={opp.id} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.03 }}>
           <SitaCard className="p-4" hover>
             <div className="flex items-center gap-4">
@@ -168,7 +168,7 @@ const RecoveredValueLedger = () => {
         <KPITile label="Categories" value={String(Object.keys(summary.byCategory).length)} sub="Active recovery types" />
       </div>
       <div className="space-y-2">
-        {(isDemoMode ? DEMO_RECOVERED : [] as typeof DEMO_RECOVERED).map((entry, i) => (
+        {([] as typeof DEMO_RECOVERED).map((entry, i) => (
           <motion.div key={entry.id} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.03 }}>
             <SitaCard className="p-4" hover>
               <div className="flex items-center gap-4">

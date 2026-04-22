@@ -54,11 +54,10 @@ const REBUILD_HISTORY = [
 ];
 
 const ProjectionControlCenter = () => {
-  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("inventory");
-  const freshCount = (isDemoMode ? DEMO_MODELS : [] as typeof DEMO_MODELS).filter(m => m.freshness === "fresh").length;
-  const avgLag = Math.round((isDemoMode ? DEMO_MODELS : [] as typeof DEMO_MODELS).reduce((s, m) => s + m.lagMs, 0) / (isDemoMode ? DEMO_MODELS : [] as typeof DEMO_MODELS).length);
-  const degradedCount = (isDemoMode ? DEMO_MODELS : [] as typeof DEMO_MODELS).filter(m => m.freshness === "degraded" || m.freshness === "fallback").length;
+  const freshCount = ([] as typeof DEMO_MODELS).filter(m => m.freshness === "fresh").length;
+  const avgLag = Math.round(([] as typeof DEMO_MODELS).reduce((s, m) => s + m.lagMs, 0) / ([] as typeof DEMO_MODELS).length);
+  const degradedCount = ([] as typeof DEMO_MODELS).filter(m => m.freshness === "degraded" || m.freshness === "fallback").length;
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
@@ -75,7 +74,7 @@ const ProjectionControlCenter = () => {
       <motion.div variants={stagger} initial="hidden" animate="show" className="space-y-4">
         <motion.div variants={fadeUp} className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {[
-            { label: "Fresh Models", value: `${freshCount}/${(isDemoMode ? DEMO_MODELS : [] as typeof DEMO_MODELS).length}`, color: freshCount === (isDemoMode ? DEMO_MODELS : [] as typeof DEMO_MODELS).length ? "text-emerald-500" : "text-amber-500" },
+            { label: "Fresh Models", value: `${freshCount}/${([] as typeof DEMO_MODELS).length}`, color: freshCount === ([] as typeof DEMO_MODELS).length ? "text-emerald-500" : "text-amber-500" },
             { label: "Average Lag", value: avgLag < 1000 ? `${avgLag}ms` : `${(avgLag / 1000).toFixed(1)}s`, color: avgLag < 5000 ? "text-emerald-500" : "text-amber-500" },
             { label: "Rebuild Queue", value: String(REBUILD_QUEUE.length), color: "text-blue-500" },
             { label: "Degraded Models", value: String(degradedCount), color: degradedCount === 0 ? "text-emerald-500" : "text-orange-500" },
@@ -97,7 +96,7 @@ const ProjectionControlCenter = () => {
           </TabsList>
 
           <TabsContent value="inventory" className="mt-4 space-y-2">
-            {(isDemoMode ? DEMO_MODELS : [] as typeof DEMO_MODELS).map((model) => {
+            {([] as typeof DEMO_MODELS).map((model) => {
               const cfg = freshnessConfig[model.freshness];
               return (
                 <div key={model.id} className="p-3 rounded-lg border hover:bg-muted/30 transition-colors">
@@ -210,7 +209,7 @@ const ProjectionControlCenter = () => {
             <Card>
               <CardHeader className="pb-3"><CardTitle className="text-sm font-semibold flex items-center gap-2"><AlertTriangle className="h-4 w-4 text-amber-500" /> Fallback & Degraded Audit</CardTitle></CardHeader>
               <CardContent className="space-y-2">
-                {(isDemoMode ? DEMO_MODELS : [] as typeof DEMO_MODELS).filter(m => m.freshness === "degraded" || m.freshness === "fallback" || m.freshness === "stale").map(model => (
+                {([] as typeof DEMO_MODELS).filter(m => m.freshness === "degraded" || m.freshness === "fallback" || m.freshness === "stale").map(model => (
                   <div key={model.id} className={`p-3 rounded-lg border ${model.freshness === "degraded" || model.freshness === "fallback" ? "border-orange-500/20 bg-orange-500/5" : ""}`}>
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center gap-2">
@@ -225,7 +224,7 @@ const ProjectionControlCenter = () => {
                     <p className="text-[10px] text-amber-500">⚠ Surfaces using this model may show stale or approximate data. Truth disclosure should be visible to operators.</p>
                   </div>
                 ))}
-                {(isDemoMode ? DEMO_MODELS : [] as typeof DEMO_MODELS).filter(m => m.freshness === "degraded" || m.freshness === "fallback" || m.freshness === "stale").length === 0 && (
+                {([] as typeof DEMO_MODELS).filter(m => m.freshness === "degraded" || m.freshness === "fallback" || m.freshness === "stale").length === 0 && (
                   <div className="text-center py-6 text-xs text-muted-foreground"><CheckCircle className="h-8 w-8 mx-auto mb-2 text-emerald-500/50" />All models are fresh — no fallback masking detected</div>
                 )}
               </CardContent>

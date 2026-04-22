@@ -61,7 +61,6 @@ const roleColors: Record<string, string> = {
 };
 
 export default function DealRoom() {
-  const { isDemoMode } = useDataMode();
   const [selectedDeal, setSelectedDeal] = useState(DEMO_DEALS[0]);
   const [activeTab, setActiveTab] = useState<"overview" | "stakeholders" | "playbook" | "scenarios">("overview");
 
@@ -70,7 +69,7 @@ export default function DealRoom() {
       {/* Deal list sidebar */}
       <div className="w-[220px] shrink-0 border-r border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_100%/0.01)] p-3 space-y-1.5 overflow-y-auto">
         <p className="text-[9px] font-bold uppercase tracking-[0.15em] text-foreground/25 px-2 mb-2">Active Deals</p>
-        {(isDemoMode ? DEMO_DEALS : [] as typeof DEMO_DEALS).map((deal) => (
+        {([] as typeof DEMO_DEALS).map((deal) => (
           <button
             key={deal.id}
             onClick={() => setSelectedDeal(deal)}

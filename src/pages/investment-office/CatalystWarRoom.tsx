@@ -14,7 +14,6 @@ const TYPE_COLORS: Record<string, string> = {
 };
 
 export default function CatalystWarRoom() {
-  const { isDemoMode } = useDataMode();
   const { data: liveData, isLoading } = useRiskScenarios();
   const [filter, setFilter] = useState<string>("all");
   const sorted = [...DEMO_CATALYST_EVENTS]

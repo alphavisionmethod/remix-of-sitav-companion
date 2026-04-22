@@ -20,7 +20,6 @@ const statusConfig: Record<string, { label: string; color: string; icon: typeof 
 };
 
 const EnterpriseCatalogPage = () => {
-  const { isDemoMode } = useDataMode();
   const navigate = useNavigate();
   const { installApp } = useAppPlatform();
 
@@ -55,7 +54,7 @@ const EnterpriseCatalogPage = () => {
 
       {/* Apps */}
       <div className="space-y-3">
-        {(isDemoMode ? DEMO_ENTERPRISE_APPS : [] as typeof DEMO_ENTERPRISE_APPS).map(app => {
+        {([] as typeof DEMO_ENTERPRISE_APPS).map(app => {
           const st = statusConfig[app.status];
           const Icon = st.icon;
           return (

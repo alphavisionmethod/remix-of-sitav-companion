@@ -30,7 +30,6 @@ import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function OutcomeEnginePage() {
   const { isDemo } = useAuth();
-  const isDemoMode = isDemo;
   const { data: liveOutcomes } = useOutcomes();
 
   // Map live data to demo shape or use demo data
@@ -49,8 +48,8 @@ export default function OutcomeEnginePage() {
     }));
   }, [isDemoMode, liveOutcomes]);
 
-  const interventions = isDemoMode ? DEMO_INTERVENTIONS : [];
-  const spillovers = isDemoMode ? DEMO_SPILLOVERS : [];
+  const interventions = [];
+  const spillovers = [];
 
   const totalProgress = outcomes.length > 0
     ? Math.round(outcomes.reduce((s: number,  o: Record<string, any>) => s + o.progress, 0) / outcomes.length)

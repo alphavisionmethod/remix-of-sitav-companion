@@ -78,7 +78,6 @@ const ADVISOR_RESPONSES: Record<string, Record<AdvisorQueryType, AdvisorQueryRes
 };
 
 export default function GrowthAdvisorBoard() {
-  const { isDemoMode } = useDataMode();
   const { isBeginner } = useRevenueOfficeMode();
   const [tab, setTab] = useState("council");
   const [expandedAdvisor, setExpandedAdvisor] = useState<string | null>(null);

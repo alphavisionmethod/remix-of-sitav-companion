@@ -12,7 +12,6 @@ import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 const SAGBuilderConsole = () => {
-  const { isDemoMode } = useDataMode();
   const { data: models = [] } = useModelRegistry();
   const { data: prompts = [] } = usePromptFamilies();
   const { data: policies = [] } = useRoutingPolicies();
@@ -38,7 +37,7 @@ const SAGBuilderConsole = () => {
         <CardHeader><CardTitle className="text-base">AI Feature Builder Workflow</CardTitle></CardHeader>
         <CardContent>
           <div className="flex gap-1">
-            {(isDemoMode ? DEMO_BUILDER_STEPS : [] as typeof DEMO_BUILDER_STEPS).map(s => (
+            {([] as typeof DEMO_BUILDER_STEPS).map(s => (
               <button key={s.step} onClick={() => setActiveStep(s.step)}
                 className={`flex-1 p-3 rounded-lg border text-center transition-colors ${activeStep === s.step ? 'border-primary bg-primary/5' : 'border-border hover:border-primary/30'}`}>
                 <s.icon className={`h-4 w-4 mx-auto mb-1 ${activeStep === s.step ? 'text-primary' : 'text-muted-foreground'}`} />

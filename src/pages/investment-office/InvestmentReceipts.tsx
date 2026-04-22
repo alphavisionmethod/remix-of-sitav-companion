@@ -27,7 +27,6 @@ const VERDICT_COLORS: Record<string, string> = { "well-executed": "bg-[hsl(var(-
 
 export default function InvestmentReceipts() {
   const { user, isDemo } = useAuth();
-  const isDemoMode = isDemo;
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [showReview, setShowReview] = useState<string | null>(null);
 
@@ -50,7 +49,7 @@ export default function InvestmentReceipts() {
     },
   });
 
-  const receipts = isDemoMode ? DEMO_RECEIPTS : (realReceipts ?? DEMO_RECEIPTS);
+  const receipts = (realReceipts ?? DEMO_RECEIPTS);
 
   return (
     <div className="mx-auto max-w-6xl space-y-6">

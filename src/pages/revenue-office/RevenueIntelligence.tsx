@@ -28,10 +28,9 @@ const FORECAST = [
 ];
 
 export default function RevenueIntelligence() {
-  const { isDemoMode } = useDataMode();
   const { isBeginner } = useRevenueOfficeMode();
   const [tab, setTab] = useState("streams");
-  const totalLeakage = (isDemoMode ? DEMO_LEAKAGE : [] as typeof DEMO_LEAKAGE).reduce((s, l) => s + parseInt(l.value.replace(/[^0-9]/g, "")), 0);
+  const totalLeakage = ([] as typeof DEMO_LEAKAGE).reduce((s, l) => s + parseInt(l.value.replace(/[^0-9]/g, "")), 0);
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
@@ -48,7 +47,7 @@ export default function RevenueIntelligence() {
         {[
           { label: "Total Revenue", value: "$148,200", icon: DollarSign, color: "text-emerald-400", sub: "+14% MoM" },
           { label: "LTV:CAC", value: "20:1", icon: TrendingUp, color: "text-blue-400", sub: "Excellent" },
-          { label: "Active Streams", value: String((isDemoMode ? DEMO_REVENUE_STREAMS : [] as typeof DEMO_REVENUE_STREAMS).length), icon: Layers, color: "text-purple-400", sub: "Diversified" },
+          { label: "Active Streams", value: String(([] as typeof DEMO_REVENUE_STREAMS).length), icon: Layers, color: "text-purple-400", sub: "Diversified" },
           { label: "Total Leakage", value: `$${totalLeakage.toLocaleString()}`, icon: AlertTriangle, color: "text-red-400", sub: "Needs attention" },
         ].map(s => (
           <Card key={s.label} className="bg-card/50 border-border/50">
@@ -79,7 +78,7 @@ export default function RevenueIntelligence() {
             <Card className="bg-card/50 border-border/50">
               <CardHeader className="pb-3"><CardTitle className="text-sm font-medium">Revenue by Stream</CardTitle></CardHeader>
               <CardContent className="space-y-3">
-                {(isDemoMode ? DEMO_REVENUE_STREAMS : [] as typeof DEMO_REVENUE_STREAMS).map(r => (
+                {([] as typeof DEMO_REVENUE_STREAMS).map(r => (
                   <div key={r.source} className="flex items-center gap-4">
                     <span className="text-sm text-foreground w-40">{r.source}</span>
                     <div className="flex-1 h-4 bg-muted/20 rounded-full overflow-hidden">
@@ -159,7 +158,7 @@ export default function RevenueIntelligence() {
                       <th className="text-left p-2">Cohort</th><th className="p-2">Acquired</th><th className="p-2">30d</th><th className="p-2">60d</th><th className="p-2">90d</th><th className="p-2">LTV</th>
                     </tr></thead>
                     <tbody>
-                      {(isDemoMode ? DEMO_COHORT_DATA : [] as typeof DEMO_COHORT_DATA).map(c => (
+                      {([] as typeof DEMO_COHORT_DATA).map(c => (
                         <tr key={c.cohort} className="border-t border-border/20">
                           <td className="p-2 text-foreground font-medium">{c.cohort}</td>
                           <td className="p-2 text-center text-foreground">{c.acquired}</td>
@@ -181,7 +180,7 @@ export default function RevenueIntelligence() {
             <Card className="bg-card/50 border-border/50">
               <CardHeader className="pb-3"><CardTitle className="text-sm font-medium flex items-center gap-2"><AlertTriangle className="w-4 h-4 text-yellow-400" /> Revenue Leakage</CardTitle></CardHeader>
               <CardContent className="space-y-3">
-                {(isDemoMode ? DEMO_LEAKAGE : [] as typeof DEMO_LEAKAGE).map(l => (
+                {([] as typeof DEMO_LEAKAGE).map(l => (
                   <div key={l.type} className="p-3 rounded-lg bg-red-500/5 border border-red-500/20">
                     <div className="flex items-center justify-between mb-1">
                       <p className="text-sm font-medium text-foreground">{l.type}</p>

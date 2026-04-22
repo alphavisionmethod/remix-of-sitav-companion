@@ -12,7 +12,6 @@ import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function SegmentationEngine() {
-  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("segments");
 
   return (
@@ -29,9 +28,9 @@ export default function SegmentationEngine() {
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         {[
-          { label: "Segments", value: (isDemoMode ? DEMO_SEGMENTS : [] as typeof DEMO_SEGMENTS).length, color: "text-foreground" },
+          { label: "Segments", value: ([] as typeof DEMO_SEGMENTS).length, color: "text-foreground" },
           { label: "Total Contacts", value: "442", color: "text-primary" },
-          { label: "Scored Leads", value: (isDemoMode ? DEMO_TOP_LEADS : [] as typeof DEMO_TOP_LEADS).length, color: "text-blue-400" },
+          { label: "Scored Leads", value: ([] as typeof DEMO_TOP_LEADS).length, color: "text-blue-400" },
           { label: "At Risk", value: "12", color: "text-red-400" },
         ].map((k, i) => (
           <Card key={i} className="bg-card/50 border-border/50">
@@ -57,7 +56,7 @@ export default function SegmentationEngine() {
         <div className="mt-4">
           <TabsContent value="segments">
             <div className="space-y-3">
-              {(isDemoMode ? DEMO_SEGMENTS : [] as typeof DEMO_SEGMENTS).map(seg => (
+              {([] as typeof DEMO_SEGMENTS).map(seg => (
                 <Card key={seg.id} className={cn("bg-card/50 border-l-2 hover:border-primary/30 transition-colors cursor-pointer", seg.color)}>
                   <CardContent className="p-4">
                     <div className="flex items-center justify-between mb-2">
@@ -82,9 +81,9 @@ export default function SegmentationEngine() {
           </TabsContent>
 
           <TabsContent value="scoring">
-            <h3 className="text-sm font-semibold mb-4">Lead Scoring Rules ({(isDemoMode ? DEMO_SCORING_RULES : [] as typeof DEMO_SCORING_RULES).length} signals)</h3>
+            <h3 className="text-sm font-semibold mb-4">Lead Scoring Rules ({([] as typeof DEMO_SCORING_RULES).length} signals)</h3>
             <div className="space-y-2">
-              {(isDemoMode ? DEMO_SCORING_RULES : [] as typeof DEMO_SCORING_RULES).map((rule, i) => (
+              {([] as typeof DEMO_SCORING_RULES).map((rule, i) => (
                 <div key={i} className="flex items-center justify-between p-3 bg-muted/10 rounded-lg border border-border/30">
                   <div className="flex items-center gap-3">
                     {rule.points > 0 ? <TrendingUp className="w-4 h-4 text-emerald-400" /> : <AlertTriangle className="w-4 h-4 text-red-400" />}
@@ -104,7 +103,7 @@ export default function SegmentationEngine() {
           <TabsContent value="top-leads">
             <h3 className="text-sm font-semibold mb-4">Highest-Scored Leads</h3>
             <div className="space-y-3">
-              {(isDemoMode ? DEMO_TOP_LEADS : [] as typeof DEMO_TOP_LEADS).map((lead, i) => (
+              {([] as typeof DEMO_TOP_LEADS).map((lead, i) => (
                 <Card key={i} className="bg-card/50 border-border/50 hover:border-primary/30 transition-colors cursor-pointer">
                   <CardContent className="p-4">
                     <div className="flex items-center justify-between mb-2">
