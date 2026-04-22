@@ -28,12 +28,11 @@ interface Message {
 }
 
 export default function MessengerApp() {
-  const { isDemoMode } = useDataMode();
   const [selectedChat, setSelectedChat] = useState<Chat | null>(DEMO_CHATS[0]);
   const [message, setMessage] = useState("");
   const [search, setSearch] = useState("");
 
-  const filtered = (isDemoMode ? DEMO_CHATS : [] as typeof DEMO_CHATS).filter(c => !search || c.name.toLowerCase().includes(search.toLowerCase()));
+  const filtered = ([] as typeof DEMO_CHATS).filter(c => !search || c.name.toLowerCase().includes(search.toLowerCase()));
 
   return (
     <div className="p-4 md:p-6 max-w-[1400px] mx-auto">
@@ -93,7 +92,7 @@ export default function MessengerApp() {
                 </div>
               </div>
               <div className="flex-1 overflow-y-auto p-4 space-y-3">
-                {(isDemoMode ? DEMO_MESSAGES : [] as typeof DEMO_MESSAGES).map(msg => (
+                {([] as typeof DEMO_MESSAGES).map(msg => (
                   <div key={msg.id} className={`flex ${msg.sender === "me" ? "justify-end" : "justify-start"}`}>
                     <div className={`max-w-[75%] rounded-2xl px-4 py-2.5 ${msg.sender === "me" ? "bg-primary text-primary-foreground rounded-br-md" : "bg-muted text-foreground rounded-bl-md"}`}>
                       <p className="text-sm">{msg.text}</p>

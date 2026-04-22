@@ -57,7 +57,7 @@ const RECENT_CHANGES = [
 ];
 
 const MissionControlHome = () => {
-  const { isDemoMode } = useDataMode();
+  
   const [lastRefresh, setLastRefresh] = useState(new Date());
 
   const { data: incidentCount } = useQuery({
@@ -76,11 +76,11 @@ const MissionControlHome = () => {
     },
   });
 
-  const healthyCount = (isDemoMode ? DEMO_SERVICES : [] as typeof DEMO_SERVICES).filter(s => s.status === "healthy").length;
-  const overallHealth: HealthStatus = (isDemoMode ? DEMO_SERVICES : [] as typeof DEMO_SERVICES).some(s => s.status === "critical") ? "critical" : (isDemoMode ? DEMO_SERVICES : [] as typeof DEMO_SERVICES).some(s => s.status === "degraded") ? "degraded" : (isDemoMode ? DEMO_SERVICES : [] as typeof DEMO_SERVICES).some(s => s.status === "warning") ? "warning" : "healthy";
+  const healthyCount = ([] as typeof DEMO_SERVICES).filter(s => s.status === "healthy").length;
+  const overallHealth: HealthStatus = ([] as typeof DEMO_SERVICES).some(s => s.status === "critical") ? "critical" : ([] as typeof DEMO_SERVICES).some(s => s.status === "degraded") ? "degraded" : ([] as typeof DEMO_SERVICES).some(s => s.status === "warning") ? "warning" : "healthy";
   const healthScore = overallHealth === "healthy" ? 98 : overallHealth === "warning" ? 85 : overallHealth === "degraded" ? 68 : 42;
-  const pendingMutations = (isDemoMode ? DEMO_MUTATIONS : [] as typeof DEMO_MUTATIONS).filter(m => m.durabilityStatus === "pending").length;
-  const failedMutations = (isDemoMode ? DEMO_MUTATIONS : [] as typeof DEMO_MUTATIONS).filter(m => m.durabilityStatus === "failed").length;
+  const pendingMutations = ([] as typeof DEMO_MUTATIONS).filter(m => m.durabilityStatus === "pending").length;
+  const failedMutations = ([] as typeof DEMO_MUTATIONS).filter(m => m.durabilityStatus === "failed").length;
 
   const KPI_STRIP = [
     { label: "Health", value: `${healthScore}%`, icon: Activity, color: healthScore >= 90 ? "text-emerald-500" : "text-amber-500", why: "Weighted average of all subsystem health scores: auth, sync, storage, trust, AI, releases, devices." },
@@ -177,7 +177,7 @@ const MissionControlHome = () => {
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
-                  {(isDemoMode ? DEMO_SERVICES : [] as typeof DEMO_SERVICES).map((svc) => (
+                  {([] as typeof DEMO_SERVICES).map((svc) => (
                     <div key={svc.name} className="p-3 rounded-lg border bg-card hover:bg-muted/50 transition-colors">
                       <div className="flex items-center justify-between mb-1.5">
                         <span className="text-xs font-medium text-foreground">{svc.name}</span>
@@ -203,7 +203,7 @@ const MissionControlHome = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-2">
-                {(isDemoMode ? DEMO_URGENT_ACTIONS : [] as typeof DEMO_URGENT_ACTIONS).map((a) => (
+                {([] as typeof DEMO_URGENT_ACTIONS).map((a) => (
                   <Link key={a.id} to={a.route} className="block p-2.5 rounded-lg border hover:bg-muted/50 transition-colors group">
                     <div className="flex items-start gap-2">
                       <AlertTriangle className={`h-3.5 w-3.5 mt-0.5 shrink-0 ${a.severity === "high" ? "text-red-500" : a.severity === "medium" ? "text-amber-500" : "text-blue-500"}`} />

@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Switch } from "@/components/ui/switch";
 import { Plug, CheckCircle, AlertTriangle, RefreshCw, ArrowRight, Clock, Activity, Shield, Users, Settings, LinkIcon } from "lucide-react";
-import { DEMO_CONNECTIONS, DEMO_AUDIT_LOG } from "@/data/seed/integrations";
 import { getProviderById } from "@/data/seed/integrations";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -22,8 +21,6 @@ export default function ConnectionsList() {
   const [agencyMode, setAgencyMode] = useState(false);
   const navigate = useNavigate();
   const { user, isDemo } = useAuth();
-  const isDemoMode = isDemo;
-
   // Real mode: fetch from connector_instances table
   const { data: realConnections = [] } = useQuery({
     queryKey: ["connector_configs", user?.id],
@@ -35,8 +32,8 @@ export default function ConnectionsList() {
     },
   });
 
-  const connections = isDemoMode ? DEMO_CONNECTIONS : realConnections;
-  const auditLog = isDemoMode ? DEMO_AUDIT_LOG : [];
+  const connections = realConnections;
+  const auditLog = [];
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 p-6">

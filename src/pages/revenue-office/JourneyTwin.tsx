@@ -43,9 +43,8 @@ const statusColor = (s: string) => s === "active" ? "text-[hsl(var(--trust-safe)
 const statusBg = (s: string) => s === "active" ? "bg-[hsl(var(--trust-safe))]/10" : s === "degraded" ? "bg-orange-400/10" : "bg-muted/20";
 
 export default function JourneyTwin() {
-  const { isDemoMode } = useDataMode();
   const { data: liveJourneyStages } = useCustomerJourneyStages();
-  const JOURNEY_STAGES = isDemoMode ? DEMO_JOURNEY_STAGES : (liveJourneyStages && liveJourneyStages.length > 0 ? liveJourneyStages.map((s: any) => ({
+  const JOURNEY_STAGES = (liveJourneyStages && liveJourneyStages.length > 0 ? liveJourneyStages.map((s: any) => ({
     stage: s.stage_name || s.name || "Unknown",
     metrics: { entered: s.entered_count || 0, conversion: `${s.conversion_rate || 0}%`, exited: s.exited_count || 0 },
     touchpoints: (s.touchpoints as any[]) || [],

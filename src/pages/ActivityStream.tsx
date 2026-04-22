@@ -267,7 +267,6 @@ const CatchUpSummary = ({ events }: { events: any[] }) => {
 // ── Main Component ───────────────────────────────────────────
 const ActivityStream = () => {
   const { user, isDemo } = useAuth();
-  const isDemoMode = isDemo;
   const [category, setCategory] = useState<FeedCategory>("all");
   const [expandedId, setExpandedId] = useState<number | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
@@ -328,7 +327,7 @@ const ActivityStream = () => {
   // Build unified timeline
   const timeline = useMemo(() => {
     if (isDemoMode) {
-      return (isDemoMode ? DEMO_ACTIVITY_TIMELINE : [] as typeof DEMO_ACTIVITY_TIMELINE).map((ev: any, i: number) => ({
+      return ([] as typeof DEMO_ACTIVITY_TIMELINE).map((ev: any, i: number) => ({
         ...ev,
         id: i,
         type: ev.type || "system.event",

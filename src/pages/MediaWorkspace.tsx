@@ -28,7 +28,6 @@ import { useDataMode } from "@/contexts/DataModeContext";
 
 const MediaWorkspace = () => {
   const { user, isDemo } = useAuth();
-  const isDemoMode = isDemo;
   const [search, setSearch] = useState("");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [typeFilter, setTypeFilter] = useState("all");
@@ -58,7 +57,7 @@ const MediaWorkspace = () => {
     },
   });
 
-  const media = isDemoMode ? DEMO_MEDIA : (liveMedia?.length ? liveMedia : DEMO_MEDIA);
+  const media = (liveMedia?.length ? liveMedia : DEMO_MEDIA);
 
   const filtered = useMemo(() => {
     let result: MediaItem[] = media;

@@ -42,7 +42,7 @@ const MODEL_ROUTING = [
 ];
 
 const MCAIControl = () => {
-  const { isDemo } = useAuth();
+  ;
   const [tab, setTab] = useState<"agents" | "routing" | "escalations">("agents");
 
   return (

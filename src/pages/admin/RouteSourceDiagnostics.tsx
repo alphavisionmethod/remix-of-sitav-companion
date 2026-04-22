@@ -39,18 +39,17 @@ const honestyConfig: Record<LaunchHonesty, { label: string; color: string; icon:
 };
 
 export default function RouteSourceDiagnostics() {
-  const { isDemoMode } = useDataMode();
   const [search, setSearch] = useState("");
 
   const filtered = useMemo(() => {
     if (!search) return DEMO_ROUTES;
     const q = search.toLowerCase();
-    return (isDemoMode ? DEMO_ROUTES : [] as typeof DEMO_ROUTES).filter(r => r.path.includes(q) || r.pageName.toLowerCase().includes(q) || r.domain.toLowerCase().includes(q));
+    return ([] as typeof DEMO_ROUTES).filter(r => r.path.includes(q) || r.pageName.toLowerCase().includes(q) || r.domain.toLowerCase().includes(q));
   }, [search]);
 
-  const truthful = (isDemoMode ? DEMO_ROUTES : [] as typeof DEMO_ROUTES).filter(r => r.launchHonesty === "truthful").length;
-  const demoBacked = (isDemoMode ? DEMO_ROUTES : [] as typeof DEMO_ROUTES).filter(r => r.launchHonesty === "demo-backed").length;
-  const mixed = (isDemoMode ? DEMO_ROUTES : [] as typeof DEMO_ROUTES).filter(r => r.launchHonesty === "mixed").length;
+  const truthful = ([] as typeof DEMO_ROUTES).filter(r => r.launchHonesty === "truthful").length;
+  const demoBacked = ([] as typeof DEMO_ROUTES).filter(r => r.launchHonesty === "demo-backed").length;
+  const mixed = ([] as typeof DEMO_ROUTES).filter(r => r.launchHonesty === "mixed").length;
 
   return (
     <div className="mx-auto max-w-7xl space-y-6 p-6">

@@ -8,14 +8,12 @@ import { Input } from "@/components/ui/input";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Search, Plug, Shield, Zap, Globe, ArrowRight, CheckCircle, AlertTriangle } from "lucide-react";
 import { INTEGRATION_PROVIDERS, PROVIDER_CATEGORIES } from "@/data/seed/integrations";
-import { DEMO_CONNECTIONS } from "@/data/seed/integrations";
 import { useNavigate } from "react-router-dom";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 
 export default function IntegrationsCatalog() {
-  const { isDemoMode } = useDataMode();
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("all");
   const navigate = useNavigate();
@@ -26,7 +24,7 @@ export default function IntegrationsCatalog() {
     return matchSearch && matchCat;
   });
 
-  const demoConns = isDemoMode ? DEMO_CONNECTIONS : [];
+  const demoConns = [];
   const connectedIds = new Set(demoConns.filter(c => c.status === "connected").map(c => c.providerId));
   const expiredIds = new Set(demoConns.filter(c => c.status === "expired").map(c => c.providerId));
 

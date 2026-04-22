@@ -18,9 +18,9 @@ const offenders = DEMO_PROFILES
 
 
 const ZeroWastePromptView = () => {
-  const { isDemoMode } = useDataMode();
-  const avgCostReduction = Math.round((isDemoMode ? DEMO_PROFILES : [] as typeof DEMO_PROFILES).reduce((s, p) => s + p.costReduction, 0) / Math.max((isDemoMode ? DEMO_PROFILES : [] as typeof DEMO_PROFILES).length, 1));
-  const packetDrivenPct = Math.round(((isDemoMode ? DEMO_PROFILES : [] as typeof DEMO_PROFILES).filter(p => p.packetDriven).length / Math.max((isDemoMode ? DEMO_PROFILES : [] as typeof DEMO_PROFILES).length, 1)) * 100);
+  
+  const avgCostReduction = Math.round(([] as typeof DEMO_PROFILES).reduce((s, p) => s + p.costReduction, 0) / Math.max(([] as typeof DEMO_PROFILES).length, 1));
+  const packetDrivenPct = Math.round((([] as typeof DEMO_PROFILES).filter(p => p.packetDriven).length / Math.max(([] as typeof DEMO_PROFILES).length, 1)) * 100);
   const { isAdmin, loading } = useRequireAdmin();
   if (loading || !isAdmin) return null;
 
@@ -34,7 +34,7 @@ const ZeroWastePromptView = () => {
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {[
-          { label: "Prompt Profiles", value: String((isDemoMode ? DEMO_PROFILES : [] as typeof DEMO_PROFILES).length) },
+          { label: "Prompt Profiles", value: String(([] as typeof DEMO_PROFILES).length) },
           { label: "Avg Cost Reduction", value: `${avgCostReduction}%`, color: "text-emerald-400" },
           { label: "Packet-Driven", value: `${packetDrivenPct}%` },
           { label: "Offenders", value: String(offenders.length), color: offenders.length > 0 ? "text-amber-400" : "text-emerald-400" },
@@ -67,7 +67,7 @@ const ZeroWastePromptView = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {(isDemoMode ? DEMO_PROFILES : [] as typeof DEMO_PROFILES).map((p, i) => (
+              {([] as typeof DEMO_PROFILES).map((p, i) => (
                 <TableRow key={i}>
                   <TableCell className="text-xs font-medium text-foreground">{p.domain}</TableCell>
                   <TableCell className="text-xs text-muted-foreground">{p.taskType}</TableCell>
@@ -112,7 +112,7 @@ const ZeroWastePromptView = () => {
         <CardHeader className="pb-2"><CardTitle className="text-sm">Redundancy by Domain</CardTitle></CardHeader>
         <CardContent className="space-y-2">
           {Object.entries(
-            (isDemoMode ? DEMO_PROFILES : [] as typeof DEMO_PROFILES).reduce<Record<string, number[]>>((acc, p) => {
+            ([] as typeof DEMO_PROFILES).reduce<Record<string, number[]>>((acc, p) => {
               if (!acc[p.domain]) acc[p.domain] = [];
               acc[p.domain].push(p.redundancy);
               return acc;

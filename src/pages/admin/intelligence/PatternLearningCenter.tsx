@@ -19,13 +19,12 @@ const privacyBadges: Record<string, { icon: typeof Globe; color: string }> = {
 };
 
 const PatternLearningCenter = () => {
-  const { isDemoMode } = useDataMode();
   const { isAdmin, loading } = useRequireAdmin();
   if (loading || !isAdmin) return null;
 
-  const totalPatterns = (isDemoMode ? DEMO_PATTERNS : [] as typeof DEMO_PATTERNS).length;
-  const reusableCount = (isDemoMode ? DEMO_PATTERNS : [] as typeof DEMO_PATTERNS).filter(p => p.reusable).length;
-  const avgConfidence = Math.round((isDemoMode ? DEMO_PATTERNS : [] as typeof DEMO_PATTERNS).reduce((s, p) => s + p.confidence, 0) / totalPatterns);
+  const totalPatterns = ([] as typeof DEMO_PATTERNS).length;
+  const reusableCount = ([] as typeof DEMO_PATTERNS).filter(p => p.reusable).length;
+  const avgConfidence = Math.round(([] as typeof DEMO_PATTERNS).reduce((s, p) => s + p.confidence, 0) / totalPatterns);
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
@@ -40,7 +39,7 @@ const PatternLearningCenter = () => {
           { label: "Total Patterns", value: String(totalPatterns) },
           { label: "Cross-Tenant Reusable", value: String(reusableCount), color: "text-emerald-400" },
           { label: "Avg Confidence", value: `${avgConfidence}%` },
-          { label: "Privacy Restricted", value: String((isDemoMode ? DEMO_PATTERNS : [] as typeof DEMO_PATTERNS).filter(p => p.privacy === "tenant_private").length), color: "text-rose-400" },
+          { label: "Privacy Restricted", value: String(([] as typeof DEMO_PATTERNS).filter(p => p.privacy === "tenant_private").length), color: "text-rose-400" },
         ].map(m => (
           <Card key={m.label} className="bg-card/80 border-border/50">
             <CardContent className="p-3 text-center">
@@ -69,7 +68,7 @@ const PatternLearningCenter = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {(isDemoMode ? DEMO_PATTERNS : [] as typeof DEMO_PATTERNS).sort((a, b) => b.confidence - a.confidence).map(p => {
+              {([] as typeof DEMO_PATTERNS).sort((a, b) => b.confidence - a.confidence).map(p => {
                 const PrivIcon = privacyBadges[p.privacy]?.icon || Shield;
                 const privColor = privacyBadges[p.privacy]?.color || "text-muted-foreground";
                 return (
@@ -103,7 +102,7 @@ const PatternLearningCenter = () => {
 
       {/* Pattern Details Grid */}
       <div className="grid md:grid-cols-2 gap-4">
-        {(isDemoMode ? DEMO_PATTERNS : [] as typeof DEMO_PATTERNS).slice(0, 4).map(p => (
+        {([] as typeof DEMO_PATTERNS).slice(0, 4).map(p => (
           <Card key={p.id} className="bg-card/80 border-border/50">
             <CardContent className="p-4 space-y-3">
               <div className="flex items-center justify-between">

@@ -125,7 +125,7 @@ const DeviceCard = ({ device, onRevoke, onReEnroll }: { device: DeviceInfo; onRe
 };
 
 export default function MobileDeviceTrust() {
-  const { isDemoMode } = useDataMode();
+  
   const [devices] = useState<DeviceInfo[]>(MOCK_DEVICES);
 
   const handleRevoke = (id: string) => {

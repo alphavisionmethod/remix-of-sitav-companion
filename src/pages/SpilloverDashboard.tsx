@@ -28,9 +28,9 @@ const SpilloverGraph = () => {
   <div className="relative aspect-square max-w-[280px] mx-auto">
     <svg viewBox="0 0 100 100" className="w-full h-full">
       {/* Connection lines */}
-      {(isDemoMode ? DEMO_ACTIVE_SPILLOVERS : [] as typeof DEMO_ACTIVE_SPILLOVERS).map((s, i) => {
-        const from = (isDemoMode ? DEMO_DOMAINS : [] as typeof DEMO_DOMAINS).find(d => d.id === s.from);
-        const to = (isDemoMode ? DEMO_DOMAINS : [] as typeof DEMO_DOMAINS).find(d => d.id === s.to);
+      {([] as typeof DEMO_ACTIVE_SPILLOVERS).map((s, i) => {
+        const from = ([] as typeof DEMO_DOMAINS).find(d => d.id === s.from);
+        const to = ([] as typeof DEMO_DOMAINS).find(d => d.id === s.to);
         if (!from || !to) return null;
         const opacity = s.impact === "high" ? 0.6 : s.impact === "medium" ? 0.35 : 0.15;
         const width = s.impact === "high" ? 1.5 : s.impact === "medium" ? 1 : 0.5;
@@ -47,7 +47,7 @@ const SpilloverGraph = () => {
       })}
     </svg>
     {/* Domain nodes */}
-    {(isDemoMode ? DEMO_DOMAINS : [] as typeof DEMO_DOMAINS).map(d => (
+    {([] as typeof DEMO_DOMAINS).map(d => (
       <div
         key={d.id}
         className="absolute flex flex-col items-center gap-1"
@@ -68,8 +68,8 @@ const SpilloverGraph = () => {
 
 export default function SpilloverDashboard() {
   const { isDemoMode } = useDataMode();
-  const highCount = (isDemoMode ? DEMO_ACTIVE_SPILLOVERS : [] as typeof DEMO_ACTIVE_SPILLOVERS).filter(s => s.impact === "high").length;
-  const medCount = (isDemoMode ? DEMO_ACTIVE_SPILLOVERS : [] as typeof DEMO_ACTIVE_SPILLOVERS).filter(s => s.impact === "medium").length;
+  const highCount = ([] as typeof DEMO_ACTIVE_SPILLOVERS).filter(s => s.impact === "high").length;
+  const medCount = ([] as typeof DEMO_ACTIVE_SPILLOVERS).filter(s => s.impact === "medium").length;
 
   return (
     <div className="space-y-8 p-6 max-w-7xl mx-auto">
@@ -88,10 +88,10 @@ export default function SpilloverDashboard() {
 
       {/* KPI Strip */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-        <KPITile label="Active Spillovers" value={(isDemoMode ? DEMO_ACTIVE_SPILLOVERS : [] as typeof DEMO_ACTIVE_SPILLOVERS).length} trend="down" icon={ArrowLeftRight} sub="Cross-domain impacts" />
+        <KPITile label="Active Spillovers" value={([] as typeof DEMO_ACTIVE_SPILLOVERS).length} trend="down" icon={ArrowLeftRight} sub="Cross-domain impacts" />
         <KPITile label="High Impact" value={highCount} trend="down" icon={AlertTriangle} sub="Urgent attention needed" />
         <KPITile label="Domains Affected" value={4} icon={Activity} sub="All interconnected" />
-        <KPITile label="Interventions Ready" value={(isDemoMode ? DEMO_TOP_INTERVENTIONS : [] as typeof DEMO_TOP_INTERVENTIONS).length} trend="up" icon={Sparkles} sub="Cross-cutting fixes" />
+        <KPITile label="Interventions Ready" value={([] as typeof DEMO_TOP_INTERVENTIONS).length} trend="up" icon={Sparkles} sub="Cross-cutting fixes" />
       </div>
 
       {/* Main content grid */}
@@ -126,7 +126,7 @@ export default function SpilloverDashboard() {
           <div className="rounded-xl border border-border bg-card p-4">
             <h4 className="text-xs font-semibold text-muted-foreground mb-3">Active Flows</h4>
             <div className="flex flex-wrap gap-2">
-              {(isDemoMode ? DEMO_ACTIVE_SPILLOVERS : [] as typeof DEMO_ACTIVE_SPILLOVERS).map((s, i) => (
+              {([] as typeof DEMO_ACTIVE_SPILLOVERS).map((s, i) => (
                 <SpilloverBadge key={i} from={s.from} to={s.to} impact={s.impact} description={s.title} />
               ))}
             </div>
@@ -137,14 +137,14 @@ export default function SpilloverDashboard() {
         <div className="lg:col-span-2 space-y-6">
           <SectionHeader title="Top Interventions" subtitle="Single actions that fix multiple spillovers" />
           <div className="grid gap-4 md:grid-cols-2">
-            {(isDemoMode ? DEMO_TOP_INTERVENTIONS : [] as typeof DEMO_TOP_INTERVENTIONS).map((intervention, i) => (
+            {([] as typeof DEMO_TOP_INTERVENTIONS).map((intervention, i) => (
               <InterventionCard key={i} {...intervention} />
             ))}
           </div>
 
           <SectionHeader title="Active Spillovers" subtitle="Ordered by impact severity" />
           <div className="grid gap-4 md:grid-cols-2">
-            {(isDemoMode ? DEMO_ACTIVE_SPILLOVERS : [] as typeof DEMO_ACTIVE_SPILLOVERS).map((s, i) => (
+            {([] as typeof DEMO_ACTIVE_SPILLOVERS).map((s, i) => (
               <SpilloverCard key={i} {...s} />
             ))}
           </div>

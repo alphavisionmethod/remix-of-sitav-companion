@@ -15,7 +15,6 @@ import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 const DevToolsCatalogPage = () => {
-  const { isDemoMode } = useDataMode();
   const navigate = useNavigate();
   const { apps } = useAppPlatform();
   const [activeCat, setActiveCat] = useState("all");
@@ -64,7 +63,7 @@ const DevToolsCatalogPage = () => {
 
       {/* Categories */}
       <div className="flex gap-2 overflow-x-auto pb-1">
-        {(isDemoMode ? DEMO_DEV_CATEGORIES : [] as typeof DEMO_DEV_CATEGORIES).map(c => {
+        {([] as typeof DEMO_DEV_CATEGORIES).map(c => {
           const Icon = c.icon;
           return (
             <button key={c.id} onClick={() => setActiveCat(c.id)}

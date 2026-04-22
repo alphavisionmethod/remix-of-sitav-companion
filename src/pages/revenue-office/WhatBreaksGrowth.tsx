@@ -52,10 +52,9 @@ const DEPENDENCY_RISKS = [
 ];
 
 export default function WhatBreaksGrowth() {
-  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("fragility");
   const { data: liveRiskAreas } = useRevenueRiskAreas();
-  const riskAreas = isDemoMode ? DEMO_riskAreas : (liveRiskAreas && liveRiskAreas.length > 0 ? liveRiskAreas : []);
+  const riskAreas = (liveRiskAreas && liveRiskAreas.length > 0 ? liveRiskAreas : []);
   const totalRisks = riskAreas.reduce((a, r) => a + r.risks.length, 0);
   const highSeverity = riskAreas.reduce((a, r) => a + r.risks.filter(x => x.severity === "high").length, 0);
   const avgFragility = Math.round(FRAGILITY_MATRIX.reduce((a, f) => a + f.fragility, 0) / FRAGILITY_MATRIX.length);
@@ -201,7 +200,7 @@ export default function WhatBreaksGrowth() {
           <Card className="bg-primary/5 border-primary/20">
             <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><Zap className="w-4 h-4 text-primary" /> Advisor-Linked Invalidation Triggers</CardTitle></CardHeader>
             <CardContent className="space-y-2">
-              {(isDemoMode ? DEMO_ADVISOR_INVALIDATION : [] as typeof DEMO_ADVISOR_INVALIDATION).map((inv, i) => (
+              {([] as typeof DEMO_ADVISOR_INVALIDATION).map((inv, i) => (
                 <div key={i} className="flex items-start gap-2 p-2 rounded bg-background/50 border border-border/30">
                   <AlertTriangle className="w-3.5 h-3.5 text-amber-400 mt-0.5 flex-shrink-0" />
                   <div className="flex-1">

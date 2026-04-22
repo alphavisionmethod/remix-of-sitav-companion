@@ -11,7 +11,6 @@ import { useDataMode } from "@/contexts/DataModeContext";
 
 
 const NRC01RoutingStudio = () => {
-  const { isDemoMode } = useDataMode();
   const { data: routingMatrix, isLoading } = useAttentionDecisions();
   const channelSpecs = DEMO_CHANNEL_SPECS;
   const deliveryPrinciples = DEMO_DELIVERY_PRINCIPLES;

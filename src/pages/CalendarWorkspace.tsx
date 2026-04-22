@@ -47,7 +47,6 @@ const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.05 } } };
 const HOURS = Array.from({ length: 14 }, (_, i) => i + 7); // 7am-8pm
 
 const CalendarWorkspace = () => {
-  const { isDemoMode } = useDataMode();
   const [view, setView] = useState<CalView>("week");
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [domainFilter, setDomainFilter] = useState<string>("all");

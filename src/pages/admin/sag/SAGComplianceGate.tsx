@@ -19,14 +19,13 @@ const sevColors: Record<string, string> = {
 };
 
 const SAGComplianceGate = () => {
-  const { isDemoMode } = useDataMode();
   const { data: violations = [], isLoading } = useComplianceViolations();
   const { data: stats } = useGatewayStats();
   const s = stats || { totalRequests: 0, violations: 0 };
 
   const blockers = violations.filter((v: Record<string, any>) => v.blocks_launch);
   const resolved = violations.filter((v: Record<string, any>) => v.resolved);
-  const typeCounts = (isDemoMode ? DEMO_VIOLATION_TYPES : [] as typeof DEMO_VIOLATION_TYPES).map(vt => ({ ...vt, count: violations.filter((v: Record<string, any>) => v.violation_type === vt.type && !v.resolved).length }));
+  const typeCounts = ([] as typeof DEMO_VIOLATION_TYPES).map(vt => ({ ...vt, count: violations.filter((v: Record<string, any>) => v.violation_type === vt.type && !v.resolved).length }));
 
   return (
     <div className="p-6 space-y-6 max-w-7xl mx-auto">

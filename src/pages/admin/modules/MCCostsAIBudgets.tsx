@@ -39,7 +39,7 @@ const MODEL_TIER = [
 ];
 
 const MCCostsAIBudgets = () => {
-  const { isDemo } = useAuth();
+  ;
 
   return (
     <div className="p-6 space-y-6 max-w-[1400px] mx-auto">

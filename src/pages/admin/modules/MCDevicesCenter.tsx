@@ -45,12 +45,11 @@ const trustIcon: Record<string, React.ElementType> = {
 };
 
 const MCDevicesCenter = () => {
-  const { isDemo } = useAuth();
-  const { isDemoMode } = useDataMode();
+  ;
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState<string>("all");
 
-  const filtered = (isDemoMode ? DEMO_DEVICES : [] as typeof DEMO_DEVICES).filter(d => {
+  const filtered = ([] as typeof DEMO_DEVICES).filter(d => {
     if (filter !== "all" && d.trust !== filter) return false;
     if (search && !d.name.toLowerCase().includes(search.toLowerCase()) && !d.platform.toLowerCase().includes(search.toLowerCase())) return false;
     return true;
@@ -94,9 +93,9 @@ const MCDevicesCenter = () => {
         {/* Trust Summary */}
         <motion.div variants={fadeUp} className="grid grid-cols-3 gap-3">
           {[
-            { label: "Verified", count: (isDemoMode ? DEMO_DEVICES : [] as typeof DEMO_DEVICES).filter(d => d.trust === "verified").length, total: (isDemoMode ? DEMO_DEVICES : [] as typeof DEMO_DEVICES).length, color: "text-emerald-400" },
-            { label: "Pending Review", count: (isDemoMode ? DEMO_DEVICES : [] as typeof DEMO_DEVICES).filter(d => d.trust === "pending").length, total: (isDemoMode ? DEMO_DEVICES : [] as typeof DEMO_DEVICES).length, color: "text-amber-400" },
-            { label: "Revoked", count: (isDemoMode ? DEMO_DEVICES : [] as typeof DEMO_DEVICES).filter(d => d.trust === "revoked").length, total: (isDemoMode ? DEMO_DEVICES : [] as typeof DEMO_DEVICES).length, color: "text-red-400" },
+            { label: "Verified", count: ([] as typeof DEMO_DEVICES).filter(d => d.trust === "verified").length, total: ([] as typeof DEMO_DEVICES).length, color: "text-emerald-400" },
+            { label: "Pending Review", count: ([] as typeof DEMO_DEVICES).filter(d => d.trust === "pending").length, total: ([] as typeof DEMO_DEVICES).length, color: "text-amber-400" },
+            { label: "Revoked", count: ([] as typeof DEMO_DEVICES).filter(d => d.trust === "revoked").length, total: ([] as typeof DEMO_DEVICES).length, color: "text-red-400" },
           ].map(s => (
             <Card key={s.label} className="hover:-translate-y-0.5 transition-transform">
               <CardContent className="p-4">

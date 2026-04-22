@@ -28,7 +28,7 @@ const campaigns = [
 ];
 
 const LeadRecovery = () => {
-  const { isDemoMode } = useDataMode();
+  
   const [activeTab, setActiveTab] = useState<MainTab>("queues");
   const [activeQueue, setActiveQueue] = useState("all");
   const [selectedId, setSelectedId] = useState<string | null>(null);

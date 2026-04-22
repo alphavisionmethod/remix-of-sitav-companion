@@ -42,11 +42,10 @@ const statusConfig: Record<string, { icon: React.ElementType; color: string; bg:
 };
 
 export default function BackgroundTaskCenter() {
-  const { isDemoMode } = useDataMode();
   const [filter, setFilter] = useState<"all" | "running" | "completed" | "failed">("all");
 
-  const filtered = (isDemoMode ? DEMO_TASKS : [] as typeof DEMO_TASKS).filter(t => filter === "all" || t.status === filter);
-  const runningCount = (isDemoMode ? DEMO_TASKS : [] as typeof DEMO_TASKS).filter(t => t.status === "running").length;
+  const filtered = ([] as typeof DEMO_TASKS).filter(t => filter === "all" || t.status === filter);
+  const runningCount = ([] as typeof DEMO_TASKS).filter(t => t.status === "running").length;
 
   return (
     <div className="p-6 space-y-5 max-w-4xl mx-auto">
@@ -57,7 +56,7 @@ export default function BackgroundTaskCenter() {
           </div>
           <div>
             <h1 className="text-lg font-bold text-foreground">Background Tasks</h1>
-            <p className="text-[10px] text-foreground/30">{runningCount} running · {(isDemoMode ? DEMO_TASKS : [] as typeof DEMO_TASKS).length} total</p>
+            <p className="text-[10px] text-foreground/30">{runningCount} running · {([] as typeof DEMO_TASKS).length} total</p>
           </div>
         </div>
       </motion.div>

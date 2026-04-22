@@ -24,12 +24,11 @@ const DEMO_USERS = [
 ];
 
 const MCUsersCenter = () => {
-  const { isDemo } = useAuth();
-  const { isDemoMode } = useDataMode();
+  ;
   const [search, setSearch] = useState("");
   const [planFilter, setPlanFilter] = useState("all");
 
-  const filtered = (isDemoMode ? DEMO_USERS : [] as typeof DEMO_USERS).filter(u => {
+  const filtered = ([] as typeof DEMO_USERS).filter(u => {
     if (planFilter !== "all" && u.plan !== planFilter) return false;
     if (search && !u.name.toLowerCase().includes(search.toLowerCase()) && !u.email.toLowerCase().includes(search.toLowerCase())) return false;
     return true;

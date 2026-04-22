@@ -71,7 +71,6 @@ const handoffSeverityColors: Record<string, string> = {
 };
 
 export default function AutomationPolicy() {
-  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("trust");
 
   return (
@@ -85,11 +84,11 @@ export default function AutomationPolicy() {
       {/* Summary */}
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
         {[
-          { l: "Trust Policies", v: (isDemoMode ? DEMO_trustLevels : [] as typeof DEMO_trustLevels).length, c: "text-emerald-400" },
-          { l: "Constitution Rules", v: (isDemoMode ? DEMO_COMMERCIAL_CONSTITUTION : [] as typeof DEMO_COMMERCIAL_CONSTITUTION).length, c: "text-blue-400" },
-          { l: "No-Guess Rules", v: (isDemoMode ? DEMO_NO_GUESS_RULES : [] as typeof DEMO_NO_GUESS_RULES).filter(r => r.enabled).length, c: "text-purple-400" },
-          { l: "Paused/Quarantined", v: (isDemoMode ? DEMO_PAUSE_ROLLBACK : [] as typeof DEMO_PAUSE_ROLLBACK).length, c: "text-amber-400" },
-          { l: "Handoff Signals", v: (isDemoMode ? DEMO_HANDOFF_SIGNALS : [] as typeof DEMO_HANDOFF_SIGNALS).length, c: "text-red-400" },
+          { l: "Trust Policies", v: ([] as typeof DEMO_trustLevels).length, c: "text-emerald-400" },
+          { l: "Constitution Rules", v: ([] as typeof DEMO_COMMERCIAL_CONSTITUTION).length, c: "text-blue-400" },
+          { l: "No-Guess Rules", v: ([] as typeof DEMO_NO_GUESS_RULES).filter(r => r.enabled).length, c: "text-purple-400" },
+          { l: "Paused/Quarantined", v: ([] as typeof DEMO_PAUSE_ROLLBACK).length, c: "text-amber-400" },
+          { l: "Handoff Signals", v: ([] as typeof DEMO_HANDOFF_SIGNALS).length, c: "text-red-400" },
         ].map(m => (
           <Card key={m.l} className="bg-card/50 border-border/50"><CardContent className="p-3 text-center">
             <p className={`text-xl font-bold ${m.c}`}>{m.v}</p><p className="text-[10px] text-muted-foreground">{m.l}</p>
@@ -113,7 +112,7 @@ export default function AutomationPolicy() {
         {/* Trust Levels */}
         <TabsContent value="trust" className="space-y-4 mt-4">
           <div className="grid md:grid-cols-4 gap-3">
-            {(isDemoMode ? DEMO_trustLevels : [] as typeof DEMO_trustLevels).map((t) => (
+            {([] as typeof DEMO_trustLevels).map((t) => (
               <Card key={t.level} className={`bg-card/50 ${t.color}`}>
                 <CardContent className="p-4">
                   <div className="flex items-center gap-2 mb-2">
@@ -131,7 +130,7 @@ export default function AutomationPolicy() {
             ))}
           </div>
 
-          {(isDemoMode ? DEMO_policies : [] as typeof DEMO_policies).map((p) => (
+          {([] as typeof DEMO_policies).map((p) => (
             <Card key={p.category} className="bg-card/50 border-border/50">
               <CardHeader><CardTitle className="text-sm flex items-center gap-2"><p.icon className="h-4 w-4 text-blue-400" />{p.category}</CardTitle></CardHeader>
               <CardContent className="space-y-1.5">
@@ -166,9 +165,9 @@ export default function AutomationPolicy() {
 
           <div className="grid md:grid-cols-3 gap-3">
             {[
-              { label: "Hard Rules", value: (isDemoMode ? DEMO_COMMERCIAL_CONSTITUTION : [] as typeof DEMO_COMMERCIAL_CONSTITUTION).filter(r => r.severity === "hard").length, color: "text-red-400" },
-              { label: "Soft Rules", value: (isDemoMode ? DEMO_COMMERCIAL_CONSTITUTION : [] as typeof DEMO_COMMERCIAL_CONSTITUTION).filter(r => r.severity === "soft").length, color: "text-amber-400" },
-              { label: "Violations (7d)", value: (isDemoMode ? DEMO_COMMERCIAL_CONSTITUTION : [] as typeof DEMO_COMMERCIAL_CONSTITUTION).reduce((a, r) => a + r.violations7d, 0), color: "text-red-400" },
+              { label: "Hard Rules", value: ([] as typeof DEMO_COMMERCIAL_CONSTITUTION).filter(r => r.severity === "hard").length, color: "text-red-400" },
+              { label: "Soft Rules", value: ([] as typeof DEMO_COMMERCIAL_CONSTITUTION).filter(r => r.severity === "soft").length, color: "text-amber-400" },
+              { label: "Violations (7d)", value: ([] as typeof DEMO_COMMERCIAL_CONSTITUTION).reduce((a, r) => a + r.violations7d, 0), color: "text-red-400" },
             ].map(m => (
               <Card key={m.label} className="bg-card/50 border-border/50">
                 <CardContent className="p-3 text-center">
@@ -179,7 +178,7 @@ export default function AutomationPolicy() {
             ))}
           </div>
 
-          {(isDemoMode ? DEMO_COMMERCIAL_CONSTITUTION : [] as typeof DEMO_COMMERCIAL_CONSTITUTION).map((r) => (
+          {([] as typeof DEMO_COMMERCIAL_CONSTITUTION).map((r) => (
             <Card key={r.id} className={`bg-card/50 ${constitutionCategoryColors[r.category] || "border-border/50"}`}>
               <CardContent className="p-4">
                 <div className="flex items-center justify-between mb-2">
@@ -221,9 +220,9 @@ export default function AutomationPolicy() {
           </Card>
 
           <Card className="bg-card/50 border-border/50">
-            <CardHeader><CardTitle className="text-sm">Blocked Actions (last 7 days): <span className="text-amber-400">{(isDemoMode ? DEMO_NO_GUESS_RULES : [] as typeof DEMO_NO_GUESS_RULES).reduce((a, r) => a + r.blockedActions7d, 0)}</span></CardTitle></CardHeader>
+            <CardHeader><CardTitle className="text-sm">Blocked Actions (last 7 days): <span className="text-amber-400">{([] as typeof DEMO_NO_GUESS_RULES).reduce((a, r) => a + r.blockedActions7d, 0)}</span></CardTitle></CardHeader>
             <CardContent className="space-y-3">
-              {(isDemoMode ? DEMO_NO_GUESS_RULES : [] as typeof DEMO_NO_GUESS_RULES).map((r) => (
+              {([] as typeof DEMO_NO_GUESS_RULES).map((r) => (
                 <div key={r.id} className={`p-4 rounded-lg border ${r.enabled ? "bg-emerald-500/5 border-emerald-500/20" : "bg-muted/10 border-border/30"}`}>
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-3 flex-1">
@@ -258,7 +257,7 @@ export default function AutomationPolicy() {
             </CardContent>
           </Card>
 
-          {(isDemoMode ? DEMO_PAUSE_ROLLBACK : [] as typeof DEMO_PAUSE_ROLLBACK).length === 0 ? (
+          {([] as typeof DEMO_PAUSE_ROLLBACK).length === 0 ? (
             <Card className="bg-card/50 border-border/50">
               <CardContent className="p-6 text-center">
                 <CheckCircle className="h-8 w-8 text-emerald-400 mx-auto mb-2" />
@@ -266,7 +265,7 @@ export default function AutomationPolicy() {
               </CardContent>
             </Card>
           ) : (
-            (isDemoMode ? DEMO_PAUSE_ROLLBACK : [] as typeof DEMO_PAUSE_ROLLBACK).map((p) => (
+            ([] as typeof DEMO_PAUSE_ROLLBACK).map((p) => (
               <Card key={p.automation} className={`bg-card/50 ${p.status === "quarantined" ? "border-red-500/30" : p.status === "rollback_available" ? "border-blue-500/30" : "border-amber-500/30"}`}>
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between mb-3">
@@ -312,7 +311,7 @@ export default function AutomationPolicy() {
             </CardContent>
           </Card>
 
-          {(isDemoMode ? DEMO_HANDOFF_SIGNALS : [] as typeof DEMO_HANDOFF_SIGNALS).map((h, i) => (
+          {([] as typeof DEMO_HANDOFF_SIGNALS).map((h, i) => (
             <Card key={i} className={`bg-card/50 ${handoffSeverityColors[h.severity]}`}>
               <CardContent className="p-4">
                 <div className="flex items-center justify-between mb-2">
@@ -399,7 +398,7 @@ export default function AutomationPolicy() {
           <Card className="bg-card/50 border-primary/20">
             <CardHeader><CardTitle className="flex items-center gap-2 text-sm"><Brain className="h-4 w-4 text-primary" />Human vs AI Boundary Recommendations</CardTitle></CardHeader>
             <CardContent className="space-y-1.5">
-              {(isDemoMode ? DEMO_humanVsAI : [] as typeof DEMO_humanVsAI).map((item) => (
+              {([] as typeof DEMO_humanVsAI).map((item) => (
                 <div key={item.domain} className="p-3 rounded bg-background/50 border border-border/30 flex items-center justify-between">
                   <div className="flex-1">
                     <span className="text-sm text-foreground font-medium">{item.domain}</span>

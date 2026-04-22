@@ -64,7 +64,7 @@ const pressureColor: Record<string, string> = {
 };
 
 const OperationsCommandCenter = () => {
-  const { isDemoMode } = useDataMode();
+  
   const [tab, setTab] = useState("health");
 
   const { data: incidentCount } = useQuery({
@@ -114,11 +114,11 @@ const OperationsCommandCenter = () => {
       <motion.div variants={stagger} initial="hidden" animate="show" className="space-y-4">
         <motion.div variants={fadeUp} className="grid grid-cols-2 md:grid-cols-5 gap-3">
           {[
-            { label: "Services Healthy", value: `${(isDemoMode ? DEMO_SERVICES : [] as typeof DEMO_SERVICES).filter(s => s.status === "healthy").length}/${(isDemoMode ? DEMO_SERVICES : [] as typeof DEMO_SERVICES).length}`, icon: Server, color: "text-emerald-500" },
+            { label: "Services Healthy", value: `${([] as typeof DEMO_SERVICES).filter(s => s.status === "healthy").length}/${([] as typeof DEMO_SERVICES).length}`, icon: Server, color: "text-emerald-500" },
             { label: "Active Alerts", value: String(liveAlerts.filter(a => a.status === "active").length), icon: Bell, color: "text-amber-500" },
-            { label: "Open Incidents", value: String(incidentCount ?? (isDemoMode ? DEMO_INCIDENTS : [] as typeof DEMO_INCIDENTS).length), icon: AlertTriangle, color: "text-red-500" },
-            { label: "SLO Budget OK", value: `${(isDemoMode ? DEMO_SLOS : [] as typeof DEMO_SLOS).filter(s => s.burnRate < 1).length}/${(isDemoMode ? DEMO_SLOS : [] as typeof DEMO_SLOS).length}`, icon: Target, color: "text-emerald-500" },
-            { label: "Queue Pressure", value: (isDemoMode ? DEMO_QUEUES : [] as typeof DEMO_QUEUES).some(q => q.pressure === "high") ? "Elevated" : "Normal", icon: Gauge, color: (isDemoMode ? DEMO_QUEUES : [] as typeof DEMO_QUEUES).some(q => q.pressure === "high") ? "text-amber-500" : "text-emerald-500" },
+            { label: "Open Incidents", value: String(incidentCount ?? ([] as typeof DEMO_INCIDENTS).length), icon: AlertTriangle, color: "text-red-500" },
+            { label: "SLO Budget OK", value: `${([] as typeof DEMO_SLOS).filter(s => s.burnRate < 1).length}/${([] as typeof DEMO_SLOS).length}`, icon: Target, color: "text-emerald-500" },
+            { label: "Queue Pressure", value: ([] as typeof DEMO_QUEUES).some(q => q.pressure === "high") ? "Elevated" : "Normal", icon: Gauge, color: ([] as typeof DEMO_QUEUES).some(q => q.pressure === "high") ? "text-amber-500" : "text-emerald-500" },
           ].map(m => (
             <Card key={m.label} className="hover:-translate-y-0.5 transition-transform">
               <CardContent className="p-3.5">
@@ -142,7 +142,7 @@ const OperationsCommandCenter = () => {
 
           <TabsContent value="health" className="mt-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-              {(isDemoMode ? DEMO_SERVICES : [] as typeof DEMO_SERVICES).map(svc => (
+              {([] as typeof DEMO_SERVICES).map(svc => (
                 <Card key={svc.name} className="hover:bg-muted/30 transition-colors">
                   <CardContent className="p-4">
                     <div className="flex items-center justify-between mb-2">
@@ -187,7 +187,7 @@ const OperationsCommandCenter = () => {
           </TabsContent>
 
           <TabsContent value="slos" className="mt-4 space-y-2">
-            {(isDemoMode ? DEMO_SLOS : [] as typeof DEMO_SLOS).map(slo => (
+            {([] as typeof DEMO_SLOS).map(slo => (
               <Card key={slo.name}>
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between mb-2">
@@ -210,7 +210,7 @@ const OperationsCommandCenter = () => {
             <Card>
               <CardHeader className="pb-3"><CardTitle className="text-sm font-semibold">Queue & Lag Command</CardTitle></CardHeader>
               <CardContent className="space-y-2">
-                {(isDemoMode ? DEMO_QUEUES : [] as typeof DEMO_QUEUES).map(q => (
+                {([] as typeof DEMO_QUEUES).map(q => (
                   <div key={q.name} className="p-3 rounded-lg border hover:bg-muted/30 transition-colors">
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center gap-2">
@@ -232,7 +232,7 @@ const OperationsCommandCenter = () => {
           </TabsContent>
 
           <TabsContent value="incidents" className="mt-4 space-y-2">
-            {(isDemoMode ? DEMO_INCIDENTS : [] as typeof DEMO_INCIDENTS).map(inc => (
+            {([] as typeof DEMO_INCIDENTS).map(inc => (
               <Card key={inc.id} className={inc.severity === "high" ? "border-red-500/30" : ""}>
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between mb-2">
@@ -254,7 +254,7 @@ const OperationsCommandCenter = () => {
           </TabsContent>
 
           <TabsContent value="runbooks" className="mt-4 space-y-2">
-            {(isDemoMode ? DEMO_RUNBOOKS : [] as typeof DEMO_RUNBOOKS).map(rb => (
+            {([] as typeof DEMO_RUNBOOKS).map(rb => (
               <Card key={rb.id} className="hover:bg-muted/30 transition-colors">
                 <CardContent className="p-4 flex items-center justify-between">
                   <div>
@@ -271,7 +271,7 @@ const OperationsCommandCenter = () => {
             <Card>
               <CardHeader className="pb-3"><CardTitle className="text-sm font-semibold flex items-center gap-2"><Users className="h-4 w-4 text-muted-foreground" /> Operator Action Log</CardTitle></CardHeader>
               <CardContent className="space-y-1.5">
-                {(isDemoMode ? DEMO_ACTION_LOG : [] as typeof DEMO_ACTION_LOG).map((entry, i) => (
+                {([] as typeof DEMO_ACTION_LOG).map((entry, i) => (
                   <div key={i} className="flex items-start gap-3 p-2 rounded hover:bg-muted/20 text-[11px]">
                     <span className="text-muted-foreground font-mono w-10 flex-shrink-0">{entry.time}</span>
                     <span className="text-foreground font-medium w-24 flex-shrink-0">{entry.actor}</span>

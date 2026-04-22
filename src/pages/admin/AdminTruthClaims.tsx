@@ -49,10 +49,10 @@ const manifestStatusColor: Record<string, string> = {
 };
 
 const PlatformTruthRegistry = () => {
-  const { isDemoMode } = useDataMode();
+  
   const [tab, setTab] = useState("claims");
-  const verified = (isDemoMode ? DEMO_CLAIMS : [] as typeof DEMO_CLAIMS).filter(c => c.status === "verified").length;
-  const drifts = (isDemoMode ? DEMO_CLAIMS : [] as typeof DEMO_CLAIMS).filter(c => c.status === "drift").length;
+  const verified = ([] as typeof DEMO_CLAIMS).filter(c => c.status === "verified").length;
+  const drifts = ([] as typeof DEMO_CLAIMS).filter(c => c.status === "drift").length;
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
@@ -68,10 +68,10 @@ const PlatformTruthRegistry = () => {
 
       <motion.div variants={stagger} initial="hidden" animate="show" className="space-y-4">
         <motion.div variants={fadeUp} className="grid grid-cols-2 md:grid-cols-4 gap-3">
-          <Card><CardContent className="p-4"><p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-1">Verified Claims</p><p className="text-2xl font-bold text-emerald-500">{verified}/{(isDemoMode ? DEMO_CLAIMS : [] as typeof DEMO_CLAIMS).length}</p></CardContent></Card>
+          <Card><CardContent className="p-4"><p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-1">Verified Claims</p><p className="text-2xl font-bold text-emerald-500">{verified}/{([] as typeof DEMO_CLAIMS).length}</p></CardContent></Card>
           <Card><CardContent className="p-4"><p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-1">Drift Detected</p><p className="text-2xl font-bold text-red-500">{drifts}</p></CardContent></Card>
-          <Card><CardContent className="p-4"><p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-1">Manifests Aligned</p><p className="text-2xl font-bold text-emerald-500">{(isDemoMode ? DEMO_MANIFESTS : [] as typeof DEMO_MANIFESTS).filter(m => m.status === "aligned").length}/{(isDemoMode ? DEMO_MANIFESTS : [] as typeof DEMO_MANIFESTS).length}</p></CardContent></Card>
-          <Card><CardContent className="p-4"><p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-1">Docs Drift Issues</p><p className="text-2xl font-bold text-amber-500">{(isDemoMode ? DEMO_DOCS_DRIFT : [] as typeof DEMO_DOCS_DRIFT).filter(d => !d.acknowledged).length}</p></CardContent></Card>
+          <Card><CardContent className="p-4"><p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-1">Manifests Aligned</p><p className="text-2xl font-bold text-emerald-500">{([] as typeof DEMO_MANIFESTS).filter(m => m.status === "aligned").length}/{([] as typeof DEMO_MANIFESTS).length}</p></CardContent></Card>
+          <Card><CardContent className="p-4"><p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-1">Docs Drift Issues</p><p className="text-2xl font-bold text-amber-500">{([] as typeof DEMO_DOCS_DRIFT).filter(d => !d.acknowledged).length}</p></CardContent></Card>
         </motion.div>
 
         <Tabs value={tab} onValueChange={setTab}>
@@ -83,7 +83,7 @@ const PlatformTruthRegistry = () => {
           </TabsList>
 
           <TabsContent value="claims" className="mt-4 space-y-2">
-            {(isDemoMode ? DEMO_CLAIMS : [] as typeof DEMO_CLAIMS).map(c => (
+            {([] as typeof DEMO_CLAIMS).map(c => (
               <div key={c.id} className="p-3 rounded-lg border hover:bg-muted/30 transition-colors">
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center gap-2">
@@ -106,7 +106,7 @@ const PlatformTruthRegistry = () => {
             <Card>
               <CardHeader className="pb-3"><CardTitle className="text-sm font-semibold">Manifest Sync Registry</CardTitle></CardHeader>
               <CardContent className="space-y-2">
-                {(isDemoMode ? DEMO_MANIFESTS : [] as typeof DEMO_MANIFESTS).map(mf => (
+                {([] as typeof DEMO_MANIFESTS).map(mf => (
                   <div key={mf.id} className="p-3 rounded-lg border hover:bg-muted/30 transition-colors">
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center gap-2">
@@ -131,7 +131,7 @@ const PlatformTruthRegistry = () => {
             <Card>
               <CardHeader className="pb-3"><CardTitle className="text-sm font-semibold flex items-center gap-2"><GitBranch className="h-4 w-4 text-primary" /> Docs/Runtime Drift</CardTitle></CardHeader>
               <CardContent className="space-y-2">
-                {(isDemoMode ? DEMO_DOCS_DRIFT : [] as typeof DEMO_DOCS_DRIFT).map(dd => (
+                {([] as typeof DEMO_DOCS_DRIFT).map(dd => (
                   <div key={dd.id} className={`p-3 rounded-lg border ${dd.acknowledged ? "opacity-60" : dd.severity === "high" ? "border-red-500/30" : ""}`}>
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center gap-2">
@@ -155,7 +155,7 @@ const PlatformTruthRegistry = () => {
             <Card>
               <CardHeader className="pb-3"><CardTitle className="text-sm font-semibold flex items-center gap-2"><Shield className="h-4 w-4 text-primary" /> Architecture Gate Compliance</CardTitle></CardHeader>
               <CardContent className="space-y-2">
-                {(isDemoMode ? DEMO_ARCH_GATES : [] as typeof DEMO_ARCH_GATES).map(g => (
+                {([] as typeof DEMO_ARCH_GATES).map(g => (
                   <div key={g.gate} className="p-3 rounded-lg border hover:bg-muted/30 transition-colors">
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center gap-2">

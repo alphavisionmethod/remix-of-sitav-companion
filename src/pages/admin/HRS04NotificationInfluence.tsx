@@ -11,7 +11,6 @@ import { useDataMode } from "@/contexts/DataModeContext";
 
 
 const HRS04NotificationInfluence = () => {
-  const { isDemoMode } = useDataMode();
   const { data: posture, isLoading } = useInterruptionPosture();
   const suppressionRules = (posture as never[])?.length ? posture : DEMO_SUPPRESSION_RULES;
   const timingRules = DEMO_TIMING_RULES;

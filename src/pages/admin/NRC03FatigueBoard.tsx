@@ -11,7 +11,6 @@ import { useDataMode } from "@/contexts/DataModeContext";
 
 
 const NRC03FatigueBoard = () => {
-  const { isDemoMode } = useDataMode();
   const { data: fatigueSignals, isLoading } = useFatigueProfiles();
   const suppressionActions = DEMO_SUPPRESSION_ACTIONS;
   const overloadTriggers = DEMO_OVERLOAD_TRIGGERS;

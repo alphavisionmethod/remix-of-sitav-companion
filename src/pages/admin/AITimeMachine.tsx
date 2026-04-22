@@ -13,7 +13,6 @@ const impactColors: Record<string, string> = { positive: "text-[hsl(var(--trust-
 
 const AITimeMachine = () => {
   const { isDemo } = useAIEngDomain("auditTimeline", DEMO_TIMELINE);
-  const { isDemoMode } = useDataMode();
   const [selectedIdx, setSelectedIdx] = useState<number | null>(1);
 
   return (
@@ -23,7 +22,7 @@ const AITimeMachine = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Timeline */}
         <div className="lg:col-span-2 space-y-0">
-          {(isDemoMode ? DEMO_TIMELINE : [] as typeof DEMO_TIMELINE).map((event, i) => {
+          {([] as typeof DEMO_TIMELINE).map((event, i) => {
             const Icon = typeIcons[event.type] || GitBranch;
             return (
               <div key={i} className="flex gap-3">
@@ -39,7 +38,7 @@ const AITimeMachine = () => {
                       event.impact === "mixed" ? "bg-amber-500" : "bg-[hsl(var(--trust-safe))]"
                     }`} />
                   </div>
-                  {i < (isDemoMode ? DEMO_TIMELINE : [] as typeof DEMO_TIMELINE).length - 1 && <div className="w-px flex-1 bg-border/40 min-h-[16px]" />}
+                  {i < ([] as typeof DEMO_TIMELINE).length - 1 && <div className="w-px flex-1 bg-border/40 min-h-[16px]" />}
                 </div>
 
                 {/* Event Card */}

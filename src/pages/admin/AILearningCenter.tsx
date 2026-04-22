@@ -11,7 +11,6 @@ import { useDataMode } from "@/contexts/DataModeContext";
 
 const AILearningCenter = () => {
   const { data: patterns, isDemo } = useAIEngDomain("learningPatterns", DEMO_PATTERNS);
-  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("patterns");
 
   return (
@@ -22,8 +21,8 @@ const AILearningCenter = () => {
         {[
           { l: "Patterns Discovered", v: patterns.length },
           { l: "Improvements Implemented", v: patterns.filter((p: any) => p.status === "implemented").length },
-          { l: "Recommendations Tracked", v: (isDemoMode ? DEMO_OUTCOMES : [] as typeof DEMO_OUTCOMES).length },
-          { l: "Avg Agent Accuracy", v: `${Math.round((isDemoMode ? DEMO_CALIBRATION : [] as typeof DEMO_CALIBRATION).reduce((a,c) => a + c.accuracy, 0) / (isDemoMode ? DEMO_CALIBRATION : [] as typeof DEMO_CALIBRATION).length)}%` },
+          { l: "Recommendations Tracked", v: ([] as typeof DEMO_OUTCOMES).length },
+          { l: "Avg Agent Accuracy", v: `${Math.round(([] as typeof DEMO_CALIBRATION).reduce((a,c) => a + c.accuracy, 0) / ([] as typeof DEMO_CALIBRATION).length)}%` },
         ].map(c => (
           <div key={c.l} className="rounded-xl border border-border/40 bg-card p-4 text-center">
             <p className="text-xl font-bold">{c.v}</p>
@@ -57,7 +56,7 @@ const AILearningCenter = () => {
         </TabsContent>
 
         <TabsContent value="outcomes" className="space-y-2 mt-4">
-          {(isDemoMode ? DEMO_OUTCOMES : [] as typeof DEMO_OUTCOMES).map((o, i) => (
+          {([] as typeof DEMO_OUTCOMES).map((o, i) => (
             <div key={i} className="rounded-xl border border-border/40 bg-card p-4 flex items-center gap-3">
               {o.outcome === "success" ? <CheckCircle2 className="h-4 w-4 text-[hsl(var(--trust-safe))] shrink-0" /> :
                o.outcome === "rejected" ? <RotateCcw className="h-4 w-4 text-muted-foreground shrink-0" /> :
@@ -75,7 +74,7 @@ const AILearningCenter = () => {
         </TabsContent>
 
         <TabsContent value="calibration" className="space-y-2 mt-4">
-          {(isDemoMode ? DEMO_CALIBRATION : [] as typeof DEMO_CALIBRATION).map((c, i) => (
+          {([] as typeof DEMO_CALIBRATION).map((c, i) => (
             <div key={i} className="rounded-xl border border-border/40 bg-card p-4">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-sm font-semibold">{c.agent}</span>

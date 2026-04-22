@@ -31,7 +31,6 @@ const SURFACE_META: Record<string, { title: string; icon: any; desc: string; tec
 };
 
 const APL01AppleEcosystemCenter = () => {
-  const { isDemoMode } = useDataMode();
   const [showDependencies, setShowDependencies] = useState(false);
   const [showAddDevice, setShowAddDevice] = useState(false);
   const [newDevice, setNewDevice] = useState({ surface: "iphone", device_model: "", os_version: "" });
@@ -184,7 +183,7 @@ const APL01AppleEcosystemCenter = () => {
                     <th className="p-2">Priority</th>
                   </tr></thead>
                   <tbody>
-                    {(isDemoMode ? DEMO_PROVIDER_CAPS : [] as typeof DEMO_PROVIDER_CAPS).map((cap) => {
+                    {([] as typeof DEMO_PROVIDER_CAPS).map((cap) => {
                       const matchingLaunch = launchData?.find((r: Record<string, any>) => r.target.includes(cap.key.replace("apple_", "")));
                       const status = matchingLaunch?.launch_stage || "planned";
                       return (

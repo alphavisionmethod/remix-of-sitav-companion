@@ -60,7 +60,6 @@ const EMPTY_FORM: AdvisorFormData = {
 };
 
 export default function TeamManagement() {
-  const { isDemoMode } = useDataMode();
   const [search, setSearch] = useState("");
   const [selectedAdvisor, setSelectedAdvisor] = useState<string | null>(null);
   const [formDialog, setFormDialog] = useState<{ open: boolean; mode: "create" | "edit"; data: AdvisorFormData; editId?: string }>({
@@ -430,14 +429,14 @@ export default function TeamManagement() {
                 <Label className="text-xs">Domain</Label>
                 <Select value={formDialog.data.domain} onValueChange={v => updateForm({ domain: v })}>
                   <SelectTrigger><SelectValue /></SelectTrigger>
-                  <SelectContent>{(isDemoMode ? DEMO_DOMAIN_OPTIONS : [] as typeof DEMO_DOMAIN_OPTIONS).map(d => <SelectItem key={d} value={d} className="capitalize">{d}</SelectItem>)}</SelectContent>
+                  <SelectContent>{([] as typeof DEMO_DOMAIN_OPTIONS).map(d => <SelectItem key={d} value={d} className="capitalize">{d}</SelectItem>)}</SelectContent>
                 </Select>
               </div>
               <div className="space-y-1.5">
                 <Label className="text-xs">Advisor Type</Label>
                 <Select value={formDialog.data.advisor_type} onValueChange={v => updateForm({ advisor_type: v })}>
                   <SelectTrigger><SelectValue /></SelectTrigger>
-                  <SelectContent>{(isDemoMode ? DEMO_ADVISOR_TYPE_OPTIONS : [] as typeof DEMO_ADVISOR_TYPE_OPTIONS).map(t => <SelectItem key={t} value={t} className="capitalize">{t}</SelectItem>)}</SelectContent>
+                  <SelectContent>{([] as typeof DEMO_ADVISOR_TYPE_OPTIONS).map(t => <SelectItem key={t} value={t} className="capitalize">{t}</SelectItem>)}</SelectContent>
                 </Select>
               </div>
             </div>

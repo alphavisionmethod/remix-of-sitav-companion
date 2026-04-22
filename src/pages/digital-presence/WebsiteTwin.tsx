@@ -31,7 +31,6 @@ function PageNode({ page, depth = 0 }: { page: typeof DEMO_PAGE_TREE[0]; depth?:
 }
 
 export default function WebsiteTwin() {
-  const { isDemoMode } = useDataMode();
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
       <DPOSubNav />
@@ -44,7 +43,7 @@ export default function WebsiteTwin() {
       <Card className="bg-card/50 border-border/50">
         <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><Monitor className="w-4 h-4 text-cyan-400" /> Page Hierarchy</CardTitle></CardHeader>
         <CardContent>
-          {(isDemoMode ? DEMO_PAGE_TREE : [] as typeof DEMO_PAGE_TREE).map(p => <PageNode key={p.path} page={p} />)}
+          {([] as typeof DEMO_PAGE_TREE).map(p => <PageNode key={p.path} page={p} />)}
         </CardContent>
       </Card>
 
@@ -53,7 +52,7 @@ export default function WebsiteTwin() {
         <Card className="bg-card/50 border-border/50">
           <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><TrendingUp className="w-4 h-4 text-green-400" /> Conversion Paths</CardTitle></CardHeader>
           <CardContent className="space-y-3">
-            {(isDemoMode ? DEMO_CONVERSION_PATHS : [] as typeof DEMO_CONVERSION_PATHS).map(cp => (
+            {([] as typeof DEMO_CONVERSION_PATHS).map(cp => (
               <div key={cp.name} className="p-3 bg-muted/30 rounded-lg flex items-center justify-between">
                 <div>
                   <p className="text-xs font-medium text-foreground">{cp.name}</p>
@@ -72,7 +71,7 @@ export default function WebsiteTwin() {
         <Card className="bg-card/50 border-border/50">
           <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><AlertTriangle className="w-4 h-4 text-red-400" /> Weak Nodes</CardTitle></CardHeader>
           <CardContent className="space-y-3">
-            {(isDemoMode ? DEMO_WEAK_NODES : [] as typeof DEMO_WEAK_NODES).map(w => (
+            {([] as typeof DEMO_WEAK_NODES).map(w => (
               <div key={w.page} className="p-3 bg-muted/30 rounded-lg">
                 <div className="flex items-center justify-between mb-1">
                   <span className="text-xs font-mono text-muted-foreground">{w.page}</span>

@@ -10,7 +10,6 @@ import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function PromotionsOffice() {
-  const { isDemoMode } = useDataMode();
   const { data: liveData, isLoading } = useSites();
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
@@ -29,7 +28,7 @@ export default function PromotionsOffice() {
       <Card className="bg-card/50 border-border/50">
         <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><Megaphone className="w-4 h-4 text-orange-400" /> Active & Scheduled Promotions</CardTitle></CardHeader>
         <CardContent className="space-y-2">
-          {(isDemoMode ? DEMO_ACTIVE_PROMOTIONS : [] as typeof DEMO_ACTIVE_PROMOTIONS).map(p => (
+          {([] as typeof DEMO_ACTIVE_PROMOTIONS).map(p => (
             <div key={p.name} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-1">
@@ -58,7 +57,7 @@ export default function PromotionsOffice() {
         <Card className="bg-card/50 border-border/50">
           <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><Calendar className="w-4 h-4 text-blue-400" /> Promotion Calendar</CardTitle></CardHeader>
           <CardContent className="space-y-3">
-            {(isDemoMode ? DEMO_PROMO_CALENDAR : [] as typeof DEMO_PROMO_CALENDAR).map(e => (
+            {([] as typeof DEMO_PROMO_CALENDAR).map(e => (
               <div key={e.date + e.event} className="flex items-center gap-3 p-2">
                 <span className="text-xs font-mono text-muted-foreground w-14">{e.date}</span>
                 <div className="flex-1">
@@ -74,7 +73,7 @@ export default function PromotionsOffice() {
         <Card className="bg-card/50 border-border/50">
           <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><Mail className="w-4 h-4 text-green-400" /> Email / SMS Sync</CardTitle></CardHeader>
           <CardContent className="space-y-3">
-            {(isDemoMode ? DEMO_EMAIL_SMS_SYNC : [] as typeof DEMO_EMAIL_SMS_SYNC).map(e => (
+            {([] as typeof DEMO_EMAIL_SMS_SYNC).map(e => (
               <div key={e.campaign} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
                 <div>
                   <span className="text-xs font-medium text-foreground">{e.campaign}</span>

@@ -11,7 +11,6 @@ import { useDataMode } from "@/contexts/DataModeContext";
 
 
 const NRC04QueueInterruptMatrix = () => {
-  const { isDemoMode } = useDataMode();
   const { data: categoryRouting, isLoading } = useInterruptionPolicies();
   const deliveryTypes = DEMO_DELIVERY_TYPES;
   const quickActions = DEMO_QUICK_ACTIONS;

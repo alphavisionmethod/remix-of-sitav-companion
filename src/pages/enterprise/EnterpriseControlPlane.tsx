@@ -81,7 +81,7 @@ const EnterpriseControlPlane = () => {
     },
   });
 
-  const TEAM_MEMBERS = isDemoMode ? DEMO_TEAM_MEMBERS : (realTeamMembers?.length ? realTeamMembers : DEMO_TEAM_MEMBERS);
+  const TEAM_MEMBERS = (realTeamMembers?.length ? realTeamMembers : DEMO_TEAM_MEMBERS);
   const COMPLIANCE_ITEMS = DEMO_COMPLIANCE_ITEMS; // Compliance is config-driven, keep as reference data
 
   // Live SLA data from sla_snapshots
@@ -106,7 +106,7 @@ const EnterpriseControlPlane = () => {
   });
 
   const SLA_METRICS = liveSlaData && liveSlaData.length > 0 ? liveSlaData : DEMO_SLA_METRICS;
-  const DEPLOYMENTS = isDemoMode ? DEMO_DEPLOYMENTS : (realAuditLogs?.length ? realAuditLogs : DEMO_DEPLOYMENTS);
+  const DEPLOYMENTS = (realAuditLogs?.length ? realAuditLogs : DEMO_DEPLOYMENTS);
 
   const togglePermission = (role: string, cap: string) => {
     if (role === "admin") return;
@@ -193,16 +193,16 @@ const EnterpriseControlPlane = () => {
               <thead>
                 <tr className="border-b border-border/30">
                   <th className="text-left py-2 px-3 font-semibold text-muted-foreground">Capability</th>
-                  {(isDemoMode ? DEMO_ROLES : [] as typeof DEMO_ROLES).map(role => (
+                  {([] as typeof DEMO_ROLES).map(role => (
                     <th key={role} className="text-center py-2 px-3 font-semibold text-muted-foreground capitalize">{role}</th>
                   ))}
                 </tr>
               </thead>
               <tbody>
-                {(isDemoMode ? DEMO_CAPABILITIES : [] as typeof DEMO_CAPABILITIES).map(cap => (
+                {([] as typeof DEMO_CAPABILITIES).map(cap => (
                   <tr key={cap} className="border-b border-border/10 hover:bg-secondary/20 transition-colors">
                     <td className="py-2 px-3 font-mono text-foreground">{cap}</td>
-                    {(isDemoMode ? DEMO_ROLES : [] as typeof DEMO_ROLES).map(role => (
+                    {([] as typeof DEMO_ROLES).map(role => (
                       <td key={role} className="text-center py-2 px-3">
                         <Switch
                           checked={permissions[role]?.[cap] ?? false}

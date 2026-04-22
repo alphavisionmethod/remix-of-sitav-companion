@@ -6,7 +6,6 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { ArrowLeft, CheckCircle, AlertTriangle, RefreshCw, Trash2, Activity, Clock, Settings, Shield } from "lucide-react";
-import { DEMO_CONNECTIONS } from "@/data/seed/integrations";
 import { getProviderById } from "@/data/seed/integrations";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { useDataMode } from "@/contexts/DataModeContext";
@@ -17,7 +16,7 @@ export default function ConnectionDetail() {
   const { connectionId } = useParams();
   const navigate = useNavigate();
 
-  const conn = isDemoMode ? DEMO_CONNECTIONS.find(c => c.id === connectionId) : null;
+  const conn = null;
 
   if (!conn && isDemoMode) return <div className="p-6 text-muted-foreground">Connection not found</div>;
   if (!isDemoMode) return (

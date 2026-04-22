@@ -12,7 +12,6 @@ import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
 import { EmptyState } from "@/components/sita/SitaComponents";
-import { DEMO_CORE_AGENTS as DEMO_AGENTS } from "@/data/seed/core-pages";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { useDataMode } from "@/contexts/DataModeContext";
 
@@ -21,8 +20,6 @@ const statusColor = { active: "bg-emerald-500", paused: "bg-amber-500", idle: "b
 export default function AIWorkforcePage() {
   const [selectedTab, setSelectedTab] = useState("roster");
   const { user , isDemo} = useAuth();
-
-  const isDemoMode = isDemo;
   const { data: realAgents = [] } = useQuery({
     queryKey: ["ai_workforce_agents", user?.id],
     enabled: !!user && !isDemoMode,
@@ -35,7 +32,7 @@ export default function AIWorkforcePage() {
     },
   });
 
-  const agents = isDemoMode ? DEMO_AGENTS : realAgents;
+  const agents = realAgents;
 
   return (
     <div className="space-y-6 p-6">

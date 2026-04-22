@@ -16,9 +16,8 @@ const typeLabels: Record<string, string> = { campaign: "Campaign", reputation: "
 const allDomains = Object.keys(typeLabels);
 
 export default function CommercialMemoryFeed() {
-  const { isDemoMode } = useDataMode();
   const { data: liveMemoryEvents } = useCommercialMemoryEvents();
-  const memoryEvents = isDemoMode ? DEMO_memoryEvents : (liveMemoryEvents && liveMemoryEvents.length > 0 ? liveMemoryEvents : []);
+  const memoryEvents = (liveMemoryEvents && liveMemoryEvents.length > 0 ? liveMemoryEvents : []);
   const pinnedItems = DEMO_MEMORY_PINNED;
   const [activeDomain, setActiveDomain] = useState<string>("all");
   const [acknowledged, setAcknowledged] = useState<Set<number>>(new Set());

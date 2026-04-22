@@ -24,12 +24,12 @@ export default function RelationshipCenter() {
   const { data: liveLifecycleStages } = useCustomerLifecycleStages();
   const [tab, setTab] = useState("contacts");
 
-  const LIFECYCLE_STAGES = isDemoMode ? DEMO_LIFECYCLE_STAGES : (liveLifecycleStages && liveLifecycleStages.length > 0 ? liveLifecycleStages.map((s: any) => ({
+  const LIFECYCLE_STAGES = (liveLifecycleStages && liveLifecycleStages.length > 0 ? liveLifecycleStages.map((s: any) => ({
     label: s.stage_name || s.name || "Unknown",
     count: s.contact_count || 0,
     color: s.color || "bg-primary",
   })) : DEMO_LIFECYCLE_STAGES);
-  const CONTACTS = isDemoMode ? DEMO_CONTACTS : (liveContacts?.map((c: Record<string, any>) => ({
+  const CONTACTS = (liveContacts?.map((c: Record<string, any>) => ({
     name: c.name || "Unknown", company: c.company || "", stage: c.lifecycle_stage || "Lead",
     health: c.health_score || 50, ltv: `$${c.ltv || 0}`, lastContact: c.last_contact_at ? new Date(c.last_contact_at).toLocaleDateString() : "Never",
     tags: c.tags || [],
@@ -192,7 +192,7 @@ export default function RelationshipCenter() {
           {/* Next Best Actions */}
           <TabsContent value="actions">
             <div className="space-y-3">
-              {(isDemoMode ? DEMO_NEXT_BEST_ACTIONS : [] as typeof DEMO_NEXT_BEST_ACTIONS).map((nba, i) => (
+              {([] as typeof DEMO_NEXT_BEST_ACTIONS).map((nba, i) => (
                 <motion.div key={i} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}>
                   <Card className={`bg-card/50 border-border/50 ${nba.urgency === "critical" ? "border-l-4 border-l-red-400" : nba.urgency === "high" ? "border-l-4 border-l-amber-400" : ""}`}>
                     <CardContent className="p-4">
@@ -222,7 +222,7 @@ export default function RelationshipCenter() {
             <Card className="bg-card/50 border-border/50">
               <CardHeader><CardTitle className="text-sm">Relationship Graph</CardTitle></CardHeader>
               <CardContent className="space-y-3">
-                {(isDemoMode ? DEMO_RELATIONSHIP_GRAPH : [] as typeof DEMO_RELATIONSHIP_GRAPH).map((rel, i) => (
+                {([] as typeof DEMO_RELATIONSHIP_GRAPH).map((rel, i) => (
                   <div key={i} className="flex items-center gap-3 p-3 rounded-lg bg-muted/10 border border-border/30">
                     <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-[10px] font-bold text-primary">
                       {rel.from.split(" ").map(n => n[0]).join("")}
@@ -245,7 +245,7 @@ export default function RelationshipCenter() {
 
           {/* Conversation History */}
           <TabsContent value="history">
-            {(isDemoMode ? DEMO_CONVERSATION_HISTORY : [] as typeof DEMO_CONVERSATION_HISTORY).map((ch, ci) => (
+            {([] as typeof DEMO_CONVERSATION_HISTORY).map((ch, ci) => (
               <Card key={ci} className="bg-card/50 border-border/50">
                 <CardHeader className="pb-3"><CardTitle className="text-sm">{ch.contact} — Activity Timeline</CardTitle></CardHeader>
                 <CardContent>

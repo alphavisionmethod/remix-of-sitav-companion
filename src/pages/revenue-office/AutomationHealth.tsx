@@ -17,7 +17,6 @@ const statusIcon = { healthy: CheckCircle, warning: AlertTriangle, error: XCircl
 const statusColor = { healthy: "text-emerald-400", warning: "text-amber-400", error: "text-red-400", underperforming: "text-blue-400" };
 
 export default function AutomationHealth() {
-  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("all");
 
   return (
@@ -29,7 +28,7 @@ export default function AutomationHealth() {
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
-        {(isDemoMode ? DEMO_healthMetrics : [] as typeof DEMO_healthMetrics).map((m) => (
+        {([] as typeof DEMO_healthMetrics).map((m) => (
           <Card key={m.label} className="bg-card/50 border-border/50">
             <CardContent className="p-3">
               <div className="flex items-center gap-1.5 mb-1">
@@ -48,7 +47,7 @@ export default function AutomationHealth() {
       <Card className="bg-card/50 border-primary/20 border">
         <CardHeader><CardTitle className="text-sm flex items-center gap-2"><Brain className="h-4 w-4 text-primary" />Advisor Health Insights</CardTitle></CardHeader>
         <CardContent className="grid md:grid-cols-2 gap-3">
-          {(isDemoMode ? DEMO_advisorInsights : [] as typeof DEMO_advisorInsights).map((a, i) => (
+          {([] as typeof DEMO_advisorInsights).map((a, i) => (
             <div key={i} className="p-3 rounded-lg bg-background/50 border border-border/30">
               <Badge variant="secondary" className="text-[10px] mb-1">{a.advisor}</Badge>
               <p className="text-xs text-foreground mb-2">{a.insight}</p>
@@ -61,15 +60,15 @@ export default function AutomationHealth() {
       {/* Automation List */}
       <Tabs value={tab} onValueChange={setTab}>
         <TabsList className="bg-card/50">
-          <TabsTrigger value="all">All ({(isDemoMode ? DEMO_automations : [] as typeof DEMO_automations).length})</TabsTrigger>
-          <TabsTrigger value="healthy">Healthy ({(isDemoMode ? DEMO_automations : [] as typeof DEMO_automations).filter(a => a.status === "healthy").length})</TabsTrigger>
-          <TabsTrigger value="issues">Issues ({(isDemoMode ? DEMO_automations : [] as typeof DEMO_automations).filter(a => a.status !== "healthy").length})</TabsTrigger>
-          <TabsTrigger value="fatigue">Fatigue ({(isDemoMode ? DEMO_fatigueAlerts : [] as typeof DEMO_fatigueAlerts).length})</TabsTrigger>
-          <TabsTrigger value="domain">By Domain ({(isDemoMode ? DEMO_DOMAIN_HEALTH : [] as typeof DEMO_DOMAIN_HEALTH).length})</TabsTrigger>
+          <TabsTrigger value="all">All ({([] as typeof DEMO_automations).length})</TabsTrigger>
+          <TabsTrigger value="healthy">Healthy ({([] as typeof DEMO_automations).filter(a => a.status === "healthy").length})</TabsTrigger>
+          <TabsTrigger value="issues">Issues ({([] as typeof DEMO_automations).filter(a => a.status !== "healthy").length})</TabsTrigger>
+          <TabsTrigger value="fatigue">Fatigue ({([] as typeof DEMO_fatigueAlerts).length})</TabsTrigger>
+          <TabsTrigger value="domain">By Domain ({([] as typeof DEMO_DOMAIN_HEALTH).length})</TabsTrigger>
         </TabsList>
 
         <TabsContent value="all" className="space-y-2">
-          {(isDemoMode ? DEMO_automations : [] as typeof DEMO_automations).map((a) => {
+          {([] as typeof DEMO_automations).map((a) => {
             const Icon = statusIcon[a.status as keyof typeof statusIcon];
             const color = statusColor[a.status as keyof typeof statusColor];
             return (
@@ -106,7 +105,7 @@ export default function AutomationHealth() {
         </TabsContent>
 
         <TabsContent value="healthy" className="space-y-2">
-          {(isDemoMode ? DEMO_automations : [] as typeof DEMO_automations).filter(a => a.status === "healthy").map((a) => (
+          {([] as typeof DEMO_automations).filter(a => a.status === "healthy").map((a) => (
             <Card key={a.name} className="bg-card/50 border-border/50"><CardContent className="p-3 flex items-center justify-between">
               <div className="flex items-center gap-2"><CheckCircle className="h-4 w-4 text-emerald-400" /><span className="text-sm text-foreground">{a.name}</span></div>
               <span className="text-sm font-bold text-emerald-400">{a.successRate}%</span>
@@ -115,7 +114,7 @@ export default function AutomationHealth() {
         </TabsContent>
 
         <TabsContent value="issues" className="space-y-2">
-          {(isDemoMode ? DEMO_automations : [] as typeof DEMO_automations).filter(a => a.status !== "healthy").map((a) => {
+          {([] as typeof DEMO_automations).filter(a => a.status !== "healthy").map((a) => {
             const Icon = statusIcon[a.status as keyof typeof statusIcon];
             const color = statusColor[a.status as keyof typeof statusColor];
             return (
@@ -131,7 +130,7 @@ export default function AutomationHealth() {
         </TabsContent>
 
         <TabsContent value="fatigue" className="space-y-2">
-          {(isDemoMode ? DEMO_fatigueAlerts : [] as typeof DEMO_fatigueAlerts).map((f, i) => (
+          {([] as typeof DEMO_fatigueAlerts).map((f, i) => (
             <Card key={i} className="bg-card/50 border-border/50"><CardContent className="p-3 flex items-center justify-between">
               <div><p className="text-sm text-foreground">{f.contact}</p><p className="text-[10px] text-muted-foreground">{f.DEMO_automations} active automations · {f.messagesThisWeek} messages this week</p></div>
               <div className="flex items-center gap-2">
@@ -154,7 +153,7 @@ export default function AutomationHealth() {
             </CardContent>
           </Card>
 
-          {(isDemoMode ? DEMO_DOMAIN_HEALTH : [] as typeof DEMO_DOMAIN_HEALTH).map((d) => (
+          {([] as typeof DEMO_DOMAIN_HEALTH).map((d) => (
             <Card key={d.domain} className="bg-card/50 border-border/50 hover:border-primary/20 transition-colors">
               <CardContent className="p-4">
                 <div className="flex items-center justify-between mb-3">

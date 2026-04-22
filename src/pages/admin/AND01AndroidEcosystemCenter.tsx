@@ -31,7 +31,6 @@ const SURFACE_META: Record<string, { title: string; icon: any; desc: string; tec
 };
 
 const AND01AndroidEcosystemCenter = () => {
-  const { isDemoMode } = useDataMode();
   const [showDeps, setShowDeps] = useState(false);
   const [showAddDevice, setShowAddDevice] = useState(false);
   const [newDevice, setNewDevice] = useState({ surface: "android_phone", device_model: "", os_version: "" });
@@ -185,7 +184,7 @@ const AND01AndroidEcosystemCenter = () => {
                     <th className="p-2">Priority</th>
                   </tr></thead>
                   <tbody>
-                    {(isDemoMode ? DEMO_PROVIDER_CAPS : [] as typeof DEMO_PROVIDER_CAPS).map((cap) => {
+                    {([] as typeof DEMO_PROVIDER_CAPS).map((cap) => {
                       const matchingLaunch = launchData?.find((r: Record<string, any>) => r.target.includes(cap.key.replace("android_", "")));
                       const status = matchingLaunch?.launch_stage || "planned";
                       return (

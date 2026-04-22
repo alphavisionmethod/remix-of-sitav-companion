@@ -11,7 +11,6 @@ import { useDataMode } from "@/contexts/DataModeContext";
 
 
 const FIPObservabilityCenter = () => {
-  const { isDemoMode } = useDataMode();
   const { data: compliance = [] } = useComplianceRecords();
   const { data: specs = [] } = useFeatureSpecs();
 
@@ -36,7 +35,7 @@ const FIPObservabilityCenter = () => {
         <CardHeader><CardTitle className="text-base">Observability Checklist</CardTitle></CardHeader>
         <CardContent>
           <div className="grid grid-cols-3 gap-3">
-            {(isDemoMode ? DEMO_OBSERVABILITY_FIELDS : [] as typeof DEMO_OBSERVABILITY_FIELDS).map(field => {
+            {([] as typeof DEMO_OBSERVABILITY_FIELDS).map(field => {
               const count = specsWithObs.filter((s: Record<string, any>) => s.observability_support?.[field]).length;
               return (
                 <div key={field} className="flex items-center justify-between p-2 border rounded">

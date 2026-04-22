@@ -9,13 +9,12 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { ArrowLeft, CheckCircle, Shield, Zap, Globe, ExternalLink, BookOpen, AlertTriangle, ArrowRight } from "lucide-react";
 import { getProviderById } from "@/data/seed/integrations";
-import { DEMO_CONNECTIONS } from "@/data/seed/integrations";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 
 export default function ProviderDetail() {
-  const { isDemoMode } = useDataMode();
+  
   const { providerId } = useParams();
   const navigate = useNavigate();
   const [wizardStep, setWizardStep] = useState(0);
@@ -24,7 +23,7 @@ export default function ProviderDetail() {
   const provider = getProviderById(providerId || "");
   if (!provider) return <div className="p-6 text-muted-foreground">Provider not found</div>;
 
-  const existingConnection = isDemoMode ? DEMO_CONNECTIONS.find(c => c.providerId === provider.id) : null;
+  const existingConnection = null;
   const readCaps = provider.capabilities.filter(c => c.type === "read");
   const writeCaps = provider.capabilities.filter(c => c.type === "write");
 

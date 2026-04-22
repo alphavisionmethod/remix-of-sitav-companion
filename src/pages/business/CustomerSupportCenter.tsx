@@ -39,7 +39,6 @@ const DEMO_ISSUES: SupportIssue[] = [
 const urgencyMap: Record<Severity, "critical" | "high" | "normal" | "low"> = { critical: "critical", high: "high", medium: "normal", low: "low" };
 
 const CustomerSupportCenter = () => {
-  const { isDemoMode } = useDataMode();
   const { primaryMode } = useBusinessProfile();
   const moduleConfig = getModuleAdaptation("support", primaryMode);
   const [activeTab, setActiveTab] = useState("all");
@@ -47,18 +46,18 @@ const CustomerSupportCenter = () => {
   const [panelOpen, setPanelOpen] = useState(false);
 
   const filterIssues = (tab: string) => {
-    if (tab === "all") return (isDemoMode ? DEMO_ISSUES : [] as typeof DEMO_ISSUES).filter(i => i.status !== "resolved");
-    if (tab === "urgent") return (isDemoMode ? DEMO_ISSUES : [] as typeof DEMO_ISSUES).filter(i => (i.severity === "critical" || i.severity === "high") && i.status !== "resolved");
-    if (tab === "waiting-on-us") return (isDemoMode ? DEMO_ISSUES : [] as typeof DEMO_ISSUES).filter(i => i.status === "waiting-on-us");
-    if (tab === "escalated") return (isDemoMode ? DEMO_ISSUES : [] as typeof DEMO_ISSUES).filter(i => i.status === "escalated");
-    if (tab === "resolved") return (isDemoMode ? DEMO_ISSUES : [] as typeof DEMO_ISSUES).filter(i => i.status === "resolved");
+    if (tab === "all") return ([] as typeof DEMO_ISSUES).filter(i => i.status !== "resolved");
+    if (tab === "urgent") return ([] as typeof DEMO_ISSUES).filter(i => (i.severity === "critical" || i.severity === "high") && i.status !== "resolved");
+    if (tab === "waiting-on-us") return ([] as typeof DEMO_ISSUES).filter(i => i.status === "waiting-on-us");
+    if (tab === "escalated") return ([] as typeof DEMO_ISSUES).filter(i => i.status === "escalated");
+    if (tab === "resolved") return ([] as typeof DEMO_ISSUES).filter(i => i.status === "resolved");
     return DEMO_ISSUES;
   };
 
   const filtered = filterIssues(activeTab);
-  const selected = (isDemoMode ? DEMO_ISSUES : [] as typeof DEMO_ISSUES).find(i => i.id === selectedId);
-  const criticalCount = (isDemoMode ? DEMO_ISSUES : [] as typeof DEMO_ISSUES).filter(i => i.severity === "critical" && i.status !== "resolved").length;
-  const breachedCount = (isDemoMode ? DEMO_ISSUES : [] as typeof DEMO_ISSUES).filter(i => i.hoursOpen > i.slaHours && i.status !== "resolved").length;
+  const selected = ([] as typeof DEMO_ISSUES).find(i => i.id === selectedId);
+  const criticalCount = ([] as typeof DEMO_ISSUES).filter(i => i.severity === "critical" && i.status !== "resolved").length;
+  const breachedCount = ([] as typeof DEMO_ISSUES).filter(i => i.hoursOpen > i.slaHours && i.status !== "resolved").length;
 
   const handleSelect = (id: string) => { setSelectedId(id); setPanelOpen(true); };
 
@@ -75,7 +74,7 @@ const CustomerSupportCenter = () => {
 
       <HeroCard
         title={moduleConfig.title}
-        metric={`${(isDemoMode ? DEMO_ISSUES : [] as typeof DEMO_ISSUES).filter(i => i.status !== "resolved").length} open ${moduleConfig.terminology.issue?.toLowerCase() || "issue"}s`}
+        metric={`${([] as typeof DEMO_ISSUES).filter(i => i.status !== "resolved").length} open ${moduleConfig.terminology.issue?.toLowerCase() || "issue"}s`}
         subtitle={moduleConfig.subtitle}
         icon={<HeadphonesIcon className="h-5 w-5 text-[hsl(265_55%_68%)]" />}
         accentFrom="hsl(265 55% 58%)"
@@ -91,10 +90,10 @@ const CustomerSupportCenter = () => {
 
       <SitaTabs
         tabs={[
-          { key: "all", label: "All Open", count: (isDemoMode ? DEMO_ISSUES : [] as typeof DEMO_ISSUES).filter(i => i.status !== "resolved").length },
-          { key: "urgent", label: "Urgent", count: (isDemoMode ? DEMO_ISSUES : [] as typeof DEMO_ISSUES).filter(i => (i.severity === "critical" || i.severity === "high") && i.status !== "resolved").length },
-          { key: "waiting-on-us", label: "Waiting on Us", count: (isDemoMode ? DEMO_ISSUES : [] as typeof DEMO_ISSUES).filter(i => i.status === "waiting-on-us").length },
-          { key: "escalated", label: "Escalated", count: (isDemoMode ? DEMO_ISSUES : [] as typeof DEMO_ISSUES).filter(i => i.status === "escalated").length },
+          { key: "all", label: "All Open", count: ([] as typeof DEMO_ISSUES).filter(i => i.status !== "resolved").length },
+          { key: "urgent", label: "Urgent", count: ([] as typeof DEMO_ISSUES).filter(i => (i.severity === "critical" || i.severity === "high") && i.status !== "resolved").length },
+          { key: "waiting-on-us", label: "Waiting on Us", count: ([] as typeof DEMO_ISSUES).filter(i => i.status === "waiting-on-us").length },
+          { key: "escalated", label: "Escalated", count: ([] as typeof DEMO_ISSUES).filter(i => i.status === "escalated").length },
           { key: "resolved", label: "Resolved" },
         ]}
         active={activeTab}

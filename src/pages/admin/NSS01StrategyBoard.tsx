@@ -12,7 +12,6 @@ import { useDataMode } from "@/contexts/DataModeContext";
 
 
 const NSS01StrategyBoard = () => {
-  const { isDemoMode } = useDataMode();
   const { data: platforms, isLoading } = useNativeShellPlatforms();
   const items = platforms ?? [];
 
@@ -73,7 +72,7 @@ const NSS01StrategyBoard = () => {
 
         <TabsContent value="strategy">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {(isDemoMode ? DEMO_STRATEGY_PRINCIPLES : [] as typeof DEMO_STRATEGY_PRINCIPLES).map((p) => (
+            {([] as typeof DEMO_STRATEGY_PRINCIPLES).map((p) => (
               <Card key={p.principle} className="hover:shadow-md transition-shadow">
                 <CardHeader className="pb-2">
                   <div className="flex items-center justify-between">
@@ -92,7 +91,7 @@ const NSS01StrategyBoard = () => {
             <CardHeader><CardTitle className="text-sm">Hybrid Shell Architecture</CardTitle></CardHeader>
             <CardContent className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {(isDemoMode ? DEMO_ARCHITECTURE_LAYERS : [] as typeof DEMO_ARCHITECTURE_LAYERS).map((l) => (
+                {([] as typeof DEMO_ARCHITECTURE_LAYERS).map((l) => (
                   <div key={l.layer} className={`p-4 rounded-lg border ${l.color}`}>
                     <div className="font-medium text-sm mb-2">{l.layer}</div>
                     {l.items.map((i) => <div key={i} className="text-xs p-1.5 rounded border bg-background/50 mb-1">{i}</div>)}

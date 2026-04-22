@@ -20,8 +20,6 @@ import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function CapitalAllocationPage() {
   const { user , isDemo} = useAuth();
-
-  const isDemoMode = isDemo;
   const { data: realAllocations } = useQuery({
     queryKey: ["capital-allocations", user?.id],
     enabled: !!user && !isDemoMode,
@@ -45,7 +43,7 @@ export default function CapitalAllocationPage() {
     },
   });
 
-  const allocations = isDemoMode ? DEMO_ALLOCATIONS : (realAllocations ?? DEMO_ALLOCATIONS);
+  const allocations = (realAllocations ?? DEMO_ALLOCATIONS);
   const totalValue = allocations.reduce((s, a) => s + a.value, 0);
 
   return (

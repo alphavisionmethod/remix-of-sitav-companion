@@ -68,7 +68,7 @@ const QUICK_ACTIONS = [
 
 export default function FCC05FounderDashboard() {
   const navigate = useNavigate();
-  const { isDemo } = useAuth();
+  ;
 
   return (
     <div className="space-y-6 p-6">

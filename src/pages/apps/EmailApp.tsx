@@ -29,12 +29,11 @@ const categoryColors: Record<string, string> = {
 };
 
 export default function EmailApp() {
-  const { isDemoMode } = useDataMode();
   const [search, setSearch] = useState("");
   const [selectedEmail, setSelectedEmail] = useState<Email | null>(null);
-  const unread = (isDemoMode ? DEMO_EMAILS : [] as typeof DEMO_EMAILS).filter(e => !e.read).length;
+  const unread = ([] as typeof DEMO_EMAILS).filter(e => !e.read).length;
 
-  const filtered = (isDemoMode ? DEMO_EMAILS : [] as typeof DEMO_EMAILS).filter(e => !search || e.subject.toLowerCase().includes(search.toLowerCase()) || e.from.toLowerCase().includes(search.toLowerCase()));
+  const filtered = ([] as typeof DEMO_EMAILS).filter(e => !search || e.subject.toLowerCase().includes(search.toLowerCase()) || e.from.toLowerCase().includes(search.toLowerCase()));
 
   return (
     <div className="p-4 md:p-6 max-w-[1400px] mx-auto space-y-4">
