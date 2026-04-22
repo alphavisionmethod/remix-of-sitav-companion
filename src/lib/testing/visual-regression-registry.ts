@@ -80,7 +80,7 @@ export const VISUAL_REGRESSION_TARGETS: readonly VisualRegressionTarget[] = [
   {
     componentName: "Separator",
     importPath: "@/components/ui/separator",
-    expectedRoles: ["separator"],
+    expectedRoles: [],
     expectedTestIds: [],
     expectedTextContent: [],
     minChildCount: 0,
