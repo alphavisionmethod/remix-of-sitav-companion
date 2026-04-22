@@ -50,9 +50,9 @@ describe("App Store & Platform", () => {
     expect(fs.existsSync("src/hooks/use-app-platform.ts")).toBe(true);
   });
 
-  it("app lifecycle tables exist in schema", () => {
+  it("app asset tables exist in schema", () => {
     const types = fs.readFileSync("src/integrations/supabase/types.ts", "utf8");
-    expect(types).toContain("app_lifecycle");
+    expect(types).toContain("app_assets");
   });
 });
 
