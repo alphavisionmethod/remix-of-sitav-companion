@@ -19,7 +19,7 @@ export default function CallDesk() {
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 p-6">
 <div>
-        <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><Phone className="h-6 w-6 text-blue-400" />Call Desk</h1>
+        <Typography role="appTitle" className="flex items-center gap-2"><Phone className="h-6 w-6 text-blue-400" />Call Desk</Typography>
         <p className="text-muted-foreground">Prioritized call queue, AI prep briefs, relationship context, outcome logging, and auto-generated follow-ups</p>
       </div>
 

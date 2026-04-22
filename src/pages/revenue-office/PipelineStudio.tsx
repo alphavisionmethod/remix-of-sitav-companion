@@ -15,6 +15,7 @@ import { EmptyState } from "@/components/sita/EmptyState";
 import { DEMO_STAGES, DEMO_VELOCITY } from "@/data/seed/revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { PageShell } from "@/components/sita/PageShell";
+import { Typography } from "@/components/sita/Typography";
 
 
 type Deal = { id: string; name: string; value: number; probability: number; age: number; owner: string; contact: string; nextAction?: string; nextActionDate?: string; source: string; tags: string[] };
@@ -53,7 +54,7 @@ export default function PipelineStudio() {
   if (!isDemoMode && (!liveDeals || liveDeals.length === 0)) {
     return (
       <PageShell width="wide" className="space-y-6">
-<h1 className="text-2xl font-bold text-foreground">Pipeline Studio</h1>
+<Typography role="appTitle">Pipeline Studio</Typography>
         <EmptyState icon={Target} title="No deals yet" description="Create your first deal to start tracking your pipeline." />
       </PageShell>
     );
@@ -64,7 +65,7 @@ export default function PipelineStudio() {
 <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-foreground">Pipeline Studio</h1>
+            <Typography role="appTitle">Pipeline Studio</Typography>
             <p className="text-sm text-muted-foreground">Visual deal flow with conversion intelligence, velocity tracking, and leak detection</p>
           </div>
           <div className="flex gap-2">

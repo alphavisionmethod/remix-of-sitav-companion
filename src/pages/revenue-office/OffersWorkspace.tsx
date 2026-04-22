@@ -8,6 +8,7 @@ import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { PageShell } from "@/components/sita/PageShell";
+import { Typography } from "@/components/sita/Typography";
 import { DEMO_REV_BUNDLES as DEMO_BUNDLES,
   DEMO_REV_PRODUCTS as DEMO_PRODUCTS,
   DEMO_OFFER_UPSELLS,
@@ -26,7 +27,7 @@ export default function OffersWorkspace() {
 <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-foreground">Offers Workspace</h1>
+            <Typography role="appTitle">Offers Workspace</Typography>
             <p className="text-sm text-muted-foreground">Products, services, memberships, courses, bundles, upsells & pricing intelligence</p>
           </div>
           <Button className="gap-2"><Plus className="w-4 h-4" /> New Offer</Button>

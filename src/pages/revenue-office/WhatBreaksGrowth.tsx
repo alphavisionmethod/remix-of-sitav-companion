@@ -59,7 +59,7 @@ export default function WhatBreaksGrowth() {
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 p-6">
 <div>
-        <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><ShieldAlert className="w-6 h-6 text-amber-400" /> What Breaks Growth?</h1>
+        <Typography role="appTitle" className="flex items-center gap-2"><ShieldAlert className="w-6 h-6 text-amber-400" /> What Breaks Growth?</Typography>
         <p className="text-muted-foreground">Reverse-analysis of weak assumptions, delivery risks, fragility points, stress tests, and dependency mapping</p>
       </div>
 

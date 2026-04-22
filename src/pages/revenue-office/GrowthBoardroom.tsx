@@ -18,6 +18,7 @@ import { useOSRuntime } from "@/hooks/useOSRuntime";
 import { useRevenueWhatChanged } from "@/hooks/use-revenue-memory";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { PageShell } from "@/components/sita/PageShell";
+import { Typography } from "@/components/sita/Typography";
 
 const DEMO_PIPELINE_STAGES: any[] = [];
 const DEMO_ADVISOR_SIGNALS: any[] = [];
@@ -62,7 +63,7 @@ export default function GrowthBoardroom() {
 <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-foreground">Growth Boardroom</h1>
+            <Typography role="appTitle">Growth Boardroom</Typography>
             <p className="text-sm text-muted-foreground">{isBeginner ? "Your business performance at a glance" : "Executive revenue command center"}</p>
           </div>
           <div className="flex items-center gap-3">

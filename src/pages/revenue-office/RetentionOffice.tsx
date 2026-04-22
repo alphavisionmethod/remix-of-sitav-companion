@@ -9,13 +9,14 @@ import { DEMO_AT_RISK, DEMO_HEALTH_SEGMENTS, DEMO_WIN_BACK, DEMO_CHURN_PREDICTIO
 import { useState } from "react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { PageShell } from "@/components/sita/PageShell";
+import { Typography } from "@/components/sita/Typography";
 export default function RetentionOffice() {
   const [tab, setTab] = useState("overview");
 
   return (
     <PageShell width="wide" className="space-y-6">
 <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
-        <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><Heart className="w-6 h-6 text-pink-400" /> Retention Office</h1>
+        <Typography role="appTitle" className="flex items-center gap-2"><Heart className="w-6 h-6 text-pink-400" /> Retention Office</Typography>
         <p className="text-sm text-muted-foreground">Churn prediction, NPS tracking, re-engagement workflows, and engagement health</p>
       </motion.div>
 

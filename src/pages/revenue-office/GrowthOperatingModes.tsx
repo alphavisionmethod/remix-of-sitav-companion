@@ -89,7 +89,7 @@ export default function GrowthOperatingModes() {
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 p-6">
 <div>
-        <h1 className="text-2xl font-bold text-foreground">Growth Operating Modes</h1>
+        <Typography role="appTitle">Growth Operating Modes</Typography>
         <p className="text-muted-foreground">Contextual business modes that change boardroom emphasis, advisor urgency, and workflow priorities</p>
       </div>
 

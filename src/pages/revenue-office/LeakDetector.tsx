@@ -16,6 +16,7 @@ import { useState } from "react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { PremiumEmptyState } from "@/components/sita/PremiumEmptyState";
 import { PageShell } from "@/components/sita/PageShell";
+import { Typography } from "@/components/sita/Typography";
 
 export default function LeakDetector() {
   const { isBeginner } = useRevenueOfficeMode();

@@ -53,7 +53,7 @@ export default function OpportunityBoard() {
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 p-6">
 <div>
-        <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><Lightbulb className="h-6 w-6 text-amber-400" /> Opportunity Board</h1>
+        <Typography role="appTitle" className="flex items-center gap-2"><Lightbulb className="h-6 w-6 text-amber-400" /> Opportunity Board</Typography>
         <p className="text-muted-foreground">Ranked growth opportunities with priority scoring and theme clustering</p>
       </div>
 

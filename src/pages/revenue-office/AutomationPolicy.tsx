@@ -76,7 +76,7 @@ export default function AutomationPolicy() {
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 p-6">
 <AutomationSubNav />
       <div>
-        <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><ShieldCheck className="h-6 w-6 text-emerald-400" />Automation Policy Center</h1>
+        <Typography role="appTitle" className="flex items-center gap-2"><ShieldCheck className="h-6 w-6 text-emerald-400" />Automation Policy Center</Typography>
         <p className="text-muted-foreground">Trust boundaries, constitution, no-guess mode, pause/rollback, human handoff, safety rules, and audit trail</p>
       </div>
 

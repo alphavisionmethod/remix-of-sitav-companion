@@ -23,7 +23,7 @@ export default function DecisionTheater() {
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 p-6">
 <div>
-        <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><Theater className="h-6 w-6 text-purple-400" /> Business Decision Theater</h1>
+        <Typography role="appTitle" className="flex items-center gap-2"><Theater className="h-6 w-6 text-purple-400" /> Business Decision Theater</Typography>
         <p className="text-muted-foreground">Pre-launch review — impact simulation, advisor debate, risk analysis, and authorization</p>
       </div>
 

@@ -12,6 +12,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { EmptyState } from "@/components/sita/EmptyState";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { PageShell } from "@/components/sita/PageShell";
+import { Typography } from "@/components/sita/Typography";
 import {
   DEMO_REV_SERVICES as DEMO_SERVICES,
   DEMO_REV_STATS as DEMO_STATS,
@@ -50,7 +51,7 @@ export default function BookingCenter() {
   if (!isDemoMode && UPCOMING.length === 0) {
     return (
       <PageShell width="wide" className="space-y-6">
-<h1 className="text-2xl font-bold text-foreground">Booking Center</h1>
+<Typography role="appTitle">Booking Center</Typography>
         <EmptyState icon={Calendar} title="No bookings yet" description="Set up your services and start accepting bookings." />
       </PageShell>
     );
@@ -61,7 +62,7 @@ export default function BookingCenter() {
 <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-foreground">Booking & Appointment Office</h1>
+            <Typography role="appTitle">Booking & Appointment Office</Typography>
             <p className="text-sm text-muted-foreground">Scheduling, prep, no-show recovery, and conversion intelligence</p>
           </div>
           <Button className="gap-2"><Plus className="w-4 h-4" /> New Service</Button>

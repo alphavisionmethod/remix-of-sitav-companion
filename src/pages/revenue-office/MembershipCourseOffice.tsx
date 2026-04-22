@@ -25,7 +25,7 @@ export default function MembershipCourseOffice() {
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 p-6">
 <div>
-        <h1 className="text-2xl font-bold text-foreground">Membership & Course Office</h1>
+        <Typography role="appTitle">Membership & Course Office</Typography>
         <p className="text-muted-foreground">Courses, memberships, engagement, retention, and student journey intelligence</p>
       </div>
 

@@ -16,6 +16,7 @@ import { DEMO_CONTACTS, DEMO_LIFECYCLE_STAGES, DEMO_NEXT_BEST_ACTIONS, DEMO_CONV
 import { clientSentimentService } from "@/lib/services/client-sentiment";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { PageShell } from "@/components/sita/PageShell";
+import { Typography } from "@/components/sita/Typography";
 
 
 export default function RelationshipCenter() {
@@ -48,7 +49,7 @@ export default function RelationshipCenter() {
   if (!isDemoMode && CONTACTS.length === 0) {
     return (
       <PageShell width="wide" className="space-y-6">
-<h1 className="text-2xl font-bold text-foreground">Relationship Center</h1>
+<Typography role="appTitle">Relationship Center</Typography>
         <EmptyState icon={Users} title="No contacts yet" description="Add your first contact to start managing relationships." />
       </PageShell>
     );
@@ -57,7 +58,7 @@ export default function RelationshipCenter() {
   return (
     <PageShell width="wide" className="space-y-6">
 <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
-        <h1 className="text-2xl font-bold text-foreground">Relationship Center</h1>
+        <Typography role="appTitle">Relationship Center</Typography>
         <p className="text-sm text-muted-foreground">Lifecycle-aware CRM with relationship intelligence, scoring, and next-best-action</p>
       </motion.div>
 

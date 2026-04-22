@@ -34,7 +34,7 @@ export default function ChiefRevenueSynthesis() {
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 p-6">
 <div>
-        <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><Crown className="h-6 w-6 text-amber-400" /> Chief Revenue Synthesis</h1>
+        <Typography role="appTitle" className="flex items-center gap-2"><Crown className="h-6 w-6 text-amber-400" /> Chief Revenue Synthesis</Typography>
         <p className="text-muted-foreground">Executive summary — where advisors align, disagree, and what matters most</p>
       </div>
 
