@@ -67,8 +67,8 @@ export function StateRenderer({
       <div className={cn("space-y-4", className)}>
         <div className={cn(
           "flex items-center gap-2 rounded-xl border px-4 py-3 text-sm",
-          visual.colorToken === "warning" && "border-yellow-500/20 bg-yellow-500/5 text-yellow-400",
-          visual.colorToken === "info" && "border-blue-500/20 bg-blue-500/5 text-blue-400",
+          visual.colorToken === "warning" && "border-destructive/20 bg-destructive/5 text-destructive",
+          visual.colorToken === "info" && "border-primary/20 bg-primary/5 text-primary",
           visual.colorToken === "accent" && "border-primary/20 bg-primary/5 text-primary",
         )}>
           <AlertTriangle className="h-4 w-4 shrink-0" />

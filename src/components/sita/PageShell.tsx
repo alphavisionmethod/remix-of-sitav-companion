@@ -36,9 +36,9 @@ const containerVariants = {
 export const PageShell = ({ children, width = "wide", className, instant }: PageShellProps) => {
   if (instant) {
     return (
-      <div className={cn("mx-auto space-y-6 p-4 md:p-6", WIDTH_MAP[width], className)}>
+      <main className={cn("mx-auto space-y-6 p-4 md:p-6", WIDTH_MAP[width], className)}>
         {children}
-      </div>
+      </main>
     );
   }
 
@@ -47,6 +47,7 @@ export const PageShell = ({ children, width = "wide", className, instant }: Page
       variants={containerVariants}
       initial="hidden"
       animate="visible"
+      role="main"
       className={cn("mx-auto space-y-6 p-4 md:p-6", WIDTH_MAP[width], className)}
     >
       {children}
