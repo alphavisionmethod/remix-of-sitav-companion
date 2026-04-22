@@ -494,6 +494,7 @@ const PreviewPanel = ({
 // ── Main Component ───────────────────────────────────────────────
 
 const PlaybookBuilder = () => {
+  const { isDemoMode } = useDataMode();
   const { primaryMode } = useBusinessProfile();
 const [draft, setDraft] = useState<PlaybookDraft>(defaultDraft);
   const [saved, setSaved] = useState(false);
