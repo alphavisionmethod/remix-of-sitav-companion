@@ -6,7 +6,6 @@ import { INVESTMENT_ADVISORS, SAMPLE_ORDERS, SAMPLE_SCENARIOS } from "@/hooks/us
 import { useInvestmentDecisions } from "@/hooks/use-investment-office";
 import { DEMO_READINESS_DIMENSIONS } from "@/data/seed/investment";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
 
 // Advisor votes for the cinematic voting panel
 const ADVISOR_VOTES: Record<string, "approve" | "reject" | "abstain"> = {

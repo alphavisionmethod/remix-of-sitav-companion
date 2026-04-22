@@ -12,7 +12,6 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Plane, Calendar, DollarSign, FileText, CheckCircle, AlertCircle, Clock, Home, CreditCard } from "lucide-react";
 import { DEMO_householdSpillover, DEMO_itinerary, DEMO_postTripTasks, DEMO_preTripChecklist } from "@/data/seed/concierge";
-import { useDataMode } from "@/contexts/DataModeContext";
 
 
 interface Trip {

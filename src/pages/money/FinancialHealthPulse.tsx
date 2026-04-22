@@ -11,7 +11,6 @@ import { motion } from "framer-motion";
 import { useMemo } from "react";
 import { computeFinancialHealth } from "@/lib/services/finance-os/financial-health.service";
 import { computeIncomeQuality } from "@/lib/services/finance-os/income-quality.service";
-import { useDataMode } from "@/contexts/DataModeContext";
 
 
 

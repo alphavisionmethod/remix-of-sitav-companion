@@ -21,8 +21,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   AdvisorCard, RecommendationCard, SimulationCard, ApprovalCard,
   ProofCard, MemoryCard, SynthesisCard, ConfidenceLadder,
-  BoardroomAdvisorCard, UncertaintyCard,
-} from "@/components/sita/AdvisorComponents";
+  BoardroomAdvisorCard, UncertaintyCard } from "@/components/sita/AdvisorComponents";
 import { mockAdvisors, mockRecommendations, mockSimulations, mockApprovals, mockProofHistory, mockMemoryItems, mockSynthesis } from "@/hooks/useAdvisorMissionControl";
 import { useStreamingChat } from "@/hooks/use-streaming-chat";
 import {
@@ -39,7 +38,6 @@ import type { AdvisorConfig, AdvisorId } from "@/packages/advisor-config";
 import type { ProofPack, TypedReceipt } from "@/packages/proof-model";
 import type { RefusalState, ContradictionReport } from "@/packages/policy-contracts";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
 
 
 

@@ -25,7 +25,6 @@ import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvi
 import { ListReveal, ListRevealItem } from "@/components/sita/motion/AppTransitions";
 import { cn } from "@/lib/utils";
 import { CrossAppAction } from "@/components/sita/CrossAppAction";
-import { useDataMode } from "@/contexts/DataModeContext";
 
 
 // ── Chase Sequence ──────────────────────────────────────────────

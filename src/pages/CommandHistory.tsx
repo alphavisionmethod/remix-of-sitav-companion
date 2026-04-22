@@ -9,7 +9,6 @@ import { Terminal, Search, Play, Clock, ArrowRight, Trash2, Filter } from "lucid
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
 
 interface CommandRecord {
   id: string;

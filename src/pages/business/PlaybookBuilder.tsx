@@ -83,7 +83,6 @@ const STEP_TYPES: { type: BuilderStep["type"]; label: string; icon: typeof Zap; 
 
 import { OPERATORS, DELAY_OPTIONS } from "@/lib/constants/ui-config";
 import { DEMO_CONDITION_FIELDS, DEMO_TRIGGER_EVENTS } from "@/data/seed/business";
-import { useDataMode } from "@/contexts/DataModeContext";
 
 
 // Production fallback — seed data removed

@@ -19,7 +19,6 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
-import { useDataMode } from "@/contexts/DataModeContext";
 
 type Tab = "all" | "quotes" | "invoices" | "contracts" | "attachments" | "images";
 type ViewMode = "grid" | "list";

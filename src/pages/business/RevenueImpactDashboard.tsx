@@ -84,7 +84,6 @@ const RECOVERED_COLOR = "hsl(var(--trust-safe))";
 const GENERATED_COLOR = "hsl(var(--accent))";
 import { PIE_COLORS } from "@/lib/constants/ui-config";
 import { DEMO_PLAYBOOK_REVENUE } from "@/data/seed/business";
-import { useDataMode } from "@/contexts/DataModeContext";
 
 
 

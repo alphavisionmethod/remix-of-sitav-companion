@@ -15,19 +15,16 @@ import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   FULL_ADVISOR_REGISTRY,
-  type ExtendedAdvisorConfig,
-} from "@/packages/advisor-config/registry";
+  type ExtendedAdvisorConfig } from "@/packages/advisor-config/registry";
 import {
   ADVISOR_BEHAVIORAL_PROFILES,
   getBehavioralProfile,
-  type AdvisorBehavioralProfile,
-} from "@/packages/advisor-config/behavioral-engine";
+  type AdvisorBehavioralProfile } from "@/packages/advisor-config/behavioral-engine";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { DEMO_AUTONOMY_LEVELS } from "@/data/seed/core-pages";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
 
 // ── Maturity color mapping ──────────────────────────────────
 const MATURITY_COLORS: Record<string, string> = {

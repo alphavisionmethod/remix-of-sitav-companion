@@ -17,15 +17,13 @@ import { motion } from "framer-motion";
 import {
   Users, Brain, GitBranch, Shield, Scale, BarChart3, TrendingUp, TrendingDown,
   AlertTriangle, CheckCircle, XCircle, ArrowRight, Clock, Zap, DollarSign,
-  ChevronRight, ArrowUpRight, ArrowDownRight, Activity, RefreshCw, Loader2,
-} from "lucide-react";
+  ChevronRight, ArrowUpRight, ArrowDownRight, Activity, RefreshCw, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { DEMO_ADVISOR_SCORECARDS, DEMO_ESCALATION_LOG, DEMO_HANDOFF_LOG } from "@/data/seed/core-pages";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
 
 
 // ── Demo Data ────────────────────────────────────────────────

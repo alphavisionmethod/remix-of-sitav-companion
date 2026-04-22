@@ -20,7 +20,6 @@ import {
 } from "@/lib/domain-engines/revenue-autopilot";
 import { MOCK_RECOVERED_VALUES, MOCK_RAW_OPPORTUNITIES, MOCK_LEAKAGE_INPUT } from "@/data/fixtures/mock-data/revenue-autopilot";
 import { useRevenueLeaksData, useRecoveredValuesData, useRawOpportunities } from "@/hooks/use-business-data";
-import { useDataMode } from "@/contexts/DataModeContext";
 
 // ── Derived data (fallback to mock, overridden in component) ──
 let DEMO_LEAKAGE = detectLeakage(MOCK_LEAKAGE_INPUT);

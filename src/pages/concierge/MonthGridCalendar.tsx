@@ -12,7 +12,6 @@ import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
 import {
   Calendar, ChevronLeft, ChevronRight, Plus, Clock, Users, MapPin, CheckSquare
 } from "lucide-react";
-import { useDataMode } from "@/contexts/DataModeContext";
 
 interface CalendarEvent {
   id: string;

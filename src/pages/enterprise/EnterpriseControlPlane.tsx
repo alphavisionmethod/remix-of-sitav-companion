@@ -15,8 +15,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
   Users, Shield, CheckCircle, FileText, Clock, Server, Activity, Plus,
-  Globe, Lock, Eye, AlertTriangle, TrendingUp, Layers, Heart, Mail,
-} from "lucide-react";
+  Globe, Lock, Eye, AlertTriangle, TrendingUp, Layers, Heart, Mail } from "lucide-react";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
 import { useAuth } from "@/contexts/AuthContext";
@@ -25,7 +24,6 @@ import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { DEMO_COMPLIANCE_ITEMS, DEMO_DEPLOYMENTS, DEMO_ROLES, DEMO_SLA_METRICS, DEMO_TEAM_MEMBERS } from "@/data/seed/enterprise";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useEffect } from "react";
 
 

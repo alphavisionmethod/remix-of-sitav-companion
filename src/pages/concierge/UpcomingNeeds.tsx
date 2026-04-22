@@ -13,7 +13,6 @@ import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Calendar, Clock, AlertCircle, Zap, Eye } from "lucide-react";
-import { useDataMode } from "@/contexts/DataModeContext";
 
 
 const OBLIGATIONS: UpcomingObligation[] = [
