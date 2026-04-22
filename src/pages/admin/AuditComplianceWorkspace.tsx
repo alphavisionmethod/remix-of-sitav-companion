@@ -4,6 +4,9 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/contexts/AuthContext";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Shield, FileText, Download, Search, Filter, ChevronRight, CheckCircle, AlertTriangle, Clock, User, Workflow, Link2, Eye } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -27,7 +30,7 @@ interface AuditRecord {
   newValue?: string;
 }
 
-const MOCK_AUDIT_RECORDS: AuditRecord[] = [
+const DEMO_AUDIT_RECORDS: AuditRecord[] = [
   { id: "aud-1", timestamp: "2026-04-09T08:30:00Z", actor: "admin@sita.os", actorType: "user", action: "Updated trust threshold", category: "trust", domain: "Trust Center", severity: "warning", proofHash: "a3f8c2d1", mutationTarget: "trust_profile.finance_threshold", previousValue: "70", newValue: "85" },
   { id: "aud-2", timestamp: "2026-04-09T07:15:00Z", actor: "brain-core", actorType: "system", action: "Executed scheduled workflow", category: "system", domain: "Workflows", severity: "info", proofHash: "b7e2f4a9" },
   { id: "aud-3", timestamp: "2026-04-09T06:00:00Z", actor: "ota-agent", actorType: "system", action: "Applied OTA update v2.8.1", category: "system", domain: "Platform", severity: "info", proofHash: "c1d4e8b3" },
