@@ -106,6 +106,7 @@ export function useAIEngineeringData(demoSets: {
   selfHealingRules?: any[];
 }) {
   const { isConnected: realtimeConnected } = useAIEngineeringRealtime();
+  const { isDemoMode } = useDataMode();
 
   const domains = Object.keys(demoSets) as AIEngDomain[];
 
