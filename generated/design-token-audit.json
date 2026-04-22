@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-04-22T22:01:33.963Z",
+  "generated_at": "2026-04-22T22:04:13.898Z",
   "summary": {
     "errors": 0,
     "warnings": 3196,
-    "info": 29,
-    "total": 3225
+    "info": 1,
+    "total": 3197
   },
   "findings": [
     {
@@ -15885,42 +15885,42 @@
     },
     {
       "file": "src/components/sita/shell/DomainAppShell.tsx",
-      "line": 140,
+      "line": 141,
       "rule": "no-hardcoded-hsl",
       "message": "Hardcoded HSL value — use design token CSS variable instead",
       "severity": "warning"
     },
     {
       "file": "src/components/sita/shell/DomainAppShell.tsx",
-      "line": 145,
+      "line": 146,
       "rule": "no-hardcoded-hsl",
       "message": "Hardcoded HSL value — use design token CSS variable instead",
       "severity": "warning"
     },
     {
       "file": "src/components/sita/shell/DomainAppShell.tsx",
-      "line": 147,
+      "line": 148,
       "rule": "no-hardcoded-hsl",
       "message": "Hardcoded HSL value — use design token CSS variable instead",
       "severity": "warning"
     },
     {
       "file": "src/components/sita/shell/DomainAppShell.tsx",
-      "line": 182,
+      "line": 183,
       "rule": "no-hardcoded-hsl",
       "message": "Hardcoded HSL value — use design token CSS variable instead",
       "severity": "warning"
     },
     {
       "file": "src/components/sita/shell/DomainAppShell.tsx",
-      "line": 185,
+      "line": 186,
       "rule": "no-hardcoded-hsl",
       "message": "Hardcoded HSL value — use design token CSS variable instead",
       "severity": "warning"
     },
     {
       "file": "src/components/sita/shell/DomainAppShell.tsx",
-      "line": 187,
+      "line": 188,
       "rule": "no-hardcoded-hsl",
       "message": "Hardcoded HSL value — use design token CSS variable instead",
       "severity": "warning"
@@ -22378,202 +22378,6 @@
       "rule": "no-hardcoded-hsl",
       "message": "Hardcoded HSL value — use design token CSS variable instead",
       "severity": "warning"
-    },
-    {
-      "file": "src/pages/admin/fip/FIPBuilderConsole.tsx",
-      "line": 11,
-      "rule": "canonical-empty-state",
-      "message": "Import from non-canonical empty state — use @/components/sita/EmptyState instead",
-      "severity": "info"
-    },
-    {
-      "file": "src/pages/admin/health/CostSpotlight.tsx",
-      "line": 11,
-      "rule": "canonical-empty-state",
-      "message": "Import from non-canonical empty state — use @/components/sita/EmptyState instead",
-      "severity": "info"
-    },
-    {
-      "file": "src/pages/admin/releases/SbomHistory.tsx",
-      "line": 11,
-      "rule": "canonical-empty-state",
-      "message": "Import from non-canonical empty state — use @/components/sita/EmptyState instead",
-      "severity": "info"
-    },
-    {
-      "file": "src/pages/admin/verification/CrossDomainCoherence.tsx",
-      "line": 10,
-      "rule": "canonical-empty-state",
-      "message": "Import from non-canonical empty state — use @/components/sita/EmptyState instead",
-      "severity": "info"
-    },
-    {
-      "file": "src/pages/business/BusinessDocuments.tsx",
-      "line": 10,
-      "rule": "canonical-empty-state",
-      "message": "Import from non-canonical empty state — use @/components/sita/EmptyState instead",
-      "severity": "info"
-    },
-    {
-      "file": "src/pages/business/BusinessOperations.tsx",
-      "line": 10,
-      "rule": "canonical-empty-state",
-      "message": "Import from non-canonical empty state — use @/components/sita/EmptyState instead",
-      "severity": "info"
-    },
-    {
-      "file": "src/pages/business/BusinessProof.tsx",
-      "line": 10,
-      "rule": "canonical-empty-state",
-      "message": "Import from non-canonical empty state — use @/components/sita/EmptyState instead",
-      "severity": "info"
-    },
-    {
-      "file": "src/pages/business/CustomerSupportCenter.tsx",
-      "line": 9,
-      "rule": "canonical-empty-state",
-      "message": "Import from non-canonical empty state — use @/components/sita/EmptyState instead",
-      "severity": "info"
-    },
-    {
-      "file": "src/pages/business/CustomersPage.tsx",
-      "line": 11,
-      "rule": "canonical-empty-state",
-      "message": "Import from non-canonical empty state — use @/components/sita/EmptyState instead",
-      "severity": "info"
-    },
-    {
-      "file": "src/pages/business/InvoicesCollections.tsx",
-      "line": 8,
-      "rule": "canonical-empty-state",
-      "message": "Import from non-canonical empty state — use @/components/sita/EmptyState instead",
-      "severity": "info"
-    },
-    {
-      "file": "src/pages/business/OpportunitiesCenter.tsx",
-      "line": 7,
-      "rule": "canonical-empty-state",
-      "message": "Import from non-canonical empty state — use @/components/sita/EmptyState instead",
-      "severity": "info"
-    },
-    {
-      "file": "src/pages/concierge/AppointmentsPrep.tsx",
-      "line": 4,
-      "rule": "canonical-empty-state",
-      "message": "Import from non-canonical empty state — use @/components/sita/EmptyState instead",
-      "severity": "info"
-    },
-    {
-      "file": "src/pages/concierge/ConciergeOverview.tsx",
-      "line": 15,
-      "rule": "canonical-empty-state",
-      "message": "Import from non-canonical empty state — use @/components/sita/EmptyState instead",
-      "severity": "info"
-    },
-    {
-      "file": "src/pages/concierge/SchoolActivities.tsx",
-      "line": 4,
-      "rule": "canonical-empty-state",
-      "message": "Import from non-canonical empty state — use @/components/sita/EmptyState instead",
-      "severity": "info"
-    },
-    {
-      "file": "src/pages/concierge/UpcomingNeeds.tsx",
-      "line": 5,
-      "rule": "canonical-empty-state",
-      "message": "Import from non-canonical empty state — use @/components/sita/EmptyState instead",
-      "severity": "info"
-    },
-    {
-      "file": "src/pages/digital-presence/CROOffice.tsx",
-      "line": 4,
-      "rule": "canonical-empty-state",
-      "message": "Import from non-canonical empty state — use @/components/sita/EmptyState instead",
-      "severity": "info"
-    },
-    {
-      "file": "src/pages/digital-presence/SiteBuilder.tsx",
-      "line": 12,
-      "rule": "canonical-empty-state",
-      "message": "Import from non-canonical empty state — use @/components/sita/EmptyState instead",
-      "severity": "info"
-    },
-    {
-      "file": "src/pages/files/FilesAll.tsx",
-      "line": 5,
-      "rule": "canonical-empty-state",
-      "message": "Import from non-canonical empty state — use @/components/sita/EmptyState instead",
-      "severity": "info"
-    },
-    {
-      "file": "src/pages/files/FilesMemoryReview.tsx",
-      "line": 4,
-      "rule": "canonical-empty-state",
-      "message": "Import from non-canonical empty state — use @/components/sita/EmptyState instead",
-      "severity": "info"
-    },
-    {
-      "file": "src/pages/files/FilesOverview.tsx",
-      "line": 3,
-      "rule": "canonical-empty-state",
-      "message": "Import from non-canonical empty state — use @/components/sita/EmptyState instead",
-      "severity": "info"
-    },
-    {
-      "file": "src/pages/files/FilesProcessing.tsx",
-      "line": 3,
-      "rule": "canonical-empty-state",
-      "message": "Import from non-canonical empty state — use @/components/sita/EmptyState instead",
-      "severity": "info"
-    },
-    {
-      "file": "src/pages/files/FilesReview.tsx",
-      "line": 4,
-      "rule": "canonical-empty-state",
-      "message": "Import from non-canonical empty state — use @/components/sita/EmptyState instead",
-      "severity": "info"
-    },
-    {
-      "file": "src/pages/files/FilesSearch.tsx",
-      "line": 2,
-      "rule": "canonical-empty-state",
-      "message": "Import from non-canonical empty state — use @/components/sita/EmptyState instead",
-      "severity": "info"
-    },
-    {
-      "file": "src/pages/files/FilesSensitive.tsx",
-      "line": 4,
-      "rule": "canonical-empty-state",
-      "message": "Import from non-canonical empty state — use @/components/sita/EmptyState instead",
-      "severity": "info"
-    },
-    {
-      "file": "src/pages/money/CashTiming.tsx",
-      "line": 5,
-      "rule": "canonical-empty-state",
-      "message": "Import from non-canonical empty state — use @/components/sita/EmptyState instead",
-      "severity": "info"
-    },
-    {
-      "file": "src/pages/money/MoneyOverview.tsx",
-      "line": 10,
-      "rule": "canonical-empty-state",
-      "message": "Import from non-canonical empty state — use @/components/sita/EmptyState instead",
-      "severity": "info"
-    },
-    {
-      "file": "src/pages/money/NetWorthOffice.tsx",
-      "line": 19,
-      "rule": "canonical-empty-state",
-      "message": "Import from non-canonical empty state — use @/components/sita/EmptyState instead",
-      "severity": "info"
-    },
-    {
-      "file": "src/pages/revenue-office/LeakDetector.tsx",
-      "line": 17,
-      "rule": "canonical-empty-state",
-      "message": "Import from non-canonical empty state — use @/components/sita/EmptyState instead",
-      "severity": "info"
     },
     {
       "file": "src/__tests__/components/primitives-coverage.test.tsx",
