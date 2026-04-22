@@ -58,6 +58,7 @@ const SIZE_MAP = {
 };
 
 import { getAvatarCache, setAvatarCache, avatarCacheKey } from "@/lib/advisors/avatar-url-cache";
+import { sanitizeAvatarUrl } from "@/lib/advisors/avatar-url-validation";
 
 export function useCustomAdvisorAvatar(domain: AdvisorDomain) {
   const { user } = useAuth();
@@ -94,7 +95,8 @@ export function useCustomAdvisorAvatar(domain: AdvisorDomain) {
 
 export function AdvisorImage({ domain, size = "md", className, src }: AdvisorImageProps) {
   const customUrl = useCustomAdvisorAvatar(domain);
-  const resolvedSrc = src ?? customUrl ?? DEFAULT_PORTRAITS[domain] ?? DEFAULT_PORTRAITS.general;
+  const safeSrc = sanitizeAvatarUrl(src) ?? sanitizeAvatarUrl(customUrl);
+  const resolvedSrc = safeSrc ?? DEFAULT_PORTRAITS[domain] ?? DEFAULT_PORTRAITS.general;
 
   const [state, setState] = useState<"loading" | "loaded" | "error">("loading");
   const [retryCount, setRetryCount] = useState(0);
