@@ -9,6 +9,10 @@ import { useMoneyPolicies, useToggleMoneyPolicy } from "@/hooks/use-domain-data"
 import { useMemo } from "react";
 import { toast } from "sonner";
 import { AdvisorKnowledgePanel } from "@/components/advisors/AdvisorKnowledgePanel";
+
+// Production fallback — seed data removed
+const DEMO_CONNECTORS: any[] = [];
+
 const iconMap: Record<string, typeof Shield> = {
   Shield, Bell, DollarSign, PiggyBank, CreditCard, Zap, AlertTriangle, Settings,
 };

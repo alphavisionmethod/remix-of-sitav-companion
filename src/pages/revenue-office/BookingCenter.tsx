@@ -22,6 +22,8 @@ import {
 import { useDataMode } from "@/contexts/DataModeContext";
 
 
+
+
 export default function BookingCenter() {
   const { isDemoMode } = useDataMode();
   const { data: liveBookings, isLoading } = useBookings();

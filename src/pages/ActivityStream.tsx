@@ -268,7 +268,7 @@ const ActivityStream = () => {
   // Fetch events
   const { data: liveEvents = [], isLoading } = useQuery({
     queryKey: ["timeline_feed", user?.id],
-    enabled: !!user && !isDemoMode,
+    enabled: !!user && !false,
     queryFn: async () => {
       const { data, error } = await db.from("events")
         .select("*")
@@ -282,7 +282,7 @@ const ActivityStream = () => {
   // Fetch approvals for timeline
   const { data: approvalEvents = [] } = useQuery({
     queryKey: ["timeline_approvals", user?.id],
-    enabled: !!user && !isDemoMode,
+    enabled: !!user && !false,
     queryFn: async () => {
       const { data } = await db.from("ai_workforce_approval_queue")
         .select("id, status, title, summary, priority, created_at, decision_at")
@@ -301,7 +301,7 @@ const ActivityStream = () => {
   // Fetch proof records for timeline
   const { data: proofEvents = [] } = useQuery({
     queryKey: ["timeline_proof", user?.id],
-    enabled: !!user && !isDemoMode,
+    enabled: !!user && !false,
     queryFn: async () => {
       const { data } = await db.from("proof_records")
         .select("*")
@@ -320,15 +320,6 @@ const ActivityStream = () => {
 
   // Build unified timeline
   const timeline = useMemo(() => {
-    if (isDemoMode) {
-      return ([] as typeof DEMO_ACTIVITY_TIMELINE).map((ev: any, i: number) => ({
-        ...ev,
-        id: i,
-        type: ev.type || "system.event",
-        time: ev.time || "recently",
-        domain: domainFromType(ev.type || "system.event"),
-      }));
-    }
 
     const allEvents = [...liveEvents, ...approvalEvents, ...proofEvents]
       .sort((a: any,  b: Record<string, any>) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
@@ -351,7 +342,7 @@ const ActivityStream = () => {
         linkedEntity: payload.workflow_id || payload.invoice_id || null,
       };
     });
-  }, [isDemoMode, liveEvents, approvalEvents, proofEvents]);
+  }, [false, liveEvents, approvalEvents, proofEvents]);
 
   // Filter
   const filtered = useMemo(() => {
@@ -388,10 +379,10 @@ const ActivityStream = () => {
         actions={
           <div className={cn(
             "flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-semibold",
-            isDemoMode ? "bg-amber-500/10 text-amber-600 border border-amber-500/20" : "bg-emerald-500/10 text-emerald-600 border border-emerald-500/20"
+            "bg-emerald-500/10 text-emerald-600 border border-emerald-500/20"
           )}>
-            <div className={cn("h-2 w-2 rounded-full", isDemoMode ? "bg-amber-500 animate-pulse" : "bg-emerald-500")} />
-            {isDemoMode ? "Demo" : "Live"}
+            <div className={cn("h-2 w-2 rounded-full", "bg-emerald-500")} />
+            {"Live"}
           </div>
         }
       />
@@ -447,9 +438,7 @@ const ActivityStream = () => {
       </div>
 
       {/* Timeline Feed */}
-      {isLoading && !isDemoMode ? (
-        <SectionSkeleton cards={6} columns={1} />
-      ) : filtered.length === 0 ? (
+      {isLoading && !filtered.length === 0 ? (
         <EmptyState
           icon={Activity}
           title="No events found"

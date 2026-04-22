@@ -14,6 +14,10 @@ import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { classifyFeatureDomain } from "@/lib/delivery-methodology/feature-factory";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+
+// Production fallback — seed data removed
+const DEMO_ARCHETYPES: any[] = [];
+
 const FeatureIntakeDesk = () => {
   const queryClient = useQueryClient();
   const [form, setForm] = useState({

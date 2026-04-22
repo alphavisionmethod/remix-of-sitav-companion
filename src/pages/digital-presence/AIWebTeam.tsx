@@ -8,6 +8,10 @@ import { Progress } from "@/components/ui/progress";
 import { useState } from "react";
 import DPOSubNav from "./DPOSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+
+// Production fallback — seed data removed
+const DEMO_DISAGREEMENTS: any[] = [];
+
 type Intensity = "quiet" | "balanced" | "proactive";
 type AgentStatus = "active" | "inactive" | "watching";
 

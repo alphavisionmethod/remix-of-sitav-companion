@@ -9,6 +9,10 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+
+// Production fallback — seed data removed
+const DEMO_DIFFS: any[] = [];
+
 const actionColors: Record<string, string> = {
   "reuse-as-is": "text-emerald-400 bg-emerald-500/10",
   "partial-update": "text-blue-400 bg-blue-500/10",

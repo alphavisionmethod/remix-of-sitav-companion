@@ -7,6 +7,10 @@ import { Target, Clock, CheckCircle2, AlertTriangle, Pause, RotateCcw, Sparkles,
 import { useAIEngDomain } from "@/hooks/use-ai-engineering-data";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
+
+// Production fallback — seed data removed
+const DEMO_MISSIONS: any[] = [];
+
 const statusConfig: Record<string, { label: string; color: string; icon: typeof Clock }> = {
   suggested: { label: "Suggested", color: "text-muted-foreground", icon: Sparkles },
   planned: { label: "Planned", color: "text-primary", icon: Target },

@@ -59,7 +59,7 @@ export default function CommunicationsPage() {
   const { user , isDemo} = useAuth();
   const { data: realComms } = useQuery({
     queryKey: ["communications", user?.id],
-    enabled: !!user && !isDemoMode,
+    enabled: !!user && !false,
     queryFn: async () => {
       const { data } = await fromTable("communications").select("*").eq("user_id", user!.id).order("created_at", { ascending: false }).limit(50);
       if (!data?.length) return null;

@@ -9,6 +9,10 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 import { DEMO_SCORING_RULES, DEMO_TOP_LEADS } from "@/data/seed/revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+
+// Production fallback — seed data removed
+const DEMO_SEGMENTS: any[] = [];
+
 export default function SegmentationEngine() {
   const [tab, setTab] = useState("segments");
 

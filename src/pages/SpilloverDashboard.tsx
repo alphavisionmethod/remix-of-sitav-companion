@@ -18,6 +18,10 @@ import { DEMO_ACTIVE_SPILLOVERS, DEMO_TOP_INTERVENTIONS } from "@/data/seed/core
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { useDataMode } from "@/contexts/DataModeContext";
 
+
+// Production fallback — seed data removed
+const DEMO_DOMAINS: any[] = [];
+
 // ── Spillover data ───────────────────────────────────────────
 
 // ── Spillover graph (simplified visual) ──────────────────────

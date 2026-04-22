@@ -3,6 +3,10 @@ import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Server, AlertTriangle, Database, Cpu } from "lucide-react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+
+// Production fallback — seed data removed
+const DEMO_CORE_SERVICES: any[] = [];
+
 interface CoreService {
   name: string;
   backing: "memory-only" | "localStorage" | "demo" | "db" | "hybrid";

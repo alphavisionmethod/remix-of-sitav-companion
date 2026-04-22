@@ -8,6 +8,10 @@ import { useModelRegistry, usePromptFamilies, useRoutingPolicies, useTaskRequest
 import { TASK_CLASSES, MODEL_CLASSES } from "@/lib/sovereign-ai-gateway/types";
 import SAGSubNav from "@/components/admin/SAGSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+
+// Production fallback — seed data removed
+const DEMO_BUILDER_STEPS: any[] = [];
+
 const SAGBuilderConsole = () => {
   const { data: models = [] } = useModelRegistry();
   const { data: prompts = [] } = usePromptFamilies();

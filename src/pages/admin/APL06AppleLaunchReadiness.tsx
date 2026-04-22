@@ -8,6 +8,10 @@ import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import APLSubNav from "@/components/admin/APLSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+
+// Production fallback — seed data removed
+const DEMO_TARGETS: any[] = [];
+
 const APL06AppleLaunchReadiness = () => {
   const { data: dbTargets } = useQuery({
     queryKey: ["apl-launch-readiness"],

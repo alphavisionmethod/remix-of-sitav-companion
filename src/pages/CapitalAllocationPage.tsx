@@ -18,7 +18,7 @@ export default function CapitalAllocationPage() {
   const { user , isDemo} = useAuth();
   const { data: realAllocations } = useQuery({
     queryKey: ["capital-allocations", user?.id],
-    enabled: !!user && !isDemoMode,
+    enabled: !!user && !false,
     queryFn: async () => {
       const { data } = await fromTable("financial_accounts").select("*").eq("user_id", user!.id);
       if (!data?.length) return null;

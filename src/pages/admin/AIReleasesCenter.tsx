@@ -7,6 +7,10 @@ import { Rocket, CheckCircle2, AlertTriangle, Shield, Clock, ArrowRight, RotateC
 import { useAIEngDomain } from "@/hooks/use-ai-engineering-data";
 import { DEMO_PROMOTION_EVIDENCE, DEMO_ROLLBACK_OPTIONS, DEMO_ROLLOUT_HISTORY } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+
+// Production fallback — seed data removed
+const DEMO_ENVIRONMENTS: any[] = [];
+
 const AIReleasesCenter = () => {
   const { isDemo } = useAIEngDomain("efficiencyScores", DEMO_RELEASE_GATES);
   

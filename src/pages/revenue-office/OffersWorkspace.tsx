@@ -7,8 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import {
-  DEMO_REV_BUNDLES as DEMO_BUNDLES,
+import { DEMO_REV_BUNDLES as DEMO_BUNDLES,
   DEMO_REV_PRODUCTS as DEMO_PRODUCTS,
   DEMO_OFFER_UPSELLS,
   DEMO_PRICING_EXPERIMENTS,

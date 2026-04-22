@@ -33,6 +33,10 @@ import { useEffect } from "react";
 
 
 
+
+// Production fallback — seed data removed
+const DEMO_CAPABILITIES: any[] = [];
+
 // ── Demo Fallback Data ──────────────────────────────────────────
 const ROLE_PERMISSIONS_DEMO: Record<string, Record<string, boolean>> = {
   admin: Object.fromEntries(DEMO_CAPABILITIES.map(c => [c, true])),

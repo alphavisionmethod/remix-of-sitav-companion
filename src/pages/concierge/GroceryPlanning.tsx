@@ -9,6 +9,10 @@ import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
 import { useGroceryLists } from "@/hooks/use-concierge-data";
 import { DEMO_recurringSupplies, DEMO_stores } from "@/data/seed/concierge";
+
+// Production fallback — seed data removed
+const DEMO_categories: any[] = [];
+
 interface GroceryItem {
   id: string; name: string; category: string; quantity: string; estimated: string;
   checked: boolean; recurring?: boolean; urgent?: boolean; note?: string; store?: string;

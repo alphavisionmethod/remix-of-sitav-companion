@@ -7,6 +7,10 @@ import { DEMO_READINESS_FACTORS } from "@/data/seed/health-signals";
 import { DEMO_COMBINE_STRATEGIES } from "@/data/seed/admin-platform";
 import HRSSubNav from "@/components/admin/HRSSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+
+// Production fallback — seed data removed
+const DEMO_PIPELINE_STAGES: any[] = [];
+
 const HRS03ReadinessExplanation = () => {
   const { data: dbReadiness, isLoading } = useReadinessStates(10);
 

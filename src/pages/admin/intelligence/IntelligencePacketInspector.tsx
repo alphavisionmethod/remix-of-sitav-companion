@@ -11,6 +11,10 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+
+// Production fallback — seed data removed
+const DEMO_PACKETS: any[] = [];
+
 const IntelligencePacketInspector = () => {
   const { isAdmin, loading } = useRequireAdmin();
   const [selected, setSelected] = useState<string | null>(null);

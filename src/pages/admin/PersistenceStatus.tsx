@@ -6,6 +6,10 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { RefreshCw, CheckCircle2, Database, Layers, Shield, FileCheck, GitBranch, Loader2 } from "lucide-react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+
+// Production fallback — seed data removed
+const DEMO_CORE_SERVICES: any[] = [];
+
 interface ServiceStatus {
   name: string;
   icon: React.ReactNode;

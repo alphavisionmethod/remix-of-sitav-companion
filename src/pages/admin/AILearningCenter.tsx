@@ -7,6 +7,10 @@ import { TrendingUp, Brain, AlertTriangle, CheckCircle2, RotateCcw, Sparkles, Ta
 import { useAIEngDomain } from "@/hooks/use-ai-engineering-data";
 import { DEMO_CALIBRATION } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+
+// Production fallback — seed data removed
+const DEMO_OUTCOMES: any[] = [];
+
 const AILearningCenter = () => {
   const { data: patterns, isDemo } = useAIEngDomain("learningPatterns", DEMO_PATTERNS);
   const [tab, setTab] = useState("patterns");
