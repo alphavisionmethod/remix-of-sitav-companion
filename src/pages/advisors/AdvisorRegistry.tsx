@@ -15,19 +15,16 @@ import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   FULL_ADVISOR_REGISTRY,
-  type ExtendedAdvisorConfig,
-} from "@/packages/advisor-config/registry";
+  type ExtendedAdvisorConfig } from "@/packages/advisor-config/registry";
 import {
   ADVISOR_BEHAVIORAL_PROFILES,
   getBehavioralProfile,
-  type AdvisorBehavioralProfile,
-} from "@/packages/advisor-config/behavioral-engine";
+  type AdvisorBehavioralProfile } from "@/packages/advisor-config/behavioral-engine";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { DEMO_AUTONOMY_LEVELS } from "@/data/seed/core-pages";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
 
 // ── Maturity color mapping ──────────────────────────────────
 const MATURITY_COLORS: Record<string, string> = {
@@ -49,7 +46,7 @@ const COUNCIL_ICONS: Record<string, typeof Brain> = {
 };
 
 function autonomyPct(level: string): number {
-  const { isDemoMode } = useDataMode();
+  const isDemoMode = false;
   const idx = DEMO_AUTONOMY_LEVELS.indexOf(level);
   return idx >= 0 ? Math.round(((idx + 1) / ([] as typeof DEMO_AUTONOMY_LEVELS).length) * 100) : 0;
 }
@@ -242,7 +239,7 @@ function AdvisorDetailPanel({ advisor }: { advisor: ExtendedAdvisorConfig }) {
 
 // ── Main Page ───────────────────────────────────────────────
 const AdvisorRegistry = () => {
-  const { isDemoMode } = useDataMode();
+  const isDemoMode = false;
   const [council, setCouncil] = useState("all");
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [search, setSearch] = useState("");

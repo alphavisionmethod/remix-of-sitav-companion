@@ -26,7 +26,7 @@ type BoardroomView = "synthesis" | "priorities" | "risks" | "advisors";
 
 const GlobalBoardroom = () => {
   const { isDemo, user } = useAuth();
-  const isDemoMode = isDemo;
+  const isDemoMode = false;
   const [view, setView] = useState<BoardroomView>("synthesis");
   const navigate = useNavigate();
   const { data: leads = [] } = useLeads();
@@ -53,7 +53,7 @@ const GlobalBoardroom = () => {
       },
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user?.id, isDemoMode, leads.length, customers.length, invoices.length]);
+  }, [user?.id, leads.length, customers.length, invoices.length]);
 
   const crossDomainPriorities = [
     overdueAmount > 0 && { id: "od", label: `Collect $${overdueAmount.toLocaleString()} in overdue invoices`, urgency: "critical" as const },

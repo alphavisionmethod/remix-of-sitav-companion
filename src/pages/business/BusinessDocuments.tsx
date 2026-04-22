@@ -19,7 +19,6 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
-import { useDataMode } from "@/contexts/DataModeContext";
 
 type Tab = "all" | "quotes" | "invoices" | "contracts" | "attachments" | "images";
 type ViewMode = "grid" | "list";
@@ -42,7 +41,7 @@ const DEMO_DOCUMENTS: BusinessDocument[] = [
 ];
 
 const typeIcon = (type: BusinessDocument["type"]) => {
-  const { isDemoMode } = useDataMode();
+  const isDemoMode = false;
   switch (type) { case "pdf": return FileText; case "doc": return File; case "image": return Image; default: return File; }
 };
 
@@ -57,7 +56,7 @@ const statusStyle = (status: BusinessDocument["status"]) => {
 };
 
 const BusinessDocuments = () => {
-  const { isDemoMode } = useDataMode();
+  const isDemoMode = false;
   const { primaryMode } = useBusinessProfile();
   const moduleConfig = getModuleAdaptation("documents", primaryMode);
   const [tab, setTab] = useState<Tab>("all");

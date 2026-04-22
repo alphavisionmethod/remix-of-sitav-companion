@@ -6,7 +6,6 @@ import { INVESTMENT_ADVISORS, SAMPLE_ORDERS, SAMPLE_SCENARIOS } from "@/hooks/us
 import { useInvestmentDecisions } from "@/hooks/use-investment-office";
 import { DEMO_READINESS_DIMENSIONS } from "@/data/seed/investment";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
 
 // Advisor votes for the cinematic voting panel
 const ADVISOR_VOTES: Record<string, "approve" | "reject" | "abstain"> = {
@@ -40,7 +39,7 @@ function AdvisorVotingPanel() {
   const [allRevealed, setAllRevealed] = useState(false);
 
   const revealAll = () => {
-  const { isDemoMode } = useDataMode();
+  const isDemoMode = false;
     INVESTMENT_ADVISORS.slice(0, 5).forEach((adv, i) => {
       setTimeout(() => {
         setRevealed(prev => new Set([...prev, adv.id]));
@@ -200,7 +199,7 @@ function AudioWaveIndicator() {
 }
 
 export default function DecisionTheater() {
-  const { isDemoMode } = useDataMode();
+  const isDemoMode = false;
   const { data: liveData, isLoading } = useInvestmentDecisions();
   const navigate = useNavigate();
   const [spotlightActive, setSpotlightActive] = useState(false);

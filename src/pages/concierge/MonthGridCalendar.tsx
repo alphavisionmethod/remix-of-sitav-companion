@@ -12,7 +12,6 @@ import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
 import {
   Calendar, ChevronLeft, ChevronRight, Plus, Clock, Users, MapPin, CheckSquare
 } from "lucide-react";
-import { useDataMode } from "@/contexts/DataModeContext";
 
 interface CalendarEvent {
   id: string;
@@ -24,7 +23,7 @@ interface CalendarEvent {
 }
 
 function useCalendarData(year: number, month: number) {
-  const { isDemoMode } = useDataMode();
+  const isDemoMode = false;
   const { user } = useAuth();
 
   return useQuery({

@@ -13,7 +13,6 @@ import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Calendar, Clock, AlertCircle, Zap, Eye } from "lucide-react";
-import { useDataMode } from "@/contexts/DataModeContext";
 
 
 const OBLIGATIONS: UpcomingObligation[] = [
@@ -40,7 +39,7 @@ const REVIEW_ITEMS: ReviewItem[] = [
 type UpcomingView = "today" | "3-day" | "week" | "burden";
 
 const UpcomingNeeds = () => {
-  const { isDemoMode } = useDataMode();
+  const isDemoMode = false;
   const [view, setView] = useState<UpcomingView>("today");
 
   const todayItems = OBLIGATIONS.filter(o => o.dueLabel.startsWith("Today") || o.dueLabel.startsWith("Overdue"));

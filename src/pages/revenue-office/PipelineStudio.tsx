@@ -14,13 +14,12 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { EmptyState } from "@/components/sita/EmptyState";
 import { DEMO_STAGES, DEMO_VELOCITY } from "@/data/seed/revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
 
 
 type Deal = { id: string; name: string; value: number; probability: number; age: number; owner: string; contact: string; nextAction?: string; nextActionDate?: string; source: string; tags: string[] };
 
 export default function PipelineStudio() {
-  const { isDemoMode } = useDataMode();
+  const isDemoMode = false;
   const [tab, setTab] = useState("kanban");
   const [filter, setFilter] = useState<string | null>(null);
   const { data: liveDeals, isLoading } = useDeals();

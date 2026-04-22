@@ -7,7 +7,6 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Brain, RefreshCw, Clock, Globe, Eye, Link2, Search, Layers, Activity } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
 
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.05 } } };
@@ -68,7 +67,7 @@ const DEMO_SCOPES: MemoryScopeInfo[] = [
 ];
 
 const healthBadge = (h: string) => {
-  const { isDemoMode } = useDataMode();
+  const isDemoMode = false;
   switch (h) {
     case "healthy": return "bg-emerald-500/10 text-emerald-500 border-emerald-500/20";
     case "stale": return "bg-amber-500/10 text-amber-500 border-amber-500/20";
@@ -78,7 +77,7 @@ const healthBadge = (h: string) => {
 };
 
 const CrossDomainMemoryExplorer = () => {
-  const { isDemoMode } = useDataMode();
+  const isDemoMode = false;
   const [tab, setTab] = useState("timeline");
   const [search, setSearch] = useState("");
 

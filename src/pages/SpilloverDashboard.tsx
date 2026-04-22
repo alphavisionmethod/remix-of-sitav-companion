@@ -16,7 +16,6 @@ import { AutonomyLadder } from "@/components/sita/primitives/AutonomyLadder";
 import { SectionSkeleton } from "@/components/sita/SectionSkeleton";
 import { DEMO_ACTIVE_SPILLOVERS, DEMO_TOP_INTERVENTIONS } from "@/data/seed/core-pages";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
 
 
 // Production fallback — seed data removed
@@ -27,7 +26,7 @@ const DEMO_DOMAINS: any[] = [];
 // ── Spillover graph (simplified visual) ──────────────────────
 
 const SpilloverGraph = () => {
-  const { isDemoMode } = useDataMode();
+  const isDemoMode = false;
   return (
   <div className="relative aspect-square max-w-[280px] mx-auto">
     <svg viewBox="0 0 100 100" className="w-full h-full">
@@ -71,7 +70,7 @@ const SpilloverGraph = () => {
 };
 
 export default function SpilloverDashboard() {
-  const { isDemoMode } = useDataMode();
+  const isDemoMode = false;
   const highCount = ([] as typeof DEMO_ACTIVE_SPILLOVERS).filter(s => s.impact === "high").length;
   const medCount = ([] as typeof DEMO_ACTIVE_SPILLOVERS).filter(s => s.impact === "medium").length;
 

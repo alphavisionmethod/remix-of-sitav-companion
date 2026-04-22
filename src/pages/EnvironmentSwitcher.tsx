@@ -9,7 +9,6 @@ import { Globe, CheckCircle, Shield, Download, Upload, Clock, RefreshCw, Plus, A
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { PageShell } from "@/components/sita/PageShell";
 
 interface Environment {
@@ -41,7 +40,7 @@ const TYPE_STYLES = {
 };
 
 export default function EnvironmentSwitcher() {
-  const { isDemoMode } = useDataMode();
+  const isDemoMode = false;
 
   return (
     <PageShell width="full">

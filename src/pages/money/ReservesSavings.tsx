@@ -15,19 +15,18 @@ import { useReservesSavings } from "@/hooks/use-domain-data";
 import { useConfirmation } from "@/hooks/use-confirmation";
 import { ConfirmationDialog } from "@/components/sita/ConfirmationDialog";
 import { useQueryFreshness } from "@/hooks/use-query-freshness";
-import { useDataMode } from "@/contexts/DataModeContext";
 
 
 
 const ReservesSavings = () => {
-  const { isDemoMode } = useDataMode();
+  const isDemoMode = false;
   const { data: reservesData = [] } = useReservesSavings();
   const { user } = useAuth();
   const queryClient = useQueryClient();
   const { confirmation, confirm } = useConfirmation();
 
   const reservesQuery = useQuery({
-    queryKey: ["reserves", isDemoMode, user?.id],
+    queryKey: ["reserves", user?.id],
     queryFn: async () => {
       if (isDemoMode) return reservesData;
       if (!user) return [];

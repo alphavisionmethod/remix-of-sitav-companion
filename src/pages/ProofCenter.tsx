@@ -161,7 +161,7 @@ const ProofCenter = () => {
   const { receipts: kernelReceipts, chainValid, chainLength } = useProofTimeline();
   const kernelStatus = useKernelStatus();
   const { user, isDemo } = useAuth();
-  const isDemoMode = isDemo;
+  const isDemoMode = false;
   const [filter, setFilter] = useState<FilterType>("all");
   const [domainFilter, setDomainFilter] = useState<DomainFilter>("all");
   const [searchQuery, setSearchQuery] = useState("");

@@ -8,11 +8,10 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { ArrowLeft, CheckCircle, AlertTriangle, RefreshCw, Trash2, Activity, Clock, Settings, Shield } from "lucide-react";
 import { getProviderById } from "@/data/seed/integrations";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
 
 
 export default function ConnectionDetail() {
-  const { isDemoMode } = useDataMode();
+  const isDemoMode = false;
   const { connectionId } = useParams();
   const navigate = useNavigate();
 

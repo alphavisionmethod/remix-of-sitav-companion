@@ -96,7 +96,7 @@ function CallStats({ contacts, callLogs }: { contacts: Contact[]; callLogs: Call
 
 function ActiveDialer({ contact, onEnd, onSkip }: { contact: Contact; onEnd: () => void; onSkip: () => void }) {
   const { isDemo } = useAuth();
-  const isDemoMode = isDemo;
+  const isDemoMode = false;
   const [state, setState] = useState<DialerState>("dialing");
   const [elapsed, setElapsed] = useState(0);
   const [muted, setMuted] = useState(false);
@@ -246,7 +246,7 @@ function ActiveDialer({ contact, onEnd, onSkip }: { contact: Contact; onEnd: () 
 
 const RevenueCallingPage = () => {
   const { user , isDemo} = useAuth();
-  const isDemoMode = isDemo;
+  const isDemoMode = false;
   const { data: liveContacts } = useCallingContacts();
   const { data: liveLogs } = useCallLogs();
   const [activeView, setActiveView] = useState<"queue" | "dialer" | "logs" | "scripts">("queue");

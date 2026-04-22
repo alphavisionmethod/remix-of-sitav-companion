@@ -84,7 +84,6 @@ const RECOVERED_COLOR = "hsl(var(--trust-safe))";
 const GENERATED_COLOR = "hsl(var(--accent))";
 import { PIE_COLORS } from "@/lib/constants/ui-config";
 import { DEMO_PLAYBOOK_REVENUE } from "@/data/seed/business";
-import { useDataMode } from "@/contexts/DataModeContext";
 
 
 
@@ -118,7 +117,7 @@ const ChartTooltip = ({ active, payload, label }: any) => {
 
 const RevenueImpactDashboard = () => {
   const { primaryMode } = useBusinessProfile();
-  const { isDemoMode } = useDataMode();
+  const isDemoMode = false;
   const { user } = useAuth();
   const revenueLabel = primaryMode === "ecommerce" ? "Store Revenue" : primaryMode === "appointment-based" ? "Booking Revenue" : primaryMode === "membership" ? "MRR Impact" : "Revenue";
   const [granularity, setGranularity] = useState<Granularity>("daily");

@@ -20,11 +20,9 @@ import { toast } from "sonner";
 import {
   CheckCircle, XCircle, Clock, Shield, AlertTriangle, Eye, ArrowRight,
   ChevronDown, ChevronUp, Filter, History, LayoutDashboard, FileText,
-  DollarSign, Zap, RotateCcw, MessageSquare,
-} from "lucide-react";
+  DollarSign, Zap, RotateCcw, MessageSquare } from "lucide-react";
 import { DEMO_RISK_TIERS } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
 
 const DEMO_STATUSES: any[] = [];
 
@@ -157,7 +155,7 @@ const severityColor = (sev: string) =>
 // Main Page
 // ════════════════════════════════════════════════════════════════
 export default function HQApprovalQueue() {
-  const { isDemoMode } = useDataMode();
+  const isDemoMode = false;
   const [tab, setTab] = useState("overview");
 
   return (
@@ -188,7 +186,7 @@ export default function HQApprovalQueue() {
 // HQ01 — Queue Overview
 // ════════════════════════════════════════════════════════════════
 function HQ01Overview() {
-  const { isDemoMode } = useDataMode();
+  const isDemoMode = false;
   const { data: allItems = [] } = useQuery({
     queryKey: ["hq-all-items"],
     queryFn: () => fetchQueue({ status: "all" }),

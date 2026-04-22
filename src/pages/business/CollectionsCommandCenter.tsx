@@ -25,7 +25,6 @@ import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvi
 import { ListReveal, ListRevealItem } from "@/components/sita/motion/AppTransitions";
 import { cn } from "@/lib/utils";
 import { CrossAppAction } from "@/components/sita/CrossAppAction";
-import { useDataMode } from "@/contexts/DataModeContext";
 
 
 // ── Chase Sequence ──────────────────────────────────────────────
@@ -66,7 +65,7 @@ const riskUrgency = (score: number): "critical" | "high" | "normal" | "low" =>
 // ── Main Component ──────────────────────────────────────────────
 
 const CollectionsCommandCenter = () => {
-  const { isDemoMode } = useDataMode();
+  const isDemoMode = false;
   const { primaryMode } = useBusinessProfile();
   const moduleConfig = getModuleAdaptation("collections", primaryMode);
   const { data: accounts = [] } = useCollectionsAccounts();

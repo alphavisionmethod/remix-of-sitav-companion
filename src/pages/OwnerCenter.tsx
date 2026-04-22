@@ -52,13 +52,11 @@ import {
   useAdminIntelligence,
   useInternalAgents, useAgentControls,
   useTrustCenter, useReleases, useModelRouting, useKnowledgeHealth,
-  useSupportCases, useChangeReview, useRollbackCenter, useServiceMap,
-} from "@/hooks/use-admin-data";
+  useSupportCases, useChangeReview, useRollbackCenter, useServiceMap } from "@/hooks/use-admin-data";
 import { useApproveApprovalItem, useRejectApprovalItem, useDismissApprovalItem, useApprovalQueue } from "@/hooks/use-approval-queue-mutations";
 import {
   AUTONOMY_TIERS, NEVER_ALLOWED, DESIGN_DRIFT_CHECKLIST, WATCHDOG_CONCERNS, getAutonomyLevel,
-  MAY_AUTO_EXECUTE, MUST_SIMULATE_FIRST, PROMOTION_RULES, DEMOTION_TRIGGERS, MUST_REQUIRE_HUMAN_APPROVAL,
-} from "@/lib/internal-agents/rights";
+  MAY_AUTO_EXECUTE, MUST_SIMULATE_FIRST, PROMOTION_RULES, DEMOTION_TRIGGERS, MUST_REQUIRE_HUMAN_APPROVAL } from "@/lib/internal-agents/rights";
 import { validateLaunchReadiness, getCouncilSummary, getAllCouncilSummaries, ACTION_PIPELINE_STATES } from "@/lib/internal-agents/launch-readiness";
 import type { InternalAgentCouncil, InternalAgentDefinition } from "@/lib/internal-agents/types";
   const toggleMode = () => {};
@@ -79,7 +77,6 @@ import {
   Rocket, GitBranch, BookMarked, Headphones, FileCheck, Map, ExternalLink,
   CreditCard, Package
 } from "lucide-react";
-import { useDataMode } from "@/contexts/DataModeContext";
 
 type OwnerPage = "overview" | "workforce" | "incidents" | "connectors" | "costs" | "policies" | "audit" | "fleet" | "intelligence" | "council"
   | "trust-center" | "releases" | "model-routing" | "knowledge" | "support" | "change-review" | "rollback-center" | "system-map" | "autopilot" | "billing" | "governance" | "approvals";
@@ -217,7 +214,7 @@ const OwnerRevenuePanel = () => {
 const OwnerCenter = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { isDemoMode } = useDataMode();
+  const isDemoMode = false;
   const activePage = subpageFromPath(location.pathname);
 // Data hooks
   const { data: incidentData } = useAdminIncidents();

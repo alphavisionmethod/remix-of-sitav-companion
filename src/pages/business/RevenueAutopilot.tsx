@@ -20,7 +20,6 @@ import {
 } from "@/lib/domain-engines/revenue-autopilot";
 import { MOCK_RECOVERED_VALUES, MOCK_RAW_OPPORTUNITIES, MOCK_LEAKAGE_INPUT } from "@/data/fixtures/mock-data/revenue-autopilot";
 import { useRevenueLeaksData, useRecoveredValuesData, useRawOpportunities } from "@/hooks/use-business-data";
-import { useDataMode } from "@/contexts/DataModeContext";
 
 // ── Derived data (fallback to mock, overridden in component) ──
 let DEMO_LEAKAGE = detectLeakage(MOCK_LEAKAGE_INPUT);
@@ -41,7 +40,7 @@ const severityColors: Record<string, string> = {
 // ── Sub-Pages ───────────────────────────────────────────────────
 
 const LeakageRadar = () => {
-  const { isDemoMode } = useDataMode();
+  const isDemoMode = false;
   return (
   <div className="space-y-4">
     <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
@@ -83,7 +82,7 @@ const LeakageRadar = () => {
 };
 
 const RecoveryEngine = () => {
-  const { isDemoMode } = useDataMode();
+  const isDemoMode = false;
   return (
   <div className="space-y-4">
     <div className="grid gap-3 sm:grid-cols-3">
@@ -124,7 +123,7 @@ const RecoveryEngine = () => {
 };
 
 const OpportunitiesRanked = () => {
-  const { isDemoMode } = useDataMode();
+  const isDemoMode = false;
   return (
   <div className="space-y-4">
     <div className="space-y-2">
@@ -158,7 +157,7 @@ const OpportunitiesRanked = () => {
 };
 
 const RecoveredValueLedger = () => {
-  const { isDemoMode } = useDataMode();
+  const isDemoMode = false;
   const summary = computeRecoveredValueSummary(DEMO_RECOVERED);
   return (
     <div className="space-y-4">
