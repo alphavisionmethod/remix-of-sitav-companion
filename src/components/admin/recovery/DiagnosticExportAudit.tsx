@@ -30,7 +30,7 @@ export function DiagnosticExportAuditPanel({ operatorId, canExecute }: Props) {
     queryKey: ["diagnostic-export-audits", user?.id],
     enabled: !!user && !isDemoMode,
     queryFn: async () => {
-      const { data } = await supabase.from("audit_export_bundles").select("*").eq("user_id", user!.id).order("created_at", { ascending: false }).limit(20);
+      const { data } = await supabase.from("audit_export_bundles").select("*").order("created_at", { ascending: false }).limit(20);
       return (data ?? []).map((a: any) => ({
         id: a.id, exportedAt: a.created_at, exportedBy: a.exported_by || user!.email,
         parameters: a.parameters || {}, resultStatus: a.status || "success",
