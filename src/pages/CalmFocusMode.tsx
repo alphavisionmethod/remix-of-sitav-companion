@@ -11,7 +11,7 @@ const CalmFocusMode = () => {
   return (
     <PageShell width="narrow">
       <div>
-        <h1 className="text-2xl font-bold tracking-tight text-foreground">Display Modes</h1>
+        <h1 className="text-xl sm:text-2xl font-semibold tracking-tight text-foreground">Display Modes</h1>
         <p className="text-muted-foreground mt-1">
           Control how SITA presents information. Choose a mode that matches your current state.
         </p>
@@ -98,7 +98,7 @@ const CalmFocusMode = () => {
           </div>
         </CardContent>
       </Card>
-    </div>
+    </PageShell>
   );
 };
 
