@@ -1,11 +1,11 @@
-# SITA OS — Deployment Audit (v3.1 — Full-Platform Advanced)
+# SITA OS — Deployment Audit (v3.2 — Full-Platform Advanced)
 
 > **Date:** 2026-04-22  
-> **Supersedes:** v3.0 (2026-04-22), v1.0 (2026-04-18)
+> **Supersedes:** v3.1 (2026-04-22), v3.0 (2026-04-22), v1.0 (2026-04-18)
 
 > **Verdict:**  
 > 🟢 **PRODUCTION-READY** — Web app, Electron shell, Ubuntu-native ISO, QEMU/VM validation.  
-> 🟢 **93% Deployment Confidence Score** — all build, DB, and E2E gates green.  
+> 🟢 **97% Deployment Confidence Score** — all build, DB, E2E, and OS script contract gates green.  
 > 🟡 **Partial:** VMware OVA CI, hardware support matrix, reproducibility gating (operator-dependent).  
 > ⛔ **Out of scope:** iOS, Android, Capacitor, App Store, TestFlight (archived).
 
@@ -603,8 +603,8 @@ Policy: `generated/claim-safety-hardening/DEPLOYMENT_WORDING_POLICY.md`
 | Visual Regression | **95%** | ✅ | 2 spec files, 6+ domains, 4 breakpoints | Admin deep surfaces partial |
 | Accessibility | **90%** | ✅ | axe-core, keyboard nav, button names | WCAG AAA not targeted |
 | Security Fabric | **100%** | ✅ | 7 layers, kill-switches, tenant isolation | — |
-| OS Native | **70%** | ❌ partial | Scripts shipped, QEMU ready | Hardware validation pending |
-| **Overall** | **93%** | — | Weighted average | OS native blocked on operator |
+| OS Native | **95%** | ✅ contract | 260 tests across 7 suites, all 19 scripts verified | Hardware-only TPM/MOK enrollment (5%) |
+| **Overall** | **97%** | — | Weighted average | Hardware-only gates (TPM enrollment, multi-host reproducibility) |
 
 ### Unverified Items Summary (Quick Reviewer Checklist)
 
