@@ -36,6 +36,9 @@ if [ "$DEAD" -gt 0 ]; then fail "$DEAD dead onClick handlers"; else pass "No dea
 step "as-any governance"
 if bash scripts/validators/check-no-as-any-pages.sh 2>&1; then pass "Zero as-any in pages"; else fail "as-any violations in pages"; fi
 
+step "Import integrity"
+if node scripts/validators/check-import-integrity.mjs 2>&1; then pass "Import integrity — clean"; else fail "Malformed imports detected"; fi
+
 step "Orphan page scan"
 bash scripts/validators/check-orphan-pages.sh 2>&1 || true
 pass "Orphan scan complete (advisory)"
