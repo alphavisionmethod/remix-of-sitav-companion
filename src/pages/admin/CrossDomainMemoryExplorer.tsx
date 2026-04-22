@@ -78,6 +78,7 @@ const healthBadge = (h: string) => {
 };
 
 const CrossDomainMemoryExplorer = () => {
+  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("timeline");
   const [search, setSearch] = useState("");
 

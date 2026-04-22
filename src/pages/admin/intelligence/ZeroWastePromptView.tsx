@@ -16,11 +16,11 @@ const offenders = DEMO_PROFILES
   .filter(p => p.redundancy > 20)
   .sort((a, b) => b.redundancy - a.redundancy);
 
-const avgCostReduction = Math.round((isDemoMode ? DEMO_PROFILES : [] as typeof DEMO_PROFILES).reduce((s, p) => s + p.costReduction, 0) / (isDemoMode ? DEMO_PROFILES : [] as typeof DEMO_PROFILES).length);
-const packetDrivenPct = Math.round(((isDemoMode ? DEMO_PROFILES : [] as typeof DEMO_PROFILES).filter(p => p.packetDriven).length / (isDemoMode ? DEMO_PROFILES : [] as typeof DEMO_PROFILES).length) * 100);
 
 const ZeroWastePromptView = () => {
   const { isDemoMode } = useDataMode();
+  const avgCostReduction = Math.round((isDemoMode ? DEMO_PROFILES : [] as typeof DEMO_PROFILES).reduce((s, p) => s + p.costReduction, 0) / Math.max((isDemoMode ? DEMO_PROFILES : [] as typeof DEMO_PROFILES).length, 1));
+  const packetDrivenPct = Math.round(((isDemoMode ? DEMO_PROFILES : [] as typeof DEMO_PROFILES).filter(p => p.packetDriven).length / Math.max((isDemoMode ? DEMO_PROFILES : [] as typeof DEMO_PROFILES).length, 1)) * 100);
   const { isAdmin, loading } = useRequireAdmin();
   if (loading || !isAdmin) return null;
 

@@ -80,6 +80,7 @@ const statusBadge = (s: TrustStatus) => {
 };
 
 const TrustStateRegistry = () => {
+  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("domains");
   const overallScore = Math.round((isDemoMode ? DEMO_DOMAINS : [] as typeof DEMO_DOMAINS).reduce((sum, d) => sum + d.proofCoverage, 0) / (isDemoMode ? DEMO_DOMAINS : [] as typeof DEMO_DOMAINS).length);
   const verifiedCount = (isDemoMode ? DEMO_DOMAINS : [] as typeof DEMO_DOMAINS).filter(d => d.status === "verified").length;
