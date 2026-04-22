@@ -175,7 +175,7 @@ const QuotesWorkspace = () => {
         domain="business"
         insight="Quotes aging past 7 days without response see a 40% drop in win rate. Consider a brief follow-up call or revised offer."
         confidence={78}
-        actions={[{ label: "Follow Up", onClick: () => toast.info("Follow-up coming soon") }]}
+        actions={[{ label: "Follow Up", onClick: () => toast.info("Follow-up planned — coming in a future update") }]}
       />
     </div>
   ) : (

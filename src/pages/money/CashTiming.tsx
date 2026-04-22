@@ -126,7 +126,7 @@ const CashTiming = () => {
         domain="finance"
         insight={`${stressWindows.length} stress window${stressWindows.length !== 1 ? "s" : ""} in the next 15 days. Projected minimum balance: $${minBalance.toLocaleString()}.`}
         confidence={stressWindows.length === 0 ? 92 : 68}
-        actions={[{ label: "View Forecast", onClick: () => toast.info("Forecast view coming soon") }]}
+        actions={[{ label: "View Forecast", onClick: () => toast.info("Forecast view planned — coming in a future update") }]}
       />
     </motion.div>
   );

@@ -304,7 +304,7 @@ const CollectionsCommandCenter = () => {
             : `Follow up with a direct call — phone contact has 3x higher recovery rate at this aging stage.`
         }
         confidence={selected.riskScore >= 80 ? 92 : 78}
-        actions={[{ label: "View History", onClick: () => toast.info("History view coming soon") }]}
+        actions={[{ label: "View History", onClick: () => toast.info("History view planned — coming in a future update") }]}
       />
     </div>
   ) : (

@@ -110,7 +110,7 @@ const CustomerSupportCenter = () => {
         domain="business"
         confidence={92}
         insight={`2 ${moduleConfig.terminology.issue?.toLowerCase() || "issue"}s need immediate response. ${moduleConfig.advisorSpecialty}.`}
-        actions={[{ label: "View Drafts", onClick: () => toast.info("Drafts coming soon") }, { label: "Call Queue", onClick: () => toast.info("Call queue coming soon") }]}
+        actions={[{ label: "View Drafts", onClick: () => toast.info("Drafts planned — coming in a future update") }, { label: "Call Queue", onClick: () => toast.info("Call queue planned — coming in a future update") }]}
       />
 
       <SlidePanel open={panelOpen} onClose={() => setPanelOpen(false)} title={selected?.subject || "Issue Detail"} width={420}>
