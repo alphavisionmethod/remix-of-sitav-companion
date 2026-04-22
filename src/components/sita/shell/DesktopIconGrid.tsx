@@ -3,7 +3,7 @@
 // Right-aligned file/folder icons with zero-clutter auto-hide
 // ═══════════════════════════════════════════════════════════════
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { ICON_GRADIENTS } from "@/platform/design-system/nova-os";
@@ -35,6 +35,20 @@ const DESKTOP_ICONS: DesktopIcon[] = [
 
 const IDLE_TIMEOUT = 8000;
 
+const ICON_ORDER_KEY = "sita:desktop-icon-order";
+
+function loadIconOrder(): string[] {
+  try {
+    const raw = localStorage.getItem(ICON_ORDER_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw) as string[];
+      const valid = DESKTOP_ICONS.map(i => i.id);
+      if (parsed.length === valid.length && parsed.every(id => valid.includes(id))) return parsed;
+    }
+  } catch {}
+  return DESKTOP_ICONS.map(i => i.id);
+}
+
 interface DesktopIconGridProps {
   visible?: boolean;
   onOpenFolder?: (folderId: string) => void;
@@ -43,6 +57,9 @@ interface DesktopIconGridProps {
 export function DesktopIconGrid({ visible = true, onOpenFolder }: DesktopIconGridProps) {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [idle, setIdle] = useState(false);
+  const [order, setOrder] = useState<string[]>(loadIconOrder);
+  const dragIdx = useRef<number | null>(null);
+  const [dragOver, setDragOver] = useState<number | null>(null);
   const navigate = useNavigate();
 
   // Zero-clutter: hide after 8s idle
@@ -64,6 +81,30 @@ export function DesktopIconGrid({ visible = true, onOpenFolder }: DesktopIconGri
       window.removeEventListener("keydown", resetIdle);
     };
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem(ICON_ORDER_KEY, JSON.stringify(order));
+  }, [order]);
+
+  const handleDragStart = useCallback((idx: number) => { dragIdx.current = idx; }, []);
+  const handleDragOver = useCallback((e: React.DragEvent, idx: number) => {
+    e.preventDefault();
+    setDragOver(idx);
+  }, []);
+  const handleDrop = useCallback((idx: number) => {
+    const from = dragIdx.current;
+    if (from === null || from === idx) { setDragOver(null); return; }
+    setOrder(prev => {
+      const next = [...prev];
+      const [moved] = next.splice(from, 1);
+      next.splice(idx, 0, moved);
+      return next;
+    });
+    dragIdx.current = null;
+    setDragOver(null);
+  }, []);
+
+  const orderedIcons = order.map(id => DESKTOP_ICONS.find(i => i.id === id)!).filter(Boolean);
 
   const handleClick = useCallback((id: string) => {
     setSelectedId(prev => (prev === id ? null : id));
@@ -87,16 +128,22 @@ export function DesktopIconGrid({ visible = true, onOpenFolder }: DesktopIconGri
       )}
       style={{ zIndex: 11 }}
     >
-      {DESKTOP_ICONS.map((item, i) => {
+      {orderedIcons.map((item, i) => {
         const Icon = item.icon;
         const PreviewIcon = item.previewIcon;
         const isSelected = selectedId === item.id;
         return (
           <button
             key={item.id}
+            draggable
+            onDragStart={() => handleDragStart(i)}
+            onDragOver={(e) => handleDragOver(e, i)}
+            onDrop={() => handleDrop(i)}
+            onDragEnd={() => setDragOver(null)}
             className={cn(
               "flex flex-col items-center gap-1.5 w-[80px] group cursor-default",
-              "transition-all duration-200"
+              "transition-all duration-200",
+              dragOver === i && "scale-110 opacity-60",
             )}
             style={{
               animationDelay: `${i * 80}ms`,
@@ -109,7 +156,7 @@ export function DesktopIconGrid({ visible = true, onOpenFolder }: DesktopIconGri
                 "w-13 h-13 rounded-[14px] bg-gradient-to-br flex items-center justify-center transition-all duration-200 relative overflow-hidden",
                 item.gradient,
                 isSelected && "ring-2 ring-[hsl(210_80%_60%/0.7)]",
-                "group-hover:scale-[1.08]"
+                "group-hover:scale-[1.08] group-hover:-translate-y-1 group-hover:rotate-[-2deg] group-hover:brightness-110",
               )}
               style={{
                 boxShadow: isSelected
