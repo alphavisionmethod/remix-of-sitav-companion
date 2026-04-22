@@ -21,14 +21,8 @@ import {
 } from "@/data/seed/revenue-office";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const DEMO_UPCOMING: any[] = [];
-const DEMO_PREP_CHECKLISTS: any[] = [];
-const DEMO_SERVICES: any[] = [];
-const DEMO_NOSHOW_RECOVERY: any[] = [];
-const DEMO_STATS: any[] = [];
-const DEMO_REV_SERVICES: any[] = [];
-const DEMO_REV_STATS: any[] = [];
-const DEMO_BOOKING_ANALYTICS: any[] = [];
+
+
 
 
 

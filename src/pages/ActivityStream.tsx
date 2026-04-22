@@ -438,7 +438,7 @@ const ActivityStream = () => {
       </div>
 
       {/* Timeline Feed */}
-      {isLoading && !filtered.length === 0 ? (
+    {isLoading && filtered.length === 0 ? (
         <EmptyState
           icon={Activity}
           title="No events found"

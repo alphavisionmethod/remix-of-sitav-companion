@@ -57,6 +57,7 @@ const DEMO_LINKED_ENTITIES = [
 
 const NotesWorkspace = () => {
   const { isDemo } = useAuth();
+  const isDemoMode = false;
   const { data: liveNotes } = useNotes();
 
   const notes: Note[] = useMemo(() => {

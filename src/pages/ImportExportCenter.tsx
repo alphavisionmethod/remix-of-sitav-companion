@@ -72,7 +72,7 @@ const ImportExportCenter = () => {
 
           {/* Recent uploads */}
           <SitaCardTitle className="text-xs mb-3">Recent Uploads</SitaCardTitle>
-          {uploads.length === 0 && !(
+          {uploads.length === 0 ? null : (
             <div className="space-y-2">
               {uploads.map((item: Record<string, any>) => {
                 const StatusIcon = STATUS_ICONS[item.status as keyof typeof STATUS_ICONS] || Clock;
@@ -145,7 +145,7 @@ const ImportExportCenter = () => {
 
       {tab === "exports" && (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-          {exports.length === 0 && !(
+          {exports.length === 0 ? null : (
             <div className="space-y-2">
               {exports.map((item: Record<string, any>) => {
                 const StatusIcon = STATUS_ICONS[item.status as keyof typeof STATUS_ICONS] || Clock;

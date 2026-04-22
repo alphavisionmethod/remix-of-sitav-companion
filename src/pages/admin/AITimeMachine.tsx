@@ -86,7 +86,7 @@ const AITimeMachine = () => {
                     {Object.entries(event.metrics).map(([k, v]) => (
                       <div key={k} className="flex items-center justify-between text-xs">
                         <span className="text-muted-foreground capitalize">{k}</span>
-                        <span className={v.startsWith("+") || v.includes("error") ? "text-destructive" : v.startsWith("-") || v === "All pass" || v === "0" || v === "0 new" ? "text-[hsl(var(--trust-safe))]" : "text-foreground"}>{v}</span>
+                        <span className={String(v).startsWith("+") || String(v).includes("error") ? "text-destructive" : String(v).startsWith("-") || v === "All pass" || v === "0" || v === "0 new" ? "text-[hsl(var(--trust-safe))]" : "text-foreground"}>{String(v)}</span>
                       </div>
                     ))}
                   </div>
