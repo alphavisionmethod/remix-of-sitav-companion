@@ -39,7 +39,7 @@ describe("Component Smoke Tests - Domain Components", () => {
   it("AIStateBadge renders", async () => {
     const Component = await getDefaultExport(() => import("@/components/ai/AIStateBadge"));
     if (Component) {
-      const { container } = render(<Component state="healthy" />);
+      const { container } = render(<Component state="success_real" />);
       expect(container).toBeTruthy();
     }
   });
