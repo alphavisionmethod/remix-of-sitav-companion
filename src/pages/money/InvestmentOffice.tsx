@@ -173,7 +173,6 @@ const RegimeView = () => (
     </SitaCard>
   </div>
 );
-};
 
 const RiskView = () => (
   <div className="space-y-4">
