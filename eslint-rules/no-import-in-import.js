@@ -16,6 +16,7 @@
 export default {
   meta: {
     type: "problem",
+    fixable: "code",
     docs: {
       description: "Disallow import declarations that appear spliced into another import block",
     },
@@ -45,12 +46,32 @@ export default {
             .replace(/[\s,;]+/g, "");
 
           if (cleaned.length > 0 && /^[A-Za-z_$]/.test(cleaned)) {
-            context.report({ node: curr, messageId: "splicedImport" });
+            context.report({
+              node: curr,
+              messageId: "splicedImport",
+              fix(fixer) {
+                const currText = sourceCode.getText(curr);
+                return [
+                  fixer.remove(curr),
+                  fixer.insertTextBefore(prev, currText + "\n"),
+                ];
+              },
+            });
           }
 
           // Also flag if prev and curr are on the same line (parser recovered)
           if (prev.loc.end.line === curr.loc.start.line) {
-            context.report({ node: curr, messageId: "splicedImport" });
+            context.report({
+              node: curr,
+              messageId: "splicedImport",
+              fix(fixer) {
+                const currText = sourceCode.getText(curr);
+                return [
+                  fixer.remove(curr),
+                  fixer.insertTextBefore(prev, currText + "\n"),
+                ];
+              },
+            });
           }
         }
       },
