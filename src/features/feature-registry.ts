@@ -244,7 +244,7 @@ export const FEATURE_REGISTRY: readonly FeatureSurfaceEntry[] = [
   },
   {
     featureId: "governance", name: "Governance", canonicalImport: "@/features/governance",
-    domain: "compliance", riskTier: "R1", status: "beta",
+    domain: "system", riskTier: "R1", status: "beta",
     ownedRoutes: ["/governance", "/policies"], ownedApps: [],
     runtimeSupport: [...ALL_TIERS], stateGrammar: [...CORE_STATES],
     proofCoverage: PARTIAL_PROOF, supportIntegrated: true, trustIntegrated: false,
