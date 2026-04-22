@@ -13,7 +13,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
 import { Loader2, ShieldCheck, Users2, DollarSign, Wrench, AlertTriangle } from "lucide-react";
-import { EmptyState } from "@/components/primitives/feedback/EmptyState";
+import { EmptyState } from "@/components/sita/EmptyState";
 import { StatusBadge } from "@/components/primitives/status/StatusBadge";
 import { AITruthDisclosure } from "@/components/primitives/status/AITruthDisclosure";
 import { OperatorActionPanel } from "@/components/primitives/actions/OperatorActionPanel";

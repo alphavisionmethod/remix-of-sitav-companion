@@ -17,7 +17,7 @@ import {
   Lightbulb, RefreshCw, Sparkles, Filter, CheckCircle2,
   XCircle, PlayCircle, Award, Inbox,
 } from "lucide-react";
-import { EmptyState } from "@/components/primitives/feedback/EmptyState";
+import { EmptyState } from "@/components/sita/EmptyState";
 import { StatusBadge } from "@/components/primitives/status/StatusBadge";
 import { AITruthDisclosure } from "@/components/primitives/status/AITruthDisclosure";
 import { OperatorActionPanel } from "@/components/primitives/actions/OperatorActionPanel";
