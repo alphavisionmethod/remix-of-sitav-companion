@@ -195,11 +195,13 @@ export function getDomainSpring(domain: DomainId) {
   return { type: "spring" as const, stiffness: m.stiffness, damping: m.damping, mass: m.mass };
 }
 
+const SURFACE_CLASS_MAP: Record<SurfaceLevel, string> = {
+  0: "bg-surface-0 border border-transparent",
+  1: "bg-surface-1 border border-border-subtle shadow-xs",
+  2: "bg-surface-2 border border-border shadow-card",
+  3: "bg-surface-3 border border-border shadow-card-hover",
+};
+
 export function getSurfaceClasses(level: SurfaceLevel): string {
-  const t = SURFACE_TOKENS[level];
-  return [
-    `bg-[${t.darkBg}]`,
-    `border border-[${t.darkBorder}]`,
-    level > 0 ? `shadow-[${t.shadow}]` : "",
-  ].filter(Boolean).join(" ");
+  return SURFACE_CLASS_MAP[level];
 }
