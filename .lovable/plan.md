@@ -1,156 +1,162 @@
 
 
-# Remove Production Mocks and Wire Real Data — Comprehensive Plan
+# Remove All Production Mocks — Wire Real Data Everywhere
 
-## Scope Analysis
+## Scope
 
-After auditing the entire codebase, there are **4 categories of mocks** in production code:
+After auditing every file in the project, there are **5 distinct categories** of production mocks that need real wiring. This is a massive effort (~60 files) that must be done in phases to avoid breaking the app.
 
-1. **Pages with `isDemoMode ? DEMO_X : DEMO_X` (same data both ways)** — 9 revenue-office pages that never show real data even in live mode
-2. **Components with inline `MOCK_` constants** — 20 component files with hardcoded mock arrays instead of database queries
-3. **Services with simulated execution** — 4 executor services that return `{ executed: true }` or `{ simulated: true }` instead of calling real backend functions
-4. **OS-simulation layer** (kernel, filesystem, memory, rendering) — These are **intentionally simulated** browser experiences (not real OS), should be kept as-is
-
-**What stays as mocks (per user request):**
+**What stays as-is (per your request):**
+- `src/data/seed/` and `src/data/fixtures/` — demo fallback data
+- Test files (`__tests__/`, `*.test.*`) — proper test isolation
+- OS simulation layer (kernel, filesystem, memory, rendering) — this IS the product
 - Third-party API auth connectors (OAuth, banking, forex, crypto)
-- `src/data/seed/` files (needed for demo mode fallback)
-- Test files (`__tests__/`, `*.test.ts`)
-- OS simulation layer (it IS the product — browser-based OS experience)
+- `Math.random()` used for IDs (`Date.now()-${Math.random().toString(36)}`) — this is standard UUID-like generation, not mock data
+- `Math.random()` used for UI animations/visualizations (particle effects, chart noise)
 
 ---
 
-## Phase 1: Fix 9 Revenue-Office Pages (DEMO_X : DEMO_X pattern)
+## Phase 1: Fix "isDemoMode ? DEMO_X : DEMO_X" (Same Data Both Ways) — 10 files
 
-These pages use the same demo data whether in demo or live mode. Wire them to real database queries with demo fallback.
+These pages pretend to check the mode but always return the same demo data. They need real DB queries for live mode.
 
-| File | Mock Variables | Target DB Table |
+| File | Broken Pattern | Wire To |
 |---|---|---|
-| `src/pages/revenue-office/PipelineStudio.tsx` | DEMO_STAGES, DEMO_LEAKS, DEMO_VELOCITY | `deals`, `revenue_leaks` |
-| `src/pages/revenue-office/GrowthBoardroom.tsx` | DEMO_PIPELINE_STAGES, DEMO_LEAKS, DEMO_ADVISOR_SIGNALS | `deals`, `advisor_board_recommendations` |
-| `src/pages/revenue-office/ConversionLab.tsx` | DEMO_EXPERIMENTS | `conversion_experiments` (new) |
-| `src/pages/revenue-office/CommercialMemoryFeed.tsx` | DEMO_memoryEvents | `commercial_memory_events` (new) |
-| `src/pages/revenue-office/WhatBreaksGrowth.tsx` | DEMO_riskAreas | `revenue_risk_areas` (new) |
-| `src/pages/revenue-office/OpportunityBoard.tsx` | DEMO_opportunities | `deals` |
-| `src/pages/revenue-office/LeakDetector.tsx` | DEMO_LEAKS | `revenue_leaks` |
-| `src/pages/revenue-office/JourneyTwin.tsx` | DEMO_JOURNEY_STAGES | `customer_journey_stages` (new) |
-| `src/pages/revenue-office/RelationshipCenter.tsx` | DEMO_LIFECYCLE_STAGES | `customer_lifecycle_stages` (new) |
+| `LeakDetector.tsx` | `DEMO_LEAKS : DEMO_LEAKS` | `revenue_leaks` table (needs creation) |
+| `OpportunityBoard.tsx` | `DEMO_opportunities : DEMO_opportunities` | `deals` table |
+| `JourneyTwin.tsx` | `DEMO_JOURNEY_STAGES : DEMO_JOURNEY_STAGES` | `customer_journey_stages` table |
+| `RelationshipCenter.tsx` | `DEMO_LIFECYCLE_STAGES : DEMO_LIFECYCLE_STAGES` | `customer_lifecycle_stages` table |
+| `PipelineStudio.tsx` | `DEMO_VELOCITY : DEMO_VELOCITY` | Compute from `deals` data |
+| `GrowthBoardroom.tsx` | `DEMO_ADVISOR_SIGNALS : DEMO_ADVISOR_SIGNALS` | `advisor_board_recommendations` |
+| `WhatBreaksGrowth.tsx` | `liveRiskAreas.length > 0 ? DEMO : DEMO` | Actually use `liveRiskAreas` |
+| `CommercialMemoryFeed.tsx` | `liveMemoryEvents.length > 0 ? DEMO : DEMO` | Actually use `liveMemoryEvents` |
+| `MediaWorkspace.tsx` | `liveMedia?.length ? liveMedia : DEMO_MEDIA` | Already correct — just remove DEMO fallback in live mode |
+| `EnterpriseControlPlane.tsx` | `DEMO_COMPLIANCE_ITEMS` used directly | `compliance_controls` table |
 
-**Change pattern for each file:**
+**Fix pattern:**
 ```typescript
-// BEFORE
-const STAGES = isDemoMode ? DEMO_STAGES : DEMO_STAGES;
+// BEFORE (broken)
+const LEAKS = isDemoMode ? DEMO_LEAKS : DEMO_LEAKS;
 
-// AFTER
-const { data: liveStages } = useQuery({
-  queryKey: ["pipeline-stages", user?.id],
+// AFTER (real)
+const { data: liveLeaks } = useQuery({
+  queryKey: ["revenue-leaks", user?.id],
   enabled: !!user && !isDemoMode,
-  queryFn: async () => {
-    const { data } = await supabase.from("deals").select("*").eq("user_id", user!.id);
-    return data;
-  },
+  queryFn: () => supabase.from("revenue_leaks").select("*").eq("user_id", user!.id),
 });
-const STAGES = isDemoMode ? DEMO_STAGES : (liveStages ?? []);
+const LEAKS = isDemoMode ? DEMO_LEAKS : (liveLeaks ?? []);
 ```
 
-**New tables needed:** 5 tables via database migration (`conversion_experiments`, `commercial_memory_events`, `revenue_risk_areas`, `customer_journey_stages`, `customer_lifecycle_stages`)
+**DB migration needed:** Create `revenue_leaks` table (with RLS).
 
 ---
 
-## Phase 2: Wire 20 Component Files with Inline Mocks to DB
+## Phase 2: Wire 19 Components with Inline `MOCK_` Constants — 19 files
 
-Replace inline `MOCK_` constants with database-backed queries or prop-driven data.
+These components have hardcoded mock arrays that never query the database.
 
-| Component File | Inline Mock | Resolution |
+| Component | Mock | Wire To |
 |---|---|---|
-| `ComplianceDashboard.tsx` | MOCK_CONTROLS, MOCK_SLAS, MOCK_RISKS | Query `compliance_controls`, `sla_metrics`, `risk_items` tables |
-| `UniversalTimeline.tsx` | MOCK_TIMELINE | Query `audit_trail` table (already exists) |
-| `DiagnosticExportAudit.tsx` | MOCK_AUDITS | Query `diagnostic_export_jobs` table (already exists) |
-| `WebhookReplayPanel.tsx` | MOCK_EVENTS | Query `webhook_events` table (already exists) |
-| `WeeklyExecutiveReport.tsx` | MOCK_REPORT | Generate from real `advisor_board_recommendations` + `deals` data |
-| `PlaybookSimulator.tsx` | MOCK_CUSTOMERS | Query `customers` table (already exists) |
-| `CodeEditorWindow.tsx` | MOCK_FILES | Query `file_metadata` table (already exists) |
-| `MailClientWindow.tsx` | MOCK_EMAILS | Query `communication_log` table (already exists) |
-| `AccountEnvironmentStep.tsx` | MOCK_RESTORE | Query `profiles` table for real user data |
-| `ProfileEvolutionTimeline.tsx` | MOCK_TIMELINE | Query `customer_profile_snapshots` (new) |
-| Other 10 component files | Various MOCK_ constants | Map to existing tables or create new ones |
+| `ComplianceDashboard.tsx` | `MOCK_CONTROLS`, `MOCK_SLAS`, `MOCK_RISKS` | `compliance_controls`, `sla_definitions`, `risk_register` (exists) |
+| `DiagnosticExportAudit.tsx` | `MOCK_AUDITS` | `audit_export_bundles` table |
+| `WebhookReplayPanel.tsx` | `MOCK_EVENTS` | `webhook_events` table |
+| `WeeklyExecutiveReport.tsx` | `MOCK_REPORT` | Generate from `advisor_board_recommendations` + `deals` |
+| `PredictiveAnalysisDashboard.tsx` | `MOCK_PREDICTIONS`, `MOCK_ANOMALIES` | `ai_provider_health` + `incidents` |
+| `AISpendIndicator.tsx` | `MOCK_SPEND` | `ai_token_usage` table (aggregate) |
+| `MailClientWindow.tsx` | `MOCK_EMAILS` | `communications` table |
+| `CodeEditorWindow.tsx` | `MOCK_FILES` | `cloud_files` table |
+| `MusicPlayerWindow.tsx` | `MOCK_TRACKS` | Keep as-is (OS simulation — decorative) |
+| `AccountEnvironmentStep.tsx` | `MOCK_RESTORE` | `profiles` table |
+| `NetworkSetupStep.tsx` | `MOCK_NETWORKS` | Keep as-is (OS simulation — onboarding UX) |
+| `ProfileEvolutionTimeline.tsx` | `MOCK_TIMELINE` | `customer_profile_snapshots` table |
+| `PlaybookSimulator.tsx` | `MOCK_CUSTOMERS` | `customers` table |
+| `UniversalTimeline.tsx` | `MOCK_TIMELINE` | `audit_logs` table |
+| Other 5 components | Various | Map to existing tables |
 
-**New tables needed:** ~3 tables
-
----
-
-## Phase 3: Wire 4 Executor Services to Real Backend
-
-These services currently return hardcoded success. Wire them to edge functions or database operations.
-
-### `execute-action.service.ts`
-- **Current:** Returns `{ executed: true }` immediately
-- **Fix:** Record execution in `execution_receipts` table, dispatch to appropriate edge function based on `capabilityId`, update status on completion
-
-### `execute-connector-action.service.ts`
-- **Current:** Returns `{ simulated: true }` with random data
-- **Fix:** Query `connector_instances` for real health status, invoke `connector-sync` edge function for actual operations, store results in `connector_sync_logs`
-
-### `execute-workflow-step.service.ts`
-- **Current:** Returns `{ externalCallSimulated: true }` for external-call steps
-- **Fix:** Route through `workflow-step` edge function, record in `workflow_step_executions`
-
-### `connector-executor.ts`
-- **Current:** Logs to console and returns `{ executed: true }`
-- **Fix:** Call `connector-webhook` edge function, record in `connector_sync_logs`
-
-### `os-security/recovery.ts`
-- **Current:** Uses `Math.random() > 0.3` for recovery success
-- **Fix:** Actually re-initialize the failed service module and verify health
+**Pattern:** Add `useQuery` with auth check, use mock as demo-mode fallback only.
 
 ---
 
-## Phase 4: Wire Remaining Page-Level Mocks
+## Phase 3: Wire Pages That Use DEMO_ Directly (No isDemoMode Check) — 15 files
 
-Several non-revenue pages also have mock patterns that should use existing DB tables:
+These pages import DEMO_ data and render it directly without any mode check.
 
-| Page | Current Mock Source | Wire To |
+| Page | Demo Constants Used Directly | Wire To |
 |---|---|---|
-| `CustomerDetail.tsx` | `DEMO_CUSTOMERS_DATA[id]` | `customers` table with real ID lookup |
-| `MarketMemoryFeed.tsx` | `DEMO_MEMORY_EVENTS` (always used) | `market_events` + `advisor_observations` |
-| `FunnelBuilder.tsx` | DEMO_FUNNELS (always used) | `conversion_experiments` table |
+| `AISelfHealing.tsx` | `DEMO_HEALED`, `DEMO_RULES`, `DEMO_BLOCKED` | `ai_self_healing_rules` table |
+| `AdminMutationAudit.tsx` | `DEMO_MUTATIONS` | `admin_action_audit` table |
+| `AutomationReceipts.tsx` | `DEMO_receipts` | `ai_action_receipts` table |
+| `AdminOperationsHub.tsx` | `DEMO_SLOS`, `DEMO_QUEUES`, `DEMO_INCIDENTS` | `sla_definitions`, `incidents` |
+| `FleetHealthPage.tsx` | `DEMO_FLEET`, `DEMO_ANOMALIES`, `DEMO_PREDICTIONS`, `DEMO_MAINTENANCE` | `layer_health_snapshots`, `incidents` |
+| `SecurityPostureBoard.tsx` | `DEMO_SECRETS`, `DEMO_KEY_ROTATION` | `os_secrets_metadata`, `secret_rotation_log` |
+| `RevenueAutopilotMonitor.tsx` | `DEMO_HEALTH` | `automation_kill_switches` + computed |
+| `WeeklyBoardroom.tsx` | `MOCK_WEEK` | `advisor_board_recommendations` |
+| `EnvironmentSwitcher.tsx` | `MOCK_ENVIRONMENTS` | `profiles` table |
+| `DeviceSettings.tsx` | `MOCK_DEVICE` | `navigator` API (already partially real) |
+| `MobileDeviceTrust.tsx` | `MOCK_DEVICES` | Keep device info from browser APIs |
+| `SovereignExportPage.tsx` | `DEMO_EXPORTABLE_TABLES`, `DEMO_PAST_EXPORTS` | `data_export_requests` table |
+| `CapitalPurpose.tsx` | `DEMO_RULES` | Investment rules from seed (keep — config data) |
+| `AuditComplianceWorkspace.tsx` | `MOCK_AUDIT_RECORDS` | `audit_logs` table |
+| `CrossTenantGovernance.tsx` | `DEMO_PATTERNS` | Keep — governance config data |
 
 ---
 
-## Technical Details
+## Phase 4: Realize 4 Executor Services — 4 files
 
-### Database Migrations
-Create ~8 new tables for data that currently has no backing store:
-- `conversion_experiments` — A/B test experiments
-- `commercial_memory_events` — Revenue memory feed entries
-- `revenue_risk_areas` — Growth risk tracking
-- `customer_journey_stages` — Journey twin mapping
-- `customer_lifecycle_stages` — CRM lifecycle definitions
-- `customer_profile_snapshots` — Profile evolution history
-- `compliance_controls` — Compliance framework controls
-- `risk_register` — Enterprise risk items
+| Service | Current Behavior | Real Behavior |
+|---|---|---|
+| `execute-connector-action.service.ts` | Returns `{ simulated: true }` with random recordCount | Query `connector_sync_runs` for real health, invoke `connector-sync` edge function, log to `connector_sync_runs` |
+| `execute-workflow-step.service.ts` | Returns `{ externalCallSimulated: true }` for external-call | Route through `workflow-step` edge function, record in `workflow_receipts` |
+| `connector-executor.ts` | Console.debug + returns `{ executed: true }` | Invoke edge function via `supabase.functions.invoke()`, log to `connector_receipts` |
+| `connector-runners.ts` | Sandbox/simulation mode returns `{ simulated: true }` | In real mode, invoke `connector-sync` edge function; sandbox/simulation stay as simulation (intentional) |
 
-All new tables will have RLS policies scoped to `auth.uid()`.
+---
 
-### Execution Order
-1. Create database migrations for ~8 new tables
-2. Fix 9 revenue-office pages (Phase 1)
-3. Wire 20 components (Phase 2)
-4. Wire 4 executor services (Phase 3)
-5. Wire remaining pages (Phase 4)
-6. Run full test suite to verify nothing breaks
-7. Verify demo mode still works with seed data fallback
+## Phase 5: Wire `pack-store/index.ts` Install States — 1 file
 
-### What Stays As-Is
-- `src/data/seed/` — Demo data files (needed for demo mode)
-- `src/data/fixtures/` — Fixture data for testing
-- OS simulation layer (kernel, memory, filesystem) — This IS the product
-- Third-party connector auth (OAuth, banking APIs) — Added later
-- All test file mocks — Proper test isolation
-- `isDemoMode ? DEMO_X : (liveData ?? DEMO_X)` pattern — Already correctly wired
+| File | Mock | Wire To |
+|---|---|---|
+| `src/lib/pack-store/index.ts` | `MOCK_INSTALL_STATES` | `installed_apps` table |
 
-### Estimated Scope
-- ~40 files modified
-- ~8 new database tables
-- ~4 service rewrites
-- ~30 pages/components with mock-to-live wiring
+---
+
+## Phase 6: Fix Services Using Math.random() for Business Logic — 3 files
+
+| Service | Issue | Fix |
+|---|---|---|
+| `execute-action.service.ts` | `Math.floor(Math.random() * 200) + 50` for simulation durationMs | Use `performance.now()` delta |
+| `execute-connector-action.service.ts` | `Math.floor(Math.random() * 50) + 1` for recordCount | Return actual record count from sync |
+| `communication-service/index.ts` | `Math.random() * 500 + 100` for latencyMs | Use actual elapsed time |
+
+---
+
+## Database Migration
+
+**1 new table needed:**
+- `revenue_leaks` — tracking pipeline revenue leakage points
+
+All other tables already exist in the schema.
+
+## Execution Order
+
+1. Create `revenue_leaks` table migration
+2. Phase 1: Fix 10 revenue/enterprise pages with broken ternaries
+3. Phase 2: Wire 15 components (skip OS-simulation ones)
+4. Phase 3: Wire 15 pages using DEMO_ directly
+5. Phase 4: Realize 4 executor services
+6. Phase 5: Wire pack-store install states
+7. Phase 6: Fix Math.random() in business logic
+8. Run full test suite to verify nothing breaks
+
+## Summary
+
+| Category | Files | Action |
+|---|---|---|
+| Broken ternaries (DEMO : DEMO) | 10 | Wire useQuery to real tables |
+| Inline MOCK_ in components | 15 (skip 4 OS-sim) | Wire useQuery or props |
+| DEMO_ used directly (no check) | 15 | Add isDemoMode gate + useQuery |
+| Executor services | 4 | Replace simulated returns with real edge function calls |
+| Pack store | 1 | Wire to installed_apps table |
+| Math.random business logic | 3 | Use real measurements |
+| **Total** | **~48 files** | |
 
