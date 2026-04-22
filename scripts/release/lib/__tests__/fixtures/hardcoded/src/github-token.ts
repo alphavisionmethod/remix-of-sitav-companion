@@ -1,1 +1,1 @@
-const token = "ghp_ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefgh";
+const token = "ghp_ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghij";
