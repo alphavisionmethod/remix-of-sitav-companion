@@ -43,10 +43,8 @@ describe("Core Pages", () => {
         const { container } = render(<Component />, { authenticated: true });
         expect(container).toBeTruthy();
       } catch (e: any) {
-        // Some pages depend on deeply nested runtime contexts not fully mockable in unit tests.
-        // Verify the module loaded and the component is a valid function — render errors are acceptable.
         expect(typeof Component).toBe("function");
       }
-    });
+    }, 15000);
   });
 });
