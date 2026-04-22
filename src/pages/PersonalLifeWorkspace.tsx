@@ -19,6 +19,7 @@ import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import {
+import { PageShell } from "@/components/sita/PageShell";
   Heart, Sun, Moon, Target, RotateCcw, ListChecks, BookOpen,
   Calendar, Flame, CheckCircle2, Clock, AlertTriangle, Sparkles,
   TrendingUp, Battery, BatteryLow, BatteryMedium, Play, Pause,
@@ -86,7 +87,7 @@ export default function PersonalLifeWorkspace() {
   };
 
   return (
-    <div className="space-y-6 p-6 max-w-7xl mx-auto">
+    <PageShell width="wide">
 <SitaPageHeader
         icon={<Heart className="h-6 w-6" />}
         title="Personal Life"
@@ -385,6 +386,6 @@ export default function PersonalLifeWorkspace() {
           </Card>
         </TabsContent>
       </Tabs>
-    </div>
+    </PageShell>
   );
 }

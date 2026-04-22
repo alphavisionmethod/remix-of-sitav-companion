@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageShell } from "@/components/sita/PageShell";
 
 interface PrintJob {
   id: string;
@@ -54,7 +55,7 @@ const PrintScanCenter = () => {
   const [activeTab, setActiveTab] = useState<"print" | "scan" | "routing">("print");
 
   return (
-    <div className="mx-auto max-w-5xl space-y-4">
+    <PageShell width="standard">
 <SitaPageHeader icon={<Printer className="h-6 w-6" />} title="Print & Scan Center" subtitle="Print queue, scan import, and intelligent document routing">
         <Button variant="outline" size="sm"><Settings className="h-4 w-4 mr-1" /> Manage Printers</Button>
       </SitaPageHeader>
@@ -158,7 +159,7 @@ const PrintScanCenter = () => {
           <Button variant="outline" className="w-full">+ Add Routing Rule</Button>
         </div>
       )}
-    </div>
+    </PageShell>
   );
 };
 

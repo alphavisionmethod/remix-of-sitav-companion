@@ -15,6 +15,7 @@ import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import {
+import { PageShell } from "@/components/sita/PageShell";
   FileText, Bold, Italic, Underline, List, ListOrdered, Link, Image as ImageIcon,
   Code, AlignLeft, AlignCenter, AlignRight, Heading1, Heading2, Heading3,
   Save, Download, Eye, Edit3, MessageSquare, History, Paperclip,
@@ -117,7 +118,7 @@ const [mode, setMode] = useState<"edit" | "preview" | "review">("edit");
   };
 
   return (
-    <div className="min-h-screen pb-12 p-6 max-w-6xl mx-auto space-y-4">
+    <PageShell width="wide">
 <SitaPageHeader
         icon={<FileText className="h-6 w-6" />}
         title="Document Editor"
@@ -283,7 +284,7 @@ const [mode, setMode] = useState<"edit" | "preview" | "review">("edit");
           </div>
         )}
       </div>
-    </div>
+    </PageShell>
   );
 };
 

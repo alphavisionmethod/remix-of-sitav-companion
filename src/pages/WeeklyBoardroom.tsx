@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Calendar, TrendingUp, AlertTriangle, CheckCircle2, ArrowRight } from "lucide-react";
+import { PageShell } from "@/components/sita/PageShell";
 const MOCK_WEEK = {
   focus: "Revenue pipeline and household logistics",
   highlights: [
@@ -32,7 +33,7 @@ const statusIcon = (status: string) => {
 
 const WeeklyBoardroom = () => {
   return (
-    <div className="space-y-6 p-6 max-w-4xl mx-auto">
+    <PageShell width="standard">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-foreground">Weekly Boardroom</h1>
@@ -102,7 +103,7 @@ const WeeklyBoardroom = () => {
           </ol>
         </CardContent>
       </Card>
-    </div>
+    </PageShell>
   );
 };
 

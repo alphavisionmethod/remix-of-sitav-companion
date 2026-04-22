@@ -9,6 +9,7 @@ import {
   AlertTriangle, Trash2, RefreshCw, HardDrive,
 } from "lucide-react";
 import { MobileHonestyNotice } from "@/components/platform/MobileHonestyNotice";
+import { PageShell } from "@/components/sita/PageShell";
 
 const mockDownloads = [
   { id: "1", name: "Q1 Financial Report.pdf", type: "report", size: "2.4 MB", status: "complete" as const, date: "2026-04-08", expiresIn: "29 days" },
@@ -34,7 +35,7 @@ export default function DownloadsCenter() {
     : mockDownloads.filter((d) => d.type === activeTab);
 
   return (
-    <div className="space-y-6 p-6 max-w-6xl mx-auto">
+    <PageShell width="wide">
       <SitaPageHeader
         icon={<Download className="h-6 w-6" />}
         title="Downloads Center"
@@ -140,6 +141,6 @@ export default function DownloadsCenter() {
           </div>
         </TabsContent>
       </Tabs>
-    </div>
+    </PageShell>
   );
 }

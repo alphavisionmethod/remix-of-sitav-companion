@@ -10,6 +10,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Checkbox } from "@/components/ui/checkbox";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageShell } from "@/components/sita/PageShell";
 
 interface DataRow {
   id: string;
@@ -82,7 +83,7 @@ const SpreadsheetWorkspace = () => {
   };
 
   return (
-    <div className="mx-auto max-w-7xl space-y-4">
+    <PageShell width="wide">
 <SitaPageHeader icon={<Grid3X3 className="h-6 w-6" />} title="Data Grid" subtitle="View, edit, filter, and export structured data with full audit trail">
         <div className="flex items-center gap-2">
           <Button variant="outline" size="sm"><Upload className="h-4 w-4 mr-1" /> Import CSV</Button>
@@ -182,7 +183,7 @@ const SpreadsheetWorkspace = () => {
           <span>Avg: <span className="text-foreground font-medium">$3,683</span></span>
         </div>
       </SitaCard>
-    </div>
+    </PageShell>
   );
 };
 

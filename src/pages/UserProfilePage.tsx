@@ -14,6 +14,7 @@ import { User, Shield, Calendar, Activity, Receipt, Link as LinkIcon, Settings, 
 import { Link } from "react-router-dom";
 import { format } from "date-fns";
 import { useActionFn } from "@/hooks/use-action";
+import { PageShell } from "@/components/sita/PageShell";
 
 const UserProfilePage = () => {
   const { user } = useAuth();
@@ -105,7 +106,7 @@ const UserProfilePage = () => {
 
   if (isLoading) {
     return (
-      <div className="p-6 max-w-3xl mx-auto space-y-6">
+      <PageShell width="narrow">
         <div className="h-8 w-48 bg-muted animate-pulse rounded" />
         <div className="h-64 bg-muted animate-pulse rounded-lg" />
       </div>
@@ -190,7 +191,7 @@ const UserProfilePage = () => {
         <Link to="/settings/privacy"><Button variant="outline" size="sm" className="gap-1"><Settings className="h-3 w-3" /> Privacy Settings</Button></Link>
         <Link to="/settings"><Button variant="outline" size="sm" className="gap-1"><Settings className="h-3 w-3" /> All Settings</Button></Link>
       </div>
-    </div>
+    </PageShell>
   );
 };
 

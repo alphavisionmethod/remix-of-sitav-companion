@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
+import { PageShell } from "@/components/sita/PageShell";
   HardDrive, FileText, Image, Film, Archive, Trash2,
   TrendingUp, AlertTriangle, Shield,
 } from "lucide-react";
@@ -28,7 +29,7 @@ const retentionPolicies = [
 
 export default function StorageManager() {
   return (
-    <div className="space-y-6 p-6 max-w-6xl mx-auto">
+    <PageShell width="wide">
       <SitaPageHeader
         icon={<HardDrive className="h-6 w-6" />}
         title="Storage Manager"
@@ -124,6 +125,6 @@ export default function StorageManager() {
           </Button>
         </CardContent>
       </Card>
-    </div>
+    </PageShell>
   );
 }
