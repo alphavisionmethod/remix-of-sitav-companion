@@ -3056,6 +3056,7 @@ export type Database = {
           id: string
           occurrence_count: number
           original_severity: string
+          simulation_run_id: string | null
           suppression_rule_id: string | null
           user_id: string
           was_deduplicated: boolean
@@ -3069,6 +3070,7 @@ export type Database = {
           id?: string
           occurrence_count?: number
           original_severity?: string
+          simulation_run_id?: string | null
           suppression_rule_id?: string | null
           user_id: string
           was_deduplicated?: boolean
@@ -3082,6 +3084,7 @@ export type Database = {
           id?: string
           occurrence_count?: number
           original_severity?: string
+          simulation_run_id?: string | null
           suppression_rule_id?: string | null
           user_id?: string
           was_deduplicated?: boolean
@@ -3093,6 +3096,13 @@ export type Database = {
             columns: ["alert_id"]
             isOneToOne: false
             referencedRelation: "alerts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "alert_dedup_log_simulation_run_id_fkey"
+            columns: ["simulation_run_id"]
+            isOneToOne: false
+            referencedRelation: "alert_simulation_runs"
             referencedColumns: ["id"]
           },
           {
@@ -3137,6 +3147,48 @@ export type Database = {
           source_pattern?: string
           target?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      alert_simulation_runs: {
+        Row: {
+          burst_size: number
+          created_at: string
+          dedup_count: number
+          event_count: number
+          id: string
+          interval_ms: number
+          name: string
+          severity: string
+          suppress_count: number
+          suppression_window_ms: number
+          user_id: string
+        }
+        Insert: {
+          burst_size?: number
+          created_at?: string
+          dedup_count?: number
+          event_count?: number
+          id?: string
+          interval_ms?: number
+          name?: string
+          severity?: string
+          suppress_count?: number
+          suppression_window_ms?: number
+          user_id: string
+        }
+        Update: {
+          burst_size?: number
+          created_at?: string
+          dedup_count?: number
+          event_count?: number
+          id?: string
+          interval_ms?: number
+          name?: string
+          severity?: string
+          suppress_count?: number
+          suppression_window_ms?: number
+          user_id?: string
         }
         Relationships: []
       }
