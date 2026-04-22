@@ -24,6 +24,130 @@ export interface EdgeFunctionTableIO {
   readonly wrapper?: boolean;
 }
 
+// ── Traceability Allowlist ─────────────────────────────────────
+// Known false-positives: maintenance jobs, feature-flagged code
+// paths, test-only helpers, or indirect writes via shared helpers
+// that are intentionally not declared in the per-function IO map.
+//
+// Each entry must include a human-readable reason so auditors can
+// verify the exclusion is still valid on every release.
+// ───────────────────────────────────────────────────────────────
+
+export interface TraceabilityAllowlistEntry {
+  /** Edge function name */
+  readonly functionName: string;
+  /** Table or rpc: target being suppressed */
+  readonly target: string;
+  /** "undeclared-write" | "undeclared-read" | "phantom-write" | "phantom-read" */
+  readonly suppressionKind: "undeclared-write" | "undeclared-read" | "phantom-write" | "phantom-read";
+  /** Why this is a known false-positive */
+  readonly reason: string;
+  /** ISO date when this entry was added — stale entries (>180d) generate warnings */
+  readonly addedAt: string;
+  /** Optional expiry after which the suppression is removed automatically */
+  readonly expiresAt?: string;
+}
+
+/**
+ * Canonical allowlist of known false-positives in mutation traceability.
+ * Every entry MUST have a reason. Expired entries are surfaced as warnings.
+ */
+export const MUTATION_TRACEABILITY_ALLOWLIST: readonly TraceabilityAllowlistEntry[] = [
+  // ── Shared helper indirect writes ────────────────────────────
+  // These writes happen inside _shared/ helpers imported by many
+  // functions. They are governed by the helper's own contract,
+  // not the calling function's IO declaration.
+  {
+    functionName: "*",
+    target: "audit_logs",
+    suppressionKind: "undeclared-write",
+    reason: "kill-switch.ts writes refusal audit rows; governed by _shared helper contract",
+    addedAt: "2026-04-22",
+  },
+  {
+    functionName: "*",
+    target: "trace_spans",
+    suppressionKind: "undeclared-write",
+    reason: "tracing.ts writes trace spans; governed by _shared observability contract",
+    addedAt: "2026-04-22",
+  },
+  {
+    functionName: "*",
+    target: "error_events",
+    suppressionKind: "undeclared-write",
+    reason: "error-sink.ts writes error events; governed by _shared error-sink contract",
+    addedAt: "2026-04-22",
+  },
+  {
+    functionName: "*",
+    target: "ai_budget_decision_receipts",
+    suppressionKind: "undeclared-write",
+    reason: "ai-budget-check.ts writes budget receipts; governed by _shared AI budget contract",
+    addedAt: "2026-04-22",
+  },
+] as const;
+
+// ── Shared Helper Table IO Contracts ───────────────────────────
+// Maps each _shared/ helper to the tables it reads/writes.
+// The mutation traceability validator resolves imports from these
+// helpers to detect indirect DB mutations that bypass the simple
+// .from("table").insert() regex in the calling function's own code.
+// ───────────────────────────────────────────────────────────────
+
+export interface SharedHelperTableIO {
+  readonly helperFile: string;
+  readonly writes: readonly string[];
+  readonly reads: readonly string[];
+}
+
+export const SHARED_HELPER_TABLE_IO: readonly SharedHelperTableIO[] = [
+  {
+    helperFile: "kill-switch.ts",
+    writes: ["audit_logs"],
+    reads: ["automation_kill_switches"],
+  },
+  {
+    helperFile: "kill-switch-db.ts",
+    writes: ["automation_kill_switches"],
+    reads: ["automation_kill_switches"],
+  },
+  {
+    helperFile: "tracing.ts",
+    writes: ["trace_spans"],
+    reads: [],
+  },
+  {
+    helperFile: "error-sink.ts",
+    writes: ["error_events"],
+    reads: ["error_events"],
+  },
+  {
+    helperFile: "ai-budget-check.ts",
+    writes: ["ai_budget_decision_receipts"],
+    reads: [],
+  },
+  {
+    helperFile: "ai-receipt-logger.ts",
+    writes: ["ai_inference_receipts"],
+    reads: [],
+  },
+  {
+    helperFile: "audit-logger.ts",
+    writes: ["admin_action_audit"],
+    reads: [],
+  },
+  {
+    helperFile: "test-fixtures.ts",
+    writes: ["accounts", "admin_sessions", "webhook_delivery_log", "admin_action_audit"],
+    reads: ["accounts", "admin_sessions", "webhook_delivery_log", "admin_action_audit"],
+  },
+  {
+    helperFile: "alert-emitter.ts",
+    writes: [],
+    reads: [],
+  },
+] as const;
+
 export const EDGE_FUNCTION_TABLE_IO: Record<string, EdgeFunctionTableIO> = {
   // ── ADMIN BFF ────────────────────────────────────────────────
   "admin-bff-gateway": {
