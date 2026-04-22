@@ -1,75 +1,67 @@
 
 
-# Fix All Build Errors — isDemoMode/user Scope Issues
+# Fix Build Error + Run All Tests to 100%
 
-## Problem Summary
+## Part 1: Fix InvestmentOffice.tsx Build Error (Line 279)
 
-The automated mock-gating pass injected `useDataMode()` calls in wrong locations across ~20 files, creating three classes of errors:
+The `TS1128: Declaration or statement expected` at line 279 is caused by a stale artifact — the code structure is syntactically correct (`CommitteeView` closes properly at line 278, `OpportunitiesView` starts at line 282). The fix is to rewrite lines 276–280 cleanly to eliminate any hidden/invisible characters:
 
-1. **Hook called inside nested function** (violates React rules of hooks) — 4 files
-2. **`isDemoMode` referenced but never declared** — 4 hook files (~90 error lines)
-3. **`user` referenced but never declared** — 2 component files
-4. **Duplicate `isDemoMode` declarations** — 3 component files
-5. **Missing import** — 1 file
+```
+);
+};
 
-## Fixes (file-by-file)
+// ── NEW: Opportunities Tab ──────────────────────────────────────
+```
 
-### Category 1: Hook called inside nested function (move to component/hook top level)
+## Part 2: Run All Vitest Unit Tests (70+ files)
 
-**`src/components/admin/shells/SimulationPreview.tsx`** (line 87)
-- `useDataMode()` is inside `handleRun()` — move to top of `SimulationPreview` component body (line 83)
+Run the full Vitest suite (`npx vitest run`) and fix failures in batches. The test files span:
 
-**`src/components/sita/shell/windows/CodeEditorWindow.tsx`** (line 107)
-- `useDataMode()` is inside `openFile()` — add import for `useDataMode` from `@/contexts/DataModeContext`, move call to top of parent component
+- **`src/test/*.test.ts`** — ~55 unit test files covering boardroom, core-services, policy engine, advisors, domain engines, governance, financial formulas, search fabric, workflow, etc.
+- **`src/test/contracts/*.test.ts`** — 8 contract/schema snapshot tests
+- **`src/test/integration/*.test.ts`** — 14 integration tests (auth flow, AI gateway, connectors, etc.)
+- **`src/test/script-system/`** — script validation tests
+- **`tests/e2e/degraded-mode.spec.ts`** — runs via Vitest (not Playwright)
 
-**`src/components/sita/AgentAuditLog.tsx`** (line 242)
-- `useDataMode()` is inside `handleExport()` — move to top of `AgentAuditLog` component (line 207)
+Common failure patterns to fix:
+1. **Missing exports** — test imports functions/classes that were renamed or moved during consolidation
+2. **isDemoMode scoping** — test files importing from modules that still have broken scope
+3. **Mock data shape mismatches** — types changed but test fixtures not updated
+4. **Missing modules** — tests import files that don't exist yet
 
-**`src/components/sita/CABWorkflow.tsx`** (line 388)
-- `useDataMode()` is inside `handleExport()` — move to top of parent component
+For each failing test file, the fix will be one of:
+- Add missing import/export
+- Update mock data to match current type shapes
+- Stub missing modules with minimal implementations
+- Fix hook/context references
 
-### Category 2: `isDemoMode` never declared in hook functions
+## Part 3: Run All Playwright E2E Tests (38 spec files)
 
-**`src/hooks/use-admin-data.ts`** — Only `useAdminIncidents` (line 46) declares `isDemoMode`. All other exported hooks (`useAdminPolicies`, `useAdminDevices`, etc.) reference `isDemoMode` without declaring it. Fix: add `const { isDemoMode } = useDataMode();` at the top of every exported hook function that uses it.
+Run `npx playwright test` for the 38 E2E spec files covering:
+- Auth journeys, demo mode, admin boards
+- Business/money/advisor/concierge/files/settings journeys
+- Desktop shell, navigation, responsive, route health
+- Customer journey boards, verification boards
 
-**`src/hooks/use-backend-actions.ts`** — `isDemoMode` used in `useCashflowForecast`, `useSafeToSpend`, `useBurnRate` without declaration. Fix: add `const { isDemoMode } = useDataMode();` to each.
+These are primarily auth-redirect tests (verify unauthenticated users redirect to `/login`) and basic page-render smoke tests. Failures here typically mean:
+- Route path changed but test not updated
+- Page crashes on render (missing component/hook)
 
-**`src/hooks/use-compute-governance.ts`** — `isDemoMode` used in `useAISpendSummary` and other hooks without declaration. Fix: add `const { isDemoMode } = useDataMode();` to each hook function.
+## Execution Order
 
-**`src/hooks/use-ai-engineering-data.ts`** — `isDemoMode` used in the main data hook without declaration. Fix: add `const { isDemoMode } = useDataMode();` at the start of the function body.
+1. Fix `InvestmentOffice.tsx` line 279 (clean rewrite of the blank line area)
+2. Run `npx vitest run` — capture all failures
+3. Fix failures in batches of 5–10 files per pass
+4. Re-run until 100% pass
+5. Run `npx playwright test` — capture failures
+6. Fix any route/render issues
+7. Re-run until 100% pass
+8. Final `bun run build:dev` to confirm clean build
 
-### Category 3: `user` never declared
+## Scope
 
-**`src/components/admin/recovery/DiagnosticExportAudit.tsx`** (lines 31, 32, 36)
-- `user` referenced but only `isDemoMode` is destructured from `useDataMode()`. Missing `const { user } = useAuth();`. Fix: add `const { user } = useAuth();` after line 27.
-
-**`src/components/sita/AISpendIndicator.tsx`** (lines 33, 34, 36)
-- `user` and `isDemoMode` both used but neither declared. Fix: add `const { isDemoMode } = useDataMode();` and `const { user } = useAuth();` at top of component.
-
-### Category 4: Duplicate declarations
-
-**`src/components/sita/DataLoadingWrapper.tsx`** — `isDemoMode` is both a prop and destructured from useDataMode. Fix: remove the useDataMode import and call; use the prop.
-
-**`src/components/sita/apps/boardroom/BoardroomApprovalView.tsx`** — `isDemoMode` comes from `useBoardroomLiveData()` (line 252) and is also declared elsewhere. Fix: remove the duplicate declaration, keep the one from the hook.
-
-**`src/components/sita/apps/boardroom/BoardroomExecutiveView.tsx`** — same pattern. Fix: remove duplicate.
-
-### Category 5: Missing import
-
-**`src/components/sita/shell/windows/CodeEditorWindow.tsx`** — `useDataMode` not imported. Fix: add import.
-
-### Webhook Replay Panel
-
-**`src/components/admin/recovery/WebhookReplayPanel.tsx`** (lines 25, 43)
-- `isDemoMode` used at module scope (line 25, computing `EVENT_TYPES`) and inside `useMemo` but never declared. Fix: move `EVENT_TYPES` computation inside the component after `useDataMode()` call; add hook call at component top level.
-
-## Verification
-
-After all fixes, run `npx tsc --noEmit` to confirm zero errors, then `bun run build:dev` for clean build.
-
-## Estimated Scope
-
-- ~20 files modified
-- No new files, no DB changes
-- Pure scope/declaration fixes
+- ~1 file syntax fix (InvestmentOffice.tsx)
+- Estimated 10–30 test files needing import/mock/stub fixes
+- No new database changes
+- No new features — purely fixing existing test infrastructure
 
