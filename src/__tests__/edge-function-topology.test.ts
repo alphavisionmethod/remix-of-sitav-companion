@@ -35,8 +35,8 @@ describe("Edge Function Topology truth", () => {
       .filter((name) => fs.existsSync(path.join(FUNCTIONS_DIR, name, "index.ts")));
     const registered = new Set(EDGE_FUNCTION_AUTHORITY.map((e) => e.name));
     const orphans = onDisk.filter((n) => !registered.has(n));
-    // Hard ceiling — registry must cover ≥80% of on-disk fns.
+    // Hard ceiling — registry must cover ≥98% of on-disk fns.
     const coverage = (onDisk.length - orphans.length) / Math.max(onDisk.length, 1);
-    expect(coverage, `Orphans: ${orphans.length}/${onDisk.length}`).toBeGreaterThanOrEqual(0.8);
+    expect(coverage, `Orphans: ${orphans.length}/${onDisk.length}`).toBeGreaterThanOrEqual(0.98);
   });
 });
