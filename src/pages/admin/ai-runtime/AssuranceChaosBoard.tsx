@@ -39,9 +39,9 @@ export default function AssuranceChaosBoard() {
       supabase.from("internal_agent_assurance_reports").select("*").order("period_end", { ascending: false }).limit(10),
       supabase.from("internal_agent_auto_rollback_events").select("*").order("created_at", { ascending: false }).limit(20),
     ]);
-    setDrills((d.data as any) ?? []);
-    setReports((r.data as any) ?? []);
-    setRollbacks((b.data as any) ?? []);
+    setDrills((d.data ?? []) as typeof drills);
+    setReports((r.data ?? []) as typeof reports);
+    setRollbacks((b.data ?? []) as typeof rollbacks);
     setLoading(false);
   }
   useEffect(() => { refresh(); }, []);

@@ -39,9 +39,9 @@ export default function KnowledgeFederationBoard() {
       ]);
       const firstError = o.error ?? s.error ?? a.error;
       if (firstError) throw firstError;
-      setOptins((o.data as any) ?? []);
-      setShares((s.data as any) ?? []);
-      setAggs((a.data as any) ?? []);
+      setOptins((o.data ?? []) as typeof optins);
+      setShares((s.data ?? []) as typeof shares);
+      setAggs((a.data ?? []) as typeof aggs);
     } catch (e) {
       setError(e instanceof Error ? e.message : String(e));
     } finally {

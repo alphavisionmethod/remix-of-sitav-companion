@@ -39,9 +39,9 @@ export default function ExternalWorkforceApiBoard() {
       ]);
       const firstError = k.error ?? s.error ?? d.error;
       if (firstError) throw firstError;
-      setKeys((k.data as any) ?? []);
-      setSubs((s.data as any) ?? []);
-      setDeliveries((d.data as any) ?? []);
+      setKeys((k.data ?? []) as typeof keys);
+      setSubs((s.data ?? []) as typeof subs);
+      setDeliveries((d.data ?? []) as typeof deliveries);
     } catch (e) {
       setError(e instanceof Error ? e.message : String(e));
     } finally {
