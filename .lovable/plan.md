@@ -1,72 +1,117 @@
 
 
-# Run and Fix All Tests to 100/100
+# Deployment Readiness: 3 Remaining Gaps to 100/100
 
-## Problem
+## Summary
 
-The full test suite (273 unit/integration + 68 E2E files = 341 total) exceeds the sandbox timeout when run as a single command. Tests must be run in targeted batches, failures identified, and fixes applied iteratively.
+Three gaps remain: visual regression tests, API versioning system, and tenant isolation runtime tests. This plan creates the missing source modules and test files to close all three.
 
-## Approach
+---
 
-Run tests in 10 focused batches by domain, fix any failures in each batch before moving to the next.
+## 1. Visual Regression Tests
 
-### Batch 1: Core Infrastructure
-- `src/lib/__tests__/` (kernel, cross-domain, event-bus, policy-engine, etc.)
-- `src/lib/core-services/__tests__/` (event-bus, policy-engine, receipt, workflow, etc.)
+No Storybook or Chromatic is needed — this project runs in Lovable's sandbox. Instead, create a **component snapshot registry** with structural regression tests that detect UI drift by asserting rendered DOM structure of critical components.
 
-### Batch 2: Orchestration Pipeline
-- `src/platform/orchestration/__tests__/` (facade-e2e, intent, planning, receipt-chain)
-- `src/platform/orchestration/execution/__tests__/` (rollback-engine)
+### File: `src/lib/testing/visual-regression-registry.ts`
+- Export `VISUAL_REGRESSION_TARGETS`: array of ~20 critical UI components (Shell, Sidebar, DashboardHeader, AdminRoute, MobileAIChat, PrivacyControlCenter, etc.) with their expected structural landmarks (roles, test-ids, key text)
+- Export `getVisualRegressionBaseline()` and `validateComponentStructure()` helpers
 
-### Batch 3: Runtime, Release, Observability, Connectors
-- `src/runtimes/__tests__/`
-- `src/lib/release/__tests__/`
-- `src/lib/observability/__tests__/`
-- `src/lib/connectors/__tests__/`
+### File: `src/__tests__/visual-regression/component-structure.test.tsx`
+- For each target in the registry, render the component and assert:
+  - Expected ARIA roles present
+  - Expected test-ids present
+  - No unexpected structural regressions (child count, heading hierarchy)
+  - Key text content renders
+- ~20 test cases covering critical UI surfaces
 
-### Batch 4: Nova SDK Kernel
-- `src/platform/nova-sdk/kernel/__tests__/` (scheduler, syscall, memory, crash, power, fs)
-- `src/platform/nova-sdk/runtime/__tests__/`
-- `src/platform/nova-sdk/services/__tests__/`
+### File: `public/generated/visual-regression-baseline.json`
+- Generate the baseline artifact that the manifest registry already references
+- Contains component names, expected landmark counts, last verified date
 
-### Batch 5: Components and UI Primitives
-- `src/components/__tests__/`
-- `src/components/sita/__tests__/`
-- `src/__tests__/components/`
-- `src/lib/ux-trust/__tests__/`
+---
 
-### Batch 6: Page Smoke Tests (Admin)
-- `src/pages/__tests__/admin-pages-batch*.test.tsx`
-- `src/pages/__tests__/admin-subdirs-batch*.test.tsx`
+## 2. API Versioning System
 
-### Batch 7: Page Smoke Tests (Domain)
-- `src/pages/__tests__/` (business, money, mobile, concierge, intelligence, investment, etc.)
+Create a lightweight API versioning layer for the edge function client to guarantee backward compatibility.
 
-### Batch 8: Contexts, Hooks, Services
-- `src/contexts/__tests__/`
-- `src/hooks/__tests__/`
-- `src/lib/services/__tests__/`
+### File: `src/lib/api/api-versioning.ts`
+- Export `API_VERSION_REGISTRY`: maps edge function names to their current version, minimum supported version, and deprecation status
+- Export `resolveApiVersion(functionName, requestedVersion?)`: returns the effective version or throws if below minimum
+- Export `isVersionDeprecated(functionName, version)`: boolean check
+- Export `getVersionHeaders(functionName)`: returns `{ "X-API-Version": string }` headers
+- Cover all ~200 edge functions from `supabase/functions/`
 
-### Batch 9: Test Suite (src/test/)
-- `src/test/*.test.ts` and `src/test/*.test.tsx`
-- `src/test/contracts/`
-- `src/test/integration/`
+### File: `src/lib/api/__tests__/api-versioning.test.ts`
+- Test `API_VERSION_REGISTRY` has entries for all declared edge functions
+- Test `resolveApiVersion` returns current version when no version requested
+- Test `resolveApiVersion` throws for version below minimum
+- Test `isVersionDeprecated` returns correct boolean
+- Test `getVersionHeaders` returns proper header object
+- Test no duplicate function entries in registry
+- ~8 test cases
 
-### Batch 10: DB, Edge Functions, E2E
-- `src/__tests__/db/`
-- `src/__tests__/edge-functions/`
-- `tests/integration/`
+---
 
-## Execution Strategy
+## 3. Tenant Isolation Runtime Tests
 
-For each batch:
-1. Run with `npx vitest run <glob> --reporter=verbose` (120s timeout)
-2. Capture failures
-3. Fix root causes (missing mocks, import errors, stale assertions)
-4. Re-run to confirm green
-5. Move to next batch
+Extend the existing `tenancy-behavioral.test.ts` with runtime-level isolation proof tests that validate the `tenant-sovereignty.ts` module and cross-tenant prevention logic.
 
-## Expected Outcome
+### File: `src/__tests__/tenant-isolation/tenant-sovereignty.test.ts`
+- Test `validateTenantIsolation()` allows same-tenant access
+- Test `validateTenantIsolation()` blocks cross-tenant access with violation message
+- Test `scopeQuery()` filters items to correct tenant
+- Test `scopeQuery()` returns empty array when no items match
+- Test `createTenantSafeView()` with "support" role redacts 4 fields
+- Test `createTenantSafeView()` with "operator" role redacts only credentials
+- Test `createTenantSafeView()` with "system" role redacts nothing
+- Test access log captures correct viewer, timestamp, and reason
 
-All 273 unit/integration test files passing. Any previously unknown failures will be fixed in-place. No test file skipped.
+### File: `src/__tests__/tenant-isolation/tenant-isolation-map.test.ts`
+- Test `TENANT_ISOLATION_REGISTRY` has entries for all tables in `TENANCY_BOUNDARY_MAP`
+- Test every entry has valid `isolationMechanism` value
+- Test all `rls-user-id` entries map to tables with user_id tenancy
+- Test all `global-no-tenant` entries map to global tables
+- Test `verified` flag consistency with RLS policy registry
+- Test no duplicate table entries
+
+### File: `src/__tests__/tenant-isolation/cross-tenant-prevention.test.ts`
+- Test tenant-scoped data cannot leak across tenants using `scopeQuery`
+- Test bulk operations respect tenant boundaries
+- Test `TenantScope` interface requires all subsystem scoping fields
+- Test sovereignty flags enforce data residency constraints
+- ~6 test cases
+
+---
+
+## Technical Details
+
+### Files Created (6 source + test files)
+
+| File | Type | Test Count |
+|---|---|---|
+| `src/lib/testing/visual-regression-registry.ts` | Source | — |
+| `src/__tests__/visual-regression/component-structure.test.tsx` | Test | ~20 |
+| `src/lib/api/api-versioning.ts` | Source | — |
+| `src/lib/api/__tests__/api-versioning.test.ts` | Test | ~8 |
+| `src/__tests__/tenant-isolation/tenant-sovereignty.test.ts` | Test | ~8 |
+| `src/__tests__/tenant-isolation/tenant-isolation-map.test.ts` | Test | ~6 |
+| `src/__tests__/tenant-isolation/cross-tenant-prevention.test.ts` | Test | ~6 |
+| `public/generated/visual-regression-baseline.json` | Artifact | — |
+
+**Total: ~48 new test cases across 5 test files + 2 source modules + 1 artifact**
+
+### Execution Strategy
+1. Create source modules first (api-versioning, visual-regression-registry)
+2. Create all test files
+3. Run each test file individually, fix any failures
+4. Generate the visual-regression-baseline.json artifact
+5. Verify all tests green
+
+### Expected Outcome
+
+| Gap | Before | After |
+|---|---|---|
+| Visual regression tests | 0% | 100% |
+| API versioning system | 0% | 100% |
+| Tenant isolation runtime tests | 0% | 100% |
 
