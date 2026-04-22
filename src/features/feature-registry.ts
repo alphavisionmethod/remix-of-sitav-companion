@@ -98,7 +98,7 @@ export const FEATURE_REGISTRY: readonly FeatureSurfaceEntry[] = [
   {
     featureId: "apps", name: "Mini Apps", canonicalImport: "@/features/apps",
     domain: "system", riskTier: "R0", status: "beta",
-    ownedRoutes: ["/apps/email", "/apps/gallery", "/apps/health", "/apps/messenger", "/apps/vault", "/apps/weather"],
+    ownedRoutes: ["/apps", "/apps/email", "/apps/gallery", "/apps/health", "/apps/messenger", "/apps/vault", "/apps/weather"],
     ownedApps: [], runtimeSupport: [...WEB_DESKTOP], stateGrammar: [...CORE_STATES],
     proofCoverage: PARTIAL_PROOF, supportIntegrated: false, trustIntegrated: false,
   },
