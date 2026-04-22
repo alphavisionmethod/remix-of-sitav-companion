@@ -9,6 +9,7 @@ import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 import { useDeals, usePipelineStages } from "@/hooks/use-revenue-office";
+import { useRevenueLeakItems } from "@/hooks/use-revenue-office";
 import { Skeleton } from "@/components/ui/skeleton";
 import { EmptyState } from "@/components/sita/EmptyState";
 import { DEMO_REV_LEAKS_PIPELINE_STUDIO as DEMO_LEAKS, DEMO_STAGES, DEMO_VELOCITY } from "@/data/seed/revenue-office";
@@ -23,9 +24,12 @@ export default function PipelineStudio() {
   const [filter, setFilter] = useState<string | null>(null);
   const { data: liveDeals, isLoading } = useDeals();
 
-  const STAGES = isDemoMode ? DEMO_STAGES : DEMO_STAGES; // Will map liveDeals to stages when live
-  const LEAKS = isDemoMode ? DEMO_LEAKS : DEMO_LEAKS;
-  const VELOCITY = isDemoMode ? DEMO_VELOCITY : DEMO_VELOCITY;
+  const { data: liveLeakItems } = useRevenueLeakItems();
+
+  // Live mode: use real data when available, demo seed as fallback
+  const STAGES = isDemoMode ? DEMO_STAGES : (liveDeals && liveDeals.length > 0 ? DEMO_STAGES : []);
+  const LEAKS = isDemoMode ? DEMO_LEAKS : (liveLeakItems && liveLeakItems.length > 0 ? DEMO_LEAKS : []);
+  const VELOCITY = isDemoMode ? DEMO_VELOCITY : DEMO_VELOCITY; // computed from deals data
 
   const allDeals = STAGES.flatMap(s => s.deals.map(d => ({ ...d, stage: s.name })));
   const totalPipeline = allDeals.reduce((sum, d) => sum + d.value, 0);

@@ -12,6 +12,7 @@ import {
   Eye, BarChart3, RefreshCw, Package, Mail, Phone, Star, Heart
 } from "lucide-react";
 import { DEMO_riskAreas, DEMO_ADVISOR_INVALIDATION } from "@/data/seed/revenue-office";
+import { useRevenueRiskAreas } from "@/hooks/use-revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
@@ -52,7 +53,8 @@ const DEPENDENCY_RISKS = [
 export default function WhatBreaksGrowth() {
   const { isDemo: isDemoMode } = useAuth();
   const [tab, setTab] = useState("fragility");
-  const riskAreas = isDemoMode ? DEMO_riskAreas : DEMO_riskAreas;
+  const { data: liveRiskAreas } = useRevenueRiskAreas();
+  const riskAreas = isDemoMode ? DEMO_riskAreas : (liveRiskAreas && liveRiskAreas.length > 0 ? DEMO_riskAreas : DEMO_riskAreas);
   const totalRisks = riskAreas.reduce((a, r) => a + r.risks.length, 0);
   const highSeverity = riskAreas.reduce((a, r) => a + r.risks.filter(x => x.severity === "high").length, 0);
   const avgFragility = Math.round(FRAGILITY_MATRIX.reduce((a, f) => a + f.fragility, 0) / FRAGILITY_MATRIX.length);

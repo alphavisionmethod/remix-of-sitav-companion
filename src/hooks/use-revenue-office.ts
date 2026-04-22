@@ -187,3 +187,99 @@ export function useCommunicationLog() {
     },
   });
 }
+
+export function useConversionExperiments() {
+  const uid = useUserId();
+  return useQuery({
+    queryKey: ["conversion-experiments", uid],
+    enabled: !!uid,
+    queryFn: async () => {
+      const { data } = await fromTable("conversion_experiments").select("*").eq("user_id", uid!).order("created_at", { ascending: false });
+      return data ?? [];
+    },
+  });
+}
+
+export function useCommercialMemoryEvents() {
+  const uid = useUserId();
+  return useQuery({
+    queryKey: ["commercial-memory-events", uid],
+    enabled: !!uid,
+    queryFn: async () => {
+      const { data } = await fromTable("commercial_memory_events").select("*").eq("user_id", uid!).order("event_at", { ascending: false });
+      return data ?? [];
+    },
+  });
+}
+
+export function useRevenueRiskAreas() {
+  const uid = useUserId();
+  return useQuery({
+    queryKey: ["revenue-risk-areas", uid],
+    enabled: !!uid,
+    queryFn: async () => {
+      const { data } = await fromTable("revenue_risk_areas").select("*").eq("user_id", uid!);
+      return data ?? [];
+    },
+  });
+}
+
+export function useCustomerJourneyStages() {
+  const uid = useUserId();
+  return useQuery({
+    queryKey: ["customer-journey-stages", uid],
+    enabled: !!uid,
+    queryFn: async () => {
+      const { data } = await fromTable("customer_journey_stages").select("*").eq("user_id", uid!).order("stage_order");
+      return data ?? [];
+    },
+  });
+}
+
+export function useCustomerLifecycleStages() {
+  const uid = useUserId();
+  return useQuery({
+    queryKey: ["customer-lifecycle-stages", uid],
+    enabled: !!uid,
+    queryFn: async () => {
+      const { data } = await fromTable("customer_lifecycle_stages").select("*").eq("user_id", uid!).order("stage_order");
+      return data ?? [];
+    },
+  });
+}
+
+export function useComplianceControls() {
+  const uid = useUserId();
+  return useQuery({
+    queryKey: ["compliance-controls", uid],
+    enabled: !!uid,
+    queryFn: async () => {
+      const { data } = await fromTable("compliance_controls").select("*").eq("user_id", uid!);
+      return data ?? [];
+    },
+  });
+}
+
+export function useRiskRegister() {
+  const uid = useUserId();
+  return useQuery({
+    queryKey: ["risk-register", uid],
+    enabled: !!uid,
+    queryFn: async () => {
+      const { data } = await fromTable("risk_register").select("*").eq("user_id", uid!);
+      return data ?? [];
+    },
+  });
+}
+
+export function useCustomerProfileSnapshots(customerId?: string) {
+  const uid = useUserId();
+  return useQuery({
+    queryKey: ["customer-profile-snapshots", uid, customerId],
+    enabled: !!uid && !!customerId,
+    queryFn: async () => {
+      const { data } = await fromTable("customer_profile_snapshots").select("*").eq("user_id", uid!).eq("customer_id", customerId!).order("snapshot_date", { ascending: false });
+      return data ?? [];
+    },
+  });
+}

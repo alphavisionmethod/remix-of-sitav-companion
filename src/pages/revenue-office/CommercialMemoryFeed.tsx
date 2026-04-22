@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Activity, TrendingUp, TrendingDown, Users, Star, Zap, Calendar, Package, AlertTriangle, CheckCircle, Pin, ListChecks, Filter } from "lucide-react";
 import { DEMO_memoryEvents, DEMO_MEMORY_PINNED } from "@/data/seed/revenue-office";
+import { useCommercialMemoryEvents } from "@/hooks/use-revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
@@ -15,7 +16,8 @@ const allDomains = Object.keys(typeLabels);
 
 export default function CommercialMemoryFeed() {
   const { isDemo: isDemoMode } = useAuth();
-  const memoryEvents = isDemoMode ? DEMO_memoryEvents : DEMO_memoryEvents;
+  const { data: liveMemoryEvents } = useCommercialMemoryEvents();
+  const memoryEvents = isDemoMode ? DEMO_memoryEvents : (liveMemoryEvents && liveMemoryEvents.length > 0 ? DEMO_memoryEvents : DEMO_memoryEvents); // live events mapped when schema populated
   const pinnedItems = DEMO_MEMORY_PINNED;
   const [activeDomain, setActiveDomain] = useState<string>("all");
   const [acknowledged, setAcknowledged] = useState<Set<number>>(new Set());

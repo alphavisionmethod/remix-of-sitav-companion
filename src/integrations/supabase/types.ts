@@ -7725,6 +7725,57 @@ export type Database = {
           },
         ]
       }
+      commercial_memory_events: {
+        Row: {
+          created_at: string
+          detail: string | null
+          domain: string
+          event_at: string
+          event_type: string
+          id: string
+          impact_score: number | null
+          metadata: Json | null
+          sentiment: string | null
+          source_agent_id: string | null
+          source_ref: string | null
+          summary: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          detail?: string | null
+          domain?: string
+          event_at?: string
+          event_type?: string
+          id?: string
+          impact_score?: number | null
+          metadata?: Json | null
+          sentiment?: string | null
+          source_agent_id?: string | null
+          source_ref?: string | null
+          summary: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          detail?: string | null
+          domain?: string
+          event_at?: string
+          event_type?: string
+          id?: string
+          impact_score?: number | null
+          metadata?: Json | null
+          sentiment?: string | null
+          source_agent_id?: string | null
+          source_ref?: string | null
+          summary?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       communication_metrics: {
         Row: {
           created_at: string
@@ -8835,6 +8886,66 @@ export type Database = {
         }
         Relationships: []
       }
+      conversion_experiments: {
+        Row: {
+          confidence_level: number | null
+          conversion_rate_a: number | null
+          conversion_rate_b: number | null
+          created_at: string
+          description: string | null
+          ended_at: string | null
+          id: string
+          metadata: Json | null
+          name: string
+          sample_size: number | null
+          started_at: string | null
+          status: string
+          updated_at: string
+          user_id: string
+          variant_a: string
+          variant_b: string
+          winner: string | null
+        }
+        Insert: {
+          confidence_level?: number | null
+          conversion_rate_a?: number | null
+          conversion_rate_b?: number | null
+          created_at?: string
+          description?: string | null
+          ended_at?: string | null
+          id?: string
+          metadata?: Json | null
+          name: string
+          sample_size?: number | null
+          started_at?: string | null
+          status?: string
+          updated_at?: string
+          user_id: string
+          variant_a?: string
+          variant_b?: string
+          winner?: string | null
+        }
+        Update: {
+          confidence_level?: number | null
+          conversion_rate_a?: number | null
+          conversion_rate_b?: number | null
+          created_at?: string
+          description?: string | null
+          ended_at?: string | null
+          id?: string
+          metadata?: Json | null
+          name?: string
+          sample_size?: number | null
+          started_at?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string
+          variant_a?: string
+          variant_b?: string
+          winner?: string | null
+        }
+        Relationships: []
+      }
       council_escalations: {
         Row: {
           correlation_id: string | null
@@ -9696,6 +9807,132 @@ export type Database = {
           schedule_expression?: string | null
           started_at?: string
           status?: string
+        }
+        Relationships: []
+      }
+      customer_journey_stages: {
+        Row: {
+          avg_duration_days: number | null
+          conversion_rate: number | null
+          created_at: string
+          description: string | null
+          entry_count: number | null
+          exit_count: number | null
+          id: string
+          metadata: Json | null
+          stage_name: string
+          stage_order: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          avg_duration_days?: number | null
+          conversion_rate?: number | null
+          created_at?: string
+          description?: string | null
+          entry_count?: number | null
+          exit_count?: number | null
+          id?: string
+          metadata?: Json | null
+          stage_name: string
+          stage_order?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          avg_duration_days?: number | null
+          conversion_rate?: number | null
+          created_at?: string
+          description?: string | null
+          entry_count?: number | null
+          exit_count?: number | null
+          id?: string
+          metadata?: Json | null
+          stage_name?: string
+          stage_order?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      customer_lifecycle_stages: {
+        Row: {
+          avg_revenue_cents: number | null
+          color: string | null
+          created_at: string
+          criteria: string | null
+          customer_count: number | null
+          description: string | null
+          id: string
+          metadata: Json | null
+          stage_name: string
+          stage_order: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          avg_revenue_cents?: number | null
+          color?: string | null
+          created_at?: string
+          criteria?: string | null
+          customer_count?: number | null
+          description?: string | null
+          id?: string
+          metadata?: Json | null
+          stage_name: string
+          stage_order?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          avg_revenue_cents?: number | null
+          color?: string | null
+          created_at?: string
+          criteria?: string | null
+          customer_count?: number | null
+          description?: string | null
+          id?: string
+          metadata?: Json | null
+          stage_name?: string
+          stage_order?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      customer_profile_snapshots: {
+        Row: {
+          created_at: string
+          customer_id: string
+          engagement_level: string | null
+          health_score: number | null
+          id: string
+          lifetime_revenue_cents: number | null
+          metadata: Json | null
+          snapshot_date: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          customer_id: string
+          engagement_level?: string | null
+          health_score?: number | null
+          id?: string
+          lifetime_revenue_cents?: number | null
+          metadata?: Json | null
+          snapshot_date?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          customer_id?: string
+          engagement_level?: string | null
+          health_score?: number | null
+          id?: string
+          lifetime_revenue_cents?: number | null
+          metadata?: Json | null
+          snapshot_date?: string
+          user_id?: string
         }
         Relationships: []
       }
@@ -18515,6 +18752,99 @@ export type Database = {
           status?: string
           verification_matrix?: Json
           warnings?: Json
+        }
+        Relationships: []
+      }
+      revenue_risk_areas: {
+        Row: {
+          area_name: string
+          created_at: string
+          description: string | null
+          evidence_refs: Json | null
+          id: string
+          impact_estimate_cents: number | null
+          metadata: Json | null
+          mitigation_status: string
+          risk_type: string
+          severity: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          area_name: string
+          created_at?: string
+          description?: string | null
+          evidence_refs?: Json | null
+          id?: string
+          impact_estimate_cents?: number | null
+          metadata?: Json | null
+          mitigation_status?: string
+          risk_type?: string
+          severity?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          area_name?: string
+          created_at?: string
+          description?: string | null
+          evidence_refs?: Json | null
+          id?: string
+          impact_estimate_cents?: number | null
+          metadata?: Json | null
+          mitigation_status?: string
+          risk_type?: string
+          severity?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      risk_register: {
+        Row: {
+          category: string
+          created_at: string
+          id: string
+          impact: string
+          likelihood: string
+          metadata: Json | null
+          mitigation_plan: string | null
+          owner: string | null
+          risk_name: string
+          severity: string
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          category?: string
+          created_at?: string
+          id?: string
+          impact?: string
+          likelihood?: string
+          metadata?: Json | null
+          mitigation_plan?: string | null
+          owner?: string | null
+          risk_name: string
+          severity?: string
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          id?: string
+          impact?: string
+          likelihood?: string
+          metadata?: Json | null
+          mitigation_plan?: string | null
+          owner?: string | null
+          risk_name?: string
+          severity?: string
+          status?: string
+          updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }
