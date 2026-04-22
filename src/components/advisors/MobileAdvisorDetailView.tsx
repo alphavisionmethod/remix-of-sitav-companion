@@ -32,6 +32,12 @@ export const MobileAdvisorDetailView = ({ advisor, onClose }: MobileAdvisorDetai
   const scrollRef = useRef<HTMLDivElement>(null);
   const [isScrolledToTop, setIsScrolledToTop] = useState(true);
   const closedViaBack = useRef(false);
+  const [showDragHint, setShowDragHint] = useState(() => {
+    const key = "sita-drag-hint-seen";
+    if (sessionStorage.getItem(key)) return false;
+    sessionStorage.setItem(key, "1");
+    return true;
+  });
 
   // Haptic helper
   const haptic = useCallback((style: "light" | "medium" = "light") => {
@@ -80,6 +86,7 @@ export const MobileAdvisorDetailView = ({ advisor, onClose }: MobileAdvisorDetai
   const DRAG_CLOSE_VEL = 500;
 
   const handleDragEnd = (_: unknown, info: PanInfo) => {
+    if (showDragHint) setShowDragHint(false);
     const shouldClose =
       info.offset.y > DRAG_CLOSE_PX ||
       (info.velocity.y > DRAG_CLOSE_VEL && info.offset.y > 30);
@@ -122,8 +129,22 @@ export const MobileAdvisorDetailView = ({ advisor, onClose }: MobileAdvisorDetai
           </div>
 
           {/* Drag handle */}
-          <div className="flex justify-center -mt-2 mb-4">
+          <div
+            className="flex flex-col items-center -mt-2 mb-4 gap-1.5"
+            onClick={() => showDragHint && setShowDragHint(false)}
+          >
             <div className="w-10 h-1 rounded-full bg-white/20" />
+            {showDragHint && (
+              <motion.span
+                initial={{ opacity: 0, y: -4 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0 }}
+                transition={{ delay: 0.6, duration: 0.4 }}
+                className="text-[10px] text-white/40 tracking-wide select-none"
+              >
+                Swipe down to close
+              </motion.span>
+            )}
           </div>
 
           {/* Scrollable content — isolated scroll area */}
