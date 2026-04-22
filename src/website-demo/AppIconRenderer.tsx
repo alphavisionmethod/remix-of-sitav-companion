@@ -60,11 +60,11 @@ interface Props {
 }
 
 export function AppIconRenderer({ appId, size = 56, className = "", glowOnHover = false }: Props) {
+  const ref = useRef<HTMLDivElement>(null);
   const config = ICON_CONFIG[appId];
   if (!config) return null;
   const { gradient, Icon, shadow } = config;
   const iconSize = Math.round(size * 0.48);
-  const ref = useRef<HTMLDivElement>(null);
 
   return (
     <div
