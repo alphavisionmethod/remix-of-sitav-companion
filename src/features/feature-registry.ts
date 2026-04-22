@@ -134,6 +134,7 @@ export const FEATURE_REGISTRY: readonly FeatureSurfaceEntry[] = [
     featureId: "home", name: "Home", canonicalImport: "@/features/home",
     domain: "system", riskTier: "R0", status: "ga",
     ownedRoutes: ["/", "/home"], ownedApps: [],
+    // Also owns /desktop and /nova-desktop (desktop-home, nova-desktop route families)
     runtimeSupport: [...ALL_TIERS], stateGrammar: [...CORE_STATES],
     proofCoverage: CORE_PROOF, supportIntegrated: false, trustIntegrated: false,
   },
