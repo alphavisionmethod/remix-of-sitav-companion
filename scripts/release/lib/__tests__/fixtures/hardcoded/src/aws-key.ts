@@ -1,0 +1,1 @@
+const accessKey = "AKIAIOSFODNN7EXAMPLE";

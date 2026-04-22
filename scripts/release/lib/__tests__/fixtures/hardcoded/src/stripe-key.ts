@@ -1,0 +1,1 @@
+export const STRIPE_KEY = "sk_live_abcdefghij1234567890klmnop";
