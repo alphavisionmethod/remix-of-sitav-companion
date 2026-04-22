@@ -11,7 +11,9 @@
     "lint": "npx eslint server.ts",
     "clean": "rm -rf dist",
     "health-check": "curl -sf http://localhost:3001/health || exit 1",
-    "ready-check": "curl -sf http://localhost:3001/ready || exit 1"
+    "ready-check": "curl -sf http://localhost:3001/ready || exit 1",
+    "test": "echo 'No unit tests yet — use smoke' && exit 0",
+    "smoke": "curl -sf http://localhost:${PORT:-3001}/health | grep -q healthy || exit 1"
   },
   "dependencies": {
     "hono": "^4.4.0",
