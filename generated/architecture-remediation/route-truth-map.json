@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-04-18T11:59:31.305Z",
-  "totalRoutes": 491,
-  "totalPages": 1047,
-  "orphanedPageCount": 135,
+  "generatedAt": "2026-04-22T22:33:52.557Z",
+  "totalRoutes": 488,
+  "totalPages": 1097,
+  "orphanedPageCount": 153,
   "wrapperPageCount": 7,
   "orphanedPages": [
     "src/app/index.ts",
@@ -64,6 +64,7 @@
     "src/pages/__tests__/investment-pages.test.tsx",
     "src/pages/__tests__/misc-domain-pages.test.tsx",
     "src/pages/__tests__/mobile-pages-remaining.test.tsx",
+    "src/pages/__tests__/mobile-pages-sanity.test.tsx",
     "src/pages/__tests__/mobile-pages.test.tsx",
     "src/pages/__tests__/money-pages-remaining.test.tsx",
     "src/pages/__tests__/money-pages.test.tsx",
@@ -77,7 +78,13 @@
     "src/pages/__tests__/workspace-pages.test.tsx",
     "src/pages/admin/AIPromptFamiliesExplorer.tsx",
     "src/pages/admin/AdminKillSwitches.tsx",
+    "src/pages/admin/CostPerActiveUserDashboard.tsx",
     "src/pages/admin/ErrorEventsExplorer.tsx",
+    "src/pages/admin/KillSwitchDrillCenter.tsx",
+    "src/pages/admin/RecoveryOpsCenter.tsx",
+    "src/pages/admin/ai-runtime/CouncilsBoard.tsx",
+    "src/pages/admin/ai-runtime/InternalAgentsBoard.tsx",
+    "src/pages/admin/ai-runtime/SecurityCouncilBoard.tsx",
     "src/pages/auth/ForgotPassword.tsx",
     "src/pages/auth/Login.tsx",
     "src/pages/auth/ResetPassword.tsx",
@@ -97,14 +104,7 @@
     "src/pages/concierge/HouseholdCommandCenter.tsx",
     "src/pages/concierge/HouseholdTasks.tsx",
     "src/pages/concierge/LifeAdminCenter.tsx",
-    "src/pages/concierge/MonthGridCalendar.tsx",
-    "src/pages/concierge/RecurringObligations.tsx",
-    "src/pages/concierge/SchoolActivities.tsx",
-    "src/pages/concierge/ServiceProviders.tsx",
-    "src/pages/concierge/TravelPlanning.tsx",
-    "src/pages/concierge/UpcomingNeeds.tsx",
-    "src/pages/digital-presence/DPOSubNav.tsx",
-    "src/pages/files/FilesAll.tsx"
+    "src/pages/concierge/MonthGridCalendar.tsx"
   ],
   "wrapperPages": [
     "src/app/index.ts",
@@ -116,6 +116,8 @@
     "src/pages/admin/verification/V07LaunchBlockerBoard.tsx"
   ],
   "routeFiles": [
+    "src/__tests__/routes/route-family-completeness.test.ts",
+    "src/__tests__/routes/route-page-alignment.test.ts",
     "src/admin/routes/index.ts",
     "src/components/auth/AdminRoute.tsx",
     "src/components/auth/PermissionGatedRoute.tsx",
@@ -146,6 +148,11 @@
     {
       "path": "/admin/alerts",
       "element": "AlertsHome",
+      "sourceFile": "src/routes/AdminRoutes.tsx"
+    },
+    {
+      "path": "/admin/alerts/simulation",
+      "element": "AlertSimulationLab",
       "sourceFile": "src/routes/AdminRoutes.tsx"
     },
     {
@@ -381,11 +388,6 @@
     {
       "path": "/owner/pulse",
       "element": "OwnerPulsePage",
-      "sourceFile": "src/routes/OwnerRoutes.tsx"
-    },
-    {
-      "path": "/owner/trust",
-      "element": "Navigate",
       "sourceFile": "src/routes/OwnerRoutes.tsx"
     }
   ]

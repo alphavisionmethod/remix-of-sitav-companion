@@ -1,36 +1,36 @@
 {
-  "generatedAt": "2026-04-18T11:59:31.053Z",
-  "canonicalCount": 390,
-  "leakedCount": 1138,
+  "generatedAt": "2026-04-22T22:33:52.231Z",
+  "canonicalCount": 392,
+  "leakedCount": 1403,
   "leakedByFamily": {
     "misc": {
-      "count": 873,
+      "count": 1066,
       "sample": [
         "src/admin/redirects/admin-redirect-map.ts",
         "src/components/admin/hubs/DomainHubLayout.tsx",
         "src/components/admin/shells/AdminShell.tsx",
         "src/components/admin/shells/SurfaceAuthorityMatrix.tsx",
         "src/components/admin-ai/AIWorkforceScoreForm.tsx",
+        "src/components/advisors/AdvisorImage.tsx",
         "src/components/business/adaptive/AdaptiveCRMConfig.ts",
         "src/components/business/adaptive/AdaptiveContactLayout.tsx",
         "src/components/business/adaptive/BusinessHomeWidgetRegistry.ts",
-        "src/components/business/lead-inbox/mock-inbox-data.ts",
-        "src/components/concierge/ConciergeEmptyState.tsx"
+        "src/components/business/lead-inbox/mock-inbox-data.ts"
       ]
     },
     "types-leak": {
-      "count": 59,
+      "count": 79,
       "sample": [
         "src/components/sita/money-onboarding/types.ts",
+        "src/data/fixtures/seed/contract-runtime-consumer.ts",
         "src/data/persistence/event-bus-persistence.ts",
+        "src/features/_contracts/feature-surface-contract.ts",
         "src/integrations/supabase/types.ts",
         "src/lib/advisor-intelligence/types.ts",
-        "src/lib/ai/ai-state-types.ts",
+        "src/lib/ai-platform/runtime/ai-state-types.ts",
+        "src/lib/ai-platform/sovereign/types.ts",
         "src/lib/api/schemas.ts",
-        "src/lib/app-platform/manifest-schema.ts",
-        "src/lib/app-platform/package-schema.ts",
-        "src/lib/backend-topology/edge-function-contract-map.ts",
-        "src/lib/boardroom/types.ts"
+        "src/lib/app-platform/manifest-schema.ts"
       ]
     },
     "advisors-contracts": {
@@ -76,8 +76,24 @@
         "src/domains/investment/types.ts"
       ]
     },
+    "simulation-contracts": {
+      "count": 4,
+      "sample": [
+        "src/domains/simulation/domain-scenarios.ts",
+        "src/domains/simulation/financial-formulas.ts",
+        "src/domains/simulation/market-intelligence.ts",
+        "src/domains/simulation/monte-carlo-engine.ts"
+      ]
+    },
+    "admin-contracts": {
+      "count": 2,
+      "sample": [
+        "src/platform/admin/admin-ia-registry.ts",
+        "src/platform/admin/operator-workflow-map.ts"
+      ]
+    },
     "architecture-contracts": {
-      "count": 38,
+      "count": 50,
       "sample": [
         "src/platform/architecture/admin-page-consolidation-map.ts",
         "src/platform/architecture/admin-route-registry.ts",
@@ -111,12 +127,32 @@
         "src/platform/core-services/event-bus.ts"
       ]
     },
-    "design-system-contracts": {
-      "count": 3,
+    "deploy-contracts": {
+      "count": 1,
       "sample": [
-        "src/platform/design-system/domain-atmospheres.ts",
+        "src/platform/deploy/deployment-target-registry.ts"
+      ]
+    },
+    "design-system-contracts": {
+      "count": 2,
+      "sample": [
         "src/platform/design-system/sita-design-tokens.ts",
         "src/platform/design-system/snap-zones.ts"
+      ]
+    },
+    "experience-contracts": {
+      "count": 17,
+      "sample": [
+        "src/platform/experience/brand-surface-policy.ts",
+        "src/platform/experience/command-surface-merge-map.ts",
+        "src/platform/experience/component-tier-map.ts",
+        "src/platform/experience/design-token-bridge.ts",
+        "src/platform/experience/layout-merge-map.ts",
+        "src/platform/experience/motion-grammar.ts",
+        "src/platform/experience/navigation-merge-map.ts",
+        "src/platform/experience/notification-merge-map.ts",
+        "src/platform/experience/os-app-experience-contract.ts",
+        "src/platform/experience/responsive-coherence-map.ts"
       ]
     },
     "governance-contracts": {
@@ -155,6 +191,27 @@
         "src/platform/orchestration/intent/escalation-router.ts"
       ]
     },
+    "product-contracts": {
+      "count": 16,
+      "sample": [
+        "src/platform/product/command-search-model.ts",
+        "src/platform/product/deep-link-registry.ts",
+        "src/platform/product/domain-boundary-map.ts",
+        "src/platform/product/evidence-disclosure-map.ts",
+        "src/platform/product/navigation-model.ts",
+        "src/platform/product/notification-center-model.ts",
+        "src/platform/product/offline-degraded-matrix.ts",
+        "src/platform/product/permission-explanation-policy.ts",
+        "src/platform/product/product-boundary-contract.ts",
+        "src/platform/product/product-surface-registry.ts"
+      ]
+    },
+    "support-contracts": {
+      "count": 1,
+      "sample": [
+        "src/platform/support/support-bundle-builder.ts"
+      ]
+    },
     "sync-engine-contracts": {
       "count": 37,
       "sample": [
@@ -177,5 +234,5 @@
       ]
     }
   },
-  "totalContracts": 1528
+  "totalContracts": 1795
 }
