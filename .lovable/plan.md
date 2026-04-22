@@ -1,83 +1,131 @@
 
 
-# Plan: OS Script Test Coverage — 100% Deployment Readiness
+# Plan: Honest Audit Rewrite v4.0 + Fix All Identified Gaps
 
 ## Summary
 
-Create a comprehensive test suite covering all 18 OS build/release scripts. Since these scripts require root, hardware (TPM), and build tooling that cannot run in CI directly, the tests use two strategies:
+Full rewrite of `docs/os/SITA_OS_NATIVE_DEPLOYMENT_AUDIT.md` to v4.0 based on the PM's 10-concern assessment. The document will split confidence scores by surface (Web/Electron vs OS Native vs Operational Proof), eliminate self-scored inflation, and mark structural-only coverage honestly. Additionally, fix the code-level gaps the PM identified that are actionable now.
 
-1. **Vitest structural/contract tests** — validate script existence, bash syntax, output contract schemas, argument handling, and error paths using Node `fs` and `child_process`
-2. **Vitest simulation tests** — create mock `out/` directories with fixture data, then run safe portions of scripts (e.g., `--dry-run`, `--offline`, `--print` modes) to verify real behavior
-3. **Playwright E2E spec** — validates the full release pipeline structure and all script cross-references
+## Part 1 — Document Rewrite (v4.0)
 
-## Files Created (7 files)
+Single file: `docs/os/SITA_OS_NATIVE_DEPLOYMENT_AUDIT.md` (~750 lines)
 
-### 1. `src/__tests__/os/os-script-structural.test.ts`
-Structural contract tests for all 18 scripts:
-- Every script file exists and is executable (`chmod +x`)
-- Every script starts with `#!/usr/bin/env bash` and `set -euo pipefail`
-- Every script that produces receipts/manifests documents its output format in comments
-- No hardcoded absolute paths to user home directories
-- All scripts reference `SITA_OUT_DIR` env var (output directory convention)
-- Scripts that need tools check `command -v` before use
+### Verdict Block — Honest Layered Assessment
+Replace the single "🟢 97% PRODUCTION-READY" with the PM's recommended layered format:
+- 🟢 **WEB APP + ELECTRON SHELL: PRODUCTION-READY** — 11/11 pre-deploy gates, 49 E2E specs, 934 RLS policies, visual regression CI
+- 🟡 **OS NATIVE: CANDIDATE, NOT PROVEN** — 22 scripts complete, 0/22 executed on hardware, hardware validation pending
+- 🟡 **OPERATIONAL PROOF: PARTIAL** — kill-switch registry tests pass, 0 production-shape drills executed; receipt emission 0% live
+- 🔵 **Confidence: Web/Electron 96% | OS Native ~40% | Operational Proof ~35%**
 
-### 2. `src/__tests__/os/os-verity-contracts.test.ts`
-Tests for `build-verity-root.sh`, `verify-verity-metadata.sh`:
-- Validates receipt JSON schema: `rootHash` (64 hex chars), `salt`, `dataBlocks`, `hashBlockSize`, `createdAt` (ISO timestamp), `panicOnCorruption`
-- Validates cmdline fragment format: must contain `rd.systemd.verity=1` and `systemd.verity_root_hash=`
-- Validates verify script reads receipt and checks all 3 required files
+### New Section: Coverage Type Legend (§1.1)
+Define three coverage types used throughout:
+- **Behavioral** — function invoked, response validated, side effects checked
+- **Structural** — file scanned for patterns (grep-based), no invocation
+- **Contract** — schema/shape validated against fixture data, no live system
 
-### 3. `src/__tests__/os/os-signing-contracts.test.ts`
-Tests for `sign-kernel.sh`, `sign-initramfs.sh`, `enroll-secureboot-mok.sh`:
-- Validates signing receipt JSON schema: `artifact`, `sha256` (64 hex), `signedAt`, `keyKind` (enum: ephemeral-dev | production-mok), `verified`
-- Validates initramfs receipt schema: `artifact`, `signature`, `sha256`, `signedAt`, `keyKind`, `verified`
-- Validates MOK manifest schema: `version`, `key_provenance`, `cert_sha256_fp`, `signed_targets` (object with shim/grub/kernel booleans)
-- Validates ephemeral dev key fallback path exists in each script
+Every "Test Verified" cell will now specify which type.
 
-### 4. `src/__tests__/os/os-tpm-contracts.test.ts`
-Tests for `seal-verity-to-tpm.sh`, `verify-tpm-seal.sh`:
-- Validates TPM seal manifest schema: `version`, `verity_root_hash`, `pcr_selection`, `policy_digest_hex`, `sealed_public_sha256`, `sealed_private_sha256`
-- Validates verify script supports `--offline` and `--hardware` modes
-- Validates offline mode checks: manifest presence, SHA256 integrity of public/private blobs
-- Creates fixture `tpm-seal-manifest.json` + dummy blobs, runs offline verify logic in Node to confirm algorithm
+### §1 Platform Scale — Add Honest Context
+Keep the metrics table. Add a new column "What This Means":
+- "1,092 page files" → add note: "593 are admin pages — consolidation to ~80 canonical surfaces is P1"
+- "202 edge functions" → add note: "0 have behavioral integration tests; 15 structural assertions cover all 202 via grep"
+- "934 RLS policies" → keep as-is (this is genuinely strong)
 
-### 5. `src/__tests__/os/os-sbom-attestation-contracts.test.ts`
-Tests for `generate-sbom.sh`, `verify-sbom.sh`, `emit-attestation.sh`:
-- Validates SBOM output follows CycloneDX 1.5 schema: `bomFormat`, `specVersion`, `serialNumber` (urn:uuid:), `metadata.component`, `components` array
-- Validates attestation schema: `schema` field = "sita-os-attestation/v1", required keys (version, commit, builtAt, iso, packages, signing, verity, services)
-- Validates SBOM verify script checks schema + signature/sha256 sidecar
-- Validates signing fallback (sha256 when no SIGN_KEY)
+### §2.1 OS Scripts — Relabel Coverage Type
+All 22 scripts change from "✅" to "✅ contract" with explicit note: "Contract tests validate output schemas and script structure. No script has been executed end-to-end in CI or on hardware."
 
-### 6. `src/__tests__/os/os-update-rollback-contracts.test.ts`
-Tests for `build-update-bundle.sh`, `verify-update-bundle.sh`, `rollback-to-previous.sh`, `generate-support-bundle.sh`, `release.sh`:
-- Validates bundle manifest schema: `schema` = "sita-os-update/v1", `version`, `channel`, `rootHash`, `applyMode` = "ab-slot", `rebootRequired`, `rollbackAfterFailedBoots`
-- Validates verify script checks: SHA256 match, signature verification, version compatibility (`ver_ge` logic)
-- Tests `ver_ge` version comparison logic by extracting and running it in Node
-- Validates rollback script: `--dry-run` mode produces receipt without reboot, receipt schema (`from`, `to`, `at`, `reason`, `dryRun`)
-- Validates support bundle script: redaction patterns cover JWT, Stripe, License tokens
-- Validates release pipeline: all 14 steps reference real script paths, correct ordering
+### §4 Edge Functions — Honest Assessment
+- Change "✅ structural" labels to explicitly state: "grep-based pattern matching, not behavioral"
+- Add a new subsection "Behavioral Coverage Gap" with: "0/204 functions have integration tests that invoke the function and validate response + side effects"
+- Add top-20 priority list for behavioral tests (auth, AI gateway, payment, receipt emission, admin-bff)
+- Receipt emission: infrastructure exists (`ai-receipt-logger.ts`, `ai-budget-check.ts` in `_shared/`), 0% live emission confirmed
 
-### 7. `src/__tests__/os/os-reproducibility-contracts.test.ts`
-Tests for `reproducible-build-env.sh`, `verify-reproducibility.sh`:
-- Validates env script sets `SOURCE_DATE_EPOCH`, `LC_ALL`, `TZ=UTC`, `SITA_MKSQUASHFS_OPTS`, `SITA_TAR_OPTS`
-- Runs `bash os/scripts/reproducible-build-env.sh --print` and validates output contains all required vars
-- Validates reproducibility report schema: `checked_at`, `source_date_epoch`, `ok` (boolean), `artifact_count`, `results` array
+### §6 Database — Unchanged (genuinely strong)
 
-## Update to Audit Document
+### §9 Design Token Audit — Relabel
+Change "3,196 HSL warnings baselined, cosmetic only" to "3,196 HSL warnings — deferred design debt, will require manual fixes for brand refresh/dark mode/white-label"
 
-After all tests are created, update `docs/os/SITA_OS_NATIVE_DEPLOYMENT_AUDIT.md` Section 2.1 table:
-- Change all 18 scripts from `❌` to `✅` with the corresponding test file reference
-- Update Deployment Confidence Score: OS Native from 70% to 95% (5% reserved for hardware-only TPM/MOK which can never be CI-tested)
-- Overall score: 93% to 97%
+### §13 Pre-Flight Checklist — Add Drill Status
+- Row 18 "Kill-switches operational": Change to "✅ registry structural | ❌ no production drill executed"
+- Add new row 21: "Kill-switch drill executed in staging" → ❌
+- Add new row 22: "Production-shape restore drill executed" → ❌
 
-## Update to Downloadable Artifact
+### §14 Active Caveats — Elevate Severity
+Rename section to "Active Caveats — These Qualify All Claims Above"
+Add opening statement: "The verdict at the top of this document is **conditional** on these items. Do not cite the verdict without this section."
 
-Regenerate `SITA_OS_OSAUDIT_v3.1.md` in `/mnt/documents/` with the updated scores.
+### §15 Confidence Score — Split by Surface
+Replace single 97% with:
 
-## Test Strategy Notes
+| Surface | Score | Method | Gap |
+|---|---|---|---|
+| Web App (build, types, lint, RLS, E2E) | 96% | Behavioral + structural | 5 missing E2E specs |
+| Electron Shell (security fabric) | 90% | Behavioral (5/11 modules) | auto-updater, crash-reporter, fs-bridge untested |
+| Edge Functions | 30% | Structural only | 0/204 behavioral tests, 0% receipt emission |
+| OS Native | 40% | Contract only | 0/22 scripts executed, 0 hardware proofs |
+| Operational Proof | 25% | Registry structural | 0 drills, 0 restore tests, 0 7-day probes |
+| **Weighted Overall** | **62%** | — | See gaps above |
 
-- All tests use **Vitest** (not Playwright) since they validate file-system contracts and script logic, not browser UI
-- Tests that can safely execute script fragments (e.g., `--print`, `--dry-run`, `--offline`) do so via `child_process.execSync`
-- Tests that cannot run scripts (need root/TPM/hardware) validate the **contract** — the JSON schema of outputs, the presence of error handling, and the correctness of parsing logic
-- Fixture data uses realistic but synthetic values (64-char hex hashes, ISO timestamps, valid JSON)
+### New Section: Service & Page Sprawl Status (§17)
+- 593 admin pages vs 80 target = 7.4x over target
+- Service directories: current count vs 45 target
+- 204 edge functions, growing (was 193 six days ago, now 204)
+- Recommendation: freeze additions, consolidate
+
+### New Section: PM Corrective Actions Tracker (§18)
+| # | Action | Owner | Deadline | Status |
+Immediate (this week):
+1. Verdict rewrite — this document — ✅ done in v4.0
+2. Freeze edge function additions — PR gate — 🟡 needs enforcement
+3. Execute 1 kill-switch drill — staging — ❌ not started
+4. Close 1 P1 caveat (OAuth 7-day probe) — connectors — ❌ not started
+
+30-day:
+5. Behavioral tests for top 20 edge functions
+6. Wire receipt emission on those 20
+7. Consolidate 34 duplicated service pairs
+8. Execute production-shape restore drill
+9. Ship MOK signing CI secret injection
+
+90-day:
+10. TPM hardware seal/verify on reference device
+11. Second reproducibility host in CI
+12. Expand hardware matrix to 3 platforms
+13. Consolidate 593 admin pages to ~80
+
+## Part 2 — Code Fixes (Actionable Now)
+
+### Fix 1: Kill-switch test — add drill readiness check
+File: `src/__tests__/kill-switch-enforcement.test.ts`
+Add test case that checks for a `drills/` directory or drill log file, and explicitly marks "0 drills executed" as a tracked metric rather than silently passing.
+
+### Fix 2: Service boundary test — add sprawl metric
+File: `src/__tests__/service-boundary-truth.test.ts`
+Add test case that counts service directories and reports the count, with a warning threshold (e.g., > 100 directories = warning in output).
+
+### Fix 3: Edge function freeze gate
+New file: `src/__tests__/edge-function-freeze-gate.test.ts`
+Test that asserts: if edge function count > 204, at least 1 new integration test must exist per new function. This is the PR-level gate the PM demanded.
+
+### Fix 4: Admin page sprawl tracker
+New file: `src/__tests__/admin-page-sprawl.test.ts`
+Test that counts admin pages (`src/pages/**/admin*` + `src/pages/**/Admin*`) and reports the count. Sets a ratchet: count must not increase above current (593) without a consolidation plan reference.
+
+### Fix 5: Receipt emission coverage gate
+New file: `src/__tests__/edge-functions/receipt-emission-coverage.test.ts`
+Test that checks how many of the 204 edge functions actually call `logAIReceipt`, `writeDecisionReceipt`, `emitActionReceipt`, or insert into receipt/audit tables. Reports percentage. Current expected: ~5-10%.
+
+## Part 3 — Updated Downloadable Artifact
+
+Regenerate `/mnt/documents/SITA_OS_OSAUDIT_v4.0.md` with the honest scoring.
+
+## Files Changed/Created
+
+1. `docs/os/SITA_OS_NATIVE_DEPLOYMENT_AUDIT.md` — full rewrite to v4.0
+2. `src/__tests__/kill-switch-enforcement.test.ts` — add drill readiness check
+3. `src/__tests__/service-boundary-truth.test.ts` — add sprawl metric
+4. `src/__tests__/edge-function-freeze-gate.test.ts` — new
+5. `src/__tests__/admin-page-sprawl.test.ts` — new
+6. `src/__tests__/edge-functions/receipt-emission-coverage.test.ts` — new
+7. `/mnt/documents/SITA_OS_OSAUDIT_v4.0.md` — downloadable artifact
 
