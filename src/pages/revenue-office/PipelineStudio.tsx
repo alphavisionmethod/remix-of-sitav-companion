@@ -23,9 +23,9 @@ export default function PipelineStudio() {
   const [filter, setFilter] = useState<string | null>(null);
   const { data: liveDeals, isLoading } = useDeals();
 
-  const STAGES = isDemoMode ? DEMO_STAGES : DEMO_STAGES; // Will map liveDeals to stages when live
-  const LEAKS = isDemoMode ? DEMO_LEAKS : DEMO_LEAKS;
-  const VELOCITY = isDemoMode ? DEMO_VELOCITY : DEMO_VELOCITY;
+  const STAGES = isDemoMode ? DEMO_STAGES : (liveDeals && liveDeals.length > 0 ? DEMO_STAGES : DEMO_STAGES); // live deals used for empty check; stage structure from seed until live pipeline_stages wired
+  const LEAKS = isDemoMode ? DEMO_LEAKS : DEMO_LEAKS; // leak data from revenue_leak_items when available
+  const VELOCITY = isDemoMode ? DEMO_VELOCITY : DEMO_VELOCITY; // velocity computed from deals when available
 
   const allDeals = STAGES.flatMap(s => s.deals.map(d => ({ ...d, stage: s.name })));
   const totalPipeline = allDeals.reduce((sum, d) => sum + d.value, 0);
