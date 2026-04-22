@@ -1,30 +1,10 @@
 import { test, expect } from "@playwright/test";
+import {
+  PUBLIC_ROUTES,
+  PROTECTED_ROUTE_SAMPLES,
+} from "../../src/platform/architecture/route-registry";
 
-// Public routes that don't require auth
-const PUBLIC_ROUTES = [
-  "/login",
-  "/signup",
-  "/forgot-password",
-  "/reset-password",
-];
-
-// These routes require auth — unauthenticated should redirect to /login
-const PROTECTED_ROUTE_SAMPLES = [
-  "/",
-  "/business",
-  "/money",
-  "/files",
-  "/boardroom",
-  "/advisor",
-  "/approvals",
-  "/settings",
-  "/connectors",
-  "/admin/dashboard",
-  "/admin/truth-registry",
-  "/admin/launch-readiness",
-];
-
-test.describe("Route Health — Public Routes", () => {
+test.describe("Route Health — Public Routes (from route-registry)", () => {
   for (const route of PUBLIC_ROUTES) {
     test(`${route} loads without crash`, async ({ page }) => {
       await page.goto(route);
