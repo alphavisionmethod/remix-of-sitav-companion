@@ -136,6 +136,6 @@ export default function EnvironmentSwitcher() {
           </div>
         </CardContent>
       </Card>
-    </div>
+    </PageShell>
   );
 }

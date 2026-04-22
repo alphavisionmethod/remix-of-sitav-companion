@@ -133,6 +133,6 @@ export default function PlanningCanvas() {
           </div>
         </CardContent>
       </Card>
-    </div>
+    </PageShell>
   );
 }
