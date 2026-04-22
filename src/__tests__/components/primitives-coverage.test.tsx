@@ -2,6 +2,10 @@ import { describe, it, expect, vi } from "vitest";
 import { render } from "@/test/test-utils";
 import * as fs from "fs";
 import { CANONICAL_PRIMITIVES } from "@/platform/architecture/component-registry";
+import { BaseCard } from "@/components/primitives/display/BaseCard";
+import { StatusBadge } from "@/components/primitives/status/StatusBadge";
+import { EmptyState } from "@/components/primitives/feedback/EmptyState";
+import { Panel } from "@/components/primitives/display/Panel";
 
 vi.mock("react-router-dom", async () => {
   const actual = await vi.importActual("react-router-dom");
@@ -22,30 +26,22 @@ describe("Canonical Primitives Coverage", () => {
     expect(count).toBeGreaterThanOrEqual(14);
   });
 
-  it("BaseCard renders", async () => {
-    const mod = await import("@/components/primitives/display/BaseCard");
-    const BaseCard = mod.default || mod.BaseCard;
+  it("BaseCard renders", () => {
     const { container } = render(<BaseCard>Content</BaseCard>);
     expect(container.firstChild).not.toBeNull();
   });
 
-  it("StatusBadge renders", async () => {
-    const mod = await import("@/components/primitives/status/StatusBadge");
-    const StatusBadge = mod.default || mod.StatusBadge;
+  it("StatusBadge renders", () => {
     const { container } = render(<StatusBadge status="active" />);
     expect(container.firstChild).not.toBeNull();
   });
 
-  it("EmptyState renders", async () => {
-    const mod = await import("@/components/primitives/feedback/EmptyState");
-    const EmptyState = mod.default || mod.EmptyState;
+  it("EmptyState renders", () => {
     const { container } = render(<EmptyState title="Nothing" />);
     expect(container.firstChild).not.toBeNull();
   });
 
-  it("Panel renders", async () => {
-    const mod = await import("@/components/primitives/display/Panel");
-    const Panel = mod.default || mod.Panel;
+  it("Panel renders", () => {
     const { container } = render(<Panel>Content</Panel>);
     expect(container.firstChild).not.toBeNull();
   });
