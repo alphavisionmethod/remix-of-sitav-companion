@@ -146,6 +146,12 @@ export interface SettingsSchema {
   // General — Approval
   "general.approvalStyle": "ask-as-needed" | "batch-reviews" | "minimal-interruptions";
 
+  // General — Accessibility sync
+  "general.syncAccessibility": boolean;
+
+  // General — Timezone favorites
+  "general.timezoneFavorites": string[];
+
   // Accessibility
   "accessibility.voiceOver": boolean;
   "accessibility.zoom": boolean;
@@ -177,7 +183,36 @@ interface SettingsConstraint {
 
 const DB_NAME = "nova-settings";
 const STORE_NAME = "user-settings";
-const SCHEMA_VERSION = 1;
+const SCHEMA_VERSION = 2;
+
+// ── Schema migration registry ──
+interface SchemaMigration {
+  fromVersion: number;
+  toVersion: number;
+  migrate: (data: Record<string, unknown>) => Record<string, unknown>;
+}
+
+const SCHEMA_MIGRATIONS: SchemaMigration[] = [
+  {
+    fromVersion: 1,
+    toVersion: 2,
+    migrate: (data) => {
+      const migrated = { ...data };
+      if (!("general.syncAccessibility" in migrated)) migrated["general.syncAccessibility"] = true;
+      if (!("general.timezoneFavorites" in migrated)) migrated["general.timezoneFavorites"] = [];
+      return migrated;
+    },
+  },
+];
+
+function runMigrations(data: Record<string, unknown>, fromVersion: number): Record<string, unknown> {
+  let current = { ...data };
+  let version = fromVersion;
+  for (const m of SCHEMA_MIGRATIONS) {
+    if (m.fromVersion === version) { current = m.migrate(current); version = m.toVersion; }
+  }
+  return current;
+}
 
 class SettingsServiceClass implements SystemService {
   id = "SettingsService";
@@ -450,7 +485,11 @@ class SettingsServiceClass implements SystemService {
     d.set("general.showSetupRecommendations", true);
     // General — Approval
     d.set("general.approvalStyle", "ask-as-needed");
-    // Accessibility
+    // General — Accessibility sync
+    d.set("general.syncAccessibility", true);
+    // General — Timezone favorites
+    d.set("general.timezoneFavorites", []);
+    // Accessibility  
     d.set("accessibility.voiceOver", false);
     d.set("accessibility.zoom", false);
     d.set("accessibility.zoomLevel", 1);
@@ -523,8 +562,15 @@ class SettingsServiceClass implements SystemService {
     try {
       const stored = localStorage.getItem("nova-settings-user");
       if (stored) {
-        const parsed = JSON.parse(stored);
+        let parsed: Record<string, unknown> = JSON.parse(stored);
+        const storedVersion = (parsed as any).__schemaVersion ?? 1;
+        if (storedVersion < SCHEMA_VERSION) {
+          parsed = runMigrations(parsed, storedVersion);
+          parsed.__schemaVersion = SCHEMA_VERSION;
+          localStorage.setItem("nova-settings-user", JSON.stringify(parsed));
+        }
         for (const [key, value] of Object.entries(parsed)) {
+          if (key === "__schemaVersion") continue;
           this.layers.user.set(key, value);
         }
       }
@@ -533,7 +579,8 @@ class SettingsServiceClass implements SystemService {
 
   private persistToStorage(): void {
     try {
-      const data = Object.fromEntries(this.layers.user);
+      const data: Record<string, unknown> = Object.fromEntries(this.layers.user);
+      data.__schemaVersion = SCHEMA_VERSION;
       localStorage.setItem("nova-settings-user", JSON.stringify(data));
     } catch {}
   }
