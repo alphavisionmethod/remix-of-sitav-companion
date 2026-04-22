@@ -39,7 +39,7 @@ const MODE_STYLES = {
 };
 
 export default function CommandHistory() {
-  const { isDemoMode } = useDataMode();
+  const isDemoMode = false;
   const [filter, setFilter] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState("");
 

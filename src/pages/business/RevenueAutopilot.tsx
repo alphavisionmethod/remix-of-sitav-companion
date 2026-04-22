@@ -41,7 +41,7 @@ const severityColors: Record<string, string> = {
 // ── Sub-Pages ───────────────────────────────────────────────────
 
 const LeakageRadar = () => {
-  const { isDemoMode } = useDataMode();
+  const isDemoMode = false;
   return (
   <div className="space-y-4">
     <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
@@ -83,7 +83,7 @@ const LeakageRadar = () => {
 };
 
 const RecoveryEngine = () => {
-  const { isDemoMode } = useDataMode();
+  const isDemoMode = false;
   return (
   <div className="space-y-4">
     <div className="grid gap-3 sm:grid-cols-3">
@@ -124,7 +124,7 @@ const RecoveryEngine = () => {
 };
 
 const OpportunitiesRanked = () => {
-  const { isDemoMode } = useDataMode();
+  const isDemoMode = false;
   return (
   <div className="space-y-4">
     <div className="space-y-2">
@@ -158,7 +158,7 @@ const OpportunitiesRanked = () => {
 };
 
 const RecoveredValueLedger = () => {
-  const { isDemoMode } = useDataMode();
+  const isDemoMode = false;
   const summary = computeRecoveredValueSummary(DEMO_RECOVERED);
   return (
     <div className="space-y-4">

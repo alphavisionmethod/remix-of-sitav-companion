@@ -17,7 +17,7 @@ const deviceIcon = (type: "desktop" | "phone" | "tablet") => {
 };
 
 const TrustedDeviceManager = () => {
-  const { isDemoMode } = useDataMode();
+  const isDemoMode = false;
   return (
     <div className="space-y-6 p-6 max-w-3xl mx-auto">
       <div>

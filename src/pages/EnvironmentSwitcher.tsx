@@ -41,7 +41,7 @@ const TYPE_STYLES = {
 };
 
 export default function EnvironmentSwitcher() {
-  const { isDemoMode } = useDataMode();
+  const isDemoMode = false;
 
   return (
     <PageShell width="full">

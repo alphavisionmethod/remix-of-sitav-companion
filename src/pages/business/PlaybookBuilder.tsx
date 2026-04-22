@@ -139,7 +139,7 @@ const StepCard = ({
   step: BuilderStep; index: number; totalSteps: number;
   onUpdate: (s: BuilderStep) => void; onRemove: () => void; onDuplicate: () => void;
 }) => {
-  const { isDemoMode } = useDataMode();
+  const isDemoMode = false;
   const [expanded, setExpanded] = useState(false);
   const actionMeta = step.action ? ACTION_TYPES.find(a => a.type === step.action) : null;
   const stepMeta = STEP_TYPES.find(s => s.type === step.type);
@@ -374,7 +374,7 @@ const AddStepMenu = ({ onAdd }: { onAdd: (type: BuilderStep["type"], action?: Au
 // ── Trigger Config Panel ─────────────────────────────────────────
 
 const TriggerPanel = ({ trigger, onChange }: { trigger: BuilderTrigger; onChange: (t: BuilderTrigger) => void }) => {
-  const { isDemoMode } = useDataMode();
+  const isDemoMode = false;
   return (
   <SitaCard className="p-4" hover={false}>
     <SitaCardTitle sub="What starts this playbook">Trigger</SitaCardTitle>
@@ -435,7 +435,7 @@ const TriggerPanel = ({ trigger, onChange }: { trigger: BuilderTrigger; onChange
 
 const PreviewPanel = ({
   draft }: { draft: PlaybookDraft }) => {
-  const { isDemoMode } = useDataMode();
+  const isDemoMode = false;
   const triggerLabel = draft.trigger.type === "event"
     ? ([] as typeof DEMO_TRIGGER_EVENTS).find(e => e.value === draft.trigger.event)?.label || draft.trigger.event
     : draft.trigger.type === "schedule" ? draft.trigger.schedule
@@ -502,7 +502,7 @@ const PreviewPanel = ({
 // ── Main Component ───────────────────────────────────────────────
 
 const PlaybookBuilder = () => {
-  const { isDemoMode } = useDataMode();
+  const isDemoMode = false;
   const { primaryMode } = useBusinessProfile();
 const [draft, setDraft] = useState<PlaybookDraft>(defaultDraft);
   const [saved, setSaved] = useState(false);

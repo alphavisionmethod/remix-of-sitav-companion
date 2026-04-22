@@ -157,7 +157,7 @@ const severityColor = (sev: string) =>
 // Main Page
 // ════════════════════════════════════════════════════════════════
 export default function HQApprovalQueue() {
-  const { isDemoMode } = useDataMode();
+  const isDemoMode = false;
   const [tab, setTab] = useState("overview");
 
   return (
@@ -188,7 +188,7 @@ export default function HQApprovalQueue() {
 // HQ01 — Queue Overview
 // ════════════════════════════════════════════════════════════════
 function HQ01Overview() {
-  const { isDemoMode } = useDataMode();
+  const isDemoMode = false;
   const { data: allItems = [] } = useQuery({
     queryKey: ["hq-all-items"],
     queryFn: () => fetchQueue({ status: "all" }),

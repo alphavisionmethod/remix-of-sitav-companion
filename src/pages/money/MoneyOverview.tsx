@@ -14,7 +14,7 @@ import { useDataMode } from "@/contexts/DataModeContext";
 
 
 const MoneyOverview = () => {
-  const { isDemoMode } = useDataMode();
+  const isDemoMode = false;
   const { navigateTo } = useFinanceNavigation();
   const { data: bills = [] } = useBills();
   const { data: subscriptions = [] } = useSubscriptions();

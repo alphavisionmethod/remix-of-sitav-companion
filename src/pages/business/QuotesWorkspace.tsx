@@ -23,7 +23,7 @@ import { useDataMode } from "@/contexts/DataModeContext";
 
 const QuotesWorkspace = () => {
   const { primaryMode } = useBusinessProfile();
-  const { isDemoMode } = useDataMode();
+  const isDemoMode = false;
   const { user } = useAuth();
   const moduleConfig = getModuleAdaptation("quotes", primaryMode);
   const queryClient = useQueryClient();

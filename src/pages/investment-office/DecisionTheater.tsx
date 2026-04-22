@@ -40,7 +40,7 @@ function AdvisorVotingPanel() {
   const [allRevealed, setAllRevealed] = useState(false);
 
   const revealAll = () => {
-  const { isDemoMode } = useDataMode();
+  const isDemoMode = false;
     INVESTMENT_ADVISORS.slice(0, 5).forEach((adv, i) => {
       setTimeout(() => {
         setRevealed(prev => new Set([...prev, adv.id]));
@@ -200,7 +200,7 @@ function AudioWaveIndicator() {
 }
 
 export default function DecisionTheater() {
-  const { isDemoMode } = useDataMode();
+  const isDemoMode = false;
   const { data: liveData, isLoading } = useInvestmentDecisions();
   const navigate = useNavigate();
   const [spotlightActive, setSpotlightActive] = useState(false);

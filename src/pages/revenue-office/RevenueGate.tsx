@@ -26,7 +26,7 @@ const CONNECTION_HEALTH = [
 const OPERATING_MODES = ["Growth", "Stability", "Recovery", "Launch"] as const;
 
 export default function RevenueGate() {
-  const { isDemoMode } = useDataMode();
+  const isDemoMode = false;
   const navigate = useNavigate();
   const { data: liveDeals, isLoading } = useDeals();
   const [operatingMode, setOperatingMode] = useState<typeof OPERATING_MODES[number]>("Growth");

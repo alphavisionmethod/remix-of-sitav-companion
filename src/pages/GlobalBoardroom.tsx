@@ -53,7 +53,7 @@ const GlobalBoardroom = () => {
       },
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user?.id, isDemoMode, leads.length, customers.length, invoices.length]);
+  }, [user?.id, leads.length, customers.length, invoices.length]);
 
   const crossDomainPriorities = [
     overdueAmount > 0 && { id: "od", label: `Collect $${overdueAmount.toLocaleString()} in overdue invoices`, urgency: "critical" as const },

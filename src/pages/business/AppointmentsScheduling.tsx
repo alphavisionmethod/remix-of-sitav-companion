@@ -57,7 +57,7 @@ const riskConfig: Record<string, string> = {
 };
 
 const KPIStrip = () => {
-  const { isDemoMode } = useDataMode();
+  const isDemoMode = false;
   const upcoming = ([] as typeof DEMO_APPOINTMENTS).filter(a => ["Today", "Tomorrow", "Wed"].includes(a.date) && a.status !== "no-show" && a.status !== "cancelled").length;
   const needsConfirm = ([] as typeof DEMO_APPOINTMENTS).filter(a => a.status === "pending" || a.status === "unconfirmed").length;
   const highRisk = ([] as typeof DEMO_APPOINTMENTS).filter(a => a.noShowRisk === "high" && a.status !== "no-show" && a.status !== "cancelled").length;
@@ -145,7 +145,7 @@ const AppointmentCard = ({ apt }: { apt: Appointment }) => {
 };
 
 const AppointmentsScheduling = () => {
-  const { isDemoMode } = useDataMode();
+  const isDemoMode = false;
   const { primaryMode } = useBusinessProfile();
   const moduleConfig = getModuleAdaptation("appointments", primaryMode);
   const [activeTab, setActiveTab] = useState("upcoming");

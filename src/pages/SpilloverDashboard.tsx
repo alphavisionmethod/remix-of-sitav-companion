@@ -27,7 +27,7 @@ const DEMO_DOMAINS: any[] = [];
 // ── Spillover graph (simplified visual) ──────────────────────
 
 const SpilloverGraph = () => {
-  const { isDemoMode } = useDataMode();
+  const isDemoMode = false;
   return (
   <div className="relative aspect-square max-w-[280px] mx-auto">
     <svg viewBox="0 0 100 100" className="w-full h-full">
@@ -71,7 +71,7 @@ const SpilloverGraph = () => {
 };
 
 export default function SpilloverDashboard() {
-  const { isDemoMode } = useDataMode();
+  const isDemoMode = false;
   const highCount = ([] as typeof DEMO_ACTIVE_SPILLOVERS).filter(s => s.impact === "high").length;
   const medCount = ([] as typeof DEMO_ACTIVE_SPILLOVERS).filter(s => s.impact === "medium").length;
 

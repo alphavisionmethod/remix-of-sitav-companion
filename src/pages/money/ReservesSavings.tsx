@@ -20,14 +20,14 @@ import { useDataMode } from "@/contexts/DataModeContext";
 
 
 const ReservesSavings = () => {
-  const { isDemoMode } = useDataMode();
+  const isDemoMode = false;
   const { data: reservesData = [] } = useReservesSavings();
   const { user } = useAuth();
   const queryClient = useQueryClient();
   const { confirmation, confirm } = useConfirmation();
 
   const reservesQuery = useQuery({
-    queryKey: ["reserves", isDemoMode, user?.id],
+    queryKey: ["reserves", user?.id],
     queryFn: async () => {
       if (isDemoMode) return reservesData;
       if (!user) return [];

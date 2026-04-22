@@ -18,7 +18,7 @@ import { getBoardroomAgenda } from "@/domains/engines/adaptive-boardroom-framing
 import { useDataMode } from "@/contexts/DataModeContext";
 
 const BusinessBoardroom = () => {
-  const { isDemoMode } = useDataMode();
+  const isDemoMode = false;
 const [mode, setMode] = useState("weekly");
   const { profile } = useBusinessProfile();
   const adaptiveAdvisors = useMemo(() => {

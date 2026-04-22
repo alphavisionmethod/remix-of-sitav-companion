@@ -12,7 +12,7 @@ import { useDataMode } from "@/contexts/DataModeContext";
 
 
 export default function ConnectionDetail() {
-  const { isDemoMode } = useDataMode();
+  const isDemoMode = false;
   const { connectionId } = useParams();
   const navigate = useNavigate();
 
