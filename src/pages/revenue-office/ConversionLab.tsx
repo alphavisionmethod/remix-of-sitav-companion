@@ -8,6 +8,9 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { DEMO_EXPERIMENTS } from "@/data/seed/revenue-office";
+import { useConversionExperiments } from "@/hooks/use-revenue-office";
+import { Skeleton } from "@/components/ui/skeleton";
+import { EmptyState } from "@/components/sita/EmptyState";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
@@ -46,7 +49,19 @@ const ADVISOR_CONVERSION_INSIGHTS = [
 export default function ConversionLab() {
   const { isDemo: isDemoMode } = useAuth();
   const [tab, setTab] = useState("experiments");
-  const EXPERIMENTS = isDemoMode ? DEMO_EXPERIMENTS : DEMO_EXPERIMENTS;
+  const { data: liveExperiments, isLoading } = useConversionExperiments();
+  const EXPERIMENTS = isDemoMode ? DEMO_EXPERIMENTS : (liveExperiments && liveExperiments.length > 0 ? liveExperiments.map((e: any) => ({
+    name: e.name,
+    status: e.status || "draft",
+    startDate: e.started_at ? new Date(e.started_at).toLocaleDateString() : "—",
+    lift: `+${((e.conversion_rate_b - e.conversion_rate_a) / Math.max(e.conversion_rate_a, 0.01) * 100).toFixed(1)}%`,
+    confidence: e.confidence_level || 0,
+    winner: e.winner || null,
+    variants: [
+      { name: e.variant_a || "Control", visitors: Math.round((e.sample_size || 0) / 2), conversions: Math.round((e.sample_size || 0) / 2 * (e.conversion_rate_a || 0) / 100), rate: e.conversion_rate_a || 0 },
+      { name: e.variant_b || "Variant B", visitors: Math.round((e.sample_size || 0) / 2), conversions: Math.round((e.sample_size || 0) / 2 * (e.conversion_rate_b || 0) / 100), rate: e.conversion_rate_b || 0 },
+    ],
+  })) : DEMO_EXPERIMENTS);
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
