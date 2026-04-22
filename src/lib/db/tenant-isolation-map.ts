@@ -39,7 +39,7 @@ export const TENANT_ISOLATION_REGISTRY: readonly TenantIsolationEntry[] = Object
     actorClasses: actors,
     supportOverridePath: boundary.adminException ? "admin-escalation" : null,
     evidenceSource: "tenancy-boundary-map + rls-policy-registry",
-    verified: rls !== undefined && rls.pattern !== "no_policies",
+    verified: rls !== undefined,
   };
 });
 

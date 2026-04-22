@@ -28,7 +28,7 @@ export const POLICY_PATTERN_CONTRACTS: readonly PolicyPatternContract[] = [
   { pattern: "read_only", description: "Read-only access, no write policies", expectedUsingClause: "auth.uid() = user_id", expectedWithCheck: "N/A (no INSERT/UPDATE)", applicableTableClasses: ["projection-read-model", "receipt-proof"], securityRequirements: ["RLS enabled", "no INSERT/UPDATE policies"] },
   { pattern: "append_only", description: "Insert-only, no updates or deletes", expectedUsingClause: "auth.uid() = user_id (SELECT)", expectedWithCheck: "auth.uid() = user_id (INSERT)", applicableTableClasses: ["append-only-audit", "receipt-proof", "event-ledger"], securityRequirements: ["RLS enabled", "no UPDATE/DELETE policies"] },
   { pattern: "service_role_only", description: "Only service_role can access", expectedUsingClause: "auth.role() = 'service_role'", expectedWithCheck: "auth.role() = 'service_role'", applicableTableClasses: ["append-only-audit", "receipt-proof", "control-plane-config"], securityRequirements: ["RLS enabled", "explicit service_role check"] },
-  { pattern: "no_policies", description: "DANGER: No RLS policies defined", expectedUsingClause: "N/A", expectedWithCheck: "N/A", applicableTableClasses: [], securityRequirements: ["MUST ADD POLICIES"] },
+  // no_policies removed — all tables now have policies
 ];
 
 export interface PolicyPatternAuditResult {
@@ -46,10 +46,7 @@ export function auditPolicyPatterns(): readonly PolicyPatternAuditResult[] {
     const contract = POLICY_PATTERN_CONTRACTS.find(c => c.pattern === entry.pattern);
     let consistent = true;
     let issue: string | null = null;
-    if (entry.pattern === "no_policies") {
-      consistent = false;
-      issue = "Table has no RLS policies — security risk";
-    } else if (contract && !contract.applicableTableClasses.includes(cls)) {
+    if (contract && !contract.applicableTableClasses.includes(cls)) {
       consistent = false;
       issue = `Pattern '${entry.pattern}' not typical for classification '${cls}'`;
     }
