@@ -20,7 +20,7 @@ const IntelligencePacketInspector = () => {
   const [selected, setSelected] = useState<string | null>(null);
   if (loading || !isAdmin) return null;
 
-  const avgCompression = DEMO_PACKETS.reduce((s, p) => s + p.compressionRatio, 0) / (isDemoMode ? DEMO_PACKETS : [] as typeof DEMO_PACKETS).length;
+  const avgCompression = (isDemoMode ? DEMO_PACKETS : [] as typeof DEMO_PACKETS).reduce((s, p) => s + p.compressionRatio, 0) / (isDemoMode ? DEMO_PACKETS : [] as typeof DEMO_PACKETS).length;
   const avgTokens = Math.round((isDemoMode ? DEMO_PACKETS : [] as typeof DEMO_PACKETS).reduce((s, p) => s + p.tokenCount, 0) / (isDemoMode ? DEMO_PACKETS : [] as typeof DEMO_PACKETS).length);
   const freshCount = (isDemoMode ? DEMO_PACKETS : [] as typeof DEMO_PACKETS).filter(p => p.fresh).length;
   const totalCompileCost = (isDemoMode ? DEMO_PACKETS : [] as typeof DEMO_PACKETS).reduce((s, p) => s + p.compileCost, 0);
