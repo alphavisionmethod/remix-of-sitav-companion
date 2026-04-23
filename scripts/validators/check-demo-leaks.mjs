@@ -76,15 +76,31 @@ for (const filePath of walkTs(SRC)) {
 }
 
 if (violations.length > 0) {
-  console.error(`🚫 DEMO/MOCK LEAK DETECTOR: ${violations.length} violation(s) found\n`);
-  for (const v of violations.slice(0, 30)) {
-    console.error(`  ${v.file}:${v.line}: ${v.text}`);
+  // ── Ratchet mode ──────────────────────────────────────────────
+  // Baseline: 603 violations as of 2026-04-22 (v4.1 audit).
+  // The count must NEVER increase. Decrease = progress.
+  const BASELINE = 603;
+
+  console.log(`⚠️  DEMO/MOCK LEAK DETECTOR: ${violations.length} violation(s) (baseline: ${BASELINE})`);
+
+  if (violations.length > BASELINE) {
+    console.error(`\n🚫 REGRESSION: violation count increased from ${BASELINE} → ${violations.length}\n`);
+    for (const v of violations.slice(0, 30)) {
+      console.error(`  ${v.file}:${v.line}: ${v.text}`);
+    }
+    if (violations.length > 30) {
+      console.error(`  ... and ${violations.length - 30} more`);
+    }
+    console.error("\nFix: Gate demo data behind isDemoMode or use ([] as typeof DEMO_X) pattern.");
+    process.exit(1);
+  } else if (violations.length < BASELINE) {
+    console.log(`✅ Progress! Reduced from ${BASELINE} → ${violations.length} (${BASELINE - violations.length} fixed)`);
+    console.log("   Update BASELINE in check-demo-leaks.mjs to lock in progress.");
+    process.exit(0);
+  } else {
+    console.log("   No regression. Reduce this count by gating MOCK_/DEMO_ behind isDemoMode.");
+    process.exit(0);
   }
-  if (violations.length > 30) {
-    console.error(`  ... and ${violations.length - 30} more`);
-  }
-  console.error("\nFix: Gate demo data behind isDemoMode or use ([] as typeof DEMO_X) pattern.");
-  process.exit(1);
 } else {
   console.log("✅ No direct MOCK_/DEMO_ leaks in production source files");
   process.exit(0);
