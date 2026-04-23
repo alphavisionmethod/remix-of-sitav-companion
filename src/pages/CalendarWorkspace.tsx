@@ -15,7 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
-import { type CalWorkspaceEvent as CalEvent } from "@/data/seed/calendar-workspace";
+type CalEvent = { id: string; title: string; date: string; time?: string; type: string; domain?: string; [k: string]: any };
 import { useRealityProvider } from "@/hooks/useRealityProvider";
 import { useCreateCalendarEvent, useUpdateCalendarEvent, useDeleteCalendarEvent } from "@/hooks/use-calendar-mutations";
 import { useBookingList, useBookingCreate, useBookingCancel } from "@/hooks/use-backend-actions";

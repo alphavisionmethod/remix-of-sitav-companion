@@ -13,13 +13,15 @@ import { EmptyState } from "@/components/sita/EmptyState";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { PageShell } from "@/components/sita/PageShell";
 import { Typography } from "@/components/sita/Typography";
-import {
-  REV_SERVICES as SERVICES,
-  REV_STATS as STATS,
-  UPCOMING,
-  BOOKING_ANALYTICS,
-  NOSHOW_RECOVERY,
-  PREP_CHECKLISTS } from "@/data/seed/revenue-office";
+
+// Inline static configuration (was seed data)
+const REV_SERVICES: any[] = [];
+const REV_STATS: any[] = [];
+const UPCOMING: any[] = [];
+const BOOKING_ANALYTICS: any[] = [];
+const NOSHOW_RECOVERY: any[] = [];
+const PREP_CHECKLISTS: any[] = [];
+
 
 
 

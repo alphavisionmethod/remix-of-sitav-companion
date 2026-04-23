@@ -6,7 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Database, CheckCircle, AlertTriangle, XCircle, Clock, Shield, RefreshCw, Eye, Undo2, GitBranch, Layers, ArrowRight, FileCheck } from "lucide-react";
-import { type DemoMutationRecord, type DurabilityStatus, MUTATIONS } from "@/data/seed/durability";
+type DemoMutationRecord = { id: string; table: string; operation: string; durabilityStatus: string; timestamp: string; [k: string]: any };
+type DurabilityStatus = "persisted" | "pending" | "failed" | "rolling_back" | "verified";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.05 } } };
@@ -40,7 +41,7 @@ const AdminDurabilityBoard = () => {
   const [mutFilter, setMutFilter] = useState("all");
   const [selectedMutation, setSelectedMutation] = useState<DemoMutationRecord | null>(null);
 
-  const filtered = mutFilter === "all" ? MUTATIONS : ([] as any[]).filter(m => m.durabilityStatus === mutFilter);
+  const filtered = mutFilter === "all" ? ([] as DemoMutationRecord[]) : ([] as any[]).filter(m => m.durabilityStatus === mutFilter);
   const persistedPct = Math.round((([] as any[]).filter(m => m.durabilityStatus === "persisted").length / ([] as any[]).length) * 100);
   const lineagePct = Math.round((([] as any[]).filter(m => m.lineageComplete).length / ([] as any[]).length) * 100);
   const canonicalPct = Math.round((([] as any[]).filter(m => m.canonicalWritePath).length / ([] as any[]).length) * 100);

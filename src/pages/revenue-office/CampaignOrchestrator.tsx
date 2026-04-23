@@ -13,12 +13,14 @@ import { EmptyState } from "@/components/sita/EmptyState";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { PageShell } from "@/components/sita/PageShell";
 import { Typography } from "@/components/sita/Typography";
-import {
-  REV_CAMPAIGNS as CAMPAIGNS,
-  REV_SEGMENTS as SEGMENTS,
-  CAMPAIGN_ATTRIBUTION,
-  CAMPAIGN_FATIGUE,
-  DELIVERABILITY } from "@/data/seed/revenue-office";
+
+// Inline static configuration (was seed data)
+const REV_CAMPAIGNS: any[] = [];
+const REV_SEGMENTS: any[] = [];
+const CAMPAIGN_ATTRIBUTION: any[] = [];
+const CAMPAIGN_FATIGUE: any[] = [];
+const DELIVERABILITY: any[] = [];
+
 
 
 

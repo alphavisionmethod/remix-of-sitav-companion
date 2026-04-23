@@ -10,10 +10,13 @@ import { cn } from "@/lib/utils";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { PageShell } from "@/components/sita/PageShell";
 import { Typography } from "@/components/sita/Typography";
-import { RATING_DIST, REVIEWS, REV_CAMPAIGNS_REPUTATION_ENGINE as CAMPAIGNS,
-  REV_PLATFORMS as PLATFORMS, REV_STATS_REPUTATION_ENGINE as STATS,
-  TESTIMONIALS, SENTIMENT_TREND,
-} from "@/data/seed/revenue-office";
+const RATING_DIST: any[] = [];
+const REVIEWS: any[] = [];
+const CAMPAIGNS: any[] = [];
+const PLATFORMS: any[] = [];
+const STATS: any[] = [];
+const TESTIMONIALS: any[] = [];
+const SENTIMENT_TREND: any[] = [];
 
 
 export default function ReputationEngine() {

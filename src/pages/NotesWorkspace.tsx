@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useNotes } from "@/hooks/use-live-data";
-import { type DemoNote as Note } from "@/data/seed/notes";
+type Note = { id: string; title: string; content: string; updatedAt: string; tags?: string[]; [k: string]: any };
 import { motion, AnimatePresence } from "framer-motion";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";

@@ -12,14 +12,21 @@ import {
   MessageSquare, UserPlus, Heart, Package, ArrowUpRight, Layers, Globe, Calendar,
   GitBranch, Send, Award, Glasses, HandMetal
 } from "lucide-react";
-import {
-  activeAutomations, advisorRecommendations, atRiskAutomations,
-  automationStats, leakRepairOpportunities,
-  AUTOMATION_SURFACE_MAP, AUTOMATION_OS_CONNECTIONS,
-  AUTOMATION_QUALITY_SCORES, SHADOW_BOARD, PROMISES
-} from "@/data/seed/revenue-office";
 import AutomationSubNav from "./AutomationSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+
+// Inline static configuration (was seed data)
+const activeAutomations: any[] = [];
+const advisorRecommendations: any[] = [];
+const atRiskAutomations: any[] = [];
+const automationStats: any[] = [];
+const leakRepairOpportunities: any[] = [];
+const AUTOMATION_SURFACE_MAP: any[] = [];
+const AUTOMATION_OS_CONNECTIONS: any[] = [];
+const AUTOMATION_QUALITY_SCORES: any[] = [];
+const SHADOW_BOARD: any[] = [];
+const PROMISES: any[] = [];
+
 
 
 

@@ -12,7 +12,9 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { useIncidentManagement, useEntityScoped } from "@/contexts/SitaKernelContext";
-import { type DemoIncident as Incident, type Severity, type IncidentStatus, INCIDENTS } from "@/data/seed/incidents";
+type Incident = { id: string; title: string; severity: string; status: string; assignee?: string; createdAt: string; [k: string]: any };
+type Severity = "critical" | "high" | "medium" | "low";
+type IncidentStatus = "active" | "investigating" | "mitigating" | "resolved" | "closed";
 import { anomalyAlertSystem, type Anomaly } from "@/lib/services/anomaly-alert";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 const SEVERITY_CONFIG: Record<Severity, { color: string; bg: string; border: string }> = {
@@ -62,7 +64,7 @@ export default function IncidentCommandCenter() {
     },
   });
 
-  const incidents = INCIDENTS;
+  const incidents: Incident[] = [];
   const active = incidents.filter(i => !["resolved", "closed"].includes(i.status));
   const resolved = incidents.filter(i => ["resolved", "closed"].includes(i.status));
   const criticalCount = active.filter(i => i.severity === "critical").length;
