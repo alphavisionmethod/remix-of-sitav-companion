@@ -8,6 +8,7 @@ import { lazy, Suspense, useState, useCallback, useEffect } from "react";
 import { useWindowManager } from "@/hooks/useWindowManager";
 type WindowManager = ReturnType<typeof useWindowManager>;
 import { useFocusMode } from "@/hooks/use-focus-mode";
+import { useSitaAmbientMood } from "./sita-hud";
 
 const UniversalCommandSurface = lazy(() => import("./UniversalCommandSurface").then(m => ({ default: m.UniversalCommandSurface })));
 const ShellAmbientBackground = lazy(() => import("./ShellAmbientBackground").then(m => ({ default: m.ShellAmbientBackground })));
@@ -30,6 +31,10 @@ const NotificationDropdownLazy = lazy(() => import("./NotificationDropdown").the
 const PictureInPictureLazy = lazy(() => import("./PictureInPicture").then(m => ({ default: m.PictureInPicture })));
 const IntentSuggestionsWidgetLazy = lazy(() => import("./IntentSuggestionsWidget").then(m => ({ default: m.IntentSuggestionsWidget })));
 const AppRecentsStripLazy = lazy(() => import("../AppRecentsStrip").then(m => ({ default: m.AppRecentsStrip })));
+// ── Sita HUD (Phase A) ──────────────────────────────────────────
+const SitaPresenceOrbLazy = lazy(() => import("./sita-hud").then(m => ({ default: m.SitaPresenceOrb })));
+const SitaHudStripLazy = lazy(() => import("./sita-hud").then(m => ({ default: m.SitaHudStrip })));
+const SitaFirstRunRevealLazy = lazy(() => import("./sita-hud").then(m => ({ default: m.SitaFirstRunReveal })));
 
 interface ShellLiveLayerProps {
   wm: WindowManager;
@@ -65,6 +70,7 @@ export function ShellLiveLayer({
   const [showBootSplash, setShowBootSplash] = useState(true);
   const [pipWindows, setPipWindows] = useState<Array<{ id: string; title: string; type: "music" | "generic"; data?: any }>>([]);
   const focusMode = useFocusMode();
+  const sitaMood = useSitaAmbientMood();
 
   return (
     <>
@@ -95,7 +101,7 @@ export function ShellLiveLayer({
 
       {/* Ambient background */}
       <Suspense fallback={null}>
-        <ShellAmbientBackground intensity="subtle" className="fixed" />
+        <ShellAmbientBackground intensity="subtle" mood={sitaMood} className="fixed" />
       </Suspense>
 
       {/* Desktop Dock */}
@@ -150,6 +156,17 @@ export function ShellLiveLayer({
             wm.focusWindow(id);
           }}
         />
+      </Suspense>
+
+      {/* ── Sita HUD (Phase A) ─────────────────────────────────── */}
+      <Suspense fallback={null}>
+        <SitaHudStripLazy />
+      </Suspense>
+      <Suspense fallback={null}>
+        <SitaPresenceOrbLazy />
+      </Suspense>
+      <Suspense fallback={null}>
+        <SitaFirstRunRevealLazy />
       </Suspense>
 
     </>
