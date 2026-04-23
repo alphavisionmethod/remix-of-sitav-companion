@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { FlaskConical, TrendingUp, TrendingDown, AlertTriangle, ChevronRight } from "lucide-react";
 import { useMarketWatchlistItems } from "@/hooks/use-investment-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+const EVENTS: any[] = [{ name: "—", probability: 0, branches: [], impact: {} }];
 export default function EventProbabilityLab() {
   const { data: liveData, isLoading } = useMarketWatchlistItems();
   const [selected, setSelected] = useState(EVENTS[0]);

@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { useNavigate } from "react-router-dom";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+const CHIEF_HISTORICAL: any[] = [];
 const synthesis = {
   confidence: 76,
   biggestLeak: "45% of leads receive no follow-up within 24hrs — estimated $12,400/mo leakage",

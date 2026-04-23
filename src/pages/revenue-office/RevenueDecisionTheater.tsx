@@ -8,6 +8,7 @@ import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+const pendingDecisions: any[] = [];
 type DecisionState = "draft" | "review" | "approved" | "executed";
 
 export default function DecisionTheater() {

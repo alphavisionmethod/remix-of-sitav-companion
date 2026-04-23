@@ -13,6 +13,7 @@ import {
 import { useState } from "react";
 import AutomationSubNav from "./AutomationSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+const receipts: any[] = [];
 const categoryIcons: Record<string, typeof Mail> = {
   "Lead Recovery": Users, Sales: FileText, Booking: Phone, Reputation: Star,
   Onboarding: UserPlus, Operations: Target, Retention: Heart, Growth: RefreshCw, Revenue: DollarSign,
@@ -29,8 +30,8 @@ export default function AutomationReceipts() {
   const [tab, setTab] = useState("all");
   const [timeFilter, setTimeFilter] = useState("48h");
   const [viewMode, setViewMode] = useState<"receipts" | "why">("receipts");
-  const categories = ["all", ...Array.from(new Set(([] as typeof receipts).map(r => r.category)))];
-  const filtered = tab === "all" ? receipts : ([] as typeof receipts).filter(r => r.category === tab);
+  const categories = ["all", ...Array.from(new Set(receipts.map((r: any) => r.category)))];
+  const filtered = tab === "all" ? receipts : receipts.filter((r: any) => r.category === tab);
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 p-6">
@@ -85,7 +86,7 @@ export default function AutomationReceipts() {
           {/* Category Tabs */}
           <div className="flex flex-wrap gap-1.5">
             {categories.map(cat => (
-              <button key={cat} onClick={() => setTab(cat)} className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors capitalize ${tab === cat ? "bg-primary text-primary-foreground" : "bg-secondary text-secondary-foreground hover:bg-primary/10"}`}>{cat}</button>
+               <button key={cat as string} onClick={() => setTab(cat as string)} className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors capitalize ${tab === cat ? "bg-primary text-primary-foreground" : "bg-secondary text-secondary-foreground hover:bg-primary/10"}`}>{String(cat)}</button>
             ))}
           </div>
 

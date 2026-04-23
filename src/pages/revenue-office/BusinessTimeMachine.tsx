@@ -21,6 +21,7 @@ const LESSONS_CAPTURED = [
   { date: "Jan 20", lesson: "Launching 3 campaigns same week caused fatigue — stagger by 5+ days", category: "campaigns", applied: false },
 ];
 
+const PERIODS: any[] = [{ revenue: 0 }];
 const BusinessTimeMachine = () => {
   const [tab, setTab] = useState("timeline");
   const [lessonInput, setLessonInput] = useState("");

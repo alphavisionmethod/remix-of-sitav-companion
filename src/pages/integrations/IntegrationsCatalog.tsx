@@ -9,6 +9,8 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Search, Plug, Shield, Zap, Globe, ArrowRight, CheckCircle, AlertTriangle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+const INTEGRATION_PROVIDERS: any[] = [];
+const PROVIDER_CATEGORIES: any[] = [];
 export default function IntegrationsCatalog() {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("all");

@@ -21,10 +21,10 @@ import {
 import { useRevenueLeaksData, useRecoveredValuesData, useRawOpportunities } from "@/hooks/use-business-data";
 
 // ── Derived data (fallback to mock, overridden in component) ──
-let LEAKAGE = detectLeakage(LEAKAGE_INPUT);
+let LEAKAGE = detectLeakage({ leads: [], quotes: [], invoices: [], customers: [], bookings: [], subscriptions: [] });
 let RECOVERY_ACTIONS = suggestRecoveryActions(LEAKAGE);
-let RECOVERED = RECOVERED_VALUES;
-let OPPORTUNITIES = rankOpportunities(RAW_OPPORTUNITIES);
+let RECOVERED: any[] = [];
+let OPPORTUNITIES = rankOpportunities([] as any[]);
 let SUMMARY = computeAutopilotSummary(LEAKAGE, RECOVERY_ACTIONS, RECOVERED);
 
 // ── Severity Colors ─────────────────────────────────────────────

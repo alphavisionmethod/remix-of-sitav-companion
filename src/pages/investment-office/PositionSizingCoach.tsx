@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Ruler, AlertTriangle, Check, Info, Shield, Target } from "lucide-react";
 import { usePortfolioPositions } from "@/hooks/use-investment-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+const SIZING_SCENARIOS: any[] = [{ name: "—", conviction: 0, allocation: 0, riskFactors: [] }];
 export default function PositionSizingCoach() {
   const { data: liveData, isLoading } = usePortfolioPositions();
   const [selectedIdx, setSelectedIdx] = useState(0);

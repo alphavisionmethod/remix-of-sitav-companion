@@ -27,6 +27,8 @@ export default function ConnectionDetail() {
     </div>
   );
 
+const getProviderById = (_id: string): any => null;
+
   const provider = getProviderById(conn.providerId);
 
   return (

@@ -59,7 +59,7 @@ export default function ConversionLab() {
       { name: e.variant_a || "Control", visitors: Math.round((e.sample_size || 0) / 2), conversions: Math.round((e.sample_size || 0) / 2 * (e.conversion_rate_a || 0) / 100), rate: e.conversion_rate_a || 0 },
       { name: e.variant_b || "Variant B", visitors: Math.round((e.sample_size || 0) / 2), conversions: Math.round((e.sample_size || 0) / 2 * (e.conversion_rate_b || 0) / 100), rate: e.conversion_rate_b || 0 },
     ],
-  })) : EXPERIMENTS);
+  })) : [] as any[]);
 
   return (
     <PageShell width="wide" className="space-y-6">

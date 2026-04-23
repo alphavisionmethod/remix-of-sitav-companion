@@ -11,6 +11,10 @@ import {
   Star, Mail, Zap, Eye, Shield, BarChart3, RefreshCw
 } from "lucide-react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+const callStats: any[] = [];
+const callQueue: any[] = [];
+const recentCalls: any[] = [];
+const callAnalytics: any[] = [];
 const priorityColors: Record<string, string> = { critical: "bg-red-500/10 text-red-400", high: "bg-amber-500/10 text-amber-400", medium: "bg-blue-500/10 text-blue-400", low: "bg-muted text-muted-foreground" };
 
 export default function CallDesk() {

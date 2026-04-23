@@ -7,6 +7,11 @@ import { motion } from "framer-motion";
 import { Calendar, Users, Clock, MapPin, AlertCircle, Heart, GraduationCap, Dumbbell, Stethoscope, Wrench, Car, Sparkles } from "lucide-react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
+const events: any[] = [];
+const conflicts: any[] = [];
+const prepItems: any[] = [];
+const transportDuties: any[] = [];
+const familyMembers: any[] = [];
 const weekDays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 const today = 2;
 

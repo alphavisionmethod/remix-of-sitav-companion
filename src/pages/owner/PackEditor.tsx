@@ -23,7 +23,7 @@ interface PackState {
 }
 
 const PackEditor = () => {
-  const packs = listPacks();
+  const packs: any[] = [];
   const [packStates, setPackStates] = useState<PackState[]>(
     packs.map(p => ({ packId: p.packId, name: p.name, status: "active" as const, capabilities: p.capabilities, connectors: p.connectors, requiredTier: p.requiredTier }))
   );

@@ -18,6 +18,9 @@ import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 const now = new Date();
 const h = (hours: number) => new Date(now.getTime() - hours * 3600000).toISOString();
 
+const connectors: any[] = [];
+const auditTimeline: any[] = [];
+
 const lifecycleStates = ["registered", "configured", "active", "paused", "error", "disabled", "decommissioned"];
 
 export default function ConnectorControlCenter() {

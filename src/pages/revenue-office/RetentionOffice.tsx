@@ -9,6 +9,7 @@ import { useState } from "react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { PageShell } from "@/components/sita/PageShell";
 import { Typography } from "@/components/sita/Typography";
+const NPS_DATA: any = { current: 0, previous: 0, trend: "—", distribution: [], recentResponses: [] };
 export default function RetentionOffice() {
   const [tab, setTab] = useState("overview");
 

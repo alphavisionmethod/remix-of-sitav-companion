@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import DPOSubNav from "./DPOSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+const TIMELINE_EVENTS: any[] = [];
 export default function PresenceTimeMachine() {
   const [selectedIdx, setSelectedIdx] = useState(0);
   const selected = TIMELINE_EVENTS[selectedIdx];

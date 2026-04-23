@@ -24,7 +24,7 @@ export default function BoardroomHistory() {
         .select("*, boardroom_decisions(id)")
         .eq("user_id", user!.id)
         .order("created_at", { ascending: false });
-      if (error || !data || data.length === 0) return SESSIONS;
+      if (error || !data || data.length === 0) return [] as any[];
       return data.map((s: Record<string, any>) => ({
         ...s,
         decisions_count: s.boardroom_decisions?.length || 0,

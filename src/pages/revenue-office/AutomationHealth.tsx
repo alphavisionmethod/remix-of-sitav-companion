@@ -11,6 +11,10 @@ import {
 import { useState } from "react";
 import AutomationSubNav from "./AutomationSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+const healthMetrics: any[] = [];
+const advisorInsights: any[] = [];
+const automations: any[] = [];
+const fatigueAlerts: any[] = [];
 const statusIcon = { healthy: CheckCircle, warning: AlertTriangle, error: XCircle, underperforming: TrendingUp };
 const statusColor = { healthy: "text-emerald-400", warning: "text-amber-400", error: "text-red-400", underperforming: "text-blue-400" };
 

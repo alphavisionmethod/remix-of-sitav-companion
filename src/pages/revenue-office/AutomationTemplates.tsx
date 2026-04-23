@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import AutomationSubNav from "./AutomationSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+const templates: any[] = [];
 
 // Production fallback — seed data removed
 const categories: any[] = [];
