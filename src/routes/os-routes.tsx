@@ -46,6 +46,11 @@ const PersonalBrainWorkspace = lazy(() => import("@/pages/personal-brain/Persona
 const PersonalBrainChat = lazy(() => import("@/pages/personal-brain/PersonalBrainChat"));
 const BrainSnapshot = lazy(() => import("@/pages/personal-brain/BrainSnapshot"));
 const PbVoiceSettings = lazy(() => import("@/pages/personal-brain/VoiceSettings"));
+const PbBrainSettings = lazy(() => import("@/pages/personal-brain/BrainSettings"));
+const PbSecuritySettings = lazy(() => import("@/pages/personal-brain/SecuritySettings"));
+const PbLearningSettings = lazy(() => import("@/pages/personal-brain/LearningSettings"));
+const PbRetentionSettings = lazy(() => import("@/pages/personal-brain/RetentionSettings"));
+const PbDataSettings = lazy(() => import("@/pages/personal-brain/DataSettings"));
 const CalmFocusMode = lazy(() => import("@/pages/CalmFocusMode"));
 const CommandHistory = lazy(() => import("@/pages/CommandHistory"));
 const EnvironmentSwitcherPage = lazy(() => import("@/pages/EnvironmentSwitcher"));
@@ -188,6 +193,11 @@ export function getOSRoutes() {
       <Route path="/personal-brain/c/:chatId" element={<PersonalBrainChat />} />
       <Route path="/personal-brain/snapshot" element={<BrainSnapshot />} />
       <Route path="/personal-brain/voice-settings" element={<PbVoiceSettings />} />
+      <Route path="/personal-brain/settings" element={<PbBrainSettings />} />
+      <Route path="/personal-brain/settings/security" element={<PbSecuritySettings />} />
+      <Route path="/personal-brain/settings/learning" element={<PbLearningSettings />} />
+      <Route path="/personal-brain/settings/retention" element={<PbRetentionSettings />} />
+      <Route path="/personal-brain/settings/data" element={<PbDataSettings />} />
 
       {/* OS Workspaces */}
       <Route path="/calendar" element={<CalendarWorkspace />} />

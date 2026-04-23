@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Brain, Mic, Plus } from "lucide-react";
+import { Brain, Mic, Plus, Settings } from "lucide-react";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
 export type BrainScope = "personal" | "business";
@@ -10,9 +10,17 @@ interface BrainHeroProps {
   onScopeChange: (scope: BrainScope) => void;
   onNewChat: () => void;
   onVoice?: () => void;
+  onSettings?: () => void;
 }
 
-export function BrainHero({ greeting, scope, onScopeChange, onNewChat, onVoice }: BrainHeroProps) {
+export function BrainHero({
+  greeting,
+  scope,
+  onScopeChange,
+  onNewChat,
+  onVoice,
+  onSettings,
+}: BrainHeroProps) {
   return (
     <div className="rounded-2xl border border-border bg-gradient-to-br from-primary/5 via-card to-card p-5 sm:p-6">
       <div className="flex flex-wrap items-start justify-between gap-4">
@@ -45,6 +53,12 @@ export function BrainHero({ greeting, scope, onScopeChange, onNewChat, onVoice }
             <Mic className="h-4 w-4" />
             Voice
           </Button>
+          {onSettings && (
+            <Button variant="outline" size="sm" onClick={onSettings} title="Brain settings">
+              <Settings className="h-4 w-4" />
+              <span className="sr-only">Settings</span>
+            </Button>
+          )}
           <Button size="sm" onClick={onNewChat}>
             <Plus className="h-4 w-4" />
             New Chat
