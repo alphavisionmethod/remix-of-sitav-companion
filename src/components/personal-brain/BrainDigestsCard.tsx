@@ -10,10 +10,12 @@ export function BrainDigestsCard() {
   const latest = digests[0];
 
   return (
-    <Card>
+    <Card className="overflow-hidden border-border/60 bg-gradient-to-br from-primary/8 via-card to-card-elevated">
       <CardHeader className="flex flex-row items-center justify-between gap-2 pb-3">
         <CardTitle className="flex items-center gap-2 text-base">
-          <Sparkles className="h-4 w-4 text-primary" />
+          <span className="relative flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-primary/30 to-accent/30">
+            <Sparkles className="h-3.5 w-3.5 text-primary" />
+          </span>
           Brain digest
         </CardTitle>
         <div className="flex gap-1.5">
