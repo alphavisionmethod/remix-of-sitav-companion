@@ -30,6 +30,7 @@ import {
   routeVoiceIntent,
   type SitaIntent,
 } from "@/lib/sita-voice/voice-intent-router";
+import { useSitaBrainBridge } from "@/lib/sita-voice/useSitaBrainBridge";
 
 type LoopState = "idle" | "wake" | "capture" | "thinking" | "speaking";
 
@@ -64,6 +65,9 @@ function emitIntent(intent: SitaIntent) {
 export function SitaVoiceProvider({ children }: { children: ReactNode }) {
   const { prefs: sentinel } = useSentinelPrefs();
   const synth = useSpeechSynthesis();
+
+  // Phase B+C — brain bridge runs alongside, wired to the same window bus.
+  useSitaBrainBridge();
 
   const [armed, setArmedState] = useState(false);
   const [muted, setMutedState] = useState(false);
