@@ -17,6 +17,8 @@ const statusConfig: Record<DurabilityStatus, { color: string; icon: typeof Check
   pending: { color: "bg-amber-500/10 text-amber-500 border-amber-500/20", icon: Clock, label: "Pending" },
   failed: { color: "bg-red-500/10 text-red-500 border-red-500/20", icon: XCircle, label: "Failed" },
   noncanonical: { color: "bg-orange-500/10 text-orange-500 border-orange-500/20", icon: AlertTriangle, label: "Non-canonical" },
+  rolling_back: { color: "bg-blue-500/10 text-blue-500 border-blue-500/20", icon: RefreshCw, label: "Rolling Back" },
+  verified: { color: "bg-green-500/10 text-green-500 border-green-500/20", icon: Shield, label: "Verified" },
 };
 
 const WRITE_PATHS = [

@@ -16,6 +16,9 @@ interface Photo {
   favorite: boolean;
 }
 
+const placeholderColors = ["from-blue-500/20 to-purple-500/20", "from-green-500/20 to-teal-500/20", "from-amber-500/20 to-orange-500/20", "from-pink-500/20 to-rose-500/20"];
+const albums = ["All", "Favorites", "Recent", "Screenshots"];
+
 export default function GalleryApp() {
   const [search, setSearch] = useState("");
   const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
@@ -46,7 +49,7 @@ export default function GalleryApp() {
       </div>
 
       <div className="flex gap-1.5 flex-wrap">
-        {([] as typeof albums).map(a => (
+        {albums.map(a => (
           <Button key={a} variant={album === a ? "default" : "outline"} size="sm" className="text-xs" onClick={() => setAlbum(a)}>
             <FolderOpen className="h-3 w-3 mr-1" /> {a}
           </Button>
