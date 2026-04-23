@@ -7,6 +7,8 @@ import { BrainHero, type BrainScope } from "./BrainHero";
 import { ChatList } from "./ChatList";
 import { GoalProgressCard } from "./GoalProgressCard";
 import { BrainInsightCard } from "./BrainInsightCard";
+import { BrainDigestsCard } from "./BrainDigestsCard";
+import { BrainSignalsCard } from "./BrainSignalsCard";
 import { SuggestedPromptStrip } from "./SuggestedPromptStrip";
 import { ModePicker } from "./ModePicker";
 import { WorkspaceGrid } from "./WorkspaceGrid";
@@ -126,6 +128,8 @@ export function BrainDashboard() {
           </div>
           <div className="space-y-6">
             <GoalProgressCard goals={goals} loading={goalsLoading} />
+            <BrainDigestsCard />
+            <BrainSignalsCard />
             <BrainInsightCard insights={insights} loading={insightsLoading} />
           </div>
         </div>

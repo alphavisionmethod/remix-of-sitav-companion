@@ -16831,6 +16831,54 @@ export type Database = {
           },
         ]
       }
+      pb_digests: {
+        Row: {
+          created_at: string
+          generated_by_model: string | null
+          highlights: Json
+          id: string
+          period: string
+          period_end: string
+          period_start: string
+          source_counts: Json
+          status: string
+          summary: string
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          generated_by_model?: string | null
+          highlights?: Json
+          id?: string
+          period?: string
+          period_end: string
+          period_start: string
+          source_counts?: Json
+          status?: string
+          summary?: string
+          title?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          generated_by_model?: string | null
+          highlights?: Json
+          id?: string
+          period?: string
+          period_end?: string
+          period_start?: string
+          source_counts?: Json
+          status?: string
+          summary?: string
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       pb_files: {
         Row: {
           created_at: string
@@ -16916,6 +16964,45 @@ export type Database = {
           id?: string
           kind?: string
           progress_pct?: number
+          status?: string
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      pb_insights_signals: {
+        Row: {
+          body: string
+          confidence: number
+          created_at: string
+          id: string
+          kind: string
+          source_refs: Json
+          status: string
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          body?: string
+          confidence?: number
+          created_at?: string
+          id?: string
+          kind?: string
+          source_refs?: Json
+          status?: string
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          body?: string
+          confidence?: number
+          created_at?: string
+          id?: string
+          kind?: string
+          source_refs?: Json
           status?: string
           title?: string
           updated_at?: string
@@ -17158,6 +17245,48 @@ export type Database = {
         }
         Relationships: []
       }
+      pb_tools: {
+        Row: {
+          config: Json
+          created_at: string
+          description: string
+          display_name: string
+          enabled: boolean
+          id: string
+          kind: string
+          last_used_at: string | null
+          tool_key: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          config?: Json
+          created_at?: string
+          description?: string
+          display_name: string
+          enabled?: boolean
+          id?: string
+          kind?: string
+          last_used_at?: string | null
+          tool_key: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          config?: Json
+          created_at?: string
+          description?: string
+          display_name?: string
+          enabled?: boolean
+          id?: string
+          kind?: string
+          last_used_at?: string | null
+          tool_key?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       pb_voice_prefs: {
         Row: {
           autoread: boolean
@@ -17199,6 +17328,56 @@ export type Database = {
           voice_id?: string
         }
         Relationships: []
+      }
+      pb_workspace_members: {
+        Row: {
+          accepted_at: string | null
+          created_at: string
+          id: string
+          invite_token: string
+          invited_by: string
+          member_email: string
+          member_user_id: string | null
+          role: string
+          status: string
+          updated_at: string
+          workspace_id: string
+        }
+        Insert: {
+          accepted_at?: string | null
+          created_at?: string
+          id?: string
+          invite_token?: string
+          invited_by: string
+          member_email: string
+          member_user_id?: string | null
+          role?: string
+          status?: string
+          updated_at?: string
+          workspace_id: string
+        }
+        Update: {
+          accepted_at?: string | null
+          created_at?: string
+          id?: string
+          invite_token?: string
+          invited_by?: string
+          member_email?: string
+          member_user_id?: string | null
+          role?: string
+          status?: string
+          updated_at?: string
+          workspace_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pb_workspace_members_workspace_id_fkey"
+            columns: ["workspace_id"]
+            isOneToOne: false
+            referencedRelation: "pb_workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       pb_workspaces: {
         Row: {
@@ -22986,6 +23165,14 @@ export type Database = {
           p_topic: string
         }
         Returns: string
+      }
+      pb_is_workspace_member: {
+        Args: { _user_id: string; _workspace_id: string }
+        Returns: boolean
+      }
+      pb_is_workspace_owner: {
+        Args: { _user_id: string; _workspace_id: string }
+        Returns: boolean
       }
       propose_implementation_suggestion: {
         Args: {

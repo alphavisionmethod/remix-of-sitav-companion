@@ -18,6 +18,21 @@ const REQUIRED_ACTIONS = [
   "voice.transcribe",
   "data.export",
   "data.delete",
+  "digest.generate",
+  "digest.list",
+  "digest.dismiss",
+  "workspace.invite",
+  "workspace.accept",
+  "workspace.list_members",
+  "workspace.remove_member",
+  "workspace.update_role",
+  "tool.list",
+  "tool.upsert",
+  "tool.toggle",
+  "tool.delete",
+  "insights.scan",
+  "insights.list",
+  "insights.update_status",
 ];
 
 const REQUIRED_MODES = [

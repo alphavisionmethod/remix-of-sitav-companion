@@ -30,6 +30,20 @@ import {
   PBVoiceTranscribeSchema,
 } from "../_shared/zod-validate.ts";
 import { PBVoiceTtsSchema } from "../_shared/zod-validate.ts";
+import {
+  PBDigestGenerateSchema,
+  PBDigestDismissSchema,
+  PBWorkspaceInviteSchema,
+  PBWorkspaceAcceptSchema,
+  PBWorkspaceListMembersSchema,
+  PBWorkspaceRemoveMemberSchema,
+  PBWorkspaceUpdateRoleSchema,
+  PBToolUpsertSchema,
+  PBToolToggleSchema,
+  PBToolDeleteSchema,
+  PBInsightsScanSchema,
+  PBInsightsUpdateStatusSchema,
+} from "../_shared/zod-validate.ts";
 import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
 import { logAIReceipt } from "../_shared/ai-receipt-logger.ts";
 import { checkAIBudget } from "../_shared/ai-budget-check.ts";
@@ -681,6 +695,442 @@ async function actionDataDelete(
   return jsonResponse({ ok: true, counts });
 }
 
+// ═══════════════════════════════════════════════════════════════
+// Phase 7 — Digests, Workspaces (sharing), Tools, Insights
+// ═══════════════════════════════════════════════════════════════
+
+async function actionDigestGenerate(
+  user: { id: string },
+  admin: ReturnType<typeof createClient>,
+  payload: unknown,
+  correlationId: string,
+): Promise<Response> {
+  const v = zodValidate(payload, PBDigestGenerateSchema);
+  if (!v.success) return v.response;
+
+  const period = v.data.period;
+  const now = new Date();
+  const periodEnd = now.toISOString();
+  const periodStart = new Date(now.getTime() - (period === "weekly" ? 7 : 1) * 24 * 60 * 60 * 1000).toISOString();
+
+  const [msgsRes, memsRes, goalsRes, chatsRes] = await Promise.all([
+    admin.from("pb_messages").select("role,content,created_at,chat_id")
+      .eq("user_id", user.id).gte("created_at", periodStart).order("created_at", { ascending: true }).limit(300),
+    admin.from("pb_memories").select("category,content,confidence,created_at,kind")
+      .eq("user_id", user.id).gte("created_at", periodStart).order("created_at", { ascending: false }).limit(40),
+    admin.from("pb_goals").select("title,kind,progress_pct,horizon_days,status")
+      .eq("user_id", user.id).eq("status", "active").limit(20),
+    admin.from("pb_chats").select("id,title,mode,created_at")
+      .eq("user_id", user.id).gte("created_at", periodStart).order("created_at", { ascending: false }).limit(20),
+  ]);
+
+  const counts = {
+    messages: msgsRes.data?.length ?? 0,
+    memories: memsRes.data?.length ?? 0,
+    goals: goalsRes.data?.length ?? 0,
+    chats: chatsRes.data?.length ?? 0,
+  };
+
+  if (counts.messages === 0 && counts.memories === 0 && counts.chats === 0) {
+    return jsonResponse({ ok: true, skipped: true, reason: "no_activity", counts });
+  }
+
+  const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
+  if (!LOVABLE_API_KEY) return jsonResponse({ error: "AI provider not configured" }, 503);
+
+  const transcript = (msgsRes.data ?? [])
+    .map((m: { role: string; content: string }) => `${m.role.toUpperCase()}: ${m.content.slice(0, 400)}`)
+    .join("\n").slice(0, 12000);
+
+  const sysPrompt = `You write a short, energetic, scannable ${period} brain digest for the user. Tone: warm, candid, focused on growth. Always return a JSON object via the tool call — never plain prose.`;
+
+  const tools = [{
+    type: "function",
+    function: {
+      name: "render_digest",
+      description: "Render the structured brain digest.",
+      parameters: {
+        type: "object",
+        properties: {
+          title: { type: "string", description: "Punchy headline (max 60 chars)" },
+          summary: { type: "string", description: "3-5 sentence narrative summary" },
+          highlights: {
+            type: "array",
+            items: {
+              type: "object",
+              properties: {
+                kind: { type: "string", enum: ["win","theme","blocker","next_step","question"] },
+                text: { type: "string" },
+              },
+              required: ["kind","text"],
+            },
+            minItems: 2, maxItems: 8,
+          },
+        },
+        required: ["title","summary","highlights"],
+      },
+    },
+  }];
+
+  const aiResp = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+    method: "POST",
+    headers: { Authorization: `Bearer ${LOVABLE_API_KEY}`, "Content-Type": "application/json" },
+    body: JSON.stringify({
+      model: DEFAULT_MODEL,
+      messages: [
+        { role: "system", content: sysPrompt },
+        { role: "user", content: `Period: ${period}\nActive goals:\n${(goalsRes.data ?? []).map((g: { title: string; progress_pct?: number }) => `- ${g.title} (${g.progress_pct ?? 0}%)`).join("\n") || "(none)"}\n\nRecent memories:\n${(memsRes.data ?? []).slice(0, 12).map((m: { content: string }) => `- ${m.content}`).join("\n") || "(none)"}\n\nChat transcript:\n${transcript || "(no chats)"}` },
+      ],
+      tools,
+      tool_choice: { type: "function", function: { name: "render_digest" } },
+    }),
+  });
+
+  if (!aiResp.ok) {
+    return jsonResponse({ error: "Digest generation failed", status: aiResp.status }, 500);
+  }
+  const json = await aiResp.json();
+  const args = json.choices?.[0]?.message?.tool_calls?.[0]?.function?.arguments;
+  let parsed: { title: string; summary: string; highlights: Array<{ kind: string; text: string }> } | null = null;
+  try { parsed = JSON.parse(args ?? "{}"); } catch { parsed = null; }
+  if (!parsed?.title) {
+    return jsonResponse({ error: "Digest model returned no content" }, 502);
+  }
+
+  const { data: inserted, error: insErr } = await admin.from("pb_digests").insert({
+    user_id: user.id,
+    period,
+    period_start: periodStart,
+    period_end: periodEnd,
+    title: parsed.title.slice(0, 200),
+    summary: parsed.summary,
+    highlights: parsed.highlights ?? [],
+    source_counts: counts,
+    status: "ready",
+    generated_by_model: DEFAULT_MODEL,
+  }).select().single();
+
+  if (insErr) return jsonResponse({ error: insErr.message }, 500);
+
+  await logSecurityEvent(admin, user.id, "digest.generated", { correlationId, period, counts });
+  return jsonResponse({ ok: true, digest: inserted });
+}
+
+async function actionDigestList(
+  user: { id: string },
+  admin: ReturnType<typeof createClient>,
+): Promise<Response> {
+  const { data, error } = await admin.from("pb_digests")
+    .select("*").eq("user_id", user.id).neq("status", "dismissed")
+    .order("period_end", { ascending: false }).limit(20);
+  if (error) return jsonResponse({ error: error.message }, 500);
+  return jsonResponse({ ok: true, digests: data ?? [] });
+}
+
+async function actionDigestDismiss(
+  user: { id: string },
+  admin: ReturnType<typeof createClient>,
+  payload: unknown,
+): Promise<Response> {
+  const v = zodValidate(payload, PBDigestDismissSchema);
+  if (!v.success) return v.response;
+  const { error } = await admin.from("pb_digests")
+    .update({ status: "dismissed" }).eq("id", v.data.id).eq("user_id", user.id);
+  if (error) return jsonResponse({ error: error.message }, 500);
+  return jsonResponse({ ok: true });
+}
+
+// ── Workspace sharing ─────────────────────────────────────────
+
+async function ensureWorkspaceOwner(
+  admin: ReturnType<typeof createClient>,
+  userId: string,
+  workspaceId: string,
+): Promise<boolean> {
+  const { data } = await admin.from("pb_workspaces").select("id").eq("id", workspaceId).eq("user_id", userId).maybeSingle();
+  return !!data;
+}
+
+async function actionWorkspaceInvite(
+  user: { id: string },
+  admin: ReturnType<typeof createClient>,
+  payload: unknown,
+): Promise<Response> {
+  const v = zodValidate(payload, PBWorkspaceInviteSchema);
+  if (!v.success) return v.response;
+  if (!await ensureWorkspaceOwner(admin, user.id, v.data.workspace_id)) {
+    return jsonResponse({ error: "Only the workspace owner can invite" }, 403);
+  }
+
+  // If the email already maps to a Brain user, link the user_id at invite-time.
+  const { data: matched } = await admin.from("pb_profile")
+    .select("user_id,display_name")
+    .ilike("email", v.data.email)
+    .maybeSingle();
+
+  const { data, error } = await admin.from("pb_workspace_members").insert({
+    workspace_id: v.data.workspace_id,
+    member_email: v.data.email.toLowerCase(),
+    member_user_id: (matched as { user_id?: string } | null)?.user_id ?? null,
+    role: v.data.role,
+    invited_by: user.id,
+    status: "invited",
+  }).select().single();
+  if (error) return jsonResponse({ error: error.message }, 400);
+
+  await logSecurityEvent(admin, user.id, "workspace.invited", { workspace_id: v.data.workspace_id, email: v.data.email, role: v.data.role });
+  return jsonResponse({ ok: true, member: data });
+}
+
+async function actionWorkspaceAccept(
+  user: { id: string },
+  admin: ReturnType<typeof createClient>,
+  payload: unknown,
+): Promise<Response> {
+  const v = zodValidate(payload, PBWorkspaceAcceptSchema);
+  if (!v.success) return v.response;
+  const { data: invite } = await admin.from("pb_workspace_members")
+    .select("*").eq("invite_token", v.data.invite_token).maybeSingle();
+  if (!invite) return jsonResponse({ error: "Invite not found" }, 404);
+  if ((invite as { status: string }).status === "revoked") {
+    return jsonResponse({ error: "Invite revoked" }, 410);
+  }
+
+  const { data: updated, error } = await admin.from("pb_workspace_members").update({
+    member_user_id: user.id,
+    status: "active",
+    accepted_at: new Date().toISOString(),
+  }).eq("id", (invite as { id: string }).id).select().single();
+  if (error) return jsonResponse({ error: error.message }, 500);
+
+  await logSecurityEvent(admin, user.id, "workspace.accepted", { workspace_id: (invite as { workspace_id: string }).workspace_id });
+  return jsonResponse({ ok: true, member: updated });
+}
+
+async function actionWorkspaceListMembers(
+  user: { id: string },
+  admin: ReturnType<typeof createClient>,
+  payload: unknown,
+): Promise<Response> {
+  const v = zodValidate(payload, PBWorkspaceListMembersSchema);
+  if (!v.success) return v.response;
+  if (!await ensureWorkspaceOwner(admin, user.id, v.data.workspace_id)) {
+    return jsonResponse({ error: "Only the workspace owner can list members" }, 403);
+  }
+  const { data } = await admin.from("pb_workspace_members")
+    .select("id,member_email,member_user_id,role,status,invite_token,accepted_at,created_at")
+    .eq("workspace_id", v.data.workspace_id)
+    .order("created_at", { ascending: true });
+  return jsonResponse({ ok: true, members: data ?? [] });
+}
+
+async function actionWorkspaceRemoveMember(
+  user: { id: string },
+  admin: ReturnType<typeof createClient>,
+  payload: unknown,
+): Promise<Response> {
+  const v = zodValidate(payload, PBWorkspaceRemoveMemberSchema);
+  if (!v.success) return v.response;
+  const { data: row } = await admin.from("pb_workspace_members").select("workspace_id").eq("id", v.data.member_id).maybeSingle();
+  if (!row) return jsonResponse({ error: "Member not found" }, 404);
+  if (!await ensureWorkspaceOwner(admin, user.id, (row as { workspace_id: string }).workspace_id)) {
+    return jsonResponse({ error: "Only the workspace owner can remove members" }, 403);
+  }
+  await admin.from("pb_workspace_members").update({ status: "revoked" }).eq("id", v.data.member_id);
+  await logSecurityEvent(admin, user.id, "workspace.member_removed", { member_id: v.data.member_id });
+  return jsonResponse({ ok: true });
+}
+
+async function actionWorkspaceUpdateRole(
+  user: { id: string },
+  admin: ReturnType<typeof createClient>,
+  payload: unknown,
+): Promise<Response> {
+  const v = zodValidate(payload, PBWorkspaceUpdateRoleSchema);
+  if (!v.success) return v.response;
+  const { data: row } = await admin.from("pb_workspace_members").select("workspace_id").eq("id", v.data.member_id).maybeSingle();
+  if (!row) return jsonResponse({ error: "Member not found" }, 404);
+  if (!await ensureWorkspaceOwner(admin, user.id, (row as { workspace_id: string }).workspace_id)) {
+    return jsonResponse({ error: "Only the workspace owner can change roles" }, 403);
+  }
+  await admin.from("pb_workspace_members").update({ role: v.data.role }).eq("id", v.data.member_id);
+  return jsonResponse({ ok: true });
+}
+
+// ── Tools registry ────────────────────────────────────────────
+
+async function actionToolList(
+  user: { id: string },
+  admin: ReturnType<typeof createClient>,
+): Promise<Response> {
+  const { data } = await admin.from("pb_tools").select("*").eq("user_id", user.id).order("created_at", { ascending: false });
+  return jsonResponse({ ok: true, tools: data ?? [] });
+}
+
+async function actionToolUpsert(
+  user: { id: string },
+  admin: ReturnType<typeof createClient>,
+  payload: unknown,
+): Promise<Response> {
+  const v = zodValidate(payload, PBToolUpsertSchema);
+  if (!v.success) return v.response;
+  const { data, error } = await admin.from("pb_tools").upsert({
+    user_id: user.id,
+    tool_key: v.data.tool_key,
+    display_name: v.data.display_name,
+    description: v.data.description,
+    kind: v.data.kind,
+    config: v.data.config,
+    enabled: v.data.enabled,
+  }, { onConflict: "user_id,tool_key" }).select().single();
+  if (error) return jsonResponse({ error: error.message }, 400);
+  return jsonResponse({ ok: true, tool: data });
+}
+
+async function actionToolToggle(
+  user: { id: string },
+  admin: ReturnType<typeof createClient>,
+  payload: unknown,
+): Promise<Response> {
+  const v = zodValidate(payload, PBToolToggleSchema);
+  if (!v.success) return v.response;
+  const { error } = await admin.from("pb_tools").update({ enabled: v.data.enabled })
+    .eq("id", v.data.id).eq("user_id", user.id);
+  if (error) return jsonResponse({ error: error.message }, 500);
+  return jsonResponse({ ok: true });
+}
+
+async function actionToolDelete(
+  user: { id: string },
+  admin: ReturnType<typeof createClient>,
+  payload: unknown,
+): Promise<Response> {
+  const v = zodValidate(payload, PBToolDeleteSchema);
+  if (!v.success) return v.response;
+  const { error } = await admin.from("pb_tools").delete().eq("id", v.data.id).eq("user_id", user.id);
+  if (error) return jsonResponse({ error: error.message }, 500);
+  return jsonResponse({ ok: true });
+}
+
+// ── Insights engine ───────────────────────────────────────────
+
+async function actionInsightsScan(
+  user: { id: string },
+  admin: ReturnType<typeof createClient>,
+  payload: unknown,
+  correlationId: string,
+): Promise<Response> {
+  const v = zodValidate(payload, PBInsightsScanSchema);
+  if (!v.success) return v.response;
+  const prefs = await getSecurityPrefs(admin, user.id);
+  if (prefs.sensitive_mode) {
+    return jsonResponse({ ok: true, skipped: true, reason: "sensitive_mode" });
+  }
+
+  const [msgsRes, memsRes] = await Promise.all([
+    admin.from("pb_messages").select("role,content,created_at,chat_id")
+      .eq("user_id", user.id).order("created_at", { ascending: false }).limit(v.data.windowMessages),
+    admin.from("pb_memories").select("category,content,confidence")
+      .eq("user_id", user.id).eq("status", "active").order("created_at", { ascending: false }).limit(40),
+  ]);
+
+  if ((msgsRes.data?.length ?? 0) < 6) {
+    return jsonResponse({ ok: true, scanned: msgsRes.data?.length ?? 0, signals: 0, reason: "insufficient_data" });
+  }
+
+  const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
+  if (!LOVABLE_API_KEY) return jsonResponse({ error: "AI provider not configured" }, 503);
+
+  const transcript = (msgsRes.data ?? [])
+    .reverse()
+    .map((m: { role: string; content: string }) => `${m.role.toUpperCase()}: ${m.content.slice(0, 500)}`)
+    .join("\n").slice(0, 14000);
+
+  const tools = [{
+    type: "function",
+    function: {
+      name: "record_signals",
+      description: "Record up to 6 high-signal patterns the user might benefit from seeing.",
+      parameters: {
+        type: "object",
+        properties: {
+          signals: {
+            type: "array",
+            items: {
+              type: "object",
+              properties: {
+                kind: { type: "string", enum: ["pattern","blocker","win","theme","suggestion"] },
+                title: { type: "string" },
+                body: { type: "string" },
+                confidence: { type: "number", minimum: 0, maximum: 1 },
+              },
+              required: ["kind","title","body","confidence"],
+            },
+            maxItems: 6,
+          },
+        },
+        required: ["signals"],
+      },
+    },
+  }];
+
+  const aiResp = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+    method: "POST",
+    headers: { Authorization: `Bearer ${LOVABLE_API_KEY}`, "Content-Type": "application/json" },
+    body: JSON.stringify({
+      model: DEFAULT_MODEL,
+      messages: [
+        { role: "system", content: `You analyze the user's recent activity and surface up to 6 useful, non-obvious signals. Be precise. Skip restating known memories. Skip fluff.` },
+        { role: "user", content: `Active memories:\n${(memsRes.data ?? []).map((m: { content: string }) => `- ${m.content}`).join("\n")}\n\nRecent transcript:\n${transcript}` },
+      ],
+      tools,
+      tool_choice: { type: "function", function: { name: "record_signals" } },
+    }),
+  });
+  if (!aiResp.ok) return jsonResponse({ error: "Insights scan failed", status: aiResp.status }, 500);
+
+  const json = await aiResp.json();
+  const args = json.choices?.[0]?.message?.tool_calls?.[0]?.function?.arguments;
+  let signals: Array<{ kind: string; title: string; body: string; confidence: number }> = [];
+  try { signals = JSON.parse(args ?? "{}").signals ?? []; } catch { signals = []; }
+
+  const rows = signals.slice(0, 6).map((s) => ({
+    user_id: user.id,
+    kind: s.kind,
+    title: s.title.slice(0, 200),
+    body: s.body.slice(0, 1500),
+    confidence: s.confidence,
+    status: "new",
+  }));
+  if (rows.length) await admin.from("pb_insights_signals").insert(rows);
+
+  await logSecurityEvent(admin, user.id, "insights.scan", { correlationId, scanned: msgsRes.data?.length ?? 0, signals: rows.length });
+  return jsonResponse({ ok: true, scanned: msgsRes.data?.length ?? 0, signals: rows.length });
+}
+
+async function actionInsightsList(
+  user: { id: string },
+  admin: ReturnType<typeof createClient>,
+): Promise<Response> {
+  const { data } = await admin.from("pb_insights_signals")
+    .select("*").eq("user_id", user.id).neq("status", "dismissed")
+    .order("created_at", { ascending: false }).limit(20);
+  return jsonResponse({ ok: true, signals: data ?? [] });
+}
+
+async function actionInsightsUpdateStatus(
+  user: { id: string },
+  admin: ReturnType<typeof createClient>,
+  payload: unknown,
+): Promise<Response> {
+  const v = zodValidate(payload, PBInsightsUpdateStatusSchema);
+  if (!v.success) return v.response;
+  const { error } = await admin.from("pb_insights_signals")
+    .update({ status: v.data.status }).eq("id", v.data.id).eq("user_id", user.id);
+  if (error) return jsonResponse({ error: error.message }, 500);
+  return jsonResponse({ ok: true });
+}
+
 serve(async (req) => {
   const cors = handleCors(req);
   if (cors) return cors;
@@ -723,6 +1173,21 @@ serve(async (req) => {
       case "voice.tts":          return await actionVoiceTts(user, admin, payload);
       case "data.export":        return await actionDataExport(user, admin);
       case "data.delete":        return await actionDataDelete(user, admin, payload);
+      case "digest.generate":         return await actionDigestGenerate(user, admin, payload, correlationId);
+      case "digest.list":             return await actionDigestList(user, admin);
+      case "digest.dismiss":          return await actionDigestDismiss(user, admin, payload);
+      case "workspace.invite":        return await actionWorkspaceInvite(user, admin, payload);
+      case "workspace.accept":        return await actionWorkspaceAccept(user, admin, payload);
+      case "workspace.list_members":  return await actionWorkspaceListMembers(user, admin, payload);
+      case "workspace.remove_member": return await actionWorkspaceRemoveMember(user, admin, payload);
+      case "workspace.update_role":   return await actionWorkspaceUpdateRole(user, admin, payload);
+      case "tool.list":               return await actionToolList(user, admin);
+      case "tool.upsert":             return await actionToolUpsert(user, admin, payload);
+      case "tool.toggle":             return await actionToolToggle(user, admin, payload);
+      case "tool.delete":             return await actionToolDelete(user, admin, payload);
+      case "insights.scan":           return await actionInsightsScan(user, admin, payload, correlationId);
+      case "insights.list":           return await actionInsightsList(user, admin);
+      case "insights.update_status":  return await actionInsightsUpdateStatus(user, admin, payload);
       default:
         return jsonResponse({ error: "Unknown action", code: "BAD_ACTION" }, 400);
     }
