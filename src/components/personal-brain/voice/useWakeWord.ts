@@ -191,5 +191,5 @@ export function useWakeWord(opts: UseWakeWordOptions = {}): UseWakeWord {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return { supported, active, lastWakeAt, start, stop };
+  return { supported, active, lastWakeAt, start, stop, liveTranscript };
 }
