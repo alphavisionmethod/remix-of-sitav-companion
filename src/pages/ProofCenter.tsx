@@ -27,6 +27,7 @@ import {
   DollarSign, Briefcase, Home, Zap, Hash, Download, Layers
 } from "lucide-react";
 import { PageShell } from "@/components/sita/PageShell";
+import { PageErrorState } from "@/components/sita/PageErrorState";
 import { Skeleton } from "@/components/ui/skeleton";
 
 type FilterType = "all" | "verified" | "pending" | "failed" | "rolled-back";
@@ -162,7 +163,7 @@ const ReceiptDetailPanel = ({ item, onClose }: { item: any; onClose: () => void 
 
 // ── Main Component ───────────────────────────────────────────
 const ProofCenter = () => {
-  const { data: proofRecords = [], isLoading } = useProofRecords();
+  const { data: proofRecords = [], isLoading, isError: proofError, refetch: refetchProofs } = useProofRecords();
   const { receipts: kernelReceipts, chainValid, chainLength } = useProofTimeline();
   const kernelStatus = useKernelStatus();
   const { user } = useAuth();
@@ -172,7 +173,7 @@ const ProofCenter = () => {
   const [detailId, setDetailId] = useState<DetailViewId>(null);
 
   // Fetch linked approvals
-  const { data: approvals = [] } = useQuery({
+  const { data: approvals = [], isError: approvalsError } = useQuery({
     queryKey: ["proof_approvals", user?.id],
     enabled: !!user,
     queryFn: async () => {
@@ -203,6 +204,14 @@ const ProofCenter = () => {
   }, [proofRecords, filter, domainFilter, searchQuery, verified, pending, failed, rolledBack]);
 
   const selectedItem = detailId ? proofRecords.find((p: Record<string, any>) => p.id === detailId) : null;
+
+  if (proofError || approvalsError) {
+    return (
+      <div className="mx-auto max-w-7xl space-y-6">
+        <PageErrorState onRetry={refetchProofs} context="proof records" />
+      </div>
+    );
+  }
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">

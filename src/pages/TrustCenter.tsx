@@ -26,6 +26,7 @@ import { TrustBadge } from "@/components/sita/badges";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
 import { EmptyState } from "@/components/sita/SitaComponents";
+import { PageErrorState } from "@/components/sita/PageErrorState";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
@@ -69,7 +70,7 @@ const TrustOverviewPage = () => {
   const trustDebtEngine = useMemo(() => new TrustDebtEngine(), []);
   const debtScore = useMemo(() => trustDebtEngine.computeDebtScore(), [trustDebtEngine]);
 
-  const { data: devices = [] } = useQuery({
+  const { data: devices = [], isError: devicesError, refetch: refetchDevices } = useQuery({
     queryKey: ["trust_devices", user?.id],
     queryFn: async () => {
       if (!user) return [];
@@ -86,6 +87,15 @@ const TrustOverviewPage = () => {
   ];
 
   const healthPct = Math.round((1 - debtScore) * 100);
+
+  if (devicesError) {
+    return (
+      <div className="space-y-5">
+        <PageTruthBanner truthState="live" />
+        <PageErrorState onRetry={refetchDevices} context="trust data" />
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-5">

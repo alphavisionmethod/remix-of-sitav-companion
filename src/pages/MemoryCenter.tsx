@@ -16,6 +16,7 @@ import {
   Brain, Search, Edit, Trash2, Eye, Lock, Shield, Clock, Sparkles, X, Check, Save
 } from "lucide-react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageErrorState } from "@/components/sita/PageErrorState";
 
 
 
@@ -59,7 +60,7 @@ const MemoryCenter = () => {
   };
 
   // Live data from user_memory table
-  const { data: allMemories = [], isLoading } = useQuery({
+  const { data: allMemories = [], isLoading, isError, refetch } = useQuery({
     queryKey: ["user_memory", user?.id],
     enabled: !!user,
     queryFn: async () => {
@@ -113,6 +114,15 @@ const MemoryCenter = () => {
     if (hours < 24) return `${hours}h ago`;
     return `${Math.floor(hours / 24)}d ago`;
   };
+
+  if (isError) {
+    return (
+      <motion.div className="mx-auto max-w-5xl space-y-6" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+        <SitaPageHeader title="Memory Center" subtitle="Everything SITA knows — transparent, editable, and governed" />
+        <PageErrorState onRetry={refetch} context="memories" />
+      </motion.div>
+    );
+  }
 
   return (
     <motion.div className="mx-auto max-w-5xl space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>

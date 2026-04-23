@@ -24,6 +24,7 @@ import {
 
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { PageShell } from "@/components/sita/PageShell";
+import { PageErrorState } from "@/components/sita/PageErrorState";
 // ── Category System ──────────────────────────────────────────
 type FeedCategory = "all" | "actions" | "approvals" | "proof" | "workflows" | "finance" | "communications" | "household" | "system";
 
@@ -268,7 +269,7 @@ const ActivityStream = () => {
   const [searchQuery, setSearchQuery] = useState("");
 
   // Fetch events
-  const { data: liveEvents = [], isLoading } = useQuery({
+  const { data: liveEvents = [], isLoading, isError: eventsError, refetch: refetchEvents } = useQuery({
     queryKey: ["timeline_feed", user?.id],
     enabled: !!user && !false,
     queryFn: async () => {
@@ -370,6 +371,14 @@ const ActivityStream = () => {
   const todayCount = timeline.filter(e => e.dateGroup === "Today").length;
   const pendingCount = timeline.filter(e => e.approvalRequired).length;
   const proofCount = timeline.filter(e => e.proofLinked).length;
+
+  if (eventsError) {
+    return (
+      <motion.div className="mx-auto max-w-5xl space-y-6" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+        <PageErrorState onRetry={refetchEvents} context="timeline events" />
+      </motion.div>
+    );
+  }
 
   return (
     <motion.div className="mx-auto max-w-5xl space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>

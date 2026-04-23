@@ -1,7 +1,7 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — usePageData Hook
 // Canonical wrapper for page-level data fetching with built-in
-// loading, error, and empty state resolution.
+// loading, error, empty, and ready state resolution.
 // ═══════════════════════════════════════════════════════════════
 
 import { useQuery, type UseQueryOptions } from "@tanstack/react-query";
@@ -20,12 +20,26 @@ export interface PageDataResult<T> {
 }
 
 /**
+ * Universal empty check that handles every shape:
+ * - null / undefined → empty
+ * - Array → length === 0
+ * - Plain object → Object.keys().length === 0
+ * - Anything else → falsy check
+ */
+function defaultEmptyCheck<T>(data: T): boolean {
+  if (data === null || data === undefined) return true;
+  if (Array.isArray(data)) return data.length === 0;
+  if (typeof data === "object") return Object.keys(data as object).length === 0;
+  return !data;
+}
+
+/**
  * Wraps useQuery with standardized page-level state resolution.
  * Returns a `state` enum that maps directly to canonical components:
  * - "loading" → <PageSkeleton />
- * - "error" → <PremiumEmptyState variant="degraded" />
- * - "empty" → <PremiumEmptyState variant="no-data" />
- * - "ready" → render content
+ * - "error"   → <PageErrorState /> with retry
+ * - "empty"   → <PremiumEmptyState variant="no-data" />
+ * - "ready"   → render content
  */
 export function usePageData<T>(
   options: UseQueryOptions<T, Error> & { emptyCheck?: (data: T) => boolean }
@@ -33,13 +47,9 @@ export function usePageData<T>(
   const { emptyCheck, ...queryOpts } = options;
   const query = useQuery<T, Error>(queryOpts);
 
-  const isEmpty = query.data !== undefined && (
-    emptyCheck
-      ? emptyCheck(query.data)
-      : Array.isArray(query.data)
-        ? query.data.length === 0
-        : query.data === null
-  );
+  const isEmpty =
+    query.data !== undefined &&
+    (emptyCheck ? emptyCheck(query.data) : defaultEmptyCheck(query.data));
 
   const state: PageDataState = query.isLoading
     ? "loading"
