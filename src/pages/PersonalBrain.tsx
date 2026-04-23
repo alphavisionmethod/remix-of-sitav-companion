@@ -12,6 +12,8 @@ import { useOSOrchestration } from "@/hooks/useOSOrchestration";
 import { useExperienceSignature } from "@/hooks/useExperienceSignature";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { PageShell } from "@/components/sita/PageShell";
+import { usePersonalBrainOnboarding } from "@/components/personal-brain/onboarding/usePersonalBrainOnboarding";
+import { PersonalBrainOnboarding } from "@/components/personal-brain/onboarding/PersonalBrainOnboarding";
 
 
 
@@ -201,9 +203,29 @@ function PersonalBrainInner() {
 }
 
 export default function PersonalBrain() {
-return (
+  return (
     <GlobalErrorBoundary>
-      <PersonalBrainInner />
+      <PersonalBrainGate />
     </GlobalErrorBoundary>
   );
+}
+
+function PersonalBrainGate() {
+  const { loading, onboarded, refresh } = usePersonalBrainOnboarding();
+
+  if (loading) {
+    return (
+      <PageShell>
+        <div className="flex items-center justify-center min-h-[60vh]">
+          <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+        </div>
+      </PageShell>
+    );
+  }
+
+  if (!onboarded) {
+    return <PersonalBrainOnboarding onComplete={() => void refresh()} />;
+  }
+
+  return <PersonalBrainInner />;
 }
