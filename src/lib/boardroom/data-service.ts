@@ -9,15 +9,15 @@ import { fromTable } from "@/lib/supabase-helpers";
 import * as legacyMocks from "@/data/fixtures/mock-data/legacy-display-mocks";
 
 export interface BoardroomDataBundle {
-  leads: typeof legacyMocks.leads;
-  invoices: typeof legacyMocks.invoices;
-  cashFlow: typeof legacyMocks.cashFlow;
-  bills: typeof legacyMocks.bills;
-  subscriptions: typeof legacyMocks.subscriptions;
-  householdTasks: typeof legacyMocks.householdTasks;
-  familyEvents: typeof legacyMocks.familyEvents;
-  incidents: typeof legacyMocks.incidents;
-  opportunityInsights: typeof legacyMocks.opportunityInsights;
+  leads: typeof legacyMocks.mockLeads;
+  invoices: typeof legacyMocks.mockInvoices;
+  cashFlow: typeof legacyMocks.mockCashFlow;
+  bills: typeof legacyMocks.mockBills;
+  subscriptions: typeof legacyMocks.mockSubscriptions;
+  householdTasks: typeof legacyMocks.mockHouseholdTasks;
+  familyEvents: typeof legacyMocks.mockFamilyEvents;
+  incidents: typeof legacyMocks.mockIncidents;
+  opportunityInsights: typeof legacyMocks.mockOpportunityInsights;
   dataFreshness: Record<string, string>; // domain → ISO timestamp
   isLiveData: boolean;
 }
@@ -86,15 +86,15 @@ export async function fetchBoardroomData(): Promise<BoardroomDataBundle> {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) {
     return {
-      leads: legacyMocks.leads,
-      invoices: legacyMocks.invoices,
-      cashFlow: legacyMocks.cashFlow,
-      bills: legacyMocks.bills,
-      subscriptions: legacyMocks.subscriptions,
-      householdTasks: legacyMocks.householdTasks,
-      familyEvents: legacyMocks.familyEvents,
-      incidents: legacyMocks.incidents,
-      opportunityInsights: legacyMocks.opportunityInsights,
+      leads: legacyMocks.mockLeads,
+      invoices: legacyMocks.mockInvoices,
+      cashFlow: legacyMocks.mockCashFlow,
+      bills: legacyMocks.mockBills,
+      subscriptions: legacyMocks.mockSubscriptions,
+      householdTasks: legacyMocks.mockHouseholdTasks,
+      familyEvents: legacyMocks.mockFamilyEvents,
+      incidents: legacyMocks.mockIncidents,
+      opportunityInsights: legacyMocks.mockOpportunityInsights,
       dataFreshness: {},
       isLiveData: false,
     };
@@ -111,15 +111,15 @@ export async function fetchBoardroomData(): Promise<BoardroomDataBundle> {
   const hasAnyLiveData = !!(leads || invoices || bills || incidents);
 
   return {
-    leads: leads ?? legacyMocks.leads,
-    invoices: invoices ?? legacyMocks.invoices,
-    cashFlow: legacyMocks.cashFlow, // No dedicated cashflow table yet — stays mock
-    bills: bills ?? legacyMocks.bills,
-    subscriptions: legacyMocks.subscriptions, // No subscriptions table yet
-    householdTasks: legacyMocks.householdTasks, // No household tasks table yet
-    familyEvents: legacyMocks.familyEvents, // No family events table yet
-    incidents: incidents ?? legacyMocks.incidents,
-    opportunityInsights: legacyMocks.opportunityInsights, // Narrative — stays mock
+    leads: leads ?? legacyMocks.mockLeads,
+    invoices: invoices ?? legacyMocks.mockInvoices,
+    cashFlow: legacyMocks.mockCashFlow, // No dedicated cashflow table yet — stays mock
+    bills: bills ?? legacyMocks.mockBills,
+    subscriptions: legacyMocks.mockSubscriptions, // No subscriptions table yet
+    householdTasks: legacyMocks.mockHouseholdTasks, // No household tasks table yet
+    familyEvents: legacyMocks.mockFamilyEvents, // No family events table yet
+    incidents: incidents ?? legacyMocks.mockIncidents,
+    opportunityInsights: legacyMocks.mockOpportunityInsights, // Narrative — stays mock
     dataFreshness: {
       leads: leads ? now : "",
       invoices: invoices ? now : "",
