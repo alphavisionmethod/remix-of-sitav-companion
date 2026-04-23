@@ -45,6 +45,7 @@ const PersonalBrain = lazy(() => import("@/pages/PersonalBrain"));
 const PersonalBrainWorkspace = lazy(() => import("@/pages/personal-brain/PersonalBrainWorkspace"));
 const PersonalBrainChat = lazy(() => import("@/pages/personal-brain/PersonalBrainChat"));
 const BrainSnapshot = lazy(() => import("@/pages/personal-brain/BrainSnapshot"));
+const PbVoiceSettings = lazy(() => import("@/pages/personal-brain/VoiceSettings"));
 const CalmFocusMode = lazy(() => import("@/pages/CalmFocusMode"));
 const CommandHistory = lazy(() => import("@/pages/CommandHistory"));
 const EnvironmentSwitcherPage = lazy(() => import("@/pages/EnvironmentSwitcher"));
@@ -186,6 +187,7 @@ export function getOSRoutes() {
       <Route path="/personal-brain/w/:workspaceId" element={<PersonalBrainWorkspace />} />
       <Route path="/personal-brain/c/:chatId" element={<PersonalBrainChat />} />
       <Route path="/personal-brain/snapshot" element={<BrainSnapshot />} />
+      <Route path="/personal-brain/voice-settings" element={<PbVoiceSettings />} />
 
       {/* OS Workspaces */}
       <Route path="/calendar" element={<CalendarWorkspace />} />
