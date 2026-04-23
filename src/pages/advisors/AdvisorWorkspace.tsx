@@ -41,6 +41,8 @@ import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 
+
+const isDemoMode = false;
 // ── Operating Modes ─────────────────────────────────────────────
 
 type CouncilMode = "daily-pulse" | "business" | "money" | "concierge" | "boardroom" | "executive";

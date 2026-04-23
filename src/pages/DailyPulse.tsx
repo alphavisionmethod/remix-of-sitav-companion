@@ -20,6 +20,8 @@ import {
   ChevronDown, ChevronUp,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+
+const isDemoMode = false;
 // ── Helpers ──────────────────────────────────────────────────
 
 function getGreeting(): string {

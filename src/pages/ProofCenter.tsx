@@ -27,6 +27,8 @@ import {
   DollarSign, Briefcase, Home, Zap, Hash, Download, Layers
 } from "lucide-react";
 import { PageShell } from "@/components/sita/PageShell";
+
+const isDemoMode = false;
 type FilterType = "all" | "verified" | "pending" | "failed" | "rolled-back";
 type DomainFilter = "all" | "finance" | "business" | "household" | "system" | "workflow";
 type DetailViewId = string | null;

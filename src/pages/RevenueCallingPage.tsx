@@ -29,6 +29,8 @@ import { useCallingContactsData } from "@/hooks/use-business-data";
 import { useCallingContacts, useCallLogs } from "@/hooks/use-live-data";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { PageShell } from "@/components/sita/PageShell";
+
+const isDemoMode = false;
 type DialerState = "idle" | "dialing" | "connected" | "wrapping-up";
 
 // ── Helpers ─────────────────────────────────────────────────────
