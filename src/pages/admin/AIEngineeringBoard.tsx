@@ -15,16 +15,15 @@ import { generateChiefSynthesis } from "@/lib/ai-engineering";
 import { getIntegrationHealthSummary } from "@/lib/ai-engineering/platform-integration";
 import { useAIEngineeringData } from "@/hooks/use-ai-engineering-data";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { ADMIN_ENVIRONMENTS as ENVIRONMENTS,
-  ADMIN_MISSIONS as MISSIONS,
-  ADMIN_RELEASE_GATES as RELEASE_GATES,
-  AGENT_SIGNALS,
-  ATTENTION_ITEMS,
-  CHANGES,
-  LEARNING_HIGHLIGHTS,
-  OVERVIEW_BAND,
-  RECENT_HEALS,
-} from "@/data/seed/admin-platform";
+const MISSIONS: any[] = [];
+const RELEASE_GATES: any[] = [];
+const AGENT_SIGNALS: any[] = [];
+const ATTENTION_ITEMS: any[] = [];
+const CHANGES: any[] = [];
+const LEARNING_HIGHLIGHTS: any[] = [];
+const OVERVIEW_BAND: any[] = [];
+const RECENT_HEALS: any[] = [];
+
 
 
 const HEAL_STATS = { attempted: 12, verified: 11, blocked: 3, rolledBack: 1 };

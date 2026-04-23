@@ -16,10 +16,12 @@ import {
   evaluateThesis,
   type Position, type CapitalBucket, type Thesis,
 } from "@/lib/domain-engines/investment-office";
-import {
-  getWatchlist, getTradeReviewPackets, getExecutionIntents,
-  getOpportunityScores, getAvailableTrustModes, getInvestmentTrustMode,
-} from "@/data/seed/investment";
+const getWatchlist = () => [] as any[];
+const getTradeReviewPackets = () => [] as any[];
+const getExecutionIntents = () => [] as any[];
+const getOpportunityScores = () => [] as any[];
+const getAvailableTrustModes = () => ["standard"] as string[];
+const getInvestmentTrustMode = () => "standard";
 import { useCapitalBuckets, usePositions, useTheses } from "@/hooks/use-investment-data";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 

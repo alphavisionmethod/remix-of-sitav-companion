@@ -9,11 +9,10 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { PageShell } from "@/components/sita/PageShell";
 import { Typography } from "@/components/sita/Typography";
-import { REV_BUNDLES as BUNDLES,
-  REV_PRODUCTS as PRODUCTS,
-  OFFER_UPSELLS,
-  PRICING_EXPERIMENTS,
-} from "@/data/seed/revenue-office";
+const BUNDLES: any[] = [];
+const PRODUCTS: any[] = [];
+const OFFER_UPSELLS: any[] = [];
+const PRICING_EXPERIMENTS: any[] = [];
 
 
 export default function OffersWorkspace() {
