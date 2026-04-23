@@ -20513,6 +20513,78 @@ export type Database = {
         }
         Relationships: []
       }
+      sita_agent_plans: {
+        Row: {
+          approved_at: string | null
+          autonomy_tier: number
+          completed_at: string | null
+          created_at: string
+          domain: string
+          error: string | null
+          expires_at: string
+          id: string
+          intent: string
+          org_id: string | null
+          plan: Json
+          result: Json | null
+          status: string
+          user_id: string
+        }
+        Insert: {
+          approved_at?: string | null
+          autonomy_tier?: number
+          completed_at?: string | null
+          created_at?: string
+          domain?: string
+          error?: string | null
+          expires_at?: string
+          id?: string
+          intent: string
+          org_id?: string | null
+          plan?: Json
+          result?: Json | null
+          status?: string
+          user_id: string
+        }
+        Update: {
+          approved_at?: string | null
+          autonomy_tier?: number
+          completed_at?: string | null
+          created_at?: string
+          domain?: string
+          error?: string | null
+          expires_at?: string
+          id?: string
+          intent?: string
+          org_id?: string | null
+          plan?: Json
+          result?: Json | null
+          status?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      sita_autonomy_preferences: {
+        Row: {
+          created_at: string
+          tiers: Json
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          tiers?: Json
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          tiers?: Json
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       sla_breach_contributing_events: {
         Row: {
           contributing_alert_id: string | null
