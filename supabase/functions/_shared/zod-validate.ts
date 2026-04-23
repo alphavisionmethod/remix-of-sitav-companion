@@ -69,6 +69,7 @@ export const PBRouterSchema = z.object({
     "learn.scan",
     "file.ingest",
     "voice.transcribe",
+    "voice.tts",
     "data.export",
   ]),
   payload: z.record(z.unknown()).optional().default({}),
@@ -111,6 +112,11 @@ export const PBVoiceTranscribeSchema = z.object({
   audio_base64: z.string().min(1).max(20_000_000),
   mime_type: z.string().min(1).max(64).default("audio/webm"),
   language: z.string().max(8).optional(),
+});
+
+export const PBVoiceTtsSchema = z.object({
+  text: z.string().min(1).max(5000),
+  voice_id: z.string().max(64).optional(),
 });
 
 export const OsCommandSchema = z.object({

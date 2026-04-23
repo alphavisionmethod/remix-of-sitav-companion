@@ -16,6 +16,7 @@ import { usePbGoals } from "./hooks/usePbGoals";
 import { usePbInsights } from "./hooks/usePbInsights";
 import type { BrainModeId } from "./BRAIN_MODES";
 import { supabase } from "@/integrations/supabase/client";
+import { VoicePanel } from "./voice/VoicePanel";
 
 function greetingFor(name?: string | null): string {
   const hour = new Date().getHours();
@@ -34,6 +35,7 @@ export function BrainDashboard() {
   const { chats, loading: chatsLoading } = usePbChats({ limit: 5 });
   const { goals, loading: goalsLoading } = usePbGoals();
   const { insights, loading: insightsLoading } = usePbInsights(3);
+  const [voiceOpen, setVoiceOpen] = useState(false);
 
   const filteredWorkspaces = useMemo(() => {
     if (scope === "business") {
@@ -69,6 +71,7 @@ export function BrainDashboard() {
           scope={scope}
           onScopeChange={setScope}
           onNewChat={() => void startNewChat(mode)}
+          onVoice={() => setVoiceOpen(true)}
         />
 
         <Card>
@@ -105,6 +108,12 @@ export function BrainDashboard() {
           </div>
         </div>
       </div>
+      {voiceOpen && (
+        <VoicePanel
+          initialMode={mode}
+          onClose={() => setVoiceOpen(false)}
+        />
+      )}
     </PageShell>
   );
 }

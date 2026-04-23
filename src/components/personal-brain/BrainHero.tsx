@@ -41,7 +41,7 @@ export function BrainHero({ greeting, scope, onScopeChange, onNewChat, onVoice }
               Business
             </ToggleGroupItem>
           </ToggleGroup>
-          <Button variant="outline" size="sm" onClick={onVoice} disabled={!onVoice} title="Voice (coming in Phase 4)">
+          <Button variant="outline" size="sm" onClick={onVoice} disabled={!onVoice} title="Open voice mode">
             <Mic className="h-4 w-4" />
             Voice
           </Button>

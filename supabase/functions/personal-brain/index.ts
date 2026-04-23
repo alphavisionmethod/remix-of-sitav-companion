@@ -29,6 +29,7 @@ import {
   PBFileIngestSchema,
   PBVoiceTranscribeSchema,
 } from "../_shared/zod-validate.ts";
+import { PBVoiceTtsSchema } from "../_shared/zod-validate.ts";
 import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
 import { logAIReceipt } from "../_shared/ai-receipt-logger.ts";
 import { checkAIBudget } from "../_shared/ai-budget-check.ts";
@@ -544,16 +545,97 @@ async function actionVoiceTranscribe(
   if (!v.success) return v.response;
 
   const prefs = await getSecurityPrefs(admin, user.id);
+  const elevenKey = Deno.env.get("ELEVENLABS_API_KEY");
+
+  // Cloud STT path (ElevenLabs Scribe v2) when key is configured
+  if (elevenKey) {
+    try {
+      const bin = Uint8Array.from(atob(v.data.audio_base64), (c) => c.charCodeAt(0));
+      const blob = new Blob([bin], { type: v.data.mime_type });
+      const fd = new FormData();
+      fd.append("file", blob, "audio.webm");
+      fd.append("model_id", "scribe_v2");
+      if (v.data.language) fd.append("language_code", v.data.language);
+      const resp = await fetch("https://api.elevenlabs.io/v1/speech-to-text", {
+        method: "POST",
+        headers: { "xi-api-key": elevenKey },
+        body: fd,
+      });
+      if (resp.ok) {
+        const json = await resp.json();
+        await logSecurityEvent(admin, user.id, "voice.transcribed", {
+          chars: (json.text ?? "").length,
+          retention: prefs.voice_transcript_retention,
+          provider: "elevenlabs",
+        });
+        return jsonResponse({
+          ok: true,
+          use_browser: false,
+          text: json.text ?? "",
+          language: json.language_code ?? v.data.language,
+        });
+      }
+      console.error("ElevenLabs STT failed:", resp.status, await resp.text().catch(() => ""));
+    } catch (e) {
+      console.error("voice.transcribe cloud error:", e);
+    }
+  }
+
   await logSecurityEvent(admin, user.id, "voice.transcribe.requested", {
     bytes: v.data.audio_base64.length,
     retention: prefs.voice_transcript_retention,
+    provider: "browser_fallback",
   });
   return jsonResponse({
     ok: true,
+    use_browser: true,
     use_browser_stt: true,
     retention: prefs.voice_transcript_retention,
-    note: "Cloud STT not available — fall back to Web Speech API on the client.",
+    note: "Cloud STT unavailable — client should fall back to Web Speech API.",
   });
+}
+
+async function actionVoiceTts(
+  user: { id: string },
+  admin: ReturnType<typeof createClient>,
+  payload: unknown,
+): Promise<Response> {
+  const v = zodValidate(payload, PBVoiceTtsSchema);
+  if (!v.success) return v.response;
+
+  const elevenKey = Deno.env.get("ELEVENLABS_API_KEY");
+  if (!elevenKey) {
+    await logSecurityEvent(admin, user.id, "voice.tts.requested", { provider: "browser_fallback" });
+    return jsonResponse({ ok: true, use_browser: true, reason: "elevenlabs_not_configured" });
+  }
+
+  const voiceId = v.data.voice_id && v.data.voice_id !== "browser-default" ? v.data.voice_id : "JBFqnCBsd6RMkjVDRZzb";
+  try {
+    const resp = await fetch(
+      `https://api.elevenlabs.io/v1/text-to-speech/${voiceId}?output_format=mp3_44100_128`,
+      {
+        method: "POST",
+        headers: { "xi-api-key": elevenKey, "Content-Type": "application/json" },
+        body: JSON.stringify({ text: v.data.text, model_id: "eleven_turbo_v2_5" }),
+      },
+    );
+    if (!resp.ok) {
+      console.error("ElevenLabs TTS failed:", resp.status);
+      return jsonResponse({ ok: true, use_browser: true, reason: `tts_${resp.status}` });
+    }
+    const buf = new Uint8Array(await resp.arrayBuffer());
+    let binary = "";
+    const chunk = 0x8000;
+    for (let i = 0; i < buf.length; i += chunk) {
+      binary += String.fromCharCode.apply(null, Array.from(buf.subarray(i, i + chunk)));
+    }
+    const audio_base64 = btoa(binary);
+    await logSecurityEvent(admin, user.id, "voice.tts.spoken", { chars: v.data.text.length, voice: voiceId });
+    return jsonResponse({ ok: true, use_browser: false, audio_base64, mime_type: "audio/mpeg" });
+  } catch (e) {
+    console.error("voice.tts error:", e);
+    return jsonResponse({ ok: true, use_browser: true, reason: e instanceof Error ? e.message : "tts_error" });
+  }
 }
 
 async function actionDataExport(
@@ -614,6 +696,7 @@ serve(async (req) => {
       case "learn.scan":         return await actionLearnScan(user, admin, payload, correlationId);
       case "file.ingest":        return await actionFileIngest(user, admin, payload);
       case "voice.transcribe":   return await actionVoiceTranscribe(user, admin, payload);
+      case "voice.tts":          return await actionVoiceTts(user, admin, payload);
       case "data.export":        return await actionDataExport(user, admin);
       default:
         return jsonResponse({ error: "Unknown action", code: "BAD_ACTION" }, 400);
