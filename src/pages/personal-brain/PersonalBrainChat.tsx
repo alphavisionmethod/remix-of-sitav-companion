@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
-import { ArrowLeft, Brain, Info, Loader2, Send } from "lucide-react";
+import { ArrowLeft, Brain, Info, Loader2, Send, Sparkles } from "lucide-react";
 import ReactMarkdown from "react-markdown";
+import { toast } from "sonner";
 import { GlobalErrorBoundary } from "@/components/sita/GlobalErrorBoundary";
 import { PageShell } from "@/components/sita/PageShell";
 import { Button } from "@/components/ui/button";
@@ -13,6 +14,8 @@ import { ModePicker } from "@/components/personal-brain/ModePicker";
 import { ContextDrawer } from "@/components/personal-brain/ContextDrawer";
 import { ConvertMessageMenu } from "@/components/personal-brain/ConvertMessageMenu";
 import { usePbChat } from "@/components/personal-brain/hooks/usePbChat";
+import { usePbMemories, type PbMemoryCategory } from "@/components/personal-brain/hooks/usePbMemories";
+import { parseRememberCommand } from "@/components/personal-brain/parseRememberCommand";
 import { BRAIN_MODES_BY_ID, type BrainModeId, isBrainModeId } from "@/components/personal-brain/BRAIN_MODES";
 
 function ChatInner() {
