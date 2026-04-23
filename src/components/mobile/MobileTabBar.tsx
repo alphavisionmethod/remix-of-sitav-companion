@@ -18,7 +18,10 @@ export const MobileTabBar = () => {
     path === "/mobile" ? location.pathname === "/mobile" : location.pathname.startsWith(path);
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-border/40 bg-card/95 backdrop-blur-xl"
+    <nav
+      role="tablist"
+      aria-label="Main navigation"
+      className="fixed bottom-0 left-0 right-0 z-50 border-t border-border/40 bg-card/95 backdrop-blur-xl"
       style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}>
       <div className="flex items-center justify-around px-1 py-2 max-w-md mx-auto">
         {tabs.map((tab) => {
@@ -27,7 +30,18 @@ export const MobileTabBar = () => {
           return (
             <button
               key={tab.path}
-              onClick={() => navigate(tab.path)}
+              role="tab"
+              aria-selected={active}
+              aria-label={tab.label}
+              onClick={() => {
+                if (active && location.pathname !== tab.path) {
+                  // If on a sub-page of this tab, navigate to tab root (preserve filter context)
+                  navigate(tab.path);
+                } else if (!active) {
+                  navigate(tab.path);
+                }
+                // If already on exact tab root, do nothing (no-op tap)
+              }}
               className={cn(
                 "relative flex flex-col items-center gap-0.5 px-3 py-1 rounded-lg transition-colors",
                 active ? "text-primary" : "text-muted-foreground"

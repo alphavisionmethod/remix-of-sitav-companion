@@ -183,13 +183,23 @@ const MOBILE_ROUTE_MAP: Record<string, string> = {
   "/investment": "/mobile/investment",
   "/approvals": "/mobile/approvals",
 };
+// Additional desktop→mobile route mappings for DailyPulse & Tasks
+const MOBILE_ROUTE_MAP_EXTENDED: Record<string, string> = {
+  ...MOBILE_ROUTE_MAP,
+  "/daily-pulse": "/mobile",
+  "/pulse": "/mobile",
+  "/workflows": "/mobile/more",
+  "/tasks": "/mobile/more",
+  "/proof": "/mobile/proof",
+  "/receipts": "/mobile/proof",
+};
 
 const MobileGuard = ({ children }: { children: ReactNode }) => {
   const isMobile = useIsMobileViewport();
   const location = useLocation();
   if (isMobile) {
     // Check for exact route mapping first
-    for (const [desktop, mobile] of Object.entries(MOBILE_ROUTE_MAP)) {
+    for (const [desktop, mobile] of Object.entries(MOBILE_ROUTE_MAP_EXTENDED)) {
       if (location.pathname === desktop || location.pathname.startsWith(desktop + "/")) {
         return <Navigate to={mobile} replace />;
       }
