@@ -8,3 +8,6 @@ verify_jwt = false
 
 [functions.os-update-manifest]
 verify_jwt = false
+
+[functions.personal-brain-cron]
+verify_jwt = false

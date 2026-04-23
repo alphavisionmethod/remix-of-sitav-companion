@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
-import { ArrowLeft, Brain, Info, Loader2, Send } from "lucide-react";
+import { ArrowLeft, Brain, Info, Loader2, Send, Sparkles } from "lucide-react";
 import ReactMarkdown from "react-markdown";
+import { toast } from "sonner";
 import { GlobalErrorBoundary } from "@/components/sita/GlobalErrorBoundary";
 import { PageShell } from "@/components/sita/PageShell";
 import { Button } from "@/components/ui/button";
@@ -13,6 +14,8 @@ import { ModePicker } from "@/components/personal-brain/ModePicker";
 import { ContextDrawer } from "@/components/personal-brain/ContextDrawer";
 import { ConvertMessageMenu } from "@/components/personal-brain/ConvertMessageMenu";
 import { usePbChat } from "@/components/personal-brain/hooks/usePbChat";
+import { usePbMemories, type PbMemoryCategory } from "@/components/personal-brain/hooks/usePbMemories";
+import { parseRememberCommand } from "@/components/personal-brain/parseRememberCommand";
 import { BRAIN_MODES_BY_ID, type BrainModeId, isBrainModeId } from "@/components/personal-brain/BRAIN_MODES";
 
 function ChatInner() {
@@ -21,12 +24,15 @@ function ChatInner() {
   const { user } = useAuth();
   const [searchParams, setSearchParams] = useSearchParams();
   const { chat, messages, loading, streaming, send } = usePbChat(chatId ?? null);
+  const { save: saveMemory, triggerScan } = usePbMemories();
   const [input, setInput] = useState("");
   const [contextOpen, setContextOpen] = useState(false);
   const [contextSources, setContextSources] = useState<Record<string, unknown> | null>(null);
   const [mode, setMode] = useState<BrainModeId>("think");
   const bottomRef = useRef<HTMLDivElement>(null);
   const autosentRef = useRef(false);
+  const turnCountRef = useRef(0);
+  const lastScanAtRef = useRef(0);
 
   useEffect(() => {
     if (chat && isBrainModeId(chat.mode)) {
@@ -56,8 +62,39 @@ function ChatInner() {
   const handleSubmit = async () => {
     const value = input.trim();
     if (!value || streaming) return;
+
+    // /remember slash command — save explicit memory directly, do not call AI
+    const remember = parseRememberCommand(value);
+    if (remember) {
+      setInput("");
+      try {
+        await saveMemory({
+          content: remember.content,
+          category: remember.category as PbMemoryCategory,
+          kind: "explicit",
+          confidence: 1.0,
+          source_chat_id: chatId ?? null,
+        });
+        toast.success("Saved to Brain", {
+          description: `Tagged as ${remember.category.replace(/_/g, " ")}.`,
+          action: { label: "View", onClick: () => navigate("/personal-brain/snapshot") },
+        });
+      } catch (e) {
+        toast.error(e instanceof Error ? e.message : "Failed to save memory");
+      }
+      return;
+    }
+
     setInput("");
     await send(value, mode);
+    turnCountRef.current += 1;
+
+    // Trigger background learn.scan every 6 turns, max once per 5 minutes
+    const now = Date.now();
+    if (turnCountRef.current % 6 === 0 && now - lastScanAtRef.current > 5 * 60 * 1000) {
+      lastScanAtRef.current = now;
+      void triggerScan(chatId);
+    }
   };
 
   if (!chatId) {
@@ -166,11 +203,17 @@ function ChatInner() {
         </div>
 
         <div className="border-t border-border p-4">
+          {parseRememberCommand(input) && (
+            <div className="mb-2 flex items-center gap-1.5 text-[11px] text-primary">
+              <Sparkles className="h-3 w-3" />
+              Press Enter to save this directly to your Brain (won't be sent as a message).
+            </div>
+          )}
           <div className="flex gap-2">
             <Textarea
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder={`Ask in ${meta.label} mode…`}
+              placeholder={`Ask in ${meta.label} mode… or type /remember … to teach the Brain`}
               className="max-h-[160px] min-h-[44px] resize-none"
               onKeyDown={(e) => {
                 if (e.key === "Enter" && !e.shiftKey) {
