@@ -162,11 +162,17 @@ async function scanForUser(
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
-  // Shared-secret auth — falls back to WEBHOOK_SIGNING_SECRET so deploys
-  // don't require a brand-new env var.
-  const expected = Deno.env.get("CRON_SECRET") ?? Deno.env.get("WEBHOOK_SIGNING_SECRET");
-  const provided = req.headers.get("x-cron-secret") ?? "";
-  if (!expected || provided !== expected) {
+  // Auth: only allow service-role-bearer or a CRON_SECRET-bearer caller.
+  // pg_cron schedules with the service_role JWT in Authorization.
+  const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
+  const auth = req.headers.get("authorization") ?? "";
+  const bearer = auth.startsWith("Bearer ") ? auth.slice(7) : "";
+  const cronSecret = Deno.env.get("CRON_SECRET");
+  const xSecret = req.headers.get("x-cron-secret") ?? "";
+
+  const isServiceRoleCall = serviceRoleKey && bearer === serviceRoleKey;
+  const isSecretCall = cronSecret && xSecret === cronSecret;
+  if (!isServiceRoleCall && !isSecretCall) {
     return jsonResponse({ error: "Unauthorized" }, 401);
   }
 
