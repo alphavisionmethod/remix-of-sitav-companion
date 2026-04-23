@@ -1,107 +1,147 @@
 
 
-# Honest Assessment and Deployment Readiness Plan
+# Deployment Readiness Plan: From Contract to Production
 
-## What Actually Exists (Credit Where Due)
+## Current State (Honest Assessment)
 
-The OS native surface is **not** "zero code." There is substantial, well-structured infrastructure that would work if executed on a real Linux CI runner:
+| Area | Count | Status |
+|------|-------|--------|
+| Edge functions on disk | 202 | Auto-deployed by Lovable Cloud, most functional |
+| Pages with `isDemoMode = false` dead branching | 33 | Compiles but carries dead code |
+| Pages importing `DEMO_*`/`MOCK_*` constants | 261 | Most cast to empty arrays `([] as typeof DEMO_X)` -- renders nothing |
+| Seed data files (`src/data/seed/`) | 29 | Still exist, referenced from 261 pages |
+| Secrets configured | 15 | All critical keys present |
+| Electron modules | 17 `.cjs` files | Never packaged or tested |
+| ISO build scripts | Complete 9-stage pipeline | Never executed |
+| Pre-deploy gate (`scripts/pre-deploy.sh`) | 11 checks | Not wired to CI |
 
-1. **`os/image-builder/build.sh`** (385 lines) -- A complete 9-stage ISO builder: debootstrap Ubuntu 24.04 minbase, install packages, build squashfs, configure GRUB (BIOS+UEFI hybrid), assemble ISO via xorriso, trust pipeline (kernel signing, dm-verity), SHA256 checksums, attestation.
+## What "100% Deployment Ready" Means
 
-2. **`os/qemu-validate.sh`** (109 lines) -- Real QEMU headless boot validation with 5 positive assertions (kernel userspace, first-boot service, runtime shell, networking, recovery target) and 4 negative checks (no panic, no verity corruption, no OOM, no failed mount).
-
-3. **`.github/workflows/os-build-iso.yml`** (330 lines) -- Complete CI pipeline: build ISO for user+operator profiles, QEMU smoke test, publish to GitHub Releases, OVA appliance build.
-
-4. **`.github/workflows/desktop-build.yml`** (157 lines) -- Cross-platform Electron packaging (Linux x64, macOS x64/arm64, Windows x64) with code signing paths.
-
-5. **`electron/main.cjs`** (375 lines) -- Real Electron main process with BrowserWindow, crash reporter, auto-updater, license guard, DLP, runtime shield, network sentinel.
-
-6. **`os/image-builder/sita-runtime.service`** -- Real systemd unit that starts Electron on TTY7 via xinit after first-boot completes.
-
-## What the "OS" Actually Is
-
-The architecture is: **Custom Ubuntu ISO -> boots to systemd -> launches Electron on X11 -> loads the Vite-built SPA as the desktop shell.** This is a legitimate approach (Chrome OS does the same with Chrome). The web app IS the OS shell.
-
-## The Honest Gap
-
-**None of this has been executed.** The scripts are syntactically correct and well-structured, but:
-
-- No GitHub Actions run has ever triggered `os-build-iso.yml` (requires pushing to `main` with changes in `os/` or a manual `workflow_dispatch`)
-- No ISO has ever been built
-- No QEMU validation has ever run
-- No Electron package has ever been produced
-- The CI secrets (MOK signing keys, Apple certs) are not configured
-
-## What Lovable Cannot Do
-
-Lovable is a web app builder. It **cannot**:
-- Run `sudo debootstrap` (needs root on Linux)
-- Run `qemu-system-x86_64` (needs KVM/hardware)
-- Package Electron (needs `electron` binary + native deps)
-- Sign with MOK/Apple/Windows certificates
-
-These must happen in **GitHub Actions CI** or on a **local Linux machine**.
-
-## What Lovable CAN Do (and the plan below)
-
-### Step 1: Ensure the web app builds cleanly for Electron embedding
-- Verify `npx vite build` produces a working `dist/` with `index.html`
-- Ensure the Electron main process can load `dist/index.html` (relative path)
-- Check that `ELECTRON_BUILD` env var is handled in Vite config for correct base path
-
-### Step 2: Fix any remaining TypeScript/build errors
-- Continue the `isDemoMode` migration to ensure zero build errors
-- The web app must compile with zero errors for any downstream packaging to work
-
-### Step 3: Validate Electron main process statically
-- Review `electron/main.cjs` for any missing imports or broken paths
-- Ensure `preload.cjs` exports match what the renderer expects
-- Verify `forge.config.cjs` ignore patterns don't exclude `dist/`
-
-### Step 4: Audit the ISO build scripts for correctness
-- Review `build.sh` stage ordering and path assumptions
-- Verify `packages.list` has no missing/renamed Ubuntu packages
-- Check that `sita-runtime.service` paths match what `build.sh` installs
-- Ensure recovery scripts referenced in the service chain exist
-
-### Step 5: Create a "first real build" checklist document
-Generate a concrete runbook the user can follow outside Lovable:
+Three deployment surfaces, three separate work streams:
 
 ```text
-Prerequisites:
-  - GitHub repo with Actions enabled
-  - Ubuntu 24.04 runner (GitHub-hosted works)
-  
-First Electron build:
-  1. Push code to main
-  2. Go to Actions -> "Release - Desktop Matrix" -> Run workflow
-  3. Download artifact from the completed run
-  
-First ISO build:
-  1. Generate MOK keys (or skip for dev-unsigned builds)
-  2. Go to Actions -> "sita-os-build-iso" -> Run workflow
-  3. Wait ~30-40 min for build + QEMU validation
-  4. Download ISO artifact
-  5. Boot in VirtualBox/VMware/QEMU locally to verify
+Surface 1: Web App (Lovable Cloud)    -- closest to ready
+Surface 2: Desktop App (Electron)     -- needs first packaging run
+Surface 3: OS ISO (Ubuntu appliance)  -- needs CI infrastructure
 ```
 
-## What This Plan Does NOT Include
+---
 
-- Actually running the builds (impossible in Lovable)
-- Setting up signing certificates (requires external accounts)
-- Hardware testing (requires physical machines)
-- Continuing the demo-mode migration (separate task, already in progress)
+## Phase 1: Web App Production Clean (Lovable -- can do now)
 
-## Technical Details
+### 1A. Complete the `isDemoMode` removal (33 pages)
 
-Files to audit and potentially fix:
-- `electron/main.cjs` -- verify dist path, preload path
-- `electron/preload.cjs` -- verify IPC channel names match renderer expectations
-- `vite.config.ts` -- verify `base` path handling for Electron
-- `os/image-builder/build.sh` -- verify all referenced scripts exist
-- `os/image-builder/packages.list` -- verify against Ubuntu Noble package names
-- `os/runtime/shell-watchdog.sh` -- verify `/usr/bin/sita-shell` symlink target
-- `scripts/release/desktop/build-electron.sh` -- verify packaging command
+For each of the 33 pages still containing `const isDemoMode = false`:
+- Remove the variable declaration
+- Replace `isDemoMode ? "demo" : "live"` ternaries with the "live" branch directly
+- Replace `if (isDemoMode) return;` guards with nothing (they are no-ops since the value is always `false`)
+- Update `PageTruthBanner truthState={isDemoMode ? "demo" : "live"}` to `truthState="live"`
 
-The deliverable is: a codebase that will build successfully the first time someone triggers the CI workflows, plus a clear operator runbook for that first build.
+Files: `DailyPulse.tsx`, `GlobalBoardroom.tsx`, `NotificationCenter.tsx`, `OwnerCenter.tsx`, `ApprovalsCenter.tsx`, `Boardroom.tsx`, `RevenueCallingPage.tsx`, `TrustCenter.tsx`, `AdvisorWorkspace.tsx`, `AdvisorCouncilDashboard.tsx`, `FilesOverview.tsx`, `MoneyOverview.tsx`, `SubscriptionsWaste.tsx`, `ReservesSavings.tsx`, `ConciergeOverview.tsx`, `MonthGridCalendar.tsx`, `UpcomingNeeds.tsx`, `FamilyBoardroom.tsx`, `CommunicationsCenter.tsx`, `QuotesWorkspace.tsx`, `CollectionsCommandCenter.tsx`, `EnterpriseControlPlane.tsx`, `ConnectionDetail.tsx`, and remaining pages in subdirectories.
+
+### 1B. Remove `DEMO_*`/`MOCK_*` dead references (261 pages)
+
+The pattern across 261 pages is:
+```tsx
+import { DEMO_X } from "@/data/seed/...";
+// ...
+{([] as typeof DEMO_X).map(item => ...)}  // renders NOTHING
+```
+
+For each page:
+- Remove the import of `DEMO_*`/`MOCK_*` constants
+- Replace `([] as typeof DEMO_X).map(...)` with proper empty-state rendering using `PremiumEmptyState` component
+- Where a real data hook already exists alongside the demo import, keep the hook and remove the demo fallback
+- Where no real hook exists, render an empty state with a "Connect data source" or "Coming soon" message
+
+### 1C. Delete seed data files
+
+Once no page imports them, delete all 29 files in `src/data/seed/`. These are 1,800+ lines of fake data that ship to production bundles.
+
+### 1D. Wire pre-deploy gate to build
+
+Add the demo-leak check from `scripts/pre-deploy.sh` as a post-build validation in `package.json` so future regressions are caught:
+```json
+"postbuild": "bash scripts/validators/check-demo-leaks.sh"
+```
+
+### 1E. Verify edge function health
+
+Call the deployed `health-check` function to confirm all subsystems report healthy. Fix any that report degraded (e.g., missing `VAPID_PUBLIC_KEY` is already configured).
+
+---
+
+## Phase 2: Desktop App Packaging Readiness (Lovable -- static fixes)
+
+### 2A. Audit Electron module imports
+
+Verify each of the 17 `.cjs` files in `electron/` can resolve their `require()` targets. Currently `main.cjs` imports:
+- `crash-reporter.cjs`, `auto-updater.cjs`, `fs-bridge.cjs`, `license-guard.cjs`, `license-ui.cjs`, `integrity-check.cjs`, `runtime-shield.cjs`, `dlp-guard.cjs`, `network-sentinel.cjs`, `sita-apps-bridge.cjs`
+
+All exist on disk. Verify each exports the named functions that `main.cjs` destructures.
+
+### 2B. Verify Vite Electron build path
+
+`vite.config.ts` already handles `ELECTRON_BUILD` with `base: './'`. Confirm `electron/main.cjs` loads from `path.join(__dirname, '..', 'dist', 'index.html')` which matches the Vite output.
+
+### 2C. Verify `forge.config.cjs` packaging rules
+
+Ensure the Electron Forge config does not exclude `dist/` and includes the correct entrypoint.
+
+### 2D. Create missing `package.json` scripts for Electron
+
+If not present, add `electron:dev` and `electron:package` scripts to the root `package.json` for local development.
+
+---
+
+## Phase 3: ISO Build Readiness (Lovable -- script fixes only)
+
+### 3A. Package list validation
+
+Already done in previous session -- `packages.list` updated for Ubuntu 24.04 Noble `t64` transitions.
+
+### 3B. Build script symlink fix
+
+Already done -- `build.sh` updated to install shell binary and create `/usr/bin/sita-shell`.
+
+### 3C. Verify QEMU validation assertions
+
+Review `os/qemu-validate.sh` to ensure the 5 positive assertions match the actual service names and paths installed by `build.sh`.
+
+---
+
+## Phase 4: CI Pipeline (Requires GitHub -- documented in runbook)
+
+These cannot be done in Lovable but the runbook (`docs/FIRST_BUILD_RUNBOOK.md`, already created) covers them:
+
+1. Push code to GitHub
+2. Configure repository secrets: `SUPABASE_PROJECT_REF`, `SUPABASE_ACCESS_TOKEN`
+3. Trigger "Release - Desktop Matrix" workflow for Electron builds
+4. Trigger "sita-os-build-iso" workflow for ISO builds
+5. Download artifacts and test locally
+
+---
+
+## Execution Order
+
+| Step | Effort | Scope |
+|------|--------|-------|
+| 1A: Remove `isDemoMode` from 33 pages | ~2 hours | 33 files |
+| 1B: Remove `DEMO_*`/`MOCK_*` from 261 pages | ~6 hours | 261 files + empty states |
+| 1C: Delete seed data | 5 min | 29 files |
+| 1D: Wire post-build check | 5 min | 1 file |
+| 1E: Health check verification | 10 min | API call |
+| 2A-2D: Electron audit | 30 min | 17 files |
+| 3A-3C: ISO script audit | 15 min | 3 files |
+
+**Total estimated Lovable work: ~9 hours across multiple sessions.**
+
+Phase 1A and 1B are the bulk of the work and should be done in batches of 10-15 pages per session to stay within context limits.
+
+## What This Plan Produces
+
+- A web app that ships zero demo data and zero dead code paths to production
+- Static verification that Electron packaging will succeed on first CI run
+- Static verification that ISO build scripts reference correct paths and packages
+- A post-build gate that prevents demo data from being reintroduced
 
