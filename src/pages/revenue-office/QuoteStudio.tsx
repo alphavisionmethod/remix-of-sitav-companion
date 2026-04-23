@@ -36,7 +36,7 @@ export default function QuoteStudio() {
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
-        {([] as typeof DEMO_quoteStats).map((s) => (
+        {([] as typeof quoteStats).map((s) => (
           <Card key={s.label} className="bg-card/50 border-border/50">
             <CardContent className="p-3">
               <div className="flex items-center gap-1.5 mb-1"><s.icon className={`h-3.5 w-3.5 ${s.color}`} /><p className="text-[10px] text-muted-foreground">{s.label}</p></div>
@@ -49,14 +49,14 @@ export default function QuoteStudio() {
 
       <Tabs value={tab} onValueChange={setTab}>
         <TabsList className="bg-card/50">
-          <TabsTrigger value="pipeline">Pipeline ({([] as typeof DEMO_quotes).length})</TabsTrigger>
-          <TabsTrigger value="upsells">Upsell Suggestions ({([] as typeof DEMO_upsellSuggestions).length})</TabsTrigger>
-          <TabsTrigger value="insights">Pricing Insights ({([] as typeof DEMO_pricingInsights).length})</TabsTrigger>
+          <TabsTrigger value="pipeline">Pipeline ({([] as typeof quotes).length})</TabsTrigger>
+          <TabsTrigger value="upsells">Upsell Suggestions ({([] as typeof upsellSuggestions).length})</TabsTrigger>
+          <TabsTrigger value="insights">Pricing Insights ({([] as typeof pricingInsights).length})</TabsTrigger>
           <TabsTrigger value="features">Capabilities</TabsTrigger>
         </TabsList>
 
         <TabsContent value="pipeline" className="space-y-3">
-          {([] as typeof DEMO_quotes).map((q) => (
+          {([] as typeof quotes).map((q) => (
             <Card key={q.client} className="bg-card/50 border-border/50 hover:border-primary/20 transition-colors cursor-pointer">
               <CardContent className="p-4">
                 <div className="flex items-center justify-between mb-2">
@@ -94,7 +94,7 @@ export default function QuoteStudio() {
         </TabsContent>
 
         <TabsContent value="upsells" className="space-y-3">
-          {([] as typeof DEMO_upsellSuggestions).map((u, i) => (
+          {([] as typeof upsellSuggestions).map((u, i) => (
             <Card key={i} className="bg-card/50 border-border/50">
               <CardContent className="p-4 flex items-center justify-between">
                 <div className="flex-1">
@@ -114,7 +114,7 @@ export default function QuoteStudio() {
         </TabsContent>
 
         <TabsContent value="insights" className="space-y-3">
-          {([] as typeof DEMO_pricingInsights).map((p, i) => (
+          {([] as typeof pricingInsights).map((p, i) => (
             <Card key={i} className="bg-card/50 border-border/50">
               <CardContent className="p-4 flex items-center justify-between">
                 <div className="flex items-start gap-2 flex-1">
@@ -132,7 +132,7 @@ export default function QuoteStudio() {
 
         <TabsContent value="features" className="grid md:grid-cols-3 gap-4">
           {[
-            { title: "AI Quote Generation", desc: "Create DEMO_quotes from CRM notes, call transcripts, intake forms, or booking context. AI selects services, pricing, and terms.", icon: Brain },
+            { title: "AI Quote Generation", desc: "Create quotes from CRM notes, call transcripts, intake forms, or booking context. AI selects services, pricing, and terms.", icon: Brain },
             { title: "PDF & Digital Delivery", desc: "Professional branded PDF output with one-click send, email tracking, and view notifications.", icon: Send },
             { title: "Follow-up Automation", desc: "Auto-reminders at day 3/5/7, expiry alerts, viewed-but-no-response recovery, and escalation to personal call.", icon: Clock },
             { title: "Pricing Rules Engine", desc: "Volume discounts, bundle pricing, seasonal adjustments, loyalty tiers, and custom pricing approval workflows.", icon: DollarSign },

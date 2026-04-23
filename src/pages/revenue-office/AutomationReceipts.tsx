@@ -29,8 +29,8 @@ export default function AutomationReceipts() {
   const [tab, setTab] = useState("all");
   const [timeFilter, setTimeFilter] = useState("48h");
   const [viewMode, setViewMode] = useState<"receipts" | "why">("receipts");
-  const categories = ["all", ...Array.from(new Set(([] as typeof DEMO_receipts).map(r => r.category)))];
-  const filtered = tab === "all" ? DEMO_receipts : ([] as typeof DEMO_receipts).filter(r => r.category === tab);
+  const categories = ["all", ...Array.from(new Set(([] as typeof receipts).map(r => r.category)))];
+  const filtered = tab === "all" ? receipts : ([] as typeof receipts).filter(r => r.category === tab);
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 p-6">
@@ -49,10 +49,10 @@ export default function AutomationReceipts() {
 
       {/* KPIs */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-        <Card className="bg-card/50 border-border/50"><CardContent className="p-3 text-center"><p className="text-2xl font-bold text-foreground">{([] as typeof DEMO_receipts).length}</p><p className="text-[10px] text-muted-foreground">Actions ({timeFilter})</p></CardContent></Card>
-        <Card className="bg-card/50 border-border/50"><CardContent className="p-3 text-center"><p className="text-2xl font-bold text-emerald-400">{([] as typeof DEMO_receipts).reduce((a, r) => a + r.contacts, 0)}</p><p className="text-[10px] text-muted-foreground">Contacts Affected</p></CardContent></Card>
-        <Card className="bg-card/50 border-border/50"><CardContent className="p-3 text-center"><p className="text-2xl font-bold text-blue-400">{([] as typeof DEMO_receipts).filter(r => r.rollback).length}</p><p className="text-[10px] text-muted-foreground">Rollback Available</p></CardContent></Card>
-        <Card className="bg-card/50 border-border/50"><CardContent className="p-3 text-center"><p className="text-2xl font-bold text-amber-400">{([] as typeof DEMO_receipts).filter(r => r.approvedBy.includes("Awaiting")).length}</p><p className="text-[10px] text-muted-foreground">Pending Approval</p></CardContent></Card>
+        <Card className="bg-card/50 border-border/50"><CardContent className="p-3 text-center"><p className="text-2xl font-bold text-foreground">{([] as typeof receipts).length}</p><p className="text-[10px] text-muted-foreground">Actions ({timeFilter})</p></CardContent></Card>
+        <Card className="bg-card/50 border-border/50"><CardContent className="p-3 text-center"><p className="text-2xl font-bold text-emerald-400">{([] as typeof receipts).reduce((a, r) => a + r.contacts, 0)}</p><p className="text-[10px] text-muted-foreground">Contacts Affected</p></CardContent></Card>
+        <Card className="bg-card/50 border-border/50"><CardContent className="p-3 text-center"><p className="text-2xl font-bold text-blue-400">{([] as typeof receipts).filter(r => r.rollback).length}</p><p className="text-[10px] text-muted-foreground">Rollback Available</p></CardContent></Card>
+        <Card className="bg-card/50 border-border/50"><CardContent className="p-3 text-center"><p className="text-2xl font-bold text-amber-400">{([] as typeof receipts).filter(r => r.approvedBy.includes("Awaiting")).length}</p><p className="text-[10px] text-muted-foreground">Pending Approval</p></CardContent></Card>
       </div>
 
       {/* Impact Summary */}

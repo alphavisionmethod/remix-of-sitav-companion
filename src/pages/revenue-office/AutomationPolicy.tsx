@@ -15,7 +15,7 @@ import {
 } from "lucide-react";
 import AutomationSubNav from "./AutomationSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { DEMO_humanVsAI, DEMO_policies, DEMO_trustLevels,
+import { humanVsAI, policies, trustLevels,
   COMMERCIAL_CONSTITUTION, NO_GUESS_RULES,
   PAUSE_ROLLBACK, HANDOFF_SIGNALS
 } from "@/data/seed/revenue-office";
@@ -84,7 +84,7 @@ export default function AutomationPolicy() {
       {/* Summary */}
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
         {[
-          { l: "Trust Policies", v: ([] as typeof DEMO_trustLevels).length, c: "text-emerald-400" },
+          { l: "Trust Policies", v: ([] as typeof trustLevels).length, c: "text-emerald-400" },
           { l: "Constitution Rules", v: ([] as any[]).length, c: "text-blue-400" },
           { l: "No-Guess Rules", v: ([] as any[]).filter(r => r.enabled).length, c: "text-purple-400" },
           { l: "Paused/Quarantined", v: ([] as any[]).length, c: "text-amber-400" },
@@ -112,7 +112,7 @@ export default function AutomationPolicy() {
         {/* Trust Levels */}
         <TabsContent value="trust" className="space-y-4 mt-4">
           <div className="grid md:grid-cols-4 gap-3">
-            {([] as typeof DEMO_trustLevels).map((t) => (
+            {([] as typeof trustLevels).map((t) => (
               <Card key={t.level} className={`bg-card/50 ${t.color}`}>
                 <CardContent className="p-4">
                   <div className="flex items-center gap-2 mb-2">
@@ -130,7 +130,7 @@ export default function AutomationPolicy() {
             ))}
           </div>
 
-          {([] as typeof DEMO_policies).map((p) => (
+          {([] as typeof policies).map((p) => (
             <Card key={p.category} className="bg-card/50 border-border/50">
               <CardHeader><CardTitle className="text-sm flex items-center gap-2"><p.icon className="h-4 w-4 text-blue-400" />{p.category}</CardTitle></CardHeader>
               <CardContent className="space-y-1.5">
@@ -398,7 +398,7 @@ export default function AutomationPolicy() {
           <Card className="bg-card/50 border-primary/20">
             <CardHeader><CardTitle className="flex items-center gap-2 text-sm"><Brain className="h-4 w-4 text-primary" />Human vs AI Boundary Recommendations</CardTitle></CardHeader>
             <CardContent className="space-y-1.5">
-              {([] as typeof DEMO_humanVsAI).map((item) => (
+              {([] as typeof humanVsAI).map((item) => (
                 <div key={item.domain} className="p-3 rounded bg-background/50 border border-border/30 flex items-center justify-between">
                   <div className="flex-1">
                     <span className="text-sm text-foreground font-medium">{item.domain}</span>

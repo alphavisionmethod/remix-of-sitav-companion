@@ -13,8 +13,8 @@ import {
   GitBranch, Send, Award, Glasses, HandMetal
 } from "lucide-react";
 import {
-  DEMO_activeAutomations, DEMO_advisorRecommendations, DEMO_atRiskAutomations,
-  DEMO_automationStats, DEMO_leakRepairOpportunities,
+  activeAutomations, advisorRecommendations, atRiskAutomations,
+  automationStats, leakRepairOpportunities,
   AUTOMATION_SURFACE_MAP, AUTOMATION_OS_CONNECTIONS,
   AUTOMATION_QUALITY_SCORES, SHADOW_BOARD, PROMISES
 } from "@/data/seed/revenue-office";
@@ -94,7 +94,7 @@ export default function AutomationOffice() {
 
       {/* Stats Band */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
-        {([] as typeof DEMO_automationStats).map((s) => (
+        {([] as typeof automationStats).map((s) => (
           <Card key={s.label} className="bg-card/50 border-border/50">
             <CardContent className="p-3">
               <div className="flex items-center gap-2 mb-1">
@@ -112,10 +112,10 @@ export default function AutomationOffice() {
         <TabsList className="bg-card/50 flex-wrap">
           <TabsTrigger value="overview">Boardroom</TabsTrigger>
           <TabsTrigger value="surface">Surface Map</TabsTrigger>
-          <TabsTrigger value="active">Active ({([] as typeof DEMO_activeAutomations).length})</TabsTrigger>
-          <TabsTrigger value="atRisk">At Risk ({([] as typeof DEMO_atRiskAutomations).length})</TabsTrigger>
-          <TabsTrigger value="advisors">Advisor Recs ({([] as typeof DEMO_advisorRecommendations).length})</TabsTrigger>
-          <TabsTrigger value="leaks">Leak Repair ({([] as typeof DEMO_leakRepairOpportunities).length})</TabsTrigger>
+          <TabsTrigger value="active">Active ({([] as typeof activeAutomations).length})</TabsTrigger>
+          <TabsTrigger value="atRisk">At Risk ({([] as typeof atRiskAutomations).length})</TabsTrigger>
+          <TabsTrigger value="advisors">Advisor Recs ({([] as typeof advisorRecommendations).length})</TabsTrigger>
+          <TabsTrigger value="leaks">Leak Repair ({([] as typeof leakRepairOpportunities).length})</TabsTrigger>
           <TabsTrigger value="quality">Quality Scoring</TabsTrigger>
           <TabsTrigger value="shadow">Shadow Board</TabsTrigger>
           <TabsTrigger value="promises">Promises ({([] as any[]).filter(p => p.status !== "completed").length})</TabsTrigger>
@@ -297,7 +297,7 @@ export default function AutomationOffice() {
 
         {/* ACTIVE AUTOMATIONS TAB */}
         <TabsContent value="active" className="space-y-3">
-          {([] as typeof DEMO_activeAutomations).map((a) => (
+          {([] as typeof activeAutomations).map((a) => (
             <Card key={a.name} className="bg-card/50 border-border/50 hover:border-primary/20 transition-colors cursor-pointer">
               <CardContent className="p-4">
                 <div className="flex items-center justify-between mb-2">
@@ -330,7 +330,7 @@ export default function AutomationOffice() {
 
         {/* AT RISK TAB */}
         <TabsContent value="atRisk" className="space-y-3">
-          {([] as typeof DEMO_atRiskAutomations).map((a) => (
+          {([] as typeof atRiskAutomations).map((a) => (
             <Card key={a.name} className="bg-card/50 border-border/50">
               <CardContent className="p-4">
                 <div className="flex items-center justify-between mb-2">
@@ -352,7 +352,7 @@ export default function AutomationOffice() {
 
         {/* ADVISOR RECOMMENDATIONS TAB */}
         <TabsContent value="advisors" className="space-y-3">
-          {([] as typeof DEMO_advisorRecommendations).map((r, i) => (
+          {([] as typeof advisorRecommendations).map((r, i) => (
             <Card key={i} className="bg-card/50 border-border/50 hover:border-primary/20 transition-colors">
               <CardContent className="p-4">
                 <div className="flex items-center justify-between mb-2">
@@ -382,10 +382,10 @@ export default function AutomationOffice() {
             <CardContent className="p-4">
               <p className="text-sm font-semibold text-foreground mb-1">Total Estimated Revenue Leakage</p>
               <p className="text-2xl font-bold text-red-400">$42,100/mo</p>
-              <p className="text-xs text-muted-foreground">from {([] as typeof DEMO_leakRepairOpportunities).length} automation gaps across the customer journey</p>
+              <p className="text-xs text-muted-foreground">from {([] as typeof leakRepairOpportunities).length} automation gaps across the customer journey</p>
             </CardContent>
           </Card>
-          {([] as typeof DEMO_leakRepairOpportunities).map((leak, i) => (
+          {([] as typeof leakRepairOpportunities).map((leak, i) => (
             <Card key={i} className="bg-card/50 border-border/50">
               <CardContent className="p-4 flex items-center justify-between">
                 <div className="flex-1">

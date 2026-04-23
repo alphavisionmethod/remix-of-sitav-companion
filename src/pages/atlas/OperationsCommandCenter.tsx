@@ -25,17 +25,17 @@ export default function OperationsCommandCenter() {
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mx-auto max-w-7xl space-y-6 p-6">
 <SitaPageHeader title="Operations Command Center" subtitle="Service health, SLO burn rates, alert triage, incident drilldown, and runbook management" />
 
-      {([] as typeof DEMO_alerts).filter(a => !a.acknowledged).length > 0 && (
-        <DegradedStateBanner severity="warning" reason={`${([] as typeof DEMO_alerts).filter(a => !a.acknowledged).length} unacknowledged alert(s)`} impact="Operator attention required" dismissible />
+      {([] as typeof alerts).filter(a => !a.acknowledged).length > 0 && (
+        <DegradedStateBanner severity="warning" reason={`${([] as typeof alerts).filter(a => !a.acknowledged).length} unacknowledged alert(s)`} impact="Operator attention required" dismissible />
       )}
 
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
         {[
-          { label: "Services Healthy", value: `${([] as typeof DEMO_services).filter(s => s.status === "healthy").length}/${([] as typeof DEMO_services).length}`, color: ([] as typeof DEMO_services).every(s => s.status === "healthy") ? "text-green-400" : "text-amber-400" },
-          { label: "SLO Budget Avg", value: `${Math.round(([] as typeof DEMO_slos).reduce((s, l) => s + l.budget, 0) / ([] as typeof DEMO_slos).length)}%`, color: "text-green-400" },
-          { label: "Active Alerts", value: ([] as typeof DEMO_alerts).filter(a => !a.acknowledged).length, color: ([] as typeof DEMO_alerts).some(a => !a.acknowledged) ? "text-amber-400" : "text-green-400" },
-          { label: "Active Incidents", value: ([] as typeof DEMO_incidents).filter(i => i.status !== "resolved").length, color: ([] as typeof DEMO_incidents).some(i => i.status !== "resolved") ? "text-amber-400" : "text-green-400" },
-          { label: "Runbooks", value: ([] as typeof DEMO_runbooks).length, color: "text-blue-400" },
+          { label: "Services Healthy", value: `${([] as typeof services).filter(s => s.status === "healthy").length}/${([] as typeof services).length}`, color: ([] as typeof services).every(s => s.status === "healthy") ? "text-green-400" : "text-amber-400" },
+          { label: "SLO Budget Avg", value: `${Math.round(([] as typeof slos).reduce((s, l) => s + l.budget, 0) / ([] as typeof slos).length)}%`, color: "text-green-400" },
+          { label: "Active Alerts", value: ([] as typeof alerts).filter(a => !a.acknowledged).length, color: ([] as typeof alerts).some(a => !a.acknowledged) ? "text-amber-400" : "text-green-400" },
+          { label: "Active Incidents", value: ([] as typeof incidents).filter(i => i.status !== "resolved").length, color: ([] as typeof incidents).some(i => i.status !== "resolved") ? "text-amber-400" : "text-green-400" },
+          { label: "Runbooks", value: ([] as typeof runbooks).length, color: "text-blue-400" },
         ].map((k, i) => (
           <Card key={i} className="bg-card/50 border-border/50">
             <CardContent className="p-3 text-center">
@@ -62,7 +62,7 @@ export default function OperationsCommandCenter() {
 
         <div className="mt-4 space-y-3">
           <TabsContent value="health">
-            {([] as typeof DEMO_services).map(svc => (
+            {([] as typeof services).map(svc => (
               <div key={svc.name} className="flex items-center justify-between p-3 bg-muted/20 rounded-lg mb-2">
                 <div className="flex items-center gap-3">
                   <div className={cn("w-2 h-2 rounded-full", svc.status === "healthy" ? "bg-green-400" : "bg-amber-400")} />
@@ -80,7 +80,7 @@ export default function OperationsCommandCenter() {
           </TabsContent>
 
           <TabsContent value="slos">
-            {([] as typeof DEMO_slos).map(slo => (
+            {([] as typeof slos).map(slo => (
               <Card key={slo.name} className="bg-card/50 border-border/50 mb-2">
                 <CardContent className="p-3">
                   <div className="flex items-center justify-between mb-2">
@@ -104,7 +104,7 @@ export default function OperationsCommandCenter() {
           </TabsContent>
 
           <TabsContent value="alerts">
-            {([] as typeof DEMO_alerts).map(alert => (
+            {([] as typeof alerts).map(alert => (
               <div key={alert.id} className="flex items-center justify-between p-3 bg-muted/20 rounded-lg mb-2">
                 <div className="flex items-center gap-3">
                   <AlertTriangle className={cn("w-4 h-4", alert.severity === "warning" ? "text-amber-400" : "text-blue-400")} />
@@ -123,7 +123,7 @@ export default function OperationsCommandCenter() {
           </TabsContent>
 
           <TabsContent value="incidents">
-            {([] as typeof DEMO_incidents).map(inc => (
+            {([] as typeof incidents).map(inc => (
               <Card key={inc.id} className="bg-card/50 border-border/50 mb-2">
                 <CardContent className="p-3 space-y-2">
                   <div className="flex items-center justify-between">
@@ -171,7 +171,7 @@ export default function OperationsCommandCenter() {
 
           <TabsContent value="runbooks">
             <div className="grid gap-2 sm:grid-cols-2">
-              {([] as typeof DEMO_runbooks).map(rb => (
+              {([] as typeof runbooks).map(rb => (
                 <div key={rb.id} className="flex items-center justify-between p-3 bg-muted/20 rounded-lg">
                   <div className="flex items-center gap-3">
                     <BookOpen className="w-3.5 h-3.5 text-primary" />

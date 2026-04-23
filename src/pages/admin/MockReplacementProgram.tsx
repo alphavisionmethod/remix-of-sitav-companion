@@ -80,7 +80,7 @@ function MockFormDialog({ trigger, initial, onSave }: { trigger: React.ReactNode
               <Label>Mock Type</Label>
               <Select value={form.mock_type} onValueChange={v => setForm(f => ({ ...f, mock_type: v as never }))}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
-                <SelectContent>{MOCK_TYPES.map(t => <SelectItem key={t} value={t}>{t.replace(/_/g, " ")}</SelectItem>)}</SelectContent>
+                <SelectContent>{TYPES.map(t => <SelectItem key={t} value={t}>{t.replace(/_/g, " ")}</SelectItem>)}</SelectContent>
               </Select>
             </div>
           </div>
