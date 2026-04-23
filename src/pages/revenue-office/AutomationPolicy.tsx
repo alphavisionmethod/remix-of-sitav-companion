@@ -15,10 +15,16 @@ import {
 } from "lucide-react";
 import AutomationSubNav from "./AutomationSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { humanVsAI, policies, trustLevels,
-  COMMERCIAL_CONSTITUTION, NO_GUESS_RULES,
-  PAUSE_ROLLBACK, HANDOFF_SIGNALS
-} from "@/data/seed/revenue-office";
+
+// Inline static configuration (was seed data)
+const humanVsAI: any[] = [];
+const policies: any[] = [];
+const trustLevels: any[] = [];
+const COMMERCIAL_CONSTITUTION: any[] = [];
+const NO_GUESS_RULES: any[] = [];
+const PAUSE_ROLLBACK: any[] = [];
+const HANDOFF_SIGNALS: any[] = [];
+
 
 
 const ESCALATION_RULES = [
