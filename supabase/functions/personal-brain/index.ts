@@ -1173,6 +1173,21 @@ serve(async (req) => {
       case "voice.tts":          return await actionVoiceTts(user, admin, payload);
       case "data.export":        return await actionDataExport(user, admin);
       case "data.delete":        return await actionDataDelete(user, admin, payload);
+      case "digest.generate":         return await actionDigestGenerate(user, admin, payload, correlationId);
+      case "digest.list":             return await actionDigestList(user, admin);
+      case "digest.dismiss":          return await actionDigestDismiss(user, admin, payload);
+      case "workspace.invite":        return await actionWorkspaceInvite(user, admin, payload);
+      case "workspace.accept":        return await actionWorkspaceAccept(user, admin, payload);
+      case "workspace.list_members":  return await actionWorkspaceListMembers(user, admin, payload);
+      case "workspace.remove_member": return await actionWorkspaceRemoveMember(user, admin, payload);
+      case "workspace.update_role":   return await actionWorkspaceUpdateRole(user, admin, payload);
+      case "tool.list":               return await actionToolList(user, admin);
+      case "tool.upsert":             return await actionToolUpsert(user, admin, payload);
+      case "tool.toggle":             return await actionToolToggle(user, admin, payload);
+      case "tool.delete":             return await actionToolDelete(user, admin, payload);
+      case "insights.scan":           return await actionInsightsScan(user, admin, payload, correlationId);
+      case "insights.list":           return await actionInsightsList(user, admin);
+      case "insights.update_status":  return await actionInsightsUpdateStatus(user, admin, payload);
       default:
         return jsonResponse({ error: "Unknown action", code: "BAD_ACTION" }, 400);
     }
