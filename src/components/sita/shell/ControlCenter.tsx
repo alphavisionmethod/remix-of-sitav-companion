@@ -18,6 +18,7 @@ import { DEPTH_LAYERS } from "@/platform/design-system/nova-os";
 import { useSettingsValue } from "@/hooks/use-settings-value";
 import { Slider } from "@/components/ui/slider";
 import { useWindowManagerContext } from "@/contexts/WindowManagerContext";
+import { SitaVoiceControlRow } from "./sita-voice/SitaVoiceControlRow";
 
 interface ControlCenterProps {
   open: boolean;
@@ -497,6 +498,9 @@ export function ControlCenter({ open, onClose }: ControlCenterProps) {
             <div className="p-3 space-y-3">
               {/* 1. Connectivity */}
               <ConnectivityCluster onOpenSettings={handleOpenSettings} />
+
+              {/* 1b. Sita Voice (Phase B) */}
+              <SitaVoiceControlRow />
 
               {/* 2. Mode cluster */}
               <ModeCluster isDark={isDark} onThemeToggle={handleThemeToggle} />
