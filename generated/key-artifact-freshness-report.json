@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-23T19:11:38.334Z",
+  "generatedAt": "2026-04-23T19:12:25.060Z",
   "gate": "key-artifact-freshness-gate",
   "total": 13,
   "results": [
@@ -66,8 +66,8 @@
       "parseable": true,
       "ageHours": 1.3,
       "fresh": true,
-      "failureReason": "ok: false",
-      "ok": false
+      "failureReason": null,
+      "ok": true
     },
     {
       "file": "ios-release-readiness-report.json",
@@ -77,8 +77,8 @@
       "parseable": true,
       "ageHours": 1.3,
       "fresh": true,
-      "failureReason": "ok: false",
-      "ok": false
+      "failureReason": null,
+      "ok": true
     },
     {
       "file": "iso-vmware-release-readiness-report.json",
@@ -147,5 +147,5 @@
       "ok": true
     }
   ],
-  "ok": false
+  "ok": true
 }
