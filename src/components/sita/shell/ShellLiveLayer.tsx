@@ -35,6 +35,8 @@ const AppRecentsStripLazy = lazy(() => import("../AppRecentsStrip").then(m => ({
 const SitaPresenceOrbLazy = lazy(() => import("./sita-hud").then(m => ({ default: m.SitaPresenceOrb })));
 const SitaHudStripLazy = lazy(() => import("./sita-hud").then(m => ({ default: m.SitaHudStrip })));
 const SitaFirstRunRevealLazy = lazy(() => import("./sita-hud").then(m => ({ default: m.SitaFirstRunReveal })));
+const SitaWhisperLazy = lazy(() => import("./sita-hud").then(m => ({ default: m.SitaWhisper })));
+const SitaProactiveRunnerLazy = lazy(() => import("./sita-hud").then(m => ({ default: m.SitaProactiveRunner })));
 
 interface ShellLiveLayerProps {
   wm: WindowManager;
@@ -167,6 +169,14 @@ export function ShellLiveLayer({
       </Suspense>
       <Suspense fallback={null}>
         <SitaFirstRunRevealLazy />
+      </Suspense>
+
+      {/* ── Sita Proactive (Phase D) ───────────────────────────── */}
+      <Suspense fallback={null}>
+        <SitaWhisperLazy />
+      </Suspense>
+      <Suspense fallback={null}>
+        <SitaProactiveRunnerLazy />
       </Suspense>
 
     </>
