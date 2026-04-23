@@ -29,7 +29,7 @@ function useCalendarData(year: number, month: number) {
     queryFn: async (): Promise<CalendarEvent[]> => {
       if (!user?.id) {
         // Demo data
-        return generateCalendarDemoEvents(year, month) as CalendarEvent[];
+        return [] as CalendarEvent[];
       }
 
       const startDate = `${year}-${String(month + 1).padStart(2, "0")}-01`;

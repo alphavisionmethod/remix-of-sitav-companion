@@ -136,7 +136,7 @@ const RevenueImpactDashboard = () => {
     },
   });
 
-  const PLAYBOOK_REVENUE = PLAYBOOK_REVENUE; // Playbook breakdown is config/demo — real aggregates feed KPIs
+  const PLAYBOOK_REVENUE: any[] = []; // Playbook breakdown is config/demo — real aggregates feed KPIs
 
   const trendData = useMemo(() => generateTrend(granularity), [granularity]);
 
@@ -347,7 +347,7 @@ const RevenueImpactDashboard = () => {
               ).map(([cat, v]) => (
                 <div key={cat} className="flex items-center justify-between text-xs">
                   <span className={`rounded-full px-2 py-0.5 text-[9px] font-semibold capitalize ${categoryColors[cat]}`}>{cat}</span>
-                  <span className="font-medium text-foreground">${(v.recovered + v.generated).toLocaleString()}</span>
+                  <span className="font-medium text-foreground">${((v as any).recovered + (v as any).generated).toLocaleString()}</span>
                 </div>
               ))}
             </div>

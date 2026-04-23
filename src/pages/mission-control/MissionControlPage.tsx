@@ -77,7 +77,7 @@ function SystemPulseHero() {
   const totalAgents = internalAgents.length;
   const openIncidents = adminOpenCount || incidents.filter(i => i.status !== "resolved").length;
   const degradedConnectors = connectorHealth.filter(c => c.status !== "connected").length;
-  const stuckWorkflows = stuckWorkflows.length;
+  const stuckWorkflowCount = 0;
   const totalTokens = internalAgents.reduce((s, a) => s + a.costTokens24h, 0);
 
   const sentinel = useFraudSentinel();

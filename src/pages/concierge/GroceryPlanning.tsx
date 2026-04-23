@@ -10,6 +10,8 @@ import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
 import { useGroceryLists } from "@/hooks/use-concierge-data";
 // Production fallback — seed data removed
 const categories: any[] = [];
+const stores: any[] = [];
+const recurringSupplies: any[] = [];
 
 interface GroceryItem {
   id: string; name: string; category: string; quantity: string; estimated: string;

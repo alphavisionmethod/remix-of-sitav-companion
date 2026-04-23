@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Calendar, Zap, AlertTriangle, Clock, Target, TrendingUp } from "lucide-react";
 import { useRiskScenarios } from "@/hooks/use-investment-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+const CATALYST_EVENTS: any[] = [];
 const TYPE_COLORS: Record<string, string> = {
   macro: "bg-primary/10 text-primary",
   earnings: "bg-[hsl(var(--trust-safe))]/10 text-[hsl(var(--trust-safe))]",

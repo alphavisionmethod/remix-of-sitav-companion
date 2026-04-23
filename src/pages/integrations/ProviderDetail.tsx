@@ -9,6 +9,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { ArrowLeft, CheckCircle, Shield, Zap, Globe, ExternalLink, BookOpen, AlertTriangle, ArrowRight } from "lucide-react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+const getProviderById = (_id: string): any => ({ capabilities: [], color: '#666', icon: '🔗', displayName: 'Unknown', description: '' });
 export default function ProviderDetail() {
   
   const { providerId } = useParams();

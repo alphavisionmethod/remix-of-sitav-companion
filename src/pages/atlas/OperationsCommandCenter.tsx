@@ -17,6 +17,12 @@ import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 const now = new Date();
 const h = (hours: number) => new Date(now.getTime() - hours * 3600000).toISOString();
 
+const services: any[] = [];
+const slos: any[] = [];
+const alerts: any[] = [];
+const incidents: any[] = [];
+const runbooks: any[] = [];
+
 export default function OperationsCommandCenter() {
   
   const [tab, setTab] = useState("health");
