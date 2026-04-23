@@ -1,36 +1,60 @@
-/**
- * Boot-time environment variable validation.
- * Logs warnings for missing VITE_ vars that backend features depend on.
- * Does NOT throw — the app should degrade gracefully.
- */
+// ═══════════════════════════════════════════════════════════════
+// SITA OS — Boot-time Environment Validation
+// Fail-fast: blocks app render when critical vars are missing.
+// ═══════════════════════════════════════════════════════════════
 
-interface EnvRequirement {
+export interface EnvRequirement {
   key: string;
   required: boolean;
   description: string;
 }
 
-const ENV_REQUIREMENTS: EnvRequirement[] = [
-  { key: "VITE_SUPABASE_URL", required: true, description: "Backend API URL" },
-  { key: "VITE_SUPABASE_PUBLISHABLE_KEY", required: true, description: "Backend public key" },
-  { key: "VITE_SUPABASE_PROJECT_ID", required: false, description: "Project identifier for edge function URLs" },
+export const ENV_REQUIREMENTS: EnvRequirement[] = [
+  { key: "VITE_SUPABASE_URL",             required: true,  description: "Backend API URL" },
+  { key: "VITE_SUPABASE_PUBLISHABLE_KEY", required: true,  description: "Backend public key" },
+  { key: "VITE_SUPABASE_PROJECT_ID",      required: false, description: "Project identifier for edge function URLs" },
 ];
 
-export function validateEnvironment(): { valid: boolean; warnings: string[] } {
+export interface EnvValidationResult {
+  valid: boolean;
+  missing: string[];
+  warnings: string[];
+}
+
+let _cached: EnvValidationResult | null = null;
+
+/**
+ * Validates all VITE_* environment requirements at boot.
+ * - `missing` contains names of required vars that are absent.
+ * - `warnings` contains optional vars that are absent.
+ * Result is cached after first call.
+ */
+export function validateEnvironment(): EnvValidationResult {
+  if (_cached) return _cached;
+
+  const missing: string[] = [];
   const warnings: string[] = [];
 
   for (const req of ENV_REQUIREMENTS) {
     const value = import.meta.env[req.key];
-    if (!value || value === "undefined" || value === "") {
-      const msg = `${req.required ? "MISSING" : "OPTIONAL"}: ${req.key} — ${req.description}`;
-      warnings.push(msg);
-      if (req.required) {
-        console.error(`[env-validation] ${msg}`);
-      } else {
-        console.warn(`[env-validation] ${msg}`);
-      }
+    const isBlank = !value || value === "undefined" || value === "";
+
+    if (!isBlank) continue;
+
+    if (req.required) {
+      missing.push(req.key);
+      console.error(`[env-validation] MISSING: ${req.key} — ${req.description}`);
+    } else {
+      warnings.push(req.key);
+      console.warn(`[env-validation] OPTIONAL: ${req.key} — ${req.description}`);
     }
   }
 
-  return { valid: warnings.filter((_, i) => ENV_REQUIREMENTS[i]?.required).length === 0, warnings };
+  _cached = { valid: missing.length === 0, missing, warnings };
+  return _cached;
+}
+
+/** Returns the cached result (or runs validation if not yet cached). */
+export function getEnvValidation(): EnvValidationResult {
+  return _cached ?? validateEnvironment();
 }
