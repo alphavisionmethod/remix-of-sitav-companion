@@ -19,6 +19,7 @@ import { useQueryFreshness } from "@/hooks/use-query-freshness";
 
 
 const ReservesSavings = () => {
+  const isDemoMode = false;
   const { data: reservesData = [] } = useReservesSavings();
   const { user } = useAuth();
   const queryClient = useQueryClient();

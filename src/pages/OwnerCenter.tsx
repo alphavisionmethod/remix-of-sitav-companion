@@ -35,6 +35,7 @@ interface SimResult {
   };
 }
 const buildDemoSimResult = (simInput: { amount: number; [key: string]: unknown }): SimResult => ({
+  const isDemoMode = false;
   simulation: {
     input: simInput,
     final_effect: simInput.amount > 500 ? "deny" : "allow",

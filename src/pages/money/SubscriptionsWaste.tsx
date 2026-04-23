@@ -23,6 +23,7 @@ import { useQueryFreshness } from "@/hooks/use-query-freshness";
 
 interface EnrichedSub { waste_flag: boolean; duplicate_of: string; usage_level: string; [key: string]: unknown; }
 function enrichSub(s: Record<string, unknown>): EnrichedSub {
+  const isDemoMode = false;
   return { ...s, waste_flag: typeof s.waste_flag === "boolean" ? s.waste_flag : (typeof s.usage_score === "number" && s.usage_score <= 20 && s.status === "active"), duplicate_of: typeof s.duplicate_of === "string" ? s.duplicate_of : "", usage_level: typeof s.usage_level === "string" ? s.usage_level : String(s.usage_score ?? "unknown") };
 }
 

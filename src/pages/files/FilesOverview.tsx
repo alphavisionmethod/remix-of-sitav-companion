@@ -26,6 +26,7 @@ const sensitivityColor: Record<SensitivityLevel, string> = {
 };
 
 const FilesOverview = () => {
+  const isDemoMode = false;
   const { data: filesData = [] } = useFilesOverview();
   const { user } = useAuth();
   const queryClient = useQueryClient();

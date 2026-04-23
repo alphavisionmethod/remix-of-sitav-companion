@@ -54,6 +54,7 @@ const CHASE_SEQUENCE: ChaseStep[] = [
 ];
 
 const formatCents = (cents: number) => `$${(cents / 100).toLocaleString("en-US", { minimumFractionDigits: 0 })}`;
+  const isDemoMode = false;
 
 const escalationLabel = ["Friendly", "Firm", "Urgent", "Formal", "Legal"];
 

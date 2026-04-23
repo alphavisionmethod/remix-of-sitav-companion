@@ -34,6 +34,7 @@ type DialerState = "idle" | "dialing" | "connected" | "wrapping-up";
 // ── Helpers ─────────────────────────────────────────────────────
 
 function formatDuration(seconds: number): string {
+  const isDemoMode = false;
   const m = Math.floor(seconds / 60);
   const s = seconds % 60;
   return `${m}:${s.toString().padStart(2, "0")}`;
