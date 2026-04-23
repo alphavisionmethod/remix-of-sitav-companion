@@ -63,11 +63,12 @@ interface FloatingWindowProps {
 
 const MIN_WIDTH = 300;
 const MIN_HEIGHT = 200;
-const DRAG_SMOOTHING = 0.25;
-const INERTIA_FRICTION = 0.92;
-const INERTIA_THRESHOLD = 0.5;
-const MAGNETIC_RANGE = 20;
-const MAGNETIC_STRENGTH = 0.15;
+const DEFAULT_WINDOW_HEIGHT = 480;
+const DRAG_SMOOTHING = 0.55;
+const INERTIA_FRICTION = 0.85;
+const INERTIA_THRESHOLD = 0.8;
+const MAGNETIC_RANGE = 12;
+const MAGNETIC_STRENGTH = 0.1;
 
 // ── Throttled content wrapper for unfocused windows ──────────
 
@@ -445,18 +446,15 @@ export function FloatingWindow({
     } else {
       const vw = window.innerWidth;
       const vh = window.innerHeight;
-      const bounce = applyEdgeBounce(
-        currentPos.current,
-        { vx: dragRef.current.velocityX, vy: dragRef.current.velocityY },
-        { width: size.width, height: size.height || 300 },
-        { width: vw, height: vh }
-      );
-
-      if (bounce.bounced) {
-        currentPos.current = { x: bounce.x, y: bounce.y };
-        dragRef.current.velocityX = bounce.vx;
-        dragRef.current.velocityY = bounce.vy;
-        setPos({ x: bounce.x, y: bounce.y });
+      // Clamp position to viewport instead of bouncing
+      const clampedX = Math.max(0, Math.min(vw - 100, currentPos.current.x));
+      const clampedY = Math.max(0, Math.min(vh - 50, currentPos.current.y));
+      currentPos.current = { x: clampedX, y: clampedY };
+      setPos({ x: clampedX, y: clampedY });
+      // Kill velocity if near edge to prevent drift
+      if (clampedX !== currentPos.current.x || clampedY !== currentPos.current.y) {
+        dragRef.current.velocityX = 0;
+        dragRef.current.velocityY = 0;
       }
 
       runInertia();
@@ -706,7 +704,7 @@ export function FloatingWindow({
                   ? { left: 0, top: 0, transform: `translate3d(${pos.x}px, ${pos.y}px, 0)` }
                   : { left: pos.x, top: pos.y }),
                 width: size.width,
-                height: size.height || undefined,
+                height: size.height || DEFAULT_WINDOW_HEIGHT,
                 zIndex: DEPTH_LAYERS.windows,
                 borderRadius: APP_CHROME.cornerRadius,
               }),
@@ -827,7 +825,7 @@ export function FloatingWindow({
         )}
 
         {/* ── Content with progressive crossfade + error boundary + occlusion + throttling ── */}
-        <div className={cn("overflow-auto", isMaximized && "flex-1")} style={{ maxHeight: isMaximized ? undefined : (size.height ? size.height - totalChromeH - APP_CHROME.accentStripHeight : undefined) }}>
+        <div className={cn("overflow-auto", isMaximized && "flex-1")} style={{ maxHeight: isMaximized ? undefined : ((size.height || DEFAULT_WINDOW_HEIGHT) - totalChromeH - APP_CHROME.accentStripHeight) }}>
           {isOccluded ? (
             // Fully occluded — render minimal placeholder to save CPU
             <div style={{ minHeight: 100 }} />
