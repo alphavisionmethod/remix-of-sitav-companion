@@ -69,6 +69,7 @@ export const PBRouterSchema = z.object({
     "learn.scan",
     "file.ingest",
     "voice.transcribe",
+    "voice.tts",
     "data.export",
   ]),
   payload: z.record(z.unknown()).optional().default({}),
