@@ -1,0 +1,87 @@
+# ═══════════════════════════════════════════════════════════════
+# SITA OS — Production Build Smoke Test
+# Builds the app, serves it via `vite preview`, and runs Playwright
+# smoke flows against the real production artifacts. Validates:
+#   - cold-start (no console errors)
+#   - key public endpoints (HTTP 200)
+#   - critical UI flows (login, signup, route guards)
+# ═══════════════════════════════════════════════════════════════
+name: Production Smoke
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: prod-smoke-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: "20"
+  PLAYWRIGHT_BASE_URL: "http://localhost:4173"
+
+jobs:
+  prod-build-smoke:
+    name: Build + smoke against artifacts
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Production build
+        run: npm run build
+
+      - name: Verify build artifacts exist
+        run: |
+          test -d dist && test -f dist/index.html
+          echo "✅ dist/ contains index.html"
+          du -sh dist/
+
+      - name: Start preview server
+        run: npx vite preview --port 4173 --host 127.0.0.1 &
+
+      - name: Wait for preview to be ready
+        run: |
+          for i in $(seq 1 30); do
+            curl -sf http://127.0.0.1:4173/ > /dev/null && exit 0 || sleep 2
+          done
+          echo "❌ preview never started"
+          exit 1
+
+      - name: Run production smoke tests
+        run: npx playwright test tests/e2e/production-build-smoke.spec.ts --reporter=list
+
+      - name: Upload Playwright report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: prod-smoke-playwright-report
+          path: playwright-report/
+          retention-days: 14
+          if-no-files-found: ignore
+
+      - name: Upload trace on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: prod-smoke-traces
+          path: test-results/
+          retention-days: 14
+          if-no-files-found: ignore

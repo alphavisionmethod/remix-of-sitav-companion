@@ -1,0 +1,73 @@
+# ═══════════════════════════════════════════════════════════════
+# SITA OS — Deployment Readiness Gate (BLOCKING)
+# Runs `npm run test:deployment-readiness` and the threshold-drift
+# regression suite. This gate is REQUIRED to merge to main.
+# ═══════════════════════════════════════════════════════════════
+name: Deployment Readiness Gate
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deployment-readiness-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: "20"
+
+jobs:
+  deployment-readiness:
+    name: test:deployment-readiness (REQUIRED)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run deployment-readiness gate
+        run: npm run test:deployment-readiness
+
+      - name: Run threshold-drift regression
+        run: npx vitest run src/__tests__/regression/threshold-drift-regression.test.ts --reporter=verbose
+
+      - name: Generate gate summary
+        if: always()
+        run: |
+          echo "## 🚦 Deployment Readiness Gate" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [ -f generated/key-artifact-freshness-report.json ]; then
+            OK=$(node -e "console.log(JSON.parse(require('fs').readFileSync('generated/key-artifact-freshness-report.json','utf8')).ok)")
+            ICON=$( [ "$OK" = "true" ] && echo "✅" || echo "❌" )
+            echo "- $ICON Key artifact freshness: $OK" >> $GITHUB_STEP_SUMMARY
+          fi
+          if [ -f generated/threshold-drift-regression-report.json ]; then
+            echo "- ✅ Threshold-drift regression: report emitted" >> $GITHUB_STEP_SUMMARY
+          fi
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "This gate is REQUIRED to merge. Failure blocks the PR." >> $GITHUB_STEP_SUMMARY
+
+      - name: Upload gate reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: deployment-readiness-reports
+          path: |
+            generated/key-artifact-freshness-report.json
+            generated/threshold-drift-regression-report.json
+            generated/deployment-readiness-report.json
+          retention-days: 30
+          if-no-files-found: warn
