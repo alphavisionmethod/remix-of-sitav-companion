@@ -25,13 +25,14 @@ import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { PageShell } from "@/components/sita/PageShell";
-const CHANNEL_ICONS: Record<ChannelType, typeof Mail> = { email: Mail, sms: MessageSquare, call: Phone, chat: Send };
-const STATUS_STYLES: Record<MessageStatus, { color: string; icon: typeof CheckCircle2 }> = {
+const CHANNEL_ICONS: Partial<Record<ChannelType, typeof Mail>> = { email: Mail, sms: MessageSquare, call: Phone, chat: Send, voice: Phone };
+const STATUS_STYLES: Partial<Record<MessageStatus, { color: string; icon: typeof CheckCircle2 }>> = {
   sent: { color: "text-muted-foreground", icon: Clock },
   delivered: { color: "text-primary", icon: CheckCircle2 },
   read: { color: "text-emerald-400", icon: CheckCircle2 },
   failed: { color: "text-destructive", icon: AlertCircle },
   queued: { color: "text-muted-foreground", icon: Clock },
+  draft: { color: "text-muted-foreground", icon: Clock },
 };
 
 // ── Extended demo data for new features ──────────────────────

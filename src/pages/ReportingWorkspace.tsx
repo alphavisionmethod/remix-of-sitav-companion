@@ -29,6 +29,37 @@ import { PageShell } from "@/components/sita/PageShell";
 const fadeUp = { hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0, transition: { duration: 0.3 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.06 } } };
 
+// ── Chart data ─────────────────────────────────────────────
+const REVENUE_DATA = [
+  { month: "Jan", revenue: 42000, profit: 18000 },
+  { month: "Feb", revenue: 48000, profit: 21000 },
+  { month: "Mar", revenue: 52000, profit: 24000 },
+  { month: "Apr", revenue: 47000, profit: 20000 },
+  { month: "May", revenue: 55000, profit: 26000 },
+  { month: "Jun", revenue: 61000, profit: 30000 },
+];
+const DOMAIN_BREAKDOWN = [
+  { name: "Business", value: 40, color: "hsl(var(--primary))" },
+  { name: "Finance", value: 25, color: "#10b981" },
+  { name: "Operations", value: 20, color: "#f59e0b" },
+  { name: "Household", value: 15, color: "#8b5cf6" },
+];
+const COMPLETION_TREND = [
+  { week: "W1", tasks: 24, workflows: 8 },
+  { week: "W2", tasks: 30, workflows: 12 },
+  { week: "W3", tasks: 28, workflows: 10 },
+  { week: "W4", tasks: 35, workflows: 15 },
+  { week: "W5", tasks: 32, workflows: 14 },
+  { week: "W6", tasks: 40, workflows: 18 },
+];
+const PIPELINE_DATA = [
+  { stage: "Prospect", value: 120000 },
+  { stage: "Qualified", value: 85000 },
+  { stage: "Proposal", value: 60000 },
+  { stage: "Negotiation", value: 35000 },
+  { stage: "Closed", value: 22000 },
+];
+
 // ── Saved reports ──────────────────────────────────────────
 const SAVED_REPORTS = [
   { id: "r1", title: "Monthly Revenue Summary", domain: "finance", lastRun: "2 hours ago", scheduled: true, frequency: "Monthly" },
