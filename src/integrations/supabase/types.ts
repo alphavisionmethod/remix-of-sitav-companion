@@ -16781,6 +16781,464 @@ export type Database = {
         }
         Relationships: []
       }
+      pb_chats: {
+        Row: {
+          archived_at: string | null
+          created_at: string
+          id: string
+          last_message_at: string
+          message_count: number
+          mode: string
+          pinned: boolean
+          title: string
+          updated_at: string
+          user_id: string
+          workspace_id: string | null
+        }
+        Insert: {
+          archived_at?: string | null
+          created_at?: string
+          id?: string
+          last_message_at?: string
+          message_count?: number
+          mode?: string
+          pinned?: boolean
+          title?: string
+          updated_at?: string
+          user_id: string
+          workspace_id?: string | null
+        }
+        Update: {
+          archived_at?: string | null
+          created_at?: string
+          id?: string
+          last_message_at?: string
+          message_count?: number
+          mode?: string
+          pinned?: boolean
+          title?: string
+          updated_at?: string
+          user_id?: string
+          workspace_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pb_chats_workspace_id_fkey"
+            columns: ["workspace_id"]
+            isOneToOne: false
+            referencedRelation: "pb_workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pb_files: {
+        Row: {
+          created_at: string
+          filename: string
+          id: string
+          indexed_at: string | null
+          mime_type: string | null
+          scope: string
+          size_bytes: number | null
+          storage_path: string
+          summary: string | null
+          updated_at: string
+          user_id: string
+          workspace_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          filename: string
+          id?: string
+          indexed_at?: string | null
+          mime_type?: string | null
+          scope?: string
+          size_bytes?: number | null
+          storage_path: string
+          summary?: string | null
+          updated_at?: string
+          user_id: string
+          workspace_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          filename?: string
+          id?: string
+          indexed_at?: string | null
+          mime_type?: string | null
+          scope?: string
+          size_bytes?: number | null
+          storage_path?: string
+          summary?: string | null
+          updated_at?: string
+          user_id?: string
+          workspace_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pb_files_workspace_id_fkey"
+            columns: ["workspace_id"]
+            isOneToOne: false
+            referencedRelation: "pb_workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pb_goals: {
+        Row: {
+          created_at: string
+          description: string | null
+          horizon_days: number
+          id: string
+          kind: string
+          progress_pct: number
+          status: string
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          horizon_days?: number
+          id?: string
+          kind?: string
+          progress_pct?: number
+          status?: string
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          horizon_days?: number
+          id?: string
+          kind?: string
+          progress_pct?: number
+          status?: string
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      pb_memories: {
+        Row: {
+          category: string
+          confidence: number
+          content: string
+          created_at: string
+          decay_at: string | null
+          id: string
+          kind: string
+          metadata: Json
+          source_chat_id: string | null
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          category?: string
+          confidence?: number
+          content: string
+          created_at?: string
+          decay_at?: string | null
+          id?: string
+          kind?: string
+          metadata?: Json
+          source_chat_id?: string | null
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          category?: string
+          confidence?: number
+          content?: string
+          created_at?: string
+          decay_at?: string | null
+          id?: string
+          kind?: string
+          metadata?: Json
+          source_chat_id?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pb_memories_source_chat_id_fkey"
+            columns: ["source_chat_id"]
+            isOneToOne: false
+            referencedRelation: "pb_chats"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pb_messages: {
+        Row: {
+          chat_id: string
+          content: string
+          created_at: string
+          id: string
+          role: string
+          sources: Json
+          tokens: number | null
+          user_id: string
+        }
+        Insert: {
+          chat_id: string
+          content: string
+          created_at?: string
+          id?: string
+          role: string
+          sources?: Json
+          tokens?: number | null
+          user_id: string
+        }
+        Update: {
+          chat_id?: string
+          content?: string
+          created_at?: string
+          id?: string
+          role?: string
+          sources?: Json
+          tokens?: number | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pb_messages_chat_id_fkey"
+            columns: ["chat_id"]
+            isOneToOne: false
+            referencedRelation: "pb_chats"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pb_profile: {
+        Row: {
+          coaching_style: string
+          context_sources: Json
+          created_at: string
+          depth: string
+          display_name: string | null
+          format_pref: string
+          id: string
+          language: string
+          life_context: string | null
+          mode_overrides: Json
+          onboarded_at: string | null
+          personalization_depth: string
+          role: string | null
+          timezone: string
+          tone: string
+          updated_at: string
+          use_cases: Json
+          user_id: string
+          work_mode: string
+        }
+        Insert: {
+          coaching_style?: string
+          context_sources?: Json
+          created_at?: string
+          depth?: string
+          display_name?: string | null
+          format_pref?: string
+          id?: string
+          language?: string
+          life_context?: string | null
+          mode_overrides?: Json
+          onboarded_at?: string | null
+          personalization_depth?: string
+          role?: string | null
+          timezone?: string
+          tone?: string
+          updated_at?: string
+          use_cases?: Json
+          user_id: string
+          work_mode?: string
+        }
+        Update: {
+          coaching_style?: string
+          context_sources?: Json
+          created_at?: string
+          depth?: string
+          display_name?: string | null
+          format_pref?: string
+          id?: string
+          language?: string
+          life_context?: string | null
+          mode_overrides?: Json
+          onboarded_at?: string | null
+          personalization_depth?: string
+          role?: string | null
+          timezone?: string
+          tone?: string
+          updated_at?: string
+          use_cases?: Json
+          user_id?: string
+          work_mode?: string
+        }
+        Relationships: []
+      }
+      pb_security_events: {
+        Row: {
+          created_at: string
+          detail: Json
+          event_type: string
+          id: string
+          ip_address: string | null
+          severity: string
+          user_agent: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          detail?: Json
+          event_type: string
+          id?: string
+          ip_address?: string | null
+          severity?: string
+          user_agent?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          detail?: Json
+          event_type?: string
+          id?: string
+          ip_address?: string | null
+          severity?: string
+          user_agent?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      pb_security_prefs: {
+        Row: {
+          autolearn_enabled: boolean
+          autolearn_threshold: number
+          created_at: string
+          id: string
+          learn_from_chats: boolean
+          learn_from_files: boolean
+          retention_days: number
+          sensitive_mode: boolean
+          updated_at: string
+          user_id: string
+          voice_transcript_retention: string
+        }
+        Insert: {
+          autolearn_enabled?: boolean
+          autolearn_threshold?: number
+          created_at?: string
+          id?: string
+          learn_from_chats?: boolean
+          learn_from_files?: boolean
+          retention_days?: number
+          sensitive_mode?: boolean
+          updated_at?: string
+          user_id: string
+          voice_transcript_retention?: string
+        }
+        Update: {
+          autolearn_enabled?: boolean
+          autolearn_threshold?: number
+          created_at?: string
+          id?: string
+          learn_from_chats?: boolean
+          learn_from_files?: boolean
+          retention_days?: number
+          sensitive_mode?: boolean
+          updated_at?: string
+          user_id?: string
+          voice_transcript_retention?: string
+        }
+        Relationships: []
+      }
+      pb_voice_prefs: {
+        Row: {
+          autoread: boolean
+          created_at: string
+          id: string
+          input_mode: string
+          pitch: number
+          rate: number
+          transcript_retention: string
+          updated_at: string
+          use_cloud_stt: boolean
+          user_id: string
+          voice_id: string
+        }
+        Insert: {
+          autoread?: boolean
+          created_at?: string
+          id?: string
+          input_mode?: string
+          pitch?: number
+          rate?: number
+          transcript_retention?: string
+          updated_at?: string
+          use_cloud_stt?: boolean
+          user_id: string
+          voice_id?: string
+        }
+        Update: {
+          autoread?: boolean
+          created_at?: string
+          id?: string
+          input_mode?: string
+          pitch?: number
+          rate?: number
+          transcript_retention?: string
+          updated_at?: string
+          use_cloud_stt?: boolean
+          user_id?: string
+          voice_id?: string
+        }
+        Relationships: []
+      }
+      pb_workspaces: {
+        Row: {
+          archived_at: string | null
+          color: string
+          created_at: string
+          custom_instructions: string | null
+          default_mode: string
+          id: string
+          kind: string
+          name: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          archived_at?: string | null
+          color?: string
+          created_at?: string
+          custom_instructions?: string | null
+          default_mode?: string
+          id?: string
+          kind?: string
+          name: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          archived_at?: string | null
+          color?: string
+          created_at?: string
+          custom_instructions?: string | null
+          default_mode?: string
+          id?: string
+          kind?: string
+          name?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       plane_service_assignments: {
         Row: {
           created_at: string
