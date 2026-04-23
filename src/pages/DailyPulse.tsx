@@ -23,6 +23,7 @@ import { cn } from "@/lib/utils";
 // ── Helpers ──────────────────────────────────────────────────
 
 function getGreeting(): string {
+  const isDemoMode = false;
   const h = new Date().getHours();
   if (h < 12) return "Good morning";
   if (h < 17) return "Good afternoon";

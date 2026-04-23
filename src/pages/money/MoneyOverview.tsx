@@ -13,6 +13,7 @@ import { useFinanceNavigation } from "@/contexts/FinanceNavigationContext";
 
 
 const MoneyOverview = () => {
+  const isDemoMode = false;
   const { navigateTo } = useFinanceNavigation();
   const { data: bills = [] } = useBills();
   const { data: subscriptions = [] } = useSubscriptions();

@@ -42,6 +42,7 @@ const categoryIcons: Record<string, typeof Bell> = {
 
 // ── Notification Card ────────────────────────────────────────
 const NotificationCard = ({ notif, onMarkRead, onDismiss, onAction }: {
+  const isDemoMode = false;
   notif: any;
   onMarkRead: () => void;
   onDismiss: () => void;

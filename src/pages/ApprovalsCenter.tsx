@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { PageShell } from "@/components/sita/PageShell";
 const ApprovalsCenter = () => {
+  const isDemoMode = false;
   const { isDemo } = useAuth();
   const { data: approvals = [], isLoading } = useApprovals();
   const { approve, reject } = useApprovalQueue();

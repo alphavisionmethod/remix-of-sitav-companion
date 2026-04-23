@@ -60,6 +60,7 @@ import { BoardroomSeedSampleButton } from "@/components/sita/BoardroomSeedSample
 // ── Section Renderers (preserved from original) ───────────────
 
 const MetricCardGrid = ({ data, title }: { data: MetricCardData[]; title: string }) => {
+  const isDemoMode = false;
   return (
   <div>
     <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">{title}</p>

@@ -69,6 +69,7 @@ const STATUS_COLORS: Record<string, string> = {
 };
 
 const AdvisorScorecard = ({ advisor }: { advisor: typeof DEMO_ADVISOR_SCORECARDS[0] }) => (
+  const isDemoMode = false;
   <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="glass-panel rounded-xl p-5 space-y-4">
     <div className="flex items-start justify-between">
       <div className="flex items-center gap-3">

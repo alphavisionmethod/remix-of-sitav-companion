@@ -21,6 +21,7 @@ import { useAction } from "@/hooks/use-action";
 import { useDraftAutosave } from "@/hooks/useDraftAutosave";
 
 const QuotesWorkspace = () => {
+  const isDemoMode = false;
   const { primaryMode } = useBusinessProfile();
   const { user } = useAuth();
   const moduleConfig = getModuleAdaptation("quotes", primaryMode);
