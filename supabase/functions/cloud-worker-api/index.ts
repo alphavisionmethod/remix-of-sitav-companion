@@ -1,7 +1,16 @@
 import { handleCors, corsResponse, corsError } from "../_shared/cors.ts";
 import { requireAuth, requireAdmin } from "../_shared/auth.ts";
 
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+};
+
 Deno.serve(async (req) => {
+  if (req.method === "OPTIONS") {
+    return new Response("ok", { headers: corsHeaders });
+  }
+
   const cors = handleCors(req);
   if (cors) return cors;
 
