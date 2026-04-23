@@ -182,15 +182,6 @@ const ProofCenter = () => {
     },
   });
 
-  if (proofError || approvalsError) {
-    return (
-      <div className="mx-auto max-w-7xl space-y-6">
-        <DomainHeader title="Receipt & Proof Center" subtitle="Accountable, inspectable, immutable" />
-        <PageErrorState onRetry={refetchProofs} context="proof records" />
-      </div>
-    );
-  }
-
   const verified = proofRecords.filter((p: Record<string, any>) => p.verification === "system-verified" || p.result === "completed");
   const pending = proofRecords.filter((p: Record<string, any>) => p.verification === "pending" || p.result === "executing");
   const failed = proofRecords.filter((p: Record<string, any>) => p.result === "failed" || p.result === "escalated");
@@ -213,6 +204,14 @@ const ProofCenter = () => {
   }, [proofRecords, filter, domainFilter, searchQuery, verified, pending, failed, rolledBack]);
 
   const selectedItem = detailId ? proofRecords.find((p: Record<string, any>) => p.id === detailId) : null;
+
+  if (proofError || approvalsError) {
+    return (
+      <div className="mx-auto max-w-7xl space-y-6">
+        <PageErrorState onRetry={refetchProofs} context="proof records" />
+      </div>
+    );
+  }
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
