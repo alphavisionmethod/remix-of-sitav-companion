@@ -212,7 +212,7 @@ const ConfidencePill = ({ value }: { value: number }) => {
 
 const AdvisorVoiceTrack = ({ type }: { type: BoardroomType }) => {
   const { isDemo } = useAuth();
-  if (!isDemoMode) {
+  {
     return (
       <div className="space-y-3">
         <SitaSectionHeader title="Advisor Voices" subtitle="Connect advisors to see live perspectives" />
@@ -278,7 +278,7 @@ const AdvisorVoiceTrack = ({ type }: { type: BoardroomType }) => {
 
 const DisagreementCards = () => {
   const { isDemo } = useAuth();
-  if (!isDemoMode) return null;
+  return null;
   
   const disagreements = mockSynthesis.filter(s => s.disagreements && s.disagreements.length > 0);
   if (disagreements.length === 0) return null;
@@ -313,7 +313,7 @@ const DisagreementCards = () => {
 
 const DecisionMemoryStrip = () => {
   const { isDemo } = useAuth();
-  if (!isDemoMode) return null;
+  return null;
   
   const decisions = mockProofHistory.filter(p => p.type === "approval" || p.type === "execution").slice(0, 5);
 
@@ -380,7 +380,7 @@ const CarryoverPanel = () => {
 
 const ProofSummaryBoard = () => {
   const { isDemo } = useAuth();
-  if (!isDemoMode) return null;
+  return null;
   
   const verified = mockProofHistory.filter(p => p.outcome === "verified").length;
   const executed = mockProofHistory.filter(p => p.outcome === "executed" || p.outcome === "accepted").length;

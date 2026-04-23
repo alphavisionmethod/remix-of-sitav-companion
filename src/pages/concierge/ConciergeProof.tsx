@@ -45,7 +45,7 @@ const ConciergeProof = () => {
     <ConciergePageWrapper className="space-y-6">
       <PageTruthBanner />
 
-      {!isDemoMode ? (
+      {true ? (
         <ConciergeEmptyState domain="generic" title="No proof records yet" description="As you complete tasks and confirmations, verified records will appear here — giving you a clear audit trail of everything handled." />
       ) : (<>
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">

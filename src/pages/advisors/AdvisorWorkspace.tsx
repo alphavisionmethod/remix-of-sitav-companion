@@ -199,7 +199,7 @@ const modeConfig = MODES.find(m => m.id === mode)!;
 // ── What Matters Now — Priority Recommendations ─────────────────
 
 const WhatMattersNow = ({ mode }: { mode: CouncilMode }) => {
-if (!isDemoMode) return null;
+return null;
   
   const modeConfig = MODES.find(m => m.id === mode)!;
   const recs = modeConfig.domains.includes("all")
@@ -232,7 +232,7 @@ if (!isDemoMode) return null;
 // ── Disagreement & Synthesis Cards ──────────────────────────────
 
 const DisagreementPanel = () => {
-if (!isDemoMode) return null;
+return null;
   
   const disagreements = mockSynthesis.filter(s => s.disagreements && s.disagreements.length > 0);
 
@@ -280,7 +280,7 @@ if (!isDemoMode) return null;
 // ── Confidence Ladder Panel ─────────────────────────────────────
 
 const ConfidencePanel = ({ mode }: { mode: CouncilMode }) => {
-if (!isDemoMode) return null;
+return null;
   
   const modeConfig = MODES.find(m => m.id === mode)!;
   const advisors = modeConfig.domains.includes("all")
@@ -300,7 +300,7 @@ if (!isDemoMode) return null;
 // ── Trust State Pipeline Visualization ──────────────────────────
 
 const TrustPipelineStrip = () => {
-if (!isDemoMode) return null;
+return null;
   
   const states: { state: ExecutionState; count: number }[] = [
     { state: "proposed", count: 3 },
@@ -329,7 +329,7 @@ if (!isDemoMode) return null;
 // ── What Changed Panel ──────────────────────────────────────────
 
 const WhatChangedPanel = () => {
-if (!isDemoMode) return null;
+return null;
   
   const recentProof = mockProofHistory.slice(0, 4);
 
@@ -512,7 +512,7 @@ return (
         </div>
       </motion.div>
 
-      {isDemoMode ? (
+      {false ? (
         <div className="space-y-2">
           {mockProofHistory.map((p, i) => (
             <motion.div key={p.id} initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.03 }}>
@@ -533,7 +533,7 @@ const SingleAdvisorView = ({ advisorId }: { advisorId: string }) => {
   const navigate = useNavigate();
 const [activeSection, setActiveSection] = useState<"overview" | "simulations" | "history">("overview");
 
-  if (!isDemoMode) {
+  {
     return (
       <div className="space-y-6">
         <button onClick={() => navigate("/advisors")} className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors">

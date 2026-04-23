@@ -41,7 +41,7 @@ const FamilyBoardroom = () => {
         <ConciergeEmptyState domain="generic" title="No review data yet" description="Your boardroom will populate with insights once you start tracking tasks, events, and obligations across concierge surfaces." />
       )}
 
-      {isDemoMode && (<>
+      {false && (<>
       <SitaTabs
         tabs={[
           { key: "daily", label: "Daily Pulse" },

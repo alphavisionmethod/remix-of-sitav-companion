@@ -68,7 +68,7 @@ const UpcomingNeeds = () => {
     accentColor: o.dueLabel.includes("Overdue") ? "hsl(0 70% 55%)" : "hsl(285 55% 55%)",
   }));
 
-  if (!isDemoMode) {
+  {
     return (
       <ConciergePageWrapper className="space-y-5">
         <PageTruthBanner truthState="live" />
