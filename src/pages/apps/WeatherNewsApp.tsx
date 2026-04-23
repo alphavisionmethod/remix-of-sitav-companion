@@ -15,8 +15,11 @@ const categoryColors: Record<string, string> = {
   Policy: "bg-amber-500/10 text-amber-500",
 };
 
+const forecast: any[] = [];
+const newsArticles: any[] = [];
+
 export default function WeatherNewsApp() {
-  const current = forecast[0];
+  const current = forecast[0] || { day: "Today", high: 72, low: 58, rain: 10, condition: "Sunny", icon: Sun, humidity: 45, wind: 8, uv: 6, visibility: 10 };
 
   return (
     <div className="p-4 md:p-6 max-w-[1400px] mx-auto space-y-4">

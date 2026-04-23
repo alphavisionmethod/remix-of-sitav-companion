@@ -198,10 +198,10 @@ export default function ProofMatrixExplorer() {
                   <CardContent className="p-4">
                     <div className="flex items-center justify-between mb-2">
                       <p className="text-sm font-medium text-foreground capitalize">{domain}</p>
-                      <p className="text-lg font-bold text-primary">{count}</p>
+                      <p className="text-lg font-bold text-primary">{count as any}</p>
                     </div>
-                    <Progress value={(count / ([] as any[]).length) * 100} className="h-1.5" />
-                    <p className="text-[10px] text-muted-foreground mt-1">{Math.round((count / ([] as any[]).length) * 100)}% of total proofs</p>
+                    <Progress value={0} className="h-1.5" />
+                    <p className="text-[10px] text-muted-foreground mt-1">0% of total proofs</p>
                   </CardContent>
                 </Card>
               ))}

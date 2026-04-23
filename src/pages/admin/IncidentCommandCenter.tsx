@@ -25,6 +25,7 @@ const SEVERITY_CONFIG: Record<Severity, { color: string; bg: string; border: str
 };
 
 const STATUS_CONFIG: Record<IncidentStatus, { color: string; icon: typeof AlertTriangle }> = {
+  active: { color: "text-red-400", icon: Zap },
   open: { color: "text-red-400", icon: AlertTriangle },
   investigating: { color: "text-amber-400", icon: Search },
   mitigating: { color: "text-blue-400", icon: Shield },

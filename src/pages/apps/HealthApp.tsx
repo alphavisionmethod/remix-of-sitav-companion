@@ -87,7 +87,7 @@ export default function HealthApp() {
               <p className="text-2xl font-bold text-foreground">7.8h</p>
               <p className="text-[10px] text-muted-foreground">Last night</p>
               <div className="flex items-end gap-0.5 h-8 mt-2">
-                {([] as typeof sleepData).map((v, i) => (
+                {([7.2, 6.8, 8.1, 7.5, 6.9, 7.8, 8.0] as number[]).map((v, i) => (
                   <div key={i} className="flex-1 flex flex-col items-center gap-0.5">
                     <div className="w-full rounded-sm bg-indigo-500/30" style={{ height: `${(v / 10) * 100}%` }} />
                     <span className="text-[8px] text-muted-foreground">{weekDays[i]}</span>

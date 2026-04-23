@@ -25,7 +25,7 @@ interface Message {
 }
 
 export default function MessengerApp() {
-  const [selectedChat, setSelectedChat] = useState<Chat | null>(CHATS[0]);
+  const [selectedChat, setSelectedChat] = useState<Chat | null>(null);
   const [message, setMessage] = useState("");
   const [search, setSearch] = useState("");
 
