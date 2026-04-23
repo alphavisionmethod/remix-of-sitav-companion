@@ -185,7 +185,7 @@ const ProofCenter = () => {
   if (proofError || approvalsError) {
     return (
       <div className="mx-auto max-w-7xl space-y-6">
-        <DomainHeader title="Receipt & Proof Center" description="Accountable, inspectable, immutable" />
+        <DomainHeader title="Receipt & Proof Center" subtitle="Accountable, inspectable, immutable" />
         <PageErrorState onRetry={refetchProofs} context="proof records" />
       </div>
     );
