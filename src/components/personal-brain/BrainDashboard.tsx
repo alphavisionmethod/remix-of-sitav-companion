@@ -78,6 +78,7 @@ export function BrainDashboard() {
           onNewChat={() => void startNewChat(mode)}
           onVoice={() => setVoiceOpen(true)}
           onSettings={() => navigate("/personal-brain/settings")}
+          onTools={() => navigate("/personal-brain/tools")}
         />
 
         {securityPrefs?.sensitive_mode && (

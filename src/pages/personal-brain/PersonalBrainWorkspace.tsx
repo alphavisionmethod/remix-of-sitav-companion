@@ -13,6 +13,7 @@ import { ModePicker } from "@/components/personal-brain/ModePicker";
 import { ChatList } from "@/components/personal-brain/ChatList";
 import { SuggestedPromptStrip } from "@/components/personal-brain/SuggestedPromptStrip";
 import { usePbChats } from "@/components/personal-brain/hooks/usePbChats";
+import { MembersPanel } from "@/components/personal-brain/members/MembersPanel";
 import {
   isBrainModeId,
   type BrainModeId,
@@ -148,6 +149,8 @@ function WorkspaceInner() {
           onOpen={(id) => navigate(`/personal-brain/c/${id}`)}
           emptyMessage="No chats in this workspace yet."
         />
+
+        {workspaceId && <MembersPanel workspaceId={workspaceId} />}
       </div>
     </PageShell>
   );

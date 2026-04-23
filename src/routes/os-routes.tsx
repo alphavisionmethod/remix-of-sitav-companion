@@ -46,6 +46,8 @@ const PersonalBrainWorkspace = lazy(() => import("@/pages/personal-brain/Persona
 const PersonalBrainChat = lazy(() => import("@/pages/personal-brain/PersonalBrainChat"));
 const BrainSnapshot = lazy(() => import("@/pages/personal-brain/BrainSnapshot"));
 const PbVoiceSettings = lazy(() => import("@/pages/personal-brain/VoiceSettings"));
+const PbToolsRegistry = lazy(() => import("@/pages/personal-brain/ToolsRegistry"));
+const PbAcceptInvite = lazy(() => import("@/pages/personal-brain/AcceptInvite"));
 const PbBrainSettings = lazy(() => import("@/pages/personal-brain/BrainSettings"));
 const PbSecuritySettings = lazy(() => import("@/pages/personal-brain/SecuritySettings"));
 const PbLearningSettings = lazy(() => import("@/pages/personal-brain/LearningSettings"));
@@ -198,6 +200,8 @@ export function getOSRoutes() {
       <Route path="/personal-brain/settings/learning" element={<PbLearningSettings />} />
       <Route path="/personal-brain/settings/retention" element={<PbRetentionSettings />} />
       <Route path="/personal-brain/settings/data" element={<PbDataSettings />} />
+      <Route path="/personal-brain/tools" element={<PbToolsRegistry />} />
+      <Route path="/personal-brain/invite/:token" element={<PbAcceptInvite />} />
 
       {/* OS Workspaces */}
       <Route path="/calendar" element={<CalendarWorkspace />} />

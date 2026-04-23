@@ -16,10 +16,12 @@ const KIND_COLOR: Record<string, string> = {
 export function BrainSignalsCard() {
   const { signals, loading, busy, scan, updateStatus } = usePbInsightsSignals();
   return (
-    <Card>
+    <Card className="overflow-hidden border-border/60 bg-gradient-to-br from-accent/8 via-card to-card-elevated">
       <CardHeader className="flex flex-row items-center justify-between gap-2 pb-3">
         <CardTitle className="flex items-center gap-2 text-base">
-          <Lightbulb className="h-4 w-4 text-primary" />
+          <span className="relative flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-accent/30 to-primary/30">
+            <Lightbulb className="h-3.5 w-3.5 text-primary" />
+          </span>
           Signals
         </CardTitle>
         <Button size="sm" variant="outline" disabled={busy} onClick={() => void scan()}>
