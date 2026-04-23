@@ -28,13 +28,14 @@ import { useSpeechRecognition } from "./useSpeechRecognition";
 import { useSpeechSynthesis } from "./useSpeechSynthesis";
 import { useCloudVoice } from "./useCloudVoice";
 import { usePbVoicePrefs } from "./usePbVoicePrefs";
+import { useSentinelPrefs } from "./useSentinelPrefs";
 
 type LoopState = "wake" | "capture" | "thinking" | "speaking" | "paused";
 
 interface AlwaysOnVoiceProps {
   enabled: boolean;
   onDisable: () => void;
-  /** Wake phrases. Defaults to ["hey sita", "hey sentinel", "hey jarvis"]. */
+  /** Wake phrases override (otherwise uses Sentinel prefs from localStorage). */
   wakePhrases?: string[];
 }
 
@@ -43,8 +44,11 @@ const CAPTURE_TIMEOUT_MS = 7000;
 export function AlwaysOnVoice({ enabled, onDisable, wakePhrases }: AlwaysOnVoiceProps) {
   const { user } = useAuth();
   const { prefs } = usePbVoicePrefs();
+  const { prefs: sentinel } = useSentinelPrefs();
   const synth = useSpeechSynthesis();
   const cloud = useCloudVoice();
+
+  const phrases = wakePhrases ?? sentinel.phrases;
 
   const [state, setState] = useState<LoopState>("paused");
   const [lastUser, setLastUser] = useState<string>("");
@@ -208,7 +212,9 @@ export function AlwaysOnVoice({ enabled, onDisable, wakePhrases }: AlwaysOnVoice
 
   // ── Wake word ──
   const wake = useWakeWord({
-    phrases: wakePhrases,
+    phrases,
+    cooldownMs: sentinel.cooldownMs,
+    minMatchWords: sentinel.minMatchWords,
     onWake: () => {
       // Only react when we're in the WAKE phase.
       if (stateRef.current !== "wake") return;
@@ -272,7 +278,7 @@ export function AlwaysOnVoice({ enabled, onDisable, wakePhrases }: AlwaysOnVoice
         stream.getTracks().forEach((t) => t.stop());
         setState("wake");
         toast.success("Sentinel is listening", {
-          description: `Say "${(wakePhrases?.[0] ?? "hey sita")}" to start a command.`,
+          description: `Say "${phrases[0] ?? "hey sita"}" to start a command.`,
         });
       })
       .catch(() => {
@@ -296,7 +302,7 @@ export function AlwaysOnVoice({ enabled, onDisable, wakePhrases }: AlwaysOnVoice
 
   const stateLabel: Record<LoopState, string> = {
     paused: "Paused",
-    wake: `Listening for "${wakePhrases?.[0] ?? "Hey Sita"}"…`,
+    wake: `Listening for "${phrases[0] ?? "hey sita"}"…`,
     capture: "Speak your command…",
     thinking: "Thinking…",
     speaking: "Speaking…",
