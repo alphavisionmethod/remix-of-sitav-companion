@@ -278,7 +278,7 @@ export function AlwaysOnVoice({ enabled, onDisable, wakePhrases }: AlwaysOnVoice
         stream.getTracks().forEach((t) => t.stop());
         setState("wake");
         toast.success("Sentinel is listening", {
-          description: `Say "${(wakePhrases?.[0] ?? "hey sita")}" to start a command.`,
+          description: `Say "${phrases[0] ?? "hey sita"}" to start a command.`,
         });
       })
       .catch(() => {
