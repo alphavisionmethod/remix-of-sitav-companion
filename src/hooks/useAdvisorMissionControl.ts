@@ -20,11 +20,11 @@ export const memoryItems = amc.mockMemoryItems;
 export const internalAgents = amc.mockInternalAgents;
 export const incidents = amc.mockIncidents;
 export const connectorHealth = amc.mockConnectorHealth;
-export const stuckWorkflows = amc.stuckWorkflows;
-export const costAnomalies = amc.costAnomalies;
-export const policyAnomalies = amc.policyAnomalies;
-export const releaseSafety = amc.releaseSafety;
-export const safeMode = amc.safeMode;
+export const stuckWorkflows = amc.mockStuckWorkflows;
+export const costAnomalies = amc.mockCostAnomalies;
+export const policyAnomalies = amc.mockPolicyAnomalies;
+export const releaseSafety = amc.mockReleaseSafety;
+export const safeMode = amc.mockSafeMode;
 
 export function useAdvisorMissionControl() {
   const { isDemoMode } = useDataMode();
@@ -41,10 +41,10 @@ export function useAdvisorMissionControl() {
     internalAgents: amc.mockInternalAgents,
     incidents: amc.mockIncidents,
     connectorHealth: amc.mockConnectorHealth,
-    stuckWorkflows: amc.stuckWorkflows,
-    costAnomalies: amc.costAnomalies,
-    policyAnomalies: amc.policyAnomalies,
-    releaseSafety: amc.releaseSafety,
-    safeMode: amc.safeMode,
+    stuckWorkflows: amc.mockStuckWorkflows,
+    costAnomalies: amc.mockCostAnomalies,
+    policyAnomalies: amc.mockPolicyAnomalies,
+    releaseSafety: amc.mockReleaseSafety,
+    safeMode: amc.mockSafeMode,
   };
 }
