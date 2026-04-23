@@ -277,6 +277,13 @@ function ChatInner() {
         onOpenChange={setContextOpen}
         sources={contextSources}
       />
+      {voiceOpen && (
+        <VoicePanel
+          initialChatId={chatId ?? undefined}
+          initialMode={mode}
+          onClose={() => setVoiceOpen(false)}
+        />
+      )}
     </PageShell>
   );
 }
