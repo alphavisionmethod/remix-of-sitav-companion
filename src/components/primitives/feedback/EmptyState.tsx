@@ -1,7 +1,6 @@
 // ═══════════════════════════════════════════════════════════════
-// DEPRECATED — Re-exports from canonical sita/EmptyState.
-// The primitives barrel maintains this for backward compatibility.
-// New code should import from "@/components/sita/EmptyState".
+// Re-exports from canonical sita/EmptyState.
+// All code should import from this path or "@/components/sita/EmptyState".
 // ═══════════════════════════════════════════════════════════════
 
 export { EmptyState } from "@/components/sita/EmptyState";

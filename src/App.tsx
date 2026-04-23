@@ -30,6 +30,7 @@ import { ThemeProvider } from "@/contexts/AppearanceContext";
 import { ShellLayout } from "@/components/sita/ShellLayout";
 import { GlobalErrorBoundary } from "@/components/sita/GlobalErrorBoundary";
 import { RouteErrorBoundary } from "@/components/sita/RouteErrorBoundary";
+import { EnvErrorBoundary } from "@/components/sita/EnvErrorBoundary";
 import { createQueryClient } from "@/lib/query-config";
 import { initErrorMonitoring } from "@/lib/services/error-monitoring-service";
 
@@ -222,6 +223,7 @@ const AuthenticatedProviders = ({ children }: { children: ReactNode }) => (
 // App — Thin orchestrator composing route families
 // ═══════════════════════════════════════════════════════════════
 const App = () => (
+  <EnvErrorBoundary>
   <GlobalErrorBoundary>
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
@@ -316,6 +318,7 @@ const App = () => (
     </TooltipProvider>
   </QueryClientProvider>
   </GlobalErrorBoundary>
+  </EnvErrorBoundary>
 );
 
 export default App;
