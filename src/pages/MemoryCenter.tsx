@@ -16,6 +16,7 @@ import {
   Brain, Search, Edit, Trash2, Eye, Lock, Shield, Clock, Sparkles, X, Check, Save
 } from "lucide-react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageErrorState } from "@/components/sita/PageErrorState";
 
 
 
@@ -115,7 +116,6 @@ const MemoryCenter = () => {
   };
 
   if (isError) {
-    const { PageErrorState } = require("@/components/sita/PageErrorState");
     return (
       <motion.div className="mx-auto max-w-5xl space-y-6" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
         <SitaPageHeader title="Memory Center" subtitle="Everything SITA knows — transparent, editable, and governed" />
