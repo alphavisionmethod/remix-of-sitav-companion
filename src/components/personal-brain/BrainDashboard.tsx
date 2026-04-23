@@ -22,6 +22,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { VoicePanel } from "./voice/VoicePanel";
 import { ShieldAlert } from "lucide-react";
 import { BrainOnboardingTour } from "./onboarding-tour/BrainOnboardingTour";
+import { AlwaysOnVoice } from "./voice/AlwaysOnVoice";
 
 function greetingFor(name?: string | null): string {
   const hour = new Date().getHours();
@@ -41,6 +42,7 @@ export function BrainDashboard() {
   const { goals, loading: goalsLoading } = usePbGoals();
   const { insights, loading: insightsLoading } = usePbInsights(3);
   const [voiceOpen, setVoiceOpen] = useState(false);
+  const [sentinelOn, setSentinelOn] = useState(false);
   const { prefs: securityPrefs } = usePbSecurityPrefs();
 
   const filteredWorkspaces = useMemo(() => {
@@ -80,6 +82,8 @@ export function BrainDashboard() {
           onVoice={() => setVoiceOpen(true)}
           onSettings={() => navigate("/personal-brain/settings")}
           onTools={() => navigate("/personal-brain/tools")}
+          sentinelOn={sentinelOn}
+          onToggleSentinel={() => setSentinelOn((v) => !v)}
         />
 
         {securityPrefs?.sensitive_mode && (
@@ -145,6 +149,7 @@ export function BrainDashboard() {
         />
       )}
       <BrainOnboardingTour />
+      <AlwaysOnVoice enabled={sentinelOn} onDisable={() => setSentinelOn(false)} />
     </PageShell>
   );
 }

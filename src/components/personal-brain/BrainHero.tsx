@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Brain, Mic, Plus, Settings, Wrench } from "lucide-react";
+import { Brain, Mic, Plus, Radio, Settings, Wrench } from "lucide-react";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
 export type BrainScope = "personal" | "business";
@@ -12,6 +12,8 @@ interface BrainHeroProps {
   onVoice?: () => void;
   onSettings?: () => void;
   onTools?: () => void;
+  sentinelOn?: boolean;
+  onToggleSentinel?: () => void;
 }
 
 export function BrainHero({
@@ -22,6 +24,8 @@ export function BrainHero({
   onVoice,
   onSettings,
   onTools,
+  sentinelOn = false,
+  onToggleSentinel,
 }: BrainHeroProps) {
   return (
     <div className="relative overflow-hidden rounded-3xl border border-border/60 bg-gradient-to-br from-primary/15 via-card to-accent/10 p-5 shadow-xl shadow-primary/5 sm:p-7">
@@ -61,6 +65,20 @@ export function BrainHero({
             <Mic className="h-4 w-4" />
             Voice
           </Button>
+          {onToggleSentinel && (
+            <Button
+              variant={sentinelOn ? "default" : "outline"}
+              size="sm"
+              onClick={onToggleSentinel}
+              title={sentinelOn ? "Turn off Sentinel (always-on voice)" : "Turn on Sentinel (always-on voice)"}
+              className={sentinelOn
+                ? "bg-gradient-to-br from-primary to-accent text-primary-foreground shadow-lg shadow-primary/30"
+                : "backdrop-blur"}
+            >
+              <Radio className="h-4 w-4" />
+              <span className="sr-only sm:not-sr-only">{sentinelOn ? "Sentinel on" : "Sentinel"}</span>
+            </Button>
+          )}
           {onTools && (
             <Button data-tour="brain-tools" variant="outline" size="sm" onClick={onTools} title="External tools" className="backdrop-blur">
               <Wrench className="h-4 w-4" />
