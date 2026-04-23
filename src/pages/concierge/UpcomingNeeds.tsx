@@ -39,7 +39,6 @@ const REVIEW_ITEMS: ReviewItem[] = [
 type UpcomingView = "today" | "3-day" | "week" | "burden";
 
 const UpcomingNeeds = () => {
-  const isDemoMode = false;
   const [view, setView] = useState<UpcomingView>("today");
 
   const todayItems = OBLIGATIONS.filter(o => o.dueLabel.startsWith("Today") || o.dueLabel.startsWith("Overdue"));

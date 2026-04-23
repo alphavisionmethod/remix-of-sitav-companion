@@ -43,9 +43,8 @@ const ROLE_PERMISSIONS_DEMO: Record<string, Record<string, boolean>> = {
 };
 
 const EnterpriseControlPlane = () => {
-  const isDemoMode = false;
   const [activeTab, setActiveTab] = useState("organization");
-  const [permissions, setPermissions] = useState(isDemoMode ? ROLE_PERMISSIONS_DEMO : {});
+  const [permissions, setPermissions] = useState({});
   const [inviteEmail, setInviteEmail] = useState("");
   const { user, isDemo } = useAuth();
 

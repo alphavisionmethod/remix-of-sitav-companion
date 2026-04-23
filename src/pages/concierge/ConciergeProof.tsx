@@ -33,7 +33,6 @@ const proofRecords: ProofRecord[] = [
 ];
 
 const ConciergeProof = () => {
-  const isDemoMode = false;
   const [view, setView] = useState("all");
   const verified = proofRecords.filter(p => p.verification === "verified").length;
   const pending = proofRecords.filter(p => p.verification === "pending").length;

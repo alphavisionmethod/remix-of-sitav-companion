@@ -58,7 +58,6 @@ import { useOpportunitySignals, usePriorityStacks, useDigestCompilations } from 
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { BoardroomSeedSampleButton } from "@/components/sita/BoardroomSeedSampleButton";
 
-const isDemoMode = false;
 // ── Section Renderers (preserved from original) ───────────────
 
 const MetricCardGrid = ({ data, title }: { data: MetricCardData[]; title: string }) => {
@@ -772,10 +771,10 @@ const PacketView = ({ type, perspective = "owner" }: { type: BoardroomType; pers
       {limitedSections.filter(s => s.type !== "narrative").map(s => <RenderSection key={s.id} section={s} />)}
 
       {/* ── War Room: Confidence Radar (demo OR has recommendations to score) ── */}
-      {(isDemoMode || hasRecommendations) ? (
+      {hasRecommendations ? (
         <WarRoomConfidenceRadar
           advisors={
-            isDemoMode
+            false
               ? mockAdvisors.slice(0, 6).map(a => ({
                   name: a.name,
                   confidence: Math.round(a.confidence * 100),
@@ -799,7 +798,7 @@ const PacketView = ({ type, perspective = "owner" }: { type: BoardroomType; pers
       )}
 
       {/* ── War Room: Disagreement Theater (demo OR boardroom_items with multiple advisor_summaries) ── */}
-      {isDemoMode && mockSynthesis.some(s => s.disagreements?.length) ? (
+      {false ? (
         <WarRoomDisagreementTheater
           topic="Growth vs. Cash Preservation Strategy"
           sideA={{
@@ -857,7 +856,7 @@ const PacketView = ({ type, perspective = "owner" }: { type: BoardroomType; pers
       )}
 
       {/* ── War Room: Voting Card ── */}
-      {isDemoMode ? (
+      {false ? (
         <VotingCard
           question="Should we hire a contractor for the Q3 expansion project?"
           votes={[
@@ -897,7 +896,7 @@ const PacketView = ({ type, perspective = "owner" }: { type: BoardroomType; pers
       )}
 
       {/* ── War Room: Evidence Chain (demo OR latest decision receipt has proof_trail) ── */}
-      {isDemoMode ? (
+      {false ? (
         <EvidenceChain
           title="Revenue Growth Conclusion Chain"
           nodes={[
@@ -929,7 +928,7 @@ const PacketView = ({ type, perspective = "owner" }: { type: BoardroomType; pers
       )}
 
       {/* ── War Room: Scenario Fork ── */}
-      {isDemoMode ? (
+      {false ? (
         <ScenarioFork
           titleA="Maintain Current Course"
           titleB="Accelerate Growth"
@@ -951,7 +950,7 @@ const PacketView = ({ type, perspective = "owner" }: { type: BoardroomType; pers
       )}
 
       {/* ── War Room: Decision Seal (wired to latest boardroom_decision_receipts) ── */}
-      {isDemoMode ? (
+      {false ? (
         <DecisionSeal
           decision="Adopt balanced execution strategy for Q2"
           decidedBy="Owner (recommended by Business + Money Advisors)"
@@ -976,13 +975,13 @@ const PacketView = ({ type, perspective = "owner" }: { type: BoardroomType; pers
       )}
 
       {/* Confidence ladder */}
-      {(isDemoMode || hasRecommendations) ? (
+      {hasRecommendations ? (
         <div className="space-y-3">
           <SitaSectionHeader title="Confidence Ladder" subtitle="Advisor certainty levels for this review" />
           <SitaCard hover={false}>
             <ConfidenceLadder
               items={
-                isDemoMode
+                false
                   ? mockAdvisors.slice(0, 5).map(a => ({ label: a.name, confidence: a.confidence }))
                   : recommendations.slice(0, 5).map((r: any) => ({
                       label: (r.title || r.role_key || "recommendation").toString().slice(0, 32),
@@ -1029,11 +1028,7 @@ const PacketView = ({ type, perspective = "owner" }: { type: BoardroomType; pers
           domain: (t.domain === "business" || t.domain === "money" || t.domain === "concierge" ? t.domain : "business") as "business" | "money" | "concierge",
           progress: t.status === "completed" ? 100 : t.status === "in_progress" ? 50 : 0,
           proofGenerated: false,
-        })) : isDemoMode ? [
-          { id: "t1", title: "Call Apex Corp about Quote #1039", assignee: "Owner", decidedAt: "Mar 25", dueBy: "Mar 26", status: "completed" as const, domain: "business" as const, progress: 100, proofGenerated: true },
-          { id: "t2", title: "Send collections escalation to Green Valley", assignee: "SITA (delegated)", decidedAt: "Mar 25", dueBy: "Mar 27", status: "in-progress" as const, domain: "business" as const, progress: 60 },
-          { id: "t3", title: "Cancel Zoom Pro subscription", assignee: "Owner", decidedAt: "Mar 25", dueBy: "Apr 5", status: "pending" as const, domain: "money" as const, progress: 0 },
-        ] : []}
+        })) : []}
       />
 
       {/* Confidence Envelope & Provenance */}

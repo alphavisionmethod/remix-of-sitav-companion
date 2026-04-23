@@ -30,7 +30,6 @@ import { useCallingContacts, useCallLogs } from "@/hooks/use-live-data";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { PageShell } from "@/components/sita/PageShell";
 
-const isDemoMode = false;
 type DialerState = "idle" | "dialing" | "connected" | "wrapping-up";
 
 // ── Helpers ─────────────────────────────────────────────────────
@@ -114,7 +113,7 @@ function ActiveDialer({ contact, onEnd, onSkip }: { contact: Contact; onEnd: () 
     setTimeout(() => setState("connected"), 3000);
     return () => clearInterval(timer);
   });
-  const script = isDemoMode ? ((MOCK_SCRIPTS).find(s => s.stage === contact.stage) || MOCK_SCRIPTS[0]) : null;
+  const script = null;
 
   const handleEndCall = () => {
     setState("wrapping-up");
@@ -480,11 +479,11 @@ const RevenueCallingPage = () => {
       {/* Scripts */}
       {activeView === "scripts" && (
         <div className="space-y-3">
-          {!isDemoMode ? (
+          {true ? (
             <SitaCard className="p-6 text-center">
               <FileText className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
               <p className="text-sm font-medium text-foreground">No Scripts Configured</p>
-              <p className="text-xs text-muted-foreground mt-1">Call scripts activate when configured. Switch to demo mode to preview.</p>
+              <p className="text-xs text-muted-foreground mt-1">Call scripts will appear here once configured.</p>
             </SitaCard>
           ) : (MOCK_SCRIPTS).map(script => (
             <SitaCard key={script.id} className="p-4">
