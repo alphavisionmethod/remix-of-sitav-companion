@@ -96,7 +96,7 @@ const favoritesNav = [
 
 const bottomNav = [
   { title: "Settings",     url: "/settings", icon: Settings },
-  { title: "Control Room", url: "/owner",    icon: Shield },
+  { title: "Desktop",      url: "/home",     icon: LayoutDashboard },
 ];
 
 // ── Recents Tracker ──────────────────────────────────────────

@@ -53,6 +53,7 @@ import { LockScreenOverlay } from "./shell/LockScreenOverlay";
 import { useGlobalShortcuts } from "@/hooks/useGlobalShortcuts";
 import { initZoomFromStorage } from "@/lib/system-menu/menu-actions";
 import { useRoutePerformance } from "@/hooks/useRoutePerformance";
+import { StandaloneAppFrame } from "./shell/StandaloneAppFrame";
 
 const SystemMenuBarLazy = lazy(() => import("./shell/SystemMenuBar").then(m => ({ default: m.SystemMenuBar })));
 
@@ -243,6 +244,12 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
   const handleCommandOpen = useCallback(() => setCommandOpen(true), []);
 
   const isDesktopRoute = location.pathname === "/" || location.pathname === "/home" || location.pathname === "/desktop";
+  // Control Room is the ONLY route that shows the multi-app aggregated sidebar.
+  const isControlRoomRoute = location.pathname === "/owner" || location.pathname.startsWith("/owner/");
+  const showGlobalSidebar = isControlRoomRoute;
+  // Mobile routes manage their own chrome; skip the standalone frame there too.
+  const isMobileRoute = location.pathname.startsWith("/mobile");
+  const useStandaloneFrame = !isDesktopRoute && !isControlRoomRoute && !isMobileRoute;
 
   return (
     <OSWindowProvider>
@@ -283,13 +290,21 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
         )}
 
         <div className="relative z-10 flex flex-1 min-w-0">
-          {!isDesktopRoute && <AppSidebar />}
+          {showGlobalSidebar && <AppSidebar />}
           <div className="flex flex-1 min-w-0">
             <div className="flex flex-1 flex-col min-w-0">
               <main id="main-content" role="main" aria-label="Page content"
                 className={cn("flex-1 overflow-auto scrollbar-thin", isDesktopRoute ? "" : "pb-28 md:pb-16")}>
                 <ErrorBoundary>
-                  {isDesktopRoute ? children : <PageTransition>{children}</PageTransition>}
+                  {isDesktopRoute ? (
+                    children
+                  ) : useStandaloneFrame ? (
+                    <StandaloneAppFrame>
+                      <PageTransition>{children}</PageTransition>
+                    </StandaloneAppFrame>
+                  ) : (
+                    <PageTransition>{children}</PageTransition>
+                  )}
                 </ErrorBoundary>
               </main>
             </div>
