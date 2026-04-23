@@ -1,0 +1,99 @@
+{
+  "generatedAt": "2026-04-23T19:16:09.419Z",
+  "gate": "threshold-drift-regression",
+  "repeatCount": 5,
+  "epsilonRatio": 0.02,
+  "epsilonCount": 0.05,
+  "thresholds": {
+    "freshRatio": {
+      "baseline": 0.2,
+      "runs": [
+        {
+          "iteration": 0,
+          "value": 1,
+          "driftFromBaseline": 0
+        },
+        {
+          "iteration": 1,
+          "value": 1,
+          "driftFromBaseline": 0
+        },
+        {
+          "iteration": 2,
+          "value": 1,
+          "driftFromBaseline": 0
+        },
+        {
+          "iteration": 3,
+          "value": 1,
+          "driftFromBaseline": 0
+        },
+        {
+          "iteration": 4,
+          "value": 1,
+          "driftFromBaseline": 0
+        }
+      ]
+    },
+    "failingArtifacts": {
+      "baseline": 100,
+      "runs": [
+        {
+          "iteration": 0,
+          "value": 41,
+          "driftFromBaseline": 0
+        },
+        {
+          "iteration": 1,
+          "value": 41,
+          "driftFromBaseline": 0
+        },
+        {
+          "iteration": 2,
+          "value": 41,
+          "driftFromBaseline": 0
+        },
+        {
+          "iteration": 3,
+          "value": 41,
+          "driftFromBaseline": 0
+        },
+        {
+          "iteration": 4,
+          "value": 41,
+          "driftFromBaseline": 0
+        }
+      ]
+    },
+    "testFileCount": {
+      "baseline": 280,
+      "runs": [
+        {
+          "iteration": 0,
+          "value": 328,
+          "driftFromBaseline": 0
+        },
+        {
+          "iteration": 1,
+          "value": 328,
+          "driftFromBaseline": 0
+        },
+        {
+          "iteration": 2,
+          "value": 328,
+          "driftFromBaseline": 0
+        },
+        {
+          "iteration": 3,
+          "value": 328,
+          "driftFromBaseline": 0
+        },
+        {
+          "iteration": 4,
+          "value": 328,
+          "driftFromBaseline": 0
+        }
+      ]
+    }
+  }
+}
