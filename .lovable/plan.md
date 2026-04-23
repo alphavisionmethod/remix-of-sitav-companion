@@ -1,74 +1,121 @@
 
+# SITA = Jarvis: Desktop HUD + System-Wide Voice
 
-# Phase 2 — Dashboard, Workspaces, Chats & 9-Mode Brain
+Goal: make the desktop the front door of "Sita" — an always-on, voice-first HUD that can see everything on screen, speak across every app, and act through the OS service fleet. Today the Sentinel voice loop is locked inside `/personal-brain`. We promote it to a shell-level service, give the desktop a cinematic "presence" UI, then layer advanced capabilities in 6 incremental phases.
 
-Replace the bare chat page with a true Brain home. Persist every chat and message in `pb_*` tables, introduce workspaces, and expose all 9 mode prompts the Phase-0 edge router already supports.
+---
 
-## What you'll see
+## Phase A — Wow-grade desktop "Sita HUD"
 
-- Visiting `/personal-brain` (post-onboarding) lands on **BrainDashboard** instead of a blank chat.
-  - Header: greeting + Personal/Business workspace toggle + "New Chat" + "Voice" CTA (placeholder until Phase 4).
-  - Cards: **Continue Chats** (recent 5 from `pb_chats`) · **Active Goals** (from `pb_goals` with progress) · **Workspaces** (`pb_workspaces` grid + create) · **Brain Insights** (top 3 inferred memories) · **Suggested Prompts** (mode-aware starter chips).
-- `/personal-brain/w/:workspaceId` → workspace home: that workspace's chats, files, scoped memories, default mode.
-- `/personal-brain/c/:chatId` → focused chat view, persisted in `pb_messages`, with the **9-mode picker** (Think · Learn · Build · Create · Research · Strategize · Coach · Reflect · Decide).
-- New chat side **Context Drawer** ("What memory & sources informed this reply") — reads `sources` jsonb on each `assistant` row.
-- "Convert to…" menu on any assistant message → New Note / Task / Project (writes to existing `notes`/`tasks` tables; project = new `pb_workspace`).
+Visual goal: the moment you log in, the desktop *feels alive*. Not flat wallpaper + dock, but a cinematic command bridge.
 
-## How it works
+What we build:
+- **SitaPresenceOrb** (new shell-level component, mounted in `ShellLiveLayer`)
+  - Floating, draggable holographic orb in a corner of the desktop.
+  - 4 visual states: idle (slow breathing), listening (fast pulse + ring), thinking (orbiting particles), speaking (audio-reactive waveform around the orb).
+  - Uses `framer-motion` + a WebGL/canvas shader for a soft volumetric glow, falling back to CSS gradients on low-power tier.
+- **SitaAmbientCanvas** (replaces / wraps `ShellAmbientBackground`)
+  - Subtle parallax aurora that *reacts* to system state: tints blue when calm, amber on warnings (from `healthd`), violet when Sentinel is listening.
+  - Time-of-day tinting (morning/day/dusk/night) sourced from `timed`.
+- **SitaHUD strip** (top-of-screen, above the menu bar)
+  - One-line "ambient status" feed: e.g. *"Good morning. 3 boardroom items. Markets calm. Sentinel armed."*
+  - Built from existing `LiveActivityBar` + `IntentSuggestionsWidget` + a new "Sita greeting" line driven by the Brain.
+- **First-run Sita reveal** — a 6-second cinematic on first desktop arrival: orb materializes, speaks "I'm Sita. Say *Hey Sita* anytime." Persisted via `pb_sita_reveal_v1` in localStorage.
 
-1. **Routing** — extend `src/routes/os-routes.tsx`:
-   ```tsx
-   <Route path="/personal-brain" element={<PersonalBrain />} />
-   <Route path="/personal-brain/w/:workspaceId" element={<PersonalBrainWorkspace />} />
-   <Route path="/personal-brain/c/:chatId" element={<PersonalBrainChat />} />
-   ```
-   `PersonalBrain.tsx` becomes a thin gate → onboarding → `BrainDashboard`.
+Constraints we respect:
+- Glassmorphic depth, vibrant gradients (Premium UX System).
+- No marketing clutter. Desktop-first.
+- Empty-state honesty — no fake metrics in the HUD strip; if a source has no data, the line is omitted.
+- Runtime-tier aware via `useCurrentLayer()` — appliance/simulated tiers get the CSS fallback orb, not the WebGL one.
 
-2. **Data hooks** (`src/components/personal-brain/hooks/`):
-   - `usePbWorkspaces()` — list/create/archive `pb_workspaces`.
-   - `usePbChats(workspaceId?)` — list/create/rename/pin/archive `pb_chats`.
-   - `usePbChat(chatId)` — load a chat + its `pb_messages` + realtime subscribe.
-   - `usePbGoals()` — list/upsert `pb_goals` for dashboard progress.
-   - `usePbInsights()` — top 3 active inferred `pb_memories`.
+---
 
-3. **Chat send path (persistent)** — `usePbChat.send(content, mode)`:
-   - Insert `pb_messages` (role=user) **before** invoke (optimistic).
-   - `supabase.functions.invoke("personal-brain", { body: { messages, mode, chatId } })` — edge already accepts `chatId` and persists user-side; Phase 2 adds **assistant-side persistence** in the edge function (one small additive change in `actionInfer`: collect SSE delta on the server only when `chatId` present, write final assistant `pb_messages` row with `sources` jsonb listing memories used).
-   - Auto-create chat on first message if none yet (writes `pb_chats` with mode + workspace).
-   - Update `pb_chats.last_message_at` (already wired).
+## Phase B — Sentinel becomes the OS voice spine
 
-4. **9-Mode picker** — replace the 4-button strip with a `ModePicker` primitive listing all 9 modes (icon + label + 1-line description) sourced from a shared `BRAIN_MODES` const co-located with the edge `MODE_PROMPTS`. Mode persists per chat (`pb_chats.mode`).
+Today `AlwaysOnVoice.tsx` only runs inside `BrainDashboard`. We promote it.
 
-5. **Components** (new under `src/components/personal-brain/`):
-   `BrainDashboard.tsx`, `BrainHero.tsx`, `WorkspaceCard.tsx`, `WorkspaceGrid.tsx`, `WorkspaceSwitcher.tsx`, `GoalProgressCard.tsx`, `BrainInsightCard.tsx`, `SuggestedPromptStrip.tsx`, `ChatList.tsx`, `ChatRow.tsx`, `ModePicker.tsx`, `ContextDrawer.tsx`, `ConvertMessageMenu.tsx`, `BRAIN_MODES.ts`.
+What we build:
+- **`SitaVoiceProvider`** (new, in `src/contexts/`) — boots the wake-word loop once at the shell level, exposes `useSitaVoice()` everywhere.
+  - Owns lifecycle (wake → capture → think → speak), persists toggle in user settings (DB-backed via `useSentinelPrefs` mirrored to a `sita_voice_prefs` row).
+  - One singleton — no double-listening when the Brain is also open.
+- **OS-wide intents** — captured commands flow through a new `voice-intent-router`:
+  - "Open Calendar" → uses the existing app launcher (`handleLaunchApp`).
+  - "Focus mode 25 minutes" → `useFocusMode().start(25)`.
+  - "What's on my calendar today?" → routes to Brain with calendar tool context.
+  - "Read me the boardroom brief" → fetches `DesktopBoardroomBriefWidget` data, TTS-reads it.
+  - Unrecognized → falls back to Brain `mode='think'` (existing edge function).
+- **Voice receipts** — every spoken command writes a row to `ai_action_receipts` (existing table, see `mem://infrastructure/receipt-emission`) so it's auditable.
+- **HUD wiring** — the orb's pulse and waveform are driven by the provider, so it's identical whether you're on `/index`, `/calendar`, or inside a windowed app.
+- **Privacy controls** — a new `ControlCenter` row "Sentinel: armed / off / mute mic" so the user always knows mic state. Hard kill switch via existing runbook system (`mem://features/runbook-and-simulation-system`).
 
-6. **Pages** (new under `src/pages/personal-brain/`):
-   `PersonalBrainWorkspace.tsx`, `PersonalBrainChat.tsx` (the actual chat surface; old `PersonalBrainInner` is deleted in favor of this).
+---
 
-7. **Mobile** — add `"/personal-brain": "/mobile"` to `MOBILE_ROUTE_MAP_EXTENDED` in `src/App.tsx` (mobile Brain UI deferred to a later phase; for now mobile users land on home).
+## Phase C — Sita sees what you see (visual context)
 
-## Edge function additive change (small, safe)
+What we build:
+- **Screen-context hook** `useSitaScreenContext()` — captures the focused window's title, route, and a structured "what's visible" payload that each app opts into via a small `<SitaContext value={...}>` wrapper.
+- Brain prompts now include the focused-window context, so "summarize this" and "schedule this" work in any app without the user re-explaining.
+- Optional **vision tier**: on Tier 2 (desktop host), allow on-demand screenshot of the focused window (Electron `desktopCapturer`) sent to a multimodal model via the AI gateway. Off by default, requires explicit consent toast each session.
 
-In `supabase/functions/personal-brain/index.ts`, `actionInfer` currently streams the response unmodified. Add a **branched path when `chatId` is present**: tee the SSE stream — pass-through to the client AND parse deltas server-side to build the final assistant content, then `pb_messages` insert with `{ role:"assistant", content, sources: { memories_used:[…] }, tokens }`. Falls back gracefully on parse errors. No change to legacy (no-`chatId`) behavior. Bumps the existing edge function smoke test with one extra assertion ("chatId persists assistant message").
+---
 
-## Verification gate (must pass before Phase 3)
+## Phase D — Proactive Sita (ambient daemon)
 
-- Manual round-trip: create workspace → open it → send "hello" in 3 different modes → reload → all 3 chats + their messages persist with the right mode.
-- DB check: `select count(*) from pb_messages where role='assistant' and chat_id is not null` increases by 1 per send.
-- Existing edge router tests still pass; one new test for assistant-persistence path added to `src/__tests__/edge-functions/personal-brain-router.test.ts`.
-- No regression on the `/personal-brain` legacy path (no `chatId`) — old streaming SSE still works.
+What we build:
+- **`sita-ambient` edge function** (scheduled every 5 min) — reads signals from existing widgets/connectors, decides if Sita should speak unprompted (e.g. "You have a meeting in 10 minutes and traffic is bad").
+- **Quiet hours + budget** — respects existing `notification-classifier`, focus mode, and `ai-budget` enforcement (`mem://architecture/ai-budget-enforcement`).
+- **Spoken vs silent** — proactive items appear in the HUD strip silently by default; user can opt-in to "speak important alerts" per category.
+- **Anticipation chips** — small hover chips next to the orb suggesting next actions ("Start standup notes?" 9:58am).
 
-## Out of scope (later phases)
+---
 
-- Memory snapshot UI + `/remember` slash command + cron `learn.scan` → **Phase 3**.
-- Voice orb, mic, cloud STT → **Phase 4**.
-- Settings hub, security console, sensitive-mode UI, data export download button → **Phase 5**.
+## Phase E — Sita acts (agentic execution)
 
-## Files
+Hooks into the existing **Orchestration Pipeline** (`mem://architecture/orchestration-pipeline`) and **AI Workforce Runtime** (`mem://features/ai-workforce-runtime`).
 
-**New (~16):**
-`src/components/personal-brain/BRAIN_MODES.ts`, `BrainDashboard.tsx`, `BrainHero.tsx`, `WorkspaceCard.tsx`, `WorkspaceGrid.tsx`, `WorkspaceSwitcher.tsx`, `GoalProgressCard.tsx`, `BrainInsightCard.tsx`, `SuggestedPromptStrip.tsx`, `ChatList.tsx`, `ChatRow.tsx`, `ModePicker.tsx`, `ContextDrawer.tsx`, `ConvertMessageMenu.tsx`, `hooks/usePbWorkspaces.ts`, `hooks/usePbChats.ts`, `hooks/usePbChat.ts`, `hooks/usePbGoals.ts`, `hooks/usePbInsights.ts`, `src/pages/personal-brain/PersonalBrainWorkspace.tsx`, `src/pages/personal-brain/PersonalBrainChat.tsx`.
+What we build:
+- **Action plan dialog** — when Sita is asked to *do* something multi-step ("draft an email to Alex about Q2 and put a meeting on Thursday"), she shows a transparent plan card on the HUD with each step + a confirm button. No silent writes.
+- **Capability gates** — every action flows through existing `PermissionGatedRoute` / capability leases (`useCapabilityLease`). Voice can never bypass approval that the click UI requires.
+- **Boardroom hand-off** — strategic asks are routed to the Advisor Boardroom (`mem://features/advisor-boardroom-showcase`) instead of Brain, with the orb morphing into the council ring while they deliberate.
 
-**Edited:**
-`src/pages/PersonalBrain.tsx` (becomes dashboard host), `src/routes/os-routes.tsx` (3 new routes), `src/App.tsx` (mobile mapping), `supabase/functions/personal-brain/index.ts` (assistant-side persistence in `actionInfer` when `chatId`), `src/__tests__/edge-functions/personal-brain-router.test.ts` (1 new assertion).
+---
 
+## Phase F — Advanced "high-tech" capability set
+
+Picked for impact + feasibility on our current stack:
+
+1. **Spatial workspaces** — extend `SpatialDesktop` so Sita can voice-navigate ("show me last Tuesday's workspace"); workspaces snapshot via Digital Twins (`mem://features/digital-twins`).
+2. **Multi-device handoff** — pair desktop + mobile so saying "continue this on my phone" pushes the focused app/window over (uses `sync-engine`).
+3. **Gesture + gaze (desktop tier only)** — optional webcam gesture pad: pinch to dismiss notifications, look-away to pause TTS. Off by default; behind a tier-3 capability flag.
+4. **Holographic boardroom mode** — full-screen takeover where the 10 advisors visually appear in a ring around the user; Sita is the moderator. Reuses existing boardroom assets.
+5. **Wake-on-glance / wake-on-clap** — alternate wake modes besides phrase, for accessibility.
+6. **Encrypted voice memory** — long-term "she remembers" via `advisor_board_memory` with per-entry user-controlled retention (TTL governed by `mem://governance/data-retention-policy`).
+7. **Sovereign offline mode** — on appliance tier, fall back to local STT/TTS (Web Speech) with a clear "offline Sita" badge so the user always knows the model boundary.
+8. **Skill marketplace** — third-party voice "skills" published via the existing App Platform (`mem://architecture/app-platform-and-store`); each skill declares the voice intents it claims, gated by capability review.
+
+---
+
+## Architecture / technical notes
+
+- **No new providers in the kernel.** `SitaVoiceProvider` mounts inside `RuntimeProvider` *after* `NovaSDKProvider`, before `PipelineBootstrap`, so it can publish intents into the orchestration pipeline.
+- **Singleton wake-word.** `useWakeWord` is moved behind the provider; `BrainDashboard`'s current local mount is replaced by a thin consumer that just renders the orb panel.
+- **All AI through the gateway** (`mem://constraints/sovereign-ai-gateway`). No direct ElevenLabs/OpenAI calls in components.
+- **Tier matrix.** WebGL HUD only on Tier 1/2; CSS fallback on Tier 3/4. Vision capture only on Tier 2.
+- **Receipts + audit.** Every voice-triggered action writes to `ai_action_receipts` with `source: 'sita_voice'`.
+- **Kill-switches.** New runbooks: `sita.voice.disable`, `sita.proactive.pause`, `sita.vision.revoke`.
+- **No demo-mode bypass.** When `isDemoMode`, Sita uses canned responses and never hits the network — same pattern as the rest of the app.
+
+---
+
+## Suggested build order
+
+```text
+Phase A   Desktop HUD + Presence Orb              (visual wow, no behavior change)
+Phase B   SitaVoiceProvider + OS intent router    (Sita becomes system-wide)
+Phase C   Screen-context awareness                (Sita understands current app)
+Phase D   Proactive ambient daemon                (Sita speaks unprompted)
+Phase E   Agentic action plans                    (Sita does multi-step work)
+Phase F   Advanced capabilities (pick & choose)   (spatial, handoff, gestures…)
+```
+
+Each phase ships independently and is testable on its own. After approval I'll start with **Phase A** (the visual HUD + Presence Orb) so the wow is immediate, then move into Phase B to wire it as the OS voice spine.
