@@ -3,6 +3,29 @@ import { supabase } from "@/integrations/supabase/client";
 import { fromTable, fromDynamicTable } from "@/lib/supabase-helpers";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useAuth } from "@/contexts/AuthContext";
+
+const leads: any[] = [];
+const customers: any[] = [];
+const opportunities: any[] = [];
+const quotes: any[] = [];
+const invoices: any[] = [];
+const communications: any[] = [];
+const bills: any[] = [];
+const subscriptions: any[] = [];
+const cashFlow: any = { available: "$0", incoming: "$0", outgoing: "$0", safeToSpend: "$0", runway: "N/A", nextBigExpense: { name: "None", amount: "$0", date: "N/A" } };
+const householdTasks: any[] = [];
+const familyEvents: any[] = [];
+const groceryList: any[] = [];
+const travel: any[] = [];
+const activity: any[] = [];
+const opportunityInsights: any[] = [];
+const memoryItems: any[] = [];
+const automationRules: any[] = [];
+const connectors: any[] = [];
+const aITeam: any[] = [];
+const incidents: any[] = [];
+const costs: any = { totalSpend: "$0", todaySpend: "$0", topModel: "N/A", callCount: 0 };
+
 // ── Generic hook factory ─────────────────────────────────────
 // Returns mock data ONLY in demo mode; queries Supabase in live mode.
 // On Supabase error in live mode → returns empty array, NOT mock data.

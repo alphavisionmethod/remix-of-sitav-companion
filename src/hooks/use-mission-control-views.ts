@@ -13,6 +13,14 @@ import type {
   SystemActivityEntry, ControlMode, PackSummaryView,
 } from "@/packages/contracts";
 
+const internalAgents: any[] = [];
+const incidents: any[] = [];
+const connectorHealth: any[] = [];
+const costAnomalies: any[] = [];
+const stuckWorkflows: any[] = [];
+const releaseSafety: any = { currentRing: "stable", canaryStatus: "healthy" };
+const safeMode: any = { globalSafeMode: false };
+
 // ── Control Mode ────────────────────────────────────────────────
 export function useControlMode() {
   const [mode, setMode] = useState<ControlMode>("owner");

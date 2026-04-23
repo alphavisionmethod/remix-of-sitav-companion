@@ -8,6 +8,19 @@ import { useState, useEffect, useCallback, useMemo } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { fromDynamicTable } from "@/lib/supabase-helpers";
 import { useDataMode } from "@/contexts/DataModeContext";
+
+const INTEL_ASSETS: IntelligenceAsset[] = [];
+const INTEL_AGENTS: EfficiencyAgent[] = [];
+const INTEL_OUTCOMES: OutcomeRecord[] = [];
+const WORKFLOWS: any[] = [];
+const PATHS: any[] = [];
+const REASONING_PATHS: any[] = [];
+const REUSE_DATA: ReuseStats = { reuseRate: 0, directReuseRate: 0, adaptedReuseRate: 0, costAvoided: 0, totalReuses: 0, invalidatedAssets: 0, avgConfidence: 0, confidenceTrend: "stable" };
+const ASSET_CLASSES: any[] = [];
+const DOMAIN_REUSE: any[] = [];
+const INVALIDATION_FEED: any[] = [];
+const CONFIDENCE_TREND: any[] = [];
+
 // ── Types ────────────────────────────────────────────────────────
 
 export interface IntelligenceAsset {

@@ -7,6 +7,10 @@ import { useQuery } from "@tanstack/react-query";
 import { useRealityProvider } from "@/hooks/useRealityProvider";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
+const LEAKAGE_INPUT: any[] = [];
+const RECOVERED_VALUES: any[] = [];
+const RAW_OPPORTUNITIES: any[] = [];
+const CONTACTS: any[] = [];
 async function fetchRevenueLeaks(mode: string): Promise<any> {
   if (mode !== "real") return LEAKAGE_INPUT;
   const { data: { user } } = await supabase.auth.getUser();
