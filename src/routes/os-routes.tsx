@@ -42,6 +42,8 @@ const NotificationSettingsPage = lazy(() => import("@/pages/NotificationSettings
 const NotificationCenter = lazy(() => import("@/pages/NotificationCenter"));
 const NotificationPreferences = lazy(() => import("@/pages/settings/NotificationPreferences"));
 const PersonalBrain = lazy(() => import("@/pages/PersonalBrain"));
+const PersonalBrainWorkspace = lazy(() => import("@/pages/personal-brain/PersonalBrainWorkspace"));
+const PersonalBrainChat = lazy(() => import("@/pages/personal-brain/PersonalBrainChat"));
 const CalmFocusMode = lazy(() => import("@/pages/CalmFocusMode"));
 const CommandHistory = lazy(() => import("@/pages/CommandHistory"));
 const EnvironmentSwitcherPage = lazy(() => import("@/pages/EnvironmentSwitcher"));
@@ -180,6 +182,8 @@ export function getOSRoutes() {
 
       {/* Personal Brain */}
       <Route path="/personal-brain" element={<PersonalBrain />} />
+      <Route path="/personal-brain/w/:workspaceId" element={<PersonalBrainWorkspace />} />
+      <Route path="/personal-brain/c/:chatId" element={<PersonalBrainChat />} />
 
       {/* OS Workspaces */}
       <Route path="/calendar" element={<CalendarWorkspace />} />
