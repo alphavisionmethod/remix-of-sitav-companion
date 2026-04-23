@@ -11,7 +11,7 @@ import {
 import { useAIEngDomain } from "@/hooks/use-ai-engineering-data";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
-const DEMO_AGENTS: any[] = [];
+const AGENTS: any[] = [];
 
 
 const autonomyColors: Record<string, string> = {
@@ -31,10 +31,10 @@ const AITeamRoster = () => {
 
   const getAutonomy = (agentId: string, defaultVal: string) => agentAutonomy[agentId] ?? defaultVal;
 
-  const sorted = view === "roster" ? DEMO_AGENTS :
-    view === "severity" ? [...DEMO_AGENTS].sort((a, b) => (b.escalation === "active" ? 2 : b.escalation === "pending" ? 1 : 0) - (a.escalation === "active" ? 2 : a.escalation === "pending" ? 1 : 0)) :
-    view === "workload" ? [...DEMO_AGENTS].sort((a, b) => b.queueLoad - a.queueLoad) :
-    [...DEMO_AGENTS].sort((a, b) => b.accuracy - a.accuracy);
+  const sorted = view === "roster" ? AGENTS :
+    view === "severity" ? [...AGENTS].sort((a, b) => (b.escalation === "active" ? 2 : b.escalation === "pending" ? 1 : 0) - (a.escalation === "active" ? 2 : a.escalation === "pending" ? 1 : 0)) :
+    view === "workload" ? [...AGENTS].sort((a, b) => b.queueLoad - a.queueLoad) :
+    [...AGENTS].sort((a, b) => b.accuracy - a.accuracy);
 
   return (
     <div className="space-y-6 p-6">

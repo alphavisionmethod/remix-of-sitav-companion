@@ -10,10 +10,10 @@ import { useWebsiteManager } from "@/contexts/SitaKernelContext";
 import DPOSubNav from "./DPOSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
-const DEMO_ENVIRONMENTS: any[] = [];
+const ENVIRONMENTS: any[] = [];
 
 // Production fallback — seed data removed
-const DEMO_DOMAINS: any[] = [];
+const DOMAINS: any[] = [];
 
 export default function DomainPublishManager() {
   const { pages: managedPages, domains: managedDomains, getStats: getWebsiteStats } = useWebsiteManager();

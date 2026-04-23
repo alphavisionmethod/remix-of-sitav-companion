@@ -10,9 +10,9 @@ import { cn } from "@/lib/utils";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { PageShell } from "@/components/sita/PageShell";
 import { Typography } from "@/components/sita/Typography";
-import { DEMO_RATING_DIST, DEMO_REVIEWS, DEMO_REV_CAMPAIGNS_REPUTATION_ENGINE as DEMO_CAMPAIGNS,
-  DEMO_REV_PLATFORMS as DEMO_PLATFORMS, DEMO_REV_STATS_REPUTATION_ENGINE as DEMO_STATS,
-  DEMO_TESTIMONIALS, DEMO_SENTIMENT_TREND,
+import { RATING_DIST, REVIEWS, REV_CAMPAIGNS_REPUTATION_ENGINE as CAMPAIGNS,
+  REV_PLATFORMS as PLATFORMS, REV_STATS_REPUTATION_ENGINE as STATS,
+  TESTIMONIALS, SENTIMENT_TREND,
 } from "@/data/seed/revenue-office";
 
 

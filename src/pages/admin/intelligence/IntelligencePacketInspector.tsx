@@ -13,7 +13,7 @@ import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 // Production fallback — seed data removed
-const DEMO_PACKETS: any[] = [];
+const PACKETS: any[] = [];
 
 const IntelligencePacketInspector = () => {
   const { isAdmin, loading } = useRequireAdmin();

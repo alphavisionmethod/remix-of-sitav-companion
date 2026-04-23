@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Replace, CheckCircle, XCircle, AlertTriangle, ChevronDown, ChevronRight } from "lucide-react";
 import {
-  MOCK_REPLACEMENT_PROGRAM, getMockReplacementProgress,
+  REPLACEMENT_PROGRAM, getMockReplacementProgress,
   type MigrationStatus, type MockType
 } from "@/runtimes/reality/reality-audit-registry";
 
@@ -32,7 +32,7 @@ const MockReplacementProgram = () => {
 
   const byDomain = useMemo(() => {
     const map = new Map<string, { total: number; done: number }>();
-    MOCK_REPLACEMENT_PROGRAM.forEach(m => {
+    REPLACEMENT_PROGRAM.forEach(m => {
       const existing = map.get(m.domain) || { total: 0, done: 0 };
       existing.total++;
       if (m.done) existing.done++;
@@ -119,7 +119,7 @@ const MockReplacementProgram = () => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {MOCK_REPLACEMENT_PROGRAM.map(m => (
+                {REPLACEMENT_PROGRAM.map(m => (
                   <>
                     <TableRow key={m.id}
                       className={`cursor-pointer ${m.done ? "bg-emerald-500/5" : m.migrationPriority === "P0" ? "bg-red-500/5" : ""}`}
@@ -134,7 +134,7 @@ const MockReplacementProgram = () => {
                       </TableCell>
                       <TableCell className="text-xs capitalize">{m.domain}</TableCell>
                       <TableCell><Badge variant={m.migrationPriority === "P0" ? "destructive" : "secondary"} className="text-[10px]">{m.migrationPriority}</Badge></TableCell>
-                      <TableCell><Badge variant="outline" className="text-[10px]">{m.mockType}</Badge></TableCell>
+                      <TableCell><Badge variant="outline" className="text-[10px]">{m.type}</Badge></TableCell>
                       <TableCell><span className={`text-[10px] px-2 py-0.5 rounded ${statusColors[m.migrationStatus]}`}>{m.migrationStatus.replace("_", " ")}</span></TableCell>
                       <TableCell><span className={`text-[10px] px-2 py-0.5 rounded ${contractColors[m.contractStatus]}`}>{m.contractStatus}</span></TableCell>
                       <TableCell className="text-xs">{m.owner || "—"}</TableCell>
@@ -145,7 +145,7 @@ const MockReplacementProgram = () => {
                         <TableCell colSpan={10} className="bg-muted/20">
                           <div className="p-3 space-y-3 text-sm">
                             <div className="grid grid-cols-2 gap-3">
-                              <div><span className="text-muted-foreground text-xs">Mock Source</span><p className="text-xs">{m.mockSource}</p></div>
+                              <div><span className="text-muted-foreground text-xs">Mock Source</span><p className="text-xs">{m.source}</p></div>
                               <div><span className="text-muted-foreground text-xs">Real Backend Target</span><p className="text-xs">{m.realBackendTarget}</p></div>
                             </div>
                             <div className="grid grid-cols-2 gap-3">
@@ -205,7 +205,7 @@ const MockReplacementProgram = () => {
           </CardHeader>
           <CardContent>
             <div className="space-y-2">
-              {MOCK_REPLACEMENT_PROGRAM.filter(m => !m.done && m.migrationPriority === "P0").map(m => (
+              {REPLACEMENT_PROGRAM.filter(m => !m.done && m.migrationPriority === "P0").map(m => (
                 <div key={m.id} className="p-2 rounded bg-red-500/10 border border-red-500/20 text-sm">
                   <div className="flex items-center justify-between">
                     <div>

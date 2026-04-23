@@ -28,7 +28,7 @@ interface SpendingCategory {
   flagReason?: string;
 }
 
-const DEMO_CATEGORIES: SpendingCategory[] = [
+const CATEGORIES: SpendingCategory[] = [
   { id: "sc1", name: "Groceries", icon: ShoppingCart, thisWeek: 287, lastWeek: 245, average: 260, transactions: 4, flagged: false },
   { id: "sc2", name: "Dining", icon: Utensils, thisWeek: 182, lastWeek: 95, average: 110, transactions: 6, flagged: true, flagReason: "65% above 90-day average" },
   { id: "sc3", name: "Transport", icon: Car, thisWeek: 68, lastWeek: 72, average: 70, transactions: 3, flagged: false },
@@ -37,7 +37,7 @@ const DEMO_CATEGORIES: SpendingCategory[] = [
   { id: "sc6", name: "Health", icon: Heart, thisWeek: 120, lastWeek: 0, average: 30, transactions: 1, flagged: true, flagReason: "Unusual one-time charge — pharmacy $120" },
 ];
 
-const DEMO_RECURRING = [
+const RECURRING = [
   { id: "rc1", name: "Cloud storage plan", previousAmount: 9.99, newAmount: 12.99, changeType: "increase" as const },
   { id: "rc2", name: "New streaming service", previousAmount: 0, newAmount: 7.99, changeType: "new" as const },
   { id: "rc3", name: "Gym membership", previousAmount: 49, newAmount: 39, changeType: "decrease" as const },

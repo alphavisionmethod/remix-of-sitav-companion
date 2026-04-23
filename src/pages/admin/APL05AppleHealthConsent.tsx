@@ -9,7 +9,7 @@ import APLSubNav from "@/components/admin/APLSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 // Production fallback — seed data removed
-const DEMO_SIGNALS: any[] = [];
+const SIGNALS: any[] = [];
 
 type ConsentState = Record<string, { read: boolean; routing: boolean; boardroom: boolean; assistant: boolean }>;
 

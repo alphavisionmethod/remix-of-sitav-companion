@@ -15,7 +15,7 @@ import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { ConnectorStateBadge } from "@/components/primitives/status/ConnectorStateBadge";
 
 // Production fallback — seed data removed
-const DEMO_CAPABILITIES: any[] = [];
+const CAPABILITIES: any[] = [];
 
 const statusBadge = (ok: boolean, label: string) => (
   <Badge variant="outline" className={`text-[10px] ${ok ? "bg-emerald-500/15 text-emerald-400" : "bg-muted text-muted-foreground"}`}>

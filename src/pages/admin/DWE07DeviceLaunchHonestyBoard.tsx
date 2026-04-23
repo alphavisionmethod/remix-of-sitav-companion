@@ -10,7 +10,7 @@ import type { AmbientLaunchReadinessRow } from "@/lib/types/dwe-types";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { DemoOnlyBanner } from "@/components/claim-safety/DemoOnlyBanner";
 import { FutureVisionBadge } from "@/components/claim-safety/FutureVisionBadge";
-import { getDemoOnlySurfacesByContainment, DEMO_ONLY_SURFACE_COUNT } from "@/lib/claim-safety/demo-only-surface-registry";
+import { getDemoOnlySurfacesByContainment, ONLY_SURFACE_COUNT } from "@/lib/claim-safety/demo-only-surface-registry";
 export default function DWE07DeviceLaunchHonestyBoard() {
   const { user } = useAuth();
 
@@ -46,7 +46,7 @@ export default function DWE07DeviceLaunchHonestyBoard() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Beaker className="h-4 w-4" />
-            Demo-Only Surface Registry ({DEMO_ONLY_SURFACE_COUNT})
+            Demo-Only Surface Registry ({ONLY_SURFACE_COUNT})
           </CardTitle>
         </CardHeader>
         <CardContent>

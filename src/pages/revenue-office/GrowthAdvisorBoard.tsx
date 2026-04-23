@@ -83,11 +83,11 @@ export default function GrowthAdvisorBoard() {
   const [activeQueries, setActiveQueries] = useState<Record<string, AdvisorQueryType | null>>({});
   const [loadingQueries, setLoadingQueries] = useState<Record<string, boolean>>({});
 
-  const advisors = DEMO_ADVISORS;
-  const debates = DEMO_ADVISOR_DEBATES;
-  const whatChanged = DEMO_ADVISOR_WHAT_CHANGED;
-  const invalidation = DEMO_ADVISOR_INVALIDATION;
-  const clusters = DEMO_ALIGNMENT_CLUSTERS;
+  const advisors = ADVISORS;
+  const debates = ADVISOR_DEBATES;
+  const whatChanged = ADVISOR_WHAT_CHANGED;
+  const invalidation = ADVISOR_INVALIDATION;
+  const clusters = ALIGNMENT_CLUSTERS;
 
   const boardConfidence = Math.round(advisors.reduce((s, a) => s + a.confidence, 0) / advisors.length * 100);
   const alertCount = advisors.filter(a => a.type === "alert").length;

@@ -9,7 +9,7 @@ import DPOSubNav from "./DPOSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 export default function PresenceTimeMachine() {
   const [selectedIdx, setSelectedIdx] = useState(0);
-  const selected = DEMO_TIMELINE_EVENTS[selectedIdx];
+  const selected = TIMELINE_EVENTS[selectedIdx];
 
   return (
     <PageShell width="wide">

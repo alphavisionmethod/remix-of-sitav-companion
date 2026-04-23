@@ -7,13 +7,13 @@ import { Sparkles, CheckCircle2, AlertTriangle, Shield, TrendingUp, Clock, Rotat
 import { useAIEngDomain } from "@/hooks/use-ai-engineering-data";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
-const DEMO_RULES: any[] = [];
+const RULES: any[] = [];
 
 // Production fallback — seed data removed
-const DEMO_PATTERNS: any[] = [];
+const PATTERNS: any[] = [];
 
 const AISelfHealing = () => {
-  const { data: patterns, isDemo } = useAIEngDomain("learningPatterns", DEMO_PATTERNS);
+  const { data: patterns, isDemo } = useAIEngDomain("learningPatterns", PATTERNS);
   const [tab, setTab] = useState("recent");
 
   return (

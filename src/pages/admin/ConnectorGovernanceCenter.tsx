@@ -17,7 +17,7 @@ import { toast } from "sonner";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 // Production fallback — seed data removed
-const DEMO_CONNECTORS: any[] = [];
+const CONNECTORS: any[] = [];
 
 interface ConnectorStatus {
   id: string;
@@ -56,7 +56,7 @@ export default function ConnectorGovernanceCenter() {
   const queryClient = useQueryClient();
 
   // Fetch real sync history from audit_logs
-  const { data: syncHistory = DEMO_FALLBACK_SYNC_HISTORY } = useQuery({
+  const { data: syncHistory = FALLBACK_SYNC_HISTORY } = useQuery({
     queryKey: ["connector-sync-history", user?.id],
     enabled: !!user,
     refetchInterval: tab === "history" ? 5000 : false,
@@ -66,7 +66,7 @@ export default function ConnectorGovernanceCenter() {
         .or("category.eq.connector,action.ilike.sync%")
         .order("created_at", { ascending: false })
         .limit(30);
-      if (error || !data || data.length === 0) return DEMO_FALLBACK_SYNC_HISTORY;
+      if (error || !data || data.length === 0) return FALLBACK_SYNC_HISTORY;
       return data.map((log: Record<string, any>) => ({
         connector: log.details?.connector_type || log.target_type || "Unknown",
         time: new Date(log.created_at).toLocaleString(),
@@ -94,7 +94,7 @@ export default function ConnectorGovernanceCenter() {
   const activeConnectors = dbConnectors ? ([] as any[]).map(c => {
     const acc = dbConnectors.accounts.find((a: Record<string, any>) => a.connector_type === c.id);
     return acc ? { ...c, status: acc.status === "active" ? "healthy" as const : c.status, lastSyncAt: acc.connected_at ? new Date(acc.connected_at).toLocaleTimeString() : c.lastSyncAt } : c;
-  }) : DEMO_CONNECTORS;
+  }) : CONNECTORS;
 
   const healthy = activeConnectors.filter(c => c.status === "healthy").length;
   const issues = activeConnectors.filter(c => !["healthy"].includes(c.status)).length;

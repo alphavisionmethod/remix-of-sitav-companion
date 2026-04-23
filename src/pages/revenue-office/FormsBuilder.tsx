@@ -11,7 +11,7 @@ import { PageShell } from "@/components/sita/PageShell";
 import { Typography } from "@/components/sita/Typography";
 
 // Production fallback — seed data removed
-const DEMO_STATS: any[] = [];
+const STATS: any[] = [];
 
 export default function FormsBuilder() {
   const [tab, setTab] = useState("forms");

@@ -6,10 +6,10 @@ import { Shield, Fingerprint, Smartphone, Watch, Lock, CheckCircle2, XCircle, Ar
 import ANDSubNav from "@/components/admin/ANDSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
-const DEMO_VERIFICATION_EVENTS: any[] = [];
+const VERIFICATION_EVENTS: any[] = [];
 
 // Production fallback — seed data removed
-const DEMO_TRUST_CLASSES: any[] = [];
+const TRUST_CLASSES: any[] = [];
 
 const AND03AndroidTrustApprovals = () => {
   return (

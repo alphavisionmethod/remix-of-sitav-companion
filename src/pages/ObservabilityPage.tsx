@@ -70,7 +70,7 @@ export default function ObservabilityPage() {
     return { slos, trustPosture, anomalies };
   }, [engines.observability]);
 
-  // Engine-backed services replaces static mockServices
+  // Engine-backed services replaces static services
   const services: ServiceReliabilityView[] = useMemo(() => [
     { name: "Brain Core", uptime: 99.99, latencyP50: 45, latencyP99: 180, errorRate: 0.01, throughput: 2400, status: "healthy" },
     { name: "Policy Engine", uptime: 99.95, latencyP50: 12, latencyP99: 55, errorRate: 0.02, throughput: 1800, status: "healthy" },

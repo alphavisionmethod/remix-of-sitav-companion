@@ -3,10 +3,10 @@ import { Landmark, Shield, TrendingUp, Wallet, Zap, Calendar, Target, Coins } fr
 import { useCapitalPurposeBuckets } from "@/hooks/use-investment-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
-const DEMO_RULES: any[] = [];
+const RULES: any[] = [];
 
 // Production fallback — seed data removed
-const DEMO_PURPOSES: any[] = [];
+const PURPOSES: any[] = [];
 
 const fmt = (n: number) => n >= 1e6 ? `$${(n / 1e6).toFixed(2)}M` : `$${(n / 1e3).toFixed(1)}K`;
 

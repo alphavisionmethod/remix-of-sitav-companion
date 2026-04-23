@@ -43,7 +43,7 @@ const scopeColors: Record<MemoryScope, string> = {
   "ai-gateway": "bg-rose-500/10 text-rose-500 border-rose-500/20",
 };
 
-const DEMO_EVENTS: MemoryEvent[] = [
+const EVENTS: MemoryEvent[] = [
   { id: "me1", domain: "business", type: "action", description: "Invoice #4821 sent to client Acme Corp", actor: "autopilot", timestamp: "2026-04-10T09:30:00Z", linkedEntities: ["Acme Corp", "Invoice #4821"], privacyTier: "internal" },
   { id: "me2", domain: "finance", type: "state-change", description: "Cash reserve threshold crossed — $12,400 available", actor: "system", timestamp: "2026-04-10T09:28:00Z", linkedEntities: ["Cash Reserve"], privacyTier: "sensitive" },
   { id: "me3", domain: "concierge", type: "action", description: "Booking confirmed: Dr. Miller appointment at 3 PM", actor: "concierge-agent", timestamp: "2026-04-10T09:25:00Z", linkedEntities: ["Dr. Miller", "Calendar"], privacyTier: "internal" },
@@ -56,7 +56,7 @@ const DEMO_EVENTS: MemoryEvent[] = [
   { id: "me10", domain: "admin", type: "state-change", description: "Connector Google Calendar entered degraded mode — sync stale >10m", actor: "health-monitor", timestamp: "2026-04-10T08:50:00Z", linkedEntities: ["Google Calendar Connector"], privacyTier: "internal" },
 ];
 
-const DEMO_SCOPES: MemoryScopeInfo[] = [
+const SCOPES: MemoryScopeInfo[] = [
   { scope: "business", label: "Business OS", totalEvents: 1847, lastActivity: "2026-04-10T09:30:00Z", crossLinks: 42, healthStatus: "healthy" },
   { scope: "finance", label: "Finance OS", totalEvents: 1203, lastActivity: "2026-04-10T09:28:00Z", crossLinks: 31, healthStatus: "healthy" },
   { scope: "concierge", label: "Concierge OS", totalEvents: 892, lastActivity: "2026-04-10T09:25:00Z", crossLinks: 18, healthStatus: "stale" },
@@ -81,7 +81,7 @@ const CrossDomainMemoryExplorer = () => {
 
   const filteredEvents = search
     ? ([] as any[]).filter(e => e.description.toLowerCase().includes(search.toLowerCase()) || e.domain.includes(search.toLowerCase()))
-    : DEMO_EVENTS;
+    : EVENTS;
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">

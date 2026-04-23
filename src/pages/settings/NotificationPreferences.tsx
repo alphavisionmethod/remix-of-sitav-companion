@@ -13,7 +13,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
 // Production fallback — seed data removed
-const DEMO_CATEGORIES: any[] = [];
+const CATEGORIES: any[] = [];
 
 export default function NotificationPreferences() {
   const { user } = useAuth();

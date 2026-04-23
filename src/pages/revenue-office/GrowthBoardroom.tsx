@@ -19,8 +19,8 @@ import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { PageShell } from "@/components/sita/PageShell";
 import { Typography } from "@/components/sita/Typography";
 
-const DEMO_PIPELINE_STAGES: any[] = [];
-const DEMO_ADVISOR_SIGNALS: any[] = [];
+const PIPELINE_STAGES: any[] = [];
+const ADVISOR_SIGNALS: any[] = [];
 
 
 
@@ -47,9 +47,9 @@ export default function GrowthBoardroom() {
 
   const { data: liveLeakItems } = useRevenueLeakItems();
 
-  const PIPELINE_STAGES = (liveDeals && liveDeals.length > 0 ? DEMO_PIPELINE_STAGES : []);
+  const PIPELINE_STAGES = (liveDeals && liveDeals.length > 0 ? PIPELINE_STAGES : []);
   const LEAKS = (liveLeakItems && liveLeakItems.length > 0 ? liveLeakItems : []);
-  const ADVISOR_SIGNALS = DEMO_ADVISOR_SIGNALS;
+  const ADVISOR_SIGNALS = ADVISOR_SIGNALS;
 
   if (isLoading) {
     return <PageShell width="wide" className="space-y-6">

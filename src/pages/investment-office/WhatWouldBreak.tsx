@@ -5,7 +5,7 @@ import { useRiskScenarios } from "@/hooks/use-investment-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 export default function WhatWouldBreak() {
   const { data: liveData, isLoading } = useRiskScenarios();
-  const [selected, setSelected] = useState(DEMO_TRADES[0]);
+  const [selected, setSelected] = useState(TRADES[0]);
 
   return (
     <div className="mx-auto max-w-5xl space-y-6">

@@ -11,7 +11,7 @@ import { toast } from "sonner";
 import { AdvisorKnowledgePanel } from "@/components/advisors/AdvisorKnowledgePanel";
 
 // Production fallback — seed data removed
-const DEMO_CONNECTORS: any[] = [];
+const CONNECTORS: any[] = [];
 
 const iconMap: Record<string, typeof Shield> = {
   Shield, Bell, DollarSign, PiggyBank, CreditCard, Zap, AlertTriangle, Settings,

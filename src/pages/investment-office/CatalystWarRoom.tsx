@@ -13,7 +13,7 @@ const TYPE_COLORS: Record<string, string> = {
 export default function CatalystWarRoom() {
   const { data: liveData, isLoading } = useRiskScenarios();
   const [filter, setFilter] = useState<string>("all");
-  const sorted = [...DEMO_CATALYST_EVENTS]
+  const sorted = [...CATALYST_EVENTS]
     .filter(e => filter === "all" || e.type === filter)
     .sort((a, b) => a.date.localeCompare(b.date));
 

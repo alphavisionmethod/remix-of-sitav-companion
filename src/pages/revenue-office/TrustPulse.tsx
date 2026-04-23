@@ -8,7 +8,7 @@ import { useState } from "react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 // Production fallback — seed data removed
-const DEMO_ALERTS: any[] = [];
+const ALERTS: any[] = [];
 
 const ti = (t: string) => t === "up" ? <TrendingUp className="h-3.5 w-3.5 text-[hsl(var(--trust-safe))]" /> : t === "down" ? <TrendingDown className="h-3.5 w-3.5 text-destructive" /> : <span className="text-muted-foreground">—</span>;
 
@@ -16,7 +16,7 @@ const TrustPulse = () => {
   const [tab, setTab] = useState("dimensions");
   const avg = Math.round(([] as any[]).reduce((a, c) => a + c.score, 0) / ([] as any[]).length);
   const dimAvg = Math.round(([] as any[]).reduce((a, d) => a + d.score, 0) / ([] as any[]).length);
-  const latestSentiment = DEMO_SENTIMENT_TREND[([] as any[]).length - 1];
+  const latestSentiment = SENTIMENT_TREND[([] as any[]).length - 1];
 
   return (
     <div className="space-y-6 p-6">

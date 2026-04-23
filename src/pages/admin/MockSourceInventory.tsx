@@ -18,13 +18,13 @@ interface MockSourceEntry {
 }
 
 export default function MockSourceInventory() {
-  const { data: mockReplacements = [] } = useMockReplacements();
+  const { data: replacements = [] } = useMockReplacements();
   const { data: classifications = [] } = useRealityClassifications();
 
   const inventory = useMemo(() => {
     const map = new Map<string, MockSourceEntry>();
 
-    mockReplacements.forEach(m => {
+    replacements.forEach(m => {
       const entry = map.get(m.mock_source) ?? {
         source: m.mock_source, pages: [], domains: new Set<string>(),
         count: 0, criticalCount: 0, forbidden: false, replacementTarget: null,
@@ -52,7 +52,7 @@ export default function MockSourceInventory() {
     });
 
     return [...map.values()].sort((a, b) => b.criticalCount - a.criticalCount || b.count - a.count);
-  }, [mockReplacements, classifications]);
+  }, [replacements, classifications]);
 
   return (
     <div className="space-y-6 p-6">

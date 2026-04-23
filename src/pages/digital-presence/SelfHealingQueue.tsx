@@ -10,7 +10,7 @@ import DPOSubNav from "./DPOSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 // Production fallback — seed data removed
-const DEMO_STATS: any[] = [];
+const STATS: any[] = [];
 
 type PatchStatus = "pending" | "approved" | "applied" | "rejected" | "verified";
 

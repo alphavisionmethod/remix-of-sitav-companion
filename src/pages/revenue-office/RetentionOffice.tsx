@@ -23,7 +23,7 @@ export default function RetentionOffice() {
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
         {[
           { l: "Retention Rate", v: "91%", c: "text-[hsl(var(--trust-safe))]" },
-          { l: "NPS Score", v: DEMO_NPS_DATA.current, c: "text-primary" },
+          { l: "NPS Score", v: NPS_DATA.current, c: "text-primary" },
           { l: "Churn Risk Clients", v: ([] as any[]).length, c: "text-orange-400" },
           { l: "Revenue at Risk", v: "$18,500", c: "text-destructive" },
           { l: "Win-Back Pipeline", v: ([] as any[]).length, c: "text-purple-400" },
@@ -121,20 +121,20 @@ export default function RetentionOffice() {
             <Card className="bg-card/50 border-border/50">
               <CardContent className="p-4 text-center">
                 <p className="text-xs text-muted-foreground">Current NPS</p>
-                <p className="text-4xl font-bold text-primary mt-1">{DEMO_NPS_DATA.current}</p>
-                <p className="text-xs text-[hsl(var(--trust-safe))]">{DEMO_NPS_DATA.trend} vs last period</p>
+                <p className="text-4xl font-bold text-primary mt-1">{NPS_DATA.current}</p>
+                <p className="text-xs text-[hsl(var(--trust-safe))]">{NPS_DATA.trend} vs last period</p>
               </CardContent>
             </Card>
             <Card className="bg-card/50 border-border/50">
               <CardContent className="p-4 text-center">
                 <p className="text-xs text-muted-foreground">Previous NPS</p>
-                <p className="text-4xl font-bold text-muted-foreground mt-1">{DEMO_NPS_DATA.previous}</p>
+                <p className="text-4xl font-bold text-muted-foreground mt-1">{NPS_DATA.previous}</p>
               </CardContent>
             </Card>
             <Card className="bg-card/50 border-border/50">
               <CardContent className="p-4 text-center">
                 <p className="text-xs text-muted-foreground">Total Responses</p>
-                <p className="text-4xl font-bold text-foreground mt-1">{DEMO_NPS_DATA.distribution.reduce((a, d) => a + d.count, 0)}</p>
+                <p className="text-4xl font-bold text-foreground mt-1">{NPS_DATA.distribution.reduce((a, d) => a + d.count, 0)}</p>
               </CardContent>
             </Card>
           </div>
@@ -143,7 +143,7 @@ export default function RetentionOffice() {
           <Card className="bg-card/50 border-border/50">
             <CardHeader className="pb-2"><CardTitle className="text-sm">Score Distribution</CardTitle></CardHeader>
             <CardContent className="space-y-3">
-              {DEMO_NPS_DATA.distribution.map(d => (
+              {NPS_DATA.distribution.map(d => (
                 <div key={d.range}>
                   <div className="flex items-center justify-between text-xs mb-1">
                     <div className="flex items-center gap-2">
@@ -162,7 +162,7 @@ export default function RetentionOffice() {
           <Card className="bg-card/50 border-border/50">
             <CardHeader className="pb-2"><CardTitle className="text-sm">Recent Responses</CardTitle></CardHeader>
             <CardContent className="space-y-2">
-              {DEMO_NPS_DATA.recentResponses.map((r, i) => (
+              {NPS_DATA.recentResponses.map((r, i) => (
                 <div key={i} className={`p-3 rounded-lg border ${r.score >= 9 ? "border-[hsl(var(--trust-safe))]/30 bg-[hsl(var(--trust-safe))]/5" : r.score <= 6 ? "border-destructive/30 bg-destructive/5" : "border-border/40 bg-card"}`}>
                   <div className="flex items-center justify-between mb-1">
                     <span className="text-sm font-medium text-foreground">{r.name}</span>

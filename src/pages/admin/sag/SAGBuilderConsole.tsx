@@ -10,7 +10,7 @@ import SAGSubNav from "@/components/admin/SAGSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 // Production fallback — seed data removed
-const DEMO_BUILDER_STEPS: any[] = [];
+const BUILDER_STEPS: any[] = [];
 
 const SAGBuilderConsole = () => {
   const { data: models = [] } = useModelRegistry();
@@ -47,8 +47,8 @@ const SAGBuilderConsole = () => {
             ))}
           </div>
           <div className="mt-4 p-4 bg-muted/30 rounded-lg">
-            <h3 className="font-medium text-sm mb-1">Step {activeStep}: {DEMO_BUILDER_STEPS[activeStep - 1].label}</h3>
-            <p className="text-sm text-muted-foreground">{DEMO_BUILDER_STEPS[activeStep - 1].desc}</p>
+            <h3 className="font-medium text-sm mb-1">Step {activeStep}: {BUILDER_STEPS[activeStep - 1].label}</h3>
+            <p className="text-sm text-muted-foreground">{BUILDER_STEPS[activeStep - 1].desc}</p>
             <div className="mt-3 flex gap-2">
               <Button variant="outline" size="sm" disabled={activeStep === 1} onClick={() => setActiveStep(p => p - 1)}>Previous</Button>
               <Button size="sm" disabled={activeStep === 10} onClick={() => setActiveStep(p => p + 1)}>Next <ArrowRight className="h-3 w-3 ml-1" /></Button>

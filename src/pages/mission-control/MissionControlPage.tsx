@@ -25,7 +25,7 @@ import {
   CostAnomalyCard, PolicyAnomalyCard, ReleaseSafetyCard, SafeModeCard,
   PermissionsCard,
 } from "@/components/sita/MissionControlComponents";
-import { mockAdvisors, mockRecommendations, mockInternalAgents, mockIncidents, mockConnectorHealth, mockStuckWorkflows, mockCostAnomalies, mockPolicyAnomalies, mockReleaseSafety, mockApprovals, mockSafeMode, type SafeModeState } from "@/hooks/useAdvisorMissionControl";
+import { advisors, recommendations, internalAgents, incidents, connectorHealth, stuckWorkflows, costAnomalies, policyAnomalies, releaseSafety, approvals, safeMode, type SafeModeState } from "@/hooks/useAdvisorMissionControl";
 import { cn } from "@/lib/utils";
 import { useFraudSentinel, useGovernanceSimulator } from "@/contexts/SitaKernelContext";
 import type { TrustState, ExecutionEnvelope, WorkflowState, DiagnosticBundle } from "@/packages/contracts";
@@ -73,12 +73,12 @@ function SystemPulseHero() {
   const { adminIncidents } = useMCAdmin();
   const adminOpenCount = adminIncidents?.summary?.open ?? 0;
 
-  const healthyAgents = mockInternalAgents.filter(a => a.health === "healthy").length;
-  const totalAgents = mockInternalAgents.length;
-  const openIncidents = adminOpenCount || mockIncidents.filter(i => i.status !== "resolved").length;
-  const degradedConnectors = mockConnectorHealth.filter(c => c.status !== "connected").length;
-  const stuckWorkflows = mockStuckWorkflows.length;
-  const totalTokens = mockInternalAgents.reduce((s, a) => s + a.costTokens24h, 0);
+  const healthyAgents = internalAgents.filter(a => a.health === "healthy").length;
+  const totalAgents = internalAgents.length;
+  const openIncidents = adminOpenCount || incidents.filter(i => i.status !== "resolved").length;
+  const degradedConnectors = connectorHealth.filter(c => c.status !== "connected").length;
+  const stuckWorkflows = stuckWorkflows.length;
+  const totalTokens = internalAgents.reduce((s, a) => s + a.costTokens24h, 0);
 
   const sentinel = useFraudSentinel();
 
@@ -90,7 +90,7 @@ function SystemPulseHero() {
   const systemScore = Math.round(
     ((healthyAgents / totalAgents) * 40) +
     ((openIncidents === 0 ? 1 : Math.max(0, 1 - openIncidents * 0.2)) * 25) +
-    ((1 - degradedConnectors / mockConnectorHealth.length) * 20) +
+    ((1 - degradedConnectors / connectorHealth.length) * 20) +
     ((stuckWorkflows === 0 ? 1 : 0.5) * 15)
   );
 
@@ -118,7 +118,7 @@ function SystemPulseHero() {
             </div>
           </div>
           <div className="flex items-center gap-3">
-            {mockSafeMode.globalSafeMode && (
+            {safeMode.globalSafeMode && (
               <Badge className="bg-destructive/15 text-destructive border-destructive/20 text-[10px]">SAFE MODE</Badge>
             )}
             {openIncidents > 0 && (
@@ -151,7 +151,7 @@ function SystemPulseHero() {
           {[
             { label: "AI Team", value: `${healthyAgents}/${totalAgents}`, sub: "healthy", icon: Server, ok: healthyAgents === totalAgents },
             { label: "Incidents", value: openIncidents.toString(), sub: openIncidents === 0 ? "all clear" : "open", icon: AlertTriangle, ok: openIncidents === 0 },
-            { label: "Connectors", value: `${mockConnectorHealth.filter(c => c.status === "connected").length}/${mockConnectorHealth.length}`, sub: "online", icon: Wifi, ok: degradedConnectors === 0 },
+            { label: "Connectors", value: `${connectorHealth.filter(c => c.status === "connected").length}/${connectorHealth.length}`, sub: "online", icon: Wifi, ok: degradedConnectors === 0 },
             { label: "Workflows", value: stuckWorkflows.toString(), sub: stuckWorkflows === 0 ? "all running" : "stuck", icon: Activity, ok: stuckWorkflows === 0 },
             { label: "Tokens / 24h", value: `${(totalTokens / 1000).toFixed(0)}k`, sub: `~$${(totalTokens * 0.002 / 1000).toFixed(2)}`, icon: DollarSign, ok: true },
             { label: "Fraud", value: fraudSentinel.activeAlerts.toString(), sub: `risk: ${fraudSentinel.riskScore}`, icon: ShieldAlert, ok: fraudSentinel.activeAlerts === 0 },
@@ -204,10 +204,10 @@ function MCHome() {
   const { adminIncidents: adminData, runtime } = useMCAdmin();
   const adminIncidentList = adminData?.incidents || [];
   const openIncidents = adminIncidentList.length > 0
-    ? mockIncidents.map((m, i) => ({ ...m, status: adminIncidentList[i]?.status === "resolved" ? "resolved" as const : m.status })).filter(i => i.status !== "resolved")
-    : mockIncidents.filter(i => i.status !== "resolved");
-  const degradedAgents = mockInternalAgents.filter(a => a.health !== "healthy");
-  const degradedConnectors = mockConnectorHealth.filter(c => c.status !== "connected");
+    ? incidents.map((m, i) => ({ ...m, status: adminIncidentList[i]?.status === "resolved" ? "resolved" as const : m.status })).filter(i => i.status !== "resolved")
+    : incidents.filter(i => i.status !== "resolved");
+  const degradedAgents = internalAgents.filter(a => a.health !== "healthy");
+  const degradedConnectors = connectorHealth.filter(c => c.status !== "connected");
 
   return (
     <div className="space-y-6">
@@ -237,22 +237,22 @@ function MCHome() {
         </div>
       )}
 
-      {mockCostAnomalies.length > 0 && (
+      {costAnomalies.length > 0 && (
         <div className="space-y-3">
           <SitaSectionHeader title="Cost Anomalies" />
-          {mockCostAnomalies.map(c => <CostAnomalyCard key={c.id} anomaly={c} />)}
+          {costAnomalies.map(c => <CostAnomalyCard key={c.id} anomaly={c} />)}
         </div>
       )}
 
-      {mockStuckWorkflows.length > 0 && (
+      {stuckWorkflows.length > 0 && (
         <div className="space-y-3">
           <SitaSectionHeader title="Stuck Workflows" />
-          {mockStuckWorkflows.map(w => <WorkflowRecoveryCard key={w.id} workflow={w} />)}
+          {stuckWorkflows.map(w => <WorkflowRecoveryCard key={w.id} workflow={w} />)}
         </div>
       )}
 
       {/* All clear state */}
-      {openIncidents.length === 0 && degradedAgents.length === 0 && degradedConnectors.length === 0 && mockStuckWorkflows.length === 0 && (
+      {openIncidents.length === 0 && degradedAgents.length === 0 && degradedConnectors.length === 0 && stuckWorkflows.length === 0 && (
         <motion.div initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }}
           className="rounded-2xl border border-trust-verified/20 bg-trust-verified/5 p-10 text-center"
         >
@@ -358,8 +358,8 @@ function MCAgentTeam() {
 
   // Group agents by role category
   const groups = useMemo(() => {
-    const categories: Record<string, typeof mockInternalAgents> = {};
-    mockInternalAgents.forEach(a => {
+    const categories: Record<string, typeof internalAgents> = {};
+    internalAgents.forEach(a => {
       const cat = a.role;
       if (!categories[cat]) categories[cat] = [];
       categories[cat].push(a);
@@ -397,10 +397,10 @@ function MCAgentTeam() {
       {/* Agent summary strip */}
       <div className="grid grid-cols-4 gap-3">
         {[
-          { label: "Total Agents", value: mockInternalAgents.length, color: "primary" },
-          { label: "Healthy", value: mockInternalAgents.filter(a => a.health === "healthy").length, color: "trust-safe" },
-          { label: "Degraded", value: mockInternalAgents.filter(a => a.health === "degraded").length, color: "accent" },
-          { label: "Paused", value: mockInternalAgents.filter(a => a.health === "paused").length, color: "muted-foreground" },
+          { label: "Total Agents", value: internalAgents.length, color: "primary" },
+          { label: "Healthy", value: internalAgents.filter(a => a.health === "healthy").length, color: "trust-safe" },
+          { label: "Degraded", value: internalAgents.filter(a => a.health === "degraded").length, color: "accent" },
+          { label: "Paused", value: internalAgents.filter(a => a.health === "paused").length, color: "muted-foreground" },
         ].map(m => (
           <div key={m.label} className="rounded-xl border border-border bg-card/50 p-3 text-center">
             <p className={cn("font-display text-lg font-bold", `text-${m.color}`)}>{m.value}</p>
@@ -430,7 +430,7 @@ function MCAgentTeam() {
       ) : (
         <SitaCard hover={false}>
           <div className="space-y-1">
-            {mockInternalAgents.map(a => {
+            {internalAgents.map(a => {
               const hc = a.health === "healthy" ? "trust-safe" : a.health === "degraded" ? "accent" : a.health === "paused" ? "muted-foreground" : "destructive";
               return (
                 <div key={a.id} className="flex items-center gap-3 rounded-lg px-3 py-2 hover:bg-secondary/30 transition-colors">
@@ -440,7 +440,7 @@ function MCAgentTeam() {
                   <span className="text-[10px] text-muted-foreground w-20">{a.autonomyLevel}</span>
                   <div className="flex-1 h-1.5 rounded-full bg-muted/40 overflow-hidden">
                     <div className={cn("h-full rounded-full", `bg-${hc}`)}
-                      style={{ width: `${(a.costTokens24h / Math.max(...mockInternalAgents.map(x => x.costTokens24h))) * 100}%` }} />
+                      style={{ width: `${(a.costTokens24h / Math.max(...internalAgents.map(x => x.costTokens24h))) * 100}%` }} />
                   </div>
                   <span className="text-[10px] font-mono text-muted-foreground w-16 text-right">{(a.costTokens24h / 1000).toFixed(1)}k</span>
                   <span className="text-[10px] text-muted-foreground w-16 text-right">{a.invocations24h} calls</span>
@@ -460,7 +460,7 @@ function MCIncidents() {
   const { adminIncidents } = useMCAdmin();
   const adminList = adminIncidents?.incidents || [];
   // Merge admin data onto mock incidents for enriched display
-  const incidents = mockIncidents.map((m, idx) => {
+  const incidents = incidents.map((m, idx) => {
     const admin = adminList[idx];
     return admin ? { ...m, status: admin.status ?? m.status, severity: admin.severity ?? m.severity } : m;
   });
@@ -504,7 +504,7 @@ function MCIncidents() {
 
 function MCConnectors() {
   const { fleetHealth } = useMCAdmin();
-  const connectors = mockConnectorHealth.map(c => {
+  const connectors = connectorHealth.map(c => {
     const fleetService = fleetHealth?.services?.find((s: Record<string, any>) => s.name?.toLowerCase().includes(c.name.toLowerCase()));
     return fleetService ? { ...c, healthScore: Math.round(fleetService.uptime ?? c.healthScore) } : c;
   });
@@ -563,8 +563,8 @@ function MCRecovery() {
         </div>
       </motion.div>
 
-      {mockStuckWorkflows.length > 0 ? (
-        <div className="space-y-3">{mockStuckWorkflows.map(w => <WorkflowRecoveryCard key={w.id} workflow={w} />)}</div>
+      {stuckWorkflows.length > 0 ? (
+        <div className="space-y-3">{stuckWorkflows.map(w => <WorkflowRecoveryCard key={w.id} workflow={w} />)}</div>
       ) : (
         <EmptyState icon={Zap} title="All workflows healthy" description="No stuck or failed workflows — everything is running smoothly" color="trust-verified" />
       )}
@@ -827,7 +827,7 @@ function MCTrust() {
       )}
 
       <div className="space-y-2">
-        {mockPolicyAnomalies.map(p => <PolicyAnomalyCard key={p.id} anomaly={p} />)}
+        {policyAnomalies.map(p => <PolicyAnomalyCard key={p.id} anomaly={p} />)}
       </div>
     </div>
   );
@@ -925,7 +925,7 @@ function MCReplayRollback() {
 function MCReleases() {
   return (
     <div className="space-y-6">
-      <ReleaseSafetyCard state={mockReleaseSafety} />
+      <ReleaseSafetyCard state={releaseSafety} />
     </div>
   );
 }
@@ -970,7 +970,7 @@ function MCPermissions() {
             <div className="h-px flex-1 bg-border" />
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            {mockInternalAgents.slice(0, 6).map(a => (
+            {internalAgents.slice(0, 6).map(a => (
               <PermissionsCard key={a.id} name={a.name} level={a.autonomyLevel} allowedActions={a.permissions} blockedActions={["execute", "modify user data"]} memoryScope="System metrics only" />
             ))}
           </div>
@@ -983,7 +983,7 @@ function MCPermissions() {
 // ── Safe Mode ───────────────────────────────────────────────────────────────
 
 function MCSafeMode() {
-  const [state, setState] = useState<SafeModeState>({ ...mockSafeMode });
+  const [state, setState] = useState<SafeModeState>({ ...safeMode });
   return (
     <div className="space-y-6">
       <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
@@ -1097,12 +1097,12 @@ function EnvironmentBar() {
     const bundle = {
       timestamp: new Date().toISOString(),
       environment: env,
-      agents: mockInternalAgents.map(a => ({ id: a.id, name: a.name, health: a.health, role: a.role })),
-      incidents: mockIncidents.map(i => ({ id: i.id, title: i.title, severity: i.severity, status: i.status })),
-      connectors: mockConnectorHealth.map(c => ({ id: c.id, name: c.name, status: c.status })),
-      costAnomalies: mockCostAnomalies.length,
-      stuckWorkflows: mockStuckWorkflows.length,
-      safeMode: mockSafeMode.globalSafeMode,
+      agents: internalAgents.map(a => ({ id: a.id, name: a.name, health: a.health, role: a.role })),
+      incidents: incidents.map(i => ({ id: i.id, title: i.title, severity: i.severity, status: i.status })),
+      connectors: connectorHealth.map(c => ({ id: c.id, name: c.name, status: c.status })),
+      costAnomalies: costAnomalies.length,
+      stuckWorkflows: stuckWorkflows.length,
+      safeMode: safeMode.globalSafeMode,
     };
     const blob = new Blob([JSON.stringify(bundle, null, 2)], { type: "application/json" });
     const url = URL.createObjectURL(blob);
@@ -1190,7 +1190,7 @@ const [activeTab, setActiveTab] = useState("home");
   const { data: fleetHealth } = useFleetHealth();
   const { data: trustCenter } = useTrustCenter();
   const { data: missionGoals } = useMissionGoals();
-  const openIncidents = (adminIncidents && typeof adminIncidents === "object" && "summary" in adminIncidents ? (adminIncidents.summary as Record<string, unknown>)?.open as number : undefined) ?? mockIncidents.filter(i => i.status !== "resolved").length;
+  const openIncidents = (adminIncidents && typeof adminIncidents === "object" && "summary" in adminIncidents ? (adminIncidents.summary as Record<string, unknown>)?.open as number : undefined) ?? incidents.filter(i => i.status !== "resolved").length;
 
   const ownerTabs = [
     { value: "home", label: "Home", icon: Cpu },
@@ -1204,7 +1204,7 @@ const [activeTab, setActiveTab] = useState("home");
 
   const advancedTabs = [
     { value: "home", label: "Home", icon: Cpu },
-    { value: "ai-team", label: "AI Team", icon: Server, badge: mockInternalAgents.length },
+    { value: "ai-team", label: "AI Team", icon: Server, badge: internalAgents.length },
     { value: "incidents", label: "Incidents", icon: AlertTriangle, badge: openIncidents > 0 ? openIncidents : undefined },
     { value: "connectors", label: "Connectors", icon: Wifi },
     { value: "recovery", label: "Recovery", icon: RefreshCw },

@@ -8,7 +8,7 @@ import ANDSubNav from "@/components/admin/ANDSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 // Production fallback — seed data removed
-const DEMO_SIGNALS: any[] = [];
+const SIGNALS: any[] = [];
 
 type ConsentMap = Record<string, { read: boolean; routing: boolean; assistant: boolean }>;
 

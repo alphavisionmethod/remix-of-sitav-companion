@@ -10,7 +10,7 @@ import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 // Production fallback — seed data removed
-const DEMO_PATTERNS: any[] = [];
+const PATTERNS: any[] = [];
 
 const CrossTenantGovernance = () => {
   const { isAdmin, loading } = useRequireAdmin();

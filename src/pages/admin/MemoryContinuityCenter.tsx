@@ -12,7 +12,7 @@ import { fetchScopedMemory, getScopedMemoryStats, forgetScopedMemory, type Persi
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 // Production fallback — seed data removed
-const DEMO_SCOPES: any[] = [];
+const SCOPES: any[] = [];
 
 const fade = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0 } };
 

@@ -47,7 +47,7 @@ interface Task {
   evidence: string[];
 }
 
-const DEMO_OBJECTIVES: Objective[] = [
+const OBJECTIVES: Objective[] = [
   {
     id: "obj-1",
     title: "Achieve 99.9% cloud sync reliability",

@@ -14,14 +14,14 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { sharingEngine } from "@/platform/sync-engine/collaboration/sharing-engine";
-const DEMO_SHARES = [
+const SHARES = [
   { id: "1", objectName: "Q4 Business Plan.pdf", sharedWith: 3, permission: "edit" as const, linkActive: true, createdAt: "2026-04-14T10:00:00Z" },
   { id: "2", objectName: "Family Budget 2026.xlsx", sharedWith: 2, permission: "read" as const, linkActive: false, createdAt: "2026-04-13T14:00:00Z" },
   { id: "3", objectName: "Travel Itinerary", sharedWith: 5, permission: "comment" as const, linkActive: true, createdAt: "2026-04-12T08:00:00Z" },
   { id: "4", objectName: "Product Roadmap", sharedWith: 8, permission: "admin" as const, linkActive: true, createdAt: "2026-04-10T16:00:00Z" },
 ];
 
-const DEMO_WORKSPACES = [
+const WORKSPACES = [
   { id: "ws1", name: "Business Strategy", members: 4, objects: 12, mode: "auto-merge" },
   { id: "ws2", name: "Family Photos", members: 3, objects: 248, mode: "last-write-wins" },
   { id: "ws3", name: "Q4 Planning", members: 6, objects: 8, mode: "manual" },

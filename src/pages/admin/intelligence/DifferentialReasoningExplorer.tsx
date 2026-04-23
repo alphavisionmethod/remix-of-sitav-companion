@@ -11,7 +11,7 @@ import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 // Production fallback — seed data removed
-const DEMO_DIFFS: any[] = [];
+const DIFFS: any[] = [];
 
 const actionColors: Record<string, string> = {
   "reuse-as-is": "text-emerald-400 bg-emerald-500/10",

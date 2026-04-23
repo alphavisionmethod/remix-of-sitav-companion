@@ -7,13 +7,13 @@ import { Rocket, CheckCircle2, AlertTriangle, Shield, Clock, ArrowRight, RotateC
 import { useAIEngDomain } from "@/hooks/use-ai-engineering-data";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
-const DEMO_RELEASE_GATES: any[] = [];
+const RELEASE_GATES: any[] = [];
 
 // Production fallback — seed data removed
-const DEMO_ENVIRONMENTS: any[] = [];
+const ENVIRONMENTS: any[] = [];
 
 const AIReleasesCenter = () => {
-  const { isDemo } = useAIEngDomain("efficiencyScores", DEMO_RELEASE_GATES);
+  const { isDemo } = useAIEngDomain("efficiencyScores", RELEASE_GATES);
   
   const [tab, setTab] = useState("readiness");
   const passCount = ([] as any[]).filter(g => g.status === "pass").length;

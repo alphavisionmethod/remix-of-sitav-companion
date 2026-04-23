@@ -31,7 +31,7 @@ interface BusinessDocument {
   starred: boolean; previewable: boolean; tags: string[];
 }
 
-const DEMO_DOCUMENTS: BusinessDocument[] = [
+const DOCUMENTS: BusinessDocument[] = [
   { id: "doc-1", name: "Q-2024-0847 — Acme Corp Website Redesign.pdf", type: "pdf", category: "quote", size: "2.4 MB", uploadedAt: "2 hours ago", uploadedBy: "Sarah K.", linkedEntity: "Acme Corp", linkedEntityType: "Customer", status: "sent", starred: true, previewable: true, tags: ["high-value", "website"] },
   { id: "doc-2", name: "INV-2024-1205 — Monthly Retainer.pdf", type: "pdf", category: "invoice", size: "156 KB", uploadedAt: "1 day ago", uploadedBy: "System", linkedEntity: "Wilson & Partners", linkedEntityType: "Customer", status: "sent", starred: false, previewable: true, tags: ["recurring", "retainer"] },
   { id: "doc-3", name: "Master Services Agreement — BigCorp.pdf", type: "pdf", category: "contract", size: "4.8 MB", uploadedAt: "3 days ago", uploadedBy: "Michael R.", linkedEntity: "BigCorp Industries", linkedEntityType: "Customer", status: "signed", starred: true, previewable: true, tags: ["legal", "enterprise"] },

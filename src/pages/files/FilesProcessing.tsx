@@ -30,7 +30,7 @@ const inProgressStatuses = ["uploading", "processing", "classifying", "scanning"
 
 const FilesProcessing = () => {
   const { user } = useAuth();
-  const { data: mockData = [] } = useFilesProcessing();
+  const { data: data = [] } = useFilesProcessing();
 
   const { data: realFiles } = useQuery({
     queryKey: ["file-processing-queue", user?.id],
@@ -46,7 +46,7 @@ const FilesProcessing = () => {
   });
 
   const ingestedFiles = useMemo(() => {
-    const files = realFiles && realFiles.length > 0 ? realFiles : mockData;
+    const files = realFiles && realFiles.length > 0 ? realFiles : data;
     return files.map((f: any) => ({
       ...f,
       filename: f.filename || f.name || "Unknown",
@@ -54,7 +54,7 @@ const FilesProcessing = () => {
       stage: stageFromStatus(f.status || "processing") as ProcessingStage,
       inProgress: inProgressStatuses.includes(f.status || "processing"),
     }));
-  }, [realFiles, mockData]);
+  }, [realFiles, data]);
 
   const processingItems = ingestedFiles.filter(f => f.inProgress);
   const completedItems = ingestedFiles.filter(f => !f.inProgress);

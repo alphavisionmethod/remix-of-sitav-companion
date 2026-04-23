@@ -12,7 +12,7 @@ import { useAuth } from "@/contexts/AuthContext";
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.3 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.04 } } };
 
-const DEMO_USERS = [
+const USERS = [
   { id: "u1", name: "Sarah Chen", email: "sarah@example.com", plan: "Pro", devices: 3, syncHealth: 98, trustScore: 95, joined: "2024-01-15", status: "active", lastActive: "2m ago" },
   { id: "u2", name: "Marcus Rivera", email: "marcus@example.com", plan: "Business", devices: 5, syncHealth: 94, trustScore: 88, joined: "2023-11-20", status: "active", lastActive: "1h ago" },
   { id: "u3", name: "Aisha Patel", email: "aisha@example.com", plan: "Pro", devices: 2, syncHealth: 100, trustScore: 97, joined: "2024-03-01", status: "active", lastActive: "Now" },

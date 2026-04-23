@@ -17,7 +17,7 @@ const AppComparePage = () => {
   const [searchParams] = useSearchParams();
   const [installTarget, setInstallTarget] = useState<AppDefinition | null>(null);
 
-  const ids = searchParams.get("apps")?.split(",") || DEMO_COMPARE_PAIRS[0].ids;
+  const ids = searchParams.get("apps")?.split(",") || COMPARE_PAIRS[0].ids;
   const compareApps = ids.map(id => apps.find(a => a.id === id)).filter(Boolean) as AppDefinition[];
 
   if (compareApps.length < 2) {

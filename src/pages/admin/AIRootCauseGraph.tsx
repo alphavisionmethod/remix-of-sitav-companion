@@ -14,7 +14,7 @@ const typeStyles: Record<string, { icon: typeof Bug; color: string; bg: string }
 };
 
 const AIRootCauseGraph = () => {
-  const { isDemo } = useAIEngDomain("violations", DEMO_GRAPH_NODES);
+  const { isDemo } = useAIEngDomain("violations", GRAPH_NODES);
   const [selectedNode, setSelectedNode] = useState<string | null>("root-1");
   const selected = ([] as any[]).find(n => n.id === selectedNode);
   const connectedEdges = ([] as any[]).filter(e => e.from === selectedNode || e.to === selectedNode);

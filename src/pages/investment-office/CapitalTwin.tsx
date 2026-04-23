@@ -7,7 +7,7 @@ import { useCapitalPurposeBuckets } from "@/hooks/use-investment-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 // Production fallback — seed data removed
-const DEMO_PURPOSES: any[] = [];
+const PURPOSES: any[] = [];
 
 export default function CapitalTwin() {
   const { data: liveData, isLoading } = useCapitalPurposeBuckets();

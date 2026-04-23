@@ -6,7 +6,7 @@ import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 export default function PositionSizingCoach() {
   const { data: liveData, isLoading } = usePortfolioPositions();
   const [selectedIdx, setSelectedIdx] = useState(0);
-  const scenario = DEMO_SIZING_SCENARIOS[selectedIdx];
+  const scenario = SIZING_SCENARIOS[selectedIdx];
 
 
   return (

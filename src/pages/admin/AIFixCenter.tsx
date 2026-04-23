@@ -23,7 +23,7 @@ const blastRadiusColors: Record<string, string> = {
 };
 
 const AIFixCenter = () => {
-  const { data: fixes, isDemo } = useAIEngDomain("fixes", DEMO_FIXES);
+  const { data: fixes, isDemo } = useAIEngDomain("fixes", FIXES);
   const [expanded, setExpanded] = useState<number | null>(1);
   const [tab, setTab] = useState("all");
   const [view, setView] = useState("severity");

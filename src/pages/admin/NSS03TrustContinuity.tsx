@@ -5,9 +5,9 @@ import { Shield, ArrowRightLeft, CheckCircle2, AlertTriangle, ArrowRight } from 
 import NSSSubNav from "@/components/admin/NSSSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 const NSS03TrustContinuity = () => {
-  const secureActions = DEMO_SECURE_ACTIONS;
-  const continuityFlows = DEMO_CONTINUITY_FLOWS;
-  const trustContinuity = DEMO_TRUST_CONTINUITY;
+  const secureActions = SECURE_ACTIONS;
+  const continuityFlows = CONTINUITY_FLOWS;
+  const trustContinuity = TRUST_CONTINUITY;
 
   return (
     <div className="p-6 max-w-[1400px] mx-auto space-y-6">

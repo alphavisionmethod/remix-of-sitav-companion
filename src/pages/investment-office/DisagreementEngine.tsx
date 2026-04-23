@@ -4,7 +4,7 @@ import { useInvestmentDecisions } from "@/hooks/use-investment-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 // Production fallback — seed data removed
-const DEMO_DISAGREEMENTS: any[] = [];
+const DISAGREEMENTS: any[] = [];
 
 export default function DisagreementEngine() {
   const { data: liveData, isLoading } = useInvestmentDecisions();

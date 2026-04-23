@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Clock, ArrowRight, Flag, GitBranch, Rocket } from "lucide-react";
 import {
   getProgressTimeline, getRealityDistribution, REALITY_TRANSITIONS,
-  MOCK_SOURCE_INVENTORY, type RealityState
+  SOURCE_INVENTORY, type RealityState
 } from "@/runtimes/reality/reality-audit-registry";
 
 const typeIcons: Record<string, typeof Clock> = {
@@ -42,7 +42,7 @@ const RCP11ProgressTimeline = () => {
           { label: "Total Transitions", value: REALITY_TRANSITIONS.length, color: "text-blue-400" },
           { label: "→ Persisted", value: REALITY_TRANSITIONS.filter(t => t.toState === "persisted").length, color: "text-blue-400" },
           { label: "→ Proven", value: REALITY_TRANSITIONS.filter(t => t.toState === "proven").length, color: "text-emerald-400" },
-          { label: "Mock Sources", value: MOCK_SOURCE_INVENTORY.length, color: "text-amber-400" },
+          { label: "Mock Sources", value: SOURCE_INVENTORY.length, color: "text-amber-400" },
         ]).map(k => (
           <Card key={k.label} className="bg-card/50"><CardContent className="p-3 text-center">
             <div className={`text-xl font-bold ${k.color}`}>{k.value}</div>
@@ -110,7 +110,7 @@ const RCP11ProgressTimeline = () => {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             {([
               { milestone: "50% Persisted", current: Math.round(((dist.persisted + dist.proven) / totalFeatures) * 100), target: 50, date: "Target: Q2 2026" },
-              { milestone: "Zero Forbidden Mocks", current: MOCK_SOURCE_INVENTORY.filter(s => !s.forbidden).length, target: MOCK_SOURCE_INVENTORY.length, date: "Target: Q3 2026" },
+              { milestone: "Zero Forbidden Mocks", current: SOURCE_INVENTORY.filter(s => !s.forbidden).length, target: SOURCE_INVENTORY.length, date: "Target: Q3 2026" },
               { milestone: "First Proven Feature", current: dist.proven, target: 1, date: "Target: Q2 2026" },
             ]).map(m => (
               <div key={m.milestone} className="p-3 rounded-lg border border-border/50 space-y-2">

@@ -24,7 +24,7 @@ interface SupportIssue {
   createdAt: string; lastAction: string; responseCount: number; slaHours: number; hoursOpen: number;
 }
 
-const DEMO_ISSUES: SupportIssue[] = [
+const ISSUES: SupportIssue[] = [
   { id: "SUP-001", customer: "Marcus Chen", subject: "Order arrived damaged — requesting replacement", preview: "The packaging was torn and the product inside has visible damage.", severity: "critical", status: "waiting-on-us", owner: "You", linkedEntity: "ORD-4521", linkedType: "order", createdAt: "2h ago", lastAction: "Customer sent photos", responseCount: 3, slaHours: 4, hoursOpen: 2 },
   { id: "SUP-002", customer: "Sarah Park", subject: "Billing discrepancy on last invoice", preview: "I was charged $450 but the agreed amount was $380.", severity: "high", status: "open", owner: "Unassigned", linkedEntity: "INV-1892", linkedType: "invoice", createdAt: "5h ago", lastAction: "New ticket", responseCount: 0, slaHours: 8, hoursOpen: 5 },
   { id: "SUP-003", customer: "David Liu", subject: "Can't access my account portal", preview: "I've tried resetting my password three times and still can't log in.", severity: "medium", status: "waiting-on-us", owner: "Alex M.", createdAt: "1d ago", lastAction: "Escalated to tech", responseCount: 2, slaHours: 24, hoursOpen: 26 },
@@ -50,7 +50,7 @@ const CustomerSupportCenter = () => {
     if (tab === "waiting-on-us") return ([] as any[]).filter(i => i.status === "waiting-on-us");
     if (tab === "escalated") return ([] as any[]).filter(i => i.status === "escalated");
     if (tab === "resolved") return ([] as any[]).filter(i => i.status === "resolved");
-    return DEMO_ISSUES;
+    return ISSUES;
   };
 
   const filtered = filterIssues(activeTab);

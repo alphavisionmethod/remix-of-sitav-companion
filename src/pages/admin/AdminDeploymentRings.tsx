@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 // Production fallback — seed data removed
-const DEMO_ENVIRONMENTS: any[] = [];
+const ENVIRONMENTS: any[] = [];
 
 type GateStatus = "passed" | "failed" | "pending" | "skipped" | "blocked";
 type RingStatus = "deployed" | "canary" | "staging" | "blocked" | "pending";

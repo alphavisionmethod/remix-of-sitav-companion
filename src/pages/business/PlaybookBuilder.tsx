@@ -83,7 +83,7 @@ const STEP_TYPES: { type: BuilderStep["type"]; label: string; icon: typeof Zap; 
 
 import { OPERATORS, DELAY_OPTIONS } from "@/lib/constants/ui-config";
 // Production fallback — seed data removed
-const DEMO_CATEGORIES: any[] = [];
+const CATEGORIES: any[] = [];
 
 // ── Helpers ──────────────────────────────────────────────────────
 

@@ -26,7 +26,7 @@ const SEVERITY_CONFIG: Record<LogSeverity, { color: string; bg: string }> = {
   error: { color: "text-red-400", bg: "bg-red-500/10" }, critical: { color: "text-red-400", bg: "bg-red-500/15" },
 };
 
-const DEMO_LOGS: AuditEntry[] = [
+const LOGS: AuditEntry[] = [
   { id: "1", timestamp: "14:23:01", actor: "admin", actorName: "Founder", action: "Approved canary rollout", resource: "release-v3.4.1", severity: "info", correlationId: "rel-3841", whyExplanation: "Founder approved the staged rollout after simulation passed with 91% confidence." },
   { id: "2", timestamp: "14:22:45", actor: "ai_agent", actorName: "Release Advisor", action: "Recommended canary expansion", resource: "canary-cohort-beta", severity: "info", correlationId: "rel-3841", whyExplanation: "Health metrics stable for 30 minutes. Error rate within threshold." },
   { id: "3", timestamp: "14:18:30", actor: "system", actorName: "Health Monitor", action: "Health check passed", resource: "sync-service", severity: "info", correlationId: "hc-9921" },

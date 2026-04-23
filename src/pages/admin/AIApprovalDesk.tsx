@@ -10,8 +10,8 @@ import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 const typeIcons: Record<string, typeof Code> = { code: Code, design: Palette, ops: Wrench };
 
 const AIApprovalDesk = () => {
-  const { data: approvals, isDemo } = useAIEngDomain("approvals", DEMO_APPROVALS);
-  const items = approvals as typeof DEMO_APPROVALS;
+  const { data: approvals, isDemo } = useAIEngDomain("approvals", APPROVALS);
+  const items = approvals as typeof APPROVALS;
   const [expanded, setExpanded] = useState<number | null>(null);
 
   return (

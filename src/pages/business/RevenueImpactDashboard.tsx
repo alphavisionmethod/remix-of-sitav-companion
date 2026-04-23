@@ -136,7 +136,7 @@ const RevenueImpactDashboard = () => {
     },
   });
 
-  const PLAYBOOK_REVENUE = DEMO_PLAYBOOK_REVENUE; // Playbook breakdown is config/demo — real aggregates feed KPIs
+  const PLAYBOOK_REVENUE = PLAYBOOK_REVENUE; // Playbook breakdown is config/demo — real aggregates feed KPIs
 
   const trendData = useMemo(() => generateTrend(granularity), [granularity]);
 

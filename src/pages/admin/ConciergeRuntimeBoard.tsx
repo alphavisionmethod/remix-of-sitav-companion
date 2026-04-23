@@ -21,31 +21,31 @@ const stateColor: Record<TaskState, string> = {
 
 const domainIcon: Record<string, typeof Activity> = { task: Activity, travel: Plane, household: Home, promise: CalendarCheck };
 
-const DEMO_TRAVEL = [
+const TRAVEL = [
   { id: "tr-1", trip: "Berlin → London", status: "active" as const, legs: 3, completed: 1, nextAction: "Check-in opens at 14:00", lastUpdated: "2026-04-05T10:00:00Z" },
   { id: "tr-2", trip: "Tokyo Business Trip", status: "completed" as const, legs: 5, completed: 5, nextAction: "Expense report pending", lastUpdated: "2026-04-02T18:00:00Z" },
 ];
 
-const DEMO_HOUSEHOLD = [
+const HOUSEHOLD = [
   { id: "hh-1", commitment: "Weekly grocery delivery", status: "active" as const, frequency: "Weekly", nextDue: "2026-04-07", assignee: "household-agent", lastFulfilled: "2026-03-31" },
   { id: "hh-2", commitment: "Monthly budget review", status: "active" as const, frequency: "Monthly", nextDue: "2026-04-30", assignee: "finance-advisor", lastFulfilled: "2026-03-28" },
   { id: "hh-3", commitment: "Insurance renewal", status: "stale" as const, frequency: "Annual", nextDue: "2026-04-15", assignee: "concierge-agent", lastFulfilled: "2025-04-15" },
 ];
 
-const DEMO_PROMISES = [
+const PROMISES = [
   { id: "pm-1", promise: "Send updated portfolio summary by Friday", status: "active" as const, dueDate: "2026-04-11", owner: "finance-advisor", confidence: 92 },
   { id: "pm-2", promise: "Book restaurant for anniversary", status: "completed" as const, dueDate: "2026-04-08", owner: "concierge-agent", confidence: 100 },
   { id: "pm-3", promise: "Follow up on home inspection report", status: "broken" as const, dueDate: "2026-04-03", owner: "household-agent", confidence: 0 },
 ];
 
-const DEMO_RECEIPTS = [
+const RECEIPTS = [
   { id: "rc-1", action: "Booked restaurant reservation", agent: "concierge-agent", timestamp: "2026-04-05T09:30:00Z", outcome: "success" as const },
   { id: "rc-2", action: "Submitted expense report", agent: "finance-advisor", timestamp: "2026-04-04T16:00:00Z", outcome: "success" as const },
   { id: "rc-3", action: "Attempted flight rebooking", agent: "travel-agent", timestamp: "2026-04-03T11:00:00Z", outcome: "failed" as const },
   { id: "rc-4", action: "Grocery order placed", agent: "household-agent", timestamp: "2026-04-01T08:00:00Z", outcome: "success" as const },
 ];
 
-const DEMO_SLA = [
+const SLA = [
   { metric: "Promise fulfillment rate", target: 95, current: 67, unit: "%", status: "below" as const },
   { metric: "Task completion within SLA", target: 90, current: 88, unit: "%", status: "at-risk" as const },
   { metric: "Travel continuity", target: 99, current: 100, unit: "%", status: "healthy" as const },

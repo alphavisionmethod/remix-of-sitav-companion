@@ -5,8 +5,8 @@ import { Timer, BrainCircuit, Calendar, AlertTriangle, Loader2 } from "lucide-re
 import { useReadinessStates } from "@/hooks/use-health-signal-data";
 import HRSSubNav from "@/components/admin/HRSSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-const BRIEFING_WINDOWS = DEMO_BRIEFING_WINDOWS;
-const HOLD_VS_ACT = DEMO_HOLD_VS_ACT;
+const BRIEFING_WINDOWS = BRIEFING_WINDOWS;
+const HOLD_VS_ACT = HOLD_VS_ACT;
 
 const HRS05AssistantTimingBoard = () => {
   const { data: dbReadiness, isLoading } = useReadinessStates(5);

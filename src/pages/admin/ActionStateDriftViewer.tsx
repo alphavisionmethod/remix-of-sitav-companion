@@ -38,7 +38,7 @@ const stateColor: Record<string, string> = {
   receipted: "bg-emerald-500/10 text-emerald-500 border-emerald-500/20",
 };
 
-const DEMO_ACTIONS: ActionRecord[] = [
+const ACTIONS: ActionRecord[] = [
   { id: "a1", action: "Invoice Payment Processing", domain: "Finance OS", actor: "system", state: "completed", canonical: true, timestamp: "2026-04-10T09:00:00Z" },
   { id: "a2", action: "Lead Recovery Autopilot", domain: "Business OS", actor: "autopilot", state: "executing", canonical: true, timestamp: "2026-04-10T09:15:00Z" },
   { id: "a3", action: "Connector Sync — Google Calendar", domain: "Connector Control", actor: "scheduler", state: "degraded", canonical: false, driftReason: "Sync stuck in retry loop, expected 'completed' but remains 'executing' for >15m", expectedState: "completed", timestamp: "2026-04-10T08:30:00Z" },

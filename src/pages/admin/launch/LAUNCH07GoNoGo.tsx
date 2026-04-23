@@ -27,7 +27,7 @@ export default function LAUNCH07GoNoGo() {
 
   if (!result) return null;
 
-  const currentModeIdx = DEMO_MODE_ORDER.indexOf(result.recommendedMode);
+  const currentModeIdx = MODE_ORDER.indexOf(result.recommendedMode);
 
   return (
     <div className="space-y-6 p-6" data-testid="launch07-go-no-go">

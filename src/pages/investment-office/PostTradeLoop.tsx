@@ -7,7 +7,7 @@ export default function PostTradeLoop() {
   const { data: livePositions } = usePortfolioPositionsMemory();
   const { data: liveExecutions } = useExecutionRecords();
   const { data: liveTheses } = useThesisRecords();
-  const [selected, setSelected] = useState(DEMO_ACTIVE_POSITIONS[0]);
+  const [selected, setSelected] = useState(ACTIVE_POSITIONS[0]);
   const pnlPct = ((selected.currentPrice - selected.entryPrice) / selected.entryPrice * 100).toFixed(1);
   const isPositive = selected.currentPrice >= selected.entryPrice;
 

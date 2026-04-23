@@ -7,7 +7,7 @@ export default function TimeMachineReview() {
   const { data: liveSnapshots } = useTimeMachineSnapshots();
   const { data: liveDecisions } = useDecisionRecords();
   const { data: liveObservations } = useAdvisorObservations();
-  const [selected, setSelected] = useState(DEMO_PAST_DECISIONS[0]);
+  const [selected, setSelected] = useState(PAST_DECISIONS[0]);
 
 
   return (

@@ -5,7 +5,7 @@ import { useMarketWatchlistItems } from "@/hooks/use-investment-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 export default function EventProbabilityLab() {
   const { data: liveData, isLoading } = useMarketWatchlistItems();
-  const [selected, setSelected] = useState(DEMO_EVENTS[0]);
+  const [selected, setSelected] = useState(EVENTS[0]);
 
   return (
     <div className="mx-auto max-w-6xl space-y-6">

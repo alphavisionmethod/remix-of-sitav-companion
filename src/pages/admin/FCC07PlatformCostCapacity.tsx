@@ -26,7 +26,7 @@ interface CostBreakdownItem {
   color: string;
 }
 
-const DEMO_COST_DATA: CostBreakdownItem[] = [
+const COST_DATA: CostBreakdownItem[] = [
   { label: "AI Inference", value: 428, unit: "cents", budget: 800, trend: -12.5, icon: Brain, color: "text-primary" },
   { label: "Compute", value: 4500, unit: "cents/mo", budget: 8000, trend: 1.8, icon: Cpu, color: "text-sita-gold" },
   { label: "Storage", value: 2.4, unit: "GB", budget: 10, trend: 5.2, icon: HardDrive, color: "text-accent" },

@@ -186,7 +186,7 @@ function FormDialog({ trigger, initial, onSave }: { trigger: React.ReactNode; in
             <div><Label>Owner</Label><Input value={form.owner} onChange={e => setForm(f => ({ ...f, owner: e.target.value }))} placeholder="team/person" /></div>
           </div>
 
-          <div><Label>Mock Sources (comma-separated)</Label><Input value={form.mock_sources} onChange={e => setForm(f => ({ ...f, mock_sources: e.target.value }))} placeholder="MOCK_CUSTOMERS, MOCK_INVOICES" /></div>
+          <div><Label>Mock Sources (comma-separated)</Label><Input value={form.mock_sources} onChange={e => setForm(f => ({ ...f, mock_sources: e.target.value }))} placeholder="CUSTOMERS, INVOICES" /></div>
           <div><Label>Missing Requirements (comma-separated)</Label><Textarea value={form.missing_requirements} onChange={e => setForm(f => ({ ...f, missing_requirements: e.target.value }))} rows={2} placeholder="RLS policies, edge function, E2E tests" /></div>
           <div><Label>Blockers (comma-separated)</Label><Textarea value={form.blockers} onChange={e => setForm(f => ({ ...f, blockers: e.target.value }))} rows={2} placeholder="Schema not migrated, API not ready" /></div>
           <div className="grid grid-cols-2 gap-3">

@@ -13,7 +13,7 @@ import { useAuth } from "@/contexts/AuthContext";
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.3 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.04 } } };
 
-const DEMO_DEVICES = [
+const DEVICES = [
   { id: "d1", name: "MacBook Pro 16″", platform: "macOS", version: "14.3", trust: "verified", status: "online", syncCapable: true, meshCapable: true, lastSeen: "Now", icon: Laptop },
   { id: "d2", name: "iPhone 15 Pro", platform: "iOS", version: "17.4", trust: "verified", status: "online", syncCapable: true, meshCapable: true, lastSeen: "Now", icon: Smartphone },
   { id: "d3", name: "iPad Air M2", platform: "iPadOS", version: "17.4", trust: "verified", status: "online", syncCapable: true, meshCapable: false, lastSeen: "2m ago", icon: Tablet },

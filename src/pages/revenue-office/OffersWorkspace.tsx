@@ -9,10 +9,10 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { PageShell } from "@/components/sita/PageShell";
 import { Typography } from "@/components/sita/Typography";
-import { DEMO_REV_BUNDLES as DEMO_BUNDLES,
-  DEMO_REV_PRODUCTS as DEMO_PRODUCTS,
-  DEMO_OFFER_UPSELLS,
-  DEMO_PRICING_EXPERIMENTS,
+import { REV_BUNDLES as BUNDLES,
+  REV_PRODUCTS as PRODUCTS,
+  OFFER_UPSELLS,
+  PRICING_EXPERIMENTS,
 } from "@/data/seed/revenue-office";
 
 

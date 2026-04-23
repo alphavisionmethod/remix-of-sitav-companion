@@ -29,7 +29,7 @@ interface OperationalItem {
   linkedEntity?: string; linkedEntityType?: string; age: string; nextAction: string; workload?: number;
 }
 
-const DEMO_ITEMS: OperationalItem[] = [
+const ITEMS: OperationalItem[] = [
   { id: "ops-1", title: "Order fulfillment queue backup", category: "queue", status: "at-risk", urgency: "critical", owner: "Sarah K.", ownerAvatar: "SK", customerImpact: 12, description: "14 orders pending fulfillment > 48hrs. SLA breach imminent for 5 priority accounts.", linkedEntity: "Warehouse A", linkedEntityType: "Facility", age: "2d 6h", nextAction: "Reassign 5 priority orders to express lane" },
   { id: "ops-2", title: "Billing dispute escalation — Acme Corp", category: "escalation", status: "active", urgency: "high", owner: "Michael R.", ownerAvatar: "MR", customerImpact: 1, description: "Customer disputes $12,400 invoice. Finance review pending since Monday.", linkedEntity: "INV-2024-0847", linkedEntityType: "Invoice", age: "4d", nextAction: "Schedule finance review call" },
   { id: "ops-3", title: "API integration stall — payment processor", category: "bottleneck", status: "blocked", urgency: "critical", owner: "Dev Team", ownerAvatar: "DT", customerImpact: 45, description: "Payment processor webhook failing intermittently. 45 transactions in retry queue.", linkedEntity: "Stripe Webhook", linkedEntityType: "Integration", age: "18h", nextAction: "Escalate to engineering lead" },

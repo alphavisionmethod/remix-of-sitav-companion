@@ -30,7 +30,7 @@ interface Appointment {
   isFollowUp?: boolean;
 }
 
-const DEMO_APPOINTMENTS: Appointment[] = [
+const APPOINTMENTS: Appointment[] = [
   { id: "APT-301", customer: "Marcus Chen", service: "Strategy Consultation", date: "Today", time: "2:00 PM", duration: "60 min", location: "Office — Room A", status: "confirmed", staff: "You", noShowRisk: "low", lastContact: "Confirmed via SMS 2h ago" },
   { id: "APT-302", customer: "Sarah Park", service: "Project Review", date: "Today", time: "4:30 PM", duration: "30 min", location: "Video Call", status: "pending", staff: "You", noShowRisk: "medium", notes: "Hasn't confirmed. 2 prior reschedules." },
   { id: "APT-303", customer: "David Liu", service: "Onboarding Session", date: "Tomorrow", time: "10:00 AM", duration: "90 min", location: "Office — Room B", status: "unconfirmed", staff: "Alex M.", noShowRisk: "high", notes: "No response to 2 reminders. History of missed appointments." },
@@ -152,7 +152,7 @@ const AppointmentsScheduling = () => {
     if (tab === "needs-confirm") return ([] as any[]).filter(a => a.status === "pending" || a.status === "unconfirmed");
     if (tab === "no-show") return ([] as any[]).filter(a => a.status === "no-show");
     if (tab === "follow-up") return ([] as any[]).filter(a => a.isFollowUp || a.status === "no-show");
-    return DEMO_APPOINTMENTS;
+    return APPOINTMENTS;
   };
 
   const filtered = filterApts(activeTab);

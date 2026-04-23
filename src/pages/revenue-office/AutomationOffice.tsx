@@ -15,8 +15,8 @@ import {
 import {
   DEMO_activeAutomations, DEMO_advisorRecommendations, DEMO_atRiskAutomations,
   DEMO_automationStats, DEMO_leakRepairOpportunities,
-  DEMO_AUTOMATION_SURFACE_MAP, DEMO_AUTOMATION_OS_CONNECTIONS,
-  DEMO_AUTOMATION_QUALITY_SCORES, DEMO_SHADOW_BOARD, DEMO_PROMISES
+  AUTOMATION_SURFACE_MAP, AUTOMATION_OS_CONNECTIONS,
+  AUTOMATION_QUALITY_SCORES, SHADOW_BOARD, PROMISES
 } from "@/data/seed/revenue-office";
 import AutomationSubNav from "./AutomationSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";

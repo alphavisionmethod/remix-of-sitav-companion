@@ -35,7 +35,7 @@ import { SurfaceAuthorityMatrix } from "@/components/admin/shells/SurfaceAuthori
 import { StateAuthorityMap } from "@/components/admin/shells/StateAuthorityMap";
 
 // Production fallback — seed data removed
-const DEMO_SERVICES: any[] = [];
+const SERVICES: any[] = [];
 
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.05 } } };

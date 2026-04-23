@@ -9,7 +9,7 @@ import DPOSubNav from "./DPOSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 // Production fallback — seed data removed
-const DEMO_PLATFORMS: any[] = [];
+const PLATFORMS: any[] = [];
 
 export default function ConnectedSites() {
   const { data: liveData, isLoading } = useSites();

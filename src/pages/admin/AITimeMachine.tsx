@@ -6,12 +6,12 @@ import { useAIEngDomain } from "@/hooks/use-ai-engineering-data";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { EmptyState } from "@/components/sita/EmptyState";
 
-const DEMO_TIMELINE: any[] = [];
+const TIMELINE: any[] = [];
 const typeIcons: Record<string, typeof GitBranch> = { deploy: GitBranch, config: Zap, rollback: RotateCcw };
 const impactColors: Record<string, string> = { positive: "text-[hsl(var(--trust-safe))]", negative: "text-destructive", mixed: "text-amber-500" };
 
 const AITimeMachine = () => {
-  const { isDemo } = useAIEngDomain("auditTimeline", DEMO_TIMELINE);
+  const { isDemo } = useAIEngDomain("auditTimeline", TIMELINE);
   const [selectedIdx, setSelectedIdx] = useState<number | null>(1);
 
   return (
@@ -64,7 +64,7 @@ const AITimeMachine = () => {
         {/* Detail Panel */}
         <div className="rounded-xl border border-border/40 bg-card p-5">
           {selectedIdx !== null ? (() => {
-            const event = DEMO_TIMELINE[selectedIdx];
+            const event = TIMELINE[selectedIdx];
             const Icon = typeIcons[event.type] || GitBranch;
             return (
               <div className="space-y-4">

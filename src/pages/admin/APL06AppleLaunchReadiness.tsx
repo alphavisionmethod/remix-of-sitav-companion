@@ -10,7 +10,7 @@ import APLSubNav from "@/components/admin/APLSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 // Production fallback — seed data removed
-const DEMO_TARGETS: any[] = [];
+const TARGETS: any[] = [];
 
 const APL06AppleLaunchReadiness = () => {
   const { data: dbTargets } = useQuery({

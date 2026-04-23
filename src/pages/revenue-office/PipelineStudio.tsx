@@ -27,9 +27,9 @@ export default function PipelineStudio() {
   const { data: liveLeakItems } = useRevenueLeakItems();
 
   // Live mode: use real data when available, demo seed as fallback
-  const STAGES = (liveDeals && liveDeals.length > 0 ? DEMO_STAGES : []);  // [deferred] map liveDeals to stage structure when schema populated
+  const STAGES = (liveDeals && liveDeals.length > 0 ? STAGES : []);  // [deferred] map liveDeals to stage structure when schema populated
   const LEAKS = (liveLeakItems && liveLeakItems.length > 0 ? liveLeakItems : []);
-  const VELOCITY = (liveDeals && liveDeals.length > 0 ? DEMO_VELOCITY : DEMO_VELOCITY);
+  const VELOCITY = (liveDeals && liveDeals.length > 0 ? VELOCITY : VELOCITY);
 
   const allDeals = STAGES.flatMap(s => s.deals.map(d => ({ ...d, stage: s.name })));
   const totalPipeline = allDeals.reduce((sum, d) => sum + d.value, 0);

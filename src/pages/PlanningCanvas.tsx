@@ -20,7 +20,7 @@ interface CanvasCard {
   tags: string[];
 }
 
-const mockCards: CanvasCard[] = [
+const cards: CanvasCard[] = [
   { id: "1", title: "Q3 revenue strategy", zone: "planning", color: "bg-blue-500/20 border-blue-500/40", linkedWorkspace: "business", tags: ["strategy"] },
   { id: "2", title: "Family vacation planning", zone: "ideas", color: "bg-emerald-500/20 border-emerald-500/40", linkedWorkspace: "household", tags: ["travel"] },
   { id: "3", title: "Automate invoice follow-ups", zone: "in-progress", color: "bg-purple-500/20 border-purple-500/40", linkedWorkspace: "workflows", tags: ["automation"] },
@@ -37,7 +37,7 @@ const zones: { key: CanvasZone; label: string; icon: typeof Lightbulb }[] = [
 ];
 
 export default function PlanningCanvas() {
-  const [cards] = useState(mockCards);
+  const [cards] = useState(cards);
 
   return (
     <PageShell width="wide">

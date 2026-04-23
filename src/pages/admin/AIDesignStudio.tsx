@@ -16,7 +16,7 @@ const typeIcons: Record<string, typeof Layout> = {
 };
 
 const AIDesignStudio = () => {
-  const { data: improvements, isDemo } = useAIEngDomain("designDiffs", DEMO_IMPROVEMENTS);
+  const { data: improvements, isDemo } = useAIEngDomain("designDiffs", IMPROVEMENTS);
   const [expanded, setExpanded] = useState<number | null>(null);
 
   return (

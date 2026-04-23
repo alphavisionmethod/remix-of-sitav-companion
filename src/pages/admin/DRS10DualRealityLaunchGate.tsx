@@ -8,7 +8,7 @@ import DRSSubNav from "@/components/admin/DRSSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 // Production fallback — seed data removed
-const DEMO_ALL_DOMAINS: any[] = [];
+const ALL_DOMAINS: any[] = [];
 
 interface GateCheck {
   label: string;

@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
-const DEMO_RUNS: any[] = [];
+const RUNS: any[] = [];
 
 
 interface RunRow {
@@ -71,7 +71,7 @@ export default function WorkflowReplayAudit() {
 
   async function loadRuns() {
     setLoading(true);
-    // Query workflow_runs for live data (no DEMO_RUNS fallback)
+    // Query workflow_runs for live data (no RUNS fallback)
     const { data, error } = await supabase
       .from("workflow_runs")
       .select("id, workflow_id, status, current_step, started_at, completed_at, last_progress_at, error, correlation_id, replayed_from")

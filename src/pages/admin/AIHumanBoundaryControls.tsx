@@ -39,7 +39,7 @@ interface ChangeTypeBoundary {
 }
 
 const AIHumanBoundaryControls = () => {
-  const { isDemo } = useAIEngDomain("selfHealingRules", DEMO_AGENT_BOUNDARIES);
+  const { isDemo } = useAIEngDomain("selfHealingRules", AGENT_BOUNDARIES);
   const [tab, setTab] = useState("agents");
 
   return (

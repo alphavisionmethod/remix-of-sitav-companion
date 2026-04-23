@@ -13,7 +13,7 @@ const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.05 } } };
 
 const connectorStatusColor: Record<string, string> = { connected: "bg-emerald-500/10 text-emerald-500 border-emerald-500/20", available: "bg-blue-500/10 text-blue-500 border-blue-500/20", required: "bg-amber-500/10 text-amber-500 border-amber-500/20" };
 
-const DEMO_RECOMMENDATIONS = [
+const RECOMMENDATIONS = [
   { id: "rec1", useCase: "Lead Recovery", connector: "HubSpot CRM", reason: "90% of lead recovery use cases require CRM integration for contact enrichment", confidence: 0.94, priority: "high" },
   { id: "rec2", useCase: "Incident Alerting", connector: "Slack", reason: "Real-time alerting requires messaging integration for team notification", confidence: 0.97, priority: "high" },
   { id: "rec3", useCase: "Invoice Automation", connector: "Xero", reason: "Accounting integration enables automated invoice generation and reconciliation", confidence: 0.88, priority: "medium" },
@@ -21,13 +21,13 @@ const DEMO_RECOMMENDATIONS = [
   { id: "rec5", useCase: "Email Campaigns", connector: "SendGrid", reason: "Transactional and campaign emails require email delivery provider", confidence: 0.85, priority: "medium" },
 ];
 
-const DEMO_WORKFLOWS = [
+const WORKFLOWS = [
   { id: "wf1", name: "Lead → CRM → Nurture Sequence", steps: ["Capture lead signal", "Enrich via CRM", "Create nurture workflow", "Schedule follow-up"], status: "ready", connectorDeps: ["HubSpot", "SendGrid"] },
   { id: "wf2", name: "Incident → Alert → Runbook", steps: ["Detect anomaly", "Classify severity", "Route to Slack", "Launch runbook"], status: "ready", connectorDeps: ["Slack", "PagerDuty"] },
   { id: "wf3", name: "Invoice → Accounting → Receipt", steps: ["Generate invoice", "Push to Xero", "Track payment", "Issue receipt"], status: "partial", connectorDeps: ["Xero", "Stripe"] },
 ];
 
-const DEMO_SIMULATIONS = [
+const SIMULATIONS = [
   { id: "sim1", useCase: "Lead Recovery with HubSpot", result: "success", latencyMs: 340, dataFlowValid: true, trustGatesPassed: 3, trustGatesTotal: 3 },
   { id: "sim2", useCase: "Incident Alerting with Slack", result: "success", latencyMs: 120, dataFlowValid: true, trustGatesPassed: 2, trustGatesTotal: 2 },
   { id: "sim3", useCase: "Invoice Automation with Xero", result: "partial", latencyMs: 890, dataFlowValid: false, trustGatesPassed: 2, trustGatesTotal: 3 },

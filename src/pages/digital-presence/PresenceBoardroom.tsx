@@ -9,10 +9,10 @@ import { useNavigate } from "react-router-dom";
 import DPOSubNav from "./DPOSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
-const DEMO_METRICS: any[] = [];
+const METRICS: any[] = [];
 
 // Production fallback — seed data removed
-const DEMO_ADVISOR_SIGNALS: any[] = [];
+const ADVISOR_SIGNALS: any[] = [];
 
 export default function PresenceBoardroom() {
   const navigate = useNavigate();

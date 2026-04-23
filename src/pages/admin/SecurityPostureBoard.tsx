@@ -13,7 +13,7 @@ const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.05 } } };
 const encColor: Record<string, string> = { full: "text-emerald-500 bg-emerald-500/10 border-emerald-500/20", partial: "text-amber-500 bg-amber-500/10 border-amber-500/20", none: "text-red-500 bg-red-500/10 border-red-500/20" };
 const secColor: Record<string, string> = { verified: "text-emerald-500 bg-emerald-500/10 border-emerald-500/20", unverified: "text-amber-500 bg-amber-500/10 border-amber-500/20", expired: "text-red-500 bg-red-500/10 border-red-500/20" };
 
-const DEMO_SECRETS = [
+const SECRETS = [
   { name: "SUPABASE_SERVICE_ROLE_KEY", status: "verified" as const, rotatedAt: "2026-03-20", expiresAt: "2027-03-20", scope: "platform" },
   { name: "OPENAI_API_KEY", status: "verified" as const, rotatedAt: "2026-04-01", expiresAt: "2027-04-01", scope: "ai-gateway" },
   { name: "VAPID_PRIVATE_KEY", status: "verified" as const, rotatedAt: "2026-02-15", expiresAt: "2027-02-15", scope: "notifications" },
@@ -21,7 +21,7 @@ const DEMO_SECRETS = [
   { name: "ANTHROPIC_API_KEY", status: "verified" as const, rotatedAt: "2026-03-28", expiresAt: "2027-03-28", scope: "ai-gateway" },
 ];
 
-const DEMO_CLASSIFICATION = [
+const CLASSIFICATION = [
   { domain: "User Profiles", classification: "PII" as const, tables: ["profiles", "user_preferences"], protectionLevel: "encrypted", lastAudit: "2026-04-01" },
   { domain: "Financial Data", classification: "Sensitive" as const, tables: ["invoices", "transactions", "revenue_records"], protectionLevel: "encrypted+rls", lastAudit: "2026-04-03" },
   { domain: "Health Signals", classification: "PHI" as const, tables: ["health_metrics", "wellness_scores"], protectionLevel: "encrypted+rls+audit", lastAudit: "2026-03-28" },
@@ -29,7 +29,7 @@ const DEMO_CLASSIFICATION = [
   { domain: "Audit Logs", classification: "Compliance" as const, tables: ["audit_logs", "agent_action_receipts"], protectionLevel: "immutable+encrypted", lastAudit: "2026-04-05" },
 ];
 
-const DEMO_KEY_ROTATION = [
+const KEY_ROTATION = [
   { key: "DB Encryption Key", lastRotated: "2026-03-15", nextRotation: "2026-06-15", status: "on-schedule" as const },
   { key: "JWT Signing Key", lastRotated: "2026-04-01", nextRotation: "2026-07-01", status: "on-schedule" as const },
   { key: "VAPID Keys", lastRotated: "2026-02-15", nextRotation: "2026-05-15", status: "due-soon" as const },

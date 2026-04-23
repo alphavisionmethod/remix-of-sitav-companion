@@ -17,7 +17,7 @@ const claimColor: Record<ClaimStatus, string> = {
   stale: "bg-orange-500/10 text-orange-500 border-orange-500/20",
 };
 
-const DEMO_MANIFESTS = [
+const MANIFESTS = [
   { id: "mf-1", scope: "auth-service", generatedAt: "2026-04-05T10:00:00Z", claims: 8, verified: 8, drifts: 0, status: "aligned" as const },
   { id: "mf-2", scope: "connector-gateway", generatedAt: "2026-04-05T09:30:00Z", claims: 12, verified: 9, drifts: 2, status: "drift" as const },
   { id: "mf-3", scope: "workflow-engine", generatedAt: "2026-04-05T08:00:00Z", claims: 6, verified: 5, drifts: 0, status: "stale" as const },
@@ -25,13 +25,13 @@ const DEMO_MANIFESTS = [
   { id: "mf-5", scope: "notification-center", generatedAt: "2026-04-05T10:10:00Z", claims: 5, verified: 5, drifts: 0, status: "aligned" as const },
 ];
 
-const DEMO_DOCS_DRIFT = [
+const DOCS_DRIFT = [
   { id: "dd-1", doc: "ATLAS_OPERATIONS_AND_PLATFORM_TRUTH.md", claim: "Receipt chain coverage tracked in real-time", evidence: "Coverage computed on page load, not real-time", severity: "medium" as const, acknowledged: false },
   { id: "dd-2", doc: "MISSION_CONTROL_SHELL.md", claim: "12 tabs fully implemented", evidence: "11/12 tabs active, Safe Mode is placeholder", severity: "low" as const, acknowledged: true },
   { id: "dd-3", doc: "API Gateway docs", claim: "Rate limiting per-tenant", evidence: "Rate limiting is global, not per-tenant", severity: "high" as const, acknowledged: false },
 ];
 
-const DEMO_ARCH_GATES = [
+const ARCH_GATES = [
   { gate: "No hidden write paths", status: "passing" as const, lastChecked: "2026-04-05T10:20:00Z", evidence: "7/7 admin surfaces use canonical writes" },
   { gate: "Proof coverage >80%", status: "passing" as const, lastChecked: "2026-04-05T10:19:00Z", evidence: "87% capability coverage" },
   { gate: "No opaque fallbacks", status: "warning" as const, lastChecked: "2026-04-05T10:18:00Z", evidence: "2 surfaces use fallback without disclosure" },

@@ -40,7 +40,7 @@ import {
 } from "lucide-react";
 import { useBoardroomPacket } from "@/hooks/use-boardroom";
 import type { BoardroomSession, BoardroomDecision, StrategicInsight } from "@/packages/boardroom-contracts";
-import { mockAdvisors, mockRecommendations, mockSynthesis, mockApprovals, mockProofHistory } from "@/hooks/useAdvisorMissionControl";
+import { advisors, recommendations, synthesis, approvals, proofHistory } from "@/hooks/useAdvisorMissionControl";
 import type {
   BoardroomType, BoardroomPacket, BoardroomContentSection, MetricCardData,
   TableData, NarrativeData, AlertData, ActionItemData, ChartData, BOARDROOM_META
@@ -226,17 +226,17 @@ const AdvisorVoiceTrack = ({ type }: { type: BoardroomType }) => {
   }
 
   const relevantAdvisors = type === "financial-health" || type === "pipeline-review"
-    ? mockAdvisors.filter(a => ["money", "treasury", "business", "sales", "risk"].includes(a.domain))
+    ? advisors.filter(a => ["money", "treasury", "business", "sales", "risk"].includes(a.domain))
     : type === "household-ops"
-    ? mockAdvisors.filter(a => ["concierge", "family", "calendar"].includes(a.domain))
-    : mockAdvisors.slice(0, 5);
+    ? advisors.filter(a => ["concierge", "family", "calendar"].includes(a.domain))
+    : advisors.slice(0, 5);
 
   return (
     <div className="space-y-3">
       <SitaSectionHeader title="Advisor Voices" subtitle="Each advisor's perspective on this review" />
       <div className="space-y-2">
         {relevantAdvisors.map((advisor, i) => {
-          const rec = mockRecommendations.find(r => r.advisorId === advisor.id);
+          const rec = recommendations.find(r => r.advisorId === advisor.id);
           return (
             <motion.div key={advisor.id} initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.05 }}
               className="group rounded-xl border border-border/60 bg-card/80 p-4 hover:border-primary/20 transition-all"
@@ -280,7 +280,7 @@ const DisagreementCards = () => {
   const { isDemo } = useAuth();
   return null;
   
-  const disagreements = mockSynthesis.filter(s => s.disagreements && s.disagreements.length > 0);
+  const disagreements = synthesis.filter(s => s.disagreements && s.disagreements.length > 0);
   if (disagreements.length === 0) return null;
 
   return (
@@ -315,7 +315,7 @@ const DecisionMemoryStrip = () => {
   const { isDemo } = useAuth();
   return null;
   
-  const decisions = mockProofHistory.filter(p => p.type === "approval" || p.type === "execution").slice(0, 5);
+  const decisions = proofHistory.filter(p => p.type === "approval" || p.type === "execution").slice(0, 5);
 
   return (
     <div className="space-y-3">
@@ -382,9 +382,9 @@ const ProofSummaryBoard = () => {
   const { isDemo } = useAuth();
   return null;
   
-  const verified = mockProofHistory.filter(p => p.outcome === "verified").length;
-  const executed = mockProofHistory.filter(p => p.outcome === "executed" || p.outcome === "accepted").length;
-  const failed = mockProofHistory.filter(p => p.outcome === "rolled-back" || p.outcome === "rejected").length;
+  const verified = proofHistory.filter(p => p.outcome === "verified").length;
+  const executed = proofHistory.filter(p => p.outcome === "executed" || p.outcome === "accepted").length;
+  const failed = proofHistory.filter(p => p.outcome === "rolled-back" || p.outcome === "rejected").length;
 
   return (
     <SitaCard hover={false}>
@@ -775,7 +775,7 @@ const PacketView = ({ type, perspective = "owner" }: { type: BoardroomType; pers
         <WarRoomConfidenceRadar
           advisors={
             false
-              ? mockAdvisors.slice(0, 6).map(a => ({
+              ? advisors.slice(0, 6).map(a => ({
                   name: a.name,
                   confidence: Math.round(a.confidence * 100),
                   domain: a.domain,
@@ -982,7 +982,7 @@ const PacketView = ({ type, perspective = "owner" }: { type: BoardroomType; pers
             <ConfidenceLadder
               items={
                 false
-                  ? mockAdvisors.slice(0, 5).map(a => ({ label: a.name, confidence: a.confidence }))
+                  ? advisors.slice(0, 5).map(a => ({ label: a.name, confidence: a.confidence }))
                   : recommendations.slice(0, 5).map((r: any) => ({
                       label: (r.title || r.role_key || "recommendation").toString().slice(0, 32),
                       confidence: Number(r.confidence) || 0.5,

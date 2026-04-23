@@ -3,7 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Smartphone, Monitor, Tablet, Shield, Trash2, Clock } from "lucide-react";
 
-const MOCK_DEVICES = [
+const DEVICES = [
   { id: "1", name: "This Device", type: "desktop" as const, lastActive: "Now", trusted: true, current: true },
   { id: "2", name: "iPhone 15 Pro", type: "phone" as const, lastActive: "2 hours ago", trusted: true, current: false },
   { id: "3", name: "iPad Air", type: "tablet" as const, lastActive: "3 days ago", trusted: false, current: false },
@@ -37,7 +37,7 @@ const TrustedDeviceManager = () => {
       </Card>
 
       <div className="space-y-3">
-        {(MOCK_DEVICES).map(device => (
+        {(DEVICES).map(device => (
           <Card key={device.id}>
             <CardContent className="pt-6 flex items-center gap-4">
               <div className="p-2 rounded-lg bg-muted">{deviceIcon(device.type)}</div>

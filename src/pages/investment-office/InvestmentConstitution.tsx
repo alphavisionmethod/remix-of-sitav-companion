@@ -5,7 +5,7 @@ import { useInvestmentStrategyRecords } from "@/hooks/use-investment-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 // Production fallback — seed data removed
-const DEMO_CATEGORIES: any[] = [];
+const CATEGORIES: any[] = [];
 
 interface Rule {
   id: string;

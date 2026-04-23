@@ -8,7 +8,7 @@ import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 export default function OpportunityMap() {
   const { data: liveData, isLoading } = useMarketWatchlistItems();
   const navigate = useNavigate();
-  const [selectedTheme, setSelectedTheme] = useState(DEMO_THEMES[0]);
+  const [selectedTheme, setSelectedTheme] = useState(THEMES[0]);
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">

@@ -21,7 +21,7 @@ interface RouteSource {
   domain: string;
   activeProvider: "real" | "demo" | "mixed" | "none";
   dataServices: string[];
-  mockImports: string[];
+  imports: string[];
   scenarioBinding: string | null;
   launchHonesty: LaunchHonesty;
   notes: string;
@@ -39,7 +39,7 @@ export default function RouteSourceDiagnostics() {
   const [search, setSearch] = useState("");
 
   const filtered = useMemo(() => {
-    if (!search) return DEMO_ROUTES;
+    if (!search) return ROUTES;
     const q = search.toLowerCase();
     return ([] as any[]).filter(r => r.path.includes(q) || r.pageName.toLowerCase().includes(q) || r.domain.toLowerCase().includes(q));
   }, [search]);
@@ -91,7 +91,7 @@ export default function RouteSourceDiagnostics() {
                     </div>
                     <div className="flex items-center gap-3 mt-1 text-[10px] text-muted-foreground">
                       <span className="flex items-center gap-1"><Database className="h-3 w-3" /> {r.dataServices.join(", ")}</span>
-                      {r.mockImports.length > 0 && <span className="flex items-center gap-1"><Code className="h-3 w-3" /> mock: {r.mockImports.join(", ")}</span>}
+                      {r.imports.length > 0 && <span className="flex items-center gap-1"><Code className="h-3 w-3" /> mock: {r.imports.join(", ")}</span>}
                       {r.scenarioBinding && <span className="flex items-center gap-1"><Globe className="h-3 w-3" /> scenario: {r.scenarioBinding}</span>}
                     </div>
                     <p className="text-[10px] text-muted-foreground mt-0.5 italic">{r.notes}</p>

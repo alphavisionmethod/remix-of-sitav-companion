@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { FileCode, AlertTriangle, ShieldAlert, Ban } from "lucide-react";
-import { MOCK_SOURCE_INVENTORY, getMockSourceStats, type PromiseSeverity } from "@/runtimes/reality/reality-audit-registry";
+import { SOURCE_INVENTORY, getMockSourceStats, type PromiseSeverity } from "@/runtimes/reality/reality-audit-registry";
 
 const critColors: Record<PromiseSeverity, string> = {
   critical: "text-red-400 bg-red-500/10",
@@ -49,7 +49,7 @@ const RCP05MockSourceInventory = () => {
           </CardHeader>
           <CardContent>
             <div className="space-y-2">
-              {MOCK_SOURCE_INVENTORY.filter(s => s.forbidden).map(s => (
+              {SOURCE_INVENTORY.filter(s => s.forbidden).map(s => (
                 <div key={s.id} className="p-2 rounded bg-red-500/10 border border-red-500/20 text-sm">
                   <div className="flex items-center justify-between">
                     <span className="font-mono text-xs">{s.sourcePath}</span>
@@ -86,14 +86,14 @@ const RCP05MockSourceInventory = () => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {MOCK_SOURCE_INVENTORY.map(s => (
+                {SOURCE_INVENTORY.map(s => (
                   <TableRow key={s.id} className={s.forbidden ? "bg-red-500/5" : ""}>
                     <TableCell className="font-mono text-xs">{s.id}</TableCell>
                     <TableCell>
                       <div className="font-mono text-xs">{s.sourcePath}</div>
                       <div className="text-[10px] text-muted-foreground mt-0.5">{s.sourceDescription}</div>
                     </TableCell>
-                    <TableCell><Badge variant="outline" className="text-[10px]">{s.mockType}</Badge></TableCell>
+                    <TableCell><Badge variant="outline" className="text-[10px]">{s.type}</Badge></TableCell>
                     <TableCell className="text-center font-bold">{s.usageCount}</TableCell>
                     <TableCell><span className={`text-[10px] px-2 py-0.5 rounded ${critColors[s.criticality]}`}>{s.criticality}</span></TableCell>
                     <TableCell>
@@ -118,8 +118,8 @@ const RCP05MockSourceInventory = () => {
         <CardHeader className="pb-3"><CardTitle className="text-sm">Domain Impact</CardTitle></CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            {Array.from(new Set(MOCK_SOURCE_INVENTORY.flatMap(s => s.domainsAffected))).map(domain => {
-              const sources = MOCK_SOURCE_INVENTORY.filter(s => s.domainsAffected.includes(domain));
+            {Array.from(new Set(SOURCE_INVENTORY.flatMap(s => s.domainsAffected))).map(domain => {
+              const sources = SOURCE_INVENTORY.filter(s => s.domainsAffected.includes(domain));
               const forbidden = sources.filter(s => s.forbidden).length;
               return (
                 <div key={domain} className={`p-3 rounded-lg border ${forbidden > 0 ? "border-red-500/20 bg-red-500/5" : "border-border/50"}`}>

@@ -8,10 +8,10 @@ import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 // Production fallback — seed data removed
-const DEMO_DIFFS: any[] = [];
+const DIFFS: any[] = [];
 
 const AIDesignDiffTheater = () => {
-  const { data: diffs, isDemo } = useAIEngDomain("designDiffs", DEMO_DIFFS);
+  const { data: diffs, isDemo } = useAIEngDomain("designDiffs", DIFFS);
   const [expanded, setExpanded] = useState<number | null>(1);
 
   return (

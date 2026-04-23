@@ -27,7 +27,7 @@ interface ReconciliationItem {
   suggestedAction: string;
 }
 
-const DEMO_ITEMS: ReconciliationItem[] = [
+const ITEMS: ReconciliationItem[] = [
   { id: "R01", title: "Statement vs recorded mismatch", description: "Chase checking shows $4,230 but recorded balance is $4,180. Difference: $50.", issueType: "mismatch", status: "open", amount: 50, date: "Apr 10", source: "Chase Checking", severity: "medium", suggestedAction: "Review recent transactions for missing entry" },
   { id: "R02", title: "Uncategorized Stripe deposit", description: "Stripe payout of $1,840 has no category assigned.", issueType: "uncategorized", status: "open", amount: 1840, date: "Apr 9", source: "Stripe", severity: "low", suggestedAction: "Categorize as Business Revenue" },
   { id: "R03", title: "AWS charge increased 18%", description: "Monthly AWS charge rose from $342 to $403 without a plan change.", issueType: "recurring-change", status: "investigating", amount: 61, date: "Apr 3", source: "AWS", severity: "medium", suggestedAction: "Review usage spike or contact support" },
@@ -53,7 +53,7 @@ const ReconciliationReview = () => {
   const [tab, setTab] = useState("all");
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
-  const filtered = tab === "all" ? DEMO_ITEMS
+  const filtered = tab === "all" ? ITEMS
     : tab === "resolved" ? ([] as any[]).filter(i => i.status === "resolved")
     : ([] as any[]).filter(i => i.issueType === tab && i.status !== "resolved");
 

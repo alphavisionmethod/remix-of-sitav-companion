@@ -8,7 +8,7 @@ import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { Users, DollarSign, PiggyBank, Target, Home, BarChart3 } from "lucide-react";
 import { motion } from "framer-motion";
 import type { HouseholdFinanceSummary } from "@/packages/finance-contracts";
-const DEMO_HOUSEHOLD: HouseholdFinanceSummary = {
+const HOUSEHOLD: HouseholdFinanceSummary = {
   householdId: "hh-1", memberCount: 2, totalIncomeCents: 1700000, totalExpensesCents: 1150000,
   sharedGoals: [
     { id: "g1", name: "Emergency Fund", targetCents: 3000000, currentCents: 1800000, contributors: [{ memberId: "m1", contributedCents: 1000000 }, { memberId: "m2", contributedCents: 800000 }], projectedCompletionDate: "2026-09-15" },
@@ -23,7 +23,7 @@ const DEMO_HOUSEHOLD: HouseholdFinanceSummary = {
 };
 
 const HouseholdMoneyOffice = () => {
-  const hh = DEMO_HOUSEHOLD;
+  const hh = HOUSEHOLD;
   const fmt = (c: number) => `$${(Math.abs(c) / 100).toLocaleString()}`;
   const surplus = hh.totalIncomeCents - hh.totalExpensesCents;
 

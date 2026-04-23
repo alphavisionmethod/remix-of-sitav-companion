@@ -12,7 +12,7 @@ import { PageShell } from "@/components/sita/PageShell";
 import { Typography } from "@/components/sita/Typography";
 
 // Production fallback — seed data removed
-const DEMO_SEGMENTS: any[] = [];
+const SEGMENTS: any[] = [];
 
 export default function SegmentationEngine() {
   const [tab, setTab] = useState("segments");

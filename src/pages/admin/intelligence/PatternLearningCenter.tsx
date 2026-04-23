@@ -11,7 +11,7 @@ import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 // Production fallback — seed data removed
-const DEMO_PATTERNS: any[] = [];
+const PATTERNS: any[] = [];
 
 const privacyBadges: Record<string, { icon: typeof Globe; color: string }> = {
   public_safe: { icon: Globe, color: "text-emerald-400" },

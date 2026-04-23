@@ -21,11 +21,11 @@ import {
 import { useRevenueLeaksData, useRecoveredValuesData, useRawOpportunities } from "@/hooks/use-business-data";
 
 // ── Derived data (fallback to mock, overridden in component) ──
-let DEMO_LEAKAGE = detectLeakage(MOCK_LEAKAGE_INPUT);
-let DEMO_RECOVERY_ACTIONS = suggestRecoveryActions(DEMO_LEAKAGE);
-let DEMO_RECOVERED = MOCK_RECOVERED_VALUES;
-let DEMO_OPPORTUNITIES = rankOpportunities(MOCK_RAW_OPPORTUNITIES);
-let SUMMARY = computeAutopilotSummary(DEMO_LEAKAGE, DEMO_RECOVERY_ACTIONS, DEMO_RECOVERED);
+let LEAKAGE = detectLeakage(LEAKAGE_INPUT);
+let RECOVERY_ACTIONS = suggestRecoveryActions(LEAKAGE);
+let RECOVERED = RECOVERED_VALUES;
+let OPPORTUNITIES = rankOpportunities(RAW_OPPORTUNITIES);
+let SUMMARY = computeAutopilotSummary(LEAKAGE, RECOVERY_ACTIONS, RECOVERED);
 
 // ── Severity Colors ─────────────────────────────────────────────
 
@@ -153,7 +153,7 @@ const OpportunitiesRanked = () => {
 };
 
 const RecoveredValueLedger = () => {
-  const summary = computeRecoveredValueSummary(DEMO_RECOVERED);
+  const summary = computeRecoveredValueSummary(RECOVERED);
   return (
     <div className="space-y-4">
       <div className="grid gap-3 sm:grid-cols-3">

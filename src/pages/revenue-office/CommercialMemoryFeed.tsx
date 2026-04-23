@@ -15,7 +15,7 @@ const allDomains = Object.keys(typeLabels);
 export default function CommercialMemoryFeed() {
   const { data: liveMemoryEvents } = useCommercialMemoryEvents();
   const memoryEvents = (liveMemoryEvents && liveMemoryEvents.length > 0 ? liveMemoryEvents : []);
-  const pinnedItems = DEMO_MEMORY_PINNED;
+  const pinnedItems = MEMORY_PINNED;
   const [activeDomain, setActiveDomain] = useState<string>("all");
   const [acknowledged, setAcknowledged] = useState<Set<number>>(new Set());
 

@@ -9,14 +9,14 @@ import { ShieldCheck, Activity, Database, Zap, CheckCircle2, AlertTriangle } fro
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 export default function RuntimeRealityValidation() {
-  const { data: mockReplacements = [] } = useMockReplacements();
+  const { data: replacements = [] } = useMockReplacements();
   const { data: classifications = [] } = useRealityClassifications();
 
   const completedMigrations = useMemo(() =>
-    mockReplacements.filter(m => m.migration_status === "completed" || m.migration_status === "validated"),
-  [mockReplacements]);
+    replacements.filter(m => m.migration_status === "completed" || m.migration_status === "validated"),
+  [replacements]);
 
-  const validatedCount = mockReplacements.filter(m => m.migration_status === "validated").length;
+  const validatedCount = replacements.filter(m => m.migration_status === "validated").length;
   const completedCount = completedMigrations.length;
   const validationRate = completedCount > 0 ? Math.round((validatedCount / completedCount) * 100) : 0;
 

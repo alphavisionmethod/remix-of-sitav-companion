@@ -7,9 +7,9 @@ import HRSSubNav from "@/components/admin/HRSSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 const HRS04NotificationInfluence = () => {
   const { data: posture, isLoading } = useInterruptionPosture();
-  const suppressionRules = (posture as never[])?.length ? posture : DEMO_SUPPRESSION_RULES;
-  const timingRules = DEMO_TIMING_RULES;
-  const overrideMatrix = DEMO_OVERRIDE_MATRIX;
+  const suppressionRules = (posture as never[])?.length ? posture : SUPPRESSION_RULES;
+  const timingRules = TIMING_RULES;
+  const overrideMatrix = OVERRIDE_MATRIX;
 
   return (
     <div className="p-6 max-w-[1400px] mx-auto space-y-6">

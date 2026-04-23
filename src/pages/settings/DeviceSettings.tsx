@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Monitor, Battery, Wifi, HardDrive, Shield, Cpu, RefreshCw } from "lucide-react";
-const MOCK_DEVICE = {
+const DEVICE = {
   name: "SITA Environment — Primary",
   platform: navigator.platform,
   cores: navigator.hardwareConcurrency,
@@ -30,10 +30,10 @@ const DeviceSettings = () => {
         </CardHeader>
         <CardContent className="space-y-3">
           <div className="grid grid-cols-2 gap-3 text-sm">
-            <div><p className="text-muted-foreground">Device Name</p><p className="font-medium">{MOCK_DEVICE.name}</p></div>
-            <div><p className="text-muted-foreground">Platform</p><p className="font-medium">{MOCK_DEVICE.platform}</p></div>
-            <div><p className="text-muted-foreground">Display</p><p className="font-medium">{MOCK_DEVICE.screenWidth}×{MOCK_DEVICE.screenHeight} @{MOCK_DEVICE.pixelRatio}x</p></div>
-            <div><p className="text-muted-foreground">Language</p><p className="font-medium">{MOCK_DEVICE.language}</p></div>
+            <div><p className="text-muted-foreground">Device Name</p><p className="font-medium">{DEVICE.name}</p></div>
+            <div><p className="text-muted-foreground">Platform</p><p className="font-medium">{DEVICE.platform}</p></div>
+            <div><p className="text-muted-foreground">Display</p><p className="font-medium">{DEVICE.screenWidth}×{DEVICE.screenHeight} @{DEVICE.pixelRatio}x</p></div>
+            <div><p className="text-muted-foreground">Language</p><p className="font-medium">{DEVICE.language}</p></div>
           </div>
         </CardContent>
       </Card>
@@ -42,29 +42,29 @@ const DeviceSettings = () => {
         <Card>
           <CardHeader className="pb-2"><CardTitle className="text-base flex items-center gap-2"><Cpu className="h-4 w-4" /> Performance</CardTitle></CardHeader>
           <CardContent className="space-y-2 text-sm">
-            <div className="flex justify-between"><span className="text-muted-foreground">CPU Cores</span><span className="font-medium">{MOCK_DEVICE.cores}</span></div>
-            <div className="flex justify-between"><span className="text-muted-foreground">Tier</span><Badge variant="outline">{MOCK_DEVICE.cores >= 8 ? "High" : MOCK_DEVICE.cores >= 4 ? "Medium" : "Low"}</Badge></div>
+            <div className="flex justify-between"><span className="text-muted-foreground">CPU Cores</span><span className="font-medium">{DEVICE.cores}</span></div>
+            <div className="flex justify-between"><span className="text-muted-foreground">Tier</span><Badge variant="outline">{DEVICE.cores >= 8 ? "High" : DEVICE.cores >= 4 ? "Medium" : "Low"}</Badge></div>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="pb-2"><CardTitle className="text-base flex items-center gap-2"><Wifi className="h-4 w-4" /> Network</CardTitle></CardHeader>
           <CardContent className="space-y-2 text-sm">
-            <div className="flex justify-between"><span className="text-muted-foreground">Status</span><Badge variant={MOCK_DEVICE.online ? "default" : "destructive"}>{MOCK_DEVICE.online ? "Online" : "Offline"}</Badge></div>
+            <div className="flex justify-between"><span className="text-muted-foreground">Status</span><Badge variant={DEVICE.online ? "default" : "destructive"}>{DEVICE.online ? "Online" : "Offline"}</Badge></div>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="pb-2"><CardTitle className="text-base flex items-center gap-2"><HardDrive className="h-4 w-4" /> Storage</CardTitle></CardHeader>
           <CardContent className="space-y-2 text-sm">
-            <div className="flex justify-between"><span className="text-muted-foreground">Status</span><span className="font-medium">{MOCK_DEVICE.storage}</span></div>
+            <div className="flex justify-between"><span className="text-muted-foreground">Status</span><span className="font-medium">{DEVICE.storage}</span></div>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="pb-2"><CardTitle className="text-base flex items-center gap-2"><Shield className="h-4 w-4" /> Security</CardTitle></CardHeader>
           <CardContent className="space-y-2 text-sm">
-            <div className="flex justify-between"><span className="text-muted-foreground">Protection</span><Badge variant="outline">{MOCK_DEVICE.securityStatus}</Badge></div>
+            <div className="flex justify-between"><span className="text-muted-foreground">Protection</span><Badge variant="outline">{DEVICE.securityStatus}</Badge></div>
           </CardContent>
         </Card>
       </div>

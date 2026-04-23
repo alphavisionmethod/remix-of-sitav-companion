@@ -13,7 +13,7 @@ const VERDICT_CONFIG = {
 
 export default function DecisionReadiness() {
   const { data: liveData, isLoading } = useInvestmentDecisions();
-  const [selected, setSelected] = useState(DEMO_PENDING_DECISIONS[0]);
+  const [selected, setSelected] = useState(PENDING_DECISIONS[0]);
   const vc = VERDICT_CONFIG[selected.verdict];
 
   return (

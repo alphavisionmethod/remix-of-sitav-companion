@@ -7,7 +7,7 @@ import ANDSubNav from "@/components/admin/ANDSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 // Production fallback — seed data removed
-const DEMO_TARGETS: any[] = [];
+const TARGETS: any[] = [];
 
 const AND05AndroidLaunchReadiness = () => {
   const overall = Math.round(([] as any[]).reduce((s, t) => s + t.readiness, 0) / ([] as any[]).length);

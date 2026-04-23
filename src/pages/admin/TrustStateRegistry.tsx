@@ -32,7 +32,7 @@ interface ProofNode {
   evidenceCount: number;
 }
 
-const DEMO_DOMAINS: DomainTrust[] = [
+const DOMAINS: DomainTrust[] = [
   { domain: "Business OS", status: "verified", proofCoverage: 94, approvalChainComplete: true, receiptLinked: true, lastVerified: "2026-04-10T09:30:00Z" },
   { domain: "Finance OS", status: "verified", proofCoverage: 91, approvalChainComplete: true, receiptLinked: true, lastVerified: "2026-04-10T09:28:00Z" },
   { domain: "Concierge OS", status: "degraded", proofCoverage: 72, approvalChainComplete: true, receiptLinked: false, lastVerified: "2026-04-10T08:15:00Z", degradedReason: "Receipt linkage incomplete for booking flows" },
@@ -43,7 +43,7 @@ const DEMO_DOMAINS: DomainTrust[] = [
   { domain: "Connector Control", status: "degraded", proofCoverage: 78, approvalChainComplete: true, receiptLinked: false, lastVerified: "2026-04-10T08:45:00Z", degradedReason: "3 connectors missing sync receipts" },
 ];
 
-const DEMO_PROOF_NODES: ProofNode[] = [
+const PROOF_NODES: ProofNode[] = [
   { id: "p1", type: "Approval → Receipt", from: "Invoice #4821", to: "Receipt R-4821", status: "verified", evidenceCount: 4 },
   { id: "p2", type: "Policy → Execution", from: "Budget Policy BP-3", to: "Spend Action SA-112", status: "verified", evidenceCount: 3 },
   { id: "p3", type: "Trigger → Approval", from: "Lead Recovery Signal", to: "Autopilot Approval AA-7", status: "degraded", evidenceCount: 1 },
@@ -52,7 +52,7 @@ const DEMO_PROOF_NODES: ProofNode[] = [
   { id: "p6", type: "Event → Projection", from: "OrderCreated E-901", to: "Revenue Projection RP-42", status: "verified", evidenceCount: 2 },
 ];
 
-const DEMO_DEGRADED = [
+const DEGRADED = [
   { surface: "Booking Continuity", state: "fallback", source: "Concierge OS", reason: "External calendar sync stale >10m", since: "2026-04-10T08:00:00Z" },
   { surface: "Device Trust Chain", state: "partial", source: "Device Layer", reason: "Apple Watch handoff not verified", since: "2026-04-10T06:30:00Z" },
   { surface: "Connector Receipts", state: "missing", source: "Connector Control", reason: "3 connectors have no sync receipts", since: "2026-04-10T07:45:00Z" },

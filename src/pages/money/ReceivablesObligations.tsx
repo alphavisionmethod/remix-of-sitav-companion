@@ -14,7 +14,7 @@ import {
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useInvoices, useBills } from "@/hooks/use-sita-data";
-const DEMO_RECEIVABLES = [
+const RECEIVABLES = [
   { id: "DR01", source: "Acme Corp", initials: "AC", amount: 4200, invoiceNum: "INV-1042", daysOverdue: 45, status: "overdue" as const, lastContact: "Mar 28", remindersSent: 2, contactName: "Sarah Chen", contactEmail: "sarah@acme.co", notes: "Promised payment by Apr 15" },
   { id: "DR02", source: "TechStart Inc", initials: "TS", amount: 1850, invoiceNum: "INV-1038", daysOverdue: 62, status: "overdue" as const, lastContact: "Mar 15", remindersSent: 3, contactName: "Mike Rodriguez", contactEmail: "mike@techstart.io", notes: "Disputing line item #3" },
   { id: "DR03", source: "Green Valley LLC", initials: "GV", amount: 3600, invoiceNum: "INV-1045", daysOverdue: 12, status: "overdue" as const, lastContact: "Apr 5", remindersSent: 1, contactName: "David Park", contactEmail: "david@greenvalley.com", notes: "" },
@@ -61,7 +61,7 @@ const ReceivablesObligations = () => {
         lastContact: "—", remindersSent: 0, contactName: clientName, contactEmail: i.contactEmail || "", notes: i.notes || "",
       };
     });
-    return dbItems.length > 0 ? dbItems : DEMO_RECEIVABLES;
+    return dbItems.length > 0 ? dbItems : RECEIVABLES;
   }, [invoices]);
 
   const obligations = useMemo(() =>

@@ -114,8 +114,8 @@ export default function ChiefRevenueSynthesis() {
                 <div className="flex items-center gap-1">
                   <Progress value={h.score} className="h-1.5 w-20" />
                   {i > 0 && (
-                    <span className={`text-[10px] font-medium ${h.score > DEMO_CHIEF_HISTORICAL[i - 1].score ? "text-[hsl(var(--trust-safe))]" : "text-destructive"}`}>
-                      {h.score > DEMO_CHIEF_HISTORICAL[i - 1].score ? "↑" : "↓"}{Math.abs(h.score - DEMO_CHIEF_HISTORICAL[i - 1].score)}
+                    <span className={`text-[10px] font-medium ${h.score > CHIEF_HISTORICAL[i - 1].score ? "text-[hsl(var(--trust-safe))]" : "text-destructive"}`}>
+                      {h.score > CHIEF_HISTORICAL[i - 1].score ? "↑" : "↓"}{Math.abs(h.score - CHIEF_HISTORICAL[i - 1].score)}
                     </span>
                   )}
                 </div>

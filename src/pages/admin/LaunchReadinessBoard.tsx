@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 // Production fallback — seed data removed
-const DEMO_READINESS_CHECKS: any[] = [];
+const READINESS_CHECKS: any[] = [];
 
 type BlockerSeverity = "critical" | "high" | "medium" | "low";
 type BlockerStatus = "open" | "in-progress" | "resolved" | "accepted-risk";

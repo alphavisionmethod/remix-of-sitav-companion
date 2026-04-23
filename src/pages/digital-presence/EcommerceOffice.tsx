@@ -9,7 +9,7 @@ import DPOSubNav from "./DPOSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 // Production fallback — seed data removed
-const DEMO_PRODUCTS: any[] = [];
+const PRODUCTS: any[] = [];
 
 export default function EcommerceOffice() {
   const { data: liveData, isLoading } = useSites();

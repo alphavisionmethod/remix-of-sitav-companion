@@ -8,7 +8,7 @@ import { RefreshCw, CheckCircle2, Database, Layers, Shield, FileCheck, GitBranch
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 // Production fallback — seed data removed
-const DEMO_CORE_SERVICES: any[] = [];
+const CORE_SERVICES: any[] = [];
 
 interface ServiceStatus {
   name: string;

@@ -124,7 +124,7 @@ export default function ConscienceGateDashboard() {
     return () => { cancelled = true; };
   }, [isAdmin]);
 
-  const DEMO_VERDICTS: DashboardVerdict[] = liveVerdicts.length > 0
+  const VERDICTS: DashboardVerdict[] = liveVerdicts.length > 0
     ? liveVerdicts
     : ([] as any[]).map(withDashboardId);
 
@@ -133,7 +133,7 @@ export default function ConscienceGateDashboard() {
     ([] as any[]).forEach((v) => counts[v.decision]++);
     const total = ([] as any[]).length;
     return { counts, total, passRate: total ? Math.round((counts.pass / total) * 100) : 0 };
-  }, [DEMO_VERDICTS]);
+  }, [VERDICTS]);
 
   if (loading || !isAdmin) return null;
 

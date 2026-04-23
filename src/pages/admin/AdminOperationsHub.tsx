@@ -15,7 +15,7 @@ const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.05 } } };
 
 const sevColor: Record<string, string> = { high: "text-red-500", medium: "text-amber-500", low: "text-blue-500" };
 
-const DEMO_SERVICES = [
+const SERVICES = [
   { name: "brain-core", status: "healthy" as const, latency: 12, errorRate: 0, uptime: 99.99 },
   { name: "approval-service", status: "healthy" as const, latency: 8, errorRate: 0, uptime: 99.98 },
   { name: "workflow-engine", status: "warning" as const, latency: 185, errorRate: 0.2, uptime: 99.91 },
@@ -26,7 +26,7 @@ const DEMO_SERVICES = [
   { name: "receipt-service", status: "healthy" as const, latency: 5, errorRate: 0, uptime: 100 },
 ];
 
-const DEMO_QUEUES = [
+const QUEUES = [
   { name: "Approval Queue", depth: 12, avgWait: "3.2m", owner: "approval-service", pressure: "normal" as const },
   { name: "Event Bus Consumer", depth: 2847, avgWait: "1.1s", owner: "event-bus", pressure: "normal" as const },
   { name: "Projection Rebuild", depth: 3, avgWait: "45s", owner: "projection-worker", pressure: "elevated" as const },
@@ -34,12 +34,12 @@ const DEMO_QUEUES = [
   { name: "Workflow Retry", depth: 7, avgWait: "12m", owner: "workflow-engine", pressure: "high" as const },
 ];
 
-const DEMO_INCIDENTS = [
+const INCIDENTS = [
   { id: "inc-1", title: "Connector Slack sync delay >15m", severity: "high" as const, status: "investigating", startedAt: "2026-04-05T10:05:00Z", assignee: "ops-team" },
   { id: "inc-2", title: "Workflow engine p99 latency spike", severity: "medium" as const, status: "open", startedAt: "2026-04-05T09:50:00Z", assignee: "platform-eng" },
 ];
 
-const DEMO_ACTION_LOG = [
+const ACTION_LOG = [
   { time: "10:22", actor: "ops-team", action: "Acknowledged incident inc-1", surface: "IncidentCommand" },
   { time: "10:18", actor: "admin@sita.os", action: "Launched runbook: Connector Resync", surface: "RunbookLauncher" },
   { time: "10:15", actor: "system", action: "Auto-scaled projection-worker to 3 replicas", surface: "AutoScaler" },

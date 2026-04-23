@@ -14,11 +14,11 @@ import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { PageShell } from "@/components/sita/PageShell";
 import { Typography } from "@/components/sita/Typography";
 import {
-  DEMO_REV_CAMPAIGNS as DEMO_CAMPAIGNS,
-  DEMO_REV_SEGMENTS as DEMO_SEGMENTS,
-  DEMO_CAMPAIGN_ATTRIBUTION,
-  DEMO_CAMPAIGN_FATIGUE,
-  DEMO_DELIVERABILITY } from "@/data/seed/revenue-office";
+  REV_CAMPAIGNS as CAMPAIGNS,
+  REV_SEGMENTS as SEGMENTS,
+  CAMPAIGN_ATTRIBUTION,
+  CAMPAIGN_FATIGUE,
+  DELIVERABILITY } from "@/data/seed/revenue-office";
 
 
 

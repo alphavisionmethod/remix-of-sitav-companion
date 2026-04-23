@@ -8,7 +8,7 @@ import DPOSubNav from "./DPOSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 // Production fallback — seed data removed
-const DEMO_READINESS_CHECKS: any[] = [];
+const READINESS_CHECKS: any[] = [];
 
 export default function LaunchWarRoom() {
   const overallScore = Math.round(([] as any[]).reduce((sum, c) => sum + c.score, 0) / Math.max(([] as any[]).length, 1));

@@ -14,12 +14,12 @@ import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { PageShell } from "@/components/sita/PageShell";
 import { Typography } from "@/components/sita/Typography";
 import {
-  DEMO_REV_SERVICES as DEMO_SERVICES,
-  DEMO_REV_STATS as DEMO_STATS,
-  DEMO_UPCOMING,
-  DEMO_BOOKING_ANALYTICS,
-  DEMO_NOSHOW_RECOVERY,
-  DEMO_PREP_CHECKLISTS } from "@/data/seed/revenue-office";
+  REV_SERVICES as SERVICES,
+  REV_STATS as STATS,
+  UPCOMING,
+  BOOKING_ANALYTICS,
+  NOSHOW_RECOVERY,
+  PREP_CHECKLISTS } from "@/data/seed/revenue-office";
 
 
 

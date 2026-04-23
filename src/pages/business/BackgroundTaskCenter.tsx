@@ -16,7 +16,7 @@ interface BGTask {
   details?: string;
 }
 
-const DEMO_TASKS: BGTask[] = [
+const TASKS: BGTask[] = [
   { id: "1", title: "CSV Import — contacts_q1.csv", type: "import", status: "running", progress: 67, startedAt: "2 min ago", details: "1,340 of 2,000 rows processed" },
   { id: "2", title: "Sync with Google Contacts", type: "sync", status: "running", progress: 45, startedAt: "5 min ago", details: "Syncing 450 records" },
   { id: "3", title: "Automation: Follow-up sequence", type: "automation", status: "completed", progress: 100, startedAt: "15 min ago", duration: "3m 42s", details: "12 emails sent, 0 errors" },

@@ -32,11 +32,11 @@ import { useEffect } from "react";
 
 
 // Production fallback — seed data removed
-const DEMO_CAPABILITIES: any[] = [];
+const CAPABILITIES: any[] = [];
 
 // ── Demo Fallback Data ──────────────────────────────────────────
 const ROLE_PERMISSIONS_DEMO: Record<string, Record<string, boolean>> = {
-  admin: Object.fromEntries(DEMO_CAPABILITIES.map(c => [c, true])),
+  admin: Object.fromEntries(CAPABILITIES.map(c => [c, true])),
   moderator: { "biz-crm-read": true, "biz-crm-write": true, "fin-accounts-read": true, "fin-payment-execute": false, "con-calendar-read": true, "con-booking-create": true, "plat-diagnostic": true, "plat-config-write": false },
   user: { "biz-crm-read": true, "biz-crm-write": false, "fin-accounts-read": true, "fin-payment-execute": false, "con-calendar-read": true, "con-booking-create": false, "plat-diagnostic": false, "plat-config-write": false },
 };
@@ -81,8 +81,8 @@ const EnterpriseControlPlane = () => {
     },
   });
 
-  const TEAM_MEMBERS = (realTeamMembers?.length ? realTeamMembers : DEMO_TEAM_MEMBERS);
-  const COMPLIANCE_ITEMS = DEMO_COMPLIANCE_ITEMS; // Compliance is config-driven, keep as reference data
+  const TEAM_MEMBERS = (realTeamMembers?.length ? realTeamMembers : TEAM_MEMBERS);
+  const COMPLIANCE_ITEMS = COMPLIANCE_ITEMS; // Compliance is config-driven, keep as reference data
 
   // Live SLA data from sla_snapshots
   const { data: liveSlaData } = useQuery({
@@ -105,8 +105,8 @@ const EnterpriseControlPlane = () => {
     refetchInterval: 60_000,
   });
 
-  const SLA_METRICS = liveSlaData && liveSlaData.length > 0 ? liveSlaData : DEMO_SLA_METRICS;
-  const DEPLOYMENTS = (realAuditLogs?.length ? realAuditLogs : DEMO_DEPLOYMENTS);
+  const SLA_METRICS = liveSlaData && liveSlaData.length > 0 ? liveSlaData : SLA_METRICS;
+  const DEPLOYMENTS = (realAuditLogs?.length ? realAuditLogs : DEPLOYMENTS);
 
   const togglePermission = (role: string, cap: string) => {
     if (role === "admin") return;

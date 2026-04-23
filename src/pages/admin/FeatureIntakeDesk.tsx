@@ -16,7 +16,7 @@ import { classifyFeatureDomain } from "@/lib/delivery-methodology/feature-factor
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 // Production fallback — seed data removed
-const DEMO_ARCHETYPES: any[] = [];
+const ARCHETYPES: any[] = [];
 
 const FeatureIntakeDesk = () => {
   const queryClient = useQueryClient();

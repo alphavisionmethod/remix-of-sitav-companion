@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, CheckCircle, XCircle, Shield, FileCode, Database, Zap, ArrowRight } from "lucide-react";
 import {
-  getFeatureById, getMockReplacementsForFeature, MOCK_SOURCE_INVENTORY,
+  getFeatureById, getMockReplacementsForFeature, SOURCE_INVENTORY,
   type RealityState, type FeatureRealityRecord
 } from "@/runtimes/reality/reality-audit-registry";
 
@@ -40,9 +40,9 @@ const RCP03FeatureDetail = () => {
   const { featureId } = useParams<{ featureId: string }>();
   const navigate = useNavigate();
   const feature = useMemo(() => featureId ? getFeatureById(featureId) : undefined, [featureId]);
-  const mockReplacements = useMemo(() => featureId ? getMockReplacementsForFeature(featureId) : [], [featureId]);
+  const replacements = useMemo(() => featureId ? getMockReplacementsForFeature(featureId) : [], [featureId]);
   const relatedMockSources = useMemo(() =>
-    MOCK_SOURCE_INVENTORY.filter(s => s.importedByPages.some(p => feature?.route && p.startsWith(feature.route.split("/").slice(0, 2).join("/")))),
+    SOURCE_INVENTORY.filter(s => s.importedByPages.some(p => feature?.route && p.startsWith(feature.route.split("/").slice(0, 2).join("/")))),
   [feature]);
 
   if (!feature) {
@@ -132,7 +132,7 @@ const RCP03FeatureDetail = () => {
                     <span className="font-mono text-xs">{s.sourcePath}</span>
                     <div className="flex gap-1">
                       {s.forbidden && <Badge variant="destructive" className="text-[9px]">FORBIDDEN</Badge>}
-                      <Badge variant="outline" className="text-[9px]">{s.mockType}</Badge>
+                      <Badge variant="outline" className="text-[9px]">{s.type}</Badge>
                     </div>
                   </div>
                   <p className="text-[10px] text-muted-foreground mt-1">{s.sourceDescription}</p>
@@ -144,16 +144,16 @@ const RCP03FeatureDetail = () => {
       )}
 
       {/* PersistenceStatusStrip */}
-      {mockReplacements.length > 0 && (
+      {replacements.length > 0 && (
         <Card>
           <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><Database className="h-4 w-4" /> Migration Status</CardTitle></CardHeader>
           <CardContent>
             <div className="space-y-2">
-              {mockReplacements.map(m => (
+              {replacements.map(m => (
                 <div key={m.id} className="flex items-center justify-between p-2 rounded bg-muted/30 text-sm">
                   <div>
                     <span className="font-medium">{m.page}</span>
-                    <span className="text-[10px] text-muted-foreground ml-2">{m.mockSource}</span>
+                    <span className="text-[10px] text-muted-foreground ml-2">{m.source}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Badge variant="outline" className="text-[10px] capitalize">{m.migrationStatus.replace("_", " ")}</Badge>
