@@ -13,9 +13,9 @@ import type { MockDoc, MockSheet, MockDeck } from "@/data/fixtures/mock-data/wor
 const DOC_TYPES = ["document", "proposal", "report", "boardroom-packet", "note"];
 
 export async function fetchDocs(mode: RealityModeKey = "real"): Promise<ModeAwareResult<MockDoc[]>> {
-  if (mode !== "real") return resolveByMode({ mode, realData: null, demoData: DOCS, emptyDefault: [] });
+  if (mode !== "real") return resolveByMode({ mode, realData: null, demoData: [] as any[], emptyDefault: [] });
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return resolveByMode({ mode, realData: null, demoData: DOCS, emptyDefault: [] });
+  if (!user) return resolveByMode({ mode, realData: null, demoData: [] as any[], emptyDefault: [] });
   const { data, error } = await fromTable("documents").select("*")
     .eq("user_id", user.id).in("document_type", DOC_TYPES)
     .order("updated_at", { ascending: false });
@@ -26,13 +26,13 @@ export async function fetchDocs(mode: RealityModeKey = "real"): Promise<ModeAwar
     version: d.version || 1, privacy: d.privacy as never, content: d.content || "",
     governed: d.governed || false, tags: d.tags || [],
   })) : null;
-  return resolveByMode({ mode, realData: mapped, demoData: DOCS, emptyDefault: [] });
+  return resolveByMode({ mode, realData: mapped, demoData: [] as any[], emptyDefault: [] });
 }
 
 export async function fetchSheets(mode: RealityModeKey = "real"): Promise<ModeAwareResult<MockSheet[]>> {
-  if (mode !== "real") return resolveByMode({ mode, realData: null, demoData: SHEETS, emptyDefault: [] });
+  if (mode !== "real") return resolveByMode({ mode, realData: null, demoData: [] as any[], emptyDefault: [] });
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return resolveByMode({ mode, realData: null, demoData: SHEETS, emptyDefault: [] });
+  if (!user) return resolveByMode({ mode, realData: null, demoData: [] as any[], emptyDefault: [] });
   const { data, error } = await fromTable("documents").select("*")
     .eq("user_id", user.id).eq("document_type", "sheet")
     .order("updated_at", { ascending: false });
@@ -43,13 +43,13 @@ export async function fetchSheets(mode: RealityModeKey = "real"): Promise<ModeAw
     data: Array.isArray(d.data_rows) ? d.data_rows : [],
     formulas: d.formulas || {},
   })) : null;
-  return resolveByMode({ mode, realData: mapped, demoData: SHEETS, emptyDefault: [] });
+  return resolveByMode({ mode, realData: mapped, demoData: [] as any[], emptyDefault: [] });
 }
 
 export async function fetchDecks(mode: RealityModeKey = "real"): Promise<ModeAwareResult<MockDeck[]>> {
-  if (mode !== "real") return resolveByMode({ mode, realData: null, demoData: DECKS, emptyDefault: [] });
+  if (mode !== "real") return resolveByMode({ mode, realData: null, demoData: [] as any[], emptyDefault: [] });
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return resolveByMode({ mode, realData: null, demoData: DECKS, emptyDefault: [] });
+  if (!user) return resolveByMode({ mode, realData: null, demoData: [] as any[], emptyDefault: [] });
   const { data, error } = await fromTable("documents").select("*")
     .eq("user_id", user.id).eq("document_type", "deck")
     .order("updated_at", { ascending: false });
@@ -59,5 +59,5 @@ export async function fetchDecks(mode: RealityModeKey = "real"): Promise<ModeAwa
     status: d.status as never, lastModified: d.updated_at,
     linkedBoardroom: d.linked_entity, privacy: d.privacy as never,
   })) : null;
-  return resolveByMode({ mode, realData: mapped, demoData: DECKS, emptyDefault: [] });
+  return resolveByMode({ mode, realData: mapped, demoData: [] as any[], emptyDefault: [] });
 }

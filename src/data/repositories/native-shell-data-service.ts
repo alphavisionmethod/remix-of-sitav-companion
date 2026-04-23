@@ -6,32 +6,32 @@
 import { supabase } from "@/integrations/supabase/client";
 const db = supabase as any;
 export async function fetchNativeShellPlatforms(isDemoMode: boolean) {
-  if (isDemoMode) return PLATFORMS;
+  if (isDemoMode) return [] as any[];
   const { data, error } = await db.from("device_families")
     .select("*")
     .eq("active", true)
     .order("family_key");
   if (error) throw error;
-  return data?.length ? data : PLATFORMS;
+  return data?.length ? data : [] as any[];
 }
 
 export async function fetchCapabilitySurfaceBindings(isDemoMode: boolean) {
-  if (isDemoMode) return CAPABILITIES;
+  if (isDemoMode) return [] as any[];
   const { data, error } = await db.from("capability_surface_bindings")
     .select("*")
     .order("capability_key");
   if (error) throw error;
-  return data?.length ? data : CAPABILITIES;
+  return data?.length ? data : [] as any[];
 }
 
 export async function fetchNssLaunchReadiness(isDemoMode: boolean) {
-  if (isDemoMode) return NSS_TARGETS;
+  if (isDemoMode) return [] as any[];
   const { data, error } = await db.from("ecosystem_launch_readiness")
     .select("*")
     .like("target", "nss_%")
     .order("last_assessed_at", { ascending: false });
   if (error) throw error;
-  if (!data?.length) return NSS_TARGETS;
+  if (!data?.length) return [] as any[];
   return data.map((r: any) => ({
     target: r.target_name || r.target,
     key: r.target,

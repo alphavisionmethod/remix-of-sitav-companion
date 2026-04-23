@@ -10,7 +10,7 @@ async function getUser() {
 export async function fetchFilesOverview() {
   const user = await getUser();
   // Unauthenticated/demo path keeps curated fixtures so the surface remains expressive.
-  if (!user) return FILES_OVERVIEW;
+  if (!user) return [] as any[];
   // Authenticated users always get real data — empty array means honest empty state.
   const { data, error } = await db.from("file_metadata").select("*").eq("user_id", user.id).order("created_at", { ascending: false }) as { data: any[]; error: any };
   if (error || !data) return [];
@@ -19,7 +19,7 @@ export async function fetchFilesOverview() {
 
 export async function fetchFilesProcessing() {
   const user = await getUser();
-  if (!user) return FILES_PROCESSING;
+  if (!user) return [] as any[];
   const { data, error } = await db.from("file_metadata").select("*").eq("user_id", user.id).eq("status", "processing").order("created_at", { ascending: false }) as { data: any[]; error: any };
   if (error || !data) return [];
   return data.map((f: any) => ({ filename: f.filename, mimeType: f.mime_type, sizeBytes: Number(f.size_bytes), textContent: f.extracted_data?.text || "", uploadedBy: "owner" }));
@@ -51,7 +51,7 @@ export async function fetchFilesBySensitivity(sensitivities: string[]) {
 
 export async function fetchFilesSearchIndex(): Promise<IndexableItem[]> {
   const user = await getUser();
-  if (!user) return FILES_SEARCH_INDEX;
+  if (!user) return [] as any[];
   const { data, error } = await db.from("file_metadata").select("*").eq("user_id", user.id).order("created_at", { ascending: false }) as { data: any[]; error: any };
   if (error || !data) return [];
   return data.map((f: any, i: number) => ({
