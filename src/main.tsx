@@ -8,10 +8,10 @@ import { initErrorMonitoring } from "@/lib/services/error-monitoring-service";
 import { installFetchInterceptor } from "@/lib/observability/request-context";
 import { startSpanExporter } from "@/lib/observability/apm";
 import { startUptimeHeartbeat } from "@/lib/observability/uptime";
-import { validateEnv } from "@/lib/env-validation";
+import { validateEnvironment } from "@/lib/env-validation";
 
 // ── Boot-time env check ──
-validateEnv();
+validateEnvironment();
 
 // ── Service Worker registration with iframe / preview-host guard ──
 if ('serviceWorker' in navigator) {
