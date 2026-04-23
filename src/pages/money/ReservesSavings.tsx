@@ -19,7 +19,6 @@ import { useQueryFreshness } from "@/hooks/use-query-freshness";
 
 
 const ReservesSavings = () => {
-  const isDemoMode = false;
   const { data: reservesData = [] } = useReservesSavings();
   const { user } = useAuth();
   const queryClient = useQueryClient();
@@ -49,7 +48,7 @@ const ReservesSavings = () => {
 
   return (
     <motion.div className="space-y-5" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
-      <PageTruthBanner truthState={isDemoMode ? "demo" : "live"} freshness={freshness.label} />
+      <PageTruthBanner truthState="live" freshness={freshness.label} />
       <ConfirmationDialog state={confirmation} />
 
       <HeroCard

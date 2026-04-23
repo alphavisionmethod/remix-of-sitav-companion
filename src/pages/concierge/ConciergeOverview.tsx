@@ -23,12 +23,11 @@ import {
 
 
 const ConciergeOverview = () => {
-  const isDemoMode = false;
   const { navigateTo } = useConciergeNavigation();
   const { data: tasks = [] } = useHouseholdTasks();
   const { data: events = [] } = useFamilyEvents();
 
-  const hasLiveData = isDemoMode || tasks.length > 0 || events.length > 0;
+  const hasLiveData = tasks.length > 0 || events.length > 0;
 
   const kpi = useMemo(() => {
     const now = new Date();

@@ -11,14 +11,12 @@ import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 export default function ConnectionDetail() {
-  const isDemoMode = false;
   const { connectionId } = useParams();
   const navigate = useNavigate();
 
   const conn = null;
 
-  if (!conn && isDemoMode) return <div className="p-6 text-muted-foreground">Connection not found</div>;
-  if (!isDemoMode) return (
+  return (
     <div className="p-6 space-y-4">
       <Button variant="ghost" size="sm" className="gap-1.5 text-muted-foreground" onClick={() => navigate("/integrations/connections")}>
         <ArrowLeft className="w-3.5 h-3.5" /> Back to Connections

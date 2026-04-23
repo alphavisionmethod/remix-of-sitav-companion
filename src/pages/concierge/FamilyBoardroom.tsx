@@ -31,7 +31,6 @@ const familyWellness = {
 type BoardroomView = "daily" | "weekly" | "school" | "shopping" | "travel" | "monthly";
 
 const FamilyBoardroom = () => {
-  const isDemoMode = false;
   const [view, setView] = useState<BoardroomView>("daily");
 
   return (
@@ -42,7 +41,7 @@ const FamilyBoardroom = () => {
         <ConciergeEmptyState domain="generic" title="No review data yet" description="Your boardroom will populate with insights once you start tracking tasks, events, and obligations across concierge surfaces." />
       )}
 
-      {isDemoMode && (<>
+      {false && (<>
       <SitaTabs
         tabs={[
           { key: "daily", label: "Daily Pulse" },

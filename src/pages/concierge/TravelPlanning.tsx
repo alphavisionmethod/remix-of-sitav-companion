@@ -29,7 +29,6 @@ const trips: Trip[] = [
 type TravelView = "trips" | "prep" | "itinerary" | "logistics" | "post-trip";
 
 const TravelPlanning = () => {
-  const isDemoMode = false;
   const [view, setView] = useState<TravelView>("trips");
   const [selectedTrip, setSelectedTrip] = useState(trips[1]);
 
@@ -53,7 +52,7 @@ const TravelPlanning = () => {
   return (
     <ConciergePageWrapper className="space-y-5">
       <div className="flex items-center gap-2 flex-wrap">
-        <PageTruthBanner truthState={isDemoMode ? "demo" : "live"} />
+        <PageTruthBanner truthState="live" />
         <CrossAppAction to="/files/search" label="Travel Documents" variant="chip" context={{ entityType: "file", entityId: "travel", entityLabel: "Travel docs" }} />
       </div>
 

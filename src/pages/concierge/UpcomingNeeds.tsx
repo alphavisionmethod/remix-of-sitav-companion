@@ -39,7 +39,6 @@ const REVIEW_ITEMS: ReviewItem[] = [
 type UpcomingView = "today" | "3-day" | "week" | "burden";
 
 const UpcomingNeeds = () => {
-  const isDemoMode = false;
   const [view, setView] = useState<UpcomingView>("today");
 
   const todayItems = OBLIGATIONS.filter(o => o.dueLabel.startsWith("Today") || o.dueLabel.startsWith("Overdue"));
@@ -69,7 +68,7 @@ const UpcomingNeeds = () => {
     accentColor: o.dueLabel.includes("Overdue") ? "hsl(0 70% 55%)" : "hsl(285 55% 55%)",
   }));
 
-  if (!isDemoMode) {
+  {
     return (
       <ConciergePageWrapper className="space-y-5">
         <PageTruthBanner truthState="live" />

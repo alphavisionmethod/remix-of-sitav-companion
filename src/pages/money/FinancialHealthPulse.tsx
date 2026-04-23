@@ -15,7 +15,6 @@ import { computeIncomeQuality } from "@/lib/services/finance-os/income-quality.s
 
 
 const FinancialHealthPulse = () => {
-  const isDemoMode = false;
   const health = useMemo(() => computeFinancialHealth({
     safeToSpendCents: 245000, monthlyIncomeCents: 850000, totalDebtCents: 4813000,
     debtToIncomeRatio: 10.4, creditUtilization: 24.5, billsCoveredPct: 100,
@@ -48,7 +47,7 @@ const FinancialHealthPulse = () => {
   return (
     <motion.div className="space-y-5" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}>
       <DomainHeader domain="money" title="Financial Health Pulse" subtitle="Composite health score across all money dimensions" />
-      <PageTruthBanner truthState={isDemoMode ? "demo" : "live"} />
+      <PageTruthBanner truthState="live" />
 
       {/* Overall Score Hero */}
       <HeroCard

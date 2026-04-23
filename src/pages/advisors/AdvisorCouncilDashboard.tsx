@@ -155,7 +155,6 @@ function useAgentIntelligence(action: string) {
 // ── Main Dashboard ───────────────────────────────────────────
 
 export default function AdvisorCouncilDashboard() {
-  const isDemoMode = false;
   const [searchParams] = useSearchParams();
   const initialTab = searchParams.get("tab") || "scorecards";
   const [tab, setTab] = useState(initialTab);
@@ -166,11 +165,9 @@ export default function AdvisorCouncilDashboard() {
 
   // Try fetching live data on mount (falls back gracefully)
   useEffect(() => {
-    if (!isDemoMode) {
-      fleetStatus.refresh();
-      budgetData.refresh();
-    }
-  }, [isDemoMode]);
+    fleetStatus.refresh();
+    budgetData.refresh();
+  }, []);
 
   // Use live data if available, else demo data
   const scorecards = DEMO_ADVISOR_SCORECARDS;

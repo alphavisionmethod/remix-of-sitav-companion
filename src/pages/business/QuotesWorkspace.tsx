@@ -21,7 +21,6 @@ import { useAction } from "@/hooks/use-action";
 import { useDraftAutosave } from "@/hooks/useDraftAutosave";
 
 const QuotesWorkspace = () => {
-  const isDemoMode = false;
   const { primaryMode } = useBusinessProfile();
   const { user } = useAuth();
   const moduleConfig = getModuleAdaptation("quotes", primaryMode);
@@ -71,7 +70,7 @@ const QuotesWorkspace = () => {
 
   const listPane = (
     <div className="p-3 space-y-3">
-      <PageTruthBanner truthState={isDemoMode ? "demo" : "live"} />
+      <PageTruthBanner truthState="live" />
       <CrossAppAction to="/business/invoices" label="Convert to Invoice" variant="chip" context={{ entityType: "quote", entityId: selectedId || "all" }} />
 
       <div className="flex items-center justify-between px-1">

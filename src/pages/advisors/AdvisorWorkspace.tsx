@@ -42,7 +42,6 @@ import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 
-const isDemoMode = false;
 // ── Operating Modes ─────────────────────────────────────────────
 
 type CouncilMode = "daily-pulse" | "business" | "money" | "concierge" | "boardroom" | "executive";
@@ -65,9 +64,9 @@ const TRUST_PIPELINE: ExecutionState[] = [
 // ── Main Guide Identity ─────────────────────────────────────────
 
 const MainGuideHeader = ({ mode, onModeChange }: { mode: CouncilMode; onModeChange: (m: CouncilMode) => void }) => {
-const totalApprovals = isDemoMode ? mockAdvisors.reduce((s, a) => s + a.pendingApprovals, 0) : 0;
-  const activeAdvisors = isDemoMode ? mockAdvisors.filter(a => a.status === "active").length : 0;
-  const highImpact = isDemoMode ? mockRecommendations.filter(r => r.impact === "high").length : 0;
+const totalApprovals = 0;
+  const activeAdvisors = 0;
+  const highImpact = 0;
 
   return (
     <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
@@ -105,7 +104,7 @@ const totalApprovals = isDemoMode ? mockAdvisors.reduce((s, a) => s + a.pendingA
           <MetricPill label="High-Impact Moves" value={highImpact} accent />
           <MetricPill label="Active Advisors" value={activeAdvisors} />
           <MetricPill label="Pending Approvals" value={totalApprovals} accent={totalApprovals > 0} />
-          <MetricPill label="Simulations Ready" value={isDemoMode ? mockSimulations.length : 0} />
+          <MetricPill label="Simulations Ready" value={0} />
         </div>
 
         {/* Operating mode selector */}
@@ -149,9 +148,7 @@ const MetricPill = ({ label, value, accent }: { label: string; value: number; ac
 const CouncilGrid = ({ mode }: { mode: CouncilMode }) => {
   const navigate = useNavigate();
 const modeConfig = MODES.find(m => m.id === mode)!;
-  const filtered = isDemoMode
-    ? (modeConfig.domains.includes("all") ? mockAdvisors : mockAdvisors.filter(a => modeConfig.domains.includes(a.domain)))
-    : [];
+  const filtered: typeof mockAdvisors = [];
 
   const advisorIds = useMemo(() => filtered.map(a => a.id), [filtered]);
   const liveStatuses = useAdvisorStatuses(advisorIds);
@@ -202,7 +199,7 @@ const modeConfig = MODES.find(m => m.id === mode)!;
 // ── What Matters Now — Priority Recommendations ─────────────────
 
 const WhatMattersNow = ({ mode }: { mode: CouncilMode }) => {
-if (!isDemoMode) return null;
+return null;
   
   const modeConfig = MODES.find(m => m.id === mode)!;
   const recs = modeConfig.domains.includes("all")
@@ -235,7 +232,7 @@ if (!isDemoMode) return null;
 // ── Disagreement & Synthesis Cards ──────────────────────────────
 
 const DisagreementPanel = () => {
-if (!isDemoMode) return null;
+return null;
   
   const disagreements = mockSynthesis.filter(s => s.disagreements && s.disagreements.length > 0);
 
@@ -283,7 +280,7 @@ if (!isDemoMode) return null;
 // ── Confidence Ladder Panel ─────────────────────────────────────
 
 const ConfidencePanel = ({ mode }: { mode: CouncilMode }) => {
-if (!isDemoMode) return null;
+return null;
   
   const modeConfig = MODES.find(m => m.id === mode)!;
   const advisors = modeConfig.domains.includes("all")
@@ -303,7 +300,7 @@ if (!isDemoMode) return null;
 // ── Trust State Pipeline Visualization ──────────────────────────
 
 const TrustPipelineStrip = () => {
-if (!isDemoMode) return null;
+return null;
   
   const states: { state: ExecutionState; count: number }[] = [
     { state: "proposed", count: 3 },
@@ -332,7 +329,7 @@ if (!isDemoMode) return null;
 // ── What Changed Panel ──────────────────────────────────────────
 
 const WhatChangedPanel = () => {
-if (!isDemoMode) return null;
+return null;
   
   const recentProof = mockProofHistory.slice(0, 4);
 
@@ -515,7 +512,7 @@ return (
         </div>
       </motion.div>
 
-      {isDemoMode ? (
+      {false ? (
         <div className="space-y-2">
           {mockProofHistory.map((p, i) => (
             <motion.div key={p.id} initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.03 }}>
@@ -536,7 +533,7 @@ const SingleAdvisorView = ({ advisorId }: { advisorId: string }) => {
   const navigate = useNavigate();
 const [activeSection, setActiveSection] = useState<"overview" | "simulations" | "history">("overview");
 
-  if (!isDemoMode) {
+  {
     return (
       <div className="space-y-6">
         <button onClick={() => navigate("/advisors")} className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors">
@@ -921,11 +918,11 @@ const params = useParams();
           </TabsTrigger>
           <TabsTrigger value="simulations" className="text-[11px] h-8 px-3 data-[state=active]:bg-card data-[state=active]:shadow-sm">
             <Play className="h-3 w-3 mr-1.5" />Simulations
-            {isDemoMode && mockSimulations.length > 0 && <Badge className="ml-1 h-4 px-1 text-[9px] bg-state-simulated/20 text-state-simulated">{mockSimulations.length}</Badge>}
+            
           </TabsTrigger>
           <TabsTrigger value="approvals" className="text-[11px] h-8 px-3 data-[state=active]:bg-card data-[state=active]:shadow-sm">
             <CheckCircle className="h-3 w-3 mr-1.5" />Approvals
-            {isDemoMode && mockApprovals.length > 0 && <Badge className="ml-1 h-4 px-1 text-[9px] bg-trust-approval/20 text-trust-approval">{mockApprovals.length}</Badge>}
+            
           </TabsTrigger>
           <TabsTrigger value="memory" className="text-[11px] h-8 px-3 data-[state=active]:bg-card data-[state=active]:shadow-sm">
             <Eye className="h-3 w-3 mr-1.5" />Memory

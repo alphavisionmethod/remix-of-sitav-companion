@@ -25,7 +25,6 @@ import { useMoneyKPIs } from "@/hooks/use-domain-data";
 type BoardroomView = "synthesis" | "priorities" | "risks" | "advisors";
 
 const GlobalBoardroom = () => {
-  const isDemoMode = false;
   const { isDemo, user } = useAuth();
   const [view, setView] = useState<BoardroomView>("synthesis");
   const navigate = useNavigate();
@@ -41,7 +40,7 @@ const GlobalBoardroom = () => {
 
   // Flagship Loop 3 — emit boardroom_summary once data has settled (live mode only).
   useEffect(() => {
-    if (!user || isDemoMode) return;
+    if (!user) return;
     emitBoardroomLoop("boardroom_summary", {
       outcome: "success",
       evidence: {
@@ -66,7 +65,7 @@ const GlobalBoardroom = () => {
   return (
     <BoardroomCinematic domain="business">
       <motion.div className="mx-auto max-w-6xl space-y-6 p-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-        <PageTruthBanner truthState={isDemoMode ? "demo" : "live"} />
+        <PageTruthBanner truthState="live" />
 
         <HeroCard
           title={`Executive Boardroom — ${new Date().toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" })}`}
@@ -192,9 +191,9 @@ const GlobalBoardroom = () => {
 
             <ProofCard
               title="Boardroom Evidence Chain"
-              status={isDemoMode ? "pending" : "verified"}
+              status="verified"
               chain={[
-                { label: "Business data sourced", verified: !isDemoMode },
+                { label: "Business data sourced", verified: true },
                 { label: "Financial accounts synced", verified: k.totalBalance > 0 },
                 { label: "Concierge data loaded", verified: true },
                 { label: "Cross-domain synthesis complete", verified: true },

@@ -26,7 +26,6 @@ const sensitivityColor: Record<SensitivityLevel, string> = {
 };
 
 const FilesOverview = () => {
-  const isDemoMode = false;
   const { data: filesData = [] } = useFilesOverview();
   const { user } = useAuth();
   const queryClient = useQueryClient();
@@ -82,7 +81,7 @@ const FilesOverview = () => {
 
   return (
     <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }} className="space-y-5">
-      <PageTruthBanner truthState={isDemoMode ? "demo" : "live"} />
+      <PageTruthBanner truthState="live" />
 
       <HeroCard
         title="Files & Knowledge"
