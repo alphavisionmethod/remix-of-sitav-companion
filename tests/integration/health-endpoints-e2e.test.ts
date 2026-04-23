@@ -158,6 +158,34 @@ describe("E2E: Health & Readiness Endpoints", () => {
     }
   });
 
+  // ── Connector Health (auth-gated, skip if no token) ────────
+  it.skipIf(!SUPABASE_URL || !ANON_KEY)("health-beat: rejects invalid method", async () => {
+    const res = await fetch(`${SUPABASE_URL}/functions/v1/health-beat`, {
+      method: "GET",
+      headers: { apikey: ANON_KEY },
+    });
+    expect(res.status).toBe(405);
+  });
+
+  it.skipIf(!SUPABASE_URL || !ANON_KEY)("health-beat: rejects invalid JSON", async () => {
+    const res = await fetch(`${SUPABASE_URL}/functions/v1/health-beat`, {
+      method: "POST",
+      headers: { apikey: ANON_KEY, "Content-Type": "application/json" },
+      body: "not json",
+    });
+    expect(res.status).toBe(400);
+  });
+
+  it.skipIf(!SUPABASE_URL || !ANON_KEY)("health-check: version and release are strings", async () => {
+    const res = await fetch(`${SUPABASE_URL}/functions/v1/health-check`, {
+      headers: { apikey: ANON_KEY },
+    });
+    const body = await res.json();
+    expect(typeof body.version).toBe("string");
+    expect(typeof body.release).toBe("string");
+    expect(typeof body.uptime_seconds).toBe("number");
+  });
+
   // Cross-endpoint consistency: live=alive implies ready should have some checks passing
   it.skipIf(!SUPABASE_URL || !ANON_KEY)("cross-check: live + ready consistency", async () => {
     const [liveRes, readyRes] = await Promise.all([
@@ -171,6 +199,46 @@ describe("E2E: Health & Readiness Endpoints", () => {
     // If liveness is alive, readiness checks should at least have entries
     if (live.status === "alive") {
       expect(Object.keys(ready.checks).length).toBeGreaterThan(0);
+    }
+  });
+
+  // Cross-endpoint: health-check + health-ready agree on DB status
+  it.skipIf(!SUPABASE_URL || !ANON_KEY)("cross-check: health-check DB status matches health-ready DB check", async () => {
+    const [checkRes, readyRes] = await Promise.all([
+      fetch(`${SUPABASE_URL}/functions/v1/health-check`, { headers: { apikey: ANON_KEY } }),
+      fetch(`${SUPABASE_URL}/functions/v1/health-ready`, { headers: { apikey: ANON_KEY } }),
+    ]);
+    const check = await checkRes.json();
+    const ready = await readyRes.json();
+
+    const dbHealthy = check.subsystems?.db?.status === "healthy";
+    const dbReachable = ready.checks?.["db:reachable"]?.ok;
+
+    // If health-check says DB is healthy, ready should agree
+    if (dbHealthy) {
+      expect(dbReachable).toBe(true);
+    }
+  });
+
+  // Staleness guard: all timestamps within 60s of each other
+  it.skipIf(!SUPABASE_URL || !ANON_KEY)("cross-check: timestamps are within 60s of each other", async () => {
+    const [liveRes, readyRes, checkRes] = await Promise.all([
+      fetch(`${SUPABASE_URL}/functions/v1/health-live`, { headers: { apikey: ANON_KEY } }),
+      fetch(`${SUPABASE_URL}/functions/v1/health-ready`, { headers: { apikey: ANON_KEY } }),
+      fetch(`${SUPABASE_URL}/functions/v1/health-check`, { headers: { apikey: ANON_KEY } }),
+    ]);
+
+    const live = await liveRes.json();
+    const ready = await readyRes.json();
+    const check = await checkRes.json();
+
+    const timestamps = [live.timestamp, ready.timestamp, check.timestamp]
+      .filter(Boolean)
+      .map((t: string) => new Date(t).getTime());
+
+    if (timestamps.length >= 2) {
+      const maxDrift = Math.max(...timestamps) - Math.min(...timestamps);
+      expect(maxDrift, "Endpoint timestamps drifted >60s").toBeLessThan(60_000);
     }
   });
 });
