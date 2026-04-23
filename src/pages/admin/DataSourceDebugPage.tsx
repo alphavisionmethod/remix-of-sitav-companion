@@ -1,5 +1,6 @@
 import { useState, useMemo } from "react";
 import { AdminPageHeader } from "@/components/sita/admin/AdminPageHeader";
+import { Database } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -42,6 +43,7 @@ export default function DataSourceDebugPage() {
   return (
     <div className="space-y-6 p-6">
       <AdminPageHeader
+        icon={Database}
         title="Data Source Debug"
         subtitle={`${s.totalFiles} files scanned · Generated ${new Date(s.generatedAt).toLocaleDateString()}`}
       />
