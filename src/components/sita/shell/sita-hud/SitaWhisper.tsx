@@ -28,6 +28,13 @@ const KIND_TINT: Record<string, string> = {
 function dispatchAction(action: SitaNudgeAction) {
   if (typeof window === "undefined") return;
   if (action.intent) {
+    // Phase E — if the intent starts with "do:" treat as agent intent
+    if (action.intent.startsWith("do:")) {
+      window.dispatchEvent(
+        new CustomEvent("sita-agent-intent", { detail: { intent: action.intent.slice(3).trim() } }),
+      );
+      return;
+    }
     window.dispatchEvent(
       new CustomEvent("sita-voice-utterance", { detail: { utterance: action.intent } }),
     );
