@@ -149,6 +149,8 @@ function WorkspaceInner() {
           onOpen={(id) => navigate(`/personal-brain/c/${id}`)}
           emptyMessage="No chats in this workspace yet."
         />
+
+        {workspaceId && <MembersPanel workspaceId={workspaceId} />}
       </div>
     </PageShell>
   );
