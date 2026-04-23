@@ -26,7 +26,6 @@ const CONNECTION_HEALTH = [
 const OPERATING_MODES = ["Growth", "Stability", "Recovery", "Launch"] as const;
 
 export default function RevenueGate() {
-  const isDemoMode = false;
   const navigate = useNavigate();
   const { data: liveDeals, isLoading } = useDeals();
   const [operatingMode, setOperatingMode] = useState<typeof OPERATING_MODES[number]>("Growth");
@@ -75,7 +74,7 @@ export default function RevenueGate() {
         </CardContent>
       </Card>
 
-      {!isDemoMode && isLoading ? (
+      {isLoading ? (
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           {[1, 2, 3, 4].map(i => <Skeleton key={i} className="h-24 rounded-xl" />)}
         </div>

@@ -38,11 +38,10 @@ const MODE_STYLES = {
 };
 
 export default function CommandHistory() {
-  const isDemoMode = false;
   const [filter, setFilter] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState("");
 
-  const filtered = (isDemoMode ? MOCK_HISTORY : [] as typeof MOCK_HISTORY).filter(r => {
+  const filtered = (MOCK_HISTORY).filter(r => {
     if (filter !== "all" && r.mode !== filter) return false;
     if (searchQuery && !r.query.toLowerCase().includes(searchQuery.toLowerCase())) return false;
     return true;

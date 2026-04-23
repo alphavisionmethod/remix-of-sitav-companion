@@ -28,7 +28,6 @@ import {
 
 
 export default function BookingCenter() {
-  const isDemoMode = false;
   const { data: liveBookings, isLoading } = useBookings();
   const [tab, setTab] = useState("upcoming");
 
@@ -38,7 +37,7 @@ export default function BookingCenter() {
     mode: b.mode || "video", status: b.status || "pending",
   })) ?? []);
 
-  if (!isDemoMode && isLoading) {
+  if (isLoading) {
     return (
       <PageShell width="wide" className="space-y-6">
 <Skeleton className="h-8 w-48" />
@@ -48,7 +47,7 @@ export default function BookingCenter() {
     );
   }
 
-  if (!isDemoMode && UPCOMING.length === 0) {
+  if (UPCOMING.length === 0) {
     return (
       <PageShell width="wide" className="space-y-6">
 <Typography role="appTitle">Booking Center</Typography>

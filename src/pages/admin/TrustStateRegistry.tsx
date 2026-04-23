@@ -59,7 +59,6 @@ const DEMO_DEGRADED = [
 ];
 
 const statusIcon = (s: TrustStatus) => {
-  const isDemoMode = false;
   switch (s) {
     case "verified": return <CheckCircle className="h-3.5 w-3.5 text-emerald-500" />;
     case "degraded": return <AlertTriangle className="h-3.5 w-3.5 text-amber-500" />;
@@ -79,7 +78,6 @@ const statusBadge = (s: TrustStatus) => {
 };
 
 const TrustStateRegistry = () => {
-  const isDemoMode = false;
   const [tab, setTab] = useState("domains");
   const overallScore = Math.round(([] as typeof DEMO_DOMAINS).reduce((sum, d) => sum + d.proofCoverage, 0) / ([] as typeof DEMO_DOMAINS).length);
   const verifiedCount = ([] as typeof DEMO_DOMAINS).filter(d => d.status === "verified").length;

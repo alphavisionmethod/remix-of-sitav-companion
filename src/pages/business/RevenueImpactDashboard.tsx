@@ -117,7 +117,6 @@ const ChartTooltip = ({ active, payload, label }: any) => {
 
 const RevenueImpactDashboard = () => {
   const { primaryMode } = useBusinessProfile();
-  const isDemoMode = false;
   const { user } = useAuth();
   const revenueLabel = primaryMode === "ecommerce" ? "Store Revenue" : primaryMode === "appointment-based" ? "Booking Revenue" : primaryMode === "membership" ? "MRR Impact" : "Revenue";
   const [granularity, setGranularity] = useState<Granularity>("daily");
@@ -126,7 +125,7 @@ const RevenueImpactDashboard = () => {
   // Real data: aggregate from invoices + payment_transactions
   const { data: realRevenue } = useQuery({
     queryKey: ["revenue-impact", user?.id],
-    enabled: !!user && !isDemoMode,
+    enabled: !!user,
     queryFn: async () => {
       const { data: invoices } = await fromTable("invoices").select("id, total_cents, status, paid_at, created_at").eq("user_id", user!.id);
       if (!invoices?.length) return null;
@@ -147,7 +146,7 @@ const RevenueImpactDashboard = () => {
   const trendData = useMemo(() => generateTrend(granularity), [granularity]);
 
   const totals = useMemo(() => {
-    if (!isDemoMode && realRevenue) {
+    if (realRevenue) {
       return {
         recovered: realRevenue.recovered,
         generated: realRevenue.generated,
@@ -163,7 +162,7 @@ const RevenueImpactDashboard = () => {
     const avgRoi = Math.round(PLAYBOOK_REVENUE.reduce((s, p) => s + p.roi, 0) / PLAYBOOK_REVENUE.length);
     const avgSuccess = Math.round(PLAYBOOK_REVENUE.reduce((s, p) => s + p.successRate, 0) / PLAYBOOK_REVENUE.length);
     return { recovered, generated, total: recovered + generated, actions, avgRoi, avgSuccess };
-  }, [isDemoMode, realRevenue]);
+  }, [realRevenue]);
 
   const pieData = useMemo(() =>
     PLAYBOOK_REVENUE.map(p => ({

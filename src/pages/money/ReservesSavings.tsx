@@ -19,7 +19,6 @@ import { useQueryFreshness } from "@/hooks/use-query-freshness";
 
 
 const ReservesSavings = () => {
-  const isDemoMode = false;
   const { data: reservesData = [] } = useReservesSavings();
   const { user } = useAuth();
   const queryClient = useQueryClient();
@@ -28,13 +27,12 @@ const ReservesSavings = () => {
   const reservesQuery = useQuery({
     queryKey: ["reserves", user?.id],
     queryFn: async () => {
-      if (isDemoMode) return reservesData;
       if (!user) return [];
       const { data, error } = await db.from("reserves").select("*").order("priority", { ascending: true });
       if (error) { console.error("[reserves]", error); return reservesData; }
       return data || [];
     },
-    staleTime: isDemoMode ? Infinity : 10000,
+    staleTime: 10000,
   });
   const reserves = reservesQuery.data ?? [];
   const isLoading = reservesQuery.isLoading;

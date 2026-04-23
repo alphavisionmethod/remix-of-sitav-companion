@@ -16,7 +16,17 @@ const ADVISORS = [
   { advisor_id: "money-guardian", display_name: "Money Guardian", domain: "finance-os", council: "customer-facing", default_model: "google/gemini-2.5-flash", prompt_family_id: "money-advisor-system", autonomy_level: "L2-recommend", risk_tier: "R2", maturity: "beta", confidence_threshold: 0.75 },
 ];
 
+
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+};
+
 serve(async (req) => {
+  if (req.method === "OPTIONS") {
+    return new Response("ok", { headers: corsHeaders });
+  }
+
   const cors = handleCors(req);
   if (cors) return cors;
 

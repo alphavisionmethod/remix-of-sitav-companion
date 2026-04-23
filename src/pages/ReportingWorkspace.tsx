@@ -51,7 +51,6 @@ const DEMO_TRUST_DATA = [
 
 const ReportingWorkspace = () => {
   const { user , isDemo} = useAuth();
-  const isDemoMode = false;
   const [period, setPeriod] = useState("6m");
   const [tab, setTab] = useState("executive");
 

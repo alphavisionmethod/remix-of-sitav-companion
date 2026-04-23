@@ -99,7 +99,6 @@ function CallStats({ contacts, callLogs }: { contacts: Contact[]; callLogs: Call
 
 function ActiveDialer({ contact, onEnd, onSkip }: { contact: Contact; onEnd: () => void; onSkip: () => void }) {
   const { isDemo } = useAuth();
-  const isDemoMode = false;
   const [state, setState] = useState<DialerState>("dialing");
   const [elapsed, setElapsed] = useState(0);
   const [muted, setMuted] = useState(false);
@@ -113,7 +112,7 @@ function ActiveDialer({ contact, onEnd, onSkip }: { contact: Contact; onEnd: () 
     setTimeout(() => setState("connected"), 3000);
     return () => clearInterval(timer);
   });
-  const script = isDemoMode ? ((isDemoMode ? MOCK_SCRIPTS : [] as typeof MOCK_SCRIPTS).find(s => s.stage === contact.stage) || MOCK_SCRIPTS[0]) : null;
+  const script = isDemoMode ? ((MOCK_SCRIPTS).find(s => s.stage === contact.stage) || MOCK_SCRIPTS[0]) : null;
 
   const handleEndCall = () => {
     setState("wrapping-up");
@@ -249,7 +248,6 @@ function ActiveDialer({ contact, onEnd, onSkip }: { contact: Contact; onEnd: () 
 
 const RevenueCallingPage = () => {
   const { user , isDemo} = useAuth();
-  const isDemoMode = false;
   const { data: liveContacts } = useCallingContacts();
   const { data: liveLogs } = useCallLogs();
   const [activeView, setActiveView] = useState<"queue" | "dialer" | "logs" | "scripts">("queue");
@@ -261,7 +259,6 @@ const RevenueCallingPage = () => {
 
   // Map live contacts to Contact shape or use demo data
   const contacts: Contact[] = useMemo(() => {
-    if (isDemoMode) return MOCK_CONTACTS;
     if (!liveContacts?.length) return [];
     return liveContacts.map((c: Record<string, any>) => ({
       id: c.id,
@@ -276,10 +273,9 @@ const RevenueCallingPage = () => {
       lastContact: c.last_called_at ? new Date(c.last_called_at).getTime() : undefined,
       notes: c.notes || "",
     }));
-  }, [isDemoMode, liveContacts]);
+  }, [liveContacts]);
 
   const callLogs: CallLog[] = useMemo(() => {
-    if (isDemoMode) return MOCK_CALL_LOGS;
     if (!liveLogs?.length) return [];
     return liveLogs.map((l: Record<string, any>): CallLog => ({
       id: l.id,
@@ -295,7 +291,7 @@ const RevenueCallingPage = () => {
       direction: "outbound" as const,
       recordingUrl: null,
     }));
-  }, [isDemoMode, liveLogs]);
+  }, [liveLogs]);
 
   const filteredContacts = useMemo(() => {
     let result = contacts;
@@ -488,7 +484,7 @@ const RevenueCallingPage = () => {
               <p className="text-sm font-medium text-foreground">No Scripts Configured</p>
               <p className="text-xs text-muted-foreground mt-1">Call scripts activate when configured. Switch to demo mode to preview.</p>
             </SitaCard>
-          ) : (isDemoMode ? MOCK_SCRIPTS : [] as typeof MOCK_SCRIPTS).map(script => (
+          ) : (MOCK_SCRIPTS).map(script => (
             <SitaCard key={script.id} className="p-4">
               <div className="space-y-3">
                 <div className="flex items-center gap-2">

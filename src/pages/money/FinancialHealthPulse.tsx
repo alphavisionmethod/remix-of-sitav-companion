@@ -15,8 +15,6 @@ import { computeIncomeQuality } from "@/lib/services/finance-os/income-quality.s
 
 
 const FinancialHealthPulse = () => {
-  const isDemoMode = false;
-
   const health = useMemo(() => computeFinancialHealth({
     safeToSpendCents: 245000, monthlyIncomeCents: 850000, totalDebtCents: 4813000,
     debtToIncomeRatio: 10.4, creditUtilization: 24.5, billsCoveredPct: 100,

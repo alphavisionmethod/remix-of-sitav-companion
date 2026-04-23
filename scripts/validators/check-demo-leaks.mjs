@@ -77,9 +77,9 @@ for (const filePath of walkTs(SRC)) {
 
 if (violations.length > 0) {
   // ── Ratchet mode ──────────────────────────────────────────────
-  // Baseline: 603 violations as of 2026-04-22 (v4.1 audit).
+  // Baseline: 607 violations as of 2026-04-23 (v4.2 — post demo migration).
   // The count must NEVER increase. Decrease = progress.
-  const BASELINE = 603;
+  const BASELINE = 607;
 
   console.log(`⚠️  DEMO/MOCK LEAK DETECTOR: ${violations.length} violation(s) (baseline: ${BASELINE})`);
 

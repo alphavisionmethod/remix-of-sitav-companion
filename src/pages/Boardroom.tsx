@@ -211,8 +211,6 @@ const ConfidencePill = ({ value }: { value: number }) => {
 
 const AdvisorVoiceTrack = ({ type }: { type: BoardroomType }) => {
   const { isDemo } = useAuth();
-  const isDemoMode = false;
-  
   if (!isDemoMode) {
     return (
       <div className="space-y-3">
@@ -279,7 +277,6 @@ const AdvisorVoiceTrack = ({ type }: { type: BoardroomType }) => {
 
 const DisagreementCards = () => {
   const { isDemo } = useAuth();
-  const isDemoMode = false;
   if (!isDemoMode) return null;
   
   const disagreements = mockSynthesis.filter(s => s.disagreements && s.disagreements.length > 0);
@@ -315,7 +312,6 @@ const DisagreementCards = () => {
 
 const DecisionMemoryStrip = () => {
   const { isDemo } = useAuth();
-  const isDemoMode = false;
   if (!isDemoMode) return null;
   
   const decisions = mockProofHistory.filter(p => p.type === "approval" || p.type === "execution").slice(0, 5);
@@ -383,7 +379,6 @@ const CarryoverPanel = () => {
 
 const ProofSummaryBoard = () => {
   const { isDemo } = useAuth();
-  const isDemoMode = false;
   if (!isDemoMode) return null;
   
   const verified = mockProofHistory.filter(p => p.outcome === "verified").length;
@@ -616,7 +611,6 @@ const RenderSection = ({ section }: { section: BoardroomContentSection }) => {
 
 const PacketView = ({ type, perspective = "owner" }: { type: BoardroomType; perspective?: PerspectiveLevel }) => {
   const { isDemo } = useAuth();
-  const isDemoMode = false;
   const { packet, isLoading, regenerate } = useBoardroomPacket(type);
   const config = getPerspectiveConfig(perspective);
   const {
@@ -822,7 +816,7 @@ const PacketView = ({ type, perspective = "owner" }: { type: BoardroomType; pers
           }}
           resolution="Balanced approach recommended: focus collections on overdue invoices while maintaining moderate outbound."
         />
-      ) : !isDemoMode && hasDisagreementData ? (
+      ) : hasDisagreementData ? (
         (() => {
           const item: any = boardroomItems.find((i: any) => Array.isArray(i.advisor_summaries) && i.advisor_summaries.length >= 2);
           const sums: any[] = item?.advisor_summaries || [];
@@ -852,7 +846,7 @@ const PacketView = ({ type, perspective = "owner" }: { type: BoardroomType; pers
             />
           );
         })()
-      ) : !isDemoMode && (
+      ) : (
         <EmptyState
           icon={Scale}
           title="Disagreement Theater"
@@ -1265,7 +1259,6 @@ const FullscreenPresentation = ({ type, onExit }: { type: BoardroomType; onExit:
 
 const Boardroom = () => {
   const { isDemo } = useAuth();
-  const isDemoMode = false;
   const os = useOSOrchestration();
   const signature = useExperienceSignature();
   const interfaceState = useAdaptiveInterface();

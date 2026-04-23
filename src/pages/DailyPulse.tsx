@@ -74,7 +74,6 @@ function usePulseLiveData(userId: string | undefined) {
 
 export default function DailyPulse() {
   const { user, isDemo } = useAuth();
-  const isDemoMode = false;
   const navigate = useNavigate();
   const emitLoop = useLoopEmitter("sign-in-dashboard-pulse");
   const [approvalsOpen, setApprovalsOpen] = useState(false);

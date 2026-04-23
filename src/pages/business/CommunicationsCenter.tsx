@@ -38,7 +38,6 @@ const fallbackComms: Communication[] = [
 
 const CommunicationsCenter = () => {
   const { primaryMode } = useBusinessProfile();
-  const isDemoMode = false;
   const { user } = useAuth();
   const moduleConfig = getModuleAdaptation("communications", primaryMode);
   const queryClient = useQueryClient();

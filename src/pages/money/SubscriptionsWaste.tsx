@@ -30,7 +30,6 @@ interface SubForm { service_name: string; amount: string; billing_cycle: string;
 const emptyForm: SubForm = { service_name: "", amount: "", billing_cycle: "monthly", category: "", renewal_date: "", usage_level: "unknown", waste_flag: false, duplicate_of: "", notes: "" };
 
 const SubscriptionsWaste = () => {
-  const isDemoMode = false;
   const { user } = useAuth();
   const queryClient = useQueryClient();
   const { confirmation, confirm } = useConfirmation();
