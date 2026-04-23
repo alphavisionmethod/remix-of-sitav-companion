@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Brain, Mic, Plus, Settings, Wrench } from "lucide-react";
+import { Brain, Mic, Plus, Radio, Settings, Wrench } from "lucide-react";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
 export type BrainScope = "personal" | "business";
@@ -12,6 +12,8 @@ interface BrainHeroProps {
   onVoice?: () => void;
   onSettings?: () => void;
   onTools?: () => void;
+  sentinelOn?: boolean;
+  onToggleSentinel?: () => void;
 }
 
 export function BrainHero({
@@ -22,6 +24,8 @@ export function BrainHero({
   onVoice,
   onSettings,
   onTools,
+  sentinelOn = false,
+  onToggleSentinel,
 }: BrainHeroProps) {
   return (
     <div className="relative overflow-hidden rounded-3xl border border-border/60 bg-gradient-to-br from-primary/15 via-card to-accent/10 p-5 shadow-xl shadow-primary/5 sm:p-7">
