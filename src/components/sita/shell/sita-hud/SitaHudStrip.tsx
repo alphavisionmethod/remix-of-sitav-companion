@@ -13,9 +13,10 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Sparkles } from "lucide-react";
+import { Sparkles, Eye } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useSitaHud, type SitaPresenceState } from "./sita-hud-bus";
+import { useSitaScreenContext } from "@/lib/sita-context";
 
 function greeting(now = new Date()): string {
   const h = now.getHours();
@@ -41,6 +42,7 @@ export interface SitaHudStripProps {
 
 export function SitaHudStrip({ className }: SitaHudStripProps) {
   const hud = useSitaHud();
+  const screen = useSitaScreenContext();
   const [now, setNow] = useState(() => new Date());
 
   useEffect(() => {
@@ -61,6 +63,7 @@ export function SitaHudStrip({ className }: SitaHudStripProps) {
 
   // Hide entirely if there's nothing meaningful to say and we're not armed.
   const visible = hud.armed || hud.presence !== "idle";
+  const showSeeChip = hud.armed && Boolean(screen) && (hud.presence === "idle" || hud.presence === "listening");
 
   return (
     <AnimatePresence>
@@ -99,6 +102,15 @@ export function SitaHudStrip({ className }: SitaHudStripProps) {
             {showTranscript && hud.transcript && (
               <span className="hidden truncate text-muted-foreground sm:inline">
                 · "{truncate(hud.transcript, 56)}"
+              </span>
+            )}
+            {showSeeChip && screen && (
+              <span
+                className="hidden items-center gap-1 rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-medium text-primary sm:inline-flex"
+                title={`Sita can see: ${screen.title}`}
+              >
+                <Eye className="h-2.5 w-2.5" />
+                {truncate(screen.title, 28)}
               </span>
             )}
           </div>
