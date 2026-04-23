@@ -63,7 +63,6 @@ const TRUST_PIPELINE: ExecutionState[] = [
 // ── Main Guide Identity ─────────────────────────────────────────
 
 const MainGuideHeader = ({ mode, onModeChange }: { mode: CouncilMode; onModeChange: (m: CouncilMode) => void }) => {
-  const isDemoMode = false;
 const totalApprovals = isDemoMode ? mockAdvisors.reduce((s, a) => s + a.pendingApprovals, 0) : 0;
   const activeAdvisors = isDemoMode ? mockAdvisors.filter(a => a.status === "active").length : 0;
   const highImpact = isDemoMode ? mockRecommendations.filter(r => r.impact === "high").length : 0;
@@ -146,7 +145,6 @@ const MetricPill = ({ label, value, accent }: { label: string; value: number; ac
 // ── Advisor Council Grid ────────────────────────────────────────
 
 const CouncilGrid = ({ mode }: { mode: CouncilMode }) => {
-  const isDemoMode = false;
   const navigate = useNavigate();
 const modeConfig = MODES.find(m => m.id === mode)!;
   const filtered = isDemoMode
@@ -202,7 +200,6 @@ const modeConfig = MODES.find(m => m.id === mode)!;
 // ── What Matters Now — Priority Recommendations ─────────────────
 
 const WhatMattersNow = ({ mode }: { mode: CouncilMode }) => {
-  const isDemoMode = false;
 if (!isDemoMode) return null;
   
   const modeConfig = MODES.find(m => m.id === mode)!;
@@ -236,7 +233,6 @@ if (!isDemoMode) return null;
 // ── Disagreement & Synthesis Cards ──────────────────────────────
 
 const DisagreementPanel = () => {
-  const isDemoMode = false;
 if (!isDemoMode) return null;
   
   const disagreements = mockSynthesis.filter(s => s.disagreements && s.disagreements.length > 0);
@@ -285,7 +281,6 @@ if (!isDemoMode) return null;
 // ── Confidence Ladder Panel ─────────────────────────────────────
 
 const ConfidencePanel = ({ mode }: { mode: CouncilMode }) => {
-  const isDemoMode = false;
 if (!isDemoMode) return null;
   
   const modeConfig = MODES.find(m => m.id === mode)!;
@@ -306,7 +301,6 @@ if (!isDemoMode) return null;
 // ── Trust State Pipeline Visualization ──────────────────────────
 
 const TrustPipelineStrip = () => {
-  const isDemoMode = false;
 if (!isDemoMode) return null;
   
   const states: { state: ExecutionState; count: number }[] = [
@@ -336,7 +330,6 @@ if (!isDemoMode) return null;
 // ── What Changed Panel ──────────────────────────────────────────
 
 const WhatChangedPanel = () => {
-  const isDemoMode = false;
 if (!isDemoMode) return null;
   
   const recentProof = mockProofHistory.slice(0, 4);
@@ -394,12 +387,11 @@ const SimulationStudio = () => (
 // ── Approval Queue ──────────────────────────────────────────────
 
 const ApprovalQueue = () => {
-  const isDemoMode = false;
   const { user } = useAuth();
 const { pendingApprovals, isLoading } = useApprovalQueue();
 
   // Use DB approvals if available, otherwise mock
-  const approvals = (!isDemoMode && pendingApprovals.length > 0)
+  const approvals = (pendingApprovals.length > 0)
     ? pendingApprovals.map((a: Record<string, any>) => ({
         id: a.id,
         advisorId: "system",
@@ -451,19 +443,17 @@ const { pendingApprovals, isLoading } = useApprovalQueue();
 // ── Memory Transparency ─────────────────────────────────────────
 
 const MemoryTransparency = () => {
-  const isDemoMode = false;
   const { user } = useAuth();
 const { data: dbMemory = [] } = useQuery({
     queryKey: ["advisor-memory", user?.id],
-    enabled: !!user && !isDemoMode,
-    queryFn: async () => {
+    enabled: !!user && !queryFn: async () => {
       const { data } = await fromTable("user_memory").select("*").order("created_at", { ascending: false }).limit(20);
       return data || [];
     },
   });
 
   // Map DB memory to mock format, or use mocks
-  const memoryItems = (!isDemoMode && dbMemory.length > 0)
+  const memoryItems = (dbMemory.length > 0)
     ? dbMemory.map((m: Record<string, any>) => ({
         id: m.id,
         type: m.memory_type || "learned",
@@ -506,7 +496,6 @@ const { data: dbMemory = [] } = useQuery({
 // ── Proof & History ─────────────────────────────────────────────
 
 const ProofHistory = () => {
-  const isDemoMode = false;
 return (
     <div className="space-y-6">
       <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
@@ -541,7 +530,6 @@ return (
 // ── Single Advisor Workspace ────────────────────────────────────
 
 const SingleAdvisorView = ({ advisorId }: { advisorId: string }) => {
-  const isDemoMode = false;
   const navigate = useNavigate();
 const [activeSection, setActiveSection] = useState<"overview" | "simulations" | "history">("overview");
 
@@ -899,7 +887,6 @@ const CouncilChatPanel = ({ mode }: { mode: CouncilMode }) => {
 // ── Main Page ───────────────────────────────────────────────────
 
 export default function AdvisorWorkspace() {
-  const isDemoMode = false;
   const [mode, setMode] = useState<CouncilMode>("daily-pulse");
   const [activeTab, setActiveTab] = useState("council");
 const params = useParams();

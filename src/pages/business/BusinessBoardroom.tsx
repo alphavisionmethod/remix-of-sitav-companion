@@ -17,7 +17,6 @@ import { getTopAdvisors } from "@/domains/engines/adaptive-advisor-roster";
 import { getBoardroomAgenda } from "@/domains/engines/adaptive-boardroom-framing";
 
 const BusinessBoardroom = () => {
-  const isDemoMode = false;
 const [mode, setMode] = useState("weekly");
   const { profile } = useBusinessProfile();
   const adaptiveAdvisors = useMemo(() => {

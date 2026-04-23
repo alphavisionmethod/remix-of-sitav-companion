@@ -21,7 +21,6 @@ const DEFAULT_SCOPE = { ownerId: "current-user", visibility: "private" as const 
 
 export default function GovernanceDashboard() {
   const { isDemo } = useAuth();
-  const isDemoMode = false;
   const { data: gov, isLoading } = useGovernanceSummary();
   const { engines } = useOSRuntime();
 
@@ -55,10 +54,9 @@ export default function GovernanceDashboard() {
       {/* Data mode + staleness indicator */}
       <div className="flex items-center gap-3">
         <div className={cn(
-          "flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-semibold border",
-          isDemoMode ? "bg-accent/10 text-accent border-accent/20" : "bg-primary/10 text-primary border-primary/20"
+          "flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-semibold border" ? "bg-accent/10 text-accent border-accent/20" : "bg-primary/10 text-primary border-primary/20"
         )}>
-          <div className={cn("h-2 w-2 rounded-full", isDemoMode ? "bg-accent animate-pulse" : "bg-primary")} />
+          <div className={cn("h-2 w-2 rounded-full" ? "bg-accent animate-pulse" : "bg-primary")} />
           {isDemoMode ? "Demo Data" : "Live"}
         </div>
         {gov?.lastUpdated && (

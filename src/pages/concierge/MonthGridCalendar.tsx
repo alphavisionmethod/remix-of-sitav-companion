@@ -23,11 +23,10 @@ interface CalendarEvent {
 }
 
 function useCalendarData(year: number, month: number) {
-  const isDemoMode = false;
   const { user } = useAuth();
 
   return useQuery({
-    queryKey: ["calendar-data", user?.id, year, month, isDemoMode],
+    queryKey: ["calendar-data", user?.id, year, month],
     queryFn: async (): Promise<CalendarEvent[]> => {
       if (!user?.id || isDemoMode) {
         // Demo data

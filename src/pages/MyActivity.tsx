@@ -40,7 +40,6 @@ const intensityClass = (count: number): string => {
 const HeatmapGrid = ({ data }: { data: Record<string, number> }) => {
   const today = new Date();
   const cells: { date: string; count: number }[] = [];
-  const isDemoMode = false;
   for (let w = WEEKS - 1; w >= 0; w--) {
     for (let d = 0; d < DAYS; d++) {
       const date = new Date(today);
@@ -86,7 +85,6 @@ const HeatmapGrid = ({ data }: { data: Record<string, number> }) => {
 
 const MyActivity = () => {
   const { user, isDemo } = useAuth();
-  const isDemoMode = false;
   const [heatmapData, setHeatmapData] = useState<Record<string, number>>({});
   const [featureUsage, setFeatureUsage] = useState<Record<string, number>>({});
   const [totalActions, setTotalActions] = useState(0);

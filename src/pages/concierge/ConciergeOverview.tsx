@@ -23,7 +23,6 @@ import {
 
 
 const ConciergeOverview = () => {
-  const isDemoMode = false;
   const { navigateTo } = useConciergeNavigation();
   const { data: tasks = [] } = useHouseholdTasks();
   const { data: events = [] } = useFamilyEvents();

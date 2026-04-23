@@ -22,7 +22,6 @@ import { useDraftAutosave } from "@/hooks/useDraftAutosave";
 
 const QuotesWorkspace = () => {
   const { primaryMode } = useBusinessProfile();
-  const isDemoMode = false;
   const { user } = useAuth();
   const moduleConfig = getModuleAdaptation("quotes", primaryMode);
   const queryClient = useQueryClient();

@@ -37,7 +37,6 @@ const REPUTATION_PULSE = { rating: 4.8, reviews: 127, responseRate: 96, nps: 72 
 const OPERATING_MODE = "Growth";
 
 export default function GrowthBoardroom() {
-  const isDemoMode = false;
   const { isBeginner } = useRevenueOfficeMode();
   const { data: liveDeals, isLoading } = useDeals();
   const navigate = useNavigate();
@@ -53,7 +52,7 @@ export default function GrowthBoardroom() {
   const LEAKS = (liveLeakItems && liveLeakItems.length > 0 ? liveLeakItems : []);
   const ADVISOR_SIGNALS = DEMO_ADVISOR_SIGNALS;
 
-  if (!isDemoMode && isLoading) {
+  if (isLoading) {
     return <PageShell width="wide" className="space-y-6">
 <Skeleton className="h-8 w-48" /><div className="grid grid-cols-2 lg:grid-cols-4 gap-4">{[1, 2, 3, 4].map(i => <Skeleton key={i} className="h-24 rounded-xl" />)}</div></PageShell>;
   }

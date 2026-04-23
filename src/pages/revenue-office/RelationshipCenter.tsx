@@ -20,7 +20,6 @@ import { Typography } from "@/components/sita/Typography";
 
 
 export default function RelationshipCenter() {
-  const isDemoMode = false;
   const { data: liveContacts, isLoading } = useCustomers();
   const { data: liveLifecycleStages } = useCustomerLifecycleStages();
   const [tab, setTab] = useState("contacts");
@@ -36,7 +35,7 @@ export default function RelationshipCenter() {
     tags: c.tags || [],
   })) ?? []);
 
-  if (!isDemoMode && isLoading) {
+  if (isLoading) {
     return (
       <PageShell width="wide" className="space-y-6">
 <Skeleton className="h-8 w-48" />
@@ -46,7 +45,7 @@ export default function RelationshipCenter() {
     );
   }
 
-  if (!isDemoMode && CONTACTS.length === 0) {
+  if (CONTACTS.length === 0) {
     return (
       <PageShell width="wide" className="space-y-6">
 <Typography role="appTitle">Relationship Center</Typography>

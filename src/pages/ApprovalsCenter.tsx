@@ -17,7 +17,6 @@ import {
 import { PageShell } from "@/components/sita/PageShell";
 const ApprovalsCenter = () => {
   const { isDemo } = useAuth();
-  const isDemoMode = false;
   const { data: approvals = [], isLoading } = useApprovals();
   const { approve, reject } = useApprovalQueue();
   const [expandedId, setExpandedId] = useState<string | null>(null);

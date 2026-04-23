@@ -44,7 +44,6 @@ interface AttributionRow {
 
 
 export default function CampaignOrchestrator() {
-  const isDemoMode = false;
   const { data: liveCampaigns, isLoading } = useCampaigns();
   const [tab, setTab] = useState("campaigns");
 
@@ -54,7 +53,7 @@ export default function CampaignOrchestrator() {
     revenue: `$${c.revenue_generated || 0}`, steps: c.steps || 0, completionRate: c.completion_rate || 0,
   })) ?? []);
 
-  if (!isDemoMode && isLoading) {
+  if (isLoading) {
     return (
       <PageShell width="wide" className="space-y-6">
 <Skeleton className="h-8 w-64" />
@@ -64,7 +63,7 @@ export default function CampaignOrchestrator() {
     );
   }
 
-  if (!isDemoMode && CAMPAIGNS.length === 0) {
+  if (CAMPAIGNS.length === 0) {
     return (
       <PageShell width="wide" className="space-y-6">
 <Typography role="appTitle">Campaign Orchestrator</Typography>

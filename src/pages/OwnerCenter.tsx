@@ -214,7 +214,6 @@ const OwnerRevenuePanel = () => {
 const OwnerCenter = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const isDemoMode = false;
   const activePage = subpageFromPath(location.pathname);
 // Data hooks
   const { data: incidentData } = useAdminIncidents();

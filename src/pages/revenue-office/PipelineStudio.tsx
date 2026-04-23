@@ -21,7 +21,6 @@ import { Typography } from "@/components/sita/Typography";
 type Deal = { id: string; name: string; value: number; probability: number; age: number; owner: string; contact: string; nextAction?: string; nextActionDate?: string; source: string; tags: string[] };
 
 export default function PipelineStudio() {
-  const isDemoMode = false;
   const [tab, setTab] = useState("kanban");
   const [filter, setFilter] = useState<string | null>(null);
   const { data: liveDeals, isLoading } = useDeals();
@@ -39,7 +38,7 @@ export default function PipelineStudio() {
   const avgAge = Math.round(allDeals.filter(d => d.age > 0).reduce((sum, d) => sum + d.age, 0) / (allDeals.filter(d => d.age > 0).length || 1));
   const atRisk = allDeals.filter(d => d.age > 15 && d.probability < 100).length;
 
-  if (!isDemoMode && isLoading) {
+  if (isLoading) {
     return (
       <PageShell width="wide" className="space-y-6">
 <Skeleton className="h-8 w-48" />
@@ -51,7 +50,7 @@ export default function PipelineStudio() {
     );
   }
 
-  if (!isDemoMode && (!liveDeals || liveDeals.length === 0)) {
+  if ((!liveDeals || liveDeals.length === 0)) {
     return (
       <PageShell width="wide" className="space-y-6">
 <Typography role="appTitle">Pipeline Studio</Typography>

@@ -16,7 +16,6 @@ const deviceIcon = (type: "desktop" | "phone" | "tablet") => {
 };
 
 const TrustedDeviceManager = () => {
-  const isDemoMode = false;
   return (
     <div className="space-y-6 p-6 max-w-3xl mx-auto">
       <div>
@@ -38,7 +37,7 @@ const TrustedDeviceManager = () => {
       </Card>
 
       <div className="space-y-3">
-        {(isDemoMode ? MOCK_DEVICES : [] as typeof MOCK_DEVICES).map(device => (
+        {(MOCK_DEVICES).map(device => (
           <Card key={device.id}>
             <CardContent className="pt-6 flex items-center gap-4">
               <div className="p-2 rounded-lg bg-muted">{deviceIcon(device.type)}</div>

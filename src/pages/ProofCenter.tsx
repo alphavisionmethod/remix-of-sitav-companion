@@ -164,7 +164,6 @@ const ProofCenter = () => {
   const { receipts: kernelReceipts, chainValid, chainLength } = useProofTimeline();
   const kernelStatus = useKernelStatus();
   const { user, isDemo } = useAuth();
-  const isDemoMode = false;
   const [filter, setFilter] = useState<FilterType>("all");
   const [domainFilter, setDomainFilter] = useState<DomainFilter>("all");
   const [searchQuery, setSearchQuery] = useState("");
@@ -173,8 +172,7 @@ const ProofCenter = () => {
   // Fetch linked approvals
   const { data: approvals = [] } = useQuery({
     queryKey: ["proof_approvals", user?.id],
-    enabled: !!user && !isDemoMode,
-    queryFn: async () => {
+    enabled: !!user && !queryFn: async () => {
       const { data } = await fromTable("approval_queue").select("*").eq("status", "approved").order("created_at", { ascending: false }).limit(20);
       return data || [];
     },
@@ -216,10 +214,9 @@ const ProofCenter = () => {
               <FileDown className="h-3 w-3" /> Export Audit Trail
             </button>
             <div className={cn(
-              "flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-semibold",
-              isDemoMode ? "bg-amber-500/10 text-amber-600 border border-amber-500/20" : "bg-emerald-500/10 text-emerald-600 border border-emerald-500/20"
+              "flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-semibold" ? "bg-amber-500/10 text-amber-600 border border-amber-500/20" : "bg-emerald-500/10 text-emerald-600 border border-emerald-500/20"
             )}>
-              <div className={cn("h-2 w-2 rounded-full", isDemoMode ? "bg-amber-500 animate-pulse" : "bg-emerald-500")} />
+              <div className={cn("h-2 w-2 rounded-full" ? "bg-amber-500 animate-pulse" : "bg-emerald-500")} />
               {isDemoMode ? "Demo" : "Live"}
             </div>
           </div>

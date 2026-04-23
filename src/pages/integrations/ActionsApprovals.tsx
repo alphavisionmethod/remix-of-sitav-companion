@@ -23,7 +23,6 @@ const statusConfig: Record<string, { color: string; icon: any; label: string }> 
 };
 
 function ActionCard({ action, onApprove, onReject }: { action: DemoActionRequest; onApprove?: () => void; onReject?: () => void }) {
-  const isDemoMode = false;
   const [showDryRun, setShowDryRun] = useState(false);
   const config = statusConfig[action.status];
   const StatusIcon = config.icon;
@@ -123,7 +122,6 @@ function ActionCard({ action, onApprove, onReject }: { action: DemoActionRequest
 }
 
 export default function ActionsApprovals() {
-  const isDemoMode = false;
   const [filter, setFilter] = useState("all");
   const navigate = useNavigate();
 

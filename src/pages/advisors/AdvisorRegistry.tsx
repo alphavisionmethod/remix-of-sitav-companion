@@ -46,7 +46,6 @@ const COUNCIL_ICONS: Record<string, typeof Brain> = {
 };
 
 function autonomyPct(level: string): number {
-  const isDemoMode = false;
   const idx = DEMO_AUTONOMY_LEVELS.indexOf(level);
   return idx >= 0 ? Math.round(((idx + 1) / ([] as typeof DEMO_AUTONOMY_LEVELS).length) * 100) : 0;
 }
@@ -239,7 +238,6 @@ function AdvisorDetailPanel({ advisor }: { advisor: ExtendedAdvisorConfig }) {
 
 // ── Main Page ───────────────────────────────────────────────
 const AdvisorRegistry = () => {
-  const isDemoMode = false;
   const [council, setCouncil] = useState("all");
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [search, setSearch] = useState("");

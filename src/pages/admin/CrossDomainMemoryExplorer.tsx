@@ -67,7 +67,6 @@ const DEMO_SCOPES: MemoryScopeInfo[] = [
 ];
 
 const healthBadge = (h: string) => {
-  const isDemoMode = false;
   switch (h) {
     case "healthy": return "bg-emerald-500/10 text-emerald-500 border-emerald-500/20";
     case "stale": return "bg-amber-500/10 text-amber-500 border-amber-500/20";
@@ -77,7 +76,6 @@ const healthBadge = (h: string) => {
 };
 
 const CrossDomainMemoryExplorer = () => {
-  const isDemoMode = false;
   const [tab, setTab] = useState("timeline");
   const [search, setSearch] = useState("");
 

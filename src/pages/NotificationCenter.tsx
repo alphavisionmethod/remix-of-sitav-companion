@@ -139,7 +139,6 @@ const NotificationCard = ({ notif, onMarkRead, onDismiss, onAction }: {
 // ── Main Component ───────────────────────────────────────────
 const NotificationCenter = () => {
   const { user, isDemo } = useAuth();
-  const isDemoMode = false;
   const queryClient = useQueryClient();
   const interfaceState = useAdaptiveInterface();
   const os = useOSOrchestration();
@@ -155,8 +154,7 @@ const NotificationCenter = () => {
   // Fetch notifications from queue
   const { data: notifications = [], isLoading } = useQuery({
     queryKey: ["notification_center", user?.id],
-    enabled: !!user && !isDemoMode,
-    queryFn: async () => {
+    enabled: !!user && !queryFn: async () => {
       const { data, error } = await db.from("notifications_queue")
         .select("*")
         .order("created_at", { ascending: false })
@@ -169,8 +167,7 @@ const NotificationCenter = () => {
   // Also fetch from notifications table
   const { data: legacyNotifs = [] } = useQuery({
     queryKey: ["notifications_legacy", user?.id],
-    enabled: !!user && !isDemoMode,
-    queryFn: async () => {
+    enabled: !!user && !queryFn: async () => {
       const { data } = await db.from("notifications")
         .select("*")
         .order("created_at", { ascending: false })
@@ -195,7 +192,7 @@ const NotificationCenter = () => {
       ];
     }
     return combined;
-  }, [notifications, legacyNotifs, isDemoMode]);
+  }, [notifications, legacyNotifs]);
 
   // Filter
   const filtered = useMemo(() => {
