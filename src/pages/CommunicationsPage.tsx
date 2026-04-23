@@ -16,8 +16,8 @@ import { MessageSquare, Mail, Phone, Send, Clock, CheckCircle2, AlertCircle, Sta
 import { motion, AnimatePresence } from "framer-motion";
 import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 type CommunicationEntry = { id: string; channel: string; subject: string; status: string; date: string; [k: string]: any };
-type ChannelType = "email" | "sms" | "chat" | "voice";
-type MessageStatus = "sent" | "delivered" | "read" | "failed" | "draft";
+type ChannelType = "email" | "sms" | "chat" | "voice" | "call";
+type MessageStatus = "sent" | "delivered" | "read" | "failed" | "draft" | "queued";
 import { useAuth } from "@/contexts/AuthContext";
 import { useQuery } from "@tanstack/react-query";
 import { fromTable } from "@/lib/supabase-helpers";

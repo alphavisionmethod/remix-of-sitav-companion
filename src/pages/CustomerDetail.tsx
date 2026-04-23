@@ -14,7 +14,9 @@ import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 // Production fallback — seed data removed
 const TIMELINE_ITEMS: any[] = [];
 
-// Mock customer data keyed by ID
+// Production fallback — customer data from DB
+const CUSTOMERS_DATA: Record<string, any> = {};
+
 const CustomerDetail = ({
   customerId: propId }: { customerId?: string }) => {
   const params = useParams<{ id: string }>();
