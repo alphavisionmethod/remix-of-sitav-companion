@@ -64,7 +64,7 @@ export default function MembershipCourseOffice() {
             <Card className="bg-card/50 border-border/50">
               <CardHeader><CardTitle className="flex items-center gap-2"><GraduationCap className="h-5 w-5 text-blue-400" />Course Library</CardTitle></CardHeader>
               <CardContent className="space-y-3">
-                {([] as typeof courses).map(c => (
+                {([] as any[]).map((c: any) => (
                   <div key={c.name} className="p-3 rounded-lg bg-background/50 border border-border/30">
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center gap-2">

@@ -19,6 +19,8 @@ export default function RetentionOffice() {
         <p className="text-sm text-muted-foreground">Churn prediction, NPS tracking, re-engagement workflows, and engagement health</p>
       </motion.div>
 
+const NPS_DATA: any = { current: 0, previous: 0, trend: "—", distribution: [], recentResponses: [] };
+
       {/* Summary */}
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
         {[

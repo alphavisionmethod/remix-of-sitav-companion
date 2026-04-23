@@ -11,6 +11,10 @@ import {
   Star, Shield, Target, RefreshCw, Zap, BarChart3, XCircle
 } from "lucide-react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+const quoteStats: any[] = [];
+const quotes: any[] = [];
+const upsellSuggestions: any[] = [];
+const pricingInsights: any[] = [];
 const statusColors: Record<string, string> = {
   draft: "bg-muted text-muted-foreground",
   sent: "bg-blue-500/10 text-blue-400",

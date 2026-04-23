@@ -152,7 +152,7 @@ function SystemPulseHero() {
             { label: "AI Team", value: `${healthyAgents}/${totalAgents}`, sub: "healthy", icon: Server, ok: healthyAgents === totalAgents },
             { label: "Incidents", value: openIncidents.toString(), sub: openIncidents === 0 ? "all clear" : "open", icon: AlertTriangle, ok: openIncidents === 0 },
             { label: "Connectors", value: `${connectorHealth.filter(c => c.status === "connected").length}/${connectorHealth.length}`, sub: "online", icon: Wifi, ok: degradedConnectors === 0 },
-            { label: "Workflows", value: stuckWorkflows.toString(), sub: stuckWorkflows === 0 ? "all running" : "stuck", icon: Activity, ok: stuckWorkflows === 0 },
+            { label: "Workflows", value: stuckWorkflowCount.toString(), sub: stuckWorkflowCount === 0 ? "all running" : "stuck", icon: Activity, ok: stuckWorkflowCount === 0 },
             { label: "Tokens / 24h", value: `${(totalTokens / 1000).toFixed(0)}k`, sub: `~$${(totalTokens * 0.002 / 1000).toFixed(2)}`, icon: DollarSign, ok: true },
             { label: "Fraud", value: fraudSentinel.activeAlerts.toString(), sub: `risk: ${fraudSentinel.riskScore}`, icon: ShieldAlert, ok: fraudSentinel.activeAlerts === 0 },
           ].map(m => (
@@ -460,7 +460,7 @@ function MCIncidents() {
   const { adminIncidents } = useMCAdmin();
   const adminList = adminIncidents?.incidents || [];
   // Merge admin data onto mock incidents for enriched display
-  const incidents = incidents.map((m, idx) => {
+  const incidents = ([] as any[]).map((m: any, idx: number) => {
     const admin = adminList[idx];
     return admin ? { ...m, status: admin.status ?? m.status, severity: admin.severity ?? m.severity } : m;
   });

@@ -27,6 +27,8 @@ export default function DecisionTheater() {
         <p className="text-muted-foreground">Pre-launch review — impact simulation, advisor debate, risk analysis, and authorization</p>
       </div>
 
+const pendingDecisions: any[] = [];
+
       {/* Summary */}
       <div className="grid grid-cols-4 gap-3">
         {[

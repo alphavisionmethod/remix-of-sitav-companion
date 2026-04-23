@@ -62,6 +62,10 @@ const StoreAnalyticsPage = () => {
         </TabsList>
 
         <TabsContent value="overview" className="space-y-6 mt-4">
+const REVENUE_TREND: any[] = [];
+const CATEGORY_REVENUE: any[] = [];
+const RETENTION_DATA: any[] = [];
+
           {/* Revenue Trend */}
           <SitaCard hover={false}>
             <SitaCardTitle sub="Monthly revenue and install volume">Revenue & Install Trend</SitaCardTitle>

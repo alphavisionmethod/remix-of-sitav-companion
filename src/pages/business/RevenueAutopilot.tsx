@@ -21,7 +21,7 @@ import {
 import { useRevenueLeaksData, useRecoveredValuesData, useRawOpportunities } from "@/hooks/use-business-data";
 
 // ── Derived data (fallback to mock, overridden in component) ──
-let LEAKAGE = detectLeakage([] as any[]);
+let LEAKAGE = detectLeakage({ leads: [], quotes: [], invoices: [], customers: [], bookings: [], subscriptions: [] });
 let RECOVERY_ACTIONS = suggestRecoveryActions(LEAKAGE);
 let RECOVERED: any[] = [];
 let OPPORTUNITIES = rankOpportunities([] as any[]);

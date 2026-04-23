@@ -107,6 +107,8 @@ export default function ChiefRevenueSynthesis() {
           {([] as any[]).map((h, i) => (
             <div key={i} className="p-4 rounded-xl border border-border/40 bg-card">
               <div className="flex items-center justify-between mb-2">
+const CHIEF_HISTORICAL: any[] = [];
+
                 <div className="flex items-center gap-2">
                   <span className="text-xs font-medium text-muted-foreground">{h.date}</span>
                   <Badge variant="outline" className="text-[10px]">Score: {h.score}</Badge>
