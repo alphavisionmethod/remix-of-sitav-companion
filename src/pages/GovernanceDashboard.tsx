@@ -17,13 +17,13 @@ import { useOSRuntime } from "@/hooks/useOSRuntime";
 import { useMemo } from "react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { PageShell } from "@/components/sita/PageShell";
+import { Skeleton } from "@/components/ui/skeleton";
+import { PremiumEmptyState } from "@/components/sita/PremiumEmptyState";
 
-const isDemoMode = false;
 const DEFAULT_SCOPE = { ownerId: "current-user", visibility: "private" as const };
 
 export default function GovernanceDashboard() {
-  const { isDemo } = useAuth();
-  const { data: gov, isLoading } = useGovernanceSummary();
+  const { data: gov, isLoading, isError, refetch } = useGovernanceSummary();
   const { engines } = useOSRuntime();
 
   // Invisible labor stats from engine
@@ -45,6 +45,38 @@ export default function GovernanceDashboard() {
     confidenceQuality: { avgConfidence: gov ? gov.trust.avgScore / 100 : 0.88, evidence: gov ? [`avg score: ${gov.trust.avgScore}`] : ["loading"] },
   };
 
+  if (isLoading) {
+    return (
+      <PageShell>
+        <div className="space-y-6 pb-8">
+          <SitaPageHeader title="Governance Dashboard" subtitle="Meta-governance health across trust, execution, drag, readiness, and delegation" />
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+            {Array.from({ length: 5 }).map((_, i) => <Skeleton key={i} className="h-24 rounded-xl" />)}
+          </div>
+          <Skeleton className="h-64 rounded-xl" />
+        </div>
+      </PageShell>
+    );
+  }
+
+  if (isError) {
+    return (
+      <PageShell>
+        <div className="space-y-6 pb-8">
+          <SitaPageHeader title="Governance Dashboard" subtitle="Meta-governance health across trust, execution, drag, readiness, and delegation" />
+          <PremiumEmptyState
+            variant="degraded"
+            icon={AlertTriangle}
+            title="Unable to load governance data"
+            description="There was an error fetching governance metrics. Please try again."
+            actions={[{ label: "Retry", onClick: () => refetch() }]}
+            domain="trust"
+          />
+        </div>
+      </PageShell>
+    );
+  }
+
   return (
     <PageShell>
     <div className="space-y-6 pb-8">
@@ -56,11 +88,10 @@ export default function GovernanceDashboard() {
       {/* Data mode + staleness indicator */}
       <div className="flex items-center gap-3">
         <div className={cn(
-          "flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-semibold border",
-          isDemoMode ? "bg-accent/10 text-accent border-accent/20" : "bg-primary/10 text-primary border-primary/20"
+          "flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-semibold border bg-primary/10 text-primary border-primary/20"
         )}>
-          <div className={cn("h-2 w-2 rounded-full", isDemoMode ? "bg-accent animate-pulse" : "bg-primary")} />
-          {isDemoMode ? "Demo Data" : "Live"}
+          <div className="h-2 w-2 rounded-full bg-primary" />
+          Live
         </div>
         {gov?.lastUpdated && (
           <span className="text-[10px] text-muted-foreground">
