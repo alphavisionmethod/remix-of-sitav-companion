@@ -10,19 +10,28 @@ import { usePbSecurityEvents, type PbSecurityEvent } from "../hooks/usePbSecurit
 
 function severityIcon(s: PbSecurityEvent["severity"]) {
   if (s === "critical") return <AlertCircle className="h-3.5 w-3.5 text-destructive" />;
-  if (s === "warning") return <AlertTriangle className="h-3.5 w-3.5 text-amber-600" />;
+  if (s === "warning") return <AlertTriangle className="h-3.5 w-3.5 text-destructive/80" />;
   return <Info className="h-3.5 w-3.5 text-muted-foreground" />;
 }
 
 function severityBadge(s: PbSecurityEvent["severity"]) {
-  if (s === "critical") return <Badge variant="destructive" className="h-5 px-1.5 text-[10px]">CRITICAL</Badge>;
+  if (s === "critical")
+    return (
+      <Badge variant="destructive" className="h-5 px-1.5 text-[10px]">
+        CRITICAL
+      </Badge>
+    );
   if (s === "warning")
     return (
-      <Badge variant="outline" className="h-5 border-amber-500/50 px-1.5 text-[10px] text-amber-700">
+      <Badge variant="outline" className="h-5 border-destructive/40 px-1.5 text-[10px] text-destructive">
         WARNING
       </Badge>
     );
-  return <Badge variant="outline" className="h-5 px-1.5 text-[10px] text-muted-foreground">INFO</Badge>;
+  return (
+    <Badge variant="outline" className="h-5 px-1.5 text-[10px] text-muted-foreground">
+      INFO
+    </Badge>
+  );
 }
 
 function formatDate(iso: string) {

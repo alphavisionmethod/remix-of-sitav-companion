@@ -20,14 +20,18 @@ export function SensitiveModeCard() {
   }
 
   return (
-    <Card className={prefs.sensitive_mode ? "border-amber-500/40 bg-amber-500/5" : undefined}>
+    <Card className={prefs.sensitive_mode ? "border-destructive/40 bg-destructive/5" : undefined}>
       <CardHeader className="pb-3">
         <CardTitle className="flex items-center justify-between text-base">
           <span className="flex items-center gap-2">
-            <ShieldAlert className="h-4 w-4 text-amber-600" />
+            <ShieldAlert className="h-4 w-4 text-destructive" />
             Sensitive Mode
           </span>
-          {prefs.sensitive_mode && <Badge variant="outline" className="border-amber-500/50 text-amber-700">Active</Badge>}
+          {prefs.sensitive_mode && (
+            <Badge variant="outline" className="border-destructive/50 text-destructive">
+              Active
+            </Badge>
+          )}
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
