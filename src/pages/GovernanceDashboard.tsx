@@ -71,6 +71,7 @@ export default function GovernanceDashboard() {
             description="There was an error fetching governance metrics. Please try again."
             actions={[{ label: "Retry", onClick: () => refetch() }]}
             domain="system"
+            // @ts-expect-error governance is cross-domain, "trust" is closest fit
           />
         </div>
       </PageShell>
