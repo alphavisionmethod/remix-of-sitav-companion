@@ -657,6 +657,30 @@ async function actionDataExport(
   });
 }
 
+async function actionDataDelete(
+  user: { id: string },
+  admin: ReturnType<typeof createClient>,
+  payload: Record<string, unknown> | undefined,
+): Promise<Response> {
+  const confirm = (payload as { confirm?: string } | undefined)?.confirm;
+  if (confirm !== "DELETE") {
+    return jsonResponse({ error: "Confirmation required: send { confirm: 'DELETE' }" }, 400);
+  }
+  // Order matters for FK safety: child rows first, parents last.
+  const tables = [
+    "pb_messages","pb_chats","pb_workspaces","pb_memories","pb_goals",
+    "pb_files","pb_voice_prefs","pb_security_events","pb_security_prefs","pb_profile",
+  ];
+  const counts: Record<string, number> = {};
+  for (const t of tables) {
+    const { count } = await admin.from(t).delete({ count: "exact" }).eq("user_id", user.id);
+    counts[t] = count ?? 0;
+  }
+  // Re-log AFTER pb_security_events purge so user has a final receipt.
+  await logSecurityEvent(admin, user.id, "data.deleted", { counts }, "critical");
+  return jsonResponse({ ok: true, counts });
+}
+
 serve(async (req) => {
   const cors = handleCors(req);
   if (cors) return cors;
@@ -698,6 +722,7 @@ serve(async (req) => {
       case "voice.transcribe":   return await actionVoiceTranscribe(user, admin, payload);
       case "voice.tts":          return await actionVoiceTts(user, admin, payload);
       case "data.export":        return await actionDataExport(user, admin);
+      case "data.delete":        return await actionDataDelete(user, admin, payload);
       default:
         return jsonResponse({ error: "Unknown action", code: "BAD_ACTION" }, 400);
     }
