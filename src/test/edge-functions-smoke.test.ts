@@ -205,6 +205,7 @@ describe("Error handling: try/catch + corsHeaders on errors", () => {
       /corsError\s*\([^)]*,\s*(400|401|402|403|404|409|422|429|500|502|503)/.test(src) ||
       /corsResponse\s*\([^)]*,\s*(400|401|402|403|404|409|422|429|500|502|503)/.test(src) ||
       /\bjson\s*\([^)]*,\s*(400|401|402|403|404|409|422|429|500|502|503)/.test(src) ||
+      /jsonResponse\s*\([^)]*,\s*(400|401|402|403|404|409|422|429|500|502|503)/.test(src) ||
       /resp(?:onse)?\.status\s*(?:===?|>=?|<=?)\s*(400|401|402|403|404|409|422|429|500)/.test(src);
     expect(errorStatusPattern).toBe(true);
   });
