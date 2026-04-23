@@ -2,7 +2,7 @@
 // Settings — System Group (General, Appearance, Display, Accessibility, Operating Modes, Device Mode)
 // ═══════════════════════════════════════════════════════════════
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useMemo } from "react";
 import {
   Moon, Sun, Bell, Palette, Monitor, Eye, Globe, Check, ChevronRight, Lock,
   Type, Accessibility, Activity, Clock, Home as HomeIcon, Layout,
@@ -755,6 +755,22 @@ function TimezonePicker() {
     ? ALL_TIMEZONES.filter(t => t.toLowerCase().includes(query.toLowerCase())).slice(0, 30)
     : [];
 
+  // Group timezones by region for browsable list (like macOS/Windows)
+  const grouped = useMemo(() => {
+    const groups: Record<string, string[]> = {};
+    for (const t of ALL_TIMEZONES) {
+      const slash = t.indexOf("/");
+      const region = slash > 0 ? t.substring(0, slash) : "Other";
+      if (!groups[region]) groups[region] = [];
+      groups[region].push(t);
+    }
+    // Sort regions sensibly
+    const order = ["America", "Europe", "Asia", "Africa", "Australia", "Pacific", "Atlantic", "Indian", "Arctic", "Antarctica", "Other"];
+    return order
+      .filter(r => groups[r]?.length)
+      .map(r => ({ region: r, zones: groups[r].sort() }));
+  }, []);
+
   const selectTz = useCallback((newTz: string) => {
     setTz(newTz as any);
     setOpen(false);
@@ -825,6 +841,19 @@ function TimezonePicker() {
             <NovaText variant="label" muted className="!text-[9px] py-2 text-center">No timezones match "{query}"</NovaText>
           ) : filtered.map(t => (
             <TzRow key={t} tz={t} active={tz === t} isFav={favList.includes(t)} onSelect={selectTz} onToggleFav={toggleFav} />
+          ))}
+        </div>
+      )}
+      {/* All timezones grouped by region (when not searching) */}
+      {!query && (
+        <div className="max-h-52 overflow-y-auto space-y-2 scrollbar-thin">
+          {grouped.map(g => (
+            <VStack key={g.region} spacing="micro">
+              <NovaText variant="label" muted className="!text-[8px] !uppercase !tracking-wider sticky top-0 bg-[hsl(225_12%_10%)] z-10 py-0.5">{g.region}</NovaText>
+              {g.zones.map(t => (
+                <TzRow key={t} tz={t} active={tz === t} isFav={favList.includes(t)} onSelect={selectTz} onToggleFav={toggleFav} />
+              ))}
+            </VStack>
           ))}
         </div>
       )}
