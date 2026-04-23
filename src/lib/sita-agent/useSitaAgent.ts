@@ -82,10 +82,10 @@ export function useSitaAgent() {
             user_id: user.id,
             intent,
             domain,
-            plan: plan as unknown as Record<string, unknown>,
+            plan: plan as unknown as never,
             status: "pending",
             autonomy_tier: tier,
-          });
+          } as never);
         } catch (err) {
           console.warn("[sita-agent] plan persist failed", err);
         }
@@ -152,7 +152,7 @@ export function useSitaAgent() {
         await supabase.from("sita_agent_plans").update({
           status,
           completed_at: new Date().toISOString(),
-          result: result as unknown as Record<string, unknown>,
+          result: result as unknown as never,
           error: allOk ? null : (stepResults.find((s) => !s.ok)?.error ?? "step_failed"),
         }).eq("id", plan.id);
       } catch { /* noop */ }

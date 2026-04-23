@@ -8,6 +8,7 @@ export { SitaFirstRunReveal } from "./SitaFirstRunReveal";
 export { useSitaAmbientMood } from "./useSitaAmbientMood";
 export { SitaWhisper } from "./SitaWhisper";
 export { SitaProactiveRunner } from "./SitaProactiveRunner";
+export { SitaActionPlanCard } from "../sita-agent/SitaActionPlanCard";
 export {
   publishSitaHud,
   readSitaHud,

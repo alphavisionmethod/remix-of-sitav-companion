@@ -19,6 +19,7 @@ import { useSettingsValue } from "@/hooks/use-settings-value";
 import { Slider } from "@/components/ui/slider";
 import { useWindowManagerContext } from "@/contexts/WindowManagerContext";
 import { SitaVoiceControlRow } from "./sita-voice/SitaVoiceControlRow";
+import { SitaAutonomyControls } from "./sita-agent/SitaAutonomyControls";
 
 interface ControlCenterProps {
   open: boolean;
@@ -501,6 +502,9 @@ export function ControlCenter({ open, onClose }: ControlCenterProps) {
 
               {/* 1b. Sita Voice (Phase B) */}
               <SitaVoiceControlRow />
+
+              {/* 1c. Sita Autonomy (Phase E) */}
+              <SitaAutonomyControls />
 
               {/* 2. Mode cluster */}
               <ModeCluster isDark={isDark} onThemeToggle={handleThemeToggle} />
