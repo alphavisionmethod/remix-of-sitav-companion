@@ -8,6 +8,36 @@ import { Sparkles, Wrench, Users, ArrowRight, X, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const STORAGE_KEY = "pb_tour_v1_completed";
+const PROGRESS_KEY = "pb_tour_v1_progress";
+
+interface TourProgress {
+  step: number;
+  updated_at: string;
+  // Bumped if STEPS shape ever changes — invalidates stale progress.
+  schema: 1;
+}
+
+function readProgress(): TourProgress | null {
+  try {
+    const raw = localStorage.getItem(PROGRESS_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw) as Partial<TourProgress>;
+    if (parsed?.schema !== 1) return null;
+    if (typeof parsed.step !== "number") return null;
+    return parsed as TourProgress;
+  } catch { return null; }
+}
+
+function writeProgress(step: number) {
+  try {
+    const payload: TourProgress = { step, updated_at: new Date().toISOString(), schema: 1 };
+    localStorage.setItem(PROGRESS_KEY, JSON.stringify(payload));
+  } catch { /* private mode / quota */ }
+}
+
+function clearProgress() {
+  try { localStorage.removeItem(PROGRESS_KEY); } catch { /* */ }
+}
 
 interface TourStep {
   id: string;
@@ -88,17 +118,47 @@ export function BrainOnboardingTour({ forceOpen, onClose }: BrainOnboardingTourP
   const [step, setStep] = useState(0);
 
   useEffect(() => {
-    if (forceOpen) { setOpen(true); setStep(0); return; }
+    if (forceOpen) {
+      // Manual launch: also resume mid-tour if there's saved progress.
+      const resumed = readProgress();
+      setStep(resumed && resumed.step < STEPS.length ? resumed.step : 0);
+      setOpen(true);
+      return;
+    }
     try {
-      if (!localStorage.getItem(STORAGE_KEY)) {
-        const t = window.setTimeout(() => setOpen(true), 600);
-        return () => window.clearTimeout(t);
+      const completed = localStorage.getItem(STORAGE_KEY);
+      if (completed) return; // tour already finished — don't reopen
+      const resumed = readProgress();
+      if (resumed && resumed.step > 0 && resumed.step < STEPS.length) {
+        setStep(resumed.step);
       }
+      const t = window.setTimeout(() => setOpen(true), 600);
+      return () => window.clearTimeout(t);
     } catch { /* private mode */ }
   }, [forceOpen]);
 
+  // Persist step changes (debounced via microtask) whenever the tour is open.
+  useEffect(() => {
+    if (!open) return;
+    writeProgress(step);
+  }, [open, step]);
+
+  // Cross-tab sync: if another tab finishes/resets the tour, mirror it here.
+  useEffect(() => {
+    const onStorage = (e: StorageEvent) => {
+      if (e.key === STORAGE_KEY && e.newValue) { setOpen(false); return; }
+      if (e.key === PROGRESS_KEY) {
+        const next = readProgress();
+        if (next && next.step !== step && next.step < STEPS.length) setStep(next.step);
+      }
+    };
+    window.addEventListener("storage", onStorage);
+    return () => window.removeEventListener("storage", onStorage);
+  }, [step]);
+
   const finish = useCallback(() => {
     try { localStorage.setItem(STORAGE_KEY, new Date().toISOString()); } catch { /* */ }
+    clearProgress();
     setOpen(false);
     onClose?.();
   }, [onClose]);
@@ -249,4 +309,5 @@ export function BrainOnboardingTour({ forceOpen, onClose }: BrainOnboardingTourP
 
 export function resetBrainTour() {
   try { localStorage.removeItem(STORAGE_KEY); } catch { /* */ }
+  clearProgress();
 }
