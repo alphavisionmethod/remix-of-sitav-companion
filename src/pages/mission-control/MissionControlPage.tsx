@@ -77,7 +77,7 @@ function SystemPulseHero() {
   const totalAgents = internalAgents.length;
   const openIncidents = adminOpenCount || incidents.filter(i => i.status !== "resolved").length;
   const degradedConnectors = connectorHealth.filter(c => c.status !== "connected").length;
-  const stuckWorkflowCount = 0;
+  const stuckWorkflowCount = 0 as number;
   const totalTokens = internalAgents.reduce((s, a) => s + a.costTokens24h, 0);
 
   const sentinel = useFraudSentinel();
@@ -91,7 +91,7 @@ function SystemPulseHero() {
     ((healthyAgents / totalAgents) * 40) +
     ((openIncidents === 0 ? 1 : Math.max(0, 1 - openIncidents * 0.2)) * 25) +
     ((1 - degradedConnectors / connectorHealth.length) * 20) +
-    ((stuckWorkflows === 0 ? 1 : 0.5) * 15)
+    ((stuckWorkflowCount === 0 ? 1 : 0.5) * 15)
   );
 
   const scoreColor = systemScore >= 90 ? "trust-verified" : systemScore >= 70 ? "trust-review" : "urgency-high";

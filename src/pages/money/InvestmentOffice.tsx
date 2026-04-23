@@ -16,14 +16,16 @@ import {
   evaluateThesis,
   type Position, type CapitalBucket, type Thesis,
 } from "@/lib/domain-engines/investment-office";
-const getWatchlist = () => [] as any[];
+const getWatchlist = () => ({ currentRegime: "neutral", entries: [] as any[] });
 const getTradeReviewPackets = () => [] as any[];
 const getExecutionIntents = () => [] as any[];
 const getOpportunityScores = () => [] as any[];
-const getAvailableTrustModes = () => ["standard"] as string[];
+const getAvailableTrustModes = () => [{ mode: "standard", label: "Standard", description: "Default trust mode" }] as any[];
 const getInvestmentTrustMode = () => "standard";
 import { useCapitalBuckets, usePositions, useTheses } from "@/hooks/use-investment-data";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+
+const INVESTMENT_POLICY_RULES: any[] = [];
 
 const regimeColor = (value: string) => {
   if (["extreme", "crisis", "flight-to-safety", "stressed", "dislocating", "strong-down"].includes(value)) return "text-destructive bg-destructive/10";
