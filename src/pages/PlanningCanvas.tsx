@@ -37,7 +37,7 @@ const zones: { key: CanvasZone; label: string; icon: typeof Lightbulb }[] = [
 ];
 
 export default function PlanningCanvas() {
-  const [cards] = useState(cards);
+  const [canvasCards] = useState(cards);
 
   return (
     <PageShell width="wide">

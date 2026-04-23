@@ -9,6 +9,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+const PROFILES: any[] = [];
 const offenders = PROFILES
   .filter(p => p.redundancy > 20)
   .sort((a, b) => b.redundancy - a.redundancy);

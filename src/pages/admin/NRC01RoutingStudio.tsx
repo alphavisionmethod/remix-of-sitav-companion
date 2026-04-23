@@ -7,8 +7,8 @@ import NRCSubNav from "@/components/admin/NRCSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 const NRC01RoutingStudio = () => {
   const { data: routingMatrix, isLoading } = useAttentionDecisions();
-  const channelSpecs = CHANNEL_SPECS;
-  const deliveryPrinciples = DELIVERY_PRINCIPLES;
+  const channelSpecs = channelSpecs;
+  const deliveryPrinciples = deliveryPrinciples;
   const iconMap: Record<string, any> = { "Desktop/Web": Monitor, "Phone (iOS/Android)": Smartphone, "Watch (Apple/Wear OS)": Watch };
 
   return (

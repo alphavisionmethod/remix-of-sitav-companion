@@ -16,8 +16,8 @@ import { MessageSquare, Mail, Phone, Send, Clock, CheckCircle2, AlertCircle, Sta
 import { motion, AnimatePresence } from "framer-motion";
 import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 type CommunicationEntry = { id: string; channel: string; subject: string; status: string; date: string; [k: string]: any };
-type ChannelType = "email" | "sms" | "chat" | "voice";
-type MessageStatus = "sent" | "delivered" | "read" | "failed" | "draft";
+type ChannelType = "email" | "sms" | "chat" | "voice" | "call";
+type MessageStatus = "sent" | "delivered" | "read" | "failed" | "draft" | "queued";
 import { useAuth } from "@/contexts/AuthContext";
 import { useQuery } from "@tanstack/react-query";
 import { fromTable } from "@/lib/supabase-helpers";
@@ -25,13 +25,14 @@ import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { PageShell } from "@/components/sita/PageShell";
-const CHANNEL_ICONS: Record<ChannelType, typeof Mail> = { email: Mail, sms: MessageSquare, call: Phone, chat: Send };
-const STATUS_STYLES: Record<MessageStatus, { color: string; icon: typeof CheckCircle2 }> = {
+const CHANNEL_ICONS: Partial<Record<ChannelType, typeof Mail>> = { email: Mail, sms: MessageSquare, call: Phone, chat: Send, voice: Phone };
+const STATUS_STYLES: Partial<Record<MessageStatus, { color: string; icon: typeof CheckCircle2 }>> = {
   sent: { color: "text-muted-foreground", icon: Clock },
   delivered: { color: "text-primary", icon: CheckCircle2 },
   read: { color: "text-emerald-400", icon: CheckCircle2 },
   failed: { color: "text-destructive", icon: AlertCircle },
   queued: { color: "text-muted-foreground", icon: Clock },
+  draft: { color: "text-muted-foreground", icon: Clock },
 };
 
 // ── Extended demo data for new features ──────────────────────

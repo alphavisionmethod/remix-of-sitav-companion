@@ -26,7 +26,7 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 
 // ── Types (re-use demo-data interface) ────────────────────────
-type ApprovalItem = { id: string; title: string; domain: string; status: string; risk: string; requestedBy: string; createdAt: string; [k: string]: any };
+type ApprovalItem = { id: string; title: string; domain: string; status: string; risk?: string; requestedBy: string; createdAt?: string; riskLevel?: string; requestedAt?: string; [k: string]: any };
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { EmptyState } from "@/components/sita/EmptyState";
 import { PageShell } from "@/components/sita/PageShell";

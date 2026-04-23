@@ -7,9 +7,9 @@ import NRCSubNav from "@/components/admin/NRCSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 const NRC02CalmnessCenter = () => {
   const { data: roles, isLoading } = useAssistantRolePresences();
-  const calmPrinciples = CALM_PRINCIPLES;
+  const calmPrinciples = calmPrinciples;
   const principleIcons = [Eye, Zap, MessageSquare, Shield, Heart, Users];
-  const interventions = INTERVENTION_SCENARIOS;
+  const interventions = ([] as any[]);
 
   return (
     <div className="p-6 max-w-[1400px] mx-auto space-y-6">
