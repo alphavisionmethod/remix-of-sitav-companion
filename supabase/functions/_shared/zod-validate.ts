@@ -72,6 +72,10 @@ export const PBRouterSchema = z.object({
     "voice.tts",
     "data.export",
     "data.delete",
+    "digest.generate", "digest.list", "digest.dismiss",
+    "workspace.invite", "workspace.accept", "workspace.list_members", "workspace.remove_member", "workspace.update_role",
+    "tool.list", "tool.upsert", "tool.toggle", "tool.delete",
+    "insights.scan", "insights.list", "insights.update_status",
   ]),
   payload: z.record(z.unknown()).optional().default({}),
 });
@@ -118,6 +122,65 @@ export const PBVoiceTranscribeSchema = z.object({
 export const PBVoiceTtsSchema = z.object({
   text: z.string().min(1).max(5000),
   voice_id: z.string().max(64).optional(),
+});
+
+// ── Phase 7 schemas ──────────────────────────────────────────
+export const PBDigestGenerateSchema = z.object({
+  period: z.enum(["daily","weekly"]).default("daily"),
+});
+
+export const PBDigestDismissSchema = z.object({
+  id: z.string().uuid(),
+});
+
+export const PBWorkspaceInviteSchema = z.object({
+  workspace_id: z.string().uuid(),
+  email: z.string().email().max(255),
+  role: z.enum(["viewer","editor","owner"]).default("viewer"),
+});
+
+export const PBWorkspaceAcceptSchema = z.object({
+  invite_token: z.string().min(8).max(64),
+});
+
+export const PBWorkspaceListMembersSchema = z.object({
+  workspace_id: z.string().uuid(),
+});
+
+export const PBWorkspaceRemoveMemberSchema = z.object({
+  member_id: z.string().uuid(),
+});
+
+export const PBWorkspaceUpdateRoleSchema = z.object({
+  member_id: z.string().uuid(),
+  role: z.enum(["viewer","editor","owner"]),
+});
+
+export const PBToolUpsertSchema = z.object({
+  tool_key: z.string().min(1).max(64),
+  display_name: z.string().min(1).max(120),
+  description: z.string().max(500).default(""),
+  kind: z.enum(["web_search","calendar","file_search","memory_search","custom"]).default("custom"),
+  config: z.record(z.unknown()).default({}),
+  enabled: z.boolean().default(true),
+});
+
+export const PBToolToggleSchema = z.object({
+  id: z.string().uuid(),
+  enabled: z.boolean(),
+});
+
+export const PBToolDeleteSchema = z.object({
+  id: z.string().uuid(),
+});
+
+export const PBInsightsScanSchema = z.object({
+  windowMessages: z.number().int().min(10).max(500).default(80),
+});
+
+export const PBInsightsUpdateStatusSchema = z.object({
+  id: z.string().uuid(),
+  status: z.enum(["new","pinned","dismissed"]),
 });
 
 export const OsCommandSchema = z.object({
