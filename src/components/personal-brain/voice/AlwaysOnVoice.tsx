@@ -302,7 +302,7 @@ export function AlwaysOnVoice({ enabled, onDisable, wakePhrases }: AlwaysOnVoice
 
   const stateLabel: Record<LoopState, string> = {
     paused: "Paused",
-    wake: `Listening for "${wakePhrases?.[0] ?? "Hey Sita"}"…`,
+    wake: `Listening for "${phrases[0] ?? "hey sita"}"…`,
     capture: "Speak your command…",
     thinking: "Thinking…",
     speaking: "Speaking…",
