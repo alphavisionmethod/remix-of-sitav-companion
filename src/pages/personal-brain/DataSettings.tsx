@@ -8,6 +8,7 @@ import { GlobalErrorBoundary } from "@/components/sita/GlobalErrorBoundary";
 import { PageShell } from "@/components/sita/PageShell";
 import { Button } from "@/components/ui/button";
 import { DataExportCard } from "@/components/personal-brain/settings/DataExportCard";
+import { DataDeleteCard } from "@/components/personal-brain/settings/DataDeleteCard";
 
 export default function DataSettings() {
   const navigate = useNavigate();
@@ -26,6 +27,7 @@ export default function DataSettings() {
             <h1 className="text-base font-semibold">Export Your Data</h1>
           </div>
           <DataExportCard />
+          <DataDeleteCard />
         </div>
       </PageShell>
     </GlobalErrorBoundary>
