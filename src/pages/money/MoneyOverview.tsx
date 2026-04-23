@@ -13,7 +13,6 @@ import { useFinanceNavigation } from "@/contexts/FinanceNavigationContext";
 
 
 const MoneyOverview = () => {
-  const isDemoMode = false;
   const { navigateTo } = useFinanceNavigation();
   const { data: bills = [] } = useBills();
   const { data: subscriptions = [] } = useSubscriptions();
@@ -21,7 +20,7 @@ const MoneyOverview = () => {
   const { data: accounts = [] } = useFinancialAccounts();
   const { data: kpis } = useMoneyKPIs();
 
-  const hasLiveData = isDemoMode || bills.length > 0 || subscriptions.length > 0 || invoices.length > 0 || accounts.length > 0;
+  const hasLiveData = bills.length > 0 || subscriptions.length > 0 || invoices.length > 0 || accounts.length > 0;
 
   if (!hasLiveData) {
     return (

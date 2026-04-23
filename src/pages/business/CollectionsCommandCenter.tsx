@@ -54,7 +54,6 @@ const CHASE_SEQUENCE: ChaseStep[] = [
 ];
 
 const formatCents = (cents: number) => `$${(cents / 100).toLocaleString("en-US", { minimumFractionDigits: 0 })}`;
-  const isDemoMode = false;
 
 const escalationLabel = ["Friendly", "Firm", "Urgent", "Formal", "Legal"];
 
@@ -103,7 +102,7 @@ const CollectionsCommandCenter = () => {
   // ── List Pane ──────────────────────────────────────────────
   const listPane = (
     <div className="p-3 space-y-3">
-      <PageTruthBanner truthState={isDemoMode ? "demo" : "live"} />
+      <PageTruthBanner truthState="live" />
 
       {/* KPI Strip */}
       <div className="grid grid-cols-2 gap-2">

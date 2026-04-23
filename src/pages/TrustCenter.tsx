@@ -31,7 +31,6 @@ import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { DomainAdvisorCard } from "@/components/advisors/DomainAdvisorCard";
 
-const isDemoMode = false;
 const DOMAIN_CONFIG: DomainConfig = {
   id: "trust" as DomainConfig["id"],
   title: "Trust Center",
@@ -90,7 +89,7 @@ const TrustOverviewPage = () => {
 
   return (
     <div className="space-y-5">
-      <PageTruthBanner truthState={isDemoMode ? "demo" : "live"} />
+      <PageTruthBanner truthState="live" />
 
       <HeroCard
         title="Trust Posture"

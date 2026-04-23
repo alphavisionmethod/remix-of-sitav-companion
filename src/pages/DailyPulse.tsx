@@ -21,7 +21,6 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-const isDemoMode = false;
 // ── Helpers ──────────────────────────────────────────────────
 
 function getGreeting(): string {
@@ -84,7 +83,7 @@ export default function DailyPulse() {
 
   // Emit a loop completion the first time live data arrives.
   useEffect(() => {
-    if (!user || isDemoMode || isLoading) return;
+    if (!user || isLoading) return;
     const t0 = performance.now();
     emitLoop("pulse_view", {
       latency_ms: Math.round(performance.now() - t0),
@@ -137,7 +136,7 @@ export default function DailyPulse() {
   return (
     <div className="max-w-4xl mx-auto space-y-6 pb-8">
       <h1 className="sr-only">Daily Pulse</h1>
-      <PageTruthBanner truthState={isDemoMode ? "demo" : "live"} />
+      <PageTruthBanner truthState="live" />
 
       {isLoading && (
         <div className="space-y-4 animate-pulse" role="status" aria-label="Loading dashboard">
@@ -155,9 +154,7 @@ export default function DailyPulse() {
       <HeroCard
         title={formatDate()}
         metric={`${getGreeting()}, ${firstName}`}
-        subtitle={isDemoMode
-          ? "Cross-Domain Morning Briefing (demo)"
-          : `${pendingApprovals.length} pending · ${recentNotifications.length} updates · ${fileCount} files`}
+        subtitle={`${pendingApprovals.length} pending · ${recentNotifications.length} updates · ${fileCount} files`}
         accentFrom="hsl(265 55% 58%)"
         accentTo="hsl(285 50% 48%)"
         icon={<Sparkles className="h-5 w-5 text-[hsl(265_55%_58%)]" />}
