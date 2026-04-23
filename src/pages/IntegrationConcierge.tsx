@@ -18,10 +18,10 @@ import { useOSRuntime } from "@/hooks/useOSRuntime";
 import type { ConnectorUseCase } from "@/domains/engines/connector-concierge";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
-const DEMO_CATEGORIES: any[] = [];
+const CATEGORIES: any[] = [];
 
 // Production fallback — seed data removed
-const DEMO_BUNDLES: any[] = [];
+const BUNDLES: any[] = [];
 
 // ── Category Config ────────────────────────────────────────────
 // ── Use Case Card ──────────────────────────────────────────────
@@ -233,7 +233,7 @@ function SetupWizard({ useCase, onClose }: { useCase: ConnectorUseCase; onClose:
 }
 
 // ── Bundle Card ────────────────────────────────────────────────
-function BundleCard({ bundle, onSelect }: { bundle: typeof DEMO_BUNDLES[0]; onSelect: () => void }) {
+function BundleCard({ bundle, onSelect }: { bundle: typeof BUNDLES[0]; onSelect: () => void }) {
   return (
     <motion.div
       whileHover={{ y: -2 }}

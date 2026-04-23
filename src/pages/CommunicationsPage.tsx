@@ -33,14 +33,14 @@ const STATUS_STYLES: Record<MessageStatus, { color: string; icon: typeof CheckCi
 };
 
 // ── Extended demo data for new features ──────────────────────
-const DEMO_FOLLOW_UPS = [
+const FOLLOW_UPS = [
   { id: "f1", contact: "Apex Corp — Sarah Chen", lastContact: "5 days ago", urgency: "high" as const, channel: "email" as ChannelType, reason: "No reply to proposal sent Monday" },
   { id: "f2", contact: "Delta Inc — James Park", lastContact: "3 days ago", urgency: "medium" as const, channel: "email" as ChannelType, reason: "Invoice follow-up needed" },
   { id: "f3", contact: "Mom", lastContact: "2 weeks ago", urgency: "low" as const, channel: "call" as ChannelType, reason: "Personal — haven't called in a while" },
   { id: "f4", contact: "Broker — Michael Torres", lastContact: "8 days ago", urgency: "high" as const, channel: "email" as ChannelType, reason: "Waiting on insurance quote" },
 ];
 
-const DEMO_DRAFTS = [
+const DRAFTS = [
   { id: "d1", to: "Sarah Chen", subject: "Re: Q2 Partnership Proposal", channel: "email" as ChannelType, lastEdited: "2 hours ago", status: "draft" as const, approvalNeeded: false },
   { id: "d2", to: "Board Members", subject: "Monthly Update — March 2026", channel: "email" as ChannelType, lastEdited: "Yesterday", status: "review" as const, approvalNeeded: true },
   { id: "d3", to: "Delta Inc", subject: "Service Agreement Amendment", channel: "email" as ChannelType, lastEdited: "3 days ago", status: "draft" as const, approvalNeeded: false },

@@ -23,8 +23,8 @@ const AutomationCenter = () => {
   const navigate = useNavigate();
   const { user , isDemo} = useAuth();
   const qc = useQueryClient();
-  const { data: MOCK_AUTOMATION_RULES = [] } = useAutomationRules();
-  const { data: MOCK_DELEGATIONS = [] } = useDelegations();
+  const { data: automationRules = [] } = useAutomationRules();
+  const { data: delegations = [] } = useDelegations();
 
   const activeTab = (() => {
     if (location.pathname.includes("/trust")) return "trust";

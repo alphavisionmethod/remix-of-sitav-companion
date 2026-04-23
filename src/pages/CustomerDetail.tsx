@@ -12,7 +12,7 @@ import {
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 // Production fallback — seed data removed
-const DEMO_TIMELINE: any[] = [];
+const TIMELINE_ITEMS: any[] = [];
 
 // Mock customer data keyed by ID
 const CustomerDetail = ({
@@ -22,7 +22,7 @@ const CustomerDetail = ({
   const { navigateTo } = useBusinessNavigation();
   const navigate = useNavigate();
   const [tab, setTab] = useState("overview");
-  const customer = DEMO_CUSTOMERS_DATA[id || "marcus-johnson"] || DEMO_CUSTOMERS_DATA["marcus-johnson"];
+  const customer = CUSTOMERS_DATA[id || "marcus-johnson"] || CUSTOMERS_DATA["marcus-johnson"];
 
   const healthColor = customer.health >= 80 ? "text-trust-verified" : customer.health >= 50 ? "text-trust-review" : "text-urgency-high";
   const healthBg = customer.health >= 80 ? "bg-trust-verified" : customer.health >= 50 ? "bg-trust-review" : "bg-urgency-high";

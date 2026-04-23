@@ -17,7 +17,7 @@ import { useEffect } from "react";
 import { PageShell } from "@/components/sita/PageShell";
 
 // Production fallback — seed data removed
-const DEMO_CATEGORIES: any[] = [];
+const POLICY_CATEGORIES: any[] = [];
 
 const PolicyEditor = () => {
   const { user } = useAuth();

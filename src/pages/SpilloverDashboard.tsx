@@ -19,7 +19,7 @@ import { PageShell } from "@/components/sita/PageShell";
 
 
 // Production fallback — seed data removed
-const DEMO_DOMAINS: any[] = [];
+const SPILLOVER_DOMAINS: any[] = [];
 
 // ── Spillover data ───────────────────────────────────────────
 

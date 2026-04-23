@@ -49,7 +49,7 @@ function mapDbNote(row: Record<string, any>): Note {
 }
 
 // ── Demo linked entities ──────────────────────────────────
-const DEMO_LINKED_ENTITIES = [
+const LINKED_ENTITIES = [
   { type: "task", label: "Follow up with Apex Corp", icon: ListTodo, path: "/tasks" },
   { type: "contact", label: "Sarah Chen", icon: Users, path: "/business/customers" },
   { type: "workflow", label: "Invoice Approval Pipeline", icon: Workflow, path: "/workflows" },

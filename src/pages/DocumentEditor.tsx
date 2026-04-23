@@ -32,7 +32,7 @@ const TEMPLATES = [
 ];
 
 // ── Version history mock ──────────────────────────────────────
-const DEMO_VERSIONS = [
+const VERSION_HISTORY = [
   { id: "v4", label: "Current", timestamp: "Just now", author: "You", changes: "Updated budget section" },
   { id: "v3", label: "v3", timestamp: "2 hours ago", author: "You", changes: "Added timeline" },
   { id: "v2", label: "v2", timestamp: "Yesterday", author: "You", changes: "First draft complete" },

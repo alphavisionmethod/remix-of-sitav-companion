@@ -23,7 +23,7 @@ import {
   Eye, Download, Tag, Link, Trash2, MoreHorizontal, Filter, FolderOpen,
   Plus, FileText, X, ZoomIn, ChevronLeft, ChevronRight, Edit3,
 } from "lucide-react";
-import { type DemoMediaItem as MediaItem, DEMO_MEDIA } from "@/data/seed/media";
+import { type DemoMediaItem as MediaItem, FALLBACK_MEDIA } from "@/data/seed/media";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { PageShell } from "@/components/sita/PageShell";
 const MediaWorkspace = () => {
@@ -57,7 +57,7 @@ const MediaWorkspace = () => {
     },
   });
 
-  const media = (liveMedia?.length ? liveMedia : DEMO_MEDIA);
+  const media = (liveMedia?.length ? liveMedia : FALLBACK_MEDIA);
 
   const filtered = useMemo(() => {
     let result: MediaItem[] = media;

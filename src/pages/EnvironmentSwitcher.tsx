@@ -21,7 +21,7 @@ interface Environment {
   version: string;
 }
 
-const MOCK_ENVIRONMENTS: Environment[] = [
+const ENVIRONMENTS: Environment[] = [
   { id: "env-1", name: "Personal Environment", type: "personal", isCurrent: true, lastAccessed: "2026-04-09T08:30:00Z", backupStatus: "current", version: "v2.8.1" },
   { id: "env-2", name: "Business — Apex Corp", type: "business", isCurrent: false, lastAccessed: "2026-04-08T17:00:00Z", backupStatus: "current", version: "v2.8.1" },
   { id: "env-3", name: "Family Shared", type: "personal", isCurrent: false, lastAccessed: "2026-04-07T20:00:00Z", backupStatus: "stale", version: "v2.7.9" },
@@ -52,7 +52,7 @@ export default function EnvironmentSwitcher() {
       {/* Environments */}
       <div className="space-y-3">
         <h2 className="text-sm font-semibold">Your Environments</h2>
-        {(MOCK_ENVIRONMENTS).map(env => (
+        {(ENVIRONMENTS).map(env => (
           <Card key={env.id} className={cn(env.isCurrent && "ring-1 ring-primary/30")}>
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
