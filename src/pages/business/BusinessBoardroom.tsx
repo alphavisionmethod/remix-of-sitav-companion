@@ -17,7 +17,6 @@ import { getTopAdvisors } from "@/domains/engines/adaptive-advisor-roster";
 import { getBoardroomAgenda } from "@/domains/engines/adaptive-boardroom-framing";
 
 const BusinessBoardroom = () => {
-  const isDemoMode = false;
 const [mode, setMode] = useState("weekly");
   const { profile } = useBusinessProfile();
   const adaptiveAdvisors = useMemo(() => {
@@ -70,7 +69,7 @@ const [mode, setMode] = useState("weekly");
   return (
     <BoardroomCinematic domain="business">
       <motion.div className="space-y-5" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-        <PageTruthBanner truthState={isDemoMode ? "demo" : "live"} />
+        <PageTruthBanner truthState="live" />
 
         <SitaTabs
           tabs={[
@@ -124,12 +123,12 @@ const [mode, setMode] = useState("weekly");
             {/* Proof chain */}
             <ProofCard
               title="Business Review Evidence"
-              status={isDemoMode ? "pending" : "verified"}
+              status="verified"
               chain={[
                 { label: "Lead pipeline data sourced", verified: true },
                 { label: "Invoice records verified", verified: true },
-                { label: "Opportunity tracker synced", verified: !isDemoMode },
-                { label: "Customer database checked", verified: !isDemoMode },
+                { label: "Opportunity tracker synced", verified: true },
+                { label: "Customer database checked", verified: true },
               ]}
             />
 

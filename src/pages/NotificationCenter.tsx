@@ -138,7 +138,6 @@ const NotificationCard = ({ notif, onMarkRead, onDismiss, onAction }: {
 
 // ── Main Component ───────────────────────────────────────────
 const NotificationCenter = () => {
-  const isDemoMode = false;
   const { user, isDemo } = useAuth();
   const queryClient = useQueryClient();
   const interfaceState = useAdaptiveInterface();
@@ -185,15 +184,6 @@ const NotificationCenter = () => {
       ...legacyNotifs.map((n: Record<string, any>) => ({ ...n, source: "legacy", category: n.domain || n.type || "system" })),
     ].sort((a: any,  b: Record<string, any>) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
 
-    if (isDemoMode) {
-      return [
-        { id: "d1", title: "Approval Required: Vendor payment $2,850", body: "Finance threshold exceeded. Review and approve.", category: "approval", urgency: "high", created_at: new Date().toISOString(), action_url: "/approvals" },
-        { id: "d2", title: "3 follow-ups at risk of going stale", body: "Leads haven't been contacted in 7+ days.", category: "business", urgency: "normal", created_at: new Date(Date.now() - 3600000).toISOString() },
-        { id: "d3", title: "Electricity bill due tomorrow", body: "Auto-pay enabled. $142.50", category: "finance", urgency: "normal", created_at: new Date(Date.now() - 7200000).toISOString() },
-        { id: "d4", title: "Workflow completed: Monthly reporting", body: "All 5 steps executed successfully. Receipt generated.", category: "system", urgency: "low", created_at: new Date(Date.now() - 14400000).toISOString(), read_at: new Date().toISOString() },
-        { id: "d5", title: "Grocery list updated by Sarah", body: "3 items added to shared list", category: "household", urgency: "low", created_at: new Date(Date.now() - 28800000).toISOString(), read_at: new Date().toISOString() },
-      ];
-    }
     return combined;
   }, [notifications, legacyNotifs]);
 
@@ -299,7 +289,7 @@ const NotificationCenter = () => {
       </div>
 
       {/* Notification List */}
-      {isLoading && !isDemoMode ? (
+      {isLoading ? (
         <div className="space-y-3">
           {Array.from({ length: 5 }).map((_, i) => (
             <div key={i} className="h-20 rounded-xl bg-card animate-pulse border border-border" />

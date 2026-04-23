@@ -16,7 +16,6 @@ import {
 } from "lucide-react";
 import { PageShell } from "@/components/sita/PageShell";
 const ApprovalsCenter = () => {
-  const isDemoMode = false;
   const { isDemo } = useAuth();
   const { data: approvals = [], isLoading } = useApprovals();
   const { approve, reject } = useApprovalQueue();
@@ -37,12 +36,10 @@ const ApprovalsCenter = () => {
   const decided = approvals.filter((a: Record<string, any>) => a.status !== "pending");
 
   const handleApprove = (id: string) => {
-    if (isDemoMode) return;
     approve(id, "Approved via Approvals Center");
   };
 
   const handleReject = (id: string) => {
-    if (isDemoMode) return;
     reject(id, rejectionReason || "Rejected via Approvals Center");
     setRejectionReason("");
     setExpandedId(null);
@@ -64,9 +61,9 @@ const ApprovalsCenter = () => {
         title="Approvals Center"
         subtitle="Review and approve SITA-recommended actions before execution"
         actions={
-          <div className={`flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-semibold ${isDemoMode ? "bg-amber-500/10 text-amber-600 border border-amber-500/20" : "bg-emerald-500/10 text-emerald-600 border border-emerald-500/20"}`}>
-            <div className={`h-2 w-2 rounded-full ${isDemoMode ? "bg-amber-500 animate-pulse" : "bg-emerald-500"}`} />
-            {isDemoMode ? "Demo" : "Live"}
+          <div className={`flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-semibold ${"bg-emerald-500/10 text-emerald-600 border border-emerald-500/20"}`}>
+            <div className={`h-2 w-2 rounded-full ${"bg-emerald-500"}`} />
+            "Live"
           </div>
         }
       />

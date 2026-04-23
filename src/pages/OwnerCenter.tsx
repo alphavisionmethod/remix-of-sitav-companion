@@ -212,7 +212,6 @@ const OwnerRevenuePanel = () => {
 // MAIN COMPONENT
 // ═══════════════════════════════════════════════════
 const OwnerCenter = () => {
-  const isDemoMode = false;
   const location = useLocation();
   const navigate = useNavigate();
   const activePage = subpageFromPath(location.pathname);
@@ -335,9 +334,9 @@ const OwnerCenter = () => {
         subtitle="Full admin control — incidents, intelligence, policies, fleet, council, and governance"
         actions={
           <div className="flex items-center gap-3">
-            <div className={`flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-semibold transition-all ${isDemoMode ? "bg-amber-500/10 text-amber-600 border border-amber-500/20" : "bg-emerald-500/10 text-emerald-600 border border-emerald-500/20"}`}>
-              <div className={`h-2 w-2 rounded-full ${isDemoMode ? "bg-amber-500 animate-pulse" : "bg-emerald-500"}`} />
-              {isDemoMode ? "Demo Mode" : "Live Mode"}
+            <div className={`flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-semibold transition-all ${"bg-emerald-500/10 text-emerald-600 border border-emerald-500/20"}`}>
+              <div className={`h-2 w-2 rounded-full ${"bg-emerald-500"}`} />
+              "Live Mode"
             </div>
             <SitaButton variant="secondary"><RefreshCw className="h-4 w-4" /> Refresh</SitaButton>
           </div>
@@ -485,15 +484,15 @@ const OwnerCenter = () => {
               <SitaCard hover={false} className="p-5">
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-3">
-                    <div className={`flex h-10 w-10 items-center justify-center rounded-xl ${isDemoMode ? "bg-amber-500/10" : "bg-emerald-500/10"}`}>
-                      {isDemoMode ? <CloudOff className="h-5 w-5 text-amber-500" /> : <Cloud className="h-5 w-5 text-emerald-500" />}
+                    <div className={`flex h-10 w-10 items-center justify-center rounded-xl ${"bg-emerald-500/10"}`}>
+                      <Cloud className="h-5 w-5 text-emerald-500" />
                     </div>
                     <div>
                       <p className="text-sm font-bold text-foreground">Operating Mode</p>
-                      <p className="text-[10px] text-muted-foreground">{isDemoMode ? "Sample data" : "Live connections"}</p>
+                      <p className="text-[10px] text-muted-foreground">"Live connections"</p>
                     </div>
                   </div>
-                  <Switch checked={!isDemoMode} onCheckedChange={toggleMode} />
+                  <Switch checked={true} onCheckedChange={toggleMode} />
                 </div>
 
                 <div className="border-t border-border/30 pt-3 mt-2">
@@ -1712,7 +1711,7 @@ const OwnerCenter = () => {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="font-display text-base font-bold text-foreground">External Connections</p>
-                  <p className="text-xs text-muted-foreground mt-0.5">{isDemoMode ? "Simulated status (Demo)" : "Real connector status (Live)"}</p>
+                  <p className="text-xs text-muted-foreground mt-0.5">"Real connector status (Live)"</p>
                 </div>
                 <SitaButton variant="secondary" size="sm" onClick={refreshConnectors}>
                   <RefreshCw className="h-3.5 w-3.5" /> Refresh
@@ -2389,15 +2388,11 @@ const OwnerCenter = () => {
               <Input type="number" value={simInput.amount} onChange={e => setSimInput({ ...simInput, amount: Number(e.target.value) })} className="mt-1" />
             </div>
             <SitaButton variant="accent" className="w-full" onClick={() => {
-              if (isDemoMode) {
-                setSimResult(buildDemoSimResult(simInput));
-              } else {
-                simulatePolicy.mutate(simInput, { onSuccess: (data) => {
+              simulatePolicy.mutate(simInput, { onSuccess: (data) => {
                   if (data && typeof data === "object" && "simulation" in data) {
                     setSimResult(data as SimResult);
                   }
                 }});
-              }
             }}>
               <Gauge className="h-4 w-4" /> Run Simulation
             </SitaButton>

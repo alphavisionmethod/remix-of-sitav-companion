@@ -37,7 +37,6 @@ const fallbackComms: Communication[] = [
 ];
 
 const CommunicationsCenter = () => {
-  const isDemoMode = false;
   const { primaryMode } = useBusinessProfile();
   const { user } = useAuth();
   const moduleConfig = getModuleAdaptation("communications", primaryMode);
@@ -62,7 +61,7 @@ const CommunicationsCenter = () => {
     };
   });
 
-  const communications = liveComms.length > 0 ? liveComms : (isDemoMode ? fallbackComms : []);
+  const communications = liveComms;
   const [tab, setTab] = useState("all");
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [showForm, setShowForm] = useState(false);
@@ -122,7 +121,7 @@ const CommunicationsCenter = () => {
 
   const listPane = (
     <div className="p-3 space-y-3">
-      <PageTruthBanner truthState={isDemoMode ? "demo" : "live"} />
+      <PageTruthBanner truthState="live" />
       <ConfirmationDialog state={confirmation} />
 
       <div className="flex items-center justify-between px-1">
