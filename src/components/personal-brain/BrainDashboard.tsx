@@ -21,6 +21,7 @@ import type { BrainModeId } from "./BRAIN_MODES";
 import { supabase } from "@/integrations/supabase/client";
 import { VoicePanel } from "./voice/VoicePanel";
 import { ShieldAlert } from "lucide-react";
+import { BrainOnboardingTour } from "./onboarding-tour/BrainOnboardingTour";
 
 function greetingFor(name?: string | null): string {
   const hour = new Date().getHours();
@@ -118,6 +119,7 @@ export function BrainDashboard() {
               onOpen={(id) => navigate(`/personal-brain/c/${id}`)}
               showWorkspaceBadge
             />
+            <div data-tour="brain-workspaces">
             <WorkspaceGrid
               workspaces={filteredWorkspaces}
               loading={workspacesLoading}
@@ -126,10 +128,11 @@ export function BrainDashboard() {
                 await createWorkspace({ name, kind, default_mode });
               }}
             />
+            </div>
           </div>
           <div className="space-y-6">
             <GoalProgressCard goals={goals} loading={goalsLoading} />
-            <BrainDigestsCard />
+            <div data-tour="brain-digests"><BrainDigestsCard /></div>
             <BrainSignalsCard />
             <BrainInsightCard insights={insights} loading={insightsLoading} />
           </div>
@@ -141,6 +144,7 @@ export function BrainDashboard() {
           onClose={() => setVoiceOpen(false)}
         />
       )}
+      <BrainOnboardingTour />
     </PageShell>
   );
 }
