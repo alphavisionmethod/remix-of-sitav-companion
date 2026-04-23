@@ -259,6 +259,9 @@ const AdminConsolidationExplorer = lazy(() => import("@/pages/admin/AdminConsoli
 // ── Performance Dashboard ──
 const AdminPerformanceDashboard = lazy(() => import("@/pages/admin/AdminPerformanceDashboard"));
 
+// ── Data Source Debug ──
+const DataSourceDebugPage = lazy(() => import("@/pages/admin/DataSourceDebugPage"));
+
 export function getAdminRoutes() {
   return [
     // ── Phase 3: Canonical Domain Hubs (12-domain IA) ──
@@ -268,6 +271,7 @@ export function getAdminRoutes() {
     <Route key="hub-approvals" path="/admin/approvals" element={gated("support.grant", <ApprovalsHome />)} />,
     <Route key="consolidation-explorer" path="/admin/consolidation" element={gated("audit.view", <AdminConsolidationExplorer />)} />,
     <Route key="perf-dashboard" path="/admin/performance" element={gated("audit.view", <AdminPerformanceDashboard />)} />,
+    <Route key="data-source-debug" path="/admin/data-source-debug" element={gated("audit.view", <DataSourceDebugPage />)} />,
     <Route key="hub-environments" path="/admin/environments" element={gated("users.view", <EnvironmentsHome />)} />,
     <Route key="hub-releases" path="/admin/releases" element={gated("audit.view", <ReleasesHome />)} />,
     <Route key="hub-support" path="/admin/support" element={gated("support.view", <SupportHome />)} />,
