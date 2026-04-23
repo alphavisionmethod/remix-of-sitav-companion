@@ -446,18 +446,15 @@ export function FloatingWindow({
     } else {
       const vw = window.innerWidth;
       const vh = window.innerHeight;
-      const bounce = applyEdgeBounce(
-        currentPos.current,
-        { vx: dragRef.current.velocityX, vy: dragRef.current.velocityY },
-        { width: size.width, height: size.height || 300 },
-        { width: vw, height: vh }
-      );
-
-      if (bounce.bounced) {
-        currentPos.current = { x: bounce.x, y: bounce.y };
-        dragRef.current.velocityX = bounce.vx;
-        dragRef.current.velocityY = bounce.vy;
-        setPos({ x: bounce.x, y: bounce.y });
+      // Clamp position to viewport instead of bouncing
+      const clampedX = Math.max(0, Math.min(vw - 100, currentPos.current.x));
+      const clampedY = Math.max(0, Math.min(vh - 50, currentPos.current.y));
+      currentPos.current = { x: clampedX, y: clampedY };
+      setPos({ x: clampedX, y: clampedY });
+      // Kill velocity if near edge to prevent drift
+      if (clampedX !== currentPos.current.x || clampedY !== currentPos.current.y) {
+        dragRef.current.velocityX = 0;
+        dragRef.current.velocityY = 0;
       }
 
       runInertia();
