@@ -125,7 +125,8 @@ const RevenueImpactDashboard = () => {
   // Real data: aggregate from invoices + payment_transactions
   const { data: realRevenue } = useQuery({
     queryKey: ["revenue-impact", user?.id],
-    enabled: !!user && !queryFn: async () => {
+    enabled: !!user,
+    queryFn: async () => {
       const { data: invoices } = await fromTable("invoices").select("id, total_cents, status, paid_at, created_at").eq("user_id", user!.id);
       if (!invoices?.length) return null;
       const paid = invoices.filter((i: Record<string, any>) => i.status === "paid");

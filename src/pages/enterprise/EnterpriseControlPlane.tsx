@@ -51,7 +51,8 @@ const EnterpriseControlPlane = () => {
   // Real data queries
   const { data: realTeamMembers } = useQuery({
     queryKey: ["enterprise-team", user?.id],
-    enabled: !!user && !queryFn: async () => {
+    enabled: !!user,
+    queryFn: async () => {
       const { data } = await fromTable("profiles").select("*, user_roles(role)").limit(50);
       return (data ?? []).map((p: Record<string, any>) => ({
         id: p.id || p.user_id,
@@ -67,7 +68,8 @@ const EnterpriseControlPlane = () => {
 
   const { data: realAuditLogs } = useQuery({
     queryKey: ["enterprise-deployments", user?.id],
-    enabled: !!user && !queryFn: async () => {
+    enabled: !!user,
+    queryFn: async () => {
       const { data } = await fromTable("audit_logs").select("*").eq("category", "deployment").order("created_at", { ascending: false }).limit(10);
       return (data ?? []).map((a: Record<string, any>) => ({
         id: a.id,

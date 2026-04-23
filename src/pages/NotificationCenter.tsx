@@ -154,7 +154,8 @@ const NotificationCenter = () => {
   // Fetch notifications from queue
   const { data: notifications = [], isLoading } = useQuery({
     queryKey: ["notification_center", user?.id],
-    enabled: !!user && !queryFn: async () => {
+    enabled: !!user,
+    queryFn: async () => {
       const { data, error } = await db.from("notifications_queue")
         .select("*")
         .order("created_at", { ascending: false })
@@ -167,7 +168,8 @@ const NotificationCenter = () => {
   // Also fetch from notifications table
   const { data: legacyNotifs = [] } = useQuery({
     queryKey: ["notifications_legacy", user?.id],
-    enabled: !!user && !queryFn: async () => {
+    enabled: !!user,
+    queryFn: async () => {
       const { data } = await db.from("notifications")
         .select("*")
         .order("created_at", { ascending: false })

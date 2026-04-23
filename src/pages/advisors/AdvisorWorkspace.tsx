@@ -446,7 +446,8 @@ const MemoryTransparency = () => {
   const { user } = useAuth();
 const { data: dbMemory = [] } = useQuery({
     queryKey: ["advisor-memory", user?.id],
-    enabled: !!user && !queryFn: async () => {
+    enabled: !!user,
+    queryFn: async () => {
       const { data } = await fromTable("user_memory").select("*").order("created_at", { ascending: false }).limit(20);
       return data || [];
     },

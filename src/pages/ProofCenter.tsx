@@ -172,7 +172,8 @@ const ProofCenter = () => {
   // Fetch linked approvals
   const { data: approvals = [] } = useQuery({
     queryKey: ["proof_approvals", user?.id],
-    enabled: !!user && !queryFn: async () => {
+    enabled: !!user,
+    queryFn: async () => {
       const { data } = await fromTable("approval_queue").select("*").eq("status", "approved").order("created_at", { ascending: false }).limit(20);
       return data || [];
     },
