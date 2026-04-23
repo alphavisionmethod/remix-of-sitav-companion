@@ -1,0 +1,151 @@
+{
+  "generatedAt": "2026-04-23T19:12:37.157Z",
+  "gate": "key-artifact-freshness-gate",
+  "total": 13,
+  "results": [
+    {
+      "file": "deployment-readiness-report.json",
+      "budget": "strict",
+      "budgetHours": 168,
+      "exists": true,
+      "parseable": true,
+      "ageHours": 1.3,
+      "fresh": true,
+      "failureReason": null,
+      "ok": true
+    },
+    {
+      "file": "validation-summary.json",
+      "budget": "weekly",
+      "budgetHours": 336,
+      "exists": true,
+      "parseable": true,
+      "ageHours": 1.3,
+      "fresh": true,
+      "failureReason": null,
+      "ok": true
+    },
+    {
+      "file": "architecture-compliance-report.json",
+      "budget": "weekly",
+      "budgetHours": 336,
+      "exists": true,
+      "parseable": true,
+      "ageHours": 1.3,
+      "fresh": true,
+      "failureReason": null,
+      "ok": true
+    },
+    {
+      "file": "production-launch-attestation-report.json",
+      "budget": "weekly",
+      "budgetHours": 336,
+      "exists": true,
+      "parseable": true,
+      "ageHours": 1.3,
+      "fresh": true,
+      "failureReason": null,
+      "ok": true
+    },
+    {
+      "file": "final-deployment-readiness-report.json",
+      "budget": "weekly",
+      "budgetHours": 336,
+      "exists": true,
+      "parseable": true,
+      "ageHours": 1.3,
+      "fresh": true,
+      "failureReason": null,
+      "ok": true
+    },
+    {
+      "file": "android-release-readiness-report.json",
+      "budget": "weekly",
+      "budgetHours": 336,
+      "exists": true,
+      "parseable": true,
+      "ageHours": 1.3,
+      "fresh": true,
+      "failureReason": null,
+      "ok": true
+    },
+    {
+      "file": "ios-release-readiness-report.json",
+      "budget": "weekly",
+      "budgetHours": 336,
+      "exists": true,
+      "parseable": true,
+      "ageHours": 1.3,
+      "fresh": true,
+      "failureReason": null,
+      "ok": true
+    },
+    {
+      "file": "iso-vmware-release-readiness-report.json",
+      "budget": "weekly",
+      "budgetHours": 336,
+      "exists": true,
+      "parseable": true,
+      "ageHours": 1.3,
+      "fresh": true,
+      "failureReason": null,
+      "ok": true
+    },
+    {
+      "file": "service-manifest.json",
+      "budget": "monthly",
+      "budgetHours": 1440,
+      "exists": true,
+      "parseable": true,
+      "ageHours": 1.3,
+      "fresh": true,
+      "failureReason": null,
+      "ok": true
+    },
+    {
+      "file": "route-manifest.json",
+      "budget": "monthly",
+      "budgetHours": 1440,
+      "exists": true,
+      "parseable": true,
+      "ageHours": 1.3,
+      "fresh": true,
+      "failureReason": null,
+      "ok": true
+    },
+    {
+      "file": "capability-index.json",
+      "budget": "monthly",
+      "budgetHours": 1440,
+      "exists": true,
+      "parseable": true,
+      "ageHours": 1.3,
+      "fresh": true,
+      "failureReason": null,
+      "ok": true
+    },
+    {
+      "file": "launch-tier-index.json",
+      "budget": "monthly",
+      "budgetHours": 1440,
+      "exists": true,
+      "parseable": true,
+      "ageHours": 1.3,
+      "fresh": true,
+      "failureReason": null,
+      "ok": true
+    },
+    {
+      "file": "security-review-manifest.json",
+      "budget": "monthly",
+      "budgetHours": 1440,
+      "exists": true,
+      "parseable": true,
+      "ageHours": 1.3,
+      "fresh": true,
+      "failureReason": null,
+      "ok": true
+    }
+  ],
+  "ok": true
+}
