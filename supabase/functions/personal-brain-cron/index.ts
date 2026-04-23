@@ -162,8 +162,9 @@ async function scanForUser(
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
-  // Shared-secret auth — reject anything without the cron secret
-  const expected = Deno.env.get("CRON_SECRET");
+  // Shared-secret auth — falls back to WEBHOOK_SIGNING_SECRET so deploys
+  // don't require a brand-new env var.
+  const expected = Deno.env.get("CRON_SECRET") ?? Deno.env.get("WEBHOOK_SIGNING_SECRET");
   const provided = req.headers.get("x-cron-secret") ?? "";
   if (!expected || provided !== expected) {
     return jsonResponse({ error: "Unauthorized" }, 401);
