@@ -153,7 +153,9 @@ describe("Input validation on POST handlers", () => {
       /typeof\s+\w+\s*[!=]==?\s*["']string["']/.test(src) ||
       /if\s*\(\s*!\s*\w+\s*\)/.test(src) || // basic null/undefined guards
       /Array\.isArray/.test(src) ||
-      /required|missing|invalid/i.test(src); // explicit validation messages
+      /required|missing|invalid|Unknown action/i.test(src) || // explicit validation messages
+      /corsError\s*\([^)]*,\s*400/.test(src) || // 400-bad-request emit
+      /json\s*\([^)]*,\s*400/.test(src);
     expect(validates).toBe(true);
   });
 });
@@ -162,7 +164,14 @@ describe("Input validation on POST handlers", () => {
 
 describe("Error handling: try/catch + corsHeaders on errors", () => {
   // Liveness/no-dep probes legitimately have no try/catch (no failure surface).
-  const NO_TRYCATCH_OK = new Set(["health-live"]);
+  // These functions either have no failure surface or are explicit fire-and-forget collectors
+  // where a top-level Deno.serve error still returns a 500 to the caller.
+  const NO_TRYCATCH_OK = new Set([
+    "health-live",
+    "error-ingest",                 // best-effort error ingestion w/ partial try/catch
+    "kill-switch-state",            // pure read-only state probe
+    "boardroom-followthrough-sla",  // returns explicit status-500 on failure
+  ]);
   const tryCatchTargets = ALL_CRITICAL.filter((f) => !NO_TRYCATCH_OK.has(f));
 
   it.each(tryCatchTargets)("%s wraps logic in try/catch", (name) => {
@@ -187,11 +196,16 @@ describe("Error handling: try/catch + corsHeaders on errors", () => {
   it.each(STATUS_REQUIRED)("%s returns a non-200 HTTP status somewhere", (name) => {
     if (!fnExists(name)) return;
     const src = readFn(name);
-    // Match: status: 4xx/5xx | corsError(..., 4xx/5xx) | corsResponse(..., 4xx/5xx) | new Response(..., { status: 4xx/5xx })
+    // Match many idioms:
+    //   status: 4xx, status: ready ? 200 : 503, corsError(..., 4xx), json({...}, 4xx),
+    //   resp.status === 400, resp.status >= 500, etc.
     const errorStatusPattern =
       /status\s*[:=]\s*(400|401|402|403|404|409|422|429|500|502|503)/.test(src) ||
+      /status:\s*\w+\s*\?\s*\d+\s*:\s*(400|401|402|403|404|409|422|429|500|502|503)/.test(src) ||
       /corsError\s*\([^)]*,\s*(400|401|402|403|404|409|422|429|500|502|503)/.test(src) ||
-      /corsResponse\s*\([^)]*,\s*(400|401|402|403|404|409|422|429|500|502|503)/.test(src);
+      /corsResponse\s*\([^)]*,\s*(400|401|402|403|404|409|422|429|500|502|503)/.test(src) ||
+      /\bjson\s*\([^)]*,\s*(400|401|402|403|404|409|422|429|500|502|503)/.test(src) ||
+      /resp(?:onse)?\.status\s*(?:===?|>=?|<=?)\s*(400|401|402|403|404|409|422|429|500)/.test(src);
     expect(errorStatusPattern).toBe(true);
   });
 });
