@@ -22,6 +22,14 @@ export interface UseWakeWordOptions {
   autoStart?: boolean;
   /** Called when one of the wake phrases is detected in a transcript. */
   onWake?: (matchedPhrase: string, fullTranscript: string) => void;
+  /**
+   * Minimum number of words a heard transcript must contain before we
+   * consider it for matching. Higher values = stricter sensitivity, fewer
+   * accidental wakes from background chatter.
+   */
+  minMatchWords?: number;
+  /** Called for every interim transcript update (live captions). */
+  onTranscript?: (text: string, isFinal: boolean) => void;
 }
 
 export interface UseWakeWord {
@@ -30,6 +38,8 @@ export interface UseWakeWord {
   lastWakeAt: number | null;
   start: () => void;
   stop: () => void;
+  /** Latest interim transcript (live caption). */
+  liveTranscript: string;
 }
 
 const DEFAULT_PHRASES = ["hey sita", "hey sentinel", "hey jarvis"];
@@ -45,6 +55,8 @@ export function useWakeWord(opts: UseWakeWordOptions = {}): UseWakeWord {
     cooldownMs = 2500,
     autoStart = false,
     onWake,
+    minMatchWords = 2,
+    onTranscript,
   } = opts;
 
   const supported = Boolean(getSpeechRecognitionCtor());
@@ -54,9 +66,13 @@ export function useWakeWord(opts: UseWakeWordOptions = {}): UseWakeWord {
   const restartTimerRef = useRef<number | null>(null);
   const onWakeRef = useRef(onWake);
   const phrasesRef = useRef(phrases);
+  const onTranscriptRef = useRef(onTranscript);
+  const minWordsRef = useRef(minMatchWords);
+  const cooldownRef = useRef(cooldownMs);
 
   const [active, setActive] = useState(false);
   const [lastWakeAt, setLastWakeAt] = useState<number | null>(null);
+  const [liveTranscript, setLiveTranscript] = useState("");
 
   useEffect(() => {
     onWakeRef.current = onWake;
@@ -64,6 +80,9 @@ export function useWakeWord(opts: UseWakeWordOptions = {}): UseWakeWord {
   useEffect(() => {
     phrasesRef.current = phrases.map(normalize).filter(Boolean);
   }, [phrases]);
+  useEffect(() => { onTranscriptRef.current = onTranscript; }, [onTranscript]);
+  useEffect(() => { minWordsRef.current = Math.max(1, minMatchWords); }, [minMatchWords]);
+  useEffect(() => { cooldownRef.current = cooldownMs; }, [cooldownMs]);
 
   const teardown = useCallback(() => {
     if (restartTimerRef.current) {
