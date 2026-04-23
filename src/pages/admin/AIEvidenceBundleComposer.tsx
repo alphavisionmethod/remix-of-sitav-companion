@@ -18,6 +18,7 @@ const typeColors: Record<string, string> = {
 };
 
 const AIEvidenceBundleComposer = () => {
+const BUNDLE_ITEMS: any[] = [];
   const { isDemo } = useAIEngDomain("missions", BUNDLE_ITEMS);
   const [selectedMode, setSelectedMode] = useState<ExportMode>("markdown");
   const [selectedItems, setSelectedItems] = useState<string[]>(([] as any[]).map(b => b.id));

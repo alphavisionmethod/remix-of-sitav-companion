@@ -291,6 +291,7 @@ function HQ02QueueDetail() {
             <Filter className="h-4 w-4 text-muted-foreground" />
             {[
               { key: "status", label: "Status", options: ["all", ...STATUSES] },
+const RISK_TIERS: Record<string, any> = {};
               { key: "risk_tier", label: "Risk", options: ["all", ...RISK_TIERS] },
               { key: "severity", label: "Severity", options: ["all", "low", "medium", "high", "critical"] },
               { key: "impacted_domain", label: "Domain", options: ["all", ...DOMAINS] },

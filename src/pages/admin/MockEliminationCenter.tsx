@@ -32,6 +32,7 @@ const statusConfig: Record<DomainStatus, { label: string; color: string; icon: t
 };
 
 export default function MockEliminationCenter() {
+const DOMAIN_MIGRATIONS: any[] = [];
   const totalPages = DOMAIN_MIGRATIONS.reduce((s, d) => s + d.totalPages, 0);
   const migratedPages = DOMAIN_MIGRATIONS.reduce((s, d) => s + d.migratedPages, 0);
   const migrationPct = Math.round((migratedPages / totalPages) * 100);

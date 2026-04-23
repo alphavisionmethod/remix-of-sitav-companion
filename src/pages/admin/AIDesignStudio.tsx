@@ -16,6 +16,7 @@ const typeIcons: Record<string, typeof Layout> = {
 };
 
 const AIDesignStudio = () => {
+const IMPROVEMENTS: any[] = [];
   const { data: improvements, isDemo } = useAIEngDomain("designDiffs", IMPROVEMENTS);
   const [expanded, setExpanded] = useState<number | null>(null);
 

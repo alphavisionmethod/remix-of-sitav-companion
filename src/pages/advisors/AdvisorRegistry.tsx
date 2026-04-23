@@ -45,6 +45,7 @@ const COUNCIL_ICONS: Record<string, typeof Brain> = {
 };
 
 function autonomyPct(level: string): number {
+const AUTONOMY_LEVELS: Record<string, any> = {};
   const idx = AUTONOMY_LEVELS.indexOf(level);
   return idx >= 0 ? Math.round(((idx + 1) / ([] as any[]).length) * 100) : 0;
 }

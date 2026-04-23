@@ -18,6 +18,7 @@ import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 const WebAppInstallPage = () => {
   const navigate = useNavigate();
   const { apps, installApp, pinToDock, setNotificationEnabled, setStartupBehavior } = useAppPlatform();
+const DETECTED_SITES: any[] = [];
   const [selectedSite, setSelectedSite] = useState<typeof DETECTED_SITES[0] | null>(null);
   const [installing, setInstalling] = useState(false);
   const [installed, setInstalled] = useState(false);

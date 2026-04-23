@@ -22,6 +22,7 @@ const HRS02SignalSourcesBoard = () => {
         signals: p.categories || p.signals || [],
         platform: p.platform || "Cloud",
       }))
+const SIGNAL_PROVIDERS: any[] = [];
     : (providers as typeof SIGNAL_PROVIDERS) ?? [];
 
   return (

@@ -14,6 +14,7 @@ const stanceColors: Record<string, string> = {
 };
 
 const AIAgentDebate = () => {
+const DEBATES: any[] = [];
   const { data: debates, isDemo } = useAIEngDomain("debates", DEBATES);
   const [expanded, setExpanded] = useState<number | null>(2);
 

@@ -56,6 +56,7 @@ export default function ConnectorGovernanceCenter() {
   const queryClient = useQueryClient();
 
   // Fetch real sync history from audit_logs
+const FALLBACK_SYNC_HISTORY: any[] = [];
   const { data: syncHistory = FALLBACK_SYNC_HISTORY } = useQuery({
     queryKey: ["connector-sync-history", user?.id],
     enabled: !!user,

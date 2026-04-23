@@ -27,6 +27,7 @@ export default function LAUNCH07GoNoGo() {
 
   if (!result) return null;
 
+const MODE_ORDER: string[] = [];
   const currentModeIdx = MODE_ORDER.indexOf(result.recommendedMode);
 
   return (

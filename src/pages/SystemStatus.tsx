@@ -29,18 +29,18 @@ const createSelfHealingService = () => ({
   resolve: (_id: string, _msg: string) => {},
   getAllIncidents: () => [] as any[], getActiveIncidents: () => [] as any[],
   getCircuitBreakerStates: () => [] as any[],
-  getStats: () => ({ total: 0, resolved: 0, bySeverity: { P0: 0, P1: 0, P2: 0, P3: 0 } }),
+  getStats: () => ({ total: 0, resolved: 0, escalated: 0, bySeverity: { P0: 0, P1: 0, P2: 0, P3: 0 }, byState: {} as Record<string, number> }),
 });
 const createImmuneController = () => ({
   getThreats: () => [] as any[], getStatus: () => "active",
   quarantine: (..._args: any[]) => {},
   getAllQuarantined: () => [] as any[],
-  getStats: () => ({ threats: 0, quarantined: 0 }),
+  getStats: () => ({ threats: 0, quarantined: 0, enabledRuleCount: 0, ruleCount: 0 }),
 });
 const createFleetHealthService = () => ({
   registerService: (..._args: any[]) => {}, getHealth: () => ({}), getDependencyGraph: () => ({}),
   recordHealthCheck: (..._args: any[]) => {},
-  getFleetSummary: () => ({ total: 12, healthy: 11, degraded: 1, avgHealthScore: 95 }),
+  getFleetSummary: () => ({ total: 12, healthy: 11, degraded: 1, unhealthy: 0, avgHealthScore: 95 }),
   getAllServices: () => [] as any[], getDegradedServices: () => [] as any[],
 });
 const ENGINE_CONNECTORS: any[] = [];

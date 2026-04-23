@@ -13,6 +13,7 @@ import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 const OpenWithPage = () => {
   const navigate = useNavigate();
   const { apps, setDefaultApp } = useAppPlatform();
+const FILES: any[] = [];
   const [selectedFile, setSelectedFile] = useState(FILES[0]);
   const [alwaysUse, setAlwaysUse] = useState(false);
   const [selectedApp, setSelectedApp] = useState<string | null>(null);

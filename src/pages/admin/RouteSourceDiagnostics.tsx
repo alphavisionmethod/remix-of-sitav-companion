@@ -39,6 +39,7 @@ export default function RouteSourceDiagnostics() {
   const [search, setSearch] = useState("");
 
   const filtered = useMemo(() => {
+const ROUTES: any[] = [];
     if (!search) return ROUTES;
     const q = search.toLowerCase();
     return ([] as any[]).filter(r => r.path.includes(q) || r.pageName.toLowerCase().includes(q) || r.domain.toLowerCase().includes(q));

@@ -67,6 +67,7 @@ const STATUS_COLORS: Record<string, string> = {
   completed: "bg-trust-safe/10 text-trust-safe",
 };
 
+const ADVISOR_SCORECARDS: any[] = [];
 const AdvisorScorecard = ({ advisor }: { advisor: typeof ADVISOR_SCORECARDS[0] }) => (
   <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="glass-panel rounded-xl p-5 space-y-4">
     <div className="flex items-start justify-between">
@@ -170,7 +171,9 @@ export default function AdvisorCouncilDashboard() {
 
   // Use live data if available, else demo data
   const scorecards = ADVISOR_SCORECARDS;
+const ESCALATION_LOG: any[] = [];
   const escalations = ESCALATION_LOG;
+const HANDOFF_LOG: any[] = [];
   const handoffs = HANDOFF_LOG;
   const budgetRaw = budgetData.data && typeof budgetData.data === "object" && "budget" in budgetData.data
     ? budgetData.data.budget as typeof MODEL_BUDGET
