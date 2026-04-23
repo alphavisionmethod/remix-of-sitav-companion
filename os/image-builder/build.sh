@@ -127,6 +127,25 @@ stage_install_packages() {
   install -m 0755 "${SCRIPT_DIR}/launch.sh"                            "${ROOT_DIR}/opt/sita/shell/launch.sh"
 
   # ── Embed deployment profile manifest (Part 3) ───────────────────────
+  # ── Install Electron shell as /usr/bin/sita-shell ────────────────────
+  # At ISO build time the pre-packaged Electron app must exist at
+  # electron-release/SITA-OS-linux-x64/ (produced by build-electron.sh).
+  # If not present, create a stub launcher so the watchdog path resolves.
+  local electron_pkg="${REPO_ROOT}/electron-release/SITA-OS-linux-x64"
+  if [[ -d "${electron_pkg}" ]]; then
+    log "  installing Electron shell from ${electron_pkg}"
+    cp -a "${electron_pkg}/." "${ROOT_DIR}/opt/sita/shell/electron/"
+    ln -sf /opt/sita/shell/electron/sita-os "${ROOT_DIR}/usr/bin/sita-shell"
+  else
+    warn "electron-release/SITA-OS-linux-x64 not found — creating stub /usr/bin/sita-shell"
+    cat > "${ROOT_DIR}/usr/bin/sita-shell" <<'STUB'
+#!/usr/bin/env bash
+echo "[sita-shell] Electron package not installed. Run build-electron.sh first." >&2
+exit 1
+STUB
+    chmod +x "${ROOT_DIR}/usr/bin/sita-shell"
+  fi
+
   install -m 0644 "${PROFILE_MANIFEST}" "${ROOT_DIR}/etc/sita/deployment-profile.json"
   ok "embedded deployment profile: ${SITA_PROFILE}"
 
