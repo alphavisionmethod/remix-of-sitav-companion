@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
-import { ArrowLeft, Brain, Info, Loader2, Send, Sparkles } from "lucide-react";
+import { ArrowLeft, Brain, Info, Loader2, Mic, Send, Sparkles, Volume2, VolumeX } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import { toast } from "sonner";
 import { GlobalErrorBoundary } from "@/components/sita/GlobalErrorBoundary";
@@ -17,6 +17,9 @@ import { usePbChat } from "@/components/personal-brain/hooks/usePbChat";
 import { usePbMemories, type PbMemoryCategory } from "@/components/personal-brain/hooks/usePbMemories";
 import { parseRememberCommand } from "@/components/personal-brain/parseRememberCommand";
 import { BRAIN_MODES_BY_ID, type BrainModeId, isBrainModeId } from "@/components/personal-brain/BRAIN_MODES";
+import { VoicePanel } from "@/components/personal-brain/voice/VoicePanel";
+import { useSpeechSynthesis } from "@/components/personal-brain/voice/useSpeechSynthesis";
+import { usePbVoicePrefs } from "@/components/personal-brain/voice/usePbVoicePrefs";
 
 function ChatInner() {
   const { chatId } = useParams<{ chatId: string }>();
@@ -29,6 +32,10 @@ function ChatInner() {
   const [contextOpen, setContextOpen] = useState(false);
   const [contextSources, setContextSources] = useState<Record<string, unknown> | null>(null);
   const [mode, setMode] = useState<BrainModeId>("think");
+  const [voiceOpen, setVoiceOpen] = useState(false);
+  const { prefs: voicePrefs } = usePbVoicePrefs();
+  const synth = useSpeechSynthesis();
+  const lastReadIdRef = useRef<string | null>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
   const autosentRef = useRef(false);
   const turnCountRef = useRef(0);
@@ -43,6 +50,20 @@ function ChatInner() {
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
+
+  // Auto-read newest assistant message when autoread pref is on
+  useEffect(() => {
+    if (!voicePrefs?.autoread || !synth.supported) return;
+    const last = messages[messages.length - 1];
+    if (!last || last.role !== "assistant" || last.pending || !last.content) return;
+    if (lastReadIdRef.current === last.id) return;
+    lastReadIdRef.current = last.id;
+    synth.speak(last.content, {
+      rate: voicePrefs.rate,
+      pitch: voicePrefs.pitch,
+      voiceURI: voicePrefs.voice_id,
+    });
+  }, [messages, voicePrefs, synth]);
 
   // Auto-send a starter prompt arriving from dashboard `?prompt=…`
   useEffect(() => {
@@ -140,6 +161,28 @@ function ChatInner() {
             <Badge variant="outline" className="text-[10px] capitalize">
               {mode}
             </Badge>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8"
+              onClick={() => setVoiceOpen(true)}
+              aria-label="Open voice mode"
+              title="Open voice mode"
+            >
+              <Mic className="h-4 w-4" />
+            </Button>
+            {synth.supported && (
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8"
+                onClick={() => synth.speaking ? synth.stop() : null}
+                aria-label={synth.speaking ? "Stop speaking" : "Idle"}
+                title={synth.speaking ? "Stop speaking" : "Speech idle"}
+              >
+                {synth.speaking ? <Volume2 className="h-4 w-4 text-primary" /> : <VolumeX className="h-4 w-4 text-muted-foreground" />}
+              </Button>
+            )}
           </div>
           <ModePicker value={mode} onChange={(m) => void handleModeChange(m)} />
         </div>
