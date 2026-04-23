@@ -24,6 +24,7 @@ export type SitaIntent =
   | { kind: "open_notifications"; raw: string }
   | { kind: "summarize_screen"; context: SitaScreenContext | null; raw: string }
   | { kind: "act_on_screen"; verb: string; context: SitaScreenContext | null; raw: string }
+  | { kind: "agent_plan"; intent: string; domain?: "business" | "finance" | "concierge"; raw: string }
   | { kind: "brain"; utterance: string; context: SitaScreenContext | null };
 
 const APP_ALIASES: Record<string, string[]> = {
@@ -45,6 +46,19 @@ const APP_ALIASES: Record<string, string[]> = {
 const OPEN_VERBS = ["open", "launch", "start", "show", "go to", "switch to"];
 const SUMMARIZE_VERBS = ["summarize", "summarise", "tl;dr", "explain"];
 const ACT_DEICTIC = ["this", "that", "it", "current"];
+
+const AGENT_TRIGGERS = [
+  "sita ", "do ", "send ", "create ", "draft ", "schedule ", "book ", "pay ",
+  "invoice", "categorize", "categorise", "remind ", "plan my", "chase ",
+  "reschedule", "cancel reservation", "prepare payment",
+];
+
+function detectAgentDomain(t: string): "business" | "finance" | "concierge" | undefined {
+  if (/invoice|bill|payment|cash|expense|categori[sz]e|payroll|tax/.test(t)) return "finance";
+  if (/reservation|book|reschedul|reminder|travel|hotel|flight|concierge|errand|gift/.test(t)) return "concierge";
+  if (/task|proposal|meeting|report|contact|crm|workflow/.test(t)) return "business";
+  return undefined;
+}
 
 function containsAny(haystack: string, needles: string[]): boolean {
   return needles.some((n) => haystack.includes(n));
@@ -104,6 +118,12 @@ export function routeVoiceIntent(rawUtterance: string): SitaIntent {
   if (containsAny(utterance, ACT_DEICTIC) && /^(schedule|add|save|share|send|export|copy)/.test(utterance)) {
     const verb = utterance.split(/\s+/)[0] ?? "act";
     return { kind: "act_on_screen", verb, context: screenContext, raw: rawUtterance };
+  }
+
+  // Phase E — agent planning route for action-y utterances
+  if (containsAny(utterance, AGENT_TRIGGERS)) {
+    const domain = detectAgentDomain(utterance);
+    return { kind: "agent_plan", intent: rawUtterance, domain, raw: rawUtterance };
   }
 
   // Brain fallback (always carries screen context for free)

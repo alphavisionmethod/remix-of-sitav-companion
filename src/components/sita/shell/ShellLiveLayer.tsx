@@ -37,6 +37,8 @@ const SitaHudStripLazy = lazy(() => import("./sita-hud").then(m => ({ default: m
 const SitaFirstRunRevealLazy = lazy(() => import("./sita-hud").then(m => ({ default: m.SitaFirstRunReveal })));
 const SitaWhisperLazy = lazy(() => import("./sita-hud").then(m => ({ default: m.SitaWhisper })));
 const SitaProactiveRunnerLazy = lazy(() => import("./sita-hud").then(m => ({ default: m.SitaProactiveRunner })));
+const SitaActionPlanCardLazy = lazy(() => import("./sita-agent").then(m => ({ default: m.SitaActionPlanCard })));
+const SitaAgentMountLazy = lazy(() => import("./sita-agent").then(m => ({ default: m.SitaAgentMount })));
 
 interface ShellLiveLayerProps {
   wm: WindowManager;
@@ -177,6 +179,14 @@ export function ShellLiveLayer({
       </Suspense>
       <Suspense fallback={null}>
         <SitaProactiveRunnerLazy />
+      </Suspense>
+
+      {/* ── Sita Agent (Phase E) ───────────────────────────────── */}
+      <Suspense fallback={null}>
+        <SitaActionPlanCardLazy />
+      </Suspense>
+      <Suspense fallback={null}>
+        <SitaAgentMountLazy />
       </Suspense>
 
     </>
