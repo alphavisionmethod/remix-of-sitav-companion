@@ -7,8 +7,8 @@ import NRCSubNav from "@/components/admin/NRCSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 const NRC04QueueInterruptMatrix = () => {
   const { data: categoryRouting, isLoading } = useInterruptionPolicies();
-  const deliveryTypes = DELIVERY_TYPES;
-  const quickActions = QUICK_ACTIONS;
+  const deliveryTypes = deliveryTypes;
+  const quickActions = quickActions;
 
   return (
     <div className="p-6 max-w-[1400px] mx-auto space-y-6">

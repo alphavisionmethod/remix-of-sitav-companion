@@ -17,6 +17,9 @@ import { Plus, Trash2, Search, ArrowRight, AlertTriangle, CheckCircle2, Clock, B
 import type { MockReplacement } from "@/data/persistence/mock-replacement-persistence";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
+const TYPES: any[] = [];
+const PRIORITIES: any[] = [];
+
 const STATUSES: any[] = [];
 
 

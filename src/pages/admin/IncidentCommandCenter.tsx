@@ -14,7 +14,7 @@ import { fromTable } from "@/lib/supabase-helpers";
 import { useIncidentManagement, useEntityScoped } from "@/contexts/SitaKernelContext";
 type Incident = { id: string; title: string; severity: string; status: string; assignee?: string; createdAt: string; [k: string]: any };
 type Severity = "critical" | "high" | "medium" | "low";
-type IncidentStatus = "active" | "investigating" | "mitigating" | "resolved" | "closed";
+type IncidentStatus = "active" | "investigating" | "mitigating" | "resolved" | "closed" | "open";
 import { anomalyAlertSystem, type Anomaly } from "@/lib/services/anomaly-alert";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 const SEVERITY_CONFIG: Record<Severity, { color: string; bg: string; border: string }> = {
