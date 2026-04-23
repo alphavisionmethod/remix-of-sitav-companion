@@ -212,7 +212,9 @@ export function AlwaysOnVoice({ enabled, onDisable, wakePhrases }: AlwaysOnVoice
 
   // ── Wake word ──
   const wake = useWakeWord({
-    phrases: wakePhrases,
+    phrases,
+    cooldownMs: sentinel.cooldownMs,
+    minMatchWords: sentinel.minMatchWords,
     onWake: () => {
       // Only react when we're in the WAKE phase.
       if (stateRef.current !== "wake") return;
