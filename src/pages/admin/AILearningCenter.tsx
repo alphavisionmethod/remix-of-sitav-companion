@@ -5,7 +5,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState } from "react";
 import { TrendingUp, Brain, AlertTriangle, CheckCircle2, RotateCcw, Sparkles, Target, Users } from "lucide-react";
 import { useAIEngDomain } from "@/hooks/use-ai-engineering-data";
-import { DEMO_CALIBRATION } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const DEMO_PATTERNS: any[] = [];
@@ -25,8 +24,8 @@ const AILearningCenter = () => {
         {[
           { l: "Patterns Discovered", v: patterns.length },
           { l: "Improvements Implemented", v: patterns.filter((p: any) => p.status === "implemented").length },
-          { l: "Recommendations Tracked", v: ([] as typeof DEMO_OUTCOMES).length },
-          { l: "Avg Agent Accuracy", v: `${Math.round(([] as typeof DEMO_CALIBRATION).reduce((a,c) => a + c.accuracy, 0) / ([] as typeof DEMO_CALIBRATION).length)}%` },
+          { l: "Recommendations Tracked", v: ([] as any[]).length },
+          { l: "Avg Agent Accuracy", v: `${Math.round(([] as any[]).reduce((a,c) => a + c.accuracy, 0) / ([] as any[]).length)}%` },
         ].map(c => (
           <div key={c.l} className="rounded-xl border border-border/40 bg-card p-4 text-center">
             <p className="text-xl font-bold">{c.v}</p>
@@ -60,7 +59,7 @@ const AILearningCenter = () => {
         </TabsContent>
 
         <TabsContent value="outcomes" className="space-y-2 mt-4">
-          {([] as typeof DEMO_OUTCOMES).map((o, i) => (
+          {([] as any[]).map((o, i) => (
             <div key={i} className="rounded-xl border border-border/40 bg-card p-4 flex items-center gap-3">
               {o.outcome === "success" ? <CheckCircle2 className="h-4 w-4 text-[hsl(var(--trust-safe))] shrink-0" /> :
                o.outcome === "rejected" ? <RotateCcw className="h-4 w-4 text-muted-foreground shrink-0" /> :
@@ -78,7 +77,7 @@ const AILearningCenter = () => {
         </TabsContent>
 
         <TabsContent value="calibration" className="space-y-2 mt-4">
-          {([] as typeof DEMO_CALIBRATION).map((c, i) => (
+          {([] as any[]).map((c, i) => (
             <div key={i} className="rounded-xl border border-border/40 bg-card p-4">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-sm font-semibold">{c.agent}</span>

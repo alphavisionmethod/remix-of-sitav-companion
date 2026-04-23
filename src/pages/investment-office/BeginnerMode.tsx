@@ -4,7 +4,6 @@ import { motion } from "framer-motion";
 import { GraduationCap, Shield, Brain, TrendingUp, Eye, Target, ChevronRight, HelpCircle, Lightbulb, DollarSign, CheckCircle2, BarChart3, Wallet } from "lucide-react";
 import { PORTFOLIO } from "@/hooks/useInvestmentOfficeData";
 import { useInvestmentStrategyRecords } from "@/hooks/use-investment-office";
-import { DEMO_LEARN_TOPICS } from "@/data/seed/investment";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 const fmt = (n: number) => n >= 1e6 ? `$${(n / 1e6).toFixed(1)}M` : n >= 1e3 ? `$${(n / 1e3).toFixed(1)}K` : `$${n.toFixed(2)}`;
 
@@ -139,7 +138,7 @@ export default function BeginnerMode() {
       <div className="space-y-3">
         <h3 className="text-sm font-semibold text-foreground flex items-center gap-2"><HelpCircle className="h-4 w-4 text-primary" /> Learn the Basics</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-          {([] as typeof DEMO_LEARN_TOPICS).map(t => (
+          {([] as any[]).map(t => (
             <div key={t.title} className="rounded-2xl border border-border bg-card p-4 space-y-2 hover:border-primary/15 transition-all cursor-pointer">
               <span className="text-2xl">{t.icon}</span>
               <p className="text-xs font-semibold text-foreground">{t.title}</p>

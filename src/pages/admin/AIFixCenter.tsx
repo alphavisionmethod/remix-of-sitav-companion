@@ -5,7 +5,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState } from "react";
 import { Bug, AlertTriangle, CheckCircle2, Wrench, Shield, RotateCcw, Sparkles, FileCheck, Eye, Code, Server, Layout } from "lucide-react";
 import { useAIEngDomain } from "@/hooks/use-ai-engineering-data";
-import { DEMO_FIXES } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const severityColors: Record<string, string> = {

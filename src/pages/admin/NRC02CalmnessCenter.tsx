@@ -3,7 +3,6 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Heart, Users, MessageSquare, Shield, Zap, Eye } from "lucide-react";
 import { useAssistantRolePresences } from "@/hooks/use-notification-calm-data";
-import { DEMO_CALM_PRINCIPLES, DEMO_INTERVENTION_SCENARIOS } from "@/data/seed/notification-calm";
 import NRCSubNav from "@/components/admin/NRCSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 const NRC02CalmnessCenter = () => {

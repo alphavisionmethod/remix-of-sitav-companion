@@ -2,7 +2,6 @@ import { motion } from "framer-motion";
 import { Network, ChevronRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useMarketWatchlistItems } from "@/hooks/use-investment-office";
-import { DEMO_NARRATIVES } from "@/data/seed/investment";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 export default function CrossAssetStoryEngine() {
   const { data: liveData, isLoading } = useMarketWatchlistItems();
@@ -15,7 +14,7 @@ export default function CrossAssetStoryEngine() {
         <p className="text-sm text-muted-foreground mt-0.5">Map narratives across markets — see what connects stocks, crypto, commodities, and events</p>
       </div>
 
-      {([] as typeof DEMO_NARRATIVES).map((n, ni) => (
+      {([] as any[]).map((n, ni) => (
         <motion.div key={n.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: ni * 0.06 }}
           className="rounded-2xl border border-border bg-card p-6 space-y-4">
           <div className="flex items-center gap-3">

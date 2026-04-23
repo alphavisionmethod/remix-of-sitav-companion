@@ -7,7 +7,6 @@ import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
-import { DEMO_ESCALATIONS } from "@/data/seed/admin-intelligence";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 const triggerColors: Record<string, string> = {
   low_confidence: "text-amber-400 bg-amber-500/10",
@@ -29,12 +28,12 @@ const EscalationControlCenter = () => {
   const { isAdmin, loading } = useRequireAdmin();
   if (loading || !isAdmin) return null;
 
-  const totalCost = ([] as typeof DEMO_ESCALATIONS).reduce((s, e) => s + e.cost, 0);
-  const justified = ([] as typeof DEMO_ESCALATIONS).filter(e => e.justified).length;
-  const unnecessary = ([] as typeof DEMO_ESCALATIONS).filter(e => !e.justified).length;
-  const accepted = ([] as typeof DEMO_ESCALATIONS).filter(e => e.outcome === "accepted").length;
+  const totalCost = ([] as any[]).reduce((s, e) => s + e.cost, 0);
+  const justified = ([] as any[]).filter(e => e.justified).length;
+  const unnecessary = ([] as any[]).filter(e => !e.justified).length;
+  const accepted = ([] as any[]).filter(e => e.outcome === "accepted").length;
 
-  const byTrigger = ([] as typeof DEMO_ESCALATIONS).reduce<Record<string, { count: number; cost: number }>>((acc, e) => {
+  const byTrigger = ([] as any[]).reduce<Record<string, { count: number; cost: number }>>((acc, e) => {
     if (!acc[e.trigger]) acc[e.trigger] = { count: 0, cost: 0 };
     acc[e.trigger].count++;
     acc[e.trigger].cost += e.cost;
@@ -51,7 +50,7 @@ const EscalationControlCenter = () => {
 
       <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
         {[
-          { label: "Total Escalations", value: String(([] as typeof DEMO_ESCALATIONS).length), color: "text-foreground" },
+          { label: "Total Escalations", value: String(([] as any[]).length), color: "text-foreground" },
           { label: "Total Cost", value: `$${(totalCost / 100).toFixed(0)}`, color: "text-foreground" },
           { label: "Justified", value: String(justified), color: "text-emerald-400" },
           { label: "Unnecessary", value: String(unnecessary), color: "text-amber-400" },
@@ -98,7 +97,7 @@ const EscalationControlCenter = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {([] as typeof DEMO_ESCALATIONS).map(e => (
+              {([] as any[]).map(e => (
                 <TableRow key={e.id}>
                   <TableCell className="text-xs font-medium text-foreground">{e.domain}</TableCell>
                   <TableCell className="text-xs text-muted-foreground max-w-[200px] truncate">{e.desc}</TableCell>
@@ -120,7 +119,7 @@ const EscalationControlCenter = () => {
         <Card className="bg-card/80 border-amber-500/20">
           <CardHeader className="pb-2"><CardTitle className="text-sm flex items-center gap-2"><AlertTriangle className="h-4 w-4 text-amber-400" /> Unnecessary Escalations — Optimization Opportunities</CardTitle></CardHeader>
           <CardContent className="space-y-2">
-            {([] as typeof DEMO_ESCALATIONS).filter(e => !e.justified).map(e => (
+            {([] as any[]).filter(e => !e.justified).map(e => (
               <div key={e.id} className="flex items-center justify-between p-3 rounded-lg bg-amber-500/5">
                 <div>
                   <p className="text-xs font-medium text-foreground">{e.desc}</p>

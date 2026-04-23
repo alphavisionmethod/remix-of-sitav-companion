@@ -4,7 +4,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { Layers, Smartphone, AlertTriangle, CheckCircle2 } from "lucide-react";
 import { useNativeShellPlatforms } from "@/hooks/use-native-shell-data";
-import { DEMO_STRATEGY_PRINCIPLES, DEMO_ARCHITECTURE_LAYERS } from "@/data/seed/native-shell";
 import NSSSubNav from "@/components/admin/NSSSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 const NSS01StrategyBoard = () => {
@@ -68,7 +67,7 @@ const NSS01StrategyBoard = () => {
 
         <TabsContent value="strategy">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {([] as typeof DEMO_STRATEGY_PRINCIPLES).map((p) => (
+            {([] as any[]).map((p) => (
               <Card key={p.principle} className="hover:shadow-md transition-shadow">
                 <CardHeader className="pb-2">
                   <div className="flex items-center justify-between">
@@ -87,7 +86,7 @@ const NSS01StrategyBoard = () => {
             <CardHeader><CardTitle className="text-sm">Hybrid Shell Architecture</CardTitle></CardHeader>
             <CardContent className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {([] as typeof DEMO_ARCHITECTURE_LAYERS).map((l) => (
+                {([] as any[]).map((l) => (
                   <div key={l.layer} className={`p-4 rounded-lg border ${l.color}`}>
                     <div className="font-medium text-sm mb-2">{l.layer}</div>
                     {l.items.map((i) => <div key={i} className="text-xs p-1.5 rounded border bg-background/50 mb-1">{i}</div>)}

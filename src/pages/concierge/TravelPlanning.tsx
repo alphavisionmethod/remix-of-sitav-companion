@@ -11,9 +11,6 @@ import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Plane, Calendar, DollarSign, FileText, CheckCircle, AlertCircle, Clock, Home, CreditCard } from "lucide-react";
-import { DEMO_householdSpillover, DEMO_itinerary, DEMO_postTripTasks, DEMO_preTripChecklist } from "@/data/seed/concierge";
-
-
 interface Trip {
   id: string; destination: string; dates: string; status: "planning" | "booked" | "upcoming" | "active" | "completed";
   travelers: string; budget: string; spent: string; tasks: number; completedTasks: number;

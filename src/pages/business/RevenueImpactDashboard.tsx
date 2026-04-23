@@ -83,11 +83,6 @@ function generateTrend(granularity: Granularity): TrendPoint[] {
 const RECOVERED_COLOR = "hsl(var(--trust-safe))";
 const GENERATED_COLOR = "hsl(var(--accent))";
 import { PIE_COLORS } from "@/lib/constants/ui-config";
-import { DEMO_PLAYBOOK_REVENUE } from "@/data/seed/business";
-
-
-
-
 const categoryColors: Record<string, string> = {
   recovery: "bg-trust-safe/10 text-trust-safe",
   growth: "bg-accent/10 text-accent",

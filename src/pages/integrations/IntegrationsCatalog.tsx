@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Search, Plug, Shield, Zap, Globe, ArrowRight, CheckCircle, AlertTriangle } from "lucide-react";
-import { INTEGRATION_PROVIDERS, PROVIDER_CATEGORIES } from "@/data/seed/integrations";
 import { useNavigate } from "react-router-dom";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 export default function IntegrationsCatalog() {

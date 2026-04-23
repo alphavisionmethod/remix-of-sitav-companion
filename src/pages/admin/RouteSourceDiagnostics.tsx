@@ -12,7 +12,6 @@ import {
   Search, Database, Shield, CheckCircle, AlertTriangle,
   XCircle, Eye, ArrowRight, Globe, Code
 } from "lucide-react";
-import { DEMO_ROUTES } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 type LaunchHonesty = "truthful" | "demo-backed" | "mixed" | "overstated" | "blocked";
 
@@ -42,12 +41,12 @@ export default function RouteSourceDiagnostics() {
   const filtered = useMemo(() => {
     if (!search) return DEMO_ROUTES;
     const q = search.toLowerCase();
-    return ([] as typeof DEMO_ROUTES).filter(r => r.path.includes(q) || r.pageName.toLowerCase().includes(q) || r.domain.toLowerCase().includes(q));
+    return ([] as any[]).filter(r => r.path.includes(q) || r.pageName.toLowerCase().includes(q) || r.domain.toLowerCase().includes(q));
   }, [search]);
 
-  const truthful = ([] as typeof DEMO_ROUTES).filter(r => r.launchHonesty === "truthful").length;
-  const demoBacked = ([] as typeof DEMO_ROUTES).filter(r => r.launchHonesty === "demo-backed").length;
-  const mixed = ([] as typeof DEMO_ROUTES).filter(r => r.launchHonesty === "mixed").length;
+  const truthful = ([] as any[]).filter(r => r.launchHonesty === "truthful").length;
+  const demoBacked = ([] as any[]).filter(r => r.launchHonesty === "demo-backed").length;
+  const mixed = ([] as any[]).filter(r => r.launchHonesty === "mixed").length;
 
   return (
     <div className="mx-auto max-w-7xl space-y-6 p-6">

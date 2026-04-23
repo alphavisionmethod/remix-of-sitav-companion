@@ -22,7 +22,6 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
-import { DEMO_COMPLIANCE_ITEMS, DEMO_DEPLOYMENTS, DEMO_ROLES, DEMO_SLA_METRICS, DEMO_TEAM_MEMBERS } from "@/data/seed/enterprise";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { useEffect } from "react";
 
@@ -194,16 +193,16 @@ const EnterpriseControlPlane = () => {
               <thead>
                 <tr className="border-b border-border/30">
                   <th className="text-left py-2 px-3 font-semibold text-muted-foreground">Capability</th>
-                  {([] as typeof DEMO_ROLES).map(role => (
+                  {([] as any[]).map(role => (
                     <th key={role} className="text-center py-2 px-3 font-semibold text-muted-foreground capitalize">{role}</th>
                   ))}
                 </tr>
               </thead>
               <tbody>
-                {([] as typeof DEMO_CAPABILITIES).map(cap => (
+                {([] as any[]).map(cap => (
                   <tr key={cap} className="border-b border-border/10 hover:bg-secondary/20 transition-colors">
                     <td className="py-2 px-3 font-mono text-foreground">{cap}</td>
-                    {([] as typeof DEMO_ROLES).map(role => (
+                    {([] as any[]).map(role => (
                       <td key={role} className="text-center py-2 px-3">
                         <Switch
                           checked={permissions[role]?.[cap] ?? false}

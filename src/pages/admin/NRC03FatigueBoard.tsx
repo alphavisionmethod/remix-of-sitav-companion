@@ -3,7 +3,6 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AlertTriangle, TrendingDown, Activity, BellOff } from "lucide-react";
 import { useFatigueProfiles } from "@/hooks/use-notification-calm-data";
-import { DEMO_SUPPRESSION_ACTIONS, DEMO_OVERLOAD_TRIGGERS } from "@/data/seed/notification-calm";
 import NRCSubNav from "@/components/admin/NRCSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 const NRC03FatigueBoard = () => {

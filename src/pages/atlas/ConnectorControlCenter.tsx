@@ -14,7 +14,6 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
-import { DEMO_auditTimeline, DEMO_connectors } from "@/data/seed/atlas";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 const now = new Date();
 const h = (hours: number) => new Date(now.getTime() - hours * 3600000).toISOString();

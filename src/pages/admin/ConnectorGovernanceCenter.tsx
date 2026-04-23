@@ -14,7 +14,6 @@ import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
 import { ConnectorSyncDashboard } from "@/components/sita/ConnectorSyncDashboard";
 import { toast } from "sonner";
-import { DEMO_FALLBACK_SYNC_HISTORY, DEMO_POLICIES } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 // Production fallback — seed data removed
@@ -92,7 +91,7 @@ export default function ConnectorGovernanceCenter() {
     staleTime: 30000,
   });
 
-  const activeConnectors = dbConnectors ? ([] as typeof DEMO_CONNECTORS).map(c => {
+  const activeConnectors = dbConnectors ? ([] as any[]).map(c => {
     const acc = dbConnectors.accounts.find((a: Record<string, any>) => a.connector_type === c.id);
     return acc ? { ...c, status: acc.status === "active" ? "healthy" as const : c.status, lastSyncAt: acc.connected_at ? new Date(acc.connected_at).toLocaleTimeString() : c.lastSyncAt } : c;
   }) : DEMO_CONNECTORS;
@@ -278,7 +277,7 @@ export default function ConnectorGovernanceCenter() {
 
           <TabsContent value="policies">
             <div className="space-y-3">
-              {([] as typeof DEMO_POLICIES).map(pol => (
+              {([] as any[]).map(pol => (
                 <Card key={pol.connector} className="bg-card/50 border-border/50">
                   <CardContent className="p-4">
                     <p className="text-sm font-medium text-foreground capitalize mb-2">{pol.connector}</p>

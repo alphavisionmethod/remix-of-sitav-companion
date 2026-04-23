@@ -14,9 +14,6 @@ import {
 } from "lucide-react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
-import { DEMO_carryover, DEMO_nextMoves, DEMO_priorities, DEMO_proofSummary, DEMO_scheduleConflicts } from "@/data/seed/concierge";
-
-
 const weeklyStats = {
   tasksCompleted: 12, tasksTotal: 18, eventsAttended: 6, eventsTotal: 7,
   providersContacted: 2, groceryRuns: 1, budgetSpent: "$186", budgetTarget: "$200",

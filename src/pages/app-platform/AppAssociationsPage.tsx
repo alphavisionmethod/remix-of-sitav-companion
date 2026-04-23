@@ -8,7 +8,6 @@ import { ArrowLeft, FileText, Link2, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAppPlatform } from "@/contexts/AppPlatformContext";
 import { AppIcon } from "@/components/sita/app-platform/AppStoreComponents";
-import { DEMO_APP_SLOTS, DEMO_FILE_TYPES } from "@/data/seed/core-pages";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 const AppAssociationsPage = () => {
   const { apps, defaultApps, setDefaultApp } = useAppPlatform();
@@ -44,7 +43,7 @@ const AppAssociationsPage = () => {
 
       {activeTab === "defaults" && (
         <div className="space-y-3">
-          {([] as typeof DEMO_APP_SLOTS).map(slot => {
+          {([] as any[]).map(slot => {
             const Icon = slot.icon;
             const currentAppId = defaultApps[slot.id] || slot.currentApp;
             const currentApp = currentAppId ? apps.find(a => a.id === currentAppId) : null;
@@ -101,7 +100,7 @@ const AppAssociationsPage = () => {
 
       {activeTab === "files" && (
         <div className="space-y-2">
-          {([] as typeof DEMO_FILE_TYPES).map(ft => {
+          {([] as any[]).map(ft => {
             const ftApps = ft.apps.map(id => apps.find(a => a.id === id)).filter(Boolean);
             return (
               <div key={ft.ext} className="rounded-xl border border-border bg-card p-3 flex items-center gap-3">

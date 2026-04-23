@@ -22,7 +22,6 @@ import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import { DEMO_ADVISOR_SCORECARDS, DEMO_ESCALATION_LOG, DEMO_HANDOFF_LOG } from "@/data/seed/core-pages";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
@@ -208,7 +207,7 @@ export default function AdvisorCouncilDashboard() {
         <SitaCard className="glass-panel">
           <SitaCardTitle className="text-[10px]">Active Advisors</SitaCardTitle>
           <div className="flex items-center gap-2 mt-1">
-            <span className="text-2xl font-bold text-foreground">{([] as typeof DEMO_ADVISOR_SCORECARDS).length}</span>
+            <span className="text-2xl font-bold text-foreground">{([] as any[]).length}</span>
             <CheckCircle className="h-3.5 w-3.5 text-trust-safe ml-auto" />
           </div>
         </SitaCard>
@@ -242,7 +241,7 @@ export default function AdvisorCouncilDashboard() {
         <div className="mt-4">
           <TabsContent value="scorecards">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {([] as typeof DEMO_ADVISOR_SCORECARDS).map(a => <AdvisorScorecard key={a.id} advisor={a} />)}
+              {([] as any[]).map(a => <AdvisorScorecard key={a.id} advisor={a} />)}
             </div>
           </TabsContent>
 
@@ -250,9 +249,9 @@ export default function AdvisorCouncilDashboard() {
             <div className="space-y-3">
               <div className="flex items-center justify-between">
                 <h3 className="font-display text-sm font-bold text-foreground">Escalation History</h3>
-                <span className="text-xs text-muted-foreground">{([] as typeof DEMO_ESCALATION_LOG).length} total</span>
+                <span className="text-xs text-muted-foreground">{([] as any[]).length} total</span>
               </div>
-              {([] as typeof DEMO_ESCALATION_LOG).map(esc => (
+              {([] as any[]).map(esc => (
                 <motion.div key={esc.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="glass-panel rounded-xl p-4 space-y-2">
                   <div className="flex items-start justify-between">
                     <div className="flex items-center gap-2">
@@ -277,9 +276,9 @@ export default function AdvisorCouncilDashboard() {
             <div className="space-y-3">
               <div className="flex items-center justify-between">
                 <h3 className="font-display text-sm font-bold text-foreground">Handoff Activity</h3>
-                <span className="text-xs text-muted-foreground">{([] as typeof DEMO_HANDOFF_LOG).length} total</span>
+                <span className="text-xs text-muted-foreground">{([] as any[]).length} total</span>
               </div>
-              {([] as typeof DEMO_HANDOFF_LOG).map(h => (
+              {([] as any[]).map(h => (
                 <motion.div key={h.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="glass-panel rounded-xl p-4 space-y-2">
                   <div className="flex items-start justify-between">
                     <div className="flex items-center gap-2">

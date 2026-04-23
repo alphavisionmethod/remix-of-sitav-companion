@@ -4,7 +4,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Theater, Shield, AlertTriangle, Check, X, Brain, Target, Zap, Clock, FileText, Volume2 } from "lucide-react";
 import { INVESTMENT_ADVISORS, SAMPLE_ORDERS, SAMPLE_SCENARIOS } from "@/hooks/useInvestmentOfficeData";
 import { useInvestmentDecisions } from "@/hooks/use-investment-office";
-import { DEMO_READINESS_DIMENSIONS } from "@/data/seed/investment";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 // Advisor votes for the cinematic voting panel
@@ -202,7 +201,7 @@ export default function DecisionTheater() {
   const navigate = useNavigate();
   const [spotlightActive, setSpotlightActive] = useState(false);
   const order = SAMPLE_ORDERS[0];
-  const overallReadiness = Math.round(([] as typeof DEMO_READINESS_DIMENSIONS).reduce((s, d) => s + d.score, 0) / ([] as typeof DEMO_READINESS_DIMENSIONS).length);
+  const overallReadiness = Math.round(([] as any[]).reduce((s, d) => s + d.score, 0) / ([] as any[]).length);
   const readinessLabel = overallReadiness >= 80 ? "Ready" : overallReadiness >= 65 ? "Needs Review" : overallReadiness >= 50 ? "Simulate First" : "Wait";
 
   return (
@@ -273,7 +272,7 @@ export default function DecisionTheater() {
           </div>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-          {([] as typeof DEMO_READINESS_DIMENSIONS).map(d => (
+          {([] as any[]).map(d => (
             <div key={d.label} className="rounded-xl border border-border bg-secondary/20 p-3 space-y-2">
               <p className="text-[10px] font-medium text-muted-foreground">{d.label}</p>
               <div className="h-1.5 rounded-full bg-secondary overflow-hidden">

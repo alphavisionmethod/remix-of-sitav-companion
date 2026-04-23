@@ -6,7 +6,6 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
-import { DEMO_FIELD_TYPES, DEMO_FORMS, DEMO_SAMPLE_FIELDS } from "@/data/seed/revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { PageShell } from "@/components/sita/PageShell";
 import { Typography } from "@/components/sita/Typography";
@@ -31,7 +30,7 @@ export default function FormsBuilder() {
       </motion.div>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-        {([] as typeof DEMO_STATS).map(s => (
+        {([] as any[]).map(s => (
           <Card key={s.label} className="bg-card/50 border-border/50">
             <CardContent className="p-3 text-center">
               <p className="text-xl font-bold text-foreground">{s.value}</p>
@@ -55,7 +54,7 @@ export default function FormsBuilder() {
         <div className="mt-4">
           <TabsContent value="forms">
             <div className="space-y-3">
-              {([] as typeof DEMO_FORMS).map(form => (
+              {([] as any[]).map(form => (
                 <Card key={form.id} className="bg-card/50 border-border/50 hover:border-primary/30 transition-colors cursor-pointer" onClick={() => { setSelectedForm(form.id); setTab("builder"); }}>
                   <CardContent className="p-4">
                     <div className="flex items-center justify-between">
@@ -93,7 +92,7 @@ export default function FormsBuilder() {
               <Card className="bg-card/50 border-border/50">
                 <CardHeader className="pb-2"><CardTitle className="text-xs">Field Types</CardTitle></CardHeader>
                 <CardContent className="space-y-1">
-                  {([] as typeof DEMO_FIELD_TYPES).map(ft => (
+                  {([] as any[]).map(ft => (
                     <div key={ft.type} className="flex items-center gap-2 p-2 rounded-lg bg-muted/10 border border-border/20 cursor-grab hover:bg-muted/20 transition-colors">
                       <ft.icon className="w-3.5 h-3.5 text-primary" />
                       <span className="text-xs text-foreground">{ft.label}</span>
@@ -115,7 +114,7 @@ export default function FormsBuilder() {
                     </div>
                   </CardHeader>
                   <CardContent className="space-y-3">
-                    {([] as typeof DEMO_SAMPLE_FIELDS).map(field => (
+                    {([] as any[]).map(field => (
                       <div key={field.id} className="flex items-center gap-2 p-3 rounded-lg bg-background/50 border border-border/30 group">
                         <GripVertical className="w-3 h-3 text-muted-foreground cursor-grab" />
                         <div className="flex-1">

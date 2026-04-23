@@ -5,7 +5,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useSites } from "@/hooks/use-digital-presence";
-import { DEMO_AI_RECOMMENDATIONS, DEMO_AUDIT_FINDINGS } from "@/data/seed/digital-presence";
 import DPOSubNav from "./DPOSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
@@ -24,7 +23,7 @@ export default function ConnectedSites() {
 
       {/* Connected Platforms */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {([] as typeof DEMO_PLATFORMS).map(p => (
+        {([] as any[]).map(p => (
           <Card key={p.name} className={`bg-card/50 border-border/50 ${p.connected ? "hover:border-primary/30" : "opacity-60"} transition-all`}>
             <CardContent className="p-5">
               <div className="flex items-center justify-between mb-3">
@@ -63,7 +62,7 @@ export default function ConnectedSites() {
         <Card className="bg-card/50 border-border/50">
           <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><AlertTriangle className="w-4 h-4 text-amber-400" /> Audit Findings</CardTitle></CardHeader>
           <CardContent className="space-y-2">
-            {([] as typeof DEMO_AUDIT_FINDINGS).map((f, i) => (
+            {([] as any[]).map((f, i) => (
               <div key={i} className="p-3 bg-muted/30 rounded-lg">
                 <div className="flex items-center justify-between mb-1">
                   <div className="flex items-center gap-2">
@@ -82,7 +81,7 @@ export default function ConnectedSites() {
         <Card className="bg-card/50 border-border/50">
           <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><Shield className="w-4 h-4 text-green-400" /> AI Recommendations</CardTitle></CardHeader>
           <CardContent className="space-y-2">
-            {([] as typeof DEMO_AI_RECOMMENDATIONS).map((r, i) => (
+            {([] as any[]).map((r, i) => (
               <div key={i} className="p-3 bg-muted/30 rounded-lg flex items-center justify-between">
                 <div>
                   <p className="text-xs font-medium text-foreground">{r.action}</p>

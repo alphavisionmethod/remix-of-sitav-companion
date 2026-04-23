@@ -2,7 +2,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { KeyRound, Link, User, Shield, ArrowRight, CheckCircle2, AlertTriangle, Lock, Mail, Fingerprint } from "lucide-react";
-import { DEMO_IDENTITY_ARCHITECTURE, DEMO_LINK_FLOW_STEPS, DEMO_SECURITY_POLICIES } from "@/data/seed/admin-platform";
 import APLSubNav from "@/components/admin/APLSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 const APL04AppleIdentityAccounts = () => {
@@ -30,7 +29,7 @@ const APL04AppleIdentityAccounts = () => {
           <CardHeader><CardTitle className="text-sm">Sign in with Apple — Architecture</CardTitle></CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              {([] as typeof DEMO_IDENTITY_ARCHITECTURE).map((item) => (
+              {([] as any[]).map((item) => (
                 <div key={item.field} className="flex items-center justify-between p-3 rounded border text-xs">
                   <span className="font-medium">{item.field}</span>
                   <Badge variant={item.badge === "primary" ? "default" : "outline"}>{item.value}</Badge>
@@ -45,7 +44,7 @@ const APL04AppleIdentityAccounts = () => {
         <Card>
           <CardHeader><CardTitle className="text-sm">Identity Link Flow</CardTitle></CardHeader>
           <CardContent className="space-y-3">
-            {([] as typeof DEMO_LINK_FLOW_STEPS).map((s, i) => (
+            {([] as any[]).map((s, i) => (
               <div key={s.step} className="flex items-start gap-3">
                 <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
                   <s.icon className="h-4 w-4 text-primary" />
@@ -72,7 +71,7 @@ const APL04AppleIdentityAccounts = () => {
                   <th className="p-2">Severity</th>
                 </tr></thead>
                 <tbody>
-                  {([] as typeof DEMO_SECURITY_POLICIES).map((p) => (
+                  {([] as any[]).map((p) => (
                     <tr key={p.policy} className="border-b hover:bg-muted/30">
                       <td className="p-2 font-medium">{p.policy}</td>
                       <td className="p-2 text-muted-foreground">{p.value}</td>

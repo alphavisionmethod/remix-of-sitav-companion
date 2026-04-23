@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { BarChart3, TrendingUp, DollarSign, RefreshCw, Zap, Target, CheckCircle, AlertTriangle, Clock, Shield, Activity, Heart } from "lucide-react";
-import { DEMO_AUTOPILOT_ACTIONS, DEMO_WINBACKS } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.05 } } };
@@ -40,8 +39,8 @@ const DEMO_HEALTH = {
 
 const RevenueAutopilotMonitor = () => {
   const [tab, setTab] = useState("overview");
-  const totalRecovered = ([] as typeof DEMO_RECOVERED).reduce((s, r) => s + r.value, 0);
-  const totalSaved = ([] as typeof DEMO_SAVED_COSTS).reduce((s, c) => s + c.savedUsd, 0);
+  const totalRecovered = ([] as any[]).reduce((s, r) => s + r.value, 0);
+  const totalSaved = ([] as any[]).reduce((s, c) => s + c.savedUsd, 0);
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
@@ -59,8 +58,8 @@ const RevenueAutopilotMonitor = () => {
         {[
           { label: "Recovered Value", value: `$${totalRecovered.toLocaleString()}`, icon: DollarSign, color: "text-emerald-500" },
           { label: "Cost Saved", value: `$${totalSaved.toLocaleString()}`, icon: TrendingUp, color: "text-blue-500" },
-          { label: "Autopilot Actions", value: String(([] as typeof DEMO_AUTOPILOT_ACTIONS).length), icon: Zap, color: "text-primary" },
-          { label: "Win-Back Queue", value: String(([] as typeof DEMO_WINBACKS).length), icon: Target, color: "text-amber-500" },
+          { label: "Autopilot Actions", value: String(([] as any[]).length), icon: Zap, color: "text-primary" },
+          { label: "Win-Back Queue", value: String(([] as any[]).length), icon: Target, color: "text-amber-500" },
           { label: "Uptime", value: `${DEMO_HEALTH.automationUptime}%`, icon: Activity, color: "text-emerald-500" },
         ].map(m => (
           <motion.div key={m.label} variants={fadeUp}>
@@ -88,7 +87,7 @@ const RevenueAutopilotMonitor = () => {
           <Card>
             <CardHeader className="pb-3"><CardTitle className="text-sm font-semibold">Autopilot Actions</CardTitle></CardHeader>
             <CardContent className="space-y-2">
-              {([] as typeof DEMO_AUTOPILOT_ACTIONS).map(a => (
+              {([] as any[]).map(a => (
                 <div key={a.id} className="p-3 rounded-lg border hover:bg-muted/30 transition-colors">
                   <div className="flex items-center justify-between mb-1.5">
                     <span className="text-sm font-medium text-foreground">{a.action}</span>
@@ -106,7 +105,7 @@ const RevenueAutopilotMonitor = () => {
         </TabsContent>
 
         <TabsContent value="recovered" className="mt-4 space-y-3">
-          {([] as typeof DEMO_RECOVERED).map(r => (
+          {([] as any[]).map(r => (
             <Card key={r.id} className="hover:bg-muted/20 transition-colors">
               <CardContent className="p-4">
                 <div className="flex items-center justify-between mb-2">
@@ -128,7 +127,7 @@ const RevenueAutopilotMonitor = () => {
         </TabsContent>
 
         <TabsContent value="saved" className="mt-4 space-y-3">
-          {([] as typeof DEMO_SAVED_COSTS).map(c => (
+          {([] as any[]).map(c => (
             <Card key={c.id} className="hover:bg-muted/20 transition-colors">
               <CardContent className="p-4">
                 <div className="flex items-center justify-between mb-2">
@@ -152,7 +151,7 @@ const RevenueAutopilotMonitor = () => {
           <Card>
             <CardHeader className="pb-3"><CardTitle className="text-sm font-semibold">Win-Back Opportunities</CardTitle></CardHeader>
             <CardContent className="space-y-2">
-              {([] as typeof DEMO_WINBACKS).map(w => (
+              {([] as any[]).map(w => (
                 <div key={w.name} className="p-3 rounded-lg border hover:bg-muted/30 transition-colors flex items-center justify-between">
                   <div>
                     <p className="text-sm font-medium text-foreground">{w.name}</p>
@@ -198,7 +197,7 @@ const RevenueAutopilotMonitor = () => {
           <Card>
             <CardHeader className="pb-3"><CardTitle className="text-sm font-semibold flex items-center gap-2"><Shield className="h-4 w-4 text-primary" /> Revenue Action Proof</CardTitle></CardHeader>
             <CardContent className="space-y-2">
-              {([] as typeof DEMO_RECOVERED).map(r => (
+              {([] as any[]).map(r => (
                 <div key={r.id} className="p-3 rounded-lg border hover:bg-muted/20 transition-colors">
                   <div className="flex items-center justify-between mb-1">
                     <span className="text-xs font-medium text-foreground">{r.type} — {r.customer}</span>

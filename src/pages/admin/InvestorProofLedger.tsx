@@ -5,7 +5,6 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Layers, CheckCircle, AlertTriangle, Download, RefreshCw, GitBranch, Shield, Undo2, FileText, Eye, Scale, Clock } from "lucide-react";
-import { DEMO_PROOF_ENTRIES } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.05 } } };
@@ -39,7 +38,7 @@ const DEMO_COMPLIANCE = [
 
 const InvestorProofLedger = () => {
   const [tab, setTab] = useState("ledger");
-  const fullProof = ([] as typeof DEMO_PROOF_ENTRIES).filter(p => p.proofChain.every(s => s.status === "verified")).length;
+  const fullProof = ([] as any[]).filter(p => p.proofChain.every(s => s.status === "verified")).length;
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
@@ -58,11 +57,11 @@ const InvestorProofLedger = () => {
 
       <motion.div variants={stagger} initial="hidden" animate="show" className="grid grid-cols-2 md:grid-cols-5 gap-3">
         {[
-          { label: "Full Proof", value: `${fullProof}/${([] as typeof DEMO_PROOF_ENTRIES).length}`, color: "text-emerald-500" },
-          { label: "Rollback Evidence", value: String(([] as typeof DEMO_PROOF_ENTRIES).filter(p => p.rollbackEvidence).length), color: "text-foreground" },
-          { label: "Exportable", value: String(([] as typeof DEMO_PROOF_ENTRIES).filter(p => p.exportable).length), color: "text-foreground" },
-          { label: "Evidence Bundles", value: String(([] as typeof DEMO_BUNDLES).length), color: "text-blue-500" },
-          { label: "Compliance Trails", value: String(([] as typeof DEMO_COMPLIANCE).filter(c => c.status === "compliant").length), color: "text-emerald-500" },
+          { label: "Full Proof", value: `${fullProof}/${([] as any[]).length}`, color: "text-emerald-500" },
+          { label: "Rollback Evidence", value: String(([] as any[]).filter(p => p.rollbackEvidence).length), color: "text-foreground" },
+          { label: "Exportable", value: String(([] as any[]).filter(p => p.exportable).length), color: "text-foreground" },
+          { label: "Evidence Bundles", value: String(([] as any[]).length), color: "text-blue-500" },
+          { label: "Compliance Trails", value: String(([] as any[]).filter(c => c.status === "compliant").length), color: "text-emerald-500" },
         ].map(m => (
           <motion.div key={m.label} variants={fadeUp}>
             <Card className="hover:-translate-y-0.5 transition-transform">
@@ -88,7 +87,7 @@ const InvestorProofLedger = () => {
           <Card>
             <CardHeader className="pb-3"><CardTitle className="text-sm font-semibold">Proof Ledger</CardTitle></CardHeader>
             <CardContent className="space-y-3">
-              {([] as typeof DEMO_PROOF_ENTRIES).map(p => (
+              {([] as any[]).map(p => (
                 <div key={p.id} className="p-4 rounded-lg border hover:bg-muted/30 transition-colors">
                   <div className="flex items-center justify-between mb-2">
                     <div>
@@ -120,7 +119,7 @@ const InvestorProofLedger = () => {
         </TabsContent>
 
         <TabsContent value="bundles" className="mt-4 space-y-3">
-          {([] as typeof DEMO_BUNDLES).map(b => (
+          {([] as any[]).map(b => (
             <Card key={b.id} className="hover:bg-muted/20 transition-colors">
               <CardContent className="p-4 flex items-center justify-between">
                 <div>
@@ -143,7 +142,7 @@ const InvestorProofLedger = () => {
         </TabsContent>
 
         <TabsContent value="migrations" className="mt-4 space-y-3">
-          {([] as typeof DEMO_MIGRATIONS).map(m => (
+          {([] as any[]).map(m => (
             <Card key={m.id} className="hover:bg-muted/20 transition-colors">
               <CardContent className="p-4">
                 <div className="flex items-center justify-between mb-2">
@@ -164,7 +163,7 @@ const InvestorProofLedger = () => {
         </TabsContent>
 
         <TabsContent value="rollback" className="mt-4 space-y-3">
-          {([] as typeof DEMO_ROLLBACK_EVIDENCE).map(r => (
+          {([] as any[]).map(r => (
             <Card key={r.id} className={`hover:bg-muted/20 transition-colors ${!r.verified ? "border-amber-500/20" : ""}`}>
               <CardContent className="p-4">
                 <div className="flex items-center justify-between mb-2">
@@ -184,7 +183,7 @@ const InvestorProofLedger = () => {
         </TabsContent>
 
         <TabsContent value="compliance" className="mt-4 space-y-3">
-          {([] as typeof DEMO_COMPLIANCE).map(c => (
+          {([] as any[]).map(c => (
             <Card key={c.id} className="hover:bg-muted/20 transition-colors">
               <CardContent className="p-4">
                 <div className="flex items-center justify-between mb-2">

@@ -7,7 +7,6 @@ import { SitaPageHeader, SitaCard, SitaCardTitle } from "@/components/sita/SitaC
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { CheckCircle, AlertTriangle, XCircle, Database, Shield, ArrowRight } from "lucide-react";
-import { DEMO_DOMAIN_MIGRATIONS } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 type DomainStatus = "real" | "demo_provider" | "mock_direct" | "mixed" | "blocked";

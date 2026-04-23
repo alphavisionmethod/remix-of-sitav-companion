@@ -12,7 +12,6 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import AutomationSubNav from "./AutomationSubNav";
-import { DEMO_receipts, DEMO_WHY_SENT } from "@/data/seed/revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 const categoryIcons: Record<string, typeof Mail> = {
   "Lead Recovery": Users, Sales: FileText, Booking: Phone, Reputation: Star,
@@ -147,7 +146,7 @@ export default function AutomationReceipts() {
             </CardContent>
           </Card>
 
-          {([] as typeof DEMO_WHY_SENT).map((w) => (
+          {([] as any[]).map((w) => (
             <Card key={w.id} className="bg-card/50 border-border/50 hover:border-primary/20 transition-colors">
               <CardContent className="p-4">
                 <div className="flex items-center justify-between mb-3">

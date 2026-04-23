@@ -4,7 +4,6 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { MessageSquare, Send, Search, Plus, Paperclip, Smile, Phone, Video, MoreVertical, CheckCheck } from "lucide-react";
 import { useState } from "react";
-import { DEMO_CHATS, DEMO_MESSAGES } from "@/data/seed/apps";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 interface Chat {
   id: string;
@@ -30,7 +29,7 @@ export default function MessengerApp() {
   const [message, setMessage] = useState("");
   const [search, setSearch] = useState("");
 
-  const filtered = ([] as typeof DEMO_CHATS).filter(c => !search || c.name.toLowerCase().includes(search.toLowerCase()));
+  const filtered = ([] as any[]).filter(c => !search || c.name.toLowerCase().includes(search.toLowerCase()));
 
   return (
     <div className="p-4 md:p-6 max-w-[1400px] mx-auto">
@@ -90,7 +89,7 @@ export default function MessengerApp() {
                 </div>
               </div>
               <div className="flex-1 overflow-y-auto p-4 space-y-3">
-                {([] as typeof DEMO_MESSAGES).map(msg => (
+                {([] as any[]).map(msg => (
                   <div key={msg.id} className={`flex ${msg.sender === "me" ? "justify-end" : "justify-start"}`}>
                     <div className={`max-w-[75%] rounded-2xl px-4 py-2.5 ${msg.sender === "me" ? "bg-primary text-primary-foreground rounded-br-md" : "bg-muted text-foreground rounded-bl-md"}`}>
                       <p className="text-sm">{msg.text}</p>

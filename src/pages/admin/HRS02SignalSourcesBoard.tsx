@@ -4,7 +4,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { Radio, CheckCircle2, Wifi, Smartphone, Loader2 } from "lucide-react";
 import { useWearableProviders } from "@/hooks/use-health-signal-data";
-import { DEMO_SIGNAL_PROVIDERS } from "@/data/seed/health-signals";
 import HRSSubNav from "@/components/admin/HRSSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 const HRS02SignalSourcesBoard = () => {

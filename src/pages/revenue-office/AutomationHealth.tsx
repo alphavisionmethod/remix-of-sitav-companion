@@ -10,7 +10,6 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import AutomationSubNav from "./AutomationSubNav";
-import { DEMO_advisorInsights, DEMO_automations, DEMO_fatigueAlerts, DEMO_healthMetrics, DEMO_DOMAIN_HEALTH } from "@/data/seed/revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 const statusIcon = { healthy: CheckCircle, warning: AlertTriangle, error: XCircle, underperforming: TrendingUp };
 const statusColor = { healthy: "text-emerald-400", warning: "text-amber-400", error: "text-red-400", underperforming: "text-blue-400" };
@@ -63,7 +62,7 @@ export default function AutomationHealth() {
           <TabsTrigger value="healthy">Healthy ({([] as typeof DEMO_automations).filter(a => a.status === "healthy").length})</TabsTrigger>
           <TabsTrigger value="issues">Issues ({([] as typeof DEMO_automations).filter(a => a.status !== "healthy").length})</TabsTrigger>
           <TabsTrigger value="fatigue">Fatigue ({([] as typeof DEMO_fatigueAlerts).length})</TabsTrigger>
-          <TabsTrigger value="domain">By Domain ({([] as typeof DEMO_DOMAIN_HEALTH).length})</TabsTrigger>
+          <TabsTrigger value="domain">By Domain ({([] as any[]).length})</TabsTrigger>
         </TabsList>
 
         <TabsContent value="all" className="space-y-2">
@@ -152,7 +151,7 @@ export default function AutomationHealth() {
             </CardContent>
           </Card>
 
-          {([] as typeof DEMO_DOMAIN_HEALTH).map((d) => (
+          {([] as any[]).map((d) => (
             <Card key={d.domain} className="bg-card/50 border-border/50 hover:border-primary/20 transition-colors">
               <CardContent className="p-4">
                 <div className="flex items-center justify-between mb-3">

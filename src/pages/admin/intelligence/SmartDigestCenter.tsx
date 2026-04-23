@@ -8,17 +8,16 @@ import { Progress } from "@/components/ui/progress";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
-import { DEMO_DIGESTS } from "@/data/seed/admin-intelligence";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 const SmartDigestCenter = () => {
   const { isAdmin, loading } = useRequireAdmin();
   if (loading || !isAdmin) return null;
 
-  const freshCount = ([] as typeof DEMO_DIGESTS).filter(d => d.fresh).length;
-  const staleCount = ([] as typeof DEMO_DIGESTS).filter(d => !d.fresh).length;
-  const avgHitRate = Math.round(([] as typeof DEMO_DIGESTS).reduce((s, d) => s + d.hitRate, 0) / ([] as typeof DEMO_DIGESTS).length * 100);
-  const totalGenCost = ([] as typeof DEMO_DIGESTS).reduce((s, d) => s + d.genCost, 0);
-  const totalAvoided = ([] as typeof DEMO_DIGESTS).reduce((s, d) => s + d.avoidedSpend, 0);
+  const freshCount = ([] as any[]).filter(d => d.fresh).length;
+  const staleCount = ([] as any[]).filter(d => !d.fresh).length;
+  const avgHitRate = Math.round(([] as any[]).reduce((s, d) => s + d.hitRate, 0) / ([] as any[]).length * 100);
+  const totalGenCost = ([] as any[]).reduce((s, d) => s + d.genCost, 0);
+  const totalAvoided = ([] as any[]).reduce((s, d) => s + d.avoidedSpend, 0);
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
@@ -30,7 +29,7 @@ const SmartDigestCenter = () => {
 
       <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
         {[
-          { label: "Total Digests", value: String(([] as typeof DEMO_DIGESTS).length) },
+          { label: "Total Digests", value: String(([] as any[]).length) },
           { label: "Fresh", value: String(freshCount), color: "text-emerald-400" },
           { label: "Stale", value: String(staleCount), color: staleCount > 0 ? "text-amber-400" : "text-emerald-400" },
           { label: "Avg Hit Rate", value: `${avgHitRate}%` },
@@ -63,7 +62,7 @@ const SmartDigestCenter = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {([] as typeof DEMO_DIGESTS).sort((a, b) => b.hitRate - a.hitRate).map(d => (
+              {([] as any[]).sort((a, b) => b.hitRate - a.hitRate).map(d => (
                 <TableRow key={d.id}>
                   <TableCell className="text-xs font-medium text-foreground">{d.type.replace(/_/g, " ")}</TableCell>
                   <TableCell className="text-xs text-muted-foreground">{d.domain}</TableCell>
@@ -90,7 +89,7 @@ const SmartDigestCenter = () => {
         <Card className="bg-card/80 border-amber-500/20">
           <CardHeader className="pb-2"><CardTitle className="text-sm flex items-center gap-2"><AlertTriangle className="h-4 w-4 text-amber-400" /> Stale Digest Warnings</CardTitle></CardHeader>
           <CardContent className="space-y-2">
-            {([] as typeof DEMO_DIGESTS).filter(d => !d.fresh).map(d => (
+            {([] as any[]).filter(d => !d.fresh).map(d => (
               <div key={d.id} className="flex items-center justify-between p-3 rounded-lg bg-amber-500/5">
                 <div>
                   <p className="text-xs font-medium text-foreground">{d.type.replace(/_/g, " ")} — {d.domain}</p>
@@ -109,7 +108,7 @@ const SmartDigestCenter = () => {
         <CardContent>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
             {Object.entries(
-              ([] as typeof DEMO_DIGESTS).reduce<Record<string, { avoided: number; genCost: number; count: number }>>((acc, d) => {
+              ([] as any[]).reduce<Record<string, { avoided: number; genCost: number; count: number }>>((acc, d) => {
                 if (!acc[d.type]) acc[d.type] = { avoided: 0, genCost: 0, count: 0 };
                 acc[d.type].avoided += d.avoidedSpend;
                 acc[d.type].genCost += d.genCost;

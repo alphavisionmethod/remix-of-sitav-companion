@@ -5,7 +5,6 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { DEMO_AT_RISK, DEMO_HEALTH_SEGMENTS, DEMO_WIN_BACK, DEMO_CHURN_PREDICTION, DEMO_NPS_DATA } from "@/data/seed/revenue-office";
 import { useState } from "react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { PageShell } from "@/components/sita/PageShell";
@@ -25,9 +24,9 @@ export default function RetentionOffice() {
         {[
           { l: "Retention Rate", v: "91%", c: "text-[hsl(var(--trust-safe))]" },
           { l: "NPS Score", v: DEMO_NPS_DATA.current, c: "text-primary" },
-          { l: "Churn Risk Clients", v: ([] as typeof DEMO_CHURN_PREDICTION).length, c: "text-orange-400" },
+          { l: "Churn Risk Clients", v: ([] as any[]).length, c: "text-orange-400" },
           { l: "Revenue at Risk", v: "$18,500", c: "text-destructive" },
-          { l: "Win-Back Pipeline", v: ([] as typeof DEMO_WIN_BACK).length, c: "text-purple-400" },
+          { l: "Win-Back Pipeline", v: ([] as any[]).length, c: "text-purple-400" },
         ].map(m => (
           <div key={m.l} className="rounded-xl border border-border/40 bg-card p-3 text-center">
             <p className="text-xs text-muted-foreground">{m.l}</p>
@@ -51,10 +50,10 @@ export default function RetentionOffice() {
             <CardHeader className="pb-3"><CardTitle className="text-sm font-medium">Customer Health Segments</CardTitle></CardHeader>
             <CardContent>
               <div className="flex gap-1 h-8 rounded-full overflow-hidden mb-4">
-                {([] as typeof DEMO_HEALTH_SEGMENTS).map(s => <div key={s.label} className={`${s.color} transition-all`} style={{ width: `${s.pct}%` }} />)}
+                {([] as any[]).map(s => <div key={s.label} className={`${s.color} transition-all`} style={{ width: `${s.pct}%` }} />)}
               </div>
               <div className="flex gap-6">
-                {([] as typeof DEMO_HEALTH_SEGMENTS).map(s => (
+                {([] as any[]).map(s => (
                   <div key={s.label} className="flex items-center gap-2"><div className={`w-2 h-2 rounded-full ${s.color}`} /><span className="text-xs text-muted-foreground">{s.label}: {s.count}</span></div>
                 ))}
               </div>
@@ -65,7 +64,7 @@ export default function RetentionOffice() {
           <Card className="bg-card/50 border-border/50">
             <CardHeader className="pb-3"><CardTitle className="text-sm font-medium flex items-center gap-2"><AlertTriangle className="w-4 h-4 text-red-400" /> At-Risk Clients</CardTitle></CardHeader>
             <CardContent className="space-y-3">
-              {([] as typeof DEMO_AT_RISK).map(c => (
+              {([] as any[]).map(c => (
                 <div key={c.name} className="p-3 rounded-lg bg-red-500/5 border border-red-500/20">
                   <div className="flex items-center justify-between mb-2">
                     <div><p className="text-sm font-medium text-foreground">{c.name}</p><p className="text-xs text-muted-foreground">{c.company} · LTV {c.ltv}</p></div>
@@ -83,7 +82,7 @@ export default function RetentionOffice() {
           <Card className="bg-card/50 border-border/50">
             <CardHeader className="pb-2"><CardTitle className="text-sm flex items-center gap-2"><Target className="h-4 w-4 text-orange-400" /> Churn Prediction Model</CardTitle></CardHeader>
             <CardContent className="space-y-3">
-              {([] as typeof DEMO_CHURN_PREDICTION).map((pred, i) => (
+              {([] as any[]).map((pred, i) => (
                 <div key={i} className={`p-4 rounded-xl border ${pred.probability >= 60 ? "border-destructive/30 bg-destructive/5" : pred.probability >= 40 ? "border-orange-400/30 bg-orange-400/5" : "border-border/40 bg-card"}`}>
                   <div className="flex items-center justify-between mb-2">
                     <div>
@@ -178,7 +177,7 @@ export default function RetentionOffice() {
 
         {/* Win-Back */}
         <TabsContent value="winback" className="space-y-3 mt-4">
-          {([] as typeof DEMO_WIN_BACK).map(c => (
+          {([] as any[]).map(c => (
             <Card key={c.name} className="bg-card/50 border-border/50">
               <CardContent className="p-4">
                 <div className="flex items-center justify-between mb-2">

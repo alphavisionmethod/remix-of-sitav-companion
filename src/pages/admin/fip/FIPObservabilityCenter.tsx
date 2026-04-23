@@ -4,7 +4,6 @@ import { Activity, CheckCircle2, XCircle, Wrench, FileSearch, RotateCcw } from "
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useComplianceRecords, useFeatureSpecs } from "@/hooks/use-fip-data";
-import { DEMO_OBSERVABILITY_FIELDS } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 const FIPObservabilityCenter = () => {
   const { data: compliance = [] } = useComplianceRecords();
@@ -31,7 +30,7 @@ const FIPObservabilityCenter = () => {
         <CardHeader><CardTitle className="text-base">Observability Checklist</CardTitle></CardHeader>
         <CardContent>
           <div className="grid grid-cols-3 gap-3">
-            {([] as typeof DEMO_OBSERVABILITY_FIELDS).map(field => {
+            {([] as any[]).map(field => {
               const count = specsWithObs.filter((s: Record<string, any>) => s.observability_support?.[field]).length;
               return (
                 <div key={field} className="flex items-center justify-between p-2 border rounded">

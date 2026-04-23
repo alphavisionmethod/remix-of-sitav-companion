@@ -6,7 +6,6 @@ import { Badge } from "@/components/ui/badge";
 import { Lightbulb, TrendingUp, UserPlus, Star, RefreshCw, DollarSign, ArrowRight, Layers, AlertTriangle, Clock } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
-import { DEMO_OPPORTUNITY_THEMES } from "@/data/seed/revenue-office";
 import { useState, useMemo } from "react";
 import { useDeals } from "@/hooks/use-revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
@@ -113,7 +112,7 @@ export default function OpportunityBoard() {
         </TabsContent>
 
         <TabsContent value="themes" className="space-y-3 mt-4">
-          {([] as typeof DEMO_OPPORTUNITY_THEMES).map(theme => {
+          {([] as any[]).map(theme => {
             const themeOpps = scored.filter(o => {
               if (theme.theme === "Conversion Optimization") return ["Conversion"].includes(o.category);
               if (theme.theme === "Revenue Expansion") return ["Upsell", "Packaging"].includes(o.category);

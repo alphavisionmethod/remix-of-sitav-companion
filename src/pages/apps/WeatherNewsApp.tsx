@@ -3,7 +3,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Cloud, Sun, CloudRain, Wind, Droplets, Thermometer, Newspaper, TrendingUp, Clock, ExternalLink, Eye, MapPin, Sunrise, Sunset } from "lucide-react";
-import { DEMO_forecast, DEMO_newsArticles } from "@/data/seed/apps";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.06 } } };

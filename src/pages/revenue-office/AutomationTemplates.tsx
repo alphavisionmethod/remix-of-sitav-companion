@@ -12,7 +12,6 @@ import {
   Eye, Search, TrendingUp, BarChart3
 } from "lucide-react";
 import AutomationSubNav from "./AutomationSubNav";
-import { DEMO_templates } from "@/data/seed/revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 // Production fallback — seed data removed

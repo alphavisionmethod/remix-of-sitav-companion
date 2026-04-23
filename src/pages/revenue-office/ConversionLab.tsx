@@ -7,7 +7,6 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { DEMO_EXPERIMENTS } from "@/data/seed/revenue-office";
 import { useConversionExperiments } from "@/hooks/use-revenue-office";
 import { Skeleton } from "@/components/ui/skeleton";
 import { EmptyState } from "@/components/sita/EmptyState";

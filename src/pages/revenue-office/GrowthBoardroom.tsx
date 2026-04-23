@@ -12,7 +12,6 @@ import { useDeals } from "@/hooks/use-revenue-office";
 import { useRevenueLeakItems } from "@/hooks/use-revenue-office";
 import { useNavigate } from "react-router-dom";
 import { Skeleton } from "@/components/ui/skeleton";
-import { DEMO_WHAT_CHANGED } from "@/data/seed/revenue-office";
 import { competitiveIntelligenceService, type CompetitivePosition } from "@/lib/services/competitive-intelligence";
 import { useOSRuntime } from "@/hooks/useOSRuntime";
 import { useRevenueWhatChanged } from "@/hooks/use-revenue-memory";
@@ -207,7 +206,7 @@ export default function GrowthBoardroom() {
         <Card className="bg-card/50 border-border/50">
           <CardHeader className="pb-3"><CardTitle className="text-sm font-medium flex items-center gap-2"><RefreshCw className="w-4 h-4 text-primary" /> What Changed</CardTitle></CardHeader>
           <CardContent className="space-y-3">
-            {([] as typeof DEMO_WHAT_CHANGED).map((w, i) => (
+            {([] as any[]).map((w, i) => (
               <div key={i} className="flex items-start gap-2">
                 <div className={`w-1.5 h-1.5 rounded-full mt-2 flex-shrink-0 ${w.type === "positive" ? "bg-green-400" : w.type === "warning" ? "bg-yellow-400" : "bg-red-400"}`} />
                 <div className="flex-1">

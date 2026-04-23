@@ -13,7 +13,6 @@ import { cn } from "@/lib/utils";
 import { useAppPlatform } from "@/contexts/AppPlatformContext";
 import { AppIcon, VerificationBadge } from "@/components/sita/app-platform/AppStoreComponents";
 import type { AppDefinition } from "@/domains/apps/types";
-import { DEMO_DETECTED_SITES } from "@/data/seed/core-pages";
 import { toast } from "sonner";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 const WebAppInstallPage = () => {
@@ -76,7 +75,7 @@ const WebAppInstallPage = () => {
           <div className="space-y-3">
             <h3 className="text-sm font-semibold text-foreground">Installable Web Apps</h3>
             <div className="grid gap-3 sm:grid-cols-2">
-              {([] as typeof DEMO_DETECTED_SITES).map(site => (
+              {([] as any[]).map(site => (
                 <motion.button key={site.url} whileHover={{ y: -2 }} onClick={() => setSelectedSite(site)}
                   className="flex items-center gap-3 rounded-2xl border border-border bg-card p-4 text-left transition-all hover:border-primary/20 hover:shadow-lg group">
                   <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-primary/10 to-accent/10 text-2xl">

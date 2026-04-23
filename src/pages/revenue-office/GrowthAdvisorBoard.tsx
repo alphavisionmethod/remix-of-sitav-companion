@@ -8,7 +8,6 @@ import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { useRevenueOfficeMode } from "@/contexts/RevenueOfficeModeContext";
 import { RevenueOfficeModeToggle } from "@/components/revenue-office/RevenueOfficeModeToggle";
-import { DEMO_ADVISORS, DEMO_ADVISOR_DEBATES, DEMO_ADVISOR_WHAT_CHANGED, DEMO_ADVISOR_INVALIDATION, DEMO_ALIGNMENT_CLUSTERS } from "@/data/seed/revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { PageShell } from "@/components/sita/PageShell";
 import { Typography } from "@/components/sita/Typography";

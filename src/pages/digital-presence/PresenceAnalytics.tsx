@@ -5,7 +5,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { useSeoReports } from "@/hooks/use-digital-presence";
-import { DEMO_AGENT_CONFIDENCE, DEMO_OVERVIEW_METRICS, DEMO_PAGE_IMPACT, DEMO_PROMO_PERFORMANCE, DEMO_SOURCE_PERFORMANCE } from "@/data/seed/digital-presence";
 import DPOSubNav from "./DPOSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 export default function PresenceAnalytics() {
@@ -20,7 +19,7 @@ export default function PresenceAnalytics() {
 
       {/* Overview */}
       <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
-        {([] as typeof DEMO_OVERVIEW_METRICS).map((m, i) => (
+        {([] as any[]).map((m, i) => (
           <motion.div key={m.label} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.03 }}>
             <Card className="bg-card/50 border-border/50">
               <CardContent className="p-4">
@@ -43,7 +42,7 @@ export default function PresenceAnalytics() {
       <Card className="bg-card/50 border-border/50">
         <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><Globe className="w-4 h-4 text-blue-400" /> Source-to-Conversion Performance</CardTitle></CardHeader>
         <CardContent className="space-y-2">
-          {([] as typeof DEMO_SOURCE_PERFORMANCE).map(s => (
+          {([] as any[]).map(s => (
             <div key={s.source} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
               <div className="flex items-center gap-3 flex-1">
                 <span className="text-sm font-medium text-foreground w-32">{s.source}</span>
@@ -81,7 +80,7 @@ export default function PresenceAnalytics() {
                 </tr>
               </thead>
               <tbody>
-                {([] as typeof DEMO_PAGE_IMPACT).map(p => (
+                {([] as any[]).map(p => (
                   <tr key={p.page} className="border-b border-border/10 hover:bg-muted/20">
                     <td className="p-2">
                       <span className="text-foreground font-medium">{p.name}</span>
@@ -106,7 +105,7 @@ export default function PresenceAnalytics() {
         <Card className="bg-card/50 border-border/50">
           <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><TrendingUp className="w-4 h-4 text-orange-400" /> Promo Performance</CardTitle></CardHeader>
           <CardContent className="space-y-3">
-            {([] as typeof DEMO_PROMO_PERFORMANCE).map(p => (
+            {([] as any[]).map(p => (
               <div key={p.name} className="p-3 bg-muted/30 rounded-lg">
                 <div className="flex items-center justify-between mb-1">
                   <span className="text-xs font-medium text-foreground">{p.name}</span>
@@ -127,7 +126,7 @@ export default function PresenceAnalytics() {
         <Card className="bg-card/50 border-border/50">
           <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><Sparkles className="w-4 h-4 text-violet-400" /> Agent Confidence Trends</CardTitle></CardHeader>
           <CardContent className="space-y-3">
-            {([] as typeof DEMO_AGENT_CONFIDENCE).map(a => (
+            {([] as any[]).map(a => (
               <div key={a.agent} className="p-3 bg-muted/30 rounded-lg">
                 <div className="flex items-center justify-between mb-1">
                   <span className="text-xs font-medium text-foreground">{a.agent}</span>

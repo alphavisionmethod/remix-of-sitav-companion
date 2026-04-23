@@ -4,7 +4,6 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { RefreshCw, CheckCircle2, XCircle, AlertTriangle, Loader2, Activity, Zap, Shield, DollarSign, Clock, Server, Inbox } from "lucide-react";
-import { DEMO_AI_FEATURES } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { EmptyState } from "@/components/sita/EmptyState";
 const statusColors = {
@@ -159,7 +158,7 @@ export default function AIRuntimeStatus() {
                   </tr>
                 </thead>
                 <tbody>
-                  {([] as typeof DEMO_AI_FEATURES).map((feature) => {
+                  {([] as any[]).map((feature) => {
                     const fnHealthy = health?.checks.edge_functions_healthy?.[feature.fn];
                     const usesAI = feature.fn === "chat-advisor" || feature.fn === "brain-core" || feature.fn === "personal-brain";
                     const featureStatus = usesAI

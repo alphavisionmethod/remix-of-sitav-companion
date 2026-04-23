@@ -21,7 +21,6 @@ import {
   CheckCircle, XCircle, Clock, Shield, AlertTriangle, Eye, ArrowRight,
   ChevronDown, ChevronUp, Filter, History, LayoutDashboard, FileText,
   DollarSign, Zap, RotateCcw, MessageSquare } from "lucide-react";
-import { DEMO_RISK_TIERS } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const DEMO_STATUSES: any[] = [];
@@ -226,7 +225,7 @@ function HQ01Overview() {
         <CardHeader><CardTitle className="text-sm">Pending by Risk Tier</CardTitle></CardHeader>
         <CardContent>
           <div className="grid grid-cols-4 gap-3">
-            {([] as typeof DEMO_RISK_TIERS).map(tier => {
+            {([] as any[]).map(tier => {
               const count = pending.filter(i => i.risk_tier === tier).length;
               return (
                 <div key={tier} className="text-center p-3 rounded border">

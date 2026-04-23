@@ -4,7 +4,6 @@ import { Monitor, ArrowRight, AlertTriangle, TrendingUp, Smartphone, Eye } from 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { DEMO_CONVERSION_PATHS, DEMO_PAGE_TREE, DEMO_WEAK_NODES } from "@/data/seed/digital-presence";
 import DPOSubNav from "./DPOSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 function PageNode({ page, depth = 0 }: { page: typeof DEMO_PAGE_TREE[0]; depth?: number }) {
@@ -42,7 +41,7 @@ export default function WebsiteTwin() {
       <Card className="bg-card/50 border-border/50">
         <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><Monitor className="w-4 h-4 text-cyan-400" /> Page Hierarchy</CardTitle></CardHeader>
         <CardContent>
-          {([] as typeof DEMO_PAGE_TREE).map(p => <PageNode key={p.path} page={p} />)}
+          {([] as any[]).map(p => <PageNode key={p.path} page={p} />)}
         </CardContent>
       </Card>
 
@@ -51,7 +50,7 @@ export default function WebsiteTwin() {
         <Card className="bg-card/50 border-border/50">
           <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><TrendingUp className="w-4 h-4 text-green-400" /> Conversion Paths</CardTitle></CardHeader>
           <CardContent className="space-y-3">
-            {([] as typeof DEMO_CONVERSION_PATHS).map(cp => (
+            {([] as any[]).map(cp => (
               <div key={cp.name} className="p-3 bg-muted/30 rounded-lg flex items-center justify-between">
                 <div>
                   <p className="text-xs font-medium text-foreground">{cp.name}</p>
@@ -70,7 +69,7 @@ export default function WebsiteTwin() {
         <Card className="bg-card/50 border-border/50">
           <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><AlertTriangle className="w-4 h-4 text-red-400" /> Weak Nodes</CardTitle></CardHeader>
           <CardContent className="space-y-3">
-            {([] as typeof DEMO_WEAK_NODES).map(w => (
+            {([] as any[]).map(w => (
               <div key={w.page} className="p-3 bg-muted/30 rounded-lg">
                 <div className="flex items-center justify-between mb-1">
                   <span className="text-xs font-mono text-muted-foreground">{w.page}</span>

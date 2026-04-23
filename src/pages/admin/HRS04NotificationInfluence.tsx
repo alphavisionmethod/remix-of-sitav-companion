@@ -3,7 +3,6 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Bell, BellOff, Clock, AlertTriangle, Shield } from "lucide-react";
 import { useInterruptionPosture } from "@/hooks/use-health-signal-data";
-import { DEMO_SUPPRESSION_RULES, DEMO_TIMING_RULES, DEMO_OVERRIDE_MATRIX } from "@/data/seed/notification-calm";
 import HRSSubNav from "@/components/admin/HRSSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 const HRS04NotificationInfluence = () => {

@@ -16,7 +16,6 @@ import { useRealityClassifications, useUpsertClassification, useDeleteClassifica
 import { Shield, Eye, Cpu, CheckCircle2, Plus, Trash2, Search, BarChart3, Pencil, Rocket, AlertTriangle, Info, ArrowRight, Layers, Target } from "lucide-react";
 import type { RealityClassification } from "@/data/persistence/reality-classification-persistence";
 import { SCOPE_LEVELS, EVIDENCE_SIGNALS, PROGRESSION_REQUIREMENTS, type ScopeLevel, type LaunchImpact } from "@/data/persistence/reality-classification-persistence";
-import { DEMO_CONTRACT_STATUSES } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 const CLASSIFICATION_CONFIG = {
   presentational: { label: "Presentational", color: "bg-muted text-muted-foreground", icon: Eye, description: "UI shell — no backing logic or data truth" },
@@ -180,7 +179,7 @@ function FormDialog({ trigger, initial, onSave }: { trigger: React.ReactNode; in
               <Label>Contract Status</Label>
               <Select value={form.contract_status} onValueChange={v => setForm(f => ({ ...f, contract_status: v as never }))}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
-                <SelectContent>{([] as unknown as typeof DEMO_CONTRACT_STATUSES).map(s => <SelectItem key={s} value={s} className="capitalize">{s}</SelectItem>)}</SelectContent>
+                <SelectContent>{([] as any[]).map(s => <SelectItem key={s} value={s} className="capitalize">{s}</SelectItem>)}</SelectContent>
               </Select>
             </div>
             <div><Label>Backend Target</Label><Input value={form.backend_target} onChange={e => setForm(f => ({ ...f, backend_target: e.target.value }))} placeholder="supabase.customers + RLS" /></div>

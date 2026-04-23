@@ -8,8 +8,6 @@ import { motion } from "framer-motion";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
 import { useGroceryLists } from "@/hooks/use-concierge-data";
-import { DEMO_recurringSupplies, DEMO_stores } from "@/data/seed/concierge";
-
 // Production fallback — seed data removed
 const DEMO_categories: any[] = [];
 

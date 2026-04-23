@@ -25,7 +25,6 @@ import {
   AlertCircle, ArrowRightLeft, Timer, BarChart3
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { DEMO_ENGINE_CONNECTORS, DEMO_FALLBACK_APPROVALS } from "@/data/seed/core-pages";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 // ── Initialize services with demo data ──────────────────────────
 
@@ -282,7 +281,7 @@ const SystemStatus = () => {
             </div>
 
             <SitaSectionHeader title="Recent Approvals" />
-            {([] as typeof DEMO_FALLBACK_APPROVALS).map((a, i) => (
+            {([] as any[]).map((a, i) => (
               <SitaCard key={i} hover={false} className="p-3">
                 <div className="flex items-center justify-between gap-2">
                   <div className="min-w-0">
@@ -693,7 +692,7 @@ const SystemStatus = () => {
 
       {activeTab === "history" && (
         <div className="space-y-3">
-          {[...([] as typeof DEMO_FALLBACK_APPROVALS).map((a, i) => ({
+          {[...([] as any[]).map((a, i) => ({
             id: `approval-${i}`,
             type: "approval" as const,
             title: a.action,
@@ -728,7 +727,7 @@ const SystemStatus = () => {
             <div className="flex items-center justify-between">
               <p className="text-sm font-medium text-foreground">Execution Summary</p>
               <div className="flex items-center gap-4 text-xs text-muted-foreground">
-                <span>{([] as typeof DEMO_FALLBACK_APPROVALS).length} approvals</span>
+                <span>{([] as any[]).length} approvals</span>
                 <span>{incidents.length} incidents</span>
                 <span className="text-trust-safe">{incidents.filter(i => i.state === "resolved").length} resolved</span>
               </div>

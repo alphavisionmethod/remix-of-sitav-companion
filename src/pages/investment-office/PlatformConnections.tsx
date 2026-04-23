@@ -3,7 +3,6 @@ import { Link2, Plus, RefreshCw, CheckCircle2, AlertTriangle, XCircle, Shield, C
 import { PLATFORM_CONNECTIONS } from "@/hooks/useInvestmentOfficeData";
 import { SYNC_HISTORY, PLATFORM_PERMISSIONS } from "@/domains/investment/mock-data";
 import { useMarketWatchlistItems } from "@/hooks/use-investment-office";
-import { DEMO_AVAILABLE_PLATFORMS } from "@/data/seed/investment";
 import { ConnectPlatformModal } from "@/components/investment/ConnectPlatformModal";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";

@@ -11,7 +11,6 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Plug, Wifi, WifiOff, RefreshCw, Clock, ChevronRight, Activity, Database, Shield, Circle, AlertTriangle, ExternalLink, Unplug, Search } from "lucide-react";
 import { ConnectorSyncDashboard } from "@/components/sita/ConnectorSyncDashboard";
-import { fetchConnectorHealth, type ConnectorHealthResult } from "@/data/seed/connectors";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";

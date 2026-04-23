@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Switch } from "@/components/ui/switch";
 import { Plug, CheckCircle, AlertTriangle, RefreshCw, ArrowRight, Clock, Activity, Shield, Users, Settings, LinkIcon } from "lucide-react";
-import { getProviderById } from "@/data/seed/integrations";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";

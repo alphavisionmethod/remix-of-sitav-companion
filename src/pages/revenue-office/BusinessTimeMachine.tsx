@@ -6,7 +6,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { useState } from "react";
-import { DEMO_DECISIONS, DEMO_PERIODS, DEMO_WHATIF, DEMO_CHIEF_HISTORICAL } from "@/data/seed/revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 const ti = (t: string) => t === "up" ? <TrendingUp className="h-3.5 w-3.5 text-[hsl(var(--trust-safe))]" /> : t === "down" ? <TrendingDown className="h-3.5 w-3.5 text-destructive" /> : <span className="text-muted-foreground">—</span>;
 
@@ -27,7 +26,7 @@ const BusinessTimeMachine = () => {
   const [lessonInput, setLessonInput] = useState("");
   const [savedLessons, setSavedLessons] = useState<string[]>([]);
   const cur = DEMO_PERIODS[0].revenue;
-  const old = DEMO_PERIODS[([] as typeof DEMO_PERIODS).length - 1].revenue;
+  const old = DEMO_PERIODS[([] as any[]).length - 1].revenue;
   const yoy = Math.round(((cur - old) / old) * 100);
 
   const saveLesson = () => {
@@ -45,9 +44,9 @@ const BusinessTimeMachine = () => {
         {[
           { l: "Current Revenue", v: `$${(cur / 1000).toFixed(1)}k/mo`, c: "text-[hsl(var(--trust-safe))]" },
           { l: "YoY Growth", v: `+${yoy}%`, c: "text-primary" },
-          { l: "Key Decisions", v: ([] as typeof DEMO_DECISIONS).length, c: "text-foreground" },
+          { l: "Key Decisions", v: ([] as any[]).length, c: "text-foreground" },
           { l: "Lessons Captured", v: LESSONS_CAPTURED.length + savedLessons.length, c: "text-amber-400" },
-          { l: "Synthesis History", v: ([] as typeof DEMO_CHIEF_HISTORICAL).length, c: "text-purple-400" },
+          { l: "Synthesis History", v: ([] as any[]).length, c: "text-purple-400" },
         ].map(m => (
           <div key={m.l} className="rounded-xl border border-border/40 bg-card p-3 text-center">
             <p className="text-xs text-muted-foreground">{m.l}</p>
@@ -69,17 +68,17 @@ const BusinessTimeMachine = () => {
           <div className="rounded-xl border border-border/40 bg-card overflow-hidden">
             <table className="w-full text-xs">
               <thead><tr className="border-b border-border/40 bg-muted/30"><th className="text-left p-3">Period</th><th className="text-right p-3">Revenue</th><th className="text-right p-3">Clients</th><th className="text-right p-3">Deals</th><th className="text-right p-3">Conv %</th><th className="text-center p-3">Trend</th></tr></thead>
-              <tbody>{([] as typeof DEMO_PERIODS).map(p => <tr key={p.period} className="border-b border-border/20"><td className="p-3 font-medium">{p.period}</td><td className="p-3 text-right">${p.revenue.toLocaleString()}</td><td className="p-3 text-right">{p.clients}</td><td className="p-3 text-right">{p.deals}</td><td className="p-3 text-right">{p.conversion}%</td><td className="p-3 text-center">{ti(p.trend)}</td></tr>)}</tbody>
+              <tbody>{([] as any[]).map(p => <tr key={p.period} className="border-b border-border/20"><td className="p-3 font-medium">{p.period}</td><td className="p-3 text-right">${p.revenue.toLocaleString()}</td><td className="p-3 text-right">{p.clients}</td><td className="p-3 text-right">{p.deals}</td><td className="p-3 text-right">{p.conversion}%</td><td className="p-3 text-center">{ti(p.trend)}</td></tr>)}</tbody>
             </table>
           </div>
         </TabsContent>
 
         <TabsContent value="decisions" className="space-y-0 mt-4">
-          {([] as typeof DEMO_DECISIONS).map((d, i) => (
+          {([] as any[]).map((d, i) => (
             <div key={i} className="flex gap-3">
               <div className="flex flex-col items-center">
                 <div className={`h-3 w-3 rounded-full border-2 ${d.impact === "positive" ? "border-[hsl(var(--trust-safe))] bg-[hsl(var(--trust-safe))]/20" : d.impact === "negative" ? "border-destructive bg-destructive/20" : "border-muted-foreground bg-muted"}`} />
-                {i < ([] as typeof DEMO_DECISIONS).length - 1 && <div className="w-px flex-1 bg-border/40" />}
+                {i < ([] as any[]).length - 1 && <div className="w-px flex-1 bg-border/40" />}
               </div>
               <div className="pb-4 flex-1">
                 <div className="flex items-center gap-2 mb-1"><span className="text-[10px] text-muted-foreground">{d.date}</span><Badge variant={d.impact === "positive" ? "default" : d.impact === "negative" ? "destructive" : "outline"} className="text-[10px]">{d.metric}</Badge></div>
@@ -127,7 +126,7 @@ const BusinessTimeMachine = () => {
           <Card className="bg-card/50 border-border/50">
             <CardHeader className="pb-2"><CardTitle className="text-sm flex items-center gap-2"><Lightbulb className="h-4 w-4 text-purple-400" /> Historical Chief Synthesis</CardTitle></CardHeader>
             <CardContent className="space-y-2">
-              {([] as typeof DEMO_CHIEF_HISTORICAL).map((h, i) => (
+              {([] as any[]).map((h, i) => (
                 <div key={i} className="p-3 rounded-lg bg-muted/10 border border-border/30">
                   <div className="flex items-center justify-between mb-1">
                     <span className="text-xs font-medium text-muted-foreground">{h.date}</span>
@@ -182,7 +181,7 @@ const BusinessTimeMachine = () => {
         </TabsContent>
 
         <TabsContent value="whatif" className="space-y-3 mt-4">
-          {([] as typeof DEMO_WHATIF).map((s, i) => (
+          {([] as any[]).map((s, i) => (
             <div key={i} className="rounded-xl border border-border/40 bg-card p-4">
               <div className="flex items-center justify-between mb-2"><span className="text-sm font-semibold">{s.q}</span><Badge variant="outline">{s.conf}% confidence</Badge></div>
               <div className="rounded-lg bg-muted/30 p-3 mb-2"><p className="text-xs font-mono">{s.proj}</p></div>

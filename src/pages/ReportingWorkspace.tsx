@@ -24,7 +24,6 @@ import {
   ChevronRight, Eye, RotateCcw,
 } from "lucide-react";
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip, BarChart, Bar, PieChart as RechartsPie, Pie, Cell, LineChart, Line, CartesianGrid } from "recharts";
-import { DEMO_COMPLETION_TREND, DEMO_DOMAIN_BREAKDOWN, DEMO_PIPELINE_DATA, DEMO_REVENUE_DATA } from "@/data/seed/core-pages";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { PageShell } from "@/components/sita/PageShell";
 const fadeUp = { hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0, transition: { duration: 0.3 } } };
@@ -172,12 +171,12 @@ const ReportingWorkspace = () => {
                       <ResponsiveContainer width={160} height={160}>
                         <RechartsPie>
                           <Pie data={DEMO_DOMAIN_BREAKDOWN} dataKey="value" cx="50%" cy="50%" innerRadius={45} outerRadius={70} paddingAngle={3} strokeWidth={0}>
-                            {([] as typeof DEMO_DOMAIN_BREAKDOWN).map((entry, i) => <Cell key={i} fill={entry.color} />)}
+                            {([] as any[]).map((entry, i) => <Cell key={i} fill={entry.color} />)}
                           </Pie>
                         </RechartsPie>
                       </ResponsiveContainer>
                       <div className="space-y-2">
-                        {([] as typeof DEMO_DOMAIN_BREAKDOWN).map(d => (
+                        {([] as any[]).map(d => (
                           <div key={d.name} className="flex items-center gap-2">
                             <div className="w-2.5 h-2.5 rounded-full" style={{ background: d.color }} />
                             <span className="text-xs text-muted-foreground">{d.name}</span>
@@ -330,7 +329,7 @@ const ReportingWorkspace = () => {
               </div>
             </CardHeader>
             <CardContent className="space-y-2">
-              {([] as typeof DEMO_SAVED_REPORTS).map(r => (
+              {([] as any[]).map(r => (
                 <div key={r.id} className="flex items-center gap-3 p-3 rounded-lg border border-border/30 hover:bg-accent/20 transition-colors cursor-pointer">
                   <FileText className="h-4 w-4 text-muted-foreground shrink-0" />
                   <div className="flex-1 min-w-0">

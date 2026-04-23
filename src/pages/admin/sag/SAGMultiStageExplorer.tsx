@@ -3,7 +3,6 @@ import { Layers, ArrowRight, Zap, DollarSign, CheckCircle2 } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useRoutingPolicies } from "@/hooks/use-sag-data";
-import { DEMO_EXAMPLE_STAGES } from "@/data/seed/admin-platform";
 import SAGSubNav from "@/components/admin/SAGSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 const SAGMultiStageExplorer = () => {
@@ -18,13 +17,13 @@ const SAGMultiStageExplorer = () => {
       </motion.div>
 
       <div className="grid grid-cols-3 gap-4">
-        <Card><CardContent className="pt-4"><p className="text-2xl font-bold">{([] as typeof DEMO_EXAMPLE_STAGES).length}</p><p className="text-xs text-muted-foreground">Stage Patterns</p></CardContent></Card>
+        <Card><CardContent className="pt-4"><p className="text-2xl font-bold">{([] as any[]).length}</p><p className="text-xs text-muted-foreground">Stage Patterns</p></CardContent></Card>
         <Card><CardContent className="pt-4"><p className="text-2xl font-bold">{policies.filter((p: Record<string, any>) => p.fallback_chain?.length > 0).length}</p><p className="text-xs text-muted-foreground">Policies with Fallback Chains</p></CardContent></Card>
         <Card><CardContent className="pt-4"><p className="text-2xl font-bold">{policies.filter((p: Record<string, any>) => p.reuse_eligible).length}</p><p className="text-xs text-muted-foreground">Reuse-Eligible Policies</p></CardContent></Card>
       </div>
 
       <div className="space-y-4">
-        {([] as typeof DEMO_EXAMPLE_STAGES).map((pattern, pi) => (
+        {([] as any[]).map((pattern, pi) => (
           <Card key={pi}>
             <CardHeader className="pb-2"><CardTitle className="text-base">{pattern.pattern}</CardTitle></CardHeader>
             <CardContent>

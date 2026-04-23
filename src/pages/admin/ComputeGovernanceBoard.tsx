@@ -21,7 +21,6 @@ import { CG06MissionCostTab } from "@/components/admin/compute-governance/CG06Mi
 import { CG10PricingSimulatorTab } from "@/components/admin/compute-governance/CG10PricingSimulatorTab";
 import { classColors, tierColors, budgetStatusColors, fmt } from "@/components/admin/compute-governance/shared";
 import { useComputeBudgetStatus, useAISpendSummary, useModelRoutingStats, useMarginSnapshot } from "@/hooks/use-compute-governance";
-import { DEMO_AGENT_SPEND, DEMO_ANOMALIES, DEMO_BUDGETS, DEMO_DEEP_JOBS, DEMO_ROUTING_EVENTS, DEMO_TENANT_SPEND } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 // ── Mock Data ───────────────────────────────────────────────
 
@@ -67,10 +66,10 @@ const ComputeGovernanceBoard = () => {
   const totalSpend = spendRows?.reduce((s, r) => s + r.total_cost_usd, 0) ?? 1.49;
   const marginPct = marginData?.grossMarginPct ?? 67;
   const cacheHitRate = 64; // from token usage stats
-  const anomalyCount = ([] as typeof DEMO_ANOMALIES).length;
-  const criticalCount = ([] as typeof DEMO_ANOMALIES).filter(a => a.severity === "critical").length;
+  const anomalyCount = ([] as any[]).length;
+  const criticalCount = ([] as any[]).filter(a => a.severity === "critical").length;
 
-  const forecasts = ([] as typeof DEMO_BUDGETS).filter(b => b.scope === "tenant").map(b => forecastSpend(b, 18, 30));
+  const forecasts = ([] as any[]).filter(b => b.scope === "tenant").map(b => forecastSpend(b, 18, 30));
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
@@ -161,7 +160,7 @@ const ComputeGovernanceBoard = () => {
             <Card className="bg-card/80 border-border/50">
               <CardHeader className="pb-2"><CardTitle className="text-sm">Spend by Agent</CardTitle></CardHeader>
               <CardContent className="space-y-2">
-                {([] as typeof DEMO_AGENT_SPEND).sort((a, b) => b.cost - a.cost).map(a => (
+                {([] as any[]).sort((a, b) => b.cost - a.cost).map(a => (
                   <div key={a.agentId} className="flex items-center justify-between p-2 rounded-lg bg-secondary/20">
                     <div className="flex items-center gap-2">
                       <Badge className={tierColors[a.tier]} variant="secondary">{a.tier[0].toUpperCase()}</Badge>
@@ -179,7 +178,7 @@ const ComputeGovernanceBoard = () => {
             <Card className="bg-card/80 border-border/50">
               <CardHeader className="pb-2"><CardTitle className="text-sm">Margin Posture</CardTitle></CardHeader>
               <CardContent className="space-y-2">
-                {([] as typeof DEMO_TENANT_SPEND).map(t => (
+                {([] as any[]).map(t => (
                   <div key={t.tenantId} className="flex items-center justify-between p-2 rounded-lg bg-secondary/20">
                     <div>
                       <p className="text-xs font-medium text-foreground">{t.name}</p>
@@ -196,7 +195,7 @@ const ComputeGovernanceBoard = () => {
             <Card className="bg-card/80 border-border/50">
               <CardHeader className="pb-2"><CardTitle className="text-sm flex items-center gap-2"><AlertTriangle className="h-4 w-4 text-amber-400" /> Active Anomalies</CardTitle></CardHeader>
               <CardContent className="space-y-2">
-                {([] as typeof DEMO_ANOMALIES).slice(0, 3).map(a => (
+                {([] as any[]).slice(0, 3).map(a => (
                   <div key={a.id} className="flex items-center justify-between p-2 rounded-lg bg-secondary/20">
                     <div className="flex items-center gap-2">
                       <Badge variant={a.severity === "critical" ? "destructive" : a.severity === "warning" ? "destructive" : "secondary"} className="text-[9px]">{a.severity}</Badge>
@@ -294,7 +293,7 @@ const ComputeGovernanceBoard = () => {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {([] as typeof DEMO_ROUTING_EVENTS).map(r => (
+                  {([] as any[]).map(r => (
                     <TableRow key={r.id}>
                       <TableCell><span className={`font-mono font-bold ${classColors[r.taskClass]}`}>{r.taskClass}</span></TableCell>
                       <TableCell className="text-xs max-w-[200px] truncate">{r.intent}</TableCell>
@@ -402,7 +401,7 @@ const ComputeGovernanceBoard = () => {
         <TabsContent value="budgets" className="space-y-4 mt-4">
           {/* Budget Pressure Indicators */}
           <div className="grid grid-cols-3 md:grid-cols-6 gap-3">
-            {([] as typeof DEMO_BUDGETS).map(env => {
+            {([] as any[]).map(env => {
               const pct = env.allocatedCents > 0 ? Math.round((env.spentCents / env.allocatedCents) * 100) : 0;
               return (
                 <Card key={env.envelopeId} className="bg-card/80 border-border/50">
@@ -433,7 +432,7 @@ const ComputeGovernanceBoard = () => {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {([] as typeof DEMO_BUDGETS).map(env => (
+                  {([] as any[]).map(env => (
                     <TableRow key={env.envelopeId}>
                       <TableCell><Badge variant="outline" className="text-[10px]">{env.scope}</Badge></TableCell>
                       <TableCell className="text-xs font-medium text-foreground">{env.label}</TableCell>
@@ -627,7 +626,7 @@ const ComputeGovernanceBoard = () => {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {([] as typeof DEMO_TENANT_SPEND).map(t => {
+                  {([] as any[]).map(t => {
                     const deepPct = t.deepCap > 0 ? Math.round((t.deepUsed / t.deepCap) * 100) : 0;
                     const needsUpgrade = deepPct > 80 || t.margin < 55;
                     return (
@@ -717,7 +716,7 @@ const ComputeGovernanceBoard = () => {
             <Card className="bg-card/80 border-border/50">
               <CardHeader className="pb-2"><CardTitle className="text-sm">Upgrade Candidates</CardTitle></CardHeader>
               <CardContent className="space-y-2">
-                {([] as typeof DEMO_TENANT_SPEND).filter(t => t.margin < 60 || (t.deepUsed / t.deepCap) > 0.8).map(t => (
+                {([] as any[]).filter(t => t.margin < 60 || (t.deepUsed / t.deepCap) > 0.8).map(t => (
                   <div key={t.tenantId} className="p-2 rounded-lg bg-secondary/20 flex items-center justify-between">
                     <div>
                       <p className="text-xs font-medium text-foreground">{t.name}</p>
@@ -726,7 +725,7 @@ const ComputeGovernanceBoard = () => {
                     <Badge variant="destructive" className="text-[9px]">Recommend</Badge>
                   </div>
                 ))}
-                {([] as typeof DEMO_TENANT_SPEND).filter(t => t.margin < 60 || (t.deepUsed / t.deepCap) > 0.8).length === 0 && (
+                {([] as any[]).filter(t => t.margin < 60 || (t.deepUsed / t.deepCap) > 0.8).length === 0 && (
                   <p className="text-xs text-muted-foreground text-center py-4">No upgrade candidates at this time.</p>
                 )}
               </CardContent>
@@ -767,7 +766,7 @@ const ComputeGovernanceBoard = () => {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {([] as typeof DEMO_DEEP_JOBS).map(j => (
+                  {([] as any[]).map(j => (
                     <TableRow key={j.id}>
                       <TableCell className="text-xs font-medium text-foreground max-w-[200px] truncate">{j.title}</TableCell>
                       <TableCell><Badge variant="outline" className="text-[10px]">{j.type}</Badge></TableCell>
@@ -800,7 +799,7 @@ const ComputeGovernanceBoard = () => {
             <Card className="bg-card/80 border-border/50">
               <CardHeader className="pb-2"><CardTitle className="text-sm">Class D Events</CardTitle></CardHeader>
               <CardContent className="space-y-2">
-                {([] as typeof DEMO_DEEP_JOBS).filter(j => j.costClass === "D").map(j => (
+                {([] as any[]).filter(j => j.costClass === "D").map(j => (
                   <div key={j.id} className="p-2 rounded-lg bg-secondary/20 flex items-center justify-between">
                     <div>
                       <p className="text-xs font-medium text-foreground">{j.title}</p>
@@ -809,7 +808,7 @@ const ComputeGovernanceBoard = () => {
                     <Badge variant={j.approval === "awaiting" ? "destructive" : "secondary"} className="text-[9px]">{j.approval}</Badge>
                   </div>
                 ))}
-                {([] as typeof DEMO_DEEP_JOBS).filter(j => j.costClass === "D").length === 0 && (
+                {([] as any[]).filter(j => j.costClass === "D").length === 0 && (
                   <p className="text-xs text-muted-foreground text-center py-4">No Class D events.</p>
                 )}
               </CardContent>
@@ -859,7 +858,7 @@ const ComputeGovernanceBoard = () => {
           <Card className="bg-card/80 border-border/50">
             <CardHeader className="pb-2"><CardTitle className="text-sm">Deep Reasoning Usage by Tenant</CardTitle></CardHeader>
             <CardContent className="space-y-2">
-              {([] as typeof DEMO_TENANT_SPEND).map(t => {
+              {([] as any[]).map(t => {
                 const pct = t.deepCap > 0 ? Math.round((t.deepUsed / t.deepCap) * 100) : 0;
                 return (
                   <div key={t.tenantId} className="flex items-center justify-between p-2 rounded-lg bg-secondary/20">
@@ -881,25 +880,25 @@ const ComputeGovernanceBoard = () => {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             <Card className="bg-card/80 border-border/50">
               <CardContent className="p-3 text-center">
-                <p className="text-2xl font-bold text-foreground">{([] as typeof DEMO_ANOMALIES).length}</p>
+                <p className="text-2xl font-bold text-foreground">{([] as any[]).length}</p>
                 <p className="text-[10px] text-muted-foreground">Total Anomalies</p>
               </CardContent>
             </Card>
             <Card className="bg-card/80 border-border/50">
               <CardContent className="p-3 text-center">
-                <p className="text-2xl font-bold text-rose-400">{([] as typeof DEMO_ANOMALIES).filter(a => a.severity === "critical").length}</p>
+                <p className="text-2xl font-bold text-rose-400">{([] as any[]).filter(a => a.severity === "critical").length}</p>
                 <p className="text-[10px] text-muted-foreground">Critical</p>
               </CardContent>
             </Card>
             <Card className="bg-card/80 border-border/50">
               <CardContent className="p-3 text-center">
-                <p className="text-2xl font-bold text-foreground">${(([] as typeof DEMO_ANOMALIES).reduce((s, a) => s + a.estimatedWaste, 0) / 100).toFixed(2)}</p>
+                <p className="text-2xl font-bold text-foreground">${(([] as any[]).reduce((s, a) => s + a.estimatedWaste, 0) / 100).toFixed(2)}</p>
                 <p className="text-[10px] text-muted-foreground">Estimated Waste</p>
               </CardContent>
             </Card>
             <Card className="bg-card/80 border-border/50">
               <CardContent className="p-3 text-center">
-                <p className="text-2xl font-bold text-foreground">{Math.round(([] as typeof DEMO_ANOMALIES).reduce((s, a) => s + a.confidence, 0) / ([] as typeof DEMO_ANOMALIES).length)}%</p>
+                <p className="text-2xl font-bold text-foreground">{Math.round(([] as any[]).reduce((s, a) => s + a.confidence, 0) / ([] as any[]).length)}%</p>
                 <p className="text-[10px] text-muted-foreground">Avg Confidence</p>
               </CardContent>
             </Card>
@@ -909,7 +908,7 @@ const ComputeGovernanceBoard = () => {
           <Card className="bg-card/80 border-border/50">
             <CardHeader className="pb-2"><CardTitle className="text-sm flex items-center gap-2"><Radar className="h-4 w-4 text-primary" /> Anomaly Radar</CardTitle></CardHeader>
             <CardContent className="space-y-3">
-              {([] as typeof DEMO_ANOMALIES).map((a, i) => (
+              {([] as any[]).map((a, i) => (
                 <motion.div key={a.id} initial={{ opacity: 0, x: -12 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.08 }} className="p-3 rounded-lg bg-secondary/20 space-y-2">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
@@ -939,13 +938,13 @@ const ComputeGovernanceBoard = () => {
             <Card className="bg-card/80 border-border/50">
               <CardHeader className="pb-2"><CardTitle className="text-sm">Retry Storm Detection</CardTitle></CardHeader>
               <CardContent className="space-y-2">
-                {([] as typeof DEMO_ANOMALIES).filter(a => a.type === "retry-storm").map(a => (
+                {([] as any[]).filter(a => a.type === "retry-storm").map(a => (
                   <div key={a.id} className="p-2 rounded-lg bg-secondary/20">
                     <p className="text-xs font-medium text-foreground">{a.desc}</p>
                     <p className="text-[10px] text-muted-foreground">{a.tenant} · {a.time}</p>
                   </div>
                 ))}
-                {([] as typeof DEMO_ANOMALIES).filter(a => a.type === "retry-storm").length === 0 && (
+                {([] as any[]).filter(a => a.type === "retry-storm").length === 0 && (
                   <p className="text-xs text-muted-foreground text-center py-4">No retry storms detected.</p>
                 )}
               </CardContent>
@@ -954,7 +953,7 @@ const ComputeGovernanceBoard = () => {
             <Card className="bg-card/80 border-border/50">
               <CardHeader className="pb-2"><CardTitle className="text-sm">Automation Loop Alerts</CardTitle></CardHeader>
               <CardContent className="space-y-2">
-                {([] as typeof DEMO_ANOMALIES).filter(a => a.type === "burn-spike" || a.type === "duplicate-action").map(a => (
+                {([] as any[]).filter(a => a.type === "burn-spike" || a.type === "duplicate-action").map(a => (
                   <div key={a.id} className="p-2 rounded-lg bg-secondary/20">
                     <div className="flex items-center gap-2 mb-1">
                       <Badge variant="destructive" className="text-[9px]">{a.type}</Badge>

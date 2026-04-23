@@ -3,7 +3,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Watch, ArrowRight, Clock, Zap, Eye, Smartphone, AlertTriangle, Vibrate } from "lucide-react";
-import { DEMO_COMPLICATIONS, DEMO_MICRO_ACTIONS, DEMO_TILES } from "@/data/seed/admin-platform";
 import ANDSubNav from "@/components/admin/ANDSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 const AND02WearOSExperience = () => {
@@ -28,7 +27,7 @@ const AND02WearOSExperience = () => {
 
       <TabsContent value="tiles">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {([] as typeof DEMO_TILES).map((tile) => (
+          {([] as any[]).map((tile) => (
             <Card key={tile.id} className="hover:shadow-md transition-shadow">
               <CardHeader className="pb-2">
                 <div className="flex items-center justify-between">
@@ -63,7 +62,7 @@ const AND02WearOSExperience = () => {
                 <th className="p-2">Feedback</th>
               </tr></thead>
               <tbody>
-                {([] as typeof DEMO_MICRO_ACTIONS).map((a) => (
+                {([] as any[]).map((a) => (
                   <tr key={a.action} className="border-b hover:bg-muted/30">
                     <td className="p-2 font-medium">{a.action}</td>
                     <td className="p-2 text-center"><Badge variant={a.riskCeiling === "medium" ? "default" : "secondary"}>{a.riskCeiling}</Badge></td>
@@ -84,7 +83,7 @@ const AND02WearOSExperience = () => {
           <CardHeader><CardTitle className="text-sm">Complication Registry</CardTitle></CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {([] as typeof DEMO_COMPLICATIONS).map((c) => (
+              {([] as any[]).map((c) => (
                 <div key={c.name} className="p-4 rounded-lg border space-y-2">
                   <div className="text-sm font-medium">{c.name}</div>
                   <div className="flex gap-2 text-xs">

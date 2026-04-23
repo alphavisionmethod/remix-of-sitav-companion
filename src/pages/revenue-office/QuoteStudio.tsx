@@ -10,7 +10,6 @@ import {
   TrendingUp, Package, Plus, ArrowRight, Brain, Users, Mail, Phone,
   Star, Shield, Target, RefreshCw, Zap, BarChart3, XCircle
 } from "lucide-react";
-import { DEMO_pricingInsights, DEMO_quoteStats, DEMO_quotes, DEMO_upsellSuggestions } from "@/data/seed/revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 const statusColors: Record<string, string> = {
   draft: "bg-muted text-muted-foreground",

@@ -12,7 +12,6 @@ import { useDeals, usePipelineStages } from "@/hooks/use-revenue-office";
 import { useRevenueLeakItems } from "@/hooks/use-revenue-office";
 import { Skeleton } from "@/components/ui/skeleton";
 import { EmptyState } from "@/components/sita/EmptyState";
-import { DEMO_STAGES, DEMO_VELOCITY } from "@/data/seed/revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { PageShell } from "@/components/sita/PageShell";
 import { Typography } from "@/components/sita/Typography";

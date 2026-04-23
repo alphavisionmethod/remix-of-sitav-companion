@@ -4,7 +4,6 @@ import { Progress } from "@/components/ui/progress";
 import { useState } from "react";
 import { Palette, Eye, CheckCircle2, ArrowRight, Sparkles, Sun, Moon, Accessibility, Layout, Type, Move } from "lucide-react";
 import { useAIEngDomain } from "@/hooks/use-ai-engineering-data";
-import { DEMO_IMPROVEMENTS } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const typeIcons: Record<string, typeof Layout> = {

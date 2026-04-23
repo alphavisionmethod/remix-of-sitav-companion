@@ -12,7 +12,6 @@ import {
   Wrench, CheckCircle, ArrowRight, Brain, TrendingDown, XCircle, Shield,
   Eye, BarChart3, RefreshCw, Package, Mail, Phone, Star, Heart
 } from "lucide-react";
-import { DEMO_ADVISOR_INVALIDATION } from "@/data/seed/revenue-office";
 import { useRevenueRiskAreas } from "@/hooks/use-revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 const FRAGILITY_MATRIX = [
@@ -198,7 +197,7 @@ export default function WhatBreaksGrowth() {
           <Card className="bg-primary/5 border-primary/20">
             <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><Zap className="w-4 h-4 text-primary" /> Advisor-Linked Invalidation Triggers</CardTitle></CardHeader>
             <CardContent className="space-y-2">
-              {([] as typeof DEMO_ADVISOR_INVALIDATION).map((inv, i) => (
+              {([] as any[]).map((inv, i) => (
                 <div key={i} className="flex items-start gap-2 p-2 rounded bg-background/50 border border-border/30">
                   <AlertTriangle className="w-3.5 h-3.5 text-amber-400 mt-0.5 flex-shrink-0" />
                   <div className="flex-1">
