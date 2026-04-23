@@ -22,7 +22,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { VoicePanel } from "./voice/VoicePanel";
 import { ShieldAlert } from "lucide-react";
 import { BrainOnboardingTour } from "./onboarding-tour/BrainOnboardingTour";
-import { AlwaysOnVoice } from "./voice/AlwaysOnVoice";
+import { useSitaVoice } from "@/contexts/SitaVoiceContext";
 
 function greetingFor(name?: string | null): string {
   const hour = new Date().getHours();
@@ -42,7 +42,11 @@ export function BrainDashboard() {
   const { goals, loading: goalsLoading } = usePbGoals();
   const { insights, loading: insightsLoading } = usePbInsights(3);
   const [voiceOpen, setVoiceOpen] = useState(false);
-  const [sentinelOn, setSentinelOn] = useState(false);
+  // Sentinel is now an OS-wide singleton (SitaVoiceProvider, Phase B).
+  // The dashboard just reflects + toggles its armed state.
+  const sitaVoice = useSitaVoice();
+  const sentinelOn = Boolean(sitaVoice?.armed);
+  const toggleSentinel = () => sitaVoice?.setArmed(!sentinelOn);
   const { prefs: securityPrefs } = usePbSecurityPrefs();
 
   const filteredWorkspaces = useMemo(() => {
@@ -83,7 +87,7 @@ export function BrainDashboard() {
           onSettings={() => navigate("/personal-brain/settings")}
           onTools={() => navigate("/personal-brain/tools")}
           sentinelOn={sentinelOn}
-          onToggleSentinel={() => setSentinelOn((v) => !v)}
+          onToggleSentinel={toggleSentinel}
         />
 
         {securityPrefs?.sensitive_mode && (
@@ -149,7 +153,6 @@ export function BrainDashboard() {
         />
       )}
       <BrainOnboardingTour />
-      <AlwaysOnVoice enabled={sentinelOn} onDisable={() => setSentinelOn(false)} />
     </PageShell>
   );
 }

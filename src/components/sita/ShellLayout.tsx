@@ -34,6 +34,7 @@ import { useAppTransitions } from "@/components/sita/shell/AppTransitionLayer";
 import { useGestureEngine } from "@/hooks/use-gesture-engine";
 import { useFocusMode } from "@/hooks/use-focus-mode";
 import { registerActivity, removeActivity, updateActivity } from "@/components/sita/shell/LiveActivityBar";
+import { useSitaVoiceBridge } from "@/lib/sita-voice/useSitaVoiceBridge";
 import { useLiveActivityDomainData } from "@/hooks/useLiveActivityDomainData";
 import { lazy } from "react";
 
@@ -242,6 +243,16 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
   const handleControlCenterOpen = useCallback(() => setControlCenterOpen(o => !o), []);
   const handleTimelineOpen = useCallback(() => setTimelineOpen(true), []);
   const handleCommandOpen = useCallback(() => setCommandOpen(true), []);
+
+  // ── Sita voice bridge (Phase B) — wires global voice intents to host actions.
+  useSitaVoiceBridge({
+    launchApp: handleLaunchApp,
+    focus: { active: focusMode.active, start: focusMode.start, stop: focusMode.stop },
+    setLauncherOpen,
+    setCommandOpen,
+    setControlCenterOpen,
+    setNotifDropdownOpen,
+  });
 
   const isDesktopRoute = location.pathname === "/" || location.pathname === "/home" || location.pathname === "/desktop";
   // Control Room is the ONLY route that shows the multi-app aggregated sidebar.
