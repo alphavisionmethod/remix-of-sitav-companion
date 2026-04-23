@@ -21,16 +21,15 @@ import {
   CheckCircle, XCircle, Clock, Shield, AlertTriangle, Eye, ArrowRight,
   ChevronDown, ChevronUp, Filter, History, LayoutDashboard, FileText,
   DollarSign, Zap, RotateCcw, MessageSquare } from "lucide-react";
-import { DEMO_RISK_TIERS } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
-const DEMO_STATUSES: any[] = [];
+const STATUSES: any[] = [];
 
 
 
 
 // Production fallback — seed data removed
-const DEMO_DOMAINS: any[] = [];
+const DOMAINS: any[] = [];
 
 // ── Types ──
 // Aligned to canonical `ai_workforce_approval_queue` schema.
@@ -226,7 +225,7 @@ function HQ01Overview() {
         <CardHeader><CardTitle className="text-sm">Pending by Risk Tier</CardTitle></CardHeader>
         <CardContent>
           <div className="grid grid-cols-4 gap-3">
-            {([] as typeof DEMO_RISK_TIERS).map(tier => {
+            {([] as any[]).map(tier => {
               const count = pending.filter(i => i.risk_tier === tier).length;
               return (
                 <div key={tier} className="text-center p-3 rounded border">
@@ -291,10 +290,10 @@ function HQ02QueueDetail() {
           <div className="flex items-center gap-2 flex-wrap">
             <Filter className="h-4 w-4 text-muted-foreground" />
             {[
-              { key: "status", label: "Status", options: ["all", ...DEMO_STATUSES] },
-              { key: "risk_tier", label: "Risk", options: ["all", ...DEMO_RISK_TIERS] },
+              { key: "status", label: "Status", options: ["all", ...STATUSES] },
+              { key: "risk_tier", label: "Risk", options: ["all", ...RISK_TIERS] },
               { key: "severity", label: "Severity", options: ["all", "low", "medium", "high", "critical"] },
-              { key: "impacted_domain", label: "Domain", options: ["all", ...DEMO_DOMAINS] },
+              { key: "impacted_domain", label: "Domain", options: ["all", ...DOMAINS] },
             ].map(f => (
               <Select key={f.key} value={filters[f.key] ?? "all"} onValueChange={v => setFilter(f.key, v)}>
                 <SelectTrigger className="w-[130px] h-7 text-[10px]"><SelectValue placeholder={f.label} /></SelectTrigger>

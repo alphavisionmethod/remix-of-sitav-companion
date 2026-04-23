@@ -4,7 +4,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState } from "react";
 import { Shield, Eye, FileEdit, Sparkles, CheckCircle2, Lock, AlertTriangle, Users, Wrench, Palette, Bug, Gauge, BookOpen, Rocket, ShieldCheck, Brain } from "lucide-react";
 import { useAIEngDomain } from "@/hooks/use-ai-engineering-data";
-import { DEMO_AGENT_BOUNDARIES, DEMO_CHANGE_TYPE_BOUNDARIES, DEMO_MISSION_BOUNDARIES } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 type AutonomyLevel = "observe_only" | "draft_only" | "safe_auto_heal" | "approval_required" | "never_automate";
 
@@ -40,7 +39,7 @@ interface ChangeTypeBoundary {
 }
 
 const AIHumanBoundaryControls = () => {
-  const { isDemo } = useAIEngDomain("selfHealingRules", DEMO_AGENT_BOUNDARIES);
+  const { isDemo } = useAIEngDomain("selfHealingRules", AGENT_BOUNDARIES);
   const [tab, setTab] = useState("agents");
 
   return (
@@ -65,7 +64,7 @@ const AIHumanBoundaryControls = () => {
         </TabsList>
 
         <TabsContent value="agents" className="space-y-2 mt-4">
-          {([] as typeof DEMO_AGENT_BOUNDARIES).map(a => {
+          {([] as any[]).map(a => {
             const level = AUTONOMY_LABELS[a.autonomy];
             return (
               <div key={a.agent} className="rounded-xl border border-border/40 bg-card p-3 flex items-center gap-3">
@@ -84,7 +83,7 @@ const AIHumanBoundaryControls = () => {
         </TabsContent>
 
         <TabsContent value="missions" className="space-y-2 mt-4">
-          {([] as typeof DEMO_MISSION_BOUNDARIES).map(m => {
+          {([] as any[]).map(m => {
             const level = AUTONOMY_LABELS[m.defaultAutonomy];
             return (
               <div key={m.missionType} className="rounded-xl border border-border/40 bg-card p-3">
@@ -112,7 +111,7 @@ const AIHumanBoundaryControls = () => {
                 <th className="text-center p-3">Canary</th>
                 <th className="text-left p-3">Rationale</th>
               </tr></thead>
-              <tbody>{([] as typeof DEMO_CHANGE_TYPE_BOUNDARIES).map(c => {
+              <tbody>{([] as any[]).map(c => {
                 const level = AUTONOMY_LABELS[c.maxAutonomy];
                 return (
                   <tr key={c.changeType} className="border-b border-border/20">

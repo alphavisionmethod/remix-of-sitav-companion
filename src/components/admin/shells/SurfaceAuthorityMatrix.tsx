@@ -32,7 +32,7 @@ interface AuthorityEntry {
   recoverySurface: "os" | "cloud" | "app" | "os_cloud" | "app_cloud";
 }
 
-const DEMO_AUTHORITY_DATA: AuthorityEntry[] = [
+const AUTHORITY_DATA: AuthorityEntry[] = [
   { id: "am-1", action: "Install trusted app", domain: "Apps", osCanInitiate: true, appCanInitiate: true, cloudDecides: true, appApproves: false, osExecutes: true, offlineCapable: false, rollbackAvailable: true, riskLevel: "low", description: "Install from official, policy-verified catalog. Cloud validates trust signature, OS handles installation.", decisionSurface: "cloud", recoverySurface: "os" },
   { id: "am-2", action: "Install untrusted app", domain: "Apps", osCanInitiate: true, appCanInitiate: false, cloudDecides: true, appApproves: true, osExecutes: true, offlineCapable: false, rollbackAvailable: true, riskLevel: "high", description: "Requires App approval for unknown publisher. Cloud evaluates risk score and policy compliance.", decisionSurface: "cloud", recoverySurface: "os" },
   { id: "am-3", action: "Remote device lock", domain: "Security", osCanInitiate: false, appCanInitiate: true, cloudDecides: true, appApproves: true, osExecutes: true, offlineCapable: false, rollbackAvailable: true, riskLevel: "high", description: "App-exclusive emergency action. Cloud validates identity, OS enforces lock state.", decisionSurface: "app_cloud", recoverySurface: "app_cloud" },
@@ -77,10 +77,10 @@ export function SurfaceAuthorityMatrix({ compact = false }: { compact?: boolean 
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [collapsed, setCollapsed] = useState(compact);
 
-  const domains = useMemo(() => [...new Set((isDemoMode ? DEMO_AUTHORITY_DATA : [] as typeof DEMO_AUTHORITY_DATA).map(d => d.domain))], []);
+  const domains = useMemo(() => [...new Set((isDemoMode ? AUTHORITY_DATA : [] as typeof AUTHORITY_DATA).map(d => d.domain))], []);
 
   const filtered = useMemo(() => {
-    return (isDemoMode ? DEMO_AUTHORITY_DATA : [] as typeof DEMO_AUTHORITY_DATA).filter(e => {
+    return (isDemoMode ? AUTHORITY_DATA : [] as typeof AUTHORITY_DATA).filter(e => {
       if (domainFilter !== "all" && e.domain !== domainFilter) return false;
       if (search && !e.action.toLowerCase().includes(search.toLowerCase())) return false;
       return true;

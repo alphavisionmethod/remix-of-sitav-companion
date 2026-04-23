@@ -5,19 +5,18 @@ import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useState } from "react";
-import { DEMO_CLIENTS, DEMO_TRUST_DIMENSIONS, DEMO_SENTIMENT_TREND } from "@/data/seed/revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 // Production fallback — seed data removed
-const DEMO_ALERTS: any[] = [];
+const ALERTS: any[] = [];
 
 const ti = (t: string) => t === "up" ? <TrendingUp className="h-3.5 w-3.5 text-[hsl(var(--trust-safe))]" /> : t === "down" ? <TrendingDown className="h-3.5 w-3.5 text-destructive" /> : <span className="text-muted-foreground">—</span>;
 
 const TrustPulse = () => {
   const [tab, setTab] = useState("dimensions");
-  const avg = Math.round(([] as typeof DEMO_CLIENTS).reduce((a, c) => a + c.score, 0) / ([] as typeof DEMO_CLIENTS).length);
-  const dimAvg = Math.round(([] as typeof DEMO_TRUST_DIMENSIONS).reduce((a, d) => a + d.score, 0) / ([] as typeof DEMO_TRUST_DIMENSIONS).length);
-  const latestSentiment = DEMO_SENTIMENT_TREND[([] as typeof DEMO_SENTIMENT_TREND).length - 1];
+  const avg = Math.round(([] as any[]).reduce((a, c) => a + c.score, 0) / ([] as any[]).length);
+  const dimAvg = Math.round(([] as any[]).reduce((a, d) => a + d.score, 0) / ([] as any[]).length);
+  const latestSentiment = SENTIMENT_TREND[([] as any[]).length - 1];
 
   return (
     <div className="space-y-6 p-6">
@@ -28,8 +27,8 @@ const TrustPulse = () => {
         {[
           { l: "Avg Client Trust", v: `${avg}/100`, c: avg >= 70 ? "text-[hsl(var(--trust-safe))]" : "text-orange-400" },
           { l: "Trust Dimensions", v: `${dimAvg}/100`, c: "text-primary" },
-          { l: "Strong Clients", v: ([] as typeof DEMO_CLIENTS).filter(c => c.score >= 80).length, c: "text-[hsl(var(--trust-safe))]" },
-          { l: "At Risk", v: ([] as typeof DEMO_CLIENTS).filter(c => c.score < 50).length, c: "text-destructive" },
+          { l: "Strong Clients", v: ([] as any[]).filter(c => c.score >= 80).length, c: "text-[hsl(var(--trust-safe))]" },
+          { l: "At Risk", v: ([] as any[]).filter(c => c.score < 50).length, c: "text-destructive" },
           { l: "Sentiment", v: `${latestSentiment.positive}%+`, c: "text-[hsl(var(--trust-safe))]" },
         ].map(m => (
           <div key={m.l} className="rounded-xl border border-border/40 bg-card p-3 text-center">
@@ -52,7 +51,7 @@ const TrustPulse = () => {
           <Card className="bg-card/50 border-border/50">
             <CardHeader className="pb-2"><CardTitle className="text-sm">Multi-Axis Trust Breakdown</CardTitle></CardHeader>
             <CardContent className="space-y-4">
-              {([] as typeof DEMO_TRUST_DIMENSIONS).map(dim => (
+              {([] as any[]).map(dim => (
                 <div key={dim.dimension}>
                   <div className="flex items-center justify-between mb-1">
                     <span className="text-sm font-medium text-foreground">{dim.dimension}</span>
@@ -73,7 +72,7 @@ const TrustPulse = () => {
             <CardContent className="p-4">
               <h3 className="text-sm font-bold text-foreground mb-3">Trust Health Summary</h3>
               <div className="grid grid-cols-5 gap-2">
-                {([] as typeof DEMO_TRUST_DIMENSIONS).map(dim => (
+                {([] as any[]).map(dim => (
                   <div key={dim.dimension} className="text-center">
                     <div className="relative w-14 h-14 mx-auto">
                       <svg className="w-14 h-14 -rotate-90" viewBox="0 0 36 36">
@@ -92,7 +91,7 @@ const TrustPulse = () => {
 
         {/* Client Board */}
         <TabsContent value="clients" className="space-y-2 mt-4">
-          {([] as typeof DEMO_CLIENTS).sort((a, b) => a.score - b.score).map(c => (
+          {([] as any[]).sort((a, b) => a.score - b.score).map(c => (
             <div key={c.client} className={`rounded-xl border p-4 ${c.score < 50 ? "border-destructive/30 bg-destructive/5" : "border-border/40 bg-card"}`}>
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-2"><span className="text-sm font-semibold">{c.client}</span>{ti(c.trend)}</div>
@@ -111,7 +110,7 @@ const TrustPulse = () => {
           <Card className="bg-card/50 border-border/50">
             <CardHeader className="pb-2"><CardTitle className="text-sm">Client Sentiment Over Time</CardTitle></CardHeader>
             <CardContent className="space-y-4">
-              {([] as typeof DEMO_SENTIMENT_TREND).map((s, i) => (
+              {([] as any[]).map((s, i) => (
                 <div key={s.month}>
                   <div className="flex items-center justify-between text-xs mb-1">
                     <span className="font-medium text-foreground w-10">{s.month}</span>
@@ -139,7 +138,7 @@ const TrustPulse = () => {
 
         {/* Alerts */}
         <TabsContent value="alerts" className="space-y-2 mt-4">
-          {([] as typeof DEMO_ALERTS).map((a, i) => (
+          {([] as any[]).map((a, i) => (
             <div key={i} className={`rounded-xl border p-4 ${a.severity === "critical" ? "border-destructive/30 bg-destructive/5" : a.severity === "positive" ? "border-[hsl(var(--trust-safe))]/30 bg-[hsl(var(--trust-safe))]/5" : "border-border/40 bg-card"}`}>
               <div className="flex items-center justify-between mb-1"><span className="text-sm font-semibold">{a.client}</span><Badge variant={a.severity === "critical" ? "destructive" : a.severity === "positive" ? "default" : "outline"}>{a.severity}</Badge></div>
               <p className="text-xs text-muted-foreground mb-2">{a.msg}</p>

@@ -10,13 +10,13 @@ import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 export default function FeatureRealityDetail() {
   const { data: classifications = [] } = useRealityClassifications();
-  const { data: mockReplacements = [] } = useMockReplacements();
+  const { data: replacements = [] } = useMockReplacements();
   const [selectedId, setSelectedId] = useState<string>("");
 
   const feature = useMemo(() => classifications.find(c => c.id === selectedId), [classifications, selectedId]);
   const relatedMocks = useMemo(() =>
-    feature ? mockReplacements.filter(m => m.page_path === feature.route_path || m.feature_name === feature.feature_name) : [],
-  [feature, mockReplacements]);
+    feature ? replacements.filter(m => m.page_path === feature.route_path || m.feature_name === feature.feature_name) : [],
+  [feature, replacements]);
 
   const nextTransition = useMemo(() => {
     if (!feature) return null;

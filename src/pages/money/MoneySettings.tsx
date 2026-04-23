@@ -11,7 +11,7 @@ import { toast } from "sonner";
 import { AdvisorKnowledgePanel } from "@/components/advisors/AdvisorKnowledgePanel";
 
 // Production fallback — seed data removed
-const DEMO_CONNECTORS: any[] = [];
+const CONNECTORS: any[] = [];
 
 const iconMap: Record<string, typeof Shield> = {
   Shield, Bell, DollarSign, PiggyBank, CreditCard, Zap, AlertTriangle, Settings,
@@ -79,7 +79,7 @@ const MoneySettings = () => {
         <div className="space-y-6">
           <div className="space-y-3">
             <h3 className={SITA_TYPE.microLabel + " text-[hsl(0_0%_50%)] uppercase tracking-wider"}>Connected Services</h3>
-            {([] as typeof DEMO_CONNECTORS).map((c, i) => (
+            {([] as any[]).map((c, i) => (
               <StatusCard
                 key={i}
                 label={c.name}

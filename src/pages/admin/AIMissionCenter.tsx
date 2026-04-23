@@ -9,7 +9,7 @@ import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 // Production fallback — seed data removed
-const DEMO_MISSIONS: any[] = [];
+const MISSIONS: any[] = [];
 
 const statusConfig: Record<string, { label: string; color: string; icon: typeof Clock }> = {
   suggested: { label: "Suggested", color: "text-muted-foreground", icon: Sparkles },
@@ -29,7 +29,7 @@ const taskStatusIcon = (status: string) =>
   <div className="h-3 w-3 rounded-full border border-border" />;
 
 const AIMissionCenter = () => {
-  const { data: missions, isDemo } = useAIEngDomain("missions", DEMO_MISSIONS);
+  const { data: missions, isDemo } = useAIEngDomain("missions", MISSIONS);
   const [tab, setTab] = useState("all");
   const [expanded, setExpanded] = useState<number | null>(1);
   const filtered = tab === "all" ? missions : missions.filter((m: any) => m.status === tab);

@@ -3,7 +3,6 @@ import { motion } from "framer-motion";
 import { ShieldAlert, Brain, AlertTriangle, Check, Clock, Eye, TrendingUp, Zap, MessageSquare } from "lucide-react";
 import { useBehavioralSignals, useInvestmentConstitution } from "@/hooks/use-investment-memory";
 import { assessBehavioralFirewall } from "@/lib/services/finance-os/investment-memory.service";
-import { DEMO_BEHAVIORAL_SIGNALS } from "@/data/seed/investment";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 const FIREWALL_STATUS = {
   overallHealth: 85,
@@ -18,7 +17,7 @@ export default function BehavioralFirewall() {
   const { data: constitution } = useInvestmentConstitution();
   const firewallState = assessBehavioralFirewall(liveBehavioralSignals ?? [], constitution);
   const [filter, setFilter] = useState<string>("all");
-  const filtered = ([] as typeof DEMO_BEHAVIORAL_SIGNALS).filter(s => filter === "all" || s.type === filter);
+  const filtered = ([] as any[]).filter(s => filter === "all" || s.type === filter);
 
   return (
     <div className="mx-auto max-w-5xl space-y-6">

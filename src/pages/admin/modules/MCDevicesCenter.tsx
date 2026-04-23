@@ -13,7 +13,7 @@ import { useAuth } from "@/contexts/AuthContext";
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.3 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.04 } } };
 
-const DEMO_DEVICES = [
+const DEVICES = [
   { id: "d1", name: "MacBook Pro 16″", platform: "macOS", version: "14.3", trust: "verified", status: "online", syncCapable: true, meshCapable: true, lastSeen: "Now", icon: Laptop },
   { id: "d2", name: "iPhone 15 Pro", platform: "iOS", version: "17.4", trust: "verified", status: "online", syncCapable: true, meshCapable: true, lastSeen: "Now", icon: Smartphone },
   { id: "d3", name: "iPad Air M2", platform: "iPadOS", version: "17.4", trust: "verified", status: "online", syncCapable: true, meshCapable: false, lastSeen: "2m ago", icon: Tablet },
@@ -47,7 +47,7 @@ const MCDevicesCenter = () => {
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState<string>("all");
 
-  const filtered = ([] as typeof DEMO_DEVICES).filter(d => {
+  const filtered = ([] as any[]).filter(d => {
     if (filter !== "all" && d.trust !== filter) return false;
     if (search && !d.name.toLowerCase().includes(search.toLowerCase()) && !d.platform.toLowerCase().includes(search.toLowerCase())) return false;
     return true;
@@ -91,9 +91,9 @@ const MCDevicesCenter = () => {
         {/* Trust Summary */}
         <motion.div variants={fadeUp} className="grid grid-cols-3 gap-3">
           {[
-            { label: "Verified", count: ([] as typeof DEMO_DEVICES).filter(d => d.trust === "verified").length, total: ([] as typeof DEMO_DEVICES).length, color: "text-emerald-400" },
-            { label: "Pending Review", count: ([] as typeof DEMO_DEVICES).filter(d => d.trust === "pending").length, total: ([] as typeof DEMO_DEVICES).length, color: "text-amber-400" },
-            { label: "Revoked", count: ([] as typeof DEMO_DEVICES).filter(d => d.trust === "revoked").length, total: ([] as typeof DEMO_DEVICES).length, color: "text-red-400" },
+            { label: "Verified", count: ([] as any[]).filter(d => d.trust === "verified").length, total: ([] as any[]).length, color: "text-emerald-400" },
+            { label: "Pending Review", count: ([] as any[]).filter(d => d.trust === "pending").length, total: ([] as any[]).length, color: "text-amber-400" },
+            { label: "Revoked", count: ([] as any[]).filter(d => d.trust === "revoked").length, total: ([] as any[]).length, color: "text-red-400" },
           ].map(s => (
             <Card key={s.label} className="hover:-translate-y-0.5 transition-transform">
               <CardContent className="p-4">

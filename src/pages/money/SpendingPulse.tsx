@@ -28,7 +28,7 @@ interface SpendingCategory {
   flagReason?: string;
 }
 
-const DEMO_CATEGORIES: SpendingCategory[] = [
+const CATEGORIES: SpendingCategory[] = [
   { id: "sc1", name: "Groceries", icon: ShoppingCart, thisWeek: 287, lastWeek: 245, average: 260, transactions: 4, flagged: false },
   { id: "sc2", name: "Dining", icon: Utensils, thisWeek: 182, lastWeek: 95, average: 110, transactions: 6, flagged: true, flagReason: "65% above 90-day average" },
   { id: "sc3", name: "Transport", icon: Car, thisWeek: 68, lastWeek: 72, average: 70, transactions: 3, flagged: false },
@@ -37,7 +37,7 @@ const DEMO_CATEGORIES: SpendingCategory[] = [
   { id: "sc6", name: "Health", icon: Heart, thisWeek: 120, lastWeek: 0, average: 30, transactions: 1, flagged: true, flagReason: "Unusual one-time charge — pharmacy $120" },
 ];
 
-const DEMO_RECURRING = [
+const RECURRING = [
   { id: "rc1", name: "Cloud storage plan", previousAmount: 9.99, newAmount: 12.99, changeType: "increase" as const },
   { id: "rc2", name: "New streaming service", previousAmount: 0, newAmount: 7.99, changeType: "new" as const },
   { id: "rc3", name: "Gym membership", previousAmount: 49, newAmount: 39, changeType: "decrease" as const },
@@ -45,14 +45,14 @@ const DEMO_RECURRING = [
 
 const SpendingPulse = () => {
   const [selectedId, setSelectedId] = useState<string | null>(null);
-  const flaggedCount = ([] as typeof DEMO_CATEGORIES).filter(c => c.flagged).length;
+  const flaggedCount = ([] as any[]).filter(c => c.flagged).length;
   const pulseState: PulseState = flaggedCount >= 3 ? "attention" : flaggedCount > 0 ? "review-needed" : "all-normal";
 
-  const totalThisWeek = useMemo(() => ([] as typeof DEMO_CATEGORIES).reduce((sum, c) => sum + c.thisWeek, 0), []);
-  const totalLastWeek = useMemo(() => ([] as typeof DEMO_CATEGORIES).reduce((sum, c) => sum + c.lastWeek, 0), []);
+  const totalThisWeek = useMemo(() => ([] as any[]).reduce((sum, c) => sum + c.thisWeek, 0), []);
+  const totalLastWeek = useMemo(() => ([] as any[]).reduce((sum, c) => sum + c.lastWeek, 0), []);
   const weekChange = totalLastWeek > 0 ? ((totalThisWeek - totalLastWeek) / totalLastWeek * 100) : 0;
 
-  const selectedCategory = ([] as typeof DEMO_CATEGORIES).find(c => c.id === selectedId) || null;
+  const selectedCategory = ([] as any[]).find(c => c.id === selectedId) || null;
 
   const listPane = (
     <div className="p-3 space-y-3">
@@ -84,7 +84,7 @@ const SpendingPulse = () => {
 
       {/* Category List */}
       <ListReveal>
-        {([] as typeof DEMO_CATEGORIES).map((cat) => {
+        {([] as any[]).map((cat) => {
           const pctChange = cat.average > 0 ? ((cat.thisWeek - cat.average) / cat.average * 100) : 0;
           const CatIcon = cat.icon;
           return (
@@ -130,7 +130,7 @@ const SpendingPulse = () => {
       {/* Recurring Changes */}
       <QueueCard
         title="RECURRING CHANGES"
-        items={([] as typeof DEMO_RECURRING).map(c => ({
+        items={([] as any[]).map(c => ({
           id: c.id,
           label: c.name,
           meta: c.changeType === "new" ? `New: $${c.newAmount}/mo` : `$${c.previousAmount} → $${c.newAmount}`,

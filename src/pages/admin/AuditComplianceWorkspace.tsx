@@ -29,7 +29,7 @@ interface AuditRecord {
   newValue?: string;
 }
 
-const DEMO_AUDIT_RECORDS: AuditRecord[] = [
+const AUDIT_RECORDS: AuditRecord[] = [
   { id: "aud-1", timestamp: "2026-04-09T08:30:00Z", actor: "admin@sita.os", actorType: "user", action: "Updated trust threshold", category: "trust", domain: "Trust Center", severity: "warning", proofHash: "a3f8c2d1", mutationTarget: "trust_profile.finance_threshold", previousValue: "70", newValue: "85" },
   { id: "aud-2", timestamp: "2026-04-09T07:15:00Z", actor: "brain-core", actorType: "system", action: "Executed scheduled workflow", category: "system", domain: "Workflows", severity: "info", proofHash: "b7e2f4a9" },
   { id: "aud-3", timestamp: "2026-04-09T06:00:00Z", actor: "ota-agent", actorType: "system", action: "Applied OTA update v2.8.1", category: "system", domain: "Platform", severity: "info", proofHash: "c1d4e8b3" },
@@ -61,7 +61,7 @@ export default function AuditComplianceWorkspace() {
   const [searchQuery, setSearchQuery] = useState("");
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
-  const filtered = ([] as typeof DEMO_AUDIT_RECORDS).filter(r => {
+  const filtered = ([] as any[]).filter(r => {
     if (category !== "all" && r.category !== category) return false;
     if (searchQuery && !r.action.toLowerCase().includes(searchQuery.toLowerCase()) && !r.actor.toLowerCase().includes(searchQuery.toLowerCase())) return false;
     return true;
@@ -111,10 +111,10 @@ export default function AuditComplianceWorkspace() {
       {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {[
-          { label: "Total Records", value: ([] as typeof DEMO_AUDIT_RECORDS).length, color: "text-foreground" },
-          { label: "With Proof", value: ([] as typeof DEMO_AUDIT_RECORDS).filter(r => r.proofHash).length, color: "text-[hsl(var(--trust-safe))]" },
-          { label: "Warnings", value: ([] as typeof DEMO_AUDIT_RECORDS).filter(r => r.severity === "warning").length, color: "text-[hsl(var(--sita-gold))]" },
-          { label: "Critical", value: ([] as typeof DEMO_AUDIT_RECORDS).filter(r => r.severity === "critical").length, color: "text-destructive" },
+          { label: "Total Records", value: ([] as any[]).length, color: "text-foreground" },
+          { label: "With Proof", value: ([] as any[]).filter(r => r.proofHash).length, color: "text-[hsl(var(--trust-safe))]" },
+          { label: "Warnings", value: ([] as any[]).filter(r => r.severity === "warning").length, color: "text-[hsl(var(--sita-gold))]" },
+          { label: "Critical", value: ([] as any[]).filter(r => r.severity === "critical").length, color: "text-destructive" },
         ].map(stat => (
           <Card key={stat.label}>
             <CardContent className="p-4 text-center">

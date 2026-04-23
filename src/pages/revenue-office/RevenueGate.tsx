@@ -8,7 +8,6 @@ import { Progress } from "@/components/ui/progress";
 import { useNavigate } from "react-router-dom";
 import { useDeals } from "@/hooks/use-revenue-office";
 import { Skeleton } from "@/components/ui/skeleton";
-import { DEMO_QUICK_ACTIONS } from "@/data/seed/revenue-office";
 import { useState } from "react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { PageShell } from "@/components/sita/PageShell";
@@ -98,7 +97,7 @@ export default function RevenueGate() {
         <Card className="bg-card/50 border-border/50">
           <CardHeader className="pb-3"><CardTitle className="text-sm font-medium text-muted-foreground">Quick Navigation</CardTitle></CardHeader>
           <CardContent className="space-y-2">
-            {([] as typeof DEMO_QUICK_ACTIONS).map(a => (
+            {([] as any[]).map(a => (
               <Button key={a.label} variant="ghost" className="w-full justify-between text-foreground hover:bg-accent/50" onClick={() => navigate(a.path)}>
                 <span className="flex items-center gap-2"><a.icon className="w-4 h-4 text-primary" />{a.label}</span>
                 <ArrowRight className="w-3 h-3 text-muted-foreground" />

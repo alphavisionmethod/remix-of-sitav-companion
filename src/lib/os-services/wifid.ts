@@ -97,7 +97,7 @@ const DEFAULT_NETWORK_SETTINGS: PerNetworkSettings = {
   useDhcp: true, isMetered: false, customDns: false, autoConnect: true,
 };
 
-const MOCK_NETWORKS: WifiNetwork[] = [
+const NETWORKS: WifiNetwork[] = [
   { ssid: "SITA-Secure-5G", bssid: "AA:BB:CC:DD:EE:01", signal: -35, rssiPercent: 95, security: "wpa3_personal", band: "5ghz", channel: 36, connected: true, saved: true, hidden: false, perNetworkSettings: { ...DEFAULT_NETWORK_SETTINGS }, authFailureCount: 0 },
   { ssid: "SITA-Guest", bssid: "AA:BB:CC:DD:EE:02", signal: -55, rssiPercent: 75, security: "open", band: "2.4ghz", channel: 6, connected: false, saved: true, hidden: false, perNetworkSettings: { ...DEFAULT_NETWORK_SETTINGS, isMetered: true }, authFailureCount: 0 },
   { ssid: "Office-Enterprise", bssid: "AA:BB:CC:DD:EE:03", signal: -45, rssiPercent: 85, security: "wpa2_enterprise", band: "5ghz", channel: 44, connected: false, saved: true, hidden: false, enterpriseAuth: { username: "user@corp.com", validated: true }, perNetworkSettings: { ...DEFAULT_NETWORK_SETTINGS }, authFailureCount: 0 },
@@ -114,9 +114,9 @@ export class WifiDaemon {
     this.state = {
       enabled: true,
       connectivity: "online",
-      currentNetwork: MOCK_NETWORKS[0],
-      availableNetworks: [...MOCK_NETWORKS],
-      savedNetworks: MOCK_NETWORKS.filter(n => n.saved),
+      currentNetwork: NETWORKS[0],
+      availableNetworks: [...NETWORKS],
+      savedNetworks: NETWORKS.filter(n => n.saved),
       captivePortal: { detected: false, loginUrl: "", detectedAt: 0, userDismissed: false, retryCount: 0 },
       hotspot: { enabled: false, ssid: "SITA-Hotspot", password: "secure2024", band: "5ghz", security: "wpa3", maxClients: 8, connectedClients: [], dataUsedMb: 0, dataLimitMb: null },
       airplaneMode: false,

@@ -43,7 +43,7 @@ const scopeColors: Record<MemoryScope, string> = {
   "ai-gateway": "bg-rose-500/10 text-rose-500 border-rose-500/20",
 };
 
-const DEMO_EVENTS: MemoryEvent[] = [
+const EVENTS: MemoryEvent[] = [
   { id: "me1", domain: "business", type: "action", description: "Invoice #4821 sent to client Acme Corp", actor: "autopilot", timestamp: "2026-04-10T09:30:00Z", linkedEntities: ["Acme Corp", "Invoice #4821"], privacyTier: "internal" },
   { id: "me2", domain: "finance", type: "state-change", description: "Cash reserve threshold crossed — $12,400 available", actor: "system", timestamp: "2026-04-10T09:28:00Z", linkedEntities: ["Cash Reserve"], privacyTier: "sensitive" },
   { id: "me3", domain: "concierge", type: "action", description: "Booking confirmed: Dr. Miller appointment at 3 PM", actor: "concierge-agent", timestamp: "2026-04-10T09:25:00Z", linkedEntities: ["Dr. Miller", "Calendar"], privacyTier: "internal" },
@@ -56,7 +56,7 @@ const DEMO_EVENTS: MemoryEvent[] = [
   { id: "me10", domain: "admin", type: "state-change", description: "Connector Google Calendar entered degraded mode — sync stale >10m", actor: "health-monitor", timestamp: "2026-04-10T08:50:00Z", linkedEntities: ["Google Calendar Connector"], privacyTier: "internal" },
 ];
 
-const DEMO_SCOPES: MemoryScopeInfo[] = [
+const SCOPES: MemoryScopeInfo[] = [
   { scope: "business", label: "Business OS", totalEvents: 1847, lastActivity: "2026-04-10T09:30:00Z", crossLinks: 42, healthStatus: "healthy" },
   { scope: "finance", label: "Finance OS", totalEvents: 1203, lastActivity: "2026-04-10T09:28:00Z", crossLinks: 31, healthStatus: "healthy" },
   { scope: "concierge", label: "Concierge OS", totalEvents: 892, lastActivity: "2026-04-10T09:25:00Z", crossLinks: 18, healthStatus: "stale" },
@@ -80,8 +80,8 @@ const CrossDomainMemoryExplorer = () => {
   const [search, setSearch] = useState("");
 
   const filteredEvents = search
-    ? ([] as typeof DEMO_EVENTS).filter(e => e.description.toLowerCase().includes(search.toLowerCase()) || e.domain.includes(search.toLowerCase()))
-    : DEMO_EVENTS;
+    ? ([] as any[]).filter(e => e.description.toLowerCase().includes(search.toLowerCase()) || e.domain.includes(search.toLowerCase()))
+    : EVENTS;
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
@@ -97,10 +97,10 @@ const CrossDomainMemoryExplorer = () => {
 
       <motion.div variants={stagger} initial="hidden" animate="show" className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {[
-          { label: "Total Memory Events", value: ([] as typeof DEMO_SCOPES).reduce((s, d) => s + d.totalEvents, 0).toLocaleString(), color: "text-foreground" },
-          { label: "Active Domains", value: `${([] as typeof DEMO_SCOPES).length}`, color: "text-primary" },
-          { label: "Cross-Links", value: ([] as typeof DEMO_SCOPES).reduce((s, d) => s + d.crossLinks, 0).toString(), color: "text-blue-500" },
-          { label: "Health Issues", value: String(([] as typeof DEMO_SCOPES).filter(s => s.healthStatus !== "healthy").length), color: "text-amber-500" },
+          { label: "Total Memory Events", value: ([] as any[]).reduce((s, d) => s + d.totalEvents, 0).toLocaleString(), color: "text-foreground" },
+          { label: "Active Domains", value: `${([] as any[]).length}`, color: "text-primary" },
+          { label: "Cross-Links", value: ([] as any[]).reduce((s, d) => s + d.crossLinks, 0).toString(), color: "text-blue-500" },
+          { label: "Health Issues", value: String(([] as any[]).filter(s => s.healthStatus !== "healthy").length), color: "text-amber-500" },
         ].map(m => (
           <motion.div key={m.label} variants={fadeUp}>
             <Card className="hover:-translate-y-0.5 transition-transform">
@@ -155,7 +155,7 @@ const CrossDomainMemoryExplorer = () => {
         </TabsContent>
 
         <TabsContent value="scopes" className="mt-4 space-y-3">
-          {([] as typeof DEMO_SCOPES).map(scope => (
+          {([] as any[]).map(scope => (
             <Card key={scope.scope} className="hover:bg-muted/20 transition-colors">
               <CardContent className="p-4">
                 <div className="flex items-center justify-between mb-2">
@@ -179,7 +179,7 @@ const CrossDomainMemoryExplorer = () => {
           <Card>
             <CardHeader className="pb-3"><CardTitle className="text-sm font-semibold flex items-center gap-2"><Link2 className="h-4 w-4 text-primary" /> Cross-Domain Context Links</CardTitle></CardHeader>
             <CardContent className="space-y-2">
-              {([] as typeof DEMO_EVENTS).filter(e => e.linkedEntities.length > 1).map(event => (
+              {([] as any[]).filter(e => e.linkedEntities.length > 1).map(event => (
                 <div key={event.id} className="p-3 rounded-lg border hover:bg-muted/20 transition-colors">
                   <div className="flex items-center gap-2 mb-1">
                     <Badge variant="outline" className={`text-[9px] ${scopeColors[event.domain]}`}>{event.domain}</Badge>

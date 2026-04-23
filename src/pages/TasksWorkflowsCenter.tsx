@@ -49,7 +49,7 @@ interface DemoTask {
   updatedAt: string;
 }
 
-const DEMO_TASKS: DemoTask[] = [
+const INITIAL_TASKS: DemoTask[] = [
   { id: "t1", title: "Review Q2 budget proposal", description: "Finance team submitted updated budget with 12% increase", status: "todo", priority: "high", domain: "finance", dueDate: "2026-04-10", createdAt: "2026-04-07T10:00:00Z", updatedAt: "2026-04-07T10:00:00Z" },
   { id: "t2", title: "Follow up with Apex Corp lead", description: "Last contact 5 days ago — needs reply", status: "in-progress", priority: "high", domain: "business", assignee: "You", dueDate: "2026-04-09", createdAt: "2026-04-04T09:00:00Z", updatedAt: "2026-04-08T14:00:00Z" },
   { id: "t3", title: "Schedule plumber for kitchen leak", description: "Kitchen faucet dripping since Tuesday", status: "waiting", priority: "medium", domain: "household", waitingOn: "Plumber callback", createdAt: "2026-04-06T08:00:00Z", updatedAt: "2026-04-07T16:00:00Z" },

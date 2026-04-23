@@ -43,7 +43,7 @@ const STATUS_STYLES: Record<string, string> = {
 };
 
 // Demo data showing a realistic command lifecycle
-const DEMO_TIMELINE: TimelineEvent[] = [
+const TIMELINE: TimelineEvent[] = [
   { id: "1", timestamp: "12:01 PM", type: "command", title: "Founder requested sync reliability improvement", description: '"Improve sync reliability across all devices"', status: "completed" },
   { id: "2", timestamp: "12:02 PM", type: "plan", title: "AI created execution plan", description: "6 tasks identified across sync-service, storage-service, and mobile sync core", status: "completed" },
   { id: "3", timestamp: "12:03 PM", type: "task_start", title: "Analyzing sync failure rates by platform", status: "completed", metadata: { duration: "45s", findings: "3 patterns" } },
@@ -62,7 +62,7 @@ interface ExecutionTimelineProps {
   maxVisible?: number;
 }
 
-export function ExecutionTimeline({ events = DEMO_TIMELINE, compact = false, maxVisible }: ExecutionTimelineProps) {
+export function ExecutionTimeline({ events = TIMELINE, compact = false, maxVisible }: ExecutionTimelineProps) {
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [showAll, setShowAll] = useState(false);
 

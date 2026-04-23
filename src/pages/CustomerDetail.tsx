@@ -9,11 +9,10 @@ import {
   ArrowLeft, Phone, Mail, Clock, MapPin, Globe, Building, DollarSign, FileText, CheckCircle,
   AlertTriangle, Briefcase, MessageSquare, Calendar, Receipt, BarChart3, Sparkles, Star, TrendingUp, TrendingDown, Shield
 } from "lucide-react";
-import { DEMO_ACTIONS, DEMO_CUSTOMERS_DATA, DEMO_DOCUMENTS } from "@/data/seed/core-pages";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 // Production fallback — seed data removed
-const DEMO_TIMELINE: any[] = [];
+const TIMELINE_ITEMS: any[] = [];
 
 // Mock customer data keyed by ID
 const CustomerDetail = ({
@@ -23,7 +22,7 @@ const CustomerDetail = ({
   const { navigateTo } = useBusinessNavigation();
   const navigate = useNavigate();
   const [tab, setTab] = useState("overview");
-  const customer = DEMO_CUSTOMERS_DATA[id || "marcus-johnson"] || DEMO_CUSTOMERS_DATA["marcus-johnson"];
+  const customer = CUSTOMERS_DATA[id || "marcus-johnson"] || CUSTOMERS_DATA["marcus-johnson"];
 
   const healthColor = customer.health >= 80 ? "text-trust-verified" : customer.health >= 50 ? "text-trust-review" : "text-urgency-high";
   const healthBg = customer.health >= 80 ? "bg-trust-verified" : customer.health >= 50 ? "bg-trust-review" : "bg-urgency-high";
@@ -102,8 +101,8 @@ const CustomerDetail = ({
           <div className="lg:col-span-3 space-y-6">
             {/* Action Queue */}
             <div className="space-y-3">
-              <SitaSectionHeader title="Action Queue" subtitle={`${([] as typeof DEMO_ACTIONS).length} items pending`} />
-              {([] as typeof DEMO_ACTIONS).map((a, i) => (
+              <SitaSectionHeader title="Action Queue" subtitle={`${([] as any[]).length} items pending`} />
+              {([] as any[]).map((a, i) => (
                 <SitaCard key={i} lane="action" className="p-4 pl-5">
                   <div className="flex items-start justify-between gap-3">
                     <div className="flex-1">
@@ -126,7 +125,7 @@ const CustomerDetail = ({
             <div className="space-y-3">
               <SitaSectionHeader title="Recent Activity" action={<button onClick={() => setTab("timeline")} className="text-xs text-primary hover:underline">View all</button>} />
               <SitaCard hover={false} className="p-4">
-                {([] as typeof DEMO_TIMELINE).slice(0, 4).map((t, i) => (
+                {([] as any[]).slice(0, 4).map((t, i) => (
                   <TimelineItem key={i} {...t} />
                 ))}
               </SitaCard>
@@ -178,7 +177,7 @@ const CustomerDetail = ({
         <SitaCard hover={false} className="p-5">
           <SitaCardTitle sub="Complete relationship history">Full Timeline</SitaCardTitle>
           <div className="mt-4">
-            {([] as typeof DEMO_TIMELINE).map((t, i) => <TimelineItem key={i} {...t} />)}
+            {([] as any[]).map((t, i) => <TimelineItem key={i} {...t} />)}
           </div>
         </SitaCard>
       )}
@@ -221,7 +220,7 @@ const CustomerDetail = ({
       {tab === "documents" && (
         <div className="space-y-3">
           <SitaSectionHeader title="Customer Documents" subtitle="All files linked to this customer" />
-          {([] as typeof DEMO_DOCUMENTS).map((doc, i) => (
+          {([] as any[]).map((doc, i) => (
             <SitaCard key={i} className="p-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">

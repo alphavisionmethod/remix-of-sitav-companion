@@ -18,15 +18,14 @@ import {
   detectLeakage, suggestRecoveryActions, rankOpportunities, computeRecoveredValueSummary,
   computeAutopilotSummary, type LeakageItem, type RecoveredValueEntry, type RankedOpportunity
 } from "@/lib/domain-engines/revenue-autopilot";
-import { MOCK_RECOVERED_VALUES, MOCK_RAW_OPPORTUNITIES, MOCK_LEAKAGE_INPUT } from "@/data/fixtures/mock-data/revenue-autopilot";
 import { useRevenueLeaksData, useRecoveredValuesData, useRawOpportunities } from "@/hooks/use-business-data";
 
 // ── Derived data (fallback to mock, overridden in component) ──
-let DEMO_LEAKAGE = detectLeakage(MOCK_LEAKAGE_INPUT);
-let DEMO_RECOVERY_ACTIONS = suggestRecoveryActions(DEMO_LEAKAGE);
-let DEMO_RECOVERED = MOCK_RECOVERED_VALUES;
-let DEMO_OPPORTUNITIES = rankOpportunities(MOCK_RAW_OPPORTUNITIES);
-let SUMMARY = computeAutopilotSummary(DEMO_LEAKAGE, DEMO_RECOVERY_ACTIONS, DEMO_RECOVERED);
+let LEAKAGE = detectLeakage(LEAKAGE_INPUT);
+let RECOVERY_ACTIONS = suggestRecoveryActions(LEAKAGE);
+let RECOVERED = RECOVERED_VALUES;
+let OPPORTUNITIES = rankOpportunities(RAW_OPPORTUNITIES);
+let SUMMARY = computeAutopilotSummary(LEAKAGE, RECOVERY_ACTIONS, RECOVERED);
 
 // ── Severity Colors ─────────────────────────────────────────────
 
@@ -44,12 +43,12 @@ const LeakageRadar = () => {
   <div className="space-y-4">
     <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
       <KPITile label="Total Leakage Detected" value={`$${Math.round(SUMMARY.totalLeakageDetected).toLocaleString()}`} sub="Across all sources" trend="down" />
-      <KPITile label="Recoverable" value={`$${Math.round(SUMMARY.totalRecoverable).toLocaleString()}`} sub={`${([] as typeof DEMO_LEAKAGE).filter(l => l.recoverable).length} items`} />
-      <KPITile label="Critical Items" value={String(([] as typeof DEMO_LEAKAGE).filter(l => l.severity === "critical").length)} sub="Need immediate action" trend="down" />
+      <KPITile label="Recoverable" value={`$${Math.round(SUMMARY.totalRecoverable).toLocaleString()}`} sub={`${([] as any[]).filter(l => l.recoverable).length} items`} />
+      <KPITile label="Critical Items" value={String(([] as any[]).filter(l => l.severity === "critical").length)} sub="Need immediate action" trend="down" />
       <KPITile label="Health Score" value={`${SUMMARY.healthScore}/100`} sub="Revenue health" trend="up" />
     </div>
     <div className="space-y-2">
-      {([] as typeof DEMO_LEAKAGE).map((item, i) => (
+      {([] as any[]).map((item, i) => (
         <motion.div key={item.id} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.03 }}>
           <SitaCard className="p-4" hover>
             <div className="flex items-center gap-4">
@@ -85,11 +84,11 @@ const RecoveryEngine = () => {
   <div className="space-y-4">
     <div className="grid gap-3 sm:grid-cols-3">
       <KPITile label="Active Recoveries" value={String(SUMMARY.activeRecoveryActions)} sub="In progress" />
-      <KPITile label="Suggested Actions" value={String(([] as typeof DEMO_RECOVERY_ACTIONS).length)} sub="Ready to launch" />
-      <KPITile label="Approval Required" value={String(([] as typeof DEMO_RECOVERY_ACTIONS).filter(r => r.approvalRequired).length)} sub="Need your OK" />
+      <KPITile label="Suggested Actions" value={String(([] as any[]).length)} sub="Ready to launch" />
+      <KPITile label="Approval Required" value={String(([] as any[]).filter(r => r.approvalRequired).length)} sub="Need your OK" />
     </div>
     <div className="space-y-2">
-      {([] as typeof DEMO_RECOVERY_ACTIONS).map((action, i) => (
+      {([] as any[]).map((action, i) => (
         <motion.div key={action.id} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.03 }}>
           <SitaCard className="p-4" hover>
             <div className="flex items-center gap-4">
@@ -124,7 +123,7 @@ const OpportunitiesRanked = () => {
   return (
   <div className="space-y-4">
     <div className="space-y-2">
-      {([] as typeof DEMO_OPPORTUNITIES).map((opp, i) => (
+      {([] as any[]).map((opp, i) => (
         <motion.div key={opp.id} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.03 }}>
           <SitaCard className="p-4" hover>
             <div className="flex items-center gap-4">
@@ -154,7 +153,7 @@ const OpportunitiesRanked = () => {
 };
 
 const RecoveredValueLedger = () => {
-  const summary = computeRecoveredValueSummary(DEMO_RECOVERED);
+  const summary = computeRecoveredValueSummary(RECOVERED);
   return (
     <div className="space-y-4">
       <div className="grid gap-3 sm:grid-cols-3">
@@ -163,7 +162,7 @@ const RecoveredValueLedger = () => {
         <KPITile label="Categories" value={String(Object.keys(summary.byCategory).length)} sub="Active recovery types" />
       </div>
       <div className="space-y-2">
-        {([] as typeof DEMO_RECOVERED).map((entry, i) => (
+        {([] as any[]).map((entry, i) => (
           <motion.div key={entry.id} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.03 }}>
             <SitaCard className="p-4" hover>
               <div className="flex items-center gap-4">

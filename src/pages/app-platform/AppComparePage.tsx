@@ -9,7 +9,6 @@ import { cn } from "@/lib/utils";
 import { useAppPlatform } from "@/contexts/AppPlatformContext";
 import { AppIcon, VerificationBadge, AppSourceLabel, InstallSheet } from "@/components/sita/app-platform/AppStoreComponents";
 import type { AppDefinition } from "@/domains/apps/types";
-import { DEMO_COMPARE_PAIRS } from "@/data/seed/core-pages";
 import { toast } from "sonner";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 const AppComparePage = () => {
@@ -18,7 +17,7 @@ const AppComparePage = () => {
   const [searchParams] = useSearchParams();
   const [installTarget, setInstallTarget] = useState<AppDefinition | null>(null);
 
-  const ids = searchParams.get("apps")?.split(",") || DEMO_COMPARE_PAIRS[0].ids;
+  const ids = searchParams.get("apps")?.split(",") || COMPARE_PAIRS[0].ids;
   const compareApps = ids.map(id => apps.find(a => a.id === id)).filter(Boolean) as AppDefinition[];
 
   if (compareApps.length < 2) {
@@ -60,7 +59,7 @@ const AppComparePage = () => {
 
       {/* Quick Pairs */}
       <div className="flex gap-2 overflow-x-auto pb-1">
-        {([] as typeof DEMO_COMPARE_PAIRS).map(p => (
+        {([] as any[]).map(p => (
           <button key={p.label} onClick={() => navigate(`/app-store/compare?apps=${p.ids.join(",")}`)}
             className={cn("shrink-0 rounded-lg px-3 py-2 text-xs font-medium transition-all",
               JSON.stringify(ids) === JSON.stringify(p.ids) ? "bg-primary text-primary-foreground" : "bg-secondary text-muted-foreground hover:text-foreground")}>

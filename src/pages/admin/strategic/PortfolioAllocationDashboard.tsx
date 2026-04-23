@@ -5,7 +5,6 @@ import { Progress } from "@/components/ui/progress";
 import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { useComputeSnapshots } from "@/hooks/useIntelligencePersistence";
-import { DEMO_DEFAULT_CATEGORIES } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 const PortfolioAllocationDashboard = () => {
   const { isAdmin, loading: authLoading } = useRequireAdmin();
@@ -17,7 +16,7 @@ const PortfolioAllocationDashboard = () => {
   const modelMix = (latest?.model_mix as Record<string, number>) || {};
   const totalSpent = latest?.used_cents ?? 0;
 
-  const cats = ([] as typeof DEMO_DEFAULT_CATEGORIES).map(c => {
+  const cats = ([] as any[]).map(c => {
     const actual = modelMix[c.cat] ?? c.target;
     const spent = Math.round(totalSpent * (actual / 100));
     return { ...c, actual, spent };

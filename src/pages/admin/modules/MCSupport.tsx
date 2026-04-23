@@ -34,7 +34,7 @@ const PRIORITY_CFG: Record<CasePriority, { color: string; border: string }> = {
   critical: { color: "text-red-400", border: "border-red-500/20" },
 };
 
-const DEMO_CASES: SupportCase[] = [
+const CASES: SupportCase[] = [
   { id: "SUP-1042", subject: "Workspace not restoring on new device", userEmail: "j***@example.com", status: "investigating", priority: "high", category: "Continuity", createdAt: "2 hours ago", lastActivity: "15 min ago", description: "User reports workspace state not restoring after logging in on a new tablet.", diagnosticSummary: "Device registered. Sync checkpoint exists but state schema version mismatch (v3 vs v4). Migration path available.", suggestedActions: ["Run state schema migration for user", "Verify workspace restore on test device", "Check for similar reports"], syncHealth: "degraded", trustScore: 87 },
   { id: "SUP-1041", subject: "Unable to complete file upload", userEmail: "m***@corp.io", status: "open", priority: "medium", category: "Storage", createdAt: "4 hours ago", lastActivity: "3 hours ago", description: "Large file uploads (>50MB) failing with timeout.", diagnosticSummary: "Upload finalization timing out. Storage service healthy but user on metered connection with high packet loss.", suggestedActions: ["Enable chunked upload fallback", "Check storage finalization queue depth"], syncHealth: "healthy", trustScore: 94 },
   { id: "SUP-1040", subject: "Trust prompt appearing too frequently", userEmail: "a***@startup.co", status: "escalated", priority: "critical", category: "Trust", createdAt: "1 day ago", lastActivity: "30 min ago", description: "User reports being asked to re-verify every session.", diagnosticSummary: "Trust score dropping due to VPN IP rotation. Device fingerprint stable. False positive confirmed.", suggestedActions: ["Add VPN IP range to trusted list", "Review trust threshold for VPN users globally", "Send apology"], syncHealth: "healthy", trustScore: 42 },
@@ -49,14 +49,14 @@ export default function MCSupport() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
   const filtered = useMemo(() => {
-    return ([] as typeof DEMO_CASES).filter(c => {
+    return ([] as any[]).filter(c => {
       if (statusFilter !== "all" && c.status !== statusFilter) return false;
       if (search && !c.subject.toLowerCase().includes(search.toLowerCase()) && !c.id.toLowerCase().includes(search.toLowerCase())) return false;
       return true;
     });
   }, [statusFilter, search]);
 
-  const selected = ([] as typeof DEMO_CASES).find(c => c.id === selectedId);
+  const selected = ([] as any[]).find(c => c.id === selectedId);
 
   return (
     <div className="p-6 space-y-6 max-w-7xl mx-auto">
@@ -67,10 +67,10 @@ export default function MCSupport() {
 
       <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
         {[
-          { label: "Open Cases", value: ([] as typeof DEMO_CASES).filter(c => c.status === "open" || c.status === "investigating").length, icon: MessageSquare, color: "text-blue-400" },
-          { label: "Escalated", value: ([] as typeof DEMO_CASES).filter(c => c.status === "escalated").length, icon: ArrowUp, color: "text-red-400" },
-          { label: "Waiting", value: ([] as typeof DEMO_CASES).filter(c => c.status === "waiting").length, icon: Clock, color: "text-muted-foreground" },
-          { label: "Resolved Today", value: ([] as typeof DEMO_CASES).filter(c => c.status === "resolved").length, icon: CheckCircle, color: "text-emerald-400" },
+          { label: "Open Cases", value: ([] as any[]).filter(c => c.status === "open" || c.status === "investigating").length, icon: MessageSquare, color: "text-blue-400" },
+          { label: "Escalated", value: ([] as any[]).filter(c => c.status === "escalated").length, icon: ArrowUp, color: "text-red-400" },
+          { label: "Waiting", value: ([] as any[]).filter(c => c.status === "waiting").length, icon: Clock, color: "text-muted-foreground" },
+          { label: "Resolved Today", value: ([] as any[]).filter(c => c.status === "resolved").length, icon: CheckCircle, color: "text-emerald-400" },
           { label: "Avg Resolution", value: "4.2h", icon: Activity, color: "text-cyan-400" },
         ].map(kpi => (
           <div key={kpi.label} className="rounded-xl border border-border/30 bg-white/[0.02] p-3">

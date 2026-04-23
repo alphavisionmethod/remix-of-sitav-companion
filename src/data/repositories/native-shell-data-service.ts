@@ -5,39 +5,33 @@
 
 import { supabase } from "@/integrations/supabase/client";
 const db = supabase as any;
-import {
-  DEMO_PLATFORMS,
-  DEMO_CAPABILITIES,
-  DEMO_NSS_TARGETS,
-} from "@/data/seed/native-shell";
-
 export async function fetchNativeShellPlatforms(isDemoMode: boolean) {
-  if (isDemoMode) return DEMO_PLATFORMS;
+  if (isDemoMode) return PLATFORMS;
   const { data, error } = await db.from("device_families")
     .select("*")
     .eq("active", true)
     .order("family_key");
   if (error) throw error;
-  return data?.length ? data : DEMO_PLATFORMS;
+  return data?.length ? data : PLATFORMS;
 }
 
 export async function fetchCapabilitySurfaceBindings(isDemoMode: boolean) {
-  if (isDemoMode) return DEMO_CAPABILITIES;
+  if (isDemoMode) return CAPABILITIES;
   const { data, error } = await db.from("capability_surface_bindings")
     .select("*")
     .order("capability_key");
   if (error) throw error;
-  return data?.length ? data : DEMO_CAPABILITIES;
+  return data?.length ? data : CAPABILITIES;
 }
 
 export async function fetchNssLaunchReadiness(isDemoMode: boolean) {
-  if (isDemoMode) return DEMO_NSS_TARGETS;
+  if (isDemoMode) return NSS_TARGETS;
   const { data, error } = await db.from("ecosystem_launch_readiness")
     .select("*")
     .like("target", "nss_%")
     .order("last_assessed_at", { ascending: false });
   if (error) throw error;
-  if (!data?.length) return DEMO_NSS_TARGETS;
+  if (!data?.length) return NSS_TARGETS;
   return data.map((r: any) => ({
     target: r.target_name || r.target,
     key: r.target,

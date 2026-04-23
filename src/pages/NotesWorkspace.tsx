@@ -49,7 +49,7 @@ function mapDbNote(row: Record<string, any>): Note {
 }
 
 // ── Demo linked entities ──────────────────────────────────
-const DEMO_LINKED_ENTITIES = [
+const LINKED_ENTITIES = [
   { type: "task", label: "Follow up with Apex Corp", icon: ListTodo, path: "/tasks" },
   { type: "contact", label: "Sarah Chen", icon: Users, path: "/business/customers" },
   { type: "workflow", label: "Invoice Approval Pipeline", icon: Workflow, path: "/workflows" },
@@ -286,7 +286,7 @@ const NotesWorkspace = () => {
                 <CardContent className="p-3">
                   <h4 className="text-xs font-medium text-muted-foreground mb-2 flex items-center gap-1.5"><Link className="w-3 h-3" /> Linked Entities</h4>
                   <div className="space-y-1.5">
-                    {([] as typeof DEMO_LINKED_ENTITIES).map((ent, i) => (
+                    {([] as any[]).map((ent, i) => (
                       <a key={i} href={ent.path} className="flex items-center gap-2 p-2 rounded-lg hover:bg-accent/20 transition-colors text-xs">
                         <ent.icon className="w-3 h-3 text-primary shrink-0" />
                         <span className="truncate text-muted-foreground">{ent.label}</span>

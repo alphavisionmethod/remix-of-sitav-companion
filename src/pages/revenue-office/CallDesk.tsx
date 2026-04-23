@@ -10,7 +10,6 @@ import {
   TrendingUp, ArrowRight, MessageSquare, Brain, Target, DollarSign,
   Star, Mail, Zap, Eye, Shield, BarChart3, RefreshCw
 } from "lucide-react";
-import { DEMO_callAnalytics, DEMO_callQueue, DEMO_callStats, DEMO_recentCalls } from "@/data/seed/revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 const priorityColors: Record<string, string> = { critical: "bg-red-500/10 text-red-400", high: "bg-amber-500/10 text-amber-400", medium: "bg-blue-500/10 text-blue-400", low: "bg-muted text-muted-foreground" };
 
@@ -25,7 +24,7 @@ export default function CallDesk() {
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
-        {([] as typeof DEMO_callStats).map((s) => (
+        {([] as typeof callStats).map((s) => (
           <Card key={s.label} className="bg-card/50 border-border/50">
             <CardContent className="p-3">
               <div className="flex items-center gap-1.5 mb-1"><s.icon className={`h-3.5 w-3.5 ${s.color}`} /><p className="text-[10px] text-muted-foreground">{s.label}</p></div>
@@ -38,13 +37,13 @@ export default function CallDesk() {
 
       <Tabs value={tab} onValueChange={setTab}>
         <TabsList className="bg-card/50">
-          <TabsTrigger value="queue">Call Queue ({([] as typeof DEMO_callQueue).length})</TabsTrigger>
-          <TabsTrigger value="recent">Recent Calls ({([] as typeof DEMO_recentCalls).length})</TabsTrigger>
+          <TabsTrigger value="queue">Call Queue ({([] as typeof callQueue).length})</TabsTrigger>
+          <TabsTrigger value="recent">Recent Calls ({([] as typeof recentCalls).length})</TabsTrigger>
           <TabsTrigger value="analytics">Call Analytics</TabsTrigger>
         </TabsList>
 
         <TabsContent value="queue" className="space-y-3">
-          {([] as typeof DEMO_callQueue).map((c) => (
+          {([] as typeof callQueue).map((c) => (
             <Card key={c.name} className="bg-card/50 border-border/50 hover:border-primary/20 transition-colors">
               <CardContent className="p-4">
                 <div className="flex items-center justify-between mb-3">
@@ -112,7 +111,7 @@ export default function CallDesk() {
         </TabsContent>
 
         <TabsContent value="recent" className="space-y-2">
-          {([] as typeof DEMO_recentCalls).map((c, i) => (
+          {([] as typeof recentCalls).map((c, i) => (
             <Card key={i} className="bg-card/50 border-border/50">
               <CardContent className="p-4 flex items-center justify-between">
                 <div className="flex-1">
@@ -139,7 +138,7 @@ export default function CallDesk() {
         </TabsContent>
 
         <TabsContent value="analytics" className="grid md:grid-cols-2 gap-3">
-          {([] as typeof DEMO_callAnalytics).map((a) => (
+          {([] as typeof callAnalytics).map((a) => (
             <Card key={a.metric} className="bg-card/50 border-border/50">
               <CardContent className="p-4">
                 <p className="text-xs text-muted-foreground">{a.metric}</p>

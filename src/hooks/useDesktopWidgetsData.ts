@@ -16,34 +16,34 @@ const STALE = 30_000; // 30s — matches admin seed acceptance criterion
 
 // ─────────── Demo data shapes (preserved for visual parity) ───────────
 
-const DEMO_WHAT_MATTERS = [
+const WHAT_MATTERS = [
   { id: "business", label: "Business", color: "text-violet-300", count: 4, summary: "3 follow-ups prepared, 1 account needs decision, support pressure elevated." },
   { id: "finance", label: "Finance", color: "text-emerald-300", count: 1, summary: "One payment requires approval. Reserve confidence remains stable." },
   { id: "concierge", label: "Concierge", color: "text-amber-200", count: 2, summary: "Travel prep updated and one recurring household obligation grouped for Friday." },
 ];
 
-const DEMO_BUSINESS_KPI = [
+const BUSINESS_KPI = [
   { label: "Revenue", value: "$84.2K", change: "+12%", up: true },
   { label: "Pipeline", value: "$312K", change: "+8%", up: true },
   { label: "Approvals", value: "3", change: "pending", up: false },
 ];
 
-const DEMO_FINANCE_SNAPSHOT = { totalCents: 2_480_000, fileCount: 47, monthDeltaPct: 5.27 };
+const FINANCE_SNAPSHOT = { totalCents: 2_480_000, fileCount: 47, monthDeltaPct: 5.27 };
 
-const DEMO_CONCIERGE_TASKS = [
+const CONCIERGE_TASKS = [
   { id: "d1", title: "Pick up dry cleaning", dueLabel: "Today 3pm", priority: "high" as const },
   { id: "d2", title: "Schedule vet for Bruno", dueLabel: "Tomorrow", priority: "medium" as const },
   { id: "d3", title: "Renew parking permit", dueLabel: "Apr 18", priority: "low" as const },
 ];
 
-const DEMO_BOARDROOM_BRIEF = {
+const BOARDROOM_BRIEF = {
   nextSessionLabel: "Tomorrow 10 AM",
   topic: "Quarterly strategy review",
   pendingDecisions: 3,
   carryoverItems: 2,
 };
 
-const DEMO_CRM_PIPELINE = {
+const CRM_PIPELINE = {
   totalLabel: "$312K",
   openCount: 14,
   deals: [
@@ -53,13 +53,13 @@ const DEMO_CRM_PIPELINE = {
   ],
 };
 
-const DEMO_LEADS_RECOVERED = [
+const LEADS_RECOVERED = [
   { key: "recovered", label: "Leads Recovered", value: "47" },
   { key: "carts", label: "Carts Recovered", value: "23" },
   { key: "revenue", label: "Revenue Saved", value: "$18.4K" },
 ];
 
-const DEMO_INVESTMENT_PULSE = {
+const INVESTMENT_PULSE = {
   totalLabel: "$142,800",
   changeLabel: "+1.8% today",
   up: true,
@@ -70,33 +70,33 @@ const DEMO_INVESTMENT_PULSE = {
   ],
 };
 
-const DEMO_CALENDAR = [
+const CALENDAR = [
   { id: "c1", time: "9:00 AM", title: "Team standup", domain: "business" },
   { id: "c2", time: "11:30 AM", title: "Financial review", domain: "finance" },
   { id: "c3", time: "2:00 PM", title: "Client call — Acme", domain: "business" },
   { id: "c4", time: "5:00 PM", title: "Dentist (Maya)", domain: "concierge" },
 ];
 
-const DEMO_ADVISORS = [
+const ADVISORS = [
   { advisor_id: "strategy", display_name: "Strategy", domain: "business" as const, confidence: 92 },
   { advisor_id: "finance", display_name: "Finance", domain: "money" as const, confidence: 87 },
   { advisor_id: "concierge", display_name: "Concierge", domain: "concierge" as const, confidence: 95 },
   { advisor_id: "growth", display_name: "Growth", domain: "growth" as const, confidence: 78 },
 ];
 
-const DEMO_NOTIFICATIONS_FEED = [
+const NOTIFICATIONS_FEED = [
   { id: "n1", title: "Collections follow-up overdue", urgency: "high", domain: "finance", created_at: new Date(Date.now() - 12 * 60_000).toISOString() },
   { id: "n2", title: "Insurance renewal due Friday", urgency: "medium", domain: "finance", created_at: new Date(Date.now() - 60 * 60_000).toISOString() },
   { id: "n3", title: "Flight to NYC confirmed", urgency: "low", domain: "concierge", created_at: new Date(Date.now() - 3 * 60 * 60_000).toISOString() },
 ];
 
-const DEMO_BUSINESS_PULSE = [
+const BUSINESS_PULSE = [
   { symbol: "REVENUE", name: "Monthly Revenue", value: "$48.2K", change: "+12.3%", up: true },
   { symbol: "PIPELINE", name: "Active Pipeline", value: "$127K", change: "+8.7%", up: true },
   { symbol: "NET", name: "Net Worth", value: "$2.4M", change: "+0.89%", up: true },
 ];
 
-const DEMO_PORTFOLIO_MAP = [
+const PORTFOLIO_MAP = [
   { name: "Tech", pct: 42, color: "bg-sky-400" },
   { name: "Healthcare", pct: 24, color: "bg-emerald-400" },
   { name: "Finance", pct: 18, color: "bg-violet-400" },
@@ -143,7 +143,7 @@ export function useWhatMattersData() {
       ];
     },
   });
-  const data = isDemoMode ? DEMO_WHAT_MATTERS : (q.data ?? []);
+  const data = isDemoMode ? WHAT_MATTERS : (q.data ?? []);
   return { data, isLoading: !isDemoMode && q.isLoading, isEmpty: !isDemoMode && data.every((d) => d.count === 0) };
 }
 
@@ -169,7 +169,7 @@ export function useBusinessKPIData() {
       ];
     },
   });
-  const data = isDemoMode ? DEMO_BUSINESS_KPI : (q.data ?? []);
+  const data = isDemoMode ? BUSINESS_KPI : (q.data ?? []);
   const isEmpty = !isDemoMode && data.length > 0 && data.every((k) => k.value === "$0" || k.value === "0");
   return { data, isLoading: !isDemoMode && q.isLoading, isEmpty };
 }
@@ -193,7 +193,7 @@ export function useFinanceSnapshotData() {
       return { totalCents, fileCount: files.count ?? 0, monthDeltaPct };
     },
   });
-  const data = isDemoMode ? DEMO_FINANCE_SNAPSHOT : (q.data ?? { totalCents: 0, fileCount: 0, monthDeltaPct: 0 });
+  const data = isDemoMode ? FINANCE_SNAPSHOT : (q.data ?? { totalCents: 0, fileCount: 0, monthDeltaPct: 0 });
   return { data, isLoading: !isDemoMode && q.isLoading, isEmpty: !isDemoMode && data.totalCents === 0 && data.fileCount === 0 };
 }
 
@@ -221,7 +221,7 @@ export function useConciergeTasksData() {
       });
     },
   });
-  const data = isDemoMode ? DEMO_CONCIERGE_TASKS : (q.data ?? []);
+  const data = isDemoMode ? CONCIERGE_TASKS : (q.data ?? []);
   return { data, isLoading: !isDemoMode && q.isLoading, isEmpty: !isDemoMode && data.length === 0 };
 }
 
@@ -247,7 +247,7 @@ export function useBoardroomBriefData() {
       };
     },
   });
-  const data = isDemoMode ? DEMO_BOARDROOM_BRIEF : (q.data ?? { nextSessionLabel: "—", topic: "—", pendingDecisions: 0, carryoverItems: 0 });
+  const data = isDemoMode ? BOARDROOM_BRIEF : (q.data ?? { nextSessionLabel: "—", topic: "—", pendingDecisions: 0, carryoverItems: 0 });
   return { data, isLoading: !isDemoMode && q.isLoading, isEmpty: !isDemoMode && data.pendingDecisions === 0 && data.carryoverItems === 0 };
 }
 
@@ -270,7 +270,7 @@ export function useCRMPipelineData() {
       };
     },
   });
-  const data = isDemoMode ? DEMO_CRM_PIPELINE : (q.data ?? { totalLabel: "$0", openCount: 0, deals: [] });
+  const data = isDemoMode ? CRM_PIPELINE : (q.data ?? { totalLabel: "$0", openCount: 0, deals: [] });
   return { data, isLoading: !isDemoMode && q.isLoading, isEmpty: !isDemoMode && data.openCount === 0 };
 }
 
@@ -294,7 +294,7 @@ export function useLeadsRecoveredData() {
       ];
     },
   });
-  const data = isDemoMode ? DEMO_LEADS_RECOVERED : (q.data ?? []);
+  const data = isDemoMode ? LEADS_RECOVERED : (q.data ?? []);
   return { data, isLoading: !isDemoMode && q.isLoading, isEmpty: !isDemoMode && data.length > 0 && data.every((s) => s.value === "0" || s.value === "$0") };
 }
 
@@ -324,7 +324,7 @@ export function useInvestmentPulseData() {
       };
     },
   });
-  const data = isDemoMode ? DEMO_INVESTMENT_PULSE : (q.data ?? { totalLabel: "$0", changeLabel: "—", up: true, holdings: [] });
+  const data = isDemoMode ? INVESTMENT_PULSE : (q.data ?? { totalLabel: "$0", changeLabel: "—", up: true, holdings: [] });
   return { data, isLoading: !isDemoMode && q.isLoading, isEmpty: !isDemoMode && data.holdings.length === 0 };
 }
 
@@ -346,7 +346,7 @@ export function useCalendarTodayData() {
       }));
     },
   });
-  const data = isDemoMode ? DEMO_CALENDAR : (q.data ?? []);
+  const data = isDemoMode ? CALENDAR : (q.data ?? []);
   return { data, isLoading: !isDemoMode && q.isLoading, isEmpty: !isDemoMode && data.length === 0 };
 }
 
@@ -375,7 +375,7 @@ export function useAdvisorCouncilData() {
       });
     },
   });
-  const data = isDemoMode ? DEMO_ADVISORS : (q.data ?? []);
+  const data = isDemoMode ? ADVISORS : (q.data ?? []);
   return { data, isLoading: !isDemoMode && q.isLoading, isEmpty: !isDemoMode && data.length === 0 };
 }
 
@@ -397,7 +397,7 @@ export function useNotificationsFeedData() {
       }));
     },
   });
-  const data = isDemoMode ? DEMO_NOTIFICATIONS_FEED : (q.data ?? []);
+  const data = isDemoMode ? NOTIFICATIONS_FEED : (q.data ?? []);
   return { data, isLoading: !isDemoMode && q.isLoading, isEmpty: !isDemoMode && data.length === 0, timeAgo };
 }
 
@@ -426,7 +426,7 @@ export function useBusinessPulseData() {
       ];
     },
   });
-  const data = isDemoMode ? DEMO_BUSINESS_PULSE : (q.data ?? []);
+  const data = isDemoMode ? BUSINESS_PULSE : (q.data ?? []);
   const isEmpty = !isDemoMode && data.length > 0 && data.every((s) => s.value === "$0");
   return { data, isLoading: !isDemoMode && q.isLoading, isEmpty };
 }
@@ -454,6 +454,6 @@ export function usePortfolioMapData() {
         .map(([name, cents], i) => ({ name, pct: Math.round((cents / total) * 100), color: palette[i] ?? "bg-white/20" }));
     },
   });
-  const data = isDemoMode ? DEMO_PORTFOLIO_MAP : (q.data ?? []);
+  const data = isDemoMode ? PORTFOLIO_MAP : (q.data ?? []);
   return { data, isLoading: !isDemoMode && q.isLoading, isEmpty: !isDemoMode && data.length === 0 };
 }

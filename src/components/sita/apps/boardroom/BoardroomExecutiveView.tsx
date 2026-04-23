@@ -118,7 +118,7 @@ const TrendIcon = ({ trend }: { trend: "up" | "down" | "flat" }) => {
   return <Minus size={14} className="text-muted-foreground" />;
 };
 
-const mockChain = buildDefaultChain("simulation");
+const chain = buildDefaultChain("simulation");
 
 function MorningBrief({ scope }: { scope: string }) {
   // Generate brief from live synthesis when available
@@ -418,7 +418,7 @@ export function BoardroomExecutiveView({ scope, onNavigate }: Props) {
             </div>
 
             <ConfidenceBar value={active.confidence} label="System Confidence" className="mb-5" />
-            <ExecutionChainTimeline steps={mockChain} compact className="mb-5" />
+            <ExecutionChainTimeline steps={chain} compact className="mb-5" />
 
             <div className="flex items-center gap-2 md:gap-3 flex-wrap">
               <button

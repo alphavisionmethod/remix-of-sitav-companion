@@ -2,12 +2,11 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Ruler, AlertTriangle, Check, Info, Shield, Target } from "lucide-react";
 import { usePortfolioPositions } from "@/hooks/use-investment-office";
-import { DEMO_SIZING_SCENARIOS } from "@/data/seed/investment";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 export default function PositionSizingCoach() {
   const { data: liveData, isLoading } = usePortfolioPositions();
   const [selectedIdx, setSelectedIdx] = useState(0);
-  const scenario = DEMO_SIZING_SCENARIOS[selectedIdx];
+  const scenario = SIZING_SCENARIOS[selectedIdx];
 
 
   return (
@@ -19,7 +18,7 @@ export default function PositionSizingCoach() {
 
       {/* Scenario Selector */}
       <div className="flex gap-2">
-        {([] as typeof DEMO_SIZING_SCENARIOS).map((s, i) => (
+        {([] as any[]).map((s, i) => (
           <button key={s.asset} onClick={() => setSelectedIdx(i)}
             className={`rounded-xl border px-4 py-3 flex items-center gap-2 transition-all ${selectedIdx === i ? "border-primary bg-primary/5" : "border-border bg-card hover:border-primary/20"}`}>
             <span className="text-lg">{s.icon}</span>

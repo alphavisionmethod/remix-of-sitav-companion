@@ -47,7 +47,7 @@ interface AuditEntry {
 
 const AUTONOMY_LABELS = ["L0 Observe", "L1 Diagnose", "L2 Recommend", "L3 Draft", "L4 Simulate", "L5 Approval", "L6 Action"];
 
-const MOCK_AUDIT: AuditEntry[] = [
+const AUDIT: AuditEntry[] = [
   {
     id: "aud-001", timestamp: Date.now() - 300000, action: "quarantine", agentId: "aw-connector-health",
     agentName: "Connector Health Agent", performedBy: "admin@sita.os", reason: "Repeated false positives on Plaid status",
@@ -210,10 +210,10 @@ export function AgentAuditLog() {
   const [performerFilter, setPerformerFilter] = useState<string>("all");
   const { isDemoMode } = useDataMode();
 
-  const performers = useMemo(() => [...new Set((isDemoMode ? MOCK_AUDIT : [] as typeof MOCK_AUDIT).map(a => a.performedBy))], []);
+  const performers = useMemo(() => [...new Set((isDemoMode ? AUDIT : [] as typeof AUDIT).map(a => a.performedBy))], []);
 
   const filtered = useMemo(() => {
-    let result = MOCK_AUDIT;
+    let result = AUDIT;
     if (actionFilter !== "all") {
       result = result.filter(e => e.action === actionFilter || e.action === `bulk-${actionFilter}`);
     }
@@ -233,10 +233,10 @@ export function AgentAuditLog() {
   }, [actionFilter, performerFilter, searchQuery]);
 
   const stats = useMemo(() => ({
-    total: (isDemoMode ? MOCK_AUDIT : [] as typeof MOCK_AUDIT).length,
-    manual: (isDemoMode ? MOCK_AUDIT : [] as typeof MOCK_AUDIT).filter(a => !a.performedBy.includes("system")).length,
-    automated: (isDemoMode ? MOCK_AUDIT : [] as typeof MOCK_AUDIT).filter(a => a.performedBy.includes("system")).length,
-    bulkOps: (isDemoMode ? MOCK_AUDIT : [] as typeof MOCK_AUDIT).filter(a => a.bulk).length,
+    total: (isDemoMode ? AUDIT : [] as typeof AUDIT).length,
+    manual: (isDemoMode ? AUDIT : [] as typeof AUDIT).filter(a => !a.performedBy.includes("system")).length,
+    automated: (isDemoMode ? AUDIT : [] as typeof AUDIT).filter(a => a.performedBy.includes("system")).length,
+    bulkOps: (isDemoMode ? AUDIT : [] as typeof AUDIT).filter(a => a.bulk).length,
   }), []);
 
   const handleExport = () => {

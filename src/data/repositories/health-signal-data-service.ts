@@ -5,18 +5,13 @@
 
 import { supabase } from "@/integrations/supabase/client";
 const db = supabase as any;
-import {
-  DEMO_SIGNAL_PROVIDERS,
-  DEMO_SIGNAL_SUBSYSTEMS,
-} from "@/data/seed/health-signals";
-
 export async function fetchWearableProviders(isDemoMode: boolean) {
-  if (isDemoMode) return DEMO_SIGNAL_PROVIDERS;
+  if (isDemoMode) return SIGNAL_PROVIDERS;
   const { data, error } = await db.from("wearable_providers")
     .select("*")
     .order("created_at", { ascending: false });
   if (error) throw error;
-  return data?.length ? data : DEMO_SIGNAL_PROVIDERS;
+  return data?.length ? data : SIGNAL_PROVIDERS;
 }
 
 export async function fetchHealthSignalConsents(isDemoMode: boolean) {
@@ -68,13 +63,13 @@ export async function fetchVisibilityPolicies(isDemoMode: boolean) {
 }
 
 export async function fetchSignalSubsystemReadiness(isDemoMode: boolean) {
-  if (isDemoMode) return DEMO_SIGNAL_SUBSYSTEMS;
+  if (isDemoMode) return SIGNAL_SUBSYSTEMS;
   const { data, error } = await db.from("ecosystem_launch_readiness")
     .select("*")
     .like("target", "hrs_%")
     .order("last_assessed_at", { ascending: false });
   if (error) throw error;
-  if (!data?.length) return DEMO_SIGNAL_SUBSYSTEMS;
+  if (!data?.length) return SIGNAL_SUBSYSTEMS;
   return data.map((r: any) => ({
     target: r.target_name || r.target,
     key: r.target,

@@ -324,7 +324,7 @@ export const CI_GATE_REGISTRY: readonly CIGateEntry[] = [
     owner: "platform-architecture",
     severity: "blocker",
     description:
-      "Error monitoring (Sentry + native sink) wired; ≥6 hot edge fns wrapped with withTrace; real health probes + uptime cron; alerts table live with no DEMO_ALERTS imports.",
+      "Error monitoring (Sentry + native sink) wired; ≥6 hot edge fns wrapped with withTrace; real health probes + uptime cron; alerts table live with no ALERTS imports.",
     producesArtifact: "generated/production-operations-report.json",
   },
 
@@ -350,7 +350,7 @@ export const CI_GATE_REGISTRY: readonly CIGateEntry[] = [
     owner: "platform-architecture",
     severity: "blocker",
     description:
-      "8 workflow/automation tables exist with RLS; workflow-execute, workflow-repair, workflow-stuck-detector, workflow-replay deployed; admin page queries real workflow_runs (no DEMO_RUNS); KS-WORKFLOW + KS-AUTOMATIONS enforced in execute and dispatch.",
+      "8 workflow/automation tables exist with RLS; workflow-execute, workflow-repair, workflow-stuck-detector, workflow-replay deployed; admin page queries real workflow_runs (no RUNS); KS-WORKFLOW + KS-AUTOMATIONS enforced in execute and dispatch.",
     producesArtifact: "generated/workflow-reality-report.json",
   },
   {

@@ -2,7 +2,6 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Calendar, Zap, AlertTriangle, Clock, Target, TrendingUp } from "lucide-react";
 import { useRiskScenarios } from "@/hooks/use-investment-office";
-import { DEMO_CATALYST_EVENTS } from "@/data/seed/investment";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 const TYPE_COLORS: Record<string, string> = {
   macro: "bg-primary/10 text-primary",
@@ -14,7 +13,7 @@ const TYPE_COLORS: Record<string, string> = {
 export default function CatalystWarRoom() {
   const { data: liveData, isLoading } = useRiskScenarios();
   const [filter, setFilter] = useState<string>("all");
-  const sorted = [...DEMO_CATALYST_EVENTS]
+  const sorted = [...CATALYST_EVENTS]
     .filter(e => filter === "all" || e.type === filter)
     .sort((a, b) => a.date.localeCompare(b.date));
 

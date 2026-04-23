@@ -20,7 +20,7 @@ interface Track {
   color: string;
 }
 
-const MOCK_TRACKS: Track[] = [
+const TRACKS: Track[] = [
   { id: "1", title: "Midnight Protocol", artist: "Neural Wave", album: "Digital Horizons", duration: 234, color: "hsl(265 55% 58%)" },
   { id: "2", title: "Sovereign Dreams", artist: "Ambient Core", album: "Trust Layer", duration: 198, color: "hsl(38 85% 58%)" },
   { id: "3", title: "Deep Work Flow", artist: "Focus Engine", album: "Calm Sessions", duration: 312, color: "hsl(152 55% 48%)" },
@@ -93,14 +93,14 @@ export function MusicPlayerWindow() {
   const [showPlaylist, setShowPlaylist] = useState(true);
   const [liked, setLiked] = useState<Set<string>>(new Set());
 
-  const track = MOCK_TRACKS[currentIdx];
+  const track = TRACKS[currentIdx];
 
   useEffect(() => {
     if (!playing) return;
     const id = setInterval(() => {
       setProgress(p => {
         if (p >= track.duration) {
-          setCurrentIdx(i => (i + 1) % MOCK_TRACKS.length);
+          setCurrentIdx(i => (i + 1) % TRACKS.length);
           return 0;
         }
         return p + 1;
@@ -109,8 +109,8 @@ export function MusicPlayerWindow() {
     return () => clearInterval(id);
   }, [playing, track.duration]);
 
-  const next = () => { setCurrentIdx(i => (shuffle ? Math.floor(Math.random() * MOCK_TRACKS.length) : (i + 1) % MOCK_TRACKS.length)); setProgress(0); };
-  const prev = () => { setCurrentIdx(i => i === 0 ? MOCK_TRACKS.length - 1 : i - 1); setProgress(0); };
+  const next = () => { setCurrentIdx(i => (shuffle ? Math.floor(Math.random() * TRACKS.length) : (i + 1) % TRACKS.length)); setProgress(0); };
+  const prev = () => { setCurrentIdx(i => i === 0 ? TRACKS.length - 1 : i - 1); setProgress(0); };
 
   return (
     <div className="flex h-[420px] bg-[hsl(0_0%_8%)] text-[hsl(0_0%_90%)] overflow-hidden rounded-b-xl">
@@ -211,7 +211,7 @@ export function MusicPlayerWindow() {
             <ListMusic className="h-3.5 w-3.5 text-[hsl(0_0%_40%)]" />
           </div>
           <div className="flex-1 overflow-y-auto scrollbar-thin">
-            {MOCK_TRACKS.map((t, i) => (
+            {TRACKS.map((t, i) => (
               <button
                 key={t.id}
                 onClick={() => { setCurrentIdx(i); setProgress(0); setPlaying(true); }}

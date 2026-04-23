@@ -26,7 +26,7 @@ interface CostBreakdownItem {
   color: string;
 }
 
-const DEMO_COST_DATA: CostBreakdownItem[] = [
+const COST_DATA: CostBreakdownItem[] = [
   { label: "AI Inference", value: 428, unit: "cents", budget: 800, trend: -12.5, icon: Brain, color: "text-primary" },
   { label: "Compute", value: 4500, unit: "cents/mo", budget: 8000, trend: 1.8, icon: Cpu, color: "text-sita-gold" },
   { label: "Storage", value: 2.4, unit: "GB", budget: 10, trend: 5.2, icon: HardDrive, color: "text-accent" },
@@ -70,7 +70,7 @@ export default function FCC07PlatformCostCapacity() {
 
       {/* Cost Overview Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        {([] as typeof DEMO_COST_DATA).map((item, i) => {
+        {([] as any[]).map((item, i) => {
           const Icon = item.icon;
           const usage = item.unit === "GB" ? (item.value / item.budget) * 100 : (item.value / item.budget) * 100;
           const isPositive = item.trend < 0;

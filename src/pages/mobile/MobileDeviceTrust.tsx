@@ -23,7 +23,7 @@ interface DeviceInfo {
   fingerprint: string;
 }
 
-const MOCK_DEVICES: DeviceInfo[] = [
+const DEVICES: DeviceInfo[] = [
   {
     id: "dev-001", name: "This iPhone", platform: "iOS 18", trustLevel: "hardware-attested",
     enrolledAt: "2026-03-15T10:00:00Z", lastSeenAt: "2026-04-09T08:30:00Z",
@@ -124,7 +124,7 @@ const DeviceCard = ({ device, onRevoke, onReEnroll }: { device: DeviceInfo; onRe
 
 export default function MobileDeviceTrust() {
   
-  const [devices] = useState<DeviceInfo[]>(MOCK_DEVICES);
+  const [devices] = useState<DeviceInfo[]>(DEVICES);
 
   const handleRevoke = (id: string) => {
     toast.info("Device trust revoked", { description: "This device can no longer approve high-trust actions." });

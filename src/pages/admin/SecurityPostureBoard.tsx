@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Lock, Shield, CheckCircle, AlertTriangle, XCircle, RefreshCw, Key, Database, Server, Eye, Fingerprint, Clock } from "lucide-react";
-import { DEMO_POSTURE } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.05 } } };
@@ -14,7 +13,7 @@ const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.05 } } };
 const encColor: Record<string, string> = { full: "text-emerald-500 bg-emerald-500/10 border-emerald-500/20", partial: "text-amber-500 bg-amber-500/10 border-amber-500/20", none: "text-red-500 bg-red-500/10 border-red-500/20" };
 const secColor: Record<string, string> = { verified: "text-emerald-500 bg-emerald-500/10 border-emerald-500/20", unverified: "text-amber-500 bg-amber-500/10 border-amber-500/20", expired: "text-red-500 bg-red-500/10 border-red-500/20" };
 
-const DEMO_SECRETS = [
+const SECRETS = [
   { name: "SUPABASE_SERVICE_ROLE_KEY", status: "verified" as const, rotatedAt: "2026-03-20", expiresAt: "2027-03-20", scope: "platform" },
   { name: "OPENAI_API_KEY", status: "verified" as const, rotatedAt: "2026-04-01", expiresAt: "2027-04-01", scope: "ai-gateway" },
   { name: "VAPID_PRIVATE_KEY", status: "verified" as const, rotatedAt: "2026-02-15", expiresAt: "2027-02-15", scope: "notifications" },
@@ -22,7 +21,7 @@ const DEMO_SECRETS = [
   { name: "ANTHROPIC_API_KEY", status: "verified" as const, rotatedAt: "2026-03-28", expiresAt: "2027-03-28", scope: "ai-gateway" },
 ];
 
-const DEMO_CLASSIFICATION = [
+const CLASSIFICATION = [
   { domain: "User Profiles", classification: "PII" as const, tables: ["profiles", "user_preferences"], protectionLevel: "encrypted", lastAudit: "2026-04-01" },
   { domain: "Financial Data", classification: "Sensitive" as const, tables: ["invoices", "transactions", "revenue_records"], protectionLevel: "encrypted+rls", lastAudit: "2026-04-03" },
   { domain: "Health Signals", classification: "PHI" as const, tables: ["health_metrics", "wellness_scores"], protectionLevel: "encrypted+rls+audit", lastAudit: "2026-03-28" },
@@ -30,7 +29,7 @@ const DEMO_CLASSIFICATION = [
   { domain: "Audit Logs", classification: "Compliance" as const, tables: ["audit_logs", "agent_action_receipts"], protectionLevel: "immutable+encrypted", lastAudit: "2026-04-05" },
 ];
 
-const DEMO_KEY_ROTATION = [
+const KEY_ROTATION = [
   { key: "DB Encryption Key", lastRotated: "2026-03-15", nextRotation: "2026-06-15", status: "on-schedule" as const },
   { key: "JWT Signing Key", lastRotated: "2026-04-01", nextRotation: "2026-07-01", status: "on-schedule" as const },
   { key: "VAPID Keys", lastRotated: "2026-02-15", nextRotation: "2026-05-15", status: "due-soon" as const },
@@ -39,10 +38,10 @@ const DEMO_KEY_ROTATION = [
 
 const SecurityPostureBoard = () => {
   const [tab, setTab] = useState("overview");
-  const fullEncryption = ([] as typeof DEMO_POSTURE).filter(p => p.encryption === "full").length;
-  const allRls = ([] as typeof DEMO_POSTURE).filter(p => p.rlsEnabled).length;
-  const totalGaps = ([] as typeof DEMO_POSTURE).reduce((s, p) => s + p.gaps.length, 0);
-  const verifiedSecrets = ([] as typeof DEMO_SECRETS).filter(s => s.status === "verified").length;
+  const fullEncryption = ([] as any[]).filter(p => p.encryption === "full").length;
+  const allRls = ([] as any[]).filter(p => p.rlsEnabled).length;
+  const totalGaps = ([] as any[]).reduce((s, p) => s + p.gaps.length, 0);
+  const verifiedSecrets = ([] as any[]).filter(s => s.status === "verified").length;
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
@@ -59,11 +58,11 @@ const SecurityPostureBoard = () => {
       <motion.div variants={stagger} initial="hidden" animate="show" className="space-y-4">
         <motion.div variants={fadeUp} className="grid grid-cols-2 md:grid-cols-5 gap-3">
           {[
-            { label: "Encryption Coverage", value: `${fullEncryption}/${([] as typeof DEMO_POSTURE).length}`, color: fullEncryption === ([] as typeof DEMO_POSTURE).length ? "text-emerald-500" : "text-amber-500" },
-            { label: "RLS Enabled", value: `${allRls}/${([] as typeof DEMO_POSTURE).length}`, color: allRls === ([] as typeof DEMO_POSTURE).length ? "text-emerald-500" : "text-red-500" },
-            { label: "Secrets Verified", value: `${verifiedSecrets}/${([] as typeof DEMO_SECRETS).length}`, color: verifiedSecrets === ([] as typeof DEMO_SECRETS).length ? "text-emerald-500" : "text-amber-500" },
+            { label: "Encryption Coverage", value: `${fullEncryption}/${([] as any[]).length}`, color: fullEncryption === ([] as any[]).length ? "text-emerald-500" : "text-amber-500" },
+            { label: "RLS Enabled", value: `${allRls}/${([] as any[]).length}`, color: allRls === ([] as any[]).length ? "text-emerald-500" : "text-red-500" },
+            { label: "Secrets Verified", value: `${verifiedSecrets}/${([] as any[]).length}`, color: verifiedSecrets === ([] as any[]).length ? "text-emerald-500" : "text-amber-500" },
             { label: "Open Gaps", value: String(totalGaps), color: totalGaps === 0 ? "text-emerald-500" : "text-amber-500" },
-            { label: "Key Rotation", value: ([] as typeof DEMO_KEY_ROTATION).some(k => k.status === "due-soon") ? "Due soon" : "On schedule", color: ([] as typeof DEMO_KEY_ROTATION).some(k => k.status === "due-soon") ? "text-amber-500" : "text-emerald-500" },
+            { label: "Key Rotation", value: ([] as any[]).some(k => k.status === "due-soon") ? "Due soon" : "On schedule", color: ([] as any[]).some(k => k.status === "due-soon") ? "text-amber-500" : "text-emerald-500" },
           ].map(m => (
             <Card key={m.label}><CardContent className="p-4">
               <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-1">{m.label}</p>
@@ -82,7 +81,7 @@ const SecurityPostureBoard = () => {
           </TabsList>
 
           <TabsContent value="overview" className="mt-4 space-y-2">
-            {([] as typeof DEMO_POSTURE).map((p) => (
+            {([] as any[]).map((p) => (
               <div key={p.domain} className="p-3 rounded-lg border hover:bg-muted/30 transition-colors">
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center gap-2">
@@ -110,7 +109,7 @@ const SecurityPostureBoard = () => {
             <Card>
               <CardHeader className="pb-3"><CardTitle className="text-sm font-semibold flex items-center gap-2"><Key className="h-4 w-4 text-primary" /> Secret Integrity Matrix</CardTitle></CardHeader>
               <CardContent className="space-y-2">
-                {([] as typeof DEMO_SECRETS).map(s => (
+                {([] as any[]).map(s => (
                   <div key={s.name} className="p-3 rounded-lg border hover:bg-muted/30 transition-colors">
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center gap-2">
@@ -134,7 +133,7 @@ const SecurityPostureBoard = () => {
             <Card>
               <CardHeader className="pb-3"><CardTitle className="text-sm font-semibold flex items-center gap-2"><Fingerprint className="h-4 w-4 text-primary" /> Data Classification Board</CardTitle></CardHeader>
               <CardContent className="space-y-2">
-                {([] as typeof DEMO_CLASSIFICATION).map(c => (
+                {([] as any[]).map(c => (
                   <div key={c.domain} className="p-3 rounded-lg border hover:bg-muted/30 transition-colors">
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center gap-2">
@@ -157,7 +156,7 @@ const SecurityPostureBoard = () => {
             <Card>
               <CardHeader className="pb-3"><CardTitle className="text-sm font-semibold flex items-center gap-2"><Clock className="h-4 w-4 text-primary" /> Key Rotation Schedule</CardTitle></CardHeader>
               <CardContent className="space-y-2">
-                {([] as typeof DEMO_KEY_ROTATION).map(k => (
+                {([] as any[]).map(k => (
                   <div key={k.key} className="p-3 rounded-lg border hover:bg-muted/30 transition-colors">
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-sm font-medium text-foreground">{k.key}</span>
@@ -177,7 +176,7 @@ const SecurityPostureBoard = () => {
             <Card>
               <CardHeader className="pb-3"><CardTitle className="text-sm font-semibold flex items-center gap-2"><AlertTriangle className="h-4 w-4 text-amber-500" /> Protection Gaps ({totalGaps})</CardTitle></CardHeader>
               <CardContent className="space-y-2">
-                {([] as typeof DEMO_POSTURE).filter(p => p.gaps.length > 0).map(p => (
+                {([] as any[]).filter(p => p.gaps.length > 0).map(p => (
                   <div key={p.domain} className="p-3 rounded-lg border border-amber-500/20 bg-amber-500/5">
                     <div className="flex items-center gap-2 mb-2">
                       <Shield className="h-4 w-4 text-amber-500" />

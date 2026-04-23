@@ -8,7 +8,6 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { DEMO_DRAFTS } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 interface PolicyDraft {
   id: string;
@@ -88,7 +87,7 @@ export default function PolicySimulator() {
       <Tabs value={tab} onValueChange={setTab}>
         <TabsList className="bg-muted/30 border border-border/40 h-8 p-0.5 gap-0.5">
           {[
-            { value: "drafts", label: `Policies (${([] as typeof DEMO_DRAFTS).length})`, icon: FileText },
+            { value: "drafts", label: `Policies (${([] as any[]).length})`, icon: FileText },
             { value: "simulate", label: "Simulation Results", icon: Play },
             { value: "compose", label: "Compose", icon: GitBranch },
           ].map(t => (
@@ -99,7 +98,7 @@ export default function PolicySimulator() {
         <div className="mt-4">
           <TabsContent value="drafts">
             <div className="space-y-3">
-              {([] as typeof DEMO_DRAFTS).map((policy, idx) => {
+              {([] as any[]).map((policy, idx) => {
                 const riskCfg = RISK_CONFIG[policy.riskLevel];
                 const stCfg = STATUS_CONFIG[policy.status];
                 const isSelected = selectedPolicy === policy.id;

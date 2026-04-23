@@ -5,7 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
 import { toast } from "sonner";
-import { MOCK_INBOX_ITEMS, type InboxItem } from "./mock-inbox-data";
+import { FALLBACK_INBOX_ITEMS, type InboxItem } from "./mock-inbox-data";
 import { computeLeadScore, computeBatchScores, type LeadScoreResult } from "@/domains/engines/lead-scoring-engine";
 
 export type InboxFilter = "all" | "new" | "urgent" | "high-quality" | "missing-info" | "duplicates" | "snoozed" | "accepted" | "rejected" | "exceptional" | "recovery" | "at-risk";
@@ -24,17 +24,17 @@ export function useLeadInbox() {
   const inboxQuery = useQuery({
     queryKey: ["lead-inbox-items"],
     queryFn: async () => {
-      if (!user?.id) return MOCK_INBOX_ITEMS;
+      if (!user?.id) return FALLBACK_INBOX_ITEMS;
       const { data, error } = await fromTable("lead_inbox_items")
         .select("*")
         .order("created_at", { ascending: false });
       if (error) throw error;
-      if (!data || data.length === 0) return MOCK_INBOX_ITEMS;
+      if (!data || data.length === 0) return FALLBACK_INBOX_ITEMS;
       return data as InboxItem[];
     },
   });
 
-  const items = inboxQuery.data ?? MOCK_INBOX_ITEMS;
+  const items = inboxQuery.data ?? FALLBACK_INBOX_ITEMS;
 
   // Compute scores for all items
   const scoreResults = useMemo(() => {
@@ -152,7 +152,7 @@ export function useLeadInbox() {
     setSelectedId, checkedIds, toggleCheck, clearChecked,
     triageAction, bulkAction,
     isLoading: inboxQuery.isLoading,
-    isDemo: !user?.id || (items === MOCK_INBOX_ITEMS),
+    isDemo: !user?.id || (items === FALLBACK_INBOX_ITEMS),
     scoreMap, scoreResults,
     explainId, setExplainId, explainScore,
   };

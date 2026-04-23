@@ -2,11 +2,10 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { FlaskConical, TrendingUp, TrendingDown, AlertTriangle, ChevronRight } from "lucide-react";
 import { useMarketWatchlistItems } from "@/hooks/use-investment-office";
-import { DEMO_EVENTS } from "@/data/seed/investment";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 export default function EventProbabilityLab() {
   const { data: liveData, isLoading } = useMarketWatchlistItems();
-  const [selected, setSelected] = useState(DEMO_EVENTS[0]);
+  const [selected, setSelected] = useState(EVENTS[0]);
 
   return (
     <div className="mx-auto max-w-6xl space-y-6">
@@ -17,7 +16,7 @@ export default function EventProbabilityLab() {
 
       {/* Event Selector */}
       <div className="flex gap-2 overflow-x-auto pb-1">
-        {([] as typeof DEMO_EVENTS).map(e => (
+        {([] as any[]).map(e => (
           <button key={e.id} onClick={() => setSelected(e)}
             className={`shrink-0 rounded-xl border px-4 py-3 text-left transition-all ${selected.id === e.id ? "border-primary bg-primary/5" : "border-border bg-card hover:border-primary/20"}`}>
             <p className="text-xs font-bold text-foreground">{e.title}</p>

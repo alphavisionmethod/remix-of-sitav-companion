@@ -3,14 +3,13 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { Shield, Fingerprint, Smartphone, Watch, Lock, CheckCircle2, XCircle, ArrowRight, AlertTriangle, Key } from "lucide-react";
-import { DEMO_ESCALATION_MATRIX } from "@/data/seed/admin-platform";
 import ANDSubNav from "@/components/admin/ANDSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
-const DEMO_VERIFICATION_EVENTS: any[] = [];
+const VERIFICATION_EVENTS: any[] = [];
 
 // Production fallback — seed data removed
-const DEMO_TRUST_CLASSES: any[] = [];
+const TRUST_CLASSES: any[] = [];
 
 const AND03AndroidTrustApprovals = () => {
   return (
@@ -34,7 +33,7 @@ const AND03AndroidTrustApprovals = () => {
 
       <TabsContent value="classes">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {([] as typeof DEMO_TRUST_CLASSES).map((t) => (
+          {([] as any[]).map((t) => (
             <Card key={t.cls}>
               <CardHeader className="pb-2">
                 <div className="flex items-center justify-between">
@@ -68,7 +67,7 @@ const AND03AndroidTrustApprovals = () => {
             <table className="w-full text-xs">
               <thead><tr className="border-b"><th className="text-left p-2">Risk</th><th className="text-left p-2">Action</th><th className="p-2">Biometric</th><th className="p-2">Escalates</th></tr></thead>
               <tbody>
-                {([] as typeof DEMO_ESCALATION_MATRIX).map((r) => (
+                {([] as any[]).map((r) => (
                   <tr key={r.risk} className="border-b hover:bg-muted/30">
                     <td className="p-2"><Badge variant={r.risk === "Critical" ? "destructive" : r.risk === "High" ? "default" : "secondary"}>{r.risk}</Badge></td>
                     <td className="p-2">{r.action}</td>
@@ -104,7 +103,7 @@ const AND03AndroidTrustApprovals = () => {
             <table className="w-full text-xs">
               <thead><tr className="border-b"><th className="text-left p-2">Event</th><th className="text-left p-2">Method</th><th className="p-2">Frequency</th></tr></thead>
               <tbody>
-                {([] as typeof DEMO_VERIFICATION_EVENTS).map((v) => (
+                {([] as any[]).map((v) => (
                   <tr key={v.event} className="border-b hover:bg-muted/30">
                     <td className="p-2 font-medium">{v.event}</td>
                     <td className="p-2"><Badge variant="outline">{v.method}</Badge></td>

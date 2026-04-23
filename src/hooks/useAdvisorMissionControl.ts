@@ -10,21 +10,21 @@ export type { AdvisorSummary, AdvisorRecommendation, SafeModeState } from "@/dat
 
 // ── Named re-exports for module-scope usage in sub-components ──
 // Pages import these instead of importing from mock-data directly.
-export const mockAdvisors = amc.mockAdvisors;
-export const mockRecommendations = amc.mockRecommendations;
-export const mockSynthesis = amc.mockSynthesis;
-export const mockApprovals = amc.mockApprovals;
-export const mockProofHistory = amc.mockProofHistory;
-export const mockSimulations = amc.mockSimulations;
-export const mockMemoryItems = amc.mockMemoryItems;
-export const mockInternalAgents = amc.mockInternalAgents;
-export const mockIncidents = amc.mockIncidents;
-export const mockConnectorHealth = amc.mockConnectorHealth;
-export const mockStuckWorkflows = amc.mockStuckWorkflows;
-export const mockCostAnomalies = amc.mockCostAnomalies;
-export const mockPolicyAnomalies = amc.mockPolicyAnomalies;
-export const mockReleaseSafety = amc.mockReleaseSafety;
-export const mockSafeMode = amc.mockSafeMode;
+export const advisors = amc.mockAdvisors;
+export const recommendations = amc.mockRecommendations;
+export const synthesis = amc.mockSynthesis;
+export const approvals = amc.mockApprovals;
+export const proofHistory = amc.mockProofHistory;
+export const simulations = amc.mockSimulations;
+export const memoryItems = amc.mockMemoryItems;
+export const internalAgents = amc.mockInternalAgents;
+export const incidents = amc.mockIncidents;
+export const connectorHealth = amc.mockConnectorHealth;
+export const stuckWorkflows = amc.stuckWorkflows;
+export const costAnomalies = amc.costAnomalies;
+export const policyAnomalies = amc.policyAnomalies;
+export const releaseSafety = amc.releaseSafety;
+export const safeMode = amc.safeMode;
 
 export function useAdvisorMissionControl() {
   const { isDemoMode } = useDataMode();
@@ -41,10 +41,10 @@ export function useAdvisorMissionControl() {
     internalAgents: amc.mockInternalAgents,
     incidents: amc.mockIncidents,
     connectorHealth: amc.mockConnectorHealth,
-    stuckWorkflows: amc.mockStuckWorkflows,
-    costAnomalies: amc.mockCostAnomalies,
-    policyAnomalies: amc.mockPolicyAnomalies,
-    releaseSafety: amc.mockReleaseSafety,
-    safeMode: amc.mockSafeMode,
+    stuckWorkflows: amc.stuckWorkflows,
+    costAnomalies: amc.costAnomalies,
+    policyAnomalies: amc.policyAnomalies,
+    releaseSafety: amc.releaseSafety,
+    safeMode: amc.safeMode,
   };
 }

@@ -16,7 +16,7 @@ interface BGTask {
   details?: string;
 }
 
-const DEMO_TASKS: BGTask[] = [
+const TASKS: BGTask[] = [
   { id: "1", title: "CSV Import — contacts_q1.csv", type: "import", status: "running", progress: 67, startedAt: "2 min ago", details: "1,340 of 2,000 rows processed" },
   { id: "2", title: "Sync with Google Contacts", type: "sync", status: "running", progress: 45, startedAt: "5 min ago", details: "Syncing 450 records" },
   { id: "3", title: "Automation: Follow-up sequence", type: "automation", status: "completed", progress: 100, startedAt: "15 min ago", duration: "3m 42s", details: "12 emails sent, 0 errors" },
@@ -42,8 +42,8 @@ const statusConfig: Record<string, { icon: React.ElementType; color: string; bg:
 export default function BackgroundTaskCenter() {
   const [filter, setFilter] = useState<"all" | "running" | "completed" | "failed">("all");
 
-  const filtered = ([] as typeof DEMO_TASKS).filter(t => filter === "all" || t.status === filter);
-  const runningCount = ([] as typeof DEMO_TASKS).filter(t => t.status === "running").length;
+  const filtered = ([] as any[]).filter(t => filter === "all" || t.status === filter);
+  const runningCount = ([] as any[]).filter(t => t.status === "running").length;
 
   return (
     <div className="p-6 space-y-5 max-w-4xl mx-auto">
@@ -54,7 +54,7 @@ export default function BackgroundTaskCenter() {
           </div>
           <div>
             <h1 className="text-lg font-bold text-foreground">Background Tasks</h1>
-            <p className="text-[10px] text-foreground/30">{runningCount} running · {([] as typeof DEMO_TASKS).length} total</p>
+            <p className="text-[10px] text-foreground/30">{runningCount} running · {([] as any[]).length} total</p>
           </div>
         </div>
       </motion.div>

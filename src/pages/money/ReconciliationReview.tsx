@@ -27,7 +27,7 @@ interface ReconciliationItem {
   suggestedAction: string;
 }
 
-const DEMO_ITEMS: ReconciliationItem[] = [
+const ITEMS: ReconciliationItem[] = [
   { id: "R01", title: "Statement vs recorded mismatch", description: "Chase checking shows $4,230 but recorded balance is $4,180. Difference: $50.", issueType: "mismatch", status: "open", amount: 50, date: "Apr 10", source: "Chase Checking", severity: "medium", suggestedAction: "Review recent transactions for missing entry" },
   { id: "R02", title: "Uncategorized Stripe deposit", description: "Stripe payout of $1,840 has no category assigned.", issueType: "uncategorized", status: "open", amount: 1840, date: "Apr 9", source: "Stripe", severity: "low", suggestedAction: "Categorize as Business Revenue" },
   { id: "R03", title: "AWS charge increased 18%", description: "Monthly AWS charge rose from $342 to $403 without a plan change.", issueType: "recurring-change", status: "investigating", amount: 61, date: "Apr 3", source: "AWS", severity: "medium", suggestedAction: "Review usage spike or contact support" },
@@ -53,15 +53,15 @@ const ReconciliationReview = () => {
   const [tab, setTab] = useState("all");
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
-  const filtered = tab === "all" ? DEMO_ITEMS
-    : tab === "resolved" ? ([] as typeof DEMO_ITEMS).filter(i => i.status === "resolved")
-    : ([] as typeof DEMO_ITEMS).filter(i => i.issueType === tab && i.status !== "resolved");
+  const filtered = tab === "all" ? ITEMS
+    : tab === "resolved" ? ([] as any[]).filter(i => i.status === "resolved")
+    : ([] as any[]).filter(i => i.issueType === tab && i.status !== "resolved");
 
-  const selected = ([] as typeof DEMO_ITEMS).find(i => i.id === selectedId);
-  const openCount = ([] as typeof DEMO_ITEMS).filter(i => i.status !== "resolved").length;
-  const mismatchCount = ([] as typeof DEMO_ITEMS).filter(i => i.issueType === "mismatch" && i.status !== "resolved").length;
-  const uncatCount = ([] as typeof DEMO_ITEMS).filter(i => i.issueType === "uncategorized" && i.status !== "resolved").length;
-  const recurringCount = ([] as typeof DEMO_ITEMS).filter(i => i.issueType === "recurring-change" && i.status !== "resolved").length;
+  const selected = ([] as any[]).find(i => i.id === selectedId);
+  const openCount = ([] as any[]).filter(i => i.status !== "resolved").length;
+  const mismatchCount = ([] as any[]).filter(i => i.issueType === "mismatch" && i.status !== "resolved").length;
+  const uncatCount = ([] as any[]).filter(i => i.issueType === "uncategorized" && i.status !== "resolved").length;
+  const recurringCount = ([] as any[]).filter(i => i.issueType === "recurring-change" && i.status !== "resolved").length;
 
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
@@ -76,11 +76,11 @@ const ReconciliationReview = () => {
 
       <SitaTabs
         tabs={[
-          { key: "all", label: "All", count: ([] as typeof DEMO_ITEMS).filter(i => i.status !== "resolved").length },
+          { key: "all", label: "All", count: ([] as any[]).filter(i => i.status !== "resolved").length },
           { key: "mismatch", label: "Mismatches", count: mismatchCount },
           { key: "uncategorized", label: "Uncategorized", count: uncatCount },
           { key: "recurring-change", label: "Recurring Changes", count: recurringCount },
-          { key: "resolved", label: "Resolved", count: ([] as typeof DEMO_ITEMS).filter(i => i.status === "resolved").length },
+          { key: "resolved", label: "Resolved", count: ([] as any[]).filter(i => i.status === "resolved").length },
         ]}
         active={tab}
         onChange={setTab}
@@ -185,7 +185,7 @@ const ReconciliationReview = () => {
       <ModuleAdvisorInsight
         advisorName="Reconciliation Advisor"
         domain="finance"
-        insight={`${openCount} items need review. Priority: ${mismatchCount} balance mismatches totaling $${([] as typeof DEMO_ITEMS).filter(i => i.issueType === "mismatch" && i.status !== "resolved").reduce((s, i) => s + i.amount, 0).toLocaleString()}.`}
+        insight={`${openCount} items need review. Priority: ${mismatchCount} balance mismatches totaling $${([] as any[]).filter(i => i.issueType === "mismatch" && i.status !== "resolved").reduce((s, i) => s + i.amount, 0).toLocaleString()}.`}
         confidence={82}
       />
     </motion.div>

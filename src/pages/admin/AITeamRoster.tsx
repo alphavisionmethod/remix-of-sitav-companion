@@ -11,7 +11,7 @@ import {
 import { useAIEngDomain } from "@/hooks/use-ai-engineering-data";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
-const DEMO_AGENTS: any[] = [];
+const AGENTS: any[] = [];
 
 
 const autonomyColors: Record<string, string> = {
@@ -27,14 +27,14 @@ const AITeamRoster = () => {
   const [selected, setSelected] = useState<string | null>("debugger");
   const [view, setView] = useState("roster");
   const [agentAutonomy, setAgentAutonomy] = useState<Record<string, string>>({});
-  const active = selected ? ([] as typeof DEMO_AGENTS).find(a => a.id === selected) : null;
+  const active = selected ? ([] as any[]).find(a => a.id === selected) : null;
 
   const getAutonomy = (agentId: string, defaultVal: string) => agentAutonomy[agentId] ?? defaultVal;
 
-  const sorted = view === "roster" ? DEMO_AGENTS :
-    view === "severity" ? [...DEMO_AGENTS].sort((a, b) => (b.escalation === "active" ? 2 : b.escalation === "pending" ? 1 : 0) - (a.escalation === "active" ? 2 : a.escalation === "pending" ? 1 : 0)) :
-    view === "workload" ? [...DEMO_AGENTS].sort((a, b) => b.queueLoad - a.queueLoad) :
-    [...DEMO_AGENTS].sort((a, b) => b.accuracy - a.accuracy);
+  const sorted = view === "roster" ? AGENTS :
+    view === "severity" ? [...AGENTS].sort((a, b) => (b.escalation === "active" ? 2 : b.escalation === "pending" ? 1 : 0) - (a.escalation === "active" ? 2 : a.escalation === "pending" ? 1 : 0)) :
+    view === "workload" ? [...AGENTS].sort((a, b) => b.queueLoad - a.queueLoad) :
+    [...AGENTS].sort((a, b) => b.accuracy - a.accuracy);
 
   return (
     <div className="space-y-6 p-6">
@@ -43,11 +43,11 @@ const AITeamRoster = () => {
       {/* Summary Stats */}
       <div className="grid grid-cols-5 gap-3">
         {[
-          { l: "Total Agents", v: ([] as typeof DEMO_AGENTS).length },
-          { l: "Escalated", v: ([] as typeof DEMO_AGENTS).filter(a => a.escalation !== "none").length, c: "text-amber-500" },
-          { l: "Total Queue", v: ([] as typeof DEMO_AGENTS).reduce((a, ag) => a + ag.queueLoad, 0) },
-          { l: "Avg Confidence", v: `${Math.round(([] as typeof DEMO_AGENTS).reduce((a, ag) => a + ag.confidence, 0) / ([] as typeof DEMO_AGENTS).length)}%` },
-          { l: "Avg Accuracy", v: `${Math.round(([] as typeof DEMO_AGENTS).reduce((a, ag) => a + ag.accuracy, 0) / ([] as typeof DEMO_AGENTS).length)}%` },
+          { l: "Total Agents", v: ([] as any[]).length },
+          { l: "Escalated", v: ([] as any[]).filter(a => a.escalation !== "none").length, c: "text-amber-500" },
+          { l: "Total Queue", v: ([] as any[]).reduce((a, ag) => a + ag.queueLoad, 0) },
+          { l: "Avg Confidence", v: `${Math.round(([] as any[]).reduce((a, ag) => a + ag.confidence, 0) / ([] as any[]).length)}%` },
+          { l: "Avg Accuracy", v: `${Math.round(([] as any[]).reduce((a, ag) => a + ag.accuracy, 0) / ([] as any[]).length)}%` },
         ].map(c => (
           <div key={c.l} className="rounded-xl border border-border/40 bg-card p-3 text-center">
             <p className={`text-xl font-bold ${c.c || ""}`}>{c.v}</p>

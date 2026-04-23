@@ -25,7 +25,7 @@ interface KBArticle {
   source: "human" | "ai" | "auto";
 }
 
-const DEMO_ARTICLES: KBArticle[] = [
+const ARTICLES: KBArticle[] = [
   { id: "1", title: "Sync Retry Policy — Exponential Backoff with Jitter", category: "architecture", summary: "Canonical retry policy for all sync operations. Includes idempotency requirements and circuit breaker thresholds.", tags: ["sync", "retry", "reliability"], lastUpdated: "2 hours ago", linkedIncidents: 3, linkedReleases: 2, confidence: 95, source: "human" },
   { id: "2", title: "Runbook: Sync Storm Recovery", category: "runbook", summary: "Step-by-step guide for recovering from sync retry storms. Includes queue drain procedure and client throttle activation.", tags: ["sync", "incident", "recovery"], lastUpdated: "1 day ago", linkedIncidents: 5, linkedReleases: 0, confidence: 92, source: "human" },
   { id: "3", title: "Incident Lesson: Storage Finalization Race Condition", category: "incident", summary: "Root cause analysis of the Jan 2026 storage finalization failures. Race condition in blob commit path under concurrent uploads.", tags: ["storage", "race-condition", "postmortem"], lastUpdated: "3 days ago", linkedIncidents: 1, linkedReleases: 1, confidence: 88, source: "human" },
@@ -58,7 +58,7 @@ export default function MCKnowledgeBase() {
   const [category, setCategory] = useState<DocCategory>("all");
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
-  const articles = DEMO_ARTICLES;
+  const articles = ARTICLES;
   const filtered = useMemo(() => {
     return articles.filter(a => {
       if (category !== "all" && a.category !== category) return false;

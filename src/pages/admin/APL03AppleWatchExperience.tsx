@@ -4,7 +4,6 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { Watch, Vibrate, CheckCircle, ArrowRight, Clock, Zap, Eye, AlertTriangle, Smartphone, Bell } from "lucide-react";
-import { DEMO_GLANCE_CARDS, DEMO_HAPTIC_PATTERNS, DEMO_MICRO_CONSTRAINTS } from "@/data/seed/admin-platform";
 import APLSubNav from "@/components/admin/APLSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 const APL03AppleWatchExperience = () => {
@@ -31,7 +30,7 @@ const APL03AppleWatchExperience = () => {
 
         <TabsContent value="glances">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {([] as typeof DEMO_GLANCE_CARDS).map((card) => (
+            {([] as any[]).map((card) => (
               <Card key={card.id} className={`cursor-pointer transition-all ${selectedCard === card.id ? "ring-2 ring-primary" : "hover:shadow-md"}`} onClick={() => setSelectedCard(selectedCard === card.id ? null : card.id)}>
                 <CardHeader className="pb-2">
                   <div className="flex items-center justify-between">
@@ -74,7 +73,7 @@ const APL03AppleWatchExperience = () => {
                     <th className="text-left p-2">Description</th>
                   </tr></thead>
                   <tbody>
-                    {([] as typeof DEMO_HAPTIC_PATTERNS).map((h) => (
+                    {([] as any[]).map((h) => (
                       <tr key={h.pattern} className="border-b hover:bg-muted/30">
                         <td className="p-2 font-medium">{h.pattern}</td>
                         <td className="p-2 text-center"><Badge variant="outline">{h.type}</Badge></td>
@@ -95,7 +94,7 @@ const APL03AppleWatchExperience = () => {
             <CardHeader><CardTitle className="text-sm">Micro-Approval Constraints</CardTitle></CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
-                {([] as typeof DEMO_MICRO_CONSTRAINTS).map((c) => (
+                {([] as any[]).map((c) => (
                   <div key={c.label} className="p-3 rounded border space-y-1">
                     <div className="text-xs font-medium">{c.label}</div>
                     <div className="text-sm font-mono font-bold">{c.value}</div>

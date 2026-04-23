@@ -18,10 +18,10 @@ import { useOSRuntime } from "@/hooks/useOSRuntime";
 import type { ConnectorUseCase } from "@/domains/engines/connector-concierge";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
-const DEMO_CATEGORIES: any[] = [];
+const CATEGORIES: any[] = [];
 
 // Production fallback — seed data removed
-const DEMO_BUNDLES: any[] = [];
+const BUNDLES: any[] = [];
 
 // ── Category Config ────────────────────────────────────────────
 // ── Use Case Card ──────────────────────────────────────────────
@@ -233,7 +233,7 @@ function SetupWizard({ useCase, onClose }: { useCase: ConnectorUseCase; onClose:
 }
 
 // ── Bundle Card ────────────────────────────────────────────────
-function BundleCard({ bundle, onSelect }: { bundle: typeof DEMO_BUNDLES[0]; onSelect: () => void }) {
+function BundleCard({ bundle, onSelect }: { bundle: typeof BUNDLES[0]; onSelect: () => void }) {
   return (
     <motion.div
       whileHover={{ y: -2 }}
@@ -353,7 +353,7 @@ export default function IntegrationConcierge() {
         <TabsContent value="use-cases" className="mt-5">
           {/* Category Filter */}
           <div className="flex gap-1.5 mb-5 flex-wrap">
-            {([] as unknown as typeof DEMO_CATEGORIES).map(cat => (
+            {([] as any[]).map(cat => (
               <button
                 key={cat.id}
                 onClick={() => setCategory(cat.id)}
@@ -378,7 +378,7 @@ export default function IntegrationConcierge() {
         </TabsContent>
 
         <TabsContent value="bundles" className="mt-5 space-y-4">
-          {([] as typeof DEMO_BUNDLES).map(b => (
+          {([] as any[]).map(b => (
             <BundleCard key={b.id} bundle={b} onSelect={() => {
               const firstUc = engines.integrations.getUseCase(b.useCases[0]);
               if (firstUc) setActiveUseCase(firstUc);

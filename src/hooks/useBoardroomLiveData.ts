@@ -90,7 +90,7 @@ export interface LiveReceipt {
 }
 
 // ── Demo fallbacks ─────────────────────────────────────────
-const DEMO_ITEMS: LiveItem[] = [
+const ITEMS: LiveItem[] = [
   {
     id: "demo-a1", title: "Collections action review — 3 overdue invoices",
     description: "David Kim ($4,200), Sarah Chen ($1,800), TechCorp ($12,500) — combined $18,500 overdue.",
@@ -124,7 +124,7 @@ const DEMO_ITEMS: LiveItem[] = [
   },
 ];
 
-const DEMO_RECEIPTS: LiveReceipt[] = [
+const RECEIPTS: LiveReceipt[] = [
   {
     id: "demo-r1", approved_motion: "Approved phased collections for Q1 receivables",
     rationale_summary: "Phased outreach to 4 overdue accounts segmented by relationship value",
@@ -167,13 +167,13 @@ export function useBoardroomLiveData() {
   const itemsQuery = useQuery({
     queryKey: ["boardroom-items"],
     queryFn: async () => {
-      if (isDemoMode) return DEMO_ITEMS;
+      if (isDemoMode) return ITEMS;
       const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return DEMO_ITEMS;
+      if (!user) return ITEMS;
       const { data, error } = await fromTable("boardroom_items")
         .select("*").eq("user_id", user.id).order("created_at", { ascending: false }).limit(50);
       if (error) throw error;
-      return (data && data.length > 0 ? data : DEMO_ITEMS) as LiveItem[];
+      return (data && data.length > 0 ? data : ITEMS) as LiveItem[];
     },
     staleTime: 15_000,
   });
@@ -212,13 +212,13 @@ export function useBoardroomLiveData() {
   const receiptsQuery = useQuery({
     queryKey: ["boardroom-receipts"],
     queryFn: async () => {
-      if (isDemoMode) return DEMO_RECEIPTS;
+      if (isDemoMode) return RECEIPTS;
       const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return DEMO_RECEIPTS;
+      if (!user) return RECEIPTS;
       const { data, error } = await fromTable("boardroom_decision_receipts")
         .select("*").eq("user_id", user.id).order("created_at", { ascending: false }).limit(50);
       if (error) throw error;
-      return (data && data.length > 0 ? data : DEMO_RECEIPTS) as LiveReceipt[];
+      return (data && data.length > 0 ? data : RECEIPTS) as LiveReceipt[];
     },
     staleTime: 15_000,
   });
@@ -339,10 +339,10 @@ export function useBoardroomLiveData() {
 
   return {
     sessions: sessionsQuery.data || [],
-    items: itemsQuery.data || DEMO_ITEMS,
+    items: itemsQuery.data || ITEMS,
     evidence: evidenceQuery.data || [],
     recommendations: recsQuery.data || [],
-    receipts: receiptsQuery.data || DEMO_RECEIPTS,
+    receipts: receiptsQuery.data || RECEIPTS,
     isLoading: itemsQuery.isLoading || receiptsQuery.isLoading,
     createReceipt,
     createActionItem,

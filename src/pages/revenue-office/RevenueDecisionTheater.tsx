@@ -6,7 +6,6 @@ import { Theater, AlertTriangle, CheckCircle, Users, TrendingUp, Shield, Zap, Ar
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
-import { DEMO_pendingDecisions, DEMO_SCENARIO_CARDS } from "@/data/seed/revenue-office";
 import { useState } from "react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 type DecisionState = "draft" | "review" | "approved" | "executed";
@@ -31,10 +30,10 @@ export default function DecisionTheater() {
       {/* Summary */}
       <div className="grid grid-cols-4 gap-3">
         {[
-          { l: "Pending Decisions", v: ([] as typeof DEMO_pendingDecisions).length, c: "text-purple-400" },
-          { l: "Scenarios to Review", v: ([] as typeof DEMO_SCENARIO_CARDS).length, c: "text-primary" },
-          { l: "Avg Confidence", v: `${Math.round(([] as typeof DEMO_SCENARIO_CARDS).reduce((a, s) => a + s.confidence, 0) / ([] as typeof DEMO_SCENARIO_CARDS).length)}%`, c: "text-[hsl(var(--trust-safe))]" },
-          { l: "Advisor Votes", v: ([] as typeof DEMO_SCENARIO_CARDS).reduce((a, s) => a + s.advisorVotes.approve + s.advisorVotes.cautious + s.advisorVotes.oppose, 0), c: "text-foreground" },
+          { l: "Pending Decisions", v: ([] as typeof pendingDecisions).length, c: "text-purple-400" },
+          { l: "Scenarios to Review", v: ([] as any[]).length, c: "text-primary" },
+          { l: "Avg Confidence", v: `${Math.round(([] as any[]).reduce((a, s) => a + s.confidence, 0) / ([] as any[]).length)}%`, c: "text-[hsl(var(--trust-safe))]" },
+          { l: "Advisor Votes", v: ([] as any[]).reduce((a, s) => a + s.advisorVotes.approve + s.advisorVotes.cautious + s.advisorVotes.oppose, 0), c: "text-foreground" },
         ].map(m => (
           <div key={m.l} className="rounded-xl border border-border/40 bg-card p-3 text-center">
             <p className="text-xs text-muted-foreground">{m.l}</p>
@@ -52,7 +51,7 @@ export default function DecisionTheater() {
 
         {/* Decisions */}
         <TabsContent value="decisions" className="space-y-4 mt-4">
-          {([] as typeof DEMO_pendingDecisions).map((d, i) => {
+          {([] as typeof pendingDecisions).map((d, i) => {
             const state = decisionStates[i] || "draft";
             return (
               <Card key={i} className="bg-card/50 border-border/50">
@@ -131,7 +130,7 @@ export default function DecisionTheater() {
 
         {/* Scenario Simulation */}
         <TabsContent value="scenarios" className="space-y-3 mt-4">
-          {([] as typeof DEMO_SCENARIO_CARDS).map((s, i) => {
+          {([] as any[]).map((s, i) => {
             const state = scenarioStates[i] || "pending";
             return (
               <Card key={i} className={`bg-card/50 ${state === "approved" ? "border-[hsl(var(--trust-safe))]/30" : state === "rejected" ? "border-destructive/30" : "border-border/50"}`}>
@@ -188,7 +187,7 @@ export default function DecisionTheater() {
                 <table className="w-full text-xs">
                   <thead><tr className="border-b border-border/40 bg-muted/30"><th className="text-left p-3">Decision</th><th className="text-center p-3">Type</th><th className="text-center p-3">Advisors</th><th className="text-center p-3">Status</th><th className="text-center p-3">Proof</th></tr></thead>
                   <tbody>
-                    {([] as typeof DEMO_pendingDecisions).map((d, i) => {
+                    {([] as typeof pendingDecisions).map((d, i) => {
                       const state = decisionStates[i] || "draft";
                       return (
                         <tr key={i} className="border-b border-border/20">
@@ -206,7 +205,7 @@ export default function DecisionTheater() {
                         </tr>
                       );
                     })}
-                    {([] as typeof DEMO_SCENARIO_CARDS).map((s, i) => {
+                    {([] as any[]).map((s, i) => {
                       const state = scenarioStates[i] || "pending";
                       return (
                         <tr key={`s${i}`} className="border-b border-border/20">

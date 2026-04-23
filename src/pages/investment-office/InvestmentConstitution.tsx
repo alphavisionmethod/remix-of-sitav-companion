@@ -2,11 +2,10 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { ScrollText, Shield, Check, AlertTriangle, Settings, Lock } from "lucide-react";
 import { useInvestmentStrategyRecords } from "@/hooks/use-investment-office";
-import { DEMO_CONSTITUTION_RULES, DEMO_CURRENT_VIOLATIONS } from "@/data/seed/investment";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 // Production fallback — seed data removed
-const DEMO_CATEGORIES: any[] = [];
+const CATEGORIES: any[] = [];
 
 interface Rule {
   id: string;
@@ -21,7 +20,7 @@ interface Rule {
 export default function InvestmentConstitution() {
   const { data: liveData, isLoading } = useInvestmentStrategyRecords();
   const [filter, setFilter] = useState("all");
-  const filtered = ([] as typeof DEMO_CONSTITUTION_RULES).filter(r => filter === "all" || r.category === filter);
+  const filtered = ([] as any[]).filter(r => filter === "all" || r.category === filter);
 
   return (
     <div className="mx-auto max-w-5xl space-y-6">
@@ -31,13 +30,13 @@ export default function InvestmentConstitution() {
       </div>
 
       {/* Violations Banner */}
-      {([] as typeof DEMO_CURRENT_VIOLATIONS).length > 0 && (
+      {([] as any[]).length > 0 && (
         <div className="rounded-2xl border border-destructive/20 bg-destructive/5 p-4 space-y-2">
           <p className="text-[10px] font-semibold text-destructive uppercase tracking-wider flex items-center gap-1">
-            <AlertTriangle className="h-3 w-3" /> {([] as typeof DEMO_CURRENT_VIOLATIONS).length} Active Violations
+            <AlertTriangle className="h-3 w-3" /> {([] as any[]).length} Active Violations
           </p>
-          {([] as typeof DEMO_CURRENT_VIOLATIONS).map(v => {
-            const rule = ([] as typeof DEMO_CONSTITUTION_RULES).find(r => r.id === v.ruleId);
+          {([] as any[]).map(v => {
+            const rule = ([] as any[]).find(r => r.id === v.ruleId);
             return (
               <div key={v.ruleId} className="flex items-start gap-2 text-sm text-foreground">
                 <AlertTriangle className="h-3.5 w-3.5 text-destructive shrink-0 mt-0.5" />
@@ -50,7 +49,7 @@ export default function InvestmentConstitution() {
 
       {/* Filter Tabs */}
       <div className="flex gap-1.5">
-        {([] as typeof DEMO_CATEGORIES).map(c => (
+        {([] as any[]).map(c => (
           <button key={c.id} onClick={() => setFilter(c.id)}
             className={`rounded-lg px-3 py-2 text-xs font-medium transition-colors ${
               filter === c.id ? "bg-primary text-primary-foreground" : "bg-secondary text-muted-foreground hover:text-foreground"
@@ -61,7 +60,7 @@ export default function InvestmentConstitution() {
       {/* Rules */}
       <div className="space-y-3">
         {filtered.map((rule, i) => {
-          const isViolated = ([] as typeof DEMO_CURRENT_VIOLATIONS).some(v => v.ruleId === rule.id);
+          const isViolated = ([] as any[]).some(v => v.ruleId === rule.id);
           return (
             <motion.div key={rule.id} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.03 }}
               className={`rounded-2xl border p-5 space-y-2 ${

@@ -12,7 +12,7 @@ const CONTRACT_COLORS: Record<string, string> = { none: "text-destructive", part
 
 export default function ContractBackendReadiness() {
   const { data: classifications = [] } = useRealityClassifications();
-  const { data: mockReplacements = [] } = useMockReplacements();
+  const { data: replacements = [] } = useMockReplacements();
 
   const contractStats = useMemo(() => {
     const counts = { none: 0, partial: 0, aligned: 0, verified: 0 };

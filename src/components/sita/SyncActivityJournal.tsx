@@ -19,7 +19,7 @@ import { useDataMode } from "@/contexts/DataModeContext";
 
 // ─── Demo Data ───────────────────────────────────────────────
 
-const DEMO_ENTRIES = [
+const ENTRIES = [
   { id: "j1", category: "sync" as JournalCategory, severity: "info" as JournalSeverity, title: "Pulled 14 objects", description: "Sync pull from MacBook Pro", deviceName: "MacBook Pro", timestamp: new Date(Date.now() - 120000).toISOString(), undoable: false },
   { id: "j2", category: "share" as JournalCategory, severity: "info" as JournalSeverity, title: "Shared with Alex", description: "Q4 Business Plan shared with edit access", deviceName: "iPhone 16", timestamp: new Date(Date.now() - 900000).toISOString(), undoable: true },
   { id: "j3", category: "settings" as JournalCategory, severity: "info" as JournalSeverity, title: "Theme changed", description: "Dark mode enabled across devices", deviceName: "iPad Air", timestamp: new Date(Date.now() - 3600000).toISOString(), undoable: true },
@@ -77,7 +77,7 @@ export function SyncActivityJournal({ compact = false, maxEntries = 10 }: SyncAc
   const [showUndoableOnly, setShowUndoableOnly] = useState(false);
 
   const filteredEntries = useMemo(() => {
-    let entries = [...DEMO_ENTRIES];
+    let entries = [...ENTRIES];
     if (searchText) {
       const s = searchText.toLowerCase();
       entries = entries.filter(e => e.title.toLowerCase().includes(s) || e.description.toLowerCase().includes(s));

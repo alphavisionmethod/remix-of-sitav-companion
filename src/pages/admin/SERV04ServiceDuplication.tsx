@@ -8,7 +8,6 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { SERVICE_OWNERSHIP_REGISTRY, DUPLICATE_CLUSTER_RESOLUTIONS, type ClusterResolution } from "@/lib/core-services/service-registry/service-ownership-registry";
 import { getDuplicateActionPatterns, getRoutesWithShadowRisk } from "@/lib/core-services/service-registry/route-to-service-inventory";
 import { AlertTriangle, Copy, Ghost, Shield, CheckCircle, ArrowRight } from "lucide-react";
-import { DEMO_SHADOW_PATTERNS } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 interface ShadowPattern {
   pattern: string;
@@ -98,7 +97,7 @@ export default function SERV04ServiceDuplication() {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <Card>
           <CardContent className="pt-4" data-testid="serv04-shadow-count">
-            <div className="text-2xl font-bold text-amber-400">{([] as typeof DEMO_SHADOW_PATTERNS).length}</div>
+            <div className="text-2xl font-bold text-amber-400">{([] as any[]).length}</div>
             <div className="text-xs text-muted-foreground">Known Shadow Patterns</div>
           </CardContent>
         </Card>
@@ -154,7 +153,7 @@ export default function SERV04ServiceDuplication() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {([] as typeof DEMO_SHADOW_PATTERNS).map((p) => (
+              {([] as any[]).map((p) => (
                 <TableRow key={p.pattern}>
                   <TableCell className="font-medium text-sm">{p.pattern}</TableCell>
                   <TableCell><Badge variant="outline">{p.domain}</Badge></TableCell>

@@ -23,7 +23,6 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
-import { DEMO_AUTONOMY_LEVELS } from "@/data/seed/core-pages";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 // ── Maturity color mapping ──────────────────────────────────
@@ -46,8 +45,8 @@ const COUNCIL_ICONS: Record<string, typeof Brain> = {
 };
 
 function autonomyPct(level: string): number {
-  const idx = DEMO_AUTONOMY_LEVELS.indexOf(level);
-  return idx >= 0 ? Math.round(((idx + 1) / ([] as typeof DEMO_AUTONOMY_LEVELS).length) * 100) : 0;
+  const idx = AUTONOMY_LEVELS.indexOf(level);
+  return idx >= 0 ? Math.round(((idx + 1) / ([] as any[]).length) * 100) : 0;
 }
 
 // ── Detail Panel ────────────────────────────────────────────

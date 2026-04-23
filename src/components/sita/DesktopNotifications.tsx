@@ -27,7 +27,7 @@ const DOMAIN_CONFIG: Record<string, { icon: React.ElementType; accent: string }>
   system: { icon: Users, accent: "border-l-[hsl(190_60%_50%)]" },
 };
 
-const DEMO_NOTIFICATIONS: DesktopNotification[] = [
+const NOTIFICATIONS: DesktopNotification[] = [
   { id: "1", domain: "advisor", title: "Business Advisor", message: "3 leads are cooling — re-engage before Friday", action: "View Leads", timestamp: Date.now() },
   { id: "2", domain: "money", title: "Money Center", message: "Insurance renewal due in 12 days", action: "Review Options", timestamp: Date.now() + 2000 },
   { id: "3", domain: "household", title: "Concierge", message: "Grocery list ready for approval", action: "Review List", timestamp: Date.now() + 5000 },
@@ -46,7 +46,7 @@ export function DesktopNotifications() {
   // Stagger demo notifications
   useEffect(() => {
     if (!isDesktop) return;
-    const timers = (isDemoMode ? DEMO_NOTIFICATIONS : [] as typeof DEMO_NOTIFICATIONS).map((notif, i) =>
+    const timers = (isDemoMode ? NOTIFICATIONS : [] as typeof NOTIFICATIONS).map((notif, i) =>
       setTimeout(() => {
         setNotifications(prev => [notif, ...prev].slice(0, MAX_VISIBLE + 2));
       }, 2000 + i * STAGGER_DELAY_MS)

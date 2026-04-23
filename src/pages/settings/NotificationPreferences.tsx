@@ -13,7 +13,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
 // Production fallback — seed data removed
-const DEMO_CATEGORIES: any[] = [];
+const CATEGORIES: any[] = [];
 
 export default function NotificationPreferences() {
   const { user } = useAuth();
@@ -105,7 +105,7 @@ export default function NotificationPreferences() {
           <CardDescription>Choose which categories send push vs in-app only</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          {([] as typeof DEMO_CATEGORIES).map((cat) => {
+          {([] as any[]).map((cat) => {
             const pref = getPref(cat.key);
             return (
               <div key={cat.key} className="flex items-center justify-between p-3 rounded-lg bg-muted/30 border border-border">

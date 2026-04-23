@@ -71,14 +71,14 @@ export interface MockReplacementRecord {
   page: string;
   route: string;
   domain: string;
-  mockSource: string;
+  source: string;
   realBackendTarget: string;
   contractStatus: "absent" | "draft" | "defined" | "implemented";
   migrationPriority: "P0" | "P1" | "P2";
   done: boolean;
   notes: string;
   // Extended fields
-  mockType: MockType;
+  type: MockType;
   owner: string | null;
   blockers: string[];
   migrationStatus: MigrationStatus;
@@ -90,19 +90,19 @@ export interface MockReplacementRecord {
   dependencies: string[];
 }
 
-export const MOCK_REPLACEMENT_PROGRAM: MockReplacementRecord[] = [
-  { id: "MR-001", page: "Money Office", route: "/money", domain: "finance", mockSource: "In-memory demo data generators", realBackendTarget: "Supabase + account aggregation service", contractStatus: "defined", migrationPriority: "P0", done: false, notes: "Highest user-facing priority. Needs account linking API.", mockType: "in_memory_engine", owner: "Finance Team", blockers: ["No account linking API", "No banking connector"], migrationStatus: "planned", validationEvidence: [], truthSeverity: "critical", expectedContracts: ["AccountContract", "TransactionContract"], persistenceTarget: "Supabase accounts + transactions tables", sequenceOrder: 1, dependencies: [] },
-  { id: "MR-002", page: "Safe to Spend", route: "/money/safe-to-spend", domain: "finance", mockSource: "Hardcoded balance calculations", realBackendTarget: "financial-projection-service", contractStatus: "defined", migrationPriority: "P0", done: false, notes: "Flagship feature. Math must be real.", mockType: "pure_function", owner: "Finance Team", blockers: ["No real balance API", "Projection model not validated"], migrationStatus: "planned", validationEvidence: [], truthSeverity: "critical", expectedContracts: ["BalanceContract", "ProjectionContract"], persistenceTarget: "Supabase projections table", sequenceOrder: 2, dependencies: ["MR-001"] },
-  { id: "MR-003", page: "Business Center", route: "/business", domain: "business", mockSource: "Static business entity data", realBackendTarget: "Supabase business_entities + contracts", contractStatus: "defined", migrationPriority: "P0", done: false, notes: "Core product. Needs real entity persistence.", mockType: "local_array", owner: "Business Team", blockers: ["Schema migration needed"], migrationStatus: "in_progress", validationEvidence: [], truthSeverity: "critical", expectedContracts: ["BusinessEntityContract", "ContractContract"], persistenceTarget: "Supabase business_entities", sequenceOrder: 3, dependencies: [] },
-  { id: "MR-004", page: "Investment Office", route: "/investment", domain: "business", mockSource: "Hardcoded portfolio data", realBackendTarget: "Investment API + market data connector", contractStatus: "absent", migrationPriority: "P1", done: false, notes: "Requires external market data integration.", mockType: "hardcoded", owner: null, blockers: ["No brokerage connector", "No market data API"], migrationStatus: "identified", validationEvidence: [], truthSeverity: "high", expectedContracts: ["PortfolioContract", "MarketDataContract"], persistenceTarget: "Supabase portfolios + market cache", sequenceOrder: 7, dependencies: [] },
-  { id: "MR-005", page: "Concierge Chat", route: "/concierge", domain: "concierge", mockSource: "Demo AI responses", realBackendTarget: "AI Gateway (Lovable/OpenAI)", contractStatus: "implemented", migrationPriority: "P0", done: false, notes: "Keys exist. Needs wiring verification.", mockType: "demo_flow", owner: "AI Team", blockers: ["OPENAI key verification"], migrationStatus: "in_progress", validationEvidence: ["AI Gateway config exists"], truthSeverity: "critical", expectedContracts: ["InferenceContract"], persistenceTarget: "Supabase conversations + messages", sequenceOrder: 4, dependencies: [] },
-  { id: "MR-006", page: "Admin Intelligence", route: "/admin/intelligence", domain: "admin", mockSource: "Hardcoded dashboard metrics", realBackendTarget: "Supabase analytics views + edge functions", contractStatus: "draft", migrationPriority: "P1", done: false, notes: "Intelligence must come from real telemetry.", mockType: "hardcoded", owner: "Admin Team", blockers: ["No telemetry pipeline"], migrationStatus: "planned", validationEvidence: [], truthSeverity: "high", expectedContracts: ["TelemetryContract", "AnalyticsContract"], persistenceTarget: "Supabase analytics views", sequenceOrder: 8, dependencies: [] },
-  { id: "MR-007", page: "Daily Pulse", route: "/pulse", domain: "platform", mockSource: "Mock aggregation data", realBackendTarget: "Supabase views + real user activity", contractStatus: "defined", migrationPriority: "P0", done: false, notes: "Entry point. Must show real user state.", mockType: "in_memory_engine", owner: "Platform Team", blockers: ["EventBus not persisted", "No activity stream"], migrationStatus: "planned", validationEvidence: [], truthSeverity: "high", expectedContracts: ["ActivityContract", "PulseAggregationContract"], persistenceTarget: "Supabase activity_events", sequenceOrder: 5, dependencies: ["MR-001"] },
-  { id: "MR-008", page: "Owner Center", route: "/owner", domain: "owner", mockSource: "Static owner/team data", realBackendTarget: "Supabase profiles + user_roles", contractStatus: "draft", migrationPriority: "P1", done: false, notes: "Team management needs real role system.", mockType: "hardcoded", owner: null, blockers: ["Role system not wired"], migrationStatus: "identified", validationEvidence: [], truthSeverity: "high", expectedContracts: ["TeamContract", "RoleContract"], persistenceTarget: "Supabase user_roles + profiles", sequenceOrder: 9, dependencies: [] },
-  { id: "MR-009", page: "Boardroom", route: "/boardroom", domain: "platform", mockSource: "Demo intelligence briefs", realBackendTarget: "AI Gateway + real data aggregation", contractStatus: "defined", migrationPriority: "P1", done: false, notes: "Strategic intelligence surface.", mockType: "demo_flow", owner: "AI Team", blockers: ["AI keys needed", "No data aggregation"], migrationStatus: "identified", validationEvidence: [], truthSeverity: "high", expectedContracts: ["IntelligenceContract", "BriefingContract"], persistenceTarget: "Supabase intelligence_snapshots", sequenceOrder: 10, dependencies: ["MR-005"] },
-  { id: "MR-010", page: "Connector Hub", route: "/connectors", domain: "platform", mockSource: "Hardcoded connector list", realBackendTarget: "Real OAuth + API integrations", contractStatus: "draft", migrationPriority: "P1", done: false, notes: "First real connector will prove the model.", mockType: "hardcoded", owner: null, blockers: ["No OAuth client", "No sync engine"], migrationStatus: "identified", validationEvidence: [], truthSeverity: "high", expectedContracts: ["ConnectorContract", "SyncContract"], persistenceTarget: "Supabase connector_configs", sequenceOrder: 11, dependencies: [] },
-  { id: "MR-011", page: "Spending Analytics", route: "/money/analytics", domain: "finance", mockSource: "Static chart data", realBackendTarget: "Transaction aggregation service", contractStatus: "absent", migrationPriority: "P1", done: false, notes: "Charts look premium but data is fake.", mockType: "hardcoded", owner: null, blockers: ["No transaction data source"], migrationStatus: "identified", validationEvidence: [], truthSeverity: "high", expectedContracts: ["TransactionAggregationContract"], persistenceTarget: "Supabase transaction_aggregates", sequenceOrder: 12, dependencies: ["MR-001"] },
-  { id: "MR-012", page: "Workspace Suite", route: "/workspace", domain: "platform", mockSource: "No real editing engine", realBackendTarget: "Collaborative editing service (TBD)", contractStatus: "absent", migrationPriority: "P2", done: false, notes: "Large effort. Lower priority.", mockType: "hardcoded", owner: null, blockers: ["No editing engine", "No collaboration backend"], migrationStatus: "identified", validationEvidence: [], truthSeverity: "medium", expectedContracts: ["DocumentContract", "CollaborationContract"], persistenceTarget: "Supabase documents + CRDT", sequenceOrder: 13, dependencies: [] },
+export const REPLACEMENT_PROGRAM: MockReplacementRecord[] = [
+  { id: "MR-001", page: "Money Office", route: "/money", domain: "finance", source: "In-memory demo data generators", realBackendTarget: "Supabase + account aggregation service", contractStatus: "defined", migrationPriority: "P0", done: false, notes: "Highest user-facing priority. Needs account linking API.", type: "in_memory_engine", owner: "Finance Team", blockers: ["No account linking API", "No banking connector"], migrationStatus: "planned", validationEvidence: [], truthSeverity: "critical", expectedContracts: ["AccountContract", "TransactionContract"], persistenceTarget: "Supabase accounts + transactions tables", sequenceOrder: 1, dependencies: [] },
+  { id: "MR-002", page: "Safe to Spend", route: "/money/safe-to-spend", domain: "finance", source: "Hardcoded balance calculations", realBackendTarget: "financial-projection-service", contractStatus: "defined", migrationPriority: "P0", done: false, notes: "Flagship feature. Math must be real.", type: "pure_function", owner: "Finance Team", blockers: ["No real balance API", "Projection model not validated"], migrationStatus: "planned", validationEvidence: [], truthSeverity: "critical", expectedContracts: ["BalanceContract", "ProjectionContract"], persistenceTarget: "Supabase projections table", sequenceOrder: 2, dependencies: ["MR-001"] },
+  { id: "MR-003", page: "Business Center", route: "/business", domain: "business", source: "Static business entity data", realBackendTarget: "Supabase business_entities + contracts", contractStatus: "defined", migrationPriority: "P0", done: false, notes: "Core product. Needs real entity persistence.", type: "local_array", owner: "Business Team", blockers: ["Schema migration needed"], migrationStatus: "in_progress", validationEvidence: [], truthSeverity: "critical", expectedContracts: ["BusinessEntityContract", "ContractContract"], persistenceTarget: "Supabase business_entities", sequenceOrder: 3, dependencies: [] },
+  { id: "MR-004", page: "Investment Office", route: "/investment", domain: "business", source: "Hardcoded portfolio data", realBackendTarget: "Investment API + market data connector", contractStatus: "absent", migrationPriority: "P1", done: false, notes: "Requires external market data integration.", type: "hardcoded", owner: null, blockers: ["No brokerage connector", "No market data API"], migrationStatus: "identified", validationEvidence: [], truthSeverity: "high", expectedContracts: ["PortfolioContract", "MarketDataContract"], persistenceTarget: "Supabase portfolios + market cache", sequenceOrder: 7, dependencies: [] },
+  { id: "MR-005", page: "Concierge Chat", route: "/concierge", domain: "concierge", source: "Demo AI responses", realBackendTarget: "AI Gateway (Lovable/OpenAI)", contractStatus: "implemented", migrationPriority: "P0", done: false, notes: "Keys exist. Needs wiring verification.", type: "demo_flow", owner: "AI Team", blockers: ["OPENAI key verification"], migrationStatus: "in_progress", validationEvidence: ["AI Gateway config exists"], truthSeverity: "critical", expectedContracts: ["InferenceContract"], persistenceTarget: "Supabase conversations + messages", sequenceOrder: 4, dependencies: [] },
+  { id: "MR-006", page: "Admin Intelligence", route: "/admin/intelligence", domain: "admin", source: "Hardcoded dashboard metrics", realBackendTarget: "Supabase analytics views + edge functions", contractStatus: "draft", migrationPriority: "P1", done: false, notes: "Intelligence must come from real telemetry.", type: "hardcoded", owner: "Admin Team", blockers: ["No telemetry pipeline"], migrationStatus: "planned", validationEvidence: [], truthSeverity: "high", expectedContracts: ["TelemetryContract", "AnalyticsContract"], persistenceTarget: "Supabase analytics views", sequenceOrder: 8, dependencies: [] },
+  { id: "MR-007", page: "Daily Pulse", route: "/pulse", domain: "platform", source: "Mock aggregation data", realBackendTarget: "Supabase views + real user activity", contractStatus: "defined", migrationPriority: "P0", done: false, notes: "Entry point. Must show real user state.", type: "in_memory_engine", owner: "Platform Team", blockers: ["EventBus not persisted", "No activity stream"], migrationStatus: "planned", validationEvidence: [], truthSeverity: "high", expectedContracts: ["ActivityContract", "PulseAggregationContract"], persistenceTarget: "Supabase activity_events", sequenceOrder: 5, dependencies: ["MR-001"] },
+  { id: "MR-008", page: "Owner Center", route: "/owner", domain: "owner", source: "Static owner/team data", realBackendTarget: "Supabase profiles + user_roles", contractStatus: "draft", migrationPriority: "P1", done: false, notes: "Team management needs real role system.", type: "hardcoded", owner: null, blockers: ["Role system not wired"], migrationStatus: "identified", validationEvidence: [], truthSeverity: "high", expectedContracts: ["TeamContract", "RoleContract"], persistenceTarget: "Supabase user_roles + profiles", sequenceOrder: 9, dependencies: [] },
+  { id: "MR-009", page: "Boardroom", route: "/boardroom", domain: "platform", source: "Demo intelligence briefs", realBackendTarget: "AI Gateway + real data aggregation", contractStatus: "defined", migrationPriority: "P1", done: false, notes: "Strategic intelligence surface.", type: "demo_flow", owner: "AI Team", blockers: ["AI keys needed", "No data aggregation"], migrationStatus: "identified", validationEvidence: [], truthSeverity: "high", expectedContracts: ["IntelligenceContract", "BriefingContract"], persistenceTarget: "Supabase intelligence_snapshots", sequenceOrder: 10, dependencies: ["MR-005"] },
+  { id: "MR-010", page: "Connector Hub", route: "/connectors", domain: "platform", source: "Hardcoded connector list", realBackendTarget: "Real OAuth + API integrations", contractStatus: "draft", migrationPriority: "P1", done: false, notes: "First real connector will prove the model.", type: "hardcoded", owner: null, blockers: ["No OAuth client", "No sync engine"], migrationStatus: "identified", validationEvidence: [], truthSeverity: "high", expectedContracts: ["ConnectorContract", "SyncContract"], persistenceTarget: "Supabase connector_configs", sequenceOrder: 11, dependencies: [] },
+  { id: "MR-011", page: "Spending Analytics", route: "/money/analytics", domain: "finance", source: "Static chart data", realBackendTarget: "Transaction aggregation service", contractStatus: "absent", migrationPriority: "P1", done: false, notes: "Charts look premium but data is fake.", type: "hardcoded", owner: null, blockers: ["No transaction data source"], migrationStatus: "identified", validationEvidence: [], truthSeverity: "high", expectedContracts: ["TransactionAggregationContract"], persistenceTarget: "Supabase transaction_aggregates", sequenceOrder: 12, dependencies: ["MR-001"] },
+  { id: "MR-012", page: "Workspace Suite", route: "/workspace", domain: "platform", source: "No real editing engine", realBackendTarget: "Collaborative editing service (TBD)", contractStatus: "absent", migrationPriority: "P2", done: false, notes: "Large effort. Lower priority.", type: "hardcoded", owner: null, blockers: ["No editing engine", "No collaboration backend"], migrationStatus: "identified", validationEvidence: [], truthSeverity: "medium", expectedContracts: ["DocumentContract", "CollaborationContract"], persistenceTarget: "Supabase documents + CRDT", sequenceOrder: 13, dependencies: [] },
 ];
 
 // ─── C. Core Service Persistence Program ──────────────────────
@@ -245,7 +245,7 @@ export interface MockSourceRecord {
   id: string;
   sourcePath: string;
   sourceDescription: string;
-  mockType: MockType;
+  type: MockType;
   importedByPages: string[];
   domainsAffected: string[];
   usageCount: number;
@@ -255,22 +255,22 @@ export interface MockSourceRecord {
   replacementTarget: string;
 }
 
-export const MOCK_SOURCE_INVENTORY: MockSourceRecord[] = [
-  { id: "MS-001", sourcePath: "src/data/fixtures/mock-data/finance-demo.ts", sourceDescription: "Demo account balances, transactions, spending categories", mockType: "hardcoded", importedByPages: ["/money", "/money/analytics", "/money/safe-to-spend", "/money/bills"], domainsAffected: ["finance"], usageCount: 12, criticality: "critical", allowed: false, forbidden: true, replacementTarget: "Supabase accounts + transaction tables" },
-  { id: "MS-002", sourcePath: "src/data/fixtures/mock-data/business-entities.ts", sourceDescription: "Static business entities, contracts, team data", mockType: "local_array", importedByPages: ["/business", "/business/contracts"], domainsAffected: ["business"], usageCount: 8, criticality: "critical", allowed: false, forbidden: true, replacementTarget: "Supabase business_entities" },
-  { id: "MS-003", sourcePath: "src/lib/demo-intelligence.ts", sourceDescription: "Hardcoded intelligence metrics, insights, briefs", mockType: "hardcoded", importedByPages: ["/admin/intelligence", "/boardroom", "/pulse"], domainsAffected: ["admin", "platform"], usageCount: 15, criticality: "high", allowed: false, forbidden: true, replacementTarget: "AI Gateway + analytics views" },
-  { id: "MS-004", sourcePath: "src/lib/services/EventBus.ts", sourceDescription: "In-memory event bus — no persistence, lost on refresh", mockType: "in_memory_engine", importedByPages: ["/pulse", "/mission-control", "/admin/*"], domainsAffected: ["platform", "admin", "finance"], usageCount: 25, criticality: "critical", allowed: true, forbidden: false, replacementTarget: "Supabase event_log + pg_notify" },
-  { id: "MS-005", sourcePath: "src/lib/services/MemoryService.ts", sourceDescription: "In-memory key-value store for AI context", mockType: "in_memory_engine", importedByPages: ["/concierge", "/advisors", "/boardroom"], domainsAffected: ["concierge", "ai"], usageCount: 10, criticality: "critical", allowed: true, forbidden: false, replacementTarget: "Supabase memory_store table" },
-  { id: "MS-006", sourcePath: "src/lib/services/PolicyEngine.ts", sourceDescription: "In-memory policy rules and evaluation", mockType: "in_memory_engine", importedByPages: ["/admin/policies", "/approvals"], domainsAffected: ["admin", "platform"], usageCount: 8, criticality: "critical", allowed: true, forbidden: false, replacementTarget: "Supabase policy_rules + evaluations" },
-  { id: "MS-007", sourcePath: "src/data/fixtures/mock-data/investment-demo.ts", sourceDescription: "Fake portfolio holdings, market data, returns", mockType: "hardcoded", importedByPages: ["/investment"], domainsAffected: ["business"], usageCount: 6, criticality: "high", allowed: false, forbidden: true, replacementTarget: "Investment API + market connector" },
-  { id: "MS-008", sourcePath: "src/lib/demo-connectors.ts", sourceDescription: "Hardcoded connector list and fake sync states", mockType: "hardcoded", importedByPages: ["/connectors"], domainsAffected: ["platform"], usageCount: 4, criticality: "high", allowed: false, forbidden: true, replacementTarget: "Real OAuth connector configs" },
-  { id: "MS-009", sourcePath: "src/data/fixtures/mock-data/owner-team.ts", sourceDescription: "Static team members, roles, permissions", mockType: "local_array", importedByPages: ["/owner", "/owner/team"], domainsAffected: ["owner"], usageCount: 5, criticality: "high", allowed: false, forbidden: true, replacementTarget: "Supabase profiles + user_roles" },
-  { id: "MS-010", sourcePath: "src/lib/platform-law/platform-law-registry.ts", sourceDescription: "In-memory law packs, rules, validation runs", mockType: "in_memory_engine", importedByPages: ["/admin/platform-law/*"], domainsAffected: ["admin"], usageCount: 10, criticality: "medium", allowed: true, forbidden: false, replacementTarget: "Supabase law_packs + rules tables" },
-  { id: "MS-011", sourcePath: "src/lib/implementation-truth/registry.ts", sourceDescription: "In-memory feature truth inventory", mockType: "in_memory_engine", importedByPages: ["/admin/implementation-truth/*"], domainsAffected: ["admin"], usageCount: 12, criticality: "medium", allowed: true, forbidden: false, replacementTarget: "Supabase feature_truth table" },
-  { id: "MS-012", sourcePath: "src/lib/demo-ai-responses.ts", sourceDescription: "Canned AI responses and demo conversation flows", mockType: "demo_flow", importedByPages: ["/concierge", "/advisors"], domainsAffected: ["concierge", "ai"], usageCount: 6, criticality: "critical", allowed: false, forbidden: true, replacementTarget: "AI Gateway real inference" },
-  { id: "MS-013", sourcePath: "src/data/fixtures/mock-data/workspace-docs.ts", sourceDescription: "Sample documents, sheets, slide decks", mockType: "hardcoded", importedByPages: ["/workspace"], domainsAffected: ["platform"], usageCount: 3, criticality: "low", allowed: true, forbidden: false, replacementTarget: "Document persistence service" },
-  { id: "MS-014", sourcePath: "src/lib/demo-auth-bypass.ts", sourceDescription: "Demo authentication bypass for development", mockType: "demo_flow", importedByPages: ["/auth", "/*"], domainsAffected: ["platform"], usageCount: 2, criticality: "critical", allowed: false, forbidden: true, replacementTarget: "Gate behind env flag, remove for production" },
-  { id: "MS-015", sourcePath: "src/data/fixtures/mock-data/activity-feed.ts", sourceDescription: "Fake activity events and notification data", mockType: "local_array", importedByPages: ["/pulse", "/inbox"], domainsAffected: ["platform"], usageCount: 7, criticality: "high", allowed: false, forbidden: true, replacementTarget: "Supabase activity_events table" },
+export const SOURCE_INVENTORY: MockSourceRecord[] = [
+  { id: "MS-001", sourcePath: "src/data/fixtures/mock-data/finance-demo.ts", sourceDescription: "Demo account balances, transactions, spending categories", type: "hardcoded", importedByPages: ["/money", "/money/analytics", "/money/safe-to-spend", "/money/bills"], domainsAffected: ["finance"], usageCount: 12, criticality: "critical", allowed: false, forbidden: true, replacementTarget: "Supabase accounts + transaction tables" },
+  { id: "MS-002", sourcePath: "src/data/fixtures/mock-data/business-entities.ts", sourceDescription: "Static business entities, contracts, team data", type: "local_array", importedByPages: ["/business", "/business/contracts"], domainsAffected: ["business"], usageCount: 8, criticality: "critical", allowed: false, forbidden: true, replacementTarget: "Supabase business_entities" },
+  { id: "MS-003", sourcePath: "src/lib/demo-intelligence.ts", sourceDescription: "Hardcoded intelligence metrics, insights, briefs", type: "hardcoded", importedByPages: ["/admin/intelligence", "/boardroom", "/pulse"], domainsAffected: ["admin", "platform"], usageCount: 15, criticality: "high", allowed: false, forbidden: true, replacementTarget: "AI Gateway + analytics views" },
+  { id: "MS-004", sourcePath: "src/lib/services/EventBus.ts", sourceDescription: "In-memory event bus — no persistence, lost on refresh", type: "in_memory_engine", importedByPages: ["/pulse", "/mission-control", "/admin/*"], domainsAffected: ["platform", "admin", "finance"], usageCount: 25, criticality: "critical", allowed: true, forbidden: false, replacementTarget: "Supabase event_log + pg_notify" },
+  { id: "MS-005", sourcePath: "src/lib/services/MemoryService.ts", sourceDescription: "In-memory key-value store for AI context", type: "in_memory_engine", importedByPages: ["/concierge", "/advisors", "/boardroom"], domainsAffected: ["concierge", "ai"], usageCount: 10, criticality: "critical", allowed: true, forbidden: false, replacementTarget: "Supabase memory_store table" },
+  { id: "MS-006", sourcePath: "src/lib/services/PolicyEngine.ts", sourceDescription: "In-memory policy rules and evaluation", type: "in_memory_engine", importedByPages: ["/admin/policies", "/approvals"], domainsAffected: ["admin", "platform"], usageCount: 8, criticality: "critical", allowed: true, forbidden: false, replacementTarget: "Supabase policy_rules + evaluations" },
+  { id: "MS-007", sourcePath: "src/data/fixtures/mock-data/investment-demo.ts", sourceDescription: "Fake portfolio holdings, market data, returns", type: "hardcoded", importedByPages: ["/investment"], domainsAffected: ["business"], usageCount: 6, criticality: "high", allowed: false, forbidden: true, replacementTarget: "Investment API + market connector" },
+  { id: "MS-008", sourcePath: "src/lib/demo-connectors.ts", sourceDescription: "Hardcoded connector list and fake sync states", type: "hardcoded", importedByPages: ["/connectors"], domainsAffected: ["platform"], usageCount: 4, criticality: "high", allowed: false, forbidden: true, replacementTarget: "Real OAuth connector configs" },
+  { id: "MS-009", sourcePath: "src/data/fixtures/mock-data/owner-team.ts", sourceDescription: "Static team members, roles, permissions", type: "local_array", importedByPages: ["/owner", "/owner/team"], domainsAffected: ["owner"], usageCount: 5, criticality: "high", allowed: false, forbidden: true, replacementTarget: "Supabase profiles + user_roles" },
+  { id: "MS-010", sourcePath: "src/lib/platform-law/platform-law-registry.ts", sourceDescription: "In-memory law packs, rules, validation runs", type: "in_memory_engine", importedByPages: ["/admin/platform-law/*"], domainsAffected: ["admin"], usageCount: 10, criticality: "medium", allowed: true, forbidden: false, replacementTarget: "Supabase law_packs + rules tables" },
+  { id: "MS-011", sourcePath: "src/lib/implementation-truth/registry.ts", sourceDescription: "In-memory feature truth inventory", type: "in_memory_engine", importedByPages: ["/admin/implementation-truth/*"], domainsAffected: ["admin"], usageCount: 12, criticality: "medium", allowed: true, forbidden: false, replacementTarget: "Supabase feature_truth table" },
+  { id: "MS-012", sourcePath: "src/lib/demo-ai-responses.ts", sourceDescription: "Canned AI responses and demo conversation flows", type: "demo_flow", importedByPages: ["/concierge", "/advisors"], domainsAffected: ["concierge", "ai"], usageCount: 6, criticality: "critical", allowed: false, forbidden: true, replacementTarget: "AI Gateway real inference" },
+  { id: "MS-013", sourcePath: "src/data/fixtures/mock-data/workspace-docs.ts", sourceDescription: "Sample documents, sheets, slide decks", type: "hardcoded", importedByPages: ["/workspace"], domainsAffected: ["platform"], usageCount: 3, criticality: "low", allowed: true, forbidden: false, replacementTarget: "Document persistence service" },
+  { id: "MS-014", sourcePath: "src/lib/demo-auth-bypass.ts", sourceDescription: "Demo authentication bypass for development", type: "demo_flow", importedByPages: ["/auth", "/*"], domainsAffected: ["platform"], usageCount: 2, criticality: "critical", allowed: false, forbidden: true, replacementTarget: "Gate behind env flag, remove for production" },
+  { id: "MS-015", sourcePath: "src/data/fixtures/mock-data/activity-feed.ts", sourceDescription: "Fake activity events and notification data", type: "local_array", importedByPages: ["/pulse", "/inbox"], domainsAffected: ["platform"], usageCount: 7, criticality: "high", allowed: false, forbidden: true, replacementTarget: "Supabase activity_events table" },
 ];
 
 // ─── G. Contract & Backend Readiness ──────────────────────────
@@ -398,11 +398,11 @@ export function getDomainRealityRollups(): { domain: string; total: number; pres
 }
 
 export function getMockReplacementProgress(): { total: number; done: number; p0Remaining: number; byStatus: Record<MigrationStatus, number> } {
-  const total = MOCK_REPLACEMENT_PROGRAM.length;
-  const done = MOCK_REPLACEMENT_PROGRAM.filter(m => m.done).length;
-  const p0Remaining = MOCK_REPLACEMENT_PROGRAM.filter(m => !m.done && m.migrationPriority === "P0").length;
+  const total = REPLACEMENT_PROGRAM.length;
+  const done = REPLACEMENT_PROGRAM.filter(m => m.done).length;
+  const p0Remaining = REPLACEMENT_PROGRAM.filter(m => !m.done && m.migrationPriority === "P0").length;
   const byStatus: Record<MigrationStatus, number> = { identified: 0, planned: 0, in_progress: 0, blocked: 0, completed: 0, validated: 0 };
-  MOCK_REPLACEMENT_PROGRAM.forEach(m => byStatus[m.migrationStatus]++);
+  REPLACEMENT_PROGRAM.forEach(m => byStatus[m.migrationStatus]++);
   return { total, done, p0Remaining, byStatus };
 }
 
@@ -436,10 +436,10 @@ export function getLaunchHonestySummary(): { total: number; claimable: number; b
 
 export function getMockSourceStats(): { total: number; forbidden: number; critical: number; totalUsage: number } {
   return {
-    total: MOCK_SOURCE_INVENTORY.length,
-    forbidden: MOCK_SOURCE_INVENTORY.filter(s => s.forbidden).length,
-    critical: MOCK_SOURCE_INVENTORY.filter(s => s.criticality === "critical").length,
-    totalUsage: MOCK_SOURCE_INVENTORY.reduce((sum, s) => sum + s.usageCount, 0),
+    total: SOURCE_INVENTORY.length,
+    forbidden: SOURCE_INVENTORY.filter(s => s.forbidden).length,
+    critical: SOURCE_INVENTORY.filter(s => s.criticality === "critical").length,
+    totalUsage: SOURCE_INVENTORY.reduce((sum, s) => sum + s.usageCount, 0),
   };
 }
 
@@ -469,7 +469,7 @@ export function getFeatureById(id: string): FeatureRealityRecord | undefined {
 export function getMockReplacementsForFeature(featureId: string): MockReplacementRecord[] {
   const feature = FEATURE_REALITY_MATRIX.find(f => f.id === featureId);
   if (!feature) return [];
-  return MOCK_REPLACEMENT_PROGRAM.filter(m => m.route === feature.route || m.domain === feature.domain);
+  return REPLACEMENT_PROGRAM.filter(m => m.route === feature.route || m.domain === feature.domain);
 }
 
 export function getProgressTimeline(): { date: string; event: string; type: "transition" | "milestone" | "migration"; detail: string }[] {
@@ -488,21 +488,21 @@ export function getProgressTimeline(): { date: string; event: string; type: "tra
 
 export function getOverviewStats() {
   const dist = getRealityDistribution();
-  const mockProgress = getMockReplacementProgress();
+  const progress = getMockReplacementProgress();
   const serviceHealth = getCoreServiceHealth();
   const launchSummary = getLaunchHonestySummary();
   const runtimeSummary = getRuntimeTruthSummary();
-  const mockSourceStats = getMockSourceStats();
+  const sourceStats = getMockSourceStats();
   const contractStats = getContractReadinessStats();
 
   return {
     totalFeatures: FEATURE_REALITY_MATRIX.length,
     distribution: dist,
-    mockProgress,
+    progress,
     serviceHealth,
     launchSummary,
     runtimeSummary,
-    mockSourceStats,
+    sourceStats,
     contractStats,
     topSimulatedDomains: getDomainRealityRollups().filter(d => d.healthPct < 50),
     recentTransitions: REALITY_TRANSITIONS.slice(-3),

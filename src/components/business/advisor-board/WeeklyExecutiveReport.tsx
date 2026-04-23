@@ -34,7 +34,7 @@ interface WeeklyReport {
   riskChanges: string[];
 }
 
-const MOCK_REPORT: WeeklyReport = {
+const REPORT: WeeklyReport = {
   executiveSummary: "This week saw **positive momentum** in pipeline development with 3 new qualified leads, offset by continued aging on the Atlas Corp invoice. Cash position is stable but requires attention on receivables. Client health improved for Nova Inc but Meridian LLC remains at risk. Overall business health: **steady with upside potential** if invoice collection and lead follow-up are prioritized.",
   wins: [
     "Closed $8,400 deal with Nova Inc — fastest close this quarter",
@@ -74,7 +74,7 @@ const MOCK_REPORT: WeeklyReport = {
 };
 
 export function WeeklyExecutiveReport({ brief, profitSummary, reflectionSummary }: Props) {
-  const [report, setReport] = useState<WeeklyReport>(MOCK_REPORT);
+  const [report, setReport] = useState<WeeklyReport>(REPORT);
   const [isGenerating, setIsGenerating] = useState(false);
 
   const generateReport = async () => {

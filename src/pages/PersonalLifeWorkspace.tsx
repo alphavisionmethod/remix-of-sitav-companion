@@ -27,7 +27,7 @@ import {
 } from "lucide-react";
 
 // ── Demo Data ──────────────────────────────────────────────
-const mockRoutines = [
+const routines = [
   { id: "1", name: "Morning meditation", time: "6:30 AM", streak: 14, active: true, category: "wellbeing" },
   { id: "2", name: "Exercise", time: "7:00 AM", streak: 7, active: true, category: "health" },
   { id: "3", name: "Journal", time: "9:00 PM", streak: 3, active: true, category: "growth" },
@@ -35,21 +35,21 @@ const mockRoutines = [
   { id: "5", name: "Hydrate (8 glasses)", time: "All day", streak: 21, active: true, category: "health" },
 ];
 
-const mockGoals = [
+const goals = [
   { id: "1", title: "Run a half marathon", progress: 65, deadline: "2026-09-01", domain: "health", milestones: ["5K done", "10K done", "15K next"], nextAction: "Register for 10K race" },
   { id: "2", title: "Learn Spanish B1", progress: 40, deadline: "2026-12-31", domain: "growth", milestones: ["A1 complete", "A2 in progress"], nextAction: "Complete Duolingo Unit 5" },
   { id: "3", title: "Save €10k emergency fund", progress: 82, deadline: "2026-06-30", domain: "finance", milestones: ["€5K saved", "€8.2K saved"], nextAction: "Set up auto-transfer for €500/mo" },
   { id: "4", title: "Declutter home office", progress: 30, deadline: "2026-05-15", domain: "household", milestones: ["Sorted papers"], nextAction: "Organize bookshelf" },
 ];
 
-const mockSlipping = [
+const slipping = [
   { id: "1", item: "Dentist appointment — overdue by 2 weeks", severity: "medium" as const, domain: "health", action: "Schedule appointment" },
   { id: "2", item: "Car insurance renewal — 3 days left", severity: "high" as const, domain: "finance", action: "Review & renew online" },
   { id: "3", item: "Read 30 min habit — streak broken 4 days ago", severity: "low" as const, domain: "growth", action: "Resume tonight" },
   { id: "4", item: "Annual physical — 6 months overdue", severity: "high" as const, domain: "health", action: "Call doctor" },
 ];
 
-const mockBacklog = [
+const backlog = [
   { id: "1", item: "Learn to cook Thai food", domain: "growth" },
   { id: "2", item: "Organize photo library", domain: "household" },
   { id: "3", item: "Plan summer vacation", domain: "personal" },
@@ -130,9 +130,9 @@ export default function PersonalLifeWorkspace() {
               <CardContent className="space-y-3">
                 <div className="flex items-center justify-between text-sm">
                   <span className="text-muted-foreground">Routines completed</span>
-                  <span className="font-medium">{completedToday.length}/{mockRoutines.filter(r => r.active).length}</span>
+                  <span className="font-medium">{completedToday.length}/{routines.filter(r => r.active).length}</span>
                 </div>
-                <Progress value={(completedToday.length / mockRoutines.filter(r => r.active).length) * 100} className="h-2" />
+                <Progress value={(completedToday.length / routines.filter(r => r.active).length) * 100} className="h-2" />
                 <div className="flex items-center justify-between text-sm">
                   <span className="text-muted-foreground">Goal milestones approaching</span>
                   <span className="font-medium">1</span>
@@ -152,11 +152,11 @@ export default function PersonalLifeWorkspace() {
               <CardHeader className="pb-3">
                 <CardTitle className="text-base flex items-center gap-2">
                   <AlertTriangle className="h-4 w-4 text-amber-500" /> Slipping Items
-                  <Badge variant="outline" className="ml-auto text-[10px]">{mockSlipping.length}</Badge>
+                  <Badge variant="outline" className="ml-auto text-[10px]">{slipping.length}</Badge>
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-2">
-                {mockSlipping.map((item) => (
+                {slipping.map((item) => (
                   <div key={item.id} className="flex items-start gap-2 text-sm group">
                     <Badge variant={item.severity === "high" ? "destructive" : "secondary"} className="text-[10px] shrink-0 mt-0.5">
                       {item.severity}
@@ -231,7 +231,7 @@ export default function PersonalLifeWorkspace() {
         {/* GOALS TAB */}
         <TabsContent value="goals" className="space-y-4 mt-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {mockGoals.map((goal) => (
+            {goals.map((goal) => (
               <Card key={goal.id}>
                 <CardHeader className="pb-3">
                   <div className="flex items-center justify-between">
@@ -270,7 +270,7 @@ export default function PersonalLifeWorkspace() {
         {/* ROUTINES TAB */}
         <TabsContent value="routines" className="space-y-4 mt-4">
           <div className="space-y-2">
-            {mockRoutines.map((routine) => (
+            {routines.map((routine) => (
               <Card key={routine.id} className={cn(!routine.active && "opacity-60")}>
                 <CardContent className="flex items-center justify-between p-4">
                   <div className="flex items-center gap-3">
@@ -338,7 +338,7 @@ export default function PersonalLifeWorkspace() {
                 Items you want to get to eventually — not urgent, but important for long-term wellbeing.
               </p>
               <div className="space-y-2">
-                {mockBacklog.map((item) => (
+                {backlog.map((item) => (
                   <div key={item.id} className="flex items-center gap-3 p-3 rounded-lg border border-border/30 hover:bg-accent/20 transition-colors group">
                     <Clock className="h-4 w-4 text-muted-foreground shrink-0" />
                     <span className="text-sm flex-1">{item.item}</span>

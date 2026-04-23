@@ -53,15 +53,15 @@ const RCP07RouteHeatmap = () => {
       {/* RouteHeatmapCanvas */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {heatmap.map(({ domain, routes }) => {
-          const mockCount = routes.filter(r => r.hasMock).length;
+          const count = routes.filter(r => r.hasMock).length;
           return (
-            <Card key={domain} className={mockCount === routes.length ? "border-red-500/20" : ""}>
+            <Card key={domain} className={count === routes.length ? "border-red-500/20" : ""}>
               <CardHeader className="pb-2">
                 <div className="flex items-center justify-between">
                   <CardTitle className="text-sm capitalize">{domain}</CardTitle>
-                  {mockCount > 0 && (
+                  {count > 0 && (
                     <span className="flex items-center gap-1 text-[10px] text-amber-400">
-                      <AlertTriangle className="h-3 w-3" /> {mockCount} mock-backed
+                      <AlertTriangle className="h-3 w-3" /> {count} mock-backed
                     </span>
                   )}
                 </div>

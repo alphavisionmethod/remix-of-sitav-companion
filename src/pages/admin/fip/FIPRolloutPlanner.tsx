@@ -4,7 +4,6 @@ import { Rocket, Flag, Power, RotateCcw, ArrowUpRight, Shield, Target } from "lu
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useRolloutRecords } from "@/hooks/use-fip-data";
-import { DEMO_ROLLOUT_RINGS } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 const ringColors: Record<string, string> = {
   dev: 'bg-muted text-muted-foreground', staging: 'bg-blue-500/10 text-blue-500',
@@ -35,7 +34,7 @@ const FIPRolloutPlanner = () => {
         <CardHeader><CardTitle className="text-base">Rollout Ring Distribution</CardTitle></CardHeader>
         <CardContent>
           <div className="flex gap-2">
-            {([] as typeof DEMO_ROLLOUT_RINGS).map(ring => {
+            {([] as any[]).map(ring => {
               const count = rollouts.filter((r: Record<string, any>) => r.current_ring === ring).length;
               return (
                 <div key={ring} className={`flex-1 text-center p-3 rounded-lg border ${count > 0 ? 'border-primary/30' : ''}`}>

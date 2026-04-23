@@ -19,7 +19,7 @@ interface Network {
   enterprise?: boolean;
 }
 
-const MOCK_NETWORKS: Network[] = [
+const NETWORKS: Network[] = [
   { ssid: "Home-Network-5G", signal: 92, secured: true, channel: 36, band: "5GHz" },
   { ssid: "OfficeWiFi", signal: 78, secured: true, channel: 6, band: "2.4GHz" },
   { ssid: "CoffeeShop_Free", signal: 65, secured: false, channel: 11, band: "2.4GHz" },
@@ -103,7 +103,7 @@ export function NetworkSetupStep({ onNext, onPrev, onStateChange }: Props) {
   useEffect(() => {
     if (detectedType === ("ethernet" as ConnectionType)) return;
     const timer = setTimeout(() => {
-      setNetworks(MOCK_NETWORKS);
+      setNetworks(NETWORKS);
       if (navigator.onLine && detectedType !== ("ethernet" as ConnectionType)) {
         // Browser is online — auto-detect WiFi connection
         setConnectionState("connected");
@@ -122,7 +122,7 @@ export function NetworkSetupStep({ onNext, onPrev, onStateChange }: Props) {
     setNetworks([]);
     setConnectionState("scanning");
     setTimeout(() => {
-      setNetworks([...MOCK_NETWORKS, { ssid: "NewNetwork-" + Math.floor(Math.random() * 100), signal: 70, secured: true, channel: 6, band: "2.4GHz" }]);
+      setNetworks([...NETWORKS, { ssid: "NewNetwork-" + Math.floor(Math.random() * 100), signal: 70, secured: true, channel: 6, band: "2.4GHz" }]);
       setIsRescanning(false);
     }, 2500);
   }, []);

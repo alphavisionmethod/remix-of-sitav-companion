@@ -29,7 +29,7 @@ interface EvidenceItem {
   lineage: string[];
 }
 
-const DEMO_EVIDENCE: EvidenceItem[] = [
+const EVIDENCE: EvidenceItem[] = [
   {
     id: "ev1", sourceType: "verified", sourceName: "Invoice Aging Report",
     content: "3 accounts overdue: TechCorp ($12,500), David Kim ($4,200), Sarah Chen ($1,800). Total: $18,500.",
@@ -90,8 +90,8 @@ export function BoardroomEvidencePanel({ open, onClose }: Props) {
   const [activeFilter, setActiveFilter] = useState<EvidenceType | "all">("all");
 
   const filtered = activeFilter === "all"
-    ? DEMO_EVIDENCE
-    : (isDemoMode ? DEMO_EVIDENCE : [] as typeof DEMO_EVIDENCE).filter(e => e.sourceType === activeFilter);
+    ? EVIDENCE
+    : (isDemoMode ? EVIDENCE : [] as typeof EVIDENCE).filter(e => e.sourceType === activeFilter);
 
   return (
     <AnimatePresence>
@@ -137,7 +137,7 @@ export function BoardroomEvidencePanel({ open, onClose }: Props) {
               <div className="flex items-center gap-2 mb-2">
                 {(["verified", "inferred", "assumption", "stale"] as EvidenceType[]).map(t => {
                   const cfg = typeConfig[t];
-                  const count = (isDemoMode ? DEMO_EVIDENCE : [] as typeof DEMO_EVIDENCE).filter(e => e.sourceType === t).length;
+                  const count = (isDemoMode ? EVIDENCE : [] as typeof EVIDENCE).filter(e => e.sourceType === t).length;
                   return (
                     <div key={t} className={cn("flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-semibold", cfg.bg, cfg.color)}>
                       {count} {cfg.label}

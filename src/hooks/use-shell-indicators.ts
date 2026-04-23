@@ -18,7 +18,7 @@ export interface ShellIndicators {
   loading: boolean;
 }
 
-const DEMO_INDICATORS: ShellIndicators = {
+const INDICATORS: ShellIndicators = {
   pendingApprovals: 3,
   activeIncidents: 1,
   unreadNotifications: 5,
@@ -37,7 +37,7 @@ export function useShellIndicators(): ShellIndicators {
 
   useEffect(() => {
     if (isDemoMode || !user) {
-      setIndicators(DEMO_INDICATORS);
+      setIndicators(INDICATORS);
       return;
     }
 

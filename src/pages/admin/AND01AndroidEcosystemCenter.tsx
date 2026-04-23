@@ -21,7 +21,7 @@ import ANDSubNav from "@/components/admin/ANDSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 // Production fallback — seed data removed
-const DEMO_PROVIDER_CAPS: any[] = [];
+const PROVIDER_CAPS: any[] = [];
 
 const SURFACE_META: Record<string, { title: string; icon: any; desc: string; tech: string[]; capabilities: string[] }> = {
   android_phone: { title: "Android Phone Shell", icon: Smartphone, desc: "Primary Android surface — Material Design shell", tech: ["Kotlin", "Jetpack Compose", "WebView hybrid"], capabilities: ["push_fcm", "biometric", "camera", "nfc"] },
@@ -185,7 +185,7 @@ const AND01AndroidEcosystemCenter = () => {
                     <th className="p-2">Priority</th>
                   </tr></thead>
                   <tbody>
-                    {([] as typeof DEMO_PROVIDER_CAPS).map((cap) => {
+                    {([] as any[]).map((cap) => {
                       const matchingLaunch = launchData?.find((r: Record<string, any>) => r.target.includes(cap.key.replace("android_", "")));
                       const status = matchingLaunch?.launch_stage || "planned";
                       return (

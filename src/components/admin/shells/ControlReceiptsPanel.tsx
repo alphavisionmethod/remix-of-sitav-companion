@@ -40,7 +40,7 @@ const RESULT_CONFIG: Record<string, { color: string; icon: React.ElementType }> 
   pending: { color: "text-blue-400", icon: Clock },
 };
 
-const DEMO_RECEIPTS: ControlReceipt[] = [
+const RECEIPTS: ControlReceipt[] = [
   { id: "cr-1", action: "Remote device lock", target: "desktop-01", targetType: "device", origin: "app_remote", reason: "Suspected unauthorized access detected by trust engine", result: "success", rollbackAvailable: true, rollbackExpiry: "30 days", timestamp: "2026-04-15 14:23:01", auditRef: "AUD-88231", actor: "Founder" },
   { id: "cr-2", action: "Trust threshold update", target: "trust-engine", targetType: "service", origin: "admin_control_plane", reason: "Reducing false positive rate for mobile clients", result: "success", rollbackAvailable: true, rollbackExpiry: "Indefinite", timestamp: "2026-04-15 13:45:22", auditRef: "AUD-88229", actor: "Founder" },
   { id: "cr-3", action: "Canary rollout expansion", target: "release-v3.4.1", targetType: "cohort", origin: "admin_control_plane", reason: "Health metrics stable for 2 hours, expanding to 25%", result: "success", rollbackAvailable: true, rollbackExpiry: "Until next release", timestamp: "2026-04-15 12:10:44", auditRef: "AUD-88225", actor: "Release AI" },
@@ -71,7 +71,7 @@ export function ControlReceiptsPanel() {
       </div>
 
       <div className="space-y-2">
-        {(isDemoMode ? DEMO_RECEIPTS : [] as typeof DEMO_RECEIPTS).map((receipt, i) => {
+        {(isDemoMode ? RECEIPTS : [] as typeof RECEIPTS).map((receipt, i) => {
           const ResultIcon = RESULT_CONFIG[receipt.result].icon;
           const OriginIcon = ORIGIN_CONFIG[receipt.origin].icon;
           const isExpanded = expandedId === receipt.id;

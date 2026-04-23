@@ -177,7 +177,7 @@ export interface CRMTag {
 }
 
 // ─── Demo Data ───────────────────────────────────────────────
-const DEMO_CONTACTS: CRMContact[] = [
+const CONTACTS: CRMContact[] = [
   { id: "dc1", user_id: "", first_name: "Sarah", last_name: "Chen", email: "sarah@meridian.vc", phone: "+1-555-0101", title: "Managing Partner", lifecycle_stage: "customer", status: "active", owner: "You", source: "Referral", health_score: 92, avatar_url: null, address: null, city: "San Francisco", state: "CA", country: "US", website: "meridian.vc", tags: ["VIP", "Investor"], custom_fields: {}, last_contacted_at: new Date(Date.now() - 864e5 * 2).toISOString(), next_follow_up_at: new Date(Date.now() + 864e5 * 3).toISOString(), import_source: null, import_job_id: null, created_at: new Date(Date.now() - 864e5 * 365).toISOString(), updated_at: new Date().toISOString() },
   { id: "dc2", user_id: "", first_name: "Marcus", last_name: "Webb", email: "marcus@atlas.co", phone: "+1-555-0102", title: "CTO", lifecycle_stage: "opportunity", status: "active", owner: "You", source: "Website", health_score: 78, avatar_url: null, address: null, city: "Austin", state: "TX", country: "US", website: "atlas.co", tags: ["Enterprise"], custom_fields: {}, last_contacted_at: new Date(Date.now() - 864e5 * 5).toISOString(), next_follow_up_at: new Date(Date.now() + 864e5).toISOString(), import_source: null, import_job_id: null, created_at: new Date(Date.now() - 864e5 * 180).toISOString(), updated_at: new Date().toISOString() },
   { id: "dc3", user_id: "", first_name: "Elena", last_name: "Rossi", email: "elena@vanguard.co", phone: "+1-555-0103", title: "Senior Advisor", lifecycle_stage: "customer", status: "active", owner: "You", source: "Partner", health_score: 95, avatar_url: null, address: null, city: "New York", state: "NY", country: "US", website: "vanguard.co", tags: ["Advisory", "VIP"], custom_fields: {}, last_contacted_at: new Date(Date.now() - 864e5).toISOString(), next_follow_up_at: null, import_source: null, import_job_id: null, created_at: new Date(Date.now() - 864e5 * 400).toISOString(), updated_at: new Date().toISOString() },
@@ -185,25 +185,25 @@ const DEMO_CONTACTS: CRMContact[] = [
   { id: "dc5", user_id: "", first_name: "Aisha", last_name: "Patel", email: "aisha@brightside.com", phone: "+1-555-0105", title: "VP Sales", lifecycle_stage: "qualified", status: "active", owner: "You", source: "Conference", health_score: 68, avatar_url: null, address: null, city: "Chicago", state: "IL", country: "US", website: "brightside.com", tags: ["Mid-Market"], custom_fields: {}, last_contacted_at: new Date(Date.now() - 864e5 * 7).toISOString(), next_follow_up_at: new Date(Date.now() + 864e5 * 2).toISOString(), import_source: null, import_job_id: null, created_at: new Date(Date.now() - 864e5 * 60).toISOString(), updated_at: new Date().toISOString() },
 ];
 
-const DEMO_COMPANIES: CRMCompany[] = [
+const COMPANIES: CRMCompany[] = [
   { id: "dco1", user_id: "", name: "Meridian Ventures", domain: "meridian.vc", industry: "Finance", size: "50-200", annual_revenue: 12000000, health_score: 92, owner: "You", phone: "+1-555-1001", address: null, city: "San Francisco", state: "CA", country: "US", website: "meridian.vc", tags: ["VIP"], custom_fields: {}, notes: null, import_source: null, created_at: new Date(Date.now() - 864e5 * 365).toISOString(), updated_at: new Date().toISOString() },
   { id: "dco2", user_id: "", name: "Atlas Corp", domain: "atlas.co", industry: "Technology", size: "200-500", annual_revenue: 45000000, health_score: 78, owner: "You", phone: "+1-555-1002", address: null, city: "Austin", state: "TX", country: "US", website: "atlas.co", tags: ["Enterprise"], custom_fields: {}, notes: null, import_source: null, created_at: new Date(Date.now() - 864e5 * 180).toISOString(), updated_at: new Date().toISOString() },
   { id: "dco3", user_id: "", name: "BrightSide Inc", domain: "brightside.com", industry: "Marketing", size: "10-50", annual_revenue: 5000000, health_score: 68, owner: "You", phone: "+1-555-1003", address: null, city: "Chicago", state: "IL", country: "US", website: "brightside.com", tags: ["Mid-Market"], custom_fields: {}, notes: null, import_source: null, created_at: new Date(Date.now() - 864e5 * 60).toISOString(), updated_at: new Date().toISOString() },
 ];
 
-const DEMO_OPPORTUNITIES: CRMOpportunity[] = [
+const OPPORTUNITIES: CRMOpportunity[] = [
   { id: "do1", user_id: "", title: "Atlas Enterprise License", value: 120000, stage: "Proposal", stage_id: null, probability: 65, expected_close_date: new Date(Date.now() + 864e5 * 30).toISOString().split("T")[0], source: "Website", owner: "You", contact_id: "dc2", company_id: "dco2", status: "open", lost_reason: null, won_at: null, lost_at: null, notes: "Waiting on legal review", tags: ["Enterprise"], created_at: new Date(Date.now() - 864e5 * 45).toISOString(), updated_at: new Date().toISOString() },
   { id: "do2", user_id: "", title: "BrightSide Consulting Retainer", value: 36000, stage: "Negotiation", stage_id: null, probability: 80, expected_close_date: new Date(Date.now() + 864e5 * 14).toISOString().split("T")[0], source: "Conference", owner: "You", contact_id: "dc5", company_id: "dco3", status: "open", lost_reason: null, won_at: null, lost_at: null, notes: null, tags: [], created_at: new Date(Date.now() - 864e5 * 20).toISOString(), updated_at: new Date().toISOString() },
   { id: "do3", user_id: "", title: "Nordic Digital Discovery", value: 25000, stage: "Discovery", stage_id: null, probability: 20, expected_close_date: new Date(Date.now() + 864e5 * 60).toISOString().split("T")[0], source: "LinkedIn", owner: null, contact_id: "dc4", company_id: null, status: "open", lost_reason: null, won_at: null, lost_at: null, notes: "Initial call scheduled", tags: ["New"], created_at: new Date(Date.now() - 864e5 * 5).toISOString(), updated_at: new Date().toISOString() },
 ];
 
-const DEMO_TASKS: CRMTask[] = [
+const TASKS: CRMTask[] = [
   { id: "dt1", user_id: "", title: "Follow up with Marcus on contract", description: "Send revised terms", status: "pending", priority: "high", due_date: new Date(Date.now() + 864e5).toISOString(), completed_at: null, contact_id: "dc2", company_id: "dco2", opportunity_id: "do1", task_type: "follow-up", created_at: new Date().toISOString(), updated_at: new Date().toISOString() },
   { id: "dt2", user_id: "", title: "Schedule demo for Aisha", description: null, status: "pending", priority: "medium", due_date: new Date(Date.now() + 864e5 * 3).toISOString(), completed_at: null, contact_id: "dc5", company_id: "dco3", opportunity_id: "do2", task_type: "meeting", created_at: new Date().toISOString(), updated_at: new Date().toISOString() },
   { id: "dt3", user_id: "", title: "Re-engage James Park", description: "No contact in 14 days", status: "overdue", priority: "high", due_date: new Date(Date.now() - 864e5 * 2).toISOString(), completed_at: null, contact_id: "dc4", company_id: null, opportunity_id: "do3", task_type: "follow-up", created_at: new Date().toISOString(), updated_at: new Date().toISOString() },
 ];
 
-const DEMO_COMMS: CRMCommunication[] = [
+const COMMS: CRMCommunication[] = [
   { id: "dcm1", user_id: "", contact_id: "dc1", company_id: "dco1", opportunity_id: null, comm_type: "email", direction: "outbound", subject: "Q2 Strategy Review", content: "Sent quarterly review deck", channel: "email", outcome: "replied", occurred_at: new Date(Date.now() - 864e5 * 2).toISOString(), created_at: new Date().toISOString() },
   { id: "dcm2", user_id: "", contact_id: "dc2", company_id: "dco2", opportunity_id: "do1", comm_type: "call", direction: "outbound", subject: "Contract Discussion", content: "45 min call. Legal review pending.", channel: "phone", outcome: "positive", occurred_at: new Date(Date.now() - 864e5 * 5).toISOString(), created_at: new Date().toISOString() },
   { id: "dcm3", user_id: "", contact_id: "dc5", company_id: "dco3", opportunity_id: "do2", comm_type: "meeting", direction: "outbound", subject: "Demo & Pricing", content: "Presented retainer package", channel: "zoom", outcome: "interested", occurred_at: new Date(Date.now() - 864e5 * 7).toISOString(), created_at: new Date().toISOString() },
@@ -216,43 +216,43 @@ async function getUserId(): Promise<string | null> {
 }
 
 export async function fetchCRMContacts(mode: RealityModeKey = "real"): Promise<ModeAwareResult<CRMContact[]>> {
-  if (mode !== "real") return resolveByMode({ mode, realData: null, demoData: DEMO_CONTACTS, emptyDefault: [] });
+  if (mode !== "real") return resolveByMode({ mode, realData: null, demoData: CONTACTS, emptyDefault: [] });
   const uid = await getUserId();
-  if (!uid) return resolveByMode({ mode, realData: null, demoData: DEMO_CONTACTS, emptyDefault: [] });
+  if (!uid) return resolveByMode({ mode, realData: null, demoData: CONTACTS, emptyDefault: [] });
   const { data, error } = await fromTable("crm_contacts").select("*").eq("user_id", uid).order("created_at", { ascending: false });
-  return resolveByMode({ mode, realData: !error && data?.length ? data : null, demoData: DEMO_CONTACTS, emptyDefault: [] });
+  return resolveByMode({ mode, realData: !error && data?.length ? data : null, demoData: CONTACTS, emptyDefault: [] });
 }
 
 export async function fetchCRMCompanies(mode: RealityModeKey = "real"): Promise<ModeAwareResult<CRMCompany[]>> {
-  if (mode !== "real") return resolveByMode({ mode, realData: null, demoData: DEMO_COMPANIES, emptyDefault: [] });
+  if (mode !== "real") return resolveByMode({ mode, realData: null, demoData: COMPANIES, emptyDefault: [] });
   const uid = await getUserId();
-  if (!uid) return resolveByMode({ mode, realData: null, demoData: DEMO_COMPANIES, emptyDefault: [] });
+  if (!uid) return resolveByMode({ mode, realData: null, demoData: COMPANIES, emptyDefault: [] });
   const { data, error } = await fromTable("crm_companies").select("*").eq("user_id", uid).order("created_at", { ascending: false });
-  return resolveByMode({ mode, realData: !error && data?.length ? data : null, demoData: DEMO_COMPANIES, emptyDefault: [] });
+  return resolveByMode({ mode, realData: !error && data?.length ? data : null, demoData: COMPANIES, emptyDefault: [] });
 }
 
 export async function fetchCRMOpportunities(mode: RealityModeKey = "real"): Promise<ModeAwareResult<CRMOpportunity[]>> {
-  if (mode !== "real") return resolveByMode({ mode, realData: null, demoData: DEMO_OPPORTUNITIES, emptyDefault: [] });
+  if (mode !== "real") return resolveByMode({ mode, realData: null, demoData: OPPORTUNITIES, emptyDefault: [] });
   const uid = await getUserId();
-  if (!uid) return resolveByMode({ mode, realData: null, demoData: DEMO_OPPORTUNITIES, emptyDefault: [] });
+  if (!uid) return resolveByMode({ mode, realData: null, demoData: OPPORTUNITIES, emptyDefault: [] });
   const { data, error } = await fromTable("crm_opportunities").select("*").eq("user_id", uid).order("created_at", { ascending: false });
-  return resolveByMode({ mode, realData: !error && data?.length ? data : null, demoData: DEMO_OPPORTUNITIES, emptyDefault: [] });
+  return resolveByMode({ mode, realData: !error && data?.length ? data : null, demoData: OPPORTUNITIES, emptyDefault: [] });
 }
 
 export async function fetchCRMTasks(mode: RealityModeKey = "real"): Promise<ModeAwareResult<CRMTask[]>> {
-  if (mode !== "real") return resolveByMode({ mode, realData: null, demoData: DEMO_TASKS, emptyDefault: [] });
+  if (mode !== "real") return resolveByMode({ mode, realData: null, demoData: TASKS, emptyDefault: [] });
   const uid = await getUserId();
-  if (!uid) return resolveByMode({ mode, realData: null, demoData: DEMO_TASKS, emptyDefault: [] });
+  if (!uid) return resolveByMode({ mode, realData: null, demoData: TASKS, emptyDefault: [] });
   const { data, error } = await fromTable("crm_tasks").select("*").eq("user_id", uid).order("due_date", { ascending: true });
-  return resolveByMode({ mode, realData: !error && data?.length ? data : null, demoData: DEMO_TASKS, emptyDefault: [] });
+  return resolveByMode({ mode, realData: !error && data?.length ? data : null, demoData: TASKS, emptyDefault: [] });
 }
 
 export async function fetchCRMCommunications(mode: RealityModeKey = "real"): Promise<ModeAwareResult<CRMCommunication[]>> {
-  if (mode !== "real") return resolveByMode({ mode, realData: null, demoData: DEMO_COMMS, emptyDefault: [] });
+  if (mode !== "real") return resolveByMode({ mode, realData: null, demoData: COMMS, emptyDefault: [] });
   const uid = await getUserId();
-  if (!uid) return resolveByMode({ mode, realData: null, demoData: DEMO_COMMS, emptyDefault: [] });
+  if (!uid) return resolveByMode({ mode, realData: null, demoData: COMMS, emptyDefault: [] });
   const { data, error } = await fromTable("crm_communications").select("*").eq("user_id", uid).order("occurred_at", { ascending: false });
-  return resolveByMode({ mode, realData: !error && data?.length ? data : null, demoData: DEMO_COMMS, emptyDefault: [] });
+  return resolveByMode({ mode, realData: !error && data?.length ? data : null, demoData: COMMS, emptyDefault: [] });
 }
 
 export async function fetchCRMNotes(mode: RealityModeKey = "real"): Promise<ModeAwareResult<CRMNote[]>> {
@@ -534,7 +534,7 @@ export interface CRMAutomation {
   updated_at: string;
 }
 
-const DEMO_AUTOMATIONS: CRMAutomation[] = [
+const AUTOMATIONS: CRMAutomation[] = [
   { id: "da1", user_id: "", title: "New Lead → Assign + Follow-Up", description: "Auto-assign owner and create follow-up task when a new lead is imported or created", trigger_type: "contact_created", trigger_config: { stage: "lead" }, conditions: [], actions: [{ type: "assign_owner", config: { method: "round-robin" } }, { type: "create_task", config: { title: "Follow up with new lead", due_days: 3 } }], delay_minutes: 0, trust_gate: "active", status: "active", target_entity: "contact", runs: 24, last_run_at: new Date(Date.now() - 7200000).toISOString(), execution_log: [], created_at: new Date(Date.now() - 864e5 * 30).toISOString(), updated_at: new Date().toISOString() },
   { id: "da2", user_id: "", title: "14-Day Silence → Follow-Up Reminder", description: "Create a reminder when any contact hasn't been reached in 14 days", trigger_type: "no_contact_days", trigger_config: { days: 14 }, conditions: [], actions: [{ type: "create_task", config: { title: "Follow up — no contact in 14 days", priority: "high" } }, { type: "notify_advisor" }], delay_minutes: 0, trust_gate: "active", status: "active", target_entity: "contact", runs: 18, last_run_at: new Date(Date.now() - 18000000).toISOString(), execution_log: [], created_at: new Date(Date.now() - 864e5 * 60).toISOString(), updated_at: new Date().toISOString() },
   { id: "da3", user_id: "", title: "Quote No Response → Auto Follow-Up", description: "Suggest follow-up when a sent quote goes unanswered for 5 days", trigger_type: "quote_no_reply", trigger_config: { days: 5 }, conditions: [], actions: [{ type: "draft_email", config: { template: "quote_follow_up" } }, { type: "queue_for_review" }], delay_minutes: 0, trust_gate: "approval_required", status: "paused", target_entity: "opportunity", runs: 7, last_run_at: new Date(Date.now() - 864e5 * 2).toISOString(), execution_log: [], created_at: new Date(Date.now() - 864e5 * 45).toISOString(), updated_at: new Date().toISOString() },
@@ -546,11 +546,11 @@ const DEMO_AUTOMATIONS: CRMAutomation[] = [
 ];
 
 export async function fetchCRMAutomations(mode: RealityModeKey = "real"): Promise<ModeAwareResult<CRMAutomation[]>> {
-  if (mode !== "real") return resolveByMode({ mode, realData: null, demoData: DEMO_AUTOMATIONS, emptyDefault: [] });
+  if (mode !== "real") return resolveByMode({ mode, realData: null, demoData: AUTOMATIONS, emptyDefault: [] });
   const uid = await getUserId();
-  if (!uid) return resolveByMode({ mode, realData: null, demoData: DEMO_AUTOMATIONS, emptyDefault: [] });
+  if (!uid) return resolveByMode({ mode, realData: null, demoData: AUTOMATIONS, emptyDefault: [] });
   const { data, error } = await fromTable("crm_automations").select("*").eq("user_id", uid).order("created_at", { ascending: false });
-  return resolveByMode({ mode, realData: !error && data?.length ? (data as unknown as CRMAutomation[]) : null, demoData: DEMO_AUTOMATIONS, emptyDefault: [] });
+  return resolveByMode({ mode, realData: !error && data?.length ? (data as unknown as CRMAutomation[]) : null, demoData: AUTOMATIONS, emptyDefault: [] });
 }
 
 export async function createCRMAutomation(automation: Omit<CRMAutomation, "id" | "user_id" | "created_at" | "updated_at" | "runs" | "last_run_at" | "execution_log">) {

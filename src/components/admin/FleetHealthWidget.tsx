@@ -16,9 +16,8 @@ import type {
 } from "@/lib/core-services/self-healing/types";
 
 // ── Demo fleet data (shared module) ─────────────────────────────
-import { DEMO_FLEET_SERVICES } from "@/data/fixtures/mock-data/fleet-health";
 import { useDataMode } from "@/contexts/DataModeContext";
-const DEMO_SERVICES = [...DEMO_FLEET_SERVICES];
+const SERVICES = [...FLEET_SERVICES];
 
 interface AutoIncident {
   id: string;
@@ -78,13 +77,13 @@ export default function FleetHealthWidget() {
     const fhs = createFleetHealthService();
 
     // Register services
-    for (const svc of DEMO_SERVICES) {
+    for (const svc of SERVICES) {
       fhs.registerService(svc.id, svc.name, svc.deps);
     }
 
     // Run health checks and collect auto-incidents
     const autoIncidents: AutoIncident[] = [];
-    for (const svc of DEMO_SERVICES) {
+    for (const svc of SERVICES) {
       const result = fhs.recordHealthCheck(svc.id, svc.passed, svc.metrics);
       if (result && (result.status === "degraded" || result.status === "unhealthy")) {
         autoIncidents.push({

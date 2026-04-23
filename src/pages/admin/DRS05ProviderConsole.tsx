@@ -8,7 +8,7 @@ import DRSSubNav from "@/components/admin/DRSSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 // Production fallback — seed data removed
-const DEMO_ALL_DOMAINS: any[] = [];
+const ALL_DOMAINS: any[] = [];
 
 export default function DRS05ProviderConsole() {
   registerAllProviders();
@@ -38,7 +38,7 @@ export default function DRS05ProviderConsole() {
                 </tr>
               </thead>
               <tbody>
-                {([] as typeof DEMO_ALL_DOMAINS).map(domain => {
+                {([] as any[]).map(domain => {
                   const isRegistered = registered.includes(domain);
                   const meta = isRegistered ? getProviderMetadata(domain, mode) : null;
                   return (

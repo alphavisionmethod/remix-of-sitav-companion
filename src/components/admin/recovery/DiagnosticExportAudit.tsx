@@ -12,7 +12,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 // Demo audit entries
-const DEMO_AUDITS: AuditEntry[] = [
+const AUDITS: AuditEntry[] = [
   { id: "DEA-001", exportedAt: "2026-04-21T10:00:00Z", exportedBy: "admin@sita.os", parameters: { scope: "full", redacted: true }, resultStatus: "success", fileSize: 2450000, bundleId: "BND-042", downloadUrl: "#" },
   { id: "DEA-002", exportedAt: "2026-04-20T16:30:00Z", exportedBy: "ops@sita.os", parameters: { scope: "ai-runtime", redacted: true }, resultStatus: "success", fileSize: 890000, bundleId: "BND-041", downloadUrl: "#" },
   { id: "DEA-003", exportedAt: "2026-04-19T09:15:00Z", exportedBy: "admin@sita.os", parameters: { scope: "full", redacted: false }, resultStatus: "partial", fileSize: 1200000, bundleId: "BND-040", downloadUrl: "#" },
@@ -41,7 +41,7 @@ export function DiagnosticExportAuditPanel({ operatorId, canExecute }: Props) {
     },
   });
 
-  const audits = isDemoMode ? DEMO_AUDITS : (liveAudits ?? []);
+  const audits = isDemoMode ? AUDITS : (liveAudits ?? []);
 
   const exportBundle = () => {
     if (!canExecute) {

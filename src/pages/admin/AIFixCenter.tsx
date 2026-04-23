@@ -5,7 +5,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState } from "react";
 import { Bug, AlertTriangle, CheckCircle2, Wrench, Shield, RotateCcw, Sparkles, FileCheck, Eye, Code, Server, Layout } from "lucide-react";
 import { useAIEngDomain } from "@/hooks/use-ai-engineering-data";
-import { DEMO_FIXES } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const severityColors: Record<string, string> = {
@@ -24,7 +23,7 @@ const blastRadiusColors: Record<string, string> = {
 };
 
 const AIFixCenter = () => {
-  const { data: fixes, isDemo } = useAIEngDomain("fixes", DEMO_FIXES);
+  const { data: fixes, isDemo } = useAIEngDomain("fixes", FIXES);
   const [expanded, setExpanded] = useState<number | null>(1);
   const [tab, setTab] = useState("all");
   const [view, setView] = useState("severity");

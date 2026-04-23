@@ -16,7 +16,7 @@ import { classifyFeatureDomain } from "@/lib/delivery-methodology/feature-factor
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 // Production fallback — seed data removed
-const DEMO_ARCHETYPES: any[] = [];
+const ARCHETYPES: any[] = [];
 
 const FeatureIntakeDesk = () => {
   const queryClient = useQueryClient();
@@ -79,7 +79,7 @@ const FeatureIntakeDesk = () => {
                 <label className="text-sm font-medium">Archetype</label>
                 <Select value={form.archetypeKey} onValueChange={v => setForm({ ...form, archetypeKey: v })}>
                   <SelectTrigger><SelectValue /></SelectTrigger>
-                  <SelectContent>{([] as typeof DEMO_ARCHETYPES).map(a => <SelectItem key={a} value={a}>{a}</SelectItem>)}</SelectContent>
+                  <SelectContent>{([] as any[]).map(a => <SelectItem key={a} value={a}>{a}</SelectItem>)}</SelectContent>
                 </Select>
               </div>
               <div>

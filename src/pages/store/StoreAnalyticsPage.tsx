@@ -12,7 +12,6 @@ import { BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, Cart
 import { Package, TrendingUp, DollarSign, Users, Activity, ArrowRight, Target, Zap, BarChart3, RefreshCw } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { DEMO_CATEGORY_REVENUE, DEMO_RETENTION_DATA, DEMO_REVENUE_TREND } from "@/data/seed/core-pages";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 // ── Mock Analytics Data ─────────────────────────────────────────
 
@@ -68,7 +67,7 @@ const StoreAnalyticsPage = () => {
             <SitaCardTitle sub="Monthly revenue and install volume">Revenue & Install Trend</SitaCardTitle>
             <div className="mt-4 h-72">
               <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={DEMO_REVENUE_TREND}>
+                <AreaChart data={REVENUE_TREND}>
                   <defs>
                     <linearGradient id="revGrad" x1="0" y1="0" x2="0" y2="1">
                       <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.3} />
@@ -94,8 +93,8 @@ const StoreAnalyticsPage = () => {
               <div className="mt-4 h-64">
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
-                    <Pie data={DEMO_CATEGORY_REVENUE} cx="50%" cy="50%" innerRadius={50} outerRadius={90} paddingAngle={3} dataKey="value">
-                      {([] as typeof DEMO_CATEGORY_REVENUE).map((entry, i) => <Cell key={i} fill={entry.color} />)}
+                    <Pie data={CATEGORY_REVENUE} cx="50%" cy="50%" innerRadius={50} outerRadius={90} paddingAngle={3} dataKey="value">
+                      {([] as any[]).map((entry, i) => <Cell key={i} fill={entry.color} />)}
                     </Pie>
                     <Tooltip formatter={(v: number) => `$${(v / 1000).toFixed(1)}k`} contentStyle={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: 12, fontSize: 12 }} />
                     <Legend wrapperStyle={{ fontSize: 11 }} />
@@ -153,7 +152,7 @@ const StoreAnalyticsPage = () => {
             <SitaCardTitle sub="Pack users vs non-pack users over time">Retention Differential</SitaCardTitle>
             <div className="mt-4 h-80">
               <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={DEMO_RETENTION_DATA}>
+                <AreaChart data={RETENTION_DATA}>
                   <defs>
                     <linearGradient id="retWith" x1="0" y1="0" x2="0" y2="1">
                       <stop offset="5%" stopColor="hsl(var(--trust-safe))" stopOpacity={0.3} />

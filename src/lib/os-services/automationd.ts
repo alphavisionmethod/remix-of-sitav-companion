@@ -106,7 +106,7 @@ const BUILT_IN_RULES: AutomationRule[] = [
   },
 ];
 
-const MOCK_HISTORY: RuleExecution[] = [
+const HISTORY: RuleExecution[] = [
   { id: "exec-1", ruleId: "rule-1", ruleName: "Auto-VPN on Public WiFi", domain: "network", triggeredAt: now - hour * 3, conditionSnapshot: { "network.security": "open", ssid: "CoffeeShop-Free" }, actionsExecuted: ["Enable VPN", "Notify user"], success: true },
   { id: "exec-2", ruleId: "rule-3", ruleName: "Mute Notifications in Meetings", domain: "notification", triggeredAt: now - hour * 2, conditionSnapshot: { "calendar.event_active": true, event: "Sprint Planning" }, actionsExecuted: ["Enable Focus Mode"], success: true },
   { id: "exec-3", ruleId: "rule-4", ruleName: "Audio Panel on Headphones", domain: "bluetooth", triggeredAt: now - hour * 6, conditionSnapshot: { "bluetooth.headphones_connected": true, device: "AirPods Pro" }, actionsExecuted: ["Open Audio Controls"], success: true },
@@ -121,7 +121,7 @@ export class AutomationDaemon {
   constructor() {
     this.state = {
       rules: [...BUILT_IN_RULES],
-      executionHistory: [...MOCK_HISTORY],
+      executionHistory: [...HISTORY],
       eventBusActive: true,
       conflictsDetected: 0,
     };

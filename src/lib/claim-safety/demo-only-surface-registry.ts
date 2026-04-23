@@ -45,7 +45,7 @@ export interface DemoOnlySurface {
   excludedFromLaunchScoring: boolean;
 }
 
-export const DEMO_ONLY_SURFACES: readonly DemoOnlySurface[] = [
+export const ONLY_SURFACES: readonly DemoOnlySurface[] = [
   {
     surfaceId: "DWE01",
     surfaceName: "Connected Devices Center",
@@ -181,28 +181,28 @@ export const DEMO_ONLY_SURFACES: readonly DemoOnlySurface[] = [
 
 /** Lookup by surface ID. Returns undefined if not registered. */
 export function getDemoOnlySurface(surfaceId: string): DemoOnlySurface | undefined {
-  return DEMO_ONLY_SURFACES.find((s) => s.surfaceId === surfaceId);
+  return ONLY_SURFACES.find((s) => s.surfaceId === surfaceId);
 }
 
 /** Returns true if a surface is registered as demo-only / preview / future-vision / archived. */
 export function isDemoOnlySurface(surfaceId: string): boolean {
-  return DEMO_ONLY_SURFACES.some((s) => s.surfaceId === surfaceId);
+  return ONLY_SURFACES.some((s) => s.surfaceId === surfaceId);
 }
 
 /** Group surfaces by containment level — used by DWE07 truth board. */
 export function getDemoOnlySurfacesByContainment(): Record<ContainmentLevel, DemoOnlySurface[]> {
   return {
-    demo_only: DEMO_ONLY_SURFACES.filter((s) => s.containment === "demo_only"),
-    internal_preview: DEMO_ONLY_SURFACES.filter((s) => s.containment === "internal_preview"),
-    future_vision: DEMO_ONLY_SURFACES.filter((s) => s.containment === "future_vision"),
-    archived: DEMO_ONLY_SURFACES.filter((s) => s.containment === "archived"),
+    demo_only: ONLY_SURFACES.filter((s) => s.containment === "demo_only"),
+    internal_preview: ONLY_SURFACES.filter((s) => s.containment === "internal_preview"),
+    future_vision: ONLY_SURFACES.filter((s) => s.containment === "future_vision"),
+    archived: ONLY_SURFACES.filter((s) => s.containment === "archived"),
   };
 }
 
 /** Surfaces excluded from launch-scoring (used by check-launch-scope-surface-classification). */
 export function getLaunchScopeExclusions(): DemoOnlySurface[] {
-  return DEMO_ONLY_SURFACES.filter((s) => s.excludedFromLaunchScoring);
+  return ONLY_SURFACES.filter((s) => s.excludedFromLaunchScoring);
 }
 
 /** Total count — for status reporting. */
-export const DEMO_ONLY_SURFACE_COUNT = DEMO_ONLY_SURFACES.length;
+export const ONLY_SURFACE_COUNT = ONLY_SURFACES.length;

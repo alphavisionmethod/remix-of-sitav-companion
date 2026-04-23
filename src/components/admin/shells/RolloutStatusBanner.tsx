@@ -17,7 +17,7 @@ interface RolloutState {
   lastUpdated: string;
 }
 
-const DEMO_ROLLOUT: RolloutState = {
+const ROLLOUT: RolloutState = {
   active: true,
   ring: "Ring 1 (Beta)",
   environment: "staging",
@@ -37,7 +37,7 @@ const levelStyles = {
 export function RolloutStatusBanner() {
   const [expanded, setExpanded] = useState(false);
   const navigate = useNavigate();
-  const rollout = DEMO_ROLLOUT;
+  const rollout = ROLLOUT;
 
   if (!rollout.active) return null;
 

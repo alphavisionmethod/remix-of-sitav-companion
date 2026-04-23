@@ -3,7 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Calendar, TrendingUp, AlertTriangle, CheckCircle2, ArrowRight } from "lucide-react";
 import { PageShell } from "@/components/sita/PageShell";
-const MOCK_WEEK = {
+const WEEK = {
   focus: "Revenue pipeline and household logistics",
   highlights: [
     { label: "3 deals expected to close", domain: "business", status: "on-track" },
@@ -50,7 +50,7 @@ const WeeklyBoardroom = () => {
           <CardTitle className="text-lg">Week Focus</CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-foreground font-medium">{MOCK_WEEK.focus}</p>
+          <p className="text-foreground font-medium">{WEEK.focus}</p>
         </CardContent>
       </Card>
 
@@ -62,7 +62,7 @@ const WeeklyBoardroom = () => {
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
-            {MOCK_WEEK.highlights.map((item, i) => (
+            {WEEK.highlights.map((item, i) => (
               <div key={i} className="flex items-center gap-3">
                 {statusIcon(item.status)}
                 <div className="flex-1">
@@ -79,7 +79,7 @@ const WeeklyBoardroom = () => {
             <CardTitle className="text-base">Advisor Insights</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
-            {MOCK_WEEK.advisorInsights.map((insight, i) => (
+            {WEEK.advisorInsights.map((insight, i) => (
               <p key={i} className="text-sm text-muted-foreground">{insight}</p>
             ))}
           </CardContent>
@@ -93,7 +93,7 @@ const WeeklyBoardroom = () => {
         </CardHeader>
         <CardContent>
           <ol className="space-y-2">
-            {MOCK_WEEK.priorities.map((priority, i) => (
+            {WEEK.priorities.map((priority, i) => (
               <li key={i} className="flex items-center gap-3">
                 <span className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/10 text-primary text-xs font-bold flex items-center justify-center">{i + 1}</span>
                 <span className="text-sm">{priority}</span>

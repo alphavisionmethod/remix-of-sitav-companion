@@ -5,16 +5,15 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState } from "react";
 import { Sparkles, CheckCircle2, AlertTriangle, Shield, TrendingUp, Clock, RotateCcw, Eye, Settings } from "lucide-react";
 import { useAIEngDomain } from "@/hooks/use-ai-engineering-data";
-import { DEMO_BLOCKED, DEMO_HEALED } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
-const DEMO_RULES: any[] = [];
+const RULES: any[] = [];
 
 // Production fallback — seed data removed
-const DEMO_PATTERNS: any[] = [];
+const PATTERNS: any[] = [];
 
 const AISelfHealing = () => {
-  const { data: patterns, isDemo } = useAIEngDomain("learningPatterns", DEMO_PATTERNS);
+  const { data: patterns, isDemo } = useAIEngDomain("learningPatterns", PATTERNS);
   const [tab, setTab] = useState("recent");
 
   return (
@@ -23,9 +22,9 @@ const AISelfHealing = () => {
 
       <div className="grid grid-cols-4 gap-3">
         {[
-          { l: "Healed This Week", v: ([] as typeof DEMO_HEALED).length, c: "text-[hsl(var(--trust-safe))]" },
-          { l: "Active Rules", v: ([] as typeof DEMO_RULES).filter(r => r.enabled).length, c: "text-primary" },
-          { l: "Blocked (Human Needed)", v: ([] as typeof DEMO_BLOCKED).length, c: "text-amber-500" },
+          { l: "Healed This Week", v: ([] as any[]).length, c: "text-[hsl(var(--trust-safe))]" },
+          { l: "Active Rules", v: ([] as any[]).filter(r => r.enabled).length, c: "text-primary" },
+          { l: "Blocked (Human Needed)", v: ([] as any[]).length, c: "text-amber-500" },
           { l: "Patterns Discovered", v: (patterns).length, c: "text-primary" },
         ].map(c => (
           <div key={c.l} className="rounded-xl border border-border/40 bg-card p-4 text-center">
@@ -44,7 +43,7 @@ const AISelfHealing = () => {
         </TabsList>
 
         <TabsContent value="recent" className="space-y-2 mt-4">
-          {([] as typeof DEMO_HEALED).map((h, i) => (
+          {([] as any[]).map((h, i) => (
             <div key={i} className="rounded-xl border border-border/40 bg-card p-4 flex items-center gap-3">
               <CheckCircle2 className="h-4 w-4 text-[hsl(var(--trust-safe))] shrink-0" />
               <div className="flex-1">
@@ -60,7 +59,7 @@ const AISelfHealing = () => {
         </TabsContent>
 
         <TabsContent value="rules" className="space-y-2 mt-4">
-          {([] as typeof DEMO_RULES).map((r, i) => (
+          {([] as any[]).map((r, i) => (
             <div key={i} className="rounded-xl border border-border/40 bg-card p-4 flex items-center gap-3">
               <Shield className={`h-4 w-4 shrink-0 ${r.enabled ? "text-[hsl(var(--trust-safe))]" : "text-muted-foreground"}`} />
               <div className="flex-1">
@@ -73,7 +72,7 @@ const AISelfHealing = () => {
         </TabsContent>
 
         <TabsContent value="blocked" className="space-y-2 mt-4">
-          {([] as typeof DEMO_BLOCKED).map((b, i) => (
+          {([] as any[]).map((b, i) => (
             <div key={i} className="rounded-xl border border-destructive/20 bg-destructive/5 p-4">
               <div className="flex items-center gap-2 mb-1">
                 <AlertTriangle className="h-4 w-4 text-destructive" />

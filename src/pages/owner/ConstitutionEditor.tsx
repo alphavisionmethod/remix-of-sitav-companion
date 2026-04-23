@@ -24,7 +24,6 @@ import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { useActionFn } from "@/hooks/use-action";
 import { PlainEnglishPolicyEditor } from "@/components/sita/PlainEnglishPolicyEditor";
-import { DEMO_EXAMPLE_RULES } from "@/data/seed/core-pages";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 // ── Category Config ─────────────────────────────────────────────
 
@@ -246,7 +245,7 @@ function RuleComposer({ onCompile }: { onCompile: (text: string) => void }) {
             className="overflow-hidden"
           >
             <div className="flex flex-wrap gap-1.5 mt-2">
-              {([] as typeof DEMO_EXAMPLE_RULES).map(ex => (
+              {([] as any[]).map(ex => (
                 <button
                   key={ex}
                   onClick={() => setInput(ex)}

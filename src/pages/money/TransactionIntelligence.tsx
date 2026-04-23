@@ -18,7 +18,7 @@ interface DemoTx {
   flags: string[]; classification: "personal" | "business";
 }
 
-const DEMO_TXS: DemoTx[] = [
+const TXS: DemoTx[] = [
   { id: "t1", date: "2026-04-09", description: "STRIPE TRANSFER", merchant: "Stripe", amountCents: 450000, category: "Revenue", type: "credit", isRecurring: true, categorizedBy: "rule", confidence: 0.99, flags: [], classification: "business" },
   { id: "t2", date: "2026-04-09", description: "WHOLE FOODS #1234", merchant: "Whole Foods", amountCents: 8542, category: "Groceries", type: "debit", isRecurring: false, categorizedBy: "ai", confidence: 0.95, flags: [], classification: "personal" },
   { id: "t3", date: "2026-04-08", description: "AWS SERVICES", merchant: "Amazon Web Services", amountCents: 34500, category: "Cloud Infrastructure", type: "debit", isRecurring: true, categorizedBy: "rule", confidence: 0.99, flags: [], classification: "business" },
@@ -36,7 +36,7 @@ const TransactionIntelligence = () => {
   const [searchTerm, setSearchTerm] = useState("");
 
   const filtered = useMemo(() => {
-    let txs = DEMO_TXS;
+    let txs = TXS;
     if (tab === "recurring") txs = txs.filter(t => t.isRecurring);
     if (tab === "flagged") txs = txs.filter(t => t.flags.length > 0);
     if (tab === "business") txs = txs.filter(t => t.classification === "business");
@@ -46,11 +46,11 @@ const TransactionIntelligence = () => {
   }, [tab, searchTerm]);
 
   const stats = useMemo(() => {
-    const total = ([] as typeof DEMO_TXS).length;
-    const aiCategorized = ([] as typeof DEMO_TXS).filter(t => t.categorizedBy === "ai").length;
-    const flagged = ([] as typeof DEMO_TXS).filter(t => t.flags.length > 0).length;
-    const recurring = ([] as typeof DEMO_TXS).filter(t => t.isRecurring).length;
-    const avgConfidence = ([] as typeof DEMO_TXS).reduce((s, t) => s + t.confidence, 0) / total;
+    const total = ([] as any[]).length;
+    const aiCategorized = ([] as any[]).filter(t => t.categorizedBy === "ai").length;
+    const flagged = ([] as any[]).filter(t => t.flags.length > 0).length;
+    const recurring = ([] as any[]).filter(t => t.isRecurring).length;
+    const avgConfidence = ([] as any[]).reduce((s, t) => s + t.confidence, 0) / total;
     return { total, aiCategorized, flagged, recurring, avgConfidence };
   }, []);
 

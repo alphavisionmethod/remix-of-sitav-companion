@@ -5,7 +5,6 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { DEMO_HEALTH_STATS, DEMO_WORKSPACES } from "@/data/seed/digital-presence";
 import DPOSubNav from "./DPOSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 export default function PresenceGate() {
@@ -24,7 +23,7 @@ export default function PresenceGate() {
 
       {/* Health band */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        {([] as typeof DEMO_HEALTH_STATS).map((s, i) => (
+        {([] as any[]).map((s, i) => (
           <motion.div key={s.label} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}>
             <Card className="bg-card/50 border-border/50">
               <CardContent className="p-4 text-center">
@@ -41,7 +40,7 @@ export default function PresenceGate() {
 
       {/* Workspace grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {([] as typeof DEMO_WORKSPACES).map((w, i) => (
+        {([] as any[]).map((w, i) => (
           <motion.div key={w.label} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.03 }}>
             <Card
               className="bg-card/50 border-border/50 hover:border-primary/30 cursor-pointer transition-all group"

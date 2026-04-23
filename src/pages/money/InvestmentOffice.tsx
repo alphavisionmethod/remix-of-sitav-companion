@@ -21,7 +21,6 @@ import {
   getOpportunityScores, getAvailableTrustModes, getInvestmentTrustMode,
 } from "@/data/seed/investment";
 import { useCapitalBuckets, usePositions, useTheses } from "@/hooks/use-investment-data";
-import { INVESTMENT_POLICY_RULES } from "@/data/seed/investment";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const regimeColor = (value: string) => {

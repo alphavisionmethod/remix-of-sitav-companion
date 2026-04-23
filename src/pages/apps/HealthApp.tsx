@@ -6,7 +6,6 @@ import { Progress } from "@/components/ui/progress";
 import { Heart, Activity, Moon, Dumbbell, Brain, Droplets, Apple, TrendingUp, Plus, Smile, Meh, Frown, Sun, ChevronRight } from "lucide-react";
 import { useState } from "react";
 import { useHealthLogs } from "@/hooks/use-apps-data";
-import { DEMO_sleepData } from "@/data/seed/apps";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.06 } } };
@@ -88,7 +87,7 @@ export default function HealthApp() {
               <p className="text-2xl font-bold text-foreground">7.8h</p>
               <p className="text-[10px] text-muted-foreground">Last night</p>
               <div className="flex items-end gap-0.5 h-8 mt-2">
-                {([] as typeof DEMO_sleepData).map((v, i) => (
+                {([] as typeof sleepData).map((v, i) => (
                   <div key={i} className="flex-1 flex flex-col items-center gap-0.5">
                     <div className="w-full rounded-sm bg-indigo-500/30" style={{ height: `${(v / 10) * 100}%` }} />
                     <span className="text-[8px] text-muted-foreground">{weekDays[i]}</span>

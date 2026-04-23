@@ -18,7 +18,7 @@ interface StatusItem {
   pulse?: boolean;
 }
 
-const DEMO_STATUS: StatusItem[] = [
+const STATUS: StatusItem[] = [
   { label: "Health", value: "98%", icon: Activity, color: "text-emerald-400" },
   { label: "Incidents", value: "0 active", icon: CheckCircle, color: "text-emerald-400" },
   { label: "Rollout", value: "Canary 10%", icon: Rocket, color: "text-blue-400" },
@@ -42,7 +42,7 @@ export function StatusStrip() {
         <div className="h-3 w-px bg-border/30 shrink-0" />
 
         {/* Status Items */}
-        {(isDemoMode ? DEMO_STATUS : [] as typeof DEMO_STATUS).map(item => (
+        {(isDemoMode ? STATUS : [] as typeof STATUS).map(item => (
           <div key={item.label} className="flex items-center gap-1.5 shrink-0">
             <item.icon className={cn("h-3 w-3", item.color)} />
             <span className="text-[10px] text-muted-foreground">{item.label}:</span>

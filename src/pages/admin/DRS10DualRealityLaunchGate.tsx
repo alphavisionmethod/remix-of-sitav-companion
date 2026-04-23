@@ -8,7 +8,7 @@ import DRSSubNav from "@/components/admin/DRSSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 // Production fallback — seed data removed
-const DEMO_ALL_DOMAINS: any[] = [];
+const ALL_DOMAINS: any[] = [];
 
 interface GateCheck {
   label: string;
@@ -23,8 +23,8 @@ export default function DRS10DualRealityLaunchGate() {
   const checks: GateCheck[] = [
     {
       label: "All domains have mode-aware providers",
-      status: ([] as typeof DEMO_ALL_DOMAINS).every(d => registered.includes(d)) ? "pass" : "warn",
-      detail: `${registered.length}/${([] as typeof DEMO_ALL_DOMAINS).length} domains registered`,
+      status: ([] as any[]).every(d => registered.includes(d)) ? "pass" : "warn",
+      detail: `${registered.length}/${([] as any[]).length} domains registered`,
     },
     {
       label: "Demo mode blocks external writes",

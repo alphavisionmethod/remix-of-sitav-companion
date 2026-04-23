@@ -5,7 +5,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState } from "react";
 import { FileCheck, CheckCircle2, AlertTriangle, XCircle, Clock, ArrowRight, Shield, Code, Eye, RotateCcw, Zap } from "lucide-react";
 import { useAIEngDomain } from "@/hooks/use-ai-engineering-data";
-import { DEMO_PLANS } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const statusColors: Record<string, string> = {
@@ -18,7 +17,7 @@ const statusColors: Record<string, string> = {
 };
 
 const AIChangePlanViewer = () => {
-  const { data: plans, isDemo } = useAIEngDomain("changePlans", DEMO_PLANS);
+  const { data: plans, isDemo } = useAIEngDomain("changePlans", PLANS);
   const [expanded, setExpanded] = useState<string | null>("cp-1");
   const [tab, setTab] = useState("all");
 

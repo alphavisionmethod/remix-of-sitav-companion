@@ -13,7 +13,7 @@ import {
 import {
   PACK_CATALOG, INTERNAL_APPS, STORE_CATEGORIES,
   getFeaturedPacks, getInstalledPacks, getPacksWithUpdates, getRecommendedPacks,
-  DEMO_INSTALL_STATES, type StoreCategory, type PackManifest,
+  INSTALL_STATES, type StoreCategory, type PackManifest,
 } from "@/lib/pack-store";
 import { ArrowRight, Package, RefreshCw, Sparkles, TrendingUp } from "lucide-react";
 import { usePackInstalls } from "@/hooks/use-live-data";

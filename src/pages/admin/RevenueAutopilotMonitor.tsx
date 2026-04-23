@@ -6,21 +6,20 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { BarChart3, TrendingUp, DollarSign, RefreshCw, Zap, Target, CheckCircle, AlertTriangle, Clock, Shield, Activity, Heart } from "lucide-react";
-import { DEMO_AUTOPILOT_ACTIONS, DEMO_WINBACKS } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.05 } } };
 
 const statusColor: Record<string, string> = { completed: "bg-emerald-500/10 text-emerald-500 border-emerald-500/20", pending: "bg-amber-500/10 text-amber-500 border-amber-500/20", active: "bg-blue-500/10 text-blue-500 border-blue-500/20" };
 
-const DEMO_RECOVERED = [
+const RECOVERED = [
   { id: "rv1", type: "Abandoned Cart Recovery", customer: "Apex Ltd", value: 2400, recovered: "2026-04-08", confidence: 0.94, proofId: "PRF-421" },
   { id: "rv2", type: "Late Payment Follow-up", customer: "Nova Inc", value: 1800, recovered: "2026-04-07", confidence: 0.88, proofId: "PRF-418" },
   { id: "rv3", type: "Subscription Renewal Nudge", customer: "Stellar Co", value: 1200, recovered: "2026-04-06", confidence: 0.92, proofId: "PRF-415" },
   { id: "rv4", type: "Dormant Account Reactivation", customer: "Blue Wave", value: 1300, recovered: "2026-04-05", confidence: 0.79, proofId: "PRF-410" },
 ];
 
-const DEMO_SAVED_COSTS = [
+const SAVED_COSTS = [
   { id: "sc1", category: "AI Model Routing Optimization", savedUsd: 890, period: "Last 30 days", method: "Downgraded non-critical calls to GPT-4o-mini" },
   { id: "sc2", category: "Cache Hit Optimization", savedUsd: 620, period: "Last 30 days", method: "Increased semantic cache coverage from 22% to 41%" },
   { id: "sc3", category: "Batch Processing", savedUsd: 450, period: "Last 30 days", method: "Combined 47 individual advisory calls into 12 batch runs" },
@@ -28,7 +27,7 @@ const DEMO_SAVED_COSTS = [
   { id: "sc5", category: "Smart Retry Reduction", savedUsd: 280, period: "Last 30 days", method: "Reduced retry storms by implementing circuit breakers" },
 ];
 
-const DEMO_HEALTH = {
+const HEALTH = {
   automationUptime: 99.7,
   activeRules: 14,
   pausedRules: 2,
@@ -40,8 +39,8 @@ const DEMO_HEALTH = {
 
 const RevenueAutopilotMonitor = () => {
   const [tab, setTab] = useState("overview");
-  const totalRecovered = ([] as typeof DEMO_RECOVERED).reduce((s, r) => s + r.value, 0);
-  const totalSaved = ([] as typeof DEMO_SAVED_COSTS).reduce((s, c) => s + c.savedUsd, 0);
+  const totalRecovered = ([] as any[]).reduce((s, r) => s + r.value, 0);
+  const totalSaved = ([] as any[]).reduce((s, c) => s + c.savedUsd, 0);
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
@@ -59,9 +58,9 @@ const RevenueAutopilotMonitor = () => {
         {[
           { label: "Recovered Value", value: `$${totalRecovered.toLocaleString()}`, icon: DollarSign, color: "text-emerald-500" },
           { label: "Cost Saved", value: `$${totalSaved.toLocaleString()}`, icon: TrendingUp, color: "text-blue-500" },
-          { label: "Autopilot Actions", value: String(([] as typeof DEMO_AUTOPILOT_ACTIONS).length), icon: Zap, color: "text-primary" },
-          { label: "Win-Back Queue", value: String(([] as typeof DEMO_WINBACKS).length), icon: Target, color: "text-amber-500" },
-          { label: "Uptime", value: `${DEMO_HEALTH.automationUptime}%`, icon: Activity, color: "text-emerald-500" },
+          { label: "Autopilot Actions", value: String(([] as any[]).length), icon: Zap, color: "text-primary" },
+          { label: "Win-Back Queue", value: String(([] as any[]).length), icon: Target, color: "text-amber-500" },
+          { label: "Uptime", value: `${HEALTH.automationUptime}%`, icon: Activity, color: "text-emerald-500" },
         ].map(m => (
           <motion.div key={m.label} variants={fadeUp}>
             <Card className="hover:-translate-y-0.5 transition-transform">
@@ -88,7 +87,7 @@ const RevenueAutopilotMonitor = () => {
           <Card>
             <CardHeader className="pb-3"><CardTitle className="text-sm font-semibold">Autopilot Actions</CardTitle></CardHeader>
             <CardContent className="space-y-2">
-              {([] as typeof DEMO_AUTOPILOT_ACTIONS).map(a => (
+              {([] as any[]).map(a => (
                 <div key={a.id} className="p-3 rounded-lg border hover:bg-muted/30 transition-colors">
                   <div className="flex items-center justify-between mb-1.5">
                     <span className="text-sm font-medium text-foreground">{a.action}</span>
@@ -106,7 +105,7 @@ const RevenueAutopilotMonitor = () => {
         </TabsContent>
 
         <TabsContent value="recovered" className="mt-4 space-y-3">
-          {([] as typeof DEMO_RECOVERED).map(r => (
+          {([] as any[]).map(r => (
             <Card key={r.id} className="hover:bg-muted/20 transition-colors">
               <CardContent className="p-4">
                 <div className="flex items-center justify-between mb-2">
@@ -128,7 +127,7 @@ const RevenueAutopilotMonitor = () => {
         </TabsContent>
 
         <TabsContent value="saved" className="mt-4 space-y-3">
-          {([] as typeof DEMO_SAVED_COSTS).map(c => (
+          {([] as any[]).map(c => (
             <Card key={c.id} className="hover:bg-muted/20 transition-colors">
               <CardContent className="p-4">
                 <div className="flex items-center justify-between mb-2">
@@ -152,7 +151,7 @@ const RevenueAutopilotMonitor = () => {
           <Card>
             <CardHeader className="pb-3"><CardTitle className="text-sm font-semibold">Win-Back Opportunities</CardTitle></CardHeader>
             <CardContent className="space-y-2">
-              {([] as typeof DEMO_WINBACKS).map(w => (
+              {([] as any[]).map(w => (
                 <div key={w.name} className="p-3 rounded-lg border hover:bg-muted/30 transition-colors flex items-center justify-between">
                   <div>
                     <p className="text-sm font-medium text-foreground">{w.name}</p>
@@ -176,13 +175,13 @@ const RevenueAutopilotMonitor = () => {
             <CardContent>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 {[
-                  { label: "Uptime", value: `${DEMO_HEALTH.automationUptime}%`, good: true },
-                  { label: "Active Rules", value: String(DEMO_HEALTH.activeRules), good: true },
-                  { label: "Paused Rules", value: String(DEMO_HEALTH.pausedRules), good: DEMO_HEALTH.pausedRules === 0 },
-                  { label: "Daily Actions", value: String(DEMO_HEALTH.dailyActions), good: true },
-                  { label: "Confidence Floor", value: `${(DEMO_HEALTH.confidenceFloor * 100).toFixed(0)}%`, good: true },
-                  { label: "Safety Overrides", value: String(DEMO_HEALTH.safetyOverrides), good: false },
-                  { label: "Last Failure", value: new Date(DEMO_HEALTH.lastFailure).toLocaleDateString(), good: true },
+                  { label: "Uptime", value: `${HEALTH.automationUptime}%`, good: true },
+                  { label: "Active Rules", value: String(HEALTH.activeRules), good: true },
+                  { label: "Paused Rules", value: String(HEALTH.pausedRules), good: HEALTH.pausedRules === 0 },
+                  { label: "Daily Actions", value: String(HEALTH.dailyActions), good: true },
+                  { label: "Confidence Floor", value: `${(HEALTH.confidenceFloor * 100).toFixed(0)}%`, good: true },
+                  { label: "Safety Overrides", value: String(HEALTH.safetyOverrides), good: false },
+                  { label: "Last Failure", value: new Date(HEALTH.lastFailure).toLocaleDateString(), good: true },
                 ].map(m => (
                   <div key={m.label} className="p-3 rounded-lg border">
                     <p className="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">{m.label}</p>
@@ -198,7 +197,7 @@ const RevenueAutopilotMonitor = () => {
           <Card>
             <CardHeader className="pb-3"><CardTitle className="text-sm font-semibold flex items-center gap-2"><Shield className="h-4 w-4 text-primary" /> Revenue Action Proof</CardTitle></CardHeader>
             <CardContent className="space-y-2">
-              {([] as typeof DEMO_RECOVERED).map(r => (
+              {([] as any[]).map(r => (
                 <div key={r.id} className="p-3 rounded-lg border hover:bg-muted/20 transition-colors">
                   <div className="flex items-center justify-between mb-1">
                     <span className="text-xs font-medium text-foreground">{r.type} — {r.customer}</span>

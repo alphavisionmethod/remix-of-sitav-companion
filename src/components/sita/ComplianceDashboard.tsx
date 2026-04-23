@@ -55,7 +55,7 @@ interface RiskItem {
 
 // ── Demo Data ───────────────────────────────────────────────────
 
-const DEMO_CONTROLS: ComplianceControl[] = [
+const CONTROLS: ComplianceControl[] = [
   { id: "c-1", framework: "ISO 27001", controlId: "A.5.1", title: "Information Security Policies", description: "Management direction for information security", status: "compliant", evidence: ["Policy document v3.2", "Board approval minutes"], lastAuditedAt: Date.now() - 86400000 * 7, owner: "CISO", category: "Governance" },
   { id: "c-2", framework: "ISO 27001", controlId: "A.6.1", title: "Organization of Information Security", description: "Internal organization security roles and responsibilities", status: "compliant", evidence: ["RACI matrix", "Role definitions"], lastAuditedAt: Date.now() - 86400000 * 14, owner: "CISO", category: "Governance" },
   { id: "c-3", framework: "ISO 27001", controlId: "A.8.1", title: "Asset Management", description: "Responsibility for assets and classification", status: "compliant", evidence: ["Asset inventory", "Classification schema"], lastAuditedAt: Date.now() - 86400000 * 5, owner: "IT Ops", category: "Asset Management" },
@@ -72,7 +72,7 @@ const DEMO_CONTROLS: ComplianceControl[] = [
   { id: "c-14", framework: "NIST 800-53", controlId: "RA-5", title: "Vulnerability Scanning", description: "Scan for vulnerabilities and remediate", status: "partial", evidence: ["Dependency scanning", "Missing: infra scanning"], lastAuditedAt: Date.now() - 86400000 * 15, owner: "Security", category: "Risk Assessment" },
 ];
 
-const DEMO_SLAS: SLAMetric[] = [
+const SLAS: SLAMetric[] = [
   { name: "System Uptime", target: 99.95, actual: 99.98, unit: "%", status: "met", trend: "stable" },
   { name: "Incident Response (P0)", target: 5, actual: 3.2, unit: "min", status: "met", trend: "improving" },
   { name: "Incident Response (P1)", target: 15, actual: 12, unit: "min", status: "met", trend: "stable" },
@@ -83,7 +83,7 @@ const DEMO_SLAS: SLAMetric[] = [
   { name: "Vulnerability Remediation", target: 7, actual: 12, unit: "days", status: "breached", trend: "declining" },
 ];
 
-const DEMO_RISKS: RiskItem[] = [
+const RISKS: RiskItem[] = [
   { id: "r-1", title: "Third-party connector API deprecation", likelihood: 3, impact: 4, category: "Vendor", mitigations: ["Multi-provider fallback", "API version monitoring"], owner: "Engineering", status: "mitigated" },
   { id: "r-2", title: "AI model hallucination in financial advice", likelihood: 2, impact: 5, category: "AI Safety", mitigations: ["Sovereign calculation engine", "Human-in-loop for high-value", "Confidence thresholds"], owner: "AI Safety", status: "mitigated" },
   { id: "r-3", title: "Permission drift allowing unauthorized actions", likelihood: 2, impact: 4, category: "Security", mitigations: ["Permission drift agent", "Immutable audit log", "Autonomy ceilings"], owner: "Security", status: "mitigated" },
@@ -142,22 +142,22 @@ export function ComplianceDashboard() {
   const [frameworkFilter, setFrameworkFilter] = useState<string>("all");
 
   const filteredControls = useMemo(() => {
-    if (frameworkFilter === "all") return DEMO_CONTROLS;
-    return (isDemoMode ? DEMO_CONTROLS : [] as typeof DEMO_CONTROLS).filter(c => c.framework === frameworkFilter);
+    if (frameworkFilter === "all") return CONTROLS;
+    return (isDemoMode ? CONTROLS : [] as typeof CONTROLS).filter(c => c.framework === frameworkFilter);
   }, [frameworkFilter]);
 
   const stats = useMemo(() => {
-    const compliant = (isDemoMode ? DEMO_CONTROLS : [] as typeof DEMO_CONTROLS).filter(c => c.status === "compliant").length;
-    const partial = (isDemoMode ? DEMO_CONTROLS : [] as typeof DEMO_CONTROLS).filter(c => c.status === "partial").length;
-    const nonCompliant = (isDemoMode ? DEMO_CONTROLS : [] as typeof DEMO_CONTROLS).filter(c => c.status === "non-compliant").length;
-    const score = Math.round((compliant / (isDemoMode ? DEMO_CONTROLS : [] as typeof DEMO_CONTROLS).length) * 100);
-    return { compliant, partial, nonCompliant, total: (isDemoMode ? DEMO_CONTROLS : [] as typeof DEMO_CONTROLS).length, score };
+    const compliant = (isDemoMode ? CONTROLS : [] as typeof CONTROLS).filter(c => c.status === "compliant").length;
+    const partial = (isDemoMode ? CONTROLS : [] as typeof CONTROLS).filter(c => c.status === "partial").length;
+    const nonCompliant = (isDemoMode ? CONTROLS : [] as typeof CONTROLS).filter(c => c.status === "non-compliant").length;
+    const score = Math.round((compliant / (isDemoMode ? CONTROLS : [] as typeof CONTROLS).length) * 100);
+    return { compliant, partial, nonCompliant, total: (isDemoMode ? CONTROLS : [] as typeof CONTROLS).length, score };
   }, []);
 
   const slaStats = useMemo(() => ({
-    met: (isDemoMode ? DEMO_SLAS : [] as typeof DEMO_SLAS).filter(s => s.status === "met").length,
-    atRisk: (isDemoMode ? DEMO_SLAS : [] as typeof DEMO_SLAS).filter(s => s.status === "at-risk").length,
-    breached: (isDemoMode ? DEMO_SLAS : [] as typeof DEMO_SLAS).filter(s => s.status === "breached").length,
+    met: (isDemoMode ? SLAS : [] as typeof SLAS).filter(s => s.status === "met").length,
+    atRisk: (isDemoMode ? SLAS : [] as typeof SLAS).filter(s => s.status === "at-risk").length,
+    breached: (isDemoMode ? SLAS : [] as typeof SLAS).filter(s => s.status === "breached").length,
   }), []);
 
   return (
@@ -192,7 +192,7 @@ export function ComplianceDashboard() {
           { label: "Partial", value: stats.partial, color: "text-accent" },
           { label: "SLAs Met", value: slaStats.met, color: "text-trust-safe" },
           { label: "SLAs At Risk", value: slaStats.atRisk, color: "text-accent" },
-          { label: "Risks Open", value: (isDemoMode ? DEMO_RISKS : [] as typeof DEMO_RISKS).filter(r => r.status === "open").length, color: "text-destructive" },
+          { label: "Risks Open", value: (isDemoMode ? RISKS : [] as typeof RISKS).filter(r => r.status === "open").length, color: "text-destructive" },
         ].map(m => (
           <div key={m.label} className="rounded-xl border border-border/40 bg-card/40 p-2 text-center">
             <p className={cn("font-display text-lg font-bold", m.color)}>{m.value}</p>
@@ -236,7 +236,7 @@ export function ComplianceDashboard() {
 
         {selectedView === "sla" && (
           <motion.div key="sla" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-2">
-            {(isDemoMode ? DEMO_SLAS : [] as typeof DEMO_SLAS).map(sla => (
+            {(isDemoMode ? SLAS : [] as typeof SLAS).map(sla => (
               <div key={sla.name} className={cn(
                 "rounded-lg border p-3 flex items-center gap-3",
                 sla.status === "breached" ? "border-destructive/20 bg-destructive/3" :
@@ -272,7 +272,7 @@ export function ComplianceDashboard() {
 
         {selectedView === "risks" && (
           <motion.div key="risks" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-3">
-            {(isDemoMode ? DEMO_RISKS : [] as typeof DEMO_RISKS).sort((a, b) => (b.likelihood * b.impact) - (a.likelihood * a.impact)).map(risk => (
+            {(isDemoMode ? RISKS : [] as typeof RISKS).sort((a, b) => (b.likelihood * b.impact) - (a.likelihood * a.impact)).map(risk => (
               <div key={risk.id} className={cn(
                 "rounded-xl border p-4",
                 risk.status === "open" ? "border-destructive/20 bg-destructive/3" : "border-border/40 bg-card/40"

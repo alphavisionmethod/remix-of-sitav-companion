@@ -3,14 +3,13 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Heart, Users, MessageSquare, Shield, Zap, Eye } from "lucide-react";
 import { useAssistantRolePresences } from "@/hooks/use-notification-calm-data";
-import { DEMO_CALM_PRINCIPLES, DEMO_INTERVENTION_SCENARIOS } from "@/data/seed/notification-calm";
 import NRCSubNav from "@/components/admin/NRCSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 const NRC02CalmnessCenter = () => {
   const { data: roles, isLoading } = useAssistantRolePresences();
-  const calmPrinciples = DEMO_CALM_PRINCIPLES;
+  const calmPrinciples = CALM_PRINCIPLES;
   const principleIcons = [Eye, Zap, MessageSquare, Shield, Heart, Users];
-  const interventions = DEMO_INTERVENTION_SCENARIOS;
+  const interventions = INTERVENTION_SCENARIOS;
 
   return (
     <div className="p-6 max-w-[1400px] mx-auto space-y-6">

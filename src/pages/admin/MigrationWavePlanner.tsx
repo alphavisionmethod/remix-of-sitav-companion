@@ -6,13 +6,13 @@ import { Layers, Users, Clock, Target, ArrowRight } from "lucide-react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 export default function MigrationWavePlanner() {
-  const { data: mockReplacements = [] } = useMockReplacements();
+  const { data: replacements = [] } = useMockReplacements();
 
   const waves = useMemo(() => {
-    const critical = mockReplacements.filter(m => m.migration_priority === "critical");
-    const high = mockReplacements.filter(m => m.migration_priority === "high");
-    const medium = mockReplacements.filter(m => m.migration_priority === "medium");
-    const low = mockReplacements.filter(m => m.migration_priority === "low");
+    const critical = replacements.filter(m => m.migration_priority === "critical");
+    const high = replacements.filter(m => m.migration_priority === "high");
+    const medium = replacements.filter(m => m.migration_priority === "medium");
+    const low = replacements.filter(m => m.migration_priority === "low");
 
     return [
       { name: "Wave 1 — Critical / Launch Blockers", priority: "critical", items: critical, color: "text-destructive border-destructive/30" },
@@ -20,18 +20,18 @@ export default function MigrationWavePlanner() {
       { name: "Wave 3 — Medium / Important", priority: "medium", items: medium, color: "text-yellow-400 border-yellow-400/30" },
       { name: "Wave 4 — Low / Internal", priority: "low", items: low, color: "text-muted-foreground border-muted" },
     ];
-  }, [mockReplacements]);
+  }, [replacements]);
 
   const domainGroups = useMemo(() => {
-    const map = new Map<string, typeof mockReplacements>();
-    mockReplacements.forEach(m => {
+    const map = new Map<string, typeof replacements>();
+    replacements.forEach(m => {
       const domain = m.page_path.split("/")[1] || "root";
       const list = map.get(domain) ?? [];
       list.push(m);
       map.set(domain, list);
     });
     return [...map.entries()].sort((a, b) => b[1].length - a[1].length);
-  }, [mockReplacements]);
+  }, [replacements]);
 
   return (
     <div className="space-y-6 p-6">

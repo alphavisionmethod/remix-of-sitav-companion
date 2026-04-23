@@ -14,7 +14,7 @@ import { RecoveryOverview } from "@/components/business/lead-recovery/RecoveryOv
 import { RecoveryQueuePanel } from "@/components/business/lead-recovery/RecoveryQueuePanel";
 import { RecoveryCard } from "@/components/business/lead-recovery/RecoveryCard";
 import { RecoveryHighPressureBanner } from "@/components/business/lead-recovery/RecoveryStates";
-import { MOCK_RECOVERY_CANDIDATES, filterByQueue, type RecoveryCandidate } from "@/domains/engines/lead-recovery-engine";
+import { RECOVERY_CANDIDATES, filterByQueue, type RecoveryCandidate } from "@/domains/engines/lead-recovery-engine";
 type MainTab = "overview" | "queues" | "campaigns" | "analytics";
 type SortMode = "score" | "value" | "urgency" | "recency";
 
@@ -34,7 +34,7 @@ const LeadRecovery = () => {
   const [search, setSearch] = useState("");
   const [sortMode, setSortMode] = useState<SortMode>("score");
 
-  const candidates = MOCK_RECOVERY_CANDIDATES;
+  const candidates = RECOVERY_CANDIDATES;
   const filtered = useMemo(() => {
     let list = filterByQueue(candidates, activeQueue);
     if (search) {

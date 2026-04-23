@@ -12,7 +12,6 @@ import {
   Search, Database, Shield, CheckCircle, AlertTriangle,
   XCircle, Eye, ArrowRight, Globe, Code
 } from "lucide-react";
-import { DEMO_ROUTES } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 type LaunchHonesty = "truthful" | "demo-backed" | "mixed" | "overstated" | "blocked";
 
@@ -22,7 +21,7 @@ interface RouteSource {
   domain: string;
   activeProvider: "real" | "demo" | "mixed" | "none";
   dataServices: string[];
-  mockImports: string[];
+  imports: string[];
   scenarioBinding: string | null;
   launchHonesty: LaunchHonesty;
   notes: string;
@@ -40,14 +39,14 @@ export default function RouteSourceDiagnostics() {
   const [search, setSearch] = useState("");
 
   const filtered = useMemo(() => {
-    if (!search) return DEMO_ROUTES;
+    if (!search) return ROUTES;
     const q = search.toLowerCase();
-    return ([] as typeof DEMO_ROUTES).filter(r => r.path.includes(q) || r.pageName.toLowerCase().includes(q) || r.domain.toLowerCase().includes(q));
+    return ([] as any[]).filter(r => r.path.includes(q) || r.pageName.toLowerCase().includes(q) || r.domain.toLowerCase().includes(q));
   }, [search]);
 
-  const truthful = ([] as typeof DEMO_ROUTES).filter(r => r.launchHonesty === "truthful").length;
-  const demoBacked = ([] as typeof DEMO_ROUTES).filter(r => r.launchHonesty === "demo-backed").length;
-  const mixed = ([] as typeof DEMO_ROUTES).filter(r => r.launchHonesty === "mixed").length;
+  const truthful = ([] as any[]).filter(r => r.launchHonesty === "truthful").length;
+  const demoBacked = ([] as any[]).filter(r => r.launchHonesty === "demo-backed").length;
+  const mixed = ([] as any[]).filter(r => r.launchHonesty === "mixed").length;
 
   return (
     <div className="mx-auto max-w-7xl space-y-6 p-6">
@@ -92,7 +91,7 @@ export default function RouteSourceDiagnostics() {
                     </div>
                     <div className="flex items-center gap-3 mt-1 text-[10px] text-muted-foreground">
                       <span className="flex items-center gap-1"><Database className="h-3 w-3" /> {r.dataServices.join(", ")}</span>
-                      {r.mockImports.length > 0 && <span className="flex items-center gap-1"><Code className="h-3 w-3" /> mock: {r.mockImports.join(", ")}</span>}
+                      {r.imports.length > 0 && <span className="flex items-center gap-1"><Code className="h-3 w-3" /> mock: {r.imports.join(", ")}</span>}
                       {r.scenarioBinding && <span className="flex items-center gap-1"><Globe className="h-3 w-3" /> scenario: {r.scenarioBinding}</span>}
                     </div>
                     <p className="text-[10px] text-muted-foreground mt-0.5 italic">{r.notes}</p>

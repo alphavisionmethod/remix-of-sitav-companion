@@ -6,7 +6,7 @@ import {
   BarChart3, ArrowUpRight, Star, Briefcase, Zap
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-const DEMO_DEALS = [
+const DEALS = [
   { id: "1", name: "NovaTech Enterprise License", value: "$85,000", stage: "Negotiation", probability: 75, daysInStage: 8, contacts: 3, nextAction: "Send revised pricing", health: "good" },
   { id: "2", name: "DataFlow API Integration", value: "$42,000", stage: "Proposal", probability: 60, daysInStage: 12, contacts: 2, nextAction: "Follow up on proposal", health: "warning" },
   { id: "3", name: "BlueStar Annual Contract", value: "$120,000", stage: "Discovery", probability: 35, daysInStage: 5, contacts: 4, nextAction: "Schedule deep-dive demo", health: "good" },
@@ -59,7 +59,7 @@ const roleColors: Record<string, string> = {
 };
 
 export default function DealRoom() {
-  const [selectedDeal, setSelectedDeal] = useState(DEMO_DEALS[0]);
+  const [selectedDeal, setSelectedDeal] = useState(DEALS[0]);
   const [activeTab, setActiveTab] = useState<"overview" | "stakeholders" | "playbook" | "scenarios">("overview");
 
   return (
@@ -67,7 +67,7 @@ export default function DealRoom() {
       {/* Deal list sidebar */}
       <div className="w-[220px] shrink-0 border-r border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_100%/0.01)] p-3 space-y-1.5 overflow-y-auto">
         <p className="text-[9px] font-bold uppercase tracking-[0.15em] text-foreground/25 px-2 mb-2">Active Deals</p>
-        {([] as typeof DEMO_DEALS).map((deal) => (
+        {([] as any[]).map((deal) => (
           <button
             key={deal.id}
             onClick={() => setSelectedDeal(deal)}

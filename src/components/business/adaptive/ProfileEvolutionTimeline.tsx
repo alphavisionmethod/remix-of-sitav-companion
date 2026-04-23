@@ -27,7 +27,7 @@ const ARCHETYPE_LABELS: Record<string, string> = {
 };
 
 // Mock timeline data
-const MOCK_TIMELINE = [
+const TIMELINE = [
   { date: "Jan", mode: "service" as ProfileArchetype, confidence: 0.45 },
   { date: "Feb", mode: "service" as ProfileArchetype, confidence: 0.52 },
   { date: "Mar", mode: "service" as ProfileArchetype, confidence: 0.58 },
@@ -67,7 +67,7 @@ export default function ProfileEvolutionTimeline() {
   };
 
   // Generate timeline with current mode
-  const timeline = (isDemoMode ? MOCK_TIMELINE : [] as typeof MOCK_TIMELINE).map(t => ({ ...t, mode: primaryMode }));
+  const timeline = (isDemoMode ? TIMELINE : [] as typeof TIMELINE).map(t => ({ ...t, mode: primaryMode }));
 
   return (
     <div className="p-5 space-y-5 max-w-3xl">

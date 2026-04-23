@@ -2,7 +2,6 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { ShieldCheck, AlertTriangle, Check, X, Clock, Search, Brain } from "lucide-react";
 import { useInvestmentDecisions } from "@/hooks/use-investment-office";
-import { DEMO_PENDING_DECISIONS } from "@/data/seed/investment";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 const VERDICT_CONFIG = {
   ready: { label: "Ready", color: "text-[hsl(var(--trust-safe))]", bg: "bg-[hsl(var(--trust-safe))]/10", icon: <Check className="h-5 w-5" /> },
@@ -14,7 +13,7 @@ const VERDICT_CONFIG = {
 
 export default function DecisionReadiness() {
   const { data: liveData, isLoading } = useInvestmentDecisions();
-  const [selected, setSelected] = useState(DEMO_PENDING_DECISIONS[0]);
+  const [selected, setSelected] = useState(PENDING_DECISIONS[0]);
   const vc = VERDICT_CONFIG[selected.verdict];
 
   return (
@@ -25,7 +24,7 @@ export default function DecisionReadiness() {
       </div>
 
       <div className="flex gap-2 overflow-x-auto pb-1">
-        {([] as typeof DEMO_PENDING_DECISIONS).map(d => {
+        {([] as any[]).map(d => {
           const v = VERDICT_CONFIG[d.verdict];
           return (
             <button key={d.id} onClick={() => setSelected(d)}

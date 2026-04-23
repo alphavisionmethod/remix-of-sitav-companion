@@ -20,11 +20,11 @@ import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { PageShell } from "@/components/sita/PageShell";
 
 export default function UsersAdminPage() {
-  const { data: mockUsers = [] } = useAdminUsers();
+  const { data: users = [] } = useAdminUsers();
   const [search, setSearch] = useState("");
   const [selectedUser, setSelectedUser] = useState<UserRowView | null>(null);
 
-  const filtered = mockUsers.filter(u =>
+  const filtered = users.filter(u =>
     search === "" || u.name.toLowerCase().includes(search.toLowerCase()) || u.email.includes(search) || u.org.toLowerCase().includes(search.toLowerCase())
   );
 
@@ -34,10 +34,10 @@ export default function UsersAdminPage() {
 <AdminPageHeader icon={Users} title="Users & Organizations" subtitle="User roster, trust state, connector health, and support diagnostics">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 w-full mt-5">
           {[
-            { label: "Total Users", value: mockUsers.length, ok: true },
-            { label: "Enterprise", value: mockUsers.filter(u => u.tier === "enterprise").length, ok: true },
-            { label: "Support Flags", value: mockUsers.reduce((s, u) => s + u.supportFlags, 0), ok: mockUsers.reduce((s, u) => s + u.supportFlags, 0) === 0 },
-            { label: "Pending Approvals", value: mockUsers.reduce((s, u) => s + u.approvalBurden, 0), ok: true },
+            { label: "Total Users", value: users.length, ok: true },
+            { label: "Enterprise", value: users.filter(u => u.tier === "enterprise").length, ok: true },
+            { label: "Support Flags", value: users.reduce((s, u) => s + u.supportFlags, 0), ok: users.reduce((s, u) => s + u.supportFlags, 0) === 0 },
+            { label: "Pending Approvals", value: users.reduce((s, u) => s + u.approvalBurden, 0), ok: true },
           ].map(m => (
             <div key={m.label} className={cn("rounded-xl border px-3 py-2.5 text-center", m.ok ? "border-border bg-card/50" : "border-accent/20 bg-accent/5")}>
               <p className={cn("font-display text-lg font-bold", m.ok ? "text-foreground" : "text-accent")}>{m.value}</p>

@@ -87,7 +87,7 @@ export interface PlaybookDraftSim {
 
 // ── Mock customer pool ───────────────────────────────────────────
 
-export const MOCK_CUSTOMERS: MockCustomer[] = [
+export const CUSTOMERS: MockCustomer[] = [
   { id: "MC-1", name: "Horizon Media", healthScore: 32, ltv: 18400, segment: "enterprise", daysOverdue: 22, lastContactDays: 15, dealValue: 4800 },
   { id: "MC-2", name: "Petal & Bloom", healthScore: 58, ltv: 6200, segment: "smb", daysOverdue: 8, lastContactDays: 5, dealValue: 1200 },
   { id: "MC-3", name: "Cascade Labs", healthScore: 75, ltv: 42000, segment: "enterprise", daysOverdue: 0, lastContactDays: 2, dealValue: 9600 },
@@ -151,7 +151,7 @@ const parseDays = (delay?: string): number => {
 
 export function simulatePlaybook(
   draft: PlaybookDraftSim,
-  customers: MockCustomer[] = MOCK_CUSTOMERS,
+  customers: MockCustomer[] = CUSTOMERS,
 ): SimulationResult {
   const steps: StepOutcome[] = [];
   let activeCustomers = [...customers];

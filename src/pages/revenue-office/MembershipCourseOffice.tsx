@@ -6,7 +6,6 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { GraduationCap, Users, BookOpen, PlayCircle, Star, TrendingUp, AlertTriangle, Clock, Calendar, BarChart3, Zap } from "lucide-react";
-import { DEMO_courses, DEMO_DRIP_SCHEDULE, DEMO_ENGAGEMENT_HEATMAP } from "@/data/seed/revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 const memberships = [
   { tier: "Premium", members: 156, mrr: 7800, churn: 3.2, retention: 96.8, trend: "up" },
@@ -65,7 +64,7 @@ export default function MembershipCourseOffice() {
             <Card className="bg-card/50 border-border/50">
               <CardHeader><CardTitle className="flex items-center gap-2"><GraduationCap className="h-5 w-5 text-blue-400" />Course Library</CardTitle></CardHeader>
               <CardContent className="space-y-3">
-                {([] as typeof DEMO_courses).map(c => (
+                {([] as typeof courses).map(c => (
                   <div key={c.name} className="p-3 rounded-lg bg-background/50 border border-border/30">
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center gap-2">
@@ -119,7 +118,7 @@ export default function MembershipCourseOffice() {
             <Card className="bg-card/50 border-border/50">
               <CardHeader><CardTitle className="flex items-center gap-2"><Calendar className="h-5 w-5 text-primary" />Content Drip Schedule</CardTitle></CardHeader>
               <CardContent className="space-y-3">
-                {([] as typeof DEMO_DRIP_SCHEDULE).map((d, i) => (
+                {([] as any[]).map((d, i) => (
                   <div key={d.module} className="p-3 rounded-lg bg-background/50 border border-border/30 flex items-center justify-between">
                     <div className="flex items-center gap-3">
                       <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold ${d.status === "released" ? "bg-primary/20 text-primary" : "bg-muted/30 text-muted-foreground"}`}>
@@ -162,7 +161,7 @@ export default function MembershipCourseOffice() {
                       </tr>
                     </thead>
                     <tbody>
-                      {([] as typeof DEMO_ENGAGEMENT_HEATMAP).map(row => (
+                      {([] as any[]).map(row => (
                         <tr key={row.module} className="border-t border-border/20">
                           <td className="p-2 text-foreground font-medium">{row.module}</td>
                           {[row.week1, row.week2, row.week3, row.week4].map((val, j) => {

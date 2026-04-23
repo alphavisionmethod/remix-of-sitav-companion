@@ -76,8 +76,8 @@ const RCP01Overview = () => {
       <div className="grid grid-cols-2 sm:grid-cols-6 gap-3">
         {([
           { label: "Total Features", value: stats.totalFeatures, color: "text-foreground" },
-          { label: "Mock Sources", value: stats.mockSourceStats.total, color: "text-amber-400" },
-          { label: "Forbidden Mocks", value: stats.mockSourceStats.forbidden, color: "text-red-400" },
+          { label: "Mock Sources", value: stats.sourceStats.total, color: "text-amber-400" },
+          { label: "Forbidden Mocks", value: stats.sourceStats.forbidden, color: "text-red-400" },
           { label: "Contracts Ready", value: stats.contractStats.fullyReady, color: "text-emerald-400" },
           { label: "Services In-Memory", value: stats.serviceHealth.inMemory, color: "text-red-400" },
           { label: "Runtime Passing", value: stats.runtimeSummary.passing, color: "text-emerald-400" },
@@ -125,7 +125,7 @@ const RCP01Overview = () => {
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
-            {(Object.entries(stats.mockProgress.byStatus) as [string, number][]).map(([status, count]) => (
+            {(Object.entries(stats.progress.byStatus) as [string, number][]).map(([status, count]) => (
               <div key={status} className="text-center p-2 rounded bg-muted/30">
                 <div className="text-lg font-bold">{count}</div>
                 <div className="text-[10px] text-muted-foreground capitalize">{status.replace("_", " ")}</div>

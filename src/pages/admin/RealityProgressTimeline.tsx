@@ -9,9 +9,9 @@ import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 export default function RealityProgressTimeline() {
   const { data: classifications = [] } = useRealityClassifications();
-  const { data: mockReplacements = [] } = useMockReplacements();
+  const { data: replacements = [] } = useMockReplacements();
   const cStats = useClassificationStats(classifications);
-  const mStats = useMockReplacementStats(mockReplacements);
+  const mStats = useMockReplacementStats(replacements);
 
   const transitionCounts = useMemo(() => {
     const counts = { toSimulated: 0, toPersisted: 0, toProven: 0 };
@@ -24,16 +24,16 @@ export default function RealityProgressTimeline() {
   const milestones = useMemo(() => {
     const items: { label: string; achieved: boolean; detail: string }[] = [
       { label: "First feature classified", achieved: classifications.length > 0, detail: `${classifications.length} total` },
-      { label: "First mock tracked", achieved: mockReplacements.length > 0, detail: `${mockReplacements.length} tracked` },
+      { label: "First mock tracked", achieved: replacements.length > 0, detail: `${replacements.length} tracked` },
       { label: "First mock replaced", achieved: mStats.completed + mStats.validated > 0, detail: `${mStats.completed + mStats.validated} done` },
       { label: "First proven feature", achieved: cStats.proven > 0, detail: `${cStats.proven} proven` },
       { label: "50% mocks replaced", achieved: mStats.completionRate >= 50, detail: `${mStats.completionRate}%` },
-      { label: "All critical mocks replaced", achieved: mockReplacements.filter(m => m.migration_priority === "critical" && m.migration_status !== "validated" && m.migration_status !== "completed").length === 0 && mockReplacements.some(m => m.migration_priority === "critical"), detail: "" },
+      { label: "All critical mocks replaced", achieved: replacements.filter(m => m.migration_priority === "critical" && m.migration_status !== "validated" && m.migration_status !== "completed").length === 0 && replacements.some(m => m.migration_priority === "critical"), detail: "" },
       { label: "80% platform proven", achieved: cStats.readiness >= 80, detail: `${cStats.readiness}%` },
       { label: "100% launch honesty", achieved: cStats.readiness === 100, detail: "" },
     ];
     return items;
-  }, [classifications, mockReplacements, cStats, mStats]);
+  }, [classifications, replacements, cStats, mStats]);
 
   return (
     <div className="space-y-6 p-6">

@@ -9,7 +9,7 @@ import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 export default function LaunchHonestyBoard() {
   const { data: classifications = [] } = useRealityClassifications();
-  const { data: mockReplacements = [] } = useMockReplacements();
+  const { data: replacements = [] } = useMockReplacements();
 
   const domainTruth = useMemo(() => {
     const map = new Map<string, { total: number; proven: number; simulated: number; blockers: string[] }>();
@@ -69,7 +69,7 @@ export default function LaunchHonestyBoard() {
         <Card>
           <CardContent className="p-4 text-center">
             <TrendingDown className="h-8 w-8 mx-auto mb-2 text-yellow-400" />
-            <div className="text-3xl font-bold">{mockReplacements.filter(m => m.migration_priority === "critical" && m.migration_status !== "validated").length}</div>
+            <div className="text-3xl font-bold">{replacements.filter(m => m.migration_priority === "critical" && m.migration_status !== "validated").length}</div>
             <div className="text-xs text-muted-foreground">Critical mocks remaining</div>
           </CardContent>
         </Card>

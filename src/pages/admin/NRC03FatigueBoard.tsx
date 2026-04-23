@@ -3,13 +3,12 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AlertTriangle, TrendingDown, Activity, BellOff } from "lucide-react";
 import { useFatigueProfiles } from "@/hooks/use-notification-calm-data";
-import { DEMO_SUPPRESSION_ACTIONS, DEMO_OVERLOAD_TRIGGERS } from "@/data/seed/notification-calm";
 import NRCSubNav from "@/components/admin/NRCSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 const NRC03FatigueBoard = () => {
   const { data: fatigueSignals, isLoading } = useFatigueProfiles();
-  const suppressionActions = DEMO_SUPPRESSION_ACTIONS;
-  const overloadTriggers = DEMO_OVERLOAD_TRIGGERS;
+  const suppressionActions = SUPPRESSION_ACTIONS;
+  const overloadTriggers = OVERLOAD_TRIGGERS;
 
   return (
     <div className="p-6 max-w-[1400px] mx-auto space-y-6">

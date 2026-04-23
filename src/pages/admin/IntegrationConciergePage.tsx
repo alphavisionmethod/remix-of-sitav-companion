@@ -7,14 +7,13 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { Globe, Sparkles, CheckCircle, Search, Zap, Shield, Play, ArrowRight, AlertTriangle, RefreshCw, Workflow, Eye } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { DEMO_USE_CASES } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.05 } } };
 
 const connectorStatusColor: Record<string, string> = { connected: "bg-emerald-500/10 text-emerald-500 border-emerald-500/20", available: "bg-blue-500/10 text-blue-500 border-blue-500/20", required: "bg-amber-500/10 text-amber-500 border-amber-500/20" };
 
-const DEMO_RECOMMENDATIONS = [
+const RECOMMENDATIONS = [
   { id: "rec1", useCase: "Lead Recovery", connector: "HubSpot CRM", reason: "90% of lead recovery use cases require CRM integration for contact enrichment", confidence: 0.94, priority: "high" },
   { id: "rec2", useCase: "Incident Alerting", connector: "Slack", reason: "Real-time alerting requires messaging integration for team notification", confidence: 0.97, priority: "high" },
   { id: "rec3", useCase: "Invoice Automation", connector: "Xero", reason: "Accounting integration enables automated invoice generation and reconciliation", confidence: 0.88, priority: "medium" },
@@ -22,13 +21,13 @@ const DEMO_RECOMMENDATIONS = [
   { id: "rec5", useCase: "Email Campaigns", connector: "SendGrid", reason: "Transactional and campaign emails require email delivery provider", confidence: 0.85, priority: "medium" },
 ];
 
-const DEMO_WORKFLOWS = [
+const WORKFLOWS = [
   { id: "wf1", name: "Lead → CRM → Nurture Sequence", steps: ["Capture lead signal", "Enrich via CRM", "Create nurture workflow", "Schedule follow-up"], status: "ready", connectorDeps: ["HubSpot", "SendGrid"] },
   { id: "wf2", name: "Incident → Alert → Runbook", steps: ["Detect anomaly", "Classify severity", "Route to Slack", "Launch runbook"], status: "ready", connectorDeps: ["Slack", "PagerDuty"] },
   { id: "wf3", name: "Invoice → Accounting → Receipt", steps: ["Generate invoice", "Push to Xero", "Track payment", "Issue receipt"], status: "partial", connectorDeps: ["Xero", "Stripe"] },
 ];
 
-const DEMO_SIMULATIONS = [
+const SIMULATIONS = [
   { id: "sim1", useCase: "Lead Recovery with HubSpot", result: "success", latencyMs: 340, dataFlowValid: true, trustGatesPassed: 3, trustGatesTotal: 3 },
   { id: "sim2", useCase: "Incident Alerting with Slack", result: "success", latencyMs: 120, dataFlowValid: true, trustGatesPassed: 2, trustGatesTotal: 2 },
   { id: "sim3", useCase: "Invoice Automation with Xero", result: "partial", latencyMs: 890, dataFlowValid: false, trustGatesPassed: 2, trustGatesTotal: 3 },
@@ -37,7 +36,7 @@ const DEMO_SIMULATIONS = [
 const IntegrationConciergePage = () => {
   const [tab, setTab] = useState("discover");
   const [search, setSearch] = useState("");
-  const filtered = ([] as typeof DEMO_USE_CASES).filter(uc => uc.title.toLowerCase().includes(search.toLowerCase()));
+  const filtered = ([] as any[]).filter(uc => uc.title.toLowerCase().includes(search.toLowerCase()));
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
@@ -120,7 +119,7 @@ const IntegrationConciergePage = () => {
           <Card>
             <CardHeader className="pb-3"><CardTitle className="text-sm font-semibold flex items-center gap-2"><Sparkles className="h-4 w-4 text-primary" /> Connector Recommendations</CardTitle></CardHeader>
             <CardContent className="space-y-2">
-              {([] as typeof DEMO_RECOMMENDATIONS).map(r => (
+              {([] as any[]).map(r => (
                 <div key={r.id} className="p-3 rounded-lg border hover:bg-muted/20 transition-colors">
                   <div className="flex items-center justify-between mb-1">
                     <div className="flex items-center gap-2">
@@ -138,7 +137,7 @@ const IntegrationConciergePage = () => {
         </TabsContent>
 
         <TabsContent value="workflows" className="mt-4 space-y-3">
-          {([] as typeof DEMO_WORKFLOWS).map(wf => (
+          {([] as any[]).map(wf => (
             <Card key={wf.id} className="hover:bg-muted/20 transition-colors">
               <CardContent className="p-4">
                 <div className="flex items-center justify-between mb-3">
@@ -166,7 +165,7 @@ const IntegrationConciergePage = () => {
         </TabsContent>
 
         <TabsContent value="simulations" className="mt-4 space-y-3">
-          {([] as typeof DEMO_SIMULATIONS).map(sim => (
+          {([] as any[]).map(sim => (
             <Card key={sim.id} className={`hover:bg-muted/20 transition-colors ${sim.result !== "success" ? "border-amber-500/20" : ""}`}>
               <CardContent className="p-4">
                 <div className="flex items-center justify-between mb-2">

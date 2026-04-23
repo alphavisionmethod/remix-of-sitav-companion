@@ -4,7 +4,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useComplianceViolations, useGatewayStats } from "@/hooks/use-sag-data";
 import type { ComplianceGate, TenantFirewallRule, SecurityIncident } from "@/packages/enterprise-contracts";
-import { DEMO_VIOLATION_TYPES } from "@/data/seed/admin-platform";
 import SAGSubNav from "@/components/admin/SAGSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 const sevColors: Record<string, string> = {
@@ -21,7 +20,7 @@ const SAGComplianceGate = () => {
 
   const blockers = violations.filter((v: Record<string, any>) => v.blocks_launch);
   const resolved = violations.filter((v: Record<string, any>) => v.resolved);
-  const typeCounts = ([] as typeof DEMO_VIOLATION_TYPES).map(vt => ({ ...vt, count: violations.filter((v: Record<string, any>) => v.violation_type === vt.type && !v.resolved).length }));
+  const typeCounts = ([] as any[]).map(vt => ({ ...vt, count: violations.filter((v: Record<string, any>) => v.violation_type === vt.type && !v.resolved).length }));
 
   return (
     <div className="p-6 space-y-6 max-w-7xl mx-auto">

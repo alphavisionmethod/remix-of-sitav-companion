@@ -11,7 +11,7 @@ import {
 import { MobileHonestyNotice } from "@/components/platform/MobileHonestyNotice";
 import { PageShell } from "@/components/sita/PageShell";
 
-const mockDownloads = [
+const downloads = [
   { id: "1", name: "Q1 Financial Report.pdf", type: "report", size: "2.4 MB", status: "complete" as const, date: "2026-04-08", expiresIn: "29 days" },
   { id: "2", name: "Proof Bundle — Invoice #1042.zip", type: "proof", size: "512 KB", status: "complete" as const, date: "2026-04-07", expiresIn: "28 days" },
   { id: "3", name: "Contact Export.csv", type: "export", size: "184 KB", status: "complete" as const, date: "2026-04-06", expiresIn: "27 days" },
@@ -31,8 +31,8 @@ export default function DownloadsCenter() {
   const [activeTab, setActiveTab] = useState("all");
 
   const filtered = activeTab === "all"
-    ? mockDownloads
-    : mockDownloads.filter((d) => d.type === activeTab);
+    ? downloads
+    : downloads.filter((d) => d.type === activeTab);
 
   return (
     <PageShell width="wide">
@@ -51,19 +51,19 @@ export default function DownloadsCenter() {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <Card>
           <CardContent className="p-4 text-center">
-            <p className="text-2xl font-bold">{mockDownloads.filter((d) => d.status === "complete").length}</p>
+            <p className="text-2xl font-bold">{downloads.filter((d) => d.status === "complete").length}</p>
             <p className="text-xs text-muted-foreground">Available</p>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-4 text-center">
-            <p className="text-2xl font-bold">{mockDownloads.filter((d) => d.status === "pending").length}</p>
+            <p className="text-2xl font-bold">{downloads.filter((d) => d.status === "pending").length}</p>
             <p className="text-xs text-muted-foreground">Pending</p>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-4 text-center">
-            <p className="text-2xl font-bold">{mockDownloads.filter((d) => d.status === "expired").length}</p>
+            <p className="text-2xl font-bold">{downloads.filter((d) => d.status === "expired").length}</p>
             <p className="text-xs text-muted-foreground">Expired</p>
           </CardContent>
         </Card>

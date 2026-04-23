@@ -80,7 +80,7 @@ export interface PowerState {
   profileTuning: Record<PowerProfile, ProfileTuning>;
 }
 
-const MOCK_APP_DRAIN: AppDrainEntry[] = [
+const APP_DRAIN: AppDrainEntry[] = [
   { appName: "Chrome", icon: "🌐", cpuPercent: 18, networkMb: 245, wakeupsPerHour: 42, backgroundMinutes: 120, totalDrainPercent: 28 },
   { appName: "Slack", icon: "💬", cpuPercent: 8, networkMb: 85, wakeupsPerHour: 24, backgroundMinutes: 180, totalDrainPercent: 15 },
   { appName: "VS Code", icon: "📝", cpuPercent: 12, networkMb: 30, wakeupsPerHour: 15, backgroundMinutes: 90, totalDrainPercent: 12 },
@@ -123,7 +123,7 @@ export class PowerDaemon {
         predictedUnplugTime: "08:00 AM",
         isHolding: false,
       },
-      appDrain: MOCK_APP_DRAIN,
+      appDrain: APP_DRAIN,
       suspendResume: {
         totalSuspends: 342,
         failedResumes: 2,

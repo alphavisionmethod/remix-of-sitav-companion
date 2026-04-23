@@ -8,7 +8,6 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Activity, AlertTriangle, Zap, Clock, Target, Server, BarChart3, Bell, CheckCircle, RefreshCw, Play, Gauge, Database, ArrowRight, Users } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { fromTable } from "@/lib/supabase-helpers";
-import { DEMO_RUNBOOKS, DEMO_SLOS } from "@/data/seed/admin-platform";
 import { supabase } from "@/integrations/supabase/client";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
@@ -16,7 +15,7 @@ const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.05 } } };
 
 const sevColor: Record<string, string> = { high: "text-red-500", medium: "text-amber-500", low: "text-blue-500" };
 
-const DEMO_SERVICES = [
+const SERVICES = [
   { name: "brain-core", status: "healthy" as const, latency: 12, errorRate: 0, uptime: 99.99 },
   { name: "approval-service", status: "healthy" as const, latency: 8, errorRate: 0, uptime: 99.98 },
   { name: "workflow-engine", status: "warning" as const, latency: 185, errorRate: 0.2, uptime: 99.91 },
@@ -27,7 +26,7 @@ const DEMO_SERVICES = [
   { name: "receipt-service", status: "healthy" as const, latency: 5, errorRate: 0, uptime: 100 },
 ];
 
-const DEMO_QUEUES = [
+const QUEUES = [
   { name: "Approval Queue", depth: 12, avgWait: "3.2m", owner: "approval-service", pressure: "normal" as const },
   { name: "Event Bus Consumer", depth: 2847, avgWait: "1.1s", owner: "event-bus", pressure: "normal" as const },
   { name: "Projection Rebuild", depth: 3, avgWait: "45s", owner: "projection-worker", pressure: "elevated" as const },
@@ -35,12 +34,12 @@ const DEMO_QUEUES = [
   { name: "Workflow Retry", depth: 7, avgWait: "12m", owner: "workflow-engine", pressure: "high" as const },
 ];
 
-const DEMO_INCIDENTS = [
+const INCIDENTS = [
   { id: "inc-1", title: "Connector Slack sync delay >15m", severity: "high" as const, status: "investigating", startedAt: "2026-04-05T10:05:00Z", assignee: "ops-team" },
   { id: "inc-2", title: "Workflow engine p99 latency spike", severity: "medium" as const, status: "open", startedAt: "2026-04-05T09:50:00Z", assignee: "platform-eng" },
 ];
 
-const DEMO_ACTION_LOG = [
+const ACTION_LOG = [
   { time: "10:22", actor: "ops-team", action: "Acknowledged incident inc-1", surface: "IncidentCommand" },
   { time: "10:18", actor: "admin@sita.os", action: "Launched runbook: Connector Resync", surface: "RunbookLauncher" },
   { time: "10:15", actor: "system", action: "Auto-scaled projection-worker to 3 replicas", surface: "AutoScaler" },
@@ -112,11 +111,11 @@ const OperationsCommandCenter = () => {
       <motion.div variants={stagger} initial="hidden" animate="show" className="space-y-4">
         <motion.div variants={fadeUp} className="grid grid-cols-2 md:grid-cols-5 gap-3">
           {[
-            { label: "Services Healthy", value: `${([] as typeof DEMO_SERVICES).filter(s => s.status === "healthy").length}/${([] as typeof DEMO_SERVICES).length}`, icon: Server, color: "text-emerald-500" },
+            { label: "Services Healthy", value: `${([] as any[]).filter(s => s.status === "healthy").length}/${([] as any[]).length}`, icon: Server, color: "text-emerald-500" },
             { label: "Active Alerts", value: String(liveAlerts.filter(a => a.status === "active").length), icon: Bell, color: "text-amber-500" },
-            { label: "Open Incidents", value: String(incidentCount ?? ([] as typeof DEMO_INCIDENTS).length), icon: AlertTriangle, color: "text-red-500" },
-            { label: "SLO Budget OK", value: `${([] as typeof DEMO_SLOS).filter(s => s.burnRate < 1).length}/${([] as typeof DEMO_SLOS).length}`, icon: Target, color: "text-emerald-500" },
-            { label: "Queue Pressure", value: ([] as typeof DEMO_QUEUES).some(q => q.pressure === "high") ? "Elevated" : "Normal", icon: Gauge, color: ([] as typeof DEMO_QUEUES).some(q => q.pressure === "high") ? "text-amber-500" : "text-emerald-500" },
+            { label: "Open Incidents", value: String(incidentCount ?? ([] as any[]).length), icon: AlertTriangle, color: "text-red-500" },
+            { label: "SLO Budget OK", value: `${([] as any[]).filter(s => s.burnRate < 1).length}/${([] as any[]).length}`, icon: Target, color: "text-emerald-500" },
+            { label: "Queue Pressure", value: ([] as any[]).some(q => q.pressure === "high") ? "Elevated" : "Normal", icon: Gauge, color: ([] as any[]).some(q => q.pressure === "high") ? "text-amber-500" : "text-emerald-500" },
           ].map(m => (
             <Card key={m.label} className="hover:-translate-y-0.5 transition-transform">
               <CardContent className="p-3.5">
@@ -140,7 +139,7 @@ const OperationsCommandCenter = () => {
 
           <TabsContent value="health" className="mt-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-              {([] as typeof DEMO_SERVICES).map(svc => (
+              {([] as any[]).map(svc => (
                 <Card key={svc.name} className="hover:bg-muted/30 transition-colors">
                   <CardContent className="p-4">
                     <div className="flex items-center justify-between mb-2">
@@ -185,7 +184,7 @@ const OperationsCommandCenter = () => {
           </TabsContent>
 
           <TabsContent value="slos" className="mt-4 space-y-2">
-            {([] as typeof DEMO_SLOS).map(slo => (
+            {([] as any[]).map(slo => (
               <Card key={slo.name}>
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between mb-2">
@@ -208,7 +207,7 @@ const OperationsCommandCenter = () => {
             <Card>
               <CardHeader className="pb-3"><CardTitle className="text-sm font-semibold">Queue & Lag Command</CardTitle></CardHeader>
               <CardContent className="space-y-2">
-                {([] as typeof DEMO_QUEUES).map(q => (
+                {([] as any[]).map(q => (
                   <div key={q.name} className="p-3 rounded-lg border hover:bg-muted/30 transition-colors">
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center gap-2">
@@ -230,7 +229,7 @@ const OperationsCommandCenter = () => {
           </TabsContent>
 
           <TabsContent value="incidents" className="mt-4 space-y-2">
-            {([] as typeof DEMO_INCIDENTS).map(inc => (
+            {([] as any[]).map(inc => (
               <Card key={inc.id} className={inc.severity === "high" ? "border-red-500/30" : ""}>
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between mb-2">
@@ -252,7 +251,7 @@ const OperationsCommandCenter = () => {
           </TabsContent>
 
           <TabsContent value="runbooks" className="mt-4 space-y-2">
-            {([] as typeof DEMO_RUNBOOKS).map(rb => (
+            {([] as any[]).map(rb => (
               <Card key={rb.id} className="hover:bg-muted/30 transition-colors">
                 <CardContent className="p-4 flex items-center justify-between">
                   <div>
@@ -269,7 +268,7 @@ const OperationsCommandCenter = () => {
             <Card>
               <CardHeader className="pb-3"><CardTitle className="text-sm font-semibold flex items-center gap-2"><Users className="h-4 w-4 text-muted-foreground" /> Operator Action Log</CardTitle></CardHeader>
               <CardContent className="space-y-1.5">
-                {([] as typeof DEMO_ACTION_LOG).map((entry, i) => (
+                {([] as any[]).map((entry, i) => (
                   <div key={i} className="flex items-start gap-3 p-2 rounded hover:bg-muted/20 text-[11px]">
                     <span className="text-muted-foreground font-mono w-10 flex-shrink-0">{entry.time}</span>
                     <span className="text-foreground font-medium w-24 flex-shrink-0">{entry.actor}</span>

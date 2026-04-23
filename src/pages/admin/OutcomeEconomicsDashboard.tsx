@@ -25,7 +25,7 @@ interface OutcomeROI {
   trend: "up" | "down" | "flat";
 }
 
-const DEMO_OUTCOMES: OutcomeROI[] = [
+const OUTCOMES: OutcomeROI[] = [
   { category: "incident_prevented", label: "Incidents Prevented", outcomes: 47, totalCost: 12.40, totalValue: 2340, paybackRatio: 188.7, acceptanceRate: 96, trend: "up" },
   { category: "self_heal_success", label: "Self-Heal Success", outcomes: 31, totalCost: 8.20, totalValue: 1560, paybackRatio: 190.2, acceptanceRate: 94, trend: "up" },
   { category: "cost_saved", label: "Cost Saved", outcomes: 23, totalCost: 6.10, totalValue: 890, paybackRatio: 145.9, acceptanceRate: 89, trend: "up" },
@@ -47,7 +47,7 @@ interface ReasoningPath {
   recommendation: "expand" | "maintain" | "optimize" | "downgrade" | "eliminate";
 }
 
-const DEMO_PATHS: ReasoningPath[] = [
+const PATHS: ReasoningPath[] = [
   { path: "Monitor → Detect → Auto-Fix", outcomes: 31, cost: 4.20, value: 1560, avgPayback: 371.4, acceptance: 94, recommendation: "expand" },
   { path: "Monitor → Alert → Review → Fix", outcomes: 22, cost: 8.40, value: 1120, avgPayback: 133.3, acceptance: 89, recommendation: "maintain" },
   { path: "Analyze → Recommend → Approve", outcomes: 18, cost: 6.80, value: 640, avgPayback: 94.1, acceptance: 82, recommendation: "maintain" },
@@ -64,7 +64,7 @@ interface IncidentMetric {
   roi: number;
 }
 
-const DEMO_INCIDENTS: IncidentMetric[] = [
+const INCIDENTS: IncidentMetric[] = [
   { type: "Infrastructure Outage", prevented: 12, avgCostPer: 0.28, avgValueSaved: 85, roi: 303.6 },
   { type: "Data Quality Drift", prevented: 9, avgCostPer: 0.18, avgValueSaved: 42, roi: 233.3 },
   { type: "Security Anomaly", prevented: 8, avgCostPer: 0.34, avgValueSaved: 120, roi: 352.9 },
@@ -81,7 +81,7 @@ interface Benchmark {
   unit: string;
 }
 
-const DEMO_BENCHMARKS: Benchmark[] = [
+const BENCHMARKS: Benchmark[] = [
   { metric: "Cost per Outcome", current: 0.38, target: 0.25, industry: 0.65, unit: "$" },
   { metric: "Payback Ratio", current: 142, target: 200, industry: 85, unit: "x" },
   { metric: "Acceptance Rate", current: 86, target: 92, industry: 72, unit: "%" },
@@ -113,9 +113,9 @@ const OutcomeEconomicsDashboard = () => {
   useRequireAdmin();
   const [period, setPeriod] = useState("30d");
 
-  const totalCost = ([] as typeof DEMO_OUTCOMES).reduce((s, o) => s + o.totalCost, 0);
-  const totalValue = ([] as typeof DEMO_OUTCOMES).reduce((s, o) => s + o.totalValue, 0);
-  const totalOutcomes = ([] as typeof DEMO_OUTCOMES).reduce((s, o) => s + o.outcomes, 0);
+  const totalCost = ([] as any[]).reduce((s, o) => s + o.totalCost, 0);
+  const totalValue = ([] as any[]).reduce((s, o) => s + o.totalValue, 0);
+  const totalOutcomes = ([] as any[]).reduce((s, o) => s + o.outcomes, 0);
   const overallPayback = totalValue / totalCost;
 
   return (
@@ -168,7 +168,7 @@ const OutcomeEconomicsDashboard = () => {
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-2">
-          {([] as typeof DEMO_OUTCOMES).map((o) => (
+          {([] as any[]).map((o) => (
             <div key={o.category} className="flex items-center gap-3 p-2.5 rounded-lg bg-secondary/20 hover:bg-secondary/30 transition-colors">
               <div className="w-36 shrink-0">
                 <p className="text-xs font-semibold text-foreground">{o.label}</p>
@@ -203,7 +203,7 @@ const OutcomeEconomicsDashboard = () => {
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-2">
-            {([] as typeof DEMO_PATHS).map((p) => (
+            {([] as any[]).map((p) => (
               <div key={p.path} className="p-2.5 rounded-lg bg-secondary/20 space-y-1.5">
                 <div className="flex items-center justify-between">
                   <p className="text-xs font-semibold text-foreground">{p.path}</p>
@@ -232,7 +232,7 @@ const OutcomeEconomicsDashboard = () => {
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-2">
-            {([] as typeof DEMO_INCIDENTS).map((inc) => (
+            {([] as any[]).map((inc) => (
               <div key={inc.type} className="flex items-center gap-3 p-2.5 rounded-lg bg-secondary/20">
                 <div className="flex-1">
                   <p className="text-xs font-semibold text-foreground">{inc.type}</p>
@@ -261,7 +261,7 @@ const OutcomeEconomicsDashboard = () => {
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-            {([] as typeof DEMO_BENCHMARKS).map((b) => {
+            {([] as any[]).map((b) => {
               const pct = b.unit === "%" ? b.current : Math.min((b.current / b.target) * 100, 100);
               const beating = b.current >= b.industry;
               return (

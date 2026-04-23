@@ -6,7 +6,6 @@ import { Crown, TrendingUp, AlertTriangle, Lightbulb, Users, CheckCircle, HelpCi
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { useNavigate } from "react-router-dom";
-import { DEMO_CHIEF_HISTORICAL } from "@/data/seed/revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 const synthesis = {
   confidence: 76,
@@ -105,7 +104,7 @@ export default function ChiefRevenueSynthesis() {
       <Card className="bg-card/50 border-border/50">
         <CardHeader><CardTitle className="text-sm flex items-center gap-2"><Clock className="h-4 w-4 text-purple-400" /> Historical Synthesis Comparison</CardTitle></CardHeader>
         <CardContent className="space-y-3">
-          {([] as typeof DEMO_CHIEF_HISTORICAL).map((h, i) => (
+          {([] as any[]).map((h, i) => (
             <div key={i} className="p-4 rounded-xl border border-border/40 bg-card">
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-2">
@@ -115,8 +114,8 @@ export default function ChiefRevenueSynthesis() {
                 <div className="flex items-center gap-1">
                   <Progress value={h.score} className="h-1.5 w-20" />
                   {i > 0 && (
-                    <span className={`text-[10px] font-medium ${h.score > DEMO_CHIEF_HISTORICAL[i - 1].score ? "text-[hsl(var(--trust-safe))]" : "text-destructive"}`}>
-                      {h.score > DEMO_CHIEF_HISTORICAL[i - 1].score ? "↑" : "↓"}{Math.abs(h.score - DEMO_CHIEF_HISTORICAL[i - 1].score)}
+                    <span className={`text-[10px] font-medium ${h.score > CHIEF_HISTORICAL[i - 1].score ? "text-[hsl(var(--trust-safe))]" : "text-destructive"}`}>
+                      {h.score > CHIEF_HISTORICAL[i - 1].score ? "↑" : "↓"}{Math.abs(h.score - CHIEF_HISTORICAL[i - 1].score)}
                     </span>
                   )}
                 </div>

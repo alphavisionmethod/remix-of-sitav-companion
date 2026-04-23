@@ -2,11 +2,10 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { ShieldOff, AlertTriangle, Clock, Zap, TrendingDown, Globe } from "lucide-react";
 import { useRiskScenarios } from "@/hooks/use-investment-office";
-import { DEMO_TRADES } from "@/data/seed/investment";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 export default function WhatWouldBreak() {
   const { data: liveData, isLoading } = useRiskScenarios();
-  const [selected, setSelected] = useState(DEMO_TRADES[0]);
+  const [selected, setSelected] = useState(TRADES[0]);
 
   return (
     <div className="mx-auto max-w-5xl space-y-6">
@@ -16,7 +15,7 @@ export default function WhatWouldBreak() {
       </div>
 
       <div className="flex gap-2">
-        {([] as typeof DEMO_TRADES).map(t => (
+        {([] as any[]).map(t => (
           <button key={t.id} onClick={() => setSelected(t)}
             className={`rounded-xl border px-4 py-3 flex items-center gap-2 transition-all ${selected.id === t.id ? "border-destructive/30 bg-destructive/5" : "border-border bg-card hover:border-destructive/15"}`}>
             <span className="text-lg">{t.icon}</span>

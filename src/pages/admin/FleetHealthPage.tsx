@@ -10,7 +10,7 @@ import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.05 } } };
 
-const DEMO_FLEET = [
+const FLEET = [
   { id: "rt-1", name: "edge-node-eu-west-1", status: "healthy" as const, cpu: 34, memory: 52, uptime: "42d 3h", version: "v2.13.0", lastHealthCheck: "2026-04-05T10:20:00Z", failureProbability: 2, segment: "EU" },
   { id: "rt-2", name: "edge-node-us-east-1", status: "healthy" as const, cpu: 28, memory: 41, uptime: "42d 3h", version: "v2.13.0", lastHealthCheck: "2026-04-05T10:20:00Z", failureProbability: 1, segment: "US" },
   { id: "rt-3", name: "edge-node-ap-southeast-1", status: "warning" as const, cpu: 78, memory: 82, uptime: "12d 8h", version: "v2.13.0", lastHealthCheck: "2026-04-05T10:18:00Z", failureProbability: 24, segment: "APAC" },
@@ -19,17 +19,17 @@ const DEMO_FLEET = [
   { id: "rt-6", name: "gateway-primary", status: "healthy" as const, cpu: 15, memory: 22, uptime: "90d 0h", version: "v2.13.0", lastHealthCheck: "2026-04-05T10:20:00Z", failureProbability: 0, segment: "Global" },
 ];
 
-const DEMO_ANOMALIES = [
+const ANOMALIES = [
   { id: "an-1", node: "edge-node-ap-southeast-1", type: "CPU spike", severity: "warning" as const, detected: "2026-04-05T09:45:00Z", pattern: "Recurring daily at peak hours", recommendation: "Scale to 2 replicas during 09:00-18:00 APAC" },
   { id: "an-2", node: "worker-projection-01", type: "Memory leak", severity: "critical" as const, detected: "2026-04-05T08:00:00Z", pattern: "Gradual increase over 48h", recommendation: "Restart with memory profiling enabled" },
 ];
 
-const DEMO_PREDICTIONS = [
+const PREDICTIONS = [
   { node: "worker-projection-01", prediction: "OOM crash within 6h", confidence: 89, horizon: "6h", impact: "Projection rebuilds will stall", preventive: "Restart now + increase memory limit" },
   { node: "edge-node-ap-southeast-1", prediction: "Latency degradation during peak", confidence: 72, horizon: "3h", impact: "APAC users experience >500ms latency", preventive: "Add replica before 09:00 SGT" },
 ];
 
-const DEMO_MAINTENANCE = [
+const MAINTENANCE = [
   { id: "mt-1", action: "Restart worker-projection-01", reason: "Memory leak detected", status: "pending" as const, scheduledFor: "2026-04-05T11:00:00Z", risk: "low" },
   { id: "mt-2", action: "Scale APAC edge to 2 replicas", reason: "Peak-hour CPU pressure", status: "scheduled" as const, scheduledFor: "2026-04-06T01:00:00Z", risk: "low" },
   { id: "mt-3", action: "Upgrade worker-projection-01 to v2.13.0", reason: "Version drift from fleet", status: "pending" as const, scheduledFor: "2026-04-05T12:00:00Z", risk: "medium" },
@@ -44,7 +44,7 @@ const statusColor: Record<string, string> = {
 
 export default function FleetHealthPage() {
   const [tab, setTab] = useState("inventory");
-  const healthyCount = ([] as typeof DEMO_FLEET).filter(n => n.status === "healthy").length;
+  const healthyCount = ([] as any[]).filter(n => n.status === "healthy").length;
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
@@ -61,10 +61,10 @@ export default function FleetHealthPage() {
       <motion.div variants={stagger} initial="hidden" animate="show" className="space-y-4">
         <motion.div variants={fadeUp} className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {[
-            { label: "Fleet Healthy", value: `${healthyCount}/${([] as typeof DEMO_FLEET).length}`, color: healthyCount === ([] as typeof DEMO_FLEET).length ? "text-emerald-500" : "text-amber-500" },
-            { label: "Active Anomalies", value: String(([] as typeof DEMO_ANOMALIES).length), color: ([] as typeof DEMO_ANOMALIES).length === 0 ? "text-emerald-500" : "text-amber-500" },
-            { label: "Predicted Risks", value: String(([] as typeof DEMO_PREDICTIONS).length), color: ([] as typeof DEMO_PREDICTIONS).length === 0 ? "text-emerald-500" : "text-orange-500" },
-            { label: "Pending Maintenance", value: String(([] as typeof DEMO_MAINTENANCE).filter(m => m.status === "pending").length), color: "text-blue-500" },
+            { label: "Fleet Healthy", value: `${healthyCount}/${([] as any[]).length}`, color: healthyCount === ([] as any[]).length ? "text-emerald-500" : "text-amber-500" },
+            { label: "Active Anomalies", value: String(([] as any[]).length), color: ([] as any[]).length === 0 ? "text-emerald-500" : "text-amber-500" },
+            { label: "Predicted Risks", value: String(([] as any[]).length), color: ([] as any[]).length === 0 ? "text-emerald-500" : "text-orange-500" },
+            { label: "Pending Maintenance", value: String(([] as any[]).filter(m => m.status === "pending").length), color: "text-blue-500" },
           ].map(m => (
             <Card key={m.label}><CardContent className="p-4">
               <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-1">{m.label}</p>
@@ -83,7 +83,7 @@ export default function FleetHealthPage() {
 
           <TabsContent value="inventory" className="mt-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-              {([] as typeof DEMO_FLEET).map(node => (
+              {([] as any[]).map(node => (
                 <Card key={node.id} className="hover:bg-muted/30 transition-colors">
                   <CardContent className="p-4">
                     <div className="flex items-center justify-between mb-2">
@@ -114,7 +114,7 @@ export default function FleetHealthPage() {
           </TabsContent>
 
           <TabsContent value="predictions" className="mt-4 space-y-2">
-            {([] as typeof DEMO_PREDICTIONS).map((p, i) => (
+            {([] as any[]).map((p, i) => (
               <Card key={i} className="border-orange-500/20">
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between mb-2">
@@ -136,7 +136,7 @@ export default function FleetHealthPage() {
           </TabsContent>
 
           <TabsContent value="anomalies" className="mt-4 space-y-2">
-            {([] as typeof DEMO_ANOMALIES).map(a => (
+            {([] as any[]).map(a => (
               <Card key={a.id} className={a.severity === "critical" ? "border-red-500/30" : ""}>
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between mb-2">
@@ -157,7 +157,7 @@ export default function FleetHealthPage() {
           </TabsContent>
 
           <TabsContent value="maintenance" className="mt-4 space-y-2">
-            {([] as typeof DEMO_MAINTENANCE).map(m => (
+            {([] as any[]).map(m => (
               <Card key={m.id}>
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between mb-2">

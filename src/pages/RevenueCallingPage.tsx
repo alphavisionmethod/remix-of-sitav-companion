@@ -23,7 +23,6 @@ import {
   ArrowRight, Hash, Zap, XCircle, Calendar, User,
 } from "lucide-react";
 
-import { MOCK_CONTACTS, MOCK_CALL_LOGS, MOCK_CALL_SCRIPTS as MOCK_SCRIPTS } from "@/data/fixtures/mock-data/revenue-calling";
 import type { CallingContact as Contact, CallingCallLog as CallLog, CallingCallScript as CallScript } from "@/data/fixtures/mock-data/revenue-calling";
 import { useCallingContactsData } from "@/hooks/use-business-data";
 import { useCallingContacts, useCallLogs } from "@/hooks/use-live-data";
@@ -485,7 +484,7 @@ const RevenueCallingPage = () => {
               <p className="text-sm font-medium text-foreground">No Scripts Configured</p>
               <p className="text-xs text-muted-foreground mt-1">Call scripts will appear here once configured.</p>
             </SitaCard>
-          ) : (MOCK_SCRIPTS).map(script => (
+          ) : (CALL_SCRIPTS).map(script => (
             <SitaCard key={script.id} className="p-4">
               <div className="space-y-3">
                 <div className="flex items-center gap-2">

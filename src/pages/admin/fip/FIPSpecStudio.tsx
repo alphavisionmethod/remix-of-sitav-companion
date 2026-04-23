@@ -11,7 +11,6 @@ import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useFeatureSpecs, useCreateSpec } from "@/hooks/use-fip-data";
 import { COMPLIANCE_SECTIONS } from "@/lib/fip/types";
-import { DEMO_SPEC_SECTIONS } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 const FIPSpecStudio = () => {
   const { data: specs = [], isLoading } = useFeatureSpecs();
@@ -21,7 +20,7 @@ const FIPSpecStudio = () => {
 
   const handleCreate = () => {
     if (!form.feature_id) return;
-    const missing = ([] as typeof DEMO_SPEC_SECTIONS).filter(s => s !== 'outcome_statement' || !form.outcome_statement);
+    const missing = ([] as any[]).filter(s => s !== 'outcome_statement' || !form.outcome_statement);
     createSpec.mutate({ ...form, missing_sections: missing, completeness_score: form.outcome_statement ? 8 : 0 });
     setShowForm(false);
     setForm({ feature_id: '', feature_name: '', outcome_statement: '' });

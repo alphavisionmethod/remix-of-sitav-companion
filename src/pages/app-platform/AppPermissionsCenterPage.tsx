@@ -8,7 +8,6 @@ import { ArrowLeft } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAppPlatform } from "@/contexts/AppPlatformContext";
 import { AppIcon } from "@/components/sita/app-platform/AppStoreComponents";
-import { DEMO_PERMISSION_DOMAINS } from "@/data/seed/core-pages";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 const AppPermissionsCenterPage = () => {
   const { apps, togglePermission } = useAppPlatform();
@@ -19,7 +18,7 @@ const AppPermissionsCenterPage = () => {
     app.permissions.some(p => p.domain === activeDomain)
   );
 
-  const activeDomainInfo = ([] as typeof DEMO_PERMISSION_DOMAINS).find(d => d.id === activeDomain)!;
+  const activeDomainInfo = ([] as any[]).find(d => d.id === activeDomain)!;
 
   return (
     <div className="mx-auto max-w-4xl space-y-6">
@@ -34,7 +33,7 @@ const AppPermissionsCenterPage = () => {
 
       {/* Permission Domain Tabs */}
       <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-thin">
-        {([] as typeof DEMO_PERMISSION_DOMAINS).map(d => {
+        {([] as any[]).map(d => {
           const Icon = d.icon;
           const count = apps.filter(a => a.permissions.some(p => p.domain === d.id)).length;
           return (

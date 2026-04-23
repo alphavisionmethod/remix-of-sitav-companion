@@ -7,7 +7,6 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Activity, CheckCircle, AlertTriangle, Clock, Users, Plane, Home, RefreshCw, FileCheck, Target, XCircle, CalendarCheck } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { fromTable } from "@/lib/supabase-helpers";
-import { DEMO_TASKS } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.05 } } };
@@ -22,31 +21,31 @@ const stateColor: Record<TaskState, string> = {
 
 const domainIcon: Record<string, typeof Activity> = { task: Activity, travel: Plane, household: Home, promise: CalendarCheck };
 
-const DEMO_TRAVEL = [
+const TRAVEL = [
   { id: "tr-1", trip: "Berlin → London", status: "active" as const, legs: 3, completed: 1, nextAction: "Check-in opens at 14:00", lastUpdated: "2026-04-05T10:00:00Z" },
   { id: "tr-2", trip: "Tokyo Business Trip", status: "completed" as const, legs: 5, completed: 5, nextAction: "Expense report pending", lastUpdated: "2026-04-02T18:00:00Z" },
 ];
 
-const DEMO_HOUSEHOLD = [
+const HOUSEHOLD = [
   { id: "hh-1", commitment: "Weekly grocery delivery", status: "active" as const, frequency: "Weekly", nextDue: "2026-04-07", assignee: "household-agent", lastFulfilled: "2026-03-31" },
   { id: "hh-2", commitment: "Monthly budget review", status: "active" as const, frequency: "Monthly", nextDue: "2026-04-30", assignee: "finance-advisor", lastFulfilled: "2026-03-28" },
   { id: "hh-3", commitment: "Insurance renewal", status: "stale" as const, frequency: "Annual", nextDue: "2026-04-15", assignee: "concierge-agent", lastFulfilled: "2025-04-15" },
 ];
 
-const DEMO_PROMISES = [
+const PROMISES = [
   { id: "pm-1", promise: "Send updated portfolio summary by Friday", status: "active" as const, dueDate: "2026-04-11", owner: "finance-advisor", confidence: 92 },
   { id: "pm-2", promise: "Book restaurant for anniversary", status: "completed" as const, dueDate: "2026-04-08", owner: "concierge-agent", confidence: 100 },
   { id: "pm-3", promise: "Follow up on home inspection report", status: "broken" as const, dueDate: "2026-04-03", owner: "household-agent", confidence: 0 },
 ];
 
-const DEMO_RECEIPTS = [
+const RECEIPTS = [
   { id: "rc-1", action: "Booked restaurant reservation", agent: "concierge-agent", timestamp: "2026-04-05T09:30:00Z", outcome: "success" as const },
   { id: "rc-2", action: "Submitted expense report", agent: "finance-advisor", timestamp: "2026-04-04T16:00:00Z", outcome: "success" as const },
   { id: "rc-3", action: "Attempted flight rebooking", agent: "travel-agent", timestamp: "2026-04-03T11:00:00Z", outcome: "failed" as const },
   { id: "rc-4", action: "Grocery order placed", agent: "household-agent", timestamp: "2026-04-01T08:00:00Z", outcome: "success" as const },
 ];
 
-const DEMO_SLA = [
+const SLA = [
   { metric: "Promise fulfillment rate", target: 95, current: 67, unit: "%", status: "below" as const },
   { metric: "Task completion within SLA", target: 90, current: 88, unit: "%", status: "at-risk" as const },
   { metric: "Travel continuity", target: 99, current: 100, unit: "%", status: "healthy" as const },
@@ -61,8 +60,8 @@ const ConciergeRuntimeBoard = () => {
     queryFn: async () => { const { data } = await fromTable("household_tasks").select("*").limit(5); return data || []; },
   });
 
-  const activeCount = ([] as typeof DEMO_TASKS).filter(t => t.state === "active").length;
-  const brokenCount = ([] as typeof DEMO_TASKS).filter(t => t.continuityBroken).length;
+  const activeCount = ([] as any[]).filter(t => t.state === "active").length;
+  const brokenCount = ([] as any[]).filter(t => t.continuityBroken).length;
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
@@ -81,9 +80,9 @@ const ConciergeRuntimeBoard = () => {
           {[
             { label: "Active Tasks", value: String(activeCount), color: "text-blue-500" },
             { label: "Broken Continuity", value: String(brokenCount), color: brokenCount > 0 ? "text-red-500" : "text-emerald-500" },
-            { label: "Promises Tracked", value: String(([] as typeof DEMO_PROMISES).length), color: "text-primary" },
-            { label: "Active Travel", value: String(([] as typeof DEMO_TRAVEL).filter(t => t.status === "active").length), color: "text-blue-500" },
-            { label: "Promise Fulfillment", value: `${Math.round((([] as typeof DEMO_PROMISES).filter(p => p.status === "completed").length / ([] as typeof DEMO_PROMISES).length) * 100)}%`, color: "text-amber-500" },
+            { label: "Promises Tracked", value: String(([] as any[]).length), color: "text-primary" },
+            { label: "Active Travel", value: String(([] as any[]).filter(t => t.status === "active").length), color: "text-blue-500" },
+            { label: "Promise Fulfillment", value: `${Math.round((([] as any[]).filter(p => p.status === "completed").length / ([] as any[]).length) * 100)}%`, color: "text-amber-500" },
           ].map(m => (
             <Card key={m.label}><CardContent className="p-3.5">
               <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-1">{m.label}</p>
@@ -103,7 +102,7 @@ const ConciergeRuntimeBoard = () => {
           </TabsList>
 
           <TabsContent value="tasks" className="mt-4 space-y-2">
-            {([] as typeof DEMO_TASKS).map(t => {
+            {([] as any[]).map(t => {
               const DomainIcon = domainIcon[t.domain] || Activity;
               return (
                 <div key={t.id} className="p-3 rounded-lg border hover:bg-muted/30 transition-colors">
@@ -127,7 +126,7 @@ const ConciergeRuntimeBoard = () => {
           </TabsContent>
 
           <TabsContent value="travel" className="mt-4 space-y-2">
-            {([] as typeof DEMO_TRAVEL).map(t => (
+            {([] as any[]).map(t => (
               <Card key={t.id}>
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between mb-2">
@@ -147,7 +146,7 @@ const ConciergeRuntimeBoard = () => {
           </TabsContent>
 
           <TabsContent value="household" className="mt-4 space-y-2">
-            {([] as typeof DEMO_HOUSEHOLD).map(h => (
+            {([] as any[]).map(h => (
               <Card key={h.id}>
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between mb-2">
@@ -169,7 +168,7 @@ const ConciergeRuntimeBoard = () => {
           </TabsContent>
 
           <TabsContent value="promises" className="mt-4 space-y-2">
-            {([] as typeof DEMO_PROMISES).map(p => (
+            {([] as any[]).map(p => (
               <Card key={p.id} className={p.status === "broken" ? "border-red-500/30" : ""}>
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between mb-2">
@@ -193,7 +192,7 @@ const ConciergeRuntimeBoard = () => {
             <Card>
               <CardHeader className="pb-3"><CardTitle className="text-sm font-semibold">Concierge Receipt Feed</CardTitle></CardHeader>
               <CardContent className="space-y-2">
-                {([] as typeof DEMO_RECEIPTS).map(r => (
+                {([] as any[]).map(r => (
                   <div key={r.id} className="flex items-start gap-3 p-2.5 rounded border hover:bg-muted/20">
                     {r.outcome === "success" ? <CheckCircle className="h-3.5 w-3.5 mt-0.5 text-emerald-500" /> : <XCircle className="h-3.5 w-3.5 mt-0.5 text-red-500" />}
                     <div className="flex-1">
@@ -213,7 +212,7 @@ const ConciergeRuntimeBoard = () => {
             <Card>
               <CardHeader className="pb-3"><CardTitle className="text-sm font-semibold flex items-center gap-2"><Target className="h-4 w-4 text-primary" /> Concierge SLA Tracking</CardTitle></CardHeader>
               <CardContent className="space-y-3">
-                {([] as typeof DEMO_SLA).map(s => (
+                {([] as any[]).map(s => (
                   <div key={s.metric} className="p-3 rounded-lg border">
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-sm font-medium text-foreground">{s.metric}</span>

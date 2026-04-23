@@ -11,9 +11,6 @@ import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Plane, Calendar, DollarSign, FileText, CheckCircle, AlertCircle, Clock, Home, CreditCard } from "lucide-react";
-import { DEMO_householdSpillover, DEMO_itinerary, DEMO_postTripTasks, DEMO_preTripChecklist } from "@/data/seed/concierge";
-
-
 interface Trip {
   id: string; destination: string; dates: string; status: "planning" | "booked" | "upcoming" | "active" | "completed";
   travelers: string; budget: string; spent: string; tasks: number; completedTasks: number;
@@ -32,7 +29,7 @@ const TravelPlanning = () => {
   const [view, setView] = useState<TravelView>("trips");
   const [selectedTrip, setSelectedTrip] = useState(trips[1]);
 
-  const prepQueueItems = ([] as typeof DEMO_preTripChecklist).flatMap((section, si) =>
+  const prepQueueItems = ([] as typeof preTripChecklist).flatMap((section, si) =>
     section.items.map((item, ii) => ({
       id: `prep-${si}-${ii}`,
       label: item,
@@ -41,7 +38,7 @@ const TravelPlanning = () => {
     }))
   ).slice(0, 8);
 
-  const itineraryEvents = ([] as typeof DEMO_itinerary).map((day, i) => ({
+  const itineraryEvents = ([] as typeof itinerary).map((day, i) => ({
     id: `day-${i}`,
     title: day.day,
     timestamp: `${day.items.length} activities`,
@@ -93,7 +90,7 @@ const TravelPlanning = () => {
           {view === "logistics" && (
             <div className="space-y-2">
               <h4 className={cn(SITA_TYPE.microLabel, "text-[hsl(0_0%_50%)]")}>Household Spillover</h4>
-              {([] as typeof DEMO_householdSpillover).map((item, i) => (
+              {([] as typeof householdSpillover).map((item, i) => (
                 <StatusCard key={i} label={item.item} status={item.urgency === "high" ? "degraded" : "healthy"} lastChecked={item.cost || undefined} icon={<Home className="h-3.5 w-3.5" />} />
               ))}
             </div>
@@ -102,7 +99,7 @@ const TravelPlanning = () => {
           {view === "post-trip" && (
             <QueueCard
               title="Post-Trip Recovery"
-              items={([] as typeof DEMO_postTripTasks).map((task, i) => ({ id: `pt-${i}`, label: task, urgency: "normal" as const }))}
+              items={([] as typeof postTripTasks).map((task, i) => ({ id: `pt-${i}`, label: task, urgency: "normal" as const }))}
               maxVisible={10}
             />
           )}

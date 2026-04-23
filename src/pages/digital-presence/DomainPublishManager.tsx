@@ -7,14 +7,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { useWebsiteManager } from "@/contexts/SitaKernelContext";
-import { DEMO_PUBLISH_HISTORY, DEMO_PUBLISH_RULES } from "@/data/seed/digital-presence";
 import DPOSubNav from "./DPOSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
-const DEMO_ENVIRONMENTS: any[] = [];
+const ENVIRONMENTS: any[] = [];
 
 // Production fallback — seed data removed
-const DEMO_DOMAINS: any[] = [];
+const DOMAINS: any[] = [];
 
 export default function DomainPublishManager() {
   const { pages: managedPages, domains: managedDomains, getStats: getWebsiteStats } = useWebsiteManager();
@@ -40,7 +39,7 @@ export default function DomainPublishManager() {
           </div>
         </CardHeader>
         <CardContent className="space-y-2">
-          {([] as typeof DEMO_DOMAINS).map(d => (
+          {([] as any[]).map(d => (
             <div key={d.domain} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
               <div className="flex items-center gap-3">
                 {d.ssl ? <Lock className="w-3 h-3 text-green-400" /> : <AlertTriangle className="w-3 h-3 text-red-400" />}
@@ -67,7 +66,7 @@ export default function DomainPublishManager() {
       <Card className="bg-card/50 border-border/50">
         <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><Server className="w-4 h-4 text-purple-400" /> Environments</CardTitle></CardHeader>
         <CardContent className="space-y-2">
-          {([] as typeof DEMO_ENVIRONMENTS).map(e => (
+          {([] as any[]).map(e => (
             <div key={e.env} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
               <div>
                 <div className="flex items-center gap-2">
@@ -98,7 +97,7 @@ export default function DomainPublishManager() {
         <Card className="bg-card/50 border-border/50">
           <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><FileText className="w-4 h-4 text-green-400" /> Publish History</CardTitle></CardHeader>
           <CardContent className="space-y-2">
-            {([] as typeof DEMO_PUBLISH_HISTORY).map(p => (
+            {([] as any[]).map(p => (
               <div key={p.version} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
                 <div>
                   <div className="flex items-center gap-2 mb-0.5">
@@ -120,7 +119,7 @@ export default function DomainPublishManager() {
         <Card className="bg-card/50 border-border/50">
           <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><Shield className="w-4 h-4 text-amber-400" /> Publishing Rules</CardTitle></CardHeader>
           <CardContent className="space-y-2">
-            {([] as typeof DEMO_PUBLISH_RULES).map(r => (
+            {([] as any[]).map(r => (
               <div key={r.rule} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
                 <span className="text-xs text-foreground">{r.rule}</span>
                 <Badge variant={r.active ? "default" : "secondary"} className="text-[10px]">{r.active ? "Active" : "Off"}</Badge>

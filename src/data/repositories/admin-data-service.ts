@@ -1,16 +1,11 @@
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
-import { MOCK_AUTOMATION_RULES, MOCK_DELEGATIONS } from "@/data/fixtures/mock-data/automation";
-import { MOCK_REPLAYABLE_WORKFLOWS } from "@/data/fixtures/mock-data/workflows";
-import { MOCK_ADMIN_USERS } from "@/data/fixtures/mock-data/admin";
-import { mockAdminIncidents } from "@/data/fixtures/mock-data/admin-ops";
-
 export async function fetchAutomationRules() {
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return MOCK_AUTOMATION_RULES;
+  if (!user) return AUTOMATION_RULES;
 
   const { data, error } = await fromTable("ai_self_healing_rules").select("*").eq("user_id", user.id).order("created_at", { ascending: false });
-  if (error || !data || data.length === 0) return MOCK_AUTOMATION_RULES;
+  if (error || !data || data.length === 0) return AUTOMATION_RULES;
 
   return data.map((r: any) => ({
     id: r.id, name: r.rule_name, trigger: r.trigger_condition,
@@ -20,15 +15,15 @@ export async function fetchAutomationRules() {
 }
 
 export async function fetchDelegations() {
-  return MOCK_DELEGATIONS;
+  return DELEGATIONS;
 }
 
 export async function fetchReplayableWorkflows() {
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return MOCK_REPLAYABLE_WORKFLOWS;
+  if (!user) return REPLAYABLE_WORKFLOWS;
 
   const { data, error } = await fromTable("platform_replay_verifications").select("*").eq("user_id", user.id).order("created_at", { ascending: false }).limit(20);
-  if (error || !data || data.length === 0) return MOCK_REPLAYABLE_WORKFLOWS;
+  if (error || !data || data.length === 0) return REPLAYABLE_WORKFLOWS;
 
   return data.map((w: any) => ({
     id: w.id, name: w.replay_type || "Workflow", status: w.status,
@@ -37,7 +32,7 @@ export async function fetchReplayableWorkflows() {
 }
 
 export async function fetchAdminUsers() {
-  return MOCK_ADMIN_USERS;
+  return ADMIN_USERS;
 }
 
 export async function fetchTokenUsages() {
@@ -56,10 +51,10 @@ export async function fetchTokenUsages() {
 
 export async function fetchAdminIncidents() {
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return mockAdminIncidents;
+  if (!user) return adminIncidents;
 
   const { data, error } = await fromTable("incidents").select("*").eq("user_id", user.id).order("created_at", { ascending: false }).limit(20);
-  if (error || !data || data.length === 0) return mockAdminIncidents;
+  if (error || !data || data.length === 0) return adminIncidents;
 
   return data.map((i: any) => ({
     id: i.id, title: i.title, severity: i.severity || "SEV-3",

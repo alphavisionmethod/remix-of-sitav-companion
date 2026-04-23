@@ -7,7 +7,6 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { DEMO_EXPERIMENTS } from "@/data/seed/revenue-office";
 import { useConversionExperiments } from "@/hooks/use-revenue-office";
 import { Skeleton } from "@/components/ui/skeleton";
 import { EmptyState } from "@/components/sita/EmptyState";
@@ -60,7 +59,7 @@ export default function ConversionLab() {
       { name: e.variant_a || "Control", visitors: Math.round((e.sample_size || 0) / 2), conversions: Math.round((e.sample_size || 0) / 2 * (e.conversion_rate_a || 0) / 100), rate: e.conversion_rate_a || 0 },
       { name: e.variant_b || "Variant B", visitors: Math.round((e.sample_size || 0) / 2), conversions: Math.round((e.sample_size || 0) / 2 * (e.conversion_rate_b || 0) / 100), rate: e.conversion_rate_b || 0 },
     ],
-  })) : DEMO_EXPERIMENTS);
+  })) : EXPERIMENTS);
 
   return (
     <PageShell width="wide" className="space-y-6">

@@ -20,7 +20,7 @@ import { appGovernance } from "@/platform/sync-engine/governance/app-governance"
 import { trustScoring, type TrustState } from "@/platform/sync-engine/governance/trust-scoring";
 import { complianceEngine } from "@/platform/sync-engine/governance/compliance-engine";
 import { abusePrevention } from "@/platform/sync-engine/operations/abuse-prevention";
-const DEMO_TRUST_DEVICES = [
+const TRUST_DEVICES = [
   { id: "d1", name: "MacBook Pro", state: "trusted" as TrustState, score: 92, platform: "macOS" },
   { id: "d2", name: "iPhone 16", state: "managed" as TrustState, score: 71, platform: "iOS" },
   { id: "d3", name: "iPad Air", state: "limited" as TrustState, score: 48, platform: "iPadOS" },
@@ -158,7 +158,7 @@ export function CloudGovernanceAdmin() {
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-2">
-            {([] as typeof DEMO_TRUST_DEVICES).map(d => (
+            {([] as any[]).map(d => (
               <div key={d.id} className="flex items-center justify-between p-3 rounded-lg bg-muted/20 border border-border/30">
                 <div className="flex items-center gap-3">
                   <div className="h-10 w-10 rounded-lg bg-muted/30 flex items-center justify-center">

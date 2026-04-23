@@ -24,14 +24,13 @@ import {
   ChevronRight, Eye, RotateCcw,
 } from "lucide-react";
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip, BarChart, Bar, PieChart as RechartsPie, Pie, Cell, LineChart, Line, CartesianGrid } from "recharts";
-import { DEMO_COMPLETION_TREND, DEMO_DOMAIN_BREAKDOWN, DEMO_PIPELINE_DATA, DEMO_REVENUE_DATA } from "@/data/seed/core-pages";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { PageShell } from "@/components/sita/PageShell";
 const fadeUp = { hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0, transition: { duration: 0.3 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.06 } } };
 
 // ── Saved reports ──────────────────────────────────────────
-const DEMO_SAVED_REPORTS = [
+const SAVED_REPORTS = [
   { id: "r1", title: "Monthly Revenue Summary", domain: "finance", lastRun: "2 hours ago", scheduled: true, frequency: "Monthly" },
   { id: "r2", title: "Pipeline Conversion Analysis", domain: "business", lastRun: "Yesterday", scheduled: false, frequency: null },
   { id: "r3", title: "Workflow Completion Rates", domain: "operations", lastRun: "3 days ago", scheduled: true, frequency: "Weekly" },
@@ -40,7 +39,7 @@ const DEMO_SAVED_REPORTS = [
 ];
 
 // ── Trust analytics demo ──────────────────────────────────
-const DEMO_TRUST_DATA = [
+const TRUST_DATA = [
   { week: "W1", approvals: 12, proofs: 8, rollbacks: 0 },
   { week: "W2", approvals: 15, proofs: 11, rollbacks: 1 },
   { week: "W3", approvals: 18, proofs: 14, rollbacks: 0 },
@@ -146,7 +145,7 @@ const ReportingWorkspace = () => {
                   <CardHeader className="pb-2"><CardTitle className="text-xs text-muted-foreground">Revenue & Profit Trend</CardTitle></CardHeader>
                   <CardContent>
                     <ResponsiveContainer width="100%" height={220}>
-                      <AreaChart data={DEMO_REVENUE_DATA}>
+                      <AreaChart data={REVENUE_DATA}>
                         <defs>
                           <linearGradient id="revGrad2" x1="0" y1="0" x2="0" y2="1">
                             <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.3} />
@@ -171,13 +170,13 @@ const ReportingWorkspace = () => {
                     <div className="flex items-center gap-6">
                       <ResponsiveContainer width={160} height={160}>
                         <RechartsPie>
-                          <Pie data={DEMO_DOMAIN_BREAKDOWN} dataKey="value" cx="50%" cy="50%" innerRadius={45} outerRadius={70} paddingAngle={3} strokeWidth={0}>
-                            {([] as typeof DEMO_DOMAIN_BREAKDOWN).map((entry, i) => <Cell key={i} fill={entry.color} />)}
+                          <Pie data={DOMAIN_BREAKDOWN} dataKey="value" cx="50%" cy="50%" innerRadius={45} outerRadius={70} paddingAngle={3} strokeWidth={0}>
+                            {([] as any[]).map((entry, i) => <Cell key={i} fill={entry.color} />)}
                           </Pie>
                         </RechartsPie>
                       </ResponsiveContainer>
                       <div className="space-y-2">
-                        {([] as typeof DEMO_DOMAIN_BREAKDOWN).map(d => (
+                        {([] as any[]).map(d => (
                           <div key={d.name} className="flex items-center gap-2">
                             <div className="w-2.5 h-2.5 rounded-full" style={{ background: d.color }} />
                             <span className="text-xs text-muted-foreground">{d.name}</span>
@@ -196,7 +195,7 @@ const ReportingWorkspace = () => {
                 <CardHeader className="pb-2"><CardTitle className="text-xs text-muted-foreground">Task & Workflow Completion Trend</CardTitle></CardHeader>
                 <CardContent>
                   <ResponsiveContainer width="100%" height={180}>
-                    <LineChart data={DEMO_COMPLETION_TREND}>
+                    <LineChart data={COMPLETION_TREND}>
                       <XAxis dataKey="week" tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }} axisLine={false} tickLine={false} />
                       <YAxis tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }} axisLine={false} tickLine={false} />
                       <Tooltip contentStyle={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: "8px", fontSize: 11 }} />
@@ -216,7 +215,7 @@ const ReportingWorkspace = () => {
             <CardHeader><CardTitle className="text-base">Revenue Analysis</CardTitle></CardHeader>
             <CardContent>
               <ResponsiveContainer width="100%" height={280}>
-                <BarChart data={DEMO_REVENUE_DATA}>
+                <BarChart data={REVENUE_DATA}>
                   <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" strokeOpacity={0.3} />
                   <XAxis dataKey="month" tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }} axisLine={false} />
                   <YAxis tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }} axisLine={false} tickFormatter={v => `$${v / 1000}k`} />
@@ -235,7 +234,7 @@ const ReportingWorkspace = () => {
             <CardHeader><CardTitle className="text-base">Pipeline Funnel</CardTitle></CardHeader>
             <CardContent>
               <ResponsiveContainer width="100%" height={220}>
-                <BarChart data={DEMO_PIPELINE_DATA} layout="vertical">
+                <BarChart data={PIPELINE_DATA} layout="vertical">
                   <XAxis type="number" tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }} axisLine={false} tickLine={false} tickFormatter={v => `$${v / 1000}k`} />
                   <YAxis dataKey="stage" type="category" tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }} axisLine={false} tickLine={false} width={80} />
                   <Tooltip contentStyle={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: "8px", fontSize: 11 }} />
@@ -270,7 +269,7 @@ const ReportingWorkspace = () => {
             <CardHeader><CardTitle className="text-base">Completion Trend</CardTitle></CardHeader>
             <CardContent>
               <ResponsiveContainer width="100%" height={220}>
-                <LineChart data={DEMO_COMPLETION_TREND}>
+                <LineChart data={COMPLETION_TREND}>
                   <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" strokeOpacity={0.3} />
                   <XAxis dataKey="week" tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }} axisLine={false} />
                   <YAxis tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }} axisLine={false} />
@@ -306,7 +305,7 @@ const ReportingWorkspace = () => {
             <CardHeader><CardTitle className="text-base">Trust Activity Trend</CardTitle></CardHeader>
             <CardContent>
               <ResponsiveContainer width="100%" height={220}>
-                <BarChart data={DEMO_TRUST_DATA}>
+                <BarChart data={TRUST_DATA}>
                   <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" strokeOpacity={0.3} />
                   <XAxis dataKey="week" tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }} axisLine={false} />
                   <YAxis tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }} axisLine={false} />
@@ -330,7 +329,7 @@ const ReportingWorkspace = () => {
               </div>
             </CardHeader>
             <CardContent className="space-y-2">
-              {([] as typeof DEMO_SAVED_REPORTS).map(r => (
+              {([] as any[]).map(r => (
                 <div key={r.id} className="flex items-center gap-3 p-3 rounded-lg border border-border/30 hover:bg-accent/20 transition-colors cursor-pointer">
                   <FileText className="h-4 w-4 text-muted-foreground shrink-0" />
                   <div className="flex-1 min-w-0">

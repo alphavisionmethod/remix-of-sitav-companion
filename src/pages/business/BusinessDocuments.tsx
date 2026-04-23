@@ -31,7 +31,7 @@ interface BusinessDocument {
   starred: boolean; previewable: boolean; tags: string[];
 }
 
-const DEMO_DOCUMENTS: BusinessDocument[] = [
+const DOCUMENTS: BusinessDocument[] = [
   { id: "doc-1", name: "Q-2024-0847 — Acme Corp Website Redesign.pdf", type: "pdf", category: "quote", size: "2.4 MB", uploadedAt: "2 hours ago", uploadedBy: "Sarah K.", linkedEntity: "Acme Corp", linkedEntityType: "Customer", status: "sent", starred: true, previewable: true, tags: ["high-value", "website"] },
   { id: "doc-2", name: "INV-2024-1205 — Monthly Retainer.pdf", type: "pdf", category: "invoice", size: "156 KB", uploadedAt: "1 day ago", uploadedBy: "System", linkedEntity: "Wilson & Partners", linkedEntityType: "Customer", status: "sent", starred: false, previewable: true, tags: ["recurring", "retainer"] },
   { id: "doc-3", name: "Master Services Agreement — BigCorp.pdf", type: "pdf", category: "contract", size: "4.8 MB", uploadedAt: "3 days ago", uploadedBy: "Michael R.", linkedEntity: "BigCorp Industries", linkedEntityType: "Customer", status: "signed", starred: true, previewable: true, tags: ["legal", "enterprise"] },
@@ -61,9 +61,9 @@ const BusinessDocuments = () => {
   const [viewMode, setViewMode] = useState<ViewMode>("list");
   const [search, setSearch] = useState("");
   const [selectedId, setSelectedId] = useState<string | null>(null);
-  const [starredIds, setStarredIds] = useState<Set<string>>(new Set(([] as typeof DEMO_DOCUMENTS).filter(d => d.starred).map(d => d.id)));
+  const [starredIds, setStarredIds] = useState<Set<string>>(new Set(([] as any[]).filter(d => d.starred).map(d => d.id)));
 
-  const filtered = ([] as typeof DEMO_DOCUMENTS).filter(doc => {
+  const filtered = ([] as any[]).filter(doc => {
     if (tab === "quotes") return doc.category === "quote" || doc.category === "proposal";
     if (tab === "invoices") return doc.category === "invoice" || doc.category === "receipt";
     if (tab === "contracts") return doc.category === "contract";
@@ -72,11 +72,11 @@ const BusinessDocuments = () => {
     return true;
   }).filter(doc => !search || doc.name.toLowerCase().includes(search.toLowerCase()) || doc.linkedEntity?.toLowerCase().includes(search.toLowerCase()));
 
-  const selected = ([] as typeof DEMO_DOCUMENTS).find(d => d.id === selectedId);
+  const selected = ([] as any[]).find(d => d.id === selectedId);
   const toggleStar = (id: string) => setStarredIds(prev => { const n = new Set(prev); n.has(id) ? n.delete(id) : n.add(id); return n; });
 
   const tabs = [
-    { key: "all", label: `All (${([] as typeof DEMO_DOCUMENTS).length})` },
+    { key: "all", label: `All (${([] as any[]).length})` },
     { key: "quotes", label: "Quotes" },
     { key: "invoices", label: "Invoices" },
     { key: "contracts", label: "Contracts" },
@@ -206,7 +206,7 @@ const BusinessDocuments = () => {
       <ModuleAdvisorInsight
         advisorName="Document Advisor"
         domain="business"
-        insight={`${([] as typeof DEMO_DOCUMENTS).filter(d => d.status === "expired").length} expired document(s) need attention. ${([] as typeof DEMO_DOCUMENTS).filter(d => d.status === "signed").length} contracts fully signed.`}
+        insight={`${([] as any[]).filter(d => d.status === "expired").length} expired document(s) need attention. ${([] as any[]).filter(d => d.status === "signed").length} contracts fully signed.`}
         confidence={85}
       />
     </motion.div>

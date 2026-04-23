@@ -3,14 +3,6 @@ import { useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useAuth } from "@/contexts/AuthContext";
-import {
-  mockAdminIncidents, mockAdminAuditLogs, mockAdminPolicies,
-  mockAdminDevices, mockAdminCouncilDecisions, mockAdminIntelligence,
-  mockAgentRuntimeStates, mockSupervisorRuntimeStates,
-  mockTrustCenter, mockReleases, mockModelRouting, mockKnowledgeHealth,
-  mockSupportCases, mockChangeReviews, mockRollbackCenter, mockServiceMap,
-  mockSLOs, mockArchGates, mockDeploymentRings, mockTestCoverage,
-} from "@/data/fixtures/mock-data/admin-ops";
 import { ALL_DETAILED_AGENTS, COUNCILS, SUPERVISORS } from "@/lib/internal-agents";
 import { toast } from "sonner";
 
@@ -30,14 +22,14 @@ async function callAdminAPI<T = unknown>(endpoint: string, options?: { method?: 
 }
 
 // ── Upstream data shape types for Owner Center hooks ──
-export type TrustCenterData = typeof import("@/data/fixtures/mock-data/admin-ops").mockTrustCenter;
-export type ReleasesData = typeof import("@/data/fixtures/mock-data/admin-ops").mockReleases;
-export type ModelRoutingData = typeof import("@/data/fixtures/mock-data/admin-ops").mockModelRouting;
-export type KnowledgeHealthData = typeof import("@/data/fixtures/mock-data/admin-ops").mockKnowledgeHealth;
-export type SupportCase = (typeof import("@/data/fixtures/mock-data/admin-ops").mockSupportCases)[number];
-export type ChangeReview = (typeof import("@/data/fixtures/mock-data/admin-ops").mockChangeReviews)[number];
-export type RollbackCenterData = typeof import("@/data/fixtures/mock-data/admin-ops").mockRollbackCenter;
-export type ServiceMapData = typeof import("@/data/fixtures/mock-data/admin-ops").mockServiceMap;
+export type TrustCenterData = typeof import("@/data/fixtures/mock-data/admin-ops").trustCenter;
+export type ReleasesData = typeof import("@/data/fixtures/mock-data/admin-ops").releases;
+export type ModelRoutingData = typeof import("@/data/fixtures/mock-data/admin-ops").modelRouting;
+export type KnowledgeHealthData = typeof import("@/data/fixtures/mock-data/admin-ops").knowledgeHealth;
+export type SupportCase = (typeof import("@/data/fixtures/mock-data/admin-ops").supportCases)[number];
+export type ChangeReview = (typeof import("@/data/fixtures/mock-data/admin-ops").changeReviews)[number];
+export type RollbackCenterData = typeof import("@/data/fixtures/mock-data/admin-ops").rollbackCenter;
+export type ServiceMapData = typeof import("@/data/fixtures/mock-data/admin-ops").serviceMap;
 
 // ══════════════════════════════════════════════
 // INCIDENTS
@@ -62,7 +54,7 @@ export function useAdminIncidents(filters?: { status?: string; severity?: string
   return useQuery({
     queryKey: ["admin-incidents", isDemoMode, user?.id, filters],
     queryFn: async () => {
-      if (isDemoMode) return { incidents: mockAdminIncidents, summary: { total: mockAdminIncidents.length, open: mockAdminIncidents.filter(i => i.status === "open").length, acknowledged: mockAdminIncidents.filter(i => i.status === "acknowledged").length, resolved: mockAdminIncidents.filter(i => i.status === "resolved").length } };
+      if (isDemoMode) return { incidents: adminIncidents, summary: { total: adminIncidents.length, open: adminIncidents.filter(i => i.status === "open").length, acknowledged: adminIncidents.filter(i => i.status === "acknowledged").length, resolved: adminIncidents.filter(i => i.status === "resolved").length } };
       return callAdminAPI("incidents", { params: { ...(filters?.status ? { status: filters.status } : {}), ...(filters?.severity ? { severity: filters.severity } : {}) } });
     },
     staleTime: isDemoMode ? Infinity : 5000,
@@ -121,7 +113,7 @@ export function useAdminPolicies(domain?: string) {
   return useQuery({
     queryKey: ["admin-policies", isDemoMode, user?.id, domain],
     queryFn: async () => {
-      if (isDemoMode) return { policies: mockAdminPolicies, summary: { total: mockAdminPolicies.length, active: mockAdminPolicies.filter(p => p.active).length, require_approval: mockAdminPolicies.filter(p => p.approval_required).length } };
+      if (isDemoMode) return { policies: adminPolicies, summary: { total: adminPolicies.length, active: adminPolicies.filter(p => p.active).length, require_approval: adminPolicies.filter(p => p.approval_required).length } };
       return callAdminAPI("policies", { params: domain ? { domain } : {} });
     },
     staleTime: isDemoMode ? Infinity : 30000,
@@ -161,7 +153,7 @@ export function useAdminAuditLogs(filters?: { action?: string; limit?: number })
   return useQuery({
     queryKey: ["admin-audit-logs", isDemoMode, user?.id, filters],
     queryFn: async () => {
-      if (isDemoMode) return { logs: mockAdminAuditLogs, total: mockAdminAuditLogs.length };
+      if (isDemoMode) return { logs: adminAuditLogs, total: adminAuditLogs.length };
       return callAdminAPI("audit-logs", { params: { ...(filters?.action ? { action: filters.action } : {}), limit: String(filters?.limit || 100) } });
     },
     staleTime: isDemoMode ? Infinity : 10000,
@@ -190,13 +182,13 @@ export function useFleetHealth() {
     queryFn: async () => {
       if (isDemoMode) return {
         status: "healthy",
-        summary: `${mockAdminDevices.length} devices: ${mockAdminDevices.filter(d => d.connectivity === "online").length} online`,
-        devices: mockAdminDevices,
+        summary: `${adminDevices.length} devices: ${adminDevices.filter(d => d.connectivity === "online").length} online`,
+        devices: adminDevices,
         kpis: {
-          total: mockAdminDevices.length,
-          online: mockAdminDevices.filter(d => d.connectivity === "online").length,
-          degraded: mockAdminDevices.filter(d => d.health === "degraded").length,
-          offline: mockAdminDevices.filter(d => d.connectivity === "offline").length,
+          total: adminDevices.length,
+          online: adminDevices.filter(d => d.connectivity === "online").length,
+          degraded: adminDevices.filter(d => d.health === "degraded").length,
+          offline: adminDevices.filter(d => d.connectivity === "offline").length,
         },
       };
       return callAdminAPI("fleet-health");
@@ -243,7 +235,7 @@ export function useCouncilDecisions() {
   return useQuery({
     queryKey: ["admin-council", isDemoMode, user?.id],
     queryFn: async () => {
-      if (isDemoMode) return { decisions: mockAdminCouncilDecisions, summary: { total: mockAdminCouncilDecisions.length, pending: mockAdminCouncilDecisions.filter(d => d.status === "pending").length, approved: mockAdminCouncilDecisions.filter(d => d.status === "approved").length, rejected: mockAdminCouncilDecisions.filter(d => d.status === "rejected").length } };
+      if (isDemoMode) return { decisions: adminCouncilDecisions, summary: { total: adminCouncilDecisions.length, pending: adminCouncilDecisions.filter(d => d.status === "pending").length, approved: adminCouncilDecisions.filter(d => d.status === "approved").length, rejected: adminCouncilDecisions.filter(d => d.status === "rejected").length } };
       return callAdminAPI("council");
     },
     staleTime: isDemoMode ? Infinity : 10000,
@@ -299,7 +291,7 @@ export function useAdminIntelligence() {
 
       const engineAnomalies = adminService.detectAnomalies(metricsInput);
 
-      // Shape anomaly data for the UI (matches existing mockAdminIntelligence.anomalies shape)
+      // Shape anomaly data for the UI (matches existing adminIntelligence.anomalies shape)
       const anomalyMetrics: Record<string, { stats: { mean: number; stddev: number }; anomalies: Array<{ value: number; sigma: string; severity: string }> }> = {};
       const grouped = new Map<string, typeof engineAnomalies>();
       for (const a of engineAnomalies) {
@@ -444,12 +436,12 @@ export function useInternalAgents() {
 
       const agents = ALL_DETAILED_AGENTS.map(agent => {
         const runtime = liveStates.find(r => r.agentId === agent.agentId) 
-          ?? mockAgentRuntimeStates.find(r => r.agentId === agent.agentId);
+          ?? agentRuntimeStates.find(r => r.agentId === agent.agentId);
         return { ...agent, runtime: runtime || { agentId: agent.agentId, status: "active" as const, invocationCount: 0, lastAction: "No activity", lastActionTimestamp: new Date().toISOString(), confidenceAvg: 0, costTokens: 0, costCompute: 0, escalationCount: 0, failureCount: 0, simulationOnly: false } };
       });
 
       const supervisors = SUPERVISORS.map(sup => {
-        const runtime = mockSupervisorRuntimeStates.find(r => r.supervisorId === sup.supervisorId);
+        const runtime = supervisorRuntimeStates.find(r => r.supervisorId === sup.supervisorId);
         return { ...sup, runtime: runtime || { supervisorId: sup.supervisorId, status: "active" as const, overrideCount: 0, activeEscalations: 0, lastOverride: null } };
       });
 
@@ -500,7 +492,7 @@ export function useTrustCenter() {
   return useQuery({
     queryKey: ["trust-center", isDemoMode],
     queryFn: async (): Promise<TrustCenterData> => {
-      if (isDemoMode) return mockTrustCenter;
+      if (isDemoMode) return trustCenter;
       return callAdminAPI<TrustCenterData>("trust-center");
     },
     staleTime: isDemoMode ? Infinity : 30000,
@@ -512,7 +504,7 @@ export function useReleases() {
   return useQuery({
     queryKey: ["releases", isDemoMode],
     queryFn: async (): Promise<ReleasesData> => {
-      if (isDemoMode) return mockReleases;
+      if (isDemoMode) return releases;
       return callAdminAPI<ReleasesData>("releases");
     },
     staleTime: isDemoMode ? Infinity : 30000,
@@ -524,7 +516,7 @@ export function useModelRouting() {
   return useQuery({
     queryKey: ["model-routing", isDemoMode],
     queryFn: async (): Promise<ModelRoutingData> => {
-      if (isDemoMode) return mockModelRouting;
+      if (isDemoMode) return modelRouting;
       return callAdminAPI<ModelRoutingData>("model-routing");
     },
     staleTime: isDemoMode ? Infinity : 30000,
@@ -536,7 +528,7 @@ export function useKnowledgeHealth() {
   return useQuery({
     queryKey: ["knowledge-health", isDemoMode],
     queryFn: async (): Promise<KnowledgeHealthData> => {
-      if (isDemoMode) return mockKnowledgeHealth;
+      if (isDemoMode) return knowledgeHealth;
       return callAdminAPI<KnowledgeHealthData>("knowledge-health");
     },
     staleTime: isDemoMode ? Infinity : 60000,
@@ -548,7 +540,7 @@ export function useSupportCases() {
   return useQuery({
     queryKey: ["support-cases", isDemoMode],
     queryFn: async (): Promise<SupportCase[]> => {
-      if (isDemoMode) return mockSupportCases;
+      if (isDemoMode) return supportCases;
       return callAdminAPI<SupportCase[]>("support-cases");
     },
     staleTime: isDemoMode ? Infinity : 30000,
@@ -560,7 +552,7 @@ export function useChangeReview() {
   return useQuery({
     queryKey: ["change-review", isDemoMode],
     queryFn: async (): Promise<ChangeReview[]> => {
-      if (isDemoMode) return mockChangeReviews;
+      if (isDemoMode) return changeReviews;
       return callAdminAPI<ChangeReview[]>("change-review");
     },
     staleTime: isDemoMode ? Infinity : 60000,
@@ -572,7 +564,7 @@ export function useRollbackCenter() {
   return useQuery({
     queryKey: ["rollback-center", isDemoMode],
     queryFn: async (): Promise<RollbackCenterData> => {
-      if (isDemoMode) return mockRollbackCenter;
+      if (isDemoMode) return rollbackCenter;
       return callAdminAPI<RollbackCenterData>("rollback-center");
     },
     staleTime: isDemoMode ? Infinity : 30000,
@@ -584,7 +576,7 @@ export function useServiceMap() {
   return useQuery({
     queryKey: ["service-map", isDemoMode],
     queryFn: async (): Promise<ServiceMapData> => {
-      if (isDemoMode) return mockServiceMap;
+      if (isDemoMode) return serviceMap;
       return callAdminAPI<ServiceMapData>("service-map");
     },
     staleTime: isDemoMode ? Infinity : 60000,
@@ -596,7 +588,7 @@ export function useSLOs() {
   return useQuery({
     queryKey: ["slos", isDemoMode],
     queryFn: async () => {
-      if (isDemoMode) return mockSLOs;
+      if (isDemoMode) return sLOs;
       return callAdminAPI("slos");
     },
     staleTime: isDemoMode ? Infinity : 30000,
@@ -608,7 +600,7 @@ export function useArchGates() {
   return useQuery({
     queryKey: ["arch-gates", isDemoMode],
     queryFn: async () => {
-      if (isDemoMode) return mockArchGates;
+      if (isDemoMode) return archGates;
       return callAdminAPI("arch-gates");
     },
     staleTime: isDemoMode ? Infinity : 60000,
@@ -620,7 +612,7 @@ export function useDeploymentRings() {
   return useQuery({
     queryKey: ["deployment-rings", isDemoMode],
     queryFn: async () => {
-      if (isDemoMode) return mockDeploymentRings;
+      if (isDemoMode) return deploymentRings;
       return callAdminAPI("deployment-rings");
     },
     staleTime: isDemoMode ? Infinity : 30000,
@@ -632,7 +624,7 @@ export function useTestCoverage() {
   return useQuery({
     queryKey: ["test-coverage", isDemoMode],
     queryFn: async () => {
-      if (isDemoMode) return mockTestCoverage;
+      if (isDemoMode) return testCoverage;
       return callAdminAPI("test-coverage");
     },
     staleTime: isDemoMode ? Infinity : 60000,

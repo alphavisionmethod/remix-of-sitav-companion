@@ -24,9 +24,9 @@ const STATE_COLORS = {
 
 export default function RealityConversionOverview() {
   const { data: classifications = [] } = useRealityClassifications();
-  const { data: mockReplacements = [] } = useMockReplacements();
+  const { data: replacements = [] } = useMockReplacements();
   const cStats = useClassificationStats(classifications);
-  const mStats = useMockReplacementStats(mockReplacements);
+  const mStats = useMockReplacementStats(replacements);
   const { data: detectionReport } = useDetectionReport();
   const { data: integrations = [] } = useIntegrationStatuses();
   const qc = useQueryClient();
@@ -63,10 +63,10 @@ export default function RealityConversionOverview() {
   [classifications]);
 
   const recentConversions = useMemo(() =>
-    mockReplacements.filter(m => m.migration_status === "completed" || m.migration_status === "validated")
+    replacements.filter(m => m.migration_status === "completed" || m.migration_status === "validated")
       .sort((a, b) => new Date(b.done_at ?? b.updated_at).getTime() - new Date(a.done_at ?? a.updated_at).getTime())
       .slice(0, 8),
-  [mockReplacements]);
+  [replacements]);
 
   return (
     <div className="space-y-6 p-6">
@@ -174,7 +174,7 @@ export default function RealityConversionOverview() {
           <CardContent>
             <div className="grid grid-cols-5 gap-3">
               {[
-                { label: "Mock Imports", count: detectionReport.summary.mockImportCount, color: "text-yellow-400" },
+                { label: "Mock Imports", count: detectionReport.summary.importCount, color: "text-yellow-400" },
                 { label: "Persistence Gaps", count: detectionReport.summary.persistenceGapCount, color: "text-orange-400" },
                 { label: "Contract Gaps", count: detectionReport.summary.contractGapCount, color: "text-destructive" },
                 { label: "Runtime Gaps", count: detectionReport.summary.runtimeGapCount, color: "text-blue-400" },

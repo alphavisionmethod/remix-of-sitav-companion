@@ -27,7 +27,7 @@ interface KPIMetric {
 }
 
 // Demo KPI data per archetype
-const DEMO_KPIS: Record<string, KPIMetric[]> = {
+const KPIS: Record<string, KPIMetric[]> = {
   ecommerce: [
     { id: "conversion", label: "Conversion Rate", value: "3.2%", change: "+0.4%", changeType: "positive", sparkline: [2.8, 2.9, 3.0, 2.8, 3.1, 3.2], target: "3.5%", status: "on-track" },
     { id: "aov", label: "Average Order Value", value: "$87.50", change: "+$4.20", changeType: "positive", sparkline: [82, 83, 85, 84, 86, 87.5], target: "$90", status: "on-track" },
@@ -110,7 +110,7 @@ export default function AdaptiveKPIDashboard() {
   const { isDemoMode } = useDataMode();
   const { primaryMode, adaptations } = useBusinessProfile();
   const identity = getIdentityLayer(primaryMode);
-  const kpis = DEMO_KPIS[primaryMode] || DEMO_KPIS.service;
+  const kpis = KPIS[primaryMode] || KPIS.service;
 
   const statusCounts = kpis.reduce((acc, k) => {
     acc[k.status] = (acc[k.status] || 0) + 1;

@@ -10,7 +10,6 @@ import { useAppPlatform } from "@/contexts/AppPlatformContext";
 import { APP_BUNDLES } from "@/lib/app-platform";
 import { AppCard, BundleCard, AppIcon } from "@/components/sita/app-platform/AppStoreComponents";
 import type { AppDefinition } from "@/domains/apps/types";
-import { DEMO_DEV_CATEGORIES } from "@/data/seed/core-pages";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 const DevToolsCatalogPage = () => {
   const navigate = useNavigate();
@@ -61,7 +60,7 @@ const DevToolsCatalogPage = () => {
 
       {/* Categories */}
       <div className="flex gap-2 overflow-x-auto pb-1">
-        {([] as typeof DEMO_DEV_CATEGORIES).map(c => {
+        {([] as any[]).map(c => {
           const Icon = c.icon;
           return (
             <button key={c.id} onClick={() => setActiveCat(c.id)}

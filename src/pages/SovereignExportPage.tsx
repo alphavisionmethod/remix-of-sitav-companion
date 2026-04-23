@@ -9,13 +9,12 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
-import { DEMO_EXPORTABLE_TABLES, DEMO_PAST_EXPORTS } from "@/data/seed/core-pages";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { PageShell } from "@/components/sita/PageShell";
 export default function SovereignExportPage() {
   
   const { user, isDemo } = useAuth();
-  const [selectedTables, setSelectedTables] = useState<string[]>(([] as typeof DEMO_EXPORTABLE_TABLES).map(t => t.name));
+  const [selectedTables, setSelectedTables] = useState<string[]>(([] as any[]).map(t => t.name));
   const [exporting, setExporting] = useState(false);
   const [exportProgress, setExportProgress] = useState(0);
   const [deleting, setDeleting] = useState(false);
@@ -115,11 +114,11 @@ export default function SovereignExportPage() {
           <CardHeader className="flex flex-row items-center justify-between">
             <CardTitle className="text-sm">Select Data to Export</CardTitle>
             <Button variant="ghost" size="sm" onClick={() => setSelectedTables(
-              selectedTables.length === ([] as typeof DEMO_EXPORTABLE_TABLES).length ? [] : ([] as typeof DEMO_EXPORTABLE_TABLES).map(t => t.name)
-            )}>{selectedTables.length === ([] as typeof DEMO_EXPORTABLE_TABLES).length ? "Deselect All" : "Select All"}</Button>
+              selectedTables.length === ([] as any[]).length ? [] : ([] as any[]).map(t => t.name)
+            )}>{selectedTables.length === ([] as any[]).length ? "Deselect All" : "Select All"}</Button>
           </CardHeader>
           <CardContent className="space-y-3">
-            {([] as typeof DEMO_EXPORTABLE_TABLES).map(table => (
+            {([] as any[]).map(table => (
               <div key={table.name} className="flex items-center justify-between p-2 rounded-lg hover:bg-muted/30 transition-colors">
                 <div className="flex items-center gap-3">
                   <Checkbox checked={selectedTables.includes(table.name)} onCheckedChange={() => toggleTable(table.name)} />
@@ -141,7 +140,7 @@ export default function SovereignExportPage() {
           <Card className="border-border/50">
             <CardHeader><CardTitle className="text-sm">Export History</CardTitle></CardHeader>
             <CardContent className="space-y-3">
-              {([] as typeof DEMO_PAST_EXPORTS).map(exp => (
+              {([] as any[]).map(exp => (
                 <div key={exp.id} className="flex items-center justify-between p-3 rounded-lg bg-muted/30">
                   <div className="flex items-center gap-3">
                     <CheckCircle className="h-4 w-4 text-emerald-500" />

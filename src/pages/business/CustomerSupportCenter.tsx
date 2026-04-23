@@ -24,7 +24,7 @@ interface SupportIssue {
   createdAt: string; lastAction: string; responseCount: number; slaHours: number; hoursOpen: number;
 }
 
-const DEMO_ISSUES: SupportIssue[] = [
+const ISSUES: SupportIssue[] = [
   { id: "SUP-001", customer: "Marcus Chen", subject: "Order arrived damaged — requesting replacement", preview: "The packaging was torn and the product inside has visible damage.", severity: "critical", status: "waiting-on-us", owner: "You", linkedEntity: "ORD-4521", linkedType: "order", createdAt: "2h ago", lastAction: "Customer sent photos", responseCount: 3, slaHours: 4, hoursOpen: 2 },
   { id: "SUP-002", customer: "Sarah Park", subject: "Billing discrepancy on last invoice", preview: "I was charged $450 but the agreed amount was $380.", severity: "high", status: "open", owner: "Unassigned", linkedEntity: "INV-1892", linkedType: "invoice", createdAt: "5h ago", lastAction: "New ticket", responseCount: 0, slaHours: 8, hoursOpen: 5 },
   { id: "SUP-003", customer: "David Liu", subject: "Can't access my account portal", preview: "I've tried resetting my password three times and still can't log in.", severity: "medium", status: "waiting-on-us", owner: "Alex M.", createdAt: "1d ago", lastAction: "Escalated to tech", responseCount: 2, slaHours: 24, hoursOpen: 26 },
@@ -45,18 +45,18 @@ const CustomerSupportCenter = () => {
   const [panelOpen, setPanelOpen] = useState(false);
 
   const filterIssues = (tab: string) => {
-    if (tab === "all") return ([] as typeof DEMO_ISSUES).filter(i => i.status !== "resolved");
-    if (tab === "urgent") return ([] as typeof DEMO_ISSUES).filter(i => (i.severity === "critical" || i.severity === "high") && i.status !== "resolved");
-    if (tab === "waiting-on-us") return ([] as typeof DEMO_ISSUES).filter(i => i.status === "waiting-on-us");
-    if (tab === "escalated") return ([] as typeof DEMO_ISSUES).filter(i => i.status === "escalated");
-    if (tab === "resolved") return ([] as typeof DEMO_ISSUES).filter(i => i.status === "resolved");
-    return DEMO_ISSUES;
+    if (tab === "all") return ([] as any[]).filter(i => i.status !== "resolved");
+    if (tab === "urgent") return ([] as any[]).filter(i => (i.severity === "critical" || i.severity === "high") && i.status !== "resolved");
+    if (tab === "waiting-on-us") return ([] as any[]).filter(i => i.status === "waiting-on-us");
+    if (tab === "escalated") return ([] as any[]).filter(i => i.status === "escalated");
+    if (tab === "resolved") return ([] as any[]).filter(i => i.status === "resolved");
+    return ISSUES;
   };
 
   const filtered = filterIssues(activeTab);
-  const selected = ([] as typeof DEMO_ISSUES).find(i => i.id === selectedId);
-  const criticalCount = ([] as typeof DEMO_ISSUES).filter(i => i.severity === "critical" && i.status !== "resolved").length;
-  const breachedCount = ([] as typeof DEMO_ISSUES).filter(i => i.hoursOpen > i.slaHours && i.status !== "resolved").length;
+  const selected = ([] as any[]).find(i => i.id === selectedId);
+  const criticalCount = ([] as any[]).filter(i => i.severity === "critical" && i.status !== "resolved").length;
+  const breachedCount = ([] as any[]).filter(i => i.hoursOpen > i.slaHours && i.status !== "resolved").length;
 
   const handleSelect = (id: string) => { setSelectedId(id); setPanelOpen(true); };
 
@@ -73,7 +73,7 @@ const CustomerSupportCenter = () => {
 
       <HeroCard
         title={moduleConfig.title}
-        metric={`${([] as typeof DEMO_ISSUES).filter(i => i.status !== "resolved").length} open ${moduleConfig.terminology.issue?.toLowerCase() || "issue"}s`}
+        metric={`${([] as any[]).filter(i => i.status !== "resolved").length} open ${moduleConfig.terminology.issue?.toLowerCase() || "issue"}s`}
         subtitle={moduleConfig.subtitle}
         icon={<HeadphonesIcon className="h-5 w-5 text-[hsl(265_55%_68%)]" />}
         accentFrom="hsl(265 55% 58%)"
@@ -89,10 +89,10 @@ const CustomerSupportCenter = () => {
 
       <SitaTabs
         tabs={[
-          { key: "all", label: "All Open", count: ([] as typeof DEMO_ISSUES).filter(i => i.status !== "resolved").length },
-          { key: "urgent", label: "Urgent", count: ([] as typeof DEMO_ISSUES).filter(i => (i.severity === "critical" || i.severity === "high") && i.status !== "resolved").length },
-          { key: "waiting-on-us", label: "Waiting on Us", count: ([] as typeof DEMO_ISSUES).filter(i => i.status === "waiting-on-us").length },
-          { key: "escalated", label: "Escalated", count: ([] as typeof DEMO_ISSUES).filter(i => i.status === "escalated").length },
+          { key: "all", label: "All Open", count: ([] as any[]).filter(i => i.status !== "resolved").length },
+          { key: "urgent", label: "Urgent", count: ([] as any[]).filter(i => (i.severity === "critical" || i.severity === "high") && i.status !== "resolved").length },
+          { key: "waiting-on-us", label: "Waiting on Us", count: ([] as any[]).filter(i => i.status === "waiting-on-us").length },
+          { key: "escalated", label: "Escalated", count: ([] as any[]).filter(i => i.status === "escalated").length },
           { key: "resolved", label: "Resolved" },
         ]}
         active={activeTab}

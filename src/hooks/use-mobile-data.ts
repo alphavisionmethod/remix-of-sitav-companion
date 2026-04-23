@@ -76,7 +76,7 @@ function timeAgo(iso: string): string {
 
 // ── Demo data ────────────────────────────────────────────────
 
-const DEMO_PULSE: MobilePulseMetric[] = [
+const PULSE: MobilePulseMetric[] = [
   { icon: "Heart", label: "System Health", value: "97%", trend: "up", accent: "green" },
   { icon: "TrendingUp", label: "Revenue MTD", value: "$42.8K", trend: "up", accent: "purple" },
   { icon: "Shield", label: "Trust Score", value: "94/100", trend: "stable", accent: "green" },
@@ -85,27 +85,27 @@ const DEMO_PULSE: MobilePulseMetric[] = [
   { icon: "Users", label: "Active Leads", value: "23", trend: "up", accent: "green" },
 ];
 
-const DEMO_QUICK_ACTIONS: MobileQuickAction[] = [
+const QUICK_ACTIONS: MobileQuickAction[] = [
   { label: "Approvals", path: "/mobile/approvals", count: 3 },
   { label: "Alerts", path: "/mobile/alerts", count: 5 },
   { label: "Proof Log", path: "/mobile/proof", count: 12 },
   { label: "Boardroom", path: "/mobile/boardroom", count: 0 },
 ];
 
-const DEMO_ACTIVITY: MobileActivityItem[] = [
+const ACTIVITY: MobileActivityItem[] = [
   { time: "2m ago", action: "Invoice #1042 payment received", domain: "business" },
   { time: "15m ago", action: "Reserve contribution auto-executed", domain: "finance" },
   { time: "1h ago", action: "Grocery list generated for the week", domain: "concierge" },
   { time: "3h ago", action: "Lead scoring recalculated — 4 promoted", domain: "business" },
 ];
 
-const DEMO_ACCOUNTS: MobileAccount[] = [
+const ACCOUNTS: MobileAccount[] = [
   { label: "Operating", balance: "$24,300", trend: "+$3,200 this month" },
   { label: "Reserves", balance: "$18,500", trend: "Target: $25,000" },
   { label: "Tax Set-Aside", balance: "$6,200", trend: "Next due: Apr 15" },
 ];
 
-const DEMO_TX: MobileTransaction[] = [
+const TX: MobileTransaction[] = [
   { desc: "Client Payment — Acme Corp", amount: "+$4,800", type: "in", time: "Today" },
   { desc: "Software Subscription", amount: "-$199", type: "out", time: "Today" },
   { desc: "Reserve Auto-Contribution", amount: "-$500", type: "out", time: "Yesterday" },
@@ -113,7 +113,7 @@ const DEMO_TX: MobileTransaction[] = [
   { desc: "Invoice #1037 Paid", amount: "+$2,100", type: "in", time: "2 days ago" },
 ];
 
-const DEMO_CONCIERGE: MobileConciergeSection[] = [
+const CONCIERGE: MobileConciergeSection[] = [
   {
     title: "Today's Schedule", iconName: "Calendar",
     items: [
@@ -148,9 +148,9 @@ export function useMobileHomePulse() {
 
   return useModeData<MobilePulseMetric[]>(
     ["mobile-pulse", uid ?? ""],
-    DEMO_PULSE,
+    PULSE,
     async () => {
-      if (!uid) return DEMO_PULSE;
+      if (!uid) return PULSE;
 
       // Parallel queries for pulse metrics
       const [alertsRes, approvalsRes, leadsRes, txRes] = await Promise.all([
@@ -183,7 +183,7 @@ export function useMobileHomePulse() {
         { icon: "Users", label: "Active Leads", value: `${leadCount}`, trend: "up", accent: "green" as const },
       ];
     },
-    DEMO_PULSE,
+    PULSE,
   );
 }
 
@@ -193,9 +193,9 @@ export function useMobileHomeQuickActions() {
 
   return useModeData<MobileQuickAction[]>(
     ["mobile-quick-actions", uid ?? ""],
-    DEMO_QUICK_ACTIONS,
+    QUICK_ACTIONS,
     async () => {
-      if (!uid) return DEMO_QUICK_ACTIONS;
+      if (!uid) return QUICK_ACTIONS;
 
       const [approvals, alerts, receipts, boardroom] = await Promise.all([
         supabase.from("approval_requests").select("id", { count: "exact", head: true }).eq("user_id", uid).eq("status", "pending"),
@@ -211,7 +211,7 @@ export function useMobileHomeQuickActions() {
         { label: "Boardroom", path: "/mobile/boardroom", count: boardroom.count ?? 0 },
       ];
     },
-    DEMO_QUICK_ACTIONS,
+    QUICK_ACTIONS,
   );
 }
 
@@ -221,9 +221,9 @@ export function useMobileHomeActivity() {
 
   return useModeData<MobileActivityItem[]>(
     ["mobile-activity", uid ?? ""],
-    DEMO_ACTIVITY,
+    ACTIVITY,
     async () => {
-      if (!uid) return DEMO_ACTIVITY;
+      if (!uid) return ACTIVITY;
 
       // Pull recent transactions as activity
       const { data: txData } = await supabase
@@ -233,7 +233,7 @@ export function useMobileHomeActivity() {
         .order("occurred_at", { ascending: false })
         .limit(6);
 
-      if (!txData || txData.length === 0) return DEMO_ACTIVITY;
+      if (!txData || txData.length === 0) return ACTIVITY;
 
       return txData.map((tx) => ({
         time: timeAgo(tx.occurred_at),
@@ -241,7 +241,7 @@ export function useMobileHomeActivity() {
         domain: tx.category === "revenue" || tx.category === "sales" ? "business" : "finance",
       }));
     },
-    DEMO_ACTIVITY,
+    ACTIVITY,
   );
 }
 
@@ -251,9 +251,9 @@ export function useMobileMoneyAccounts() {
 
   return useModeData<{ safeToSpend: string; accounts: MobileAccount[] }>(
     ["mobile-money-accounts", uid ?? ""],
-    { safeToSpend: "$8,240", accounts: DEMO_ACCOUNTS },
+    { safeToSpend: "$8,240", accounts: ACCOUNTS },
     async () => {
-      if (!uid) return { safeToSpend: "$8,240", accounts: DEMO_ACCOUNTS };
+      if (!uid) return { safeToSpend: "$8,240", accounts: ACCOUNTS };
 
       // Aggregate transactions by account_label
       const { data: txData } = await supabase
@@ -291,9 +291,9 @@ export function useMobileMoneyTransactions() {
 
   return useModeData<MobileTransaction[]>(
     ["mobile-money-tx", uid ?? ""],
-    DEMO_TX,
+    TX,
     async () => {
-      if (!uid) return DEMO_TX;
+      if (!uid) return TX;
 
       const { data } = await supabase
         .from("transactions")
@@ -321,9 +321,9 @@ export function useMobileConciergeData() {
 
   return useModeData<MobileConciergeSection[]>(
     ["mobile-concierge", uid ?? ""],
-    DEMO_CONCIERGE,
+    CONCIERGE,
     async () => {
-      if (!uid) return DEMO_CONCIERGE;
+      if (!uid) return CONCIERGE;
 
       const [appointmentsRes, errandsRes, obligationsRes] = await Promise.all([
         supabase.from("appointments").select("title, appointment_date, location, status, provider").eq("user_id", uid).order("appointment_date", { ascending: true }).limit(10),
@@ -375,8 +375,8 @@ export function useMobileConciergeData() {
         });
       }
 
-      return sections.length > 0 ? sections : DEMO_CONCIERGE;
+      return sections.length > 0 ? sections : CONCIERGE;
     },
-    DEMO_CONCIERGE,
+    CONCIERGE,
   );
 }

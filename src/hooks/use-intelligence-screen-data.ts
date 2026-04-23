@@ -8,20 +8,6 @@ import { useState, useEffect, useCallback, useMemo } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { fromDynamicTable } from "@/lib/supabase-helpers";
 import { useDataMode } from "@/contexts/DataModeContext";
-import {
-  DEMO_INTEL_ASSETS,
-  DEMO_INTEL_AGENTS,
-  DEMO_WORKFLOWS,
-  DEMO_PATHS,
-  DEMO_INTEL_OUTCOMES,
-  DEMO_REASONING_PATHS,
-  DEMO_REUSE_DATA,
-  DEMO_ASSET_CLASSES,
-  DEMO_DOMAIN_REUSE,
-  DEMO_INVALIDATION_FEED,
-  DEMO_CONFIDENCE_TREND,
-} from "@/data/seed/admin-intelligence";
-
 // ── Types ────────────────────────────────────────────────────────
 
 export interface IntelligenceAsset {
@@ -117,7 +103,7 @@ export function useIntelligenceAssetLibrary(filters?: { domain?: string; type?: 
     setLoading(true);
 
     if (mode === "demo") {
-      setAssets(DEMO_INTEL_ASSETS);
+      setAssets(INTEL_ASSETS);
       setIsDemo(true);
       setLoading(false);
       return;
@@ -125,7 +111,7 @@ export function useIntelligenceAssetLibrary(filters?: { domain?: string; type?: 
 
     const userId = await uid();
     if (!userId) {
-      setAssets(DEMO_INTEL_ASSETS);
+      setAssets(INTEL_ASSETS);
       setIsDemo(true);
       setLoading(false);
       return;
@@ -145,7 +131,7 @@ export function useIntelligenceAssetLibrary(filters?: { domain?: string; type?: 
       const { data: rawAssets, error } = await q;
 
       if (error || !rawAssets || rawAssets.length === 0) {
-        setAssets(DEMO_INTEL_ASSETS);
+        setAssets(INTEL_ASSETS);
         setIsDemo(true);
         setLoading(false);
         return;
@@ -191,7 +177,7 @@ export function useIntelligenceAssetLibrary(filters?: { domain?: string; type?: 
       setAssets(mapped);
       setIsDemo(false);
     } catch {
-      setAssets(DEMO_INTEL_ASSETS);
+      setAssets(INTEL_ASSETS);
       setIsDemo(true);
     }
 
@@ -215,7 +201,7 @@ export function useEfficiencyScoreboard() {
     setLoading(true);
 
     if (mode === "demo") {
-      setAgents(DEMO_INTEL_AGENTS);
+      setAgents(INTEL_AGENTS);
       setIsDemo(true);
       setLoading(false);
       return;
@@ -223,7 +209,7 @@ export function useEfficiencyScoreboard() {
 
     const userId = await uid();
     if (!userId) {
-      setAgents(DEMO_INTEL_AGENTS);
+      setAgents(INTEL_AGENTS);
       setIsDemo(true);
       setLoading(false);
       return;
@@ -237,7 +223,7 @@ export function useEfficiencyScoreboard() {
         .limit(50);
 
       if (error || !data || data.length === 0) {
-        setAgents(DEMO_INTEL_AGENTS);
+        setAgents(INTEL_AGENTS);
         setIsDemo(true);
         setLoading(false);
         return;
@@ -267,7 +253,7 @@ export function useEfficiencyScoreboard() {
       setAgents(mapped);
       setIsDemo(false);
     } catch {
-      setAgents(DEMO_INTEL_AGENTS);
+      setAgents(INTEL_AGENTS);
       setIsDemo(true);
     }
 
@@ -277,7 +263,7 @@ export function useEfficiencyScoreboard() {
   useEffect(() => { reload(); }, [reload]);
 
   // Always provide demo workflow/path data (no separate table exists)
-  return { agents, workflows: DEMO_WORKFLOWS, paths: DEMO_PATHS, loading, isDemo, reload };
+  return { agents, workflows: WORKFLOWS, paths: PATHS, loading, isDemo, reload };
 }
 
 // ── Outcome Economics Hook ───────────────────────────────────────
@@ -292,7 +278,7 @@ export function useOutcomeEconomics() {
     setLoading(true);
 
     if (mode === "demo") {
-      setOutcomes(DEMO_INTEL_OUTCOMES);
+      setOutcomes(INTEL_OUTCOMES);
       setIsDemo(true);
       setLoading(false);
       return;
@@ -300,7 +286,7 @@ export function useOutcomeEconomics() {
 
     const userId = await uid();
     if (!userId) {
-      setOutcomes(DEMO_INTEL_OUTCOMES);
+      setOutcomes(INTEL_OUTCOMES);
       setIsDemo(true);
       setLoading(false);
       return;
@@ -315,7 +301,7 @@ export function useOutcomeEconomics() {
         .limit(500);
 
       if (error || !feedback || feedback.length === 0) {
-        setOutcomes(DEMO_INTEL_OUTCOMES);
+        setOutcomes(INTEL_OUTCOMES);
         setIsDemo(true);
         setLoading(false);
         return;
@@ -336,7 +322,7 @@ export function useOutcomeEconomics() {
 
       // If we got feedback but can't compute meaningful economics, fall back
       if (outcomeMap.size === 0) {
-        setOutcomes(DEMO_INTEL_OUTCOMES);
+        setOutcomes(INTEL_OUTCOMES);
         setIsDemo(true);
       } else {
         // Estimate costs/values from counts (placeholder until full ledger integration)
@@ -350,7 +336,7 @@ export function useOutcomeEconomics() {
         setIsDemo(false);
       }
     } catch {
-      setOutcomes(DEMO_INTEL_OUTCOMES);
+      setOutcomes(INTEL_OUTCOMES);
       setIsDemo(true);
     }
 
@@ -359,18 +345,18 @@ export function useOutcomeEconomics() {
 
   useEffect(() => { reload(); }, [reload]);
 
-  return { outcomes, reasoningPaths: DEMO_REASONING_PATHS, loading, isDemo, reload };
+  return { outcomes, reasoningPaths: REASONING_PATHS, loading, isDemo, reload };
 }
 
 // ── Reuse Overview Hook ──────────────────────────────────────────
 
 export function useReuseOverview() {
   const { mode } = useDataMode();
-  const [stats, setStats] = useState<ReuseStats>(DEMO_REUSE_DATA);
-  const [assetClasses, setAssetClasses] = useState(DEMO_ASSET_CLASSES);
-  const [domainReuse, setDomainReuse] = useState(DEMO_DOMAIN_REUSE);
-  const [invalidationFeed, setInvalidationFeed] = useState(DEMO_INVALIDATION_FEED);
-  const [confidenceTrend, setConfidenceTrend] = useState(DEMO_CONFIDENCE_TREND);
+  const [stats, setStats] = useState<ReuseStats>(REUSE_DATA);
+  const [assetClasses, setAssetClasses] = useState(ASSET_CLASSES);
+  const [domainReuse, setDomainReuse] = useState(DOMAIN_REUSE);
+  const [invalidationFeed, setInvalidationFeed] = useState(INVALIDATION_FEED);
+  const [confidenceTrend, setConfidenceTrend] = useState(CONFIDENCE_TREND);
   const [loading, setLoading] = useState(true);
   const [isDemo, setIsDemo] = useState(false);
 
@@ -378,11 +364,11 @@ export function useReuseOverview() {
     setLoading(true);
 
     if (mode === "demo") {
-      setStats(DEMO_REUSE_DATA);
-      setAssetClasses(DEMO_ASSET_CLASSES);
-      setDomainReuse(DEMO_DOMAIN_REUSE);
-      setInvalidationFeed(DEMO_INVALIDATION_FEED);
-      setConfidenceTrend(DEMO_CONFIDENCE_TREND);
+      setStats(REUSE_DATA);
+      setAssetClasses(ASSET_CLASSES);
+      setDomainReuse(DOMAIN_REUSE);
+      setInvalidationFeed(INVALIDATION_FEED);
+      setConfidenceTrend(CONFIDENCE_TREND);
       setIsDemo(true);
       setLoading(false);
       return;

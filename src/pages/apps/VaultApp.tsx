@@ -6,7 +6,6 @@ import { Lock, Plus, Search, Eye, EyeOff, Copy, Shield, AlertTriangle, Key, Glob
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useVaultItems } from "@/hooks/use-apps-data";
-import { DEMO_ENTRIES } from "@/data/seed/apps";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 interface VaultEntry {
   id: string;
@@ -28,9 +27,9 @@ export default function VaultApp() {
   const [showPasswords, setShowPasswords] = useState<Record<string, boolean>>({});
   const { toast } = useToast();
 
-  const filtered = ([] as typeof DEMO_ENTRIES).filter(e => !search || e.name.toLowerCase().includes(search.toLowerCase()));
-  const breachedCount = ([] as typeof DEMO_ENTRIES).filter(e => e.breached).length;
-  const weakCount = ([] as typeof DEMO_ENTRIES).filter(e => e.strength === "weak").length;
+  const filtered = ([] as any[]).filter(e => !search || e.name.toLowerCase().includes(search.toLowerCase()));
+  const breachedCount = ([] as any[]).filter(e => e.breached).length;
+  const weakCount = ([] as any[]).filter(e => e.strength === "weak").length;
 
   const toggleShow = (id: string) => setShowPasswords(p => ({ ...p, [id]: !p[id] }));
   const copyToClipboard = (text: string) => {
@@ -63,8 +62,8 @@ export default function VaultApp() {
       )}
 
       <div className="grid grid-cols-3 gap-3">
-        <Card><CardContent className="p-3 text-center"><p className="text-2xl font-bold text-foreground">{([] as typeof DEMO_ENTRIES).length}</p><p className="text-[10px] text-muted-foreground">Total Entries</p></CardContent></Card>
-        <Card><CardContent className="p-3 text-center"><p className="text-2xl font-bold text-emerald-500">{([] as typeof DEMO_ENTRIES).filter(e => e.strength === "strong").length}</p><p className="text-[10px] text-muted-foreground">Strong</p></CardContent></Card>
+        <Card><CardContent className="p-3 text-center"><p className="text-2xl font-bold text-foreground">{([] as any[]).length}</p><p className="text-[10px] text-muted-foreground">Total Entries</p></CardContent></Card>
+        <Card><CardContent className="p-3 text-center"><p className="text-2xl font-bold text-emerald-500">{([] as any[]).filter(e => e.strength === "strong").length}</p><p className="text-[10px] text-muted-foreground">Strong</p></CardContent></Card>
         <Card><CardContent className="p-3 text-center"><p className="text-2xl font-bold text-foreground">256-bit</p><p className="text-[10px] text-muted-foreground">Encryption</p></CardContent></Card>
       </div>
 

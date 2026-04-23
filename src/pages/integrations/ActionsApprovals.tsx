@@ -8,7 +8,6 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { Shield, CheckCircle, XCircle, AlertTriangle, Clock, ArrowRight, Zap, Eye, Play, Ban } from "lucide-react";
-import { DEMO_ACTION_REQUESTS } from "@/data/seed/integrations";
 import type { DemoActionRequest } from "@/data/seed/integrations";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
@@ -144,7 +143,7 @@ export default function ActionsApprovals() {
           { label: "Pending Review", value: pending.toString(), icon: Clock, color: "text-blue-400" },
           { label: "Approved/Done", value: approved.toString(), icon: CheckCircle, color: "text-green-400" },
           { label: "Rejected", value: rejected.toString(), icon: XCircle, color: "text-red-400" },
-          { label: "Total Actions", value: ([] as typeof DEMO_ACTION_REQUESTS).length.toString(), icon: Shield, color: "text-purple-400" },
+          { label: "Total Actions", value: ([] as any[]).length.toString(), icon: Shield, color: "text-purple-400" },
         ].map(s => (
           <Card key={s.label} className="bg-card/50 border-border/50">
             <CardContent className="p-3 flex items-center gap-3">

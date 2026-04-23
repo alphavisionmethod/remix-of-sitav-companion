@@ -27,7 +27,7 @@ interface Email {
   hasAttachment: boolean;
 }
 
-const MOCK_EMAILS: Email[] = [
+const EMAILS: Email[] = [
   { id: "1", from: "Sarah Chen", fromEmail: "sarah@acme.co", subject: "Q2 Revenue Report Ready", preview: "Hi, I've compiled the Q2 revenue report with all the projections we discussed...", body: "Hi,\n\nI've compiled the Q2 revenue report with all the projections we discussed in yesterday's boardroom. Key highlights:\n\n• Revenue up 18% vs Q1\n• Customer acquisition cost down 12%\n• Net retention rate at 115%\n\nThe full report is attached. Let me know if you need any adjustments before the board presentation.\n\nBest,\nSarah", date: "10:42 AM", read: false, starred: true, category: "primary", hasAttachment: true },
   { id: "2", from: "David Park", fromEmail: "david@venture.io", subject: "Partnership Proposal - Follow Up", preview: "Following up on our conversation last week about the strategic partnership...", body: "Hi,\n\nFollowing up on our conversation last week about the strategic partnership opportunity. I've reviewed the terms with our legal team and we're aligned on the key points.\n\nWould love to schedule a call this week to finalize details.\n\nCheers,\nDavid", date: "9:15 AM", read: false, starred: false, category: "primary", hasAttachment: false },
   { id: "3", from: "GitHub", fromEmail: "noreply@github.com", subject: "[nova-os] PR #342 merged", preview: "Your pull request 'Fix: window physics snap zones' has been merged into main...", body: "Pull Request #342 has been merged.\n\nFix: window physics snap zones\n\nChanges:\n- Fixed magnetic docking edge detection\n- Added velocity-based snap threshold\n- Updated test coverage to 94%\n\n3 files changed, +127 -34", date: "Yesterday", read: true, starred: false, category: "updates", hasAttachment: false },
@@ -57,8 +57,8 @@ export function MailClientWindow() {
   const [selectedId, setSelectedId] = useState<string | null>("1");
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
 
-  const filtered = (isDemoMode ? MOCK_EMAILS : [] as typeof MOCK_EMAILS).filter(e => activeCategory ? e.category === activeCategory : true);
-  const selected = (isDemoMode ? MOCK_EMAILS : [] as typeof MOCK_EMAILS).find(e => e.id === selectedId);
+  const filtered = (isDemoMode ? EMAILS : [] as typeof EMAILS).filter(e => activeCategory ? e.category === activeCategory : true);
+  const selected = (isDemoMode ? EMAILS : [] as typeof EMAILS).find(e => e.id === selectedId);
 
   return (
     <div className="flex h-[420px] bg-[hsl(0_0%_6%)] text-[hsl(0_0%_85%)] rounded-b-xl overflow-hidden">

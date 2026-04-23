@@ -5,21 +5,20 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState } from "react";
 import { Rocket, CheckCircle2, AlertTriangle, Shield, Clock, ArrowRight, RotateCcw, Activity, GitBranch, Eye, TrendingUp } from "lucide-react";
 import { useAIEngDomain } from "@/hooks/use-ai-engineering-data";
-import { DEMO_PROMOTION_EVIDENCE, DEMO_ROLLBACK_OPTIONS, DEMO_ROLLOUT_HISTORY } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
-const DEMO_RELEASE_GATES: any[] = [];
+const RELEASE_GATES: any[] = [];
 
 // Production fallback — seed data removed
-const DEMO_ENVIRONMENTS: any[] = [];
+const ENVIRONMENTS: any[] = [];
 
 const AIReleasesCenter = () => {
-  const { isDemo } = useAIEngDomain("efficiencyScores", DEMO_RELEASE_GATES);
+  const { isDemo } = useAIEngDomain("efficiencyScores", RELEASE_GATES);
   
   const [tab, setTab] = useState("readiness");
-  const passCount = ([] as typeof DEMO_RELEASE_GATES).filter(g => g.status === "pass").length;
-  const totalRequired = ([] as typeof DEMO_RELEASE_GATES).filter(g => g.required).length;
-  const requiredPass = ([] as typeof DEMO_RELEASE_GATES).filter(g => g.required && g.status === "pass").length;
+  const passCount = ([] as any[]).filter(g => g.status === "pass").length;
+  const totalRequired = ([] as any[]).filter(g => g.required).length;
+  const requiredPass = ([] as any[]).filter(g => g.required && g.status === "pass").length;
 
   return (
     <div className="space-y-6 p-6">
@@ -27,7 +26,7 @@ const AIReleasesCenter = () => {
 
       <div className="grid grid-cols-4 gap-3">
         {[
-          { l: "Gates Passing", v: `${passCount}/${([] as typeof DEMO_RELEASE_GATES).length}`, c: passCount === ([] as typeof DEMO_RELEASE_GATES).length ? "text-[hsl(var(--trust-safe))]" : "text-amber-500" },
+          { l: "Gates Passing", v: `${passCount}/${([] as any[]).length}`, c: passCount === ([] as any[]).length ? "text-[hsl(var(--trust-safe))]" : "text-amber-500" },
           { l: "Required Gates", v: `${requiredPass}/${totalRequired}`, c: requiredPass === totalRequired ? "text-[hsl(var(--trust-safe))]" : "text-destructive" },
           { l: "Release Confidence", v: "78%", c: "text-amber-500" },
           { l: "Promotable", v: requiredPass === totalRequired ? "Yes" : "No", c: requiredPass === totalRequired ? "text-[hsl(var(--trust-safe))]" : "text-destructive" },
@@ -50,7 +49,7 @@ const AIReleasesCenter = () => {
 
         <TabsContent value="readiness" className="mt-4">
           <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-            {([] as typeof DEMO_RELEASE_GATES).map(g => (
+            {([] as any[]).map(g => (
               <div key={g.gate} className={`rounded-xl border p-3 ${
                 g.status === "pass" ? "border-[hsl(var(--trust-safe))]/20 bg-[hsl(var(--trust-safe))]/5" :
                 g.status === "fail" ? "border-destructive/20 bg-destructive/5" :
@@ -70,7 +69,7 @@ const AIReleasesCenter = () => {
         </TabsContent>
 
         <TabsContent value="environments" className="space-y-3 mt-4">
-          {([] as typeof DEMO_ENVIRONMENTS).map(e => (
+          {([] as any[]).map(e => (
             <div key={e.env} className="rounded-xl border border-border/40 bg-card p-4">
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-2">
@@ -94,7 +93,7 @@ const AIReleasesCenter = () => {
               <thead><tr className="border-b border-border/40 bg-muted/30">
                 <th className="text-left p-3">Version</th><th className="text-left p-3">Deployed</th><th className="text-center p-3">Gates</th><th className="text-center p-3">Confidence</th><th className="text-center p-3">Issues</th><th className="text-center p-3">Status</th>
               </tr></thead>
-              <tbody>{([] as typeof DEMO_ROLLOUT_HISTORY).map(r => (
+              <tbody>{([] as any[]).map(r => (
                 <tr key={r.version + r.at} className="border-b border-border/20">
                   <td className="p-3 font-medium font-mono">{r.version}</td>
                   <td className="p-3">{r.at}</td>
@@ -110,7 +109,7 @@ const AIReleasesCenter = () => {
         </TabsContent>
 
         <TabsContent value="rollback" className="space-y-3 mt-4">
-          {([] as typeof DEMO_ROLLBACK_OPTIONS).map(r => (
+          {([] as any[]).map(r => (
             <div key={r.target} className={`rounded-xl border bg-card p-4 ${r.risk === "high" ? "border-destructive/30" : r.risk === "medium" ? "border-amber-500/30" : "border-border/40"}`}>
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-2">
@@ -131,7 +130,7 @@ const AIReleasesCenter = () => {
           <div className="rounded-xl border border-border/40 bg-card p-4 mb-4">
             <div className="flex items-center gap-2 mb-3"><TrendingUp className="h-4 w-4 text-primary" /><span className="text-sm font-semibold">Staging → Production Promotion Evidence</span></div>
             <div className="space-y-2">
-              {([] as typeof DEMO_PROMOTION_EVIDENCE).map((p, i) => (
+              {([] as any[]).map((p, i) => (
                 <div key={i} className="flex items-center gap-2">
                   {p.met ? <CheckCircle2 className="h-4 w-4 text-[hsl(var(--trust-safe))]" /> : <AlertTriangle className="h-4 w-4 text-destructive" />}
                   <span className="text-sm">{p.check}</span>
@@ -140,9 +139,9 @@ const AIReleasesCenter = () => {
               ))}
             </div>
           </div>
-          <div className={`rounded-xl border p-4 text-center ${([] as typeof DEMO_PROMOTION_EVIDENCE).every(p => p.met) ? "border-[hsl(var(--trust-safe))]/30 bg-[hsl(var(--trust-safe))]/5" : "border-destructive/30 bg-destructive/5"}`}>
-            <p className={`text-sm font-semibold ${([] as typeof DEMO_PROMOTION_EVIDENCE).every(p => p.met) ? "text-[hsl(var(--trust-safe))]" : "text-destructive"}`}>
-              {([] as typeof DEMO_PROMOTION_EVIDENCE).every(p => p.met) ? "✓ Ready to promote" : `⚠ ${([] as typeof DEMO_PROMOTION_EVIDENCE).filter(p => !p.met).length} checks not met — promotion blocked`}
+          <div className={`rounded-xl border p-4 text-center ${([] as any[]).every(p => p.met) ? "border-[hsl(var(--trust-safe))]/30 bg-[hsl(var(--trust-safe))]/5" : "border-destructive/30 bg-destructive/5"}`}>
+            <p className={`text-sm font-semibold ${([] as any[]).every(p => p.met) ? "text-[hsl(var(--trust-safe))]" : "text-destructive"}`}>
+              {([] as any[]).every(p => p.met) ? "✓ Ready to promote" : `⚠ ${([] as any[]).filter(p => !p.met).length} checks not met — promotion blocked`}
             </p>
           </div>
         </TabsContent>

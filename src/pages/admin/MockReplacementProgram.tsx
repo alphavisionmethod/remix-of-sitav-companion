@@ -15,14 +15,13 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { useMockReplacements, useUpsertMockReplacement, useUpdateMockStatus, useDeleteMockReplacement, useMockReplacementStats } from "@/hooks/useMockReplacements";
 import { Plus, Trash2, Search, ArrowRight, AlertTriangle, CheckCircle2, Clock, Ban, CircleDot, Pencil, BarChart3, Flame, GitBranch, ShieldCheck, Layers } from "lucide-react";
 import type { MockReplacement } from "@/data/persistence/mock-replacement-persistence";
-import { DEMO_MOCK_TYPES, DEMO_PRIORITIES } from "@/data/seed/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
-const DEMO_STATUSES: any[] = [];
+const STATUSES: any[] = [];
 
 
 // Production fallback — seed data removed
-const DEMO_CUSTOMERS: any[] = [];
+const CUSTOMERS: any[] = [];
 
 const STATUS_CONFIG: Record<MockReplacement["migration_status"], { label: string; color: string; icon: any }> = {
   identified: { label: "Identified", color: "bg-muted text-muted-foreground", icon: CircleDot },
@@ -76,12 +75,12 @@ function MockFormDialog({ trigger, initial, onSave }: { trigger: React.ReactNode
             <div><Label>Page Path</Label><Input value={form.page_path} onChange={e => setForm(f => ({ ...f, page_path: e.target.value }))} placeholder="/business/customers" /></div>
           </div>
           <div className="grid grid-cols-2 gap-3">
-            <div><Label>Mock Source</Label><Input value={form.mock_source} onChange={e => setForm(f => ({ ...f, mock_source: e.target.value }))} placeholder="MOCK_DEMO_CUSTOMERS" /></div>
+            <div><Label>Mock Source</Label><Input value={form.mock_source} onChange={e => setForm(f => ({ ...f, mock_source: e.target.value }))} placeholder="CUSTOMERS" /></div>
             <div>
               <Label>Mock Type</Label>
               <Select value={form.mock_type} onValueChange={v => setForm(f => ({ ...f, mock_type: v as never }))}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
-                <SelectContent>{DEMO_MOCK_TYPES.map(t => <SelectItem key={t} value={t}>{t.replace(/_/g, " ")}</SelectItem>)}</SelectContent>
+                <SelectContent>{TYPES.map(t => <SelectItem key={t} value={t}>{t.replace(/_/g, " ")}</SelectItem>)}</SelectContent>
               </Select>
             </div>
           </div>
@@ -92,7 +91,7 @@ function MockFormDialog({ trigger, initial, onSave }: { trigger: React.ReactNode
               <Label>Priority</Label>
               <Select value={form.migration_priority} onValueChange={v => setForm(f => ({ ...f, migration_priority: v as never }))}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
-                <SelectContent>{DEMO_PRIORITIES.map(p => <SelectItem key={p} value={p} className="capitalize">{p}</SelectItem>)}</SelectContent>
+                <SelectContent>{PRIORITIES.map(p => <SelectItem key={p} value={p} className="capitalize">{p}</SelectItem>)}</SelectContent>
               </Select>
             </div>
             <div><Label>Owner</Label><Input value={form.migration_owner} onChange={e => setForm(f => ({ ...f, migration_owner: e.target.value }))} placeholder="team/person" /></div>
@@ -128,7 +127,7 @@ function toFormData(r: MockReplacement): MockFormData {
 function PriorityBreakdownCard({ data }: { data: MockReplacement[] }) {
   const byPriority = useMemo(() => {
     const map: Record<string, { total: number; done: number; blocked: number }> = {};
-    DEMO_PRIORITIES.forEach(p => { map[p] = { total: 0, done: 0, blocked: 0 }; });
+    PRIORITIES.forEach(p => { map[p] = { total: 0, done: 0, blocked: 0 }; });
     data.forEach(d => {
       map[d.migration_priority].total++;
       if (d.migration_status === "completed" || d.migration_status === "validated") map[d.migration_priority].done++;
@@ -141,7 +140,7 @@ function PriorityBreakdownCard({ data }: { data: MockReplacement[] }) {
     <Card>
       <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><Flame className="h-4 w-4" />Priority Breakdown</CardTitle></CardHeader>
       <CardContent className="space-y-3">
-        {DEMO_PRIORITIES.map(p => {
+        {PRIORITIES.map(p => {
           const { total, done, blocked } = byPriority[p];
           if (total === 0) return null;
           return (
@@ -336,14 +335,14 @@ export default function MockReplacementProgram() {
               <SelectTrigger className="w-[150px]"><SelectValue /></SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Statuses</SelectItem>
-                {DEMO_STATUSES.map(s => <SelectItem key={s} value={s}>{STATUS_CONFIG[s].label}</SelectItem>)}
+                {STATUSES.map(s => <SelectItem key={s} value={s}>{STATUS_CONFIG[s].label}</SelectItem>)}
               </SelectContent>
             </Select>
             <Select value={filterPriority} onValueChange={setFilterPriority}>
               <SelectTrigger className="w-[130px]"><SelectValue /></SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Priorities</SelectItem>
-                {DEMO_PRIORITIES.map(p => <SelectItem key={p} value={p} className="capitalize">{p}</SelectItem>)}
+                {PRIORITIES.map(p => <SelectItem key={p} value={p} className="capitalize">{p}</SelectItem>)}
               </SelectContent>
             </Select>
           </div>
@@ -385,7 +384,7 @@ export default function MockReplacementProgram() {
                       <TableCell>
                         <Select value={row.migration_status} onValueChange={v => updateStatus.mutate({ id: row.id, status: v as never })}>
                           <SelectTrigger className="h-7 text-xs w-[120px]"><SelectValue /></SelectTrigger>
-                          <SelectContent>{DEMO_STATUSES.map(s => <SelectItem key={s} value={s}>{STATUS_CONFIG[s].label}</SelectItem>)}</SelectContent>
+                          <SelectContent>{STATUSES.map(s => <SelectItem key={s} value={s}>{STATUS_CONFIG[s].label}</SelectItem>)}</SelectContent>
                         </Select>
                       </TableCell>
                       <TableCell>

@@ -19,7 +19,6 @@ import { Progress } from "@/components/ui/progress";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { DEMO_ENGINE_COSTS } from "@/data/seed/core-pages";
 // Demo simulation helper (inline — no mock-data import)
 interface SimPolicyResult {
   policy_name: string;
@@ -1765,7 +1764,7 @@ const OwnerCenter = () => {
                 </div>
               </div>
             </SitaCard>
-            {([] as typeof DEMO_ENGINE_COSTS).map((c, i) => (
+            {([] as any[]).map((c, i) => (
               <SitaCard key={i} hover={false} className="p-4">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">

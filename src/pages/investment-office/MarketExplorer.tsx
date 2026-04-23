@@ -6,7 +6,6 @@ import { SparklineChart } from "@/components/sita/SparklineChart";
 import { INSTRUMENTS, INVESTMENT_ADVISORS } from "@/hooks/useInvestmentOfficeData";
 import { SPARKLINE_DATA } from "@/domains/investment/mock-data";
 import { useMarketWatchlistItems } from "@/hooks/use-investment-office";
-import { DEMO_CLASS_TABS } from "@/data/seed/investment";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 const pctFmt = (n: number) => `${n >= 0 ? "+" : ""}${n.toFixed(2)}%`;
 
@@ -52,7 +51,7 @@ export default function MarketExplorer() {
       </div>
 
       <div className="flex gap-1.5 overflow-x-auto pb-1">
-        {([] as typeof DEMO_CLASS_TABS).map(tab => (
+        {([] as any[]).map(tab => (
           <button key={tab.value} onClick={() => setActiveClass(tab.value as typeof activeClass)}
             className={`shrink-0 rounded-lg px-3 py-2 text-xs font-medium transition-colors flex items-center gap-1.5 ${
               activeClass === tab.value ? "bg-primary text-primary-foreground" : "bg-secondary text-muted-foreground hover:text-foreground"

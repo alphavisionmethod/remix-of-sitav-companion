@@ -12,7 +12,6 @@ import { useDeals } from "@/hooks/use-revenue-office";
 import { useRevenueLeakItems } from "@/hooks/use-revenue-office";
 import { useNavigate } from "react-router-dom";
 import { Skeleton } from "@/components/ui/skeleton";
-import { DEMO_WHAT_CHANGED } from "@/data/seed/revenue-office";
 import { competitiveIntelligenceService, type CompetitivePosition } from "@/lib/services/competitive-intelligence";
 import { useOSRuntime } from "@/hooks/useOSRuntime";
 import { useRevenueWhatChanged } from "@/hooks/use-revenue-memory";
@@ -20,8 +19,8 @@ import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { PageShell } from "@/components/sita/PageShell";
 import { Typography } from "@/components/sita/Typography";
 
-const DEMO_PIPELINE_STAGES: any[] = [];
-const DEMO_ADVISOR_SIGNALS: any[] = [];
+const PIPELINE_STAGES: any[] = [];
+const ADVISOR_SIGNALS: any[] = [];
 
 
 
@@ -48,9 +47,9 @@ export default function GrowthBoardroom() {
 
   const { data: liveLeakItems } = useRevenueLeakItems();
 
-  const PIPELINE_STAGES = (liveDeals && liveDeals.length > 0 ? DEMO_PIPELINE_STAGES : []);
+  const PIPELINE_STAGES = (liveDeals && liveDeals.length > 0 ? PIPELINE_STAGES : []);
   const LEAKS = (liveLeakItems && liveLeakItems.length > 0 ? liveLeakItems : []);
-  const ADVISOR_SIGNALS = DEMO_ADVISOR_SIGNALS;
+  const ADVISOR_SIGNALS = ADVISOR_SIGNALS;
 
   if (isLoading) {
     return <PageShell width="wide" className="space-y-6">
@@ -207,7 +206,7 @@ export default function GrowthBoardroom() {
         <Card className="bg-card/50 border-border/50">
           <CardHeader className="pb-3"><CardTitle className="text-sm font-medium flex items-center gap-2"><RefreshCw className="w-4 h-4 text-primary" /> What Changed</CardTitle></CardHeader>
           <CardContent className="space-y-3">
-            {([] as typeof DEMO_WHAT_CHANGED).map((w, i) => (
+            {([] as any[]).map((w, i) => (
               <div key={i} className="flex items-start gap-2">
                 <div className={`w-1.5 h-1.5 rounded-full mt-2 flex-shrink-0 ${w.type === "positive" ? "bg-green-400" : w.type === "warning" ? "bg-yellow-400" : "bg-red-400"}`} />
                 <div className="flex-1">

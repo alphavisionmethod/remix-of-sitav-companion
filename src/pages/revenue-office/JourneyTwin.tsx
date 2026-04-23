@@ -4,7 +4,6 @@ import { Route, Eye, MousePointer, Mail, Phone, CreditCard, Star, ArrowRight, Cl
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { DEMO_JOURNEY_STAGES } from "@/data/seed/revenue-office";
 import { useState, useMemo } from "react";
 import { useCustomerJourneyStages } from "@/hooks/use-revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
@@ -47,7 +46,7 @@ export default function JourneyTwin() {
     stage: s.stage_name || s.name || "Unknown",
     metrics: { entered: s.entered_count || 0, conversion: `${s.conversion_rate || 0}%`, exited: s.exited_count || 0 },
     touchpoints: (Array.isArray(s.touchpoints) ? s.touchpoints : []) as string[],
-  })) : DEMO_JOURNEY_STAGES);
+  })) : JOURNEY_STAGES);
   const [expanded, setExpanded] = useState<string | null>(null);
 
   const totalEntered = JOURNEY_STAGES[0]?.metrics.entered ?? 0;

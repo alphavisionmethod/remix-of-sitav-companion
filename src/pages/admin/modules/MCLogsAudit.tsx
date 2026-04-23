@@ -26,7 +26,7 @@ const SEVERITY_CONFIG: Record<LogSeverity, { color: string; bg: string }> = {
   error: { color: "text-red-400", bg: "bg-red-500/10" }, critical: { color: "text-red-400", bg: "bg-red-500/15" },
 };
 
-const DEMO_LOGS: AuditEntry[] = [
+const LOGS: AuditEntry[] = [
   { id: "1", timestamp: "14:23:01", actor: "admin", actorName: "Founder", action: "Approved canary rollout", resource: "release-v3.4.1", severity: "info", correlationId: "rel-3841", whyExplanation: "Founder approved the staged rollout after simulation passed with 91% confidence." },
   { id: "2", timestamp: "14:22:45", actor: "ai_agent", actorName: "Release Advisor", action: "Recommended canary expansion", resource: "canary-cohort-beta", severity: "info", correlationId: "rel-3841", whyExplanation: "Health metrics stable for 30 minutes. Error rate within threshold." },
   { id: "3", timestamp: "14:18:30", actor: "system", actorName: "Health Monitor", action: "Health check passed", resource: "sync-service", severity: "info", correlationId: "hc-9921" },
@@ -48,7 +48,7 @@ export default function MCLogsAudit() {
   const [showCorrelation, setShowCorrelation] = useState<string | null>(null);
 
   const filtered = useMemo(() => {
-    return ([] as typeof DEMO_LOGS).filter(l => {
+    return ([] as any[]).filter(l => {
       if (actorFilter !== "all" && l.actor !== actorFilter) return false;
       if (severityFilter !== "all" && l.severity !== severityFilter) return false;
       if (showCorrelation && l.correlationId !== showCorrelation) return false;
@@ -69,11 +69,11 @@ export default function MCLogsAudit() {
 
       <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
         {[
-          { label: "Total Events", value: ([] as typeof DEMO_LOGS).length, icon: FileText, color: "text-foreground" },
-          { label: "Admin Actions", value: ([] as typeof DEMO_LOGS).filter(l => l.actor === "admin").length, icon: User, color: "text-blue-400" },
-          { label: "AI Actions", value: ([] as typeof DEMO_LOGS).filter(l => l.actor === "ai_agent").length, icon: Bot, color: "text-purple-400" },
-          { label: "Warnings", value: ([] as typeof DEMO_LOGS).filter(l => l.severity === "warning").length, icon: AlertTriangle, color: "text-amber-400" },
-          { label: "Errors", value: ([] as typeof DEMO_LOGS).filter(l => l.severity === "error" || l.severity === "critical").length, icon: XCircle, color: "text-red-400" },
+          { label: "Total Events", value: ([] as any[]).length, icon: FileText, color: "text-foreground" },
+          { label: "Admin Actions", value: ([] as any[]).filter(l => l.actor === "admin").length, icon: User, color: "text-blue-400" },
+          { label: "AI Actions", value: ([] as any[]).filter(l => l.actor === "ai_agent").length, icon: Bot, color: "text-purple-400" },
+          { label: "Warnings", value: ([] as any[]).filter(l => l.severity === "warning").length, icon: AlertTriangle, color: "text-amber-400" },
+          { label: "Errors", value: ([] as any[]).filter(l => l.severity === "error" || l.severity === "critical").length, icon: XCircle, color: "text-red-400" },
         ].map(kpi => (
           <div key={kpi.label} className="rounded-xl border border-border/30 bg-white/[0.02] p-3">
             <div className="flex items-center gap-2 mb-1"><kpi.icon className={cn("h-3.5 w-3.5", kpi.color)} /><span className="text-[10px] text-muted-foreground">{kpi.label}</span></div>

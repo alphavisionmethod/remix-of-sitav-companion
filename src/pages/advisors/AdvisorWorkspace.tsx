@@ -22,7 +22,7 @@ import {
   AdvisorCard, RecommendationCard, SimulationCard, ApprovalCard,
   ProofCard, MemoryCard, SynthesisCard, ConfidenceLadder,
   BoardroomAdvisorCard, UncertaintyCard } from "@/components/sita/AdvisorComponents";
-import { mockAdvisors, mockRecommendations, mockSimulations, mockApprovals, mockProofHistory, mockMemoryItems, mockSynthesis } from "@/hooks/useAdvisorMissionControl";
+import { advisors, recommendations, simulations, approvals, proofHistory, memoryItems, synthesis } from "@/hooks/useAdvisorMissionControl";
 import { useStreamingChat } from "@/hooks/use-streaming-chat";
 import {
   Brain, Users, GitCompare, Play, CheckCircle, FileText, Eye,
@@ -148,7 +148,7 @@ const MetricPill = ({ label, value, accent }: { label: string; value: number; ac
 const CouncilGrid = ({ mode }: { mode: CouncilMode }) => {
   const navigate = useNavigate();
 const modeConfig = MODES.find(m => m.id === mode)!;
-  const filtered: typeof mockAdvisors = [];
+  const filtered: typeof advisors = [];
 
   const advisorIds = useMemo(() => filtered.map(a => a.id), [filtered]);
   const liveStatuses = useAdvisorStatuses(advisorIds);
@@ -203,9 +203,9 @@ return null;
   
   const modeConfig = MODES.find(m => m.id === mode)!;
   const recs = modeConfig.domains.includes("all")
-    ? mockRecommendations
-    : mockRecommendations.filter(r => {
-        const adv = mockAdvisors.find(a => a.id === r.advisorId);
+    ? recommendations
+    : recommendations.filter(r => {
+        const adv = advisors.find(a => a.id === r.advisorId);
         return adv && modeConfig.domains.includes(adv.domain);
       });
   const sorted = [...recs].sort((a, b) => {
@@ -234,9 +234,9 @@ return null;
 const DisagreementPanel = () => {
 return null;
   
-  const disagreements = mockSynthesis.filter(s => s.disagreements && s.disagreements.length > 0);
+  const disagreements = synthesis.filter(s => s.disagreements && s.disagreements.length > 0);
 
-  if (disagreements.length === 0 && mockSynthesis.length === 0) return null;
+  if (disagreements.length === 0 && synthesis.length === 0) return null;
 
   return (
     <div className="space-y-3">
@@ -271,7 +271,7 @@ return null;
 
       {/* Full synthesis cards */}
       <div className="space-y-3">
-        {mockSynthesis.map(s => <SynthesisCard key={s.id} synthesis={s} />)}
+        {synthesis.map(s => <SynthesisCard key={s.id} synthesis={s} />)}
       </div>
     </div>
   );
@@ -284,8 +284,8 @@ return null;
   
   const modeConfig = MODES.find(m => m.id === mode)!;
   const advisors = modeConfig.domains.includes("all")
-    ? mockAdvisors
-    : mockAdvisors.filter(a => modeConfig.domains.includes(a.domain));
+    ? advisors
+    : advisors.filter(a => modeConfig.domains.includes(a.domain));
 
   return (
     <div className="space-y-3">
@@ -305,7 +305,7 @@ return null;
   const states: { state: ExecutionState; count: number }[] = [
     { state: "proposed", count: 3 },
     { state: "simulated", count: 2 },
-    { state: "approval-requested", count: mockApprovals.length },
+    { state: "approval-requested", count: approvals.length },
     { state: "executing", count: 1 },
     { state: "completed", count: 5 },
     { state: "verified", count: 12 },
@@ -331,7 +331,7 @@ return null;
 const WhatChangedPanel = () => {
 return null;
   
-  const recentProof = mockProofHistory.slice(0, 4);
+  const recentProof = proofHistory.slice(0, 4);
 
   return (
     <div className="space-y-3">
@@ -369,9 +369,9 @@ const SimulationStudio = () => (
       </p>
     </motion.div>
 
-    {mockSimulations.length > 0 ? (
+    {simulations.length > 0 ? (
       <div className="space-y-4">
-        {mockSimulations.map((s, i) => (
+        {simulations.map((s, i) => (
           <motion.div key={s.id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.08 }}>
             <SimulationCard sim={s} />
           </motion.div>
@@ -401,7 +401,7 @@ const { pendingApprovals, isLoading } = useApprovalQueue();
         impact: "medium" as const,
         requiresApproval: true,
       }))
-    : mockApprovals;
+    : approvals;
 
   return (
     <div className="space-y-6">
@@ -463,7 +463,7 @@ const { data: dbMemory = [] } = useQuery({
         confidence: m.confidence || 0.8,
         usedCount: 0,
       }))
-    : mockMemoryItems;
+    : memoryItems;
 
   return (
     <div className="space-y-6">
@@ -514,7 +514,7 @@ return (
 
       {false ? (
         <div className="space-y-2">
-          {mockProofHistory.map((p, i) => (
+          {proofHistory.map((p, i) => (
             <motion.div key={p.id} initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.03 }}>
               <ProofCard item={p} />
             </motion.div>
@@ -548,10 +548,10 @@ const [activeSection, setActiveSection] = useState<"overview" | "simulations" | 
     );
   }
 
-  const advisor = mockAdvisors.find(a => a.id === advisorId) || mockAdvisors[0];
-  const recs = mockRecommendations.filter(r => r.advisorId === advisor.id);
-  const proofs = mockProofHistory.filter(p => p.advisor === advisor.name);
-  const memories = mockMemoryItems.filter(m => m.source.toLowerCase().includes(advisor.domain));
+  const advisor = advisors.find(a => a.id === advisorId) || advisors[0];
+  const recs = recommendations.filter(r => r.advisorId === advisor.id);
+  const proofs = proofHistory.filter(p => p.advisor === advisor.name);
+  const memories = memoryItems.filter(m => m.source.toLowerCase().includes(advisor.domain));
 
   const iconMap: Record<string, React.ElementType> = { Briefcase, DollarSign, Headphones, TrendingUp, Target, Shield, BarChart3, Brain };
   const Icon = iconMap[advisor.icon] || Brain;

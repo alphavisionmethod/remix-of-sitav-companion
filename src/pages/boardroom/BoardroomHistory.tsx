@@ -11,7 +11,6 @@ import { BarChart3, Calendar, CheckCircle, Clock, ChevronRight, Target } from "l
 import { ConfidenceBar } from "@/components/sita/primitives/ConfidenceBar";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import { DEMO_SESSIONS } from "@/data/seed/core-pages";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 export default function BoardroomHistory() {
   const { user } = useAuth();
@@ -25,7 +24,7 @@ export default function BoardroomHistory() {
         .select("*, boardroom_decisions(id)")
         .eq("user_id", user!.id)
         .order("created_at", { ascending: false });
-      if (error || !data || data.length === 0) return DEMO_SESSIONS;
+      if (error || !data || data.length === 0) return SESSIONS;
       return data.map((s: Record<string, any>) => ({
         ...s,
         decisions_count: s.boardroom_decisions?.length || 0,

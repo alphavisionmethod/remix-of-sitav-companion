@@ -19,7 +19,7 @@ interface CommandRecord {
   domain?: string;
 }
 
-const MOCK_HISTORY: CommandRecord[] = [
+const COMMAND_HISTORY: CommandRecord[] = [
   { id: "cmd-1", query: "Enter Boardroom", mode: "action", result: "Navigated to /boardroom", timestamp: "2026-04-09T08:30:00Z" },
   { id: "cmd-2", query: "Johnson account", mode: "search", result: "Found: Johnson & Co. (Lead)", timestamp: "2026-04-09T08:15:00Z", domain: "business" },
   { id: "cmd-3", query: "note: Follow up on Q2 proposal", mode: "capture", result: "Note captured", timestamp: "2026-04-09T07:50:00Z" },
@@ -41,7 +41,7 @@ export default function CommandHistory() {
   const [filter, setFilter] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState("");
 
-  const filtered = (MOCK_HISTORY).filter(r => {
+  const filtered = (COMMAND_HISTORY).filter(r => {
     if (filter !== "all" && r.mode !== filter) return false;
     if (searchQuery && !r.query.toLowerCase().includes(searchQuery.toLowerCase())) return false;
     return true;
