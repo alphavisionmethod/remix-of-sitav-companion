@@ -13,6 +13,9 @@ import { Package, TrendingUp, DollarSign, Users, Activity, ArrowRight, Target, Z
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+const REVENUE_TREND: any[] = [];
+const CATEGORY_REVENUE: any[] = [];
+const RETENTION_DATA: any[] = [];
 // ── Mock Analytics Data ─────────────────────────────────────────
 
 const PACK_ANALYTICS: PackAnalytics[] = [
@@ -62,10 +65,6 @@ const StoreAnalyticsPage = () => {
         </TabsList>
 
         <TabsContent value="overview" className="space-y-6 mt-4">
-const REVENUE_TREND: any[] = [];
-const CATEGORY_REVENUE: any[] = [];
-const RETENTION_DATA: any[] = [];
-
           {/* Revenue Trend */}
           <SitaCard hover={false}>
             <SitaCardTitle sub="Monthly revenue and install volume">Revenue & Install Trend</SitaCardTitle>

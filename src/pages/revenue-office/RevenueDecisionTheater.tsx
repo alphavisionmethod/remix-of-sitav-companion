@@ -8,6 +8,7 @@ import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+const pendingDecisions: any[] = [];
 type DecisionState = "draft" | "review" | "approved" | "executed";
 
 export default function DecisionTheater() {
@@ -26,8 +27,6 @@ export default function DecisionTheater() {
         <Typography role="appTitle" className="flex items-center gap-2"><Theater className="h-6 w-6 text-purple-400" /> Business Decision Theater</Typography>
         <p className="text-muted-foreground">Pre-launch review — impact simulation, advisor debate, risk analysis, and authorization</p>
       </div>
-
-const pendingDecisions: any[] = [];
 
       {/* Summary */}
       <div className="grid grid-cols-4 gap-3">
