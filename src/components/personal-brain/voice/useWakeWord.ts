@@ -110,12 +110,19 @@ export function useWakeWord(opts: UseWakeWordOptions = {}): UseWakeWord {
       const list = phrasesRef.current;
       if (list.length === 0) return;
       for (let i = event.resultIndex; i < event.results.length; i++) {
-        const transcript = normalize(event.results[i]?.[0]?.transcript ?? "");
+        const raw = event.results[i]?.[0]?.transcript ?? "";
+        const transcript = normalize(raw);
         if (!transcript) continue;
+        // Live caption hook (always emits even if no wake match).
+        setLiveTranscript(transcript);
+        try { onTranscriptRef.current?.(transcript, Boolean(event.results[i]?.isFinal)); } catch { /* noop */ }
+        // Sensitivity gate: require at least N words to consider a match.
+        const wordCount = transcript.split(/\s+/).filter(Boolean).length;
+        if (wordCount < minWordsRef.current) continue;
         const matched = list.find((p) => transcript.includes(p));
         if (!matched) continue;
         const now = Date.now();
-        if (now - lastWakeRef.current < cooldownMs) return;
+        if (now - lastWakeRef.current < cooldownRef.current) return;
         lastWakeRef.current = now;
         setLastWakeAt(now);
         try { onWakeRef.current?.(matched, transcript); } catch { /* noop */ }
