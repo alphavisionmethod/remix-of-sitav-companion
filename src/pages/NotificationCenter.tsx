@@ -42,7 +42,6 @@ const categoryIcons: Record<string, typeof Bell> = {
 
 // ── Notification Card ────────────────────────────────────────
 const NotificationCard = ({ notif, onMarkRead, onDismiss, onAction }: {
-  const isDemoMode = false;
   notif: any;
   onMarkRead: () => void;
   onDismiss: () => void;
@@ -139,6 +138,7 @@ const NotificationCard = ({ notif, onMarkRead, onDismiss, onAction }: {
 
 // ── Main Component ───────────────────────────────────────────
 const NotificationCenter = () => {
+  const isDemoMode = false;
   const { user, isDemo } = useAuth();
   const queryClient = useQueryClient();
   const interfaceState = useAdaptiveInterface();

@@ -35,7 +35,6 @@ interface SimResult {
   };
 }
 const buildDemoSimResult = (simInput: { amount: number; [key: string]: unknown }): SimResult => ({
-  const isDemoMode = false;
   simulation: {
     input: simInput,
     final_effect: simInput.amount > 500 ? "deny" : "allow",
@@ -213,6 +212,7 @@ const OwnerRevenuePanel = () => {
 // MAIN COMPONENT
 // ═══════════════════════════════════════════════════
 const OwnerCenter = () => {
+  const isDemoMode = false;
   const location = useLocation();
   const navigate = useNavigate();
   const activePage = subpageFromPath(location.pathname);

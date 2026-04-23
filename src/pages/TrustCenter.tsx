@@ -30,6 +30,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { DomainAdvisorCard } from "@/components/advisors/DomainAdvisorCard";
+
+const isDemoMode = false;
 const DOMAIN_CONFIG: DomainConfig = {
   id: "trust" as DomainConfig["id"],
   title: "Trust Center",
@@ -43,7 +45,6 @@ const DOMAIN_CONFIG: DomainConfig = {
 type SubPage = "overview" | "autonomy" | "devices" | "permissions" | "proof" | "audit" | "settings";
 
 const subpageFromPath = (path: string): SubPage => {
-  const isDemoMode = false;
   if (path.includes("/trust/autonomy")) return "autonomy";
   if (path.includes("/trust/devices")) return "devices";
   if (path.includes("/trust/permissions")) return "permissions";

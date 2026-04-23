@@ -27,6 +27,8 @@ import {
   DollarSign, Briefcase, Home, Zap, Hash, Download, Layers
 } from "lucide-react";
 import { PageShell } from "@/components/sita/PageShell";
+
+const isDemoMode = false;
 type FilterType = "all" | "verified" | "pending" | "failed" | "rolled-back";
 type DomainFilter = "all" | "finance" | "business" | "household" | "system" | "workflow";
 type DetailViewId = string | null;
@@ -39,7 +41,6 @@ const stateMap: Record<string, "verified" | "pending" | "failed" | "rolled-back"
 };
 
 const generateHash = (id: string) => {
-  const isDemoMode = false;
   const chars = "0123456789abcdef";
   let hash = "";
   for (let i = 0; i < 64; i++) hash += chars[(id.charCodeAt(i % id.length) + i * 7) % 16];

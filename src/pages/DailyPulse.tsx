@@ -20,10 +20,11 @@ import {
   ChevronDown, ChevronUp,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+
+const isDemoMode = false;
 // ── Helpers ──────────────────────────────────────────────────
 
 function getGreeting(): string {
-  const isDemoMode = false;
   const h = new Date().getHours();
   if (h < 12) return "Good morning";
   if (h < 17) return "Good afternoon";
