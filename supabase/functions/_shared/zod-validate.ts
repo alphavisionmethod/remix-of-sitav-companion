@@ -71,6 +71,7 @@ export const PBRouterSchema = z.object({
     "voice.transcribe",
     "voice.tts",
     "data.export",
+    "data.delete",
   ]),
   payload: z.record(z.unknown()).optional().default({}),
 });
