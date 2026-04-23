@@ -309,4 +309,5 @@ export function BrainOnboardingTour({ forceOpen, onClose }: BrainOnboardingTourP
 
 export function resetBrainTour() {
   try { localStorage.removeItem(STORAGE_KEY); } catch { /* */ }
+  clearProgress();
 }
