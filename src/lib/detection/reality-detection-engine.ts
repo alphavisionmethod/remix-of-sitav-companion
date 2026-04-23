@@ -81,7 +81,7 @@ export interface DetectionReport {
 
 // ── Complete Mock Source Registry (all 14 page-level + 10 data-service) ──
 
-const KNOWN_MOCK_SOURCES: Array<{
+const KNOWN_SEED_SOURCES: Array<{
   path: string; pages: string[]; domain: string;
   severity: MockImportDetection["severity"];
   type: MockImportDetection["type"];
@@ -235,7 +235,7 @@ export const REPLACEMENT_SEEDS: MockReplacementSeed[] = [
 
 export function detectMockImports(): MockImportDetection[] {
   const now = new Date().toISOString();
-  return KNOWN_MOCK_SOURCES.map((src, i) => ({
+  return KNOWN_SEED_SOURCES.map((src, i) => ({
     id: `mock-import-${i}`,
     filePath: src.path,
     importSource: src.path,

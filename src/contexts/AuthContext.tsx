@@ -28,7 +28,7 @@ export const useAuth = () => {
   return ctx;
 };
 
-const DEMO_USER: User = {
+const FALLBACK_USER: User = {
   id: "00000000-0000-0000-0000-000000000000",
   aud: "authenticated",
   role: "authenticated",
@@ -116,7 +116,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     // Check if demo session was active
     if (localStorage.getItem("sita-demo-session") === "true") {
-      setUser(DEMO_USER);
+      setUser(FALLBACK_USER);
       setIsDemo(true);
       setLoading(false);
       return;
@@ -189,7 +189,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const signInAsDemo = () => {
     localStorage.setItem("sita-demo-session", "true");
-    setUser(DEMO_USER);
+    setUser(FALLBACK_USER);
     setIsDemo(true);
     setLoading(false);
   };

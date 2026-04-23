@@ -192,7 +192,7 @@ export function assignQueue(mode: FailureMode, value: number): string {
 }
 
 // ── Mock Data ──────────────────────────────────────────────────
-export const MOCK_RECOVERY_CANDIDATES: RecoveryCandidate[] = [
+export const RECOVERY_CANDIDATES: RecoveryCandidate[] = [
   {
     id: "rc-1", name: "James Morton", company: "Morton Labs", email: "james@mortonlabs.com", phone: "+1-555-0101",
     failureMode: "quote_abandoned", recoveryReason: "Proposal sent 45 days ago with no follow-up or response recorded", stageAtSlip: "Proposal Sent",

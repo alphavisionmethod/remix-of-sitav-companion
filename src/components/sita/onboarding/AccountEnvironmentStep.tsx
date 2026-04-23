@@ -7,7 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const IS_DEV = import.meta.env.DEV || import.meta.env.VITE_DEMO_MODE === "true";
+const IS_DEV = import.meta.env.DEV || import.meta.env.VITE_DEV_MODE === "true";
 
 type AccountPath = "signin" | "restore" | "create" | "offline" | "managed" | "";
 type SubView = "paths" | "signin-form" | "create-form" | "managed-form";

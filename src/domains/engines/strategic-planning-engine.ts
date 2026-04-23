@@ -84,7 +84,7 @@ export interface PlanningSnapshot {
 
 // ── Demo Data ───────────────────────────────────────────────────
 
-const DEMO_GOALS: StrategicGoal[] = [
+const DEFAULT_GOALS: StrategicGoal[] = [
   {
     id: "g1",
     title: "Grow Monthly Revenue to $75K",
@@ -175,7 +175,7 @@ const DEMO_GOALS: StrategicGoal[] = [
   },
 ];
 
-const DEMO_MILESTONES: Milestone[] = [
+const DEFAULT_MILESTONES: Milestone[] = [
   { id: "m1", goalId: "g1", title: "Close 3rd new client", description: "Sign contract with qualified prospect", targetDate: "2026-04-20", status: "completed", completedDate: "2026-04-12", dependencies: [], impact: "high" },
   { id: "m2", goalId: "g1", title: "Launch referral program", description: "Activate client referral incentive system", targetDate: "2026-04-30", status: "in_progress", dependencies: [], impact: "medium" },
   { id: "m3", goalId: "g2", title: "Collect Atlas Corp invoice", description: "Resolve overdue payment of $12,500", targetDate: "2026-04-25", status: "upcoming", dependencies: [], impact: "critical" },
@@ -189,8 +189,8 @@ const DEMO_MILESTONES: Milestone[] = [
 // ── Engine ──────────────────────────────────────────────────────
 
 export class StrategicPlanningEngine {
-  private goals: StrategicGoal[] = [...DEMO_GOALS];
-  private milestones: Milestone[] = [...DEMO_MILESTONES];
+  private goals: StrategicGoal[] = [...DEFAULT_GOALS];
+  private milestones: Milestone[] = [...DEFAULT_MILESTONES];
 
   getGoals(): StrategicGoal[] {
     return [...this.goals];

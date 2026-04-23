@@ -11,7 +11,7 @@ export interface InboxItem extends ScoreableLead {
 
 const ago = (h: number) => new Date(Date.now() - h * 3600000).toISOString();
 
-export const MOCK_INBOX_ITEMS: InboxItem[] = [
+export const FALLBACK_INBOX_ITEMS: InboxItem[] = [
   {
     id: "li-1", user_id: "", contact_name: "Sarah Chen", contact_email: "sarah@techflow.io", contact_phone: "+1-415-555-1234", company: "TechFlow Inc",
     source: "website", inquiry_text: "We're looking for a complete platform migration. Budget approved for Q2. Need proposal by Friday.",
