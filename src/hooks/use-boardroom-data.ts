@@ -41,39 +41,39 @@ export interface BoardroomDataShape {
 // Demo mock data (only used when isDemoMode === true)
 // ─────────────────────────────────────────────────────────────
 
-const mockNotifications = [
+const notifications = [
   { id: "N-001", title: "Apex Corp viewed your proposal", body: "3 minutes ago", urgency: "high", domain: "business", read: false, created_at: new Date(Date.now() - 3 * 60_000).toISOString() },
   { id: "N-002", title: "Invoice #1042 cleared", body: "$2,400 received", urgency: "normal", domain: "money", read: false, created_at: new Date(Date.now() - 2 * 3600_000).toISOString() },
   { id: "N-003", title: "Family dinner reminder", body: "7pm tonight", urgency: "low", domain: "concierge", read: false, created_at: new Date(Date.now() - 6 * 3600_000).toISOString() },
 ];
 
-const mockRecommendations = [
+const recommendations = [
   { id: "R-001", title: "Send follow-up to 3 warming leads", summary: "REX detected pipeline cooling — re-engage now", domain: "business", severity: "medium", confidence: 0.84, status: "new", created_at: new Date(Date.now() - 4 * 3600_000).toISOString() },
   { id: "R-002", title: "Cancel unused Adobe CC seat", summary: "Zero usage for 47 days — $54/mo savings", domain: "money", severity: "low", confidence: 0.92, status: "new", created_at: new Date(Date.now() - 1 * 86_400_000).toISOString() },
   { id: "R-003", title: "Reschedule school enrollment call", summary: "Conflict with deposition — auto-propose new slot", domain: "concierge", severity: "medium", confidence: 0.78, status: "new", created_at: new Date(Date.now() - 2 * 86_400_000).toISOString() },
 ];
 
-const mockPendingApprovals = [
+const pendingApprovals = [
   { id: "APR-001", title: "Auto-pay AWS hosting — $342", summary: "Recurring infra charge", priority: "medium", status: "pending", created_at: new Date(Date.now() - 1 * 3600_000).toISOString() },
   { id: "APR-002", title: "Send follow-up email to Sarah Chen", summary: "Warm lead, 4 days silent", priority: "low", status: "pending", created_at: new Date(Date.now() - 2 * 3600_000).toISOString() },
   { id: "APR-003", title: "Cancel Adobe CC subscription", summary: "$54/mo, unused 47 days", priority: "high", status: "pending", created_at: new Date(Date.now() - 18 * 3600_000).toISOString() },
 ];
 
-const mockBoardroomItems = [
+const boardroomItems = [
   { id: "BI-001", title: "Q2 Hiring Decision", description: "Hire contractor or defer?", domain: "business", severity: "high", recommendation_state: "deliberating", advisor_summaries: [{ advisor: "Business", position: "for" }, { advisor: "Money", position: "against" }] },
 ];
 
-const mockDecisionReceipts = [
+const decisionReceipts = [
   { id: "DR-001", approved_motion: "Adopt balanced execution strategy for Q2", rationale_summary: "Combined business+money advisor consensus", status: "sealed", created_at: new Date(Date.now() - 24 * 3600_000).toISOString() },
 ];
 
-const mockActiveGoals = [
+const activeGoals = [
   { id: "G-001", title: "Stabilize monthly cash flow", domain: "money", target_value: 10000, current_value: 7200, status: "active" },
   { id: "G-002", title: "Close 5 new clients this quarter", domain: "business", target_value: 5, current_value: 2, status: "active" },
   { id: "G-003", title: "Reduce household task overdue rate", domain: "concierge", target_value: 0, current_value: 3, status: "active" },
 ];
 
-const mockOverdueTasks = [
+const overdueTasks = [
   { id: "T-001", title: "Follow up on Invoice #1035 — David Kim", domain: "business", due_at: new Date(Date.now() - 14 * 86_400_000).toISOString(), status: "overdue", priority: "high" },
   { id: "T-002", title: "School enrollment decision", domain: "concierge", due_at: new Date(Date.now() - 7 * 86_400_000).toISOString(), status: "overdue", priority: "medium" },
   { id: "T-003", title: "Reserve target shortfall review", domain: "money", due_at: new Date(Date.now() - 30 * 86_400_000).toISOString(), status: "overdue", priority: "high" },
@@ -93,7 +93,7 @@ export function useBoardroomData(): BoardroomDataShape {
     queryKey: ["boardroom-notifications", isDemoMode, user?.id],
     enabled,
     queryFn: async () => {
-      if (isDemoMode) return mockNotifications;
+      if (isDemoMode) return notifications;
       if (!user) return [];
       const { data, error } = await fromTable("notifications").select("*")
         .eq("user_id", user.id)
@@ -114,7 +114,7 @@ export function useBoardroomData(): BoardroomDataShape {
     queryKey: ["boardroom-approvals", isDemoMode, user?.id],
     enabled,
     queryFn: async () => {
-      if (isDemoMode) return mockPendingApprovals;
+      if (isDemoMode) return pendingApprovals;
       if (!user) return [];
       const { data, error } = await fromTable("ai_workforce_approval_queue").select("*")
         .eq("user_id", user.id)
@@ -135,7 +135,7 @@ export function useBoardroomData(): BoardroomDataShape {
     queryKey: ["boardroom-recommendations", isDemoMode, user?.id],
     enabled,
     queryFn: async () => {
-      if (isDemoMode) return mockRecommendations;
+      if (isDemoMode) return recommendations;
       if (!user) return [];
       const { data, error } = await fromTable("ai_workforce_recommendations").select("*")
         .eq("user_id", user.id)
@@ -156,7 +156,7 @@ export function useBoardroomData(): BoardroomDataShape {
     queryKey: ["boardroom-items", isDemoMode, user?.id],
     enabled,
     queryFn: async () => {
-      if (isDemoMode) return mockBoardroomItems;
+      if (isDemoMode) return boardroomItems;
       if (!user) return [];
       const { data, error } = await fromTable("boardroom_items").select("*")
         .eq("user_id", user.id)
@@ -176,7 +176,7 @@ export function useBoardroomData(): BoardroomDataShape {
     queryKey: ["boardroom-receipts", isDemoMode, user?.id],
     enabled,
     queryFn: async () => {
-      if (isDemoMode) return mockDecisionReceipts;
+      if (isDemoMode) return decisionReceipts;
       if (!user) return [];
       const { data, error } = await fromTable("boardroom_decision_receipts").select("*")
         .eq("user_id", user.id)
@@ -196,7 +196,7 @@ export function useBoardroomData(): BoardroomDataShape {
     queryKey: ["boardroom-goals", isDemoMode, user?.id],
     enabled,
     queryFn: async () => {
-      if (isDemoMode) return mockActiveGoals;
+      if (isDemoMode) return activeGoals;
       if (!user) return [];
       const { data, error } = await fromTable("goals").select("*")
         .eq("status", "active")
@@ -216,7 +216,7 @@ export function useBoardroomData(): BoardroomDataShape {
     queryKey: ["boardroom-overdue", isDemoMode, user?.id],
     enabled,
     queryFn: async () => {
-      if (isDemoMode) return mockOverdueTasks;
+      if (isDemoMode) return overdueTasks;
       if (!user) return [];
       const { data, error } = await fromTable("tasks").select("*")
         .lt("due_at", new Date().toISOString())

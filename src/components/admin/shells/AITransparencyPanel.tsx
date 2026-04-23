@@ -29,14 +29,14 @@ interface AISuggestion {
   impact: "low" | "medium" | "high";
 }
 
-const DEMO_TASKS: AITask[] = [
+const TASKS: AITask[] = [
   { id: "t1", label: "Analyzing sync failure patterns", status: "done", confidence: 94, detail: "Found bottleneck in upload finalization path" },
   { id: "t2", label: "Preparing optimization fix", status: "running", confidence: 87, detail: "Generating retry logic improvements" },
   { id: "t3", label: "Running regression tests", status: "waiting", detail: "Waiting for fix preparation" },
   { id: "t4", label: "Canary deployment preparation", status: "waiting", detail: "Depends on test validation" },
 ];
 
-const DEMO_SUGGESTIONS: AISuggestion[] = [
+const SUGGESTIONS: AISuggestion[] = [
   { id: "s1", text: "Delay rollout by 6 hours — beta crash rate is trending upward", domain: "releases", confidence: 89, impact: "high" },
   { id: "s2", text: "Storage costs rose 8% due to aggressive preview generation", domain: "costs", confidence: 92, impact: "medium" },
   { id: "s3", text: "Sync performance can improve 12% by optimizing retry backoff", domain: "sync", confidence: 85, impact: "medium" },
@@ -149,7 +149,7 @@ export function AITransparencyPanel({ collapsed, onToggle }: { collapsed: boolea
               <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider">Active Tasks</span>
             </div>
             <div className="px-3 space-y-1.5 pb-3">
-              {(isDemoMode ? DEMO_TASKS : [] as typeof DEMO_TASKS).map(task => (
+              {(isDemoMode ? TASKS : [] as typeof TASKS).map(task => (
                 <div key={task.id} className="p-2 rounded-lg bg-muted/10 border border-border/10 space-y-1">
                   <div className="flex items-center gap-2">
                     {statusIcon[task.status]}
@@ -181,7 +181,7 @@ export function AITransparencyPanel({ collapsed, onToggle }: { collapsed: boolea
               </div>
             </div>
             <div className="px-3 space-y-1.5 pb-3">
-              {(isDemoMode ? DEMO_SUGGESTIONS : [] as typeof DEMO_SUGGESTIONS).map(suggestion => (
+              {(isDemoMode ? SUGGESTIONS : [] as typeof SUGGESTIONS).map(suggestion => (
                 <div key={suggestion.id} className="group">
                   <button
                     onClick={() => setExpandedSuggestion(expandedSuggestion === suggestion.id ? null : suggestion.id)}

@@ -132,7 +132,7 @@ const demoBase = {
   policy_score: 0,
 };
 
-const DEMO_SPECS: SpecRegistryEntry[] = [
+const SPECS: SpecRegistryEntry[] = [
   {
     id: "demo-1", user_id: "demo", spec_id: "money-office",
     canonical_name: "Money Office", owning_module: "money",
@@ -245,7 +245,7 @@ const DEMO_SPECS: SpecRegistryEntry[] = [
   },
 ];
 
-const DEMO_EDGES: WiringEdge[] = [
+const EDGES: WiringEdge[] = [
   { id: "e1", user_id: "demo", spec_id: "money-office", source_type: "route", source_name: "/money", target_type: "component", target_name: "MoneyCenter", edge_status: "connected", evidence: "Route renders MoneyCenter", verified_at: new Date().toISOString(), created_at: new Date().toISOString(), updated_at: new Date().toISOString() },
   { id: "e2", user_id: "demo", spec_id: "money-office", source_type: "component", source_name: "MoneyCenter", target_type: "hook", target_name: "useFinancialAccounts", edge_status: "connected", evidence: "Import found", verified_at: new Date().toISOString(), created_at: new Date().toISOString(), updated_at: new Date().toISOString() },
   { id: "e3", user_id: "demo", spec_id: "money-office", source_type: "hook", source_name: "useFinancialAccounts", target_type: "service", target_name: "finance-os", edge_status: "broken", evidence: "Service exists but hook uses demo data", verified_at: null, created_at: new Date().toISOString(), updated_at: new Date().toISOString() },
@@ -271,14 +271,14 @@ export function useSpecRegistry() {
   return useQuery({
     queryKey: SPEC_KEY,
     queryFn: async (): Promise<SpecRegistryEntry[]> => {
-      if (isDemoMode || !user) return DEMO_SPECS;
+      if (isDemoMode || !user) return SPECS;
       const { data, error } = await fromSpecRegistry()
         .select("*")
         .eq("user_id", user.id)
         .order("canonical_name");
       if (error) throw error;
       const live = (data as unknown as SpecRegistryEntry[]) ?? [];
-      return live.length > 0 ? live : DEMO_SPECS;
+      return live.length > 0 ? live : SPECS;
     },
   });
 }
@@ -318,14 +318,14 @@ export function useWiringEdges(specId: string) {
   return useQuery({
     queryKey: WIRING_KEY(specId),
     queryFn: async (): Promise<WiringEdge[]> => {
-      if (isDemoMode || !user) return DEMO_EDGES.filter(e => e.spec_id === specId);
+      if (isDemoMode || !user) return EDGES.filter(e => e.spec_id === specId);
       const { data, error } = await fromWiringEdges()
         .select("*")
         .eq("user_id", user.id)
         .eq("spec_id", specId);
       if (error) throw error;
       const live = (data as unknown as WiringEdge[]) ?? [];
-      return live.length > 0 ? live : DEMO_EDGES.filter(e => e.spec_id === specId);
+      return live.length > 0 ? live : EDGES.filter(e => e.spec_id === specId);
     },
     enabled: !!specId,
   });

@@ -1,13 +1,11 @@
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
-import { MOCK_MOBILE_ALERTS, MOCK_MOBILE_APPROVALS, MOCK_MOBILE_PROOFS, MOCK_MOBILE_WORKFLOW_STEPS } from "@/data/fixtures/mock-data/mobile";
-
 export async function fetchMobileAlerts() {
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return MOCK_MOBILE_ALERTS;
+  if (!user) return MOBILE_ALERTS;
 
   const { data, error } = await fromTable("notifications_queue").select("*").eq("user_id", user.id).order("created_at", { ascending: false }).limit(20);
-  if (error || !data || data.length === 0) return MOCK_MOBILE_ALERTS;
+  if (error || !data || data.length === 0) return MOBILE_ALERTS;
 
   return data.map((n: any) => ({
     id: n.id, severity: (n.urgency === "critical" ? "critical" : n.urgency === "high" ? "urgent" : n.urgency === "normal" ? "warning" : "info") as "critical" | "urgent" | "warning" | "info",
@@ -18,10 +16,10 @@ export async function fetchMobileAlerts() {
 
 export async function fetchMobileApprovals() {
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return MOCK_MOBILE_APPROVALS;
+  if (!user) return MOBILE_APPROVALS;
 
   const { data, error } = await fromTable("approval_queue").select("*").eq("user_id", user.id).eq("status", "pending").order("created_at", { ascending: false });
-  if (error || !data || data.length === 0) return MOCK_MOBILE_APPROVALS;
+  if (error || !data || data.length === 0) return MOBILE_APPROVALS;
 
   return data.map((a: any) => ({
     id: a.id, title: a.action_summary, domain: a.action_type || "general",
@@ -32,10 +30,10 @@ export async function fetchMobileApprovals() {
 
 export async function fetchMobileProofs() {
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return MOCK_MOBILE_PROOFS;
+  if (!user) return MOBILE_PROOFS;
 
   const { data, error } = await fromTable("platform_proof_chains").select("*").eq("user_id", user.id).order("created_at", { ascending: false }).limit(20);
-  if (error || !data || data.length === 0) return MOCK_MOBILE_PROOFS;
+  if (error || !data || data.length === 0) return MOBILE_PROOFS;
 
   return data.map((p: any) => ({
     id: p.id, type: "receipt" as const, title: p.proof_type || "Proof",
@@ -46,5 +44,5 @@ export async function fetchMobileProofs() {
 
 export async function fetchMobileWorkflowSteps() {
   // Workflow steps are contextual - use mock as default
-  return MOCK_MOBILE_WORKFLOW_STEPS;
+  return MOBILE_WORKFLOW_STEPS;
 }

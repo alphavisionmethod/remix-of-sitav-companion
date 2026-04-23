@@ -19,7 +19,7 @@ const DOMAIN_APP_MAP: Record<string, string> = {
   ai: "sita-ai-workforce",
 };
 
-const DEMO_BADGES: AppBadge[] = [
+const BADGES: AppBadge[] = [
   { appId: "sita-business-center", count: 3, urgency: "medium" },
   { appId: "sita-money-center", count: 2, urgency: "high" },
   { appId: "sita-concierge", count: 5, urgency: "low" },
@@ -81,7 +81,7 @@ export function useAppBadges() {
         fetchBadges(user.id);
       } else {
         const map = new Map<string, AppBadge>();
-        DEMO_BADGES.forEach(b => map.set(b.appId, b));
+        BADGES.forEach(b => map.set(b.appId, b));
         setBadges(map);
       }
     });
@@ -93,7 +93,7 @@ export function useAppBadges() {
       } else {
         setUserId(null);
         const map = new Map<string, AppBadge>();
-        DEMO_BADGES.forEach(b => map.set(b.appId, b));
+        BADGES.forEach(b => map.set(b.appId, b));
         setBadges(map);
       }
     });

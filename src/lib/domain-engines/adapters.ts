@@ -9,8 +9,8 @@ import type { Task } from "@/lib/domain-engines/concierge-os";
 
 // ── Business Adapters ────────────────────────────────────────
 
-export function adaptMockLeads(mockLeads: any[]): BizLead[] {
-  return mockLeads.map((l, i) => ({
+export function adaptMockLeads(leads: any[]): BizLead[] {
+  return leads.map((l, i) => ({
     id: l.id,
     name: l.name,
     email: l.email || `${l.name.toLowerCase().replace(/\s/g, ".")}@example.com`,
@@ -25,8 +25,8 @@ export function adaptMockLeads(mockLeads: any[]): BizLead[] {
   }));
 }
 
-export function adaptMockCustomers(mockCustomers: any[]): Customer[] {
-  return mockCustomers.map((c) => ({
+export function adaptMockCustomers(customers: any[]): Customer[] {
+  return customers.map((c) => ({
     id: c.id,
     name: c.name,
     totalRevenue: parseDollarAmount(c.mrr) * 12 || 24000,
@@ -40,8 +40,8 @@ export function adaptMockCustomers(mockCustomers: any[]): Customer[] {
   }));
 }
 
-export function adaptMockOpportunities(mockOpps: any[]): PipelineOpportunity[] {
-  return mockOpps.map((o) => ({
+export function adaptMockOpportunities(opps: any[]): PipelineOpportunity[] {
+  return opps.map((o) => ({
     id: o.id,
     name: o.name,
     stage: mapOppStage(o.stage),
@@ -55,8 +55,8 @@ export function adaptMockOpportunities(mockOpps: any[]): PipelineOpportunity[] {
 
 // ── Finance Adapters ─────────────────────────────────────────
 
-export function adaptMockBills(mockBills: any[]): FinBill[] {
-  return mockBills.map((b) => ({
+export function adaptMockBills(bills: any[]): FinBill[] {
+  return bills.map((b) => ({
     id: b.id,
     vendor: b.name,
     amount: parseDollarAmount(b.amount) || 500,
@@ -101,9 +101,9 @@ export function buildMockReserves(): Reserve[] {
   ];
 }
 
-export function adaptMockInvoicesForAging(mockInvoices: any[]): FinInvoice[] {
+export function adaptMockInvoicesForAging(invoices: any[]): FinInvoice[] {
   const now = Date.now();
-  return mockInvoices.map((inv) => ({
+  return invoices.map((inv) => ({
     id: inv.id,
     customerId: inv.client?.replace(/\s/g, "-").toLowerCase() || "unknown",
     customerName: inv.client || "Unknown",
@@ -118,8 +118,8 @@ export function adaptMockInvoicesForAging(mockInvoices: any[]): FinInvoice[] {
 
 // ── Concierge Adapters ───────────────────────────────────────
 
-export function adaptMockHouseholdTasks(mockTasks: any[]): Task[] {
-  return mockTasks.map((t) => ({
+export function adaptMockHouseholdTasks(tasks: any[]): Task[] {
+  return tasks.map((t) => ({
     id: t.id,
     title: t.title,
     category: "household" as const,

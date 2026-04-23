@@ -21,7 +21,7 @@ const PATH_OPTIONS: { key: AccountPath; icon: typeof LogIn; title: string; desc:
 ];
 
 // Mock restore data
-const MOCK_RESTORE = {
+const RESTORE = {
   name: "Alex's Environment",
   avatar: null,
   lastDevice: "MacBook Pro",
@@ -170,20 +170,20 @@ export function AccountEnvironmentStep({ onNext, onPrev, onPathChange, selectedP
                       <User className="h-6 w-6 text-primary" />
                     </div>
                     <div>
-                      <p className="text-base font-semibold text-foreground">{MOCK_RESTORE.name}</p>
+                      <p className="text-base font-semibold text-foreground">{RESTORE.name}</p>
                       <p className="text-xs text-muted-foreground">Your world is coming back</p>
                     </div>
                   </div>
                   <div className="grid grid-cols-2 gap-3 text-xs">
                     <div className="flex items-center gap-2 text-muted-foreground">
-                      <Monitor className="h-3 w-3" /> {MOCK_RESTORE.lastDevice}
+                      <Monitor className="h-3 w-3" /> {RESTORE.lastDevice}
                     </div>
                     <div className="flex items-center gap-2 text-muted-foreground">
-                      <Calendar className="h-3 w-3" /> {MOCK_RESTORE.lastDate}
+                      <Calendar className="h-3 w-3" /> {RESTORE.lastDate}
                     </div>
                   </div>
                   <div className="mt-3 flex gap-1.5">
-                    {MOCK_RESTORE.modules.map(m => (
+                    {RESTORE.modules.map(m => (
                       <span key={m} className="rounded-full bg-primary/10 px-2.5 py-0.5 text-[10px] text-primary font-medium">{m}</span>
                     ))}
                   </div>

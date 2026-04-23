@@ -28,7 +28,7 @@ export interface DiagnosticBundle {
   safeModeTriggered: boolean;
 }
 
-const MOCK_CRASHES: CrashDump[] = [
+const CRASHES: CrashDump[] = [
   { id: 'crash-001', pid: 1842, processName: 'wifid', signal: 'SIGSEGV', exitCode: 139, stackTrace: ['wifid::scan_loop+0x4a2', 'wifid::handle_bss+0x182', 'libc::poll+0x3f'], timestamp: Date.now() - 3600000, memoryUsageMB: 24.5, cpuTimeSec: 142, severity: 'high', resolved: true, restartAttempted: true, restartSucceeded: true },
   { id: 'crash-002', pid: 2103, processName: 'notifyd', signal: 'SIGABRT', exitCode: 134, stackTrace: ['notifyd::dispatch+0x221', 'notifyd::queue_overflow+0x44', 'libsignal::abort+0x12'], timestamp: Date.now() - 7200000, memoryUsageMB: 8.2, cpuTimeSec: 55, severity: 'medium', resolved: true, restartAttempted: true, restartSucceeded: true },
   { id: 'crash-003', pid: 3050, processName: 'pkgd', signal: 'SIGKILL', exitCode: 137, stackTrace: ['pkgd::resolve_deps+0x882', 'pkgd::fetch_manifest+0x3a1', 'oom_killer+0x10'], timestamp: Date.now() - 86400000, memoryUsageMB: 512, cpuTimeSec: 320, severity: 'critical', resolved: false, restartAttempted: true, restartSucceeded: false },
@@ -36,7 +36,7 @@ const MOCK_CRASHES: CrashDump[] = [
 ];
 
 class CrashDaemon {
-  private crashes: CrashDump[] = [...MOCK_CRASHES];
+  private crashes: CrashDump[] = [...CRASHES];
   private safeModeActive = false;
   private consecutiveCrashCount = new Map<string, number>();
 

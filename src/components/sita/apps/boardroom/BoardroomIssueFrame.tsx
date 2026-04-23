@@ -31,7 +31,7 @@ interface Props {
   onNavigate?: (module: string) => void;
 }
 
-const DEMO_ITEM: IssueFrameItem = {
+const ITEM: IssueFrameItem = {
   title: "Collections action review — 3 overdue invoices totaling $18,500",
   domain: "business",
   severity: "high",
@@ -65,7 +65,7 @@ const domainColors: Record<string, string> = {
 };
 
 export function BoardroomIssueFrame({ item, onNavigate }: Props) {
-  const issue = item || DEMO_ITEM;
+  const issue = item || ITEM;
   const sev = severityStyles[issue.severity] || severityStyles.medium;
   const sim = simLabels[issue.simulationState];
 

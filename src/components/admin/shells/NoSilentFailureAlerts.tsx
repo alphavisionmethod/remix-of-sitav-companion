@@ -1,7 +1,7 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — No-Silent-Failure Alerts (Phase 20.D — LIVE)
 // Subscribes to public.alerts for active high/critical issues with
-// known root cause or active self-healing. Replaces static DEMO_ALERTS.
+// known root cause or active self-healing. Replaces static ALERTS.
 // ═══════════════════════════════════════════════════════════════
 
 import { useState } from "react";

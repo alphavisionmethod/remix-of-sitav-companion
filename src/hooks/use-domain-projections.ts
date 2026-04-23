@@ -16,10 +16,6 @@ import {
   adaptMockInvoicesForAging, adaptMockHouseholdTasks, buildMockCashflowEntries,
   buildMockBudgets, buildMockReserves
 } from "@/lib/domain-engines/adapters";
-import {
-  mockLeads, mockCustomers, mockOpportunities, mockBills, mockInvoices, mockSubscriptions,
-  mockHouseholdTasks,
-} from "@/data/fixtures/mock-data/legacy-display-mocks";
 import type { CashflowAnalysis, BudgetHealthResult, ReserveAssessment, InvoiceAgingResult, FinancialHealthResult, BillCalendarResult } from "@/lib/domain-engines/finance-os";
 import type { BusinessHealthResult, PipelineAnalysis, LeadScoreResult } from "@/lib/domain-engines/business-os";
 import type { TaskPrioritization } from "@/lib/domain-engines/concierge-os";
@@ -38,8 +34,8 @@ function buildDemoFinance(): FinanceProjection {
   const entries = buildMockCashflowEntries();
   const budgets = buildMockBudgets();
   const reserves = buildMockReserves();
-  const invoices = adaptMockInvoicesForAging(mockInvoices);
-  const bills = adaptMockBills(mockBills);
+  const invoices = adaptMockInvoicesForAging(invoices);
+  const bills = adaptMockBills(bills);
   const cashflow = analyzeCashflow(entries, 24500);
   const bh = assessBudgetHealth(budgets);
   const ra = assessReserves(reserves, 5000);
@@ -141,12 +137,12 @@ export function useFinanceProjection() {
       const cashflow = analyzeCashflow(entries, Math.max(balance, 0));
       const bh = assessBudgetHealth(budgets.length ? budgets : buildMockBudgets());
       const ra = assessReserves(reserves, Math.max(balance * 0.3, 3000));
-      const ia = analyzeInvoiceAging(invoicesForAging.length ? invoicesForAging : adaptMockInvoicesForAging(mockInvoices));
+      const ia = analyzeInvoiceAging(invoicesForAging.length ? invoicesForAging : adaptMockInvoicesForAging(invoices));
 
       return {
         cashflow, budgetHealth: bh, reserves: ra, invoiceAging: ia,
         overallHealth: assessFinancialHealth(cashflow, bh, ra, ia),
-        billCalendar: analyzeBillCalendar(billsForCalendar.length ? billsForCalendar : adaptMockBills(mockBills)),
+        billCalendar: analyzeBillCalendar(billsForCalendar.length ? billsForCalendar : adaptMockBills(bills)),
         lastUpdated: new Date().toISOString(),
       };
     },
@@ -162,9 +158,9 @@ export interface BusinessProjection {
 }
 
 function buildDemoBusiness(): BusinessProjection {
-  const customers = adaptMockCustomers(mockCustomers);
-  const opportunities = adaptMockOpportunities(mockOpportunities);
-  const leads = adaptMockLeads(mockLeads);
+  const customers = adaptMockCustomers(customers);
+  const opportunities = adaptMockOpportunities(opportunities);
+  const leads = adaptMockLeads(leads);
   return {
     health: assessBusinessHealth(customers, opportunities, [8000, 9000, 8500, 10000, 11000, 12000]),
     pipeline: analyzePipeline(opportunities),
@@ -251,13 +247,13 @@ export function useConciergeProjection() {
     staleTime: isDemoMode ? Infinity : 15000,
     queryFn: async () => {
       if (isDemoMode) {
-        const tasks = adaptMockHouseholdTasks(mockHouseholdTasks);
+        const tasks = adaptMockHouseholdTasks(householdTasks);
         return { taskPrioritization: prioritizeTasks(tasks), lastUpdated: new Date().toISOString() };
       }
 
       const { data } = await fromTable("household_tasks").select("*").limit(200);
       if (!data?.length) {
-        const tasks = adaptMockHouseholdTasks(mockHouseholdTasks);
+        const tasks = adaptMockHouseholdTasks(householdTasks);
         return { taskPrioritization: prioritizeTasks(tasks), lastUpdated: new Date().toISOString() };
       }
 

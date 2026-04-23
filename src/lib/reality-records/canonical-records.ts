@@ -45,11 +45,11 @@ export interface RealityEvidenceRecord {
 // ── 3. Mock Usage Record ──
 export interface MockUsageRecord {
   id: string;
-  mockSource: string;
+  source: string;
   importPath: string;
   usageLocation: string; // file path
   domain: string;
-  mockType: "hardcoded" | "local_array" | "localstorage" | "in_memory_engine" | "pure_function" | "demo_flow";
+  type: "hardcoded" | "local_array" | "localstorage" | "in_memory_engine" | "pure_function" | "demo_flow";
   severity: "critical" | "high" | "medium" | "low";
   forbidden: boolean;
   detectedAt: string;
@@ -76,8 +76,8 @@ export interface MockReplacementMigrationRecord {
   featureName: string;
   routePath: string;
   domain: string;
-  mockSource: string;
-  mockType: MockUsageRecord["mockType"];
+  source: string;
+  type: MockUsageRecord["type"];
   realBackendTarget: string | null;
   expectedContracts: string[];
   persistenceTarget: string | null;

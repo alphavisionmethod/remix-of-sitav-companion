@@ -30,7 +30,7 @@ interface SimulationScenario {
   recommendation: string;
 }
 
-const DEMO_SCENARIOS: SimulationScenario[] = [
+const SCENARIOS: SimulationScenario[] = [
   {
     id: "rollout-20",
     question: "What happens if I roll this out to 20%?",
@@ -99,7 +99,7 @@ export function SimulationPreview({ compact = false }: SimulationPreviewProps) {
       </div>
 
       <div className="space-y-2">
-        {(isDemoMode ? DEMO_SCENARIOS : [] as typeof DEMO_SCENARIOS).map((scenario) => {
+        {(isDemoMode ? SCENARIOS : [] as typeof SCENARIOS).map((scenario) => {
           const isActive = activeScenario === scenario.id;
           return (
             <div key={scenario.id} className={cn(

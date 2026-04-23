@@ -21,7 +21,7 @@ interface Photo {
   dimensions: string;
 }
 
-const MOCK_PHOTOS: Photo[] = [
+const PHOTOS: Photo[] = [
   { id: "1", gradient: "from-[hsl(265_55%_40%)] to-[hsl(280_50%_55%)]", title: "Mountain Sunset", date: "2026-03-15", size: "4.2 MB", dimensions: "4032 × 3024" },
   { id: "2", gradient: "from-[hsl(190_60%_35%)] to-[hsl(200_55%_50%)]", title: "Ocean Waves", date: "2026-03-12", size: "3.8 MB", dimensions: "3840 × 2160" },
   { id: "3", gradient: "from-[hsl(35_80%_40%)] to-[hsl(25_70%_55%)]", title: "Desert Dunes", date: "2026-03-10", size: "5.1 MB", dimensions: "4032 × 3024" },
@@ -45,14 +45,14 @@ export function PhotoViewerWindow() {
   const [saturation, setSaturation] = useState(100);
   const [showFilters, setShowFilters] = useState(false);
 
-  const photo = selectedIdx !== null ? MOCK_PHOTOS[selectedIdx] : null;
+  const photo = selectedIdx !== null ? PHOTOS[selectedIdx] : null;
 
   return (
     <div className="h-[420px] bg-[hsl(0_0%_6%)] text-[hsl(0_0%_90%)] rounded-b-xl overflow-hidden flex flex-col">
       {/* Toolbar */}
       <div className="flex items-center gap-2 px-3 py-1.5 border-b border-[hsl(0_0%_12%)]">
         <Grid3X3 className="h-3.5 w-3.5 text-[hsl(0_0%_40%)]" />
-        <span className="text-[11px] text-[hsl(0_0%_50%)]">{(isDemoMode ? MOCK_PHOTOS : [] as typeof MOCK_PHOTOS).length} photos</span>
+        <span className="text-[11px] text-[hsl(0_0%_50%)]">{(isDemoMode ? PHOTOS : [] as typeof PHOTOS).length} photos</span>
         <div className="flex-1" />
         <button onClick={() => setShowFilters(!showFilters)} className={cn("p-1 rounded transition-colors", showFilters ? "text-[hsl(265_55%_65%)]" : "text-[hsl(0_0%_40%)] hover:text-[hsl(0_0%_60%)]")}>
           <SlidersHorizontal className="h-3.5 w-3.5" />
@@ -64,7 +64,7 @@ export function PhotoViewerWindow() {
         {/* Gallery Grid */}
         {selectedIdx === null ? (
           <div className="grid grid-cols-4 gap-1 p-1 overflow-y-auto h-full scrollbar-thin">
-            {(isDemoMode ? MOCK_PHOTOS : [] as typeof MOCK_PHOTOS).map((p, i) => (
+            {(isDemoMode ? PHOTOS : [] as typeof PHOTOS).map((p, i) => (
               <motion.button
                 key={p.id}
                 initial={{ opacity: 0, scale: 0.9 }}
@@ -85,13 +85,13 @@ export function PhotoViewerWindow() {
             <div className="flex-1 relative flex items-center justify-center p-4">
               {/* Navigation */}
               <button
-                onClick={() => setSelectedIdx(i => i !== null ? (i > 0 ? i - 1 : (isDemoMode ? MOCK_PHOTOS : [] as typeof MOCK_PHOTOS).length - 1) : null)}
+                onClick={() => setSelectedIdx(i => i !== null ? (i > 0 ? i - 1 : (isDemoMode ? PHOTOS : [] as typeof PHOTOS).length - 1) : null)}
                 className="absolute left-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-[hsl(0_0%_0%/0.5)] hover:bg-[hsl(0_0%_0%/0.7)] transition-colors z-10"
               >
                 <ChevronLeft className="h-4 w-4" />
               </button>
               <button
-                onClick={() => setSelectedIdx(i => i !== null ? (i + 1) % (isDemoMode ? MOCK_PHOTOS : [] as typeof MOCK_PHOTOS).length : null)}
+                onClick={() => setSelectedIdx(i => i !== null ? (i + 1) % (isDemoMode ? PHOTOS : [] as typeof PHOTOS).length : null)}
                 className="absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-[hsl(0_0%_0%/0.5)] hover:bg-[hsl(0_0%_0%/0.7)] transition-colors z-10"
               >
                 <ChevronRight className="h-4 w-4" />
@@ -124,7 +124,7 @@ export function PhotoViewerWindow() {
 
               {/* Counter */}
               <div className="absolute bottom-2 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-[hsl(0_0%_0%/0.5)] text-[10px] tabular-nums">
-                {selectedIdx + 1} / {(isDemoMode ? MOCK_PHOTOS : [] as typeof MOCK_PHOTOS).length}
+                {selectedIdx + 1} / {(isDemoMode ? PHOTOS : [] as typeof PHOTOS).length}
               </div>
             </div>
 

@@ -97,7 +97,7 @@ export interface CognitivePipelineResult {
 }
 
 // ── Demo context for profitability engine ─────────────────────
-const DEMO_CONTEXT = {
+const CONTEXT = {
   leads: [
     { id: "l1", name: "David Chen", value: 17000, lastActivity: 3, status: "active" },
     { id: "l2", name: "Rachel Adams", value: 28000, lastActivity: 18, status: "active" },
@@ -163,7 +163,7 @@ export function useBusinessAdvisorBoard() {
   const reflectionEngine = useMemo(() => getAdvisorReflectionEngine(), []);
 
   const profitabilityBrief = useMemo<ProfitabilityBrief>(
-    () => generateProfitabilityBrief(DEMO_CONTEXT), []
+    () => generateProfitabilityBrief(CONTEXT), []
   );
 
   const memorySnapshot = useMemo(() => memoryEngine.getMemorySnapshot(), [memoryEngine]);

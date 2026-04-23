@@ -26,18 +26,18 @@ const BLOCKERS = [
   { id: "b3", title: "Advisor consensus above 65%", status: "pending" as const, domain: "system" },
 ];
 
-const MOCK_APPROVALS = [
+const APPROVALS = [
   { id: "ap1", title: "Initiate phased collections outreach", description: "Send segmented recovery messages to 3 overdue accounts. TechCorp gets personal outreach, others get standard follow-up.", riskLevel: "medium" as const, advisorEmoji: "📈", advisorName: "Revenue Advisor", advisorConfidence: 72, urgencyHours: 4, beforeState: "$18.5K overdue, 3 accounts aging", afterState: "$16.8K recovered, relationships preserved" },
   { id: "ap2", title: "Defer Adobe CC subscription — $54/mo", description: "Pause Adobe Creative Cloud for 30 days to support reserve target. No active projects depend on it.", riskLevel: "low" as const, advisorEmoji: "📋", advisorName: "Obligations Advisor", advisorConfidence: 78, urgencyHours: 48, beforeState: "Reserves at $7,200 (72% target)", afterState: "Reserves at $7,542 (75% target)" },
   { id: "ap3", title: "Approve NYC travel package — $1,840", description: "Flights, hotel (2 nights), restaurant reservations for Q2 client visit. All documents verified.", riskLevel: "high" as const, advisorEmoji: "✈️", advisorName: "Travel Advisor", advisorConfidence: 88, urgencyHours: 2, beforeState: "Prices at $1,840, rising $120/day", afterState: "Locked at $1,840, full logistics booked" },
 ];
 
-const MOCK_SEALED = [
+const SEALED = [
   { decision: "Auto-pay AWS hosting approved", decidedBy: "Owner", timestamp: "Apr 2, 2026 — 10:14 AM", receiptHash: "0x8f3a…c7d2", status: "sealed" as const },
   { decision: "Follow-up email to Sarah Chen approved", decidedBy: "Owner", timestamp: "Apr 2, 2026 — 09:30 AM", receiptHash: "0x2b1f…a9e5", status: "sealed" as const },
 ];
 
-const MOCK_RECEIPTS = [
+const RECEIPTS = [
   {
     title: "Payment received — Invoice #1038", hash: "0xa3f2…d8b1", verification: "verified" as const,
     timestamp: "Apr 2, 2026 — 08:00 AM", actor: "System",
@@ -113,7 +113,7 @@ function SealStampCeremony({ show }: { show: boolean }) {
 }
 
 // Pre-approval checklist
-function PreApprovalChecklist({ approval, onNavigateToSim }: { approval: typeof MOCK_APPROVALS[0]; onNavigateToSim: () => void }) {
+function PreApprovalChecklist({ approval, onNavigateToSim }: { approval: typeof APPROVALS[0]; onNavigateToSim: () => void }) {
   const [expanded, setExpanded] = useState(false);
 
   const checklistItems = [
@@ -256,7 +256,7 @@ export function BoardroomApprovalView({ scope, onNavigate }: Props) {
 
   const handleApprove = (title: string) => {
     // Find which domain this approval belongs to
-    const approval = (isDemoMode ? MOCK_APPROVALS : [] as typeof MOCK_APPROVALS).find(a => a.title === title);
+    const approval = (isDemoMode ? APPROVALS : [] as typeof APPROVALS).find(a => a.title === title);
     const targetDomain = (scope as string) === "global" ? "business" : scope;
 
     setShowSignature(true);
@@ -367,7 +367,7 @@ export function BoardroomApprovalView({ scope, onNavigate }: Props) {
           Pending Approvals
         </p>
         <div className="space-y-3">
-          {(isDemoMode ? MOCK_APPROVALS : [] as typeof MOCK_APPROVALS).map((ap, i) => (
+          {(isDemoMode ? APPROVALS : [] as typeof APPROVALS).map((ap, i) => (
             <motion.div
               key={ap.id}
               initial={{ opacity: 0, y: 8 }}
@@ -423,7 +423,7 @@ export function BoardroomApprovalView({ scope, onNavigate }: Props) {
           Recent Decision Seals
         </p>
         <div className="space-y-3">
-          {(isDemoMode ? MOCK_SEALED : [] as typeof MOCK_SEALED).map((seal, i) => (
+          {(isDemoMode ? SEALED : [] as typeof SEALED).map((seal, i) => (
             <motion.div
               key={seal.receiptHash}
               initial={{ opacity: 0, y: 8 }}
@@ -442,7 +442,7 @@ export function BoardroomApprovalView({ scope, onNavigate }: Props) {
           Proof & Receipts
         </p>
         <div className="space-y-3">
-          {(isDemoMode ? MOCK_RECEIPTS : [] as typeof MOCK_RECEIPTS).map((r, i) => (
+          {(isDemoMode ? RECEIPTS : [] as typeof RECEIPTS).map((r, i) => (
             <motion.div
               key={r.hash}
               initial={{ opacity: 0, y: 8 }}

@@ -14,7 +14,7 @@ interface TimelineEntry {
   proofLink?: string;
 }
 
-const MOCK_TIMELINE: TimelineEntry[] = [
+const TIMELINE: TimelineEntry[] = [
   { id: "1", domain: "finance", type: "action", title: "Paid office rent", description: "$2,500 via ACH", time: "Today 9:15 AM", proofLink: "#" },
   { id: "2", domain: "business", type: "receipt", title: "Invoice sent to Acme Corp", description: "#INV-2024-048 — $12,000", time: "Today 8:42 AM", proofLink: "#" },
   { id: "3", domain: "system", type: "approval", title: "Quarterly tax payment approved", description: "$4,200 — auto-approved by policy", time: "Yesterday 4:30 PM", proofLink: "#" },
@@ -39,7 +39,7 @@ export const UniversalTimeline = ({
   const { isDemoMode } = useDataMode();
   const [filter, setFilter] = useState<string>("all");
 
-  const filtered = filter === "all" ? MOCK_TIMELINE : (isDemoMode ? MOCK_TIMELINE : [] as typeof MOCK_TIMELINE).filter(e => e.domain === filter);
+  const filtered = filter === "all" ? TIMELINE : (isDemoMode ? TIMELINE : [] as typeof TIMELINE).filter(e => e.domain === filter);
 
   return (
     <AnimatePresence>

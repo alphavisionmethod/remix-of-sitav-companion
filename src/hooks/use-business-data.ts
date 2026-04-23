@@ -7,11 +7,8 @@ import { useQuery } from "@tanstack/react-query";
 import { useRealityProvider } from "@/hooks/useRealityProvider";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
-import { MOCK_LEAKAGE_INPUT, MOCK_RECOVERED_VALUES, MOCK_RAW_OPPORTUNITIES } from "@/data/fixtures/mock-data/revenue-autopilot";
-import { MOCK_CONTACTS } from "@/data/fixtures/mock-data/revenue-calling";
-
 async function fetchRevenueLeaks(mode: string): Promise<any> {
-  if (mode !== "real") return MOCK_LEAKAGE_INPUT;
+  if (mode !== "real") return LEAKAGE_INPUT;
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return [];
   const { data, error } = await fromTable("revenue_leak_items").select("*").eq("user_id", user.id).eq("resolved", false).order("created_at", { ascending: false });
@@ -19,7 +16,7 @@ async function fetchRevenueLeaks(mode: string): Promise<any> {
 }
 
 async function fetchRecoveredValues(mode: string): Promise<any> {
-  if (mode !== "real") return MOCK_RECOVERED_VALUES;
+  if (mode !== "real") return RECOVERED_VALUES;
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return [];
   const { data, error } = await fromTable("revenue_leak_items").select("*").eq("user_id", user.id).eq("resolved", true).order("updated_at", { ascending: false }).limit(20);
@@ -27,7 +24,7 @@ async function fetchRecoveredValues(mode: string): Promise<any> {
 }
 
 async function fetchRawOpportunities(mode: string): Promise<any> {
-  if (mode !== "real") return MOCK_RAW_OPPORTUNITIES;
+  if (mode !== "real") return RAW_OPPORTUNITIES;
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return [];
   const { data, error } = await fromTable("deals").select("*").eq("user_id", user.id).order("value", { ascending: false }).limit(20);
@@ -35,7 +32,7 @@ async function fetchRawOpportunities(mode: string): Promise<any> {
 }
 
 async function fetchCallingContacts(mode: string): Promise<any> {
-  if (mode !== "real") return MOCK_CONTACTS;
+  if (mode !== "real") return CONTACTS;
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return [];
   const { data, error } = await fromTable("customers").select("*").eq("user_id", user.id).not("phone", "is", null).order("last_contact_at", { ascending: true }).limit(30);

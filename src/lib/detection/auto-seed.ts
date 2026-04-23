@@ -5,7 +5,7 @@
 
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
-import { ROUTE_CLASSIFICATION_SEEDS, MOCK_REPLACEMENT_SEEDS } from "@/lib/detection/reality-detection-engine";
+import { ROUTE_CLASSIFICATION_SEEDS, REPLACEMENT_SEEDS } from "@/lib/detection/reality-detection-engine";
 
 export async function autoSeedClassifications(): Promise<{ seeded: number; skipped: number }> {
   const { data: { user } } = await supabase.auth.getUser();
@@ -32,7 +32,7 @@ export async function autoSeedClassifications(): Promise<{ seeded: number; skipp
       missing_requirements: [],
       blockers: [],
       launch_impact: seed.launchImpact,
-      mock_sources: seed.mockSources,
+      mock_sources: seed.sources,
       backend_target: seed.backendTarget,
       contract_status: seed.backendTarget ? "partial" : "none",
       readiness_score: seed.classification === "proven" ? 95 : seed.classification === "persisted" ? 60 : seed.classification === "simulated" ? 30 : 10,
@@ -58,7 +58,7 @@ export async function autoSeedMockReplacements(): Promise<{ seeded: number; skip
   let seeded = 0;
   let skipped = 0;
 
-  for (const seed of MOCK_REPLACEMENT_SEEDS) {
+  for (const seed of REPLACEMENT_SEEDS) {
     const key = `${seed.featureName}::${seed.pagePath}`;
     if (existingKeys.has(key)) { skipped++; continue; }
 
@@ -66,8 +66,8 @@ export async function autoSeedMockReplacements(): Promise<{ seeded: number; skip
       user_id: user.id,
       feature_name: seed.featureName,
       page_path: seed.pagePath,
-      mock_source: seed.mockSource,
-      mock_type: seed.mockType,
+      mock_source: seed.source,
+      mock_type: seed.type,
       real_backend_target: seed.realBackendTarget,
       migration_priority: seed.migrationPriority,
       migration_status: "identified",

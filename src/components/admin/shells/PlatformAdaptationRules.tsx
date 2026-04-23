@@ -20,7 +20,7 @@ interface AdaptationRule {
   active: boolean;
 }
 
-const DEMO_RULES: AdaptationRule[] = [
+const RULES: AdaptationRule[] = [
   { id: "ar-1", category: "Speed Priority", osRule: "Prioritize local execution speed and cache hits", appRule: "Prioritize trust clarity and control responsiveness", cloudRole: "Coordinate state — not latency-critical", active: true },
   { id: "ar-2", category: "Complexity Handling", osRule: "Hide global complexity — show local context only", appRule: "Show aggregated status and fleet-level overview", cloudRole: "Compute aggregations and anomaly detection", active: true },
   { id: "ar-3", category: "Confirmation Flow", osRule: "Minimal confirmation for local actions", appRule: "Confirmation-heavy for remote and destructive actions", cloudRole: "Evaluate risk and determine confirmation requirement", active: true },
@@ -179,7 +179,7 @@ export function PlatformAdaptationRules() {
                     </tr>
                   </thead>
                   <tbody>
-                    {(isDemoMode ? DEMO_RULES : [] as typeof DEMO_RULES).map((rule, i) => (
+                    {(isDemoMode ? RULES : [] as typeof RULES).map((rule, i) => (
                       <tr key={rule.id} className={cn("border-b border-white/[0.04]", i % 2 === 0 && "bg-white/[0.01]")}>
                         <td className="px-4 py-2.5 font-medium text-foreground whitespace-nowrap">{rule.category}</td>
                         <td className="px-4 py-2.5 text-blue-300/80">{rule.osRule}</td>

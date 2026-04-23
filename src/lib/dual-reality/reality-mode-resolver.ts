@@ -27,7 +27,7 @@ export interface ModeResolution {
   resolvedAt: number;
 }
 
-const DEMO_TOKEN_KEY = "sita-demo-token";
+const TOKEN_KEY = "sita-demo-token";
 const MODE_OVERRIDE_KEY = "sita-mode-override";
 
 /**
@@ -47,7 +47,7 @@ export function resolveMode(opts?: {
   const params = opts?.searchParams ?? new URLSearchParams(window.location.search);
   const demoParam = params.get("demo");
   if (demoParam) {
-    sessionStorage.setItem(DEMO_TOKEN_KEY, demoParam);
+    sessionStorage.setItem(TOKEN_KEY, demoParam);
     return {
       mode: "demo",
       source: "demo_token",
@@ -77,7 +77,7 @@ export function resolveMode(opts?: {
   }
 
   // 3. Active demo token
-  const demoToken = sessionStorage.getItem(DEMO_TOKEN_KEY);
+  const demoToken = sessionStorage.getItem(TOKEN_KEY);
   if (demoToken) {
     return {
       mode: "demo",
@@ -115,7 +115,7 @@ export function setModeOverride(
 /** Clear mode override, return to real */
 export function clearModeOverride(): void {
   sessionStorage.removeItem(MODE_OVERRIDE_KEY);
-  sessionStorage.removeItem(DEMO_TOKEN_KEY);
+  sessionStorage.removeItem(TOKEN_KEY);
 }
 
 /** Persist resolution event to DB for audit */

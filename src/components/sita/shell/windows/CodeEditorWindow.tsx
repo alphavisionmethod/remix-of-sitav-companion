@@ -19,7 +19,7 @@ interface FileNode {
   content?: string;
 }
 
-const MOCK_FILES: FileNode[] = [
+const FILES: FileNode[] = [
   {
     name: "src", type: "folder", children: [
       {
@@ -97,7 +97,7 @@ function FileTreeItem({ node, depth = 0, activeFile, onSelect }: {
 export function CodeEditorWindow() {
   const { isDemoMode } = useDataMode();
   const [openFiles, setOpenFiles] = useState<FileNode[]>([
-    MOCK_FILES[0].children![0].children![0], // App.tsx
+    FILES[0].children![0].children![0], // App.tsx
   ]);
   const [activeIdx, setActiveIdx] = useState(0);
   const [showTerminal, setShowTerminal] = useState(false);
@@ -129,7 +129,7 @@ export function CodeEditorWindow() {
           <span className="text-[10px] text-[hsl(0_0%_35%)] uppercase tracking-wider font-semibold">Explorer</span>
         </div>
         <div className="flex-1 overflow-y-auto scrollbar-thin p-1">
-          {(isDemoMode ? MOCK_FILES : [] as typeof MOCK_FILES).map(f => (
+          {(isDemoMode ? FILES : [] as typeof FILES).map(f => (
             <FileTreeItem key={f.name} node={f} activeFile={activeFile?.name || ""} onSelect={openFile} />
           ))}
         </div>

@@ -57,7 +57,7 @@ export interface BTState {
 const now = Date.now();
 const day = 86400000;
 
-const MOCK_DEVICES: BTDevice[] = [
+const DEVICES: BTDevice[] = [
   { id: "bt-1", name: "AirPods Pro", type: "earbuds", paired: true, connected: true, battery: { left: 85, right: 78, case: 92 }, codec: "aac", codecProfile: "auto", reconnectPolicy: "always", lastSeen: now, lastConnected: now, isAudioOutput: true, isAudioInput: true, blePrivate: true, trusted: true, signalStrength: -35 },
   { id: "bt-2", name: "Sony WH-1000XM5", type: "headphones", paired: true, connected: false, battery: { main: 64 }, codec: "ldac", codecProfile: "quality", reconnectPolicy: "always", lastSeen: now - day * 2, lastConnected: now - day * 2, isAudioOutput: true, isAudioInput: true, blePrivate: false, trusted: true, signalStrength: -55 },
   { id: "bt-3", name: "MX Keys", type: "keyboard", paired: true, connected: true, battery: { main: 45 }, codecProfile: "auto", reconnectPolicy: "always", lastSeen: now, lastConnected: now, isAudioOutput: false, isAudioInput: false, blePrivate: false, trusted: true, signalStrength: -40 },
@@ -75,7 +75,7 @@ export class BluetoothDaemon {
     this.state = {
       enabled: true,
       discovering: false,
-      devices: [...MOCK_DEVICES],
+      devices: [...DEVICES],
       audioRoute: { outputDevice: "bt-1", inputDevice: "bt-1", activeRole: "media", preferredOutput: "bt-1", preferredInput: "bt-1" },
       blePrivacyEnabled: true,
       staleDaysThreshold: 30,

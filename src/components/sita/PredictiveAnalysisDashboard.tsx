@@ -61,7 +61,7 @@ interface AnomalyEvent {
 
 // ── Mock Data ───────────────────────────────────────────────────
 
-const MOCK_PREDICTIONS: PredictionSignal[] = [
+const PREDICTIONS: PredictionSignal[] = [
   {
     id: "pred-1", agentId: "aw-connector-health", agentName: "Connector Health Agent",
     type: "failure", severity: "high", probability: 0.82, timeToEvent: "~4 hours",
@@ -118,7 +118,7 @@ function generateTrendData(): TrendMetric[] {
   return data;
 }
 
-const MOCK_ANOMALIES: AnomalyEvent[] = [
+const ANOMALIES: AnomalyEvent[] = [
   { id: "a-1", timestamp: Date.now() - 900000, metric: "Error Rate", actual: 4.2, expected: 0.8, deviation: 425, service: "Plaid Connector", autoResolved: false },
   { id: "a-2", timestamp: Date.now() - 3600000, metric: "Response Time", actual: 2800, expected: 450, deviation: 522, service: "Brain Core", autoResolved: true },
   { id: "a-3", timestamp: Date.now() - 7200000, metric: "Token Usage", actual: 45000, expected: 28000, deviation: 61, service: "Business Advisor", autoResolved: false },
@@ -254,11 +254,11 @@ export function PredictiveAnalysisDashboard() {
   const trendData = useMemo(() => generateTrendData(), []);
 
   const stats = useMemo(() => ({
-    totalPredictions: (isDemoMode ? MOCK_PREDICTIONS : [] as typeof MOCK_PREDICTIONS).length,
-    highRisk: (isDemoMode ? MOCK_PREDICTIONS : [] as typeof MOCK_PREDICTIONS).filter(p => p.probability > 0.7).length,
-    avgConfidence: Math.round((isDemoMode ? MOCK_PREDICTIONS : [] as typeof MOCK_PREDICTIONS).reduce((s, p) => s + p.confidence, 0) / (isDemoMode ? MOCK_PREDICTIONS : [] as typeof MOCK_PREDICTIONS).length * 100),
-    anomaliesDetected: (isDemoMode ? MOCK_ANOMALIES : [] as typeof MOCK_ANOMALIES).length,
-    autoResolved: (isDemoMode ? MOCK_ANOMALIES : [] as typeof MOCK_ANOMALIES).filter(a => a.autoResolved).length,
+    totalPredictions: (isDemoMode ? PREDICTIONS : [] as typeof PREDICTIONS).length,
+    highRisk: (isDemoMode ? PREDICTIONS : [] as typeof PREDICTIONS).filter(p => p.probability > 0.7).length,
+    avgConfidence: Math.round((isDemoMode ? PREDICTIONS : [] as typeof PREDICTIONS).reduce((s, p) => s + p.confidence, 0) / (isDemoMode ? PREDICTIONS : [] as typeof PREDICTIONS).length * 100),
+    anomaliesDetected: (isDemoMode ? ANOMALIES : [] as typeof ANOMALIES).length,
+    autoResolved: (isDemoMode ? ANOMALIES : [] as typeof ANOMALIES).filter(a => a.autoResolved).length,
   }), []);
 
   return (
@@ -326,7 +326,7 @@ export function PredictiveAnalysisDashboard() {
           <motion.div key="predictions" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
             className="space-y-3"
           >
-            {(isDemoMode ? MOCK_PREDICTIONS : [] as typeof MOCK_PREDICTIONS).sort((a, b) => b.probability - a.probability).map(p => (
+            {(isDemoMode ? PREDICTIONS : [] as typeof PREDICTIONS).sort((a, b) => b.probability - a.probability).map(p => (
               <PredictionCard key={p.id} signal={p} />
             ))}
           </motion.div>
@@ -405,7 +405,7 @@ export function PredictiveAnalysisDashboard() {
                 Events with deviation &gt;3σ are flagged. Auto-resolution triggers when metrics return to 1σ within 15 minutes.
               </p>
             </div>
-            {(isDemoMode ? MOCK_ANOMALIES : [] as typeof MOCK_ANOMALIES).map(a => <AnomalyRow key={a.id} anomaly={a} />)}
+            {(isDemoMode ? ANOMALIES : [] as typeof ANOMALIES).map(a => <AnomalyRow key={a.id} anomaly={a} />)}
           </motion.div>
         )}
       </AnimatePresence>

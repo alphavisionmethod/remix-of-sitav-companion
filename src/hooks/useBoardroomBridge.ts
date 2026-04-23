@@ -22,7 +22,7 @@ import type { AppBoardSynthesis, Domain } from "@/lib/services/orchestration-pip
 import { useCallback, useMemo } from "react";
 
 // Demo fallback data
-const DEMO_ESCALATIONS: Record<string, any[]> = {
+const ESCALATIONS: Record<string, any[]> = {
   business: [
     { id: "demo-esc-1", title: "Collections action review — 3 overdue invoices", domain: "business", severity: "high", status: "active", created_at: new Date().toISOString() },
   ],
@@ -34,7 +34,7 @@ const DEMO_ESCALATIONS: Record<string, any[]> = {
   ],
 };
 
-const DEMO_DECISIONS: Record<string, any[]> = {
+const DECISIONS: Record<string, any[]> = {
   business: [
     { id: "demo-dec-1", summary: "Initiate phased collections outreach", domain: "business", status: "proposed", confidence: 0.72, created_at: "2026-04-02T10:14:00Z", payload: { approved_motion: "Phased collections for Q1 receivables" } },
   ],
@@ -49,7 +49,7 @@ export function useBoardroomBridge(domain: Domain) {
   const escalationsQuery = useQuery({
     queryKey: ["boardroom-escalations", domain],
     queryFn: async () => {
-      if (isDemoMode) return DEMO_ESCALATIONS[domain] || [];
+      if (isDemoMode) return ESCALATIONS[domain] || [];
       return getEscalationsByDomain(domain);
     },
     staleTime: 15_000,
@@ -58,7 +58,7 @@ export function useBoardroomBridge(domain: Domain) {
   const decisionsQuery = useQuery({
     queryKey: ["boardroom-decisions", domain],
     queryFn: async () => {
-      if (isDemoMode) return DEMO_DECISIONS[domain] || [];
+      if (isDemoMode) return DECISIONS[domain] || [];
       return getDecisionsForDomain(domain);
     },
     staleTime: 15_000,

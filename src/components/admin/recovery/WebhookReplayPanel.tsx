@@ -12,7 +12,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 // Mock webhook events for demonstration
-const MOCK_EVENTS: WebhookEvent[] = [
+const EVENTS: WebhookEvent[] = [
   { id: "wh-001", eventType: "payment.completed", status: "failed", timestamp: "2026-04-21T10:30:00Z", payload: { amount: 99 }, errorMessage: "Timeout after 30s", provider: "stripe", retryCount: 3 },
   { id: "wh-002", eventType: "contact.created", status: "delivered", timestamp: "2026-04-21T10:28:00Z", payload: { email: "test@example.com" }, errorMessage: null, provider: "crm", retryCount: 0 },
   { id: "wh-003", eventType: "payment.refunded", status: "failed", timestamp: "2026-04-21T09:15:00Z", payload: { amount: 50 }, errorMessage: "502 Bad Gateway", provider: "stripe", retryCount: 2 },
@@ -39,7 +39,7 @@ export function WebhookReplayPanel({ operatorId, canExecute }: Props) {
   const [selected, setSelected] = useState<Set<string>>(new Set());
 
   const filtered = useMemo(() => {
-    return (isDemoMode ? MOCK_EVENTS : [] as typeof MOCK_EVENTS).filter((e) => {
+    return (isDemoMode ? EVENTS : [] as typeof EVENTS).filter((e) => {
       if (filters.eventType && e.eventType !== filters.eventType) return false;
       if (filters.status && e.status !== filters.status) return false;
       if (filters.dateFrom && e.timestamp < filters.dateFrom) return false;
@@ -48,7 +48,7 @@ export function WebhookReplayPanel({ operatorId, canExecute }: Props) {
     });
   }, [filters]);
 
-  const eventTypes = [...new Set((isDemoMode ? MOCK_EVENTS : [] as typeof MOCK_EVENTS).map((e) => e.eventType))];
+  const eventTypes = [...new Set((isDemoMode ? EVENTS : [] as typeof EVENTS).map((e) => e.eventType))];
   const failedFiltered = filtered.filter((e) => e.status === "failed");
 
   const toggleSelect = (id: string) => {

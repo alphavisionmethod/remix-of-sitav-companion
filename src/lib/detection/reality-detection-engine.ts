@@ -14,7 +14,7 @@ export interface MockImportDetection {
   filePath: string;
   importSource: string;
   pages: string[];
-  mockType: "mock-data-folder" | "hardcoded-array" | "localStorage" | "in-memory-service" | "demo-flow" | "data-service-fallback";
+  type: "mock-data-folder" | "hardcoded-array" | "localStorage" | "in-memory-service" | "demo-flow" | "data-service-fallback";
   severity: "critical" | "high" | "medium" | "low";
   domain: string;
   hasSupersedeService: boolean;
@@ -62,7 +62,7 @@ export interface FormSubmissionGap {
 
 export interface DetectionReport {
   generatedAt: string;
-  mockImports: MockImportDetection[];
+  imports: MockImportDetection[];
   persistenceGaps: PersistenceGapDetection[];
   contractGaps: ContractGapDetection[];
   runtimeEvidenceGaps: RuntimeEvidenceGap[];
@@ -71,7 +71,7 @@ export interface DetectionReport {
     totalDetections: number;
     criticalCount: number;
     highCount: number;
-    mockImportCount: number;
+    importCount: number;
     persistenceGapCount: number;
     contractGapCount: number;
     runtimeGapCount: number;
@@ -84,31 +84,31 @@ export interface DetectionReport {
 const KNOWN_MOCK_SOURCES: Array<{
   path: string; pages: string[]; domain: string;
   severity: MockImportDetection["severity"];
-  mockType: MockImportDetection["mockType"];
+  type: MockImportDetection["type"];
   hasSupersedeService: boolean;
   realBackendTarget: string;
 }> = [
   // Page-level direct imports (canonical home: src/data/fixtures/mock-data after Wave 2 migration)
-  { path: "src/data/fixtures/mock-data/investment.ts", pages: ["/money/investment-office"], domain: "investment", severity: "critical", mockType: "mock-data-folder", hasSupersedeService: true, realBackendTarget: "capital_purpose_buckets + asset_master" },
-  { path: "src/data/fixtures/mock-data/advisor-mission-control.ts", pages: ["/boardroom", "/advisors/workspace", "/mission-control"], domain: "advisors", severity: "critical", mockType: "mock-data-folder", hasSupersedeService: false, realBackendTarget: "advisor_registry + advisor_configs" },
-  { path: "src/data/fixtures/mock-data/revenue-autopilot.ts", pages: ["/business/revenue-autopilot"], domain: "business", severity: "high", mockType: "mock-data-folder", hasSupersedeService: true, realBackendTarget: "invoices + revenue_analytics" },
-  { path: "src/data/fixtures/mock-data/owner.ts", pages: ["/owner/approvals", "/owner/pricing"], domain: "owner", severity: "high", mockType: "mock-data-folder", hasSupersedeService: true, realBackendTarget: "approval_queue + pricing_items" },
-  { path: "src/data/fixtures/mock-data/collections.ts", pages: ["/business/collections"], domain: "business", severity: "high", mockType: "mock-data-folder", hasSupersedeService: true, realBackendTarget: "invoices (collections)" },
-  { path: "src/data/fixtures/mock-data/workspace.ts", pages: ["/workspace/docs", "/workspace/sheets", "/workspace/slides"], domain: "workspace", severity: "medium", mockType: "mock-data-folder", hasSupersedeService: true, realBackendTarget: "workspace_documents" },
-  { path: "src/data/fixtures/mock-data/calendar.ts", pages: ["/concierge/calendar"], domain: "concierge", severity: "low", mockType: "mock-data-folder", hasSupersedeService: true, realBackendTarget: "bookings" },
-  { path: "src/data/fixtures/mock-data/owner-center.ts", pages: ["/owner"], domain: "owner", severity: "medium", mockType: "demo-flow", hasSupersedeService: false, realBackendTarget: "owner_policies" },
-  { path: "src/data/fixtures/mock-data/calling.ts", pages: ["/business/calling"], domain: "business", severity: "medium", mockType: "mock-data-folder", hasSupersedeService: false, realBackendTarget: "communication_log + leads" },
+  { path: "src/data/fixtures/mock-data/investment.ts", pages: ["/money/investment-office"], domain: "investment", severity: "critical", type: "mock-data-folder", hasSupersedeService: true, realBackendTarget: "capital_purpose_buckets + asset_master" },
+  { path: "src/data/fixtures/mock-data/advisor-mission-control.ts", pages: ["/boardroom", "/advisors/workspace", "/mission-control"], domain: "advisors", severity: "critical", type: "mock-data-folder", hasSupersedeService: false, realBackendTarget: "advisor_registry + advisor_configs" },
+  { path: "src/data/fixtures/mock-data/revenue-autopilot.ts", pages: ["/business/revenue-autopilot"], domain: "business", severity: "high", type: "mock-data-folder", hasSupersedeService: true, realBackendTarget: "invoices + revenue_analytics" },
+  { path: "src/data/fixtures/mock-data/owner.ts", pages: ["/owner/approvals", "/owner/pricing"], domain: "owner", severity: "high", type: "mock-data-folder", hasSupersedeService: true, realBackendTarget: "approval_queue + pricing_items" },
+  { path: "src/data/fixtures/mock-data/collections.ts", pages: ["/business/collections"], domain: "business", severity: "high", type: "mock-data-folder", hasSupersedeService: true, realBackendTarget: "invoices (collections)" },
+  { path: "src/data/fixtures/mock-data/workspace.ts", pages: ["/workspace/docs", "/workspace/sheets", "/workspace/slides"], domain: "workspace", severity: "medium", type: "mock-data-folder", hasSupersedeService: true, realBackendTarget: "workspace_documents" },
+  { path: "src/data/fixtures/mock-data/calendar.ts", pages: ["/concierge/calendar"], domain: "concierge", severity: "low", type: "mock-data-folder", hasSupersedeService: true, realBackendTarget: "bookings" },
+  { path: "src/data/fixtures/mock-data/owner-center.ts", pages: ["/owner"], domain: "owner", severity: "medium", type: "demo-flow", hasSupersedeService: false, realBackendTarget: "owner_policies" },
+  { path: "src/data/fixtures/mock-data/calling.ts", pages: ["/business/calling"], domain: "business", severity: "medium", type: "mock-data-folder", hasSupersedeService: false, realBackendTarget: "communication_log + leads" },
 
   // Data-service fallback imports (services that fall back to mock when no user/data)
-  { path: "src/lib/data-services/business-data-service.ts", pages: ["/business/customers", "/business/collections"], domain: "business", severity: "medium", mockType: "data-service-fallback", hasSupersedeService: true, realBackendTarget: "customers + invoices" },
-  { path: "src/lib/data-services/files-data-service.ts", pages: ["/files/overview", "/files/processing", "/files/search"], domain: "files", severity: "medium", mockType: "data-service-fallback", hasSupersedeService: true, realBackendTarget: "documents + storage" },
-  { path: "src/lib/data-services/money-data-service.ts", pages: ["/money/reserves"], domain: "money", severity: "high", mockType: "data-service-fallback", hasSupersedeService: true, realBackendTarget: "capital_allocations" },
-  { path: "src/lib/data-services/mobile-data-service.ts", pages: ["/mobile/alerts", "/mobile/approvals", "/mobile/proof"], domain: "mobile", severity: "medium", mockType: "data-service-fallback", hasSupersedeService: true, realBackendTarget: "notifications_queue + approval_queue" },
-  { path: "src/lib/data-services/owner-data-service.ts", pages: ["/owner/leases", "/owner/approvals", "/owner/pricing"], domain: "owner", severity: "high", mockType: "data-service-fallback", hasSupersedeService: true, realBackendTarget: "leases + approval_queue" },
-  { path: "src/lib/data-services/workspace-data-service.ts", pages: ["/workspace/docs", "/workspace/sheets", "/workspace/slides"], domain: "workspace", severity: "medium", mockType: "data-service-fallback", hasSupersedeService: true, realBackendTarget: "workspace_documents" },
-  { path: "src/lib/data-services/mission-control-data-service.ts", pages: ["/mission-control"], domain: "advisors", severity: "high", mockType: "data-service-fallback", hasSupersedeService: true, realBackendTarget: "advisor_registry" },
-  { path: "src/lib/data-services/revenue-data-service.ts", pages: ["/business/revenue-autopilot"], domain: "business", severity: "high", mockType: "data-service-fallback", hasSupersedeService: true, realBackendTarget: "invoices" },
-  { path: "src/lib/data-services/investment-data-service.ts", pages: ["/money/investment-office"], domain: "investment", severity: "high", mockType: "data-service-fallback", hasSupersedeService: true, realBackendTarget: "capital_purpose_buckets + asset_master" },
+  { path: "src/lib/data-services/business-data-service.ts", pages: ["/business/customers", "/business/collections"], domain: "business", severity: "medium", type: "data-service-fallback", hasSupersedeService: true, realBackendTarget: "customers + invoices" },
+  { path: "src/lib/data-services/files-data-service.ts", pages: ["/files/overview", "/files/processing", "/files/search"], domain: "files", severity: "medium", type: "data-service-fallback", hasSupersedeService: true, realBackendTarget: "documents + storage" },
+  { path: "src/lib/data-services/money-data-service.ts", pages: ["/money/reserves"], domain: "money", severity: "high", type: "data-service-fallback", hasSupersedeService: true, realBackendTarget: "capital_allocations" },
+  { path: "src/lib/data-services/mobile-data-service.ts", pages: ["/mobile/alerts", "/mobile/approvals", "/mobile/proof"], domain: "mobile", severity: "medium", type: "data-service-fallback", hasSupersedeService: true, realBackendTarget: "notifications_queue + approval_queue" },
+  { path: "src/lib/data-services/owner-data-service.ts", pages: ["/owner/leases", "/owner/approvals", "/owner/pricing"], domain: "owner", severity: "high", type: "data-service-fallback", hasSupersedeService: true, realBackendTarget: "leases + approval_queue" },
+  { path: "src/lib/data-services/workspace-data-service.ts", pages: ["/workspace/docs", "/workspace/sheets", "/workspace/slides"], domain: "workspace", severity: "medium", type: "data-service-fallback", hasSupersedeService: true, realBackendTarget: "workspace_documents" },
+  { path: "src/lib/data-services/mission-control-data-service.ts", pages: ["/mission-control"], domain: "advisors", severity: "high", type: "data-service-fallback", hasSupersedeService: true, realBackendTarget: "advisor_registry" },
+  { path: "src/lib/data-services/revenue-data-service.ts", pages: ["/business/revenue-autopilot"], domain: "business", severity: "high", type: "data-service-fallback", hasSupersedeService: true, realBackendTarget: "invoices" },
+  { path: "src/lib/data-services/investment-data-service.ts", pages: ["/money/investment-office"], domain: "investment", severity: "high", type: "data-service-fallback", hasSupersedeService: true, realBackendTarget: "capital_purpose_buckets + asset_master" },
 ];
 
 // ── Known In-Memory Services ──
@@ -135,7 +135,7 @@ export interface RouteClassificationSeed {
   domain: string;
   classification: "presentational" | "simulated" | "persisted" | "proven";
   confidence: number;
-  mockSources: string[];
+  sources: string[];
   backendTarget: string | null;
   launchImpact: "blocking" | "degraded" | "none";
   evidenceInputs: string[];
@@ -143,58 +143,58 @@ export interface RouteClassificationSeed {
 
 export const ROUTE_CLASSIFICATION_SEEDS: RouteClassificationSeed[] = [
   // ── Investment Office (critical, simulated) ──
-  { routePath: "/money/investment-office", featureName: "Investment Office", domain: "investment", classification: "simulated", confidence: 90, mockSources: ["MOCK_CAPITAL_BUCKETS", "MOCK_POSITIONS", "MOCK_THESES"], backendTarget: "capital_purpose_buckets + asset_master", launchImpact: "blocking", evidenceInputs: ["route_exists", "shell_exists", "component_renders"] },
+  { routePath: "/money/investment-office", featureName: "Investment Office", domain: "investment", classification: "simulated", confidence: 90, sources: ["CAPITAL_BUCKETS", "POSITIONS", "THESES"], backendTarget: "capital_purpose_buckets + asset_master", launchImpact: "blocking", evidenceInputs: ["route_exists", "shell_exists", "component_renders"] },
 
   // ── Business Center ──
-  { routePath: "/business/customers", featureName: "Customers", domain: "business", classification: "persisted", confidence: 75, mockSources: [], backendTarget: "customers", launchImpact: "degraded", evidenceInputs: ["route_exists", "shell_exists", "component_renders", "data_source_real", "db_persistence"] },
-  { routePath: "/business/collections", featureName: "Collections", domain: "business", classification: "simulated", confidence: 70, mockSources: ["MOCK_COLLECTIONS_ACCOUNTS"], backendTarget: "invoices", launchImpact: "degraded", evidenceInputs: ["route_exists", "shell_exists", "component_renders"] },
-  { routePath: "/business/revenue-autopilot", featureName: "Revenue Autopilot", domain: "business", classification: "simulated", confidence: 60, mockSources: ["MOCK_LEAKAGE_INPUT", "MOCK_RECOVERED_VALUES"], backendTarget: "invoices + revenue_analytics", launchImpact: "blocking", evidenceInputs: ["route_exists", "shell_exists", "component_renders"] },
-  { routePath: "/business/calling", featureName: "Revenue Calling", domain: "business", classification: "simulated", confidence: 50, mockSources: ["MOCK_CONTACTS", "MOCK_CALL_LOGS"], backendTarget: "communication_log + leads", launchImpact: "degraded", evidenceInputs: ["route_exists", "shell_exists"] },
+  { routePath: "/business/customers", featureName: "Customers", domain: "business", classification: "persisted", confidence: 75, sources: [], backendTarget: "customers", launchImpact: "degraded", evidenceInputs: ["route_exists", "shell_exists", "component_renders", "data_source_real", "db_persistence"] },
+  { routePath: "/business/collections", featureName: "Collections", domain: "business", classification: "simulated", confidence: 70, sources: ["COLLECTIONS_ACCOUNTS"], backendTarget: "invoices", launchImpact: "degraded", evidenceInputs: ["route_exists", "shell_exists", "component_renders"] },
+  { routePath: "/business/revenue-autopilot", featureName: "Revenue Autopilot", domain: "business", classification: "simulated", confidence: 60, sources: ["LEAKAGE_INPUT", "RECOVERED_VALUES"], backendTarget: "invoices + revenue_analytics", launchImpact: "blocking", evidenceInputs: ["route_exists", "shell_exists", "component_renders"] },
+  { routePath: "/business/calling", featureName: "Revenue Calling", domain: "business", classification: "simulated", confidence: 50, sources: ["CONTACTS", "CALL_LOGS"], backendTarget: "communication_log + leads", launchImpact: "degraded", evidenceInputs: ["route_exists", "shell_exists"] },
 
   // ── Owner Center ──
-  { routePath: "/owner", featureName: "Owner Center", domain: "owner", classification: "simulated", confidence: 60, mockSources: ["buildMockSimResult"], backendTarget: "owner_policies", launchImpact: "degraded", evidenceInputs: ["route_exists", "shell_exists", "component_renders"] },
-  { routePath: "/owner/leases", featureName: "Lease Dashboard", domain: "owner", classification: "persisted", confidence: 70, mockSources: [], backendTarget: "leases (via data-service)", launchImpact: "degraded", evidenceInputs: ["route_exists", "shell_exists", "component_renders", "data_source_real"] },
-  { routePath: "/owner/approvals", featureName: "Owner Approvals", domain: "owner", classification: "persisted", confidence: 65, mockSources: [], backendTarget: "approval_queue", launchImpact: "degraded", evidenceInputs: ["route_exists", "component_renders", "data_source_real"] },
-  { routePath: "/owner/pricing", featureName: "Pricing Editor", domain: "owner", classification: "persisted", confidence: 65, mockSources: [], backendTarget: "pricing_items (via data-service)", launchImpact: "none", evidenceInputs: ["route_exists", "component_renders", "data_source_real"] },
+  { routePath: "/owner", featureName: "Owner Center", domain: "owner", classification: "simulated", confidence: 60, sources: ["buildMockSimResult"], backendTarget: "owner_policies", launchImpact: "degraded", evidenceInputs: ["route_exists", "shell_exists", "component_renders"] },
+  { routePath: "/owner/leases", featureName: "Lease Dashboard", domain: "owner", classification: "persisted", confidence: 70, sources: [], backendTarget: "leases (via data-service)", launchImpact: "degraded", evidenceInputs: ["route_exists", "shell_exists", "component_renders", "data_source_real"] },
+  { routePath: "/owner/approvals", featureName: "Owner Approvals", domain: "owner", classification: "persisted", confidence: 65, sources: [], backendTarget: "approval_queue", launchImpact: "degraded", evidenceInputs: ["route_exists", "component_renders", "data_source_real"] },
+  { routePath: "/owner/pricing", featureName: "Pricing Editor", domain: "owner", classification: "persisted", confidence: 65, sources: [], backendTarget: "pricing_items (via data-service)", launchImpact: "none", evidenceInputs: ["route_exists", "component_renders", "data_source_real"] },
 
   // ── Files Center ──
-  { routePath: "/files/overview", featureName: "Files Overview", domain: "files", classification: "persisted", confidence: 70, mockSources: [], backendTarget: "documents", launchImpact: "none", evidenceInputs: ["route_exists", "component_renders", "data_source_real", "db_persistence"] },
-  { routePath: "/files/processing", featureName: "Files Processing", domain: "files", classification: "persisted", confidence: 70, mockSources: [], backendTarget: "documents", launchImpact: "none", evidenceInputs: ["route_exists", "component_renders", "data_source_real"] },
-  { routePath: "/files/search", featureName: "Files Search", domain: "files", classification: "persisted", confidence: 70, mockSources: [], backendTarget: "documents", launchImpact: "none", evidenceInputs: ["route_exists", "component_renders", "data_source_real"] },
+  { routePath: "/files/overview", featureName: "Files Overview", domain: "files", classification: "persisted", confidence: 70, sources: [], backendTarget: "documents", launchImpact: "none", evidenceInputs: ["route_exists", "component_renders", "data_source_real", "db_persistence"] },
+  { routePath: "/files/processing", featureName: "Files Processing", domain: "files", classification: "persisted", confidence: 70, sources: [], backendTarget: "documents", launchImpact: "none", evidenceInputs: ["route_exists", "component_renders", "data_source_real"] },
+  { routePath: "/files/search", featureName: "Files Search", domain: "files", classification: "persisted", confidence: 70, sources: [], backendTarget: "documents", launchImpact: "none", evidenceInputs: ["route_exists", "component_renders", "data_source_real"] },
 
   // ── Workspace ──
-  { routePath: "/workspace/docs", featureName: "Docs Workspace", domain: "workspace", classification: "simulated", confidence: 60, mockSources: ["MOCK_DOCS"], backendTarget: "workspace_documents", launchImpact: "none", evidenceInputs: ["route_exists", "component_renders"] },
-  { routePath: "/workspace/sheets", featureName: "Sheets Workspace", domain: "workspace", classification: "simulated", confidence: 60, mockSources: ["MOCK_SHEETS"], backendTarget: "workspace_documents", launchImpact: "none", evidenceInputs: ["route_exists", "component_renders"] },
-  { routePath: "/workspace/slides", featureName: "Slides Workspace", domain: "workspace", classification: "simulated", confidence: 60, mockSources: ["MOCK_DECKS"], backendTarget: "workspace_documents", launchImpact: "none", evidenceInputs: ["route_exists", "component_renders"] },
+  { routePath: "/workspace/docs", featureName: "Docs Workspace", domain: "workspace", classification: "simulated", confidence: 60, sources: ["DOCS"], backendTarget: "workspace_documents", launchImpact: "none", evidenceInputs: ["route_exists", "component_renders"] },
+  { routePath: "/workspace/sheets", featureName: "Sheets Workspace", domain: "workspace", classification: "simulated", confidence: 60, sources: ["SHEETS"], backendTarget: "workspace_documents", launchImpact: "none", evidenceInputs: ["route_exists", "component_renders"] },
+  { routePath: "/workspace/slides", featureName: "Slides Workspace", domain: "workspace", classification: "simulated", confidence: 60, sources: ["DECKS"], backendTarget: "workspace_documents", launchImpact: "none", evidenceInputs: ["route_exists", "component_renders"] },
 
   // ── Money ──
-  { routePath: "/money/reserves", featureName: "Reserves & Savings", domain: "money", classification: "persisted", confidence: 70, mockSources: [], backendTarget: "capital_allocations", launchImpact: "blocking", evidenceInputs: ["route_exists", "component_renders", "data_source_real", "db_persistence"] },
+  { routePath: "/money/reserves", featureName: "Reserves & Savings", domain: "money", classification: "persisted", confidence: 70, sources: [], backendTarget: "capital_allocations", launchImpact: "blocking", evidenceInputs: ["route_exists", "component_renders", "data_source_real", "db_persistence"] },
 
   // ── Mobile ──
-  { routePath: "/mobile/alerts", featureName: "Mobile Alerts", domain: "mobile", classification: "persisted", confidence: 65, mockSources: [], backendTarget: "notifications_queue", launchImpact: "none", evidenceInputs: ["route_exists", "component_renders", "data_source_real"] },
-  { routePath: "/mobile/approvals", featureName: "Mobile Approvals", domain: "mobile", classification: "persisted", confidence: 65, mockSources: [], backendTarget: "approval_queue", launchImpact: "none", evidenceInputs: ["route_exists", "component_renders", "data_source_real"] },
-  { routePath: "/mobile/proof", featureName: "Mobile Proof", domain: "mobile", classification: "persisted", confidence: 65, mockSources: [], backendTarget: "agent_action_receipts", launchImpact: "none", evidenceInputs: ["route_exists", "component_renders", "data_source_real"] },
+  { routePath: "/mobile/alerts", featureName: "Mobile Alerts", domain: "mobile", classification: "persisted", confidence: 65, sources: [], backendTarget: "notifications_queue", launchImpact: "none", evidenceInputs: ["route_exists", "component_renders", "data_source_real"] },
+  { routePath: "/mobile/approvals", featureName: "Mobile Approvals", domain: "mobile", classification: "persisted", confidence: 65, sources: [], backendTarget: "approval_queue", launchImpact: "none", evidenceInputs: ["route_exists", "component_renders", "data_source_real"] },
+  { routePath: "/mobile/proof", featureName: "Mobile Proof", domain: "mobile", classification: "persisted", confidence: 65, sources: [], backendTarget: "agent_action_receipts", launchImpact: "none", evidenceInputs: ["route_exists", "component_renders", "data_source_real"] },
 
   // ── Concierge ──
-  { routePath: "/concierge/calendar", featureName: "Calendar", domain: "concierge", classification: "simulated", confidence: 55, mockSources: ["generateCalendarDemoEvents"], backendTarget: "bookings", launchImpact: "none", evidenceInputs: ["route_exists", "component_renders"] },
+  { routePath: "/concierge/calendar", featureName: "Calendar", domain: "concierge", classification: "simulated", confidence: 55, sources: ["generateCalendarDemoEvents"], backendTarget: "bookings", launchImpact: "none", evidenceInputs: ["route_exists", "component_renders"] },
 
   // ── Activity ──
-  { routePath: "/inbox", featureName: "Inbox Capture", domain: "activity", classification: "persisted", confidence: 65, mockSources: [], backendTarget: "inbox_items", launchImpact: "none", evidenceInputs: ["route_exists", "component_renders", "data_source_real"] },
+  { routePath: "/inbox", featureName: "Inbox Capture", domain: "activity", classification: "persisted", confidence: 65, sources: [], backendTarget: "inbox_items", launchImpact: "none", evidenceInputs: ["route_exists", "component_renders", "data_source_real"] },
 
   // ── Advisors / Mission Control ──
-  { routePath: "/boardroom", featureName: "Boardroom", domain: "advisors", classification: "simulated", confidence: 40, mockSources: ["mockAdvisors", "mockConnectorHealth"], backendTarget: "advisor_registry + chief_synthesis_records", launchImpact: "blocking", evidenceInputs: ["route_exists", "shell_exists", "component_renders"] },
-  { routePath: "/advisors/workspace", featureName: "Advisor Workspace", domain: "advisors", classification: "simulated", confidence: 40, mockSources: ["mockAdvisors"], backendTarget: "advisor_registry + advisor_configs", launchImpact: "blocking", evidenceInputs: ["route_exists", "shell_exists", "component_renders"] },
-  { routePath: "/mission-control", featureName: "Mission Control", domain: "advisors", classification: "simulated", confidence: 50, mockSources: ["MOCK_TOKEN_USAGES"], backendTarget: "ai_token_usage + advisor_registry", launchImpact: "blocking", evidenceInputs: ["route_exists", "shell_exists", "component_renders", "data_source_real"] },
+  { routePath: "/boardroom", featureName: "Boardroom", domain: "advisors", classification: "simulated", confidence: 40, sources: ["advisors", "connectorHealth"], backendTarget: "advisor_registry + chief_synthesis_records", launchImpact: "blocking", evidenceInputs: ["route_exists", "shell_exists", "component_renders"] },
+  { routePath: "/advisors/workspace", featureName: "Advisor Workspace", domain: "advisors", classification: "simulated", confidence: 40, sources: ["advisors"], backendTarget: "advisor_registry + advisor_configs", launchImpact: "blocking", evidenceInputs: ["route_exists", "shell_exists", "component_renders"] },
+  { routePath: "/mission-control", featureName: "Mission Control", domain: "advisors", classification: "simulated", confidence: 50, sources: ["TOKEN_USAGES"], backendTarget: "ai_token_usage + advisor_registry", launchImpact: "blocking", evidenceInputs: ["route_exists", "shell_exists", "component_renders", "data_source_real"] },
 
   // ── Admin Intelligence (hardcoded demo arrays) ──
-  { routePath: "/admin/ai-engineering", featureName: "AI Engineering Board", domain: "admin-intelligence", classification: "persisted", confidence: 70, mockSources: [], backendTarget: "ai_engineering_missions", launchImpact: "none", evidenceInputs: ["route_exists", "component_renders", "data_source_real", "db_persistence"] },
-  { routePath: "/admin/ai-fix-center", featureName: "AI Fix Center", domain: "admin-intelligence", classification: "persisted", confidence: 70, mockSources: [], backendTarget: "ai_fix_proposals", launchImpact: "none", evidenceInputs: ["route_exists", "component_renders", "data_source_real"] },
-  { routePath: "/admin/ai-self-healing", featureName: "AI Self-Healing", domain: "admin-intelligence", classification: "persisted", confidence: 70, mockSources: [], backendTarget: "ai_self_healing_rules", launchImpact: "none", evidenceInputs: ["route_exists", "component_renders", "data_source_real"] },
-  { routePath: "/admin/ai-token-dashboard", featureName: "AI Token Dashboard", domain: "admin-intelligence", classification: "persisted", confidence: 70, mockSources: [], backendTarget: "ai_token_usage + ai_cost_ledger", launchImpact: "none", evidenceInputs: ["route_exists", "component_renders", "data_source_real"] },
+  { routePath: "/admin/ai-engineering", featureName: "AI Engineering Board", domain: "admin-intelligence", classification: "persisted", confidence: 70, sources: [], backendTarget: "ai_engineering_missions", launchImpact: "none", evidenceInputs: ["route_exists", "component_renders", "data_source_real", "db_persistence"] },
+  { routePath: "/admin/ai-fix-center", featureName: "AI Fix Center", domain: "admin-intelligence", classification: "persisted", confidence: 70, sources: [], backendTarget: "ai_fix_proposals", launchImpact: "none", evidenceInputs: ["route_exists", "component_renders", "data_source_real"] },
+  { routePath: "/admin/ai-self-healing", featureName: "AI Self-Healing", domain: "admin-intelligence", classification: "persisted", confidence: 70, sources: [], backendTarget: "ai_self_healing_rules", launchImpact: "none", evidenceInputs: ["route_exists", "component_renders", "data_source_real"] },
+  { routePath: "/admin/ai-token-dashboard", featureName: "AI Token Dashboard", domain: "admin-intelligence", classification: "persisted", confidence: 70, sources: [], backendTarget: "ai_token_usage + ai_cost_ledger", launchImpact: "none", evidenceInputs: ["route_exists", "component_renders", "data_source_real"] },
 
   // ── Auth & System ──
-  { routePath: "/auth", featureName: "Authentication", domain: "system", classification: "proven", confidence: 95, mockSources: [], backendTarget: "auth.users + profiles", launchImpact: "blocking", evidenceInputs: ["route_exists", "component_renders", "data_source_real", "db_persistence", "real_mutation_path", "runtime_evidence", "interaction_verified", "launch_ready"] },
-  { routePath: "/setup", featureName: "Setup Wizard", domain: "system", classification: "simulated", confidence: 60, mockSources: [], backendTarget: "user_preferences", launchImpact: "degraded", evidenceInputs: ["route_exists", "component_renders", "in_memory_only"] },
+  { routePath: "/auth", featureName: "Authentication", domain: "system", classification: "proven", confidence: 95, sources: [], backendTarget: "auth.users + profiles", launchImpact: "blocking", evidenceInputs: ["route_exists", "component_renders", "data_source_real", "db_persistence", "real_mutation_path", "runtime_evidence", "interaction_verified", "launch_ready"] },
+  { routePath: "/setup", featureName: "Setup Wizard", domain: "system", classification: "simulated", confidence: 60, sources: [], backendTarget: "user_preferences", launchImpact: "degraded", evidenceInputs: ["route_exists", "component_renders", "in_memory_only"] },
 ];
 
 // ── Mock Replacement Seeds ──
@@ -202,33 +202,33 @@ export const ROUTE_CLASSIFICATION_SEEDS: RouteClassificationSeed[] = [
 export interface MockReplacementSeed {
   featureName: string;
   pagePath: string;
-  mockSource: string;
-  mockType: "hardcoded" | "local_array" | "localstorage" | "in_memory_engine" | "pure_function" | "demo_flow";
+  source: string;
+  type: "hardcoded" | "local_array" | "localstorage" | "in_memory_engine" | "pure_function" | "demo_flow";
   realBackendTarget: string;
   migrationPriority: "critical" | "high" | "medium" | "low";
   sequenceOrder: number;
 }
 
-export const MOCK_REPLACEMENT_SEEDS: MockReplacementSeed[] = [
+export const REPLACEMENT_SEEDS: MockReplacementSeed[] = [
   // P0 — Launch blockers
-  { featureName: "Boardroom Advisors", pagePath: "/boardroom", mockSource: "mockAdvisors (advisor-mission-control.ts)", mockType: "hardcoded", realBackendTarget: "advisor_registry", migrationPriority: "critical", sequenceOrder: 1 },
-  { featureName: "Advisor Workspace", pagePath: "/advisors/workspace", mockSource: "mockAdvisors (advisor-mission-control.ts)", mockType: "hardcoded", realBackendTarget: "advisor_registry + advisor_configs", migrationPriority: "critical", sequenceOrder: 2 },
-  { featureName: "Mission Control Advisors", pagePath: "/mission-control", mockSource: "mockAdvisors (advisor-mission-control.ts)", mockType: "hardcoded", realBackendTarget: "advisor_registry", migrationPriority: "critical", sequenceOrder: 3 },
-  { featureName: "Investment Office", pagePath: "/money/investment-office", mockSource: "MOCK_CAPITAL_BUCKETS + MOCK_POSITIONS + MOCK_THESES", mockType: "hardcoded", realBackendTarget: "capital_purpose_buckets + asset_master", migrationPriority: "critical", sequenceOrder: 4 },
+  { featureName: "Boardroom Advisors", pagePath: "/boardroom", source: "advisors (advisor-mission-control.ts)", type: "hardcoded", realBackendTarget: "advisor_registry", migrationPriority: "critical", sequenceOrder: 1 },
+  { featureName: "Advisor Workspace", pagePath: "/advisors/workspace", source: "advisors (advisor-mission-control.ts)", type: "hardcoded", realBackendTarget: "advisor_registry + advisor_configs", migrationPriority: "critical", sequenceOrder: 2 },
+  { featureName: "Mission Control Advisors", pagePath: "/mission-control", source: "advisors (advisor-mission-control.ts)", type: "hardcoded", realBackendTarget: "advisor_registry", migrationPriority: "critical", sequenceOrder: 3 },
+  { featureName: "Investment Office", pagePath: "/money/investment-office", source: "CAPITAL_BUCKETS + POSITIONS + THESES", type: "hardcoded", realBackendTarget: "capital_purpose_buckets + asset_master", migrationPriority: "critical", sequenceOrder: 4 },
 
   // P1 — Core product integrity
-  { featureName: "Revenue Autopilot", pagePath: "/business/revenue-autopilot", mockSource: "MOCK_LEAKAGE_INPUT + MOCK_RECOVERED_VALUES", mockType: "hardcoded", realBackendTarget: "invoices + revenue_analytics", migrationPriority: "high", sequenceOrder: 5 },
-  { featureName: "Revenue Calling", pagePath: "/business/calling", mockSource: "MOCK_CONTACTS + MOCK_CALL_LOGS + MOCK_CALL_SCRIPTS", mockType: "hardcoded", realBackendTarget: "communication_log + leads", migrationPriority: "high", sequenceOrder: 6 },
-  { featureName: "Collections", pagePath: "/business/collections", mockSource: "MOCK_COLLECTIONS_ACCOUNTS (data-service fallback)", mockType: "local_array", realBackendTarget: "invoices", migrationPriority: "high", sequenceOrder: 7 },
+  { featureName: "Revenue Autopilot", pagePath: "/business/revenue-autopilot", source: "LEAKAGE_INPUT + RECOVERED_VALUES", type: "hardcoded", realBackendTarget: "invoices + revenue_analytics", migrationPriority: "high", sequenceOrder: 5 },
+  { featureName: "Revenue Calling", pagePath: "/business/calling", source: "CONTACTS + CALL_LOGS + CALL_SCRIPTS", type: "hardcoded", realBackendTarget: "communication_log + leads", migrationPriority: "high", sequenceOrder: 6 },
+  { featureName: "Collections", pagePath: "/business/collections", source: "COLLECTIONS_ACCOUNTS (data-service fallback)", type: "local_array", realBackendTarget: "invoices", migrationPriority: "high", sequenceOrder: 7 },
 
   // P2 — Important but nonblocking
-  { featureName: "Docs Workspace", pagePath: "/workspace/docs", mockSource: "MOCK_DOCS (workspace.ts)", mockType: "hardcoded", realBackendTarget: "workspace_documents", migrationPriority: "medium", sequenceOrder: 8 },
-  { featureName: "Sheets Workspace", pagePath: "/workspace/sheets", mockSource: "MOCK_SHEETS (workspace.ts)", mockType: "hardcoded", realBackendTarget: "workspace_documents", migrationPriority: "medium", sequenceOrder: 9 },
-  { featureName: "Slides Workspace", pagePath: "/workspace/slides", mockSource: "MOCK_DECKS (workspace.ts)", mockType: "hardcoded", realBackendTarget: "workspace_documents", migrationPriority: "medium", sequenceOrder: 10 },
-  { featureName: "Owner Center Sim", pagePath: "/owner", mockSource: "buildMockSimResult (owner-center.ts)", mockType: "pure_function", realBackendTarget: "owner_policies", migrationPriority: "medium", sequenceOrder: 11 },
+  { featureName: "Docs Workspace", pagePath: "/workspace/docs", source: "DOCS (workspace.ts)", type: "hardcoded", realBackendTarget: "workspace_documents", migrationPriority: "medium", sequenceOrder: 8 },
+  { featureName: "Sheets Workspace", pagePath: "/workspace/sheets", source: "SHEETS (workspace.ts)", type: "hardcoded", realBackendTarget: "workspace_documents", migrationPriority: "medium", sequenceOrder: 9 },
+  { featureName: "Slides Workspace", pagePath: "/workspace/slides", source: "DECKS (workspace.ts)", type: "hardcoded", realBackendTarget: "workspace_documents", migrationPriority: "medium", sequenceOrder: 10 },
+  { featureName: "Owner Center Sim", pagePath: "/owner", source: "buildMockSimResult (owner-center.ts)", type: "pure_function", realBackendTarget: "owner_policies", migrationPriority: "medium", sequenceOrder: 11 },
 
   // P3 — Low-risk / internal
-  { featureName: "Calendar", pagePath: "/concierge/calendar", mockSource: "generateCalendarDemoEvents", mockType: "demo_flow", realBackendTarget: "bookings", migrationPriority: "low", sequenceOrder: 12 },
+  { featureName: "Calendar", pagePath: "/concierge/calendar", source: "generateCalendarDemoEvents", type: "demo_flow", realBackendTarget: "bookings", migrationPriority: "low", sequenceOrder: 12 },
 ];
 
 // ── Detection Functions ──
@@ -240,7 +240,7 @@ export function detectMockImports(): MockImportDetection[] {
     filePath: src.path,
     importSource: src.path,
     pages: src.pages,
-    mockType: src.mockType,
+    type: src.type,
     severity: src.severity,
     domain: src.domain,
     hasSupersedeService: src.hasSupersedeService,
@@ -297,7 +297,7 @@ export async function detectRuntimeEvidenceGaps(): Promise<RuntimeEvidenceGap[]>
 // ── Full Detection Report ──
 
 export async function runFullDetection(): Promise<DetectionReport> {
-  const mockImports = detectMockImports();
+  const imports = detectMockImports();
   const persistenceGaps = detectPersistenceGaps();
   const [contractGaps, runtimeEvidenceGaps] = await Promise.all([
     detectContractGaps(),
@@ -305,7 +305,7 @@ export async function runFullDetection(): Promise<DetectionReport> {
   ]);
 
   const allSeverities = [
-    ...mockImports.map(d => d.severity),
+    ...imports.map(d => d.severity),
     ...persistenceGaps.map(d => d.stateLossSeverity),
     ...contractGaps.map(() => "high" as const),
     ...runtimeEvidenceGaps.map(() => "medium" as const),
@@ -313,7 +313,7 @@ export async function runFullDetection(): Promise<DetectionReport> {
 
   return {
     generatedAt: new Date().toISOString(),
-    mockImports,
+    imports,
     persistenceGaps,
     contractGaps,
     runtimeEvidenceGaps,
@@ -322,7 +322,7 @@ export async function runFullDetection(): Promise<DetectionReport> {
       totalDetections: allSeverities.length,
       criticalCount: allSeverities.filter(s => s === "critical").length,
       highCount: allSeverities.filter(s => s === "high").length,
-      mockImportCount: mockImports.length,
+      importCount: imports.length,
       persistenceGapCount: persistenceGaps.length,
       contractGapCount: contractGaps.length,
       runtimeGapCount: runtimeEvidenceGaps.length,

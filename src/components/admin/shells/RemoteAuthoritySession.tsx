@@ -33,7 +33,7 @@ interface RemoteSession {
   isActive: boolean;
 }
 
-const DEMO_SESSION: RemoteSession = {
+const SESSION: RemoteSession = {
   id: "rs-001",
   targetDevice: "desktop-01 (MacBook Pro)",
   targetType: "desktop",
@@ -64,7 +64,7 @@ const CMD_STATUS_ICON: Record<string, { icon: React.ElementType; color: string }
 };
 
 export function RemoteAuthoritySession({ open, onOpenChange }: { open: boolean; onOpenChange: (open: boolean) => void }) {
-  const session = DEMO_SESSION;
+  const session = SESSION;
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>

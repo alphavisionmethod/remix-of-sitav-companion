@@ -23,7 +23,7 @@ interface DiscussionEntry {
   timestamp: string;
 }
 
-const MOCK_DISCUSSIONS: Record<string, DiscussionEntry[]> = {
+const DISCUSSIONS: Record<string, DiscussionEntry[]> = {
   business: [
     {
       advisorId: "biz-revenue",
@@ -256,7 +256,7 @@ export function BoardroomDiscussionThread({ scope }: Props) {
   const [playIndex, setPlayIndex] = useState(0);
 
   const domain = scope === "global" ? "business" : scope;
-  const entries = MOCK_DISCUSSIONS[domain] || MOCK_DISCUSSIONS.business;
+  const entries = DISCUSSIONS[domain] || DISCUSSIONS.business;
 
   // Auto-play sequential mode
   React.useEffect(() => {

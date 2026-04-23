@@ -15,7 +15,7 @@ import {
 } from "lucide-react";
 import {
   simulatePlaybook,
-  MOCK_CUSTOMERS,
+  CUSTOMERS,
   type PlaybookDraftSim,
   type StepOutcome,
   type SimulationResult,
@@ -286,14 +286,14 @@ interface PlaybookSimulatorProps {
 
 const PlaybookSimulator = ({ draft, onBack, onActivate }: PlaybookSimulatorProps) => {
   const { isDemoMode } = useDataMode();
-  const [selectedCustomerIds, setSelectedCustomerIds] = useState<string[]>((isDemoMode ? MOCK_CUSTOMERS : [] as typeof MOCK_CUSTOMERS).map(c => c.id));
+  const [selectedCustomerIds, setSelectedCustomerIds] = useState<string[]>((isDemoMode ? CUSTOMERS : [] as typeof CUSTOMERS).map(c => c.id));
   const [currentStep, setCurrentStep] = useState(-1); // -1 = not started
   const [autoPlay, setAutoPlay] = useState(false);
   const [result, setResult] = useState<SimulationResult | null>(null);
   const [showSummary, setShowSummary] = useState(false);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  const selectedCustomers = (isDemoMode ? MOCK_CUSTOMERS : [] as typeof MOCK_CUSTOMERS).filter(c => selectedCustomerIds.includes(c.id));
+  const selectedCustomers = (isDemoMode ? CUSTOMERS : [] as typeof CUSTOMERS).filter(c => selectedCustomerIds.includes(c.id));
 
   // Run simulation
   useEffect(() => {
@@ -436,7 +436,7 @@ const PlaybookSimulator = ({ draft, onBack, onActivate }: PlaybookSimulatorProps
         {/* Right: Customer selector */}
         <div>
           <CustomerSelector
-            customers={MOCK_CUSTOMERS}
+            customers={CUSTOMERS}
             selected={selectedCustomerIds}
             onToggle={toggleCustomer}
           />

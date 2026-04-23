@@ -13,9 +13,8 @@ interface ConnectorSyncDashboardProps {
   compact?: boolean;
 }
 
-import { DEMO_SYNC_CONNECTORS } from "@/data/fixtures/mock-data/connector-sync";
 import { useDataMode } from "@/contexts/DataModeContext";
-const DEMO_CONNECTORS = DEMO_SYNC_CONNECTORS;
+const CONNECTORS = SYNC_CONNECTORS;
 
 const statusConfig: Record<string, { color: string; icon: typeof CheckCircle }> = {
   active: { color: "text-trust-safe", icon: CheckCircle },
@@ -27,7 +26,7 @@ const statusConfig: Record<string, { color: string; icon: typeof CheckCircle }> 
 export function ConnectorSyncDashboard({ compact = false }: ConnectorSyncDashboardProps) {
   const { user } = useAuth();
 
-  const { data: connectors = DEMO_CONNECTORS } = useQuery({
+  const { data: connectors = CONNECTORS } = useQuery({
     queryKey: ["connector-sync-dashboard", user?.id],
     enabled: !!user,
     queryFn: async () => {
@@ -39,7 +38,7 @@ export function ConnectorSyncDashboard({ compact = false }: ConnectorSyncDashboa
         .eq("user_id", user!.id);
 
       if ((!registry || registry.length === 0) && (!accounts || accounts.length === 0)) {
-        return DEMO_CONNECTORS;
+        return CONNECTORS;
       }
 
       return (accounts || []).map((acc: any) => {

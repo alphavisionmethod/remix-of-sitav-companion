@@ -65,7 +65,7 @@ export interface DemoAuditEntry {
 const now = new Date();
 const h = (hours: number) => new Date(now.getTime() - hours * 3600000).toISOString();
 
-export const DEMO_CONNECTIONS: DemoConnection[] = [
+export const CONNECTIONS: DemoConnection[] = [
   {
     id: "conn-1", providerId: "hubspot", providerName: "HubSpot", status: "connected",
     externalAccountName: "Acme Corp Portal", externalAccountId: "hub-12345",
@@ -115,7 +115,7 @@ export const DEMO_CONNECTIONS: DemoConnection[] = [
   },
 ];
 
-export const DEMO_ACTION_REQUESTS: DemoActionRequest[] = [
+export const ACTION_REQUESTS: DemoActionRequest[] = [
   {
     id: "ar-1", connectionId: "conn-1", providerName: "HubSpot", actionType: "create-contact", actionName: "Create Contact",
     riskLevel: "low", status: "succeeded", requestedBy: "You", requestedAt: h(2),
@@ -150,7 +150,7 @@ export const DEMO_ACTION_REQUESTS: DemoActionRequest[] = [
   },
 ];
 
-export const DEMO_AUDIT_LOG: DemoAuditEntry[] = [
+export const AUDIT_LOG: DemoAuditEntry[] = [
   { id: "al-1", eventType: "connection.created", summary: "Connected HubSpot — Acme Corp Portal", actor: "You", connectionName: "HubSpot", timestamp: h(720) },
   { id: "al-2", eventType: "sync.completed", summary: "Synced 342 HubSpot contacts", actor: "System", connectionName: "HubSpot", timestamp: h(0.5) },
   { id: "al-3", eventType: "action.proposed", summary: "Proposed: Update Google Ads campaign budget ($50→$75/day)", actor: "You", connectionName: "Google Ads", timestamp: h(0.5) },

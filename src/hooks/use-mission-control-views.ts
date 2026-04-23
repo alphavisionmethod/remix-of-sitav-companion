@@ -4,10 +4,6 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useMemo, useState } from "react";
-import {
-  mockInternalAgents, mockIncidents, mockConnectorHealth, mockStuckWorkflows,
-  mockCostAnomalies, mockPolicyAnomalies, mockReleaseSafety, mockSafeMode,
-} from "@/data/fixtures/mock-data/advisor-mission-control";
 import type {
   MissionControlSummaryView, WhatMattersItem, ConnectorSummaryView,
   ConnectorDetailView, ConnectorLogEntry, ConnectorHealthView,
@@ -26,23 +22,23 @@ export function useControlMode() {
 // ── System Summary ──────────────────────────────────────────────
 export function useMissionControlSummary(): MissionControlSummaryView {
   return useMemo(() => {
-    const healthy = mockInternalAgents.filter(a => a.health === "healthy").length;
-    const total = mockInternalAgents.length;
-    const openInc = mockIncidents.filter(i => i.status !== "resolved").length;
-    const critInc = mockIncidents.filter(i => i.severity === "critical" && i.status !== "resolved").length;
-    const connected = mockConnectorHealth.filter(c => c.status === "connected").length;
-    const degradedConn = mockConnectorHealth.filter(c => c.status === "degraded").length;
-    const disconnected = mockConnectorHealth.filter(c => c.status === "disconnected").length;
-    const avgHealth = Math.round(mockConnectorHealth.reduce((s, c) => s + c.healthScore, 0) / mockConnectorHealth.length);
-    const stuck = mockStuckWorkflows.length;
-    const totalTokens = mockInternalAgents.reduce((s, a) => s + a.costTokens24h, 0);
+    const healthy = internalAgents.filter(a => a.health === "healthy").length;
+    const total = internalAgents.length;
+    const openInc = incidents.filter(i => i.status !== "resolved").length;
+    const critInc = incidents.filter(i => i.severity === "critical" && i.status !== "resolved").length;
+    const connected = connectorHealth.filter(c => c.status === "connected").length;
+    const degradedConn = connectorHealth.filter(c => c.status === "degraded").length;
+    const disconnected = connectorHealth.filter(c => c.status === "disconnected").length;
+    const avgHealth = Math.round(connectorHealth.reduce((s, c) => s + c.healthScore, 0) / connectorHealth.length);
+    const stuck = stuckWorkflows.length;
+    const totalTokens = internalAgents.reduce((s, a) => s + a.costTokens24h, 0);
     const budget = 5.0;
     const costToday = totalTokens * 0.002 / 1000;
 
     const score = Math.round(
       ((healthy / total) * 40) +
       ((openInc === 0 ? 1 : Math.max(0, 1 - openInc * 0.2)) * 25) +
-      ((1 - degradedConn / mockConnectorHealth.length) * 20) +
+      ((1 - degradedConn / connectorHealth.length) * 20) +
       ((stuck === 0 ? 1 : 0.5) * 15)
     );
 
@@ -52,16 +48,16 @@ export function useMissionControlSummary(): MissionControlSummaryView {
       trustPosture: critInc > 0 ? "compromised" : openInc > 0 ? "review" : "verified",
       agentsSummary: {
         total, healthy,
-        degraded: mockInternalAgents.filter(a => a.health === "degraded").length,
-        paused: mockInternalAgents.filter(a => a.health === "paused").length,
-        error: mockInternalAgents.filter(a => a.health === "critical").length,
+        degraded: internalAgents.filter(a => a.health === "degraded").length,
+        paused: internalAgents.filter(a => a.health === "paused").length,
+        error: internalAgents.filter(a => a.health === "critical").length,
       },
-      incidentsSummary: { open: openInc, critical: critInc, total: mockIncidents.length },
-      connectorsSummary: { total: mockConnectorHealth.length, connected, degraded: degradedConn, disconnected, avgHealth },
+      incidentsSummary: { open: openInc, critical: critInc, total: incidents.length },
+      connectorsSummary: { total: connectorHealth.length, connected, degraded: degradedConn, disconnected, avgHealth },
       workflowsSummary: { total: 24, running: 24 - stuck, stuck, failed: 0 },
       costSummary: { tokensToday: totalTokens, costToday, budget, utilization: Math.round((costToday / budget) * 100) },
-      releaseSummary: { currentVersion: "v2.4.0", ringStatus: mockReleaseSafety.currentRing, canaryHealth: mockReleaseSafety.canaryStatus === "healthy" ? 100 : 60 },
-      safeModeActive: mockSafeMode.globalSafeMode,
+      releaseSummary: { currentVersion: "v2.4.0", ringStatus: releaseSafety.currentRing, canaryHealth: releaseSafety.canaryStatus === "healthy" ? 100 : 60 },
+      safeModeActive: safeMode.globalSafeMode,
       lastUpdated: new Date().toISOString(),
     };
   }, []);
@@ -71,7 +67,7 @@ export function useMissionControlSummary(): MissionControlSummaryView {
 export function useWhatMattersNow(): WhatMattersItem[] {
   return useMemo(() => {
     const items: WhatMattersItem[] = [];
-    const openInc = mockIncidents.filter(i => i.status !== "resolved");
+    const openInc = incidents.filter(i => i.status !== "resolved");
     openInc.forEach(i => items.push({
       id: `inc-${i.id}`, title: i.title, description: `${i.severity} severity — ${i.scope}`,
       urgency: i.severity === "critical" ? "critical" : "high", domain: "incidents",
@@ -79,7 +75,7 @@ export function useWhatMattersNow(): WhatMattersItem[] {
       timestamp: i.createdAt,
     }));
 
-    const degradedConn = mockConnectorHealth.filter(c => c.status !== "connected");
+    const degradedConn = connectorHealth.filter(c => c.status !== "connected");
     degradedConn.forEach(c => items.push({
       id: `conn-${c.id}`, title: `${c.name} is ${c.status}`, description: `Health score: ${c.healthScore}/100`,
       urgency: c.status === "disconnected" ? "high" : "medium", domain: "connectors",
@@ -87,14 +83,14 @@ export function useWhatMattersNow(): WhatMattersItem[] {
       timestamp: new Date().toISOString(),
     }));
 
-    mockCostAnomalies.forEach(a => items.push({
+    costAnomalies.forEach(a => items.push({
       id: `cost-${a.id}`, title: a.description, description: `${a.advisor} — ${a.timeframe}`,
       urgency: "medium", domain: "costs",
       actionLabel: "Review", actionRoute: `/mission-control/costs`,
       timestamp: new Date().toISOString(),
     }));
 
-    mockStuckWorkflows.forEach(w => items.push({
+    stuckWorkflows.forEach(w => items.push({
       id: `wf-${w.id}`, title: `Workflow stuck: ${w.name}`, description: `${w.reason} — stuck since ${w.stuckSince}`,
       urgency: "high", domain: "workflows",
       actionLabel: "Recover", actionRoute: `/mission-control/recovery`,
@@ -111,7 +107,7 @@ export function useWhatMattersNow(): WhatMattersItem[] {
 // ── Connector Views ─────────────────────────────────────────────
 export function useConnectorSummaries(): ConnectorSummaryView[] {
   return useMemo(() =>
-    mockConnectorHealth.map(c => ({
+    connectorHealth.map(c => ({
       id: c.id, name: c.name, status: c.status as ConnectorSummaryView["status"],
       healthScore: c.healthScore, authState: "valid" as const,
       lastSync: c.lastSync, errorRate: parseFloat(c.errorRate) || 0,
@@ -124,7 +120,7 @@ export function useConnectorSummaries(): ConnectorSummaryView[] {
 
 export function useConnectorDetail(connectorId: string): ConnectorDetailView | null {
   return useMemo(() => {
-    const c = mockConnectorHealth.find(x => x.id === connectorId);
+    const c = connectorHealth.find(x => x.id === connectorId);
     if (!c) return null;
     return {
       id: c.id, name: c.name, status: c.status as ConnectorSummaryView["status"],
@@ -146,7 +142,7 @@ export function useConnectorDetail(connectorId: string): ConnectorDetailView | n
 
 export function useConnectorHealth(connectorId: string): ConnectorHealthView | null {
   return useMemo(() => {
-    const c = mockConnectorHealth.find(x => x.id === connectorId);
+    const c = connectorHealth.find(x => x.id === connectorId);
     if (!c) return null;
     const latencyMs = Math.floor(Math.random() * 300) + 50;
     return {
@@ -174,7 +170,7 @@ export function useConnectorLogs(connectorId: string): ConnectorLogEntry[] {
 // ── Incident Views ──────────────────────────────────────────────
 export function useIncidentSummaries(): IncidentSummaryView[] {
   return useMemo(() =>
-    mockIncidents.map(i => ({
+    incidents.map(i => ({
       id: i.id, title: i.title, severity: i.severity as IncidentSummaryView["severity"],
       status: i.status as IncidentSummaryView["status"],
       affectedModules: [i.scope], trustImpact: i.severity === "critical" ? "critical" as const : "minor" as const,
@@ -186,7 +182,7 @@ export function useIncidentSummaries(): IncidentSummaryView[] {
 
 export function useIncidentDetail(incidentId: string): IncidentDetailView | null {
   return useMemo(() => {
-    const i = mockIncidents.find(x => x.id === incidentId);
+    const i = incidents.find(x => x.id === incidentId);
     if (!i) return null;
     return {
       id: i.id, title: i.title, severity: i.severity as IncidentSummaryView["severity"],
@@ -221,13 +217,13 @@ export function useTrustSummary(): TrustSummaryView {
 // ── Cost View ───────────────────────────────────────────────────
 export function useFounderCostSummary(): FounderCostSummaryView {
   return useMemo(() => {
-    const totalTokens = mockInternalAgents.reduce((s, a) => s + a.costTokens24h, 0);
+    const totalTokens = internalAgents.reduce((s, a) => s + a.costTokens24h, 0);
     const budget = 5.0;
     const cost = totalTokens * 0.002 / 1000;
-    const sorted = [...mockInternalAgents].sort((a, b) => b.costTokens24h - a.costTokens24h);
+    const sorted = [...internalAgents].sort((a, b) => b.costTokens24h - a.costTokens24h);
     return {
       totalTokensToday: totalTokens, totalCostToday: cost, dailyBudget: budget,
-      budgetUtilization: Math.round((cost / budget) * 100), anomalyCount: mockCostAnomalies.length,
+      budgetUtilization: Math.round((cost / budget) * 100), anomalyCount: costAnomalies.length,
       topSpenders: sorted.slice(0, 5).map(a => ({ name: a.name, tokens: a.costTokens24h, cost: a.costTokens24h * 0.002 / 1000, invocations: a.invocations24h })),
       byModule: [
         { module: "Business OS", tokens: Math.round(totalTokens * 0.35), cost: cost * 0.35 },
@@ -245,7 +241,7 @@ export function useFounderCostSummary(): FounderCostSummaryView {
         projected: +(cost * (0.9 + Math.random() * 0.3)).toFixed(2),
         budget,
       })),
-      recommendations: mockCostAnomalies.length > 0
+      recommendations: costAnomalies.length > 0
         ? ["Consider throttling premium model usage", "Review boardroom session frequency"]
         : ["Cost efficiency is within normal range"],
     };
@@ -255,10 +251,10 @@ export function useFounderCostSummary(): FounderCostSummaryView {
 // ── Recovery View ───────────────────────────────────────────────
 export function useRecoverySummary(): RecoverySummaryView {
   return useMemo(() => ({
-    failedWorkflows: 0, stuckWorkflows: mockStuckWorkflows.length,
-    degradedServices: mockConnectorHealth.filter(c => c.status === "degraded").length,
+    failedWorkflows: 0, stuckWorkflows: stuckWorkflows.length,
+    degradedServices: connectorHealth.filter(c => c.status === "degraded").length,
     unresolvedPostconditions: 0, replayQueue: 1, rollbackQueue: 0,
-    items: mockStuckWorkflows.map(w => ({
+    items: stuckWorkflows.map(w => ({
       id: w.id, workflowName: w.name, status: "stuck" as const,
       stuckSince: w.stuckSince, suggestedAction: "retry" as const,
       domain: "system", impact: w.reason,
@@ -278,18 +274,18 @@ export function useDiagnosticsSummary(): DiagnosticsSummaryView {
 // ── AI Team View ────────────────────────────────────────────────
 export function useAITeamSummary(): AITeamSummaryView {
   return useMemo(() => {
-    const pods = new Map<string, typeof mockInternalAgents>();
-    mockInternalAgents.forEach(a => {
+    const pods = new Map<string, typeof internalAgents>();
+    internalAgents.forEach(a => {
       if (!pods.has(a.role)) pods.set(a.role, []);
       pods.get(a.role)!.push(a);
     });
     return {
-      totalAgents: mockInternalAgents.length,
-      healthyCount: mockInternalAgents.filter(a => a.health === "healthy").length,
-      degradedCount: mockInternalAgents.filter(a => a.health === "degraded").length,
-      pausedCount: mockInternalAgents.filter(a => a.health === "paused").length,
-      totalTokens24h: mockInternalAgents.reduce((s, a) => s + a.costTokens24h, 0),
-      totalInvocations24h: mockInternalAgents.reduce((s, a) => s + a.invocations24h, 0),
+      totalAgents: internalAgents.length,
+      healthyCount: internalAgents.filter(a => a.health === "healthy").length,
+      degradedCount: internalAgents.filter(a => a.health === "degraded").length,
+      pausedCount: internalAgents.filter(a => a.health === "paused").length,
+      totalTokens24h: internalAgents.reduce((s, a) => s + a.costTokens24h, 0),
+      totalInvocations24h: internalAgents.reduce((s, a) => s + a.invocations24h, 0),
       stuckTasks: 0, governanceState: "compliant",
       pods: Array.from(pods.entries()).map(([name, agents]) => ({
         name,

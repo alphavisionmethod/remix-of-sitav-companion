@@ -80,7 +80,7 @@ interface BCPMetrics {
 
 // ── Mock Data ───────────────────────────────────────────────────
 
-const MOCK_OBJECTIVES: RecoveryObjective[] = [
+const OBJECTIVES: RecoveryObjective[] = [
   { id: "ro-1", service: "Authentication Service", category: "critical", rpo: 1, rto: 5, actualRpo: 0.5, actualRto: 3, status: "met", lastTested: Date.now() - 604800000, backupMethod: "Active-Active Multi-Region", replicationLag: 0.2 },
   { id: "ro-2", service: "Transaction Engine", category: "critical", rpo: 1, rto: 5, actualRpo: 0.8, actualRto: 4, status: "met", lastTested: Date.now() - 604800000, backupMethod: "Synchronous Replication", replicationLag: 0.5 },
   { id: "ro-3", service: "Agent Orchestrator", category: "critical", rpo: 5, rto: 15, actualRpo: 3, actualRto: 12, status: "met", lastTested: Date.now() - 1209600000, backupMethod: "Hot Standby", replicationLag: 1.2 },
@@ -93,7 +93,7 @@ const MOCK_OBJECTIVES: RecoveryObjective[] = [
   { id: "ro-10", service: "Email/SMS Gateway", category: "non-critical", rpo: 120, rto: 240, actualRpo: 60, actualRto: 180, status: "met", lastTested: Date.now() - 7776000000, backupMethod: "Provider Failover", replicationLag: 0 },
 ];
 
-const MOCK_FAILOVER: FailoverProcedure[] = [
+const FAILOVER: FailoverProcedure[] = [
   {
     id: "fo-1", name: "Database Primary Failover", triggerCondition: "Primary DB unresponsive for >30s or replication lag >10s",
     type: "automatic", steps: [
@@ -153,7 +153,7 @@ const MOCK_FAILOVER: FailoverProcedure[] = [
   },
 ];
 
-const MOCK_DR_TESTS: DRTest[] = [
+const DR_TESTS: DRTest[] = [
   {
     id: "dt-1", name: "Q1 Full DR Simulation", type: "simulation", status: "completed",
     scheduledDate: Date.now() - 7776000000, completedDate: Date.now() - 7776000000 + 14400000,
@@ -188,7 +188,7 @@ const MOCK_DR_TESTS: DRTest[] = [
   },
 ];
 
-const MOCK_METRICS: BCPMetrics = {
+const METRICS: BCPMetrics = {
   overallReadiness: 89,
   servicesProtected: 9,
   totalServices: 10,
@@ -453,7 +453,7 @@ export function BCPDRDashboard() {
 
   const handleExport = () => {
     const headers = ["Service", "Category", "RPO Target (min)", "RPO Actual (min)", "RTO Target (min)", "RTO Actual (min)", "Status", "Backup Method", "Last Tested"];
-    const rows = (isDemoMode ? MOCK_OBJECTIVES : [] as typeof MOCK_OBJECTIVES).map(o => [
+    const rows = (isDemoMode ? OBJECTIVES : [] as typeof OBJECTIVES).map(o => [
       o.service, o.category, o.rpo.toString(), o.actualRpo.toString(),
       o.rto.toString(), o.actualRto.toString(), o.status, o.backupMethod, formatDateShort(o.lastTested),
     ]);
@@ -510,14 +510,14 @@ export function BCPDRDashboard() {
           {/* KPI Grid */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
             {[
-              { label: "Overall Readiness", value: `${MOCK_METRICS.overallReadiness}%`, icon: Gauge, color: MOCK_METRICS.overallReadiness >= 85 ? "text-trust-safe" : "text-amber-500" },
-              { label: "Services Protected", value: `${MOCK_METRICS.servicesProtected}/${MOCK_METRICS.totalServices}`, icon: Server, color: "text-primary" },
-              { label: "RPO Compliance", value: `${MOCK_METRICS.avgRpoCompliance}%`, icon: Clock, color: MOCK_METRICS.avgRpoCompliance >= 90 ? "text-trust-safe" : "text-amber-500" },
-              { label: "RTO Compliance", value: `${MOCK_METRICS.avgRtoCompliance}%`, icon: Activity, color: MOCK_METRICS.avgRtoCompliance >= 90 ? "text-trust-safe" : "text-amber-500" },
-              { label: "Failover Success", value: `${MOCK_METRICS.failoverSuccess}%`, icon: RefreshCw, color: "text-trust-safe" },
-              { label: "Open Findings", value: MOCK_METRICS.openFindings.toString(), icon: AlertTriangle, color: MOCK_METRICS.openFindings > 0 ? "text-amber-500" : "text-trust-safe" },
-              { label: "Last DR Test", value: `${daysAgo(MOCK_METRICS.lastDRTest)}d ago`, icon: CheckCircle, color: daysAgo(MOCK_METRICS.lastDRTest) > 90 ? "text-destructive" : "text-foreground" },
-              { label: "Next DR Test", value: `in ${daysUntil(MOCK_METRICS.nextDRTest)}d`, icon: Calendar, color: "text-primary" },
+              { label: "Overall Readiness", value: `${METRICS.overallReadiness}%`, icon: Gauge, color: METRICS.overallReadiness >= 85 ? "text-trust-safe" : "text-amber-500" },
+              { label: "Services Protected", value: `${METRICS.servicesProtected}/${METRICS.totalServices}`, icon: Server, color: "text-primary" },
+              { label: "RPO Compliance", value: `${METRICS.avgRpoCompliance}%`, icon: Clock, color: METRICS.avgRpoCompliance >= 90 ? "text-trust-safe" : "text-amber-500" },
+              { label: "RTO Compliance", value: `${METRICS.avgRtoCompliance}%`, icon: Activity, color: METRICS.avgRtoCompliance >= 90 ? "text-trust-safe" : "text-amber-500" },
+              { label: "Failover Success", value: `${METRICS.failoverSuccess}%`, icon: RefreshCw, color: "text-trust-safe" },
+              { label: "Open Findings", value: METRICS.openFindings.toString(), icon: AlertTriangle, color: METRICS.openFindings > 0 ? "text-amber-500" : "text-trust-safe" },
+              { label: "Last DR Test", value: `${daysAgo(METRICS.lastDRTest)}d ago`, icon: CheckCircle, color: daysAgo(METRICS.lastDRTest) > 90 ? "text-destructive" : "text-foreground" },
+              { label: "Next DR Test", value: `in ${daysUntil(METRICS.nextDRTest)}d`, icon: Calendar, color: "text-primary" },
             ].map(m => (
               <div key={m.label} className="rounded-xl border border-border/40 bg-card/40 p-3 flex items-center gap-2.5">
                 <m.icon className={cn("h-4 w-4 shrink-0", m.color)} />
@@ -532,7 +532,7 @@ export function BCPDRDashboard() {
           {/* Critical Services Quick View */}
           <div className="space-y-2">
             <span className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">Critical Services Status</span>
-            {(isDemoMode ? MOCK_OBJECTIVES : [] as typeof MOCK_OBJECTIVES).filter(o => o.category === "critical").map(o => (
+            {(isDemoMode ? OBJECTIVES : [] as typeof OBJECTIVES).filter(o => o.category === "critical").map(o => (
               <div key={o.id} className="flex items-center gap-3 rounded-lg border border-border/30 bg-card/30 p-2.5">
                 <RPOStatusDot status={o.status} />
                 <span className="text-xs font-medium text-foreground flex-1">{o.service}</span>
@@ -546,7 +546,7 @@ export function BCPDRDashboard() {
           {/* Upcoming Tests */}
           <div className="space-y-2">
             <span className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">Upcoming DR Tests</span>
-            {(isDemoMode ? MOCK_DR_TESTS : [] as typeof MOCK_DR_TESTS).filter(t => t.status === "scheduled").map(t => (
+            {(isDemoMode ? DR_TESTS : [] as typeof DR_TESTS).filter(t => t.status === "scheduled").map(t => (
               <div key={t.id} className="flex items-center gap-3 rounded-lg border border-primary/15 bg-primary/3 p-2.5">
                 <Calendar className="h-3.5 w-3.5 text-primary" />
                 <span className="text-xs font-medium text-foreground flex-1">{t.name}</span>
@@ -561,21 +561,21 @@ export function BCPDRDashboard() {
       {/* RPO/RTO Objectives */}
       {activeView === "objectives" && (
         <div className="space-y-2">
-          {(isDemoMode ? MOCK_OBJECTIVES : [] as typeof MOCK_OBJECTIVES).map(obj => <ObjectiveRow key={obj.id} obj={obj} />)}
+          {(isDemoMode ? OBJECTIVES : [] as typeof OBJECTIVES).map(obj => <ObjectiveRow key={obj.id} obj={obj} />)}
         </div>
       )}
 
       {/* Failover Procedures */}
       {activeView === "failover" && (
         <div className="space-y-2">
-          {(isDemoMode ? MOCK_FAILOVER : [] as typeof MOCK_FAILOVER).map(proc => <FailoverCard key={proc.id} proc={proc} />)}
+          {(isDemoMode ? FAILOVER : [] as typeof FAILOVER).map(proc => <FailoverCard key={proc.id} proc={proc} />)}
         </div>
       )}
 
       {/* DR Tests */}
       {activeView === "tests" && (
         <div className="space-y-2">
-          {(isDemoMode ? MOCK_DR_TESTS : [] as typeof MOCK_DR_TESTS).map(test => <DRTestCard key={test.id} test={test} />)}
+          {(isDemoMode ? DR_TESTS : [] as typeof DR_TESTS).map(test => <DRTestCard key={test.id} test={test} />)}
         </div>
       )}
 

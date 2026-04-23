@@ -5,20 +5,20 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useDataMode } from "@/contexts/DataModeContext";
-import * as mockData from "@/domains/investment/mock-data";
+import * as data from "@/domains/investment/mock-data";
 
 // ── Named re-exports for module-scope usage ──
-export const INSTRUMENTS = mockData.INSTRUMENTS;
-export const PORTFOLIO = mockData.PORTFOLIO;
-export const WATCHLISTS = mockData.WATCHLISTS;
-export const SAMPLE_THESES = mockData.SAMPLE_THESES;
-export const INVESTMENT_ADVISORS = mockData.INVESTMENT_ADVISORS;
-export const PLATFORM_CONNECTIONS = mockData.PLATFORM_CONNECTIONS;
-export const SAMPLE_ORDERS = mockData.SAMPLE_ORDERS;
-export const SAMPLE_SCENARIOS = mockData.SAMPLE_SCENARIOS;
-export const SAMPLE_RESEARCH = mockData.SAMPLE_RESEARCH;
-export const ADVISOR_SYNTHESIS = mockData.ADVISOR_SYNTHESIS;
-export const getInstrument = mockData.getInstrument;
+export const INSTRUMENTS = data.INSTRUMENTS;
+export const PORTFOLIO = data.PORTFOLIO;
+export const WATCHLISTS = data.WATCHLISTS;
+export const SAMPLE_THESES = data.SAMPLE_THESES;
+export const INVESTMENT_ADVISORS = data.INVESTMENT_ADVISORS;
+export const PLATFORM_CONNECTIONS = data.PLATFORM_CONNECTIONS;
+export const SAMPLE_ORDERS = data.SAMPLE_ORDERS;
+export const SAMPLE_SCENARIOS = data.SAMPLE_SCENARIOS;
+export const SAMPLE_RESEARCH = data.SAMPLE_RESEARCH;
+export const ADVISOR_SYNTHESIS = data.ADVISOR_SYNTHESIS;
+export const getInstrument = data.getInstrument;
 
 export function useInvestmentOfficeData() {
   const { isDemoMode } = useDataMode();

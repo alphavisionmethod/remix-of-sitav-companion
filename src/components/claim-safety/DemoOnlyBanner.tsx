@@ -12,7 +12,7 @@ import {
 } from "@/lib/claim-safety/demo-only-surface-registry";
 
 interface DemoOnlyBannerProps {
-  /** Surface ID — must match an entry in DEMO_ONLY_SURFACES. */
+  /** Surface ID — must match an entry in ONLY_SURFACES. */
   surfaceId: string;
   /** Optional className passthrough. */
   className?: string;

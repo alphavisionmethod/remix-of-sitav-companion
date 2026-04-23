@@ -72,7 +72,7 @@ interface PIR {
 
 // ── Mock Data ───────────────────────────────────────────────────
 
-const MOCK_CHANGES: ChangeRequest[] = [
+const CHANGES: ChangeRequest[] = [
   {
     id: "CR-2024-001", title: "Upgrade Agent Orchestrator to v2.5", description: "Major version upgrade for the agent orchestrator with new scheduling engine, improved memory management, and enhanced fault tolerance.",
     type: "normal", status: "cab-review", priority: "P2", requester: "platform@sita.os", assignee: "ai-ops@sita.os",
@@ -362,7 +362,7 @@ export function CABWorkflow() {
   const [searchQuery, setSearchQuery] = useState("");
 
   const filtered = useMemo(() => {
-    let result = MOCK_CHANGES;
+    let result = CHANGES;
     if (statusFilter !== "all") result = result.filter(c => c.status === statusFilter);
     if (typeFilter !== "all") result = result.filter(c => c.type === typeFilter);
     if (searchQuery) {
@@ -376,13 +376,13 @@ export function CABWorkflow() {
   }, [statusFilter, typeFilter, searchQuery]);
 
   const stats = useMemo(() => ({
-    total: (isDemoMode ? MOCK_CHANGES : [] as typeof MOCK_CHANGES).length,
-    pending: (isDemoMode ? MOCK_CHANGES : [] as typeof MOCK_CHANGES).filter(c => ["submitted", "risk-review", "cab-review"].includes(c.status)).length,
-    approved: (isDemoMode ? MOCK_CHANGES : [] as typeof MOCK_CHANGES).filter(c => c.status === "approved" || c.status === "implementing").length,
-    closed: (isDemoMode ? MOCK_CHANGES : [] as typeof MOCK_CHANGES).filter(c => c.status === "closed").length,
-    emergency: (isDemoMode ? MOCK_CHANGES : [] as typeof MOCK_CHANGES).filter(c => c.type === "emergency").length,
-    avgRiskScore: Math.round((isDemoMode ? MOCK_CHANGES : [] as typeof MOCK_CHANGES).reduce((s, c) => s + c.riskScore, 0) / (isDemoMode ? MOCK_CHANGES : [] as typeof MOCK_CHANGES).length),
-    pirComplete: (isDemoMode ? MOCK_CHANGES : [] as typeof MOCK_CHANGES).filter(c => c.pir !== null).length,
+    total: (isDemoMode ? CHANGES : [] as typeof CHANGES).length,
+    pending: (isDemoMode ? CHANGES : [] as typeof CHANGES).filter(c => ["submitted", "risk-review", "cab-review"].includes(c.status)).length,
+    approved: (isDemoMode ? CHANGES : [] as typeof CHANGES).filter(c => c.status === "approved" || c.status === "implementing").length,
+    closed: (isDemoMode ? CHANGES : [] as typeof CHANGES).filter(c => c.status === "closed").length,
+    emergency: (isDemoMode ? CHANGES : [] as typeof CHANGES).filter(c => c.type === "emergency").length,
+    avgRiskScore: Math.round((isDemoMode ? CHANGES : [] as typeof CHANGES).reduce((s, c) => s + c.riskScore, 0) / (isDemoMode ? CHANGES : [] as typeof CHANGES).length),
+    pirComplete: (isDemoMode ? CHANGES : [] as typeof CHANGES).filter(c => c.pir !== null).length,
   }), []);
 
   const handleExport = () => {
@@ -425,7 +425,7 @@ export function CABWorkflow() {
           { label: "Total Changes", value: stats.total, icon: FileText, color: "text-foreground" },
           { label: "Pending Review", value: stats.pending, icon: Clock, color: stats.pending > 0 ? "text-amber-500" : "text-trust-safe" },
           { label: "Approved/Implementing", value: stats.approved, icon: CheckCircle, color: "text-trust-safe" },
-          { label: "PIR Complete", value: `${stats.pirComplete}/${stats.closed + stats.pirComplete > 0 ? (isDemoMode ? MOCK_CHANGES : [] as typeof MOCK_CHANGES).filter(c => c.pir !== null || c.status === "closed").length : 0}`, icon: Eye, color: "text-primary" },
+          { label: "PIR Complete", value: `${stats.pirComplete}/${stats.closed + stats.pirComplete > 0 ? (isDemoMode ? CHANGES : [] as typeof CHANGES).filter(c => c.pir !== null || c.status === "closed").length : 0}`, icon: Eye, color: "text-primary" },
           { label: "Emergency Changes", value: stats.emergency, icon: Zap, color: stats.emergency > 0 ? "text-destructive" : "text-muted-foreground" },
           { label: "Avg Risk Score", value: `${stats.avgRiskScore}/25`, icon: Gauge, color: stats.avgRiskScore > 15 ? "text-destructive" : stats.avgRiskScore > 10 ? "text-amber-500" : "text-trust-safe" },
           { label: "Closed", value: stats.closed, icon: Lock, color: "text-muted-foreground" },
@@ -446,7 +446,7 @@ export function CABWorkflow() {
         <span className="text-[9px] font-semibold text-muted-foreground uppercase tracking-wider">Change Pipeline</span>
         <div className="flex items-center gap-1 mt-2 overflow-x-auto">
           {STATUS_FLOW.map((status, i) => {
-            const count = (isDemoMode ? MOCK_CHANGES : [] as typeof MOCK_CHANGES).filter(c => c.status === status).length;
+            const count = (isDemoMode ? CHANGES : [] as typeof CHANGES).filter(c => c.status === status).length;
             const meta = STATUS_META[status];
             return (
               <div key={status} className="flex items-center">
