@@ -28,13 +28,14 @@ import { useSpeechRecognition } from "./useSpeechRecognition";
 import { useSpeechSynthesis } from "./useSpeechSynthesis";
 import { useCloudVoice } from "./useCloudVoice";
 import { usePbVoicePrefs } from "./usePbVoicePrefs";
+import { useSentinelPrefs } from "./useSentinelPrefs";
 
 type LoopState = "wake" | "capture" | "thinking" | "speaking" | "paused";
 
 interface AlwaysOnVoiceProps {
   enabled: boolean;
   onDisable: () => void;
-  /** Wake phrases. Defaults to ["hey sita", "hey sentinel", "hey jarvis"]. */
+  /** Wake phrases override (otherwise uses Sentinel prefs from localStorage). */
   wakePhrases?: string[];
 }
 
@@ -43,8 +44,11 @@ const CAPTURE_TIMEOUT_MS = 7000;
 export function AlwaysOnVoice({ enabled, onDisable, wakePhrases }: AlwaysOnVoiceProps) {
   const { user } = useAuth();
   const { prefs } = usePbVoicePrefs();
+  const { prefs: sentinel } = useSentinelPrefs();
   const synth = useSpeechSynthesis();
   const cloud = useCloudVoice();
+
+  const phrases = wakePhrases ?? sentinel.phrases;
 
   const [state, setState] = useState<LoopState>("paused");
   const [lastUser, setLastUser] = useState<string>("");
