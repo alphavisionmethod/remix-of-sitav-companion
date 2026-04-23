@@ -62,7 +62,7 @@ export function BrainHero({
             Voice
           </Button>
           {onTools && (
-            <Button variant="outline" size="sm" onClick={onTools} title="External tools" className="backdrop-blur">
+            <Button data-tour="brain-tools" variant="outline" size="sm" onClick={onTools} title="External tools" className="backdrop-blur">
               <Wrench className="h-4 w-4" />
               <span className="sr-only sm:not-sr-only">Tools</span>
             </Button>
