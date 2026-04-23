@@ -192,6 +192,7 @@ const MOBILE_ROUTE_MAP_EXTENDED: Record<string, string> = {
   "/tasks": "/mobile/more",
   "/proof": "/mobile/proof",
   "/receipts": "/mobile/proof",
+  "/personal-brain": "/mobile",
 };
 
 const MobileGuard = ({ children }: { children: ReactNode }) => {

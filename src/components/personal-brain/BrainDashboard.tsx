@@ -1,0 +1,110 @@
+import { useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
+import { PageShell } from "@/components/sita/PageShell";
+import { Card, CardContent } from "@/components/ui/card";
+import { BrainHero, type BrainScope } from "./BrainHero";
+import { ChatList } from "./ChatList";
+import { GoalProgressCard } from "./GoalProgressCard";
+import { BrainInsightCard } from "./BrainInsightCard";
+import { SuggestedPromptStrip } from "./SuggestedPromptStrip";
+import { ModePicker } from "./ModePicker";
+import { WorkspaceGrid } from "./WorkspaceGrid";
+import { usePbWorkspaces } from "./hooks/usePbWorkspaces";
+import { usePbChats } from "./hooks/usePbChats";
+import { usePbGoals } from "./hooks/usePbGoals";
+import { usePbInsights } from "./hooks/usePbInsights";
+import type { BrainModeId } from "./BRAIN_MODES";
+import { supabase } from "@/integrations/supabase/client";
+
+function greetingFor(name?: string | null): string {
+  const hour = new Date().getHours();
+  const part =
+    hour < 5 ? "Up late" : hour < 12 ? "Good morning" : hour < 18 ? "Good afternoon" : "Good evening";
+  return name ? `${part}, ${name.split(" ")[0]}.` : `${part}.`;
+}
+
+export function BrainDashboard() {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const [scope, setScope] = useState<BrainScope>("personal");
+  const [mode, setMode] = useState<BrainModeId>("think");
+
+  const { workspaces, loading: workspacesLoading, createWorkspace } = usePbWorkspaces();
+  const { chats, loading: chatsLoading } = usePbChats({ limit: 5 });
+  const { goals, loading: goalsLoading } = usePbGoals();
+  const { insights, loading: insightsLoading } = usePbInsights(3);
+
+  const filteredWorkspaces = useMemo(() => {
+    if (scope === "business") {
+      return workspaces.filter((w) => ["business", "finance"].includes(w.kind));
+    }
+    return workspaces.filter((w) => !["business", "finance"].includes(w.kind));
+  }, [workspaces, scope]);
+
+  const startNewChat = async (mode: BrainModeId, prefill?: string) => {
+    if (!user) return;
+    const { data, error } = await supabase
+      .from("pb_chats")
+      .insert({
+        user_id: user.id,
+        title: prefill ? prefill.slice(0, 60) : "New chat",
+        mode,
+      })
+      .select()
+      .single();
+    if (error || !data) return;
+    const search = prefill ? `?prompt=${encodeURIComponent(prefill)}` : "";
+    navigate(`/personal-brain/c/${data.id}${search}`);
+  };
+
+  const displayName =
+    (user?.user_metadata as Record<string, unknown> | undefined)?.full_name as string | undefined;
+
+  return (
+    <PageShell>
+      <div className="mx-auto w-full max-w-6xl space-y-6 p-4 sm:p-6">
+        <BrainHero
+          greeting={greetingFor(displayName ?? user?.email)}
+          scope={scope}
+          onScopeChange={setScope}
+          onNewChat={() => void startNewChat(mode)}
+        />
+
+        <Card>
+          <CardContent className="space-y-3 p-4">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <h2 className="text-sm font-semibold text-foreground">Pick a mode</h2>
+              <span className="text-xs text-muted-foreground">9 specialized brain modes</span>
+            </div>
+            <ModePicker value={mode} onChange={setMode} />
+            <SuggestedPromptStrip mode={mode} onPick={(p) => void startNewChat(mode, p)} />
+          </CardContent>
+        </Card>
+
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+          <div className="space-y-6 lg:col-span-2">
+            <ChatList
+              chats={chats}
+              loading={chatsLoading}
+              onOpen={(id) => navigate(`/personal-brain/c/${id}`)}
+              showWorkspaceBadge
+            />
+            <WorkspaceGrid
+              workspaces={filteredWorkspaces}
+              loading={workspacesLoading}
+              onOpen={(id) => navigate(`/personal-brain/w/${id}`)}
+              onCreate={async ({ name, kind, default_mode }) => {
+                await createWorkspace({ name, kind, default_mode });
+              }}
+            />
+          </div>
+          <div className="space-y-6">
+            <GoalProgressCard goals={goals} loading={goalsLoading} />
+            <BrainInsightCard insights={insights} loading={insightsLoading} />
+          </div>
+        </div>
+      </div>
+    </PageShell>
+  );
+}

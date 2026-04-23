@@ -233,6 +233,72 @@ async function actionInfer(
     p_cost: Math.ceil(inputApprox * 0.002),
   }).then(() => {}).catch((e) => console.error("Budget metering error:", e));
 
+  // When chatId is present, tee the SSE stream — pass-through to client AND
+  // assemble assistant content server-side so we can persist it.
+  if (chatId && response.body) {
+    const [clientStream, serverStream] = response.body.tee();
+    (async () => {
+      try {
+        const reader = serverStream.getReader();
+        const decoder = new TextDecoder();
+        let buffer = "";
+        let assembled = "";
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          buffer += decoder.decode(value, { stream: true });
+          const lines = buffer.split("\n");
+          buffer = lines.pop() ?? "";
+          for (const line of lines) {
+            const trimmed = line.trim();
+            if (!trimmed.startsWith("data:")) continue;
+            const data = trimmed.slice(5).trim();
+            if (data === "[DONE]") continue;
+            try {
+              const json = JSON.parse(data);
+              const delta = json?.choices?.[0]?.delta?.content ?? "";
+              if (delta) assembled += delta;
+            } catch {
+              /* ignore malformed chunk */
+            }
+          }
+        }
+        if (assembled.trim().length > 0) {
+          // Reload the active memories to record what informed the reply.
+          const { data: mems } = await admin
+            .from("pb_memories")
+            .select("id,category,content,confidence,kind")
+            .eq("user_id", user.id)
+            .eq("status", "active")
+            .order("confidence", { ascending: false })
+            .limit(20);
+          await admin.from("pb_messages").insert({
+            user_id: user.id,
+            chat_id: chatId,
+            role: "assistant",
+            content: assembled,
+            sources: { memories_used: mems ?? [], mode },
+          });
+          await admin
+            .from("pb_chats")
+            .update({ last_message_at: new Date().toISOString() })
+            .eq("id", chatId)
+            .eq("user_id", user.id);
+        }
+      } catch (e) {
+        console.error(`personal-brain [${correlationId}] persist error:`, e);
+      }
+    })();
+    return new Response(clientStream, {
+      headers: {
+        ...corsHeaders,
+        "Content-Type": "text/event-stream",
+        "X-Correlation-Id": correlationId,
+        "X-Latency-Ms": aiLatencyMs.toString(),
+      },
+    });
+  }
+
   return new Response(response.body!, {
     headers: {
       ...corsHeaders,
