@@ -1,147 +1,76 @@
 
 
-# Deployment Readiness Plan: From Contract to Production
+# Fix Remaining TypeScript Build Errors (Batch 5)
 
-## Current State (Honest Assessment)
+## Problem
 
-| Area | Count | Status |
-|------|-------|--------|
-| Edge functions on disk | 202 | Auto-deployed by Lovable Cloud, most functional |
-| Pages with `isDemoMode = false` dead branching | 33 | Compiles but carries dead code |
-| Pages importing `DEMO_*`/`MOCK_*` constants | 261 | Most cast to empty arrays `([] as typeof DEMO_X)` -- renders nothing |
-| Seed data files (`src/data/seed/`) | 29 | Still exist, referenced from 261 pages |
-| Secrets configured | 15 | All critical keys present |
-| Electron modules | 17 `.cjs` files | Never packaged or tested |
-| ISO build scripts | Complete 9-stage pipeline | Never executed |
-| Pre-deploy gate (`scripts/pre-deploy.sh`) | 11 checks | Not wired to CI |
+~30 files still reference undefined constants/variables from removed seed data. The errors fall into these categories:
 
-## What "100% Deployment Ready" Means
+1. **Circular self-references** (`const X = X;`, `const stuckWorkflows = stuckWorkflows.length`) — 4 files
+2. **`[] as typeof MISSING_VAR`** pattern where the referenced variable was never declared — 6 files
+3. **Undefined constants** used directly (e.g., `CATALYST_EVENTS`, `TIMELINE_EVENTS`, `PAGE_TREE`, `INTEGRATION_PROVIDERS`) — 15 files
+4. **Missing helper functions** (`getProviderById`, `generateCalendarDemoEvents`) — 4 files
 
-Three deployment surfaces, three separate work streams:
+## Fix Strategy
 
-```text
-Surface 1: Web App (Lovable Cloud)    -- closest to ready
-Surface 2: Desktop App (Electron)     -- needs first packaging run
-Surface 3: OS ISO (Ubuntu appliance)  -- needs CI infrastructure
-```
+For every file, declare the missing constant as an empty typed array (or stub function) at the top of the file, just before first use. No seed data reintroduction — just empty defaults so the app compiles and renders empty states.
 
----
+## Files to Fix (grouped by directory)
 
-## Phase 1: Web App Production Clean (Lovable -- can do now)
+### `src/pages/atlas/` (2 files)
+- **ConnectorControlCenter.tsx** — Add `const connectors: any[] = []; const auditTimeline: any[] = [];` before component
+- **OperationsCommandCenter.tsx** — Add `const alerts: any[] = []; const services: any[] = []; const slos: any[] = []; const incidents: any[] = []; const runbooks: any[] = [];`
 
-### 1A. Complete the `isDemoMode` removal (33 pages)
+### `src/pages/boardroom/` (1 file)
+- **BoardroomHistory.tsx** — Change `return SESSIONS;` to `return [] as any[];`
 
-For each of the 33 pages still containing `const isDemoMode = false`:
-- Remove the variable declaration
-- Replace `isDemoMode ? "demo" : "live"` ternaries with the "live" branch directly
-- Replace `if (isDemoMode) return;` guards with nothing (they are no-ops since the value is always `false`)
-- Update `PageTruthBanner truthState={isDemoMode ? "demo" : "live"}` to `truthState="live"`
+### `src/pages/business/` (2 files)
+- **RevenueAutopilot.tsx** — Replace `LEAKAGE_INPUT`, `RECOVERED_VALUES`, `RAW_OPPORTUNITIES` with `[] as any[]`
+- **RevenueImpactDashboard.tsx** — Fix `const PLAYBOOK_REVENUE = PLAYBOOK_REVENUE;` → `const PLAYBOOK_REVENUE: any[] = [];` and cast `v` in line 350
 
-Files: `DailyPulse.tsx`, `GlobalBoardroom.tsx`, `NotificationCenter.tsx`, `OwnerCenter.tsx`, `ApprovalsCenter.tsx`, `Boardroom.tsx`, `RevenueCallingPage.tsx`, `TrustCenter.tsx`, `AdvisorWorkspace.tsx`, `AdvisorCouncilDashboard.tsx`, `FilesOverview.tsx`, `MoneyOverview.tsx`, `SubscriptionsWaste.tsx`, `ReservesSavings.tsx`, `ConciergeOverview.tsx`, `MonthGridCalendar.tsx`, `UpcomingNeeds.tsx`, `FamilyBoardroom.tsx`, `CommunicationsCenter.tsx`, `QuotesWorkspace.tsx`, `CollectionsCommandCenter.tsx`, `EnterpriseControlPlane.tsx`, `ConnectionDetail.tsx`, and remaining pages in subdirectories.
+### `src/pages/concierge/` (5 files)
+- **FamilyBoardroom.tsx** — Add `const priorities: any[] = []; const scheduleConflicts: any[] = []; const nextMoves: any[] = []; const carryover: any[] = []; const proofSummary: any[] = [];`
+- **FamilyCalendar.tsx** — Add `const events: any[] = []; const conflicts: any[] = []; const prepItems: any[] = []; const transportDuties: any[] = []; const familyMembers: any[] = [];`
+- **GroceryPlanning.tsx** — Add `const stores: any[] = []; const recurringSupplies: any[] = [];`
+- **MonthGridCalendar.tsx** — Add `function generateCalendarDemoEvents(): any[] { return []; }`
+- **TravelPlanning.tsx** — Add `const preTripChecklist: any[] = []; const itinerary: any[] = []; const householdSpillover: any[] = []; const postTripTasks: any[] = [];`
 
-### 1B. Remove `DEMO_*`/`MOCK_*` dead references (261 pages)
+### `src/pages/digital-presence/` (2 files)
+- **PresenceTimeMachine.tsx** — Add `const TIMELINE_EVENTS: any[] = [];`
+- **WebsiteTwin.tsx** — Add `const PAGE_TREE: any[] = [];`
 
-The pattern across 261 pages is:
-```tsx
-import { DEMO_X } from "@/data/seed/...";
-// ...
-{([] as typeof DEMO_X).map(item => ...)}  // renders NOTHING
-```
+### `src/pages/enterprise/` (1 file)
+- **EnterpriseControlPlane.tsx** — Fix self-references: `const TEAM_MEMBERS = realTeamMembers?.length ? realTeamMembers : [];` and similar for `COMPLIANCE_ITEMS`, `SLA_METRICS`, `DEPLOYMENTS`
 
-For each page:
-- Remove the import of `DEMO_*`/`MOCK_*` constants
-- Replace `([] as typeof DEMO_X).map(...)` with proper empty-state rendering using `PremiumEmptyState` component
-- Where a real data hook already exists alongside the demo import, keep the hook and remove the demo fallback
-- Where no real hook exists, render an empty state with a "Connect data source" or "Coming soon" message
+### `src/pages/integrations/` (4 files)
+- **IntegrationsCatalog.tsx** — Add `const INTEGRATION_PROVIDERS: any[] = []; const PROVIDER_CATEGORIES: any[] = [];`
+- **ConnectionDetail.tsx** — Add `const getProviderById = (_id: string): any => null;`
+- **ConnectionsList.tsx** — Add `const getProviderById = (_id: string): any => null;`
+- **ProviderDetail.tsx** — Add `const getProviderById = (_id: string): any => ({ capabilities: [], color: '#666', icon: '🔗' });`
 
-### 1C. Delete seed data files
+### `src/pages/investment-office/` (8 files)
+- **CatalystWarRoom.tsx** — Add `const CATALYST_EVENTS: any[] = [];`
+- **DecisionReadiness.tsx** — Add `const PENDING_DECISIONS: any[] = [];`
+- **EventProbabilityLab.tsx** — Add `const EVENTS: any[] = [];`
+- **OpportunityMap.tsx** — Add `const THEMES: any[] = [];`
+- **PlatformConnections.tsx** — Add `const AVAILABLE_PLATFORMS: any[] = [];`
+- **PositionSizingCoach.tsx** — Add `const SIZING_SCENARIOS: any[] = [];`
+- **PostTradeLoop.tsx** — Add `const ACTIVE_POSITIONS: any[] = [];`
+- **TimeMachineReview.tsx** — Add `const PAST_DECISIONS: any[] = [];`
+- **WhatWouldBreak.tsx** — Add `const TRADES: any[] = [];`
 
-Once no page imports them, delete all 29 files in `src/data/seed/`. These are 1,800+ lines of fake data that ship to production bundles.
+### `src/pages/mission-control/` (1 file)
+- **MissionControlPage.tsx** — Fix `const stuckWorkflows = stuckWorkflows.length;` → reference the already-available array
 
-### 1D. Wire pre-deploy gate to build
+## Verification
 
-Add the demo-leak check from `scripts/pre-deploy.sh` as a post-build validation in `package.json` so future regressions are caught:
-```json
-"postbuild": "bash scripts/validators/check-demo-leaks.sh"
-```
+After all fixes, run `npx tsc --noEmit` and `npx vite build` to confirm zero errors.
 
-### 1E. Verify edge function health
+## Deliverable: full_report.md
 
-Call the deployed `health-check` function to confirm all subsystems report healthy. Fix any that report degraded (e.g., missing `VAPID_PUBLIC_KEY` is already configured).
-
----
-
-## Phase 2: Desktop App Packaging Readiness (Lovable -- static fixes)
-
-### 2A. Audit Electron module imports
-
-Verify each of the 17 `.cjs` files in `electron/` can resolve their `require()` targets. Currently `main.cjs` imports:
-- `crash-reporter.cjs`, `auto-updater.cjs`, `fs-bridge.cjs`, `license-guard.cjs`, `license-ui.cjs`, `integrity-check.cjs`, `runtime-shield.cjs`, `dlp-guard.cjs`, `network-sentinel.cjs`, `sita-apps-bridge.cjs`
-
-All exist on disk. Verify each exports the named functions that `main.cjs` destructures.
-
-### 2B. Verify Vite Electron build path
-
-`vite.config.ts` already handles `ELECTRON_BUILD` with `base: './'`. Confirm `electron/main.cjs` loads from `path.join(__dirname, '..', 'dist', 'index.html')` which matches the Vite output.
-
-### 2C. Verify `forge.config.cjs` packaging rules
-
-Ensure the Electron Forge config does not exclude `dist/` and includes the correct entrypoint.
-
-### 2D. Create missing `package.json` scripts for Electron
-
-If not present, add `electron:dev` and `electron:package` scripts to the root `package.json` for local development.
-
----
-
-## Phase 3: ISO Build Readiness (Lovable -- script fixes only)
-
-### 3A. Package list validation
-
-Already done in previous session -- `packages.list` updated for Ubuntu 24.04 Noble `t64` transitions.
-
-### 3B. Build script symlink fix
-
-Already done -- `build.sh` updated to install shell binary and create `/usr/bin/sita-shell`.
-
-### 3C. Verify QEMU validation assertions
-
-Review `os/qemu-validate.sh` to ensure the 5 positive assertions match the actual service names and paths installed by `build.sh`.
-
----
-
-## Phase 4: CI Pipeline (Requires GitHub -- documented in runbook)
-
-These cannot be done in Lovable but the runbook (`docs/FIRST_BUILD_RUNBOOK.md`, already created) covers them:
-
-1. Push code to GitHub
-2. Configure repository secrets: `SUPABASE_PROJECT_REF`, `SUPABASE_ACCESS_TOKEN`
-3. Trigger "Release - Desktop Matrix" workflow for Electron builds
-4. Trigger "sita-os-build-iso" workflow for ISO builds
-5. Download artifacts and test locally
-
----
-
-## Execution Order
-
-| Step | Effort | Scope |
-|------|--------|-------|
-| 1A: Remove `isDemoMode` from 33 pages | ~2 hours | 33 files |
-| 1B: Remove `DEMO_*`/`MOCK_*` from 261 pages | ~6 hours | 261 files + empty states |
-| 1C: Delete seed data | 5 min | 29 files |
-| 1D: Wire post-build check | 5 min | 1 file |
-| 1E: Health check verification | 10 min | API call |
-| 2A-2D: Electron audit | 30 min | 17 files |
-| 3A-3C: ISO script audit | 15 min | 3 files |
-
-**Total estimated Lovable work: ~9 hours across multiple sessions.**
-
-Phase 1A and 1B are the bulk of the work and should be done in batches of 10-15 pages per session to stay within context limits.
-
-## What This Plan Produces
-
-- A web app that ships zero demo data and zero dead code paths to production
-- Static verification that Electron packaging will succeed on first CI run
-- Static verification that ISO build scripts reference correct paths and packages
-- A post-build gate that prevents demo data from being reintroduced
+Generate `/mnt/documents/full_report.md` documenting:
+- All tests/checks performed (tsc, vite build) with pass/fail status
+- Files fixed across all sessions with error counts
+- Which capabilities are proven working (DB-backed, real Supabase queries) vs. stub/empty-state (awaiting real data)
+- The OSAUDIT.md update with current project status
 
