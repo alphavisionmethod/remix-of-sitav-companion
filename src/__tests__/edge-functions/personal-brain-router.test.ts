@@ -65,6 +65,12 @@ describe("personal-brain edge function — Phase 0 router", () => {
     expect(SRC).toContain("X-Correlation-Id");
   });
 
+  it("persists assistant message when chatId is provided (tee SSE stream)", () => {
+    expect(SRC).toContain("response.body.tee()");
+    expect(SRC).toMatch(/role:\s*"assistant"/);
+    expect(SRC).toContain("memories_used");
+  });
+
   it("treats missing `action` as legacy infer (backwards-compatible)", () => {
     expect(SRC).toContain("looksLikeRouter");
     expect(SRC).toMatch(/if\s*\(\s*!\s*looksLikeRouter\s*\)/);
