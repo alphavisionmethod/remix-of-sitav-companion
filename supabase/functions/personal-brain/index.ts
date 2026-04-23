@@ -30,6 +30,20 @@ import {
   PBVoiceTranscribeSchema,
 } from "../_shared/zod-validate.ts";
 import { PBVoiceTtsSchema } from "../_shared/zod-validate.ts";
+import {
+  PBDigestGenerateSchema,
+  PBDigestDismissSchema,
+  PBWorkspaceInviteSchema,
+  PBWorkspaceAcceptSchema,
+  PBWorkspaceListMembersSchema,
+  PBWorkspaceRemoveMemberSchema,
+  PBWorkspaceUpdateRoleSchema,
+  PBToolUpsertSchema,
+  PBToolToggleSchema,
+  PBToolDeleteSchema,
+  PBInsightsScanSchema,
+  PBInsightsUpdateStatusSchema,
+} from "../_shared/zod-validate.ts";
 import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
 import { logAIReceipt } from "../_shared/ai-receipt-logger.ts";
 import { checkAIBudget } from "../_shared/ai-budget-check.ts";
