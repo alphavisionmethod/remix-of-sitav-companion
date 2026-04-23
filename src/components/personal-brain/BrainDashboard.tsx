@@ -23,6 +23,7 @@ import { VoicePanel } from "./voice/VoicePanel";
 import { ShieldAlert } from "lucide-react";
 import { BrainOnboardingTour } from "./onboarding-tour/BrainOnboardingTour";
 import { useSitaVoice } from "@/contexts/SitaVoiceContext";
+import { SitaContext } from "@/lib/sita-context";
 
 function greetingFor(name?: string | null): string {
   const hour = new Date().getHours();
@@ -77,6 +78,19 @@ export function BrainDashboard() {
 
   return (
     <PageShell>
+      <SitaContext
+        surfaceId="personal-brain-dashboard"
+        title="Personal Brain"
+        route="/personal-brain"
+        summary={`Brain dashboard for ${displayName ?? user?.email ?? "the user"} — scope ${scope}, mode ${mode}.`}
+        suggestedIntents={["start a new chat", "open my goals", "summarize my recent insights"]}
+        payload={{
+          scope,
+          mode,
+          recentChats: chats.slice(0, 3).map((c) => ({ id: c.id, title: c.title })),
+          goalsCount: goals.length,
+        }}
+      >
       <div className="mx-auto w-full max-w-6xl space-y-6 p-4 sm:p-6">
         <BrainHero
           greeting={greetingFor(displayName ?? user?.email)}
@@ -153,6 +167,7 @@ export function BrainDashboard() {
         />
       )}
       <BrainOnboardingTour />
+      </SitaContext>
     </PageShell>
   );
 }
