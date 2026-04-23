@@ -33,8 +33,8 @@ function makeHealthy(): SystemSnapshot {
 }
 
 describe("Production Alert Rules", () => {
-  it("has 15 rules across all categories", () => {
-    expect(ALERT_RULES.length).toBe(15);
+  it("has 16 rules across all categories", () => {
+    expect(ALERT_RULES.length).toBe(16);
     const categories = new Set(ALERT_RULES.map(r => r.category));
     expect(categories).toContain("error_rate");
     expect(categories).toContain("latency");
@@ -207,9 +207,9 @@ describe("Production Alert Rules", () => {
 
   // ── Report Structure ───────────────────────────────────────
 
-  it("report contains all 15 evaluations regardless of trigger state", () => {
+  it("report contains all 16 evaluations regardless of trigger state", () => {
     const report = evaluateAlertRules(makeHealthy());
-    expect(report.evaluations).toHaveLength(15);
+    expect(report.evaluations).toHaveLength(16);
     expect(report.evaluatedAt).toBeTruthy();
     expect(report.snapshot).toBeDefined();
   });
