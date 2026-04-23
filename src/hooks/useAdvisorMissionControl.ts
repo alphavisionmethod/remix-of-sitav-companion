@@ -10,16 +10,16 @@ export type { AdvisorSummary, AdvisorRecommendation, SafeModeState } from "@/dat
 
 // ── Named re-exports for module-scope usage in sub-components ──
 // Pages import these instead of importing from mock-data directly.
-export const advisors = amc.advisors;
-export const recommendations = amc.recommendations;
-export const synthesis = amc.synthesis;
-export const approvals = amc.approvals;
-export const proofHistory = amc.proofHistory;
-export const simulations = amc.simulations;
-export const memoryItems = amc.memoryItems;
-export const internalAgents = amc.internalAgents;
-export const incidents = amc.incidents;
-export const connectorHealth = amc.connectorHealth;
+export const advisors = amc.mockAdvisors;
+export const recommendations = amc.mockRecommendations;
+export const synthesis = amc.mockSynthesis;
+export const approvals = amc.mockApprovals;
+export const proofHistory = amc.mockProofHistory;
+export const simulations = amc.mockSimulations;
+export const memoryItems = amc.mockMemoryItems;
+export const internalAgents = amc.mockInternalAgents;
+export const incidents = amc.mockIncidents;
+export const connectorHealth = amc.mockConnectorHealth;
 export const stuckWorkflows = amc.stuckWorkflows;
 export const costAnomalies = amc.costAnomalies;
 export const policyAnomalies = amc.policyAnomalies;
@@ -31,16 +31,16 @@ export function useAdvisorMissionControl() {
 
   return {
     isDemoMode,
-    advisors: amc.advisors,
-    recommendations: amc.recommendations,
-    synthesis: amc.synthesis,
-    approvals: amc.approvals,
-    proofHistory: amc.proofHistory,
-    simulations: amc.simulations,
-    memoryItems: amc.memoryItems,
-    internalAgents: amc.internalAgents,
-    incidents: amc.incidents,
-    connectorHealth: amc.connectorHealth,
+    advisors: amc.mockAdvisors,
+    recommendations: amc.mockRecommendations,
+    synthesis: amc.mockSynthesis,
+    approvals: amc.mockApprovals,
+    proofHistory: amc.mockProofHistory,
+    simulations: amc.mockSimulations,
+    memoryItems: amc.mockMemoryItems,
+    internalAgents: amc.mockInternalAgents,
+    incidents: amc.mockIncidents,
+    connectorHealth: amc.mockConnectorHealth,
     stuckWorkflows: amc.stuckWorkflows,
     costAnomalies: amc.costAnomalies,
     policyAnomalies: amc.policyAnomalies,
