@@ -1,51 +1,36 @@
-// ═══════════════════════════════════════════════════════════════
-// SITA OS — Boot-time Environment Validation
-// Called once at app startup to surface missing config early.
-// ═══════════════════════════════════════════════════════════════
+/**
+ * Boot-time environment variable validation.
+ * Logs warnings for missing VITE_ vars that backend features depend on.
+ * Does NOT throw — the app should degrade gracefully.
+ */
 
-const REQUIRED_VARS = [
-  "VITE_SUPABASE_URL",
-  "VITE_SUPABASE_PUBLISHABLE_KEY",
-] as const;
-
-const OPTIONAL_VARS = [
-  "VITE_SUPABASE_PROJECT_ID",
-  "VITE_SENTRY_DSN",
-  "VITE_APPLIANCE_RUNTIME",
-] as const;
-
-export interface EnvValidationResult {
-  valid: boolean;
-  missing: string[];
-  warnings: string[];
+interface EnvRequirement {
+  key: string;
+  required: boolean;
+  description: string;
 }
 
-export function validateEnv(): EnvValidationResult {
-  const missing: string[] = [];
+const ENV_REQUIREMENTS: EnvRequirement[] = [
+  { key: "VITE_SUPABASE_URL", required: true, description: "Backend API URL" },
+  { key: "VITE_SUPABASE_PUBLISHABLE_KEY", required: true, description: "Backend public key" },
+  { key: "VITE_SUPABASE_PROJECT_ID", required: false, description: "Project identifier for edge function URLs" },
+];
+
+export function validateEnvironment(): { valid: boolean; warnings: string[] } {
   const warnings: string[] = [];
 
-  for (const key of REQUIRED_VARS) {
-    if (!import.meta.env[key]) {
-      missing.push(key);
+  for (const req of ENV_REQUIREMENTS) {
+    const value = import.meta.env[req.key];
+    if (!value || value === "undefined" || value === "") {
+      const msg = `${req.required ? "MISSING" : "OPTIONAL"}: ${req.key} — ${req.description}`;
+      warnings.push(msg);
+      if (req.required) {
+        console.error(`[env-validation] ${msg}`);
+      } else {
+        console.warn(`[env-validation] ${msg}`);
+      }
     }
   }
 
-  for (const key of OPTIONAL_VARS) {
-    if (!import.meta.env[key]) {
-      warnings.push(`Optional env var ${key} is not set`);
-    }
-  }
-
-  if (missing.length > 0) {
-    console.error(
-      `[SITA] Missing required environment variables: ${missing.join(", ")}. ` +
-      `The app may not function correctly.`
-    );
-  }
-
-  if (warnings.length > 0 && import.meta.env.DEV) {
-    console.warn(`[SITA] Environment warnings:\n${warnings.join("\n")}`);
-  }
-
-  return { valid: missing.length === 0, missing, warnings };
+  return { valid: warnings.filter((_, i) => ENV_REQUIREMENTS[i]?.required).length === 0, warnings };
 }
