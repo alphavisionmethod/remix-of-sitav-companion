@@ -79,7 +79,7 @@ if (violations.length > 0) {
   // ── Ratchet mode ──────────────────────────────────────────────
   // Baseline: 607 violations as of 2026-04-23 (v4.2 — post demo migration).
   // The count must NEVER increase. Decrease = progress.
-  const BASELINE = 607;
+  const BASELINE = 581;
 
   console.log(`⚠️  DEMO/MOCK LEAK DETECTOR: ${violations.length} violation(s) (baseline: ${BASELINE})`);
 
