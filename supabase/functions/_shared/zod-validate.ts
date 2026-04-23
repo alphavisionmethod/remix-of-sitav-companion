@@ -113,6 +113,11 @@ export const PBVoiceTranscribeSchema = z.object({
   language: z.string().max(8).optional(),
 });
 
+export const PBVoiceTtsSchema = z.object({
+  text: z.string().min(1).max(5000),
+  voice_id: z.string().max(64).optional(),
+});
+
 export const OsCommandSchema = z.object({
   device_id: z.string().min(1).max(255),
   command: z.enum(["restart-service", "update-now", "run-backup", "clear-cache", "rotate-certs", "health-check"]),
