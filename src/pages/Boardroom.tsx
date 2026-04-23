@@ -876,7 +876,7 @@ const PacketView = ({ type, perspective = "owner" }: { type: BoardroomType; pers
       )}
 
       {/* ── War Room: Sentiment Pulse ── */}
-      {isDemoMode ? (
+      {false ? (
         <SentimentPulse
           overallScore={0.42}
           sentiments={[
