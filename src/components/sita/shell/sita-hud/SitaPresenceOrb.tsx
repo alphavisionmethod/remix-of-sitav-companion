@@ -275,7 +275,8 @@ export function SitaPresenceOrb() {
             {[0.5, 0.9, 0.6, 1.0, 0.7, 0.4].map((mult, i) => (
               <motion.span
                 key={i}
-                className="w-[3px] rounded-full bg-cyan-200/90"
+                className="w-[3px] rounded-full"
+                style={{ background: "hsl(190 80% 75% / 0.9)" }}
                 animate={reduced ? {} : { height: [4, 8 + 14 * mult, 4] }}
                 transition={{ duration: 0.55 + i * 0.04, repeat: Infinity, ease: "easeInOut" }}
               />
