@@ -10,7 +10,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { CheckSquare, FileText, FolderPlus, MoreHorizontal } from "lucide-react";
+import { Copy, FolderPlus, MoreHorizontal } from "lucide-react";
 
 interface ConvertMessageMenuProps {
   content: string;
@@ -32,42 +32,12 @@ export function ConvertMessageMenu({ content, chatTitle }: ConvertMessageMenuPro
     toast({ title, description });
   };
 
-  const convertToNote = async () => {
-    if (!user) return;
-    setBusy(true);
+  const copyToClipboard = async () => {
     try {
-      const title = chatTitle ? `Brain · ${chatTitle}` : `Brain note · ${summarize(content, 60)}`;
-      const { error } = await supabase.from("notes").insert({
-        user_id: user.id,
-        title,
-        content,
-      });
-      if (error) throw error;
-      safeNotify("Saved as note", "Open Notes to view.");
-    } catch (e) {
-      safeNotify("Couldn't save note", e instanceof Error ? e.message : "Unknown error");
-    } finally {
-      setBusy(false);
-    }
-  };
-
-  const convertToTask = async () => {
-    if (!user) return;
-    setBusy(true);
-    try {
-      const title = summarize(content, 80);
-      const { error } = await supabase.from("tasks").insert({
-        user_id: user.id,
-        title,
-        description: content,
-        status: "todo",
-      });
-      if (error) throw error;
-      safeNotify("Added to Tasks", "Open Tasks to view.");
-    } catch (e) {
-      safeNotify("Couldn't create task", e instanceof Error ? e.message : "Unknown error");
-    } finally {
-      setBusy(false);
+      await navigator.clipboard.writeText(content);
+      safeNotify("Copied to clipboard");
+    } catch {
+      safeNotify("Couldn't copy", "Clipboard unavailable");
     }
   };
 
@@ -110,13 +80,9 @@ export function ConvertMessageMenu({ content, chatTitle }: ConvertMessageMenuPro
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-48">
-        <DropdownMenuItem onClick={convertToNote}>
-          <FileText className="h-3.5 w-3.5" />
-          Save as note
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={convertToTask}>
-          <CheckSquare className="h-3.5 w-3.5" />
-          Add to tasks
+        <DropdownMenuItem onClick={copyToClipboard}>
+          <Copy className="h-3.5 w-3.5" />
+          Copy text
         </DropdownMenuItem>
         <DropdownMenuItem onClick={convertToProject}>
           <FolderPlus className="h-3.5 w-3.5" />
