@@ -203,11 +203,17 @@ function ChatInner() {
         </div>
 
         <div className="border-t border-border p-4">
+          {parseRememberCommand(input) && (
+            <div className="mb-2 flex items-center gap-1.5 text-[11px] text-primary">
+              <Sparkles className="h-3 w-3" />
+              Press Enter to save this directly to your Brain (won't be sent as a message).
+            </div>
+          )}
           <div className="flex gap-2">
             <Textarea
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder={`Ask in ${meta.label} mode…`}
+              placeholder={`Ask in ${meta.label} mode… or type /remember … to teach the Brain`}
               className="max-h-[160px] min-h-[44px] resize-none"
               onKeyDown={(e) => {
                 if (e.key === "Enter" && !e.shiftKey) {
