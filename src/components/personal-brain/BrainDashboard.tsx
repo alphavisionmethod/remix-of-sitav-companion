@@ -14,9 +14,11 @@ import { usePbWorkspaces } from "./hooks/usePbWorkspaces";
 import { usePbChats } from "./hooks/usePbChats";
 import { usePbGoals } from "./hooks/usePbGoals";
 import { usePbInsights } from "./hooks/usePbInsights";
+import { usePbSecurityPrefs } from "./hooks/usePbSecurityPrefs";
 import type { BrainModeId } from "./BRAIN_MODES";
 import { supabase } from "@/integrations/supabase/client";
 import { VoicePanel } from "./voice/VoicePanel";
+import { ShieldAlert } from "lucide-react";
 
 function greetingFor(name?: string | null): string {
   const hour = new Date().getHours();
@@ -36,6 +38,7 @@ export function BrainDashboard() {
   const { goals, loading: goalsLoading } = usePbGoals();
   const { insights, loading: insightsLoading } = usePbInsights(3);
   const [voiceOpen, setVoiceOpen] = useState(false);
+  const { prefs: securityPrefs } = usePbSecurityPrefs();
 
   const filteredWorkspaces = useMemo(() => {
     if (scope === "business") {
@@ -72,7 +75,26 @@ export function BrainDashboard() {
           onScopeChange={setScope}
           onNewChat={() => void startNewChat(mode)}
           onVoice={() => setVoiceOpen(true)}
+          onSettings={() => navigate("/personal-brain/settings")}
         />
+
+        {securityPrefs?.sensitive_mode && (
+          <div
+            role="status"
+            className="flex items-center gap-2 rounded-lg border border-destructive/40 bg-destructive/5 px-4 py-2.5 text-sm text-destructive"
+          >
+            <ShieldAlert className="h-4 w-4 shrink-0" />
+            <span className="flex-1">
+              <strong>Sensitive mode is on.</strong> Auto-learning is paused and voice transcripts won't persist.
+            </span>
+            <button
+              className="text-xs font-medium underline-offset-2 hover:underline"
+              onClick={() => navigate("/personal-brain/settings/security")}
+            >
+              Manage
+            </button>
+          </div>
+        )}
 
         <Card>
           <CardContent className="space-y-3 p-4">
