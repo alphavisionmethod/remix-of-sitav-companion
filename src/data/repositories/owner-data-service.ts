@@ -31,18 +31,18 @@ export async function fetchLeases(mode: RealityModeKey = "real"): Promise<ModeAw
 }
 
 export async function fetchOwnerApprovals(mode: RealityModeKey = "real"): Promise<ModeAwareResult<OwnerApprovalItem[]>> {
-  if (mode !== "real") return resolveByMode({ mode, realData: null, demoData: OWNER_APPROVALS, emptyDefault: [] });
+  if (mode !== "real") return resolveByMode({ mode, realData: null, demoData: [] as any[], emptyDefault: [] });
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return resolveByMode({ mode, realData: null, demoData: OWNER_APPROVALS, emptyDefault: [] });
+  if (!user) return resolveByMode({ mode, realData: null, demoData: [] as any[], emptyDefault: [] });
   const { data, error } = await fromTable("approval_queue").select("*").eq("user_id", user.id).order("created_at", { ascending: false });
   const mapped = (!error && data && data.length > 0) ? data.map((a: any): OwnerApprovalItem => ({
     id: a.id, title: a.action_summary, domain: a.action_type || "general",
     requestedBy: a.requested_by || "System", riskTier: (a.risk_tier || "medium") as OwnerApprovalItem["riskTier"],
     status: a.status as OwnerApprovalItem["status"], requestedAt: a.created_at,
   })) : null;
-  return resolveByMode({ mode, realData: mapped, demoData: OWNER_APPROVALS, emptyDefault: [] });
+  return resolveByMode({ mode, realData: mapped, demoData: [] as any[], emptyDefault: [] });
 }
 
 export async function fetchPricingItems(mode: RealityModeKey = "real"): Promise<ModeAwareResult<OwnerPricingItem[]>> {
-  return resolveByMode({ mode, realData: null, demoData: PRICING_ITEMS, emptyDefault: [] });
+  return resolveByMode({ mode, realData: null, demoData: [] as any[], emptyDefault: [] });
 }

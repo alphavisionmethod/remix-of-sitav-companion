@@ -17,7 +17,7 @@ import type {
 
 // ── Demo fleet data (shared module) ─────────────────────────────
 import { useDataMode } from "@/contexts/DataModeContext";
-const SERVICES = [...FLEET_SERVICES];
+const SERVICES = [] as any[];
 
 interface AutoIncident {
   id: string;

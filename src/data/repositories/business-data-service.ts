@@ -35,5 +35,5 @@ export async function fetchCustomers(mode: RealityModeKey = "real"): Promise<Mod
 }
 
 export async function fetchCollections(mode: RealityModeKey = "real"): Promise<ModeAwareResult<CollectionsAccount[]>> {
-  return resolveByMode({ mode, realData: null, demoData: COLLECTIONS_ACCOUNTS, emptyDefault: [] });
+  return resolveByMode({ mode, realData: null, demoData: [] as any[], emptyDefault: [] });
 }

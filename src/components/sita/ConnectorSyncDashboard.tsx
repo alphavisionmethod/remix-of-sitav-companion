@@ -14,7 +14,7 @@ interface ConnectorSyncDashboardProps {
 }
 
 import { useDataMode } from "@/contexts/DataModeContext";
-const CONNECTORS = SYNC_CONNECTORS;
+const CONNECTORS = [] as any[];
 
 const statusConfig: Record<string, { color: string; icon: typeof CheckCircle }> = {
   active: { color: "text-trust-safe", icon: CheckCircle },

@@ -6,12 +6,12 @@
 import { supabase } from "@/integrations/supabase/client";
 const db = supabase as any;
 export async function fetchWearableProviders(isDemoMode: boolean) {
-  if (isDemoMode) return SIGNAL_PROVIDERS;
+  if (isDemoMode) return [] as any[];
   const { data, error } = await db.from("wearable_providers")
     .select("*")
     .order("created_at", { ascending: false });
   if (error) throw error;
-  return data?.length ? data : SIGNAL_PROVIDERS;
+  return data?.length ? data : [] as any[];
 }
 
 export async function fetchHealthSignalConsents(isDemoMode: boolean) {
@@ -63,13 +63,13 @@ export async function fetchVisibilityPolicies(isDemoMode: boolean) {
 }
 
 export async function fetchSignalSubsystemReadiness(isDemoMode: boolean) {
-  if (isDemoMode) return SIGNAL_SUBSYSTEMS;
+  if (isDemoMode) return [] as any[];
   const { data, error } = await db.from("ecosystem_launch_readiness")
     .select("*")
     .like("target", "hrs_%")
     .order("last_assessed_at", { ascending: false });
   if (error) throw error;
-  if (!data?.length) return SIGNAL_SUBSYSTEMS;
+  if (!data?.length) return [] as any[];
   return data.map((r: any) => ({
     target: r.target_name || r.target,
     key: r.target,

@@ -2,10 +2,10 @@ import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 export async function fetchAutomationRules() {
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return AUTOMATION_RULES;
+  if (!user) return [] as any[];
 
   const { data, error } = await fromTable("ai_self_healing_rules").select("*").eq("user_id", user.id).order("created_at", { ascending: false });
-  if (error || !data || data.length === 0) return AUTOMATION_RULES;
+  if (error || !data || data.length === 0) return [] as any[];
 
   return data.map((r: any) => ({
     id: r.id, name: r.rule_name, trigger: r.trigger_condition,
@@ -15,15 +15,15 @@ export async function fetchAutomationRules() {
 }
 
 export async function fetchDelegations() {
-  return DELEGATIONS;
+  return [] as any[];
 }
 
 export async function fetchReplayableWorkflows() {
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return REPLAYABLE_WORKFLOWS;
+  if (!user) return [] as any[];
 
   const { data, error } = await fromTable("platform_replay_verifications").select("*").eq("user_id", user.id).order("created_at", { ascending: false }).limit(20);
-  if (error || !data || data.length === 0) return REPLAYABLE_WORKFLOWS;
+  if (error || !data || data.length === 0) return [] as any[];
 
   return data.map((w: any) => ({
     id: w.id, name: w.replay_type || "Workflow", status: w.status,
@@ -32,7 +32,7 @@ export async function fetchReplayableWorkflows() {
 }
 
 export async function fetchAdminUsers() {
-  return ADMIN_USERS;
+  return [] as any[];
 }
 
 export async function fetchTokenUsages() {
@@ -51,10 +51,10 @@ export async function fetchTokenUsages() {
 
 export async function fetchAdminIncidents() {
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return adminIncidents;
+  if (!user) return [] as any[];
 
   const { data, error } = await fromTable("incidents").select("*").eq("user_id", user.id).order("created_at", { ascending: false }).limit(20);
-  if (error || !data || data.length === 0) return adminIncidents;
+  if (error || !data || data.length === 0) return [] as any[];
 
   return data.map((i: any) => ({
     id: i.id, title: i.title, severity: i.severity || "SEV-3",
