@@ -170,7 +170,7 @@ export default function FCC06ProgramManagementBoard() {
     setExpandedMs(prev => { const n = new Set(prev); n.has(id) ? n.delete(id) : n.add(id); return n; });
   }
 
-  const allTasks = ([] as typeof DEMO_OBJECTIVES).flatMap(o => o.milestones.flatMap(m => m.tasks));
+  const allTasks = ([] as any[]).flatMap(o => o.milestones.flatMap(m => m.tasks));
   const totalCompleted = allTasks.filter(t => t.status === "completed").length;
   const totalBlocked = allTasks.filter(t => t.status === "blocked").length;
 
@@ -186,7 +186,7 @@ export default function FCC06ProgramManagementBoard() {
       {/* Summary Strip */}
       <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
         {[
-          { label: "Objectives", value: ([] as typeof DEMO_OBJECTIVES).length, color: "text-primary" },
+          { label: "Objectives", value: ([] as any[]).length, color: "text-primary" },
           { label: "Total Tasks", value: allTasks.length, color: "text-foreground" },
           { label: "Completed", value: totalCompleted, color: "text-trust-safe" },
           { label: "In Progress", value: allTasks.filter(t => t.status === "in_progress").length, color: "text-sita-gold" },
@@ -205,7 +205,7 @@ export default function FCC06ProgramManagementBoard() {
 
       {/* Objectives */}
       <div className="space-y-4">
-        {([] as typeof DEMO_OBJECTIVES).map((obj, oi) => {
+        {([] as any[]).map((obj, oi) => {
           const expanded = expandedObj.has(obj.id);
           const progress = getObjectiveProgress(obj);
           return (

@@ -64,7 +64,7 @@ const AutomationCenter = () => {
     invalidateKeys: [["workflows_automation"]],
   });
 
-  const rules = false ? MOCK_AUTOMATION_RULES : liveWorkflows.map(w => ({
+  const rules = liveWorkflows.map(w => ({
     id: w.id,
     name: w.name,
     trigger_event: w.trigger_type || "unknown",
@@ -95,7 +95,7 @@ const AutomationCenter = () => {
       <SitaTabs
         tabs={[
           { key: "rules", label: "Rules", count: rules.length },
-          { key: "delegations", label: "Delegations", count: (false ? MOCK_DELEGATIONS : [] as typeof MOCK_DELEGATIONS).length },
+          { key: "delegations", label: "Delegations", count: ([] as any[]).length },
           { key: "trust", label: "Trust Levels" },
         ]}
         active={activeTab}
@@ -149,7 +149,7 @@ const AutomationCenter = () => {
 
       {activeTab === "delegations" && (
         <div className="space-y-2">
-          {(false ? MOCK_DELEGATIONS : [] as typeof MOCK_DELEGATIONS).map((d, i) => (
+          {([] as any[]).map((d, i) => (
             <SitaCard key={i} hover={false} className="p-4">
               <div className="flex items-center justify-between">
                 <div>

@@ -22,7 +22,6 @@ import {
   ChevronRight, Pin, Search, Layers, TrendingUp
 } from "lucide-react";
 
-import { DEMO_ACTIVITY_TIMELINE } from "@/data/fixtures/demo-data";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { PageShell } from "@/components/sita/PageShell";
 // ── Category System ──────────────────────────────────────────

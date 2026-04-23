@@ -51,9 +51,9 @@ const DEMO_ACTIONS: ActionRecord[] = [
 
 const ActionStateDriftViewer = () => {
   const [tab, setTab] = useState("all");
-  const nonCanonical = ([] as typeof DEMO_ACTIONS).filter(a => !a.canonical);
-  const stuck = ([] as typeof DEMO_ACTIONS).filter(a => a.stuckSince);
-  const drifted = ([] as typeof DEMO_ACTIONS).filter(a => a.driftReason);
+  const nonCanonical = ([] as any[]).filter(a => !a.canonical);
+  const stuck = ([] as any[]).filter(a => a.stuckSince);
+  const drifted = ([] as any[]).filter(a => a.driftReason);
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
@@ -69,8 +69,8 @@ const ActionStateDriftViewer = () => {
 
       <motion.div variants={stagger} initial="hidden" animate="show" className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {[
-          { label: "Total Actions", value: String(([] as typeof DEMO_ACTIONS).length), color: "text-foreground" },
-          { label: "Canonical", value: String(([] as typeof DEMO_ACTIONS).filter(a => a.canonical).length), color: "text-emerald-500" },
+          { label: "Total Actions", value: String(([] as any[]).length), color: "text-foreground" },
+          { label: "Canonical", value: String(([] as any[]).filter(a => a.canonical).length), color: "text-emerald-500" },
           { label: "Noncanonical", value: String(nonCanonical.length), color: nonCanonical.length > 0 ? "text-amber-500" : "text-emerald-500" },
           { label: "Drifted/Stuck", value: String(drifted.length), color: drifted.length > 0 ? "text-destructive" : "text-emerald-500" },
         ].map(m => (
@@ -94,7 +94,7 @@ const ActionStateDriftViewer = () => {
         </TabsList>
 
         <TabsContent value="all" className="mt-4 space-y-2">
-          {([] as typeof DEMO_ACTIONS).map(a => (
+          {([] as any[]).map(a => (
             <ActionRow key={a.id} action={a} />
           ))}
         </TabsContent>

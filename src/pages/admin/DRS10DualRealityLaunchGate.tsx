@@ -23,8 +23,8 @@ export default function DRS10DualRealityLaunchGate() {
   const checks: GateCheck[] = [
     {
       label: "All domains have mode-aware providers",
-      status: ([] as typeof DEMO_ALL_DOMAINS).every(d => registered.includes(d)) ? "pass" : "warn",
-      detail: `${registered.length}/${([] as typeof DEMO_ALL_DOMAINS).length} domains registered`,
+      status: ([] as any[]).every(d => registered.includes(d)) ? "pass" : "warn",
+      detail: `${registered.length}/${([] as any[]).length} domains registered`,
     },
     {
       label: "Demo mode blocks external writes",

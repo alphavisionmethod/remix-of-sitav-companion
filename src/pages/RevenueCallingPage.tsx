@@ -23,7 +23,6 @@ import {
   ArrowRight, Hash, Zap, XCircle, Calendar, User,
 } from "lucide-react";
 
-import { MOCK_CONTACTS, MOCK_CALL_LOGS, MOCK_CALL_SCRIPTS as MOCK_SCRIPTS } from "@/data/fixtures/mock-data/revenue-calling";
 import type { CallingContact as Contact, CallingCallLog as CallLog, CallingCallScript as CallScript } from "@/data/fixtures/mock-data/revenue-calling";
 import { useCallingContactsData } from "@/hooks/use-business-data";
 import { useCallingContacts, useCallLogs } from "@/hooks/use-live-data";

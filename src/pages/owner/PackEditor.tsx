@@ -11,7 +11,6 @@ import { Badge } from "@/components/ui/badge";
 import { Package, Layers, Zap, Shield, ArrowRight } from "lucide-react";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
-import { listPacks } from "@/data/fixtures/demo-data/packs";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 interface PackState {

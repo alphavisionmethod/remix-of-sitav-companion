@@ -92,7 +92,7 @@ export default function PersistenceStatus() {
   const { data: stats, isLoading: statsLoading, refetch: refetchStats } = useSubstrateStats();
   const { data: recentWrites, isLoading: writesLoading, refetch: refetchWrites, isFetching } = useRecentWrites();
 
-  const allWired = ([] as typeof DEMO_CORE_SERVICES).every(s => s.wired);
+  const allWired = ([] as any[]).every(s => s.wired);
 
   return (
     <div className="space-y-6 p-6">
@@ -116,7 +116,7 @@ export default function PersistenceStatus() {
               {allWired ? "All Core Services Wired to Persistence" : "Partial Wiring"}
             </span>
             <p className="text-sm text-muted-foreground mt-0.5">
-              {([] as typeof DEMO_CORE_SERVICES).filter(s => s.wired).length}/{([] as typeof DEMO_CORE_SERVICES).length} services durably backed
+              {([] as any[]).filter(s => s.wired).length}/{([] as any[]).length} services durably backed
             </p>
           </div>
         </CardContent>
@@ -141,7 +141,7 @@ export default function PersistenceStatus() {
                   </tr>
                 </thead>
                 <tbody>
-                  {([] as typeof DEMO_CORE_SERVICES).map((svc) => {
+                  {([] as any[]).map((svc) => {
                     const count = stats ? (
                       svc.name === "EventBus" ? stats.events :
                       svc.name === "MemoryService" ? stats.memory :

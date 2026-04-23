@@ -44,10 +44,10 @@ export function CloudSharingAdmin() {
       {/* Stats Overview */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {[
-          { label: "Shared Objects", value: stats.totalSharedObjects || ([] as typeof DEMO_SHARES).length, icon: Share2, color: "text-primary" },
+          { label: "Shared Objects", value: stats.totalSharedObjects || ([] as any[]).length, icon: Share2, color: "text-primary" },
           { label: "Active Links", value: stats.totalLinks || 2, icon: Link2, color: "text-emerald-400" },
           { label: "Pending Invites", value: stats.pendingInvites || 1, icon: UserPlus, color: "text-amber-400" },
-          { label: "Workspaces", value: stats.activeWorkspaces || ([] as typeof DEMO_WORKSPACES).length, icon: Folder, color: "text-cyan-400" },
+          { label: "Workspaces", value: stats.activeWorkspaces || ([] as any[]).length, icon: Folder, color: "text-cyan-400" },
         ].map(s => (
           <Card key={s.label}>
             <CardContent className="pt-4 pb-3 px-4">
@@ -86,7 +86,7 @@ export function CloudSharingAdmin() {
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-2">
-            {([] as typeof DEMO_SHARES).map(share => (
+            {([] as any[]).map(share => (
               <div key={share.id} className="flex items-center justify-between p-3 rounded-lg bg-muted/20 border border-border/30 hover:bg-muted/30 transition-colors">
                 <div className="flex items-center gap-3 min-w-0">
                   <div className="h-8 w-8 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
@@ -185,7 +185,7 @@ export function CloudSharingAdmin() {
             </div>
           </CardHeader>
           <CardContent className="space-y-2">
-            {([] as typeof DEMO_WORKSPACES).map(ws => (
+            {([] as any[]).map(ws => (
               <div key={ws.id} className="flex items-center justify-between p-4 rounded-lg bg-muted/20 border border-border/30">
                 <div>
                   <p className="text-sm font-semibold">{ws.name}</p>

@@ -31,7 +31,7 @@ export default function SimulatedCoreServicesBoard() {
 
       <div className="grid grid-cols-4 gap-4">
         {(["critical", "high", "medium", "low"] as const).map(sev => {
-          const count = ([] as typeof DEMO_CORE_SERVICES).filter(s => s.stateLossSeverity === sev).length;
+          const count = ([] as any[]).filter(s => s.stateLossSeverity === sev).length;
           return (
             <Card key={sev}>
               <CardContent className="p-4">
@@ -58,7 +58,7 @@ export default function SimulatedCoreServicesBoard() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {([] as typeof DEMO_CORE_SERVICES).map(s => {
+              {([] as any[]).map(s => {
                 const Icon = BACKING_ICONS[s.backing] ?? Server;
                 return (
                   <TableRow key={s.name}>

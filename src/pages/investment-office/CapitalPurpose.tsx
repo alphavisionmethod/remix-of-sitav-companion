@@ -11,7 +11,7 @@ const DEMO_PURPOSES: any[] = [];
 const fmt = (n: number) => n >= 1e6 ? `$${(n / 1e6).toFixed(2)}M` : `$${(n / 1e3).toFixed(1)}K`;
 
 export default function CapitalPurpose() {
-  const TOTAL = ([] as typeof DEMO_PURPOSES).reduce((s, p) => s + p.allocated, 0);
+  const TOTAL = ([] as any[]).reduce((s, p) => s + p.allocated, 0);
   const { data: liveData, isLoading } = useCapitalPurposeBuckets();
   return (
     <div className="mx-auto max-w-5xl space-y-6">
@@ -28,7 +28,7 @@ export default function CapitalPurpose() {
 
       {/* Purpose Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {([] as typeof DEMO_PURPOSES).map((p, i) => {
+        {([] as any[]).map((p, i) => {
           const overTarget = p.actual > p.target * 1.2;
           return (
             <motion.div key={p.id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.04 }}
@@ -58,7 +58,7 @@ export default function CapitalPurpose() {
       {/* Policy Rules */}
       <div className="rounded-2xl border border-border bg-card p-6 space-y-3">
         <h3 className="text-sm font-bold text-foreground">Capital Purpose Rules</h3>
-        {([] as typeof DEMO_RULES).map((r, i) => (
+        {([] as any[]).map((r, i) => (
           <div key={i} className={`rounded-xl border p-3 flex items-start gap-2 ${r.status === "violated" ? "border-destructive/20 bg-destructive/5" : "border-border bg-secondary/20"}`}>
             {r.status === "pass" ? <Shield className="h-4 w-4 text-[hsl(var(--trust-safe))] shrink-0 mt-0.5" /> : <Zap className="h-4 w-4 text-destructive shrink-0 mt-0.5" />}
             <div>

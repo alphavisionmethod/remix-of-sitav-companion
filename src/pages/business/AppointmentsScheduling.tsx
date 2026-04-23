@@ -56,10 +56,10 @@ const riskConfig: Record<string, string> = {
 };
 
 const KPIStrip = () => {
-  const upcoming = ([] as typeof DEMO_APPOINTMENTS).filter(a => ["Today", "Tomorrow", "Wed"].includes(a.date) && a.status !== "no-show" && a.status !== "cancelled").length;
-  const needsConfirm = ([] as typeof DEMO_APPOINTMENTS).filter(a => a.status === "pending" || a.status === "unconfirmed").length;
-  const highRisk = ([] as typeof DEMO_APPOINTMENTS).filter(a => a.noShowRisk === "high" && a.status !== "no-show" && a.status !== "cancelled").length;
-  const noShows = ([] as typeof DEMO_APPOINTMENTS).filter(a => a.status === "no-show").length;
+  const upcoming = ([] as any[]).filter(a => ["Today", "Tomorrow", "Wed"].includes(a.date) && a.status !== "no-show" && a.status !== "cancelled").length;
+  const needsConfirm = ([] as any[]).filter(a => a.status === "pending" || a.status === "unconfirmed").length;
+  const highRisk = ([] as any[]).filter(a => a.noShowRisk === "high" && a.status !== "no-show" && a.status !== "cancelled").length;
+  const noShows = ([] as any[]).filter(a => a.status === "no-show").length;
 
   const kpis = [
     { label: "Upcoming", value: upcoming, icon: <CalendarDays className="h-4 w-4" />, accent: "text-primary" },
@@ -148,10 +148,10 @@ const AppointmentsScheduling = () => {
   const [activeTab, setActiveTab] = useState("upcoming");
 
   const filterApts = (tab: string) => {
-    if (tab === "upcoming") return ([] as typeof DEMO_APPOINTMENTS).filter(a => ["Today", "Tomorrow", "Wed"].includes(a.date) && a.status !== "no-show" && a.status !== "cancelled");
-    if (tab === "needs-confirm") return ([] as typeof DEMO_APPOINTMENTS).filter(a => a.status === "pending" || a.status === "unconfirmed");
-    if (tab === "no-show") return ([] as typeof DEMO_APPOINTMENTS).filter(a => a.status === "no-show");
-    if (tab === "follow-up") return ([] as typeof DEMO_APPOINTMENTS).filter(a => a.isFollowUp || a.status === "no-show");
+    if (tab === "upcoming") return ([] as any[]).filter(a => ["Today", "Tomorrow", "Wed"].includes(a.date) && a.status !== "no-show" && a.status !== "cancelled");
+    if (tab === "needs-confirm") return ([] as any[]).filter(a => a.status === "pending" || a.status === "unconfirmed");
+    if (tab === "no-show") return ([] as any[]).filter(a => a.status === "no-show");
+    if (tab === "follow-up") return ([] as any[]).filter(a => a.isFollowUp || a.status === "no-show");
     return DEMO_APPOINTMENTS;
   };
 
@@ -224,7 +224,7 @@ const AppointmentsScheduling = () => {
               <CardTitle className="text-sm">Today's Schedule</CardTitle>
             </CardHeader>
             <CardContent className="space-y-2">
-              {([] as typeof DEMO_APPOINTMENTS).filter(a => a.date === "Today").map(a => (
+              {([] as any[]).filter(a => a.date === "Today").map(a => (
                 <div key={a.id} className="flex items-center justify-between text-xs py-1.5 border-b border-border/30 last:border-0">
                   <div>
                     <p className="font-medium text-foreground">{a.time}</p>

@@ -61,7 +61,7 @@ export default function AuditComplianceWorkspace() {
   const [searchQuery, setSearchQuery] = useState("");
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
-  const filtered = ([] as typeof DEMO_AUDIT_RECORDS).filter(r => {
+  const filtered = ([] as any[]).filter(r => {
     if (category !== "all" && r.category !== category) return false;
     if (searchQuery && !r.action.toLowerCase().includes(searchQuery.toLowerCase()) && !r.actor.toLowerCase().includes(searchQuery.toLowerCase())) return false;
     return true;
@@ -111,10 +111,10 @@ export default function AuditComplianceWorkspace() {
       {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {[
-          { label: "Total Records", value: ([] as typeof DEMO_AUDIT_RECORDS).length, color: "text-foreground" },
-          { label: "With Proof", value: ([] as typeof DEMO_AUDIT_RECORDS).filter(r => r.proofHash).length, color: "text-[hsl(var(--trust-safe))]" },
-          { label: "Warnings", value: ([] as typeof DEMO_AUDIT_RECORDS).filter(r => r.severity === "warning").length, color: "text-[hsl(var(--sita-gold))]" },
-          { label: "Critical", value: ([] as typeof DEMO_AUDIT_RECORDS).filter(r => r.severity === "critical").length, color: "text-destructive" },
+          { label: "Total Records", value: ([] as any[]).length, color: "text-foreground" },
+          { label: "With Proof", value: ([] as any[]).filter(r => r.proofHash).length, color: "text-[hsl(var(--trust-safe))]" },
+          { label: "Warnings", value: ([] as any[]).filter(r => r.severity === "warning").length, color: "text-[hsl(var(--sita-gold))]" },
+          { label: "Critical", value: ([] as any[]).filter(r => r.severity === "critical").length, color: "text-destructive" },
         ].map(stat => (
           <Card key={stat.label}>
             <CardContent className="p-4 text-center">
