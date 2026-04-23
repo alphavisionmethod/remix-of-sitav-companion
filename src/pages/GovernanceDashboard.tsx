@@ -20,7 +20,6 @@ import { PageShell } from "@/components/sita/PageShell";
 const DEFAULT_SCOPE = { ownerId: "current-user", visibility: "private" as const };
 
 export default function GovernanceDashboard() {
-  const isDemoMode = false;
   const { isDemo } = useAuth();
   const { data: gov, isLoading } = useGovernanceSummary();
   const { engines } = useOSRuntime();

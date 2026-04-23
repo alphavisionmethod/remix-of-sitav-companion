@@ -43,7 +43,6 @@ const DOMAIN_CONFIG: DomainConfig = {
 type SubPage = "overview" | "autonomy" | "devices" | "permissions" | "proof" | "audit" | "settings";
 
 const subpageFromPath = (path: string): SubPage => {
-  const isDemoMode = false;
   if (path.includes("/trust/autonomy")) return "autonomy";
   if (path.includes("/trust/devices")) return "devices";
   if (path.includes("/trust/permissions")) return "permissions";

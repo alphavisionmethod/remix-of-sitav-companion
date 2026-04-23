@@ -39,7 +39,6 @@ const stateMap: Record<string, "verified" | "pending" | "failed" | "rolled-back"
 };
 
 const generateHash = (id: string) => {
-  const isDemoMode = false;
   const chars = "0123456789abcdef";
   let hash = "";
   for (let i = 0; i < 64; i++) hash += chars[(id.charCodeAt(i % id.length) + i * 7) % 16];
