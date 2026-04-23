@@ -1,8 +1,8 @@
 import { ReactNode } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { EmptyState } from "./EmptyState";
+import { PageErrorState } from "./PageErrorState";
 import { LucideIcon } from "lucide-react";
-import { useDataMode } from "@/contexts/DataModeContext";
 
 interface DataLoadingWrapperProps {
   isLoading: boolean;
@@ -13,6 +13,12 @@ interface DataLoadingWrapperProps {
   emptyTitle?: string;
   emptyDescription?: string;
   skeletonCount?: number;
+  /** Pass `true` when the underlying query errored */
+  isError?: boolean;
+  /** Called when user clicks "Retry" in the error state */
+  onRetry?: () => void;
+  /** Context label shown in error state (e.g. "connectors") */
+  errorContext?: string;
 }
 
 export function DataLoadingWrapper({
@@ -24,6 +30,9 @@ export function DataLoadingWrapper({
   emptyTitle,
   emptyDescription,
   skeletonCount = 3,
+  isError = false,
+  onRetry,
+  errorContext,
 }: DataLoadingWrapperProps) {
   if (!isDemoMode && isLoading) {
     return (
@@ -33,6 +42,10 @@ export function DataLoadingWrapper({
         ))}
       </div>
     );
+  }
+
+  if (!isDemoMode && isError) {
+    return <PageErrorState onRetry={onRetry} context={errorContext} />;
   }
 
   if (!isDemoMode && isEmpty) {
