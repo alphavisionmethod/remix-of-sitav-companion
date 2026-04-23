@@ -149,6 +149,7 @@ export function BrainDashboard() {
         />
       )}
       <BrainOnboardingTour />
+      <AlwaysOnVoice enabled={sentinelOn} onDisable={() => setSentinelOn(false)} />
     </PageShell>
   );
 }
