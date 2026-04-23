@@ -6,6 +6,8 @@ export { SitaPresenceOrb } from "./SitaPresenceOrb";
 export { SitaHudStrip } from "./SitaHudStrip";
 export { SitaFirstRunReveal } from "./SitaFirstRunReveal";
 export { useSitaAmbientMood } from "./useSitaAmbientMood";
+export { SitaWhisper } from "./SitaWhisper";
+export { SitaProactiveRunner } from "./SitaProactiveRunner";
 export {
   publishSitaHud,
   readSitaHud,
