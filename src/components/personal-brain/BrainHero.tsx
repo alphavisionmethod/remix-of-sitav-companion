@@ -65,6 +65,20 @@ export function BrainHero({
             <Mic className="h-4 w-4" />
             Voice
           </Button>
+          {onToggleSentinel && (
+            <Button
+              variant={sentinelOn ? "default" : "outline"}
+              size="sm"
+              onClick={onToggleSentinel}
+              title={sentinelOn ? "Turn off Sentinel (always-on voice)" : "Turn on Sentinel (always-on voice)"}
+              className={sentinelOn
+                ? "bg-gradient-to-br from-primary to-accent text-primary-foreground shadow-lg shadow-primary/30"
+                : "backdrop-blur"}
+            >
+              <Radio className="h-4 w-4" />
+              <span className="sr-only sm:not-sr-only">{sentinelOn ? "Sentinel on" : "Sentinel"}</span>
+            </Button>
+          )}
           {onTools && (
             <Button data-tour="brain-tools" variant="outline" size="sm" onClick={onTools} title="External tools" className="backdrop-blur">
               <Wrench className="h-4 w-4" />
