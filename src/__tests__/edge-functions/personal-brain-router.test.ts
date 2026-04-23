@@ -17,6 +17,7 @@ const REQUIRED_ACTIONS = [
   "file.ingest",
   "voice.transcribe",
   "data.export",
+  "data.delete",
 ];
 
 const REQUIRED_MODES = [
