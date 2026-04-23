@@ -2,7 +2,7 @@
 // Settings — System Group (General, Appearance, Display, Accessibility, Operating Modes, Device Mode)
 // ═══════════════════════════════════════════════════════════════
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useMemo } from "react";
 import {
   Moon, Sun, Bell, Palette, Monitor, Eye, Globe, Check, ChevronRight, Lock,
   Type, Accessibility, Activity, Clock, Home as HomeIcon, Layout,
