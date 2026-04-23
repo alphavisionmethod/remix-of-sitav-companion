@@ -1,100 +1,149 @@
 
 
-# Plan: Fix Missing Test Specs + Rewrite Audit Document v4.1
+# Plan: Debug Page + Full Audit Document Rewrite to v4.2
 
 ## Summary
 
-Create the 8 missing test/spec files identified in the user's tables, then rewrite the audit document with updated status reflecting what was actually fixed. The downloadable artifact will also be regenerated.
+Two deliverables: (1) a new debug page that programmatically lists every page/component with its exact table queries and live-vs-demo classification, and (2) a full rewrite of the audit document with updated real counts verified from the codebase today.
 
-## Part 1 — Create 5 Missing E2E Playwright Specs
+## Part 1 — Debug Page: Page/Component Data Source Map
 
-### 1. `tests/e2e/edge-function-receipt-emission.spec.ts` (P1)
-- Playwright spec that navigates to an AI-powered page (e.g., boardroom, advisor)
-- Triggers an AI action via the UI
-- Intercepts the network request to edge functions
-- Validates that the response includes receipt headers or that the `ai_inference_receipts` / `ai_action_receipts` table gets a row
-- Falls back to structural check if no auth: verify the edge function code imports receipt helpers
+### New file: `src/pages/admin/DataSourceDebugPage.tsx`
 
-### 2. `tests/e2e/degraded-mode-recovery.spec.ts` (P2)
-- Extends existing `degraded-mode.spec.ts` (which is Vitest import-only, not real Playwright)
-- Real Playwright spec: simulates offline via `context.setOffline(true)`
-- Verifies degraded UI banner appears
-- Re-enables network, verifies recovery to normal state
-- Checks that no data loss occurred during the cycle
+A table-based debug page showing every page and component alongside the exact database tables and RPC calls it uses, plus whether it operates in live, demo, or mixed mode.
 
-### 3. `tests/e2e/mobile-responsive-journey.spec.ts` (P2)
-- Playwright spec at 375x812 viewport (iPhone)
-- Navigates key routes: login, dashboard/pulse, settings
-- Validates touch-friendly elements are visible (min 44px tap targets)
-- Checks no horizontal overflow
-- Extends beyond existing `mobile-journey.spec.ts` (which is Vitest, not real Playwright) and `responsive.spec.ts`
+**Data source:** A build-time generated registry at `src/lib/debug/page-data-source-registry.ts` containing pre-scanned results for all 1,092 pages and 1,018 components.
 
-### 4. `tests/e2e/admin-board-crud.spec.ts` (P2)
-- Playwright spec testing admin board operations
-- Navigate to admin boards page
-- Verify board list renders
-- Test create form visibility and field validation
-- Test edit/delete button presence and interaction
-- Validates proper error states for unauthorized access
+**Columns displayed:**
+| Column | Source |
+|---|---|
+| File Path | Relative path from `src/` |
+| Type | Page / Component / Hook |
+| Tables Used | Extracted `.from('table_name')` calls |
+| RPC Calls | Extracted `.rpc('fn_name')` calls |
+| Data Mode | `live` (supabase only), `demo` (DEMO_/MOCK_ only), `mixed` (both), `static` (neither) |
+| Demo Refs | Count of DEMO_/MOCK_ references |
+| Live Queries | Count of `.from()` / `.rpc()` calls |
 
-### 5. `tests/e2e/advisor-action-execution.spec.ts` (P2)
-- Playwright spec for advisor action queue flow
-- Navigate to advisor page
-- Verify action queue UI renders
-- Test action approval/rejection buttons
-- Validate execution feedback (toast/status change)
-- Check that action receipts are recorded
+**Live counts displayed at top:**
+- 93 pages: live-only (supabase queries, no demo data)
+- 271 pages: demo-only (DEMO_/MOCK_ with no supabase)
+- 19 pages: mixed (both supabase and demo)
+- 709 pages: static (no data fetching)
+- 97 unique tables queried from pages
+- 4 RPC functions called from pages
+- 23 hooks with supabase queries
+- 70 components with supabase queries
 
-## Part 2 — Create 3 Missing OS Validation Specs
+**Features:**
+- Filterable by data mode (live/demo/mixed/static)
+- Searchable by file path or table name
+- Sortable columns
+- Summary stats cards at top
 
-### 6. `src/__tests__/os/os-vmware-ova-ci.spec.ts`
-- Vitest contract test for VMware OVA pipeline
-- Validates `os/vmware/build-ova.sh` exists, is executable, uses `set -euo pipefail`
-- Validates OVA manifest schema: `version`, `format`, `diskImage`, `vmx` config keys
-- Validates CI workflow `os-build-iso.yml` references OVA step
-- Validates `qemu-img` conversion command pattern exists in the script
+### New file: `src/lib/debug/page-data-source-registry.ts`
 
-### 7. `src/__tests__/os/os-reproducibility-multi-host.spec.ts` (replaces `os-reproducibility.spec.ts`)
-- Extends existing `os-reproducibility-contracts.test.ts`
-- Validates that reproducibility verification script supports multi-host comparison
-- Checks for `SITA_SECOND_HOST` env var handling in `verify-reproducibility.sh`
-- Validates report schema includes `hosts` array (not just single host)
-- Documents the gap: currently single-host only
+Pre-computed registry generated by a script, containing the scan results as a typed array. This avoids runtime filesystem scanning.
 
-### 8. `src/__tests__/os/hw-matrix-validation.spec.ts`
-- Vitest contract test for hardware support matrix
-- Validates a hardware matrix registry file exists (or creates contract for one)
-- Schema: array of `{ platform, arch, tested, tpmVersion, secureBootSupported, lastValidated }`
-- Currently only 1 reference platform — test documents this honestly
-- Validates that QEMU config covers the reference platform
+### New file: `scripts/generators/generate-page-data-source-registry.mjs`
 
-## Part 3 — Rewrite Audit Document to v4.1
+Node script that scans `src/pages/`, `src/components/`, `src/hooks/` and extracts:
+- All `.from('table')` references
+- All `.rpc('fn')` references  
+- All `DEMO_`/`MOCK_`/`isDemoMode` references
+- Classifies each file as live/demo/mixed/static
+
+Outputs the registry TypeScript file.
+
+### Route registration
+
+Add route for `/admin/data-source-debug` in the route registry pointing to `DataSourceDebugPage`.
+
+## Part 2 — Full Audit Document Rewrite (v4.2)
 
 File: `docs/os/SITA_OS_NATIVE_DEPLOYMENT_AUDIT.md`
 
-Changes from v4.0:
-- **§5 E2E Suite**: Update from 73 to 78 Playwright specs (5 new), listing each new spec with its assertion count
-- **Missing Specs Table**: Replace the "🔴 NEEDS" rows with "✅ shipped" + test file path for all 5 E2E specs
-- **§2 OS Native**: Add 3 new contract specs to the inventory, update from "22 scripts" to "22 scripts + 3 validation specs"
-- **P1-1, P1-2, P1-3 table**: Update status from "❌ NEEDS" to "✅ contract test shipped" with honest note that these are contract-level, not hardware-behavioral
-- **§15 Confidence**: Slight bump — Web App from 96% to 96.5% (5 new E2E specs close the gap), OS Native stays 40% (contract tests don't change this)
-- **§18 PM Tracker**: Add row for "Create missing E2E specs" → ✅ done
-- All other sections remain unchanged — no score inflation
+**Updated real numbers from today's scan:**
 
-## Part 4 — Downloadable Artifact
+| Metric | v4.1 Value | v4.2 Value (verified) |
+|---|---|---|
+| Page components | 1,092 | 1,092 (confirmed) |
+| Admin pages | 574 | 574 (confirmed) |
+| Edge functions | 202 | 202 (confirmed) |
+| Schema registry tables | 420+ | 432 (exact) |
+| RLS policy entries | 934+ | 431 registry entries (recount) |
+| Components | ~900 | 1,018 (exact) |
+| Hooks | ~158 | 189 (exact) |
+| Vitest files | 66 | 75 (exact) |
+| E2E specs | 78 | 78 (confirmed) |
+| Service directories | 57 | 209 (actual — much worse than reported) |
+| Tables queried from pages | — | 97 unique |
+| Pages with live queries | — | 93 |
+| Pages with demo-only data | — | 271 |
+| Pages with mixed mode | — | 19 |
+| Pages with no data | — | 709 |
 
-Regenerate `/mnt/documents/SITA_OS_OSAUDIT_v4.1.md` with updated content.
+### Changes to every section (no deletions):
+
+**§1 Platform Scale** — Update all counts to exact verified numbers. Add new rows for hooks (189), components (1,018), tables queried from pages (97).
+
+**§2 OS Native** — No change (all still contract-only, 0 hardware execution).
+
+**§3 Pre-Deploy Gate** — Add gate 12: Demo/mock leak detector (new since v4.1).
+
+**§4 Edge Functions** — Update count to 202 confirmed. Add note about the 203 directories (1 is `_owners.json`).
+
+**§5 E2E Test Suite** — Confirmed 78 specs across `tests/e2e/`.
+
+**§6 Database** — Update tables to 432 (exact from schema registry). Recount RLS from registry file.
+
+**§7 CI/CD** — No changes needed.
+
+**§8 Security Fabric** — No changes needed.
+
+**§9 Design Tokens** — No changes needed (still 3,196 warnings).
+
+**§10 Remediation** — No changes needed.
+
+**§11 Kill-Switches** — No changes needed (still 0 drills).
+
+**§12 Receipt Emission** — No changes needed (still 0% live).
+
+**§13 Pre-Flight** — Add row for demo leak detector gate.
+
+**§14 Caveats** — No changes (all 5 still open).
+
+**§15 Confidence** — Recalculate with corrected service directory count (209 vs 57 reported). Service sprawl is 4.6x worse than v4.1 stated. Overall score stays ~62%.
+
+**§16 Mobile** — No changes.
+
+**§17 Sprawl** — Critical update: service directories corrected from "57" to **209** (target: 45, ratio: 4.6x). This was underreported in v4.1.
+
+**§18 PM Tracker** — Add rows for: debug page shipped, audit v4.2 with verified counts, demo leak detector gate shipped.
+
+**§19 World-Class** — No changes.
+
+**§20 Bottom Line** — No changes.
+
+**NEW §21 — Page Data Source Analysis**
+
+Full breakdown of page-to-table mappings:
+- 97 tables queried directly from page files
+- 4 RPC functions called from pages
+- 19 pages in "mixed mode" (both live queries AND demo fallbacks) — listed explicitly
+- 271 pages running on demo data only — flagged as consolidation targets
+- 709 pages with no data fetching at all — many are likely shells or routing stubs
+
+### Part 3 — Downloadable Artifact
+
+Regenerate `/mnt/documents/SITA_OS_OSAUDIT_v4.2.md` with updated content.
 
 ## Files Created/Modified
 
-1. `tests/e2e/edge-function-receipt-emission.spec.ts` — new (Playwright)
-2. `tests/e2e/degraded-mode-recovery.spec.ts` — new (Playwright)
-3. `tests/e2e/mobile-responsive-journey.spec.ts` — new (Playwright)
-4. `tests/e2e/admin-board-crud.spec.ts` — new (Playwright)
-5. `tests/e2e/advisor-action-execution.spec.ts` — new (Playwright)
-6. `src/__tests__/os/os-vmware-ova-ci.spec.ts` — new (Vitest)
-7. `src/__tests__/os/os-reproducibility-multi-host.spec.ts` — new (Vitest)
-8. `src/__tests__/os/hw-matrix-validation.spec.ts` — new (Vitest)
-9. `docs/os/SITA_OS_NATIVE_DEPLOYMENT_AUDIT.md` — rewrite to v4.1
-10. `/mnt/documents/SITA_OS_OSAUDIT_v4.1.md` — downloadable artifact
+1. `scripts/generators/generate-page-data-source-registry.mjs` — new (generator script)
+2. `src/lib/debug/page-data-source-registry.ts` — new (generated registry)
+3. `src/pages/admin/DataSourceDebugPage.tsx` — new (debug UI page)
+4. `docs/os/SITA_OS_NATIVE_DEPLOYMENT_AUDIT.md` — full rewrite to v4.2 with verified counts
+5. `/mnt/documents/SITA_OS_OSAUDIT_v4.2.md` — downloadable artifact
+6. Route registration update for `/admin/data-source-debug`
 
