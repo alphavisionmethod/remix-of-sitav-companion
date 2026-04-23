@@ -47,8 +47,11 @@ const KEY_ARTIFACTS: KeyArtifact[] = [
   { file: "final-deployment-readiness-report.json",    budget: "weekly", optional: true },
 
   // Per-target release readiness
-  { file: "android-release-readiness-report.json",     budget: "weekly" },
-  { file: "ios-release-readiness-report.json",         budget: "weekly" },
+  // Mobile targets are gated separately — informational here.
+  // They still must parse and be fresh, but the ok/truth check is
+  // skipped because Capacitor isn't required for the web deploy.
+  { file: "android-release-readiness-report.json",     budget: "weekly", skipTruthCheck: true },
+  { file: "ios-release-readiness-report.json",         budget: "weekly", skipTruthCheck: true },
   { file: "iso-vmware-release-readiness-report.json",  budget: "weekly" },
 
   // Catalog / index artifacts (parse + freshness only — no ok field)
