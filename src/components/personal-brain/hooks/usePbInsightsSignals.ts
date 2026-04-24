@@ -1,4 +1,6 @@
 // Personal Brain — Phase 7 insights signals hook
+// Supports refresh + cursor pagination (infinite scroll) by querying
+// pb_insights_signals directly. Mutations still go through the edge fn.
 import { useCallback, useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
@@ -13,21 +15,49 @@ export interface PbSignal {
   created_at: string;
 }
 
+const PAGE_SIZE = 20;
+
 export function usePbInsightsSignals() {
   const { user } = useAuth();
   const [signals, setSignals] = useState<PbSignal[]>([]);
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
 
   const refresh = useCallback(async () => {
     if (!user) return;
     setLoading(true);
-    const { data } = await supabase.functions.invoke("personal-brain", {
-      body: { action: "insights.list", payload: {} },
-    });
-    setSignals(((data as { signals?: PbSignal[] } | null)?.signals ?? []));
+    const { data } = await supabase
+      .from("pb_insights_signals")
+      .select("*")
+      .eq("user_id", user.id)
+      .neq("status", "dismissed")
+      .order("created_at", { ascending: false })
+      .limit(PAGE_SIZE);
+    const rows = (data ?? []) as unknown as PbSignal[];
+    setSignals(rows);
+    setHasMore(rows.length === PAGE_SIZE);
     setLoading(false);
   }, [user]);
+
+  const loadMore = useCallback(async () => {
+    if (!user || loadingMore || !hasMore || signals.length === 0) return;
+    setLoadingMore(true);
+    const cursor = signals[signals.length - 1].created_at;
+    const { data } = await supabase
+      .from("pb_insights_signals")
+      .select("*")
+      .eq("user_id", user.id)
+      .neq("status", "dismissed")
+      .lt("created_at", cursor)
+      .order("created_at", { ascending: false })
+      .limit(PAGE_SIZE);
+    const rows = (data ?? []) as unknown as PbSignal[];
+    setSignals((prev) => [...prev, ...rows]);
+    setHasMore(rows.length === PAGE_SIZE);
+    setLoadingMore(false);
+  }, [user, loadingMore, hasMore, signals]);
 
   const scan = useCallback(async () => {
     setBusy(true);
@@ -51,5 +81,5 @@ export function usePbInsightsSignals() {
   }, []);
 
   useEffect(() => { void refresh(); }, [refresh]);
-  return { signals, loading, busy, scan, updateStatus, refresh };
+  return { signals, loading, busy, scan, updateStatus, refresh, loadMore, hasMore, loadingMore };
 }
