@@ -466,6 +466,10 @@ export function CFOAdvisorRecommendations() {
                 <div className="flex items-center gap-2">
                   <Icon className="h-4 w-4 text-muted-foreground" />
                   <CardTitle className="text-base">{g.title}</CardTitle>
+                  <CFOExplainabilityPopover
+                    data={g.explain}
+                    triggerLabel={`Explain how ${g.title} was computed`}
+                  />
                 </div>
                 {g.action && (
                   <Button
@@ -502,7 +506,13 @@ export function CFOAdvisorRecommendations() {
                           <p className="text-sm font-medium truncate">{item.primary}</p>
                           <p className="text-xs text-muted-foreground truncate">{item.secondary}</p>
                         </div>
-                        <Badge variant={item.chipVariant} className="text-xs ml-2 shrink-0">{item.chip}</Badge>
+                        <div className="flex items-center gap-1.5 ml-2 shrink-0">
+                          <CFOExplainabilityPopover
+                            data={item.explain}
+                            triggerLabel={`Explain why ${item.primary} is flagged`}
+                          />
+                          <Badge variant={item.chipVariant} className="text-xs">{item.chip}</Badge>
+                        </div>
                       </button>
                     ))}
                   </div>
