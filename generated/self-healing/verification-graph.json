@@ -1,0 +1,432 @@
+{
+  "schema": "self-healing/verification-graph@1",
+  "generatedAt": "2026-04-24T15:17:37.500Z",
+  "flags": {
+    "dry": true,
+    "criticalOnly": false,
+    "quick": false,
+    "subsystem": null
+  },
+  "totals": {
+    "registered": 24,
+    "selected": 24,
+    "passed": 0,
+    "failed": 0,
+    "timedOut": 0,
+    "skipped": 24
+  },
+  "checks": [
+    {
+      "id": "typecheck",
+      "command": "npx tsc --noEmit",
+      "subsystem": "frontend",
+      "scope": "repo",
+      "criticality": "release-blocker",
+      "dependencies": [],
+      "timeoutMs": 600000,
+      "result": {
+        "checkId": "typecheck",
+        "status": "skipped-dry",
+        "durationMs": 0,
+        "exitCode": null,
+        "stdout": "",
+        "stderr": ""
+      }
+    },
+    {
+      "id": "lint",
+      "command": "npx eslint . --max-warnings=0",
+      "subsystem": "frontend",
+      "scope": "repo",
+      "criticality": "high",
+      "dependencies": [],
+      "timeoutMs": 300000,
+      "result": {
+        "checkId": "lint",
+        "status": "skipped-dry",
+        "durationMs": 0,
+        "exitCode": null,
+        "stdout": "",
+        "stderr": ""
+      }
+    },
+    {
+      "id": "vitest:unit",
+      "command": "npx vitest run --reporter=json --outputFile=coverage/vitest-result.json",
+      "subsystem": "tests",
+      "scope": "repo",
+      "criticality": "release-blocker",
+      "dependencies": [],
+      "timeoutMs": 1200000,
+      "result": {
+        "checkId": "vitest:unit",
+        "status": "skipped-dry",
+        "durationMs": 0,
+        "exitCode": null,
+        "stdout": "",
+        "stderr": ""
+      }
+    },
+    {
+      "id": "vitest:integration",
+      "command": "npx vitest run src/test/integration/ --reporter=json",
+      "subsystem": "tests",
+      "scope": "subsystem",
+      "criticality": "high",
+      "dependencies": [
+        "vitest:unit"
+      ],
+      "timeoutMs": 600000,
+      "result": {
+        "checkId": "vitest:integration",
+        "status": "skipped-dry",
+        "durationMs": 0,
+        "exitCode": null,
+        "stdout": "",
+        "stderr": ""
+      }
+    },
+    {
+      "id": "test:deployment-readiness",
+      "command": "npm run test:deployment-readiness",
+      "subsystem": "release",
+      "scope": "repo",
+      "criticality": "release-blocker",
+      "dependencies": [
+        "vitest:unit"
+      ],
+      "timeoutMs": 600000,
+      "result": {
+        "checkId": "test:deployment-readiness",
+        "status": "skipped-dry",
+        "durationMs": 0,
+        "exitCode": null,
+        "stdout": "",
+        "stderr": ""
+      }
+    },
+    {
+      "id": "test:imports",
+      "command": "npm run test:imports",
+      "subsystem": "contracts",
+      "scope": "repo",
+      "criticality": "high",
+      "dependencies": [],
+      "timeoutMs": 120000,
+      "result": {
+        "checkId": "test:imports",
+        "status": "skipped-dry",
+        "durationMs": 0,
+        "exitCode": null,
+        "stdout": "",
+        "stderr": ""
+      }
+    },
+    {
+      "id": "test:classifier",
+      "command": "node scripts/lib/failure-classifier.test.mjs",
+      "subsystem": "governance",
+      "scope": "repo",
+      "criticality": "normal",
+      "dependencies": [],
+      "timeoutMs": 60000,
+      "result": {
+        "checkId": "test:classifier",
+        "status": "skipped-dry",
+        "durationMs": 0,
+        "exitCode": null,
+        "stdout": "",
+        "stderr": ""
+      }
+    },
+    {
+      "id": "validate:architecture",
+      "command": "npm run validate:architecture",
+      "subsystem": "governance",
+      "scope": "repo",
+      "criticality": "high",
+      "dependencies": [],
+      "timeoutMs": 600000,
+      "result": {
+        "checkId": "validate:architecture",
+        "status": "skipped-dry",
+        "durationMs": 0,
+        "exitCode": null,
+        "stdout": "",
+        "stderr": ""
+      }
+    },
+    {
+      "id": "validate:contracts",
+      "command": "npm run validate:contracts",
+      "subsystem": "contracts",
+      "scope": "repo",
+      "criticality": "release-blocker",
+      "dependencies": [],
+      "timeoutMs": 600000,
+      "result": {
+        "checkId": "validate:contracts",
+        "status": "skipped-dry",
+        "durationMs": 0,
+        "exitCode": null,
+        "stdout": "",
+        "stderr": ""
+      }
+    },
+    {
+      "id": "validate:runtime",
+      "command": "npm run validate:runtime",
+      "subsystem": "runtime",
+      "scope": "repo",
+      "criticality": "high",
+      "dependencies": [],
+      "timeoutMs": 600000,
+      "result": {
+        "checkId": "validate:runtime",
+        "status": "skipped-dry",
+        "durationMs": 0,
+        "exitCode": null,
+        "stdout": "",
+        "stderr": ""
+      }
+    },
+    {
+      "id": "validate:db",
+      "command": "npm run validate:db",
+      "subsystem": "db",
+      "scope": "repo",
+      "criticality": "release-blocker",
+      "dependencies": [],
+      "timeoutMs": 300000,
+      "result": {
+        "checkId": "validate:db",
+        "status": "skipped-dry",
+        "durationMs": 0,
+        "exitCode": null,
+        "stdout": "",
+        "stderr": ""
+      }
+    },
+    {
+      "id": "validate:deployment",
+      "command": "npm run validate:deployment",
+      "subsystem": "release",
+      "scope": "repo",
+      "criticality": "release-blocker",
+      "dependencies": [],
+      "timeoutMs": 600000,
+      "result": {
+        "checkId": "validate:deployment",
+        "status": "skipped-dry",
+        "durationMs": 0,
+        "exitCode": null,
+        "stdout": "",
+        "stderr": ""
+      }
+    },
+    {
+      "id": "validate:manifests",
+      "command": "npm run validate:manifests",
+      "subsystem": "manifests",
+      "scope": "repo",
+      "criticality": "high",
+      "dependencies": [],
+      "timeoutMs": 300000,
+      "result": {
+        "checkId": "validate:manifests",
+        "status": "skipped-dry",
+        "durationMs": 0,
+        "exitCode": null,
+        "stdout": "",
+        "stderr": ""
+      }
+    },
+    {
+      "id": "validate:support",
+      "command": "npm run validate:support",
+      "subsystem": "governance",
+      "scope": "repo",
+      "criticality": "normal",
+      "dependencies": [],
+      "timeoutMs": 300000,
+      "result": {
+        "checkId": "validate:support",
+        "status": "skipped-dry",
+        "durationMs": 0,
+        "exitCode": null,
+        "stdout": "",
+        "stderr": ""
+      }
+    },
+    {
+      "id": "validate:release",
+      "command": "npm run validate:release",
+      "subsystem": "release",
+      "scope": "repo",
+      "criticality": "release-blocker",
+      "dependencies": [],
+      "timeoutMs": 600000,
+      "result": {
+        "checkId": "validate:release",
+        "status": "skipped-dry",
+        "durationMs": 0,
+        "exitCode": null,
+        "stdout": "",
+        "stderr": ""
+      }
+    },
+    {
+      "id": "validate:security",
+      "command": "npm run validate:security",
+      "subsystem": "security",
+      "scope": "repo",
+      "criticality": "release-blocker",
+      "dependencies": [],
+      "timeoutMs": 600000,
+      "result": {
+        "checkId": "validate:security",
+        "status": "skipped-dry",
+        "durationMs": 0,
+        "exitCode": null,
+        "stdout": "",
+        "stderr": ""
+      }
+    },
+    {
+      "id": "check:imports",
+      "command": "npm run check:imports",
+      "subsystem": "contracts",
+      "scope": "repo",
+      "criticality": "high",
+      "dependencies": [],
+      "timeoutMs": 120000,
+      "result": {
+        "checkId": "check:imports",
+        "status": "skipped-dry",
+        "durationMs": 0,
+        "exitCode": null,
+        "stdout": "",
+        "stderr": ""
+      }
+    },
+    {
+      "id": "validate:governance",
+      "command": "npm run validate:governance",
+      "subsystem": "governance",
+      "scope": "repo",
+      "criticality": "high",
+      "dependencies": [],
+      "timeoutMs": 180000,
+      "result": {
+        "checkId": "validate:governance",
+        "status": "skipped-dry",
+        "durationMs": 0,
+        "exitCode": null,
+        "stdout": "",
+        "stderr": ""
+      }
+    },
+    {
+      "id": "check:ai-domains",
+      "command": "npm run check:ai-domains",
+      "subsystem": "ai",
+      "scope": "repo",
+      "criticality": "high",
+      "dependencies": [],
+      "timeoutMs": 120000,
+      "result": {
+        "checkId": "check:ai-domains",
+        "status": "skipped-dry",
+        "durationMs": 0,
+        "exitCode": null,
+        "stdout": "",
+        "stderr": ""
+      }
+    },
+    {
+      "id": "check:routes-inventory",
+      "command": "npm run check:routes-inventory-completeness",
+      "subsystem": "frontend",
+      "scope": "repo",
+      "criticality": "high",
+      "dependencies": [],
+      "timeoutMs": 120000,
+      "result": {
+        "checkId": "check:routes-inventory",
+        "status": "skipped-dry",
+        "durationMs": 0,
+        "exitCode": null,
+        "stdout": "",
+        "stderr": ""
+      }
+    },
+    {
+      "id": "check:edge-function-ownership",
+      "command": "npm run check:edge-function-ownership-completeness",
+      "subsystem": "edge",
+      "scope": "repo",
+      "criticality": "high",
+      "dependencies": [],
+      "timeoutMs": 120000,
+      "result": {
+        "checkId": "check:edge-function-ownership",
+        "status": "skipped-dry",
+        "durationMs": 0,
+        "exitCode": null,
+        "stdout": "",
+        "stderr": ""
+      }
+    },
+    {
+      "id": "check:artifact-ownership-graph",
+      "command": "npm run check:artifact-ownership-graph",
+      "subsystem": "manifests",
+      "scope": "repo",
+      "criticality": "normal",
+      "dependencies": [],
+      "timeoutMs": 180000,
+      "result": {
+        "checkId": "check:artifact-ownership-graph",
+        "status": "skipped-dry",
+        "durationMs": 0,
+        "exitCode": null,
+        "stdout": "",
+        "stderr": ""
+      }
+    },
+    {
+      "id": "check:runbook-coverage",
+      "command": "npm run check:runbook-coverage",
+      "subsystem": "governance",
+      "scope": "repo",
+      "criticality": "normal",
+      "dependencies": [],
+      "timeoutMs": 60000,
+      "result": {
+        "checkId": "check:runbook-coverage",
+        "status": "skipped-dry",
+        "durationMs": 0,
+        "exitCode": null,
+        "stdout": "",
+        "stderr": ""
+      }
+    },
+    {
+      "id": "check:self-healer-safe-catalogue",
+      "command": "npx tsx scripts/validation/check-self-healer-safe-catalogue.ts",
+      "subsystem": "security",
+      "scope": "repo",
+      "criticality": "release-blocker",
+      "dependencies": [],
+      "timeoutMs": 60000,
+      "result": {
+        "checkId": "check:self-healer-safe-catalogue",
+        "status": "skipped-dry",
+        "durationMs": 0,
+        "exitCode": null,
+        "stdout": "",
+        "stderr": ""
+      }
+    }
+  ]
+}
