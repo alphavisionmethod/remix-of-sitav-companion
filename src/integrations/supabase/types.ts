@@ -17104,21 +17104,75 @@ export type Database = {
           },
         ]
       }
+      pb_notification_prefs: {
+        Row: {
+          channel_email: boolean
+          channel_in_app: boolean
+          continue_where_left_off: boolean
+          created_at: string
+          daily_planning_prompt: boolean
+          inferred_pattern_review: boolean
+          learning_reminders: string
+          project_nudges: string
+          updated_at: string
+          user_id: string
+          voice_reflection_reminder: boolean
+          weekly_recap: boolean
+        }
+        Insert: {
+          channel_email?: boolean
+          channel_in_app?: boolean
+          continue_where_left_off?: boolean
+          created_at?: string
+          daily_planning_prompt?: boolean
+          inferred_pattern_review?: boolean
+          learning_reminders?: string
+          project_nudges?: string
+          updated_at?: string
+          user_id: string
+          voice_reflection_reminder?: boolean
+          weekly_recap?: boolean
+        }
+        Update: {
+          channel_email?: boolean
+          channel_in_app?: boolean
+          continue_where_left_off?: boolean
+          created_at?: string
+          daily_planning_prompt?: boolean
+          inferred_pattern_review?: boolean
+          learning_reminders?: string
+          project_nudges?: string
+          updated_at?: string
+          user_id?: string
+          voice_reflection_reminder?: boolean
+          weekly_recap?: boolean
+        }
+        Relationships: []
+      }
       pb_profile: {
         Row: {
+          biggest_need: string | null
           coaching_style: string
           context_sources: Json
           created_at: string
+          default_workspace_id: string | null
           depth: string
           display_name: string | null
           format_pref: string
           id: string
+          infer_prompt_mode: string
           language: string
+          learning_level: string
+          learning_style: Json
           life_context: string | null
+          location: string | null
           mode_overrides: Json
           onboarded_at: string | null
+          output_formats: Json
           personalization_depth: string
           role: string | null
+          separation_pref: string
+          strengths: Json
           timezone: string
           tone: string
           updated_at: string
@@ -17127,19 +17181,28 @@ export type Database = {
           work_mode: string
         }
         Insert: {
+          biggest_need?: string | null
           coaching_style?: string
           context_sources?: Json
           created_at?: string
+          default_workspace_id?: string | null
           depth?: string
           display_name?: string | null
           format_pref?: string
           id?: string
+          infer_prompt_mode?: string
           language?: string
+          learning_level?: string
+          learning_style?: Json
           life_context?: string | null
+          location?: string | null
           mode_overrides?: Json
           onboarded_at?: string | null
+          output_formats?: Json
           personalization_depth?: string
           role?: string | null
+          separation_pref?: string
+          strengths?: Json
           timezone?: string
           tone?: string
           updated_at?: string
@@ -17148,19 +17211,28 @@ export type Database = {
           work_mode?: string
         }
         Update: {
+          biggest_need?: string | null
           coaching_style?: string
           context_sources?: Json
           created_at?: string
+          default_workspace_id?: string | null
           depth?: string
           display_name?: string | null
           format_pref?: string
           id?: string
+          infer_prompt_mode?: string
           language?: string
+          learning_level?: string
+          learning_style?: Json
           life_context?: string | null
+          location?: string | null
           mode_overrides?: Json
           onboarded_at?: string | null
+          output_formats?: Json
           personalization_depth?: string
           role?: string | null
+          separation_pref?: string
+          strengths?: Json
           timezone?: string
           tone?: string
           updated_at?: string
