@@ -47,7 +47,7 @@ export default function GrowthBoardroom() {
 
   const { data: liveLeakItems } = useRevenueLeakItems();
 
-  const PIPELINE_STAGES = (liveDeals && liveDeals.length > 0 ? [] as any[] : []);
+  const PIPELINE_STAGES = (liveDeals && liveDeals.length > 0 ? [] as never[] : []);
   const LEAKS = (liveLeakItems && liveLeakItems.length > 0 ? liveLeakItems : []);
   const ADVISOR_SIGNALS: any[] = [];
 

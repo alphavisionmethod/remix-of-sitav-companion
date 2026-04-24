@@ -283,7 +283,7 @@ const ConfidencePanel = ({ mode }: { mode: CouncilMode }) => {
 return null;
   
   const modeConfig = MODES.find(m => m.id === mode)!;
-  const advisors = [] as any[];
+  const advisors = [] as never[];
 
   return (
     <div className="space-y-3">

@@ -81,7 +81,7 @@ const EnterpriseControlPlane = () => {
     },
   });
 
-  const TEAM_MEMBERS = (realTeamMembers?.length ? realTeamMembers : [] as any[]);
+  const TEAM_MEMBERS = (realTeamMembers?.length ? realTeamMembers : [] as never[]);
   const COMPLIANCE_ITEMS: any[] = []; // Compliance is config-driven, keep as reference data
 
   // Live SLA data from sla_snapshots
@@ -106,7 +106,7 @@ const EnterpriseControlPlane = () => {
   });
 
   const SLA_METRICS = liveSlaData && liveSlaData.length > 0 ? liveSlaData : ([] as never[]);
-  const DEPLOYMENTS = (realAuditLogs?.length ? realAuditLogs : [] as any[]);
+  const DEPLOYMENTS = (realAuditLogs?.length ? realAuditLogs : [] as never[]);
 
   const togglePermission = (role: string, cap: string) => {
     if (role === "admin") return;

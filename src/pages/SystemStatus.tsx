@@ -22,26 +22,26 @@ type ServiceHealthRecord = { id: string; name: string; status: string; [k: strin
 type QuarantineRecord = { id: string; service: string; reason: string; [k: string]: any };
 type CircuitBreakerState = { id: string; service: string; state: string; [k: string]: any };
 const createSelfHealingService = () => ({
-  getHistory: () => [] as any[], heal: () => {}, getStatus: () => "healthy",
+  getHistory: () => [] as never[], heal: () => {}, getStatus: () => "healthy",
   registerService: (..._args: any[]) => {}, recordHealthCheck: (..._args: any[]) => {},
   runPipeline: (_p: any) => ({ id: crypto.randomUUID() }),
   detect: (_p: any) => ({ id: crypto.randomUUID() }),
   resolve: (_id: string, _msg: string) => {},
-  getAllIncidents: () => [] as any[], getActiveIncidents: () => [] as any[],
-  getCircuitBreakerStates: () => [] as any[],
+  getAllIncidents: () => [] as never[], getActiveIncidents: () => [] as never[],
+  getCircuitBreakerStates: () => [] as never[],
   getStats: () => ({ total: 0, resolved: 0, escalated: 0, bySeverity: { P0: 0, P1: 0, P2: 0, P3: 0 }, byState: {} as Record<string, number> }),
 });
 const createImmuneController = () => ({
-  getThreats: () => [] as any[], getStatus: () => "active",
+  getThreats: () => [] as never[], getStatus: () => "active",
   quarantine: (..._args: any[]) => {},
-  getAllQuarantined: () => [] as any[],
+  getAllQuarantined: () => [] as never[],
   getStats: () => ({ threats: 0, quarantined: 0, enabledRuleCount: 0, ruleCount: 0 }),
 });
 const createFleetHealthService = () => ({
   registerService: (..._args: any[]) => {}, getHealth: () => ({}), getDependencyGraph: () => ({}),
   recordHealthCheck: (..._args: any[]) => {},
   getFleetSummary: () => ({ total: 12, healthy: 11, degraded: 1, unhealthy: 0, avgHealthScore: 95 }),
-  getAllServices: () => [] as any[], getDegradedServices: () => [] as any[],
+  getAllServices: () => [] as never[], getDegradedServices: () => [] as never[],
 });
 const ENGINE_CONNECTORS: any[] = [];
 const HEALING_CAPABILITY_MAP: any[] = [];

@@ -27,7 +27,7 @@ export default function RelationshipCenter() {
     label: s.stage_name || s.name || "Unknown",
     count: s.contact_count || 0,
     color: s.color || "bg-primary",
-  })) : [] as any[]);
+  })) : [] as never[]);
   const CONTACTS = (liveContacts?.map((c: Record<string, any>) => ({
     name: c.name || "Unknown", company: c.company || "", stage: c.lifecycle_stage || "Lead",
     health: c.health_score || 50, ltv: `$${c.ltv || 0}`, lastContact: c.last_contact_at ? new Date(c.last_contact_at).toLocaleDateString() : "Never",
