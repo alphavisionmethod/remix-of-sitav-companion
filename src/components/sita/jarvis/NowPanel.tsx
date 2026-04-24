@@ -3,7 +3,7 @@
 // "What matters now" — active mission + top briefings + reflection.
 // ═══════════════════════════════════════════════════════════════
 
-import { Sparkles, Target, Bell, Calendar, RefreshCw } from "lucide-react";
+import { Sparkles, Target, Bell, Calendar, RefreshCw, Check } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -34,6 +34,19 @@ export function NowPanel() {
       toast.error("Could not generate briefing", { description: (err as Error).message });
     } finally {
       setGenerating(false);
+    }
+  };
+
+  const markSeen = async (id: string) => {
+    try {
+      const { error } = await supabase
+        .from("sita_proactive_briefings" as never)
+        .update({ status: "acknowledged", acknowledged_at: new Date().toISOString() } as never)
+        .eq("id", id);
+      if (error) throw error;
+      await refresh();
+    } catch (err) {
+      toast.error("Could not mark seen", { description: (err as Error).message });
     }
   };
 
@@ -104,6 +117,17 @@ export function NowPanel() {
                         <Badge variant="outline" className="text-[10px] shrink-0">{b.kind}</Badge>
                       </div>
                       {b.body && <div className="mt-1 text-xs text-muted-foreground line-clamp-2">{b.body}</div>}
+                      <div className="mt-2 flex justify-end">
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          className="h-6 px-2 text-[10px]"
+                          onClick={() => void markSeen(b.id)}
+                          aria-label={`Mark briefing ${b.headline} as seen`}
+                        >
+                          <Check className="h-3 w-3 mr-1" /> Mark seen
+                        </Button>
+                      </div>
                     </li>
                   ))}
                 </ul>
