@@ -211,6 +211,16 @@ export const EDGE_FUNCTION_MIGRATION_MAP : Record<string, FunctionTableAccess> =
   "workflow-repair": { reads: [], writes: [] },
   "workflow-replay": { reads: [], writes: [] },
   "workflow-stuck-detector": { reads: [], writes: [] },
+  // ── Phase 2 G3 — orphan reconciliation ──
+  "personal-brain-cron": { reads: ["advisor_board_memory"], writes: ["advisor_board_memory"] },
+  "self-heal-receipts": { reads: ["ai_invocations"], writes: ["ai_action_receipts"] },
+  "sita-agent-planner": { reads: [], writes: ["sita_agent_plans"] },
+  "sita-briefings-generate": { reads: ["ai_action_receipts","sita_agent_plans","sita_missions"], writes: ["sita_proactive_briefings"] },
+  "sita-council-prevote": { reads: ["advisor_board_recommendations"], writes: [] },
+  "sita-dream-consolidate": { reads: ["advisor_board_memory"], writes: ["advisor_board_memory"] },
+  "sita-handoff-broker": { reads: [], writes: [] },
+  "sita-personality-tune": { reads: [], writes: ["advisor_profiles"] },
+  "sita-reflection-loop": { reads: ["advisor_board_recommendations"], writes: ["advisor_board_reflections"] },
 };
 
 export function getTableAccessForFunction(name: string): FunctionTableAccess | undefined {

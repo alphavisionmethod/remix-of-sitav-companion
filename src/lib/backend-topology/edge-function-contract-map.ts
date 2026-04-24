@@ -212,6 +212,16 @@ export const EDGE_FUNCTION_CONTRACT_MAP : Record<string, FunctionContract> = {
   "workflow-repair": { inputSchema: null, outputSchema: null, errorSchema: "StandardError" },
   "workflow-replay": { inputSchema: null, outputSchema: null, errorSchema: "StandardError" },
   "workflow-stuck-detector": { inputSchema: null, outputSchema: null, errorSchema: "StandardError" },
+  // ── Phase 2 G3 — orphan reconciliation ──
+  "personal-brain-cron": { inputSchema: null, outputSchema: null, errorSchema: "StandardError" },
+  "self-heal-receipts": { inputSchema: null, outputSchema: null, errorSchema: "StandardError" },
+  "sita-agent-planner": { inputSchema: null, outputSchema: null, errorSchema: "StandardError" },
+  "sita-briefings-generate": { inputSchema: null, outputSchema: null, errorSchema: "StandardError" },
+  "sita-council-prevote": { inputSchema: null, outputSchema: null, errorSchema: "StandardError" },
+  "sita-dream-consolidate": { inputSchema: null, outputSchema: null, errorSchema: "StandardError" },
+  "sita-handoff-broker": { inputSchema: null, outputSchema: null, errorSchema: "StandardError" },
+  "sita-personality-tune": { inputSchema: null, outputSchema: null, errorSchema: "StandardError" },
+  "sita-reflection-loop": { inputSchema: null, outputSchema: null, errorSchema: "StandardError" },
 };
 
 export function getContractForFunction(name: string): FunctionContract | undefined {

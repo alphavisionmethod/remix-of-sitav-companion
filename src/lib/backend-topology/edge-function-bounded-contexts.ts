@@ -232,4 +232,14 @@ export const EDGE_FUNCTION_BOUNDED_CONTEXTS: Record<string, BoundedContext> = {
   "workflow-repair": "workflow-engine",
   "workflow-replay": "workflow-engine",
   "workflow-stuck-detector": "workflow-engine",
+  // ── Phase 2 G3 — orphan reconciliation ──
+  "personal-brain-cron": "intelligence-pipeline",
+  "self-heal-receipts": "observability",
+  "sita-agent-planner": "intelligence-pipeline",
+  "sita-briefings-generate": "intelligence-pipeline",
+  "sita-council-prevote": "intelligence-pipeline",
+  "sita-dream-consolidate": "intelligence-pipeline",
+  "sita-handoff-broker": "intelligence-pipeline",
+  "sita-personality-tune": "intelligence-pipeline",
+  "sita-reflection-loop": "intelligence-pipeline",
 };

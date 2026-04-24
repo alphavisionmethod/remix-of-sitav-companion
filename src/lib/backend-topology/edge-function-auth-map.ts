@@ -214,5 +214,15 @@ export const EDGE_FUNCTION_AUTH_MAP: Record<string, EdgeFunctionAuthEntry> = {
   "workflow-repair": { auth: "service-role", requiresUserContext: false, adminOnly: false },
   "workflow-replay": { auth: "service-role", requiresUserContext: false, adminOnly: false },
   "workflow-stuck-detector": { auth: "service-role", requiresUserContext: false, adminOnly: false },
+  // ── Phase 2 G3 — orphan reconciliation (SITA brain & cron) ──
+  "personal-brain-cron": { auth: "service-role", requiresUserContext: false, adminOnly: false },
+  "self-heal-receipts": { auth: "service-role", requiresUserContext: false, adminOnly: false },
+  "sita-agent-planner": { auth: "jwt", requiresUserContext: true, adminOnly: false },
+  "sita-briefings-generate": { auth: "service-role", requiresUserContext: false, adminOnly: false },
+  "sita-council-prevote": { auth: "jwt", requiresUserContext: true, adminOnly: false },
+  "sita-dream-consolidate": { auth: "service-role", requiresUserContext: false, adminOnly: false },
+  "sita-handoff-broker": { auth: "jwt", requiresUserContext: true, adminOnly: false },
+  "sita-personality-tune": { auth: "jwt", requiresUserContext: true, adminOnly: false },
+  "sita-reflection-loop": { auth: "service-role", requiresUserContext: false, adminOnly: false },
 };
 

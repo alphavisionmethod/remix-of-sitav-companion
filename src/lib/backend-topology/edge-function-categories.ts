@@ -289,6 +289,16 @@ export const EDGE_FUNCTION_BACKEND_CATEGORY: Record<string, ClassificationVerdic
   "workflow-repair": "ORCHESTRATION_FUNCTION",
   "workflow-replay": "ORCHESTRATION_FUNCTION",
   "workflow-stuck-detector": "ORCHESTRATION_FUNCTION",
+  // ── Phase 2 G3 — orphan reconciliation ──
+  "personal-brain-cron": "ORCHESTRATION_FUNCTION",
+  "self-heal-receipts": "RUNTIME_SYSTEM_FUNCTION",
+  "sita-agent-planner": "ORCHESTRATION_FUNCTION",
+  "sita-briefings-generate": "ORCHESTRATION_FUNCTION",
+  "sita-council-prevote": "ORCHESTRATION_FUNCTION",
+  "sita-dream-consolidate": "ORCHESTRATION_FUNCTION",
+  "sita-handoff-broker": "ORCHESTRATION_FUNCTION",
+  "sita-personality-tune": "DOMAIN_FUNCTION",
+  "sita-reflection-loop": "ORCHESTRATION_FUNCTION",
 };
 
 /**
@@ -498,6 +508,16 @@ export const EDGE_FUNCTION_CATEGORIES: Record<string, EdgeFunctionCategory> = {
   "workflow-repair": "platform",
   "workflow-replay": "platform",
   "workflow-stuck-detector": "platform",
+  // ── Phase 2 G3 — orphan reconciliation ──
+  "personal-brain-cron": "intelligence",
+  "self-heal-receipts": "platform",
+  "sita-agent-planner": "intelligence",
+  "sita-briefings-generate": "intelligence",
+  "sita-council-prevote": "intelligence",
+  "sita-dream-consolidate": "intelligence",
+  "sita-handoff-broker": "intelligence",
+  "sita-personality-tune": "intelligence",
+  "sita-reflection-loop": "intelligence",
 } as const;
 
 export function getFunctionsByCategory(category: EdgeFunctionCategory): string[] {
