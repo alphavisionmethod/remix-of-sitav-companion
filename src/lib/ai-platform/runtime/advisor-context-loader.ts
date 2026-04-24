@@ -134,7 +134,9 @@ async function loadSlice(
       | "app_launch_events"
       | "customer_journey_stages"
       | "customer_lifecycle_stages"
-      | "conversion_experiments";
+      | "conversion_experiments"
+      | "incidents"
+      | "error_events";
     const { data, error, count } = await supabase
       .from(tableName)
       .select("*", { count: "exact" })
