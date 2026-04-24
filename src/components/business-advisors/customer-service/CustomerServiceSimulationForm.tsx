@@ -94,7 +94,7 @@ export function CustomerServiceSimulationForm({ onCompleted }: { onCompleted?: (
 
   const livePayload = useMemo(
     () => ({
-      advisorId: "customer-service-advisor",
+      advisorId: "customer-service-advisor" as const,
       scenarioTitle: title.trim() || `(untitled — ${scenario.label})`,
       inputs: { scenario_type: scenario.id, shift_pct: shiftPct },
       assumptions: { narrative: assumption.trim() || scenario.hint },
