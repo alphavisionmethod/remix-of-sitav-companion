@@ -16,10 +16,13 @@ import { motion } from "framer-motion";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { PremiumEmptyState } from "@/components/sita/PremiumEmptyState";
 import { useOperationsCommandCenter } from "@/hooks/use-operations-command-center";
+import type { RunbookRow } from "@/hooks/use-operations-command-center";
+import { RunbookLaunchDialog } from "@/components/operations/RunbookLaunchDialog";
 
 export default function OperationsCommandCenter() {
   
   const [tab, setTab] = useState("health");
+  const [activeRunbook, setActiveRunbook] = useState<RunbookRow | null>(null);
   const { data, isLoading } = useOperationsCommandCenter();
   const services = data?.services ?? [];
   const slos = data?.slos ?? [];
@@ -205,13 +208,21 @@ export default function OperationsCommandCenter() {
                       <p className="text-[10px] text-muted-foreground">{rb.steps} steps • {rb.domain} • {rb.autoHeal ? "auto-heal" : "manual"} • {rb.executions} runs</p>
                     </div>
                   </div>
-                  <Button variant="ghost" size="sm" className="text-[10px] h-6 gap-0.5"><Play className="w-2.5 h-2.5" />Launch</Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="text-[10px] h-6 gap-0.5"
+                    onClick={() => setActiveRunbook(rb)}
+                  >
+                    <Play className="w-2.5 h-2.5" />Launch
+                  </Button>
                 </div>
               ))}
             </div>
           </TabsContent>
         </div>
       </Tabs>
+      <RunbookLaunchDialog runbook={activeRunbook} onOpenChange={(o) => { if (!o) setActiveRunbook(null); }} />
     </motion.div>
   );
 }
