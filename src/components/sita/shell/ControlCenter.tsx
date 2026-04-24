@@ -507,6 +507,9 @@ export function ControlCenter({ open, onClose }: ControlCenterProps) {
               {/* 1c. Sita Autonomy (Phase E) */}
               <SitaAutonomyControls />
 
+              {/* 1d. Sita Spatial (Phase F) */}
+              <SitaSpatialControls />
+
               {/* 2. Mode cluster */}
               <ModeCluster isDark={isDark} onThemeToggle={handleThemeToggle} />
 
