@@ -2,23 +2,79 @@
 // SITA OS — Customer Service Advisor "Run a Scenario" form.
 // Project response-time, staffing, and escalation policy outcomes
 // without touching live cases or customers.
+//
+// Includes a live preview that re-renders as you edit the inputs
+// so you see exactly what the advisor will receive.
 // ═══════════════════════════════════════════════════════════════
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Loader2, FlaskConical } from "lucide-react";
+import { Loader2, FlaskConical, Eye } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 import { runAdvisorSimulation } from "@/lib/ai-platform/runtime";
 import { useToast } from "@/hooks/use-toast";
 
-const SCENARIOS = [
-  { id: "response-time-target", label: "Response-time target", hint: "What if our first-response SLA dropped to 1h?" },
-  { id: "staffing-change", label: "Staffing change", hint: "What if we add 1 support rep to peak hours?" },
-  { id: "escalation-policy", label: "Escalation policy", hint: "What if all priority=high cases auto-escalate at 4h?" },
+interface ScenarioMeta {
+  id: "response-time-target" | "staffing-change" | "escalation-policy";
+  label: string;
+  hint: string;
+  /** Build the natural-language prompt the advisor will see. */
+  buildPrompt: (shiftPct: number, assumption: string) => string;
+  /** What the advisor is expected to return. */
+  expectedOutputs: readonly string[];
+}
+
+const SCENARIOS: readonly ScenarioMeta[] = [
+  {
+    id: "response-time-target",
+    label: "Response-time target",
+    hint: "What if our first-response SLA dropped to 1h?",
+    buildPrompt: (shift, asm) =>
+      `Project the impact of tightening our first-response SLA target by ${shift}%. ` +
+      `Compare projected handle time, CSAT, and breach rate against the current baseline. ` +
+      `Baseline / assumptions: ${asm || "current SLA + current staffing"}.`,
+    expectedOutputs: [
+      "Projected breach-rate change (%)",
+      "Projected CSAT delta (pts)",
+      "Required handle-time uplift",
+      "Top 3 risks + mitigations",
+    ],
+  },
+  {
+    id: "staffing-change",
+    label: "Staffing change",
+    hint: "What if we add 1 support rep to peak hours?",
+    buildPrompt: (shift, asm) =>
+      `Project the impact of changing peak-hour staffing capacity by ${shift}%. ` +
+      `Estimate queue depth, wait-time, and weekly cost change. ` +
+      `Baseline / assumptions: ${asm || "current shift coverage and ticket volume"}.`,
+    expectedOutputs: [
+      "Projected average wait-time change",
+      "Projected queue-depth at peak",
+      "Estimated weekly cost delta",
+      "Recommended shift pattern",
+    ],
+  },
+  {
+    id: "escalation-policy",
+    label: "Escalation policy",
+    hint: "What if all priority=high cases auto-escalate at 4h?",
+    buildPrompt: (shift, asm) =>
+      `Project the impact of tightening the escalation trigger by ${shift}% (earlier auto-escalation on priority=high cases). ` +
+      `Estimate L2/L3 load shift, customer-impact reduction, and false-escalation risk. ` +
+      `Baseline / assumptions: ${asm || "current 8h auto-escalation rule on priority=high"}.`,
+    expectedOutputs: [
+      "Projected L2/L3 load shift (%)",
+      "Projected customer-impact reduction",
+      "False-escalation risk estimate",
+      "Recommended guardrails",
+    ],
+  },
 ] as const;
 
 export function CustomerServiceSimulationForm({ onCompleted }: { onCompleted?: () => void }) {
@@ -31,6 +87,21 @@ export function CustomerServiceSimulationForm({ onCompleted }: { onCompleted?: (
 
   const scenario = SCENARIOS.find((s) => s.id === scenarioType)!;
 
+  const livePrompt = useMemo(
+    () => scenario.buildPrompt(shiftPct, assumption.trim()),
+    [scenario, shiftPct, assumption],
+  );
+
+  const livePayload = useMemo(
+    () => ({
+      advisorId: "customer-service-advisor" as const,
+      scenarioTitle: title.trim() || `(untitled — ${scenario.label})`,
+      inputs: { scenario_type: scenario.id, shift_pct: shiftPct },
+      assumptions: { narrative: assumption.trim() || scenario.hint },
+    }),
+    [scenario, title, shiftPct, assumption],
+  );
+
   async function handleRun() {
     if (!title.trim()) {
       toast({ title: "Add a scenario title", variant: "destructive" });
@@ -38,17 +109,7 @@ export function CustomerServiceSimulationForm({ onCompleted }: { onCompleted?: (
     }
     setSubmitting(true);
     try {
-      const r = await runAdvisorSimulation({
-        advisorId: "customer-service-advisor",
-        scenarioTitle: title.trim(),
-        inputs: {
-          scenario_type: scenarioType,
-          shift_pct: shiftPct,
-        },
-        assumptions: {
-          narrative: assumption.trim() || scenario.hint,
-        },
-      });
+      const r = await runAdvisorSimulation(livePayload);
       toast({
         title: r.status === "completed" ? "Scenario complete" : "Scenario failed",
         description:
@@ -129,6 +190,40 @@ export function CustomerServiceSimulationForm({ onCompleted }: { onCompleted?: (
             disabled={submitting}
           />
         </div>
+
+        {/* ── Live preview ─────────────────────────────────────── */}
+        <div className="rounded-md border border-border bg-muted/30 p-3 space-y-3">
+          <div className="flex items-center gap-2">
+            <Eye className="h-3.5 w-3.5 text-muted-foreground" />
+            <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+              Live preview — what the advisor will receive
+            </p>
+          </div>
+
+          <div>
+            <p className="text-[10px] uppercase tracking-wide text-muted-foreground mb-1">Prompt</p>
+            <p className="text-xs whitespace-pre-wrap leading-relaxed">{livePrompt}</p>
+          </div>
+
+          <div>
+            <p className="text-[10px] uppercase tracking-wide text-muted-foreground mb-1">Inputs payload</p>
+            <pre className="text-[11px] font-mono whitespace-pre-wrap rounded bg-background/60 p-2 border border-border/40">
+{JSON.stringify(livePayload.inputs, null, 2)}
+            </pre>
+          </div>
+
+          <div>
+            <p className="text-[10px] uppercase tracking-wide text-muted-foreground mb-1">Expected outputs</p>
+            <div className="flex flex-wrap gap-1">
+              {scenario.expectedOutputs.map((o) => (
+                <Badge key={o} variant="outline" className="text-[10px] font-normal">
+                  {o}
+                </Badge>
+              ))}
+            </div>
+          </div>
+        </div>
+
         <Alert>
           <AlertTitle className="text-xs">Simulation only</AlertTitle>
           <AlertDescription className="text-xs">

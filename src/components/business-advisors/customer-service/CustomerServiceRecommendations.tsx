@@ -17,6 +17,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlarmClock, AlertTriangle, HeartPulse, MessageSquareWarning, Loader2, Activity } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { askBusinessAdvisor } from "@/lib/ai-platform/runtime";
+import { CustomerServiceDetailDrawer, type DrawerTarget } from "./CustomerServiceDetailDrawer";
 
 interface CaseRow {
   id: string;
@@ -99,6 +100,7 @@ export function CustomerServiceRecommendations() {
   const [error, setError] = useState<string | null>(null);
   const [askLoading, setAskLoading] = useState<string | null>(null);
   const [askResult, setAskResult] = useState<{ key: string; content: string } | null>(null);
+  const [drawerTarget, setDrawerTarget] = useState<DrawerTarget | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -152,6 +154,7 @@ export function CustomerServiceRecommendations() {
         description: `${snapshot.urgentCases.length} open case${snapshot.urgentCases.length === 1 ? "" : "s"} marked high or urgent`,
         items: snapshot.urgentCases.map((c) => ({
           id: c.id,
+          kind: "case" as const,
           primary: c.title,
           secondary: `${c.category ?? "general"} · ${ageLabel(c.created_at)}`,
           chip: c.priority ?? "—",
@@ -172,6 +175,7 @@ export function CustomerServiceRecommendations() {
         description: `${snapshot.escalatedCases.length} case${snapshot.escalatedCases.length === 1 ? "" : "s"} routed to a higher tier`,
         items: snapshot.escalatedCases.map((c) => ({
           id: c.id,
+          kind: "case" as const,
           primary: c.title,
           secondary: `escalated to ${c.escalated_to_role} · ${ageLabel(c.updated_at)}`,
           chip: c.status ?? "open",
@@ -190,6 +194,7 @@ export function CustomerServiceRecommendations() {
         description: `${snapshot.agingCases.length} case${snapshot.agingCases.length === 1 ? "" : "s"} quietly waiting`,
         items: snapshot.agingCases.map((c) => ({
           id: c.id,
+          kind: "case" as const,
           primary: c.title,
           secondary: `${c.category ?? "general"} · ${ageLabel(c.created_at)}`,
           chip: c.priority ?? "normal",
@@ -208,6 +213,7 @@ export function CustomerServiceRecommendations() {
         description: `${snapshot.atRiskCustomers.length} customer${snapshot.atRiskCustomers.length === 1 ? "" : "s"} flagged for retention attention`,
         items: snapshot.atRiskCustomers.map((c) => ({
           id: c.id,
+          kind: "customer" as const,
           primary: c.display_name,
           secondary: `health ${c.health_score ?? "—"} · ${c.status ?? "active"}`,
           chip: `score ${c.health_score ?? "?"}`,
@@ -241,6 +247,14 @@ export function CustomerServiceRecommendations() {
   }
 
   if (!snapshot) return null;
+
+  function openDrawer(item: { id: string; kind: "case" | "customer"; primary: string }) {
+    setDrawerTarget(
+      item.kind === "case"
+        ? { kind: "case", id: item.id, title: item.primary }
+        : { kind: "customer", id: item.id, displayName: item.primary },
+    );
+  }
 
   return (
     <div className="space-y-4">
@@ -293,13 +307,19 @@ export function CustomerServiceRecommendations() {
                 <ScrollArea className="max-h-[240px]">
                   <div className="space-y-2">
                     {g.items.map((item) => (
-                      <div key={item.id} className="flex items-center justify-between rounded-md border border-border px-3 py-2">
+                      <button
+                        key={item.id}
+                        type="button"
+                        onClick={() => openDrawer(item)}
+                        className="w-full flex items-center justify-between rounded-md border border-border px-3 py-2 text-left transition-colors hover:bg-muted/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                        aria-label={`Open detail for ${item.primary}`}
+                      >
                         <div className="min-w-0">
                           <p className="text-sm font-medium truncate">{item.primary}</p>
                           <p className="text-xs text-muted-foreground truncate">{item.secondary}</p>
                         </div>
                         <Badge variant="outline" className="text-xs ml-2 shrink-0">{item.chip}</Badge>
-                      </div>
+                      </button>
                     ))}
                   </div>
                 </ScrollArea>
@@ -314,6 +334,11 @@ export function CustomerServiceRecommendations() {
           </Card>
         );
       })}
+
+      <CustomerServiceDetailDrawer
+        target={drawerTarget}
+        onOpenChange={(open) => { if (!open) setDrawerTarget(null); }}
+      />
     </div>
   );
 }
