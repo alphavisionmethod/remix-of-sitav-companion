@@ -7,49 +7,49 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader, SitaMetric } from "@/components/sita/SitaCard";
 import { KPITile } from "@/components/sita/SitaComponents";
-import { PACK_CATALOG, getInstalledPacks, type PackAnalytics } from "@/lib/pack-store";
+import { PACK_CATALOG, getInstalledPacks } from "@/lib/pack-store";
 import { BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, Area, AreaChart } from "recharts";
 import { Package, TrendingUp, DollarSign, Users, Activity, ArrowRight, Target, Zap, BarChart3, RefreshCw } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-const REVENUE_TREND: any[] = [];
-const CATEGORY_REVENUE: any[] = [];
-const RETENTION_DATA: any[] = [];
-// ── Mock Analytics Data ─────────────────────────────────────────
-
-const PACK_ANALYTICS: PackAnalytics[] = [
-  { pack_id: "pack-founder-boardroom", attach_rate: 0.42, time_to_first_value_avg: "8 min", retention_lift: 0.18, arpu_uplift: 0.35, activation_speed: "Fast", workflow_completion_lift: 0.25, install_completion_rate: 0.94, uninstall_reasons: ["Too complex", "Not enough time"], revenue_generated: 35960 },
-  { pack_id: "pack-collections", attach_rate: 0.38, time_to_first_value_avg: "45 min", retention_lift: 0.22, arpu_uplift: 0.28, activation_speed: "Medium", workflow_completion_lift: 0.35, install_completion_rate: 0.91, uninstall_reasons: ["Switched provider"], revenue_generated: 39900 },
-  { pack_id: "pack-family-coo", attach_rate: 0.55, time_to_first_value_avg: "4 min", retention_lift: 0.15, arpu_uplift: 0.18, activation_speed: "Fast", workflow_completion_lift: 0.20, install_completion_rate: 0.96, uninstall_reasons: ["Partner didn't adopt"], revenue_generated: 38400 },
-  { pack_id: "pack-revenue-autopilot", attach_rate: 0.31, time_to_first_value_avg: "55 min", retention_lift: 0.28, arpu_uplift: 0.45, activation_speed: "Medium", workflow_completion_lift: 0.40, install_completion_rate: 0.87, uninstall_reasons: ["Too aggressive"], revenue_generated: 64350 },
-  { pack_id: "pack-med-spa", attach_rate: 0.22, time_to_first_value_avg: "20 min", retention_lift: 0.32, arpu_uplift: 0.52, activation_speed: "Fast", workflow_completion_lift: 0.38, install_completion_rate: 0.89, uninstall_reasons: ["Wrong vertical"], revenue_generated: 22620 },
-  { pack_id: "pack-investment-office", attach_rate: 0.08, time_to_first_value_avg: "12 min", retention_lift: 0.35, arpu_uplift: 0.85, activation_speed: "Slow", workflow_completion_lift: 0.15, install_completion_rate: 0.82, uninstall_reasons: ["Too expensive"], revenue_generated: 22120 },
-  { pack_id: "pack-lead-recovery", attach_rate: 0.34, time_to_first_value_avg: "1.5 hr", retention_lift: 0.12, arpu_uplift: 0.20, activation_speed: "Fast", workflow_completion_lift: 0.30, install_completion_rate: 0.93, uninstall_reasons: ["Low lead volume"], revenue_generated: 27000 },
-];
+import { PremiumEmptyState } from "@/components/sita/PremiumEmptyState";
+import { useStoreAnalytics } from "@/hooks/use-store-analytics";
 
 const StoreAnalyticsPage = () => {
   const [activeTab, setActiveTab] = useState("overview");
+  const { data, isLoading } = useStoreAnalytics();
+  const enrichedAnalytics = data?.packAnalytics ?? [];
+  const REVENUE_TREND = data?.revenueTrend ?? [];
+  const CATEGORY_REVENUE = data?.categoryRevenue ?? [];
+  const RETENTION_DATA = data?.retentionData ?? [];
 
-  const totalRevenue = PACK_ANALYTICS.reduce((s, a) => s + a.revenue_generated, 0);
-  const avgAttachRate = PACK_ANALYTICS.reduce((s, a) => s + a.attach_rate, 0) / PACK_ANALYTICS.length;
-  const avgArpuUplift = PACK_ANALYTICS.reduce((s, a) => s + a.arpu_uplift, 0) / PACK_ANALYTICS.length;
-  const avgRetentionLift = PACK_ANALYTICS.reduce((s, a) => s + a.retention_lift, 0) / PACK_ANALYTICS.length;
-  const avgInstallCompletion = PACK_ANALYTICS.reduce((s, a) => s + a.install_completion_rate, 0) / PACK_ANALYTICS.length;
-
-  const enrichedAnalytics = PACK_ANALYTICS.map(a => {
-    const pack = PACK_CATALOG.find(p => p.pack_id === a.pack_id);
-    return { ...a, name: pack?.name || a.pack_id, category: pack?.category || "unknown" };
-  }).sort((a, b) => b.revenue_generated - a.revenue_generated);
+  const totalRevenue = enrichedAnalytics.reduce((s, a) => s + a.revenue_generated, 0);
+  const safe = (arr: number[]) => (arr.length ? arr.reduce((s, n) => s + n, 0) / arr.length : 0);
+  const avgAttachRate = safe(enrichedAnalytics.map(a => a.attach_rate));
+  const avgArpuUplift = safe(enrichedAnalytics.map(a => a.arpu_uplift));
+  const avgRetentionLift = safe(enrichedAnalytics.map(a => a.retention_lift));
+  const avgInstallCompletion = safe(enrichedAnalytics.map(a => a.install_completion_rate));
+  const hasData = enrichedAnalytics.length > 0;
 
   return (
     <div className="mx-auto max-w-6xl space-y-8">
 {/* Header */}
       <SitaPageHeader title="Pack Analytics" subtitle="Attach rates, ARPU uplift, retention differentials, and revenue performance" />
 
+      {!hasData && !isLoading && (
+        <PremiumEmptyState
+          variant="connect-to-activate"
+          icon={Package}
+          title="No pack metrics yet"
+          description="Pack analytics — installs, ARPU uplift, retention, and revenue — populate as users install and use packs."
+        />
+      )}
+
+      {hasData && (<>
       {/* KPI Row */}
       <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
-        <KPITile label="Total Pack Revenue" value={`$${(totalRevenue / 1000).toFixed(0)}k`} trend="up" sub="Last 6 months" />
+        <KPITile label="Total Pack Revenue" value={`$${(totalRevenue / 1000).toFixed(1)}k`} trend="up" sub="Last 6 months" />
         <KPITile label="Avg Attach Rate" value={`${Math.round(avgAttachRate * 100)}%`} trend="up" sub="Across all packs" />
         <KPITile label="ARPU Uplift" value={`+${Math.round(avgArpuUplift * 100)}%`} trend="up" sub="Pack users vs base" />
         <KPITile label="Retention Lift" value={`+${Math.round(avgRetentionLift * 100)}%`} trend="up" sub="12-month cohort" />
@@ -97,7 +97,7 @@ const StoreAnalyticsPage = () => {
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
                     <Pie data={CATEGORY_REVENUE} cx="50%" cy="50%" innerRadius={50} outerRadius={90} paddingAngle={3} dataKey="value">
-                      {([] as any[]).map((entry, i) => <Cell key={i} fill={entry.color} />)}
+                      {CATEGORY_REVENUE.map((entry, i) => <Cell key={i} fill={entry.color} />)}
                     </Pie>
                     <Tooltip formatter={(v: number) => `$${(v / 1000).toFixed(1)}k`} contentStyle={{ background: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: 12, fontSize: 12 }} />
                     <Legend wrapperStyle={{ fontSize: 11 }} />
@@ -196,6 +196,7 @@ const StoreAnalyticsPage = () => {
           </SitaCard>
         </TabsContent>
       </Tabs>
+      </>)}
     </div>
   );
 };

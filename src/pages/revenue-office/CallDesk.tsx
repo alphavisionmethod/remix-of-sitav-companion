@@ -11,14 +11,19 @@ import {
   Star, Mail, Zap, Eye, Shield, BarChart3, RefreshCw
 } from "lucide-react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-const callStats: any[] = [];
-const callQueue: any[] = [];
-const recentCalls: any[] = [];
-const callAnalytics: any[] = [];
+import { PremiumEmptyState } from "@/components/sita/PremiumEmptyState";
+import { useCallDesk } from "@/hooks/use-call-desk";
+import { useNavigate } from "react-router-dom";
 const priorityColors: Record<string, string> = { critical: "bg-red-500/10 text-red-400", high: "bg-amber-500/10 text-amber-400", medium: "bg-blue-500/10 text-blue-400", low: "bg-muted text-muted-foreground" };
 
 export default function CallDesk() {
   const [tab, setTab] = useState("queue");
+  const navigate = useNavigate();
+  const { data, isLoading } = useCallDesk();
+  const callStats = data?.callStats ?? [];
+  const callQueue = data?.callQueue ?? [];
+  const recentCalls = data?.recentCalls ?? [];
+  const callAnalytics = data?.callAnalytics ?? [];
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 p-6">
@@ -28,7 +33,7 @@ export default function CallDesk() {
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
-        {([] as typeof callStats).map((s) => (
+        {callStats.map((s) => (
           <Card key={s.label} className="bg-card/50 border-border/50">
             <CardContent className="p-3">
               <div className="flex items-center gap-1.5 mb-1"><s.icon className={`h-3.5 w-3.5 ${s.color}`} /><p className="text-[10px] text-muted-foreground">{s.label}</p></div>
@@ -41,14 +46,23 @@ export default function CallDesk() {
 
       <Tabs value={tab} onValueChange={setTab}>
         <TabsList className="bg-card/50">
-          <TabsTrigger value="queue">Call Queue ({([] as typeof callQueue).length})</TabsTrigger>
-          <TabsTrigger value="recent">Recent Calls ({([] as typeof recentCalls).length})</TabsTrigger>
+          <TabsTrigger value="queue">Call Queue ({callQueue.length})</TabsTrigger>
+          <TabsTrigger value="recent">Recent Calls ({recentCalls.length})</TabsTrigger>
           <TabsTrigger value="analytics">Call Analytics</TabsTrigger>
         </TabsList>
 
         <TabsContent value="queue" className="space-y-3">
-          {([] as typeof callQueue).map((c) => (
-            <Card key={c.name} className="bg-card/50 border-border/50 hover:border-primary/20 transition-colors">
+          {callQueue.length === 0 && !isLoading && (
+            <PremiumEmptyState
+              variant="first-use"
+              icon={Phone}
+              title="No calls scheduled"
+              description="Schedule your first call — AI prep briefs, talking points, and post-call automations will appear here."
+              actions={[{ label: "Schedule Call", icon: Phone, variant: "primary", onClick: () => navigate("/calendar") }]}
+            />
+          )}
+          {callQueue.map((c) => (
+            <Card key={c.id} className="bg-card/50 border-border/50 hover:border-primary/20 transition-colors">
               <CardContent className="p-4">
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-3">
@@ -115,8 +129,11 @@ export default function CallDesk() {
         </TabsContent>
 
         <TabsContent value="recent" className="space-y-2">
-          {([] as typeof recentCalls).map((c, i) => (
-            <Card key={i} className="bg-card/50 border-border/50">
+          {recentCalls.length === 0 && !isLoading && (
+            <PremiumEmptyState variant="no-data" icon={Phone} title="No completed calls yet" description="Logged call outcomes — sentiment, duration, follow-ups — will appear here." />
+          )}
+          {recentCalls.map((c) => (
+            <Card key={c.id} className="bg-card/50 border-border/50">
               <CardContent className="p-4 flex items-center justify-between">
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1">
@@ -142,7 +159,10 @@ export default function CallDesk() {
         </TabsContent>
 
         <TabsContent value="analytics" className="grid md:grid-cols-2 gap-3">
-          {([] as typeof callAnalytics).map((a) => (
+          {callAnalytics.length === 0 && !isLoading && (
+            <div className="md:col-span-2"><PremiumEmptyState variant="connect-to-activate" icon={BarChart3} title="Analytics calibrating" description="Once 5+ calls are logged, sentiment, conversion, and follow-up rates will appear here." /></div>
+          )}
+          {callAnalytics.map((a) => (
             <Card key={a.metric} className="bg-card/50 border-border/50">
               <CardContent className="p-4">
                 <p className="text-xs text-muted-foreground">{a.metric}</p>

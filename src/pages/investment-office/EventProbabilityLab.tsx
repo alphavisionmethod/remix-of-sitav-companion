@@ -1,12 +1,19 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { FlaskConical, TrendingUp, TrendingDown, AlertTriangle, ChevronRight } from "lucide-react";
-import { useMarketWatchlistItems } from "@/hooks/use-investment-office";
+import { FlaskConical, TrendingUp, TrendingDown, ChevronRight } from "lucide-react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-const EVENTS: any[] = [{ name: "—", probability: 0, branches: [], impact: {} }];
+import { PremiumEmptyState } from "@/components/sita/PremiumEmptyState";
+import { useEventProbabilities, type EventProbability } from "@/hooks/use-event-probabilities";
+import { useNavigate } from "react-router-dom";
+
 export default function EventProbabilityLab() {
-  const { data: liveData, isLoading } = useMarketWatchlistItems();
-  const [selected, setSelected] = useState(EVENTS[0]);
+  const { data: events = [], isLoading } = useEventProbabilities();
+  const navigate = useNavigate();
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+  useEffect(() => {
+    if (!selectedId && events.length > 0) setSelectedId(events[0].id);
+  }, [events, selectedId]);
+  const selected: EventProbability | undefined = events.find(e => e.id === selectedId) ?? events[0];
 
   return (
     <div className="mx-auto max-w-6xl space-y-6">
@@ -15,10 +22,22 @@ export default function EventProbabilityLab() {
         <p className="text-sm text-muted-foreground mt-0.5">Scenario trees, branch probabilities, and portfolio impact for event and prediction markets</p>
       </div>
 
+      {events.length === 0 && !isLoading && (
+        <PremiumEmptyState
+          variant="first-use"
+          icon={FlaskConical}
+          title="No event scenarios yet"
+          description="Run your first probability scenario to see branch trees, market-implied odds, and portfolio impact."
+          actions={[{ label: "Open Scenario Builder", icon: FlaskConical, variant: "primary", onClick: () => navigate("/investment-office/scenarios") }]}
+        />
+      )}
+
+      {selected && (
+      <>
       {/* Event Selector */}
       <div className="flex gap-2 overflow-x-auto pb-1">
-        {([] as any[]).map(e => (
-          <button key={e.id} onClick={() => setSelected(e)}
+        {events.map(e => (
+          <button key={e.id} onClick={() => setSelectedId(e.id)}
             className={`shrink-0 rounded-xl border px-4 py-3 text-left transition-all ${selected.id === e.id ? "border-primary bg-primary/5" : "border-border bg-card hover:border-primary/20"}`}>
             <p className="text-xs font-bold text-foreground">{e.title}</p>
             <div className="flex items-center gap-2 mt-1">
@@ -95,6 +114,8 @@ export default function EventProbabilityLab() {
           </div>
         </div>
       </motion.div>
+      </>
+      )}
     </div>
   );
 }

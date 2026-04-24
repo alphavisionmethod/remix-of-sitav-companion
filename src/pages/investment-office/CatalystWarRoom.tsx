@@ -1,20 +1,23 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Calendar, Zap, AlertTriangle, Clock, Target, TrendingUp } from "lucide-react";
-import { useRiskScenarios } from "@/hooks/use-investment-office";
+import { Calendar, AlertTriangle } from "lucide-react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-const CATALYST_EVENTS: any[] = [];
+import { PremiumEmptyState } from "@/components/sita/PremiumEmptyState";
+import { useCatalystEvents } from "@/hooks/use-catalyst-events";
+import { useNavigate } from "react-router-dom";
 const TYPE_COLORS: Record<string, string> = {
   macro: "bg-primary/10 text-primary",
   earnings: "bg-[hsl(var(--trust-safe))]/10 text-[hsl(var(--trust-safe))]",
   product: "bg-[hsl(38,85%,58%)]/10 text-[hsl(38,85%,58%)]",
   event: "bg-[hsl(280,60%,55%)]/10 text-[hsl(280,60%,55%)]",
+  catalyst: "bg-[hsl(200,60%,55%)]/10 text-[hsl(200,60%,55%)]",
 };
 
 export default function CatalystWarRoom() {
-  const { data: liveData, isLoading } = useRiskScenarios();
+  const { data: events = [], isLoading } = useCatalystEvents();
+  const navigate = useNavigate();
   const [filter, setFilter] = useState<string>("all");
-  const sorted = [...CATALYST_EVENTS]
+  const sorted = [...events]
     .filter(e => filter === "all" || e.type === filter)
     .sort((a, b) => a.date.localeCompare(b.date));
 
@@ -30,6 +33,18 @@ export default function CatalystWarRoom() {
         <p className="text-sm text-muted-foreground mt-0.5">Calendar intelligence center — every event that could move your portfolio</p>
       </div>
 
+      {sorted.length === 0 && !isLoading && (
+        <PremiumEmptyState
+          variant="first-use"
+          icon={Calendar}
+          title="No catalysts on the horizon"
+          description="Add earnings dates, macro events, or catalyst markers to your money calendar — they'll appear here ranked by portfolio exposure."
+          actions={[{ label: "Open Money Calendar", icon: Calendar, variant: "primary", onClick: () => navigate("/calendar?domain=money") }]}
+        />
+      )}
+
+      {sorted.length > 0 && (
+      <>
       {/* Upcoming Urgency Band */}
       <div className="rounded-2xl border border-primary/15 bg-primary/5 p-4">
         <p className="text-[10px] font-semibold text-primary uppercase tracking-wider mb-2">Next Major Catalyst</p>
@@ -93,6 +108,8 @@ export default function CatalystWarRoom() {
           </motion.div>
         ))}
       </div>
+      </>
+      )}
     </div>
   );
 }

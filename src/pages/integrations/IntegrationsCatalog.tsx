@@ -9,12 +9,14 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Search, Plug, Shield, Zap, Globe, ArrowRight, CheckCircle, AlertTriangle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-const INTEGRATION_PROVIDERS: any[] = [];
-const PROVIDER_CATEGORIES: any[] = [];
+import { INTEGRATION_PROVIDERS, PROVIDER_CATEGORIES } from "@/lib/services/integration-hub/providers";
+import { useConnectorControlCenter } from "@/hooks/use-connector-control-center";
 export default function IntegrationsCatalog() {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("all");
   const navigate = useNavigate();
+  const { data: connectorData } = useConnectorControlCenter();
+  const liveConnectors = connectorData?.connectors ?? [];
 
   const filtered = INTEGRATION_PROVIDERS.filter(p => {
     const matchSearch = !search || p.displayName.toLowerCase().includes(search.toLowerCase()) || p.description.toLowerCase().includes(search.toLowerCase());
@@ -22,9 +24,9 @@ export default function IntegrationsCatalog() {
     return matchSearch && matchCat;
   });
 
-  const demoConns = [];
-  const connectedIds = new Set(demoConns.filter(c => c.status === "connected").map(c => c.providerId));
-  const expiredIds = new Set(demoConns.filter(c => c.status === "expired").map(c => c.providerId));
+  const connectedIds = new Set(liveConnectors.filter(c => c.status === "active").map(c => c.connector_id));
+  const expiredIds = new Set(liveConnectors.filter(c => c.status === "error").map(c => c.connector_id));
+  const totalConnected = liveConnectors.filter(c => c.status !== "registered").length;
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 p-6">
@@ -35,7 +37,7 @@ export default function IntegrationsCatalog() {
         </div>
         <div className="flex gap-2">
           <Button variant="outline" size="sm" onClick={() => navigate("/integrations/connections")} className="gap-1.5">
-            <Plug className="w-3.5 h-3.5" /> My Connections ({demoConns.length})
+            <Plug className="w-3.5 h-3.5" /> My Connections ({totalConnected})
           </Button>
           <Button variant="outline" size="sm" onClick={() => navigate("/integrations/actions")} className="gap-1.5">
             <Shield className="w-3.5 h-3.5" /> Approvals
@@ -47,8 +49,8 @@ export default function IntegrationsCatalog() {
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         {[
           { label: "Available", value: INTEGRATION_PROVIDERS.length.toString(), icon: Globe, color: "text-blue-400" },
-          { label: "Connected", value: demoConns.filter(c => c.status === "connected").length.toString(), icon: CheckCircle, color: "text-green-400" },
-          { label: "Needs Attention", value: demoConns.filter(c => c.status === "expired" || c.status === "error").length.toString(), icon: AlertTriangle, color: "text-amber-400" },
+          { label: "Connected", value: connectedIds.size.toString(), icon: CheckCircle, color: "text-green-400" },
+          { label: "Needs Attention", value: expiredIds.size.toString(), icon: AlertTriangle, color: "text-amber-400" },
           { label: "Write-Enabled", value: INTEGRATION_PROVIDERS.filter(p => p.capabilities.some(c => c.type === "write")).length.toString(), icon: Zap, color: "text-purple-400" },
         ].map(s => (
           <Card key={s.label} className="bg-card/50 border-border/50">
