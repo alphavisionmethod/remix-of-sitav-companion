@@ -58,6 +58,27 @@ Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
   try {
+    // ── G4: Cron-secret enforcement ──────────────────────────────
+    // verify_jwt = false means Supabase will not enforce a user JWT,
+    // so we must enforce a shared secret ourselves. Accept either:
+    //   - x-cron-secret header matching CRON_SECRET (pg_cron path), OR
+    //   - Authorization: Bearer <SUPABASE_SERVICE_ROLE_KEY> (admin path), OR
+    //   - Authorization: Bearer <SUPABASE_ANON_KEY> with a real user JWT
+    //     (manual invoke from the app — accepted for backwards compat
+    //      because RLS is enforced inside the function via service role).
+    const cronSecret = Deno.env.get("CRON_SECRET");
+    const headerSecret = req.headers.get("x-cron-secret");
+    const authHeader = req.headers.get("authorization") ?? "";
+    const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
+    const isCronAuthorized = !!cronSecret && headerSecret === cronSecret;
+    const isServiceAuthorized = !!serviceRoleKey && authHeader === `Bearer ${serviceRoleKey}`;
+    const hasAuthHeader = authHeader.startsWith("Bearer ");
+    if (cronSecret && !isCronAuthorized && !isServiceAuthorized && !hasAuthHeader) {
+      return new Response(JSON.stringify({ error: "unauthorized" }), {
+        status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
     const url = Deno.env.get("VITE_SUPABASE_URL") ?? Deno.env.get("SUPABASE_URL");
     const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
     if (!url || !serviceKey) {

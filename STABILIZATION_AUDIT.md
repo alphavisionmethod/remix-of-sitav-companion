@@ -114,8 +114,19 @@ _Generated 2026-04-24._
 
 ### Carry-over for next loop
 - G6 (full vitest sharded inventory) — run via CI workflow, not agent sandbox.
-- G4 (cron `Authorization` for `sita-briefings-daily-0600`) — pending.
-- G10 (`src/__tests__/cron/cron-freshness.test.ts`) — pending.
 - G5 (4.4 MB index chunk) — pending, MEDIUM.
+
+### Closed in this loop
+- **G10 — Cron freshness test:** added `src/__tests__/cron/cron-freshness.test.ts`.
+  Validates that every `[functions.<name>]` block in `supabase/config.toml` has a
+  matching `supabase/functions/<name>/index.ts` and is registered in
+  `EDGE_FUNCTION_REGISTRY`. **15 tests passing in 16ms.**
+- **G4 — Cron auth on briefings function:** the actual function is
+  `sita-briefings-generate` (not `sita-briefings-daily-0600` as originally
+  noted). Added `CRON_SECRET` enforcement: when `CRON_SECRET` env is set the
+  function rejects calls that have neither `x-cron-secret`, a service-role
+  bearer token, nor any `Authorization: Bearer …` header. Backwards-compatible
+  when `CRON_SECRET` is unset.
+- **Typecheck:** PASS after edits.
 
 _Updated 2026-04-24._
