@@ -20513,6 +20513,42 @@ export type Database = {
         }
         Relationships: []
       }
+      sita_affect_events: {
+        Row: {
+          created_at: string
+          expires_at: string
+          id: string
+          metadata: Json
+          signal: string
+          target_kind: string
+          target_ref: string | null
+          user_id: string
+          weight: number
+        }
+        Insert: {
+          created_at?: string
+          expires_at?: string
+          id?: string
+          metadata?: Json
+          signal: string
+          target_kind: string
+          target_ref?: string | null
+          user_id: string
+          weight?: number
+        }
+        Update: {
+          created_at?: string
+          expires_at?: string
+          id?: string
+          metadata?: Json
+          signal?: string
+          target_kind?: string
+          target_ref?: string | null
+          user_id?: string
+          weight?: number
+        }
+        Relationships: []
+      }
       sita_agent_plans: {
         Row: {
           approved_at: string | null
@@ -20684,6 +20720,48 @@ export type Database = {
           score?: number
           user_id?: string
           vote?: string
+        }
+        Relationships: []
+      }
+      sita_episodes: {
+        Row: {
+          created_at: string
+          ended_at: string | null
+          energy_score: number
+          id: string
+          intent_summary: string | null
+          metadata: Json
+          primary_surface: string | null
+          signals_count: number
+          started_at: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          ended_at?: string | null
+          energy_score?: number
+          id?: string
+          intent_summary?: string | null
+          metadata?: Json
+          primary_surface?: string | null
+          signals_count?: number
+          started_at?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          ended_at?: string | null
+          energy_score?: number
+          id?: string
+          intent_summary?: string | null
+          metadata?: Json
+          primary_surface?: string | null
+          signals_count?: number
+          started_at?: string
+          updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }

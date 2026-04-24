@@ -17,3 +17,6 @@ verify_jwt = false
 
 [functions.sita-reflection-loop]
 verify_jwt = false
+
+[functions.sita-dream-consolidate]
+verify_jwt = false

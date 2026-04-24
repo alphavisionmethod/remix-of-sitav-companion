@@ -48,6 +48,7 @@ const SitaSpatialIntentMountLazy = lazy(() => import("./sita-spatial").then(m =>
 const SitaCortexMountLazy = lazy(() => import("./sita-cortex").then(m => ({ default: m.SitaCortexMount })));
 const SitaSentienceMountLazy = lazy(() => import("./sita-sentience").then(m => ({ default: m.SitaSentienceMount })));
 const SitaEmbodimentMountLazy = lazy(() => import("@/lib/sita-embodiment").then(m => ({ default: m.SitaEmbodimentMount })));
+const SitaContinuumMountLazy = lazy(() => import("./sita-continuum").then(m => ({ default: m.SitaContinuumMount })));
 
 interface ShellLiveLayerProps {
   wm: WindowManager;
@@ -228,6 +229,11 @@ export function ShellLiveLayer({
       {/* ── Sita Embodiment (Phase I) ───────────────────────────── */}
       <Suspense fallback={null}>
         <SitaEmbodimentMountLazy />
+      </Suspense>
+
+      {/* ── Sita Continuum (Phase J) ────────────────────────────── */}
+      <Suspense fallback={null}>
+        <SitaContinuumMountLazy />
       </Suspense>
 
     </>
