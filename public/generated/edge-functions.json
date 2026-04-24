@@ -1,0 +1,6456 @@
+{
+  "$schema": "sita/edge-functions-index@1",
+  "generatedAt": "2026-04-24T16:08:28.797Z",
+  "totalFunctions": 211,
+  "totalBuckets": 13,
+  "ownerCoverage": {
+    "owned": 192,
+    "missing": 19,
+    "percent": 91
+  },
+  "receiptCoverage": {
+    "emitting": 5,
+    "total": 211
+  },
+  "authCoverage": {
+    "enforced": 133,
+    "total": 211
+  },
+  "bucketTotals": {
+    "identity-and-auth": 4,
+    "admin-and-governance": 12,
+    "advisor-intelligence": 12,
+    "agent-runtime": 10,
+    "ai-engineering": 12,
+    "ops-and-reliability": 9,
+    "domain-functions": 120,
+    "platform-jobs": 4,
+    "connector-integrations": 17,
+    "revenue-and-finance": 5,
+    "data-and-files": 3,
+    "analytics-and-insights": 1,
+    "notifications": 2
+  },
+  "buckets": {
+    "identity-and-auth": [
+      {
+        "name": "account-delete",
+        "path": "supabase/functions/account-delete/index.ts",
+        "owner": {
+          "team": "compliance-security",
+          "primary": "@sita/compliance-security",
+          "escalation": "pd:security-oncall",
+          "slack": "#compliance-security",
+          "runbook": "RB-011-SECURITY",
+          "reviewers": "@sita/compliance-security"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "account_deletion_requests"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "owner-copilot-session-tracker",
+        "path": "supabase/functions/owner-copilot-session-tracker/index.ts",
+        "owner": {
+          "team": "user-experience",
+          "primary": "@sita/user-experience",
+          "escalation": "pd:user-experience-oncall",
+          "slack": "#user-experience",
+          "runbook": "RB-012-USER-EXPERIENCE",
+          "reviewers": "@sita/user-experience"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "owner_copilot_sessions"
+          ]
+        },
+        "callers": [
+          "src/pages/admin/ai-runtime/OwnerCopilotSessionConsole.tsx"
+        ],
+        "callerCount": 1,
+        "linkedRoutes": [
+          "/admin/ai-runtime/ownercopilotsessionconsole"
+        ]
+      },
+      {
+        "name": "seed-user-data",
+        "path": "supabase/functions/seed-user-data/index.ts",
+        "owner": {
+          "team": "platform-core",
+          "primary": "@sita/platform-core",
+          "escalation": "pd:platform-core-oncall",
+          "slack": "#platform-core",
+          "runbook": "RB-001-PLATFORM-CORE",
+          "reviewers": "@sita/platform-core"
+        },
+        "io": {
+          "input": "zod-validated",
+          "methods": [
+            "OPTIONS",
+            "POST",
+            "PUT",
+            "PATCH"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "profiles",
+            "user_seed_runs",
+            "leads",
+            "customers",
+            "events",
+            "bills",
+            "invoices",
+            "subscriptions",
+            "reserves",
+            "quotes",
+            "deals",
+            "opportunities"
+          ]
+        },
+        "callers": [
+          "src/components/sita/OSSetupExperience.tsx",
+          "src/contexts/AuthContext.tsx",
+          "src/pages/admin/UserSeedHealth.tsx"
+        ],
+        "callerCount": 3,
+        "linkedRoutes": [
+          "/admin/userseedhealth"
+        ]
+      },
+      {
+        "name": "waitlist-signup",
+        "path": "supabase/functions/waitlist-signup/index.ts",
+        "owner": {
+          "team": "user-experience",
+          "primary": "@sita/user-experience",
+          "escalation": "pd:user-experience-oncall",
+          "slack": "#user-experience",
+          "runbook": "RB-012-USER-EXPERIENCE",
+          "reviewers": "@sita/user-experience"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": false,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "waitlist_signups"
+          ]
+        },
+        "callers": [
+          "src/components/marketing/WaitlistForm.tsx"
+        ],
+        "callerCount": 1,
+        "linkedRoutes": []
+      }
+    ],
+    "admin-and-governance": [
+      {
+        "name": "admin-ai-workforce-run",
+        "path": "supabase/functions/admin-ai-workforce-run/index.ts",
+        "owner": {
+          "team": "admin-governance",
+          "primary": "@sita/admin-governance",
+          "escalation": "pd:admin-governance-oncall",
+          "slack": "#admin-governance",
+          "runbook": "RB-002-ADMIN",
+          "reviewers": "@sita/admin-governance"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "ai_workforce_roles",
+            "ai_workforce_task_types",
+            "ai_workforce_role_task_permissions",
+            "ai_workforce_invocations",
+            "ai_workforce_cached_outputs",
+            "ai_workforce_role_health",
+            "ai_workforce_outputs",
+            "ai_workforce_recommendations",
+            "ai_workforce_approval_queue",
+            "ai_inference_receipts"
+          ]
+        },
+        "callers": [
+          "src/lib/admin-ai/admin-ai-workforce-client.ts"
+        ],
+        "callerCount": 1,
+        "linkedRoutes": []
+      },
+      {
+        "name": "admin-api",
+        "path": "supabase/functions/admin-api/index.ts",
+        "owner": {
+          "team": "admin-governance",
+          "primary": "@sita/admin-governance",
+          "escalation": "pd:admin-governance-oncall",
+          "slack": "#admin-governance",
+          "runbook": "RB-002-ADMIN",
+          "reviewers": "@sita/admin-governance"
+        },
+        "io": {
+          "input": "zod-validated",
+          "methods": [
+            "OPTIONS",
+            "POST",
+            "PUT",
+            "PATCH",
+            "DELETE"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "audit_logs",
+            "incidents",
+            "policies",
+            "device_statuses",
+            "council_decisions",
+            "ai_cost_ledger",
+            "agent_action_receipts",
+            "advisor_requests",
+            "advisor_responses",
+            "workflow_runs",
+            "connector_configs",
+            "approval_queue"
+          ]
+        },
+        "callers": [
+          "src/hooks/use-admin-data.ts"
+        ],
+        "callerCount": 1,
+        "linkedRoutes": []
+      },
+      {
+        "name": "admin-bff-gateway",
+        "path": "supabase/functions/admin-bff-gateway/index.ts",
+        "owner": {
+          "team": "admin-governance",
+          "primary": "@sita/admin-governance",
+          "escalation": "pd:admin-governance-oncall",
+          "slack": "#admin-governance",
+          "runbook": "RB-002-ADMIN",
+          "reviewers": "@sita/admin-governance"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS",
+            "GET"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "cloud_audit_events",
+            "profiles",
+            "cloud_devices",
+            "cloud_blobs",
+            "cloud_sync_jobs",
+            "cloud_conflicts",
+            "support_cases",
+            "cloud_worker_jobs",
+            "admin_safety_actions",
+            "admin_action_confirmations",
+            "platform_notifications"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "admin-gateway",
+        "path": "supabase/functions/admin-gateway/index.ts",
+        "owner": {
+          "team": "admin-governance",
+          "primary": "@sita/admin-governance",
+          "escalation": "pd:admin-governance-oncall",
+          "slack": "#admin-governance",
+          "runbook": "RB-002-ADMIN",
+          "reviewers": "@sita/admin-governance"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "admin_action_audit"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "admin-intelligence",
+        "path": "supabase/functions/admin-intelligence/index.ts",
+        "owner": {
+          "team": "admin-governance",
+          "primary": "@sita/admin-governance",
+          "escalation": "pd:admin-governance-oncall",
+          "slack": "#admin-governance",
+          "runbook": "RB-002-ADMIN",
+          "reviewers": "@sita/admin-governance"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "advisor_responses",
+            "admin_incidents",
+            "workflow_runs"
+          ]
+        },
+        "callers": [
+          "src/hooks/use-admin-data.ts"
+        ],
+        "callerCount": 1,
+        "linkedRoutes": []
+      },
+      {
+        "name": "admin-reset-user-setup",
+        "path": "supabase/functions/admin-reset-user-setup/index.ts",
+        "owner": null,
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "POST",
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "user_roles",
+            "accounts",
+            "admin_action_audit"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "admin-revoke-session",
+        "path": "supabase/functions/admin-revoke-session/index.ts",
+        "owner": null,
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "POST",
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "user_roles",
+            "admin_sessions",
+            "admin_action_audit"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "admin-users",
+        "path": "supabase/functions/admin-users/index.ts",
+        "owner": {
+          "team": "admin-governance",
+          "primary": "@sita/admin-governance",
+          "escalation": "pd:admin-governance-oncall",
+          "slack": "#admin-governance",
+          "runbook": "RB-002-ADMIN",
+          "reviewers": "@sita/admin-governance"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "GET",
+            "POST"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": false,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "user_roles",
+            "audit_logs"
+          ]
+        },
+        "callers": [
+          "src/pages/admin/UserManagement.tsx"
+        ],
+        "callerCount": 1,
+        "linkedRoutes": [
+          "/admin/usermanagement"
+        ]
+      },
+      {
+        "name": "audit-export-bundler",
+        "path": "supabase/functions/audit-export-bundler/index.ts",
+        "owner": {
+          "team": "compliance-security",
+          "primary": "@sita/compliance-security",
+          "escalation": "pd:security-oncall",
+          "slack": "#compliance-security",
+          "runbook": "RB-011-SECURITY",
+          "reviewers": "@sita/compliance-security"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "user_roles",
+            "admin_action_audit",
+            "audit_export_bundles"
+          ]
+        },
+        "callers": [
+          "src/pages/admin/ai-runtime/SovereignDeploymentDRBoard.tsx"
+        ],
+        "callerCount": 1,
+        "linkedRoutes": [
+          "/admin/ai-runtime/sovereigndeploymentdrboard"
+        ]
+      },
+      {
+        "name": "audit-log-export",
+        "path": "supabase/functions/audit-log-export/index.ts",
+        "owner": {
+          "team": "compliance-security",
+          "primary": "@sita/compliance-security",
+          "escalation": "pd:security-oncall",
+          "slack": "#compliance-security",
+          "runbook": "RB-011-SECURITY",
+          "reviewers": "@sita/compliance-security"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": []
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "compliance-evidence-collector",
+        "path": "supabase/functions/compliance-evidence-collector/index.ts",
+        "owner": {
+          "team": "compliance-security",
+          "primary": "@sita/compliance-security",
+          "escalation": "pd:security-oncall",
+          "slack": "#compliance-security",
+          "runbook": "RB-011-SECURITY",
+          "reviewers": "@sita/compliance-security"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "admin_action_audit",
+            "audit_export_bundles",
+            "dr_drills",
+            "user_roles",
+            "compliance_controls",
+            "compliance_evidence"
+          ]
+        },
+        "callers": [
+          "src/pages/admin/ai-runtime/ComplianceAttestationBoard.tsx"
+        ],
+        "callerCount": 1,
+        "linkedRoutes": [
+          "/admin/ai-runtime/complianceattestationboard"
+        ]
+      },
+      {
+        "name": "compliance-evidence-cron",
+        "path": "supabase/functions/compliance-evidence-cron/index.ts",
+        "owner": {
+          "team": "compliance-security",
+          "primary": "@sita/compliance-security",
+          "escalation": "pd:security-oncall",
+          "slack": "#compliance-security",
+          "runbook": "RB-011-SECURITY",
+          "reviewers": "@sita/compliance-security"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": false,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "admin_action_audit",
+            "cloud_backup_snapshots",
+            "signed_release_artifacts",
+            "dr_drills",
+            "user_roles",
+            "v_admin_user_mfa_factors",
+            "account_deletion_requests",
+            "incidents",
+            "kill_switch_audit_log",
+            "compliance_evidence_collectors",
+            "compliance_evidence"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      }
+    ],
+    "advisor-intelligence": [
+      {
+        "name": "advisor-agent-loop",
+        "path": "supabase/functions/advisor-agent-loop/index.ts",
+        "owner": {
+          "team": "advisor-intelligence",
+          "primary": "@sita/advisor-intelligence",
+          "escalation": "pd:advisor-oncall",
+          "slack": "#advisor-intelligence",
+          "runbook": "RB-003-ADVISOR",
+          "reviewers": "@sita/advisor-intelligence"
+        },
+        "io": {
+          "input": "zod-validated",
+          "methods": [
+            "OPTIONS",
+            "POST"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "advisor_agents",
+            "advisor_action_queue"
+          ]
+        },
+        "callers": [
+          "src/hooks/use-advisor-agents.ts"
+        ],
+        "callerCount": 1,
+        "linkedRoutes": []
+      },
+      {
+        "name": "advisor-avatar-generate",
+        "path": "supabase/functions/advisor-avatar-generate/index.ts",
+        "owner": {
+          "team": "advisor-intelligence",
+          "primary": "@sita/advisor-intelligence",
+          "escalation": "pd:advisor-oncall",
+          "slack": "#advisor-intelligence",
+          "runbook": "RB-003-ADVISOR",
+          "reviewers": "@sita/advisor-intelligence"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "advisor_profiles"
+          ]
+        },
+        "callers": [
+          "src/components/advisors/AdvisorMeetingRoom.tsx"
+        ],
+        "callerCount": 1,
+        "linkedRoutes": []
+      },
+      {
+        "name": "advisor-conversation",
+        "path": "supabase/functions/advisor-conversation/index.ts",
+        "owner": {
+          "team": "advisor-intelligence",
+          "primary": "@sita/advisor-intelligence",
+          "escalation": "pd:advisor-oncall",
+          "slack": "#advisor-intelligence",
+          "runbook": "RB-003-ADVISOR",
+          "reviewers": "@sita/advisor-intelligence"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": false,
+          "emitsReceipt": false,
+          "tablesTouched": []
+        },
+        "callers": [
+          "src/components/business/advisor-board/AdvisorConversation.tsx"
+        ],
+        "callerCount": 1,
+        "linkedRoutes": []
+      },
+      {
+        "name": "advisor-deep-intelligence",
+        "path": "supabase/functions/advisor-deep-intelligence/index.ts",
+        "owner": {
+          "team": "advisor-intelligence",
+          "primary": "@sita/advisor-intelligence",
+          "escalation": "pd:advisor-oncall",
+          "slack": "#advisor-intelligence",
+          "runbook": "RB-003-ADVISOR",
+          "reviewers": "@sita/advisor-intelligence"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "advisor_board_memory",
+            "advisor_board_recommendations"
+          ]
+        },
+        "callers": [
+          "src/hooks/useBusinessAdvisorBoard.ts"
+        ],
+        "callerCount": 1,
+        "linkedRoutes": []
+      },
+      {
+        "name": "advisor-knowledge-manage",
+        "path": "supabase/functions/advisor-knowledge-manage/index.ts",
+        "owner": {
+          "team": "advisor-intelligence",
+          "primary": "@sita/advisor-intelligence",
+          "escalation": "pd:advisor-oncall",
+          "slack": "#advisor-intelligence",
+          "runbook": "RB-003-ADVISOR",
+          "reviewers": "@sita/advisor-intelligence"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "GET",
+            "POST",
+            "DELETE"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": false,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "advisor_knowledge"
+          ]
+        },
+        "callers": [
+          "src/components/advisors/AdvisorKnowledgePanel.tsx"
+        ],
+        "callerCount": 1,
+        "linkedRoutes": []
+      },
+      {
+        "name": "advisor-weekly-report",
+        "path": "supabase/functions/advisor-weekly-report/index.ts",
+        "owner": {
+          "team": "advisor-intelligence",
+          "primary": "@sita/advisor-intelligence",
+          "escalation": "pd:advisor-oncall",
+          "slack": "#advisor-intelligence",
+          "runbook": "RB-003-ADVISOR",
+          "reviewers": "@sita/advisor-intelligence"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": false,
+          "emitsReceipt": false,
+          "tablesTouched": []
+        },
+        "callers": [
+          "src/components/business/advisor-board/WeeklyExecutiveReport.tsx"
+        ],
+        "callerCount": 1,
+        "linkedRoutes": []
+      },
+      {
+        "name": "boardroom-cockpit-telemetry",
+        "path": "supabase/functions/boardroom-cockpit-telemetry/index.ts",
+        "owner": {
+          "team": "user-experience",
+          "primary": "@sita/user-experience",
+          "escalation": "pd:user-experience-oncall",
+          "slack": "#user-experience",
+          "runbook": "RB-012-USER-EXPERIENCE",
+          "reviewers": "@sita/user-experience"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "boardroom_cockpit_tab_views"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "boardroom-followthrough-dispatch",
+        "path": "supabase/functions/boardroom-followthrough-dispatch/index.ts",
+        "owner": {
+          "team": "user-experience",
+          "primary": "@sita/user-experience",
+          "escalation": "pd:user-experience-oncall",
+          "slack": "#user-experience",
+          "runbook": "RB-012-USER-EXPERIENCE",
+          "reviewers": "@sita/user-experience"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "boardroom_items",
+            "boardroom_followthrough_dispatches",
+            "os_commands",
+            "command_steps",
+            "timeline_events"
+          ]
+        },
+        "callers": [
+          "src/components/admin/boardroom/Layer7FollowthroughBoard.tsx"
+        ],
+        "callerCount": 1,
+        "linkedRoutes": []
+      },
+      {
+        "name": "boardroom-followthrough-sla",
+        "path": "supabase/functions/boardroom-followthrough-sla/index.ts",
+        "owner": {
+          "team": "user-experience",
+          "primary": "@sita/user-experience",
+          "escalation": "pd:user-experience-oncall",
+          "slack": "#user-experience",
+          "runbook": "RB-012-USER-EXPERIENCE",
+          "reviewers": "@sita/user-experience"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": false,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "boardroom_followthrough_dispatches",
+            "boardroom_followthrough_sla_alerts"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "boardroom-outcome-record",
+        "path": "supabase/functions/boardroom-outcome-record/index.ts",
+        "owner": {
+          "team": "user-experience",
+          "primary": "@sita/user-experience",
+          "escalation": "pd:user-experience-oncall",
+          "slack": "#user-experience",
+          "runbook": "RB-012-USER-EXPERIENCE",
+          "reviewers": "@sita/user-experience"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "boardroom_followthrough_dispatches",
+            "user_roles",
+            "boardroom_outcome_records",
+            "boardroom_items",
+            "timeline_events"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "boardroom-replay",
+        "path": "supabase/functions/boardroom-replay/index.ts",
+        "owner": {
+          "team": "user-experience",
+          "primary": "@sita/user-experience",
+          "escalation": "pd:user-experience-oncall",
+          "slack": "#user-experience",
+          "runbook": "RB-012-USER-EXPERIENCE",
+          "reviewers": "@sita/user-experience"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": false,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "boardroom_sessions",
+            "boardroom_items",
+            "boardroom_evidence",
+            "boardroom_recommendations",
+            "boardroom_decision_receipts"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "boardroom-session",
+        "path": "supabase/functions/boardroom-session/index.ts",
+        "owner": {
+          "team": "user-experience",
+          "primary": "@sita/user-experience",
+          "escalation": "pd:user-experience-oncall",
+          "slack": "#user-experience",
+          "runbook": "RB-012-USER-EXPERIENCE",
+          "reviewers": "@sita/user-experience"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": false,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "boardroom_sessions",
+            "boardroom_items",
+            "boardroom_evidence",
+            "boardroom_recommendations",
+            "boardroom_decision_receipts"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      }
+    ],
+    "agent-runtime": [
+      {
+        "name": "agent-executor",
+        "path": "supabase/functions/agent-executor/index.ts",
+        "owner": {
+          "team": "agent-runtime",
+          "primary": "@sita/agent-runtime",
+          "escalation": "pd:agent-runtime-oncall",
+          "slack": "#agent-runtime",
+          "runbook": "RB-004-AGENT-RUNTIME",
+          "reviewers": "@sita/agent-runtime"
+        },
+        "io": {
+          "input": "zod-validated",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "agent_signals",
+            "agent_action_receipts",
+            "connector_configs",
+            "workflow_runs",
+            "agent_telemetry",
+            "advisor_responses",
+            "agent_schedules",
+            "sync_logs",
+            "boardroom_followthrough_dispatches",
+            "command_steps",
+            "boardroom_items",
+            "timeline_events"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "agent-heartbeat",
+        "path": "supabase/functions/agent-heartbeat/index.ts",
+        "owner": {
+          "team": "agent-runtime",
+          "primary": "@sita/agent-runtime",
+          "escalation": "pd:agent-runtime-oncall",
+          "slack": "#agent-runtime",
+          "runbook": "RB-004-AGENT-RUNTIME",
+          "reviewers": "@sita/agent-runtime"
+        },
+        "io": {
+          "input": "zod-validated",
+          "methods": [
+            "OPTIONS",
+            "POST",
+            "PUT",
+            "PATCH"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "agent_telemetry"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "agent-intelligence",
+        "path": "supabase/functions/agent-intelligence/index.ts",
+        "owner": {
+          "team": "agent-runtime",
+          "primary": "@sita/agent-runtime",
+          "escalation": "pd:agent-runtime-oncall",
+          "slack": "#agent-runtime",
+          "runbook": "RB-004-AGENT-RUNTIME",
+          "reviewers": "@sita/agent-runtime"
+        },
+        "io": {
+          "input": "zod-validated",
+          "methods": [
+            "OPTIONS",
+            "POST",
+            "PUT",
+            "PATCH"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "agent_telemetry",
+            "agent_action_receipts",
+            "agent_signals",
+            "advisor_responses"
+          ]
+        },
+        "callers": [
+          "src/pages/advisors/AdvisorCouncilDashboard.tsx"
+        ],
+        "callerCount": 1,
+        "linkedRoutes": [
+          "/advisors/advisorcouncildashboard"
+        ]
+      },
+      {
+        "name": "agent-scheduler",
+        "path": "supabase/functions/agent-scheduler/index.ts",
+        "owner": {
+          "team": "agent-runtime",
+          "primary": "@sita/agent-runtime",
+          "escalation": "pd:agent-runtime-oncall",
+          "slack": "#agent-runtime",
+          "runbook": "RB-004-AGENT-RUNTIME",
+          "reviewers": "@sita/agent-runtime"
+        },
+        "io": {
+          "input": "zod-validated",
+          "methods": [
+            "OPTIONS",
+            "POST",
+            "PUT",
+            "PATCH"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "agent_schedules"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "agent-signal",
+        "path": "supabase/functions/agent-signal/index.ts",
+        "owner": {
+          "team": "agent-runtime",
+          "primary": "@sita/agent-runtime",
+          "escalation": "pd:agent-runtime-oncall",
+          "slack": "#agent-runtime",
+          "runbook": "RB-004-AGENT-RUNTIME",
+          "reviewers": "@sita/agent-runtime"
+        },
+        "io": {
+          "input": "zod-validated",
+          "methods": [
+            "OPTIONS",
+            "POST",
+            "PUT",
+            "PATCH",
+            "GET"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "agent_signals"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "external-workforce-api",
+        "path": "supabase/functions/external-workforce-api/index.ts",
+        "owner": {
+          "team": "platform-core",
+          "primary": "@sita/platform-core",
+          "escalation": "pd:platform-core-oncall",
+          "slack": "#platform-core",
+          "runbook": "RB-001-PLATFORM-CORE",
+          "reviewers": "@sita/platform-core"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": false,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "external_workforce_api_keys",
+            "owner_copilot_briefings",
+            "internal_agent_tenant_kill_switches",
+            "ai_action_receipts"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "external-workforce-webhook-dispatcher",
+        "path": "supabase/functions/external-workforce-webhook-dispatcher/index.ts",
+        "owner": {
+          "team": "platform-core",
+          "primary": "@sita/platform-core",
+          "escalation": "pd:platform-core-oncall",
+          "slack": "#platform-core",
+          "runbook": "RB-001-PLATFORM-CORE",
+          "reviewers": "@sita/platform-core"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": false,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "external_workforce_subscriptions",
+            "external_workforce_webhook_deliveries"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "internal-agent-chaos-scheduler",
+        "path": "supabase/functions/internal-agent-chaos-scheduler/index.ts",
+        "owner": {
+          "team": "agent-runtime",
+          "primary": "@sita/agent-runtime",
+          "escalation": "pd:agent-runtime-oncall",
+          "slack": "#agent-runtime",
+          "runbook": "RB-004-AGENT-RUNTIME",
+          "reviewers": "@sita/agent-runtime"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": false,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "internal_agent_chaos_drills",
+            "internal_agent_auto_rollback_events",
+            "internal_agent_assurance_reports"
+          ]
+        },
+        "callers": [
+          "src/pages/admin/ai-runtime/AssuranceChaosBoard.tsx"
+        ],
+        "callerCount": 1,
+        "linkedRoutes": [
+          "/admin/ai-runtime/assurancechaosboard"
+        ]
+      },
+      {
+        "name": "scheduler-dispatch",
+        "path": "supabase/functions/scheduler-dispatch/index.ts",
+        "owner": {
+          "team": "platform-core",
+          "primary": "@sita/platform-core",
+          "escalation": "pd:platform-core-oncall",
+          "slack": "#platform-core",
+          "runbook": "RB-001-PLATFORM-CORE",
+          "reviewers": "@sita/platform-core"
+        },
+        "io": {
+          "input": "zod-validated",
+          "methods": [
+            "OPTIONS",
+            "POST",
+            "PUT",
+            "PATCH"
+          ],
+          "usesAuth": false,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "automation_kill_switches",
+            "workflow_receipts",
+            "scheduled_jobs",
+            "job_executions"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "secret-rotation-orchestrator",
+        "path": "supabase/functions/secret-rotation-orchestrator/index.ts",
+        "owner": {
+          "team": "compliance-security",
+          "primary": "@sita/compliance-security",
+          "escalation": "pd:security-oncall",
+          "slack": "#compliance-security",
+          "runbook": "RB-011-SECURITY",
+          "reviewers": "@sita/compliance-security"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": []
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      }
+    ],
+    "ai-engineering": [
+      {
+        "name": "ai-gateway",
+        "path": "supabase/functions/ai-gateway/index.ts",
+        "owner": {
+          "team": "ai-engineering",
+          "primary": "@sita/ai-engineering",
+          "escalation": "pd:ai-engineering-oncall",
+          "slack": "#ai-engineering",
+          "runbook": "RB-006-AI-ENGINEERING",
+          "reviewers": "@sita/ai-engineering"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "POST",
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": true,
+          "emitsReceipt": true,
+          "tablesTouched": [
+            "ai_prompt_versions",
+            "ai_prompt_invocations",
+            "ai_capability_routing",
+            "ai_model_registry",
+            "ai_routing_policies",
+            "ai_usage_ledger",
+            "ai_budget_alerts",
+            "ai_inference_receipts",
+            "ai_fallback_events",
+            "ai_receipt_records"
+          ]
+        },
+        "callers": [
+          "src/components/sita/CommandPalette.tsx",
+          "src/components/sita/RuntimeTruthProbe.tsx",
+          "src/lib/core-services/inference-gateway/inference-gateway.ts",
+          "src/lib/services/ai-gateway/callable.ts",
+          "src/lib/services/ai-gateway/invoke.ts"
+        ],
+        "callerCount": 5,
+        "linkedRoutes": []
+      },
+      {
+        "name": "ai-health",
+        "path": "supabase/functions/ai-health/index.ts",
+        "owner": {
+          "team": "ai-engineering",
+          "primary": "@sita/ai-engineering",
+          "escalation": "pd:ai-engineering-oncall",
+          "slack": "#ai-engineering",
+          "runbook": "RB-006-AI-ENGINEERING",
+          "reviewers": "@sita/ai-engineering"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "POST",
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": true,
+          "emitsReceipt": true,
+          "tablesTouched": [
+            "user_ai_budgets",
+            "ai_receipt_records",
+            "ai_capability_routing",
+            "ai_usage_ledger"
+          ]
+        },
+        "callers": [
+          "src/hooks/use-ai-health.ts",
+          "src/lib/ai-platform/runtime/hooks/use-ai-runtime-verification.ts"
+        ],
+        "callerCount": 2,
+        "linkedRoutes": []
+      },
+      {
+        "name": "ai-receipt-completeness-snapshot",
+        "path": "supabase/functions/ai-receipt-completeness-snapshot/index.ts",
+        "owner": {
+          "team": "ai-engineering",
+          "primary": "@sita/ai-engineering",
+          "escalation": "pd:ai-engineering-oncall",
+          "slack": "#ai-engineering",
+          "runbook": "RB-006-AI-ENGINEERING",
+          "reviewers": "@sita/ai-engineering"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": false,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "ai_invocations",
+            "ai_action_receipts",
+            "ai_receipt_completeness_snapshots"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "ai-runtime-nightly-verify",
+        "path": "supabase/functions/ai-runtime-nightly-verify/index.ts",
+        "owner": {
+          "team": "ai-engineering",
+          "primary": "@sita/ai-engineering",
+          "escalation": "pd:ai-engineering-oncall",
+          "slack": "#ai-engineering",
+          "runbook": "RB-006-AI-ENGINEERING",
+          "reviewers": "@sita/ai-engineering"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS",
+            "POST"
+          ],
+          "usesAuth": false,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "ai_runtime_nightly_runs",
+            "ai_invocations",
+            "ai_usage_ledger",
+            "ai_inference_receipts",
+            "ai_fallback_events",
+            "ai_workforce_budget_classes",
+            "ai_budget_alerts"
+          ]
+        },
+        "callers": [
+          "src/lib/internal-agents/runtime/nightly-truth-data.ts"
+        ],
+        "callerCount": 1,
+        "linkedRoutes": []
+      },
+      {
+        "name": "api-gateway",
+        "path": "supabase/functions/api-gateway/index.ts",
+        "owner": {
+          "team": "platform-core",
+          "primary": "@sita/platform-core",
+          "escalation": "pd:platform-core-oncall",
+          "slack": "#platform-core",
+          "runbook": "RB-001-PLATFORM-CORE",
+          "reviewers": "@sita/platform-core"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "GET",
+            "POST",
+            "PUT",
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": false,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "profiles",
+            "user_roles",
+            "cloud_devices",
+            "os_commands",
+            "client_capability_matrix",
+            "os_command_events",
+            "ai_workforce_recommendations",
+            "ai_inference_receipts",
+            "cloud_abuse_events",
+            "ai_workforce_invocations",
+            "cloud_activity_journal",
+            "cloud_sync_ledger"
+          ]
+        },
+        "callers": [
+          "src/lib/api/os-api-client.ts"
+        ],
+        "callerCount": 1,
+        "linkedRoutes": []
+      },
+      {
+        "name": "brain-core",
+        "path": "supabase/functions/brain-core/index.ts",
+        "owner": {
+          "team": "ai-engineering",
+          "primary": "@sita/ai-engineering",
+          "escalation": "pd:ai-engineering-oncall",
+          "slack": "#ai-engineering",
+          "runbook": "RB-006-AI-ENGINEERING",
+          "reviewers": "@sita/ai-engineering"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "user_memory",
+            "policies",
+            "advisor_configs",
+            "advisor_requests",
+            "advisor_knowledge",
+            "advisor_responses",
+            "proof_records",
+            "approval_queue"
+          ]
+        },
+        "callers": [
+          "src/hooks/use-backend-actions.ts",
+          "src/hooks/use-brain-core.ts",
+          "src/lib/services/ai-gateway/callable.ts",
+          "src/pages/admin/AIT04to08Boards.tsx"
+        ],
+        "callerCount": 4,
+        "linkedRoutes": [
+          "/admin/ait04to08boards"
+        ]
+      },
+      {
+        "name": "chat-advisor",
+        "path": "supabase/functions/chat-advisor/index.ts",
+        "owner": {
+          "team": "advisor-intelligence",
+          "primary": "@sita/advisor-intelligence",
+          "escalation": "pd:advisor-oncall",
+          "slack": "#advisor-intelligence",
+          "runbook": "RB-003-ADVISOR",
+          "reviewers": "@sita/advisor-intelligence"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "POST",
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "advisor_knowledge",
+            "advisor_memories",
+            "advisor_feedback",
+            "user_ai_budgets",
+            "ai_token_usage",
+            "advisor_responses"
+          ]
+        },
+        "callers": [
+          "src/components/advisors/AdvisorMeetingRoom.tsx",
+          "src/components/advisors/AskAdvisorChat.tsx",
+          "src/domains/simulation/market-intelligence.ts",
+          "src/hooks/use-streaming-chat.ts",
+          "src/lib/services/advisor-memory/summarizer.ts"
+        ],
+        "callerCount": 5,
+        "linkedRoutes": []
+      },
+      {
+        "name": "license-gateway",
+        "path": "supabase/functions/license-gateway/index.ts",
+        "owner": {
+          "team": "user-experience",
+          "primary": "@sita/user-experience",
+          "escalation": "pd:user-experience-oncall",
+          "slack": "#user-experience",
+          "runbook": "RB-012-USER-EXPERIENCE",
+          "reviewers": "@sita/user-experience"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "licenses",
+            "license_audit_log",
+            "license_activations"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "personal-brain-cron",
+        "path": "supabase/functions/personal-brain-cron/index.ts",
+        "owner": null,
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": false,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "pb_security_prefs",
+            "pb_messages",
+            "pb_memories",
+            "pb_security_events"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "prompt-versioning",
+        "path": "supabase/functions/prompt-versioning/index.ts",
+        "owner": {
+          "team": "platform-core",
+          "primary": "@sita/platform-core",
+          "escalation": "pd:platform-core-oncall",
+          "slack": "#platform-core",
+          "runbook": "RB-001-PLATFORM-CORE",
+          "reviewers": "@sita/platform-core"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "POST",
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "ai_prompt_versions",
+            "ai_prompt_families"
+          ]
+        },
+        "callers": [
+          "src/pages/admin/AIPromptFamiliesExplorer.tsx"
+        ],
+        "callerCount": 1,
+        "linkedRoutes": [
+          "/admin/aipromptfamiliesexplorer"
+        ]
+      },
+      {
+        "name": "support-gateway",
+        "path": "supabase/functions/support-gateway/index.ts",
+        "owner": {
+          "team": "user-experience",
+          "primary": "@sita/user-experience",
+          "escalation": "pd:user-experience-oncall",
+          "slack": "#user-experience",
+          "runbook": "RB-012-USER-EXPERIENCE",
+          "reviewers": "@sita/user-experience"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "admin_action_audit"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "user-bff-gateway",
+        "path": "supabase/functions/user-bff-gateway/index.ts",
+        "owner": {
+          "team": "user-experience",
+          "primary": "@sita/user-experience",
+          "escalation": "pd:user-experience-oncall",
+          "slack": "#user-experience",
+          "runbook": "RB-012-USER-EXPERIENCE",
+          "reviewers": "@sita/user-experience"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": false,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "profiles",
+            "cloud_devices",
+            "platform_notifications",
+            "support_cases",
+            "support_case_events"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      }
+    ],
+    "ops-and-reliability": [
+      {
+        "name": "alert-actions",
+        "path": "supabase/functions/alert-actions/index.ts",
+        "owner": {
+          "team": "notification-services",
+          "primary": "@sita/notification-services",
+          "escalation": "pd:notifications-oncall",
+          "slack": "#notification-services",
+          "runbook": "RB-009-NOTIFICATIONS",
+          "reviewers": "@sita/notification-services"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "alerts"
+          ]
+        },
+        "callers": [
+          "src/lib/services/alerting/alert-client.ts"
+        ],
+        "callerCount": 1,
+        "linkedRoutes": []
+      },
+      {
+        "name": "alert-ingest",
+        "path": "supabase/functions/alert-ingest/index.ts",
+        "owner": {
+          "team": "notification-services",
+          "primary": "@sita/notification-services",
+          "escalation": "pd:notifications-oncall",
+          "slack": "#notification-services",
+          "runbook": "RB-009-NOTIFICATIONS",
+          "reviewers": "@sita/notification-services"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": false,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "alerts"
+          ]
+        },
+        "callers": [
+          "src/lib/observability/perf-budget.ts",
+          "src/lib/services/alerting/alert-client.ts",
+          "src/lib/services/connector-control-plane/connector-fake-mode.service.ts"
+        ],
+        "callerCount": 3,
+        "linkedRoutes": []
+      },
+      {
+        "name": "alert-route",
+        "path": "supabase/functions/alert-route/index.ts",
+        "owner": {
+          "team": "notification-services",
+          "primary": "@sita/notification-services",
+          "escalation": "pd:notifications-oncall",
+          "slack": "#notification-services",
+          "runbook": "RB-009-NOTIFICATIONS",
+          "reviewers": "@sita/notification-services"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": false,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "alerts",
+            "alert_routes"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "alert-router",
+        "path": "supabase/functions/alert-router/index.ts",
+        "owner": {
+          "team": "notification-services",
+          "primary": "@sita/notification-services",
+          "escalation": "pd:notifications-oncall",
+          "slack": "#notification-services",
+          "runbook": "RB-009-NOTIFICATIONS",
+          "reviewers": "@sita/notification-services"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": false,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "notification_delivery_receipts"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "kill-switch-state",
+        "path": "supabase/functions/kill-switch-state/index.ts",
+        "owner": {
+          "team": "compliance-security",
+          "primary": "@sita/compliance-security",
+          "escalation": "pd:security-oncall",
+          "slack": "#compliance-security",
+          "runbook": "RB-011-SECURITY",
+          "reviewers": "@sita/compliance-security"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": false,
+          "usesServiceRole": false,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "automation_kill_switches"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "kill-switch-toggle",
+        "path": "supabase/functions/kill-switch-toggle/index.ts",
+        "owner": {
+          "team": "compliance-security",
+          "primary": "@sita/compliance-security",
+          "escalation": "pd:security-oncall",
+          "slack": "#compliance-security",
+          "runbook": "RB-011-SECURITY",
+          "reviewers": "@sita/compliance-security"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "kill_switch_approvals"
+          ]
+        },
+        "callers": [
+          "src/lib/control-plane/kill-switch-db-client.ts"
+        ],
+        "callerCount": 1,
+        "linkedRoutes": []
+      },
+      {
+        "name": "recovery-evidence-ingest",
+        "path": "supabase/functions/recovery-evidence-ingest/index.ts",
+        "owner": {
+          "team": "compliance-security",
+          "primary": "@sita/compliance-security",
+          "escalation": "pd:security-oncall",
+          "slack": "#compliance-security",
+          "runbook": "RB-011-SECURITY",
+          "reviewers": "@sita/compliance-security"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "recovery_boot_evidence"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "runbook-drill",
+        "path": "supabase/functions/runbook-drill/index.ts",
+        "owner": {
+          "team": "compliance-security",
+          "primary": "@sita/compliance-security",
+          "escalation": "pd:security-oncall",
+          "slack": "#compliance-security",
+          "runbook": "RB-011-SECURITY",
+          "reviewers": "@sita/compliance-security"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "runbook_drill_results",
+            "operator_drill_executions"
+          ]
+        },
+        "callers": [
+          "src/lib/support/runbook-drill-status.ts"
+        ],
+        "callerCount": 1,
+        "linkedRoutes": []
+      },
+      {
+        "name": "support-recovery-api",
+        "path": "supabase/functions/support-recovery-api/index.ts",
+        "owner": null,
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": false,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "user_roles",
+            "admin_role_permissions",
+            "recovery_jobs",
+            "webhook_delivery_log"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      }
+    ],
+    "domain-functions": [
+      {
+        "name": "ambient-os-operations",
+        "path": "supabase/functions/ambient-os-operations/index.ts",
+        "owner": {
+          "team": "os-kernel",
+          "primary": "@sita/os-kernel",
+          "escalation": "pd:os-kernel-oncall",
+          "slack": "#os-kernel",
+          "runbook": "RB-010-OS-KERNEL",
+          "reviewers": "@sita/os-kernel"
+        },
+        "io": {
+          "input": "zod-validated",
+          "methods": [
+            "OPTIONS",
+            "POST",
+            "PUT",
+            "PATCH"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "device_families",
+            "wearable_providers",
+            "assistant_role_presences",
+            "ambient_launch_readiness",
+            "presence_states",
+            "wearable_signals",
+            "readiness_states",
+            "connected_devices",
+            "device_trust_records",
+            "user_device_graph_edges",
+            "handoff_sessions",
+            "interruption_policies"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "apm-metrics-ingest",
+        "path": "supabase/functions/apm-metrics-ingest/index.ts",
+        "owner": null,
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": false,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "observability_metrics"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "app-ingest-pwa",
+        "path": "supabase/functions/app-ingest-pwa/index.ts",
+        "owner": {
+          "team": "app-platform",
+          "primary": "@sita/app-platform",
+          "escalation": "pd:app-platform-oncall",
+          "slack": "#app-platform",
+          "runbook": "RB-013-APP-PLATFORM",
+          "reviewers": "@sita/app-platform"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "app_ingestion_jobs",
+            "app_assets"
+          ]
+        },
+        "callers": [
+          "src/lib/services/app-ingestion/ingestion.service.ts"
+        ],
+        "callerCount": 1,
+        "linkedRoutes": []
+      },
+      {
+        "name": "app-ingest-web",
+        "path": "supabase/functions/app-ingest-web/index.ts",
+        "owner": {
+          "team": "app-platform",
+          "primary": "@sita/app-platform",
+          "escalation": "pd:app-platform-oncall",
+          "slack": "#app-platform",
+          "runbook": "RB-013-APP-PLATFORM",
+          "reviewers": "@sita/app-platform"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "app_ingestion_jobs",
+            "app_assets"
+          ]
+        },
+        "callers": [
+          "src/lib/services/app-ingestion/ingestion.service.ts"
+        ],
+        "callerCount": 1,
+        "linkedRoutes": []
+      },
+      {
+        "name": "app-install",
+        "path": "supabase/functions/app-install/index.ts",
+        "owner": {
+          "team": "app-platform",
+          "primary": "@sita/app-platform",
+          "escalation": "pd:app-platform-oncall",
+          "slack": "#app-platform",
+          "runbook": "RB-013-APP-PLATFORM",
+          "reviewers": "@sita/app-platform"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": false,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "apps",
+            "installed_apps"
+          ]
+        },
+        "callers": [
+          "src/lib/services/app-store/install.service.ts"
+        ],
+        "callerCount": 1,
+        "linkedRoutes": []
+      },
+      {
+        "name": "app-launch-resolve",
+        "path": "supabase/functions/app-launch-resolve/index.ts",
+        "owner": {
+          "team": "app-platform",
+          "primary": "@sita/app-platform",
+          "escalation": "pd:app-platform-oncall",
+          "slack": "#app-platform",
+          "runbook": "RB-013-APP-PLATFORM",
+          "reviewers": "@sita/app-platform"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": false,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "apps",
+            "installed_apps",
+            "app_launch_events"
+          ]
+        },
+        "callers": [
+          "src/lib/services/app-store/launch.service.ts"
+        ],
+        "callerCount": 1,
+        "linkedRoutes": []
+      },
+      {
+        "name": "app-manifest-sync",
+        "path": "supabase/functions/app-manifest-sync/index.ts",
+        "owner": {
+          "team": "app-platform",
+          "primary": "@sita/app-platform",
+          "escalation": "pd:app-platform-oncall",
+          "slack": "#app-platform",
+          "runbook": "RB-013-APP-PLATFORM",
+          "reviewers": "@sita/app-platform"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "user_roles",
+            "apps",
+            "app_versions"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "app-manifest-verifier",
+        "path": "supabase/functions/app-manifest-verifier/index.ts",
+        "owner": {
+          "team": "app-platform",
+          "primary": "@sita/app-platform",
+          "escalation": "pd:app-platform-oncall",
+          "slack": "#app-platform",
+          "runbook": "RB-013-APP-PLATFORM",
+          "reviewers": "@sita/app-platform"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "installed_apps_receipts"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "app-permissions-sync",
+        "path": "supabase/functions/app-permissions-sync/index.ts",
+        "owner": {
+          "team": "app-platform",
+          "primary": "@sita/app-platform",
+          "escalation": "pd:app-platform-oncall",
+          "slack": "#app-platform",
+          "runbook": "RB-013-APP-PLATFORM",
+          "reviewers": "@sita/app-platform"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS",
+            "GET",
+            "POST"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": false,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "app_permissions_overrides"
+          ]
+        },
+        "callers": [
+          "src/lib/services/app-store/permissions.service.ts"
+        ],
+        "callerCount": 1,
+        "linkedRoutes": []
+      },
+      {
+        "name": "app-screenshot-capture",
+        "path": "supabase/functions/app-screenshot-capture/index.ts",
+        "owner": {
+          "team": "app-platform",
+          "primary": "@sita/app-platform",
+          "escalation": "pd:app-platform-oncall",
+          "slack": "#app-platform",
+          "runbook": "RB-013-APP-PLATFORM",
+          "reviewers": "@sita/app-platform"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "app_ingestion_jobs",
+            "app_assets"
+          ]
+        },
+        "callers": [
+          "src/lib/services/app-ingestion/ingestion.service.ts"
+        ],
+        "callerCount": 1,
+        "linkedRoutes": []
+      },
+      {
+        "name": "app-store-api",
+        "path": "supabase/functions/app-store-api/index.ts",
+        "owner": {
+          "team": "user-experience",
+          "primary": "@sita/user-experience",
+          "escalation": "pd:user-experience-oncall",
+          "slack": "#user-experience",
+          "runbook": "RB-012-USER-EXPERIENCE",
+          "reviewers": "@sita/user-experience"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS",
+            "GET"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": false,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "app_catalog",
+            "app_installations",
+            "app_reviews"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "app-store-catalog",
+        "path": "supabase/functions/app-store-catalog/index.ts",
+        "owner": {
+          "team": "app-platform",
+          "primary": "@sita/app-platform",
+          "escalation": "pd:app-platform-oncall",
+          "slack": "#app-platform",
+          "runbook": "RB-013-APP-PLATFORM",
+          "reviewers": "@sita/app-platform"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": false,
+          "usesServiceRole": false,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "apps",
+            "app_versions",
+            "app_sources"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "app-uninstall",
+        "path": "supabase/functions/app-uninstall/index.ts",
+        "owner": {
+          "team": "app-platform",
+          "primary": "@sita/app-platform",
+          "escalation": "pd:app-platform-oncall",
+          "slack": "#app-platform",
+          "runbook": "RB-013-APP-PLATFORM",
+          "reviewers": "@sita/app-platform"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": false,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "apps",
+            "installed_apps"
+          ]
+        },
+        "callers": [
+          "src/lib/services/app-store/install.service.ts"
+        ],
+        "callerCount": 1,
+        "linkedRoutes": []
+      },
+      {
+        "name": "app-update-check",
+        "path": "supabase/functions/app-update-check/index.ts",
+        "owner": {
+          "team": "app-platform",
+          "primary": "@sita/app-platform",
+          "escalation": "pd:app-platform-oncall",
+          "slack": "#app-platform",
+          "runbook": "RB-013-APP-PLATFORM",
+          "reviewers": "@sita/app-platform"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": false,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "installed_apps",
+            "apps"
+          ]
+        },
+        "callers": [
+          "src/lib/services/app-store/update.service.ts"
+        ],
+        "callerCount": 1,
+        "linkedRoutes": []
+      },
+      {
+        "name": "attestation-packet-builder",
+        "path": "supabase/functions/attestation-packet-builder/index.ts",
+        "owner": {
+          "team": "compliance-security",
+          "primary": "@sita/compliance-security",
+          "escalation": "pd:security-oncall",
+          "slack": "#compliance-security",
+          "runbook": "RB-011-SECURITY",
+          "reviewers": "@sita/compliance-security"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "user_roles",
+            "compliance_controls",
+            "compliance_evidence",
+            "attestation_packets"
+          ]
+        },
+        "callers": [
+          "src/pages/admin/ai-runtime/ComplianceAttestationBoard.tsx"
+        ],
+        "callerCount": 1,
+        "linkedRoutes": [
+          "/admin/ai-runtime/complianceattestationboard"
+        ]
+      },
+      {
+        "name": "beta-apply",
+        "path": "supabase/functions/beta-apply/index.ts",
+        "owner": {
+          "team": "user-experience",
+          "primary": "@sita/user-experience",
+          "escalation": "pd:user-experience-oncall",
+          "slack": "#user-experience",
+          "runbook": "RB-012-USER-EXPERIENCE",
+          "reviewers": "@sita/user-experience"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": false,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "beta_applications"
+          ]
+        },
+        "callers": [
+          "src/components/marketing/BetaForm.tsx"
+        ],
+        "callerCount": 1,
+        "linkedRoutes": []
+      },
+      {
+        "name": "booking-manage",
+        "path": "supabase/functions/booking-manage/index.ts",
+        "owner": {
+          "team": "user-experience",
+          "primary": "@sita/user-experience",
+          "escalation": "pd:user-experience-oncall",
+          "slack": "#user-experience",
+          "runbook": "RB-012-USER-EXPERIENCE",
+          "reviewers": "@sita/user-experience"
+        },
+        "io": {
+          "input": "zod-validated",
+          "methods": [
+            "POST",
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": false,
+          "emitsReceipt": true,
+          "tablesTouched": [
+            "bookings",
+            "audit_logs",
+            "receipts"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "business-advisor-intelligence",
+        "path": "supabase/functions/business-advisor-intelligence/index.ts",
+        "owner": {
+          "team": "advisor-intelligence",
+          "primary": "@sita/advisor-intelligence",
+          "escalation": "pd:advisor-oncall",
+          "slack": "#advisor-intelligence",
+          "runbook": "RB-003-ADVISOR",
+          "reviewers": "@sita/advisor-intelligence"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": false,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "ai_inference_receipts"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "business-board-api",
+        "path": "supabase/functions/business-board-api/index.ts",
+        "owner": {
+          "team": "advisor-intelligence",
+          "primary": "@sita/advisor-intelligence",
+          "escalation": "pd:advisor-oncall",
+          "slack": "#advisor-intelligence",
+          "runbook": "RB-003-ADVISOR",
+          "reviewers": "@sita/advisor-intelligence"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "advisor_board_recommendations",
+            "advisor_board_actions",
+            "business_health_scores",
+            "profit_signals",
+            "advisor_autonomy_policies",
+            "advisor_board_memory",
+            "advisor_board_reflections",
+            "advisor_board_tool_executions"
+          ]
+        },
+        "callers": [
+          "src/lib/services/board-api-client.ts"
+        ],
+        "callerCount": 1,
+        "linkedRoutes": []
+      },
+      {
+        "name": "canary-chaos-cron",
+        "path": "supabase/functions/canary-chaos-cron/index.ts",
+        "owner": {
+          "team": "compliance-security",
+          "primary": "@sita/compliance-security",
+          "escalation": "pd:security-oncall",
+          "slack": "#compliance-security",
+          "runbook": "RB-011-SECURITY",
+          "reviewers": "@sita/compliance-security"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": false,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": []
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "cashflow-calculate",
+        "path": "supabase/functions/cashflow-calculate/index.ts",
+        "owner": {
+          "team": "finance-engine",
+          "primary": "@sita/finance-engine",
+          "escalation": "pd:finance-engine-oncall",
+          "slack": "#finance-engine",
+          "runbook": "RB-005-AUTH",
+          "reviewers": "@sita/finance-engine"
+        },
+        "io": {
+          "input": "zod-validated",
+          "methods": [
+            "POST",
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": false,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "financial_accounts",
+            "invoices"
+          ]
+        },
+        "callers": [
+          "src/hooks/use-sita-data.ts"
+        ],
+        "callerCount": 1,
+        "linkedRoutes": []
+      },
+      {
+        "name": "chaos-drill-runner",
+        "path": "supabase/functions/chaos-drill-runner/index.ts",
+        "owner": null,
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": false,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "automation_kill_switches",
+            "alerts",
+            "chaos_drill_results"
+          ]
+        },
+        "callers": [
+          "src/pages/admin/SRE05ChaosTestingFramework.tsx"
+        ],
+        "callerCount": 1,
+        "linkedRoutes": [
+          "/admin/sre05chaostestingframework"
+        ]
+      },
+      {
+        "name": "check-ai-budget",
+        "path": "supabase/functions/check-ai-budget/index.ts",
+        "owner": {
+          "team": "ai-engineering",
+          "primary": "@sita/ai-engineering",
+          "escalation": "pd:ai-engineering-oncall",
+          "slack": "#ai-engineering",
+          "runbook": "RB-006-AI-ENGINEERING",
+          "reviewers": "@sita/ai-engineering"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": []
+        },
+        "callers": [
+          "src/lib/ai-platform/gateway/budget-gate.ts"
+        ],
+        "callerCount": 1,
+        "linkedRoutes": []
+      },
+      {
+        "name": "cloud-admin-api",
+        "path": "supabase/functions/cloud-admin-api/index.ts",
+        "owner": {
+          "team": "cloud-infrastructure",
+          "primary": "@sita/cloud-infrastructure",
+          "escalation": "pd:cloud-infra-oncall",
+          "slack": "#cloud-infra",
+          "runbook": "RB-007-CLOUD-INFRA",
+          "reviewers": "@sita/cloud-infrastructure"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": false,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "cloud_storage_usage",
+            "cloud_files",
+            "cloud_blobs",
+            "cloud_devices",
+            "cloud_conflicts",
+            "cloud_trash",
+            "cloud_sync_changes",
+            "cloud_user_plans",
+            "cloud_sync_jobs"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "cloud-device-api",
+        "path": "supabase/functions/cloud-device-api/index.ts",
+        "owner": {
+          "team": "cloud-infrastructure",
+          "primary": "@sita/cloud-infrastructure",
+          "escalation": "pd:cloud-infra-oncall",
+          "slack": "#cloud-infra",
+          "runbook": "RB-007-CLOUD-INFRA",
+          "reviewers": "@sita/cloud-infrastructure"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS",
+            "GET"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": false,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "cloud_devices",
+            "cloud_device_sessions"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "cloud-lifecycle-api",
+        "path": "supabase/functions/cloud-lifecycle-api/index.ts",
+        "owner": {
+          "team": "cloud-infrastructure",
+          "primary": "@sita/cloud-infrastructure",
+          "escalation": "pd:cloud-infra-oncall",
+          "slack": "#cloud-infra",
+          "runbook": "RB-007-CLOUD-INFRA",
+          "reviewers": "@sita/cloud-infrastructure"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS",
+            "GET"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": false,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "cloud_reconciliation_runs",
+            "cloud_blobs",
+            "cloud_compliance_hooks",
+            "cloud_archive_jobs",
+            "cloud_import_export_jobs",
+            "cloud_account_closure_requests"
+          ]
+        },
+        "callers": [
+          "src/components/cloud/CloudImportExport.tsx"
+        ],
+        "callerCount": 1,
+        "linkedRoutes": []
+      },
+      {
+        "name": "cloud-storage-api",
+        "path": "supabase/functions/cloud-storage-api/index.ts",
+        "owner": {
+          "team": "cloud-infrastructure",
+          "primary": "@sita/cloud-infrastructure",
+          "escalation": "pd:cloud-infra-oncall",
+          "slack": "#cloud-infra",
+          "runbook": "RB-007-CLOUD-INFRA",
+          "reviewers": "@sita/cloud-infrastructure"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS",
+            "GET"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": false,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "cloud_folders",
+            "cloud_files",
+            "cloud_storage_usage",
+            "cloud_blobs",
+            "cloud_file_versions",
+            "cloud_trash"
+          ]
+        },
+        "callers": [
+          "src/components/cloud/CloudFileBrowser.tsx"
+        ],
+        "callerCount": 1,
+        "linkedRoutes": []
+      },
+      {
+        "name": "cloud-tenant-api",
+        "path": "supabase/functions/cloud-tenant-api/index.ts",
+        "owner": {
+          "team": "cloud-infrastructure",
+          "primary": "@sita/cloud-infrastructure",
+          "escalation": "pd:cloud-infra-oncall",
+          "slack": "#cloud-infra",
+          "runbook": "RB-007-CLOUD-INFRA",
+          "reviewers": "@sita/cloud-infrastructure"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS",
+            "GET"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": false,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "cloud_tenant_memberships",
+            "cloud_tenants",
+            "cloud_tenant_quotas",
+            "cloud_tenant_policies",
+            "cloud_shared_workspaces"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "cloud-worker-api",
+        "path": "supabase/functions/cloud-worker-api/index.ts",
+        "owner": {
+          "team": "cloud-infrastructure",
+          "primary": "@sita/cloud-infrastructure",
+          "escalation": "pd:cloud-infra-oncall",
+          "slack": "#cloud-infra",
+          "runbook": "RB-007-CLOUD-INFRA",
+          "reviewers": "@sita/cloud-infrastructure"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": false,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "cloud_worker_jobs"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "communications-api",
+        "path": "supabase/functions/communications-api/index.ts",
+        "owner": {
+          "team": "user-experience",
+          "primary": "@sita/user-experience",
+          "escalation": "pd:user-experience-oncall",
+          "slack": "#user-experience",
+          "runbook": "RB-012-USER-EXPERIENCE",
+          "reviewers": "@sita/user-experience"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS",
+            "GET"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": false,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "message_threads",
+            "messages",
+            "contacts"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "cost-alert",
+        "path": "supabase/functions/cost-alert/index.ts",
+        "owner": {
+          "team": "finance-engine",
+          "primary": "@sita/finance-engine",
+          "escalation": "pd:finance-engine-oncall",
+          "slack": "#finance-engine",
+          "runbook": "RB-005-AUTH",
+          "reviewers": "@sita/finance-engine"
+        },
+        "io": {
+          "input": "zod-validated",
+          "methods": [
+            "POST",
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "user_ai_budgets"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "crash-report-ingest",
+        "path": "supabase/functions/crash-report-ingest/index.ts",
+        "owner": {
+          "team": "platform-core",
+          "primary": "@sita/platform-core",
+          "escalation": "pd:platform-core-oncall",
+          "slack": "#platform-core",
+          "runbook": "RB-001-PLATFORM-CORE",
+          "reviewers": "@sita/platform-core"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": []
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "data-cleanup",
+        "path": "supabase/functions/data-cleanup/index.ts",
+        "owner": {
+          "team": "platform-core",
+          "primary": "@sita/platform-core",
+          "escalation": "pd:platform-core-oncall",
+          "slack": "#platform-core",
+          "runbook": "RB-001-PLATFORM-CORE",
+          "reviewers": "@sita/platform-core"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": false,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "data_retention_runs"
+          ]
+        },
+        "callers": [
+          "src/pages/admin/DataRetentionDashboard.tsx"
+        ],
+        "callerCount": 1,
+        "linkedRoutes": [
+          "/admin/dataretentiondashboard"
+        ]
+      },
+      {
+        "name": "db-introspection",
+        "path": "supabase/functions/db-introspection/index.ts",
+        "owner": null,
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": false,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": []
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "db-truth-introspect",
+        "path": "supabase/functions/db-truth-introspect/index.ts",
+        "owner": {
+          "team": "platform-core",
+          "primary": "@sita/platform-core",
+          "escalation": "pd:platform-core-oncall",
+          "slack": "#platform-core",
+          "runbook": "RB-001-PLATFORM-CORE",
+          "reviewers": "@sita/platform-core"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": false,
+          "emitsReceipt": false,
+          "tablesTouched": []
+        },
+        "callers": [
+          "src/lib/backend-topology/edge-function-health-source.ts"
+        ],
+        "callerCount": 1,
+        "linkedRoutes": []
+      },
+      {
+        "name": "desktop-update-manifest",
+        "path": "supabase/functions/desktop-update-manifest/index.ts",
+        "owner": {
+          "team": "app-platform",
+          "primary": "@sita/app-platform",
+          "escalation": "pd:app-platform-oncall",
+          "slack": "#app-platform",
+          "runbook": "RB-013-APP-PLATFORM",
+          "reviewers": "@sita/app-platform"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": false,
+          "usesServiceRole": false,
+          "emitsReceipt": false,
+          "tablesTouched": []
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "digital-twin-engine",
+        "path": "supabase/functions/digital-twin-engine/index.ts",
+        "owner": {
+          "team": "ai-engineering",
+          "primary": "@sita/ai-engineering",
+          "escalation": "pd:ai-engineering-oncall",
+          "slack": "#ai-engineering",
+          "runbook": "RB-006-AI-ENGINEERING",
+          "reviewers": "@sita/ai-engineering"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS",
+            "GET"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": false,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "digital_twin_state",
+            "digital_twin_snapshots"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "dr-drill-cron",
+        "path": "supabase/functions/dr-drill-cron/index.ts",
+        "owner": {
+          "team": "compliance-security",
+          "primary": "@sita/compliance-security",
+          "escalation": "pd:security-oncall",
+          "slack": "#compliance-security",
+          "runbook": "RB-011-SECURITY",
+          "reviewers": "@sita/compliance-security"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": false,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "dr_drills"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "dr-drill-executor",
+        "path": "supabase/functions/dr-drill-executor/index.ts",
+        "owner": {
+          "team": "compliance-security",
+          "primary": "@sita/compliance-security",
+          "escalation": "pd:security-oncall",
+          "slack": "#compliance-security",
+          "runbook": "RB-011-SECURITY",
+          "reviewers": "@sita/compliance-security"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "user_roles",
+            "dr_drill_executions"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "dr-drill-runner",
+        "path": "supabase/functions/dr-drill-runner/index.ts",
+        "owner": {
+          "team": "compliance-security",
+          "primary": "@sita/compliance-security",
+          "escalation": "pd:security-oncall",
+          "slack": "#compliance-security",
+          "runbook": "RB-011-SECURITY",
+          "reviewers": "@sita/compliance-security"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "user_roles",
+            "dr_drills"
+          ]
+        },
+        "callers": [
+          "src/pages/admin/ai-runtime/SovereignDeploymentDRBoard.tsx"
+        ],
+        "callerCount": 1,
+        "linkedRoutes": [
+          "/admin/ai-runtime/sovereigndeploymentdrboard"
+        ]
+      },
+      {
+        "name": "ecosystem-operations",
+        "path": "supabase/functions/ecosystem-operations/index.ts",
+        "owner": {
+          "team": "platform-core",
+          "primary": "@sita/platform-core",
+          "escalation": "pd:platform-core-oncall",
+          "slack": "#platform-core",
+          "runbook": "RB-001-PLATFORM-CORE",
+          "reviewers": "@sita/platform-core"
+        },
+        "io": {
+          "input": "zod-validated",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "ecosystem_devices",
+            "ecosystem_trust_records",
+            "ecosystem_health_consents",
+            "ecosystem_wearable_configs",
+            "ecosystem_push_routes",
+            "ecosystem_launch_readiness"
+          ]
+        },
+        "callers": [
+          "src/hooks/useEcosystemDevices.ts"
+        ],
+        "callerCount": 1,
+        "linkedRoutes": []
+      },
+      {
+        "name": "error-ingest",
+        "path": "supabase/functions/error-ingest/index.ts",
+        "owner": {
+          "team": "platform-core",
+          "primary": "@sita/platform-core",
+          "escalation": "pd:platform-core-oncall",
+          "slack": "#platform-core",
+          "runbook": "RB-001-PLATFORM-CORE",
+          "reviewers": "@sita/platform-core"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "error_events"
+          ]
+        },
+        "callers": [
+          "src/lib/services/error-monitoring-service.ts"
+        ],
+        "callerCount": 1,
+        "linkedRoutes": []
+      },
+      {
+        "name": "escalation-engine",
+        "path": "supabase/functions/escalation-engine/index.ts",
+        "owner": null,
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": false,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "escalation_policies",
+            "alerts",
+            "incident_classifications",
+            "council_escalations"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "event-processor",
+        "path": "supabase/functions/event-processor/index.ts",
+        "owner": {
+          "team": "platform-core",
+          "primary": "@sita/platform-core",
+          "escalation": "pd:platform-core-oncall",
+          "slack": "#platform-core",
+          "runbook": "RB-001-PLATFORM-CORE",
+          "reviewers": "@sita/platform-core"
+        },
+        "io": {
+          "input": "zod-validated",
+          "methods": [
+            "OPTIONS",
+            "POST",
+            "PUT",
+            "PATCH"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "events",
+            "workflows",
+            "tasks",
+            "user_memory",
+            "proof_records",
+            "approval_queue"
+          ]
+        },
+        "callers": [
+          "src/hooks/use-brain-core.ts"
+        ],
+        "callerCount": 1,
+        "linkedRoutes": []
+      },
+      {
+        "name": "evidence-graph-builder",
+        "path": "supabase/functions/evidence-graph-builder/index.ts",
+        "owner": {
+          "team": "compliance-security",
+          "primary": "@sita/compliance-security",
+          "escalation": "pd:security-oncall",
+          "slack": "#compliance-security",
+          "runbook": "RB-011-SECURITY",
+          "reviewers": "@sita/compliance-security"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS",
+            "POST"
+          ],
+          "usesAuth": false,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "evidence_graph_nodes",
+            "evidence_graph_edges"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "federated-knowledge-aggregator",
+        "path": "supabase/functions/federated-knowledge-aggregator/index.ts",
+        "owner": {
+          "team": "compliance-security",
+          "primary": "@sita/compliance-security",
+          "escalation": "pd:security-oncall",
+          "slack": "#compliance-security",
+          "runbook": "RB-011-SECURITY",
+          "reviewers": "@sita/compliance-security"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": false,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "tenant_federation_optins",
+            "federated_knowledge_shares",
+            "federated_pattern_aggregates"
+          ]
+        },
+        "callers": [
+          "src/pages/admin/ai-runtime/KnowledgeFederationBoard.tsx"
+        ],
+        "callerCount": 1,
+        "linkedRoutes": [
+          "/admin/ai-runtime/knowledgefederationboard"
+        ]
+      },
+      {
+        "name": "gdpr-delete",
+        "path": "supabase/functions/gdpr-delete/index.ts",
+        "owner": {
+          "team": "compliance-security",
+          "primary": "@sita/compliance-security",
+          "escalation": "pd:security-oncall",
+          "slack": "#compliance-security",
+          "runbook": "RB-011-SECURITY",
+          "reviewers": "@sita/compliance-security"
+        },
+        "io": {
+          "input": "zod-validated",
+          "methods": [
+            "POST",
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "data_retention_runs"
+          ]
+        },
+        "callers": [
+          "src/components/sita/shell/windows/settings/PrivacyTrustSections.tsx",
+          "src/pages/SovereignExportPage.tsx"
+        ],
+        "callerCount": 2,
+        "linkedRoutes": [
+          "/sovereignexportpage"
+        ]
+      },
+      {
+        "name": "generate-support-bundle",
+        "path": "supabase/functions/generate-support-bundle/index.ts",
+        "owner": null,
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "admin_role_permissions",
+            "admin_action_audit",
+            "kill_switches"
+          ]
+        },
+        "callers": [
+          "src/pages/admin/support/AdminRecoveryOperations.tsx"
+        ],
+        "callerCount": 1,
+        "linkedRoutes": [
+          "/admin/support/adminrecoveryoperations"
+        ]
+      },
+      {
+        "name": "get-weather",
+        "path": "supabase/functions/get-weather/index.ts",
+        "owner": {
+          "team": "user-experience",
+          "primary": "@sita/user-experience",
+          "escalation": "pd:user-experience-oncall",
+          "slack": "#user-experience",
+          "runbook": "RB-012-USER-EXPERIENCE",
+          "reviewers": "@sita/user-experience"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": false,
+          "usesServiceRole": false,
+          "emitsReceipt": false,
+          "tablesTouched": []
+        },
+        "callers": [
+          "src/components/sita/WidgetGrid.tsx"
+        ],
+        "callerCount": 1,
+        "linkedRoutes": []
+      },
+      {
+        "name": "health-beat",
+        "path": "supabase/functions/health-beat/index.ts",
+        "owner": {
+          "team": "platform-core",
+          "primary": "@sita/platform-core",
+          "escalation": "pd:platform-core-oncall",
+          "slack": "#platform-core",
+          "runbook": "RB-001-PLATFORM-CORE",
+          "reviewers": "@sita/platform-core"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": false,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "uptime_heartbeats"
+          ]
+        },
+        "callers": [
+          "src/lib/observability/uptime.ts"
+        ],
+        "callerCount": 1,
+        "linkedRoutes": []
+      },
+      {
+        "name": "health-check",
+        "path": "supabase/functions/health-check/index.ts",
+        "owner": {
+          "team": "platform-core",
+          "primary": "@sita/platform-core",
+          "escalation": "pd:platform-core-oncall",
+          "slack": "#platform-core",
+          "runbook": "RB-001-PLATFORM-CORE",
+          "reviewers": "@sita/platform-core"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": false,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "error_events",
+            "profiles"
+          ]
+        },
+        "callers": [
+          "src/lib/observability/health-probes.ts",
+          "src/pages/admin/releases/EnvironmentConfigVerification.tsx"
+        ],
+        "callerCount": 2,
+        "linkedRoutes": [
+          "/admin/releases/environmentconfigverification"
+        ]
+      },
+      {
+        "name": "health-cron",
+        "path": "supabase/functions/health-cron/index.ts",
+        "owner": {
+          "team": "platform-core",
+          "primary": "@sita/platform-core",
+          "escalation": "pd:platform-core-oncall",
+          "slack": "#platform-core",
+          "runbook": "RB-001-PLATFORM-CORE",
+          "reviewers": "@sita/platform-core"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": false,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "error_events",
+            "profiles",
+            "alerts",
+            "trace_spans",
+            "uptime_heartbeats"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "health-live",
+        "path": "supabase/functions/health-live/index.ts",
+        "owner": {
+          "team": "platform-core",
+          "primary": "@sita/platform-core",
+          "escalation": "pd:platform-core-oncall",
+          "slack": "#platform-core",
+          "runbook": "RB-001-PLATFORM-CORE",
+          "reviewers": "@sita/platform-core"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": false,
+          "usesServiceRole": false,
+          "emitsReceipt": false,
+          "tablesTouched": []
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "health-ready",
+        "path": "supabase/functions/health-ready/index.ts",
+        "owner": {
+          "team": "platform-core",
+          "primary": "@sita/platform-core",
+          "escalation": "pd:platform-core-oncall",
+          "slack": "#platform-core",
+          "runbook": "RB-001-PLATFORM-CORE",
+          "reviewers": "@sita/platform-core"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": false,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "error_events"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "intelligence-api",
+        "path": "supabase/functions/intelligence-api/index.ts",
+        "owner": {
+          "team": "ai-engineering",
+          "primary": "@sita/ai-engineering",
+          "escalation": "pd:ai-engineering-oncall",
+          "slack": "#ai-engineering",
+          "runbook": "RB-006-AI-ENGINEERING",
+          "reviewers": "@sita/ai-engineering"
+        },
+        "io": {
+          "input": "zod-validated",
+          "methods": [
+            "POST",
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "intelligence_assets_library",
+            "engine_events",
+            "ai_efficiency_scores",
+            "ai_learning_patterns",
+            "ai_prompt_families",
+            "ai_inference_receipts"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "internal-agent-canary-runner",
+        "path": "supabase/functions/internal-agent-canary-runner/index.ts",
+        "owner": {
+          "team": "agent-runtime",
+          "primary": "@sita/agent-runtime",
+          "escalation": "pd:agent-runtime-oncall",
+          "slack": "#agent-runtime",
+          "runbook": "RB-004-AGENT-RUNTIME",
+          "reviewers": "@sita/agent-runtime"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": false,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "internal_agent_slo_snapshots",
+            "internal_agent_canary_runs",
+            "internal_agent_auto_rollback_events"
+          ]
+        },
+        "callers": [
+          "src/pages/admin/ai-runtime/AssuranceChaosBoard.tsx"
+        ],
+        "callerCount": 1,
+        "linkedRoutes": [
+          "/admin/ai-runtime/assurancechaosboard"
+        ]
+      },
+      {
+        "name": "internal-agent-consensus-engine",
+        "path": "supabase/functions/internal-agent-consensus-engine/index.ts",
+        "owner": {
+          "team": "agent-runtime",
+          "primary": "@sita/agent-runtime",
+          "escalation": "pd:agent-runtime-oncall",
+          "slack": "#agent-runtime",
+          "runbook": "RB-004-AGENT-RUNTIME",
+          "reviewers": "@sita/agent-runtime"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": false,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": []
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "internal-agent-cost-optimizer",
+        "path": "supabase/functions/internal-agent-cost-optimizer/index.ts",
+        "owner": {
+          "team": "agent-runtime",
+          "primary": "@sita/agent-runtime",
+          "escalation": "pd:agent-runtime-oncall",
+          "slack": "#agent-runtime",
+          "runbook": "RB-004-AGENT-RUNTIME",
+          "reviewers": "@sita/agent-runtime"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": false,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "ai_usage_ledger"
+          ]
+        },
+        "callers": [
+          "src/pages/admin/ai-runtime/CrossCouncilBoard.tsx"
+        ],
+        "callerCount": 1,
+        "linkedRoutes": [
+          "/admin/ai-runtime/crosscouncilboard"
+        ]
+      },
+      {
+        "name": "internal-agent-dependency-scanner",
+        "path": "supabase/functions/internal-agent-dependency-scanner/index.ts",
+        "owner": {
+          "team": "agent-runtime",
+          "primary": "@sita/agent-runtime",
+          "escalation": "pd:agent-runtime-oncall",
+          "slack": "#agent-runtime",
+          "runbook": "RB-004-AGENT-RUNTIME",
+          "reviewers": "@sita/agent-runtime"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": false,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "dependency_upgrade_findings"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "internal-agent-execute-action",
+        "path": "supabase/functions/internal-agent-execute-action/index.ts",
+        "owner": {
+          "team": "agent-runtime",
+          "primary": "@sita/agent-runtime",
+          "escalation": "pd:agent-runtime-oncall",
+          "slack": "#agent-runtime",
+          "runbook": "RB-004-AGENT-RUNTIME",
+          "reviewers": "@sita/agent-runtime"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": false,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "user_roles",
+            "internal_agent_action_intents",
+            "ai_workforce_approval_queue",
+            "internal_agent_actions",
+            "ai_action_receipts",
+            "internal_agent_runtime_state",
+            "timeline_events",
+            "error_patrol_detections",
+            "workflow_runs",
+            "connector_accounts",
+            "incidents"
+          ]
+        },
+        "callers": [
+          "src/pages/admin/ai-runtime/InternalAgentIntentTimeline.tsx",
+          "src/pages/admin/health/ErrorPatrolBoard.tsx"
+        ],
+        "callerCount": 2,
+        "linkedRoutes": [
+          "/admin/ai-runtime/internalagentintenttimeline",
+          "/admin/health/errorpatrolboard"
+        ]
+      },
+      {
+        "name": "internal-agent-loop",
+        "path": "supabase/functions/internal-agent-loop/index.ts",
+        "owner": {
+          "team": "agent-runtime",
+          "primary": "@sita/agent-runtime",
+          "escalation": "pd:agent-runtime-oncall",
+          "slack": "#agent-runtime",
+          "runbook": "RB-004-AGENT-RUNTIME",
+          "reviewers": "@sita/agent-runtime"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "POST",
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "automation_kill_switches",
+            "internal_agent_actions",
+            "internal_agent_runtime_state",
+            "council_escalations",
+            "ai_workforce_invocations",
+            "ai_workforce_approval_queue",
+            "ai_budget_alerts",
+            "internal_agent_definitions"
+          ]
+        },
+        "callers": [
+          "src/lib/internal-agents/runtime/supervisor-actions.ts"
+        ],
+        "callerCount": 1,
+        "linkedRoutes": []
+      },
+      {
+        "name": "internal-agent-policy-architect",
+        "path": "supabase/functions/internal-agent-policy-architect/index.ts",
+        "owner": {
+          "team": "agent-runtime",
+          "primary": "@sita/agent-runtime",
+          "escalation": "pd:agent-runtime-oncall",
+          "slack": "#agent-runtime",
+          "runbook": "RB-004-AGENT-RUNTIME",
+          "reviewers": "@sita/agent-runtime"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "user_roles",
+            "internal_agent_policy_drafts"
+          ]
+        },
+        "callers": [
+          "src/pages/admin/ai-runtime/PolicyDraftReviewBoard.tsx"
+        ],
+        "callerCount": 1,
+        "linkedRoutes": [
+          "/admin/ai-runtime/policydraftreviewboard"
+        ]
+      },
+      {
+        "name": "internal-agent-reflect",
+        "path": "supabase/functions/internal-agent-reflect/index.ts",
+        "owner": {
+          "team": "agent-runtime",
+          "primary": "@sita/agent-runtime",
+          "escalation": "pd:agent-runtime-oncall",
+          "slack": "#agent-runtime",
+          "runbook": "RB-004-AGENT-RUNTIME",
+          "reviewers": "@sita/agent-runtime"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS",
+            "POST"
+          ],
+          "usesAuth": false,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "internal_agent_action_intents",
+            "internal_agent_reflections"
+          ]
+        },
+        "callers": [
+          "src/pages/admin/ai-runtime/ReflectionBoard.tsx"
+        ],
+        "callerCount": 1,
+        "linkedRoutes": [
+          "/admin/ai-runtime/reflectionboard"
+        ]
+      },
+      {
+        "name": "internal-agent-self-healer",
+        "path": "supabase/functions/internal-agent-self-healer/index.ts",
+        "owner": {
+          "team": "agent-runtime",
+          "primary": "@sita/agent-runtime",
+          "escalation": "pd:agent-runtime-oncall",
+          "slack": "#agent-runtime",
+          "runbook": "RB-004-AGENT-RUNTIME",
+          "reviewers": "@sita/agent-runtime"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": false,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": []
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "internal-agent-slo-evaluator",
+        "path": "supabase/functions/internal-agent-slo-evaluator/index.ts",
+        "owner": {
+          "team": "agent-runtime",
+          "primary": "@sita/agent-runtime",
+          "escalation": "pd:agent-runtime-oncall",
+          "slack": "#agent-runtime",
+          "runbook": "RB-004-AGENT-RUNTIME",
+          "reviewers": "@sita/agent-runtime"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "ai_action_receipts",
+            "internal_agent_slo_snapshots",
+            "internal_agent_anomaly_signals"
+          ]
+        },
+        "callers": [
+          "src/pages/admin/ai-runtime/SLOObservabilityBoard.tsx"
+        ],
+        "callerCount": 1,
+        "linkedRoutes": [
+          "/admin/ai-runtime/sloobservabilityboard"
+        ]
+      },
+      {
+        "name": "internal-agent-suggestion-generator",
+        "path": "supabase/functions/internal-agent-suggestion-generator/index.ts",
+        "owner": {
+          "team": "agent-runtime",
+          "primary": "@sita/agent-runtime",
+          "escalation": "pd:agent-runtime-oncall",
+          "slack": "#agent-runtime",
+          "runbook": "RB-004-AGENT-RUNTIME",
+          "reviewers": "@sita/agent-runtime"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": false,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "error_patrol_detections",
+            "internal_agent_reflections",
+            "ai_budget_alerts",
+            "internal_agent_consensus_sessions",
+            "internal_agent_policy_drafts"
+          ]
+        },
+        "callers": [
+          "src/pages/admin/ai-runtime/SuggestionsBoard.tsx"
+        ],
+        "callerCount": 1,
+        "linkedRoutes": [
+          "/admin/ai-runtime/suggestionsboard"
+        ]
+      },
+      {
+        "name": "internal-agent-tenant-federation",
+        "path": "supabase/functions/internal-agent-tenant-federation/index.ts",
+        "owner": {
+          "team": "agent-runtime",
+          "primary": "@sita/agent-runtime",
+          "escalation": "pd:agent-runtime-oncall",
+          "slack": "#agent-runtime",
+          "runbook": "RB-004-AGENT-RUNTIME",
+          "reviewers": "@sita/agent-runtime"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": false,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "internal_agent_tenant_scopes",
+            "internal_agent_tenant_quotas",
+            "internal_agent_tenant_kill_switches"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "internal-agent-trust-evaluator",
+        "path": "supabase/functions/internal-agent-trust-evaluator/index.ts",
+        "owner": {
+          "team": "agent-runtime",
+          "primary": "@sita/agent-runtime",
+          "escalation": "pd:agent-runtime-oncall",
+          "slack": "#agent-runtime",
+          "runbook": "RB-004-AGENT-RUNTIME",
+          "reviewers": "@sita/agent-runtime"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "internal_agent_reflections"
+          ]
+        },
+        "callers": [
+          "src/pages/admin/ai-runtime/TrustLadderBoard.tsx"
+        ],
+        "callerCount": 1,
+        "linkedRoutes": [
+          "/admin/ai-runtime/trustladderboard"
+        ]
+      },
+      {
+        "name": "internal-agent-weekly-digest",
+        "path": "supabase/functions/internal-agent-weekly-digest/index.ts",
+        "owner": {
+          "team": "agent-runtime",
+          "primary": "@sita/agent-runtime",
+          "escalation": "pd:agent-runtime-oncall",
+          "slack": "#agent-runtime",
+          "runbook": "RB-004-AGENT-RUNTIME",
+          "reviewers": "@sita/agent-runtime"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": false,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "error_patrol_detections",
+            "ai_implementation_suggestions",
+            "internal_agent_reflections",
+            "internal_agent_runtime_state",
+            "internal_agent_action_intents",
+            "ai_budget_alerts",
+            "internal_agent_consensus_sessions",
+            "internal_agent_weekly_digests"
+          ]
+        },
+        "callers": [
+          "src/pages/admin/ai-runtime/WeeklyDigestBoard.tsx"
+        ],
+        "callerCount": 1,
+        "linkedRoutes": [
+          "/admin/ai-runtime/weeklydigestboard"
+        ]
+      },
+      {
+        "name": "investment-portfolio-api",
+        "path": "supabase/functions/investment-portfolio-api/index.ts",
+        "owner": {
+          "team": "finance-engine",
+          "primary": "@sita/finance-engine",
+          "escalation": "pd:finance-engine-oncall",
+          "slack": "#finance-engine",
+          "runbook": "RB-005-AUTH",
+          "reviewers": "@sita/finance-engine"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS",
+            "GET"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": false,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "investment_portfolios",
+            "investment_performance_snapshots"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "investor-request",
+        "path": "supabase/functions/investor-request/index.ts",
+        "owner": {
+          "team": "user-experience",
+          "primary": "@sita/user-experience",
+          "escalation": "pd:user-experience-oncall",
+          "slack": "#user-experience",
+          "runbook": "RB-012-USER-EXPERIENCE",
+          "reviewers": "@sita/user-experience"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": false,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "investor_requests"
+          ]
+        },
+        "callers": [
+          "src/components/marketing/InvestorForm.tsx"
+        ],
+        "callerCount": 1,
+        "linkedRoutes": []
+      },
+      {
+        "name": "main",
+        "path": "supabase/functions/main/index.ts",
+        "owner": {
+          "team": "platform-core",
+          "primary": "@sita/platform-core",
+          "escalation": "pd:platform-core-oncall",
+          "slack": "#platform-core",
+          "runbook": "RB-001-PLATFORM-CORE",
+          "reviewers": "@sita/platform-core"
+        },
+        "io": {
+          "input": "zod-validated",
+          "methods": [
+            "POST",
+            "OPTIONS"
+          ],
+          "usesAuth": false,
+          "usesServiceRole": false,
+          "emitsReceipt": false,
+          "tablesTouched": []
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "mobile-deferral-attestor",
+        "path": "supabase/functions/mobile-deferral-attestor/index.ts",
+        "owner": {
+          "team": "compliance-security",
+          "primary": "@sita/compliance-security",
+          "escalation": "pd:security-oncall",
+          "slack": "#compliance-security",
+          "runbook": "RB-011-SECURITY",
+          "reviewers": "@sita/compliance-security"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "user_roles",
+            "mobile_deferral_attestations"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "msa-operations",
+        "path": "supabase/functions/msa-operations/index.ts",
+        "owner": {
+          "team": "finance-engine",
+          "primary": "@sita/finance-engine",
+          "escalation": "pd:finance-engine-oncall",
+          "slack": "#finance-engine",
+          "runbook": "RB-005-AUTH",
+          "reviewers": "@sita/finance-engine"
+        },
+        "io": {
+          "input": "zod-validated",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "surface_types",
+            "surface_adapters",
+            "shell_implementations",
+            "surface_readiness_records",
+            "capability_definitions",
+            "capability_surface_bindings",
+            "architecture_boundary_records",
+            "experience_grammars"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "onboarding-branch-tracker",
+        "path": "supabase/functions/onboarding-branch-tracker/index.ts",
+        "owner": {
+          "team": "user-experience",
+          "primary": "@sita/user-experience",
+          "escalation": "pd:user-experience-oncall",
+          "slack": "#user-experience",
+          "runbook": "RB-012-USER-EXPERIENCE",
+          "reviewers": "@sita/user-experience"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "onboarding_branch_events"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "onboarding-resume-checkpoint",
+        "path": "supabase/functions/onboarding-resume-checkpoint/index.ts",
+        "owner": {
+          "team": "user-experience",
+          "primary": "@sita/user-experience",
+          "escalation": "pd:user-experience-oncall",
+          "slack": "#user-experience",
+          "runbook": "RB-012-USER-EXPERIENCE",
+          "reviewers": "@sita/user-experience"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS",
+            "GET",
+            "POST"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "onboarding_resume_checkpoints"
+          ]
+        },
+        "callers": [
+          "src/hooks/useOnboardingResume.ts"
+        ],
+        "callerCount": 1,
+        "linkedRoutes": []
+      },
+      {
+        "name": "os-agent-channel",
+        "path": "supabase/functions/os-agent-channel/index.ts",
+        "owner": {
+          "team": "os-kernel",
+          "primary": "@sita/os-kernel",
+          "escalation": "pd:os-kernel-oncall",
+          "slack": "#os-kernel",
+          "runbook": "RB-010-OS-KERNEL",
+          "reviewers": "@sita/os-kernel"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": false,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "cloud_devices",
+            "cloud_activity_journal",
+            "communication_metrics",
+            "os_commands",
+            "os_command_events"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "os-command",
+        "path": "supabase/functions/os-command/index.ts",
+        "owner": {
+          "team": "os-kernel",
+          "primary": "@sita/os-kernel",
+          "escalation": "pd:os-kernel-oncall",
+          "slack": "#os-kernel",
+          "runbook": "RB-010-OS-KERNEL",
+          "reviewers": "@sita/os-kernel"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "POST",
+            "GET"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": false,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "agent_signals",
+            "audit_logs"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "os-status",
+        "path": "supabase/functions/os-status/index.ts",
+        "owner": {
+          "team": "os-kernel",
+          "primary": "@sita/os-kernel",
+          "escalation": "pd:os-kernel-oncall",
+          "slack": "#os-kernel",
+          "runbook": "RB-010-OS-KERNEL",
+          "reviewers": "@sita/os-kernel"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS",
+            "POST",
+            "GET"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "device_statuses"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "os-update-manifest",
+        "path": "supabase/functions/os-update-manifest/index.ts",
+        "owner": {
+          "team": "app-platform",
+          "primary": "@sita/app-platform",
+          "escalation": "pd:app-platform-oncall",
+          "slack": "#app-platform",
+          "runbook": "RB-013-APP-PLATFORM",
+          "reviewers": "@sita/app-platform"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": false,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "release_artifacts",
+            "admin_action_audit"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "owner-copilot-bff",
+        "path": "supabase/functions/owner-copilot-bff/index.ts",
+        "owner": {
+          "team": "user-experience",
+          "primary": "@sita/user-experience",
+          "escalation": "pd:user-experience-oncall",
+          "slack": "#user-experience",
+          "runbook": "RB-012-USER-EXPERIENCE",
+          "reviewers": "@sita/user-experience"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS",
+            "GET",
+            "POST"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": false,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "owner_copilot_briefings"
+          ]
+        },
+        "callers": [
+          "src/pages/admin/ai-runtime/OwnerCopilotBriefings.tsx"
+        ],
+        "callerCount": 1,
+        "linkedRoutes": [
+          "/admin/ai-runtime/ownercopilotbriefings"
+        ]
+      },
+      {
+        "name": "package-verify",
+        "path": "supabase/functions/package-verify/index.ts",
+        "owner": {
+          "team": "app-platform",
+          "primary": "@sita/app-platform",
+          "escalation": "pd:app-platform-oncall",
+          "slack": "#app-platform",
+          "runbook": "RB-013-APP-PLATFORM",
+          "reviewers": "@sita/app-platform"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "app_packages",
+            "publisher_keys",
+            "app_signatures"
+          ]
+        },
+        "callers": [
+          "src/lib/services/app-ingestion/ingestion.service.ts"
+        ],
+        "callerCount": 1,
+        "linkedRoutes": []
+      },
+      {
+        "name": "personal-brain",
+        "path": "supabase/functions/personal-brain/index.ts",
+        "owner": {
+          "team": "ai-engineering",
+          "primary": "@sita/ai-engineering",
+          "escalation": "pd:ai-engineering-oncall",
+          "slack": "#ai-engineering",
+          "runbook": "RB-006-AI-ENGINEERING",
+          "reviewers": "@sita/ai-engineering"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "POST",
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "pb_security_prefs",
+            "pb_security_events",
+            "pb_profile",
+            "pb_memories",
+            "pb_goals",
+            "advisor_memories",
+            "pb_messages",
+            "pb_chats",
+            "pb_files",
+            "pb_digests",
+            "pb_workspaces",
+            "pb_workspace_members"
+          ]
+        },
+        "callers": [
+          "src/components/personal-brain/hooks/usePbChat.ts",
+          "src/components/personal-brain/hooks/usePbDataExport.ts",
+          "src/components/personal-brain/hooks/usePbDigests.ts",
+          "src/components/personal-brain/hooks/usePbInsightsSignals.ts",
+          "src/components/personal-brain/hooks/usePbMemories.ts",
+          "src/components/personal-brain/hooks/usePbTools.ts",
+          "src/components/personal-brain/hooks/usePbWorkspaceMembers.ts",
+          "src/components/personal-brain/settings/DataDeleteCard.tsx",
+          "src/components/personal-brain/voice/AlwaysOnVoice.tsx",
+          "src/components/personal-brain/voice/VoicePanel.tsx"
+        ],
+        "callerCount": 15,
+        "linkedRoutes": [
+          "/personal-brain/acceptinvite"
+        ]
+      },
+      {
+        "name": "press-inquiry",
+        "path": "supabase/functions/press-inquiry/index.ts",
+        "owner": {
+          "team": "user-experience",
+          "primary": "@sita/user-experience",
+          "escalation": "pd:user-experience-oncall",
+          "slack": "#user-experience",
+          "runbook": "RB-012-USER-EXPERIENCE",
+          "reviewers": "@sita/user-experience"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": false,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "press_inquiries"
+          ]
+        },
+        "callers": [
+          "src/components/marketing/PressForm.tsx"
+        ],
+        "callerCount": 1,
+        "linkedRoutes": []
+      },
+      {
+        "name": "production-launch-attestor",
+        "path": "supabase/functions/production-launch-attestor/index.ts",
+        "owner": {
+          "team": "compliance-security",
+          "primary": "@sita/compliance-security",
+          "escalation": "pd:security-oncall",
+          "slack": "#compliance-security",
+          "runbook": "RB-011-SECURITY",
+          "reviewers": "@sita/compliance-security"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "user_roles",
+            "production_launch_attestations"
+          ]
+        },
+        "callers": [
+          "src/pages/admin/ai-runtime/ProductionLaunchAttestationConsole.tsx"
+        ],
+        "callerCount": 1,
+        "linkedRoutes": [
+          "/admin/ai-runtime/productionlaunchattestationconsole"
+        ]
+      },
+      {
+        "name": "provider-family-operations",
+        "path": "supabase/functions/provider-family-operations/index.ts",
+        "owner": {
+          "team": "connector-integrations",
+          "primary": "@sita/connector-integrations",
+          "escalation": "pd:connectors-oncall",
+          "slack": "#connector-integrations",
+          "runbook": "RB-008-CONNECTORS",
+          "reviewers": "@sita/connector-integrations"
+        },
+        "io": {
+          "input": "zod-validated",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "provider_families",
+            "integration_launch_honesty",
+            "provider_capabilities",
+            "oauth_client_registry",
+            "scope_policy_matrix",
+            "connected_service_links",
+            "permission_drift_records",
+            "scope_recommendations",
+            "unified_account_nodes",
+            "unified_account_edges",
+            "identity_provider_links"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "release-artifact-signer",
+        "path": "supabase/functions/release-artifact-signer/index.ts",
+        "owner": {
+          "team": "compliance-security",
+          "primary": "@sita/compliance-security",
+          "escalation": "pd:security-oncall",
+          "slack": "#compliance-security",
+          "runbook": "RB-011-SECURITY",
+          "reviewers": "@sita/compliance-security"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": false,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "signed_release_artifacts"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "release-artifact-verifier",
+        "path": "supabase/functions/release-artifact-verifier/index.ts",
+        "owner": {
+          "team": "compliance-security",
+          "primary": "@sita/compliance-security",
+          "escalation": "pd:security-oncall",
+          "slack": "#compliance-security",
+          "runbook": "RB-011-SECURITY",
+          "reviewers": "@sita/compliance-security"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "user_roles",
+            "signed_release_artifacts"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "release-env-gate",
+        "path": "supabase/functions/release-env-gate/index.ts",
+        "owner": null,
+        "io": {
+          "input": "zod-validated",
+          "methods": [
+            "POST",
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "user_roles",
+            "admin_action_audit"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "release-evidence-graph-snapshot",
+        "path": "supabase/functions/release-evidence-graph-snapshot/index.ts",
+        "owner": {
+          "team": "compliance-security",
+          "primary": "@sita/compliance-security",
+          "escalation": "pd:security-oncall",
+          "slack": "#compliance-security",
+          "runbook": "RB-011-SECURITY",
+          "reviewers": "@sita/compliance-security"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": false,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "evidence_graph_nodes",
+            "evidence_graph_edges",
+            "release_evidence_graph_snapshots"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "routing-policy-update",
+        "path": "supabase/functions/routing-policy-update/index.ts",
+        "owner": {
+          "team": "platform-core",
+          "primary": "@sita/platform-core",
+          "escalation": "pd:platform-core-oncall",
+          "slack": "#platform-core",
+          "runbook": "RB-001-PLATFORM-CORE",
+          "reviewers": "@sita/platform-core"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "ai_capability_routing",
+            "proof_records"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "runtime-probes",
+        "path": "supabase/functions/runtime-probes/index.ts",
+        "owner": {
+          "team": "os-kernel",
+          "primary": "@sita/os-kernel",
+          "escalation": "pd:os-kernel-oncall",
+          "slack": "#os-kernel",
+          "runbook": "RB-010-OS-KERNEL",
+          "reviewers": "@sita/os-kernel"
+        },
+        "io": {
+          "input": "zod-validated",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": false,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "profiles",
+            "agent_schedules",
+            "notifications_queue",
+            "device_push_tokens",
+            "ai_budget_policies",
+            "audit_logs"
+          ]
+        },
+        "callers": [
+          "src/lib/observability/use-observability.ts",
+          "src/pages/admin/BrainCoreDashboard.tsx",
+          "src/pages/admin/LT04RuntimeProbeCenter.tsx",
+          "src/pages/admin/verification/JVC10RuntimeProbeCenter.tsx"
+        ],
+        "callerCount": 4,
+        "linkedRoutes": [
+          "/admin/braincoredashboard",
+          "/admin/lt04runtimeprobecenter",
+          "/admin/verification/jvc10runtimeprobecenter"
+        ]
+      },
+      {
+        "name": "security-anomaly-rotation-trigger",
+        "path": "supabase/functions/security-anomaly-rotation-trigger/index.ts",
+        "owner": {
+          "team": "compliance-security",
+          "primary": "@sita/compliance-security",
+          "escalation": "pd:security-oncall",
+          "slack": "#compliance-security",
+          "runbook": "RB-011-SECURITY",
+          "reviewers": "@sita/compliance-security"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": false,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": []
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "security-council-tick",
+        "path": "supabase/functions/security-council-tick/index.ts",
+        "owner": {
+          "team": "compliance-security",
+          "primary": "@sita/compliance-security",
+          "escalation": "pd:security-oncall",
+          "slack": "#compliance-security",
+          "runbook": "RB-011-SECURITY",
+          "reviewers": "@sita/compliance-security"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": false,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "admin_action_audit",
+            "user_roles",
+            "internal_agent_runtime_state",
+            "ai_invocations",
+            "ai_inference_receipts"
+          ]
+        },
+        "callers": [
+          "src/pages/admin/ai-runtime/SecurityCouncilBoard.tsx"
+        ],
+        "callerCount": 1,
+        "linkedRoutes": [
+          "/admin/ai-runtime/securitycouncilboard"
+        ]
+      },
+      {
+        "name": "security-fabric-runtime-probe",
+        "path": "supabase/functions/security-fabric-runtime-probe/index.ts",
+        "owner": {
+          "team": "compliance-security",
+          "primary": "@sita/compliance-security",
+          "escalation": "pd:security-oncall",
+          "slack": "#compliance-security",
+          "runbook": "RB-011-SECURITY",
+          "reviewers": "@sita/compliance-security"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": false,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "electron_security_telemetry",
+            "ai_output_firewall_events",
+            "session_threat_events",
+            "security_fabric_probe_results"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "security-kill-switch-recommender",
+        "path": "supabase/functions/security-kill-switch-recommender/index.ts",
+        "owner": {
+          "team": "compliance-security",
+          "primary": "@sita/compliance-security",
+          "escalation": "pd:security-oncall",
+          "slack": "#compliance-security",
+          "runbook": "RB-011-SECURITY",
+          "reviewers": "@sita/compliance-security"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": false,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": []
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "self-heal-receipts",
+        "path": "supabase/functions/self-heal-receipts/index.ts",
+        "owner": null,
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": []
+        },
+        "callers": [
+          "src/pages/admin/verification/SelfHealRunsDashboard.tsx"
+        ],
+        "callerCount": 1,
+        "linkedRoutes": [
+          "/admin/verification/selfhealrunsdashboard"
+        ]
+      },
+      {
+        "name": "self-healing",
+        "path": "supabase/functions/self-healing/index.ts",
+        "owner": {
+          "team": "os-kernel",
+          "primary": "@sita/os-kernel",
+          "escalation": "pd:os-kernel-oncall",
+          "slack": "#os-kernel",
+          "runbook": "RB-010-OS-KERNEL",
+          "reviewers": "@sita/os-kernel"
+        },
+        "io": {
+          "input": "zod-validated",
+          "methods": [
+            "OPTIONS",
+            "POST",
+            "PUT",
+            "PATCH"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "workflow_runs",
+            "incidents",
+            "connector_configs",
+            "notifications",
+            "agent_telemetry"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "simulation-engine-api",
+        "path": "supabase/functions/simulation-engine-api/index.ts",
+        "owner": {
+          "team": "ai-engineering",
+          "primary": "@sita/ai-engineering",
+          "escalation": "pd:ai-engineering-oncall",
+          "slack": "#ai-engineering",
+          "runbook": "RB-006-AI-ENGINEERING",
+          "reviewers": "@sita/ai-engineering"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS",
+            "GET"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": false,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "simulation_scenarios",
+            "simulation_runs"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "sita-agent-planner",
+        "path": "supabase/functions/sita-agent-planner/index.ts",
+        "owner": null,
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": false,
+          "usesServiceRole": false,
+          "emitsReceipt": false,
+          "tablesTouched": []
+        },
+        "callers": [
+          "src/lib/sita-agent/useSitaAgent.ts"
+        ],
+        "callerCount": 1,
+        "linkedRoutes": []
+      },
+      {
+        "name": "sita-briefings-generate",
+        "path": "supabase/functions/sita-briefings-generate/index.ts",
+        "owner": null,
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": false,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "ai_action_receipts",
+            "sita_agent_plans",
+            "sita_missions",
+            "sita_proactive_briefings"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "sita-council-prevote",
+        "path": "supabase/functions/sita-council-prevote/index.ts",
+        "owner": null,
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": false,
+          "usesServiceRole": false,
+          "emitsReceipt": false,
+          "tablesTouched": []
+        },
+        "callers": [
+          "src/lib/sita-cortex/council.ts"
+        ],
+        "callerCount": 1,
+        "linkedRoutes": []
+      },
+      {
+        "name": "sita-dream-consolidate",
+        "path": "supabase/functions/sita-dream-consolidate/index.ts",
+        "owner": null,
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": false,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "sita_episodes",
+            "sita_affect_events",
+            "sita_perception_events",
+            "sita_knowledge_nodes",
+            "sita_personality_profiles"
+          ]
+        },
+        "callers": [
+          "src/lib/sita-continuum/dream-consolidator.ts"
+        ],
+        "callerCount": 1,
+        "linkedRoutes": []
+      },
+      {
+        "name": "sita-handoff-broker",
+        "path": "supabase/functions/sita-handoff-broker/index.ts",
+        "owner": null,
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "sita_handoff_sessions",
+            "sita_spatial_events"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "sita-personality-tune",
+        "path": "supabase/functions/sita-personality-tune/index.ts",
+        "owner": null,
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": false,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "sita_personality_profiles",
+            "advisor_feedback"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "sita-reflection-loop",
+        "path": "supabase/functions/sita-reflection-loop/index.ts",
+        "owner": null,
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": false,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "ai_action_receipts",
+            "sita_agent_plans",
+            "sita_journal_entries"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "sla-evaluator",
+        "path": "supabase/functions/sla-evaluator/index.ts",
+        "owner": null,
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": false,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "sla_definitions",
+            "uptime_heartbeats",
+            "observability_metrics",
+            "incident_classifications",
+            "dr_drill_executions",
+            "alerts",
+            "sla_snapshots"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "system-updates",
+        "path": "supabase/functions/system-updates/index.ts",
+        "owner": {
+          "team": "os-kernel",
+          "primary": "@sita/os-kernel",
+          "escalation": "pd:os-kernel-oncall",
+          "slack": "#os-kernel",
+          "runbook": "RB-010-OS-KERNEL",
+          "reviewers": "@sita/os-kernel"
+        },
+        "io": {
+          "input": "zod-validated",
+          "methods": [
+            "OPTIONS",
+            "POST",
+            "PUT",
+            "PATCH",
+            "GET"
+          ],
+          "usesAuth": false,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "system_update_releases",
+            "system_update_devices",
+            "system_update_log"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "tasks-workflow-api",
+        "path": "supabase/functions/tasks-workflow-api/index.ts",
+        "owner": {
+          "team": "user-experience",
+          "primary": "@sita/user-experience",
+          "escalation": "pd:user-experience-oncall",
+          "slack": "#user-experience",
+          "runbook": "RB-012-USER-EXPERIENCE",
+          "reviewers": "@sita/user-experience"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS",
+            "GET"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": false,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "tasks",
+            "workflow_templates"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "tax-estimate",
+        "path": "supabase/functions/tax-estimate/index.ts",
+        "owner": {
+          "team": "finance-engine",
+          "primary": "@sita/finance-engine",
+          "escalation": "pd:finance-engine-oncall",
+          "slack": "#finance-engine",
+          "runbook": "RB-005-AUTH",
+          "reviewers": "@sita/finance-engine"
+        },
+        "io": {
+          "input": "zod-validated",
+          "methods": [
+            "POST",
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": false,
+          "emitsReceipt": false,
+          "tablesTouched": []
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "tenant-self-service-bff",
+        "path": "supabase/functions/tenant-self-service-bff/index.ts",
+        "owner": {
+          "team": "platform-core",
+          "primary": "@sita/platform-core",
+          "escalation": "pd:platform-core-oncall",
+          "slack": "#platform-core",
+          "runbook": "RB-001-PLATFORM-CORE",
+          "reviewers": "@sita/platform-core"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": false,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "tenant_self_service_actions",
+            "tenant_quotas"
+          ]
+        },
+        "callers": [
+          "src/pages/tenant/TenantSelfServiceConsole.tsx"
+        ],
+        "callerCount": 1,
+        "linkedRoutes": [
+          "/tenant/tenantselfserviceconsole"
+        ]
+      },
+      {
+        "name": "trace-ingest",
+        "path": "supabase/functions/trace-ingest/index.ts",
+        "owner": {
+          "team": "platform-core",
+          "primary": "@sita/platform-core",
+          "escalation": "pd:platform-core-oncall",
+          "slack": "#platform-core",
+          "runbook": "RB-001-PLATFORM-CORE",
+          "reviewers": "@sita/platform-core"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "trace_spans"
+          ]
+        },
+        "callers": [
+          "src/lib/observability/apm.ts"
+        ],
+        "callerCount": 1,
+        "linkedRoutes": []
+      },
+      {
+        "name": "uptime-rollup",
+        "path": "supabase/functions/uptime-rollup/index.ts",
+        "owner": {
+          "team": "platform-core",
+          "primary": "@sita/platform-core",
+          "escalation": "pd:platform-core-oncall",
+          "slack": "#platform-core",
+          "runbook": "RB-001-PLATFORM-CORE",
+          "reviewers": "@sita/platform-core"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": false,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "uptime_heartbeats"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "vapid-public-key",
+        "path": "supabase/functions/vapid-public-key/index.ts",
+        "owner": {
+          "team": "notification-services",
+          "primary": "@sita/notification-services",
+          "escalation": "pd:notifications-oncall",
+          "slack": "#notification-services",
+          "runbook": "RB-009-NOTIFICATIONS",
+          "reviewers": "@sita/notification-services"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "POST",
+            "OPTIONS"
+          ],
+          "usesAuth": false,
+          "usesServiceRole": false,
+          "emitsReceipt": false,
+          "tablesTouched": []
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "verification-recorder",
+        "path": "supabase/functions/verification-recorder/index.ts",
+        "owner": {
+          "team": "compliance-security",
+          "primary": "@sita/compliance-security",
+          "escalation": "pd:security-oncall",
+          "slack": "#compliance-security",
+          "runbook": "RB-011-SECURITY",
+          "reviewers": "@sita/compliance-security"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": false,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "verification_surfaces",
+            "verification_runs",
+            "verification_blockers",
+            "verification_evidence"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "waitlist-stats",
+        "path": "supabase/functions/waitlist-stats/index.ts",
+        "owner": {
+          "team": "user-experience",
+          "primary": "@sita/user-experience",
+          "escalation": "pd:user-experience-oncall",
+          "slack": "#user-experience",
+          "runbook": "RB-012-USER-EXPERIENCE",
+          "reviewers": "@sita/user-experience"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": false,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "waitlist_signups"
+          ]
+        },
+        "callers": [
+          "src/pages/marketing/Waitlist.tsx"
+        ],
+        "callerCount": 1,
+        "linkedRoutes": [
+          "/marketing/waitlist"
+        ]
+      },
+      {
+        "name": "webauthn-challenge",
+        "path": "supabase/functions/webauthn-challenge/index.ts",
+        "owner": {
+          "team": "compliance-security",
+          "primary": "@sita/compliance-security",
+          "escalation": "pd:security-oncall",
+          "slack": "#compliance-security",
+          "runbook": "RB-011-SECURITY",
+          "reviewers": "@sita/compliance-security"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": false,
+          "usesServiceRole": false,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "webauthn_challenges",
+            "user_passkeys"
+          ]
+        },
+        "callers": [
+          "src/lib/services/identity-auth/webauthn.service.ts"
+        ],
+        "callerCount": 1,
+        "linkedRoutes": []
+      },
+      {
+        "name": "workflow-execute",
+        "path": "supabase/functions/workflow-execute/index.ts",
+        "owner": {
+          "team": "platform-core",
+          "primary": "@sita/platform-core",
+          "escalation": "pd:platform-core-oncall",
+          "slack": "#platform-core",
+          "runbook": "RB-001-PLATFORM-CORE",
+          "reviewers": "@sita/platform-core"
+        },
+        "io": {
+          "input": "zod-validated",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": false,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "workflows",
+            "automation_kill_switches",
+            "workflow_runs",
+            "workflow_state_transitions",
+            "workflow_steps",
+            "workflow_receipts"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "workflow-replay",
+        "path": "supabase/functions/workflow-replay/index.ts",
+        "owner": {
+          "team": "platform-core",
+          "primary": "@sita/platform-core",
+          "escalation": "pd:platform-core-oncall",
+          "slack": "#platform-core",
+          "runbook": "RB-001-PLATFORM-CORE",
+          "reviewers": "@sita/platform-core"
+        },
+        "io": {
+          "input": "zod-validated",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "user_roles",
+            "workflow_runs",
+            "workflow_state_transitions"
+          ]
+        },
+        "callers": [
+          "src/pages/admin/WorkflowReplayAudit.tsx"
+        ],
+        "callerCount": 1,
+        "linkedRoutes": [
+          "/admin/workflowreplayaudit"
+        ]
+      },
+      {
+        "name": "workflow-stuck-detector",
+        "path": "supabase/functions/workflow-stuck-detector/index.ts",
+        "owner": {
+          "team": "platform-core",
+          "primary": "@sita/platform-core",
+          "escalation": "pd:platform-core-oncall",
+          "slack": "#platform-core",
+          "runbook": "RB-001-PLATFORM-CORE",
+          "reviewers": "@sita/platform-core"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": false,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "workflow_runs",
+            "workflow_state_transitions",
+            "workflow_receipts",
+            "alerts"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      }
+    ],
+    "platform-jobs": [
+      {
+        "name": "cloud-sync-api",
+        "path": "supabase/functions/cloud-sync-api/index.ts",
+        "owner": {
+          "team": "cloud-infrastructure",
+          "primary": "@sita/cloud-infrastructure",
+          "escalation": "pd:cloud-infra-oncall",
+          "slack": "#cloud-infra",
+          "runbook": "RB-007-CLOUD-INFRA",
+          "reviewers": "@sita/cloud-infrastructure"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": false,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "cloud_sync_objects",
+            "cloud_sync_changes",
+            "cloud_sync_checkpoints",
+            "cloud_conflicts"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "cron-receipt-collector",
+        "path": "supabase/functions/cron-receipt-collector/index.ts",
+        "owner": {
+          "team": "platform-core",
+          "primary": "@sita/platform-core",
+          "escalation": "pd:platform-core-oncall",
+          "slack": "#platform-core",
+          "runbook": "RB-001-PLATFORM-CORE",
+          "reviewers": "@sita/platform-core"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS",
+            "POST"
+          ],
+          "usesAuth": false,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "cron_run_receipts"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "seed-advisor-registry",
+        "path": "supabase/functions/seed-advisor-registry/index.ts",
+        "owner": {
+          "team": "user-experience",
+          "primary": "@sita/user-experience",
+          "escalation": "pd:user-experience-oncall",
+          "slack": "#user-experience",
+          "runbook": "RB-012-USER-EXPERIENCE",
+          "reviewers": "@sita/user-experience"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": false,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "advisor_registry"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "workflow-repair",
+        "path": "supabase/functions/workflow-repair/index.ts",
+        "owner": {
+          "team": "platform-core",
+          "primary": "@sita/platform-core",
+          "escalation": "pd:platform-core-oncall",
+          "slack": "#platform-core",
+          "runbook": "RB-001-PLATFORM-CORE",
+          "reviewers": "@sita/platform-core"
+        },
+        "io": {
+          "input": "zod-validated",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "user_roles",
+            "workflow_runs",
+            "workflow_state_transitions",
+            "workflow_receipts"
+          ]
+        },
+        "callers": [
+          "src/pages/admin/WorkflowReplayAudit.tsx"
+        ],
+        "callerCount": 1,
+        "linkedRoutes": [
+          "/admin/workflowreplayaudit"
+        ]
+      }
+    ],
+    "connector-integrations": [
+      {
+        "name": "connector-batch",
+        "path": "supabase/functions/connector-batch/index.ts",
+        "owner": {
+          "team": "connector-integrations",
+          "primary": "@sita/connector-integrations",
+          "escalation": "pd:connectors-oncall",
+          "slack": "#connector-integrations",
+          "runbook": "RB-008-CONNECTORS",
+          "reviewers": "@sita/connector-integrations"
+        },
+        "io": {
+          "input": "zod-validated",
+          "methods": [
+            "POST",
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": false,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "audit_logs",
+            "connector_registry",
+            "connector_accounts"
+          ]
+        },
+        "callers": [
+          "src/components/sita/ConnectorSyncDashboard.tsx",
+          "src/pages/ConnectorHub.tsx",
+          "src/pages/admin/ConnectorGovernanceCenter.tsx"
+        ],
+        "callerCount": 3,
+        "linkedRoutes": [
+          "/connectorhub",
+          "/admin/connectorgovernancecenter"
+        ]
+      },
+      {
+        "name": "connector-discover",
+        "path": "supabase/functions/connector-discover/index.ts",
+        "owner": {
+          "team": "connector-integrations",
+          "primary": "@sita/connector-integrations",
+          "escalation": "pd:connectors-oncall",
+          "slack": "#connector-integrations",
+          "runbook": "RB-008-CONNECTORS",
+          "reviewers": "@sita/connector-integrations"
+        },
+        "io": {
+          "input": "zod-validated",
+          "methods": [
+            "POST",
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": false,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "connector_registry",
+            "connector_accounts",
+            "connector_configs",
+            "audit_logs"
+          ]
+        },
+        "callers": [
+          "src/pages/ConnectorHub.tsx",
+          "src/pages/admin/ConnectorGovernanceCenter.tsx"
+        ],
+        "callerCount": 2,
+        "linkedRoutes": [
+          "/connectorhub",
+          "/admin/connectorgovernancecenter"
+        ]
+      },
+      {
+        "name": "connector-health",
+        "path": "supabase/functions/connector-health/index.ts",
+        "owner": {
+          "team": "connector-integrations",
+          "primary": "@sita/connector-integrations",
+          "escalation": "pd:connectors-oncall",
+          "slack": "#connector-integrations",
+          "runbook": "RB-008-CONNECTORS",
+          "reviewers": "@sita/connector-integrations"
+        },
+        "io": {
+          "input": "zod-validated",
+          "methods": [
+            "POST",
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": false,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "connector_configs"
+          ]
+        },
+        "callers": [
+          "src/lib/services/connector-health-service.ts"
+        ],
+        "callerCount": 1,
+        "linkedRoutes": []
+      },
+      {
+        "name": "connector-oauth",
+        "path": "supabase/functions/connector-oauth/index.ts",
+        "owner": {
+          "team": "connector-integrations",
+          "primary": "@sita/connector-integrations",
+          "escalation": "pd:connectors-oncall",
+          "slack": "#connector-integrations",
+          "runbook": "RB-008-CONNECTORS",
+          "reviewers": "@sita/connector-integrations"
+        },
+        "io": {
+          "input": "zod-validated",
+          "methods": [
+            "POST",
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "connector_oauth_flows",
+            "connector_registry",
+            "connector_accounts",
+            "connector_oauth_tokens",
+            "consent_scope_records",
+            "connector_receipts",
+            "consent_ledger"
+          ]
+        },
+        "callers": [
+          "src/lib/capabilities/system-capabilities.ts",
+          "src/pages/ConnectorHub.tsx",
+          "src/pages/admin/CN01ConnectorRealityOverview.tsx"
+        ],
+        "callerCount": 3,
+        "linkedRoutes": [
+          "/connectorhub",
+          "/admin/cn01connectorrealityoverview"
+        ]
+      },
+      {
+        "name": "connector-operations",
+        "path": "supabase/functions/connector-operations/index.ts",
+        "owner": {
+          "team": "connector-integrations",
+          "primary": "@sita/connector-integrations",
+          "escalation": "pd:connectors-oncall",
+          "slack": "#connector-integrations",
+          "runbook": "RB-008-CONNECTORS",
+          "reviewers": "@sita/connector-integrations"
+        },
+        "io": {
+          "input": "zod-validated",
+          "methods": [
+            "OPTIONS",
+            "POST",
+            "PUT",
+            "PATCH"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "connector_registry",
+            "connector_policies",
+            "connector_launch_readiness",
+            "connector_demo_bindings",
+            "connector_accounts",
+            "connector_sync_runs",
+            "connector_health_records",
+            "connector_receipts",
+            "connector_oauth_tokens"
+          ]
+        },
+        "callers": [
+          "src/lib/capabilities/connector-capability.ts"
+        ],
+        "callerCount": 1,
+        "linkedRoutes": []
+      },
+      {
+        "name": "connector-proxy",
+        "path": "supabase/functions/connector-proxy/index.ts",
+        "owner": {
+          "team": "connector-integrations",
+          "primary": "@sita/connector-integrations",
+          "escalation": "pd:connectors-oncall",
+          "slack": "#connector-integrations",
+          "runbook": "RB-008-CONNECTORS",
+          "reviewers": "@sita/connector-integrations"
+        },
+        "io": {
+          "input": "zod-validated",
+          "methods": [
+            "OPTIONS",
+            "POST",
+            "PUT",
+            "PATCH"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "connector_receipts",
+            "connector_accounts"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "connector-reauth-tracker",
+        "path": "supabase/functions/connector-reauth-tracker/index.ts",
+        "owner": {
+          "team": "connector-integrations",
+          "primary": "@sita/connector-integrations",
+          "escalation": "pd:connectors-oncall",
+          "slack": "#connector-integrations",
+          "runbook": "RB-008-CONNECTORS",
+          "reviewers": "@sita/connector-integrations"
+        },
+        "io": {
+          "input": "zod-validated",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": false,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "connector_reauth_events"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "connector-refresh-nightly-verify",
+        "path": "supabase/functions/connector-refresh-nightly-verify/index.ts",
+        "owner": {
+          "team": "connector-integrations",
+          "primary": "@sita/connector-integrations",
+          "escalation": "pd:connectors-oncall",
+          "slack": "#connector-integrations",
+          "runbook": "RB-008-CONNECTORS",
+          "reviewers": "@sita/connector-integrations"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": false,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "oauth_refresh_probe_results",
+            "connector_effective_state",
+            "user_roles",
+            "connector_refresh_nightly_runs"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "connector-sync",
+        "path": "supabase/functions/connector-sync/index.ts",
+        "owner": {
+          "team": "connector-integrations",
+          "primary": "@sita/connector-integrations",
+          "escalation": "pd:connectors-oncall",
+          "slack": "#connector-integrations",
+          "runbook": "RB-008-CONNECTORS",
+          "reviewers": "@sita/connector-integrations"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "connector_receipts",
+            "connector_accounts",
+            "connector_sync_cursors",
+            "connector_sync_runs"
+          ]
+        },
+        "callers": [
+          "src/lib/capabilities/admin-capabilities.ts"
+        ],
+        "callerCount": 1,
+        "linkedRoutes": []
+      },
+      {
+        "name": "connector-token-refresh",
+        "path": "supabase/functions/connector-token-refresh/index.ts",
+        "owner": {
+          "team": "connector-integrations",
+          "primary": "@sita/connector-integrations",
+          "escalation": "pd:connectors-oncall",
+          "slack": "#connector-integrations",
+          "runbook": "RB-008-CONNECTORS",
+          "reviewers": "@sita/connector-integrations"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": false,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "connector_oauth_tokens",
+            "connector_receipts",
+            "connector_accounts",
+            "alerts"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "connector-transform",
+        "path": "supabase/functions/connector-transform/index.ts",
+        "owner": {
+          "team": "connector-integrations",
+          "primary": "@sita/connector-integrations",
+          "escalation": "pd:connectors-oncall",
+          "slack": "#connector-integrations",
+          "runbook": "RB-008-CONNECTORS",
+          "reviewers": "@sita/connector-integrations"
+        },
+        "io": {
+          "input": "zod-validated",
+          "methods": [
+            "POST",
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": false,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "audit_logs"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "oauth-refresh-probe",
+        "path": "supabase/functions/oauth-refresh-probe/index.ts",
+        "owner": {
+          "team": "platform-core",
+          "primary": "@sita/platform-core",
+          "escalation": "pd:platform-core-oncall",
+          "slack": "#platform-core",
+          "runbook": "RB-001-PLATFORM-CORE",
+          "reviewers": "@sita/platform-core"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": false,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "connector_tokens",
+            "oauth_refresh_probe_results",
+            "drill_cadence_registry"
+          ]
+        },
+        "callers": [
+          "src/components/admin/OAuthRefreshHealthBoard.tsx"
+        ],
+        "callerCount": 1,
+        "linkedRoutes": []
+      },
+      {
+        "name": "seed-connector-registry",
+        "path": "supabase/functions/seed-connector-registry/index.ts",
+        "owner": {
+          "team": "user-experience",
+          "primary": "@sita/user-experience",
+          "escalation": "pd:user-experience-oncall",
+          "slack": "#user-experience",
+          "runbook": "RB-012-USER-EXPERIENCE",
+          "reviewers": "@sita/user-experience"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": false,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "connector_registry"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "webhook-ingest",
+        "path": "supabase/functions/webhook-ingest/index.ts",
+        "owner": {
+          "team": "platform-core",
+          "primary": "@sita/platform-core",
+          "escalation": "pd:platform-core-oncall",
+          "slack": "#platform-core",
+          "runbook": "RB-001-PLATFORM-CORE",
+          "reviewers": "@sita/platform-core"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": false,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "webhook_events"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "webhook-process",
+        "path": "supabase/functions/webhook-process/index.ts",
+        "owner": {
+          "team": "platform-core",
+          "primary": "@sita/platform-core",
+          "escalation": "pd:platform-core-oncall",
+          "slack": "#platform-core",
+          "runbook": "RB-001-PLATFORM-CORE",
+          "reviewers": "@sita/platform-core"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": false,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "webhook_events",
+            "alerts"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "webhook-replay",
+        "path": "supabase/functions/webhook-replay/index.ts",
+        "owner": {
+          "team": "platform-core",
+          "primary": "@sita/platform-core",
+          "escalation": "pd:platform-core-oncall",
+          "slack": "#platform-core",
+          "runbook": "RB-001-PLATFORM-CORE",
+          "reviewers": "@sita/platform-core"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "POST",
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "user_roles",
+            "webhook_delivery_log",
+            "admin_action_audit"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "webhook-retry-processor",
+        "path": "supabase/functions/webhook-retry-processor/index.ts",
+        "owner": {
+          "team": "platform-core",
+          "primary": "@sita/platform-core",
+          "escalation": "pd:platform-core-oncall",
+          "slack": "#platform-core",
+          "runbook": "RB-001-PLATFORM-CORE",
+          "reviewers": "@sita/platform-core"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": false,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "webhook_retry_queue",
+            "external_workforce_subscriptions"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      }
+    ],
+    "revenue-and-finance": [
+      {
+        "name": "crm-sync",
+        "path": "supabase/functions/crm-sync/index.ts",
+        "owner": {
+          "team": "connector-integrations",
+          "primary": "@sita/connector-integrations",
+          "escalation": "pd:connectors-oncall",
+          "slack": "#connector-integrations",
+          "runbook": "RB-008-CONNECTORS",
+          "reviewers": "@sita/connector-integrations"
+        },
+        "io": {
+          "input": "zod-validated",
+          "methods": [
+            "POST",
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": false,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "leads",
+            "customers",
+            "opportunities",
+            "audit_logs"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "invoice-generate",
+        "path": "supabase/functions/invoice-generate/index.ts",
+        "owner": {
+          "team": "finance-engine",
+          "primary": "@sita/finance-engine",
+          "escalation": "pd:finance-engine-oncall",
+          "slack": "#finance-engine",
+          "runbook": "RB-005-AUTH",
+          "reviewers": "@sita/finance-engine"
+        },
+        "io": {
+          "input": "zod-validated",
+          "methods": [
+            "POST",
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": false,
+          "emitsReceipt": true,
+          "tablesTouched": [
+            "invoices",
+            "audit_logs",
+            "communication_log",
+            "receipts"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "payment-kill-switch",
+        "path": "supabase/functions/payment-kill-switch/index.ts",
+        "owner": {
+          "team": "finance-engine",
+          "primary": "@sita/finance-engine",
+          "escalation": "pd:finance-engine-oncall",
+          "slack": "#finance-engine",
+          "runbook": "RB-005-AUTH",
+          "reviewers": "@sita/finance-engine"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": false,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "admin_action_audit"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "payment-process",
+        "path": "supabase/functions/payment-process/index.ts",
+        "owner": {
+          "team": "finance-engine",
+          "primary": "@sita/finance-engine",
+          "escalation": "pd:finance-engine-oncall",
+          "slack": "#finance-engine",
+          "runbook": "RB-005-AUTH",
+          "reviewers": "@sita/finance-engine"
+        },
+        "io": {
+          "input": "zod-validated",
+          "methods": [
+            "POST",
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": false,
+          "emitsReceipt": true,
+          "tablesTouched": [
+            "approval_queue",
+            "financial_accounts",
+            "audit_logs",
+            "receipts"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "revenue-caller",
+        "path": "supabase/functions/revenue-caller/index.ts",
+        "owner": {
+          "team": "finance-engine",
+          "primary": "@sita/finance-engine",
+          "escalation": "pd:finance-engine-oncall",
+          "slack": "#finance-engine",
+          "runbook": "RB-005-AUTH",
+          "reviewers": "@sita/finance-engine"
+        },
+        "io": {
+          "input": "zod-validated",
+          "methods": [
+            "OPTIONS",
+            "POST",
+            "PUT",
+            "PATCH"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": false,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "communication_log"
+          ]
+        },
+        "callers": [
+          "src/pages/RevenueCallingPage.tsx"
+        ],
+        "callerCount": 1,
+        "linkedRoutes": [
+          "/revenuecallingpage"
+        ]
+      }
+    ],
+    "data-and-files": [
+      {
+        "name": "data-export",
+        "path": "supabase/functions/data-export/index.ts",
+        "owner": {
+          "team": "platform-core",
+          "primary": "@sita/platform-core",
+          "escalation": "pd:platform-core-oncall",
+          "slack": "#platform-core",
+          "runbook": "RB-001-PLATFORM-CORE",
+          "reviewers": "@sita/platform-core"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "data_export_requests"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "file-ingestion",
+        "path": "supabase/functions/file-ingestion/index.ts",
+        "owner": {
+          "team": "platform-core",
+          "primary": "@sita/platform-core",
+          "escalation": "pd:platform-core-oncall",
+          "slack": "#platform-core",
+          "runbook": "RB-001-PLATFORM-CORE",
+          "reviewers": "@sita/platform-core"
+        },
+        "io": {
+          "input": "zod-validated",
+          "methods": [
+            "POST"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "file_metadata",
+            "notifications"
+          ]
+        },
+        "callers": [
+          "src/components/sita/FileUploader.tsx"
+        ],
+        "callerCount": 1,
+        "linkedRoutes": []
+      },
+      {
+        "name": "gdpr-export",
+        "path": "supabase/functions/gdpr-export/index.ts",
+        "owner": {
+          "team": "compliance-security",
+          "primary": "@sita/compliance-security",
+          "escalation": "pd:security-oncall",
+          "slack": "#compliance-security",
+          "runbook": "RB-011-SECURITY",
+          "reviewers": "@sita/compliance-security"
+        },
+        "io": {
+          "input": "zod-validated",
+          "methods": [
+            "POST",
+            "OPTIONS"
+          ],
+          "usesAuth": true,
+          "usesServiceRole": false,
+          "emitsReceipt": false,
+          "tablesTouched": []
+        },
+        "callers": [
+          "src/components/sita/shell/windows/settings/PrivacyTrustSections.tsx",
+          "src/pages/SovereignExportPage.tsx"
+        ],
+        "callerCount": 2,
+        "linkedRoutes": [
+          "/sovereignexportpage"
+        ]
+      }
+    ],
+    "analytics-and-insights": [
+      {
+        "name": "device-telemetry",
+        "path": "supabase/functions/device-telemetry/index.ts",
+        "owner": {
+          "team": "cloud-infrastructure",
+          "primary": "@sita/cloud-infrastructure",
+          "escalation": "pd:cloud-infra-oncall",
+          "slack": "#cloud-infra",
+          "runbook": "RB-007-CLOUD-INFRA",
+          "reviewers": "@sita/cloud-infrastructure"
+        },
+        "io": {
+          "input": "zod-validated",
+          "methods": [
+            "OPTIONS",
+            "POST",
+            "PUT",
+            "PATCH"
+          ],
+          "usesAuth": false,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "device_statuses",
+            "system_update_devices"
+          ]
+        },
+        "callers": [
+          "src/lib/services/device-presence-service.ts"
+        ],
+        "callerCount": 1,
+        "linkedRoutes": []
+      }
+    ],
+    "notifications": [
+      {
+        "name": "push-dispatch",
+        "path": "supabase/functions/push-dispatch/index.ts",
+        "owner": {
+          "team": "notification-services",
+          "primary": "@sita/notification-services",
+          "escalation": "pd:notifications-oncall",
+          "slack": "#notification-services",
+          "runbook": "RB-009-NOTIFICATIONS",
+          "reviewers": "@sita/notification-services"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "POST",
+            "OPTIONS"
+          ],
+          "usesAuth": false,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "interruption_policies",
+            "notification_preferences",
+            "notification_delivery_receipts",
+            "notifications_queue",
+            "device_push_tokens"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      },
+      {
+        "name": "push-track",
+        "path": "supabase/functions/push-track/index.ts",
+        "owner": {
+          "team": "notification-services",
+          "primary": "@sita/notification-services",
+          "escalation": "pd:notifications-oncall",
+          "slack": "#notification-services",
+          "runbook": "RB-009-NOTIFICATIONS",
+          "reviewers": "@sita/notification-services"
+        },
+        "io": {
+          "input": "json-body",
+          "methods": [
+            "POST",
+            "OPTIONS"
+          ],
+          "usesAuth": false,
+          "usesServiceRole": true,
+          "emitsReceipt": false,
+          "tablesTouched": [
+            "notification_delivery_receipts"
+          ]
+        },
+        "callers": [],
+        "callerCount": 0,
+        "linkedRoutes": []
+      }
+    ]
+  }
+}

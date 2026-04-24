@@ -1,0 +1,76 @@
+%% sitav3 module dependency map (generated)
+graph LR
+  admin["admin<br/><small>41 files</small>"]
+  app["app<br/><small>1 files</small>"]
+  components["components<br/><small>1136 files</small>"]
+  contexts["contexts<br/><small>23 files</small>"]
+  contracts["contracts<br/><small>4 files</small>"]
+  data["data<br/><small>88 files</small>"]
+  domains["domains<br/><small>111 files</small>"]
+  features["features<br/><small>38 files</small>"]
+  hooks["hooks<br/><small>186 files</small>"]
+  i18n["i18n<br/><small>1 files</small>"]
+  integrations["integrations<br/><small>9 files</small>"]
+  layouts["layouts<br/><small>1 files</small>"]
+  lib["lib<br/><small>1577 files</small>"]
+  packages["packages<br/><small>453 files</small>"]
+  pages["pages<br/><small>1067 files</small>"]
+  planes["planes<br/><small>8 files</small>"]
+  platform["platform<br/><small>282 files</small>"]
+  routes["routes<br/><small>17 files</small>"]
+  runtimes["runtimes<br/><small>83 files</small>"]
+  services["services<br/><small>1 files</small>"]
+  shell_runtime["shell-runtime<br/><small>3 files</small>"]
+  test["test<br/><small>91 files</small>"]
+  website_demo["website-demo<br/><small>18 files</small>"]
+  pages ==>|5058| components
+  components ==>|880| lib
+  pages ==>|702| lib
+  pages ==>|568| hooks
+  admin ==>|505| pages
+  components ==>|293| hooks
+  lib ==>|279| packages
+  pages -->|195| contexts
+  pages -->|193| integrations
+  lib -->|172| integrations
+  components -->|170| platform
+  hooks -->|164| lib
+  components -->|161| contexts
+  components -->|158| domains
+  lib -->|146| data
+  planes -->|144| lib
+  features -->|138| components
+  pages -->|132| platform
+  test -->|110| lib
+  components -->|98| integrations
+  hooks -->|94| contexts
+  components -->|86| pages
+  pages -->|86| domains
+  admin -->|84| components
+  features -.->|75| pages
+  data -.->|64| lib
+  hooks -.->|64| integrations
+  packages -.->|64| lib
+  lib -.->|58| assets
+  lib -.->|53| platform
+  data -.->|47| integrations
+  contexts -.->|39| lib
+  pages -.->|38| packages
+  domains -.->|37| lib
+  hooks -.->|36| data
+  planes -.->|36| packages
+  platform -.->|34| lib
+  test -.->|34| packages
+  pages -.->|33| runtimes
+  hooks -.->|32| domains
+  lib -.->|30| components
+  components -.->|29| assets
+  hooks -.->|28| packages
+  domains -.->|26| packages
+  pages -.->|25| data
+  lib -.->|24| runtimes
+  runtimes -.->|21| components
+  planes -.->|20| platform
+  platform -.->|20| hooks
+  classDef hub fill:hsl(217_91%_60%),color:#fff,stroke:#333,stroke-width:2px;
+  class components,pages,lib,hooks,integrations hub;
