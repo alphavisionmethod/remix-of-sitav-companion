@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Brain, Mic, Plus, Radio, Settings, Wrench } from "lucide-react";
+import { Brain, Gauge, Mic, Plus, Radio, Settings, Wrench } from "lucide-react";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
 export type BrainScope = "personal" | "business";
@@ -12,6 +12,7 @@ interface BrainHeroProps {
   onVoice?: () => void;
   onSettings?: () => void;
   onTools?: () => void;
+  onCommandCenter?: () => void;
   sentinelOn?: boolean;
   onToggleSentinel?: () => void;
 }
@@ -24,6 +25,7 @@ export function BrainHero({
   onVoice,
   onSettings,
   onTools,
+  onCommandCenter,
   sentinelOn = false,
   onToggleSentinel,
 }: BrainHeroProps) {
@@ -83,6 +85,12 @@ export function BrainHero({
             <Button data-tour="brain-tools" variant="outline" size="sm" onClick={onTools} title="External tools" className="backdrop-blur">
               <Wrench className="h-4 w-4" />
               <span className="sr-only sm:not-sr-only">Tools</span>
+            </Button>
+          )}
+          {onCommandCenter && (
+            <Button variant="outline" size="sm" onClick={onCommandCenter} title="Command Center" className="backdrop-blur">
+              <Gauge className="h-4 w-4" />
+              <span className="sr-only sm:not-sr-only">Command</span>
             </Button>
           )}
           {onSettings && (
