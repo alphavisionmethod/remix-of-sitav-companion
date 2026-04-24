@@ -94,12 +94,16 @@ const IntelligenceDashboard = lazy(() => import("@/pages/intelligence/Intelligen
 const DeviceMeshPanel = lazy(() => import("@/pages/intelligence/DeviceMeshPanel"));
 const PrivacyControlCenter = lazy(() => import("@/pages/intelligence/PrivacyControlCenter"));
 const DownloadPage = lazy(() => import("@/pages/DownloadPage"));
+const JarvisBridge = lazy(() => import("@/pages/sita/JarvisBridge"));
+const JarvisEntityView = lazy(() => import("@/pages/sita/EntityView"));
 
 export function getOSRoutes() {
   return (
     <>
       <Route path="/home" element={<DailyPulse />} />
       <Route path="/desktop" element={<DesktopPage />} />
+      <Route path="/sita" element={<JarvisBridge />} />
+      <Route path="/sita/entity/:nodeId" element={<JarvisEntityView />} />
       <Route path="/pulse" element={<DailyPulse />} />
       <Route path="/daily-pulse" element={<DailyPulse />} />
       <Route path="/profile" element={<UserProfilePage />} />

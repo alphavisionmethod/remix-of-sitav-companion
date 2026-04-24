@@ -1,221 +1,170 @@
-# Fix 8 Stub Empty-State Surfaces — Production Deployment Plan
+# Jarvis Foundation — Unification Plan
 
-## Ground Truth (verified against your actual repo + DB)
+## Audit findings (what already exists)
 
-I inspected each of the 8 surfaces and your live database. The honest situation:
+The repo is far more advanced than the prompt assumes. The "Jarvis foundation" is **already built in pieces** — the gap is **unification, not capability**.
 
-**Pattern in all 8 files:** Each page declares `const X: any[] = []` as a literal stub at module scope and renders from it. There is **no DB query**, **no hook**, **no service call**. The pages will *always* be empty no matter what data exists in the DB.
+**Already present and wired:**
+- **World model** — `src/lib/sita-cortex/world-model.ts` + `sita_world_state` table, hydrated on auth via `SitaCortexMount` in `ShellLiveLayer`.
+- **Agent loop (Plan→Confirm→Act)** — `useSitaAgent` → `sita-agent-planner` edge fn → `useCanonicalAction` execute → `sita-receipt` events → `SitaActionPlanCard`.
+- **Advisor council** — `advisor_registry`, `advisor_agents`, `advisor_action_queue`, `advisor_board_recommendations`, `advisor_action_proof_packs`, `advisor_board_memory`, debate orchestrator, confidence policy, conflict resolution, persona boundaries, identity registry — all in `src/lib/advisors/` and `src/packages/advisor-runtime-contracts`.
+- **Council pre-vote** — `sita_council_votes` + `sita-council-prevote` edge fn + `council.ts`.
+- **Knowledge graph** — `sita_knowledge_nodes` + `sita_knowledge_edges` (Phase H Sentience).
+- **Episodes/perception/personality** — `sita_episodes`, `sita_perception_events`, `sita_personality_profiles`, `sita_affect_events`.
+- **Missions** — `sita_missions`, `sita_mission_milestones` + `missions.ts`.
+- **Briefings** — `sita_proactive_briefings` + `sita-briefings-generate` edge fn + `sita-sentience/briefings.ts`.
+- **Reflection** — `sita_journal_entries` + nightly `sita-reflection-loop` edge fn.
+- **Personal Brain (51 tables)** — `pb_profile`, `pb_memories`, `pb_insights_signals`, `pb_chats`, etc.
+- **Workflows / proof / receipts** — `workflow-step-contracts.ts`, `advisor_action_proof_packs`, hash-chained self-healing receipts, `evidence_graph_*` tables.
+- **Shell layers** — `SitaPresenceOrb`, `SitaWhisper`, `SitaHudStrip`, `ControlCenter` toggles.
 
-**Tables that already exist** (verified via `psql`):
-- ✅ `connector_registry`, `connector_accounts`, `connector_receipts`, `connector_sync_runs` → Connector Control Center
-- ✅ `alerts`, `incidents`, `incident_classifications` → Operations Command Center (services/SLOs need synthesis)
-- ✅ `crm_automations` (with `runs`, `last_run_at`, `execution_log`) → Revenue Automation Health
-- ✅ `quotes` (full schema with line_items, status, expires_at) → Quote Studio
-- ✅ `advisor_registry`, `advisor_board_recommendations` → Growth Advisor Board
+**The real gap:**
+1. **No single canonical "operating intelligence" surface.** Capabilities are scattered across `/boardroom`, `/owner`, `/desktop`, `/personal-brain`, `/advisor-workspace`, `/global-boardroom` — none of them fuse world model + active mission + advisor council debate + proactive briefing + agent action queue + receipts + explanation into one operator console.
+2. **Briefings are generated nightly but never surfaced** in a "what matters now" view.
+3. **Knowledge graph has nodes/edges but no entity-centric view** (no `/entity/:id` surface).
+4. **Action queue (`advisor_action_queue`) and agent plans (`sita_agent_plans`) live in different surfaces** — operator can't see one unified follow-through queue.
+5. **No "why this, why now" explanation panel** — confidence/persona/council vote data exists but isn't rendered together.
+6. **World model is read by the agent but not visible to the user** — no surface shows "this is what Sita currently believes about your world".
+7. **Memory/timeline of past recommendations and outcomes** isn't navigable as one stream.
+8. **No cross-session continuity surface** — episodes table exists but no "recent episodes" view.
 
-**Tables that DO NOT exist** (verified):
-- ❌ No `pack_revenue_trend` / `pack_install_events` table → Pack Store Analytics
-- ❌ No `integration_providers` registry table → Integration Catalog (data lives in `connector_registry` + a TS catalog file)
-- ❌ No `catalyst_events` / `market_events` / `investment_events` table → Investment Catalyst War Room
-- ❌ No `call_queue` / `call_log` table → Call Desk
-- ❌ No `automation_fatigue_alerts` table → Revenue Automation Health (fatigue tab only)
+## Target architecture
 
-**This is the key honesty rule:** I will NOT invent fake data. For surfaces with real tables, I wire the queries. For surfaces without tables, I either (a) create the migration + seed real schema, or (b) render an honest "Awaiting first signal" `PremiumEmptyState` with a clear next-step CTA — never a fake row.
+One canonical surface — **`/sita`** (route: `JarvisBridge`) — composed of 7 panels, each a thin view over **existing services and tables**. Plus 4 connective services that fuse already-disparate data, and a small set of new edge-function-backed endpoints where the data needs server-side aggregation.
 
----
-
-## Phase 1 — Wire 5 surfaces with existing tables (no migrations needed)
-
-### 1.1 Connector Control Center (`src/pages/atlas/ConnectorControlCenter.tsx`)
-- Replace `const connectors: any[] = []` with `useQuery` hook reading `connector_registry` + `connector_accounts` + last `connector_sync_runs.status`
-- Compute `health = (successful_syncs_24h / total_syncs_24h) * 100`
-- Replace `const auditTimeline: any[] = []` with `connector_receipts` ordered by `created_at desc limit 50`
-- Render `PremiumEmptyState` with "Connect your first integration" CTA → `/integrations` when zero rows
-
-### 1.2 Operations Command Center (`src/pages/atlas/OperationsCommandCenter.tsx`)
-- Wire `alerts` tab → `select * from alerts where status='active' order by severity, last_seen_at desc`
-- Wire `incidents` tab → `select * from incidents where status != 'resolved' order by severity, created_at desc`
-- For `services` and `slos` (no dedicated tables yet): synthesize from `internal_agent_slo_snapshots` + `ai_runtime_failure_alerts` (both exist), grouped by `subsystem`
-- Keep `runbooks` static from existing `src/lib/runbooks/registry.ts` (already real)
-- Honest `PremiumEmptyState` per tab when zero rows
-
-### 1.3 Revenue Automation Health (`src/pages/revenue-office/AutomationHealth.tsx`)
-- Wire `automations` → `select * from crm_automations where user_id = auth.uid()` with computed `successRate = (runs - failures_in_execution_log) / runs * 100`
-- Compute `healthMetrics` aggregate KPIs from the same query (avg success rate, total runs, recent failures, etc.)
-- For `fatigueAlerts` (no table): keep an honest "Fatigue tracking activates after 100+ messages sent in a 7-day window" `PremiumEmptyState` — no fake alerts
-- For `advisorInsights`: wire to `advisor_board_recommendations where category='automation'`
-
-### 1.4 Quote Studio (`src/pages/revenue-office/QuoteStudio.tsx`)
-- Wire `quotes` → `select * from quotes where user_id = auth.uid() order by created_at desc`
-- Use existing schema fields: `title, amount_cents, currency, status, expires_at, line_items`
-- `PremiumEmptyState` "Create your first quote" CTA when zero rows
-
-### 1.5 Growth Advisor Board (`src/pages/revenue-office/GrowthAdvisorBoard.tsx`)
-- Replace stubbed `ADVISORS` array with `useQuery` against `advisor_registry where domain='revenue'`
-- Wire recommendations → `advisor_board_recommendations where status='new' order by urgency_score desc`
-- Keep the rich `ADVISOR_RESPONSES` map (it's real fallback content for query types) but display only for advisors that actually exist in the registry
-- `PremiumEmptyState` "Activate your advisor board" CTA → `/business/onboarding/advisor-activation` when registry returns zero
-
-**Validation for Phase 1:** All 5 pages render real DB data when present, render canonical `PremiumEmptyState` with operator-grade copy + actionable CTA when empty. No fake fallback data anywhere.
-
----
-
-## Phase 2 — Honest empty states for 3 surfaces with no backing table
-
-### 2.1 Pack Store Analytics (`src/pages/store/StoreAnalyticsPage.tsx`)
-**Current dishonesty:** `PACK_ANALYTICS` has 7 hardcoded rows with fake revenue numbers ($35,960 etc). The `REVENUE_TREND`/`CATEGORY_REVENUE`/`RETENTION_DATA` are empty arrays passed to recharts.
-
-**Two options:**
-- **Option A (recommended, fully real):** Create migration adding `pack_install_events` table (pack_id, user_id, event_type ['install'|'uninstall'|'activated'], revenue_cents, occurred_at). Wire `StoreAnalyticsPage` to aggregate from this. Until first event fires, show `PremiumEmptyState`. Remove hardcoded `PACK_ANALYTICS` entirely.
-- **Option B (lower scope):** Keep page, replace hardcoded `PACK_ANALYTICS` with `[]`, render full-page `PremiumEmptyState` "Pack analytics activate when first install completes" with link to Pack Store.
-
-I recommend **Option A** — it matches your `mem://infrastructure/receipt-emission` pattern (events fire from real install flow).
-
-### 2.2 Integration Catalog (`src/pages/integrations/IntegrationsCatalog.tsx`)
-**Current dishonesty:** `INTEGRATION_PROVIDERS = []`, so the catalog is permanently empty. But you have `connector_registry` (35+ real rows) and a typed catalog at `src/lib/services/integration-hub/providers.ts`.
-
-**Fix:** Wire `INTEGRATION_PROVIDERS` to `connector_registry` (already populated), and `PROVIDER_CATEGORIES` derived from `distinct connector_class`. Use `connector_accounts where user_id = auth.uid()` for the connected/expired badges. No new tables needed.
-
-### 2.3 Investment Catalyst War Room (`src/pages/investment-office/CatalystWarRoom.tsx`)
-**Current dishonesty:** `CATALYST_EVENTS = []`. The page already calls `useRiskScenarios()` (real hook) but ignores its data and reads from the empty stub.
-
-**Fix:** Create migration for `investment_catalyst_events` table (id, user_id, title, description, event_date, event_type ['macro'|'earnings'|'product'|'event'], impact, assets jsonb, portfolio_exposure_pct, created_at). Add `useCatalystEvents` hook. Render `PremiumEmptyState` "Connect your portfolio to surface catalyst events" → `/integrations?category=brokerage` until first row.
-
----
-
-## Phase 3 — Call Desk (no table, needs migration)
-
-### 3.1 Call Desk (`src/pages/revenue-office/CallDesk.tsx`)
-**Current:** `callQueue`, `recentCalls`, `callStats`, `callAnalytics` all empty stubs.
-
-**Fix:** Create migration `call_log` table (id, user_id, contact_name, contact_company, contact_id uuid nullable, priority ['critical'|'high'|'medium'|'low'], call_value_cents, reason, prep_notes, suggested_talking_points jsonb, status ['queued'|'in_progress'|'completed'|'skipped'], scheduled_at, completed_at, outcome, warmth_score, last_contact_at, created_at). Standard RLS. Wire page to it. Honest empty state when no rows.
-
----
-
-## Phase 4 — Honesty enforcement & deployment gates
-
-### 4.1 Add validator
-Create `scripts/validation/check-no-literal-stubs.ts` — fails CI if any `src/pages/**/*.tsx` file contains the pattern `const \w+: any\[\] = \[\]` followed by a render reference to that array. This prevents the bug class from regressing.
-
-### 4.2 Empty-state validator (already exists)
-The 8 fixed surfaces will pass `check-empty-state-coverage.ts` because they'll all use `PremiumEmptyState` from `@/components/sita/PremiumEmptyState` (already canonical per `mem://design/elite-components`).
-
-### 4.3 Update memory
-Add `mem://features/stub-surface-elimination` documenting the 8 surfaces, the table they bind to, and the honest empty-state copy used — so future work doesn't reintroduce stubs.
-
----
-
-## Migrations summary (3 new tables)
-
-```sql
--- Phase 2.1 - pack analytics events
-CREATE TABLE pack_install_events (
-  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-  pack_id text NOT NULL,
-  user_id uuid NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
-  event_type text NOT NULL CHECK (event_type IN ('install','uninstall','activated','first_value')),
-  revenue_cents bigint NOT NULL DEFAULT 0,
-  metadata jsonb NOT NULL DEFAULT '{}',
-  occurred_at timestamptz NOT NULL DEFAULT now()
-);
--- + index on (pack_id, occurred_at) and (user_id, occurred_at)
--- + RLS: users see own events, admins see all
-
--- Phase 2.3 - investment catalyst events
-CREATE TABLE investment_catalyst_events (
-  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_id uuid NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
-  title text NOT NULL,
-  description text NOT NULL DEFAULT '',
-  event_date date NOT NULL,
-  event_type text NOT NULL CHECK (event_type IN ('macro','earnings','product','event')),
-  impact text NOT NULL DEFAULT 'medium' CHECK (impact IN ('low','medium','high')),
-  assets jsonb NOT NULL DEFAULT '[]',
-  portfolio_exposure_pct numeric NOT NULL DEFAULT 0,
-  created_at timestamptz NOT NULL DEFAULT now()
-);
--- + RLS: users manage own
-
--- Phase 3 - call log
-CREATE TABLE call_log (
-  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_id uuid NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
-  contact_id uuid,
-  contact_name text NOT NULL,
-  contact_company text,
-  priority text NOT NULL DEFAULT 'medium' CHECK (priority IN ('critical','high','medium','low')),
-  call_value_cents bigint NOT NULL DEFAULT 0,
-  reason text NOT NULL DEFAULT '',
-  prep_notes text NOT NULL DEFAULT '',
-  suggested_talking_points jsonb NOT NULL DEFAULT '[]',
-  status text NOT NULL DEFAULT 'queued' CHECK (status IN ('queued','in_progress','completed','skipped')),
-  scheduled_at timestamptz,
-  completed_at timestamptz,
-  outcome text,
-  warmth_score integer NOT NULL DEFAULT 50,
-  last_contact_at timestamptz,
-  created_at timestamptz NOT NULL DEFAULT now(),
-  updated_at timestamptz NOT NULL DEFAULT now()
-);
--- + RLS: users manage own
--- + trigger: update_updated_at_column on UPDATE
+```
+/sita  (JarvisBridge)
+├─ HUDFrame           (reuses Presence Orb + Whisper, already mounted)
+├─ NowPanel           (active mission + top 3 briefings + "what changed since last visit")
+├─ WorldModelPanel    (live snapshot from world-model.ts — visible for the first time)
+├─ CouncilPanel       (active recommendations + dissent + pre-vote + persona + confidence)
+├─ ActionQueuePanel   (unified: advisor_action_queue + sita_agent_plans + pending approvals)
+├─ TimelinePanel      (sita_episodes + receipts + advisor_board_actions, one stream)
+├─ ExplainPanel       (selected item: why, sources, council vote, confidence, reversibility)
+└─ EntityDrawer       (object-centric view backed by sita_knowledge_nodes/edges)
 ```
 
----
+## Build plan — ordered, all wired to real systems
 
-## Files modified (8 page files + new infrastructure)
+### Phase J1 — Connective services (no UI yet, pure fusion layer)
 
-**Pages rewritten (literal stubs → real queries):**
-- `src/pages/atlas/ConnectorControlCenter.tsx`
-- `src/pages/atlas/OperationsCommandCenter.tsx`
-- `src/pages/revenue-office/AutomationHealth.tsx`
-- `src/pages/revenue-office/CallDesk.tsx`
-- `src/pages/revenue-office/QuoteStudio.tsx`
-- `src/pages/revenue-office/GrowthAdvisorBoard.tsx`
-- `src/pages/investment-office/CatalystWarRoom.tsx`
-- `src/pages/integrations/IntegrationsCatalog.tsx`
-- `src/pages/store/StoreAnalyticsPage.tsx`
+New files under `src/lib/sita-jarvis/` (small, narrow, depends only on existing tables/hooks):
 
-**New hooks (one per surface, colocated under `src/hooks/`):**
-- `use-connector-control-center.ts`
-- `use-operations-command-center.ts`
-- `use-revenue-automation-health.ts`
-- `use-call-desk.ts`
-- `use-quote-studio.ts`
-- `use-investment-catalyst-events.ts`
-- `use-pack-store-analytics.ts`
-- `use-integration-catalog.ts`
-- `useGrowthAdvisorBoard.ts`
+1. **`useNowSnapshot.ts`** — reads `sita_world_state` + `sita_missions` (active) + top 3 unread `sita_proactive_briefings` + last `sita_journal_entries` ("what changed since yesterday"). Single React Query hook.
+2. **`useUnifiedActionQueue.ts`** — fuses `advisor_action_queue` (pending) + `sita_agent_plans` (status='proposed' or 'awaiting_confirmation') + `advisor_board_recommendations` not yet acted on. Returns one sorted list with source-tagged items, each carrying `confidence`, `reversibility`, `requiresApproval`.
+3. **`useUnifiedTimeline.ts`** — fuses `sita_episodes` + `sita_perception_events` (last 48h) + `advisor_board_actions` (executed) + receipts from `advisor_action_proof_packs`. Returns one chronological feed.
+4. **`useExplanation.ts`** — given a selected item id+source, hydrates: persona boundary (from `advisor-persona-boundary-map`), council vote (`sita_council_votes`), confidence gate result (`advisor-confidence-policy`), reversibility (`advisor-reversibility-map`), and source memories (`advisor_memories` joined to the recommendation).
 
-**New validator:**
-- `scripts/validation/check-no-literal-stubs.ts` (fails CI on stub regression)
+All four are pure read hooks — no schema changes needed, all tables exist.
 
-**New memory:**
-- `.lovable/memory/features/stub-surface-elimination.md`
+### Phase J2 — One canonical surface
 
-**Migrations (3):**
-- `pack_install_events`, `investment_catalyst_events`, `call_log` with RLS + indexes + triggers
+New page **`src/pages/sita/JarvisBridge.tsx`** + 7 panel components in `src/components/sita/jarvis/`.
 
----
+- Mounted as a windowed app in the OS shell (re-uses the existing windowing system — same pattern as `Boardroom.tsx`).
+- Route added to `src/routes/os-routes.tsx`: `/sita` → `JarvisBridge`.
+- Sidebar entry added under "Control Room" so it's discoverable but doesn't pollute the main app grid.
+- Layout: 12-col grid using existing primitives (`Card`, `PremiumEmptyState`, glassmorphic surfaces from `mem://design/premium-ux-system`). Honest empty states everywhere — `PremiumEmptyState` with `variant="no-data"` when a table is empty.
+- All panels lazy-load. The page composes existing components where they exist (e.g. `SitaActionPlanCard`, `RecommendationCard`, `MorningExecutiveBrief`) instead of reinventing them.
 
-## Deployment readiness checklist
+### Phase J3 — Surfacing the briefing pipeline (trustful proactivity)
 
-After implementation, the following gates pass:
-- ✅ `check-empty-state-coverage` — all 8 surfaces use canonical `PremiumEmptyState`
-- ✅ `check-admin-empty-state-consistency` — no raw `<p>No data</p>` patterns
-- ✅ `check-thin-admin-empty-states` — no thin empty states
-- ✅ NEW `check-no-literal-stubs` — no `const X: any[] = []` rendered patterns
-- ✅ TypeScript: zero `as any` introductions in pages (per `mem://constraints/type-safety-standards`)
-- ✅ RLS: every new table has policies (per Core memory rule)
-- ✅ Demo Mode: every wired hook respects `useDataMode()` so demo path still works (per `mem://design/demo-mode-standardization`)
+The `sita-briefings-generate` edge function exists but the table is rarely populated and never read by the UI. Two small additions:
 
----
+1. **Cron entry** — schedule `sita-briefings-generate` daily at 06:00 user-local (one row in pg_cron via the insert tool). Idempotent per (user, day).
+2. **`NowPanel`** reads top 3 unread `sita_proactive_briefings` and exposes a "Mark seen" action that updates the row.
 
-## What this is NOT
+If the table is empty (cron hasn't run yet), `NowPanel` shows an honest "Sita hasn't generated a briefing yet — first one runs tomorrow at 06:00" empty state. **No fake briefings.**
 
-- **Not** seeding fake production data into your DB
-- **Not** weakening any existing test or empty-state validator
-- **Not** creating tables for surfaces that semantically don't need them (e.g., Operations services tab uses synthesized aggregates, not a fake `services` table)
-- **Not** hiding the truth — when DB is empty, the page says "Connect X to populate Y" with a real CTA, not "No data available"
+### Phase J4 — Entity-centric view (knowledge graph becomes navigable)
 
-After this lands, all 8 🟡 statuses become 🟢: code wired to truth, honest empty states for first-run, and CI-enforced regression prevention.
+New route **`/sita/entity/:nodeId`** → `EntityView.tsx`. Pure read of `sita_knowledge_nodes` (the entity) + `sita_knowledge_edges` (relationships) + back-references from `advisor_board_recommendations` (where this entity is mentioned) + receipts touching it.
+
+This makes the existing knowledge graph **visible and navigable for the first time**. No schema changes.
+
+### Phase J5 — Explanation contract (trust surfacing)
+
+`ExplainPanel` renders, for any selected recommendation/plan/action:
+- **Why this** — pulls from the recommendation's `rationale` + linked `advisor_memories`.
+- **Why now** — from world-model triggers + mission alignment.
+- **Who recommended** — advisor identity + persona boundary.
+- **Council vote** — from `sita_council_votes` (consensus / dissent / abstain).
+- **Confidence** — from `advisor-confidence-policy.evaluateConfidenceGate`.
+- **Reversibility** — from `advisor-reversibility-map.getReversibility`.
+- **What it will do** — plan steps from `sita_agent_plans`.
+- **Approval state** — from `advisor_action_queue` row.
+
+All data already exists. This panel is pure composition.
+
+### Phase J6 — Tests and validators
+
+Reusing the existing verification framework (`mem://architecture/verification-framework`):
+
+1. **Unit** — `src/lib/sita-jarvis/__tests__/use-now-snapshot.test.ts`, `use-unified-action-queue.test.ts`, `use-unified-timeline.test.ts`, `use-explanation.test.ts`. Mock supabase, assert correct fusion ordering, dedupe (apply the existing `dedupeById` pattern from `usePbInsightsSignals`).
+2. **Page test** — `src/__tests__/pages/jarvis-bridge.test.tsx` — renders `/sita`, verifies 7 panels mount, verifies empty states are present (honest), verifies route appears in sidebar.
+3. **E2E (Playwright)** — `tests/e2e/jarvis-bridge.spec.ts` — login, navigate to `/sita`, assert the 7 panels render, assert clicking an action queue item opens the explain panel with confidence + persona shown, assert clicking an entity link navigates to `/sita/entity/:id`.
+4. **Stub regression** — extend the `check-no-literal-stubs.ts` validator to cover the new `src/lib/sita-jarvis/**` so no future hardcoded arrays leak in.
+
+### Phase J7 — Implementation report
+
+`JARVIS_FOUNDATION_IMPLEMENTATION_REPORT.md` documenting (Parts 1–5 from your prompt): existing systems built on, files added/modified, what's now Jarvis-like, tests added, what remains future-facing (e.g. true cross-device handoff is Phase F-spatial, not Jarvis Bridge; we won't reimplement it).
+
+## What I will explicitly NOT do (anti-bloat guarantees)
+
+- **No new advisor system.** Reuses `advisor_registry`, `advisor-runtime-contracts`, `useBusinessAdvisorBoard`, `useGrowthAdvisorBoard`.
+- **No new agent loop.** Reuses `useSitaAgent` + `sita-agent-planner` + `useCanonicalAction`.
+- **No new world model.** Reuses `world-model.ts`.
+- **No new boardroom.** Existing `/boardroom`, `/global-boardroom`, `/business/boardroom`, `/money/boardroom` all stay; Jarvis Bridge links to them, doesn't replace them.
+- **No new memory system.** Reuses `advisor_memories`, `pb_memories`, `sita_episodes`, `sita_journal_entries`.
+- **No new schema changes** for J1, J2, J4, J5. The only DB write is the J3 pg_cron schedule for `sita-briefings-generate`. Everything else is read-fusion of existing tables.
+- **No fake AI behavior.** Briefings only show if the cron has run. World model only shows what's in `sita_world_state`. Empty states are honest.
+- **No second product.** Single `/sita` route inside the existing OS shell, lazy-loaded, windowed like every other app.
+
+## Files that will be touched (concrete)
+
+**New (~12 files):**
+- `src/lib/sita-jarvis/use-now-snapshot.ts`
+- `src/lib/sita-jarvis/use-unified-action-queue.ts`
+- `src/lib/sita-jarvis/use-unified-timeline.ts`
+- `src/lib/sita-jarvis/use-explanation.ts`
+- `src/lib/sita-jarvis/index.ts`
+- `src/pages/sita/JarvisBridge.tsx`
+- `src/pages/sita/EntityView.tsx`
+- `src/components/sita/jarvis/NowPanel.tsx`
+- `src/components/sita/jarvis/WorldModelPanel.tsx`
+- `src/components/sita/jarvis/CouncilPanel.tsx`
+- `src/components/sita/jarvis/ActionQueuePanel.tsx`
+- `src/components/sita/jarvis/TimelinePanel.tsx`
+- `src/components/sita/jarvis/ExplainPanel.tsx`
+- 4 unit tests + 1 page test + 1 Playwright spec
+- `JARVIS_FOUNDATION_IMPLEMENTATION_REPORT.md`
+
+**Modified (~3 files):**
+- `src/routes/os-routes.tsx` — add `/sita` and `/sita/entity/:nodeId` routes
+- `src/components/sita/shell/AppSidebar.tsx` (or equivalent control-room sidebar) — add Jarvis Bridge entry
+- `scripts/governance/check-no-literal-stubs.ts` — extend coverage to `src/lib/sita-jarvis/**`
+
+**DB (one insert via insert tool):**
+- pg_cron schedule for `sita-briefings-generate` daily 06:00 UTC.
+
+## Estimated outcome
+
+After this lands, a user opening `/sita` sees, in one window:
+- "Active mission: launch X. 3 briefings since yesterday. World state: 2 windows open, $4.2k cash runway, 1 bill due in 2 days."
+- "Council recommends: defer the Q3 hire (advisor: Finance, confidence 0.82, council vote 4–1 dissent from Growth)."
+- "Action queue: 3 pending approvals, 2 reversible, 1 awaiting your confirmation."
+- "Last 48h: agent executed 7 actions (all receipted), advisor memory updated 12 times, 1 mission milestone hit."
+- Click any item → Explain panel renders why/who/confidence/reversibility/what-it-will-do.
+
+Every byte of that comes from tables and services **that already exist and have RLS**. No mock. No second app. No new advisor framework. Just fusion + one honest surface.
+
+## Risks and mitigations
+
+- **Risk:** users don't discover `/sita`. **Mitigation:** sidebar entry under Control Room + add it as the default landing app in `OwnerCenter`.
+- **Risk:** empty state on first load looks bad. **Mitigation:** honest copy ("Sita is still learning your world — open a few apps and check back tomorrow") + mark it clearly as a "Day 0" state, not an error.
+- **Risk:** the unified action queue duplicates items across sources. **Mitigation:** apply the proven `dedupeById` pattern (from `usePbInsightsSignals`) plus a `(source, source_id)` tuple key.
+- **Risk:** cron doesn't fire in non-prod. **Mitigation:** also expose a "Generate now" button on the empty NowPanel that invokes `sita-briefings-generate` on demand (still honest — user-initiated).
+
+## Approval gate
+
+Approve to switch to default mode and execute J1 → J7 in order. I will stop after J3 and surface the unified surface for review before adding entity view + tests, in case you want to reshape the layout first.
