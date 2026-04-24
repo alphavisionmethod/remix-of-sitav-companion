@@ -1,151 +1,255 @@
+# Consolidated Execution Plan — Two Tracks, One Pass
 
-# Human-User Production-Proof Closure — Real Gaps Only
+You said "execute whatever is better and more advanced" and "build as specified" with all four enhancements. Here's exactly what I'll build, integrated, with no duplication of existing strong systems.
 
-## Inventory of existing strong coverage (KEEP — DO NOT DUPLICATE)
+---
 
-`tests/e2e/` already has a deep, real-user verification layer. After full inventory, the following are already proven and will be **left untouched**:
+## TRACK A — `SITA_OS_SYSTEM_REPORT.md` (Implementation-Truth)
 
-| Area | Existing proof | Status |
+### A.1 Anchor file reading (parallel batches of 8–10)
+
+I'll read these in 4 parallel batches to lock evidence before writing:
+
+**Batch 1 — Frontend spine**
+`src/App.tsx`, `src/main.tsx`, `src/pages/index.ts` (if present), `src/pages/DesktopPage.tsx`, `src/pages/Boardroom.tsx`, `src/pages/AdminCenter.tsx`, `src/pages/BusinessCenter.tsx`, `src/pages/MoneyCenter.tsx` (or equivalent)
+
+**Batch 2 — Architecture & runtime**
+`src/runtimes/runtime-index.ts`, `src/runtimes/feature-runtime-tier-registry.ts`, `src/runtimes/product-reality-tiers.ts`, `src/services/index.ts`, `src/features/index.ts`, `src/lib/orchestration/` (if present), `src/lib/policy/` index
+
+**Batch 3 — AI / Advisor / Boardroom**
+`src/lib/ai/index.ts`, `src/lib/ai/ai-capability-registry.ts`, `src/lib/ai/ai-fallback-policy.ts`, `src/lib/ai/ai-refusal-policy.ts`, `src/lib/advisors/index.ts`, `src/lib/advisors/advisor-identity-registry.ts`, `src/lib/advisors/advisor-debate-orchestrator.ts`, `src/lib/boardroom/index.ts`, `src/lib/boardroom/data-service.ts`
+
+**Batch 4 — Contracts, packages, governance**
+`src/packages/index.ts`, `src/packages/proof-model/`, `src/packages/release-contracts/`, `src/packages/shell-grammar/`, `src/packages/feature-governance/`, `supabase/functions/_shared/` index, `supabase/functions/_owners.json`
+
+### A.2 Edge function bucketing (212 functions → 8 roles)
+
+Deterministic categorization by name prefix + role tag from `_owners.json` if present:
+
+| Bucket | Examples | Count (est.) |
 |---|---|---|
-| Sign in (form + flow + reload persistence) | `customer-journey/auth/sign-in-primary.spec.ts` | KEEP |
-| Sign out + protected-route block after | `customer-journey/auth/sign-out-primary.spec.ts` | KEEP |
-| First-boot + setup continuation | `customer-journey/auth/{first-boot,setup-continuation}.spec.ts` | KEEP |
-| Dashboard load + sidebar clickable | `customer-journey/dashboard/dashboard-load-primary.spec.ts` | KEEP |
-| Stale-leads dashboard | `customer-journey/dashboard/stale-leads.spec.ts` | KEEP |
-| Assistant/advisor chat input + degraded fallback | `customer-journey/assistant/assistant-chat-primary.spec.ts` | KEEP |
-| Boardroom approve outbound + review proof + mobile | `customer-journey/boardroom/*.spec.ts` | KEEP |
-| Connectors connect-CRM + OAuth + sync | `customer-journey/connectors/*.spec.ts` | KEEP |
-| Files real upload round-trip | `customer-journey/files/files-upload-real-roundtrip.spec.ts` | KEEP |
-| Settings restore + account open | `customer-journey/settings/*.spec.ts` | KEEP |
-| Demo-vs-real for assistant/boardroom/connectors | `customer-journey/demo-vs-real/*.spec.ts` | KEEP |
-| Degraded mode (assistant provider, connectors) | `customer-journey/degraded/*.spec.ts` | KEEP |
-| Admin envelope (AI team, env recovery, owner intervention, runtime/launch truth, workflow replay) | `customer-journey/admin/*.spec.ts` | KEEP |
-| Full-route deep navigation across 9 domains | `tests/e2e/full-journey.spec.ts` | KEEP |
-| Permission gating + unauth redirect to login | `auth-journeys.spec.ts`, `full-journey.spec.ts` | KEEP |
-| Approvals, advisor action execution, advisor portrait, accessibility, route health, page content, edge contracts, push notifications, mobile responsive, visual regression, error states, recovery | top-level specs in `tests/e2e/` | KEEP |
+| **BFF / Gateway** | `admin-bff-gateway`, `api-gateway`, `user-bff-gateway`, `tenant-self-service-bff`, `owner-copilot-bff`, `support-gateway` | ~10 |
+| **AI Platform** | `ai-gateway`, `ai-health`, `chat-advisor`, `brain-core`, `personal-brain`, `check-ai-budget`, `prompt-versioning` | ~12 |
+| **Advisor / Boardroom** | `advisor-*` (×5), `boardroom-*` (×4), `sita-council-prevote`, `sita-agent-planner` | ~14 |
+| **Internal Agents / Workforce** | `internal-agent-*` (×16), `agent-*` (×4) | ~22 |
+| **Connectors / Integrations** | `connector-*` (×11), `oauth-refresh-probe`, `crm-sync` | ~15 |
+| **OS / App Platform / Cloud** | `app-*` (×9), `cloud-*` (×7), `os-*` (×5), `desktop-update-manifest` | ~25 |
+| **Security / Trust / Recovery** | `kill-switch-*`, `security-*`, `recovery-*`, `runbook-drill`, `dr-drill-*`, `chaos-*`, `gdpr-*`, `account-delete`, `audit-*` | ~20 |
+| **Domain (Business/Money/Concierge)** | `cashflow-*`, `tax-*`, `invoice-*`, `payment-*`, `revenue-caller`, `booking-*`, `tasks-workflow-api`, `communications-api`, `investment-portfolio-api` | ~15 |
+| **Operations / Health / Telemetry** | `health-*` (×4), `apm-*`, `device-telemetry`, `error-ingest`, `trace-ingest`, `uptime-rollup`, `crash-report-ingest`, `cost-alert`, `sla-evaluator`, `escalation-engine`, `alert-*` | ~18 |
+| **Release / Evidence / Compliance** | `release-*` (×4), `compliance-*` (×2), `evidence-graph-builder`, `verification-recorder`, `production-launch-attestor`, `attestation-packet-builder`, `mobile-deferral-attestor` | ~12 |
+| **Webhooks / Workflows / Schedulers** | `webhook-*` (×4), `workflow-*` (×4), `event-processor`, `scheduler-dispatch`, `health-cron`, `*-cron` (×6) | ~22 |
+| **Misc / Public / Marketing** | `waitlist-*`, `beta-apply`, `press-inquiry`, `investor-request`, `vapid-public-key`, `webauthn-challenge`, `get-weather` | ~10 |
 
-**Conclusion**: existing coverage is strong and must not be re-implemented. Only true gaps remain.
+Total ≈ 212 (allowing for cross-counting on a few). Each bucket gets a paragraph in the report explaining role, sample functions, and shared helpers (`_shared/`).
 
----
+### A.3 Report sections (21, written end-to-end in one pass)
 
-## Real gaps identified (the only things to add)
+1. Executive Overview
+2. What SITA OS Is (30s / 2m / deep)
+3. Audience & Surfaces (Desktop OS, Mobile, Admin, Marketing)
+4. Core Product Domains (Business, Finance, Concierge, Revenue Office, Investment, Mission Control, Atlas, App Store, Owner Mode, Settings, Files, Boardroom, Admin)
+5. Frontend / Shell / App / Window Architecture
+6. Backend / Services / Edge Functions / Runtime Architecture (with bucket table)
+7. Database & RLS Truth Layer (420 tables, 934 policies, 257 migrations)
+8. Security / Trust / Safety (7-layer fabric, epistemic firewall, kill switches, anti-piracy)
+9. AI Platform (gateway, budget, refusal/fallback, receipts, providers)
+10. Advisor System (34 identities, debate orchestrator, override model, persona boundaries)
+11. Boardroom & Decision Systems
+12. Business OS (onboarding archetypes, profile engine, signals)
+13. Finance / Money / Revenue / Investment Systems
+14. Concierge / Household / Life Systems
+15. Admin / Atlas / Mission Control / Operational Truth
+16. Release / Workflows / Proof / Supportability (CI gates, drills, attestation)
+17. Key Packages / Contracts / Shared Foundations (~36 packages)
+18. Maturity Matrix — Complete vs Partial vs Blocked (5-grade scheme)
+19. How To Explain SITA OS To Someone New (3 layers)
+20. Key Files & Where To Start Reading (annotated entry points)
+21. Final Truth Summary (strongest / weakest / next-most-valuable closure)
 
-### Gap A — Personal Brain v2 surfaces have ZERO human-journey coverage
-We just shipped:
-- 11-step calibration onboarding (`PersonalBrainOnboarding`)
-- 11-section settings hub with sticky sidebar (`/personal-brain/settings/{profile,memory,modes,workspaces,files,notifications,labs,security,data,voice-settings}`)
-- Brain Command Center (`/personal-brain/command-center`) with Brain Snapshot, Learning Momentum, Insights Feed
-- "Scan now" parallel-scan flow + post-scan refresh
-- Insights Feed refresh button + IntersectionObserver infinite scroll
+### A.4 Maturity grading scheme (5 grades)
 
-None of these have an E2E spec. They are the highest-value missing journeys.
+- ✅ **Behaviorally proven** — has tests + persistence + runtime exercise
+- 🟢 **Wired** — UI ↔ service ↔ DB connected, used in flows
+- 🟡 **Partially wired** — works with documented gaps
+- 🟠 **Structural** — types/contracts/scaffolding only
+- 🔴 **Blocked / external** — depends on hardware/OS/external execution
 
-### Gap B — Auxiliary auth surfaces (signup, forgot-password, reset-password)
-The existing `auth.spec.ts` only checks **render**. There is no journey proof that:
-- the signup form submits and shows the "check your email" confirmation state
-- forgot-password submit shows the "email sent" confirmation
-- reset-password page enforces validation (length, mismatch) and shows the success state
+### A.5 Companion artifact
 
-### Gap C — Public download page user journey
-`/download` and `/downloads` (DownloadsCenter, marketing/Download) currently only have a "renders" check in `full-journey.spec.ts`. There is no proof that:
-- the page exposes the documented install/VMware guidance
-- gated artifacts are not shown publicly without an access path
-- the primary "Get SITA OS" CTA either leads somewhere or honestly represents its state
-
-### Gap D — Honest-state "no broken Brain" smoke
-A shipped feature should not crash unauth users who land on its routes.
-
----
-
-## Plan: add 4 new spec files + 1 helper, run, fix, report
-
-### New file 1 — `tests/e2e/customer-journey/personal-brain/calibration-flow.spec.ts`
-Real-user journey through the 11-step ceremony. Covers:
-1. Authenticated user opens `/personal-brain` for the first time → sees calibration shell with step 0 ("Let's shape your Brain") + visible progress indicator.
-2. Clicks "Begin" → step 1 (Identity) → fills name + role → "Continue" gates correctly when name empty (negative case) and unlocks when filled.
-3. Walks through Use cases → Cognition → Privacy steps using the `OnboardingChoiceCard` selectors.
-4. "Save & exit" link is visible from step 2+ (resume contract).
-5. On the final summary step, the recap text reflects choices made earlier (real persistence proof, not just navigation).
-6. Clicking "Enter your Brain" lands on `/personal-brain` dashboard with `onboarded_at` reflected (no longer shows the calibration intro).
-
-Skipped honestly with `test.skip(!hasTestCredentials())` if no test user.
-
-### New file 2 — `tests/e2e/customer-journey/personal-brain/settings-hub.spec.ts`
-Real-user proof for the 11-section Settings Hub:
-1. Authenticated user navigates to `/personal-brain/settings` → Overview renders live tiles (personalization depth, memory count, voice on/off, security level).
-2. Sticky `SettingsSidebarNav` is visible and contains all 11 sections.
-3. Click each section in turn (Profile, Memory, Modes, Workspaces, Files, Notifications, Voice, Security, Data, Labs) → assert the URL changes to the section route AND the page renders meaningful content (>50 chars) AND no fatal error.
-4. **Save proof**: on Notifications, toggle one switch → click Save → reload → assert toggle state persisted (writes to `pb_notification_prefs`).
-5. **Save proof**: on Profile, change `tone` → Save → reload → assert persisted.
-6. Empty-state honesty: on Files (if no files) the empty state shows an explanation, not a blank panel.
-
-### New file 3 — `tests/e2e/customer-journey/personal-brain/command-center.spec.ts`
-Real-user proof for the dashboard Command Center:
-1. Navigate to `/personal-brain/command-center` → Brain Snapshot, Learning Momentum bar chart, Insights Feed, Active Goals all render.
-2. Click "Scan now" → button enters loading state → loading toast visible → after settle, Brain Snapshot/Insights Feed re-fetch (network call observable; the button returns to idle and a success toast appears).
-3. Insights Feed: click the refresh icon-button → spinning state visible → settles.
-4. Insights Feed infinite scroll: scroll the list to the bottom; if `hasMore`, sentinel triggers `loadMore` (next page appears or "Load more" CTA falls back); if no more, "You're all caught up" terminal text is visible.
-5. Insight pin/dismiss: pick a signal → click dismiss → row disappears from the list (optimistic UI proof).
-
-### New file 4 — `tests/e2e/auth-auxiliary-flows.spec.ts`
-Closes Gap B + Gap C without duplicating existing render checks:
-- **Signup submit flow**: goto `/signup` → fill random-burner email + password (or skip if no `TEST_SIGNUP_EMAIL` env) → submit → expect either the "check your email" confirmation panel OR a Sonner error toast. (Honest dual-path: works in projects with signups enabled, honestly skipped where disabled.)
-- **Signup validation**: short password (<6) → expect inline error toast, no navigation.
-- **Forgot-password flow**: goto `/forgot-password` → fill any email → submit → expect a confirmation state (text contains "sent" / "check") OR honest error.
-- **Reset-password validation**: goto `/reset-password` → submit with password mismatch → expect error toast → submit with too-short password → expect error toast. (We do not exercise the recovery token path because it requires a real email link.)
-- **Download page honesty**: goto `/download` → page renders → primary CTA (`Get SITA OS` / `Download`) is visible OR an honest "coming soon / request access" state is shown. Assert no broken artifact link (no `href="#"` on the primary CTA).
-
-### New helper — `tests/e2e/helpers/personal-brain.ts`
-Tiny helpers used by the three Brain specs:
-- `gotoBrainRoute(page, path)` — login + navigate, with idle wait
-- `assertBrainShellLoaded(page)` — checks for the shared `BrainHero` test-id or fallback heading
-- `clickBrainNavSection(page, label)` — clicks a section in the settings sidebar
-
-Adds `data-testid` attributes to a small number of Brain components where selectors don't already exist (read-only inspection shows these are missing). The additions are **non-functional** (no behavior change), purely test hooks:
-- `data-testid="brain-onboarding-shell"` on the `OnboardingShell` root
-- `data-testid="brain-onboarding-progress"` on the progress bar
-- `data-testid="brain-onboarding-continue"` on the primary footer button
-- `data-testid="brain-settings-sidebar"` on `SettingsSidebarNav` root
-- `data-testid="brain-command-scan-now"` on the Scan-now button
-- `data-testid="brain-insights-refresh"` on the refresh button
-- `data-testid="brain-insights-list"` and `="brain-insights-sentinel"` on the feed
-- `data-testid="brain-insight-row"` per row, plus `="brain-insight-dismiss"` per row
+`generated/sita-os-system-report.json` — machine-readable matrix:
+```json
+{
+  "generatedAt": "...",
+  "totals": { "edgeFunctions": 212, "migrations": 257, "packages": 36, "pages": ~120 },
+  "buckets": { "ai-platform": { "count": 12, "functions": [...], "maturity": "🟢" }, ... },
+  "domains": [ { "id": "business-os", "maturity": "🟢", "evidence": [...], "gaps": [...] }, ... ],
+  "subsystems": [ { "id": "advisor-debate", "maturity": "🟡", "anchorFiles": [...], "notes": "..." }, ... ]
+}
+```
 
 ---
 
-## Run & fix loop
-1. `npx playwright test --project=customer-journey --grep "personal-brain|auth-auxiliary"` (and `tests/e2e/auth-auxiliary-flows.spec.ts` for the auxiliary spec).
-2. Triage: any failure that is a real product bug (crash, dead CTA, broken save, fatal console error) gets fixed at the source. Any failure that's selector noise gets a stronger selector (not a weakened assertion).
-3. Re-run until stable, capturing journey-reporter output.
+## TRACK B — Failure Triage + Self-Healing Test Platform (T0–T5)
 
-## Report — `HUMAN_USER_PRODUCTION_PROOF_REPORT.md` (new, at repo root)
-Structured per the requested 6-part format:
-1. Existing coverage reused (the "KEEP" table above, condensed).
-2. New human-user verification added (the 4 specs + helper, with the journey IDs each adds).
-3. Failures found and fixed (root causes only — no test-weakening).
-4. Newly proven user journeys (explicit list of `[journey:*]` tags).
-5. Remaining blocked / deferred (e.g. real reset-password recovery-token requires email; signup confirmation requires real inbox; install-artifact download requires authorized binary — represented honestly).
-6. Final readiness truth: clear statement of what is now proven from a real user perspective vs. what is still externally blocked.
+Building all 5 tiers, with the four refinements you named:
+
+### B.1 Refinement decisions (from your 4 questions)
+
+1. **T4 tightened** → 2-person approval required. Auto-apply only if (a) failure class is in whitelist AND (b) commit message contains a signed `Heal-Approved-By:` trailer from a CODEOWNER **plus** a second CODEOWNER's GitHub review approval recorded via `gh api`. In CI, T4 is OFF by default and behind `SITA_HEAL_T4=1` env flag.
+2. **T3 loosened** → patches written to disk **and** optionally pushed as a draft PR via `gh pr create --draft` when `--open-pr` flag is passed. PR body includes RCA, classifier confidence, and explicit "DO NOT MERGE WITHOUT REVIEW" header.
+3. **T5 added** → LLM-backed RCA narrative + patch suggester via Lovable AI Gateway (`google/gemini-2.5-pro` for narrative, `openai/gpt-5` for patch diff). Outputs go to `coverage/triage/llm-suggestions/<file>.md` and `.diff`. **Never auto-applied. Never commits. Never opens a PR by itself.** Human pulls them into a T3 PR if useful.
+4. **CI workflow shipped** — non-negotiable for value. New `.github/workflows/test-self-heal.yml` runs T0–T2 on every `test-sequential.yml` failure and posts the markdown report as a job summary + PR comment. T3/T4/T5 remain manual `workflow_dispatch`.
+
+### B.2 The 5 tiers
+
+| Tier | Action | Autonomy | Default |
+|---|---|---|---|
+| **T0** Triage | Re-run failed specs in fresh env, classify, emit RCA per file | Full auto | ON |
+| **T1** Quarantine | Retry N×; separate flakes from stable failures; tag in report | Full auto | ON |
+| **T2** Env heal | Clear `.vite`, `node_modules/.cache`, fresh `/tmp/sita-test-*`, re-run global setup, refresh Playwright auth state | Full auto | ON |
+| **T3** Patch propose | Write `.diff` to `coverage/triage/proposed-patches/` + optional `--open-pr` draft PR | Auto-propose, **human apply** | ON (propose only) |
+| **T4** Auto-apply | Apply whitelisted patch classes (snapshot updates, codemod renames) only with 2-person CODEOWNER attestation | Strict gated | **OFF** by default |
+| **T5** LLM RCA | Lovable AI generates narrative RCA + suggested diff for `real-bug` class | Advisory only | OFF (opt-in via `--llm`) |
+
+### B.3 Files to create
+
+```
+scripts/
+├── test-triage.mjs                       # T0+T1 orchestrator
+├── test-self-heal.mjs                    # Full T0→T4 loop coordinator
+├── test-llm-rca.mjs                      # T5 LLM advisor (calls ai-gateway edge fn)
+├── lib/
+│   ├── failure-classifier.mjs            # Pure rule engine (12 classes)
+│   ├── failure-classifier.test.mjs       # Unit tests with fixture stdouts
+│   ├── heal-strategies/
+│   │   ├── clear-vite-cache.mjs
+│   │   ├── rerun-fresh-env.mjs
+│   │   ├── update-snapshots.mjs          # Gated: --allow-snapshot-updates
+│   │   ├── rerun-global-setup.mjs
+│   │   ├── refresh-playwright-auth.mjs
+│   │   └── index.mjs                     # Strategy registry
+│   ├── heal-attestation.mjs              # 2-person approval verifier (T4)
+│   ├── heal-receipt.mjs                  # Emits coverage/triage/heal-receipts/<id>.json
+│   ├── github-pr-helper.mjs              # gh CLI wrapper for --open-pr
+│   └── refusal-classes.mjs               # Hard-refusal list (security, RLS, contracts, deploy gates)
+└── triage/
+    └── fixtures/                         # Synthetic stdout corpus for classifier tests
+        ├── flake-timing.txt
+        ├── stale-snapshot.txt
+        ├── stale-vite-cache.txt
+        ├── expired-auth.txt
+        ├── missing-mock.txt
+        ├── import-rename.txt
+        └── real-bug.txt
+
+.github/workflows/
+└── test-self-heal.yml                    # T0–T2 auto on failure; T3–T5 manual dispatch
+
+mem://architecture/test-self-healing-system.md   # New memory rule
+
+package.json scripts:
+├── test:triage           → analyze last sequential run
+├── test:heal             → T0–T2 only (safe default)
+├── test:heal:dry         → propose only, no writes
+├── test:heal:full        → T0–T3 with patch proposals to disk
+├── test:heal:pr          → T0–T3 + open draft PR
+├── test:heal:t4          → T0–T4 (requires SITA_HEAL_T4=1 + attestation)
+└── test:heal:llm         → T0–T2 + T5 LLM RCA narratives
+```
+
+### B.4 Failure classifier rule table (12 classes)
+
+| Class | Detection signal | Heal tier |
+|---|---|---|
+| `flake-timing` | passes on rerun | T1 quarantine |
+| `flake-network` | `ECONNREFUSED`, `fetch failed`, `MSW handler missing` | T1 + log |
+| `stale-snapshot` | `toMatchSnapshot` mismatch | T2 (gated) |
+| `stale-vite-cache` | `Failed to resolve import` for known-good path | T2 auto |
+| `dirty-jsdom` | `localStorage`/`window` leak between tests | T3 propose `vi.unstubAllGlobals()` |
+| `expired-auth` | Playwright storage state 401/redirect to /login | T2 re-run global setup |
+| `missing-mock` | `is not a function` on supabase/fetch client | T3 propose mock patch |
+| `import-rename` | TS error matches known codemod table | T4 (gated) codemod |
+| `port-collision` | `EADDRINUSE` | T2 auto (random port + retry) |
+| `oom-worker` | `Worker terminated`, `JavaScript heap out of memory` | T2 (lower concurrency, rerun) |
+| `db-rls-denied` | RLS policy denial | **REFUSAL** — never heal |
+| `real-bug` | none of the above | T0 surface + optional T5 LLM RCA |
+
+### B.5 Hard-refusal list (NEVER auto-touched)
+
+- Anything under `src/__tests__/security/`
+- `src/__tests__/deployment/`
+- `src/__tests__/ci/`
+- `tests/e2e/edge-function-contracts.spec.ts`
+- Any test matching `*rls*`, `*policy*`, `*kill-switch*`, `*compliance*`
+- Any test in `tests/e2e/customer-journey/` core paths (advisor, boardroom, auth)
+
+These bypass heal entirely and surface as `real-bug` for human review.
+
+### B.6 Receipt emission
+
+Every heal action emits `coverage/triage/heal-receipts/<uuid>.json`:
+```json
+{
+  "id": "heal_...",
+  "file": "src/...",
+  "failureClass": "stale-vite-cache",
+  "tier": "T2",
+  "action": "clear-vite-cache",
+  "before": { "exitCode": 1, "snippet": "..." },
+  "after": { "exitCode": 0, "duration": 4321 },
+  "attestation": "auto",
+  "approvers": [],
+  "timestamp": "..."
+}
+```
+
+T4 receipts additionally require `approvers: ["@user1", "@user2"]` and a verified GitHub review reference.
+
+### B.7 LLM-backed T5 (Lovable AI)
+
+- Calls `supabase/functions/ai-gateway` with the failed file's source + test source + stdout/stderr
+- Uses `google/gemini-2.5-pro` for RCA narrative (better long-context reasoning over multiple files)
+- Uses `openai/gpt-5` for diff suggestion (stronger structured-output discipline)
+- Outputs:
+  - `coverage/triage/llm-suggestions/<file>.rca.md` — human RCA narrative
+  - `coverage/triage/llm-suggestions/<file>.suggested.diff` — never applied
+- Token budget capped per file (8k input, 2k output) and per run (50k total)
+- Falls back gracefully if `LOVABLE_API_KEY` missing — emits placeholder, doesn't fail the run
+
+### B.8 What I am NOT doing (explicit non-goals)
+
+- ❌ No auto-commit, ever
+- ❌ No silent test deletion or `.skip()` injection
+- ❌ No coverage threshold relaxation
+- ❌ No changes to existing `test-sequential.mjs`, `pre-deploy.sh`, or any current test
+- ❌ No LLM diff auto-application — T5 is advisory only
+- ❌ No T4 enabled by default in CI
 
 ---
 
-## Files added
-- `tests/e2e/customer-journey/personal-brain/calibration-flow.spec.ts`
-- `tests/e2e/customer-journey/personal-brain/settings-hub.spec.ts`
-- `tests/e2e/customer-journey/personal-brain/command-center.spec.ts`
-- `tests/e2e/auth-auxiliary-flows.spec.ts`
-- `tests/e2e/helpers/personal-brain.ts`
-- `HUMAN_USER_PRODUCTION_PROOF_REPORT.md`
+## Execution order (single pass)
 
-## Files edited (test-id hooks only — zero behavior change)
-- `src/components/personal-brain/onboarding/PersonalBrainOnboarding.tsx`
-- `src/components/personal-brain/onboarding/OnboardingShell.tsx` (if it lacks an outer test-id)
-- `src/components/personal-brain/settings/SettingsSidebarNav.tsx`
-- `src/pages/personal-brain/BrainCommandCenter.tsx`
+1. Read 4 parallel anchor batches (Track A.1)
+2. Generate `SITA_OS_SYSTEM_REPORT.md` (21 sections)
+3. Generate `generated/sita-os-system-report.json`
+4. Build classifier + strategies + receipt system (Track B core)
+5. Build orchestrator scripts (`test-triage.mjs`, `test-self-heal.mjs`, `test-llm-rca.mjs`)
+6. Build classifier unit tests with fixtures
+7. Add `package.json` scripts (7 new)
+8. Add `.github/workflows/test-self-heal.yml`
+9. Write `mem://architecture/test-self-healing-system.md`
+10. Run classifier unit tests to prove the rule engine works
+11. Dry-run `test:heal:dry` against the existing `coverage/sequential-report.json` (if present) or a synthetic fixture to prove end-to-end wiring
+12. Return Parts 1–4 summary
 
-## Out of scope (explicitly)
-- Re-implementing already-strong journeys listed in the KEEP table.
-- Real recovery-token or magic-link flows that require an actual mailbox.
-- Real billable AI calls inside Brain scan (we assert UI behavior + network observability, not provider responses).
-- Visual-regression snapshots for the new Brain surfaces (existing `visual-regression.spec.ts` covers the global system; Brain visuals can be added later if requested).
+---
 
+## Estimated scope
+
+- Track A: 2 files (~2,500 LOC report + ~400 LOC JSON)
+- Track B: ~14 new files (~1,200 LOC), 1 workflow, 7 package scripts, 1 memory rule
+- Zero changes to existing source, tests, or pre-deploy
+- All gates default-safe; T4 + T5 opt-in only
+
+Approve and I'll execute end-to-end in one pass.
