@@ -237,6 +237,9 @@ export function AdvisorPageShell({
           </AlertDescription>
         </Alert>
 
+        {/* Domain quick-stats slot */}
+        {headerStatsSlot}
+
         {/* Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab}>
           <TabsList className="grid w-full grid-cols-6">
