@@ -72,7 +72,7 @@ export async function offerHandoff(payload: HandoffPayload): Promise<HandoffSess
     console.warn("[sita-handoff] offer failed", error);
     return null;
   }
-  return data as HandoffSession;
+  return data as unknown as HandoffSession;
 }
 
 export async function acceptHandoff(id: string): Promise<boolean> {
@@ -114,7 +114,7 @@ export async function subscribeIncomingHandoffs(listener: HandoffListener): Prom
         filter: `user_id=eq.${user.id}`,
       },
       (payload) => {
-        const row = payload.new as HandoffSession;
+        const row = payload.new as unknown as HandoffSession;
         if (row.source_device === getDeviceLabel()) return; // skip own
         if (row.status !== "offered") return;
         listener(row);

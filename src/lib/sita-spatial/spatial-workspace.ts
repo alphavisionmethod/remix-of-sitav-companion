@@ -55,7 +55,7 @@ export async function loadRemoteLayout(): Promise<SpatialLayout | null> {
     .select("layout")
     .eq("user_id", user.id)
     .maybeSingle();
-  return (data?.layout as SpatialLayout) ?? null;
+  return (data?.layout as unknown as SpatialLayout) ?? null;
 }
 
 export async function saveRemoteLayout(layout: SpatialLayout): Promise<void> {
