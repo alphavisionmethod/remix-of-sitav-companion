@@ -171,7 +171,15 @@
     "release:android": "npx tsx scripts/architecture/checks/check-release-readiness-android.ts",
     "release:iso-vmware": "npx tsx scripts/architecture/checks/check-release-readiness-iso-vmware.ts",
     "release:all-targets": "npm run release:web && npm run release:ios && npm run release:android && npm run release:iso-vmware",
-    "verify": "npm run typecheck && npm run lint && npm run test && npm run test:deployment-readiness && npm run validate:governance && npm run build"
+    "verify": "npm run typecheck && npm run lint && npm run test && npm run test:deployment-readiness && npm run validate:governance && npm run build",
+    "test:triage": "node scripts/test-triage.mjs",
+    "test:heal": "node scripts/test-self-heal.mjs",
+    "test:heal:dry": "node scripts/test-self-heal.mjs --dry",
+    "test:heal:full": "node scripts/test-self-heal.mjs --t3",
+    "test:heal:pr": "node scripts/test-self-heal.mjs --t3 --pr",
+    "test:heal:t4": "SITA_HEAL_T4=1 node scripts/test-self-heal.mjs --t3 --t4",
+    "test:heal:llm": "node scripts/test-self-heal.mjs --llm && node scripts/test-llm-rca.mjs",
+    "test:classifier": "node scripts/lib/failure-classifier.test.mjs"
   },
   "dependencies": {
     "@electron/packager": "^18.3.6",

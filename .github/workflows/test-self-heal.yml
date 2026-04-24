@@ -1,0 +1,58 @@
+name: Test Self-Heal (T0–T2 auto, T3–T5 manual)
+
+on:
+  workflow_dispatch:
+    inputs:
+      tier:
+        description: "Max tier (t2|t3|t3-pr|t4|llm)"
+        required: false
+        default: "t2"
+  workflow_run:
+    workflows: ["Test (Sequential, Sharded)"]
+    types: [completed]
+
+jobs:
+  heal:
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'failure' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: "20", cache: "npm" }
+      - run: npm ci --no-audit --no-fund
+      - name: Download last sequential report
+        uses: actions/download-artifact@v4
+        continue-on-error: true
+        with:
+          name: sequential-report-shard-1
+          path: coverage/
+      - name: Run classifier unit tests
+        run: node scripts/lib/failure-classifier.test.mjs
+      - name: Triage + heal
+        env:
+          SITA_HEAL_T4: "0"
+        run: |
+          FLAGS=""
+          case "${{ inputs.tier }}" in
+            t3)     FLAGS="--t3" ;;
+            t3-pr)  FLAGS="--t3 --pr" ;;
+            t4)     FLAGS="--t3 --t4" ;;
+            llm)    FLAGS="--llm" ;;
+          esac
+          node scripts/test-self-heal.mjs $FLAGS || true
+      - name: Job summary
+        if: always()
+        run: |
+          if [ -f coverage/triage/triage-report.md ]; then
+            cat coverage/triage/triage-report.md >> $GITHUB_STEP_SUMMARY
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: triage-${{ github.run_id }}
+          path: coverage/triage/
+          retention-days: 14
