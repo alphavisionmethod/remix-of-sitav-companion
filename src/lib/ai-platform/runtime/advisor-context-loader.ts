@@ -37,12 +37,12 @@ export interface AdvisorContextSnapshot {
 }
 
 const SOURCE_TO_TABLE: Record<string, { table: string; label?: string } | null> = {
-  // Sales
-  crm_records: { table: "accounts" },
-  leads: null,
-  pipeline: null,
-  quotes: null,
-  offers: null,
+  // Sales — Phase 1 wired to real CRM substrate
+  crm_records: { table: "crm_contacts", label: "CRM contacts" },
+  leads: { table: "leads", label: "Sales leads" },
+  pipeline: { table: "crm_opportunities", label: "Pipeline opportunities" },
+  quotes: { table: "quotes", label: "Quotes" },
+  offers: { table: "deals", label: "Active deals" },
   // Customer service
   support_tickets: null,
   customer_records: { table: "accounts" },
