@@ -54,6 +54,13 @@ export default defineConfig({
       testMatch: "edge-function-contracts.spec.ts",
       use: { ...devices["Desktop Chrome"] },
     },
+    {
+      name: "kill-switch-drill",
+      testMatch: "kill-switch-drill.spec.ts",
+      use: { ...devices["Desktop Chrome"] },
+      timeout: 120_000,
+      retries: 0,
+    },
   ],
   webServer: process.env.CI
     ? undefined
