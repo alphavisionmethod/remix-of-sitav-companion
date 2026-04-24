@@ -192,6 +192,7 @@ const ErrorPatrolBoard = lazy(() => import("@/pages/admin/health/ErrorPatrolBoar
 const TrustSecurityHome = lazy(() => import("@/pages/admin/trust-security/TrustSecurityHome"));
 const VerificationHome = lazy(() => import("@/pages/admin/verification/VerificationHome"));
 const CrossDomainCoherence = lazy(() => import("@/pages/admin/verification/CrossDomainCoherence"));
+const SelfHealRunsDashboard = lazy(() => import("@/pages/admin/verification/SelfHealRunsDashboard"));
 const CostSpotlight = lazy(() => import("@/pages/admin/health/CostSpotlight"));
 const SbomHistory = lazy(() => import("@/pages/admin/releases/SbomHistory"));
 const AIRuntimeHome = lazy(() => import("@/pages/admin/ai-runtime/AIRuntimeHome"));
@@ -312,6 +313,7 @@ export function getAdminRoutes() {
     <Route key="ws-weekly-aieff" path="/admin/ai-runtime/intelligence/efficiency" element={<Navigate to="/admin/intelligence/efficiency" replace />} />,
     <Route key="ws-weekly-honesty" path="/admin/verification/launch-honesty" element={gated("audit.view", <LaunchHonestyBoard />)} />,
     <Route key="ws-verification-cross-domain" path="/admin/verification/cross-domain-coherence" element={gated("audit.view", <CrossDomainCoherence />)} />,
+    <Route key="ws-verification-self-heal" path="/admin/verification/self-heal" element={gated("audit.view", <SelfHealRunsDashboard />)} />,
     <Route key="ws-health-cost-spotlight" path="/admin/health/cost-spotlight" element={gated("maintenance.view", <CostSpotlight />)} />,
     <Route key="ws-releases-sbom-history" path="/admin/releases/sbom-history" element={gated("audit.view", <SbomHistory />)} />,
     <Route key="ws-weekly-costs" path="/admin/ai-runtime/costs" element={<Navigate to="/admin/ai-team/cost" replace />} />,
