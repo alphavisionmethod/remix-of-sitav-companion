@@ -45,6 +45,7 @@ const SitaGestureLayerLazy = lazy(() => import("./sita-spatial").then(m => ({ de
 const SitaHolographicBoardroomLazy = lazy(() => import("./sita-spatial").then(m => ({ default: m.SitaHolographicBoardroom })));
 const SitaSpatialFieldLazy = lazy(() => import("./sita-spatial").then(m => ({ default: m.SitaSpatialField })));
 const SitaSpatialIntentMountLazy = lazy(() => import("./sita-spatial").then(m => ({ default: m.SitaSpatialIntentMount })));
+const SitaCortexMountLazy = lazy(() => import("./sita-cortex").then(m => ({ default: m.SitaCortexMount })));
 
 interface ShellLiveLayerProps {
   wm: WindowManager;
@@ -210,6 +211,11 @@ export function ShellLiveLayer({
       </Suspense>
       <Suspense fallback={null}>
         <SitaSpatialIntentMountLazy />
+      </Suspense>
+
+      {/* ── Sita Cortex (Phase G) ──────────────────────────────── */}
+      <Suspense fallback={null}>
+        <SitaCortexMountLazy />
       </Suspense>
 
     </>

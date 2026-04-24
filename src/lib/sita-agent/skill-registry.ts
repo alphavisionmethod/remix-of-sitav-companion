@@ -9,6 +9,7 @@
 import { BUSINESS_SKILLS } from "./skills/business-skills";
 import { FINANCE_SKILLS } from "./skills/finance-skills";
 import { CONCIERGE_SKILLS } from "./skills/concierge-skills";
+import { EXTERNAL_SKILLS } from "./skills/external-skills";
 import type { SitaActionRisk, SitaAgentDomain } from "./plan-types";
 
 export interface SitaSkillDef {
@@ -27,6 +28,7 @@ const ALL: SitaSkillDef[] = [
   ...BUSINESS_SKILLS,
   ...FINANCE_SKILLS,
   ...CONCIERGE_SKILLS,
+  ...EXTERNAL_SKILLS,
 ];
 
 const BY_ID = new Map<string, SitaSkillDef>(ALL.map((s) => [s.id, s]));

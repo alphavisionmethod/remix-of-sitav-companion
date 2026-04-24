@@ -20564,6 +20564,33 @@ export type Database = {
         }
         Relationships: []
       }
+      sita_app_open_log: {
+        Row: {
+          app_id: string
+          context: Json
+          expires_at: string
+          id: string
+          opened_at: string
+          user_id: string
+        }
+        Insert: {
+          app_id: string
+          context?: Json
+          expires_at?: string
+          id?: string
+          opened_at?: string
+          user_id: string
+        }
+        Update: {
+          app_id?: string
+          context?: Json
+          expires_at?: string
+          id?: string
+          opened_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       sita_autonomy_preferences: {
         Row: {
           created_at: string
@@ -20582,6 +20609,39 @@ export type Database = {
           tiers?: Json
           updated_at?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      sita_council_votes: {
+        Row: {
+          advisor_id: string
+          created_at: string
+          id: string
+          plan_id: string
+          rationale: string | null
+          score: number
+          user_id: string
+          vote: string
+        }
+        Insert: {
+          advisor_id: string
+          created_at?: string
+          id?: string
+          plan_id: string
+          rationale?: string | null
+          score?: number
+          user_id: string
+          vote?: string
+        }
+        Update: {
+          advisor_id?: string
+          created_at?: string
+          id?: string
+          plan_id?: string
+          rationale?: string | null
+          score?: number
+          user_id?: string
+          vote?: string
         }
         Relationships: []
       }
@@ -20623,6 +20683,128 @@ export type Database = {
           source_device?: string
           status?: string
           target_device?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      sita_journal_entries: {
+        Row: {
+          blockers: Json
+          created_at: string
+          entry_date: string
+          id: string
+          lessons: Json
+          summary: Json
+          user_id: string
+          wins: Json
+        }
+        Insert: {
+          blockers?: Json
+          created_at?: string
+          entry_date?: string
+          id?: string
+          lessons?: Json
+          summary?: Json
+          user_id: string
+          wins?: Json
+        }
+        Update: {
+          blockers?: Json
+          created_at?: string
+          entry_date?: string
+          id?: string
+          lessons?: Json
+          summary?: Json
+          user_id?: string
+          wins?: Json
+        }
+        Relationships: []
+      }
+      sita_mission_milestones: {
+        Row: {
+          created_at: string
+          due_at: string | null
+          id: string
+          mission_id: string
+          ordering: number
+          plan_id: string | null
+          status: string
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          due_at?: string | null
+          id?: string
+          mission_id: string
+          ordering?: number
+          plan_id?: string | null
+          status?: string
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          due_at?: string | null
+          id?: string
+          mission_id?: string
+          ordering?: number
+          plan_id?: string | null
+          status?: string
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sita_mission_milestones_mission_id_fkey"
+            columns: ["mission_id"]
+            isOneToOne: false
+            referencedRelation: "sita_missions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      sita_missions: {
+        Row: {
+          created_at: string
+          description: string | null
+          domain: string
+          id: string
+          priority: number
+          status: string
+          success_criteria: Json
+          target_at: string | null
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          domain?: string
+          id?: string
+          priority?: number
+          status?: string
+          success_criteria?: Json
+          target_at?: string | null
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          domain?: string
+          id?: string
+          priority?: number
+          status?: string
+          success_criteria?: Json
+          target_at?: string | null
+          title?: string
+          updated_at?: string
           user_id?: string
         }
         Relationships: []
@@ -20669,6 +20851,27 @@ export type Database = {
           layout?: Json
           updated_at?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      sita_world_state: {
+        Row: {
+          snapshot: Json
+          updated_at: string
+          user_id: string
+          version: number
+        }
+        Insert: {
+          snapshot?: Json
+          updated_at?: string
+          user_id: string
+          version?: number
+        }
+        Update: {
+          snapshot?: Json
+          updated_at?: string
+          user_id?: string
+          version?: number
         }
         Relationships: []
       }
