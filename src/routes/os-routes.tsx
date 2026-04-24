@@ -45,6 +45,7 @@ const PersonalBrain = lazy(() => import("@/pages/PersonalBrain"));
 const PersonalBrainWorkspace = lazy(() => import("@/pages/personal-brain/PersonalBrainWorkspace"));
 const PersonalBrainChat = lazy(() => import("@/pages/personal-brain/PersonalBrainChat"));
 const BrainSnapshot = lazy(() => import("@/pages/personal-brain/BrainSnapshot"));
+const BrainCommandCenter = lazy(() => import("@/pages/personal-brain/BrainCommandCenter"));
 const PbVoiceSettings = lazy(() => import("@/pages/personal-brain/VoiceSettings"));
 const PbToolsRegistry = lazy(() => import("@/pages/personal-brain/ToolsRegistry"));
 const PbAcceptInvite = lazy(() => import("@/pages/personal-brain/AcceptInvite"));
@@ -201,6 +202,7 @@ export function getOSRoutes() {
       <Route path="/personal-brain/w/:workspaceId" element={<PersonalBrainWorkspace />} />
       <Route path="/personal-brain/c/:chatId" element={<PersonalBrainChat />} />
       <Route path="/personal-brain/snapshot" element={<BrainSnapshot />} />
+      <Route path="/personal-brain/command-center" element={<BrainCommandCenter />} />
       <Route path="/personal-brain/voice-settings" element={<PbVoiceSettings />} />
       <Route path="/personal-brain/settings" element={<PbBrainSettings />} />
       <Route path="/personal-brain/settings/security" element={<PbSecuritySettings />} />
