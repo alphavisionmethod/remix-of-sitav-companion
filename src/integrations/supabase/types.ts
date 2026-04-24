@@ -20612,6 +20612,48 @@ export type Database = {
         }
         Relationships: []
       }
+      sita_conflict_resolutions: {
+        Row: {
+          conflict_kind: string
+          created_at: string
+          description: string
+          evidence: Json
+          id: string
+          options: Json
+          recommended_option: string | null
+          resolved_at: string | null
+          resolved_option: string | null
+          status: string
+          user_id: string
+        }
+        Insert: {
+          conflict_kind: string
+          created_at?: string
+          description: string
+          evidence?: Json
+          id?: string
+          options?: Json
+          recommended_option?: string | null
+          resolved_at?: string | null
+          resolved_option?: string | null
+          status?: string
+          user_id: string
+        }
+        Update: {
+          conflict_kind?: string
+          created_at?: string
+          description?: string
+          evidence?: Json
+          id?: string
+          options?: Json
+          recommended_option?: string | null
+          resolved_at?: string | null
+          resolved_option?: string | null
+          status?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       sita_council_votes: {
         Row: {
           advisor_id: string
@@ -20720,6 +20762,96 @@ export type Database = {
         }
         Relationships: []
       }
+      sita_knowledge_edges: {
+        Row: {
+          created_at: string
+          from_node_id: string
+          id: string
+          metadata: Json
+          relation: string
+          to_node_id: string
+          user_id: string
+          weight: number
+        }
+        Insert: {
+          created_at?: string
+          from_node_id: string
+          id?: string
+          metadata?: Json
+          relation: string
+          to_node_id: string
+          user_id: string
+          weight?: number
+        }
+        Update: {
+          created_at?: string
+          from_node_id?: string
+          id?: string
+          metadata?: Json
+          relation?: string
+          to_node_id?: string
+          user_id?: string
+          weight?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sita_knowledge_edges_from_node_id_fkey"
+            columns: ["from_node_id"]
+            isOneToOne: false
+            referencedRelation: "sita_knowledge_nodes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "sita_knowledge_edges_to_node_id_fkey"
+            columns: ["to_node_id"]
+            isOneToOne: false
+            referencedRelation: "sita_knowledge_nodes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      sita_knowledge_nodes: {
+        Row: {
+          body: string | null
+          confidence: number
+          created_at: string
+          id: string
+          kind: string
+          label: string
+          last_seen_at: string
+          metadata: Json
+          source: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          body?: string | null
+          confidence?: number
+          created_at?: string
+          id?: string
+          kind: string
+          label: string
+          last_seen_at?: string
+          metadata?: Json
+          source?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          body?: string | null
+          confidence?: number
+          created_at?: string
+          id?: string
+          kind?: string
+          label?: string
+          last_seen_at?: string
+          metadata?: Json
+          source?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       sita_mission_milestones: {
         Row: {
           created_at: string
@@ -20805,6 +20937,135 @@ export type Database = {
           target_at?: string | null
           title?: string
           updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      sita_perception_events: {
+        Row: {
+          created_at: string
+          expires_at: string
+          id: string
+          payload: Json
+          source: string
+          ttl_seconds: number
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          expires_at?: string
+          id?: string
+          payload?: Json
+          source: string
+          ttl_seconds?: number
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          expires_at?: string
+          id?: string
+          payload?: Json
+          source?: string
+          ttl_seconds?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
+      sita_personality_profiles: {
+        Row: {
+          created_at: string
+          formality: number
+          honorific: string | null
+          humor: number
+          language: string
+          metadata: Json
+          preferred_pronouns: string | null
+          proactivity: number
+          quiet_hours_end: string | null
+          quiet_hours_start: string | null
+          updated_at: string
+          user_id: string
+          verbosity: number
+          voice_persona: string
+        }
+        Insert: {
+          created_at?: string
+          formality?: number
+          honorific?: string | null
+          humor?: number
+          language?: string
+          metadata?: Json
+          preferred_pronouns?: string | null
+          proactivity?: number
+          quiet_hours_end?: string | null
+          quiet_hours_start?: string | null
+          updated_at?: string
+          user_id: string
+          verbosity?: number
+          voice_persona?: string
+        }
+        Update: {
+          created_at?: string
+          formality?: number
+          honorific?: string | null
+          humor?: number
+          language?: string
+          metadata?: Json
+          preferred_pronouns?: string | null
+          proactivity?: number
+          quiet_hours_end?: string | null
+          quiet_hours_start?: string | null
+          updated_at?: string
+          user_id?: string
+          verbosity?: number
+          voice_persona?: string
+        }
+        Relationships: []
+      }
+      sita_proactive_briefings: {
+        Row: {
+          acknowledged_at: string | null
+          body: string | null
+          created_at: string
+          delivered_at: string | null
+          evidence: Json
+          expires_at: string
+          headline: string
+          id: string
+          kind: string
+          priority: number
+          scheduled_for: string
+          status: string
+          user_id: string
+        }
+        Insert: {
+          acknowledged_at?: string | null
+          body?: string | null
+          created_at?: string
+          delivered_at?: string | null
+          evidence?: Json
+          expires_at?: string
+          headline: string
+          id?: string
+          kind: string
+          priority?: number
+          scheduled_for?: string
+          status?: string
+          user_id: string
+        }
+        Update: {
+          acknowledged_at?: string | null
+          body?: string | null
+          created_at?: string
+          delivered_at?: string | null
+          evidence?: Json
+          expires_at?: string
+          headline?: string
+          id?: string
+          kind?: string
+          priority?: number
+          scheduled_for?: string
+          status?: string
           user_id?: string
         }
         Relationships: []
@@ -23597,6 +23858,8 @@ export type Database = {
         Returns: string
       }
       purge_expired_budget_decision_receipts: { Args: never; Returns: number }
+      purge_sita_app_open_log: { Args: never; Returns: undefined }
+      purge_sita_perception_events: { Args: never; Returns: undefined }
       record_dp_epsilon_spend: {
         Args: {
           _capability_key: string
