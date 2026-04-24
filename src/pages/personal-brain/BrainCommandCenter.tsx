@@ -147,6 +147,7 @@ function CommandCenterInner() {
             <Button
               variant="outline"
               size="sm"
+              data-testid="brain-command-scan-now"
               onClick={() => void handleScanAll()}
               disabled={busy || scanning}
               className="h-8 text-xs"
@@ -312,6 +313,7 @@ function CommandCenterInner() {
                 <Button
                   variant="ghost"
                   size="sm"
+                  data-testid="brain-insights-refresh"
                   className="h-7 w-7 p-0"
                   aria-label="Refresh insights"
                   onClick={() => void refreshSignals()}
@@ -337,10 +339,12 @@ function CommandCenterInner() {
               </div>
             ) : (
               <>
-              <ul className="space-y-2">
+              <ul data-testid="brain-insights-list" className="space-y-2">
                 {signals.map((s) => (
                   <li
                     key={s.id}
+                    data-testid="brain-insight-row"
+                    data-signal-id={s.id}
                     className="rounded-lg border border-border/50 bg-card/40 p-3"
                   >
                     <div className="flex items-start justify-between gap-3">
@@ -375,6 +379,7 @@ function CommandCenterInner() {
                           variant="ghost"
                           size="sm"
                           className="h-7 w-7 p-0"
+                          data-testid="brain-insight-dismiss"
                           aria-label="Dismiss"
                           onClick={() => void updateStatus(s.id, "dismissed")}
                         >
@@ -386,7 +391,11 @@ function CommandCenterInner() {
                 ))}
               </ul>
               {/* Infinite scroll sentinel + status row */}
-              <div ref={sentinelRef} className="flex items-center justify-center py-3">
+              <div
+                ref={sentinelRef}
+                data-testid="brain-insights-sentinel"
+                className="flex items-center justify-center py-3"
+              >
                 {loadingMore ? (
                   <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
                 ) : hasMore ? (
