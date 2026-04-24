@@ -53,6 +53,13 @@ const PbSecuritySettings = lazy(() => import("@/pages/personal-brain/SecuritySet
 const PbLearningSettings = lazy(() => import("@/pages/personal-brain/LearningSettings"));
 const PbRetentionSettings = lazy(() => import("@/pages/personal-brain/RetentionSettings"));
 const PbDataSettings = lazy(() => import("@/pages/personal-brain/DataSettings"));
+const PbProfileSettings = lazy(() => import("@/pages/personal-brain/settings/ProfileSettings"));
+const PbMemorySettings = lazy(() => import("@/pages/personal-brain/settings/MemorySettings"));
+const PbModesSettings = lazy(() => import("@/pages/personal-brain/settings/ModesSettings"));
+const PbWorkspacesSettings = lazy(() => import("@/pages/personal-brain/settings/WorkspacesSettings"));
+const PbFilesSettings = lazy(() => import("@/pages/personal-brain/settings/FilesSettings"));
+const PbNotificationsSettings = lazy(() => import("@/pages/personal-brain/settings/NotificationsSettings"));
+const PbLabsSettings = lazy(() => import("@/pages/personal-brain/settings/LabsSettings"));
 const CalmFocusMode = lazy(() => import("@/pages/CalmFocusMode"));
 const CommandHistory = lazy(() => import("@/pages/CommandHistory"));
 const EnvironmentSwitcherPage = lazy(() => import("@/pages/EnvironmentSwitcher"));
@@ -200,6 +207,13 @@ export function getOSRoutes() {
       <Route path="/personal-brain/settings/learning" element={<PbLearningSettings />} />
       <Route path="/personal-brain/settings/retention" element={<PbRetentionSettings />} />
       <Route path="/personal-brain/settings/data" element={<PbDataSettings />} />
+      <Route path="/personal-brain/settings/profile" element={<PbProfileSettings />} />
+      <Route path="/personal-brain/settings/memory" element={<PbMemorySettings />} />
+      <Route path="/personal-brain/settings/modes" element={<PbModesSettings />} />
+      <Route path="/personal-brain/settings/workspaces" element={<PbWorkspacesSettings />} />
+      <Route path="/personal-brain/settings/files" element={<PbFilesSettings />} />
+      <Route path="/personal-brain/settings/notifications" element={<PbNotificationsSettings />} />
+      <Route path="/personal-brain/settings/labs" element={<PbLabsSettings />} />
       <Route path="/personal-brain/tools" element={<PbToolsRegistry />} />
       <Route path="/personal-brain/invite/:token" element={<PbAcceptInvite />} />
 
