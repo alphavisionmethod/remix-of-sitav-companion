@@ -70,7 +70,7 @@ export default function OperationsCommandCenter() {
         <div className="mt-4 space-y-3">
           <TabsContent value="health">
             {services.length === 0 && !isLoading && (
-              <PremiumEmptyState icon={Activity} title="No service health snapshots yet" description="Awaiting first internal_agent_slo_snapshots row. Once internal agents emit SLO data, services will appear here." />
+              <PremiumEmptyState variant="no-data" icon={Activity} title="No service health snapshots yet" description="Awaiting first internal_agent_slo_snapshots row. Once internal agents emit SLO data, services will appear here." />
             )}
             {services.map(svc => (
               <div key={svc.name} className="flex items-center justify-between p-3 bg-muted/20 rounded-lg mb-2">
@@ -91,7 +91,7 @@ export default function OperationsCommandCenter() {
 
           <TabsContent value="slos">
             {slos.length === 0 && !isLoading && (
-              <PremiumEmptyState icon={Gauge} title="No SLO data yet" description="Awaiting first signals from internal_agent_slo_snapshots." />
+              <PremiumEmptyState variant="no-data" icon={Gauge} title="No SLO data yet" description="Awaiting first signals from internal_agent_slo_snapshots." />
             )}
             {slos.map(slo => (
               <Card key={slo.name} className="bg-card/50 border-border/50 mb-2">
@@ -118,7 +118,7 @@ export default function OperationsCommandCenter() {
 
           <TabsContent value="alerts">
             {alerts.length === 0 && !isLoading && (
-              <PremiumEmptyState icon={AlertTriangle} title="No active alerts" description="System is clean. Alerts will appear here when raised by monitoring." />
+              <PremiumEmptyState variant="no-data" icon={AlertTriangle} title="No active alerts" description="System is clean. Alerts will appear here when raised by monitoring." />
             )}
             {alerts.map(alert => (
               <div key={alert.id} className="flex items-center justify-between p-3 bg-muted/20 rounded-lg mb-2">
@@ -140,7 +140,7 @@ export default function OperationsCommandCenter() {
 
           <TabsContent value="incidents">
             {incidents.length === 0 && !isLoading && (
-              <PremiumEmptyState icon={Radio} title="No active incidents" description="Open incidents will appear here. Closed incidents are hidden by default." />
+              <PremiumEmptyState variant="no-data" icon={Radio} title="No active incidents" description="Open incidents will appear here. Closed incidents are hidden by default." />
             )}
             {incidents.map(inc => (
               <Card key={inc.id} className="bg-card/50 border-border/50 mb-2">
@@ -192,7 +192,7 @@ export default function OperationsCommandCenter() {
             <div className="grid gap-2 sm:grid-cols-2">
               {runbooks.length === 0 && (
                 <div className="col-span-full">
-                  <PremiumEmptyState icon={BookOpen} title="No runbooks registered" description="Runbooks will appear here once added to the runbook registry." />
+                  <PremiumEmptyState variant="no-data" icon={BookOpen} title="No runbooks registered" description="Runbooks will appear here once added to the runbook registry." />
                 </div>
               )}
               {runbooks.map(rb => (
