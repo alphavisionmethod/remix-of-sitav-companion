@@ -141,6 +141,26 @@ export default defineConfig(({ mode }) => ({
 
           // Architecture & generated truth artifacts should never ship to user bundles.
           if (id.includes("/src/platform/architecture/")) return "platform-architecture";
+
+          // ── G5: Split heavy kernel / platform subtrees out of `index` ──
+          // These are imported transitively from contexts/providers in App.tsx.
+          // Splitting them into named chunks lets the browser parallelize
+          // download + parse and lets Lovable update the kernel without
+          // invalidating the user-page chunks.
+          if (id.includes("/src/lib/sita-kernel/")) return "lib-sita-kernel";
+          if (id.includes("/src/lib/orchestration/")) return "lib-orchestration";
+          if (id.includes("/src/lib/intelligence/")) return "lib-intelligence";
+          if (id.includes("/src/lib/ai-gateway/")) return "lib-ai-gateway";
+          if (id.includes("/src/lib/agent/") || id.includes("/src/lib/agents/")) return "lib-agents";
+          if (id.includes("/src/lib/runtime/")) return "lib-runtime";
+          if (id.includes("/src/lib/backend-topology/")) return "lib-backend-topology";
+          if (id.includes("/src/lib/truth-manifests/")) return "lib-truth-manifests";
+          if (id.includes("/src/lib/policy/")) return "lib-policy";
+          if (id.includes("/src/lib/services/")) return "lib-services";
+          if (id.includes("/src/lib/debug/")) return "lib-debug";
+          if (id.includes("/src/services/")) return "platform-services";
+          if (id.includes("/src/contracts/")) return "platform-contracts";
+          if (id.includes("/src/data/")) return "platform-data";
         },
       },
     },
