@@ -52,6 +52,7 @@ import { getConciergeRoutes } from "@/routes/concierge-routes";
 import { getFilesRoutes } from "@/routes/files-routes";
 import { getBoardroomRoutes } from "@/routes/boardroom-routes";
 import { getAdvisorRoutes } from "@/routes/advisor-routes";
+import { getBusinessAdvisorRoutes } from "@/routes/business-advisor-routes";
 import { getExperimentalRoutes } from "@/routes/experimental-routes";
 import { getInvestmentRoutes } from "@/routes/investment-routes";
 import { USER_REDIRECTS } from "@/routes/redirects/user-redirect-map";
@@ -289,6 +290,7 @@ const App = () => (
                         {getFilesRoutes()}
                         {getBoardroomRoutes()}
                         {getAdvisorRoutes()}
+                        {getBusinessAdvisorRoutes()}
                         {getExperimentalRoutes()}
                         {getInvestmentRoutes()}
                         {getCommunicationsRoutes()}

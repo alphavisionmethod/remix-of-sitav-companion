@@ -1,0 +1,28 @@
+{
+  "generatedAt": "2026-04-24T22:14:35.714Z",
+  "gate": "business-advisor-deployment-ready",
+  "ok": true,
+  "requiredAdvisors": [
+    "sales-advisor",
+    "customer-service-advisor",
+    "cfo-advisor",
+    "marketing-advertising-advisor",
+    "growth-advisor",
+    "tech-advisor",
+    "imports-exports-advisor",
+    "taxes-laws-advisor",
+    "ceo-advisor"
+  ],
+  "artefactsChecked": [
+    "src/lib/ai-platform/runtime/business-advisor-registry.ts",
+    "src/lib/ai-platform/runtime/business-advisor-runtime.ts",
+    "src/lib/ai-platform/runtime/advisor-context-loader.ts",
+    "src/components/business-advisors/AdvisorPageShell.tsx",
+    "src/pages/business-advisors/BusinessAdvisorPage.tsx",
+    "src/pages/business-advisors/BusinessAdvisorsIndex.tsx",
+    "src/pages/mobile/MobileBusinessAdvisors.tsx",
+    "src/pages/mobile/MobileBusinessAdvisorDetail.tsx",
+    "src/routes/business-advisor-routes.tsx",
+    "src/lib/ai-platform/runtime/index.ts"
+  ]
+}
