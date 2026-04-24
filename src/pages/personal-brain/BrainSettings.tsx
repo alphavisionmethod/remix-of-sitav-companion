@@ -2,18 +2,24 @@
 // Personal Brain — Settings layout shell with sidebar + outlet
 // ═══════════════════════════════════════════════════════════════
 
-import { Outlet, useNavigate } from "react-router-dom";
-import { ArrowLeft, Settings, ShieldAlert } from "lucide-react";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { ArrowLeft, Settings, ShieldAlert, ChevronRight } from "lucide-react";
 import { GlobalErrorBoundary } from "@/components/sita/GlobalErrorBoundary";
 import { PageShell } from "@/components/sita/PageShell";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
 import { SettingsSidebarNav } from "@/components/personal-brain/settings/SettingsSidebarNav";
 import { usePbSecurityPrefs } from "@/components/personal-brain/hooks/usePbSecurityPrefs";
+import { usePbProfile } from "@/components/personal-brain/hooks/usePbProfile";
+import { usePbWorkspaces } from "@/components/personal-brain/hooks/usePbWorkspaces";
+import { usePbMemories } from "@/components/personal-brain/hooks/usePbMemories";
 
 export default function BrainSettings() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { prefs } = usePbSecurityPrefs();
+  const isIndex = location.pathname === "/personal-brain/settings";
 
   return (
     <GlobalErrorBoundary>
@@ -41,11 +47,79 @@ export default function BrainSettings() {
               <SettingsSidebarNav />
             </aside>
             <main className="min-w-0">
-              <Outlet />
+              {isIndex ? <SettingsOverview /> : <Outlet />}
             </main>
           </div>
         </div>
       </PageShell>
     </GlobalErrorBoundary>
+  );
+}
+
+function SettingsOverview() {
+  const { profile } = usePbProfile();
+  const { workspaces } = usePbWorkspaces();
+  const { memories } = usePbMemories();
+  const { prefs } = usePbSecurityPrefs();
+
+  const tiles = [
+    {
+      label: "Personalization",
+      value: profile?.personalization_depth ?? "—",
+    },
+    {
+      label: "Memories",
+      value: String(memories?.length ?? 0),
+    },
+    {
+      label: "Workspaces",
+      value: String(workspaces?.length ?? 0),
+    },
+    {
+      label: "Privacy",
+      value: prefs?.sensitive_mode ? "Sensitive" : "Standard",
+    },
+    {
+      label: "Style",
+      value: profile?.tone ?? "—",
+    },
+    {
+      label: "Scope",
+      value: profile?.work_mode ?? "—",
+    },
+  ];
+
+  return (
+    <div className="space-y-4">
+      <div>
+        <h2 className="text-sm font-semibold">Overview</h2>
+        <p className="text-xs text-muted-foreground">
+          A snapshot of how your Brain is configured. Pick a section on the left to refine.
+        </p>
+      </div>
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+        {tiles.map((t) => (
+          <Card key={t.label}>
+            <CardContent className="p-3">
+              <p className="text-[10px] uppercase tracking-wider text-muted-foreground">
+                {t.label}
+              </p>
+              <p className="text-sm font-medium text-foreground capitalize truncate">
+                {t.value}
+              </p>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+      <Card>
+        <CardContent className="p-4 flex items-center gap-3">
+          <ChevronRight className="h-4 w-4 text-muted-foreground" />
+          <p className="text-xs text-muted-foreground">
+            Use the sidebar to manage profile, memory, modes, workspaces, files, voice,
+            notifications, security, data, and labs.
+          </p>
+        </CardContent>
+      </Card>
+    </div>
   );
 }
