@@ -86,6 +86,7 @@ const WORKSPACES: WorkspaceConfig[] = [
     routes: [
       { path: "/advisors", label: "Advisors", icon: Brain },
       { path: "/boardroom", label: "Boardroom", icon: Users },
+      { path: "/sita", label: "Jarvis Bridge", icon: Brain },
       { path: "/proof-center", label: "Proof Center", icon: Shield },
       { path: "/admin/kernel", label: "Kernel", icon: Settings },
     ],
