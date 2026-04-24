@@ -1,7 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
 import { render } from "@/test/test-utils";
-import { MemoryRouter } from "react-router-dom";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import React from "react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
@@ -33,8 +31,6 @@ vi.mock("@/contexts/InspectorContext", () => ({
 }));
 
 describe("Boardroom Page", () => {
-  const qc = new QueryClient({ defaultOptions: { queries: { retry: false } } });
-
   it("exports a default component", async () => {
     const mod = await import("../Boardroom");
     expect(mod.default).toBeDefined();
@@ -42,13 +38,7 @@ describe("Boardroom Page", () => {
 
   it("renders with DemoModeBadge", async () => {
     const Boardroom = (await import("../Boardroom")).default;
-    const { container } = render(
-      <QueryClientProvider client={qc}>
-        <MemoryRouter>
-          <Boardroom />
-        </MemoryRouter>
-      </QueryClientProvider>
-    );
+    const { container } = render(<Boardroom />);
     expect(container).toBeTruthy();
     expect(container.textContent).toContain("Demo");
   }, 15000);

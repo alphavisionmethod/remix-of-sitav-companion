@@ -1,7 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
 import { render } from "@/test/test-utils";
-import { MemoryRouter } from "react-router-dom";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import React from "react";
 
 
@@ -28,8 +26,6 @@ vi.mock("@/contexts/AuthContext", () => ({
 }));
 
 describe("SettingsPage", () => {
-  const qc = new QueryClient({ defaultOptions: { queries: { retry: false } } });
-
   it("exports a default component", async () => {
     const mod = await import("../SettingsPage");
     expect(mod.default).toBeDefined();
@@ -37,13 +33,7 @@ describe("SettingsPage", () => {
 
   it("renders settings sections", async () => {
     const SettingsPage = (await import("../SettingsPage")).default;
-    const { container } = render(
-      <QueryClientProvider client={qc}>
-        <MemoryRouter>
-          <SettingsPage />
-        </MemoryRouter>
-      </QueryClientProvider>
-    );
+    const { container } = render(<SettingsPage />);
     expect(container).toBeTruthy();
   }, 15000);
 });
