@@ -14,7 +14,7 @@
 // Empty-state honesty is mandatory: never fabricate data.
 // ═══════════════════════════════════════════════════════════════
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -38,6 +38,12 @@ interface AdvisorPageShellProps {
   advisor: BusinessAdvisorManifest;
   /** Path users return to (defaults to /business-advisors) */
   backHref?: string;
+  /** Domain-specific recommendations content (e.g. pipeline insights). Replaces the placeholder. */
+  recommendationsSlot?: ReactNode;
+  /** Domain-specific simulation form (e.g. deal-size scenario). Rendered above the run history. */
+  simulationFormSlot?: ReactNode;
+  /** Domain-specific quick stats rendered just under the header. */
+  headerStatsSlot?: ReactNode;
 }
 
 interface DeploymentRow {
@@ -82,7 +88,13 @@ const AUTHORITY_TONE: Record<BusinessAdvisorManifest["authority"], string> = {
   "L5-approval-ready": "Approval-ready",
 };
 
-export function AdvisorPageShell({ advisor, backHref = "/business-advisors" }: AdvisorPageShellProps) {
+export function AdvisorPageShell({
+  advisor,
+  backHref = "/business-advisors",
+  recommendationsSlot,
+  simulationFormSlot,
+  headerStatsSlot,
+}: AdvisorPageShellProps) {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("chat");
 
