@@ -242,7 +242,7 @@ function CommandCenterInner() {
                     >
                       <p className="text-xs font-medium text-foreground truncate">{g.title}</p>
                       <p className="mt-0.5 text-[10px] text-muted-foreground capitalize">
-                        {g.horizon ?? "ongoing"} · {g.status}
+                        {g.kind} · {g.status} · {g.progress_pct}%
                       </p>
                     </li>
                   ))}
