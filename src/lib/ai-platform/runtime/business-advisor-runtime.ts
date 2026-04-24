@@ -156,19 +156,18 @@ export async function askBusinessAdvisor(
     : `Advisor: ${advisor.displayName} — operating without business context (empty workspace).`;
 
   const response = await invokeAICapability({
-    capability_key: capabilityKey,
-    prompt: `${contextSummary}\n\n---\n\nUser request (${request.intent ?? "ask"}):\n${request.prompt}`,
-    metadata: {
-      advisor_id: advisor.id,
-      advisor_authority: advisor.authority,
-      sensitive: advisor.sensitive,
-      intent: request.intent ?? "ask",
-    },
+    capabilityKey,
+    messages: [
+      { role: "system", content: contextSummary },
+      { role: "user", content: request.prompt },
+    ],
+    intent: request.intent === "draft" ? "draft" : "ask",
+    receiptRequested: true,
   });
 
   // 3. Persist citations (drawn from context + any returned by the model)
   const derived = deriveCitationsFromContext(context);
-  await persistCitations(advisor.id, userId, response.invocationId ?? null, derived);
+  await persistCitations(advisor.id, userId, response.receiptId ?? null, derived);
 
   return {
     advisor,
@@ -235,21 +234,33 @@ export async function runAdvisorSimulation(
 
   try {
     const response = await invokeAICapability({
-      capability_key: "advisor-simulation",
-      prompt:
-        `Run a what-if scenario for ${advisor.displayName}.\n` +
-        `Scenario: ${req.scenarioTitle}\n` +
-        `Inputs: ${JSON.stringify(req.inputs)}\n` +
-        `Assumptions: ${JSON.stringify(req.assumptions)}\n\n` +
-        `Return projected outcomes, key risks, and a confidence score (0-1).`,
-      metadata: { advisor_id: advisor.id, mode: "simulation" },
+      capabilityKey: "advisor-simulation",
+      messages: [
+        {
+          role: "system",
+          content: `You are running a what-if scenario for ${advisor.displayName}. Return JSON with projected_outcomes, risk_summary, and confidence (0-1).`,
+        },
+        {
+          role: "user",
+          content:
+            `Scenario: ${req.scenarioTitle}\n` +
+            `Inputs: ${JSON.stringify(req.inputs)}\n` +
+            `Assumptions: ${JSON.stringify(req.assumptions)}`,
+        },
+      ],
+      intent: "analyze",
+      receiptRequested: true,
     });
 
+    const structured = response.structuredOutput ?? {};
     const outcomes: Record<string, unknown> =
-      typeof response.data === "object" && response.data !== null
-        ? (response.data as Record<string, unknown>)
-        : { narrative: String(response.data ?? "") };
-    const confidence = response.confidence ?? 0.5;
+      (structured.projected_outcomes as Record<string, unknown> | undefined) ??
+      { narrative: response.content };
+    const confidenceRaw = structured.confidence;
+    const confidence =
+      typeof confidenceRaw === "number"
+        ? Math.max(0, Math.min(1, confidenceRaw))
+        : 0.5;
     const risk =
       (outcomes.risk_summary as string) ??
       (outcomes.risks as string) ??
