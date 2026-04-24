@@ -1,6 +1,9 @@
 name: Test (Sequential, Sharded)
 
 on:
+  # Nightly G6 inventory at 03:15 UTC.
+  schedule:
+    - cron: "15 3 * * *"
   workflow_dispatch:
     inputs:
       filter:
@@ -34,7 +37,7 @@ jobs:
         run: |
           node scripts/test-sequential.mjs \
             --shard ${{ matrix.shard }}/4 \
-            --retry ${{ inputs.retry }} \
+            --retry ${{ inputs.retry || '1' }} \
             ${{ inputs.filter && format('--filter {0}', inputs.filter) || '' }} \
             --allow-failures
       - name: Upload report
@@ -47,3 +50,43 @@ jobs:
             coverage/sequential-report.md
           if-no-files-found: warn
           retention-days: 14
+
+  aggregate:
+    name: Aggregate G6 Inventory
+    needs: test-sequential
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Download all shard reports
+        uses: actions/download-artifact@v4
+        with:
+          path: shard-reports
+          pattern: sequential-report-shard-*
+          merge-multiple: false
+      - name: Aggregate into inventory
+        run: |
+          mkdir -p coverage/g6
+          node scripts/ci/aggregate-sequential-shards.mjs shard-reports coverage/g6
+      - name: Append to job summary
+        if: always()
+        run: |
+          if [ -f coverage/g6/sequential-inventory.md ]; then
+            cat coverage/g6/sequential-inventory.md >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "No inventory produced." >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - name: Upload G6 inventory
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: g6-sequential-inventory
+          path: |
+            coverage/g6/sequential-inventory.json
+            coverage/g6/sequential-inventory.md
+          if-no-files-found: error
+          retention-days: 30
