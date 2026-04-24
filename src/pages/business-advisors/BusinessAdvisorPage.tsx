@@ -13,6 +13,9 @@ import { CFOAdvisorHeaderStats } from "@/components/business-advisors/cfo/CFOAdv
 import { MarketingAdvisorRecommendations } from "@/components/business-advisors/marketing/MarketingAdvisorRecommendations";
 import { MarketingAdvisorSimulationForm } from "@/components/business-advisors/marketing/MarketingAdvisorSimulationForm";
 import { MarketingAdvisorHeaderStats } from "@/components/business-advisors/marketing/MarketingAdvisorHeaderStats";
+import { GrowthAdvisorRecommendations } from "@/components/business-advisors/growth/GrowthAdvisorRecommendations";
+import { GrowthAdvisorSimulationForm } from "@/components/business-advisors/growth/GrowthAdvisorSimulationForm";
+import { GrowthAdvisorHeaderStats } from "@/components/business-advisors/growth/GrowthAdvisorHeaderStats";
 
 export default function BusinessAdvisorPage() {
   const { advisorId } = useParams<{ advisorId: string }>();
@@ -57,6 +60,16 @@ export default function BusinessAdvisorPage() {
         headerStatsSlot={<MarketingAdvisorHeaderStats />}
         recommendationsSlot={<MarketingAdvisorRecommendations />}
         simulationFormSlot={<MarketingAdvisorSimulationForm />}
+      />
+    );
+  }
+  if (advisor.id === "growth-advisor") {
+    return (
+      <AdvisorPageShell
+        advisor={advisor}
+        headerStatsSlot={<GrowthAdvisorHeaderStats />}
+        recommendationsSlot={<GrowthAdvisorRecommendations />}
+        simulationFormSlot={<GrowthAdvisorSimulationForm />}
       />
     );
   }
