@@ -1,7 +1,6 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Revenue Automation Health data hook
-// Wires crm_automations + advisor_board_recommendations.
-// Fatigue alerts have no backing table yet → empty array (honest).
+// Wires crm_automations + advisor_board_recommendations + automation_fatigue_alerts.
 // ═══════════════════════════════════════════════════════════════
 import { useQuery } from "@tanstack/react-query";
 import { fromTable } from "@/lib/supabase-helpers";
@@ -33,6 +32,17 @@ export interface HealthMetric {
   icon: any;
 }
 
+export interface FatigueAlertRow {
+  id: string;
+  automationId: string | null;
+  channel: string;
+  signal: string;
+  severity: "info" | "warning" | "critical";
+  evidence: Record<string, unknown>;
+  acknowledgedAt: string | null;
+  createdAt: string;
+}
+
 export function useRevenueAutomationHealth() {
   const { user } = useAuth();
   const uid = user?.id ?? null;
@@ -44,9 +54,9 @@ export function useRevenueAutomationHealth() {
       automations: AutomationRow[];
       advisorInsights: AdvisorInsightRow[];
       healthMetrics: HealthMetric[];
-      fatigueAlerts: never[];
+      fatigueAlerts: FatigueAlertRow[];
     }> => {
-      const [autoRes, recRes] = await Promise.all([
+      const [autoRes, recRes, fatigueRes] = await Promise.all([
         fromTable("crm_automations")
           .select("id, title, status, runs, last_run_at, execution_log, target_entity")
           .eq("user_id", uid!)
@@ -58,6 +68,12 @@ export function useRevenueAutomationHealth() {
           .eq("status", "new")
           .order("urgency_score", { ascending: false })
           .limit(10),
+        fromTable("automation_fatigue_alerts")
+          .select("id, automation_id, channel, signal, severity, evidence, acknowledged_at, created_at")
+          .eq("user_id", uid!)
+          .is("resolved_at", null)
+          .order("created_at", { ascending: false })
+          .limit(50),
       ]);
 
       const automations: AutomationRow[] = ((autoRes as any).data ?? []).map((a: any) => {
@@ -111,7 +127,18 @@ export function useRevenueAutomationHealth() {
               { label: "Active Automations", value: automations.filter((a) => a.status !== "underperforming").length, target: 0, color: "text-foreground", icon: null },
             ];
 
-      return { automations, advisorInsights, healthMetrics, fatigueAlerts: [] };
+      const fatigueAlerts: FatigueAlertRow[] = ((fatigueRes as any).data ?? []).map((f: any) => ({
+        id: f.id,
+        automationId: f.automation_id ?? null,
+        channel: f.channel,
+        signal: f.signal,
+        severity: f.severity,
+        evidence: (f.evidence ?? {}) as Record<string, unknown>,
+        acknowledgedAt: f.acknowledged_at ?? null,
+        createdAt: f.created_at,
+      }));
+
+      return { automations, advisorInsights, healthMetrics, fatigueAlerts };
     },
   });
 }
