@@ -20,6 +20,7 @@ import { Slider } from "@/components/ui/slider";
 import { useWindowManagerContext } from "@/contexts/WindowManagerContext";
 import { SitaVoiceControlRow } from "./sita-voice/SitaVoiceControlRow";
 import { SitaAutonomyControls } from "./sita-agent/SitaAutonomyControls";
+import { SitaSpatialControls } from "./sita-spatial/SitaSpatialControls";
 
 interface ControlCenterProps {
   open: boolean;
