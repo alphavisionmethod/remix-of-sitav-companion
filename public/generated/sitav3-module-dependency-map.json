@@ -1,0 +1,702 @@
+{
+  "$schema": "sita/module-dependency-map@1",
+  "generatedAt": "2026-04-24T16:09:04.407Z",
+  "totalSubsystems": 26,
+  "totalEdges": 131,
+  "strongEdges": 49,
+  "threshold": 20,
+  "fileCounts": {
+    "__tests__": 0,
+    "admin": 41,
+    "app": 1,
+    "assets": 0,
+    "components": 1136,
+    "contexts": 23,
+    "contracts": 4,
+    "data": 88,
+    "domains": 111,
+    "features": 38,
+    "hooks": 186,
+    "i18n": 1,
+    "integrations": 9,
+    "layouts": 1,
+    "lib": 1577,
+    "packages": 453,
+    "pages": 1067,
+    "planes": 8,
+    "platform": 282,
+    "routes": 17,
+    "runtimes": 83,
+    "services": 1,
+    "shell-runtime": 3,
+    "test": 91,
+    "types": 0,
+    "website-demo": 18,
+    "App.tsx": 1,
+    "main.tsx": 1
+  },
+  "topHubs": [
+    "components",
+    "pages",
+    "lib",
+    "hooks",
+    "integrations"
+  ],
+  "edges": [
+    {
+      "from": "pages",
+      "to": "components",
+      "count": 5058
+    },
+    {
+      "from": "components",
+      "to": "lib",
+      "count": 880
+    },
+    {
+      "from": "pages",
+      "to": "lib",
+      "count": 702
+    },
+    {
+      "from": "pages",
+      "to": "hooks",
+      "count": 568
+    },
+    {
+      "from": "admin",
+      "to": "pages",
+      "count": 505
+    },
+    {
+      "from": "components",
+      "to": "hooks",
+      "count": 293
+    },
+    {
+      "from": "lib",
+      "to": "packages",
+      "count": 279
+    },
+    {
+      "from": "pages",
+      "to": "contexts",
+      "count": 195
+    },
+    {
+      "from": "pages",
+      "to": "integrations",
+      "count": 193
+    },
+    {
+      "from": "lib",
+      "to": "integrations",
+      "count": 172
+    },
+    {
+      "from": "components",
+      "to": "platform",
+      "count": 170
+    },
+    {
+      "from": "hooks",
+      "to": "lib",
+      "count": 164
+    },
+    {
+      "from": "components",
+      "to": "contexts",
+      "count": 161
+    },
+    {
+      "from": "components",
+      "to": "domains",
+      "count": 158
+    },
+    {
+      "from": "lib",
+      "to": "data",
+      "count": 146
+    },
+    {
+      "from": "planes",
+      "to": "lib",
+      "count": 144
+    },
+    {
+      "from": "features",
+      "to": "components",
+      "count": 138
+    },
+    {
+      "from": "pages",
+      "to": "platform",
+      "count": 132
+    },
+    {
+      "from": "test",
+      "to": "lib",
+      "count": 110
+    },
+    {
+      "from": "components",
+      "to": "integrations",
+      "count": 98
+    },
+    {
+      "from": "hooks",
+      "to": "contexts",
+      "count": 94
+    },
+    {
+      "from": "components",
+      "to": "pages",
+      "count": 86
+    },
+    {
+      "from": "pages",
+      "to": "domains",
+      "count": 86
+    },
+    {
+      "from": "admin",
+      "to": "components",
+      "count": 84
+    },
+    {
+      "from": "features",
+      "to": "pages",
+      "count": 75
+    },
+    {
+      "from": "data",
+      "to": "lib",
+      "count": 64
+    },
+    {
+      "from": "hooks",
+      "to": "integrations",
+      "count": 64
+    },
+    {
+      "from": "packages",
+      "to": "lib",
+      "count": 64
+    },
+    {
+      "from": "lib",
+      "to": "assets",
+      "count": 58
+    },
+    {
+      "from": "lib",
+      "to": "platform",
+      "count": 53
+    },
+    {
+      "from": "data",
+      "to": "integrations",
+      "count": 47
+    },
+    {
+      "from": "contexts",
+      "to": "lib",
+      "count": 39
+    },
+    {
+      "from": "pages",
+      "to": "packages",
+      "count": 38
+    },
+    {
+      "from": "domains",
+      "to": "lib",
+      "count": 37
+    },
+    {
+      "from": "hooks",
+      "to": "data",
+      "count": 36
+    },
+    {
+      "from": "planes",
+      "to": "packages",
+      "count": 36
+    },
+    {
+      "from": "platform",
+      "to": "lib",
+      "count": 34
+    },
+    {
+      "from": "test",
+      "to": "packages",
+      "count": 34
+    },
+    {
+      "from": "pages",
+      "to": "runtimes",
+      "count": 33
+    },
+    {
+      "from": "hooks",
+      "to": "domains",
+      "count": 32
+    },
+    {
+      "from": "lib",
+      "to": "components",
+      "count": 30
+    },
+    {
+      "from": "components",
+      "to": "assets",
+      "count": 29
+    },
+    {
+      "from": "hooks",
+      "to": "packages",
+      "count": 28
+    },
+    {
+      "from": "domains",
+      "to": "packages",
+      "count": 26
+    },
+    {
+      "from": "pages",
+      "to": "data",
+      "count": 25
+    },
+    {
+      "from": "lib",
+      "to": "runtimes",
+      "count": 24
+    },
+    {
+      "from": "runtimes",
+      "to": "components",
+      "count": 21
+    },
+    {
+      "from": "planes",
+      "to": "platform",
+      "count": 20
+    },
+    {
+      "from": "platform",
+      "to": "hooks",
+      "count": 20
+    },
+    {
+      "from": "components",
+      "to": "data",
+      "count": 17
+    },
+    {
+      "from": "App.tsx",
+      "to": "routes",
+      "count": 15
+    },
+    {
+      "from": "App.tsx",
+      "to": "components",
+      "count": 14
+    },
+    {
+      "from": "website-demo",
+      "to": "assets",
+      "count": 14
+    },
+    {
+      "from": "components",
+      "to": "packages",
+      "count": 13
+    },
+    {
+      "from": "test",
+      "to": "domains",
+      "count": 13
+    },
+    {
+      "from": "contracts",
+      "to": "packages",
+      "count": 12
+    },
+    {
+      "from": "hooks",
+      "to": "platform",
+      "count": 12
+    },
+    {
+      "from": "contexts",
+      "to": "platform",
+      "count": 11
+    },
+    {
+      "from": "lib",
+      "to": "hooks",
+      "count": 11
+    },
+    {
+      "from": "pages",
+      "to": "assets",
+      "count": 11
+    },
+    {
+      "from": "test",
+      "to": "platform",
+      "count": 11
+    },
+    {
+      "from": "App.tsx",
+      "to": "contexts",
+      "count": 10
+    },
+    {
+      "from": "admin",
+      "to": "lib",
+      "count": 9
+    },
+    {
+      "from": "data",
+      "to": "hooks",
+      "count": 9
+    },
+    {
+      "from": "domains",
+      "to": "integrations",
+      "count": 9
+    },
+    {
+      "from": "admin",
+      "to": "platform",
+      "count": 8
+    },
+    {
+      "from": "contexts",
+      "to": "hooks",
+      "count": 8
+    },
+    {
+      "from": "pages",
+      "to": "admin",
+      "count": 8
+    },
+    {
+      "from": "main.tsx",
+      "to": "lib",
+      "count": 7
+    },
+    {
+      "from": "website-demo",
+      "to": "lib",
+      "count": 7
+    },
+    {
+      "from": "components",
+      "to": "runtimes",
+      "count": 6
+    },
+    {
+      "from": "lib",
+      "to": "contexts",
+      "count": 6
+    },
+    {
+      "from": "contexts",
+      "to": "components",
+      "count": 5
+    },
+    {
+      "from": "hooks",
+      "to": "runtimes",
+      "count": 5
+    },
+    {
+      "from": "shell-runtime",
+      "to": "platform",
+      "count": 5
+    },
+    {
+      "from": "data",
+      "to": "packages",
+      "count": 4
+    },
+    {
+      "from": "hooks",
+      "to": "components",
+      "count": 4
+    },
+    {
+      "from": "planes",
+      "to": "data",
+      "count": 4
+    },
+    {
+      "from": "platform",
+      "to": "runtimes",
+      "count": 4
+    },
+    {
+      "from": "runtimes",
+      "to": "platform",
+      "count": 4
+    },
+    {
+      "from": "test",
+      "to": "data",
+      "count": 4
+    },
+    {
+      "from": "App.tsx",
+      "to": "lib",
+      "count": 3
+    },
+    {
+      "from": "data",
+      "to": "components",
+      "count": 3
+    },
+    {
+      "from": "integrations",
+      "to": "lib",
+      "count": 3
+    },
+    {
+      "from": "planes",
+      "to": "domains",
+      "count": 3
+    },
+    {
+      "from": "platform",
+      "to": "packages",
+      "count": 3
+    },
+    {
+      "from": "runtimes",
+      "to": "hooks",
+      "count": 3
+    },
+    {
+      "from": "services",
+      "to": "lib",
+      "count": 3
+    },
+    {
+      "from": "shell-runtime",
+      "to": "runtimes",
+      "count": 3
+    },
+    {
+      "from": "test",
+      "to": "components",
+      "count": 3
+    },
+    {
+      "from": "App.tsx",
+      "to": "hooks",
+      "count": 2
+    },
+    {
+      "from": "admin",
+      "to": "integrations",
+      "count": 2
+    },
+    {
+      "from": "contexts",
+      "to": "domains",
+      "count": 2
+    },
+    {
+      "from": "contexts",
+      "to": "runtimes",
+      "count": 2
+    },
+    {
+      "from": "data",
+      "to": "platform",
+      "count": 2
+    },
+    {
+      "from": "domains",
+      "to": "pages",
+      "count": 2
+    },
+    {
+      "from": "hooks",
+      "to": "pages",
+      "count": 2
+    },
+    {
+      "from": "lib",
+      "to": "domains",
+      "count": 2
+    },
+    {
+      "from": "platform",
+      "to": "admin",
+      "count": 2
+    },
+    {
+      "from": "platform",
+      "to": "routes",
+      "count": 2
+    },
+    {
+      "from": "platform",
+      "to": "components",
+      "count": 2
+    },
+    {
+      "from": "routes",
+      "to": "components",
+      "count": 2
+    },
+    {
+      "from": "test",
+      "to": "runtimes",
+      "count": 2
+    },
+    {
+      "from": "App.tsx",
+      "to": "integrations",
+      "count": 1
+    },
+    {
+      "from": "App.tsx",
+      "to": "layouts",
+      "count": 1
+    },
+    {
+      "from": "admin",
+      "to": "domains",
+      "count": 1
+    },
+    {
+      "from": "admin",
+      "to": "routes",
+      "count": 1
+    },
+    {
+      "from": "app",
+      "to": "App",
+      "count": 1
+    },
+    {
+      "from": "app",
+      "to": "contexts",
+      "count": 1
+    },
+    {
+      "from": "components",
+      "to": "layouts",
+      "count": 1
+    },
+    {
+      "from": "contexts",
+      "to": "integrations",
+      "count": 1
+    },
+    {
+      "from": "contexts",
+      "to": "data",
+      "count": 1
+    },
+    {
+      "from": "domains",
+      "to": "platform",
+      "count": 1
+    },
+    {
+      "from": "domains",
+      "to": "data",
+      "count": 1
+    },
+    {
+      "from": "domains",
+      "to": "hooks",
+      "count": 1
+    },
+    {
+      "from": "features",
+      "to": "packages",
+      "count": 1
+    },
+    {
+      "from": "features",
+      "to": "runtimes",
+      "count": 1
+    },
+    {
+      "from": "features",
+      "to": "contexts",
+      "count": 1
+    },
+    {
+      "from": "hooks",
+      "to": "i18n",
+      "count": 1
+    },
+    {
+      "from": "main.tsx",
+      "to": "App.tsx",
+      "count": 1
+    },
+    {
+      "from": "packages",
+      "to": "platform",
+      "count": 1
+    },
+    {
+      "from": "planes",
+      "to": "runtimes",
+      "count": 1
+    },
+    {
+      "from": "platform",
+      "to": "contexts",
+      "count": 1
+    },
+    {
+      "from": "platform",
+      "to": "data",
+      "count": 1
+    },
+    {
+      "from": "platform",
+      "to": "integrations",
+      "count": 1
+    },
+    {
+      "from": "routes",
+      "to": "runtimes",
+      "count": 1
+    },
+    {
+      "from": "routes",
+      "to": "admin",
+      "count": 1
+    },
+    {
+      "from": "routes",
+      "to": "contexts",
+      "count": 1
+    },
+    {
+      "from": "runtimes",
+      "to": "packages",
+      "count": 1
+    },
+    {
+      "from": "services",
+      "to": "packages",
+      "count": 1
+    },
+    {
+      "from": "test",
+      "to": "contexts",
+      "count": 1
+    }
+  ]
+}
