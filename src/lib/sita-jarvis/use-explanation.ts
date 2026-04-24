@@ -20,12 +20,13 @@ import { getReversibility } from "@/lib/ai-platform/runtime/advisor-reversibilit
 import type { ActionPlan } from "@/lib/sita-agent/plan-types";
 import type { JarvisActionItem, JarvisExplanation } from "./types";
 
-function safeGate(score: number | null, advisorId: string | null): "auto" | "approval" | "block" | "unknown" {
-  if (score == null || !advisorId) return "unknown";
+function safeGate(score: number | null, actionClass: string | null): "auto" | "approval" | "block" | "unknown" {
+  if (score == null || !actionClass) return "unknown";
   try {
-    const result = evaluateConfidenceGate(advisorId, score);
-    if (result === "auto" || result === "approval" || result === "block") return result;
-    return "unknown";
+    const { allowed, behavior } = evaluateConfidenceGate(actionClass, score);
+    if (allowed) return "auto";
+    if (behavior === "refuse") return "block";
+    return "approval";
   } catch {
     return "unknown";
   }
@@ -129,10 +130,12 @@ export function useExplanation(item: JarvisActionItem | null, userId: string | n
           loadAdvisorMemories(item.advisorId, userId),
         ]);
         if (cancelled) return;
+        // Use domain as the action-class proxy for the gate (matches CONFIDENCE_GATES keys).
+        const actionClass = item.domain || item.advisorId;
         const payload: JarvisExplanation = {
           item,
           persona: safePersona(item.advisorId),
-          confidence: { score: item.confidence, gate: safeGate(item.confidence, item.advisorId) },
+          confidence: { score: item.confidence, gate: safeGate(item.confidence, actionClass) },
           reversibility: safeReversibility(item),
           councilVotes,
           memories,
