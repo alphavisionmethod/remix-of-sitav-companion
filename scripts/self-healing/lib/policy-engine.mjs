@@ -181,8 +181,30 @@ export function decideRepair(cluster, env = {}) {
     };
   }
 
-  // 5. Auto-merge gate
+  // 5. HARD patch-application gate — 2-person + CODEOWNERS, NEVER bypassable
+  //    by any feature flag. Applied to BOTH safe-auto and gated-pr lanes.
+  const gateResult = enforcePatchApplicationGate(cluster, env);
+
+  // 6. If the gate failed, force the cluster into GATED-PR (or ESCALATE
+  //    for human-only). Surfaces the proposed patch + missing attestation
+  //    to humans without ever silently applying.
+  if (!gateResult.ok) {
+    return {
+      decision: lane === "human-only" ? "ESCALATE" : "DOWNGRADE-TO-GATED",
+      lane: lane === "human-only" ? "human-only" : "gated-pr",
+      requiredStages: limits.requiredStages,
+      blastRadiusCap: limits.blastRadiusCap,
+      autoMergeAllowed: false,
+      gate: gateResult,
+      reason: `patch-gate-blocked:${gateResult.reason}`,
+    };
+  }
+
+  // 7. Auto-merge gate — now requires gateResult.ok IN ADDITION to the
+  //    existing flag + confidence floors. SITA_SAFE_AUTOMERGE alone is
+  //    no longer sufficient.
   const autoMergeAllowed =
+    gateResult.ok &&
     lane === "safe-auto" &&
     limits.autoMergeAllowed === true &&
     cluster.maxConfidence >= POLICY.globalLimits.minConfidenceToAutoMerge &&
@@ -194,6 +216,7 @@ export function decideRepair(cluster, env = {}) {
     requiredStages: limits.requiredStages,
     blastRadiusCap: limits.blastRadiusCap,
     autoMergeAllowed,
+    gate: gateResult,
     reason: `lane:${lane}; conf:${cluster.maxConfidence.toFixed(2)}`,
   };
 }
