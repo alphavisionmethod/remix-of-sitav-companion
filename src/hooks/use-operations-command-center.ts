@@ -44,6 +44,29 @@ export interface IncidentRow {
   started: string;
 }
 
+export interface RunbookRow {
+  id: string;
+  name: string;
+  steps: number;
+  domain: string;
+  severity: string;
+  status: string;
+  autoHeal: boolean;
+  executions: number;
+  lastUsed: string | null;
+}
+
+export interface QueueRow {
+  name: string;
+  owner: string;
+  depth: number;
+  lagMs: number;
+  pressure: "none" | "low" | "medium" | "high";
+  capturedAt: string;
+}
+
+const SYSTEM_RUNBOOK_OWNER = "00000000-0000-0000-0000-000000000000";
+
 export function useOperationsCommandCenter() {
   const { user } = useAuth();
   const uid = user?.id ?? null;
@@ -55,8 +78,10 @@ export function useOperationsCommandCenter() {
       slos: SloRow[];
       alerts: AlertRow[];
       incidents: IncidentRow[];
+      runbooks: RunbookRow[];
+      queues: QueueRow[];
     }> => {
-      const [alertsRes, incidentsRes, slosRes] = await Promise.all([
+      const [alertsRes, incidentsRes, slosRes, runbooksRes] = await Promise.all([
         fromTable("alerts")
           .select("id, title, source, subsystem, severity, status, runbook_id, ack_at, last_seen_at")
           .eq("status", "active")
@@ -73,6 +98,11 @@ export function useOperationsCommandCenter() {
         fromTable("internal_agent_slo_snapshots")
           .select("agent_id, slo_name, target, current, budget_remaining, burn_rate, window, captured_at")
           .order("captured_at", { ascending: false })
+          .limit(50),
+        fromTable("platform_runbooks")
+          .select("id, title, steps, domain, severity, status, auto_heal_enabled, execution_count, last_executed_at, user_id")
+          .or(`user_id.eq.${SYSTEM_RUNBOOK_OWNER}${uid ? `,user_id.eq.${uid}` : ""}`)
+          .order("severity", { ascending: true })
           .limit(50),
       ]);
 
@@ -117,7 +147,57 @@ export function useOperationsCommandCenter() {
         window: row.window ?? "30d",
       }));
 
-      return { services, slos, alerts, incidents };
+      const runbooks: RunbookRow[] = ((runbooksRes as any).data ?? []).map((r: any) => ({
+        id: r.id,
+        name: r.title,
+        steps: Array.isArray(r.steps) ? r.steps.length : 0,
+        domain: r.domain ?? "platform",
+        severity: r.severity ?? "info",
+        status: r.status ?? "draft",
+        autoHeal: !!r.auto_heal_enabled,
+        executions: r.execution_count ?? 0,
+        lastUsed: r.last_executed_at ?? null,
+      }));
+
+      // Derive queue depths from SLO snapshots tagged as queue_*_depth / queue_*_lag.
+      const queueAgg = new Map<string, { depth: number; lagMs: number; capturedAt: string; owner: string }>();
+      ((slosRes as any).data ?? []).forEach((row: any) => {
+        const sloName: string = row.slo_name ?? "";
+        const match = sloName.match(/^queue_(.+?)_(depth|lag_ms)$/);
+        if (!match) return;
+        const [, queueKey, kind] = match;
+        const existing = queueAgg.get(queueKey) ?? {
+          depth: 0,
+          lagMs: 0,
+          capturedAt: row.captured_at,
+          owner: row.agent_id ?? "platform",
+        };
+        if (kind === "depth") existing.depth = Math.round(Number(row.current ?? 0));
+        if (kind === "lag_ms") existing.lagMs = Math.round(Number(row.current ?? 0));
+        if (!existing.capturedAt || row.captured_at > existing.capturedAt) existing.capturedAt = row.captured_at;
+        existing.owner = row.agent_id ?? existing.owner;
+        queueAgg.set(queueKey, existing);
+      });
+      const queues: QueueRow[] = Array.from(queueAgg.entries()).map(([key, v]) => {
+        const pressure: QueueRow["pressure"] =
+          v.depth === 0 && v.lagMs < 50
+            ? "none"
+            : v.depth < 25 && v.lagMs < 250
+              ? "low"
+              : v.depth < 100 && v.lagMs < 1000
+                ? "medium"
+                : "high";
+        return {
+          name: key.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()),
+          owner: v.owner,
+          depth: v.depth,
+          lagMs: v.lagMs,
+          pressure,
+          capturedAt: v.capturedAt,
+        };
+      });
+
+      return { services, slos, alerts, incidents, runbooks, queues };
     },
   });
 }
