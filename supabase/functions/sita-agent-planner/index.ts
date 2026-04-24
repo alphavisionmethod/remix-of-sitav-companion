@@ -129,6 +129,9 @@ Deno.serve(async (req) => {
     const intent = typeof body.intent === "string" ? body.intent.trim() : "";
     const domain: Domain = ["business", "finance", "concierge"].includes(body.domain) ? body.domain : "business";
     const autonomyTier = Math.max(0, Math.min(4, Number.parseInt(String(body.autonomyTier ?? 1), 10) || 1));
+    // Phase G: optional rolling world snapshot from useSitaAgent.
+    const worldState = (body.world_state && typeof body.world_state === "object") ? body.world_state : null;
+    const missionId = typeof body.mission_id === "string" ? body.mission_id : null;
 
     if (!intent) {
       return new Response(JSON.stringify({ error: "intent required" }), {
@@ -147,10 +150,14 @@ Deno.serve(async (req) => {
       "3. Each step's `payload` must be a JSON object the capability can consume directly.",
       "4. Order steps so prerequisites come first.",
       "5. Keep summaries short (≤ 80 chars), human-readable, action-oriented.",
+      worldState ? "" : null,
+      worldState ? "WORLD STATE (use only if relevant — never invent fields):" : null,
+      worldState ? JSON.stringify(worldState).slice(0, 1500) : null,
+      missionId ? `ACTIVE MISSION: ${missionId} — bias steps toward advancing this mission when applicable.` : null,
       "",
       "ALLOWED SKILLS:",
       allowed,
-    ].join("\n");
+    ].filter(Boolean).join("\n");
 
     const aiResp = await fetch(LOVABLE_AI_URL, {
       method: "POST",
@@ -248,6 +255,7 @@ Deno.serve(async (req) => {
       reversible: steps.every((s) => s.reversible),
       autonomyTier,
       canAutoRun: canAutoRun(steps, autonomyTier),
+      missionId: missionId ?? undefined,
       createdAt: Date.now(),
     };
 
