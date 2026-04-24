@@ -37,3 +37,30 @@ export { useAIRuntimeVerification } from "./hooks/use-ai-runtime-verification";
 // Workforce executor
 export { executeWorkforceTask } from "./workforce-executor";
 export type { WorkforceExecutionRequest, WorkforceExecutionResult } from "./workforce-executor";
+
+// ── Phase 0: Business Advisor Shared Platform ──
+export {
+  BUSINESS_ADVISORS,
+  BUSINESS_ADVISOR_LIST,
+  getBusinessAdvisor,
+  isBusinessAdvisor,
+} from "./business-advisor-registry";
+export type {
+  BusinessAdvisorId,
+  BusinessAdvisorManifest,
+  AdvisorAuthorityLevel,
+} from "./business-advisor-registry";
+export { loadAdvisorContext } from "./advisor-context-loader";
+export type { AdvisorContextSlice, AdvisorContextSnapshot } from "./advisor-context-loader";
+export {
+  askBusinessAdvisor,
+  runAdvisorSimulation,
+  AdvisorRuntimeError,
+} from "./business-advisor-runtime";
+export type {
+  AdvisorAskRequest,
+  AdvisorAskResult,
+  AdvisorCitation,
+  AdvisorSimulationRequest,
+  AdvisorSimulationResult,
+} from "./business-advisor-runtime";
