@@ -51,7 +51,7 @@ const EnterpriseCatalogPage = () => {
 
       {/* Apps */}
       <div className="space-y-3">
-        {([] as never[]).map(app => {
+        {([] as any[]).map(app => {
           const st = statusConfig[app.status];
           const Icon = st.icon;
           return (

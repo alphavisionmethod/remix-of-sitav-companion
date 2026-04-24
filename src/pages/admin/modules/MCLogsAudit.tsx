@@ -48,7 +48,7 @@ export default function MCLogsAudit() {
   const [showCorrelation, setShowCorrelation] = useState<string | null>(null);
 
   const filtered = useMemo(() => {
-    return ([] as never[]).filter(l => {
+    return ([] as any[]).filter(l => {
       if (actorFilter !== "all" && l.actor !== actorFilter) return false;
       if (severityFilter !== "all" && l.severity !== severityFilter) return false;
       if (showCorrelation && l.correlationId !== showCorrelation) return false;
@@ -69,11 +69,11 @@ export default function MCLogsAudit() {
 
       <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
         {[
-          { label: "Total Events", value: ([] as never[]).length, icon: FileText, color: "text-foreground" },
-          { label: "Admin Actions", value: ([] as never[]).filter(l => l.actor === "admin").length, icon: User, color: "text-blue-400" },
-          { label: "AI Actions", value: ([] as never[]).filter(l => l.actor === "ai_agent").length, icon: Bot, color: "text-purple-400" },
-          { label: "Warnings", value: ([] as never[]).filter(l => l.severity === "warning").length, icon: AlertTriangle, color: "text-amber-400" },
-          { label: "Errors", value: ([] as never[]).filter(l => l.severity === "error" || l.severity === "critical").length, icon: XCircle, color: "text-red-400" },
+          { label: "Total Events", value: ([] as any[]).length, icon: FileText, color: "text-foreground" },
+          { label: "Admin Actions", value: ([] as any[]).filter(l => l.actor === "admin").length, icon: User, color: "text-blue-400" },
+          { label: "AI Actions", value: ([] as any[]).filter(l => l.actor === "ai_agent").length, icon: Bot, color: "text-purple-400" },
+          { label: "Warnings", value: ([] as any[]).filter(l => l.severity === "warning").length, icon: AlertTriangle, color: "text-amber-400" },
+          { label: "Errors", value: ([] as any[]).filter(l => l.severity === "error" || l.severity === "critical").length, icon: XCircle, color: "text-red-400" },
         ].map(kpi => (
           <div key={kpi.label} className="rounded-xl border border-border/30 bg-white/[0.02] p-3">
             <div className="flex items-center gap-2 mb-1"><kpi.icon className={cn("h-3.5 w-3.5", kpi.color)} /><span className="text-[10px] text-muted-foreground">{kpi.label}</span></div>

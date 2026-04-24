@@ -158,7 +158,7 @@ export default function AIRuntimeStatus() {
                   </tr>
                 </thead>
                 <tbody>
-                  {([] as never[]).map((feature) => {
+                  {([] as any[]).map((feature) => {
                     const fnHealthy = health?.checks.edge_functions_healthy?.[feature.fn];
                     const usesAI = feature.fn === "chat-advisor" || feature.fn === "brain-core" || feature.fn === "personal-brain";
                     const featureStatus = usesAI

@@ -57,18 +57,18 @@ export default function ProofMatrixExplorer() {
   const [typeFilter, setTypeFilter] = useState("all");
   const [expanded, setExpanded] = useState<string | null>(null);
 
-  const filtered = ([] as never[]).filter(p => {
+  const filtered = ([] as any[]).filter(p => {
     if (typeFilter !== "all" && p.type !== typeFilter) return false;
     if (search && !p.action.toLowerCase().includes(search.toLowerCase())) return false;
     return true;
   });
 
-  const verifiedCount = ([] as never[]).filter(p => p.verified).length;
-  const withReceipts = ([] as never[]).filter(p => p.receiptId).length;
-  const totalEvidence = ([] as never[]).reduce((s, p) => s + p.evidenceCount, 0);
+  const verifiedCount = ([] as any[]).filter(p => p.verified).length;
+  const withReceipts = ([] as any[]).filter(p => p.receiptId).length;
+  const totalEvidence = ([] as any[]).reduce((s, p) => s + p.evidenceCount, 0);
 
   // Coverage by domain
-  const domainCoverage = ([] as never[]).reduce((acc, p) => {
+  const domainCoverage = ([] as any[]).reduce((acc, p) => {
     acc[p.domain] = (acc[p.domain] || 0) + 1;
     return acc;
   }, {} as Record<string, number>);
@@ -86,11 +86,11 @@ export default function ProofMatrixExplorer() {
 
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
         {[
-          { label: "Total Proofs", value: ([] as never[]).length, color: "text-foreground" },
-          { label: "Verified", value: `${verifiedCount}/${([] as never[]).length}`, color: "text-emerald-400" },
-          { label: "With Receipts", value: `${withReceipts}/${([] as never[]).length}`, color: "text-blue-400" },
+          { label: "Total Proofs", value: ([] as any[]).length, color: "text-foreground" },
+          { label: "Verified", value: `${verifiedCount}/${([] as any[]).length}`, color: "text-emerald-400" },
+          { label: "With Receipts", value: `${withReceipts}/${([] as any[]).length}`, color: "text-blue-400" },
           { label: "Evidence Items", value: totalEvidence, color: "text-purple-400" },
-          { label: "Rollbackable", value: ([] as never[]).filter(p => p.rollbackEligible).length, color: "text-amber-400" },
+          { label: "Rollbackable", value: ([] as any[]).filter(p => p.rollbackEligible).length, color: "text-amber-400" },
         ].map((k, i) => (
           <Card key={i} className="bg-card/50 border-border/50">
             <CardContent className="p-3 text-center">
@@ -210,11 +210,11 @@ export default function ProofMatrixExplorer() {
               <CardHeader className="pb-2"><CardTitle className="text-xs">Finality Distribution</CardTitle></CardHeader>
               <CardContent className="space-y-2">
                 {(["tentative", "provisional", "committed", "finalized", "irreversible"] as const).map(f => {
-                  const count = ([] as never[]).filter(p => p.finality === f).length;
+                  const count = ([] as any[]).filter(p => p.finality === f).length;
                   return (
                     <div key={f} className="flex items-center gap-2">
                       <span className={cn("text-[10px] w-20 capitalize", FINALITY_CONFIG[f].color)}>{f}</span>
-                      <div className="flex-1 h-2 bg-muted/20 rounded-full overflow-hidden"><div className="h-full bg-primary/60 rounded-full" style={{ width: `${(count / ([] as never[]).length) * 100}%` }} /></div>
+                      <div className="flex-1 h-2 bg-muted/20 rounded-full overflow-hidden"><div className="h-full bg-primary/60 rounded-full" style={{ width: `${(count / ([] as any[]).length) * 100}%` }} /></div>
                       <span className="text-[10px] text-foreground w-4 text-right">{count}</span>
                     </div>
                   );
@@ -226,7 +226,7 @@ export default function ProofMatrixExplorer() {
           <TabsContent value="chains">
             <h3 className="text-sm font-semibold mb-4">Evidence Chain Visualization</h3>
             <div className="space-y-4">
-              {([] as never[]).filter(p => p.chain.length >= 3).map(proof => (
+              {([] as any[]).filter(p => p.chain.length >= 3).map(proof => (
                 <Card key={proof.id} className="bg-card/50 border-border/50">
                   <CardContent className="p-4">
                     <div className="flex items-center gap-2 mb-3">

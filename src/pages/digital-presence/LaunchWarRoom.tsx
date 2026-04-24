@@ -11,7 +11,7 @@ import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 const READINESS_CHECKS: any[] = [];
 
 export default function LaunchWarRoom() {
-  const overallScore = Math.round(([] as never[]).reduce((sum, c) => sum + c.score, 0) / Math.max(([] as never[]).length, 1));
+  const overallScore = Math.round(([] as any[]).reduce((sum, c) => sum + c.score, 0) / Math.max(([] as any[]).length, 1));
   return (
     <PageShell width="wide">
       <DPOSubNav />
@@ -37,7 +37,7 @@ export default function LaunchWarRoom() {
         <Card className="bg-card/50 border-border/50">
           <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><Rocket className="w-4 h-4 text-pink-400" /> Readiness Checks</CardTitle></CardHeader>
           <CardContent className="space-y-2">
-            {([] as never[]).map(c => (
+            {([] as any[]).map(c => (
               <div key={c.area} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
                 <div className="flex items-center gap-3">
                   {c.status === "ready" ? <CheckCircle className="w-4 h-4 text-green-400" /> : <AlertTriangle className="w-4 h-4 text-amber-400" />}
@@ -59,7 +59,7 @@ export default function LaunchWarRoom() {
         <Card className="bg-card/50 border-border/50">
           <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><Clock className="w-4 h-4 text-blue-400" /> Launch Timeline</CardTitle></CardHeader>
           <CardContent className="space-y-2">
-            {([] as never[]).map(t => (
+            {([] as any[]).map(t => (
               <div key={t.time} className="flex items-center gap-3 p-2">
                 <span className="text-xs font-mono text-muted-foreground w-12">{t.time}</span>
                 <div className="flex-1 flex items-center justify-between">

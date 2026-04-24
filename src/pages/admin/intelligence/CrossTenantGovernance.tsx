@@ -16,9 +16,9 @@ const CrossTenantGovernance = () => {
   const { isAdmin, loading } = useRequireAdmin();
   if (loading || !isAdmin) return null;
 
-  const approved = ([] as never[]).filter(p => p.approved).length;
-  const pending = ([] as never[]).filter(p => !p.approved && p.tenants > 0).length;
-  const blocked = ([] as never[]).filter(p => p.tenants === 0).length;
+  const approved = ([] as any[]).filter(p => p.approved).length;
+  const pending = ([] as any[]).filter(p => !p.approved && p.tenants > 0).length;
+  const blocked = ([] as any[]).filter(p => p.tenants === 0).length;
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
@@ -30,7 +30,7 @@ const CrossTenantGovernance = () => {
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {[
-          { label: "Total Patterns", value: String(([] as never[]).length) },
+          { label: "Total Patterns", value: String(([] as any[]).length) },
           { label: "Approved", value: String(approved), color: "text-emerald-400" },
           { label: "Pending Review", value: String(pending), color: "text-amber-400" },
           { label: "Blocked (Private)", value: String(blocked), color: "text-rose-400" },
@@ -63,7 +63,7 @@ const CrossTenantGovernance = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {([] as never[]).map(p => (
+              {([] as any[]).map(p => (
                 <TableRow key={p.id}>
                   <TableCell className="text-xs font-medium text-foreground max-w-[200px] truncate">{p.label}</TableCell>
                   <TableCell><Badge variant="outline" className="text-[9px]">{p.type.replace(/_/g, " ")}</Badge></TableCell>
@@ -93,14 +93,14 @@ const CrossTenantGovernance = () => {
             <div className="p-3 rounded-lg bg-secondary/20 space-y-2">
               <p className="text-xs font-medium text-foreground">Restricted Domains</p>
               <div className="flex flex-wrap gap-2">
-                {([] as never[]).map(d => <Badge key={d} variant="destructive" className="text-[9px]">{d}</Badge>)}
+                {([] as any[]).map(d => <Badge key={d} variant="destructive" className="text-[9px]">{d}</Badge>)}
               </div>
               <p className="text-[10px] text-muted-foreground">These domains never participate in cross-tenant generalization</p>
             </div>
             <div className="p-3 rounded-lg bg-secondary/20 space-y-2">
               <p className="text-xs font-medium text-foreground">Enterprise Exclusions</p>
               <div className="flex flex-wrap gap-2">
-                {([] as never[]).map(e => <Badge key={e} variant="outline" className="text-[9px]">{e}</Badge>)}
+                {([] as any[]).map(e => <Badge key={e} variant="outline" className="text-[9px]">{e}</Badge>)}
               </div>
               <p className="text-[10px] text-muted-foreground">Opted out of cross-tenant learning by policy</p>
             </div>
@@ -121,7 +121,7 @@ const CrossTenantGovernance = () => {
         <Card className="bg-card/80 border-border/50">
           <CardHeader className="pb-2"><CardTitle className="text-sm flex items-center gap-2"><Eye className="h-4 w-4 text-blue-400" /> Pattern Eligibility Summary</CardTitle></CardHeader>
           <CardContent className="space-y-2">
-            {([] as never[]).map(p => (
+            {([] as any[]).map(p => (
               <div key={p.id} className="flex items-center justify-between p-2 rounded-lg bg-secondary/20">
                 <div className="min-w-0 flex-1">
                   <p className="text-xs font-medium text-foreground truncate">{p.label}</p>

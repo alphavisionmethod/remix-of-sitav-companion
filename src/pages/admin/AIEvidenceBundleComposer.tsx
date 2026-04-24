@@ -21,14 +21,14 @@ const AIEvidenceBundleComposer = () => {
 const BUNDLE_ITEMS: any[] = [];
   const { isDemo } = useAIEngDomain("missions", BUNDLE_ITEMS);
   const [selectedMode, setSelectedMode] = useState<ExportMode>("markdown");
-  const [selectedItems, setSelectedItems] = useState<string[]>(([] as never[]).map(b => b.id));
+  const [selectedItems, setSelectedItems] = useState<string[]>(([] as any[]).map(b => b.id));
   const [tab, setTab] = useState("compose");
 
   const toggleItem = (id: string) => {
     setSelectedItems(prev => prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]);
   };
 
-  const selected = ([] as never[]).filter(b => selectedItems.includes(b.id));
+  const selected = ([] as any[]).filter(b => selectedItems.includes(b.id));
   const totalEvidence = selected.reduce((a, b) => a + b.evidence.length, 0);
   const totalTests = selected.reduce((a, b) => a + b.tests.length, 0);
   const avgConfidence = selected.length > 0 ? Math.round(selected.reduce((a, b) => a + b.confidence, 0) / selected.length) : 0;
@@ -64,7 +64,7 @@ const BUNDLE_ITEMS: any[] = [];
           <div>
             <p className="text-[10px] text-muted-foreground uppercase tracking-wider mb-2">Export Format</p>
             <div className="grid grid-cols-5 gap-2">
-              {([] as never[]).map(m => (
+              {([] as any[]).map(m => (
                 <div
                   key={m.mode}
                   onClick={() => setSelectedMode(m.mode)}
@@ -84,7 +84,7 @@ const BUNDLE_ITEMS: any[] = [];
           <div>
             <p className="text-[10px] text-muted-foreground uppercase tracking-wider mb-2">Items to Include</p>
             <div className="space-y-2">
-              {([] as never[]).map(b => (
+              {([] as any[]).map(b => (
                 <div
                   key={b.id}
                   onClick={() => toggleItem(b.id)}
@@ -231,7 +231,7 @@ const BUNDLE_ITEMS: any[] = [];
               <div className="rounded-xl border border-border/40 p-4">
                 <p className="text-sm font-semibold mb-1">Bundle Summary</p>
                 <div className="space-y-1 text-xs text-muted-foreground">
-                  <p>Format: <strong className="text-foreground">{([] as never[]).find(m => m.mode === selectedMode)?.label}</strong></p>
+                  <p>Format: <strong className="text-foreground">{([] as any[]).find(m => m.mode === selectedMode)?.label}</strong></p>
                   <p>Items: <strong className="text-foreground">{selected.length}</strong></p>
                   <p>Evidence: <strong className="text-foreground">{totalEvidence} pieces</strong></p>
                   <p>Tests: <strong className="text-foreground">{totalTests}</strong></p>
@@ -267,7 +267,7 @@ const BUNDLE_ITEMS: any[] = [];
               </p>
               <div className="flex justify-center gap-2 mt-3">
                 <Badge variant="outline" className="cursor-pointer hover:bg-primary/10 transition-colors px-3 py-1">
-                  <Download className="h-3 w-3 mr-1" /> Download {([] as never[]).find(m => m.mode === selectedMode)?.label}
+                  <Download className="h-3 w-3 mr-1" /> Download {([] as any[]).find(m => m.mode === selectedMode)?.label}
                 </Badge>
                 <Badge variant="outline" className="cursor-pointer hover:bg-primary/10 transition-colors px-3 py-1">
                   <Code className="h-3 w-3 mr-1" /> Copy to Clipboard

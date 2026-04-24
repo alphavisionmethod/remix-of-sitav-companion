@@ -38,7 +38,7 @@ export default function DRS05ProviderConsole() {
                 </tr>
               </thead>
               <tbody>
-                {([] as never[]).map(domain => {
+                {([] as any[]).map(domain => {
                   const isRegistered = registered.includes(domain);
                   const meta = isRegistered ? getProviderMetadata(domain, mode) : null;
                   return (

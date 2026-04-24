@@ -38,7 +38,7 @@ const BuilderKnowledgeBase = () => {
 
         <TabsContent value="archetypes" className="space-y-4 mt-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {([] as never[]).map(arch => (
+            {([] as any[]).map(arch => (
               <Card key={arch.key}>
                 <CardHeader><CardTitle className="text-base">{arch.label}</CardTitle></CardHeader>
                 <CardContent className="space-y-3">

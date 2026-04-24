@@ -25,7 +25,7 @@ export default function DecisionReadiness() {
       </div>
 
       <div className="flex gap-2 overflow-x-auto pb-1">
-        {([] as never[]).map(d => {
+        {([] as any[]).map(d => {
           const v = VERDICT_CONFIG[d.verdict];
           return (
             <button key={d.id} onClick={() => setSelected(d)}

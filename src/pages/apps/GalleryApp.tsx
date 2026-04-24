@@ -24,7 +24,7 @@ export default function GalleryApp() {
   const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
   const [album, setAlbum] = useState("All");
 
-  const filtered = ([] as never[]).filter(p => {
+  const filtered = ([] as any[]).filter(p => {
     if (album !== "All" && p.album !== album) return false;
     if (search && !p.title.toLowerCase().includes(search.toLowerCase())) return false;
     return true;
@@ -36,7 +36,7 @@ export default function GalleryApp() {
         <div className="flex items-center gap-2">
           <Image className="h-6 w-6 text-primary" />
           <h1 className="text-xl font-bold text-foreground">Gallery</h1>
-          <Badge variant="secondary" className="text-xs">{([] as never[]).length} items</Badge>
+          <Badge variant="secondary" className="text-xs">{([] as any[]).length} items</Badge>
         </div>
         <Button size="sm"><Upload className="h-3.5 w-3.5 mr-1.5" /> Upload</Button>
       </div>

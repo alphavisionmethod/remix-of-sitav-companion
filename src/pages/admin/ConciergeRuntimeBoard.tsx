@@ -60,8 +60,8 @@ const ConciergeRuntimeBoard = () => {
     queryFn: async () => { const { data } = await fromTable("household_tasks").select("*").limit(5); return data || []; },
   });
 
-  const activeCount = ([] as never[]).filter(t => t.state === "active").length;
-  const brokenCount = ([] as never[]).filter(t => t.continuityBroken).length;
+  const activeCount = ([] as any[]).filter(t => t.state === "active").length;
+  const brokenCount = ([] as any[]).filter(t => t.continuityBroken).length;
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
@@ -80,9 +80,9 @@ const ConciergeRuntimeBoard = () => {
           {[
             { label: "Active Tasks", value: String(activeCount), color: "text-blue-500" },
             { label: "Broken Continuity", value: String(brokenCount), color: brokenCount > 0 ? "text-red-500" : "text-emerald-500" },
-            { label: "Promises Tracked", value: String(([] as never[]).length), color: "text-primary" },
-            { label: "Active Travel", value: String(([] as never[]).filter(t => t.status === "active").length), color: "text-blue-500" },
-            { label: "Promise Fulfillment", value: `${Math.round((([] as never[]).filter(p => p.status === "completed").length / ([] as never[]).length) * 100)}%`, color: "text-amber-500" },
+            { label: "Promises Tracked", value: String(([] as any[]).length), color: "text-primary" },
+            { label: "Active Travel", value: String(([] as any[]).filter(t => t.status === "active").length), color: "text-blue-500" },
+            { label: "Promise Fulfillment", value: `${Math.round((([] as any[]).filter(p => p.status === "completed").length / ([] as any[]).length) * 100)}%`, color: "text-amber-500" },
           ].map(m => (
             <Card key={m.label}><CardContent className="p-3.5">
               <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-1">{m.label}</p>
@@ -102,7 +102,7 @@ const ConciergeRuntimeBoard = () => {
           </TabsList>
 
           <TabsContent value="tasks" className="mt-4 space-y-2">
-            {([] as never[]).map(t => {
+            {([] as any[]).map(t => {
               const DomainIcon = domainIcon[t.domain] || Activity;
               return (
                 <div key={t.id} className="p-3 rounded-lg border hover:bg-muted/30 transition-colors">
@@ -126,7 +126,7 @@ const ConciergeRuntimeBoard = () => {
           </TabsContent>
 
           <TabsContent value="travel" className="mt-4 space-y-2">
-            {([] as never[]).map(t => (
+            {([] as any[]).map(t => (
               <Card key={t.id}>
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between mb-2">
@@ -146,7 +146,7 @@ const ConciergeRuntimeBoard = () => {
           </TabsContent>
 
           <TabsContent value="household" className="mt-4 space-y-2">
-            {([] as never[]).map(h => (
+            {([] as any[]).map(h => (
               <Card key={h.id}>
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between mb-2">
@@ -168,7 +168,7 @@ const ConciergeRuntimeBoard = () => {
           </TabsContent>
 
           <TabsContent value="promises" className="mt-4 space-y-2">
-            {([] as never[]).map(p => (
+            {([] as any[]).map(p => (
               <Card key={p.id} className={p.status === "broken" ? "border-red-500/30" : ""}>
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between mb-2">
@@ -192,7 +192,7 @@ const ConciergeRuntimeBoard = () => {
             <Card>
               <CardHeader className="pb-3"><CardTitle className="text-sm font-semibold">Concierge Receipt Feed</CardTitle></CardHeader>
               <CardContent className="space-y-2">
-                {([] as never[]).map(r => (
+                {([] as any[]).map(r => (
                   <div key={r.id} className="flex items-start gap-3 p-2.5 rounded border hover:bg-muted/20">
                     {r.outcome === "success" ? <CheckCircle className="h-3.5 w-3.5 mt-0.5 text-emerald-500" /> : <XCircle className="h-3.5 w-3.5 mt-0.5 text-red-500" />}
                     <div className="flex-1">
@@ -212,7 +212,7 @@ const ConciergeRuntimeBoard = () => {
             <Card>
               <CardHeader className="pb-3"><CardTitle className="text-sm font-semibold flex items-center gap-2"><Target className="h-4 w-4 text-primary" /> Concierge SLA Tracking</CardTitle></CardHeader>
               <CardContent className="space-y-3">
-                {([] as never[]).map(s => (
+                {([] as any[]).map(s => (
                   <div key={s.metric} className="p-3 rounded-lg border">
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-sm font-medium text-foreground">{s.metric}</span>

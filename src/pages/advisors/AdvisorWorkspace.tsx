@@ -283,7 +283,7 @@ const ConfidencePanel = ({ mode }: { mode: CouncilMode }) => {
 return null;
   
   const modeConfig = MODES.find(m => m.id === mode)!;
-  const advisors = [] as never[];
+  const advisors = [] as any[];
 
   return (
     <div className="space-y-3">
@@ -399,7 +399,7 @@ const { pendingApprovals, isLoading } = useApprovalQueue();
         impact: "medium" as const,
         requiresApproval: true,
       }))
-    : ([] as never[]);
+    : ([] as any[]);
 
   return (
     <div className="space-y-6">
@@ -461,7 +461,7 @@ const { data: dbMemory = [] } = useQuery({
         confidence: m.confidence || 0.8,
         usedCount: 0,
       }))
-    : ([] as never[]);
+    : ([] as any[]);
 
   return (
     <div className="space-y-6">

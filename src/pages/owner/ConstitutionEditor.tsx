@@ -245,7 +245,7 @@ function RuleComposer({ onCompile }: { onCompile: (text: string) => void }) {
             className="overflow-hidden"
           >
             <div className="flex flex-wrap gap-1.5 mt-2">
-              {([] as never[]).map(ex => (
+              {([] as any[]).map(ex => (
                 <button
                   key={ex}
                   onClick={() => setInput(ex)}

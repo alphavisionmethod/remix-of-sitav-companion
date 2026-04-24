@@ -37,7 +37,7 @@ const APL02AppleDevicesTrust = () => {
 
         <TabsContent value="trust-classes">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {([] as never[]).map((t) => (
+            {([] as any[]).map((t) => (
               <Card key={t.cls} className={`cursor-pointer transition-all ${selectedClass === t.cls ? "ring-2 ring-primary" : "hover:shadow-md"}`} onClick={() => setSelectedClass(selectedClass === t.cls ? null : t.cls)}>
                 <CardHeader className="pb-2">
                   <div className="flex items-center justify-between">
@@ -87,7 +87,7 @@ const APL02AppleDevicesTrust = () => {
                     <th className="text-left p-2">Method</th>
                   </tr></thead>
                   <tbody>
-                    {([] as never[]).map((r, i) => (
+                    {([] as any[]).map((r, i) => (
                       <tr key={i} className="border-b hover:bg-muted/30">
                         <td className="p-2 font-medium">{r.from}</td>
                         <td className="p-2 text-center"><ArrowRight className="h-3 w-3 mx-auto text-primary" /></td>
@@ -133,7 +133,7 @@ const APL02AppleDevicesTrust = () => {
                     <th className="p-2">Min Risk Tier</th>
                   </tr></thead>
                   <tbody>
-                    {([] as never[]).map((v) => (
+                    {([] as any[]).map((v) => (
                       <tr key={v.event} className="border-b hover:bg-muted/30">
                         <td className="p-2 font-medium">{v.event}</td>
                         <td className="p-2"><Badge variant="outline">{v.requires}</Badge></td>

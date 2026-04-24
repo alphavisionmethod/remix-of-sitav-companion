@@ -1764,7 +1764,7 @@ const OwnerCenter = () => {
                 </div>
               </div>
             </SitaCard>
-            {([] as never[]).map((c, i) => (
+            {([] as any[]).map((c, i) => (
               <SitaCard key={i} hover={false} className="p-4">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">

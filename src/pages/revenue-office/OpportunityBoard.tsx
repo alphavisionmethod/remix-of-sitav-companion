@@ -112,7 +112,7 @@ export default function OpportunityBoard() {
         </TabsContent>
 
         <TabsContent value="themes" className="space-y-3 mt-4">
-          {([] as never[]).map(theme => {
+          {([] as any[]).map(theme => {
             const themeOpps = scored.filter(o => {
               if (theme.theme === "Conversion Optimization") return ["Conversion"].includes(o.category);
               if (theme.theme === "Revenue Expansion") return ["Upsell", "Packaging"].includes(o.category);

@@ -43,7 +43,7 @@ export default function BrandStudio() {
         <Card className="bg-card/50 border-border/50">
           <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><Paintbrush className="w-4 h-4 text-purple-400" /> Color System</CardTitle></CardHeader>
           <CardContent className="space-y-3">
-            {([] as never[]).map(c => (
+            {([] as any[]).map(c => (
               <div key={c.name} className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="w-8 h-8 rounded-md border border-border/50" style={{ backgroundColor: c.value }} />
@@ -62,7 +62,7 @@ export default function BrandStudio() {
         <Card className="bg-card/50 border-border/50">
           <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><Type className="w-4 h-4 text-blue-400" /> Typography</CardTitle></CardHeader>
           <CardContent className="space-y-3">
-            {([] as never[]).map(t => (
+            {([] as any[]).map(t => (
               <div key={t.role} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
                 <div>
                   <span className="text-sm font-medium text-foreground">{t.role}</span>
@@ -81,7 +81,7 @@ export default function BrandStudio() {
         <Card className="bg-card/50 border-border/50">
           <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><Image className="w-4 h-4 text-green-400" /> Brand Assets</CardTitle></CardHeader>
           <CardContent className="space-y-2">
-            {([] as never[]).map(a => (
+            {([] as any[]).map(a => (
               <div key={a.name} className="flex items-center justify-between p-2">
                 <div className="flex items-center gap-2">
                   <span className="text-sm text-foreground">{a.name}</span>
@@ -100,7 +100,7 @@ export default function BrandStudio() {
         <Card className="bg-card/50 border-border/50">
           <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><Layout className="w-4 h-4 text-indigo-400" /> Reusable Blocks</CardTitle></CardHeader>
           <CardContent className="space-y-2">
-            {([] as never[]).map(b => (
+            {([] as any[]).map(b => (
               <div key={b.name} className="flex items-center justify-between p-2">
                 <div>
                   <span className="text-sm text-foreground">{b.name}</span>

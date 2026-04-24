@@ -47,7 +47,7 @@ export default function GrowthBoardroom() {
 
   const { data: liveLeakItems } = useRevenueLeakItems();
 
-  const PIPELINE_STAGES = (liveDeals && liveDeals.length > 0 ? [] as never[] : []);
+  const PIPELINE_STAGES = (liveDeals && liveDeals.length > 0 ? [] as any[] : []);
   const LEAKS = (liveLeakItems && liveLeakItems.length > 0 ? liveLeakItems : []);
   const ADVISOR_SIGNALS: any[] = [];
 
@@ -206,7 +206,7 @@ export default function GrowthBoardroom() {
         <Card className="bg-card/50 border-border/50">
           <CardHeader className="pb-3"><CardTitle className="text-sm font-medium flex items-center gap-2"><RefreshCw className="w-4 h-4 text-primary" /> What Changed</CardTitle></CardHeader>
           <CardContent className="space-y-3">
-            {([] as never[]).map((w, i) => (
+            {([] as any[]).map((w, i) => (
               <div key={i} className="flex items-start gap-2">
                 <div className={`w-1.5 h-1.5 rounded-full mt-2 flex-shrink-0 ${w.type === "positive" ? "bg-green-400" : w.type === "warning" ? "bg-yellow-400" : "bg-red-400"}`} />
                 <div className="flex-1">

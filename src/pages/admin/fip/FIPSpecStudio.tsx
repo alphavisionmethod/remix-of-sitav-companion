@@ -20,7 +20,7 @@ const FIPSpecStudio = () => {
 
   const handleCreate = () => {
     if (!form.feature_id) return;
-    const missing = ([] as never[]).filter(s => s !== 'outcome_statement' || !form.outcome_statement);
+    const missing = ([] as any[]).filter(s => s !== 'outcome_statement' || !form.outcome_statement);
     createSpec.mutate({ ...form, missing_sections: missing, completeness_score: form.outcome_statement ? 8 : 0 });
     setShowForm(false);
     setForm({ feature_id: '', feature_name: '', outcome_statement: '' });

@@ -29,10 +29,10 @@ export default function ClientOnboarding() {
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         {[
-          { label: "Active Journeys", value: ([] as never[]).filter(j => j.status === "active").length },
-          { label: "Clients Onboarding", value: ([] as never[]).filter(c => c.status !== "completed").length },
+          { label: "Active Journeys", value: ([] as any[]).filter(j => j.status === "active").length },
+          { label: "Clients Onboarding", value: ([] as any[]).filter(c => c.status !== "completed").length },
           { label: "Avg. Completion", value: "82%" },
-          { label: "Delayed", value: ([] as never[]).filter(c => c.status === "delayed").length, color: "text-amber-400" },
+          { label: "Delayed", value: ([] as any[]).filter(c => c.status === "delayed").length, color: "text-amber-400" },
         ].map((k, i) => (
           <Card key={i} className="bg-card/50 border-border/50">
             <CardContent className="p-3 text-center">
@@ -56,7 +56,7 @@ export default function ClientOnboarding() {
         <div className="mt-4">
           <TabsContent value="journeys">
             <div className="space-y-4">
-              {([] as never[]).map(journey => (
+              {([] as any[]).map(journey => (
                 <Card key={journey.id} className="bg-card/50 border-border/50">
                   <CardHeader className="pb-3">
                     <div className="flex items-center justify-between">
@@ -111,7 +111,7 @@ export default function ClientOnboarding() {
 
           <TabsContent value="active">
             <div className="space-y-3">
-              {([] as never[]).map((client, i) => (
+              {([] as any[]).map((client, i) => (
                 <Card key={i} className={cn("bg-card/50 border-border/50", client.status === "delayed" && "border-amber-500/30")}>
                   <CardContent className="p-4">
                     <div className="flex items-center justify-between mb-3">

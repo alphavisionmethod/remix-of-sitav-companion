@@ -46,11 +46,11 @@ const TransactionIntelligence = () => {
   }, [tab, searchTerm]);
 
   const stats = useMemo(() => {
-    const total = ([] as never[]).length;
-    const aiCategorized = ([] as never[]).filter(t => t.categorizedBy === "ai").length;
-    const flagged = ([] as never[]).filter(t => t.flags.length > 0).length;
-    const recurring = ([] as never[]).filter(t => t.isRecurring).length;
-    const avgConfidence = ([] as never[]).reduce((s, t) => s + t.confidence, 0) / total;
+    const total = ([] as any[]).length;
+    const aiCategorized = ([] as any[]).filter(t => t.categorizedBy === "ai").length;
+    const flagged = ([] as any[]).filter(t => t.flags.length > 0).length;
+    const recurring = ([] as any[]).filter(t => t.isRecurring).length;
+    const avgConfidence = ([] as any[]).reduce((s, t) => s + t.confidence, 0) / total;
     return { total, aiCategorized, flagged, recurring, avgConfidence };
   }, []);
 

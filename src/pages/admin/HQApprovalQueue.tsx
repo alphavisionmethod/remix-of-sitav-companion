@@ -225,7 +225,7 @@ function HQ01Overview() {
         <CardHeader><CardTitle className="text-sm">Pending by Risk Tier</CardTitle></CardHeader>
         <CardContent>
           <div className="grid grid-cols-4 gap-3">
-            {([] as never[]).map(tier => {
+            {([] as any[]).map(tier => {
               const count = pending.filter(i => i.risk_tier === tier).length;
               return (
                 <div key={tier} className="text-center p-3 rounded border">

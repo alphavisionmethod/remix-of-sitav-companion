@@ -43,7 +43,7 @@ const AppAssociationsPage = () => {
 
       {activeTab === "defaults" && (
         <div className="space-y-3">
-          {([] as never[]).map(slot => {
+          {([] as any[]).map(slot => {
             const Icon = slot.icon;
             const currentAppId = defaultApps[slot.id] || slot.currentApp;
             const currentApp = currentAppId ? apps.find(a => a.id === currentAppId) : null;
@@ -100,7 +100,7 @@ const AppAssociationsPage = () => {
 
       {activeTab === "files" && (
         <div className="space-y-2">
-          {([] as never[]).map(ft => {
+          {([] as any[]).map(ft => {
             const ftApps = ft.apps.map(id => apps.find(a => a.id === id)).filter(Boolean);
             return (
               <div key={ft.ext} className="rounded-xl border border-border bg-card p-3 flex items-center gap-3">

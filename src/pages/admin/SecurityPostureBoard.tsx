@@ -38,10 +38,10 @@ const KEY_ROTATION = [
 
 const SecurityPostureBoard = () => {
   const [tab, setTab] = useState("overview");
-  const fullEncryption = ([] as never[]).filter(p => p.encryption === "full").length;
-  const allRls = ([] as never[]).filter(p => p.rlsEnabled).length;
-  const totalGaps = ([] as never[]).reduce((s, p) => s + p.gaps.length, 0);
-  const verifiedSecrets = ([] as never[]).filter(s => s.status === "verified").length;
+  const fullEncryption = ([] as any[]).filter(p => p.encryption === "full").length;
+  const allRls = ([] as any[]).filter(p => p.rlsEnabled).length;
+  const totalGaps = ([] as any[]).reduce((s, p) => s + p.gaps.length, 0);
+  const verifiedSecrets = ([] as any[]).filter(s => s.status === "verified").length;
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
@@ -58,11 +58,11 @@ const SecurityPostureBoard = () => {
       <motion.div variants={stagger} initial="hidden" animate="show" className="space-y-4">
         <motion.div variants={fadeUp} className="grid grid-cols-2 md:grid-cols-5 gap-3">
           {[
-            { label: "Encryption Coverage", value: `${fullEncryption}/${([] as never[]).length}`, color: fullEncryption === ([] as never[]).length ? "text-emerald-500" : "text-amber-500" },
-            { label: "RLS Enabled", value: `${allRls}/${([] as never[]).length}`, color: allRls === ([] as never[]).length ? "text-emerald-500" : "text-red-500" },
-            { label: "Secrets Verified", value: `${verifiedSecrets}/${([] as never[]).length}`, color: verifiedSecrets === ([] as never[]).length ? "text-emerald-500" : "text-amber-500" },
+            { label: "Encryption Coverage", value: `${fullEncryption}/${([] as any[]).length}`, color: fullEncryption === ([] as any[]).length ? "text-emerald-500" : "text-amber-500" },
+            { label: "RLS Enabled", value: `${allRls}/${([] as any[]).length}`, color: allRls === ([] as any[]).length ? "text-emerald-500" : "text-red-500" },
+            { label: "Secrets Verified", value: `${verifiedSecrets}/${([] as any[]).length}`, color: verifiedSecrets === ([] as any[]).length ? "text-emerald-500" : "text-amber-500" },
             { label: "Open Gaps", value: String(totalGaps), color: totalGaps === 0 ? "text-emerald-500" : "text-amber-500" },
-            { label: "Key Rotation", value: ([] as never[]).some(k => k.status === "due-soon") ? "Due soon" : "On schedule", color: ([] as never[]).some(k => k.status === "due-soon") ? "text-amber-500" : "text-emerald-500" },
+            { label: "Key Rotation", value: ([] as any[]).some(k => k.status === "due-soon") ? "Due soon" : "On schedule", color: ([] as any[]).some(k => k.status === "due-soon") ? "text-amber-500" : "text-emerald-500" },
           ].map(m => (
             <Card key={m.label}><CardContent className="p-4">
               <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-1">{m.label}</p>
@@ -81,7 +81,7 @@ const SecurityPostureBoard = () => {
           </TabsList>
 
           <TabsContent value="overview" className="mt-4 space-y-2">
-            {([] as never[]).map((p) => (
+            {([] as any[]).map((p) => (
               <div key={p.domain} className="p-3 rounded-lg border hover:bg-muted/30 transition-colors">
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center gap-2">
@@ -109,7 +109,7 @@ const SecurityPostureBoard = () => {
             <Card>
               <CardHeader className="pb-3"><CardTitle className="text-sm font-semibold flex items-center gap-2"><Key className="h-4 w-4 text-primary" /> Secret Integrity Matrix</CardTitle></CardHeader>
               <CardContent className="space-y-2">
-                {([] as never[]).map(s => (
+                {([] as any[]).map(s => (
                   <div key={s.name} className="p-3 rounded-lg border hover:bg-muted/30 transition-colors">
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center gap-2">
@@ -133,7 +133,7 @@ const SecurityPostureBoard = () => {
             <Card>
               <CardHeader className="pb-3"><CardTitle className="text-sm font-semibold flex items-center gap-2"><Fingerprint className="h-4 w-4 text-primary" /> Data Classification Board</CardTitle></CardHeader>
               <CardContent className="space-y-2">
-                {([] as never[]).map(c => (
+                {([] as any[]).map(c => (
                   <div key={c.domain} className="p-3 rounded-lg border hover:bg-muted/30 transition-colors">
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center gap-2">
@@ -156,7 +156,7 @@ const SecurityPostureBoard = () => {
             <Card>
               <CardHeader className="pb-3"><CardTitle className="text-sm font-semibold flex items-center gap-2"><Clock className="h-4 w-4 text-primary" /> Key Rotation Schedule</CardTitle></CardHeader>
               <CardContent className="space-y-2">
-                {([] as never[]).map(k => (
+                {([] as any[]).map(k => (
                   <div key={k.key} className="p-3 rounded-lg border hover:bg-muted/30 transition-colors">
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-sm font-medium text-foreground">{k.key}</span>
@@ -176,7 +176,7 @@ const SecurityPostureBoard = () => {
             <Card>
               <CardHeader className="pb-3"><CardTitle className="text-sm font-semibold flex items-center gap-2"><AlertTriangle className="h-4 w-4 text-amber-500" /> Protection Gaps ({totalGaps})</CardTitle></CardHeader>
               <CardContent className="space-y-2">
-                {([] as never[]).filter(p => p.gaps.length > 0).map(p => (
+                {([] as any[]).filter(p => p.gaps.length > 0).map(p => (
                   <div key={p.domain} className="p-3 rounded-lg border border-amber-500/20 bg-amber-500/5">
                     <div className="flex items-center gap-2 mb-2">
                       <Shield className="h-4 w-4 text-amber-500" />

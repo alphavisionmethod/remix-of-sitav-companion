@@ -22,9 +22,9 @@ const AISelfHealing = () => {
 
       <div className="grid grid-cols-4 gap-3">
         {[
-          { l: "Healed This Week", v: ([] as never[]).length, c: "text-[hsl(var(--trust-safe))]" },
-          { l: "Active Rules", v: ([] as never[]).filter(r => r.enabled).length, c: "text-primary" },
-          { l: "Blocked (Human Needed)", v: ([] as never[]).length, c: "text-amber-500" },
+          { l: "Healed This Week", v: ([] as any[]).length, c: "text-[hsl(var(--trust-safe))]" },
+          { l: "Active Rules", v: ([] as any[]).filter(r => r.enabled).length, c: "text-primary" },
+          { l: "Blocked (Human Needed)", v: ([] as any[]).length, c: "text-amber-500" },
           { l: "Patterns Discovered", v: (patterns).length, c: "text-primary" },
         ].map(c => (
           <div key={c.l} className="rounded-xl border border-border/40 bg-card p-4 text-center">
@@ -43,7 +43,7 @@ const AISelfHealing = () => {
         </TabsList>
 
         <TabsContent value="recent" className="space-y-2 mt-4">
-          {([] as never[]).map((h, i) => (
+          {([] as any[]).map((h, i) => (
             <div key={i} className="rounded-xl border border-border/40 bg-card p-4 flex items-center gap-3">
               <CheckCircle2 className="h-4 w-4 text-[hsl(var(--trust-safe))] shrink-0" />
               <div className="flex-1">
@@ -59,7 +59,7 @@ const AISelfHealing = () => {
         </TabsContent>
 
         <TabsContent value="rules" className="space-y-2 mt-4">
-          {([] as never[]).map((r, i) => (
+          {([] as any[]).map((r, i) => (
             <div key={i} className="rounded-xl border border-border/40 bg-card p-4 flex items-center gap-3">
               <Shield className={`h-4 w-4 shrink-0 ${r.enabled ? "text-[hsl(var(--trust-safe))]" : "text-muted-foreground"}`} />
               <div className="flex-1">
@@ -72,7 +72,7 @@ const AISelfHealing = () => {
         </TabsContent>
 
         <TabsContent value="blocked" className="space-y-2 mt-4">
-          {([] as never[]).map((b, i) => (
+          {([] as any[]).map((b, i) => (
             <div key={i} className="rounded-xl border border-destructive/20 bg-destructive/5 p-4">
               <div className="flex items-center gap-2 mb-1">
                 <AlertTriangle className="h-4 w-4 text-destructive" />

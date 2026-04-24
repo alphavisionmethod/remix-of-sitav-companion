@@ -96,7 +96,7 @@ export default function CN01ConnectorRealityOverview() {
   const connectedAccounts = accounts.filter((a: Record<string, any>) => a.status === "connected" || a.status === "demo_simulated" || a.status === "internal_test");
 
   const verificationData = { registry, accounts, tokens, receipts, oauthConfig };
-  const passedChecks = ([] as never[]).filter((c) => c.check(verificationData)).length;
+  const passedChecks = ([] as any[]).filter((c) => c.check(verificationData)).length;
 
   const failureGroups = [
     { type: "Missing OAuth Config", count: oauthConfig?.google_oauth_configured ? 0 : 1, icon: <AlertTriangle className="h-3 w-3" /> },
@@ -123,14 +123,14 @@ export default function CN01ConnectorRealityOverview() {
           <CardTitle className="text-lg flex items-center gap-2">
             <Shield className="h-5 w-5 text-primary" />
             OAuth Runtime Verification Matrix
-            <Badge variant="outline" className={passedChecks === ([] as never[]).length ? "bg-emerald-500/15 text-emerald-400" : "bg-amber-500/15 text-amber-400"}>
-              {passedChecks}/{([] as never[]).length} passed
+            <Badge variant="outline" className={passedChecks === ([] as any[]).length ? "bg-emerald-500/15 text-emerald-400" : "bg-amber-500/15 text-amber-400"}>
+              {passedChecks}/{([] as any[]).length} passed
             </Badge>
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-            {([] as never[]).map((check) => {
+            {([] as any[]).map((check) => {
               const passed = check.check(verificationData);
               return (
                 <div key={check.label} className="flex items-center gap-2 p-2 rounded-lg bg-muted/30 border border-border">
@@ -190,7 +190,7 @@ export default function CN01ConnectorRealityOverview() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {([] as never[]).map((cap) => {
+                  {([] as any[]).map((cap) => {
                     const capTokens = tokens.filter((t: Record<string, any>) => t.scopes?.some((s: string) => cap.scopes.some((cs) => s.includes(cs))));
                     const hasCallback = receipts.some((r: Record<string, any>) => r.event_type === "oauth_connect");
                     const hasDisconnect = receipts.some((r: Record<string, any>) => r.event_type === "disconnect");

@@ -92,7 +92,7 @@ const FALLBACK_SYNC_HISTORY: any[] = [];
     staleTime: 30000,
   });
 
-  const activeConnectors = dbConnectors ? ([] as never[]).map(c => {
+  const activeConnectors = dbConnectors ? ([] as any[]).map(c => {
     const acc = dbConnectors.accounts.find((a: Record<string, any>) => a.connector_type === c.id);
     return acc ? { ...c, status: acc.status === "active" ? "healthy" as const : c.status, lastSyncAt: acc.connected_at ? new Date(acc.connected_at).toLocaleTimeString() : c.lastSyncAt } : c;
   }) : CONNECTORS;
@@ -278,7 +278,7 @@ const FALLBACK_SYNC_HISTORY: any[] = [];
 
           <TabsContent value="policies">
             <div className="space-y-3">
-              {([] as never[]).map(pol => (
+              {([] as any[]).map(pol => (
                 <Card key={pol.connector} className="bg-card/50 border-border/50">
                   <CardContent className="p-4">
                     <p className="text-sm font-medium text-foreground capitalize mb-2">{pol.connector}</p>

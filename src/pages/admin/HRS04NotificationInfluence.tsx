@@ -8,9 +8,9 @@ import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 const HRS04NotificationInfluence = () => {
   const { data: posture, isLoading } = useInterruptionPosture();
   const postureList = Array.isArray(posture) ? posture : [];
-  const suppressionRules = postureList.length ? postureList : ([] as never[]);
-  const timingRules = [] as never[];
-  const overrideMatrix = [] as never[];
+  const suppressionRules = postureList.length ? postureList : ([] as any[]);
+  const timingRules = [] as any[];
+  const overrideMatrix = [] as any[];
 
   return (
     <div className="p-6 max-w-[1400px] mx-auto space-y-6">

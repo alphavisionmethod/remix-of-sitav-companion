@@ -36,7 +36,7 @@ const SIMULATIONS = [
 const IntegrationConciergePage = () => {
   const [tab, setTab] = useState("discover");
   const [search, setSearch] = useState("");
-  const filtered = ([] as never[]).filter(uc => uc.title.toLowerCase().includes(search.toLowerCase()));
+  const filtered = ([] as any[]).filter(uc => uc.title.toLowerCase().includes(search.toLowerCase()));
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
@@ -119,7 +119,7 @@ const IntegrationConciergePage = () => {
           <Card>
             <CardHeader className="pb-3"><CardTitle className="text-sm font-semibold flex items-center gap-2"><Sparkles className="h-4 w-4 text-primary" /> Connector Recommendations</CardTitle></CardHeader>
             <CardContent className="space-y-2">
-              {([] as never[]).map(r => (
+              {([] as any[]).map(r => (
                 <div key={r.id} className="p-3 rounded-lg border hover:bg-muted/20 transition-colors">
                   <div className="flex items-center justify-between mb-1">
                     <div className="flex items-center gap-2">
@@ -137,7 +137,7 @@ const IntegrationConciergePage = () => {
         </TabsContent>
 
         <TabsContent value="workflows" className="mt-4 space-y-3">
-          {([] as never[]).map(wf => (
+          {([] as any[]).map(wf => (
             <Card key={wf.id} className="hover:bg-muted/20 transition-colors">
               <CardContent className="p-4">
                 <div className="flex items-center justify-between mb-3">
@@ -165,7 +165,7 @@ const IntegrationConciergePage = () => {
         </TabsContent>
 
         <TabsContent value="simulations" className="mt-4 space-y-3">
-          {([] as never[]).map(sim => (
+          {([] as any[]).map(sim => (
             <Card key={sim.id} className={`hover:bg-muted/20 transition-colors ${sim.result !== "success" ? "border-amber-500/20" : ""}`}>
               <CardContent className="p-4">
                 <div className="flex items-center justify-between mb-2">

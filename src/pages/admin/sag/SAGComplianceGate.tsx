@@ -20,7 +20,7 @@ const SAGComplianceGate = () => {
 
   const blockers = violations.filter((v: Record<string, any>) => v.blocks_launch);
   const resolved = violations.filter((v: Record<string, any>) => v.resolved);
-  const typeCounts = ([] as never[]).map(vt => ({ ...vt, count: violations.filter((v: Record<string, any>) => v.violation_type === vt.type && !v.resolved).length }));
+  const typeCounts = ([] as any[]).map(vt => ({ ...vt, count: violations.filter((v: Record<string, any>) => v.violation_type === vt.type && !v.resolved).length }));
 
   return (
     <div className="p-6 space-y-6 max-w-7xl mx-auto">

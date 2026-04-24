@@ -18,7 +18,7 @@ const AppPermissionsCenterPage = () => {
     app.permissions.some(p => p.domain === activeDomain)
   );
 
-  const activeDomainInfo = ([] as never[]).find(d => d.id === activeDomain)!;
+  const activeDomainInfo = ([] as any[]).find(d => d.id === activeDomain)!;
 
   return (
     <div className="mx-auto max-w-4xl space-y-6">
@@ -33,7 +33,7 @@ const AppPermissionsCenterPage = () => {
 
       {/* Permission Domain Tabs */}
       <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-thin">
-        {([] as never[]).map(d => {
+        {([] as any[]).map(d => {
           const Icon = d.icon;
           const count = apps.filter(a => a.permissions.some(p => p.domain === d.id)).length;
           return (

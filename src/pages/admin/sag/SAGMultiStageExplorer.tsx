@@ -17,13 +17,13 @@ const SAGMultiStageExplorer = () => {
       </motion.div>
 
       <div className="grid grid-cols-3 gap-4">
-        <Card><CardContent className="pt-4"><p className="text-2xl font-bold">{([] as never[]).length}</p><p className="text-xs text-muted-foreground">Stage Patterns</p></CardContent></Card>
+        <Card><CardContent className="pt-4"><p className="text-2xl font-bold">{([] as any[]).length}</p><p className="text-xs text-muted-foreground">Stage Patterns</p></CardContent></Card>
         <Card><CardContent className="pt-4"><p className="text-2xl font-bold">{policies.filter((p: Record<string, any>) => p.fallback_chain?.length > 0).length}</p><p className="text-xs text-muted-foreground">Policies with Fallback Chains</p></CardContent></Card>
         <Card><CardContent className="pt-4"><p className="text-2xl font-bold">{policies.filter((p: Record<string, any>) => p.reuse_eligible).length}</p><p className="text-xs text-muted-foreground">Reuse-Eligible Policies</p></CardContent></Card>
       </div>
 
       <div className="space-y-4">
-        {([] as never[]).map((pattern, pi) => (
+        {([] as any[]).map((pattern, pi) => (
           <Card key={pi}>
             <CardHeader className="pb-2"><CardTitle className="text-base">{pattern.pattern}</CardTitle></CardHeader>
             <CardContent>

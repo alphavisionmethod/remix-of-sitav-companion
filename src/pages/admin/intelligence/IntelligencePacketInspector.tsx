@@ -20,11 +20,11 @@ const IntelligencePacketInspector = () => {
   const [selected, setSelected] = useState<string | null>(null);
   if (loading || !isAdmin) return null;
 
-  const avgCompression = ([] as never[]).reduce((s, p) => s + p.compressionRatio, 0) / ([] as never[]).length;
-  const avgTokens = Math.round(([] as never[]).reduce((s, p) => s + p.tokenCount, 0) / ([] as never[]).length);
-  const freshCount = ([] as never[]).filter(p => p.fresh).length;
-  const totalCompileCost = ([] as never[]).reduce((s, p) => s + p.compileCost, 0);
-  const selectedPacket = ([] as never[]).find(p => p.domain === selected);
+  const avgCompression = ([] as any[]).reduce((s, p) => s + p.compressionRatio, 0) / ([] as any[]).length;
+  const avgTokens = Math.round(([] as any[]).reduce((s, p) => s + p.tokenCount, 0) / ([] as any[]).length);
+  const freshCount = ([] as any[]).filter(p => p.fresh).length;
+  const totalCompileCost = ([] as any[]).reduce((s, p) => s + p.compileCost, 0);
+  const selectedPacket = ([] as any[]).find(p => p.domain === selected);
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
@@ -39,9 +39,9 @@ const IntelligencePacketInspector = () => {
         {[
           { label: "Avg Packet Size", value: `${avgTokens.toLocaleString()} tok`, sub: "vs ~12k raw" },
           { label: "Avg Compression", value: `${(avgCompression * 100).toFixed(0)}%`, sub: "of original size" },
-          { label: "Fresh Packets", value: `${freshCount}/${([] as never[]).length}`, sub: "ready to use" },
+          { label: "Fresh Packets", value: `${freshCount}/${([] as any[]).length}`, sub: "ready to use" },
           { label: "Total Compile Cost", value: `$${(totalCompileCost / 100).toFixed(2)}`, sub: "this cycle" },
-          { label: "Est. Daily Savings", value: `$${((([] as never[]).reduce((s, p) => s + (12000 - p.tokenCount), 0) * 0.003) / 100).toFixed(0)}`, sub: "from packet-driven" },
+          { label: "Est. Daily Savings", value: `$${((([] as any[]).reduce((s, p) => s + (12000 - p.tokenCount), 0) * 0.003) / 100).toFixed(0)}`, sub: "from packet-driven" },
         ].map(m => (
           <Card key={m.label} className="bg-card/80 border-border/50">
             <CardContent className="p-3 text-center">
@@ -76,7 +76,7 @@ const IntelligencePacketInspector = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {([] as never[]).map(p => (
+              {([] as any[]).map(p => (
                 <TableRow key={p.domain} className="cursor-pointer hover:bg-secondary/30" onClick={() => setSelected(p.domain)}>
                   <TableCell className="text-xs font-medium text-foreground">{p.domain}</TableCell>
                   <TableCell className="text-xs text-right font-mono">{p.tokenCount.toLocaleString()}</TableCell>
@@ -102,7 +102,7 @@ const IntelligencePacketInspector = () => {
       <Card className="bg-card/80 border-border/50">
         <CardHeader className="pb-2"><CardTitle className="text-sm">Compression Effectiveness</CardTitle></CardHeader>
         <CardContent className="space-y-2">
-          {([] as never[]).map(p => (
+          {([] as any[]).map(p => (
             <div key={p.domain} className="flex items-center gap-3">
               <span className="text-xs text-muted-foreground w-[160px] truncate">{p.domain}</span>
               <div className="flex-1 relative h-4 bg-secondary/30 rounded">

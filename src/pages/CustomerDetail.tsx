@@ -103,8 +103,8 @@ const CustomerDetail = ({
           <div className="lg:col-span-3 space-y-6">
             {/* Action Queue */}
             <div className="space-y-3">
-              <SitaSectionHeader title="Action Queue" subtitle={`${([] as never[]).length} items pending`} />
-              {([] as never[]).map((a, i) => (
+              <SitaSectionHeader title="Action Queue" subtitle={`${([] as any[]).length} items pending`} />
+              {([] as any[]).map((a, i) => (
                 <SitaCard key={i} lane="action" className="p-4 pl-5">
                   <div className="flex items-start justify-between gap-3">
                     <div className="flex-1">
@@ -127,7 +127,7 @@ const CustomerDetail = ({
             <div className="space-y-3">
               <SitaSectionHeader title="Recent Activity" action={<button onClick={() => setTab("timeline")} className="text-xs text-primary hover:underline">View all</button>} />
               <SitaCard hover={false} className="p-4">
-                {([] as never[]).slice(0, 4).map((t, i) => (
+                {([] as any[]).slice(0, 4).map((t, i) => (
                   <TimelineItem key={i} {...t} />
                 ))}
               </SitaCard>
@@ -179,7 +179,7 @@ const CustomerDetail = ({
         <SitaCard hover={false} className="p-5">
           <SitaCardTitle sub="Complete relationship history">Full Timeline</SitaCardTitle>
           <div className="mt-4">
-            {([] as never[]).map((t, i) => <TimelineItem key={i} {...t} />)}
+            {([] as any[]).map((t, i) => <TimelineItem key={i} {...t} />)}
           </div>
         </SitaCard>
       )}
@@ -222,7 +222,7 @@ const CustomerDetail = ({
       {tab === "documents" && (
         <div className="space-y-3">
           <SitaSectionHeader title="Customer Documents" subtitle="All files linked to this customer" />
-          {([] as never[]).map((doc, i) => (
+          {([] as any[]).map((doc, i) => (
             <SitaCard key={i} className="p-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">

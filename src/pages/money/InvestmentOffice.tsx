@@ -16,10 +16,10 @@ import {
   evaluateThesis,
   type Position, type CapitalBucket, type Thesis,
 } from "@/lib/domain-engines/investment-office";
-const getWatchlist = () => ({ currentRegime: "neutral", entries: [] as never[] });
-const getTradeReviewPackets = () => [] as never[];
-const getExecutionIntents = () => [] as never[];
-const getOpportunityScores = () => [] as never[];
+const getWatchlist = () => ({ currentRegime: "neutral", entries: [] as any[] });
+const getTradeReviewPackets = () => [] as any[];
+const getExecutionIntents = () => [] as any[];
+const getOpportunityScores = () => [] as any[];
 const getAvailableTrustModes = () => [{ mode: "standard", label: "Standard", description: "Default trust mode" }];
 const getInvestmentTrustMode = () => "standard";
 import { useCapitalBuckets, usePositions, useTheses } from "@/hooks/use-investment-data";

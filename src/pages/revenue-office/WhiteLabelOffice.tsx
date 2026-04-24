@@ -20,8 +20,8 @@ const REPUTATION_CROSS_CLIENT = [
 
 const WhiteLabelOffice = () => {
   const [tab, setTab] = useState("partners");
-  const total = ([] as never[]).reduce((a, p) => a + p.revenue, 0);
-  const avgHealth = Math.round(([] as never[]).reduce((a, p) => a + p.health, 0) / ([] as never[]).length);
+  const total = ([] as any[]).reduce((a, p) => a + p.revenue, 0);
+  const avgHealth = Math.round(([] as any[]).reduce((a, p) => a + p.health, 0) / ([] as any[]).length);
 
   return (
     <div className="space-y-6 p-6">
@@ -29,11 +29,11 @@ const WhiteLabelOffice = () => {
 
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
         {[
-          { l: "Active Partners", v: ([] as never[]).filter(p => p.status === "active").length, c: "text-primary" },
-          { l: "Total Clients", v: ([] as never[]).reduce((a, p) => a + p.clients, 0), c: "text-foreground" },
+          { l: "Active Partners", v: ([] as any[]).filter(p => p.status === "active").length, c: "text-primary" },
+          { l: "Total Clients", v: ([] as any[]).reduce((a, p) => a + p.clients, 0), c: "text-foreground" },
           { l: "Partner Revenue", v: `$${(total / 1000).toFixed(1)}k`, c: "text-[hsl(var(--trust-safe))]" },
           { l: "Avg Health", v: `${avgHealth}/100`, c: avgHealth >= 70 ? "text-[hsl(var(--trust-safe))]" : "text-orange-400" },
-          { l: "Brand Kits", v: ([] as never[]).length, c: "text-purple-400" },
+          { l: "Brand Kits", v: ([] as any[]).length, c: "text-purple-400" },
         ].map(m => (
           <div key={m.l} className="rounded-xl border border-border/40 bg-card p-3 text-center">
             <p className="text-xs text-muted-foreground">{m.l}</p>
@@ -53,7 +53,7 @@ const WhiteLabelOffice = () => {
         </TabsList>
 
         <TabsContent value="partners" className="space-y-2 mt-4">
-          {([] as never[]).map(p => (
+          {([] as any[]).map(p => (
             <div key={p.name} className="rounded-xl border border-border/40 bg-card p-4">
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-2"><span className="text-sm font-semibold">{p.name}</span><Badge variant="outline">{p.type}</Badge><Badge variant={p.status === "active" ? "default" : "secondary"}>{p.status}</Badge></div>
@@ -117,7 +117,7 @@ const WhiteLabelOffice = () => {
         </TabsContent>
 
         <TabsContent value="branding" className="space-y-3 mt-4">
-          {([] as never[]).map(b => (
+          {([] as any[]).map(b => (
             <div key={b.name} className="rounded-xl border border-border/40 bg-card p-4">
               <div className="flex items-center justify-between mb-2"><span className="text-sm font-semibold">{b.name}</span><Badge variant={b.status === "live" ? "default" : "outline"}>{b.status}</Badge></div>
               <p className="text-xs text-muted-foreground mb-2">Partner: {b.partner} · Domain: {b.domain}</p>
@@ -130,7 +130,7 @@ const WhiteLabelOffice = () => {
           <div className="rounded-xl border border-border/40 bg-card overflow-hidden">
             <table className="w-full text-xs">
               <thead><tr className="border-b border-border/40 bg-muted/30"><th className="text-left p-3">Partner</th><th className="text-right p-3">Gross</th><th className="text-right p-3">Theirs</th><th className="text-right p-3">Yours</th><th className="text-center p-3">Split</th><th className="text-right p-3">Pending</th></tr></thead>
-              <tbody>{([] as never[]).map(r => <tr key={r.partner} className="border-b border-border/20"><td className="p-3 font-medium">{r.partner}</td><td className="p-3 text-right">${r.gross.toLocaleString()}</td><td className="p-3 text-right">${r.theirs.toLocaleString()}</td><td className="p-3 text-right font-semibold text-[hsl(var(--trust-safe))]">${r.yours.toLocaleString()}</td><td className="p-3 text-center"><Badge variant="outline">{r.split}</Badge></td><td className="p-3 text-right">{r.pending > 0 ? `$${r.pending.toLocaleString()}` : "—"}</td></tr>)}</tbody>
+              <tbody>{([] as any[]).map(r => <tr key={r.partner} className="border-b border-border/20"><td className="p-3 font-medium">{r.partner}</td><td className="p-3 text-right">${r.gross.toLocaleString()}</td><td className="p-3 text-right">${r.theirs.toLocaleString()}</td><td className="p-3 text-right font-semibold text-[hsl(var(--trust-safe))]">${r.yours.toLocaleString()}</td><td className="p-3 text-center"><Badge variant="outline">{r.split}</Badge></td><td className="p-3 text-right">{r.pending > 0 ? `$${r.pending.toLocaleString()}` : "—"}</td></tr>)}</tbody>
             </table>
           </div>
         </TabsContent>

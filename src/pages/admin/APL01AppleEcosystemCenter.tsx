@@ -184,7 +184,7 @@ const APL01AppleEcosystemCenter = () => {
                     <th className="p-2">Priority</th>
                   </tr></thead>
                   <tbody>
-                    {([] as never[]).map((cap) => {
+                    {([] as any[]).map((cap) => {
                       const matchingLaunch = launchData?.find((r: Record<string, any>) => r.target.includes(cap.key.replace("apple_", "")));
                       const status = matchingLaunch?.launch_stage || "planned";
                       return (

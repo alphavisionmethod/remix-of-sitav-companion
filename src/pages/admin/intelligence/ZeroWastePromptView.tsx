@@ -17,8 +17,8 @@ const offenders = PROFILES
 
 const ZeroWastePromptView = () => {
   
-  const avgCostReduction = Math.round(([] as never[]).reduce((s, p) => s + p.costReduction, 0) / Math.max(([] as never[]).length, 1));
-  const packetDrivenPct = Math.round((([] as never[]).filter(p => p.packetDriven).length / Math.max(([] as never[]).length, 1)) * 100);
+  const avgCostReduction = Math.round(([] as any[]).reduce((s, p) => s + p.costReduction, 0) / Math.max(([] as any[]).length, 1));
+  const packetDrivenPct = Math.round((([] as any[]).filter(p => p.packetDriven).length / Math.max(([] as any[]).length, 1)) * 100);
   const { isAdmin, loading } = useRequireAdmin();
   if (loading || !isAdmin) return null;
 
@@ -32,7 +32,7 @@ const ZeroWastePromptView = () => {
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {[
-          { label: "Prompt Profiles", value: String(([] as never[]).length) },
+          { label: "Prompt Profiles", value: String(([] as any[]).length) },
           { label: "Avg Cost Reduction", value: `${avgCostReduction}%`, color: "text-emerald-400" },
           { label: "Packet-Driven", value: `${packetDrivenPct}%` },
           { label: "Offenders", value: String(offenders.length), color: offenders.length > 0 ? "text-amber-400" : "text-emerald-400" },
@@ -65,7 +65,7 @@ const ZeroWastePromptView = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {([] as never[]).map((p, i) => (
+              {([] as any[]).map((p, i) => (
                 <TableRow key={i}>
                   <TableCell className="text-xs font-medium text-foreground">{p.domain}</TableCell>
                   <TableCell className="text-xs text-muted-foreground">{p.taskType}</TableCell>
@@ -110,7 +110,7 @@ const ZeroWastePromptView = () => {
         <CardHeader className="pb-2"><CardTitle className="text-sm">Redundancy by Domain</CardTitle></CardHeader>
         <CardContent className="space-y-2">
           {Object.entries(
-            ([] as never[]).reduce<Record<string, number[]>>((acc, p) => {
+            ([] as any[]).reduce<Record<string, number[]>>((acc, p) => {
               if (!acc[p.domain]) acc[p.domain] = [];
               acc[p.domain].push(p.redundancy);
               return acc;

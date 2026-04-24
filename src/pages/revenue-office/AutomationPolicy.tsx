@@ -91,10 +91,10 @@ export default function AutomationPolicy() {
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
         {[
           { l: "Trust Policies", v: ([] as typeof trustLevels).length, c: "text-emerald-400" },
-          { l: "Constitution Rules", v: ([] as never[]).length, c: "text-blue-400" },
-          { l: "No-Guess Rules", v: ([] as never[]).filter(r => r.enabled).length, c: "text-purple-400" },
-          { l: "Paused/Quarantined", v: ([] as never[]).length, c: "text-amber-400" },
-          { l: "Handoff Signals", v: ([] as never[]).length, c: "text-red-400" },
+          { l: "Constitution Rules", v: ([] as any[]).length, c: "text-blue-400" },
+          { l: "No-Guess Rules", v: ([] as any[]).filter(r => r.enabled).length, c: "text-purple-400" },
+          { l: "Paused/Quarantined", v: ([] as any[]).length, c: "text-amber-400" },
+          { l: "Handoff Signals", v: ([] as any[]).length, c: "text-red-400" },
         ].map(m => (
           <Card key={m.l} className="bg-card/50 border-border/50"><CardContent className="p-3 text-center">
             <p className={`text-xl font-bold ${m.c}`}>{m.v}</p><p className="text-[10px] text-muted-foreground">{m.l}</p>
@@ -171,9 +171,9 @@ export default function AutomationPolicy() {
 
           <div className="grid md:grid-cols-3 gap-3">
             {[
-              { label: "Hard Rules", value: ([] as never[]).filter(r => r.severity === "hard").length, color: "text-red-400" },
-              { label: "Soft Rules", value: ([] as never[]).filter(r => r.severity === "soft").length, color: "text-amber-400" },
-              { label: "Violations (7d)", value: ([] as never[]).reduce((a, r) => a + r.violations7d, 0), color: "text-red-400" },
+              { label: "Hard Rules", value: ([] as any[]).filter(r => r.severity === "hard").length, color: "text-red-400" },
+              { label: "Soft Rules", value: ([] as any[]).filter(r => r.severity === "soft").length, color: "text-amber-400" },
+              { label: "Violations (7d)", value: ([] as any[]).reduce((a, r) => a + r.violations7d, 0), color: "text-red-400" },
             ].map(m => (
               <Card key={m.label} className="bg-card/50 border-border/50">
                 <CardContent className="p-3 text-center">
@@ -184,7 +184,7 @@ export default function AutomationPolicy() {
             ))}
           </div>
 
-          {([] as never[]).map((r) => (
+          {([] as any[]).map((r) => (
             <Card key={r.id} className={`bg-card/50 ${constitutionCategoryColors[r.category] || "border-border/50"}`}>
               <CardContent className="p-4">
                 <div className="flex items-center justify-between mb-2">
@@ -226,9 +226,9 @@ export default function AutomationPolicy() {
           </Card>
 
           <Card className="bg-card/50 border-border/50">
-            <CardHeader><CardTitle className="text-sm">Blocked Actions (last 7 days): <span className="text-amber-400">{([] as never[]).reduce((a, r) => a + r.blockedActions7d, 0)}</span></CardTitle></CardHeader>
+            <CardHeader><CardTitle className="text-sm">Blocked Actions (last 7 days): <span className="text-amber-400">{([] as any[]).reduce((a, r) => a + r.blockedActions7d, 0)}</span></CardTitle></CardHeader>
             <CardContent className="space-y-3">
-              {([] as never[]).map((r) => (
+              {([] as any[]).map((r) => (
                 <div key={r.id} className={`p-4 rounded-lg border ${r.enabled ? "bg-emerald-500/5 border-emerald-500/20" : "bg-muted/10 border-border/30"}`}>
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-3 flex-1">
@@ -263,7 +263,7 @@ export default function AutomationPolicy() {
             </CardContent>
           </Card>
 
-          {([] as never[]).length === 0 ? (
+          {([] as any[]).length === 0 ? (
             <Card className="bg-card/50 border-border/50">
               <CardContent className="p-6 text-center">
                 <CheckCircle className="h-8 w-8 text-emerald-400 mx-auto mb-2" />
@@ -271,7 +271,7 @@ export default function AutomationPolicy() {
               </CardContent>
             </Card>
           ) : (
-            ([] as never[]).map((p) => (
+            ([] as any[]).map((p) => (
               <Card key={p.automation} className={`bg-card/50 ${p.status === "quarantined" ? "border-red-500/30" : p.status === "rollback_available" ? "border-blue-500/30" : "border-amber-500/30"}`}>
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between mb-3">
@@ -317,7 +317,7 @@ export default function AutomationPolicy() {
             </CardContent>
           </Card>
 
-          {([] as never[]).map((h, i) => (
+          {([] as any[]).map((h, i) => (
             <Card key={i} className={`bg-card/50 ${handoffSeverityColors[h.severity]}`}>
               <CardContent className="p-4">
                 <div className="flex items-center justify-between mb-2">

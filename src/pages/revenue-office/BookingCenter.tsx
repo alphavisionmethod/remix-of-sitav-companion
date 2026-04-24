@@ -72,7 +72,7 @@ export default function BookingCenter() {
 
       {/* Stats Row */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        {([] as never[]).map(s => (
+        {([] as any[]).map(s => (
           <Card key={s.label} className="bg-card/50 border-border/50">
             <CardContent className="p-4">
               <p className="text-xs text-muted-foreground">{s.label}</p>
@@ -127,7 +127,7 @@ export default function BookingCenter() {
           {/* Analytics */}
           <TabsContent value="analytics">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {([] as never[]).map(a => (
+              {([] as any[]).map(a => (
                 <Card key={a.metric} className="bg-card/50 border-border/50">
                   <CardContent className="p-4 text-center">
                     <p className="text-xs text-muted-foreground mb-1">{a.metric}</p>
@@ -158,7 +158,7 @@ export default function BookingCenter() {
                   </Button>
                 </div>
               </div>
-              {([] as never[]).map((n, i) => (
+              {([] as any[]).map((n, i) => (
                 <Card key={i} className={`border-border/50 ${n.rebooked ? "bg-card/50" : "bg-amber-500/5 border-amber-500/20"}`}>
                   <CardContent className="p-4 flex items-center justify-between">
                     <div className="flex items-center gap-3">
@@ -195,7 +195,7 @@ export default function BookingCenter() {
               <h3 className="text-sm font-semibold text-foreground flex items-center gap-2">
                 <CheckSquare className="w-4 h-4 text-primary" /> Appointment Prep Checklists
               </h3>
-              {([] as never[]).map((pc, i) => {
+              {([] as any[]).map((pc, i) => {
                 const done = pc.items.filter(it => it.done).length;
                 return (
                   <Card key={i} className="bg-card/50 border-border/50">
@@ -232,7 +232,7 @@ export default function BookingCenter() {
             <Card className="bg-card/50 border-border/50">
               <CardHeader className="pb-3"><CardTitle className="text-sm font-medium">Service Catalog</CardTitle></CardHeader>
               <CardContent className="space-y-3">
-                {([] as never[]).map(s => (
+                {([] as any[]).map(s => (
                   <div key={s.name} className="flex items-center justify-between p-3 rounded-lg bg-muted/10 border border-border/30">
                     <div>
                       <p className="text-sm font-medium text-foreground">{s.name}</p>

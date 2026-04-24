@@ -22,26 +22,26 @@ type ServiceHealthRecord = { id: string; name: string; status: string; [k: strin
 type QuarantineRecord = { id: string; service: string; reason: string; [k: string]: any };
 type CircuitBreakerState = { id: string; service: string; state: string; [k: string]: any };
 const createSelfHealingService = () => ({
-  getHistory: () => [] as never[], heal: () => {}, getStatus: () => "healthy",
+  getHistory: () => [] as any[], heal: () => {}, getStatus: () => "healthy",
   registerService: (..._args: any[]) => {}, recordHealthCheck: (..._args: any[]) => {},
   runPipeline: (_p: any) => ({ id: crypto.randomUUID() }),
   detect: (_p: any) => ({ id: crypto.randomUUID() }),
   resolve: (_id: string, _msg: string) => {},
-  getAllIncidents: () => [] as never[], getActiveIncidents: () => [] as never[],
-  getCircuitBreakerStates: () => [] as never[],
+  getAllIncidents: () => [] as any[], getActiveIncidents: () => [] as any[],
+  getCircuitBreakerStates: () => [] as any[],
   getStats: () => ({ total: 0, resolved: 0, escalated: 0, bySeverity: { P0: 0, P1: 0, P2: 0, P3: 0 }, byState: {} as Record<string, number> }),
 });
 const createImmuneController = () => ({
-  getThreats: () => [] as never[], getStatus: () => "active",
+  getThreats: () => [] as any[], getStatus: () => "active",
   quarantine: (..._args: any[]) => {},
-  getAllQuarantined: () => [] as never[],
+  getAllQuarantined: () => [] as any[],
   getStats: () => ({ threats: 0, quarantined: 0, enabledRuleCount: 0, ruleCount: 0 }),
 });
 const createFleetHealthService = () => ({
   registerService: (..._args: any[]) => {}, getHealth: () => ({}), getDependencyGraph: () => ({}),
   recordHealthCheck: (..._args: any[]) => {},
   getFleetSummary: () => ({ total: 12, healthy: 11, degraded: 1, unhealthy: 0, avgHealthScore: 95 }),
-  getAllServices: () => [] as never[], getDegradedServices: () => [] as never[],
+  getAllServices: () => [] as any[], getDegradedServices: () => [] as any[],
 });
 const ENGINE_CONNECTORS: any[] = [];
 const HEALING_CAPABILITY_MAP: any[] = [];
@@ -303,7 +303,7 @@ const SystemStatus = () => {
             </div>
 
             <SitaSectionHeader title="Recent Approvals" />
-            {([] as never[]).map((a, i) => (
+            {([] as any[]).map((a, i) => (
               <SitaCard key={i} hover={false} className="p-3">
                 <div className="flex items-center justify-between gap-2">
                   <div className="min-w-0">
@@ -714,7 +714,7 @@ const SystemStatus = () => {
 
       {activeTab === "history" && (
         <div className="space-y-3">
-          {[...([] as never[]).map((a, i) => ({
+          {[...([] as any[]).map((a, i) => ({
             id: `approval-${i}`,
             type: "approval" as const,
             title: a.action,
@@ -749,7 +749,7 @@ const SystemStatus = () => {
             <div className="flex items-center justify-between">
               <p className="text-sm font-medium text-foreground">Execution Summary</p>
               <div className="flex items-center gap-4 text-xs text-muted-foreground">
-                <span>{([] as never[]).length} approvals</span>
+                <span>{([] as any[]).length} approvals</span>
                 <span>{incidents.length} incidents</span>
                 <span className="text-trust-safe">{incidents.filter(i => i.state === "resolved").length} resolved</span>
               </div>

@@ -37,8 +37,8 @@ const [selectedRole, setSelectedRole] = useState("");
 
   const { data: roles = [] } = useQuery({ queryKey: ["ai-workforce-roles"], queryFn: getWorkforceRoles });
 
-  const selectedBudget = ([] as never[]).find(b => b.key === budgetPosture);
-  const selectedTaskMeta = ([] as never[]).find(t => t.key === selectedTask);
+  const selectedBudget = ([] as any[]).find(b => b.key === budgetPosture);
+  const selectedTaskMeta = ([] as any[]).find(t => t.key === selectedTask);
   const selectedRoleMeta = roles.find(r => r.role_key === selectedRole);
   const isApprovalNeeded = selectedRoleMeta?.approval_required || selectedTask === "propose";
 
@@ -125,7 +125,7 @@ const [selectedRole, setSelectedRole] = useState("");
                   <Select value={selectedTask} onValueChange={setSelectedTask}>
                     <SelectTrigger><SelectValue placeholder="Select task..." /></SelectTrigger>
                     <SelectContent>
-                      {([] as never[]).map(t => <SelectItem key={t.key} value={t.key}>{t.label} — {t.desc}</SelectItem>)}
+                      {([] as any[]).map(t => <SelectItem key={t.key} value={t.key}>{t.label} — {t.desc}</SelectItem>)}
                     </SelectContent>
                   </Select>
                 </div>
@@ -134,7 +134,7 @@ const [selectedRole, setSelectedRole] = useState("");
                   <Select value={budgetPosture} onValueChange={setBudgetPosture}>
                     <SelectTrigger><SelectValue /></SelectTrigger>
                     <SelectContent>
-                      {([] as never[]).map(b => <SelectItem key={b.key} value={b.key}>{b.icon} {b.label} ({b.costBand})</SelectItem>)}
+                      {([] as any[]).map(b => <SelectItem key={b.key} value={b.key}>{b.icon} {b.label} ({b.costBand})</SelectItem>)}
                     </SelectContent>
                   </Select>
                 </div>
@@ -147,7 +147,7 @@ const [selectedRole, setSelectedRole] = useState("");
                   <Select value={scopeDomain} onValueChange={setScopeDomain}>
                     <SelectTrigger><SelectValue placeholder="Optional scope..." /></SelectTrigger>
                     <SelectContent>
-                      {([] as never[]).map(d => <SelectItem key={d} value={d}>{d}</SelectItem>)}
+                      {([] as any[]).map(d => <SelectItem key={d} value={d}>{d}</SelectItem>)}
                     </SelectContent>
                   </Select>
                 </div>

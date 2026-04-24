@@ -81,7 +81,7 @@ const EnterpriseControlPlane = () => {
     },
   });
 
-  const TEAM_MEMBERS = (realTeamMembers?.length ? realTeamMembers : [] as never[]);
+  const TEAM_MEMBERS = (realTeamMembers?.length ? realTeamMembers : [] as any[]);
   const COMPLIANCE_ITEMS: any[] = []; // Compliance is config-driven, keep as reference data
 
   // Live SLA data from sla_snapshots
@@ -105,8 +105,8 @@ const EnterpriseControlPlane = () => {
     refetchInterval: 60_000,
   });
 
-  const SLA_METRICS = liveSlaData && liveSlaData.length > 0 ? liveSlaData : ([] as never[]);
-  const DEPLOYMENTS = (realAuditLogs?.length ? realAuditLogs : [] as never[]);
+  const SLA_METRICS = liveSlaData && liveSlaData.length > 0 ? liveSlaData : ([] as any[]);
+  const DEPLOYMENTS = (realAuditLogs?.length ? realAuditLogs : [] as any[]);
 
   const togglePermission = (role: string, cap: string) => {
     if (role === "admin") return;
@@ -193,16 +193,16 @@ const EnterpriseControlPlane = () => {
               <thead>
                 <tr className="border-b border-border/30">
                   <th className="text-left py-2 px-3 font-semibold text-muted-foreground">Capability</th>
-                  {([] as never[]).map(role => (
+                  {([] as any[]).map(role => (
                     <th key={role} className="text-center py-2 px-3 font-semibold text-muted-foreground capitalize">{role}</th>
                   ))}
                 </tr>
               </thead>
               <tbody>
-                {([] as never[]).map(cap => (
+                {([] as any[]).map(cap => (
                   <tr key={cap} className="border-b border-border/10 hover:bg-secondary/20 transition-colors">
                     <td className="py-2 px-3 font-mono text-foreground">{cap}</td>
-                    {([] as never[]).map(role => (
+                    {([] as any[]).map(role => (
                       <td key={role} className="text-center py-2 px-3">
                         <Switch
                           checked={permissions[role]?.[cap] ?? false}

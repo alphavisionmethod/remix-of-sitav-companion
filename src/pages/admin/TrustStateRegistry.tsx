@@ -79,8 +79,8 @@ const statusBadge = (s: TrustStatus) => {
 
 const TrustStateRegistry = () => {
   const [tab, setTab] = useState("domains");
-  const overallScore = Math.round(([] as never[]).reduce((sum, d) => sum + d.proofCoverage, 0) / ([] as never[]).length);
-  const verifiedCount = ([] as never[]).filter(d => d.status === "verified").length;
+  const overallScore = Math.round(([] as any[]).reduce((sum, d) => sum + d.proofCoverage, 0) / ([] as any[]).length);
+  const verifiedCount = ([] as any[]).filter(d => d.status === "verified").length;
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
@@ -98,9 +98,9 @@ const TrustStateRegistry = () => {
       <motion.div variants={stagger} initial="hidden" animate="show" className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {[
           { label: "Overall Trust Score", value: `${overallScore}%`, color: overallScore > 85 ? "text-emerald-500" : "text-amber-500" },
-          { label: "Domains Verified", value: `${verifiedCount}/${([] as never[]).length}`, color: "text-foreground" },
-          { label: "Proof Links Active", value: String(([] as never[]).filter(n => n.status === "verified").length), color: "text-emerald-500" },
-          { label: "Degraded Surfaces", value: String(([] as never[]).length), color: ([] as never[]).length > 0 ? "text-amber-500" : "text-emerald-500" },
+          { label: "Domains Verified", value: `${verifiedCount}/${([] as any[]).length}`, color: "text-foreground" },
+          { label: "Proof Links Active", value: String(([] as any[]).filter(n => n.status === "verified").length), color: "text-emerald-500" },
+          { label: "Degraded Surfaces", value: String(([] as any[]).length), color: ([] as any[]).length > 0 ? "text-amber-500" : "text-emerald-500" },
         ].map(m => (
           <motion.div key={m.label} variants={fadeUp}>
             <Card className="hover:-translate-y-0.5 transition-transform">
@@ -123,7 +123,7 @@ const TrustStateRegistry = () => {
 
         {/* Domains */}
         <TabsContent value="domains" className="mt-4 space-y-3">
-          {([] as never[]).map(d => (
+          {([] as any[]).map(d => (
             <Card key={d.domain} className="hover:bg-muted/20 transition-colors">
               <CardContent className="p-4">
                 <div className="flex items-center justify-between mb-2">
@@ -166,7 +166,7 @@ const TrustStateRegistry = () => {
           <Card>
             <CardHeader className="pb-3"><CardTitle className="text-sm font-semibold flex items-center gap-2"><Link2 className="h-4 w-4 text-primary" /> Approval/Receipt Link Graph</CardTitle></CardHeader>
             <CardContent className="space-y-2">
-              {([] as never[]).map(node => (
+              {([] as any[]).map(node => (
                 <div key={node.id} className="p-3 rounded-lg border hover:bg-muted/20 transition-colors">
                   <div className="flex items-center justify-between mb-1">
                     <div className="flex items-center gap-2">
@@ -189,10 +189,10 @@ const TrustStateRegistry = () => {
 
         {/* Degraded State Map */}
         <TabsContent value="degraded" className="mt-4 space-y-3">
-          {([] as never[]).length === 0 ? (
+          {([] as any[]).length === 0 ? (
             <Card><CardContent className="p-8 text-center text-muted-foreground text-sm">No degraded surfaces detected. All systems operating at full truth fidelity.</CardContent></Card>
           ) : (
-            ([] as never[]).map((d, i) => (
+            ([] as any[]).map((d, i) => (
               <Card key={i} className="border-amber-500/20 bg-amber-500/5">
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between mb-2">
@@ -216,7 +216,7 @@ const TrustStateRegistry = () => {
           <Card>
             <CardHeader className="pb-3"><CardTitle className="text-sm font-semibold flex items-center gap-2"><Globe className="h-4 w-4 text-primary" /> Cross-Domain Trust Ribbon State</CardTitle></CardHeader>
             <CardContent className="space-y-3">
-              {([] as never[]).map(d => (
+              {([] as any[]).map(d => (
                 <div key={d.domain} className="flex items-center justify-between p-2 rounded-lg hover:bg-muted/20 transition-colors">
                   <div className="flex items-center gap-2">
                     {statusIcon(d.status)}

@@ -17,8 +17,8 @@ const AIRootCauseGraph = () => {
 const GRAPH_NODES: any[] = [];
   const { isDemo } = useAIEngDomain("violations", GRAPH_NODES);
   const [selectedNode, setSelectedNode] = useState<string | null>("root-1");
-  const selected = ([] as never[]).find(n => n.id === selectedNode);
-  const connectedEdges = ([] as never[]).filter(e => e.from === selectedNode || e.to === selectedNode);
+  const selected = ([] as any[]).find(n => n.id === selectedNode);
+  const connectedEdges = ([] as any[]).filter(e => e.from === selectedNode || e.to === selectedNode);
   const connectedNodes = connectedEdges.map(e => e.from === selectedNode ? e.to : e.from);
 
   return (
@@ -29,7 +29,7 @@ const GRAPH_NODES: any[] = [];
         {/* Graph Visualization (structured list view) */}
         <div className="lg:col-span-2 space-y-4">
           {(["symptom", "service", "release", "config", "root_cause"] as const).map(type => {
-            const nodes = ([] as never[]).filter(n => n.type === type);
+            const nodes = ([] as any[]).filter(n => n.type === type);
             if (!nodes.length) return null;
             const style = typeStyles[type];
             return (
@@ -78,7 +78,7 @@ const GRAPH_NODES: any[] = [];
                 <p className="text-[10px] text-muted-foreground uppercase tracking-wider mb-2">Connections ({connectedEdges.length})</p>
                 <div className="space-y-2">
                   {connectedEdges.map((e, i) => {
-                    const other = ([] as never[]).find(n => n.id === (e.from === selectedNode ? e.to : e.from));
+                    const other = ([] as any[]).find(n => n.id === (e.from === selectedNode ? e.to : e.from));
                     const direction = e.from === selectedNode ? "→" : "←";
                     return (
                       <div key={i} className="flex items-center gap-2 text-xs">

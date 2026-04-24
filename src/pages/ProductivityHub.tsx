@@ -53,7 +53,7 @@ const OverviewPage = () => {
       </div>
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-        {([] as never[]).map(doc => (
+        {([] as any[]).map(doc => (
           <SitaCard key={doc.id} className="p-4 cursor-pointer group">
             <div className="flex items-start gap-3">
               <div className="rounded-lg bg-secondary p-2">

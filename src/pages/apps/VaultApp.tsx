@@ -27,9 +27,9 @@ export default function VaultApp() {
   const [showPasswords, setShowPasswords] = useState<Record<string, boolean>>({});
   const { toast } = useToast();
 
-  const filtered = ([] as never[]).filter(e => !search || e.name.toLowerCase().includes(search.toLowerCase()));
-  const breachedCount = ([] as never[]).filter(e => e.breached).length;
-  const weakCount = ([] as never[]).filter(e => e.strength === "weak").length;
+  const filtered = ([] as any[]).filter(e => !search || e.name.toLowerCase().includes(search.toLowerCase()));
+  const breachedCount = ([] as any[]).filter(e => e.breached).length;
+  const weakCount = ([] as any[]).filter(e => e.strength === "weak").length;
 
   const toggleShow = (id: string) => setShowPasswords(p => ({ ...p, [id]: !p[id] }));
   const copyToClipboard = (text: string) => {
@@ -62,8 +62,8 @@ export default function VaultApp() {
       )}
 
       <div className="grid grid-cols-3 gap-3">
-        <Card><CardContent className="p-3 text-center"><p className="text-2xl font-bold text-foreground">{([] as never[]).length}</p><p className="text-[10px] text-muted-foreground">Total Entries</p></CardContent></Card>
-        <Card><CardContent className="p-3 text-center"><p className="text-2xl font-bold text-emerald-500">{([] as never[]).filter(e => e.strength === "strong").length}</p><p className="text-[10px] text-muted-foreground">Strong</p></CardContent></Card>
+        <Card><CardContent className="p-3 text-center"><p className="text-2xl font-bold text-foreground">{([] as any[]).length}</p><p className="text-[10px] text-muted-foreground">Total Entries</p></CardContent></Card>
+        <Card><CardContent className="p-3 text-center"><p className="text-2xl font-bold text-emerald-500">{([] as any[]).filter(e => e.strength === "strong").length}</p><p className="text-[10px] text-muted-foreground">Strong</p></CardContent></Card>
         <Card><CardContent className="p-3 text-center"><p className="text-2xl font-bold text-foreground">256-bit</p><p className="text-[10px] text-muted-foreground">Encryption</p></CardContent></Card>
       </div>
 

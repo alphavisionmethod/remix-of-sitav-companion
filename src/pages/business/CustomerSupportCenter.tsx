@@ -45,18 +45,18 @@ const CustomerSupportCenter = () => {
   const [panelOpen, setPanelOpen] = useState(false);
 
   const filterIssues = (tab: string) => {
-    if (tab === "all") return ([] as never[]).filter(i => i.status !== "resolved");
-    if (tab === "urgent") return ([] as never[]).filter(i => (i.severity === "critical" || i.severity === "high") && i.status !== "resolved");
-    if (tab === "waiting-on-us") return ([] as never[]).filter(i => i.status === "waiting-on-us");
-    if (tab === "escalated") return ([] as never[]).filter(i => i.status === "escalated");
-    if (tab === "resolved") return ([] as never[]).filter(i => i.status === "resolved");
+    if (tab === "all") return ([] as any[]).filter(i => i.status !== "resolved");
+    if (tab === "urgent") return ([] as any[]).filter(i => (i.severity === "critical" || i.severity === "high") && i.status !== "resolved");
+    if (tab === "waiting-on-us") return ([] as any[]).filter(i => i.status === "waiting-on-us");
+    if (tab === "escalated") return ([] as any[]).filter(i => i.status === "escalated");
+    if (tab === "resolved") return ([] as any[]).filter(i => i.status === "resolved");
     return ISSUES;
   };
 
   const filtered = filterIssues(activeTab);
-  const selected = ([] as never[]).find(i => i.id === selectedId);
-  const criticalCount = ([] as never[]).filter(i => i.severity === "critical" && i.status !== "resolved").length;
-  const breachedCount = ([] as never[]).filter(i => i.hoursOpen > i.slaHours && i.status !== "resolved").length;
+  const selected = ([] as any[]).find(i => i.id === selectedId);
+  const criticalCount = ([] as any[]).filter(i => i.severity === "critical" && i.status !== "resolved").length;
+  const breachedCount = ([] as any[]).filter(i => i.hoursOpen > i.slaHours && i.status !== "resolved").length;
 
   const handleSelect = (id: string) => { setSelectedId(id); setPanelOpen(true); };
 
@@ -73,7 +73,7 @@ const CustomerSupportCenter = () => {
 
       <HeroCard
         title={moduleConfig.title}
-        metric={`${([] as never[]).filter(i => i.status !== "resolved").length} open ${moduleConfig.terminology.issue?.toLowerCase() || "issue"}s`}
+        metric={`${([] as any[]).filter(i => i.status !== "resolved").length} open ${moduleConfig.terminology.issue?.toLowerCase() || "issue"}s`}
         subtitle={moduleConfig.subtitle}
         icon={<HeadphonesIcon className="h-5 w-5 text-[hsl(265_55%_68%)]" />}
         accentFrom="hsl(265 55% 58%)"
@@ -89,10 +89,10 @@ const CustomerSupportCenter = () => {
 
       <SitaTabs
         tabs={[
-          { key: "all", label: "All Open", count: ([] as never[]).filter(i => i.status !== "resolved").length },
-          { key: "urgent", label: "Urgent", count: ([] as never[]).filter(i => (i.severity === "critical" || i.severity === "high") && i.status !== "resolved").length },
-          { key: "waiting-on-us", label: "Waiting on Us", count: ([] as never[]).filter(i => i.status === "waiting-on-us").length },
-          { key: "escalated", label: "Escalated", count: ([] as never[]).filter(i => i.status === "escalated").length },
+          { key: "all", label: "All Open", count: ([] as any[]).filter(i => i.status !== "resolved").length },
+          { key: "urgent", label: "Urgent", count: ([] as any[]).filter(i => (i.severity === "critical" || i.severity === "high") && i.status !== "resolved").length },
+          { key: "waiting-on-us", label: "Waiting on Us", count: ([] as any[]).filter(i => i.status === "waiting-on-us").length },
+          { key: "escalated", label: "Escalated", count: ([] as any[]).filter(i => i.status === "escalated").length },
           { key: "resolved", label: "Resolved" },
         ]}
         active={activeTab}

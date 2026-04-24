@@ -34,7 +34,7 @@ const FIPRolloutPlanner = () => {
         <CardHeader><CardTitle className="text-base">Rollout Ring Distribution</CardTitle></CardHeader>
         <CardContent>
           <div className="flex gap-2">
-            {([] as never[]).map(ring => {
+            {([] as any[]).map(ring => {
               const count = rollouts.filter((r: Record<string, any>) => r.current_ring === ring).length;
               return (
                 <div key={ring} className={`flex-1 text-center p-3 rounded-lg border ${count > 0 ? 'border-primary/30' : ''}`}>

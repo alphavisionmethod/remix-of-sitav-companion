@@ -65,7 +65,7 @@ const AGENT_BOUNDARIES: any[] = [];
         </TabsList>
 
         <TabsContent value="agents" className="space-y-2 mt-4">
-          {([] as never[]).map(a => {
+          {([] as any[]).map(a => {
             const level = AUTONOMY_LABELS[a.autonomy];
             return (
               <div key={a.agent} className="rounded-xl border border-border/40 bg-card p-3 flex items-center gap-3">
@@ -84,7 +84,7 @@ const AGENT_BOUNDARIES: any[] = [];
         </TabsContent>
 
         <TabsContent value="missions" className="space-y-2 mt-4">
-          {([] as never[]).map(m => {
+          {([] as any[]).map(m => {
             const level = AUTONOMY_LABELS[m.defaultAutonomy];
             return (
               <div key={m.missionType} className="rounded-xl border border-border/40 bg-card p-3">
@@ -112,7 +112,7 @@ const AGENT_BOUNDARIES: any[] = [];
                 <th className="text-center p-3">Canary</th>
                 <th className="text-left p-3">Rationale</th>
               </tr></thead>
-              <tbody>{([] as never[]).map(c => {
+              <tbody>{([] as any[]).map(c => {
                 const level = AUTONOMY_LABELS[c.maxAutonomy];
                 return (
                   <tr key={c.changeType} className="border-b border-border/20">

@@ -12,7 +12,7 @@ const ICON_MAP: Record<string, any> = { ingestion: Eye, routing: ShieldCheck, bo
 
 const HRS01HealthConsentCenter = () => {
   const [enabledCats, setEnabledCats] = useState<Record<string, boolean>>(
-    Object.fromEntries(([] as never[]).map(c => [c.key, false]))
+    Object.fromEntries(([] as any[]).map(c => [c.key, false]))
   );
   const { data: dbConsents, isLoading } = useHealthSignalConsents();
   const toggleConsent = useToggleSignalConsent();
@@ -21,7 +21,7 @@ const HRS01HealthConsentCenter = () => {
   useEffect(() => {
     if (dbConsents?.length) {
       const fromDb: Record<string, boolean> = {};
-      ([] as never[]).forEach(c => {
+      ([] as any[]).forEach(c => {
         const match = dbConsents.find((dc: Record<string, any>) => dc.consent_scope === c.key && dc.read_permission && !dc.revoked_at);
         fromDb[c.key] = !!match;
       });
@@ -51,7 +51,7 @@ const HRS01HealthConsentCenter = () => {
 
         <TabsContent value="categories">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {([] as never[]).map((c) => {
+            {([] as any[]).map((c) => {
               const Icon = ICON_MAP[c.key] || Eye;
               return (
                 <Card key={c.key} className="hover:shadow-md transition-shadow">
@@ -114,7 +114,7 @@ const HRS01HealthConsentCenter = () => {
           <Card>
             <CardHeader><CardTitle className="text-sm flex items-center gap-2"><Lock className="h-4 w-4" />Core Consent Principles</CardTitle></CardHeader>
             <CardContent className="space-y-2">
-              {([] as never[]).map((p, i) => (
+              {([] as any[]).map((p, i) => (
                 <div key={i} className="flex items-start gap-2 p-2 rounded border text-xs"><CheckCircle2 className="h-3 w-3 text-green-500 shrink-0 mt-0.5" />{p}</div>
               ))}
             </CardContent>
@@ -129,7 +129,7 @@ const HRS01HealthConsentCenter = () => {
               <table className="w-full text-xs">
                 <thead><tr className="border-b"><th className="text-left p-2">Action</th><th className="text-left p-2">Effect</th><th className="p-2">Timeline</th><th className="text-left p-2">Cascade</th></tr></thead>
                 <tbody>
-                  {([] as never[]).map((r) => (
+                  {([] as any[]).map((r) => (
                     <tr key={r.action} className="border-b hover:bg-muted/30">
                       <td className="p-2 font-medium">{r.action}</td>
                       <td className="p-2 text-muted-foreground">{r.effect}</td>
