@@ -17,8 +17,6 @@ import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { PremiumEmptyState } from "@/components/sita/PremiumEmptyState";
 import { useOperationsCommandCenter } from "@/hooks/use-operations-command-center";
 
-const runbooks: Array<{ id: string; name: string; steps: number; lastUsed: string | null }> = [];
-
 export default function OperationsCommandCenter() {
   
   const [tab, setTab] = useState("health");
@@ -27,6 +25,8 @@ export default function OperationsCommandCenter() {
   const slos = data?.slos ?? [];
   const alerts = data?.alerts ?? [];
   const incidents = data?.incidents ?? [];
+  const runbooks = data?.runbooks ?? [];
+  const queues = data?.queues ?? [];
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mx-auto max-w-7xl space-y-6 p-6">
@@ -164,20 +164,21 @@ export default function OperationsCommandCenter() {
 
           <TabsContent value="queues">
             <h3 className="text-xs font-semibold mb-3">Queue Depths & Lag</h3>
-            {[
-              { name: "Approval Queue", depth: 2, lag: "0s", pressure: "low", owner: "approval-engine" },
-              { name: "Event Bus", depth: 0, lag: "12ms", pressure: "none", owner: "event-bus" },
-              { name: "Notification Queue", depth: 5, lag: "200ms", pressure: "low", owner: "notification-service" },
-              { name: "Connector Sync Queue", depth: 1, lag: "0s", pressure: "none", owner: "connector-gateway" },
-              { name: "Agent Signal Queue", depth: 0, lag: "0ms", pressure: "none", owner: "agent-runtime" },
-              { name: "Projection Rebuild Queue", depth: 0, lag: "0ms", pressure: "none", owner: "projection-engine" },
-            ].map(q => (
+            {queues.length === 0 && !isLoading && (
+              <PremiumEmptyState
+                variant="no-data"
+                icon={BarChart3}
+                title="No queue telemetry yet"
+                description="Queue depth and lag will appear here once internal agents emit queue_*_depth / queue_*_lag_ms SLO snapshots."
+              />
+            )}
+            {queues.map(q => (
               <div key={q.name} className="flex items-center justify-between p-3 bg-muted/20 rounded-lg mb-2">
                 <div className="flex items-center gap-3">
                   <BarChart3 className={cn("w-4 h-4", q.pressure === "none" ? "text-green-400" : q.pressure === "low" ? "text-blue-400" : "text-amber-400")} />
                   <div>
                     <p className="text-xs font-medium text-foreground">{q.name}</p>
-                    <p className="text-[10px] text-muted-foreground">Owner: {q.owner} • Lag: {q.lag}</p>
+                    <p className="text-[10px] text-muted-foreground">Owner: {q.owner} • Lag: {q.lagMs}ms</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
@@ -190,7 +191,7 @@ export default function OperationsCommandCenter() {
 
           <TabsContent value="runbooks">
             <div className="grid gap-2 sm:grid-cols-2">
-              {runbooks.length === 0 && (
+              {runbooks.length === 0 && !isLoading && (
                 <div className="col-span-full">
                   <PremiumEmptyState variant="no-data" icon={BookOpen} title="No runbooks registered" description="Runbooks will appear here once added to the runbook registry." />
                 </div>
@@ -201,7 +202,7 @@ export default function OperationsCommandCenter() {
                     <BookOpen className="w-3.5 h-3.5 text-primary" />
                     <div>
                       <p className="text-xs font-medium text-foreground">{rb.name}</p>
-                      <p className="text-[10px] text-muted-foreground">{rb.steps} steps • {rb.lastUsed ? `Used ${Math.round((Date.now() - new Date(rb.lastUsed).getTime()) / 86400000)}d ago` : "Never used"}</p>
+                      <p className="text-[10px] text-muted-foreground">{rb.steps} steps • {rb.domain} • {rb.autoHeal ? "auto-heal" : "manual"} • {rb.executions} runs</p>
                     </div>
                   </div>
                   <Button variant="ghost" size="sm" className="text-[10px] h-6 gap-0.5"><Play className="w-2.5 h-2.5" />Launch</Button>
