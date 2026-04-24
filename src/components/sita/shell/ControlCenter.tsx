@@ -21,6 +21,7 @@ import { useWindowManagerContext } from "@/contexts/WindowManagerContext";
 import { SitaVoiceControlRow } from "./sita-voice/SitaVoiceControlRow";
 import { SitaAutonomyControls } from "./sita-agent/SitaAutonomyControls";
 import { SitaSpatialControls } from "./sita-spatial/SitaSpatialControls";
+import { SitaCortexControls } from "./sita-cortex/SitaCortexControls";
 
 interface ControlCenterProps {
   open: boolean;
@@ -509,6 +510,9 @@ export function ControlCenter({ open, onClose }: ControlCenterProps) {
 
               {/* 1d. Sita Spatial (Phase F) */}
               <SitaSpatialControls />
+
+              {/* 1e. Sita Cortex (Phase G) */}
+              <SitaCortexControls />
 
               {/* 2. Mode cluster */}
               <ModeCluster isDark={isDark} onThemeToggle={handleThemeToggle} />
