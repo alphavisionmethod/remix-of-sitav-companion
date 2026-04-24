@@ -18,8 +18,8 @@
 |---|---|---|
 | sales-advisor | deployment-ready | 1.00 ✅ |
 | customer-service-advisor | deployment-ready | 1.00 ✅ |
-| **cfo-advisor** | **discovery** | **0.00 ← next** |
-| marketing-advertising-advisor | discovery | 0.00 |
+| cfo-advisor | deployment-ready | 1.00 ✅ |
+| **marketing-advertising-advisor** | **discovery** | **0.00 ← next (Phase 4)** |
 | growth-advisor | discovery | 0.00 |
 | tech-advisor | discovery | 0.00 |
 | imports-exports-advisor | discovery | 0.00 |
@@ -30,8 +30,8 @@
 
 1. ✅ Sales — done
 2. ✅ Customer Service — done
-3. **CFO** ← Phase 3 (this plan)
-4. Marketing & Advertising — Phase 4
+3. ✅ CFO — done (OS+mobile parity, 6/6 vitest, L2-recommend, blocked: execute_payment/close_books/file_taxes)
+4. **Marketing & Advertising** ← Phase 4 (next)
 5. Growth — Phase 5 (depends on Marketing analytics surface)
 6. Tech — Phase 6
 7. Imports & Exports — Phase 7
