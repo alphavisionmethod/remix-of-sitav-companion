@@ -85,7 +85,11 @@ Deno.serve(async (req) => {
   );
 });
 
-async function consolidateUser(admin: ReturnType<typeof createClient>, userId: string): Promise<ConsolidationReport> {
+// service-role admin client is intentionally untyped at edge runtime — newer
+// @supabase/supabase-js typings lock generic schema to `never` and reject all
+// table writes when `Database` types aren't supplied.
+// deno-lint-ignore no-explicit-any
+async function consolidateUser(admin: any, userId: string): Promise<ConsolidationReport> {
   const since = new Date(Date.now() - 24 * 3600_000).toISOString();
 
   // 1. Episodes
