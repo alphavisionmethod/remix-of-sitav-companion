@@ -31,23 +31,41 @@ const MOCK_SESSION = {
 let _authMode: "anonymous" | "authenticated" = "anonymous";
 
 // Mock Supabase globally
+// Build a fully chainable query-builder stub so any combination of
+// `.select().eq().eq().order().limit().single()` resolves to an empty result
+// without throwing. Returning the same builder from every method makes the
+// chain depth-agnostic (matches PostgREST's fluent API in shape).
+const makeChainableQuery = () => {
+  const emptyResult = { data: [], error: null, count: 0 };
+  const singleResult = { data: null, error: null };
+  const builder: Record<string, unknown> = {
+    data: [],
+    error: null,
+    count: 0,
+    then: (resolve: (v: typeof emptyResult) => unknown) => Promise.resolve(emptyResult).then(resolve),
+    maybeSingle: () => Promise.resolve(singleResult),
+    single: () => Promise.resolve(singleResult),
+    csv: () => Promise.resolve({ data: "", error: null }),
+  };
+  const chainable = [
+    "select", "eq", "neq", "gt", "gte", "lt", "lte", "like", "ilike",
+    "is", "in", "contains", "containedBy", "rangeGt", "rangeGte",
+    "rangeLt", "rangeLte", "rangeAdjacent", "overlaps", "match",
+    "not", "or", "filter", "order", "limit", "range", "abortSignal",
+    "returns", "explain", "throwOnError",
+  ];
+  for (const m of chainable) builder[m] = () => builder;
+  return builder;
+};
+
 vi.mock("@/integrations/supabase/client", () => ({
   supabase: {
     from: () => ({
-      select: () => ({
-        eq: () => ({
-          data: [],
-          error: null,
-          maybeSingle: () => Promise.resolve({ data: null, error: null }),
-        }),
-        data: [],
-        error: null,
-        maybeSingle: () => Promise.resolve({ data: null, error: null }),
-      }),
-      insert: () => ({ data: null, error: null }),
-      update: () => ({ eq: () => ({ data: null, error: null }), data: null, error: null }),
-      upsert: () => ({ data: null, error: null }),
-      delete: () => ({ eq: () => ({ data: null, error: null }), data: null, error: null }),
+      ...makeChainableQuery(),
+      insert: () => ({ ...makeChainableQuery(), data: null, error: null }),
+      update: () => makeChainableQuery(),
+      upsert: () => ({ ...makeChainableQuery(), data: null, error: null }),
+      delete: () => makeChainableQuery(),
     }),
     auth: {
       getSession: () => Promise.resolve({

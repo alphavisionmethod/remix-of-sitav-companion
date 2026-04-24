@@ -11,7 +11,12 @@ const ConnectivityContext = createContext<ConnectivityState>({ isOnline: true, w
 export const useConnectivity = () => useContext(ConnectivityContext);
 
 export const ConnectivityProvider = ({ children }: { children: ReactNode }) => {
-  const [isOnline, setIsOnline] = useState(navigator.onLine);
+  // navigator.onLine can be undefined in jsdom/test envs — default to online
+  const [isOnline, setIsOnline] = useState<boolean>(
+    typeof navigator !== "undefined" && typeof navigator.onLine === "boolean"
+      ? navigator.onLine
+      : true
+  );
   const [wasOffline, setWasOffline] = useState(false);
   const [showReconnected, setShowReconnected] = useState(false);
 
