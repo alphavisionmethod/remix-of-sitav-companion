@@ -1,20 +1,11 @@
 export {
-  speak as ttsSpeak,
-  cancel as ttsCancel,
-  isTTSEnabled,
-  setTTSEnabled,
-  listVoices,
-  whenVoicesReady,
-  getPreferredVoiceURI,
+  pickVoiceForActivePersona,
+  rateForActivePersona,
+  pitchForActivePersona,
+  shapeReplyForActivePersona,
   setPreferredVoiceURI,
-} from "./tts";
-export {
-  isWakeWordSupported,
-  isWakeWordEnabled,
-  setWakeWordEnabled,
-  startWakeWord,
-  stopWakeWord,
-  onWake,
-  getWakePhrases,
-  setWakePhrases,
-} from "./wake-word";
+  getPreferredVoiceURI,
+  isEmbodimentEnabled,
+  setEmbodimentEnabled,
+} from "./persona-voice-bridge";
+export { SitaEmbodimentMount } from "./SitaEmbodimentMount";
