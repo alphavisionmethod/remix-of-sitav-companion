@@ -37,7 +37,9 @@ interface ScanStat {
 }
 
 async function scanForUser(
-  admin: ReturnType<typeof createClient>,
+  // service-role client is intentionally untyped at edge runtime
+  // deno-lint-ignore no-explicit-any
+  admin: any,
   userId: string,
   apiKey: string,
 ): Promise<ScanStat> {
