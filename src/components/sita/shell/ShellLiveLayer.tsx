@@ -44,6 +44,7 @@ const SitaHandoffBannerLazy = lazy(() => import("./sita-spatial").then(m => ({ d
 const SitaGestureLayerLazy = lazy(() => import("./sita-spatial").then(m => ({ default: m.SitaGestureLayer })));
 const SitaHolographicBoardroomLazy = lazy(() => import("./sita-spatial").then(m => ({ default: m.SitaHolographicBoardroom })));
 const SitaSpatialFieldLazy = lazy(() => import("./sita-spatial").then(m => ({ default: m.SitaSpatialField })));
+const SitaSpatialIntentMountLazy = lazy(() => import("./sita-spatial").then(m => ({ default: m.SitaSpatialIntentMount })));
 
 interface ShellLiveLayerProps {
   wm: WindowManager;
@@ -206,6 +207,9 @@ export function ShellLiveLayer({
       </Suspense>
       <Suspense fallback={null}>
         <SitaSpatialFieldLazy />
+      </Suspense>
+      <Suspense fallback={null}>
+        <SitaSpatialIntentMountLazy />
       </Suspense>
 
     </>
