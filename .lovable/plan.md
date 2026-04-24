@@ -19,8 +19,8 @@
 | sales-advisor | deployment-ready | 1.00 ✅ |
 | customer-service-advisor | deployment-ready | 1.00 ✅ |
 | cfo-advisor | deployment-ready | 1.00 ✅ |
-| **marketing-advertising-advisor** | **discovery** | **0.00 ← next (Phase 4)** |
-| growth-advisor | discovery | 0.00 |
+| marketing-advertising-advisor | deployment-ready | 1.00 ✅ |
+| **growth-advisor** | **discovery** | **0.00 ← next (Phase 5)** |
 | tech-advisor | discovery | 0.00 |
 | imports-exports-advisor | discovery | 0.00 |
 | taxes-laws-advisor | discovery | 0.00 |
