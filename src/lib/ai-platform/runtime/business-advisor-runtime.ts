@@ -161,7 +161,14 @@ export async function askBusinessAdvisor(
       { role: "system", content: contextSummary },
       { role: "user", content: request.prompt },
     ],
-    intent: request.intent === "draft" ? "draft" : "ask",
+    intent:
+      request.intent === "draft"
+        ? "draft"
+        : request.intent === "analyze"
+          ? "analyze"
+          : request.intent === "simulate"
+            ? "analyze"
+            : "chat",
     receiptRequested: true,
   });
 
