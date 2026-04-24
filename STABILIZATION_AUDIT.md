@@ -372,3 +372,60 @@ typechecks clean, and the deployment-readiness gate plus the new cron
 freshness gate both pass. Remaining items are CI-runnable or advisory.
 
 _Updated 2026-04-24._
+
+---
+
+## Phase 9 — Stub Surface Elimination (CLOSED)
+
+**Goal:** purge the 8 surfaces flagged as "🟡 Empty / awaiting data" by
+separating *honest empty states* from *real broken stubs that shadowed
+canonical data*.
+
+### Schema (3 new tables, all RLS-secured)
+| Table | Purpose | Policies |
+|---|---|---|
+| `call_outcomes` | Per-call sentiment, duration, outcome, post-call actions | Owner-scoped CRUD |
+| `automation_fatigue_alerts` | Channel/contact fatigue signals tied to `crm_automations` | Owner-scoped CRUD |
+| `pack_install_metrics` | Daily pack install/revenue/retention rollup | Public read, admin write |
+
+### Reference seed data (idempotent, public reads)
+| Registry | Rows seeded |
+|---|---|
+| `connector_registry` | 40 providers |
+| `advisor_registry` (domain=`revenue`) | 9 advisors |
+| `platform_runbooks` (system-owned) | 6 canonical runbooks |
+
+### Surfaces classified
+| Surface | Was | Now |
+|---|---|---|
+| Connector Control Center | Empty registry | 40 providers, hook unchanged |
+| Operations Command Center — Runbooks | Local `[]` stub | Wired to `platform_runbooks` |
+| Operations Command Center — Queues | Hardcoded inline mock | Derived from `internal_agent_slo_snapshots` (`queue_*_depth`/`_lag_ms`) |
+| Revenue Automation Health — Fatigue | `fatigueAlerts: []` const | Wired to `automation_fatigue_alerts` |
+| Call Desk | 4 local `[]` stubs | `useCallDesk()` over `calendar_events` + `call_outcomes` |
+| Quote Studio | Already correct | No change (honest empty) |
+| Investment Catalyst War Room | `CATALYST_EVENTS: any[]=[]` | `useCatalystEvents()` over `calendar_events`+`risk_scenarios` |
+| Event Probability Lab | `EVENTS: any[]=[…]` | `useEventProbabilities()` over `scenarios` |
+| Pack Store Analytics | All charts empty + mock cards | `useStoreAnalytics()` over `pack_install_metrics`+`pack_purchases` |
+| Integration Catalog | `INTEGRATION_PROVIDERS: any[]=[]` shadowed canonical | Imports `@/lib/services/integration-hub/providers` (35+ providers) |
+| Growth Advisor Board | Empty `advisor_registry` | 9 revenue advisors seeded |
+
+### Code outputs
+- **New hooks:** `use-call-desk`, `use-catalyst-events`, `use-event-probabilities`, `use-store-analytics`
+- **Extended hook:** `use-operations-command-center` (+`runbooks`,+`queues`); `use-revenue-automation-health` (+`fatigueAlerts`)
+- **Page rewrites:** 7 surfaces (lists above)
+- **Migrations:** 2 (schema + seeds)
+
+### Validation
+- `npx tsc --noEmit`: **0 errors**
+- `as-any` count in `src/pages/**`: unchanged (zero new violations)
+- `connector_registry`: 40 rows · `advisor_registry[domain=revenue]`: 9 rows · `platform_runbooks[system]`: 6 rows
+- All 3 new tables present with RLS enabled
+
+### Out-of-scope (intentional Empty-State Honesty)
+- Quote Studio upsells/insights — require ≥5 accepted quotes before inference
+- User-scoped `crm_automations`, `quotes`, `incidents`, `alerts` — empty until the user creates data; the empty state IS the feature
+
+**Phase 9 status: CLOSED. Stub surfaces eliminated. Deployment posture preserved.**
+
+_Updated 2026-04-24 (Phase 9)._
