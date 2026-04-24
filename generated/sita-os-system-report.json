@@ -1,0 +1,81 @@
+{
+  "generatedAt": "2026-04-24T00:00:00Z",
+  "reportFile": "SITA_OS_SYSTEM_REPORT.md",
+  "totals": {
+    "edgeFunctions": 212,
+    "migrations": 257,
+    "pages": 126,
+    "packages": 37,
+    "advisorIdentities": 34,
+    "ownerTeams": 13,
+    "rlsTables": 420,
+    "rlsPolicies": 934,
+    "runtimeTiers": 4,
+    "runbooks": 19,
+    "killSwitches": 15
+  },
+  "buckets": {
+    "bff-gateway": { "count": 10, "owners": ["admin-governance", "platform-core"], "maturity": "🟢" },
+    "ai-platform": { "count": 12, "owners": ["ai-engineering"], "maturity": "🟢" },
+    "advisor-boardroom": { "count": 14, "owners": ["advisor-intelligence"], "maturity": "🟢" },
+    "internal-agents-workforce": { "count": 22, "owners": ["agent-runtime"], "maturity": "🟡" },
+    "connectors": { "count": 13, "owners": ["connector-integrations"], "maturity": "✅" },
+    "os-app-platform-cloud": { "count": 26, "owners": ["app-platform","cloud-infrastructure","os-kernel"], "maturity": "🟢" },
+    "security-trust-recovery": { "count": 25, "owners": ["compliance-security"], "maturity": "✅" },
+    "domain-business-money-concierge": { "count": 13, "owners": ["finance-engine","user-experience"], "maturity": "🟢" },
+    "operations-health-telemetry": { "count": 22, "owners": ["platform-core"], "maturity": "🟢" },
+    "release-evidence-compliance": { "count": 12, "owners": ["compliance-security","platform-core"], "maturity": "✅" },
+    "webhooks-workflows-schedulers": { "count": 17, "owners": ["platform-core","notification-services"], "maturity": "🟢" },
+    "public-marketing-misc": { "count": 26, "owners": ["notification-services","user-experience","platform-core"], "maturity": "🟢" }
+  },
+  "ownerTeamDistribution": {
+    "admin-governance": 6, "advisor-intelligence": 9, "agent-runtime": 20,
+    "ai-engineering": 10, "os-kernel": 7, "platform-core": 34, "user-experience": 25,
+    "finance-engine": 9, "cloud-infrastructure": 8, "connector-integrations": 13,
+    "compliance-security": 30, "notification-services": 7, "app-platform": 14
+  },
+  "subsystems": [
+    { "id": "frontend-shell", "maturity": "🟢", "anchor": "src/App.tsx" },
+    { "id": "window-app-platform", "maturity": "🟢", "anchor": "mem://architecture/app-lifecycle-governance" },
+    { "id": "service-constitution", "maturity": "🟢", "anchor": "src/services/index.ts" },
+    { "id": "edge-function-topology", "maturity": "🟢", "anchor": "supabase/functions/_owners.json" },
+    { "id": "database-rls", "maturity": "✅", "anchor": "supabase/migrations/" },
+    { "id": "ai-capability-registry", "maturity": "🟢", "anchor": "src/lib/ai/ai-capability-registry.ts" },
+    { "id": "advisor-identities", "maturity": "🟢", "anchor": "src/lib/advisors/advisor-identity-registry.ts" },
+    { "id": "advisor-debate-orchestrator", "maturity": "🟢", "anchor": "src/lib/advisors/advisor-debate-orchestrator.ts" },
+    { "id": "boardroom", "maturity": "🟢", "anchor": "src/pages/Boardroom.tsx" },
+    { "id": "personal-brain", "maturity": "🟢", "anchor": "supabase/functions/personal-brain" },
+    { "id": "business-onboarding-archetypes", "maturity": "🟡", "gap": "branchAnswers not yet feeding archetype weights" },
+    { "id": "business-twin-persistence", "maturity": "🟠", "gap": "16-model interface not fully DB-backed" },
+    { "id": "security-fabric", "maturity": "✅", "anchor": "mem://architecture/security-fabric" },
+    { "id": "kill-switches", "maturity": "🟢" },
+    { "id": "anti-piracy", "maturity": "🟢" },
+    { "id": "internal-agents-security-council", "maturity": "🟢" },
+    { "id": "internal-agents-full-workforce", "maturity": "🟡", "gap": "many scheduled-only, not yet through canonical spine" },
+    { "id": "connectors", "maturity": "✅" },
+    { "id": "push-notifications", "maturity": "🟡", "gap": "VAPID active, FCM planned, APNs deferred" },
+    { "id": "os-appliance-iso-ova", "maturity": "🟢" },
+    { "id": "os-appliance-raw-img", "maturity": "🟢" },
+    { "id": "desktop-host-electron", "maturity": "🟢" },
+    { "id": "mobile-native", "maturity": "🔴", "reason": "archived; Ubuntu-native canonical" },
+    { "id": "evidence-persistence", "maturity": "🟢" },
+    { "id": "release-attestation", "maturity": "✅" },
+    { "id": "ci-deployment-readiness", "maturity": "✅" },
+    { "id": "sequential-test-runner", "maturity": "✅" },
+    { "id": "self-healing-test-system", "maturity": "🟢", "anchor": "scripts/test-self-heal.mjs" },
+    { "id": "voice-spine", "maturity": "🟢" },
+    { "id": "marketing-demo-site", "maturity": "🟢" }
+  ],
+  "maturityLegend": {
+    "✅": "Behaviorally proven",
+    "🟢": "Wired",
+    "🟡": "Partially wired",
+    "🟠": "Structural",
+    "🔴": "Blocked / external"
+  },
+  "nextMostValuableClosures": [
+    "Persist Business Twin + consume branchAnswers (hyper-personalisation)",
+    "Wire scheduled-only internal agents through canonical-chain-orchestrator",
+    "Stand up T5 LLM RCA on real failures and cherry-pick into PRs"
+  ]
+}
