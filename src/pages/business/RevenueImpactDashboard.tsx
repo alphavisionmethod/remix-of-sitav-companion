@@ -344,12 +344,15 @@ const RevenueImpactDashboard = () => {
                   cats[p.category].generated += p.generated;
                   return cats;
                 }, {} as Record<string, { recovered: number; generated: number }>)
-              ).map(([cat, v]) => (
-                <div key={cat} className="flex items-center justify-between text-xs">
-                  <span className={`rounded-full px-2 py-0.5 text-[9px] font-semibold capitalize ${categoryColors[cat]}`}>{cat}</span>
-                  <span className="font-medium text-foreground">${((v as any).recovered + (v as any).generated).toLocaleString()}</span>
-                </div>
-              ))}
+              ).map(([cat, v]) => {
+                const totals = v as { recovered: number; generated: number };
+                return (
+                  <div key={cat} className="flex items-center justify-between text-xs">
+                    <span className={`rounded-full px-2 py-0.5 text-[9px] font-semibold capitalize ${categoryColors[cat]}`}>{cat}</span>
+                    <span className="font-medium text-foreground">${(totals.recovered + totals.generated).toLocaleString()}</span>
+                  </div>
+                );
+              })}
             </div>
           </SitaCard>
         </div>

@@ -43,9 +43,9 @@ export default function PlatformConnections() {
   const [search, setSearch] = useState("");
   const [selectedPlatform, setSelectedPlatform] = useState<AvailablePlatform | null>(null);
 
-  const AVAILABLE_PLATFORMS: any[] = [];
+  const AVAILABLE_PLATFORMS: AvailablePlatform[] = [];
   const filtered = useMemo(() => {
-    let list = AVAILABLE_PLATFORMS as any[];
+    let list: AvailablePlatform[] = AVAILABLE_PLATFORMS;
     const tab = CATEGORY_TABS.find(t => t.value === category);
     if (tab && tab.types.length > 0) {
       list = list.filter(p => tab.types.includes(p.type as PlatformType));

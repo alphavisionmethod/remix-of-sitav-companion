@@ -198,7 +198,7 @@ export default function ProofMatrixExplorer() {
                   <CardContent className="p-4">
                     <div className="flex items-center justify-between mb-2">
                       <p className="text-sm font-medium text-foreground capitalize">{domain}</p>
-                      <p className="text-lg font-bold text-primary">{count as any}</p>
+                      <p className="text-lg font-bold text-primary">{Number(count) || 0}</p>
                     </div>
                     <Progress value={0} className="h-1.5" />
                     <p className="text-[10px] text-muted-foreground mt-1">0% of total proofs</p>
