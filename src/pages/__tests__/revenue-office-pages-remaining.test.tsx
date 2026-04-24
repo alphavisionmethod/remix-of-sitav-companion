@@ -50,7 +50,19 @@ describe("Revenue-Office Pages Remaining", () => {
       const mod: any = await loader();
       const Component = mod.default || Object.values(mod).find((v: any) => typeof v === "function");
       const isScreen = name.endsWith("Screen") || name === "BranchingQuestionsPanel";
-      const props = isScreen ? screenProps : {};
+      // BranchingQuestionsPanel takes a different prop shape
+      const branchProps = { questions: [], answers: {}, onAnswer: vi.fn() };
+      // LiveOfficeSidebar takes onboarding state directly
+      const sidebarProps = { state: defaultOnboardingState, currentStage: "ceremony" };
+      let props: Record<string, unknown> = {};
+      if (name === "BranchingQuestionsPanel") props = branchProps;
+      else if (name === "LiveOfficeSidebar") props = sidebarProps;
+      else if (isScreen) props = screenProps;
+      // 'primitives' is a module of helpers, not a component — skip render
+      if (name === "primitives") {
+        expect(mod).toBeTruthy();
+        return;
+      }
       const { container } = render(<Component {...props} />, { authenticated: true });
       expect(container).toBeTruthy();
     });
