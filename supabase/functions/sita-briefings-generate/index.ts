@@ -9,6 +9,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
+import { authorizeCronInvocation } from "./auth.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -59,23 +60,19 @@ Deno.serve(async (req) => {
 
   try {
     // ── G4: Cron-secret enforcement ──────────────────────────────
-    // verify_jwt = false means Supabase will not enforce a user JWT,
-    // so we must enforce a shared secret ourselves. Accept either:
-    //   - x-cron-secret header matching CRON_SECRET (pg_cron path), OR
-    //   - Authorization: Bearer <SUPABASE_SERVICE_ROLE_KEY> (admin path), OR
-    //   - Authorization: Bearer <SUPABASE_ANON_KEY> with a real user JWT
-    //     (manual invoke from the app — accepted for backwards compat
-    //      because RLS is enforced inside the function via service role).
-    const cronSecret = Deno.env.get("CRON_SECRET");
-    const headerSecret = req.headers.get("x-cron-secret");
-    const authHeader = req.headers.get("authorization") ?? "";
-    const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
-    const isCronAuthorized = !!cronSecret && headerSecret === cronSecret;
-    const isServiceAuthorized = !!serviceRoleKey && authHeader === `Bearer ${serviceRoleKey}`;
-    const hasAuthHeader = authHeader.startsWith("Bearer ");
-    if (cronSecret && !isCronAuthorized && !isServiceAuthorized && !hasAuthHeader) {
-      return new Response(JSON.stringify({ error: "unauthorized" }), {
-        status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" },
+    // Delegated to the pure helper in `./auth.ts` so the predicate
+    // can be unit-tested deterministically (see `auth.test.ts`).
+    const decision = authorizeCronInvocation({
+      cronSecretHeader: req.headers.get("x-cron-secret"),
+      authorizationHeader: req.headers.get("authorization"),
+      cronSecretEnv: Deno.env.get("CRON_SECRET"),
+      serviceRoleEnv: Deno.env.get("SUPABASE_SERVICE_ROLE_KEY"),
+    });
+    if (!decision.ok) {
+      const status = decision.reason === "missing_cron_secret_env" ? 503 : 401;
+      return new Response(JSON.stringify({ error: decision.reason }), {
+        status,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
 

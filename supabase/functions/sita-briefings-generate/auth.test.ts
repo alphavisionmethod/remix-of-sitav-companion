@@ -14,7 +14,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { describe, it, expect } from "vitest";
-import { authorizeCronInvocation, type AuthInput } from "./auth";
+import { authorizeCronInvocation, type AuthInput } from "./auth.ts";
 
 const CRON = "super-secret-cron-token-1234567890";
 const SVC = "service-role-key-abcdef-1234567890";
