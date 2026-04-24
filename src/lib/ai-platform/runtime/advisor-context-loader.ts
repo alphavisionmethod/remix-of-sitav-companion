@@ -47,10 +47,13 @@ const SOURCE_TO_TABLE: Record<string, { table: string; label?: string } | null> 
   support_tickets: { table: "support_cases", label: "Support cases" },
   customer_records: { table: "customers", label: "Customers" },
   sla_policies: null,
-  // Finance
-  financial_statements: null,
-  budgets: null,
-  transactions: null,
+  // Finance — Phase 3 wired to real ledger / invoicing substrate.
+  // `accounts` is the closest ledger we have today; `forecasts` and
+  // dedicated statement views remain honestly null (empty-state honest).
+  financial_statements: { table: "accounts", label: "Financial accounts" },
+  budgets: { table: "budgets", label: "Operating budgets" },
+  transactions: { table: "transactions", label: "Transactions" },
+  invoices: { table: "invoices", label: "Customer invoices" },
   forecasts: null,
   // Marketing
   campaigns: null,
@@ -112,7 +115,10 @@ async function loadSlice(
       | "quotes"
       | "deals"
       | "support_cases"
-      | "customers";
+      | "customers"
+      | "transactions"
+      | "budgets"
+      | "invoices";
     const { data, error, count } = await supabase
       .from(tableName)
       .select("*", { count: "exact" })
