@@ -149,7 +149,7 @@ vi.mock("@/contexts/DisplayModeContext", () => ({
 
 // Mock connectivity
 vi.mock("@/contexts/ConnectivityContext", () => ({
-  useConnectivity: () => ({ isOnline: true }),
+  useConnectivity: () => ({ isOnline: true, wasOffline: false }),
   ConnectivityProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
 }));
 
