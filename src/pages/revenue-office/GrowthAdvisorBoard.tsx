@@ -11,6 +11,8 @@ import { RevenueOfficeModeToggle } from "@/components/revenue-office/RevenueOffi
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { PageShell } from "@/components/sita/PageShell";
 import { Typography } from "@/components/sita/Typography";
+import { PremiumEmptyState } from "@/components/sita/PremiumEmptyState";
+import { useGrowthAdvisorBoard } from "@/hooks/use-growth-advisor-board";
 type AdvisorQueryType = "disagree" | "missing" | "break";
 
 interface AdvisorQueryResponse {
@@ -82,14 +84,17 @@ export default function GrowthAdvisorBoard() {
   const [expandedAdvisor, setExpandedAdvisor] = useState<string | null>(null);
   const [activeQueries, setActiveQueries] = useState<Record<string, AdvisorQueryType | null>>({});
   const [loadingQueries, setLoadingQueries] = useState<Record<string, boolean>>({});
+  const { data, isLoading } = useGrowthAdvisorBoard();
 
-  const advisors: any[] = [];
-  const debates: any[] = [];
-  const whatChanged: any[] = [];
-  const invalidation: any[] = [];
-  const clusters: any[] = [];
+  const advisors = data?.advisors ?? [];
+  const debates = data?.debates ?? [];
+  const whatChanged = data?.whatChanged ?? [];
+  const invalidation = data?.invalidation ?? [];
+  const clusters = data?.clusters ?? [];
 
-  const boardConfidence = Math.round(advisors.reduce((s, a) => s + a.confidence, 0) / advisors.length * 100);
+  const boardConfidence = advisors.length > 0
+    ? Math.round(advisors.reduce((s, a) => s + a.confidence, 0) / advisors.length * 100)
+    : 0;
   const alertCount = advisors.filter(a => a.type === "alert").length;
   const debateCount = debates.reduce((s, d) => s + d.disagreements.length, 0);
 
