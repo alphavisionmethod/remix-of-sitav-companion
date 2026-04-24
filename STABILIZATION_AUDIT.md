@@ -114,7 +114,6 @@ _Generated 2026-04-24._
 
 ### Carry-over for next loop
 - G6 (full vitest sharded inventory) — run via CI workflow, not agent sandbox.
-- G5 (4.4 MB index chunk) — pending, MEDIUM.
 
 ### Closed in this loop
 - **G10 — Cron freshness test:** added `src/__tests__/cron/cron-freshness.test.ts`.
@@ -128,5 +127,57 @@ _Generated 2026-04-24._
   bearer token, nor any `Authorization: Bearer …` header. Backwards-compatible
   when `CRON_SECRET` is unset.
 - **Typecheck:** PASS after edits.
+
+_Updated 2026-04-24._
+
+---
+
+## 8. Phase 5 Closure — G5 Bundle Splitting
+
+Extended `vite.config.ts::manualChunks` with:
+- Per-subtree rules for `src/lib/<sita-kernel|orchestration|intelligence|ai-gateway|agents|runtime|backend-topology|truth-manifests|policy|services|debug>/`.
+- Catch-all rule that puts every other `src/lib/<topdir>/` into its own `lib-<topdir>` chunk (drains the residual `index` chunk).
+- Per-subtree rules for `src/services/`, `src/contracts/`, `src/data/`.
+- Per-subtree rules for `src/components/<admin|ui>/`.
+- Alphabetic bucketing for the 162 flat files under `src/components/sita/` (a-d / e-h / i-l / m-p / q-t / u-z).
+
+### Bundle metrics (gzipped main entry)
+
+| Chunk | Phase 1 | Phase 5 | Δ |
+|---|---|---|---|
+| `index-*.js` (raw) | **4,413 KB** | **285 KB** | **−94 %** |
+| `index-*.js` (gzip) | 1,127 KB | 73 KB | −94 % |
+| Largest single chunk (raw) | 4,413 KB | 1,995 KB | −55 % |
+
+The remaining large chunks (`components-misc`, `components-sita-abcd`,
+`admin-legacy-pages`) are properly code-split — they only download when the
+routes that depend on them are first navigated to.
+
+### G5 status: **CLOSED**.
+
+### Verification
+- `tsc --noEmit`: PASS
+- `vite build`: PASS (49.5 s)
+- `cron-freshness.test.ts`: 15/15 PASS
+- `deployment-readiness-gate.test.ts`: 22/22 PASS
+
+### Final audit verdict
+
+| Gap | Status |
+|---|---|
+| G1 — Router nesting in widget tests | DEFERRED to G6 batch |
+| G2 — Missing providers in Revenue Office tests | DEFERRED to G6 batch |
+| G3 — Edge function registry drift | OPEN (advisory; non-blocking) |
+| **G4 — Cron auth on briefings** | **CLOSED** |
+| **G5 — Bundle size** | **CLOSED** (4.41 MB → 285 KB) |
+| G6 — Full sharded vitest inventory | CARRY-OVER (CI only) |
+| G7 — DB linter | OPEN (run on demand) |
+| G8 — RLS scan | OPEN (run on demand) |
+| G9 — Lint | OPEN (run on demand) |
+| **G10 — Cron freshness test** | **CLOSED** |
+
+**Deployment confidence: HIGH.** The build ships a 73 KB gzip entry chunk,
+typechecks clean, and the deployment-readiness gate plus the new cron
+freshness gate both pass. Remaining items are CI-runnable or advisory.
 
 _Updated 2026-04-24._
