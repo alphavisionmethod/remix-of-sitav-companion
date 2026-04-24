@@ -24,6 +24,16 @@ import {
   canAutoRunStep,
 } from "./autonomy-tier";
 import type { ActionPlan, PlanResult, PlanStepResult, SitaAgentDomain } from "./plan-types";
+import { readWorldModel, updateWorldModel } from "@/lib/sita-cortex/world-model";
+import { preVoteOnPlan } from "@/lib/sita-cortex/council";
+import { readCortexFlags } from "@/components/sita/shell/sita-cortex/SitaCortexControls";
+
+function emitReceipt(label: string, opts?: { reversible?: boolean; onUndo?: () => void }) {
+  if (typeof window === "undefined") return;
+  window.dispatchEvent(new CustomEvent("sita-receipt", {
+    detail: { id: crypto.randomUUID(), label, reversible: !!opts?.reversible, onUndo: opts?.onUndo },
+  }));
+}
 
 export interface PlanRequestOptions {
   /** Optional override domain hint. */
@@ -53,8 +63,22 @@ export function useSitaAgent() {
       const domain = opts.domain ?? detectDomain(intent);
       const tier = getAutonomyTier(domain);
 
+      // Phase G: enrich planner with rolling world model context.
+      const world = readWorldModel();
+      updateWorldModel({ active_intent: intent });
+
       const { data, error } = await supabase.functions.invoke("sita-agent-planner", {
-        body: { intent, domain, autonomyTier: tier },
+        body: {
+          intent,
+          domain,
+          autonomyTier: tier,
+          world_state: {
+            focused_app: world.focused_app,
+            open_windows: world.open_windows?.slice(0, 8),
+            calendar_next_48h: world.calendar_next_48h?.slice(0, 8),
+            finance_posture: world.finance_posture,
+          },
+        },
       });
       if (error) throw error;
 
@@ -71,6 +95,32 @@ export function useSitaAgent() {
         if (!getSkill(s.skillId)) {
           toast.error(`Sita produced an unknown skill: ${s.skillId}`);
           return null;
+        }
+      }
+
+      // Phase G: best-effort council pre-vote. Never blocks user input.
+      const flags = readCortexFlags();
+      if (flags.council) {
+        try {
+          const verdict = await preVoteOnPlan(plan);
+          if (verdict) {
+            (plan as ActionPlan & { councilVerdict?: unknown }).councilVerdict = verdict;
+            if (user) {
+              const rows = (verdict.votes ?? []).map((v) => ({
+                user_id: user.id,
+                plan_id: plan.id,
+                advisor_id: v.advisor_id,
+                vote: v.vote,
+                score: v.score,
+                rationale: v.rationale,
+              }));
+              if (rows.length > 0) {
+                await supabase.from("sita_council_votes" as never).insert(rows as never);
+              }
+            }
+          }
+        } catch (err) {
+          console.warn("[sita-agent] council prevote failed", err);
         }
       }
 
@@ -162,6 +212,9 @@ export function useSitaAgent() {
     speakAgentSummary(summary);
     if (allOk) toast.success(summary);
     else toast.error(summary);
+
+    // Phase G: trust receipt chip near HUD orb.
+    emitReceipt(summary, { reversible: plan.reversible });
 
     clearAgentPlan();
     return result;
