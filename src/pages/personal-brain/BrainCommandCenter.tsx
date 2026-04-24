@@ -305,9 +305,23 @@ function CommandCenterInner() {
                 <Sparkles className="h-4 w-4 text-primary" />
                 <h2 className="text-sm font-semibold text-foreground">Insights feed</h2>
               </div>
-              <span className="text-[11px] text-muted-foreground">
-                {signals.length} signal{signals.length === 1 ? "" : "s"}
-              </span>
+              <div className="flex items-center gap-2">
+                <span className="text-[11px] text-muted-foreground">
+                  {signals.length} signal{signals.length === 1 ? "" : "s"}
+                </span>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-7 w-7 p-0"
+                  aria-label="Refresh insights"
+                  onClick={() => void refreshSignals()}
+                  disabled={signalsLoading}
+                >
+                  <RefreshCw
+                    className={`h-3.5 w-3.5 ${signalsLoading ? "animate-spin" : ""}`}
+                  />
+                </Button>
+              </div>
             </div>
             {signalsLoading ? (
               <div className="flex items-center justify-center py-10">
@@ -322,6 +336,7 @@ function CommandCenterInner() {
                 </p>
               </div>
             ) : (
+              <>
               <ul className="space-y-2">
                 {signals.map((s) => (
                   <li
@@ -370,6 +385,26 @@ function CommandCenterInner() {
                   </li>
                 ))}
               </ul>
+              {/* Infinite scroll sentinel + status row */}
+              <div ref={sentinelRef} className="flex items-center justify-center py-3">
+                {loadingMore ? (
+                  <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+                ) : hasMore ? (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="h-7 text-[11px]"
+                    onClick={() => void loadMore()}
+                  >
+                    Load more
+                  </Button>
+                ) : (
+                  <span className="text-[11px] text-muted-foreground">
+                    You're all caught up.
+                  </span>
+                )}
+              </div>
+              </>
             )}
           </CardContent>
         </Card>
