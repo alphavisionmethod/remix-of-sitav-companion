@@ -6,7 +6,7 @@
 // existing pb_* tables and the personal-brain edge function.
 // ═══════════════════════════════════════════════════════════════
 
-import { useMemo } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   ArrowLeft,
@@ -14,10 +14,12 @@ import {
   ChevronRight,
   Loader2,
   Pin,
+  RefreshCw,
   Sparkles,
   TrendingUp,
   X,
 } from "lucide-react";
+import { toast } from "sonner";
 import { GlobalErrorBoundary } from "@/components/sita/GlobalErrorBoundary";
 import { PageShell } from "@/components/sita/PageShell";
 import { Button } from "@/components/ui/button";
@@ -30,10 +32,21 @@ import { usePbGoals } from "@/components/personal-brain/hooks/usePbGoals";
 
 function CommandCenterInner() {
   const navigate = useNavigate();
-  const { memories, loading: memoriesLoading, triggerScan } = usePbMemories();
-  const { signals, loading: signalsLoading, busy, scan, updateStatus } = usePbInsightsSignals();
+  const { memories, loading: memoriesLoading, triggerScan, refresh: refreshMemories } = usePbMemories();
+  const {
+    signals,
+    loading: signalsLoading,
+    busy,
+    scan,
+    updateStatus,
+    refresh: refreshSignals,
+    loadMore,
+    hasMore,
+    loadingMore,
+  } = usePbInsightsSignals();
   const { profile } = usePbProfile();
   const { goals } = usePbGoals();
+  const [scanning, setScanning] = useState(false);
 
   // ── Snapshot stats ──────────────────────────────────────────
   const explicitCount = useMemo(
@@ -79,8 +92,36 @@ function CommandCenterInner() {
   }, [memories]);
 
   const handleScanAll = async () => {
-    await Promise.all([triggerScan(null), scan()]);
+    if (scanning) return;
+    setScanning(true);
+    const t = toast.loading("Scanning your Brain…");
+    try {
+      // Run both scans in parallel; each persists writes server-side.
+      await Promise.all([triggerScan(null), scan()]);
+      // Re-fetch both feeds so the UI reflects new memories + signals.
+      await Promise.all([refreshMemories(), refreshSignals()]);
+      toast.success("Brain updated", { id: t });
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Scan failed", { id: t });
+    } finally {
+      setScanning(false);
+    }
   };
+
+  // Infinite scroll sentinel for the Insights Feed.
+  const sentinelRef = useRef<HTMLDivElement | null>(null);
+  useEffect(() => {
+    const node = sentinelRef.current;
+    if (!node || !hasMore) return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting) void loadMore();
+      },
+      { rootMargin: "200px" },
+    );
+    io.observe(node);
+    return () => io.disconnect();
+  }, [hasMore, loadMore, signals.length]);
 
   return (
     <PageShell>
@@ -107,10 +148,14 @@ function CommandCenterInner() {
               variant="outline"
               size="sm"
               onClick={() => void handleScanAll()}
-              disabled={busy}
+              disabled={busy || scanning}
               className="h-8 text-xs"
             >
-              {busy ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Sparkles className="h-3.5 w-3.5" />}
+              {busy || scanning ? (
+                <Loader2 className="h-3.5 w-3.5 animate-spin" />
+              ) : (
+                <Sparkles className="h-3.5 w-3.5" />
+              )}
               Scan now
             </Button>
             <Button
