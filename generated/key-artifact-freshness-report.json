@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-24T17:59:18.524Z",
+  "generatedAt": "2026-04-24T18:10:43.823Z",
   "gate": "key-artifact-freshness-gate",
   "total": 13,
   "results": [
@@ -9,7 +9,7 @@
       "budgetHours": 168,
       "exists": true,
       "parseable": true,
-      "ageHours": 0.6,
+      "ageHours": 0.8,
       "fresh": true,
       "failureReason": null,
       "ok": true
@@ -20,7 +20,7 @@
       "budgetHours": 336,
       "exists": true,
       "parseable": true,
-      "ageHours": 0.6,
+      "ageHours": 0.8,
       "fresh": true,
       "failureReason": null,
       "ok": true
@@ -31,7 +31,7 @@
       "budgetHours": 336,
       "exists": true,
       "parseable": true,
-      "ageHours": 0.6,
+      "ageHours": 0.8,
       "fresh": true,
       "failureReason": null,
       "ok": true
@@ -42,7 +42,7 @@
       "budgetHours": 336,
       "exists": true,
       "parseable": true,
-      "ageHours": 0.6,
+      "ageHours": 0.8,
       "fresh": true,
       "failureReason": null,
       "ok": true
@@ -53,7 +53,7 @@
       "budgetHours": 336,
       "exists": true,
       "parseable": true,
-      "ageHours": 0.6,
+      "ageHours": 0.8,
       "fresh": true,
       "failureReason": null,
       "ok": true
@@ -64,7 +64,7 @@
       "budgetHours": 336,
       "exists": true,
       "parseable": true,
-      "ageHours": 0.6,
+      "ageHours": 0.8,
       "fresh": true,
       "failureReason": null,
       "ok": true
@@ -75,7 +75,7 @@
       "budgetHours": 336,
       "exists": true,
       "parseable": true,
-      "ageHours": 0.6,
+      "ageHours": 0.8,
       "fresh": true,
       "failureReason": null,
       "ok": true
@@ -86,7 +86,7 @@
       "budgetHours": 336,
       "exists": true,
       "parseable": true,
-      "ageHours": 0.6,
+      "ageHours": 0.8,
       "fresh": true,
       "failureReason": null,
       "ok": true
@@ -97,7 +97,7 @@
       "budgetHours": 1440,
       "exists": true,
       "parseable": true,
-      "ageHours": 0.6,
+      "ageHours": 0.8,
       "fresh": true,
       "failureReason": null,
       "ok": true
@@ -108,7 +108,7 @@
       "budgetHours": 1440,
       "exists": true,
       "parseable": true,
-      "ageHours": 0.6,
+      "ageHours": 0.8,
       "fresh": true,
       "failureReason": null,
       "ok": true
@@ -119,7 +119,7 @@
       "budgetHours": 1440,
       "exists": true,
       "parseable": true,
-      "ageHours": 0.6,
+      "ageHours": 0.8,
       "fresh": true,
       "failureReason": null,
       "ok": true
@@ -130,7 +130,7 @@
       "budgetHours": 1440,
       "exists": true,
       "parseable": true,
-      "ageHours": 0.6,
+      "ageHours": 0.8,
       "fresh": true,
       "failureReason": null,
       "ok": true
@@ -141,7 +141,7 @@
       "budgetHours": 1440,
       "exists": true,
       "parseable": true,
-      "ageHours": 0.6,
+      "ageHours": 0.8,
       "fresh": true,
       "failureReason": null,
       "ok": true
