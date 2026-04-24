@@ -55,7 +55,8 @@ describe("Jarvis Bridge fusion layer", () => {
     expect(timeline).toContain("sita_episodes");
     expect(timeline).toContain("sita_perception_events");
     expect(timeline).toContain("advisor_board_actions");
-    expect(timeline).toContain("advisor_action_proof_packs");
+    // Timeline pulls reflection journal as the fourth historical source.
+    expect(timeline).toContain("sita_journal_entries");
   });
 
   it("now snapshot composes world model + missions + briefings + journal", () => {
