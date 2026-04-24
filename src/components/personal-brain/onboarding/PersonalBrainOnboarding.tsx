@@ -405,7 +405,9 @@ export function PersonalBrainOnboarding({ onComplete }: PersonalBrainOnboardingP
           break;
       }
       if (Object.keys(profilePatch).length > 1) {
-        await supabase.from("pb_profile").upsert(profilePatch, { onConflict: "user_id" });
+        await supabase
+          .from("pb_profile")
+          .upsert(profilePatch as never, { onConflict: "user_id" });
       }
     } catch (e) {
       console.error("persistStep error", e);
