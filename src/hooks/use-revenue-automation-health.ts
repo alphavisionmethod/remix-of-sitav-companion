@@ -73,7 +73,7 @@ export function useRevenueAutomationHealth() {
               : successRate >= 70
                 ? "warning"
                 : "error";
-        const trendBase = log.slice(-7).map((e: any) => (e?.status === "failed" ? 40 : 95));
+        const trendBase: number[] = log.slice(-7).map((e: any) => (e?.status === "failed" ? 40 : 95));
         while (trendBase.length < 7) trendBase.unshift(85);
         return {
           name: a.title,
