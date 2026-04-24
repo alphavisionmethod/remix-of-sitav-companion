@@ -17,9 +17,9 @@ const PRICING_EXPERIMENTS: any[] = [];
 
 export default function OffersWorkspace() {
   const [tab, setTab] = useState("catalog");
-  const totalRevenue = ([] as any[]).reduce((s, p) => s + parseInt(p.revenue.replace(/[^0-9]/g, "")), 0);
-  const activeProd = ([] as any[]).filter(p => p.status === "active").length;
-  const totalSales = ([] as any[]).reduce((s, p) => s + p.sales, 0);
+  const totalRevenue = ([] as never[]).reduce((s, p) => s + parseInt(p.revenue.replace(/[^0-9]/g, "")), 0);
+  const activeProd = ([] as never[]).filter(p => p.status === "active").length;
+  const totalSales = ([] as never[]).reduce((s, p) => s + p.sales, 0);
 
   return (
     <PageShell width="wide" className="space-y-6">
@@ -39,7 +39,7 @@ export default function OffersWorkspace() {
           { label: "Product Revenue", value: `$${totalRevenue.toLocaleString()}`, icon: DollarSign, color: "text-emerald-400" },
           { label: "Active Products", value: String(activeProd), icon: Package, color: "text-blue-400" },
           { label: "Total Sales", value: String(totalSales), icon: BarChart3, color: "text-purple-400" },
-          { label: "Upsell Paths", value: String(([] as any[]).length), icon: ArrowUpRight, color: "text-amber-400" },
+          { label: "Upsell Paths", value: String(([] as never[]).length), icon: ArrowUpRight, color: "text-amber-400" },
         ].map(s => (
           <Card key={s.label} className="bg-card/50 border-border/50">
             <CardContent className="p-4 flex items-center gap-3">
@@ -65,7 +65,7 @@ export default function OffersWorkspace() {
           {/* Catalog Tab */}
           <TabsContent value="catalog">
             <div className="space-y-3">
-              {([] as any[]).map((p, i) => (
+              {([] as never[]).map((p, i) => (
                 <motion.div key={p.name} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.04 }}>
                   <Card className="bg-card/50 border-border/50 hover:border-primary/30 transition-colors cursor-pointer">
                     <CardContent className="p-4 flex items-center justify-between">
@@ -105,7 +105,7 @@ export default function OffersWorkspace() {
                 <h3 className="text-sm font-semibold text-foreground">Upsell & Cross-sell Paths</h3>
                 <Button variant="outline" size="sm" className="gap-1 text-xs"><Plus className="w-3 h-3" />New Path</Button>
               </div>
-              {([] as any[]).map((u, i) => (
+              {([] as never[]).map((u, i) => (
                 <motion.div key={i} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}>
                   <Card className="bg-card/50 border-border/50">
                     <CardContent className="p-4">
@@ -159,7 +159,7 @@ export default function OffersWorkspace() {
                 </h3>
                 <Button variant="outline" size="sm" className="gap-1 text-xs"><Plus className="w-3 h-3" />New Test</Button>
               </div>
-              {([] as any[]).map((exp, i) => (
+              {([] as never[]).map((exp, i) => (
                 <motion.div key={exp.name} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}>
                   <Card className="bg-card/50 border-border/50">
                     <CardContent className="p-4">
@@ -200,7 +200,7 @@ export default function OffersWorkspace() {
           {/* Bundles Tab */}
           <TabsContent value="bundles">
             <div className="space-y-3">
-              {([] as any[]).map(b => (
+              {([] as never[]).map(b => (
                 <Card key={b.name} className="bg-card/50 border-border/50">
                   <CardContent className="p-4">
                     <div className="flex items-center justify-between mb-2">

@@ -95,7 +95,7 @@ const AutomationCenter = () => {
       <SitaTabs
         tabs={[
           { key: "rules", label: "Rules", count: rules.length },
-          { key: "delegations", label: "Delegations", count: ([] as any[]).length },
+          { key: "delegations", label: "Delegations", count: ([] as never[]).length },
           { key: "trust", label: "Trust Levels" },
         ]}
         active={activeTab}
@@ -149,7 +149,7 @@ const AutomationCenter = () => {
 
       {activeTab === "delegations" && (
         <div className="space-y-2">
-          {([] as any[]).map((d, i) => (
+          {([] as never[]).map((d, i) => (
             <SitaCard key={i} hover={false} className="p-4">
               <div className="flex items-center justify-between">
                 <div>

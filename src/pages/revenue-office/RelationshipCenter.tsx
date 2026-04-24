@@ -191,7 +191,7 @@ export default function RelationshipCenter() {
           {/* Next Best Actions */}
           <TabsContent value="actions">
             <div className="space-y-3">
-              {([] as any[]).map((nba, i) => (
+              {([] as never[]).map((nba, i) => (
                 <motion.div key={i} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}>
                   <Card className={`bg-card/50 border-border/50 ${nba.urgency === "critical" ? "border-l-4 border-l-red-400" : nba.urgency === "high" ? "border-l-4 border-l-amber-400" : ""}`}>
                     <CardContent className="p-4">
@@ -221,7 +221,7 @@ export default function RelationshipCenter() {
             <Card className="bg-card/50 border-border/50">
               <CardHeader><CardTitle className="text-sm">Relationship Graph</CardTitle></CardHeader>
               <CardContent className="space-y-3">
-                {([] as any[]).map((rel, i) => (
+                {([] as never[]).map((rel, i) => (
                   <div key={i} className="flex items-center gap-3 p-3 rounded-lg bg-muted/10 border border-border/30">
                     <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-[10px] font-bold text-primary">
                       {rel.from.split(" ").map(n => n[0]).join("")}
@@ -244,7 +244,7 @@ export default function RelationshipCenter() {
 
           {/* Conversation History */}
           <TabsContent value="history">
-            {([] as any[]).map((ch, ci) => (
+            {([] as never[]).map((ch, ci) => (
               <Card key={ci} className="bg-card/50 border-border/50">
                 <CardHeader className="pb-3"><CardTitle className="text-sm">{ch.contact} — Activity Timeline</CardTitle></CardHeader>
                 <CardContent>

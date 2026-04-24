@@ -10,7 +10,7 @@ import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 const TARGETS: any[] = [];
 
 const AND05AndroidLaunchReadiness = () => {
-  const overall = Math.round(([] as any[]).reduce((s, t) => s + t.readiness, 0) / ([] as any[]).length);
+  const overall = Math.round(([] as never[]).reduce((s, t) => s + t.readiness, 0) / ([] as never[]).length);
 
   return (
     <div className="p-6 max-w-[1400px] mx-auto space-y-6">
@@ -28,9 +28,9 @@ const AND05AndroidLaunchReadiness = () => {
 
       <div className="grid grid-cols-3 gap-4">
         {[
-          { label: "Demo Ready", count: ([] as any[]).filter(t => t.demo).length },
-          { label: "Critical Path", count: ([] as any[]).filter(t => t.critical).length },
-          { label: "Total Blockers", count: ([] as any[]).reduce((s, t) => s + t.blockers.length, 0) },
+          { label: "Demo Ready", count: ([] as never[]).filter(t => t.demo).length },
+          { label: "Critical Path", count: ([] as never[]).filter(t => t.critical).length },
+          { label: "Total Blockers", count: ([] as never[]).reduce((s, t) => s + t.blockers.length, 0) },
         ].map((s) => (
           <Card key={s.label}><CardContent className="pt-4 pb-3"><div className="text-xs text-muted-foreground">{s.label}</div><div className="text-2xl font-bold">{s.count}</div></CardContent></Card>
         ))}
@@ -45,7 +45,7 @@ const AND05AndroidLaunchReadiness = () => {
 
         <TabsContent value="grid">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {([] as any[]).map((t) => (
+            {([] as never[]).map((t) => (
               <Card key={t.target} className={t.critical ? "border-primary/50" : ""}>
                 <CardHeader className="pb-2">
                   <div className="flex items-center justify-between">
@@ -72,13 +72,13 @@ const AND05AndroidLaunchReadiness = () => {
 
         <TabsContent value="deps">
           <Card><CardContent className="pt-6 space-y-3">
-            {([] as any[]).filter(t => t.deps.length > 0).map((t) => (
+            {([] as never[]).filter(t => t.deps.length > 0).map((t) => (
               <div key={t.key} className="flex items-center gap-2 text-xs p-2 rounded border">
                 <span className="font-medium min-w-[120px]">{t.target}</span><ArrowRight className="h-3 w-3" /><span className="text-muted-foreground">depends on:</span>
                 {t.deps.map((d) => <Badge key={d} variant="outline" className="font-mono">{d}</Badge>)}
               </div>
             ))}
-            {([] as any[]).filter(t => t.deps.length === 0).map((t) => (
+            {([] as never[]).filter(t => t.deps.length === 0).map((t) => (
               <div key={t.key} className="flex items-center gap-2 text-xs p-2 rounded border bg-green-500/5">
                 <CheckCircle2 className="h-3 w-3 text-green-500" /><span className="font-medium">{t.target}</span><span className="text-muted-foreground">— independent</span>
               </div>

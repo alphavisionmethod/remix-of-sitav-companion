@@ -21,8 +21,8 @@ const APL06AppleLaunchReadiness = () => {
     },
   });
 
-  const overallReadiness = Math.round(([] as any[]).reduce((s, t) => s + t.readiness, 0) / ([] as any[]).length);
-  const totalBlockers = ([] as any[]).reduce((s, t) => s + t.blockers.length, 0);
+  const overallReadiness = Math.round(([] as never[]).reduce((s, t) => s + t.readiness, 0) / ([] as never[]).length);
+  const totalBlockers = ([] as never[]).reduce((s, t) => s + t.blockers.length, 0);
 
   return (
     <div className="p-6 max-w-[1400px] mx-auto space-y-6">
@@ -43,10 +43,10 @@ const APL06AppleLaunchReadiness = () => {
 
       <div className="grid grid-cols-3 md:grid-cols-4 gap-4">
         {[
-          { label: "Demo Ready", count: ([] as any[]).filter(t => t.demo).length, total: ([] as any[]).length, color: "text-green-500" },
-          { label: "Pilot Ready", count: ([] as any[]).filter(t => t.pilot).length, total: ([] as any[]).length, color: "text-amber-500" },
-          { label: "Launch Ready", count: ([] as any[]).filter(t => t.launch).length, total: ([] as any[]).length, color: "text-blue-500" },
-          { label: "Critical Path", count: ([] as any[]).filter(t => t.critical).length, total: ([] as any[]).length, color: "text-destructive" },
+          { label: "Demo Ready", count: ([] as never[]).filter(t => t.demo).length, total: ([] as never[]).length, color: "text-green-500" },
+          { label: "Pilot Ready", count: ([] as never[]).filter(t => t.pilot).length, total: ([] as never[]).length, color: "text-amber-500" },
+          { label: "Launch Ready", count: ([] as never[]).filter(t => t.launch).length, total: ([] as never[]).length, color: "text-blue-500" },
+          { label: "Critical Path", count: ([] as never[]).filter(t => t.critical).length, total: ([] as never[]).length, color: "text-destructive" },
         ].map((s) => (
           <Card key={s.label}>
             <CardContent className="pt-4 pb-3">
@@ -66,7 +66,7 @@ const APL06AppleLaunchReadiness = () => {
 
         <TabsContent value="grid">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {([] as any[]).map((item) => (
+            {([] as never[]).map((item) => (
               <Card key={item.target} className={item.critical ? "border-primary/50" : ""}>
                 <CardHeader className="pb-2">
                   <div className="flex items-center justify-between">
@@ -103,9 +103,9 @@ const APL06AppleLaunchReadiness = () => {
           <Card>
             <CardContent className="pt-6 space-y-4">
               {[
-                { quarter: "Q2 2026", items: ([] as any[]).filter(t => t.stage === "alpha"), label: "Alpha" },
-                { quarter: "Q3 2026", items: ([] as any[]).filter(t => t.critical && t.stage === "planned"), label: "Critical Path" },
-                { quarter: "Q4 2026", items: ([] as any[]).filter(t => !t.critical && t.stage === "planned"), label: "Expansion" },
+                { quarter: "Q2 2026", items: ([] as never[]).filter(t => t.stage === "alpha"), label: "Alpha" },
+                { quarter: "Q3 2026", items: ([] as never[]).filter(t => t.critical && t.stage === "planned"), label: "Critical Path" },
+                { quarter: "Q4 2026", items: ([] as never[]).filter(t => !t.critical && t.stage === "planned"), label: "Expansion" },
               ].map((q) => (
                 <div key={q.quarter} className="p-4 rounded-lg border">
                   <div className="flex items-center justify-between mb-2">
@@ -127,7 +127,7 @@ const APL06AppleLaunchReadiness = () => {
           <Card>
             <CardHeader><CardTitle className="text-sm">Dependency Graph</CardTitle></CardHeader>
             <CardContent className="space-y-3">
-              {([] as any[]).filter(t => t.deps.length > 0).map((t) => (
+              {([] as never[]).filter(t => t.deps.length > 0).map((t) => (
                 <div key={t.key} className="flex items-center gap-2 text-xs p-2 rounded border">
                   <span className="font-medium min-w-[140px]">{t.target}</span>
                   <ArrowRight className="h-3 w-3 text-muted-foreground" />
@@ -135,7 +135,7 @@ const APL06AppleLaunchReadiness = () => {
                   {t.deps.map((d) => <Badge key={d} variant="outline" className="font-mono">{d}</Badge>)}
                 </div>
               ))}
-              {([] as any[]).filter(t => t.deps.length === 0).map((t) => (
+              {([] as never[]).filter(t => t.deps.length === 0).map((t) => (
                 <div key={t.key} className="flex items-center gap-2 text-xs p-2 rounded border bg-green-500/5">
                   <CheckCircle2 className="h-3 w-3 text-green-500" />
                   <span className="font-medium">{t.target}</span>

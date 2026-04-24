@@ -105,7 +105,7 @@ const EnterpriseControlPlane = () => {
     refetchInterval: 60_000,
   });
 
-  const SLA_METRICS = liveSlaData && liveSlaData.length > 0 ? liveSlaData : ([] as any[]);
+  const SLA_METRICS = liveSlaData && liveSlaData.length > 0 ? liveSlaData : ([] as never[]);
   const DEPLOYMENTS = (realAuditLogs?.length ? realAuditLogs : [] as any[]);
 
   const togglePermission = (role: string, cap: string) => {
@@ -193,16 +193,16 @@ const EnterpriseControlPlane = () => {
               <thead>
                 <tr className="border-b border-border/30">
                   <th className="text-left py-2 px-3 font-semibold text-muted-foreground">Capability</th>
-                  {([] as any[]).map(role => (
+                  {([] as never[]).map(role => (
                     <th key={role} className="text-center py-2 px-3 font-semibold text-muted-foreground capitalize">{role}</th>
                   ))}
                 </tr>
               </thead>
               <tbody>
-                {([] as any[]).map(cap => (
+                {([] as never[]).map(cap => (
                   <tr key={cap} className="border-b border-border/10 hover:bg-secondary/20 transition-colors">
                     <td className="py-2 px-3 font-mono text-foreground">{cap}</td>
-                    {([] as any[]).map(role => (
+                    {([] as never[]).map(role => (
                       <td key={role} className="text-center py-2 px-3">
                         <Switch
                           checked={permissions[role]?.[cap] ?? false}

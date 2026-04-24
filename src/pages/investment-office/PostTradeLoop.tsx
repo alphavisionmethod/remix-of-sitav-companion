@@ -21,7 +21,7 @@ export default function PostTradeLoop() {
 
       {/* Position Selector */}
       <div className="flex gap-2 overflow-x-auto pb-1">
-        {([] as any[]).map(p => (
+        {([] as never[]).map(p => (
           <button key={p.id} onClick={() => setSelected(p)}
             className={`shrink-0 rounded-xl border px-4 py-3 flex items-center gap-2 transition-all ${selected.id === p.id ? "border-primary bg-primary/5" : "border-border bg-card hover:border-primary/20"}`}>
             <span className="text-lg">{p.icon}</span>

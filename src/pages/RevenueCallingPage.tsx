@@ -484,7 +484,7 @@ const RevenueCallingPage = () => {
               <p className="text-sm font-medium text-foreground">No Scripts Configured</p>
               <p className="text-xs text-muted-foreground mt-1">Call scripts will appear here once configured.</p>
             </SitaCard>
-          ) : ([] as any[]).map(script => (
+          ) : ([] as never[]).map(script => (
             <SitaCard key={script.id} className="p-4">
               <div className="space-y-3">
                 <div className="flex items-center gap-2">

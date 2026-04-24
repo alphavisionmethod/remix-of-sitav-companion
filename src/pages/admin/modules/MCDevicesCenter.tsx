@@ -47,7 +47,7 @@ const MCDevicesCenter = () => {
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState<string>("all");
 
-  const filtered = ([] as any[]).filter(d => {
+  const filtered = ([] as never[]).filter(d => {
     if (filter !== "all" && d.trust !== filter) return false;
     if (search && !d.name.toLowerCase().includes(search.toLowerCase()) && !d.platform.toLowerCase().includes(search.toLowerCase())) return false;
     return true;
@@ -91,9 +91,9 @@ const MCDevicesCenter = () => {
         {/* Trust Summary */}
         <motion.div variants={fadeUp} className="grid grid-cols-3 gap-3">
           {[
-            { label: "Verified", count: ([] as any[]).filter(d => d.trust === "verified").length, total: ([] as any[]).length, color: "text-emerald-400" },
-            { label: "Pending Review", count: ([] as any[]).filter(d => d.trust === "pending").length, total: ([] as any[]).length, color: "text-amber-400" },
-            { label: "Revoked", count: ([] as any[]).filter(d => d.trust === "revoked").length, total: ([] as any[]).length, color: "text-red-400" },
+            { label: "Verified", count: ([] as never[]).filter(d => d.trust === "verified").length, total: ([] as never[]).length, color: "text-emerald-400" },
+            { label: "Pending Review", count: ([] as never[]).filter(d => d.trust === "pending").length, total: ([] as never[]).length, color: "text-amber-400" },
+            { label: "Revoked", count: ([] as never[]).filter(d => d.trust === "revoked").length, total: ([] as never[]).length, color: "text-red-400" },
           ].map(s => (
             <Card key={s.label} className="hover:-translate-y-0.5 transition-transform">
               <CardContent className="p-4">

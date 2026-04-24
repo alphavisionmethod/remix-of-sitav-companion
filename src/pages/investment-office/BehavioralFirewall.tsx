@@ -17,7 +17,7 @@ export default function BehavioralFirewall() {
   const { data: constitution } = useInvestmentConstitution();
   const firewallState = assessBehavioralFirewall(liveBehavioralSignals ?? [], constitution);
   const [filter, setFilter] = useState<string>("all");
-  const filtered = ([] as any[]).filter(s => filter === "all" || s.type === filter);
+  const filtered = ([] as never[]).filter(s => filter === "all" || s.type === filter);
 
   return (
     <div className="mx-auto max-w-5xl space-y-6">

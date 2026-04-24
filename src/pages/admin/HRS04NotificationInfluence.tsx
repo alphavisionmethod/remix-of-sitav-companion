@@ -7,7 +7,7 @@ import HRSSubNav from "@/components/admin/HRSSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 const HRS04NotificationInfluence = () => {
   const { data: posture, isLoading } = useInterruptionPosture();
-  const suppressionRules = (posture as any[])?.length ? posture : ([] as any[]);
+  const suppressionRules = (posture as any[])?.length ? posture : ([] as never[]);
   const timingRules = [] as any[];
   const overrideMatrix = [] as any[];
 

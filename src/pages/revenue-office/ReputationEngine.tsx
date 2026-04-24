@@ -38,7 +38,7 @@ export default function ReputationEngine() {
       </motion.div>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        {([] as any[]).map(s => (
+        {([] as never[]).map(s => (
           <Card key={s.label} className="bg-card/50 border-border/50">
             <CardContent className="p-4 flex items-center gap-3">
               <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center"><s.icon className={cn("w-5 h-5", s.color)} /></div>
@@ -73,7 +73,7 @@ export default function ReputationEngine() {
               <Card className="bg-card/50 border-border/50">
                 <CardHeader className="pb-3"><CardTitle className="text-sm">Rating Distribution</CardTitle></CardHeader>
                 <CardContent className="space-y-2">
-                  {([] as any[]).map(r => (
+                  {([] as never[]).map(r => (
                     <div key={r.stars} className="flex items-center gap-2">
                       <span className="text-xs text-muted-foreground w-8">{r.stars}★</span>
                       <Progress value={r.pct} className="h-2 flex-1" />
@@ -93,7 +93,7 @@ export default function ReputationEngine() {
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-3">
-                  {([] as any[]).map(r => (
+                  {([] as never[]).map(r => (
                     <div key={r.id} className={cn("p-3 rounded-lg border border-border/30", r.sentiment === "negative" ? "bg-red-500/5" : "bg-muted/10")}>
                       <div className="flex items-center justify-between mb-1">
                         <div className="flex items-center gap-2">
@@ -126,7 +126,7 @@ export default function ReputationEngine() {
           <TabsContent value="platforms">
             <h3 className="text-sm font-semibold mb-4">Connected Platforms</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {([] as any[]).map(p => (
+              {([] as never[]).map(p => (
                 <Card key={p.name} className="bg-card/50 border-border/50">
                   <CardContent className="p-4">
                     <div className="flex items-center justify-between mb-3">
@@ -155,7 +155,7 @@ export default function ReputationEngine() {
           <TabsContent value="campaigns">
             <h3 className="text-sm font-semibold mb-4">Review Request Campaigns</h3>
             <div className="space-y-3">
-              {([] as any[]).map(c => (
+              {([] as never[]).map(c => (
                 <Card key={c.name} className="bg-card/50 border-border/50">
                   <CardContent className="p-4">
                     <div className="flex items-center justify-between mb-2">
@@ -182,7 +182,7 @@ export default function ReputationEngine() {
           <TabsContent value="testimonials">
             <h3 className="text-sm font-semibold mb-4">Testimonial Library</h3>
             <div className="space-y-3">
-              {([] as any[]).map((t, i) => (
+              {([] as never[]).map((t, i) => (
                 <Card key={i} className="bg-card/50 border-border/50">
                   <CardContent className="p-4">
                     <div className="flex items-start justify-between">
@@ -215,7 +215,7 @@ export default function ReputationEngine() {
               <CardHeader className="pb-3"><CardTitle className="text-sm font-medium flex items-center gap-2"><TrendingUp className="w-4 h-4 text-primary" /> Sentiment Trend (Monthly)</CardTitle></CardHeader>
               <CardContent>
                 <div className="space-y-3">
-                  {([] as any[]).map(s => (
+                  {([] as never[]).map(s => (
                     <div key={s.month} className="space-y-1">
                       <div className="flex items-center justify-between">
                         <span className="text-xs text-foreground font-medium w-8">{s.month}</span>

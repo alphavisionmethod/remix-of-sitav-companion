@@ -26,7 +26,7 @@ export default function PresenceBoardroom() {
 
       {/* Metrics */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        {([] as any[]).map((m, i) => (
+        {([] as never[]).map((m, i) => (
           <motion.div key={m.label} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}>
             <Card className="bg-card/50 border-border/50">
               <CardContent className="p-4">
@@ -50,7 +50,7 @@ export default function PresenceBoardroom() {
         <Card className="bg-card/50 border-border/50">
           <CardHeader className="pb-3"><CardTitle className="text-sm">Top Pages</CardTitle></CardHeader>
           <CardContent className="space-y-3">
-            {([] as any[]).map(p => (
+            {([] as never[]).map(p => (
               <div key={p.page} className="flex items-center justify-between text-sm">
                 <div>
                   <span className="font-medium text-foreground">{p.name}</span>
@@ -70,7 +70,7 @@ export default function PresenceBoardroom() {
         <Card className="bg-card/50 border-border/50">
           <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><AlertTriangle className="w-4 h-4 text-amber-400" /> Weak Pages</CardTitle></CardHeader>
           <CardContent className="space-y-3">
-            {([] as any[]).map(p => (
+            {([] as never[]).map(p => (
               <div key={p.page} className="p-3 bg-muted/30 rounded-lg">
                 <div className="flex items-center justify-between mb-1">
                   <span className="text-xs font-mono text-muted-foreground">{p.page}</span>
@@ -86,7 +86,7 @@ export default function PresenceBoardroom() {
         <Card className="bg-card/50 border-border/50">
           <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><Clock className="w-4 h-4 text-orange-400" /> Live Promotions</CardTitle></CardHeader>
           <CardContent className="space-y-3">
-            {([] as any[]).map(p => (
+            {([] as never[]).map(p => (
               <div key={p.name} className="flex items-center justify-between text-sm">
                 <div>
                   <span className="font-medium text-foreground">{p.name}</span>
@@ -105,7 +105,7 @@ export default function PresenceBoardroom() {
         <Card className="bg-card/50 border-border/50">
           <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><Sparkles className="w-4 h-4 text-violet-400" /> Advisor Signals</CardTitle></CardHeader>
           <CardContent className="space-y-3">
-            {([] as any[]).map((s, i) => (
+            {([] as never[]).map((s, i) => (
               <div key={i} className="p-3 bg-muted/30 rounded-lg">
                 <div className="flex items-center gap-2 mb-1">
                   <Badge variant={s.type === "alert" ? "destructive" : s.type === "warning" ? "secondary" : "default"} className="text-[10px]">{s.advisor}</Badge>

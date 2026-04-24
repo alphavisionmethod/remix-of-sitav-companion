@@ -53,7 +53,7 @@ const HeatmapGrid = ({ data }: { data: Record<string, number> }) => {
     <div className="flex gap-1">
 {/* Day labels */}
       <div className="flex flex-col gap-[3px] mr-1 pt-5">
-        {([] as any[]).map((l, i) => (
+        {([] as never[]).map((l, i) => (
           <span key={i} className="text-[8px] text-muted-foreground h-[14px] flex items-center">{l}</span>
         ))}
       </div>
@@ -186,7 +186,7 @@ const MyActivity = () => {
       <div className="rounded-2xl border border-border bg-card p-5">
         <h3 className="text-sm font-semibold text-foreground mb-4">Feature Usage</h3>
         <div className="space-y-3">
-          {([] as any[]).map((f) => {
+          {([] as never[]).map((f) => {
             const count = featureUsage[f.key] || 0;
             const max = Math.max(...Object.values(featureUsage), 1);
             const pct = (count / max) * 100;

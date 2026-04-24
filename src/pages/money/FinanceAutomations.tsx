@@ -44,13 +44,13 @@ const FinanceAutomations = () => {
   const [tab, setTab] = useState("active");
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
-  const filtered = tab === "all" ? AUTOMATIONS : ([] as any[]).filter(a => a.status === tab);
-  const selected = ([] as any[]).find(a => a.id === selectedId);
+  const filtered = tab === "all" ? AUTOMATIONS : ([] as never[]).filter(a => a.status === tab);
+  const selected = ([] as never[]).find(a => a.id === selectedId);
 
-  const activeCount = ([] as any[]).filter(a => a.status === "active").length;
-  const suggestedCount = ([] as any[]).filter(a => a.status === "suggested").length;
-  const totalRuns = ([] as any[]).reduce((s, a) => s + a.runsTotal, 0);
-  const totalProofs = ([] as any[]).reduce((s, a) => s + a.proofCount, 0);
+  const activeCount = ([] as never[]).filter(a => a.status === "active").length;
+  const suggestedCount = ([] as never[]).filter(a => a.status === "suggested").length;
+  const totalRuns = ([] as never[]).reduce((s, a) => s + a.runsTotal, 0);
+  const totalProofs = ([] as never[]).reduce((s, a) => s + a.proofCount, 0);
 
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
@@ -74,9 +74,9 @@ const FinanceAutomations = () => {
         tabs={[
           { key: "active", label: "Active", count: activeCount },
           { key: "suggested", label: "Suggested", count: suggestedCount },
-          { key: "paused", label: "Paused", count: ([] as any[]).filter(a => a.status === "paused").length },
-          { key: "failed", label: "Failed", count: ([] as any[]).filter(a => a.status === "failed").length },
-          { key: "all", label: "All", count: ([] as any[]).length },
+          { key: "paused", label: "Paused", count: ([] as never[]).filter(a => a.status === "paused").length },
+          { key: "failed", label: "Failed", count: ([] as never[]).filter(a => a.status === "failed").length },
+          { key: "all", label: "All", count: ([] as never[]).length },
         ]}
         active={tab}
         onChange={setTab}

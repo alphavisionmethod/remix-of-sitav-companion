@@ -353,7 +353,7 @@ export default function IntegrationConcierge() {
         <TabsContent value="use-cases" className="mt-5">
           {/* Category Filter */}
           <div className="flex gap-1.5 mb-5 flex-wrap">
-            {([] as any[]).map(cat => (
+            {([] as never[]).map(cat => (
               <button
                 key={cat.id}
                 onClick={() => setCategory(cat.id)}
@@ -378,7 +378,7 @@ export default function IntegrationConcierge() {
         </TabsContent>
 
         <TabsContent value="bundles" className="mt-5 space-y-4">
-          {([] as any[]).map(b => (
+          {([] as never[]).map(b => (
             <BundleCard key={b.id} bundle={b} onSelect={() => {
               const firstUc = engines.integrations.getUseCase(b.useCases[0]);
               if (firstUc) setActiveUseCase(firstUc);

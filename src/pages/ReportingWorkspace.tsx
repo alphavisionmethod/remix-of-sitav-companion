@@ -202,12 +202,12 @@ const ReportingWorkspace = () => {
                       <ResponsiveContainer width={160} height={160}>
                         <RechartsPie>
                           <Pie data={DOMAIN_BREAKDOWN} dataKey="value" cx="50%" cy="50%" innerRadius={45} outerRadius={70} paddingAngle={3} strokeWidth={0}>
-                            {([] as any[]).map((entry, i) => <Cell key={i} fill={entry.color} />)}
+                            {([] as never[]).map((entry, i) => <Cell key={i} fill={entry.color} />)}
                           </Pie>
                         </RechartsPie>
                       </ResponsiveContainer>
                       <div className="space-y-2">
-                        {([] as any[]).map(d => (
+                        {([] as never[]).map(d => (
                           <div key={d.name} className="flex items-center gap-2">
                             <div className="w-2.5 h-2.5 rounded-full" style={{ background: d.color }} />
                             <span className="text-xs text-muted-foreground">{d.name}</span>
@@ -360,7 +360,7 @@ const ReportingWorkspace = () => {
               </div>
             </CardHeader>
             <CardContent className="space-y-2">
-              {([] as any[]).map(r => (
+              {([] as never[]).map(r => (
                 <div key={r.id} className="flex items-center gap-3 p-3 rounded-lg border border-border/30 hover:bg-accent/20 transition-colors cursor-pointer">
                   <FileText className="h-4 w-4 text-muted-foreground shrink-0" />
                   <div className="flex-1 min-w-0">

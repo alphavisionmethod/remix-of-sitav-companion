@@ -399,7 +399,7 @@ const { pendingApprovals, isLoading } = useApprovalQueue();
         impact: "medium" as const,
         requiresApproval: true,
       }))
-    : ([] as any[]);
+    : ([] as never[]);
 
   return (
     <div className="space-y-6">
@@ -461,7 +461,7 @@ const { data: dbMemory = [] } = useQuery({
         confidence: m.confidence || 0.8,
         usedCount: 0,
       }))
-    : ([] as any[]);
+    : ([] as never[]);
 
   return (
     <div className="space-y-6">

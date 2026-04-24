@@ -60,7 +60,7 @@ const COMPARE_PAIRS: any[] = [];
 
       {/* Quick Pairs */}
       <div className="flex gap-2 overflow-x-auto pb-1">
-        {([] as any[]).map(p => (
+        {([] as never[]).map(p => (
           <button key={p.label} onClick={() => navigate(`/app-store/compare?apps=${p.ids.join(",")}`)}
             className={cn("shrink-0 rounded-lg px-3 py-2 text-xs font-medium transition-all",
               JSON.stringify(ids) === JSON.stringify(p.ids) ? "bg-primary text-primary-foreground" : "bg-secondary text-muted-foreground hover:text-foreground")}>

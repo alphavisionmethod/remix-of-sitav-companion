@@ -20,7 +20,7 @@ export default function TimeMachineReview() {
 
       {/* Decision Selector */}
       <div className="flex gap-2 overflow-x-auto pb-1">
-        {([] as any[]).map(d => (
+        {([] as never[]).map(d => (
           <button key={d.id} onClick={() => setSelected(d)}
             className={`shrink-0 rounded-xl border px-4 py-3 text-left transition-all ${
               selected.id === d.id ? "border-primary bg-primary/5" : "border-border bg-card hover:border-primary/20"

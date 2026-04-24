@@ -28,9 +28,9 @@ const categoryColors: Record<string, string> = {
 export default function EmailApp() {
   const [search, setSearch] = useState("");
   const [selectedEmail, setSelectedEmail] = useState<Email | null>(null);
-  const unread = ([] as any[]).filter(e => !e.read).length;
+  const unread = ([] as never[]).filter(e => !e.read).length;
 
-  const filtered = ([] as any[]).filter(e => !search || e.subject.toLowerCase().includes(search.toLowerCase()) || e.from.toLowerCase().includes(search.toLowerCase()));
+  const filtered = ([] as never[]).filter(e => !search || e.subject.toLowerCase().includes(search.toLowerCase()) || e.from.toLowerCase().includes(search.toLowerCase()));
 
   return (
     <div className="p-4 md:p-6 max-w-[1400px] mx-auto space-y-4">

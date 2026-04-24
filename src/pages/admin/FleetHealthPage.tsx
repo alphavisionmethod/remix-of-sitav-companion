@@ -44,7 +44,7 @@ const statusColor: Record<string, string> = {
 
 export default function FleetHealthPage() {
   const [tab, setTab] = useState("inventory");
-  const healthyCount = ([] as any[]).filter(n => n.status === "healthy").length;
+  const healthyCount = ([] as never[]).filter(n => n.status === "healthy").length;
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
@@ -61,10 +61,10 @@ export default function FleetHealthPage() {
       <motion.div variants={stagger} initial="hidden" animate="show" className="space-y-4">
         <motion.div variants={fadeUp} className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {[
-            { label: "Fleet Healthy", value: `${healthyCount}/${([] as any[]).length}`, color: healthyCount === ([] as any[]).length ? "text-emerald-500" : "text-amber-500" },
-            { label: "Active Anomalies", value: String(([] as any[]).length), color: ([] as any[]).length === 0 ? "text-emerald-500" : "text-amber-500" },
-            { label: "Predicted Risks", value: String(([] as any[]).length), color: ([] as any[]).length === 0 ? "text-emerald-500" : "text-orange-500" },
-            { label: "Pending Maintenance", value: String(([] as any[]).filter(m => m.status === "pending").length), color: "text-blue-500" },
+            { label: "Fleet Healthy", value: `${healthyCount}/${([] as never[]).length}`, color: healthyCount === ([] as never[]).length ? "text-emerald-500" : "text-amber-500" },
+            { label: "Active Anomalies", value: String(([] as never[]).length), color: ([] as never[]).length === 0 ? "text-emerald-500" : "text-amber-500" },
+            { label: "Predicted Risks", value: String(([] as never[]).length), color: ([] as never[]).length === 0 ? "text-emerald-500" : "text-orange-500" },
+            { label: "Pending Maintenance", value: String(([] as never[]).filter(m => m.status === "pending").length), color: "text-blue-500" },
           ].map(m => (
             <Card key={m.label}><CardContent className="p-4">
               <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-1">{m.label}</p>
@@ -83,7 +83,7 @@ export default function FleetHealthPage() {
 
           <TabsContent value="inventory" className="mt-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-              {([] as any[]).map(node => (
+              {([] as never[]).map(node => (
                 <Card key={node.id} className="hover:bg-muted/30 transition-colors">
                   <CardContent className="p-4">
                     <div className="flex items-center justify-between mb-2">
@@ -114,7 +114,7 @@ export default function FleetHealthPage() {
           </TabsContent>
 
           <TabsContent value="predictions" className="mt-4 space-y-2">
-            {([] as any[]).map((p, i) => (
+            {([] as never[]).map((p, i) => (
               <Card key={i} className="border-orange-500/20">
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between mb-2">
@@ -136,7 +136,7 @@ export default function FleetHealthPage() {
           </TabsContent>
 
           <TabsContent value="anomalies" className="mt-4 space-y-2">
-            {([] as any[]).map(a => (
+            {([] as never[]).map(a => (
               <Card key={a.id} className={a.severity === "critical" ? "border-red-500/30" : ""}>
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between mb-2">
@@ -157,7 +157,7 @@ export default function FleetHealthPage() {
           </TabsContent>
 
           <TabsContent value="maintenance" className="mt-4 space-y-2">
-            {([] as any[]).map(m => (
+            {([] as never[]).map(m => (
               <Card key={m.id}>
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between mb-2">

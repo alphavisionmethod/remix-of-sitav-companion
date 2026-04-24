@@ -460,7 +460,7 @@ function MCIncidents() {
   const { adminIncidents } = useMCAdmin();
   const adminList = adminIncidents?.incidents || [];
   // Merge admin data onto mock incidents for enriched display
-  const incidents = ([] as any[]).map((m: any, idx: number) => {
+  const incidents = ([] as never[]).map((m: any, idx: number) => {
     const admin = adminList[idx];
     return admin ? { ...m, status: admin.status ?? m.status, severity: admin.severity ?? m.severity } : m;
   });

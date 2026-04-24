@@ -42,12 +42,12 @@ export default function RouteSourceDiagnostics() {
 const ROUTES: any[] = [];
     if (!search) return ROUTES;
     const q = search.toLowerCase();
-    return ([] as any[]).filter(r => r.path.includes(q) || r.pageName.toLowerCase().includes(q) || r.domain.toLowerCase().includes(q));
+    return ([] as never[]).filter(r => r.path.includes(q) || r.pageName.toLowerCase().includes(q) || r.domain.toLowerCase().includes(q));
   }, [search]);
 
-  const truthful = ([] as any[]).filter(r => r.launchHonesty === "truthful").length;
-  const demoBacked = ([] as any[]).filter(r => r.launchHonesty === "demo-backed").length;
-  const mixed = ([] as any[]).filter(r => r.launchHonesty === "mixed").length;
+  const truthful = ([] as never[]).filter(r => r.launchHonesty === "truthful").length;
+  const demoBacked = ([] as never[]).filter(r => r.launchHonesty === "demo-backed").length;
+  const mixed = ([] as never[]).filter(r => r.launchHonesty === "mixed").length;
 
   return (
     <div className="mx-auto max-w-7xl space-y-6 p-6">

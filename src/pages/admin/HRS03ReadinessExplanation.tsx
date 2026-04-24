@@ -36,7 +36,7 @@ const HRS03ReadinessExplanation = () => {
             <CardHeader><CardTitle className="text-sm">Signal → Readiness Pipeline</CardTitle></CardHeader>
             <CardContent className="space-y-4">
               <div className="flex items-stretch gap-3 flex-wrap">
-                {([] as any[]).map((s, i) => (
+                {([] as never[]).map((s, i) => (
                   <div key={s.stage} className="flex items-center gap-3 flex-1 min-w-[200px]">
                     {i > 0 && <ArrowRight className="h-5 w-5 text-muted-foreground shrink-0" />}
                     <div className={`p-4 rounded-lg border ${s.color} flex-1`}>
@@ -61,7 +61,7 @@ const HRS03ReadinessExplanation = () => {
               <table className="w-full text-xs">
                 <thead><tr className="border-b"><th className="text-left p-2">Level</th><th className="text-left p-2">Description</th><th className="text-left p-2">Routing Effect</th></tr></thead>
                 <tbody>
-                  {([] as any[]).map((l) => (
+                  {([] as never[]).map((l) => (
                     <tr key={l.level} className="border-b hover:bg-muted/30">
                       <td className="p-2"><span className={`font-mono font-medium ${l.color}`}>{l.level}</span></td>
                       <td className="p-2 text-muted-foreground">{l.desc}</td>
@@ -106,7 +106,7 @@ const HRS03ReadinessExplanation = () => {
 
         <TabsContent value="combine">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {([] as any[]).map((s) => (
+            {([] as never[]).map((s) => (
               <Card key={s.name}>
                 <CardHeader className="pb-2"><CardTitle className="text-sm font-mono">{s.name}</CardTitle></CardHeader>
                 <CardContent className="text-xs space-y-2">

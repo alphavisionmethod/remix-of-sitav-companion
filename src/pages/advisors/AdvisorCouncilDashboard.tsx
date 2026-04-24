@@ -210,7 +210,7 @@ const HANDOFF_LOG: any[] = [];
         <SitaCard className="glass-panel">
           <SitaCardTitle className="text-[10px]">Active Advisors</SitaCardTitle>
           <div className="flex items-center gap-2 mt-1">
-            <span className="text-2xl font-bold text-foreground">{([] as any[]).length}</span>
+            <span className="text-2xl font-bold text-foreground">{([] as never[]).length}</span>
             <CheckCircle className="h-3.5 w-3.5 text-trust-safe ml-auto" />
           </div>
         </SitaCard>
@@ -244,7 +244,7 @@ const HANDOFF_LOG: any[] = [];
         <div className="mt-4">
           <TabsContent value="scorecards">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {([] as any[]).map(a => <AdvisorScorecard key={a.id} advisor={a} />)}
+              {([] as never[]).map(a => <AdvisorScorecard key={a.id} advisor={a} />)}
             </div>
           </TabsContent>
 
@@ -252,9 +252,9 @@ const HANDOFF_LOG: any[] = [];
             <div className="space-y-3">
               <div className="flex items-center justify-between">
                 <h3 className="font-display text-sm font-bold text-foreground">Escalation History</h3>
-                <span className="text-xs text-muted-foreground">{([] as any[]).length} total</span>
+                <span className="text-xs text-muted-foreground">{([] as never[]).length} total</span>
               </div>
-              {([] as any[]).map(esc => (
+              {([] as never[]).map(esc => (
                 <motion.div key={esc.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="glass-panel rounded-xl p-4 space-y-2">
                   <div className="flex items-start justify-between">
                     <div className="flex items-center gap-2">
@@ -279,9 +279,9 @@ const HANDOFF_LOG: any[] = [];
             <div className="space-y-3">
               <div className="flex items-center justify-between">
                 <h3 className="font-display text-sm font-bold text-foreground">Handoff Activity</h3>
-                <span className="text-xs text-muted-foreground">{([] as any[]).length} total</span>
+                <span className="text-xs text-muted-foreground">{([] as never[]).length} total</span>
               </div>
-              {([] as any[]).map(h => (
+              {([] as never[]).map(h => (
                 <motion.div key={h.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="glass-panel rounded-xl p-4 space-y-2">
                   <div className="flex items-start justify-between">
                     <div className="flex items-center gap-2">

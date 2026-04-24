@@ -11,7 +11,7 @@ export default function ConvictionEngine() {
         <p className="text-sm text-muted-foreground mt-0.5">Multi-dimensional conviction scoring for every position — conviction, uncertainty, catalyst strength, fragility, and fit</p>
       </div>
 
-      {([] as any[]).map((p, pi) => (
+      {([] as never[]).map((p, pi) => (
         <motion.div key={p.symbol} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: pi * 0.05 }}
           className="rounded-2xl border border-border bg-card p-6 space-y-4">
           <div className="flex items-center gap-3">
@@ -27,7 +27,7 @@ export default function ConvictionEngine() {
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-2">
-            {([] as any[]).map(d => {
+            {([] as never[]).map(d => {
               const val = p[d.key];
               const isGood = d.inverted ? val < 40 : val >= 70;
               const isBad = d.inverted ? val >= 60 : val < 50;

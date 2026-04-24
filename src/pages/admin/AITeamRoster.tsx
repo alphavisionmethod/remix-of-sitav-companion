@@ -27,7 +27,7 @@ const AITeamRoster = () => {
   const [selected, setSelected] = useState<string | null>("debugger");
   const [view, setView] = useState("roster");
   const [agentAutonomy, setAgentAutonomy] = useState<Record<string, string>>({});
-  const active = selected ? ([] as any[]).find(a => a.id === selected) : null;
+  const active = selected ? ([] as never[]).find(a => a.id === selected) : null;
 
   const getAutonomy = (agentId: string, defaultVal: string) => agentAutonomy[agentId] ?? defaultVal;
 
@@ -43,11 +43,11 @@ const AITeamRoster = () => {
       {/* Summary Stats */}
       <div className="grid grid-cols-5 gap-3">
         {[
-          { l: "Total Agents", v: ([] as any[]).length },
-          { l: "Escalated", v: ([] as any[]).filter(a => a.escalation !== "none").length, c: "text-amber-500" },
-          { l: "Total Queue", v: ([] as any[]).reduce((a, ag) => a + ag.queueLoad, 0) },
-          { l: "Avg Confidence", v: `${Math.round(([] as any[]).reduce((a, ag) => a + ag.confidence, 0) / ([] as any[]).length)}%` },
-          { l: "Avg Accuracy", v: `${Math.round(([] as any[]).reduce((a, ag) => a + ag.accuracy, 0) / ([] as any[]).length)}%` },
+          { l: "Total Agents", v: ([] as never[]).length },
+          { l: "Escalated", v: ([] as never[]).filter(a => a.escalation !== "none").length, c: "text-amber-500" },
+          { l: "Total Queue", v: ([] as never[]).reduce((a, ag) => a + ag.queueLoad, 0) },
+          { l: "Avg Confidence", v: `${Math.round(([] as never[]).reduce((a, ag) => a + ag.confidence, 0) / ([] as never[]).length)}%` },
+          { l: "Avg Accuracy", v: `${Math.round(([] as never[]).reduce((a, ag) => a + ag.accuracy, 0) / ([] as never[]).length)}%` },
         ].map(c => (
           <div key={c.l} className="rounded-xl border border-border/40 bg-card p-3 text-center">
             <p className={`text-xl font-bold ${c.c || ""}`}>{c.v}</p>

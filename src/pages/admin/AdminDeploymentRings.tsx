@@ -53,9 +53,9 @@ const RING_COLORS: Record<RingStatus, string> = {
 export default function DeploymentTruthCenter() {
   const [tab, setTab] = useState("rings");
 
-  const passedGates = ([] as any[]).filter(g => g.status === "passed").length;
-  const totalGates = ([] as any[]).length;
-  const blockers = ([] as any[]).filter(g => g.blocker && g.status !== "passed");
+  const passedGates = ([] as never[]).filter(g => g.status === "passed").length;
+  const totalGates = ([] as never[]).length;
+  const blockers = ([] as never[]).filter(g => g.blocker && g.status !== "passed");
   const promotionReady = blockers.length === 0;
 
   return (
@@ -106,7 +106,7 @@ export default function DeploymentTruthCenter() {
           <TabsContent value="rings">
             {/* Ring visualization */}
             <div className="flex items-center gap-2 mb-6 overflow-x-auto pb-2">
-              {([] as any[]).map((ring, ri) => (
+              {([] as never[]).map((ring, ri) => (
                 <div key={ring.name} className="flex items-center gap-2">
                   <Card className={cn("min-w-[180px] bg-card/50 border-border/50", ring.status === "blocked" && "border-red-500/30")}>
                     <CardContent className="p-3 text-center">
@@ -117,14 +117,14 @@ export default function DeploymentTruthCenter() {
                       {ring.deployedAt && <p className="text-[9px] text-muted-foreground mt-1">{ring.deployedAt}</p>}
                     </CardContent>
                   </Card>
-                  {ri < ([] as any[]).length - 1 && <ArrowRight className="w-4 h-4 text-muted-foreground flex-shrink-0" />}
+                  {ri < ([] as never[]).length - 1 && <ArrowRight className="w-4 h-4 text-muted-foreground flex-shrink-0" />}
                 </div>
               ))}
             </div>
 
             {/* Ring details */}
             <div className="space-y-3">
-              {([] as any[]).map(ring => (
+              {([] as never[]).map(ring => (
                 <Card key={ring.name} className="bg-card/50 border-border/50">
                   <CardContent className="p-4">
                     <div className="flex items-center justify-between">
@@ -152,7 +152,7 @@ export default function DeploymentTruthCenter() {
             <h3 className="text-sm font-semibold mb-4">Promotion Gates — {passedGates}/{totalGates} passed</h3>
             <Progress value={(passedGates / totalGates) * 100} className="h-2 mb-4" />
             <div className="space-y-2">
-              {([] as any[]).map((gate, i) => {
+              {([] as never[]).map((gate, i) => {
                 const gcfg = GATE_ICONS[gate.status];
                 const GIcon = gcfg.icon;
                 return (
@@ -184,7 +184,7 @@ export default function DeploymentTruthCenter() {
 
           <TabsContent value="environments">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {([] as any[]).map(env => (
+              {([] as never[]).map(env => (
                 <Card key={env.name} className="bg-card/50 border-border/50">
                   <CardHeader className="pb-3">
                     <div className="flex items-center justify-between">

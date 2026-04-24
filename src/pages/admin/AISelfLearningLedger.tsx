@@ -18,9 +18,9 @@ const LEARNED_PATTERNS: any[] = [];
       <div className="grid grid-cols-4 gap-3">
         {[
           { l: "Active Patterns", v: patterns.filter((p: any) => p.status === "active").length },
-          { l: "Behavior Changes", v: ([] as any[]).length },
+          { l: "Behavior Changes", v: ([] as never[]).length },
           { l: "Avg Pattern Confidence", v: `${Math.round(patterns.reduce((a: number, p: any) => a + (p.confidence || 0), 0) / Math.max(patterns.length, 1))}%` },
-          { l: "Top Agent Weight", v: Math.max(...([] as any[]).map(w => w.weight)).toFixed(2) },
+          { l: "Top Agent Weight", v: Math.max(...([] as never[]).map(w => w.weight)).toFixed(2) },
         ].map(c => (
           <div key={c.l} className="rounded-xl border border-border/40 bg-card p-4 text-center">
             <p className="text-xl font-bold">{c.v}</p>
@@ -61,7 +61,7 @@ const LEARNED_PATTERNS: any[] = [];
         </TabsContent>
 
         <TabsContent value="behavior" className="space-y-2 mt-4">
-          {([] as any[]).map((b, i) => (
+          {([] as never[]).map((b, i) => (
             <div key={i} className="rounded-xl border border-border/40 bg-card p-4">
               <p className="text-sm font-medium mb-1">{b.change}</p>
               <div className="rounded-lg bg-muted/30 p-2 mb-2">
@@ -76,7 +76,7 @@ const LEARNED_PATTERNS: any[] = [];
         </TabsContent>
 
         <TabsContent value="routing" className="space-y-2 mt-4">
-          {([] as any[]).map((w, i) => (
+          {([] as never[]).map((w, i) => (
             <div key={i} className="rounded-xl border border-border/40 bg-card p-4 flex items-center gap-3">
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-1">

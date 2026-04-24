@@ -64,7 +64,7 @@ export default function MembershipCourseOffice() {
             <Card className="bg-card/50 border-border/50">
               <CardHeader><CardTitle className="flex items-center gap-2"><GraduationCap className="h-5 w-5 text-blue-400" />Course Library</CardTitle></CardHeader>
               <CardContent className="space-y-3">
-                {([] as any[]).map((c: any) => (
+                {([] as never[]).map((c: any) => (
                   <div key={c.name} className="p-3 rounded-lg bg-background/50 border border-border/30">
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center gap-2">
@@ -118,7 +118,7 @@ export default function MembershipCourseOffice() {
             <Card className="bg-card/50 border-border/50">
               <CardHeader><CardTitle className="flex items-center gap-2"><Calendar className="h-5 w-5 text-primary" />Content Drip Schedule</CardTitle></CardHeader>
               <CardContent className="space-y-3">
-                {([] as any[]).map((d, i) => (
+                {([] as never[]).map((d, i) => (
                   <div key={d.module} className="p-3 rounded-lg bg-background/50 border border-border/30 flex items-center justify-between">
                     <div className="flex items-center gap-3">
                       <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold ${d.status === "released" ? "bg-primary/20 text-primary" : "bg-muted/30 text-muted-foreground"}`}>
@@ -161,7 +161,7 @@ export default function MembershipCourseOffice() {
                       </tr>
                     </thead>
                     <tbody>
-                      {([] as any[]).map(row => (
+                      {([] as never[]).map(row => (
                         <tr key={row.module} className="border-t border-border/20">
                           <td className="p-2 text-foreground font-medium">{row.module}</td>
                           {[row.week1, row.week2, row.week3, row.week4].map((val, j) => {

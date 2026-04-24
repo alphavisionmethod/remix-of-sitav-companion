@@ -9,7 +9,7 @@ const NRC02CalmnessCenter = () => {
   const { data: roles, isLoading } = useAssistantRolePresences();
   const calmPrinciples = [] as any[];
   const principleIcons = [Eye, Zap, MessageSquare, Shield, Heart, Users];
-  const interventions = ([] as any[]);
+  const interventions = ([] as never[]);
 
   return (
     <div className="p-6 max-w-[1400px] mx-auto space-y-6">

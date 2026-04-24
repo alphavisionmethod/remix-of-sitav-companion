@@ -55,7 +55,7 @@ const TrustPulse = () => {
           <Card className="bg-card/50 border-border/50">
             <CardHeader className="pb-2"><CardTitle className="text-sm">Multi-Axis Trust Breakdown</CardTitle></CardHeader>
             <CardContent className="space-y-4">
-              {([] as any[]).map(dim => (
+              {([] as never[]).map(dim => (
                 <div key={dim.dimension}>
                   <div className="flex items-center justify-between mb-1">
                     <span className="text-sm font-medium text-foreground">{dim.dimension}</span>
@@ -76,7 +76,7 @@ const TrustPulse = () => {
             <CardContent className="p-4">
               <h3 className="text-sm font-bold text-foreground mb-3">Trust Health Summary</h3>
               <div className="grid grid-cols-5 gap-2">
-                {([] as any[]).map(dim => (
+                {([] as never[]).map(dim => (
                   <div key={dim.dimension} className="text-center">
                     <div className="relative w-14 h-14 mx-auto">
                       <svg className="w-14 h-14 -rotate-90" viewBox="0 0 36 36">
@@ -95,7 +95,7 @@ const TrustPulse = () => {
 
         {/* Client Board */}
         <TabsContent value="clients" className="space-y-2 mt-4">
-          {([] as any[]).sort((a, b) => a.score - b.score).map(c => (
+          {([] as never[]).sort((a, b) => a.score - b.score).map(c => (
             <div key={c.client} className={`rounded-xl border p-4 ${c.score < 50 ? "border-destructive/30 bg-destructive/5" : "border-border/40 bg-card"}`}>
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-2"><span className="text-sm font-semibold">{c.client}</span>{ti(c.trend)}</div>
@@ -114,7 +114,7 @@ const TrustPulse = () => {
           <Card className="bg-card/50 border-border/50">
             <CardHeader className="pb-2"><CardTitle className="text-sm">Client Sentiment Over Time</CardTitle></CardHeader>
             <CardContent className="space-y-4">
-              {([] as any[]).map((s, i) => (
+              {([] as never[]).map((s, i) => (
                 <div key={s.month}>
                   <div className="flex items-center justify-between text-xs mb-1">
                     <span className="font-medium text-foreground w-10">{s.month}</span>
@@ -142,7 +142,7 @@ const TrustPulse = () => {
 
         {/* Alerts */}
         <TabsContent value="alerts" className="space-y-2 mt-4">
-          {([] as any[]).map((a, i) => (
+          {([] as never[]).map((a, i) => (
             <div key={i} className={`rounded-xl border p-4 ${a.severity === "critical" ? "border-destructive/30 bg-destructive/5" : a.severity === "positive" ? "border-[hsl(var(--trust-safe))]/30 bg-[hsl(var(--trust-safe))]/5" : "border-border/40 bg-card"}`}>
               <div className="flex items-center justify-between mb-1"><span className="text-sm font-semibold">{a.client}</span><Badge variant={a.severity === "critical" ? "destructive" : a.severity === "positive" ? "default" : "outline"}>{a.severity}</Badge></div>
               <p className="text-xs text-muted-foreground mb-2">{a.msg}</p>

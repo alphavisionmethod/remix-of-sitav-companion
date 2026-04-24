@@ -125,7 +125,7 @@ export default function AutomationOffice() {
           <TabsTrigger value="leaks">Leak Repair ({([] as typeof leakRepairOpportunities).length})</TabsTrigger>
           <TabsTrigger value="quality">Quality Scoring</TabsTrigger>
           <TabsTrigger value="shadow">Shadow Board</TabsTrigger>
-          <TabsTrigger value="promises">Promises ({([] as any[]).filter(p => p.status !== "completed").length})</TabsTrigger>
+          <TabsTrigger value="promises">Promises ({([] as never[]).filter(p => p.status !== "completed").length})</TabsTrigger>
           <TabsTrigger value="osmap">OS Map</TabsTrigger>
         </TabsList>
 
@@ -220,8 +220,8 @@ export default function AutomationOffice() {
 
           <div className="grid md:grid-cols-3 gap-3">
             {[
-              { label: "Domains Covered", value: `${([] as any[]).filter(d => d.currentLevel !== "None").length}/10`, color: "text-emerald-400" },
-              { label: "Average Coverage", value: `${Math.round(([] as any[]).reduce((a, d) => a + d.coveragePct, 0) / ([] as any[]).length)}%`, color: "text-blue-400" },
+              { label: "Domains Covered", value: `${([] as never[]).filter(d => d.currentLevel !== "None").length}/10`, color: "text-emerald-400" },
+              { label: "Average Coverage", value: `${Math.round(([] as never[]).reduce((a, d) => a + d.coveragePct, 0) / ([] as never[]).length)}%`, color: "text-blue-400" },
               { label: "Total Estimated Value", value: "$127K/mo", color: "text-primary" },
             ].map((m) => (
               <Card key={m.label} className="bg-card/50 border-border/50">
@@ -234,7 +234,7 @@ export default function AutomationOffice() {
           </div>
 
           <div className="space-y-3">
-            {([] as any[]).map((domain) => (
+            {([] as never[]).map((domain) => (
               <Card key={domain.domain} className="bg-card/50 border-border/50 hover:border-primary/20 transition-colors">
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between mb-3">
@@ -424,10 +424,10 @@ export default function AutomationOffice() {
 
           <div className="grid md:grid-cols-4 gap-3">
             {[
-              { label: "Safe to Automate", value: ([] as any[]).filter(q => q.safetyLevel === "Safe to automate").length, color: "text-emerald-400" },
-              { label: "Review Recommended", value: ([] as any[]).filter(q => q.safetyLevel === "Review recommended").length, color: "text-amber-400" },
-              { label: "Needs Redesign", value: ([] as any[]).filter(q => q.safetyLevel === "Needs redesign").length, color: "text-red-400" },
-              { label: "Human Only", value: ([] as any[]).filter(q => q.safetyLevel === "Human only").length, color: "text-purple-400" },
+              { label: "Safe to Automate", value: ([] as never[]).filter(q => q.safetyLevel === "Safe to automate").length, color: "text-emerald-400" },
+              { label: "Review Recommended", value: ([] as never[]).filter(q => q.safetyLevel === "Review recommended").length, color: "text-amber-400" },
+              { label: "Needs Redesign", value: ([] as never[]).filter(q => q.safetyLevel === "Needs redesign").length, color: "text-red-400" },
+              { label: "Human Only", value: ([] as never[]).filter(q => q.safetyLevel === "Human only").length, color: "text-purple-400" },
             ].map(m => (
               <Card key={m.label} className="bg-card/50 border-border/50">
                 <CardContent className="p-3 text-center">
@@ -438,7 +438,7 @@ export default function AutomationOffice() {
             ))}
           </div>
 
-          {([] as any[]).map((q) => (
+          {([] as never[]).map((q) => (
             <Card key={q.automation} className="bg-card/50 border-border/50 hover:border-primary/20 transition-colors">
               <CardContent className="p-4">
                 <div className="flex items-center justify-between mb-3">
@@ -490,9 +490,9 @@ export default function AutomationOffice() {
 
           <div className="grid md:grid-cols-3 gap-3">
             {[
-              { label: "Automation Better", value: ([] as any[]).filter(s => s.betterOutcome === "automation").length, color: "text-emerald-400" },
-              { label: "Human Better", value: ([] as any[]).filter(s => s.betterOutcome === "human").length, color: "text-purple-400" },
-              { label: "Promotion Candidates", value: ([] as any[]).filter(s => s.promotionRecommendation.includes("Promote")).length, color: "text-blue-400" },
+              { label: "Automation Better", value: ([] as never[]).filter(s => s.betterOutcome === "automation").length, color: "text-emerald-400" },
+              { label: "Human Better", value: ([] as never[]).filter(s => s.betterOutcome === "human").length, color: "text-purple-400" },
+              { label: "Promotion Candidates", value: ([] as never[]).filter(s => s.promotionRecommendation.includes("Promote")).length, color: "text-blue-400" },
             ].map(m => (
               <Card key={m.label} className="bg-card/50 border-border/50">
                 <CardContent className="p-3 text-center">
@@ -503,7 +503,7 @@ export default function AutomationOffice() {
             ))}
           </div>
 
-          {([] as any[]).map((s, i) => (
+          {([] as never[]).map((s, i) => (
             <Card key={i} className={`bg-card/50 ${s.betterOutcome === "automation" ? "border-emerald-500/20" : "border-purple-500/20"}`}>
               <CardContent className="p-4">
                 <div className="flex items-center justify-between mb-3">
@@ -550,10 +550,10 @@ export default function AutomationOffice() {
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {[
-              { label: "Overdue", value: ([] as any[]).filter(p => p.status === "overdue").length, color: "text-red-400" },
-              { label: "Due Today", value: ([] as any[]).filter(p => p.status === "due_today").length, color: "text-amber-400" },
-              { label: "On Track", value: ([] as any[]).filter(p => p.status === "on_track").length, color: "text-blue-400" },
-              { label: "Completed", value: ([] as any[]).filter(p => p.status === "completed").length, color: "text-emerald-400" },
+              { label: "Overdue", value: ([] as never[]).filter(p => p.status === "overdue").length, color: "text-red-400" },
+              { label: "Due Today", value: ([] as never[]).filter(p => p.status === "due_today").length, color: "text-amber-400" },
+              { label: "On Track", value: ([] as never[]).filter(p => p.status === "on_track").length, color: "text-blue-400" },
+              { label: "Completed", value: ([] as never[]).filter(p => p.status === "completed").length, color: "text-emerald-400" },
             ].map(m => (
               <Card key={m.label} className="bg-card/50 border-border/50">
                 <CardContent className="p-3 text-center">
@@ -564,7 +564,7 @@ export default function AutomationOffice() {
             ))}
           </div>
 
-          {([] as any[]).map((p) => (
+          {([] as never[]).map((p) => (
             <Card key={p.id} className={`bg-card/50 ${p.status === "overdue" ? "border-red-500/30" : p.status === "due_today" ? "border-amber-500/30" : "border-border/50"}`}>
               <CardContent className="p-4">
                 <div className="flex items-center justify-between mb-2">
@@ -614,7 +614,7 @@ export default function AutomationOffice() {
           </Card>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
-            {([] as any[]).map((conn) => (
+            {([] as never[]).map((conn) => (
               <Card key={conn.from + conn.to} className="bg-card/50 border-border/50 hover:border-primary/20 transition-colors">
                 <CardContent className="p-4">
                   <div className="flex items-center gap-2 mb-2">

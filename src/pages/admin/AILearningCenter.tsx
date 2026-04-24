@@ -24,8 +24,8 @@ const AILearningCenter = () => {
         {[
           { l: "Patterns Discovered", v: patterns.length },
           { l: "Improvements Implemented", v: patterns.filter((p: any) => p.status === "implemented").length },
-          { l: "Recommendations Tracked", v: ([] as any[]).length },
-          { l: "Avg Agent Accuracy", v: `${Math.round(([] as any[]).reduce((a,c) => a + c.accuracy, 0) / ([] as any[]).length)}%` },
+          { l: "Recommendations Tracked", v: ([] as never[]).length },
+          { l: "Avg Agent Accuracy", v: `${Math.round(([] as never[]).reduce((a,c) => a + c.accuracy, 0) / ([] as never[]).length)}%` },
         ].map(c => (
           <div key={c.l} className="rounded-xl border border-border/40 bg-card p-4 text-center">
             <p className="text-xl font-bold">{c.v}</p>
@@ -59,7 +59,7 @@ const AILearningCenter = () => {
         </TabsContent>
 
         <TabsContent value="outcomes" className="space-y-2 mt-4">
-          {([] as any[]).map((o, i) => (
+          {([] as never[]).map((o, i) => (
             <div key={i} className="rounded-xl border border-border/40 bg-card p-4 flex items-center gap-3">
               {o.outcome === "success" ? <CheckCircle2 className="h-4 w-4 text-[hsl(var(--trust-safe))] shrink-0" /> :
                o.outcome === "rejected" ? <RotateCcw className="h-4 w-4 text-muted-foreground shrink-0" /> :
@@ -77,7 +77,7 @@ const AILearningCenter = () => {
         </TabsContent>
 
         <TabsContent value="calibration" className="space-y-2 mt-4">
-          {([] as any[]).map((c, i) => (
+          {([] as never[]).map((c, i) => (
             <div key={i} className="rounded-xl border border-border/40 bg-card p-4">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-sm font-semibold">{c.agent}</span>

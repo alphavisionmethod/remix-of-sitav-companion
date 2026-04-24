@@ -43,10 +43,10 @@ const AdminDurabilityBoard = () => {
   const [mutFilter, setMutFilter] = useState("all");
   const [selectedMutation, setSelectedMutation] = useState<DemoMutationRecord | null>(null);
 
-  const filtered = mutFilter === "all" ? ([] as DemoMutationRecord[]) : ([] as any[]).filter(m => m.durabilityStatus === mutFilter);
-  const persistedPct = Math.round((([] as any[]).filter(m => m.durabilityStatus === "persisted").length / ([] as any[]).length) * 100);
-  const lineagePct = Math.round((([] as any[]).filter(m => m.lineageComplete).length / ([] as any[]).length) * 100);
-  const canonicalPct = Math.round((([] as any[]).filter(m => m.canonicalWritePath).length / ([] as any[]).length) * 100);
+  const filtered = mutFilter === "all" ? ([] as DemoMutationRecord[]) : ([] as never[]).filter(m => m.durabilityStatus === mutFilter);
+  const persistedPct = Math.round((([] as never[]).filter(m => m.durabilityStatus === "persisted").length / ([] as never[]).length) * 100);
+  const lineagePct = Math.round((([] as never[]).filter(m => m.lineageComplete).length / ([] as never[]).length) * 100);
+  const canonicalPct = Math.round((([] as never[]).filter(m => m.canonicalWritePath).length / ([] as never[]).length) * 100);
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">

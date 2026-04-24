@@ -60,7 +60,7 @@ const DevToolsCatalogPage = () => {
 
       {/* Categories */}
       <div className="flex gap-2 overflow-x-auto pb-1">
-        {([] as any[]).map(c => {
+        {([] as never[]).map(c => {
           const Icon = c.icon;
           return (
             <button key={c.id} onClick={() => setActiveCat(c.id)}

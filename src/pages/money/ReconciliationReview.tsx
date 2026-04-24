@@ -54,14 +54,14 @@ const ReconciliationReview = () => {
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
   const filtered = tab === "all" ? ITEMS
-    : tab === "resolved" ? ([] as any[]).filter(i => i.status === "resolved")
-    : ([] as any[]).filter(i => i.issueType === tab && i.status !== "resolved");
+    : tab === "resolved" ? ([] as never[]).filter(i => i.status === "resolved")
+    : ([] as never[]).filter(i => i.issueType === tab && i.status !== "resolved");
 
-  const selected = ([] as any[]).find(i => i.id === selectedId);
-  const openCount = ([] as any[]).filter(i => i.status !== "resolved").length;
-  const mismatchCount = ([] as any[]).filter(i => i.issueType === "mismatch" && i.status !== "resolved").length;
-  const uncatCount = ([] as any[]).filter(i => i.issueType === "uncategorized" && i.status !== "resolved").length;
-  const recurringCount = ([] as any[]).filter(i => i.issueType === "recurring-change" && i.status !== "resolved").length;
+  const selected = ([] as never[]).find(i => i.id === selectedId);
+  const openCount = ([] as never[]).filter(i => i.status !== "resolved").length;
+  const mismatchCount = ([] as never[]).filter(i => i.issueType === "mismatch" && i.status !== "resolved").length;
+  const uncatCount = ([] as never[]).filter(i => i.issueType === "uncategorized" && i.status !== "resolved").length;
+  const recurringCount = ([] as never[]).filter(i => i.issueType === "recurring-change" && i.status !== "resolved").length;
 
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
@@ -76,11 +76,11 @@ const ReconciliationReview = () => {
 
       <SitaTabs
         tabs={[
-          { key: "all", label: "All", count: ([] as any[]).filter(i => i.status !== "resolved").length },
+          { key: "all", label: "All", count: ([] as never[]).filter(i => i.status !== "resolved").length },
           { key: "mismatch", label: "Mismatches", count: mismatchCount },
           { key: "uncategorized", label: "Uncategorized", count: uncatCount },
           { key: "recurring-change", label: "Recurring Changes", count: recurringCount },
-          { key: "resolved", label: "Resolved", count: ([] as any[]).filter(i => i.status === "resolved").length },
+          { key: "resolved", label: "Resolved", count: ([] as never[]).filter(i => i.status === "resolved").length },
         ]}
         active={tab}
         onChange={setTab}
@@ -185,7 +185,7 @@ const ReconciliationReview = () => {
       <ModuleAdvisorInsight
         advisorName="Reconciliation Advisor"
         domain="finance"
-        insight={`${openCount} items need review. Priority: ${mismatchCount} balance mismatches totaling $${([] as any[]).filter(i => i.issueType === "mismatch" && i.status !== "resolved").reduce((s, i) => s + i.amount, 0).toLocaleString()}.`}
+        insight={`${openCount} items need review. Priority: ${mismatchCount} balance mismatches totaling $${([] as never[]).filter(i => i.issueType === "mismatch" && i.status !== "resolved").reduce((s, i) => s + i.amount, 0).toLocaleString()}.`}
         confidence={82}
       />
     </motion.div>

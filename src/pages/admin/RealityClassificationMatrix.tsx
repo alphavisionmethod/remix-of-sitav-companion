@@ -179,7 +179,7 @@ function FormDialog({ trigger, initial, onSave }: { trigger: React.ReactNode; in
               <Label>Contract Status</Label>
               <Select value={form.contract_status} onValueChange={v => setForm(f => ({ ...f, contract_status: v as never }))}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
-                <SelectContent>{([] as any[]).map(s => <SelectItem key={s} value={s} className="capitalize">{s}</SelectItem>)}</SelectContent>
+                <SelectContent>{([] as never[]).map(s => <SelectItem key={s} value={s} className="capitalize">{s}</SelectItem>)}</SelectContent>
               </Select>
             </div>
             <div><Label>Backend Target</Label><Input value={form.backend_target} onChange={e => setForm(f => ({ ...f, backend_target: e.target.value }))} placeholder="supabase.customers + RLS" /></div>

@@ -113,9 +113,9 @@ const OutcomeEconomicsDashboard = () => {
   useRequireAdmin();
   const [period, setPeriod] = useState("30d");
 
-  const totalCost = ([] as any[]).reduce((s, o) => s + o.totalCost, 0);
-  const totalValue = ([] as any[]).reduce((s, o) => s + o.totalValue, 0);
-  const totalOutcomes = ([] as any[]).reduce((s, o) => s + o.outcomes, 0);
+  const totalCost = ([] as never[]).reduce((s, o) => s + o.totalCost, 0);
+  const totalValue = ([] as never[]).reduce((s, o) => s + o.totalValue, 0);
+  const totalOutcomes = ([] as never[]).reduce((s, o) => s + o.outcomes, 0);
   const overallPayback = totalValue / totalCost;
 
   return (
@@ -168,7 +168,7 @@ const OutcomeEconomicsDashboard = () => {
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-2">
-          {([] as any[]).map((o) => (
+          {([] as never[]).map((o) => (
             <div key={o.category} className="flex items-center gap-3 p-2.5 rounded-lg bg-secondary/20 hover:bg-secondary/30 transition-colors">
               <div className="w-36 shrink-0">
                 <p className="text-xs font-semibold text-foreground">{o.label}</p>
@@ -203,7 +203,7 @@ const OutcomeEconomicsDashboard = () => {
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-2">
-            {([] as any[]).map((p) => (
+            {([] as never[]).map((p) => (
               <div key={p.path} className="p-2.5 rounded-lg bg-secondary/20 space-y-1.5">
                 <div className="flex items-center justify-between">
                   <p className="text-xs font-semibold text-foreground">{p.path}</p>
@@ -232,7 +232,7 @@ const OutcomeEconomicsDashboard = () => {
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-2">
-            {([] as any[]).map((inc) => (
+            {([] as never[]).map((inc) => (
               <div key={inc.type} className="flex items-center gap-3 p-2.5 rounded-lg bg-secondary/20">
                 <div className="flex-1">
                   <p className="text-xs font-semibold text-foreground">{inc.type}</p>
@@ -261,7 +261,7 @@ const OutcomeEconomicsDashboard = () => {
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-            {([] as any[]).map((b) => {
+            {([] as never[]).map((b) => {
               const pct = b.unit === "%" ? b.current : Math.min((b.current / b.target) * 100, 100);
               const beating = b.current >= b.industry;
               return (

@@ -26,7 +26,7 @@ export default function PromotionsOffice() {
       <Card className="bg-card/50 border-border/50">
         <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><Megaphone className="w-4 h-4 text-orange-400" /> Active & Scheduled Promotions</CardTitle></CardHeader>
         <CardContent className="space-y-2">
-          {([] as any[]).map(p => (
+          {([] as never[]).map(p => (
             <div key={p.name} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-1">
@@ -55,7 +55,7 @@ export default function PromotionsOffice() {
         <Card className="bg-card/50 border-border/50">
           <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><Calendar className="w-4 h-4 text-blue-400" /> Promotion Calendar</CardTitle></CardHeader>
           <CardContent className="space-y-3">
-            {([] as any[]).map(e => (
+            {([] as never[]).map(e => (
               <div key={e.date + e.event} className="flex items-center gap-3 p-2">
                 <span className="text-xs font-mono text-muted-foreground w-14">{e.date}</span>
                 <div className="flex-1">
@@ -71,7 +71,7 @@ export default function PromotionsOffice() {
         <Card className="bg-card/50 border-border/50">
           <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><Mail className="w-4 h-4 text-green-400" /> Email / SMS Sync</CardTitle></CardHeader>
           <CardContent className="space-y-3">
-            {([] as any[]).map(e => (
+            {([] as never[]).map(e => (
               <div key={e.campaign} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
                 <div>
                   <span className="text-xs font-medium text-foreground">{e.campaign}</span>

@@ -62,7 +62,7 @@ export default function SelfHealingQueue() {
 
       {/* Stats */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        {([] as any[]).map(s => (
+        {([] as never[]).map(s => (
           <Card key={s.label} className="bg-card/50 border-border/50">
             <CardContent className="p-4 text-center">
               <p className={`text-2xl font-bold ${s.color}`}>{s.value}</p>

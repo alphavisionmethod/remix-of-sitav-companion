@@ -17,7 +17,7 @@ export default function FamilyOffice() {
       <div className="rounded-2xl border border-border bg-card p-5 space-y-3">
         <h3 className="text-sm font-bold text-foreground">Household Members</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-          {([] as any[]).map(m => (
+          {([] as never[]).map(m => (
             <div key={m.name} className="rounded-xl border border-border bg-secondary/20 p-3 flex items-center gap-3">
               <span className="text-2xl">{m.emoji}</span>
               <div>
@@ -33,7 +33,7 @@ export default function FamilyOffice() {
       {/* Family Goals */}
       <div className="rounded-2xl border border-border bg-card p-5 space-y-4">
         <h3 className="text-sm font-bold text-foreground flex items-center gap-2"><Heart className="h-4 w-4 text-primary" /> Family Goals</h3>
-        {([] as any[]).map((g, i) => {
+        {([] as never[]).map((g, i) => {
           const pct = Math.min((g.current / g.target) * 100, 100);
           return (
             <motion.div key={g.id} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.04 }}
@@ -67,7 +67,7 @@ export default function FamilyOffice() {
       {/* Family Rules */}
       <div className="rounded-2xl border border-border bg-card p-5 space-y-3">
         <h3 className="text-sm font-bold text-foreground flex items-center gap-2"><Shield className="h-4 w-4 text-primary" /> Family Investment Rules</h3>
-        {([] as any[]).map((r, i) => (
+        {([] as never[]).map((r, i) => (
           <div key={i} className="flex items-center gap-2 text-sm">
             {r.status === "pass" || r.status === "active" ? <Check className="h-3.5 w-3.5 text-[hsl(var(--trust-safe))]" /> : <AlertTriangle className="h-3.5 w-3.5 text-destructive" />}
             <span className="text-foreground">{r.rule}</span>

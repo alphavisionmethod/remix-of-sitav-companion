@@ -21,7 +21,7 @@ const AITimeMachine = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Timeline */}
         <div className="lg:col-span-2 space-y-0">
-          {([] as any[]).map((event, i) => {
+          {([] as never[]).map((event, i) => {
             const Icon = typeIcons[event.type] || GitBranch;
             return (
               <div key={i} className="flex gap-3">
@@ -37,7 +37,7 @@ const AITimeMachine = () => {
                       event.impact === "mixed" ? "bg-amber-500" : "bg-[hsl(var(--trust-safe))]"
                     }`} />
                   </div>
-                  {i < ([] as any[]).length - 1 && <div className="w-px flex-1 bg-border/40 min-h-[16px]" />}
+                  {i < ([] as never[]).length - 1 && <div className="w-px flex-1 bg-border/40 min-h-[16px]" />}
                 </div>
 
                 {/* Event Card */}

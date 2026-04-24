@@ -45,7 +45,7 @@ export default function MarketMemoryFeed() {
 
       {/* Feed */}
       <div className="space-y-2">
-        {([] as any[]).map((evt, i) => (
+        {([] as never[]).map((evt, i) => (
           <motion.div key={evt.id} initial={{ opacity: 0, x: -6 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.03 }}
             className={`rounded-xl border p-4 ${SEVERITY_STYLES[evt.severity] || SEVERITY_STYLES.info}`}>
             <div className="flex items-start gap-3">

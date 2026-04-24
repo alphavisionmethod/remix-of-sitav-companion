@@ -147,7 +147,7 @@ export default function AutomationReceipts() {
             </CardContent>
           </Card>
 
-          {([] as any[]).map((w) => (
+          {([] as never[]).map((w) => (
             <Card key={w.id} className="bg-card/50 border-border/50 hover:border-primary/20 transition-colors">
               <CardContent className="p-4">
                 <div className="flex items-center justify-between mb-3">

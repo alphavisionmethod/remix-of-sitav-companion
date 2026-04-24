@@ -289,7 +289,7 @@ export default function AIWebTeam() {
           { label: "Avg Confidence", value: `${avgConfidence}%`, icon: Brain },
           { label: "Observations", value: totalObservations.toString(), icon: Eye },
           { label: "High Impact", value: highImpactCount.toString(), icon: Zap },
-          { label: "Disagreements", value: ([] as any[]).length.toString(), icon: MessageSquare },
+          { label: "Disagreements", value: ([] as never[]).length.toString(), icon: MessageSquare },
         ].map((s, i) => (
           <motion.div key={s.label} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.04 }}>
             <Card className="bg-card/50 border-border/50">
@@ -434,7 +434,7 @@ export default function AIWebTeam() {
 
         {/* Disagreements Tab */}
         <TabsContent value="disagreements" className="mt-4 space-y-4">
-          {([] as any[]).map((d, i) => (
+          {([] as never[]).map((d, i) => (
             <Card key={i} className="bg-card/50 border-border/50">
               <CardContent className="p-5 space-y-3">
                 <div className="flex items-center gap-2">
