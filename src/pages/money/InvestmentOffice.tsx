@@ -20,7 +20,7 @@ const getWatchlist = () => ({ currentRegime: "neutral", entries: [] as never[] }
 const getTradeReviewPackets = () => [] as never[];
 const getExecutionIntents = () => [] as never[];
 const getOpportunityScores = () => [] as never[];
-const getAvailableTrustModes = () => [{ mode: "standard", label: "Standard", description: "Default trust mode" }] as any[];
+const getAvailableTrustModes = () => [{ mode: "standard", label: "Standard", description: "Default trust mode" }];
 const getInvestmentTrustMode = () => "standard";
 import { useCapitalBuckets, usePositions, useTheses } from "@/hooks/use-investment-data";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
