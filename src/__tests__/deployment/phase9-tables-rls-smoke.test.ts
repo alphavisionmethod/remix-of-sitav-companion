@@ -26,12 +26,13 @@ import { createClient } from "@supabase/supabase-js";
  * environments without DB credentials.
  */
 
-const PHASE9_TABLES = [
-  "call_outcomes",
-  "automation_fatigue_alerts",
-  "pack_install_metrics",
-  "runbook_launch_requests",
-] as const;
+/** Each table is probed with a column that is guaranteed to exist. */
+const PHASE9_TABLES: Array<{ table: string; probe: string }> = [
+  { table: "call_outcomes", probe: "id" },
+  { table: "automation_fatigue_alerts", probe: "id" },
+  { table: "pack_install_metrics", probe: "pack_id" },
+  { table: "runbook_launch_requests", probe: "id" },
+];
 
 const SUPABASE_URL = process.env.VITE_SUPABASE_URL ?? "";
 const SUPABASE_KEY = process.env.VITE_SUPABASE_PUBLISHABLE_KEY ?? "";
@@ -41,7 +42,7 @@ describe("Phase 9 — pre-deploy smoke gate", () => {
   describe.skipIf(!HAS_DB)("live DB checks", () => {
     const sb = HAS_DB ? createClient(SUPABASE_URL, SUPABASE_KEY) : null;
 
-    it.each(PHASE9_TABLES)("table %s exists and responds via PostgREST", async (table) => {
+    it.each(PHASE9_TABLES)("table $table exists and responds via PostgREST", async ({ table }) => {
       // `head: true` issues a HEAD request — fastest way to confirm
       // the relation is exposed without transferring rows.
       const { error } = await sb!.from(table).select("*", { head: true, count: "exact" }).limit(1);
@@ -51,13 +52,13 @@ describe("Phase 9 — pre-deploy smoke gate", () => {
       expect(code, `Table ${table} unexpectedly missing (PostgREST error: ${error?.message ?? "none"})`).not.toBe("42P01");
     });
 
-    it.each(PHASE9_TABLES)("RLS prevents anon from reading other users' rows in %s", async (table) => {
+    it.each(PHASE9_TABLES)("RLS prevents anon from reading other users' rows in $table", async ({ table, probe }) => {
       // For per-user tables, an anon SELECT should either:
       //  - return zero rows (RLS filters out everything), or
       //  - return a permission-denied / RLS error.
       // For pack_install_metrics (read-all-authenticated), anon may also
       // return permission denied — that is also acceptable proof.
-      const { data, error } = await sb!.from(table).select("id").limit(5);
+      const { data, error } = await sb!.from(table).select(probe).limit(5);
       if (error) {
         const msg = (error.message ?? "").toLowerCase();
         expect(
