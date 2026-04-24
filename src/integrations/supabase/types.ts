@@ -4354,6 +4354,59 @@ export type Database = {
         }
         Relationships: []
       }
+      automation_fatigue_alerts: {
+        Row: {
+          acknowledged_at: string | null
+          automation_id: string | null
+          channel: string
+          contact_id: string | null
+          created_at: string
+          evidence: Json
+          id: string
+          resolved_at: string | null
+          severity: string
+          signal: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          acknowledged_at?: string | null
+          automation_id?: string | null
+          channel: string
+          contact_id?: string | null
+          created_at?: string
+          evidence?: Json
+          id?: string
+          resolved_at?: string | null
+          severity?: string
+          signal: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          acknowledged_at?: string | null
+          automation_id?: string | null
+          channel?: string
+          contact_id?: string | null
+          created_at?: string
+          evidence?: Json
+          id?: string
+          resolved_at?: string | null
+          severity?: string
+          signal?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "automation_fatigue_alerts_automation_id_fkey"
+            columns: ["automation_id"]
+            isOneToOne: false
+            referencedRelation: "crm_automations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       automation_kill_switches: {
         Row: {
           activated_at: string | null
@@ -5397,6 +5450,80 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      call_outcomes: {
+        Row: {
+          ai_prep_brief: string | null
+          calendar_event_id: string | null
+          company: string | null
+          contact_name: string | null
+          created_at: string
+          duration_seconds: number
+          follow_up_sent: boolean
+          id: string
+          metadata: Json
+          next_step: string | null
+          objections: Json
+          outcome: string
+          post_call_actions: Json
+          quote_triggered: boolean
+          sentiment: string
+          talking_points: Json
+          updated_at: string
+          user_id: string
+          warmth_score: number | null
+        }
+        Insert: {
+          ai_prep_brief?: string | null
+          calendar_event_id?: string | null
+          company?: string | null
+          contact_name?: string | null
+          created_at?: string
+          duration_seconds?: number
+          follow_up_sent?: boolean
+          id?: string
+          metadata?: Json
+          next_step?: string | null
+          objections?: Json
+          outcome?: string
+          post_call_actions?: Json
+          quote_triggered?: boolean
+          sentiment?: string
+          talking_points?: Json
+          updated_at?: string
+          user_id: string
+          warmth_score?: number | null
+        }
+        Update: {
+          ai_prep_brief?: string | null
+          calendar_event_id?: string | null
+          company?: string | null
+          contact_name?: string | null
+          created_at?: string
+          duration_seconds?: number
+          follow_up_sent?: boolean
+          id?: string
+          metadata?: Json
+          next_step?: string | null
+          objections?: Json
+          outcome?: string
+          post_call_actions?: Json
+          quote_triggered?: boolean
+          sentiment?: string
+          talking_points?: Json
+          updated_at?: string
+          user_id?: string
+          warmth_score?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "call_outcomes_calendar_event_id_fkey"
+            columns: ["calendar_event_id"]
+            isOneToOne: false
+            referencedRelation: "calendar_events"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       capital_buckets: {
         Row: {
@@ -16778,6 +16905,51 @@ export type Database = {
           session_started_at?: string
           tenant_id?: string | null
           user_id?: string
+        }
+        Relationships: []
+      }
+      pack_install_metrics: {
+        Row: {
+          active_users: number
+          arpu_cents: number
+          attach_rate: number | null
+          category: string | null
+          created_at: string
+          installs: number
+          metric_date: string
+          pack_id: string
+          retention_30d: number | null
+          revenue_cents: number
+          uninstalls: number
+          updated_at: string
+        }
+        Insert: {
+          active_users?: number
+          arpu_cents?: number
+          attach_rate?: number | null
+          category?: string | null
+          created_at?: string
+          installs?: number
+          metric_date: string
+          pack_id: string
+          retention_30d?: number | null
+          revenue_cents?: number
+          uninstalls?: number
+          updated_at?: string
+        }
+        Update: {
+          active_users?: number
+          arpu_cents?: number
+          attach_rate?: number | null
+          category?: string | null
+          created_at?: string
+          installs?: number
+          metric_date?: string
+          pack_id?: string
+          retention_30d?: number | null
+          revenue_cents?: number
+          uninstalls?: number
+          updated_at?: string
         }
         Relationships: []
       }
