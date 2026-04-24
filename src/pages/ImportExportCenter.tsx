@@ -12,6 +12,7 @@ type ExportItem = { id: string; name: string; format: string; status: string; da
 import { useImportExportJobs } from "@/hooks/use-live-data";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { PageShell } from "@/components/sita/PageShell";
+import { CsvImportPanel } from "@/components/imports/CsvImportPanel";
 const STATUS_STYLES = { uploading: "text-primary", processing: "text-amber-400", complete: "text-emerald-400", failed: "text-red-400", generating: "text-amber-400", ready: "text-emerald-400", expired: "text-muted-foreground", pending: "text-amber-400" };
 const STATUS_ICONS = { uploading: Clock, processing: Clock, complete: CheckCircle2, failed: AlertTriangle, generating: Clock, ready: CheckCircle2, expired: AlertTriangle, pending: Clock };
 
@@ -124,6 +125,7 @@ const ImportExportCenter = () => {
               </SitaCard>
             ))}
           </div>
+          <CsvImportPanel />
         </motion.div>
       )}
 
