@@ -73,11 +73,14 @@ const SOURCE_TO_TABLE: Record<string, { table: string; label?: string } | null> 
   funnel_metrics: { table: "customer_journey_stages", label: "Funnel stages" },
   cohorts: { table: "customer_lifecycle_stages", label: "Lifecycle cohorts" },
   experiments: { table: "conversion_experiments", label: "Conversion experiments" },
-  // Tech
+  // Tech — Phase 6 wired to real reliability substrate.
+  // `incidents` → live incident records (RLS-scoped per-user),
+  // `architecture_docs` → recent error_events (real signal of stack health),
+  // The rest stay honestly null (empty-state honest).
   product_roadmap: null,
   tech_stack: null,
-  architecture_docs: null,
-  incidents: null,
+  architecture_docs: { table: "error_events", label: "Recent error events" },
+  incidents: { table: "incidents", label: "Open & recent incidents" },
   // Imports/Exports
   trade_records: null,
   logistics: null,
@@ -131,7 +134,9 @@ async function loadSlice(
       | "app_launch_events"
       | "customer_journey_stages"
       | "customer_lifecycle_stages"
-      | "conversion_experiments";
+      | "conversion_experiments"
+      | "incidents"
+      | "error_events";
     const { data, error, count } = await supabase
       .from(tableName)
       .select("*", { count: "exact" })
