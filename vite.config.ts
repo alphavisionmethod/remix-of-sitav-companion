@@ -128,7 +128,15 @@ export default defineConfig(({ mode }) => ({
             const m = id.match(/\/src\/admin\/modules\/([^/]+)\//);
             if (m) return `admin-mod-${m[1]}`;
           }
-          if (id.includes("/src/pages/admin/")) return "admin-legacy-pages";
+          // ── G7: per-prefix split of legacy admin pages ──────────────
+          // The previous catch-all bucket was 1.6 MB. Group by the first
+          // 3 letters of the page name so AI*, AGT*, USR*, etc. each land
+          // in a chunk of ~150-300 KB and can be parallelized.
+          if (id.includes("/src/pages/admin/")) {
+            const m = id.match(/\/src\/pages\/admin\/([A-Za-z][A-Za-z0-9]{0,2})/);
+            const seg = m ? m[1].toLowerCase() : "misc";
+            return `admin-page-${seg}`;
+          }
           if (id.includes("/src/routes/AdminRoutes")) return "admin-router";
 
           // User-domain features: keep each shell in its own chunk.
@@ -192,6 +200,14 @@ export default defineConfig(({ mode }) => ({
           // single ~2 MB `components-misc` chunk. Split per top-level
           // subdirectory so business/, concierge/, finance/, etc. are
           // independently cacheable and only loaded when needed.
+          // src/components/business/ is itself ~140 files and 1.2 MB.
+          // Split it per second-level subfolder so /business/crm and
+          // /business/lead-recovery don't share a chunk.
+          if (id.includes("/src/components/business/")) {
+            const m = id.match(/\/src\/components\/business\/([^/]+)/);
+            const seg = m ? (m[1].endsWith(".tsx") ? "root" : m[1]) : "root";
+            return `components-business-${seg}`;
+          }
           {
             const m = id.match(/\/src\/components\/([^/]+)\//);
             if (m) return `components-${m[1]}`;
@@ -199,16 +215,6 @@ export default defineConfig(({ mode }) => ({
           // Files directly under src/components/ (e.g. NavLink.tsx) stay
           // in the default `index` chunk — they are tiny and shared.
 
-          // ── G7: split src/pages/admin/ legacy bucket the same way ──
-          // `admin-legacy-pages` was 1.6 MB; per-folder gives ~10 chunks
-          // of 100-300 KB each.
-          if (id.includes("/src/pages/admin/")) {
-            const m = id.match(/\/src\/pages\/admin\/([^/]+)/);
-            if (m) {
-              const seg = m[1].endsWith(".tsx") ? "root" : m[1];
-              return `admin-page-${seg}`;
-            }
-          }
         },
       },
     },
