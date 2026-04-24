@@ -7,6 +7,9 @@ import { SalesAdvisorHeaderStats } from "@/components/business-advisors/sales/Sa
 import { CustomerServiceRecommendations } from "@/components/business-advisors/customer-service/CustomerServiceRecommendations";
 import { CustomerServiceSimulationForm } from "@/components/business-advisors/customer-service/CustomerServiceSimulationForm";
 import { CustomerServiceHeaderStats } from "@/components/business-advisors/customer-service/CustomerServiceHeaderStats";
+import { CFOAdvisorRecommendations } from "@/components/business-advisors/cfo/CFOAdvisorRecommendations";
+import { CFOAdvisorSimulationForm } from "@/components/business-advisors/cfo/CFOAdvisorSimulationForm";
+import { CFOAdvisorHeaderStats } from "@/components/business-advisors/cfo/CFOAdvisorHeaderStats";
 
 export default function BusinessAdvisorPage() {
   const { advisorId } = useParams<{ advisorId: string }>();
@@ -31,6 +34,16 @@ export default function BusinessAdvisorPage() {
         headerStatsSlot={<CustomerServiceHeaderStats />}
         recommendationsSlot={<CustomerServiceRecommendations />}
         simulationFormSlot={<CustomerServiceSimulationForm />}
+      />
+    );
+  }
+  if (advisor.id === "cfo-advisor") {
+    return (
+      <AdvisorPageShell
+        advisor={advisor}
+        headerStatsSlot={<CFOAdvisorHeaderStats />}
+        recommendationsSlot={<CFOAdvisorRecommendations />}
+        simulationFormSlot={<CFOAdvisorSimulationForm />}
       />
     );
   }

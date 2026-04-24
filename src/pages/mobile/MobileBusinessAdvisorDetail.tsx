@@ -12,6 +12,7 @@ import {
 } from "@/lib/ai-platform/runtime";
 import { MobileSalesAdvisorPanels } from "@/components/business-advisors/sales/MobileSalesAdvisorPanels";
 import { MobileCustomerServiceAdvisorPanels } from "@/components/business-advisors/customer-service/MobileCustomerServiceAdvisorPanels";
+import { MobileCFOAdvisorPanels } from "@/components/business-advisors/cfo/MobileCFOAdvisorPanels";
 
 export default function MobileBusinessAdvisorDetail() {
   const { advisorId } = useParams<{ advisorId: string }>();
@@ -75,6 +76,7 @@ export default function MobileBusinessAdvisorDetail() {
 
         {advisor.id === "sales-advisor" && <MobileSalesAdvisorPanels />}
         {advisor.id === "customer-service-advisor" && <MobileCustomerServiceAdvisorPanels />}
+        {advisor.id === "cfo-advisor" && <MobileCFOAdvisorPanels />}
 
         <Textarea
           rows={3}
