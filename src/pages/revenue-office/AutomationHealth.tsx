@@ -13,11 +13,14 @@ import AutomationSubNav from "./AutomationSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { PremiumEmptyState } from "@/components/sita/PremiumEmptyState";
 import { useRevenueAutomationHealth } from "@/hooks/use-revenue-automation-health";
+import { FatigueAlertDrawer } from "@/components/revenue/FatigueAlertDrawer";
+import type { FatigueAlertRow } from "@/hooks/use-revenue-automation-health";
 const statusIcon = { healthy: CheckCircle, warning: AlertTriangle, error: XCircle, underperforming: TrendingUp };
 const statusColor = { healthy: "text-emerald-400", warning: "text-amber-400", error: "text-red-400", underperforming: "text-blue-400" };
 
 export default function AutomationHealth() {
   const [tab, setTab] = useState("all");
+  const [activeAlert, setActiveAlert] = useState<FatigueAlertRow | null>(null);
   const { data, isLoading } = useRevenueAutomationHealth();
   const healthMetrics = data?.healthMetrics ?? [];
   const advisorInsights = data?.advisorInsights ?? [];
@@ -151,20 +154,27 @@ export default function AutomationHealth() {
             <PremiumEmptyState variant="no-data" icon={Heart} title="No contact fatigue detected" description="Fatigue alerts appear when an automation triggers an unsubscribe spike, frequency cap, or sentiment drop on a channel." />
           )}
           {fatigueAlerts.map((f) => (
-            <Card key={f.id} className="bg-card/50 border-border/50">
-              <CardContent className="p-3 flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-foreground capitalize">{f.signal.replace(/_/g, " ")}</p>
-                  <p className="text-[10px] text-muted-foreground">
-                    {f.channel} · {new Date(f.createdAt).toLocaleString()}
-                    {f.acknowledgedAt ? " · acknowledged" : ""}
-                  </p>
-                </div>
-                <Badge variant={f.severity === "critical" ? "destructive" : "secondary"} className="text-[10px] capitalize">
-                  {f.severity}
-                </Badge>
-              </CardContent>
-            </Card>
+            <button
+              key={f.id}
+              type="button"
+              onClick={() => setActiveAlert(f)}
+              className="w-full text-left focus:outline-none focus:ring-2 focus:ring-primary/40 rounded-lg"
+            >
+              <Card className="bg-card/50 border-border/50 hover:border-primary/40 transition-colors">
+                <CardContent className="p-3 flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-foreground capitalize">{f.signal.replace(/_/g, " ")}</p>
+                    <p className="text-[10px] text-muted-foreground">
+                      {f.channel} · {new Date(f.createdAt).toLocaleString()}
+                      {f.acknowledgedAt ? " · acknowledged" : ""}
+                    </p>
+                  </div>
+                  <Badge variant={f.severity === "critical" ? "destructive" : "secondary"} className="text-[10px] capitalize">
+                    {f.severity}
+                  </Badge>
+                </CardContent>
+              </Card>
+            </button>
           ))}
         </TabsContent>
 
@@ -228,6 +238,7 @@ export default function AutomationHealth() {
           ))}
         </TabsContent>
       </Tabs>
+      <FatigueAlertDrawer alert={activeAlert} onOpenChange={(o) => { if (!o) setActiveAlert(null); }} />
     </motion.div>
   );
 }

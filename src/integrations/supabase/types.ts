@@ -20007,6 +20007,74 @@ export type Database = {
         }
         Relationships: []
       }
+      runbook_launch_requests: {
+        Row: {
+          approved_at: string | null
+          approved_by: string | null
+          completed_at: string | null
+          created_at: string
+          evidence: Json
+          executed_at: string | null
+          execution_id: string | null
+          id: string
+          justification: string | null
+          outcome_summary: string | null
+          parameters: Json
+          requested_at: string
+          runbook_id: string
+          status: string
+          trigger_reason: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          approved_at?: string | null
+          approved_by?: string | null
+          completed_at?: string | null
+          created_at?: string
+          evidence?: Json
+          executed_at?: string | null
+          execution_id?: string | null
+          id?: string
+          justification?: string | null
+          outcome_summary?: string | null
+          parameters?: Json
+          requested_at?: string
+          runbook_id: string
+          status?: string
+          trigger_reason?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          approved_at?: string | null
+          approved_by?: string | null
+          completed_at?: string | null
+          created_at?: string
+          evidence?: Json
+          executed_at?: string | null
+          execution_id?: string | null
+          id?: string
+          justification?: string | null
+          outcome_summary?: string | null
+          parameters?: Json
+          requested_at?: string
+          runbook_id?: string
+          status?: string
+          trigger_reason?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "runbook_launch_requests_runbook_id_fkey"
+            columns: ["runbook_id"]
+            isOneToOne: false
+            referencedRelation: "platform_runbooks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       runtime_agents: {
         Row: {
           agent_type: string

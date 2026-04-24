@@ -17,6 +17,9 @@ if npx vitest run 2>&1; then pass "Unit tests — all passed"; else fail "Unit t
 step "Deployment readiness gate"
 if npx vitest run src/__tests__/deployment/ src/__tests__/meta/ src/__tests__/ci/ src/__tests__/security/security-fabric-behavioral.test.ts 2>&1; then pass "Deployment readiness gate — passed"; else fail "Deployment readiness gate failed"; fi
 
+step "Phase 9 tables + RLS smoke"
+if npx vitest run src/__tests__/deployment/phase9-tables-rls-smoke.test.ts 2>&1; then pass "Phase 9 smoke — passed"; else fail "Phase 9 smoke failed"; fi
+
 step "Vite production build"
 if npx vite build 2>&1; then pass "Vite build — success"; else fail "Vite build failed"; fi
 
