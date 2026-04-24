@@ -42,10 +42,8 @@ export function useCronStatus() {
         { _jobname: JOB_NAME } as never,
       );
       if (error) throw error;
-      const row = Array.isArray(data) && data.length > 0
-        ? (data[0] as unknown as JarvisCronStatus)
-        : null;
-      setState({ loading: false, error: null, status: row });
+      const rows = (data as unknown as JarvisCronStatus[] | null) ?? [];
+      setState({ loading: false, error: null, status: rows[0] ?? null });
     } catch (err) {
       setState({ loading: false, error: err as Error, status: null });
     }
