@@ -64,11 +64,15 @@ const SOURCE_TO_TABLE: Record<string, { table: string; label?: string } | null> 
   funnels: { table: "leads", label: "Acquisition funnel rows" },
   content_assets: null,
   audience_data: { table: "leads", label: "Audience source mix" },
-  // Growth
-  analytics: null,
-  funnel_metrics: null,
-  cohorts: null,
-  experiments: null,
+  // Growth — Phase 5 wired to real growth substrate.
+  // `analytics` → app launch events (real activity ledger),
+  // `funnel_metrics` → customer journey stages,
+  // `cohorts` → customer lifecycle stages,
+  // `experiments` → conversion experiments. All RLS-scoped.
+  analytics: { table: "app_launch_events", label: "App launch events" },
+  funnel_metrics: { table: "customer_journey_stages", label: "Funnel stages" },
+  cohorts: { table: "customer_lifecycle_stages", label: "Lifecycle cohorts" },
+  experiments: { table: "conversion_experiments", label: "Conversion experiments" },
   // Tech
   product_roadmap: null,
   tech_stack: null,
@@ -123,7 +127,11 @@ async function loadSlice(
       | "transactions"
       | "budgets"
       | "invoices"
-      | "lead_inbox_items";
+      | "lead_inbox_items"
+      | "app_launch_events"
+      | "customer_journey_stages"
+      | "customer_lifecycle_stages"
+      | "conversion_experiments";
     const { data, error, count } = await supabase
       .from(tableName)
       .select("*", { count: "exact" })
