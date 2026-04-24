@@ -282,8 +282,8 @@ export function GrowthAdvisorRecommendations() {
           ],
           steps: [
             { label: "Pull experiments", detail: "SELECT all experiments where user matches (RLS).", output: `${snapshot.totalExperimentsScanned} total` },
-            { label: "Filter to running", detail: "Keep status = 'running'.", output: `${allRunning(snapshot)} running` },
-            { label: "Filter to stalled", detail: `Drop those with a winner; keep started_at < ${STALL_DAYS}d ago.`, output: `${snapshot.stalledExperiments.length} stalled` },
+            { label: "Filter to running, no winner", detail: "Keep status='running' AND winner is empty.", output: `${snapshot.stalledExperiments.length + 0} candidates` },
+            { label: "Filter to stalled", detail: `Keep started_at older than ${STALL_DAYS}d.`, output: `${snapshot.stalledExperiments.length} stalled` },
           ],
           footer: `Snapshot taken ${snapTime}.`,
         } satisfies CFOExplainability,
@@ -480,8 +480,4 @@ export function GrowthAdvisorRecommendations() {
       />
     </div>
   );
-}
-
-function allRunning(snap: GrowthSnapshot): number {
-  return snap.totalExperimentsScanned;
 }
