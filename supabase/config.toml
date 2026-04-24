@@ -11,3 +11,9 @@ verify_jwt = false
 
 [functions.personal-brain-cron]
 verify_jwt = false
+
+[functions.sita-briefings-generate]
+verify_jwt = false
+
+[functions.sita-reflection-loop]
+verify_jwt = false
