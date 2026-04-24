@@ -12,17 +12,25 @@ const LS_PHRASES = "sita.embodiment.wake.phrases";
 
 const DEFAULT_PHRASES = ["sita", "jarvis", "hey sita", "hey jarvis"];
 
-type Recognition = { start: () => void; stop: () => void; abort?: () => void; onresult: ((e: unknown) => void) | null; onerror: ((e: unknown) => void) | null; onend: (() => void) | null; continuous: boolean; interimResults: boolean; lang: string };
-
-interface WakeWindow extends Window {
-  SpeechRecognition?: new () => Recognition;
-  webkitSpeechRecognition?: new () => Recognition;
+interface RecognitionLike {
+  start: () => void;
+  stop: () => void;
+  abort?: () => void;
+  onresult: ((e: unknown) => void) | null;
+  onerror: ((e: unknown) => void) | null;
+  onend: ((e?: unknown) => void) | null;
+  continuous: boolean;
+  interimResults: boolean;
+  lang: string;
 }
 
-function getRecognitionCtor(): (new () => Recognition) | null {
+type RecognitionCtor = new () => RecognitionLike;
+
+function getRecognitionCtor(): RecognitionCtor | null {
   if (typeof window === "undefined") return null;
-  const w = window as WakeWindow;
-  return w.SpeechRecognition ?? w.webkitSpeechRecognition ?? null;
+  const w = window as unknown as { SpeechRecognition?: unknown; webkitSpeechRecognition?: unknown };
+  const ctor = w.SpeechRecognition ?? w.webkitSpeechRecognition;
+  return (ctor as RecognitionCtor) ?? null;
 }
 
 export function isWakeWordSupported(): boolean {
@@ -46,7 +54,7 @@ export function setWakePhrases(phrases: string[]) {
   try { localStorage.setItem(LS_PHRASES, JSON.stringify(phrases.map((s) => s.toLowerCase()))); } catch { /* noop */ }
 }
 
-let active: Recognition | null = null;
+let active: RecognitionLike | null = null;
 let restartTimer: ReturnType<typeof setTimeout> | null = null;
 let consecutiveErrors = 0;
 let stoppedByUser = false;
