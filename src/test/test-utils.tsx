@@ -185,6 +185,13 @@ vi.mock("@/hooks/useOSRuntime", () => ({
         detectLeakage: vi.fn(),
         getLedger: vi.fn().mockReturnValue({ entries: [], total: 0 }),
         getMetrics: vi.fn().mockReturnValue({}),
+        getStats: vi.fn().mockReturnValue({
+          totalRevenue: 0,
+          monthlyRecurring: 0,
+          activeDeals: 0,
+          conversionRate: 0,
+          churnRate: 0,
+        }),
       },
     },
   }),
@@ -302,6 +309,12 @@ vi.mock("framer-motion", () => ({
   useTransform: () => ({ get: () => 0, set: vi.fn() }),
   useSpring: () => ({ get: () => 0, set: vi.fn() }),
   useInView: () => true,
+  useReducedMotion: () => false,
+  animate: vi.fn(),
+  Reorder: {
+    Group: ({ children }: any) => <>{children}</>,
+    Item: ({ children }: any) => <>{children}</>,
+  },
 }));
 
 function createTestQueryClient() {

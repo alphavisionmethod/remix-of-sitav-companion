@@ -1,5 +1,6 @@
 import { describe, it, expect, vi } from "vitest";
 import { render } from "@/test/test-utils";
+import { defaultOnboardingState } from "@/pages/revenue-office/onboarding/types";
 
 vi.mock("react-router-dom", async () => {
   const actual = await vi.importActual("react-router-dom");
@@ -36,11 +37,33 @@ const pages: [string, () => Promise<any>][] = [
 ];
 
 describe("Revenue-Office Pages Remaining", () => {
+  // Onboarding screens require ScreenProps; supply safe defaults.
+  const screenProps = {
+    state: defaultOnboardingState,
+    setState: vi.fn(),
+    onNext: vi.fn(),
+    onBack: vi.fn(),
+  };
+
   pages.forEach(([name, loader]) => {
     it(`${name} renders without crashing`, async () => {
       const mod: any = await loader();
       const Component = mod.default || Object.values(mod).find((v: any) => typeof v === "function");
-      const { container } = render(<Component />, { authenticated: true });
+      const isScreen = name.endsWith("Screen") || name === "BranchingQuestionsPanel";
+      // BranchingQuestionsPanel takes a different prop shape
+      const branchProps = { questions: [], answers: {}, onAnswer: vi.fn() };
+      // LiveOfficeSidebar takes onboarding state directly
+      const sidebarProps = { state: defaultOnboardingState, currentStage: "ceremony" };
+      let props: Record<string, unknown> = {};
+      if (name === "BranchingQuestionsPanel") props = branchProps;
+      else if (name === "LiveOfficeSidebar") props = sidebarProps;
+      else if (isScreen) props = screenProps;
+      // 'primitives' is a module of helpers, not a component — skip render
+      if (name === "primitives") {
+        expect(mod).toBeTruthy();
+        return;
+      }
+      const { container } = render(<Component {...props} />, { authenticated: true });
       expect(container).toBeTruthy();
     });
   });

@@ -1,7 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
 import { render } from "@/test/test-utils";
-import { MemoryRouter } from "react-router-dom";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import React from "react";
 
 
@@ -27,8 +25,6 @@ vi.mock("@/contexts/AuthContext", () => ({
 }));
 
 describe("MoneyCenter Page", () => {
-  const qc = new QueryClient({ defaultOptions: { queries: { retry: false } } });
-
   it("exports a default component", async () => {
     const mod = await import("../MoneyCenter");
     expect(mod.default).toBeDefined();
@@ -37,13 +33,7 @@ describe("MoneyCenter Page", () => {
 
   it("renders with tabs", async () => {
     const MoneyCenter = (await import("../MoneyCenter")).default;
-    const { container } = render(
-      <QueryClientProvider client={qc}>
-        <MemoryRouter initialEntries={["/money"]}>
-          <MoneyCenter />
-        </MemoryRouter>
-      </QueryClientProvider>
-    );
+    const { container } = render(<MoneyCenter />);
     expect(container).toBeTruthy();
     const buttons = container.querySelectorAll("button");
     expect(buttons.length).toBeGreaterThan(0);
