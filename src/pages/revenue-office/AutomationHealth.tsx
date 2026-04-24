@@ -11,15 +11,19 @@ import {
 import { useState } from "react";
 import AutomationSubNav from "./AutomationSubNav";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-const healthMetrics: any[] = [];
-const advisorInsights: any[] = [];
-const automations: any[] = [];
-const fatigueAlerts: any[] = [];
+import { PremiumEmptyState } from "@/components/sita/PremiumEmptyState";
+import { useRevenueAutomationHealth } from "@/hooks/use-revenue-automation-health";
 const statusIcon = { healthy: CheckCircle, warning: AlertTriangle, error: XCircle, underperforming: TrendingUp };
 const statusColor = { healthy: "text-emerald-400", warning: "text-amber-400", error: "text-red-400", underperforming: "text-blue-400" };
 
 export default function AutomationHealth() {
   const [tab, setTab] = useState("all");
+  const { data, isLoading } = useRevenueAutomationHealth();
+  const healthMetrics = data?.healthMetrics ?? [];
+  const advisorInsights = data?.advisorInsights ?? [];
+  const automations = data?.automations ?? [];
+  const fatigueAlerts = data?.fatigueAlerts ?? [];
+  const domainHealth: Array<{ domain: string; icon: any; healthScore: number; status: string; automationCount: number; triggersThisWeek: number; successRate: number; failures: number; revenueImpact: string; trend: string; topIssue?: string }> = [];
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 p-6">
@@ -30,11 +34,16 @@ export default function AutomationHealth() {
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
-        {([] as typeof healthMetrics).map((m) => (
+        {healthMetrics.length === 0 && !isLoading && (
+          <div className="col-span-full">
+            <PremiumEmptyState variant="no-data" icon={Activity} title="No automation health data" description="Once you create automations and they begin running, aggregated health metrics will appear here." />
+          </div>
+        )}
+        {healthMetrics.map((m) => (
           <Card key={m.label} className="bg-card/50 border-border/50">
             <CardContent className="p-3">
               <div className="flex items-center gap-1.5 mb-1">
-                <m.icon className={`h-3.5 w-3.5 ${m.color}`} />
+                {m.icon && <m.icon className={`h-3.5 w-3.5 ${m.color}`} />}
                 <p className="text-[10px] text-muted-foreground">{m.label}</p>
               </div>
               <p className={`text-xl font-bold ${m.color}`}>{m.value}{m.label === "Fatigue Score" ? "" : "%"}</p>
@@ -49,7 +58,10 @@ export default function AutomationHealth() {
       <Card className="bg-card/50 border-primary/20 border">
         <CardHeader><CardTitle className="text-sm flex items-center gap-2"><Brain className="h-4 w-4 text-primary" />Advisor Health Insights</CardTitle></CardHeader>
         <CardContent className="grid md:grid-cols-2 gap-3">
-          {([] as typeof advisorInsights).map((a, i) => (
+          {advisorInsights.length === 0 && (
+            <p className="text-xs text-muted-foreground col-span-full">No advisor insights yet — recommendations tagged with category “automation” will appear here.</p>
+          )}
+          {advisorInsights.map((a, i) => (
             <div key={i} className="p-3 rounded-lg bg-background/50 border border-border/30">
               <Badge variant="secondary" className="text-[10px] mb-1">{a.advisor}</Badge>
               <p className="text-xs text-foreground mb-2">{a.insight}</p>
@@ -62,15 +74,18 @@ export default function AutomationHealth() {
       {/* Automation List */}
       <Tabs value={tab} onValueChange={setTab}>
         <TabsList className="bg-card/50">
-          <TabsTrigger value="all">All ({([] as typeof automations).length})</TabsTrigger>
-          <TabsTrigger value="healthy">Healthy ({([] as typeof automations).filter(a => a.status === "healthy").length})</TabsTrigger>
-          <TabsTrigger value="issues">Issues ({([] as typeof automations).filter(a => a.status !== "healthy").length})</TabsTrigger>
-          <TabsTrigger value="fatigue">Fatigue ({([] as typeof fatigueAlerts).length})</TabsTrigger>
-          <TabsTrigger value="domain">By Domain ({([] as any[]).length})</TabsTrigger>
+          <TabsTrigger value="all">All ({automations.length})</TabsTrigger>
+          <TabsTrigger value="healthy">Healthy ({automations.filter(a => a.status === "healthy").length})</TabsTrigger>
+          <TabsTrigger value="issues">Issues ({automations.filter(a => a.status !== "healthy").length})</TabsTrigger>
+          <TabsTrigger value="fatigue">Fatigue ({fatigueAlerts.length})</TabsTrigger>
+          <TabsTrigger value="domain">By Domain ({domainHealth.length})</TabsTrigger>
         </TabsList>
 
         <TabsContent value="all" className="space-y-2">
-          {([] as typeof automations).map((a) => {
+          {automations.length === 0 && !isLoading && (
+            <PremiumEmptyState variant="no-data" icon={Zap} title="No automations yet" description="Create your first CRM automation to begin tracking trigger volume, success rate and fatigue here." />
+          )}
+          {automations.map((a) => {
             const Icon = statusIcon[a.status as keyof typeof statusIcon];
             const color = statusColor[a.status as keyof typeof statusColor];
             return (
@@ -107,7 +122,7 @@ export default function AutomationHealth() {
         </TabsContent>
 
         <TabsContent value="healthy" className="space-y-2">
-          {([] as typeof automations).filter(a => a.status === "healthy").map((a) => (
+          {automations.filter(a => a.status === "healthy").map((a) => (
             <Card key={a.name} className="bg-card/50 border-border/50"><CardContent className="p-3 flex items-center justify-between">
               <div className="flex items-center gap-2"><CheckCircle className="h-4 w-4 text-emerald-400" /><span className="text-sm text-foreground">{a.name}</span></div>
               <span className="text-sm font-bold text-emerald-400">{a.successRate}%</span>
@@ -116,7 +131,7 @@ export default function AutomationHealth() {
         </TabsContent>
 
         <TabsContent value="issues" className="space-y-2">
-          {([] as typeof automations).filter(a => a.status !== "healthy").map((a) => {
+          {automations.filter(a => a.status !== "healthy").map((a) => {
             const Icon = statusIcon[a.status as keyof typeof statusIcon];
             const color = statusColor[a.status as keyof typeof statusColor];
             return (
@@ -132,7 +147,10 @@ export default function AutomationHealth() {
         </TabsContent>
 
         <TabsContent value="fatigue" className="space-y-2">
-          {([] as typeof fatigueAlerts).map((f, i) => (
+          {fatigueAlerts.length === 0 && (
+            <PremiumEmptyState variant="no-data" icon={Heart} title="No contact fatigue detected" description="Fatigue tracking requires per-contact message-volume signals. Will populate once message-event tracking is wired." />
+          )}
+          {fatigueAlerts.map((f: any, i) => (
             <Card key={i} className="bg-card/50 border-border/50"><CardContent className="p-3 flex items-center justify-between">
               <div><p className="text-sm text-foreground">{f.contact}</p><p className="text-[10px] text-muted-foreground">{f.automations} active automations · {f.messagesThisWeek} messages this week</p></div>
               <div className="flex items-center gap-2">
@@ -155,7 +173,10 @@ export default function AutomationHealth() {
             </CardContent>
           </Card>
 
-          {([] as any[]).map((d) => (
+          {domainHealth.length === 0 && (
+            <PremiumEmptyState variant="no-data" icon={Globe} title="Domain breakdown not available yet" description="Domain-level rollups require automations tagged by business domain. Tag your automations to populate this view." />
+          )}
+          {domainHealth.map((d) => (
             <Card key={d.domain} className="bg-card/50 border-border/50 hover:border-primary/20 transition-colors">
               <CardContent className="p-4">
                 <div className="flex items-center justify-between mb-3">
