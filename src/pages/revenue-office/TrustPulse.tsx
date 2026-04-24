@@ -16,9 +16,11 @@ const SENTIMENT_TREND: any[] = [];
 
 const TrustPulse = () => {
   const [tab, setTab] = useState("dimensions");
-  const avg = Math.round(([] as any[]).reduce((a, c) => a + c.score, 0) / ([] as any[]).length);
-  const dimAvg = Math.round(([] as any[]).reduce((a, d) => a + d.score, 0) / ([] as any[]).length);
-  const latestSentiment = SENTIMENT_TREND[([] as any[]).length - 1];
+  const clients: any[] = [];
+  const dims: any[] = [];
+  const avg = clients.length > 0 ? Math.round(clients.reduce((a, c) => a + c.score, 0) / clients.length) : 0;
+  const dimAvg = dims.length > 0 ? Math.round(dims.reduce((a, d) => a + d.score, 0) / dims.length) : 0;
+  const latestSentiment = SENTIMENT_TREND.length > 0 ? SENTIMENT_TREND[SENTIMENT_TREND.length - 1] : { positive: 0 };
 
   return (
     <div className="space-y-6 p-6">
@@ -29,8 +31,8 @@ const TrustPulse = () => {
         {[
           { l: "Avg Client Trust", v: `${avg}/100`, c: avg >= 70 ? "text-[hsl(var(--trust-safe))]" : "text-orange-400" },
           { l: "Trust Dimensions", v: `${dimAvg}/100`, c: "text-primary" },
-          { l: "Strong Clients", v: ([] as any[]).filter(c => c.score >= 80).length, c: "text-[hsl(var(--trust-safe))]" },
-          { l: "At Risk", v: ([] as any[]).filter(c => c.score < 50).length, c: "text-destructive" },
+          { l: "Strong Clients", v: clients.filter(c => c.score >= 80).length, c: "text-[hsl(var(--trust-safe))]" },
+          { l: "At Risk", v: clients.filter(c => c.score < 50).length, c: "text-destructive" },
           { l: "Sentiment", v: `${latestSentiment.positive}%+`, c: "text-[hsl(var(--trust-safe))]" },
         ].map(m => (
           <div key={m.l} className="rounded-xl border border-border/40 bg-card p-3 text-center">

@@ -26,9 +26,9 @@ const BusinessTimeMachine = () => {
   const [tab, setTab] = useState("timeline");
   const [lessonInput, setLessonInput] = useState("");
   const [savedLessons, setSavedLessons] = useState<string[]>([]);
-  const cur = PERIODS[0].revenue;
-  const old = PERIODS[([] as any[]).length - 1].revenue;
-  const yoy = Math.round(((cur - old) / old) * 100);
+  const cur = PERIODS[0]?.revenue ?? 0;
+  const old = PERIODS[PERIODS.length - 1]?.revenue ?? 0;
+  const yoy = old > 0 ? Math.round(((cur - old) / old) * 100) : 0;
 
   const saveLesson = () => {
     if (lessonInput.trim()) {
