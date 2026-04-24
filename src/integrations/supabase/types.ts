@@ -20585,6 +20585,93 @@ export type Database = {
         }
         Relationships: []
       }
+      sita_handoff_sessions: {
+        Row: {
+          accepted_at: string | null
+          created_at: string
+          expires_at: string
+          id: string
+          intent: string
+          payload: Json
+          plan_id: string | null
+          source_device: string
+          status: string
+          target_device: string | null
+          user_id: string
+        }
+        Insert: {
+          accepted_at?: string | null
+          created_at?: string
+          expires_at?: string
+          id?: string
+          intent: string
+          payload?: Json
+          plan_id?: string | null
+          source_device: string
+          status?: string
+          target_device?: string | null
+          user_id: string
+        }
+        Update: {
+          accepted_at?: string | null
+          created_at?: string
+          expires_at?: string
+          id?: string
+          intent?: string
+          payload?: Json
+          plan_id?: string | null
+          source_device?: string
+          status?: string
+          target_device?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      sita_spatial_events: {
+        Row: {
+          created_at: string
+          expires_at: string
+          id: string
+          kind: string
+          payload: Json
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          expires_at?: string
+          id?: string
+          kind: string
+          payload?: Json
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          expires_at?: string
+          id?: string
+          kind?: string
+          payload?: Json
+          user_id?: string
+        }
+        Relationships: []
+      }
+      sita_spatial_layout: {
+        Row: {
+          layout: Json
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          layout?: Json
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          layout?: Json
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       sla_breach_contributing_events: {
         Row: {
           contributing_alert_id: string | null
