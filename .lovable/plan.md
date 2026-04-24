@@ -1,196 +1,151 @@
 
+# Human-User Production-Proof Closure — Real Gaps Only
 
-# Personal Brain — Premium Onboarding + Settings + Dashboard Upgrade
+## Inventory of existing strong coverage (KEEP — DO NOT DUPLICATE)
 
-Goal: replace the existing 6-step intake with a guided 11-step "calibration" ceremony, expand the Settings hub from 5 sections to 11 first-class sections, and evolve the dashboard into a true command center — all wired to existing `pb_*` tables (no schema rewrites; one additive migration only).
+`tests/e2e/` already has a deep, real-user verification layer. After full inventory, the following are already proven and will be **left untouched**:
 
----
-
-## Part 1 — The 11-Step Calibration Ceremony
-
-Rebuild `src/components/personal-brain/onboarding/PersonalBrainOnboarding.tsx` as a step machine driven by config. Steps correspond 1:1 to the spec.
-
-| # | Step | Maps to |
+| Area | Existing proof | Status |
 |---|---|---|
-| 0 | Intro / "Let's shape your Brain" | none (skip → defaults) |
-| 1 | Identity (name, role, life context, timezone, language, optional location) | `pb_profile` |
-| 2 | What do you want help with? (use cases + top-3 strengths + biggest need) | `pb_profile.use_cases` + new `strengths`, `biggest_need` |
-| 3 | What are you trying to learn? (skills, current topics, 3-mo + 6-12-mo goals, learning style, level) | `pb_goals` rows + `pb_profile.learning_style`, `learning_level` |
-| 4 | Cognition style (response style, thinking-style top-2, output formats, depth-of-detail) | `pb_profile.tone`, `coaching_style`, `format_pref`, new `output_formats` |
-| 5 | Personal vs Business vs Mixed (work_mode, separation pref, default workspaces to create, default workspace) | `pb_profile.work_mode` + queues `pb_workspaces` inserts |
-| 6 | Projects in flight (free-text list + optional first project) | creates a `pb_workspaces` row of kind `custom` (= project) per entry |
-| 7 | Memory & learning controls (depth, sources, infer-toggle, review cadence, "should I remember?" prompts) | `pb_profile.personalization_depth`, `context_sources` + `pb_security_prefs.autolearn_*` + new `infer_prompt_mode` |
-| 8 | Voice (use-frequency, default mode, autoread, voice summaries) | `pb_voice_prefs` |
-| 9 | Security & privacy (privacy level preset, sensitive-mode opt-in, separate-controls toggle) | `pb_security_prefs` |
-| 10 | Final calibration / summary screen with personalized recap and 4 CTAs (Enter / Review / Create workspace / Start with voice) | reads what was just saved |
+| Sign in (form + flow + reload persistence) | `customer-journey/auth/sign-in-primary.spec.ts` | KEEP |
+| Sign out + protected-route block after | `customer-journey/auth/sign-out-primary.spec.ts` | KEEP |
+| First-boot + setup continuation | `customer-journey/auth/{first-boot,setup-continuation}.spec.ts` | KEEP |
+| Dashboard load + sidebar clickable | `customer-journey/dashboard/dashboard-load-primary.spec.ts` | KEEP |
+| Stale-leads dashboard | `customer-journey/dashboard/stale-leads.spec.ts` | KEEP |
+| Assistant/advisor chat input + degraded fallback | `customer-journey/assistant/assistant-chat-primary.spec.ts` | KEEP |
+| Boardroom approve outbound + review proof + mobile | `customer-journey/boardroom/*.spec.ts` | KEEP |
+| Connectors connect-CRM + OAuth + sync | `customer-journey/connectors/*.spec.ts` | KEEP |
+| Files real upload round-trip | `customer-journey/files/files-upload-real-roundtrip.spec.ts` | KEEP |
+| Settings restore + account open | `customer-journey/settings/*.spec.ts` | KEEP |
+| Demo-vs-real for assistant/boardroom/connectors | `customer-journey/demo-vs-real/*.spec.ts` | KEEP |
+| Degraded mode (assistant provider, connectors) | `customer-journey/degraded/*.spec.ts` | KEEP |
+| Admin envelope (AI team, env recovery, owner intervention, runtime/launch truth, workflow replay) | `customer-journey/admin/*.spec.ts` | KEEP |
+| Full-route deep navigation across 9 domains | `tests/e2e/full-journey.spec.ts` | KEEP |
+| Permission gating + unauth redirect to login | `auth-journeys.spec.ts`, `full-journey.spec.ts` | KEEP |
+| Approvals, advisor action execution, advisor portrait, accessibility, route health, page content, edge contracts, push notifications, mobile responsive, visual regression, error states, recovery | top-level specs in `tests/e2e/` | KEEP |
 
-Each step renders inside the existing `OnboardingShell` + `OnboardingProgress` + `OnboardingChoiceCard` primitives — so the visual grammar already in `src/components/onboarding/*` is reused.
-
-A "Save & exit" link appears on every step from #2 onward; partial state is upserted to `pb_profile` so the user can resume mid-flow (gate hook already keys on `onboarded_at`).
-
-The existing single-call `submit()` is replaced with a per-step `persistStep()` that does a small upsert on advance, plus a final `finalize()` that writes `onboarded_at`, the chosen workspaces, and the optional first project in one batched call.
-
----
-
-## Part 2 — Settings Center Expansion
-
-Rebuild `/personal-brain/settings` as an 11-section hub with a left-rail nav (sticky on desktop, accordion on mobile) using `Sidebar` primitives. Each section gets its own route under `/personal-brain/settings/<section>`.
-
-| Section | Route | Backed by |
-|---|---|---|
-| Overview | `/settings` (default) | aggregate read |
-| Profile & Personalization | `/settings/profile` | `pb_profile` |
-| Memory & Learning | `/settings/memory` | `pb_memories`, `pb_security_prefs` |
-| Modes & Behavior | `/settings/modes` | `pb_profile.mode_overrides` |
-| Workspaces & Projects | `/settings/workspaces` | `pb_workspaces` |
-| Files & Knowledge | `/settings/files` | `pb_files` |
-| Voice & Audio | `/voice-settings` (existing) | `pb_voice_prefs` |
-| Notifications | `/settings/notifications` | new `pb_notification_prefs` (additive migration) |
-| Security & Privacy | `/settings/security` (existing) | `pb_security_prefs`, `pb_security_events` |
-| Data & Controls | `/settings/data` (existing — extend) | export/delete edge fns |
-| Advanced / Labs | `/settings/labs` | `pb_profile.mode_overrides.labs` JSON |
-
-New components (under `src/components/personal-brain/settings/`):
-- `SettingsSidebarNav.tsx`
-- `OverviewCard.tsx` (live tiles: personalization level, memory count, active workspaces, voice on/off, security level, recent learned patterns)
-- `ProfilePersonalizationCard.tsx`
-- `MemoryControlCenter.tsx` (lists explicit + inferred, accept/edit/reject, category filters, reset buttons)
-- `ModesBehaviorEditor.tsx` (per-mode tone/verbosity/output/clarify-first/use-context toggles, persisted as `pb_profile.mode_overrides[modeId]`)
-- `WorkspacesManager.tsx` (full CRUD, type selector, default-workspace, archive, custom-instructions)
-- `FilesKnowledgeManager.tsx` (existing `pb_files` table — uploads already wired through edge fn)
-- `NotificationsCard.tsx`
-- `LabsCard.tsx`
-
-`BrainSettings.tsx` becomes a layout shell with `<Outlet/>`; the 11 section pages become children.
+**Conclusion**: existing coverage is strong and must not be re-implemented. Only true gaps remain.
 
 ---
 
-## Part 3 — Dashboard Command Center
+## Real gaps identified (the only things to add)
 
-Rebuild `BrainDashboard.tsx` to match the spec sections 1–10. Existing components are reused; new ones are added.
+### Gap A — Personal Brain v2 surfaces have ZERO human-journey coverage
+We just shipped:
+- 11-step calibration onboarding (`PersonalBrainOnboarding`)
+- 11-section settings hub with sticky sidebar (`/personal-brain/settings/{profile,memory,modes,workspaces,files,notifications,labs,security,data,voice-settings}`)
+- Brain Command Center (`/personal-brain/command-center`) with Brain Snapshot, Learning Momentum, Insights Feed
+- "Scan now" parallel-scan flow + post-scan refresh
+- Insights Feed refresh button + IntersectionObserver infinite scroll
 
-Layout (top to bottom):
+None of these have an E2E spec. They are the highest-value missing journeys.
 
-1. **Top header**: keep `BrainHero` (already has scope, voice, settings, sentinel) — extend with a `WorkspaceSwitcher` (already exists) and `ModePicker` inline.
-2. **Hero prompt**: large adaptive prompt box with mode-aware placeholder, attach button, voice trigger (new `BrainCommandBar.tsx`).
-3. **Active workspaces** (existing `WorkspaceGrid`) — extend each card with: recent activity, suggested next action, chat count, file count, active goals.
-4. **Continue where you left off** (existing `ChatList`) — add pin/favorite (uses `pb_chats.metadata`).
-5. **Brain Snapshot** (new `BrainSnapshotCard.tsx`) — "What your Brain knows right now": current focus, top skills, preferred style, most-used mode, suggested next skill, recent inferred pattern. Reads `pb_profile` + `pb_memories` (top by recency) + `pb_chats` aggregate.
-6. **Suggested next actions** (new `BrainNextActionsCard.tsx`) — derived client-side from goals + chats + insights.
-7. **Learning momentum** (new `BrainLearningMomentumCard.tsx`) — per-goal progress bars + suggested next step (uses `pb_goals`).
-8. **Projects in motion** (new `BrainProjectsCard.tsx`) — `pb_workspaces` of kind `custom` with chat/file counts.
-9. **Files recently used** (new `BrainRecentFilesCard.tsx`) — `pb_files` ordered by `updated_at`.
-10. **Voice & quick capture** (new `BrainQuickCaptureCard.tsx`) — start voice convo, record reflection, dictate idea.
-11. **Insights / adaptation feed** (existing `BrainInsightCard`) — extend with Accept / Edit / Dismiss actions writing back to `pb_memories.status`.
-12. **Footer actions** (new `BrainFooterActions.tsx`).
+### Gap B — Auxiliary auth surfaces (signup, forgot-password, reset-password)
+The existing `auth.spec.ts` only checks **render**. There is no journey proof that:
+- the signup form submits and shows the "check your email" confirmation state
+- forgot-password submit shows the "email sent" confirmation
+- reset-password page enforces validation (length, mismatch) and shows the success state
 
-Layout uses a 3-col responsive grid on `lg+`, single-column on mobile. All new cards follow existing glassmorphic Card grammar; no inline CSS.
+### Gap C — Public download page user journey
+`/download` and `/downloads` (DownloadsCenter, marketing/Download) currently only have a "renders" check in `full-journey.spec.ts`. There is no proof that:
+- the page exposes the documented install/VMware guidance
+- gated artifacts are not shown publicly without an access path
+- the primary "Get SITA OS" CTA either leads somewhere or honestly represents its state
 
----
-
-## Part 4 — Mode Behavior Matrix (real, not cosmetic)
-
-`src/components/personal-brain/BRAIN_MODES.ts` is extended with the per-mode behavior block from the spec (default tone, verbosity, output structure, clarify-first, cite sources, use project context, memory weight, voice compatibility). The chat page (`PersonalBrainChat.tsx`) already reads from this file — extend its system-prompt builder so each mode actually loads its overrides, blended with the user's `pb_profile.mode_overrides[modeId]`.
-
-Also adds a `getEffectiveModeBehavior(modeId, profile)` helper used by both the chat surface and the planner edge function (`personal-brain/router`).
+### Gap D — Honest-state "no broken Brain" smoke
+A shipped feature should not crash unauth users who land on its routes.
 
 ---
 
-## Part 5 — Database (one additive migration)
+## Plan: add 4 new spec files + 1 helper, run, fix, report
 
-Single migration file. No table renames. No column drops. No data backfill needed.
+### New file 1 — `tests/e2e/customer-journey/personal-brain/calibration-flow.spec.ts`
+Real-user journey through the 11-step ceremony. Covers:
+1. Authenticated user opens `/personal-brain` for the first time → sees calibration shell with step 0 ("Let's shape your Brain") + visible progress indicator.
+2. Clicks "Begin" → step 1 (Identity) → fills name + role → "Continue" gates correctly when name empty (negative case) and unlocks when filled.
+3. Walks through Use cases → Cognition → Privacy steps using the `OnboardingChoiceCard` selectors.
+4. "Save & exit" link is visible from step 2+ (resume contract).
+5. On the final summary step, the recap text reflects choices made earlier (real persistence proof, not just navigation).
+6. Clicking "Enter your Brain" lands on `/personal-brain` dashboard with `onboarded_at` reflected (no longer shows the calibration intro).
 
-```sql
--- pb_profile additive columns
-alter table public.pb_profile
-  add column if not exists location text,
-  add column if not exists strengths jsonb not null default '[]'::jsonb,
-  add column if not exists biggest_need text,
-  add column if not exists learning_style jsonb not null default '[]'::jsonb,
-  add column if not exists learning_level text not null default 'adaptive'
-    check (learning_level in ('beginner','intermediate','advanced','adaptive')),
-  add column if not exists output_formats jsonb not null default '[]'::jsonb,
-  add column if not exists default_workspace_id uuid,
-  add column if not exists separation_pref text not null default 'mixed-ok'
-    check (separation_pref in ('always-separate','mostly-separate','mixed-ok','ask')),
-  add column if not exists infer_prompt_mode text not null default 'sometimes'
-    check (infer_prompt_mode in ('always','sometimes','never'));
+Skipped honestly with `test.skip(!hasTestCredentials())` if no test user.
 
--- pb_notification_prefs (new)
-create table if not exists public.pb_notification_prefs (
-  user_id uuid primary key references auth.users(id) on delete cascade,
-  learning_reminders text not null default 'weekly',
-  project_nudges text not null default 'weekly',
-  continue_where_left_off boolean not null default true,
-  weekly_recap boolean not null default true,
-  inferred_pattern_review boolean not null default true,
-  daily_planning_prompt boolean not null default false,
-  voice_reflection_reminder boolean not null default false,
-  channel_in_app boolean not null default true,
-  channel_email boolean not null default false,
-  created_at timestamptz not null default now(),
-  updated_at timestamptz not null default now()
-);
-alter table public.pb_notification_prefs enable row level security;
-create policy "pb_notif_prefs self all" on public.pb_notification_prefs
-  for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
-create trigger pb_notif_prefs_updated_at before update on public.pb_notification_prefs
-  for each row execute function pb_set_updated_at();
-```
+### New file 2 — `tests/e2e/customer-journey/personal-brain/settings-hub.spec.ts`
+Real-user proof for the 11-section Settings Hub:
+1. Authenticated user navigates to `/personal-brain/settings` → Overview renders live tiles (personalization depth, memory count, voice on/off, security level).
+2. Sticky `SettingsSidebarNav` is visible and contains all 11 sections.
+3. Click each section in turn (Profile, Memory, Modes, Workspaces, Files, Notifications, Voice, Security, Data, Labs) → assert the URL changes to the section route AND the page renders meaningful content (>50 chars) AND no fatal error.
+4. **Save proof**: on Notifications, toggle one switch → click Save → reload → assert toggle state persisted (writes to `pb_notification_prefs`).
+5. **Save proof**: on Profile, change `tone` → Save → reload → assert persisted.
+6. Empty-state honesty: on Files (if no files) the empty state shows an explanation, not a blank panel.
 
-After migration, regenerate `src/integrations/supabase/types.ts` automatically.
+### New file 3 — `tests/e2e/customer-journey/personal-brain/command-center.spec.ts`
+Real-user proof for the dashboard Command Center:
+1. Navigate to `/personal-brain/command-center` → Brain Snapshot, Learning Momentum bar chart, Insights Feed, Active Goals all render.
+2. Click "Scan now" → button enters loading state → loading toast visible → after settle, Brain Snapshot/Insights Feed re-fetch (network call observable; the button returns to idle and a success toast appears).
+3. Insights Feed: click the refresh icon-button → spinning state visible → settles.
+4. Insights Feed infinite scroll: scroll the list to the bottom; if `hasMore`, sentinel triggers `loadMore` (next page appears or "Load more" CTA falls back); if no more, "You're all caught up" terminal text is visible.
+5. Insight pin/dismiss: pick a signal → click dismiss → row disappears from the list (optimistic UI proof).
+
+### New file 4 — `tests/e2e/auth-auxiliary-flows.spec.ts`
+Closes Gap B + Gap C without duplicating existing render checks:
+- **Signup submit flow**: goto `/signup` → fill random-burner email + password (or skip if no `TEST_SIGNUP_EMAIL` env) → submit → expect either the "check your email" confirmation panel OR a Sonner error toast. (Honest dual-path: works in projects with signups enabled, honestly skipped where disabled.)
+- **Signup validation**: short password (<6) → expect inline error toast, no navigation.
+- **Forgot-password flow**: goto `/forgot-password` → fill any email → submit → expect a confirmation state (text contains "sent" / "check") OR honest error.
+- **Reset-password validation**: goto `/reset-password` → submit with password mismatch → expect error toast → submit with too-short password → expect error toast. (We do not exercise the recovery token path because it requires a real email link.)
+- **Download page honesty**: goto `/download` → page renders → primary CTA (`Get SITA OS` / `Download`) is visible OR an honest "coming soon / request access" state is shown. Assert no broken artifact link (no `href="#"` on the primary CTA).
+
+### New helper — `tests/e2e/helpers/personal-brain.ts`
+Tiny helpers used by the three Brain specs:
+- `gotoBrainRoute(page, path)` — login + navigate, with idle wait
+- `assertBrainShellLoaded(page)` — checks for the shared `BrainHero` test-id or fallback heading
+- `clickBrainNavSection(page, label)` — clicks a section in the settings sidebar
+
+Adds `data-testid` attributes to a small number of Brain components where selectors don't already exist (read-only inspection shows these are missing). The additions are **non-functional** (no behavior change), purely test hooks:
+- `data-testid="brain-onboarding-shell"` on the `OnboardingShell` root
+- `data-testid="brain-onboarding-progress"` on the progress bar
+- `data-testid="brain-onboarding-continue"` on the primary footer button
+- `data-testid="brain-settings-sidebar"` on `SettingsSidebarNav` root
+- `data-testid="brain-command-scan-now"` on the Scan-now button
+- `data-testid="brain-insights-refresh"` on the refresh button
+- `data-testid="brain-insights-list"` and `="brain-insights-sentinel"` on the feed
+- `data-testid="brain-insight-row"` per row, plus `="brain-insight-dismiss"` per row
 
 ---
 
-## Part 6 — Edge function changes
+## Run & fix loop
+1. `npx playwright test --project=customer-journey --grep "personal-brain|auth-auxiliary"` (and `tests/e2e/auth-auxiliary-flows.spec.ts` for the auxiliary spec).
+2. Triage: any failure that is a real product bug (crash, dead CTA, broken save, fatal console error) gets fixed at the source. Any failure that's selector noise gets a stronger selector (not a weakened assertion).
+3. Re-run until stable, capturing journey-reporter output.
 
-- `supabase/functions/personal-brain/router.ts` (existing): consume `getEffectiveModeBehavior` and inject mode behavior + memory + selected `context_sources` into the system prompt.
-- New `supabase/functions/pb-snapshot-aggregate/index.ts`: returns the Brain Snapshot in one call (current focus, top skills, preferred style, most-used mode, recent inferred pattern). Cached server-side with `evidence_signal_cache` (already used by other PB functions). `verify_jwt = true`.
-- New `supabase/functions/pb-suggest-next/index.ts`: returns 3-5 suggested next actions per scope. `verify_jwt = true`.
-
-Both registered in `supabase/config.toml` with default JWT verification.
-
----
-
-## Part 7 — Memory file
-
-New `mem://features/personal-brain-onboarding-and-settings.md` describing: 11-step ceremony + 11-section settings hub + 12-section dashboard + per-mode behavior matrix + which `pb_*` tables back what. Index updated.
+## Report — `HUMAN_USER_PRODUCTION_PROOF_REPORT.md` (new, at repo root)
+Structured per the requested 6-part format:
+1. Existing coverage reused (the "KEEP" table above, condensed).
+2. New human-user verification added (the 4 specs + helper, with the journey IDs each adds).
+3. Failures found and fixed (root causes only — no test-weakening).
+4. Newly proven user journeys (explicit list of `[journey:*]` tags).
+5. Remaining blocked / deferred (e.g. real reset-password recovery-token requires email; signup confirmation requires real inbox; install-artifact download requires authorized binary — represented honestly).
+6. Final readiness truth: clear statement of what is now proven from a real user perspective vs. what is still externally blocked.
 
 ---
 
 ## Files added
-- `src/components/personal-brain/onboarding/steps/Step{0..10}.tsx` (11 step components)
-- `src/components/personal-brain/onboarding/onboarding-machine.ts` (state, persistStep, finalize)
-- `src/components/personal-brain/onboarding/onboarding-config.ts` (extended)
-- `src/components/personal-brain/settings/{OverviewCard,ProfilePersonalizationCard,MemoryControlCenter,ModesBehaviorEditor,WorkspacesManager,FilesKnowledgeManager,NotificationsCard,LabsCard,SettingsSidebarNav}.tsx`
-- `src/pages/personal-brain/settings/{Profile,Memory,Modes,Workspaces,Files,Notifications,Labs}.tsx`
-- `src/components/personal-brain/dashboard/{BrainCommandBar,BrainSnapshotCard,BrainNextActionsCard,BrainLearningMomentumCard,BrainProjectsCard,BrainRecentFilesCard,BrainQuickCaptureCard,BrainFooterActions}.tsx`
-- `src/lib/personal-brain/effective-mode-behavior.ts`
-- `supabase/functions/pb-snapshot-aggregate/index.ts`
-- `supabase/functions/pb-suggest-next/index.ts`
-- `supabase/migrations/<ts>_pb_onboarding_v2.sql`
-- `mem/features/personal-brain-onboarding-and-settings.md`
+- `tests/e2e/customer-journey/personal-brain/calibration-flow.spec.ts`
+- `tests/e2e/customer-journey/personal-brain/settings-hub.spec.ts`
+- `tests/e2e/customer-journey/personal-brain/command-center.spec.ts`
+- `tests/e2e/auth-auxiliary-flows.spec.ts`
+- `tests/e2e/helpers/personal-brain.ts`
+- `HUMAN_USER_PRODUCTION_PROOF_REPORT.md`
 
-## Files edited
-- `src/components/personal-brain/onboarding/PersonalBrainOnboarding.tsx` (rewritten as machine host)
-- `src/components/personal-brain/BrainDashboard.tsx` (sectional layout)
-- `src/components/personal-brain/BRAIN_MODES.ts` (behavior block per mode)
-- `src/pages/personal-brain/BrainSettings.tsx` (becomes layout with `<Outlet/>`)
-- `src/pages/personal-brain/PersonalBrainChat.tsx` (uses `getEffectiveModeBehavior`)
-- `src/routes/os-routes.tsx` (7 new settings child routes)
-- `supabase/functions/personal-brain/router.ts` (mode behavior injection)
-- `supabase/config.toml` (register 2 new functions)
-- `mem/index.md`
+## Files edited (test-id hooks only — zero behavior change)
+- `src/components/personal-brain/onboarding/PersonalBrainOnboarding.tsx`
+- `src/components/personal-brain/onboarding/OnboardingShell.tsx` (if it lacks an outer test-id)
+- `src/components/personal-brain/settings/SettingsSidebarNav.tsx`
+- `src/pages/personal-brain/BrainCommandCenter.tsx`
 
-## Verification gates
-1. `tsc --noEmit` clean.
-2. `npm run test:seq -- --filter personal-brain` (uses the runner you just shipped).
-3. Manual gate-walk: fresh user → 11 steps → land on dashboard → all 12 sections render with empty-state honesty (no inline CSS).
-4. Existing user (already onboarded): dashboard renders unchanged-by-default, settings hub now shows 11 sections with values populated from existing rows.
-5. RLS check on `pb_notification_prefs`.
-
-## Out of scope (documented as follow-ups)
-- Real-time pattern-acceptance via inferred-memory edge fn (existing `pb-learn` already covers writes — UI surfaces what's there).
-- Multi-tenant workspace sharing UI (the `pb_workspace_members` table already exists; the existing AcceptInvite flow stays).
-- Background job for "weekly Brain recap" notification (queued for a later phase; the toggle persists today).
+## Out of scope (explicitly)
+- Re-implementing already-strong journeys listed in the KEEP table.
+- Real recovery-token or magic-link flows that require an actual mailbox.
+- Real billable AI calls inside Brain scan (we assert UI behavior + network observability, not provider responses).
+- Visual-regression snapshots for the new Brain surfaces (existing `visual-regression.spec.ts` covers the global system; Brain visuals can be added later if requested).
 
