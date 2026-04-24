@@ -48,6 +48,7 @@ const LEGACY: NavItem[] = [
 export function SettingsSidebarNav() {
   return (
     <nav
+      data-testid="brain-settings-sidebar"
       aria-label="Brain settings"
       className="space-y-0.5 lg:sticky lg:top-4"
     >

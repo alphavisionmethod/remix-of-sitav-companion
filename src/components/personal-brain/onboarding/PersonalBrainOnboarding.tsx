@@ -521,7 +521,12 @@ export function PersonalBrainOnboarding({ onComplete }: PersonalBrainOnboardingP
   };
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] w-full bg-gradient-to-b from-background via-background to-primary/5 py-10 px-4">
+    <div
+      data-testid="brain-onboarding-shell"
+      data-step={stepKey}
+      data-step-index={stepIdx}
+      className="min-h-[calc(100vh-4rem)] w-full bg-gradient-to-b from-background via-background to-primary/5 py-10 px-4"
+    >
       <div className="max-w-3xl mx-auto">
         {/* ─── Premium header w/ progress bar + chip strip ─── */}
         <div className="mb-6 space-y-3">
@@ -547,7 +552,12 @@ export function PersonalBrainOnboarding({ onComplete }: PersonalBrainOnboardingP
               </p>
             </div>
           </div>
-          <Progress value={progressPct} className="h-1.5" />
+          <Progress
+            data-testid="brain-onboarding-progress"
+            aria-valuenow={Math.round(progressPct)}
+            value={progressPct}
+            className="h-1.5"
+          />
           <div className="hidden sm:flex flex-wrap gap-1.5">
             {STEP_KEYS.map((k, i) => (
               <button
@@ -1246,6 +1256,7 @@ export function PersonalBrainOnboarding({ onComplete }: PersonalBrainOnboardingP
             <div className="flex-1" />
             <button
               type="button"
+              data-testid="brain-onboarding-continue"
               onClick={() => void goNext()}
               disabled={!canAdvance || savingStep || finalizing}
               className="px-5 py-2.5 rounded-xl text-sm font-semibold flex items-center gap-2 transition-colors disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90"
