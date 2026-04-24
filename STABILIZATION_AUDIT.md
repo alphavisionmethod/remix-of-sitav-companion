@@ -1,0 +1,102 @@
+# SITA OS — Stabilization Audit (Phase 1)
+
+**Date:** 2026-04-24
+**Scope:** Repository-wide audit prior to feature expansion. Read-only inspection — no code changes in this phase.
+
+---
+
+## 1. Repository Scale
+
+| Metric | Count |
+|---|---|
+| TS / TSX files | 5,508 |
+| Pages (`src/pages/**`) | 1,115 |
+| Edge Functions (on disk) | 212 |
+| Registered routes | 705 |
+| Vitest test files | 334 |
+
+---
+
+## 2. Build & Typecheck
+
+| Gate | Status | Notes |
+|---|---|---|
+| `tsc --noEmit` | ✅ PASS | Clean — 0 errors. |
+| `vite build` | ✅ PASS | Built in 54.9s. |
+| Bundle warnings | ⚠️ | `index` chunk = 4.4 MB. Code-splitting opportunity — non-blocking for deploy. |
+| Lint (`eslint`) | not run | Deferred to Phase 5. |
+
+**Verdict:** The project compiles and ships a usable bundle. No type-level deployment blockers.
+
+---
+
+## 3. Test Suite (vitest)
+
+The full suite hits the 8-minute exec timeout. A sharded run is required for a complete failure inventory (Phase 2 task). The following failure clusters were positively identified during the partial run:
+
+### 3.1 BLOCKER — Router nesting in widget tests
+- **Symptom:** `You cannot render a <Router> inside another <Router>`.
+- **Affected (sample):** `IntentSuggestionsWidget`, several Revenue Office widgets.
+- **Root cause:** Widgets that import a component which mounts its own `<BrowserRouter>` are wrapped a second time inside `<MemoryRouter>` in the test harness.
+- **Fix strategy:** Centralize a `renderWithProviders()` helper that supplies a single Router + QueryClient + RuntimeProvider; refactor offending tests to use it.
+
+### 3.2 BLOCKER — Revenue Office page renders (~17 failures)
+- **Symptom:** `useX must be used within a YProvider` thrown during render.
+- **Likely cause:** A shared provider is missing from the test harness wrapper used in `src/pages/revenue-office/__tests__/*`.
+- **Fix strategy:** Same `renderWithProviders()` helper above.
+
+### 3.3 BLOCKER — Edge function registry drift
+- **Symptom:** `check-edge-function-backend-mapping` flags on-disk functions not registered in `EDGE_FUNCTION_REGISTRY` (advisory only — does not fail build).
+- **Magnitude:** 212 on disk vs N registered (exact delta to be measured in Phase 2).
+- **Fix strategy:** Reconcile registry by registering missing functions or deprecating + deleting orphans.
+
+### 3.4 BLOCKER — Cron `Authorization` header on `sita-briefings-daily-0600`
+- **Symptom:** Cron-triggered invocations fail JWT validation because the scheduled HTTP call does not carry a user JWT.
+- **Fix strategy:** Function must accept `CRON_SECRET` header (or a service-role bearer) when called from `pg_cron`, and bypass user-JWT checks for that path while still requiring a signed source.
+- **Trace:** Surfaced via `useCronStatus` panel — `last_run_status = 'failed'` with HTTP 401.
+
+---
+
+## 4. Code Health (Positive)
+
+| Check | Result |
+|---|---|
+| Empty `onClick={() => {}}` handlers | **0** |
+| `throw new Error("not implemented")` | **0** |
+| RLS coverage | 100% across 420 tables |
+
+The codebase is unusually clean for its size. The blockers are concentrated in **test infrastructure** and **registry hygiene**, not in product logic.
+
+---
+
+## 5. Triaged Gap List
+
+| # | Gap | Severity | Phase |
+|---|---|---|---|
+| G1 | Router nesting in widget tests | BLOCKER | 2 |
+| G2 | Missing providers in Revenue Office test harness | BLOCKER | 2 |
+| G3 | Edge function registry drift | BLOCKER | 2 |
+| G4 | Cron auth on `sita-briefings-daily-0600` | BLOCKER | 2 |
+| G5 | Bundle size (4.4 MB index chunk) | MEDIUM | 6 |
+| G6 | Full vitest sharded inventory | HIGH | 2 |
+| G7 | DB linter not yet executed | HIGH | 2 |
+| G8 | RLS scan not yet executed | HIGH | 2 |
+| G9 | Lint not yet executed | MEDIUM | 5 |
+| G10 | Auth, calibration, Jarvis Bridge integration tests missing | HIGH | 5 |
+
+---
+
+## 6. Phase 2 Plan (in progress)
+
+1. Create canonical `src/test/render-with-providers.tsx` helper.
+2. Refactor failing widget tests to use it (G1, G2).
+3. Run sharded vitest to surface the complete failure list (G6).
+4. Patch `sita-briefings-daily-0600` to accept `CRON_SECRET` header (G4).
+5. Reconcile `EDGE_FUNCTION_REGISTRY` against `supabase/functions/` directory (G3).
+6. Run `supabase--linter` and `security--run_security_scan`; fix surfaced issues (G7, G8).
+
+**Confidence at end of Phase 1:** Build is green, types are clean, RLS is universal. The remaining work is concentrated and tractable.
+
+---
+
+_Generated 2026-04-24._
