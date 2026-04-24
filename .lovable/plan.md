@@ -1,71 +1,109 @@
 
 
-# Phase F — Sita Spatial & Multi-Device (Most Advanced Tier)
+# Fix Phase F build + Phase G — "True Jarvis" Upgrade
 
-Goal: Push Sita past a single-screen assistant into a **spatial, multi-device, multi-modal operator** — handoff between devices, gesture/gaze input, a holographic Boardroom layer over the desktop, and a spatial workspace where windows, advisors, and Sita herself coexist in a 3D field.
+## Part 1 — Immediate fix (1 line)
 
-## What you'll get
+**File**: `src/components/sita/shell/sita-spatial/index.ts`
+- Add `export { SitaSpatialIntentMount } from "./SitaSpatialIntentMount";`
 
-1. **Multi-Device Handoff** — start a task on desktop, continue on mobile (or vice-versa). A live "handoff baton" shows current intent, plan, and cursor position; one tap passes control. Powered by Supabase Realtime + a per-user `sita_handoff_sessions` channel.
-2. **Gesture & Gaze Input (web-native)** — uses `MediaDevices` + lightweight on-device pose/face landmark detection (TFJS already loadable on demand) for:
-   - **Air-tap / pinch** → activate HUD button under cursor
-   - **Look-to-focus** → window the user is looking at gets soft focus glow
-   - **Palm-up** → opens Sita
-   - **Swipe-away** → dismisses current whisper
-   All gesture detection runs locally; nothing leaves the device.
-3. **Holographic Boardroom Layer** — when invoked ("Sita, convene the board"), the active app dims and a translucent 3D council ring of advisor portraits floats above it. Each advisor can speak (TTS) with positional audio. Decisions feed straight into the Phase E Action Plan card.
-4. **Spatial Workspace** — opt-in mode (`Cmd+Shift+Space`) that re-projects open windows onto a curved depth plane with parallax. Drag windows in Z-axis with scroll-wheel + Shift. Persistent per user.
-5. **Sita Presence Beacon** — a low-power BLE-style beacon emitted via WebRTC data channels so other Sita-enabled devices on the same network/account see "Sita is active here" and can request handoff.
-6. **Cross-modal Memory** — every spatial / gesture / handoff event writes to `sita_spatial_events` so the agent learns which input modality the user prefers per task.
+That clears the TS2339 error blocking the preview.
 
-## User experience
+---
 
-- On laptop, you start *"Draft the Q3 board memo"*. Walk to the kitchen, pick up your phone — a banner says **"Continue with Sita?"**. Tap → the same plan resumes on mobile with voice.
-- Look at the Calendar window and say *"Move tomorrow's standup to 10am"* — gaze gives Sita the target window, voice gives the intent.
-- Pinch-air over the HUD orb to open Sita without touching the trackpad.
-- Say *"Convene the board for Q3 strategy"* → 6 advisor holograms ring the screen, debate live, return a single Action Plan you approve once.
-- Hit `Cmd+Shift+Space` → desktop becomes a curved depth field; push less-important windows back, pull priority work forward.
+## Part 2 — What's missing to be the most advanced Jarvis in the world
 
-## Technical implementation
+Phases A→F gave Sita: HUD, voice, screen context, proactive whispers, agentic execution, multi-device + spatial. To make it **truly Jarvis-grade** we need five more capability layers:
 
-**New files**
-- `src/lib/sita-spatial/handoff-bus.ts` — Realtime channel `sita_handoff:{user_id}` with `{intent, plan_id, cursor, device_label, ts}` payload
-- `src/lib/sita-spatial/useSitaHandoff.ts` — hook: emit + subscribe + accept/decline
-- `src/lib/sita-spatial/gesture-engine.ts` — wraps `@mediapipe/tasks-vision` (lazy-loaded) for hand + face landmarks
-- `src/lib/sita-spatial/gaze-tracker.ts` — derives a normalised gaze vector and maps to window-id under cursor
-- `src/lib/sita-spatial/spatial-workspace.ts` — depth/Z model for open windows, persisted to `sita_spatial_layout`
-- `src/lib/sita-spatial/presence-beacon.ts` — WebRTC data-channel beacon (graceful no-op if blocked)
-- `src/lib/sita-spatial/index.ts` — barrel
-- `src/components/sita/shell/sita-spatial/SitaHandoffBanner.tsx` — incoming-handoff toast
-- `src/components/sita/shell/sita-spatial/SitaGestureLayer.tsx` — invisible canvas + activation pulses
-- `src/components/sita/shell/sita-spatial/SitaHolographicBoardroom.tsx` — translucent advisor ring overlay
-- `src/components/sita/shell/sita-spatial/SitaSpatialField.tsx` — curved-plane re-projection container
-- `src/components/sita/shell/sita-spatial/SitaSpatialControls.tsx` — Control Center toggles (gesture / gaze / spatial / handoff)
-- `supabase/functions/sita-handoff-broker/index.ts` — server-validates handoff requests against autonomy + receipts
-- `mem://features/sita-spatial-phase-f.md`
+### Phase G — The Cognitive Cortex (the real upgrade)
 
-**Edited files**
-- `src/components/sita/shell/ShellLiveLayer.tsx` — mount handoff banner, gesture layer, holographic boardroom, spatial field
-- `src/components/sita/shell/ControlCenter.tsx` — add `SitaSpatialControls` row
-- `src/lib/sita-voice/voice-intent-router.ts` — recognize spatial verbs (`convene the board`, `hand off to phone`, `spatial mode`)
-- `src/components/sita/shell/sita-hud/index.ts` — re-export new components
+A unified always-on reasoning brain that closes the loop between **perception → memory → planning → action → reflection**.
 
-**Pipeline & safety**
-- All handoff and spatial actions still flow through `useAction` → 12-stage kernel.
-- Gesture and gaze processing is **on-device only** — never streams video off the user's machine.
-- Holographic Boardroom decisions surface as standard Phase E `ActionPlan`s — same approval, same receipts.
-- All new tables RLS-locked to `auth.uid() = user_id`. Realtime channels use per-user topics + JWT.
-- Feature flags via `personal_brain_preferences.sita_spatial_features` (`{gesture, gaze, spatial, handoff}`) all default OFF; user opts in from Control Center.
+1. **Persistent World Model**
+   - Single rolling "what Sita knows right now" graph: who you are, what you're working on, open windows, calendar next 48h, finance posture, concierge tasks, recent receipts, advisor opinions.
+   - Backed by new table `sita_world_state` (one row per user, jsonb snapshot, updated by a debounced reducer).
+   - Read by every Sita surface; eliminates per-feature context re-fetching.
 
-**Data**
-- New table `sita_handoff_sessions` (id, user_id, source_device, target_device, intent, plan_id, status, payload, created_at, accepted_at, expires_at)
-- New table `sita_spatial_layout` (user_id PK, layout jsonb, updated_at)
-- New table `sita_spatial_events` (id, user_id, kind, payload, created_at) with 30-day TTL
-- Add column `sita_spatial_features` jsonb to `personal_brain_preferences`
+2. **Long-Horizon Goals & Missions**
+   - User can declare "missions" (e.g. *"Close Q3 with >£250k cash buffer"*, *"Move to Lisbon by March"*).
+   - Sita decomposes each into milestones, schedules sub-plans, monitors drift, and surfaces weekly briefings.
+   - New table `sita_missions` + `sita_mission_milestones`. Planner edge function gains a `mission_id` context field.
 
-**Memory rule added**
-- `mem://features/sita-spatial-phase-f` describing handoff topic, gesture engine boundaries (on-device only), holographic boardroom contract, and spatial layout persistence. Index updated.
+3. **Reflection & Self-Improvement Loop**
+   - Nightly edge function `sita-reflection-loop` reads the day's `ai_action_receipts`, success/failure rates, user overrides, and writes a structured "lessons" record back to memory. Future plans bias against repeated mistakes.
+   - User-visible "Sita Journal" panel in the HUD (read-only) shows the day's wins, blockers, and what Sita learned.
 
-## Out of scope (Phase G+)
-- Native AR/VR (visionOS, Quest) shells, real holography, cross-account collaboration.
+4. **Multi-Agent Council in the Background**
+   - Promote the holographic boardroom into an **always-on advisory council** that silently scores every Phase E plan before it surfaces. Plans only reach the user when the council reaches quorum (≥4/6 advisors agree) OR when there's productive disagreement worth showing.
+   - Reuses Phase E `ActionPlan` type — adds `council_votes` field + `dissent_summary`.
+
+5. **Always-Listening Ambient Mode (opt-in, on-device)**
+   - Wake-word ("Sita") with on-device VAD before activating the Phase B voice spine — no cloud streaming until intent is confirmed.
+   - Toggle in Control Center, defaults OFF, gated by mic permission + a clear red recording dot in the HUD strip.
+
+6. **Predictive Pre-warm**
+   - Sita pre-opens the next likely app/window/document based on time-of-day + calendar + recent intent chain. Uses a tiny on-device markov over the last 200 launches in `sita_app_open_log`.
+
+7. **Real-World Bridges**
+   - Wire the existing connectors (Calendar, Email, Banking via Lovable Cloud, Slack/Teams) into typed skill packs so Phase E plans can actually act on the outside world, not just inside the OS.
+   - New skill packs: `external.calendar.*`, `external.email.*`, `external.slack.*`, `external.banking.*`.
+
+8. **Trust Receipts in the HUD**
+   - Every action Sita takes autonomously surfaces a 3-second glassy "receipt chip" near the HUD orb with one-tap **Undo** for reversible actions.
+
+### Files to add for Phase G
+
+**New**
+- `src/lib/sita-cortex/world-model.ts` — reducer + snapshot writer
+- `src/lib/sita-cortex/useWorldModel.ts` — hook
+- `src/lib/sita-cortex/missions.ts` — mission CRUD + decomposition helper
+- `src/lib/sita-cortex/reflection.ts` — client-side daily journal viewer
+- `src/lib/sita-cortex/council.ts` — pre-execution multi-advisor scorer
+- `src/lib/sita-cortex/ambient-listener.ts` — wake-word + VAD (on-device only)
+- `src/lib/sita-cortex/predictive-prewarm.ts` — Markov + launcher integration
+- `src/lib/sita-agent/skills/external-skills.ts` — calendar/email/slack/banking
+- `src/components/sita/shell/sita-cortex/SitaJournalPanel.tsx`
+- `src/components/sita/shell/sita-cortex/SitaMissionsPanel.tsx`
+- `src/components/sita/shell/sita-cortex/SitaTrustReceiptChip.tsx`
+- `src/components/sita/shell/sita-cortex/SitaCortexMount.tsx`
+- `supabase/functions/sita-reflection-loop/index.ts` (nightly cron-ready)
+- `supabase/functions/sita-council-prevote/index.ts` (called by planner)
+- `mem://features/sita-cortex-phase-g.md`
+
+**Edited**
+- `src/components/sita/shell/ShellLiveLayer.tsx` — mount `SitaCortexMount`
+- `src/components/sita/shell/ControlCenter.tsx` — Cortex section (ambient listening, missions, journal toggles)
+- `src/lib/sita-agent/agent-core.ts` — call council pre-vote, attach mission_id
+- `src/lib/sita-agent/skill-registry.ts` — register external skill packs
+- `supabase/functions/sita-agent-planner/index.ts` — accept `world_state` + `mission_id`, return `council_votes`
+- Index memory file
+
+### Pipeline & safety
+- Every new path still flows through `useAction` → 12-stage kernel (trust, approval, budget, receipts) — no bypass.
+- Ambient listening is opt-in, on-device VAD only, with a permanent visible recording indicator.
+- Council pre-vote runs server-side via Lovable AI Gateway (`google/gemini-2.5-pro`), returns within 1.5s, never blocks the user — it just biases plan ordering.
+- Mission decomposition obeys the existing AI Autonomy Ceiling Policy per domain.
+
+### Data
+- `sita_world_state` (user_id PK, snapshot jsonb, version, updated_at)
+- `sita_missions` (id, user_id, title, success_criteria jsonb, status, target_at, created_at)
+- `sita_mission_milestones` (id, mission_id, title, status, due_at, plan_id)
+- `sita_council_votes` (id, plan_id, advisor_id, score, rationale, created_at)
+- `sita_app_open_log` (id, user_id, app_id, opened_at) — TTL 30d
+- `sita_journal_entries` (id, user_id, date, summary jsonb, lessons jsonb)
+- All RLS-locked to `auth.uid() = user_id`.
+
+### Out of scope (Phase H+)
+- Native AR/VR shells, on-prem self-hosted Sita node, third-party developer skill SDK, federated Sita-to-Sita collaboration across users.
+
+---
+
+## Order of execution (when approved)
+1. Apply the one-line index export fix → preview unblocks.
+2. DB migration for the 6 new Cortex tables.
+3. Edge functions (reflection loop + council pre-vote).
+4. Cortex libraries + hooks.
+5. Cortex UI panels + HUD mounts.
+6. Wire planner + agent core to consume world state + mission + council votes.
+7. Memory file + index update.
 
