@@ -1,0 +1,100 @@
+name: Kill-Switch Drill (E2E)
+
+# Runs the kill-switch drill spec on a schedule and on-demand.
+# Required repository secrets:
+#   - VITE_SUPABASE_URL
+#   - VITE_SUPABASE_PUBLISHABLE_KEY
+#   - E2E_ADMIN_EMAIL
+#   - E2E_ADMIN_PASSWORD   (must belong to a user with admin role)
+
+on:
+  workflow_dispatch:
+    inputs:
+      require_ui:
+        description: "Hard-fail if degraded-mode UI is not visible"
+        required: false
+        default: "true"
+      require_receipts:
+        description: "Hard-fail if no receipts land in the drill window"
+        required: false
+        default: "true"
+  schedule:
+    # Weekly drill — Mondays 06:00 UTC
+    - cron: "0 6 * * 1"
+
+jobs:
+  drill:
+    name: Arm → Verify → Disarm → Recover
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+      VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}
+      E2E_ADMIN_EMAIL: ${{ secrets.E2E_ADMIN_EMAIL }}
+      E2E_ADMIN_PASSWORD: ${{ secrets.E2E_ADMIN_PASSWORD }}
+      SITA_DRILL_REQUIRE_UI: ${{ github.event.inputs.require_ui != 'false' && '1' || '0' }}
+      SITA_DRILL_REQUIRE_RECEIPTS: ${{ github.event.inputs.require_receipts != 'false' && '1' || '0' }}
+      PLAYWRIGHT_BASE_URL: http://localhost:8080
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Build app
+        run: npm run build
+
+      - name: Serve preview
+        run: |
+          npx vite preview --port 8080 --strictPort &
+          for i in $(seq 1 30); do
+            curl -sf http://localhost:8080 > /dev/null && break || sleep 2;
+          done
+
+      - name: Pre-flight — verify drill credentials present
+        run: |
+          if [ -z "$VITE_SUPABASE_URL" ] || [ -z "$E2E_ADMIN_EMAIL" ]; then
+            echo "::error::Drill secrets are not configured. Add VITE_SUPABASE_URL, VITE_SUPABASE_PUBLISHABLE_KEY, E2E_ADMIN_EMAIL, E2E_ADMIN_PASSWORD."
+            exit 1
+          fi
+
+      - name: Run kill-switch drill
+        run: npx playwright test --project=kill-switch-drill --reporter=list
+
+      - name: Verify drill receipt was written and passed
+        if: always()
+        run: |
+          set -e
+          if [ ! -f generated/kill-switch-drill/latest.json ]; then
+            echo "::error::No drill receipt was produced at generated/kill-switch-drill/latest.json"
+            exit 1
+          fi
+          node -e "
+            const r = require('./generated/kill-switch-drill/latest.json');
+            console.log(JSON.stringify(r, null, 2));
+            if (!r.pass) { console.error('Drill receipt reports pass=false'); process.exit(1); }
+            if (!r.armed || !r.disarmed) { console.error('arm/disarm not both true'); process.exit(1); }
+            if (!r.stateObservedEnabled || !r.stateObservedDisabled) { console.error('state transitions not both observed'); process.exit(1); }
+            if (!r.auditRowsObserved) { console.error('no audit rows observed'); process.exit(1); }
+            if (!r.recoveryUiObserved) { console.error('UI did not recover after disarm'); process.exit(1); }
+          "
+
+      - name: Upload drill receipts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kill-switch-drill-receipts
+          path: |
+            generated/kill-switch-drill/**
+            playwright-report/**
+            test-results/**
+          if-no-files-found: warn
+          retention-days: 30
