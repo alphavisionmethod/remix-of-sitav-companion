@@ -100,3 +100,22 @@ The codebase is unusually clean for its size. The blockers are concentrated in *
 ---
 
 _Generated 2026-04-24._
+
+---
+
+## 7. Phase 4 — Status (in progress, deferred to next loop)
+
+**Blocker hit:** the full sharded `vitest` run on this sandbox exceeds the 10-minute exec deadline even at `--shard=1/4`. A complete failure inventory cannot be captured in a single agent loop. Recommend running the existing `.github/workflows/test-sequential.yml` (4 parallel shards, 90-min budget each) to gather the inventory, then triaging failures locally.
+
+### What is verified
+- `tsc --noEmit`: PASS (Phase 1)
+- `vite build`: PASS (Phase 1)
+- Supabase mock in `src/test/test-utils.tsx` already supports both sync-destructure and thenable shapes — no patch required.
+
+### Carry-over for next loop
+- G6 (full vitest sharded inventory) — run via CI workflow, not agent sandbox.
+- G4 (cron `Authorization` for `sita-briefings-daily-0600`) — pending.
+- G10 (`src/__tests__/cron/cron-freshness.test.ts`) — pending.
+- G5 (4.4 MB index chunk) — pending, MEDIUM.
+
+_Updated 2026-04-24._
