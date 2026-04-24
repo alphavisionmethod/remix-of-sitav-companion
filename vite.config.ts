@@ -172,8 +172,22 @@ export default defineConfig(({ mode }) => ({
 
           // Components: split heavy admin/sita/ui-kit subtrees.
           if (id.includes("/src/components/admin/")) return "components-admin";
-          if (id.includes("/src/components/sita/")) return "components-sita";
+          // src/components/sita/ has 162 flat files; bucket by first letter
+          // so no single chunk exceeds ~500 KB.
+          {
+            const s = id.match(/\/src\/components\/sita\/([A-Za-z])/);
+            if (s) {
+              const c = s[1].toLowerCase();
+              if ("abcd".includes(c)) return "components-sita-abcd";
+              if ("efgh".includes(c)) return "components-sita-efgh";
+              if ("ijkl".includes(c)) return "components-sita-ijkl";
+              if ("mnop".includes(c)) return "components-sita-mnop";
+              if ("qrst".includes(c)) return "components-sita-qrst";
+              return "components-sita-uvwxyz";
+            }
+          }
           if (id.includes("/src/components/ui/")) return "components-ui";
+          if (id.includes("/src/components/")) return "components-misc";
         },
       },
     },
