@@ -100,12 +100,17 @@ async function loadSlice(
   }
 
   try {
-    // Use type-safe table queries; cast to any only at the boundary because
-    // SOURCE_TO_TABLE is a string-driven dispatcher. RLS guarantees scoping.
+    // RLS guarantees scoping. SOURCE_TO_TABLE is a string-driven dispatcher,
+    // so we narrow to the union of currently-wired tables for type safety.
     const tableName = mapping.table as
       | "accounts"
       | "advisor_board_recommendations"
-      | "advisor_board_actions";
+      | "advisor_board_actions"
+      | "crm_contacts"
+      | "crm_opportunities"
+      | "leads"
+      | "quotes"
+      | "deals";
     const { data, error, count } = await supabase
       .from(tableName)
       .select("*", { count: "exact" })
