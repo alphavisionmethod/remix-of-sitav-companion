@@ -498,6 +498,16 @@ export const EDGE_FUNCTION_CATEGORIES: Record<string, EdgeFunctionCategory> = {
   "workflow-repair": "platform",
   "workflow-replay": "platform",
   "workflow-stuck-detector": "platform",
+  // ── Phase 2 G3 — orphan reconciliation ──
+  "personal-brain-cron": "intelligence",
+  "self-heal-receipts": "platform",
+  "sita-agent-planner": "intelligence",
+  "sita-briefings-generate": "intelligence",
+  "sita-council-prevote": "intelligence",
+  "sita-dream-consolidate": "intelligence",
+  "sita-handoff-broker": "intelligence",
+  "sita-personality-tune": "intelligence",
+  "sita-reflection-loop": "intelligence",
 } as const;
 
 export function getFunctionsByCategory(category: EdgeFunctionCategory): string[] {

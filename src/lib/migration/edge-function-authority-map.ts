@@ -286,4 +286,14 @@ export const EDGE_FUNCTION_AUTHORITY: readonly EdgeFunctionAuthorityEntry[] = [
   { name: "workflow-repair", category: "internal", authClass: "service-role", owner: "platform", riskTier: "R2", corsRequired: true, description: "workflow repair", authJustification: "Service-internal function" },
   { name: "workflow-replay", category: "internal", authClass: "service-role", owner: "platform", riskTier: "R2", corsRequired: true, description: "workflow replay", authJustification: "Service-internal function" },
   { name: "workflow-stuck-detector", category: "internal", authClass: "service-role", owner: "platform", riskTier: "R2", corsRequired: true, description: "workflow stuck detector", authJustification: "Service-internal function" },
+  // ── Phase 2 G3 — orphan reconciliation ──
+  { name: "personal-brain-cron", category: "internal", authClass: "service-role", owner: "ai", riskTier: "R2", corsRequired: true, description: "personal brain scheduled tick", authJustification: "Cron-only invocation" },
+  { name: "self-heal-receipts", category: "internal", authClass: "service-role", owner: "platform", riskTier: "R2", corsRequired: true, description: "self-heal missing AI receipts", authJustification: "Service-internal function" },
+  { name: "sita-agent-planner", category: "domain-api", authClass: "jwt-required", owner: "ai", riskTier: "R2", corsRequired: true, description: "SITA agent plan generator" },
+  { name: "sita-briefings-generate", category: "internal", authClass: "service-role", owner: "ai", riskTier: "R2", corsRequired: true, description: "queues proactive briefings", authJustification: "Cron-only invocation" },
+  { name: "sita-council-prevote", category: "domain-api", authClass: "jwt-required", owner: "ai", riskTier: "R2", corsRequired: true, description: "council prevote synthesis" },
+  { name: "sita-dream-consolidate", category: "internal", authClass: "service-role", owner: "ai", riskTier: "R2", corsRequired: true, description: "nightly memory consolidation", authJustification: "Cron-only invocation" },
+  { name: "sita-handoff-broker", category: "domain-api", authClass: "jwt-required", owner: "ai", riskTier: "R2", corsRequired: true, description: "advisor handoff broker" },
+  { name: "sita-personality-tune", category: "domain-api", authClass: "jwt-required", owner: "ai", riskTier: "R2", corsRequired: true, description: "tune personality params" },
+  { name: "sita-reflection-loop", category: "internal", authClass: "service-role", owner: "ai", riskTier: "R2", corsRequired: true, description: "scheduled advisor reflection", authJustification: "Cron-only invocation" },
 ];
