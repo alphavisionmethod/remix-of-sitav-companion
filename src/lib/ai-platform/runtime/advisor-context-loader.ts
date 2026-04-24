@@ -37,12 +37,12 @@ export interface AdvisorContextSnapshot {
 }
 
 const SOURCE_TO_TABLE: Record<string, { table: string; label?: string } | null> = {
-  // Sales
-  crm_records: { table: "accounts" },
-  leads: null,
-  pipeline: null,
-  quotes: null,
-  offers: null,
+  // Sales — Phase 1 wired to real CRM substrate
+  crm_records: { table: "crm_contacts", label: "CRM contacts" },
+  leads: { table: "leads", label: "Sales leads" },
+  pipeline: { table: "crm_opportunities", label: "Pipeline opportunities" },
+  quotes: { table: "quotes", label: "Quotes" },
+  offers: { table: "deals", label: "Active deals" },
   // Customer service
   support_tickets: null,
   customer_records: { table: "accounts" },
@@ -100,12 +100,17 @@ async function loadSlice(
   }
 
   try {
-    // Use type-safe table queries; cast to any only at the boundary because
-    // SOURCE_TO_TABLE is a string-driven dispatcher. RLS guarantees scoping.
+    // RLS guarantees scoping. SOURCE_TO_TABLE is a string-driven dispatcher,
+    // so we narrow to the union of currently-wired tables for type safety.
     const tableName = mapping.table as
       | "accounts"
       | "advisor_board_recommendations"
-      | "advisor_board_actions";
+      | "advisor_board_actions"
+      | "crm_contacts"
+      | "crm_opportunities"
+      | "leads"
+      | "quotes"
+      | "deals";
     const { data, error, count } = await supabase
       .from(tableName)
       .select("*", { count: "exact" })

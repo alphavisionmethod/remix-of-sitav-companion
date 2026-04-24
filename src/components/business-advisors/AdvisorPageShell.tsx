@@ -14,7 +14,7 @@
 // Empty-state honesty is mandatory: never fabricate data.
 // ═══════════════════════════════════════════════════════════════
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -38,6 +38,12 @@ interface AdvisorPageShellProps {
   advisor: BusinessAdvisorManifest;
   /** Path users return to (defaults to /business-advisors) */
   backHref?: string;
+  /** Domain-specific recommendations content (e.g. pipeline insights). Replaces the placeholder. */
+  recommendationsSlot?: ReactNode;
+  /** Domain-specific simulation form (e.g. deal-size scenario). Rendered above the run history. */
+  simulationFormSlot?: ReactNode;
+  /** Domain-specific quick stats rendered just under the header. */
+  headerStatsSlot?: ReactNode;
 }
 
 interface DeploymentRow {
@@ -82,7 +88,13 @@ const AUTHORITY_TONE: Record<BusinessAdvisorManifest["authority"], string> = {
   "L5-approval-ready": "Approval-ready",
 };
 
-export function AdvisorPageShell({ advisor, backHref = "/business-advisors" }: AdvisorPageShellProps) {
+export function AdvisorPageShell({
+  advisor,
+  backHref = "/business-advisors",
+  recommendationsSlot,
+  simulationFormSlot,
+  headerStatsSlot,
+}: AdvisorPageShellProps) {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("chat");
 
@@ -225,6 +237,9 @@ export function AdvisorPageShell({ advisor, backHref = "/business-advisors" }: A
           </AlertDescription>
         </Alert>
 
+        {/* Domain quick-stats slot */}
+        {headerStatsSlot}
+
         {/* Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab}>
           <TabsList className="grid w-full grid-cols-6">
@@ -338,6 +353,7 @@ export function AdvisorPageShell({ advisor, backHref = "/business-advisors" }: A
 
           {/* Simulation */}
           <TabsContent value="simulation" className="mt-4">
+            {simulationFormSlot && <div className="mb-4">{simulationFormSlot}</div>}
             <Card>
               <CardHeader>
                 <CardTitle className="text-base">Scenarios &amp; what-if runs</CardTitle>
@@ -376,18 +392,21 @@ export function AdvisorPageShell({ advisor, backHref = "/business-advisors" }: A
 
           {/* Recommendations */}
           <TabsContent value="recommendations" className="mt-4">
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-base">Recommendations</CardTitle>
-                <CardDescription>Structured outputs from previous asks (Phase 1+ wires per-advisor specifics).</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-muted-foreground">
-                  Recommendation surfaces are wired per advisor in Phase 1 onward. This shell exposes the hook;
-                  domain-specific lists arrive when each advisor reaches the wiring phase.
-                </p>
-              </CardContent>
-            </Card>
+            {recommendationsSlot ?? (
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-base">Recommendations</CardTitle>
+                  <CardDescription>
+                    Domain-specific recommendations are wired per advisor. This advisor has not been specialised yet.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-muted-foreground">
+                    Use the Chat tab to ask {advisor.displayName} for structured analysis in the meantime.
+                  </p>
+                </CardContent>
+              </Card>
+            )}
           </TabsContent>
 
           {/* Memory */}

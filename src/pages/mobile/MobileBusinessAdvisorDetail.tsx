@@ -10,6 +10,7 @@ import {
   getBusinessAdvisor,
   type AdvisorAskResult,
 } from "@/lib/ai-platform/runtime";
+import { MobileSalesAdvisorPanels } from "@/components/business-advisors/sales/MobileSalesAdvisorPanels";
 
 export default function MobileBusinessAdvisorDetail() {
   const { advisorId } = useParams<{ advisorId: string }>();
@@ -70,6 +71,8 @@ export default function MobileBusinessAdvisorDetail() {
               : `Blocked: ${advisor.blockedActions.join(", ") || "none"}`}
           </AlertDescription>
         </Alert>
+
+        {advisor.id === "sales-advisor" && <MobileSalesAdvisorPanels />}
 
         <Textarea
           rows={3}
