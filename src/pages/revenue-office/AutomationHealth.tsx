@@ -148,16 +148,23 @@ export default function AutomationHealth() {
 
         <TabsContent value="fatigue" className="space-y-2">
           {fatigueAlerts.length === 0 && (
-            <PremiumEmptyState variant="no-data" icon={Heart} title="No contact fatigue detected" description="Fatigue tracking requires per-contact message-volume signals. Will populate once message-event tracking is wired." />
+            <PremiumEmptyState variant="no-data" icon={Heart} title="No contact fatigue detected" description="Fatigue alerts appear when an automation triggers an unsubscribe spike, frequency cap, or sentiment drop on a channel." />
           )}
-          {fatigueAlerts.map((f: any, i) => (
-            <Card key={i} className="bg-card/50 border-border/50"><CardContent className="p-3 flex items-center justify-between">
-              <div><p className="text-sm text-foreground">{f.contact}</p><p className="text-[10px] text-muted-foreground">{f.automations} active automations · {f.messagesThisWeek} messages this week</p></div>
-              <div className="flex items-center gap-2">
-                <Badge variant={f.risk === "high" ? "destructive" : "secondary"} className="text-[10px]">{f.risk}</Badge>
-                <span className="text-[10px] text-foreground">{f.action}</span>
-              </div>
-            </CardContent></Card>
+          {fatigueAlerts.map((f) => (
+            <Card key={f.id} className="bg-card/50 border-border/50">
+              <CardContent className="p-3 flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-foreground capitalize">{f.signal.replace(/_/g, " ")}</p>
+                  <p className="text-[10px] text-muted-foreground">
+                    {f.channel} · {new Date(f.createdAt).toLocaleString()}
+                    {f.acknowledgedAt ? " · acknowledged" : ""}
+                  </p>
+                </div>
+                <Badge variant={f.severity === "critical" ? "destructive" : "secondary"} className="text-[10px] capitalize">
+                  {f.severity}
+                </Badge>
+              </CardContent>
+            </Card>
           ))}
         </TabsContent>
 
