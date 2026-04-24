@@ -41,6 +41,17 @@
     "maxConcurrentRepairs": 1,
     "maxRepairsPerRun": 5,
     "minConfidenceToAct": 0.65,
-    "minConfidenceToAutoMerge": 0.85
+    "minConfidenceToAutoMerge": 0.85,
+    "patchApplicationGate": {
+      "description": "Hard floor for ANY patch application — enforced by policy-engine.decideRepair regardless of lane, feature flag, or confidence. Cannot be bypassed.",
+      "requireTwoPersonApproval": true,
+      "minDistinctApprovers": 2,
+      "requireCodeownersMatch": true,
+      "requireCodeownersForEveryFile": true,
+      "approvalLifetimeMinutes": 60,
+      "auditTrailRequired": true,
+      "bypassFlags": [],
+      "rejectIfFlagsAttempted": ["SITA_SAFE_AUTOMERGE", "SITA_HEAL_T4", "SITA_FORCE_APPLY"]
+    }
   }
 }
