@@ -1,0 +1,55 @@
+{
+  "runs": [
+    {
+      "runAt": "2026-04-24T15:23:56.764Z",
+      "apply": false,
+      "proofs": [
+        {
+          "clusterId": "cluster_1b0cb1305003",
+          "repairId": "rep_942cc2ada314f343",
+          "decision": {
+            "decision": "PROCEED",
+            "lane": "safe-auto",
+            "requiredStages": [
+              "local",
+              "subsystem",
+              "global"
+            ],
+            "blastRadiusCap": 20,
+            "autoMergeAllowed": false,
+            "reason": "lane:safe-auto; conf:0.72"
+          },
+          "strategy": "propose-import-patch",
+          "dryRun": true
+        },
+        {
+          "clusterId": "cluster_bbb125f414d2",
+          "repairId": "rep_6962b24bd6019956",
+          "decision": {
+            "decision": "PROCEED",
+            "lane": "safe-auto",
+            "requiredStages": [
+              "local",
+              "subsystem"
+            ],
+            "blastRadiusCap": 30,
+            "autoMergeAllowed": false,
+            "reason": "lane:safe-auto; conf:0.90"
+          },
+          "strategy": "regenerate-manifests",
+          "dryRun": true
+        },
+        {
+          "clusterId": "cluster_ea88c041e318",
+          "decision": {
+            "decision": "REFUSE",
+            "lane": "human-only",
+            "reason": "refusal-path:src/__tests__/security/rls-audit.test.ts",
+            "autoMergeAllowed": false
+          },
+          "applied": false
+        }
+      ]
+    }
+  ]
+}
