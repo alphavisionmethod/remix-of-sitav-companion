@@ -43,9 +43,9 @@ const SOURCE_TO_TABLE: Record<string, { table: string; label?: string } | null> 
   pipeline: { table: "crm_opportunities", label: "Pipeline opportunities" },
   quotes: { table: "quotes", label: "Quotes" },
   offers: { table: "deals", label: "Active deals" },
-  // Customer service
-  support_tickets: null,
-  customer_records: { table: "accounts" },
+  // Customer service — Phase 2 wired to real support substrate
+  support_tickets: { table: "support_cases", label: "Support cases" },
+  customer_records: { table: "customers", label: "Customers" },
   sla_policies: null,
   // Finance
   financial_statements: null,
@@ -110,7 +110,9 @@ async function loadSlice(
       | "crm_opportunities"
       | "leads"
       | "quotes"
-      | "deals";
+      | "deals"
+      | "support_cases"
+      | "customers";
     const { data, error, count } = await supabase
       .from(tableName)
       .select("*", { count: "exact" })
