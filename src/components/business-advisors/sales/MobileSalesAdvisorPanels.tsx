@@ -138,7 +138,7 @@ export function MobileSalesAdvisorPanels() {
       <Card>
         <CardHeader className="pb-2">
           <CardTitle className="text-sm flex items-center gap-2">
-            <Hourglass className="h-3.5 w-3.5" /> Stalled (>14d)
+            <Hourglass className="h-3.5 w-3.5" /> Stalled (&gt;14d)
             <Badge variant="outline" className="ml-auto text-[10px] h-4">{snap.stalledOpps}</Badge>
           </CardTitle>
         </CardHeader>
