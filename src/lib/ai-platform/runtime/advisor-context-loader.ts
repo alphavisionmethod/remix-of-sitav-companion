@@ -55,11 +55,15 @@ const SOURCE_TO_TABLE: Record<string, { table: string; label?: string } | null> 
   transactions: { table: "transactions", label: "Transactions" },
   invoices: { table: "invoices", label: "Customer invoices" },
   forecasts: null,
-  // Marketing
-  campaigns: null,
-  funnels: null,
+  // Marketing — Phase 4 wired to real acquisition substrate.
+  // No dedicated `campaigns/funnels/content_assets` tables exist yet,
+  // so we route them to the closest live signals (lead inbox + leads
+  // give real positioning/channel/audience evidence) and the rest stay
+  // honestly null (empty-state honest).
+  campaigns: { table: "lead_inbox_items", label: "Inbound campaign signals" },
+  funnels: { table: "leads", label: "Acquisition funnel rows" },
   content_assets: null,
-  audience_data: null,
+  audience_data: { table: "leads", label: "Audience source mix" },
   // Growth
   analytics: null,
   funnel_metrics: null,
@@ -118,7 +122,8 @@ async function loadSlice(
       | "customers"
       | "transactions"
       | "budgets"
-      | "invoices";
+      | "invoices"
+      | "lead_inbox_items";
     const { data, error, count } = await supabase
       .from(tableName)
       .select("*", { count: "exact" })
