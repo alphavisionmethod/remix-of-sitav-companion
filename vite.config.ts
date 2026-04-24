@@ -128,7 +128,15 @@ export default defineConfig(({ mode }) => ({
             const m = id.match(/\/src\/admin\/modules\/([^/]+)\//);
             if (m) return `admin-mod-${m[1]}`;
           }
-          if (id.includes("/src/pages/admin/")) return "admin-legacy-pages";
+          // ── G7: per-prefix split of legacy admin pages ──────────────
+          // The previous catch-all bucket was 1.6 MB. Group by the first
+          // 3 letters of the page name so AI*, AGT*, USR*, etc. each land
+          // in a chunk of ~150-300 KB and can be parallelized.
+          if (id.includes("/src/pages/admin/")) {
+            const m = id.match(/\/src\/pages\/admin\/([A-Za-z][A-Za-z0-9]{0,2})/);
+            const seg = m ? m[1].toLowerCase() : "misc";
+            return `admin-page-${seg}`;
+          }
           if (id.includes("/src/routes/AdminRoutes")) return "admin-router";
 
           // User-domain features: keep each shell in its own chunk.
@@ -172,22 +180,41 @@ export default defineConfig(({ mode }) => ({
 
           // Components: split heavy admin/sita/ui-kit subtrees.
           if (id.includes("/src/components/admin/")) return "components-admin";
-          // src/components/sita/ has 162 flat files; bucket by first letter
-          // so no single chunk exceeds ~500 KB.
+          // src/components/sita/ has 142+ flat files. The previous
+          // first-letter buckets produced two ~1.5 MB chunks because the
+          // alphabet is uneven (A-D and Q-T dominate). Hash the first
+          // 4 letters of the filename into 8 uniform buckets so each
+          // chunk lands at ~250-400 KB.
           {
-            const s = id.match(/\/src\/components\/sita\/([A-Za-z])/);
+            const s = id.match(/\/src\/components\/sita\/([A-Za-z0-9_-]+)/);
             if (s) {
-              const c = s[1].toLowerCase();
-              if ("abcd".includes(c)) return "components-sita-abcd";
-              if ("efgh".includes(c)) return "components-sita-efgh";
-              if ("ijkl".includes(c)) return "components-sita-ijkl";
-              if ("mnop".includes(c)) return "components-sita-mnop";
-              if ("qrst".includes(c)) return "components-sita-qrst";
-              return "components-sita-uvwxyz";
+              const name = s[1].toLowerCase().slice(0, 4);
+              let h = 0;
+              for (let i = 0; i < name.length; i++) h = (h * 31 + name.charCodeAt(i)) & 0xff;
+              return `components-sita-${(h % 8).toString(16)}`;
             }
           }
           if (id.includes("/src/components/ui/")) return "components-ui";
-          if (id.includes("/src/components/")) return "components-misc";
+          // ── G7: per-domain component split ──────────────────────────
+          // Previously every other src/components/* file landed in a
+          // single ~2 MB `components-misc` chunk. Split per top-level
+          // subdirectory so business/, concierge/, finance/, etc. are
+          // independently cacheable and only loaded when needed.
+          // src/components/business/ is itself ~140 files and 1.2 MB.
+          // Split it per second-level subfolder so /business/crm and
+          // /business/lead-recovery don't share a chunk.
+          if (id.includes("/src/components/business/")) {
+            const m = id.match(/\/src\/components\/business\/([^/]+)/);
+            const seg = m ? (m[1].endsWith(".tsx") ? "root" : m[1]) : "root";
+            return `components-business-${seg}`;
+          }
+          {
+            const m = id.match(/\/src\/components\/([^/]+)\//);
+            if (m) return `components-${m[1]}`;
+          }
+          // Files directly under src/components/ (e.g. NavLink.tsx) stay
+          // in the default `index` chunk — they are tiny and shared.
+
         },
       },
     },

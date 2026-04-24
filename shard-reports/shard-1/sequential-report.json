@@ -1,0 +1,715 @@
+{
+  "meta": {
+    "startedAt": "2026-04-24T21:23:33.289Z",
+    "finishedAt": "2026-04-24T21:31:59.070Z",
+    "totalMs": 505781,
+    "shard": {
+      "index": 1,
+      "total": 4
+    },
+    "flags": {
+      "filter": null,
+      "bail": false,
+      "retry": 1,
+      "timeout": 180000,
+      "shard": {
+        "index": 1,
+        "total": 4
+      },
+      "since": null,
+      "list": false,
+      "allowFailures": true,
+      "quiet": true
+    }
+  },
+  "results": [
+    {
+      "file": "scripts/release/lib/__tests__/secret-scanner.test.ts",
+      "status": "pass",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 3822,
+      "attempts": 1
+    },
+    {
+      "file": "src/__tests__/ai/ai-workforce-integrity.test.ts",
+      "status": "pass",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 4176,
+      "attempts": 1
+    },
+    {
+      "file": "src/__tests__/components/component-registry-behavioral.test.ts",
+      "status": "pass",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 3824,
+      "attempts": 1
+    },
+    {
+      "file": "src/__tests__/connectors/connector-behavioral.test.ts",
+      "status": "pass",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 3994,
+      "attempts": 1
+    },
+    {
+      "file": "src/__tests__/db/migration-ownership-integrity.test.ts",
+      "status": "pass",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 4108,
+      "attempts": 1
+    },
+    {
+      "file": "src/__tests__/db/rls-pattern-integrity.test.ts",
+      "status": "pass",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 3836,
+      "attempts": 1
+    },
+    {
+      "file": "src/__tests__/deploy/deploy-ci-integrity.test.ts",
+      "status": "pass",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 3972,
+      "attempts": 1
+    },
+    {
+      "file": "src/__tests__/edge-function-freeze-gate.test.ts",
+      "status": "pass",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 3642,
+      "attempts": 1
+    },
+    {
+      "file": "src/__tests__/edge-functions/ef-critical-smoke.test.ts",
+      "status": "pass",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 3838,
+      "attempts": 1
+    },
+    {
+      "file": "src/__tests__/edge-functions/ef-structural-verification.test.ts",
+      "status": "pass",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 4144,
+      "attempts": 1
+    },
+    {
+      "file": "src/__tests__/features/feature-system-coverage.test.ts",
+      "status": "pass",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 3939,
+      "attempts": 1
+    },
+    {
+      "file": "src/__tests__/kill-switch-enforcement.test.ts",
+      "status": "pass",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 4163,
+      "attempts": 1
+    },
+    {
+      "file": "src/__tests__/notifications/notification-system.test.ts",
+      "status": "pass",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 3984,
+      "attempts": 1
+    },
+    {
+      "file": "src/__tests__/os/os-sbom-attestation-contracts.test.ts",
+      "status": "pass",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 3838,
+      "attempts": 1
+    },
+    {
+      "file": "src/__tests__/os/os-update-rollback-contracts.test.ts",
+      "status": "pass",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 3912,
+      "attempts": 1
+    },
+    {
+      "file": "src/__tests__/pages/page-design-system-coverage.test.ts",
+      "status": "pass",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 3728,
+      "attempts": 1
+    },
+    {
+      "file": "src/__tests__/platform/platform-coverage.test.ts",
+      "status": "pass",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 3573,
+      "attempts": 1
+    },
+    {
+      "file": "src/__tests__/routes/route-family-completeness.test.ts",
+      "status": "pass",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 3637,
+      "attempts": 1
+    },
+    {
+      "file": "src/__tests__/security/security-fabric-behavioral.test.ts",
+      "status": "fail",
+      "exitCode": 1,
+      "signal": null,
+      "durationMs": 4365,
+      "attempts": 2
+    },
+    {
+      "file": "src/__tests__/shell/shell-window-system.test.ts",
+      "status": "pass",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 4517,
+      "attempts": 1
+    },
+    {
+      "file": "src/__tests__/visual-regression/component-structure.test.tsx",
+      "status": "pass",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 4688,
+      "attempts": 1
+    },
+    {
+      "file": "src/components/sita/__tests__/DemoModeBadge.test.tsx",
+      "status": "pass",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 4898,
+      "attempts": 1
+    },
+    {
+      "file": "src/components/sita/__tests__/SitaCard.test.tsx",
+      "status": "pass",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 4564,
+      "attempts": 1
+    },
+    {
+      "file": "src/components/sita/shell/windows/__tests__/CloudSyncWindow.test.tsx",
+      "status": "pass",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 4627,
+      "attempts": 1
+    },
+    {
+      "file": "src/components/sita/shell/windows/settings/__tests__/GeneralSettings.test.tsx",
+      "status": "fail",
+      "exitCode": 1,
+      "signal": null,
+      "durationMs": 7355,
+      "attempts": 2
+    },
+    {
+      "file": "src/contexts/__tests__/DemoModeProvider.test.tsx",
+      "status": "pass",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 5015,
+      "attempts": 1
+    },
+    {
+      "file": "src/hooks/__tests__/use-brain-core.test.ts",
+      "status": "pass",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 4274,
+      "attempts": 1
+    },
+    {
+      "file": "src/hooks/__tests__/use-push-notifications.test.ts",
+      "status": "pass",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 4332,
+      "attempts": 1
+    },
+    {
+      "file": "src/lib/__tests__/concierge-os-advanced.test.ts",
+      "status": "pass",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 4273,
+      "attempts": 1
+    },
+    {
+      "file": "src/lib/__tests__/cross-domain-advanced.test.ts",
+      "status": "pass",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 4829,
+      "attempts": 1
+    },
+    {
+      "file": "src/lib/__tests__/fraud-sentinel-advanced.test.ts",
+      "status": "pass",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 4144,
+      "attempts": 1
+    },
+    {
+      "file": "src/lib/__tests__/kernel-display.test.ts",
+      "status": "pass",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 4340,
+      "attempts": 1
+    },
+    {
+      "file": "src/lib/__tests__/kernel-wayland-client.test.ts",
+      "status": "pass",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 4773,
+      "attempts": 1
+    },
+    {
+      "file": "src/lib/api/__tests__/api-versioning.test.ts",
+      "status": "pass",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 4799,
+      "attempts": 1
+    },
+    {
+      "file": "src/lib/app-platform/__tests__/package-validator.test.ts",
+      "status": "pass",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 4299,
+      "attempts": 1
+    },
+    {
+      "file": "src/lib/capabilities/__tests__/capability-registry-extended.test.ts",
+      "status": "pass",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 4172,
+      "attempts": 1
+    },
+    {
+      "file": "src/lib/core-services/__tests__/action-lineage-service.test.ts",
+      "status": "pass",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 5459,
+      "attempts": 1
+    },
+    {
+      "file": "src/lib/core-services/__tests__/executor-service.test.ts",
+      "status": "pass",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 4107,
+      "attempts": 1
+    },
+    {
+      "file": "src/lib/core-services/__tests__/search-fabric.test.ts",
+      "status": "pass",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 4216,
+      "attempts": 1
+    },
+    {
+      "file": "src/lib/dual-reality/__tests__/reality-mode-registry.test.ts",
+      "status": "pass",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 4391,
+      "attempts": 1
+    },
+    {
+      "file": "src/lib/no-hallucination/__tests__/refusal.test.ts",
+      "status": "pass",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 4158,
+      "attempts": 1
+    },
+    {
+      "file": "src/lib/observability/__tests__/observability.test.ts",
+      "status": "pass",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 4884,
+      "attempts": 1
+    },
+    {
+      "file": "src/lib/services/__tests__/window-physics.test.ts",
+      "status": "pass",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 4398,
+      "attempts": 1
+    },
+    {
+      "file": "src/lib/services/billing/__tests__/billing-service.test.ts",
+      "status": "pass",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 4589,
+      "attempts": 1
+    },
+    {
+      "file": "src/lib/services/native-apps/__tests__/native-apps-degraded.test.ts",
+      "status": "pass",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 4227,
+      "attempts": 1
+    },
+    {
+      "file": "src/lib/services/self-healing/__tests__/self-healing.test.ts",
+      "status": "pass",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 4325,
+      "attempts": 1
+    },
+    {
+      "file": "src/lib/sita-jarvis/__tests__/sita-jarvis-fusion.test.ts",
+      "status": "pass",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 4142,
+      "attempts": 1
+    },
+    {
+      "file": "src/pages/__tests__/BusinessCenter.test.tsx",
+      "status": "fail",
+      "exitCode": 1,
+      "signal": null,
+      "durationMs": 4306,
+      "attempts": 2
+    },
+    {
+      "file": "src/pages/__tests__/NotFoundExtended.test.tsx",
+      "status": "pass",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 4493,
+      "attempts": 1
+    },
+    {
+      "file": "src/pages/__tests__/admin-pages-batch10.test.tsx",
+      "status": "fail",
+      "exitCode": 1,
+      "signal": null,
+      "durationMs": 6074,
+      "attempts": 2
+    },
+    {
+      "file": "src/pages/__tests__/admin-pages-batch14.test.tsx",
+      "status": "pass",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 4908,
+      "attempts": 1
+    },
+    {
+      "file": "src/pages/__tests__/admin-pages-batch5.test.tsx",
+      "status": "fail",
+      "exitCode": 1,
+      "signal": null,
+      "durationMs": 6299,
+      "attempts": 2
+    },
+    {
+      "file": "src/pages/__tests__/admin-pages-batch9.test.tsx",
+      "status": "pass",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 8571,
+      "attempts": 1
+    },
+    {
+      "file": "src/pages/__tests__/admin-subdirs-batch17.test.tsx",
+      "status": "pass",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 8258,
+      "attempts": 1
+    },
+    {
+      "file": "src/pages/__tests__/business-pages-remaining.test.tsx",
+      "status": "fail",
+      "exitCode": 1,
+      "signal": null,
+      "durationMs": 8877,
+      "attempts": 2
+    },
+    {
+      "file": "src/pages/__tests__/digital-presence-pages.test.tsx",
+      "status": "fail",
+      "exitCode": 1,
+      "signal": null,
+      "durationMs": 8748,
+      "attempts": 2
+    },
+    {
+      "file": "src/pages/__tests__/mobile-pages-remaining.test.tsx",
+      "status": "pass",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 6705,
+      "attempts": 1
+    },
+    {
+      "file": "src/pages/__tests__/money-pages.test.tsx",
+      "status": "fail",
+      "exitCode": 1,
+      "signal": null,
+      "durationMs": 8492,
+      "attempts": 2
+    },
+    {
+      "file": "src/pages/__tests__/revenue-office-pages.test.tsx",
+      "status": "pass",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 9666,
+      "attempts": 1
+    },
+    {
+      "file": "src/pages/__tests__/workspace-pages.test.tsx",
+      "status": "pass",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 8380,
+      "attempts": 1
+    },
+    {
+      "file": "src/platform/nova-sdk/kernel/__tests__/process-manager.test.ts",
+      "status": "pass",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 4677,
+      "attempts": 1
+    },
+    {
+      "file": "src/platform/nova-sdk/runtime/__tests__/managed-runtime.test.ts",
+      "status": "pass",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 4696,
+      "attempts": 1
+    },
+    {
+      "file": "src/platform/orchestration/__tests__/planning-orchestrator.test.ts",
+      "status": "pass",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 4858,
+      "attempts": 1
+    },
+    {
+      "file": "src/test/EnvErrorBoundary.test.tsx",
+      "status": "fail",
+      "exitCode": 1,
+      "signal": null,
+      "durationMs": 5124,
+      "attempts": 2
+    },
+    {
+      "file": "src/test/advisor-council-protocol.test.ts",
+      "status": "pass",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 4596,
+      "attempts": 1
+    },
+    {
+      "file": "src/test/advisor-workspace.test.ts",
+      "status": "pass",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 3799,
+      "attempts": 1
+    },
+    {
+      "file": "src/test/boot-flow.test.tsx",
+      "status": "pass",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 5502,
+      "attempts": 1
+    },
+    {
+      "file": "src/test/contracts-packages.test.ts",
+      "status": "pass",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 4432,
+      "attempts": 1
+    },
+    {
+      "file": "src/test/contracts/mobile-app-contracts.test.ts",
+      "status": "pass",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 4521,
+      "attempts": 1
+    },
+    {
+      "file": "src/test/contracts/schema-snapshots.test.ts",
+      "status": "pass",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 4825,
+      "attempts": 1
+    },
+    {
+      "file": "src/test/data-hooks.test.ts",
+      "status": "pass",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 4781,
+      "attempts": 1
+    },
+    {
+      "file": "src/test/e2e-cross-surface-verification.test.ts",
+      "status": "pass",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 5237,
+      "attempts": 1
+    },
+    {
+      "file": "src/test/example.test.ts",
+      "status": "pass",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 4778,
+      "attempts": 1
+    },
+    {
+      "file": "src/test/financial-formulas.test.ts",
+      "status": "pass",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 4646,
+      "attempts": 1
+    },
+    {
+      "file": "src/test/integration/approval-engine-flow.integration.test.ts",
+      "status": "pass",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 4244,
+      "attempts": 1
+    },
+    {
+      "file": "src/test/integration/cloud-sync-updates.integration.test.ts",
+      "status": "pass",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 4409,
+      "attempts": 1
+    },
+    {
+      "file": "src/test/integration/event-bus-wiring.integration.test.ts",
+      "status": "pass",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 4008,
+      "attempts": 1
+    },
+    {
+      "file": "src/test/integration/workflow-engine-chain.integration.test.ts",
+      "status": "pass",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 4317,
+      "attempts": 1
+    },
+    {
+      "file": "src/test/lock-screen.test.tsx",
+      "status": "fail",
+      "exitCode": 1,
+      "signal": null,
+      "durationMs": 7709,
+      "attempts": 2
+    },
+    {
+      "file": "src/test/model-router.test.ts",
+      "status": "pass",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 4522,
+      "attempts": 1
+    },
+    {
+      "file": "src/test/page-rendering.test.ts",
+      "status": "pass",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 13698,
+      "attempts": 1
+    },
+    {
+      "file": "src/test/policy-engine.test.ts",
+      "status": "pass",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 4695,
+      "attempts": 1
+    },
+    {
+      "file": "src/test/script-system/script-system.test.ts",
+      "status": "fail",
+      "exitCode": 1,
+      "signal": null,
+      "durationMs": 4447,
+      "attempts": 2
+    },
+    {
+      "file": "src/test/services.test.ts",
+      "status": "pass",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 3908,
+      "attempts": 1
+    },
+    {
+      "file": "src/test/workflow-primitives.test.ts",
+      "status": "pass",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 4154,
+      "attempts": 1
+    },
+    {
+      "file": "tests/integration/health-endpoints-e2e.test.ts",
+      "status": "pass",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 12237,
+      "attempts": 1
+    }
+  ]
+}
