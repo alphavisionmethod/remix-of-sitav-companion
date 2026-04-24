@@ -18,7 +18,7 @@ import {
 import { usePersonality } from "@/lib/sita-sentience/usePersonality";
 
 export function SitaEmbodimentControls() {
-  const personality = usePersonality();
+  const { personality } = usePersonality();
   const [enabled, setEnabled] = useState<boolean>(() => isEmbodimentEnabled());
   const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
   const [voiceURI, setVoiceURI] = useState<string | null>(() => getPreferredVoiceURI());
