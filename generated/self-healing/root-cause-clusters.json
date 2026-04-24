@@ -1,0 +1,64 @@
+{
+  "schema": "self-healing/root-cause-clusters@1",
+  "generatedAt": "2026-04-24T15:19:47.445Z",
+  "totals": {
+    "symptoms": 3,
+    "clusters": 3
+  },
+  "clusters": [
+    {
+      "clusterId": "cluster_1b0cb1305003",
+      "class": "missing-symbol",
+      "anchor": "src/pages/A.tsx",
+      "repairFamily": "safe-auto",
+      "severity": "critical",
+      "symptoms": [
+        "fail_8f72b77e263a97f0"
+      ],
+      "impactedFiles": [
+        "src/pages/A.tsx"
+      ],
+      "impactedOwners": [
+        "frontend-pages"
+      ],
+      "maxConfidence": 0.725,
+      "symptomCount": 1
+    },
+    {
+      "clusterId": "cluster_bbb125f414d2",
+      "class": "stale-generated",
+      "anchor": "generated/routes-manifest.js",
+      "repairFamily": "safe-auto",
+      "severity": "high",
+      "symptoms": [
+        "fail_24b85f94314f9d74"
+      ],
+      "impactedFiles": [
+        "generated/routes-manifest.js"
+      ],
+      "impactedOwners": [
+        "generated"
+      ],
+      "maxConfidence": 0.9,
+      "symptomCount": 1
+    },
+    {
+      "clusterId": "cluster_ea88c041e318",
+      "class": "auth-boundary-regression",
+      "anchor": "src/__tests__/security/rls-audit.test.ts",
+      "repairFamily": "human-only",
+      "severity": "critical",
+      "symptoms": [
+        "fail_18f84f80130d143a"
+      ],
+      "impactedFiles": [
+        "src/__tests__/security/rls-audit.test.ts"
+      ],
+      "impactedOwners": [
+        "uncategorized"
+      ],
+      "maxConfidence": 0.95,
+      "symptomCount": 1
+    }
+  ]
+}

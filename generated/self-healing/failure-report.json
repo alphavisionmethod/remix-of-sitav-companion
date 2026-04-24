@@ -1,0 +1,95 @@
+{
+  "schema": "self-healing/failure-report@1",
+  "generatedAt": "2026-04-24T15:19:47.332Z",
+  "sourceGraph": "/dev-server/generated/self-healing/verification-graph.json",
+  "totals": {
+    "failedChecks": 3,
+    "byClass": {
+      "missing-symbol": 1,
+      "stale-generated": 1,
+      "auth-boundary-regression": 1
+    },
+    "bySeverity": {
+      "critical": 2,
+      "high": 1
+    },
+    "byRepairFamily": {
+      "safe-auto": 2,
+      "human-only": 1
+    }
+  },
+  "failures": [
+    {
+      "failureId": "fail_8f72b77e263a97f0",
+      "checkId": "typecheck",
+      "subsystem": "frontend",
+      "criticality": "release-blocker",
+      "severity": "critical",
+      "normalizedClass": "missing-symbol",
+      "rootCauseConfidence": 0.725,
+      "repairFamily": "safe-auto",
+      "signals": [
+        "[missing-symbol] Cannot find name 'Foo'"
+      ],
+      "impactedFiles": [
+        "src/pages/A.tsx"
+      ],
+      "impactedOwners": [
+        "frontend-pages"
+      ],
+      "durationMs": 10,
+      "rawSnippet": "src/pages/A.tsx(10,5): error TS2304: Cannot find name 'Foo'.\nsrc/pages/A.tsx(11,5): error TS2304: Cannot find name 'Bar'.\n",
+      "suggestedValidationScope": "file",
+      "flakeSuspicion": false,
+      "reproducibilityStatus": "untested"
+    },
+    {
+      "failureId": "fail_24b85f94314f9d74",
+      "checkId": "validate:manifests",
+      "subsystem": "manifests",
+      "criticality": "high",
+      "severity": "high",
+      "normalizedClass": "stale-generated",
+      "rootCauseConfidence": 0.9,
+      "repairFamily": "safe-auto",
+      "signals": [
+        "[stale-generated] generated/routes-manifest.json"
+      ],
+      "impactedFiles": [
+        "generated/routes-manifest.js"
+      ],
+      "impactedOwners": [
+        "generated"
+      ],
+      "durationMs": 20,
+      "rawSnippet": "generated/routes-manifest.json is stale; run `npm run generate:manifests`.\n",
+      "suggestedValidationScope": "subsystem",
+      "flakeSuspicion": false,
+      "reproducibilityStatus": "untested"
+    },
+    {
+      "failureId": "fail_18f84f80130d143a",
+      "checkId": "validate:security",
+      "subsystem": "security",
+      "criticality": "release-blocker",
+      "severity": "critical",
+      "normalizedClass": "auth-boundary-regression",
+      "rootCauseConfidence": 0.95,
+      "repairFamily": "human-only",
+      "signals": [
+        "[auth-boundary-regression] __tests__/security/"
+      ],
+      "impactedFiles": [
+        "src/__tests__/security/rls-audit.test.ts"
+      ],
+      "impactedOwners": [
+        "uncategorized"
+      ],
+      "durationMs": 30,
+      "rawSnippet": "FAIL src/__tests__/security/rls-audit.test.ts > policy-bypass detected\n",
+      "suggestedValidationScope": "repo",
+      "flakeSuspicion": false,
+      "reproducibilityStatus": "untested"
+    }
+  ]
+}

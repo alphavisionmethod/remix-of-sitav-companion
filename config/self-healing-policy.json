@@ -1,0 +1,46 @@
+{
+  "$schema": "self-healing/policy@1",
+  "version": "1.0.0",
+  "description": "Top-level lane assignments per repo failure class. Three lanes: SAFE-AUTO, GATED-PR, HUMAN-ONLY. NEVER bypass for any reason.",
+  "lanes": {
+    "safe-auto": {
+      "description": "May auto-execute. May auto-merge ONLY when SITA_SAFE_AUTOMERGE=1 AND all 4 validation stages pass AND blast radius within cap.",
+      "classes": [
+        "stale-generated",
+        "manifest-drift",
+        "barrel-export-broken",
+        "missing-symbol",
+        "import-drift",
+        "demo-removal-fallout",
+        "dependency-drift"
+      ]
+    },
+    "gated-pr": {
+      "description": "May auto-execute. NEVER auto-merge. Always raises a draft PR for human review.",
+      "classes": [
+        "contract-drift",
+        "route-wiring-drift",
+        "cta-wiring-drift",
+        "feature-ownership-drift",
+        "service-duplication-fallout",
+        "semantic-ui-regression"
+      ]
+    },
+    "human-only": {
+      "description": "May analyze and propose, NEVER executes. Surfaces in dashboard for human action.",
+      "classes": [
+        "auth-boundary-regression",
+        "release-readiness-mismatch",
+        "external-dep-unavailable",
+        "real-bug",
+        "flaky-test"
+      ]
+    }
+  },
+  "globalLimits": {
+    "maxConcurrentRepairs": 1,
+    "maxRepairsPerRun": 5,
+    "minConfidenceToAct": 0.65,
+    "minConfidenceToAutoMerge": 0.85
+  }
+}

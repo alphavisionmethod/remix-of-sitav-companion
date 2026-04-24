@@ -1,0 +1,56 @@
+{
+  "schema": "self-healing/verification-graph@1",
+  "generatedAt": "2026-04-24T15:19:47.231Z",
+  "flags": {
+    "synthetic": true
+  },
+  "totals": {
+    "registered": 3,
+    "selected": 3,
+    "passed": 0,
+    "failed": 3,
+    "timedOut": 0,
+    "skipped": 0
+  },
+  "checks": [
+    {
+      "id": "typecheck",
+      "subsystem": "frontend",
+      "scope": "repo",
+      "criticality": "release-blocker",
+      "result": {
+        "status": "fail",
+        "exitCode": 1,
+        "durationMs": 10,
+        "stdout": "src/pages/A.tsx(10,5): error TS2304: Cannot find name 'Foo'.\nsrc/pages/A.tsx(11,5): error TS2304: Cannot find name 'Bar'.",
+        "stderr": ""
+      }
+    },
+    {
+      "id": "validate:manifests",
+      "subsystem": "manifests",
+      "scope": "repo",
+      "criticality": "high",
+      "result": {
+        "status": "fail",
+        "exitCode": 1,
+        "durationMs": 20,
+        "stdout": "generated/routes-manifest.json is stale; run `npm run generate:manifests`.",
+        "stderr": ""
+      }
+    },
+    {
+      "id": "validate:security",
+      "subsystem": "security",
+      "scope": "repo",
+      "criticality": "release-blocker",
+      "result": {
+        "status": "fail",
+        "exitCode": 1,
+        "durationMs": 30,
+        "stdout": "FAIL src/__tests__/security/rls-audit.test.ts > policy-bypass detected",
+        "stderr": ""
+      }
+    }
+  ]
+}

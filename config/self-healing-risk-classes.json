@@ -1,0 +1,106 @@
+{
+  "$schema": "self-healing/risk-classes@1",
+  "version": "1.0.0",
+  "description": "Per-class limits: max files, max subsystems, validation requirements, blast-radius caps, escalation triggers.",
+  "classes": {
+    "stale-generated": {
+      "maxFilesTouched": 10,
+      "maxSubsystemsTouched": 1,
+      "requiredStages": ["local", "subsystem"],
+      "blastRadiusCap": 30,
+      "escalateIfRoutesChanged": true,
+      "escalateIfSecurityFilesChanged": true,
+      "autoMergeAllowed": true
+    },
+    "manifest-drift": {
+      "maxFilesTouched": 15,
+      "maxSubsystemsTouched": 2,
+      "requiredStages": ["local", "subsystem", "global"],
+      "blastRadiusCap": 50,
+      "autoMergeAllowed": true
+    },
+    "barrel-export-broken": {
+      "maxFilesTouched": 5,
+      "maxSubsystemsTouched": 1,
+      "requiredStages": ["local", "subsystem", "global"],
+      "blastRadiusCap": 25,
+      "autoMergeAllowed": true
+    },
+    "missing-symbol": {
+      "maxFilesTouched": 3,
+      "maxSubsystemsTouched": 1,
+      "requiredStages": ["local", "subsystem", "global"],
+      "blastRadiusCap": 20,
+      "autoMergeAllowed": true
+    },
+    "import-drift": {
+      "maxFilesTouched": 5,
+      "maxSubsystemsTouched": 1,
+      "requiredStages": ["local", "subsystem", "global"],
+      "blastRadiusCap": 25,
+      "autoMergeAllowed": true
+    },
+    "demo-removal-fallout": {
+      "maxFilesTouched": 8,
+      "maxSubsystemsTouched": 1,
+      "requiredStages": ["local", "subsystem", "global", "semantic"],
+      "blastRadiusCap": 35,
+      "autoMergeAllowed": false
+    },
+    "dependency-drift": {
+      "maxFilesTouched": 2,
+      "maxSubsystemsTouched": 1,
+      "requiredStages": ["local", "subsystem", "global"],
+      "blastRadiusCap": 15,
+      "autoMergeAllowed": false
+    },
+    "contract-drift": {
+      "maxFilesTouched": 8,
+      "maxSubsystemsTouched": 2,
+      "requiredStages": ["local", "subsystem", "global", "semantic"],
+      "blastRadiusCap": 60,
+      "autoMergeAllowed": false
+    },
+    "route-wiring-drift": {
+      "maxFilesTouched": 5,
+      "maxSubsystemsTouched": 1,
+      "requiredStages": ["local", "subsystem", "global", "semantic"],
+      "blastRadiusCap": 40,
+      "autoMergeAllowed": false
+    },
+    "cta-wiring-drift": {
+      "maxFilesTouched": 5,
+      "maxSubsystemsTouched": 1,
+      "requiredStages": ["local", "subsystem", "global", "semantic"],
+      "blastRadiusCap": 30,
+      "autoMergeAllowed": false
+    },
+    "feature-ownership-drift": {
+      "maxFilesTouched": 10,
+      "maxSubsystemsTouched": 2,
+      "requiredStages": ["local", "subsystem", "global", "semantic"],
+      "blastRadiusCap": 45,
+      "autoMergeAllowed": false
+    },
+    "service-duplication-fallout": {
+      "maxFilesTouched": 12,
+      "maxSubsystemsTouched": 2,
+      "requiredStages": ["local", "subsystem", "global", "semantic"],
+      "blastRadiusCap": 55,
+      "autoMergeAllowed": false
+    },
+    "semantic-ui-regression": {
+      "maxFilesTouched": 5,
+      "maxSubsystemsTouched": 1,
+      "requiredStages": ["local", "subsystem", "global", "semantic"],
+      "blastRadiusCap": 25,
+      "autoMergeAllowed": false
+    }
+  },
+  "criticalityWeights": {
+    "trivial": 1,
+    "normal": 3,
+    "high": 7,
+    "release-blocker": 15
+  }
+}

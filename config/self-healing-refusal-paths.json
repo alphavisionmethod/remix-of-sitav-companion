@@ -1,0 +1,52 @@
+{
+  "$schema": "self-healing/refusal-paths@1",
+  "version": "1.0.0",
+  "description": "ABSOLUTE REFUSAL LIST. The self-healing system NEVER modifies these files or paths under any circumstance, regardless of policy lane or autonomy flag. Any matching file → repair instantly aborts and escalates HUMAN-ONLY.",
+  "pathPrefixes": [
+    "src/__tests__/security/",
+    "src/__tests__/deployment/",
+    "src/__tests__/ci/",
+    "src/__tests__/regression/",
+    "src/__tests__/meta/",
+    "tests/e2e/customer-journey/advisor/",
+    "tests/e2e/customer-journey/boardroom/",
+    "tests/e2e/customer-journey/auth/",
+    "supabase/migrations/",
+    "supabase/functions/_shared/security/",
+    "src/lib/policy/",
+    "src/lib/auth/",
+    "src/integrations/supabase/types.ts",
+    "src/integrations/supabase/client.ts",
+    ".github/CODEOWNERS",
+    "config/self-healing-policy.json",
+    "config/self-healing-risk-classes.json",
+    "config/self-healing-refusal-paths.json"
+  ],
+  "pathContains": [
+    "/payments/",
+    "/billing/",
+    "/kill-switch",
+    "/rls-",
+    "/policy-engine",
+    "/ai-gateway/governance/",
+    "/ai-budget-",
+    "/anti-piracy",
+    "/license-validator"
+  ],
+  "pathSuffixes": [
+    ".env",
+    ".env.local",
+    ".env.production",
+    "compliance.spec.ts",
+    "rls.test.ts",
+    "edge-function-contracts.spec.ts",
+    "kill-switch.spec.ts"
+  ],
+  "globPatterns": [
+    "**/*rls*",
+    "**/*policy*",
+    "**/*kill-switch*",
+    "**/*compliance*",
+    "**/*payment*"
+  ]
+}

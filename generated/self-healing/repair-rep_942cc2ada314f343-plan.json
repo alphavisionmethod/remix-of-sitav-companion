@@ -1,0 +1,59 @@
+{
+  "repairId": "rep_942cc2ada314f343",
+  "createdAt": "2026-04-24T15:23:56.644Z",
+  "cluster": {
+    "class": "missing-symbol",
+    "anchor": "src/pages/A.tsx",
+    "severity": "critical"
+  },
+  "decision": {
+    "decision": "PROCEED",
+    "lane": "safe-auto",
+    "requiredStages": [
+      "local",
+      "subsystem",
+      "global"
+    ],
+    "blastRadiusCap": 20,
+    "autoMergeAllowed": false,
+    "reason": "lane:safe-auto; conf:0.72"
+  },
+  "environment": {
+    "capturedAt": "2026-04-24T15:23:56.504Z",
+    "nodeVersion": "v22.22.0",
+    "platform": "linux-x64",
+    "cwd": "/dev-server",
+    "branch": "edit/edt-5daed9e0-7e65-4224-936d-284b3cc377ef",
+    "headSha": "111854e35296f0126dc09fae3203a40df5c1e162",
+    "workspaceClean": true,
+    "lockfile": {
+      "name": "bun.lock",
+      "hash": "17959be8f362c554"
+    },
+    "packageJsonHash": "69cd543fd2af30c7",
+    "secretAvailability": {
+      "VITE_SUPABASE_URL": true,
+      "VITE_SUPABASE_PUBLISHABLE_KEY": true,
+      "LOVABLE_API_KEY": true,
+      "SUPABASE_SERVICE_ROLE_KEY": true
+    },
+    "externalDeps": {
+      "supabaseReachable": null,
+      "lovableAiReachable": null
+    }
+  },
+  "snapshotsBefore": [
+    {
+      "path": "src/pages/A.tsx",
+      "exists": false,
+      "content": null,
+      "hash": null
+    }
+  ],
+  "snapshotsAfter": null,
+  "strategyExecuted": null,
+  "outcome": {
+    "dryRun": true,
+    "plannedStrategy": "propose-import-patch"
+  }
+}
