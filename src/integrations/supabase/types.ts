@@ -1025,6 +1025,87 @@ export type Database = {
           },
         ]
       }
+      advisor_deployment_status: {
+        Row: {
+          admin_visibility: boolean
+          advisor_id: string
+          analytics_wired: boolean
+          authority_model_complete: boolean
+          backend_complete: boolean
+          context_wired: boolean
+          created_at: string
+          empty_states_handled: boolean
+          error_states_handled: boolean
+          evidence: Json
+          explainability_complete: boolean
+          id: string
+          last_reviewed_at: string | null
+          notes: string | null
+          phase: string
+          ready_score: number | null
+          receipts_integrated: boolean
+          reviewed_by: string | null
+          scope_complete: boolean
+          simulation_capable: boolean
+          tests_passing: boolean
+          trust_model_complete: boolean
+          ui_complete: boolean
+          updated_at: string
+        }
+        Insert: {
+          admin_visibility?: boolean
+          advisor_id: string
+          analytics_wired?: boolean
+          authority_model_complete?: boolean
+          backend_complete?: boolean
+          context_wired?: boolean
+          created_at?: string
+          empty_states_handled?: boolean
+          error_states_handled?: boolean
+          evidence?: Json
+          explainability_complete?: boolean
+          id?: string
+          last_reviewed_at?: string | null
+          notes?: string | null
+          phase?: string
+          ready_score?: number | null
+          receipts_integrated?: boolean
+          reviewed_by?: string | null
+          scope_complete?: boolean
+          simulation_capable?: boolean
+          tests_passing?: boolean
+          trust_model_complete?: boolean
+          ui_complete?: boolean
+          updated_at?: string
+        }
+        Update: {
+          admin_visibility?: boolean
+          advisor_id?: string
+          analytics_wired?: boolean
+          authority_model_complete?: boolean
+          backend_complete?: boolean
+          context_wired?: boolean
+          created_at?: string
+          empty_states_handled?: boolean
+          error_states_handled?: boolean
+          evidence?: Json
+          explainability_complete?: boolean
+          id?: string
+          last_reviewed_at?: string | null
+          notes?: string | null
+          phase?: string
+          ready_score?: number | null
+          receipts_integrated?: boolean
+          reviewed_by?: string | null
+          scope_complete?: boolean
+          simulation_capable?: boolean
+          tests_passing?: boolean
+          trust_model_complete?: boolean
+          ui_complete?: boolean
+          updated_at?: string
+        }
+        Relationships: []
+      }
       advisor_feedback: {
         Row: {
           advisor_id: string
@@ -1241,6 +1322,105 @@ export type Database = {
           required_inputs?: Json
           risk_tier?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      advisor_simulation_runs: {
+        Row: {
+          advisor_id: string
+          confidence: number
+          created_at: string
+          domain: string
+          id: string
+          projected_outcomes: Json
+          ran_at: string | null
+          risk_summary: string | null
+          scenario_assumptions: Json
+          scenario_inputs: Json
+          scenario_title: string
+          source_citations: Json
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          advisor_id: string
+          confidence?: number
+          created_at?: string
+          domain: string
+          id?: string
+          projected_outcomes?: Json
+          ran_at?: string | null
+          risk_summary?: string | null
+          scenario_assumptions?: Json
+          scenario_inputs?: Json
+          scenario_title: string
+          source_citations?: Json
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          advisor_id?: string
+          confidence?: number
+          created_at?: string
+          domain?: string
+          id?: string
+          projected_outcomes?: Json
+          ran_at?: string | null
+          risk_summary?: string | null
+          scenario_assumptions?: Json
+          scenario_inputs?: Json
+          scenario_title?: string
+          source_citations?: Json
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      advisor_source_citations: {
+        Row: {
+          advisor_id: string
+          created_at: string
+          excerpt: string | null
+          id: string
+          invocation_id: string | null
+          metadata: Json
+          recommendation_id: string | null
+          source_label: string
+          source_ref: string
+          source_type: string
+          user_id: string
+          weight: number
+        }
+        Insert: {
+          advisor_id: string
+          created_at?: string
+          excerpt?: string | null
+          id?: string
+          invocation_id?: string | null
+          metadata?: Json
+          recommendation_id?: string | null
+          source_label: string
+          source_ref: string
+          source_type: string
+          user_id: string
+          weight?: number
+        }
+        Update: {
+          advisor_id?: string
+          created_at?: string
+          excerpt?: string | null
+          id?: string
+          invocation_id?: string | null
+          metadata?: Json
+          recommendation_id?: string | null
+          source_label?: string
+          source_ref?: string
+          source_type?: string
+          user_id?: string
+          weight?: number
         }
         Relationships: []
       }
