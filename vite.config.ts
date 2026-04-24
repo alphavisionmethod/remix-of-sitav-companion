@@ -161,6 +161,19 @@ export default defineConfig(({ mode }) => ({
           if (id.includes("/src/services/")) return "platform-services";
           if (id.includes("/src/contracts/")) return "platform-contracts";
           if (id.includes("/src/data/")) return "platform-data";
+
+          // Catch-all: any other top-level src/lib/<dir>/ becomes its own chunk.
+          // This drains the residual `index` chunk where ~100 lib subdirs live.
+          // Files directly under src/lib/ (e.g. src/lib/foo.ts) stay in `index`.
+          {
+            const m = id.match(/\/src\/lib\/([^/]+)\/[^/]+/);
+            if (m) return `lib-${m[1]}`;
+          }
+
+          // Components: split heavy admin/sita/ui-kit subtrees.
+          if (id.includes("/src/components/admin/")) return "components-admin";
+          if (id.includes("/src/components/sita/")) return "components-sita";
+          if (id.includes("/src/components/ui/")) return "components-ui";
         },
       },
     },
