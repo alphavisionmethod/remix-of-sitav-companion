@@ -21,8 +21,8 @@
 | cfo-advisor | deployment-ready | 1.00 ✅ |
 | marketing-advertising-advisor | deployment-ready | 1.00 ✅ |
 | growth-advisor | deployment-ready | 1.00 ✅ |
-| **tech-advisor** | **discovery** | **0.00 ← next (Phase 6)** |
-| imports-exports-advisor | discovery | 0.00 |
+| tech-advisor | deployment-ready | 1.00 ✅ |
+| **imports-exports-advisor** | **discovery** | **0.00 ← next (Phase 7)** |
 | taxes-laws-advisor | discovery | 0.00 |
 | ceo-advisor | discovery | 0.00 |
 
