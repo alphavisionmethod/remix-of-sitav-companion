@@ -11,6 +11,7 @@ import {
   type AdvisorAskResult,
 } from "@/lib/ai-platform/runtime";
 import { MobileSalesAdvisorPanels } from "@/components/business-advisors/sales/MobileSalesAdvisorPanels";
+import { MobileCustomerServiceAdvisorPanels } from "@/components/business-advisors/customer-service/MobileCustomerServiceAdvisorPanels";
 
 export default function MobileBusinessAdvisorDetail() {
   const { advisorId } = useParams<{ advisorId: string }>();
@@ -73,6 +74,7 @@ export default function MobileBusinessAdvisorDetail() {
         </Alert>
 
         {advisor.id === "sales-advisor" && <MobileSalesAdvisorPanels />}
+        {advisor.id === "customer-service-advisor" && <MobileCustomerServiceAdvisorPanels />}
 
         <Textarea
           rows={3}
