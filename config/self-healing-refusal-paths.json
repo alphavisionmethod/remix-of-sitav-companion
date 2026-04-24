@@ -13,8 +13,12 @@
     "tests/e2e/customer-journey/auth/",
     "supabase/migrations/",
     "supabase/functions/_shared/security/",
-    "src/lib/policy/",
+    "supabase/functions/ai-gateway/governance/",
+    "supabase/functions/payments/",
+    "supabase/functions/billing/",
+    "supabase/functions/auth-",
     "src/lib/auth/",
+    "src/lib/policy/",
     "src/integrations/supabase/types.ts",
     "src/integrations/supabase/client.ts",
     ".github/CODEOWNERS",
@@ -31,7 +35,10 @@
     "/ai-gateway/governance/",
     "/ai-budget-",
     "/anti-piracy",
-    "/license-validator"
+    "/license-validator",
+    "/auth/",
+    "/rls/",
+    "/migrations/"
   ],
   "pathSuffixes": [
     ".env",
@@ -40,13 +47,18 @@
     "compliance.spec.ts",
     "rls.test.ts",
     "edge-function-contracts.spec.ts",
-    "kill-switch.spec.ts"
+    "kill-switch.spec.ts",
+    "auth.spec.ts",
+    "rls-policy.sql"
   ],
   "globPatterns": [
     "**/*rls*",
     "**/*policy*",
     "**/*kill-switch*",
     "**/*compliance*",
-    "**/*payment*"
+    "**/*payment*",
+    "**/*billing*",
+    "**/*auth-flow*",
+    "supabase/migrations/**"
   ]
 }
