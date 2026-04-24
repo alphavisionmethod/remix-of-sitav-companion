@@ -14,6 +14,7 @@ import { CouncilPanel } from "@/components/sita/jarvis/CouncilPanel";
 import { ActionQueuePanel } from "@/components/sita/jarvis/ActionQueuePanel";
 import { TimelinePanel } from "@/components/sita/jarvis/TimelinePanel";
 import { ExplainPanel } from "@/components/sita/jarvis/ExplainPanel";
+import { CronStatusPanel } from "@/components/sita/jarvis/CronStatusPanel";
 import type { JarvisActionItem } from "@/lib/sita-jarvis";
 
 export default function JarvisBridge() {
@@ -32,6 +33,7 @@ export default function JarvisBridge() {
         {/* Left rail — Now + World model */}
         <div className="lg:col-span-3 space-y-4">
           <NowPanel />
+          <CronStatusPanel />
           <WorldModelPanel />
         </div>
 

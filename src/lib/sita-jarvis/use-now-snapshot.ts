@@ -100,5 +100,27 @@ export function useNowSnapshot() {
     setSnap((s) => ({ ...s, worldModel }));
   }, [worldModel]);
 
+  // Realtime: refresh whenever a briefing is inserted or updated for this user.
+  // The cron-driven sita-briefings-generate function inserts new rows, and the
+  // "Mark seen" action updates `acknowledged_at`/`status` — both should reflect
+  // immediately in the Now panel without manual refresh.
+  useEffect(() => {
+    if (!user?.id) return;
+    const channel = supabase
+      .channel(`jarvis-now-briefings:${user.id}`)
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "sita_proactive_briefings",
+          filter: `user_id=eq.${user.id}`,
+        },
+        () => { void refresh(); },
+      )
+      .subscribe();
+    return () => { void supabase.removeChannel(channel); };
+  }, [user?.id, refresh]);
+
   return { snapshot: snap, refresh };
 }

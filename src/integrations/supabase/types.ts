@@ -23865,6 +23865,18 @@ export type Database = {
       get_compliance_rls_summary: { Args: never; Returns: Json }
       get_connector_refresh_streak_summary: { Args: never; Returns: Json }
       get_db_truth_snapshot: { Args: { _op?: string }; Returns: Json }
+      get_jarvis_cron_status: {
+        Args: { _jobname?: string }
+        Returns: {
+          active: boolean
+          jobname: string
+          last_message: string
+          last_run_at: string
+          last_status: string
+          next_expected_after: string
+          schedule: string
+        }[]
+      }
       has_admin_permission: {
         Args: { _permission: string; _user_id: string }
         Returns: boolean
