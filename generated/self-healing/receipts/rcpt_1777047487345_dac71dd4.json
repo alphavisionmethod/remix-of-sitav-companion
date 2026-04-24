@@ -1,0 +1,12 @@
+{
+  "id": "rcpt_1777047487345_dac71dd4",
+  "schema": "self-healing/receipt@2",
+  "seq": 1,
+  "prevHash": null,
+  "timestamp": "2026-04-24T16:18:07.345Z",
+  "payload": {
+    "kind": "test",
+    "n": 1
+  },
+  "hash": "0f03e0639ff034355f428d0fed8013c2d0954d6016f1d1bf9dd2ed4c710cbf73"
+}
