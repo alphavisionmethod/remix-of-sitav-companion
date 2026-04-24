@@ -4,18 +4,17 @@ import "@testing-library/jest-dom";
 Element.prototype.scrollIntoView = () => {};
 
 // Polyfill ResizeObserver (used by Radix UI primitives like Slider, Popover)
-if (typeof globalThis.ResizeObserver === "undefined") {
+if (typeof (globalThis as { ResizeObserver?: unknown }).ResizeObserver === "undefined") {
   class ResizeObserverStub {
     observe() {}
     unobserve() {}
     disconnect() {}
   }
-  // @ts-expect-error — assign polyfill to global
-  globalThis.ResizeObserver = ResizeObserverStub;
+  (globalThis as { ResizeObserver: unknown }).ResizeObserver = ResizeObserverStub;
 }
 
 // Polyfill IntersectionObserver (used by lazy-loading & viewport hooks)
-if (typeof globalThis.IntersectionObserver === "undefined") {
+if (typeof (globalThis as { IntersectionObserver?: unknown }).IntersectionObserver === "undefined") {
   class IntersectionObserverStub {
     root = null;
     rootMargin = "";
@@ -27,8 +26,7 @@ if (typeof globalThis.IntersectionObserver === "undefined") {
       return [];
     }
   }
-  // @ts-expect-error — assign polyfill to global
-  globalThis.IntersectionObserver = IntersectionObserverStub;
+  (globalThis as { IntersectionObserver: unknown }).IntersectionObserver = IntersectionObserverStub;
 }
 
 Object.defineProperty(window, "matchMedia", {
