@@ -132,6 +132,10 @@ const SKIP_DIRS = new Set([
   "generated",
 ]);
 
+// Subpaths to exclude (Playwright e2e specs use the same suffix but are
+// not Vitest specs).
+const EXCLUDE_SUBPATHS = ["tests/e2e/", "tests\\e2e\\"];
+
 async function walk(dir, out) {
   let entries;
   try {
@@ -145,7 +149,9 @@ async function walk(dir, out) {
     if (e.isDirectory()) {
       await walk(full, out);
     } else if (e.isFile() && SPEC_RE.test(e.name)) {
-      out.push(path.relative(ROOT, full));
+      const rel = path.relative(ROOT, full);
+      if (EXCLUDE_SUBPATHS.some((p) => rel.includes(p))) continue;
+      out.push(rel);
     }
   }
 }
