@@ -10,6 +10,13 @@ export { SitaWhisper } from "./SitaWhisper";
 export { SitaProactiveRunner } from "./SitaProactiveRunner";
 export { SitaActionPlanCard } from "../sita-agent/SitaActionPlanCard";
 export {
+  SitaHandoffBanner,
+  SitaGestureLayer,
+  SitaHolographicBoardroom,
+  SitaSpatialField,
+  SitaSpatialControls,
+} from "../sita-spatial";
+export {
   publishSitaHud,
   readSitaHud,
   subscribeSitaHud,

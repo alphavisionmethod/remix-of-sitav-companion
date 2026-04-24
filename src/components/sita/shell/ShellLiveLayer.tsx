@@ -39,6 +39,12 @@ const SitaWhisperLazy = lazy(() => import("./sita-hud").then(m => ({ default: m.
 const SitaProactiveRunnerLazy = lazy(() => import("./sita-hud").then(m => ({ default: m.SitaProactiveRunner })));
 const SitaActionPlanCardLazy = lazy(() => import("./sita-agent").then(m => ({ default: m.SitaActionPlanCard })));
 const SitaAgentMountLazy = lazy(() => import("./sita-agent").then(m => ({ default: m.SitaAgentMount })));
+// ── Sita Spatial (Phase F) ──────────────────────────────────────
+const SitaHandoffBannerLazy = lazy(() => import("./sita-spatial").then(m => ({ default: m.SitaHandoffBanner })));
+const SitaGestureLayerLazy = lazy(() => import("./sita-spatial").then(m => ({ default: m.SitaGestureLayer })));
+const SitaHolographicBoardroomLazy = lazy(() => import("./sita-spatial").then(m => ({ default: m.SitaHolographicBoardroom })));
+const SitaSpatialFieldLazy = lazy(() => import("./sita-spatial").then(m => ({ default: m.SitaSpatialField })));
+const SitaSpatialIntentMountLazy = lazy(() => import("./sita-spatial").then(m => ({ default: m.SitaSpatialIntentMount })));
 
 interface ShellLiveLayerProps {
   wm: WindowManager;
@@ -187,6 +193,23 @@ export function ShellLiveLayer({
       </Suspense>
       <Suspense fallback={null}>
         <SitaAgentMountLazy />
+      </Suspense>
+
+      {/* ── Sita Spatial (Phase F) ─────────────────────────────── */}
+      <Suspense fallback={null}>
+        <SitaHandoffBannerLazy />
+      </Suspense>
+      <Suspense fallback={null}>
+        <SitaGestureLayerLazy />
+      </Suspense>
+      <Suspense fallback={null}>
+        <SitaHolographicBoardroomLazy />
+      </Suspense>
+      <Suspense fallback={null}>
+        <SitaSpatialFieldLazy />
+      </Suspense>
+      <Suspense fallback={null}>
+        <SitaSpatialIntentMountLazy />
       </Suspense>
 
     </>

@@ -20,6 +20,7 @@ import { Slider } from "@/components/ui/slider";
 import { useWindowManagerContext } from "@/contexts/WindowManagerContext";
 import { SitaVoiceControlRow } from "./sita-voice/SitaVoiceControlRow";
 import { SitaAutonomyControls } from "./sita-agent/SitaAutonomyControls";
+import { SitaSpatialControls } from "./sita-spatial/SitaSpatialControls";
 
 interface ControlCenterProps {
   open: boolean;
@@ -505,6 +506,9 @@ export function ControlCenter({ open, onClose }: ControlCenterProps) {
 
               {/* 1c. Sita Autonomy (Phase E) */}
               <SitaAutonomyControls />
+
+              {/* 1d. Sita Spatial (Phase F) */}
+              <SitaSpatialControls />
 
               {/* 2. Mode cluster */}
               <ModeCluster isDark={isDark} onThemeToggle={handleThemeToggle} />

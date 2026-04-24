@@ -25,6 +25,7 @@ export type SitaIntent =
   | { kind: "summarize_screen"; context: SitaScreenContext | null; raw: string }
   | { kind: "act_on_screen"; verb: string; context: SitaScreenContext | null; raw: string }
   | { kind: "agent_plan"; intent: string; domain?: "business" | "finance" | "concierge"; raw: string }
+  | { kind: "spatial_command"; verb: "convene_board" | "handoff" | "spatial_mode"; topic?: string; target?: string; raw: string }
   | { kind: "brain"; utterance: string; context: SitaScreenContext | null };
 
 const APP_ALIASES: Record<string, string[]> = {
@@ -124,6 +125,19 @@ export function routeVoiceIntent(rawUtterance: string): SitaIntent {
   if (containsAny(utterance, AGENT_TRIGGERS)) {
     const domain = detectAgentDomain(utterance);
     return { kind: "agent_plan", intent: rawUtterance, domain, raw: rawUtterance };
+  }
+
+  // Phase F — spatial / multi-device verbs
+  if (/conven(e|ing)?\s+(the\s+)?board(room)?/.test(utterance)) {
+    const topicMatch = utterance.match(/(?:for|about|on)\s+(.{3,})$/);
+    return { kind: "spatial_command", verb: "convene_board", topic: topicMatch?.[1]?.trim(), raw: rawUtterance };
+  }
+  if (/hand\s*off|continue\s+on\s+(my\s+)?(phone|laptop|mac|desktop)/.test(utterance)) {
+    const targetMatch = utterance.match(/(?:to|on)\s+(?:my\s+)?(\w+)/);
+    return { kind: "spatial_command", verb: "handoff", target: targetMatch?.[1], raw: rawUtterance };
+  }
+  if (/spatial\s*mode|spatial\s*workspace|depth\s*view/.test(utterance)) {
+    return { kind: "spatial_command", verb: "spatial_mode", raw: rawUtterance };
   }
 
   // Brain fallback (always carries screen context for free)
