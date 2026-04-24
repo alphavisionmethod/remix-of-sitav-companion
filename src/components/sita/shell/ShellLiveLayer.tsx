@@ -225,6 +225,11 @@ export function ShellLiveLayer({
         <SitaSentienceMountLazy />
       </Suspense>
 
+      {/* ── Sita Embodiment (Phase I) ───────────────────────────── */}
+      <Suspense fallback={null}>
+        <SitaEmbodimentMountLazy />
+      </Suspense>
+
     </>
   );
 }
