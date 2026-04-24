@@ -100,6 +100,7 @@ export function BrainDashboard() {
           onVoice={() => setVoiceOpen(true)}
           onSettings={() => navigate("/personal-brain/settings")}
           onTools={() => navigate("/personal-brain/tools")}
+          onCommandCenter={() => navigate("/personal-brain/command-center")}
           sentinelOn={sentinelOn}
           onToggleSentinel={toggleSentinel}
         />
