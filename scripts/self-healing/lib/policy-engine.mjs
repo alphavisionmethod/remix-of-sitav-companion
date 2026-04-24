@@ -18,6 +18,12 @@ export function isRefusalPath(filePath) {
   if (REFUSAL.pathContains.some(p => filePath.includes(p))) return true;
   if (REFUSAL.pathSuffixes.some(p => filePath.endsWith(p))) return true;
   for (const g of REFUSAL.globPatterns) {
+    // Treat **/*token* as case-insensitive substring match anywhere in path
+    const m = g.match(/^\*\*\/\*(.+)\*$/);
+    if (m) {
+      if (filePath.toLowerCase().includes(m[1].toLowerCase())) return true;
+      continue;
+    }
     const re = new RegExp("^" + g.replace(/\./g, "\\.").replace(/\*\*/g, ".*").replace(/\*/g, "[^/]*") + "$", "i");
     if (re.test(filePath)) return true;
   }
