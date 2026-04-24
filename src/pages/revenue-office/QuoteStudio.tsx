@@ -11,10 +11,9 @@ import {
   Star, Shield, Target, RefreshCw, Zap, BarChart3, XCircle
 } from "lucide-react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-const quoteStats: any[] = [];
-const quotes: any[] = [];
-const upsellSuggestions: any[] = [];
-const pricingInsights: any[] = [];
+import { PremiumEmptyState } from "@/components/sita/PremiumEmptyState";
+import { useQuoteStudio } from "@/hooks/use-quote-studio";
+import { useNavigate } from "react-router-dom";
 const statusColors: Record<string, string> = {
   draft: "bg-muted text-muted-foreground",
   sent: "bg-blue-500/10 text-blue-400",
@@ -25,6 +24,12 @@ const statusColors: Record<string, string> = {
 
 export default function QuoteStudio() {
   const [tab, setTab] = useState("pipeline");
+  const navigate = useNavigate();
+  const { data, isLoading } = useQuoteStudio();
+  const quotes = data?.quotes ?? [];
+  const quoteStats = data?.quoteStats ?? [];
+  const upsellSuggestions = data?.upsellSuggestions ?? [];
+  const pricingInsights = data?.pricingInsights ?? [];
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 p-6">
@@ -40,7 +45,7 @@ export default function QuoteStudio() {
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
-        {([] as typeof quoteStats).map((s) => (
+        {quoteStats.map((s) => (
           <Card key={s.label} className="bg-card/50 border-border/50">
             <CardContent className="p-3">
               <div className="flex items-center gap-1.5 mb-1"><s.icon className={`h-3.5 w-3.5 ${s.color}`} /><p className="text-[10px] text-muted-foreground">{s.label}</p></div>
@@ -53,14 +58,23 @@ export default function QuoteStudio() {
 
       <Tabs value={tab} onValueChange={setTab}>
         <TabsList className="bg-card/50">
-          <TabsTrigger value="pipeline">Pipeline ({([] as typeof quotes).length})</TabsTrigger>
-          <TabsTrigger value="upsells">Upsell Suggestions ({([] as typeof upsellSuggestions).length})</TabsTrigger>
-          <TabsTrigger value="insights">Pricing Insights ({([] as typeof pricingInsights).length})</TabsTrigger>
+          <TabsTrigger value="pipeline">Pipeline ({quotes.length})</TabsTrigger>
+          <TabsTrigger value="upsells">Upsell Suggestions ({upsellSuggestions.length})</TabsTrigger>
+          <TabsTrigger value="insights">Pricing Insights ({pricingInsights.length})</TabsTrigger>
           <TabsTrigger value="features">Capabilities</TabsTrigger>
         </TabsList>
 
         <TabsContent value="pipeline" className="space-y-3">
-          {([] as typeof quotes).map((q) => (
+          {quotes.length === 0 && !isLoading ? (
+            <PremiumEmptyState
+              variant="first-use"
+              icon={FileText}
+              title="No quotes yet"
+              description="Create your first quote — AI will pull context from your CRM, suggest upsells, and auto-track follow-ups."
+              actions={[{ label: "New Quote", icon: Plus, variant: "primary" }]}
+            />
+          ) : null}
+          {quotes.map((q) => (
             <Card key={q.client} className="bg-card/50 border-border/50 hover:border-primary/20 transition-colors cursor-pointer">
               <CardContent className="p-4">
                 <div className="flex items-center justify-between mb-2">
@@ -98,7 +112,15 @@ export default function QuoteStudio() {
         </TabsContent>
 
         <TabsContent value="upsells" className="space-y-3">
-          {([] as typeof upsellSuggestions).map((u, i) => (
+          {upsellSuggestions.length === 0 ? (
+            <PremiumEmptyState
+              variant="connect-to-activate"
+              icon={TrendingUp}
+              title="Upsell intelligence calibrating"
+              description="As you accept quotes, AI learns the patterns and surfaces upsell opportunities for similar clients."
+            />
+          ) : null}
+          {upsellSuggestions.map((u, i) => (
             <Card key={i} className="bg-card/50 border-border/50">
               <CardContent className="p-4 flex items-center justify-between">
                 <div className="flex-1">
@@ -118,7 +140,15 @@ export default function QuoteStudio() {
         </TabsContent>
 
         <TabsContent value="insights" className="space-y-3">
-          {([] as typeof pricingInsights).map((p, i) => (
+          {pricingInsights.length === 0 ? (
+            <PremiumEmptyState
+              variant="connect-to-activate"
+              icon={Brain}
+              title="Pricing insights activating"
+              description="Pricing patterns surface after 5+ accepted quotes — segment win rates, discount sensitivity, and benchmark gaps."
+            />
+          ) : null}
+          {pricingInsights.map((p, i) => (
             <Card key={i} className="bg-card/50 border-border/50">
               <CardContent className="p-4 flex items-center justify-between">
                 <div className="flex items-start gap-2 flex-1">
