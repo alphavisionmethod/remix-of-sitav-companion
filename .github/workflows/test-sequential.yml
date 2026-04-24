@@ -1,0 +1,49 @@
+name: Test (Sequential, Sharded)
+
+on:
+  workflow_dispatch:
+    inputs:
+      filter:
+        description: "Optional substring filter for specs"
+        required: false
+        default: ""
+      retry:
+        description: "Retries per failing file"
+        required: false
+        default: "1"
+
+jobs:
+  test-sequential:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3, 4]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+      - name: Install
+        run: npm ci --no-audit --no-fund
+      - name: Run sequential tests (shard ${{ matrix.shard }}/4)
+        run: |
+          node scripts/test-sequential.mjs \
+            --shard ${{ matrix.shard }}/4 \
+            --retry ${{ inputs.retry }} \
+            ${{ inputs.filter && format('--filter {0}', inputs.filter) || '' }} \
+            --allow-failures
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sequential-report-shard-${{ matrix.shard }}
+          path: |
+            coverage/sequential-report.json
+            coverage/sequential-report.md
+          if-no-files-found: warn
+          retention-days: 14

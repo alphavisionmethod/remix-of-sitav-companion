@@ -16,6 +16,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:integration": "vitest run src/test/integration/",
+    "test:seq": "node scripts/test-sequential.mjs",
+    "test:seq:bail": "node scripts/test-sequential.mjs --bail",
     "test:e2e": "npx playwright test",
     "test:e2e:consolidation": "npx playwright test --project=consolidation-regression",
     "test:e2e:smoke": "npx playwright test smoke-flows.spec.ts",
