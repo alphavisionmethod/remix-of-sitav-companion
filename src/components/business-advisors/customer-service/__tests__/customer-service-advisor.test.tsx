@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom/vitest";
 
 // ── Supabase client mock ───────────────────────────────────────
@@ -86,23 +86,23 @@ describe("CustomerServiceSimulationForm", () => {
   });
 
   it("blocks submission when title is empty", async () => {
-    const { default: userEvent } = await import("@testing-library/user-event");
-    const user = userEvent.setup();
     render(<CustomerServiceSimulationForm />);
-    await user.click(screen.getByRole("button", { name: /Run scenario/i }));
+    fireEvent.click(screen.getByRole("button", { name: /Run scenario/i }));
     expect(simMock).not.toHaveBeenCalled();
-    expect(toastMock).toHaveBeenCalledWith(
-      expect.objectContaining({ title: expect.stringMatching(/title/i) }),
-    );
+    await waitFor(() => {
+      expect(toastMock).toHaveBeenCalledWith(
+        expect.objectContaining({ title: expect.stringMatching(/title/i) }),
+      );
+    });
   });
 
   it("calls runAdvisorSimulation with the customer-service-advisor id and scenario inputs", async () => {
-    const { default: userEvent } = await import("@testing-library/user-event");
-    const user = userEvent.setup();
     simMock.mockResolvedValue({ status: "completed", confidence: 0.82, riskSummary: "" });
     render(<CustomerServiceSimulationForm />);
-    await user.type(screen.getByLabelText(/Scenario title/i), "Tighten SLA to 1h");
-    await user.click(screen.getByRole("button", { name: /Run scenario/i }));
+    fireEvent.change(screen.getByLabelText(/Scenario title/i), {
+      target: { value: "Tighten SLA to 1h" },
+    });
+    fireEvent.click(screen.getByRole("button", { name: /Run scenario/i }));
     await waitFor(() => {
       expect(simMock).toHaveBeenCalledWith(
         expect.objectContaining({
