@@ -150,6 +150,15 @@ export default function GrowthAdvisorBoard() {
         )}
       </div>
 
+      {advisors.length === 0 && !isLoading && (
+        <PremiumEmptyState
+          variant="no-data"
+          icon={Sparkles}
+          title="No revenue advisors registered yet"
+          description="The Growth Advisor Board will populate once advisors with domain=revenue are seeded into the advisor registry and begin emitting recommendations."
+        />
+      )}
+
       <Tabs value={tab} onValueChange={setTab}>
         <TabsList className="bg-muted/30 border border-border/40 h-8 p-0.5 gap-0.5">
           <TabsTrigger value="council" className="text-[10px] h-7 px-2.5 gap-1"><Users className="h-3 w-3" />{isBeginner ? "Advisors" : "Council"}</TabsTrigger>
