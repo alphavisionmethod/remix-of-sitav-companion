@@ -353,6 +353,7 @@ export function AdvisorPageShell({
 
           {/* Simulation */}
           <TabsContent value="simulation" className="mt-4">
+            {simulationFormSlot && <div className="mb-4">{simulationFormSlot}</div>}
             <Card>
               <CardHeader>
                 <CardTitle className="text-base">Scenarios &amp; what-if runs</CardTitle>
@@ -391,18 +392,21 @@ export function AdvisorPageShell({
 
           {/* Recommendations */}
           <TabsContent value="recommendations" className="mt-4">
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-base">Recommendations</CardTitle>
-                <CardDescription>Structured outputs from previous asks (Phase 1+ wires per-advisor specifics).</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-muted-foreground">
-                  Recommendation surfaces are wired per advisor in Phase 1 onward. This shell exposes the hook;
-                  domain-specific lists arrive when each advisor reaches the wiring phase.
-                </p>
-              </CardContent>
-            </Card>
+            {recommendationsSlot ?? (
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-base">Recommendations</CardTitle>
+                  <CardDescription>
+                    Domain-specific recommendations are wired per advisor. This advisor has not been specialised yet.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-muted-foreground">
+                    Use the Chat tab to ask {advisor.displayName} for structured analysis in the meantime.
+                  </p>
+                </CardContent>
+              </Card>
+            )}
           </TabsContent>
 
           {/* Memory */}
