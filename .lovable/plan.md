@@ -1,5 +1,9 @@
 # Phase 9 — Stub Surface Elimination (Deployment-Critical)
 
+> **STATUS: CLOSED — 2026-04-24.** All schema, seeds, hooks and page
+> rewires landed. `npx tsc --noEmit` is green. See `STABILIZATION_AUDIT.md`
+> "Phase 9" section for the close-out matrix.
+
 ## Audit summary (what is actually broken vs. honestly empty)
 
 | Surface | Real status | Fix class |
