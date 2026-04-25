@@ -19,6 +19,37 @@ const corsHeaders = {
 };
 
 const LOVABLE_AI_URL = "https://ai.gateway.lovable.dev/v1/chat/completions";
+const SUPABASE_URL = Deno.env.get("SUPABASE_URL") ?? "";
+const SUPABASE_ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY") ?? "";
+
+interface MultiModalContextRow {
+  id: string;
+  modality: string;
+  content: string;
+  media_uri: string | null;
+  media_mime: string | null;
+  workspace_id: string | null;
+}
+
+/**
+ * Phase 9 — pull recent multi-modal chunks for the active workspace
+ * so voice/image/audio inputs can ground the resulting Action Plan.
+ */
+async function fetchMultiModalContext(authHeader: string, workspaceId: string | null): Promise<MultiModalContextRow[]> {
+  if (!workspaceId || !SUPABASE_URL) return [];
+  try {
+    const resp = await fetch(
+      `${SUPABASE_URL}/rest/v1/knowledge_chunks?select=id,modality,content,media_uri,media_mime,workspace_id&workspace_id=eq.${workspaceId}&modality=in.(image,audio,video)&order=created_at.desc&limit=8`,
+      { headers: { Authorization: authHeader, apikey: SUPABASE_ANON_KEY } },
+    );
+    if (!resp.ok) return [];
+    const rows = await resp.json();
+    return Array.isArray(rows) ? (rows as MultiModalContextRow[]) : [];
+  } catch (e) {
+    console.warn("[planner] multimodal context fetch failed", e);
+    return [];
+  }
+}
 
 // ── Skill catalog (kept in sync with src/lib/sita-agent/skills/*) ──
 type Risk = "low" | "medium" | "high";
