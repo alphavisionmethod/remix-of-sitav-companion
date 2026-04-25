@@ -160,6 +160,10 @@ function classifyFile(absPath: string): FileReport {
   for (const p of TW_PREFIXES) {
     src = src.replace(new RegExp(`${p}-(?:trust|cloud|admin|operator|sita|advisor|boardroom|proof|receipt|governance|observability|release|verification|connector|atlas|mission|intelligence)(?:-[a-z]+)?`, "g"), "");
   }
+  // Strip CSS custom-property references like `var(--trust-safe)` so design
+  // tokens don't trigger vocabulary matches.
+  src = src.replace(/var\(\s*--[a-z-]+\s*\)/g, "");
+  src = src.replace(/--(?:trust|cloud|admin|operator|sita|advisor|boardroom|proof|receipt|governance|observability|release|verification|connector|atlas|mission|intelligence)(?:-[a-z]+)?/g, "");
   const lines = logicalLines(src);
   const imports = findImportTargets(rawSrc);
 
