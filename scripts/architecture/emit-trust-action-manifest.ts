@@ -38,8 +38,14 @@ function buildManifest(): Manifest {
     byPillar[a.pillar] = (byPillar[a.pillar] ?? 0) + 1;
     byRiskTier[a.riskTier] = (byRiskTier[a.riskTier] ?? 0) + 1;
   }
+  // Reproducible builds: when SOURCE_DATE_EPOCH is set (CI generate-and-diff),
+  // use it instead of wall-clock time so the artifact is deterministic.
+  const epoch = process.env.SOURCE_DATE_EPOCH;
+  const generatedAt = epoch
+    ? new Date(Number(epoch) * 1000).toISOString()
+    : new Date().toISOString();
   return {
-    generatedAt: new Date().toISOString(),
+    generatedAt,
     source: "src/modules/_trust/registry/trust-action-registry.ts",
     totals: {
       total: TRUST_ACTION_LIST.length,
