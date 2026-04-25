@@ -18,6 +18,7 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/component
 import { toast } from "sonner";
 import { Check, X, ShieldCheck, Clock, AlertTriangle, ChevronDown, FlaskConical } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { recordReflectionForQueueRow, type OwnerAction } from "@/lib/autonomy/reflection";
 
 type QueueRow = {
   id: string;
@@ -118,6 +119,7 @@ export function AutonomyApprovalQueue({ advisorId, compact = false }: Props) {
     setBusyId(null);
     if (error) toast.error(`Approve failed: ${error.message}`);
     else {
+      await emitReflection(row, "approved", userData.user?.id, simulations[row.id]);
       toast.success(`Approved ${row.action_type}`);
       void load();
     }
@@ -125,6 +127,7 @@ export function AutonomyApprovalQueue({ advisorId, compact = false }: Props) {
 
   const reject = async (row: QueueRow) => {
     setBusyId(row.id);
+    const { data: userData } = await supabase.auth.getUser();
     const { error } = await supabase
       .from("advisor_action_queue")
       .update({
@@ -135,10 +138,35 @@ export function AutonomyApprovalQueue({ advisorId, compact = false }: Props) {
     setBusyId(null);
     if (error) toast.error(`Reject failed: ${error.message}`);
     else {
+      await emitReflection(row, "rejected", userData.user?.id, simulations[row.id]);
       toast.success(`Rejected ${row.action_type}`);
       void load();
     }
   };
+
+  async function emitReflection(
+    row: QueueRow,
+    ownerAction: OwnerAction,
+    userId: string | undefined,
+    sim: SimulationReceipt | undefined,
+  ) {
+    if (!userId) return;
+    await recordReflectionForQueueRow({
+      userId,
+      queueRow: {
+        id: row.id,
+        advisor_id: row.advisor_id,
+        domain: row.domain,
+        action_type: row.action_type,
+        confidence: row.confidence,
+        status: ownerAction === "rejected" ? "rejected" : "executed",
+        error_message: ownerAction === "rejected" ? "owner_rejected" : null,
+        payload: row.payload,
+      },
+      ownerAction,
+      simulation: sim ? { policyWarnings: sim.policy_warnings ?? [] } : null,
+    });
+  }
 
   const list = (
     <ScrollArea className="h-[480px]">
