@@ -10,6 +10,7 @@ import { Sparkles, ShieldCheck, Brain } from "lucide-react";
 import { AutonomyApprovalQueue } from "@/components/autonomy/AutonomyApprovalQueue";
 import { AutonomyReflectionTimeline } from "@/components/autonomy/AutonomyReflectionTimeline";
 import { AutonomyMissionsPanel } from "@/components/autonomy/AutonomyMissionsPanel";
+import { AutonomyKillSwitch } from "@/components/autonomy/AutonomyKillSwitch";
 import { useAutonomyFleet } from "@/hooks/useAutonomyFleet";
 
 export default function AutonomyControlCenter() {
@@ -27,6 +28,8 @@ export default function AutonomyControlCenter() {
           ever runs without your tap.
         </p>
       </header>
+
+      <AutonomyKillSwitch variant="banner" />
 
       <section className="grid grid-cols-3 gap-3">
         <MiniStat label="Waiting on you" value={totals.awaitingApproval} loading={loading} accent="warning" />
@@ -59,6 +62,8 @@ export default function AutonomyControlCenter() {
       </Card>
 
       <AutonomyMissionsPanel ownerView compact />
+
+      <AutonomyKillSwitch />
     </div>
   );
 }
