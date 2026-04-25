@@ -1,0 +1,15 @@
+{
+  "generatedAt": "2026-04-25T17:51:19.587Z",
+  "gate": "shared-component-concept-rule",
+  "classification": "block",
+  "rule": "Constitution Rules 36, 37, 38",
+  "model": "docs/architecture/SHARED_COMPONENT_OWNERSHIP_MODEL.md",
+  "baselineCount": 12,
+  "liveCount": 12,
+  "ratchetDelta": 0,
+  "newViolators": [],
+  "regressions": [],
+  "drained": [],
+  "errors": [],
+  "ok": true
+}
