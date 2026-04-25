@@ -12,6 +12,8 @@ const TrustedDeviceManager = lazy(() => import("@/pages/settings/TrustedDeviceMa
 const MFAEnrollment = lazy(() => import("@/pages/settings/MFAEnrollment"));
 const PasskeyManagement = lazy(() => import("@/pages/settings/PasskeyManagement"));
 const MissionControl = lazy(() => import("@/pages/mission-control/MissionControlPage"));
+const AutonomyMissionControl = lazy(() => import("@/pages/admin/AutonomyMissionControl"));
+const AutonomyControlCenter = lazy(() => import("@/pages/owner/AutonomyControlCenter"));
 const PersonalizationStudio = lazy(() => import("@/pages/PersonalizationStudio"));
 const MemoryCenter = lazy(() => import("@/pages/MemoryCenter"));
 const LifeDashboard = lazy(() => import("@/pages/LifeDashboard"));
@@ -185,6 +187,8 @@ export function getOSRoutes() {
 
       {/* Mission Control */}
       <Route path="/mission-control" element={<MissionControl />} />
+      <Route path="/admin/autonomy" element={<AutonomyMissionControl />} />
+      <Route path="/control-center/autonomy" element={<AutonomyControlCenter />} />
 
       {/* Display Modes */}
       <Route path="/display-modes" element={<CalmFocusMode />} />
