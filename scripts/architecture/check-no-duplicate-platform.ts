@@ -30,10 +30,17 @@ const STRICT = !WARN; // default is now strict (post-Wave 2)
  *   - src/platform/sync-engine/      (38 files — real implementation)
  *   - src/platform/nova-sdk/         (40+ files — real implementation)
  *   - src/platform/core-services/    (event-bus + 30 consumers)
+ *
+ * Wave 3 promoted these to canonical homes (do NOT add):
+ *   - src/platform/ai/               (orchestrator client + explainability + streaming)
+ *   - src/platform/knowledge/        (memory + chunks + ingestion + voice + federation)
+ *   - src/platform/workspace/        (active workspace context)
+ *   - src/platform/registry/         (module registry)
+ *   - src/platform/contracts/        (pillar-contract, decision-queue)
+ *   - src/platform/trust/            (receipts + approvals + authority + UI)
  */
 const FORBIDDEN_FOLDERS: Array<{ name: string; reason: string }> = [
   { name: "ai-gateway", reason: "empty placeholder — AI gateway code lives at src/lib/services/ai-gateway/" },
-  { name: "ai", reason: "empty placeholder — AI surfaces live under src/platform/orchestration/, src/lib/ai*, etc." },
   { name: "core", reason: "empty placeholder — kernel/runtime code lives in src/platform/core-services/ and src/runtimes/" },
   { name: "os-services", reason: "empty placeholder — OS services live in src/platform/core-services/" },
   { name: "services-unclassified", reason: "anti-pattern — every service must have a classified subsystem owner" },

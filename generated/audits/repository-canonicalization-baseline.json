@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-04-25T15:45:58.473Z",
+  "generatedAt": "2026-04-25T15:56:39.466Z",
   "schemaVersion": 1,
   "note": "Baseline file counts captured before Repository Tree Canonicalization waves. See docs/architecture/REPOSITORY_CONSTITUTION.md.",
   "topLevel": {
     "src/pages": 1148,
     "src/modules": 61,
-    "src/platform": 287,
+    "src/platform": 328,
     "src/components": 1227,
     "src/lib": 1710,
     "src/domains": 111,
@@ -38,7 +38,7 @@
   },
   "platformDuplicateCandidates": {
     "ai_vs_ai_gateway": {
-      "ai": 0,
+      "ai": 6,
       "ai_gateway": 0
     },
     "nova_sdk_vs_nova_runtime_sdk": {
@@ -102,12 +102,12 @@
       "files": 2
     },
     {
-      "dir": "src/pages/business",
-      "files": 49
-    },
-    {
       "dir": "src/pages/business-advisors",
       "files": 2
+    },
+    {
+      "dir": "src/pages/business",
+      "files": 49
     },
     {
       "dir": "src/pages/concierge",
@@ -146,12 +146,12 @@
       "files": 10
     },
     {
-      "dir": "src/pages/mission",
-      "files": 8
-    },
-    {
       "dir": "src/pages/mission-control",
       "files": 2
+    },
+    {
+      "dir": "src/pages/mission",
+      "files": 8
     },
     {
       "dir": "src/pages/mobile",
@@ -162,12 +162,12 @@
       "files": 34
     },
     {
-      "dir": "src/pages/owner",
-      "files": 10
-    },
-    {
       "dir": "src/pages/owner-mode",
       "files": 1
+    },
+    {
+      "dir": "src/pages/owner",
+      "files": 10
     },
     {
       "dir": "src/pages/personal-brain",
@@ -330,6 +330,30 @@
     {
       "dir": "src/platform/verification",
       "files": 3
+    },
+    {
+      "dir": "src/platform/knowledge",
+      "files": 23
+    },
+    {
+      "dir": "src/platform/workspace",
+      "files": 1
+    },
+    {
+      "dir": "src/platform/registry",
+      "files": 1
+    },
+    {
+      "dir": "src/platform/contracts",
+      "files": 2
+    },
+    {
+      "dir": "src/platform/trust",
+      "files": 8
+    },
+    {
+      "dir": "src/platform/ai",
+      "files": 6
     }
   ]
 }
