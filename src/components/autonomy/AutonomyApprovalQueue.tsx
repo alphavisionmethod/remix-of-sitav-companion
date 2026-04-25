@@ -14,8 +14,9 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { toast } from "sonner";
-import { Check, X, ShieldCheck, Clock, AlertTriangle } from "lucide-react";
+import { Check, X, ShieldCheck, Clock, AlertTriangle, ChevronDown, FlaskConical } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 type QueueRow = {
@@ -30,6 +31,16 @@ type QueueRow = {
   payload: Record<string, unknown> | null;
 };
 
+type SimulationReceipt = {
+  id: string;
+  queue_id: string | null;
+  projected_outcomes: string[];
+  side_effects: Array<{ kind: string; target: string; reversible: boolean; description: string }>;
+  rollback_plan: { strategy: string; humanSummary?: string };
+  policy_warnings: string[];
+  decision_reason: string;
+};
+
 type Props = {
   /** Optional advisor filter; if omitted, shows all awaiting approval. */
   advisorId?: string;
@@ -39,8 +50,10 @@ type Props = {
 
 export function AutonomyApprovalQueue({ advisorId, compact = false }: Props) {
   const [rows, setRows] = useState<QueueRow[]>([]);
+  const [simulations, setSimulations] = useState<Record<string, SimulationReceipt>>({});
   const [loading, setLoading] = useState(true);
   const [busyId, setBusyId] = useState<string | null>(null);
+  const [openId, setOpenId] = useState<string | null>(null);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -54,6 +67,23 @@ export function AutonomyApprovalQueue({ advisorId, compact = false }: Props) {
     const { data, error } = await q;
     if (error) toast.error(`Failed to load queue: ${error.message}`);
     setRows((data as QueueRow[]) ?? []);
+    // Pull simulation receipts for visible rows in one shot.
+    if (data && data.length > 0) {
+      const ids = data.map((r) => r.id);
+      const { data: sims } = await supabase
+        .from("autonomy_simulation_receipts")
+        .select(
+          "id, queue_id, projected_outcomes, side_effects, rollback_plan, policy_warnings, decision_reason",
+        )
+        .in("queue_id", ids);
+      const map: Record<string, SimulationReceipt> = {};
+      for (const s of (sims ?? []) as SimulationReceipt[]) {
+        if (s.queue_id) map[s.queue_id] = s;
+      }
+      setSimulations(map);
+    } else {
+      setSimulations({});
+    }
     setLoading(false);
   }, [advisorId]);
 
@@ -164,6 +194,11 @@ export function AutonomyApprovalQueue({ advisorId, compact = false }: Props) {
                             <AlertTriangle className="mr-1 h-3 w-3" /> client-facing
                           </Badge>
                         )}
+                        {simulations[row.id] && (
+                          <Badge variant="outline" className="text-[10px] border-primary/40 text-primary">
+                            <FlaskConical className="mr-1 h-3 w-3" /> simulated
+                          </Badge>
+                        )}
                       </div>
                       <p className="mt-1 text-sm font-medium leading-snug">{row.summary}</p>
                       <div className="mt-1 flex flex-wrap items-center gap-3 text-[11px] text-muted-foreground">
@@ -178,6 +213,31 @@ export function AutonomyApprovalQueue({ advisorId, compact = false }: Props) {
                           <span className="truncate">{payload.dry_run_reason}</span>
                         )}
                       </div>
+                      {simulations[row.id] && (
+                        <Collapsible
+                          open={openId === row.id}
+                          onOpenChange={(open) => setOpenId(open ? row.id : null)}
+                          className="mt-2"
+                        >
+                          <CollapsibleTrigger asChild>
+                            <button
+                              type="button"
+                              className="inline-flex items-center gap-1 text-[11px] text-primary hover:underline"
+                            >
+                              <ChevronDown
+                                className={cn(
+                                  "h-3 w-3 transition-transform",
+                                  openId === row.id && "rotate-180",
+                                )}
+                              />
+                              {openId === row.id ? "Hide" : "Show"} simulation
+                            </button>
+                          </CollapsibleTrigger>
+                          <CollapsibleContent className="mt-2 space-y-2 rounded-md border border-border/50 bg-muted/30 p-2">
+                            <SimulationPanel sim={simulations[row.id]} />
+                          </CollapsibleContent>
+                        </Collapsible>
+                      )}
                     </div>
                     <div className="flex shrink-0 gap-1">
                       <Button
@@ -231,4 +291,62 @@ function timeAgo(iso: string): string {
   const h = Math.floor(m / 60);
   if (h < 24) return `${h}h ago`;
   return `${Math.floor(h / 24)}d ago`;
+}
+
+function SimulationPanel({ sim }: { sim: SimulationReceipt }) {
+  return (
+    <div className="space-y-2 text-[11px] text-muted-foreground">
+      {sim.projected_outcomes?.length > 0 && (
+        <div>
+          <div className="mb-1 font-semibold text-foreground/80">Projected outcomes</div>
+          <ul className="list-disc space-y-0.5 pl-4">
+            {sim.projected_outcomes.map((o, i) => (
+              <li key={i}>{o}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+      {sim.side_effects?.length > 0 && (
+        <div>
+          <div className="mb-1 font-semibold text-foreground/80">Side effects</div>
+          <ul className="space-y-0.5">
+            {sim.side_effects.map((e, i) => (
+              <li key={i} className="flex items-start gap-1">
+                <span
+                  className={cn(
+                    "mt-0.5 inline-block h-1.5 w-1.5 shrink-0 rounded-full",
+                    e.reversible ? "bg-primary" : "bg-destructive/70",
+                  )}
+                />
+                <span>
+                  <span className="font-medium text-foreground/70">{e.kind}</span> · {e.target}
+                  {" — "}
+                  <span className="opacity-80">{e.description}</span>
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+      {sim.rollback_plan && (
+        <div>
+          <div className="mb-1 font-semibold text-foreground/80">Rollback plan</div>
+          <p>
+            <span className="font-mono text-foreground/70">{sim.rollback_plan.strategy}</span>
+            {sim.rollback_plan.humanSummary ? ` — ${sim.rollback_plan.humanSummary}` : ""}
+          </p>
+        </div>
+      )}
+      {sim.policy_warnings?.length > 0 && (
+        <div>
+          <div className="mb-1 font-semibold text-destructive">Policy warnings</div>
+          <ul className="list-disc space-y-0.5 pl-4 text-destructive">
+            {sim.policy_warnings.map((w, i) => (
+              <li key={i}>{w}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </div>
+  );
 }
