@@ -11,3 +11,6 @@ export * from "./use-voice-spine";
 export { SemanticContextBadge, type RetrievalKind, type SemanticContextBadgeProps } from "./SemanticContextBadge";
 export { VoiceTranscriptDrawer, type VoiceTranscriptDrawerProps } from "./VoiceTranscriptDrawer";
 export { EmbeddingHealthPanel } from "./EmbeddingHealthPanel";
+
+// ── Phase 7 — Live Cortex surfaces ────────────────────────────
+export { EmbeddingBudgetPanel } from "./EmbeddingBudgetPanel";
