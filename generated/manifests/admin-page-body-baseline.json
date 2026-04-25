@@ -1,0 +1,11 @@
+{
+  "generatedAt": "2026-04-25T17:21:47.036Z",
+  "schemaVersion": 1,
+  "rule": "Constitution Rule 30 — admin page-body monotone ratchet",
+  "description": "Snapshot of LEGACY_PAGE_BODY count under src/pages/admin/. New PRs may only DECREASE this count. Bodies must migrate to @/admin/modules/<domain>/views/.",
+  "direction": "decrease-only",
+  "enforcer": "scripts/architecture/check-admin-page-body-ratchet.ts",
+  "legacyPageBodyCount": 576,
+  "thinAdapterCount": 7,
+  "sealedAt": "2026-04-25T17:21:47.036Z"
+}
