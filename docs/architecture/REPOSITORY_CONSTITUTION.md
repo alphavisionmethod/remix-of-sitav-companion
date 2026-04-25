@@ -85,6 +85,13 @@ During an in-flight migration wave, a thin re-export wrapper at the old path is 
 - Wrapper must be tracked in the wave's compatibility manifest (`generated/audits/wave-<N>-compatibility-wrappers.json`).
 - Wrapper is removed in Wave 9 once two consecutive CI runs show zero usages.
 
+## Component classification (Wave 7 — CI-enforced)
+
+13. **`src/components/` is reserved for shared UI.** Only the following subtrees are permitted to contain non-adapter source files: `ui/`, `primitives/`, `shared/`, `cards/`, `navigation/`, `launcher/`, `__tests__/`. Every other historical subtree (`business/`, `admin/`, `sita/`, `personal-brain/`, `advisors/`, `ai/`, …) MUST contain only Wave-7 thin adapters of the form `export * from "@/{modules|platform}/<owner>/components/<sub>/...";`.
+14. **Pillar-owned components live under `src/modules/<pillar>/components/<sub>/`.** Canonical owners: `business`, `concierge`, `finance`, `health`.
+15. **Platform-owned components live under `src/platform/<system>/components/<sub>/`.** Canonical systems include `admin`, `advisors`, `ai`, `app-platform`, `auth`, `cloud`, `experience`, `files`, `governance`, `intelligence`, `marketing`, `notifications`, `observability`, `operations`, `orchestration`, `personal-brain`, `product`, `runtime`, `settings`, `setup`, `sita`, `sync-engine`, `trust`, `core-services`.
+16. **No deep relative imports.** Files under `src/platform/**`, `src/modules/**`, `src/components/**`, `src/pages/**` MUST NOT contain `from "../../../..."` style imports. All cross-tree references MUST use `@/...` aliases. Codemod: `scripts/codemods/wave-7-fix-relative-imports.mjs`.
+
 ## Amendment process
 
 1. Open an ADR under `docs/adr/ADR-<NNN>-<slug>.md` describing the change and its blast radius.
