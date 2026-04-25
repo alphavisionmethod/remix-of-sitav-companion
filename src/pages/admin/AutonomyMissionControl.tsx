@@ -28,6 +28,7 @@ import {
 } from "lucide-react";
 import { useAutonomyFleet, resetCircuitBreaker, type FleetAdvisor } from "@/hooks/useAutonomyFleet";
 import { AutonomyApprovalQueue } from "@/components/autonomy/AutonomyApprovalQueue";
+import { AutonomyReflectionTimeline } from "@/components/autonomy/AutonomyReflectionTimeline";
 import {
   runControllersForAdvisors,
   DEFAULT_CONTROLLED_ADVISORS,
@@ -121,6 +122,7 @@ export default function AutonomyMissionControl() {
         <TabsList>
           <TabsTrigger value="fleet">Fleet state</TabsTrigger>
           <TabsTrigger value="approvals">JIT approvals ({totals.awaitingApproval})</TabsTrigger>
+          <TabsTrigger value="reflections">Reflections</TabsTrigger>
         </TabsList>
 
         <TabsContent value="fleet" className="mt-4">
@@ -149,6 +151,10 @@ export default function AutonomyMissionControl() {
 
         <TabsContent value="approvals" className="mt-4">
           <AutonomyApprovalQueue />
+        </TabsContent>
+
+        <TabsContent value="reflections" className="mt-4">
+          <AutonomyReflectionTimeline />
         </TabsContent>
       </Tabs>
     </div>
