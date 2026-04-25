@@ -6,7 +6,13 @@
     "view": "workspace_federation_overview",
     "rpc": "federate_memories",
     "scopes": ["scope_memories", "scope_chunks", "scope_voice"],
-    "states": ["active", "revoked", "expired"]
+    "states": ["active", "revoked", "expired"],
+    "ui": {
+      "adminRoute": "/admin/architecture/federation",
+      "page": "WorkspaceFederationBoard",
+      "service": "federation-service",
+      "hooks": ["useFederationOverview", "useCreateFederation", "useRevokeFederation", "useFederateMemories"]
+    }
   },
   "voiceAgentBridge": {
     "rpc": "dispatch_voice_intent",
@@ -20,6 +26,13 @@
     "columns": {
       "knowledge_chunks": ["modality", "media_uri", "media_mime"],
       "memory_provenance": ["modality", "media_uri", "media_mime"]
+    },
+    "ingest": {
+      "service": "multimodal-service",
+      "panel": "MultiModalIngestPanel",
+      "bucket": "user-files",
+      "captionModel": "google/gemini-2.5-flash",
+      "embedModel": "google/text-embedding-004"
     }
   },
   "trustActions": [
