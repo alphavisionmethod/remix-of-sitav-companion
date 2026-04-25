@@ -13,7 +13,7 @@ export default function TrustAutomationAuthority() {
       </p>
       <div className="rounded-lg border bg-card p-6">
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
-          <ShieldCheck className="h-4 w-4 text-emerald-500" />
+          <ShieldCheck className="h-4 w-4 text-primary" />
           <span>
             Wired in Phase 2 to <code className="text-xs bg-muted px-1.5 py-0.5 rounded">advisor_autonomy_policies</code>{" "}
             and the action-safety classifier.
