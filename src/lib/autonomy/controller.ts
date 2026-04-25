@@ -148,7 +148,11 @@ export async function runControllerCycle(advisorId: string): Promise<ControllerC
       if (!budgetCheck.ok) {
         result.budgetTrips += 1;
         notes.push(`budget_breaker:${budgetCheck.reason}`);
-        await tripCircuitBreakerForBudget(userId, advisorId, budgetCheck.reason);
+        await tripCircuitBreakerForBudget(
+          userId,
+          advisorId,
+          budgetCheck.reason as Exclude<typeof budgetCheck.reason, "within_budget">,
+        );
         currentState = "circuit_open";
         break;
       }
@@ -359,6 +363,7 @@ export async function runControllersForAdvisors(
         queued: 0,
         autoExecuted: 0,
         blocked: 0,
+        budgetTrips: 0,
         finalState: "idle",
         notes: [`error:${err instanceof Error ? err.message : "unknown"}`],
       });
