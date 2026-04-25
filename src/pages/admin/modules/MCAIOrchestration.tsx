@@ -14,7 +14,7 @@ import { Cpu, Zap } from "lucide-react";
 import {
   useRecentInvocations,
   ExplainabilityPanel,
-} from "@/modules/_shared/ai";
+} from "@/platform/ai";
 
 const STATUS_COLOR: Record<string, string> = {
   completed: "bg-emerald-500/15 text-emerald-300",

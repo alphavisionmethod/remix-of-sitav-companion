@@ -13,7 +13,7 @@ import Papa from "papaparse";
 import * as XLSX from "xlsx";
 import { useCreateContact } from "@/hooks/use-crm-data";
 import { supabase } from "@/integrations/supabase/client";
-import { emitRegisteredTrustAction } from "@/modules/_trust";
+import { emitRegisteredTrustAction } from "@/platform/trust";
 
 interface Props {
   onClose: () => void;

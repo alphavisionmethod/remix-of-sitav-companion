@@ -9,7 +9,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
 import { Database, Brain, FileText, Inbox } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { IngestionStatusPanel, MemoryReviewQueue } from "@/modules/_shared/knowledge";
+import { IngestionStatusPanel, MemoryReviewQueue } from "@/platform/knowledge";
 
 interface SpineCounts {
   memories_total: number;

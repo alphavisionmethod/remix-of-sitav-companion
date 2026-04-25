@@ -13,7 +13,7 @@
 
 import { supabase } from "@/integrations/supabase/client";
 import type { Database } from "@/integrations/supabase/types";
-import { emitRegisteredTrustAction } from "@/modules/_trust";
+import { emitRegisteredTrustAction } from "@/platform/trust";
 
 export type KillSwitchRow =
   Database["public"]["Tables"]["autonomy_kill_switch"]["Row"];

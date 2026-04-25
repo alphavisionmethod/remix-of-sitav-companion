@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Bot, ShieldCheck, AlertTriangle, Pause } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Badge } from "@/components/ui/badge";
-import { ActionAuthorityPanel } from "@/modules/_trust/ui/ActionAuthorityPanel";
+import { ActionAuthorityPanel } from "@/platform/trust/ui/ActionAuthorityPanel";
 
 interface PolicyRow {
   id: string;

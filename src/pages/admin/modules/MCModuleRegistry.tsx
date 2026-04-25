@@ -4,7 +4,7 @@ import {
   useRouteOwnership,
   groupModulesByParent,
   type ModuleRegistryRow,
-} from "@/modules/_shared";
+} from "@/platform/registry/module-registry";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
