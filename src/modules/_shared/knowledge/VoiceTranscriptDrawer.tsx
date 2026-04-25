@@ -9,9 +9,15 @@ import { Drawer } from "@/components/primitives/overlays/Drawer";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Mic, MessageSquare, Bot, AlertCircle, Sparkles, CheckCircle2 } from "lucide-react";
-import { useSessionTranscripts, usePromoteVoiceTranscript } from "./use-voice-spine";
-import type { Sensitivity, VoiceTranscriptRow } from "./voice-service";
+import { Mic, MessageSquare, Bot, AlertCircle, Sparkles, CheckCircle2, Wand2, Check, X, Play } from "lucide-react";
+import {
+  useSessionTranscripts,
+  usePromoteVoiceTranscript,
+  useSessionIntents,
+  useExtractVoiceIntents,
+  useUpdateVoiceIntent,
+} from "./use-voice-spine";
+import type { Sensitivity, VoiceIntentRow, VoiceTranscriptRow } from "./voice-service";
 
 export interface VoiceTranscriptDrawerProps {
   open: boolean;
@@ -33,6 +39,10 @@ export function VoiceTranscriptDrawer({
   const { data, isLoading } = useSessionTranscripts(sessionId);
   const promote = usePromoteVoiceTranscript();
   const [busyId, setBusyId] = useState<string | null>(null);
+  const { data: intents = [], isLoading: intentsLoading } = useSessionIntents(sessionId);
+  const extract = useExtractVoiceIntents();
+  const updateIntent = useUpdateVoiceIntent(sessionId);
+  const [intentBusyId, setIntentBusyId] = useState<string | null>(null);
 
   const handlePromote = async (t: VoiceTranscriptRow) => {
     setBusyId(t.id);
@@ -47,6 +57,20 @@ export function VoiceTranscriptDrawer({
     }
   };
 
+  const handleExtract = async () => {
+    if (!sessionId) return;
+    await extract.mutateAsync({ sessionId, maxTranscripts: 15 });
+  };
+
+  const handleIntent = async (intent: VoiceIntentRow, status: "approved" | "rejected" | "executed") => {
+    setIntentBusyId(intent.id);
+    try {
+      await updateIntent.mutateAsync({ intentId: intent.id, status });
+    } finally {
+      setIntentBusyId(null);
+    }
+  };
+
   return (
     <Drawer
       open={open}
@@ -56,6 +80,93 @@ export function VoiceTranscriptDrawer({
       width="lg"
     >
       <div className="space-y-3">
+        {/* ── Phase 7: Voice Intents panel ── */}
+        {sessionId && (
+          <div className="rounded-md border bg-muted/40 p-3 space-y-2">
+            <div className="flex items-center justify-between gap-2">
+              <div className="flex items-center gap-2 text-xs font-medium">
+                <Wand2 className="h-3.5 w-3.5" /> Proposed actions
+                <Badge variant="outline" className="text-[10px]">{intents.length}</Badge>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                className="h-7 gap-1 text-xs"
+                disabled={extract.isPending || (data?.length ?? 0) === 0}
+                onClick={handleExtract}
+              >
+                <Sparkles className="h-3 w-3" />
+                {extract.isPending ? "Extracting…" : "Extract intents"}
+              </Button>
+            </div>
+            {intentsLoading && <Skeleton className="h-12 w-full" />}
+            {!intentsLoading && intents.length === 0 && (
+              <p className="text-[11px] text-muted-foreground">
+                No proposed actions. Click <em>Extract intents</em> to scan transcripts for whitelisted actions.
+              </p>
+            )}
+            {intents.map((intent) => {
+              const busy = intentBusyId === intent.id;
+              const conf = Math.round(intent.confidence * 100);
+              const statusVariant: Record<string, "default" | "secondary" | "outline" | "destructive"> = {
+                proposed: "default",
+                approved: "secondary",
+                rejected: "destructive",
+                executed: "secondary",
+                expired: "outline",
+              };
+              return (
+                <div key={intent.id} className="rounded-md border bg-card p-2 text-xs space-y-1">
+                  <div className="flex items-center justify-between gap-2">
+                    <div className="flex items-center gap-2 min-w-0">
+                      <Badge variant="outline" className="text-[10px] font-mono">{intent.action_key}</Badge>
+                      <span className="text-muted-foreground">conf {conf}%</span>
+                    </div>
+                    <Badge variant={statusVariant[intent.status] ?? "outline"} className="text-[10px] uppercase">
+                      {intent.status}
+                    </Badge>
+                  </div>
+                  {intent.rationale && (
+                    <p className="text-[11px] text-muted-foreground leading-snug">{intent.rationale}</p>
+                  )}
+                  {Object.keys(intent.params ?? {}).length > 0 && (
+                    <pre className="rounded bg-muted/50 px-2 py-1 text-[10px] font-mono overflow-x-auto">
+                      {JSON.stringify(intent.params, null, 0)}
+                    </pre>
+                  )}
+                  {intent.status === "proposed" && (
+                    <div className="flex items-center gap-1 pt-1">
+                      <Button
+                        size="sm" variant="outline"
+                        className="h-6 gap-1 text-[11px]"
+                        disabled={busy} onClick={() => handleIntent(intent, "approved")}
+                      >
+                        <Check className="h-3 w-3" /> Approve
+                      </Button>
+                      <Button
+                        size="sm" variant="ghost"
+                        className="h-6 gap-1 text-[11px]"
+                        disabled={busy} onClick={() => handleIntent(intent, "rejected")}
+                      >
+                        <X className="h-3 w-3" /> Reject
+                      </Button>
+                    </div>
+                  )}
+                  {intent.status === "approved" && (
+                    <Button
+                      size="sm" variant="outline"
+                      className="h-6 gap-1 text-[11px]"
+                      disabled={busy} onClick={() => handleIntent(intent, "executed")}
+                    >
+                      <Play className="h-3 w-3" /> Mark executed
+                    </Button>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        )}
+
         {isLoading && (
           <div className="space-y-2">
             <Skeleton className="h-16 w-full" />
