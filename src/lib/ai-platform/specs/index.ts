@@ -41,6 +41,9 @@ import "./tech-advisor.spec";
 // Phase 7 — Imports & Exports Advisor
 import "./imports-exports-advisor.spec";
 
+// Phase 8 — Taxes & Laws Advisor
+import "./taxes-laws-advisor.spec";
+
 export type {
   BusinessAdvisorSpec,
   AutomationLevel,
