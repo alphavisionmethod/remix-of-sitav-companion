@@ -1,16 +1,3 @@
-/**
- * Wave 1.3 baselined violations — pre-existing findings that cannot be fixed
- * in this wave without violating the strict no-logic / no-UI / no-API change
- * rule. Each entry MUST cite a follow-up wave / ADR. Set is monotone-decreasing:
- * removing an entry is always allowed; adding one requires an ADR.
- */
-const WAVE_1_3_BASELINE: ReadonlySet<string> = new Set([
-  // src/contexts/AuthContext.tsx imports User, Session as values for a typed
-  // fallback cast (FALLBACK_USER: User = ... as unknown as User). Converting to
-  // `import type` requires touching the cast site — out of scope for Wave 1.3
-  // (no-logic rule). Track in Wave 1.4 auth-types-cleanup.
-  "src/contexts/AuthContext.tsx",
-]);
 #!/usr/bin/env node
 // ═══════════════════════════════════════════════════════════════
 // Wave 1.3 — check-service-vocabulary-coherence (BLOCKING)
@@ -43,6 +30,20 @@ import {
 } from "../../../src/lib/migration/service-vocabulary-bridge";
 
 const REPO = process.cwd();
+
+/**
+ * Wave 1.3 baselined violations — pre-existing findings that cannot be fixed
+ * in this wave without violating the strict no-logic / no-UI / no-API change
+ * rule. Each entry MUST cite a follow-up wave / ADR. Set is monotone-decreasing:
+ * removing an entry is always allowed; adding one requires an ADR.
+ */
+const WAVE_1_3_BASELINE: ReadonlySet<string> = new Set([
+  // src/contexts/AuthContext.tsx imports User, Session as values for a typed
+  // fallback cast (FALLBACK_USER: User = ... as unknown as User). Converting to
+  // `import type` requires touching the cast site — out of scope for Wave 1.3
+  // (no-logic rule). Track in Wave 1.4 auth-types-cleanup.
+  "src/contexts/AuthContext.tsx",
+]);
 
 interface Violation {
   rule: 1 | 2 | 3 | 4;
