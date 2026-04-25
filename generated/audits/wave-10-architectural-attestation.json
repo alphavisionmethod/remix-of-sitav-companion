@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 1,
+  "wave": 10,
+  "generatedAt": "2026-04-25T16:47:26.686Z",
+  "title": "Repository Canonicalization — Final Architectural Attestation",
+  "description": "Seals the post-Wave-9 canonical tree state. Single source of truth for what 'canonical' means at deploy time. Validators may compare any subset of these digests to detect drift.",
+  "constitutionRef": "docs/architecture/REPOSITORY_CONSTITUTION.md",
+  "surfaces": {
+    "src/components": {
+      "count": 83,
+      "digest": "4467915ced6cc9fbb104a2ce06c4c346d2425092db8d8d3deb7ebebf66694217"
+    },
+    "src/modules": {
+      "count": 557,
+      "digest": "27b8dfb500262dbd138d9757bf2265c615c0f9ab003aee74640ed80b2e21710b"
+    },
+    "src/platform": {
+      "count": 1452,
+      "digest": "28d2b9cf6f1c549755a1414e70bc4c234e69a9f02d267021a14f753b45b60470"
+    },
+    "src/pages": {
+      "count": 1148,
+      "digest": "2e24df98861e2258fd41d4f752109df8626a16d5357c24192061eedb8bebc46a"
+    },
+    "src/admin": {
+      "count": 41,
+      "digest": "f651f8a7bd5ca6df241d8c752b1d2f0e2dd0c2f5891e1f9c12d9a8e47d868bf9"
+    },
+    "src/runtimes": {
+      "count": 84,
+      "digest": "42b0e426600abdf44151989d64d8ec721b83288ac25344f5170622a9f4fdc46e"
+    },
+    "src/routes": {
+      "count": 20,
+      "digest": "1a2b9caf44fcd1f34edbec7daf0e1b9c76cd1a362b3a202490c3bdc483b23158"
+    }
+  },
+  "manifestDigest": "fe9b177635a0bd1758aaeab9790c0b6be5271c2c86ed48e3f1fd69fce79a71a6",
+  "invariants": {
+    "lastWaveCompleted": 9,
+    "sealingWave": 10,
+    "maxAdapterLines": 12,
+    "sharedAllowlist": [
+      "ui",
+      "primitives",
+      "shared",
+      "cards",
+      "navigation",
+      "launcher",
+      "__tests__"
+    ],
+    "rootFileAllowlist": [
+      "NavLink.tsx"
+    ]
+  }
+}
