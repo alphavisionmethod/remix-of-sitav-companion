@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "phase": 9,
+  "federatedRetrieval": {
+    "rpcs": [
+      "semantic_knowledge_chunks_federated",
+      "semantic_workspace_memories_federated"
+    ],
+    "helper": "sensitivity_rank",
+    "viaFederationColumn": "via_federation",
+    "service": "federated-retrieval-service",
+    "exports": ["searchFederatedChunks", "searchFederatedMemories"],
+    "orchestrator": "ai-orchestrator-stream",
+    "retrievalKind": "federated"
+  },
+  "agentMultiModal": {
+    "planner": "sita-agent-planner",
+    "contextField": "multiModalContext",
+    "modalities": ["image", "audio", "video"],
+    "workspaceParam": "workspace_id"
+  }
+}
