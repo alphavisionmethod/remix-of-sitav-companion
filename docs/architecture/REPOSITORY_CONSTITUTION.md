@@ -50,6 +50,7 @@ steady-state target — independent of what wave is currently in progress.
 7. **Pages are thin.** Files under `src/pages/<family>/**` MUST be ≤40 lines OR be a pure re-export.
     - **Pillar families** (`<pillar>` ∈ {business, concierge, finance, health, money, investment-office, revenue-office, digital-presence}) — canonical body in `src/modules/<pillar>/pages/`. (Wave 4)
     - **Platform families** (Wave 5: `<system>` ∈ {atlas, files, owner, mission-control, mission, boardroom, intelligence, trust, personal-brain, enterprise, tenant, workspace, integrations, marketing, settings, store, app-platform, apps, sita, advisors, auth}) — canonical body in `src/platform/<system>/pages/`. Special re-routings: `pages/mission/*` → `platform/mission-control/mission-pages/`; `pages/store/*` → `platform/app-platform/store-pages/`; `pages/integrations/*` → `platform/integration/pages/`.
+    - **Root-level single-file pages** (Wave 6): `src/pages/<File>.tsx` MUST be a thin re-export from `src/platform/<system>/pages/<File>.tsx` or `src/modules/<pillar>/pages/<File>.tsx`. **Sole exception:** `src/pages/NotFound.tsx` (router 404 fallback) keeps its body at root.
 
 ## Folder uniqueness rules (CI-enforced)
 

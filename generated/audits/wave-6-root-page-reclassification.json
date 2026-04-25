@@ -1,0 +1,418 @@
+{
+  "generatedAt": "2026-04-25T16:15:12.819Z",
+  "wave": 6,
+  "movedCount": 96,
+  "adapterCount": 96,
+  "skippedCount": 0,
+  "movedByDestination": {
+    "src/platform/ai/pages": 9,
+    "src/platform/trust/pages": 7,
+    "src/platform/governance/pages": 1,
+    "src/platform/boardroom/pages": 3,
+    "src/platform/owner/pages": 3,
+    "src/platform/enterprise/pages": 1,
+    "src/platform/app-platform/pages": 5,
+    "src/platform/files/pages": 4,
+    "src/platform/workspace/pages": 15,
+    "src/platform/search/pages": 1,
+    "src/platform/notifications/pages": 8,
+    "src/platform/setup/pages": 6,
+    "src/modules/finance/pages": 4,
+    "src/platform/marketing/pages": 1,
+    "src/platform/integration/pages": 2,
+    "src/platform/observability/pages": 7,
+    "src/platform/personal-brain/pages": 3,
+    "src/platform/settings/pages": 4,
+    "src/platform/orchestration/pages": 3,
+    "src/platform/support/pages": 1,
+    "src/modules/business/pages": 5,
+    "src/modules/concierge/pages": 3
+  },
+  "moved": [
+    {
+      "src": "src/pages/AIEconomicsPage.tsx",
+      "dest": "src/platform/ai/pages/AIEconomicsPage.tsx"
+    },
+    {
+      "src": "src/pages/AIWorkforcePage.tsx",
+      "dest": "src/platform/ai/pages/AIWorkforcePage.tsx"
+    },
+    {
+      "src": "src/pages/AgentActivityDashboard.tsx",
+      "dest": "src/platform/ai/pages/AgentActivityDashboard.tsx"
+    },
+    {
+      "src": "src/pages/OutcomeEnginePage.tsx",
+      "dest": "src/platform/ai/pages/OutcomeEnginePage.tsx"
+    },
+    {
+      "src": "src/pages/OpportunityEngine.tsx",
+      "dest": "src/platform/ai/pages/OpportunityEngine.tsx"
+    },
+    {
+      "src": "src/pages/DigitalTwinsPage.tsx",
+      "dest": "src/platform/ai/pages/DigitalTwinsPage.tsx"
+    },
+    {
+      "src": "src/pages/SimulationEnginePage.tsx",
+      "dest": "src/platform/ai/pages/SimulationEnginePage.tsx"
+    },
+    {
+      "src": "src/pages/ScenarioLabPage.tsx",
+      "dest": "src/platform/ai/pages/ScenarioLabPage.tsx"
+    },
+    {
+      "src": "src/pages/LifeSimulator.tsx",
+      "dest": "src/platform/ai/pages/LifeSimulator.tsx"
+    },
+    {
+      "src": "src/pages/ApprovalChamber.tsx",
+      "dest": "src/platform/trust/pages/ApprovalChamber.tsx"
+    },
+    {
+      "src": "src/pages/ApprovalsCenter.tsx",
+      "dest": "src/platform/trust/pages/ApprovalsCenter.tsx"
+    },
+    {
+      "src": "src/pages/ProofCenter.tsx",
+      "dest": "src/platform/trust/pages/ProofCenter.tsx"
+    },
+    {
+      "src": "src/pages/TrustCenter.tsx",
+      "dest": "src/platform/trust/pages/TrustCenter.tsx"
+    },
+    {
+      "src": "src/pages/PermissionsCenter.tsx",
+      "dest": "src/platform/trust/pages/PermissionsCenter.tsx"
+    },
+    {
+      "src": "src/pages/PolicyEditor.tsx",
+      "dest": "src/platform/trust/pages/PolicyEditor.tsx"
+    },
+    {
+      "src": "src/pages/PolicySimulatorHub.tsx",
+      "dest": "src/platform/trust/pages/PolicySimulatorHub.tsx"
+    },
+    {
+      "src": "src/pages/GovernanceDashboard.tsx",
+      "dest": "src/platform/governance/pages/GovernanceDashboard.tsx"
+    },
+    {
+      "src": "src/pages/Boardroom.tsx",
+      "dest": "src/platform/boardroom/pages/Boardroom.tsx"
+    },
+    {
+      "src": "src/pages/GlobalBoardroom.tsx",
+      "dest": "src/platform/boardroom/pages/GlobalBoardroom.tsx"
+    },
+    {
+      "src": "src/pages/WeeklyBoardroom.tsx",
+      "dest": "src/platform/boardroom/pages/WeeklyBoardroom.tsx"
+    },
+    {
+      "src": "src/pages/OwnerCenter.tsx",
+      "dest": "src/platform/owner/pages/OwnerCenter.tsx"
+    },
+    {
+      "src": "src/pages/AdminCenter.tsx",
+      "dest": "src/platform/owner/pages/AdminCenter.tsx"
+    },
+    {
+      "src": "src/pages/UsersAdminPage.tsx",
+      "dest": "src/platform/owner/pages/UsersAdminPage.tsx"
+    },
+    {
+      "src": "src/pages/EnterpriseMaturityDashboard.tsx",
+      "dest": "src/platform/enterprise/pages/EnterpriseMaturityDashboard.tsx"
+    },
+    {
+      "src": "src/pages/AppStoreCenter.tsx",
+      "dest": "src/platform/app-platform/pages/AppStoreCenter.tsx"
+    },
+    {
+      "src": "src/pages/DownloadPage.tsx",
+      "dest": "src/platform/app-platform/pages/DownloadPage.tsx"
+    },
+    {
+      "src": "src/pages/DownloadsCenter.tsx",
+      "dest": "src/platform/app-platform/pages/DownloadsCenter.tsx"
+    },
+    {
+      "src": "src/pages/TemplateCenter.tsx",
+      "dest": "src/platform/app-platform/pages/TemplateCenter.tsx"
+    },
+    {
+      "src": "src/pages/UpdateCenter.tsx",
+      "dest": "src/platform/app-platform/pages/UpdateCenter.tsx"
+    },
+    {
+      "src": "src/pages/FilesCenter.tsx",
+      "dest": "src/platform/files/pages/FilesCenter.tsx"
+    },
+    {
+      "src": "src/pages/StorageManager.tsx",
+      "dest": "src/platform/files/pages/StorageManager.tsx"
+    },
+    {
+      "src": "src/pages/ImportExportCenter.tsx",
+      "dest": "src/platform/files/pages/ImportExportCenter.tsx"
+    },
+    {
+      "src": "src/pages/SovereignExportPage.tsx",
+      "dest": "src/platform/files/pages/SovereignExportPage.tsx"
+    },
+    {
+      "src": "src/pages/DesktopPage.tsx",
+      "dest": "src/platform/workspace/pages/DesktopPage.tsx"
+    },
+    {
+      "src": "src/pages/CalendarWorkspace.tsx",
+      "dest": "src/platform/workspace/pages/CalendarWorkspace.tsx"
+    },
+    {
+      "src": "src/pages/DocumentEditor.tsx",
+      "dest": "src/platform/workspace/pages/DocumentEditor.tsx"
+    },
+    {
+      "src": "src/pages/SpreadsheetWorkspace.tsx",
+      "dest": "src/platform/workspace/pages/SpreadsheetWorkspace.tsx"
+    },
+    {
+      "src": "src/pages/MediaWorkspace.tsx",
+      "dest": "src/platform/workspace/pages/MediaWorkspace.tsx"
+    },
+    {
+      "src": "src/pages/NotesWorkspace.tsx",
+      "dest": "src/platform/workspace/pages/NotesWorkspace.tsx"
+    },
+    {
+      "src": "src/pages/PDFViewerWorkspace.tsx",
+      "dest": "src/platform/workspace/pages/PDFViewerWorkspace.tsx"
+    },
+    {
+      "src": "src/pages/PeopleWorkspace.tsx",
+      "dest": "src/platform/workspace/pages/PeopleWorkspace.tsx"
+    },
+    {
+      "src": "src/pages/ReportingWorkspace.tsx",
+      "dest": "src/platform/workspace/pages/ReportingWorkspace.tsx"
+    },
+    {
+      "src": "src/pages/TeamWorkspace.tsx",
+      "dest": "src/platform/workspace/pages/TeamWorkspace.tsx"
+    },
+    {
+      "src": "src/pages/PlanningCanvas.tsx",
+      "dest": "src/platform/workspace/pages/PlanningCanvas.tsx"
+    },
+    {
+      "src": "src/pages/ProductivityHub.tsx",
+      "dest": "src/platform/workspace/pages/ProductivityHub.tsx"
+    },
+    {
+      "src": "src/pages/PrintScanCenter.tsx",
+      "dest": "src/platform/workspace/pages/PrintScanCenter.tsx"
+    },
+    {
+      "src": "src/pages/ClipboardHistory.tsx",
+      "dest": "src/platform/workspace/pages/ClipboardHistory.tsx"
+    },
+    {
+      "src": "src/pages/CommandHistory.tsx",
+      "dest": "src/platform/workspace/pages/CommandHistory.tsx"
+    },
+    {
+      "src": "src/pages/SearchPage.tsx",
+      "dest": "src/platform/search/pages/SearchPage.tsx"
+    },
+    {
+      "src": "src/pages/NotificationCenter.tsx",
+      "dest": "src/platform/notifications/pages/NotificationCenter.tsx"
+    },
+    {
+      "src": "src/pages/NotificationSettingsPage.tsx",
+      "dest": "src/platform/notifications/pages/NotificationSettingsPage.tsx"
+    },
+    {
+      "src": "src/pages/ActivityStream.tsx",
+      "dest": "src/platform/notifications/pages/ActivityStream.tsx"
+    },
+    {
+      "src": "src/pages/MyActivity.tsx",
+      "dest": "src/platform/notifications/pages/MyActivity.tsx"
+    },
+    {
+      "src": "src/pages/InboxCapture.tsx",
+      "dest": "src/platform/notifications/pages/InboxCapture.tsx"
+    },
+    {
+      "src": "src/pages/DailyPulse.tsx",
+      "dest": "src/platform/notifications/pages/DailyPulse.tsx"
+    },
+    {
+      "src": "src/pages/CommunicationInbox.tsx",
+      "dest": "src/platform/notifications/pages/CommunicationInbox.tsx"
+    },
+    {
+      "src": "src/pages/CommunicationsPage.tsx",
+      "dest": "src/platform/notifications/pages/CommunicationsPage.tsx"
+    },
+    {
+      "src": "src/pages/FirstBootSetup.tsx",
+      "dest": "src/platform/setup/pages/FirstBootSetup.tsx"
+    },
+    {
+      "src": "src/pages/FirstWinActivation.tsx",
+      "dest": "src/platform/setup/pages/FirstWinActivation.tsx"
+    },
+    {
+      "src": "src/pages/Onboarding.tsx",
+      "dest": "src/platform/setup/pages/Onboarding.tsx"
+    },
+    {
+      "src": "src/pages/OnboardingWrapper.tsx",
+      "dest": "src/platform/setup/pages/OnboardingWrapper.tsx"
+    },
+    {
+      "src": "src/pages/MoneyOnboarding.tsx",
+      "dest": "src/modules/finance/pages/MoneyOnboarding.tsx"
+    },
+    {
+      "src": "src/pages/PersonalizationStudio.tsx",
+      "dest": "src/platform/setup/pages/PersonalizationStudio.tsx"
+    },
+    {
+      "src": "src/pages/EnvironmentSwitcher.tsx",
+      "dest": "src/platform/setup/pages/EnvironmentSwitcher.tsx"
+    },
+    {
+      "src": "src/pages/LandingPage.tsx",
+      "dest": "src/platform/marketing/pages/LandingPage.tsx"
+    },
+    {
+      "src": "src/pages/ConnectorHub.tsx",
+      "dest": "src/platform/integration/pages/ConnectorHub.tsx"
+    },
+    {
+      "src": "src/pages/IntegrationConcierge.tsx",
+      "dest": "src/platform/integration/pages/IntegrationConcierge.tsx"
+    },
+    {
+      "src": "src/pages/ObservabilityPage.tsx",
+      "dest": "src/platform/observability/pages/ObservabilityPage.tsx"
+    },
+    {
+      "src": "src/pages/SystemStatus.tsx",
+      "dest": "src/platform/observability/pages/SystemStatus.tsx"
+    },
+    {
+      "src": "src/pages/ServiceArchitectureDashboard.tsx",
+      "dest": "src/platform/observability/pages/ServiceArchitectureDashboard.tsx"
+    },
+    {
+      "src": "src/pages/NetworkUtility.tsx",
+      "dest": "src/platform/observability/pages/NetworkUtility.tsx"
+    },
+    {
+      "src": "src/pages/WorkflowReplayHub.tsx",
+      "dest": "src/platform/observability/pages/WorkflowReplayHub.tsx"
+    },
+    {
+      "src": "src/pages/TimeMachinePage.tsx",
+      "dest": "src/platform/observability/pages/TimeMachinePage.tsx"
+    },
+    {
+      "src": "src/pages/SpilloverDashboard.tsx",
+      "dest": "src/platform/observability/pages/SpilloverDashboard.tsx"
+    },
+    {
+      "src": "src/pages/MemoryCenter.tsx",
+      "dest": "src/platform/personal-brain/pages/MemoryCenter.tsx"
+    },
+    {
+      "src": "src/pages/PersonalBrain.tsx",
+      "dest": "src/platform/personal-brain/pages/PersonalBrain.tsx"
+    },
+    {
+      "src": "src/pages/LearnLaterPage.tsx",
+      "dest": "src/platform/personal-brain/pages/LearnLaterPage.tsx"
+    },
+    {
+      "src": "src/pages/SettingsPage.tsx",
+      "dest": "src/platform/settings/pages/SettingsPage.tsx"
+    },
+    {
+      "src": "src/pages/UserProfilePage.tsx",
+      "dest": "src/platform/settings/pages/UserProfilePage.tsx"
+    },
+    {
+      "src": "src/pages/AchievementsPage.tsx",
+      "dest": "src/platform/settings/pages/AchievementsPage.tsx"
+    },
+    {
+      "src": "src/pages/CalmFocusMode.tsx",
+      "dest": "src/platform/settings/pages/CalmFocusMode.tsx"
+    },
+    {
+      "src": "src/pages/AutomationCenter.tsx",
+      "dest": "src/platform/orchestration/pages/AutomationCenter.tsx"
+    },
+    {
+      "src": "src/pages/TasksWorkflowsCenter.tsx",
+      "dest": "src/platform/orchestration/pages/TasksWorkflowsCenter.tsx"
+    },
+    {
+      "src": "src/pages/WorkflowsCenter.tsx",
+      "dest": "src/platform/orchestration/pages/WorkflowsCenter.tsx"
+    },
+    {
+      "src": "src/pages/RecoveryCenter.tsx",
+      "dest": "src/platform/support/pages/RecoveryCenter.tsx"
+    },
+    {
+      "src": "src/pages/BusinessCenter.tsx",
+      "dest": "src/modules/business/pages/BusinessCenter.tsx"
+    },
+    {
+      "src": "src/pages/CustomerDetail.tsx",
+      "dest": "src/modules/business/pages/CustomerDetail.tsx"
+    },
+    {
+      "src": "src/pages/CustomerHealthPage.tsx",
+      "dest": "src/modules/business/pages/CustomerHealthPage.tsx"
+    },
+    {
+      "src": "src/pages/RevenueCallingPage.tsx",
+      "dest": "src/modules/business/pages/RevenueCallingPage.tsx"
+    },
+    {
+      "src": "src/pages/RecoveredValuePage.tsx",
+      "dest": "src/modules/business/pages/RecoveredValuePage.tsx"
+    },
+    {
+      "src": "src/pages/ConciergeCenter.tsx",
+      "dest": "src/modules/concierge/pages/ConciergeCenter.tsx"
+    },
+    {
+      "src": "src/pages/PersonalLifeWorkspace.tsx",
+      "dest": "src/modules/concierge/pages/PersonalLifeWorkspace.tsx"
+    },
+    {
+      "src": "src/pages/LifeDashboard.tsx",
+      "dest": "src/modules/concierge/pages/LifeDashboard.tsx"
+    },
+    {
+      "src": "src/pages/MoneyCenter.tsx",
+      "dest": "src/modules/finance/pages/MoneyCenter.tsx"
+    },
+    {
+      "src": "src/pages/WealthCommandCenter.tsx",
+      "dest": "src/modules/finance/pages/WealthCommandCenter.tsx"
+    },
+    {
+      "src": "src/pages/CapitalAllocationPage.tsx",
+      "dest": "src/modules/finance/pages/CapitalAllocationPage.tsx"
+    }
+  ],
+  "skipped": []
+}
