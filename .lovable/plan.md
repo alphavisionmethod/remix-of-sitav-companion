@@ -1,334 +1,334 @@
-# Phase 7 — Live Semantic Cortex (streaming + voice intents + embedding budget)
 
-Phase 6 closed the vector + voice-to-memory loops. Phase 7 turns them into a **live, governed cortex** the orchestrator can stream from, that voice can act on, and that finance can budget.
+# SITA OS — Repository Tree Canonicalization Plan
 
-## Three loops still open after Phase 6.b
-1. **Streaming semantic deltas** — `ai-orchestrator` returns one final payload; explainability traces only appear after the model finishes. There's no SSE channel.
-2. **Voice intents** — `voice-spine` records transcripts but they're inert. There's no path from "user said X" → "advisor proposes a trust-gated action".
-3. **Embedding budget** — `knowledge-embedder` calls `text-embedding-004` with no per-user ceiling, no cost ledger entry tagged `mode='embedding'`, and no fallback when over budget.
+## Audit findings (what's actually true today)
 
-## Phase 7 Deliverables
+| Area | Files | Reality |
+|---|---|---|
+| `src/pages/` | 1,148 | Currently the **de-facto owner** of nearly all product surfaces. ~97 root-level pages + 36 subdirs. |
+| `src/modules/` | 61 | Thin identity layer — only manifests, capability registries, and 8 recent re-export wrappers. **Not** the real owner yet. |
+| `src/platform/` | 296 across 41 subdirs | Real platform code, but with several **duplicate folder pairs**: `ai/` + `ai-gateway/`, `nova-sdk/` + `nova-runtime-sdk/`, `policy/` + `policies/`, `sync/` + `sync-engine/`, `core/` + `core-services/`, `os-services/` + `core-services/`. Also has a `services-unclassified/` folder (anti-pattern). |
+| `src/admin/` (41) + `src/pages/admin/` (583) | 624 | **Two parallel admin trees**. Major duplicate-ownership risk. |
+| `src/routes/*-routes.tsx` | 17 | Routes mostly point to **`Center` shells** (`BusinessCenter`, `MoneyCenter`, etc.), **not** to individual page files. The 1,148 page files are windowed sub-views composed inside Centers — moving them does not break routes. |
+| `generated/` (top-level) + `public/generated/` | 2 trees | Both exist with overlapping artifact families. No clear lifecycle separation. |
+| `src/lib/services/` | ~150+ subdirs | Side-effect layer, generally well-placed but pillar-specific service folders (`business-os/`, `concierge-os/`, etc.) belong adjacent to their modules logically. |
+| Cross-pillar imports | 0 violations | The existing `check-module-ownership.ts` validator is green because pillars are nearly empty. |
+| Pillar-specific consumers of `@/pages/{business,money,concierge}` outside the page tree | 0 | **Migration is mechanically much safer than it looks** — the page tree is a leaf. |
 
-### 7.1 Streaming orchestrator (`ai-orchestrator-stream`)
-New SSE edge fn emitting `context` (semantic hits), `delta` (token chunks), `trace` (explainability rows), `done` (final receipt). Frontend `useOrchestratorStream()` hook yields tokens + traces incrementally.
+### Hidden landmines
+- **`BusinessCenter.tsx` and similar shells are routed for ~30+ URLs each** — they internally switch on `useLocation()`. Moving the *Center shells* requires care; moving the *sub-pages they import* is safe.
+- **Lazy imports in `App.tsx`** reference 11 root-level page files directly (LandingPage, DesktopPage, Onboarding, etc.).
+- **`supabase/functions/`** import nothing from `src/`, so they're isolated.
+- **`scripts/architecture/check-module-ownership.ts`** already enforces pillar boundaries — extending it is the right validator pattern.
+- **`src/integrations/supabase/types.ts` is auto-generated** — do not touch.
+- **Phase 8–11 manifests** (`public/generated/phase-*-manifest.json`) and CI gates are in place — must be preserved through the migration.
 
-### 7.2 Voice intents
-New table `voice_intents` (session_id, transcript_id, action_key, params, confidence, status, expires_at — 30d TTL). New RPC `extract_voice_intents` + `voice-spine?action=extract_intents` calling `gemini-3-flash-preview` with tool-calling. Surfaced in `VoiceTranscriptDrawer` with a "Run via Trust" button → existing trust-action engine.
+## Why this MUST be wave-based, not big-bang
 
-### 7.3 Embedding budget governance
-`embedding` capability key in `ai_capability_routing` (budget_class=`bulk`). `knowledge-embedder` calls `check_ai_budget_policies` per batch and writes `ai_budget_decision_receipts`. New view `embedding_budget_overview`; admin panel adds a burn-down card to `/admin/architecture/semantic-spine`.
+Moving 1,148 files in one pass would:
+1. Force every CI gate (Phase 8/9/10/11, knowledge-spine, semantic-spine, live-cortex, memory-provenance) to be re-validated simultaneously, masking which move broke what.
+2. Create a 1,000-file diff that no human can review, defeating the "no integration mistakes" requirement.
+3. Risk breaking the lazy-import wiring in `App.tsx` and the `Center` shells.
+4. Touch route registries, admin trees, generated artifacts, and validators in the same commit — exactly the integration-issue surface you asked me to avoid.
 
-### 7.4 Trust + observability
-2 new trust actions: `shared.voice.intent.execute` (high, `ask`), `shared.embedding.batch` (low, `pre_approved`) — total **44**. Manifest + CI gate updated.
-
-### Acceptance gates (10)
-1. `ai-orchestrator-stream` deployed and returns SSE.
-2. `useOrchestratorStream` emits ≥3 event kinds.
-3. `voice_intents` table exists, RLS owner-only, 30d TTL.
-4. `extract_voice_intents` returns ≥1 proposal on a test transcript.
-5. `voice-spine?action=extract_intents` deployed + idempotent.
-6. `VoiceTranscriptDrawer` renders intents with Trust-routed execute button.
-7. Embedder writes `ai_budget_decision_receipts` for every batch.
-8. `embedding_budget_overview` returns today's totals per user.
-9. Trust registry exports 44 entries; manifest hash regenerated.
-10. CI gate `check-semantic-spine-manifest.mjs` passes.
-
----
-
-# Phase 6 — Vector Embeddings & Voice-to-Memory Bridge ✅ SHIPPED
-
-Phases 1–5 delivered: module/workspace registry, authority engine, Health OS, AI orchestration with explainability traces, and a workspace-scoped knowledge spine (memory provenance + knowledge chunks + ingestion jobs).
-
-Phase 6 closes two open loops the orchestrator cannot yet do:
-
-1. **Semantic retrieval** — chunks are stored full-text only (`tsvector`); the orchestrator cannot rank by meaning.
-2. **Voice as a first-class memory source** — voice goes into `personal-brain` and `SitaVoiceContext` but never lands in `pb_memories` with provenance, so it disappears.
+The plan below executes in **9 numbered waves**, each independently shippable, each with its own validator and rollback story.
 
 ---
 
-## Current State (audit)
+## Target canonical tree (the destination)
 
-- ✅ `pgvector` extension is **available** in Postgres but not yet enabled.
-- ✅ `knowledge_chunks` exists with `embedding_status text` placeholder and tsvector full-text — but no embedding column.
-- ✅ Voice infra exists: `pb_voice_prefs`, `SitaVoiceContext`, `useCloudVoice`, `VoicePanel`, browser STT and `personal-brain` edge fn.
-- ❌ No `voice_sessions` / `voice_transcripts` tables → voice has no audit trail or persistence.
-- ❌ No bridge from a voice transcript to `memory_provenance` (`provenance_kind='inferred_voice'` is missing from the enum vocabulary).
-- ❌ Orchestrator `effective_workspace_memories` ranks by confidence × recency only, not similarity.
-- ❌ No embedding worker / batch job; `embedding_status` is permanently `pending`.
-- ❌ ElevenLabs STT/TTS exists in browser only — no server-side STT receipt for the audit trail.
+```
+src/
+  app/                    Bootstrap, route assembly, top-level shells/launchers (currently 1 file — fill it)
+  modules/                THE owner of user-facing product pillars
+    business/             { pages, components, services-facade, manifest, index }
+    concierge/            { pages, components, services-facade, manifest, index }
+    finance/              { pages, components, services-facade, manifest, index }
+    health/               { pages, components, services-facade, manifest, index }
+    _shared/              Cross-module reusable UI/services available to pillars only
+    _trust/               Trust platform consumed by pillars (kept as alias to src/platform/trust)
+  platform/               THE owner of cross-pillar systems
+    trust/                (canonical home — _trust becomes alias)
+    ai/                   (consolidates ai/ + ai-gateway/)
+    nova-sdk/             (consolidates nova-sdk/ + nova-runtime-sdk/)
+    policy/               (consolidates policy/ + policies/)
+    sync/                 (consolidates sync/ + sync-engine/)
+    core-services/        (consolidates core/ + core-services/ + os-services/)
+    knowledge/            (lifted from modules/_shared/knowledge — Phase 6–11 work)
+    notifications/  files/  owner/  mission-control/  atlas/  tenant/  enterprise/  personal-brain/
+    runtime/  integration/  observability/  search/  security/  governance/  …
+    (delete services-unclassified/ — classify each file)
+  domains/                Pure contracts/models/engines (already correctly scoped)
+  lib/services/           Side effects, persistence, integrations (kept; pillar-named subfolders relocate)
+  runtimes/               Runtime/host/deployability abstractions (already correctly scoped)
+  pages/                  THIN route adapters only — re-export from modules/platform
+  components/             Shared reusable presentation (pillar-specific moves into modules/<x>/components)
+  routes/                 Route registries (already correctly scoped)
+  admin/                  Canonical admin tree (src/pages/admin/ becomes thin adapters)
+  contexts/  hooks/  contracts/  integrations/  layouts/  features/  data/  test/  __tests__/  i18n/  types/  assets/  packages/  shell-runtime/  website-demo/  planes/
 
----
+generated/                Machine-owned outputs only
+  manifests/  proof/  readiness/  audits/  historical/
 
-## Phase 6 Deliverables
+public/generated/         Publish-safe surfaced artifacts only (subset of generated/)
 
-### 6.1 — Enable pgvector + embedding columns
-
-- `CREATE EXTENSION IF NOT EXISTS vector;`
-- `ALTER TABLE knowledge_chunks ADD COLUMN embedding vector(768) NULL;` (768 = Gemini text-embedding-004 dim).
-- `ALTER TABLE memory_provenance ADD COLUMN embedding vector(768) NULL;` — memories are also embedded for semantic recall.
-- IVFFlat indexes (`vector_cosine_ops`, `lists=100`) on both columns. Conditional creation only after first 100 rows are populated (deferred trigger).
-- New column `knowledge_chunks.embedding_model text` + `embedding_dim int` so future re-embed (e.g. 1536-dim) is non-destructive.
-
-### 6.2 — Embedding worker (`knowledge-embedder` edge fn)
-
-- Pulls up to 50 rows where `embedding_status='pending'` (chunks ∪ memories).
-- Calls **Lovable AI Gateway** `google/text-embedding-004` (no extra key required).
-- Writes `embedding`, `embedding_model`, `embedding_dim`, sets `embedding_status='embedded'`.
-- Records `ai_invocation_plans` row with `mode='embedding'`, capability `shared.embed.text`, full cost accounting.
-- Triggered by:
-  - Trust action `shared.knowledge.embed` (manual reindex).
-  - Cron-style invocation from existing `knowledge-indexer` once a chunk is written (already-async pattern, no new scheduler).
-
-### 6.3 — RPC `semantic_workspace_memories(workspace_id, query_embedding, max_n, min_similarity)`
-
-- Returns memories from (workspace ∪ user-global) ordered by `1 - (embedding <=> query_embedding)` (cosine sim).
-- Falls back gracefully to `effective_workspace_memories` when query_embedding is null OR fewer than 10 embedded memories exist.
-- Same sensitivity/restricted-workspace gating as Phase 5.
-
-### 6.4 — RPC `semantic_knowledge_chunks(workspace_id, query_embedding, max_n)` — same pattern, returns top chunks for grounding.
-
-### 6.5 — Orchestrator wiring
-
-Update `supabase/functions/ai-orchestrator/index.ts`:
-
-1. Before context resolution, embed the **last user message** via the embedding worker (cached by hash to avoid re-embedding).
-2. If `contextSources.semanticRetrieval !== false`, call the two new RPCs first; merge with `effective_workspace_memories` results (semantic wins on ties).
-3. Emit explainability traces with `metadata.similarity` and `metadata.retrieval_kind ∈ ('semantic'|'recency'|'explicit')`.
-
-Update `useOrchestrator.ts` types: `OrchestratorContextSources.semanticRetrieval?: boolean` (default true).
-
-### 6.6 — Voice spine (Voice-to-Memory bridge)
-
-**New tables** (RLS owner-only, 90-day TTL on transcripts):
-
-- `voice_sessions`
-  - `id uuid PK`, `user_id`, `workspace_id NULL`, `module_id NULL`
-  - `started_at`, `ended_at`, `duration_ms`, `provider text` (`browser_stt|elevenlabs_stt|gemini_stt`)
-  - `mode text` (`dictation|conversation|background`)
-  - `correlation_id uuid`, `metadata jsonb`, `expires_at`
-- `voice_transcripts`
-  - `id uuid PK`, `session_id uuid FK`, `user_id`
-  - `seq int`, `role text` (`user|assistant|system`)
-  - `text text`, `lang text`, `confidence numeric(4,3)`
-  - `is_final bool`, `audio_storage_path text NULL` (optional reference into `voice-recordings` bucket — not auto-stored)
-  - `embedding vector(768) NULL`, `embedding_status text`
-  - `expires_at`
-
-**New storage bucket** `voice-recordings` (private, owner-only via folder-name = user id). Default disabled — only used when user explicitly opts in via `pb_voice_prefs.transcript_retention='extended'`.
-
-### 6.7 — Voice-to-Memory promotion
-
-New RPC `promote_voice_transcript_to_memory(transcript_id, sensitivity)`:
-- Inserts into `pb_memories` with content from transcript.
-- Inserts into `memory_provenance` with `provenance_kind='inferred_voice'`, `source_chat_id=session_id`, `confidence_band` derived from STT confidence.
-- Marks transcript `metadata.promoted_memory_id`.
-- Trust action: `shared.memory.create` already covers this (Phase 5).
-
-New Trust action: `shared.voice.session.start` (low, `pre_approved`) — keeps voice spine inside authority engine. **Catalog now totals 41 actions.**
-
-### 6.8 — Edge function `voice-spine`
-
-Single endpoint with sub-routes:
-- `POST /voice-spine/session/start` → creates `voice_sessions` row, returns `session_id` + `correlation_id`.
-- `POST /voice-spine/transcript` → upserts `voice_transcripts` (called by client when STT fires `is_final`).
-- `POST /voice-spine/session/end` → finalises session, kicks `knowledge-embedder` to embed final transcripts.
-- `POST /voice-spine/promote` → wraps `promote_voice_transcript_to_memory`.
-
-CORS, auth via JWT, Trust enforcement on every sub-route.
-
-### 6.9 — Frontend (`src/modules/_shared/voice/`)
-
-- `voice-spine-service.ts` + `useVoiceSession()`, `useVoiceTranscripts(sessionId)`, `usePromoteTranscript()`.
-- `VoiceTranscriptDrawer.tsx` — read-only timeline of finalised transcripts with one-click "Remember this" button.
-- `SemanticContextBadge.tsx` — small chip surfaced inside `ExplainabilityPanel` showing similarity score when `retrieval_kind='semantic'`.
-- Hook `SitaVoiceContext` (existing) emits transcripts to the new spine when `pb_voice_prefs.transcript_retention !== 'none'` — non-breaking.
-
-### 6.10 — Admin & CI
-
-- New page `/admin/architecture/semantic-spine` — embedding coverage % per pillar, average similarity for last 100 retrievals, voice session counts, top-promoted memories.
-- New CI script `check-embedding-coverage.mjs` — fails if `embedding_status='pending'` count > 1000 (baseline lock) for chunks older than 24h.
-- New CI script `check-voice-spine-manifest.mjs` — emits `public/generated/voice-spine-manifest.json` (tables, RPCs, edge fn version, trust action count) and diff-checks like Phase 0/5.
-- Wire both into existing `deployment-readiness-gate.yml`.
-
-### 6.11 — Backfill
-
-- Schedule (idempotent, runs once via the embedder on first deploy): embed all existing `knowledge_chunks` and `pb_memories` rows in batches of 50.
-- No voice backfill (voice tables are net new).
+docs/
+  architecture/  adr/  runbooks/  reference/
+```
 
 ---
 
-## Acceptance Gates (must all pass before declaring Phase 6 done)
+## WAVE 1 — Repository constitution + validators (no code moves)
+**Goal:** Lock the rules in place before any file moves so every subsequent wave is self-validating.
 
-1. ✅ `vector` extension enabled; `embedding` columns added; IVFFlat indexes created (post-backfill).
-2. ✅ `knowledge-embedder` deployed and successfully embeds a sample chunk via Lovable AI Gateway.
-3. ✅ `semantic_workspace_memories` and `semantic_knowledge_chunks` RPCs return ranked results in < 200ms on a 1k-row test set.
-4. ✅ Orchestrator uses semantic retrieval; explainability traces show `retrieval_kind='semantic'` with similarity scores.
-5. ✅ `voice_sessions` and `voice_transcripts` tables present with RLS; `voice-spine` edge fn smoke-tested end-to-end.
-6. ✅ `promote_voice_transcript_to_memory` writes `memory_provenance` with `provenance_kind='inferred_voice'`.
-7. ✅ Trust catalog totals **41 actions**; manifest regenerated; diff CI green.
-8. ✅ Admin page `/admin/architecture/semantic-spine` renders real coverage %.
-9. ✅ Both new CI scripts green; baselines locked.
-10. ✅ TypeScript compiles clean; no new `as any` in `src/pages/**`; no duplicate code (re-uses `knowledge-indexer`, `pb_memories`, `pb_voice_prefs`, `SitaVoiceContext`).
+1. Write `docs/architecture/REPOSITORY_CONSTITUTION.md` — the human-readable version of the target tree, ownership rules, and forbidden patterns.
+2. Strengthen `scripts/architecture/check-module-ownership.ts` to also enforce:
+   - `src/platform/**` MUST NOT import from `src/modules/<pillar>/**`
+   - `src/components/**` MUST NOT import from `src/pages/**` or `src/modules/**`
+   - `src/domains/**` MUST be side-effect free (no `from "@/lib/services/"`, no `supabase`)
+3. Add `scripts/architecture/check-pages-thin-adapter.ts` — flags `src/pages/<pillar>/**` files >40 lines that are not pure re-exports (warn-only initially; becomes blocking in Wave 4).
+4. Add `scripts/architecture/check-no-duplicate-platform.ts` — flags duplicate platform folder pairs.
+5. Add `scripts/architecture/check-generated-vs-docs.ts` — flags hand-edited files inside `generated/`.
+6. Wire all 4 new checks into `.github/workflows/deployment-readiness-gate.yml` as a single `architecture-canonicalization` step (warn-only for Wave 1, becomes blocking after each subsequent wave it covers).
+7. Emit `generated/audits/repository-canonicalization-baseline.json` capturing today's file counts per ownership zone (will be the "before" snapshot for the final report).
 
----
-
-## Out of Scope (deferred)
-
-- Real-time streaming embeddings (we batch every chunk-write — sufficient for Phase 6).
-- Cross-modal (image/audio) embeddings — Phase 7 candidate.
-- Speaker diarisation — Phase 7 candidate (ElevenLabs scribe_v2 supports it; not needed for memory bridge).
-- Voice TTS personalisation — already covered by existing `pb_voice_prefs`.
+**Risk:** None — read-only validators + docs.
+**Rollback:** Revert one PR.
 
 ---
 
-**On approval**: I'll execute as one atomic phase — migration (vector + voice tables + RPCs) → trust seed → `knowledge-embedder` + `voice-spine` edge fns → frontend hooks/components → orchestrator semantic wiring → admin page → CI scripts → manifest regen → backfill smoke test — and not stop until every acceptance gate passes.
+## WAVE 2 — Platform deduplication (no semantic changes)
+**Goal:** Collapse the 5 duplicate platform folder pairs without changing what the code does.
+
+For each duplicate pair, do a **content audit first**, then merge with import rewriting:
+
+| Keep | Merge from | Strategy |
+|---|---|---|
+| `src/platform/ai/` | `src/platform/ai-gateway/` | Move `ai-gateway/*` → `ai/gateway/*`, rewrite imports. |
+| `src/platform/nova-sdk/` | `src/platform/nova-runtime-sdk/` | Audit overlap; nova-runtime-sdk appears smaller — fold into `nova-sdk/runtime/`. |
+| `src/platform/policy/` | `src/platform/policies/` | Merge into `policy/` (singular, matches existing `src/lib/policy/`). |
+| `src/platform/sync/` | `src/platform/sync-engine/` | Move `sync-engine/*` → `sync/engine/*`. |
+| `src/platform/core-services/` | `src/platform/core/`, `src/platform/os-services/` | Audit each; consolidate under `core-services/` with subfolders `os/`, `kernel/`. |
+
+Then **classify `src/platform/services-unclassified/`** file-by-file into the proper subsystem. Delete the folder when empty.
+
+For each merge:
+- Use a single migration script `scripts/architecture/wave-2-platform-dedup.ts` that moves files + rewrites all imports across the repo (codemod).
+- Validate with TypeScript compile + `bunx vitest run` smoke tests.
+- Update any `public/generated/*.json` that references old paths.
+
+**Risk:** Medium — touches platform foundations.
+**Rollback:** Revert single PR; codemod is reversible.
+**Validators added/flipped to blocking:** `check-no-duplicate-platform.ts`.
 
 ---
 
-# Phase 5 — Memory, Files & Knowledge Platform Hardening (COMPLETED)
+## WAVE 3 — Lift cross-pillar systems out of `src/modules/_shared` and `src/modules/_trust`
+**Goal:** Make `src/platform/` the real cross-pillar home; keep `_shared`/`_trust` only as **thin alias barrels** for transition.
 
-Phases 1–4 delivered: module/workspace registry, authority engine, Health OS data layer, and AI orchestration with explainability traces.
+Move:
+- `src/modules/_shared/knowledge/` → `src/platform/knowledge/` (this is the Phase 6–11 spine — high-value, must be done atomically with import rewriting).
+- `src/modules/_shared/ai/` → `src/platform/ai/shared-ui/` (or merge into existing platform/ai).
+- `src/modules/_shared/registry/` → `src/platform/registry/`.
+- `src/modules/_shared/workspace/` → `src/platform/tenant/workspace/`.
+- `src/modules/_trust/` → `src/platform/trust/` (registry, authority, ui).
 
-Phase 5 hardens the **knowledge spine** the orchestrator depends on: every memory, file, and knowledge chunk becomes workspace-scoped, provenance-tracked, sensitivity-classified, and governed by the Trust layer.
+Leave behind in `src/modules/_shared/index.ts` and `src/modules/_trust/index.ts` **pure re-export barrels** so existing pillar imports keep working with zero changes:
+```ts
+// src/modules/_shared/knowledge/index.ts (transitional)
+export * from "@/platform/knowledge";
+```
 
----
+Update Phase 8–11 manifests + CI gates to point at the new canonical paths (additive — manifest entries list both old + new during transition, then drop old in Wave 9).
 
-## Current State (audit)
-
-**Memory tables present**: `pb_memories` (user-scoped, no workspace_id, no provenance), `advisor_memories`, `boardroom-memory.service.ts`, etc. — fragmented, no unified scope or provenance.
-
-**File tables present**: `file_metadata` (legacy, no workspace_id), `pb_files` (has workspace_id + scope but no sensitivity/classification), `cloud_files` (storage shell). Two storage buckets exist: `user-files`, `pb-files`.
-
-**Gaps**:
-- No memory `workspace_id` or `module_id` scoping → orchestrator cannot inject workspace memory.
-- No memory `provenance` (source chat / file / inferred / explicit).
-- No memory `sensitivity` flag → restricted-workspace policies cannot be enforced.
-- No knowledge-chunk table → file Q&A has no retrievable units to cite in explainability traces.
-- No ingestion job table → multi-stage pipeline status is invisible.
-- File mutations bypass the Trust authority engine.
-- No "should I remember this?" governance loop.
-
----
-
-## Phase 5 Deliverables
-
-### 5.1 — Memory unification & provenance
-
-**New table `memory_provenance`** (extends `pb_memories` rather than replacing it, to avoid duplicate stores):
-- `memory_id uuid PK FK pb_memories(id) ON DELETE CASCADE`
-- `workspace_id uuid NULL` (FK pb_workspaces — null = global user memory)
-- `module_id text NULL` (FK module_registry.module_id)
-- `pillar text` (business|finance|concierge|health|shared)
-- `sensitivity text` default `internal` (`public|internal|confidential|restricted`)
-- `provenance_kind text` (`explicit_user|inferred_chat|inferred_file|inferred_behavior|system_seed`)
-- `source_chat_id uuid NULL`, `source_file_id uuid NULL`, `source_correlation_id uuid NULL`
-- `confidence_band text` (`low|medium|high|verified`)
-- `last_used_at timestamptz`
-- `usage_count int default 0`
-- `review_status text` default `accepted` (`pending_review|accepted|rejected|expired`)
-- RLS: owner-only via `pb_memories.user_id` join.
-
-**RPC `record_memory_usage(memory_id)`** — increments usage_count + sets last_used_at; called by orchestrator when a memory is injected into context.
-
-**RPC `effective_workspace_memories(workspace_id, max_n)`** — returns memories scoped to: (workspace) ∪ (user-global) excluding `restricted` unless workspace is also restricted, ranked by confidence × recency.
-
-### 5.2 — Knowledge chunks (file → retrievable units)
-
-**New table `knowledge_chunks`** — first time the system has citeable retrieval units:
-- `id uuid PK`
-- `user_id uuid NOT NULL`
-- `file_id uuid NOT NULL` (works against both `pb_files` and `file_metadata` via `source_table` discriminator)
-- `source_table text` (`pb_files|file_metadata`)
-- `workspace_id uuid NULL`, `module_id text NULL`, `pillar text`
-- `chunk_index int`, `content text`, `token_estimate int`
-- `sensitivity text` default `internal`
-- `embedding_status text` (`pending|embedded|failed|skipped`) — embedding column itself deferred (pgvector add-on); we store status now
-- `metadata jsonb`
-- `created_at, updated_at`
-- Indexed on `(user_id, workspace_id, file_id)` and full-text on `content` (tsvector generated column).
-- RLS owner-only.
-
-### 5.3 — Ingestion jobs
-
-**New table `ingestion_jobs`** — multi-stage pipeline observability:
-- `id uuid PK`, `user_id uuid`, `workspace_id uuid NULL`
-- `source_kind text` (`file|chat|voice|connector`)
-- `source_id uuid`, `source_table text`
-- `stage text` (`queued|extracting|classifying|chunking|embedding|indexed|failed`)
-- `progress numeric(4,3)`, `error text`, `correlation_id uuid`
-- Timestamps + RLS owner-only.
-
-### 5.4 — Trust integration (5 new actions, seeded into `trust_action_catalog`)
-
-- `shared.memory.create` (low, default `pre_approved`)
-- `shared.memory.update` (low, `pre_approved`)
-- `shared.memory.delete` (medium, `ask`)
-- `shared.file.upload` (low, `pre_approved`)
-- `shared.file.delete` (medium, `ask`)
-- `shared.knowledge.reindex` (low, `pre_approved`)
-
-Mirror in `src/modules/_trust/registry/trust-action-registry.ts` → catalog now totals **40 actions**. Manifest regenerated deterministically.
-
-### 5.5 — Edge function: `knowledge-indexer`
-
-New orchestration function that:
-1. Receives `{file_id, source_table, workspace_id?}`.
-2. Calls authority engine (`shared.knowledge.reindex`).
-3. Creates `ingestion_jobs` row, advances stages, writes `knowledge_chunks`.
-4. Re-uses existing `file-ingestion` for raw extraction (no duplication).
-5. Links chunks back to `ai_explainability_traces` schema (`source_table='knowledge_chunks'`).
-
-### 5.6 — Frontend: shared knowledge & memory hooks
-
-In `src/modules/_shared/knowledge/`:
-- `memory-service.ts` + `useMemory()` (workspace-scoped read, governed write through authority).
-- `knowledge-service.ts` + `useKnowledgeChunks(fileId)` + `useReindex()`.
-- `MemoryProvenanceBadge.tsx` — surfaces source/confidence/last-used inline.
-- `MemoryReviewQueue.tsx` — "Should I remember this?" inbox for `review_status='pending_review'`.
-- `IngestionStatusPanel.tsx` — live job stages.
-
-### 5.7 — Orchestrator wiring
-
-Update `src/modules/_shared/ai/useOrchestrator.ts` and `supabase/functions/ai-orchestrator/index.ts` to:
-- When `contextSources.workspaceMemoryAuto = true`, call `effective_workspace_memories` RPC instead of caller passing IDs by hand.
-- For each retrieved memory + chunk, write an `ai_explainability_traces` row with role=`grounding` and source_table set correctly.
-- Call `record_memory_usage` for each injected memory.
-
-### 5.8 — Admin & CI
-
-- New page `/admin/architecture/knowledge-spine` — counts memories by pillar/sensitivity, ingestion job health, top-cited chunks (last 30d).
-- New CI script `check-memory-provenance-coverage.ts` — fails if any `pb_memories` row created in last 24h lacks a `memory_provenance` row. Lock baseline at 0.
-- New CI script `check-knowledge-spine-manifest.ts` — emit deterministic `public/generated/knowledge-spine-manifest.json` (table counts, action keys, edge fn version) and diff like Phase 0.
-- Wire both into `.github/workflows/ci.yml` and `scripts/pre-deploy.sh`.
-
-### 5.9 — Backfill
-
-One-time migration backfill:
-- Insert `memory_provenance` rows for all existing `pb_memories` with `provenance_kind='system_seed'`, `confidence_band` derived from existing `confidence`, `sensitivity='internal'`, `workspace_id=NULL`.
-- Leave `knowledge_chunks` empty (filled lazily by `knowledge-indexer` on next file open or admin-triggered reindex).
+**Risk:** Medium-high — touches the live knowledge/federation/voice spine just shipped in Phase 11.
+**Rollback:** Each subsystem move is its own PR; revert independently.
+**Validators added:** Extend `check-module-ownership.ts` to flag direct imports of moved files via the *old* paths after grace period (warn first).
 
 ---
 
-## Acceptance Gates (must all pass before declaring Phase 5 done)
+## WAVE 4 — Pillar product page migration (Business + Concierge + Finance + Health)
+**Goal:** Make `src/modules/<pillar>/` the real owner of product pages.
 
-1. ✅ Migration applied; 4 new tables present with RLS; 5 new actions in `trust_action_catalog`.
-2. ✅ Backfill produced one `memory_provenance` row per existing `pb_memories` row.
-3. ✅ `knowledge-indexer` edge function deployed, smoke-tested on a sample file.
-4. ✅ Orchestrator auto-injects workspace memory + chunks and writes traces (verified via SQL).
-5. ✅ Admin page `/admin/architecture/knowledge-spine` renders real counts.
-6. ✅ Trust action manifest regenerated (40 actions); CI diff check green.
-7. ✅ `check-memory-provenance-coverage.ts` and `check-knowledge-spine-manifest.ts` green; baselines locked.
-8. ✅ TypeScript compiles; no new `as any` in `src/pages/**`.
-9. ✅ No duplicate code: existing `memory-service/` files, `file-ingestion` edge fn, and `pb_memories` table all reused, not replaced.
+For each pillar, move pages **as a single atomic PR per pillar** in this order (smallest first to de-risk):
+
+### Wave 4a — Health (9 pages, smallest blast radius)
+- Move `src/pages/health/*` → `src/modules/health/pages/*`.
+- Replace `src/pages/health/<X>.tsx` with one-line re-export: `export { default } from "@/modules/health/pages/<X>";`.
+- Update `src/routes/health-routes.tsx` to import from `@/modules/health/pages/*`.
+- Move pillar-specific components from `src/components/health/**` → `src/modules/health/components/**`, leave shared ones.
+- Update `MANIFEST.md`.
+
+### Wave 4b — Concierge (21 pages)
+Same pattern. Includes resolving the `TravelPlanning.tsx` already-migrated case (currently in both `src/pages/concierge/` as re-export and `src/modules/concierge/pages/`).
+
+### Wave 4c — Finance (34 money + 42 investment-office = 76 pages) — **Finance reconciliation**
+- Move `src/pages/money/*` → `src/modules/finance/pages/money/*`.
+- Move `src/pages/investment-office/*` → `src/modules/finance/pages/investment-office/*`.
+- Keep `/money/*` and `/finance/*` URL aliases (URL stability) — both routes hit the same module pages.
+- Add `src/routes/redirects/finance-aliases.ts` to make `/finance/*` ↔ `/money/*` interchangeable.
+- Update `MoneyCenter.tsx` shell to import sub-pages from `@/modules/finance/pages/`.
+- Leave thin re-exports in old `src/pages/money/` and `src/pages/investment-office/` paths for any straggler import.
+
+### Wave 4d — Business (49 business + 69 revenue-office + 20 digital-presence = 138 pages) — **Business reconciliation**
+- Move `src/pages/business/*` → `src/modules/business/pages/*`.
+- Move `src/pages/revenue-office/*` → `src/modules/business/pages/revenue/*` (revenue is a Business sub-domain).
+- Audit `src/pages/digital-presence/*` page-by-page:
+  - Business-owned (websites, brand, ecommerce ops) → `src/modules/business/pages/digital-presence/*`.
+  - Cross-pillar marketing → `src/platform/marketing/` if any.
+- Update `BusinessCenter.tsx` and `src/routes/business-routes.tsx` accordingly.
+- Update `MANIFEST.md` to reflect revenue-office is now an internal Business sub-domain.
+
+For every move in Wave 4: keep a 1-line re-export wrapper in `src/pages/<old-path>` so any forgotten import still works. These wrappers are tracked in `generated/audits/wave-4-compatibility-wrappers.json` and removed in Wave 9 once the no-direct-import validator is green for two CI runs.
+
+**Validators flipped to blocking:** `check-pages-thin-adapter.ts` for migrated pillars.
+**Risk:** High due to volume; mitigated by pillar-by-pillar PRs and the re-export safety net.
 
 ---
 
-## Out of Scope (deferred to later phases)
+## WAVE 5 — Cross-pillar root-level pages classification
+**Goal:** Each of these root-level page families gets a canonical home.
 
-- Vector embeddings (pgvector enable + similarity search) — Phase 6 candidate.
-- Voice transcript → memory bridge — Phase 6 (Voice Infrastructure).
-- Cross-workspace knowledge sharing UI — Phase 8 (Growth/CRM lifecycle).
+| Current path | Canonical home | Reason |
+|---|---|---|
+| `src/pages/personal-brain/` (19) | `src/platform/personal-brain/pages/` | Cross-pillar memory layer |
+| `src/pages/trust/` (8) | `src/platform/trust/pages/` | Cross-pillar trust UI |
+| `src/pages/owner/` (10) + `src/pages/owner-mode/` | `src/platform/owner/pages/` | Operator-only |
+| `src/pages/mission-control/` + `src/pages/mission/` (8) | `src/platform/mission-control/pages/` | Operator-only |
+| `src/pages/atlas/` (12) | `src/platform/atlas/pages/` | Cross-pillar map |
+| `src/pages/files/` (9) | `src/platform/files/pages/` | Cross-pillar file platform |
+| `src/pages/integrations/` | `src/platform/integration/pages/` | Cross-pillar |
+| `src/pages/intelligence/` | `src/platform/ai/pages/` | Cross-pillar AI |
+| `src/pages/app-platform/` (17) + `src/pages/store/` (6) + `src/pages/apps/` | `src/platform/app-platform/pages/` | App platform |
+| `src/pages/tenant/` + `src/pages/enterprise/` | `src/platform/tenant/pages/` and `src/platform/enterprise/pages/` | Tenancy/enterprise |
+| `src/pages/workspace/` | `src/platform/tenant/workspace/pages/` | Tenant workspace |
+| `src/pages/boardroom/` | `src/platform/ai/boardroom/pages/` | Boardroom is AI/advisor surface |
+| `src/pages/advisors/` + `src/pages/business-advisors/` | `src/platform/ai/advisors/pages/` and (business advisors stay under `src/modules/business/pages/advisors/`) | |
+| `src/pages/sita/` | `src/platform/personal-brain/sita/pages/` | Sita HUD/voice |
+| `src/pages/mobile/` (27) | `src/platform/runtime/mobile/pages/` | Runtime-specific |
+| `src/pages/marketing/` | Decision: keep as `src/pages/marketing/` (pure adapter, no canonical product surface) **or** move to `src/website-demo/pages/`. Decide at wave start. |
+| `src/pages/settings/` | `src/platform/setup/settings/pages/` (settings is platform-owned) | |
+| `src/pages/auth/` | Stays at `src/pages/auth/` — auth is route-entry by definition. |
+
+Each move follows the same "move + thin re-export wrapper" pattern as Wave 4.
+
+**Risk:** Medium per family.
+**Rollback:** Per-family PRs.
 
 ---
 
-**On approval**: I'll execute as one atomic phase — migration → trust seed → edge fn → frontend hooks → orchestrator update → admin page → CI scripts → manifest regen → verification — and not stop until every acceptance gate passes.
+## WAVE 6 — Admin tree consolidation (`src/pages/admin/` ↔ `src/admin/`)
+**Goal:** Eliminate the parallel admin tree.
+
+`src/admin/` is already structured as a proper module (with `pages/`, `modules/`, `routes/`, `shell/`, `state/`, `navigation/`). `src/pages/admin/` (583 files) is the older, larger surface.
+
+1. Audit which `src/admin/` files duplicate `src/pages/admin/` (likely many of the recent admin pages).
+2. Decide canonical: **`src/admin/` becomes the single owner** (already correctly structured).
+3. Move missing pages from `src/pages/admin/<area>/` → `src/admin/pages/<area>/` per area (ai-runtime, alerts, approvals, architecture, cloud, … 29 areas).
+4. Replace `src/pages/admin/**` with thin re-export wrappers (or delete if not referenced).
+5. Update `src/routes/AdminRoutes.tsx` to import from `@/admin/pages/`.
+6. Update `src/admin/redirects/` to handle any URL changes.
+
+**Risk:** High — admin is operationally critical (Mission Control surfaces).
+**Rollback:** Per-area PRs (29 areas = 29 small PRs).
+**Pre-flight:** Ensure `npm run lint` and `npx tsx scripts/architecture/check-module-ownership.ts` are green before each area PR.
+
+---
+
+## WAVE 7 — Component, domain, and lib/services normalization
+**Goal:** Fix the underlying ownership layers so they don't re-create the problem.
+
+1. **`src/components/`**: Audit pillar-specific component folders (`src/components/business/`, `src/components/money/`, `src/components/concierge/`, `src/components/health/`, `src/components/business-advisors/`, `src/components/revenue/`, `src/components/operations/`, `src/components/digital-presence/`, etc.) and move them into `src/modules/<owner>/components/`. Components used by ≥2 pillars stay in `src/components/`.
+2. **`src/domains/`**: Verify side-effect-free purity. Add `check-domains-purity.ts` validator. Move any side-effecting code into `src/lib/services/`.
+3. **`src/lib/services/`**: Pillar-named subfolders (`business-os/`, `concierge-os/`, `finance-os/`?, `health-*/`?) are kept here (this is the side-effects layer per the constitution), but each gets a `MANIFEST.md` declaring its owning pillar. Add `check-service-ownership.ts` to flag any cross-pillar service imports.
+4. **`src/services/`**: This is just a 1-file re-export façade — leave it; document its role in the constitution.
+5. **`src/features/`**: Audit each — most likely belong under modules or platform. Migrate or document why they remain.
+
+**Risk:** Medium — high file-touch count but each move is local.
+
+---
+
+## WAVE 8 — Generated artifacts + docs lifecycle governance
+**Goal:** Stop `generated/` from acting like a competing architecture source.
+
+1. Reorganize `generated/` (top-level) into:
+   ```
+   generated/
+     manifests/      ← *.json registry truth
+     proof/          ← evidence reports
+     readiness/      ← deployment readiness
+     audits/         ← one-time audit outputs
+     historical/     ← archive (date-stamped)
+   ```
+   Move each existing file into the right bucket. Use a single `scripts/architecture/wave-8-generated-reorg.ts` codemod that updates every `*.json` cross-reference.
+2. Reorganize `public/generated/` to contain ONLY publish-safe surfaced artifacts (subset of `generated/`). Add `scripts/architecture/check-public-generated-allowlist.ts` to enforce.
+3. Reorganize `docs/`:
+   ```
+   docs/
+     architecture/   ← REPOSITORY_CONSTITUTION + ADRs index + diagrams
+     adr/            ← numbered ADRs (one per major decision)
+     runbooks/       ← operational
+     reference/      ← API/connector reference
+   ```
+4. Move stale or duplicated `.md` files in repo root and other locations under `docs/historical/` or delete after archiving.
+5. Add `check-generated-vs-docs.ts` validator to blocking.
+6. Emit one ADR per wave: ADR-001 (Constitution), ADR-002 (Platform dedup), ADR-003 (Pillar migration), ADR-004 (Admin consolidation), ADR-005 (Generated reorg).
+
+**Risk:** Low — these are non-runtime files. Mostly mechanical.
+
+---
+
+## WAVE 9 — Compatibility wrapper sweep + final hardening
+**Goal:** Remove the temporary re-export wrappers from Waves 3–6 once the validators have been green for ≥2 CI runs.
+
+1. Run `scripts/architecture/find-stale-wrappers.ts` to list every 1-line `export { default } from ...` wrapper in `src/pages/`, `src/modules/_shared/`, `src/modules/_trust/`.
+2. For each wrapper, run `rg "@/pages/<old-path>"` across the repo. If zero usages → delete. If non-zero → fix the importer to use the canonical path, then delete.
+3. Remove transitional barrel exports in `src/modules/_shared/` and `src/modules/_trust/` (they become empty `index.ts` re-exporting from `@/platform/`).
+4. Optionally rename `src/modules/_trust/` → `src/modules/trust-bridge/` (or delete entirely) — decide based on remaining usage.
+5. Flip every Wave 1–8 validator to blocking in CI.
+6. Emit final reports:
+   - `SITA_OS_REPOSITORY_TREE_CANONICAL_OWNERSHIP_MAP.md`
+   - `SITA_OS_MODULE_PLATFORM_PAGE_OWNERSHIP_MATRIX.md`
+   - `SITA_OS_ROUTE_WRAPPER_AND_CANONICAL_PAGE_MAP.md`
+   - `SITA_OS_GENERATED_DOCS_ARTIFACT_LIFECYCLE_MAP.md`
+   - `SITA_OS_FULL_TREE_CANONICALIZATION_REPORT.md` (the master summary with before/after counts, debt log, and rollback log)
+
+---
+
+## Wave dependency graph
+```
+Wave 1 (constitution + validators)       [can ship immediately]
+   ↓
+Wave 2 (platform dedup)                  [unlocks Wave 3]
+   ↓
+Wave 3 (_shared/_trust → platform)       [unlocks Wave 4]
+   ↓
+Wave 4 (pillar pages: 4a→4b→4c→4d)       [parallel-safe per pillar]
+   ↓
+Wave 5 (cross-pillar pages)              [parallel-safe per family]
+   ↓
+Wave 6 (admin consolidation)             [parallel-safe per area]
+   ↓
+Wave 7 (components/domains/lib normalize)
+   ↓
+Wave 8 (generated/docs lifecycle)
+   ↓
+Wave 9 (wrapper sweep + final reports)
+```
+
+## What I will NOT do (explicit non-goals to avoid integration issues)
+
+1. **Will not** move all 1,148 pages in one PR.
+2. **Will not** edit `src/integrations/supabase/types.ts` or `src/integrations/supabase/client.ts`.
+3. **Will not** modify `supabase/config.toml` project-level settings.
+4. **Will not** rename routes (URL stability preserved). All moves keep existing URLs alive via wrappers or the `src/routes/redirects/` map.
+5. **Will not** delete the Phase 8–11 manifests or knowledge spine — those move atomically in Wave 3 with their CI gates updated in the same PR.
+6. **Will not** touch `src/runtimes/`, `src/contexts/`, `src/hooks/`, `src/integrations/`, `src/data/`, `src/i18n/`, `src/test/`, `src/__tests__/`, `src/contracts/`, `src/layouts/`, `src/packages/`, `src/website-demo/`, `src/shell-runtime/`, `src/types/`, `src/assets/`, `src/planes/` — they're already correctly scoped.
+7. **Will not** introduce a parallel architecture; every move *replaces* the old location with a thin wrapper, never duplicates.
+8. **Will not** stop after analysis — each wave ends in shipped code + green CI.
+
+## Approval scope
+
+When you approve this plan, I will execute **Wave 1 first** (validators + constitution + baseline snapshot, ~15 files, zero runtime changes). After Wave 1 lands and CI is green, I'll ask before proceeding to Wave 2, and so on. This gives you a checkpoint after each wave with no risk of mid-flight integration breakage.
+
+If you'd rather I bundle multiple waves into one delivery, say "execute Waves 1–3 together" (or any combination) and I'll batch them.
