@@ -27,12 +27,37 @@ const FORBIDDEN: Array<[RegExp, string]> = [
   [/\/components\/surfaces\//, "imports from /components/surfaces/ — domain may not depend on surface"],
 ];
 
+// ── Wave 1.2 Rule 41 — extended forbidden imports for src/domains/** ──
+// Domain code MUST NOT import React, Supabase, services, components, or pages.
+const DOMAIN_FORBIDDEN: Array<[RegExp, string]> = [
+  [/^react($|\/)/, "imports react — domain must be UI-free"],
+  [/^react-dom($|\/)/, "imports react-dom — domain must be UI-free"],
+  [/^@\/integrations\/supabase/, "imports @/integrations/supabase — domain must be persistence-free"],
+  [/^@\/lib\/services(\/|$)/, "imports @/lib/services — domain must be side-effect-free"],
+  [/^@\/components(\/|$)/, "imports @/components — domain must be UI-free"],
+  [/^@\/pages(\/|$)/, "imports @/pages — domain must not depend on routes"],
+];
+
 for (const rec of domainRecords) {
   const imports = extractImports(rec.path);
   for (const imp of imports) {
     for (const [pattern, reason] of FORBIDDEN) {
       if (pattern.test(imp.source)) {
         vc.add(rec.path, "domain-impurity", `${reason}: ${imp.source}`);
+      }
+    }
+  }
+}
+
+// ── Wave 1.2 — scan all of src/domains/** for the extended Rule 41 set ──
+const domainTreeFiles = scanDir("src/domains", [".ts", ".tsx"]);
+for (const file of domainTreeFiles) {
+  if (file.includes("/__tests__/") || file.endsWith(".test.ts") || file.endsWith(".test.tsx")) continue;
+  const imports = extractImports(file);
+  for (const imp of imports) {
+    for (const [pattern, reason] of DOMAIN_FORBIDDEN) {
+      if (pattern.test(imp.source)) {
+        vc.add(file, "domain-impurity-rule-41", `${reason}: ${imp.source}`);
       }
     }
   }
