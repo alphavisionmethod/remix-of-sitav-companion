@@ -164,6 +164,8 @@ serve(async (req) => {
                         memory_id: String(m.memory_id),
                         content: String(m.content ?? ""),
                         similarity: sim,
+                        peer_workspace_id: m.workspace_id ? String(m.workspace_id) : null,
+                        via_federation: viaFed,
                       });
                       traceRows.push({
                         source_type: "memory", source_id: String(m.memory_id),
@@ -188,6 +190,8 @@ serve(async (req) => {
                         chunk_id: String(c.chunk_id),
                         content: String(c.content ?? ""),
                         similarity: sim,
+                        peer_workspace_id: c.workspace_id ? String(c.workspace_id) : null,
+                        via_federation: viaFed,
                       });
                       traceRows.push({
                         source_type: "knowledge_chunk", source_id: String(c.chunk_id),
