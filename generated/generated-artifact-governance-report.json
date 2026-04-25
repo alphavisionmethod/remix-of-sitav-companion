@@ -1,0 +1,10 @@
+{
+  "generatedAt": "2026-04-25T19:18:45.080Z",
+  "gate": "generated-artifact-governance",
+  "ok": true,
+  "errorCount": 0,
+  "warningCount": 0,
+  "totalArtifacts": 1446,
+  "baselineOrphans": 919,
+  "issues": []
+}

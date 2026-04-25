@@ -148,6 +148,42 @@ During an in-flight migration wave, a thin re-export wrapper at the old path is 
 
 The full ownership model (promotion rule, duplication rule, direction rule, decision tree) lives in `docs/architecture/CONTRACT_LAYER_OWNERSHIP_MODEL.md`.
 
+## Wave B.1 — Generated Artifact Lifecycle Law (BLOCKING)
+
+Every file under `generated/**` carries four mandatory facets: **lifecycle class**, **freshness TTL**, **owning generation script**, **publishability**. The four lifecycle classes are:
+
+- `active-blocking` — read by a STRICT/BLOCK validator; TTL 7d; stale or missing **fails CI**.
+- `active-informational` — read by a WARN/advisory validator or dashboard; TTL 30d; warns on stale.
+- `reference` — engineer/audit lookup; TTL 180d; label-only.
+- `historical-archived` — frozen snapshot/baseline; never expires; immutable.
+
+Rules:
+- Every `active-*` artifact MUST have an owning script under `scripts/**` (or appear on `generated/baselines/orphan-artifact-baseline.json`, which is monotone-decreasing).
+- An artifact may be mirrored to `public/generated/**` only if it matches `MIRROR_RULES` in `scripts/architecture/lib/public-mirror-policy.ts` AND is not `active-blocking` (unless explicitly allowlisted).
+- Canonical manifest: `generated/manifests/generated-artifact-governance-map.json`. Canonical policy: `generated/manifests/generated-artifact-freshness-policy.json`.
+- Validator (BLOCK): `scripts/architecture/checks/check-generated-artifact-governance.ts`.
+- Generator: `scripts/architecture/generate/generate-artifact-governance-map.ts`.
+- Full model: `docs/architecture/GENERATED_ARTIFACT_LIFECYCLE_MODEL.md`.
+
+## Wave B.2 — Frontend / Backend Ownership Law (BLOCKING)
+
+The boundary between UI, frontend service facades, integration clients, edge functions, and migrations is constitutional:
+
+- `supabase/functions/**` owns backend execution endpoints. Never imported by `src/**`.
+- `supabase/migrations/**` owns schema evolution. Never treated as application logic.
+- `src/integrations/**` owns generated clients and provider adapters. May be imported only by `src/lib/services/**`, `src/lib/clients/**`, `src/data/**`, `src/platform/**`, `src/modules/**`.
+- `src/lib/services/**` owns app-facing service facades. The only sanctioned home for raw backend invocation patterns. May NOT import `react`, `@/components/**`, or `@/pages/**`.
+- `src/pages/**` and `src/components/**` are UI/presentation only and must call backend through a service facade. Direct `@/integrations/supabase/client` imports are baselined and **monotone-decreasing** (page baseline = 145; component sealed at 0).
+- `src/domains/**` is pure business logic. Direct integration/service imports are baselined at 9 and **monotone-decreasing**.
+- A frontend service that proxies an edge function must declare a contract link (`SERVICE_LAYER_CONSTITUTION.md` Rule 44).
+
+Rules:
+- Validator (BLOCK): `scripts/architecture/checks/check-page-backend-bypass.ts`.
+- Companion BLOCK gates: `check-no-ui-in-backend`, `check-edge-function-ownership-completeness`, `check-route-backend-wiring`.
+- Canonical manifest: `generated/manifests/frontend-backend-boundary-map.json`.
+- Canonical baseline: `generated/baselines/page-backend-bypass-baseline.json`.
+- Full model: `docs/architecture/FRONTEND_BACKEND_OWNERSHIP_MODEL.md`.
+
 ## Amendment process
 
 1. Open an ADR under `docs/adr/ADR-<NNN>-<slug>.md` describing the change and its blast radius.
@@ -168,3 +204,9 @@ The full ownership model (promotion rule, duplication rule, direction rule, deci
 - Deprecated shim manifests (Wave 3 → removal Wave 9): `src/modules/_shared/MANIFEST.md`, `src/modules/_trust/MANIFEST.md`
 - Admin plane manifest: `src/admin/MANIFEST.md`
 - Admin plane model: `docs/architecture/ADMIN_PLANE_OWNERSHIP_MODEL.md`
+- Generated artifact lifecycle model (Wave B.1): `docs/architecture/GENERATED_ARTIFACT_LIFECYCLE_MODEL.md`
+- Frontend/Backend ownership model (Wave B.2): `docs/architecture/FRONTEND_BACKEND_OWNERSHIP_MODEL.md`
+- Wave B governance manifest: `generated/manifests/generated-artifact-governance-map.json`
+- Wave B freshness policy: `generated/manifests/generated-artifact-freshness-policy.json`
+- Wave B FE/BE boundary map: `generated/manifests/frontend-backend-boundary-map.json`
+- Wave B baselines: `generated/baselines/orphan-artifact-baseline.json`, `generated/baselines/page-backend-bypass-baseline.json`

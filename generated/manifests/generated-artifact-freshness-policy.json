@@ -1,0 +1,44 @@
+{
+  "version": "1.0.0",
+  "generatedAt": "2026-04-25T19:13:11Z",
+  "policy": {
+    "active-blocking": {
+      "definition": "Artifact read by a STRICT/BLOCK gate (validator-gate-map classification=block). Stale or missing fails CI.",
+      "freshnessTtlDays": 7,
+      "ciOnStale": "fail",
+      "ciOnMissing": "fail",
+      "publishable": "only-if-allowlisted",
+      "owningScriptRequired": true
+    },
+    "active-informational": {
+      "definition": "Artifact read by a WARN/advisory gate or dashboard. Stale warns; missing warns.",
+      "freshnessTtlDays": 30,
+      "ciOnStale": "warn",
+      "ciOnMissing": "warn",
+      "publishable": "yes-if-mirror-policy-matches",
+      "owningScriptRequired": true
+    },
+    "reference": {
+      "definition": "Engineer/audit lookup; not gated. Label-only on stale.",
+      "freshnessTtlDays": 180,
+      "ciOnStale": "label-only",
+      "ciOnMissing": "none",
+      "publishable": "yes-if-mirror-policy-matches",
+      "owningScriptRequired": false
+    },
+    "historical-archived": {
+      "definition": "Frozen wave/audit snapshots. Never expires.",
+      "freshnessTtlDays": null,
+      "ciOnStale": "none",
+      "ciOnMissing": "none",
+      "publishable": "yes-immutable",
+      "owningScriptRequired": false
+    }
+  },
+  "exceptions": {
+    "orphanArtifactsBaseline": "generated/baselines/orphan-artifact-baseline.json",
+    "rationale": "917 pre-Wave-B orphans pinned. New orphans block CI."
+  },
+  "owningManifest": "generated/manifests/generated-artifact-governance-map.json",
+  "constitutionRule": "Wave B.1"
+}

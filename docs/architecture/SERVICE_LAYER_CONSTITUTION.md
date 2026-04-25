@@ -92,3 +92,31 @@ No file may be promoted between vocabulary classes (Service ↔ Adapter ↔ Clie
 
 No physical file move, no logic change, no UI change, and no public API change
 is permitted in a vocabulary-class promotion PR.
+
+## Rule 44 — Service ↔ Edge Function contract link (Wave B / Constitution §B.2)
+
+Any frontend service in `src/lib/services/<name>/` whose primary responsibility is to
+invoke an edge function in `supabase/functions/<fn>/` MUST declare the contract link
+so the anti-duplication validator can prove the pairing.
+
+Recommended pattern:
+
+```ts
+// src/lib/services/<name>/contract.ts
+export const EDGE_FUNCTION_NAME = "<fn>";
+// Re-export the shared request/response types so both sides reference the same shape.
+export type * from "@/contracts/types";
+```
+
+Forbidden:
+
+1. A frontend service that re-implements business logic already owned by an edge
+   function (or vice versa) without the contract link.
+2. Multiple frontend services that each duplicate the same edge-function caller
+   logic (consolidate into a single facade).
+3. Edge functions that own frontend-specific concerns (presentation state,
+   route shape, UI-only validation copy).
+
+Authority: `docs/architecture/FRONTEND_BACKEND_OWNERSHIP_MODEL.md`.
+Surfaced advisory: `check-edge-function-mutation-traceability.ts`.
+BLOCK companion: `check-page-backend-bypass.ts` (the page-level enforcement).
