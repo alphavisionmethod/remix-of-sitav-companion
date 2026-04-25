@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { fromTable } from "@/lib/supabase-helpers";
 import { supabase } from "@/integrations/supabase/client";
+import { useTrustEmit } from "@/hooks/use-trust-emit";
 
 interface EscalationContext {
   entityType: "contact" | "company" | "deal";
@@ -78,6 +79,7 @@ export function CRMEscalateToBoardroom({ open, onOpenChange, context }: Props) {
   const [requestedActions, setRequestedActions] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const { receipt: emitTrustReceipt } = useTrustEmit();
 
   const boardroomAssessment = useMemo(() => computeBoardroomScore(context), [context]);
 
@@ -150,6 +152,23 @@ export function CRMEscalateToBoardroom({ open, onOpenChange, context }: Props) {
         },
         confidence_state: { score: boardroomAssessment.score, source: "crm_escalation" },
         status: "new",
+      });
+
+      // Trust Layer — emit a signed receipt for the escalation so the
+      // Trust Center surfaces this Business OS action alongside all others.
+      await emitTrustReceipt({
+        actionKey: "business.crm.escalate-to-boardroom",
+        pillar: "business",
+        riskTier: severity === "critical" ? "critical" : severity === "high" ? "high" : "medium",
+        reversible: true,
+        payload: {
+          entityType: context.entityType,
+          entityId: context.entityId,
+          entityName: context.entityName,
+          severity,
+          relevanceScore: boardroomAssessment.score,
+          tags: selectedTags,
+        },
       });
 
       setSubmitted(true);
