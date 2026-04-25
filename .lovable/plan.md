@@ -1,139 +1,119 @@
-# Wave 0.6 — Admin Plane Definition & Hardening
+# Wave 0.7 — Semantic Route-Adapter Hardening
 
-## Audit findings (real repo state)
+## Audit findings (read-only inspection of the real repo)
 
-| Surface | Reality |
-|---|---|
-| `src/admin/**` | Skeleton only — 9 subfolders, mostly barrels (1 component, 2 hooks, 17 modules, 1 shell, 1 nav, 1 redirects, 1 routes, 1 state). Contains **no** canonical page bodies; `src/admin/pages/` is just re-export barrels. |
-| `src/pages/admin/**` | **583 .tsx files**, median 150 lines, 452 files >100 lines — overwhelmingly **canonical page bodies**, not adapters. Only **8 files** are thin wrappers re-exporting from `@/admin`. |
-| `src/planes/admin.ts` | Re-exports from `@/lib/platform-plane/*` and `@/lib/admin-ai`, **never references `@/admin/**`** — plane metadata is detached from the canonical home. |
-| `src/routes/AdminRoutes.tsx` | 545 lines, lazy-imports **directly from `@/pages/admin/*`** — bypasses the `@/admin` barrels entirely. |
-| Cross-imports | `platform→admin`: **1** (`page-consolidation.ts` re-exports `admin-redirect-map`). `modules→admin`: 0. `admin→platform`: 13 (allowed). `admin→modules`: 0. |
-| Existing governance | `docs/architecture/ADMIN_INFORMATION_ARCHITECTURE.md` (12-domain budget), `src/lib/architecture/admin-route-registry.ts`, `src/lib/architecture/admin-ia-target.ts`, plus 10 `check-admin-*` validators in `scripts/architecture/checks/` and 20+ in `scripts/validation/`. |
-| Foundation tier | Wave 0 / 0.5 sealed; Wave 10 attestation locks `src/admin`, `src/pages`, `src/platform` digests. |
+| Surface | Files | Semantic violations¹ | Status under existing law |
+|---|---:|---:|---|
+| `src/pages/admin/**` | 583 | **305** | Body-count ratcheted (Rule 30); **semantic content not enforced** |
+| `src/pages/mobile/**` | 27 | 12 | Not covered by Rule 7 |
+| `src/pages/owner-mode/**` | 1 | 1 | Not covered by Rule 7 |
+| Root `src/pages/*.tsx` | 97 | 0 | Already adapter-shaped (re-exports / shell mounts) |
+| Pillar dirs (business/concierge/finance/health/money/…) | ~250 | **0** | Cleaned by Waves 5–6 |
+| `__tests__` | 50 | n/a | Excluded |
+| **Total** | **1,148** | **318** | |
 
-**Diagnosis.** `src/admin/` is **declared canonical** by Constitution but **physically near-empty**. The 583 real page bodies live in `src/pages/admin/`, and `AdminRoutes.tsx` imports them directly. A bulk physical move would (a) break the Wave 10 attestation, (b) churn 583 routes, and (c) violate the safe-change ledger requirements (Rule 25). The right move is **classification-first hardening with a monotone ratchet**, mirroring the Wave 0.5 platform pattern.
+¹ "Semantic violation" = file matches `useQuery\(|useMutation\(|supabase\.|useState\(` — i.e. the file is doing data fetching, mutation, or owning state, regardless of line count.
 
----
+**The loophole confirmed.** Today a 30-line `src/pages/admin/X.tsx` that calls `useQuery(...) → supabase.from(...)` passes Rule 7 (`≤40 lines OR pure re-export`) because Rule 7 is purely syntactic and only scoped to 8 pillar dirs. There is **no existing rule** asserting that page files must not fetch data, mutate state, or own canonical logic. Rule 30 only ratchets the admin **body count**, not the semantic content of those bodies.
 
-## What this wave installs (no risky physical moves)
-
-### Part 1 — Constitution: Rules 29–32 (Admin Plane Law)
-
-Append to `docs/architecture/REPOSITORY_CONSTITUTION.md`:
-
-- **Rule 29 — Admin canonical home.** `src/admin/**` owns admin/operator page bodies, layouts, navigation, dashboards, and operator consoles. New admin page bodies MUST be created under `src/admin/modules/<domain>/views/` (matching the existing 8-file pattern in `src/admin/modules/verification/views/`).
-- **Rule 30 — `src/pages/admin/**` is adapter-only (forward).** New files under `src/pages/admin/**` MUST be thin re-export wrappers (≤10 lines) targeting `@/admin/**`. Existing 575 page-body files are grandfathered into a monotone ratchet baseline; the count may only decrease.
-- **Rule 31 — Admin dependency direction.** `admin → platform` ✅. `admin → modules` ❌ (admin may consume read-models via service facades, not import module page bodies). `platform → admin` ❌. `modules → admin` ❌. `pages/admin → admin` ✅ (adapter pattern). The single existing `platform→admin` violation (`src/platform/architecture/page-consolidation.ts`) is added to the exception ledger with a fix-forward target.
-- **Rule 32 — Admin vs Platform ownership.** `src/admin/**` may aggregate pillar/platform read-models but MUST NOT become the canonical owner of platform capability or pillar product logic. Capability lives in `src/platform/**`; admin owns the operator UI over it.
-
-### Part 2 — Canonical model document
-
-Create `docs/architecture/ADMIN_PLANE_OWNERSHIP_MODEL.md` covering:
-- Canonical home + adapter layer model
-- Allowed/forbidden dependency matrix
-- Admin vs Platform vs Modules table with examples
-- Operator-only vs product-observable surface distinction
-- Profile-gating rules (cross-link to `ROUTE_AND_APP_PLANE_MAP.md`)
-- Migration policy (new files → `@/admin`; legacy bodies → ratchet down over time)
-
-### Part 3 — Canonical manifests
-
-1. **`generated/manifests/admin-plane-ownership-map.json`** — generated by new `scripts/manifests/generate/generate-admin-plane-ownership-map.ts`. For each of 583 `src/pages/admin/*` files, classify:
-   - `kind`: `THIN_ADAPTER` (≤10 lines, re-exports `@/admin`) or `LEGACY_PAGE_BODY`
-   - `canonicalPath`: target `@/admin/modules/<domain>/views/...` if known
-   - `domain`: one of the 12 IA domains (from `admin-route-registry.ts`)
-   - `profile`: `operator`-only (default for `/admin/*`)
-
-2. **`generated/manifests/admin-page-body-baseline.json`** — monotone ratchet snapshot: current count of `LEGACY_PAGE_BODY` files (~575). Future PRs may only **decrease** this number. Mirrors the Wave 0.5 cross-subclass ratchet model.
-
-3. **`generated/manifests/admin-dependency-violation-baseline.json`** — snapshot of the 1 known `platform→admin` import. Decrease-only ratchet.
-
-Register all 3 in `scripts/manifests/generate/generate-foundation-manifest-index.ts` and re-emit `foundation-manifest-index.json`.
-
-### Part 4 — Validators (BLOCKING, foundation-tier)
-
-1. **`scripts/architecture/check-admin-plane-boundaries.ts`** (new, BLOCKING)
-   - Fails on any new `platform→admin` or `modules→admin` import (vs. baseline)
-   - Fails on any new `admin→modules` import
-   - Fails on new `src/pages/admin/*.tsx` files >10 lines that don't re-export `@/admin/**`
-   - Honors monotone ratchet baselines
-
-2. **`scripts/architecture/check-admin-page-body-ratchet.ts`** (new, BLOCKING)
-   - Recomputes `LEGACY_PAGE_BODY` count, fails if greater than baseline
-   - Emits `generated/manifests/admin-page-body-ratchet-report.json`
-
-3. **Wire into foundation gate.** Update `src/lib/ci/validator-gate-map.ts` to register both as `release-readiness` and add to `generated/manifests/foundation-tier-validator-set.json`. Re-emit `generated/validator-gate-map.json`.
-
-### Part 5 — Plane metadata alignment
-
-Update `src/planes/admin.ts` to re-export the canonical `@/admin/**` surfaces alongside the existing platform-plane utilities (additive — no removals, preserves existing imports). Add a header note pointing to the new ownership model doc.
-
-Update `src/planes/ADMIN_MANIFEST.md` to reflect Rule 29–32 and link to `ADMIN_PLANE_OWNERSHIP_MODEL.md`.
-
-### Part 6 — `src/admin/MANIFEST.md` (new)
-
-Create the missing manifest at `src/admin/MANIFEST.md` declaring:
-- The 9 subfolders + canonical purpose
-- The `modules/<domain>/views/` pattern for new page bodies
-- Pointer to `ADMIN_PLANE_OWNERSHIP_MODEL.md`
-- Pointer to the 12-domain IA in `ADMIN_INFORMATION_ARCHITECTURE.md`
-
-### Part 7 — CI wiring
-
-Update `.github/workflows/foundation-gate.yml` to invoke the two new validators in the blocking step. No change to `deployment-readiness-gate.yml` (foundation gate is upstream).
-
-### Part 8 — Audit report
-
-Create `generated/audits/admin-plane-hardening-report.md` capturing:
-- Pre-state: 583 page-body files, 9-folder shell, detached planes/admin.ts
-- Post-state: classification map, baselines installed, Rules 29–32 active
-- Wave 10 attestation: **preserved** (no physical moves)
-- Future relocation wave: out of scope, governed by ratchet
+**Constraint.** Wave 10 architectural attestation is sealed. No physical file moves in this wave — install the enforcement substrate first, ratchet existing debt, block new violations. Migration of the 318 legacy semantic page-bodies happens in a future "Page Body Relocation Wave" (same pattern as Waves 0.5 / 0.6).
 
 ---
 
-## What this wave deliberately does NOT do
+## Six-class semantic adapter contract
 
-- ❌ **No physical file moves** of the 575 legacy page bodies (would break Wave 10 attestation; requires safe-change evidence per file under Rule 25). A future "Admin Relocation Wave" governed by the ratchet handles this incrementally.
-- ❌ **No changes to `AdminRoutes.tsx`** (still imports `@/pages/admin/*` — adapters will be added file-by-file as bodies migrate).
-- ❌ **No removal of `src/lib/platform-plane/*`** despite its name suggesting overlap — that's a separate platform-subclassification concern.
-- ❌ **No new top-level admin domains** (12-domain budget enforced by existing `check-admin-domain-budget.ts`).
+A file under `src/pages/**` may belong to **exactly one** of these six adapter subtypes:
 
----
+| # | Subtype | Allowed | Forbidden |
+|---|---|---|---|
+| 1 | **Pure re-export** | `export { default } from "@/{modules,platform,admin}/..."` only | Anything else |
+| 2 | **Lazy route adapter** | `lazy(() => import("@/..."))`, `<Suspense>` boundary, route-level fallback | Data fetching, state ownership |
+| 3 | **Redirect adapter** | `useNavigate`, `useLocation`, feature-flag check via context, `<Navigate to=…/>` | Domain data, mutations |
+| 4 | **Param-translation adapter** | `useParams`, `useSearchParams`, normalize → forward to canonical page | Data fetching, business state |
+| 5 | **Shell-mount adapter** | Wrap canonical page in shell (`MobileShell`, `AppFrame`, etc.); pass props through | Owning the page's state or data |
+| 6 | **Event-dispatch adapter** | `window.dispatchEvent("sita-open-...")` + `navigate("/desktop")` (the existing windowed-app pattern in `BusinessCenter.tsx`, `ConciergeCenter.tsx`, `MoneyCenter.tsx`) | Anything beyond dispatch + navigate |
 
-## Files touched (preview)
-
-| Action | Path |
-|---|---|
-| Create | `docs/architecture/ADMIN_PLANE_OWNERSHIP_MODEL.md` |
-| Create | `src/admin/MANIFEST.md` |
-| Create | `scripts/manifests/generate/generate-admin-plane-ownership-map.ts` |
-| Create | `scripts/architecture/check-admin-plane-boundaries.ts` |
-| Create | `scripts/architecture/check-admin-page-body-ratchet.ts` |
-| Create | `generated/manifests/admin-plane-ownership-map.json` |
-| Create | `generated/manifests/admin-page-body-baseline.json` |
-| Create | `generated/manifests/admin-dependency-violation-baseline.json` |
-| Create | `generated/audits/admin-plane-hardening-report.md` |
-| Edit | `docs/architecture/REPOSITORY_CONSTITUTION.md` (+ Rules 29–32) |
-| Edit | `src/planes/admin.ts` (additive re-exports + header) |
-| Edit | `src/planes/ADMIN_MANIFEST.md` (link new model) |
-| Edit | `scripts/manifests/generate/generate-foundation-manifest-index.ts` (+3 manifests, +2 validators) |
-| Edit | `src/lib/ci/validator-gate-map.ts` (register 2 new BLOCKING validators) |
-| Edit | `generated/manifests/foundation-manifest-index.json` (regenerated) |
-| Edit | `generated/manifests/foundation-tier-validator-set.json` (regenerated) |
-| Edit | `generated/validator-gate-map.json` (regenerated) |
-| Edit | `.github/workflows/foundation-gate.yml` (+ 2 validator invocations) |
-| Edit | `generated/audits/repository-canonicalization-baseline.json` (+ `adminPlaneHardeningInstalled: true`) |
+**Universally forbidden in `src/pages/**`:**
+- `supabase.*` calls
+- `useQuery` / `useMutation` / `useInfiniteQuery` (TanStack)
+- `fetch(` for domain data
+- `useState` / `useReducer` for canonical feature state (transient UI flags inside redirect/shell adapters allowed when annotated)
+- Trust / approval / persistence logic
+- Business-rule branching that owns a concept
 
 ---
 
-## Verification
+## Implementation plan (no physical file moves)
 
-1. Run `tsx scripts/manifests/generate/generate-admin-plane-ownership-map.ts` → manifest emitted, ~575 LEGACY_PAGE_BODY + ~8 THIN_ADAPTER.
-2. Run `tsx scripts/architecture/check-admin-plane-boundaries.ts` → green (1 known platform→admin baselined).
-3. Run `tsx scripts/architecture/check-admin-page-body-ratchet.ts` → green (count matches baseline).
-4. Confirm Wave 10 attestation digests for `src/admin/` and `src/pages/admin/` unchanged (no physical moves).
-5. Confirm `AdminRoutes.tsx` resolves all 545 lazy imports (no route regression).
+### 1. Constitution — Rules 33–35 (`docs/architecture/REPOSITORY_CONSTITUTION.md`)
+- **Rule 33 — Semantic route-adapter contract.** `src/pages/**/*.tsx` MUST conform to one of the six adapter subtypes above. Forbidden API surfaces enumerated. Replaces Rule 7's syntactic-only test with a semantic test (Rule 7 stays as a complementary line-count guard).
+- **Rule 34 — Page-body semantic ratchet.** The 318 pre-existing semantic violators are baselined in `generated/manifests/page-semantic-violation-baseline.json`; the count is monotone-decreasing. New semantic violators block CI.
+- **Rule 35 — Adapter subtype declaration (forward).** Net-new files under `src/pages/**` MUST carry a top-of-file directive comment `// @route-adapter: <pure-reexport|lazy|redirect|param-translate|shell-mount|event-dispatch>` so static analysis can verify the file matches its declared subtype.
 
-This installs the durable enforcement substrate so future relocation waves can drive the ratchet down safely, file-by-file, with full safe-change evidence.
+### 2. Canonical artifacts
+- **`docs/architecture/ROUTE_ADAPTER_SEMANTIC_MODEL.md`** — six-subtype model, allowed/forbidden API matrix, examples drawn from real repo (`LandingPage.tsx` = pure-reexport; `BusinessCenter.tsx` = event-dispatch; `MoneyCenter.tsx` = shell-mount + redirect; `BusinessOnboarding.tsx` = event-dispatch).
+- **`generated/manifests/route-adapter-semantic-map.json`** — generated by new `scripts/manifests/generate/generate-route-adapter-semantic-map.ts`. For every `src/pages/**` file: `{ path, subtype, canonicalTarget?, semanticStatus: clean|legacy-violation|invalid, violations: [...] }`.
+- **`generated/manifests/page-semantic-violation-baseline.json`** — sealed at 318 (305 admin + 12 mobile + 1 owner-mode). Decrease-only ratchet.
+- **`generated/manifests/page-semantic-violation-report.json`** — per-run diff vs. baseline.
+
+### 3. Validators (BLOCKING, foundation-tier)
+- **`scripts/architecture/check-page-semantic-adapter.ts`** — parses each `src/pages/**` file, classifies into one of the six subtypes, flags forbidden API usage. Compares against baseline; fails CI if (a) any net-new violation appears, or (b) baseline count grows.
+- **`scripts/architecture/check-page-adapter-subtype-declaration.ts`** — for files created/modified after Rule 35 lands, requires the `// @route-adapter:` directive and verifies the file body matches its declared subtype.
+- Both registered in `src/lib/ci/validator-gate-map.ts` with `block` classification, wired into `.github/workflows/foundation-gate.yml`.
+
+### 4. Update existing `check-pages-thin-adapter.ts`
+- Expand `PILLAR_PAGE_DIRS` to include `admin`, `mobile`, `owner-mode`, `apps`, `mission`, `mission-control`, `marketing`, `app-platform`, `atlas`, `enterprise`, `tenant`, `intelligence`, `personal-brain`, `boardroom`, `advisors`, `business-advisors`, `trust`, `files`, `settings`, `auth`, `store`, `workspace`, `integrations`, `sita`, `owner` (the remaining 25 subdirs not yet covered).
+- Keep `--warn` mode default (line-count rule); the new semantic validator is the blocking layer.
+
+### 5. Foundation index regeneration
+- Update `scripts/manifests/generate/generate-foundation-manifest-index.ts` to register the two new manifests (`route-adapter-semantic-map.json`, `page-semantic-violation-baseline.json`) and the two new validators. Re-emit `generated/manifests/foundation-manifest-index.json` and `foundation-tier-validator-set.json`.
+
+### 6. Audit report
+- **`generated/audits/semantic-route-adapter-hardening-report.md`** — full Wave 0.7 outcome: 318 baselined violations, six-subtype model, forward-blocking enforcement active, deferred relocation wave outlined.
+
+### 7. Repository canonicalization baseline
+- Update `generated/audits/repository-canonicalization-baseline.json` with `semanticRouteAdapterInstalled: true` and Wave 0.7 metadata.
+
+---
+
+## What this wave does NOT do (deferred)
+
+- **Does not move the 318 legacy semantic page-bodies** to `src/admin/**` / `src/modules/**` / `src/platform/**`. Doing so would (a) break the Wave 10 attestation seal, (b) require updating ~300 route bindings, and (c) duplicate the work being staged for the future Page Body Relocation Wave (sister to the Admin Relocation Wave already deferred in Wave 0.6).
+- **Does not delete `check-pages-thin-adapter.ts`.** It remains as the syntactic complement; the new semantic validator is additive.
+- **Does not introduce a parallel route registry.** All artifacts attach to the Wave 0 foundation manifest index.
+
+## Safety properties
+
+- **No imports change** → no route bindings break → Wave 10 attestation seal preserved.
+- **Monotone ratchet** → existing debt cannot grow; only shrinks.
+- **Forward-block only** → new files must comply; legacy files grandfathered until relocation wave.
+- **Six-subtype contract** is data-driven (manifest + AST classification), so future refactors can be verified file-by-file.
+
+## Files to be created / edited
+
+**Create (8):**
+- `docs/architecture/ROUTE_ADAPTER_SEMANTIC_MODEL.md`
+- `generated/manifests/route-adapter-semantic-map.json`
+- `generated/manifests/page-semantic-violation-baseline.json`
+- `generated/manifests/page-semantic-violation-report.json`
+- `scripts/architecture/check-page-semantic-adapter.ts`
+- `scripts/architecture/check-page-adapter-subtype-declaration.ts`
+- `scripts/manifests/generate/generate-route-adapter-semantic-map.ts`
+- `generated/audits/semantic-route-adapter-hardening-report.md`
+
+**Edit (6):**
+- `docs/architecture/REPOSITORY_CONSTITUTION.md` (add Rules 33–35)
+- `scripts/architecture/check-pages-thin-adapter.ts` (expand `PILLAR_PAGE_DIRS`)
+- `scripts/manifests/generate/generate-foundation-manifest-index.ts` (register new artifacts/validators)
+- `generated/manifests/foundation-manifest-index.json` (regenerated)
+- `generated/manifests/foundation-tier-validator-set.json` (regenerated, count 18 → 20)
+- `src/lib/ci/validator-gate-map.ts` (classify the two new validators as `block`)
+- `.github/workflows/foundation-gate.yml` (wire new validators)
+- `generated/audits/repository-canonicalization-baseline.json` (Wave 0.7 flag)
+
+## Verification (post-implementation)
+1. Run new validator → confirm exactly 318 baseline violations reported, 0 net-new.
+2. Run `tsc --noEmit` → confirm zero type regressions.
+3. Run `check-pages-thin-adapter.ts --warn` over expanded scope → confirm parse errors = 0.
+4. Confirm Wave 10 attestation digest unchanged (no source files moved).
+5. Confirm foundation-gate workflow YAML parses and lists 20 validators.
