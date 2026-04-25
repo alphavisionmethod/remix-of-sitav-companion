@@ -9,3 +9,11 @@ export const SHARED_LAYER = {
 } as const;
 
 export type SharedLayer = typeof SHARED_LAYER;
+
+// Re-export pillar contract types so pillar manifests stay coherent.
+export type {
+  PillarCapability,
+  PillarManifest,
+  CapabilityMaturity,
+  TrustTier,
+} from "./pillar-contract";
