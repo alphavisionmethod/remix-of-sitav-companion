@@ -22,6 +22,25 @@
     "ciGate": ".github/workflows/foundation-gate.yml",
     "report": "generated/audits/platform-subclassification-hardening-report.md"
   },
+  "semanticRouteAdapterInstalled": true,
+  "semanticRouteAdapter": {
+    "wave": "0.7",
+    "installedAt": "2026-04-25T17:30:00.000Z",
+    "rule": "Constitution Rules 33–35",
+    "subtypeCount": 6,
+    "totalPagesScanned": 1098,
+    "violationBaseline": 550,
+    "ratchetDirection": "decrease-only",
+    "subclassMap": "generated/manifests/route-adapter-semantic-map.json",
+    "ratchetBaseline": "generated/manifests/page-semantic-violation-baseline.json",
+    "modelDoc": "docs/architecture/ROUTE_ADAPTER_SEMANTIC_MODEL.md",
+    "blockingValidators": [
+      "scripts/architecture/check-page-semantic-adapter.ts",
+      "scripts/architecture/check-page-adapter-subtype-declaration.ts"
+    ],
+    "ciGate": ".github/workflows/foundation-gate.yml",
+    "report": "generated/audits/semantic-route-adapter-hardening-report.md"
+  },
   "topLevel": {
     "src/pages": 1148,
     "src/modules": 557,
