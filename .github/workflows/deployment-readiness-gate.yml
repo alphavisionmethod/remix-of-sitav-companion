@@ -88,6 +88,9 @@ jobs:
         run: npx tsx scripts/architecture/check-generated-vs-docs.ts
         continue-on-error: true
 
+      - name: Repo canonicalization — Wave 10 architectural attestation (REQUIRED)
+        run: npx tsx scripts/architecture/wave-10-check-attestation.ts
+
       - name: Repo canonicalization — refresh baseline snapshot
         run: npx tsx scripts/architecture/emit-canonicalization-baseline.ts
 
@@ -123,5 +126,6 @@ jobs:
             generated/threshold-drift-regression-report.json
             generated/deployment-readiness-report.json
             generated/audits/repository-canonicalization-baseline.json
+            generated/audits/wave-10-architectural-attestation.json
           retention-days: 30
           if-no-files-found: warn

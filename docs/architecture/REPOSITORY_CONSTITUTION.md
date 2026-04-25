@@ -101,6 +101,11 @@ During an in-flight migration wave, a thin re-export wrapper at the old path is 
     - any adapter targets a non-canonical path (only `@/modules/*` or `@/platform/*` are permitted).
 18. **Shared subtree allowlist** (Wave 8): `ui/`, `primitives/`, `shared/`, `cards/`, `navigation/`, `launcher/`, `__tests__/`. New top-level subtrees under `src/components/` require an ADR + an update to `SHARED_ALLOWLIST` in the validator.
 
+## Architectural attestation (Wave 10 — STRICT, BLOCKING)
+
+19. **Sealed manifest is the source of truth.** The post-Wave-9 canonical tree is sealed in `generated/audits/wave-10-architectural-attestation.json`. The manifest records, for each canonical surface (`src/components`, `src/modules`, `src/platform`, `src/pages`, `src/admin`, `src/runtimes`, `src/routes`), a SHA-256 digest of (sortedPath ⊕ contentSha256)\*. A top-level `manifestDigest` is the SHA-256 over all surface digests in canonical order — a single 64-char fingerprint of the entire architecture.
+20. **Drift fails CI.** A blocking step (`scripts/architecture/wave-10-check-attestation.ts`) re-computes the live digests and fails the build on any mismatch. Re-sealing requires an ADR + `npx tsx scripts/architecture/wave-10-emit-attestation.ts` + commit of the updated manifest. The verbose per-file inventory lives at `generated/audits/wave-10-architectural-attestation-inventory.json` for forensic auditing.
+
 ## Amendment process
 
 1. Open an ADR under `docs/adr/ADR-<NNN>-<slug>.md` describing the change and its blast radius.

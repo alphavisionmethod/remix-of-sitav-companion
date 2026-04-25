@@ -1,6 +1,6 @@
 {
   "generatedAt": "2026-04-25T16:42:30.750Z",
-  "lastWaveCompleted": 9,
+  "lastWaveCompleted": 10,
   "schemaVersion": 1,
   "note": "Baseline file counts captured before Repository Tree Canonicalization waves. See docs/architecture/REPOSITORY_CONSTITUTION.md.",
   "topLevel": {
@@ -358,6 +358,7 @@
     }
   ],
   "notes": {
-    "wave9": "Sunset of legacy `@/components/<sub>/*` adapters complete. Only shared subtrees (ui, primitives, shared, cards, navigation, launcher, __tests__) and NavLink.tsx remain."
+    "wave9": "Sunset of legacy `@/components/<sub>/*` adapters complete. Only shared subtrees (ui, primitives, shared, cards, navigation, launcher, __tests__) and NavLink.tsx remain.",
+    "wave10": "Architectural attestation sealed. Manifest at generated/audits/wave-10-architectural-attestation.json (manifestDigest fe9b177635a0bd17…). CI step `wave-10-check-attestation.ts` REQUIRED in deployment-readiness-gate.yml. Constitution Rules 19–20 added."
   }
 }
