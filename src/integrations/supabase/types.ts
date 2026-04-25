@@ -1025,6 +1025,84 @@ export type Database = {
           },
         ]
       }
+      advisor_consistency_findings: {
+        Row: {
+          acknowledged_at: string | null
+          advisor_a: string
+          advisor_b: string
+          created_at: string
+          domain: string
+          evidence: Json
+          finding_kind: string
+          id: string
+          recommendation_a_id: string | null
+          recommendation_b_id: string | null
+          resolution_notes: string | null
+          resolved_at: string | null
+          run_id: string | null
+          severity: string
+          status: string
+          summary: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          acknowledged_at?: string | null
+          advisor_a: string
+          advisor_b: string
+          created_at?: string
+          domain?: string
+          evidence?: Json
+          finding_kind?: string
+          id?: string
+          recommendation_a_id?: string | null
+          recommendation_b_id?: string | null
+          resolution_notes?: string | null
+          resolved_at?: string | null
+          run_id?: string | null
+          severity?: string
+          status?: string
+          summary: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          acknowledged_at?: string | null
+          advisor_a?: string
+          advisor_b?: string
+          created_at?: string
+          domain?: string
+          evidence?: Json
+          finding_kind?: string
+          id?: string
+          recommendation_a_id?: string | null
+          recommendation_b_id?: string | null
+          resolution_notes?: string | null
+          resolved_at?: string | null
+          run_id?: string | null
+          severity?: string
+          status?: string
+          summary?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "advisor_consistency_findings_recommendation_a_id_fkey"
+            columns: ["recommendation_a_id"]
+            isOneToOne: false
+            referencedRelation: "advisor_board_recommendations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "advisor_consistency_findings_recommendation_b_id_fkey"
+            columns: ["recommendation_b_id"]
+            isOneToOne: false
+            referencedRelation: "advisor_board_recommendations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       advisor_deployment_status: {
         Row: {
           admin_visibility: boolean
