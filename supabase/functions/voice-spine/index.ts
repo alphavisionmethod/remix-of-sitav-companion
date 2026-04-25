@@ -56,7 +56,8 @@ serve(async (req) => {
 
   const authResult = await requireAuth(req);
   if (authResult instanceof Response) return authResult;
-  const { user, token } = authResult as { user: { id: string }; token: string };
+  const { user } = authResult;
+  const authHeader = req.headers.get("Authorization") ?? "";
 
   let body: unknown;
   try { body = await req.json(); } catch {
@@ -148,7 +149,7 @@ serve(async (req) => {
       // Fire-and-forget: kick the embedder for this user's pending transcripts.
       fetch(`${supabaseUrl}/functions/v1/knowledge-embedder`, {
         method: "POST",
-        headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+        headers: { Authorization: authHeader, "Content-Type": "application/json" },
         body: JSON.stringify({ scope: "transcripts", batch_size: 50 }),
       }).catch((e) => console.error("[voice-spine] embedder kick failed", e));
 
