@@ -13,9 +13,9 @@ type: feature
 ## Layers (Phase 1 onwards)
 
 1. **OS-state sensor bus** (`src/lib/autonomy/signal-bus.ts`, `os_state_signals` table). Canonical SIGNAL_KINDS map; emitters in `emitters.ts`; `useSignalBus` hook; bootstrapped in `useAutonomyBootstrap` from RuntimeProvider. Default subs seeded per-user lazily.
-2. **Per-advisor controllers** — TBD
-3. **Budgets + circuit breakers** — `advisor_autonomy_state` already has `consecutive_failures` + `circuit_open_until`.
-4. **Dry-run gates** — TBD
+2. **Per-advisor controllers** (`src/lib/autonomy/controller.ts`) — `runControllerCycle(advisorId)` drives signal → propose → dry_run → state transition, persisting through `advisor_autonomy_state`. State machine in `state-machine.ts` with legal-transition guards. Bootstrap loop runs `runControllersForAdvisors(DEFAULT_CONTROLLED_ADVISORS)` after each emitter pass (10 min). One auto-execute max per cycle (blast-radius cap).
+3. **Budgets + circuit breakers** — Failure threshold = 3, breaker open 30 min, cooldown 5 min after execute. Counters incremented atomically in `transition()` via read-then-write.
+4. **Dry-run gates** (`src/lib/autonomy/dry-run.ts`) — `decideExecutionMode(plan, policy)` enforces hard L3 ceiling: irreversible ALWAYS queues, risky-but-reversible queues, only `reversible_safe` plans within domain/financial/confidence/quiet-hours bounds auto-execute. Plans declare `riskClass + rollback` up-front in `proposers.ts`.
 5. **JIT approval surface** — TBD
 6. **Reflection loop** — TBD
 7. **Boardroom Kernel** — TBD
