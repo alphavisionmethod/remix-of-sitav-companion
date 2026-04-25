@@ -47,3 +47,11 @@ export {
   type IngestMediaResult,
 } from "./multimodal-service";
 export { MultiModalIngestPanel } from "./MultiModalIngestPanel";
+
+// ── Phase 9 — Federated semantic retrieval ─────────────────────
+export {
+  searchFederatedChunks,
+  searchFederatedMemories,
+  type FederatedChunkHit,
+  type FederatedMemoryHit,
+} from "./federated-retrieval-service";

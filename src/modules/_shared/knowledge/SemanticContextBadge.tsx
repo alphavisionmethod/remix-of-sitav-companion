@@ -6,9 +6,9 @@
 // ═══════════════════════════════════════════════════════════════
 import { Badge } from "@/components/ui/badge";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { Sparkles, Search, Clock, Mic } from "lucide-react";
+import { Sparkles, Search, Clock, Mic, Network } from "lucide-react";
 
-export type RetrievalKind = "semantic" | "fulltext" | "recency" | "voice" | "manual";
+export type RetrievalKind = "semantic" | "fulltext" | "recency" | "voice" | "manual" | "federated";
 
 export interface SemanticContextBadgeProps {
   kind: RetrievalKind;
@@ -23,6 +23,7 @@ const KIND_CONFIG: Record<RetrievalKind, { label: string; icon: React.ReactNode;
   recency: { label: "Recent", icon: <Clock className="h-3 w-3" />, variant: "outline" },
   voice: { label: "Voice", icon: <Mic className="h-3 w-3" />, variant: "secondary" },
   manual: { label: "Manual", icon: null, variant: "outline" },
+  federated: { label: "Federated", icon: <Network className="h-3 w-3" />, variant: "default" },
 };
 
 export function SemanticContextBadge({ kind, similarity, label, className }: SemanticContextBadgeProps) {

@@ -149,7 +149,8 @@ serve(async (req) => {
                   const vecLit = `[${(ej.embedding as number[]).join(",")}]`;
                   const minSim = body.contextSources?.minSimilarity ?? 0.55;
 
-                  const { data: semMem } = await userClient.rpc("semantic_workspace_memories", {
+                  // Phase 9: federated retrieval — pulls own + peer-workspace rows the caller has been granted.
+                  const { data: semMem } = await userClient.rpc("semantic_workspace_memories_federated", {
                     _workspace_id: body.workspaceId ?? null,
                     _query_embedding: vecLit,
                     _max_n: body.contextSources?.semanticMemoryMax ?? 6,
@@ -158,6 +159,7 @@ serve(async (req) => {
                   if (Array.isArray(semMem)) {
                     for (const m of semMem as Array<Record<string, unknown>>) {
                       const sim = Number(m.similarity ?? 0);
+                      const viaFed = m.via_federation ? String(m.via_federation) : null;
                       semanticMemories.push({
                         memory_id: String(m.memory_id),
                         content: String(m.content ?? ""),
@@ -165,14 +167,14 @@ serve(async (req) => {
                       });
                       traceRows.push({
                         source_type: "memory", source_id: String(m.memory_id),
-                        source_label: "Workspace memory (semantic)",
+                        source_label: viaFed ? "Federated memory (semantic)" : "Workspace memory (semantic)",
                         weight: sim, role: "context",
-                        metadata: { retrieval_kind: "semantic", similarity: sim },
+                        metadata: { retrieval_kind: viaFed ? "federated" : "semantic", similarity: sim, via_federation: viaFed, peer_workspace_id: m.workspace_id ?? null },
                       });
                     }
                   }
 
-                  const { data: semChunks } = await userClient.rpc("semantic_knowledge_chunks", {
+                  const { data: semChunks } = await userClient.rpc("semantic_knowledge_chunks_federated", {
                     _workspace_id: body.workspaceId ?? null,
                     _query_embedding: vecLit,
                     _max_n: body.contextSources?.semanticChunkMax ?? 5,
@@ -181,6 +183,7 @@ serve(async (req) => {
                   if (Array.isArray(semChunks)) {
                     for (const c of semChunks as Array<Record<string, unknown>>) {
                       const sim = Number(c.similarity ?? 0);
+                      const viaFed = c.via_federation ? String(c.via_federation) : null;
                       semanticChunks.push({
                         chunk_id: String(c.chunk_id),
                         content: String(c.content ?? ""),
@@ -188,9 +191,9 @@ serve(async (req) => {
                       });
                       traceRows.push({
                         source_type: "knowledge_chunk", source_id: String(c.chunk_id),
-                        source_label: "Knowledge chunk (semantic)",
+                        source_label: viaFed ? "Federated chunk (semantic)" : "Knowledge chunk (semantic)",
                         weight: sim, role: "grounding",
-                        metadata: { retrieval_kind: "semantic", similarity: sim },
+                        metadata: { retrieval_kind: viaFed ? "federated" : "semantic", similarity: sim, via_federation: viaFed, peer_workspace_id: c.workspace_id ?? null },
                       });
                     }
                   }

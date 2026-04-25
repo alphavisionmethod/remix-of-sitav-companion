@@ -19,6 +19,37 @@ const corsHeaders = {
 };
 
 const LOVABLE_AI_URL = "https://ai.gateway.lovable.dev/v1/chat/completions";
+const SUPABASE_URL = Deno.env.get("SUPABASE_URL") ?? "";
+const SUPABASE_ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY") ?? "";
+
+interface MultiModalContextRow {
+  id: string;
+  modality: string;
+  content: string;
+  media_uri: string | null;
+  media_mime: string | null;
+  workspace_id: string | null;
+}
+
+/**
+ * Phase 9 — pull recent multi-modal chunks for the active workspace
+ * so voice/image/audio inputs can ground the resulting Action Plan.
+ */
+async function fetchMultiModalContext(authHeader: string, workspaceId: string | null): Promise<MultiModalContextRow[]> {
+  if (!workspaceId || !SUPABASE_URL) return [];
+  try {
+    const resp = await fetch(
+      `${SUPABASE_URL}/rest/v1/knowledge_chunks?select=id,modality,content,media_uri,media_mime,workspace_id&workspace_id=eq.${workspaceId}&modality=in.(image,audio,video)&order=created_at.desc&limit=8`,
+      { headers: { Authorization: authHeader, apikey: SUPABASE_ANON_KEY } },
+    );
+    if (!resp.ok) return [];
+    const rows = await resp.json();
+    return Array.isArray(rows) ? (rows as MultiModalContextRow[]) : [];
+  } catch (e) {
+    console.warn("[planner] multimodal context fetch failed", e);
+    return [];
+  }
+}
 
 // ── Skill catalog (kept in sync with src/lib/sita-agent/skills/*) ──
 type Risk = "low" | "medium" | "high";
@@ -136,6 +167,9 @@ Deno.serve(async (req) => {
     // Phase G: optional rolling world snapshot from useSitaAgent.
     const worldState = (body.world_state && typeof body.world_state === "object") ? body.world_state : null;
     const missionId = typeof body.mission_id === "string" ? body.mission_id : null;
+    // Phase 9: optional workspace id so the planner can pull multi-modal context.
+    const workspaceId = typeof body.workspace_id === "string" ? body.workspace_id : null;
+    const authHeader = req.headers.get("authorization") ?? "";
 
     if (!intent) {
       return new Response(JSON.stringify({ error: "intent required" }), {
@@ -144,6 +178,12 @@ Deno.serve(async (req) => {
     }
 
     const allowed = CATALOG.map((e) => `- ${e.id} (${e.domain}, risk=${e.risk}, reversible=${e.reversible}): ${e.description}`).join("\n");
+
+    // Phase 9: ambient multi-modal context for the active workspace.
+    const mmRows = workspaceId ? await fetchMultiModalContext(authHeader, workspaceId) : [];
+    const mmDigest = mmRows.length > 0
+      ? mmRows.map((r) => `- [${r.modality}] ${r.content.slice(0, 220).replace(/\s+/g, " ")}`).join("\n")
+      : null;
 
     const systemPrompt = [
       "You are Sita's planner. Translate the user's intent into a concrete, ordered Action Plan.",
@@ -158,6 +198,9 @@ Deno.serve(async (req) => {
       worldState ? "WORLD STATE (use only if relevant — never invent fields):" : null,
       worldState ? JSON.stringify(worldState).slice(0, 1500) : null,
       missionId ? `ACTIVE MISSION: ${missionId} — bias steps toward advancing this mission when applicable.` : null,
+      mmDigest ? "" : null,
+      mmDigest ? "MULTI-MODAL CONTEXT (recent images/audio/video captions in this workspace — use only if directly relevant):" : null,
+      mmDigest,
       "",
       "ALLOWED SKILLS:",
       allowed,
@@ -260,6 +303,9 @@ Deno.serve(async (req) => {
       autonomyTier,
       canAutoRun: canAutoRun(steps, autonomyTier),
       missionId: missionId ?? undefined,
+      multiModalContext: mmRows.length > 0
+        ? { count: mmRows.length, modalities: Array.from(new Set(mmRows.map((r) => r.modality))) }
+        : null,
       createdAt: Date.now(),
     };
 

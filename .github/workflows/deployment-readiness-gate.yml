@@ -56,6 +56,9 @@ jobs:
       - name: Phase 8 — Federation + voice→agent + multi-modal manifest (REQUIRED)
         run: node scripts/ci/check-phase-8-manifest.mjs
 
+      - name: Phase 9 — Federated retrieval + agent multi-modal manifest (REQUIRED)
+        run: node scripts/ci/check-phase-9-manifest.mjs
+
       - name: Run deployment-readiness gate
         run: npm run test:deployment-readiness
 
