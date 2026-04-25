@@ -121,3 +121,21 @@ export {
   type EmitRegisteredOptions,
   type EmitRegisteredResult,
 } from "./registry/emit-registered";
+
+// ── Phase 2 (Authority engine) re-exports ─────────────────────
+export type { AuthorityLevel } from "./registry/trust-action-registry";
+export {
+  evaluateActionAuthority,
+  setActionAuthority,
+  clearActionAuthority,
+  type AuthorityDecision,
+} from "./authority/authority-evaluator";
+export {
+  useActionAuthority,
+  useTrustActionCatalog,
+  useMyAuthoritySettings,
+  useSetActionAuthority,
+  useClearActionAuthority,
+  type TrustCatalogRow,
+  type AuthoritySettingRow,
+} from "./authority/use-authority";
