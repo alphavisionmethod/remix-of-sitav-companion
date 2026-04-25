@@ -1,30 +1,30 @@
 {
   "schemaVersion": 1,
   "wave": 10,
-  "generatedAt": "2026-04-25T16:50:10.056Z",
+  "generatedAt": "2026-04-25T18:37:58.721Z",
   "title": "Repository Canonicalization — Final Architectural Attestation",
   "description": "Seals the post-Wave-9 canonical tree state. Single source of truth for what 'canonical' means at deploy time. Validators may compare any subset of these digests to detect drift.",
   "constitutionRef": "docs/architecture/REPOSITORY_CONSTITUTION.md",
   "surfaces": {
     "src/components": {
       "count": 83,
-      "digest": "4467915ced6cc9fbb104a2ce06c4c346d2425092db8d8d3deb7ebebf66694217"
+      "digest": "f0b261825367749bed0bd1b95755a2d1cb8093c44973ef53c6688758438a7e04"
     },
     "src/modules": {
       "count": 557,
-      "digest": "27b8dfb500262dbd138d9757bf2265c615c0f9ab003aee74640ed80b2e21710b"
+      "digest": "afef1e1b130adf70e9bf294409055243d6e44061468fd1ddf48556a3405c7d51"
     },
     "src/platform": {
-      "count": 1452,
-      "digest": "28d2b9cf6f1c549755a1414e70bc4c234e69a9f02d267021a14f753b45b60470"
+      "count": 1463,
+      "digest": "62499a537e8cea59bba1e2bfde048c6d09385819d297777fdf5f4582d75b689e"
     },
     "src/pages": {
       "count": 1148,
-      "digest": "2e24df98861e2258fd41d4f752109df8626a16d5357c24192061eedb8bebc46a"
+      "digest": "b501ec17573a00872c4145a859e249580231aad2ec8471669b84a9dec147a73f"
     },
     "src/admin": {
-      "count": 41,
-      "digest": "f651f8a7bd5ca6df241d8c752b1d2f0e2dd0c2f5891e1f9c12d9a8e47d868bf9"
+      "count": 42,
+      "digest": "6290aa578267b71bb0b9902071431921531cb3baac759296e63f84219ae7121d"
     },
     "src/runtimes": {
       "count": 84,
@@ -35,7 +35,7 @@
       "digest": "1a2b9caf44fcd1f34edbec7daf0e1b9c76cd1a362b3a202490c3bdc483b23158"
     }
   },
-  "manifestDigest": "fe9b177635a0bd1758aaeab9790c0b6be5271c2c86ed48e3f1fd69fce79a71a6",
+  "manifestDigest": "e723345533b599c68293738538d7dc2055c110297fd462bad16fe14fda59d208",
   "invariants": {
     "lastWaveCompleted": 9,
     "sealingWave": 10,
