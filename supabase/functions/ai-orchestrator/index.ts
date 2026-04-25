@@ -35,6 +35,12 @@ interface OrchestratorRequest {
     priorReceiptIds?: string[];
     workspaceIds?: string[];
     notes?: Array<{ label: string; excerpt?: string; weight?: number }>;
+    /** Phase 5: when true, server fetches effective workspace memories via RPC and records usage. */
+    workspaceMemoryAuto?: boolean;
+    workspaceMemoryMax?: number;
+    /** Phase 5: when set, server fetches up to N matching knowledge_chunks via full-text search. */
+    chunkQuery?: string;
+    chunkMax?: number;
   };
   assumptions?: string[];
   confidenceTarget?: number;
