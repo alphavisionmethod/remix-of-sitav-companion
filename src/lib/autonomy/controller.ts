@@ -14,6 +14,12 @@ import { supabase } from "@/integrations/supabase/client";
 import { fetchSignalsForAdvisor, markSignalActedOn, type OSStateSignal } from "./signal-bus";
 import { proposeForSignal, type ProposedPlan } from "./proposers";
 import { decideExecutionMode, fetchAutonomyPolicy, type DryRunDecision } from "./dry-run";
+import {
+  decideBudget,
+  estimatePlanTokenCost,
+  fetchBudgetState,
+  tripCircuitBreakerForBudget,
+} from "./budgets";
 import type { Database } from "@/integrations/supabase/types";
 import {
   canTransition,
@@ -29,6 +35,7 @@ export type ControllerCycleResult = {
   queued: number;
   autoExecuted: number;
   blocked: number;
+  budgetTrips: number;
   finalState: AdvisorState;
   notes: string[];
 };
@@ -43,6 +50,7 @@ export async function runControllerCycle(advisorId: string): Promise<ControllerC
     queued: 0,
     autoExecuted: 0,
     blocked: 0,
+    budgetTrips: 0,
     finalState: "idle",
     notes,
   };
@@ -127,6 +135,23 @@ export async function runControllerCycle(advisorId: string): Promise<ControllerC
       await transition(userId, advisorId, currentState, "idle");
       currentState = "idle";
       continue;
+    }
+
+    // Phase 3 — budget gate. Trip the breaker if any cap is exceeded.
+    const budgetState = await fetchBudgetState(userId, advisorId, plan.domain);
+    if (budgetState) {
+      const budgetCheck = decideBudget(
+        budgetState,
+        estimatePlanTokenCost(),
+        plan.financialImpactCents,
+      );
+      if (!budgetCheck.ok) {
+        result.budgetTrips += 1;
+        notes.push(`budget_breaker:${budgetCheck.reason}`);
+        await tripCircuitBreakerForBudget(userId, advisorId, budgetCheck.reason);
+        currentState = "circuit_open";
+        break;
+      }
     }
 
     try {
