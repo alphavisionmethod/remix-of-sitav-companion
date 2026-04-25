@@ -103,3 +103,14 @@ export async function openTrustApproval(input: ApprovalRequestInput): Promise<{ 
   }
   return { id: data.id, status: data.status };
 }
+
+// ── Phase 5 re-exports ────────────────────────────────────────
+export {
+  TRUST_ACTION_REGISTRY,
+  TRUST_ACTION_LIST,
+  getTrustActionPreset,
+  type TrustActionKey,
+  type TrustActionPreset,
+} from "./registry/trust-action-registry";
+export { TrustBoundary } from "./ui/TrustBoundary";
+export { TrustActionButton } from "./ui/TrustActionButton";

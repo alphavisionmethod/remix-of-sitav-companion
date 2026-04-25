@@ -7,6 +7,7 @@ const TrustApprovals = lazy(() => import("@/pages/trust/TrustApprovals"));
 const TrustPermissions = lazy(() => import("@/pages/trust/TrustPermissions"));
 const TrustAutomationAuthority = lazy(() => import("@/pages/trust/TrustAutomationAuthority"));
 const TrustAudit = lazy(() => import("@/pages/trust/TrustAudit"));
+const TrustDecisions = lazy(() => import("@/pages/trust/TrustDecisions"));
 
 /**
  * Trust Center route group — surfaces the cross-cutting trust platform layer
@@ -22,5 +23,6 @@ export const getTrustRoutes = () => (
     <Route path="/trust/permissions" element={<TrustPermissions />} />
     <Route path="/trust/automation-authority" element={<TrustAutomationAuthority />} />
     <Route path="/trust/audit" element={<TrustAudit />} />
+    <Route path="/trust/decisions" element={<TrustDecisions />} />
   </>
 );
