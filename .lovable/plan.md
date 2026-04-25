@@ -1,119 +1,167 @@
 
-# FLOWOS — Master Execution Plan
+# Wave B — Generated Artifact Governance & Frontend/Backend Boundary Hardening
 
-## Audit summary (real repository facts)
+## Audit findings (real repo state, not assumed)
 
-The repo already has a mature wave-based canonicalization program: 257 architecture validators in `scripts/architecture/checks/`, 79 architecture docs, a sealed `REPOSITORY_CONSTITUTION.md` with 42+ numbered rules, a `validator-gate-map.ts`, monotone ratchet baselines, and reports for waves 1–10 in `generated/audits/`. Modules (`business`, `concierge`, `finance`, `health`), platform subsystems, route registries (`src/routes/*`), and admin canonical home (`src/admin/`) are all in place.
+- `generated/` holds **1,440** files; `public/generated/` holds **619**. Mirror is policy-driven via `scripts/architecture/lib/public-mirror-policy.ts` + `check-public-artifact-mirror.ts` (already STRICT).
+- Ownership maps already exist: `generated/manifests/{contract,admin-plane,shared-component,lib-service-layer}-ownership-map.json` and `foundation-manifest-freshness-report.json`.
+- Existing checks already cover much: `check-no-backend-in-ui`, `check-no-ui-in-backend`, `check-frontend-backend-substrate-map`, `check-route-backend-wiring`, plus 8 edge-function governance checks.
+- **Real gaps**:
+  1. No formal **lifecycle class** (active-blocking / active-informational / reference / historical-archived) on each generated artifact.
+  2. No formal **freshness TTL + CI behavior** matrix; freshness exists only ad-hoc (`check-supportability-freshness`, `check-attestation-evidence-freshness`, foundation-manifest).
+  3. No single canonical `FRONTEND_BACKEND_OWNERSHIP_MODEL.md` (only the older `BACKEND_TOPOLOGY_MAP.md` and `CORE_OS_USER_ADMIN_BACKEND_MODEL.md`).
+  4. **145 pages** directly import `@/integrations/supabase/client`; **9 domain files** do as well — no ratchet exists yet to prevent regression.
+  5. `check-no-backend-in-ui` only catches `@/lib/core-services/`, not direct Supabase client use.
 
-What is **not** done — the real remaining file-movement work, with sealed baselines:
+## Scope rules (hard constraints — same as prior waves)
 
-| Ratchet | Baseline | Canonical destination | Source |
+- **No-logic / No-UI / No-API change**: zero behavioral edits, zero file moves of source code in this wave (governance + ratchets only — exactly what user has approved in every prior wave).
+- **Exactly one canonical owner path per concept**: model lives at `docs/architecture/GENERATED_ARTIFACT_LIFECYCLE_MODEL.md` and `docs/architecture/FRONTEND_BACKEND_OWNERSHIP_MODEL.md` (no duplicates of `BACKEND_TOPOLOGY_MAP.md`).
+- **Attestation resealing**: only via canonical `scripts/architecture/wave-10-emit-attestation.ts` (G6).
+- **Reverse-dependency proof**: `tsc --noEmit` + targeted `rg` import checks must pass after every edit (G2).
+- **Ratchet-not-purge**: 145 page→supabase imports become a baselined ratchet, not a forced refactor (purge requires a separate Wave C with state-extraction).
+- **`EmptyState` semantic verification** (G7): unchanged; no UI surfaces touched.
+
+---
+
+## Step 1 — Generated artifact lifecycle model
+
+Create `docs/architecture/GENERATED_ARTIFACT_LIFECYCLE_MODEL.md` defining:
+
+| Class | Definition | Freshness TTL | CI on stale | CI on missing | Publish? |
+|---|---|---|---|---|---|
+| `active-blocking` | Read by a STRICT/BLOCK gate | ≤ 24h (release-gated) / ≤ 7d (PR-gated) | **fail** | **fail** | only if explicitly allowlisted |
+| `active-informational` | Read by WARN gate or dashboard | ≤ 30d | warn | warn | usually yes |
+| `reference` | Engineer/audit lookup, not gated | ≤ 180d | label-only | none | yes if mirror policy matches |
+| `historical-archived` | Frozen snapshot | n/a (frozen) | none | none | yes (immutable) |
+
+Rules:
+- Every artifact must have an **owning script** (`scripts/...`); orphans become validator violations.
+- Lifecycle/freshness/publishability/owner-script = the four mandatory metadata facets.
+
+## Step 2 — Generated artifact governance manifest
+
+Create `scripts/architecture/generate/generate-artifact-governance-map.ts` that walks `generated/**` and emits:
+
+- `generated/manifests/generated-artifact-governance-map.json` — per-artifact: `path, lifecycleClass, freshnessTtlDays, owningScript, publishable, lastModifiedISO, ageDays, gateName?`
+- `generated/manifests/generated-artifact-freshness-policy.json` — per-class: TTL + gate behavior + exceptions list
+
+Classification heuristics (deterministic, audited):
+- If artifact is referenced by any check in `src/lib/ci/validator-gate-map.ts` with `severity: BLOCK` ⇒ `active-blocking`.
+- If referenced by any other check ⇒ `active-informational`.
+- If under `generated/audits/wave-*` or `generated/.../*-historical-*` ⇒ `historical-archived`.
+- Else ⇒ `reference`.
+- Owning script: scan `scripts/**` for emitters writing the path (`fs.writeFileSync` / `writeJSON`).
+
+## Step 3 — Governance validator (BLOCKING, ratcheted)
+
+Create `scripts/architecture/checks/check-generated-artifact-governance.ts`:
+
+Detects (BLOCK):
+1. Artifact missing from governance map.
+2. `active-blocking` artifact older than its TTL.
+3. Artifact with no owning script (orphan), unless on baseline.
+4. Artifact mirrored to `public/generated/` but not in mirror policy.
+
+Wired into `src/lib/ci/validator-gate-map.ts` (going from 80 → 81 blocking validators).
+
+**Baseline file**: `generated/baselines/orphan-artifact-baseline.json` — current orphans (likely several hundred legacy files), pinned. New orphans = fail.
+
+## Step 4 — Frontend/Backend ownership model
+
+Create `docs/architecture/FRONTEND_BACKEND_OWNERSHIP_MODEL.md` defining the law:
+
+| Layer | Owns | Forbidden imports | Allowed callers |
 |---|---|---|---|
-| `LEGACY_PAGE_BODY` under `src/pages/admin/` | **576** | `src/admin/modules/<domain>/views/` | `admin-page-body-baseline.json` |
-| `page semantic violation` across `src/pages/**` | **550** (admin 534 / mobile 12 / owner-mode 1 / other 3) | `src/admin/modules/*` or `src/platform/<system>/pages/` or `src/modules/<pillar>/pages/` | `page-semantic-violation-baseline.json` |
-| `_shared` / `_trust` shim imports | **0** | already drained (Wave 9 complete) | `deprecated-shim-baseline.json` |
+| `supabase/functions/**` | Backend execution endpoints (server-side orchestration) | `@/components`, `@/pages`, `react` | (deployed; not imported) |
+| `supabase/migrations/**` | Schema evolution | n/a (SQL) | (auto-managed; never hand-edited as app logic) |
+| `src/integrations/supabase/**` | Generated client + types | n/a (auto-generated) | `src/lib/services/**`, `src/lib/clients/**`, `src/lib/data-services/**` |
+| `src/lib/services/**` | App-facing service facades | `react`, `@/components`, `@/pages` | `src/pages`, `src/components`, `src/modules`, `src/platform` |
+| `src/pages/**`, `src/components/**` | UI | direct `@/integrations/supabase/client` (use facades) | (terminal consumers) |
+| `src/domains/**` | Pure models/engines | `@/integrations/supabase`, `@/lib/services` | UI/services |
 
-So `FLOWOS.MD` must (a) consolidate all of this into one master ledger and (b) actually drain real violations physically.
+Anti-duplication rule: a frontend service that wraps an edge function must declare a **contract link** in `src/lib/services/<name>/contract.ts` referencing the edge function name, OR be flagged by validator.
 
-## Part 1 — Create `FLOWOS.MD` at repo root
+## Step 5 — Frontend/Backend boundary manifest + ratcheted validator
 
-A single execution-grade master document with all 18 mandated sections, fully grounded in the real repo:
+Create `scripts/architecture/generate/generate-frontend-backend-boundary-map.ts` → `generated/manifests/frontend-backend-boundary-map.json`:
+- Every `src/pages/**`, `src/components/**`, `src/domains/**` file with raw `@/integrations/supabase` import.
+- Current count expected: **145 pages + 9 domains** = 154 entries.
 
-1. **Mission** — make runtime ownership canonical, drain 550 page violations, govern generated/docs lifecycle.
-2. **Canonical ownership model** — references the existing `docs/architecture/REPOSITORY_CONSTITUTION.md` ownership table verbatim (modules / platform / pages / components / domains / lib/services / runtimes / generated / docs) and points to `CANONICAL_OWNERSHIP_MODEL.md` as the binding companion.
-3. **File classification system** — owner, layer, canonical-location status, runtime-truth status, dependency-direction, reverse-dep criticality, route-binding, trust/proof, test-coverage, duplication, migration action, rewiring obligations.
-4. **File status vocabulary** — controlled list (canonical, transitional, wrapper, alias, misplaced, duplicate, split-brain, generated, archive-candidate, production-real, partial, mock-only, admin-only, platform-owned, module-owned, route-adapter-only, proof-backed, unverified).
-5. **Wave strategy overview** — explicit ordered wave list (W0–W9) with dependency rationale.
-6. **Wave 0 — Baseline & Truth Inventory** — points to existing artifacts and lists any missing ones to emit (file-import-graph, reverse-dep graph, route-page map already exist as `route-adapter-semantic-map.json`, `foundation-manifest-index.json`, etc.).
-7. **Wave 1 — Constitution & topology** — references `REPOSITORY_CONSTITUTION.md`, `CANONICAL_OWNERSHIP_MODEL.md`, `WRAPPER_AND_ROUTE_ADAPTER_POLICY.md`, `GENERATED_AND_AUTHORED_ARTIFACT_LIFECYCLE.md` (all already exist).
-8. **Wave 2 — Module/Platform boundary canonicalization** — status: complete; report `wave-2-dedup-report.json`.
-9. **Wave 3 — Product pillar ownership** — pillar pages migrated; report `wave-4-pillar-migration-report.md` + `wave-4b-revenue-office.json` + `wave-4c-digital-presence.json`.
-10. **Wave 4 — Domain/service/component/runtime cleanup** — components covered by `wave-7-component-reclassification-report.md`, services by Wave 1.3 hardening report.
-11. **Wave 5 — Route/shell/launcher/registry rewiring** — covered by `src/routes/*` registries; ratchet report `wave-5-platform-page-reclassification.json`.
-12. **Wave 6 — Generated/docs/public artifacts governance** — covered by `GENERATED_AND_AUTHORED_ARTIFACT_LIFECYCLE.md` + `check-generated-vs-docs.ts` + `check-public-generated-allowlist.ts`.
-13. **Wave 7 — Tests/validators/CI** — 257 validators wired in `validator-gate-map.ts`.
-14. **Wave 8 — Per-file migration discipline** — codifies the no-logic/no-UI/no-API-change rule, mandatory rewiring of imports/exports/routes/tests/snapshots/docs/manifests/registries/generated artifacts/validator references/CI/codeowners; mandatory verification gates listed below.
-15. **Wave 9 — Verification, proof, completion criteria** — every wave must produce a delta report under `generated/audits/`.
-16. **Risk register** — populated with real live risks (admin page-body bulk migration, route stability under shell-mount adapters, attestation drift, validator gate map coverage, ratchet inversions).
-17. **Active deliverables index** — a real table of existing artifacts (manifests/audits/reports) + their owner script + wave + active-vs-historical status.
-18. **Final state blueprint** — concrete target tree, page-body count = 0, attestation green, all 257 validators wired.
+Create `scripts/architecture/checks/check-page-backend-bypass.ts`:
+- Reads boundary map + `generated/baselines/page-backend-bypass-baseline.json`.
+- New violations beyond baseline = BLOCK.
+- Domain violations always BLOCK once baseline is captured (domains are pure — stricter).
+- Wired into validator-gate-map (81 → 82 blocking validators).
 
-In addition `FLOWOS.MD` will encode the **8 user-mandated enforcement gates** as constitutional rules:
-- G1 canonical destination proof for every move
-- G2 reverse-dependency proof across src/tests/docs/generated/scripts/workflows
-- G3 verification gates for old-path removal
-- G4 targeted smoke tests for multi-consumer moves
-- G5 explicit semantic verification for `EmptyState`
-- G6 attestation resealing only via `scripts/architecture/wave-10-emit-attestation.ts`
-- G7 exactly one canonical owner path per moved concept
-- G8 strict no-logic / no-UI / no-API-change rule
+## Step 6 — Constitution amendment
 
-## Part 2 — Execute Wave A physical moves (bounded, safe)
+Edit `docs/architecture/REPOSITORY_CONSTITUTION.md`:
+- Add **§ Wave B.1 — Generated Artifact Lifecycle Law (BLOCKING)** with the 4-class model + freshness TTLs + owner-script requirement.
+- Add **§ Wave B.2 — Frontend/Backend Ownership Law (BLOCKING)** with the table from Step 4 + bypass-ratchet policy + edge-function vs facade anti-duplication rule.
+- Update `## Pointer index` to reference the two new model docs and the new manifests.
 
-Trying to move all 576 admin pages in one shot is unsafe. Wave A drains the **highest-safety, lowest-blast-radius violations now** as a working proof of FLOWOS.MD:
+Edit `docs/architecture/SERVICE_LAYER_CONSTITUTION.md`:
+- Add **Rule 44**: services that proxy edge functions must declare a contract link.
 
-### Targets (16 non-admin page bodies)
-- `src/pages/mobile/**` — 12 violations
-- `src/pages/owner-mode/**` — 1 violation
-- `src/pages/**` "other" bucket — 3 violations
+## Step 7 — Hardening report + attestation reseal
 
-For each file:
-1. **Locate** the canonical destination using existing maps (`route-adapter-semantic-map.json`, `platform-subclassification-map.json`, `admin-plane-ownership-map.json`).
-   - Mobile pages → `src/platform/mobile/pages/<File>.tsx` if platform-mobile feature, else owning pillar's `src/modules/<pillar>/pages/mobile/<File>.tsx`.
-   - Owner-mode page → `src/platform/owner/pages/<File>.tsx`.
-   - "other" bucket — case-by-case based on import graph.
-2. **Move** the body file to the canonical location preserving content byte-for-byte (no logic / UI / API change).
-3. **Replace** the original `src/pages/<…>/<File>.tsx` with a 1-line thin re-export: `export { default } from "@/platform/<system>/pages/<File>";`
-4. **Rewire** every consumer found via `rg "from .*pages/<old-path>"`:
-   - route registries in `src/routes/*`
-   - lazy loaders, manifests, registries
-   - tests under `src/__tests__/`, `src/test/`, `tests/`
-   - docs under `docs/` and generated artifacts that reference the path
-5. **Verify per-file**:
-   - canonical file exists at destination (G1)
-   - no consumer still imports from a path that conflicts with canonical (G2)
-   - thin adapter passes `check-page-semantic-adapter.ts` and `check-pages-thin-adapter.ts`
-   - `tsc --noEmit` clean
-   - For any file that is a multi-consumer concept, a smoke test is touched/verified (G4)
-   - For the `EmptyState` file specifically, run `rg -n "from .*EmptyState" src` and confirm all resolve to `@/platform/sita/components/sita/EmptyState` (G5)
+Create `generated/audits/wave-b-generated-artifact-and-backend-boundary-hardening-report.md` covering all 11 mandated sections (gap summary → verification proof → remaining work).
 
-### Bootstrap admin shard (1 domain only — proof of system)
-Pick the smallest-blast `src/pages/admin/<domain>/` cluster (≤10 files) and run the same procedure to relocate to `src/admin/modules/<domain>/views/` with a thin adapter at the old path. The remaining 500+ admin pages are sharded into **per-domain Wave A.x batches** in `FLOWOS.MD`'s wave 8 section, each to be executed in a separate approval cycle.
+Reseal attestation **only** via `npx tsx scripts/architecture/wave-10-emit-attestation.ts` (G6 enforcement).
 
-### Post-move verification (mandatory before marking Wave A done)
-- Run all blocking validators: `check-page-semantic-adapter`, `check-admin-page-body-ratchet`, `check-pages-thin-adapter`, `check-canonical-paths`, `check-no-duplicate-platform`, `check-shared-component-concept-rule`, `check-contract-duplicate-identifiers`, `check-public-contract-barrel-purity`, `check-platform-local-contract-scope`, `check-service-vocabulary-coherence`.
-- `tsc --noEmit` exit 0.
-- Update sealed baselines via `emit-canonicalization-baseline.ts` (decrement only; ratchet enforces direction=decrease-only).
-- Reseal architectural attestation **only** through `scripts/architecture/wave-10-emit-attestation.ts` (G6).
-- Generate `generated/audits/flowos-wave-a-report.md` with per-file move table (old path → new canonical path → rewired consumers).
+## Step 8 — End-to-end verification (G1–G8 gates)
 
-## Part 3 — Supporting files created/updated
-
-| File | Action |
+| Gate | Check |
 |---|---|
-| `FLOWOS.MD` (repo root) | **Create** — full 18-section execution ledger |
-| `docs/architecture/FLOWOS_MASTER_EXECUTION.md` | **Create** — companion deep-dive (long-form) referenced from FLOWOS.MD |
-| `docs/architecture/REPOSITORY_CONSTITUTION.md` | **Amend** — add Rule 43 binding all future migrations to FLOWOS.MD G1–G8 gates |
-| `generated/audits/flowos-wave-a-report.md` | **Create** — per-file move ledger |
-| `generated/manifests/flowos-deliverables-index.json` | **Create** — programmatic mirror of section 17 |
-| `generated/manifests/admin-page-body-baseline.json` | **Resealed** — new lower count after Wave A admin shard |
-| `generated/manifests/page-semantic-violation-baseline.json` | **Resealed** — new lower count |
-| `generated/audits/wave-10-architectural-attestation.json` | **Resealed via canonical script only** |
+| G1 — canonical destination proof | New docs at canonical paths; no duplicate/parallel doc created |
+| G2 — reverse-dep proof | `tsc --noEmit` clean; `rg "BACKEND_TOPOLOGY_MAP\|CORE_OS_USER_ADMIN_BACKEND_MODEL"` confirms old docs still referenced (kept as historical-reference, not removed) |
+| G3 — old-path removal gates | N/A this wave (no removals) |
+| G4 — multi-consumer smoke | Run new generators + new checks; confirm baselines match expected counts |
+| G5 — single canonical owner | Exactly one `GENERATED_ARTIFACT_LIFECYCLE_MODEL.md`, one `FRONTEND_BACKEND_OWNERSHIP_MODEL.md`; old backend docs reclassified as `reference`, not duplicates |
+| G6 — attestation via canonical script only | `wave-10-emit-attestation.ts` invoked; no manual edits to attestation files |
+| G7 — `EmptyState` semantic verification | No UI/component touched; `rg "EmptyState" src/components/empty/` unchanged |
+| G8 — strict no-logic/no-UI/no-API change | All edits limited to `docs/`, `scripts/`, `generated/manifests/`, `generated/baselines/`, `generated/audits/`, `src/lib/ci/validator-gate-map.ts` |
 
-No new validators are added in Wave A (existing 257 already cover the boundaries). Future waves may add per-domain admin shard validators only if a regression appears.
+## Files to create / edit
 
-## Part 4 — What this plan deliberately does NOT do
+**Create (10)**:
+1. `docs/architecture/GENERATED_ARTIFACT_LIFECYCLE_MODEL.md`
+2. `docs/architecture/FRONTEND_BACKEND_OWNERSHIP_MODEL.md`
+3. `scripts/architecture/generate/generate-artifact-governance-map.ts`
+4. `scripts/architecture/generate/generate-frontend-backend-boundary-map.ts`
+5. `scripts/architecture/checks/check-generated-artifact-governance.ts`
+6. `scripts/architecture/checks/check-page-backend-bypass.ts`
+7. `generated/manifests/generated-artifact-governance-map.json`
+8. `generated/manifests/generated-artifact-freshness-policy.json`
+9. `generated/manifests/frontend-backend-boundary-map.json`
+10. `generated/audits/wave-b-generated-artifact-and-backend-boundary-hardening-report.md`
 
-- Does **not** move all 534 admin page bodies in one approval (unsafe — staged into per-domain shards listed in FLOWOS.MD §14).
-- Does **not** rename any files (only relocates + thin-adapter shim).
-- Does **not** change any logic, UI, or API surface (G8).
-- Does **not** create competing ownership systems (binds to existing constitution + 257 validators).
-- Does **not** hand-edit attestation files (always via canonical script — G6).
+**Create baselines (2)**:
+11. `generated/baselines/orphan-artifact-baseline.json`
+12. `generated/baselines/page-backend-bypass-baseline.json`
 
-## Approval
+**Edit (4)**:
+13. `docs/architecture/REPOSITORY_CONSTITUTION.md` — add §B.1, §B.2, update pointer index
+14. `docs/architecture/SERVICE_LAYER_CONSTITUTION.md` — add Rule 44
+15. `src/lib/ci/validator-gate-map.ts` — register the two new BLOCK validators (80 → 82)
+16. `generated/validator-gate-map.json` — auto-regenerated to mirror
 
-Approving this plan switches Lovable to default mode and authorizes:
-1. Creating `FLOWOS.MD` and the supporting governance files.
-2. Physically moving the 16 non-admin page-body violations + 1 admin shard with full rewiring.
-3. Resealing baselines and the architectural attestation via canonical scripts only.
-4. Producing `flowos-wave-a-report.md` as proof of execution.
+**No deletions / no source moves / no UI edits / no API edits.**
+
+## Risk register
+
+| Risk | Mitigation |
+|---|---|
+| Orphan-artifact baseline too large to triage | Pin all current orphans into baseline; future additions blocked. Cleanup is a future wave. |
+| 145 page-backend-bypass entries too large to refactor | Baseline-and-pin; regression-only enforcement. Domain layer (9 files) is the strict tier. |
+| Generator scripts slow on 1,440 files | Cache mtimes; skip unchanged. Generators run nightly + on-demand. |
+| Conflict with existing `check-supportability-freshness` / `check-attestation-evidence-freshness` | New governance check is additive, reads same source-of-truth (mtimes); no overlap with existing per-domain freshness checks. |
+
+## Future work explicitly out of scope
+
+- Actually refactoring the 145 admin pages off direct `@/integrations/supabase/client` (requires Wave C with state-extraction & service-facade build-out).
+- Pruning historical orphan artifacts (requires archival policy decision per family).
+- Adding contract-link declarations to existing service↔edge-function pairs (requires per-pair audit).
+
+After approval I will execute Steps 1–8 in one pass, run `tsc --noEmit`, run both new generators + both new checks, capture baselines, reseal attestation via the canonical script, and report verification proof.
