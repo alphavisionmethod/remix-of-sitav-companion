@@ -1,20 +1,21 @@
 {
-  "generatedAt": "2026-04-25T17:48:57.172Z",
+  "generatedAt": "2026-04-25T17:49:42.617Z",
   "rule": "Constitution Rules 36, 37, 38",
   "model": "docs/architecture/SHARED_COMPONENT_OWNERSHIP_MODEL.md",
   "totals": {
     "filesScanned": 32,
-    "sharedClean": 15,
-    "deprecatedShim": 0,
-    "violators": 17
+    "sharedClean": 18,
+    "deprecatedShim": 1,
+    "violators": 13
   },
   "classificationBreakdown": {
     "barrel-only-reexport": 5,
     "shell-runtime-semantic": 1,
-    "shared-clean": 15,
-    "platform-semantic": 6,
+    "shared-clean": 18,
+    "platform-semantic": 3,
     "admin-semantic": 1,
-    "wrapper-with-platform-import": 4
+    "wrapper-with-platform-import": 3,
+    "deprecated-shim": 1
   },
   "files": [
     {
@@ -149,16 +150,14 @@
     },
     {
       "file": "src/components/primitives/display/StatTile.tsx",
-      "classification": "platform-semantic",
-      "targetOwner": "@/platform/trust/components/trust/",
-      "vocabularyHits": [
-        "trust"
-      ],
+      "classification": "shared-clean",
+      "targetOwner": null,
+      "vocabularyHits": [],
       "importViolations": [],
       "shellHints": [],
       "isBarrel": false,
       "isDeprecatedShim": false,
-      "reason": "Platform vocabulary: trust."
+      "reason": "Passes all three concept tests."
     },
     {
       "file": "src/components/primitives/display/Summary.tsx",
@@ -348,8 +347,8 @@
     },
     {
       "file": "src/components/primitives/status/TrustBadge.tsx",
-      "classification": "wrapper-with-platform-import",
-      "targetOwner": "@/platform/sita/components/sita/",
+      "classification": "deprecated-shim",
+      "targetOwner": "@/platform/sita/components/sita/TrustBadge",
       "vocabularyHits": [
         "sita"
       ],
@@ -361,8 +360,8 @@
       ],
       "shellHints": [],
       "isBarrel": false,
-      "isDeprecatedShim": false,
-      "reason": "Composes platform component(s): @/platform/sita/components/sita/TrustBadge, @/platform/sita/components/sita/TrustBadge, @/platform/sita/components/sita/TrustBadge, @/platform/sita/components/sita/TrustBadge."
+      "isDeprecatedShim": true,
+      "reason": "Self-marked DEPRECATED re-export shim — tracked in deprecated-shim baseline."
     },
     {
       "file": "src/components/primitives/status/UrgencyBadge.tsx",
@@ -377,16 +376,14 @@
     },
     {
       "file": "src/components/primitives/timelines/TimelineRow.tsx",
-      "classification": "platform-semantic",
-      "targetOwner": "@/platform/trust/components/trust/",
-      "vocabularyHits": [
-        "trust"
-      ],
+      "classification": "shared-clean",
+      "targetOwner": null,
+      "vocabularyHits": [],
       "importViolations": [],
       "shellHints": [],
       "isBarrel": false,
       "isDeprecatedShim": false,
-      "reason": "Platform vocabulary: trust."
+      "reason": "Passes all three concept tests."
     },
     {
       "file": "src/components/shared/ai/index.ts",
@@ -405,16 +402,14 @@
     },
     {
       "file": "src/components/shared/FileUploadZone.tsx",
-      "classification": "platform-semantic",
-      "targetOwner": "@/platform/cloud/components/cloud/",
-      "vocabularyHits": [
-        "cloud"
-      ],
+      "classification": "shared-clean",
+      "targetOwner": null,
+      "vocabularyHits": [],
       "importViolations": [],
       "shellHints": [],
       "isBarrel": false,
       "isDeprecatedShim": false,
-      "reason": "Platform vocabulary: cloud."
+      "reason": "Passes all three concept tests."
     },
     {
       "file": "src/components/shared/sita/index.ts",
@@ -488,12 +483,6 @@
       "reason": "Admin/operator vocabulary: operator."
     },
     {
-      "file": "src/components/primitives/display/StatTile.tsx",
-      "classification": "platform-semantic",
-      "targetOwner": "@/platform/trust/components/trust/",
-      "reason": "Platform vocabulary: trust."
-    },
-    {
       "file": "src/components/primitives/display/Summary.tsx",
       "classification": "platform-semantic",
       "targetOwner": "@/platform/trust/components/trust/",
@@ -530,28 +519,10 @@
       "reason": "Platform vocabulary: connector."
     },
     {
-      "file": "src/components/primitives/status/TrustBadge.tsx",
-      "classification": "wrapper-with-platform-import",
-      "targetOwner": "@/platform/sita/components/sita/",
-      "reason": "Composes platform component(s): @/platform/sita/components/sita/TrustBadge, @/platform/sita/components/sita/TrustBadge, @/platform/sita/components/sita/TrustBadge, @/platform/sita/components/sita/TrustBadge."
-    },
-    {
-      "file": "src/components/primitives/timelines/TimelineRow.tsx",
-      "classification": "platform-semantic",
-      "targetOwner": "@/platform/trust/components/trust/",
-      "reason": "Platform vocabulary: trust."
-    },
-    {
       "file": "src/components/shared/ai/index.ts",
       "classification": "barrel-only-reexport",
       "targetOwner": "@/platform/ai/components/index.ts",
       "reason": "Pure barrel re-exporting from 3 platform/module path(s); should be a barrel under that owner."
-    },
-    {
-      "file": "src/components/shared/FileUploadZone.tsx",
-      "classification": "platform-semantic",
-      "targetOwner": "@/platform/cloud/components/cloud/",
-      "reason": "Platform vocabulary: cloud."
     },
     {
       "file": "src/components/shared/sita/index.ts",
