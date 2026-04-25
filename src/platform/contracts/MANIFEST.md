@@ -1,19 +1,12 @@
-# `src/platform/contracts/` — Deprecated Shim Folder
+# `src/platform/contracts/` — Frozen / Empty
 
-**Status:** Frozen (Wave 1.2). No new files may be added here.
+**Status:** Frozen (Wave 9 — shims removed). No new files may be added here.
 
-## Why this folder is now deprecated
+## History
 
-Wave 1.2 promoted both files originally housed here (`pillar-contract.ts`, `decision-queue.ts`) to their canonical app-wide home at `src/packages/contracts/`. They were each imported by ≥2 distinct top-level layers (`modules/{business,concierge,finance,health}` + `platform/trust`) and therefore satisfy the **Promotion Rule** of the Contract Layer Ownership Model — making them app-wide public contracts, not platform-local ones.
+Wave 1.2 promoted both files originally housed here (`pillar-contract.ts`, `decision-queue.ts`) to their canonical app-wide home at `src/packages/contracts/`. They were each imported by ≥2 distinct top-level layers and therefore satisfy the **Promotion Rule** of the Contract Layer Ownership Model — making them app-wide public contracts, not platform-local ones.
 
-## Current contents
-
-| File | Purpose |
-|---|---|
-| `pillar-contract.ts` | `@deprecated Wave 1.2` re-export shim → `@/packages/contracts/pillar-contract` |
-| `decision-queue.ts` | `@deprecated Wave 1.2` re-export shim → `@/packages/contracts/decision-queue` |
-
-Both shims are removed in Wave 9 (alongside the rest of the deprecated-shim cohort).
+Wave 9 physically removed the deprecated re-export shims after verifying zero active consumers remained.
 
 ## What lives where now
 
