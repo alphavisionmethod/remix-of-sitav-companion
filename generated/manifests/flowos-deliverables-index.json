@@ -1,0 +1,33 @@
+{
+  "$schema": "FLOWOS Deliverables Index v1",
+  "generatedBy": "Wave 8 — FLOWOS bootstrap",
+  "generatedAt": "2026-04-25",
+  "authority": "/FLOWOS.MD §17",
+  "deliverables": [
+    { "path": "FLOWOS.MD", "owner": "Architecture Governance", "wave": "W8", "status": "active", "type": "human-authored" },
+    { "path": "docs/architecture/REPOSITORY_CONSTITUTION.md", "owner": "Architecture Governance", "wave": "W1", "status": "active", "type": "human-authored" },
+    { "path": "docs/architecture/CANONICAL_OWNERSHIP_MODEL.md", "owner": "Architecture Governance", "wave": "W1", "status": "active", "type": "human-authored" },
+    { "path": "docs/architecture/FLOWOS_MASTER_EXECUTION.md", "owner": "Architecture Governance", "wave": "W8", "status": "active", "type": "human-authored" },
+    { "path": "generated/manifests/foundation-manifest-index.json", "owner": "scripts/manifests/generate/generate-foundation-manifest-index.ts", "wave": "W0", "status": "active", "type": "machine" },
+    { "path": "generated/manifests/route-adapter-semantic-map.json", "owner": "scripts/manifests/generate/generate-route-adapter-semantic-map.ts", "wave": "W0", "status": "active", "type": "machine" },
+    { "path": "generated/manifests/page-semantic-violation-baseline.json", "owner": "check-page-semantic-adapter.ts", "wave": "W7", "status": "active-ratchet", "type": "machine" },
+    { "path": "generated/manifests/admin-page-body-baseline.json", "owner": "check-admin-page-body-ratchet.ts", "wave": "W7", "status": "active-ratchet", "type": "machine" },
+    { "path": "generated/manifests/admin-plane-ownership-map.json", "owner": "generate-admin-plane-ownership-map.ts", "wave": "W0", "status": "active", "type": "machine" },
+    { "path": "generated/manifests/platform-subclassification-map.json", "owner": "generate-platform-subclassification-map.ts", "wave": "W0", "status": "active", "type": "machine" },
+    { "path": "generated/manifests/shared-component-ownership-map.json", "owner": "generate-shared-component-ownership-map.ts", "wave": "W0", "status": "active", "type": "machine" },
+    { "path": "generated/manifests/contract-duplicate-baseline.json", "owner": "check-contract-duplicate-identifiers.ts", "wave": "W7", "status": "active-ratchet", "type": "machine" },
+    { "path": "generated/manifests/safe-change-evidence-ledger.json", "owner": "check-safe-change-evidence.ts", "wave": "W7", "status": "active-ledger", "type": "machine" },
+    { "path": "generated/audits/wave-10-architectural-attestation.json", "owner": "scripts/architecture/wave-10-emit-attestation.ts (G6 only)", "wave": "W9", "status": "active-proof", "type": "machine" },
+    { "path": "generated/audits/repository-canonicalization-baseline.json", "owner": "emit-canonicalization-baseline.ts", "wave": "W0", "status": "active", "type": "machine" },
+    { "path": "generated/audits/repository-canonicalization-plan.md", "owner": "wave runner", "wave": "W1", "status": "active", "type": "machine" },
+    { "path": "generated/audits/flowos-wave-a-report.md", "owner": "this PR", "wave": "W8", "status": "active", "type": "human-authored-ledger" },
+    { "path": "generated/manifests/flowos-deliverables-index.json", "owner": "this PR", "wave": "W8", "status": "active", "type": "machine-mirrored" },
+    { "path": "src/lib/ci/validator-gate-map.ts", "owner": "Architecture Governance", "wave": "W7", "status": "active", "type": "source-of-truth" },
+    { "path": "generated/validator-gate-map.json", "owner": "generate-validator-gate-map.ts", "wave": "W7", "status": "active", "type": "machine" }
+  ],
+  "ratchets": [
+    { "name": "page-semantic-violation", "baselineFile": "generated/manifests/page-semantic-violation-baseline.json", "currentBaseline": 550, "direction": "decrease-only", "drainPlan": "Wave A (this PR) drains 13; Wave A.1 drains 2 more; Waves B.x drain admin 534 in 12 shards" },
+    { "name": "admin-page-body", "baselineFile": "generated/manifests/admin-page-body-baseline.json", "currentBaseline": 576, "direction": "decrease-only", "drainPlan": "Waves B.1 through B.12, one per IA domain" },
+    { "name": "shared-shim-imports", "baselineFile": "generated/manifests/deprecated-shim-baseline.json", "currentBaseline": 0, "direction": "decrease-only", "drainPlan": "complete (W9)" }
+  ]
+}
