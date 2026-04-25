@@ -1,0 +1,9 @@
+{
+  "generatedAt": "2026-04-25T18:33:23.264Z",
+  "gate": "contract-duplicate-identifiers",
+  "level": "block",
+  "baselineCount": 0,
+  "currentCount": 0,
+  "ok": true,
+  "duplicates": []
+}

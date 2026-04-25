@@ -4,7 +4,7 @@
 // Pillar identity + typed capability registry that drives nav,
 // launcher ordering, and the architecture validator.
 
-import type { PillarCapability, PillarManifest } from "@/platform/contracts/pillar-contract";
+import type { PillarCapability, PillarManifest } from "@/contracts";
 
 export const BUSINESS_CAPABILITIES: readonly PillarCapability[] = [
   { id: "crm", label: "CRM", route: "/business/crm", maturity: "active", trustTier: "high" },

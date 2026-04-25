@@ -139,6 +139,15 @@ During an in-flight migration wave, a thin re-export wrapper at the old path is 
 37. **Shared-semantic violation ratchet.** Pre-existing files that fail the concept rule (12 files at Wave 0.9 seal) are baselined in `generated/manifests/shared-component-semantic-violation-baseline.json`. The count is monotone-decreasing — net-new violators BLOCK CI. Severity regressions on baselined files BLOCK CI. Drained by the future Shared Component Relocation Wave (gated by Rules 19, 24).
 38. **Shared-component import direction.** `src/components/**` MUST NOT import from `@/modules/**`, `@/platform/**`, `@/admin/**`, or `@/pages/**`. Pure-barrel re-exports of platform paths are flagged as `barrel-only-reexport` and tracked in the Rule 37 baseline; the canonical fix is to relocate the barrel under the owning subsystem (`@/platform/<system>/components/<sub>/index.ts`) and update consumers. Enforcer: same validator as Rule 36.
 
+## Contract layer ownership (Wave 1.2 — STRICT, BLOCKING)
+
+39. **Single canonical home for every contract identifier.** Every exported `type` / `interface` / `enum` / `const` identifier in the contract surface MAY exist in **exactly one** of `{ src/contracts/**, src/packages/**, src/domains/types/**, src/platform/<system>/contracts/** }`. Duplicate identifiers across these layers BLOCK CI. Validator: `scripts/architecture/checks/check-contract-duplicate-identifiers.ts` (foundation-tier, BLOCKING). Generated truth: `generated/manifests/contract-ownership-map.json`.
+40. **`src/contracts/` is a pure public re-export barrel.** Files under `src/contracts/**` MAY only contain `export ... from "@/packages/*"` (or, after explicit ADR-gated promotion, `from "@/platform/<system>/contracts/*"`) statements. They MUST NOT contain interface / type / class / function bodies, nor import from `react`, `react-dom`, `@/integrations/supabase`, `@/lib/services/**`, `@/components/**`, `@/pages/**`, `@/hooks/**`, or `@/contexts/**`. Validator: `scripts/architecture/checks/check-public-contract-barrel-purity.ts` (BLOCKING).
+41. **Domain purity (extended).** Files under `src/domains/**` MUST NOT import from `react`, `react-dom`, `@/components/**`, `@/pages/**`, `@/integrations/supabase`, or `@/lib/services/**`. (Extends prior `check-domain-purity.ts` with the canonical Wave 1.2 forbidden-import set.)
+42. **Platform-local contracts are local.** `src/platform/<X>/contracts/**` MUST NOT be imported from `src/platform/<Y>/**` (Y ≠ X), `src/modules/**`, or `src/pages/**`. The moment such a cross-layer import is needed, the contract MUST be promoted to `src/packages/<family>-contracts/` and re-exported via `src/contracts/`. Validator: `scripts/architecture/checks/check-platform-local-contract-scope.ts` (BLOCKING). Deprecated re-export shims (frontmatter `@deprecated Wave 1.2`) are explicitly exempted and tracked under the Rule 23 shim baseline.
+
+The full ownership model (promotion rule, duplication rule, direction rule, decision tree) lives in `docs/architecture/CONTRACT_LAYER_OWNERSHIP_MODEL.md`.
+
 ## Amendment process
 
 1. Open an ADR under `docs/adr/ADR-<NNN>-<slug>.md` describing the change and its blast radius.

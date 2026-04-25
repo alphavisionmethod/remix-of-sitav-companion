@@ -5,7 +5,7 @@
 // ════════════════════════════════════════════════════════════
 
 import { GitBranch, ShieldCheck, Layers, Zap } from "lucide-react";
-import { DECISION_QUEUE, type SurfaceOwner } from "@/platform/contracts/decision-queue";
+import { DECISION_QUEUE, type SurfaceOwner } from "@/contracts";
 import { TRUST_ACTION_LIST } from "@/platform/trust";
 
 const ownerStyles: Record<SurfaceOwner, string> = {
