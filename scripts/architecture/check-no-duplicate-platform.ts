@@ -2,12 +2,14 @@
 /**
  * SITA OS — No Duplicate Platform Folders Validator (Constitution Rule 8 & 9)
  *
- * Asserts that the known duplicate platform folder pairs do not coexist,
- * and that src/platform/services-unclassified/ does not exist.
+ * Asserts that the known duplicate platform folder placeholders do not exist.
+ * After Wave 2, the empty/unused barrels were deleted; only the real
+ * implementation folders remain.
  *
  * Modes:
- *   --warn   (default): non-zero exit only on schema errors
- *   --strict : non-zero exit on any duplicate pair still present
+ *   --warn  : print but always exit 0
+ *   --strict (default after Wave 2): non-zero exit if any forbidden folder
+ *           reappears.
  *
  * Run: npx tsx scripts/architecture/check-no-duplicate-platform.ts [--strict]
  */
@@ -16,46 +18,47 @@ import { join } from "node:path";
 
 const ROOT = process.cwd();
 const PLATFORM = join(ROOT, "src", "platform");
-const STRICT = process.argv.includes("--strict");
+const WARN = process.argv.includes("--warn");
+const STRICT = !WARN; // default is now strict (post-Wave 2)
 
-/** keep → merge-from. After Wave 2, every "merge-from" must be empty/removed. */
-const FORBIDDEN_PAIRS: Array<{ keep: string; mergeFrom: string; mergeTarget: string }> = [
-  { keep: "ai", mergeFrom: "ai-gateway", mergeTarget: "ai/gateway" },
-  { keep: "nova-sdk", mergeFrom: "nova-runtime-sdk", mergeTarget: "nova-sdk/runtime" },
-  { keep: "policy", mergeFrom: "policies", mergeTarget: "policy" },
-  { keep: "sync", mergeFrom: "sync-engine", mergeTarget: "sync/engine" },
-  { keep: "core-services", mergeFrom: "core", mergeTarget: "core-services/kernel" },
-  { keep: "core-services", mergeFrom: "os-services", mergeTarget: "core-services/os" },
+/**
+ * Folders that MUST NOT reappear under src/platform/. Each is either an
+ * empty/scaffolding placeholder that was removed in Wave 2, or a duplicate
+ * of one of the canonical implementation folders kept alive.
+ *
+ * Canonical implementations kept (do NOT add to this list):
+ *   - src/platform/sync-engine/      (38 files — real implementation)
+ *   - src/platform/nova-sdk/         (40+ files — real implementation)
+ *   - src/platform/core-services/    (event-bus + 30 consumers)
+ */
+const FORBIDDEN_FOLDERS: Array<{ name: string; reason: string }> = [
+  { name: "ai-gateway", reason: "empty placeholder — AI gateway code lives at src/lib/services/ai-gateway/" },
+  { name: "ai", reason: "empty placeholder — AI surfaces live under src/platform/orchestration/, src/lib/ai*, etc." },
+  { name: "core", reason: "empty placeholder — kernel/runtime code lives in src/platform/core-services/ and src/runtimes/" },
+  { name: "os-services", reason: "empty placeholder — OS services live in src/platform/core-services/" },
+  { name: "services-unclassified", reason: "anti-pattern — every service must have a classified subsystem owner" },
+  { name: "policy", reason: "empty placeholder — policy code lives at src/lib/policy/" },
+  { name: "policies", reason: "empty placeholder — policy code lives at src/lib/policy/" },
+  { name: "sync", reason: "empty placeholder — sync code lives in src/platform/sync-engine/" },
+  { name: "nova-runtime-sdk", reason: "empty alias barrel — runtime canonical naming lives inside src/platform/nova-sdk/" },
 ];
-
-const FORBIDDEN_FOLDERS = ["services-unclassified"];
 
 function main() {
   const violations: string[] = [];
 
-  for (const pair of FORBIDDEN_PAIRS) {
-    const keepPath = join(PLATFORM, pair.keep);
-    const fromPath = join(PLATFORM, pair.mergeFrom);
-    if (existsSync(keepPath) && existsSync(fromPath)) {
-      violations.push(
-        `DUPLICATE_PLATFORM_PAIR: src/platform/${pair.mergeFrom}/ must be merged into src/platform/${pair.mergeTarget}/`,
-      );
-    }
-  }
-
   for (const f of FORBIDDEN_FOLDERS) {
-    if (existsSync(join(PLATFORM, f))) {
-      violations.push(`FORBIDDEN_FOLDER: src/platform/${f}/ must be classified into proper subsystems`);
+    if (existsSync(join(PLATFORM, f.name))) {
+      violations.push(`FORBIDDEN_FOLDER: src/platform/${f.name}/ — ${f.reason}`);
     }
   }
 
   if (violations.length === 0) {
-    console.log("✅ No duplicate platform folders: OK");
+    console.log(`✅ No duplicate platform folders: OK (${FORBIDDEN_FOLDERS.length} forbidden names checked)`);
     process.exit(0);
   }
 
   console[STRICT ? "error" : "warn"](
-    `${STRICT ? "❌" : "⚠️"} Duplicate platform folders: ${violations.length} issue(s) (mode=${STRICT ? "STRICT" : "WARN"})`,
+    `${STRICT ? "❌" : "⚠️"} Forbidden platform folders: ${violations.length} issue(s) (mode=${STRICT ? "STRICT" : "WARN"})`,
   );
   for (const v of violations) console[STRICT ? "error" : "warn"](`  ${v}`);
   process.exit(STRICT ? 1 : 0);
