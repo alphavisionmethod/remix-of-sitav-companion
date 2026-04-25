@@ -144,16 +144,27 @@ function classifyFile(absPath: string): FileReport {
   const rawSrc = readFileSync(absPath, "utf-8");
   // Strip comments before vocabulary scanning so doc-comments don't generate false positives.
   // Keep imports for the import scan (run on rawSrc).
-  const src = rawSrc
+  let src = rawSrc
     .replace(/\/\*[\s\S]*?\*\//g, "")
     .split(/\r?\n/)
     .map((l) => l.replace(/\/\/.*$/, ""))
     .join("\n");
+  // Strip lucide-react icon import lists so icon names like `Cloud`, `Receipt`,
+  // `Shield` don't trigger vocabulary matches.
+  src = src.replace(/from\s+["']lucide-react["']/g, 'from "lucide-react"');
+  src = src.replace(/import\s*\{[^}]*\}\s*from\s+["']lucide-react["']/g, "");
+  // Strip tailwind utility prefixes attached to vocabulary (e.g. `bg-trust-safe`,
+  // `text-trust-warn`, `border-trust-danger`) — these are design-system tokens,
+  // not platform-trust semantics.
+  const TW_PREFIXES = ["bg", "text", "border", "ring", "from", "to", "via", "fill", "stroke", "shadow", "outline", "decoration", "divide", "placeholder", "accent", "caret"];
+  for (const p of TW_PREFIXES) {
+    src = src.replace(new RegExp(`${p}-(?:trust|cloud|admin|operator|sita|advisor|boardroom|proof|receipt|governance|observability|release|verification|connector|atlas|mission|intelligence)(?:-[a-z]+)?`, "g"), "");
+  }
   const lines = logicalLines(src);
   const imports = findImportTargets(rawSrc);
 
   const isBarrel = lines.length > 0 && lines.every((l) => RE_PURE_REEXPORT.test(l));
-  const isDeprecatedShim = /DEPRECATED/i.test(src) && imports.some((i) => i.startsWith("@/platform/"));
+  const isDeprecatedShim = /DEPRECATED/i.test(rawSrc) && imports.some((i) => i.startsWith("@/platform/"));
 
   const importViolations = imports.filter((i) =>
     i.startsWith("@/modules/") ||
