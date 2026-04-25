@@ -17,7 +17,7 @@
 | Tax                | `src/pages/money/Tax*`                               | `src/lib/services/finance-os/tax-*`     |
 | Family office      | `src/pages/money/FamilyOffice*`                      | `src/lib/services/family-command-center`|
 | Approvals (money)  | `src/pages/money/MoneyApprovals.tsx`                | DELEGATES → `@/platform/trust/approvals`          |
-| Trust Graph        | `src/pages/money/TrustGraph.tsx`                    | DELEGATES → `_trust`                    |
+| Trust Graph        | `src/pages/money/TrustGraph.tsx`                    | DELEGATES → `@/platform/trust`                    |
 | Bills / subscriptions | `src/pages/money/Bills`, `Subscriptions`         | `src/lib/services/finance-os/bills-*`   |
 | Receivables        | `src/pages/money/Receivables`                       | `src/lib/services/finance-os/ar-*`      |
 | Scenarios          | `src/pages/ScenarioLabPage.tsx`                     | `src/lib/services/life-simulation`      |
