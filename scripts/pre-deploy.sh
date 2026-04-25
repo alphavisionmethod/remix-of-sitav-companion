@@ -23,6 +23,9 @@ if npx vitest run src/__tests__/deployment/phase9-tables-rls-smoke.test.ts 2>&1;
 step "Vite production build"
 if npx vite build 2>&1; then pass "Vite build — success"; else fail "Vite build failed"; fi
 
+step "Trust action manifest freshness"
+if npx tsx scripts/architecture/check-trust-action-manifest.ts 2>&1; then pass "Trust manifest in sync"; else fail "Trust manifest stale — run scripts/architecture/emit-trust-action-manifest.ts"; fi
+
 step "Route & page consistency"
 ROUTE_COUNT=$(grep -rc "path=" src/routes/*.tsx 2>/dev/null | awk -F: '{s+=$2} END {print s+0}')
 echo "  Routes: $ROUTE_COUNT"
