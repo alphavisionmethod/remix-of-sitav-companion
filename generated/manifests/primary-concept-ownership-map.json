@@ -1,0 +1,236 @@
+{
+  "generatedAt": "2026-04-25T19:47:55.536Z",
+  "schemaVersion": 1,
+  "rule": "Constitution Rule 46 (Wave D §D.2 — Concept Uniqueness Law)",
+  "summary": {
+    "total": 12,
+    "canonical": 7,
+    "duplicateRisk": 2,
+    "noRoutes": 3,
+    "missingOwnerDir": 0,
+    "missingPageFamily": 0
+  },
+  "concepts": [
+    {
+      "concept": "business-front-door",
+      "displayName": "Business OS",
+      "ownerType": "module",
+      "ownerPath": "src/modules/business",
+      "ownerExists": true,
+      "canonicalRouteFamily": "/business",
+      "canonicalPageFamily": "src/modules/business/pages",
+      "pageFamilyExists": true,
+      "aliases": [
+        "/crm"
+      ],
+      "aliasRouteCount": 0,
+      "routeCount": 46,
+      "distinctOwnerDirs": [
+        "src/routes/business-routes.tsx"
+      ],
+      "status": "canonical",
+      "notes": "Business CRM is a sub-surface of Business OS, not a second front door."
+    },
+    {
+      "concept": "concierge-front-door",
+      "displayName": "Concierge",
+      "ownerType": "module",
+      "ownerPath": "src/modules/concierge",
+      "ownerExists": true,
+      "canonicalRouteFamily": "/concierge",
+      "canonicalPageFamily": "src/modules/concierge/pages",
+      "pageFamilyExists": true,
+      "aliases": [],
+      "aliasRouteCount": 0,
+      "routeCount": 20,
+      "distinctOwnerDirs": [
+        "src/routes/concierge-routes.tsx"
+      ],
+      "status": "canonical",
+      "notes": null
+    },
+    {
+      "concept": "finance-front-door",
+      "displayName": "Money / Finance OS",
+      "ownerType": "module",
+      "ownerPath": "src/modules/finance",
+      "ownerExists": true,
+      "canonicalRouteFamily": "/money",
+      "canonicalPageFamily": "src/modules/finance/pages",
+      "pageFamilyExists": true,
+      "aliases": [
+        "/finance"
+      ],
+      "aliasRouteCount": 0,
+      "routeCount": 38,
+      "distinctOwnerDirs": [
+        "src/routes/experimental-routes.tsx",
+        "src/routes/money-routes.tsx"
+      ],
+      "status": "duplicate-risk",
+      "notes": "Finance pillar canonicalizes its public route family as /money."
+    },
+    {
+      "concept": "health-front-door",
+      "displayName": "Health OS",
+      "ownerType": "module",
+      "ownerPath": "src/modules/health",
+      "ownerExists": true,
+      "canonicalRouteFamily": "/health",
+      "canonicalPageFamily": "src/modules/health/pages",
+      "pageFamilyExists": true,
+      "aliases": [],
+      "aliasRouteCount": 0,
+      "routeCount": 0,
+      "distinctOwnerDirs": [],
+      "status": "no-routes",
+      "notes": null
+    },
+    {
+      "concept": "boardroom",
+      "displayName": "Boardroom",
+      "ownerType": "platform",
+      "ownerPath": "src/platform/boardroom",
+      "ownerExists": true,
+      "canonicalRouteFamily": "/boardroom",
+      "canonicalPageFamily": "src/platform/boardroom/pages",
+      "pageFamilyExists": true,
+      "aliases": [],
+      "aliasRouteCount": 0,
+      "routeCount": 11,
+      "distinctOwnerDirs": [
+        "src/routes/boardroom-routes.tsx"
+      ],
+      "status": "canonical",
+      "notes": null
+    },
+    {
+      "concept": "trust",
+      "displayName": "Trust Center",
+      "ownerType": "platform",
+      "ownerPath": "src/platform/trust",
+      "ownerExists": true,
+      "canonicalRouteFamily": "/trust",
+      "canonicalPageFamily": "src/platform/trust/pages",
+      "pageFamilyExists": true,
+      "aliases": [],
+      "aliasRouteCount": 0,
+      "routeCount": 7,
+      "distinctOwnerDirs": [
+        "src/routes/files-routes.tsx"
+      ],
+      "status": "canonical",
+      "notes": null
+    },
+    {
+      "concept": "personal-brain",
+      "displayName": "Personal Brain",
+      "ownerType": "platform",
+      "ownerPath": "src/platform/personal-brain",
+      "ownerExists": true,
+      "canonicalRouteFamily": "/personal-brain",
+      "canonicalPageFamily": "src/platform/personal-brain/pages",
+      "pageFamilyExists": true,
+      "aliases": [],
+      "aliasRouteCount": 0,
+      "routeCount": 1,
+      "distinctOwnerDirs": [
+        "src/routes/os-routes.tsx"
+      ],
+      "status": "canonical",
+      "notes": null
+    },
+    {
+      "concept": "mission-control",
+      "displayName": "Mission Control",
+      "ownerType": "platform",
+      "ownerPath": "src/platform/mission-control",
+      "ownerExists": true,
+      "canonicalRouteFamily": "/mission",
+      "canonicalPageFamily": "src/platform/mission-control/mission-pages",
+      "pageFamilyExists": true,
+      "aliases": [
+        "/mission-control"
+      ],
+      "aliasRouteCount": 1,
+      "routeCount": 0,
+      "distinctOwnerDirs": [],
+      "status": "no-routes",
+      "notes": null
+    },
+    {
+      "concept": "files",
+      "displayName": "Files",
+      "ownerType": "platform",
+      "ownerPath": "src/platform/files",
+      "ownerExists": true,
+      "canonicalRouteFamily": "/files",
+      "canonicalPageFamily": "src/platform/files/pages",
+      "pageFamilyExists": true,
+      "aliases": [],
+      "aliasRouteCount": 0,
+      "routeCount": 12,
+      "distinctOwnerDirs": [
+        "src/routes/files-routes.tsx",
+        "src/routes/os-routes.tsx"
+      ],
+      "status": "duplicate-risk",
+      "notes": null
+    },
+    {
+      "concept": "atlas",
+      "displayName": "Atlas",
+      "ownerType": "platform",
+      "ownerPath": "src/platform/atlas",
+      "ownerExists": true,
+      "canonicalRouteFamily": "/atlas",
+      "canonicalPageFamily": "src/platform/atlas/pages",
+      "pageFamilyExists": true,
+      "aliases": [],
+      "aliasRouteCount": 0,
+      "routeCount": 0,
+      "distinctOwnerDirs": [],
+      "status": "no-routes",
+      "notes": null
+    },
+    {
+      "concept": "owner",
+      "displayName": "Owner Mode",
+      "ownerType": "platform",
+      "ownerPath": "src/platform/owner",
+      "ownerExists": true,
+      "canonicalRouteFamily": "/owner",
+      "canonicalPageFamily": "src/platform/owner/pages",
+      "pageFamilyExists": true,
+      "aliases": [],
+      "aliasRouteCount": 0,
+      "routeCount": 35,
+      "distinctOwnerDirs": [
+        "src/routes/OwnerRoutes.tsx"
+      ],
+      "status": "canonical",
+      "notes": null
+    },
+    {
+      "concept": "admin-plane",
+      "displayName": "Admin Control Plane",
+      "ownerType": "admin",
+      "ownerPath": "src/admin",
+      "ownerExists": true,
+      "canonicalRouteFamily": "/admin",
+      "canonicalPageFamily": "src/admin/modules",
+      "pageFamilyExists": true,
+      "aliases": [
+        "/operator",
+        "/control"
+      ],
+      "aliasRouteCount": 0,
+      "routeCount": 191,
+      "distinctOwnerDirs": [
+        "src/routes/AdminRoutes.tsx"
+      ],
+      "status": "canonical",
+      "notes": "Per-domain uniqueness is enforced by check-no-duplicate-primary-concept.ts (admin-route-registry)."
+    }
+  ]
+}

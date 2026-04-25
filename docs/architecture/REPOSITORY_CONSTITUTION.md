@@ -205,6 +205,18 @@ Validator (BLOCK): `scripts/architecture/checks/check-ui-ownership.ts`.
 Manifest: `generated/manifests/ui-ownership-map.json`.
 Full model: `docs/architecture/UI_OWNERSHIP_MODEL.md`.
 
+## Wave D.1 — Profile Visibility Law (BLOCKING)
+
+45. **Profile visibility is constitutional.** Every route under `src/routes/**` belongs to one of four profile classes: `operator-only`, `user-only`, `both`, `unscoped`. Operator-only surfaces MUST NOT leak into user route trees without an explicit `AdminRoute` / `PermissionGatedRoute` / `RequirePermission` guard. Profile assignment is centrally registered in `generated/manifests/profile-route-visibility-map.json` (projection of `app-route-profile-map.json`). Page adapters MAY declare a top-of-file `// @profile: <user|operator|both>` directive; when present it MUST match the manifest. Validator (BLOCK): `scripts/architecture/checks/check-profile-visibility-leakage.ts`. Pre-existing leak-risk routes pinned in `generated/baselines/profile-visibility-leakage-baseline.json` (sealed at 0). Full model: `docs/architecture/PROFILE_VISIBILITY_AND_OPERATOR_SEPARATION_MODEL.md`.
+
+## Wave D.2 — Concept Uniqueness Law (BLOCKING)
+
+46. **No duplicate primary concept.** A primary product/platform concept (business, concierge, finance, health, boardroom, trust, personal-brain, mission-control, files, atlas, owner, admin-plane) MUST have exactly one canonical owner path, one canonical route family, and one canonical page family. Aliases are compatibility devices only and MUST NOT host net-new logic. Registry: `src/platform/architecture/primary-concept-registry.ts`. Manifest: `generated/manifests/primary-concept-ownership-map.json`. Validator (BLOCK): `scripts/architecture/checks/check-primary-concept-uniqueness.ts`. Pre-existing duplicates baselined in `generated/baselines/primary-concept-duplicate-baseline.json` (monotone-decreasing; 2 sealed: `finance-front-door`, `files`). Complements `check-no-duplicate-primary-concept.ts` (admin per-domain). Full model: `docs/architecture/PRIMARY_CONCEPT_UNIQUENESS_MODEL.md`.
+
+## Wave D.3 — Reverse-Dependency Retirement Law (BLOCKING)
+
+47. **Safe retirement requires reproducible evidence.** Strengthens Rule 24. Every entry in `generated/manifests/safe-change-evidence-ledger.json` MUST carry all required evidence kinds per `generated/manifests/reverse-dependency-retirement-policy.json`: `grepProof`, `manifestProof`, `routeProof`, `testProof`, `docsProof` (and `duplicateReconciliation` for merges). Each proof field stores either `"reference-zero"` or an explicit historical-only file list. The validator re-greps `reference-zero` claims at validation time — a retired path that becomes referenced again BLOCKS CI. Generator: `scripts/architecture/generate/generate-retirement-evidence-proof.ts`. Validator (BLOCK): `scripts/architecture/checks/check-retirement-evidence-completeness.ts`. Pre-Wave-D entries grandfathered via `generated/baselines/retirement-evidence-completeness-baseline.json`. Full model: `docs/architecture/SAFE_RETIREMENT_AND_REVERSE_DEPENDENCY_MODEL.md`.
+
 ## Amendment process
 
 1. Open an ADR under `docs/adr/ADR-<NNN>-<slug>.md` describing the change and its blast radius.

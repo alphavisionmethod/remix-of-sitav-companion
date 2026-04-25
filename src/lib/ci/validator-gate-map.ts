@@ -179,6 +179,30 @@ export const VALIDATOR_GATE_OVERRIDES: ValidatorGateMapEntry[] = [
     consumer: "release-readiness",
     rationale: "Wave C §C.1. Enforces the 5-zone UI ownership model. (1) Sealed allowlist for src/components/* — only NavLink.tsx, primitives/, ui/, __tests__/ may exist; (2) Forbids deprecated shim folders (cards/, launcher/, navigation/, shared/) from being re-introduced; (3) Primitive purity — files under src/components/primitives/** may not import from @/modules/**, @/platform/**, @/admin/**, @/app/**, @/runtimes/**; (4) Forbids module/platform/admin-semantic component names under src/components/ root. See docs/architecture/UI_OWNERSHIP_MODEL.md and generated/manifests/ui-ownership-map.json.",
   },
+  // ─── Wave D §D.1 — Profile Visibility Law (Constitution Rule 45, BLOCKING) ──
+  {
+    validator: "check-profile-visibility-leakage",
+    gateId: "profile-visibility-leakage",
+    classification: "block",
+    consumer: "release-readiness",
+    rationale: "Wave D §D.1. Enforces operator/user profile separation. Reads generated/manifests/profile-route-visibility-map.json (projection of app-route-profile-map). Fails on (a) net-new operator-only routes lacking AdminRoute/PermissionGated guard, (b) page-adapter @profile directive contradicting the manifest. Pre-existing leak-risk routes pinned in generated/baselines/profile-visibility-leakage-baseline.json (sealed at 0). See docs/architecture/PROFILE_VISIBILITY_AND_OPERATOR_SEPARATION_MODEL.md.",
+  },
+  // ─── Wave D §D.2 — Concept Uniqueness Law (Constitution Rule 46, BLOCKING) ──
+  {
+    validator: "check-primary-concept-uniqueness",
+    gateId: "primary-concept-uniqueness",
+    classification: "block",
+    consumer: "release-readiness",
+    rationale: "Wave D §D.2. Cross-cutting primary-concept uniqueness for 12 product/platform concepts (business, concierge, finance, health, boardroom, trust, personal-brain, mission-control, files, atlas, owner, admin-plane). Reads src/platform/architecture/primary-concept-registry.ts and generated/manifests/primary-concept-ownership-map.json. Fails on net-new duplicate-risk concepts beyond the sealed baseline (2: finance-front-door, files). Complements check-no-duplicate-primary-concept.ts (admin per-domain). See docs/architecture/PRIMARY_CONCEPT_UNIQUENESS_MODEL.md.",
+  },
+  // ─── Wave D §D.3 — Reverse-Dependency Retirement Law (Constitution Rule 47, BLOCKING) ──
+  {
+    validator: "check-retirement-evidence-completeness",
+    gateId: "retirement-evidence-completeness",
+    classification: "block",
+    consumer: "release-readiness",
+    rationale: "Wave D §D.3. Strengthens Rule 24 (Safe-Change Law). Reads generated/manifests/safe-change-evidence-ledger.json against generated/manifests/reverse-dependency-retirement-policy.json. Enforces that every retirement entry carries all required evidence kinds (grepProof, manifestProof, routeProof, testProof, docsProof; +duplicateReconciliation for merges) and re-greps reference-zero claims at validation time. Pre-Wave-D entries grandfathered via generated/baselines/retirement-evidence-completeness-baseline.json. See docs/architecture/SAFE_RETIREMENT_AND_REVERSE_DEPENDENCY_MODEL.md.",
+  },
 ];
 
 /** Lookup table for fast access by validator basename. */

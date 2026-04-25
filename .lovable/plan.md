@@ -1,167 +1,96 @@
 
-# Wave B — Generated Artifact Governance & Frontend/Backend Boundary Hardening
+# Wave D — Profile Separation + Concept Uniqueness + Safe Retirement Hardening
 
-## Audit findings (real repo state, not assumed)
+**Mode:** Governance + manifests + validators. **Zero source-code logic changes. Zero UI/API changes. Zero file moves.**
 
-- `generated/` holds **1,440** files; `public/generated/` holds **619**. Mirror is policy-driven via `scripts/architecture/lib/public-mirror-policy.ts` + `check-public-artifact-mirror.ts` (already STRICT).
-- Ownership maps already exist: `generated/manifests/{contract,admin-plane,shared-component,lib-service-layer}-ownership-map.json` and `foundation-manifest-freshness-report.json`.
-- Existing checks already cover much: `check-no-backend-in-ui`, `check-no-ui-in-backend`, `check-frontend-backend-substrate-map`, `check-route-backend-wiring`, plus 8 edge-function governance checks.
-- **Real gaps**:
-  1. No formal **lifecycle class** (active-blocking / active-informational / reference / historical-archived) on each generated artifact.
-  2. No formal **freshness TTL + CI behavior** matrix; freshness exists only ad-hoc (`check-supportability-freshness`, `check-attestation-evidence-freshness`, foundation-manifest).
-  3. No single canonical `FRONTEND_BACKEND_OWNERSHIP_MODEL.md` (only the older `BACKEND_TOPOLOGY_MAP.md` and `CORE_OS_USER_ADMIN_BACKEND_MODEL.md`).
-  4. **145 pages** directly import `@/integrations/supabase/client`; **9 domain files** do as well — no ratchet exists yet to prevent regression.
-  5. `check-no-backend-in-ui` only catches `@/lib/core-services/`, not direct Supabase client use.
-
-## Scope rules (hard constraints — same as prior waves)
-
-- **No-logic / No-UI / No-API change**: zero behavioral edits, zero file moves of source code in this wave (governance + ratchets only — exactly what user has approved in every prior wave).
-- **Exactly one canonical owner path per concept**: model lives at `docs/architecture/GENERATED_ARTIFACT_LIFECYCLE_MODEL.md` and `docs/architecture/FRONTEND_BACKEND_OWNERSHIP_MODEL.md` (no duplicates of `BACKEND_TOPOLOGY_MAP.md`).
-- **Attestation resealing**: only via canonical `scripts/architecture/wave-10-emit-attestation.ts` (G6).
-- **Reverse-dependency proof**: `tsc --noEmit` + targeted `rg` import checks must pass after every edit (G2).
-- **Ratchet-not-purge**: 145 page→supabase imports become a baselined ratchet, not a forced refactor (purge requires a separate Wave C with state-extraction).
-- **`EmptyState` semantic verification** (G7): unchanged; no UI surfaces touched.
+This wave closes Gaps 14–16 by elevating already-partial enforcement into constitutional, manifest-backed, CI-gated law — *without* introducing duplicate governance or breaking any existing validator/profile/baseline contract.
 
 ---
 
-## Step 1 — Generated artifact lifecycle model
+## Audit Findings (what exists, what's missing)
 
-Create `docs/architecture/GENERATED_ARTIFACT_LIFECYCLE_MODEL.md` defining:
+| Capability | Already exists | Gap |
+|---|---|---|
+| Profile-route map (673 routes) | ✅ `generated/profile-and-runtime-hardening/app-route-profile-map.json` | ❌ Not centralized into a stable `generated/manifests/` artifact; no constitutional rule binding it; no validator that fails CI on operator-route leakage into user profile shells |
+| Profile leakage check | ✅ `check-shared-component-profile-pollution.ts`, `check-command-palette-profile-leakage.ts` | ❌ No top-level "operator-only-cannot-leak-into-user-route-tree" gate; no per-page-adapter `// @profile:` declaration |
+| Admin concept uniqueness | ✅ `check-no-duplicate-primary-concept.ts` (admin domains only) | ❌ No equivalent registry for primary product/platform concepts (Business, Boardroom, Trust, Personal Brain, Mission Control, Files, Concierge, Finance, Health) |
+| Safe-change ledger | ✅ Rule 24 + `safe-change-evidence-ledger.json` + `check-safe-change-evidence.ts` | ❌ No reverse-dependency *policy* doc; no automated grep-proof *generator*; no manifest mapping retired/deleted/merged paths to evidence |
 
-| Class | Definition | Freshness TTL | CI on stale | CI on missing | Publish? |
-|---|---|---|---|---|---|
-| `active-blocking` | Read by a STRICT/BLOCK gate | ≤ 24h (release-gated) / ≤ 7d (PR-gated) | **fail** | **fail** | only if explicitly allowlisted |
-| `active-informational` | Read by WARN gate or dashboard | ≤ 30d | warn | warn | usually yes |
-| `reference` | Engineer/audit lookup, not gated | ≤ 180d | label-only | none | yes if mirror policy matches |
-| `historical-archived` | Frozen snapshot | n/a (frozen) | none | none | yes (immutable) |
+---
 
-Rules:
-- Every artifact must have an **owning script** (`scripts/...`); orphans become validator violations.
-- Lifecycle/freshness/publishability/owner-script = the four mandatory metadata facets.
+## Deliverables
 
-## Step 2 — Generated artifact governance manifest
+### A. Profile Separation (Gap 14)
 
-Create `scripts/architecture/generate/generate-artifact-governance-map.ts` that walks `generated/**` and emits:
+1. **`generated/manifests/profile-route-visibility-map.json`** *(active-blocking, TTL 7d)*
+    - Generator: `scripts/architecture/generate/generate-profile-route-visibility-map.ts`
+    - Source: existing `app-route-profile-map.json` (no new audit; pure projection into a stable `generated/manifests/` location)
+    - Schema: `{ path, plane, profiles[], operatorOnly, sourceOwner, routeAdapter, validationStatus }`
+2. **`docs/architecture/PROFILE_VISIBILITY_AND_OPERATOR_SEPARATION_MODEL.md`** — formal model
+3. **`scripts/architecture/checks/check-profile-visibility-leakage.ts`** *(BLOCK gate)*
+    - Fails if a route with `profiles: ["operator"]` is reachable from a user-profile shell registry (`AppRoutes.tsx`, launcher app registry) without an explicit `AdminRoute` guard
+    - Fails if the visibility manifest is stale
+4. **Constitution amendment §D.1 — Profile Visibility Law** (Rule 45)
+    - Operator-only surfaces MUST NOT leak into user route trees without explicit `AdminRoute`/`PermissionGatedRoute` guard
+    - Profile visibility is centrally registered in `profile-route-visibility-map.json`
+    - Page adapters MAY declare `// @profile: <user|operator|both>`; when present it MUST match the manifest
 
-- `generated/manifests/generated-artifact-governance-map.json` — per-artifact: `path, lifecycleClass, freshnessTtlDays, owningScript, publishable, lastModifiedISO, ageDays, gateName?`
-- `generated/manifests/generated-artifact-freshness-policy.json` — per-class: TTL + gate behavior + exceptions list
+### B. Concept Uniqueness (Gap 15)
 
-Classification heuristics (deterministic, audited):
-- If artifact is referenced by any check in `src/lib/ci/validator-gate-map.ts` with `severity: BLOCK` ⇒ `active-blocking`.
-- If referenced by any other check ⇒ `active-informational`.
-- If under `generated/audits/wave-*` or `generated/.../*-historical-*` ⇒ `historical-archived`.
-- Else ⇒ `reference`.
-- Owning script: scan `scripts/**` for emitters writing the path (`fs.writeFileSync` / `writeJSON`).
+5. **`src/platform/architecture/primary-concept-registry.ts`** — typed registry of primary cross-cutting concepts:
+    - `business-front-door`, `concierge-front-door`, `finance-front-door`, `health-front-door`
+    - `boardroom`, `trust`, `personal-brain`, `mission-control`, `files`, `atlas`, `owner`
+    - Each entry: `{ concept, ownerType: "module"|"platform"|"admin", ownerPath, canonicalRouteFamily, canonicalPageFamily, aliases[] }`
+6. **`generated/manifests/primary-concept-ownership-map.json`** *(active-blocking, TTL 7d)*
+    - Generator: `scripts/architecture/generate/generate-primary-concept-ownership-map.ts`
+    - Cross-references the registry against actual route/page ownership; flags duplicates as `duplicate-risk`
+7. **`docs/architecture/PRIMARY_CONCEPT_UNIQUENESS_MODEL.md`** — formal model
+8. **`scripts/architecture/checks/check-primary-concept-uniqueness.ts`** *(BLOCK gate)*
+    - Each concept has exactly one canonical owner path, one canonical route family, one canonical page family
+    - Aliases must remain ≤2-line re-exports (reuses Rule 17 wrapper detection)
+    - Net-new duplicate canonical implementations BLOCK CI
+    - Pre-existing duplicates (if any) baselined in `generated/baselines/primary-concept-duplicate-baseline.json` (monotone-decreasing)
+9. **Constitution amendment §D.2 — Concept Uniqueness Law** (Rule 46)
 
-## Step 3 — Governance validator (BLOCKING, ratcheted)
+### C. Safe Retirement (Gap 16)
 
-Create `scripts/architecture/checks/check-generated-artifact-governance.ts`:
+10. **`docs/architecture/SAFE_RETIREMENT_AND_REVERSE_DEPENDENCY_MODEL.md`** — formal evidence policy
+11. **`generated/manifests/reverse-dependency-retirement-policy.json`** *(reference, TTL 180d)*
+    - Maps each frozen subtree to required evidence kinds and the script that produces them
+12. **`scripts/architecture/generate/generate-retirement-evidence-proof.ts`** — automation helper
+    - Given `--target <path>`, runs `rg` across `src/`, `tests/`, `docs/`, `generated/`, `scripts/`, `.github/workflows/` and emits a `{ grepProof, manifestProof, routeProof, testProof, docsProof }` JSON ready to append to `safe-change-evidence-ledger.json`
+    - Does not delete anything; only generates evidence
+13. **`scripts/architecture/checks/check-retirement-evidence-completeness.ts`** *(BLOCK gate, augments Rule 24)*
+    - Every entry in `safe-change-evidence-ledger.json` MUST have non-empty proof for all five kinds
+    - Merge entries MUST have `duplicateReconciliation`
+    - Every retired path in the ledger MUST yield zero hits when re-grepped at validation time (reference-zero proof)
+14. **Constitution amendment §D.3 — Reverse-Dependency Retirement Law** (Rule 47, formalizes & strengthens existing Rule 24)
 
-Detects (BLOCK):
-1. Artifact missing from governance map.
-2. `active-blocking` artifact older than its TTL.
-3. Artifact with no owning script (orphan), unless on baseline.
-4. Artifact mirrored to `public/generated/` but not in mirror policy.
+### D. Wiring & Verification
 
-Wired into `src/lib/ci/validator-gate-map.ts` (going from 80 → 81 blocking validators).
+15. Update `src/lib/ci/validator-gate-map.ts` — register the 3 new BLOCK gates
+16. Update `generated/manifests/foundation-manifest-index.json` — add the 2 new active-blocking manifests
+17. Update `generated/manifests/generated-artifact-governance-map.json` — classify the 3 new artifacts
+18. Update `generated/manifests/flowos-deliverables-index.json` — Wave D row
+19. Generate `generated/audits/wave-d-profile-concept-retirement-hardening-report.md`
+20. Run all new generators; verify `tsc --noEmit` is clean; run the 3 new validators locally; confirm no existing baseline regresses
+21. **Reseal step (user-runnable):** `npx tsx scripts/architecture/wave-10-emit-attestation.ts` (only via the canonical script, per Rule 19)
 
-**Baseline file**: `generated/baselines/orphan-artifact-baseline.json` — current orphans (likely several hundred legacy files), pinned. New orphans = fail.
+---
 
-## Step 4 — Frontend/Backend ownership model
+## Safety Guarantees
 
-Create `docs/architecture/FRONTEND_BACKEND_OWNERSHIP_MODEL.md` defining the law:
+- **No file moves, no logic changes, no UI changes, no API changes** — pure governance/manifest/validator additions
+- **No duplicate governance** — reuses existing `safe-change-evidence-ledger`, `app-route-profile-map`, `validator-gate-map`, `foundation-manifest-index`
+- **Single canonical owner path per moved/registered concept** — enforced by the new concept registry
+- **Reverse-dependency proof for every retirement** — formalized in §D.3 + automated by the new generator
+- **Strict no-logic / no-UI / no-API-change rule** — explicit; this wave only adds 3 docs, 3 manifests, 3 validators, 1 typed registry, 2 generator scripts, and amends the constitution
 
-| Layer | Owns | Forbidden imports | Allowed callers |
-|---|---|---|---|
-| `supabase/functions/**` | Backend execution endpoints (server-side orchestration) | `@/components`, `@/pages`, `react` | (deployed; not imported) |
-| `supabase/migrations/**` | Schema evolution | n/a (SQL) | (auto-managed; never hand-edited as app logic) |
-| `src/integrations/supabase/**` | Generated client + types | n/a (auto-generated) | `src/lib/services/**`, `src/lib/clients/**`, `src/lib/data-services/**` |
-| `src/lib/services/**` | App-facing service facades | `react`, `@/components`, `@/pages` | `src/pages`, `src/components`, `src/modules`, `src/platform` |
-| `src/pages/**`, `src/components/**` | UI | direct `@/integrations/supabase/client` (use facades) | (terminal consumers) |
-| `src/domains/**` | Pure models/engines | `@/integrations/supabase`, `@/lib/services` | UI/services |
+## Out of Scope (deferred)
 
-Anti-duplication rule: a frontend service that wraps an edge function must declare a **contract link** in `src/lib/services/<name>/contract.ts` referencing the edge function name, OR be flagged by validator.
+- Physically migrating the 145 page-backend bypass violations (Wave B baseline; future Wave E)
+- Physically migrating the 550 page-semantic violations (Wave 0.7 baseline; future Page Body Relocation Wave)
+- Physically migrating the 576 admin page bodies (Wave A baseline; future Admin Sharding Wave)
+- Removing any existing compatibility wrapper
 
-## Step 5 — Frontend/Backend boundary manifest + ratcheted validator
-
-Create `scripts/architecture/generate/generate-frontend-backend-boundary-map.ts` → `generated/manifests/frontend-backend-boundary-map.json`:
-- Every `src/pages/**`, `src/components/**`, `src/domains/**` file with raw `@/integrations/supabase` import.
-- Current count expected: **145 pages + 9 domains** = 154 entries.
-
-Create `scripts/architecture/checks/check-page-backend-bypass.ts`:
-- Reads boundary map + `generated/baselines/page-backend-bypass-baseline.json`.
-- New violations beyond baseline = BLOCK.
-- Domain violations always BLOCK once baseline is captured (domains are pure — stricter).
-- Wired into validator-gate-map (81 → 82 blocking validators).
-
-## Step 6 — Constitution amendment
-
-Edit `docs/architecture/REPOSITORY_CONSTITUTION.md`:
-- Add **§ Wave B.1 — Generated Artifact Lifecycle Law (BLOCKING)** with the 4-class model + freshness TTLs + owner-script requirement.
-- Add **§ Wave B.2 — Frontend/Backend Ownership Law (BLOCKING)** with the table from Step 4 + bypass-ratchet policy + edge-function vs facade anti-duplication rule.
-- Update `## Pointer index` to reference the two new model docs and the new manifests.
-
-Edit `docs/architecture/SERVICE_LAYER_CONSTITUTION.md`:
-- Add **Rule 44**: services that proxy edge functions must declare a contract link.
-
-## Step 7 — Hardening report + attestation reseal
-
-Create `generated/audits/wave-b-generated-artifact-and-backend-boundary-hardening-report.md` covering all 11 mandated sections (gap summary → verification proof → remaining work).
-
-Reseal attestation **only** via `npx tsx scripts/architecture/wave-10-emit-attestation.ts` (G6 enforcement).
-
-## Step 8 — End-to-end verification (G1–G8 gates)
-
-| Gate | Check |
-|---|---|
-| G1 — canonical destination proof | New docs at canonical paths; no duplicate/parallel doc created |
-| G2 — reverse-dep proof | `tsc --noEmit` clean; `rg "BACKEND_TOPOLOGY_MAP\|CORE_OS_USER_ADMIN_BACKEND_MODEL"` confirms old docs still referenced (kept as historical-reference, not removed) |
-| G3 — old-path removal gates | N/A this wave (no removals) |
-| G4 — multi-consumer smoke | Run new generators + new checks; confirm baselines match expected counts |
-| G5 — single canonical owner | Exactly one `GENERATED_ARTIFACT_LIFECYCLE_MODEL.md`, one `FRONTEND_BACKEND_OWNERSHIP_MODEL.md`; old backend docs reclassified as `reference`, not duplicates |
-| G6 — attestation via canonical script only | `wave-10-emit-attestation.ts` invoked; no manual edits to attestation files |
-| G7 — `EmptyState` semantic verification | No UI/component touched; `rg "EmptyState" src/components/empty/` unchanged |
-| G8 — strict no-logic/no-UI/no-API change | All edits limited to `docs/`, `scripts/`, `generated/manifests/`, `generated/baselines/`, `generated/audits/`, `src/lib/ci/validator-gate-map.ts` |
-
-## Files to create / edit
-
-**Create (10)**:
-1. `docs/architecture/GENERATED_ARTIFACT_LIFECYCLE_MODEL.md`
-2. `docs/architecture/FRONTEND_BACKEND_OWNERSHIP_MODEL.md`
-3. `scripts/architecture/generate/generate-artifact-governance-map.ts`
-4. `scripts/architecture/generate/generate-frontend-backend-boundary-map.ts`
-5. `scripts/architecture/checks/check-generated-artifact-governance.ts`
-6. `scripts/architecture/checks/check-page-backend-bypass.ts`
-7. `generated/manifests/generated-artifact-governance-map.json`
-8. `generated/manifests/generated-artifact-freshness-policy.json`
-9. `generated/manifests/frontend-backend-boundary-map.json`
-10. `generated/audits/wave-b-generated-artifact-and-backend-boundary-hardening-report.md`
-
-**Create baselines (2)**:
-11. `generated/baselines/orphan-artifact-baseline.json`
-12. `generated/baselines/page-backend-bypass-baseline.json`
-
-**Edit (4)**:
-13. `docs/architecture/REPOSITORY_CONSTITUTION.md` — add §B.1, §B.2, update pointer index
-14. `docs/architecture/SERVICE_LAYER_CONSTITUTION.md` — add Rule 44
-15. `src/lib/ci/validator-gate-map.ts` — register the two new BLOCK validators (80 → 82)
-16. `generated/validator-gate-map.json` — auto-regenerated to mirror
-
-**No deletions / no source moves / no UI edits / no API edits.**
-
-## Risk register
-
-| Risk | Mitigation |
-|---|---|
-| Orphan-artifact baseline too large to triage | Pin all current orphans into baseline; future additions blocked. Cleanup is a future wave. |
-| 145 page-backend-bypass entries too large to refactor | Baseline-and-pin; regression-only enforcement. Domain layer (9 files) is the strict tier. |
-| Generator scripts slow on 1,440 files | Cache mtimes; skip unchanged. Generators run nightly + on-demand. |
-| Conflict with existing `check-supportability-freshness` / `check-attestation-evidence-freshness` | New governance check is additive, reads same source-of-truth (mtimes); no overlap with existing per-domain freshness checks. |
-
-## Future work explicitly out of scope
-
-- Actually refactoring the 145 admin pages off direct `@/integrations/supabase/client` (requires Wave C with state-extraction & service-facade build-out).
-- Pruning historical orphan artifacts (requires archival policy decision per family).
-- Adding contract-link declarations to existing service↔edge-function pairs (requires per-pair audit).
-
-After approval I will execute Steps 1–8 in one pass, run `tsc --noEmit`, run both new generators + both new checks, capture baselines, reseal attestation via the canonical script, and report verification proof.
+These remain governed by their existing baselines and ratchets; Wave D only strengthens the rules under which they will eventually be retired.

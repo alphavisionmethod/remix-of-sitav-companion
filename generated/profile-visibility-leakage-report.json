@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-25T19:53:19.325Z",
+  "rule": "Constitution Rule 45 (Wave D §D.1)",
+  "baselineSealedAt": "2026-04-25T19:46:16.300Z",
+  "baselineCount": 0,
+  "currentLeakRiskCount": 0,
+  "newViolatorCount": 0,
+  "directiveMismatchCount": 0,
+  "ok": true,
+  "newViolators": [],
+  "directiveMismatches": []
+}
