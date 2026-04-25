@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-04-25T17:13:56.601Z",
+  "generatedAt": "2026-04-25T17:24:31.635Z",
   "foundationVersion": 1,
   "rule": "Constitution Rule 26",
   "description": "Master pointer file. All future architecture wave prompts attach to this index.",
-  "manifestCount": 16,
-  "presentCount": 16,
+  "manifestCount": 19,
+  "presentCount": 19,
   "missingCount": 0,
   "manifests": [
     {
@@ -28,8 +28,8 @@
       "description": "Filtered view of validator-gate-map listing the validators that run in foundation-gate.yml.",
       "required": true,
       "exists": true,
-      "sizeBytes": 4399,
-      "modifiedAt": "2026-04-25T17:13:56.603Z"
+      "sizeBytes": 4927,
+      "modifiedAt": "2026-04-25T17:24:31.636Z"
     },
     {
       "id": "architecture-exception-ledger",
@@ -53,7 +53,7 @@
       "required": true,
       "exists": true,
       "sizeBytes": 444,
-      "modifiedAt": "2026-04-25T17:13:57.012Z"
+      "modifiedAt": "2026-04-25T17:24:32.016Z"
     },
     {
       "id": "safe-change-evidence-ledger",
@@ -172,8 +172,8 @@
       "description": "Canonicalization wave progress + foundation-installation flag.",
       "required": true,
       "exists": true,
-      "sizeBytes": 6898,
-      "modifiedAt": "2026-04-25T16:49:29.700Z"
+      "sizeBytes": 7762,
+      "modifiedAt": "2026-04-25T17:15:27.760Z"
     },
     {
       "id": "platform-subclassification-map",
@@ -198,6 +198,42 @@
       "exists": true,
       "sizeBytes": 1098,
       "modifiedAt": "2026-04-25T17:09:29.496Z"
+    },
+    {
+      "id": "admin-plane-ownership-map",
+      "rule": 29,
+      "path": "generated/manifests/admin-plane-ownership-map.json",
+      "owner": "scripts/manifests/generate/generate-admin-plane-ownership-map.ts",
+      "freshnessTtlDays": 30,
+      "description": "Per-file classification of src/pages/admin/* (THIN_ADAPTER vs LEGACY_PAGE_BODY) plus admin↔platform↔modules dependency inventory.",
+      "required": true,
+      "exists": true,
+      "sizeBytes": 114395,
+      "modifiedAt": "2026-04-25T17:21:47.255Z"
+    },
+    {
+      "id": "admin-page-body-baseline",
+      "rule": 30,
+      "path": "generated/manifests/admin-page-body-baseline.json",
+      "owner": "foundation:seeded",
+      "freshnessTtlDays": null,
+      "description": "Sealed monotone-ratchet baseline for src/pages/admin/* legacy page-body count. Decrease-only.",
+      "required": true,
+      "exists": true,
+      "sizeBytes": 514,
+      "modifiedAt": "2026-04-25T17:21:47.255Z"
+    },
+    {
+      "id": "admin-dependency-violation-baseline",
+      "rule": 31,
+      "path": "generated/manifests/admin-dependency-violation-baseline.json",
+      "owner": "foundation:seeded",
+      "freshnessTtlDays": null,
+      "description": "Sealed baseline for platform→admin, modules→admin, admin→modules import counts. Decrease-only.",
+      "required": true,
+      "exists": true,
+      "sizeBytes": 692,
+      "modifiedAt": "2026-04-25T17:21:47.255Z"
     }
   ]
 }
