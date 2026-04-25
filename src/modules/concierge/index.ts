@@ -2,7 +2,7 @@
 // Concierge OS — Module Barrel (Phase 2)
 // ════════════════════════════════════════════════════════════
 
-import type { PillarCapability, PillarManifest } from "@/platform/contracts/pillar-contract";
+import type { PillarCapability, PillarManifest } from "@/contracts";
 
 export const CONCIERGE_CAPABILITIES: readonly PillarCapability[] = [
   { id: "travel", label: "Travel", route: "/concierge/travel", maturity: "active", trustTier: "high" },
