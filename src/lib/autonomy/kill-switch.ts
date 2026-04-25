@@ -13,6 +13,7 @@
 
 import { supabase } from "@/integrations/supabase/client";
 import type { Database } from "@/integrations/supabase/types";
+import { emitRegisteredTrustAction } from "@/modules/_trust";
 
 export type KillSwitchRow =
   Database["public"]["Tables"]["autonomy_kill_switch"]["Row"];
@@ -99,6 +100,18 @@ export async function engageKillSwitch(input: {
     domain_scope: input.domainScope ?? null,
   });
 
+  // Trust receipt — the kill-switch is one of the most consequential
+  // owner actions in the OS. Sourced from the registry (critical tier).
+  await emitRegisteredTrustAction("shared.autonomy.kill_switch_engage", {
+    impactSummary: input.domainScope
+      ? `Halted autonomy for domain "${input.domainScope}".`
+      : "Halted all autonomy execution system-wide.",
+    payload: {
+      reason: input.reason,
+      domainScope: input.domainScope ?? null,
+    },
+  });
+
   return { ok: true };
 }
 
@@ -132,6 +145,11 @@ export async function releaseKillSwitch(input: {
     actor_user_id: userId,
     action: "released",
     reason: input.reason ?? "released_by_owner",
+  });
+
+  await emitRegisteredTrustAction("shared.autonomy.kill_switch_release", {
+    impactSummary: "Resumed advisor controllers and standing missions.",
+    payload: { reason: input.reason ?? "released_by_owner" },
   });
 
   return { ok: true };

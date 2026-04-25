@@ -17,7 +17,7 @@ import { join, relative } from "node:path";
 const ROOT = "src";
 const MUTATION_RE = /supabase[\s\S]{0,40}\.from\([^)]+\)[\s\S]{0,80}\.(insert|update|delete)\(/g;
 const TRUST_HINT_RE =
-  /(useTrustEmit|TrustBoundary|TrustActionButton|emitTrustReceipt|openTrustApproval)/;
+  /(useTrustEmit|TrustBoundary|TrustActionButton|emitTrustReceipt|openTrustApproval|emitRegisteredTrustAction)/;
 
 // Allowlist: areas that legitimately bypass the Trust layer (the layer
 // itself, generated types, edge functions, trust-internal admin tools).

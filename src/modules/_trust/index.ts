@@ -114,3 +114,10 @@ export {
 } from "./registry/trust-action-registry";
 export { TrustBoundary } from "./ui/TrustBoundary";
 export { TrustActionButton } from "./ui/TrustActionButton";
+
+// ── Phase 6 re-exports ────────────────────────────────────────
+export {
+  emitRegisteredTrustAction,
+  type EmitRegisteredOptions,
+  type EmitRegisteredResult,
+} from "./registry/emit-registered";
