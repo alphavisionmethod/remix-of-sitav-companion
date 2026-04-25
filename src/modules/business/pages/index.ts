@@ -1,7 +1,6 @@
 // Canonical Business OS page exports.
-// Phase 5: barrel is the import surface for Business OS; legacy /pages
-// keeps heavy implementation files for router lazy-loading.
+// Phase 9: implementations live here; legacy src/pages/* paths are shims.
 export { default as CRMHome } from "./CRMHome";
-export { default as BusinessOverview } from "@/pages/business/BusinessOverview";
-export { default as CRMPipeline } from "@/pages/business/CRMPipeline";
-export { default as CRMContacts } from "@/pages/business/CRMContacts";
+export { default as BusinessOverview } from "./BusinessOverview";
+export { default as CRMPipeline } from "./CRMPipeline";
+export { default as CRMContacts } from "./CRMContacts";
