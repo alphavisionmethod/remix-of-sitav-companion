@@ -23,8 +23,6 @@ export type { StatTileProps } from "./display/StatTile";
 // status
 export { StatusBadge } from "./status/StatusBadge";
 export type { StatusBadgeProps, StatusTone, StatusSize } from "./status/StatusBadge";
-export { ProvenanceChip } from "./status/ProvenanceChip";
-export type { ProvenanceChipProps } from "./status/ProvenanceChip";
 export { TrustBadge } from "./status/TrustBadge";
 export type { TrustBadgeProps, TrustState } from "./status/TrustBadge";
 export { UrgencyBadge } from "./status/UrgencyBadge";
@@ -35,26 +33,12 @@ export { FreshnessBadge } from "./status/FreshnessBadge";
 export type { FreshnessBadgeProps, FreshnessLevel } from "./status/FreshnessBadge";
 export { ModeBadge } from "./status/ModeBadge";
 export type { ModeBadgeProps, Mode } from "./status/ModeBadge";
-export { AITruthDisclosure } from "./status/AITruthDisclosure";
-export type { AITruthDisclosureProps, AITruthMode } from "./status/AITruthDisclosure";
 
 // feedback
 export { EmptyState } from "./feedback/EmptyState";
 export type { EmptyStateProps } from "./feedback/EmptyState";
 export { Skeleton } from "./feedback/Skeleton";
 export type { SkeletonProps } from "./feedback/Skeleton";
-export { NeedsDataExplainer } from "./feedback/NeedsDataExplainer";
-export type { NeedsDataExplainerProps } from "./feedback/NeedsDataExplainer";
-export { NeedsTimeWindowExplainer } from "./feedback/NeedsTimeWindowExplainer";
-export type { NeedsTimeWindowExplainerProps } from "./feedback/NeedsTimeWindowExplainer";
-export { NeedsHistoricalReleasesExplainer } from "./feedback/NeedsHistoricalReleasesExplainer";
-export type { NeedsHistoricalReleasesExplainerProps } from "./feedback/NeedsHistoricalReleasesExplainer";
-
-// actions
-export { OperatorActionPanel } from "./actions/OperatorActionPanel";
-export type { OperatorActionPanelProps, OperatorAction } from "./actions/OperatorActionPanel";
-export { EvidenceLink } from "./actions/EvidenceLink";
-export type { EvidenceLinkProps, EvidenceKind } from "./actions/EvidenceLink";
 
 // overlays
 export { Drawer } from "./overlays/Drawer";

@@ -9,9 +9,9 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ConnectorStateBadge } from "@/components/primitives/status/ConnectorStateBadge";
+import { ConnectorStateBadge } from "@/platform/cloud/components/ConnectorStateBadge";
 import { ProvenanceChip } from "@/components/primitives/status/ProvenanceChip";
-import { OperatorActionPanel } from "@/components/primitives/actions/OperatorActionPanel";
+import { OperatorActionPanel } from "@/admin/components/operator/OperatorActionPanel";
 import { normalizeConnectorState, type ConnectorState } from "@/lib/connectors/connector-state-grammar";
 
 interface ProbeRow {

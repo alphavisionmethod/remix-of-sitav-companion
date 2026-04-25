@@ -184,6 +184,27 @@ Rules:
 - Canonical baseline: `generated/baselines/page-backend-bypass-baseline.json`.
 - Full model: `docs/architecture/FRONTEND_BACKEND_OWNERSHIP_MODEL.md`.
 
+## Wave C.1 — UI Ownership Law (BLOCKING)
+
+The `src/components/` tree is sealed to a strict 5-zone ownership model:
+
+1. **Shared foundation** — `src/components/ui/**`, `src/components/primitives/**`, `src/components/NavLink.tsx`. Owner-neutral primitives only.
+2. **Module UI** — `src/modules/<pillar>/components/**`.
+3. **Platform UI** — `src/platform/<system>/components/**`.
+4. **Admin / operator UI** — `src/admin/components/**`, `src/admin/modules/**`, `src/admin/shell/**`, `src/platform/admin/components/**`.
+5. **App / OS / shell UI** — `src/app/shell/**`, `src/runtimes/**`, `src/platform/sita/components/sita/shell/**`, `src/platform/sita/components/sita/os/**`.
+
+Rules (CI-enforced):
+
+- The **only** entries permitted directly under `src/components/` are: `NavLink.tsx`, `primitives/`, `ui/`, `__tests__/`. Any other entry FAILS the gate.
+- Deprecated Wave-C-removed folders (`cards/`, `launcher/`, `navigation/`, `shared/`, `primitives/actions/`) MUST NOT be re-introduced.
+- Files under `src/components/primitives/**` MUST NOT import from `@/modules/**`, `@/platform/**`, `@/admin/**`, `@/app/**`, `@/runtimes/**` (primitive-purity rule).
+- Owner-semantic names (`business`, `advisors`, `admin`, `concierge`, `finance`, `personal-brain`, `sita`, `mobile`, `marketing`, etc.) MUST NOT appear directly under `src/components/`. Place them in their canonical owner zone.
+
+Validator (BLOCK): `scripts/architecture/checks/check-ui-ownership.ts`.
+Manifest: `generated/manifests/ui-ownership-map.json`.
+Full model: `docs/architecture/UI_OWNERSHIP_MODEL.md`.
+
 ## Amendment process
 
 1. Open an ADR under `docs/adr/ADR-<NNN>-<slug>.md` describing the change and its blast radius.
@@ -210,3 +231,6 @@ Rules:
 - Wave B freshness policy: `generated/manifests/generated-artifact-freshness-policy.json`
 - Wave B FE/BE boundary map: `generated/manifests/frontend-backend-boundary-map.json`
 - Wave B baselines: `generated/baselines/orphan-artifact-baseline.json`, `generated/baselines/page-backend-bypass-baseline.json`
+- Wave C UI ownership model: `docs/architecture/UI_OWNERSHIP_MODEL.md`
+- Wave C UI ownership manifest: `generated/manifests/ui-ownership-map.json`
+- Wave C UI ownership validator: `scripts/architecture/checks/check-ui-ownership.ts`

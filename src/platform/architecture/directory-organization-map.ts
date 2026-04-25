@@ -102,12 +102,12 @@ export const DIRECTORY_ORGANIZATION_MAP: DirectoryMapping[] = [
   { canonicalPath: "src/runtimes/shell", legacyPaths: ["src/components/sita/shell", "src/components/sita/os"], status: "barrel-only", description: "Shell / OS runtime" },
   { canonicalPath: "src/runtimes/surfaces", legacyPaths: ["src/components/sita/surfaces"], status: "barrel-only", description: "Surface primitives" },
 
-  // ── Shared components ──
-  { canonicalPath: "src/components/shared/ai", legacyPaths: ["src/components/ai/AIReceiptLink*", "src/components/ai/AIStateBadge*", "src/components/ai/AIResponsePanel*"], status: "barrel-only", description: "Shared AI display components" },
-  { canonicalPath: "src/components/shared/sita", legacyPaths: ["src/components/sita/SitaCard*", "src/components/sita/PageSkeleton*", "src/components/sita/EmptyState*"], status: "barrel-only", description: "Shared SITA branded UI" },
-  { canonicalPath: "src/components/shared/status", legacyPaths: ["src/components/cloud/PlatformDegradedBanner*"], status: "barrel-only", description: "Status/degraded banners" },
-  { canonicalPath: "src/components/navigation", legacyPaths: ["src/components/NavLink*"], status: "barrel-only", description: "Navigation primitives" },
-  { canonicalPath: "src/components/cards", legacyPaths: ["src/components/sita/cards"], status: "barrel-only", description: "Card primitives" },
+  // ── Shared components (Wave C: shim barrels physically removed; canonical owners listed) ──
+  { canonicalPath: "src/platform/ai/components", legacyPaths: ["src/components/shared/ai", "src/components/ai/AIReceiptLink*", "src/components/ai/AIStateBadge*", "src/components/ai/AIResponsePanel*"], status: "physically-moved", description: "Shared AI display components — owned by platform/ai (Wave C: barrel removed)" },
+  { canonicalPath: "src/platform/sita/components/sita", legacyPaths: ["src/components/shared/sita", "src/components/sita/SitaCard*", "src/components/sita/PageSkeleton*", "src/components/sita/EmptyState*"], status: "physically-moved", description: "Shared SITA branded UI — owned by platform/sita (Wave C: barrel removed)" },
+  { canonicalPath: "src/platform/cloud/components", legacyPaths: ["src/components/shared/status", "src/components/cloud/PlatformDegradedBanner*"], status: "physically-moved", description: "Status/degraded banners — owned by platform/cloud (Wave C: barrel removed)" },
+  { canonicalPath: "src/components/NavLink", legacyPaths: ["src/components/navigation"], status: "physically-moved", description: "NavLink primitive (kept at root; navigation/ barrel removed in Wave C)" },
+  { canonicalPath: "src/platform/sita/components/cards", legacyPaths: ["src/components/cards", "src/components/sita/cards"], status: "physically-moved", description: "Card primitives — owned by platform/sita (Wave C: barrel removed)" },
 
   // ── Cross-cutting ──
   { canonicalPath: "src/contracts", legacyPaths: ["src/packages/contracts"], status: "barrel-only", description: "Contract types" },

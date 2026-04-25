@@ -1,0 +1,13 @@
+{
+  "validator": "check-ui-ownership",
+  "generatedAt": "2026-04-25T19:30:02.584Z",
+  "passed": true,
+  "totalViolations": 0,
+  "byRule": {
+    "rule1_componentsRootAllowlist": 0,
+    "rule2_deprecatedShimReintroduced": 0,
+    "rule3_primitivePurity": 0,
+    "rule4_ownerSemanticNameAtRoot": 0
+  },
+  "violations": []
+}

@@ -171,6 +171,14 @@ export const VALIDATOR_GATE_OVERRIDES: ValidatorGateMapEntry[] = [
     consumer: "release-readiness",
     rationale: "Wave B §B.2. Monotone ratchet over direct @/integrations/supabase imports from src/pages/** (baseline 145, decrease-only), src/components/** (sealed at 0, zero-tolerance), and src/domains/** (baseline 9, decrease-only). New violators must be moved to a canonical service facade in src/lib/services/**. See docs/architecture/FRONTEND_BACKEND_OWNERSHIP_MODEL.md and generated/baselines/page-backend-bypass-baseline.json.",
   },
+  // ─── Wave C — UI Ownership Law (Constitution §C.1, BLOCKING) ──
+  {
+    validator: "check-ui-ownership",
+    gateId: "ui-ownership",
+    classification: "block",
+    consumer: "release-readiness",
+    rationale: "Wave C §C.1. Enforces the 5-zone UI ownership model. (1) Sealed allowlist for src/components/* — only NavLink.tsx, primitives/, ui/, __tests__/ may exist; (2) Forbids deprecated shim folders (cards/, launcher/, navigation/, shared/) from being re-introduced; (3) Primitive purity — files under src/components/primitives/** may not import from @/modules/**, @/platform/**, @/admin/**, @/app/**, @/runtimes/**; (4) Forbids module/platform/admin-semantic component names under src/components/ root. See docs/architecture/UI_OWNERSHIP_MODEL.md and generated/manifests/ui-ownership-map.json.",
+  },
 ];
 
 /** Lookup table for fast access by validator basename. */
