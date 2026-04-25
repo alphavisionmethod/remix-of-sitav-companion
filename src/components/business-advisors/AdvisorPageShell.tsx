@@ -33,6 +33,9 @@ import {
   type AdvisorContextSnapshot,
   type AdvisorAskResult,
 } from "@/lib/ai-platform/runtime";
+import { getAdvisorSpec } from "@/lib/ai-platform/specs";
+import { AdvisorSpecPanel, AdvisorSpecEmptyState } from "@/components/business-advisors/AdvisorSpecPanel";
+import { ClipboardList } from "lucide-react";
 
 interface AdvisorPageShellProps {
   advisor: BusinessAdvisorManifest;
@@ -242,13 +245,14 @@ export function AdvisorPageShell({
 
         {/* Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="grid w-full grid-cols-6">
+          <TabsList className="grid w-full grid-cols-7">
             <TabsTrigger value="chat"><Sparkles className="h-4 w-4 mr-1.5" />Chat</TabsTrigger>
             <TabsTrigger value="sources"><FileText className="h-4 w-4 mr-1.5" />Sources</TabsTrigger>
             <TabsTrigger value="simulation"><FlaskConical className="h-4 w-4 mr-1.5" />Simulation</TabsTrigger>
             <TabsTrigger value="recommendations"><ListChecks className="h-4 w-4 mr-1.5" />Recommendations</TabsTrigger>
             <TabsTrigger value="memory"><Brain className="h-4 w-4 mr-1.5" />Memory</TabsTrigger>
             <TabsTrigger value="proof"><ScrollText className="h-4 w-4 mr-1.5" />Proof</TabsTrigger>
+            <TabsTrigger value="spec"><ClipboardList className="h-4 w-4 mr-1.5" />Spec</TabsTrigger>
           </TabsList>
 
           {/* Chat */}
@@ -468,6 +472,18 @@ export function AdvisorPageShell({
                 )}
               </CardContent>
             </Card>
+          </TabsContent>
+
+          {/* Spec — 23-section build spec (Phase 0+) */}
+          <TabsContent value="spec" className="mt-4">
+            {(() => {
+              const spec = getAdvisorSpec(advisor.id);
+              return spec ? (
+                <AdvisorSpecPanel spec={spec} />
+              ) : (
+                <AdvisorSpecEmptyState advisorName={advisor.displayName} />
+              );
+            })()}
           </TabsContent>
         </Tabs>
       </div>
