@@ -1,4 +1,41 @@
-# Phase 6 — Vector Embeddings & Voice-to-Memory Bridge
+# Phase 7 — Live Semantic Cortex (streaming + voice intents + embedding budget)
+
+Phase 6 closed the vector + voice-to-memory loops. Phase 7 turns them into a **live, governed cortex** the orchestrator can stream from, that voice can act on, and that finance can budget.
+
+## Three loops still open after Phase 6.b
+1. **Streaming semantic deltas** — `ai-orchestrator` returns one final payload; explainability traces only appear after the model finishes. There's no SSE channel.
+2. **Voice intents** — `voice-spine` records transcripts but they're inert. There's no path from "user said X" → "advisor proposes a trust-gated action".
+3. **Embedding budget** — `knowledge-embedder` calls `text-embedding-004` with no per-user ceiling, no cost ledger entry tagged `mode='embedding'`, and no fallback when over budget.
+
+## Phase 7 Deliverables
+
+### 7.1 Streaming orchestrator (`ai-orchestrator-stream`)
+New SSE edge fn emitting `context` (semantic hits), `delta` (token chunks), `trace` (explainability rows), `done` (final receipt). Frontend `useOrchestratorStream()` hook yields tokens + traces incrementally.
+
+### 7.2 Voice intents
+New table `voice_intents` (session_id, transcript_id, action_key, params, confidence, status, expires_at — 30d TTL). New RPC `extract_voice_intents` + `voice-spine?action=extract_intents` calling `gemini-3-flash-preview` with tool-calling. Surfaced in `VoiceTranscriptDrawer` with a "Run via Trust" button → existing trust-action engine.
+
+### 7.3 Embedding budget governance
+`embedding` capability key in `ai_capability_routing` (budget_class=`bulk`). `knowledge-embedder` calls `check_ai_budget_policies` per batch and writes `ai_budget_decision_receipts`. New view `embedding_budget_overview`; admin panel adds a burn-down card to `/admin/architecture/semantic-spine`.
+
+### 7.4 Trust + observability
+2 new trust actions: `shared.voice.intent.execute` (high, `ask`), `shared.embedding.batch` (low, `pre_approved`) — total **44**. Manifest + CI gate updated.
+
+### Acceptance gates (10)
+1. `ai-orchestrator-stream` deployed and returns SSE.
+2. `useOrchestratorStream` emits ≥3 event kinds.
+3. `voice_intents` table exists, RLS owner-only, 30d TTL.
+4. `extract_voice_intents` returns ≥1 proposal on a test transcript.
+5. `voice-spine?action=extract_intents` deployed + idempotent.
+6. `VoiceTranscriptDrawer` renders intents with Trust-routed execute button.
+7. Embedder writes `ai_budget_decision_receipts` for every batch.
+8. `embedding_budget_overview` returns today's totals per user.
+9. Trust registry exports 44 entries; manifest hash regenerated.
+10. CI gate `check-semantic-spine-manifest.mjs` passes.
+
+---
+
+# Phase 6 — Vector Embeddings & Voice-to-Memory Bridge ✅ SHIPPED
 
 Phases 1–5 delivered: module/workspace registry, authority engine, Health OS, AI orchestration with explainability traces, and a workspace-scoped knowledge spine (memory provenance + knowledge chunks + ingestion jobs).
 
