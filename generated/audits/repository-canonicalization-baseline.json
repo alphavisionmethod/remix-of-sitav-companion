@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-04-25T16:04:43.764Z",
+  "generatedAt": "2026-04-25T16:05:04.956Z",
   "schemaVersion": 1,
   "note": "Baseline file counts captured before Repository Tree Canonicalization waves. See docs/architecture/REPOSITORY_CONSTITUTION.md.",
   "topLevel": {
     "src/pages": 1148,
-    "src/modules": 277,
+    "src/modules": 297,
     "src/platform": 328,
     "src/components": 1227,
     "src/lib": 1710,
@@ -17,7 +17,7 @@
   },
   "pillars": {
     "business": {
-      "moduleOwned": 120,
+      "moduleOwned": 140,
       "legacyPages": 49,
       "revenueOffice": 69,
       "digitalPresence": 20
