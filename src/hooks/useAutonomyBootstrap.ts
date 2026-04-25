@@ -14,6 +14,7 @@ import {
   runControllersForAdvisors,
   DEFAULT_CONTROLLED_ADVISORS,
 } from "@/lib/autonomy/controller";
+import { runDueMissionsForCurrentUser } from "@/lib/autonomy/standing-missions";
 import { supabase } from "@/integrations/supabase/client";
 
 const EMITTER_INTERVAL_MS = 10 * 60 * 1000; // 10 min
@@ -31,6 +32,9 @@ export function useAutonomyBootstrap() {
     const cycle = async () => {
       try {
         await runAllEmitters();
+        // Phase 8: evaluate due standing missions BEFORE controllers so any
+        // mission-emitted signals are visible to the controller cycle.
+        await runDueMissionsForCurrentUser();
         // Phase 2: drive each default advisor's controller through one cycle.
         await runControllersForAdvisors(DEFAULT_CONTROLLED_ADVISORS);
       } catch (err) {
