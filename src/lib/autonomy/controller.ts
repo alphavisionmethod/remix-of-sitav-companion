@@ -381,6 +381,7 @@ export async function runControllersForAdvisors(
         autoExecuted: 0,
         blocked: 0,
         budgetTrips: 0,
+        simulated: 0,
         finalState: "idle",
         notes: [`error:${err instanceof Error ? err.message : "unknown"}`],
       });
