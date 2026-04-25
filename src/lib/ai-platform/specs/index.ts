@@ -37,7 +37,7 @@ export function hasAdvisorSpec(id: BusinessAdvisorId): boolean {
 // the spec into the map above.
 //
 // Phase 1 — Sales Advisor
-// (added when phase 1 completes)
+import "./sales-advisor.spec";
 
 export type {
   BusinessAdvisorSpec,
