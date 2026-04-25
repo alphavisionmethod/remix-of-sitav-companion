@@ -26,6 +26,9 @@ if npx vite build 2>&1; then pass "Vite build — success"; else fail "Vite buil
 step "Trust action manifest freshness"
 if npx tsx scripts/architecture/check-trust-action-manifest.ts 2>&1; then pass "Trust manifest in sync"; else fail "Trust manifest stale — run scripts/architecture/emit-trust-action-manifest.ts"; fi
 
+step "Module registry coverage (Phase 1)"
+if MODULE_COVERAGE_BASELINE="${MODULE_COVERAGE_BASELINE:-602}" npx tsx scripts/architecture/check-module-registry-coverage.ts 2>&1; then pass "Module registry coverage within baseline"; else fail "Module registry coverage exceeded baseline"; fi
+
 step "Trust action manifest regeneration diff"
 if command -v jq >/dev/null 2>&1 && command -v sha256sum >/dev/null 2>&1; then
   cp public/generated/trust-action-registry.json /tmp/trust-manifest-before.json
