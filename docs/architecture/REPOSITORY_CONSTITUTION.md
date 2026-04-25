@@ -51,13 +51,22 @@ steady-state target — independent of what wave is currently in progress.
 
 ## Folder uniqueness rules (CI-enforced)
 
-8. **No duplicate platform folders.** The following pairs are forbidden — the merge target is the column on the right:
-    - `src/platform/ai-gateway/` → `src/platform/ai/gateway/`
-    - `src/platform/nova-runtime-sdk/` → `src/platform/nova-sdk/runtime/`
-    - `src/platform/policies/` → `src/platform/policy/`
-    - `src/platform/sync-engine/` → `src/platform/sync/engine/`
-    - `src/platform/core/` → `src/platform/core-services/kernel/`
-    - `src/platform/os-services/` → `src/platform/core-services/os/`
+8. **No duplicate platform folders.** Wave 2 audit confirmed the canonical
+   implementation folders. The following placeholder/alias folder names MUST
+   NOT exist under `src/platform/` (CI-enforced strict by `check-no-duplicate-platform.ts`):
+    - `ai-gateway/` — AI gateway code lives at `src/lib/services/ai-gateway/`
+    - `ai/` — AI surfaces live under `src/platform/orchestration/`, `src/lib/ai*/`
+    - `core/` — kernel/runtime code lives in `src/platform/core-services/` and `src/runtimes/`
+    - `os-services/` — OS services live in `src/platform/core-services/`
+    - `policy/`, `policies/` — policy code lives at `src/lib/policy/`
+    - `sync/` — sync code lives in `src/platform/sync-engine/` (the canonical home)
+    - `nova-runtime-sdk/` — runtime canonical naming lives inside `src/platform/nova-sdk/runtime/`
+
+    **Canonical implementation folders (kept):**
+    - `src/platform/sync-engine/` (38 files — distributed sync ecosystem)
+    - `src/platform/nova-sdk/` (40+ files — App SDK)
+    - `src/platform/core-services/` (event-bus + 30 consumers)
+
 9. **No `services-unclassified/`.** Every file must have a classified subsystem owner.
 
 ## Generated vs authored rules (CI-enforced)
