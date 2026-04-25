@@ -1,0 +1,672 @@
+{
+  "generatedAt": "2026-04-25T16:09:05.573Z",
+  "wave": 5,
+  "movedCount": 144,
+  "adapterCount": 144,
+  "skippedCount": 0,
+  "mapping": [
+    {
+      "from": "src/pages/atlas",
+      "to": "src/platform/atlas/pages"
+    },
+    {
+      "from": "src/pages/files",
+      "to": "src/platform/files/pages"
+    },
+    {
+      "from": "src/pages/owner",
+      "to": "src/platform/owner/pages"
+    },
+    {
+      "from": "src/pages/mission-control",
+      "to": "src/platform/mission-control/pages"
+    },
+    {
+      "from": "src/pages/mission",
+      "to": "src/platform/mission-control/mission-pages"
+    },
+    {
+      "from": "src/pages/boardroom",
+      "to": "src/platform/boardroom/pages"
+    },
+    {
+      "from": "src/pages/intelligence",
+      "to": "src/platform/intelligence/pages"
+    },
+    {
+      "from": "src/pages/trust",
+      "to": "src/platform/trust/pages"
+    },
+    {
+      "from": "src/pages/personal-brain",
+      "to": "src/platform/personal-brain/pages"
+    },
+    {
+      "from": "src/pages/enterprise",
+      "to": "src/platform/enterprise/pages"
+    },
+    {
+      "from": "src/pages/tenant",
+      "to": "src/platform/tenant/pages"
+    },
+    {
+      "from": "src/pages/workspace",
+      "to": "src/platform/workspace/pages"
+    },
+    {
+      "from": "src/pages/integrations",
+      "to": "src/platform/integration/pages"
+    },
+    {
+      "from": "src/pages/marketing",
+      "to": "src/platform/marketing/pages"
+    },
+    {
+      "from": "src/pages/settings",
+      "to": "src/platform/settings/pages"
+    },
+    {
+      "from": "src/pages/store",
+      "to": "src/platform/app-platform/store-pages"
+    },
+    {
+      "from": "src/pages/app-platform",
+      "to": "src/platform/app-platform/pages"
+    },
+    {
+      "from": "src/pages/apps",
+      "to": "src/platform/apps/pages"
+    },
+    {
+      "from": "src/pages/sita",
+      "to": "src/platform/sita/pages"
+    },
+    {
+      "from": "src/pages/advisors",
+      "to": "src/platform/advisors/pages"
+    },
+    {
+      "from": "src/pages/auth",
+      "to": "src/platform/auth/pages"
+    }
+  ],
+  "moved": [
+    {
+      "src": "src/pages/atlas/AdminDurabilityBoard.tsx",
+      "dest": "src/platform/atlas/pages/AdminDurabilityBoard.tsx"
+    },
+    {
+      "src": "src/pages/atlas/AtlasHub.tsx",
+      "dest": "src/platform/atlas/pages/AtlasHub.tsx"
+    },
+    {
+      "src": "src/pages/atlas/ConciergeCommandCenter.tsx",
+      "dest": "src/platform/atlas/pages/ConciergeCommandCenter.tsx"
+    },
+    {
+      "src": "src/pages/atlas/ConnectorControlCenter.tsx",
+      "dest": "src/platform/atlas/pages/ConnectorControlCenter.tsx"
+    },
+    {
+      "src": "src/pages/atlas/DataProtectionPosture.tsx",
+      "dest": "src/platform/atlas/pages/DataProtectionPosture.tsx"
+    },
+    {
+      "src": "src/pages/atlas/DeploymentTruthCenter.tsx",
+      "dest": "src/platform/atlas/pages/DeploymentTruthCenter.tsx"
+    },
+    {
+      "src": "src/pages/atlas/OperationalInfraMonitor.tsx",
+      "dest": "src/platform/atlas/pages/OperationalInfraMonitor.tsx"
+    },
+    {
+      "src": "src/pages/atlas/OperationsCommandCenter.tsx",
+      "dest": "src/platform/atlas/pages/OperationsCommandCenter.tsx"
+    },
+    {
+      "src": "src/pages/atlas/PlatformTruthRegistry.tsx",
+      "dest": "src/platform/atlas/pages/PlatformTruthRegistry.tsx"
+    },
+    {
+      "src": "src/pages/atlas/ProjectionControlCenter.tsx",
+      "dest": "src/platform/atlas/pages/ProjectionControlCenter.tsx"
+    },
+    {
+      "src": "src/pages/atlas/ProofCoverageBoard.tsx",
+      "dest": "src/platform/atlas/pages/ProofCoverageBoard.tsx"
+    },
+    {
+      "src": "src/pages/atlas/ValidationCommandCenter.tsx",
+      "dest": "src/platform/atlas/pages/ValidationCommandCenter.tsx"
+    },
+    {
+      "src": "src/pages/files/FilesAll.tsx",
+      "dest": "src/platform/files/pages/FilesAll.tsx"
+    },
+    {
+      "src": "src/pages/files/FilesExplorer.tsx",
+      "dest": "src/platform/files/pages/FilesExplorer.tsx"
+    },
+    {
+      "src": "src/pages/files/FilesMemoryReview.tsx",
+      "dest": "src/platform/files/pages/FilesMemoryReview.tsx"
+    },
+    {
+      "src": "src/pages/files/FilesOverview.tsx",
+      "dest": "src/platform/files/pages/FilesOverview.tsx"
+    },
+    {
+      "src": "src/pages/files/FilesProcessing.tsx",
+      "dest": "src/platform/files/pages/FilesProcessing.tsx"
+    },
+    {
+      "src": "src/pages/files/FilesReview.tsx",
+      "dest": "src/platform/files/pages/FilesReview.tsx"
+    },
+    {
+      "src": "src/pages/files/FilesSearch.tsx",
+      "dest": "src/platform/files/pages/FilesSearch.tsx"
+    },
+    {
+      "src": "src/pages/files/FilesSensitive.tsx",
+      "dest": "src/platform/files/pages/FilesSensitive.tsx"
+    },
+    {
+      "src": "src/pages/files/FilesSettings.tsx",
+      "dest": "src/platform/files/pages/FilesSettings.tsx"
+    },
+    {
+      "src": "src/pages/owner/AdvisorConfig.tsx",
+      "dest": "src/platform/owner/pages/AdvisorConfig.tsx"
+    },
+    {
+      "src": "src/pages/owner/AutonomyControlCenter.tsx",
+      "dest": "src/platform/owner/pages/AutonomyControlCenter.tsx"
+    },
+    {
+      "src": "src/pages/owner/ConstitutionEditor.tsx",
+      "dest": "src/platform/owner/pages/ConstitutionEditor.tsx"
+    },
+    {
+      "src": "src/pages/owner/LeaseDashboard.tsx",
+      "dest": "src/platform/owner/pages/LeaseDashboard.tsx"
+    },
+    {
+      "src": "src/pages/owner/OwnerAiTeamUpdatesPage.tsx",
+      "dest": "src/platform/owner/pages/OwnerAiTeamUpdatesPage.tsx"
+    },
+    {
+      "src": "src/pages/owner/OwnerApprovalsPage.tsx",
+      "dest": "src/platform/owner/pages/OwnerApprovalsPage.tsx"
+    },
+    {
+      "src": "src/pages/owner/OwnerPulsePage.tsx",
+      "dest": "src/platform/owner/pages/OwnerPulsePage.tsx"
+    },
+    {
+      "src": "src/pages/owner/PackEditor.tsx",
+      "dest": "src/platform/owner/pages/PackEditor.tsx"
+    },
+    {
+      "src": "src/pages/owner/PricingEditor.tsx",
+      "dest": "src/platform/owner/pages/PricingEditor.tsx"
+    },
+    {
+      "src": "src/pages/owner/ReleaseDeploymentWorkspace.tsx",
+      "dest": "src/platform/owner/pages/ReleaseDeploymentWorkspace.tsx"
+    },
+    {
+      "src": "src/pages/mission-control/MissionControlPage.tsx",
+      "dest": "src/platform/mission-control/pages/MissionControlPage.tsx"
+    },
+    {
+      "src": "src/pages/mission-control/PlatformTruthDashboard.tsx",
+      "dest": "src/platform/mission-control/pages/PlatformTruthDashboard.tsx"
+    },
+    {
+      "src": "src/pages/mission/ConnectorDetailPage.tsx",
+      "dest": "src/platform/mission-control/mission-pages/ConnectorDetailPage.tsx"
+    },
+    {
+      "src": "src/pages/mission/IncidentDetailPage.tsx",
+      "dest": "src/platform/mission-control/mission-pages/IncidentDetailPage.tsx"
+    },
+    {
+      "src": "src/pages/mission/MissionErrorPage.tsx",
+      "dest": "src/platform/mission-control/mission-pages/MissionErrorPage.tsx"
+    },
+    {
+      "src": "src/pages/mission/MissionOverviewPage.tsx",
+      "dest": "src/platform/mission-control/mission-pages/MissionOverviewPage.tsx"
+    },
+    {
+      "src": "src/pages/mission/MissionRegistryPage.tsx",
+      "dest": "src/platform/mission-control/mission-pages/MissionRegistryPage.tsx"
+    },
+    {
+      "src": "src/pages/mission/MissionReleaseDetailPage.tsx",
+      "dest": "src/platform/mission-control/mission-pages/MissionReleaseDetailPage.tsx"
+    },
+    {
+      "src": "src/pages/mission/MissionWorkflowReplayPage.tsx",
+      "dest": "src/platform/mission-control/mission-pages/MissionWorkflowReplayPage.tsx"
+    },
+    {
+      "src": "src/pages/mission/PolicySimulatorPage.tsx",
+      "dest": "src/platform/mission-control/mission-pages/PolicySimulatorPage.tsx"
+    },
+    {
+      "src": "src/pages/boardroom/BoardroomHistory.tsx",
+      "dest": "src/platform/boardroom/pages/BoardroomHistory.tsx"
+    },
+    {
+      "src": "src/pages/boardroom/BoardroomReplay.tsx",
+      "dest": "src/platform/boardroom/pages/BoardroomReplay.tsx"
+    },
+    {
+      "src": "src/pages/intelligence/DeviceMeshPanel.tsx",
+      "dest": "src/platform/intelligence/pages/DeviceMeshPanel.tsx"
+    },
+    {
+      "src": "src/pages/intelligence/IntelligenceDashboard.tsx",
+      "dest": "src/platform/intelligence/pages/IntelligenceDashboard.tsx"
+    },
+    {
+      "src": "src/pages/intelligence/PrivacyControlCenter.tsx",
+      "dest": "src/platform/intelligence/pages/PrivacyControlCenter.tsx"
+    },
+    {
+      "src": "src/pages/trust/TrustApprovals.tsx",
+      "dest": "src/platform/trust/pages/TrustApprovals.tsx"
+    },
+    {
+      "src": "src/pages/trust/TrustAudit.tsx",
+      "dest": "src/platform/trust/pages/TrustAudit.tsx"
+    },
+    {
+      "src": "src/pages/trust/TrustAutomationAuthority.tsx",
+      "dest": "src/platform/trust/pages/TrustAutomationAuthority.tsx"
+    },
+    {
+      "src": "src/pages/trust/TrustCoverage.tsx",
+      "dest": "src/platform/trust/pages/TrustCoverage.tsx"
+    },
+    {
+      "src": "src/pages/trust/TrustDecisions.tsx",
+      "dest": "src/platform/trust/pages/TrustDecisions.tsx"
+    },
+    {
+      "src": "src/pages/trust/TrustHome.tsx",
+      "dest": "src/platform/trust/pages/TrustHome.tsx"
+    },
+    {
+      "src": "src/pages/trust/TrustPermissions.tsx",
+      "dest": "src/platform/trust/pages/TrustPermissions.tsx"
+    },
+    {
+      "src": "src/pages/trust/TrustReceipts.tsx",
+      "dest": "src/platform/trust/pages/TrustReceipts.tsx"
+    },
+    {
+      "src": "src/pages/personal-brain/AcceptInvite.tsx",
+      "dest": "src/platform/personal-brain/pages/AcceptInvite.tsx"
+    },
+    {
+      "src": "src/pages/personal-brain/BrainCommandCenter.tsx",
+      "dest": "src/platform/personal-brain/pages/BrainCommandCenter.tsx"
+    },
+    {
+      "src": "src/pages/personal-brain/BrainSettings.tsx",
+      "dest": "src/platform/personal-brain/pages/BrainSettings.tsx"
+    },
+    {
+      "src": "src/pages/personal-brain/BrainSnapshot.tsx",
+      "dest": "src/platform/personal-brain/pages/BrainSnapshot.tsx"
+    },
+    {
+      "src": "src/pages/personal-brain/DataSettings.tsx",
+      "dest": "src/platform/personal-brain/pages/DataSettings.tsx"
+    },
+    {
+      "src": "src/pages/personal-brain/LearningSettings.tsx",
+      "dest": "src/platform/personal-brain/pages/LearningSettings.tsx"
+    },
+    {
+      "src": "src/pages/personal-brain/PersonalBrainChat.tsx",
+      "dest": "src/platform/personal-brain/pages/PersonalBrainChat.tsx"
+    },
+    {
+      "src": "src/pages/personal-brain/PersonalBrainWorkspace.tsx",
+      "dest": "src/platform/personal-brain/pages/PersonalBrainWorkspace.tsx"
+    },
+    {
+      "src": "src/pages/personal-brain/RetentionSettings.tsx",
+      "dest": "src/platform/personal-brain/pages/RetentionSettings.tsx"
+    },
+    {
+      "src": "src/pages/personal-brain/SecuritySettings.tsx",
+      "dest": "src/platform/personal-brain/pages/SecuritySettings.tsx"
+    },
+    {
+      "src": "src/pages/personal-brain/ToolsRegistry.tsx",
+      "dest": "src/platform/personal-brain/pages/ToolsRegistry.tsx"
+    },
+    {
+      "src": "src/pages/personal-brain/VoiceSettings.tsx",
+      "dest": "src/platform/personal-brain/pages/VoiceSettings.tsx"
+    },
+    {
+      "src": "src/pages/personal-brain/settings/FilesSettings.tsx",
+      "dest": "src/platform/personal-brain/pages/settings/FilesSettings.tsx"
+    },
+    {
+      "src": "src/pages/personal-brain/settings/LabsSettings.tsx",
+      "dest": "src/platform/personal-brain/pages/settings/LabsSettings.tsx"
+    },
+    {
+      "src": "src/pages/personal-brain/settings/MemorySettings.tsx",
+      "dest": "src/platform/personal-brain/pages/settings/MemorySettings.tsx"
+    },
+    {
+      "src": "src/pages/personal-brain/settings/ModesSettings.tsx",
+      "dest": "src/platform/personal-brain/pages/settings/ModesSettings.tsx"
+    },
+    {
+      "src": "src/pages/personal-brain/settings/NotificationsSettings.tsx",
+      "dest": "src/platform/personal-brain/pages/settings/NotificationsSettings.tsx"
+    },
+    {
+      "src": "src/pages/personal-brain/settings/ProfileSettings.tsx",
+      "dest": "src/platform/personal-brain/pages/settings/ProfileSettings.tsx"
+    },
+    {
+      "src": "src/pages/personal-brain/settings/WorkspacesSettings.tsx",
+      "dest": "src/platform/personal-brain/pages/settings/WorkspacesSettings.tsx"
+    },
+    {
+      "src": "src/pages/enterprise/EnterpriseControlPlane.tsx",
+      "dest": "src/platform/enterprise/pages/EnterpriseControlPlane.tsx"
+    },
+    {
+      "src": "src/pages/tenant/TenantSelfServiceConsole.tsx",
+      "dest": "src/platform/tenant/pages/TenantSelfServiceConsole.tsx"
+    },
+    {
+      "src": "src/pages/workspace/DocsWorkspace.tsx",
+      "dest": "src/platform/workspace/pages/DocsWorkspace.tsx"
+    },
+    {
+      "src": "src/pages/workspace/OperatorWorkspace.tsx",
+      "dest": "src/platform/workspace/pages/OperatorWorkspace.tsx"
+    },
+    {
+      "src": "src/pages/workspace/PrincipalWorkspace.tsx",
+      "dest": "src/platform/workspace/pages/PrincipalWorkspace.tsx"
+    },
+    {
+      "src": "src/pages/workspace/SheetsWorkspace.tsx",
+      "dest": "src/platform/workspace/pages/SheetsWorkspace.tsx"
+    },
+    {
+      "src": "src/pages/workspace/SlidesWorkspace.tsx",
+      "dest": "src/platform/workspace/pages/SlidesWorkspace.tsx"
+    },
+    {
+      "src": "src/pages/integrations/ActionsApprovals.tsx",
+      "dest": "src/platform/integration/pages/ActionsApprovals.tsx"
+    },
+    {
+      "src": "src/pages/integrations/ConnectionDetail.tsx",
+      "dest": "src/platform/integration/pages/ConnectionDetail.tsx"
+    },
+    {
+      "src": "src/pages/integrations/ConnectionsList.tsx",
+      "dest": "src/platform/integration/pages/ConnectionsList.tsx"
+    },
+    {
+      "src": "src/pages/integrations/IntegrationsCatalog.tsx",
+      "dest": "src/platform/integration/pages/IntegrationsCatalog.tsx"
+    },
+    {
+      "src": "src/pages/integrations/ProviderDetail.tsx",
+      "dest": "src/platform/integration/pages/ProviderDetail.tsx"
+    },
+    {
+      "src": "src/pages/marketing/Beta.tsx",
+      "dest": "src/platform/marketing/pages/Beta.tsx"
+    },
+    {
+      "src": "src/pages/marketing/Demo.tsx",
+      "dest": "src/platform/marketing/pages/Demo.tsx"
+    },
+    {
+      "src": "src/pages/marketing/Donate.tsx",
+      "dest": "src/platform/marketing/pages/Donate.tsx"
+    },
+    {
+      "src": "src/pages/marketing/Download.tsx",
+      "dest": "src/platform/marketing/pages/Download.tsx"
+    },
+    {
+      "src": "src/pages/marketing/Home.tsx",
+      "dest": "src/platform/marketing/pages/Home.tsx"
+    },
+    {
+      "src": "src/pages/marketing/Investors.tsx",
+      "dest": "src/platform/marketing/pages/Investors.tsx"
+    },
+    {
+      "src": "src/pages/marketing/Manifesto.tsx",
+      "dest": "src/platform/marketing/pages/Manifesto.tsx"
+    },
+    {
+      "src": "src/pages/marketing/Press.tsx",
+      "dest": "src/platform/marketing/pages/Press.tsx"
+    },
+    {
+      "src": "src/pages/marketing/Proof.tsx",
+      "dest": "src/platform/marketing/pages/Proof.tsx"
+    },
+    {
+      "src": "src/pages/marketing/Waitlist.tsx",
+      "dest": "src/platform/marketing/pages/Waitlist.tsx"
+    },
+    {
+      "src": "src/pages/settings/AccessibilitySettings.tsx",
+      "dest": "src/platform/settings/pages/AccessibilitySettings.tsx"
+    },
+    {
+      "src": "src/pages/settings/DeviceSettings.tsx",
+      "dest": "src/platform/settings/pages/DeviceSettings.tsx"
+    },
+    {
+      "src": "src/pages/settings/GoogleConnectedAccounts.tsx",
+      "dest": "src/platform/settings/pages/GoogleConnectedAccounts.tsx"
+    },
+    {
+      "src": "src/pages/settings/MFAEnrollment.tsx",
+      "dest": "src/platform/settings/pages/MFAEnrollment.tsx"
+    },
+    {
+      "src": "src/pages/settings/MyPlanUsage.tsx",
+      "dest": "src/platform/settings/pages/MyPlanUsage.tsx"
+    },
+    {
+      "src": "src/pages/settings/NotificationPreferences.tsx",
+      "dest": "src/platform/settings/pages/NotificationPreferences.tsx"
+    },
+    {
+      "src": "src/pages/settings/PasskeyManagement.tsx",
+      "dest": "src/platform/settings/pages/PasskeyManagement.tsx"
+    },
+    {
+      "src": "src/pages/settings/TrustedDeviceManager.tsx",
+      "dest": "src/platform/settings/pages/TrustedDeviceManager.tsx"
+    },
+    {
+      "src": "src/pages/settings/UserCloudSettings.tsx",
+      "dest": "src/platform/settings/pages/UserCloudSettings.tsx"
+    },
+    {
+      "src": "src/pages/store/PackDetailPage.tsx",
+      "dest": "src/platform/app-platform/store-pages/PackDetailPage.tsx"
+    },
+    {
+      "src": "src/pages/store/PackInstalledPage.tsx",
+      "dest": "src/platform/app-platform/store-pages/PackInstalledPage.tsx"
+    },
+    {
+      "src": "src/pages/store/PackStorePage.tsx",
+      "dest": "src/platform/app-platform/store-pages/PackStorePage.tsx"
+    },
+    {
+      "src": "src/pages/store/StoreAnalyticsPage.tsx",
+      "dest": "src/platform/app-platform/store-pages/StoreAnalyticsPage.tsx"
+    },
+    {
+      "src": "src/pages/store/StoreAppDetailPage.tsx",
+      "dest": "src/platform/app-platform/store-pages/StoreAppDetailPage.tsx"
+    },
+    {
+      "src": "src/pages/store/StoreCategoryPage.tsx",
+      "dest": "src/platform/app-platform/store-pages/StoreCategoryPage.tsx"
+    },
+    {
+      "src": "src/pages/app-platform/AppAssociationsPage.tsx",
+      "dest": "src/platform/app-platform/pages/AppAssociationsPage.tsx"
+    },
+    {
+      "src": "src/pages/app-platform/AppComparePage.tsx",
+      "dest": "src/platform/app-platform/pages/AppComparePage.tsx"
+    },
+    {
+      "src": "src/pages/app-platform/AppDetailPage.tsx",
+      "dest": "src/platform/app-platform/pages/AppDetailPage.tsx"
+    },
+    {
+      "src": "src/pages/app-platform/AppLibraryPage.tsx",
+      "dest": "src/platform/app-platform/pages/AppLibraryPage.tsx"
+    },
+    {
+      "src": "src/pages/app-platform/AppManagePage.tsx",
+      "dest": "src/platform/app-platform/pages/AppManagePage.tsx"
+    },
+    {
+      "src": "src/pages/app-platform/AppPermissionsCenterPage.tsx",
+      "dest": "src/platform/app-platform/pages/AppPermissionsCenterPage.tsx"
+    },
+    {
+      "src": "src/pages/app-platform/AppReceiptDetailPage.tsx",
+      "dest": "src/platform/app-platform/pages/AppReceiptDetailPage.tsx"
+    },
+    {
+      "src": "src/pages/app-platform/AppReceiptsPage.tsx",
+      "dest": "src/platform/app-platform/pages/AppReceiptsPage.tsx"
+    },
+    {
+      "src": "src/pages/app-platform/AppStorePage.tsx",
+      "dest": "src/platform/app-platform/pages/AppStorePage.tsx"
+    },
+    {
+      "src": "src/pages/app-platform/AppUpdatesPage.tsx",
+      "dest": "src/platform/app-platform/pages/AppUpdatesPage.tsx"
+    },
+    {
+      "src": "src/pages/app-platform/BundleDetailPage.tsx",
+      "dest": "src/platform/app-platform/pages/BundleDetailPage.tsx"
+    },
+    {
+      "src": "src/pages/app-platform/DevToolsCatalogPage.tsx",
+      "dest": "src/platform/app-platform/pages/DevToolsCatalogPage.tsx"
+    },
+    {
+      "src": "src/pages/app-platform/EnterpriseCatalogPage.tsx",
+      "dest": "src/platform/app-platform/pages/EnterpriseCatalogPage.tsx"
+    },
+    {
+      "src": "src/pages/app-platform/ExternalInstallerPage.tsx",
+      "dest": "src/platform/app-platform/pages/ExternalInstallerPage.tsx"
+    },
+    {
+      "src": "src/pages/app-platform/FirstLaunchPage.tsx",
+      "dest": "src/platform/app-platform/pages/FirstLaunchPage.tsx"
+    },
+    {
+      "src": "src/pages/app-platform/OpenWithPage.tsx",
+      "dest": "src/platform/app-platform/pages/OpenWithPage.tsx"
+    },
+    {
+      "src": "src/pages/app-platform/WebAppInstallPage.tsx",
+      "dest": "src/platform/app-platform/pages/WebAppInstallPage.tsx"
+    },
+    {
+      "src": "src/pages/apps/EmailApp.tsx",
+      "dest": "src/platform/apps/pages/EmailApp.tsx"
+    },
+    {
+      "src": "src/pages/apps/GalleryApp.tsx",
+      "dest": "src/platform/apps/pages/GalleryApp.tsx"
+    },
+    {
+      "src": "src/pages/apps/HealthApp.tsx",
+      "dest": "src/platform/apps/pages/HealthApp.tsx"
+    },
+    {
+      "src": "src/pages/apps/MessengerApp.tsx",
+      "dest": "src/platform/apps/pages/MessengerApp.tsx"
+    },
+    {
+      "src": "src/pages/apps/VaultApp.tsx",
+      "dest": "src/platform/apps/pages/VaultApp.tsx"
+    },
+    {
+      "src": "src/pages/apps/WeatherNewsApp.tsx",
+      "dest": "src/platform/apps/pages/WeatherNewsApp.tsx"
+    },
+    {
+      "src": "src/pages/sita/EntityView.tsx",
+      "dest": "src/platform/sita/pages/EntityView.tsx"
+    },
+    {
+      "src": "src/pages/sita/JarvisBridge.tsx",
+      "dest": "src/platform/sita/pages/JarvisBridge.tsx"
+    },
+    {
+      "src": "src/pages/advisors/AdvisorCouncilDashboard.tsx",
+      "dest": "src/platform/advisors/pages/AdvisorCouncilDashboard.tsx"
+    },
+    {
+      "src": "src/pages/advisors/AdvisorRegistry.tsx",
+      "dest": "src/platform/advisors/pages/AdvisorRegistry.tsx"
+    },
+    {
+      "src": "src/pages/advisors/AdvisorShowcase.tsx",
+      "dest": "src/platform/advisors/pages/AdvisorShowcase.tsx"
+    },
+    {
+      "src": "src/pages/advisors/AdvisorWorkspace.tsx",
+      "dest": "src/platform/advisors/pages/AdvisorWorkspace.tsx"
+    },
+    {
+      "src": "src/pages/advisors/CalmAssistantChat.tsx",
+      "dest": "src/platform/advisors/pages/CalmAssistantChat.tsx"
+    },
+    {
+      "src": "src/pages/auth/ForgotPassword.tsx",
+      "dest": "src/platform/auth/pages/ForgotPassword.tsx"
+    },
+    {
+      "src": "src/pages/auth/Login.tsx",
+      "dest": "src/platform/auth/pages/Login.tsx"
+    },
+    {
+      "src": "src/pages/auth/ResetPassword.tsx",
+      "dest": "src/platform/auth/pages/ResetPassword.tsx"
+    },
+    {
+      "src": "src/pages/auth/Signup.tsx",
+      "dest": "src/platform/auth/pages/Signup.tsx"
+    }
+  ],
+  "skipped": []
+}

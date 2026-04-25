@@ -1,6 +1,4 @@
-import { Navigate } from "react-router-dom";
-
-export default function TrustPermissions() {
-  // Re-surface the existing PermissionsCenter under /trust/permissions
-  return <Navigate to="/permissions" replace />;
-}
+// Wave 5 — legacy path re-exports the canonical platform implementation.
+// Moved to @/platform/trust/pages/TrustPermissions
+export { default } from "@/platform/trust/pages/TrustPermissions";
+export * from "@/platform/trust/pages/TrustPermissions";
