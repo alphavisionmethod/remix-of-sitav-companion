@@ -169,6 +169,16 @@ Deno.serve(async (req) => {
     const missionId = typeof body.mission_id === "string" ? body.mission_id : null;
     // Phase 9: optional workspace id so the planner can pull multi-modal context.
     const workspaceId = typeof body.workspace_id === "string" ? body.workspace_id : null;
+    // Phase 11: optional list of peer workspace ids whose federated context
+    // shaped the upstream conversation. If the resulting plan contains any
+    // requiresApproval step, we auto-emit a cross-workspace approval per peer.
+    const federatedPeerWorkspaceIds: string[] = Array.isArray(body.federated_peer_workspace_ids)
+      ? (body.federated_peer_workspace_ids as unknown[])
+          .filter((v): v is string => typeof v === "string" && v.length > 0)
+      : [];
+    const sourceInvocationId: string | null = typeof body.source_invocation_id === "string"
+      ? body.source_invocation_id
+      : null;
     const authHeader = req.headers.get("authorization") ?? "";
 
     if (!intent) {
@@ -309,7 +319,63 @@ Deno.serve(async (req) => {
       createdAt: Date.now(),
     };
 
-    return new Response(JSON.stringify({ plan }), {
+    // Phase 11: auto-emit cross-workspace approval requests when the plan
+    // contains any step that requires approval AND the upstream call
+    // surfaced federated peer workspaces.
+    let autoApprovalIds: string[] = [];
+    const requiresApprovalSteps = steps.filter((s) => s.requiresApproval);
+    if (
+      requiresApprovalSteps.length > 0 &&
+      federatedPeerWorkspaceIds.length > 0 &&
+      workspaceId &&
+      authHeader
+    ) {
+      try {
+        const summary =
+          `Action plan "${(plan.title ?? "").slice(0, 80)}" includes ` +
+          `${requiresApprovalSteps.length} approval-gated step(s) derived from ` +
+          `${federatedPeerWorkspaceIds.length} federated peer workspace(s).`;
+        const apprResp = await fetch(
+          `${SUPABASE_URL}/rest/v1/rpc/auto_request_federated_approval`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: authHeader,
+              apikey: SUPABASE_ANON_KEY,
+            },
+            body: JSON.stringify({
+              _requester_workspace_id: workspaceId,
+              _peer_workspace_ids: federatedPeerWorkspaceIds,
+              _action_summary: summary,
+              _sensitivity: plan.risk === "high" ? "confidential" : "internal",
+              _source_invocation_id: sourceInvocationId,
+              _expires_in_hours: 168,
+            }),
+          },
+        );
+        if (apprResp.ok) {
+          const apprRows = await apprResp.json().catch(() => []);
+          if (Array.isArray(apprRows)) {
+            autoApprovalIds = apprRows
+              .map((r: Record<string, unknown>) => String(r?.id ?? ""))
+              .filter((id) => id.length > 0);
+          }
+        } else {
+          console.warn("[planner] auto_request_federated_approval failed", apprResp.status);
+        }
+      } catch (e) {
+        console.warn("[planner] auto-approval emission failed", e);
+      }
+    }
+
+    const planWithApprovals = {
+      ...plan,
+      pendingApprovalIds: autoApprovalIds,
+      federatedPeerWorkspaceIds,
+    };
+
+    return new Response(JSON.stringify({ plan: planWithApprovals }), {
       status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   } catch (err) {
