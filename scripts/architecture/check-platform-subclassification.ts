@@ -8,6 +8,10 @@
  *      [PLATFORM_UNCLASSIFIED]
  *   2. Cross-subclass imports MUST follow ALLOWED_DEPENDENCIES.
  *      [PLATFORM_FORBIDDEN_CROSS_SUBCLASS_IMPORT]
+ *      In Wave 0.5 these are recorded as ADVISORY against the baseline at
+ *      generated/manifests/platform-cross-subclass-baseline.json (monotone
+ *      ratchet — count may decrease, never grow). Will become BLOCKING after
+ *      the future Platform Relocation Wave splits the offending folders.
  *   3. Imports of `src/platform/admin/**` from `src/admin/**` are flagged as
  *      ADVISORY warnings (Rule 28 transitional). Will become BLOCKING after
  *      the future Platform Relocation Wave moves the offending files.
@@ -67,6 +71,13 @@ type Violation = {
 };
 const violations: Violation[] = [];
 
+const BASELINE_PATH = join(
+  ROOT,
+  "generated",
+  "manifests",
+  "platform-cross-subclass-baseline.json",
+);
+
 // ── Check 1: every src/platform/<X>/ is classified ───────────────────────────
 const actualFolders = readdirSync(PLATFORM_DIR, { withFileTypes: true })
   .filter((d) => d.isDirectory())
@@ -106,6 +117,7 @@ function fileSubclass(filePath: string): Subclass | null {
 }
 
 const platformFiles = walk(PLATFORM_DIR);
+let crossSubclassCount = 0;
 for (const file of platformFiles) {
   const fromSub = fileSubclass(file);
   if (!fromSub) continue;
@@ -118,14 +130,34 @@ for (const file of platformFiles) {
     if (!toSub) continue; // unclassified target already reported
     if (toSub === fromSub) continue; // intra-subclass always OK
     if (!allowedFrom.has(toSub)) {
+      crossSubclassCount++;
       violations.push({
-        severity: "block",
+        severity: "advisory",
         rule: "PLATFORM_FORBIDDEN_CROSS_SUBCLASS_IMPORT",
         file: relative(ROOT, file),
         detail: `imports @/platform/${targetFolder} (subclass=${toSub}) but ${fromSub} may only depend on: ${[...allowedFrom].join(", ") || "(none)"}.`,
       });
     }
   }
+}
+
+// Monotone ratchet: cross-subclass violation count must not grow above the baseline.
+let baselineCount = Number.POSITIVE_INFINITY;
+if (existsSync(BASELINE_PATH)) {
+  try {
+    const b = JSON.parse(readFileSync(BASELINE_PATH, "utf8")) as { baselineCount: number };
+    baselineCount = b.baselineCount;
+  } catch {
+    /* fall through */
+  }
+}
+if (Number.isFinite(baselineCount) && crossSubclassCount > baselineCount) {
+  violations.push({
+    severity: "block",
+    rule: "PLATFORM_CROSS_SUBCLASS_RATCHET",
+    file: "generated/manifests/platform-cross-subclass-baseline.json",
+    detail: `Cross-subclass violations grew from baseline ${baselineCount} → ${crossSubclassCount}. New cross-subclass imports are forbidden under the Rule 27 ratchet.`,
+  });
 }
 
 // ── Check 3: advisory — src/admin re-exports from src/platform/admin ────────
@@ -159,7 +191,9 @@ if (blocking.length === 0) {
 }
 
 if (advisory.length > 0) {
-  console.warn(`⚠️  Platform subclassification: ${advisory.length} advisory item(s) (Rule 28 transitional).`);
+  console.warn(
+    `⚠️  Platform subclassification: ${advisory.length} advisory item(s) (Wave 0.5 transitional). Cross-subclass=${crossSubclassCount}, baseline=${Number.isFinite(baselineCount) ? baselineCount : "unset"}.`,
+  );
   // Print only first 5 to keep CI logs readable.
   for (const v of advisory.slice(0, 5)) {
     console.warn(`  [${v.rule}] ${v.file} — ${v.detail}`);
