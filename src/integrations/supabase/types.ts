@@ -26396,6 +26396,25 @@ export type Database = {
           workspace_id: string
         }[]
       }
+      semantic_knowledge_chunks_federated: {
+        Args: {
+          _max_n?: number
+          _min_similarity?: number
+          _query_embedding: string
+          _workspace_id: string
+        }
+        Returns: {
+          chunk_id: string
+          content: string
+          file_id: string
+          pillar: string
+          sensitivity: string
+          similarity: number
+          source_table: string
+          via_federation: string
+          workspace_id: string
+        }[]
+      }
       semantic_workspace_memories: {
         Args: {
           _max_n?: number
@@ -26416,6 +26435,28 @@ export type Database = {
           workspace_id: string
         }[]
       }
+      semantic_workspace_memories_federated: {
+        Args: {
+          _max_n?: number
+          _min_similarity?: number
+          _query_embedding: string
+          _workspace_id: string
+        }
+        Returns: {
+          category: string
+          confidence: number
+          content: string
+          last_used_at: string
+          memory_id: string
+          pillar: string
+          provenance_kind: string
+          sensitivity: string
+          similarity: number
+          via_federation: string
+          workspace_id: string
+        }[]
+      }
+      sensitivity_rank: { Args: { _s: string }; Returns: number }
       summarize_implementation_suggestions: { Args: never; Returns: Json }
       summarize_internal_agent_learning: {
         Args: { _lookback_hours?: number }
