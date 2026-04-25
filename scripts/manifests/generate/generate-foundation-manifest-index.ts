@@ -183,6 +183,24 @@ const FOUNDATION_MANIFESTS: FoundationManifestEntry[] = [
     description: "Canonicalization wave progress + foundation-installation flag.",
     required: true,
   },
+  {
+    id: "platform-subclassification-map",
+    rule: 27,
+    path: "generated/manifests/platform-subclassification-map.json",
+    owner: "scripts/manifests/generate/generate-platform-subclassification-map.ts",
+    freshnessTtlDays: 30,
+    description: "Second-level platform taxonomy: every src/platform/<X>/ folder mapped to one of six canonical subclasses.",
+    required: true,
+  },
+  {
+    id: "platform-cross-subclass-baseline",
+    rule: 27,
+    path: "generated/manifests/platform-cross-subclass-baseline.json",
+    owner: "foundation:seeded",
+    freshnessTtlDays: null,
+    description: "Monotone ratchet baseline for cross-subclass platform imports. Decrease-only.",
+    required: true,
+  },
 ];
 
 // ── 2. Build foundation-tier validator set ─────────────────────────────────
@@ -229,6 +247,8 @@ const FOUNDATION_TIER_VALIDATORS: Array<{
   { validator: "scripts/architecture/checks/check-primitive-purity.ts",             rule: "Rule 13",   classification: "block", origin: "wired-existing", description: "src/components/primitives stay primitive." },
   { validator: "scripts/architecture/checks/check-bounded-context-coverage.ts",     rule: "Rule 26",   classification: "block", origin: "wired-existing", description: "Every subsystem maps to a bounded context." },
   { validator: "scripts/architecture/checks/check-frontend-backend-substrate-map.ts", rule: "Rule 26", classification: "block", origin: "wired-existing", description: "Frontend↔backend substrate boundaries are intact." },
+  // Wave 0.5 — Platform Subclassification (Rule 27)
+  { validator: "scripts/architecture/check-platform-subclassification.ts", rule: "Rule 27", classification: "block", origin: "new", description: "Every src/platform/<X>/ folder is classified; cross-subclass imports respect the ratchet." },
 ];
 
 writeJson(join(MANIFEST_DIR, "foundation-tier-validator-set.json"), {
