@@ -1,0 +1,91 @@
+{
+  "$schema": "https://sita-os/schemas/ui-ownership-map.v1.json",
+  "generatedBy": "Wave C — manual install",
+  "wave": "C",
+  "version": "1.0.0",
+  "zones": [
+    {
+      "id": "shared-foundation",
+      "label": "Shared UI foundation",
+      "canonicalRoots": [
+        "src/components/ui",
+        "src/components/primitives",
+        "src/components/NavLink.tsx"
+      ],
+      "rule": "Owner-neutral primitives only. No module/platform/admin/shell semantics."
+    },
+    {
+      "id": "module-ui",
+      "label": "Module-owned UI",
+      "canonicalRoots": [
+        "src/modules/business/components",
+        "src/modules/concierge/components",
+        "src/modules/finance/components",
+        "src/modules/health/components"
+      ],
+      "rule": "Pillar-semantic UI lives with the owning pillar."
+    },
+    {
+      "id": "platform-ui",
+      "label": "Platform-owned UI",
+      "canonicalRoots": [
+        "src/platform/ai/components",
+        "src/platform/advisors/components",
+        "src/platform/cloud/components",
+        "src/platform/files/components",
+        "src/platform/governance/components",
+        "src/platform/intelligence/components",
+        "src/platform/knowledge",
+        "src/platform/marketing/components",
+        "src/platform/notifications/components",
+        "src/platform/personal-brain/components",
+        "src/platform/product/components",
+        "src/platform/sita/components",
+        "src/platform/trust/components"
+      ],
+      "rule": "Platform-system UI lives in its owning subsystem."
+    },
+    {
+      "id": "admin-ui",
+      "label": "Admin / operator UI",
+      "canonicalRoots": [
+        "src/admin/components",
+        "src/admin/modules",
+        "src/admin/shell",
+        "src/platform/admin/components"
+      ],
+      "rule": "Admin/operator-plane UI lives in the admin plane."
+    },
+    {
+      "id": "shell-os-ui",
+      "label": "App / OS / shell UI",
+      "canonicalRoots": [
+        "src/app/shell",
+        "src/runtimes",
+        "src/platform/sita/components/sita/shell",
+        "src/platform/sita/components/sita/os"
+      ],
+      "rule": "Shell, OS-experience, and desktop/windowing UI is first-class."
+    }
+  ],
+  "componentsRootAllowlist": [
+    "src/components/NavLink.tsx",
+    "src/components/primitives",
+    "src/components/ui",
+    "src/components/__tests__"
+  ],
+  "deprecatedRemovedInWaveC": [
+    "src/components/cards",
+    "src/components/launcher",
+    "src/components/navigation",
+    "src/components/shared",
+    "src/components/primitives/actions"
+  ],
+  "primitivePurityForbiddenImports": [
+    "@/modules/",
+    "@/platform/",
+    "@/admin/",
+    "@/app/",
+    "@/runtimes/"
+  ]
+}
