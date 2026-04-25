@@ -1,4 +1,154 @@
-# Phase 5 — Memory, Files & Knowledge Platform Hardening
+# Phase 6 — Vector Embeddings & Voice-to-Memory Bridge
+
+Phases 1–5 delivered: module/workspace registry, authority engine, Health OS, AI orchestration with explainability traces, and a workspace-scoped knowledge spine (memory provenance + knowledge chunks + ingestion jobs).
+
+Phase 6 closes two open loops the orchestrator cannot yet do:
+
+1. **Semantic retrieval** — chunks are stored full-text only (`tsvector`); the orchestrator cannot rank by meaning.
+2. **Voice as a first-class memory source** — voice goes into `personal-brain` and `SitaVoiceContext` but never lands in `pb_memories` with provenance, so it disappears.
+
+---
+
+## Current State (audit)
+
+- ✅ `pgvector` extension is **available** in Postgres but not yet enabled.
+- ✅ `knowledge_chunks` exists with `embedding_status text` placeholder and tsvector full-text — but no embedding column.
+- ✅ Voice infra exists: `pb_voice_prefs`, `SitaVoiceContext`, `useCloudVoice`, `VoicePanel`, browser STT and `personal-brain` edge fn.
+- ❌ No `voice_sessions` / `voice_transcripts` tables → voice has no audit trail or persistence.
+- ❌ No bridge from a voice transcript to `memory_provenance` (`provenance_kind='inferred_voice'` is missing from the enum vocabulary).
+- ❌ Orchestrator `effective_workspace_memories` ranks by confidence × recency only, not similarity.
+- ❌ No embedding worker / batch job; `embedding_status` is permanently `pending`.
+- ❌ ElevenLabs STT/TTS exists in browser only — no server-side STT receipt for the audit trail.
+
+---
+
+## Phase 6 Deliverables
+
+### 6.1 — Enable pgvector + embedding columns
+
+- `CREATE EXTENSION IF NOT EXISTS vector;`
+- `ALTER TABLE knowledge_chunks ADD COLUMN embedding vector(768) NULL;` (768 = Gemini text-embedding-004 dim).
+- `ALTER TABLE memory_provenance ADD COLUMN embedding vector(768) NULL;` — memories are also embedded for semantic recall.
+- IVFFlat indexes (`vector_cosine_ops`, `lists=100`) on both columns. Conditional creation only after first 100 rows are populated (deferred trigger).
+- New column `knowledge_chunks.embedding_model text` + `embedding_dim int` so future re-embed (e.g. 1536-dim) is non-destructive.
+
+### 6.2 — Embedding worker (`knowledge-embedder` edge fn)
+
+- Pulls up to 50 rows where `embedding_status='pending'` (chunks ∪ memories).
+- Calls **Lovable AI Gateway** `google/text-embedding-004` (no extra key required).
+- Writes `embedding`, `embedding_model`, `embedding_dim`, sets `embedding_status='embedded'`.
+- Records `ai_invocation_plans` row with `mode='embedding'`, capability `shared.embed.text`, full cost accounting.
+- Triggered by:
+  - Trust action `shared.knowledge.embed` (manual reindex).
+  - Cron-style invocation from existing `knowledge-indexer` once a chunk is written (already-async pattern, no new scheduler).
+
+### 6.3 — RPC `semantic_workspace_memories(workspace_id, query_embedding, max_n, min_similarity)`
+
+- Returns memories from (workspace ∪ user-global) ordered by `1 - (embedding <=> query_embedding)` (cosine sim).
+- Falls back gracefully to `effective_workspace_memories` when query_embedding is null OR fewer than 10 embedded memories exist.
+- Same sensitivity/restricted-workspace gating as Phase 5.
+
+### 6.4 — RPC `semantic_knowledge_chunks(workspace_id, query_embedding, max_n)` — same pattern, returns top chunks for grounding.
+
+### 6.5 — Orchestrator wiring
+
+Update `supabase/functions/ai-orchestrator/index.ts`:
+
+1. Before context resolution, embed the **last user message** via the embedding worker (cached by hash to avoid re-embedding).
+2. If `contextSources.semanticRetrieval !== false`, call the two new RPCs first; merge with `effective_workspace_memories` results (semantic wins on ties).
+3. Emit explainability traces with `metadata.similarity` and `metadata.retrieval_kind ∈ ('semantic'|'recency'|'explicit')`.
+
+Update `useOrchestrator.ts` types: `OrchestratorContextSources.semanticRetrieval?: boolean` (default true).
+
+### 6.6 — Voice spine (Voice-to-Memory bridge)
+
+**New tables** (RLS owner-only, 90-day TTL on transcripts):
+
+- `voice_sessions`
+  - `id uuid PK`, `user_id`, `workspace_id NULL`, `module_id NULL`
+  - `started_at`, `ended_at`, `duration_ms`, `provider text` (`browser_stt|elevenlabs_stt|gemini_stt`)
+  - `mode text` (`dictation|conversation|background`)
+  - `correlation_id uuid`, `metadata jsonb`, `expires_at`
+- `voice_transcripts`
+  - `id uuid PK`, `session_id uuid FK`, `user_id`
+  - `seq int`, `role text` (`user|assistant|system`)
+  - `text text`, `lang text`, `confidence numeric(4,3)`
+  - `is_final bool`, `audio_storage_path text NULL` (optional reference into `voice-recordings` bucket — not auto-stored)
+  - `embedding vector(768) NULL`, `embedding_status text`
+  - `expires_at`
+
+**New storage bucket** `voice-recordings` (private, owner-only via folder-name = user id). Default disabled — only used when user explicitly opts in via `pb_voice_prefs.transcript_retention='extended'`.
+
+### 6.7 — Voice-to-Memory promotion
+
+New RPC `promote_voice_transcript_to_memory(transcript_id, sensitivity)`:
+- Inserts into `pb_memories` with content from transcript.
+- Inserts into `memory_provenance` with `provenance_kind='inferred_voice'`, `source_chat_id=session_id`, `confidence_band` derived from STT confidence.
+- Marks transcript `metadata.promoted_memory_id`.
+- Trust action: `shared.memory.create` already covers this (Phase 5).
+
+New Trust action: `shared.voice.session.start` (low, `pre_approved`) — keeps voice spine inside authority engine. **Catalog now totals 41 actions.**
+
+### 6.8 — Edge function `voice-spine`
+
+Single endpoint with sub-routes:
+- `POST /voice-spine/session/start` → creates `voice_sessions` row, returns `session_id` + `correlation_id`.
+- `POST /voice-spine/transcript` → upserts `voice_transcripts` (called by client when STT fires `is_final`).
+- `POST /voice-spine/session/end` → finalises session, kicks `knowledge-embedder` to embed final transcripts.
+- `POST /voice-spine/promote` → wraps `promote_voice_transcript_to_memory`.
+
+CORS, auth via JWT, Trust enforcement on every sub-route.
+
+### 6.9 — Frontend (`src/modules/_shared/voice/`)
+
+- `voice-spine-service.ts` + `useVoiceSession()`, `useVoiceTranscripts(sessionId)`, `usePromoteTranscript()`.
+- `VoiceTranscriptDrawer.tsx` — read-only timeline of finalised transcripts with one-click "Remember this" button.
+- `SemanticContextBadge.tsx` — small chip surfaced inside `ExplainabilityPanel` showing similarity score when `retrieval_kind='semantic'`.
+- Hook `SitaVoiceContext` (existing) emits transcripts to the new spine when `pb_voice_prefs.transcript_retention !== 'none'` — non-breaking.
+
+### 6.10 — Admin & CI
+
+- New page `/admin/architecture/semantic-spine` — embedding coverage % per pillar, average similarity for last 100 retrievals, voice session counts, top-promoted memories.
+- New CI script `check-embedding-coverage.mjs` — fails if `embedding_status='pending'` count > 1000 (baseline lock) for chunks older than 24h.
+- New CI script `check-voice-spine-manifest.mjs` — emits `public/generated/voice-spine-manifest.json` (tables, RPCs, edge fn version, trust action count) and diff-checks like Phase 0/5.
+- Wire both into existing `deployment-readiness-gate.yml`.
+
+### 6.11 — Backfill
+
+- Schedule (idempotent, runs once via the embedder on first deploy): embed all existing `knowledge_chunks` and `pb_memories` rows in batches of 50.
+- No voice backfill (voice tables are net new).
+
+---
+
+## Acceptance Gates (must all pass before declaring Phase 6 done)
+
+1. ✅ `vector` extension enabled; `embedding` columns added; IVFFlat indexes created (post-backfill).
+2. ✅ `knowledge-embedder` deployed and successfully embeds a sample chunk via Lovable AI Gateway.
+3. ✅ `semantic_workspace_memories` and `semantic_knowledge_chunks` RPCs return ranked results in < 200ms on a 1k-row test set.
+4. ✅ Orchestrator uses semantic retrieval; explainability traces show `retrieval_kind='semantic'` with similarity scores.
+5. ✅ `voice_sessions` and `voice_transcripts` tables present with RLS; `voice-spine` edge fn smoke-tested end-to-end.
+6. ✅ `promote_voice_transcript_to_memory` writes `memory_provenance` with `provenance_kind='inferred_voice'`.
+7. ✅ Trust catalog totals **41 actions**; manifest regenerated; diff CI green.
+8. ✅ Admin page `/admin/architecture/semantic-spine` renders real coverage %.
+9. ✅ Both new CI scripts green; baselines locked.
+10. ✅ TypeScript compiles clean; no new `as any` in `src/pages/**`; no duplicate code (re-uses `knowledge-indexer`, `pb_memories`, `pb_voice_prefs`, `SitaVoiceContext`).
+
+---
+
+## Out of Scope (deferred)
+
+- Real-time streaming embeddings (we batch every chunk-write — sufficient for Phase 6).
+- Cross-modal (image/audio) embeddings — Phase 7 candidate.
+- Speaker diarisation — Phase 7 candidate (ElevenLabs scribe_v2 supports it; not needed for memory bridge).
+- Voice TTS personalisation — already covered by existing `pb_voice_prefs`.
+
+---
+
+**On approval**: I'll execute as one atomic phase — migration (vector + voice tables + RPCs) → trust seed → `knowledge-embedder` + `voice-spine` edge fns → frontend hooks/components → orchestrator semantic wiring → admin page → CI scripts → manifest regen → backfill smoke test — and not stop until every acceptance gate passes.
+
+---
+
+# Phase 5 — Memory, Files & Knowledge Platform Hardening (COMPLETED)
 
 Phases 1–4 delivered: module/workspace registry, authority engine, Health OS data layer, and AI orchestration with explainability traces.
 
