@@ -14,6 +14,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { fetchSignalsForAdvisor, markSignalActedOn, type OSStateSignal } from "./signal-bus";
 import { proposeForSignal, type ProposedPlan } from "./proposers";
 import { decideExecutionMode, fetchAutonomyPolicy, type DryRunDecision } from "./dry-run";
+import { buildSimulationReceipt, persistSimulationReceipt } from "./simulation";
 import {
   decideBudget,
   estimatePlanTokenCost,
@@ -36,6 +37,7 @@ export type ControllerCycleResult = {
   autoExecuted: number;
   blocked: number;
   budgetTrips: number;
+  simulated: number;
   finalState: AdvisorState;
   notes: string[];
 };
@@ -51,6 +53,7 @@ export async function runControllerCycle(advisorId: string): Promise<ControllerC
     autoExecuted: 0,
     blocked: 0,
     budgetTrips: 0,
+    simulated: 0,
     finalState: "idle",
     notes,
   };
@@ -132,6 +135,16 @@ export async function runControllerCycle(advisorId: string): Promise<ControllerC
     if (!decision.ok) {
       result.blocked += 1;
       notes.push(`blocked:${decision.reason}`);
+      // Still persist a simulation receipt so blocked attempts are auditable.
+      const blockedReceipt = buildSimulationReceipt({
+        advisorId,
+        plan,
+        signal,
+        policy,
+        decision,
+      });
+      await persistSimulationReceipt(userId, blockedReceipt, null);
+      result.simulated += 1;
       await transition(userId, advisorId, currentState, "idle");
       currentState = "idle";
       continue;
@@ -160,6 +173,10 @@ export async function runControllerCycle(advisorId: string): Promise<ControllerC
 
     try {
       const queueId = await enqueuePlan(userId, advisorId, signal, plan, decision);
+      // Phase 4 — write the simulation receipt linked to this queue row.
+      const receipt = buildSimulationReceipt({ advisorId, plan, signal, policy, decision });
+      await persistSimulationReceipt(userId, receipt, queueId);
+      result.simulated += 1;
       if (decision.mode === "queue_for_approval") {
         result.queued += 1;
         await transition(userId, advisorId, currentState, "awaiting_approval", {
