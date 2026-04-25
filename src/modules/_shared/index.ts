@@ -17,3 +17,11 @@ export type {
   CapabilityMaturity,
   TrustTier,
 } from "./pillar-contract";
+
+// Decision-queue resolutions for ambiguous legacy surfaces.
+export {
+  DECISION_QUEUE,
+  getDecisionFor,
+  type DecisionEntry,
+  type SurfaceOwner,
+} from "./decision-queue";
