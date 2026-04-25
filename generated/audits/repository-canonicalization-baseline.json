@@ -26,7 +26,7 @@
   "semanticRouteAdapter": {
     "wave": "0.7",
     "installedAt": "2026-04-25T17:30:00.000Z",
-    "rule": "Constitution Rules 33–35",
+    "rule": "Constitution Rules 33\u201335",
     "subtypeCount": 6,
     "totalPagesScanned": 1098,
     "violationBaseline": 550,
@@ -397,6 +397,9 @@
   ],
   "notes": {
     "wave9": "Sunset of legacy `@/components/<sub>/*` adapters complete. Only shared subtrees (ui, primitives, shared, cards, navigation, launcher, __tests__) and NavLink.tsx remain.",
-    "wave10": "Architectural attestation sealed. Manifest at generated/audits/wave-10-architectural-attestation.json (manifestDigest fe9b177635a0bd17…). CI step `wave-10-check-attestation.ts` REQUIRED in deployment-readiness-gate.yml. Constitution Rules 19–20 added."
-  }
+    "wave10": "Architectural attestation sealed. Manifest at generated/audits/wave-10-architectural-attestation.json (manifestDigest fe9b177635a0bd17\u2026). CI step `wave-10-check-attestation.ts` REQUIRED in deployment-readiness-gate.yml. Constitution Rules 19\u201320 added."
+  },
+  "sharedComponentConceptRuleInstalled": true,
+  "sharedComponentSemanticBaselineCount": 12,
+  "wave_0_9_sealedAt": "2026-04-25T00:00:00Z"
 }
