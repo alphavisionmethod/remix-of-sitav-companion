@@ -1,18 +1,18 @@
 {
-  "generatedAt": "2026-04-25T17:49:42.617Z",
+  "generatedAt": "2026-04-25T17:50:11.551Z",
   "rule": "Constitution Rules 36, 37, 38",
   "model": "docs/architecture/SHARED_COMPONENT_OWNERSHIP_MODEL.md",
   "totals": {
     "filesScanned": 32,
-    "sharedClean": 18,
+    "sharedClean": 19,
     "deprecatedShim": 1,
-    "violators": 13
+    "violators": 12
   },
   "classificationBreakdown": {
     "barrel-only-reexport": 5,
     "shell-runtime-semantic": 1,
-    "shared-clean": 18,
-    "platform-semantic": 3,
+    "shared-clean": 19,
+    "platform-semantic": 2,
     "admin-semantic": 1,
     "wrapper-with-platform-import": 3,
     "deprecated-shim": 1
@@ -161,16 +161,14 @@
     },
     {
       "file": "src/components/primitives/display/Summary.tsx",
-      "classification": "platform-semantic",
-      "targetOwner": "@/platform/trust/components/trust/",
-      "vocabularyHits": [
-        "trust"
-      ],
+      "classification": "shared-clean",
+      "targetOwner": null,
+      "vocabularyHits": [],
       "importViolations": [],
       "shellHints": [],
       "isBarrel": false,
       "isDeprecatedShim": false,
-      "reason": "Platform vocabulary: trust."
+      "reason": "Passes all three concept tests."
     },
     {
       "file": "src/components/primitives/feedback/EmptyState.tsx",
@@ -481,12 +479,6 @@
       "classification": "admin-semantic",
       "targetOwner": "@/admin/modules/<domain>/components/",
       "reason": "Admin/operator vocabulary: operator."
-    },
-    {
-      "file": "src/components/primitives/display/Summary.tsx",
-      "classification": "platform-semantic",
-      "targetOwner": "@/platform/trust/components/trust/",
-      "reason": "Platform vocabulary: trust."
     },
     {
       "file": "src/components/primitives/feedback/EmptyState.tsx",
