@@ -1,17 +1,17 @@
 {
-  "generatedAt": "2026-04-25T02:26:22.423Z",
+  "generatedAt": "2026-04-25T03:55:53.053Z",
   "gate": "advisor-spec-completeness",
   "ok": true,
   "totalAdvisors": 9,
-  "complete": 0,
+  "complete": 1,
   "incomplete": 0,
-  "pending": 9,
+  "pending": 8,
   "registryFile": "src/lib/ai-platform/runtime/business-advisor-registry.ts",
   "specsFile": "src/lib/ai-platform/specs/index.ts",
   "details": [
     {
       "id": "sales-advisor",
-      "status": "pending",
+      "status": "complete",
       "issueCount": 0,
       "issues": []
     },
