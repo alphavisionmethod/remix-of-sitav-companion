@@ -44,6 +44,9 @@ import "./imports-exports-advisor.spec";
 // Phase 8 — Taxes & Laws Advisor
 import "./taxes-laws-advisor.spec";
 
+// Phase 9 — CEO Advisor (apex synthesis)
+import "./ceo-advisor.spec";
+
 export type {
   BusinessAdvisorSpec,
   AutomationLevel,
