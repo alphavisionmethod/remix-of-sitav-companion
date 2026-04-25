@@ -6,8 +6,9 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Sparkles, ShieldCheck } from "lucide-react";
+import { Sparkles, ShieldCheck, Brain } from "lucide-react";
 import { AutonomyApprovalQueue } from "@/components/autonomy/AutonomyApprovalQueue";
+import { AutonomyReflectionTimeline } from "@/components/autonomy/AutonomyReflectionTimeline";
 import { useAutonomyFleet } from "@/hooks/useAutonomyFleet";
 
 export default function AutonomyControlCenter() {
@@ -41,6 +42,18 @@ export default function AutonomyControlCenter() {
         </CardHeader>
         <CardContent>
           <AutonomyApprovalQueue compact />
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader className="pb-2">
+          <div className="flex items-center justify-between">
+            <CardTitle className="text-base">What your advisors learned</CardTitle>
+            <Brain className="h-4 w-4 text-muted-foreground" />
+          </div>
+        </CardHeader>
+        <CardContent>
+          <AutonomyReflectionTimeline compact limit={15} />
         </CardContent>
       </Card>
     </div>

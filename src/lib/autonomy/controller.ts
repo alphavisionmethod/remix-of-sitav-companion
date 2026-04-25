@@ -15,6 +15,7 @@ import { fetchSignalsForAdvisor, markSignalActedOn, type OSStateSignal } from ".
 import { proposeForSignal, type ProposedPlan } from "./proposers";
 import { decideExecutionMode, fetchAutonomyPolicy, type DryRunDecision } from "./dry-run";
 import { buildSimulationReceipt, persistSimulationReceipt } from "./simulation";
+import { recordReflectionForQueueRow } from "./reflection";
 import {
   decideBudget,
   estimatePlanTokenCost,
@@ -194,6 +195,28 @@ export async function runControllerCycle(advisorId: string): Promise<ControllerC
           lastActionId: queueId,
         });
         await markQueuedActionExecuted(queueId);
+        // Phase 6 — score the auto-executed outcome and persist a reflection.
+        await recordReflectionForQueueRow({
+          userId,
+          queueRow: {
+            id: queueId,
+            advisor_id: advisorId,
+            domain: plan.domain,
+            action_type: plan.actionKey,
+            confidence: plan.confidence,
+            status: "executed",
+            error_message: null,
+            payload: {
+              risk_class: plan.riskClass,
+              is_client_facing: plan.isClientFacing,
+              draft_only: plan.draftOnly,
+              financial_impact_cents: plan.financialImpactCents,
+              dry_run_reason: decision.reason,
+            },
+          },
+          ownerAction: "auto_executed",
+          simulation: { policyWarnings: receipt.policyWarnings },
+        });
         await transition(userId, advisorId, "executing", "cooling_down", {
           cooldownUntil: new Date(Date.now() + COOLDOWN_AFTER_EXECUTE_MS).toISOString(),
           incSuccess: true,
