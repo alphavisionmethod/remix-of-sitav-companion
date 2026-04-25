@@ -85,6 +85,11 @@ jobs:
         run: |
           npx tsx scripts/manifests/generate/generate-platform-subclassification-map.ts
           npx tsx scripts/architecture/check-platform-subclassification.ts
+      - name: Rules 29–32 — Admin plane hardening (REQUIRED)
+        run: |
+          npx tsx scripts/manifests/generate/generate-admin-plane-ownership-map.ts
+          npx tsx scripts/architecture/check-admin-plane-boundaries.ts
+          npx tsx scripts/architecture/check-admin-page-body-ratchet.ts
 
       - name: Generate gate summary
         if: always()
@@ -109,5 +114,9 @@ jobs:
             generated/manifests/deprecated-shim-baseline.json
             generated/manifests/platform-subclassification-map.json
             generated/manifests/platform-cross-subclass-baseline.json
+            generated/manifests/admin-plane-ownership-map.json
+            generated/manifests/admin-page-body-baseline.json
+            generated/manifests/admin-dependency-violation-baseline.json
+            generated/manifests/admin-page-body-ratchet-report.json
           retention-days: 30
           if-no-files-found: warn

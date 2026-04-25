@@ -87,6 +87,21 @@ export const VALIDATOR_GATE_OVERRIDES: ValidatorGateMapEntry[] = [
     consumer: "release-readiness",
     rationale: "Wave 0.5 canonical subclassification gate. Verifies every src/platform/<X>/ folder is classified into one of the six canonical subclasses and that cross-subclass imports respect the monotone ratchet (decrease-only). Wired into foundation-gate.yml as BLOCKING.",
   },
+  // ─── Wave 0.6 — Admin Plane Law (Constitution Rules 29–32, BLOCKING) ──
+  {
+    validator: "check-admin-plane-boundaries",
+    gateId: "admin-plane-boundaries",
+    classification: "block",
+    consumer: "release-readiness",
+    rationale: "Wave 0.6 admin plane boundary gate. Verifies platform→admin, modules→admin, and admin→modules import counts have not grown above their sealed baselines, and that no new page-body files were added under src/pages/admin/. Wired into foundation-gate.yml as BLOCKING.",
+  },
+  {
+    validator: "check-admin-page-body-ratchet",
+    gateId: "admin-page-body-ratchet",
+    classification: "block",
+    consumer: "release-readiness",
+    rationale: "Wave 0.6 admin page-body monotone ratchet. The LEGACY_PAGE_BODY count under src/pages/admin/ may only decrease — new admin pages must be thin re-exports targeting @/admin/** per Constitution Rule 30.",
+  },
 ];
 
 /** Lookup table for fast access by validator basename. */

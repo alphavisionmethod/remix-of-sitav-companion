@@ -201,6 +201,33 @@ const FOUNDATION_MANIFESTS: FoundationManifestEntry[] = [
     description: "Monotone ratchet baseline for cross-subclass platform imports. Decrease-only.",
     required: true,
   },
+  {
+    id: "admin-plane-ownership-map",
+    rule: 29,
+    path: "generated/manifests/admin-plane-ownership-map.json",
+    owner: "scripts/manifests/generate/generate-admin-plane-ownership-map.ts",
+    freshnessTtlDays: 30,
+    description: "Per-file classification of src/pages/admin/* (THIN_ADAPTER vs LEGACY_PAGE_BODY) plus admin↔platform↔modules dependency inventory.",
+    required: true,
+  },
+  {
+    id: "admin-page-body-baseline",
+    rule: 30,
+    path: "generated/manifests/admin-page-body-baseline.json",
+    owner: "foundation:seeded",
+    freshnessTtlDays: null,
+    description: "Sealed monotone-ratchet baseline for src/pages/admin/* legacy page-body count. Decrease-only.",
+    required: true,
+  },
+  {
+    id: "admin-dependency-violation-baseline",
+    rule: 31,
+    path: "generated/manifests/admin-dependency-violation-baseline.json",
+    owner: "foundation:seeded",
+    freshnessTtlDays: null,
+    description: "Sealed baseline for platform→admin, modules→admin, admin→modules import counts. Decrease-only.",
+    required: true,
+  },
 ];
 
 // ── 2. Build foundation-tier validator set ─────────────────────────────────
@@ -249,6 +276,9 @@ const FOUNDATION_TIER_VALIDATORS: Array<{
   { validator: "scripts/architecture/checks/check-frontend-backend-substrate-map.ts", rule: "Rule 26", classification: "block", origin: "wired-existing", description: "Frontend↔backend substrate boundaries are intact." },
   // Wave 0.5 — Platform Subclassification (Rule 27)
   { validator: "scripts/architecture/check-platform-subclassification.ts", rule: "Rule 27", classification: "block", origin: "new", description: "Every src/platform/<X>/ folder is classified; cross-subclass imports respect the ratchet." },
+  // Wave 0.6 — Admin Plane Law (Rules 29–32)
+  { validator: "scripts/architecture/check-admin-plane-boundaries.ts", rule: "Rules 30/31", classification: "block", origin: "new", description: "Admin plane dependency direction + new-page-body forbidden in src/pages/admin/." },
+  { validator: "scripts/architecture/check-admin-page-body-ratchet.ts", rule: "Rule 30", classification: "block", origin: "new", description: "src/pages/admin/* LEGACY_PAGE_BODY count is decrease-only." },
 ];
 
 writeJson(join(MANIFEST_DIR, "foundation-tier-validator-set.json"), {
