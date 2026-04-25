@@ -24,7 +24,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { ArrowLeft, ShieldAlert, Sparkles, FileText, FlaskConical, ListChecks, Brain, ScrollText, Send, Loader2 } from "lucide-react";
+import { ArrowLeft, ShieldAlert, Sparkles, FileText, FlaskConical, ListChecks, Brain, ScrollText, Send, Loader2, ClipboardList } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import {
   askBusinessAdvisor,
@@ -35,7 +35,6 @@ import {
 } from "@/lib/ai-platform/runtime";
 import { getAdvisorSpec } from "@/lib/ai-platform/specs";
 import { AdvisorSpecPanel, AdvisorSpecEmptyState } from "@/components/business-advisors/AdvisorSpecPanel";
-import { ClipboardList } from "lucide-react";
 
 interface AdvisorPageShellProps {
   advisor: BusinessAdvisorManifest;
