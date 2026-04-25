@@ -13,17 +13,23 @@ import {
   getTrustActionPreset,
   type TrustActionKey,
 } from "./trust-action-registry";
+import { evaluateActionAuthority } from "../authority/authority-evaluator";
 
 export interface EmitRegisteredOptions {
   payload?: Record<string, unknown>;
   impactSummary?: string;
   correlationId?: string;
+  /** When true, skip the authority check (the caller has already prompted the user). */
+  bypassAuthorityCheck?: boolean;
 }
 
 export interface EmitRegisteredResult {
   receiptId: string;
   approvalId?: string;
   approvalStatus?: string;
+  authorityLevel?: "suggest" | "ask" | "pre_approved" | "blocked";
+  blocked?: boolean;
+  blockedReason?: string;
 }
 
 /**
@@ -36,6 +42,29 @@ export async function emitRegisteredTrustAction(
   options: EmitRegisteredOptions = {},
 ): Promise<EmitRegisteredResult> {
   const preset = getTrustActionPreset(action);
+
+  // Phase 2: consult the authority engine first.
+  if (!options.bypassAuthorityCheck) {
+    const decision = await evaluateActionAuthority(action);
+    if (decision.isBlocked) {
+      // Still record an "attempted" receipt so the audit trail captures the block.
+      const r = await emitTrustReceipt({
+        actionKey: preset.key,
+        pillar: preset.pillar,
+        payload: { ...(options.payload ?? {}), blocked: true, reason: decision.rationale },
+        reversible: preset.reversible,
+        riskTier: preset.riskTier,
+        correlationId: options.correlationId,
+      });
+      return {
+        receiptId: r.id,
+        authorityLevel: decision.effectiveAuthority,
+        blocked: true,
+        blockedReason: decision.rationale,
+      };
+    }
+  }
+
   let approvalId: string | undefined;
   let approvalStatus: string | undefined;
   if (preset.requireApproval) {
@@ -58,5 +87,11 @@ export async function emitRegisteredTrustAction(
     riskTier: preset.riskTier,
     correlationId: options.correlationId,
   });
-  return { receiptId: r.id, approvalId, approvalStatus };
+  return {
+    receiptId: r.id,
+    approvalId,
+    approvalStatus,
+    authorityLevel: preset.defaultAuthorityLevel,
+    blocked: false,
+  };
 }
