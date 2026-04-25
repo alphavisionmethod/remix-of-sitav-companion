@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-04-25T17:30:00.000Z",
-  "lastWaveCompleted": 8,
+  "generatedAt": "2026-04-25T16:42:30.750Z",
+  "lastWaveCompleted": 9,
   "schemaVersion": 1,
   "note": "Baseline file counts captured before Repository Tree Canonicalization waves. See docs/architecture/REPOSITORY_CONSTITUTION.md.",
   "topLevel": {
     "src/pages": 1148,
     "src/modules": 557,
     "src/platform": 1452,
-    "src/components": 1227,
+    "src/components": 83,
     "src/lib": 1710,
     "src/domains": 111,
     "src/runtimes": 84,
@@ -356,5 +356,8 @@
       "dir": "src/platform/ai",
       "files": 6
     }
-  ]
+  ],
+  "notes": {
+    "wave9": "Sunset of legacy `@/components/<sub>/*` adapters complete. Only shared subtrees (ui, primitives, shared, cards, navigation, launcher, __tests__) and NavLink.tsx remain."
+  }
 }
