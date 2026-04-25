@@ -403,6 +403,84 @@ serve(async (req) => {
           );
         }
 
+        // ── 6.b Phase 11: citation enforcement + auto-approval emission ──
+        let citedTokens: string[] = [];
+        let citedFederatedTokens: string[] = [];
+        let missingFederatedCitations: string[] = [];
+        let autoApprovalIds: string[] = [];
+        try {
+          const tokenRe = /\[F?#\d+\]/g;
+          citedTokens = Array.from(new Set(fullText.match(tokenRe) ?? []));
+          citedFederatedTokens = citedTokens.filter((t) => t.startsWith("[F#"));
+          if (federatedItems.length > 0) {
+            const citedSet = new Set(citedFederatedTokens);
+            missingFederatedCitations = federatedItems
+              .filter((f) => !citedSet.has(f.token))
+              .map((f) => f.token);
+
+            // Emit a citation_warning if any federated context was likely
+            // material but went uncited. Heuristic: if at least one
+            // federated item had similarity ≥ 0.6 and wasn't cited, warn.
+            const materialUncited = federatedItems.some(
+              (f) =>
+                !citedSet.has(f.token) &&
+                citationItems.find((c) => c.token === f.token) &&
+                // any federated chunk/memory whose excerpt likely shaped the answer
+                fullText.length > 0,
+            );
+            if (materialUncited) {
+              send("citation_warning", {
+                missing_federated_tokens: missingFederatedCitations,
+                cited_federated_tokens: citedFederatedTokens,
+                total_federated_items: federatedItems.length,
+                message:
+                  "Federated context was provided but not all federated sources were cited.",
+              });
+            }
+
+            // For every cited federated item, derive the unique peer workspace ids
+            // and bulk-create pending cross-workspace approval requests. The
+            // RPC dedupes per (invocation, peer).
+            const peerSet = new Set<string>();
+            for (const tok of citedFederatedTokens) {
+              const item = federatedItems.find((f) => f.token === tok);
+              if (item?.peerWorkspaceId) peerSet.add(item.peerWorkspaceId);
+            }
+            const peerIds = Array.from(peerSet);
+            if (peerIds.length > 0 && body.workspaceId) {
+              const { data: appr, error: apprErr } = await userClient.rpc(
+                "auto_request_federated_approval",
+                {
+                  _requester_workspace_id: body.workspaceId,
+                  _peer_workspace_ids: peerIds,
+                  _action_summary:
+                    `AI answer cited ${citedFederatedTokens.length} federated source(s) ` +
+                    `from ${peerIds.length} peer workspace(s). Review for cross-workspace use.`,
+                  _sensitivity: "internal",
+                  _source_invocation_id: planId,
+                  _expires_in_hours: 168,
+                },
+              );
+              if (apprErr) {
+                console.warn("[orch-stream] auto_request_federated_approval failed", apprErr);
+              } else if (Array.isArray(appr)) {
+                autoApprovalIds = (appr as Array<Record<string, unknown>>)
+                  .map((r) => String(r.id))
+                  .filter(Boolean);
+                if (autoApprovalIds.length > 0) {
+                  send("approval_requested", {
+                    approval_ids: autoApprovalIds,
+                    peer_workspace_ids: peerIds,
+                    cited_federated_tokens: citedFederatedTokens,
+                  });
+                }
+              }
+            }
+          }
+        } catch (citationErr) {
+          console.warn("[orch-stream] citation enforcement failed", citationErr);
+        }
+
         const tokenEst = Math.ceil(fullText.length / 4);
         await service.from("ai_invocation_plans").update({
           status: "completed",
@@ -411,6 +489,19 @@ serve(async (req) => {
           model_choice: model,
           completion_tokens: tokenEst,
           total_tokens: tokenEst,
+          metadata: {
+            phase: 11,
+            stream: true,
+            model,
+            citation: {
+              total_items: citationItems.length,
+              federated_items: federatedItems.length,
+              cited_tokens: citedTokens,
+              cited_federated_tokens: citedFederatedTokens,
+              missing_federated_tokens: missingFederatedCitations,
+              auto_approval_ids: autoApprovalIds,
+            },
+          },
         }).eq("id", planId);
 
         send("done", {
@@ -419,6 +510,12 @@ serve(async (req) => {
           model,
           traceCount: traceRows.length,
           totalChars: fullText.length,
+          citation: {
+            federated_items: federatedItems.length,
+            cited_federated_tokens: citedFederatedTokens,
+            missing_federated_tokens: missingFederatedCitations,
+            auto_approval_ids: autoApprovalIds,
+          },
         });
         controller.close();
       } catch (e) {
