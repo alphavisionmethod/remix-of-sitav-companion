@@ -15767,7 +15767,10 @@ export type Database = {
           embedding_status: string
           file_id: string
           id: string
+          media_mime: string | null
+          media_uri: string | null
           metadata: Json
+          modality: string
           module_id: string | null
           pillar: string
           sensitivity: string
@@ -15789,7 +15792,10 @@ export type Database = {
           embedding_status?: string
           file_id: string
           id?: string
+          media_mime?: string | null
+          media_uri?: string | null
           metadata?: Json
+          modality?: string
           module_id?: string | null
           pillar?: string
           sensitivity?: string
@@ -15811,7 +15817,10 @@ export type Database = {
           embedding_status?: string
           file_id?: string
           id?: string
+          media_mime?: string | null
+          media_uri?: string | null
           metadata?: Json
+          modality?: string
           module_id?: string | null
           pillar?: string
           sensitivity?: string
@@ -16256,8 +16265,11 @@ export type Database = {
           embedding_model: string | null
           embedding_status: string
           last_used_at: string | null
+          media_mime: string | null
+          media_uri: string | null
           memory_id: string
           metadata: Json
+          modality: string
           module_id: string | null
           pillar: string
           provenance_kind: string
@@ -16280,8 +16292,11 @@ export type Database = {
           embedding_model?: string | null
           embedding_status?: string
           last_used_at?: string | null
+          media_mime?: string | null
+          media_uri?: string | null
           memory_id: string
           metadata?: Json
+          modality?: string
           module_id?: string | null
           pillar?: string
           provenance_kind?: string
@@ -16304,8 +16319,11 @@ export type Database = {
           embedding_model?: string | null
           embedding_status?: string
           last_used_at?: string | null
+          media_mime?: string | null
+          media_uri?: string | null
           memory_id?: string
           metadata?: Json
+          modality?: string
           module_id?: string | null
           pillar?: string
           provenance_kind?: string
@@ -24586,6 +24604,8 @@ export type Database = {
           action_key: string
           confidence: number
           created_at: string
+          dispatch_correlation_id: string | null
+          dispatched_at: string | null
           executed_at: string | null
           expires_at: string
           id: string
@@ -24605,6 +24625,8 @@ export type Database = {
           action_key: string
           confidence?: number
           created_at?: string
+          dispatch_correlation_id?: string | null
+          dispatched_at?: string | null
           executed_at?: string | null
           expires_at?: string
           id?: string
@@ -24624,6 +24646,8 @@ export type Database = {
           action_key?: string
           confidence?: number
           created_at?: string
+          dispatch_correlation_id?: string | null
+          dispatched_at?: string | null
           executed_at?: string | null
           expires_at?: string
           id?: string
@@ -25470,6 +25494,111 @@ export type Database = {
           },
         ]
       }
+      workspace_federation_grants: {
+        Row: {
+          expires_at: string
+          federation_id: string
+          granted_at: string
+          id: string
+          metadata: Json
+          resource_id: string
+          resource_kind: string
+          revoked_at: string | null
+          user_id: string
+        }
+        Insert: {
+          expires_at?: string
+          federation_id: string
+          granted_at?: string
+          id?: string
+          metadata?: Json
+          resource_id: string
+          resource_kind: string
+          revoked_at?: string | null
+          user_id: string
+        }
+        Update: {
+          expires_at?: string
+          federation_id?: string
+          granted_at?: string
+          id?: string
+          metadata?: Json
+          resource_id?: string
+          resource_kind?: string
+          revoked_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "workspace_federation_grants_federation_id_fkey"
+            columns: ["federation_id"]
+            isOneToOne: false
+            referencedRelation: "workspace_federation_overview"
+            referencedColumns: ["federation_id"]
+          },
+          {
+            foreignKeyName: "workspace_federation_grants_federation_id_fkey"
+            columns: ["federation_id"]
+            isOneToOne: false
+            referencedRelation: "workspace_federations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      workspace_federations: {
+        Row: {
+          created_at: string
+          expires_at: string
+          id: string
+          max_sensitivity: string
+          metadata: Json
+          rationale: string
+          revoked_at: string | null
+          scope_chunks: boolean
+          scope_memories: boolean
+          scope_voice: boolean
+          source_workspace_id: string
+          status: string
+          target_workspace_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          expires_at?: string
+          id?: string
+          max_sensitivity?: string
+          metadata?: Json
+          rationale?: string
+          revoked_at?: string | null
+          scope_chunks?: boolean
+          scope_memories?: boolean
+          scope_voice?: boolean
+          source_workspace_id: string
+          status?: string
+          target_workspace_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          expires_at?: string
+          id?: string
+          max_sensitivity?: string
+          metadata?: Json
+          rationale?: string
+          revoked_at?: string | null
+          scope_chunks?: boolean
+          scope_memories?: boolean
+          scope_voice?: boolean
+          source_workspace_id?: string
+          status?: string
+          target_workspace_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       approval_queue: {
@@ -25802,6 +25931,27 @@ export type Database = {
           },
         ]
       }
+      workspace_federation_overview: {
+        Row: {
+          active_grants: number | null
+          chunk_grants: number | null
+          created_at: string | null
+          expires_at: string | null
+          federation_id: string | null
+          last_grant_at: string | null
+          max_sensitivity: string | null
+          memory_grants: number | null
+          revoked_at: string | null
+          scope_chunks: boolean | null
+          scope_memories: boolean | null
+          scope_voice: boolean | null
+          source_workspace_id: string | null
+          status: string | null
+          target_workspace_id: string | null
+          user_id: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       acknowledge_ai_runtime_failure_alert: {
@@ -25860,6 +26010,17 @@ export type Database = {
         Returns: number
       }
       current_user_workspace_ids: { Args: never; Returns: string[] }
+      dispatch_voice_intent: {
+        Args: { _intent_id: string }
+        Returns: {
+          action_key: string
+          confidence: number
+          correlation_id: string
+          intent_id: string
+          params: Json
+          rationale: string
+        }[]
+      }
       dp_noise_clamp: { Args: { p_epsilon: number }; Returns: number }
       effective_workspace_memories: {
         Args: { _max_n?: number; _workspace_id: string }
@@ -25920,6 +26081,13 @@ export type Database = {
           rationale: string
           status: string
           transcript_id: string
+        }[]
+      }
+      federate_memories: {
+        Args: { _federation_id: string; _memory_ids: string[] }
+        Returns: {
+          granted: boolean
+          memory_id: string
         }[]
       }
       gen_short_code: { Args: { len?: number }; Returns: string }
