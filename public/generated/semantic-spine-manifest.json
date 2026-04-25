@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "phase": 6,
+  "embeddingDim": 768,
+  "embeddingModel": "google/text-embedding-004",
+  "tables": [
+    "voice_sessions",
+    "voice_transcripts"
+  ],
+  "augmentedTables": [
+    "knowledge_chunks",
+    "memory_provenance"
+  ],
+  "rpcs": [
+    "promote_voice_transcript_to_memory",
+    "semantic_knowledge_chunks",
+    "semantic_workspace_memories"
+  ],
+  "trustActions": [
+    "shared.knowledge.reindex",
+    "shared.voice.session.start"
+  ],
+  "edgeFunctions": [
+    "knowledge-embedder",
+    "voice-spine"
+  ],
+  "surfaces": [
+    "EmbeddingHealthPanel",
+    "SemanticContextBadge",
+    "SemanticSpineBoard",
+    "VoiceTranscriptDrawer",
+    "useVoiceSession"
+  ],
+  "storageBuckets": [
+    "voice-recordings"
+  ]
+}
