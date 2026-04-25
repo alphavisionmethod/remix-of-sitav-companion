@@ -15,15 +15,16 @@ import {
   Eye, ShieldAlert, Settings, HardDrive,
 } from "lucide-react";
 
-import FilesOverview from "./files/FilesOverview";
-import FilesAll from "./files/FilesAll";
-import FilesExplorer from "./files/FilesExplorer";
-import FilesProcessing from "./files/FilesProcessing";
-import FilesReview from "./files/FilesReview";
-import FilesSearch from "./files/FilesSearch";
-import FilesMemoryReview from "./files/FilesMemoryReview";
-import FilesSensitive from "./files/FilesSensitive";
-import FilesSettings from "./files/FilesSettings";
+// Wave 6 — sibling files migrated to platform/files/pages/ in Wave 5; use absolute aliases.
+import FilesOverview from "@/platform/files/pages/FilesOverview";
+import FilesAll from "@/platform/files/pages/FilesAll";
+import FilesExplorer from "@/platform/files/pages/FilesExplorer";
+import FilesProcessing from "@/platform/files/pages/FilesProcessing";
+import FilesReview from "@/platform/files/pages/FilesReview";
+import FilesSearch from "@/platform/files/pages/FilesSearch";
+import FilesMemoryReview from "@/platform/files/pages/FilesMemoryReview";
+import FilesSensitive from "@/platform/files/pages/FilesSensitive";
+import FilesSettings from "@/platform/files/pages/FilesSettings";
 
 const DOMAIN_CONFIG: DomainConfig = {
   id: "files",

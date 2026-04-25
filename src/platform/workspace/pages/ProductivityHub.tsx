@@ -6,9 +6,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import { lazy, Suspense } from "react";
 import { FileText, Table2, Presentation, Sparkles, Clock, Star, Plus } from "lucide-react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-const DocsWorkspace = lazy(() => import("./workspace/DocsWorkspace"));
-const SheetsWorkspace = lazy(() => import("./workspace/SheetsWorkspace"));
-const SlidesWorkspace = lazy(() => import("./workspace/SlidesWorkspace"));
+// Wave 6 — sibling workspace pages migrated to platform/workspace/pages/ in Wave 5.
+const DocsWorkspace = lazy(() => import("@/platform/workspace/pages/DocsWorkspace"));
+const SheetsWorkspace = lazy(() => import("@/platform/workspace/pages/SheetsWorkspace"));
+const SlidesWorkspace = lazy(() => import("@/platform/workspace/pages/SlidesWorkspace"));
 
 type SubPage = "overview" | "docs" | "sheets" | "slides";
 
