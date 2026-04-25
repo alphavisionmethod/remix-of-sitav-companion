@@ -81,6 +81,10 @@ jobs:
       - name: Rule 26 — Frontend/backend substrate map
         run: npx tsx scripts/architecture/checks/check-frontend-backend-substrate-map.ts
         continue-on-error: true
+      - name: Rule 27 — Platform subclassification (REQUIRED)
+        run: |
+          npx tsx scripts/manifests/generate/generate-platform-subclassification-map.ts
+          npx tsx scripts/architecture/check-platform-subclassification.ts
 
       - name: Generate gate summary
         if: always()
@@ -103,5 +107,7 @@ jobs:
             generated/manifests/architecture-exception-ledger.json
             generated/manifests/safe-change-evidence-ledger.json
             generated/manifests/deprecated-shim-baseline.json
+            generated/manifests/platform-subclassification-map.json
+            generated/manifests/platform-cross-subclass-baseline.json
           retention-days: 30
           if-no-files-found: warn
