@@ -18,9 +18,11 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, Crown, ListChecks } from "lucide-react";
+import { Loader2, Crown, ListChecks, ShieldAlert, RefreshCcw, CheckCircle2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { askBusinessAdvisor } from "@/lib/ai-platform/runtime";
+import { toast } from "sonner";
+import { cn } from "@/lib/utils";
 
 export type CEODrawerTarget =
   | { kind: "rec"; id: string; label: string }
@@ -61,6 +63,21 @@ interface DetailState {
   loading: boolean;
 }
 
+interface ConsistencyFinding {
+  id: string;
+  domain: string;
+  finding_kind: string;
+  severity: "info" | "warn" | "critical";
+  summary: string;
+  advisor_a: string;
+  advisor_b: string;
+  recommendation_a_id: string | null;
+  recommendation_b_id: string | null;
+  status: "open" | "acknowledged" | "resolved";
+  created_at: string;
+  run_id: string | null;
+}
+
 interface Props {
   target: CEODrawerTarget | null;
   onClose: () => void;
@@ -70,15 +87,43 @@ export function CEODetailDrawer({ target, onClose }: Props) {
   const [state, setState] = useState<DetailState>({ loading: false });
   const [drafting, setDrafting] = useState(false);
   const [draft, setDraft] = useState<string | null>(null);
+  const [findings, setFindings] = useState<ConsistencyFinding[]>([]);
+  const [findingsLoading, setFindingsLoading] = useState(false);
+  const [rerunning, setRerunning] = useState(false);
+
+  async function loadFindings() {
+    setFindingsLoading(true);
+    try {
+      const { data: u } = await supabase.auth.getUser();
+      const userId = u?.user?.id;
+      if (!userId) {
+        setFindings([]);
+        return;
+      }
+      const { data } = await supabase
+        .from("advisor_consistency_findings")
+        .select("id, domain, finding_kind, severity, summary, advisor_a, advisor_b, recommendation_a_id, recommendation_b_id, status, created_at, run_id")
+        .eq("user_id", userId)
+        .in("status", ["open", "acknowledged"])
+        .order("severity", { ascending: false })
+        .order("created_at", { ascending: false })
+        .limit(20);
+      setFindings((data ?? []) as ConsistencyFinding[]);
+    } finally {
+      setFindingsLoading(false);
+    }
+  }
 
   useEffect(() => {
     let cancelled = false;
     setDraft(null);
     if (!target) {
       setState({ loading: false });
+      setFindings([]);
       return;
     }
     setState({ loading: true });
+    void loadFindings();
 
     async function load() {
       if (!target) return;
@@ -111,6 +156,55 @@ export function CEODetailDrawer({ target, onClose }: Props) {
     return () => { cancelled = true; };
   }, [target]);
 
+  async function rerunCheck() {
+    setRerunning(true);
+    try {
+      const { data: session } = await supabase.auth.getSession();
+      const token = session?.session?.access_token;
+      if (!token) {
+        toast.error("Sign in to re-run the consistency check.");
+        return;
+      }
+      const { error } = await supabase.functions.invoke("cross-advisor-consistency-check", {
+        body: { triggered_by: "manual" },
+      });
+      if (error) {
+        toast.error(`Consistency check failed: ${error.message}`);
+        return;
+      }
+      toast.success("Cross-advisor consistency check complete.");
+      await loadFindings();
+    } catch (err) {
+      toast.error(`Consistency check failed: ${(err as Error).message}`);
+    } finally {
+      setRerunning(false);
+    }
+  }
+
+  async function acknowledgeFinding(id: string) {
+    const { error } = await supabase
+      .from("advisor_consistency_findings")
+      .update({ status: "acknowledged", acknowledged_at: new Date().toISOString() })
+      .eq("id", id);
+    if (error) {
+      toast.error(`Could not acknowledge: ${error.message}`);
+      return;
+    }
+    setFindings((f) => f.map((x) => (x.id === id ? { ...x, status: "acknowledged" } : x)));
+  }
+
+  async function resolveFinding(id: string) {
+    const { error } = await supabase
+      .from("advisor_consistency_findings")
+      .update({ status: "resolved", resolved_at: new Date().toISOString(), resolution_notes: "Resolved by operator from CEO drawer" })
+      .eq("id", id);
+    if (error) {
+      toast.error(`Could not resolve: ${error.message}`);
+      return;
+    }
+    setFindings((f) => f.filter((x) => x.id !== id));
+  }
+
   async function draftSynthesis() {
     if (!target) return;
     setDrafting(true);
@@ -133,6 +227,9 @@ export function CEODetailDrawer({ target, onClose }: Props) {
   }
 
   const open = !!target;
+  const criticalCount = findings.filter((f) => f.severity === "critical" && f.status === "open").length;
+  const openFindings = findings.filter((f) => f.status === "open");
+  const ackFindings = findings.filter((f) => f.status === "acknowledged");
 
   return (
     <Sheet open={open} onOpenChange={(o) => { if (!o) onClose(); }}>
@@ -148,6 +245,95 @@ export function CEODetailDrawer({ target, onClose }: Props) {
         </SheetHeader>
 
         <ScrollArea className="flex-1 mt-3 pr-3">
+          {/* Cross-advisor consistency findings */}
+          <section className="mb-4 rounded-md border border-border bg-card/40 p-2" data-testid="ceo-consistency-findings">
+            <div className="flex items-center justify-between gap-2 mb-2">
+              <div className="flex items-center gap-1.5">
+                <ShieldAlert className={cn("h-3.5 w-3.5", criticalCount > 0 ? "text-destructive" : "text-muted-foreground")} />
+                <p className="text-[11px] font-semibold uppercase tracking-wider">
+                  Cross-advisor consistency
+                </p>
+                {findings.length > 0 && (
+                  <Badge variant={criticalCount > 0 ? "destructive" : "secondary"} className="text-[10px] h-4 px-1">
+                    {findings.length}
+                  </Badge>
+                )}
+              </div>
+              <Button
+                size="sm"
+                variant="ghost"
+                onClick={rerunCheck}
+                disabled={rerunning}
+                className="h-6 text-[10px] gap-1"
+                aria-label="Re-run cross-advisor consistency check"
+              >
+                {rerunning ? (
+                  <Loader2 className="h-3 w-3 animate-spin" />
+                ) : (
+                  <RefreshCcw className="h-3 w-3" />
+                )}
+                Re-run
+              </Button>
+            </div>
+            {findingsLoading ? (
+              <Skeleton className="h-12 w-full" />
+            ) : findings.length === 0 ? (
+              <p className="text-[11px] text-muted-foreground py-1">
+                No contradictions detected across advisors. Nightly check runs at 03:15 UTC.
+              </p>
+            ) : (
+              <ul className="space-y-1.5">
+                {[...openFindings, ...ackFindings].map((f) => (
+                  <li
+                    key={f.id}
+                    className={cn(
+                      "rounded border p-2 text-[11px] leading-snug",
+                      f.severity === "critical"
+                        ? "border-destructive/40 bg-destructive/5"
+                        : f.severity === "warn"
+                          ? "border-amber-500/40 bg-amber-500/5"
+                          : "border-border bg-background",
+                    )}
+                  >
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-center gap-1.5 flex-wrap mb-0.5">
+                          <Badge variant="outline" className="text-[9px] h-4 px-1">{f.domain}</Badge>
+                          <Badge variant="outline" className="text-[9px] h-4 px-1">{f.finding_kind.replace(/_/g, " ")}</Badge>
+                          {f.status === "acknowledged" && (
+                            <Badge variant="secondary" className="text-[9px] h-4 px-1">acknowledged</Badge>
+                          )}
+                        </div>
+                        <p>{f.summary}</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-1 mt-1.5">
+                      {f.status === "open" && (
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={() => acknowledgeFinding(f.id)}
+                          className="h-5 text-[10px] px-1.5"
+                        >
+                          Acknowledge
+                        </Button>
+                      )}
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        onClick={() => resolveFinding(f.id)}
+                        className="h-5 text-[10px] px-1.5 gap-0.5"
+                      >
+                        <CheckCircle2 className="h-3 w-3" />
+                        Resolve
+                      </Button>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </section>
+
           {state.loading ? (
             <div className="space-y-2">
               <Skeleton className="h-4 w-3/4" />
