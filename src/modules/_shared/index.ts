@@ -32,6 +32,8 @@ export {
   type SurfaceOwner,
 } from "@/platform/contracts/decision-queue";
 
+// Wave 1.2 — retargeted to canonical home via @/contracts public barrel.
+
 export {
   useModuleRegistry,
   useRouteOwnership,
