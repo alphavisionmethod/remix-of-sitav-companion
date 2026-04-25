@@ -92,6 +92,15 @@ During an in-flight migration wave, a thin re-export wrapper at the old path is 
 15. **Platform-owned components live under `src/platform/<system>/components/<sub>/`.** Canonical systems include `admin`, `advisors`, `ai`, `app-platform`, `auth`, `cloud`, `experience`, `files`, `governance`, `intelligence`, `marketing`, `notifications`, `observability`, `operations`, `orchestration`, `personal-brain`, `product`, `runtime`, `settings`, `setup`, `sita`, `sync-engine`, `trust`, `core-services`.
 16. **No deep relative imports.** Files under `src/platform/**`, `src/modules/**`, `src/components/**`, `src/pages/**` MUST NOT contain `from "../../../..."` style imports. All cross-tree references MUST use `@/...` aliases. Codemod: `scripts/codemods/wave-7-fix-relative-imports.mjs`.
 
+## Components allowlist (Wave 8 — STRICT, BLOCKING)
+
+17. **Frozen subtrees are validator-enforced.** A blocking CI step (`scripts/architecture/check-components-allowlist.ts --strict`) runs on every PR. It fails the build if:
+    - any non-allowlisted top-level file appears under `src/components/` (allowlist: `NavLink.tsx`),
+    - any file inside a frozen legacy subtree (`business/`, `admin/`, `sita/`, …) contains authored code instead of a Wave-7 thin adapter,
+    - any adapter exceeds 12 logical lines, OR
+    - any adapter targets a non-canonical path (only `@/modules/*` or `@/platform/*` are permitted).
+18. **Shared subtree allowlist** (Wave 8): `ui/`, `primitives/`, `shared/`, `cards/`, `navigation/`, `launcher/`, `__tests__/`. New top-level subtrees under `src/components/` require an ADR + an update to `SHARED_ALLOWLIST` in the validator.
+
 ## Amendment process
 
 1. Open an ADR under `docs/adr/ADR-<NNN>-<slug>.md` describing the change and its blast radius.
