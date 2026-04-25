@@ -10,6 +10,10 @@
 import { useEffect, useRef } from "react";
 import { ensureDefaultSubscriptions } from "@/lib/autonomy/signal-bus";
 import { runAllEmitters } from "@/lib/autonomy/emitters";
+import {
+  runControllersForAdvisors,
+  DEFAULT_CONTROLLED_ADVISORS,
+} from "@/lib/autonomy/controller";
 import { supabase } from "@/integrations/supabase/client";
 
 const EMITTER_INTERVAL_MS = 10 * 60 * 1000; // 10 min
@@ -24,6 +28,16 @@ export function useAutonomyBootstrap() {
     let cancelled = false;
     let timer: ReturnType<typeof setInterval> | null = null;
 
+    const cycle = async () => {
+      try {
+        await runAllEmitters();
+        // Phase 2: drive each default advisor's controller through one cycle.
+        await runControllersForAdvisors(DEFAULT_CONTROLLED_ADVISORS);
+      } catch (err) {
+        console.debug("[autonomy-cycle] skipped:", err);
+      }
+    };
+
     const boot = async () => {
       // Only run for authenticated users.
       const { data } = await supabase.auth.getUser();
@@ -31,12 +45,12 @@ export function useAutonomyBootstrap() {
       if (cancelled) return;
       try {
         await ensureDefaultSubscriptions();
-        await runAllEmitters();
+        await cycle();
       } catch (err) {
         console.debug("[autonomy-boot] initial scan skipped:", err);
       }
       timer = setInterval(() => {
-        runAllEmitters().catch(() => undefined);
+        cycle().catch(() => undefined);
       }, EMITTER_INTERVAL_MS);
     };
 
