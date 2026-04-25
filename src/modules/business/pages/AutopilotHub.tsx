@@ -1,85 +1,146 @@
 // ═══════════════════════════════════════════════════════════════
-// SITA OS — Autopilot Hub Page (Migrated)
-// Wizard → Command Center flow
+// SITA OS — Autopilot Hub Page (Canonical)
+// Wizard → Command Center flow, backed by canonical persistence
+// (RLS-scoped autopilot_configs table). Demo-aware, auth-aware,
+// with full loading/error/unauth/ready state coverage.
 // ═══════════════════════════════════════════════════════════════
 
-import { useState, useCallback } from "react";
+import { useCallback, useState } from "react";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { ModuleAdvisorInsight } from "@/platform/sita/components/sita/domain-shared/ModuleAdvisorInsight";
+import { PageSkeleton } from "@/platform/sita/components/sita/PageSkeleton";
+import { EmptyStateCard } from "@/platform/sita/components/sita/EmptyStateCard";
 import AutopilotWizard from "@/platform/orchestration/components/autopilot/AutopilotWizard";
 import AutopilotCommandCenter from "@/platform/orchestration/components/autopilot/AutopilotCommandCenter";
-import { getDefaultConfig, type AutopilotConfig } from "@/lib/domain-engines/autopilot-engine";
+import { type AutopilotConfig } from "@/lib/domain-engines/autopilot-engine";
 import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
-import { getIdentityLayer } from "@/domains/engines/business-identity-layers";
-
-const STORAGE_KEY = "sita-autopilot-config";
-
-function loadConfig(): AutopilotConfig {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) return JSON.parse(raw);
-  } catch {}
-  return getDefaultConfig();
-}
-
-function saveConfig(config: AutopilotConfig) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(config));
-}
+import {
+  useAutopilotConfig,
+  useCompleteAutopilotWizard,
+  useSaveAutopilotConfig,
+  useSkipAutopilotWizard,
+} from "@/hooks/use-autopilot-config";
+import { Button } from "@/components/ui/button";
+import { AlertTriangle, Lock } from "lucide-react";
 
 const AutopilotHubPage = () => {
   const { primaryMode } = useBusinessProfile();
-  const identity = getIdentityLayer(primaryMode);
-  const autopilotLabel = primaryMode === "ecommerce" ? "Sales Autopilot" : primaryMode === "agency" ? "Growth Engine" : primaryMode === "employee-based" ? "Workflow Engine" : primaryMode === "appointment-based" ? "Booking Autopilot" : "Revenue Autopilot";
-  const [config, setConfig] = useState<AutopilotConfig>(loadConfig);
-  const [showWizard, setShowWizard] = useState(!config.isOnboarded);
+  const autopilotLabel =
+    primaryMode === "ecommerce" ? "Sales Autopilot" :
+    primaryMode === "agency" ? "Growth Engine" :
+    primaryMode === "employee-based" ? "Workflow Engine" :
+    primaryMode === "appointment-based" ? "Booking Autopilot" :
+    "Revenue Autopilot";
 
-  const handleComplete = useCallback((newConfig: AutopilotConfig) => {
-    setConfig(newConfig);
-    saveConfig(newConfig);
-    setShowWizard(false);
-  }, []);
+  const { data: snapshot, state, error, refetch, userId, mode } = useAutopilotConfig();
+  const completeMutation = useCompleteAutopilotWizard();
+  const skipMutation = useSkipAutopilotWizard();
+  const saveMutation = useSaveAutopilotConfig();
+
+  // Allow user to manually re-open the wizard from the command center.
+  const [forceWizard, setForceWizard] = useState(false);
+
+  const handleComplete = useCallback(
+    (newConfig: AutopilotConfig) => {
+      completeMutation.mutate(newConfig, { onSuccess: () => setForceWizard(false) });
+    },
+    [completeMutation],
+  );
 
   const handleSkip = useCallback(() => {
-    const skipped: AutopilotConfig = {
-      ...getDefaultConfig(),
-      isOnboarded: true,
-      activePlaybooks: ["receivable-recovery", "leak-seal"],
-    };
-    setConfig(skipped);
-    saveConfig(skipped);
-    setShowWizard(false);
-  }, []);
+    skipMutation.mutate(undefined, { onSuccess: () => setForceWizard(false) });
+  }, [skipMutation]);
 
-  const handleConfigUpdate = useCallback((updated: AutopilotConfig) => {
-    setConfig(updated);
-    saveConfig(updated);
-  }, []);
+  const handleConfigUpdate = useCallback(
+    (updated: AutopilotConfig) => {
+      saveMutation.mutate(updated);
+    },
+    [saveMutation],
+  );
 
-  const handleOpenWizard = useCallback(() => setShowWizard(true), []);
+  const handleOpenWizard = useCallback(() => setForceWizard(true), []);
 
-  if (showWizard) {
+  // ── Loading ─────────────────────────────────────────────────────
+  if (state === "loading") {
+    return (
+      <div className="space-y-4">
+        <PageTruthBanner />
+        <PageSkeleton rows={3} />
+      </div>
+    );
+  }
+
+  // ── Error ───────────────────────────────────────────────────────
+  if (state === "error") {
+    return (
+      <div className="space-y-4">
+        <PageTruthBanner />
+        <EmptyStateCard
+          icon={AlertTriangle}
+          title="Autopilot unavailable"
+          description={error?.message || "We couldn't load your Autopilot configuration."}
+          action={<Button onClick={() => refetch()}>Try again</Button>}
+        />
+      </div>
+    );
+  }
+
+  // ── Unauthenticated (live mode only) ───────────────────────────
+  if (mode === "live" && !userId) {
+    return (
+      <div className="space-y-4">
+        <PageTruthBanner />
+        <EmptyStateCard
+          icon={Lock}
+          title={`${autopilotLabel} requires sign-in`}
+          description="Autopilot configuration is tied to your account so it stays consistent across devices and is governed by your trust boundaries."
+        />
+      </div>
+    );
+  }
+
+  const isOnboarded = Boolean(snapshot?.isOnboarded) && !forceWizard;
+
+  // ── Wizard (not onboarded, or user re-opened it) ───────────────
+  if (!isOnboarded) {
     return (
       <div className="mx-auto max-w-7xl space-y-6">
         <PageTruthBanner />
         <div>
-          <h2 className={SITA_TYPE.pageTitle}>Autopilot Setup</h2>
-          <p className="text-sm text-muted-foreground mt-1">Configure your revenue automation in under 2 minutes</p>
+          <h2 className={SITA_TYPE.pageTitle}>{autopilotLabel} Setup</h2>
+          <p className="text-sm text-muted-foreground mt-1">
+            Configure your automation in under 2 minutes — every action stays governed by your approval rules.
+          </p>
         </div>
         <AutopilotWizard onComplete={handleComplete} onSkip={handleSkip} />
       </div>
     );
   }
 
+  // ── Command Center (ready) ─────────────────────────────────────
+  const config = snapshot?.config ?? ({} as AutopilotConfig);
+  const activeCount = config.activePlaybooks?.length ?? 0;
+  const insightText =
+    activeCount === 0
+      ? `${autopilotLabel} is on stand-by — no playbooks active. Enable a playbook below to start governed automation.`
+      : `${activeCount} playbook${activeCount === 1 ? "" : "s"} active under "${config.approvalMode}" approval mode. ${
+          mode === "demo" ? "Demo data — no real actions are executed." : "All runs are recorded as receipts and respect your kill-switches."
+        }`;
+
   return (
     <div className="space-y-4">
       <PageTruthBanner />
-      <AutopilotCommandCenter config={config} onConfigUpdate={handleConfigUpdate} onOpenWizard={handleOpenWizard} />
+      <AutopilotCommandCenter
+        config={config}
+        onConfigUpdate={handleConfigUpdate}
+        onOpenWizard={handleOpenWizard}
+      />
       <ModuleAdvisorInsight
         advisorName="Automation Advisor"
         domain="business"
-        insight={`${config.activePlaybooks?.length || 0} playbooks active. Autopilot is ${config.isOnboarded ? "running" : "awaiting setup"} — review trust boundaries and approval gates.`}
-        confidence={88}
+        insight={insightText}
+        confidence={activeCount === 0 ? 60 : 88}
       />
     </div>
   );
