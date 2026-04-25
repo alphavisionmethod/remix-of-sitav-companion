@@ -41,6 +41,11 @@ interface OrchestratorRequest {
     /** Phase 5: when set, server fetches up to N matching knowledge_chunks via full-text search. */
     chunkQuery?: string;
     chunkMax?: number;
+    /** Phase 6: when true (default), server embeds last user message and runs semantic retrieval. */
+    semanticRetrieval?: boolean;
+    semanticMemoryMax?: number;
+    semanticChunkMax?: number;
+    minSimilarity?: number;
   };
   assumptions?: string[];
   confidenceTarget?: number;
@@ -56,7 +61,8 @@ interface OrchestratorRequest {
 interface TraceRow {
   source_type:
     | "memory" | "file" | "advisor" | "policy" | "workspace" | "module"
-    | "tool" | "prompt" | "prior_receipt" | "live_data" | "user_input" | "system";
+    | "tool" | "prompt" | "prior_receipt" | "live_data" | "user_input" | "system"
+    | "knowledge_chunk";
   source_id?: string | null;
   source_label: string;
   weight?: number;
@@ -191,6 +197,11 @@ serve(async (req) => {
     // ── 3b. Phase 5: auto-fetch workspace memories + chunks ──
     const autoMemoryRows: Array<{ memory_id: string; content: string; pillar: string; sensitivity: string; provenance_kind: string; confidence_band: string }> = [];
     const autoChunkRows: Array<{ id: string; file_id: string; chunk_index: number; content: string; pillar: string; sensitivity: string }> = [];
+    const semanticMemoryRows: Array<{ memory_id: string; content: string; similarity: number; pillar: string; provenance_kind: string }> = [];
+    const semanticChunkRows: Array<{ chunk_id: string; file_id: string; content: string; similarity: number; pillar: string }> = [];
+    const seenMemoryIds = new Set<string>();
+    const seenChunkIds = new Set<string>();
+
     if (body.contextSources?.workspaceMemoryAuto) {
       const { data: mem } = await userClient.rpc("effective_workspace_memories", {
         _workspace_id: body.workspaceId ?? null,
@@ -202,6 +213,7 @@ serve(async (req) => {
             memory_id: m.memory_id, content: m.content ?? "", pillar: m.pillar,
             sensitivity: m.sensitivity, provenance_kind: m.provenance_kind, confidence_band: m.confidence_band,
           });
+          seenMemoryIds.add(m.memory_id);
           await userClient.rpc("record_memory_usage", { _memory_id: m.memory_id }).catch(() => {});
         }
       }
@@ -213,7 +225,76 @@ serve(async (req) => {
         .textSearch("content_search", body.contextSources.chunkQuery, { type: "websearch", config: "english" })
         .limit(body.contextSources.chunkMax ?? 8);
       if (Array.isArray(chunks)) {
-        for (const c of chunks as any[]) autoChunkRows.push(c);
+        for (const c of chunks as any[]) { autoChunkRows.push(c); seenChunkIds.add(c.id); }
+      }
+    }
+
+    // ── 3c. Phase 6: semantic retrieval (default on) ─────────
+    const semanticOn = body.contextSources?.semanticRetrieval !== false;
+    let queryEmbedding: number[] | null = null;
+    if (semanticOn) {
+      const lastUser = [...body.messages].reverse().find((m) => m.role === "user");
+      const queryText = (lastUser?.content ?? "").trim();
+      if (queryText.length >= 4) {
+        try {
+          const embResp = await fetch(`${SUPABASE_URL}/functions/v1/knowledge-embedder`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json", Authorization: authHeader ?? "", apikey: SUPABASE_ANON_KEY },
+            body: JSON.stringify({ scope: "query", query_text: queryText.slice(0, 4000) }),
+          });
+          if (embResp.ok) {
+            const ej = await embResp.json();
+            if (Array.isArray(ej?.embedding)) queryEmbedding = ej.embedding as number[];
+          } else {
+            console.warn("[ai-orchestrator] query embed failed", embResp.status);
+          }
+        } catch (e) {
+          console.warn("[ai-orchestrator] query embed exception", e);
+        }
+      }
+
+      if (queryEmbedding) {
+        const minSim = body.contextSources?.minSimilarity ?? 0.55;
+        const memMax = body.contextSources?.semanticMemoryMax ?? 8;
+        const chMax = body.contextSources?.semanticChunkMax ?? 6;
+        const vecLit = `[${queryEmbedding.join(",")}]`;
+
+        const { data: semMem, error: semMemErr } = await userClient.rpc("semantic_workspace_memories", {
+          _workspace_id: body.workspaceId ?? null,
+          _query_embedding: vecLit,
+          _max_n: memMax,
+          _min_similarity: minSim,
+        });
+        if (semMemErr) console.warn("[ai-orchestrator] semantic mem RPC failed", semMemErr);
+        if (Array.isArray(semMem)) {
+          for (const m of semMem as any[]) {
+            if (seenMemoryIds.has(m.memory_id)) continue;
+            seenMemoryIds.add(m.memory_id);
+            semanticMemoryRows.push({
+              memory_id: m.memory_id, content: m.content ?? "",
+              similarity: Number(m.similarity ?? 0), pillar: m.pillar, provenance_kind: m.provenance_kind,
+            });
+            await userClient.rpc("record_memory_usage", { _memory_id: m.memory_id }).catch(() => {});
+          }
+        }
+
+        const { data: semChunks, error: semChErr } = await userClient.rpc("semantic_knowledge_chunks", {
+          _workspace_id: body.workspaceId ?? null,
+          _query_embedding: vecLit,
+          _max_n: chMax,
+          _min_similarity: Math.max(0.45, minSim - 0.1),
+        });
+        if (semChErr) console.warn("[ai-orchestrator] semantic chunk RPC failed", semChErr);
+        if (Array.isArray(semChunks)) {
+          for (const c of semChunks as any[]) {
+            if (seenChunkIds.has(c.chunk_id)) continue;
+            seenChunkIds.add(c.chunk_id);
+            semanticChunkRows.push({
+              chunk_id: c.chunk_id, file_id: c.file_id, content: c.content ?? "",
+              similarity: Number(c.similarity ?? 0), pillar: c.pillar,
+            });
+          }
+        }
       }
     }
 
@@ -329,6 +410,7 @@ serve(async (req) => {
         source_label: `Memory ${m.provenance_kind}/${m.confidence_band}`,
         excerpt: m.content.slice(0, 240),
         role: "context",
+        metadata: { retrieval_kind: "recency" },
       });
     }
     for (const c of autoChunkRows) {
@@ -338,6 +420,29 @@ serve(async (req) => {
         source_label: `Chunk ${c.file_id.slice(0, 8)}#${c.chunk_index}`,
         excerpt: c.content.slice(0, 240),
         role: "grounding",
+        metadata: { retrieval_kind: "fulltext" },
+      });
+    }
+    for (const m of semanticMemoryRows) {
+      traces.push({
+        source_type: "memory",
+        source_id: m.memory_id,
+        source_label: `Memory ${m.provenance_kind} (sem ${(m.similarity * 100).toFixed(0)}%)`,
+        excerpt: m.content.slice(0, 240),
+        role: "context",
+        weight: Number(m.similarity.toFixed(3)),
+        metadata: { retrieval_kind: "semantic", similarity: Number(m.similarity.toFixed(4)) },
+      });
+    }
+    for (const c of semanticChunkRows) {
+      traces.push({
+        source_type: "knowledge_chunk",
+        source_id: c.chunk_id,
+        source_label: `Chunk ${c.file_id.slice(0, 8)} (sem ${(c.similarity * 100).toFixed(0)}%)`,
+        excerpt: c.content.slice(0, 240),
+        role: "grounding",
+        weight: Number(c.similarity.toFixed(3)),
+        metadata: { retrieval_kind: "semantic", similarity: Number(c.similarity.toFixed(4)) },
       });
     }
     if (body.workspaceId) {

@@ -24,6 +24,16 @@ export interface OrchestratorContextSources {
   priorReceiptIds?: string[];
   workspaceIds?: string[];
   notes?: Array<{ label: string; excerpt?: string; weight?: number }>;
+  /** Phase 5 */
+  workspaceMemoryAuto?: boolean;
+  workspaceMemoryMax?: number;
+  chunkQuery?: string;
+  chunkMax?: number;
+  /** Phase 6 — semantic retrieval (default true). */
+  semanticRetrieval?: boolean;
+  semanticMemoryMax?: number;
+  semanticChunkMax?: number;
+  minSimilarity?: number;
 }
 
 export interface OrchestratorRequest {
