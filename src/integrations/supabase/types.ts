@@ -620,6 +620,57 @@ export type Database = {
         }
         Relationships: []
       }
+      advisor_autonomy_state: {
+        Row: {
+          advisor_id: string
+          circuit_open_until: string | null
+          consecutive_failures: number
+          consecutive_successes: number
+          cooldown_until: string | null
+          created_at: string
+          current_state: string
+          id: string
+          last_action_id: string | null
+          last_signal_id: string | null
+          last_state_change_at: string
+          metadata: Json
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          advisor_id: string
+          circuit_open_until?: string | null
+          consecutive_failures?: number
+          consecutive_successes?: number
+          cooldown_until?: string | null
+          created_at?: string
+          current_state?: string
+          id?: string
+          last_action_id?: string | null
+          last_signal_id?: string | null
+          last_state_change_at?: string
+          metadata?: Json
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          advisor_id?: string
+          circuit_open_until?: string | null
+          consecutive_failures?: number
+          consecutive_successes?: number
+          cooldown_until?: string | null
+          created_at?: string
+          current_state?: string
+          id?: string
+          last_action_id?: string | null
+          last_signal_id?: string | null
+          last_state_change_at?: string
+          metadata?: Json
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       advisor_board_actions: {
         Row: {
           action_type: string
@@ -16932,6 +16983,90 @@ export type Database = {
           session_id?: string
           state?: string
           updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      os_state_signal_subscriptions: {
+        Row: {
+          advisor_id: string
+          created_at: string
+          enabled: boolean
+          id: string
+          min_severity: string
+          signal_kind: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          advisor_id: string
+          created_at?: string
+          enabled?: boolean
+          id?: string
+          min_severity?: string
+          signal_kind: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          advisor_id?: string
+          created_at?: string
+          enabled?: boolean
+          id?: string
+          min_severity?: string
+          signal_kind?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      os_state_signals: {
+        Row: {
+          acted_on: boolean
+          acted_on_at: string | null
+          acted_on_by_advisor_id: string | null
+          created_at: string
+          expires_at: string
+          id: string
+          payload: Json
+          severity: string
+          signal_kind: string
+          source: string
+          suggested_action_class: string | null
+          suggested_advisor_ids: Json
+          summary: string
+          user_id: string
+        }
+        Insert: {
+          acted_on?: boolean
+          acted_on_at?: string | null
+          acted_on_by_advisor_id?: string | null
+          created_at?: string
+          expires_at?: string
+          id?: string
+          payload?: Json
+          severity?: string
+          signal_kind: string
+          source?: string
+          suggested_action_class?: string | null
+          suggested_advisor_ids?: Json
+          summary: string
+          user_id: string
+        }
+        Update: {
+          acted_on?: boolean
+          acted_on_at?: string | null
+          acted_on_by_advisor_id?: string | null
+          created_at?: string
+          expires_at?: string
+          id?: string
+          payload?: Json
+          severity?: string
+          signal_kind?: string
+          source?: string
+          suggested_action_class?: string | null
+          suggested_advisor_ids?: Json
+          summary?: string
           user_id?: string
         }
         Relationships: []
