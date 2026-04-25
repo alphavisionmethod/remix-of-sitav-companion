@@ -50,6 +50,7 @@ const MCFeatureOwnership = lazy(() => import("@/pages/admin/modules/MCFeatureOwn
 const MCCommandRouting = lazy(() => import("@/pages/admin/modules/MCCommandRouting"));
 const MCAIOrchestration = lazy(() => import("@/pages/admin/modules/MCAIOrchestration"));
 const KnowledgeSpineBoard = lazy(() => import("@/pages/admin/architecture/KnowledgeSpineBoard"));
+const SemanticSpineBoard = lazy(() => import("@/pages/admin/architecture/SemanticSpineBoard"));
 const MCModuleRegistry = lazy(() => import("@/pages/admin/modules/MCModuleRegistry"));
 const MCApprovalFlow = lazy(() => import("@/pages/admin/modules/MCApprovalFlow"));
 const MCFailureRecovery = lazy(() => import("@/pages/admin/modules/MCFailureRecovery"));
