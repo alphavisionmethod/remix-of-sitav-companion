@@ -22,6 +22,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { askBusinessAdvisor } from "@/lib/ai-platform/runtime";
 import { CEODetailDrawer, type CEODrawerTarget } from "./CEODetailDrawer";
 import { CFOExplainabilityPopover, type CFOExplainability } from "../cfo/CFOExplainabilityPopover";
+import { ConflictResolutionWorkflow, type ConflictResolutionItem } from "./ConflictResolutionWorkflow";
 
 interface RecRow {
   id: string;
@@ -165,6 +166,36 @@ export function CEOAdvisorRecommendations() {
   const [drawerTarget, setDrawerTarget] = useState<CEODrawerTarget | null>(null);
   const [askLoading, setAskLoading] = useState<string | null>(null);
   const [synthesis, setSynthesis] = useState<Record<string, string>>({});
+
+  const conflictItems: ConflictResolutionItem[] = useMemo(() => {
+    if (!snapshot) return [];
+    return snapshot.conflicts.map((c) => ({
+      id: c.id,
+      domain: c.domain,
+      recA: {
+        id: c.recA.id,
+        advisor_id: c.recA.advisor_id,
+        title: c.recA.title,
+        summary: c.recA.summary,
+        category: c.recA.category,
+        urgency_score: c.recA.urgency_score,
+        business_impact_score: c.recA.business_impact_score,
+        reversibility_score: c.recA.reversibility_score,
+        confidence_score: c.recA.confidence_score,
+      },
+      recB: {
+        id: c.recB.id,
+        advisor_id: c.recB.advisor_id,
+        title: c.recB.title,
+        summary: c.recB.summary,
+        category: c.recB.category,
+        urgency_score: c.recB.urgency_score,
+        business_impact_score: c.recB.business_impact_score,
+        reversibility_score: c.recB.reversibility_score,
+        confidence_score: c.recB.confidence_score,
+      },
+    }));
+  }, [snapshot]);
 
   useEffect(() => {
     let cancelled = false;
@@ -466,6 +497,9 @@ export function CEOAdvisorRecommendations() {
                   <p className="text-[10px] uppercase text-muted-foreground mb-1">CEO synthesis</p>
                   <p className="text-xs whitespace-pre-wrap leading-relaxed">{synthesis[g.key]}</p>
                 </div>
+              )}
+              {g.key === "cross-advisor-conflicts" && conflictItems.length > 0 && (
+                <ConflictResolutionWorkflow conflicts={conflictItems} />
               )}
             </CardContent>
           </Card>
