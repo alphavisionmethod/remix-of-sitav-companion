@@ -52,6 +52,7 @@ const MCAIOrchestration = lazy(() => import("@/pages/admin/modules/MCAIOrchestra
 const KnowledgeSpineBoard = lazy(() => import("@/pages/admin/architecture/KnowledgeSpineBoard"));
 const SemanticSpineBoard = lazy(() => import("@/pages/admin/architecture/SemanticSpineBoard"));
 const LiveCortexBoard = lazy(() => import("@/pages/admin/architecture/LiveCortexBoard"));
+const WorkspaceFederationBoard = lazy(() => import("@/pages/admin/architecture/WorkspaceFederationBoard"));
 const MCModuleRegistry = lazy(() => import("@/pages/admin/modules/MCModuleRegistry"));
 const MCApprovalFlow = lazy(() => import("@/pages/admin/modules/MCApprovalFlow"));
 const MCFailureRecovery = lazy(() => import("@/pages/admin/modules/MCFailureRecovery"));
@@ -496,6 +497,7 @@ export function getAdminRoutes() {
     <Route key="mc-knowledge-spine" path="/admin/architecture/knowledge-spine" element={gated("audit.view", <KnowledgeSpineBoard />)} />,
     <Route key="mc-semantic-spine" path="/admin/architecture/semantic-spine" element={gated("audit.view", <SemanticSpineBoard />)} />,
     <Route key="mc-live-cortex" path="/admin/architecture/live-cortex" element={gated("audit.view", <LiveCortexBoard />)} />,
+    <Route key="mc-ws-federation" path="/admin/architecture/federation" element={gated("audit.view", <WorkspaceFederationBoard />)} />,
     <Route key="mc22" path="/admin/mc/feature-ownership" element={gated("audit.view", <MCFeatureOwnership />)} />,
     <Route key="mc23" path="/admin/mc/command-routing" element={gated("audit.view", <MCCommandRouting />)} />,
     <Route key="mc24" path="/admin/mc/approval-flow" element={gated("audit.view", <MCApprovalFlow />)} />,
