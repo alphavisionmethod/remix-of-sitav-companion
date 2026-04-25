@@ -15760,6 +15760,10 @@ export type Database = {
           content: string
           content_search: unknown
           created_at: string
+          embedded_at: string | null
+          embedding: string | null
+          embedding_dim: number | null
+          embedding_model: string | null
           embedding_status: string
           file_id: string
           id: string
@@ -15778,6 +15782,10 @@ export type Database = {
           content: string
           content_search?: unknown
           created_at?: string
+          embedded_at?: string | null
+          embedding?: string | null
+          embedding_dim?: number | null
+          embedding_model?: string | null
           embedding_status?: string
           file_id: string
           id?: string
@@ -15796,6 +15804,10 @@ export type Database = {
           content?: string
           content_search?: unknown
           created_at?: string
+          embedded_at?: string | null
+          embedding?: string | null
+          embedding_dim?: number | null
+          embedding_model?: string | null
           embedding_status?: string
           file_id?: string
           id?: string
@@ -16238,6 +16250,11 @@ export type Database = {
         Row: {
           confidence_band: string
           created_at: string
+          embedded_at: string | null
+          embedding: string | null
+          embedding_dim: number | null
+          embedding_model: string | null
+          embedding_status: string
           last_used_at: string | null
           memory_id: string
           metadata: Json
@@ -16257,6 +16274,11 @@ export type Database = {
         Insert: {
           confidence_band?: string
           created_at?: string
+          embedded_at?: string | null
+          embedding?: string | null
+          embedding_dim?: number | null
+          embedding_model?: string | null
+          embedding_status?: string
           last_used_at?: string | null
           memory_id: string
           metadata?: Json
@@ -16276,6 +16298,11 @@ export type Database = {
         Update: {
           confidence_band?: string
           created_at?: string
+          embedded_at?: string | null
+          embedding?: string | null
+          embedding_dim?: number | null
+          embedding_model?: string | null
+          embedding_status?: string
           last_used_at?: string | null
           memory_id?: string
           metadata?: Json
@@ -24554,6 +24581,137 @@ export type Database = {
         }
         Relationships: []
       }
+      voice_sessions: {
+        Row: {
+          correlation_id: string
+          created_at: string
+          duration_ms: number | null
+          ended_at: string | null
+          expires_at: string
+          id: string
+          metadata: Json
+          mode: string
+          module_id: string | null
+          pillar: string
+          provider: string
+          started_at: string
+          status: string
+          updated_at: string
+          user_id: string
+          workspace_id: string | null
+        }
+        Insert: {
+          correlation_id?: string
+          created_at?: string
+          duration_ms?: number | null
+          ended_at?: string | null
+          expires_at?: string
+          id?: string
+          metadata?: Json
+          mode?: string
+          module_id?: string | null
+          pillar?: string
+          provider?: string
+          started_at?: string
+          status?: string
+          updated_at?: string
+          user_id: string
+          workspace_id?: string | null
+        }
+        Update: {
+          correlation_id?: string
+          created_at?: string
+          duration_ms?: number | null
+          ended_at?: string | null
+          expires_at?: string
+          id?: string
+          metadata?: Json
+          mode?: string
+          module_id?: string | null
+          pillar?: string
+          provider?: string
+          started_at?: string
+          status?: string
+          updated_at?: string
+          user_id?: string
+          workspace_id?: string | null
+        }
+        Relationships: []
+      }
+      voice_transcripts: {
+        Row: {
+          audio_storage_path: string | null
+          confidence: number
+          created_at: string
+          embedded_at: string | null
+          embedding: string | null
+          embedding_dim: number | null
+          embedding_model: string | null
+          embedding_status: string
+          expires_at: string
+          id: string
+          is_final: boolean
+          lang: string
+          metadata: Json
+          role: string
+          seq: number
+          session_id: string
+          text: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          audio_storage_path?: string | null
+          confidence?: number
+          created_at?: string
+          embedded_at?: string | null
+          embedding?: string | null
+          embedding_dim?: number | null
+          embedding_model?: string | null
+          embedding_status?: string
+          expires_at?: string
+          id?: string
+          is_final?: boolean
+          lang?: string
+          metadata?: Json
+          role?: string
+          seq?: number
+          session_id: string
+          text: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          audio_storage_path?: string | null
+          confidence?: number
+          created_at?: string
+          embedded_at?: string | null
+          embedding?: string | null
+          embedding_dim?: number | null
+          embedding_model?: string | null
+          embedding_status?: string
+          expires_at?: string
+          id?: string
+          is_final?: boolean
+          lang?: string
+          metadata?: Json
+          role?: string
+          seq?: number
+          session_id?: string
+          text?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "voice_transcripts_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "voice_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       waitlist_signups: {
         Row: {
           confirmed_at: string | null
@@ -25760,6 +25918,14 @@ export type Database = {
         Args: { _user_id: string; _workspace_id: string }
         Returns: boolean
       }
+      promote_voice_transcript_to_memory: {
+        Args: {
+          _category?: string
+          _sensitivity?: string
+          _transcript_id: string
+        }
+        Returns: string
+      }
       propose_implementation_suggestion: {
         Args: {
           p_estimated_effort?: string
@@ -25939,6 +26105,44 @@ export type Database = {
       seed_master_internal_agent_kill_switch: {
         Args: { _user_id: string }
         Returns: string
+      }
+      semantic_knowledge_chunks: {
+        Args: {
+          _max_n?: number
+          _min_similarity?: number
+          _query_embedding: string
+          _workspace_id: string
+        }
+        Returns: {
+          chunk_id: string
+          content: string
+          file_id: string
+          pillar: string
+          sensitivity: string
+          similarity: number
+          source_table: string
+          workspace_id: string
+        }[]
+      }
+      semantic_workspace_memories: {
+        Args: {
+          _max_n?: number
+          _min_similarity?: number
+          _query_embedding: string
+          _workspace_id: string
+        }
+        Returns: {
+          category: string
+          confidence: number
+          content: string
+          last_used_at: string
+          memory_id: string
+          pillar: string
+          provenance_kind: string
+          sensitivity: string
+          similarity: number
+          workspace_id: string
+        }[]
       }
       summarize_implementation_suggestions: { Args: never; Returns: Json }
       summarize_internal_agent_learning: {
