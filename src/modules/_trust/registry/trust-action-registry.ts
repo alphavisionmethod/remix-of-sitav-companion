@@ -379,6 +379,20 @@ export const TRUST_ACTION_REGISTRY = {
     riskTier: "low", requireApproval: false, reversible: true,
     defaultAuthorityLevel: "pre_approved",
   },
+  "shared.voice.intent.execute": {
+    key: "shared.voice.intent.execute", pillar: "shared",
+    label: "Execute voice-extracted intent",
+    description: "Run an action proposed by the voice intent extractor through the Trust engine.",
+    riskTier: "high", requireApproval: true, reversible: false,
+    defaultAuthorityLevel: "ask",
+  },
+  "shared.embedding.batch": {
+    key: "shared.embedding.batch", pillar: "shared",
+    label: "Run embedding batch",
+    description: "Embed a batch of pending knowledge chunks, memories, or transcripts via the AI gateway.",
+    riskTier: "low", requireApproval: false, reversible: true,
+    defaultAuthorityLevel: "pre_approved",
+  },
 } as const satisfies Record<string, TrustActionPreset>;
 
 export type TrustActionKey = keyof typeof TRUST_ACTION_REGISTRY;
