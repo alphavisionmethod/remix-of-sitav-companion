@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-04-25T17:32:39.020Z",
+  "generatedAt": "2026-04-25T17:52:25.584Z",
   "foundationVersion": 1,
   "rule": "Constitution Rule 26",
   "description": "Master pointer file. All future architecture wave prompts attach to this index.",
-  "manifestCount": 21,
-  "presentCount": 21,
+  "manifestCount": 23,
+  "presentCount": 23,
   "missingCount": 0,
   "manifests": [
     {
@@ -17,7 +17,7 @@
       "required": true,
       "exists": true,
       "sizeBytes": 94155,
-      "modifiedAt": "2026-04-25T17:24:36.798Z"
+      "modifiedAt": "2026-04-25T17:32:44.430Z"
     },
     {
       "id": "foundation-tier-validator-set",
@@ -28,8 +28,8 @@
       "description": "Filtered view of validator-gate-map listing the validators that run in foundation-gate.yml.",
       "required": true,
       "exists": true,
-      "sizeBytes": 5482,
-      "modifiedAt": "2026-04-25T17:32:39.022Z"
+      "sizeBytes": 5821,
+      "modifiedAt": "2026-04-25T17:52:25.585Z"
     },
     {
       "id": "architecture-exception-ledger",
@@ -53,7 +53,7 @@
       "required": true,
       "exists": true,
       "sizeBytes": 444,
-      "modifiedAt": "2026-04-25T17:32:39.374Z"
+      "modifiedAt": "2026-04-25T17:52:26.052Z"
     },
     {
       "id": "safe-change-evidence-ledger",
@@ -172,8 +172,8 @@
       "description": "Canonicalization wave progress + foundation-installation flag.",
       "required": true,
       "exists": true,
-      "sizeBytes": 7762,
-      "modifiedAt": "2026-04-25T17:15:27.760Z"
+      "sizeBytes": 8594,
+      "modifiedAt": "2026-04-25T17:32:49.622Z"
     },
     {
       "id": "platform-subclassification-map",
@@ -258,6 +258,30 @@
       "exists": true,
       "sizeBytes": 631,
       "modifiedAt": "2026-04-25T17:29:16.909Z"
+    },
+    {
+      "id": "shared-component-ownership-map",
+      "rule": 36,
+      "path": "generated/manifests/shared-component-ownership-map.json",
+      "owner": "scripts/manifests/generate/generate-shared-component-ownership-map.ts",
+      "freshnessTtlDays": 30,
+      "description": "Per-file classification of every src/components/** file under the 3-test concept rule (vocabulary, dependency, portability).",
+      "required": true,
+      "exists": true,
+      "sizeBytes": 18494,
+      "modifiedAt": "2026-04-25T17:50:11.553Z"
+    },
+    {
+      "id": "shared-component-semantic-violation-baseline",
+      "rule": 37,
+      "path": "generated/manifests/shared-component-semantic-violation-baseline.json",
+      "owner": "wave-0.9:sealed",
+      "freshnessTtlDays": null,
+      "description": "Sealed monotone-ratchet baseline of grandfathered shared-component semantic violators (12 files at Wave 0.9 seal). Decrease-only.",
+      "required": true,
+      "exists": true,
+      "sizeBytes": 4061,
+      "modifiedAt": "2026-04-25T17:50:27.490Z"
     }
   ]
 }

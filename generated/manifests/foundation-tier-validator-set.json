@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-04-25T17:32:39.020Z",
+  "generatedAt": "2026-04-25T17:52:25.584Z",
   "foundationVersion": 1,
   "rule": "Constitution Rule 21",
   "description": "Validators that run in .github/workflows/foundation-gate.yml as BLOCKING. Adding/removing requires an ADR.",
-  "count": 20,
+  "count": 21,
   "validators": [
     {
       "validator": "scripts/architecture/check-foundation-manifest-freshness.ts",
@@ -144,6 +144,13 @@
       "classification": "block",
       "origin": "new",
       "description": "Files carrying // @route-adapter: directive must match detected subtype."
+    },
+    {
+      "validator": "scripts/architecture/check-shared-component-concept-rule.ts",
+      "rule": "Rules 36/37/38",
+      "classification": "block",
+      "origin": "new",
+      "description": "src/components/** semantic violator count is decrease-only; net-new files must classify as shared-clean per the 3-test concept rule."
     }
   ]
 }
