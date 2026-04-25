@@ -18,21 +18,20 @@ export const SHARED_LAYER = {
 
 export type SharedLayer = typeof SHARED_LAYER;
 
+// Wave 1.2 — retargeted to canonical home via @/contracts public barrel.
 export type {
   PillarCapability,
   PillarManifest,
   CapabilityMaturity,
   TrustTier,
-} from "@/platform/contracts/pillar-contract";
+} from "@/contracts";
 
 export {
   DECISION_QUEUE,
   getDecisionFor,
   type DecisionEntry,
   type SurfaceOwner,
-} from "@/platform/contracts/decision-queue";
-
-// Wave 1.2 — retargeted to canonical home via @/contracts public barrel.
+} from "@/contracts";
 
 export {
   useModuleRegistry,
