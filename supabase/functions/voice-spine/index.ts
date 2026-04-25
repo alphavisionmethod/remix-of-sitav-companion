@@ -290,6 +290,89 @@ serve(async (req) => {
       });
     }
 
+    if (input.op === "extract_intents") {
+      // Verify session ownership.
+      const { data: session, error: sessErr } = await supabase
+        .from("voice_sessions")
+        .select("id, user_id")
+        .eq("id", input.session_id)
+        .eq("user_id", user.id)
+        .maybeSingle();
+      if (sessErr || !session) {
+        return new Response(JSON.stringify({ error: "session not found" }), {
+          status: 404, headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+      // Pull recent final transcripts for this session.
+      const { data: tx, error: txErr } = await supabase
+        .from("voice_transcripts")
+        .select("id, text, role, is_final")
+        .eq("session_id", input.session_id)
+        .eq("user_id", user.id)
+        .eq("is_final", true)
+        .order("seq", { ascending: false })
+        .limit(input.max_transcripts);
+      if (txErr) throw txErr;
+      const transcripts = ((tx ?? []) as Array<{ id: string; text: string; role: string }>).reverse();
+      if (transcripts.length === 0) {
+        return new Response(JSON.stringify({ ok: true, intents: [], skipped: "no_transcripts" }), {
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+      const proposals = await extractIntentsViaGateway(transcripts);
+      let inserted = 0;
+      const insertedRows: unknown[] = [];
+      for (const p of proposals) {
+        const { data: row, error: insErr } = await supabase
+          .from("voice_intents")
+          .insert({
+            user_id: user.id,
+            session_id: input.session_id,
+            transcript_id: p.transcript_id,
+            action_key: p.action_key,
+            params: p.params,
+            rationale: p.rationale,
+            confidence: p.confidence,
+            status: "proposed",
+            metadata: { extractor_model: "google/gemini-3-flash-preview", phase: 7 },
+          })
+          .select("id, action_key, confidence, rationale, params, transcript_id, created_at, status")
+          .single();
+        if (insErr) {
+          console.warn("[voice-spine] intent insert failed", insErr);
+          continue;
+        }
+        inserted++;
+        insertedRows.push(row);
+      }
+      return new Response(JSON.stringify({
+        ok: true,
+        proposed: proposals.length,
+        inserted,
+        intents: insertedRows,
+      }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    }
+
+    if (input.op === "execute_intent") {
+      const updates: Record<string, unknown> = { status: input.status };
+      if (input.status === "executed") updates.executed_at = new Date().toISOString();
+      if (input.status === "rejected") {
+        updates.rejected_at = new Date().toISOString();
+        if (input.rejected_reason) updates.rejected_reason = input.rejected_reason;
+      }
+      const { data, error } = await supabase
+        .from("voice_intents")
+        .update(updates)
+        .eq("id", input.intent_id)
+        .eq("user_id", user.id)
+        .select("id, status, executed_at, rejected_at")
+        .single();
+      if (error) throw error;
+      return new Response(JSON.stringify({ ok: true, intent: data }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
     return new Response(JSON.stringify({ error: "unknown op" }), {
       status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
