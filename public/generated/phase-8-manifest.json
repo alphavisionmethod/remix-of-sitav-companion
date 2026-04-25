@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "phase": 8,
+  "federation": {
+    "tables": ["workspace_federations", "workspace_federation_grants"],
+    "view": "workspace_federation_overview",
+    "rpc": "federate_memories",
+    "scopes": ["scope_memories", "scope_chunks", "scope_voice"],
+    "states": ["active", "revoked", "expired"]
+  },
+  "voiceAgentBridge": {
+    "rpc": "dispatch_voice_intent",
+    "windowEvent": "sita-agent-intent",
+    "newIntentStatus": "dispatched",
+    "hook": "useDispatchVoiceIntent",
+    "service": "dispatchVoiceIntent"
+  },
+  "multiModal": {
+    "modalities": ["text", "image", "audio", "video"],
+    "columns": {
+      "knowledge_chunks": ["modality", "media_uri", "media_mime"],
+      "memory_provenance": ["modality", "media_uri", "media_mime"]
+    }
+  },
+  "trustActions": [
+    "shared.embedding.multimodal",
+    "shared.federation.share",
+    "shared.voice.intent.dispatch"
+  ],
+  "trustActionTotal": 47
+}

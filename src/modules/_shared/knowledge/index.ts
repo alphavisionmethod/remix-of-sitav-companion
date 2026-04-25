@@ -14,3 +14,7 @@ export { EmbeddingHealthPanel } from "./EmbeddingHealthPanel";
 
 // ── Phase 7 — Live Cortex surfaces ────────────────────────────
 export { EmbeddingBudgetPanel } from "./EmbeddingBudgetPanel";
+
+// ── Phase 8 — Federation + voice→agent bridge ────────────────
+export { dispatchVoiceIntent, type DispatchVoiceIntentResponse } from "./voice-service";
+export { useDispatchVoiceIntent } from "./use-voice-spine";

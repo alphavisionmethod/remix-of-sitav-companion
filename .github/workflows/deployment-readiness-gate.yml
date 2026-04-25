@@ -53,6 +53,9 @@ jobs:
       - name: Phase 7 — Live Cortex manifest freshness (REQUIRED)
         run: node scripts/ci/check-live-cortex-manifest.mjs --check
 
+      - name: Phase 8 — Federation + voice→agent + multi-modal manifest (REQUIRED)
+        run: node scripts/ci/check-phase-8-manifest.mjs
+
       - name: Run deployment-readiness gate
         run: npm run test:deployment-readiness
 

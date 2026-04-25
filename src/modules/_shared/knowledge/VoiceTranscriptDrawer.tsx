@@ -9,13 +9,14 @@ import { Drawer } from "@/components/primitives/overlays/Drawer";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Mic, MessageSquare, Bot, AlertCircle, Sparkles, CheckCircle2, Wand2, Check, X, Play } from "lucide-react";
+import { Mic, MessageSquare, Bot, AlertCircle, Sparkles, CheckCircle2, Wand2, Check, X, Play, Zap } from "lucide-react";
 import {
   useSessionTranscripts,
   usePromoteVoiceTranscript,
   useSessionIntents,
   useExtractVoiceIntents,
   useUpdateVoiceIntent,
+  useDispatchVoiceIntent,
 } from "./use-voice-spine";
 import type { Sensitivity, VoiceIntentRow, VoiceTranscriptRow } from "./voice-service";
 
@@ -42,6 +43,7 @@ export function VoiceTranscriptDrawer({
   const { data: intents = [], isLoading: intentsLoading } = useSessionIntents(sessionId);
   const extract = useExtractVoiceIntents();
   const updateIntent = useUpdateVoiceIntent(sessionId);
+  const dispatchIntent = useDispatchVoiceIntent(sessionId);
   const [intentBusyId, setIntentBusyId] = useState<string | null>(null);
 
   const handlePromote = async (t: VoiceTranscriptRow) => {
@@ -66,6 +68,15 @@ export function VoiceTranscriptDrawer({
     setIntentBusyId(intent.id);
     try {
       await updateIntent.mutateAsync({ intentId: intent.id, status });
+    } finally {
+      setIntentBusyId(null);
+    }
+  };
+
+  const handleDispatch = async (intent: VoiceIntentRow) => {
+    setIntentBusyId(intent.id);
+    try {
+      await dispatchIntent.mutateAsync({ intentId: intent.id });
     } finally {
       setIntentBusyId(null);
     }
@@ -153,13 +164,27 @@ export function VoiceTranscriptDrawer({
                     </div>
                   )}
                   {intent.status === "approved" && (
-                    <Button
-                      size="sm" variant="outline"
-                      className="h-6 gap-1 text-[11px]"
-                      disabled={busy} onClick={() => handleIntent(intent, "executed")}
-                    >
-                      <Play className="h-3 w-3" /> Mark executed
-                    </Button>
+                    <div className="flex items-center gap-1 pt-1">
+                      <Button
+                        size="sm" variant="default"
+                        className="h-6 gap-1 text-[11px]"
+                        disabled={busy} onClick={() => handleDispatch(intent)}
+                      >
+                        <Zap className="h-3 w-3" /> Dispatch to agent
+                      </Button>
+                      <Button
+                        size="sm" variant="outline"
+                        className="h-6 gap-1 text-[11px]"
+                        disabled={busy} onClick={() => handleIntent(intent, "executed")}
+                      >
+                        <Play className="h-3 w-3" /> Mark executed
+                      </Button>
+                    </div>
+                  )}
+                  {intent.status === "dispatched" && (
+                    <Badge variant="secondary" className="gap-1 text-[10px]">
+                      <Zap className="h-3 w-3" /> dispatched to agent
+                    </Badge>
                   )}
                 </div>
               );

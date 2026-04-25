@@ -3,6 +3,7 @@ import { useCallback, useRef, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   appendVoiceTranscript,
+  dispatchVoiceIntent,
   endVoiceSession,
   extractVoiceIntents,
   getEmbeddingCoverage,
@@ -13,6 +14,7 @@ import {
   startVoiceSession,
   updateVoiceIntent,
   type AppendTranscriptInput,
+  type DispatchVoiceIntentResponse,
   type PromoteTranscriptInput,
   type StartSessionInput,
   type VoiceIntentRow,
@@ -93,6 +95,21 @@ export function useUpdateVoiceIntent(sessionId: string | null) {
   return useMutation({
     mutationFn: (input: { intentId: string; status: "approved" | "rejected" | "executed"; rejectedReason?: string }) =>
       updateVoiceIntent(input.intentId, input.status, input.rejectedReason),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: VOICE_QUERY_KEYS.sessionIntents(sessionId) });
+    },
+  });
+}
+
+/**
+ * Phase 8 — Dispatch a voice intent into the Sita agent runtime.
+ * Flips status to `dispatched` server-side and emits the `sita-agent-intent`
+ * window event the agent listener already consumes.
+ */
+export function useDispatchVoiceIntent(sessionId: string | null) {
+  const qc = useQueryClient();
+  return useMutation<DispatchVoiceIntentResponse, Error, { intentId: string }>({
+    mutationFn: ({ intentId }) => dispatchVoiceIntent(intentId),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: VOICE_QUERY_KEYS.sessionIntents(sessionId) });
     },

@@ -87,7 +87,7 @@ export interface VoiceIntentRow {
   params: Record<string, unknown>;
   rationale: string;
   confidence: number;
-  status: "proposed" | "approved" | "rejected" | "executed" | "expired";
+  status: "proposed" | "approved" | "rejected" | "executed" | "expired" | "dispatched";
   executed_at: string | null;
   rejected_at: string | null;
   created_at: string;
@@ -100,6 +100,17 @@ interface ExtractIntentsResponse {
   intents: VoiceIntentRow[];
 }
 interface ExecuteIntentResponse { ok: boolean; intent: { id: string; status: string; executed_at: string | null; rejected_at: string | null } }
+
+/** Phase 8 — Sita-agent dispatch payload. */
+export interface DispatchVoiceIntentResponse {
+  ok: true;
+  intent_id: string;
+  action_key: string;
+  params: Record<string, unknown>;
+  rationale: string;
+  confidence: number;
+  correlation_id: string;
+}
 
 export async function startVoiceSession(input: StartSessionInput = {}): Promise<SpineStartResponse> {
   const { data, error } = await supabase.functions.invoke("voice-spine", {
@@ -174,6 +185,45 @@ export async function updateVoiceIntent(
   });
   if (error) throw new Error(error.message ?? "Intent update failed");
   return data as ExecuteIntentResponse;
+}
+
+/**
+ * Phase 8 — Dispatch a voice-extracted intent into the Sita agent runtime.
+ * Calls the SECURITY DEFINER `dispatch_voice_intent` RPC to flip the intent
+ * status to `dispatched` and return the payload, then fires the
+ * `sita-agent-intent` window event the agent runtime already listens to.
+ */
+export async function dispatchVoiceIntent(intentId: string): Promise<DispatchVoiceIntentResponse> {
+  const { data, error } = await (supabase as any).rpc("dispatch_voice_intent", { _intent_id: intentId });
+  if (error) throw new Error(error.message ?? "Intent dispatch failed");
+  const row = Array.isArray(data) ? data[0] : data;
+  if (!row) throw new Error("Dispatch returned no row");
+  const payload: DispatchVoiceIntentResponse = {
+    ok: true,
+    intent_id: String(row.intent_id),
+    action_key: String(row.action_key),
+    params: (row.params ?? {}) as Record<string, unknown>,
+    rationale: String(row.rationale ?? ""),
+    confidence: Number(row.confidence ?? 0),
+    correlation_id: String(row.correlation_id),
+  };
+  // Bridge to the agent runtime — the existing useSitaAgent listener
+  // turns this into a typed Action Plan via the planner edge fn.
+  if (typeof window !== "undefined") {
+    window.dispatchEvent(new CustomEvent("sita-agent-intent", {
+      detail: {
+        intent: `${payload.action_key}: ${payload.rationale}`,
+        domain: payload.action_key.startsWith("finance.") ? "finance"
+          : payload.action_key.startsWith("concierge.") ? "concierge"
+          : "business",
+        params: payload.params,
+        correlation_id: payload.correlation_id,
+        source: "voice_intent",
+        source_intent_id: payload.intent_id,
+      },
+    }));
+  }
+  return payload;
 }
 
 export async function listSessionIntents(sessionId: string): Promise<VoiceIntentRow[]> {
