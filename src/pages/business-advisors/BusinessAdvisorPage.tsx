@@ -22,6 +22,9 @@ import { TechAdvisorHeaderStats } from "@/components/business-advisors/tech/Tech
 import { ImportsExportsRecommendations } from "@/components/business-advisors/imports-exports/ImportsExportsRecommendations";
 import { ImportsExportsSimulationForm } from "@/components/business-advisors/imports-exports/ImportsExportsSimulationForm";
 import { ImportsExportsHeaderStats } from "@/components/business-advisors/imports-exports/ImportsExportsHeaderStats";
+import { TaxesLawsRecommendations } from "@/components/business-advisors/taxes-laws/TaxesLawsRecommendations";
+import { TaxesLawsSimulationForm } from "@/components/business-advisors/taxes-laws/TaxesLawsSimulationForm";
+import { TaxesLawsHeaderStats } from "@/components/business-advisors/taxes-laws/TaxesLawsHeaderStats";
 
 export default function BusinessAdvisorPage() {
   const { advisorId } = useParams<{ advisorId: string }>();
@@ -96,6 +99,16 @@ export default function BusinessAdvisorPage() {
         headerStatsSlot={<ImportsExportsHeaderStats />}
         recommendationsSlot={<ImportsExportsRecommendations />}
         simulationFormSlot={<ImportsExportsSimulationForm />}
+      />
+    );
+  }
+  if (advisor.id === "taxes-laws-advisor") {
+    return (
+      <AdvisorPageShell
+        advisor={advisor}
+        headerStatsSlot={<TaxesLawsHeaderStats />}
+        recommendationsSlot={<TaxesLawsRecommendations />}
+        simulationFormSlot={<TaxesLawsSimulationForm />}
       />
     );
   }

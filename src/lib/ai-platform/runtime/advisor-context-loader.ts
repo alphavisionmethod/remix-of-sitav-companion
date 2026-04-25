@@ -91,7 +91,12 @@ const SOURCE_TO_TABLE: Record<string, { table: string; label?: string } | null> 
   supplier_data: { table: "crm_contacts", label: "Supplier / vendor contacts" },
   customs_docs: { table: "file_metadata", label: "Customs & trade documents" },
   // Taxes/Laws
-  tax_documents: null,
+  // Taxes/Laws — Phase 9 wired (suggest-only authority).
+  // `tax_documents` → uploaded files filtered by tax/legal keywords in the
+  // panel itself. `jurisdiction_data` and `compliance_records` stay honestly
+  // null until per-user compliance tables exist (compliance_evidence has no
+  // user_id column today, so it cannot be RLS-scoped to the operator).
+  tax_documents: { table: "file_metadata", label: "Tax & legal documents" },
   jurisdiction_data: null,
   compliance_records: null,
   // CEO
