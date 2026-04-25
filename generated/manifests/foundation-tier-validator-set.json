@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-04-25T17:24:31.635Z",
+  "generatedAt": "2026-04-25T17:32:39.020Z",
   "foundationVersion": 1,
   "rule": "Constitution Rule 21",
   "description": "Validators that run in .github/workflows/foundation-gate.yml as BLOCKING. Adding/removing requires an ADR.",
-  "count": 18,
+  "count": 20,
   "validators": [
     {
       "validator": "scripts/architecture/check-foundation-manifest-freshness.ts",
@@ -130,6 +130,20 @@
       "classification": "block",
       "origin": "new",
       "description": "src/pages/admin/* LEGACY_PAGE_BODY count is decrease-only."
+    },
+    {
+      "validator": "scripts/architecture/check-page-semantic-adapter.ts",
+      "rule": "Rules 33/34",
+      "classification": "block",
+      "origin": "new",
+      "description": "src/pages/** legacy-violation count is decrease-only and forbidden APIs are blocked."
+    },
+    {
+      "validator": "scripts/architecture/check-page-adapter-subtype-declaration.ts",
+      "rule": "Rule 35",
+      "classification": "block",
+      "origin": "new",
+      "description": "Files carrying // @route-adapter: directive must match detected subtype."
     }
   ]
 }

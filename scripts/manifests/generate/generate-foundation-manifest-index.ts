@@ -228,6 +228,24 @@ const FOUNDATION_MANIFESTS: FoundationManifestEntry[] = [
     description: "Sealed baseline for platform→admin, modules→admin, admin→modules import counts. Decrease-only.",
     required: true,
   },
+  {
+    id: "route-adapter-semantic-map",
+    rule: 33,
+    path: "generated/manifests/route-adapter-semantic-map.json",
+    owner: "scripts/manifests/generate/generate-route-adapter-semantic-map.ts",
+    freshnessTtlDays: 30,
+    description: "Per-file classification of every src/pages/** route adapter into one of six subtypes plus legacy-violation status.",
+    required: true,
+  },
+  {
+    id: "page-semantic-violation-baseline",
+    rule: 34,
+    path: "generated/manifests/page-semantic-violation-baseline.json",
+    owner: "foundation:seeded",
+    freshnessTtlDays: null,
+    description: "Sealed monotone-ratchet baseline of legacy-violation files under src/pages/**. Decrease-only.",
+    required: true,
+  },
 ];
 
 // ── 2. Build foundation-tier validator set ─────────────────────────────────
@@ -279,6 +297,9 @@ const FOUNDATION_TIER_VALIDATORS: Array<{
   // Wave 0.6 — Admin Plane Law (Rules 29–32)
   { validator: "scripts/architecture/check-admin-plane-boundaries.ts", rule: "Rules 30/31", classification: "block", origin: "new", description: "Admin plane dependency direction + new-page-body forbidden in src/pages/admin/." },
   { validator: "scripts/architecture/check-admin-page-body-ratchet.ts", rule: "Rule 30", classification: "block", origin: "new", description: "src/pages/admin/* LEGACY_PAGE_BODY count is decrease-only." },
+  // Wave 0.7 — Semantic Route-Adapter Contract (Rules 33–35)
+  { validator: "scripts/architecture/check-page-semantic-adapter.ts", rule: "Rules 33/34", classification: "block", origin: "new", description: "src/pages/** legacy-violation count is decrease-only and forbidden APIs are blocked." },
+  { validator: "scripts/architecture/check-page-adapter-subtype-declaration.ts", rule: "Rule 35", classification: "block", origin: "new", description: "Files carrying // @route-adapter: directive must match detected subtype." },
 ];
 
 writeJson(join(MANIFEST_DIR, "foundation-tier-validator-set.json"), {

@@ -1,0 +1,16 @@
+{
+  "generatedAt": "2026-04-25T17:29:16.666Z",
+  "schemaVersion": 1,
+  "rule": "Constitution Rule 34 — page semantic violation monotone ratchet",
+  "description": "Sealed baseline of pre-existing src/pages/** files containing data fetching, mutations, or canonical state ownership. New PRs may only DECREASE this count. Drained by future Page Body Relocation Wave.",
+  "direction": "decrease-only",
+  "enforcer": "scripts/architecture/check-page-semantic-adapter.ts",
+  "violationCount": 550,
+  "sealedAt": "2026-04-25T17:29:16.666Z",
+  "breakdown": {
+    "admin": 534,
+    "mobile": 12,
+    "ownerMode": 1,
+    "other": 3
+  }
+}

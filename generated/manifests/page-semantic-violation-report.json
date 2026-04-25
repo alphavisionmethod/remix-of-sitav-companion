@@ -1,0 +1,20 @@
+{
+  "generatedAt": "2026-04-25T17:32:49.246Z",
+  "rule": "Constitution Rules 33–34",
+  "ok": true,
+  "baseline": 550,
+  "current": 550,
+  "delta": 0,
+  "direction": "decrease-only",
+  "invalidDeclarationsCount": 0,
+  "invalidDeclarations": [],
+  "bySubtype": {
+    "pure-reexport": 511,
+    "lazy": 11,
+    "redirect": 11,
+    "param-translate": 1,
+    "shell-mount": 14,
+    "event-dispatch": 0,
+    "legacy-violation": 550
+  }
+}

@@ -102,6 +102,21 @@ export const VALIDATOR_GATE_OVERRIDES: ValidatorGateMapEntry[] = [
     consumer: "release-readiness",
     rationale: "Wave 0.6 admin page-body monotone ratchet. The LEGACY_PAGE_BODY count under src/pages/admin/ may only decrease — new admin pages must be thin re-exports targeting @/admin/** per Constitution Rule 30.",
   },
+  // ─── Wave 0.7 — Semantic Route-Adapter Contract (Constitution Rules 33–35, BLOCKING) ──
+  {
+    validator: "check-page-semantic-adapter",
+    gateId: "page-semantic-adapter",
+    classification: "block",
+    consumer: "release-readiness",
+    rationale: "Wave 0.7 semantic route-adapter contract. Every src/pages/** file must belong to one of six adapter subtypes (pure-reexport, lazy, redirect, param-translate, shell-mount, event-dispatch) and must not contain forbidden APIs (supabase.*, TanStack queries/mutations, useState/useReducer for canonical state). The legacy-violation count is monotone-decreasing per Rule 34.",
+  },
+  {
+    validator: "check-page-adapter-subtype-declaration",
+    gateId: "page-adapter-subtype-declaration",
+    classification: "block",
+    consumer: "release-readiness",
+    rationale: "Wave 0.7 forward-looking declaration check. When a src/pages/** file carries the // @route-adapter: directive, its declared subtype must match the content the classifier detects. Enforces Constitution Rule 35.",
+  },
 ];
 
 /** Lookup table for fast access by validator basename. */

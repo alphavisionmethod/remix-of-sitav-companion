@@ -20,7 +20,12 @@ const ROOT = process.cwd();
 const PAGES_DIR = join(ROOT, "src", "pages");
 const STRICT = process.argv.includes("--strict");
 
-/** Subdirectories under src/pages/ whose contents are migrating to src/modules/<pillar>/pages/. */
+/**
+ * Subdirectories under src/pages/ in scope for the syntactic ≤40-line
+ * thin-adapter check. Wave 0.7 expanded coverage to every non-test subtree;
+ * the semantic contract is enforced separately by
+ * scripts/architecture/check-page-semantic-adapter.ts (Rules 33–35).
+ */
 const PILLAR_PAGE_DIRS = [
   "business",
   "concierge",
@@ -30,6 +35,31 @@ const PILLAR_PAGE_DIRS = [
   "investment-office",
   "revenue-office",
   "digital-presence",
+  "admin",
+  "mobile",
+  "owner-mode",
+  "owner",
+  "apps",
+  "atlas",
+  "advisors",
+  "boardroom",
+  "business-advisors",
+  "enterprise",
+  "files",
+  "intelligence",
+  "integrations",
+  "marketing",
+  "mission",
+  "mission-control",
+  "personal-brain",
+  "settings",
+  "sita",
+  "store",
+  "trust",
+  "tenant",
+  "auth",
+  "workspace",
+  "app-platform",
 ] as const;
 
 const MAX_LINES = 40;
