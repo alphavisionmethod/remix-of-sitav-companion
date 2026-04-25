@@ -4,13 +4,14 @@
 // and provides typed reads of voice_sessions / voice_transcripts.
 // ═══════════════════════════════════════════════════════════════
 import { supabase } from "@/integrations/supabase/client";
+import type { Sensitivity } from "./memory-service";
+import type { EmbeddingStatus } from "./knowledge-service";
 
 export type VoiceProvider = "browser_stt" | "elevenlabs_stt" | "gemini_stt" | "manual";
 export type VoiceMode = "dictation" | "conversation" | "background";
 export type VoiceSessionStatus = "active" | "ended" | "aborted" | "failed";
 export type VoiceTranscriptRole = "user" | "assistant" | "system";
-export type EmbeddingStatus = "pending" | "embedded" | "failed" | "skipped";
-export type Sensitivity = "public" | "internal" | "confidential" | "restricted";
+export type { EmbeddingStatus, Sensitivity };
 
 export interface VoiceSessionRow {
   id: string;
