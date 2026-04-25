@@ -1,5 +1,13 @@
 // ════════════════════════════════════════════════════════════
-// Shared Platform — Cross-module utilities (leaf-only)
+// @deprecated Wave 3 — `@/modules/_shared` is a deprecation
+// shim. The canonical home is `@/platform/*`:
+//   • @/platform/contracts/{pillar-contract,decision-queue}
+//   • @/platform/registry/module-registry
+//   • @/platform/workspace/workspace-context
+//   • @/platform/ai
+//   • @/platform/knowledge
+// This barrel will be removed in Wave 9. New code MUST import
+// from `@/platform/*` directly.
 // ════════════════════════════════════════════════════════════
 
 export const SHARED_LAYER = {
@@ -10,23 +18,20 @@ export const SHARED_LAYER = {
 
 export type SharedLayer = typeof SHARED_LAYER;
 
-// Re-export pillar contract types so pillar manifests stay coherent.
 export type {
   PillarCapability,
   PillarManifest,
   CapabilityMaturity,
   TrustTier,
-} from "./pillar-contract";
+} from "@/platform/contracts/pillar-contract";
 
-// Decision-queue resolutions for ambiguous legacy surfaces.
 export {
   DECISION_QUEUE,
   getDecisionFor,
   type DecisionEntry,
   type SurfaceOwner,
-} from "./decision-queue";
+} from "@/platform/contracts/decision-queue";
 
-// ── Phase 1: module registry + workspace context ───────────────
 export {
   useModuleRegistry,
   useRouteOwnership,
@@ -40,7 +45,7 @@ export {
   type ModuleLifecycle,
   type AuthorityLevel,
   type ModuleHealth,
-} from "./registry/module-registry";
+} from "@/platform/registry/module-registry";
 
 export {
   ActiveWorkspaceProvider,
@@ -53,9 +58,8 @@ export {
   type WorkspacePillar,
   type MemoryScope,
   type WorkspaceVisibility,
-} from "./workspace/workspace-context";
+} from "@/platform/workspace/workspace-context";
 
-// ── Phase 4: AI Orchestration & Explainability ─────────────────
 export {
   useOrchestrator,
   callOrchestrator,
@@ -73,9 +77,8 @@ export {
   type OrchestratorContextSources,
   type ExplainabilityTraceRow,
   type InvocationPlanRow,
-} from "./ai";
+} from "@/platform/ai";
 
-// ── Phase 5: Knowledge Spine (memory provenance + chunks + ingestion) ──
 export {
   fetchEffectiveWorkspaceMemories,
   recordMemoryUsage,
@@ -107,4 +110,4 @@ export {
   type ProvenanceKind,
   type ReviewStatus,
   type ReindexInput,
-} from "./knowledge";
+} from "@/platform/knowledge";
