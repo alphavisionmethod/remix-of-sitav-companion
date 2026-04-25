@@ -42,6 +42,26 @@ function readSafe(p: string): string {
   try { return fs.readFileSync(p, "utf8"); } catch { return ""; }
 }
 
+/**
+ * True when the file imports the given module **at runtime** (not type-only).
+ * Pure `import type { … } from "X"` and `import { type X } from "Y"` are excluded
+ * because they are erased by the TS compiler and have zero transport / bundle cost.
+ */
+function hasRuntimeImport(src: string, modulePattern: RegExp): boolean {
+  const lines = src.split("\n");
+  for (const raw of lines) {
+    const line = raw.trim();
+    if (!modulePattern.test(line)) continue;
+    if (!/from\s+["']/.test(line)) continue;
+    // Pure type-only import: `import type {...} from "..."`
+    if (/^import\s+type\s+/.test(line)) continue;
+    // `export type {...} from "..."`
+    if (/^export\s+type\s+/.test(line)) continue;
+    return true;
+  }
+  return false;
+}
+
 function listFiles(dir: string): string[] {
   const out: string[] = [];
   if (!fs.existsSync(dir)) return out;
@@ -77,7 +97,7 @@ function checkRule1_ServiceAsTransport() {
   for (const e of services) {
     for (const f of entryPaths(e)) {
       const src = readSafe(f);
-      if (/from\s+["']@supabase\/supabase-js["']/.test(src)) {
+      if (hasRuntimeImport(src, /["']@supabase\/supabase-js["']/)) {
         violations.push({
           rule: 1,
           file: path.relative(REPO, f),
@@ -103,7 +123,7 @@ function checkRule2_ClientAsOrchestrator() {
     for (const f of entryPaths(e)) {
       const src = readSafe(f);
       for (const pat of orchestratorPatterns) {
-        if (pat.test(src)) {
+        if (hasRuntimeImport(src, pat)) {
           violations.push({
             rule: 2,
             file: path.relative(REPO, f),
@@ -134,8 +154,8 @@ function checkRule3_AdapterAsFacade() {
   for (const f of consumers) {
     const src = readSafe(f);
     for (const prefix of adapterAliasPrefixes) {
-      const re = new RegExp(`from\\s+["']${prefix.replace(/[.*+?^${}()|[\\]\\\\]/g, "\\$&")}`);
-      if (re.test(src)) {
+      const re = new RegExp(`["']${prefix.replace(/[.*+?^${}()|[\\]\\\\]/g, "\\$&")}`);
+      if (hasRuntimeImport(src, re)) {
         violations.push({
           rule: 3,
           file: path.relative(REPO, f),
@@ -167,7 +187,7 @@ function checkRule4_RawSdkBypass() {
   for (const f of all) {
     if (isAllowed(f)) continue;
     const src = readSafe(f);
-    if (/from\s+["']@supabase\/supabase-js["']/.test(src)) {
+    if (hasRuntimeImport(src, /["']@supabase\/supabase-js["']/)) {
       // Skip the auto-generated client itself
       if (f.endsWith(path.join("integrations", "supabase", "client.ts"))) continue;
       violations.push({
