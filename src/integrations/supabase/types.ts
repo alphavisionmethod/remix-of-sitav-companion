@@ -15847,6 +15847,80 @@ export type Database = {
           },
         ]
       }
+      module_registry: {
+        Row: {
+          category: string | null
+          created_at: string
+          default_authority_level: string
+          description: string | null
+          enabled: boolean
+          feature_flag: string | null
+          health_status: string
+          icon: string | null
+          id: string
+          label: string
+          lifecycle: string
+          metadata: Json
+          module_id: string
+          owner: string | null
+          parent_id: string | null
+          pillar: string
+          route_prefix: string | null
+          sort_order: number
+          updated_at: string
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string
+          default_authority_level?: string
+          description?: string | null
+          enabled?: boolean
+          feature_flag?: string | null
+          health_status?: string
+          icon?: string | null
+          id?: string
+          label: string
+          lifecycle?: string
+          metadata?: Json
+          module_id: string
+          owner?: string | null
+          parent_id?: string | null
+          pillar: string
+          route_prefix?: string | null
+          sort_order?: number
+          updated_at?: string
+        }
+        Update: {
+          category?: string | null
+          created_at?: string
+          default_authority_level?: string
+          description?: string | null
+          enabled?: boolean
+          feature_flag?: string | null
+          health_status?: string
+          icon?: string | null
+          id?: string
+          label?: string
+          lifecycle?: string
+          metadata?: Json
+          module_id?: string
+          owner?: string | null
+          parent_id?: string | null
+          pillar?: string
+          route_prefix?: string | null
+          sort_order?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "module_registry_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "module_registry"
+            referencedColumns: ["module_id"]
+          },
+        ]
+      }
       notification_deliveries: {
         Row: {
           attempt_count: number
@@ -20621,6 +20695,53 @@ export type Database = {
           },
         ]
       }
+      route_ownership: {
+        Row: {
+          created_at: string
+          id: string
+          is_shared: boolean
+          is_trust: boolean
+          lifecycle: string
+          module_id: string
+          notes: string | null
+          route_path: string
+          updated_at: string
+          visibility: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_shared?: boolean
+          is_trust?: boolean
+          lifecycle?: string
+          module_id: string
+          notes?: string | null
+          route_path: string
+          updated_at?: string
+          visibility?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_shared?: boolean
+          is_trust?: boolean
+          lifecycle?: string
+          module_id?: string
+          notes?: string | null
+          route_path?: string
+          updated_at?: string
+          visibility?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "route_ownership_module_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "module_registry"
+            referencedColumns: ["module_id"]
+          },
+        ]
+      }
       runbook_drill_results: {
         Row: {
           created_at: string
@@ -24361,6 +24482,62 @@ export type Database = {
         }
         Relationships: []
       }
+      workspace_contexts: {
+        Row: {
+          assistant_advisor_id: string | null
+          created_at: string
+          default_authority_level: string
+          default_notification_level: string
+          ephemeral_mode: boolean
+          memory_scope: string
+          metadata: Json
+          pillar: string
+          protected: boolean
+          retention_days: number | null
+          updated_at: string
+          visibility: string
+          workspace_id: string
+        }
+        Insert: {
+          assistant_advisor_id?: string | null
+          created_at?: string
+          default_authority_level?: string
+          default_notification_level?: string
+          ephemeral_mode?: boolean
+          memory_scope?: string
+          metadata?: Json
+          pillar?: string
+          protected?: boolean
+          retention_days?: number | null
+          updated_at?: string
+          visibility?: string
+          workspace_id: string
+        }
+        Update: {
+          assistant_advisor_id?: string | null
+          created_at?: string
+          default_authority_level?: string
+          default_notification_level?: string
+          ephemeral_mode?: boolean
+          memory_scope?: string
+          metadata?: Json
+          pillar?: string
+          protected?: boolean
+          retention_days?: number | null
+          updated_at?: string
+          visibility?: string
+          workspace_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "workspace_contexts_workspace_id_fkey"
+            columns: ["workspace_id"]
+            isOneToOne: true
+            referencedRelation: "pb_workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       approval_queue: {
@@ -24735,6 +24912,7 @@ export type Database = {
         Args: { p_requested_level: number }
         Returns: number
       }
+      current_user_workspace_ids: { Args: never; Returns: string[] }
       dp_noise_clamp: { Args: { p_epsilon: number }; Returns: number }
       evaluate_action_safety_gates: {
         Args: {

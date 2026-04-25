@@ -25,3 +25,32 @@ export {
   type DecisionEntry,
   type SurfaceOwner,
 } from "./decision-queue";
+
+// ── Phase 1: module registry + workspace context ───────────────
+export {
+  useModuleRegistry,
+  useRouteOwnership,
+  findOwningModule,
+  groupModulesByParent,
+  MODULE_REGISTRY_QUERY_KEY,
+  ROUTE_OWNERSHIP_QUERY_KEY,
+  type ModuleRegistryRow,
+  type RouteOwnershipRow,
+  type ModulePillar,
+  type ModuleLifecycle,
+  type AuthorityLevel,
+  type ModuleHealth,
+} from "./registry/module-registry";
+
+export {
+  ActiveWorkspaceProvider,
+  useActiveWorkspaceId,
+  useMyWorkspaces,
+  useActiveWorkspace,
+  WorkspaceBoundary,
+  type WorkspaceContextRow,
+  type WorkspaceSummary,
+  type WorkspacePillar,
+  type MemoryScope,
+  type WorkspaceVisibility,
+} from "./workspace/workspace-context";

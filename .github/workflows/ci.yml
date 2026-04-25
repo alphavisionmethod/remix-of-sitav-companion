@@ -221,6 +221,10 @@ jobs:
         run: npx tsx scripts/root/check-env-contract-completeness.ts
       - name: Trust action manifest freshness (blocks merge)
         run: npx tsx scripts/architecture/check-trust-action-manifest.ts
+      - name: Module registry coverage (Phase 1, blocks merge above baseline)
+        env:
+          MODULE_COVERAGE_BASELINE: "602"
+        run: npx tsx scripts/architecture/check-module-registry-coverage.ts
       - name: Regenerate Trust action manifest & diff (blocks merge)
         env:
           SOURCE_DATE_EPOCH: "0"

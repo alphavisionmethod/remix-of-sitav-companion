@@ -10,6 +10,7 @@ import { NovaSDKProvider } from "@/contexts/NovaSDKContext";
 import { RuntimeTierProvider } from "@/runtimes/runtime-context";
 import { usePipelineBootstrap } from "@/hooks/usePipelineBootstrap";
 import { useAutonomyBootstrap } from "@/hooks/useAutonomyBootstrap";
+import { ActiveWorkspaceProvider } from "@/modules/_shared";
 
 /** Boots the orchestration pipeline inside the provider tree */
 function PipelineBootstrap({ children }: { children: ReactNode }) {
@@ -35,9 +36,11 @@ export function RuntimeProvider({ children }: { children: ReactNode }) {
       <SitaKernelProvider>
         <SitaOSProvider>
           <NovaSDKProvider>
-            <PipelineBootstrap>
-              {children}
-            </PipelineBootstrap>
+            <ActiveWorkspaceProvider>
+              <PipelineBootstrap>
+                {children}
+              </PipelineBootstrap>
+            </ActiveWorkspaceProvider>
           </NovaSDKProvider>
         </SitaOSProvider>
       </SitaKernelProvider>

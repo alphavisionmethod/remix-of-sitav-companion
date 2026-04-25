@@ -48,6 +48,7 @@ const MCStateAuthority = lazy(() => import("@/pages/admin/modules/MCStateAuthori
 const MCArchitectureDashboard = lazy(() => import("@/pages/admin/modules/MCArchitectureDashboard"));
 const MCFeatureOwnership = lazy(() => import("@/pages/admin/modules/MCFeatureOwnership"));
 const MCCommandRouting = lazy(() => import("@/pages/admin/modules/MCCommandRouting"));
+const MCModuleRegistry = lazy(() => import("@/pages/admin/modules/MCModuleRegistry"));
 const MCApprovalFlow = lazy(() => import("@/pages/admin/modules/MCApprovalFlow"));
 const MCFailureRecovery = lazy(() => import("@/pages/admin/modules/MCFailureRecovery"));
 const MCEventRouting = lazy(() => import("@/pages/admin/modules/MCEventRouting"));
@@ -486,6 +487,7 @@ export function getAdminRoutes() {
     <Route key="mc21" path="/admin/mc/state-authority" element={gated("audit.view", <MCStateAuthority />)} />,
     // ── MC: Architecture Governance ──
     <Route key="mc-arch" path="/admin/mc/architecture" element={gated("audit.view", <MCArchitectureDashboard />)} />,
+    <Route key="mc-arch-modules" path="/admin/architecture/modules" element={gated("audit.view", <MCModuleRegistry />)} />,
     <Route key="mc22" path="/admin/mc/feature-ownership" element={gated("audit.view", <MCFeatureOwnership />)} />,
     <Route key="mc23" path="/admin/mc/command-routing" element={gated("audit.view", <MCCommandRouting />)} />,
     <Route key="mc24" path="/admin/mc/approval-flow" element={gated("audit.view", <MCApprovalFlow />)} />,
