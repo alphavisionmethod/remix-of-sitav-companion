@@ -5,6 +5,7 @@
 
 import { supabase } from "@/integrations/supabase/client";
 import type { Json } from "@/integrations/supabase/types";
+import { emitRegisteredTrustAction } from "@/modules/_trust";
 
 export interface SupportCase {
   id: string;
@@ -98,6 +99,13 @@ class SupportWorkflowEngine {
 
     await this.addCaseEvent(caseId, "escalated", actorUserId, `Escalated to ${targetRole}: ${reason}`, {
       targetRole, reason,
+    });
+
+    // Trust receipt — escalations cross role boundaries and must be auditable.
+    await emitRegisteredTrustAction("shared.support.case_escalate", {
+      impactSummary: `Support case ${caseId} escalated to ${targetRole}.`,
+      payload: { caseId, targetRole, reason, actorUserId },
+      correlationId: caseId,
     });
   }
 
