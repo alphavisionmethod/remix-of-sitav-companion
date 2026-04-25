@@ -70,6 +70,57 @@ export const TRUST_ACTION_REGISTRY = {
     requireApproval: true,
     reversible: false,
   },
+  /** Shared — engage the global autonomy kill-switch (system-wide halt). */
+  "shared.autonomy.kill_switch_engage": {
+    key: "shared.autonomy.kill_switch_engage",
+    pillar: "shared",
+    label: "Engage autonomy kill-switch",
+    description:
+      "Halts every advisor controller, standing mission, and queue execution at the next state check.",
+    riskTier: "critical",
+    requireApproval: false,
+    reversible: true,
+  },
+  /** Shared — release the kill-switch and resume autonomous execution. */
+  "shared.autonomy.kill_switch_release": {
+    key: "shared.autonomy.kill_switch_release",
+    pillar: "shared",
+    label: "Release autonomy kill-switch",
+    description: "Resumes advisor controllers and standing missions after a halt.",
+    riskTier: "high",
+    requireApproval: false,
+    reversible: true,
+  },
+  /** Shared — escalate a support case to a higher tier. */
+  "shared.support.case_escalate": {
+    key: "shared.support.case_escalate",
+    pillar: "shared",
+    label: "Escalate support case",
+    description: "Routes a support case to a higher tier or specialist role.",
+    riskTier: "medium",
+    requireApproval: false,
+    reversible: true,
+  },
+  /** Business — bulk import contacts from CSV (PII write at scale). */
+  "business.crm.contact_bulk_import": {
+    key: "business.crm.contact_bulk_import",
+    pillar: "business",
+    label: "Bulk import contacts",
+    description: "Persists many contact records at once from an external CSV source.",
+    riskTier: "medium",
+    requireApproval: false,
+    reversible: true,
+  },
+  /** Finance — change a household money envelope allocation (budget impact). */
+  "finance.envelope.allocation_change": {
+    key: "finance.envelope.allocation_change",
+    pillar: "finance",
+    label: "Change envelope allocation",
+    description: "Reallocates funds between household money envelopes.",
+    riskTier: "medium",
+    requireApproval: false,
+    reversible: true,
+  },
 } as const satisfies Record<string, TrustActionPreset>;
 
 export type TrustActionKey = keyof typeof TRUST_ACTION_REGISTRY;
