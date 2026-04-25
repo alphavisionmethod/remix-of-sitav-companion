@@ -35,6 +35,12 @@ interface OrchestratorRequest {
     priorReceiptIds?: string[];
     workspaceIds?: string[];
     notes?: Array<{ label: string; excerpt?: string; weight?: number }>;
+    /** Phase 5: when true, server fetches effective workspace memories via RPC and records usage. */
+    workspaceMemoryAuto?: boolean;
+    workspaceMemoryMax?: number;
+    /** Phase 5: when set, server fetches up to N matching knowledge_chunks via full-text search. */
+    chunkQuery?: string;
+    chunkMax?: number;
   };
   assumptions?: string[];
   confidenceTarget?: number;
@@ -182,6 +188,35 @@ serve(async (req) => {
       .update({ status: "executing", authority_check: authorityCheck })
       .eq("id", planId);
 
+    // ── 3b. Phase 5: auto-fetch workspace memories + chunks ──
+    const autoMemoryRows: Array<{ memory_id: string; content: string; pillar: string; sensitivity: string; provenance_kind: string; confidence_band: string }> = [];
+    const autoChunkRows: Array<{ id: string; file_id: string; chunk_index: number; content: string; pillar: string; sensitivity: string }> = [];
+    if (body.contextSources?.workspaceMemoryAuto) {
+      const { data: mem } = await userClient.rpc("effective_workspace_memories", {
+        _workspace_id: body.workspaceId ?? null,
+        _max_n: body.contextSources.workspaceMemoryMax ?? 15,
+      });
+      if (Array.isArray(mem)) {
+        for (const m of mem as any[]) {
+          autoMemoryRows.push({
+            memory_id: m.memory_id, content: m.content ?? "", pillar: m.pillar,
+            sensitivity: m.sensitivity, provenance_kind: m.provenance_kind, confidence_band: m.confidence_band,
+          });
+          await userClient.rpc("record_memory_usage", { _memory_id: m.memory_id }).catch(() => {});
+        }
+      }
+    }
+    if (body.contextSources?.chunkQuery) {
+      const { data: chunks } = await userClient
+        .from("knowledge_chunks")
+        .select("id, file_id, chunk_index, content, pillar, sensitivity")
+        .textSearch("content_search", body.contextSources.chunkQuery, { type: "websearch", config: "english" })
+        .limit(body.contextSources.chunkMax ?? 8);
+      if (Array.isArray(chunks)) {
+        for (const c of chunks as any[]) autoChunkRows.push(c);
+      }
+    }
+
     // ── 4. Forward to ai-gateway (preserving auth) ───────────
     const gatewayResp = await fetch(`${SUPABASE_URL}/functions/v1/ai-gateway`, {
       method: "POST",
@@ -285,6 +320,24 @@ serve(async (req) => {
         source_id: body.promptFamilyId,
         source_label: `Prompt family ${body.promptFamilyId}`,
         role: "constraint",
+      });
+    }
+    for (const m of autoMemoryRows) {
+      traces.push({
+        source_type: "memory",
+        source_id: m.memory_id,
+        source_label: `Memory ${m.provenance_kind}/${m.confidence_band}`,
+        excerpt: m.content.slice(0, 240),
+        role: "context",
+      });
+    }
+    for (const c of autoChunkRows) {
+      traces.push({
+        source_type: "knowledge_chunk",
+        source_id: c.id,
+        source_label: `Chunk ${c.file_id.slice(0, 8)}#${c.chunk_index}`,
+        excerpt: c.content.slice(0, 240),
+        role: "grounding",
       });
     }
     if (body.workspaceId) {

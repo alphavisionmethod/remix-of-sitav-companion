@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "phase": 5,
+  "tables": [
+    "ingestion_jobs",
+    "knowledge_chunks",
+    "memory_provenance"
+  ],
+  "rpcs": [
+    "effective_workspace_memories",
+    "record_memory_usage"
+  ],
+  "trustActions": [
+    "shared.file.delete",
+    "shared.file.upload",
+    "shared.knowledge.reindex",
+    "shared.memory.add",
+    "shared.memory.create",
+    "shared.memory.delete",
+    "shared.memory.update"
+  ],
+  "edgeFunctions": [
+    "knowledge-indexer"
+  ]
+}

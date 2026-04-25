@@ -343,6 +343,35 @@ export const TRUST_ACTION_REGISTRY = {
     riskTier: "high", requireApproval: false, reversible: true,
     defaultAuthorityLevel: "ask",
   },
+  // ── Phase 5: Knowledge spine ─────────────────────────────────
+  "shared.memory.create": {
+    key: "shared.memory.create", pillar: "shared",
+    label: "Create memory",
+    description: "Persist a new memory entry for the user.",
+    riskTier: "low", requireApproval: false, reversible: true,
+    defaultAuthorityLevel: "pre_approved",
+  },
+  "shared.memory.update": {
+    key: "shared.memory.update", pillar: "shared",
+    label: "Update memory",
+    description: "Edit an existing memory entry.",
+    riskTier: "low", requireApproval: false, reversible: true,
+    defaultAuthorityLevel: "pre_approved",
+  },
+  "shared.file.upload": {
+    key: "shared.file.upload", pillar: "shared",
+    label: "Upload file",
+    description: "Upload a new file to user storage.",
+    riskTier: "low", requireApproval: false, reversible: true,
+    defaultAuthorityLevel: "pre_approved",
+  },
+  "shared.knowledge.reindex": {
+    key: "shared.knowledge.reindex", pillar: "shared",
+    label: "Re-index knowledge file",
+    description: "Re-extract and re-chunk a file in the knowledge spine.",
+    riskTier: "low", requireApproval: false, reversible: true,
+    defaultAuthorityLevel: "pre_approved",
+  },
 } as const satisfies Record<string, TrustActionPreset>;
 
 export type TrustActionKey = keyof typeof TRUST_ACTION_REGISTRY;
