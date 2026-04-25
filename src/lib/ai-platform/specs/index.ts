@@ -38,6 +38,9 @@ import "./growth-advisor.spec";
 // Phase 6 — Tech Advisor
 import "./tech-advisor.spec";
 
+// Phase 7 — Imports & Exports Advisor
+import "./imports-exports-advisor.spec";
+
 export type {
   BusinessAdvisorSpec,
   AutomationLevel,
