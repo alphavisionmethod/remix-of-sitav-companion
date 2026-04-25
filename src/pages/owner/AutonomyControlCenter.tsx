@@ -60,7 +60,7 @@ function MiniStat({
 }) {
   const tone =
     accent === "warning"
-      ? "text-warning"
+      ? "text-accent"
       : accent === "destructive"
       ? "text-destructive"
       : "text-foreground";
