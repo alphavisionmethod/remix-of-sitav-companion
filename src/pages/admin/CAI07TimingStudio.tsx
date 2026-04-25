@@ -1,6 +1,6 @@
 import { useSitaOS } from "@/contexts/SitaOSContext";
-import { AdminPageHeader } from "@/components/sita/admin/AdminPageHeader";
-import { SitaCard, SitaMetric, SitaSectionHeader } from "@/components/sita/SitaCard";
+import { AdminPageHeader } from "@/platform/sita/components/sita/admin/AdminPageHeader";
+import { SitaCard, SitaMetric, SitaSectionHeader } from "@/platform/sita/components/sita/SitaCard";
 import { Clock, TrendingUp } from "lucide-react";
 
 export default function CAI07TimingStudio() {

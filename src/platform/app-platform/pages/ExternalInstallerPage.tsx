@@ -12,8 +12,8 @@ import {
 import { cn } from "@/lib/utils";
 import { useAppPlatform } from "@/contexts/AppPlatformContext";
 import { toast } from "sonner";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { MobileHonestyNotice } from "@/components/platform/MobileHonestyNotice";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { MobileHonestyNotice } from "@/platform/core-services/components/platform/MobileHonestyNotice";
 
 type AnalysisState = "idle" | "analyzing" | "verified" | "unknown" | "blocked";
 

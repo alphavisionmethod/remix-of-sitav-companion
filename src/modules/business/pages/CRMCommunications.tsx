@@ -1,5 +1,5 @@
 import React from "react";
-import { CRMCommunicationQueue } from "@/components/business/crm/CRMCommunicationQueue";
+import { CRMCommunicationQueue } from "@/modules/business/components/business/crm/CRMCommunicationQueue";
 import { useBusinessNavigation } from "@/contexts/BusinessNavigationContext";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
 

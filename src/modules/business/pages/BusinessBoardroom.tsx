@@ -1,11 +1,11 @@
 import { useAuth } from "@/contexts/AuthContext";
-import { GlobalErrorBoundary } from "@/components/sita/GlobalErrorBoundary";
+import { GlobalErrorBoundary } from "@/platform/sita/components/sita/GlobalErrorBoundary";
 import { HeroCard, SummaryCard, ComparisonCard, ProofCard, AdvisorCard, QueueCard, TimelineCard } from "@/components/sita/cards";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { BoardroomCinematic } from "@/components/sita/motion/AppTransitions";
-import { SitaTabs } from "@/components/sita/SitaComponents";
-import { AdvisorCouncilShell, type AdvisorConfig } from "@/components/advisors/AdvisorCouncilShell";
-import { DomainAdvisorBoard } from "@/components/sita/domain-shared/DomainAdvisorBoard";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { BoardroomCinematic } from "@/platform/sita/components/sita/motion/AppTransitions";
+import { SitaTabs } from "@/platform/sita/components/sita/SitaComponents";
+import { AdvisorCouncilShell, type AdvisorConfig } from "@/platform/advisors/components/advisors/AdvisorCouncilShell";
+import { DomainAdvisorBoard } from "@/platform/sita/components/sita/domain-shared/DomainAdvisorBoard";
 import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
 import { cn } from "@/lib/utils";
 import { useState, useMemo } from "react";

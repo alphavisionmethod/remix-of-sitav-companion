@@ -1,10 +1,10 @@
-import { KPITile } from "@/components/sita/SitaComponents";
-import { PrivacyScopeCard, SensitivityBadge } from "@/components/sita/FilesComponents";
-import { SectionSkeleton } from "@/components/sita/SectionSkeleton";
-import { PremiumEmptyState } from "@/components/sita/PremiumEmptyState";
-import { TrustBadge } from "@/components/sita/TrustBadge";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvisorInsight";
+import { KPITile } from "@/platform/sita/components/sita/SitaComponents";
+import { PrivacyScopeCard, SensitivityBadge } from "@/platform/sita/components/sita/FilesComponents";
+import { SectionSkeleton } from "@/platform/sita/components/sita/SectionSkeleton";
+import { PremiumEmptyState } from "@/platform/sita/components/sita/PremiumEmptyState";
+import { TrustBadge } from "@/platform/sita/components/sita/TrustBadge";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { ModuleAdvisorInsight } from "@/platform/sita/components/sita/domain-shared/ModuleAdvisorInsight";
 import { Shield, Lock, Eye, AlertTriangle, ShieldCheck } from "lucide-react";
 import { motion } from "framer-motion";
 import { useFilesBySensitivity } from "@/hooks/use-domain-data";

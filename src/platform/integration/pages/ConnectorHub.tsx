@@ -1,8 +1,8 @@
 import { useAction } from "@/hooks/use-action";
-import { SitaPageHeader, SitaCard, SitaCardTitle, SitaButton } from "@/components/sita/SitaCard";
-import { KPITile, EmptyState, SitaTabs } from "@/components/sita/SitaComponents";
-import { SectionSkeleton } from "@/components/sita/SectionSkeleton";
-import { TrustBadge } from "@/components/sita/TrustBadge";
+import { SitaPageHeader, SitaCard, SitaCardTitle, SitaButton } from "@/platform/sita/components/sita/SitaCard";
+import { KPITile, EmptyState, SitaTabs } from "@/platform/sita/components/sita/SitaComponents";
+import { SectionSkeleton } from "@/platform/sita/components/sita/SectionSkeleton";
+import { TrustBadge } from "@/platform/sita/components/sita/TrustBadge";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
@@ -10,12 +10,12 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Plug, Wifi, WifiOff, RefreshCw, Clock, ChevronRight, Activity, Database, Shield, Circle, AlertTriangle, ExternalLink, Unplug, Search } from "lucide-react";
-import { ConnectorSyncDashboard } from "@/components/sita/ConnectorSyncDashboard";
+import { ConnectorSyncDashboard } from "@/platform/sita/components/sita/ConnectorSyncDashboard";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { useLoopEmitter } from "@/hooks/use-flagship-loop-proof";
-import { PageShell } from "@/components/sita/PageShell";
+import { PageShell } from "@/platform/sita/components/sita/PageShell";
 
 
 

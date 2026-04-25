@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Gauge, TrendingDown, RotateCcw, TrendingUp, Rocket, Sword, ShieldCheck, Building2, Users, Flame } from "lucide-react";
-import { SetupStageHeader } from "@/components/sita/setup/SetupStageHeader";
+import { SetupStageHeader } from "@/platform/sita/components/sita/setup/SetupStageHeader";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { cn } from "@/lib/utils";
 import type { OperatingMode } from "./types";

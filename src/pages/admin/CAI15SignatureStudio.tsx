@@ -1,7 +1,7 @@
 import { useSitaOS } from "@/contexts/SitaOSContext";
 import { useExperienceSignature } from "@/hooks/useExperienceSignature";
-import { AdminPageHeader } from "@/components/sita/admin/AdminPageHeader";
-import { SitaCard, SitaCardHeader, SitaCardTitle, SitaSectionHeader } from "@/components/sita/SitaCard";
+import { AdminPageHeader } from "@/platform/sita/components/sita/admin/AdminPageHeader";
+import { SitaCard, SitaCardHeader, SitaCardTitle, SitaSectionHeader } from "@/platform/sita/components/sita/SitaCard";
 import { Sparkles, Palette, MessageSquare, Eye } from "lucide-react";
 import type { SitaMode } from "@/lib/services/sita-modes/index";
 

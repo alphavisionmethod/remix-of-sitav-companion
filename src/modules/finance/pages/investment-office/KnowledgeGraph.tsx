@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { Brain, Search, Filter, ZoomIn, ZoomOut, Maximize2, X, ArrowRight, Sparkles, Eye } from "lucide-react";
 import { INSTRUMENTS, INVESTMENT_ADVISORS, SAMPLE_THESES } from "@/hooks/useInvestmentOfficeData";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 // ── Graph Data Model ──
 type NodeType = "instrument" | "thesis" | "catalyst" | "sector" | "advisor" | "theme";

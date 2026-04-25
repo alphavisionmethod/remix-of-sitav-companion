@@ -8,7 +8,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Search, ArrowRight, Command } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { LucideIcon } from "lucide-react";
-import type { DomainId } from "@/components/sita/shell/DomainAppShell";
+import type { DomainId } from "@/platform/sita/components/sita/shell/DomainAppShell";
 
 export interface CommandItem {
   id: string;

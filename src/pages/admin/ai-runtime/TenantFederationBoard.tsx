@@ -6,9 +6,9 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { AdminControlPlaneShell } from "@/components/admin/shells/AdminControlPlaneShell";
+import { AdminControlPlaneShell } from "@/platform/admin/components/admin/shells/AdminControlPlaneShell";
 import { Globe, ShieldAlert, Gauge, RefreshCw } from "lucide-react";
-import { BoardSection } from "@/components/admin/ai-runtime/_shared/BoardSection";
+import { BoardSection } from "@/platform/admin/components/admin/ai-runtime/_shared/BoardSection";
 
 interface Scope { id: string; tenant_id: string; agent_id: string; enabled: boolean; trust_rung: number; updated_at: string; }
 interface Quota { id: string; tenant_id: string; daily_cents_cap: number; weekly_cents_cap: number; max_actions_per_hour: number; consumed_cents_today: number; consumed_actions_hour: number; }

@@ -4,8 +4,8 @@ import { getRegisteredDomains, getProviderMetadata, type ProviderDomain } from "
 import { registerAllProviders } from "@/lib/dual-reality/providers";
 import { useRealityModeSafe } from "@/lib/dual-reality/reality-mode-context";
 import { Plug, CheckCircle2, AlertCircle } from "lucide-react";
-import DRSSubNav from "@/components/admin/DRSSubNav";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import DRSSubNav from "@/platform/admin/components/admin/DRSSubNav";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 // Production fallback — seed data removed
 const ALL_DOMAINS: any[] = [];

@@ -1,9 +1,9 @@
-import { KPITile, SitaTabs } from "@/components/sita/SitaComponents";
-import { GlassCard } from "@/components/sita/PremiumPageComponents";
-import { TrustBadge } from "@/components/sita/TrustBadge";
+import { KPITile, SitaTabs } from "@/platform/sita/components/sita/SitaComponents";
+import { GlassCard } from "@/platform/sita/components/sita/PremiumPageComponents";
+import { TrustBadge } from "@/platform/sita/components/sita/TrustBadge";
 import { ConciergeAdvisorInsightCard, RecurringAdminList, ConciergePageWrapper, ConciergeEmptyState } from "@/components/concierge";
 import type { RecurringAdminItem } from "@/components/concierge";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
 import { useState } from "react";
 import { motion } from "framer-motion";

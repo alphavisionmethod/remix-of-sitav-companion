@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { GitCompareArrows, AlertTriangle, Check, HelpCircle } from "lucide-react";
 import { useInvestmentDecisions } from "@/hooks/use-investment-office";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 // Production fallback — seed data removed
 const DISAGREEMENTS: any[] = [];

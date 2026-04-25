@@ -12,7 +12,7 @@ import {
   NovaText, NovaButton, NovaCard, NovaSectionLabel,
   NovaToggle, NovaBadge, NovaToolbar,
 } from "@/platform/nova-sdk/ui/components";
-import { AppStateWrapper } from "@/components/sita/shell/AppStateWrapper";
+import { AppStateWrapper } from "@/platform/sita/components/sita/shell/AppStateWrapper";
 import { CloudSyncManager, type SyncStatus, type ConflictRecord } from "@/lib/core-services/cloud-sync-manager";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";

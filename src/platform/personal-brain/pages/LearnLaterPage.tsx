@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
-import { SitaPageHeader } from "@/components/sita/SitaCard";
-import { LearnLaterHub } from "@/components/sita/onboarding/LearnLaterHub";
+import { SitaPageHeader } from "@/platform/sita/components/sita/SitaCard";
+import { LearnLaterHub } from "@/platform/sita/components/sita/onboarding/LearnLaterHub";
 import { motion } from "framer-motion";
 import { BookOpen } from "lucide-react";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { PageShell } from "@/components/sita/PageShell";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { PageShell } from "@/platform/sita/components/sita/PageShell";
 
 export default function LearnLaterPage() {
   const [deferredConnections, setDeferredConnections] = useState<string[]>([]);

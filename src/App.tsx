@@ -5,16 +5,16 @@
 
 import { QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Route, Routes, Navigate, useLocation } from "react-router-dom";
-import { AdminRoute } from "@/components/auth/AdminRoute";
+import { AdminRoute } from "@/platform/auth/components/auth/AdminRoute";
 
 
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
-import { PortraitPerfHud } from "@/components/settings/PortraitPerfHud";
+import { PortraitPerfHud } from "@/platform/settings/components/settings/PortraitPerfHud";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { ConnectivityProvider } from "@/contexts/ConnectivityContext";
-import { OfflineBanner } from "@/components/sita/OfflineBanner";
+import { OfflineBanner } from "@/platform/sita/components/sita/OfflineBanner";
 import { useUserPreferences } from "@/hooks/use-user-preferences";
 import { DataModeProvider } from "@/contexts/DataModeContext";
 import { AppearanceProvider } from "@/contexts/AppearanceContext";
@@ -28,10 +28,10 @@ import { ThemeProvider } from "@/contexts/AppearanceContext";
 import { SitaVoiceProvider } from "@/contexts/SitaVoiceContext";
 // MobileRuntimeProvider archived — Ubuntu-native is canonical native platform.
 // See docs/PLATFORM_SCOPE.md and archive/src/mobile-platform/.
-import { ShellLayout } from "@/components/sita/ShellLayout";
-import { GlobalErrorBoundary } from "@/components/sita/GlobalErrorBoundary";
-import { RouteErrorBoundary } from "@/components/sita/RouteErrorBoundary";
-import { EnvErrorBoundary } from "@/components/sita/EnvErrorBoundary";
+import { ShellLayout } from "@/platform/sita/components/sita/ShellLayout";
+import { GlobalErrorBoundary } from "@/platform/sita/components/sita/GlobalErrorBoundary";
+import { RouteErrorBoundary } from "@/platform/sita/components/sita/RouteErrorBoundary";
+import { EnvErrorBoundary } from "@/platform/sita/components/sita/EnvErrorBoundary";
 import { createQueryClient } from "@/lib/query-config";
 import { initErrorMonitoring } from "@/lib/services/error-monitoring-service";
 
@@ -39,10 +39,10 @@ import { initErrorMonitoring } from "@/lib/services/error-monitoring-service";
 initErrorMonitoring();
 import { Suspense, lazy, forwardRef, useState, useEffect, type ReactNode } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { PlatformInit } from "@/components/sita/PlatformInit";
+import { PlatformInit } from "@/platform/sita/components/sita/PlatformInit";
 import { PublicLayout } from "@/layouts/PublicLayout";
-import { AdminCommandPalette } from "@/components/admin/AdminCommandPalette";
-import { AdminKeyboardShortcuts } from "@/components/admin/AdminKeyboardShortcuts";
+import { AdminCommandPalette } from "@/platform/admin/components/admin/AdminCommandPalette";
+import { AdminKeyboardShortcuts } from "@/platform/admin/components/admin/AdminKeyboardShortcuts";
 
 // Route families
 import { getOSRoutes } from "@/routes/os-routes";
@@ -117,7 +117,7 @@ const AdminCenter = lazy(() => import("@/pages/AdminCenter"));
 // ═══════════════════════════════════════════════════════════════
 const queryClient = createQueryClient();
 
-import { PageSkeleton } from "@/components/sita/PageSkeleton";
+import { PageSkeleton } from "@/platform/sita/components/sita/PageSkeleton";
 const PageLoader = () => (
   <div className="p-4 md:p-6 max-w-[1400px] mx-auto"><PageSkeleton rows={3} /></div>
 );

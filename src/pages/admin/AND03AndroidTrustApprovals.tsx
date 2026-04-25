@@ -3,8 +3,8 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { Shield, Fingerprint, Smartphone, Watch, Lock, CheckCircle2, XCircle, ArrowRight, AlertTriangle, Key } from "lucide-react";
-import ANDSubNav from "@/components/admin/ANDSubNav";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import ANDSubNav from "@/platform/admin/components/admin/ANDSubNav";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 const VERIFICATION_EVENTS: any[] = [];
 

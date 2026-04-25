@@ -4,10 +4,10 @@
 
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Clock } from "lucide-react";
-import { GlobalErrorBoundary } from "@/components/sita/GlobalErrorBoundary";
-import { PageShell } from "@/components/sita/PageShell";
+import { GlobalErrorBoundary } from "@/platform/sita/components/sita/GlobalErrorBoundary";
+import { PageShell } from "@/platform/sita/components/sita/PageShell";
 import { Button } from "@/components/ui/button";
-import { RetentionSettingsCard } from "@/components/personal-brain/settings/RetentionSettingsCard";
+import { RetentionSettingsCard } from "@/platform/personal-brain/components/personal-brain/settings/RetentionSettingsCard";
 
 export default function RetentionSettings() {
   const navigate = useNavigate();

@@ -1,4 +1,4 @@
-import { PageShell } from "@/components/sita/PageShell";
+import { PageShell } from "@/platform/sita/components/sita/PageShell";
 import { motion } from "framer-motion";
 import { Globe, Shield, CheckCircle, AlertTriangle, Settings, Eye, Undo2, FileText, ArrowRight, Clock, Lock, Server } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { useWebsiteManager } from "@/contexts/SitaKernelContext";
 import DPOSubNav from "./DPOSubNav";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 const ENVIRONMENTS: any[] = [];
 

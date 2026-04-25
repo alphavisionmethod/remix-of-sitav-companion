@@ -5,8 +5,8 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useMemo, useCallback } from "react";
-import { SitaPageHeader, SitaCard, SitaCardTitle } from "@/components/sita/SitaCard";
-import { SitaTabs } from "@/components/sita/SitaComponents";
+import { SitaPageHeader, SitaCard, SitaCardTitle } from "@/platform/sita/components/sita/SitaCard";
+import { SitaTabs } from "@/platform/sita/components/sita/SitaComponents";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Table2, Plus, Search, Clock, Download, Upload, BarChart3, Filter,
@@ -17,7 +17,7 @@ import {
 import { useSheets } from "@/hooks/use-domain-data";
 import type { MockSheet } from "@/data/fixtures/mock-data/workspace";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 
 

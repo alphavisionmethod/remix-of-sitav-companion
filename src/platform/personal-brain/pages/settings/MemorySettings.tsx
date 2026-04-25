@@ -1,5 +1,5 @@
 import { Card, CardContent } from "@/components/ui/card";
-import { LearningSettingsCard } from "@/components/personal-brain/settings/LearningSettingsCard";
+import { LearningSettingsCard } from "@/platform/personal-brain/components/personal-brain/settings/LearningSettingsCard";
 
 export default function MemorySettings() {
   return (

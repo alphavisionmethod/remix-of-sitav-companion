@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
-import { PageErrorState } from "@/components/sita/PageErrorState";
+import { PageErrorState } from "@/platform/sita/components/sita/PageErrorState";
 
 describe("PageErrorState", () => {
   it("renders generic error message by default", () => {

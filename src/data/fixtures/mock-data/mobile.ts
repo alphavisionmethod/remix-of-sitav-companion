@@ -2,9 +2,9 @@
 // SITA OS — Mock Data: Mobile Pages
 // ═══════════════════════════════════════════════════════════════
 
-import type { AlertItem } from "@/components/mobile/AlertCard";
-import type { ApprovalItem } from "@/components/mobile/ApprovalCard";
-import type { ProofItem } from "@/components/mobile/ProofCard";
+import type { AlertItem } from "@/platform/experience/components/mobile/AlertCard";
+import type { ApprovalItem } from "@/platform/experience/components/mobile/ApprovalCard";
+import type { ProofItem } from "@/platform/experience/components/mobile/ProofCard";
 
 export const MOCK_MOBILE_ALERTS: AlertItem[] = [
   { id: "alt-001", severity: "critical", title: "Collections escalation required", message: "Invoice #892 is 92 days overdue. $8,400 outstanding — requires immediate action.", domain: "business", createdAt: new Date(Date.now() - 900000).toISOString(), read: false },

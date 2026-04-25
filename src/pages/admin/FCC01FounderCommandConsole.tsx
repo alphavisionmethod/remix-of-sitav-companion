@@ -6,7 +6,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "@/contexts/AuthContext";
-import { AdminPageHeader } from "@/components/sita/admin/AdminPageHeader";
+import { AdminPageHeader } from "@/platform/sita/components/sita/admin/AdminPageHeader";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -19,7 +19,7 @@ import {
   Play, RotateCcw, Target, TrendingUp
 } from "lucide-react";
 import { founderOrchestrator, type DirectiveRecord, type DirectiveDomain, type AgentClass } from "@/lib/services/founder-orchestrator";
-import { SimulationPreview } from "@/components/admin/shells/SimulationPreview";
+import { SimulationPreview } from "@/platform/admin/components/admin/shells/SimulationPreview";
 
 const DOMAIN_CONFIG: Record<DirectiveDomain, { icon: React.ElementType; color: string; label: string }> = {
   reliability: { icon: Shield, color: "text-trust-safe", label: "Reliability" },

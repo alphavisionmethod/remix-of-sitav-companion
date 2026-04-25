@@ -4,9 +4,9 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useState } from "react";
-import { SitaPageHeader, SitaCard, SitaSectionHeader } from "@/components/sita/SitaCard";
-import { KPITile } from "@/components/sita/SitaComponents";
-import { AdminActionCard } from "@/components/sita/AdminActionCard";
+import { SitaPageHeader, SitaCard, SitaSectionHeader } from "@/platform/sita/components/sita/SitaCard";
+import { KPITile } from "@/platform/sita/components/sita/SitaComponents";
+import { AdminActionCard } from "@/platform/sita/components/sita/AdminActionCard";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
@@ -22,7 +22,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { useEffect } from "react";
 
 

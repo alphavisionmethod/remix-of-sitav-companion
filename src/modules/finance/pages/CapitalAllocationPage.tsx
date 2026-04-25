@@ -1,4 +1,4 @@
-import { PageSkeleton } from "@/components/sita/PageSkeleton";
+import { PageSkeleton } from "@/platform/sita/components/sita/PageSkeleton";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { PieChart, TrendingUp, ArrowUpDown, Shield, DollarSign, BarChart3, RefreshCw } from "lucide-react";
@@ -13,8 +13,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 
 import { ASSET_COLORS } from "@/lib/constants/ui-config";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { PageShell } from "@/components/sita/PageShell";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { PageShell } from "@/platform/sita/components/sita/PageShell";
 export default function CapitalAllocationPage() {
   const { user , isDemo} = useAuth();
   const { data: realAllocations } = useQuery({

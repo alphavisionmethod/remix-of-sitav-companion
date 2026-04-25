@@ -15,7 +15,7 @@ import {
   ShieldCheck, Clock, AlertTriangle
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 const SYSTEM_PROMPT = `You are SITA's Chief of Staff — a calm, precise, and proactive executive assistant.
 You orchestrate across all domains (business, money, family, operations) with quiet confidence.

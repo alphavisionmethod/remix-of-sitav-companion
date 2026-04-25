@@ -22,7 +22,7 @@ import {
   Info,
   RefreshCw,
 } from "lucide-react";
-import type { OSWindow, SnapDirection } from "@/components/sita/os/WindowContext";
+import type { OSWindow, SnapDirection } from "@/platform/sita/components/sita/os/WindowContext";
 
 export interface AppWindowMenuHandlers {
   win: OSWindow;

@@ -16,12 +16,12 @@ import {
   createEnvelope, forecastSpend, evaluateFairUse, getApplicableAddons,
 } from "@/lib/compute-governance";
 import type { CostClass, ComputeModelTier, BudgetEnvelope, PlanTier } from "@/lib/compute-governance";
-import { CG04MarginProtectionTab } from "@/components/admin/compute-governance/CG04MarginProtectionTab";
-import { CG06MissionCostTab } from "@/components/admin/compute-governance/CG06MissionCostTab";
-import { CG10PricingSimulatorTab } from "@/components/admin/compute-governance/CG10PricingSimulatorTab";
-import { classColors, tierColors, budgetStatusColors, fmt } from "@/components/admin/compute-governance/shared";
+import { CG04MarginProtectionTab } from "@/platform/admin/components/admin/compute-governance/CG04MarginProtectionTab";
+import { CG06MissionCostTab } from "@/platform/admin/components/admin/compute-governance/CG06MissionCostTab";
+import { CG10PricingSimulatorTab } from "@/platform/admin/components/admin/compute-governance/CG10PricingSimulatorTab";
+import { classColors, tierColors, budgetStatusColors, fmt } from "@/platform/admin/components/admin/compute-governance/shared";
 import { useComputeBudgetStatus, useAISpendSummary, useModelRoutingStats, useMarginSnapshot } from "@/hooks/use-compute-governance";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 // ── Mock Data ───────────────────────────────────────────────
 
 // ── Helper ──────────────────────────────────────────────────

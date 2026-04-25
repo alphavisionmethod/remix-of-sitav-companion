@@ -6,7 +6,7 @@ import { Progress } from "@/components/ui/progress";
 import { useMockReplacements } from "@/hooks/useMockReplacements";
 import { useRealityClassifications } from "@/hooks/useRealityClassifications";
 import { ShieldCheck, Activity, Database, Zap, CheckCircle2, AlertTriangle } from "lucide-react";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 export default function RuntimeRealityValidation() {
   const { data: replacements = [] } = useMockReplacements();

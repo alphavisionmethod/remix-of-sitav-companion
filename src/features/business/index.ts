@@ -4,8 +4,8 @@
 // ═══════════════════════════════════════════════════════════════
 
 // Components
-export { AtRiskQueueCard } from "@/components/business/AtRiskQueueCard";
-export { BusinessMoneyFlow } from "@/components/business/BusinessMoneyFlow";
-export { BusinessQuickActions } from "@/components/business/BusinessQuickActions";
-export { BusinessRecentActivity } from "@/components/business/BusinessRecentActivity";
-export { BusinessStatCard } from "@/components/business/BusinessStatCard";
+export { AtRiskQueueCard } from "@/modules/business/components/business/AtRiskQueueCard";
+export { BusinessMoneyFlow } from "@/modules/business/components/business/BusinessMoneyFlow";
+export { BusinessQuickActions } from "@/modules/business/components/business/BusinessQuickActions";
+export { BusinessRecentActivity } from "@/modules/business/components/business/BusinessRecentActivity";
+export { BusinessStatCard } from "@/modules/business/components/business/BusinessStatCard";

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import { SitaButton } from "@/components/sita/SitaCard";
+import { SitaButton } from "@/platform/sita/components/sita/SitaCard";
 import { CheckCircle, Shield, Loader2, ArrowRight, Database, Mail, FileText, Users } from "lucide-react";
 import { motion } from "framer-motion";
 import { toast } from "sonner";

@@ -12,8 +12,8 @@ import { getWorkforceRoles, getRecentInvocations, getWorkforceStats, getRecommen
 import { computeTruthIndices } from "@/lib/core-services/truth-indices/truth-index-aggregator";
 import { Bot, DollarSign, Zap, Clock, Shield, Activity, AlertTriangle, CheckCircle2, Lightbulb, TrendingUp, ArrowRight, Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
-import AITSubNav from "@/components/admin/AITSubNav";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import AITSubNav from "@/platform/admin/components/admin/AITSubNav";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 
 

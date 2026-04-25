@@ -3,4 +3,4 @@
 // Canonical import: @/features/home
 // ═══════════════════════════════════════════════════════════════
 
-export { PulseSummaryStrip } from "@/components/user-app/PulseSummaryStrip";
+export { PulseSummaryStrip } from "@/platform/experience/components/user-app/PulseSummaryStrip";

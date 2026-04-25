@@ -3,12 +3,12 @@
 // Photo/file capture, quick note, handoff to desktop workflows
 // ═══════════════════════════════════════════════════════════════
 
-import { MobileShell } from "@/components/mobile/MobileShell";
+import { MobileShell } from "@/platform/experience/components/mobile/MobileShell";
 import { Camera, FileText, Upload, Send, Image, Mic, StickyNote, CheckCircle, ArrowRight, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useState, useRef } from "react";
 import { toast } from "sonner";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 type CaptureMode = "note" | "photo" | "file" | "voice";
 

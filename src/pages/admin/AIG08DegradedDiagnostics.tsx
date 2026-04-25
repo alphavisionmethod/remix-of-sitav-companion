@@ -5,8 +5,8 @@ import { useQuery } from "@tanstack/react-query";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { AlertOctagon, KeyRound, Gauge, ServerCrash, DollarSign, FileWarning, Ban } from "lucide-react";
 import { getDegradedDiagnostics, type DegradedDiagnostic } from "@/lib/core-services/ai-gateway/diagnostics.service";
-import AIGSubNav from "@/components/admin/AIGSubNav";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import AIGSubNav from "@/platform/admin/components/admin/AIGSubNav";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 const CATEGORY_META: Record<DegradedDiagnostic["category"], { label: string; icon: React.ReactNode; color: string }> = {
   missing_key: { label: "Missing Key", icon: <KeyRound className="h-3.5 w-3.5" />, color: "text-destructive" },

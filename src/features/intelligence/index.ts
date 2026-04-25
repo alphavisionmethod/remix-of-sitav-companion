@@ -3,5 +3,5 @@
 // Canonical import path: @/features/intelligence
 // ═══════════════════════════════════════════════════════════════
 
-export { default as ExplainabilityDrawer } from "@/components/intelligence/ExplainabilityDrawer";
-export { default as OrchestrationFlowViewer } from "@/components/intelligence/OrchestrationFlowViewer";
+export { default as ExplainabilityDrawer } from "@/platform/intelligence/components/intelligence/ExplainabilityDrawer";
+export { default as OrchestrationFlowViewer } from "@/platform/intelligence/components/intelligence/OrchestrationFlowViewer";

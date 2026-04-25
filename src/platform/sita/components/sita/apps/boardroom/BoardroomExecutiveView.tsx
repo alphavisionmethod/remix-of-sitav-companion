@@ -6,12 +6,12 @@ import {
   Briefcase, DollarSign, Users, Sparkles, FileCheck, Play, Clock, Zap, MessageCircle,
 } from "lucide-react";
 import { ConfidenceBar, ExecutionChainTimeline, buildDefaultChain } from "@/components/sita/primitives";
-import { EvidenceChain, type EvidenceNode } from "@/components/sita/primitives/EvidenceChain";
+import { EvidenceChain, type EvidenceNode } from "@/platform/sita/components/sita/primitives/EvidenceChain";
 import { BoardroomAdvisorCouncil } from "./BoardroomAdvisorCouncil";
 import { BoardroomIssueFrame } from "./BoardroomIssueFrame";
 import { useCountUp, useCountUpFormatted } from "@/hooks/useCountUp";
-import { SparklineChart } from "@/components/sita/SparklineChart";
-import { TrustStateBadge, type TrustState } from "@/components/sita/TrustStateBadge";
+import { SparklineChart } from "@/platform/sita/components/sita/SparklineChart";
+import { TrustStateBadge, type TrustState } from "@/platform/sita/components/sita/TrustStateBadge";
 import { useBoardroomLiveData } from "@/hooks/useBoardroomLiveData";
 import { getSynthesisForDomain } from "@/lib/services/orchestration-pipeline/app-board-synthesizer";
 import { getTransmissionLog } from "@/lib/services/orchestration-pipeline/signal-emitter";

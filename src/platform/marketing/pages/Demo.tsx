@@ -1,7 +1,7 @@
 import { useSearchParams, Link } from "react-router-dom";
-import { MarketingShell } from "@/components/marketing/MarketingShell";
-import { MarketingSeo } from "@/components/marketing/MarketingSeo";
-import { DemoEmbed } from "@/components/marketing/DemoEmbed";
+import { MarketingShell } from "@/platform/marketing/components/marketing/MarketingShell";
+import { MarketingSeo } from "@/platform/marketing/components/marketing/MarketingSeo";
+import { DemoEmbed } from "@/platform/marketing/components/marketing/DemoEmbed";
 import { Button } from "@/components/ui/button";
 
 export default function MarketingDemo() {

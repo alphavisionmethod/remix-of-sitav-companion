@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
-import { SpendingCategoryPane } from "@/components/money/SpendingCategoryPane";
+import { SpendingCategoryPane } from "@/modules/finance/components/money/SpendingCategoryPane";
 import {
   DollarSign, TrendingUp, TrendingDown, AlertTriangle, CheckCircle, ShoppingCart,
   CreditCard, Home, Car, Utensils, Wifi, Heart, Zap, ArrowUpRight, ArrowDownRight
@@ -10,10 +10,10 @@ import { cn } from "@/lib/utils";
 // New design system
 import { HeroCard, QueueCard, StatusCard, ActionCard } from "@/components/sita/cards";
 import { FreshnessBadge, UrgencyBadge } from "@/components/sita/badges";
-import { SplitWorkspace } from "@/components/sita/surfaces/SplitWorkspace";
-import { AppSurface } from "@/components/sita/surfaces/AppSurface";
-import { ListReveal, ListRevealItem } from "@/components/sita/motion/AppTransitions";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { SplitWorkspace } from "@/platform/sita/components/sita/surfaces/SplitWorkspace";
+import { AppSurface } from "@/platform/sita/components/sita/surfaces/AppSurface";
+import { ListReveal, ListRevealItem } from "@/platform/sita/components/sita/motion/AppTransitions";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 type PulseState = "all-normal" | "review-needed" | "attention";
 
 interface SpendingCategory {

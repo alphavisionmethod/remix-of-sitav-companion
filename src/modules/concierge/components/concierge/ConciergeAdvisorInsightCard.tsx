@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { Sparkles, ArrowRight } from "lucide-react";
-import { TrustBadge } from "@/components/sita/TrustBadge";
+import { TrustBadge } from "@/platform/sita/components/sita/TrustBadge";
 
 export interface AdvisorInsight {
   role: string;

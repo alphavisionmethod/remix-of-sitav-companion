@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Sparkles, Send, Eye, X } from "lucide-react";
-import { GlassCard } from "@/components/sita/PremiumPageComponents";
+import { GlassCard } from "@/platform/sita/components/sita/PremiumPageComponents";
 import { useState } from "react";
 
 export interface PreparedAction {

@@ -3,13 +3,13 @@
 // Wired to live DB data via useMobileHome* hooks
 // ═══════════════════════════════════════════════════════════════
 
-import { MobileShell } from "@/components/mobile/MobileShell";
-import { PulseCard } from "@/components/mobile/PulseCard";
+import { MobileShell } from "@/platform/experience/components/mobile/MobileShell";
+import { PulseCard } from "@/platform/experience/components/mobile/PulseCard";
 import { useNavigate } from "react-router-dom";
 import { Heart, TrendingUp, Shield, Wallet, Calendar, Users, ArrowRight, BarChart3 } from "lucide-react";
 import { useMobileHomePulse, useMobileHomeQuickActions, useMobileHomeActivity } from "@/hooks/use-mobile-data";
-import { MobileEmptyState, MobileErrorState } from "@/components/mobile/MobileEmptyState";
-import { PulseGridSkeleton, QuickActionsSkeleton, ActivityFeedSkeleton } from "@/components/mobile/MobileSectionSkeleton";
+import { MobileEmptyState, MobileErrorState } from "@/platform/experience/components/mobile/MobileEmptyState";
+import { PulseGridSkeleton, QuickActionsSkeleton, ActivityFeedSkeleton } from "@/platform/experience/components/mobile/MobileSectionSkeleton";
 
 import type { LucideIcon } from "lucide-react";
 

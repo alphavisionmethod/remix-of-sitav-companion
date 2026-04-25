@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Gauge, AlertTriangle, Check } from "lucide-react";
 import { usePortfolioPositions } from "@/hooks/use-investment-office";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 export default function ConvictionEngine() {
   const { data: liveData, isLoading } = usePortfolioPositions();
   return (

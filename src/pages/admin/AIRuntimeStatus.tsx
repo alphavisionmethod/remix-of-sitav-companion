@@ -4,8 +4,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { RefreshCw, CheckCircle2, XCircle, AlertTriangle, Loader2, Activity, Zap, Shield, DollarSign, Clock, Server, Inbox } from "lucide-react";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { EmptyState } from "@/components/sita/EmptyState";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { EmptyState } from "@/platform/sita/components/sita/EmptyState";
 const statusColors = {
   healthy: "bg-green-500/20 text-green-400 border-green-500/30",
   degraded: "bg-yellow-500/20 text-yellow-400 border-yellow-500/30",

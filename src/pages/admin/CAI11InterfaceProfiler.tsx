@@ -1,8 +1,8 @@
 import { useSitaOS } from "@/contexts/SitaOSContext";
 import { useAdaptiveInterface } from "@/hooks/useAdaptiveInterface";
 import { useExperienceSignature } from "@/hooks/useExperienceSignature";
-import { AdminPageHeader } from "@/components/sita/admin/AdminPageHeader";
-import { SitaCard, SitaCardHeader, SitaCardTitle, SitaMetric, SitaSectionHeader } from "@/components/sita/SitaCard";
+import { AdminPageHeader } from "@/platform/sita/components/sita/admin/AdminPageHeader";
+import { SitaCard, SitaCardHeader, SitaCardTitle, SitaMetric, SitaSectionHeader } from "@/platform/sita/components/sita/SitaCard";
 import { Monitor, Palette, Type, Zap } from "lucide-react";
 
 export default function CAI11InterfaceProfiler() {

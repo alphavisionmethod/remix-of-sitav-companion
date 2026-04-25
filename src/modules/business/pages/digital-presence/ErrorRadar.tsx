@@ -1,11 +1,11 @@
-import { PageShell } from "@/components/sita/PageShell";
+import { PageShell } from "@/platform/sita/components/sita/PageShell";
 import { motion } from "framer-motion";
 import { AlertTriangle, Link2, Image, Clock, MousePointer, Shield, Smartphone, ShoppingCart, FileText, Sparkles } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import DPOSubNav from "./DPOSubNav";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 export default function ErrorRadar() {
   return (
     <PageShell width="wide">

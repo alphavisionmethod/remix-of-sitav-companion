@@ -1,6 +1,6 @@
-import { MarketingShell } from "@/components/marketing/MarketingShell";
-import { MarketingSeo } from "@/components/marketing/MarketingSeo";
-import { PressForm } from "@/components/marketing/PressForm";
+import { MarketingShell } from "@/platform/marketing/components/marketing/MarketingShell";
+import { MarketingSeo } from "@/platform/marketing/components/marketing/MarketingSeo";
+import { PressForm } from "@/platform/marketing/components/marketing/PressForm";
 
 export default function MarketingPress() {
   return (

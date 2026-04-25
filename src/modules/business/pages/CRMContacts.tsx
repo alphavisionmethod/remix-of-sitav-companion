@@ -6,9 +6,9 @@ import { useCRMContacts, useCRMCompanies, useDeleteContact } from "@/hooks/use-c
 import { Users, Plus, Search, Grid3X3, List, ChevronRight, Phone, Mail, Heart, MoreHorizontal, Download, Trash2, Tag } from "lucide-react";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
 import { formatDistanceToNow, isPast } from "date-fns";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { CRMContactDetail } from "@/components/business/crm/CRMContactDetail";
-import { CRMContactForm } from "@/components/business/crm/CRMContactForm";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { CRMContactDetail } from "@/modules/business/components/business/crm/CRMContactDetail";
+import { CRMContactForm } from "@/modules/business/components/business/crm/CRMContactForm";
 import { toast } from "sonner";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 

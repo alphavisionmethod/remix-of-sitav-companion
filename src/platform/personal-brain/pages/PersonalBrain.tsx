@@ -1,9 +1,9 @@
 import { Loader2 } from "lucide-react";
-import { GlobalErrorBoundary } from "@/components/sita/GlobalErrorBoundary";
-import { PageShell } from "@/components/sita/PageShell";
-import { usePersonalBrainOnboarding } from "@/components/personal-brain/onboarding/usePersonalBrainOnboarding";
-import { PersonalBrainOnboarding } from "@/components/personal-brain/onboarding/PersonalBrainOnboarding";
-import { BrainDashboard } from "@/components/personal-brain/BrainDashboard";
+import { GlobalErrorBoundary } from "@/platform/sita/components/sita/GlobalErrorBoundary";
+import { PageShell } from "@/platform/sita/components/sita/PageShell";
+import { usePersonalBrainOnboarding } from "@/platform/personal-brain/components/personal-brain/onboarding/usePersonalBrainOnboarding";
+import { PersonalBrainOnboarding } from "@/platform/personal-brain/components/personal-brain/onboarding/PersonalBrainOnboarding";
+import { BrainDashboard } from "@/platform/personal-brain/components/personal-brain/BrainDashboard";
 
 function PersonalBrainGate() {
   const { loading, onboarded, refresh } = usePersonalBrainOnboarding();

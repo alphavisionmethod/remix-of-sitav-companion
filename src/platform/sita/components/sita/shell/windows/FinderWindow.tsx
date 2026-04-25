@@ -10,7 +10,7 @@ import {
   Monitor, FileText, Download, File, HardDrive, ChevronLeft,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { AppStateWrapper } from "@/components/sita/shell/AppStateWrapper";
+import { AppStateWrapper } from "@/platform/sita/components/sita/shell/AppStateWrapper";
 import { AppLayout } from "@/platform/nova-sdk/ui/layout";
 import { NovaList, NovaSectionLabel, NovaText, NovaCard, NovaToolbar, NovaBadge } from "@/platform/nova-sdk/ui/components";
 import { VStack, HStack, Divider } from "@/platform/nova-sdk/ui/layout";

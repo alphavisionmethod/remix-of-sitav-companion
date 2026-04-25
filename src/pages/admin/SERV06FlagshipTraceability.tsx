@@ -9,7 +9,7 @@ import { getRoutesByFlagshipLoop } from "@/lib/core-services/service-registry/ro
 import { getDomainsByFlagshipLoop, SERVICE_OWNERSHIP_REGISTRY } from "@/lib/core-services/service-registry/service-ownership-registry";
 import { FLAGSHIP_LOOP_SEEDS } from "@/lib/core-services/flagship-loops/flagship-loop-service";
 import { Layers, Route, Database, AlertTriangle, CheckCircle } from "lucide-react";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 export default function SERV06FlagshipTraceability() {
   return (

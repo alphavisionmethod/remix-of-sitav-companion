@@ -5,7 +5,7 @@
 //
 // NOT a new empty-state primitive. Pure composition.
 // ═══════════════════════════════════════════════════════════════
-import { PremiumEmptyState } from "@/components/sita/PremiumEmptyState";
+import { PremiumEmptyState } from "@/platform/sita/components/sita/PremiumEmptyState";
 import type { LucideIcon } from "lucide-react";
 
 export interface NeedsHistoricalReleasesExplainerProps {

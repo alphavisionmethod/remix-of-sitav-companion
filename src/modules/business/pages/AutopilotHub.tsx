@@ -4,10 +4,10 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useCallback } from "react";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvisorInsight";
-import AutopilotWizard from "@/components/autopilot/AutopilotWizard";
-import AutopilotCommandCenter from "@/components/autopilot/AutopilotCommandCenter";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { ModuleAdvisorInsight } from "@/platform/sita/components/sita/domain-shared/ModuleAdvisorInsight";
+import AutopilotWizard from "@/platform/orchestration/components/autopilot/AutopilotWizard";
+import AutopilotCommandCenter from "@/platform/orchestration/components/autopilot/AutopilotCommandCenter";
 import { getDefaultConfig, type AutopilotConfig } from "@/lib/domain-engines/autopilot-engine";
 import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";

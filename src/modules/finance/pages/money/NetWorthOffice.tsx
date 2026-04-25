@@ -4,19 +4,19 @@ import { toast } from "sonner";
 // ═══════════════════════════════════════════════════════════════
 
 import { useAuth } from "@/contexts/AuthContext";
-import { SitaCard, SitaCardTitle, SitaSectionHeader } from "@/components/sita/SitaCard";
-import { KPITile } from "@/components/sita/SitaComponents";
-import { TrustBadge } from "@/components/sita/TrustBadge";
-import { ConfidenceBar } from "@/components/sita/primitives/ConfidenceBar";
-import { DomainHeader } from "@/components/sita/primitives/DomainHeader";
+import { SitaCard, SitaCardTitle, SitaSectionHeader } from "@/platform/sita/components/sita/SitaCard";
+import { KPITile } from "@/platform/sita/components/sita/SitaComponents";
+import { TrustBadge } from "@/platform/sita/components/sita/TrustBadge";
+import { ConfidenceBar } from "@/platform/sita/components/sita/primitives/ConfidenceBar";
+import { DomainHeader } from "@/platform/sita/components/sita/primitives/DomainHeader";
 import { useFinancialAccounts, useMoneyKPIs } from "@/hooks/use-domain-data";
 import { useSavingsGoals } from "@/hooks/use-money-data";
 import { DollarSign, TrendingUp, TrendingDown, Building, PiggyBank, CreditCard, BarChart3, ArrowUpRight, ArrowDownRight, Wallet, Clock, Rewind } from "lucide-react";
 import { motion } from "framer-motion";
 import { useMemo, useState } from "react";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvisorInsight";
-import { PremiumEmptyState } from "@/components/sita/PremiumEmptyState";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { ModuleAdvisorInsight } from "@/platform/sita/components/sita/domain-shared/ModuleAdvisorInsight";
+import { PremiumEmptyState } from "@/platform/sita/components/sita/PremiumEmptyState";
 
 const NetWorthOffice = () => {
   const { data: accounts = [] } = useFinancialAccounts();

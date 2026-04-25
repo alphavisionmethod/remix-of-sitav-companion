@@ -3,8 +3,8 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Route, Smartphone, Watch, Monitor } from "lucide-react";
 import { useAttentionDecisions } from "@/hooks/use-notification-calm-data";
-import NRCSubNav from "@/components/admin/NRCSubNav";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import NRCSubNav from "@/platform/admin/components/admin/NRCSubNav";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 const NRC01RoutingStudio = () => {
   const { data: routingMatrix, isLoading } = useAttentionDecisions();
   const channelSpecs = [] as any[];

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Settings2, Eye, Search, Zap, Calendar, Activity, Shield } from "lucide-react";
 import { useInvestmentStrategyRecords } from "@/hooks/use-investment-office";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 export default function OperatingModes() {
   const { data: liveData, isLoading } = useInvestmentStrategyRecords();
   const [activeMode, setActiveMode] = useState("quiet");

@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { SitaCard } from "@/components/sita/SitaCard";
+import { SitaCard } from "@/platform/sita/components/sita/SitaCard";
 import { LeadSourceBadge } from "./LeadSourceBadge";
 import { LeadAdvisorWhisper } from "./LeadAdvisorWhisper";
 import { LeadQuickActions } from "./LeadQuickActions";

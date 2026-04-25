@@ -6,12 +6,12 @@
 import { useState, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
-import { SimulationCanvas } from "@/components/simulation/SimulationCanvas";
-import { SimulationControls } from "@/components/simulation/SimulationControls";
-import { SimulationResults } from "@/components/simulation/SimulationResults";
-import { MarketIntelligencePanel } from "@/components/simulation/MarketIntelligencePanel";
-import { ComparisonOverlay } from "@/components/simulation/ComparisonOverlay";
+import { SitaPageHeader } from "@/platform/sita/components/sita/SitaPageHeader";
+import { SimulationCanvas } from "@/platform/ai/components/simulation/SimulationCanvas";
+import { SimulationControls } from "@/platform/ai/components/simulation/SimulationControls";
+import { SimulationResults } from "@/platform/ai/components/simulation/SimulationResults";
+import { MarketIntelligencePanel } from "@/platform/ai/components/simulation/MarketIntelligencePanel";
+import { ComparisonOverlay } from "@/platform/ai/components/simulation/ComparisonOverlay";
 import { Atom, ChevronLeft, ChevronRight, Globe, BarChart3, GitCompareArrows } from "lucide-react";
 import {
   runSimulationBatch,
@@ -25,7 +25,7 @@ import {
   applyIntelligenceToVariables,
   type IntelligenceReport,
 } from "@/domains/simulation/market-intelligence";
-import { PageShell } from "@/components/sita/PageShell";
+import { PageShell } from "@/platform/sita/components/sita/PageShell";
 
 type RightTab = "results" | "intelligence";
 

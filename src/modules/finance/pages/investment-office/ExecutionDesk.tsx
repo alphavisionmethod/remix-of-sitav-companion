@@ -4,7 +4,7 @@ import { Target, Shield, DollarSign, AlertTriangle, Check, ChevronRight, ArrowRi
 import type { TradeAction, Instrument } from "@/domains/investment/types";
 import { INSTRUMENTS, INVESTMENT_ADVISORS, PLATFORM_CONNECTIONS, SAMPLE_ORDERS, SAMPLE_THESES } from "@/hooks/useInvestmentOfficeData";
 import { useTradeOrders } from "@/hooks/use-investment-office";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 // ── Trade Prep Receipt ──
 function TradePrepReceipt({ instrument, action, quantity, orderType, limitPrice, estCost }: {

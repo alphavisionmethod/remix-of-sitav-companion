@@ -18,7 +18,7 @@ import {
   NovaText, NovaButton, NovaCard, NovaSectionLabel,
   NovaToggle, NovaBadge, NovaToolbar, NovaAvatar,
 } from "@/platform/nova-sdk/ui/components";
-import { AppStateWrapper } from "@/components/sita/shell/AppStateWrapper";
+import { AppStateWrapper } from "@/platform/sita/components/sita/shell/AppStateWrapper";
 import { useAppPlatform } from "@/contexts/AppPlatformContext";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";

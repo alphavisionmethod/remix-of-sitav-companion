@@ -7,8 +7,8 @@ import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Sparkles, X, ChevronRight, Zap } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { ConfidenceBar } from "@/components/sita/primitives/ConfidenceBar";
-import { AdvisorAvatar } from "@/components/sita/primitives/AdvisorAvatar";
+import { ConfidenceBar } from "@/platform/sita/components/sita/primitives/ConfidenceBar";
+import { AdvisorAvatar } from "@/platform/sita/components/sita/primitives/AdvisorAvatar";
 
 type Domain = "business" | "finance" | "concierge" | "crm" | "vault" | "health" | "ai-workforce";
 

@@ -1,6 +1,6 @@
 import { useSitaOS } from "@/contexts/SitaOSContext";
-import { AdminPageHeader } from "@/components/sita/admin/AdminPageHeader";
-import { SitaCard, SitaCardHeader, SitaCardTitle, SitaMetric, SitaSectionHeader } from "@/components/sita/SitaCard";
+import { AdminPageHeader } from "@/platform/sita/components/sita/admin/AdminPageHeader";
+import { SitaCard, SitaCardHeader, SitaCardTitle, SitaMetric, SitaSectionHeader } from "@/platform/sita/components/sita/SitaCard";
 import { Database, RefreshCw } from "lucide-react";
 import { useMemoryGovernanceRecords, useMemoryCorrections } from "@/hooks/useCAIData";
 

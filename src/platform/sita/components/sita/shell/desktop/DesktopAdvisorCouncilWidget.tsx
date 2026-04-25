@@ -1,5 +1,5 @@
 import { DesktopWidgetCard } from "./DesktopWidgetCard";
-import { AdvisorAvatar } from "@/components/sita/primitives/AdvisorAvatar";
+import { AdvisorAvatar } from "@/platform/sita/components/sita/primitives/AdvisorAvatar";
 import { Sparkles } from "lucide-react";
 import { useAdvisorCouncilData } from "@/hooks/useDesktopWidgetsData";
 

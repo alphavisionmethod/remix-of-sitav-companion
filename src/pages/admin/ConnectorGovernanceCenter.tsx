@@ -12,9 +12,9 @@ import { supabase } from "@/integrations/supabase/client";
 import { dbAny as db } from "@/lib/supabase-helpers";
 import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
-import { ConnectorSyncDashboard } from "@/components/sita/ConnectorSyncDashboard";
+import { ConnectorSyncDashboard } from "@/platform/sita/components/sita/ConnectorSyncDashboard";
 import { toast } from "sonner";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 // Production fallback — seed data removed
 const CONNECTORS: any[] = [];

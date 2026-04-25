@@ -6,10 +6,10 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { useRevenueOfficeMode } from "@/contexts/RevenueOfficeModeContext";
-import { RevenueOfficeModeToggle } from "@/components/revenue-office/RevenueOfficeModeToggle";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { PageShell } from "@/components/sita/PageShell";
-import { Typography } from "@/components/sita/Typography";
+import { RevenueOfficeModeToggle } from "@/modules/business/components/revenue-office/RevenueOfficeModeToggle";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { PageShell } from "@/platform/sita/components/sita/PageShell";
+import { Typography } from "@/platform/sita/components/sita/Typography";
 const UNIT_ECONOMICS = [
   { metric: "Customer Acquisition Cost (CAC)", value: "$142", trend: "-8%", status: "improving" },
   { metric: "Lifetime Value (LTV)", value: "$2,840", trend: "+12%", status: "strong" },

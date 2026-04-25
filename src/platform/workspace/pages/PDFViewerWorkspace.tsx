@@ -1,15 +1,15 @@
 import { useState } from "react";
-import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
-import { SitaTabs } from "@/components/sita/SitaComponents";
-import { SitaCard } from "@/components/sita/SitaCard";
+import { SitaPageHeader } from "@/platform/sita/components/sita/SitaPageHeader";
+import { SitaTabs } from "@/platform/sita/components/sita/SitaComponents";
+import { SitaCard } from "@/platform/sita/components/sita/SitaCard";
 import { FileText, ZoomIn, ZoomOut, ChevronLeft, ChevronRight, Search, Download, Printer, MessageSquare, Highlighter, Bookmark, RotateCw, Maximize2, Layers, PenTool } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Slider } from "@/components/ui/slider";
 import { motion } from "framer-motion";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { PageShell } from "@/components/sita/PageShell";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { PageShell } from "@/platform/sita/components/sita/PageShell";
 
 type AnnotationType = "highlight" | "comment" | "signature" | "bookmark";
 

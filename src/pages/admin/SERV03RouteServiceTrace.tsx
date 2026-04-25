@@ -10,7 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { ROUTE_SERVICE_INVENTORY, type RouteInventoryEntry } from "@/lib/core-services/service-registry/route-to-service-inventory";
 import { Route, ArrowRight, Database, Plug } from "lucide-react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 function ConfidenceBadge({ level }: { level: string }) {
   if (level === "high") return <Badge className="bg-emerald-500/20 text-emerald-400">{level}</Badge>;

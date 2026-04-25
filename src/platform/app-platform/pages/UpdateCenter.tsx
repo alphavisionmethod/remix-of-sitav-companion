@@ -4,7 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useCallback } from "react";
-import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
+import { SitaPageHeader } from "@/platform/sita/components/sita/SitaPageHeader";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
@@ -16,10 +16,10 @@ import {
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 import { useUpdateDaemon } from "@/hooks/useUpdateDaemon";
-import { UpdateSlotVisualization } from "@/components/sita/os/UpdateSlotVisualization";
-import { UpdateProgressOverlay } from "@/components/sita/os/UpdateProgressOverlay";
+import { UpdateSlotVisualization } from "@/platform/sita/components/sita/os/UpdateSlotVisualization";
+import { UpdateProgressOverlay } from "@/platform/sita/components/sita/os/UpdateProgressOverlay";
 import type { CatalogEntry, UpdateChannel } from "@/lib/services/update-daemon";
-import { PageShell } from "@/components/sita/PageShell";
+import { PageShell } from "@/platform/sita/components/sita/PageShell";
 
 const formatBytes = (b: number) => {
   if (b >= 1_000_000_000) return `${(b / 1_000_000_000).toFixed(1)} GB`;

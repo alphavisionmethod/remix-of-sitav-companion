@@ -1,4 +1,4 @@
-import { PageShell } from "@/components/sita/PageShell";
+import { PageShell } from "@/platform/sita/components/sita/PageShell";
 import { motion } from "framer-motion";
 import { Megaphone, Clock, Tag, Calendar, Globe, Mail, MessageSquare, Sparkles, Plus, Eye, Trash2 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useSites } from "@/hooks/use-digital-presence";
 import DPOSubNav from "./DPOSubNav";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 export default function PromotionsOffice() {
   const { data: liveData, isLoading } = useSites();
   return (

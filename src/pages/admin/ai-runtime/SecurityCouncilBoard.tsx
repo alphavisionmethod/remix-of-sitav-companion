@@ -24,7 +24,7 @@ import {
   Shield, RefreshCw, ShieldAlert, ShieldCheck, ShieldX,
   Activity, Eye, BellOff, AlertTriangle, Clock, ExternalLink,
 } from "lucide-react";
-import { EmptyState } from "@/components/sita/EmptyState";
+import { EmptyState } from "@/platform/sita/components/sita/EmptyState";
 import { Skeleton } from "@/components/primitives/feedback/Skeleton";
 import { StatusBadge } from "@/components/primitives/status/StatusBadge";
 import { AITruthDisclosure } from "@/components/primitives/status/AITruthDisclosure";
@@ -33,7 +33,7 @@ import { formatTrustLabel } from "@/lib/trust-copy/trust-copy-map";
 import {
   severityTone,
   findingStatusTone,
-} from "@/components/admin/ai-runtime/_shared/status-tone-maps";
+} from "@/platform/admin/components/admin/ai-runtime/_shared/status-tone-maps";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { formatDistanceToNow } from "date-fns";

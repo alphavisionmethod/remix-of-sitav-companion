@@ -5,7 +5,7 @@
 
 import { useParams, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { SitaCard, SitaCardTitle, SitaSectionHeader } from "@/components/sita/SitaCard";
+import { SitaCard, SitaCardTitle, SitaSectionHeader } from "@/platform/sita/components/sita/SitaCard";
 import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
@@ -14,7 +14,7 @@ import {
   Workflow, Clock, FileCheck, Zap, Eye, Play, XCircle,
   ArrowRight, Lock, Wifi, Receipt,
 } from "lucide-react";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 interface WorkflowEvent {
   id: string;

@@ -1,7 +1,7 @@
 import { useState, useMemo } from "react";
-import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
-import { SitaTabs } from "@/components/sita/SitaComponents";
-import { SitaCard } from "@/components/sita/SitaCard";
+import { SitaPageHeader } from "@/platform/sita/components/sita/SitaPageHeader";
+import { SitaTabs } from "@/platform/sita/components/sita/SitaComponents";
+import { SitaCard } from "@/platform/sita/components/sita/SitaCard";
 import { Grid3X3, Download, Upload, Plus, Filter, ArrowUpDown, Search, Trash2, Copy, Edit3, MoreHorizontal, FileSpreadsheet } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,8 +9,8 @@ import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Checkbox } from "@/components/ui/checkbox";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { PageShell } from "@/components/sita/PageShell";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { PageShell } from "@/platform/sita/components/sita/PageShell";
 
 interface DataRow {
   id: string;

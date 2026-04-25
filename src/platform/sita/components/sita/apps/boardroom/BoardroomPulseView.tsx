@@ -5,8 +5,8 @@ import { Briefcase, DollarSign, Users, TrendingUp, TrendingDown, AlertTriangle, 
 import { ConfidenceBar, AdvisorAvatar } from "@/components/sita/primitives";
 import { useBoardroomData } from "@/hooks/use-boardroom-data";
 import { getAdvisorRoster } from "@/domains/advisors/topology";
-import { SparklineChart } from "@/components/sita/SparklineChart";
-import { AnimatedProgressRing } from "@/components/sita/AnimatedProgressRing";
+import { SparklineChart } from "@/platform/sita/components/sita/SparklineChart";
+import { AnimatedProgressRing } from "@/platform/sita/components/sita/AnimatedProgressRing";
 import { useCountUpFormatted } from "@/hooks/useCountUp";
 
 interface Props {

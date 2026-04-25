@@ -21,7 +21,7 @@ describe("Component Smoke Tests - Domain Components", () => {
   });
 
   it("DemoStateBanner renders", async () => {
-    const Component = await getDefaultExport(() => import("@/components/reality/DemoStateBanner"));
+    const Component = await getDefaultExport(() => import("@/platform/product/components/reality/DemoStateBanner"));
     if (Component) {
       const { container } = render(<Component />);
       expect(container).toBeTruthy();
@@ -29,7 +29,7 @@ describe("Component Smoke Tests - Domain Components", () => {
   });
 
   it("RealityStateBadge renders", async () => {
-    const Component = await getDefaultExport(() => import("@/components/reality/RealityStateBadge"));
+    const Component = await getDefaultExport(() => import("@/platform/product/components/reality/RealityStateBadge"));
     if (Component) {
       const { container } = render(<Component stateClass="demo" />);
       expect(container).toBeTruthy();
@@ -37,7 +37,7 @@ describe("Component Smoke Tests - Domain Components", () => {
   });
 
   it("AIStateBadge renders", async () => {
-    const Component = await getDefaultExport(() => import("@/components/ai/AIStateBadge"));
+    const Component = await getDefaultExport(() => import("@/platform/ai/components/ai/AIStateBadge"));
     if (Component) {
       const { container } = render(<Component state="success_real" />);
       expect(container).toBeTruthy();
@@ -45,7 +45,7 @@ describe("Component Smoke Tests - Domain Components", () => {
   });
 
   it("AIDegradedState renders", async () => {
-    const Component = await getDefaultExport(() => import("@/components/ai/AIDegradedState"));
+    const Component = await getDefaultExport(() => import("@/platform/ai/components/ai/AIDegradedState"));
     if (Component) {
       const { container } = render(<Component />);
       expect(container).toBeTruthy();

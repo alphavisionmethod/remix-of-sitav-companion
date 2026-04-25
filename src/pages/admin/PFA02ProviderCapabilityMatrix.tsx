@@ -6,8 +6,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Layers, CheckCircle, XCircle } from "lucide-react";
-import PFASubNav from "@/components/admin/PFASubNav";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import PFASubNav from "@/platform/admin/components/admin/PFASubNav";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 
 

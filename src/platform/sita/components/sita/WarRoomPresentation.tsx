@@ -14,8 +14,8 @@ import { cn } from "@/lib/utils";
 import { useBoardroomPacket } from "@/hooks/use-boardroom";
 import type { BoardroomType, BoardroomContentSection, MetricCardData, NarrativeData, AlertData, ActionItemData, TableData } from "@/lib/boardroom/types";
 import { BOARDROOM_META as META } from "@/lib/boardroom/types";
-import { KPITile, RiskCard } from "@/components/sita/SitaComponents";
-import { SitaCard, SitaCardTitle, SitaSectionHeader } from "@/components/sita/SitaCard";
+import { KPITile, RiskCard } from "@/platform/sita/components/sita/SitaComponents";
+import { SitaCard, SitaCardTitle, SitaSectionHeader } from "@/platform/sita/components/sita/SitaCard";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 

@@ -4,10 +4,10 @@
 
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Sparkles } from "lucide-react";
-import { GlobalErrorBoundary } from "@/components/sita/GlobalErrorBoundary";
-import { PageShell } from "@/components/sita/PageShell";
+import { GlobalErrorBoundary } from "@/platform/sita/components/sita/GlobalErrorBoundary";
+import { PageShell } from "@/platform/sita/components/sita/PageShell";
 import { Button } from "@/components/ui/button";
-import { LearningSettingsCard } from "@/components/personal-brain/settings/LearningSettingsCard";
+import { LearningSettingsCard } from "@/platform/personal-brain/components/personal-brain/settings/LearningSettingsCard";
 
 export default function LearningSettings() {
   const navigate = useNavigate();

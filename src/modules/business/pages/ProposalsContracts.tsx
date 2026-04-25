@@ -1,10 +1,10 @@
-import { DomainAdvisorCard } from "@/components/advisors/DomainAdvisorCard";
+import { DomainAdvisorCard } from "@/platform/advisors/components/advisors/DomainAdvisorCard";
 import { motion } from "framer-motion";
 import { FileSignature, Clock, CheckCircle, AlertCircle, Plus, Eye, Send, DollarSign, TrendingUp, Zap, Users, BarChart3, FileText, PenTool, BookOpen, ChevronRight, Timer, MousePointer } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvisorInsight";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { ModuleAdvisorInsight } from "@/platform/sita/components/sita/domain-shared/ModuleAdvisorInsight";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
 import { getIdentityLayer } from "@/domains/engines/business-identity-layers";
 

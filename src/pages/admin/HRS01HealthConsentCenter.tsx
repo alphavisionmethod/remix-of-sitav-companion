@@ -6,8 +6,8 @@ import { Switch } from "@/components/ui/switch";
 import { ShieldCheck, Heart, Lock, Eye, AlertTriangle, CheckCircle2, Trash2, Clock, FileText, Loader2 } from "lucide-react";
 import { useHealthSignalConsents } from "@/hooks/use-health-signal-data";
 import { useToggleSignalConsent } from "@/hooks/use-health-signal-mutations";
-import HRSSubNav from "@/components/admin/HRSSubNav";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import HRSSubNav from "@/platform/admin/components/admin/HRSSubNav";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 const ICON_MAP: Record<string, any> = { ingestion: Eye, routing: ShieldCheck, boardroom: FileText, assistant: Heart };
 
 const HRS01HealthConsentCenter = () => {

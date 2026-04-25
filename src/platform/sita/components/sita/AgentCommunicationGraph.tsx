@@ -6,8 +6,8 @@
 
 import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
-import { SitaCard, SitaCardTitle, SitaSectionHeader } from "@/components/sita/SitaCard";
-import { KPITile } from "@/components/sita/SitaComponents";
+import { SitaCard, SitaCardTitle, SitaSectionHeader } from "@/platform/sita/components/sita/SitaCard";
+import { KPITile } from "@/platform/sita/components/sita/SitaComponents";
 import {
   Activity, Zap, ArrowRight, AlertTriangle, CheckCircle, Clock,
   Shield, Brain, Eye, Server, Wifi, Database, GitBranch, RefreshCw,

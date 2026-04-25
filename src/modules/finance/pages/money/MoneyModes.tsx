@@ -2,9 +2,9 @@
 // SITA OS — Money Office: Money Operating Modes
 // ═══════════════════════════════════════════════════════════════
 
-import { SitaCard, SitaCardTitle, SitaSectionHeader } from "@/components/sita/SitaCard";
-import { DomainHeader } from "@/components/sita/primitives/DomainHeader";
-import { TrustBadge } from "@/components/sita/TrustBadge";
+import { SitaCard, SitaCardTitle, SitaSectionHeader } from "@/platform/sita/components/sita/SitaCard";
+import { DomainHeader } from "@/platform/sita/components/sita/primitives/DomainHeader";
+import { TrustBadge } from "@/platform/sita/components/sita/TrustBadge";
 import {
   Shield, TrendingDown, RefreshCw, TrendingUp, Rocket, Zap,
   ShieldAlert, Briefcase, Users, Flame, CheckCircle
@@ -12,7 +12,7 @@ import {
 import { motion } from "framer-motion";
 import { useState } from "react";
 import type { MoneyModeId, MoneyMode } from "@/packages/finance-contracts/advanced-intelligence";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 const MODES: MoneyMode[] = [
   { id: "stable", label: "Stable", description: "Normal operating rhythm. Balanced allocations, standard warnings.", icon: "Shield",

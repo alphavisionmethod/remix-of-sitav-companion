@@ -1,7 +1,7 @@
 import { HeroCard, SummaryCard, StatusCard, AdvisorCard } from "@/components/sita/cards";
 import { TrustBadge } from "@/components/sita/badges";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { ReserveProgressChart, ReserveOverTimeChart } from "@/components/sita/SitaCharts";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { ReserveProgressChart, ReserveOverTimeChart } from "@/platform/sita/components/sita/SitaCharts";
 import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
 import { cn } from "@/lib/utils";
 import { PiggyBank, Target, Shield, TrendingUp, Plus, Trash2 } from "lucide-react";
@@ -13,7 +13,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useAction } from "@/hooks/useAction";
 import { useReservesSavings } from "@/hooks/use-domain-data";
 import { useConfirmation } from "@/hooks/use-confirmation";
-import { ConfirmationDialog } from "@/components/sita/ConfirmationDialog";
+import { ConfirmationDialog } from "@/platform/sita/components/sita/ConfirmationDialog";
 import { useQueryFreshness } from "@/hooks/use-query-freshness";
 
 

@@ -8,8 +8,8 @@ import { fromTable } from "@/lib/supabase-helpers";
 import { CheckCircle, XCircle, AlertTriangle, Shield } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import CNSubNav from "@/components/admin/CNSubNav";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import CNSubNav from "@/platform/admin/components/admin/CNSubNav";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 
 

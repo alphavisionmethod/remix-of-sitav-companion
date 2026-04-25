@@ -5,12 +5,12 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
-import { SitaPageHeader, SitaCard } from "@/components/sita/SitaCard";
+import { SitaPageHeader, SitaCard } from "@/platform/sita/components/sita/SitaCard";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Calendar, Zap, Clock, AlertTriangle, Pause, Play, Ban } from "lucide-react";
-import ARSubNav from "@/components/admin/ARSubNav";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import ARSubNav from "@/platform/admin/components/admin/ARSubNav";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 
 const stateColors: Record<string, string> = {

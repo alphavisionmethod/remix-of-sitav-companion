@@ -4,8 +4,8 @@
 
 import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@/test/test-utils";
-import { FormProgressIndicator } from "@/components/sita/FormProgressIndicator";
-import { DataFreshnessBadge } from "@/components/sita/DataFreshnessBadge";
+import { FormProgressIndicator } from "@/platform/sita/components/sita/FormProgressIndicator";
+import { DataFreshnessBadge } from "@/platform/sita/components/sita/DataFreshnessBadge";
 
 describe("FormProgressIndicator", () => {
   it("renders saving state", () => {

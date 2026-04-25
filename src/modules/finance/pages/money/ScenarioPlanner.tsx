@@ -3,8 +3,8 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { HeroCard, ComparisonCard, SummaryCard, StatusCard } from "@/components/sita/cards";
-import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvisorInsight";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { ModuleAdvisorInsight } from "@/platform/sita/components/sita/domain-shared/ModuleAdvisorInsight";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { Beaker, TrendingUp, TrendingDown, AlertTriangle, CheckCircle, ArrowRight, DollarSign, Shield, Zap } from "lucide-react";
 import { motion } from "framer-motion";
 import { useState, useMemo } from "react";

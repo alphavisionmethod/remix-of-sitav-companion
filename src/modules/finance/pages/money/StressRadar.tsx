@@ -3,10 +3,10 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { HeroCard, QueueCard, StatusCard } from "@/components/sita/cards";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvisorInsight";
-import { ConfidenceBar } from "@/components/sita/primitives/ConfidenceBar";
-import { AppSurface } from "@/components/sita/surfaces/AppSurface";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { ModuleAdvisorInsight } from "@/platform/sita/components/sita/domain-shared/ModuleAdvisorInsight";
+import { ConfidenceBar } from "@/platform/sita/components/sita/primitives/ConfidenceBar";
+import { AppSurface } from "@/platform/sita/components/sita/surfaces/AppSurface";
 import { cn } from "@/lib/utils";
 import { AlertTriangle, ShieldAlert, Calendar, TrendingDown, Zap, CreditCard, DollarSign } from "lucide-react";
 import { motion } from "framer-motion";

@@ -4,18 +4,18 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
-import { SitaPageHeader } from "@/components/sita/SitaCard";
-import { DegradedStateBanner } from "@/components/sita/truth/DegradedStateBanner";
-import { StalenessIndicator } from "@/components/sita/truth/StalenessIndicator";
-import { DurabilityStateBadge } from "@/components/sita/truth/DurabilityStateBadge";
+import { SitaPageHeader } from "@/platform/sita/components/sita/SitaCard";
+import { DegradedStateBanner } from "@/platform/sita/components/sita/truth/DegradedStateBanner";
+import { StalenessIndicator } from "@/platform/sita/components/sita/truth/StalenessIndicator";
+import { DurabilityStateBadge } from "@/platform/sita/components/sita/truth/DurabilityStateBadge";
 import {
   Plug, Shield, CheckCircle, XCircle, AlertTriangle, Clock, Activity,
   Play, Pause, RotateCcw, Settings, FileCheck, GitBranch, Lock, Zap
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { PremiumEmptyState } from "@/components/sita/PremiumEmptyState";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { PremiumEmptyState } from "@/platform/sita/components/sita/PremiumEmptyState";
 import { useConnectorControlCenter } from "@/hooks/use-connector-control-center";
 import { useNavigate } from "react-router-dom";
 const now = new Date();

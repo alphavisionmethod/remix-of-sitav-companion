@@ -1,10 +1,10 @@
 import { toast } from "sonner";
 import { HeroCard, SummaryCard, StatusCard, TimelineCard } from "@/components/sita/cards";
-import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvisorInsight";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { PremiumEmptyState } from "@/components/sita/PremiumEmptyState";
-import { SectionSkeleton } from "@/components/sita/SectionSkeleton";
-import { CashFlowChart } from "@/components/sita/SitaCharts";
+import { ModuleAdvisorInsight } from "@/platform/sita/components/sita/domain-shared/ModuleAdvisorInsight";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { PremiumEmptyState } from "@/platform/sita/components/sita/PremiumEmptyState";
+import { SectionSkeleton } from "@/platform/sita/components/sita/SectionSkeleton";
+import { CashFlowChart } from "@/platform/sita/components/sita/SitaCharts";
 import { AlertTriangle, DollarSign, TrendingDown, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
 import { useCashTimingWindows, useMoneyKPIs } from "@/hooks/use-domain-data";

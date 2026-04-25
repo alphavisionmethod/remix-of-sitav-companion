@@ -1,6 +1,6 @@
 import { useState, useCallback, useRef, useMemo } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import { SitaButton } from "@/components/sita/SitaCard";
+import { SitaButton } from "@/platform/sita/components/sita/SitaCard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {

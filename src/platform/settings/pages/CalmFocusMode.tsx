@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useDisplayMode } from "@/contexts/AppearanceContext";
 import { Moon, Sun, Eye, Volume2, VolumeX, Minimize2, Maximize2 } from "lucide-react";
-import { PageShell } from "@/components/sita/PageShell";
+import { PageShell } from "@/platform/sita/components/sita/PageShell";
 
 const CalmFocusMode = () => {
   const { mode, setMode, isFocus, isCalm, toggleFocus, toggleCalm } = useDisplayMode();

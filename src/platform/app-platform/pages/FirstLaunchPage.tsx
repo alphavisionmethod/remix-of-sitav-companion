@@ -8,9 +8,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Check, Pin, Star, Settings, Layers, ArrowRight, Sparkles, CheckCircle2, Shield } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAppPlatform } from "@/contexts/AppPlatformContext";
-import { AppIcon, VerificationBadge } from "@/components/sita/app-platform/AppStoreComponents";
+import { AppIcon, VerificationBadge } from "@/platform/sita/components/sita/app-platform/AppStoreComponents";
 import { toast } from "sonner";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 const FirstLaunchPage = () => {
   const navigate = useNavigate();

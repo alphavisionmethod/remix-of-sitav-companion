@@ -11,7 +11,7 @@ import {
   RefreshCw, Database, GitBranch, Eye, FileCheck, Zap, BarChart3, Radio, Lock
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 // ── Demo truth data ─────────────────────────────────────────────
 

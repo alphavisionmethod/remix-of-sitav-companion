@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button";
 import { StatusBadge } from "@/components/primitives/status/StatusBadge";
 import { AITruthDisclosure } from "@/components/primitives/status/AITruthDisclosure";
 import { OperatorActionPanel } from "@/components/primitives/actions/OperatorActionPanel";
-import { agentStatusTone } from "@/components/admin/ai-runtime/_shared/status-tone-maps";
+import { agentStatusTone } from "@/platform/admin/components/admin/ai-runtime/_shared/status-tone-maps";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -43,7 +43,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import {
   AIRuntimeDrilldownPanel,
   NightlyProofBadge,
-} from "@/components/admin/ai-runtime/AIRuntimeDrilldownPanel";
+} from "@/platform/admin/components/admin/ai-runtime/AIRuntimeDrilldownPanel";
 import {
   loadAllAgentsWithState,
   loadAgentDetail,
@@ -66,7 +66,7 @@ import {
   TrendingDown,
   Zap,
 } from "lucide-react";
-import { EmptyState } from "@/components/sita/EmptyState";
+import { EmptyState } from "@/platform/sita/components/sita/EmptyState";
 
 const COUNCIL_LABEL: Record<string, string> = {
   "product-build": "Product Build",

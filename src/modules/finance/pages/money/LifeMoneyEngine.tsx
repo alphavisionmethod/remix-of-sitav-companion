@@ -2,15 +2,15 @@
 // SITA OS — Money Office: Life-to-Money Impact Engine
 // ═══════════════════════════════════════════════════════════════
 
-import { SitaCard, SitaCardTitle, SitaSectionHeader } from "@/components/sita/SitaCard";
-import { KPITile } from "@/components/sita/SitaComponents";
-import { DomainHeader } from "@/components/sita/primitives/DomainHeader";
+import { SitaCard, SitaCardTitle, SitaSectionHeader } from "@/platform/sita/components/sita/SitaCard";
+import { KPITile } from "@/platform/sita/components/sita/SitaComponents";
+import { DomainHeader } from "@/platform/sita/components/sita/primitives/DomainHeader";
 import { Home, Baby, Briefcase, Users, Building, CreditCard, RefreshCw, Rocket, Sun, Heart, Plane, ArrowRight, AlertTriangle, TrendingDown, TrendingUp, DollarSign } from "lucide-react";
 import { motion } from "framer-motion";
 import { useState, useMemo } from "react";
 import type { LifeEventType, LifeMoneyImpact } from "@/packages/finance-contracts/advanced-intelligence";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvisorInsight";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { ModuleAdvisorInsight } from "@/platform/sita/components/sita/domain-shared/ModuleAdvisorInsight";
 
 interface LifeEventDef {
   type: LifeEventType;

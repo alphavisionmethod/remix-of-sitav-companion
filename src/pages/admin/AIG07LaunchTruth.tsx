@@ -6,8 +6,8 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Eye, CheckCircle, XCircle, AlertTriangle, ShieldCheck } from "lucide-react";
 import { getAILaunchHonestyBoard, getLaunchHonestyRecords } from "@/lib/core-services/ai-gateway";
 import type { LaunchHonestyLevel } from "@/lib/core-services/ai-gateway";
-import AIGSubNav from "@/components/admin/AIGSubNav";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import AIGSubNav from "@/platform/admin/components/admin/AIGSubNav";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 const LEVEL_VARIANT: Record<LaunchHonestyLevel, string> = {
   real: "default",

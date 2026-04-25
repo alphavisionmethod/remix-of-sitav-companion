@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { MarketingShell } from "@/components/marketing/MarketingShell";
-import { MarketingSeo } from "@/components/marketing/MarketingSeo";
-import { WaitlistForm } from "@/components/marketing/WaitlistForm";
+import { MarketingShell } from "@/platform/marketing/components/marketing/MarketingShell";
+import { MarketingSeo } from "@/platform/marketing/components/marketing/MarketingSeo";
+import { WaitlistForm } from "@/platform/marketing/components/marketing/WaitlistForm";
 import { supabase } from "@/integrations/supabase/client";
 
 export default function MarketingWaitlist() {

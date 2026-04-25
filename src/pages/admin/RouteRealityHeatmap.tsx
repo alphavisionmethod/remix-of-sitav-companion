@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useRealityClassifications } from "@/hooks/useRealityClassifications";
 import { Map, Eye, Cpu, Shield, CheckCircle2 } from "lucide-react";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 const STATE_BG: Record<string, string> = {
   presentational: "bg-muted/60 border-muted-foreground/20",

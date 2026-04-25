@@ -5,15 +5,15 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader, SitaMetric } from "@/components/sita/SitaCard";
-import { KPITile } from "@/components/sita/SitaComponents";
+import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader, SitaMetric } from "@/platform/sita/components/sita/SitaCard";
+import { KPITile } from "@/platform/sita/components/sita/SitaComponents";
 import { PACK_CATALOG, getInstalledPacks } from "@/lib/pack-store";
 import { BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, Area, AreaChart } from "recharts";
 import { Package, TrendingUp, DollarSign, Users, Activity, ArrowRight, Target, Zap, BarChart3, RefreshCw } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { PremiumEmptyState } from "@/components/sita/PremiumEmptyState";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { PremiumEmptyState } from "@/platform/sita/components/sita/PremiumEmptyState";
 import { useStoreAnalytics } from "@/hooks/use-store-analytics";
 
 const StoreAnalyticsPage = () => {

@@ -12,9 +12,9 @@ import { AdminPrimaryNav, resolveActiveDomain } from "./AdminPrimaryNav";
 import { AdminDomainNav } from "./AdminDomainNav";
 import { AdminBreadcrumbs } from "./AdminBreadcrumbs";
 import { OwnerWorkflowSwitcher } from "./OwnerWorkflowSwitcher";
-import { TrustRibbon } from "@/components/sita/admin/TrustRibbon";
+import { TrustRibbon } from "@/platform/sita/components/sita/admin/TrustRibbon";
 import { RolloutStatusBanner } from "./RolloutStatusBanner";
-import { EmergencyBanner } from "@/components/admin/kill-switches/EmergencyBanner";
+import { EmergencyBanner } from "@/platform/admin/components/admin/kill-switches/EmergencyBanner";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {

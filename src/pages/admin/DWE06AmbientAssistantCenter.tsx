@@ -1,4 +1,4 @@
-import DWESubNav from "@/components/admin/DWESubNav";
+import DWESubNav from "@/platform/admin/components/admin/DWESubNav";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Bot, Brain, Zap, Shield, HeartHandshake } from "lucide-react";
@@ -6,8 +6,8 @@ import { fromTable } from "@/lib/supabase-helpers";
 import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/contexts/AuthContext";
 import type { AssistantRolePresenceRow, ProactiveInterventionRow } from "@/lib/types/dwe-types";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { DemoOnlyBanner } from "@/components/claim-safety/DemoOnlyBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { DemoOnlyBanner } from "@/platform/trust/components/claim-safety/DemoOnlyBanner";
 
 export default function DWE06AmbientAssistantCenter() {
   const { user } = useAuth();

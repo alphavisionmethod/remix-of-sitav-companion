@@ -3,10 +3,10 @@
 // ═══════════════════════════════════════════════════════════════
 
 import React from "react";
-import { DomainAppShell } from "@/components/sita/shell/DomainAppShell";
-import type { DomainConfig } from "@/components/sita/shell/DomainAppShell";
-import type { NavTabGroup } from "@/components/sita/shell/AppSidebarNav";
-import { GlobalErrorBoundary } from "@/components/sita/GlobalErrorBoundary";
+import { DomainAppShell } from "@/platform/sita/components/sita/shell/DomainAppShell";
+import type { DomainConfig } from "@/platform/sita/components/sita/shell/DomainAppShell";
+import type { NavTabGroup } from "@/platform/sita/components/sita/shell/AppSidebarNav";
+import { GlobalErrorBoundary } from "@/platform/sita/components/sita/GlobalErrorBoundary";
 import { useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAppStatePersistence, restoreAppState } from "@/hooks/useAppStatePersistence";

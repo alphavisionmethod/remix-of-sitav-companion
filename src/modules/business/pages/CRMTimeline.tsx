@@ -12,7 +12,7 @@ import {
   Receipt, Link2, ThumbsUp, ThumbsDown, Eye, Reply, Zap, Inbox
 } from "lucide-react";
 import { format, formatDistanceToNow, isToday, isYesterday, isThisWeek, startOfDay, differenceInDays } from "date-fns";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";

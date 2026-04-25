@@ -8,7 +8,7 @@ import { useBusinessProfile } from "@/hooks/useBusinessProfile";
 import { getIdentityLayer } from "@/domains/engines/business-identity-layers";
 import { getModuleAdaptation } from "@/domains/engines/business-module-adaptations";
 import { generateHomeAdvisors, detectAdvisorDisagreements } from "@/domains/engines/business-advisor-engine";
-import { ModuleAdvisorPanel } from "@/components/business/advisor-board/ModuleAdvisorPanel";
+import { ModuleAdvisorPanel } from "@/modules/business/components/business/advisor-board/ModuleAdvisorPanel";
 
 type Stance = "confident" | "cautious" | "divided";
 

@@ -4,11 +4,11 @@
 // ═══════════════════════════════════════════════════════════════
 
 // Components
-export { DegradedStatePanel } from "@/components/reality/DegradedStatePanel";
-export { DemoStateBanner } from "@/components/reality/DemoStateBanner";
-export { LaunchHonestyBadge } from "@/components/reality/LaunchHonestyBadge";
-export { ModeResolutionBanner } from "@/components/reality/ModeResolutionBanner";
-export { RealityStateBadge } from "@/components/reality/RealityStateBadge";
+export { DegradedStatePanel } from "@/platform/product/components/reality/DegradedStatePanel";
+export { DemoStateBanner } from "@/platform/product/components/reality/DemoStateBanner";
+export { LaunchHonestyBadge } from "@/platform/product/components/reality/LaunchHonestyBadge";
+export { ModeResolutionBanner } from "@/platform/product/components/reality/ModeResolutionBanner";
+export { RealityStateBadge } from "@/platform/product/components/reality/RealityStateBadge";
 
 // Hooks
 export * from "@/hooks/useRealityClassifications";

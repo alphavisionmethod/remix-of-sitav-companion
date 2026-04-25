@@ -4,14 +4,14 @@
 // ═══════════════════════════════════════════════════════════════
 
 // Fleet
-export { default as FleetHealthWidget } from "@/components/admin/FleetHealthWidget";
+export { default as FleetHealthWidget } from "@/platform/admin/components/admin/FleetHealthWidget";
 
 // Safety / Recovery / Authority
-export { EmergencyAuthorityPanel } from "@/components/admin/shells/EmergencyAuthorityPanel";
-export { NoSilentFailureAlerts } from "@/components/admin/shells/NoSilentFailureAlerts";
-export { RemoteAuthoritySession } from "@/components/admin/shells/RemoteAuthoritySession";
-export { RolloutStatusBanner } from "@/components/admin/shells/RolloutStatusBanner";
-export { SafeModeProvider, useSafeMode } from "@/components/admin/shells/SafeModeProvider";
-export { SafetyConfirmDialog } from "@/components/admin/shells/SafetyConfirmDialog";
-export type { SafetyAction, RiskLevel } from "@/components/admin/shells/SafetyConfirmDialog";
-export { SelfHealingStatusPanel } from "@/components/admin/shells/SelfHealingStatusPanel";
+export { EmergencyAuthorityPanel } from "@/platform/admin/components/admin/shells/EmergencyAuthorityPanel";
+export { NoSilentFailureAlerts } from "@/platform/admin/components/admin/shells/NoSilentFailureAlerts";
+export { RemoteAuthoritySession } from "@/platform/admin/components/admin/shells/RemoteAuthoritySession";
+export { RolloutStatusBanner } from "@/platform/admin/components/admin/shells/RolloutStatusBanner";
+export { SafeModeProvider, useSafeMode } from "@/platform/admin/components/admin/shells/SafeModeProvider";
+export { SafetyConfirmDialog } from "@/platform/admin/components/admin/shells/SafetyConfirmDialog";
+export type { SafetyAction, RiskLevel } from "@/platform/admin/components/admin/shells/SafetyConfirmDialog";
+export { SelfHealingStatusPanel } from "@/platform/admin/components/admin/shells/SelfHealingStatusPanel";

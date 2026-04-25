@@ -1,7 +1,7 @@
 // Route-entry wrapper for the OS Setup Experience.
 // OSSetupExperience handles its own DB persistence and data mode internally.
-import { OSSetupExperience } from "@/components/sita/OSSetupExperience";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { OSSetupExperience } from "@/platform/sita/components/sita/OSSetupExperience";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 const OnboardingWrapper = () => (
   <>

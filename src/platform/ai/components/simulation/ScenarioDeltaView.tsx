@@ -5,7 +5,7 @@
 
 import { cn } from "@/lib/utils";
 import { ArrowRight, TrendingUp, TrendingDown, Minus } from "lucide-react";
-import { ConfidenceRiskMeter } from "@/components/explainability/ConfidenceRiskMeter";
+import { ConfidenceRiskMeter } from "@/platform/ai/components/explainability/ConfidenceRiskMeter";
 import type { SimulationResult } from "@/domains/simulation/monte-carlo-engine";
 
 interface ScenarioDeltaViewProps {

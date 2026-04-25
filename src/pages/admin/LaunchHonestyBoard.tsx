@@ -5,7 +5,7 @@ import { Progress } from "@/components/ui/progress";
 import { useRealityClassifications } from "@/hooks/useRealityClassifications";
 import { useMockReplacements } from "@/hooks/useMockReplacements";
 import { Rocket, AlertTriangle, ShieldCheck, Eye, TrendingDown } from "lucide-react";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 export default function LaunchHonestyBoard() {
   const { data: classifications = [] } = useRealityClassifications();

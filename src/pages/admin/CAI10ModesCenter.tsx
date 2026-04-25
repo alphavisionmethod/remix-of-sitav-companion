@@ -1,6 +1,6 @@
 import { useSitaOS } from "@/contexts/SitaOSContext";
-import { AdminPageHeader } from "@/components/sita/admin/AdminPageHeader";
-import { SitaCard, SitaCardHeader, SitaCardTitle, SitaMetric, SitaSectionHeader } from "@/components/sita/SitaCard";
+import { AdminPageHeader } from "@/platform/sita/components/sita/admin/AdminPageHeader";
+import { SitaCard, SitaCardHeader, SitaCardTitle, SitaMetric, SitaSectionHeader } from "@/platform/sita/components/sita/SitaCard";
 import { Sliders, Play, CheckCircle } from "lucide-react";
 import type { SitaMode } from "@/lib/services/sita-modes/index";
 

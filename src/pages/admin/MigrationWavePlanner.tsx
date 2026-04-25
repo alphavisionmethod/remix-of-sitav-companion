@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useMockReplacements } from "@/hooks/useMockReplacements";
 import { Layers, Users, Clock, Target, ArrowRight } from "lucide-react";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 export default function MigrationWavePlanner() {
   const { data: replacements = [] } = useMockReplacements();

@@ -1,10 +1,10 @@
 import { useAuth } from "@/contexts/AuthContext";
-import { SurfaceTrustStrip } from "@/components/sita/SurfaceTrustStrip";
+import { SurfaceTrustStrip } from "@/platform/sita/components/sita/SurfaceTrustStrip";
 import { ConciergePageWrapper } from "@/components/concierge";
-import { KPITile, SitaTabs, RiskCard } from "@/components/sita/SitaComponents";
-import { TrustBadge } from "@/components/sita/TrustBadge";
-import { GlassCard } from "@/components/sita/PremiumPageComponents";
-import { BoardroomSection, OverloadCard } from "@/components/sita/HouseholdComponents";
+import { KPITile, SitaTabs, RiskCard } from "@/platform/sita/components/sita/SitaComponents";
+import { TrustBadge } from "@/platform/sita/components/sita/TrustBadge";
+import { GlassCard } from "@/platform/sita/components/sita/PremiumPageComponents";
+import { BoardroomSection, OverloadCard } from "@/platform/sita/components/sita/HouseholdComponents";
 import { ConciergeAdvisorInsightCard, ConciergeEmptyState } from "@/components/concierge";
 import { useState } from "react";
 import { motion } from "framer-motion";
@@ -12,7 +12,7 @@ import {
   BarChart3, Calendar, CheckSquare, AlertCircle, Heart, Users, ArrowRight, Clock, Shield,
   Plane, ShoppingCart, GraduationCap, Wrench, Gift, Sparkles, Target, FileText, TrendingUp
 } from "lucide-react";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
 const priorities: any[] = [];
 const scheduleConflicts: any[] = [];

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, ChevronRight, Hash, CheckCircle, AlertTriangle, Minus, TrendingUp, Award, PlayCircle, Rewind } from "lucide-react";
-import { AnimatedProgressRing } from "@/components/sita/AnimatedProgressRing";
+import { AnimatedProgressRing } from "@/platform/sita/components/sita/AnimatedProgressRing";
 
 interface Decision {
   id: string;

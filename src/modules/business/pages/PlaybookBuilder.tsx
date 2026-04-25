@@ -5,13 +5,13 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useCallback } from "react";
-import PlaybookSimulator from "@/components/business/PlaybookSimulator";
+import PlaybookSimulator from "@/modules/business/components/business/PlaybookSimulator";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
 import { motion, AnimatePresence, Reorder } from "framer-motion";
-import { SitaCard, SitaCardTitle, SitaButton } from "@/components/sita/SitaCard";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvisorInsight";
-import { KPITile } from "@/components/sita/SitaComponents";
+import { SitaCard, SitaCardTitle, SitaButton } from "@/platform/sita/components/sita/SitaCard";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { ModuleAdvisorInsight } from "@/platform/sita/components/sita/domain-shared/ModuleAdvisorInsight";
+import { KPITile } from "@/platform/sita/components/sita/SitaComponents";
 import {
   Plus, Trash2, GripVertical, ChevronDown, ChevronRight,
   Mail, Phone, MessageSquare, AlertTriangle, Clock, Zap,

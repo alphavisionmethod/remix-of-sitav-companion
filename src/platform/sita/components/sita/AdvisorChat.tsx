@@ -12,7 +12,7 @@ import {
   ChevronDown, Cpu, CheckCircle, Zap, MessageSquare, ShieldAlert, Eye, FlaskConical,
   AlertTriangle, Coins, StopCircle
 } from "lucide-react";
-import { AIDegradedState } from "@/components/ai/AIDegradedState";
+import { AIDegradedState } from "@/platform/ai/components/ai/AIDegradedState";
 import type { TrustEnrichedResponse } from "@/lib/ai/ai-capability-client";
 
 type AdvisorDomain = "money" | "business" | "concierge" | "family" | "growth" | "general";

@@ -5,12 +5,12 @@ import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Shield, AlertTriangle, BookOpen, Clock, ChevronRight } from "lucide-react";
 import { Link, useSearchParams } from "react-router-dom";
-import { SitaPageHeader, SitaCard, SitaCardTitle } from "@/components/sita/SitaCard";
-import ARSubNav from "@/components/admin/ARSubNav";
+import { SitaPageHeader, SitaCard, SitaCardTitle } from "@/platform/sita/components/sita/SitaCard";
+import ARSubNav from "@/platform/admin/components/admin/ARSubNav";
 import { KILL_SWITCH_REGISTRY } from "@/lib/control-plane/kill-switch-registry";
 import { loadKillSwitchRows, type KillSwitchRow } from "@/lib/control-plane/kill-switch-db-client";
-import { KillSwitchToggleDialog } from "@/components/admin/kill-switches/KillSwitchToggleDialog";
-import { KillSwitchAuditPanel } from "@/components/admin/kill-switches/KillSwitchAuditPanel";
+import { KillSwitchToggleDialog } from "@/platform/admin/components/admin/kill-switches/KillSwitchToggleDialog";
+import { KillSwitchAuditPanel } from "@/platform/admin/components/admin/kill-switches/KillSwitchAuditPanel";
 
 const SEVERITY_COLOR: Record<string, string> = {
   severe: "border-destructive/40 bg-destructive/5 text-destructive",

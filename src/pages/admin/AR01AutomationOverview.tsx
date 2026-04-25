@@ -3,13 +3,13 @@
 // Now wired through useKernelQuery for kernel-observed reads.
 // ═══════════════════════════════════════════════════════════════
 
-import { SitaPageHeader, SitaCard, SitaCardTitle } from "@/components/sita/SitaCard";
+import { SitaPageHeader, SitaCard, SitaCardTitle } from "@/platform/sita/components/sita/SitaCard";
 import { Badge } from "@/components/ui/badge";
 import { Activity, Zap, AlertTriangle, Shield, Clock, CheckCircle, XCircle, Pause } from "lucide-react";
 import { motion } from "framer-motion";
 import { useKernelQuery } from "@/hooks/use-kernel-query";
-import ARSubNav from "@/components/admin/ARSubNav";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import ARSubNav from "@/platform/admin/components/admin/ARSubNav";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 function useScheduledJobs() {
   return useKernelQuery("automation", "scheduled_jobs", {

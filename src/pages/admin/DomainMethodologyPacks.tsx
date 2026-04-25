@@ -3,7 +3,7 @@ import { BookOpen, Globe, Shield, Cpu, Landmark, Wallet, BarChart3 } from "lucid
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { CANONICAL_DOMAIN_PACKS } from "@/lib/delivery-methodology/domain-packs";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 const iconMap: Record<string, any> = {
   "money-office": Wallet, "revenue-office": BarChart3, "digital-presence": Globe,

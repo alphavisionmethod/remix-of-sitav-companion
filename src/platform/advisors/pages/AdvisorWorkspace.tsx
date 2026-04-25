@@ -11,9 +11,9 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useApprovalQueue } from "@/hooks/use-brain-core";
 import ReactMarkdown from "react-markdown";
 import { useNavigate, useParams } from "react-router-dom";
-import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader, SitaMetric, SitaButton } from "@/components/sita/SitaCard";
-import { TrustBadge, type TrustLevel } from "@/components/sita/TrustBadge";
-import { StateBadge, StateStep, type ExecutionState } from "@/components/sita/StateBadge";
+import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader, SitaMetric, SitaButton } from "@/platform/sita/components/sita/SitaCard";
+import { TrustBadge, type TrustLevel } from "@/platform/sita/components/sita/TrustBadge";
+import { StateBadge, StateStep, type ExecutionState } from "@/platform/sita/components/sita/StateBadge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
@@ -21,7 +21,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   AdvisorCard, RecommendationCard, SimulationCard, ApprovalCard,
   ProofCard, MemoryCard, SynthesisCard, ConfidenceLadder,
-  BoardroomAdvisorCard, UncertaintyCard } from "@/components/sita/AdvisorComponents";
+  BoardroomAdvisorCard, UncertaintyCard } from "@/platform/sita/components/sita/AdvisorComponents";
 import { advisors, recommendations, simulations, approvals, proofHistory, memoryItems, synthesis } from "@/hooks/useAdvisorMissionControl";
 import { useStreamingChat } from "@/hooks/use-streaming-chat";
 import {
@@ -37,7 +37,7 @@ import type { ApprovalRequest, ExecutionEnvelope, Receipt, TrustState, Opportuni
 import type { AdvisorConfig, AdvisorId } from "@/packages/advisor-config";
 import type { ProofPack, TypedReceipt } from "@/packages/proof-model";
 import type { RefusalState, ContradictionReport } from "@/packages/policy-contracts";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 
 

@@ -1,5 +1,5 @@
 import { Card, CardContent } from "@/components/ui/card";
-import { BRAIN_MODES } from "@/components/personal-brain/BRAIN_MODES";
+import { BRAIN_MODES } from "@/platform/personal-brain/components/personal-brain/BRAIN_MODES";
 import { Badge } from "@/components/ui/badge";
 
 export default function ModesSettings() {

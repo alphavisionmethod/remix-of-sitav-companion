@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import { useCountUp } from "@/hooks/useCountUp";
 import type { LucideIcon } from "lucide-react";
-import { PageShell } from "@/components/sita/PageShell";
+import { PageShell } from "@/platform/sita/components/sita/PageShell";
 
 // ─── Demo data ───
 const USER_STATS = { xp: 4280, level: 12, streak: 7, totalDecisions: 156, platformsConnected: 8 };

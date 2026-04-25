@@ -11,7 +11,7 @@ import type {
 } from "@/packages/contracts/specialized/setup-orchestration";
 import { RESOLVED_STATUSES } from "@/packages/contracts/specialized/setup-orchestration";
 import { useAuth } from "@/contexts/AuthContext";
-import { onNetworkChange, onVisibilityChange } from "@/components/sita/boot/bootStatePersistence";
+import { onNetworkChange, onVisibilityChange } from "@/platform/sita/components/sita/boot/bootStatePersistence";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable, fromDynamicTable } from "@/lib/supabase-helpers";
 import { useRuntimeHost } from "@/runtimes/runtime-host-adapter";

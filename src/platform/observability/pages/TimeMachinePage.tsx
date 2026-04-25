@@ -11,7 +11,7 @@ import {
   AlertCircle, Sparkles, ArrowRight, ChevronDown, Eye
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { PageShell } from "@/components/sita/PageShell";
+import { PageShell } from "@/platform/sita/components/sita/PageShell";
 
 // ─── Demo Data ───
 const PAST_DECISIONS = [

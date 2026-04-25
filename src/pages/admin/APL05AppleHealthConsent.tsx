@@ -5,8 +5,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Switch } from "@/components/ui/switch";
 import { Heart, ShieldCheck, Eye, EyeOff, Lock, AlertTriangle, CheckCircle2, Clock, Activity, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import APLSubNav from "@/components/admin/APLSubNav";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import APLSubNav from "@/platform/admin/components/admin/APLSubNav";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 // Production fallback — seed data removed
 const SIGNALS: any[] = [];

@@ -1,4 +1,4 @@
-import { MobileShell } from "@/components/mobile/MobileShell";
+import { MobileShell } from "@/platform/experience/components/mobile/MobileShell";
 import { useNavigate } from "react-router-dom";
 import {
   BarChart3, ShieldCheck, Bell, FileText, TrendingUp, FolderOpen,

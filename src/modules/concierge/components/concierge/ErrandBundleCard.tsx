@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { GlassCard } from "@/components/sita/PremiumPageComponents";
+import { GlassCard } from "@/platform/sita/components/sita/PremiumPageComponents";
 import { MapPin, Clock, Zap, CheckCircle2, Trash2 } from "lucide-react";
 
 export type ErrandStatus = "pending" | "in_progress" | "done" | "snoozed";

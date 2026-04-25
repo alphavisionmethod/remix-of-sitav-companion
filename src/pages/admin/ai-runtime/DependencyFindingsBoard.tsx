@@ -12,7 +12,7 @@ import { ShieldAlert, RefreshCw, Filter, ExternalLink, Inbox } from "lucide-reac
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { Link } from "react-router-dom";
-import { EmptyState } from "@/components/sita/EmptyState";
+import { EmptyState } from "@/platform/sita/components/sita/EmptyState";
 import { Skeleton } from "@/components/primitives/feedback/Skeleton";
 
 interface Finding {

@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { GlassCard } from "@/components/sita/PremiumPageComponents";
+import { GlassCard } from "@/platform/sita/components/sita/PremiumPageComponents";
 import { Sparkles, Sun, CloudRain, Shield, Zap } from "lucide-react";
 
 interface ConciergeHomeSummaryProps {

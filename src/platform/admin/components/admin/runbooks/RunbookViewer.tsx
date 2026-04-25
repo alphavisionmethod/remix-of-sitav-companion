@@ -9,7 +9,7 @@ import { ArrowLeft, BookOpen, Shield, AlertTriangle, Filter, Download } from "lu
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { SitaCard } from "@/components/sita/SitaCard";
+import { SitaCard } from "@/platform/sita/components/sita/SitaCard";
 import { getRunbookEntry, loadRunbookMarkdown } from "@/lib/support/runbook-loader";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";

@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { getAllActions } from "@/lib/core-services/service-registry/route-to-service-inventory";
 import { Crosshair, CheckCircle, AlertTriangle } from "lucide-react";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 export default function SERV05CanonicalActions() {
   const allActions = getAllActions();

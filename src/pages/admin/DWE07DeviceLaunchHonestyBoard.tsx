@@ -1,4 +1,4 @@
-import DWESubNav from "@/components/admin/DWESubNav";
+import DWESubNav from "@/platform/admin/components/admin/DWESubNav";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Rocket, CheckCircle, XCircle, Beaker } from "lucide-react";
@@ -7,9 +7,9 @@ import { DEVICE_ROADMAP } from "@/packages/contracts/msa/device-family-contract"
 import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/contexts/AuthContext";
 import type { AmbientLaunchReadinessRow } from "@/lib/types/dwe-types";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { DemoOnlyBanner } from "@/components/claim-safety/DemoOnlyBanner";
-import { FutureVisionBadge } from "@/components/claim-safety/FutureVisionBadge";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { DemoOnlyBanner } from "@/platform/trust/components/claim-safety/DemoOnlyBanner";
+import { FutureVisionBadge } from "@/platform/trust/components/claim-safety/FutureVisionBadge";
 import { getDemoOnlySurfacesByContainment, ONLY_SURFACE_COUNT } from "@/lib/claim-safety/demo-only-surface-registry";
 export default function DWE07DeviceLaunchHonestyBoard() {
   const { user } = useAuth();

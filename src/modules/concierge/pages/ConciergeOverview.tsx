@@ -6,13 +6,13 @@ import { toast } from "sonner";
 
 import { useAuth } from "@/contexts/AuthContext";
 import { HeroCard, QueueCard, ActionCard, TimelineCard, AdvisorCard, StatusCard } from "@/components/sita/cards";
-import { DomainCard } from "@/components/sita/cards/DomainCard";
+import { DomainCard } from "@/platform/sita/components/sita/cards/DomainCard";
 import { UrgencyBadge, FreshnessBadge } from "@/components/sita/badges";
-import { ListReveal, ListRevealItem } from "@/components/sita/motion/AppTransitions";
-import { AppSurface } from "@/components/sita/surfaces/AppSurface";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { ListReveal, ListRevealItem } from "@/platform/sita/components/sita/motion/AppTransitions";
+import { AppSurface } from "@/platform/sita/components/sita/surfaces/AppSurface";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
-import { PremiumEmptyState } from "@/components/sita/PremiumEmptyState";
+import { PremiumEmptyState } from "@/platform/sita/components/sita/PremiumEmptyState";
 import { useConciergeNavigation } from "@/contexts/ConciergeNavigationContext";
 import { useHouseholdTasks, useFamilyEvents } from "@/hooks/use-sita-data";
 import { useMemo } from "react";

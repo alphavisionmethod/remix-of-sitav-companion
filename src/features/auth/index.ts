@@ -4,11 +4,11 @@
 // ═══════════════════════════════════════════════════════════════
 
 // Components
-export { AdminRoute } from "@/components/auth/AdminRoute";
-export { AppleSignInButton } from "@/components/auth/AppleSignInButton";
-export { AuthDivider } from "@/components/auth/AuthDivider";
-export { GoogleSignInButton } from "@/components/auth/GoogleSignInButton";
-export { PermissionGatedRoute } from "@/components/auth/PermissionGatedRoute";
+export { AdminRoute } from "@/platform/auth/components/auth/AdminRoute";
+export { AppleSignInButton } from "@/platform/auth/components/auth/AppleSignInButton";
+export { AuthDivider } from "@/platform/auth/components/auth/AuthDivider";
+export { GoogleSignInButton } from "@/platform/auth/components/auth/GoogleSignInButton";
+export { PermissionGatedRoute } from "@/platform/auth/components/auth/PermissionGatedRoute";
 
 // Context
 export { AuthProvider, useAuth } from "@/contexts/AuthContext";

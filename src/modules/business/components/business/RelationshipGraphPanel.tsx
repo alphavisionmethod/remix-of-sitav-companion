@@ -1,5 +1,5 @@
-import { SitaCard, SitaCardTitle, SitaButton } from "@/components/sita/SitaCard";
-import { TrustBadge } from "@/components/sita/TrustBadge";
+import { SitaCard, SitaCardTitle, SitaButton } from "@/platform/sita/components/sita/SitaCard";
+import { TrustBadge } from "@/platform/sita/components/sita/TrustBadge";
 import { motion } from "framer-motion";
 import { Users, Building, Home, UserCheck, ArrowRight, Link2, Star, Phone, Mail, ShieldCheck } from "lucide-react";
 import { useDataMode } from "@/contexts/DataModeContext";

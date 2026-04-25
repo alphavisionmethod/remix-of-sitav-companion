@@ -1,10 +1,10 @@
 // Personal Brain — Phase 7 Tools page
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Wrench } from "lucide-react";
-import { GlobalErrorBoundary } from "@/components/sita/GlobalErrorBoundary";
-import { PageShell } from "@/components/sita/PageShell";
+import { GlobalErrorBoundary } from "@/platform/sita/components/sita/GlobalErrorBoundary";
+import { PageShell } from "@/platform/sita/components/sita/PageShell";
 import { Button } from "@/components/ui/button";
-import { ToolsRegistryCard } from "@/components/personal-brain/tools/ToolsRegistryCard";
+import { ToolsRegistryCard } from "@/platform/personal-brain/components/personal-brain/tools/ToolsRegistryCard";
 
 function ToolsInner() {
   const navigate = useNavigate();

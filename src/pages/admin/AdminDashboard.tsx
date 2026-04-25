@@ -16,10 +16,10 @@ import { supabase } from "@/integrations/supabase/client";
 import { dbAny as db } from "@/lib/supabase-helpers";
 import type { AuditEntry, ComplianceReport } from "@/packages/audit-contracts";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
-import { PageSkeleton } from "@/components/sita/PageSkeleton";
-import { NotificationInbox } from "@/components/notifications/NotificationInbox";
-import { ArchitectureHealthBadge } from "@/components/admin/panels/ArchitectureHealthBadge";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageSkeleton } from "@/platform/sita/components/sita/PageSkeleton";
+import { NotificationInbox } from "@/platform/notifications/components/notifications/NotificationInbox";
+import { ArchitectureHealthBadge } from "@/platform/admin/components/admin/panels/ArchitectureHealthBadge";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 const fadeUp = { hidden: { opacity: 0, y: 16 }, show: { opacity: 1, y: 0, transition: { duration: 0.4 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.06 } } };

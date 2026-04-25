@@ -5,7 +5,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useMemo } from "react";
-import { SitaCard, SitaCardTitle } from "@/components/sita/SitaCard";
+import { SitaCard, SitaCardTitle } from "@/platform/sita/components/sita/SitaCard";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -25,18 +25,18 @@ import {
 } from "lucide-react";
 import type { ServiceReliabilityView } from "@/packages/contracts";
 import type { DriftDetection, VerificationOutcome } from "@/packages/reality-contracts";
-import { DegradedStatePanel } from "@/components/reality/DegradedStatePanel";
-import { DiagnosticsContextBar } from "@/components/admin-os/DiagnosticsContextBar";
-import { LaunchHonestyBadge } from "@/components/reality/LaunchHonestyBadge";
-import { RealityStateBadge } from "@/components/reality/RealityStateBadge";
-import { LaunchTruthIndicator } from "@/components/admin-os/LaunchTruthIndicator";
-import { RealityModeIndicator } from "@/components/admin-os/RealityModeIndicator";
-import { SystemStatusBar } from "@/components/admin-os/SystemStatusBar";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { TracesPanel } from "@/components/observability/TracesPanel";
-import { UptimePanel } from "@/components/observability/UptimePanel";
-import { AlertsLivePanel } from "@/components/observability/AlertsLivePanel";
-import { PageShell } from "@/components/sita/PageShell";
+import { DegradedStatePanel } from "@/platform/product/components/reality/DegradedStatePanel";
+import { DiagnosticsContextBar } from "@/platform/admin/components/admin-os/DiagnosticsContextBar";
+import { LaunchHonestyBadge } from "@/platform/product/components/reality/LaunchHonestyBadge";
+import { RealityStateBadge } from "@/platform/product/components/reality/RealityStateBadge";
+import { LaunchTruthIndicator } from "@/platform/admin/components/admin-os/LaunchTruthIndicator";
+import { RealityModeIndicator } from "@/platform/admin/components/admin-os/RealityModeIndicator";
+import { SystemStatusBar } from "@/platform/admin/components/admin-os/SystemStatusBar";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { TracesPanel } from "@/platform/observability/components/observability/TracesPanel";
+import { UptimePanel } from "@/platform/observability/components/observability/UptimePanel";
+import { AlertsLivePanel } from "@/platform/observability/components/observability/AlertsLivePanel";
+import { PageShell } from "@/platform/sita/components/sita/PageShell";
 
 /* Count-up KPI tile for observability */
 const ObsKPITile = ({ label, value, ok, icon: Icon }: { label: string; value: string; ok: boolean; icon: React.ElementType }) => {

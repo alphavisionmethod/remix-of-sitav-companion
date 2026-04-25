@@ -6,7 +6,7 @@
 
 import { useState, useMemo, useRef, useEffect, useCallback } from "react";
 import { useAuth } from "@/contexts/AuthContext";
-import { SitaPageHeader, SitaCard } from "@/components/sita/SitaCard";
+import { SitaPageHeader, SitaCard } from "@/platform/sita/components/sita/SitaCard";
 import {
   Search, FileText, Users, Receipt, Briefcase, CheckSquare, Filter, X, Clock,
   ArrowRight, UserPlus, Target, DollarSign, Workflow, CheckCircle, AlertTriangle,
@@ -100,7 +100,7 @@ const RESULT_ACTIONS: Record<string, { label: string; icon: React.ElementType; a
 };
 
 import { DATE_RANGES } from "@/lib/constants/ui-config";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 const SearchPage = () => {
   const { user } = useAuth();

@@ -2,9 +2,9 @@
 // Production-truth: all data from hooks, empty states when no records
 
 import { useState, useMemo } from "react";
-import { SitaPageHeader, SitaCard, SitaCardTitle } from "@/components/sita/SitaCard";
-import { SitaTabs, KPITile } from "@/components/sita/SitaComponents";
-import { TrustBadge } from "@/components/sita/TrustBadge";
+import { SitaPageHeader, SitaCard, SitaCardTitle } from "@/platform/sita/components/sita/SitaCard";
+import { SitaTabs, KPITile } from "@/platform/sita/components/sita/SitaComponents";
+import { TrustBadge } from "@/platform/sita/components/sita/TrustBadge";
 import { motion } from "framer-motion";
 import {
   AlertTriangle, Target, Eye, Lock, FileCheck, Wallet,
@@ -23,7 +23,7 @@ const getOpportunityScores = () => [] as any[];
 const getAvailableTrustModes = () => [{ mode: "standard", label: "Standard", description: "Default trust mode" }];
 const getInvestmentTrustMode = () => "standard";
 import { useCapitalBuckets, usePositions, useTheses } from "@/hooks/use-investment-data";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 const INVESTMENT_POLICY_RULES: any[] = [];
 

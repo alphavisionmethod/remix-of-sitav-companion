@@ -10,8 +10,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { Plug, Shield, Activity, TestTube, Presentation, RefreshCw, CheckCircle, XCircle, AlertTriangle } from "lucide-react";
 import { toast } from "sonner";
-import CNSubNav from "@/components/admin/CNSubNav";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import CNSubNav from "@/platform/admin/components/admin/CNSubNav";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { ConnectorStateBadge } from "@/components/primitives/status/ConnectorStateBadge";
 
 // Production fallback — seed data removed

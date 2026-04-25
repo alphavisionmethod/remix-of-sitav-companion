@@ -4,7 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useMemo } from "react";
-import { AppStateWrapper } from "@/components/sita/shell/AppStateWrapper";
+import { AppStateWrapper } from "@/platform/sita/components/sita/shell/AppStateWrapper";
 import { NovaText, NovaButton, NovaSectionLabel } from "@/platform/nova-sdk/ui/components";
 import { cn } from "@/lib/utils";
 import { APP_TYPE, APP_COMPONENTS, SPACE } from "@/platform/design-system/app-window-system";

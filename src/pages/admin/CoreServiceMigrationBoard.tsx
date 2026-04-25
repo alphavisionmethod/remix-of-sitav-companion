@@ -3,8 +3,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Server, CheckCircle, ArrowRight, Database, Shield, Zap } from "lucide-react";
-import CPSSubNav from "@/components/admin/CPSSubNav";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import CPSSubNav from "@/platform/admin/components/admin/CPSSubNav";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 // Production fallback — seed data removed
 const SERVICES: any[] = [];

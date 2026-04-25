@@ -3,4 +3,4 @@
 // Canonical import: @/components/shared/status
 // ═══════════════════════════════════════════════════════════════
 
-export { PlatformDegradedBanner } from "@/components/cloud/PlatformDegradedBanner";
+export { PlatformDegradedBanner } from "@/platform/cloud/components/cloud/PlatformDegradedBanner";

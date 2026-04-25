@@ -9,8 +9,8 @@ import { fromTable } from "@/lib/supabase-helpers";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Activity, RefreshCw, AlertTriangle, CheckCircle } from "lucide-react";
 import { toast } from "sonner";
-import PFASubNav from "@/components/admin/PFASubNav";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import PFASubNav from "@/platform/admin/components/admin/PFASubNav";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 
 

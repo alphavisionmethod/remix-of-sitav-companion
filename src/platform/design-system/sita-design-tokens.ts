@@ -3,7 +3,7 @@
 // Surfaces, domain atmosphere, typography, motion pacing, badges
 // ═══════════════════════════════════════════════════════════════
 
-import type { DomainId } from "@/components/sita/shell/DomainAppShell";
+import type { DomainId } from "@/platform/sita/components/sita/shell/DomainAppShell";
 
 // ── 4-Surface Material Hierarchy ─────────────────────────────
 

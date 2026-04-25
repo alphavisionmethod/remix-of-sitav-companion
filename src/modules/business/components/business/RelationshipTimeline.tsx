@@ -1,6 +1,6 @@
-import { SitaCard, SitaCardTitle, SitaButton } from "@/components/sita/SitaCard";
-import { ConfidenceBar } from "@/components/sita/primitives/ConfidenceBar";
-import { TrustBadge, TrustLevel } from "@/components/sita/TrustBadge";
+import { SitaCard, SitaCardTitle, SitaButton } from "@/platform/sita/components/sita/SitaCard";
+import { ConfidenceBar } from "@/platform/sita/components/sita/primitives/ConfidenceBar";
+import { TrustBadge, TrustLevel } from "@/platform/sita/components/sita/TrustBadge";
 import { MessageSquare, CheckCircle, AlertTriangle, Clock, Mail, Phone, Receipt, FileText } from "lucide-react";
 import { motion } from "framer-motion";
 

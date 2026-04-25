@@ -5,8 +5,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Loader2, Eye, Tag, ShieldCheck } from "lucide-react";
 import { CANONICAL_MODES } from "@/lib/dual-reality/reality-mode-registry";
-import DRSSubNav from "@/components/admin/DRSSubNav";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import DRSSubNav from "@/platform/admin/components/admin/DRSSubNav";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 
 

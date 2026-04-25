@@ -10,7 +10,7 @@ import {
   ArrowDown, Zap, Target, XCircle, RefreshCw
 } from "lucide-react";
 import AutomationSubNav from "./AutomationSubNav";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 const simulation = {
   name: "Stale Lead Recovery (48hr Advanced)",

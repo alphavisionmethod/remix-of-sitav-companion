@@ -3,8 +3,8 @@
 // Canonical import path: @/features/mobile
 // ═══════════════════════════════════════════════════════════════
 
-export { AlertCard } from "@/components/mobile/AlertCard";
-export { ApprovalCard } from "@/components/mobile/ApprovalCard";
-export { MobileShell } from "@/components/mobile/MobileShell";
-export { MobileTabBar } from "@/components/mobile/MobileTabBar";
-export { ProofCard } from "@/components/mobile/ProofCard";
+export { AlertCard } from "@/platform/experience/components/mobile/AlertCard";
+export { ApprovalCard } from "@/platform/experience/components/mobile/ApprovalCard";
+export { MobileShell } from "@/platform/experience/components/mobile/MobileShell";
+export { MobileTabBar } from "@/platform/experience/components/mobile/MobileTabBar";
+export { ProofCard } from "@/platform/experience/components/mobile/ProofCard";

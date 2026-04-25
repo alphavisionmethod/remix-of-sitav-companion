@@ -3,13 +3,13 @@ import { Link2, Plus, RefreshCw, CheckCircle2, AlertTriangle, XCircle, Shield, C
 import { PLATFORM_CONNECTIONS } from "@/hooks/useInvestmentOfficeData";
 import { SYNC_HISTORY, PLATFORM_PERMISSIONS } from "@/domains/investment/mock-data";
 import { useMarketWatchlistItems } from "@/hooks/use-investment-office";
-import { ConnectPlatformModal } from "@/components/investment/ConnectPlatformModal";
+import { ConnectPlatformModal } from "@/modules/finance/components/investment/ConnectPlatformModal";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import type { AvailablePlatform, PlatformType } from "@/domains/investment/types";
 import { cn } from "@/lib/utils";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 const STATUS_CONFIG = {
   connected: { icon: CheckCircle2, color: "text-[hsl(var(--trust-safe))]", bg: "bg-[hsl(var(--trust-safe))]/10" },
   disconnected: { icon: XCircle, color: "text-muted-foreground", bg: "bg-secondary" },

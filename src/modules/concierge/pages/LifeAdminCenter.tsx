@@ -1,11 +1,11 @@
 import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
-import { ModuleWorkspace } from "@/components/sita/domain-shared/ModuleWorkspace";
-import { DomainAdvisorCard } from "@/components/advisors/DomainAdvisorCard";
-import { LifeAdminDetailPane } from "@/components/concierge/LifeAdminDetailPane";
+import { ModuleWorkspace } from "@/platform/sita/components/sita/domain-shared/ModuleWorkspace";
+import { DomainAdvisorCard } from "@/platform/advisors/components/advisors/DomainAdvisorCard";
+import { LifeAdminDetailPane } from "@/modules/concierge/components/concierge/LifeAdminDetailPane";
 import { QueueCard, ActionCard } from "@/components/sita/cards";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { SitaTabs } from "@/components/sita/SitaComponents";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { SitaTabs } from "@/platform/sita/components/sita/SitaComponents";
 import { LifeAdminQueueCard } from "@/components/concierge";
 import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
 import { cn } from "@/lib/utils";

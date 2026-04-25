@@ -1,5 +1,5 @@
-import { SitaCard, SitaCardTitle, SitaButton } from "@/components/sita/SitaCard";
-import { ConfidenceBar } from "@/components/sita/primitives/ConfidenceBar";
+import { SitaCard, SitaCardTitle, SitaButton } from "@/platform/sita/components/sita/SitaCard";
+import { ConfidenceBar } from "@/platform/sita/components/sita/primitives/ConfidenceBar";
 import { DollarSign, Clock, AlertTriangle, Send, ArrowRight, MoreHorizontal } from "lucide-react";
 import { motion } from "framer-motion";
 

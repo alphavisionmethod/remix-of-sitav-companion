@@ -9,12 +9,12 @@ import { fromTable } from "@/lib/supabase-helpers";
 
 import { HeroCard, SummaryCard, ActionCard, QueueCard } from "@/components/sita/cards";
 import { ExecutionBadge } from "@/components/sita/badges";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { SplitWorkspace } from "@/components/sita/surfaces/SplitWorkspace";
-import { AppSurface } from "@/components/sita/surfaces/AppSurface";
-import { SitaTabs } from "@/components/sita/SitaComponents";
-import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvisorInsight";
-import { CrossAppAction } from "@/components/sita/CrossAppAction";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { SplitWorkspace } from "@/platform/sita/components/sita/surfaces/SplitWorkspace";
+import { AppSurface } from "@/platform/sita/components/sita/surfaces/AppSurface";
+import { SitaTabs } from "@/platform/sita/components/sita/SitaComponents";
+import { ModuleAdvisorInsight } from "@/platform/sita/components/sita/domain-shared/ModuleAdvisorInsight";
+import { CrossAppAction } from "@/platform/sita/components/sita/CrossAppAction";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/contexts/AuthContext";
 import { useAction } from "@/hooks/use-action";

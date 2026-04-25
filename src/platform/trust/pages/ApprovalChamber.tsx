@@ -11,11 +11,11 @@ import { ShieldCheck, Play, X, Eye, Fingerprint, FileText, AlertTriangle, CheckC
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ExecutionChainTimeline, buildDefaultChain } from "@/components/sita/primitives/ExecutionChainTimeline";
-import type { ChainStepId } from "@/components/sita/primitives/ExecutionChainTimeline";
-import { AutonomyLadder } from "@/components/sita/primitives/AutonomyLadder";
-import type { AutonomyRung } from "@/components/sita/primitives/AutonomyLadder";
-import { ConfidenceBar } from "@/components/sita/primitives/ConfidenceBar";
+import { ExecutionChainTimeline, buildDefaultChain } from "@/platform/sita/components/sita/primitives/ExecutionChainTimeline";
+import type { ChainStepId } from "@/platform/sita/components/sita/primitives/ExecutionChainTimeline";
+import { AutonomyLadder } from "@/platform/sita/components/sita/primitives/AutonomyLadder";
+import type { AutonomyRung } from "@/platform/sita/components/sita/primitives/AutonomyLadder";
+import { ConfidenceBar } from "@/platform/sita/components/sita/primitives/ConfidenceBar";
 import { motion, AnimatePresence } from "framer-motion";
 import { useApprovals } from "@/hooks/use-sita-data";
 import { useApprovalQueue } from "@/hooks/use-brain-core";
@@ -27,9 +27,9 @@ import { toast } from "sonner";
 
 // ── Types (re-use demo-data interface) ────────────────────────
 type ApprovalItem = { id: string; title: string; domain: string; status: string; risk?: string; requestedBy: string; createdAt?: string; riskLevel?: string; requestedAt?: string; [k: string]: any };
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { EmptyState } from "@/components/sita/EmptyState";
-import { PageShell } from "@/components/sita/PageShell";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { EmptyState } from "@/platform/sita/components/sita/EmptyState";
+import { PageShell } from "@/platform/sita/components/sita/PageShell";
 // ── Risk Styling ─────────────────────────────────────────────
 
 const riskStyles = {

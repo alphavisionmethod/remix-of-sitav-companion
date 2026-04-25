@@ -1,4 +1,4 @@
-import CPSSubNav from "@/components/admin/CPSSubNav";
+import CPSSubNav from "@/platform/admin/components/admin/CPSSubNav";
 import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -6,7 +6,7 @@ import { Progress } from "@/components/ui/progress";
 import { Radar, AlertTriangle, CheckCircle, XCircle, ArrowRight } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { fetchPersistedEvents, getScopedMemoryStats, getPolicyEvaluationStats, fetchActionLineage, getAssetStats } from "@/data/persistence";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 const fade = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0 } };
 

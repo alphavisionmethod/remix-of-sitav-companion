@@ -7,10 +7,10 @@ import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { AdminControlPlaneShell } from "@/components/admin/shells/AdminControlPlaneShell";
+import { AdminControlPlaneShell } from "@/platform/admin/components/admin/shells/AdminControlPlaneShell";
 import { ShieldCheck, Zap, RotateCcw, RefreshCw } from "lucide-react";
 import { toast } from "sonner";
-import { EmptyState } from "@/components/sita/EmptyState";
+import { EmptyState } from "@/platform/sita/components/sita/EmptyState";
 
 interface Drill { id: string; drill_key: string; scenario: string; status: string; blast_radius: number; last_run_at: string | null; }
 interface Report { id: string; period_start: string; period_end: string; assurance_score: number; breach_count: number; drill_count: number; summary: string | null; }

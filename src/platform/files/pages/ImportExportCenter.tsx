@@ -1,7 +1,7 @@
 import { useAuth } from "@/contexts/AuthContext";
 import { useState, useMemo } from "react";
-import { SitaPageHeader, SitaCard, SitaCardTitle } from "@/components/sita/SitaCard";
-import { KPITile, EmptyState, SitaTabs } from "@/components/sita/SitaComponents";
+import { SitaPageHeader, SitaCard, SitaCardTitle } from "@/platform/sita/components/sita/SitaCard";
+import { KPITile, EmptyState, SitaTabs } from "@/platform/sita/components/sita/SitaComponents";
 import { motion } from "framer-motion";
 import { Upload, FileText, Image, Table2, FileSpreadsheet, Download, ArrowUpFromLine, ArrowDownToLine, Camera, Clipboard, ScanLine, HardDrive, Cloud, CheckCircle2, Clock, AlertTriangle, ChevronRight, FolderInput, X } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -10,9 +10,9 @@ import { cn } from "@/lib/utils";
 type UploadItem = { id: string; name: string; status: string; size: string; date: string; [k: string]: any };
 type ExportItem = { id: string; name: string; format: string; status: string; date: string; [k: string]: any };
 import { useImportExportJobs } from "@/hooks/use-live-data";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { PageShell } from "@/components/sita/PageShell";
-import { CsvImportPanel } from "@/components/imports/CsvImportPanel";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { PageShell } from "@/platform/sita/components/sita/PageShell";
+import { CsvImportPanel } from "@/modules/business/components/imports/CsvImportPanel";
 const STATUS_STYLES = { uploading: "text-primary", processing: "text-amber-400", complete: "text-emerald-400", failed: "text-red-400", generating: "text-amber-400", ready: "text-emerald-400", expired: "text-muted-foreground", pending: "text-amber-400" };
 const STATUS_ICONS = { uploading: Clock, processing: Clock, complete: CheckCircle2, failed: AlertTriangle, generating: Clock, ready: CheckCircle2, expired: AlertTriangle, pending: Clock };
 

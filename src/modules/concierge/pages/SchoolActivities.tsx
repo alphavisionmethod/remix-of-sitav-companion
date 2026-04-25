@@ -1,10 +1,10 @@
 import { HeroCard, QueueCard, StatusCard } from "@/components/sita/cards";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { SitaTabs } from "@/components/sita/SitaComponents";
-import { PremiumEmptyState } from "@/components/sita/PremiumEmptyState";
-import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvisorInsight";
-import { SlidePanel } from "@/components/sita/surfaces/SlidePanel";
-import { AppSurface } from "@/components/sita/surfaces/AppSurface";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { SitaTabs } from "@/platform/sita/components/sita/SitaComponents";
+import { PremiumEmptyState } from "@/platform/sita/components/sita/PremiumEmptyState";
+import { ModuleAdvisorInsight } from "@/platform/sita/components/sita/domain-shared/ModuleAdvisorInsight";
+import { SlidePanel } from "@/platform/sita/components/sita/surfaces/SlidePanel";
+import { AppSurface } from "@/platform/sita/components/sita/surfaces/AppSurface";
 import { ConciergePageWrapper } from "@/components/concierge";
 import { cn } from "@/lib/utils";
 import { useState } from "react";

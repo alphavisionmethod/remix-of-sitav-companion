@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Wallet, Building2, Users, Layers } from "lucide-react";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
-import { SetupStageHeader } from "@/components/sita/setup/SetupStageHeader";
+import { SetupStageHeader } from "@/platform/sita/components/sita/setup/SetupStageHeader";
 import { cn } from "@/lib/utils";
 import type { MoneyMode } from "./types";
 

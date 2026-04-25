@@ -2,7 +2,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Clock, Brain, Check, X, AlertTriangle, ArrowRight, TrendingUp, TrendingDown } from "lucide-react";
 import { useTimeMachineSnapshots, useDecisionRecords, useAdvisorObservations } from "@/hooks/use-investment-memory";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 const PAST_DECISIONS: any[] = [{ title: "—", date: "", outcome: "", lessons: [] }];
 export default function TimeMachineReview() {
   const { data: liveSnapshots } = useTimeMachineSnapshots();

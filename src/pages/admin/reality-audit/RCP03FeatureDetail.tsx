@@ -1,4 +1,4 @@
-import RCPSubNav from "@/components/admin/RCPSubNav";
+import RCPSubNav from "@/platform/admin/components/admin/RCPSubNav";
 import { useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";

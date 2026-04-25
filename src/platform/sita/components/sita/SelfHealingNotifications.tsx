@@ -5,8 +5,8 @@
 
 import { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { SitaCard, SitaSectionHeader } from "@/components/sita/SitaCard";
-import { KPITile } from "@/components/sita/SitaComponents";
+import { SitaCard, SitaSectionHeader } from "@/platform/sita/components/sita/SitaCard";
+import { KPITile } from "@/platform/sita/components/sita/SitaComponents";
 import {
   Heart, AlertTriangle, CheckCircle, Clock, RefreshCw, Shield,
   Zap, XCircle, Activity, Eye, ArrowRight, Bell, BellOff,

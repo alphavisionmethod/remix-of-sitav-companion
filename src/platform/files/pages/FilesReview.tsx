@@ -1,9 +1,9 @@
-import { KPITile, SitaTabs } from "@/components/sita/SitaComponents";
-import { ClassificationCard, ExtractionReviewCard } from "@/components/sita/FilesComponents";
-import { SectionSkeleton } from "@/components/sita/SectionSkeleton";
-import { PremiumEmptyState } from "@/components/sita/PremiumEmptyState";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvisorInsight";
+import { KPITile, SitaTabs } from "@/platform/sita/components/sita/SitaComponents";
+import { ClassificationCard, ExtractionReviewCard } from "@/platform/sita/components/sita/FilesComponents";
+import { SectionSkeleton } from "@/platform/sita/components/sita/SectionSkeleton";
+import { PremiumEmptyState } from "@/platform/sita/components/sita/PremiumEmptyState";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { ModuleAdvisorInsight } from "@/platform/sita/components/sita/domain-shared/ModuleAdvisorInsight";
 import { useState, useMemo } from "react";
 import { Eye, CheckCircle, AlertTriangle, FileText } from "lucide-react";
 import { motion } from "framer-motion";

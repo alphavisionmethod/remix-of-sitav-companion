@@ -7,15 +7,15 @@
 
 import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
-import { SitaPageHeader, SitaCard } from "@/components/sita/SitaCard";
-import { SitaTabs, KPITile } from "@/components/sita/SitaComponents";
+import { SitaPageHeader, SitaCard } from "@/platform/sita/components/sita/SitaCard";
+import { SitaTabs, KPITile } from "@/platform/sita/components/sita/SitaComponents";
 import {
   Zap, Play, Pause, TrendingUp, DollarSign, Clock, Shield,
   CheckCircle, AlertTriangle, ArrowRight, Activity, Users,
   BarChart3, Brain, Target, Sparkles, XCircle, Eye, ChevronRight,
   RefreshCw, Settings, Bell
 } from "lucide-react";
-import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
+import { LiveAdvisorCard } from "@/platform/sita/components/sita/LiveAdvisorCard";
 import type {
   AutopilotConfig, Playbook, PlaybookId, ActivityEvent,
   NextBestAction, BusinessDigitalTwin, AutopilotStats

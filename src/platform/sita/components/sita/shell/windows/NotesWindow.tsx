@@ -9,7 +9,7 @@ import { AppLayout } from "@/platform/nova-sdk/ui/layout";
 import { NovaText, NovaButton, NovaSectionLabel, NovaInput } from "@/platform/nova-sdk/ui/components";
 import { NovaFS } from "@/platform/nova-sdk/system/filesystem";
 import { NovaNotify } from "@/platform/nova-sdk/system/notifications";
-import { AppStateWrapper } from "@/components/sita/shell/AppStateWrapper";
+import { AppStateWrapper } from "@/platform/sita/components/sita/shell/AppStateWrapper";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Plus, Save, Trash2, Search, FolderOpen, FileText, Hash,

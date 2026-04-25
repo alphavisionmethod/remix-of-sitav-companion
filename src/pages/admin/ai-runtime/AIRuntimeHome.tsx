@@ -19,8 +19,8 @@ import { lazy, Suspense, type ComponentType } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ExternalLink } from "lucide-react";
-import { AdminControlPlaneShell } from "@/components/admin/shells/AdminControlPlaneShell";
-import { DomainHubLayout, type HubModule } from "@/components/admin/hubs/DomainHubLayout";
+import { AdminControlPlaneShell } from "@/platform/admin/components/admin/shells/AdminControlPlaneShell";
+import { DomainHubLayout, type HubModule } from "@/platform/admin/components/admin/hubs/DomainHubLayout";
 import {
   AI_ENGINEER_HUB_TABS,
   AI_ENGINEER_HUB_DEFAULT_TAB_ID,

@@ -9,8 +9,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { Unplug } from "lucide-react";
 import { toast } from "sonner";
-import CNSubNav from "@/components/admin/CNSubNav";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import CNSubNav from "@/platform/admin/components/admin/CNSubNav";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 
 

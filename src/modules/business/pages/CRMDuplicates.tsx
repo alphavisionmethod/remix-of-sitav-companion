@@ -1,6 +1,6 @@
 import React from "react";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import CRMDuplicateReview from "@/components/business/crm/CRMDuplicateReview";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import CRMDuplicateReview from "@/modules/business/components/business/crm/CRMDuplicateReview";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
 
 const CRMDuplicates = () => {

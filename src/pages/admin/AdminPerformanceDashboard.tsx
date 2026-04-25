@@ -2,8 +2,8 @@
 // SITA OS — Admin Performance Dashboard Page
 // ═══════════════════════════════════════════════════════════════
 
-import { AdminControlPlaneShell } from "@/components/admin/shells/AdminControlPlaneShell";
-import { PerformanceDashboardPanel } from "@/components/admin/performance/PerformanceDashboardPanel";
+import { AdminControlPlaneShell } from "@/platform/admin/components/admin/shells/AdminControlPlaneShell";
+import { PerformanceDashboardPanel } from "@/platform/admin/components/admin/performance/PerformanceDashboardPanel";
 
 export default function AdminPerformanceDashboard() {
   return (

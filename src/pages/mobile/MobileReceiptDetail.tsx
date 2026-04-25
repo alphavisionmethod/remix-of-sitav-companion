@@ -2,11 +2,11 @@
 // SITA OS — Mobile Trusted Device: Receipt Detail
 // ═══════════════════════════════════════════════════════════════
 
-import { MobileShell } from "@/components/mobile/MobileShell";
+import { MobileShell } from "@/platform/experience/components/mobile/MobileShell";
 import { useParams } from "react-router-dom";
 import { CheckCircle2, Copy, ExternalLink } from "lucide-react";
 import { useState } from "react";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 const MobileReceiptDetail = () => {
   const { id } = useParams();

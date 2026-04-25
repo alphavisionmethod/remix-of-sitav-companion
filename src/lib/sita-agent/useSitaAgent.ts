@@ -26,7 +26,7 @@ import {
 import type { ActionPlan, PlanResult, PlanStepResult, SitaAgentDomain } from "./plan-types";
 import { readWorldModel, updateWorldModel } from "@/lib/sita-cortex/world-model";
 import { preVoteOnPlan } from "@/lib/sita-cortex/council";
-import { readCortexFlags } from "@/components/sita/shell/sita-cortex/SitaCortexControls";
+import { readCortexFlags } from "@/platform/sita/components/sita/shell/sita-cortex/SitaCortexControls";
 
 function emitReceipt(label: string, opts?: { reversible?: boolean; onUndo?: () => void }) {
   if (typeof window === "undefined") return;

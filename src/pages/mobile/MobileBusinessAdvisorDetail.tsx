@@ -10,15 +10,15 @@ import {
   getBusinessAdvisor,
   type AdvisorAskResult,
 } from "@/lib/ai-platform/runtime";
-import { MobileSalesAdvisorPanels } from "@/components/business-advisors/sales/MobileSalesAdvisorPanels";
-import { MobileCustomerServiceAdvisorPanels } from "@/components/business-advisors/customer-service/MobileCustomerServiceAdvisorPanels";
-import { MobileCFOAdvisorPanels } from "@/components/business-advisors/cfo/MobileCFOAdvisorPanels";
-import { MobileMarketingAdvisorPanels } from "@/components/business-advisors/marketing/MobileMarketingAdvisorPanels";
-import { MobileGrowthAdvisorPanels } from "@/components/business-advisors/growth/MobileGrowthAdvisorPanels";
-import { MobileTechAdvisorPanels } from "@/components/business-advisors/tech/MobileTechAdvisorPanels";
-import { MobileImportsExportsAdvisorPanels } from "@/components/business-advisors/imports-exports/MobileImportsExportsAdvisorPanels";
-import { MobileTaxesLawsAdvisorPanels } from "@/components/business-advisors/taxes-laws/MobileTaxesLawsAdvisorPanels";
-import { MobileCEOAdvisorPanels } from "@/components/business-advisors/ceo/MobileCEOAdvisorPanels";
+import { MobileSalesAdvisorPanels } from "@/modules/business/components/business-advisors/sales/MobileSalesAdvisorPanels";
+import { MobileCustomerServiceAdvisorPanels } from "@/modules/business/components/business-advisors/customer-service/MobileCustomerServiceAdvisorPanels";
+import { MobileCFOAdvisorPanels } from "@/modules/business/components/business-advisors/cfo/MobileCFOAdvisorPanels";
+import { MobileMarketingAdvisorPanels } from "@/modules/business/components/business-advisors/marketing/MobileMarketingAdvisorPanels";
+import { MobileGrowthAdvisorPanels } from "@/modules/business/components/business-advisors/growth/MobileGrowthAdvisorPanels";
+import { MobileTechAdvisorPanels } from "@/modules/business/components/business-advisors/tech/MobileTechAdvisorPanels";
+import { MobileImportsExportsAdvisorPanels } from "@/modules/business/components/business-advisors/imports-exports/MobileImportsExportsAdvisorPanels";
+import { MobileTaxesLawsAdvisorPanels } from "@/modules/business/components/business-advisors/taxes-laws/MobileTaxesLawsAdvisorPanels";
+import { MobileCEOAdvisorPanels } from "@/modules/business/components/business-advisors/ceo/MobileCEOAdvisorPanels";
 
 export default function MobileBusinessAdvisorDetail() {
   const { advisorId } = useParams<{ advisorId: string }>();

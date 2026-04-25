@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Theater, Shield, AlertTriangle, Check, X, Brain, Target, Zap, Clock, FileText, Volume2 } from "lucide-react";
 import { INVESTMENT_ADVISORS, SAMPLE_ORDERS, SAMPLE_SCENARIOS } from "@/hooks/useInvestmentOfficeData";
 import { useInvestmentDecisions } from "@/hooks/use-investment-office";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 // Advisor votes for the cinematic voting panel
 const ADVISOR_VOTES: Record<string, "approve" | "reject" | "abstain"> = {

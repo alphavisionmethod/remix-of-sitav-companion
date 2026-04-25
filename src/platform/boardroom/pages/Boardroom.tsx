@@ -4,25 +4,25 @@ import { useAuth } from "@/contexts/AuthContext";
 // Where advisor voices become one governed plan
 // ═══════════════════════════════════════════════════════════════
 
-import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader, SitaButton, SitaMetric } from "@/components/sita/SitaCard";
-import { PrepPack } from "@/components/sita/primitives/PrepPack";
-import { ScenarioComparison } from "@/components/sita/primitives/ScenarioComparison";
-import { ConfidenceBand } from "@/components/sita/primitives/ConfidenceBand";
-import { ExecutionTracker } from "@/components/sita/primitives/ExecutionTracker";
-import { VotingCard } from "@/components/sita/primitives/VotingCard";
-import { EvidenceChain, type EvidenceNode } from "@/components/sita/primitives/EvidenceChain";
-import { ScenarioFork } from "@/components/sita/primitives/ScenarioFork";
-import { DecisionSeal } from "@/components/sita/primitives/DecisionSeal";
-import { SentimentPulse } from "@/components/sita/primitives/SentimentPulse";
+import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader, SitaButton, SitaMetric } from "@/platform/sita/components/sita/SitaCard";
+import { PrepPack } from "@/platform/sita/components/sita/primitives/PrepPack";
+import { ScenarioComparison } from "@/platform/sita/components/sita/primitives/ScenarioComparison";
+import { ConfidenceBand } from "@/platform/sita/components/sita/primitives/ConfidenceBand";
+import { ExecutionTracker } from "@/platform/sita/components/sita/primitives/ExecutionTracker";
+import { VotingCard } from "@/platform/sita/components/sita/primitives/VotingCard";
+import { EvidenceChain, type EvidenceNode } from "@/platform/sita/components/sita/primitives/EvidenceChain";
+import { ScenarioFork } from "@/platform/sita/components/sita/primitives/ScenarioFork";
+import { DecisionSeal } from "@/platform/sita/components/sita/primitives/DecisionSeal";
+import { SentimentPulse } from "@/platform/sita/components/sita/primitives/SentimentPulse";
 import { TrustDebtPanel, ExecutionDebtHeatmap, DragIndexRadar, ReadinessGauge, DelegationRegistryTable } from "@/components/governance";
-import { KPITile, RiskCard, OpportunityCard, EmptyState, SitaTabs } from "@/components/sita/SitaComponents";
-import { TrustBadge } from "@/components/sita/TrustBadge";
-import { StateBadge, StateStep } from "@/components/sita/StateBadge";
-import { ConfidenceLadder } from "@/components/sita/AdvisorComponents";
-import { WarRoomEntryCeremony } from "@/components/sita/WarRoomEntryCeremony";
-import { WarRoomConfidenceRadar } from "@/components/sita/WarRoomConfidenceRadar";
-import { WarRoomDisagreementTheater } from "@/components/sita/WarRoomDisagreementTheater";
-import { WarRoomPresentation } from "@/components/sita/WarRoomPresentation";
+import { KPITile, RiskCard, OpportunityCard, EmptyState, SitaTabs } from "@/platform/sita/components/sita/SitaComponents";
+import { TrustBadge } from "@/platform/sita/components/sita/TrustBadge";
+import { StateBadge, StateStep } from "@/platform/sita/components/sita/StateBadge";
+import { ConfidenceLadder } from "@/platform/sita/components/sita/AdvisorComponents";
+import { WarRoomEntryCeremony } from "@/platform/sita/components/sita/WarRoomEntryCeremony";
+import { WarRoomConfidenceRadar } from "@/platform/sita/components/sita/WarRoomConfidenceRadar";
+import { WarRoomDisagreementTheater } from "@/platform/sita/components/sita/WarRoomDisagreementTheater";
+import { WarRoomPresentation } from "@/platform/sita/components/sita/WarRoomPresentation";
 import { useOSRuntime } from "@/hooks/useOSRuntime";
 import { useOSOrchestration } from "@/hooks/useOSOrchestration";
 import { useExperienceSignature } from "@/hooks/useExperienceSignature";
@@ -55,8 +55,8 @@ import type { AdvisorConfig } from "@/packages/advisor-config";
 import { cn } from "@/lib/utils";
 import { useBoardroomData } from "@/hooks/use-boardroom-data";
 import { useOpportunitySignals, usePriorityStacks, useDigestCompilations } from "@/hooks/useCAIData";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { BoardroomSeedSampleButton } from "@/components/sita/BoardroomSeedSampleButton";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { BoardroomSeedSampleButton } from "@/platform/sita/components/sita/BoardroomSeedSampleButton";
 
 // ── Section Renderers (preserved from original) ───────────────
 

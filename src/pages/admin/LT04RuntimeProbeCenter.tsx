@@ -4,8 +4,8 @@ import { fromTable } from "@/lib/supabase-helpers";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Radar, Clock, Shield, Zap } from "lucide-react";
-import LTSubNav from "@/components/admin/LTSubNav";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import LTSubNav from "@/platform/admin/components/admin/LTSubNav";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 const LT04RuntimeProbeCenter = () => {
   const { data: probes } = useQuery({

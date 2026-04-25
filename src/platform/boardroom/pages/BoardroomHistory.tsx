@@ -5,13 +5,13 @@ import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { SitaPageHeader, SitaCard, SitaButton } from "@/components/sita/SitaCard";
-import { KPITile, EmptyState } from "@/components/sita/SitaComponents";
+import { SitaPageHeader, SitaCard, SitaButton } from "@/platform/sita/components/sita/SitaCard";
+import { KPITile, EmptyState } from "@/platform/sita/components/sita/SitaComponents";
 import { BarChart3, Calendar, CheckCircle, Clock, ChevronRight, Target } from "lucide-react";
-import { ConfidenceBar } from "@/components/sita/primitives/ConfidenceBar";
+import { ConfidenceBar } from "@/platform/sita/components/sita/primitives/ConfidenceBar";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 export default function BoardroomHistory() {
   const { user } = useAuth();
   const navigate = useNavigate();

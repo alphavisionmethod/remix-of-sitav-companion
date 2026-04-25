@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { generateFeatureArtifacts, type FeatureBlueprint } from "@/lib/delivery-methodology/feature-factory";
 import { mapDependencies } from "@/lib/delivery-methodology/dependency-mapper";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 
 

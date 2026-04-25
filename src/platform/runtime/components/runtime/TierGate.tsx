@@ -2,7 +2,7 @@ import { type ReactNode } from "react";
 import { useFeatureRuntimeTier, useRuntimeTier } from "@/runtimes/runtime-context";
 import type { RuntimeTier, TierAvailability } from "@/runtimes/runtime-tier-model";
 import { getFeatureRuntimeTier } from "@/runtimes/feature-runtime-tier-registry";
-import { DegradedStatePanel } from "@/components/reality/DegradedStatePanel";
+import { DegradedStatePanel } from "@/platform/product/components/reality/DegradedStatePanel";
 
 interface TierGateProps {
   /** Feature ID registered in `feature-tier-registry`. */

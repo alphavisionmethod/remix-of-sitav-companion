@@ -1,7 +1,7 @@
-import { SitaPageHeader } from "@/components/sita/SitaCard";
-import { CustomerHealthDashboard } from "@/components/business/CustomerHealthDashboard";
-import { PageShell } from "@/components/sita/PageShell";
-import { Typography } from "@/components/sita/Typography";
+import { SitaPageHeader } from "@/platform/sita/components/sita/SitaCard";
+import { CustomerHealthDashboard } from "@/modules/business/components/business/CustomerHealthDashboard";
+import { PageShell } from "@/platform/sita/components/sita/PageShell";
+import { Typography } from "@/platform/sita/components/sita/Typography";
 
 const CustomerHealthPage = () => (
   <PageShell width="wide">

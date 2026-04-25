@@ -3,4 +3,4 @@
 // Canonical import path: @/features/revenue-office
 // ═══════════════════════════════════════════════════════════════
 
-export { RevenueOfficeModeToggle } from "@/components/revenue-office/RevenueOfficeModeToggle";
+export { RevenueOfficeModeToggle } from "@/modules/business/components/revenue-office/RevenueOfficeModeToggle";

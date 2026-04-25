@@ -3,8 +3,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Watch, ArrowRight, Clock, Zap, Eye, Smartphone, AlertTriangle, Vibrate } from "lucide-react";
-import ANDSubNav from "@/components/admin/ANDSubNav";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import ANDSubNav from "@/platform/admin/components/admin/ANDSubNav";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 const AND02WearOSExperience = () => {
   return (
     <div className="p-6 max-w-[1400px] mx-auto space-y-6">

@@ -14,7 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useToast } from "@/hooks/use-toast";
-import { AlertDedupStats } from "@/components/admin/alerts/AlertDedupStats";
+import { AlertDedupStats } from "@/platform/admin/components/admin/alerts/AlertDedupStats";
 import { Play, Pause, Trash2, Zap, Activity, Radio, Save, History, RotateCcw } from "lucide-react";
 
 interface SimEvent {

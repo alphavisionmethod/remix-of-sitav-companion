@@ -24,7 +24,7 @@ import {
   type NightlyProofStatus,
 } from "@/lib/internal-agents/runtime/agent-drilldown-data";
 import { Activity, Coins, ShieldAlert, ExternalLink, Clock, Inbox } from "lucide-react";
-import { EmptyState } from "@/components/sita/EmptyState";
+import { EmptyState } from "@/platform/sita/components/sita/EmptyState";
 
 interface Props {
   agentId: string;

@@ -8,7 +8,7 @@ import {
   DollarSign, Briefcase, Home, Clock
 } from "lucide-react";
 import type { AdvisorAgent } from "@/hooks/use-advisor-agents";
-import { LaunchHonestyBadge } from "@/components/reality/LaunchHonestyBadge";
+import { LaunchHonestyBadge } from "@/platform/product/components/reality/LaunchHonestyBadge";
 
 const DOMAIN_ICONS: Record<string, React.ElementType> = {
   money: DollarSign,

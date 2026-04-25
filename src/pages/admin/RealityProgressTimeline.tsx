@@ -5,7 +5,7 @@ import { Progress } from "@/components/ui/progress";
 import { useRealityClassifications, useClassificationStats } from "@/hooks/useRealityClassifications";
 import { useMockReplacements, useMockReplacementStats } from "@/hooks/useMockReplacements";
 import { TrendingUp, CheckCircle2, ArrowRight, Clock, Target } from "lucide-react";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 export default function RealityProgressTimeline() {
   const { data: classifications = [] } = useRealityClassifications();

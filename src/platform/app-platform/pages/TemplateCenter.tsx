@@ -1,14 +1,14 @@
 import { useState } from "react";
-import { SitaPageHeader, SitaCard, SitaCardTitle } from "@/components/sita/SitaCard";
-import { EmptyState, SitaTabs } from "@/components/sita/SitaComponents";
+import { SitaPageHeader, SitaCard, SitaCardTitle } from "@/platform/sita/components/sita/SitaCard";
+import { EmptyState, SitaTabs } from "@/platform/sita/components/sita/SitaComponents";
 import { motion } from "framer-motion";
 import { Layout, FileText, DollarSign, Briefcase, Users, Home, CheckSquare, Repeat, Mail, BarChart3, Plus, ChevronRight, Copy, Star, Search } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { PageShell } from "@/components/sita/PageShell";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { PageShell } from "@/platform/sita/components/sita/PageShell";
 
 interface Template { id: string; title: string; description: string; category: string; domain: string; usageCount: number; starred: boolean; }
 

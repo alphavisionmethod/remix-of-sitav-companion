@@ -9,11 +9,11 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { motion } from "framer-motion";
-import { SitaCard, SitaCardTitle } from "@/components/sita/SitaCard";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { EmptyState } from "@/components/sita/EmptyState";
-import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvisorInsight";
-import { KPITile } from "@/components/sita/SitaComponents";
+import { SitaCard, SitaCardTitle } from "@/platform/sita/components/sita/SitaCard";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { EmptyState } from "@/platform/sita/components/sita/EmptyState";
+import { ModuleAdvisorInsight } from "@/platform/sita/components/sita/domain-shared/ModuleAdvisorInsight";
+import { KPITile } from "@/platform/sita/components/sita/SitaComponents";
 import {
   AreaChart, Area, XAxis, YAxis, CartesianGrid,
   Tooltip, ResponsiveContainer, ReferenceLine, Legend,

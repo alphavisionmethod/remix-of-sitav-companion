@@ -4,16 +4,16 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
-import { SitaPageHeader } from "@/components/sita/SitaCard";
-import { DurabilityStateBadge } from "@/components/sita/truth/DurabilityStateBadge";
-import { StalenessIndicator } from "@/components/sita/truth/StalenessIndicator";
+import { SitaPageHeader } from "@/platform/sita/components/sita/SitaCard";
+import { DurabilityStateBadge } from "@/platform/sita/components/sita/truth/DurabilityStateBadge";
+import { StalenessIndicator } from "@/platform/sita/components/sita/truth/StalenessIndicator";
 import {
   Briefcase, Home, Plane, CheckCircle, Clock, AlertTriangle, FileCheck,
   Users, Calendar, MapPin, Package, Heart, RotateCcw, Activity, ShoppingCart, Link2
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 const now = new Date();
 const h = (hours: number) => new Date(now.getTime() - hours * 3600000).toISOString();

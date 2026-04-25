@@ -13,9 +13,9 @@ import { useState, useEffect, useCallback } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { AppToolbar } from "./AppToolbar";
 import { AppSidebarNav, type NavTabGroup } from "./AppSidebarNav";
-import { DomainCommandPalette, type CommandItem } from "@/components/sita/domain-shared/DomainCommandPalette";
-import { DomainMotionProvider, AppOpenCeremony } from "@/components/sita/motion/AppTransitions";
-import { AppSurface } from "@/components/sita/surfaces/AppSurface";
+import { DomainCommandPalette, type CommandItem } from "@/platform/sita/components/sita/domain-shared/DomainCommandPalette";
+import { DomainMotionProvider, AppOpenCeremony } from "@/platform/sita/components/sita/motion/AppTransitions";
+import { AppSurface } from "@/platform/sita/components/sita/surfaces/AppSurface";
 import type { LucideIcon } from "lucide-react";
 
 export type DomainId = "business" | "finance" | "concierge" | "files" | "trust";

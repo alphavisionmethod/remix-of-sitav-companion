@@ -5,7 +5,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { SitaCard } from "@/components/sita/SitaCard";
+import { SitaCard } from "@/platform/sita/components/sita/SitaCard";
 import {
   Zap, ChevronRight, ChevronLeft, Check, Shield, Clock, Bell,
   Sparkles, Target, ArrowRight, Settings, Mail, MessageSquare, Phone

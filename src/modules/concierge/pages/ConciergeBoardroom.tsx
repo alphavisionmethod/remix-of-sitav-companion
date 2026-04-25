@@ -5,10 +5,10 @@ import { toast } from "sonner";
 // ═══════════════════════════════════════════════════════════════
 
 import { HeroCard, SummaryCard, QueueCard, ProofCard, ComparisonCard, AdvisorCard, TimelineCard } from "@/components/sita/cards";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { BoardroomCinematic } from "@/components/sita/motion/AppTransitions";
-import { SitaTabs } from "@/components/sita/SitaComponents";
-import { DomainAdvisorBoard } from "@/components/sita/domain-shared/DomainAdvisorBoard";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { BoardroomCinematic } from "@/platform/sita/components/sita/motion/AppTransitions";
+import { SitaTabs } from "@/platform/sita/components/sita/SitaComponents";
+import { DomainAdvisorBoard } from "@/platform/sita/components/sita/domain-shared/DomainAdvisorBoard";
 import { ConciergePageWrapper } from "@/components/concierge";
 import { AITruthDisclosure } from "@/components/primitives/status/AITruthDisclosure";
 import { EvidenceLink } from "@/components/primitives/actions/EvidenceLink";

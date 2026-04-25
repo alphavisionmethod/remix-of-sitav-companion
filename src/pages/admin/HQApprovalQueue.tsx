@@ -21,7 +21,7 @@ import {
   CheckCircle, XCircle, Clock, Shield, AlertTriangle, Eye, ArrowRight,
   ChevronDown, ChevronUp, Filter, History, LayoutDashboard, FileText,
   DollarSign, Zap, RotateCcw, MessageSquare } from "lucide-react";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 const STATUSES: any[] = [];
 

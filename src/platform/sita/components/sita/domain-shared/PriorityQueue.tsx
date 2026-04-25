@@ -5,7 +5,7 @@
 
 import { motion } from "framer-motion";
 import { ArrowRight, AlertCircle, Clock, CheckCircle } from "lucide-react";
-import { GlassCard } from "@/components/sita/PremiumPageComponents";
+import { GlassCard } from "@/platform/sita/components/sita/PremiumPageComponents";
 import type { LucideIcon } from "lucide-react";
 
 export interface PriorityItem {

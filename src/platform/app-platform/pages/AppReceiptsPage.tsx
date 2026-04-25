@@ -7,9 +7,9 @@ import { useNavigate, useParams } from "react-router-dom";
 import { ArrowLeft, Shield, Clock, Download, Check, AlertTriangle, FileText, RefreshCw, Trash2, Lock } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAppPlatform } from "@/contexts/AppPlatformContext";
-import { AppIcon } from "@/components/sita/app-platform/AppStoreComponents";
+import { AppIcon } from "@/platform/sita/components/sita/app-platform/AppStoreComponents";
 import type { AppLifecycleReceipt } from "@/domains/apps/types";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 const AppReceiptsPage = () => {
   const navigate = useNavigate();

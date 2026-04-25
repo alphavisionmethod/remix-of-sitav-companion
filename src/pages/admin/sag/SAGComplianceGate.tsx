@@ -4,8 +4,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useComplianceViolations, useGatewayStats } from "@/hooks/use-sag-data";
 import type { ComplianceGate, TenantFirewallRule, SecurityIncident } from "@/packages/enterprise-contracts";
-import SAGSubNav from "@/components/admin/SAGSubNav";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import SAGSubNav from "@/platform/admin/components/admin/SAGSubNav";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 const sevColors: Record<string, string> = {
   critical: 'bg-destructive/10 text-destructive',
   high: 'bg-orange-500/10 text-orange-500',

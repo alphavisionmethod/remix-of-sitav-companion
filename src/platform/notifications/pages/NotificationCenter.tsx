@@ -3,9 +3,9 @@
 // The OS-level attention management system
 // ═══════════════════════════════════════════════════════════════
 
-import { SitaCard, SitaSectionHeader, SitaButton } from "@/components/sita/SitaCard";
-import { KPITile, EmptyState } from "@/components/sita/SitaComponents";
-import { DomainHeader } from "@/components/sita/primitives/DomainHeader";
+import { SitaCard, SitaSectionHeader, SitaButton } from "@/platform/sita/components/sita/SitaCard";
+import { KPITile, EmptyState } from "@/platform/sita/components/sita/SitaComponents";
+import { DomainHeader } from "@/platform/sita/components/sita/primitives/DomainHeader";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { dbAny as db } from "@/lib/supabase-helpers";
@@ -16,14 +16,14 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect, useMemo } from "react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import {
   Bell, BellOff, Shield, Clock, CheckCircle, AlertTriangle, DollarSign,
   Briefcase, Home, Zap, Eye, Filter, Trash2, RotateCcw, ChevronRight,
   ArrowRight, Volume2, VolumeX, Pin, XCircle, AlertCircle, Sparkles,
   MessageSquare, Calendar, Settings, Activity
 } from "lucide-react";
-import { PageShell } from "@/components/sita/PageShell";
+import { PageShell } from "@/platform/sita/components/sita/PageShell";
 type UrgencyLevel = "critical" | "high" | "normal" | "low";
 type NotifCategory = "all" | "action" | "approval" | "finance" | "business" | "household" | "system" | "resolved";
 

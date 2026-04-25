@@ -1,4 +1,4 @@
-import { SetupStageHeader } from "@/components/sita/setup/SetupStageHeader";
+import { SetupStageHeader } from "@/platform/sita/components/sita/setup/SetupStageHeader";
 import { Switch } from "@/components/ui/switch";
 import { UserCircle } from "lucide-react";
 import type { MoneyMode } from "./types";

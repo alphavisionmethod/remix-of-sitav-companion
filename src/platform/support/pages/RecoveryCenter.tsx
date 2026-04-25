@@ -1,9 +1,9 @@
 import { getString } from "@/lib/types/guards";
-import { SitaPageHeader, SitaCard, SitaCardTitle, SitaButton } from "@/components/sita/SitaCard";
-import { SectionSkeleton } from "@/components/sita/SectionSkeleton";
-import { KPITile, SitaTabs, EmptyState } from "@/components/sita/SitaComponents";
-import { TrustBadge } from "@/components/sita/TrustBadge";
-import { StateBadge } from "@/components/sita/StateBadge";
+import { SitaPageHeader, SitaCard, SitaCardTitle, SitaButton } from "@/platform/sita/components/sita/SitaCard";
+import { SectionSkeleton } from "@/platform/sita/components/sita/SectionSkeleton";
+import { KPITile, SitaTabs, EmptyState } from "@/platform/sita/components/sita/SitaComponents";
+import { TrustBadge } from "@/platform/sita/components/sita/TrustBadge";
+import { StateBadge } from "@/platform/sita/components/sita/StateBadge";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { dbAny as db } from "@/lib/supabase-helpers";
@@ -17,7 +17,7 @@ import {
   ShieldAlert, RotateCcw, AlertTriangle, CheckCircle, Clock, XCircle,
   ChevronRight, Eye, Play, Pause, Activity, Download, HardDrive
 } from "lucide-react";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { cn } from "@/lib/utils";
 
 

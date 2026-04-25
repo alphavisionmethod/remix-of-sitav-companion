@@ -1,11 +1,11 @@
-import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
+import { SitaPageHeader } from "@/platform/sita/components/sita/SitaPageHeader";
 import { Building2, Users, DollarSign, Shield, ArrowUpRight, Settings, Package, TrendingUp, TrendingDown, Star } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useState } from "react";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 const CLIENT_HEALTH_BY_PARTNER = [
   { partner: "Apex Growth", clients: [{ name: "TechFlow", health: 92, trend: "up", revenue: "$4,200/mo" }, { name: "HealthFirst", health: 78, trend: "stable", revenue: "$3,100/mo" }] },
   { partner: "Beacon Digital", clients: [{ name: "Nova Digital", health: 85, trend: "up", revenue: "$2,800/mo" }, { name: "Carter Legal", health: 58, trend: "down", revenue: "$4,100/mo" }] },

@@ -3,4 +3,4 @@
 // Canonical import path: @/admin/modules/architecture
 // ═══════════════════════════════════════════════════════════════
 
-export { RuntimeViolationScanner } from "@/components/admin/architecture/RuntimeViolationScanner";
+export { RuntimeViolationScanner } from "@/platform/admin/components/admin/architecture/RuntimeViolationScanner";

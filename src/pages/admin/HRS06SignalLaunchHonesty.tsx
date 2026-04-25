@@ -6,8 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Rocket, CheckCircle2, XCircle, AlertTriangle, ArrowRight, Loader2, Database } from "lucide-react";
 import { useSignalSubsystemReadiness } from "@/hooks/use-health-signal-data";
 import { useSeedEcosystemData } from "@/hooks/useEcosystemDevices";
-import HRSSubNav from "@/components/admin/HRSSubNav";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import HRSSubNav from "@/platform/admin/components/admin/HRSSubNav";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 
 

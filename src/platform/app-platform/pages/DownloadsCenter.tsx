@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
+import { SitaPageHeader } from "@/platform/sita/components/sita/SitaPageHeader";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
@@ -8,8 +8,8 @@ import {
   Download, FileText, Shield, Archive, Clock, CheckCircle2,
   AlertTriangle, Trash2, RefreshCw, HardDrive,
 } from "lucide-react";
-import { MobileHonestyNotice } from "@/components/platform/MobileHonestyNotice";
-import { PageShell } from "@/components/sita/PageShell";
+import { MobileHonestyNotice } from "@/platform/core-services/components/platform/MobileHonestyNotice";
+import { PageShell } from "@/platform/sita/components/sita/PageShell";
 
 const downloads = [
   { id: "1", name: "Q1 Financial Report.pdf", type: "report", size: "2.4 MB", status: "complete" as const, date: "2026-04-08", expiresIn: "29 days" },

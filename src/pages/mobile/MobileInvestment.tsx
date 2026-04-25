@@ -1,4 +1,4 @@
-import { MobileShell } from "@/components/mobile/MobileShell";
+import { MobileShell } from "@/platform/experience/components/mobile/MobileShell";
 import { TrendingUp, TrendingDown, ArrowRight } from "lucide-react";
 
 const holdings = [

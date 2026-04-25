@@ -6,9 +6,9 @@ import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Building, Shield, Lock, Check, Users, AlertTriangle, Download } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAppPlatform } from "@/contexts/AppPlatformContext";
-import { AppIcon, VerificationBadge } from "@/components/sita/app-platform/AppStoreComponents";
+import { AppIcon, VerificationBadge } from "@/platform/sita/components/sita/app-platform/AppStoreComponents";
 import { toast } from "sonner";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 const statusConfig: Record<string, { label: string; color: string; icon: typeof Check }> = {
   available: { label: "Install", color: "bg-primary text-primary-foreground hover:bg-primary/90", icon: Download },
   installed: { label: "Installed", color: "bg-[hsl(var(--trust-safe))]/10 text-[hsl(var(--trust-safe))]", icon: Check },

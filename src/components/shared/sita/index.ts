@@ -3,19 +3,19 @@
 // Canonical import: @/components/shared/sita
 // ═══════════════════════════════════════════════════════════════
 
-export { SitaCard } from "@/components/sita/SitaCard";
-export * from "@/components/sita/SitaCharts";
-export { SitaCompanionBar } from "@/components/sita/SitaCompanionBar";
-export * from "@/components/sita/SitaComponents";
-export { SitaPageHeader } from "@/components/sita/SitaPageHeader";
-export { SitaTopBar } from "@/components/sita/SitaTopBar";
-export { PageSkeleton } from "@/components/sita/PageSkeleton";
-export { SectionSkeleton } from "@/components/sita/SectionSkeleton";
-export { EmptyState } from "@/components/sita/EmptyState";
-export { PremiumEmptyState } from "@/components/sita/PremiumEmptyState";
-export { DataLoadingWrapper } from "@/components/sita/DataLoadingWrapper";
-export { StateBadge } from "@/components/sita/StateBadge";
-export { TrustBadge } from "@/components/sita/TrustBadge";
-export { TrustStateBadge } from "@/components/sita/TrustStateBadge";
-export { Typography } from "@/components/sita/Typography";
-export type { TypographyRole } from "@/components/sita/Typography";
+export { SitaCard } from "@/platform/sita/components/sita/SitaCard";
+export * from "@/platform/sita/components/sita/SitaCharts";
+export { SitaCompanionBar } from "@/platform/sita/components/sita/SitaCompanionBar";
+export * from "@/platform/sita/components/sita/SitaComponents";
+export { SitaPageHeader } from "@/platform/sita/components/sita/SitaPageHeader";
+export { SitaTopBar } from "@/platform/sita/components/sita/SitaTopBar";
+export { PageSkeleton } from "@/platform/sita/components/sita/PageSkeleton";
+export { SectionSkeleton } from "@/platform/sita/components/sita/SectionSkeleton";
+export { EmptyState } from "@/platform/sita/components/sita/EmptyState";
+export { PremiumEmptyState } from "@/platform/sita/components/sita/PremiumEmptyState";
+export { DataLoadingWrapper } from "@/platform/sita/components/sita/DataLoadingWrapper";
+export { StateBadge } from "@/platform/sita/components/sita/StateBadge";
+export { TrustBadge } from "@/platform/sita/components/sita/TrustBadge";
+export { TrustStateBadge } from "@/platform/sita/components/sita/TrustStateBadge";
+export { Typography } from "@/platform/sita/components/sita/Typography";
+export type { TypographyRole } from "@/platform/sita/components/sita/Typography";

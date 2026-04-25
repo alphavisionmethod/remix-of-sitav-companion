@@ -3,4 +3,4 @@
 // Canonical import path: @/features/notifications
 // ═══════════════════════════════════════════════════════════════
 
-export { NotificationInbox } from "@/components/notifications/NotificationInbox";
+export { NotificationInbox } from "@/platform/notifications/components/notifications/NotificationInbox";

@@ -11,10 +11,10 @@ import {
   ArrowUpCircle, RefreshCw, HardDrive, Mail, Calendar,
 } from "lucide-react";
 import { useGoogleProviderFamily } from "@/hooks/use-google-provider-family";
-import { PermissionUpgradeDialog } from "@/components/sita/PermissionUpgradeDialog";
+import { PermissionUpgradeDialog } from "@/platform/sita/components/sita/PermissionUpgradeDialog";
 import type { GoogleConnectorState } from "@/lib/services/google-provider-family/types";
 import type { GenericScopeTier } from "@/lib/services/provider-family/types";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 const CAPABILITY_ICONS: Record<string, React.ReactNode> = {
   google_drive: <HardDrive className="h-5 w-5" />,

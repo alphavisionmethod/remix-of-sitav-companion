@@ -5,8 +5,8 @@ import { useQuery } from "@tanstack/react-query";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Receipt, BarChart3, ArrowDownUp } from "lucide-react";
 import { getInferenceReceipts, getReceiptStats, getReceiptRecords, getFallbackEvents } from "@/lib/core-services/ai-gateway";
-import AIGSubNav from "@/components/admin/AIGSubNav";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import AIGSubNav from "@/platform/admin/components/admin/AIGSubNav";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 export default function AIG05ReceiptsExplorer() {
   const { data: receipts = [] } = useQuery({

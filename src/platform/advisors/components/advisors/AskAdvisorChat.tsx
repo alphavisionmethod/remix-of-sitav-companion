@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { AdvisorAvatar } from "@/components/sita/primitives/AdvisorAvatar";
+import { AdvisorAvatar } from "@/platform/sita/components/sita/primitives/AdvisorAvatar";
 import { Button } from "@/components/ui/button";
 import { Send, Sparkles, MessageCircle } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";

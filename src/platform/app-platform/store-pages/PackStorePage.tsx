@@ -5,11 +5,11 @@
 
 import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import { SitaSectionHeader } from "@/components/sita/SitaCard";
+import { SitaSectionHeader } from "@/platform/sita/components/sita/SitaCard";
 import {
   StoreHero, FeaturedPackCard, PackCard, InternalAppCard, CategoryStrip, StoreEmptyState,
   PackStatusBadge, resolveIcon,
-} from "@/components/sita/PackStoreComponents";
+} from "@/platform/sita/components/sita/PackStoreComponents";
 import {
   PACK_CATALOG, INTERNAL_APPS, STORE_CATEGORIES,
   getFeaturedPacks, getInstalledPacks, getPacksWithUpdates, getRecommendedPacks,
@@ -17,7 +17,7 @@ import {
 } from "@/lib/pack-store";
 import { ArrowRight, Package, RefreshCw, Sparkles, TrendingUp } from "lucide-react";
 import { usePackInstalls } from "@/hooks/use-live-data";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 
 

@@ -3,12 +3,12 @@
 // Browsable command history with replay and filters
 // ═══════════════════════════════════════════════════════════════
 
-import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
+import { SitaPageHeader } from "@/platform/sita/components/sita/SitaPageHeader";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Terminal, Search, Play, Clock, ArrowRight, Trash2, Filter } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 interface CommandRecord {
   id: string;

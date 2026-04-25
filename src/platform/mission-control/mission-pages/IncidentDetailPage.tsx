@@ -5,7 +5,7 @@
 
 import { useParams, useNavigate } from "react-router-dom";
 import { useIncidentDetail } from "@/hooks/use-mission-control-views";
-import { SitaCard, SitaCardTitle, SitaSectionHeader } from "@/components/sita/SitaCard";
+import { SitaCard, SitaCardTitle, SitaSectionHeader } from "@/platform/sita/components/sita/SitaCard";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { motion } from "framer-motion";
@@ -14,7 +14,7 @@ import {
   ArrowLeft, AlertTriangle, Shield, Clock, CheckCircle, XCircle,
   RotateCcw, Users, GitBranch, Wifi, Activity, Eye, Loader2,
 } from "lucide-react";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 const severityColor: Record<string, string> = {
   critical: "bg-destructive/10 text-destructive border-destructive/20",

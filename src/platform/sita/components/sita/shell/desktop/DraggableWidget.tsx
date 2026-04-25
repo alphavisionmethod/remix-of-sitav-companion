@@ -1,7 +1,7 @@
 import { useState, useCallback, useRef, useEffect } from "react";
 import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { SurfaceContextMenu } from "@/components/sita/shell/SurfaceContextMenu";
+import { SurfaceContextMenu } from "@/platform/sita/components/sita/shell/SurfaceContextMenu";
 
 interface DraggableWidgetProps {
   id: string;

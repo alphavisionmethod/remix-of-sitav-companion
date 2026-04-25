@@ -14,12 +14,12 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { HeroCard, SummaryCard, ComparisonCard, ProofCard, AdvisorCard, QueueCard } from "@/components/sita/cards";
-import { AdvisorPortrait } from "@/components/advisors/AdvisorPortrait";
+import { AdvisorPortrait } from "@/platform/advisors/components/advisors/AdvisorPortrait";
 import { PROMO_IMAGES } from "@/lib/advisors/advisor-responsive-assets";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { BoardroomCinematic } from "@/components/sita/motion/AppTransitions";
-import { SitaTabs } from "@/components/sita/SitaComponents";
-import { DomainAdvisorBoard } from "@/components/sita/domain-shared/DomainAdvisorBoard";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { BoardroomCinematic } from "@/platform/sita/components/sita/motion/AppTransitions";
+import { SitaTabs } from "@/platform/sita/components/sita/SitaComponents";
+import { DomainAdvisorBoard } from "@/platform/sita/components/sita/domain-shared/DomainAdvisorBoard";
 import { useLeads, useCustomers, useInvoices } from "@/hooks/use-sita-data";
 import { useMoneyKPIs } from "@/hooks/use-domain-data";
 type BoardroomView = "synthesis" | "priorities" | "risks" | "advisors";

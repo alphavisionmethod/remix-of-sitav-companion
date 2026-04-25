@@ -1,6 +1,6 @@
 import { BadgeBase } from "./BadgeBase";
 import { Briefcase, DollarSign, Heart, FolderOpen, Shield } from "lucide-react";
-import type { DomainId } from "@/components/sita/shell/DomainAppShell";
+import type { DomainId } from "@/platform/sita/components/sita/shell/DomainAppShell";
 import { DOMAIN_ATMOSPHERE } from "@/platform/design-system/sita-design-tokens";
 
 const ICONS: Record<DomainId, typeof Briefcase> = {

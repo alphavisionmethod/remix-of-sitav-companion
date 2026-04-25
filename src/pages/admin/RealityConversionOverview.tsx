@@ -11,7 +11,7 @@ import { autoSeedAll } from "@/lib/detection/auto-seed";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { Shield, Eye, Cpu, CheckCircle2, AlertTriangle, TrendingUp, Layers, Rocket, Scan, Link2, Zap } from "lucide-react";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 
 

@@ -4,12 +4,12 @@ import { useBusinessProfile } from "@/hooks/useBusinessProfile";
 import { getModuleAdaptation } from "@/domains/engines/business-module-adaptations";
 import { motion } from "framer-motion";
 import { HeroCard, QueueCard, StatusCard, AdvisorCard } from "@/components/sita/cards";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { SitaTabs } from "@/components/sita/SitaComponents";
-import { PremiumEmptyState } from "@/components/sita/PremiumEmptyState";
-import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvisorInsight";
-import { SlidePanel } from "@/components/sita/surfaces/SlidePanel";
-import { AppSurface } from "@/components/sita/surfaces/AppSurface";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { SitaTabs } from "@/platform/sita/components/sita/SitaComponents";
+import { PremiumEmptyState } from "@/platform/sita/components/sita/PremiumEmptyState";
+import { ModuleAdvisorInsight } from "@/platform/sita/components/sita/domain-shared/ModuleAdvisorInsight";
+import { SlidePanel } from "@/platform/sita/components/sita/surfaces/SlidePanel";
+import { AppSurface } from "@/platform/sita/components/sita/surfaces/AppSurface";
 import { cn } from "@/lib/utils";
 import {
   HeadphonesIcon, AlertTriangle, Clock, CheckCircle2, MessageSquare, User, ShieldAlert,

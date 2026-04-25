@@ -4,10 +4,10 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
-import { SitaPageHeader } from "@/components/sita/SitaCard";
-import { ManifestDriftIndicator } from "@/components/sita/truth/ManifestDriftIndicator";
-import { DegradedStateBanner } from "@/components/sita/truth/DegradedStateBanner";
-import { StalenessIndicator } from "@/components/sita/truth/StalenessIndicator";
+import { SitaPageHeader } from "@/platform/sita/components/sita/SitaCard";
+import { ManifestDriftIndicator } from "@/platform/sita/components/sita/truth/ManifestDriftIndicator";
+import { DegradedStateBanner } from "@/platform/sita/components/sita/truth/DegradedStateBanner";
+import { StalenessIndicator } from "@/platform/sita/components/sita/truth/StalenessIndicator";
 import {
   FileCheck, GitCompare, CheckCircle, XCircle, AlertTriangle, Database,
   Shield, Eye, RefreshCw, BookOpen, Layers, Clock, Cpu, ArrowRight
@@ -15,7 +15,7 @@ import {
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 const now = new Date();
 const h = (hours: number) => new Date(now.getTime() - hours * 3600000).toISOString();

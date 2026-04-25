@@ -1,11 +1,11 @@
-import { DomainHeader } from "@/components/sita/primitives/DomainHeader";
-import { TrustBadge } from "@/components/sita/TrustBadge";
-import { SitaCard } from "@/components/sita/SitaCard";
-import { AdvisorCouncilShell, type AdvisorConfig } from "@/components/advisors/AdvisorCouncilShell";
+import { DomainHeader } from "@/platform/sita/components/sita/primitives/DomainHeader";
+import { TrustBadge } from "@/platform/sita/components/sita/TrustBadge";
+import { SitaCard } from "@/platform/sita/components/sita/SitaCard";
+import { AdvisorCouncilShell, type AdvisorConfig } from "@/platform/advisors/components/advisors/AdvisorCouncilShell";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { Zap } from "lucide-react";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 type MoneyMode = "stable" | "tighten" | "recovery" | "growth" | "expansion" | "debt-attack" | "tax-protection" | "founder-conservation" | "household-protection" | "launch";
 

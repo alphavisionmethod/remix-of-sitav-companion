@@ -3,7 +3,7 @@ import { Shield, AlertTriangle, BarChart3, PieChart, Eye, Settings, Zap } from "
 import { INVESTMENT_ADVISORS, PLATFORM_CONNECTIONS, PORTFOLIO } from "@/hooks/useInvestmentOfficeData";
 import { STRESS_SCENARIOS, RISK_POLICIES } from "@/domains/investment/mock-data";
 import { useRiskScenarios } from "@/hooks/use-investment-office";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 export default function RiskOffice() {
   const { data: liveData, isLoading } = useRiskScenarios();

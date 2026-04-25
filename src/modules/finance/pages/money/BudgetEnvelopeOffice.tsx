@@ -4,8 +4,8 @@ import { toast } from "sonner";
 // ═══════════════════════════════════════════════════════════════
 
 import { HeroCard, StatusCard, SummaryCard } from "@/components/sita/cards";
-import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvisorInsight";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { ModuleAdvisorInsight } from "@/platform/sita/components/sita/domain-shared/ModuleAdvisorInsight";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { DollarSign, Wallet, PiggyBank, AlertTriangle } from "lucide-react";
 import { motion } from "framer-motion";
 import { useMemo, useState } from "react";

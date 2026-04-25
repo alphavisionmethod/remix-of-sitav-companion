@@ -1,9 +1,9 @@
 import { useAuth } from "@/contexts/AuthContext";
 import { HeroCard, SummaryCard, StatusCard, AdvisorCard, QueueCard } from "@/components/sita/cards";
 import { TrustBadge } from "@/components/sita/badges";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { ConfidenceBar } from "@/components/sita/primitives/ConfidenceBar";
-import { DomainHeader } from "@/components/sita/primitives/DomainHeader";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { ConfidenceBar } from "@/platform/sita/components/sita/primitives/ConfidenceBar";
+import { DomainHeader } from "@/platform/sita/components/sita/primitives/DomainHeader";
 import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
 import { cn } from "@/lib/utils";
 import { Heart, Shield, AlertTriangle, CheckCircle, Target, Brain, Activity, Zap } from "lucide-react";

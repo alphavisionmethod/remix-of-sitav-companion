@@ -1,13 +1,13 @@
 import { useState } from "react";
-import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
-import { SitaTabs } from "@/components/sita/SitaComponents";
-import { SitaCard } from "@/components/sita/SitaCard";
+import { SitaPageHeader } from "@/platform/sita/components/sita/SitaPageHeader";
+import { SitaTabs } from "@/platform/sita/components/sita/SitaComponents";
+import { SitaCard } from "@/platform/sita/components/sita/SitaCard";
 import { Printer, ScanLine, FileText, Clock, CheckCircle2, AlertTriangle, Trash2, RotateCw, Settings, Camera, Upload, FolderOpen } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { PageShell } from "@/components/sita/PageShell";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { PageShell } from "@/platform/sita/components/sita/PageShell";
 
 interface PrintJob {
   id: string;

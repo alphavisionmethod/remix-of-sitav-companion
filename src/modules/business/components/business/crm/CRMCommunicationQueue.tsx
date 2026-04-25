@@ -12,7 +12,7 @@ import {
   Inbox, AlertCircle, Hourglass, ThumbsUp, XCircle, Zap
 } from "lucide-react";
 import { format, formatDistanceToNow, differenceInDays, differenceInHours, isAfter, subDays } from "date-fns";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { motion, AnimatePresence } from "framer-motion";
 
 const TYPE_META: Record<string, { icon: React.ElementType; color: string; bg: string; label: string }> = {

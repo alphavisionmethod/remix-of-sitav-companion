@@ -7,8 +7,8 @@ import { useNavigate } from "react-router-dom";
 import { ArrowLeft, FileText, Link2, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAppPlatform } from "@/contexts/AppPlatformContext";
-import { AppIcon } from "@/components/sita/app-platform/AppStoreComponents";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { AppIcon } from "@/platform/sita/components/sita/app-platform/AppStoreComponents";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 const AppAssociationsPage = () => {
   const { apps, defaultApps, setDefaultApp } = useAppPlatform();
   const navigate = useNavigate();

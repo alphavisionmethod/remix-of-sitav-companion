@@ -2,9 +2,9 @@
 // SITA OS — Mobile Trusted Device: Boardroom
 // ═══════════════════════════════════════════════════════════════
 
-import { MobileShell } from "@/components/mobile/MobileShell";
-import { MobileAdvisorBoard } from "@/components/advisors/MobileAdvisorBoard";
-import type { AdvisorConfig } from "@/components/advisors/AdvisorCouncilShell";
+import { MobileShell } from "@/platform/experience/components/mobile/MobileShell";
+import { MobileAdvisorBoard } from "@/platform/advisors/components/advisors/MobileAdvisorBoard";
+import type { AdvisorConfig } from "@/platform/advisors/components/advisors/AdvisorCouncilShell";
 import { Badge } from "@/components/ui/badge";
 import { Shield, TrendingUp, Briefcase, Wallet, Home } from "lucide-react";
 

@@ -8,47 +8,47 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Brain, Sparkles, RefreshCw, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { useBusinessAdvisorBoard } from "@/hooks/useBusinessAdvisorBoard";
 
 // Board components
-import { ExecutiveBriefCard } from "@/components/business/advisor-board/ExecutiveBriefCard";
-import { AdvisorPresenceBar } from "@/components/business/advisor-board/AdvisorPresenceBar";
-import { BoardroomModuleGrid } from "@/components/business/advisor-board/BoardroomModuleGrid";
-import { ActionQueuePanel } from "@/components/business/advisor-board/ActionQueuePanel";
-import { AdvisorDetailSheet } from "@/components/business/advisor-board/AdvisorDetailSheet";
-import { TrustModeIndicator } from "@/components/business/advisor-board/TrustModeIndicator";
-import { ProfitLeakCard } from "@/components/business/advisor-board/ProfitLeakCard";
-import { RevenueRecoveryCard } from "@/components/business/advisor-board/RevenueRecoveryCard";
-import { BusinessHealthScoreCard } from "@/components/business/advisor-board/BusinessHealthScoreCard";
-import { ProofTimelinePanel } from "@/components/business/advisor-board/ProofTimelinePanel";
-import { DailyBriefView } from "@/components/business/advisor-board/DailyBriefView";
-import { AutonomyLevelControl } from "@/components/business/advisor-board/AutonomyLevelControl";
+import { ExecutiveBriefCard } from "@/modules/business/components/business/advisor-board/ExecutiveBriefCard";
+import { AdvisorPresenceBar } from "@/modules/business/components/business/advisor-board/AdvisorPresenceBar";
+import { BoardroomModuleGrid } from "@/modules/business/components/business/advisor-board/BoardroomModuleGrid";
+import { ActionQueuePanel } from "@/modules/business/components/business/advisor-board/ActionQueuePanel";
+import { AdvisorDetailSheet } from "@/modules/business/components/business/advisor-board/AdvisorDetailSheet";
+import { TrustModeIndicator } from "@/modules/business/components/business/advisor-board/TrustModeIndicator";
+import { ProfitLeakCard } from "@/modules/business/components/business/advisor-board/ProfitLeakCard";
+import { RevenueRecoveryCard } from "@/modules/business/components/business/advisor-board/RevenueRecoveryCard";
+import { BusinessHealthScoreCard } from "@/modules/business/components/business/advisor-board/BusinessHealthScoreCard";
+import { ProofTimelinePanel } from "@/modules/business/components/business/advisor-board/ProofTimelinePanel";
+import { DailyBriefView } from "@/modules/business/components/business/advisor-board/DailyBriefView";
+import { AutonomyLevelControl } from "@/modules/business/components/business/advisor-board/AutonomyLevelControl";
 
 // Part 2 components
-import { MorningExecutiveBrief } from "@/components/business/advisor-board/MorningExecutiveBrief";
-import { RevenueRescuePanel } from "@/components/business/advisor-board/RevenueRescuePanel";
-import { BusinessArchetypeSelector } from "@/components/business/advisor-board/BusinessArchetypeSelector";
-import { AdvisorMemoryInspector } from "@/components/business/advisor-board/AdvisorMemoryInspector";
-import { CrossAdvisorReasoningView } from "@/components/business/advisor-board/CrossAdvisorReasoningView";
-import { ExecutiveResetMode } from "@/components/business/advisor-board/ExecutiveResetMode";
+import { MorningExecutiveBrief } from "@/modules/business/components/business/advisor-board/MorningExecutiveBrief";
+import { RevenueRescuePanel } from "@/modules/business/components/business/advisor-board/RevenueRescuePanel";
+import { BusinessArchetypeSelector } from "@/modules/business/components/business/advisor-board/BusinessArchetypeSelector";
+import { AdvisorMemoryInspector } from "@/modules/business/components/business/advisor-board/AdvisorMemoryInspector";
+import { CrossAdvisorReasoningView } from "@/modules/business/components/business/advisor-board/CrossAdvisorReasoningView";
+import { ExecutiveResetMode } from "@/modules/business/components/business/advisor-board/ExecutiveResetMode";
 
 // Part 3 components
-import { AdvisorConversation } from "@/components/business/advisor-board/AdvisorConversation";
-import { ScenarioSimulatorPanel } from "@/components/business/advisor-board/ScenarioSimulatorPanel";
-import { AdvisorDebateView } from "@/components/business/advisor-board/AdvisorDebateView";
-import { WeeklyExecutiveReport } from "@/components/business/advisor-board/WeeklyExecutiveReport";
-import { AdvisorNotificationSystem } from "@/components/business/advisor-board/AdvisorNotificationSystem";
+import { AdvisorConversation } from "@/modules/business/components/business/advisor-board/AdvisorConversation";
+import { ScenarioSimulatorPanel } from "@/modules/business/components/business/advisor-board/ScenarioSimulatorPanel";
+import { AdvisorDebateView } from "@/modules/business/components/business/advisor-board/AdvisorDebateView";
+import { WeeklyExecutiveReport } from "@/modules/business/components/business/advisor-board/WeeklyExecutiveReport";
+import { AdvisorNotificationSystem } from "@/modules/business/components/business/advisor-board/AdvisorNotificationSystem";
 
 // Part 4 components
-import { AdvisorToolExecutionPanel } from "@/components/business/advisor-board/AdvisorToolExecutionPanel";
-import { BusinessRadarPanel } from "@/components/business/advisor-board/BusinessRadarPanel";
-import { StrategicPlanningStudio } from "@/components/business/advisor-board/StrategicPlanningStudio";
+import { AdvisorToolExecutionPanel } from "@/modules/business/components/business/advisor-board/AdvisorToolExecutionPanel";
+import { BusinessRadarPanel } from "@/modules/business/components/business/advisor-board/BusinessRadarPanel";
+import { StrategicPlanningStudio } from "@/modules/business/components/business/advisor-board/StrategicPlanningStudio";
 
 // Part 5 components
-import { ClientIntelligenceHub } from "@/components/business/advisor-board/ClientIntelligenceHub";
-import { AdvisorPerformancePanel } from "@/components/business/advisor-board/AdvisorPerformancePanel";
-import { DecisionJournalPanel } from "@/components/business/advisor-board/DecisionJournalPanel";
+import { ClientIntelligenceHub } from "@/modules/business/components/business/advisor-board/ClientIntelligenceHub";
+import { AdvisorPerformancePanel } from "@/modules/business/components/business/advisor-board/AdvisorPerformancePanel";
+import { DecisionJournalPanel } from "@/modules/business/components/business/advisor-board/DecisionJournalPanel";
 
 const BusinessAdvisorBoardPage = () => {
   const board = useBusinessAdvisorBoard();

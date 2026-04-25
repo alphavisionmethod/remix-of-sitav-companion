@@ -12,8 +12,8 @@ import { Progress } from "@/components/ui/progress";
 import { getWorkforceRoles, getWorkforceStats } from "@/lib/core-services/ai-workforce/workforce-orchestrator";
 import { DEFAULT_THRESHOLDS, ROLE_BUDGET_POLICIES } from "@/lib/core-services/ai-workforce/admin-budget-routing-policy";
 import { ClipboardCheck, Shield, DollarSign, Zap, CheckCircle, AlertTriangle, Eye, Lock, Repeat, FileText, BarChart3, Users } from "lucide-react";
-import AITSubNav from "@/components/admin/AITSubNav";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import AITSubNav from "@/platform/admin/components/admin/AITSubNav";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 interface CheckItem {
   id: string;

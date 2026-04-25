@@ -5,8 +5,8 @@
 // ═══════════════════════════════════════════════════════════════
 
 // Components
-export { AdvisorCouncilShell } from "@/components/advisors/AdvisorCouncilShell";
-export { AdvisorDebateView } from "@/components/advisors/AdvisorDebateView";
-export { AdvisorDetailDrawer } from "@/components/advisors/AdvisorDetailDrawer";
-export { AdvisorKnowledgePanel } from "@/components/advisors/AdvisorKnowledgePanel";
-export { AdvisorMeetingControls } from "@/components/advisors/AdvisorMeetingControls";
+export { AdvisorCouncilShell } from "@/platform/advisors/components/advisors/AdvisorCouncilShell";
+export { AdvisorDebateView } from "@/platform/advisors/components/advisors/AdvisorDebateView";
+export { AdvisorDetailDrawer } from "@/platform/advisors/components/advisors/AdvisorDetailDrawer";
+export { AdvisorKnowledgePanel } from "@/platform/advisors/components/advisors/AdvisorKnowledgePanel";
+export { AdvisorMeetingControls } from "@/platform/advisors/components/advisors/AdvisorMeetingControls";

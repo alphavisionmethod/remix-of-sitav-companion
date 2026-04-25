@@ -6,7 +6,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useConnectorDetail, useConnectorHealth, useConnectorLogs } from "@/hooks/use-mission-control-views";
-import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader } from "@/components/sita/SitaCard";
+import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader } from "@/platform/sita/components/sita/SitaCard";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
@@ -16,7 +16,7 @@ import {
   Wifi, WifiOff, AlertTriangle, ArrowLeft, Shield, Activity,
   Clock, RefreshCw, Eye, ChevronRight, Database, Lock, Zap, Server,
 } from "lucide-react";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 function StatusBadge({ status }: { status: string }) {
   const styles: Record<string, string> = {

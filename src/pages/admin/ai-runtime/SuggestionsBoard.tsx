@@ -17,7 +17,7 @@ import {
   Lightbulb, RefreshCw, Sparkles, Filter, CheckCircle2,
   XCircle, PlayCircle, Award, Inbox,
 } from "lucide-react";
-import { EmptyState } from "@/components/sita/EmptyState";
+import { EmptyState } from "@/platform/sita/components/sita/EmptyState";
 import { StatusBadge } from "@/components/primitives/status/StatusBadge";
 import { AITruthDisclosure } from "@/components/primitives/status/AITruthDisclosure";
 import { OperatorActionPanel } from "@/components/primitives/actions/OperatorActionPanel";
@@ -26,7 +26,7 @@ import {
   suggestionStatusTone,
   priorityTone,
   outcomeTone,
-} from "@/components/admin/ai-runtime/_shared/status-tone-maps";
+} from "@/platform/admin/components/admin/ai-runtime/_shared/status-tone-maps";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 

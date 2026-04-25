@@ -4,11 +4,11 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
-import { SitaPageHeader } from "@/components/sita/SitaCard";
-import { ProjectionFreshnessIndicator } from "@/components/sita/truth/ProjectionFreshnessIndicator";
-import { SourceOfTruthDisclosure } from "@/components/sita/truth/SourceOfTruthDisclosure";
-import { DegradedStateBanner } from "@/components/sita/truth/DegradedStateBanner";
-import { TruthBadge } from "@/components/sita/truth/TruthBadge";
+import { SitaPageHeader } from "@/platform/sita/components/sita/SitaCard";
+import { ProjectionFreshnessIndicator } from "@/platform/sita/components/sita/truth/ProjectionFreshnessIndicator";
+import { SourceOfTruthDisclosure } from "@/platform/sita/components/sita/truth/SourceOfTruthDisclosure";
+import { DegradedStateBanner } from "@/platform/sita/components/sita/truth/DegradedStateBanner";
+import { TruthBadge } from "@/platform/sita/components/sita/truth/TruthBadge";
 import {
   Database, RefreshCw, Activity, BarChart3, Clock, CheckCircle, AlertTriangle,
   XCircle, Layers, Eye, Zap, Shield, Settings, RotateCcw, Loader2
@@ -16,7 +16,7 @@ import {
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 const now = new Date();
 const h = (hours: number) => new Date(now.getTime() - hours * 3600000).toISOString();

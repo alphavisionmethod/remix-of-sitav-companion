@@ -8,15 +8,15 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useRevenueOfficeMode } from "@/contexts/RevenueOfficeModeContext";
-import { RevenueOfficeModeToggle } from "@/components/revenue-office/RevenueOfficeModeToggle";
+import { RevenueOfficeModeToggle } from "@/modules/business/components/revenue-office/RevenueOfficeModeToggle";
 import { useRevenueLeakItems } from "@/hooks/use-revenue-office";
 import { useRevenueLeaks } from "@/hooks/use-revenue-office";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useState } from "react";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { PremiumEmptyState } from "@/components/sita/PremiumEmptyState";
-import { PageShell } from "@/components/sita/PageShell";
-import { Typography } from "@/components/sita/Typography";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { PremiumEmptyState } from "@/platform/sita/components/sita/PremiumEmptyState";
+import { PageShell } from "@/platform/sita/components/sita/PageShell";
+import { Typography } from "@/platform/sita/components/sita/Typography";
 
 export default function LeakDetector() {
   const { isBeginner } = useRevenueOfficeMode();

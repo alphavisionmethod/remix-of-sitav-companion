@@ -4,7 +4,7 @@
 // subscore breakdown, and evidence trail.
 // ═══════════════════════════════════════════════════════════════
 
-import { SitaCard, SitaCardTitle } from "@/components/sita/SitaCard";
+import { SitaCard, SitaCardTitle } from "@/platform/sita/components/sita/SitaCard";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { useReadinessToDelegate } from "@/hooks/use-meta-governance";

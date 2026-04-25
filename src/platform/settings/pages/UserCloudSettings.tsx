@@ -16,18 +16,18 @@ import { cloudStorageService } from "@/platform/cloud/cloud-storage-service";
 import { cloudDeviceService } from "@/platform/cloud/cloud-device-service";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
-import { SyncStatusIndicator } from "@/components/sita/SyncStatusIndicator";
-import { SyncActivityJournal } from "@/components/sita/SyncActivityJournal";
-import { CloudFileBrowser } from "@/components/cloud/CloudFileBrowser";
-import { CloudTrashManager } from "@/components/cloud/CloudTrashManager";
-import { CloudActivityTimeline } from "@/components/cloud/CloudActivityTimeline";
-import { CloudDeviceSafety } from "@/components/cloud/CloudDeviceSafety";
-import { CloudImportExport } from "@/components/cloud/CloudImportExport";
-import { CloudNamespaceToggles } from "@/components/cloud/CloudNamespaceToggles";
-import { CloudDeviceOwnership } from "@/components/cloud/CloudDeviceOwnership";
-import { UserSupportEscalation } from "@/components/cloud/UserSupportEscalation";
-import { UserNotificationCenter } from "@/components/cloud/UserNotificationCenter";
-import { PlatformDegradedBanner } from "@/components/cloud/PlatformDegradedBanner";
+import { SyncStatusIndicator } from "@/platform/sita/components/sita/SyncStatusIndicator";
+import { SyncActivityJournal } from "@/platform/sita/components/sita/SyncActivityJournal";
+import { CloudFileBrowser } from "@/platform/cloud/components/cloud/CloudFileBrowser";
+import { CloudTrashManager } from "@/platform/cloud/components/cloud/CloudTrashManager";
+import { CloudActivityTimeline } from "@/platform/cloud/components/cloud/CloudActivityTimeline";
+import { CloudDeviceSafety } from "@/platform/cloud/components/cloud/CloudDeviceSafety";
+import { CloudImportExport } from "@/platform/cloud/components/cloud/CloudImportExport";
+import { CloudNamespaceToggles } from "@/platform/cloud/components/cloud/CloudNamespaceToggles";
+import { CloudDeviceOwnership } from "@/platform/cloud/components/cloud/CloudDeviceOwnership";
+import { UserSupportEscalation } from "@/platform/cloud/components/cloud/UserSupportEscalation";
+import { UserNotificationCenter } from "@/platform/cloud/components/cloud/UserNotificationCenter";
+import { PlatformDegradedBanner } from "@/platform/cloud/components/cloud/PlatformDegradedBanner";
 
 /* ── Namespace selective sync config ── */
 const SYNC_NAMESPACES = [

@@ -1,4 +1,4 @@
-import { CompositorDebugOverlay } from "@/components/sita/kernel/CompositorDebugOverlay";
+import { CompositorDebugOverlay } from "@/platform/sita/components/sita/kernel/CompositorDebugOverlay";
 
 export default function CompositorDebugPage() {
   return (

@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { LayoutGrid, List, Zap, Bot } from "lucide-react";
-import { SetupStageHeader } from "@/components/sita/setup/SetupStageHeader";
+import { SetupStageHeader } from "@/platform/sita/components/sita/setup/SetupStageHeader";
 import { Switch } from "@/components/ui/switch";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { cn } from "@/lib/utils";

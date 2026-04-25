@@ -4,7 +4,7 @@
 // scores and actionable recommendations. Uses Recharts.
 // ═══════════════════════════════════════════════════════════════
 
-import { SitaCard, SitaCardTitle } from "@/components/sita/SitaCard";
+import { SitaCard, SitaCardTitle } from "@/platform/sita/components/sita/SitaCard";
 import { Badge } from "@/components/ui/badge";
 import { useDragIndex, useDragRecommendations } from "@/hooks/use-meta-governance";
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } from "recharts";

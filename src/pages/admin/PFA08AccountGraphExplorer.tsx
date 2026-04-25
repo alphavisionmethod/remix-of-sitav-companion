@@ -4,9 +4,9 @@ import { Badge } from "@/components/ui/badge";
 import { useQuery } from "@tanstack/react-query";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Network, User, Link2, CheckCircle, XCircle, Shield, ScrollText } from "lucide-react";
-import PFASubNav from "@/components/admin/PFASubNav";
+import PFASubNav from "@/platform/admin/components/admin/PFASubNav";
 
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import {
   getAccountNodes,
   getAccountEdges,

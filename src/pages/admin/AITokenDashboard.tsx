@@ -10,7 +10,7 @@ import { Gauge, DollarSign, Cpu, TrendingUp, Users, Zap, Plus, Trash2, Shield, L
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 
 
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import {
   useBudgetPolicies, useBudgetSummary, useUsageLedger, useDailyAggregation,
   useCreateBudgetPolicy, useUpdateBudgetPolicy, useDeleteBudgetPolicy,

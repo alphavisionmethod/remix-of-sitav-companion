@@ -27,11 +27,11 @@ import {
   Zap,
 } from "lucide-react";
 import { useAutonomyFleet, resetCircuitBreaker, type FleetAdvisor } from "@/hooks/useAutonomyFleet";
-import { AutonomyApprovalQueue } from "@/components/autonomy/AutonomyApprovalQueue";
-import { AutonomyReflectionTimeline } from "@/components/autonomy/AutonomyReflectionTimeline";
-import { BoardroomKernelPanel } from "@/components/autonomy/BoardroomKernelPanel";
-import { AutonomyMissionsPanel } from "@/components/autonomy/AutonomyMissionsPanel";
-import { AutonomyKillSwitch } from "@/components/autonomy/AutonomyKillSwitch";
+import { AutonomyApprovalQueue } from "@/platform/trust/components/autonomy/AutonomyApprovalQueue";
+import { AutonomyReflectionTimeline } from "@/platform/trust/components/autonomy/AutonomyReflectionTimeline";
+import { BoardroomKernelPanel } from "@/platform/trust/components/autonomy/BoardroomKernelPanel";
+import { AutonomyMissionsPanel } from "@/platform/trust/components/autonomy/AutonomyMissionsPanel";
+import { AutonomyKillSwitch } from "@/platform/trust/components/autonomy/AutonomyKillSwitch";
 import {
   runControllersForAdvisors,
   DEFAULT_CONTROLLED_ADVISORS,

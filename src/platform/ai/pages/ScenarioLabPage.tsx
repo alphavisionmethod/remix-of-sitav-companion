@@ -17,8 +17,8 @@ import { cn } from "@/lib/utils";
 import { useOSRuntime } from "@/hooks/useOSRuntime";
 import type { ScenarioTemplate, ScenarioSimulation, ScenarioOutcome } from "@/packages/contracts";
 import type { RealityLane, ConfidenceScore, SimulationResult } from "@/packages/reality-contracts";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { PageShell } from "@/components/sita/PageShell";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { PageShell } from "@/platform/sita/components/sita/PageShell";
 
 // ── Template Card ──────────────────────────────────────────────
 function TemplateCard({ template, onRun }: { template: ScenarioTemplate; onRun: () => void }) {

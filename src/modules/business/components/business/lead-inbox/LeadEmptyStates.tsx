@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Inbox, CheckCircle2, Search, Sparkles, Plus, Plug } from "lucide-react";
-import { SitaButton } from "@/components/sita/SitaCard";
+import { SitaButton } from "@/platform/sita/components/sita/SitaCard";
 
 interface EmptyProps {
   variant: "first-use" | "caught-up" | "no-results";

@@ -7,14 +7,14 @@
 
 import { useState } from "react";
 import { Sparkles } from "lucide-react";
-import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
-import { NowPanel } from "@/components/sita/jarvis/NowPanel";
-import { WorldModelPanel } from "@/components/sita/jarvis/WorldModelPanel";
-import { CouncilPanel } from "@/components/sita/jarvis/CouncilPanel";
-import { ActionQueuePanel } from "@/components/sita/jarvis/ActionQueuePanel";
-import { TimelinePanel } from "@/components/sita/jarvis/TimelinePanel";
-import { ExplainPanel } from "@/components/sita/jarvis/ExplainPanel";
-import { CronStatusPanel } from "@/components/sita/jarvis/CronStatusPanel";
+import { SitaPageHeader } from "@/platform/sita/components/sita/SitaPageHeader";
+import { NowPanel } from "@/platform/sita/components/sita/jarvis/NowPanel";
+import { WorldModelPanel } from "@/platform/sita/components/sita/jarvis/WorldModelPanel";
+import { CouncilPanel } from "@/platform/sita/components/sita/jarvis/CouncilPanel";
+import { ActionQueuePanel } from "@/platform/sita/components/sita/jarvis/ActionQueuePanel";
+import { TimelinePanel } from "@/platform/sita/components/sita/jarvis/TimelinePanel";
+import { ExplainPanel } from "@/platform/sita/components/sita/jarvis/ExplainPanel";
+import { CronStatusPanel } from "@/platform/sita/components/sita/jarvis/CronStatusPanel";
 import type { JarvisActionItem } from "@/lib/sita-jarvis";
 
 export default function JarvisBridge() {

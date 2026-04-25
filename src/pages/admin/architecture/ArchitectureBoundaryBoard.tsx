@@ -5,7 +5,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useMemo } from "react";
-import { RuntimeViolationScanner } from "@/components/admin/architecture/RuntimeViolationScanner";
+import { RuntimeViolationScanner } from "@/platform/admin/components/admin/architecture/RuntimeViolationScanner";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";

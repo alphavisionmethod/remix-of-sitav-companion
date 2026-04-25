@@ -7,9 +7,9 @@
 import type { ReactNode } from "react";
 import type { ProductState } from "@/platform/product/state-grammar";
 import { STATE_VISUAL_MAP } from "@/platform/experience/state-visual-grammar";
-import { EmptyState } from "@/components/sita/EmptyState";
-import { PageSkeleton } from "@/components/sita/PageSkeleton";
-import { SectionSkeleton } from "@/components/sita/SectionSkeleton";
+import { EmptyState } from "@/platform/sita/components/sita/EmptyState";
+import { PageSkeleton } from "@/platform/sita/components/sita/PageSkeleton";
+import { SectionSkeleton } from "@/platform/sita/components/sita/SectionSkeleton";
 import { AlertTriangle, Inbox, Lock, ShieldOff, WifiOff, Wrench } from "lucide-react";
 import { cn } from "@/lib/utils";
 

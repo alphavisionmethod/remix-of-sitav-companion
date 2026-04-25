@@ -1,5 +1,5 @@
-import { MobileShell } from "@/components/mobile/MobileShell";
-import { AlertCard, type AlertItem } from "@/components/mobile/AlertCard";
+import { MobileShell } from "@/platform/experience/components/mobile/MobileShell";
+import { AlertCard, type AlertItem } from "@/platform/experience/components/mobile/AlertCard";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { useMobileAlerts } from "@/hooks/use-domain-data";

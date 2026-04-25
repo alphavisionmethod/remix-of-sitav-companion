@@ -1,12 +1,12 @@
 import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
-import { KPITile } from "@/components/sita/SitaComponents";
-import { ConciergeEmptyState } from "@/components/concierge/ConciergeEmptyState";
+import { KPITile } from "@/platform/sita/components/sita/SitaComponents";
+import { ConciergeEmptyState } from "@/modules/concierge/components/concierge/ConciergeEmptyState";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { useQuery } from "@tanstack/react-query";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
 import {
   Calendar, ChevronLeft, ChevronRight, Plus, Clock, Users, MapPin, CheckSquare

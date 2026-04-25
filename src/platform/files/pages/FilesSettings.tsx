@@ -1,7 +1,7 @@
 import { useAction } from "@/hooks/use-action";
-import { SitaPageHeader, SitaCard, SitaSectionHeader, SitaButton } from "@/components/sita/SitaCard";
-import { ConnectorStatusCard, SensitivityBadge } from "@/components/sita/FilesComponents";
-import { SectionSkeleton } from "@/components/sita/SectionSkeleton";
+import { SitaPageHeader, SitaCard, SitaSectionHeader, SitaButton } from "@/platform/sita/components/sita/SitaCard";
+import { ConnectorStatusCard, SensitivityBadge } from "@/platform/sita/components/sita/FilesComponents";
+import { SectionSkeleton } from "@/platform/sita/components/sita/SectionSkeleton";
 import { Settings, Upload, Brain, Shield, Clock, Zap, Eye, Globe, Lock } from "lucide-react";
 import { motion } from "framer-motion";
 import { useFileSettings } from "@/hooks/use-domain-data";
@@ -9,7 +9,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { upsertFileSettings } from "@/data/repositories/files-data-service";
 import { toast } from "sonner";
 import { useState, useEffect } from "react";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 interface SettingsState {
   auto_classify: boolean;

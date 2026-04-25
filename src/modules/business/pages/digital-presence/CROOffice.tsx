@@ -1,8 +1,8 @@
 import { toast } from "sonner";
 import { motion } from "framer-motion";
 import DPOSubNav from "./DPOSubNav";
-import { PremiumEmptyState } from "@/components/sita/PremiumEmptyState";
-import { PageShell } from "@/components/sita/PageShell";
+import { PremiumEmptyState } from "@/platform/sita/components/sita/PremiumEmptyState";
+import { PageShell } from "@/platform/sita/components/sita/PageShell";
 
 export default function CROOffice() {
   return (

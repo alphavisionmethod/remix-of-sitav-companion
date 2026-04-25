@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { AlertCircle, ArrowRight, Clock, Zap } from "lucide-react";
-import { GlassCard } from "@/components/sita/PremiumPageComponents";
+import { GlassCard } from "@/platform/sita/components/sita/PremiumPageComponents";
 
 export type DomainType = "business" | "finance" | "concierge";
 

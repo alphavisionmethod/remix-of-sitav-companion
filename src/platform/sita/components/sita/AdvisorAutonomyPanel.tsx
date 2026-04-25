@@ -7,7 +7,7 @@ import { useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import { Eye, Sparkles, Zap, Shield, ChevronDown, ChevronUp, DollarSign } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { AdvisorAvatar } from "@/components/sita/primitives/AdvisorAvatar";
+import { AdvisorAvatar } from "@/platform/sita/components/sita/primitives/AdvisorAvatar";
 import { toast } from "sonner";
 
 type AutonomyLevel = "watch" | "suggest" | "autopilot";

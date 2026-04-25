@@ -1,23 +1,23 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ArrowLeft, FolderKanban, Loader2, Plus } from "lucide-react";
-import { GlobalErrorBoundary } from "@/components/sita/GlobalErrorBoundary";
-import { PageShell } from "@/components/sita/PageShell";
+import { GlobalErrorBoundary } from "@/platform/sita/components/sita/GlobalErrorBoundary";
+import { PageShell } from "@/platform/sita/components/sita/PageShell";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import type { Database } from "@/integrations/supabase/types";
-import { ModePicker } from "@/components/personal-brain/ModePicker";
-import { ChatList } from "@/components/personal-brain/ChatList";
-import { SuggestedPromptStrip } from "@/components/personal-brain/SuggestedPromptStrip";
-import { usePbChats } from "@/components/personal-brain/hooks/usePbChats";
-import { MembersPanel } from "@/components/personal-brain/members/MembersPanel";
+import { ModePicker } from "@/platform/personal-brain/components/personal-brain/ModePicker";
+import { ChatList } from "@/platform/personal-brain/components/personal-brain/ChatList";
+import { SuggestedPromptStrip } from "@/platform/personal-brain/components/personal-brain/SuggestedPromptStrip";
+import { usePbChats } from "@/platform/personal-brain/components/personal-brain/hooks/usePbChats";
+import { MembersPanel } from "@/platform/personal-brain/components/personal-brain/members/MembersPanel";
 import {
   isBrainModeId,
   type BrainModeId,
-} from "@/components/personal-brain/BRAIN_MODES";
+} from "@/platform/personal-brain/components/personal-brain/BRAIN_MODES";
 
 type PbWorkspace = Database["public"]["Tables"]["pb_workspaces"]["Row"];
 

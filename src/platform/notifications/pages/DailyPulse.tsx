@@ -11,9 +11,9 @@ import { useQuery } from "@tanstack/react-query";
 
 import { useLoopEmitter } from "@/hooks/use-flagship-loop-proof";
 import { HeroCard, SummaryCard, QueueCard, AdvisorCard } from "@/components/sita/cards";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { EmptyState } from "@/components/sita/EmptyState";
-import { ListReveal, ListRevealItem } from "@/components/sita/motion/AppTransitions";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { EmptyState } from "@/platform/sita/components/sita/EmptyState";
+import { ListReveal, ListRevealItem } from "@/platform/sita/components/sita/motion/AppTransitions";
 import { motion } from "framer-motion";
 import {
   Briefcase, CheckCircle, ArrowRight, Home, Sparkles, Wallet,

@@ -8,7 +8,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { SERVICE_OWNERSHIP_REGISTRY, DUPLICATE_CLUSTER_RESOLUTIONS, type ClusterResolution } from "@/lib/core-services/service-registry/service-ownership-registry";
 import { getDuplicateActionPatterns, getRoutesWithShadowRisk } from "@/lib/core-services/service-registry/route-to-service-inventory";
 import { AlertTriangle, Copy, Ghost, Shield, CheckCircle, ArrowRight } from "lucide-react";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 interface ShadowPattern {
   pattern: string;
   severity: "high" | "medium" | "low";

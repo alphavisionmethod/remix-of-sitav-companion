@@ -3,11 +3,11 @@
 // The living memory stream of the operating environment
 // ═══════════════════════════════════════════════════════════════
 
-import { SitaPageHeader, SitaCard, SitaSectionHeader } from "@/components/sita/SitaCard";
-import { KPITile, EmptyState, SitaTabs } from "@/components/sita/SitaComponents";
-import { DomainHeader } from "@/components/sita/primitives/DomainHeader";
-import { StateBadge } from "@/components/sita/StateBadge";
-import { SectionSkeleton } from "@/components/sita/SectionSkeleton";
+import { SitaPageHeader, SitaCard, SitaSectionHeader } from "@/platform/sita/components/sita/SitaCard";
+import { KPITile, EmptyState, SitaTabs } from "@/platform/sita/components/sita/SitaComponents";
+import { DomainHeader } from "@/platform/sita/components/sita/primitives/DomainHeader";
+import { StateBadge } from "@/platform/sita/components/sita/StateBadge";
+import { SectionSkeleton } from "@/platform/sita/components/sita/SectionSkeleton";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { dbAny as db } from "@/lib/supabase-helpers";
@@ -22,9 +22,9 @@ import {
   ChevronRight, Pin, Search, Layers, TrendingUp
 } from "lucide-react";
 
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { PageShell } from "@/components/sita/PageShell";
-import { PageErrorState } from "@/components/sita/PageErrorState";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { PageShell } from "@/platform/sita/components/sita/PageShell";
+import { PageErrorState } from "@/platform/sita/components/sita/PageErrorState";
 // ── Category System ──────────────────────────────────────────
 type FeedCategory = "all" | "actions" | "approvals" | "proof" | "workflows" | "finance" | "communications" | "household" | "system";
 

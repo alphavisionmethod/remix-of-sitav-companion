@@ -1,4 +1,4 @@
-import UAOSubNav from "@/components/admin/UAOSubNav";
+import UAOSubNav from "@/platform/admin/components/admin/UAOSubNav";
 import { useAction } from "@/hooks/use-action";
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -10,7 +10,7 @@ import { fromTable } from "@/lib/supabase-helpers";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Radio, RefreshCw, Monitor, Smartphone, Watch, CheckCircle, XCircle } from "lucide-react";
 import { toast } from "sonner";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 
 

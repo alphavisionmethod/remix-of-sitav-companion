@@ -5,8 +5,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { Shield, Smartphone, Watch, Monitor, Fingerprint, Lock, ArrowRight, AlertTriangle, CheckCircle2, XCircle, Eye } from "lucide-react";
-import APLSubNav from "@/components/admin/APLSubNav";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import APLSubNav from "@/platform/admin/components/admin/APLSubNav";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 const VERIFICATION_EVENTS: any[] = [];
 

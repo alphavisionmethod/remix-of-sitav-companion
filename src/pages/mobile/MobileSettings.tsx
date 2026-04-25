@@ -4,7 +4,7 @@ import { toast } from "sonner";
 // Full-parity mobile settings with grouped sections
 // ═══════════════════════════════════════════════════════════════
 
-import { MobileShell } from "@/components/mobile/MobileShell";
+import { MobileShell } from "@/platform/experience/components/mobile/MobileShell";
 import {
   Shield, Fingerprint, Bell, Moon, LogOut, ChevronRight, Smartphone,
   Wifi, Bluetooth, Cloud, Brain, Eye, Palette, Activity, Accessibility as AccessibilityIcon,

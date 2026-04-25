@@ -8,10 +8,10 @@ import { ArrowLeft, Download, Check, Shield, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { getBundleById } from "@/lib/app-platform";
 import { useAppPlatform } from "@/contexts/AppPlatformContext";
-import { AppIcon, VerificationBadge, AppSourceLabel } from "@/components/sita/app-platform/AppStoreComponents";
+import { AppIcon, VerificationBadge, AppSourceLabel } from "@/platform/sita/components/sita/app-platform/AppStoreComponents";
 import type { AppDefinition } from "@/domains/apps/types";
 import { toast } from "sonner";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 const BundleDetailPage = () => {
   const { bundleId } = useParams<{ bundleId: string }>();

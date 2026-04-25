@@ -10,7 +10,7 @@ import {
   Package, Send, ArrowRight, Layers, DollarSign, ChevronDown, Activity, Calendar
 } from "lucide-react";
 import AutomationSubNav from "./AutomationSubNav";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 const sampleNodes = [
   { id: 1, type: "trigger", label: "Lead enters 'Stale' status (>48hrs no contact)", icon: Zap, color: "bg-amber-500/10 border-amber-500/30 text-amber-400" },

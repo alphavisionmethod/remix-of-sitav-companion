@@ -1,7 +1,7 @@
 import { useAction } from "@/hooks/use-action";
-import { KPITile, SitaTabs, EmptyState } from "@/components/sita/SitaComponents";
-import { TrustBadge } from "@/components/sita/TrustBadge";
-import { MemberAvatar } from "@/components/sita/HouseholdComponents";
+import { KPITile, SitaTabs, EmptyState } from "@/platform/sita/components/sita/SitaComponents";
+import { TrustBadge } from "@/platform/sita/components/sita/TrustBadge";
+import { MemberAvatar } from "@/platform/sita/components/sita/HouseholdComponents";
 import { ConciergeAdvisorInsightCard, ConciergePageWrapper } from "@/components/concierge";
 import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -14,7 +14,7 @@ import {
   CheckSquare, Clock, AlertTriangle, Home, Wrench, ShoppingCart, Car, FileText, Plus,
   Users, GraduationCap, Stethoscope, ArrowUpRight, RotateCcw, Sparkles, Shield, X, Trash2, Check
 } from "lucide-react";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
 
 type ViewFilter = "all" | "today" | "this-week" | "overdue" | "by-person" | "high-priority";

@@ -1,4 +1,4 @@
-import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
+import { SitaPageHeader } from "@/platform/sita/components/sita/SitaPageHeader";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -17,7 +17,7 @@ import { getBluetoothDaemon } from "@/lib/os-services/btd";
 import { getPowerDaemon } from "@/lib/os-services/powerd";
 import { getSearchIndexer } from "@/lib/os-services/search-indexer";
 import { getHelpEngine } from "@/lib/os-services/help-engine";
-import { PageShell } from "@/components/sita/PageShell";
+import { PageShell } from "@/platform/sita/components/sita/PageShell";
 
 export default function NetworkUtility() {
   const wifi = getWifiDaemon().getState();

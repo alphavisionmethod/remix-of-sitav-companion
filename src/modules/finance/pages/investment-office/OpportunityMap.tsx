@@ -4,7 +4,7 @@ import { Map, TrendingUp, Zap, Eye, AlertTriangle, ChevronRight } from "lucide-r
 import { useNavigate } from "react-router-dom";
 import { INSTRUMENTS } from "@/hooks/useInvestmentOfficeData";
 import { useMarketWatchlistItems } from "@/hooks/use-investment-office";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 const THEMES: any[] = [{ name: "—", instruments: [], conviction: 0, thesis: "" }];
 export default function OpportunityMap() {
   const { data: liveData, isLoading } = useMarketWatchlistItems();

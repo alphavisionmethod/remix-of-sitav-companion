@@ -1,9 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Mic } from "lucide-react";
-import { GlobalErrorBoundary } from "@/components/sita/GlobalErrorBoundary";
-import { PageShell } from "@/components/sita/PageShell";
+import { GlobalErrorBoundary } from "@/platform/sita/components/sita/GlobalErrorBoundary";
+import { PageShell } from "@/platform/sita/components/sita/PageShell";
 import { Button } from "@/components/ui/button";
-import { VoiceSettingsCard } from "@/components/personal-brain/voice/VoiceSettingsCard";
+import { VoiceSettingsCard } from "@/platform/personal-brain/components/personal-brain/voice/VoiceSettingsCard";
 
 export default function VoiceSettings() {
   const navigate = useNavigate();

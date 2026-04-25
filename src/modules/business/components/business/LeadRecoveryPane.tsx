@@ -12,8 +12,8 @@ import {
 import { cn } from "@/lib/utils";
 import type { RecoveryCandidate } from "@/domains/engines/lead-recovery-engine";
 import { FAILURE_MODE_META, SUCCESS_BAND_META, RECOVERY_PATH_META } from "@/domains/engines/lead-recovery-engine";
-import { ModuleAdvisorPanel } from "@/components/business/advisor-board/ModuleAdvisorPanel";
-import { EscalationPacketPreview } from "@/components/business/advisor-board/EscalationPacketPreview";
+import { ModuleAdvisorPanel } from "@/modules/business/components/business/advisor-board/ModuleAdvisorPanel";
+import { EscalationPacketPreview } from "@/modules/business/components/business/advisor-board/EscalationPacketPreview";
 import { generateRecoveryAdvisors, buildEscalationPacket } from "@/domains/engines/business-advisor-engine";
 
 const CHANNEL_ICONS: Record<string, typeof Mail> = { email: Mail, phone: Phone, linkedin: Linkedin, sms: MessageSquare };

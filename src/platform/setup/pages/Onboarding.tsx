@@ -1,8 +1,8 @@
 import { useState, useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { SitaButton, SitaCard, SitaCardTitle } from "@/components/sita/SitaCard";
-import { TrustBadge } from "@/components/sita/TrustBadge";
+import { SitaButton, SitaCard, SitaCardTitle } from "@/platform/sita/components/sita/SitaCard";
+import { TrustBadge } from "@/platform/sita/components/sita/TrustBadge";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { useOnboardingResume, type OnboardingBranch } from "@/hooks/useOnboardingResume";
@@ -15,7 +15,7 @@ import {
   Shield, Brain, Zap, Clock, Mail, Calendar, FileText, Sparkles, CheckCircle, ArrowRight,
   Home, Users, CreditCard, BarChart3, Heart, Globe, Lock, Eye, Sliders, RotateCcw
 } from "lucide-react";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 type Step = "welcome" | "role" | "business" | "finance" | "concierge" | "trust" | "preferences" | "first-win" | "review" | "complete";
 

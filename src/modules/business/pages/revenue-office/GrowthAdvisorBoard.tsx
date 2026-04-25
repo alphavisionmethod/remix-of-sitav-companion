@@ -7,11 +7,11 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { useRevenueOfficeMode } from "@/contexts/RevenueOfficeModeContext";
-import { RevenueOfficeModeToggle } from "@/components/revenue-office/RevenueOfficeModeToggle";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { PageShell } from "@/components/sita/PageShell";
-import { Typography } from "@/components/sita/Typography";
-import { PremiumEmptyState } from "@/components/sita/PremiumEmptyState";
+import { RevenueOfficeModeToggle } from "@/modules/business/components/revenue-office/RevenueOfficeModeToggle";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { PageShell } from "@/platform/sita/components/sita/PageShell";
+import { Typography } from "@/platform/sita/components/sita/Typography";
+import { PremiumEmptyState } from "@/platform/sita/components/sita/PremiumEmptyState";
 import { useGrowthAdvisorBoard } from "@/hooks/use-growth-advisor-board";
 type AdvisorQueryType = "disagree" | "missing" | "break";
 

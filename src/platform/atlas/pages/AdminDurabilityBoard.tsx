@@ -4,19 +4,19 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
-import { SitaPageHeader } from "@/components/sita/SitaCard";
-import { DurabilityStateBadge } from "@/components/sita/truth/DurabilityStateBadge";
-import { StalenessIndicator } from "@/components/sita/truth/StalenessIndicator";
-import { ReplayabilityBadge } from "@/components/sita/truth/ReplayabilityBadge";
-import { RollbackabilityBadge } from "@/components/sita/truth/RollbackabilityBadge";
-import { DegradedStateBanner } from "@/components/sita/truth/DegradedStateBanner";
+import { SitaPageHeader } from "@/platform/sita/components/sita/SitaCard";
+import { DurabilityStateBadge } from "@/platform/sita/components/sita/truth/DurabilityStateBadge";
+import { StalenessIndicator } from "@/platform/sita/components/sita/truth/StalenessIndicator";
+import { ReplayabilityBadge } from "@/platform/sita/components/sita/truth/ReplayabilityBadge";
+import { RollbackabilityBadge } from "@/platform/sita/components/sita/truth/RollbackabilityBadge";
+import { DegradedStateBanner } from "@/platform/sita/components/sita/truth/DegradedStateBanner";
 import {
   Shield, CheckCircle, XCircle, AlertTriangle, Clock, FileCheck, Database,
   Activity, Eye, RotateCcw, Undo2, GitBranch, Lock, Layers, Zap, Search
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 const now = new Date();
 const h = (hours: number) => new Date(now.getTime() - hours * 3600000).toISOString();

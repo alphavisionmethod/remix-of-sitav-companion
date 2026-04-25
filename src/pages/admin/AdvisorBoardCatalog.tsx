@@ -1,4 +1,4 @@
-import { AdminControlPlaneShell as AdminShell } from "@/components/admin/shells/AdminControlPlaneShell";
+import { AdminControlPlaneShell as AdminShell } from "@/platform/admin/components/admin/shells/AdminControlPlaneShell";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
@@ -10,7 +10,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { BoardAPI, type AutonomyPolicy } from "@/lib/services/board-api-client";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-import { LaunchHonestyBadge } from "@/components/reality/LaunchHonestyBadge";
+import { LaunchHonestyBadge } from "@/platform/product/components/reality/LaunchHonestyBadge";
 import { supabase } from "@/integrations/supabase/client";
 
 type HonestyClass = "truthful" | "qualified" | "demo_governed" | "partial" | "unavailable" | "planned" | "internal_only";

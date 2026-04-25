@@ -1,4 +1,4 @@
-import CPSSubNav from "@/components/admin/CPSSubNav";
+import CPSSubNav from "@/platform/admin/components/admin/CPSSubNav";
 import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -12,8 +12,8 @@ import {
   fetchActionLineage, findStuckActions,
   fetchIntelligenceAssets, getAssetStats,
 } from "@/data/persistence";
-import { PageSkeleton } from "@/components/sita/PageSkeleton";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageSkeleton } from "@/platform/sita/components/sita/PageSkeleton";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 const fade = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.05 } } };

@@ -5,10 +5,10 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useEffect, useMemo, useState } from "react";
-import { SitaPageHeader, SitaCard, SitaCardTitle } from "@/components/sita/SitaCard";
+import { SitaPageHeader, SitaCard, SitaCardTitle } from "@/platform/sita/components/sita/SitaCard";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { SitaTabs } from "@/components/sita/SitaComponents";
+import { SitaTabs } from "@/platform/sita/components/sita/SitaComponents";
 import { CheckCircle, XCircle, Database, FileText, Layers, Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { getAllDomains, getAllDomainCompleteness } from "@/lib/domain-system/domain-registry";

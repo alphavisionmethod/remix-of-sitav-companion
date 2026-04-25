@@ -1,10 +1,10 @@
 import { HeroCard, SummaryCard, QueueCard, ActionCard, AdvisorCard } from "@/components/sita/cards";
 import { FreshnessBadge, UrgencyBadge } from "@/components/sita/badges";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { SubscriptionTrendsChart, SubscriptionCategoryChart } from "@/components/sita/SitaCharts";
-import { SitaTabs } from "@/components/sita/SitaComponents";
-import { SitaCard, SitaCardTitle, SitaButton } from "@/components/sita/SitaCard";
-import { ContextDrawer } from "@/components/sita/SitaComponents";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { SubscriptionTrendsChart, SubscriptionCategoryChart } from "@/platform/sita/components/sita/SitaCharts";
+import { SitaTabs } from "@/platform/sita/components/sita/SitaComponents";
+import { SitaCard, SitaCardTitle, SitaButton } from "@/platform/sita/components/sita/SitaCard";
+import { ContextDrawer } from "@/platform/sita/components/sita/SitaComponents";
 import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
@@ -16,7 +16,7 @@ import { CreditCard, AlertTriangle, Plus, Trash2, Pencil, Pause, Play, XCircle, 
 import { format, parseISO } from "date-fns";
 import { motion } from "framer-motion";
 import { useConfirmation } from "@/hooks/use-confirmation";
-import { ConfirmationDialog } from "@/components/sita/ConfirmationDialog";
+import { ConfirmationDialog } from "@/platform/sita/components/sita/ConfirmationDialog";
 import { useQueryFreshness } from "@/hooks/use-query-freshness";
 
 

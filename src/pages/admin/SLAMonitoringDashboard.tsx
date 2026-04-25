@@ -17,7 +17,7 @@ import {
   Activity, CheckCircle, XCircle, TrendingUp, RefreshCw, Clock, Calendar,
   AlertTriangle, Shield, ArrowUpRight, ArrowDownRight, Download,
 } from "lucide-react";
-import { AdminPageHeader } from "@/components/sita/admin/AdminPageHeader";
+import { AdminPageHeader } from "@/platform/sita/components/sita/admin/AdminPageHeader";
 import { motion } from "framer-motion";
 
 interface SLASnapshot {

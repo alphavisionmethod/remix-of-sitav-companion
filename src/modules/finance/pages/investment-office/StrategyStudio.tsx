@@ -4,9 +4,9 @@ import { Brain, TrendingUp, TrendingDown, BarChart3, Target, AlertTriangle, Chev
 import { PORTFOLIO, SAMPLE_SCENARIOS, SAMPLE_THESES } from "@/hooks/useInvestmentOfficeData";
 import { STRATEGY_TEMPLATES, STRATEGY_ADVISOR_COMMENTS } from "@/domains/investment/mock-data";
 import { useInvestmentStrategyRecords } from "@/hooks/use-investment-office";
-import AllocationRebalancer from "@/components/investment/AllocationRebalancer";
+import AllocationRebalancer from "@/modules/finance/components/investment/AllocationRebalancer";
 import { toast } from "sonner";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 const pctFmt = (n: number) => `${n >= 0 ? "+" : ""}${n.toFixed(1)}%`;
 const ALLOC_COLORS: Record<string, string> = {

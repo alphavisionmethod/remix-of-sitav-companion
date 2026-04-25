@@ -8,30 +8,30 @@ export { useOnlineStatus, type ConnectionQuality, type UseOnlineStatusReturn } f
 export { useConfirmation, useUndoStack, type ConfirmationOptions, type UndoAction } from "@/hooks/use-confirmation";
 export { useStaleData, type DataFreshness, type UseStaleDataReturn } from "@/hooks/use-stale-data";
 export { useOptimisticMutation, type MutationStatus } from "@/hooks/use-optimistic-mutation";
-export { useActionFeedback } from "@/components/sita/ActionSuccessFeedback";
+export { useActionFeedback } from "@/platform/sita/components/sita/ActionSuccessFeedback";
 export { useQueryFreshness } from "@/hooks/use-query-freshness";
 export { useUndoableAction, type UseUndoableActionOptions } from "@/hooks/use-undoable-action";
 
 // Components
-export { NetworkStatusBar } from "@/components/sita/NetworkStatusBar";
-export { ConfirmationDialog } from "@/components/sita/ConfirmationDialog";
-export { UndoToastStack } from "@/components/sita/UndoToast";
-export { DataFreshnessBadge } from "@/components/sita/DataFreshnessBadge";
-export { TrustTransitionIndicator } from "@/components/sita/TrustTransitionIndicator";
-export { ActionFeedbackStack } from "@/components/sita/ActionSuccessFeedback";
-export { FormProgressIndicator, type SaveStatus } from "@/components/sita/FormProgressIndicator";
-export { ContextualEmptyState } from "@/components/sita/ContextualEmptyState";
-export { CognitiveLoadGuard } from "@/components/sita/CognitiveLoadGuard";
-export { DegradedServiceBanner, type DegradedService } from "@/components/sita/DegradedServiceBanner";
-export { RecoveryPrompt, type RecoverableItem } from "@/components/sita/RecoveryPrompt";
+export { NetworkStatusBar } from "@/platform/sita/components/sita/NetworkStatusBar";
+export { ConfirmationDialog } from "@/platform/sita/components/sita/ConfirmationDialog";
+export { UndoToastStack } from "@/platform/sita/components/sita/UndoToast";
+export { DataFreshnessBadge } from "@/platform/sita/components/sita/DataFreshnessBadge";
+export { TrustTransitionIndicator } from "@/platform/sita/components/sita/TrustTransitionIndicator";
+export { ActionFeedbackStack } from "@/platform/sita/components/sita/ActionSuccessFeedback";
+export { FormProgressIndicator, type SaveStatus } from "@/platform/sita/components/sita/FormProgressIndicator";
+export { ContextualEmptyState } from "@/platform/sita/components/sita/ContextualEmptyState";
+export { CognitiveLoadGuard } from "@/platform/sita/components/sita/CognitiveLoadGuard";
+export { DegradedServiceBanner, type DegradedService } from "@/platform/sita/components/sita/DegradedServiceBanner";
+export { RecoveryPrompt, type RecoverableItem } from "@/platform/sita/components/sita/RecoveryPrompt";
 
 // Surfaces
-export { ContextOrientationBar } from "@/components/sita/surfaces/ContextOrientationBar";
-export { InformationLayerSurface } from "@/components/sita/surfaces/InformationLayerSurface";
-export { ActionConsequencePreview } from "@/components/sita/surfaces/ActionConsequencePreview";
+export { ContextOrientationBar } from "@/platform/sita/components/sita/surfaces/ContextOrientationBar";
+export { InformationLayerSurface } from "@/platform/sita/components/sita/surfaces/InformationLayerSurface";
+export { ActionConsequencePreview } from "@/platform/sita/components/sita/surfaces/ActionConsequencePreview";
 
 // Primitives
-export { AIConfidenceDisclosure } from "@/components/sita/primitives/AIConfidenceDisclosure";
+export { AIConfidenceDisclosure } from "@/platform/sita/components/sita/primitives/AIConfidenceDisclosure";
 
 // Empty states
 export { getContextualEmptyState, CONTEXTUAL_EMPTY_STATES } from "@/lib/ux-trust/contextual-empty-states";
