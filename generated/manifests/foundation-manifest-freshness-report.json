@@ -1,0 +1,12 @@
+{
+  "generatedAt": "2026-04-25T16:58:19.258Z",
+  "ok": true,
+  "summary": {
+    "checked": 14,
+    "missing": 0,
+    "stale": 0,
+    "unparsable": 0,
+    "fresh": 14
+  },
+  "issues": []
+}

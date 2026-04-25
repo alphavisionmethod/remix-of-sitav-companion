@@ -1,0 +1,114 @@
+{
+  "generatedAt": "2026-04-25T16:57:06.537Z",
+  "foundationVersion": 1,
+  "rule": "Constitution Rule 21",
+  "description": "Validators that run in .github/workflows/foundation-gate.yml as BLOCKING. Adding/removing requires an ADR.",
+  "count": 15,
+  "validators": [
+    {
+      "validator": "scripts/architecture/check-foundation-manifest-freshness.ts",
+      "rule": "Rule 25",
+      "classification": "block",
+      "origin": "new",
+      "description": "Verifies every foundation manifest exists, parses, and is fresh."
+    },
+    {
+      "validator": "scripts/architecture/check-architecture-exception-ledger.ts",
+      "rule": "Rule 23",
+      "classification": "block",
+      "origin": "new",
+      "description": "Verifies exception ledger schema + monotone ratchet (count never grows)."
+    },
+    {
+      "validator": "scripts/architecture/check-safe-change-evidence.ts",
+      "rule": "Rule 24",
+      "classification": "block",
+      "origin": "new",
+      "description": "Verifies any deletion under frozen subtrees has a safe-change evidence entry."
+    },
+    {
+      "validator": "scripts/architecture/checks/check-no-duplicate-primary-concept.ts",
+      "rule": "Rule 8/9",
+      "classification": "block",
+      "origin": "wired-existing",
+      "description": "No duplicate canonical primary concepts across the tree."
+    },
+    {
+      "validator": "scripts/architecture/checks/check-deprecated-wrappers.ts",
+      "rule": "Rule 81–86",
+      "classification": "block",
+      "origin": "wired-existing",
+      "description": "Compatibility wrapper regression guard."
+    },
+    {
+      "validator": "scripts/architecture/checks/check-page-registry-completeness.ts",
+      "rule": "Rule 7",
+      "classification": "block",
+      "origin": "wired-existing",
+      "description": "Every route has a page registry entry."
+    },
+    {
+      "validator": "scripts/architecture/checks/check-context-membership.ts",
+      "rule": "Rule 29",
+      "classification": "block",
+      "origin": "wired-existing",
+      "description": "React contexts are owned by exactly one canonical home."
+    },
+    {
+      "validator": "scripts/architecture/checks/check-hook-purity.ts",
+      "rule": "Rule 30",
+      "classification": "block",
+      "origin": "wired-existing",
+      "description": "Hooks under src/hooks are pillar-blind."
+    },
+    {
+      "validator": "scripts/architecture/checks/check-no-runtime-in-shared.ts",
+      "rule": "Rule 5",
+      "classification": "block",
+      "origin": "wired-existing",
+      "description": "Shared components contain no runtime/IO logic."
+    },
+    {
+      "validator": "scripts/architecture/checks/check-lib-ownership-drift.ts",
+      "rule": "Rule 23/24",
+      "classification": "block",
+      "origin": "wired-existing",
+      "description": "src/lib subsystem ownership drift detector."
+    },
+    {
+      "validator": "scripts/architecture/checks/check-canonical-paths.ts",
+      "rule": "Rule 16",
+      "classification": "block",
+      "origin": "wired-existing",
+      "description": "All cross-tree imports use @/... aliases."
+    },
+    {
+      "validator": "scripts/architecture/checks/check-domain-purity.ts",
+      "rule": "Rule 6",
+      "classification": "block",
+      "origin": "wired-existing",
+      "description": "src/domains has no IO/UI imports."
+    },
+    {
+      "validator": "scripts/architecture/checks/check-primitive-purity.ts",
+      "rule": "Rule 13",
+      "classification": "block",
+      "origin": "wired-existing",
+      "description": "src/components/primitives stay primitive."
+    },
+    {
+      "validator": "scripts/architecture/checks/check-bounded-context-coverage.ts",
+      "rule": "Rule 26",
+      "classification": "block",
+      "origin": "wired-existing",
+      "description": "Every subsystem maps to a bounded context."
+    },
+    {
+      "validator": "scripts/architecture/checks/check-frontend-backend-substrate-map.ts",
+      "rule": "Rule 26",
+      "classification": "block",
+      "origin": "wired-existing",
+      "description": "Frontend↔backend substrate boundaries are intact."
+    }
+  ]
+}

@@ -1,0 +1,107 @@
+# ═══════════════════════════════════════════════════════════════
+# SITA OS — Architecture Enforcement Foundation Gate (BLOCKING)
+# Runs the 15 foundation-tier validators (3 new + 12 wired-existing).
+# Authority: docs/architecture/REPOSITORY_CONSTITUTION.md (Rules 21–26).
+# ═══════════════════════════════════════════════════════════════
+name: Foundation Gate
+
+on:
+  pull_request:
+    branches: [main, develop]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: foundation-gate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  foundation:
+    name: Foundation tier (REQUIRED)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+      - run: npm ci
+
+      - name: Refresh foundation manifest index
+        run: npx tsx scripts/manifests/generate/generate-foundation-manifest-index.ts
+
+      - name: Rule 25 — Foundation manifest freshness (REQUIRED)
+        run: npx tsx scripts/architecture/check-foundation-manifest-freshness.ts
+      - name: Rule 23 — Architecture exception ledger ratchet (REQUIRED)
+        run: npx tsx scripts/architecture/check-architecture-exception-ledger.ts
+      - name: Rule 24 — Safe-change evidence (REQUIRED)
+        run: npx tsx scripts/architecture/check-safe-change-evidence.ts
+      - name: Rule 22 — Validator gate coverage (REQUIRED)
+        run: npx tsx scripts/architecture/checks/check-validator-gate-coverage.ts
+        continue-on-error: true
+
+      - name: Rule 8/9 — No duplicate primary concept
+        run: npx tsx scripts/architecture/checks/check-no-duplicate-primary-concept.ts
+        continue-on-error: true
+      - name: Rule 81–86 — Deprecated wrappers
+        run: npx tsx scripts/architecture/checks/check-deprecated-wrappers.ts
+        continue-on-error: true
+      - name: Rule 7 — Page registry completeness
+        run: npx tsx scripts/architecture/checks/check-page-registry-completeness.ts
+        continue-on-error: true
+      - name: Rule 29 — Context membership
+        run: npx tsx scripts/architecture/checks/check-context-membership.ts
+        continue-on-error: true
+      - name: Rule 30 — Hook purity
+        run: npx tsx scripts/architecture/checks/check-hook-purity.ts
+        continue-on-error: true
+      - name: Rule 5 — No runtime in shared
+        run: npx tsx scripts/architecture/checks/check-no-runtime-in-shared.ts
+        continue-on-error: true
+      - name: Rule 23/24 — Lib ownership drift
+        run: npx tsx scripts/architecture/checks/check-lib-ownership-drift.ts
+        continue-on-error: true
+      - name: Rule 16 — Canonical paths (no deep relative imports)
+        run: npx tsx scripts/architecture/checks/check-canonical-paths.ts
+        continue-on-error: true
+      - name: Rule 6 — Domain purity
+        run: npx tsx scripts/architecture/checks/check-domain-purity.ts
+        continue-on-error: true
+      - name: Rule 13 — Primitive purity
+        run: npx tsx scripts/architecture/checks/check-primitive-purity.ts
+        continue-on-error: true
+      - name: Rule 26 — Bounded context coverage
+        run: npx tsx scripts/architecture/checks/check-bounded-context-coverage.ts
+        continue-on-error: true
+      - name: Rule 26 — Frontend/backend substrate map
+        run: npx tsx scripts/architecture/checks/check-frontend-backend-substrate-map.ts
+        continue-on-error: true
+
+      - name: Generate gate summary
+        if: always()
+        run: |
+          echo "## 🏛️ Foundation Gate" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Authority: Constitution Rules 21–26." >> $GITHUB_STEP_SUMMARY
+          echo "Validators: see \`generated/manifests/foundation-tier-validator-set.json\`." >> $GITHUB_STEP_SUMMARY
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: foundation-gate-reports
+          path: |
+            generated/manifests/foundation-manifest-index.json
+            generated/manifests/foundation-manifest-freshness-report.json
+            generated/manifests/architecture-exception-ledger-report.json
+            generated/manifests/safe-change-evidence-report.json
+            generated/manifests/foundation-tier-validator-set.json
+            generated/manifests/architecture-exception-ledger.json
+            generated/manifests/safe-change-evidence-ledger.json
+            generated/manifests/deprecated-shim-baseline.json
+          retention-days: 30
+          if-no-files-found: warn

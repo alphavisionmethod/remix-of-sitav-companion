@@ -1,0 +1,40 @@
+{
+  "generatedAt": "2026-04-25T16:57:06.537Z",
+  "foundationVersion": 1,
+  "rule": "Constitution Rule 24",
+  "appendOnly": true,
+  "schema": {
+    "changeId": "string — short slug",
+    "kind": "delete | merge | retire",
+    "target": "string — file/folder/glob",
+    "targetCount": "number",
+    "evidence": {
+      "grepProof": "string — path to grep/codemod report",
+      "manifestProof": "string — path to manifest snapshot",
+      "routeProof": "string — route/test verification description",
+      "testProof": "string — test run summary or path",
+      "duplicateReconciliation": "string OR null — required for merges"
+    },
+    "approvedAt": "ISO timestamp",
+    "owner": "string"
+  },
+  "enforcer": "scripts/architecture/check-safe-change-evidence.ts",
+  "entries": [
+    {
+      "changeId": "wave-9-adapter-sunset",
+      "kind": "delete",
+      "target": "src/components/{admin,sita,business,advisors,…}/**",
+      "targetCount": 1144,
+      "evidence": {
+        "grepProof": "generated/audits/wave-9-consumer-rewrite.json",
+        "manifestProof": "generated/audits/wave-9-adapter-sunset-inventory.json",
+        "routeProof": "Wave-9 codemod rewrote 2,969 imports; verified by tsc + vite build.",
+        "testProof": "npx vitest run — green at Wave-9 close.",
+        "duplicateReconciliation": "All deleted files were thin Wave-7 adapters; canonical homes in @/modules/* and @/platform/*."
+      },
+      "approvedAt": "2026-04-25T00:00:00.000Z",
+      "owner": "platform-architecture"
+    }
+  ],
+  "totalEntries": 1
+}
