@@ -1358,6 +1358,53 @@ export type Database = {
         }
         Relationships: []
       }
+      advisor_mission_runs: {
+        Row: {
+          advisor_id: string
+          decision_reason: string
+          emitted_signal_id: string | null
+          evidence: Json
+          expires_at: string
+          fired: boolean
+          id: string
+          mission_id: string
+          ran_at: string
+          user_id: string
+        }
+        Insert: {
+          advisor_id: string
+          decision_reason?: string
+          emitted_signal_id?: string | null
+          evidence?: Json
+          expires_at?: string
+          fired?: boolean
+          id?: string
+          mission_id: string
+          ran_at?: string
+          user_id: string
+        }
+        Update: {
+          advisor_id?: string
+          decision_reason?: string
+          emitted_signal_id?: string | null
+          evidence?: Json
+          expires_at?: string
+          fired?: boolean
+          id?: string
+          mission_id?: string
+          ran_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "advisor_mission_runs_mission_id_fkey"
+            columns: ["mission_id"]
+            isOneToOne: false
+            referencedRelation: "advisor_standing_missions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       advisor_profiles: {
         Row: {
           advisor_id: string
@@ -1550,6 +1597,72 @@ export type Database = {
           source_type?: string
           user_id?: string
           weight?: number
+        }
+        Relationships: []
+      }
+      advisor_standing_missions: {
+        Row: {
+          advisor_id: string
+          created_at: string
+          description: string
+          emit_severity: string
+          emit_signal_kind: string
+          emit_summary_template: string
+          fire_count: number
+          id: string
+          last_run_at: string | null
+          metadata: Json
+          next_run_at: string | null
+          paused: boolean
+          paused_reason: string | null
+          run_count: number
+          title: string
+          trigger_config: Json
+          trigger_kind: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          advisor_id: string
+          created_at?: string
+          description?: string
+          emit_severity?: string
+          emit_signal_kind: string
+          emit_summary_template?: string
+          fire_count?: number
+          id?: string
+          last_run_at?: string | null
+          metadata?: Json
+          next_run_at?: string | null
+          paused?: boolean
+          paused_reason?: string | null
+          run_count?: number
+          title: string
+          trigger_config?: Json
+          trigger_kind?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          advisor_id?: string
+          created_at?: string
+          description?: string
+          emit_severity?: string
+          emit_signal_kind?: string
+          emit_summary_template?: string
+          fire_count?: number
+          id?: string
+          last_run_at?: string | null
+          metadata?: Json
+          next_run_at?: string | null
+          paused?: boolean
+          paused_reason?: string | null
+          run_count?: number
+          title?: string
+          trigger_config?: Json
+          trigger_kind?: string
+          updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }
