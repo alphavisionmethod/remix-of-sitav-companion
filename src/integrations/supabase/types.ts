@@ -13464,6 +13464,57 @@ export type Database = {
         }
         Relationships: []
       }
+      ingestion_jobs: {
+        Row: {
+          completed_at: string | null
+          correlation_id: string | null
+          created_at: string
+          error: string | null
+          id: string
+          metadata: Json
+          progress: number
+          source_id: string | null
+          source_kind: string
+          source_table: string | null
+          stage: string
+          updated_at: string
+          user_id: string
+          workspace_id: string | null
+        }
+        Insert: {
+          completed_at?: string | null
+          correlation_id?: string | null
+          created_at?: string
+          error?: string | null
+          id?: string
+          metadata?: Json
+          progress?: number
+          source_id?: string | null
+          source_kind: string
+          source_table?: string | null
+          stage?: string
+          updated_at?: string
+          user_id: string
+          workspace_id?: string | null
+        }
+        Update: {
+          completed_at?: string | null
+          correlation_id?: string | null
+          created_at?: string
+          error?: string | null
+          id?: string
+          metadata?: Json
+          progress?: number
+          source_id?: string | null
+          source_kind?: string
+          source_table?: string | null
+          stage?: string
+          updated_at?: string
+          user_id?: string
+          workspace_id?: string | null
+        }
+        Relationships: []
+      }
       installed_apps: {
         Row: {
           app_id: string
@@ -15703,6 +15754,63 @@ export type Database = {
         }
         Relationships: []
       }
+      knowledge_chunks: {
+        Row: {
+          chunk_index: number
+          content: string
+          content_search: unknown
+          created_at: string
+          embedding_status: string
+          file_id: string
+          id: string
+          metadata: Json
+          module_id: string | null
+          pillar: string
+          sensitivity: string
+          source_table: string
+          token_estimate: number
+          updated_at: string
+          user_id: string
+          workspace_id: string | null
+        }
+        Insert: {
+          chunk_index?: number
+          content: string
+          content_search?: unknown
+          created_at?: string
+          embedding_status?: string
+          file_id: string
+          id?: string
+          metadata?: Json
+          module_id?: string | null
+          pillar?: string
+          sensitivity?: string
+          source_table?: string
+          token_estimate?: number
+          updated_at?: string
+          user_id: string
+          workspace_id?: string | null
+        }
+        Update: {
+          chunk_index?: number
+          content?: string
+          content_search?: unknown
+          created_at?: string
+          embedding_status?: string
+          file_id?: string
+          id?: string
+          metadata?: Json
+          module_id?: string | null
+          pillar?: string
+          sensitivity?: string
+          source_table?: string
+          token_estimate?: number
+          updated_at?: string
+          user_id?: string
+          workspace_id?: string | null
+        }
+        Relationships: []
+      }
       layer_health_snapshots: {
         Row: {
           captured_at: string
@@ -16125,6 +16233,74 @@ export type Database = {
           version?: string
         }
         Relationships: []
+      }
+      memory_provenance: {
+        Row: {
+          confidence_band: string
+          created_at: string
+          last_used_at: string | null
+          memory_id: string
+          metadata: Json
+          module_id: string | null
+          pillar: string
+          provenance_kind: string
+          review_status: string
+          sensitivity: string
+          source_chat_id: string | null
+          source_correlation_id: string | null
+          source_file_id: string | null
+          updated_at: string
+          usage_count: number
+          user_id: string
+          workspace_id: string | null
+        }
+        Insert: {
+          confidence_band?: string
+          created_at?: string
+          last_used_at?: string | null
+          memory_id: string
+          metadata?: Json
+          module_id?: string | null
+          pillar?: string
+          provenance_kind?: string
+          review_status?: string
+          sensitivity?: string
+          source_chat_id?: string | null
+          source_correlation_id?: string | null
+          source_file_id?: string | null
+          updated_at?: string
+          usage_count?: number
+          user_id: string
+          workspace_id?: string | null
+        }
+        Update: {
+          confidence_band?: string
+          created_at?: string
+          last_used_at?: string | null
+          memory_id?: string
+          metadata?: Json
+          module_id?: string | null
+          pillar?: string
+          provenance_kind?: string
+          review_status?: string
+          sensitivity?: string
+          source_chat_id?: string | null
+          source_correlation_id?: string | null
+          source_file_id?: string | null
+          updated_at?: string
+          usage_count?: number
+          user_id?: string
+          workspace_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "memory_provenance_memory_id_fkey"
+            columns: ["memory_id"]
+            isOneToOne: true
+            referencedRelation: "pb_memories"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       mobile_deferral_attestations: {
         Row: {
@@ -25437,6 +25613,22 @@ export type Database = {
       }
       current_user_workspace_ids: { Args: never; Returns: string[] }
       dp_noise_clamp: { Args: { p_epsilon: number }; Returns: number }
+      effective_workspace_memories: {
+        Args: { _max_n?: number; _workspace_id: string }
+        Returns: {
+          category: string
+          confidence: number
+          confidence_band: string
+          content: string
+          kind: string
+          last_used_at: string
+          memory_id: string
+          pillar: string
+          provenance_kind: string
+          sensitivity: string
+          workspace_id: string
+        }[]
+      }
       evaluate_action_authority: {
         Args: { _action_key: string; _user_id: string }
         Returns: {
@@ -25696,6 +25888,7 @@ export type Database = {
         }
         Returns: string
       }
+      record_memory_usage: { Args: { _memory_id: string }; Returns: undefined }
       record_owner_copilot_handoff: {
         Args: {
           p_briefing_id: string
