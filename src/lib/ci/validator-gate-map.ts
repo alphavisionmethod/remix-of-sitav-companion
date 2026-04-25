@@ -203,6 +203,14 @@ export const VALIDATOR_GATE_OVERRIDES: ValidatorGateMapEntry[] = [
     consumer: "release-readiness",
     rationale: "Wave D §D.3. Strengthens Rule 24 (Safe-Change Law). Reads generated/manifests/safe-change-evidence-ledger.json against generated/manifests/reverse-dependency-retirement-policy.json. Enforces that every retirement entry carries all required evidence kinds (grepProof, manifestProof, routeProof, testProof, docsProof; +duplicateReconciliation for merges) and re-greps reference-zero claims at validation time. Pre-Wave-D entries grandfathered via generated/baselines/retirement-evidence-completeness-baseline.json. See docs/architecture/SAFE_RETIREMENT_AND_REVERSE_DEPENDENCY_MODEL.md.",
   },
+  // ─── Wave F — Frontend Page Ownership Law (Constitution Rule 50, BLOCKING) ──
+  {
+    validator: "check-frontend-page-canonical-ownership",
+    gateId: "frontend-page-canonical-ownership",
+    classification: "block",
+    consumer: "release-readiness",
+    rationale: "Wave F Rule 50. src/pages/** is a route-adapter zone only. Allowlist: NotFound.tsx, __tests__/, index.ts barrels, ratcheted admin/** (Rule 30). Canonical bodies live under src/modules/<pillar>/pages/, src/platform/<system>/pages/, src/platform/experience/pages/mobile/, or src/admin/modules/<domain>/views/. Sealed at 0 canonical-body files; new bodies under src/pages/{mobile,business-advisors,owner-mode}/** BLOCK CI; broken shim targets BLOCK CI. See docs/architecture/FRONTEND_PAGE_OWNERSHIP_MODEL.md and generated/manifests/frontend-page-ownership-map.json.",
+  },
 ];
 
 /** Lookup table for fast access by validator basename. */

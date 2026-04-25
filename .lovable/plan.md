@@ -1,167 +1,105 @@
+# Wave F — Frontend Page/Design Canonicalization Hardening
 
-# Wave E — `generated/` Physical Zoning + Consumer-Safe Rewiring
+## Audit findings (real state, not assumed)
 
-## Audit findings (real repo, not assumptions)
+The repo has already executed Waves 4–9 of page canonicalization. Current ground truth:
 
-| Metric | Count |
-|---|---|
-| Files in `generated/` | **1,463** (1107 JSON, 354 MD, 1 HTML, 1 SQL) |
-| Top-level files at `generated/*.json\|md` | **818** |
-| Existing subfolders | **52** |
-| Distinct `generated/...` reference paths in code | **740** |
-| Of those, top-level references | **497** |
-| Files in `scripts/` referencing `generated/` | **571** |
-| Files in `src/` referencing `generated/` | **77** |
-| Files in `docs/` referencing `generated/` | **48** |
-| Files in `.github/workflows/` referencing `generated/` | **17** |
-| Files in `public/generated/` (mirror) | **619** |
-| Entries in `generated/INDEX.json` (canonical registry) | **913** |
-| Entries in Wave-B governance map | **1,446** (1 active-blocking, 152 active-informational, 1254 reference, 37 historical-archived) |
-| Hottest single path | `generated/service-manifest.json` — referenced **39 times** |
+| Surface | State | Action needed |
+|---|---|---|
+| `src/pages/*.tsx` (97 root files) | ✅ 96 moved (Wave 6); only `NotFound.tsx` kept | None — already canonical |
+| `src/pages/{business,concierge,finance,boardroom,investment-office,money,health,files,settings,marketing,...}` (27 folders, ~400 files) | ✅ 100% shims → `@/modules/*` and `@/platform/*` | None — already canonical |
+| `src/pages/admin/**` (583 files, **561 thick bodies**) | ⚠️ Inverted: bodies still here; `src/admin/pages/<domain>/index.ts` barrels re-export FROM `@/pages/admin/`. Pinned at 576 in monotone-decrease baseline (Rule 30) | **Hold under existing ratchet** — physical move is multi-week and out of scope; tighten guard instead |
+| `src/pages/mobile/*.tsx` (27 thick bodies) | ❌ No canonical home declared | **Move to `src/platform/experience/pages/mobile/`** (matches `MobileShell` owner) |
+| `src/pages/business-advisors/*.tsx` (2 thick bodies) | ❌ No canonical home; imports from `@/modules/business/components/business-advisors/*` | **Move to `src/modules/business/pages/business-advisors/`** |
+| `src/pages/owner-mode/OwnerModePage.tsx` (1 thick) | ❌ Sibling to `src/pages/owner/` (already shims to `@/platform/owner/pages/`) | **Move to `src/platform/owner/pages/`** |
+| Constitution | ❌ No explicit "Frontend Page Ownership Law" rule (despite Rule 30 admin ratchet, Wave C UI ownership, and Waves 4–9 reports) | **Add Rule 50 + ownership doc + manifest + validator** |
 
-Wave B already installed lifecycle classification for every file. What's missing physically is **purpose-zoned folders**.
+## Strict execution scope (no logic / UI / API changes)
 
-## The physical-move risk
+This wave performs **only** physical relocations of 30 thick page bodies + governance sealing. Every move follows the proven Wave 6 pattern:
 
-A blind move of 818 root files into `manifests/`, `audits/`, `proof/`, `readiness/`, `lifecycle/`, `historical/`, `reports/` would:
-- Break 497 hardcoded references in scripts/CI/src
-- Break `INDEX.json` (913 entries with absolute paths)
-- Break `public-mirror-policy.ts` `MIRROR_RULES` (619 mirrored files)
-- Break 17 GitHub workflows
-- Violate the **strict no-logic/no-API-change rule** the user mandated, because path-resolving code is API
+1. Verify canonical destination doesn't already exist
+2. Move file via `git mv`-equivalent (rename) — preserves history
+3. Replace original with 4-line shim: `export { default } from "@/<canonical>"; export * from "@/<canonical>";`
+4. Reverse-dependency grep across `src/`, `tests/`, `scripts/`, `docs/`, `generated/`, `.github/` — confirm no path-specific consumers besides routes (which import from `@/pages/<path>` and continue to work via shim)
+5. `tsc --noEmit` after each cluster
 
-## The Wave-E approach: tiered, evidence-backed physical moves
+## Step-by-step
 
-**Tier 1 — SAFE physical moves (no rewiring needed)**
+### Step 1 — Move `src/pages/mobile/` → `src/platform/experience/pages/mobile/`
 
-Move the **38 historical-archived "closure"/"phase"/"remediation" subfolders** that already live as their own subdirectories into a single `generated/historical/` parent. These subfolders are referenced 0 times by name in scripts (only by their internal files, which already use the subfolder path).
+- 27 files (Mobile{AIChat,Alerts,ApprovalDetail,Approvals,Boardroom,Business,BusinessAdvisorDetail,BusinessAdvisors,Command,Concierge,...})
+- Rationale: every file imports `@/platform/experience/components/mobile/MobileShell` — mobile experience is the canonical owner.
+- Leave 27 thin shims at `src/pages/mobile/` so `MobileRoutes.tsx` keeps working without edits.
+- Generate `src/platform/experience/pages/mobile/index.ts` barrel.
 
-Concrete moves (verified historical-archived per Wave B governance map):
-- `generated/admin-ai-engineer-team/` → `generated/historical/admin-ai-engineer-team/`
-- `generated/admin-and-validation-closure/` → `generated/historical/admin-and-validation-closure/`
-- `generated/admin-coherence-and-responsive-closure/` → `generated/historical/admin-coherence-and-responsive-closure/`
-- `generated/admin-empty-state-closure/` → `generated/historical/admin-empty-state-closure/`
-- `generated/advisor-boardroom-proof/` → `generated/historical/advisor-boardroom-proof/`
-- `generated/ai-fallback-replay-bundle/` → `generated/historical/ai-fallback-replay-bundle/`
-- `generated/ai-runtime-truth-closure/` → `generated/historical/ai-runtime-truth-closure/`
-- `generated/app-lifecycle-closure/` → `generated/historical/app-lifecycle-closure/`
-- `generated/architectural-cleanup/` → `generated/historical/architectural-cleanup/`
-- `generated/architecture-hardening/` → `generated/historical/architecture-hardening/`
-- `generated/architecture-remediation/` → `generated/historical/architecture-remediation/`
-- `generated/behavioral-equivalence-proofs/` → `generated/historical/behavioral-equivalence-proofs/`
-- `generated/boardroom-layer7-closure/` → `generated/historical/boardroom-layer7-closure/`
-- `generated/claim-safety-hardening/` → `generated/historical/claim-safety-hardening/`
-- `generated/connector-truth-closure/` → `generated/historical/connector-truth-closure/`
-- `generated/deployment-gap-closure/` → `generated/historical/deployment-gap-closure/`
-- `generated/economic-trust-and-future-closure/` → `generated/historical/economic-trust-and-future-closure/`
-- `generated/final-deployment-closure/` → `generated/historical/final-deployment-closure/`
-- `generated/final-hardening/` → `generated/historical/final-hardening/`
-- `generated/final-proof-verification/` → `generated/historical/final-proof-verification/`
-- `generated/flagship-surface-closure/` → `generated/historical/flagship-surface-closure/`
-- `generated/frontend-polish-closure/` → `generated/historical/frontend-polish-closure/`
-- `generated/frontend-truth-backing-closure/` → `generated/historical/frontend-truth-backing-closure/`
-- `generated/hardware-and-operator-closure/` → `generated/historical/hardware-and-operator-closure/`
-- `generated/integration-proof-bundles/` → `generated/historical/integration-proof-bundles/`
-- `generated/internal-ai-runtime-phase{1..7}/` → `generated/historical/internal-ai-runtime-phase{1..7}/`
-- `generated/lib-decomposition/` → `generated/historical/lib-decomposition/`
-- `generated/lib-remediation/` → `generated/historical/lib-remediation/`
-- `generated/master-deployment-readiness/` → `generated/historical/master-deployment-readiness/`
-- `generated/mobile-identity-reconciliation/` → `generated/historical/mobile-identity-reconciliation/`
-- `generated/mobile-scope-closure/` → `generated/historical/mobile-scope-closure/`
-- `generated/page-consolidation/` → `generated/historical/page-consolidation/`
-- `generated/profile-and-runtime-hardening/` → `generated/historical/profile-and-runtime-hardening/`
-- `generated/refactor/` → `generated/historical/refactor/`
-- `generated/release-artifact-proof/` → `generated/historical/release-artifact-proof/`
-- `generated/remediation/` → `generated/historical/remediation/`
-- `generated/restore-and-oauth-hardening/` → `generated/historical/restore-and-oauth-hardening/`
-- `generated/security-and-portability-closure/` → `generated/historical/security-and-portability-closure/`
-- `generated/self-healing/` → `generated/historical/self-healing/`
-- `generated/trust-state-and-copy-closure/` → `generated/historical/trust-state-and-copy-closure/`
-- `generated/windowing-proof/` → `generated/historical/windowing-proof/`
-- `generated/workflow-proof-bundles/` → `generated/historical/workflow-proof-bundles/`
+### Step 2 — Move `src/pages/business-advisors/` → `src/modules/business/pages/business-advisors/`
 
-**Pre-move proof obligation per Rule 47** (executed via `generate-retirement-evidence-proof.ts`):
-- For each subfolder: `rg "<subfolder>/" scripts src docs .github supabase tests` must return **0 hits** (only internal generated/ self-references allowed).
-- Any subfolder with non-zero hits is **excluded from Tier 1** and pinned in `generated/baselines/historical-move-blockers.json`.
+- 2 files (`BusinessAdvisorPage.tsx`, `BusinessAdvisorsIndex.tsx`)
+- Rationale: bodies are 100% composed of `@/modules/business/components/business-advisors/*` — clear module ownership.
+- Leave 2 thin shims; `business-advisor-routes.tsx` keeps working.
 
-**Post-move rewiring** (mandatory):
-- Update `generated/manifests/generated-artifact-governance-map.json` paths
-- Update `generated/INDEX.json` paths for any moved entries
-- Update `scripts/architecture/lib/public-mirror-policy.ts` if any `MIRROR_RULES` `sourceDir` points at a moved subfolder
-- Update `generated/baselines/orphan-artifact-baseline.json` (paths only — not entries)
-- Re-run `generate-public-artifact-mirror.ts` so `public/generated/` re-mirrors from new paths
-- Re-run `generate-artifact-governance-map.ts`
+### Step 3 — Move `src/pages/owner-mode/OwnerModePage.tsx` → `src/platform/owner/pages/OwnerModePage.tsx`
 
-**Tier 2 — VIRTUAL zoning (no physical move; preserves all 740 reference paths)**
+- 1 file. `src/pages/owner/` is already 100% shims to `@/platform/owner/pages/` — `owner-mode` is just a sibling that was missed in Wave 6.
+- Leave 1 thin shim. `OwnerRoutes.tsx` keeps working.
 
-For the 818 top-level files (referenced 497 times), introduce a **virtual zoning view** without moving:
-- Generate `generated/lifecycle/generated-artifact-zone-index.json` mapping every file to one of 7 zones (manifests/audits/proof/readiness/lifecycle/historical/reports) using deterministic name-based rules + governance-map lifecycle class.
-- Generate `generated/REZONED_INDEX.md` as a human-readable directory of files grouped by zone, so engineers can navigate by purpose without breaking any path.
-- Add `scripts/architecture/checks/check-generated-zone-coverage.ts` (BLOCK): every file in `generated/**` must appear in the zone index.
+### Step 4 — Update `src/admin/pages/<domain>/index.ts` barrels (cosmetic, traceability only)
 
-This delivers the user's "purpose-zoned" experience **without** the 497-rewiring blast radius.
+The 14 admin barrel files currently import from `@/pages/admin/<File>` — they keep working as-is. **No changes** to barrel re-export paths in this wave (admin migration is governed by the existing Rule 30 ratchet and is out of scope here). Touching them would risk breaking 561 admin pages without proven need.
 
-**Tier 3 — Future enforcement (prevent root-sprawl regression)**
+### Step 5 — Seal Frontend Page Ownership Law
 
-- New rule: any **new** generated artifact created after Wave E **must** be written to a zone subfolder (`generated/manifests/`, `generated/audits/`, etc.). Root-level new files are forbidden.
-- Validator: `check-generated-root-sprawl.ts` (BLOCK) — pins current 818 root files in `generated/baselines/root-sprawl-baseline.json`; any new root file added is a CI failure.
+Create:
 
-## Files to create / modify
+- **`docs/architecture/FRONTEND_PAGE_OWNERSHIP_MODEL.md`** — describes the 5-zone canonical model (route adapters / module pages / platform pages / admin pages / shell-experience pages), references Waves 4–9 history, and pins the 3 remaining special cases (`NotFound`, admin under Rule 30 ratchet, sealed mobile/business-advisors/owner-mode).
+- **`generated/manifests/frontend-page-ownership-map.json`** — machine-readable: every `src/pages/**` file → `{ kind: "shim" | "adapter" | "canonical-body" | "router-fallback", canonicalOwner: "<path>" | null, ratcheted: boolean }`. Generated from `src/pages/**` by reading shim re-export targets vs measuring file body weight.
+- **`scripts/architecture/generate/generate-frontend-page-ownership-map.ts`** — generator (reused at CI).
+- **`scripts/architecture/checks/check-frontend-page-canonical-ownership.ts`** — BLOCK validator that:
+  - Fails if a NEW thick body (>10 logical lines) appears under `src/pages/**` outside the allowlist (`NotFound.tsx`, `src/pages/admin/**` under Rule 30 ratchet).
+  - Fails if a shim's `canonicalOwner` target doesn't exist.
+  - Fails if any thick body re-emerges under `src/pages/{mobile,business-advisors,owner-mode}/**` (the 3 zones we're sealing this wave).
+- Wire validator into `src/lib/ci/validator-gate-map.ts` as `BLOCK`.
+- Add **Rule 50 — Frontend Page Ownership Law** to `docs/architecture/REPOSITORY_CONSTITUTION.md`, codifying:
+  - `src/pages/**` is a route-adapter zone only (allowlist: `NotFound.tsx`, `__tests__/`, `index.ts` barrels, and the legacy `admin/**` region governed by Rule 30).
+  - Canonical bodies live under `src/modules/<pillar>/pages/`, `src/platform/<system>/pages/`, `src/admin/modules/<domain>/views/` (admin destination), or `src/platform/experience/pages/mobile/` (mobile/shell destination).
+  - App pages, admin pages, mobile/OS-shell pages keep separate canonical roots (no flattening).
+- Generate `generated/baselines/frontend-page-canonical-baseline.json` sealing current state at 0 thick bodies in {mobile, business-advisors, owner-mode} after the move.
+- Audit report at `generated/audits/wave-f-frontend-page-canonicalization-hardening-report.md`.
 
-### Create
-1. `generated/historical/` (new parent folder; populated by Tier 1 moves)
-2. `generated/lifecycle/generated-artifact-zone-index.json` (Tier 2 virtual zoning)
-3. `generated/REZONED_INDEX.md` (human-readable zone directory)
-4. `generated/baselines/root-sprawl-baseline.json` (818 pinned root files)
-5. `generated/baselines/historical-move-blockers.json` (any subfolder excluded from Tier 1)
-6. `generated/audits/wave-e-generated-folder-zoning-hardening-report.md`
-7. `scripts/architecture/generate/generate-generated-zone-index.ts`
-8. `scripts/architecture/checks/check-generated-zone-coverage.ts` (BLOCK validator)
-9. `scripts/architecture/checks/check-generated-root-sprawl.ts` (BLOCK validator, ratchet)
-10. `docs/architecture/GENERATED_FOLDER_ZONING_MODEL.md`
+### Step 6 — Verification gate (mandatory before completion)
 
-### Modify
-- `docs/architecture/REPOSITORY_CONSTITUTION.md` — add **§B.3 Generated Folder Zoning Law** (Rules 48–49)
-- `docs/architecture/GENERATED_ARTIFACT_LIFECYCLE_MODEL.md` — cross-reference §B.3
-- `src/lib/ci/validator-gate-map.ts` — register two new BLOCK validators
-- `generated/manifests/generated-artifact-governance-map.json` — regenerate to reflect new paths for Tier-1 moved files
-- `generated/INDEX.json` — regenerate via existing producer script
-- `scripts/architecture/lib/public-mirror-policy.ts` — review and update `sourceDir` for any rule that pointed at a Tier-1 moved subfolder (re-grep first)
-- `public/generated/artifact-index.json` and mirror — regenerate via `generate-public-artifact-mirror.ts`
+For every moved file:
 
-### Constitutional Rules to add (Rule 48 + Rule 49)
+1. **Canonical destination proof** — assert target file exists and exports `default`.
+2. **Reverse-dependency proof** — `rg "from ['\"]@/pages/(mobile|business-advisors|owner-mode)/" -t ts -t tsx src/ tests/ scripts/ docs/ generated/ .github/` returns only the route registries (which resolve via the shim).
+3. **Old-path shim proof** — original path now contains only the 4-line re-export.
+4. **`tsc --noEmit`** — 0 errors.
+5. **Validator pass** — `check-frontend-page-canonical-ownership.ts`, `check-admin-page-body-ratchet.ts`, `check-route-page-contract-layer-usage.ts`, `check-page-backend-bypass.ts` all pass.
+6. **Smoke route resolution** — re-run `generate-route-adapter-semantic-map.ts` and confirm violation count does not increase.
+7. **Attestation reseal** — only via canonical generator (`scripts/architecture/wave-10-emit-attestation.ts`); no manual edits.
 
-**Rule 48 — Generated Folder Zoning Law (BLOCKING)**
-> Every file under `generated/**` must be assigned to exactly one canonical zone (`manifests`, `audits`, `proof`, `readiness`, `lifecycle`, `historical`, `reports`) in `generated/lifecycle/generated-artifact-zone-index.json`. Zone assignment is mandatory and enforced by `check-generated-zone-coverage.ts`. Historical/closure/remediation/phase subfolders **must** physically reside under `generated/historical/`.
+### Strict no-change discipline
 
-**Rule 49 — Generated Root-Sprawl Ratchet (BLOCKING)**
-> The set of files at `generated/<file>` (top level) is sealed. Any **new** generated artifact created after Wave E must live under a zone subfolder. `check-generated-root-sprawl.ts` enforces a monotone-decreasing ratchet against `generated/baselines/root-sprawl-baseline.json`.
+- No logic changes, no UI changes, no API changes.
+- No re-styling, no copy edits, no prop additions.
+- File contents at the new canonical path are byte-identical to the originals.
+- Shims are exactly 4 lines (matching Wave 6 pattern).
 
-## Safety discipline (per the user's mandate)
+## Out of scope (deliberately deferred)
 
-| Requirement | How satisfied |
-|---|---|
-| **Verified canonical destination proof for every moved file** | Tier-1 destinations explicitly enumerated above; each is a 1:1 subfolder rename under `generated/historical/`. |
-| **Reverse-dependency proof across src/tests/docs/generated/scripts/workflows** | `rg "<subfolder>/" scripts src docs .github supabase tests` for each Tier-1 subfolder before move; 0-hit gate. |
-| **Stronger verification gates for old-path removal** | `check-generated-root-sprawl.ts` and `check-generated-zone-coverage.ts` added as BLOCK gates. |
-| **Targeted smoke tests for multi-consumer moves** | `tsc --noEmit` + `check-public-artifact-mirror.ts` + `check-artifact-index-traceability.ts` re-run post-move. |
-| **Explicit semantic verification for `EmptyState`** | N/A — no UI files touched. Asserted in audit report. |
-| **Attestation resealing only via canonical generation script** | User runs `npx tsx scripts/architecture/wave-10-emit-attestation.ts` post-merge (not in this wave). |
-| **Exactly one canonical owner path per moved concept** | Every Tier-1 subfolder has exactly one new home under `generated/historical/`; no aliases, no shims. |
-| **Strict no-logic/no-UI/no-API-change rule** | Tier 1 only renames historical subfolders; Tier 2 generates additive index files; Tier 3 adds validators. Zero src/, zero edge functions, zero supabase migrations touched. |
+- Migrating the 561 admin bodies under `src/pages/admin/**` — governed by the existing Rule 30 monotone-decrease ratchet; physical move is a multi-week effort better executed as Wave G with per-domain batches.
+- Reversing the `src/admin/pages/<domain>/index.ts` re-export direction — would require touching all admin pages and 14 barrels in one pass; risky and unrelated to today's gaps.
+- Touching `src/pages/__tests__/` (50 test files) — they belong here.
 
-## What this plan **does not** attempt (and why)
+## Deliverables
 
-- **It does not move the 818 root-level files** into `manifests/`/`audits/`/etc. zones. Doing so would require rewiring 497 hardcoded references across 571+ scripts and is a Wave-F undertaking with its own consumer-migration plan and codemod tooling. Tier 2 virtual zoning gives the user the navigational benefit immediately; Tier 3 prevents the problem from growing.
-- **It does not delete any artifact.** Per Rule 47, deletion requires reverse-dependency proof; this wave is move-only.
-- **It does not change `MIRROR_RULES` semantics.** Only `sourceDir` strings are updated where necessary, and only after grep-zero verification.
-
-## Verification gates before completion
-
-1. `tsc --noEmit` → clean
-2. `npx tsx scripts/architecture/checks/check-generated-zone-coverage.ts` → pass
-3. `npx tsx scripts/architecture/checks/check-generated-root-sprawl.ts` → pass (sealed)
-4. `npx tsx scripts/architecture/checks/check-public-artifact-mirror.ts` → pass (re-mirrored)
-5. `npx tsx scripts/architecture/checks/check-generated-artifact-governance.ts` → pass (Wave-B regenerated map)
-6. `rg` for every Tier-1 subfolder old path returns 0 hits in scripts/src/docs/.github/supabase/tests
-7. Audit report `wave-e-generated-folder-zoning-hardening-report.md` produced
+- 30 file moves + 30 thin shims (mobile: 27, business-advisors: 2, owner-mode: 1).
+- 1 new doc (`FRONTEND_PAGE_OWNERSHIP_MODEL.md`).
+- 1 new manifest + generator (`frontend-page-ownership-map.json`).
+- 1 new BLOCK validator (`check-frontend-page-canonical-ownership.ts`).
+- 1 new baseline (`frontend-page-canonical-baseline.json`).
+- 1 constitution amendment (Rule 50).
+- 1 audit report (`wave-f-…-hardening-report.md`).
+- Validator-gate-map updated.
+- 0 TypeScript errors, 0 logic/UI/API drift.
