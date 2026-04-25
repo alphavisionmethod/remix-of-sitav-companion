@@ -29,6 +29,7 @@ import {
 import { useAutonomyFleet, resetCircuitBreaker, type FleetAdvisor } from "@/hooks/useAutonomyFleet";
 import { AutonomyApprovalQueue } from "@/components/autonomy/AutonomyApprovalQueue";
 import { AutonomyReflectionTimeline } from "@/components/autonomy/AutonomyReflectionTimeline";
+import { BoardroomKernelPanel } from "@/components/autonomy/BoardroomKernelPanel";
 import {
   runControllersForAdvisors,
   DEFAULT_CONTROLLED_ADVISORS,
@@ -123,6 +124,7 @@ export default function AutonomyMissionControl() {
           <TabsTrigger value="fleet">Fleet state</TabsTrigger>
           <TabsTrigger value="approvals">JIT approvals ({totals.awaitingApproval})</TabsTrigger>
           <TabsTrigger value="reflections">Reflections</TabsTrigger>
+          <TabsTrigger value="boardroom">Boardroom</TabsTrigger>
         </TabsList>
 
         <TabsContent value="fleet" className="mt-4">
@@ -155,6 +157,10 @@ export default function AutonomyMissionControl() {
 
         <TabsContent value="reflections" className="mt-4">
           <AutonomyReflectionTimeline />
+        </TabsContent>
+
+        <TabsContent value="boardroom" className="mt-4">
+          <BoardroomKernelPanel />
         </TabsContent>
       </Tabs>
     </div>
