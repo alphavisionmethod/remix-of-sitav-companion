@@ -1,21 +1,22 @@
 {
-  "generatedAt": "2026-04-25T12:26:17.702Z",
+  "generatedAt": "2026-04-25T12:56:42.326Z",
   "source": "src/modules/_trust/registry/trust-action-registry.ts",
   "totals": {
-    "total": 10,
-    "approvalGated": 2,
-    "irreversible": 2,
+    "total": 34,
+    "approvalGated": 10,
+    "irreversible": 15,
     "byPillar": {
-      "business": 3,
-      "finance": 2,
-      "concierge": 2,
-      "shared": 3
+      "business": 7,
+      "finance": 7,
+      "concierge": 5,
+      "shared": 10,
+      "health": 5
     },
     "byRiskTier": {
-      "low": 2,
-      "medium": 4,
-      "high": 3,
-      "critical": 1
+      "low": 8,
+      "medium": 12,
+      "high": 8,
+      "critical": 6
     }
   },
   "actions": [
@@ -26,7 +27,8 @@
       "description": "Persists a new contact record with PII to the CRM store.",
       "riskTier": "low",
       "requireApproval": false,
-      "reversible": true
+      "reversible": true,
+      "defaultAuthorityLevel": "pre_approved"
     },
     {
       "key": "crm.deal.stage_change",
@@ -35,7 +37,8 @@
       "description": "Mutates pipeline stage and forecast surface.",
       "riskTier": "medium",
       "requireApproval": false,
-      "reversible": true
+      "reversible": true,
+      "defaultAuthorityLevel": "ask"
     },
     {
       "key": "finance.payment.schedule",
@@ -44,7 +47,8 @@
       "description": "Queues a future-dated outbound payment from an owner-controlled account.",
       "riskTier": "high",
       "requireApproval": true,
-      "reversible": false
+      "reversible": false,
+      "defaultAuthorityLevel": "ask"
     },
     {
       "key": "concierge.household_task.assign",
@@ -53,7 +57,8 @@
       "description": "Assigns or reassigns a household task to a member.",
       "riskTier": "low",
       "requireApproval": false,
-      "reversible": true
+      "reversible": true,
+      "defaultAuthorityLevel": "pre_approved"
     },
     {
       "key": "concierge.travel.booking_confirm",
@@ -62,7 +67,8 @@
       "description": "Confirms a flight, lodging, or transport reservation against a vendor.",
       "riskTier": "high",
       "requireApproval": true,
-      "reversible": false
+      "reversible": false,
+      "defaultAuthorityLevel": "ask"
     },
     {
       "key": "shared.autonomy.kill_switch_engage",
@@ -71,7 +77,8 @@
       "description": "Halts every advisor controller, standing mission, and queue execution at the next state check.",
       "riskTier": "critical",
       "requireApproval": false,
-      "reversible": true
+      "reversible": true,
+      "defaultAuthorityLevel": "pre_approved"
     },
     {
       "key": "shared.autonomy.kill_switch_release",
@@ -80,7 +87,8 @@
       "description": "Resumes advisor controllers and standing missions after a halt.",
       "riskTier": "high",
       "requireApproval": false,
-      "reversible": true
+      "reversible": true,
+      "defaultAuthorityLevel": "ask"
     },
     {
       "key": "shared.support.case_escalate",
@@ -89,7 +97,8 @@
       "description": "Routes a support case to a higher tier or specialist role.",
       "riskTier": "medium",
       "requireApproval": false,
-      "reversible": true
+      "reversible": true,
+      "defaultAuthorityLevel": "pre_approved"
     },
     {
       "key": "business.crm.contact_bulk_import",
@@ -98,7 +107,8 @@
       "description": "Persists many contact records at once from an external CSV source.",
       "riskTier": "medium",
       "requireApproval": false,
-      "reversible": true
+      "reversible": true,
+      "defaultAuthorityLevel": "ask"
     },
     {
       "key": "finance.envelope.allocation_change",
@@ -107,7 +117,248 @@
       "description": "Reallocates funds between household money envelopes.",
       "riskTier": "medium",
       "requireApproval": false,
-      "reversible": true
+      "reversible": true,
+      "defaultAuthorityLevel": "ask"
+    },
+    {
+      "key": "business.invoice.send",
+      "pillar": "business",
+      "label": "Send invoice",
+      "description": "Dispatches an invoice to a customer email.",
+      "riskTier": "medium",
+      "requireApproval": false,
+      "reversible": false,
+      "defaultAuthorityLevel": "ask"
+    },
+    {
+      "key": "business.crm.contact_delete",
+      "pillar": "business",
+      "label": "Delete CRM contact",
+      "description": "Permanently removes a contact and associated PII.",
+      "riskTier": "high",
+      "requireApproval": true,
+      "reversible": false,
+      "defaultAuthorityLevel": "ask"
+    },
+    {
+      "key": "business.email.campaign_send",
+      "pillar": "business",
+      "label": "Send email campaign",
+      "description": "Sends a bulk email campaign to a contact segment.",
+      "riskTier": "high",
+      "requireApproval": true,
+      "reversible": false,
+      "defaultAuthorityLevel": "ask"
+    },
+    {
+      "key": "business.calendar.external_invite",
+      "pillar": "business",
+      "label": "Send external calendar invite",
+      "description": "Creates an external-facing calendar invitation.",
+      "riskTier": "medium",
+      "requireApproval": false,
+      "reversible": true,
+      "defaultAuthorityLevel": "ask"
+    },
+    {
+      "key": "finance.transfer.execute",
+      "pillar": "finance",
+      "label": "Execute transfer",
+      "description": "Moves funds between accounts.",
+      "riskTier": "critical",
+      "requireApproval": true,
+      "reversible": false,
+      "defaultAuthorityLevel": "blocked"
+    },
+    {
+      "key": "finance.budget.adjust",
+      "pillar": "finance",
+      "label": "Adjust budget",
+      "description": "Modifies a budget category limit.",
+      "riskTier": "low",
+      "requireApproval": false,
+      "reversible": true,
+      "defaultAuthorityLevel": "pre_approved"
+    },
+    {
+      "key": "finance.investment.buy",
+      "pillar": "finance",
+      "label": "Place buy order",
+      "description": "Submits a buy order to a brokerage.",
+      "riskTier": "critical",
+      "requireApproval": true,
+      "reversible": false,
+      "defaultAuthorityLevel": "blocked"
+    },
+    {
+      "key": "finance.investment.sell",
+      "pillar": "finance",
+      "label": "Place sell order",
+      "description": "Submits a sell order to a brokerage.",
+      "riskTier": "critical",
+      "requireApproval": true,
+      "reversible": false,
+      "defaultAuthorityLevel": "blocked"
+    },
+    {
+      "key": "finance.recurring.cancel",
+      "pillar": "finance",
+      "label": "Cancel recurring payment",
+      "description": "Stops a recurring outbound payment.",
+      "riskTier": "medium",
+      "requireApproval": false,
+      "reversible": true,
+      "defaultAuthorityLevel": "ask"
+    },
+    {
+      "key": "concierge.gift.purchase",
+      "pillar": "concierge",
+      "label": "Purchase gift",
+      "description": "Buys a gift on behalf of the user.",
+      "riskTier": "high",
+      "requireApproval": true,
+      "reversible": false,
+      "defaultAuthorityLevel": "ask"
+    },
+    {
+      "key": "concierge.reservation.cancel",
+      "pillar": "concierge",
+      "label": "Cancel reservation",
+      "description": "Cancels a confirmed reservation.",
+      "riskTier": "medium",
+      "requireApproval": false,
+      "reversible": false,
+      "defaultAuthorityLevel": "ask"
+    },
+    {
+      "key": "concierge.contact.message",
+      "pillar": "concierge",
+      "label": "Send message to contact",
+      "description": "Sends a message to an external contact.",
+      "riskTier": "medium",
+      "requireApproval": false,
+      "reversible": false,
+      "defaultAuthorityLevel": "ask"
+    },
+    {
+      "key": "health.profile.update",
+      "pillar": "health",
+      "label": "Update health profile",
+      "description": "Modifies the user's sensitive health profile.",
+      "riskTier": "high",
+      "requireApproval": false,
+      "reversible": true,
+      "defaultAuthorityLevel": "ask"
+    },
+    {
+      "key": "health.metric.log",
+      "pillar": "health",
+      "label": "Log health metric",
+      "description": "Records a health metric (weight, BP, etc.).",
+      "riskTier": "low",
+      "requireApproval": false,
+      "reversible": true,
+      "defaultAuthorityLevel": "pre_approved"
+    },
+    {
+      "key": "health.record.share",
+      "pillar": "health",
+      "label": "Share health record",
+      "description": "Shares a health record with a third party.",
+      "riskTier": "critical",
+      "requireApproval": true,
+      "reversible": false,
+      "defaultAuthorityLevel": "blocked"
+    },
+    {
+      "key": "health.appointment.book",
+      "pillar": "health",
+      "label": "Book health appointment",
+      "description": "Books a medical appointment with a provider.",
+      "riskTier": "medium",
+      "requireApproval": false,
+      "reversible": true,
+      "defaultAuthorityLevel": "ask"
+    },
+    {
+      "key": "health.medication.log",
+      "pillar": "health",
+      "label": "Log medication",
+      "description": "Records a medication intake event.",
+      "riskTier": "low",
+      "requireApproval": false,
+      "reversible": true,
+      "defaultAuthorityLevel": "pre_approved"
+    },
+    {
+      "key": "shared.memory.delete",
+      "pillar": "shared",
+      "label": "Delete memory",
+      "description": "Permanently removes a memory entry.",
+      "riskTier": "medium",
+      "requireApproval": false,
+      "reversible": false,
+      "defaultAuthorityLevel": "ask"
+    },
+    {
+      "key": "shared.memory.add",
+      "pillar": "shared",
+      "label": "Add memory",
+      "description": "Saves a new memory entry.",
+      "riskTier": "low",
+      "requireApproval": false,
+      "reversible": true,
+      "defaultAuthorityLevel": "pre_approved"
+    },
+    {
+      "key": "shared.workspace.delete",
+      "pillar": "shared",
+      "label": "Delete workspace",
+      "description": "Removes a workspace and its scoped data.",
+      "riskTier": "critical",
+      "requireApproval": true,
+      "reversible": false,
+      "defaultAuthorityLevel": "ask"
+    },
+    {
+      "key": "shared.workspace.create",
+      "pillar": "shared",
+      "label": "Create workspace",
+      "description": "Creates a new workspace.",
+      "riskTier": "low",
+      "requireApproval": false,
+      "reversible": true,
+      "defaultAuthorityLevel": "pre_approved"
+    },
+    {
+      "key": "shared.file.delete",
+      "pillar": "shared",
+      "label": "Delete file",
+      "description": "Permanently deletes a file from storage.",
+      "riskTier": "medium",
+      "requireApproval": false,
+      "reversible": false,
+      "defaultAuthorityLevel": "ask"
+    },
+    {
+      "key": "shared.notification.send",
+      "pillar": "shared",
+      "label": "Send notification",
+      "description": "Sends a notification to the user.",
+      "riskTier": "low",
+      "requireApproval": false,
+      "reversible": true,
+      "defaultAuthorityLevel": "pre_approved"
+    },
+    {
+      "key": "shared.session.revoke",
+      "pillar": "shared",
+      "label": "Revoke session",
+      "description": "Terminates an active device session.",
+      "riskTier": "high",
+      "requireApproval": false,
+      "reversible": true,
+      "defaultAuthorityLevel": "ask"
     }
   ]
 }
