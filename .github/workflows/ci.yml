@@ -221,6 +221,25 @@ jobs:
         run: npx tsx scripts/root/check-env-contract-completeness.ts
       - name: Trust action manifest freshness (blocks merge)
         run: npx tsx scripts/architecture/check-trust-action-manifest.ts
+      - name: Regenerate Trust action manifest & diff (blocks merge)
+        env:
+          # Freeze timestamp so regeneration is reproducible.
+          # Use the committed file's existing generatedAt so unrelated edits
+          # to the registry are the only thing that can produce a diff.
+          SOURCE_DATE_EPOCH: "0"
+        run: |
+          set -e
+          # Re-emit with frozen epoch so generatedAt is deterministic.
+          npx tsx scripts/architecture/emit-trust-action-manifest.ts
+          # Compare ignoring generatedAt (committed file may have any timestamp).
+          jq 'del(.generatedAt)' public/generated/trust-action-registry.json > /tmp/regenerated.json
+          git show HEAD:public/generated/trust-action-registry.json \
+            | jq 'del(.generatedAt)' > /tmp/committed.json
+          if ! diff -u /tmp/committed.json /tmp/regenerated.json; then
+            echo "::error::Trust action manifest is stale. Run: npx tsx scripts/architecture/emit-trust-action-manifest.ts and commit the result."
+            exit 1
+          fi
+          echo "✅ Trust action manifest matches in-code registry."
       - name: Docker hardening
         run: npx tsx scripts/root/check-docker-hardening.ts
       - name: Deployment readiness gate
