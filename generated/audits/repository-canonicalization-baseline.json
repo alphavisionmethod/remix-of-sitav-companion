@@ -1,12 +1,12 @@
 {
   "generatedAt": "2026-04-25T16:05:04.956Z",
-  "lastWaveCompleted": 5,
+  "lastWaveCompleted": 6,
   "schemaVersion": 1,
   "note": "Baseline file counts captured before Repository Tree Canonicalization waves. See docs/architecture/REPOSITORY_CONSTITUTION.md.",
   "topLevel": {
     "src/pages": 1148,
     "src/modules": 297,
-    "src/platform": 472,
+    "src/platform": 556,
     "src/components": 1227,
     "src/lib": 1710,
     "src/domains": 111,
