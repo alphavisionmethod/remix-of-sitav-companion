@@ -1,0 +1,113 @@
+{
+  "generatedAt": "2026-04-25T12:05:56.433Z",
+  "source": "src/modules/_trust/registry/trust-action-registry.ts",
+  "totals": {
+    "total": 10,
+    "approvalGated": 2,
+    "irreversible": 2,
+    "byPillar": {
+      "business": 3,
+      "finance": 2,
+      "concierge": 2,
+      "shared": 3
+    },
+    "byRiskTier": {
+      "low": 2,
+      "medium": 4,
+      "high": 3,
+      "critical": 1
+    }
+  },
+  "actions": [
+    {
+      "key": "crm.contact.create",
+      "pillar": "business",
+      "label": "Create CRM contact",
+      "description": "Persists a new contact record with PII to the CRM store.",
+      "riskTier": "low",
+      "requireApproval": false,
+      "reversible": true
+    },
+    {
+      "key": "crm.deal.stage_change",
+      "pillar": "business",
+      "label": "Change deal stage",
+      "description": "Mutates pipeline stage and forecast surface.",
+      "riskTier": "medium",
+      "requireApproval": false,
+      "reversible": true
+    },
+    {
+      "key": "finance.payment.schedule",
+      "pillar": "finance",
+      "label": "Schedule payment",
+      "description": "Queues a future-dated outbound payment from an owner-controlled account.",
+      "riskTier": "high",
+      "requireApproval": true,
+      "reversible": false
+    },
+    {
+      "key": "concierge.household_task.assign",
+      "pillar": "concierge",
+      "label": "Assign household task",
+      "description": "Assigns or reassigns a household task to a member.",
+      "riskTier": "low",
+      "requireApproval": false,
+      "reversible": true
+    },
+    {
+      "key": "concierge.travel.booking_confirm",
+      "pillar": "concierge",
+      "label": "Confirm travel booking",
+      "description": "Confirms a flight, lodging, or transport reservation against a vendor.",
+      "riskTier": "high",
+      "requireApproval": true,
+      "reversible": false
+    },
+    {
+      "key": "shared.autonomy.kill_switch_engage",
+      "pillar": "shared",
+      "label": "Engage autonomy kill-switch",
+      "description": "Halts every advisor controller, standing mission, and queue execution at the next state check.",
+      "riskTier": "critical",
+      "requireApproval": false,
+      "reversible": true
+    },
+    {
+      "key": "shared.autonomy.kill_switch_release",
+      "pillar": "shared",
+      "label": "Release autonomy kill-switch",
+      "description": "Resumes advisor controllers and standing missions after a halt.",
+      "riskTier": "high",
+      "requireApproval": false,
+      "reversible": true
+    },
+    {
+      "key": "shared.support.case_escalate",
+      "pillar": "shared",
+      "label": "Escalate support case",
+      "description": "Routes a support case to a higher tier or specialist role.",
+      "riskTier": "medium",
+      "requireApproval": false,
+      "reversible": true
+    },
+    {
+      "key": "business.crm.contact_bulk_import",
+      "pillar": "business",
+      "label": "Bulk import contacts",
+      "description": "Persists many contact records at once from an external CSV source.",
+      "riskTier": "medium",
+      "requireApproval": false,
+      "reversible": true
+    },
+    {
+      "key": "finance.envelope.allocation_change",
+      "pillar": "finance",
+      "label": "Change envelope allocation",
+      "description": "Reallocates funds between household money envelopes.",
+      "riskTier": "medium",
+      "requireApproval": false,
+      "reversible": true
+    }
+  ]
+}
