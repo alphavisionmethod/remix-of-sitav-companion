@@ -11,7 +11,7 @@ import { SitaTabs } from "@/platform/sita/components/sita/SitaComponents";
 import { DomainAdvisorBoard } from "@/platform/sita/components/sita/domain-shared/DomainAdvisorBoard";
 import { ConciergePageWrapper } from "@/modules/concierge/components/concierge";
 import { AITruthDisclosure } from "@/components/primitives/status/AITruthDisclosure";
-import { EvidenceLink } from "@/components/primitives/actions/EvidenceLink";
+import { EvidenceLink } from "@/platform/trust/components/EvidenceLink";
 import { useState } from "react";
 import { Heart, Home } from "lucide-react";
 

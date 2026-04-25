@@ -16,7 +16,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { EmptyState } from "@/platform/sita/components/sita/EmptyState";
 import { StatusBadge, type StatusTone } from "@/components/primitives/status/StatusBadge";
 import { AITruthDisclosure } from "@/components/primitives/status/AITruthDisclosure";
-import { OperatorActionPanel } from "@/components/primitives/actions/OperatorActionPanel";
+import { OperatorActionPanel } from "@/admin/components/operator/OperatorActionPanel";
 import {
   ShieldCheck,
   RefreshCw,

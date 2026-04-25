@@ -12,7 +12,7 @@ import { Plug, Shield, Activity, TestTube, Presentation, RefreshCw, CheckCircle,
 import { toast } from "sonner";
 import CNSubNav from "@/platform/admin/components/admin/CNSubNav";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
-import { ConnectorStateBadge } from "@/components/primitives/status/ConnectorStateBadge";
+import { ConnectorStateBadge } from "@/platform/cloud/components/ConnectorStateBadge";
 
 // Production fallback — seed data removed
 const CAPABILITIES: any[] = [];

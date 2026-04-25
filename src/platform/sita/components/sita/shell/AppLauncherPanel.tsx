@@ -18,7 +18,7 @@ import { useLauncherViewModel, type LauncherAppItem, type AppInstallCTA } from "
 import type { AppCategory } from "@/domains/apps/types";
 import { SoundEngine } from "@/platform/runtime/sound-engine";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { PillarRail } from "@/components/launcher/PillarRail";
+import { PillarRail } from "@/platform/sita/components/sita/shell/PillarRail";
 
 interface AppLauncherPanelProps {
   open: boolean;

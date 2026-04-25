@@ -20,7 +20,7 @@ import {
 import { EmptyState } from "@/platform/sita/components/sita/EmptyState";
 import { StatusBadge } from "@/components/primitives/status/StatusBadge";
 import { AITruthDisclosure } from "@/components/primitives/status/AITruthDisclosure";
-import { OperatorActionPanel } from "@/components/primitives/actions/OperatorActionPanel";
+import { OperatorActionPanel } from "@/admin/components/operator/OperatorActionPanel";
 import { formatTrustLabel } from "@/lib/trust-copy/trust-copy-map";
 import {
   suggestionStatusTone,
