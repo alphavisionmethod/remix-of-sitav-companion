@@ -160,7 +160,7 @@ export function AutonomyApprovalQueue({ advisorId, compact = false }: Props) {
                           </Badge>
                         )}
                         {payload.is_client_facing && (
-                          <Badge variant="outline" className="text-[10px] border-amber-400/60 text-amber-600">
+                          <Badge variant="outline" className="text-[10px] border-warning/60 text-warning">
                             <AlertTriangle className="mr-1 h-3 w-3" /> client-facing
                           </Badge>
                         )}
