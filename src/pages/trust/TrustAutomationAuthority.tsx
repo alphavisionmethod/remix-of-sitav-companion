@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Bot, ShieldCheck, AlertTriangle, Pause } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Badge } from "@/components/ui/badge";
+import { ActionAuthorityPanel } from "@/modules/_trust/ui/ActionAuthorityPanel";
 
 interface PolicyRow {
   id: string;
@@ -102,6 +103,17 @@ export default function TrustAutomationAuthority() {
           ))}
         </div>
       )}
+
+      <section className="mt-10">
+        <header className="mb-3">
+          <h2 className="text-lg font-semibold">Per-action authority</h2>
+          <p className="text-sm text-muted-foreground">
+            Fine-grained overrides for every registered action. Defaults are tuned for safety —
+            sensitive actions ship blocked until you explicitly enable them.
+          </p>
+        </header>
+        <ActionAuthorityPanel />
+      </section>
     </div>
   );
 }
