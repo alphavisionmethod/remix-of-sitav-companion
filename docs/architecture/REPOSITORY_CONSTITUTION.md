@@ -127,6 +127,12 @@ During an in-flight migration wave, a thin re-export wrapper at the old path is 
 31. **Admin plane dependency direction.** `admin → platform` ✅. `admin → modules/<pillar>` ❌ (admin reads pillar state via service facades, never page bodies). `platform → admin` ❌. `modules → admin` ❌. `pages/admin → admin` ✅ (adapter pattern). All three directions are ratcheted in `generated/manifests/admin-dependency-violation-baseline.json` (decrease-only). Enforcer: `scripts/architecture/check-admin-plane-boundaries.ts`.
 32. **Admin vs Platform ownership.** `src/admin/**` may aggregate pillar/platform read-models but MUST NOT become the canonical owner of platform capability or pillar product logic. Capability lives in `src/platform/**`; admin owns the operator UI over it. See `docs/architecture/ADMIN_PLANE_OWNERSHIP_MODEL.md` for the canonical model.
 
+## Semantic Route-Adapter Contract (Wave 0.7 — BLOCKING)
+
+33. **Semantic route-adapter contract.** Every file under `src/pages/**/*.{ts,tsx}` (excluding `__tests__/`) MUST belong to **exactly one** of six adapter subtypes: `pure-reexport`, `lazy`, `redirect`, `param-translate`, `shell-mount`, `event-dispatch`. Files under `src/pages/**` MUST NOT contain: `supabase.*` calls, `useQuery` / `useMutation` / `useInfiniteQuery` / `useSuspenseQuery`, `useState` / `useReducer` for canonical feature state, trust/approval/persistence logic, or business-rule branching that owns a concept. Rule 7 (line-count) remains as a syntactic complement; this rule is the semantic enforcement. Validator: `scripts/architecture/check-page-semantic-adapter.ts` (foundation-tier, BLOCKING). Model doc: `docs/architecture/ROUTE_ADAPTER_SEMANTIC_MODEL.md`.
+34. **Page semantic violation ratchet.** Pre-existing `legacy-violation` files (550 at Wave 0.7 seal) are baselined in `generated/manifests/page-semantic-violation-baseline.json`. The count is monotone-decreasing — new violations BLOCK CI. Drained by the future Page Body Relocation Wave (gated by Rules 19, 24).
+35. **Adapter subtype declaration (forward).** Net-new files under `src/pages/**` SHOULD carry a top-of-file directive `// @route-adapter: <subtype>`. When present, the declared subtype MUST match the detected subtype; mismatches BLOCK CI. Enforcer: `scripts/architecture/check-page-adapter-subtype-declaration.ts`.
+
 ## Amendment process
 
 1. Open an ADR under `docs/adr/ADR-<NNN>-<slug>.md` describing the change and its blast radius.
