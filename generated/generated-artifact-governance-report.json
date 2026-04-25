@@ -1,23 +1,10 @@
 {
-  "generatedAt": "2026-04-25T19:18:24.991Z",
+  "generatedAt": "2026-04-25T19:18:45.080Z",
   "gate": "generated-artifact-governance",
   "ok": true,
   "errorCount": 0,
-  "warningCount": 2,
+  "warningCount": 0,
   "totalArtifacts": 1446,
-  "baselineOrphans": 917,
-  "issues": [
-    {
-      "severity": "warn",
-      "area": "new-orphan",
-      "path": "generated/audits/wave-b-generated-artifact-and-backend-boundary-hardening-report.md",
-      "reason": "reference artifact has no owning script and is not on orphan baseline"
-    },
-    {
-      "severity": "warn",
-      "area": "new-orphan",
-      "path": "generated/manifests/generated-artifact-freshness-policy.json",
-      "reason": "reference artifact has no owning script and is not on orphan baseline"
-    }
-  ]
+  "baselineOrphans": 919,
+  "issues": []
 }

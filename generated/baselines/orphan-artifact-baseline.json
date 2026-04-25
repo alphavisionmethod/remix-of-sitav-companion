@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-04-25T19:12:49.190Z",
-  "count": 917,
+  "generatedAt": "2026-04-25T19:18:39.917Z",
+  "count": 919,
   "paths": [
     "generated/5-plane-boundaries-report.json",
     "generated/SERVICE_GOVERNANCE_REPORT.md",
@@ -181,6 +181,7 @@
     "generated/audits/service-adapter-client-hardening-report.md",
     "generated/audits/shared-component-ownership-hardening-report.md",
     "generated/audits/shared-component-relocation-wave-report.md",
+    "generated/audits/wave-b-generated-artifact-and-backend-boundary-hardening-report.md",
     "generated/autonomous-action-receipts-report.json",
     "generated/autonomous-action-rollback-coverage-report.json",
     "generated/autonomous-action-safety-gates-report.json",
@@ -585,6 +586,7 @@
     "generated/manifests/contract-ownership-map.json",
     "generated/manifests/flowos-deliverables-index.json",
     "generated/manifests/foundation-manifest-freshness-report.json",
+    "generated/manifests/generated-artifact-freshness-policy.json",
     "generated/manifests/page-semantic-violation-report.json",
     "generated/manifests/platform-admin-capability-surface-map.json",
     "generated/manifests/safe-change-evidence-report.json",
@@ -919,5 +921,6 @@
     "generated/workflow-states-report.json",
     "generated/workflow-step-contracts-report.json",
     "generated/wrapper-purity-report.json"
-  ]
+  ],
+  "note": "Wave B baseline. 917 pre-Wave-B orphans + 2 Wave-B governance artifacts pinned. Ratchet-only: new orphans block CI."
 }
