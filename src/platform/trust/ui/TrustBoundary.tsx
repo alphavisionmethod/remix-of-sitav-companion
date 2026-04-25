@@ -7,7 +7,7 @@
 
 import { useState, type ReactNode } from "react";
 import { useTrustEmit } from "@/hooks/use-trust-emit";
-import type { RiskTier, TrustPillarId } from "@/modules/_trust";
+import type { RiskTier, TrustPillarId } from "@/platform/trust";
 
 interface TrustBoundaryProps {
   pillar: TrustPillarId;

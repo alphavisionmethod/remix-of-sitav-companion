@@ -15,7 +15,7 @@ import { useOrchestratorStream } from "./use-orchestrator-stream";
 import {
   SemanticContextBadge,
   type RetrievalKind,
-} from "@/modules/_shared/knowledge";
+} from "@/platform/knowledge";
 
 export interface StreamingChatPanelProps {
   title?: string;

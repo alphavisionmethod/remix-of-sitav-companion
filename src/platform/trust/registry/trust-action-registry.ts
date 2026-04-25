@@ -11,7 +11,7 @@
 // seed so the in-code registry stays a faithful local mirror.
 // ════════════════════════════════════════════════════════════
 
-import type { RiskTier, TrustPillarId } from "@/modules/_trust";
+import type { RiskTier, TrustPillarId } from "@/platform/trust";
 
 export type AuthorityLevel = "suggest" | "ask" | "pre_approved" | "blocked";
 

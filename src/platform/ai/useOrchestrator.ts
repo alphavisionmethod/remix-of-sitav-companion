@@ -8,7 +8,7 @@
 
 import { useCallback, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { useActiveWorkspaceId } from "@/modules/_shared/workspace/workspace-context";
+import { useActiveWorkspaceId } from "@/platform/workspace/workspace-context";
 
 export type OrchestratorMode = "chat" | "simulation" | "action" | "voice" | "recap" | "tool";
 
