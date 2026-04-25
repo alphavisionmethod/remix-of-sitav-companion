@@ -12899,6 +12899,201 @@ export type Database = {
         }
         Relationships: []
       }
+      health_appointments: {
+        Row: {
+          appointment_at: string
+          created_at: string
+          id: string
+          location: string | null
+          metadata: Json
+          notes: string | null
+          provider_name: string
+          specialty: string | null
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          appointment_at: string
+          created_at?: string
+          id?: string
+          location?: string | null
+          metadata?: Json
+          notes?: string | null
+          provider_name: string
+          specialty?: string | null
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          appointment_at?: string
+          created_at?: string
+          id?: string
+          location?: string | null
+          metadata?: Json
+          notes?: string | null
+          provider_name?: string
+          specialty?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      health_metric_logs: {
+        Row: {
+          created_at: string
+          id: string
+          metadata: Json
+          metric_kind: string
+          notes: string | null
+          recorded_at: string
+          sensitivity: string
+          source: string
+          source_ref: string | null
+          unit: string | null
+          updated_at: string
+          user_id: string
+          value_numeric: number | null
+          value_text: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          metadata?: Json
+          metric_kind: string
+          notes?: string | null
+          recorded_at?: string
+          sensitivity?: string
+          source?: string
+          source_ref?: string | null
+          unit?: string | null
+          updated_at?: string
+          user_id: string
+          value_numeric?: number | null
+          value_text?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          metadata?: Json
+          metric_kind?: string
+          notes?: string | null
+          recorded_at?: string
+          sensitivity?: string
+          source?: string
+          source_ref?: string | null
+          unit?: string | null
+          updated_at?: string
+          user_id?: string
+          value_numeric?: number | null
+          value_text?: string | null
+        }
+        Relationships: []
+      }
+      health_profiles: {
+        Row: {
+          blood_type: string | null
+          consent_share_with_advisors: boolean
+          consent_share_with_routing: boolean
+          created_at: string
+          date_of_birth: string | null
+          display_name: string | null
+          emergency_contact: Json | null
+          encrypted_payload: Json
+          encryption_key_version: string
+          height_cm: number | null
+          id: string
+          sex_at_birth: string | null
+          updated_at: string
+          user_id: string
+          weight_kg: number | null
+        }
+        Insert: {
+          blood_type?: string | null
+          consent_share_with_advisors?: boolean
+          consent_share_with_routing?: boolean
+          created_at?: string
+          date_of_birth?: string | null
+          display_name?: string | null
+          emergency_contact?: Json | null
+          encrypted_payload?: Json
+          encryption_key_version?: string
+          height_cm?: number | null
+          id?: string
+          sex_at_birth?: string | null
+          updated_at?: string
+          user_id: string
+          weight_kg?: number | null
+        }
+        Update: {
+          blood_type?: string | null
+          consent_share_with_advisors?: boolean
+          consent_share_with_routing?: boolean
+          created_at?: string
+          date_of_birth?: string | null
+          display_name?: string | null
+          emergency_contact?: Json | null
+          encrypted_payload?: Json
+          encryption_key_version?: string
+          height_cm?: number | null
+          id?: string
+          sex_at_birth?: string | null
+          updated_at?: string
+          user_id?: string
+          weight_kg?: number | null
+        }
+        Relationships: []
+      }
+      health_reminders: {
+        Row: {
+          channel: string
+          created_at: string
+          description: string | null
+          id: string
+          last_fired_at: string | null
+          metadata: Json
+          next_fire_at: string | null
+          paused: boolean
+          reminder_kind: string
+          rrule: string | null
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          channel?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          last_fired_at?: string | null
+          metadata?: Json
+          next_fire_at?: string | null
+          paused?: boolean
+          reminder_kind?: string
+          rrule?: string | null
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          channel?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          last_fired_at?: string | null
+          metadata?: Json
+          next_fire_at?: string | null
+          paused?: boolean
+          reminder_kind?: string
+          rrule?: string | null
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       health_validation_results: {
         Row: {
           checked_at: string
@@ -24114,6 +24309,107 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      wearable_connections: {
+        Row: {
+          account_label: string | null
+          created_at: string
+          encrypted_credentials: Json
+          encryption_key_version: string
+          error_message: string | null
+          id: string
+          last_sync_at: string | null
+          metadata: Json
+          provider: string
+          scopes: string[]
+          status: string
+          sync_cursor: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          account_label?: string | null
+          created_at?: string
+          encrypted_credentials?: Json
+          encryption_key_version?: string
+          error_message?: string | null
+          id?: string
+          last_sync_at?: string | null
+          metadata?: Json
+          provider: string
+          scopes?: string[]
+          status?: string
+          sync_cursor?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          account_label?: string | null
+          created_at?: string
+          encrypted_credentials?: Json
+          encryption_key_version?: string
+          error_message?: string | null
+          id?: string
+          last_sync_at?: string | null
+          metadata?: Json
+          provider?: string
+          scopes?: string[]
+          status?: string
+          sync_cursor?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      wearable_sync_events: {
+        Row: {
+          completed_at: string | null
+          connection_id: string
+          created_at: string
+          error_message: string | null
+          id: string
+          metadata: Json
+          receipt_id: string | null
+          signal_count: number
+          started_at: string
+          status: string
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          connection_id: string
+          created_at?: string
+          error_message?: string | null
+          id?: string
+          metadata?: Json
+          receipt_id?: string | null
+          signal_count?: number
+          started_at?: string
+          status?: string
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          connection_id?: string
+          created_at?: string
+          error_message?: string | null
+          id?: string
+          metadata?: Json
+          receipt_id?: string | null
+          signal_count?: number
+          started_at?: string
+          status?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "wearable_sync_events_connection_id_fkey"
+            columns: ["connection_id"]
+            isOneToOne: false
+            referencedRelation: "wearable_connections"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       webauthn_challenges: {
         Row: {
