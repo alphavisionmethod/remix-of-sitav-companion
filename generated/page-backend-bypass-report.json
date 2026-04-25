@@ -1,0 +1,32 @@
+{
+  "generatedAt": "2026-04-25T19:18:30.174Z",
+  "gate": "page-backend-bypass",
+  "ok": true,
+  "errorCount": 0,
+  "surfaces": [
+    {
+      "surfaceName": "src/pages/**",
+      "monotone": "decrease-only",
+      "baselineCount": 145,
+      "currentCount": 145,
+      "newViolators": [],
+      "removed": []
+    },
+    {
+      "surfaceName": "src/components/**",
+      "monotone": "zero-tolerance",
+      "baselineCount": 0,
+      "currentCount": 0,
+      "newViolators": [],
+      "removed": []
+    },
+    {
+      "surfaceName": "src/domains/**",
+      "monotone": "decrease-only",
+      "baselineCount": 9,
+      "currentCount": 9,
+      "newViolators": [],
+      "removed": []
+    }
+  ]
+}

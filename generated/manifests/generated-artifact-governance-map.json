@@ -1,15 +1,13 @@
 {
-  "generatedAt": "2026-04-25T19:12:49.184Z",
+  "generatedAt": "2026-04-25T19:18:14.344Z",
   "stats": {
-    "total": 1440,
-    "byClass": {
-      "reference": 1252,
-      "active-informational": 152,
-      "historical-archived": 35,
-      "active-blocking": 1
-    },
-    "staleCount": 0,
-    "orphanCount": 917
+    "total": 1446,
+    "active-blocking": 3,
+    "active-informational": 152,
+    "reference": 1254,
+    "historical-archived": 37,
+    "stale": 0,
+    "orphan": 919
   },
   "entries": [
     {
@@ -2669,7 +2667,7 @@
       "owningScript": null,
       "publishable": true,
       "lastModifiedISO": "2026-04-25T15:40:13.850Z",
-      "ageDays": 0.1,
+      "ageDays": 0.2,
       "stale": false
     },
     {
@@ -2963,6 +2961,16 @@
       "stale": false
     },
     {
+      "path": "generated/audits/wave-b-generated-artifact-and-backend-boundary-hardening-report.md",
+      "lifecycleClass": "reference",
+      "freshnessTtlDays": 180,
+      "owningScript": null,
+      "publishable": true,
+      "lastModifiedISO": "2026-04-25T19:17:55.677Z",
+      "ageDays": 0,
+      "stale": false
+    },
+    {
       "path": "generated/auth-policy-reality-report.json",
       "lifecycleClass": "active-informational",
       "freshnessTtlDays": 30,
@@ -3020,6 +3028,26 @@
       "publishable": true,
       "lastModifiedISO": "2026-04-25T11:42:39.201Z",
       "ageDays": 0.3,
+      "stale": false
+    },
+    {
+      "path": "generated/baselines/orphan-artifact-baseline.json",
+      "lifecycleClass": "historical-archived",
+      "freshnessTtlDays": null,
+      "owningScript": "scripts/architecture/checks/check-generated-artifact-governance.ts",
+      "publishable": true,
+      "lastModifiedISO": "2026-04-25T19:13:11.248Z",
+      "ageDays": 0,
+      "stale": false
+    },
+    {
+      "path": "generated/baselines/page-backend-bypass-baseline.json",
+      "lifecycleClass": "historical-archived",
+      "freshnessTtlDays": null,
+      "owningScript": "scripts/architecture/checks/check-page-backend-bypass.ts",
+      "publishable": true,
+      "lastModifiedISO": "2026-04-25T19:13:11.317Z",
+      "ageDays": 0,
       "stale": false
     },
     {
@@ -9020,6 +9048,36 @@
       "publishable": true,
       "lastModifiedISO": "2026-04-25T17:52:25.585Z",
       "ageDays": 0.1,
+      "stale": false
+    },
+    {
+      "path": "generated/manifests/frontend-backend-boundary-map.json",
+      "lifecycleClass": "active-blocking",
+      "freshnessTtlDays": 7,
+      "owningScript": "scripts/architecture/checks/check-page-backend-bypass.ts",
+      "publishable": false,
+      "lastModifiedISO": "2026-04-25T19:13:11.253Z",
+      "ageDays": 0,
+      "stale": false
+    },
+    {
+      "path": "generated/manifests/generated-artifact-freshness-policy.json",
+      "lifecycleClass": "reference",
+      "freshnessTtlDays": 180,
+      "owningScript": null,
+      "publishable": true,
+      "lastModifiedISO": "2026-04-25T19:13:11.351Z",
+      "ageDays": 0,
+      "stale": false
+    },
+    {
+      "path": "generated/manifests/generated-artifact-governance-map.json",
+      "lifecycleClass": "active-blocking",
+      "freshnessTtlDays": 7,
+      "owningScript": "scripts/architecture/checks/check-generated-artifact-governance.ts",
+      "publishable": false,
+      "lastModifiedISO": "2026-04-25T19:13:11.233Z",
+      "ageDays": 0,
       "stale": false
     },
     {
