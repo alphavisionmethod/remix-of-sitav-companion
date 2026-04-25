@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { UserCheck, DollarSign, Calendar, Home, Target } from "lucide-react";
-import { SetupStageHeader, StageTransitionController, TrustInfoCard } from "@/components/sita/setup";
+import { SetupStageHeader, StageTransitionController, TrustInfoCard } from "@/platform/sita/components/sita/setup";
 
 const options = [
   { key: "missed-followup", icon: UserCheck, title: "A missed follow-up", desc: "Find someone who needs a reply." },

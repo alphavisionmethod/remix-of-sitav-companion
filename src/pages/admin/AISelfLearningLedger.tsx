@@ -1,11 +1,11 @@
-import { AdminPageHeader } from "@/components/sita/admin/AdminPageHeader";
+import { AdminPageHeader } from "@/platform/sita/components/sita/admin/AdminPageHeader";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState } from "react";
 import { BookOpen, TrendingUp, CheckCircle2, AlertTriangle, RotateCcw, Brain, Target, Users, ArrowRight } from "lucide-react";
 import { useAIEngDomain } from "@/hooks/use-ai-engineering-data";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 const AISelfLearningLedger = () => {
 const LEARNED_PATTERNS: any[] = [];
   const { data: patterns, isDemo } = useAIEngDomain("learningPatterns", LEARNED_PATTERNS);

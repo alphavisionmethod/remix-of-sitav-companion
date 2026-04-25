@@ -3,11 +3,11 @@
 // Guided financial ceremonies for sustained money health
 // ═══════════════════════════════════════════════════════════════
 
-import { SitaCard, SitaCardTitle, SitaSectionHeader } from "@/components/sita/SitaCard";
-import { KPITile } from "@/components/sita/SitaComponents";
-import { DomainHeader } from "@/components/sita/primitives/DomainHeader";
-import { TrustBadge } from "@/components/sita/TrustBadge";
-import { ConfidenceBar } from "@/components/sita/primitives/ConfidenceBar";
+import { SitaCard, SitaCardTitle, SitaSectionHeader } from "@/platform/sita/components/sita/SitaCard";
+import { KPITile } from "@/platform/sita/components/sita/SitaComponents";
+import { DomainHeader } from "@/platform/sita/components/sita/primitives/DomainHeader";
+import { TrustBadge } from "@/platform/sita/components/sita/TrustBadge";
+import { ConfidenceBar } from "@/platform/sita/components/sita/primitives/ConfidenceBar";
 import {
   Calendar, CheckCircle, Circle, Clock, RotateCcw, CreditCard, Receipt,
   Shield, DollarSign, Briefcase, FileText, Sparkles
@@ -15,7 +15,7 @@ import {
 import { motion } from "framer-motion";
 import { useState } from "react";
 import type { MoneyRitual, RitualStep } from "@/packages/finance-contracts/advanced-intelligence";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 const ritualIcons: Record<string, typeof Calendar> = {
   "weekly-reset": RotateCcw, "month-close": Calendar, "bill-planning": Receipt,

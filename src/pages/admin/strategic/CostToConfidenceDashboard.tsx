@@ -1,12 +1,12 @@
 import { TrendingUp, BarChart3, DollarSign, Zap } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
+import { SitaPageHeader } from "@/platform/sita/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { useEngineEvents } from "@/hooks/useEngineEventsData";
 import { useIntelligenceOverview, useEfficiencyScores } from "@/hooks/useIntelligenceAPI";
 import { Progress } from "@/components/ui/progress";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 const CostToConfidenceDashboard = () => {
   const { isAdmin, loading: authLoading } = useRequireAdmin();

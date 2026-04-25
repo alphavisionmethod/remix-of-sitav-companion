@@ -19,8 +19,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { updateRecommendationStatus, updateApprovalQueueItem } from "@/lib/admin-ai/admin-ai-workforce-client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { toast } from "sonner";
-import AITSubNav from "@/components/admin/AITSubNav";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import AITSubNav from "@/platform/admin/components/admin/AITSubNav";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 
 

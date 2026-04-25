@@ -11,7 +11,7 @@ import {
   Target, FileText, Receipt, Phone, Bell, RefreshCw, Sparkles, ChevronDown, ChevronUp,
   MoreHorizontal, Copy, Archive, Inbox
 } from "lucide-react";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
 import { useCRMAutomations, useCreateAutomation, useUpdateAutomation, useDeleteAutomation } from "@/hooks/use-crm-data";

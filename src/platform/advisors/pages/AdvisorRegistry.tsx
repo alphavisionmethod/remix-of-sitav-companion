@@ -1,6 +1,6 @@
-import { SitaPageHeader, SitaCard, SitaCardTitle } from "@/components/sita/SitaCard";
-import { KPITile, EmptyState, SitaTabs } from "@/components/sita/SitaComponents";
-import { TrustBadge } from "@/components/sita/TrustBadge";
+import { SitaPageHeader, SitaCard, SitaCardTitle } from "@/platform/sita/components/sita/SitaCard";
+import { KPITile, EmptyState, SitaTabs } from "@/platform/sita/components/sita/SitaComponents";
+import { TrustBadge } from "@/platform/sita/components/sita/TrustBadge";
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -23,7 +23,7 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 // ── Maturity color mapping ──────────────────────────────────
 const MATURITY_COLORS: Record<string, string> = {

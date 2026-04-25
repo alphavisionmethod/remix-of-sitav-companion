@@ -6,8 +6,8 @@ import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Input } from "@/components/ui/input";
-import { SitaPageHeader } from "@/components/sita/SitaCard";
-import { SitaTabs } from "@/components/sita/SitaComponents";
+import { SitaPageHeader } from "@/platform/sita/components/sita/SitaCard";
+import { SitaTabs } from "@/platform/sita/components/sita/SitaComponents";
 import {
   CheckCircle2, XCircle, AlertTriangle, Shield, Activity,
   FileJson, Search, Server, Gauge, BarChart3, Layers,
@@ -18,7 +18,7 @@ import {
 import validationSummary from "../../../generated/validation-summary.json";
 import operationalScorecards from "../../../generated/operational-scorecards.json";
 import architectureCompliance from "../../../generated/architecture-compliance-report.json";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 // ── Types ───────────────────────────────────────────────────
 interface ValidationCheck { file: string; exists: boolean; validJson: boolean }

@@ -8,8 +8,8 @@ import { Loader2, Shield, ShieldOff, Zap, FileText } from "lucide-react";
 import { getKillSwitchState, setKillSwitch, loadKillSwitches } from "@/lib/dual-reality/demo-policy-engine";
 import { toast } from "sonner";
 import { useEffect, useState } from "react";
-import DRSSubNav from "@/components/admin/DRSSubNav";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import DRSSubNav from "@/platform/admin/components/admin/DRSSubNav";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 
 

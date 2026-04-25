@@ -11,7 +11,7 @@ import {
   ChevronDown, ChevronRight, MoreHorizontal, Calendar
 } from "lucide-react";
 import { format, formatDistanceToNow } from "date-fns";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { toast } from "sonner";
 import { useDraftAutosave } from "@/hooks/useDraftAutosave";

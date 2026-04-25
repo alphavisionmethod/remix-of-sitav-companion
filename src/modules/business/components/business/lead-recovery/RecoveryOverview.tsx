@@ -7,7 +7,7 @@ import { DollarSign, Target, Flame, TrendingUp, Shield, AlertTriangle, Crown, He
 import { cn } from "@/lib/utils";
 import type { RecoveryCandidate } from "@/domains/engines/lead-recovery-engine";
 import { getRecoveryStats, getTopPriorityRescues, FAILURE_MODE_META, SUCCESS_BAND_META } from "@/domains/engines/lead-recovery-engine";
-import { AdvisorCard } from "@/components/sita/cards";
+import { AdvisorCard } from "@/platform/sita/components/sita/cards";
 
 interface Props {
   candidates: RecoveryCandidate[];

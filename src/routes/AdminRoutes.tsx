@@ -1,7 +1,7 @@
 import { Route, Navigate } from "react-router-dom";
 import { lazy } from "react";
-import { PermissionGatedRoute } from "@/components/auth/PermissionGatedRoute";
-import { WorkflowStepStub } from "@/components/admin/hubs/WorkflowStepStub";
+import { PermissionGatedRoute } from "@/platform/auth/components/auth/PermissionGatedRoute";
+import { WorkflowStepStub } from "@/platform/admin/components/admin/hubs/WorkflowStepStub";
 import AdminRootLanding from "@/routes/AdminRootLanding";
 import { ADMIN_REDIRECTS } from "@/admin/redirects/admin-redirect-map";
 

@@ -14,7 +14,7 @@ import { toast } from "sonner";
 import { StatusBadge } from "@/components/primitives/status/StatusBadge";
 import { AITruthDisclosure } from "@/components/primitives/status/AITruthDisclosure";
 import { OperatorActionPanel } from "@/components/primitives/actions/OperatorActionPanel";
-import { severityTone } from "@/components/admin/ai-runtime/_shared/status-tone-maps";
+import { severityTone } from "@/platform/admin/components/admin/ai-runtime/_shared/status-tone-maps";
 import { supabase } from "@/integrations/supabase/client";
 import {
   loadCouncilSummaries,
@@ -28,7 +28,7 @@ import {
   escalateToMeta,
 } from "@/lib/internal-agents/runtime/supervisor-actions";
 import { ShieldAlert, ShieldCheck, Activity, Users, ArrowUp } from "lucide-react";
-import { EmptyState } from "@/components/sita/EmptyState";
+import { EmptyState } from "@/platform/sita/components/sita/EmptyState";
 import { Skeleton } from "@/components/primitives/feedback/Skeleton";
 
 const COUNCIL_LABEL: Record<string, string> = {

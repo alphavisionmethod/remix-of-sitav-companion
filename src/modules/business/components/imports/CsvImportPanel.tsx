@@ -11,7 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { SitaCard, SitaCardTitle } from "@/components/sita/SitaCard";
+import { SitaCard, SitaCardTitle } from "@/platform/sita/components/sita/SitaCard";
 import { Upload, FileSpreadsheet, AlertTriangle, CheckCircle2, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { parseCsv, suggestMapping } from "@/lib/imports/csv-parser";

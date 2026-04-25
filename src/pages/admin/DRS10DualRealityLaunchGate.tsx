@@ -3,9 +3,9 @@ import { Badge } from "@/components/ui/badge";
 import { CheckCircle2, AlertTriangle, XCircle, ShieldCheck, Layers } from "lucide-react";
 import { getRegisteredDomains, type ProviderDomain } from "@/lib/dual-reality/mode-aware-provider";
 import { registerAllProviders } from "@/lib/dual-reality/providers";
-import { CILaunchGateWidget } from "@/components/sita/CILaunchGateWidget";
-import DRSSubNav from "@/components/admin/DRSSubNav";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { CILaunchGateWidget } from "@/platform/sita/components/sita/CILaunchGateWidget";
+import DRSSubNav from "@/platform/admin/components/admin/DRSSubNav";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 // Production fallback — seed data removed
 const ALL_DOMAINS: any[] = [];

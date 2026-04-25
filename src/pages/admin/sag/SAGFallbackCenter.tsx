@@ -4,8 +4,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useRoutingPolicies, useProviderHealth, useTaskRequests } from "@/hooks/use-sag-data";
 import { PROVIDERS } from "@/lib/sovereign-ai-gateway/types";
-import SAGSubNav from "@/components/admin/SAGSubNav";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import SAGSubNav from "@/platform/admin/components/admin/SAGSubNav";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 const SAGFallbackCenter = () => {
   const { data: policies = [] } = useRoutingPolicies();
   const { data: health = [] } = useProviderHealth();

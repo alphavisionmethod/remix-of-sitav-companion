@@ -6,8 +6,8 @@ import { Rocket, CheckCircle2, XCircle, AlertTriangle, Clock, ArrowRight } from 
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
-import APLSubNav from "@/components/admin/APLSubNav";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import APLSubNav from "@/platform/admin/components/admin/APLSubNav";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 // Production fallback — seed data removed
 const TARGETS: any[] = [];

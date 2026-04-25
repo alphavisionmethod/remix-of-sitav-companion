@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Network, Receipt, TrendingDown, Target, ShieldCheck, Users, Calculator, Banknote } from "lucide-react";
-import { SetupStageHeader } from "@/components/sita/setup/SetupStageHeader";
+import { SetupStageHeader } from "@/platform/sita/components/sita/setup/SetupStageHeader";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { cn } from "@/lib/utils";
 import type { StructureItem } from "./types";

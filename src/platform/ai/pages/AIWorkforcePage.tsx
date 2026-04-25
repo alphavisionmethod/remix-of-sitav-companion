@@ -6,14 +6,14 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { SectionSkeleton } from "@/components/sita/SectionSkeleton";
+import { SectionSkeleton } from "@/platform/sita/components/sita/SectionSkeleton";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
-import { EmptyState } from "@/components/sita/SitaComponents";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { PageShell } from "@/components/sita/PageShell";
+import { EmptyState } from "@/platform/sita/components/sita/SitaComponents";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { PageShell } from "@/platform/sita/components/sita/PageShell";
 const statusColor = { active: "bg-emerald-500", paused: "bg-amber-500", idle: "bg-muted" };
 
 export default function AIWorkforcePage() {

@@ -1,12 +1,12 @@
 import React, { useState, useMemo } from "react";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Upload, FileSpreadsheet, Link, Plus, History, CheckCircle, AlertTriangle, RefreshCw, BarChart3, Download, Sparkles } from "lucide-react";
-import CRMImportWizard from "@/components/business/CRMImportWizard";
-import CRMConnectModal from "@/components/business/CRMConnectModal";
-import { CRMImportTemplates, CRMImportQuality } from "@/components/business/crm/CRMImportQuality";
+import CRMImportWizard from "@/modules/business/components/business/CRMImportWizard";
+import CRMConnectModal from "@/modules/business/components/business/CRMConnectModal";
+import { CRMImportTemplates, CRMImportQuality } from "@/modules/business/components/business/crm/CRMImportQuality";
 import { useCRMImportJobs } from "@/hooks/use-crm-data";
 import { format } from "date-fns";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";

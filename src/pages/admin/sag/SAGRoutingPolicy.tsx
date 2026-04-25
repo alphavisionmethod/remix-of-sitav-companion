@@ -9,8 +9,8 @@ import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
 import { useRoutingPolicies, useCreateRoutingPolicy } from "@/hooks/use-sag-data";
 import { TASK_CLASSES } from "@/lib/sovereign-ai-gateway/types";
-import SAGSubNav from "@/components/admin/SAGSubNav";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import SAGSubNav from "@/platform/admin/components/admin/SAGSubNav";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 
 

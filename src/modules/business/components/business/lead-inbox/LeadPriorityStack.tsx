@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { SitaCard } from "@/components/sita/SitaCard";
+import { SitaCard } from "@/platform/sita/components/sita/SitaCard";
 import { LeadPriorityBadge } from "./LeadPriorityBadge";
 import { LeadHeatIndicator } from "./LeadHeatIndicator";
 import { LeadConfidenceDisplay } from "./LeadConfidenceDisplay";

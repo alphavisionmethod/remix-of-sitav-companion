@@ -13,7 +13,7 @@ import {
   GitBranch, Send, Award, Glasses, HandMetal
 } from "lucide-react";
 import AutomationSubNav from "./AutomationSubNav";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 // Inline static configuration (was seed data)
 const activeAutomations: any[] = [];

@@ -1,5 +1,5 @@
-import { MobileShell } from "@/components/mobile/MobileShell";
-import { ApprovalCard } from "@/components/mobile/ApprovalCard";
+import { MobileShell } from "@/platform/experience/components/mobile/MobileShell";
+import { ApprovalCard } from "@/platform/experience/components/mobile/ApprovalCard";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { cn } from "@/lib/utils";

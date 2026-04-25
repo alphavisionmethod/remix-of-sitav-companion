@@ -15,7 +15,7 @@ import {
   useOSWindowContext,
   type OSWindow,
   type SnapDirection,
-} from "@/components/sita/os/WindowContext";
+} from "@/platform/sita/components/sita/os/WindowContext";
 
 import { DesktopMenuContent, type DesktopMenuHandlers } from "@/lib/context-menu/desktop-menu";
 import { AppWindowMenuContent, type AppWindowMenuHandlers } from "@/lib/context-menu/app-window-menu";

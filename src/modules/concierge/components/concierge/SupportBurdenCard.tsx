@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { GlassCard } from "@/components/sita/PremiumPageComponents";
+import { GlassCard } from "@/platform/sita/components/sita/PremiumPageComponents";
 import { Activity, TrendingDown, TrendingUp } from "lucide-react";
 
 interface BurdenCategory {

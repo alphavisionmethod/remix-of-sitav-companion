@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { SitaButton } from "@/components/sita/SitaCard";
+import { SitaButton } from "@/platform/sita/components/sita/SitaCard";
 import { Check, Ban, ArrowRight, X } from "lucide-react";
 
 interface Props {

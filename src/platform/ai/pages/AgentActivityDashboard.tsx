@@ -7,8 +7,8 @@ import { useState, useEffect, useMemo } from "react";
 import { useCompanion } from "@/hooks/use-companion";
 import { useAgentFleetLive } from "@/hooks/use-agent-fleet-live";
 import { useGraphNodes } from "@/hooks/use-cai-data";
-import { AgentActivityFeed } from "@/components/sita/AgentActivityFeed";
-import { SitaCard, SitaCardTitle } from "@/components/sita/SitaCard";
+import { AgentActivityFeed } from "@/platform/sita/components/sita/AgentActivityFeed";
+import { SitaCard, SitaCardTitle } from "@/platform/sita/components/sita/SitaCard";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { motion } from "framer-motion";
@@ -22,11 +22,11 @@ import {
   TrendingUp, DollarSign, Zap, CheckCircle, XCircle,
   Clock, Gauge, BarChart3, RefreshCw, Heart,
 } from "lucide-react";
-import { AIEmbeddedRecommendation } from "@/components/ai/AIEmbeddedRecommendation";
-import { AIResponsePanel } from "@/components/ai/AIResponsePanel";
-import { DataLoadingWrapper } from "@/components/sita/DataLoadingWrapper";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { PageShell } from "@/components/sita/PageShell";
+import { AIEmbeddedRecommendation } from "@/platform/ai/components/ai/AIEmbeddedRecommendation";
+import { AIResponsePanel } from "@/platform/ai/components/ai/AIResponsePanel";
+import { DataLoadingWrapper } from "@/platform/sita/components/sita/DataLoadingWrapper";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { PageShell } from "@/platform/sita/components/sita/PageShell";
 
 // ── Fleet Overview Hero ─────────────────────────────────────────
 

@@ -15,8 +15,8 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { ackAlert, suppressAlert, resolveAlert } from "@/lib/services/alerting/alert-client";
 import { useToast } from "@/hooks/use-toast";
-import { AlertSuppressionRulesPanel } from "@/components/admin/alerts/AlertSuppressionRulesPanel";
-import { AlertDedupStats } from "@/components/admin/alerts/AlertDedupStats";
+import { AlertSuppressionRulesPanel } from "@/platform/admin/components/admin/alerts/AlertSuppressionRulesPanel";
+import { AlertDedupStats } from "@/platform/admin/components/admin/alerts/AlertDedupStats";
 
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.05 } } };

@@ -1,7 +1,7 @@
-import { PageSkeleton } from "@/components/sita/PageSkeleton";
+import { PageSkeleton } from "@/platform/sita/components/sita/PageSkeleton";
 import { useState, useMemo } from "react";
-import { SitaPageHeader, SitaCard, SitaCardTitle } from "@/components/sita/SitaCard";
-import { KPITile, EmptyState, SitaTabs } from "@/components/sita/SitaComponents";
+import { SitaPageHeader, SitaCard, SitaCardTitle } from "@/platform/sita/components/sita/SitaCard";
+import { KPITile, EmptyState, SitaTabs } from "@/platform/sita/components/sita/SitaComponents";
 import { motion, AnimatePresence } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -19,8 +19,8 @@ type CalEvent = { id: string; title: string; date: string; time?: string; type: 
 import { useRealityProvider } from "@/hooks/useRealityProvider";
 import { useCreateCalendarEvent, useUpdateCalendarEvent, useDeleteCalendarEvent } from "@/hooks/use-calendar-mutations";
 import { useBookingList, useBookingCreate, useBookingCancel } from "@/hooks/use-backend-actions";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { PageShell } from "@/components/sita/PageShell";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { PageShell } from "@/platform/sita/components/sita/PageShell";
 type CalView = "day" | "week" | "month" | "agenda";
 
 const DOMAIN_COLORS: Record<string, string> = {

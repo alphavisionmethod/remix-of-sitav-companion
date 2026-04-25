@@ -1,14 +1,14 @@
-import { TrustBadge } from "@/components/sita/TrustBadge";
-import { SectionSkeleton } from "@/components/sita/SectionSkeleton";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { TrustBadge } from "@/platform/sita/components/sita/TrustBadge";
+import { SectionSkeleton } from "@/platform/sita/components/sita/SectionSkeleton";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
-import { StatusCard, SummaryCard } from "@/components/sita/cards";
+import { StatusCard, SummaryCard } from "@/platform/sita/components/sita/cards";
 import { Shield, Bell, DollarSign, PiggyBank, CreditCard, Zap, Link, AlertTriangle, CheckCircle, Settings } from "lucide-react";
 import { motion } from "framer-motion";
 import { useMoneyPolicies, useToggleMoneyPolicy } from "@/hooks/use-domain-data";
 import { useMemo } from "react";
 import { toast } from "sonner";
-import { AdvisorKnowledgePanel } from "@/components/advisors/AdvisorKnowledgePanel";
+import { AdvisorKnowledgePanel } from "@/platform/advisors/components/advisors/AdvisorKnowledgePanel";
 
 // Production fallback — seed data removed
 const CONNECTORS: any[] = [];

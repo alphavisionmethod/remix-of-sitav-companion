@@ -1,12 +1,12 @@
-import { KPITile, SitaTabs, EmptyState } from "@/components/sita/SitaComponents";
-import { TrustBadge } from "@/components/sita/TrustBadge";
-import { StateBadge } from "@/components/sita/StateBadge";
-import { GlassCard } from "@/components/sita/PremiumPageComponents";
-import { ConciergeAdvisorInsightCard, ConciergeAutomationRuleCard, ConciergePageWrapper } from "@/components/concierge";
-import type { AutomationRule } from "@/components/concierge";
+import { KPITile, SitaTabs, EmptyState } from "@/platform/sita/components/sita/SitaComponents";
+import { TrustBadge } from "@/platform/sita/components/sita/TrustBadge";
+import { StateBadge } from "@/platform/sita/components/sita/StateBadge";
+import { GlassCard } from "@/platform/sita/components/sita/PremiumPageComponents";
+import { ConciergeAdvisorInsightCard, ConciergeAutomationRuleCard, ConciergePageWrapper } from "@/modules/concierge/components/concierge";
+import type { AutomationRule } from "@/modules/concierge/components/concierge";
 import { useState } from "react";
 import { Workflow, ShoppingCart, Calendar, Wrench, GraduationCap, Plane, Gift, Bell, CheckCircle, Clock, AlertTriangle, Play, Pause, Sparkles, Shield, Eye, Zap } from "lucide-react";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
 
 interface HouseholdWorkflow {

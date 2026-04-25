@@ -5,17 +5,17 @@
 // Consumes WorkspaceViewEngine with operator filter.
 // ═══════════════════════════════════════════════════════════════
 
-import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader } from "@/components/sita/SitaCard";
+import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader } from "@/platform/sita/components/sita/SitaCard";
 import { Badge } from "@/components/ui/badge";
 import { useWorkspaceView, useMetaGovernanceBoardroom } from "@/hooks/use-meta-governance";
-import { TrustDebtPanel, ExecutionDebtHeatmap, DragIndexRadar, ReadinessGauge, DelegationRegistryTable } from "@/components/governance";
+import { TrustDebtPanel, ExecutionDebtHeatmap, DragIndexRadar, ReadinessGauge, DelegationRegistryTable } from "@/platform/governance/components/governance";
 import { motion } from "framer-motion";
 import { Wrench, AlertTriangle, Shield, CheckCircle, Activity, Eye, Unlock, Bell, Zap } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
 import type { GovernanceBoardroomSection } from "@/packages/contracts";
 import type { ReadinessInput } from "@/domains/engines/readiness-engine";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 const DEFAULT_READINESS_INPUT: ReadinessInput = {
   proofCompleteness: { rate: 0.85, evidence: ["proof-chain audit"] },

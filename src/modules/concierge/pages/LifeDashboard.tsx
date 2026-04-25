@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { useCompanion } from "@/hooks/use-companion";
-import { SitaPageHeader } from "@/components/sita/SitaCard";
+import { SitaPageHeader } from "@/platform/sita/components/sita/SitaCard";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { format, differenceInDays, parseISO } from "date-fns";
@@ -16,8 +16,8 @@ import {
   PieChart, Pie, Cell, RadarChart, PolarGrid, PolarAngleAxis,
   PolarRadiusAxis, Radar as RechartsRadar, AreaChart, Area
 } from "recharts";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { PageShell } from "@/components/sita/PageShell";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { PageShell } from "@/platform/sita/components/sita/PageShell";
 
 // ── Animation Variants ──────────────────────────────────────────
 

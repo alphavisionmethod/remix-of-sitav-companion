@@ -16,7 +16,7 @@ import {
   getRecentValidationRuns, getUnresolvedDrift, getOpenViolations,
   getDomainComplianceScores, getLaunchBlockers, getFeatureComplianceScore
 } from "@/platform/governance/platform-law-registry";
-import { LaunchBlockerPanel, type LaunchBlocker } from "@/components/sita/truth/LaunchBlockerPanel";
+import { LaunchBlockerPanel, type LaunchBlocker } from "@/platform/sita/components/sita/truth/LaunchBlockerPanel";
 
 const PLE01Overview = () => {
   const navigate = useNavigate();

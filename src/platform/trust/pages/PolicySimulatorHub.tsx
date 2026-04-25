@@ -6,17 +6,17 @@
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { SitaCard, SitaCardTitle, SitaSectionHeader } from "@/components/sita/SitaCard";
+import { SitaCard, SitaCardTitle, SitaSectionHeader } from "@/platform/sita/components/sita/SitaCard";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { AdminPageHeader, TrustRibbon, StatusBadge } from "@/components/sita/admin";
+import { AdminPageHeader, TrustRibbon, StatusBadge } from "@/platform/sita/components/sita/admin";
 import { useGovernanceSimulator } from "@/contexts/SitaKernelContext";
 import type { SimulationResult } from "@/lib/services/governance-simulator";
 import {
   Shield, Play, AlertTriangle, CheckCircle, ChevronRight,
   DollarSign, Wifi, Users, Zap, Lock, Eye, RotateCcw, Package,
 } from "lucide-react";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 interface PresetScenario {
   id: string;

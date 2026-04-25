@@ -4,7 +4,7 @@ import {
   Target, TrendingUp, BellOff, Check,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { SetupStageHeader, StageTransitionController } from "@/components/sita/setup";
+import { SetupStageHeader, StageTransitionController } from "@/platform/sita/components/sita/setup";
 
 const options = [
   { key: "forgetting", icon: Brain, label: "Forgetting things" },

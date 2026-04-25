@@ -4,7 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useState } from "react";
-import { SitaCard, SitaCardTitle, SitaSectionHeader } from "@/components/sita/SitaCard";
+import { SitaCard, SitaCardTitle, SitaSectionHeader } from "@/platform/sita/components/sita/SitaCard";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { motion } from "framer-motion";
@@ -16,7 +16,7 @@ import {
 
 import { useOwnerApprovals } from "@/hooks/use-domain-data";
 import type { OwnerApprovalItem as ApprovalItem } from "@/data/fixtures/mock-data/owner";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 const riskStyles: Record<string, string> = {
   critical: "bg-destructive/10 text-destructive",

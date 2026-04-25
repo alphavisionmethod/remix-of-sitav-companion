@@ -6,7 +6,7 @@
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Shield, ArrowLeft, RefreshCw, RotateCcw, MessageCircle } from "lucide-react";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 export default function MissionErrorPage() {
   const navigate = useNavigate();

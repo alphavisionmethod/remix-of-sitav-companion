@@ -1,4 +1,4 @@
-import { Typography } from "@/components/sita/Typography";
+import { Typography } from "@/platform/sita/components/sita/Typography";
 import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -10,8 +10,8 @@ import {
   TrendingUp, Package, Plus, ArrowRight, Brain, Users, Mail, Phone,
   Star, Shield, Target, RefreshCw, Zap, BarChart3, XCircle
 } from "lucide-react";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { PremiumEmptyState } from "@/components/sita/PremiumEmptyState";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { PremiumEmptyState } from "@/platform/sita/components/sita/PremiumEmptyState";
 import { useQuoteStudio } from "@/hooks/use-quote-studio";
 import { useNavigate } from "react-router-dom";
 const statusColors: Record<string, string> = {

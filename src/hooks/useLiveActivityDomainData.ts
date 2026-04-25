@@ -5,7 +5,7 @@
 
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { registerActivity, removeActivity, updateActivity } from "@/components/sita/shell/LiveActivityBar";
+import { registerActivity, removeActivity, updateActivity } from "@/platform/sita/components/sita/shell/LiveActivityBar";
 import { Briefcase, DollarSign, Headphones, FolderOpen } from "lucide-react";
 import React from "react";
 

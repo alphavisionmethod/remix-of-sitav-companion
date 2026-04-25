@@ -1,8 +1,8 @@
-import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader, SitaButton } from "@/components/sita/SitaCard";
-import { SectionSkeleton } from "@/components/sita/SectionSkeleton";
-import { KPITile, EmptyState, SitaTabs } from "@/components/sita/SitaComponents";
-import { StateBadge, ExecutionState } from "@/components/sita/StateBadge";
-import { TrustBadge } from "@/components/sita/TrustBadge";
+import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader, SitaButton } from "@/platform/sita/components/sita/SitaCard";
+import { SectionSkeleton } from "@/platform/sita/components/sita/SectionSkeleton";
+import { KPITile, EmptyState, SitaTabs } from "@/platform/sita/components/sita/SitaComponents";
+import { StateBadge, ExecutionState } from "@/platform/sita/components/sita/StateBadge";
+import { TrustBadge } from "@/platform/sita/components/sita/TrustBadge";
 import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -12,11 +12,11 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useAction } from "@/hooks/useAction";
 import { Workflow, CheckCircle2, Clock, AlertTriangle, ChevronRight, Eye, RotateCcw, Shield, Plus, Trash2 } from "lucide-react";
 import { useConfirmation } from "@/hooks/use-confirmation";
-import { ConfirmationDialog } from "@/components/sita/ConfirmationDialog";
-import { DataFreshnessBadge } from "@/components/sita/DataFreshnessBadge";
+import { ConfirmationDialog } from "@/platform/sita/components/sita/ConfirmationDialog";
+import { DataFreshnessBadge } from "@/platform/sita/components/sita/DataFreshnessBadge";
 import { useQueryFreshness } from "@/hooks/use-query-freshness";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { PageShell } from "@/components/sita/PageShell";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { PageShell } from "@/platform/sita/components/sita/PageShell";
 
 const statusToState = (status: string): ExecutionState => {
   const map: Record<string, ExecutionState> = {

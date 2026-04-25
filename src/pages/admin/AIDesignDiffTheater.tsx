@@ -1,10 +1,10 @@
-import { AdminPageHeader } from "@/components/sita/admin/AdminPageHeader";
+import { AdminPageHeader } from "@/platform/sita/components/sita/admin/AdminPageHeader";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { useState } from "react";
 import { Eye, CheckCircle2, ArrowRight, Palette, Layout, Accessibility, Moon, Type, Move } from "lucide-react";
 import { useAIEngDomain } from "@/hooks/use-ai-engineering-data";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 
 // Production fallback — seed data removed

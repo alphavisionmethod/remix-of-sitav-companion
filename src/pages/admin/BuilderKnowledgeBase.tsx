@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CANONICAL_DOMAIN_PACKS } from "@/lib/delivery-methodology/domain-packs";
 import { LIFECYCLE_STAGES, getStageLabel } from "@/lib/delivery-methodology/feature-lifecycle";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 const BuilderKnowledgeBase = () => {
   const { data: archetypes } = useQuery({
     queryKey: ["kb-archetypes"],

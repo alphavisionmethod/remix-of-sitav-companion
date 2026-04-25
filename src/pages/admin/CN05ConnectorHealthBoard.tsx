@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { fromTable } from "@/lib/supabase-helpers";
 import { Activity, RefreshCw } from "lucide-react";
-import CNSubNav from "@/components/admin/CNSubNav";
+import CNSubNav from "@/platform/admin/components/admin/CNSubNav";
 import { ConnectorStateBadge } from "@/components/primitives/status/ConnectorStateBadge";
 
 

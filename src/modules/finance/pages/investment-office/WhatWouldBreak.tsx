@@ -2,7 +2,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { ShieldOff, AlertTriangle, Clock, Zap, TrendingDown, Globe } from "lucide-react";
 import { useRiskScenarios } from "@/hooks/use-investment-office";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 const TRADES: any[] = [{ ticker: "—", risks: [], invalidationTriggers: [] }];
 export default function WhatWouldBreak() {
   const { data: liveData, isLoading } = useRiskScenarios();

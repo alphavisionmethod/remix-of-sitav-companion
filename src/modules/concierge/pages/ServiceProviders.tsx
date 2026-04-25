@@ -1,14 +1,14 @@
-import { KPITile, EmptyState } from "@/components/sita/SitaComponents";
+import { KPITile, EmptyState } from "@/platform/sita/components/sita/SitaComponents";
 import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
-import { TrustBadge } from "@/components/sita/TrustBadge";
-import { DomainHeader } from "@/components/sita/primitives";
-import { ConciergeAdvisorInsightCard, ServiceFollowUpCard, VendorDetailPanel, ConciergePageWrapper, ConciergeEmptyState } from "@/components/concierge";
-import type { ServiceFollowUp, VendorDetail } from "@/components/concierge";
+import { TrustBadge } from "@/platform/sita/components/sita/TrustBadge";
+import { DomainHeader } from "@/platform/sita/components/sita/primitives";
+import { ConciergeAdvisorInsightCard, ServiceFollowUpCard, VendorDetailPanel, ConciergePageWrapper, ConciergeEmptyState } from "@/modules/concierge/components/concierge";
+import type { ServiceFollowUp, VendorDetail } from "@/modules/concierge/components/concierge";
 import { Wrench, Star, Phone, Clock, DollarSign, MapPin, Shield, Plus, Search, Calendar, FileText, History, CheckCircle, AlertTriangle, ExternalLink, Sparkles } from "lucide-react";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useInspector } from "@/contexts/InspectorContext";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { useServiceProvidersList } from "@/hooks/use-concierge-data";
 
 // Production fallback — seed data removed

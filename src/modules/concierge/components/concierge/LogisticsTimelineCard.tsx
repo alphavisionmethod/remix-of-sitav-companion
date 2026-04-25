@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { GlassCard } from "@/components/sita/PremiumPageComponents";
+import { GlassCard } from "@/platform/sita/components/sita/PremiumPageComponents";
 import { Route } from "lucide-react";
 
 export interface TimelineStop {

@@ -1,14 +1,14 @@
 import { useState } from "react";
-import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
-import { SitaTabs } from "@/components/sita/SitaComponents";
-import { SitaCard } from "@/components/sita/SitaCard";
+import { SitaPageHeader } from "@/platform/sita/components/sita/SitaPageHeader";
+import { SitaTabs } from "@/platform/sita/components/sita/SitaComponents";
+import { SitaCard } from "@/platform/sita/components/sita/SitaCard";
 import { Rocket, ArrowUpCircle, ArrowDownCircle, Shield, Clock, CheckCircle2, AlertTriangle, XCircle, ChevronRight, Download, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import type { ReleaseStatus, ReleaseChannel, ReleaseRing } from "@/packages/contracts/domain-types/release-record";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 interface DemoRelease {
   id: string;

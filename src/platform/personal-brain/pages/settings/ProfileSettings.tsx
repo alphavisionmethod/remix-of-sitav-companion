@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { usePbProfile } from "@/components/personal-brain/hooks/usePbProfile";
+import { usePbProfile } from "@/platform/personal-brain/components/personal-brain/hooks/usePbProfile";
 
 export default function ProfileSettings() {
   const { profile, update, saving } = usePbProfile();

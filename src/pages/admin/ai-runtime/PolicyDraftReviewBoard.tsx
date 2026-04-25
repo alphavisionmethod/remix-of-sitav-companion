@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Skeleton } from "@/components/ui/skeleton";
-import { EmptyState } from "@/components/sita/EmptyState";
+import { EmptyState } from "@/platform/sita/components/sita/EmptyState";
 import { StatusBadge } from "@/components/primitives/status/StatusBadge";
 import { AITruthDisclosure } from "@/components/primitives/status/AITruthDisclosure";
 import { OperatorActionPanel } from "@/components/primitives/actions/OperatorActionPanel";
@@ -18,7 +18,7 @@ import { formatTrustLabel } from "@/lib/trust-copy/trust-copy-map";
 import {
   riskTone,
   policyDraftStatusTone,
-} from "@/components/admin/ai-runtime/_shared/status-tone-maps";
+} from "@/platform/admin/components/admin/ai-runtime/_shared/status-tone-maps";
 import { ShieldAlert, FileWarning, KeyRound, CheckCircle2, XCircle, RefreshCw, Play, AlertTriangle } from "lucide-react";
 import { toast } from "sonner";
 

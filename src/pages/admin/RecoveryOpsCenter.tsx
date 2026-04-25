@@ -2,10 +2,10 @@ import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useRecoveryPermissions } from "@/hooks/useRecoveryPermissions";
-import { RecoveryJobMonitor } from "@/components/admin/recovery/RecoveryJobMonitor";
-import { WebhookReplayPanel } from "@/components/admin/recovery/WebhookReplayPanel";
-import { DiagnosticExportAuditPanel } from "@/components/admin/recovery/DiagnosticExportAudit";
-import { RecoveryActionCard } from "@/components/admin/recovery/RecoveryActionCard";
+import { RecoveryJobMonitor } from "@/platform/admin/components/admin/recovery/RecoveryJobMonitor";
+import { WebhookReplayPanel } from "@/platform/admin/components/admin/recovery/WebhookReplayPanel";
+import { DiagnosticExportAuditPanel } from "@/platform/admin/components/admin/recovery/DiagnosticExportAudit";
+import { RecoveryActionCard } from "@/platform/admin/components/admin/recovery/RecoveryActionCard";
 import { ShieldAlert, Activity, RefreshCw, FileText, Wrench, Lock } from "lucide-react";
 
 export default function RecoveryOpsCenter() {

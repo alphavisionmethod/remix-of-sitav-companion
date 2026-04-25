@@ -14,8 +14,8 @@ import {
 import { useGoogleProviderFamily } from "@/hooks/use-google-provider-family";
 import type { GoogleCapabilityKey } from "@/lib/core-services/google-provider-family/types";
 import { GOOGLE_API_REQUIREMENTS, GOOGLE_OAUTH_CLIENT_TEMPLATES } from "@/lib/core-services/google-provider-family/types";
-import PFASubNav from "@/components/admin/PFASubNav";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import PFASubNav from "@/platform/admin/components/admin/PFASubNav";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 
 

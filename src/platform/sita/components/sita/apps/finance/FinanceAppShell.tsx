@@ -7,15 +7,15 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
-import { DomainAdvisorBoard } from "@/components/sita/domain-shared/DomainAdvisorBoard";
+import { DomainAdvisorBoard } from "@/platform/sita/components/sita/domain-shared/DomainAdvisorBoard";
 import { useBoardroomBridge } from "@/hooks/useBoardroomBridge";
 import { getAdvisorOutputs } from "@/lib/services/orchestration-pipeline/module-advisor-consumer";
 import { FinanceNavigationContext } from "@/contexts/FinanceNavigationContext";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
 import { getFinanceAdaptation } from "@/domains/engines/cross-os-integration";
-import { CrossOSLinksPanel } from "@/components/sita/cross-os/CrossOSLinksPanel";
-import { CrossDomainIntelligenceBridge } from "@/components/sita/cross-os/CrossDomainIntelligenceBridge";
-import { AppShellBreadcrumb, useNavigationHistory } from "@/components/sita/shell/AppShellBreadcrumb";
+import { CrossOSLinksPanel } from "@/platform/sita/components/sita/cross-os/CrossOSLinksPanel";
+import { CrossDomainIntelligenceBridge } from "@/platform/sita/components/sita/cross-os/CrossDomainIntelligenceBridge";
+import { AppShellBreadcrumb, useNavigationHistory } from "@/platform/sita/components/sita/shell/AppShellBreadcrumb";
 
 // ── Page imports ────────────────────────────────────────────
 import MoneyOverview from "@/pages/money/MoneyOverview";

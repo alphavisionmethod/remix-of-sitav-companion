@@ -2,12 +2,12 @@
 // SITA OS — Mobile Trusted Device: Approval Detail
 // ═══════════════════════════════════════════════════════════════
 
-import { MobileShell } from "@/components/mobile/MobileShell";
+import { MobileShell } from "@/platform/experience/components/mobile/MobileShell";
 import { useParams, useNavigate } from "react-router-dom";
 import { ShieldCheck, AlertTriangle, CheckCircle2, XCircle } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 const MobileApprovalDetail = () => {
   const { id } = useParams();

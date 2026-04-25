@@ -1,5 +1,5 @@
-import { MobileShell } from "@/components/mobile/MobileShell";
-import { ProofCard, type ProofItem } from "@/components/mobile/ProofCard";
+import { MobileShell } from "@/platform/experience/components/mobile/MobileShell";
+import { ProofCard, type ProofItem } from "@/platform/experience/components/mobile/ProofCard";
 import { useNavigate } from "react-router-dom";
 import { useMobileProofs } from "@/hooks/use-domain-data";
 import { Shield, CheckCircle, Clock } from "lucide-react";

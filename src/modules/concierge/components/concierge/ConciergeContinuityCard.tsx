@@ -1,4 +1,4 @@
-import { GlassCard } from "@/components/sita/PremiumPageComponents";
+import { GlassCard } from "@/platform/sita/components/sita/PremiumPageComponents";
 import { RotateCcw } from "lucide-react";
 
 export interface ContinuityItem {

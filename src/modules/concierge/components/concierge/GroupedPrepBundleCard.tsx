@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { GlassCard } from "@/components/sita/PremiumPageComponents";
+import { GlassCard } from "@/platform/sita/components/sita/PremiumPageComponents";
 import { Package, CheckCircle } from "lucide-react";
 
 export interface PrepItem {

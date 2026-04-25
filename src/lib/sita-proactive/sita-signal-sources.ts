@@ -16,7 +16,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { subscribeScreenContext, type SitaScreenContext } from "@/lib/sita-context";
-import { subscribeSitaHud, type SitaHudSnapshot } from "@/components/sita/shell/sita-hud/sita-hud-bus";
+import { subscribeSitaHud, type SitaHudSnapshot } from "@/platform/sita/components/sita/shell/sita-hud/sita-hud-bus";
 import { publishNudge } from "./sita-nudge-bus";
 
 let started = false;

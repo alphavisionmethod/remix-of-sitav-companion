@@ -6,7 +6,7 @@
 import { motion, AnimatePresence, type Variants } from "framer-motion";
 import { ReactNode, createContext, useContext } from "react";
 import { DOMAIN_MOTION, getDomainSpring } from "@/platform/design-system/sita-design-tokens";
-import type { DomainId } from "@/components/sita/shell/DomainAppShell";
+import type { DomainId } from "@/platform/sita/components/sita/shell/DomainAppShell";
 
 // ── Domain Context for Motion ────────────────────────────────
 

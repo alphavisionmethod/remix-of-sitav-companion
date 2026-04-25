@@ -6,7 +6,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { useCRMContacts, useCRMSegments } from "@/hooks/use-crm-data";
 import { Filter, Plus, Users, AlertTriangle, Clock, Star, TrendingUp, X, Search, Eye, Save, Trash2, ChevronDown } from "lucide-react";
 import { isPast, differenceInDays } from "date-fns";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { supabase } from "@/integrations/supabase/client";
 import { dbAny } from "@/lib/supabase-helpers";
 import { toast } from "sonner";

@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { RunbookViewer } from "@/components/admin/runbooks/RunbookViewer";
+import { RunbookViewer } from "@/platform/admin/components/admin/runbooks/RunbookViewer";
 
 export default function AdminRunbookViewerPage() {
   const { id } = useParams<{ id: string }>();

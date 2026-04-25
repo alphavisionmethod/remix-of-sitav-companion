@@ -5,12 +5,12 @@
 
 import { useParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { SitaSectionHeader } from "@/components/sita/SitaCard";
-import { FeaturedPackCard, PackCard, resolveIcon } from "@/components/sita/PackStoreComponents";
+import { SitaSectionHeader } from "@/platform/sita/components/sita/SitaCard";
+import { FeaturedPackCard, PackCard, resolveIcon } from "@/platform/sita/components/sita/PackStoreComponents";
 import { PACK_CATALOG, type StoreCategory, type PackManifest } from "@/lib/pack-store";
 import { ArrowRight, Crown, Home, DollarSign, Briefcase, Sparkles, Target, Zap, Shield, TrendingUp, BarChart3, CheckCircle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 // ── Segment Configs ─────────────────────────────────────────────
 

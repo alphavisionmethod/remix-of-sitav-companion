@@ -10,7 +10,7 @@ import { Progress } from "@/components/ui/progress";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Globe, Smartphone, Monitor, Glasses, Mic, RefreshCw, CheckCircle, XCircle, Layers, AlertTriangle, Shield } from "lucide-react";
 import { toast } from "sonner";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 
 

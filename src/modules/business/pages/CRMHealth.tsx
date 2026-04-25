@@ -11,9 +11,9 @@ import {
   Activity, Target, BarChart3, Zap, Shield, X
 } from "lucide-react";
 import { formatDistanceToNow, differenceInDays } from "date-fns";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { CRMRelationshipIntelligence } from "@/components/business/crm/CRMRelationshipIntelligence";
-import { CRMNextBestAction } from "@/components/business/crm/CRMNextBestAction";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { CRMRelationshipIntelligence } from "@/modules/business/components/business/crm/CRMRelationshipIntelligence";
+import { CRMNextBestAction } from "@/modules/business/components/business/crm/CRMNextBestAction";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
 import { getIdentityLayer, getStatusWord } from "@/domains/engines/business-identity-layers";
 

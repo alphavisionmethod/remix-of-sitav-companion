@@ -14,7 +14,7 @@
 import { useEffect, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
-import { useSpeechSynthesis } from "@/components/personal-brain/voice/useSpeechSynthesis";
+import { useSpeechSynthesis } from "@/platform/personal-brain/components/personal-brain/voice/useSpeechSynthesis";
 
 interface BrainRequestDetail {
   utterance: string;

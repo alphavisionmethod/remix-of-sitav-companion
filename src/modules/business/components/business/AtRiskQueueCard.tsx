@@ -1,4 +1,4 @@
-import { SitaCard, SitaCardTitle, SitaButton } from "@/components/sita/SitaCard";
+import { SitaCard, SitaCardTitle, SitaButton } from "@/platform/sita/components/sita/SitaCard";
 import { AlertTriangle, Clock, ArrowRight, Users, DollarSign } from "lucide-react";
 import { motion } from "framer-motion";
 

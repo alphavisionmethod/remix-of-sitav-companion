@@ -1,4 +1,4 @@
-import { PageShell } from "@/components/sita/PageShell";
+import { PageShell } from "@/platform/sita/components/sita/PageShell";
 import { motion } from "framer-motion";
 import { Layout, Plus, Globe, Calendar, ShoppingCart, Users, FileText, Rocket, Sparkles, Eye } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -8,8 +8,8 @@ import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { useSites } from "@/hooks/use-digital-presence";
 import DPOSubNav from "./DPOSubNav";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { PremiumEmptyState } from "@/components/sita/PremiumEmptyState";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { PremiumEmptyState } from "@/platform/sita/components/sita/PremiumEmptyState";
 
 const PAGE_TYPES = [
   { type: "Landing Page", desc: "High-converting campaign or product page", icon: Rocket, color: "text-blue-400" },

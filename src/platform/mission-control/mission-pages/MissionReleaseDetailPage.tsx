@@ -4,7 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useParams, useNavigate } from "react-router-dom";
-import { SitaCard, SitaCardTitle, SitaSectionHeader } from "@/components/sita/SitaCard";
+import { SitaCard, SitaCardTitle, SitaSectionHeader } from "@/platform/sita/components/sita/SitaCard";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { motion } from "framer-motion";
@@ -13,7 +13,7 @@ import {
   Rocket, ChevronLeft, CheckCircle, AlertTriangle, Shield, Wifi,
   RotateCcw, Play, Pause, Server, Clock, Users, Zap, Eye,
 } from "lucide-react";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 const releaseData = {
   id: "rel-241",

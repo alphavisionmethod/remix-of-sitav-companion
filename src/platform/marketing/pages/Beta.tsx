@@ -1,6 +1,6 @@
-import { MarketingShell } from "@/components/marketing/MarketingShell";
-import { MarketingSeo } from "@/components/marketing/MarketingSeo";
-import { BetaForm } from "@/components/marketing/BetaForm";
+import { MarketingShell } from "@/platform/marketing/components/marketing/MarketingShell";
+import { MarketingSeo } from "@/platform/marketing/components/marketing/MarketingSeo";
+import { BetaForm } from "@/platform/marketing/components/marketing/BetaForm";
 
 export default function MarketingBeta() {
   return (

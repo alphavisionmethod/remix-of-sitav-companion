@@ -4,17 +4,17 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
-import { SitaPageHeader } from "@/components/sita/SitaCard";
-import { ValidationScorecard } from "@/components/sita/truth/ValidationScorecard";
-import { LaunchBlockerPanel, type LaunchBlocker } from "@/components/sita/truth/LaunchBlockerPanel";
-import { DegradedStateBanner } from "@/components/sita/truth/DegradedStateBanner";
+import { SitaPageHeader } from "@/platform/sita/components/sita/SitaCard";
+import { ValidationScorecard } from "@/platform/sita/components/sita/truth/ValidationScorecard";
+import { LaunchBlockerPanel, type LaunchBlocker } from "@/platform/sita/components/sita/truth/LaunchBlockerPanel";
+import { DegradedStateBanner } from "@/platform/sita/components/sita/truth/DegradedStateBanner";
 import {
   CheckCircle, XCircle, AlertTriangle, Play, Shield, Activity, Rocket,
   FileCheck, BarChart3, AlertOctagon, Clock, Zap, GitBranch, Layers, ArrowRight
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 const testSuites = [
   { name: "Unit Tests", total: 42, passed: 42, failed: 0, pending: 0, duration: "4.2s" },

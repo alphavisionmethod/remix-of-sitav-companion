@@ -2,8 +2,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Brain, Zap, Database, DollarSign } from "lucide-react";
 import { evaluateAIPolicy } from "@/lib/dual-reality/demo-policy-engine";
-import DRSSubNav from "@/components/admin/DRSSubNav";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import DRSSubNav from "@/platform/admin/components/admin/DRSSubNav";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 export default function DRS07DemoAIControl() {
   const demoAI = evaluateAIPolicy("demo");

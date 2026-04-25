@@ -1,10 +1,10 @@
 import { useAuth } from "@/contexts/AuthContext";
-import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader, SitaButton } from "@/components/sita/SitaCard";
+import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader, SitaButton } from "@/platform/sita/components/sita/SitaCard";
 import { cn } from "@/lib/utils";
-import { KPITile, SitaTabs, TimelineItem, EmptyState } from "@/components/sita/SitaComponents";
-import { TrustBadge } from "@/components/sita/TrustBadge";
-import { StateBadge } from "@/components/sita/StateBadge";
-import { TrustDebtPanel, ExecutionDebtHeatmap, DragIndexRadar, ReadinessGauge, DelegationRegistryTable } from "@/components/governance";
+import { KPITile, SitaTabs, TimelineItem, EmptyState } from "@/platform/sita/components/sita/SitaComponents";
+import { TrustBadge } from "@/platform/sita/components/sita/TrustBadge";
+import { StateBadge } from "@/platform/sita/components/sita/StateBadge";
+import { TrustDebtPanel, ExecutionDebtHeatmap, DragIndexRadar, ReadinessGauge, DelegationRegistryTable } from "@/platform/governance/components/governance";
 import { useState, useEffect, useMemo } from "react";
 import { useOSRuntime } from "@/hooks/useOSRuntime";
 import { FounderBottleneckEngine } from "@/domains/engines/founder-bottleneck-engine";
@@ -63,7 +63,7 @@ import type { InternalAgentCouncil, InternalAgentDefinition } from "@/lib/intern
   const connectors: Array<{ name: string; status: string; lastSync: string; type: string }> = [];
 
 
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import {
   Shield, Activity, Wifi, CheckCircle, AlertTriangle, Clock, Eye, Lock, Cpu, Zap, BarChart3,
   Globe, Key, History, Users, RotateCcw, DollarSign, FileText, Server, Database, RefreshCw,

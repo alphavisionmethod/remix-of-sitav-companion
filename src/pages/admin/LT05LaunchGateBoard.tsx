@@ -5,9 +5,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Rocket, CheckCircle, XCircle, AlertTriangle, Shield } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
-import { CILaunchGateWidget } from "@/components/sita/CILaunchGateWidget";
-import LTSubNav from "@/components/admin/LTSubNav";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { CILaunchGateWidget } from "@/platform/sita/components/sita/CILaunchGateWidget";
+import LTSubNav from "@/platform/admin/components/admin/LTSubNav";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 const LT05LaunchGateBoard = () => {
   const { data: gates } = useQuery({

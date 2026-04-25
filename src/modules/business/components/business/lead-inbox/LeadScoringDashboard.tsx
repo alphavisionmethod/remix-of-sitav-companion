@@ -9,7 +9,7 @@ import { LeadConversionFunnel } from "./LeadConversionFunnel";
 import { LeadValuePipeline } from "./LeadValuePipeline";
 import { LeadHeatMap } from "./LeadHeatMap";
 import { LeadInboxOverviewCards } from "./LeadInboxOverviewCards";
-import { ModuleAdvisorPanel } from "@/components/business/advisor-board/ModuleAdvisorPanel";
+import { ModuleAdvisorPanel } from "@/modules/business/components/business/advisor-board/ModuleAdvisorPanel";
 import { runScoringAdvisor, runConversionAdvisor, runTimingAdvisor, type AdvisorOutput } from "@/domains/engines/business-advisor-engine";
 import { Flame, TrendingUp, AlertTriangle, RotateCcw, Star, Target } from "lucide-react";
 

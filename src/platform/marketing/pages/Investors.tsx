@@ -1,6 +1,6 @@
-import { MarketingShell } from "@/components/marketing/MarketingShell";
-import { MarketingSeo } from "@/components/marketing/MarketingSeo";
-import { InvestorForm } from "@/components/marketing/InvestorForm";
+import { MarketingShell } from "@/platform/marketing/components/marketing/MarketingShell";
+import { MarketingSeo } from "@/platform/marketing/components/marketing/MarketingSeo";
+import { InvestorForm } from "@/platform/marketing/components/marketing/InvestorForm";
 
 const TRACTION = [
   { k: "Architecture", v: "5 planes · 30 BLOCK gates · 100% RLS" },

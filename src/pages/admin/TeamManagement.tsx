@@ -21,9 +21,9 @@ import { supabase } from "@/integrations/supabase/client";
 import { dbAny as db } from "@/lib/supabase-helpers";
 import { fromTable } from "@/lib/supabase-helpers";
 import { useConfirmation } from "@/hooks/use-confirmation";
-import { ConfirmationDialog } from "@/components/sita/ConfirmationDialog";
+import { ConfirmationDialog } from "@/platform/sita/components/sita/ConfirmationDialog";
 import { toast } from "sonner";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.04 } } };
 

@@ -1,7 +1,7 @@
-import { PageSkeleton } from "@/components/sita/PageSkeleton";
-import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader, SitaButton } from "@/components/sita/SitaCard";
-import { KPITile, EmptyState } from "@/components/sita/SitaComponents";
-import { TrustBadge } from "@/components/sita/TrustBadge";
+import { PageSkeleton } from "@/platform/sita/components/sita/PageSkeleton";
+import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader, SitaButton } from "@/platform/sita/components/sita/SitaCard";
+import { KPITile, EmptyState } from "@/platform/sita/components/sita/SitaComponents";
+import { TrustBadge } from "@/platform/sita/components/sita/TrustBadge";
 import { motion } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -11,8 +11,8 @@ import {
   Sparkles, DollarSign, Users, Clock, Briefcase, TrendingUp,
   ArrowRight, AlertTriangle, CreditCard, Home, Headphones
 } from "lucide-react";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { PageShell } from "@/components/sita/PageShell";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { PageShell } from "@/platform/sita/components/sita/PageShell";
 
 const OpportunityEngine = () => {
   const { user } = useAuth();

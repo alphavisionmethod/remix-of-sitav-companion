@@ -2,16 +2,16 @@
 // SITA OS — Money Office: Transaction Intelligence
 // ═══════════════════════════════════════════════════════════════
 
-import { SitaCard, SitaCardTitle, SitaSectionHeader, SitaButton } from "@/components/sita/SitaCard";
-import { KPITile, SitaTabs } from "@/components/sita/SitaComponents";
-import { TrustBadge } from "@/components/sita/TrustBadge";
-import { ConfidenceBar } from "@/components/sita/primitives/ConfidenceBar";
-import { DomainHeader } from "@/components/sita/primitives/DomainHeader";
+import { SitaCard, SitaCardTitle, SitaSectionHeader, SitaButton } from "@/platform/sita/components/sita/SitaCard";
+import { KPITile, SitaTabs } from "@/platform/sita/components/sita/SitaComponents";
+import { TrustBadge } from "@/platform/sita/components/sita/TrustBadge";
+import { ConfidenceBar } from "@/platform/sita/components/sita/primitives/ConfidenceBar";
+import { DomainHeader } from "@/platform/sita/components/sita/primitives/DomainHeader";
 import { Receipt, Search, Tag, AlertTriangle, Repeat, ArrowUpDown, Sparkles, Shield, CheckCircle, XCircle, Clock, DollarSign, TrendingDown, Building } from "lucide-react";
 import { motion } from "framer-motion";
 import { useState, useMemo } from "react";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvisorInsight";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { ModuleAdvisorInsight } from "@/platform/sita/components/sita/domain-shared/ModuleAdvisorInsight";
 interface DemoTx {
   id: string; date: string; description: string; merchant: string; amountCents: number; category: string;
   type: "debit" | "credit"; isRecurring: boolean; categorizedBy: "rule" | "ai" | "manual"; confidence: number;

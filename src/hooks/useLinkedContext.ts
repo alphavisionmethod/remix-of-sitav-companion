@@ -4,7 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useEffect, useState } from "react";
-import { consumeLinkedContext } from "@/components/sita/CrossAppAction";
+import { consumeLinkedContext } from "@/platform/sita/components/sita/CrossAppAction";
 
 interface LinkedContext {
   entityType: string;

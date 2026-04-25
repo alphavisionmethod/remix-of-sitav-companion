@@ -1,4 +1,4 @@
-import { Typography } from "@/components/sita/Typography";
+import { Typography } from "@/platform/sita/components/sita/Typography";
 import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -10,8 +10,8 @@ import {
   TrendingUp, ArrowRight, MessageSquare, Brain, Target, DollarSign,
   Star, Mail, Zap, Eye, Shield, BarChart3, RefreshCw
 } from "lucide-react";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { PremiumEmptyState } from "@/components/sita/PremiumEmptyState";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { PremiumEmptyState } from "@/platform/sita/components/sita/PremiumEmptyState";
 import { useCallDesk } from "@/hooks/use-call-desk";
 import { useNavigate } from "react-router-dom";
 const priorityColors: Record<string, string> = { critical: "bg-red-500/10 text-red-400", high: "bg-amber-500/10 text-amber-400", medium: "bg-blue-500/10 text-blue-400", low: "bg-muted text-muted-foreground" };

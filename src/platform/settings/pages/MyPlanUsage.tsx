@@ -26,7 +26,7 @@ import {
   useFairUseStatus,
 } from "@/hooks/use-compute-governance";
 import { toast } from "sonner";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 const TIER_ICONS: Record<PlanTier, typeof Cpu> = {
   personal: Zap,

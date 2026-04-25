@@ -6,14 +6,14 @@
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { SitaCard, SitaCardTitle } from "@/components/sita/SitaCard";
+import { SitaCard, SitaCardTitle } from "@/platform/sita/components/sita/SitaCard";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { AdminPageHeader, TrustRibbon, SafeModeBanner, QuickActionsDock, StatusBadge } from "@/components/sita/admin";
+import { AdminPageHeader, TrustRibbon, SafeModeBanner, QuickActionsDock, StatusBadge } from "@/platform/sita/components/sita/admin";
 import {
   useWhatMattersNow, useMissionControlSummary, useFounderCostSummary,
   useTrustSummary, useRecoverySummary, useConnectorSummaries, useAITeamSummary,
@@ -25,7 +25,7 @@ import {
   CheckCircle, ChevronRight, Lightbulb, Target, Play, TrendingUp,
   Clock, Users, Undo2, FileSearch,
 } from "lucide-react";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 // ── Section: What Matters Now ───────────────────────────────────
 function WhatMattersNow() {

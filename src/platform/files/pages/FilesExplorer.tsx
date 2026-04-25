@@ -4,14 +4,14 @@ import {
   useRenameFolder, useDeleteFolder, useRenameFile, useDeleteFile, useUploadToFolder,
 } from "@/hooks/use-file-explorer";
 import { downloadFile, type ExplorerFile } from "@/data/repositories/file-explorer-service";
-import { FileExplorerBreadcrumb } from "@/components/files/FileExplorerBreadcrumb";
-import { FileExplorerToolbar, type ViewMode } from "@/components/files/FileExplorerToolbar";
-import { FileExplorerSidebar } from "@/components/files/FileExplorerSidebar";
-import { FileExplorerGrid } from "@/components/files/FileExplorerGrid";
-import { FileExplorerTrash } from "@/components/files/FileExplorerTrash";
-import { FileExplorerProperties } from "@/components/files/FileExplorerProperties";
-import { NewFolderDialog } from "@/components/files/NewFolderDialog";
-import { MoveToDialog } from "@/components/files/MoveToDialog";
+import { FileExplorerBreadcrumb } from "@/platform/files/components/files/FileExplorerBreadcrumb";
+import { FileExplorerToolbar, type ViewMode } from "@/platform/files/components/files/FileExplorerToolbar";
+import { FileExplorerSidebar } from "@/platform/files/components/files/FileExplorerSidebar";
+import { FileExplorerGrid } from "@/platform/files/components/files/FileExplorerGrid";
+import { FileExplorerTrash } from "@/platform/files/components/files/FileExplorerTrash";
+import { FileExplorerProperties } from "@/platform/files/components/files/FileExplorerProperties";
+import { NewFolderDialog } from "@/platform/files/components/files/NewFolderDialog";
+import { MoveToDialog } from "@/platform/files/components/files/MoveToDialog";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 

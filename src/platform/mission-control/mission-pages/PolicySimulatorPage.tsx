@@ -7,7 +7,7 @@ import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useGovernanceSimulator } from "@/contexts/SitaKernelContext";
 import type { SimulationResult } from "@/lib/services/governance-simulator";
-import { SitaCard, SitaCardTitle, SitaSectionHeader } from "@/components/sita/SitaCard";
+import { SitaCard, SitaCardTitle, SitaSectionHeader } from "@/platform/sita/components/sita/SitaCard";
 import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
@@ -16,7 +16,7 @@ import {
   XCircle, Zap, Activity, Lock, Eye,
 } from "lucide-react";
 import type { PolicyScenario } from "@/packages/contracts";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 interface ScenarioInput {
   id: string;

@@ -1,7 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { SitaPageHeader } from "@/components/sita/SitaCard";
+import { SitaPageHeader } from "@/platform/sita/components/sita/SitaCard";
 import { useNavigate } from "react-router-dom";
 import {
   Activity, Shield, Database, Rocket, Plug, Briefcase, FileCheck, Lock,
@@ -9,7 +9,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 const surfaces = [
   { id: "ops", label: "Operations Command Center", desc: "Service health, SLO burn, alerts, incidents, runbooks", route: "/atlas/operations", icon: Activity, status: "live", metrics: "6 services • 5 SLOs • 8 runbooks", health: 96 },

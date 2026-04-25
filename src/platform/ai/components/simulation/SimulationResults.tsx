@@ -4,7 +4,7 @@
 
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { ConfidenceBar } from "@/components/sita/primitives/ConfidenceBar";
+import { ConfidenceBar } from "@/platform/sita/components/sita/primitives/ConfidenceBar";
 import {
   TrendingUp, TrendingDown, AlertTriangle, BarChart3, Target, Shield,
   Lightbulb, CheckCircle2, XCircle, Activity,

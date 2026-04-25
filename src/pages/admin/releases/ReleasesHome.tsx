@@ -5,8 +5,8 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { lazy, Suspense } from "react";
-import { AdminControlPlaneShell } from "@/components/admin/shells/AdminControlPlaneShell";
-import { DomainHubLayout, type HubModule } from "@/components/admin/hubs/DomainHubLayout";
+import { AdminControlPlaneShell } from "@/platform/admin/components/admin/shells/AdminControlPlaneShell";
+import { DomainHubLayout, type HubModule } from "@/platform/admin/components/admin/hubs/DomainHubLayout";
 
 const LaunchReadinessBoard = lazy(() => import("@/pages/admin/LaunchReadinessBoard"));
 const LaunchHonestyBoard = lazy(() => import("@/pages/admin/LaunchHonestyBoard"));

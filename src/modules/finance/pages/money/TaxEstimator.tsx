@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { HeroCard, SummaryCard, QueueCard, AdvisorCard, ProofCard } from "@/components/sita/cards";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { ListReveal, ListRevealItem } from "@/components/sita/motion/AppTransitions";
-import { SectionSkeleton } from "@/components/sita/SectionSkeleton";
-import { SitaTabs } from "@/components/sita/SitaComponents";
+import { HeroCard, SummaryCard, QueueCard, AdvisorCard, ProofCard } from "@/platform/sita/components/sita/cards";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { ListReveal, ListRevealItem } from "@/platform/sita/components/sita/motion/AppTransitions";
+import { SectionSkeleton } from "@/platform/sita/components/sita/SectionSkeleton";
+import { SitaTabs } from "@/platform/sita/components/sita/SitaComponents";
 import { useTaxEstimate, useTaxDeductions } from "@/hooks/use-backend-actions";
 import { DollarSign, Calculator, Calendar, TrendingDown, FileText, AlertTriangle, CheckCircle, Target } from "lucide-react";
 import { motion } from "framer-motion";

@@ -1,10 +1,10 @@
-import FIPSubNav from "@/components/admin/FIPSubNav";
+import FIPSubNav from "@/platform/admin/components/admin/FIPSubNav";
 import { motion } from "framer-motion";
 import { Database, CheckCircle2, XCircle, AlertTriangle, FileJson } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useGeneratedTruthImpacts } from "@/hooks/use-fip-data";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 const FIPGeneratedTruthBoard = () => {
   const { data: impacts = [], isLoading } = useGeneratedTruthImpacts();
 

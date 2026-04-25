@@ -13,7 +13,7 @@ import {
   Bug, Target, Layers, Database, Hash, Network,
 } from "lucide-react";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
-import { PageSkeleton } from "@/components/sita/PageSkeleton";
+import { PageSkeleton } from "@/platform/sita/components/sita/PageSkeleton";
 import { getRecoveryEngine } from "@/lib/os-security/recovery";
 import { getPromptDaemon } from "@/lib/os-security/promptd";
 import { getAuditDaemon } from "@/lib/os-security/auditd";

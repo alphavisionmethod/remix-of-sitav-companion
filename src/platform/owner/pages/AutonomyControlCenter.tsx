@@ -7,10 +7,10 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Sparkles, ShieldCheck, Brain } from "lucide-react";
-import { AutonomyApprovalQueue } from "@/components/autonomy/AutonomyApprovalQueue";
-import { AutonomyReflectionTimeline } from "@/components/autonomy/AutonomyReflectionTimeline";
-import { AutonomyMissionsPanel } from "@/components/autonomy/AutonomyMissionsPanel";
-import { AutonomyKillSwitch } from "@/components/autonomy/AutonomyKillSwitch";
+import { AutonomyApprovalQueue } from "@/platform/trust/components/autonomy/AutonomyApprovalQueue";
+import { AutonomyReflectionTimeline } from "@/platform/trust/components/autonomy/AutonomyReflectionTimeline";
+import { AutonomyMissionsPanel } from "@/platform/trust/components/autonomy/AutonomyMissionsPanel";
+import { AutonomyKillSwitch } from "@/platform/trust/components/autonomy/AutonomyKillSwitch";
 import { useAutonomyFleet } from "@/hooks/useAutonomyFleet";
 
 export default function AutonomyControlCenter() {

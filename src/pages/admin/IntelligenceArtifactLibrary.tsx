@@ -1,5 +1,5 @@
 import { useState } from "react";
-import CPSSubNav from "@/components/admin/CPSSubNav";
+import CPSSubNav from "@/platform/admin/components/admin/CPSSubNav";
 import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -9,7 +9,7 @@ import { Lightbulb, RefreshCw, Recycle, TrendingUp, AlertTriangle, DollarSign } 
 import { Progress } from "@/components/ui/progress";
 import { useQuery } from "@tanstack/react-query";
 import { fetchIntelligenceAssets, getAssetStats, invalidateAsset, type IntelligenceAssetRow } from "@/data/persistence";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 const fade = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0 } };
 

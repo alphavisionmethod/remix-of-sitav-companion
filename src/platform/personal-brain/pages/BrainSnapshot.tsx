@@ -1,22 +1,22 @@
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Brain, Loader2, RefreshCw, Search, Sparkles } from "lucide-react";
-import { GlobalErrorBoundary } from "@/components/sita/GlobalErrorBoundary";
-import { PageShell } from "@/components/sita/PageShell";
+import { GlobalErrorBoundary } from "@/platform/sita/components/sita/GlobalErrorBoundary";
+import { PageShell } from "@/platform/sita/components/sita/PageShell";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
-import { MemoryCategoryFilter } from "@/components/personal-brain/MemoryCategoryFilter";
-import { MemoryRow } from "@/components/personal-brain/MemoryRow";
-import { PendingReviewTray } from "@/components/personal-brain/PendingReviewTray";
-import { AddMemoryDialog } from "@/components/personal-brain/AddMemoryDialog";
+import { MemoryCategoryFilter } from "@/platform/personal-brain/components/personal-brain/MemoryCategoryFilter";
+import { MemoryRow } from "@/platform/personal-brain/components/personal-brain/MemoryRow";
+import { PendingReviewTray } from "@/platform/personal-brain/components/personal-brain/PendingReviewTray";
+import { AddMemoryDialog } from "@/platform/personal-brain/components/personal-brain/AddMemoryDialog";
 import {
   usePbMemories,
   type PbMemoryCategory,
   type PbMemoryStatus,
-} from "@/components/personal-brain/hooks/usePbMemories";
+} from "@/platform/personal-brain/components/personal-brain/hooks/usePbMemories";
 
 type StatusTab = "active" | "disabled" | "all";
 

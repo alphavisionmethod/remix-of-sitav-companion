@@ -1,13 +1,13 @@
 import { useState } from "react";
-import { SitaPageHeader, SitaCard, SitaCardTitle } from "@/components/sita/SitaCard";
-import { KPITile, EmptyState, SitaTabs } from "@/components/sita/SitaComponents";
+import { SitaPageHeader, SitaCard, SitaCardTitle } from "@/platform/sita/components/sita/SitaCard";
+import { KPITile, EmptyState, SitaTabs } from "@/platform/sita/components/sita/SitaComponents";
 import { motion } from "framer-motion";
 import { Users, UserPlus, ArrowRightLeft, CheckCircle2, Clock, AlertTriangle, BarChart3, ChevronRight } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { PageShell } from "@/components/sita/PageShell";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { PageShell } from "@/platform/sita/components/sita/PageShell";
 
 interface TeamMember { id: string; name: string; role: string; activeTasks: number; completedThisWeek: number; overdue: number; load: "light" | "normal" | "heavy" | "overloaded"; avatar: string; }
 interface Delegation { id: string; task: string; from: string; to: string; status: "pending" | "accepted" | "in-progress" | "completed"; dueDate: string; priority: string; }

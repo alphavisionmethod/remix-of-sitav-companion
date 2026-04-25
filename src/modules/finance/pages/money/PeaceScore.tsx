@@ -2,11 +2,11 @@
 // SITA OS — Financial Peace Score (Signature Emotional Surface)
 // ═══════════════════════════════════════════════════════════════
 
-import { HeroCard, StatusCard, AdvisorCard } from "@/components/sita/cards";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvisorInsight";
-import { ConfidenceBar } from "@/components/sita/primitives/ConfidenceBar";
-import { AppSurface } from "@/components/sita/surfaces/AppSurface";
+import { HeroCard, StatusCard, AdvisorCard } from "@/platform/sita/components/sita/cards";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { ModuleAdvisorInsight } from "@/platform/sita/components/sita/domain-shared/ModuleAdvisorInsight";
+import { ConfidenceBar } from "@/platform/sita/components/sita/primitives/ConfidenceBar";
+import { AppSurface } from "@/platform/sita/components/sita/surfaces/AppSurface";
 import { cn } from "@/lib/utils";
 import { Heart, Shield, TrendingUp, TrendingDown, CheckCircle, AlertTriangle, Minus } from "lucide-react";
 import { motion } from "framer-motion";

@@ -1,5 +1,5 @@
-import { MarketingShell } from "@/components/marketing/MarketingShell";
-import { MarketingSeo } from "@/components/marketing/MarketingSeo";
+import { MarketingShell } from "@/platform/marketing/components/marketing/MarketingShell";
+import { MarketingSeo } from "@/platform/marketing/components/marketing/MarketingSeo";
 import { Button } from "@/components/ui/button";
 
 const TIERS = [

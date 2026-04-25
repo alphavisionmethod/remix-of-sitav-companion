@@ -4,9 +4,9 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useMemo, useCallback, useEffect } from "react";
-import { SitaPageHeader, SitaCard, SitaButton } from "@/components/sita/SitaCard";
-import { KPITile } from "@/components/sita/SitaComponents";
-import { ConfidenceBar } from "@/components/sita/primitives/ConfidenceBar";
+import { SitaPageHeader, SitaCard, SitaButton } from "@/platform/sita/components/sita/SitaCard";
+import { KPITile } from "@/platform/sita/components/sita/SitaComponents";
+import { ConfidenceBar } from "@/platform/sita/components/sita/primitives/ConfidenceBar";
 import { useConstitution } from "@/contexts/SitaKernelContext";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -23,8 +23,8 @@ import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { useActionFn } from "@/hooks/use-action";
-import { PlainEnglishPolicyEditor } from "@/components/sita/PlainEnglishPolicyEditor";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PlainEnglishPolicyEditor } from "@/platform/sita/components/sita/PlainEnglishPolicyEditor";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 // ── Category Config ─────────────────────────────────────────────
 
 const CATEGORY_CONFIG: Record<string, { icon: React.ElementType; color: string; label: string }> = {

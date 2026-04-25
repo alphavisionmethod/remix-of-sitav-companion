@@ -7,7 +7,7 @@
 import { useState, useCallback, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
-import { SetupShell } from "@/components/sita/setup/SetupShell";
+import { SetupShell } from "@/platform/sita/components/sita/setup/SetupShell";
 import {
   DEFAULT_ONBOARDING_STATE,
   persistMoneyOnboarding,

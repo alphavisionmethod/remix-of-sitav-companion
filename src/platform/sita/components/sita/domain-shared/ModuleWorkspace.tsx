@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { ChevronRight, X } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
-import type { DomainId } from "@/components/sita/shell/DomainAppShell";
+import type { DomainId } from "@/platform/sita/components/sita/shell/DomainAppShell";
 
 export interface ModuleBreadcrumbItem {
   label: string;

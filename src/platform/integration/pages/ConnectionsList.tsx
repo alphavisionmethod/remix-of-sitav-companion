@@ -11,8 +11,8 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
-import { EmptyState } from "@/components/sita/SitaComponents";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { EmptyState } from "@/platform/sita/components/sita/SitaComponents";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 export default function ConnectionsList() {
   const [tab, setTab] = useState("connections");
   const [agencyMode, setAgencyMode] = useState(false);

@@ -1,9 +1,9 @@
-import { ConciergePageWrapper } from "@/components/concierge";
-import { TrustBadge } from "@/components/sita/TrustBadge";
+import { ConciergePageWrapper } from "@/modules/concierge/components/concierge";
+import { TrustBadge } from "@/platform/sita/components/sita/TrustBadge";
 import { Users, Bell, Shield, Calendar, ShoppingCart, Plane, Wrench, Gift, Settings, Link, CheckCircle, AlertCircle } from "lucide-react";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
-import { AdvisorKnowledgePanel } from "@/components/advisors/AdvisorKnowledgePanel";
+import { AdvisorKnowledgePanel } from "@/platform/advisors/components/advisors/AdvisorKnowledgePanel";
 
 interface HouseholdMember {
   name: string;

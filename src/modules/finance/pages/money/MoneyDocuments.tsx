@@ -1,10 +1,10 @@
-import { KPITile, SitaTabs, EmptyState } from "@/components/sita/SitaComponents";
-import { TrustBadge } from "@/components/sita/TrustBadge";
-import { SectionSkeleton } from "@/components/sita/SectionSkeleton";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { KPITile, SitaTabs, EmptyState } from "@/platform/sita/components/sita/SitaComponents";
+import { TrustBadge } from "@/platform/sita/components/sita/TrustBadge";
+import { SectionSkeleton } from "@/platform/sita/components/sita/SectionSkeleton";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
-import { SplitWorkspace } from "@/components/sita/surfaces/SplitWorkspace";
-import { QueueCard } from "@/components/sita/cards";
+import { SplitWorkspace } from "@/platform/sita/components/sita/surfaces/SplitWorkspace";
+import { QueueCard } from "@/platform/sita/components/sita/cards";
 import { useState, useMemo } from "react";
 import { FileText, Upload, Search, DollarSign, Calendar, Shield, Clock, AlertCircle, Eye, FolderOpen } from "lucide-react";
 import { motion } from "framer-motion";

@@ -7,10 +7,10 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { ArrowLeft, Check, X, Minus, Download } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAppPlatform } from "@/contexts/AppPlatformContext";
-import { AppIcon, VerificationBadge, AppSourceLabel, InstallSheet } from "@/components/sita/app-platform/AppStoreComponents";
+import { AppIcon, VerificationBadge, AppSourceLabel, InstallSheet } from "@/platform/sita/components/sita/app-platform/AppStoreComponents";
 import type { AppDefinition } from "@/domains/apps/types";
 import { toast } from "sonner";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 const AppComparePage = () => {
   const navigate = useNavigate();
   const { apps, installApp, pinToDock } = useAppPlatform();

@@ -1,15 +1,15 @@
-import { KPITile, SitaTabs } from "@/components/sita/SitaComponents";
-import { fileTypeIcon, SensitivityBadge, ProcessingStageBadge, type SensitivityLevel, type ProcessingStage } from "@/components/sita/FilesComponents";
-import { TrustBadge, TrustLevel } from "@/components/sita/TrustBadge";
-import { SectionSkeleton } from "@/components/sita/SectionSkeleton";
-import { PremiumEmptyState } from "@/components/sita/PremiumEmptyState";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvisorInsight";
+import { KPITile, SitaTabs } from "@/platform/sita/components/sita/SitaComponents";
+import { fileTypeIcon, SensitivityBadge, ProcessingStageBadge, type SensitivityLevel, type ProcessingStage } from "@/platform/sita/components/sita/FilesComponents";
+import { TrustBadge, TrustLevel } from "@/platform/sita/components/sita/TrustBadge";
+import { SectionSkeleton } from "@/platform/sita/components/sita/SectionSkeleton";
+import { PremiumEmptyState } from "@/platform/sita/components/sita/PremiumEmptyState";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { ModuleAdvisorInsight } from "@/platform/sita/components/sita/domain-shared/ModuleAdvisorInsight";
 import { useState, useMemo } from "react";
 import { FolderOpen, Search, Eye, Link2, Shield, Upload } from "lucide-react";
 import { motion } from "framer-motion";
 import { useAllFiles } from "@/hooks/use-domain-data";
-import { FileUploader } from "@/components/sita/FileUploader";
+import { FileUploader } from "@/platform/sita/components/sita/FileUploader";
 import { useQueryClient } from "@tanstack/react-query";
 import { format } from "date-fns";
 

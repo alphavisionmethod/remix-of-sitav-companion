@@ -6,7 +6,7 @@
 // surface + edge router) gets one consistent shape.
 // ═══════════════════════════════════════════════════════════════
 
-import { BRAIN_MODES_BY_ID, type BrainModeBehavior, type BrainModeId } from "@/components/personal-brain/BRAIN_MODES";
+import { BRAIN_MODES_BY_ID, type BrainModeBehavior, type BrainModeId } from "@/platform/personal-brain/components/personal-brain/BRAIN_MODES";
 
 export interface PbProfileLike {
   tone?: string | null;

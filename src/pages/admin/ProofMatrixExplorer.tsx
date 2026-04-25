@@ -9,7 +9,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { useReceiptVerification, useSharedMemory } from "@/contexts/SitaKernelContext";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 interface ProofRecord {
   id: string;
   type: "action" | "approval" | "verification" | "rollback" | "payment" | "system";

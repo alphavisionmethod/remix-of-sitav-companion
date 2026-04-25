@@ -14,9 +14,9 @@ import {
 import {
   StoreHero, AppCard, FeaturedAppCard, AppLane, BundleCard,
   CategoryStrip, InstallSheet,
-} from "@/components/sita/app-platform/AppStoreComponents";
+} from "@/platform/sita/components/sita/app-platform/AppStoreComponents";
 import type { AppDefinition, AppCategory } from "@/domains/apps/types";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 const AppStorePage = () => {
   const { apps, installedApps, installApp, pinToDock } = useAppPlatform();

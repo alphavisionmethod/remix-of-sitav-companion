@@ -1,5 +1,5 @@
-import UAOSubNav from "@/components/admin/UAOSubNav";
-import { DemoOnlyBanner } from "@/components/claim-safety/DemoOnlyBanner";
+import UAOSubNav from "@/platform/admin/components/admin/UAOSubNav";
+import { DemoOnlyBanner } from "@/platform/trust/components/claim-safety/DemoOnlyBanner";
 import { useAction } from "@/hooks/use-action";
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -11,7 +11,7 @@ import { fromTable } from "@/lib/supabase-helpers";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Users, RefreshCw, CheckCircle, XCircle } from "lucide-react";
 import { toast } from "sonner";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 
 

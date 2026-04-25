@@ -7,8 +7,8 @@
 import { useAuth } from "@/contexts/AuthContext";
 import { useState, useMemo, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
-import { SitaPageHeader, SitaCard, SitaCardTitle, SitaMetric } from "@/components/sita/SitaCard";
-import { ConfidenceBar } from "@/components/sita/primitives/ConfidenceBar";
+import { SitaPageHeader, SitaCard, SitaCardTitle, SitaMetric } from "@/platform/sita/components/sita/SitaCard";
+import { ConfidenceBar } from "@/platform/sita/components/sita/primitives/ConfidenceBar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
@@ -22,7 +22,7 @@ import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 
 // ── Demo Data ────────────────────────────────────────────────

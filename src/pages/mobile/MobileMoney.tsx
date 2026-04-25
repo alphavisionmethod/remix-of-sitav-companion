@@ -2,11 +2,11 @@
 // SITA OS — Mobile Money (wired to transactions table)
 // ═══════════════════════════════════════════════════════════════
 
-import { MobileShell } from "@/components/mobile/MobileShell";
+import { MobileShell } from "@/platform/experience/components/mobile/MobileShell";
 import { ArrowUpRight, ArrowDownLeft, Wallet } from "lucide-react";
 import { useMobileMoneyAccounts, useMobileMoneyTransactions } from "@/hooks/use-mobile-data";
-import { MobileEmptyState, MobileErrorState } from "@/components/mobile/MobileEmptyState";
-import { SafeToSpendSkeleton, AccountListSkeleton, TransactionListSkeleton } from "@/components/mobile/MobileSectionSkeleton";
+import { MobileEmptyState, MobileErrorState } from "@/platform/experience/components/mobile/MobileEmptyState";
+import { SafeToSpendSkeleton, AccountListSkeleton, TransactionListSkeleton } from "@/platform/experience/components/mobile/MobileSectionSkeleton";
 
 const MobileMoney = () => {
   const accountData = useMobileMoneyAccounts();

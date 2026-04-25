@@ -1,20 +1,20 @@
 import { useAuth } from "@/contexts/AuthContext";
-import { SitaPageHeader, SitaCard, SitaCardTitle, SitaButton, SitaSectionHeader } from "@/components/sita/SitaCard";
-import { KPITile } from "@/components/sita/SitaComponents";
-import { TrustBadge } from "@/components/sita/TrustBadge";
-import { StateBadge } from "@/components/sita/StateBadge";
+import { SitaPageHeader, SitaCard, SitaCardTitle, SitaButton, SitaSectionHeader } from "@/platform/sita/components/sita/SitaCard";
+import { KPITile } from "@/platform/sita/components/sita/SitaComponents";
+import { TrustBadge } from "@/platform/sita/components/sita/TrustBadge";
+import { StateBadge } from "@/platform/sita/components/sita/StateBadge";
 import { useApprovals } from "@/hooks/use-sita-data";
 import { useApprovalQueue } from "@/hooks/use-brain-core";
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { useGlobalSearch } from "@/platform/search";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { EmptyState } from "@/components/sita/EmptyState";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { EmptyState } from "@/platform/sita/components/sita/EmptyState";
 import {
   Shield, CheckCircle, XCircle, Clock, AlertTriangle, Brain, Eye, Zap,
   ThumbsUp, ThumbsDown, MessageSquare, ChevronDown, ChevronUp
 } from "lucide-react";
-import { PageShell } from "@/components/sita/PageShell";
+import { PageShell } from "@/platform/sita/components/sita/PageShell";
 const ApprovalsCenter = () => {
   const { isDemo } = useAuth();
   const { data: approvals = [], isLoading } = useApprovals();

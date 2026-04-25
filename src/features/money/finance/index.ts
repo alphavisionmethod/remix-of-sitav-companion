@@ -3,8 +3,8 @@
 // Canonical import: @/features/money/finance
 // ═══════════════════════════════════════════════════════════════
 
-export { FinanceCreditCard } from "@/components/finance/FinanceCreditCard";
-export { FinanceMoneyFlow } from "@/components/finance/FinanceMoneyFlow";
-export { FinanceQuickTransfer } from "@/components/finance/FinanceQuickTransfer";
-export { FinanceRecentTransactions } from "@/components/finance/FinanceRecentTransactions";
-export { FinanceStatCards } from "@/components/finance/FinanceStatCards";
+export { FinanceCreditCard } from "@/modules/finance/components/finance/FinanceCreditCard";
+export { FinanceMoneyFlow } from "@/modules/finance/components/finance/FinanceMoneyFlow";
+export { FinanceQuickTransfer } from "@/modules/finance/components/finance/FinanceQuickTransfer";
+export { FinanceRecentTransactions } from "@/modules/finance/components/finance/FinanceRecentTransactions";
+export { FinanceStatCards } from "@/modules/finance/components/finance/FinanceStatCards";

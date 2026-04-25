@@ -5,13 +5,13 @@ import { useMoneyApprovals, useApproveMoneyAction, useRejectMoneyAction } from "
 import { toast } from "sonner";
 
 // New design system
-import { HeroCard, QueueCard, ActionCard, StatusCard } from "@/components/sita/cards";
-import { ExecutionBadge, UrgencyBadge } from "@/components/sita/badges";
-import { SplitWorkspace } from "@/components/sita/surfaces/SplitWorkspace";
-import { AppSurface } from "@/components/sita/surfaces/AppSurface";
-import { ListReveal, ListRevealItem } from "@/components/sita/motion/AppTransitions";
+import { HeroCard, QueueCard, ActionCard, StatusCard } from "@/platform/sita/components/sita/cards";
+import { ExecutionBadge, UrgencyBadge } from "@/platform/sita/components/sita/badges";
+import { SplitWorkspace } from "@/platform/sita/components/sita/surfaces/SplitWorkspace";
+import { AppSurface } from "@/platform/sita/components/sita/surfaces/AppSurface";
+import { ListReveal, ListRevealItem } from "@/platform/sita/components/sita/motion/AppTransitions";
 import { cn } from "@/lib/utils";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { TrustBoundary } from "@/platform/trust/ui/TrustBoundary";
 
 const MoneyApprovals = () => {

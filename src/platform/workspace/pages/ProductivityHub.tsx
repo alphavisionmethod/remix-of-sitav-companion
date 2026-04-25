@@ -1,11 +1,11 @@
-import { SitaPageHeader, SitaCard, SitaCardTitle, SitaButton } from "@/components/sita/SitaCard";
-import { SitaTabs } from "@/components/sita/SitaComponents";
-import { SectionSkeleton } from "@/components/sita/SectionSkeleton";
+import { SitaPageHeader, SitaCard, SitaCardTitle, SitaButton } from "@/platform/sita/components/sita/SitaCard";
+import { SitaTabs } from "@/platform/sita/components/sita/SitaComponents";
+import { SectionSkeleton } from "@/platform/sita/components/sita/SectionSkeleton";
 import { useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { lazy, Suspense } from "react";
 import { FileText, Table2, Presentation, Sparkles, Clock, Star, Plus } from "lucide-react";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 // Wave 6 — sibling workspace pages migrated to platform/workspace/pages/ in Wave 5.
 const DocsWorkspace = lazy(() => import("@/platform/workspace/pages/DocsWorkspace"));
 const SheetsWorkspace = lazy(() => import("@/platform/workspace/pages/SheetsWorkspace"));

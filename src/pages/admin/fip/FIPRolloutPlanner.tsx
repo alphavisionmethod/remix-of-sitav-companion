@@ -1,10 +1,10 @@
-import FIPSubNav from "@/components/admin/FIPSubNav";
+import FIPSubNav from "@/platform/admin/components/admin/FIPSubNav";
 import { motion } from "framer-motion";
 import { Rocket, Flag, Power, RotateCcw, ArrowUpRight, Shield, Target } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useRolloutRecords } from "@/hooks/use-fip-data";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 const ringColors: Record<string, string> = {
   dev: 'bg-muted text-muted-foreground', staging: 'bg-blue-500/10 text-blue-500',
   'internal-shadow': 'bg-purple-500/10 text-purple-500', 'internal-real': 'bg-indigo-500/10 text-indigo-500',

@@ -23,7 +23,7 @@ import {
   Server, Cpu, FileCheck, DollarSign, AlertOctagon, Receipt, Eye, Loader2, Database,
 } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
-import AIGSubNav from "@/components/admin/AIGSubNav";
+import AIGSubNav from "@/platform/admin/components/admin/AIGSubNav";
 
 const STATUS_CONFIG: Record<CapabilityVerification["last_status"], { icon: React.ReactNode; label: string; variant: "default" | "secondary" | "destructive" | "outline" }> = {
   success: { icon: <CheckCircle2 className="h-4 w-4" />, label: "Pass", variant: "default" },

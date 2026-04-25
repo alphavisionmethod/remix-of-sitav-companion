@@ -24,7 +24,7 @@ const DesktopEntryCeremony = lazy(() => import("../DesktopEntryCeremony").then(m
 const PWAInstallPrompt = lazy(() => import("../PWAInstallPrompt").then(m => ({ default: m.PWAInstallPrompt })));
 const ContinuityBanner = lazy(() => import("../ContinuityBanner").then(m => ({ default: m.ContinuityBanner })));
 const UpdateBanner = lazy(() => import("../UpdateBanner").then(m => ({ default: m.UpdateBanner })));
-const ModeResolutionBanner = lazy(() => import("@/components/reality/ModeResolutionBanner").then(m => ({ default: m.ModeResolutionBanner })));
+const ModeResolutionBanner = lazy(() => import("@/platform/product/components/reality/ModeResolutionBanner").then(m => ({ default: m.ModeResolutionBanner })));
 
 interface ShellAccessoryLayerProps {
   chatOpen: boolean;

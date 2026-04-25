@@ -12,9 +12,9 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAppPlatform } from "@/contexts/AppPlatformContext";
-import { AppIcon, VerificationBadge, AppSourceLabel } from "@/components/sita/app-platform/AppStoreComponents";
+import { AppIcon, VerificationBadge, AppSourceLabel } from "@/platform/sita/components/sita/app-platform/AppStoreComponents";
 import { exportToJSON } from "@/lib/export-engine";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 const AppReceiptDetailPage = () => {
   const navigate = useNavigate();

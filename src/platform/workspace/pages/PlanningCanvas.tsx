@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
+import { SitaPageHeader } from "@/platform/sita/components/sita/SitaPageHeader";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -7,7 +7,7 @@ import {
   PenTool, Plus, Layout, Workflow, Calendar, Users, Target,
   Lightbulb, GripVertical, Palette, Link2,
 } from "lucide-react";
-import { PageShell } from "@/components/sita/PageShell";
+import { PageShell } from "@/platform/sita/components/sita/PageShell";
 
 type CanvasZone = "ideas" | "planning" | "in-progress" | "done";
 

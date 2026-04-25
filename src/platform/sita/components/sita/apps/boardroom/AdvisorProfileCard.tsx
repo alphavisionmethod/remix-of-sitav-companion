@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { MessageCircle, FileCheck } from "lucide-react";
-import { ConfidenceBar } from "@/components/sita/primitives";
+import { ConfidenceBar } from "@/platform/sita/components/sita/primitives";
 import type { AdvisorRole } from "@/domains/advisors/topology";
 import { TalkingAvatar } from "./TalkingAvatar";
 

@@ -3,15 +3,15 @@
 // Thin page wrapper wiring DesktopSurface to shell state
 // ═══════════════════════════════════════════════════════════════
 
-import { DesktopSurface } from "@/components/sita/shell/DesktopSurface";
-import { useWindowLauncher } from "@/components/sita/shell/ShellWindowLayer";
-import { useShellState } from "@/components/sita/shell/useShellState";
+import { DesktopSurface } from "@/platform/sita/components/sita/shell/DesktopSurface";
+import { useWindowLauncher } from "@/platform/sita/components/sita/shell/ShellWindowLayer";
+import { useShellState } from "@/platform/sita/components/sita/shell/useShellState";
 import { useAuth } from "@/contexts/AuthContext";
-import { EnterpriseFlow } from "@/components/sita/EnterpriseFlow";
-import { RestoreFlow } from "@/components/sita/RestoreFlow";
-import { FirstWeekCalibration } from "@/components/sita/FirstWeekCalibration";
-import { ContextualWelcomeTour } from "@/components/sita/onboarding/ContextualWelcomeTour";
-import { DesktopNotifications } from "@/components/sita/DesktopNotifications";
+import { EnterpriseFlow } from "@/platform/sita/components/sita/EnterpriseFlow";
+import { RestoreFlow } from "@/platform/sita/components/sita/RestoreFlow";
+import { FirstWeekCalibration } from "@/platform/sita/components/sita/FirstWeekCalibration";
+import { ContextualWelcomeTour } from "@/platform/sita/components/sita/onboarding/ContextualWelcomeTour";
+import { DesktopNotifications } from "@/platform/sita/components/sita/DesktopNotifications";
 import { CalmEngineProvider } from "@/contexts/CalmEngineContext";
 import { useWindowManagerContext } from "@/contexts/WindowManagerContext";
 import { useState, useEffect, useMemo } from "react";

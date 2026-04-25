@@ -4,14 +4,14 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useState } from "react";
-import { SitaPageHeader, SitaCard } from "@/components/sita/SitaCard";
-import { AdminActionCard } from "@/components/sita/AdminActionCard";
+import { SitaPageHeader, SitaCard } from "@/platform/sita/components/sita/SitaCard";
+import { AdminActionCard } from "@/platform/sita/components/sita/AdminActionCard";
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { Package, Layers, Zap, Shield, ArrowRight } from "lucide-react";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 interface PackState {
   packId: string;

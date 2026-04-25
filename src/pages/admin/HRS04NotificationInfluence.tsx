@@ -3,8 +3,8 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Bell, BellOff, Clock, AlertTriangle, Shield } from "lucide-react";
 import { useInterruptionPosture } from "@/hooks/use-health-signal-data";
-import HRSSubNav from "@/components/admin/HRSSubNav";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import HRSSubNav from "@/platform/admin/components/admin/HRSSubNav";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 const HRS04NotificationInfluence = () => {
   const { data: posture, isLoading } = useInterruptionPosture();
   const postureList = Array.isArray(posture) ? posture : [];

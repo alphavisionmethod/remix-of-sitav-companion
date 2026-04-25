@@ -3,8 +3,8 @@
 // Canonical import path: @/features/files
 // ═══════════════════════════════════════════════════════════════
 
-export { FileExplorerBreadcrumb } from "@/components/files/FileExplorerBreadcrumb";
-export { FileExplorerGrid } from "@/components/files/FileExplorerGrid";
-export { FileExplorerProperties } from "@/components/files/FileExplorerProperties";
-export { FileExplorerSidebar } from "@/components/files/FileExplorerSidebar";
-export { FileExplorerToolbar } from "@/components/files/FileExplorerToolbar";
+export { FileExplorerBreadcrumb } from "@/platform/files/components/files/FileExplorerBreadcrumb";
+export { FileExplorerGrid } from "@/platform/files/components/files/FileExplorerGrid";
+export { FileExplorerProperties } from "@/platform/files/components/files/FileExplorerProperties";
+export { FileExplorerSidebar } from "@/platform/files/components/files/FileExplorerSidebar";
+export { FileExplorerToolbar } from "@/platform/files/components/files/FileExplorerToolbar";

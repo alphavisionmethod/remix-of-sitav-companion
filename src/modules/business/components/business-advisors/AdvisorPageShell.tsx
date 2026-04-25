@@ -34,7 +34,7 @@ import {
   type AdvisorAskResult,
 } from "@/lib/ai-platform/runtime";
 import { getAdvisorSpec } from "@/lib/ai-platform/specs";
-import { AdvisorSpecPanel, AdvisorSpecEmptyState } from "@/components/business-advisors/AdvisorSpecPanel";
+import { AdvisorSpecPanel, AdvisorSpecEmptyState } from "@/modules/business/components/business-advisors/AdvisorSpecPanel";
 
 interface AdvisorPageShellProps {
   advisor: BusinessAdvisorManifest;

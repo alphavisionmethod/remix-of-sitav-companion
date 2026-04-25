@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Sparkles, Calendar, TrendingUp, TrendingDown, AlertTriangle, Target, Shield, ChevronRight, BarChart3 } from "lucide-react";
 import { INSTRUMENTS, INVESTMENT_ADVISORS, SAMPLE_SCENARIOS } from "@/hooks/useInvestmentOfficeData";
 import { useMarketWatchlistItems } from "@/hooks/use-investment-office";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 const eventInstruments = INSTRUMENTS.filter(i => i.assetClass === "events");
 const allCatalysts = INSTRUMENTS.flatMap(i => i.catalysts.map(c => ({ ...c, instrument: i }))).sort((a, b) => a.date.localeCompare(b.date));
 const eventAdvisor = INVESTMENT_ADVISORS.find(a => a.domain === "events");

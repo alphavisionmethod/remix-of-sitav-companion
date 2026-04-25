@@ -6,10 +6,10 @@
 
 import { type ReactNode } from "react";
 import { type LucideIcon, Database } from "lucide-react";
-import { PageShell, type PageWidth } from "@/components/sita/PageShell";
-import { PageSkeleton } from "@/components/sita/PageSkeleton";
-import { PageErrorState } from "@/components/sita/PageErrorState";
-import { EmptyState } from "@/components/sita/EmptyState";
+import { PageShell, type PageWidth } from "@/platform/sita/components/sita/PageShell";
+import { PageSkeleton } from "@/platform/sita/components/sita/PageSkeleton";
+import { PageErrorState } from "@/platform/sita/components/sita/PageErrorState";
+import { EmptyState } from "@/platform/sita/components/sita/EmptyState";
 import type { PageDataResult } from "@/hooks/usePageData";
 
 interface PageDataShellProps<T> {

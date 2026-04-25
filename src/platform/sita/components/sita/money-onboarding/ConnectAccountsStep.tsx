@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Landmark, CreditCard, Building2, Users, FileSpreadsheet, Link2, ShieldCheck, Activity, Wallet, Globe, Coins } from "lucide-react";
-import { SetupStageHeader } from "@/components/sita/setup/SetupStageHeader";
+import { SetupStageHeader } from "@/platform/sita/components/sita/setup/SetupStageHeader";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { cn } from "@/lib/utils";
 import type { ConnectedAccountStub } from "./types";

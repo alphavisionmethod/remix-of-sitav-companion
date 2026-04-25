@@ -9,7 +9,7 @@ import { ShieldQuestion, Brain, Vote, Repeat, ListTree, BookOpen } from "lucide-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
-import { PremiumEmptyState } from "@/components/sita/PremiumEmptyState";
+import { PremiumEmptyState } from "@/platform/sita/components/sita/PremiumEmptyState";
 import { useExplanation } from "@/lib/sita-jarvis";
 import type { JarvisActionItem } from "@/lib/sita-jarvis";
 import { useAuth } from "@/contexts/AuthContext";

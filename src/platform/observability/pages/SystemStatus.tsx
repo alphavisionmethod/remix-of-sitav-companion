@@ -1,6 +1,6 @@
-import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader, SitaButton } from "@/components/sita/SitaCard";
-import { KPITile, SitaTabs } from "@/components/sita/SitaComponents";
-import { TrustBadge } from "@/components/sita/TrustBadge";
+import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader, SitaButton } from "@/platform/sita/components/sita/SitaCard";
+import { KPITile, SitaTabs } from "@/platform/sita/components/sita/SitaComponents";
+import { TrustBadge } from "@/platform/sita/components/sita/TrustBadge";
 import { useState, useMemo } from "react";
 import { useOSRuntime } from "@/hooks/useOSRuntime";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -16,7 +16,7 @@ import {
   AlertCircle, ArrowRightLeft, Timer, BarChart3
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 type Incident = { id: string; title: string; severity: string; status: string; [k: string]: any };
 type ServiceHealthRecord = { id: string; name: string; status: string; [k: string]: any };
 type QuarantineRecord = { id: string; service: string; reason: string; [k: string]: any };

@@ -12,7 +12,7 @@ import {
   Eye, Search, TrendingUp, BarChart3
 } from "lucide-react";
 import AutomationSubNav from "./AutomationSubNav";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 const templates: any[] = [];
 
 // Production fallback — seed data removed

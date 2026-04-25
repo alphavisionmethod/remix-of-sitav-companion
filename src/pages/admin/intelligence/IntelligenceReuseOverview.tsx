@@ -6,10 +6,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
+import { SitaPageHeader } from "@/platform/sita/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { useReuseOverview } from "@/hooks/use-intelligence-screen-data";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 const HeroCard = ({ icon: Icon, label, value, sub, color }: { icon: typeof Brain; label: string; value: string; sub: string; color?: string }) => (
   <Card className="bg-card/80 border-border/50">

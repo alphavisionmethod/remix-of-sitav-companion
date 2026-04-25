@@ -8,14 +8,14 @@ import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { ArrowLeftRight, TrendingDown, Shield, Sparkles, AlertTriangle, Activity } from "lucide-react";
 import { motion } from "framer-motion";
-import { SpilloverCard, SpilloverBadge } from "@/components/sita/primitives/SpilloverBadge";
-import { InterventionCard } from "@/components/sita/primitives/InterventionCard";
-import { KPITile, SectionHeader } from "@/components/sita/SitaComponents";
-import { ConfidenceBar } from "@/components/sita/primitives/ConfidenceBar";
-import { AutonomyLadder } from "@/components/sita/primitives/AutonomyLadder";
-import { SectionSkeleton } from "@/components/sita/SectionSkeleton";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { PageShell } from "@/components/sita/PageShell";
+import { SpilloverCard, SpilloverBadge } from "@/platform/sita/components/sita/primitives/SpilloverBadge";
+import { InterventionCard } from "@/platform/sita/components/sita/primitives/InterventionCard";
+import { KPITile, SectionHeader } from "@/platform/sita/components/sita/SitaComponents";
+import { ConfidenceBar } from "@/platform/sita/components/sita/primitives/ConfidenceBar";
+import { AutonomyLadder } from "@/platform/sita/components/sita/primitives/AutonomyLadder";
+import { SectionSkeleton } from "@/platform/sita/components/sita/SectionSkeleton";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { PageShell } from "@/platform/sita/components/sita/PageShell";
 
 
 // Production fallback — seed data removed

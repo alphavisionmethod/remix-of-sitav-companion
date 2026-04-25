@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { SitaCard, SitaCardTitle, SitaButton } from "@/components/sita/SitaCard";
+import { SitaCard, SitaCardTitle, SitaButton } from "@/platform/sita/components/sita/SitaCard";
 import { LeadSourceBadge } from "./LeadSourceBadge";
 import { LeadPriorityBadge } from "./LeadPriorityBadge";
 import { LeadHeatIndicator } from "./LeadHeatIndicator";
@@ -7,8 +7,8 @@ import { LeadConfidenceDisplay } from "./LeadConfidenceDisplay";
 import { PriorityEvolutionTimeline } from "./PriorityEvolutionTimeline";
 import { LeadScoreRadar } from "./LeadScoreRadar";
 import { LeadActivityTimeline } from "./LeadActivityTimeline";
-import { TrustBadge } from "@/components/sita/TrustBadge";
-import { ModuleAdvisorPanel } from "@/components/business/advisor-board/ModuleAdvisorPanel";
+import { TrustBadge } from "@/platform/sita/components/sita/TrustBadge";
+import { ModuleAdvisorPanel } from "@/modules/business/components/business/advisor-board/ModuleAdvisorPanel";
 import { generateInboxAdvisors } from "@/domains/engines/business-advisor-engine";
 import type { InboxItem } from "./mock-inbox-data";
 import type { LeadSource } from "./LeadSourceBadge";

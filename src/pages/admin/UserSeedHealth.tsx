@@ -10,7 +10,7 @@ import { dbAny } from "@/lib/supabase-helpers";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { EmptyState } from "@/components/sita/EmptyState";
+import { EmptyState } from "@/platform/sita/components/sita/EmptyState";
 import { CheckCircle2, AlertTriangle, SkipForward, RotateCw, Sprout } from "lucide-react";
 import { toast } from "sonner";
 import { Skeleton } from "@/components/ui/skeleton";

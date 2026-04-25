@@ -11,7 +11,7 @@ import {
   Globe, TrendingUp, TrendingDown, Minus, CheckCircle2, AlertCircle,
   Loader2, RefreshCw, Newspaper, Shield,
 } from "lucide-react";
-import { DataFreshnessBadge } from "@/components/sita/DataFreshnessBadge";
+import { DataFreshnessBadge } from "@/platform/sita/components/sita/DataFreshnessBadge";
 import type { IntelligenceReport, MarketDataPoint } from "@/domains/simulation/market-intelligence";
 
 interface MarketIntelligencePanelProps {

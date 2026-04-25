@@ -8,7 +8,7 @@ import { Activity, Eye, Receipt, BookOpen, Layers, RefreshCw } from "lucide-reac
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { PremiumEmptyState } from "@/components/sita/PremiumEmptyState";
+import { PremiumEmptyState } from "@/platform/sita/components/sita/PremiumEmptyState";
 import { useUnifiedTimeline } from "@/lib/sita-jarvis";
 
 const ICONS = {

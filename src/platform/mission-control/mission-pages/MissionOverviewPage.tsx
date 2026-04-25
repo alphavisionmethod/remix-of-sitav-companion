@@ -5,7 +5,7 @@
 
 import { useNavigate } from "react-router-dom";
 import { useMissionControlSummary, useTrustSummary, useFounderCostSummary, useRecoverySummary, useDiagnosticsSummary } from "@/hooks/use-mission-control-views";
-import { SitaCard, SitaCardTitle, SitaSectionHeader } from "@/components/sita/SitaCard";
+import { SitaCard, SitaCardTitle, SitaSectionHeader } from "@/platform/sita/components/sita/SitaCard";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { motion } from "framer-motion";
@@ -15,7 +15,7 @@ import {
   Cpu, Zap, CheckCircle, RefreshCw, Eye, Database, Rocket,
   Heart, Target, Lock, Server, BarChart3,
 } from "lucide-react";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 export default function MissionOverviewPage() {
   const navigate = useNavigate();

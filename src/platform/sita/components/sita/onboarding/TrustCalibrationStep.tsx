@@ -11,8 +11,8 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
-import { SetupStageHeader, StageTransitionController, TrustLadderControl } from "@/components/sita/setup";
-import { ProofPreviewCard } from "@/components/sita/onboarding/ProofPreviewCard";
+import { SetupStageHeader, StageTransitionController, TrustLadderControl } from "@/platform/sita/components/sita/setup";
+import { ProofPreviewCard } from "@/platform/sita/components/sita/onboarding/ProofPreviewCard";
 
 export interface TrustCalibrationData {
   level: number;

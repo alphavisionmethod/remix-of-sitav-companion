@@ -60,14 +60,14 @@ describe("Onboarding Components", () => {
 
 describe("RestoreFlow", () => {
   it("module exports RestoreFlow component", async () => {
-    const mod = await import("@/components/sita/RestoreFlow");
+    const mod = await import("@/platform/sita/components/sita/RestoreFlow");
     expect(mod.RestoreFlow).toBeDefined();
   });
 });
 
 describe("OSSetupExperience", () => {
   it("module exports OSSetupExperience component", async () => {
-    const mod = await import("@/components/sita/OSSetupExperience");
+    const mod = await import("@/platform/sita/components/sita/OSSetupExperience");
     expect(mod.OSSetupExperience).toBeDefined();
   });
 });

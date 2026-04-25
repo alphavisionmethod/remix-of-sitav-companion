@@ -4,7 +4,7 @@ import { fromTable } from "@/lib/supabase-helpers";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Rocket, CheckCircle2, XCircle, AlertTriangle, Bell, Smartphone, Monitor, Apple } from "lucide-react";
-import NRCSubNav from "@/components/admin/NRCSubNav";
+import NRCSubNav from "@/platform/admin/components/admin/NRCSubNav";
 
 
 

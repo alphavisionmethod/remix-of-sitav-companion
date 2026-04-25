@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { SitaPageHeader } from "@/components/sita/SitaCard";
+import { SitaPageHeader } from "@/platform/sita/components/sita/SitaCard";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import {
@@ -17,7 +17,7 @@ const SHOCK_ICONS: Record<ShockType, typeof AlertTriangle> = {
 };
 
 import { SEVERITY_COLORS } from "@/lib/constants/ui-config";
-import { PageShell } from "@/components/sita/PageShell";
+import { PageShell } from "@/platform/sita/components/sita/PageShell";
 
 const stagger = { hidden: { opacity: 0 }, show: { opacity: 1, transition: { staggerChildren: 0.06 } } };
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };

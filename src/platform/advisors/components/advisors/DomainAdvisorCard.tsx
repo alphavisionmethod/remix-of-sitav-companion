@@ -7,7 +7,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Sparkles, X, ChevronRight, Zap, Brain, Shield, Heart } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { ConfidenceBar } from "@/components/sita/primitives/ConfidenceBar";
+import { ConfidenceBar } from "@/platform/sita/components/sita/primitives/ConfidenceBar";
 import type { LucideIcon } from "lucide-react";
 
 type DomainId = "business" | "finance" | "concierge" | "files" | "trust";

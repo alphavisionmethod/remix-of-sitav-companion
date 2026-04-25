@@ -1,7 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import { usePbNotificationPrefs } from "@/components/personal-brain/hooks/usePbNotificationPrefs";
+import { usePbNotificationPrefs } from "@/platform/personal-brain/components/personal-brain/hooks/usePbNotificationPrefs";
 
 export default function NotificationsSettings() {
   const { prefs, update, loading } = usePbNotificationPrefs();

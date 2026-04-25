@@ -6,8 +6,8 @@
 // navigate, plus a header explaining the workflow context.
 // ═══════════════════════════════════════════════════════════════
 
-import { AdminControlPlaneShell } from "@/components/admin/shells/AdminControlPlaneShell";
-import { DomainHubIndex } from "@/components/admin/hubs/DomainHubIndex";
+import { AdminControlPlaneShell } from "@/platform/admin/components/admin/shells/AdminControlPlaneShell";
+import { DomainHubIndex } from "@/platform/admin/components/admin/hubs/DomainHubIndex";
 import type { AdminDomain } from "@/platform/architecture/admin-route-registry";
 
 interface WorkflowStepStubProps {

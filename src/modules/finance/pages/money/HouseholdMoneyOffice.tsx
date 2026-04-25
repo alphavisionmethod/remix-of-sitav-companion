@@ -2,9 +2,9 @@
 // SITA OS — Money Office: Household / Shared Money Office
 // ═══════════════════════════════════════════════════════════════
 
-import { HeroCard, StatusCard, SummaryCard } from "@/components/sita/cards";
-import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvisorInsight";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { HeroCard, StatusCard, SummaryCard } from "@/platform/sita/components/sita/cards";
+import { ModuleAdvisorInsight } from "@/platform/sita/components/sita/domain-shared/ModuleAdvisorInsight";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { Users, DollarSign, PiggyBank, Target, Home, BarChart3 } from "lucide-react";
 import { motion } from "framer-motion";
 import type { HouseholdFinanceSummary } from "@/packages/finance-contracts";

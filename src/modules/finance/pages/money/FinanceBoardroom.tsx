@@ -4,11 +4,11 @@ import { toast } from "sonner";
 // New design system: BoardroomCinematic + ComparisonCard + ProofCard
 // ═══════════════════════════════════════════════════════════════
 
-import { HeroCard, SummaryCard, QueueCard, ProofCard, ComparisonCard, AdvisorCard, StatusCard } from "@/components/sita/cards";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { BoardroomCinematic, ListReveal, ListRevealItem } from "@/components/sita/motion/AppTransitions";
-import { SectionSkeleton } from "@/components/sita/SectionSkeleton";
-import { SitaTabs } from "@/components/sita/SitaComponents";
+import { HeroCard, SummaryCard, QueueCard, ProofCard, ComparisonCard, AdvisorCard, StatusCard } from "@/platform/sita/components/sita/cards";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { BoardroomCinematic, ListReveal, ListRevealItem } from "@/platform/sita/components/sita/motion/AppTransitions";
+import { SectionSkeleton } from "@/platform/sita/components/sita/SectionSkeleton";
+import { SitaTabs } from "@/platform/sita/components/sita/SitaComponents";
 import { useState } from "react";
 import {
   BarChart3, DollarSign, PiggyBank, Shield, TrendingUp, Clock,

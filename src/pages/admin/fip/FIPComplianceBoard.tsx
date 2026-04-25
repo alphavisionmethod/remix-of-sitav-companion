@@ -1,4 +1,4 @@
-import FIPSubNav from "@/components/admin/FIPSubNav";
+import FIPSubNav from "@/platform/admin/components/admin/FIPSubNav";
 import { motion } from "framer-motion";
 import { ClipboardCheck, CheckCircle2, XCircle, AlertTriangle, Shield } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { useComplianceRecords } from "@/hooks/use-fip-data";
 import { COMPLIANCE_SECTIONS, READINESS_STAGES } from "@/lib/fip/types";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 
 

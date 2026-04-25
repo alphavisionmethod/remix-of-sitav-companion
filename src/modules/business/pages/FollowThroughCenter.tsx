@@ -2,11 +2,11 @@ import { useState, useMemo } from "react";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
 import { getModuleAdaptation } from "@/domains/engines/business-module-adaptations";
 import { motion } from "framer-motion";
-import { QueueCard } from "@/components/sita/cards";
-import { UrgencyBadge, ExecutionBadge } from "@/components/sita/badges";
-import { HeroCard, SummaryCard } from "@/components/sita/cards";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { SitaTabs } from "@/components/sita/SitaComponents";
+import { QueueCard } from "@/platform/sita/components/sita/cards";
+import { UrgencyBadge, ExecutionBadge } from "@/platform/sita/components/sita/badges";
+import { HeroCard, SummaryCard } from "@/platform/sita/components/sita/cards";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { SitaTabs } from "@/platform/sita/components/sita/SitaComponents";
 import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
 import { cn } from "@/lib/utils";
 import {

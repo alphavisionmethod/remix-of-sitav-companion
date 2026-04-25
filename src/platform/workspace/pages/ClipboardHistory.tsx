@@ -1,13 +1,13 @@
 import { useState } from "react";
-import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
-import { SitaCard } from "@/components/sita/SitaCard";
+import { SitaPageHeader } from "@/platform/sita/components/sita/SitaPageHeader";
+import { SitaCard } from "@/platform/sita/components/sita/SitaCard";
 import { Clipboard, Pin, Copy, Trash2, Search, Image, FileText, Link, Star, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { motion, AnimatePresence } from "framer-motion";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { PageShell } from "@/components/sita/PageShell";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { PageShell } from "@/platform/sita/components/sita/PageShell";
 
 type ClipType = "text" | "image" | "link" | "file";
 

@@ -2,8 +2,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Brain, CheckCircle2, Loader2, ShieldAlert, Sparkles } from "lucide-react";
-import { GlobalErrorBoundary } from "@/components/sita/GlobalErrorBoundary";
-import { PageShell } from "@/components/sita/PageShell";
+import { GlobalErrorBoundary } from "@/platform/sita/components/sita/GlobalErrorBoundary";
+import { PageShell } from "@/platform/sita/components/sita/PageShell";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useAuth } from "@/contexts/AuthContext";

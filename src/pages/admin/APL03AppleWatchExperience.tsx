@@ -4,8 +4,8 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { Watch, Vibrate, CheckCircle, ArrowRight, Clock, Zap, Eye, AlertTriangle, Smartphone, Bell } from "lucide-react";
-import APLSubNav from "@/components/admin/APLSubNav";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import APLSubNav from "@/platform/admin/components/admin/APLSubNav";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 const APL03AppleWatchExperience = () => {
   const [selectedCard, setSelectedCard] = useState<string | null>(null);
 

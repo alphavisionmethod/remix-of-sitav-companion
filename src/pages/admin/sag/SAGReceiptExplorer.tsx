@@ -3,8 +3,8 @@ import { Receipt, Zap, Eye, CheckCircle2, XCircle, Clock } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useInferenceReceipts, useTaskRequests } from "@/hooks/use-sag-data";
-import SAGSubNav from "@/components/admin/SAGSubNav";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import SAGSubNav from "@/platform/admin/components/admin/SAGSubNav";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 
 

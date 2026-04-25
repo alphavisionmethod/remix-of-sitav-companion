@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
-import { EnvErrorBoundary } from "@/components/sita/EnvErrorBoundary";
+import { EnvErrorBoundary } from "@/platform/sita/components/sita/EnvErrorBoundary";
 
 // Mock the env validation module
 vi.mock("@/lib/env-validation", () => {

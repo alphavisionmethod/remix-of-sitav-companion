@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { SitaCard, SitaCardTitle, SitaButton } from "@/components/sita/SitaCard";
+import { SitaCard, SitaCardTitle, SitaButton } from "@/platform/sita/components/sita/SitaCard";
 import { Copy, ArrowRight, X, Check, Mail, Phone, Building2 } from "lucide-react";
 import type { InboxItem } from "./mock-inbox-data";
 

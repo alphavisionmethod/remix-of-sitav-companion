@@ -3,9 +3,9 @@
 // Canonical import: @/features/ai
 // ═══════════════════════════════════════════════════════════════
 
-export { AIDegradedState } from "@/components/ai/AIDegradedState";
-export { AIEmbeddedRecommendation } from "@/components/ai/AIEmbeddedRecommendation";
-export { AIWorkforceInvocationPanel } from "@/components/ai/AIWorkforceInvocationPanel";
-export { AIStateBadge, AILaunchBadge } from "@/components/ai/AIStateBadge";
-export { AIResponsePanel } from "@/components/ai/AIResponsePanel";
-export { AIReceiptLink } from "@/components/ai/AIReceiptLink";
+export { AIDegradedState } from "@/platform/ai/components/ai/AIDegradedState";
+export { AIEmbeddedRecommendation } from "@/platform/ai/components/ai/AIEmbeddedRecommendation";
+export { AIWorkforceInvocationPanel } from "@/platform/ai/components/ai/AIWorkforceInvocationPanel";
+export { AIStateBadge, AILaunchBadge } from "@/platform/ai/components/ai/AIStateBadge";
+export { AIResponsePanel } from "@/platform/ai/components/ai/AIResponsePanel";
+export { AIReceiptLink } from "@/platform/ai/components/ai/AIReceiptLink";

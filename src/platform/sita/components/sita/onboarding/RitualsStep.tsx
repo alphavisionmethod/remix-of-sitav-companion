@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Sun, Clock, Moon, BarChart3, Calendar, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { SetupStageHeader, StageTransitionController, TrustInfoCard } from "@/components/sita/setup";
+import { SetupStageHeader, StageTransitionController, TrustInfoCard } from "@/platform/sita/components/sita/setup";
 
 const rituals = [
   { key: "morning-pulse", icon: Sun, title: "Morning Pulse", desc: "Start the day with priorities, calendar, and anything that needs attention." },

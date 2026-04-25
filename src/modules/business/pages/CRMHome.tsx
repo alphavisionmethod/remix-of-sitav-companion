@@ -8,12 +8,12 @@ import {
   UserPlus, Activity, Star, MessageSquare, BrainCircuit, Shield, Eye, ChevronRight, Sparkles, Search
 } from "lucide-react";
 import { format, formatDistanceToNow, isPast, differenceInDays, subDays } from "date-fns";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { motion } from "framer-motion";
 import { useBusinessNavigation } from "@/contexts/BusinessNavigationContext";
-import CRMCommandSearch from "@/components/business/crm/CRMCommandSearch";
-import { CRMLifecycleEngine } from "@/components/business/crm/CRMLifecycleEngine";
-import { CRMRelationshipIntelligence } from "@/components/business/crm/CRMRelationshipIntelligence";
+import CRMCommandSearch from "@/modules/business/components/business/crm/CRMCommandSearch";
+import { CRMLifecycleEngine } from "@/modules/business/components/business/crm/CRMLifecycleEngine";
+import { CRMRelationshipIntelligence } from "@/modules/business/components/business/crm/CRMRelationshipIntelligence";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
 
 const CRMHome = () => {

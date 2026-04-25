@@ -11,11 +11,11 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { useCustomers } from "@/hooks/use-revenue-office";
 import { useCustomerLifecycleStages } from "@/hooks/use-revenue-office";
 import { Skeleton } from "@/components/ui/skeleton";
-import { EmptyState } from "@/components/sita/EmptyState";
+import { EmptyState } from "@/platform/sita/components/sita/EmptyState";
 import { clientSentimentService } from "@/lib/services/client-sentiment";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { PageShell } from "@/components/sita/PageShell";
-import { Typography } from "@/components/sita/Typography";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { PageShell } from "@/platform/sita/components/sita/PageShell";
+import { Typography } from "@/platform/sita/components/sita/Typography";
 
 
 export default function RelationshipCenter() {

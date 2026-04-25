@@ -6,9 +6,9 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState } from "react";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { PageShell } from "@/components/sita/PageShell";
-import { Typography } from "@/components/sita/Typography";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { PageShell } from "@/platform/sita/components/sita/PageShell";
+import { Typography } from "@/platform/sita/components/sita/Typography";
 const NPS_DATA: any = { current: 0, previous: 0, trend: "—", distribution: [], recentResponses: [] };
 export default function RetentionOffice() {
   const [tab, setTab] = useState("overview");

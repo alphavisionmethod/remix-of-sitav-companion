@@ -11,10 +11,10 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAppPlatform } from "@/contexts/AppPlatformContext";
-import { AppIcon, VerificationBadge } from "@/components/sita/app-platform/AppStoreComponents";
+import { AppIcon, VerificationBadge } from "@/platform/sita/components/sita/app-platform/AppStoreComponents";
 import type { AppDefinition } from "@/domains/apps/types";
 import { toast } from "sonner";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 const WebAppInstallPage = () => {
   const navigate = useNavigate();
   const { apps, installApp, pinToDock, setNotificationEnabled, setStartupBehavior } = useAppPlatform();

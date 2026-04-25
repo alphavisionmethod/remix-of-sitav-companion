@@ -8,7 +8,7 @@ import type { WorkforceRole } from "@/lib/core-services/ai-workforce/workforce-o
 import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import AITSubNav from "@/components/admin/AITSubNav";
+import AITSubNav from "@/platform/admin/components/admin/AITSubNav";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -16,7 +16,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sh
 import { Progress } from "@/components/ui/progress";
 import { getWorkforceRoles, getRecentInvocations } from "@/lib/core-services/ai-workforce/workforce-orchestrator";
 import { Users, X, ChevronRight, TrendingUp, TrendingDown, Filter } from "lucide-react";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 type SortKey = "cost" | "invocations" | "name" | "stage";
 

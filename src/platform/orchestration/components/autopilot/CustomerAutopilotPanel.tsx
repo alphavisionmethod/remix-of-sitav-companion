@@ -6,8 +6,8 @@
 
 import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
-import { SitaCard, SitaCardTitle, SitaSectionHeader } from "@/components/sita/SitaCard";
-import { SitaTabs, KPITile } from "@/components/sita/SitaComponents";
+import { SitaCard, SitaCardTitle, SitaSectionHeader } from "@/platform/sita/components/sita/SitaCard";
+import { SitaTabs, KPITile } from "@/platform/sita/components/sita/SitaComponents";
 import {
   Zap, Phone, Mail, Clock, Shield, AlertTriangle, CheckCircle,
   ArrowRight, Target, Brain, Calendar, MessageSquare, TrendingDown,

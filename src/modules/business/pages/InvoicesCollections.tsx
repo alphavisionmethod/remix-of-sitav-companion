@@ -5,23 +5,23 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useAction } from "@/hooks/useAction";
 import { motion, AnimatePresence } from "framer-motion";
 import { DollarSign, Clock, AlertTriangle, CheckCircle, Plus, X, FileText, Target } from "lucide-react";
-import { PremiumEmptyState } from "@/components/sita/PremiumEmptyState";
+import { PremiumEmptyState } from "@/platform/sita/components/sita/PremiumEmptyState";
 import { useInvoiceGenerate, useInvoiceSend } from "@/hooks/use-backend-actions";
-import { InvoiceDetailPane } from "@/components/business/InvoiceDetailPane";
+import { InvoiceDetailPane } from "@/modules/business/components/business/InvoiceDetailPane";
 import { cn } from "@/lib/utils";
-import { CrossAppAction } from "@/components/sita/CrossAppAction";
+import { CrossAppAction } from "@/platform/sita/components/sita/CrossAppAction";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
 import { getIdentityLayer } from "@/domains/engines/business-identity-layers";
 import { useDraftAutosave } from "@/hooks/useDraftAutosave";
 
 // New design system
-import { HeroCard, QueueCard, StatusCard } from "@/components/sita/cards";
-import { ExecutionBadge, FreshnessBadge } from "@/components/sita/badges";
-import { SplitWorkspace } from "@/components/sita/surfaces/SplitWorkspace";
-import { DetailDrawer } from "@/components/sita/surfaces/DetailDrawer";
-import { AppSurface } from "@/components/sita/surfaces/AppSurface";
-import { ListReveal, ListRevealItem } from "@/components/sita/motion/AppTransitions";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { HeroCard, QueueCard, StatusCard } from "@/platform/sita/components/sita/cards";
+import { ExecutionBadge, FreshnessBadge } from "@/platform/sita/components/sita/badges";
+import { SplitWorkspace } from "@/platform/sita/components/sita/surfaces/SplitWorkspace";
+import { DetailDrawer } from "@/platform/sita/components/sita/surfaces/DetailDrawer";
+import { AppSurface } from "@/platform/sita/components/sita/surfaces/AppSurface";
+import { ListReveal, ListRevealItem } from "@/platform/sita/components/sita/motion/AppTransitions";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 const executionState = (status: string): "drafted" | "approved" | "executing" | "complete" | "failed" => {
   if (status === "paid") return "complete";

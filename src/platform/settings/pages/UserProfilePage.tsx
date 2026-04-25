@@ -14,7 +14,7 @@ import { User, Shield, Calendar, Activity, Receipt, Link as LinkIcon, Settings, 
 import { Link } from "react-router-dom";
 import { format } from "date-fns";
 import { useActionFn } from "@/hooks/use-action";
-import { PageShell } from "@/components/sita/PageShell";
+import { PageShell } from "@/platform/sita/components/sita/PageShell";
 
 const UserProfilePage = () => {
   const { user } = useAuth();

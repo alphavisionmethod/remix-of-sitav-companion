@@ -16,16 +16,16 @@ import {
 import { useCollectionsAccounts } from "@/hooks/use-domain-data";
 import type { CollectionsAccount } from "@/data/fixtures/mock-data/collections";
 
-import { HeroCard, QueueCard, StatusCard, ActionCard, SummaryCard, TimelineCard } from "@/components/sita/cards";
-import { ExecutionBadge, UrgencyBadge } from "@/components/sita/badges";
-import { SplitWorkspace } from "@/components/sita/surfaces/SplitWorkspace";
-import { AppSurface } from "@/components/sita/surfaces/AppSurface";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { SitaTabs } from "@/components/sita/SitaComponents";
-import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvisorInsight";
-import { ListReveal, ListRevealItem } from "@/components/sita/motion/AppTransitions";
+import { HeroCard, QueueCard, StatusCard, ActionCard, SummaryCard, TimelineCard } from "@/platform/sita/components/sita/cards";
+import { ExecutionBadge, UrgencyBadge } from "@/platform/sita/components/sita/badges";
+import { SplitWorkspace } from "@/platform/sita/components/sita/surfaces/SplitWorkspace";
+import { AppSurface } from "@/platform/sita/components/sita/surfaces/AppSurface";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { SitaTabs } from "@/platform/sita/components/sita/SitaComponents";
+import { ModuleAdvisorInsight } from "@/platform/sita/components/sita/domain-shared/ModuleAdvisorInsight";
+import { ListReveal, ListRevealItem } from "@/platform/sita/components/sita/motion/AppTransitions";
 import { cn } from "@/lib/utils";
-import { CrossAppAction } from "@/components/sita/CrossAppAction";
+import { CrossAppAction } from "@/platform/sita/components/sita/CrossAppAction";
 
 
 // ── Chase Sequence ──────────────────────────────────────────────

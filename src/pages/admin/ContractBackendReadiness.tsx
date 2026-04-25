@@ -6,7 +6,7 @@ import { Progress } from "@/components/ui/progress";
 import { useRealityClassifications } from "@/hooks/useRealityClassifications";
 import { useMockReplacements } from "@/hooks/useMockReplacements";
 import { Server, FileCheck, AlertTriangle, Database } from "lucide-react";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 const CONTRACT_COLORS: Record<string, string> = { none: "text-destructive", partial: "text-yellow-400", aligned: "text-blue-400", verified: "text-emerald-400" };
 

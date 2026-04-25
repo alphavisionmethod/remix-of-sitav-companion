@@ -3,8 +3,8 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Rocket, CheckCircle2, XCircle, AlertTriangle, ArrowRight, Clock } from "lucide-react";
-import ANDSubNav from "@/components/admin/ANDSubNav";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import ANDSubNav from "@/platform/admin/components/admin/ANDSubNav";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 // Production fallback — seed data removed
 const TARGETS: any[] = [];

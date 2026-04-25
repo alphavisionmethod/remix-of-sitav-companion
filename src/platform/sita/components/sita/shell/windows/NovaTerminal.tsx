@@ -12,7 +12,7 @@ import { NovaContext, type NovaColor } from "@/platform/nova-sdk/graphics/contex
 import { NovaEvents } from "@/platform/nova-sdk/input/events";
 import { lifecycleManager, type NovaAppLifecycle } from "@/platform/nova-sdk/runtime/lifecycle";
 import { NovaBridge } from "@/platform/nova-sdk/system/bridge";
-import { AppStateWrapper } from "@/components/sita/shell/AppStateWrapper";
+import { AppStateWrapper } from "@/platform/sita/components/sita/shell/AppStateWrapper";
 
 // ── Manifest ──────────────────────────────────────────────
 

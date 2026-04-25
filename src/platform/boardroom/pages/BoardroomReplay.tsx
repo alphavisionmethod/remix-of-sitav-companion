@@ -10,8 +10,8 @@ import { useActionFn } from "@/hooks/use-action";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
-import { BoardroomSlide } from "@/components/sita/primitives/BoardroomSlide";
-import { ConfidenceBar } from "@/components/sita/primitives/ConfidenceBar";
+import { BoardroomSlide } from "@/platform/sita/components/sita/primitives/BoardroomSlide";
+import { ConfidenceBar } from "@/platform/sita/components/sita/primitives/ConfidenceBar";
 import {
   BarChart3, DollarSign, Briefcase, TrendingUp, AlertTriangle, CheckCircle,
   ChevronLeft, ChevronRight, Maximize2, Minimize2, Pause, Play, Clock,
@@ -19,7 +19,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 // ── Slide data auto-generated from weekly reviews ────────────
 

@@ -3,16 +3,16 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
-import { SitaPageHeader } from "@/components/sita/SitaCard";
-import { EncryptionCoverageMap } from "@/components/sita/truth/EncryptionCoverageMap";
-import { SecretIntegrityPanel } from "@/components/sita/truth/SecretIntegrityPanel";
-import { StalenessIndicator } from "@/components/sita/truth/StalenessIndicator";
+import { SitaPageHeader } from "@/platform/sita/components/sita/SitaCard";
+import { EncryptionCoverageMap } from "@/platform/sita/components/sita/truth/EncryptionCoverageMap";
+import { SecretIntegrityPanel } from "@/platform/sita/components/sita/truth/SecretIntegrityPanel";
+import { StalenessIndicator } from "@/platform/sita/components/sita/truth/StalenessIndicator";
 import {
   Shield, Lock, Key, Eye, CheckCircle, XCircle, AlertTriangle, Database, FileCheck, Trash2, RotateCcw, Clock
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 const now = new Date();
 const h = (hours: number) => new Date(now.getTime() - hours * 3600000).toISOString();

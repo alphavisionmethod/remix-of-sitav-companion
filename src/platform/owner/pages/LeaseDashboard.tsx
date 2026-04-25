@@ -4,10 +4,10 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useMemo, useCallback } from "react";
-import { SitaPageHeader, SitaCard, SitaButton } from "@/components/sita/SitaCard";
-import { KPITile } from "@/components/sita/SitaComponents";
-import { DomainHeader } from "@/components/sita/primitives/DomainHeader";
-import { ConfidenceBar } from "@/components/sita/primitives/ConfidenceBar";
+import { SitaPageHeader, SitaCard, SitaButton } from "@/platform/sita/components/sita/SitaCard";
+import { KPITile } from "@/platform/sita/components/sita/SitaComponents";
+import { DomainHeader } from "@/platform/sita/components/sita/primitives/DomainHeader";
+import { ConfidenceBar } from "@/platform/sita/components/sita/primitives/ConfidenceBar";
 import { useCapabilityLease } from "@/contexts/SitaKernelContext";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -20,7 +20,7 @@ import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import type { CapabilityLease, LeaseViolation } from "@/lib/services/lease-manager";
 import { useLeases } from "@/hooks/use-domain-data";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 // ── Status helpers ──────────────────────────────────────────────
 

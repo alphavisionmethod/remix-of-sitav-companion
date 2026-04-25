@@ -9,8 +9,8 @@ import {
   Activity, Zap, AlertTriangle, Lock, ArrowRight
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { PageShell } from "@/components/sita/PageShell";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { PageShell } from "@/platform/sita/components/sita/PageShell";
 
 // ── Service Module Definitions ─────────────────────────────────
 

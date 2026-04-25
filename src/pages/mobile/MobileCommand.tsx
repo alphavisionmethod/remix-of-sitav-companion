@@ -1,4 +1,4 @@
-import { MobileShell } from "@/components/mobile/MobileShell";
+import { MobileShell } from "@/platform/experience/components/mobile/MobileShell";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {

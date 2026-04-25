@@ -21,11 +21,11 @@ import {
   type ReactNode,
 } from "react";
 import { toast } from "sonner";
-import { useWakeWord } from "@/components/personal-brain/voice/useWakeWord";
-import { useSpeechRecognition } from "@/components/personal-brain/voice/useSpeechRecognition";
-import { useSpeechSynthesis } from "@/components/personal-brain/voice/useSpeechSynthesis";
-import { useSentinelPrefs } from "@/components/personal-brain/voice/useSentinelPrefs";
-import { publishSitaHud } from "@/components/sita/shell/sita-hud/sita-hud-bus";
+import { useWakeWord } from "@/platform/personal-brain/components/personal-brain/voice/useWakeWord";
+import { useSpeechRecognition } from "@/platform/personal-brain/components/personal-brain/voice/useSpeechRecognition";
+import { useSpeechSynthesis } from "@/platform/personal-brain/components/personal-brain/voice/useSpeechSynthesis";
+import { useSentinelPrefs } from "@/platform/personal-brain/components/personal-brain/voice/useSentinelPrefs";
+import { publishSitaHud } from "@/platform/sita/components/sita/shell/sita-hud/sita-hud-bus";
 import {
   routeVoiceIntent,
   type SitaIntent,

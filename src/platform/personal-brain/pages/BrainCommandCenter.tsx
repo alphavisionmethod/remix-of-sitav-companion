@@ -20,15 +20,15 @@ import {
   X,
 } from "lucide-react";
 import { toast } from "sonner";
-import { GlobalErrorBoundary } from "@/components/sita/GlobalErrorBoundary";
-import { PageShell } from "@/components/sita/PageShell";
+import { GlobalErrorBoundary } from "@/platform/sita/components/sita/GlobalErrorBoundary";
+import { PageShell } from "@/platform/sita/components/sita/PageShell";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { usePbMemories } from "@/components/personal-brain/hooks/usePbMemories";
-import { usePbInsightsSignals } from "@/components/personal-brain/hooks/usePbInsightsSignals";
-import { usePbProfile } from "@/components/personal-brain/hooks/usePbProfile";
-import { usePbGoals } from "@/components/personal-brain/hooks/usePbGoals";
+import { usePbMemories } from "@/platform/personal-brain/components/personal-brain/hooks/usePbMemories";
+import { usePbInsightsSignals } from "@/platform/personal-brain/components/personal-brain/hooks/usePbInsightsSignals";
+import { usePbProfile } from "@/platform/personal-brain/components/personal-brain/hooks/usePbProfile";
+import { usePbGoals } from "@/platform/personal-brain/components/personal-brain/hooks/usePbGoals";
 
 function CommandCenterInner() {
   const navigate = useNavigate();

@@ -11,7 +11,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { Settings, Bell, BellOff, Users, Smartphone } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 
 export default function NOT05NotificationPreferencesBoard() {

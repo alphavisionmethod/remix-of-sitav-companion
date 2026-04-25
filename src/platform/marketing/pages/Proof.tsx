@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { MarketingShell } from "@/components/marketing/MarketingShell";
-import { MarketingSeo } from "@/components/marketing/MarketingSeo";
+import { MarketingShell } from "@/platform/marketing/components/marketing/MarketingShell";
+import { MarketingSeo } from "@/platform/marketing/components/marketing/MarketingSeo";
 import { supabase } from "@/integrations/supabase/client";
 
 interface DonationRow { id: string; tier: string; donor_name: string | null; message: string | null; receipt_hash: string | null; paid_at: string | null }

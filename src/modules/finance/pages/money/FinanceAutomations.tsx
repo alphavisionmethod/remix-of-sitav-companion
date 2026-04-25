@@ -1,9 +1,9 @@
-import { KPITile, SitaTabs, EmptyState } from "@/components/sita/SitaComponents";
-import { TrustBadge } from "@/components/sita/TrustBadge";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvisorInsight";
+import { KPITile, SitaTabs, EmptyState } from "@/platform/sita/components/sita/SitaComponents";
+import { TrustBadge } from "@/platform/sita/components/sita/TrustBadge";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { ModuleAdvisorInsight } from "@/platform/sita/components/sita/domain-shared/ModuleAdvisorInsight";
 import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
-import { StatusCard } from "@/components/sita/cards";
+import { StatusCard } from "@/platform/sita/components/sita/cards";
 import { useState } from "react";
 import {
   Zap, Play, Pause, AlertCircle, Lightbulb, Clock, Shield, CheckCircle2,

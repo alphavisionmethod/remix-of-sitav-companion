@@ -3,11 +3,11 @@ import {
   ArrowLeft, TrendingUp, TrendingDown, Shield, Zap, Brain, BarChart3,
   Target, AlertTriangle, ChevronRight, Calendar, Eye, Plus, Info, Activity, Link2
 } from "lucide-react";
-import LightweightChart from "@/components/investment/LightweightChart";
+import LightweightChart from "@/modules/finance/components/investment/LightweightChart";
 import { INVESTMENT_ADVISORS, PORTFOLIO, SAMPLE_THESES, PLATFORM_CONNECTIONS, getInstrument } from "@/hooks/useInvestmentOfficeData";
 import { SAMPLE_SCENARIOS } from "@/domains/investment/mock-data";
 import { usePortfolioPositions } from "@/hooks/use-investment-office";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 const pctFmt = (n: number) => `${n >= 0 ? "+" : ""}${n.toFixed(2)}%`;
 const fmt = (n: number) => n >= 1e12 ? `$${(n / 1e12).toFixed(2)}T` : n >= 1e9 ? `$${(n / 1e9).toFixed(1)}B` : n >= 1e6 ? `$${(n / 1e6).toFixed(1)}M` : `$${n.toLocaleString()}`;

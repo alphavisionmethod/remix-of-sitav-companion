@@ -5,7 +5,7 @@
 // ═══════════════════════════════════════════════════════════════
 import { useEffect, useMemo, useState, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { AdminControlPlaneShell } from "@/components/admin/shells/AdminControlPlaneShell";
+import { AdminControlPlaneShell } from "@/platform/admin/components/admin/shells/AdminControlPlaneShell";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";

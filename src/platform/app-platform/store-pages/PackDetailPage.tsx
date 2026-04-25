@@ -5,19 +5,19 @@
 
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { SitaSectionHeader } from "@/components/sita/SitaCard";
+import { SitaSectionHeader } from "@/platform/sita/components/sita/SitaCard";
 import {
   resolveIcon, PackStatusBadge, TierBadge, OutcomeCard, WorkflowIncludedCard,
   ConnectorCard, PricingCard, InstallStep,
-} from "@/components/sita/PackStoreComponents";
-import { TrustBadge } from "@/components/sita/TrustBadge";
+} from "@/platform/sita/components/sita/PackStoreComponents";
+import { TrustBadge } from "@/platform/sita/components/sita/TrustBadge";
 import { PACK_CATALOG, getInstallState, isInstalled } from "@/lib/pack-store";
 import {
   ArrowLeft, Check, Shield, Brain, BarChart3, FileText, Workflow, Star, Download,
   Clock, Play, AlertTriangle, ChevronRight, Lock
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 const PackDetailPage = () => {
   const { packId } = useParams<{ packId: string }>();

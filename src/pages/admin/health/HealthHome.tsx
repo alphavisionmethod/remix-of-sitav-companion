@@ -5,8 +5,8 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { lazy, Suspense } from "react";
-import { AdminControlPlaneShell } from "@/components/admin/shells/AdminControlPlaneShell";
-import { DomainHubLayout, type HubModule } from "@/components/admin/hubs/DomainHubLayout";
+import { AdminControlPlaneShell } from "@/platform/admin/components/admin/shells/AdminControlPlaneShell";
+import { DomainHubLayout, type HubModule } from "@/platform/admin/components/admin/hubs/DomainHubLayout";
 
 const FleetHealthPage = lazy(() => import("@/pages/admin/FleetHealthPage"));
 const SystemHealthDashboard = lazy(() => import("@/pages/admin/SystemHealthDashboard"));
@@ -19,7 +19,7 @@ const BackendTopologyDashboard = lazy(() => import("@/pages/admin/BackendTopolog
 const EFH01EdgeFunctionHealthCenter = lazy(
   () => import("@/pages/admin/EFH01EdgeFunctionHealthCenter"),
 );
-const DrillCadenceBoard = lazy(() => import("@/components/admin/DrillCadenceBoard"));
+const DrillCadenceBoard = lazy(() => import("@/platform/admin/components/admin/DrillCadenceBoard"));
 const CostSpotlight = lazy(() => import("@/pages/admin/health/CostSpotlight"));
 
 function ModuleFallback() {

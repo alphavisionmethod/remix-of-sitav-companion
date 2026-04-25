@@ -11,7 +11,7 @@ import {
   Reply, Forward, ChevronDown, Filter, Inbox, Tag, CalendarClock,
   StarOff, MailOpen, Users, ShoppingBag, Megaphone, ArrowLeft
 } from "lucide-react";
-import { PageShell } from "@/components/sita/PageShell";
+import { PageShell } from "@/platform/sita/components/sita/PageShell";
 
 interface Message {
   id: string;

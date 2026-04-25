@@ -3,13 +3,13 @@
 // Environment management, backup/restore center
 // ═══════════════════════════════════════════════════════════════
 
-import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
+import { SitaPageHeader } from "@/platform/sita/components/sita/SitaPageHeader";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Globe, CheckCircle, Shield, Download, Upload, Clock, RefreshCw, Plus, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { PageShell } from "@/components/sita/PageShell";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { PageShell } from "@/platform/sita/components/sita/PageShell";
 
 interface Environment {
   id: string;

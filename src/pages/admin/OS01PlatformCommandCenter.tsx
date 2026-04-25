@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { SparklineChart } from "@/components/sita/SparklineChart";
+import { SparklineChart } from "@/platform/sita/components/sita/SparklineChart";
 import {
   Cpu, HardDrive, Shield, Wifi, Server, Activity, Zap, RefreshCw,
   Clock, AlertTriangle, CheckCircle2, XCircle, Terminal, Database,

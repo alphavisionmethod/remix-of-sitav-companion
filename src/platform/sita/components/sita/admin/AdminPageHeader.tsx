@@ -5,7 +5,7 @@
 
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
-import { Typography } from "@/components/sita/Typography";
+import { Typography } from "@/platform/sita/components/sita/Typography";
 
 interface AdminPageHeaderProps {
   icon: React.ElementType;

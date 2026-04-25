@@ -15,7 +15,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { useMockReplacements, useUpsertMockReplacement, useUpdateMockStatus, useDeleteMockReplacement, useMockReplacementStats } from "@/hooks/useMockReplacements";
 import { Plus, Trash2, Search, ArrowRight, AlertTriangle, CheckCircle2, Clock, Ban, CircleDot, Pencil, BarChart3, Flame, GitBranch, ShieldCheck, Layers } from "lucide-react";
 import type { MockReplacement } from "@/data/persistence/mock-replacement-persistence";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 const TYPES: any[] = [];
 const PRIORITIES: any[] = [];

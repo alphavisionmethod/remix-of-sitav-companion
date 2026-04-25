@@ -11,10 +11,10 @@ import { cn } from "@/lib/utils";
 import { useDeals, usePipelineStages } from "@/hooks/use-revenue-office";
 import { useRevenueLeakItems } from "@/hooks/use-revenue-office";
 import { Skeleton } from "@/components/ui/skeleton";
-import { EmptyState } from "@/components/sita/EmptyState";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { PageShell } from "@/components/sita/PageShell";
-import { Typography } from "@/components/sita/Typography";
+import { EmptyState } from "@/platform/sita/components/sita/EmptyState";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { PageShell } from "@/platform/sita/components/sita/PageShell";
+import { Typography } from "@/platform/sita/components/sita/Typography";
 
 
 type Deal = { id: string; name: string; value: number; probability: number; age: number; owner: string; contact: string; nextAction?: string; nextActionDate?: string; source: string; tags: string[] };

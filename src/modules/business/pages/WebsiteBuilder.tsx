@@ -1,4 +1,4 @@
-import { DomainAdvisorCard } from "@/components/advisors/DomainAdvisorCard";
+import { DomainAdvisorCard } from "@/platform/advisors/components/advisors/DomainAdvisorCard";
 import { motion } from "framer-motion";
 import { Globe, Layout, FileText, BarChart3, Zap, Eye, Plus, ExternalLink, TrendingUp, Search, MousePointer, Users, DollarSign, Copy, FlaskConical, Settings, ArrowUpRight, ChevronRight, Target, Layers } from "lucide-react";
 import { cn } from "@/lib/utils";

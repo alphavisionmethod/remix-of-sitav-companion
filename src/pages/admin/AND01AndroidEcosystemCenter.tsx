@@ -17,8 +17,8 @@ import {
   useAddEcosystemDevice, useRemoveEcosystemDevice, useUpdateDeviceTrust,
   useToggleHealthConsent, useUpdatePushRoute,
 } from "@/hooks/useEcosystemDevices";
-import ANDSubNav from "@/components/admin/ANDSubNav";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import ANDSubNav from "@/platform/admin/components/admin/ANDSubNav";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 // Production fallback — seed data removed
 const PROVIDER_CAPS: any[] = [];

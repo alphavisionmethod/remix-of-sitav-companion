@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Zap, Play, Pause, Shield, Clock, CheckCircle, AlertTriangle, ChevronRight } from "lucide-react";
-import { GlassCard } from "@/components/sita/PremiumPageComponents";
+import { GlassCard } from "@/platform/sita/components/sita/PremiumPageComponents";
 import type { DomainType } from "./WhatMattersNow";
 
 export interface AutomationRule {

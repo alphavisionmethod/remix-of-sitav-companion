@@ -9,10 +9,10 @@ import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { useCampaigns } from "@/hooks/use-revenue-office";
 import { Skeleton } from "@/components/ui/skeleton";
-import { EmptyState } from "@/components/sita/EmptyState";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { PageShell } from "@/components/sita/PageShell";
-import { Typography } from "@/components/sita/Typography";
+import { EmptyState } from "@/platform/sita/components/sita/EmptyState";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { PageShell } from "@/platform/sita/components/sita/PageShell";
+import { Typography } from "@/platform/sita/components/sita/Typography";
 
 // Inline static configuration (was seed data)
 const REV_CAMPAIGNS: any[] = [];

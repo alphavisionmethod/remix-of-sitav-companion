@@ -1,6 +1,6 @@
-import { AdvisorCouncilShell, type AdvisorConfig } from "@/components/advisors/AdvisorCouncilShell";
+import { AdvisorCouncilShell, type AdvisorConfig } from "@/platform/advisors/components/advisors/AdvisorCouncilShell";
 import { INVESTMENT_ADVISORS } from "@/hooks/useInvestmentOfficeData";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 // Map investment advisors to AdvisorConfig format for the shared shell
 const mapToAdvisorConfig = (): AdvisorConfig[] =>

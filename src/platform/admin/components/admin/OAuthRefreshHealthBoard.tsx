@@ -3,7 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ConnectorStateBadge } from "@/components/primitives/status/ConnectorStateBadge";
-import { IntegrationReceiptDrawer, ReauthCTAButton } from "@/components/admin/integrations/IntegrationReceiptDrawer";
+import { IntegrationReceiptDrawer, ReauthCTAButton } from "@/platform/admin/components/admin/integrations/IntegrationReceiptDrawer";
 import { RefreshCw, AlertTriangle, CheckCircle2, ShieldAlert, FileText } from "lucide-react";
 
 interface ProbeRow {

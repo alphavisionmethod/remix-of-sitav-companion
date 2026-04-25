@@ -4,13 +4,13 @@
 // ═══════════════════════════════════════════════════════════════
 
 // Money components
-export { BillDetailPane } from "@/components/money/BillDetailPane";
-export { MoneyAppShell } from "@/components/money/MoneyAppShell";
-export { SpendingCategoryPane } from "@/components/money/SpendingCategoryPane";
+export { BillDetailPane } from "@/modules/finance/components/money/BillDetailPane";
+export { MoneyAppShell } from "@/modules/finance/components/money/MoneyAppShell";
+export { SpendingCategoryPane } from "@/modules/finance/components/money/SpendingCategoryPane";
 
 // Finance components
-export { FinanceCreditCard } from "@/components/finance/FinanceCreditCard";
-export { FinanceMoneyFlow } from "@/components/finance/FinanceMoneyFlow";
-export { FinanceQuickTransfer } from "@/components/finance/FinanceQuickTransfer";
-export { FinanceRecentTransactions } from "@/components/finance/FinanceRecentTransactions";
-export { FinanceStatCards } from "@/components/finance/FinanceStatCards";
+export { FinanceCreditCard } from "@/modules/finance/components/finance/FinanceCreditCard";
+export { FinanceMoneyFlow } from "@/modules/finance/components/finance/FinanceMoneyFlow";
+export { FinanceQuickTransfer } from "@/modules/finance/components/finance/FinanceQuickTransfer";
+export { FinanceRecentTransactions } from "@/modules/finance/components/finance/FinanceRecentTransactions";
+export { FinanceStatCards } from "@/modules/finance/components/finance/FinanceStatCards";

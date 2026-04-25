@@ -16,7 +16,7 @@ import {
   Shield, Zap, Activity,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 // ── Workflow definitions mapped to onboarding firstRecovery choices ──
 

@@ -4,8 +4,8 @@
 // Route: /admin/system-architecture
 // ═══════════════════════════════════════════════════════════════
 
-import { PermissionGatedRoute } from "@/components/auth/PermissionGatedRoute";
-import { SystemStackHealthCard } from "@/components/admin/SystemStackHealthCard";
+import { PermissionGatedRoute } from "@/platform/auth/components/auth/PermissionGatedRoute";
+import { SystemStackHealthCard } from "@/platform/admin/components/admin/SystemStackHealthCard";
 
 function SystemArchitectureContent() {
   return (

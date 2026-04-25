@@ -2,8 +2,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Shield, ArrowRightLeft, CheckCircle2, AlertTriangle, ArrowRight } from "lucide-react";
-import NSSSubNav from "@/components/admin/NSSSubNav";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import NSSSubNav from "@/platform/admin/components/admin/NSSSubNav";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 const NSS03TrustContinuity = () => {
   const secureActions = [] as any[];
   const continuityFlows = [] as any[];

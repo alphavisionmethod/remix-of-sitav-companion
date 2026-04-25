@@ -6,10 +6,10 @@ import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { AdminControlPlaneShell } from "@/components/admin/shells/AdminControlPlaneShell";
+import { AdminControlPlaneShell } from "@/platform/admin/components/admin/shells/AdminControlPlaneShell";
 import { Scale, FileBadge, RefreshCw, Gavel } from "lucide-react";
 import { toast } from "sonner";
-import { EmptyState } from "@/components/sita/EmptyState";
+import { EmptyState } from "@/platform/sita/components/sita/EmptyState";
 
 interface Control { id: string; framework: string; control_id: string; title: string; status: string; collection_cadence: string; }
 interface Evidence { id: string; control_id: string; collected_at: string; pass: boolean; failure_reason: string | null; }

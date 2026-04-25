@@ -7,7 +7,7 @@ import { dbAny as db } from "@/lib/supabase-helpers";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Shield, CheckCircle, XCircle, Fingerprint, Key, Smartphone, Globe, Monitor } from "lucide-react";
 import { getRelation, parseProviderFamilyRef } from "@/lib/types/relation-parsers";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 
 

@@ -4,7 +4,7 @@
 // draft center, reply-gap detection, and thread context.
 // ═══════════════════════════════════════════════════════════════
 
-import { PageSkeleton } from "@/components/sita/PageSkeleton";
+import { PageSkeleton } from "@/platform/sita/components/sita/PageSkeleton";
 import { useState, useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -14,7 +14,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { MessageSquare, Mail, Phone, Send, Clock, CheckCircle2, AlertCircle, Star, Search, Filter, Archive, Edit3, AlertTriangle, Users, ChevronRight, Inbox, FileText, ArrowRight, RotateCcw, Eye } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
+import { SitaPageHeader } from "@/platform/sita/components/sita/SitaPageHeader";
 type CommunicationEntry = { id: string; channel: string; subject: string; status: string; date: string; [k: string]: any };
 type ChannelType = "email" | "sms" | "chat" | "voice" | "call";
 type MessageStatus = "sent" | "delivered" | "read" | "failed" | "draft" | "queued";
@@ -23,8 +23,8 @@ import { useQuery } from "@tanstack/react-query";
 import { fromTable } from "@/lib/supabase-helpers";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { PageShell } from "@/components/sita/PageShell";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { PageShell } from "@/platform/sita/components/sita/PageShell";
 const CHANNEL_ICONS: Partial<Record<ChannelType, typeof Mail>> = { email: Mail, sms: MessageSquare, call: Phone, chat: Send, voice: Phone };
 const STATUS_STYLES: Partial<Record<MessageStatus, { color: string; icon: typeof CheckCircle2 }>> = {
   sent: { color: "text-muted-foreground", icon: Clock },

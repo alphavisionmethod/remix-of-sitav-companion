@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Loader2 } from "lucide-react";
-import { pathToModuleId } from "@/components/sita/apps/mission-control/MissionControlAppShell";
+import { pathToModuleId } from "@/platform/sita/components/sita/apps/mission-control/MissionControlAppShell";
 
 /**
  * AdminCenter is a redirect shim.

@@ -11,7 +11,7 @@ import {
   Brain, FileText, Plug, Layout, ExternalLink, Lock, RefreshCw, Play
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { TrustBadge } from "@/components/sita/TrustBadge";
+import { TrustBadge } from "@/platform/sita/components/sita/TrustBadge";
 import type { PackManifest, InternalApp, InstallState, StoreCategory, PackStatus } from "@/lib/pack-store";
 import { isInstalled, getInstallState } from "@/lib/pack-store";
 

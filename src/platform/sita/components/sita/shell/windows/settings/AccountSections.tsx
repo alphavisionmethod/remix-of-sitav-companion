@@ -19,13 +19,13 @@ import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 import { SettingRow } from "./shared";
 import GoogleConnectedAccounts from "@/pages/settings/GoogleConnectedAccounts";
-import { AllProviderFamiliesStatus } from "@/components/sita/AllProviderFamiliesStatus";
-import { TrustBadge } from "@/components/sita/TrustBadge";
+import { AllProviderFamiliesStatus } from "@/platform/sita/components/sita/AllProviderFamiliesStatus";
+import { TrustBadge } from "@/platform/sita/components/sita/TrustBadge";
 import { useQuery } from "@tanstack/react-query";
 import { fromDynamicTable } from "@/lib/supabase-helpers";
 import { useDemoMode } from "@/hooks/use-brain-core";
 import { useConfirmation } from "@/hooks/use-confirmation";
-import { ConfirmationDialog } from "@/components/sita/ConfirmationDialog";
+import { ConfirmationDialog } from "@/platform/sita/components/sita/ConfirmationDialog";
 
 export function ProfileContent() {
   const { user, isDemo } = useAuth();

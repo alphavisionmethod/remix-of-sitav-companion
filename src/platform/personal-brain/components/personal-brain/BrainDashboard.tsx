@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
-import { PageShell } from "@/components/sita/PageShell";
+import { PageShell } from "@/platform/sita/components/sita/PageShell";
 import { Card, CardContent } from "@/components/ui/card";
 import { BrainHero, type BrainScope } from "./BrainHero";
 import { ChatList } from "./ChatList";

@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import {
   Crown, Users, AlertTriangle, CheckCircle, Clock, Vote, FileText, Shield,
   ArrowUpRight, ArrowDownRight, Activity, ChevronRight, TrendingUp, RefreshCw

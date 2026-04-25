@@ -2,10 +2,10 @@ import { PieChart, AlertTriangle, ArrowRight } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
+import { SitaPageHeader } from "@/platform/sita/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { useComputeSnapshots } from "@/hooks/useIntelligencePersistence";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 const PortfolioAllocationDashboard = () => {
   const { isAdmin, loading: authLoading } = useRequireAdmin();
   const { snapshots, latest, loading: dataLoading } = useComputeSnapshots({ limit: 30 });

@@ -7,9 +7,9 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { AdminControlPlaneShell } from "@/components/admin/shells/AdminControlPlaneShell";
+import { AdminControlPlaneShell } from "@/platform/admin/components/admin/shells/AdminControlPlaneShell";
 import { KeyRound, Webhook, RefreshCw, Send, ShieldCheck } from "lucide-react";
-import { BoardSection } from "@/components/admin/ai-runtime/_shared/BoardSection";
+import { BoardSection } from "@/platform/admin/components/admin/ai-runtime/_shared/BoardSection";
 
 interface ApiKey { id: string; tenant_id: string; key_id: string; scope: string; status: string; last_used_at: string | null; }
 interface Sub { id: string; tenant_id: string; callback_url: string; event_types: string[]; status: string; failure_count: number; last_delivered_at: string | null; }

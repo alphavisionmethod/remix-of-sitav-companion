@@ -3,12 +3,12 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useParams, useNavigate } from "react-router-dom";
-import { SitaSectionHeader } from "@/components/sita/SitaCard";
-import { resolveIcon, TierBadge, PackCard } from "@/components/sita/PackStoreComponents";
+import { SitaSectionHeader } from "@/platform/sita/components/sita/SitaCard";
+import { resolveIcon, TierBadge, PackCard } from "@/platform/sita/components/sita/PackStoreComponents";
 import { INTERNAL_APPS, PACK_CATALOG } from "@/lib/pack-store";
 import { ArrowLeft, Check, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 const AppDetailPage = () => {
   const { appId } = useParams<{ appId: string }>();

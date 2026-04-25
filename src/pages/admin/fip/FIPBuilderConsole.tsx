@@ -1,4 +1,4 @@
-import FIPSubNav from "@/components/admin/FIPSubNav";
+import FIPSubNav from "@/platform/admin/components/admin/FIPSubNav";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Cpu, ArrowRight, CheckCircle2, Layers, FileText, Shield, Zap, Rocket, Database, Code2 } from "lucide-react";
@@ -7,8 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useFeatureIntakes, useCapabilities, useFeatureSpecs, useComplianceRecords, useRolloutRecords } from "@/hooks/use-fip-data";
 import { READINESS_STAGES } from "@/lib/fip/types";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { PremiumEmptyState } from "@/components/sita/PremiumEmptyState";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { PremiumEmptyState } from "@/platform/sita/components/sita/PremiumEmptyState";
 
 /* Static workflow steps — these are canonical methodology, not user data */
 const BUILDER_STEPS = [

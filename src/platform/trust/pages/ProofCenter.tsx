@@ -4,12 +4,12 @@
 // Now with proof chain visualization and bundle export (Phase 3)
 // ═══════════════════════════════════════════════════════════════
 
-import { SitaCard, SitaSectionHeader, SitaButton } from "@/components/sita/SitaCard";
-import { KPITile, EmptyState } from "@/components/sita/SitaComponents";
-import { ProofReceipt } from "@/components/sita/primitives/ProofReceipt";
-import { ConfidenceBar } from "@/components/sita/primitives/ConfidenceBar";
-import { DomainHeader } from "@/components/sita/primitives/DomainHeader";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { SitaCard, SitaSectionHeader, SitaButton } from "@/platform/sita/components/sita/SitaCard";
+import { KPITile, EmptyState } from "@/platform/sita/components/sita/SitaComponents";
+import { ProofReceipt } from "@/platform/sita/components/sita/primitives/ProofReceipt";
+import { ConfidenceBar } from "@/platform/sita/components/sita/primitives/ConfidenceBar";
+import { DomainHeader } from "@/platform/sita/components/sita/primitives/DomainHeader";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { useProofRecords } from "@/hooks/use-sita-data";
 import { useProofTimeline } from "@/hooks/use-proof-timeline";
 import { useProofChain, useProofBundle } from "@/hooks/use-proof-chain";
@@ -26,8 +26,8 @@ import {
   Link2, Search, ChevronDown, ChevronRight, Shield, CheckCircle, XCircle,
   DollarSign, Briefcase, Home, Zap, Hash, Download, Layers
 } from "lucide-react";
-import { PageShell } from "@/components/sita/PageShell";
-import { PageErrorState } from "@/components/sita/PageErrorState";
+import { PageShell } from "@/platform/sita/components/sita/PageShell";
+import { PageErrorState } from "@/platform/sita/components/sita/PageErrorState";
 import { Skeleton } from "@/components/ui/skeleton";
 
 type FilterType = "all" | "verified" | "pending" | "failed" | "rolled-back";

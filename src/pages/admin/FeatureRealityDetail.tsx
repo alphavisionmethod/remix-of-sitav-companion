@@ -6,7 +6,7 @@ import { useRealityClassifications } from "@/hooks/useRealityClassifications";
 import { useMockReplacements } from "@/hooks/useMockReplacements";
 import { PROGRESSION_REQUIREMENTS, EVIDENCE_SIGNALS } from "@/data/persistence/reality-classification-persistence";
 import { Shield, Eye, Cpu, CheckCircle2, AlertTriangle, ArrowRight, FileCode, Database, Zap } from "lucide-react";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 export default function FeatureRealityDetail() {
   const { data: classifications = [] } = useRealityClassifications();

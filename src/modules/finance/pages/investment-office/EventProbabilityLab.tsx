@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { FlaskConical, TrendingUp, TrendingDown, ChevronRight } from "lucide-react";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { PremiumEmptyState } from "@/components/sita/PremiumEmptyState";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { PremiumEmptyState } from "@/platform/sita/components/sita/PremiumEmptyState";
 import { useEventProbabilities, type EventProbability } from "@/hooks/use-event-probabilities";
 import { useNavigate } from "react-router-dom";
 

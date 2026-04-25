@@ -9,7 +9,7 @@ import { Shield, Play, Plus, Trash2, FileText, CheckCircle } from "lucide-react"
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import { SitaCard } from "@/components/sita/SitaCard";
+import { SitaCard } from "@/platform/sita/components/sita/SitaCard";
 import { AdminActionCard } from "./AdminActionCard";
 import { toast } from "sonner";
 

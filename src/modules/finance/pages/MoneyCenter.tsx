@@ -2,7 +2,7 @@ import { useEffect, lazy, Suspense } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useAuth } from "@/contexts/AuthContext";
-import { MobileShell } from "@/components/mobile/MobileShell";
+import { MobileShell } from "@/platform/experience/components/mobile/MobileShell";
 import { Skeleton } from "@/components/ui/skeleton";
 
 const MoneyAdvisorBoard = lazy(() => import("@/pages/money/MoneyAdvisorBoard"));

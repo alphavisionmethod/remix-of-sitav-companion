@@ -9,8 +9,8 @@ import { Progress } from "@/components/ui/progress";
 import { getRecentInvocations, getWorkforceStats } from "@/lib/core-services/ai-workforce/workforce-orchestrator";
 import { ROLE_BUDGET_POLICIES, DEFAULT_THRESHOLDS, BUDGET_CLASS_SPECS, type AdminBudgetClass } from "@/lib/core-services/ai-workforce/admin-budget-routing-policy";
 import { DollarSign, TrendingUp, TrendingDown, Lightbulb, AlertTriangle, Shield, Zap } from "lucide-react";
-import AITSubNav from "@/components/admin/AITSubNav";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import AITSubNav from "@/platform/admin/components/admin/AITSubNav";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 export function AIT05CostEfficiency() {
   const { data: stats } = useQuery({ queryKey: ["ai-workforce-stats"], queryFn: getWorkforceStats });

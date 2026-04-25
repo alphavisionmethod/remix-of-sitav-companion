@@ -16,10 +16,10 @@ import {
   AppIcon, VerificationBadge, AppSourceLabel, WorksWithSitaBadge,
   PermissionDomainCard, InstallSheet, SourceOriginLabel, PackageTypeLabel,
   SandboxLevelBadge, UpdateSourceInfo, TrustInstallBehavior,
-} from "@/components/sita/app-platform/AppStoreComponents";
+} from "@/platform/sita/components/sita/app-platform/AppStoreComponents";
 import { useAppPlatform } from "@/contexts/AppPlatformContext";
 import { toast } from "sonner";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 const AppDetailPage = () => {
   const { appId } = useParams<{ appId: string }>();

@@ -11,13 +11,13 @@ import {
 } from "lucide-react";
 import { isPast, differenceInDays, formatDistanceToNow } from "date-fns";
 import { motion, AnimatePresence } from "framer-motion";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import {
   ADVISOR_SPECS,
   generateContactInsights,
   type AdvisorInsightData,
   type AdvisorRole
-} from "@/components/business/crm/CRMAdvisorInsight";
+} from "@/modules/business/components/business/crm/CRMAdvisorInsight";
 
 type InsightCategory = "all" | "relationships" | "pipeline" | "engagement" | "growth" | "escalation";
 type InsightPriority = "critical" | "high" | "medium" | "info";

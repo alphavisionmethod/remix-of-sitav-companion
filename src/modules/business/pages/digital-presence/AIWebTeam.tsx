@@ -1,4 +1,4 @@
-import { PageShell } from "@/components/sita/PageShell";
+import { PageShell } from "@/platform/sita/components/sita/PageShell";
 import { motion, AnimatePresence } from "framer-motion";
 import { Sparkles, Globe, Palette, Target, Wrench, Search, Store, Megaphone, Settings, Eye, Layout, MessageSquare, ChevronDown, ChevronUp, AlertTriangle, CheckCircle, Brain, Users, Zap, TrendingUp, Shield, ArrowRight } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -8,7 +8,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { useState } from "react";
 import DPOSubNav from "./DPOSubNav";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 // Production fallback — seed data removed
 const DISAGREEMENTS: any[] = [];

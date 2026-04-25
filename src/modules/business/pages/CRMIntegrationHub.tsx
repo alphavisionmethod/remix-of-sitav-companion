@@ -1,15 +1,15 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { SitaPageHeader, SitaCard, SitaCardTitle, SitaButton } from "@/components/sita/SitaCard";
-import { EmptyState } from "@/components/sita/SitaComponents";
-import { DomainHeader } from "@/components/sita/primitives/DomainHeader";
+import { SitaPageHeader, SitaCard, SitaCardTitle, SitaButton } from "@/platform/sita/components/sita/SitaCard";
+import { EmptyState } from "@/platform/sita/components/sita/SitaComponents";
+import { DomainHeader } from "@/platform/sita/components/sita/primitives/DomainHeader";
 import {
   Search, Plug, CheckCircle, Clock, ArrowRight, Upload, Star,
   Zap, Globe, MessageSquare, BarChart3, FileSpreadsheet, Share2,
   Github, Linkedin, Instagram, Facebook, Mail
 } from "lucide-react";
-import CRMConnectModal from "@/components/business/CRMConnectModal";
-import CRMImportWizard from "@/components/business/CRMImportWizard";
+import CRMConnectModal from "@/modules/business/components/business/CRMConnectModal";
+import CRMImportWizard from "@/modules/business/components/business/CRMImportWizard";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
 
 type Category = "all" | "crm" | "marketing" | "dev" | "communication" | "spreadsheets" | "social";

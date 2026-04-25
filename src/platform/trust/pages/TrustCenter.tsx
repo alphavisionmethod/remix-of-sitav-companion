@@ -2,14 +2,14 @@
 // SITA OS — Trust Center (App-in-OS Shell)
 // ═══════════════════════════════════════════════════════════════
 
-import { PageSkeleton } from "@/components/sita/PageSkeleton";
-import { DomainAppShell } from "@/components/sita/shell/DomainAppShell";
-import type { DomainConfig } from "@/components/sita/shell/DomainAppShell";
-import type { NavTabGroup } from "@/components/sita/shell/AppSidebarNav";
-import { GlobalErrorBoundary } from "@/components/sita/GlobalErrorBoundary";
+import { PageSkeleton } from "@/platform/sita/components/sita/PageSkeleton";
+import { DomainAppShell } from "@/platform/sita/components/sita/shell/DomainAppShell";
+import type { DomainConfig } from "@/platform/sita/components/sita/shell/DomainAppShell";
+import type { NavTabGroup } from "@/platform/sita/components/sita/shell/AppSidebarNav";
+import { GlobalErrorBoundary } from "@/platform/sita/components/sita/GlobalErrorBoundary";
 import { useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { AppOpenTransition } from "@/components/sita/shell/AppOpenTransition";
+import { AppOpenTransition } from "@/platform/sita/components/sita/shell/AppOpenTransition";
 import { useState, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { fromTable } from "@/lib/supabase-helpers";
@@ -21,16 +21,16 @@ import {
   ShieldCheck, ShieldAlert, Wifi, WifiOff, Globe, Pause, Play,
   RotateCcw, FileText
 } from "lucide-react";
-import { HeroCard, StatusCard, ProofCard, AdvisorCard } from "@/components/sita/cards";
-import { TrustBadge } from "@/components/sita/badges";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { HeroCard, StatusCard, ProofCard, AdvisorCard } from "@/platform/sita/components/sita/cards";
+import { TrustBadge } from "@/platform/sita/components/sita/badges";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
-import { EmptyState } from "@/components/sita/SitaComponents";
-import { PageErrorState } from "@/components/sita/PageErrorState";
+import { EmptyState } from "@/platform/sita/components/sita/SitaComponents";
+import { PageErrorState } from "@/platform/sita/components/sita/PageErrorState";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
-import { DomainAdvisorCard } from "@/components/advisors/DomainAdvisorCard";
+import { DomainAdvisorCard } from "@/platform/advisors/components/advisors/DomainAdvisorCard";
 
 const DOMAIN_CONFIG: DomainConfig = {
   id: "trust" as DomainConfig["id"],

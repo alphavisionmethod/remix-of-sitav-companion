@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
-import { TrustBadge } from "@/components/sita/TrustBadge";
+import { TrustBadge } from "@/platform/sita/components/sita/TrustBadge";
 import {
   Briefcase, DollarSign, Headphones, Heart, TrendingUp, Target,
   Shield, AlertTriangle, CheckCircle, Clock, Eye, Play, ArrowRight,

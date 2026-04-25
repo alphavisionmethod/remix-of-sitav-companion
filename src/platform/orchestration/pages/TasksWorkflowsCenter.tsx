@@ -4,9 +4,9 @@
 // queue, dependency, and assigned views.
 // ═══════════════════════════════════════════════════════════════
 
-import { PageSkeleton } from "@/components/sita/PageSkeleton";
+import { PageSkeleton } from "@/platform/sita/components/sita/PageSkeleton";
 import { useState, useMemo } from "react";
-import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
+import { SitaPageHeader } from "@/platform/sita/components/sita/SitaPageHeader";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
@@ -19,13 +19,13 @@ import { useQuery } from "@tanstack/react-query";
 import { fromTable } from "@/lib/supabase-helpers";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import {
   ListTodo, Plus, Search, Calendar, CheckCircle2, Clock, AlertTriangle,
   ArrowRight, Users, RotateCcw, Filter, Workflow, ChevronRight, Eye,
   GitBranch, Kanban, ListOrdered, Target, Flame, Pause, Play,
 } from "lucide-react";
-import { PageShell } from "@/components/sita/PageShell";
+import { PageShell } from "@/platform/sita/components/sita/PageShell";
 // ── Demo Data ──────────────────────────────────────────────────
 type TaskPriority = "critical" | "high" | "medium" | "low";
 type TaskStatus = "todo" | "in-progress" | "waiting" | "blocked" | "done" | "cancelled";

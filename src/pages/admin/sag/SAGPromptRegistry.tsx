@@ -8,8 +8,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { usePromptFamilies, useCreatePromptFamily } from "@/hooks/use-sag-data";
-import SAGSubNav from "@/components/admin/SAGSubNav";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import SAGSubNav from "@/platform/admin/components/admin/SAGSubNav";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 
 

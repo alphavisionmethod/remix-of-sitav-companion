@@ -8,7 +8,7 @@ import { Upload, Check, Loader2, AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
-import { AdvisorImage, type AdvisorDomain } from "@/components/advisors/AdvisorImage";
+import { AdvisorImage, type AdvisorDomain } from "@/platform/advisors/components/advisors/AdvisorImage";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { cropAndResizePortrait } from "@/lib/advisors/portrait-crop-resize";

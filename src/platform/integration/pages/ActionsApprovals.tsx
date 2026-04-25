@@ -9,7 +9,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { Shield, CheckCircle, XCircle, AlertTriangle, Clock, ArrowRight, Zap, Eye, Play, Ban } from "lucide-react";
 type DemoActionRequest = { id: string; action: string; connector: string; status: string; requestedAt: string; [k: string]: any };
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 
 const statusConfig: Record<string, { color: string; icon: any; label: string }> = {

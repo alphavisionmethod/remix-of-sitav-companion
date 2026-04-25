@@ -10,7 +10,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useEffect, useState } from "react";
-import type { AmbientMood } from "@/components/sita/shell/ShellAmbientBackground";
+import type { AmbientMood } from "@/platform/sita/components/sita/shell/ShellAmbientBackground";
 import { useSitaHud } from "./sita-hud-bus";
 
 function timeOfDayMood(): AmbientMood {

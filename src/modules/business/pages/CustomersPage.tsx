@@ -3,16 +3,16 @@
 // Resizable list/detail with badges, surfaces, domain motion
 // ═══════════════════════════════════════════════════════════════
 
-import { SplitWorkspace } from "@/components/sita/surfaces/SplitWorkspace";
-import { AppSurface } from "@/components/sita/surfaces/AppSurface";
-import { HeroCard, SummaryCard, AdvisorCard } from "@/components/sita/cards";
-import { FreshnessBadge, TrustBadge } from "@/components/sita/badges";
-import { ListReveal, ListRevealItem } from "@/components/sita/motion/AppTransitions";
-import { PremiumEmptyState } from "@/components/sita/PremiumEmptyState";
-import { CustomerDetailPane } from "@/components/business/CustomerDetailPane";
-import { ConfidenceBar } from "@/components/sita/primitives/ConfidenceBar";
-import { SitaButton } from "@/components/sita/SitaCard";
-import { SectionSkeleton, KPISkeleton } from "@/components/sita/SectionSkeleton";
+import { SplitWorkspace } from "@/platform/sita/components/sita/surfaces/SplitWorkspace";
+import { AppSurface } from "@/platform/sita/components/sita/surfaces/AppSurface";
+import { HeroCard, SummaryCard, AdvisorCard } from "@/platform/sita/components/sita/cards";
+import { FreshnessBadge, TrustBadge } from "@/platform/sita/components/sita/badges";
+import { ListReveal, ListRevealItem } from "@/platform/sita/components/sita/motion/AppTransitions";
+import { PremiumEmptyState } from "@/platform/sita/components/sita/PremiumEmptyState";
+import { CustomerDetailPane } from "@/modules/business/components/business/CustomerDetailPane";
+import { ConfidenceBar } from "@/platform/sita/components/sita/primitives/ConfidenceBar";
+import { SitaButton } from "@/platform/sita/components/sita/SitaCard";
+import { SectionSkeleton, KPISkeleton } from "@/platform/sita/components/sita/SectionSkeleton";
 import { useState, useMemo } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
@@ -22,15 +22,15 @@ import {
   Users, Search, DollarSign, Heart, AlertTriangle, Plus, X, Plug
 } from "lucide-react";
 import { motion } from "framer-motion";
-import CustomerAutopilotPanel from "@/components/autopilot/CustomerAutopilotPanel";
+import CustomerAutopilotPanel from "@/platform/orchestration/components/autopilot/CustomerAutopilotPanel";
 import { useCustomers } from "@/hooks/use-domain-data";
 import type { MockCustomer } from "@/data/repositories/business-data-service";
 import { useCRMSync } from "@/hooks/use-backend-actions";
 import { RefreshCw } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { CrossAppAction } from "@/components/sita/CrossAppAction";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { CrossAppAction } from "@/platform/sita/components/sita/CrossAppAction";
 
 type Customer = MockCustomer;
 type Tab = "all" | "active" | "at-risk" | "new" | "inactive";

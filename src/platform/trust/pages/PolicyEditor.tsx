@@ -1,8 +1,8 @@
 import { useAction } from "@/hooks/use-action";
-import { SitaPageHeader, SitaCard, SitaCardTitle, SitaButton } from "@/components/sita/SitaCard";
-import { SectionSkeleton } from "@/components/sita/SectionSkeleton";
-import { KPITile, EmptyState, SitaTabs } from "@/components/sita/SitaComponents";
-import { TrustBadge } from "@/components/sita/TrustBadge";
+import { SitaPageHeader, SitaCard, SitaCardTitle, SitaButton } from "@/platform/sita/components/sita/SitaCard";
+import { SectionSkeleton } from "@/platform/sita/components/sita/SectionSkeleton";
+import { KPITile, EmptyState, SitaTabs } from "@/platform/sita/components/sita/SitaComponents";
+import { TrustBadge } from "@/platform/sita/components/sita/TrustBadge";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
@@ -11,10 +11,10 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
 import { Shield, Plus, Edit, Trash2, ToggleLeft, ToggleRight, ChevronRight, Play, AlertTriangle, FileText, Lock } from "lucide-react";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { useDraftAutosave } from "@/hooks/useDraftAutosave";
 import { useEffect } from "react";
-import { PageShell } from "@/components/sita/PageShell";
+import { PageShell } from "@/platform/sita/components/sita/PageShell";
 
 // Production fallback — seed data removed
 const POLICY_CATEGORIES: any[] = [];

@@ -1,4 +1,4 @@
-import { SitaCard } from "@/components/sita/SitaCard";
+import { SitaCard } from "@/platform/sita/components/sita/SitaCard";
 import { InboxItem, getInboxStats } from "./mock-inbox-data";
 import type { LeadSource } from "./LeadSourceBadge";
 import { LeadSourceBadge } from "./LeadSourceBadge";

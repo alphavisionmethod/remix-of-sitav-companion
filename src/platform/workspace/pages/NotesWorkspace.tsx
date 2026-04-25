@@ -6,7 +6,7 @@ import { useAuth } from "@/contexts/AuthContext";
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useMemo } from "react";
-import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
+import { SitaPageHeader } from "@/platform/sita/components/sita/SitaPageHeader";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -18,14 +18,14 @@ import { motion, AnimatePresence } from "framer-motion";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import {
   FileText, Search, Plus, Tag, Star, Folder, Link, Clock, Edit3,
   CheckSquare, Mic, Brain, ChevronRight, Hash, Bookmark, Archive,
   ListTodo, Users, Briefcase, Workflow, FileBox, Sparkles,
   MessageSquare, Calendar,
 } from "lucide-react";
-import { PageShell } from "@/components/sita/PageShell";
+import { PageShell } from "@/platform/sita/components/sita/PageShell";
 const TYPE_ICONS: Record<string, React.ElementType> = { note: FileText, meeting: Brain, checklist: CheckSquare, voice: Mic, knowledge: Bookmark };
 const fadeUp = { hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0, transition: { duration: 0.25 } } };
 

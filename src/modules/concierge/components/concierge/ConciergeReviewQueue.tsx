@@ -1,4 +1,4 @@
-import { GlassCard } from "@/components/sita/PremiumPageComponents";
+import { GlassCard } from "@/platform/sita/components/sita/PremiumPageComponents";
 import { Eye, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 

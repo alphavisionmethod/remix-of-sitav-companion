@@ -4,20 +4,20 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
-import { SitaPageHeader } from "@/components/sita/SitaCard";
-import { DegradedStateBanner } from "@/components/sita/truth/DegradedStateBanner";
-import { StalenessIndicator } from "@/components/sita/truth/StalenessIndicator";
+import { SitaPageHeader } from "@/platform/sita/components/sita/SitaCard";
+import { DegradedStateBanner } from "@/platform/sita/components/sita/truth/DegradedStateBanner";
+import { StalenessIndicator } from "@/platform/sita/components/sita/truth/StalenessIndicator";
 import {
   Activity, Shield, AlertTriangle, CheckCircle, XCircle, Clock, Cpu, HardDrive,
   Database, Wifi, Zap, BarChart3, BookOpen, Play, RotateCcw, Server, Gauge, Radio
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { PremiumEmptyState } from "@/components/sita/PremiumEmptyState";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { PremiumEmptyState } from "@/platform/sita/components/sita/PremiumEmptyState";
 import { useOperationsCommandCenter } from "@/hooks/use-operations-command-center";
 import type { RunbookRow } from "@/hooks/use-operations-command-center";
-import { RunbookLaunchDialog } from "@/components/operations/RunbookLaunchDialog";
+import { RunbookLaunchDialog } from "@/platform/operations/components/operations/RunbookLaunchDialog";
 
 export default function OperationsCommandCenter() {
   

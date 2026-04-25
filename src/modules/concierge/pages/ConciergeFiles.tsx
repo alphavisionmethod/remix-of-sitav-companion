@@ -1,10 +1,10 @@
-import { KPITile, SitaTabs, EmptyState } from "@/components/sita/SitaComponents";
-import { TrustBadge } from "@/components/sita/TrustBadge";
-import { PersonalEssentialsPreviewPanel, ConciergePageWrapper, ConciergeEmptyState } from "@/components/concierge";
-import type { EssentialDoc } from "@/components/concierge";
+import { KPITile, SitaTabs, EmptyState } from "@/platform/sita/components/sita/SitaComponents";
+import { TrustBadge } from "@/platform/sita/components/sita/TrustBadge";
+import { PersonalEssentialsPreviewPanel, ConciergePageWrapper, ConciergeEmptyState } from "@/modules/concierge/components/concierge";
+import type { EssentialDoc } from "@/modules/concierge/components/concierge";
 import { useState } from "react";
 import { FileText, Upload, FolderOpen, Shield, GraduationCap, Stethoscope, Home, Plane, Receipt, Calendar, Search, Eye } from "lucide-react";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
 
 interface HouseholdFile {

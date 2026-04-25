@@ -10,7 +10,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Switch } from "@/components/ui/switch";
-import { SitaCard, SitaCardTitle, SitaSectionHeader } from "@/components/sita/SitaCard";
+import { SitaCard, SitaCardTitle, SitaSectionHeader } from "@/platform/sita/components/sita/SitaCard";
 import { cn } from "@/lib/utils";
 import type { PatrolIssue, HealthReport, IssueCategory, IssueSeverity } from "@/lib/core-services/error-patrol";
 import {

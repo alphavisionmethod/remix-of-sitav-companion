@@ -14,7 +14,7 @@
 import type { ReactNode } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { EmptyState } from "@/components/sita/EmptyState";
+import { EmptyState } from "@/platform/sita/components/sita/EmptyState";
 import { Skeleton } from "@/components/primitives/feedback/Skeleton";
 import { AlertTriangle, RefreshCw } from "lucide-react";
 

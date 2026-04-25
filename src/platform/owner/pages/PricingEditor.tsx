@@ -4,8 +4,8 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useEffect } from "react";
-import { SitaPageHeader, SitaCard } from "@/components/sita/SitaCard";
-import { AdminActionCard } from "@/components/sita/AdminActionCard";
+import { SitaPageHeader, SitaCard } from "@/platform/sita/components/sita/SitaCard";
+import { AdminActionCard } from "@/platform/sita/components/sita/AdminActionCard";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
@@ -16,7 +16,7 @@ import { motion } from "framer-motion";
 
 import { usePricingItems } from "@/hooks/use-domain-data";
 import type { OwnerPricingItem as PricingItem } from "@/data/fixtures/mock-data/owner";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 const PricingEditor = () => {
   const { data: pricingData = [] } = usePricingItems();

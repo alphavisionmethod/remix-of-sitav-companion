@@ -4,11 +4,11 @@
 
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Download } from "lucide-react";
-import { GlobalErrorBoundary } from "@/components/sita/GlobalErrorBoundary";
-import { PageShell } from "@/components/sita/PageShell";
+import { GlobalErrorBoundary } from "@/platform/sita/components/sita/GlobalErrorBoundary";
+import { PageShell } from "@/platform/sita/components/sita/PageShell";
 import { Button } from "@/components/ui/button";
-import { DataExportCard } from "@/components/personal-brain/settings/DataExportCard";
-import { DataDeleteCard } from "@/components/personal-brain/settings/DataDeleteCard";
+import { DataExportCard } from "@/platform/personal-brain/components/personal-brain/settings/DataExportCard";
+import { DataDeleteCard } from "@/platform/personal-brain/components/personal-brain/settings/DataDeleteCard";
 
 export default function DataSettings() {
   const navigate = useNavigate();

@@ -1,10 +1,10 @@
-import FIPSubNav from "@/components/admin/FIPSubNav";
+import FIPSubNav from "@/platform/admin/components/admin/FIPSubNav";
 import { motion } from "framer-motion";
 import { Brain, Database, Eye, Lock, Trash2, GitBranch } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useFeatureSpecs } from "@/hooks/use-fip-data";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 
 

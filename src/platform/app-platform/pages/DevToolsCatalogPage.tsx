@@ -8,9 +8,9 @@ import { ArrowLeft, Code, Terminal, GitBranch, Database, Globe, Package, Wrench 
 import { cn } from "@/lib/utils";
 import { useAppPlatform } from "@/contexts/AppPlatformContext";
 import { APP_BUNDLES } from "@/lib/app-platform";
-import { AppCard, BundleCard, AppIcon } from "@/components/sita/app-platform/AppStoreComponents";
+import { AppCard, BundleCard, AppIcon } from "@/platform/sita/components/sita/app-platform/AppStoreComponents";
 import type { AppDefinition } from "@/domains/apps/types";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 const DevToolsCatalogPage = () => {
   const navigate = useNavigate();
   const { apps } = useAppPlatform();

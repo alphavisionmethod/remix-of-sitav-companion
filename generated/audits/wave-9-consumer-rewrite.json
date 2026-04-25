@@ -1,0 +1,128 @@
+{
+  "generatedAt": "2026-04-25T16:38:58.225Z",
+  "mappingSize": 649,
+  "filesChanged": 1056,
+  "importsRewritten": 2808,
+  "topAdapters": [
+    {
+      "alias": "@/components/sita/PageTruthBanner",
+      "count": 610
+    },
+    {
+      "alias": "@/components/sita/SitaCard",
+      "count": 189
+    },
+    {
+      "alias": "@/components/sita/PageShell",
+      "count": 113
+    },
+    {
+      "alias": "@/components/sita/SitaComponents",
+      "count": 112
+    },
+    {
+      "alias": "@/components/sita/TrustBadge",
+      "count": 63
+    },
+    {
+      "alias": "@/components/sita/SitaPageHeader",
+      "count": 59
+    },
+    {
+      "alias": "@/components/sita/admin/AdminPageHeader",
+      "count": 56
+    },
+    {
+      "alias": "@/components/sita/PremiumEmptyState",
+      "count": 48
+    },
+    {
+      "alias": "@/components/sita/domain-shared/ModuleAdvisorInsight",
+      "count": 40
+    },
+    {
+      "alias": "@/components/sita/EmptyState",
+      "count": 38
+    },
+    {
+      "alias": "@/components/admin/shells/AdminControlPlaneShell",
+      "count": 35
+    },
+    {
+      "alias": "@/components/sita/Typography",
+      "count": 34
+    },
+    {
+      "alias": "@/components/sita/SectionSkeleton",
+      "count": 28
+    },
+    {
+      "alias": "@/components/sita/primitives/ConfidenceBar",
+      "count": 28
+    },
+    {
+      "alias": "@/components/mobile/MobileShell",
+      "count": 27
+    },
+    {
+      "alias": "@/components/sita/PageSkeleton",
+      "count": 25
+    },
+    {
+      "alias": "@/components/sita/surfaces/AppSurface",
+      "count": 19
+    },
+    {
+      "alias": "@/components/sita/GlobalErrorBoundary",
+      "count": 17
+    },
+    {
+      "alias": "@/components/sita/PremiumPageComponents",
+      "count": 17
+    },
+    {
+      "alias": "@/components/sita/app-platform/AppStoreComponents",
+      "count": 16
+    },
+    {
+      "alias": "@/components/admin/FIPSubNav",
+      "count": 15
+    },
+    {
+      "alias": "@/components/sita/motion/AppTransitions",
+      "count": 15
+    },
+    {
+      "alias": "@/components/sita/StateBadge",
+      "count": 14
+    },
+    {
+      "alias": "@/components/sita/surfaces/SplitWorkspace",
+      "count": 14
+    },
+    {
+      "alias": "@/components/sita/primitives/DomainHeader",
+      "count": 14
+    },
+    {
+      "alias": "@/components/admin/RCPSubNav",
+      "count": 13
+    },
+    {
+      "alias": "@/components/admin/SAGSubNav",
+      "count": 13
+    },
+    {
+      "alias": "@/components/admin/hubs/DomainHubLayout",
+      "count": 12
+    },
+    {
+      "alias": "@/components/sita/shell/DomainAppShell",
+      "count": 12
+    },
+    {
+      "alias": "@/components/admin/AIGSubNav",
+      "count": 11
+    }
+  ]
+}

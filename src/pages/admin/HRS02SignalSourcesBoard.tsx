@@ -4,8 +4,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { Radio, CheckCircle2, Wifi, Smartphone, Loader2 } from "lucide-react";
 import { useWearableProviders } from "@/hooks/use-health-signal-data";
-import HRSSubNav from "@/components/admin/HRSSubNav";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import HRSSubNav from "@/platform/admin/components/admin/HRSSubNav";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 const HRS02SignalSourcesBoard = () => {
   const { data: providers, isLoading } = useWearableProviders();
 

@@ -1,4 +1,4 @@
-import REXSubNav from "@/components/admin/REXSubNav";
+import REXSubNav from "@/platform/admin/components/admin/REXSubNav";
 import { useQuery } from "@tanstack/react-query";
 import { fetchRemediationPrograms } from "@/lib/core-services/recommendation-execution/recommendation-loop-service";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";

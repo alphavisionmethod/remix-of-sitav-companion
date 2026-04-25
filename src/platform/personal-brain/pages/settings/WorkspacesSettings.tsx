@@ -1,7 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Archive } from "lucide-react";
-import { usePbWorkspaces } from "@/components/personal-brain/hooks/usePbWorkspaces";
+import { usePbWorkspaces } from "@/platform/personal-brain/components/personal-brain/hooks/usePbWorkspaces";
 
 export default function WorkspacesSettings() {
   const { workspaces, archiveWorkspace, loading } = usePbWorkspaces();

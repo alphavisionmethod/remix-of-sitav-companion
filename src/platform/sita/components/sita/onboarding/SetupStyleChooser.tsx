@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Zap, Sparkles, Settings } from "lucide-react";
-import { SetupStageHeader, StageTransitionController, TrustInfoCard } from "@/components/sita/setup";
+import { SetupStageHeader, StageTransitionController, TrustInfoCard } from "@/platform/sita/components/sita/setup";
 
 type SetupStyle = "express" | "guided" | "advanced";
 

@@ -3,12 +3,12 @@
 // VM status, resource usage, backup, update channel, lifecycle
 // ═══════════════════════════════════════════════════════════════
 
-import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
+import { SitaPageHeader } from "@/platform/sita/components/sita/SitaPageHeader";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Server, Cpu, HardDrive, MemoryStick, Activity, RefreshCw, Download, Shield, Clock, CheckCircle, AlertTriangle, Database } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Progress } from "@/components/ui/progress";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 const RESOURCE_METRICS = [
   { label: "CPU Usage", value: 34, max: 100, unit: "%", icon: Cpu, status: "healthy" as const },

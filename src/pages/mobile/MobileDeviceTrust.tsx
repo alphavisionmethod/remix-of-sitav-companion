@@ -3,12 +3,12 @@
 // Enrollment, trust health, revoke/re-enroll
 // ═══════════════════════════════════════════════════════════════
 
-import { MobileShell } from "@/components/mobile/MobileShell";
+import { MobileShell } from "@/platform/experience/components/mobile/MobileShell";
 import { Shield, ShieldCheck, ShieldAlert, Smartphone, Fingerprint, RefreshCw, XCircle, CheckCircle, Clock, AlertTriangle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { toast } from "sonner";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 type TrustLevel = "hardware-attested" | "verified" | "basic" | "untrusted";
 
 interface DeviceInfo {

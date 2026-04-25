@@ -1,5 +1,5 @@
-import { SitaCard, SitaCardTitle } from "@/components/sita/SitaCard";
-import { TrustBadge, TrustLevel } from "@/components/sita/TrustBadge";
+import { SitaCard, SitaCardTitle } from "@/platform/sita/components/sita/SitaCard";
+import { TrustBadge, TrustLevel } from "@/platform/sita/components/sita/TrustBadge";
 import { useBrainCore, useDemoMode } from "@/hooks/use-brain-core";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";

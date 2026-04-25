@@ -16,7 +16,7 @@ type Incident = { id: string; title: string; severity: string; status: string; a
 type Severity = "critical" | "high" | "medium" | "low";
 type IncidentStatus = "active" | "investigating" | "mitigating" | "resolved" | "closed" | "open";
 import { anomalyAlertSystem, type Anomaly } from "@/lib/services/anomaly-alert";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 const SEVERITY_CONFIG: Record<Severity, { color: string; bg: string; border: string }> = {
   critical: { color: "text-red-400", bg: "bg-red-500/10", border: "border-red-500/30" },
   high: { color: "text-orange-400", bg: "bg-orange-500/10", border: "border-orange-500/30" },

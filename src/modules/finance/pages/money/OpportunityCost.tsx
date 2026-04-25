@@ -2,15 +2,15 @@
 // SITA OS — Money Office: Opportunity Cost Dashboard
 // ═══════════════════════════════════════════════════════════════
 
-import { SitaCard, SitaCardTitle, SitaSectionHeader } from "@/components/sita/SitaCard";
-import { KPITile } from "@/components/sita/SitaComponents";
-import { DomainHeader } from "@/components/sita/primitives/DomainHeader";
-import { ConfidenceBar } from "@/components/sita/primitives/ConfidenceBar";
+import { SitaCard, SitaCardTitle, SitaSectionHeader } from "@/platform/sita/components/sita/SitaCard";
+import { KPITile } from "@/platform/sita/components/sita/SitaComponents";
+import { DomainHeader } from "@/platform/sita/components/sita/primitives/DomainHeader";
+import { ConfidenceBar } from "@/platform/sita/components/sita/primitives/ConfidenceBar";
 import { ArrowRight, DollarSign, TrendingDown, Target, PiggyBank, CreditCard } from "lucide-react";
 import { motion } from "framer-motion";
 import type { OpportunityCostEntry } from "@/packages/finance-contracts/advanced-intelligence";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvisorInsight";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { ModuleAdvisorInsight } from "@/platform/sita/components/sita/domain-shared/ModuleAdvisorInsight";
 
 const demoEntries: OpportunityCostEntry[] = [
   { category: "Dining & Delivery", spentCents: 42000, preventedReserveGrowthCents: 42000, delayedDebtPayoffDays: 8, delayedGoalProgressPct: 2.1, alternativeUse: "Emergency fund +$420" },

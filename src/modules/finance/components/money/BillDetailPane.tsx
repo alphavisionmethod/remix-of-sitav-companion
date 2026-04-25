@@ -3,8 +3,8 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { CheckCircle, Trash2, Zap, CreditCard } from "lucide-react";
-import { SitaCard, SitaCardTitle, SitaButton } from "@/components/sita/SitaCard";
-import { EmptyState } from "@/components/sita/SitaComponents";
+import { SitaCard, SitaCardTitle, SitaButton } from "@/platform/sita/components/sita/SitaCard";
+import { EmptyState } from "@/platform/sita/components/sita/SitaComponents";
 import { format, parseISO } from "date-fns";
 
 const statusConfig: Record<string, { label: string; color: string }> = {

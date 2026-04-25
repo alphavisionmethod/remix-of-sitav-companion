@@ -1,5 +1,5 @@
 import { Building2 } from "lucide-react";
-import { SetupStageHeader } from "@/components/sita/setup/SetupStageHeader";
+import { SetupStageHeader } from "@/platform/sita/components/sita/setup/SetupStageHeader";
 import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils";
 import type { MoneyOnboardingState } from "./types";

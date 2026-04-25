@@ -1,6 +1,6 @@
 import React from "react";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import CRMAdvisorBoard from "@/components/business/crm/CRMAdvisorBoard";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import CRMAdvisorBoard from "@/modules/business/components/business/crm/CRMAdvisorBoard";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
 
 const CRMAdvisorPage = () => {

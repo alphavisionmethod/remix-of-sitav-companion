@@ -8,7 +8,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { SERVICE_OWNERSHIP_REGISTRY } from "@/lib/core-services/service-registry/service-ownership-registry";
 import { ROUTE_SERVICE_INVENTORY } from "@/lib/core-services/service-registry/route-to-service-inventory";
 import { Shield, AlertTriangle, Layers } from "lucide-react";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 function getRiskBadge(risk: string) {
   if (risk === "high") return <Badge variant="destructive">{risk}</Badge>;

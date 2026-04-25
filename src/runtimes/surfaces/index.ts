@@ -3,7 +3,7 @@
 // Canonical import: @/runtimes/surfaces
 // ═══════════════════════════════════════════════════════════════
 
-export { AppSurface } from "@/components/sita/surfaces/AppSurface";
-export { DetailDrawer } from "@/components/sita/surfaces/DetailDrawer";
-export { SlidePanel } from "@/components/sita/surfaces/SlidePanel";
-export { SplitWorkspace } from "@/components/sita/surfaces/SplitWorkspace";
+export { AppSurface } from "@/platform/sita/components/sita/surfaces/AppSurface";
+export { DetailDrawer } from "@/platform/sita/components/sita/surfaces/DetailDrawer";
+export { SlidePanel } from "@/platform/sita/components/sita/surfaces/SlidePanel";
+export { SplitWorkspace } from "@/platform/sita/components/sita/surfaces/SplitWorkspace";

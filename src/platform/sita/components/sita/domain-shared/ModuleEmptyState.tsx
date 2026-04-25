@@ -6,7 +6,7 @@
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import type { LucideIcon } from "lucide-react";
-import type { DomainId } from "@/components/sita/shell/DomainAppShell";
+import type { DomainId } from "@/platform/sita/components/sita/shell/DomainAppShell";
 
 interface ModuleEmptyStateProps {
   domain: DomainId;

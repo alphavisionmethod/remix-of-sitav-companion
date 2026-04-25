@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from "react";
-import { MobileShell } from "@/components/mobile/MobileShell";
+import { MobileShell } from "@/platform/experience/components/mobile/MobileShell";
 import {
   Folder, FileText, ArrowLeft, Plus, Upload, Trash2, MoreVertical,
   File, Image, FileSpreadsheet, Film, Music, Loader2,
@@ -7,7 +7,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { useFolderContents, useCreateFolder, useDeleteFile, useDeleteFolder, useUploadToFolder } from "@/hooks/use-file-explorer";
 import type { ExplorerFile, ExplorerFolder } from "@/data/repositories/file-explorer-service";
-import { NewFolderDialog } from "@/components/files/NewFolderDialog";
+import { NewFolderDialog } from "@/platform/files/components/files/NewFolderDialog";
 import {
   DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";

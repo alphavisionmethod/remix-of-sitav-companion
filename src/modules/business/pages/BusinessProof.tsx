@@ -3,13 +3,13 @@
 // Every action has a verifiable trail
 // ═══════════════════════════════════════════════════════════════
 
-import { SplitWorkspace } from "@/components/sita/surfaces/SplitWorkspace";
-import { HeroCard, QueueCard, ProofCard, StatusCard } from "@/components/sita/cards";
-import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvisorInsight";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { PremiumEmptyState } from "@/components/sita/PremiumEmptyState";
-import { TrustBadge } from "@/components/sita/TrustBadge";
-import { StateBadge, type ExecutionState } from "@/components/sita/StateBadge";
+import { SplitWorkspace } from "@/platform/sita/components/sita/surfaces/SplitWorkspace";
+import { HeroCard, QueueCard, ProofCard, StatusCard } from "@/platform/sita/components/sita/cards";
+import { ModuleAdvisorInsight } from "@/platform/sita/components/sita/domain-shared/ModuleAdvisorInsight";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { PremiumEmptyState } from "@/platform/sita/components/sita/PremiumEmptyState";
+import { TrustBadge } from "@/platform/sita/components/sita/TrustBadge";
+import { StateBadge, type ExecutionState } from "@/platform/sita/components/sita/StateBadge";
 import { useState } from "react";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
 import { getModuleAdaptation } from "@/domains/engines/business-module-adaptations";

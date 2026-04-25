@@ -18,8 +18,8 @@ import {
   BellRing, HeartPulse, Target, Gauge, RefreshCw, Download,
   ArrowRight, Zap, ShieldCheck, Database, Globe, Key, GitBranch,
 } from "lucide-react";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { PageShell } from "@/components/sita/PageShell";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { PageShell } from "@/platform/sita/components/sita/PageShell";
 
 
 

@@ -1,13 +1,13 @@
 import { useAuth } from "@/contexts/AuthContext";
-import { FinanceCreditCard } from "@/components/finance/FinanceCreditCard";
-import { FinanceMoneyFlow } from "@/components/finance/FinanceMoneyFlow";
-import { FinanceQuickTransfer } from "@/components/finance/FinanceQuickTransfer";
-import { FinanceRecentTransactions } from "@/components/finance/FinanceRecentTransactions";
-import { FinanceStatCards } from "@/components/finance/FinanceStatCards";
+import { FinanceCreditCard } from "@/modules/finance/components/finance/FinanceCreditCard";
+import { FinanceMoneyFlow } from "@/modules/finance/components/finance/FinanceMoneyFlow";
+import { FinanceQuickTransfer } from "@/modules/finance/components/finance/FinanceQuickTransfer";
+import { FinanceRecentTransactions } from "@/modules/finance/components/finance/FinanceRecentTransactions";
+import { FinanceStatCards } from "@/modules/finance/components/finance/FinanceStatCards";
 import { useBills, useSubscriptions, useInvoices } from "@/hooks/use-sita-data";
 import { useFinancialAccounts, useMoneyKPIs } from "@/hooks/use-domain-data";
 import { DollarSign, Receipt, CreditCard } from "lucide-react";
-import { PremiumEmptyState } from "@/components/sita/PremiumEmptyState";
+import { PremiumEmptyState } from "@/platform/sita/components/sita/PremiumEmptyState";
 import { useFinanceNavigation } from "@/contexts/FinanceNavigationContext";
 
 

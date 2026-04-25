@@ -4,13 +4,13 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate, Link } from "react-router-dom";
 import { toast } from "sonner";
 import { Mail, Lock, ArrowRight, Eye, EyeOff, ShieldCheck, Zap, Brain, BarChart3, Receipt } from "lucide-react";
-import { GoogleSignInButton } from "@/components/auth/GoogleSignInButton";
-import { AppleSignInButton } from "@/components/auth/AppleSignInButton";
-import { AuthDivider } from "@/components/auth/AuthDivider";
-import { MFAChallenge } from "@/components/auth/MFAChallenge";
+import { GoogleSignInButton } from "@/platform/auth/components/auth/GoogleSignInButton";
+import { AppleSignInButton } from "@/platform/auth/components/auth/AppleSignInButton";
+import { AuthDivider } from "@/platform/auth/components/auth/AuthDivider";
+import { MFAChallenge } from "@/platform/auth/components/auth/MFAChallenge";
 import { motion } from "framer-motion";
-import { EnhancedLockScreen as LockScreen } from "@/components/sita/shell/EnhancedLockScreen";
-import { FirstBootScreen } from "@/components/sita/FirstBootScreen";
+import { EnhancedLockScreen as LockScreen } from "@/platform/sita/components/sita/shell/EnhancedLockScreen";
+import { FirstBootScreen } from "@/platform/sita/components/sita/FirstBootScreen";
 
 const Login = () => {
   const { signIn, signInAsDemo, requiresMFA, mfaFactorId, cancelMFA } = useAuth();

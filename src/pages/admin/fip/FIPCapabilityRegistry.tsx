@@ -1,4 +1,4 @@
-import FIPSubNav from "@/components/admin/FIPSubNav";
+import FIPSubNav from "@/platform/admin/components/admin/FIPSubNav";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Layers, Plus, Shield, Zap, Eye, Target } from "lucide-react";
@@ -10,7 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useCapabilities, useCreateCapability } from "@/hooks/use-fip-data";
 import { CAPABILITY_CLASSES } from "@/lib/fip/types";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 
 

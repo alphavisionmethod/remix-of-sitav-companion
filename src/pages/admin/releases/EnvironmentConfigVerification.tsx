@@ -12,7 +12,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CheckCircle2, XCircle, AlertTriangle, RefreshCw, Loader2, Server } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery } from "@tanstack/react-query";
-import { AdminControlPlaneShell } from "@/components/admin/shells/AdminControlPlaneShell";
+import { AdminControlPlaneShell } from "@/platform/admin/components/admin/shells/AdminControlPlaneShell";
 
 // ── Platform definitions ──
 type Platform = "web" | "ios" | "android" | "vm" | "iso";

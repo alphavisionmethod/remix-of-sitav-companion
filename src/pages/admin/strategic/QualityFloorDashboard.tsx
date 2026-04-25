@@ -2,11 +2,11 @@ import { Shield, CheckCircle, XCircle } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
+import { SitaPageHeader } from "@/platform/sita/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { useQualityFloors } from "@/hooks/useIntelligencePersistence";
 import { DEFAULT_QUALITY_FLOORS } from "@/lib/strategic-intelligence/quality-floor-engine";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 const enfColors: Record<string,string> = { pass: "text-emerald-400 bg-emerald-500/10", block: "text-rose-400 bg-rose-500/10", escalate: "text-amber-400 bg-amber-500/10", reroute: "text-blue-400 bg-blue-500/10", warn: "text-amber-400 bg-amber-500/10" };
 

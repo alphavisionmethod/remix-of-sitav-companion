@@ -3,8 +3,8 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Brain, ArrowRight, AlertTriangle, CheckCircle2, Loader2 } from "lucide-react";
 import { useReadinessStates } from "@/hooks/use-health-signal-data";
-import HRSSubNav from "@/components/admin/HRSSubNav";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import HRSSubNav from "@/platform/admin/components/admin/HRSSubNav";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 // Production fallback — seed data removed
 const PIPELINE_STAGES: any[] = [];

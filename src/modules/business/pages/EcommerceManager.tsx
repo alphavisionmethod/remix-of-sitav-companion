@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { SparklineChart } from "@/components/sita/SparklineChart";
+import { SparklineChart } from "@/platform/sita/components/sita/SparklineChart";
 import {
   ShoppingCart, Package, BarChart3, Store, TrendingUp, AlertTriangle,
   Search, ChevronDown, ChevronRight, Clock, CheckCircle, Truck, XCircle,

@@ -1,4 +1,4 @@
-import { Typography } from "@/components/sita/Typography";
+import { Typography } from "@/platform/sita/components/sita/Typography";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -14,7 +14,7 @@ import {
   BookOpen, ShieldOff, Pause, Undo2, Ban, HandMetal
 } from "lucide-react";
 import AutomationSubNav from "./AutomationSubNav";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 // Inline static configuration (was seed data)
 const humanVsAI: any[] = [];

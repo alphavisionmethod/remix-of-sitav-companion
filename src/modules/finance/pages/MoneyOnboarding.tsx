@@ -1,4 +1,4 @@
-import { MoneyOnboardingFlow } from "@/components/sita/money-onboarding";
+import { MoneyOnboardingFlow } from "@/platform/sita/components/sita/money-onboarding";
 import { openFinanceModule } from "@/lib/finance-launcher";
 
 const MoneyOnboarding = () => {

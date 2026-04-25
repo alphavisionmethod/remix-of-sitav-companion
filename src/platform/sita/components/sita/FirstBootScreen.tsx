@@ -11,17 +11,17 @@ import {
   HardwareDetectionPanel,
   type HardwareCheck,
   type HardwareCheckStatus,
-} from "@/components/sita/boot/HardwareDetectionPanel";
+} from "@/platform/sita/components/sita/boot/HardwareDetectionPanel";
 import {
   BootRecoveryCard,
   type BootIssueKind,
-} from "@/components/sita/boot/BootRecoveryCard";
+} from "@/platform/sita/components/sita/boot/BootRecoveryCard";
 import {
   BootAccessibilityShortcut,
   type A11yOption,
-} from "@/components/sita/boot/BootAccessibilityShortcut";
-import { SecureInitCeremony } from "@/components/sita/boot/SecureInitCeremony";
-import { BootHandoffTransition } from "@/components/sita/boot/BootHandoffTransition";
+} from "@/platform/sita/components/sita/boot/BootAccessibilityShortcut";
+import { SecureInitCeremony } from "@/platform/sita/components/sita/boot/SecureInitCeremony";
+import { BootHandoffTransition } from "@/platform/sita/components/sita/boot/BootHandoffTransition";
 import {
   persistBootState,
   loadPersistedBootState,
@@ -30,7 +30,7 @@ import {
   isNetworkAvailable,
   onNetworkChange,
   onVisibilityChange,
-} from "@/components/sita/boot/bootStatePersistence";
+} from "@/platform/sita/components/sita/boot/bootStatePersistence";
 
 // ── State Machine ───────────────────────────────────────────
 

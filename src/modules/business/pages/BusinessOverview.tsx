@@ -8,13 +8,13 @@ import {
 } from "lucide-react";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
 import { getIdentityLayer } from "@/domains/engines/business-identity-layers";
-import { HomeIdentityHeader } from "@/components/business/home/HomeIdentityHeader";
-import { WhatMattersNowHero } from "@/components/business/home/WhatMattersNowHero";
-import { PressurePulseLayer } from "@/components/business/home/PressurePulseLayer";
-import { OpportunityRecoveryLayer } from "@/components/business/home/OpportunityRecoveryLayer";
-import { ContinuityTimeline } from "@/components/business/home/ContinuityTimeline";
-import { AdvisorSynthesisZone } from "@/components/business/home/AdvisorSynthesisZone";
-import { BoardroomEntryZone } from "@/components/business/home/BoardroomEntryZone";
+import { HomeIdentityHeader } from "@/modules/business/components/business/home/HomeIdentityHeader";
+import { WhatMattersNowHero } from "@/modules/business/components/business/home/WhatMattersNowHero";
+import { PressurePulseLayer } from "@/modules/business/components/business/home/PressurePulseLayer";
+import { OpportunityRecoveryLayer } from "@/modules/business/components/business/home/OpportunityRecoveryLayer";
+import { ContinuityTimeline } from "@/modules/business/components/business/home/ContinuityTimeline";
+import { AdvisorSynthesisZone } from "@/modules/business/components/business/home/AdvisorSynthesisZone";
+import { BoardroomEntryZone } from "@/modules/business/components/business/home/BoardroomEntryZone";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 

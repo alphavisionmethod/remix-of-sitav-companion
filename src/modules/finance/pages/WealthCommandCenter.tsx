@@ -12,7 +12,7 @@ import {
   PiggyBank, CreditCard, Building2, BarChart3, Zap
 } from "lucide-react";
 import { useCountUp } from "@/hooks/useCountUp";
-import { PageShell } from "@/components/sita/PageShell";
+import { PageShell } from "@/platform/sita/components/sita/PageShell";
 
 // ─── Simulated data ───
 const ACCOUNTS = [

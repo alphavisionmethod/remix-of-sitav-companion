@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { SitaCard, SitaCardTitle } from "@/components/sita/SitaCard";
+import { SitaCard, SitaCardTitle } from "@/platform/sita/components/sita/SitaCard";
 import type { InboxItem } from "./mock-inbox-data";
 import { Mail, Phone, Calendar, FileText, MessageSquare, User, Zap, Clock } from "lucide-react";
 

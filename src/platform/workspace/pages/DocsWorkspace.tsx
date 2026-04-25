@@ -5,14 +5,14 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useMemo } from "react";
-import { SitaPageHeader, SitaCard, SitaCardTitle } from "@/components/sita/SitaCard";
-import { SitaTabs } from "@/components/sita/SitaComponents";
-import { EmptyState } from "@/components/sita/EmptyState";
+import { SitaPageHeader, SitaCard, SitaCardTitle } from "@/platform/sita/components/sita/SitaCard";
+import { SitaTabs } from "@/platform/sita/components/sita/SitaComponents";
+import { EmptyState } from "@/platform/sita/components/sita/EmptyState";
 import { motion, AnimatePresence } from "framer-motion";
 import { useDocs } from "@/hooks/use-domain-data";
 import type { MockDoc } from "@/data/fixtures/mock-data/workspace";
 import ReactMarkdown from "react-markdown";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import {
   FileText, Plus, Search, Clock, Users, Shield, Workflow,
   Lock, Eye, FileCheck, MoreVertical, ChevronRight,

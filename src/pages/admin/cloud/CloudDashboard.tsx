@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { SparklineChart } from "@/components/sita/SparklineChart";
+import { SparklineChart } from "@/platform/sita/components/sita/SparklineChart";
 import {
   Users, HardDrive, RefreshCw, Wifi, AlertTriangle, Smartphone,
   ArrowUpRight, ArrowDownRight, CheckCircle, Activity

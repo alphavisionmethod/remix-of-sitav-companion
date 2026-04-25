@@ -18,21 +18,21 @@ import {
   ConnectorSummaryPanel,
   IncidentSummaryPanel,
   ReplaySummaryPanel,
-} from "@/components/admin/panels";
-import { HealthScoreGauge } from "@/components/admin/shells/HealthScoreGauge";
-import { AISuggestionsPanel } from "@/components/admin/shells/AISuggestionsPanel";
-import { OneClickActions } from "@/components/admin/shells/OneClickActions";
-import { CommandTemplateCards } from "@/components/admin/shells/CommandTemplateCards";
-import { ExecutionTimeline } from "@/components/admin/shells/ExecutionTimeline";
-import { WhyTooltip } from "@/components/admin/shells/WhyTooltip";
-import { FullSystemAudit } from "@/components/admin/shells/FullSystemAudit";
-import { LiveSystemMap } from "@/components/admin/shells/LiveSystemMap";
-import { SelfHealingStatusPanel } from "@/components/admin/shells/SelfHealingStatusPanel";
-import { NoSilentFailureAlerts } from "@/components/admin/shells/NoSilentFailureAlerts";
-import { ContinuousVerificationPanel } from "@/components/admin/shells/ContinuousVerificationPanel";
-import { ExplainSimplyToggle } from "@/components/admin/shells/ExplainSimplyToggle";
-import { SurfaceAuthorityMatrix } from "@/components/admin/shells/SurfaceAuthorityMatrix";
-import { StateAuthorityMap } from "@/components/admin/shells/StateAuthorityMap";
+} from "@/platform/admin/components/admin/panels";
+import { HealthScoreGauge } from "@/platform/admin/components/admin/shells/HealthScoreGauge";
+import { AISuggestionsPanel } from "@/platform/admin/components/admin/shells/AISuggestionsPanel";
+import { OneClickActions } from "@/platform/admin/components/admin/shells/OneClickActions";
+import { CommandTemplateCards } from "@/platform/admin/components/admin/shells/CommandTemplateCards";
+import { ExecutionTimeline } from "@/platform/admin/components/admin/shells/ExecutionTimeline";
+import { WhyTooltip } from "@/platform/admin/components/admin/shells/WhyTooltip";
+import { FullSystemAudit } from "@/platform/admin/components/admin/shells/FullSystemAudit";
+import { LiveSystemMap } from "@/platform/admin/components/admin/shells/LiveSystemMap";
+import { SelfHealingStatusPanel } from "@/platform/admin/components/admin/shells/SelfHealingStatusPanel";
+import { NoSilentFailureAlerts } from "@/platform/admin/components/admin/shells/NoSilentFailureAlerts";
+import { ContinuousVerificationPanel } from "@/platform/admin/components/admin/shells/ContinuousVerificationPanel";
+import { ExplainSimplyToggle } from "@/platform/admin/components/admin/shells/ExplainSimplyToggle";
+import { SurfaceAuthorityMatrix } from "@/platform/admin/components/admin/shells/SurfaceAuthorityMatrix";
+import { StateAuthorityMap } from "@/platform/admin/components/admin/shells/StateAuthorityMap";
 
 // Production fallback — seed data removed
 const SERVICES: any[] = [];

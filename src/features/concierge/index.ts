@@ -3,4 +3,4 @@
 // Canonical import path: @/features/concierge
 // ═══════════════════════════════════════════════════════════════
 
-export * from "@/components/concierge";
+export * from "@/modules/concierge/components/concierge";

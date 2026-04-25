@@ -3,11 +3,11 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { Phone, Mail, Building, CheckCircle, AlertTriangle, MessageSquare, Receipt, ArrowRight, Trash2, Clock } from "lucide-react";
-import { SitaCard, SitaCardTitle, SitaButton } from "@/components/sita/SitaCard";
-import { ConfidenceBar } from "@/components/sita/primitives/ConfidenceBar";
-import { TrustBadge, TrustLevel } from "@/components/sita/TrustBadge";
-import { TimelineItem } from "@/components/sita/SitaComponents";
-import { RelationshipGraphPanel } from "@/components/business/RelationshipGraphPanel";
+import { SitaCard, SitaCardTitle, SitaButton } from "@/platform/sita/components/sita/SitaCard";
+import { ConfidenceBar } from "@/platform/sita/components/sita/primitives/ConfidenceBar";
+import { TrustBadge, TrustLevel } from "@/platform/sita/components/sita/TrustBadge";
+import { TimelineItem } from "@/platform/sita/components/sita/SitaComponents";
+import { RelationshipGraphPanel } from "@/modules/business/components/business/RelationshipGraphPanel";
 import type { MockCustomer } from "@/data/repositories/business-data-service";
 import { useBusinessNavigation } from "@/contexts/BusinessNavigationContext";
 

@@ -3,7 +3,7 @@
 // Proof chain, mutation lineage, audit logs, export
 // ═══════════════════════════════════════════════════════════════
 
-import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
+import { SitaPageHeader } from "@/platform/sita/components/sita/SitaPageHeader";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
@@ -11,7 +11,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Shield, FileText, Download, Search, Filter, ChevronRight, CheckCircle, AlertTriangle, Clock, User, Workflow, Link2, Eye } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 type AuditCategory = "all" | "operator" | "system" | "trust" | "data" | "auth";
 
 interface AuditRecord {

@@ -16,7 +16,7 @@ import { useRealityClassifications, useUpsertClassification, useDeleteClassifica
 import { Shield, Eye, Cpu, CheckCircle2, Plus, Trash2, Search, BarChart3, Pencil, Rocket, AlertTriangle, Info, ArrowRight, Layers, Target } from "lucide-react";
 import type { RealityClassification } from "@/data/persistence/reality-classification-persistence";
 import { SCOPE_LEVELS, EVIDENCE_SIGNALS, PROGRESSION_REQUIREMENTS, type ScopeLevel, type LaunchImpact } from "@/data/persistence/reality-classification-persistence";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 const CLASSIFICATION_CONFIG = {
   presentational: { label: "Presentational", color: "bg-muted text-muted-foreground", icon: Eye, description: "UI shell — no backing logic or data truth" },
   simulated: { label: "Simulated", color: "bg-yellow-500/20 text-yellow-400", icon: Cpu, description: "Mock/demo/in-memory logic, state dies on refresh" },

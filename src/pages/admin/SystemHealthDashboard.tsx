@@ -13,7 +13,7 @@ import { getCostSummary, type CostSummary } from "@/lib/observability/cost-gover
 import { getLogBuffer, type LogEntry } from "@/lib/observability/structured-logger";
 import { serviceHeartbeat, type HeartbeatSummary } from "@/lib/services/service-registry/heartbeat";
 import { createServiceRegistry } from "@/lib/services/service-registry";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 const statusColor = (s: string) => {
   switch (s) {

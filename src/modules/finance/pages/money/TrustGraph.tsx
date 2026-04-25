@@ -2,14 +2,14 @@
 // SITA OS — Money Office: Financial Trust Graph
 // ═══════════════════════════════════════════════════════════════
 
-import { SitaCard, SitaCardTitle, SitaSectionHeader } from "@/components/sita/SitaCard";
-import { KPITile } from "@/components/sita/SitaComponents";
-import { DomainHeader } from "@/components/sita/primitives/DomainHeader";
-import { TrustBadge } from "@/components/sita/TrustBadge";
+import { SitaCard, SitaCardTitle, SitaSectionHeader } from "@/platform/sita/components/sita/SitaCard";
+import { KPITile } from "@/platform/sita/components/sita/SitaComponents";
+import { DomainHeader } from "@/platform/sita/components/sita/primitives/DomainHeader";
+import { TrustBadge } from "@/platform/sita/components/sita/TrustBadge";
 import { Link2, Wallet, CreditCard, PiggyBank, Receipt, Building, AlertTriangle, DollarSign, Target, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 import type { FinancialTrustNode, FinancialTrustEdge, TrustEdgeHealth } from "@/packages/finance-contracts/advanced-intelligence";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 const healthColors: Record<TrustEdgeHealth, string> = {
   healthy: "border-trust-verified text-trust-verified bg-trust-verified/10",

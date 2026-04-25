@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 import { ReactNode } from "react";
 import { motion, useReducedMotion } from "framer-motion";
-import { Typography } from "@/components/sita/Typography";
+import { Typography } from "@/platform/sita/components/sita/Typography";
 
 const appleSpring = { type: "spring", mass: 1, stiffness: 120, damping: 14 };
 

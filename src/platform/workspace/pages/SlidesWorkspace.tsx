@@ -7,10 +7,10 @@
 import { useState } from "react";
 import { useDecks } from "@/hooks/use-domain-data";
 import type { MockDeck, MockSlide } from "@/data/fixtures/mock-data/workspace";
-import { SitaPageHeader, SitaCard, SitaCardTitle } from "@/components/sita/SitaCard";
+import { SitaPageHeader, SitaCard, SitaCardTitle } from "@/platform/sita/components/sita/SitaCard";
 import { motion, AnimatePresence } from "framer-motion";
 import ReactMarkdown from "react-markdown";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import {
   Presentation, Plus, Clock, Users, Play, Download, MoreVertical,
   BarChart3, Shield, ChevronLeft, ChevronRight, Maximize2, Minimize2,

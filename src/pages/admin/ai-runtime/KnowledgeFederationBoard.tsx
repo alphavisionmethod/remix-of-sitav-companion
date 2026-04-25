@@ -6,10 +6,10 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { AdminControlPlaneShell } from "@/components/admin/shells/AdminControlPlaneShell";
+import { AdminControlPlaneShell } from "@/platform/admin/components/admin/shells/AdminControlPlaneShell";
 import { Network, RefreshCw, Users, Share2, Layers } from "lucide-react";
 import { toast } from "sonner";
-import { BoardSection } from "@/components/admin/ai-runtime/_shared/BoardSection";
+import { BoardSection } from "@/platform/admin/components/admin/ai-runtime/_shared/BoardSection";
 
 interface Optin { id: string; tenant_id: string; opt_in_version: string; opted_in_at: string; revoked_at: string | null; }
 interface Share { id: string; pattern_kind: string; pattern_hash: string; dp_epsilon: number; created_at: string; }

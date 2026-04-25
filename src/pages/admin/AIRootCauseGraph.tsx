@@ -1,10 +1,10 @@
-import { AdminPageHeader } from "@/components/sita/admin/AdminPageHeader";
+import { AdminPageHeader } from "@/platform/sita/components/sita/admin/AdminPageHeader";
 import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
 import { Network, ArrowRight, AlertTriangle, Bug, Server, Layout, Database, Shield, Zap } from "lucide-react";
 import { useAIEngDomain } from "@/hooks/use-ai-engineering-data";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { EmptyState } from "@/components/sita/EmptyState";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { EmptyState } from "@/platform/sita/components/sita/EmptyState";
 const typeStyles: Record<string, { icon: typeof Bug; color: string; bg: string }> = {
   symptom: { icon: AlertTriangle, color: "text-destructive", bg: "bg-destructive/10 border-destructive/20" },
   service: { icon: Server, color: "text-primary", bg: "bg-primary/10 border-primary/20" },

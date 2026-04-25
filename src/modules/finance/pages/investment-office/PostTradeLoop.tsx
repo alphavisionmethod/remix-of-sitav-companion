@@ -2,7 +2,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { RotateCcw, TrendingUp, TrendingDown, Brain, Check, AlertTriangle, ArrowRight } from "lucide-react";
 import { usePortfolioPositionsMemory, useExecutionRecords, useThesisRecords } from "@/hooks/use-investment-memory";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 const ACTIVE_POSITIONS: any[] = [{ ticker: "—", entryPrice: 1, currentPrice: 1, thesis: "", lessons: [] }];
 export default function PostTradeLoop() {
   const { data: livePositions } = usePortfolioPositionsMemory();

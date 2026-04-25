@@ -3,12 +3,12 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useNavigate } from "react-router-dom";
-import { SitaSectionHeader } from "@/components/sita/SitaCard";
-import { PackStatusBadge, TierBadge, resolveIcon } from "@/components/sita/PackStoreComponents";
+import { SitaSectionHeader } from "@/platform/sita/components/sita/SitaCard";
+import { PackStatusBadge, TierBadge, resolveIcon } from "@/platform/sita/components/sita/PackStoreComponents";
 import { getInstalledPacks, getPacksWithUpdates } from "@/lib/pack-store";
 import { ArrowLeft, Settings, RefreshCw, Pause, Trash2, Shield, Clock } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 const PackInstalledPage = () => {
   const navigate = useNavigate();

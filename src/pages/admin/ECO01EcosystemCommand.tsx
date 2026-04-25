@@ -14,8 +14,8 @@ import {
   Database, Monitor, Settings, Eye,
 } from "lucide-react";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
-import { PageSkeleton } from "@/components/sita/PageSkeleton";
-import { ECOSubNav } from "@/components/admin/ECOSubNav";
+import { PageSkeleton } from "@/platform/sita/components/sita/PageSkeleton";
+import { ECOSubNav } from "@/platform/admin/components/admin/ECOSubNav";
 import { getEcosystemOrchestrator } from "@/lib/services/ecosystem-orchestrator";
 import type {
   EcosystemCommand, CommandLifecycleState, RiskClass, LayerHealthReport,

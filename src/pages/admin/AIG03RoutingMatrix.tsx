@@ -6,8 +6,8 @@ import { useQuery } from "@tanstack/react-query";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Route, CheckCircle, XCircle, AlertTriangle, Filter } from "lucide-react";
 import { getRoutingPolicies, getCapabilityRouting } from "@/lib/core-services/ai-gateway";
-import AIGSubNav from "@/components/admin/AIGSubNav";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import AIGSubNav from "@/platform/admin/components/admin/AIGSubNav";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 export default function AIG03RoutingMatrix() {
   const [familyFilter, setFamilyFilter] = useState<string>("all");

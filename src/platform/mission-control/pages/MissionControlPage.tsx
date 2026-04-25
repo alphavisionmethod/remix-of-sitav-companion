@@ -10,11 +10,11 @@ import { useMissionControlLive } from "@/hooks/use-mission-control-data";
 import { useControlMode, useWhatMattersNow, useMissionControlSummary, useSystemActivity } from "@/hooks/use-mission-control-views";
 import { useAdminIncidents, useFleetHealth, useTrustCenter } from "@/hooks/use-admin-data";
 import { useMissionGoals } from "@/hooks/use-mission-data";
-import { AdminSpendChart } from "@/components/sita/AdminSpendChart";
-import { AnimatedProgressRing } from "@/components/sita/AnimatedProgressRing";
-import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader, SitaButton } from "@/components/sita/SitaCard";
-import { TrustBadge } from "@/components/sita/TrustBadge";
-import { StateBadge } from "@/components/sita/StateBadge";
+import { AdminSpendChart } from "@/platform/sita/components/sita/AdminSpendChart";
+import { AnimatedProgressRing } from "@/platform/sita/components/sita/AnimatedProgressRing";
+import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader, SitaButton } from "@/platform/sita/components/sita/SitaCard";
+import { TrustBadge } from "@/platform/sita/components/sita/TrustBadge";
+import { StateBadge } from "@/platform/sita/components/sita/StateBadge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
@@ -24,29 +24,29 @@ import {
   AgentCard, IncidentCard, ConnectorHealthCard, WorkflowRecoveryCard,
   CostAnomalyCard, PolicyAnomalyCard, ReleaseSafetyCard, SafeModeCard,
   PermissionsCard,
-} from "@/components/sita/MissionControlComponents";
+} from "@/platform/sita/components/sita/MissionControlComponents";
 import { advisors, recommendations, internalAgents, incidents, connectorHealth, stuckWorkflows, costAnomalies, policyAnomalies, releaseSafety, approvals, safeMode, type SafeModeState } from "@/hooks/useAdvisorMissionControl";
 import { cn } from "@/lib/utils";
 import { useFraudSentinel, useGovernanceSimulator } from "@/contexts/SitaKernelContext";
 import type { TrustState, ExecutionEnvelope, WorkflowState, DiagnosticBundle } from "@/packages/contracts";
 import type { ConnectorFreshnessPolicy } from "@/packages/policy-contracts";
 import type { ReceiptRow, SyncLogRow, TenantFirewallLogRow, CapabilityRow } from "@/packages/database-schemas";
-import { AgentActivityFeed } from "@/components/sita/AgentActivityFeed";
-import { SelfHealingDashboard } from "@/components/sita/SelfHealingDashboard";
-import { SelfLearningDashboard } from "@/components/sita/SelfLearningDashboard";
-import { AgentControlPanel } from "@/components/sita/AgentControlPanel";
-import { PredictiveAnalysisDashboard } from "@/components/sita/PredictiveAnalysisDashboard";
-import { AgentAuditLog } from "@/components/sita/AgentAuditLog";
-import { ComplianceDashboard } from "@/components/sita/ComplianceDashboard";
-import { BCPDRDashboard } from "@/components/sita/BCPDRDashboard";
-import { CABWorkflow } from "@/components/sita/CABWorkflow";
-import { AgentCommunicationGraph } from "@/components/sita/AgentCommunicationGraph";
-import { SelfHealingNotifications } from "@/components/sita/SelfHealingNotifications";
+import { AgentActivityFeed } from "@/platform/sita/components/sita/AgentActivityFeed";
+import { SelfHealingDashboard } from "@/platform/sita/components/sita/SelfHealingDashboard";
+import { SelfLearningDashboard } from "@/platform/sita/components/sita/SelfLearningDashboard";
+import { AgentControlPanel } from "@/platform/sita/components/sita/AgentControlPanel";
+import { PredictiveAnalysisDashboard } from "@/platform/sita/components/sita/PredictiveAnalysisDashboard";
+import { AgentAuditLog } from "@/platform/sita/components/sita/AgentAuditLog";
+import { ComplianceDashboard } from "@/platform/sita/components/sita/ComplianceDashboard";
+import { BCPDRDashboard } from "@/platform/sita/components/sita/BCPDRDashboard";
+import { CABWorkflow } from "@/platform/sita/components/sita/CABWorkflow";
+import { AgentCommunicationGraph } from "@/platform/sita/components/sita/AgentCommunicationGraph";
+import { SelfHealingNotifications } from "@/platform/sita/components/sita/SelfHealingNotifications";
 import PlatformTruthDashboard from "./PlatformTruthDashboard";
 import { useTokenUsages } from "@/hooks/use-domain-data";
 
 
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import {
   Server, Shield, Activity, Wifi, AlertTriangle, DollarSign, Rocket,
   Lock, RotateCcw, Clock, Eye, CheckCircle, Cpu, Zap, FileText,

@@ -1,4 +1,4 @@
-import { DomainAdvisorCard } from "@/components/advisors/DomainAdvisorCard";
+import { DomainAdvisorCard } from "@/platform/advisors/components/advisors/DomainAdvisorCard";
 import { motion } from "framer-motion";
 import { Share2, TrendingUp, Calendar, MessageCircle, Heart, Eye, Plus, DollarSign, Zap, Clock, Target, BarChart3, Hash, Users, ArrowUpRight, Bot, Send } from "lucide-react";
 import { cn } from "@/lib/utils";

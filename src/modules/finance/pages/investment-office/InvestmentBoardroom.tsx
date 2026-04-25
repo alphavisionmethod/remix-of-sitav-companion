@@ -6,12 +6,12 @@ import {
   ArrowRight, BarChart3, Briefcase, AlertTriangle, Clock, Brain, ChevronRight,
   RefreshCw, Zap, Info, Bell, Network, Activity, Siren
 } from "lucide-react";
-import { SparklineChart } from "@/components/sita/SparklineChart";
+import { SparklineChart } from "@/platform/sita/components/sita/SparklineChart";
 import { INSTRUMENTS, INVESTMENT_ADVISORS, PORTFOLIO, SAMPLE_ORDERS, SAMPLE_THESES, WATCHLISTS } from "@/hooks/useInvestmentOfficeData";
 import { SPARKLINE_DATA, WHAT_CHANGED, ADVISOR_EVENT_ALERTS } from "@/domains/investment/mock-data";
 import { useInvestmentDecisions } from "@/hooks/use-investment-office";
-import { PortfolioGlobe } from "@/components/investment/PortfolioGlobe";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PortfolioGlobe } from "@/modules/finance/components/investment/PortfolioGlobe";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 const fmt = (n: number) => n >= 1e9 ? `$${(n / 1e9).toFixed(1)}B` : n >= 1e6 ? `$${(n / 1e6).toFixed(1)}M` : n >= 1e3 ? `$${(n / 1e3).toFixed(1)}K` : `$${n.toFixed(2)}`;
 const pctFmt = (n: number) => `${n >= 0 ? "+" : ""}${n.toFixed(2)}%`;

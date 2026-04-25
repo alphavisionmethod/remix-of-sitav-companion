@@ -5,8 +5,8 @@ import { useQuery } from "@tanstack/react-query";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Server, Shield, Activity, CheckCircle, XCircle } from "lucide-react";
 import { getProviderRegistry, getProviderHealth, getDistinctProviders } from "@/lib/core-services/ai-gateway";
-import AIGSubNav from "@/components/admin/AIGSubNav";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import AIGSubNav from "@/platform/admin/components/admin/AIGSubNav";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 export default function AIG01ProviderRegistry() {
   const { data: registry = [] } = useQuery({

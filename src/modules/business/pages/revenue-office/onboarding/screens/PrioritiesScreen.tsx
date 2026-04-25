@@ -1,9 +1,9 @@
 import { useCallback, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { Sparkles, DollarSign, Users, Settings, PiggyBank, Target, AlertCircle } from "lucide-react";
-import { OnboardingShell } from "@/components/onboarding/OnboardingShell";
-import { PriorityReorderStrip } from "@/components/onboarding/PriorityReorderStrip";
-import { OnboardingFooterNav } from "@/components/onboarding/OnboardingFooterNav";
+import { OnboardingShell } from "@/platform/setup/components/onboarding/OnboardingShell";
+import { PriorityReorderStrip } from "@/platform/setup/components/onboarding/PriorityReorderStrip";
+import { OnboardingFooterNav } from "@/platform/setup/components/onboarding/OnboardingFooterNav";
 import type { ScreenProps } from "../types";
 
 /* ── Priority definitions ─────────────────────────────────── */

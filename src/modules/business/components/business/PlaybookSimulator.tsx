@@ -6,7 +6,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { SitaCard, SitaCardTitle, SitaButton } from "@/components/sita/SitaCard";
+import { SitaCard, SitaCardTitle, SitaButton } from "@/platform/sita/components/sita/SitaCard";
 import {
   Play, Pause, SkipForward, RotateCcw, CheckCircle, XCircle,
   Users, DollarSign, TrendingUp, Clock, Zap, GitBranch, Shield,

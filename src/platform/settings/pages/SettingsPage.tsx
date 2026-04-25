@@ -10,11 +10,11 @@ import { Link } from "react-router-dom";
 import { MFAService } from "@/lib/services/identity-auth/mfa.service";
 import { WebAuthnService } from "@/lib/services/identity-auth/webauthn.service";
 import { useAuth } from "@/contexts/AuthContext";
-import { AdvisorAvatarPreview } from "@/components/settings/AdvisorAvatarPreview";
-import { AdvisorAvatarUpload } from "@/components/settings/AdvisorAvatarUpload";
-import { AvatarDebugToggle } from "@/components/settings/AvatarDebugToggle";
-import { PerfHudToggle } from "@/components/settings/PerfHudToggle";
-import { PageShell } from "@/components/sita/PageShell";
+import { AdvisorAvatarPreview } from "@/platform/settings/components/settings/AdvisorAvatarPreview";
+import { AdvisorAvatarUpload } from "@/platform/settings/components/settings/AdvisorAvatarUpload";
+import { AvatarDebugToggle } from "@/platform/settings/components/settings/AvatarDebugToggle";
+import { PerfHudToggle } from "@/platform/settings/components/settings/PerfHudToggle";
+import { PageShell } from "@/platform/sita/components/sita/PageShell";
 
 interface SecurityStatus {
   mfaEnrolled: boolean;

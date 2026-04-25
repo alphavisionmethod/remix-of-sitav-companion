@@ -11,20 +11,20 @@ import { format, differenceInDays, parseISO } from "date-fns";
 import { motion } from "framer-motion";
 import { simulatePayment } from "@/lib/utils/payment-simulation";
 import { useConfirmation } from "@/hooks/use-confirmation";
-import { ConfirmationDialog } from "@/components/sita/ConfirmationDialog";
+import { ConfirmationDialog } from "@/platform/sita/components/sita/ConfirmationDialog";
 import { useQueryFreshness } from "@/hooks/use-query-freshness";
 
 // New design system imports
-import { HeroCard, QueueCard, ActionCard, StatusCard } from "@/components/sita/cards";
-import { ExecutionBadge, FreshnessBadge } from "@/components/sita/badges";
-import { SplitWorkspace } from "@/components/sita/surfaces/SplitWorkspace";
-import { DetailDrawer } from "@/components/sita/surfaces/DetailDrawer";
-import { AppSurface } from "@/components/sita/surfaces/AppSurface";
-import { ListReveal, ListRevealItem } from "@/components/sita/motion/AppTransitions";
+import { HeroCard, QueueCard, ActionCard, StatusCard } from "@/platform/sita/components/sita/cards";
+import { ExecutionBadge, FreshnessBadge } from "@/platform/sita/components/sita/badges";
+import { SplitWorkspace } from "@/platform/sita/components/sita/surfaces/SplitWorkspace";
+import { DetailDrawer } from "@/platform/sita/components/sita/surfaces/DetailDrawer";
+import { AppSurface } from "@/platform/sita/components/sita/surfaces/AppSurface";
+import { ListReveal, ListRevealItem } from "@/platform/sita/components/sita/motion/AppTransitions";
 import { cn } from "@/lib/utils";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { CrossAppAction } from "@/components/sita/CrossAppAction";
-import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvisorInsight";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { CrossAppAction } from "@/platform/sita/components/sita/CrossAppAction";
+import { ModuleAdvisorInsight } from "@/platform/sita/components/sita/domain-shared/ModuleAdvisorInsight";
 
 interface BillForm {
   payee: string;

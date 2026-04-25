@@ -7,7 +7,7 @@ import { Sparkles, Target, Bell, Calendar, RefreshCw, Check } from "lucide-react
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { PremiumEmptyState } from "@/components/sita/PremiumEmptyState";
+import { PremiumEmptyState } from "@/platform/sita/components/sita/PremiumEmptyState";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useNowSnapshot } from "@/lib/sita-jarvis";
 import { supabase } from "@/integrations/supabase/client";

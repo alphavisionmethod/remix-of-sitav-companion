@@ -11,13 +11,13 @@ import {
   AlertTriangle, Brain
 } from "lucide-react";
 import { format, formatDistanceToNow, isPast, differenceInDays } from "date-fns";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { CRMDealDetail } from "@/components/business/crm/CRMDealDetail";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { CRMDealDetail } from "@/modules/business/components/business/crm/CRMDealDetail";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { toast } from "sonner";
-import { DealAdvisorSignal } from "@/components/business/crm/CRMAdvisorInsight";
+import { DealAdvisorSignal } from "@/modules/business/components/business/crm/CRMAdvisorInsight";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
-import { ModuleAdvisorPanel } from "@/components/business/advisor-board/ModuleAdvisorPanel";
+import { ModuleAdvisorPanel } from "@/modules/business/components/business/advisor-board/ModuleAdvisorPanel";
 import { generateStagesAdvisors } from "@/domains/engines/business-advisor-engine";
 
 const CRMPipeline = () => {

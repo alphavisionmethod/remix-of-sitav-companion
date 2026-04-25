@@ -18,7 +18,7 @@ import {
   TrendingUp, Clock, Server, AlertTriangle, CheckCircle2, XCircle,
 } from "lucide-react";
 import { motion } from "framer-motion";
-import { AdminSpendChart } from "@/components/sita/AdminSpendChart";
+import { AdminSpendChart } from "@/platform/sita/components/sita/AdminSpendChart";
 
 interface ServiceHealth {
   name: string;

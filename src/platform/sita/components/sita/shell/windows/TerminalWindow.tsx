@@ -5,7 +5,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
-import { AppStateWrapper } from "@/components/sita/shell/AppStateWrapper";
+import { AppStateWrapper } from "@/platform/sita/components/sita/shell/AppStateWrapper";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 import { Plus, X, ChevronRight, Cpu, HardDrive, Wifi, Clock, Terminal as TermIcon } from "lucide-react";

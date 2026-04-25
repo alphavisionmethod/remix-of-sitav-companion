@@ -3,8 +3,8 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Grid3X3, CheckCircle2, AlertTriangle } from "lucide-react";
 import { useCapabilitySurfaceBindings } from "@/hooks/use-native-shell-data";
-import NSSSubNav from "@/components/admin/NSSSubNav";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import NSSSubNav from "@/platform/admin/components/admin/NSSSubNav";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 
 

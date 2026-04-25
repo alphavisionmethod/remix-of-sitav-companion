@@ -13,9 +13,9 @@ import {
   getBudgetPolicies, getBudgetAlerts, getUsageLedgerStats,
   type UsageLedgerStats,
 } from "@/lib/core-services/ai-gateway";
-import AIGSubNav from "@/components/admin/AIGSubNav";
+import AIGSubNav from "@/platform/admin/components/admin/AIGSubNav";
 import { supabase } from "@/integrations/supabase/client";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 export default function AIG04BudgetCenter() {
 

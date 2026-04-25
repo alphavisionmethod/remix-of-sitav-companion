@@ -13,13 +13,13 @@ import {
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import {
   useAISpendSummary,
   useModelRoutingStats,
   useComputeBudgetStatus,
 } from "@/hooks/use-compute-governance";
-import { PageShell } from "@/components/sita/PageShell";
+import { PageShell } from "@/platform/sita/components/sita/PageShell";
 
 // ── Main Page ──────────────────────────────────────────────────
 export default function AIEconomicsPage() {

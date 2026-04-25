@@ -13,11 +13,11 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
 import { Loader2, ShieldCheck, Users2, DollarSign, Wrench, AlertTriangle } from "lucide-react";
-import { EmptyState } from "@/components/sita/EmptyState";
+import { EmptyState } from "@/platform/sita/components/sita/EmptyState";
 import { StatusBadge } from "@/components/primitives/status/StatusBadge";
 import { AITruthDisclosure } from "@/components/primitives/status/AITruthDisclosure";
 import { OperatorActionPanel } from "@/components/primitives/actions/OperatorActionPanel";
-import { outcomeTone, riskTone, policyDraftStatusTone } from "@/components/admin/ai-runtime/_shared/status-tone-maps";
+import { outcomeTone, riskTone, policyDraftStatusTone } from "@/platform/admin/components/admin/ai-runtime/_shared/status-tone-maps";
 
 interface ConsensusSession {
   id: string;

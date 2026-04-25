@@ -1,6 +1,6 @@
 import { useSitaOS } from "@/contexts/SitaOSContext";
-import { AdminPageHeader } from "@/components/sita/admin/AdminPageHeader";
-import { SitaCard, SitaCardHeader, SitaCardTitle, SitaMetric, SitaSectionHeader, SitaButton } from "@/components/sita/SitaCard";
+import { AdminPageHeader } from "@/platform/sita/components/sita/admin/AdminPageHeader";
+import { SitaCard, SitaCardHeader, SitaCardTitle, SitaMetric, SitaSectionHeader, SitaButton } from "@/platform/sita/components/sita/SitaCard";
 import { FileText, Sparkles } from "lucide-react";
 import { useState } from "react";
 import type { Digest, DigestType } from "@/lib/services/digest-engine/digest-engine";

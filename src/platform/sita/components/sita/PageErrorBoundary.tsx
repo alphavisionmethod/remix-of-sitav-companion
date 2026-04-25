@@ -4,7 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import React from "react";
-import { PageErrorState } from "@/components/sita/PageErrorState";
+import { PageErrorState } from "@/platform/sita/components/sita/PageErrorState";
 
 interface Props {
   children: React.ReactNode;

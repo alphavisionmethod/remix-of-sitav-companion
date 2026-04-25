@@ -4,16 +4,16 @@
 
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { ArrowLeft, Settings, ShieldAlert, ChevronRight } from "lucide-react";
-import { GlobalErrorBoundary } from "@/components/sita/GlobalErrorBoundary";
-import { PageShell } from "@/components/sita/PageShell";
+import { GlobalErrorBoundary } from "@/platform/sita/components/sita/GlobalErrorBoundary";
+import { PageShell } from "@/platform/sita/components/sita/PageShell";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import { SettingsSidebarNav } from "@/components/personal-brain/settings/SettingsSidebarNav";
-import { usePbSecurityPrefs } from "@/components/personal-brain/hooks/usePbSecurityPrefs";
-import { usePbProfile } from "@/components/personal-brain/hooks/usePbProfile";
-import { usePbWorkspaces } from "@/components/personal-brain/hooks/usePbWorkspaces";
-import { usePbMemories } from "@/components/personal-brain/hooks/usePbMemories";
+import { SettingsSidebarNav } from "@/platform/personal-brain/components/personal-brain/settings/SettingsSidebarNav";
+import { usePbSecurityPrefs } from "@/platform/personal-brain/components/personal-brain/hooks/usePbSecurityPrefs";
+import { usePbProfile } from "@/platform/personal-brain/components/personal-brain/hooks/usePbProfile";
+import { usePbWorkspaces } from "@/platform/personal-brain/components/personal-brain/hooks/usePbWorkspaces";
+import { usePbMemories } from "@/platform/personal-brain/components/personal-brain/hooks/usePbMemories";
 
 export default function BrainSettings() {
   const navigate = useNavigate();

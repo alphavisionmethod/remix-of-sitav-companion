@@ -1,4 +1,4 @@
-import FIPSubNav from "@/components/admin/FIPSubNav";
+import FIPSubNav from "@/platform/admin/components/admin/FIPSubNav";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { FileText, Plus, Layers, CheckCircle2, AlertTriangle, ArrowRight } from "lucide-react";
@@ -11,7 +11,7 @@ import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useFeatureSpecs, useCreateSpec } from "@/hooks/use-fip-data";
 import { COMPLIANCE_SECTIONS } from "@/lib/fip/types";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 const FIPSpecStudio = () => {
   const { data: specs = [], isLoading } = useFeatureSpecs();
   const createSpec = useCreateSpec();

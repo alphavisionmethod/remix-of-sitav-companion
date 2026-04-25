@@ -1,5 +1,5 @@
-import { SitaCard, SitaCardTitle } from "@/components/sita/SitaCard";
-import { ConfidenceBar } from "@/components/sita/primitives/ConfidenceBar";
+import { SitaCard, SitaCardTitle } from "@/platform/sita/components/sita/SitaCard";
+import { ConfidenceBar } from "@/platform/sita/components/sita/primitives/ConfidenceBar";
 import { Headphones, Clock, Users, AlertTriangle, TrendingUp, TrendingDown } from "lucide-react";
 
 interface SupportPressureCardProps {

@@ -1,4 +1,4 @@
-import { PageShell } from "@/components/sita/PageShell";
+import { PageShell } from "@/platform/sita/components/sita/PageShell";
 import { motion } from "framer-motion";
 import { Clock, ArrowLeft, ArrowRight, Eye, TrendingUp, TrendingDown, Sparkles, BarChart3 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import DPOSubNav from "./DPOSubNav";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 const TIMELINE_EVENTS: any[] = [];
 export default function PresenceTimeMachine() {
   const [selectedIdx, setSelectedIdx] = useState(0);

@@ -1,4 +1,4 @@
-import FIPSubNav from "@/components/admin/FIPSubNav";
+import FIPSubNav from "@/platform/admin/components/admin/FIPSubNav";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Package, Plus, ArrowRight, Target, Shield, Layers, CheckCircle2, Clock, AlertTriangle } from "lucide-react";
@@ -12,7 +12,7 @@ import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
 import { useFeatureIntakes, useCreateIntake } from "@/hooks/use-fip-data";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 
 

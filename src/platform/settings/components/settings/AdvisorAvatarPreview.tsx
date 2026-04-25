@@ -4,7 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useState } from "react";
-import { AdvisorImage, type AdvisorDomain } from "@/components/advisors/AdvisorImage";
+import { AdvisorImage, type AdvisorDomain } from "@/platform/advisors/components/advisors/AdvisorImage";
 import { Sun, Moon } from "lucide-react";
 import { cn } from "@/lib/utils";
 
