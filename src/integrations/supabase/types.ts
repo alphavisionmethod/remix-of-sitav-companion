@@ -4776,6 +4776,42 @@ export type Database = {
         }
         Relationships: []
       }
+      automation_authority_settings: {
+        Row: {
+          action_key: string
+          authority_level: string
+          created_at: string
+          expires_at: string | null
+          id: string
+          reason: string | null
+          set_by: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          action_key: string
+          authority_level: string
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          reason?: string | null
+          set_by?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          action_key?: string
+          authority_level?: string
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          reason?: string | null
+          set_by?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       automation_fatigue_alerts: {
         Row: {
           acknowledged_at: string | null
@@ -23438,6 +23474,51 @@ export type Database = {
         }
         Relationships: []
       }
+      trust_action_catalog: {
+        Row: {
+          action_key: string
+          created_at: string
+          default_authority_level: string
+          description: string
+          id: string
+          label: string
+          metadata: Json
+          pillar: string
+          require_approval: boolean
+          reversible: boolean
+          risk_tier: string
+          updated_at: string
+        }
+        Insert: {
+          action_key: string
+          created_at?: string
+          default_authority_level?: string
+          description?: string
+          id?: string
+          label: string
+          metadata?: Json
+          pillar: string
+          require_approval?: boolean
+          reversible?: boolean
+          risk_tier?: string
+          updated_at?: string
+        }
+        Update: {
+          action_key?: string
+          created_at?: string
+          default_authority_level?: string
+          description?: string
+          id?: string
+          label?: string
+          metadata?: Json
+          pillar?: string
+          require_approval?: boolean
+          reversible?: boolean
+          risk_tier?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       update_boot_attempts: {
         Row: {
           booted_at: string | null
@@ -24914,6 +24995,18 @@ export type Database = {
       }
       current_user_workspace_ids: { Args: never; Returns: string[] }
       dp_noise_clamp: { Args: { p_epsilon: number }; Returns: number }
+      evaluate_action_authority: {
+        Args: { _action_key: string; _user_id: string }
+        Returns: {
+          action_key: string
+          effective_authority: string
+          pillar: string
+          require_approval: boolean
+          reversible: boolean
+          risk_tier: string
+          source: string
+        }[]
+      }
       evaluate_action_safety_gates: {
         Args: {
           _action_class: string
