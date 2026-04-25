@@ -9,6 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Sparkles, ShieldCheck, Brain } from "lucide-react";
 import { AutonomyApprovalQueue } from "@/components/autonomy/AutonomyApprovalQueue";
 import { AutonomyReflectionTimeline } from "@/components/autonomy/AutonomyReflectionTimeline";
+import { AutonomyMissionsPanel } from "@/components/autonomy/AutonomyMissionsPanel";
 import { useAutonomyFleet } from "@/hooks/useAutonomyFleet";
 
 export default function AutonomyControlCenter() {
@@ -56,6 +57,8 @@ export default function AutonomyControlCenter() {
           <AutonomyReflectionTimeline compact limit={15} />
         </CardContent>
       </Card>
+
+      <AutonomyMissionsPanel ownerView compact />
     </div>
   );
 }
