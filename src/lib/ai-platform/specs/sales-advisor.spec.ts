@@ -13,7 +13,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import type { BusinessAdvisorSpec } from "./spec-types";
-import { registerAdvisorSpec } from "./index";
+import { registerAdvisorSpec } from "./spec-registry";
 
 export const SALES_ADVISOR_SPEC: BusinessAdvisorSpec = {
   // ── 1. Identity ─────────────────────────────────────────────
