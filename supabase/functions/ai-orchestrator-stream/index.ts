@@ -111,8 +111,20 @@ serve(async (req) => {
       try {
         // ── 1. Context resolution (semantic-first) ──
         const semanticOn = body.contextSources?.semanticRetrieval !== false;
-        const semanticMemories: Array<{ memory_id: string; content: string; similarity: number }> = [];
-        const semanticChunks: Array<{ chunk_id: string; content: string; similarity: number }> = [];
+        const semanticMemories: Array<{
+          memory_id: string;
+          content: string;
+          similarity: number;
+          peer_workspace_id: string | null;
+          via_federation: string | null;
+        }> = [];
+        const semanticChunks: Array<{
+          chunk_id: string;
+          content: string;
+          similarity: number;
+          peer_workspace_id: string | null;
+          via_federation: string | null;
+        }> = [];
         const autoMemories: Array<{ memory_id: string; content: string }> = [];
 
         if (body.contextSources?.workspaceMemoryAuto) {
