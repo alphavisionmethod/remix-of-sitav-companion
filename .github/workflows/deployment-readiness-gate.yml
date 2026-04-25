@@ -79,9 +79,8 @@ jobs:
         run: npx tsx scripts/architecture/check-pages-thin-adapter.ts
         continue-on-error: true
 
-      - name: Repo canonicalization — no duplicate platform folders (WARN)
+      - name: Repo canonicalization — no duplicate platform folders (REQUIRED post-Wave 2)
         run: npx tsx scripts/architecture/check-no-duplicate-platform.ts
-        continue-on-error: true
 
       - name: Repo canonicalization — generated/docs lifecycle (WARN)
         run: npx tsx scripts/architecture/check-generated-vs-docs.ts

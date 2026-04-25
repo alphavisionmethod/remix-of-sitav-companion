@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-04-25T15:40:06.035Z",
+  "generatedAt": "2026-04-25T15:45:58.473Z",
   "schemaVersion": 1,
   "note": "Baseline file counts captured before Repository Tree Canonicalization waves. See docs/architecture/REPOSITORY_CONSTITUTION.md.",
   "topLevel": {
     "src/pages": 1148,
     "src/modules": 61,
-    "src/platform": 296,
+    "src/platform": 287,
     "src/components": 1227,
     "src/lib": 1710,
     "src/domains": 111,
@@ -38,27 +38,27 @@
   },
   "platformDuplicateCandidates": {
     "ai_vs_ai_gateway": {
-      "ai": 1,
-      "ai_gateway": 1
+      "ai": 0,
+      "ai_gateway": 0
     },
     "nova_sdk_vs_nova_runtime_sdk": {
       "nova_sdk": 56,
-      "nova_runtime_sdk": 1
+      "nova_runtime_sdk": 0
     },
     "policy_vs_policies": {
-      "policy": 1,
-      "policies": 1
+      "policy": 0,
+      "policies": 0
     },
     "sync_vs_sync_engine": {
-      "sync": 1,
+      "sync": 0,
       "sync_engine": 38
     },
     "core_vs_core_services_vs_os_services": {
-      "core": 1,
+      "core": 0,
       "core_services": 2,
-      "os_services": 1
+      "os_services": 0
     },
-    "services_unclassified": 1
+    "services_unclassified": 0
   },
   "adminTrees": {
     "src/admin": 41,
@@ -208,14 +208,6 @@
       "files": 2
     },
     {
-      "dir": "src/platform/ai",
-      "files": 1
-    },
-    {
-      "dir": "src/platform/ai-gateway",
-      "files": 1
-    },
-    {
       "dir": "src/platform/architecture",
       "files": 59
     },
@@ -237,10 +229,6 @@
     },
     {
       "dir": "src/platform/control-plane",
-      "files": 1
-    },
-    {
-      "dir": "src/platform/core",
       "files": 1
     },
     {
@@ -284,10 +272,6 @@
       "files": 1
     },
     {
-      "dir": "src/platform/nova-runtime-sdk",
-      "files": 1
-    },
-    {
       "dir": "src/platform/nova-sdk",
       "files": 56
     },
@@ -302,18 +286,6 @@
     {
       "dir": "src/platform/orchestration",
       "files": 51
-    },
-    {
-      "dir": "src/platform/os-services",
-      "files": 1
-    },
-    {
-      "dir": "src/platform/policies",
-      "files": 1
-    },
-    {
-      "dir": "src/platform/policy",
-      "files": 1
     },
     {
       "dir": "src/platform/product",
@@ -336,20 +308,12 @@
       "files": 1
     },
     {
-      "dir": "src/platform/services-unclassified",
-      "files": 1
-    },
-    {
       "dir": "src/platform/setup",
       "files": 1
     },
     {
       "dir": "src/platform/support",
       "files": 2
-    },
-    {
-      "dir": "src/platform/sync",
-      "files": 1
     },
     {
       "dir": "src/platform/sync-engine",

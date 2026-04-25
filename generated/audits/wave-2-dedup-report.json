@@ -1,0 +1,28 @@
+{
+  "generatedAt": "2026-04-25T15:44:30.957Z",
+  "schemaVersion": 1,
+  "dryRun": false,
+  "deleted": [
+    "src/platform/ai-gateway/",
+    "src/platform/ai/",
+    "src/platform/core/",
+    "src/platform/os-services/",
+    "src/platform/services-unclassified/",
+    "src/platform/policy/",
+    "src/platform/policies/",
+    "src/platform/sync/",
+    "src/platform/nova-runtime-sdk/"
+  ],
+  "skipped": [],
+  "importRewrites": {
+    "filesScanned": 0,
+    "filesChanged": 0,
+    "rewrites": 0
+  },
+  "keptCanonical": [
+    "src/platform/sync-engine/",
+    "src/platform/nova-sdk/",
+    "src/platform/core-services/"
+  ],
+  "note": "All deleted folders had 0 consumers in src/. See script header for full audit."
+}
