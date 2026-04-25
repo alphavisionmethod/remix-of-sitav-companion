@@ -1,21 +1,20 @@
 {
-  "generatedAt": "2026-04-25T17:48:22.345Z",
+  "generatedAt": "2026-04-25T17:48:57.172Z",
   "rule": "Constitution Rules 36, 37, 38",
   "model": "docs/architecture/SHARED_COMPONENT_OWNERSHIP_MODEL.md",
   "totals": {
     "filesScanned": 32,
-    "sharedClean": 10,
-    "deprecatedShim": 1,
-    "violators": 21
+    "sharedClean": 15,
+    "deprecatedShim": 0,
+    "violators": 17
   },
   "classificationBreakdown": {
     "barrel-only-reexport": 5,
     "shell-runtime-semantic": 1,
-    "platform-semantic": 8,
-    "shared-clean": 10,
-    "admin-semantic": 4,
-    "wrapper-with-platform-import": 3,
-    "deprecated-shim": 1
+    "shared-clean": 15,
+    "platform-semantic": 6,
+    "admin-semantic": 1,
+    "wrapper-with-platform-import": 4
   },
   "files": [
     {
@@ -68,16 +67,14 @@
     },
     {
       "file": "src/components/navigation/index.ts",
-      "classification": "platform-semantic",
-      "targetOwner": "@/platform/sita/components/sita/",
-      "vocabularyHits": [
-        "sita"
-      ],
+      "classification": "shared-clean",
+      "targetOwner": null,
+      "vocabularyHits": [],
       "importViolations": [],
       "shellHints": [],
       "isBarrel": true,
       "isDeprecatedShim": false,
-      "reason": "Platform vocabulary: sita."
+      "reason": "Passes all three concept tests."
     },
     {
       "file": "src/components/NavLink.tsx",
@@ -92,12 +89,23 @@
     },
     {
       "file": "src/components/primitives/actions/EvidenceLink.tsx",
+      "classification": "platform-semantic",
+      "targetOwner": "@/platform/<system>/components/",
+      "vocabularyHits": [
+        "proof",
+        "receipt"
+      ],
+      "importViolations": [],
+      "shellHints": [],
+      "isBarrel": false,
+      "isDeprecatedShim": false,
+      "reason": "Platform vocabulary: proof, receipt."
+    },
+    {
+      "file": "src/components/primitives/actions/OperatorActionPanel.tsx",
       "classification": "admin-semantic",
       "targetOwner": "@/admin/modules/<domain>/components/",
       "vocabularyHits": [
-        "sita",
-        "proof",
-        "receipt",
         "operator"
       ],
       "importViolations": [],
@@ -105,22 +113,6 @@
       "isBarrel": false,
       "isDeprecatedShim": false,
       "reason": "Admin/operator vocabulary: operator."
-    },
-    {
-      "file": "src/components/primitives/actions/OperatorActionPanel.tsx",
-      "classification": "admin-semantic",
-      "targetOwner": "@/admin/modules/<domain>/components/",
-      "vocabularyHits": [
-        "sita",
-        "proof",
-        "admin",
-        "operator"
-      ],
-      "importViolations": [],
-      "shellHints": [],
-      "isBarrel": false,
-      "isDeprecatedShim": false,
-      "reason": "Admin/operator vocabulary: admin, operator."
     },
     {
       "file": "src/components/primitives/display/BaseCard.tsx",
@@ -202,10 +194,7 @@
       "classification": "wrapper-with-platform-import",
       "targetOwner": "@/platform/sita/components/sita/",
       "vocabularyHits": [
-        "sita",
-        "admin",
-        "operator",
-        "signals fired"
+        "sita"
       ],
       "importViolations": [
         "@/platform/sita/components/sita/PremiumEmptyState"
@@ -220,8 +209,7 @@
       "classification": "wrapper-with-platform-import",
       "targetOwner": "@/platform/sita/components/sita/",
       "vocabularyHits": [
-        "sita",
-        "release"
+        "sita"
       ],
       "importViolations": [
         "@/platform/sita/components/sita/PremiumEmptyState"
@@ -259,16 +247,14 @@
     },
     {
       "file": "src/components/primitives/index.ts",
-      "classification": "platform-semantic",
-      "targetOwner": "@/platform/sita/components/sita/",
-      "vocabularyHits": [
-        "sita"
-      ],
+      "classification": "shared-clean",
+      "targetOwner": null,
+      "vocabularyHits": [],
       "importViolations": [],
       "shellHints": [],
       "isBarrel": true,
       "isDeprecatedShim": false,
-      "reason": "Platform vocabulary: sita."
+      "reason": "Passes all three concept tests."
     },
     {
       "file": "src/components/primitives/overlays/Drawer.tsx",
@@ -283,18 +269,14 @@
     },
     {
       "file": "src/components/primitives/status/AITruthDisclosure.tsx",
-      "classification": "admin-semantic",
-      "targetOwner": "@/admin/modules/<domain>/components/",
-      "vocabularyHits": [
-        "sita",
-        "trust",
-        "admin"
-      ],
+      "classification": "shared-clean",
+      "targetOwner": null,
+      "vocabularyHits": [],
       "importViolations": [],
       "shellHints": [],
       "isBarrel": false,
       "isDeprecatedShim": false,
-      "reason": "Admin/operator vocabulary: admin."
+      "reason": "Passes all three concept tests."
     },
     {
       "file": "src/components/primitives/status/ConnectorStateBadge.tsx",
@@ -333,34 +315,25 @@
     },
     {
       "file": "src/components/primitives/status/ProofBadge.tsx",
-      "classification": "platform-semantic",
-      "targetOwner": "@/platform/<system>/components/",
-      "vocabularyHits": [
-        "proof",
-        "receipt"
-      ],
+      "classification": "shared-clean",
+      "targetOwner": null,
+      "vocabularyHits": [],
       "importViolations": [],
       "shellHints": [],
       "isBarrel": false,
       "isDeprecatedShim": false,
-      "reason": "Platform vocabulary: proof, receipt."
+      "reason": "Passes all three concept tests."
     },
     {
       "file": "src/components/primitives/status/ProvenanceChip.tsx",
-      "classification": "admin-semantic",
-      "targetOwner": "@/admin/modules/<domain>/components/",
-      "vocabularyHits": [
-        "sita",
-        "proof",
-        "oauth",
-        "admin",
-        "operator"
-      ],
+      "classification": "shared-clean",
+      "targetOwner": null,
+      "vocabularyHits": [],
       "importViolations": [],
       "shellHints": [],
       "isBarrel": false,
       "isDeprecatedShim": false,
-      "reason": "Admin/operator vocabulary: admin, operator."
+      "reason": "Passes all three concept tests."
     },
     {
       "file": "src/components/primitives/status/StatusBadge.tsx",
@@ -375,8 +348,8 @@
     },
     {
       "file": "src/components/primitives/status/TrustBadge.tsx",
-      "classification": "deprecated-shim",
-      "targetOwner": "@/platform/sita/components/sita/TrustBadge",
+      "classification": "wrapper-with-platform-import",
+      "targetOwner": "@/platform/sita/components/sita/",
       "vocabularyHits": [
         "sita"
       ],
@@ -388,8 +361,8 @@
       ],
       "shellHints": [],
       "isBarrel": false,
-      "isDeprecatedShim": true,
-      "reason": "Self-marked DEPRECATED re-export shim — tracked in deprecated-shim baseline."
+      "isDeprecatedShim": false,
+      "reason": "Composes platform component(s): @/platform/sita/components/sita/TrustBadge, @/platform/sita/components/sita/TrustBadge, @/platform/sita/components/sita/TrustBadge, @/platform/sita/components/sita/TrustBadge."
     },
     {
       "file": "src/components/primitives/status/UrgencyBadge.tsx",
@@ -419,9 +392,7 @@
       "file": "src/components/shared/ai/index.ts",
       "classification": "barrel-only-reexport",
       "targetOwner": "@/platform/ai/components/index.ts",
-      "vocabularyHits": [
-        "sita"
-      ],
+      "vocabularyHits": [],
       "importViolations": [
         "@/platform/ai/components/ai/AIReceiptLink",
         "@/platform/ai/components/ai/AIStateBadge",
@@ -480,7 +451,6 @@
       "classification": "barrel-only-reexport",
       "targetOwner": "@/platform/cloud/components/index.ts",
       "vocabularyHits": [
-        "sita",
         "cloud"
       ],
       "importViolations": [
@@ -506,22 +476,16 @@
       "reason": "Imports shell/runtime singletons (TRUST_LAYER, usePillarPriority, PILLAR_ICON)."
     },
     {
-      "file": "src/components/navigation/index.ts",
-      "classification": "platform-semantic",
-      "targetOwner": "@/platform/sita/components/sita/",
-      "reason": "Platform vocabulary: sita."
-    },
-    {
       "file": "src/components/primitives/actions/EvidenceLink.tsx",
-      "classification": "admin-semantic",
-      "targetOwner": "@/admin/modules/<domain>/components/",
-      "reason": "Admin/operator vocabulary: operator."
+      "classification": "platform-semantic",
+      "targetOwner": "@/platform/<system>/components/",
+      "reason": "Platform vocabulary: proof, receipt."
     },
     {
       "file": "src/components/primitives/actions/OperatorActionPanel.tsx",
       "classification": "admin-semantic",
       "targetOwner": "@/admin/modules/<domain>/components/",
-      "reason": "Admin/operator vocabulary: admin, operator."
+      "reason": "Admin/operator vocabulary: operator."
     },
     {
       "file": "src/components/primitives/display/StatTile.tsx",
@@ -560,34 +524,16 @@
       "reason": "Composes platform component(s): @/platform/sita/components/sita/PremiumEmptyState."
     },
     {
-      "file": "src/components/primitives/index.ts",
-      "classification": "platform-semantic",
-      "targetOwner": "@/platform/sita/components/sita/",
-      "reason": "Platform vocabulary: sita."
-    },
-    {
-      "file": "src/components/primitives/status/AITruthDisclosure.tsx",
-      "classification": "admin-semantic",
-      "targetOwner": "@/admin/modules/<domain>/components/",
-      "reason": "Admin/operator vocabulary: admin."
-    },
-    {
       "file": "src/components/primitives/status/ConnectorStateBadge.tsx",
       "classification": "platform-semantic",
       "targetOwner": "@/platform/<system>/components/",
       "reason": "Platform vocabulary: connector."
     },
     {
-      "file": "src/components/primitives/status/ProofBadge.tsx",
-      "classification": "platform-semantic",
-      "targetOwner": "@/platform/<system>/components/",
-      "reason": "Platform vocabulary: proof, receipt."
-    },
-    {
-      "file": "src/components/primitives/status/ProvenanceChip.tsx",
-      "classification": "admin-semantic",
-      "targetOwner": "@/admin/modules/<domain>/components/",
-      "reason": "Admin/operator vocabulary: admin, operator."
+      "file": "src/components/primitives/status/TrustBadge.tsx",
+      "classification": "wrapper-with-platform-import",
+      "targetOwner": "@/platform/sita/components/sita/",
+      "reason": "Composes platform component(s): @/platform/sita/components/sita/TrustBadge, @/platform/sita/components/sita/TrustBadge, @/platform/sita/components/sita/TrustBadge, @/platform/sita/components/sita/TrustBadge."
     },
     {
       "file": "src/components/primitives/timelines/TimelineRow.tsx",
