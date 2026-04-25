@@ -12,7 +12,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { StatusBadge } from "@/components/primitives/status/StatusBadge";
 import { AITruthDisclosure } from "@/components/primitives/status/AITruthDisclosure";
-import { OperatorActionPanel } from "@/components/primitives/actions/OperatorActionPanel";
+import { OperatorActionPanel } from "@/admin/components/operator/OperatorActionPanel";
 import { agentStatusTone } from "@/platform/admin/components/admin/ai-runtime/_shared/status-tone-maps";
 import { Input } from "@/components/ui/input";
 import {

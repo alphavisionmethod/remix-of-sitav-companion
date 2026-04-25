@@ -1,89 +1,16 @@
 {
   "$schema": "internal://baseline-v1",
-  "sealedAt": "2026-04-25T17:50:27Z",
-  "wave": "0.9",
-  "rule": "Constitution Rule 37 \u2014 Shared-semantic violation ratchet (monotone-decreasing).",
+  "sealedAt": "2026-04-25T18:13:27.359Z",
+  "wave": "1.1",
+  "rule": "Constitution Rule 37 — Shared-semantic violation ratchet (monotone-decreasing).",
   "model": "docs/architecture/SHARED_COMPONENT_OWNERSHIP_MODEL.md",
   "validator": "scripts/architecture/check-shared-component-concept-rule.ts",
   "ratchet": "monotone-decreasing",
-  "baselineCount": 12,
-  "baselineDigest": "07750eb932b38392f4f4f870ed5fff10766d70ea6982fad9824cd3ea2292113e",
-  "deprecatedShimCount": 1,
+  "baselineCount": 0,
+  "baselineDigest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+  "deprecatedShimCount": 13,
   "filesScanned": 32,
   "sharedCleanCount": 19,
-  "violators": [
-    {
-      "file": "src/components/cards/index.ts",
-      "classification": "barrel-only-reexport",
-      "targetOwner": "@/platform/sita/components/index.ts",
-      "reason": "Pure barrel re-exporting from 10 platform/module path(s); should be a barrel under that owner."
-    },
-    {
-      "file": "src/components/launcher/PillarRail.tsx",
-      "classification": "shell-runtime-semantic",
-      "targetOwner": "@/platform/sita/components/sita/shell/",
-      "reason": "Imports shell/runtime singletons (TRUST_LAYER, usePillarPriority, PILLAR_ICON)."
-    },
-    {
-      "file": "src/components/primitives/actions/EvidenceLink.tsx",
-      "classification": "platform-semantic",
-      "targetOwner": "@/platform/<system>/components/",
-      "reason": "Platform vocabulary: proof, receipt."
-    },
-    {
-      "file": "src/components/primitives/actions/OperatorActionPanel.tsx",
-      "classification": "admin-semantic",
-      "targetOwner": "@/admin/modules/<domain>/components/",
-      "reason": "Admin/operator vocabulary: operator."
-    },
-    {
-      "file": "src/components/primitives/feedback/EmptyState.tsx",
-      "classification": "barrel-only-reexport",
-      "targetOwner": "@/platform/sita/components/index.ts",
-      "reason": "Pure barrel re-exporting from 2 platform/module path(s); should be a barrel under that owner."
-    },
-    {
-      "file": "src/components/primitives/feedback/NeedsDataExplainer.tsx",
-      "classification": "wrapper-with-platform-import",
-      "targetOwner": "@/platform/sita/components/sita/",
-      "reason": "Composes platform component(s): @/platform/sita/components/sita/PremiumEmptyState."
-    },
-    {
-      "file": "src/components/primitives/feedback/NeedsHistoricalReleasesExplainer.tsx",
-      "classification": "wrapper-with-platform-import",
-      "targetOwner": "@/platform/sita/components/sita/",
-      "reason": "Composes platform component(s): @/platform/sita/components/sita/PremiumEmptyState."
-    },
-    {
-      "file": "src/components/primitives/feedback/NeedsTimeWindowExplainer.tsx",
-      "classification": "wrapper-with-platform-import",
-      "targetOwner": "@/platform/sita/components/sita/",
-      "reason": "Composes platform component(s): @/platform/sita/components/sita/PremiumEmptyState."
-    },
-    {
-      "file": "src/components/primitives/status/ConnectorStateBadge.tsx",
-      "classification": "platform-semantic",
-      "targetOwner": "@/platform/<system>/components/",
-      "reason": "Platform vocabulary: connector."
-    },
-    {
-      "file": "src/components/shared/ai/index.ts",
-      "classification": "barrel-only-reexport",
-      "targetOwner": "@/platform/ai/components/index.ts",
-      "reason": "Pure barrel re-exporting from 3 platform/module path(s); should be a barrel under that owner."
-    },
-    {
-      "file": "src/components/shared/sita/index.ts",
-      "classification": "barrel-only-reexport",
-      "targetOwner": "@/platform/sita/components/index.ts",
-      "reason": "Pure barrel re-exporting from 16 platform/module path(s); should be a barrel under that owner."
-    },
-    {
-      "file": "src/components/shared/status/index.ts",
-      "classification": "barrel-only-reexport",
-      "targetOwner": "@/platform/cloud/components/index.ts",
-      "reason": "Pure barrel re-exporting from 1 platform/module path(s); should be a barrel under that owner."
-    }
-  ],
-  "drainPlan": "Drained by the future Shared Component Relocation Wave (gated by Constitution Rules 19, 24)."
+  "violators": [],
+  "drainPlan": "DRAINED by Wave 1.1. All 12 violators relocated to canonical owners. The 13 @deprecated Wave 1.1 shims at the old paths will be removed in Wave 1.2 (Shared Component Shim Cleanup). Ratchet now enforces zero shared-semantic violations forever."
 }

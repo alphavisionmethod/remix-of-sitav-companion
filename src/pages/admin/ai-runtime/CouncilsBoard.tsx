@@ -13,7 +13,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { StatusBadge } from "@/components/primitives/status/StatusBadge";
 import { AITruthDisclosure } from "@/components/primitives/status/AITruthDisclosure";
-import { OperatorActionPanel } from "@/components/primitives/actions/OperatorActionPanel";
+import { OperatorActionPanel } from "@/admin/components/operator/OperatorActionPanel";
 import { severityTone } from "@/platform/admin/components/admin/ai-runtime/_shared/status-tone-maps";
 import { supabase } from "@/integrations/supabase/client";
 import {

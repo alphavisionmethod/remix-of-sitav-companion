@@ -7,7 +7,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { fromTable } from "@/lib/supabase-helpers";
 import { Activity, RefreshCw } from "lucide-react";
 import CNSubNav from "@/platform/admin/components/admin/CNSubNav";
-import { ConnectorStateBadge } from "@/components/primitives/status/ConnectorStateBadge";
+import { ConnectorStateBadge } from "@/platform/cloud/components/ConnectorStateBadge";
 
 
 export default function CN05ConnectorHealthBoard() {
