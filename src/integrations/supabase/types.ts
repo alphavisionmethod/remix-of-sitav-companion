@@ -4776,6 +4776,84 @@ export type Database = {
         }
         Relationships: []
       }
+      autonomy_simulation_receipts: {
+        Row: {
+          action_key: string
+          advisor_id: string
+          confidence: number
+          created_at: string
+          decision: string
+          decision_reason: string
+          domain: string
+          draft_only: boolean
+          expires_at: string
+          financial_impact_cents: number
+          id: string
+          is_client_facing: boolean
+          metadata: Json
+          policy_warnings: Json
+          projected_outcomes: Json
+          queue_id: string | null
+          risk_class: string
+          rollback_plan: Json
+          side_effects: Json
+          signal_id: string | null
+          signal_kind: string | null
+          summary: string
+          user_id: string
+        }
+        Insert: {
+          action_key: string
+          advisor_id: string
+          confidence?: number
+          created_at?: string
+          decision: string
+          decision_reason?: string
+          domain?: string
+          draft_only?: boolean
+          expires_at?: string
+          financial_impact_cents?: number
+          id?: string
+          is_client_facing?: boolean
+          metadata?: Json
+          policy_warnings?: Json
+          projected_outcomes?: Json
+          queue_id?: string | null
+          risk_class?: string
+          rollback_plan?: Json
+          side_effects?: Json
+          signal_id?: string | null
+          signal_kind?: string | null
+          summary?: string
+          user_id: string
+        }
+        Update: {
+          action_key?: string
+          advisor_id?: string
+          confidence?: number
+          created_at?: string
+          decision?: string
+          decision_reason?: string
+          domain?: string
+          draft_only?: boolean
+          expires_at?: string
+          financial_impact_cents?: number
+          id?: string
+          is_client_facing?: boolean
+          metadata?: Json
+          policy_warnings?: Json
+          projected_outcomes?: Json
+          queue_id?: string | null
+          risk_class?: string
+          rollback_plan?: Json
+          side_effects?: Json
+          signal_id?: string | null
+          signal_kind?: string | null
+          summary?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       beta_applications: {
         Row: {
           country: string | null
