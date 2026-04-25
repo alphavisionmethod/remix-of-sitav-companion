@@ -1,0 +1,1 @@
+ALTER VIEW public.workspace_federation_overview SET (security_invoker = true);
