@@ -38,6 +38,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Trust action manifest freshness (REQUIRED)
+        run: npx tsx scripts/architecture/check-trust-action-manifest.ts
+
       - name: Run deployment-readiness gate
         run: npm run test:deployment-readiness
 

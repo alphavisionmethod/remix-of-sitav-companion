@@ -219,6 +219,8 @@ jobs:
         run: npx tsx scripts/root/check-service-manifest-completeness.ts
       - name: Env contract completeness
         run: npx tsx scripts/root/check-env-contract-completeness.ts
+      - name: Trust action manifest freshness (blocks merge)
+        run: npx tsx scripts/architecture/check-trust-action-manifest.ts
       - name: Docker hardening
         run: npx tsx scripts/root/check-docker-hardening.ts
       - name: Deployment readiness gate
