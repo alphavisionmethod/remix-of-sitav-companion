@@ -1,6 +1,6 @@
 {
   "generatedAt": "2026-04-25T16:42:30.750Z",
-  "lastWaveCompleted": 9,
+  "lastWaveCompleted": 10,
   "schemaVersion": 1,
   "note": "Baseline file counts captured before Repository Tree Canonicalization waves. See docs/architecture/REPOSITORY_CONSTITUTION.md.",
   "topLevel": {
