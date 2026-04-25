@@ -5,14 +5,14 @@
 // ════════════════════════════════════════════════════════════
 
 import { Link } from "react-router-dom";
-import { Briefcase, Concierge, Wallet, HeartPulse, Shield } from "lucide-react";
+import { Briefcase, BellRing, Wallet, HeartPulse, Shield } from "lucide-react";
 import { usePillarPriority } from "@/hooks/use-pillar-priority";
 import { TRUST_LAYER } from "@/modules/_trust";
 import { cn } from "@/lib/utils";
 
 const PILLAR_ICON = {
   business: Briefcase,
-  concierge: Concierge,
+  concierge: BellRing,
   finance: Wallet,
   health: HeartPulse,
 } as const;
