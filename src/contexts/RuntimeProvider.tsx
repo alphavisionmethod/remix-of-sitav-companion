@@ -9,10 +9,12 @@ import { SitaOSProvider } from "@/contexts/SitaOSContext";
 import { NovaSDKProvider } from "@/contexts/NovaSDKContext";
 import { RuntimeTierProvider } from "@/runtimes/runtime-context";
 import { usePipelineBootstrap } from "@/hooks/usePipelineBootstrap";
+import { useAutonomyBootstrap } from "@/hooks/useAutonomyBootstrap";
 
 /** Boots the orchestration pipeline inside the provider tree */
 function PipelineBootstrap({ children }: { children: ReactNode }) {
   usePipelineBootstrap();
+  useAutonomyBootstrap();
   return <>{children}</>;
 }
 
