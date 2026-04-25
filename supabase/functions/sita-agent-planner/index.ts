@@ -303,6 +303,9 @@ Deno.serve(async (req) => {
       autonomyTier,
       canAutoRun: canAutoRun(steps, autonomyTier),
       missionId: missionId ?? undefined,
+      multiModalContext: mmRows.length > 0
+        ? { count: mmRows.length, modalities: Array.from(new Set(mmRows.map((r) => r.modality))) }
+        : null,
       createdAt: Date.now(),
     };
 
