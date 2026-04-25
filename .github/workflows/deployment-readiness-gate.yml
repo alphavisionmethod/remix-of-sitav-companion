@@ -78,6 +78,9 @@ jobs:
       - name: Repo canonicalization — pages thin-adapter (REQUIRED post-Wave 4)
         run: npx tsx scripts/architecture/check-pages-thin-adapter.ts
 
+      - name: Repo canonicalization — components allowlist (REQUIRED post-Wave 8)
+        run: npx tsx scripts/architecture/check-components-allowlist.ts --strict
+
       - name: Repo canonicalization — no duplicate platform folders (REQUIRED post-Wave 2)
         run: npx tsx scripts/architecture/check-no-duplicate-platform.ts
 
