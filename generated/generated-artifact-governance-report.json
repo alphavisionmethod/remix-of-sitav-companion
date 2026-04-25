@@ -1,10 +1,53 @@
 {
-  "generatedAt": "2026-04-25T19:30:16.586Z",
+  "generatedAt": "2026-04-25T20:06:27.692Z",
   "gate": "generated-artifact-governance",
   "ok": true,
   "errorCount": 0,
-  "warningCount": 0,
-  "totalArtifacts": 1446,
+  "warningCount": 7,
+  "totalArtifacts": 1465,
   "baselineOrphans": 919,
-  "issues": []
+  "issues": [
+    {
+      "severity": "warn",
+      "area": "new-orphan",
+      "path": "generated/audits/wave-c-components-tree-canonicalization-hardening-report.md",
+      "reason": "reference artifact has no owning script and is not on orphan baseline"
+    },
+    {
+      "severity": "warn",
+      "area": "new-orphan",
+      "path": "generated/audits/wave-d-profile-concept-retirement-hardening-report.md",
+      "reason": "reference artifact has no owning script and is not on orphan baseline"
+    },
+    {
+      "severity": "warn",
+      "area": "new-orphan",
+      "path": "generated/manifests/ui-ownership-map.json",
+      "reason": "reference artifact has no owning script and is not on orphan baseline"
+    },
+    {
+      "severity": "warn",
+      "area": "new-orphan",
+      "path": "generated/primary-concept-uniqueness-report.json",
+      "reason": "reference artifact has no owning script and is not on orphan baseline"
+    },
+    {
+      "severity": "warn",
+      "area": "new-orphan",
+      "path": "generated/profile-visibility-leakage-report.json",
+      "reason": "reference artifact has no owning script and is not on orphan baseline"
+    },
+    {
+      "severity": "warn",
+      "area": "new-orphan",
+      "path": "generated/retirement-evidence-completeness-report.json",
+      "reason": "reference artifact has no owning script and is not on orphan baseline"
+    },
+    {
+      "severity": "warn",
+      "area": "new-orphan",
+      "path": "generated/root-sprawl-report.json",
+      "reason": "reference artifact has no owning script and is not on orphan baseline"
+    }
+  ]
 }

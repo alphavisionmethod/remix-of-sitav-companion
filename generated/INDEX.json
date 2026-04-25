@@ -1015,126 +1015,126 @@
       "owner": "architecture"
     },
     {
-      "artifact": "generated/architecture-remediation/ARCHITECTURE_HARDENING_STATUS.md",
+      "artifact": "generated/historical/architecture-remediation/ARCHITECTURE_HARDENING_STATUS.md",
       "producer": "scripts/architecture/audits/generate-evidence-maps.ts",
       "npmScript": null,
       "consumers": [],
       "owner": "architecture"
     },
     {
-      "artifact": "generated/architecture-remediation/CONTRACT_REMEDIATION_PLAN.md",
+      "artifact": "generated/historical/architecture-remediation/CONTRACT_REMEDIATION_PLAN.md",
       "producer": "scripts/architecture/audits/generate-evidence-maps.ts",
       "npmScript": null,
       "consumers": [],
       "owner": "architecture"
     },
     {
-      "artifact": "generated/architecture-remediation/CONTRACT_TOPOLOGY_AUDIT.md",
+      "artifact": "generated/historical/architecture-remediation/CONTRACT_TOPOLOGY_AUDIT.md",
       "producer": "scripts/architecture/audits/generate-evidence-maps.ts",
       "npmScript": null,
       "consumers": [],
       "owner": "architecture"
     },
     {
-      "artifact": "generated/architecture-remediation/contract-topology-map.json",
+      "artifact": "generated/historical/architecture-remediation/contract-topology-map.json",
       "producer": "scripts/architecture/audits/generate-evidence-maps.ts",
       "npmScript": null,
       "consumers": [],
       "owner": "architecture"
     },
     {
-      "artifact": "generated/architecture-remediation/DEPLOYMENT_CERTIFICATE.md",
+      "artifact": "generated/historical/architecture-remediation/DEPLOYMENT_CERTIFICATE.md",
       "producer": "scripts/architecture/audits/generate-evidence-maps.ts",
       "npmScript": null,
       "consumers": [],
       "owner": "architecture"
     },
     {
-      "artifact": "generated/architecture-remediation/FINAL_VERIFICATION_RESULTS.md",
+      "artifact": "generated/historical/architecture-remediation/FINAL_VERIFICATION_RESULTS.md",
       "producer": "scripts/architecture/audits/generate-evidence-maps.ts",
       "npmScript": null,
       "consumers": [],
       "owner": "architecture"
     },
     {
-      "artifact": "generated/architecture-remediation/PHASE_B5_GUARDRAIL_GRADUATION.md",
+      "artifact": "generated/historical/architecture-remediation/PHASE_B5_GUARDRAIL_GRADUATION.md",
       "producer": "scripts/architecture/audits/generate-evidence-maps.ts",
       "npmScript": null,
       "consumers": [],
       "owner": "architecture"
     },
     {
-      "artifact": "generated/architecture-remediation/PLANE_ISOLATION_FIXES.md",
+      "artifact": "generated/historical/architecture-remediation/PLANE_ISOLATION_FIXES.md",
       "producer": "scripts/architecture/audits/generate-evidence-maps.ts",
       "npmScript": null,
       "consumers": [],
       "owner": "architecture"
     },
     {
-      "artifact": "generated/architecture-remediation/PLANE_ISOLATION_PROOF.md",
+      "artifact": "generated/historical/architecture-remediation/PLANE_ISOLATION_PROOF.md",
       "producer": "scripts/architecture/audits/generate-evidence-maps.ts",
       "npmScript": null,
       "consumers": [],
       "owner": "architecture"
     },
     {
-      "artifact": "generated/architecture-remediation/plane-isolation-graph.json",
+      "artifact": "generated/historical/architecture-remediation/plane-isolation-graph.json",
       "producer": "scripts/architecture/audits/generate-evidence-maps.ts",
       "npmScript": null,
       "consumers": [],
       "owner": "architecture"
     },
     {
-      "artifact": "generated/architecture-remediation/ROUTE_REMEDIATION_PLAN.md",
+      "artifact": "generated/historical/architecture-remediation/ROUTE_REMEDIATION_PLAN.md",
       "producer": "scripts/architecture/audits/generate-evidence-maps.ts",
       "npmScript": null,
       "consumers": [],
       "owner": "architecture"
     },
     {
-      "artifact": "generated/architecture-remediation/ROUTE_TRUTH_AND_TOPOLOGY_AUDIT.md",
+      "artifact": "generated/historical/architecture-remediation/ROUTE_TRUTH_AND_TOPOLOGY_AUDIT.md",
       "producer": "scripts/architecture/audits/generate-evidence-maps.ts",
       "npmScript": null,
       "consumers": [],
       "owner": "architecture"
     },
     {
-      "artifact": "generated/architecture-remediation/route-truth-map.json",
+      "artifact": "generated/historical/architecture-remediation/route-truth-map.json",
       "producer": "scripts/architecture/audits/generate-evidence-maps.ts",
       "npmScript": null,
       "consumers": [],
       "owner": "architecture"
     },
     {
-      "artifact": "generated/architecture-remediation/SERVICE_REMEDIATION_PLAN.md",
+      "artifact": "generated/historical/architecture-remediation/SERVICE_REMEDIATION_PLAN.md",
       "producer": "scripts/architecture/audits/generate-evidence-maps.ts",
       "npmScript": null,
       "consumers": [],
       "owner": "architecture"
     },
     {
-      "artifact": "generated/architecture-remediation/SERVICE_TOPOLOGY_AUDIT.md",
+      "artifact": "generated/historical/architecture-remediation/SERVICE_TOPOLOGY_AUDIT.md",
       "producer": "scripts/architecture/audits/generate-evidence-maps.ts",
       "npmScript": null,
       "consumers": [],
       "owner": "architecture"
     },
     {
-      "artifact": "generated/architecture-remediation/service-topology-map.json",
+      "artifact": "generated/historical/architecture-remediation/service-topology-map.json",
       "producer": "scripts/architecture/audits/generate-evidence-maps.ts",
       "npmScript": null,
       "consumers": [],
       "owner": "architecture"
     },
     {
-      "artifact": "generated/architecture-remediation/STALE_PAGES_AND_ROUTE_WRAPPERS.md",
+      "artifact": "generated/historical/architecture-remediation/STALE_PAGES_AND_ROUTE_WRAPPERS.md",
       "producer": "scripts/architecture/audits/generate-evidence-maps.ts",
       "npmScript": null,
       "consumers": [],
       "owner": "architecture"
     },
     {
-      "artifact": "generated/architecture-remediation/verification-results.json",
+      "artifact": "generated/historical/architecture-remediation/verification-results.json",
       "producer": "scripts/architecture/audits/generate-evidence-maps.ts",
       "npmScript": null,
       "consumers": [],
@@ -3940,70 +3940,70 @@
       "owner": "architecture"
     },
     {
-      "artifact": "generated/internal-ai-runtime-phase2/AGENT_TO_PRIMITIVE_WIRING_MAP.md",
+      "artifact": "generated/historical/internal-ai-runtime-phase2/AGENT_TO_PRIMITIVE_WIRING_MAP.md",
       "producer": "package.json#closure-pipelines (static curated evidence)",
       "npmScript": null,
       "consumers": [],
       "owner": "architecture"
     },
     {
-      "artifact": "generated/internal-ai-runtime-phase2/agent-primitive-wiring-status.json",
+      "artifact": "generated/historical/internal-ai-runtime-phase2/agent-primitive-wiring-status.json",
       "producer": "package.json#closure-pipelines (static curated evidence)",
       "npmScript": null,
       "consumers": [],
       "owner": "architecture"
     },
     {
-      "artifact": "generated/internal-ai-runtime-phase2/ERROR_PATROL_TRIAGE_UI_SPEC.md",
+      "artifact": "generated/historical/internal-ai-runtime-phase2/ERROR_PATROL_TRIAGE_UI_SPEC.md",
       "producer": "package.json#closure-pipelines (static curated evidence)",
       "npmScript": null,
       "consumers": [],
       "owner": "architecture"
     },
     {
-      "artifact": "generated/internal-ai-runtime-phase2/error-patrol-ui-status.json",
+      "artifact": "generated/historical/internal-ai-runtime-phase2/error-patrol-ui-status.json",
       "producer": "package.json#closure-pipelines (static curated evidence)",
       "npmScript": null,
       "consumers": [],
       "owner": "architecture"
     },
     {
-      "artifact": "generated/internal-ai-runtime-phase2/INTERNAL_AGENT_EXECUTE_ACTION_SPEC.md",
+      "artifact": "generated/historical/internal-ai-runtime-phase2/INTERNAL_AGENT_EXECUTE_ACTION_SPEC.md",
       "producer": "package.json#closure-pipelines (static curated evidence)",
       "npmScript": null,
       "consumers": [],
       "owner": "architecture"
     },
     {
-      "artifact": "generated/internal-ai-runtime-phase2/INTERNAL_AI_PHASE2_CURRENT_STATE_AUDIT.md",
+      "artifact": "generated/historical/internal-ai-runtime-phase2/INTERNAL_AI_PHASE2_CURRENT_STATE_AUDIT.md",
       "producer": "package.json#closure-pipelines (static curated evidence)",
       "npmScript": null,
       "consumers": [],
       "owner": "architecture"
     },
     {
-      "artifact": "generated/internal-ai-runtime-phase2/INTERNAL_AI_PHASE2_FINAL_VERIFICATION.md",
+      "artifact": "generated/historical/internal-ai-runtime-phase2/INTERNAL_AI_PHASE2_FINAL_VERIFICATION.md",
       "producer": "package.json#closure-pipelines (static curated evidence)",
       "npmScript": null,
       "consumers": [],
       "owner": "architecture"
     },
     {
-      "artifact": "generated/internal-ai-runtime-phase2/internal-agent-execute-action-status.json",
+      "artifact": "generated/historical/internal-ai-runtime-phase2/internal-agent-execute-action-status.json",
       "producer": "package.json#closure-pipelines (static curated evidence)",
       "npmScript": null,
       "consumers": [],
       "owner": "architecture"
     },
     {
-      "artifact": "generated/internal-ai-runtime-phase2/PHASE2_CLOSURE_AUDIT.md",
+      "artifact": "generated/historical/internal-ai-runtime-phase2/PHASE2_CLOSURE_AUDIT.md",
       "producer": "package.json#closure-pipelines (static curated evidence)",
       "npmScript": null,
       "consumers": [],
       "owner": "architecture"
     },
     {
-      "artifact": "generated/internal-ai-runtime-phase2/SAFE_ACTION_GOVERNANCE_MODEL.md",
+      "artifact": "generated/historical/internal-ai-runtime-phase2/SAFE_ACTION_GOVERNANCE_MODEL.md",
       "producer": "package.json#closure-pipelines (static curated evidence)",
       "npmScript": null,
       "consumers": [],
@@ -4087,49 +4087,49 @@
       "owner": "architecture"
     },
     {
-      "artifact": "generated/internal-ai-runtime-phase4/PHASE4_CLOSURE_AUDIT.md",
+      "artifact": "generated/historical/internal-ai-runtime-phase4/PHASE4_CLOSURE_AUDIT.md",
       "producer": "package.json#closure-pipelines (static curated evidence)",
       "npmScript": null,
       "consumers": [],
       "owner": "architecture"
     },
     {
-      "artifact": "generated/internal-ai-runtime-phase4/security-council-runtime-status.json",
+      "artifact": "generated/historical/internal-ai-runtime-phase4/security-council-runtime-status.json",
       "producer": "package.json#closure-pipelines (static curated evidence)",
       "npmScript": null,
       "consumers": [],
       "owner": "architecture"
     },
     {
-      "artifact": "generated/internal-ai-runtime-phase5/PHASE5_CLOSURE_AUDIT.md",
+      "artifact": "generated/historical/internal-ai-runtime-phase5/PHASE5_CLOSURE_AUDIT.md",
       "producer": "package.json#closure-pipelines (static curated evidence)",
       "npmScript": null,
       "consumers": [],
       "owner": "architecture"
     },
     {
-      "artifact": "generated/internal-ai-runtime-phase5/phase5-status.json",
+      "artifact": "generated/historical/internal-ai-runtime-phase5/phase5-status.json",
       "producer": "package.json#closure-pipelines (static curated evidence)",
       "npmScript": null,
       "consumers": [],
       "owner": "architecture"
     },
     {
-      "artifact": "generated/internal-ai-runtime-phase6/PHASE6_CLOSURE_AUDIT.md",
+      "artifact": "generated/historical/internal-ai-runtime-phase6/PHASE6_CLOSURE_AUDIT.md",
       "producer": "package.json#closure-pipelines (static curated evidence)",
       "npmScript": null,
       "consumers": [],
       "owner": "architecture"
     },
     {
-      "artifact": "generated/internal-ai-runtime-phase7/PHASE7_CLOSURE_AUDIT.md",
+      "artifact": "generated/historical/internal-ai-runtime-phase7/PHASE7_CLOSURE_AUDIT.md",
       "producer": "package.json#closure-pipelines (static curated evidence)",
       "npmScript": null,
       "consumers": [],
       "owner": "architecture"
     },
     {
-      "artifact": "generated/internal-ai-runtime-phase7/phase7-status.json",
+      "artifact": "generated/historical/internal-ai-runtime-phase7/phase7-status.json",
       "producer": "package.json#closure-pipelines (static curated evidence)",
       "npmScript": null,
       "consumers": [],
@@ -4531,21 +4531,21 @@
       "owner": "architecture"
     },
     {
-      "artifact": "generated/master-deployment-readiness/deployment-certification-status.json",
+      "artifact": "generated/historical/master-deployment-readiness/deployment-certification-status.json",
       "producer": "package.json#closure-pipelines (static curated evidence)",
       "npmScript": null,
       "consumers": [],
       "owner": "architecture"
     },
     {
-      "artifact": "generated/master-deployment-readiness/FINAL_DEPLOYMENT_CERTIFICATION_REPORT.md",
+      "artifact": "generated/historical/master-deployment-readiness/FINAL_DEPLOYMENT_CERTIFICATION_REPORT.md",
       "producer": "package.json#closure-pipelines (static curated evidence)",
       "npmScript": null,
       "consumers": [],
       "owner": "architecture"
     },
     {
-      "artifact": "generated/master-deployment-readiness/PHASE_AA_FINAL_CERTIFICATION.md",
+      "artifact": "generated/historical/master-deployment-readiness/PHASE_AA_FINAL_CERTIFICATION.md",
       "producer": "package.json#closure-pipelines (static curated evidence)",
       "npmScript": null,
       "consumers": [],
