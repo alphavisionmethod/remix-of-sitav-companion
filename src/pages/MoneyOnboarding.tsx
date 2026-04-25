@@ -1,10 +1,4 @@
-import { MoneyOnboardingFlow } from "@/components/sita/money-onboarding";
-import { openFinanceModule } from "@/lib/finance-launcher";
-
-const MoneyOnboarding = () => {
-  return (
-    <MoneyOnboardingFlow onComplete={() => openFinanceModule("overview")} />
-  );
-};
-
-export default MoneyOnboarding;
+// Wave 6 — legacy path re-exports the canonical implementation.
+// Moved to @/modules/finance/pages/MoneyOnboarding
+export { default } from "@/modules/finance/pages/MoneyOnboarding";
+export * from "@/modules/finance/pages/MoneyOnboarding";
