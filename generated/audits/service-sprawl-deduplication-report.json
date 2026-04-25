@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-04-25T18:45:46.321Z",
+  "counts": {
+    "wrapperCompat": 10,
+    "duplicateMerge": 0,
+    "splitRequired": 0,
+    "removeAfter": 0,
+    "clientShapedInServices": 1
+  },
+  "wrapperCompat": [
+    "src/lib/services/approval-engine",
+    "src/lib/services/brain-core",
+    "src/lib/services/conscience-gate",
+    "src/lib/services/constitution-compiler",
+    "src/lib/services/immune-controller",
+    "src/lib/services/inference-gateway",
+    "src/lib/services/lease-manager",
+    "src/lib/services/mnemosyne",
+    "src/lib/services/model-router",
+    "src/lib/services/trust-governor"
+  ],
+  "duplicateMerge": [],
+  "splitRequired": [],
+  "removeAfter": [],
+  "clientShapedInServices": [
+    "src/lib/services/board-api-client.ts"
+  ]
+}

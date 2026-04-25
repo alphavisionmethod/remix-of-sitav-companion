@@ -1,167 +1,113 @@
 
-# Wave 1.2 — Contract Layer Ownership Hardening
+# Wave 1.3 — Service / Adapter / Client Layer Hardening
 
-## Audit findings (real, from this repo)
+## Audit findings (real repository state)
 
-A semantic walk of `src/contracts/`, `src/domains/**`, `src/packages/**`, and `src/platform/**` shows the current state is **mostly clean but underspecified** — exactly the latent ambiguity you flagged. Concrete facts:
+| Surface | Reality |
+|---|---|
+| `src/lib/services/**` | **229 service folders** already classified by `src/lib/migration/service-authority-map.ts` into 5 layers (PLATFORM / DOMAIN / **INTEGRATION_ADAPTER** / PROJECTION / **UI_CLIENT**). |
+| `src/lib/core-services/**` | 90 entries — Layer 1 (platform canonical) + a subset already labeled `INTEGRATION_ADAPTER` (connector-runners, google-provider-family, integration-hub, connector-health-service, connector-control). |
+| `src/lib/data-services/**` | 11 entries — Layer 5 `UI_CLIENT` (mode-aware Supabase CRUD). |
+| `src/lib/adapters/**` | **Does not exist** — adapters live inside `core-services` / `services` and are tagged `INTEGRATION_ADAPTER`. |
+| `src/lib/clients/**` | **Does not exist** — low-level callers live in `data-services` (`UI_CLIENT`) plus a few `*-client.ts` files inside `services/`. |
+| Constitution | `docs/architecture/SERVICE_LAYER_CONSTITUTION.md` (66 lines) defines the 5-layer model + forbidden cross-layer matrix. |
+| Validators | 17 service-related validators already exist (`check-service-layer-boundaries`, `check-service-authority-unique`, `check-wrapper-purity`, `check-projection-purity`, `check-service-sprawl`, `check-services-structure-hygiene`, etc.). |
 
-1. **`src/contracts/`** is a 2-line barrel (`export * from "@/packages/contracts"`) plus `packages.ts` with named family namespaces. Its `types/` and `constants/` subfolders are empty (`export {}`) Wave-1 placeholders. **Zero direct consumers** repo-wide (`rg "@/contracts"` → only the barrel files themselves). The constitution promises this is "Public contracts — stable cross-layer types", but the rule is not enforced and the path is unused.
-2. **`src/domains/`** has 18 subfolders. Most pillar-named ones (`business/`, `concierge/`, `finance/`, `mission-control/`, `boardroom/`, `delivery/`, `apps/`, `setup/`, `shared/`, `ai-workforce/`, `strategic-intelligence/`, `ux-trust/`) are **empty Wave-1 barrel placeholders** (`export {}`). Real domain code lives in `customer-journey/`, `engines/`, `simulation/`, `investment/`, `advisors/`, `types/`. **210 files** consume `@/domains/*` — the populated ones are real and load-bearing.
-3. **`src/domains/types/`** is a 19-file aggregated type bucket (admin-view-models, advisor-orchestration, digital-twin, dwe, entity-graph, mission-control, os-unified, policy-depth, replay-recovery, revenue-engine, token-governance, etc.). It is wrapped through `src/lib/types/index` (legacy `@lovable:migrated-wrapper`). These are **domain-native types**, correctly located; nothing to move, but the boundary needs a guard.
-4. **`src/platform/contracts/`** has exactly 2 files (`pillar-contract.ts`, `decision-queue.ts`). They are imported by 8 consumers and `pillar-contract.ts` already has a deprecation shim at `src/modules/_shared/pillar-contract.ts` pointing here. **`pillar-contract.ts` is conceptually app-wide cross-layer** (consumed by launcher, nav, validator, blueprint generator, all 4 pillar barrels). It is *misclassified* as platform-local. `decision-queue.ts` is also cross-pillar (it references `PillarId` from `@/modules`) — same status.
-5. **`src/packages/`** is the actual canonical contract home (38 sub-packages: `ai-contracts`, `business-contracts`, `finance-contracts`, `concierge-contracts`, `policy-contracts`, `proof-model`, `enterprise-contracts`, `boardroom-contracts`, `audit-contracts`, `telemetry`, `workflow-primitives`, `event-types`, `feature-flags`, `entitlements`, `window-contracts`, etc.). 314 consumers. This is correct and load-bearing.
-6. **Existing validators** already cover: `check-contract-topology.ts` (named-family drift outside `src/contracts/` + `src/packages/`, BLOCK at 0), `check-contract-family-completeness.ts`, `check-contract-registry.ts`, `check-domain-purity.ts`, `check-misplaced-domain-logic.ts` (warn-level), `check-route-page-contract-layer-usage.ts`. **No validator currently asserts**: (a) `src/contracts/` stays a stable public barrel with zero implementation imports, (b) duplicate type names across `src/domains/types/`, `src/contracts/`, `src/platform/contracts/`, and `src/packages/`, or (c) `src/domains/**` purity against `react`, `@/integrations/supabase`, `@/lib/services/**`.
+**Conclusion:** the repo already implements the user's `services / adapters / clients` model — under different names (PLATFORM/DOMAIN, INTEGRATION_ADAPTER, UI_CLIENT). A physical mass-move of 229 folders into `src/lib/{services,adapters,clients}` would:
 
-## Conclusion
+- violate the strict **no-logic / no-UI / no-API-change** rule (229 import surfaces × thousands of consumers),
+- destabilize the Wave-10 architectural attestation,
+- conflict with the just-sealed Wave-1.1 / Wave-1.2 wrappers,
+- produce no semantic change (the layers are already authoritative via the authority map).
 
-The risk is **not 1000 misplaced files** — it's 2 truly cross-layer files in `src/platform/contracts/` and the absence of guards. A surgical, low-risk wave fixes it now, before further drift compounds.
-
----
-
-## Target contract ownership model (constitutional)
-
-| Layer | What it owns | What it forbids |
-|---|---|---|
-| `src/contracts/` | Curated public re-export barrel of cross-layer stable contracts. Implementation-free. May only `export ... from "@/packages/*"` or `from "@/platform/contracts/*"` after promotion. | Implementation code, React, Supabase, services, hooks, runtime singletons. |
-| `src/packages/<family>-contracts/` | Canonical physical home for every contract family (ai, business, finance, concierge, policy, audit, enterprise, telemetry, workflow, etc.). Pure type & enum files. | Side effects, React imports, runtime DI, persistence. |
-| `src/domains/**` | Domain-native models, entities, value objects, pure engines, FSMs, scoring, formulas. Domain-local types live alongside their engines. `src/domains/types/` is a domain-native type aggregate. | UI imports (`@/components`, `@/pages`), service imports (`@/lib/services`, `@/integrations/supabase`), React. |
-| `src/platform/<system>/contracts/` *(optional, system-local only)* | Types whose vocabulary is internal to one platform system (e.g. one daemon's internal contract). | Cross-system / app-wide vocabulary. The moment a type is imported from outside its owning platform system, it must be promoted to `src/packages/<family>-contracts/` and re-exported via `src/contracts/`. |
-
-**The Promotion Rule:** A type is *app-wide public* iff it is imported by ≥2 distinct top-level layers (e.g. `pages` + `modules`, or `platform/A` + `platform/B`). Such types **must** live in `src/packages/<family>-contracts/` and be re-exported through `src/contracts/`.
-
-**The Duplication Rule:** No exported type identifier may exist in more than one of {`src/contracts/`, `src/domains/types/`, `src/packages/<family>-contracts/`, `src/platform/<system>/contracts/`}. The single canonical home is determined by the Promotion Rule above.
+The **correct hardening** is therefore a **vocabulary bridge + enforcement strengthening**, not a folder shuffle. This matches all 8 deployment-readiness gates the user listed (canonical destination proof, reverse-dep proof, old-path removal gates, EmptyState semantics untouched, attestation reseal via canonical script, single canonical owner, no-logic/no-UI/no-API change).
 
 ---
 
-## Concrete moves (3 surgical relocations only)
+## Plan (8 changes, all safe, zero behavior diff)
 
-### Move 1 — `src/platform/contracts/pillar-contract.ts` → `src/packages/contracts/pillar-contract.ts`
-- **Why:** Imported by `src/modules/{business,concierge,finance,health}/index.ts`, `src/platform/trust/pages/TrustDecisions.tsx`, and the deprecation shim at `src/modules/_shared/pillar-contract.ts`. That's **3 distinct top-level layers** (`modules`, `platform`, deprecated-shim). It is the canonical cross-pillar shape — definitionally an app-wide public contract.
-- **Action:**
-  - Create `src/packages/contracts/pillar-contract.ts` with the full canonical body.
-  - Replace `src/platform/contracts/pillar-contract.ts` with a 2-line `@deprecated Wave 1.2` re-export from the new canonical path.
-  - Re-export from `src/contracts/index.ts` (which already cascades through `@/packages/contracts`).
-  - Update the 9 consumer files to import from `@/contracts` (the public barrel) instead of `@/platform/contracts/pillar-contract` or `@/modules/_shared/pillar-contract`.
-  - Keep both old shims (`src/platform/contracts/pillar-contract.ts` and `src/modules/_shared/pillar-contract.ts`) as deprecated re-exports for one wave.
+### 1. New constitutional doc
+**Create** `docs/architecture/SERVICE_ADAPTER_CLIENT_OWNERSHIP_MODEL.md`
 
-### Move 2 — `src/platform/contracts/decision-queue.ts` → `src/packages/contracts/decision-queue.ts`
-- **Why:** Same pattern. Imported by all 4 pillar barrels + `_shared/decision-queue.ts`. Cross-pillar by definition.
-- **Action:** Mirror Move 1 (canonical body in `src/packages/contracts/`, deprecated re-export at old path, update consumers to `@/contracts`).
-- **Note:** This file imports `PillarId` from `@/modules`. That's a `packages → modules` direction which violates the layer rule. We fix this by inlining `PillarId` (it's a simple union of 4 string literals) directly in `decision-queue.ts`, removing the `@/modules` dependency. `src/modules` can then re-export `PillarId` from `@/contracts` if needed.
+- States the canonical mapping:
+  - **Service facade** ↔ `PLATFORM_CANONICAL` ∪ `DOMAIN_CANONICAL`
+  - **Adapter** ↔ `INTEGRATION_ADAPTER`
+  - **Client** ↔ `UI_CLIENT`
+  - **Read-model** ↔ `PROJECTION_CANONICAL` (kept distinct — read-only)
+- Defines: services compose adapters/clients; adapters wrap clients; clients hold transport only; UI consumes services (not raw clients) except where `UI_CLIENT` is the explicit consumption seam.
+- Lists the 4 forbidden sprawl patterns (service doing transport, client doing orchestration, adapter duplicating facade, raw SDK bypassing adapter).
 
-### Move 3 — `src/platform/contracts/` becomes a deprecated shim folder (no new content)
-- After Moves 1–2, `src/platform/contracts/` contains only the two `@deprecated Wave 1.2` re-export shims. Future contracts go to `src/packages/<family>-contracts/`. We add a `MANIFEST.md` in this folder documenting that no new files may be added here.
+### 2. New machine-readable mapping
+**Create** `src/lib/migration/service-vocabulary-bridge.ts`
 
-**No moves to `src/contracts/types/` or `src/contracts/constants/`.** These stay as empty placeholders so the constitution can later promote curated types into them without breaking the existing barrel.
+```ts
+export const VOCAB_BRIDGE = {
+  service:  ["PLATFORM_CANONICAL", "DOMAIN_CANONICAL"],
+  adapter:  ["INTEGRATION_ADAPTER"],
+  client:   ["UI_CLIENT"],
+  readModel:["PROJECTION_CANONICAL"],
+} as const;
+```
 
-**No moves out of `src/domains/types/`.** Its 19 files are domain-native types and are correctly located; only the import-purity guard is added.
+Pure constant — zero runtime behavior, consumed only by validators + generators.
 
----
+### 3. New canonical ownership artifact
+**Create** `generated/manifests/lib-service-layer-ownership-map.json` — emitted by a new script `scripts/architecture/emit-lib-service-layer-ownership.ts` that walks `service-authority-map.ts` and projects each entry into `{ path, layer, vocabClass: service|adapter|client|readModel, canonical, family }`.
 
-## Constitution amendments (`docs/architecture/REPOSITORY_CONSTITUTION.md`)
+### 4. New sprawl-deduplication audit artifact
+**Create** `generated/audits/service-sprawl-deduplication-report.json` listing:
+- entries flagged `WRAPPER_COMPAT_ONLY`, `DUPLICATE_MERGE_REQUIRED`, `SPLIT_REQUIRED`,
+- `*-client.ts` files inside `src/lib/services/**` (potential client-misclassification),
+- low-level transport-shaped files outside `data-services/` (heuristic: imports `@supabase/supabase-js` directly + ≤ 1 export).
 
-Add **Rules 39–42** under a new section "**Contract layer ownership (Wave 1.2 — STRICT, BLOCKING)**":
+### 5. New blocking validator
+**Create** `scripts/architecture/checks/check-service-vocabulary-coherence.ts`
 
-- **Rule 39 — Single canonical home.** Every exported type/interface/enum identifier may exist in exactly one of `{src/contracts/**, src/packages/**, src/domains/types/**, src/platform/<system>/contracts/**}`. Validator: `check-contract-duplicate-identifiers.ts` (BLOCK).
-- **Rule 40 — `src/contracts/` is a pure public barrel.** Files under `src/contracts/**` MAY only contain `export ... from "@/packages/*"` or `export ... from "@/platform/<system>/contracts/*"` re-exports. They MUST NOT contain interface/type/class/function bodies, React imports, Supabase imports, or `@/lib/services/**` imports. Validator: `check-public-contract-barrel-purity.ts` (BLOCK).
-- **Rule 41 — Domain purity (extended).** Files under `src/domains/**` MUST NOT import from `react`, `react-dom`, `@/components/**`, `@/pages/**`, `@/integrations/supabase`, or `@/lib/services/**`. (Already partially asserted by `check-domain-purity.ts` against `pages` and `surfaces`; this rule extends and graduates it to BLOCK level.)
-- **Rule 42 — Platform-local contracts are local.** `src/platform/<A>/contracts/**` MUST NOT be imported from `src/platform/<B>/**` (B ≠ A), `src/modules/**`, or `src/pages/**`. The moment such an import is needed, the contract must be promoted to `src/packages/<family>-contracts/` and re-exported via `src/contracts/`. Validator: `check-platform-local-contract-scope.ts` (BLOCK after Wave 1.2 baseline).
+Fails CI when:
+- a file under `src/lib/services/**` ending in `-client.ts` is **not** classified `INTEGRATION_ADAPTER` or `UI_CLIENT` in the authority map,
+- a file classified `UI_CLIENT` lives outside `src/lib/data-services/**`,
+- a file classified `INTEGRATION_ADAPTER` directly imports `@/modules/**` or `@/pages/**` (upward leak),
+- a `PLATFORM_CANONICAL` or `DOMAIN_CANONICAL` file directly imports `@supabase/supabase-js` (must go through a client/adapter).
 
-Document the **Promotion Rule** and **Duplication Rule** verbatim in a new doc: `docs/architecture/CONTRACT_LAYER_OWNERSHIP_MODEL.md`.
+Registered in `src/lib/ci/validator-gate-map.ts` as **blocking**.
 
----
+### 6. Strengthen existing service-layer-boundaries check
+**Edit** `scripts/architecture/checks/check-service-layer-boundaries.ts` to import `VOCAB_BRIDGE` and emit human-readable `service|adapter|client` labels in violation messages (no rule change — just clarity).
 
-## New validators (3 blocking, all wired into `validator-gate-map.ts`)
+### 7. Constitution amendment
+**Edit** `docs/architecture/SERVICE_LAYER_CONSTITUTION.md` — append a new section **"Vocabulary Bridge — services / adapters / clients"** with the mapping table from doc #1, and a new **Rule 7**: *"No file may be promoted from `UI_CLIENT` to `DOMAIN_CANONICAL` (or vice-versa) without an entry update in `service-authority-map.ts` and a passing `check-service-vocabulary-coherence` run."*
 
-1. **`scripts/architecture/checks/check-public-contract-barrel-purity.ts`** — walks `src/contracts/**`, fails on any non-re-export statement, any `import` from `react`/`@/integrations`/`@/lib/services`/`@/components`/`@/pages`/`@/hooks`/`@/contexts`. Baseline: 0.
-2. **`scripts/architecture/checks/check-contract-duplicate-identifiers.ts`** — extracts every exported identifier across `src/contracts/**`, `src/packages/**`, `src/domains/types/**`, `src/platform/*/contracts/**`. Reports any name appearing in ≥2 of these scopes. Emits `generated/manifests/contract-ownership-map.json` (the manifest you specified) and `generated/audits/duplicate-contract-family-report.json`. Baseline: seal current count, decrease-only.
-3. **`scripts/architecture/checks/check-platform-local-contract-scope.ts`** — for each `src/platform/<X>/contracts/**` file, scans the whole repo for cross-system importers; fails if any importer is outside `src/platform/<X>/**`. Baseline: after Wave 1.2 moves, the only platform-local contract files are the two deprecation shims, which are exempted by frontmatter `@deprecated`.
-
-Wire all three into `src/lib/ci/validator-gate-map.ts` and `.github/workflows/foundation-gate.yml`. Register them in `scripts/manifests/generate/generate-foundation-manifest-index.ts`.
-
-Also extend the existing **`check-domain-purity.ts`** with the additional forbidden imports from Rule 41 (`react`, `@/integrations/supabase`, `@/lib/services/**`, `@/components/**`).
-
----
-
-## New / modified manifests
-
-- **`generated/manifests/contract-ownership-map.json`** — every exported contract identifier with `{ name, kind, canonicalPath, layer: "public-barrel"|"package"|"domain-native"|"platform-local"|"deprecated-shim", consumerCount, consumerLayers[] }`.
-- **`generated/audits/duplicate-contract-family-report.json`** — duplicates report from validator 2.
-- **`generated/audits/contract-layer-hardening-report.md`** — final wave report (the deliverable you specified).
-- Update `generated/manifests/foundation-manifest-index.json` and `foundation-tier-validator-set.json` to include the 3 new validators + the new manifest.
-
----
-
-## Files I will create / modify
-
-**Create:**
-- `docs/architecture/CONTRACT_LAYER_OWNERSHIP_MODEL.md`
-- `src/packages/contracts/pillar-contract.ts` (canonical body, moved from platform)
-- `src/packages/contracts/decision-queue.ts` (canonical body, moved from platform, `PillarId` inlined)
-- `src/platform/contracts/MANIFEST.md` (declares folder is deprecated-shim-only)
-- `scripts/architecture/checks/check-public-contract-barrel-purity.ts`
-- `scripts/architecture/checks/check-contract-duplicate-identifiers.ts`
-- `scripts/architecture/checks/check-platform-local-contract-scope.ts`
-- `scripts/manifests/generate/generate-contract-ownership-map.ts`
-- `generated/manifests/contract-ownership-map.json` (initial seal)
-- `generated/audits/duplicate-contract-family-report.json` (initial seal, 0 dupes after moves)
-- `generated/audits/contract-layer-hardening-report.md`
-
-**Modify (replace with deprecated re-export shims):**
-- `src/platform/contracts/pillar-contract.ts` → 2-line `@deprecated Wave 1.2` shim → `@/packages/contracts/pillar-contract`
-- `src/platform/contracts/decision-queue.ts` → 2-line `@deprecated Wave 1.2` shim → `@/packages/contracts/decision-queue`
-- `src/modules/_shared/pillar-contract.ts` → already a shim; retarget to `@/packages/contracts/pillar-contract`
-- `src/modules/_shared/decision-queue.ts` → if it exists as content file, replace with shim; if shim, retarget
-
-**Modify (rewire imports to `@/contracts`):**
-- `src/modules/business/index.ts`
-- `src/modules/concierge/index.ts`
-- `src/modules/finance/index.ts`
-- `src/modules/health/index.ts`
-- `src/modules/_shared/index.ts`
-- `src/platform/trust/pages/TrustDecisions.tsx`
-- (any other consumer found by `rg "@/platform/contracts/(pillar-contract|decision-queue)"` and `rg "@/modules/_shared/(pillar-contract|decision-queue)"`)
-
-**Modify (constitution + gates):**
-- `docs/architecture/REPOSITORY_CONSTITUTION.md` — add Rules 39–42 and link to new doc
-- `scripts/architecture/checks/check-domain-purity.ts` — extend with Rule 41 forbidden imports
-- `src/lib/ci/validator-gate-map.ts` — register 3 new blocking validators
-- `.github/workflows/foundation-gate.yml` — wire 3 new validators
-- `scripts/manifests/generate/generate-foundation-manifest-index.ts` — include new manifest + validators
+### 8. Final hardening report
+**Create** `generated/audits/service-adapter-client-hardening-report.md` — covers:
+- old sprawl-risk summary,
+- new semantic vocabulary bridge,
+- classification counts (services / adapters / clients / read-models),
+- exact files touched (this wave touches **0 service implementation files** — only docs, maps, validators, generated artifacts),
+- constitution + validator changes,
+- verification: `tsc --noEmit` clean, all 18 service-related validators passing, attestation resealed via the canonical `scripts/architecture/wave-10-emit-attestation.ts` script.
 
 ---
 
-## Safety posture
+## Safety guarantees (matches the 8 deployment-readiness gates)
 
-- **No physical moves** of any `src/domains/**` file. The 18 domain folders, 19 type files, and ~217 consumers stay exactly where they are.
-- **No physical moves** of any `src/packages/**` file. All 38 contract sub-packages stay exactly where they are.
-- **Exactly 2 small file moves** (`pillar-contract.ts`, `decision-queue.ts` from `src/platform/contracts/` → `src/packages/contracts/`). Both are ≤120 lines, pure type modules, with deprecated shims left at the old paths so any missed consumer still resolves.
-- **One trivial inlining** of the `PillarId` literal union in `decision-queue.ts` to remove the `packages → modules` upward import (currently a layer-rule violation that nobody noticed).
-- **No logic, UI, route, or API changes.** No runtime behavior changes.
-- **Zero `as any`** introduced.
-- **Wave 10 attestation re-seal** required: digest covers `src/platform/contracts`, `src/packages/contracts`, `src/modules/*/index.ts` — recomputed by the canonical generator script, recorded in `wave-10-architectural-attestation.json` with an explicit "Wave 1.2 contract relocation" entry.
+| Gate | How this plan satisfies it |
+|---|---|
+| Canonical destination proof | The vocabulary bridge maps each existing path to exactly one `vocabClass`; no file moves, so destinations are tautologically the current canonical paths. |
+| Reverse-dependency proof | Zero implementation files moved → zero importer churn → reverse-dep graph unchanged. |
+| Stronger old-path removal gates | New `check-service-vocabulary-coherence` blocks regressions; existing `check-deprecated-wrappers` + `check-legacy-wrapper-usage` continue to enforce shim removal. |
+| Targeted multi-consumer smoke tests | No multi-consumer move happens. `tsc --noEmit` + the existing 17 service validators are the smoke. |
+| Explicit `EmptyState` semantic verification | EmptyState is a UI primitive — out of service-layer scope; its Wave-1.1 canonical home (`@/platform/sita/components/sita/EmptyState`) is untouched and re-verified by the existing validator pass. |
+| Attestation resealing only via canonical script | Reseal via `scripts/architecture/wave-10-emit-attestation.ts`; never by hand. |
+| Exactly one canonical owner per concept | Enforced by the existing `check-service-authority-unique` + the new vocabulary bridge (each layer maps to exactly one `vocabClass`). |
+| Strict no-logic / no-UI / no-API change | This wave touches **0** files under `src/lib/services/**`, `src/lib/core-services/**`, or `src/lib/data-services/**`. Only docs / maps / validators / generated artifacts change. |
 
-## Verification I will run before declaring done
+---
 
-- `npx tsc --noEmit` → 0 errors.
-- `npx tsx scripts/manifests/generate/generate-contract-ownership-map.ts` → emits manifest.
-- `npx tsx scripts/architecture/checks/check-public-contract-barrel-purity.ts` → exits 0.
-- `npx tsx scripts/architecture/checks/check-contract-duplicate-identifiers.ts` → exits 0 (0 dupes).
-- `npx tsx scripts/architecture/checks/check-platform-local-contract-scope.ts` → exits 0.
-- `npx tsx scripts/architecture/checks/check-contract-topology.ts` → still exits 0 (existing BLOCK gate at 0).
-- `npx tsx scripts/architecture/checks/check-domain-purity.ts` (extended) → exits 0.
-- `rg "from ['\"]@/platform/contracts/(pillar-contract|decision-queue)['\"]"` → returns only the deprecation shims themselves.
-- `rg "from ['\"]@/modules/_shared/(pillar-contract|decision-queue)['\"]"` → returns only the deprecation shims themselves.
-- Spot-check that `src/modules/business/index.ts` (and the other 3 pillar barrels) now imports `PillarManifest` etc. from `@/contracts`.
-- Spot-check that `src/contracts/index.ts` re-exports `PillarManifest`, `PillarCapability`, `DECISION_QUEUE`, `DecisionEntry`, `SurfaceOwner` through the `@/packages/contracts` barrel cascade.
+## What this plan deliberately does NOT do
 
-## What this wave deliberately does NOT do
+- Does **not** create empty `src/lib/adapters/` or `src/lib/clients/` folders. Creating empty buckets without moving files would itself be sprawl.
+- Does **not** physically move any of the 229 service folders. The authority map already assigns each one a canonical layer; relocation would be a separate, ADR-gated wave.
+- Does **not** touch any runtime code, edge function, connector, or UI surface.
+- Does **not** alter the Wave-1.2 contract layer or the Wave-1.1 component shims.
 
-- Does NOT move any `src/domains/**` file (already correctly placed).
-- Does NOT move any `src/packages/**` file (already canonical).
-- Does NOT promote `src/contracts/types/` or `src/contracts/constants/` placeholders out of empty state — those stay reserved for future curated public types.
-- Does NOT touch `src/lib/types/**` (the 19 domain-native files reachable through `src/domains/types/index.ts` via the legacy wrapper).
-- Does NOT change pillar boundaries, route registries, or any runtime behavior.
-- Does NOT introduce a second contract taxonomy. `src/packages/<family>-contracts/` remains the only physical contract home; `src/contracts/` is purely the public re-export face.
-
-The result is a fully-defined, machine-enforced contract ownership model with the only two architecturally-misclassified contract files relocated to their canonical home, two new BLOCK-level validators preventing future drift, the constitution amended with Rules 39–42, and a sealed ownership map ready to ratchet.
+If you want a future ADR-gated **physical** relocation wave (e.g. moving the ~10 `INTEGRATION_ADAPTER` services into `src/lib/adapters/` with full shim coverage), that should be its own wave with its own attestation reseal. This wave establishes the vocabulary, enforcement, and audit trail that such a wave would need.

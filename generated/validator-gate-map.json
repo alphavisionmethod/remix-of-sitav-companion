@@ -1,18 +1,18 @@
 {
-  "generatedAt": "2026-04-25T17:52:40.097Z",
+  "generatedAt": "2026-04-25T18:48:29.700Z",
   "source": {
     "checksDir": "scripts/architecture/checks",
     "requiredGatesCount": 275,
     "deploymentGapSuiteCount": 17,
-    "overrideCount": 8
+    "overrideCount": 12
   },
-  "totalValidators": 240,
-  "blockCount": 76,
+  "totalValidators": 244,
+  "blockCount": 80,
   "warnCount": 18,
   "advisoryCount": 146,
   "disabledCount": 0,
   "archivedCount": 0,
-  "classified": 240,
+  "classified": 244,
   "unclassified": 0,
   "unwiredAdvisoryCount": 146,
   "coveragePercent": 100,
@@ -552,6 +552,16 @@
       "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
     },
     {
+      "validator": "check-contract-duplicate-identifiers",
+      "gateId": "contract-duplicate-identifiers",
+      "classification": "block",
+      "consumer": "release-readiness",
+      "declaredInRegistry": true,
+      "lastModifiedAt": "2026-04-25T18:30:11.565Z",
+      "hasReportArtifact": false,
+      "rationale": "Wave 1.2 Rule 39. Asserts no exported type/interface/enum/const identifier appears in ≥2 of {src/contracts/**, src/packages/**, src/domains/types/**, src/platform/<X>/contracts/**}. Emits generated/manifests/contract-ownership-map.json and generated/audits/duplicate-contract-family-report.json. Sealed at 0 dupes after the Wave 1.2 promotions."
+    },
+    {
       "validator": "check-contract-family-completeness",
       "gateId": "contract-family-completeness",
       "classification": "advisory",
@@ -728,7 +738,7 @@
       "classification": "advisory",
       "consumer": "advisory-only",
       "declaredInRegistry": false,
-      "lastModifiedAt": "2026-04-25T11:42:39.325Z",
+      "lastModifiedAt": "2026-04-25T18:30:32.483Z",
       "hasReportArtifact": true,
       "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
     },
@@ -1660,6 +1670,16 @@
       "rationale": "Wave 0.5 promotion. Thin wrapper that delegates to scripts/architecture/check-platform-subclassification.ts. Promoted from advisory to BLOCK so platform sprawl regressions fail CI under Constitution Rule 27."
     },
     {
+      "validator": "check-platform-local-contract-scope",
+      "gateId": "platform-local-contract-scope",
+      "classification": "block",
+      "consumer": "release-readiness",
+      "declaredInRegistry": true,
+      "lastModifiedAt": "2026-04-25T18:30:11.565Z",
+      "hasReportArtifact": true,
+      "rationale": "Wave 1.2 Rule 42. Asserts files under src/platform/<X>/contracts/** are imported only from inside src/platform/<X>/**. Cross-system / pillar / page importers indicate the contract must be promoted to src/packages/<family>-contracts/. Deprecated re-export shims (frontmatter @deprecated Wave 1.2) are exempted and tracked under the Rule 23 shim baseline."
+    },
+    {
       "validator": "check-platform-readiness",
       "gateId": "platform-readiness",
       "classification": "advisory",
@@ -1808,6 +1828,16 @@
       "lastModifiedAt": "2026-04-25T11:42:39.330Z",
       "hasReportArtifact": true,
       "rationale": "Auto-classified: gateId present in REQUIRED_GATES."
+    },
+    {
+      "validator": "check-public-contract-barrel-purity",
+      "gateId": "public-contract-barrel-purity",
+      "classification": "block",
+      "consumer": "release-readiness",
+      "declaredInRegistry": true,
+      "lastModifiedAt": "2026-04-25T18:30:11.565Z",
+      "hasReportArtifact": true,
+      "rationale": "Wave 1.2 Rule 40. Asserts src/contracts/** stays a pure public re-export barrel (re-exports only; no implementation bodies; no forbidden imports from react/supabase/services/components/pages/hooks/contexts/modules). See docs/architecture/CONTRACT_LAYER_OWNERSHIP_MODEL.md."
     },
     {
       "validator": "check-qemu-vm-readiness",
@@ -2241,6 +2271,16 @@
       "lastModifiedAt": "2026-04-25T11:42:39.332Z",
       "hasReportArtifact": true,
       "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-service-vocabulary-coherence",
+      "gateId": "service-vocabulary-coherence",
+      "classification": "block",
+      "consumer": "release-readiness",
+      "declaredInRegistry": true,
+      "lastModifiedAt": "2026-04-25T18:48:10.967Z",
+      "hasReportArtifact": false,
+      "rationale": "Wave 1.3 Rule 43. Bridges the user-facing `service / adapter / client` vocabulary onto the existing 5-layer Service Layer Constitution and enforces the four forbidden sprawl patterns (service-as-transport, client-as-orchestrator, adapter-as-facade, raw-SDK bypass). See docs/architecture/SERVICE_ADAPTER_CLIENT_OWNERSHIP_MODEL.md and src/lib/migration/service-vocabulary-bridge.ts."
     },
     {
       "validator": "check-services-structure-hygiene",
