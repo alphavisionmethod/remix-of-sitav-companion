@@ -64,3 +64,31 @@ A wrapper may NOT progress to `READY_TO_REMOVE` while any source file still impo
 - **No physical file moves.** Classification-in-place is safer than mass restructuring.
 - **No new top-level `platform/` `domains/` `integrations/` folders.** The existing `core-services/` + `services/` + `data-services/` + `engines/` already maps cleanly to the 5 layers.
 - **No behavioral changes.** Only governance, classification, import hygiene, and enforcement.
+
+## Wave 1.3 — Vocabulary Bridge: services / adapters / clients
+
+The user-facing vocabulary `service / adapter / client / read-model` maps onto the
+5 layers above as follows:
+
+| Vocabulary | Canonical layer(s)                          |
+| ---------- | ------------------------------------------- |
+| Service    | `PLATFORM_CANONICAL` ∪ `DOMAIN_CANONICAL`   |
+| Adapter    | `INTEGRATION_ADAPTER`                       |
+| Client     | `UI_CLIENT`                                 |
+| Read-model | `PROJECTION_CANONICAL`                      |
+
+Authority: `docs/architecture/SERVICE_ADAPTER_CLIENT_OWNERSHIP_MODEL.md`.
+Machine bridge: `src/lib/migration/service-vocabulary-bridge.ts`.
+Validator: `scripts/architecture/checks/check-service-vocabulary-coherence.ts` (BLOCKING).
+
+### Rule 7 — Vocabulary class promotions are constitutional events
+
+No file may be promoted between vocabulary classes (Service ↔ Adapter ↔ Client
+↔ Read-model) without:
+
+1. an updated entry in `src/lib/migration/service-authority-map.ts`,
+2. a passing `check-service-vocabulary-coherence` run,
+3. attestation reseal **only** via `scripts/architecture/wave-10-emit-attestation.ts`.
+
+No physical file move, no logic change, no UI change, and no public API change
+is permitted in a vocabulary-class promotion PR.
