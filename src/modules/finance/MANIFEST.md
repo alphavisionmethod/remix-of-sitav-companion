@@ -16,7 +16,7 @@
 | Capital allocation | `src/pages/CapitalAllocationPage.tsx`               | `src/lib/services/capital-allocation`   |
 | Tax                | `src/pages/money/Tax*`                               | `src/lib/services/finance-os/tax-*`     |
 | Family office      | `src/pages/money/FamilyOffice*`                      | `src/lib/services/family-command-center`|
-| Approvals (money)  | `src/pages/money/MoneyApprovals.tsx`                | DELEGATES → `_trust/approvals`          |
+| Approvals (money)  | `src/pages/money/MoneyApprovals.tsx`                | DELEGATES → `@/platform/trust/approvals`          |
 | Trust Graph        | `src/pages/money/TrustGraph.tsx`                    | DELEGATES → `_trust`                    |
 | Bills / subscriptions | `src/pages/money/Bills`, `Subscriptions`         | `src/lib/services/finance-os/bills-*`   |
 | Receivables        | `src/pages/money/Receivables`                       | `src/lib/services/finance-os/ar-*`      |
@@ -27,7 +27,7 @@
 
 ## Forbidden Imports
 - ❌ `src/modules/business/**` · `src/modules/concierge/**` · `src/modules/health/**`
-- ✅ `src/modules/_shared/**` · `src/modules/_trust/**`
+- ✅ `@/platform/**` · `@/platform/trust/**`
 
 ## Trust Integration
 ALL money movement (transfers, payments, investment trades, allocations) MUST be receipted and routed through approvals when above the user-set threshold. The `MoneyApprovals` and `TrustGraph` pages are user-facing windows into the Trust Layer, scoped to financial actions.

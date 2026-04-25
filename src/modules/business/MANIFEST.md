@@ -28,7 +28,7 @@
 
 ## Forbidden Imports
 - ❌ `src/modules/concierge/**` · `src/modules/finance/**` · `src/modules/health/**`
-- ✅ `src/modules/_shared/**` · `src/modules/_trust/**`
+- ✅ `@/platform/**` · `@/platform/trust/**`
 
 ## Trust Integration
-Every mutating action MUST emit a receipt via `_trust/receipts.emitActionReceipt`. CRM contact deletion, deal-stage changes, and outbound communications are the highest-priority audit targets.
+Every mutating action MUST emit a receipt via `@/platform/trust/receipts.emitActionReceipt`. CRM contact deletion, deal-stage changes, and outbound communications are the highest-priority audit targets.
