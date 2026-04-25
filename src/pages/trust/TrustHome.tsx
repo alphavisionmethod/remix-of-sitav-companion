@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Shield, FileText, CheckSquare, Key, Bot, ScrollText, Smartphone, AlertTriangle, Database, Sparkles } from "lucide-react";
+import { Shield, FileText, CheckSquare, Key, Bot, ScrollText, Smartphone, AlertTriangle, Database, Sparkles, GitBranch } from "lucide-react";
 
 const tiles = [
   { to: "/trust/receipts", icon: FileText, label: "Receipts", desc: "Every action, signed and explainable" },
@@ -7,6 +7,7 @@ const tiles = [
   { to: "/trust/permissions", icon: Key, label: "Permissions", desc: "What each module can touch" },
   { to: "/trust/automation-authority", icon: Bot, label: "Automation Authority", desc: "Autonomy levels per advisor" },
   { to: "/trust/audit", icon: ScrollText, label: "Audit Log", desc: "Full history, immutable" },
+  { to: "/trust/decisions", icon: GitBranch, label: "Decisions", desc: "Architectural ownership map" },
   { to: "/trust/devices", icon: Smartphone, label: "Devices & Sessions", desc: "Where you are signed in" },
   { to: "/trust/threats", icon: AlertTriangle, label: "Threats", desc: "Suspicious activity & holds" },
   { to: "/trust/retention", icon: Database, label: "Data Retention", desc: "What is kept and for how long" },
