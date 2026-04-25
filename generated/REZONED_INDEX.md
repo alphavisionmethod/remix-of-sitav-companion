@@ -7,7 +7,7 @@
 Every file under `generated/**` is assigned to exactly one of seven canonical zones.
 Files marked _virtually zoned_ live at the legacy root path for back-compat (740+ existing references); the zone is a navigational/governance label, not a physical move.
 
-**Total files:** 1463 · **Physically zoned:** 123 · **Virtually zoned:** 1340
+**Total files:** 1465 · **Physically zoned:** 124 · **Virtually zoned:** 1341
 
 ## Zone counts
 
@@ -17,9 +17,9 @@ Files marked _virtually zoned_ live at the legacy root path for back-compat (740
 | `audits` | 147 |
 | `proof` | 20 |
 | `readiness` | 34 |
-| `lifecycle` | 5 |
+| `lifecycle` | 6 |
 | `historical` | 477 |
-| `reports` | 553 |
+| `reports` | 554 |
 
 ## Files by zone
 
@@ -251,13 +251,14 @@ Files marked _virtually zoned_ live at the legacy root path for back-compat (740
 - 🏷️  `generated/user-profile-readiness-report.json`
 - 🏷️  `generated/web-release-readiness-report.json`
 
-### lifecycle (5)
+### lifecycle (6)
 
 - 🏷️  `generated/baselines/orphan-artifact-baseline.json`
 - 🏷️  `generated/baselines/page-backend-bypass-baseline.json`
 - 🏷️  `generated/baselines/primary-concept-duplicate-baseline.json`
 - 🏷️  `generated/baselines/profile-visibility-leakage-baseline.json`
 - 🏷️  `generated/baselines/retirement-evidence-completeness-baseline.json`
+- 📁 `generated/lifecycle/generated-artifact-zone-index.json`
 
 ### historical (477)
 
@@ -343,7 +344,7 @@ Files marked _virtually zoned_ live at the legacy root path for back-compat (740
 - 🏷️  `generated/architecture-hardening/BROWSER_GLOBAL_AND_PORTABILITY_AUDIT.md`
 - _...and 397 more_
 
-### reports (553)
+### reports (554)
 
 - 🏷️  `generated/5-plane-boundaries-report.json`
 - 🏷️  `generated/COMPONENT_GOVERNANCE_REPORT.md`
@@ -353,6 +354,7 @@ Files marked _virtually zoned_ live at the legacy root path for back-compat (740
 - 🏷️  `generated/FULL_MASTER_AUDIT.md`
 - 🏷️  `generated/MARKDOWN_REFRESH_REPORT.md`
 - 🏷️  `generated/RELEASE_NOTES.md`
+- 🏷️  `generated/REZONED_INDEX.md`
 - 🏷️  `generated/RUNTIME_TIER_GOVERNANCE_REPORT.md`
 - 🏷️  `generated/SERVICE_GOVERNANCE_REPORT.md`
 - 🏷️  `generated/SITA_MASTER_AUDIT.md`
@@ -424,5 +426,4 @@ Files marked _virtually zoned_ live at the legacy root path for back-compat (740
 - 🏷️  `generated/app-store-lifecycle-reality-report.json`
 - 🏷️  `generated/appliance-deployability-report.json`
 - 🏷️  `generated/architecture-compliance-report.json`
-- 🏷️  `generated/artifact-index-traceability-report.json`
-- _...and 473 more_
+- _...and 474 more_

@@ -1,19 +1,19 @@
 {
-  "generatedAt": "2026-04-25T20:04:23.609Z",
+  "generatedAt": "2026-04-25T20:05:32.578Z",
   "schemaVersion": 1,
   "rule": "Constitution Rule 48 (Wave E §B.3 — Generated Folder Zoning Law)",
-  "totalFiles": 1463,
+  "totalFiles": 1465,
   "zoneCounts": {
     "manifests": 227,
     "audits": 147,
     "proof": 20,
     "readiness": 34,
-    "lifecycle": 5,
+    "lifecycle": 6,
     "historical": 477,
-    "reports": 553
+    "reports": 554
   },
-  "physicallyZoned": 123,
-  "virtuallyZoned": 1340,
+  "physicallyZoned": 124,
+  "virtuallyZoned": 1341,
   "entries": [
     {
       "path": "generated/5-plane-boundaries-report.json",
@@ -67,6 +67,12 @@
       "path": "generated/RELEASE_NOTES.md",
       "zone": "reports",
       "lifecycleClass": "reference",
+      "isPhysicallyZoned": false
+    },
+    {
+      "path": "generated/REZONED_INDEX.md",
+      "zone": "reports",
+      "lifecycleClass": null,
       "isPhysicallyZoned": false
     },
     {
@@ -5402,6 +5408,12 @@
       "zone": "historical",
       "lifecycleClass": "reference",
       "isPhysicallyZoned": false
+    },
+    {
+      "path": "generated/lifecycle/generated-artifact-zone-index.json",
+      "zone": "lifecycle",
+      "lifecycleClass": null,
+      "isPhysicallyZoned": true
     },
     {
       "path": "generated/lifecycle-authority-manifest.json",
