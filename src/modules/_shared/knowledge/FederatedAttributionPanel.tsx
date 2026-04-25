@@ -128,7 +128,7 @@ export function FederatedAttributionPanel({
             >
               <div className="flex items-center gap-2 text-xs">
                 {g.isOwn ? (
-                  <Home className="h-3 w-3 text-emerald-400" />
+                  <Home className="h-3 w-3 text-primary" />
                 ) : (
                   <Network className="h-3 w-3 text-primary" />
                 )}
@@ -143,7 +143,7 @@ export function FederatedAttributionPanel({
                 {!g.isOwn && (
                   <Tooltip>
                     <TooltipTrigger>
-                      <ShieldAlert className="h-3 w-3 text-amber-400" />
+                      <ShieldAlert className="h-3 w-3 text-muted-foreground" />
                     </TooltipTrigger>
                     <TooltipContent>
                       <p className="text-xs max-w-[220px]">
