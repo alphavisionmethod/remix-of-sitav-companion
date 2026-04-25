@@ -87,7 +87,7 @@ export interface VoiceIntentRow {
   params: Record<string, unknown>;
   rationale: string;
   confidence: number;
-  status: "proposed" | "approved" | "rejected" | "executed" | "expired";
+  status: "proposed" | "approved" | "rejected" | "executed" | "expired" | "dispatched";
   executed_at: string | null;
   rejected_at: string | null;
   created_at: string;
