@@ -246,6 +246,24 @@ const FOUNDATION_MANIFESTS: FoundationManifestEntry[] = [
     description: "Sealed monotone-ratchet baseline of legacy-violation files under src/pages/**. Decrease-only.",
     required: true,
   },
+  {
+    id: "shared-component-ownership-map",
+    rule: 36,
+    path: "generated/manifests/shared-component-ownership-map.json",
+    owner: "scripts/manifests/generate/generate-shared-component-ownership-map.ts",
+    freshnessTtlDays: 30,
+    description: "Per-file classification of every src/components/** file under the 3-test concept rule (vocabulary, dependency, portability).",
+    required: true,
+  },
+  {
+    id: "shared-component-semantic-violation-baseline",
+    rule: 37,
+    path: "generated/manifests/shared-component-semantic-violation-baseline.json",
+    owner: "wave-0.9:sealed",
+    freshnessTtlDays: null,
+    description: "Sealed monotone-ratchet baseline of grandfathered shared-component semantic violators (12 files at Wave 0.9 seal). Decrease-only.",
+    required: true,
+  },
 ];
 
 // ── 2. Build foundation-tier validator set ─────────────────────────────────
@@ -300,6 +318,8 @@ const FOUNDATION_TIER_VALIDATORS: Array<{
   // Wave 0.7 — Semantic Route-Adapter Contract (Rules 33–35)
   { validator: "scripts/architecture/check-page-semantic-adapter.ts", rule: "Rules 33/34", classification: "block", origin: "new", description: "src/pages/** legacy-violation count is decrease-only and forbidden APIs are blocked." },
   { validator: "scripts/architecture/check-page-adapter-subtype-declaration.ts", rule: "Rule 35", classification: "block", origin: "new", description: "Files carrying // @route-adapter: directive must match detected subtype." },
+  // Wave 0.9 — Concept-Based Shared Component Rule (Rules 36–38)
+  { validator: "scripts/architecture/check-shared-component-concept-rule.ts", rule: "Rules 36/37/38", classification: "block", origin: "new", description: "src/components/** semantic violator count is decrease-only; net-new files must classify as shared-clean per the 3-test concept rule." },
 ];
 
 writeJson(join(MANIFEST_DIR, "foundation-tier-validator-set.json"), {
