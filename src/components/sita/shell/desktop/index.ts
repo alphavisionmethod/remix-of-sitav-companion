@@ -1,23 +1,6 @@
-export { DesktopWidgetCard } from "./DesktopWidgetCard";
-export { DesktopContinuityPanel } from "./DesktopContinuityPanel";
-export { DesktopClockWidget } from "./DesktopClockWidget";
-export { DesktopNotificationsWidget } from "./DesktopNotificationsWidget";
-export { DesktopWhatMattersWidget } from "./DesktopWhatMattersWidget";
-export { DesktopQuickActionsWidget } from "./DesktopQuickActionsWidget";
-export { DesktopSystemWidget } from "./DesktopSystemWidget";
-export { DesktopLeftRail } from "./DesktopLeftRail";
-export { DesktopNotificationCenter } from "./DesktopNotificationCenter";
-export { DraggableWidget } from "./DraggableWidget";
-export { WidgetPicker } from "./WidgetPicker";
-export { DesktopNotificationsFeedWidget } from "./DesktopNotificationsFeedWidget";
-export { DesktopInvestmentPulseWidget } from "./DesktopInvestmentPulseWidget";
-export { DesktopCRMPipelineWidget } from "./DesktopCRMPipelineWidget";
-export { DesktopLeadsRecoveredWidget } from "./DesktopLeadsRecoveredWidget";
-export { DesktopCalendarTodayWidget } from "./DesktopCalendarTodayWidget";
-export { DesktopBoardroomBriefWidget } from "./DesktopBoardroomBriefWidget";
-export { DesktopAdvisorCouncilWidget } from "./DesktopAdvisorCouncilWidget";
-export { DesktopBusinessKPIWidget } from "./DesktopBusinessKPIWidget";
-export { DesktopFinanceSnapshotWidget } from "./DesktopFinanceSnapshotWidget";
-export { DesktopConciergeTasksWidget } from "./DesktopConciergeTasksWidget";
-export { DesktopWeatherWidget } from "./DesktopWeatherWidget";
-export { DesktopPortfolioMapWidget } from "./DesktopPortfolioMapWidget";
+// ════════════════════════════════════════════════════════════
+// Wave 7 — legacy component path. Canonical home:
+//   @/platform/sita/components/sita/shell/desktop/index
+// This adapter preserves every existing @/components/<sub>/* import.
+// ════════════════════════════════════════════════════════════
+export * from "@/platform/sita/components/sita/shell/desktop/index";

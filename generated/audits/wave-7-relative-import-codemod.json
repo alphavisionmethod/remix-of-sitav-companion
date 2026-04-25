@@ -1,0 +1,23 @@
+{
+  "generatedAt": "2026-04-25T16:21:00.095Z",
+  "totalFiles": 0,
+  "totalRewrites": 0,
+  "perRoot": {
+    "src/platform": {
+      "files": 0,
+      "rewrites": 0
+    },
+    "src/modules": {
+      "files": 0,
+      "rewrites": 0
+    },
+    "src/components": {
+      "files": 0,
+      "rewrites": 0
+    },
+    "src/pages": {
+      "files": 0,
+      "rewrites": 0
+    }
+  }
+}

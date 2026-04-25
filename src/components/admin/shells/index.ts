@@ -1,44 +1,6 @@
-// ═══ Architecture Governance Shell Exports ═══
-export { AdminShell } from "./AdminShell";
-export { OwnerWorkspaceShell } from "./OwnerWorkspaceShell";
-export { RolloutStatusBanner } from "./RolloutStatusBanner";
-export { FounderControlShell } from "./FounderControlShell";
-export { GlobalCommandBar } from "./GlobalCommandBar";
-export { FounderSidebar } from "./FounderSidebar";
-export { AITransparencyPanel } from "./AITransparencyPanel";
-export { ExplainSimplyProvider, useExplainSimply } from "./ExplainSimplyProvider";
-export { ExplainSimplyToggle } from "./ExplainSimplyToggle";
-export { SafeModeProvider, useSafeMode } from "./SafeModeProvider";
-export { StatusStrip } from "./StatusStrip";
-export { MultiAITeamPanel } from "./MultiAITeamPanel";
-export { AIConversationMode } from "./AIConversationMode";
-export { SimulationResultCard } from "./SimulationResultCard";
-export { LiveSystemMap } from "./LiveSystemMap";
-export { SelfHealingStatusPanel } from "./SelfHealingStatusPanel";
-export { FullSystemAudit } from "./FullSystemAudit";
-export { ContinuousVerificationPanel } from "./ContinuousVerificationPanel";
-export { LearningYouPanel } from "./LearningYouPanel";
-export { NoSilentFailureAlerts } from "./NoSilentFailureAlerts";
-export { pushUndoAction, useUndoActions } from "./UndoToastSystem";
-export { SafetyConfirmDialog } from "./SafetyConfirmDialog";
-export type { SafetyAction, RiskLevel } from "./SafetyConfirmDialog";
-export { SurfaceAuthorityMatrix } from "./SurfaceAuthorityMatrix";
-export type { CommandOrigin } from "./SurfaceAuthorityMatrix";
-export { ControlReceiptsPanel } from "./ControlReceiptsPanel";
-export { EmergencyAuthorityPanel } from "./EmergencyAuthorityPanel";
-export { RemoteAuthoritySession } from "./RemoteAuthoritySession";
-export { PlatformAdaptationRules } from "./PlatformAdaptationRules";
-export { StateAuthorityMap } from "./StateAuthorityMap";
-export { FeatureOwnershipMatrix } from "./FeatureOwnershipMatrix";
-export type { OwnershipLayer } from "./FeatureOwnershipMatrix";
-export { CommandRoutingLifecycle } from "./CommandRoutingLifecycle";
-export { ApprovalFlowArchitecture } from "./ApprovalFlowArchitecture";
-export { FailureRecoveryModel } from "./FailureRecoveryModel";
-export { EventRoutingModel } from "./EventRoutingModel";
-export { ArchitectureSeparationTests } from "./ArchitectureSeparationTests";
-export { AdminControlPlaneShell } from "./AdminControlPlaneShell";
-export type { AdminControlPlaneShellProps } from "./AdminControlPlaneShell";
-export { AdminPrimaryNav } from "./AdminPrimaryNav";
-export { AdminDomainNav } from "./AdminDomainNav";
-export type { AdminDomain } from "./AdminDomainNav";
-export { AdminBreadcrumbs } from "./AdminBreadcrumbs";
+// ════════════════════════════════════════════════════════════
+// Wave 7 — legacy component path. Canonical home:
+//   @/platform/admin/components/admin/shells/index
+// This adapter preserves every existing @/components/<sub>/* import.
+// ════════════════════════════════════════════════════════════
+export * from "@/platform/admin/components/admin/shells/index";

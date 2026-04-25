@@ -1,10 +1,6 @@
-// ═══════════════════════════════════════════════════════════════
-// SITA OS — AI Components Barrel
-// ═══════════════════════════════════════════════════════════════
-
-export { AIStateBadge } from "./AIStateBadge";
-export { AIResponsePanel } from "./AIResponsePanel";
-export { AIDegradedState } from "./AIDegradedState";
-export { AIReceiptLink } from "./AIReceiptLink";
-export { AIEmbeddedRecommendation } from "./AIEmbeddedRecommendation";
-export { AIWorkforceInvocationPanel } from "./AIWorkforceInvocationPanel";
+// ════════════════════════════════════════════════════════════
+// Wave 7 — legacy component path. Canonical home:
+//   @/platform/ai/components/ai/index
+// This adapter preserves every existing @/components/<sub>/* import.
+// ════════════════════════════════════════════════════════════
+export * from "@/platform/ai/components/ai/index";

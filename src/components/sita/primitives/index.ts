@@ -1,23 +1,6 @@
-export { ConfidenceBar } from "./ConfidenceBar";
-export { ApprovalGate } from "./ApprovalGate";
-export { ProofReceipt } from "./ProofReceipt";
-export { AdvisorAvatar } from "./AdvisorAvatar";
-export { BoardroomSlide } from "./BoardroomSlide";
-export { DomainHeader } from "./DomainHeader";
-export { AutonomyLadder } from "./AutonomyLadder";
-export type { AutonomyRung } from "./AutonomyLadder";
-export { ExecutionChainTimeline, buildDefaultChain } from "./ExecutionChainTimeline";
-export type { ChainStepId, StepStatus, } from "./ExecutionChainTimeline";
-export { SpilloverBadge, SpilloverCard } from "./SpilloverBadge";
-export { OutcomeProgress, OutcomeRow } from "./OutcomeProgress";
-export { InterventionCard } from "./InterventionCard";
-export { PrepPack } from "./PrepPack";
-export { ScenarioComparison } from "./ScenarioComparison";
-export { ConfidenceBand } from "./ConfidenceBand";
-export { ExecutionTracker } from "./ExecutionTracker";
-export { VotingCard } from "./VotingCard";
-export { EvidenceChain } from "./EvidenceChain";
-export { ScenarioFork } from "./ScenarioFork";
-export { DecisionSeal } from "./DecisionSeal";
-export { SentimentPulse } from "./SentimentPulse";
-export { AIConfidenceDisclosure } from "./AIConfidenceDisclosure";
+// ════════════════════════════════════════════════════════════
+// Wave 7 — legacy component path. Canonical home:
+//   @/platform/sita/components/sita/primitives/index
+// This adapter preserves every existing @/components/<sub>/* import.
+// ════════════════════════════════════════════════════════════
+export * from "@/platform/sita/components/sita/primitives/index";

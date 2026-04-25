@@ -1,9 +1,6 @@
-export { HeroCard } from "./HeroCard";
-export { SummaryCard } from "./SummaryCard";
-export { ActionCard } from "./ActionCard";
-export { QueueCard } from "./QueueCard";
-export { ProofCard } from "./ProofCard";
-export { StatusCard } from "./StatusCard";
-export { AdvisorCard } from "./AdvisorCard";
-export { ComparisonCard } from "./ComparisonCard";
-export { TimelineCard } from "./TimelineCard";
+// ════════════════════════════════════════════════════════════
+// Wave 7 — legacy component path. Canonical home:
+//   @/platform/sita/components/sita/cards/index
+// This adapter preserves every existing @/components/<sub>/* import.
+// ════════════════════════════════════════════════════════════
+export * from "@/platform/sita/components/sita/cards/index";

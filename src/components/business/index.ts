@@ -1,13 +1,6 @@
-// Barrel export for all reusable business components
-export { AtRiskQueueCard } from "./AtRiskQueueCard";
-export { BusinessMoneyFlow } from "./BusinessMoneyFlow";
-export { BusinessQuickActions } from "./BusinessQuickActions";
-export { BusinessRecentActivity } from "./BusinessRecentActivity";
-export { BusinessStatCard } from "./BusinessStatCard";
-export { CallbackQueueCard } from "./CallbackQueueCard";
-export { CartRecoveryQueue } from "./CartRecoveryQueue";
-export { InvoiceCollectionsQueue } from "./InvoiceCollectionsQueue";
-export { QuoteStatusCard } from "./QuoteStatusCard";
-export { RelationshipGraphPanel } from "./RelationshipGraphPanel";
-export { RelationshipTimeline } from "./RelationshipTimeline";
-export { SupportPressureCard } from "./SupportPressureCard";
+// ════════════════════════════════════════════════════════════
+// Wave 7 — legacy component path. Canonical home:
+//   @/modules/business/components/business/index
+// This adapter preserves every existing @/components/<sub>/* import.
+// ════════════════════════════════════════════════════════════
+export * from "@/modules/business/components/business/index";

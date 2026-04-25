@@ -1,51 +1,6 @@
-export { ConciergeHomeSummary } from "./ConciergeHomeSummary";
-export { SupportBurdenCard } from "./SupportBurdenCard";
-export { UpcomingObligationsCard } from "./UpcomingObligationsCard";
-export type { UpcomingObligation } from "./UpcomingObligationsCard";
-export { ErrandBundleCard } from "./ErrandBundleCard";
-export type { ErrandBundle, ErrandItem } from "./ErrandBundleCard";
-export { LogisticsTimelineCard } from "./LogisticsTimelineCard";
-export type { TimelineStop } from "./LogisticsTimelineCard";
-export { GroupedPrepBundleCard } from "./GroupedPrepBundleCard";
-export type { PrepBundle, PrepItem } from "./GroupedPrepBundleCard";
-export { ConciergeContinuityCard } from "./ConciergeContinuityCard";
-export type { ContinuityItem } from "./ConciergeContinuityCard";
-export { ConciergeReviewQueue } from "./ConciergeReviewQueue";
-export type { ReviewItem } from "./ConciergeReviewQueue";
-
-// Phase 2 components
-export { LifeAdminQueueCard } from "./LifeAdminQueueCard";
-export type { AdminQueueItem } from "./LifeAdminQueueCard";
-export { TravelReadinessCard } from "./TravelReadinessCard";
-export type { TravelReadiness } from "./TravelReadinessCard";
-export { ReservationStatusCard } from "./ReservationStatusCard";
-export type { Reservation } from "./ReservationStatusCard";
-export { AppointmentPrepCard } from "./AppointmentPrepCard";
-export type { AppointmentPrep } from "./AppointmentPrepCard";
-export { ServiceFollowUpCard } from "./ServiceFollowUpCard";
-export type { ServiceFollowUp } from "./ServiceFollowUpCard";
-export { ConciergeAdvisorInsightCard } from "./ConciergeAdvisorInsightCard";
-export type { AdvisorInsight } from "./ConciergeAdvisorInsightCard";
-export { ConciergeProofChip } from "./ConciergeProofChip";
-export type { ProofStatus } from "./ConciergeProofChip";
-export { ConciergeReceiptViewer } from "./ConciergeReceiptViewer";
-export type { ReceiptRecord } from "./ConciergeReceiptViewer";
-export { ConciergeBoardroomSummary } from "./ConciergeBoardroomSummary";
-export type { BoardroomSummaryData } from "./ConciergeBoardroomSummary";
-export { ConciergeAutomationRuleCard } from "./ConciergeAutomationRuleCard";
-export type { AutomationRule } from "./ConciergeAutomationRuleCard";
-export { PersonalEssentialsPreviewPanel } from "./PersonalEssentialsPreviewPanel";
-export type { EssentialDoc } from "./PersonalEssentialsPreviewPanel";
-export { UpcomingNeedsList } from "./UpcomingNeedsList";
-export type { UpcomingNeed } from "./UpcomingNeedsList";
-export { ConciergeCommandActionPreview } from "./ConciergeCommandActionPreview";
-export type { CommandSuggestion } from "./ConciergeCommandActionPreview";
-export { VendorDetailPanel } from "./VendorDetailPanel";
-export type { VendorDetail } from "./VendorDetailPanel";
-export { RecurringAdminList } from "./RecurringAdminList";
-export type { RecurringAdminItem } from "./RecurringAdminList";
-export { EventPrepCard } from "./EventPrepCard";
-export type { EventPrep } from "./EventPrepCard";
-export { ConciergePageWrapper } from "./ConciergePageWrapper";
-export { ConciergeEmptyState } from "./ConciergeEmptyState";
-export type { ConciergeDomain } from "./ConciergeEmptyState";
+// ════════════════════════════════════════════════════════════
+// Wave 7 — legacy component path. Canonical home:
+//   @/modules/concierge/components/concierge/index
+// This adapter preserves every existing @/components/<sub>/* import.
+// ════════════════════════════════════════════════════════════
+export * from "@/modules/concierge/components/concierge/index";

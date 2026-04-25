@@ -1,2 +1,6 @@
-export { SitaSentienceMount } from "./SitaSentienceMount";
-export { SitaPersonalityControls } from "./SitaPersonalityControls";
+// ════════════════════════════════════════════════════════════
+// Wave 7 — legacy component path. Canonical home:
+//   @/platform/sita/components/sita/shell/sita-sentience/index
+// This adapter preserves every existing @/components/<sub>/* import.
+// ════════════════════════════════════════════════════════════
+export * from "@/platform/sita/components/sita/shell/sita-sentience/index";
