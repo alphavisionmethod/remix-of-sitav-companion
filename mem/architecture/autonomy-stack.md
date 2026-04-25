@@ -14,13 +14,13 @@ type: feature
 
 1. **OS-state sensor bus** (`src/lib/autonomy/signal-bus.ts`, `os_state_signals` table). Canonical SIGNAL_KINDS map; emitters in `emitters.ts`; `useSignalBus` hook; bootstrapped in `useAutonomyBootstrap` from RuntimeProvider. Default subs seeded per-user lazily.
 2. **Per-advisor controllers** (`src/lib/autonomy/controller.ts`) — `runControllerCycle(advisorId)` drives signal → propose → dry_run → state transition, persisting through `advisor_autonomy_state`. State machine in `state-machine.ts` with legal-transition guards. Bootstrap loop runs `runControllersForAdvisors(DEFAULT_CONTROLLED_ADVISORS)` after each emitter pass (10 min). One auto-execute max per cycle (blast-radius cap).
-3. **Budgets + circuit breakers** — Failure threshold = 3, breaker open 30 min, cooldown 5 min after execute. Counters incremented atomically in `transition()` via read-then-write.
+3. **Budgets + circuit breakers** (`src/lib/autonomy/budgets.ts`) — `decideBudget()` enforces daily token budget (advisor_agents.budget_daily_tokens), hourly invocation cap × 24, per-action $ cap (advisor_autonomy_policies.max_financial_impact_cents), and a daily $ ceiling (DEFAULT_DAILY_FINANCIAL_CEILING_CENTS = $500). Overage → `tripCircuitBreakerForBudget()` writes circuit_open + breaker_reason in metadata. Generic failure threshold = 3, breaker open 30 min, cooldown 5 min after execute.
 4. **Dry-run gates** (`src/lib/autonomy/dry-run.ts`) — `decideExecutionMode(plan, policy)` enforces hard L3 ceiling: irreversible ALWAYS queues, risky-but-reversible queues, only `reversible_safe` plans within domain/financial/confidence/quiet-hours bounds auto-execute. Plans declare `riskClass + rollback` up-front in `proposers.ts`.
-5. **JIT approval surface** — TBD
+5. **JIT approval surface** (`src/components/autonomy/AutonomyApprovalQueue.tsx`) — Realtime list of `advisor_action_queue` rows in `awaiting_approval`. Approve → executed; Reject → rejected. Mounted at `/control-center/autonomy` (owner) and `/admin/autonomy` (admin).
 6. **Reflection loop** — TBD
 7. **Boardroom Kernel** — TBD
 8. **Standing missions** — TBD
-9. **Kill-switch console** — Control Center (owner sliders) + Mission Control (admin ops view).
+9. **Kill-switch console** (`src/pages/admin/AutonomyMissionControl.tsx` + `useAutonomyFleet`) — Live fleet view: state badges, breaker reset (`resetCircuitBreaker`), `Run cycle now`, global `Reset all breakers`. Owner mini-version at `/control-center/autonomy`. Both auto-refresh via realtime channels on `advisor_autonomy_state` + `advisor_action_queue`.
 
 ## Tables (Phase 1)
 
