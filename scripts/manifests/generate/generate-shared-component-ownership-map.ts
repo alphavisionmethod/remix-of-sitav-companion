@@ -141,9 +141,16 @@ function targetForOwner(rel: string, hits: string[]): string {
 
 function classifyFile(absPath: string): FileReport {
   const rel = relative(ROOT, absPath).replace(/\\/g, "/");
-  const src = readFileSync(absPath, "utf-8");
+  const rawSrc = readFileSync(absPath, "utf-8");
+  // Strip comments before vocabulary scanning so doc-comments don't generate false positives.
+  // Keep imports for the import scan (run on rawSrc).
+  const src = rawSrc
+    .replace(/\/\*[\s\S]*?\*\//g, "")
+    .split(/\r?\n/)
+    .map((l) => l.replace(/\/\/.*$/, ""))
+    .join("\n");
   const lines = logicalLines(src);
-  const imports = findImportTargets(src);
+  const imports = findImportTargets(rawSrc);
 
   const isBarrel = lines.length > 0 && lines.every((l) => RE_PURE_REEXPORT.test(l));
   const isDeprecatedShim = /DEPRECATED/i.test(src) && imports.some((i) => i.startsWith("@/platform/"));
