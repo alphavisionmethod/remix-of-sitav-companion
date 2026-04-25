@@ -1,188 +1,198 @@
-# Wave G — Route Topology Canonicalization & Governance Hardening
+# AppointmentsScheduling — Production Wiring Plan
 
-## Audit Findings (from real repo inspection)
+## Audit findings (the truth before we change anything)
 
-The `src/routes/` layer is **functional but under-governed**. Concrete defects found:
+The canonical file is `src/modules/business/pages/AppointmentsScheduling.tsx` (the `src/pages/business/AppointmentsScheduling.tsx` is a re-export shim — correct, leave alone).
 
-| # | Defect | Evidence |
-|---|---|---|
-| 1 | **Naming drift** — mixed PascalCase/kebab-case for files of identical role | `AdminRoutes.tsx`, `OwnerRoutes.tsx`, `MobileRoutes.tsx` (PascalCase) vs `business-routes.tsx`, `os-routes.tsx`, …14 others (kebab-case). All export `getXRoutes()` factories — they are siblings semantically but not by name. |
-| 2 | **`experimental-routes.tsx` is a dumping ground** (284 LOC, 5 distinct concepts) | Contains Investment Office (44 routes), Revenue Office (~42 routes inside `<RevenueOfficeModeProvider>`), Digital Presence (19 routes), Pack Store (10 routes), App Platform shim, Digital Twins/Scenario/AI Economics. The name "experimental" no longer reflects content. |
-| 3 | **`os-routes.tsx` conflates 4 surface kinds** (259 LOC) | Mixes: shell/system pages (`/desktop`, `/system`), Personal Brain (24 routes), Workspaces (`/calendar`, `/notes`…), Built-in apps (`/apps/email`…), Intelligence Layer (`/intelligence/*`), and overlapping `/settings/*` aliases also defined in `settings-routes.tsx`. |
-| 4 | **Redirects split across two sibling-equivalent locations** | `src/routes/redirects/user-redirect-map.ts` (8 user redirects) AND `src/admin/redirects/admin-redirect-map.ts` re-exporting from `src/platform/architecture/admin-redirect-map.ts`. No single `src/routes/redirects/` index. |
-| 5 | **No route-family metadata system** | No file declares: family kind (module/platform/admin/app/os), surface kind, profile visibility, canonical page family, deprecated/alias status. `route-adapter-semantic-map.json` covers `src/pages/**` adapters but not `src/routes/**` family files. |
-| 6 | **Hidden composition logic** — `experimental-routes.tsx` mounts `<RevenueOfficeModeLayout>` (a `<RevenueOfficeModeProvider><Outlet/></RevenueOfficeProvider>` wrapper). This is shell-mounting logic embedded in a route family file. Acceptable per Rule 35 (`shell-mount`), but undeclared. |
-| 7 | **`AdminRootLanding.tsx` is a page body, not a route family** — but lives in `src/routes/` alongside route family registries. Misclassified. |
-| 8 | **Settings overlap** — `os-routes.tsx` lines 144–152 register `/settings/*` routes already owned by `settings-routes.tsx`. Source of registry collision. |
-| 9 | **No central composer file** — `App.tsx` imports 16 route-family factories individually and calls them inline. There is no `src/routes/index.ts` or `compose-routes.tsx` to centralize the topology. |
-| 10 | **No validator covers `src/routes/**` itself** — 25 route validators exist, but none audits the route-family layer for naming convention, metadata presence, surface classification, or hidden logic. |
+Concrete defects in the canonical file:
 
-**What is already good (preserve):** Rule 45 profile-visibility manifest, Rule 50 page-ownership ratchet, `app-route-profile-map.json` (673 routes), 25 existing route validators, plane-coverage check, admin redirect system.
+1. **Hardcoded `APPOINTMENTS` array** (lines 33–42) presented as live data — violates demo-mode standardization (`mem://design/demo-mode-standardization`).
+2. **`([] as any[])` everywhere** (lines 59–62, 151–154, 227) — every KPI and tab filter is computed against an empty array, so they always render `0`. Every tab except `"all"` shows nothing. Today's Schedule is permanently empty. Violates `mem://constraints/type-safety-standards` (zero `as any` in `src/pages/**`; canonical equivalent applies to `src/modules/.../pages`).
+3. **Dead buttons**: Send/Phone/Recover on each card, "View Prepared Messages", "Send All Reminders", "Call Unconfirmed", "Recover No-Shows" — none have handlers.
+4. **Static advisor copy** referencing fake `APT-303` / `APT-307` IDs.
+5. **No loading / error / empty / unauthenticated / setup states** — violates `mem://design/elite-components` empty-state honesty rule.
+6. **No tenancy / auth scoping** — never reads `auth.uid()`.
+7. **No receipt emission** for state-changing actions — violates `mem://infrastructure/receipt-emission`.
+8. **No tests** for this page.
 
----
+## Canonical systems to REUSE (no duplicates)
 
-## Strategy: 4-Tier Hardening
+| Need | Canonical source — reuse, don't recreate |
+|------|------------------------------------------|
+| Appointment domain types | `src/packages/business-contracts/booking.ts` (`Booking`, `BookingStatus`), `no-show-risk.ts` (`NoShowRisk`, `NoShowRecoveryPlan`), `revenue-autopilot/no-show-recovery-packet.ts` |
+| Bookings persistence | `public.bookings` table (already has `org_id`, `customer_id`, `starts_at`, `ends_at`, `status`, `metadata`, RLS via `is_org_member`) |
+| Page-state pattern | `src/hooks/usePageData.ts` (returns `loading`/`error`/`empty`/`ready`) |
+| Loading state | `src/platform/sita/components/sita/PageSkeleton.tsx` |
+| Error state | `src/platform/sita/components/sita/PageErrorState.tsx` |
+| Empty state | `src/platform/sita/components/sita/PremiumEmptyState.tsx` |
+| Demo-mode flag | `useDataMode()` from `src/contexts/DataModeContext.tsx` (`isDemoMode`) |
+| Toast feedback | `sonner` (already used across CRM/Leads pages) |
+| Module title / subtitle | `getModuleAdaptation("appointments", primaryMode)` (already wired) |
+| Business profile | `useBusinessProfile()` (already wired) |
+| Calendar service shape | `src/data/repositories/unified-calendar-service.ts` — extend, don't fork |
 
-This wave is **metadata-first, move-second, governance-third** to minimize risk. No routing behavior changes. All `App.tsx` imports continue to resolve via shims for any renamed file.
+## Why a NEW thin service is justified
 
-### TIER 1 — Foundation (types + registry + composer) — additive only
+There is **no existing scheduling-intelligence service** that:
+- pulls bookings + treats them as confirmable appointments,
+- computes no-show risk from `bookings.metadata`,
+- exposes `sendReminder` / `markConfirmed` / `recoverNoShow` mutations.
 
-Create:
-- **`src/routes/types/route-family-types.ts`** — TypeScript types for `RouteFamilyKind` (`"module" | "platform" | "admin" | "app-runtime" | "os-shell" | "mobile-runtime"`), `RouteSurfaceKind` (`"user-product" | "operator" | "shared-shell" | "owner"`), `ProfileVisibility` (`"user" | "operator" | "both"`), `RouteFamilyDescriptor` (id, name, kind, surface, profiles, canonicalPageOwner glob, factory ref).
-- **`src/routes/registry/route-family-registry.ts`** — typed, hand-curated registry of all 16 current route families. Single source of truth for naming, classification, and metadata.
-- **`src/routes/compose-routes.tsx`** — exports `composeRoutes({ ProtectedRoute })` that returns the shell-tier route children currently inlined in `App.tsx` lines 287–314. Pure re-composition, byte-equivalent JSX output.
-- **`src/routes/index.ts`** — barrel exposing `composeRoutes`, `ROUTE_FAMILY_REGISTRY`, types, and the redirect maps.
-
-### TIER 2 — Physical moves (proven safe; shim where consumers exist)
-
-| Move | From | To | Reason |
-|---|---|---|---|
-| Misclassified page body | `src/routes/AdminRootLanding.tsx` | `src/admin/modules/landing/views/AdminRootLanding.tsx` | It's a page body (Rule 50). Leave shim; only consumer is `src/routes/AdminRoutes.tsx`. |
-| Naming consistency | `src/routes/AdminRoutes.tsx` | `src/routes/families/admin-routes.tsx` | Sibling normalization. Re-export shim at original path; `App.tsx` import unchanged. |
-| Naming consistency | `src/routes/OwnerRoutes.tsx` | `src/routes/families/owner-routes.tsx` | Same. Shim retained. |
-| Naming consistency | `src/routes/MobileRoutes.tsx` | `src/routes/families/mobile-routes.tsx` | Same. Shim retained (preserves the named export `MobileRoutes`). |
-| Family grouping | `src/routes/{advisor,apps,boardroom,business,business-advisor,communications,concierge,files,health,investment,money,os,settings,trust}-routes.tsx` (14 files) | `src/routes/families/<name>.tsx` | Move into single `families/` folder. Re-export shims at all 14 original paths; `App.tsx` imports unchanged. |
-| Redirect consolidation | `src/routes/redirects/user-redirect-map.ts` (stays) + add `src/routes/redirects/admin-redirect-map.ts` re-exporting `@/platform/architecture/admin-redirect-map` + `src/routes/redirects/index.ts` | n/a (additive) | Single canonical redirect index. Original `src/admin/redirects/admin-redirect-map.ts` already a shim — no change there. |
-
-**Splitting `experimental-routes.tsx` (284 LOC, 5 concepts) — done in Tier 2 with shims:**
-
-| New file | Concept | Routes |
-|---|---|---|
-| `src/routes/families/investment-office-routes.tsx` | Investment Office | 44 |
-| `src/routes/families/revenue-office-routes.tsx` | Revenue Office (incl. `<RevenueOfficeModeLayout>` shell-mount, declared) | 42 |
-| `src/routes/families/digital-presence-routes.tsx` | Digital Presence | 19 |
-| `src/routes/families/pack-store-routes.tsx` | Pack Store + App Platform shim | 11 |
-| `src/routes/families/digital-twins-routes.tsx` | Digital Twins / Scenario / AI Economics | 7 |
-| `src/routes/experimental-routes.tsx` | **shim** — composes the 5 above and re-exports `getExperimentalRoutes()` byte-equivalent | n/a |
-
-`App.tsx` continues to call `getExperimentalRoutes()` — zero behavioral change. New families are also individually exported for the registry.
-
-**`os-routes.tsx` is NOT split in this wave** (deferred — it's risky, has 100+ routes, and the 4 sub-concepts share imports). Instead, it gets a top-of-file `// @route-family:` directive and is registered as `kind: "os-shell"` with mixed sub-concepts noted in the registry. Splitting deferred to Wave H with explicit task ticket in the report.
-
-**Settings overlap (defect #8):** `os-routes.tsx` lines 144–152 already render the same components as `settings-routes.tsx`. React Router will use the first-registered match. Inspection shows `settings-routes.tsx` is registered AFTER `os-routes.tsx` in `App.tsx`, so the `os-routes.tsx` versions are dead. Remove the 9 dead `/settings/*` lines from `os-routes.tsx` (Rule 24 safe-change: grep proof — no consumers reference these duplicate registrations specifically).
-
-### TIER 3 — Metadata directives on every family file
-
-Add a top-of-file machine-readable comment block to all 16 + 5-new family files:
-
-```ts
-// @route-family: investment-office
-// @kind: module
-// @surface: user-product
-// @profiles: user
-// @canonical-page-owner: src/pages/investment-office/**
-// @owns: topology-only
-```
-
-Validator parses these and cross-checks against the registry.
-
-### TIER 4 — Governance + Validators + Constitution
-
-Create:
-- **`docs/architecture/ROUTE_TOPOLOGY_GOVERNANCE_MODEL.md`** — full model: directory structure, family-kind taxonomy, surface-kind taxonomy, profile-visibility rules, the "topology-only" rule (no page bodies in `src/routes/**`), redirect governance, app-vs-OS separation, app-vs-admin separation, registry contract.
-- **`generated/manifests/route-family-registry.json`** — generated mirror of `src/routes/registry/route-family-registry.ts` for tooling/CI.
-- **`generated/manifests/route-family-ownership-map.json`** — per-file: path, family id, kind, surface, profiles, canonical page owner, declared directives, validator status.
-- **`generated/audits/route-topology-hardening-report.md`** — final report (gap summary, model adopted, moves performed, rewiring proof, future protections).
-- **`generated/baselines/route-family-governance-baseline.json`** — sealed at 0 for unclassified families, missing directives, hidden bodies in `src/routes/**`.
-
-Validators (NEW, all wired into `src/lib/ci/validator-gate-map.ts`):
-
-1. **`scripts/architecture/checks/check-route-family-classification.ts`** (BLOCK) — every file in `src/routes/**` (excluding shims, types, registry, redirects, index) must be in `src/routes/families/` AND have a complete `@route-family/@kind/@surface/@profiles` directive block AND appear in the registry.
-2. **`scripts/architecture/checks/check-route-family-no-page-bodies.ts`** (BLOCK) — files in `src/routes/**` may not contain JSX components longer than ~30 lines (heuristic for page bodies). Allowed: `Route`, `Navigate`, `Outlet`, lazy bindings, simple shell-mount wrappers (declared via `@owns: shell-mount`). Reuses `check-frontend-page-canonical-ownership.ts` patterns.
-3. **`scripts/architecture/checks/check-route-family-app-vs-os-separation.ts`** (BLOCK) — a family declared `kind: "module"` or `kind: "platform"` may not import from `@/admin/**` (admin leakage). A family declared `kind: "admin"` may not be composed into the user shell tree. Cross-checks `compose-routes.tsx` shape.
-4. **`scripts/architecture/checks/check-route-family-registry-completeness.ts`** (BLOCK) — every factory imported in `compose-routes.tsx` must appear in the registry; every registry entry must resolve to a real family file.
-
-**Generator:** `scripts/architecture/generate/generate-route-family-registry.ts` — emits `generated/manifests/route-family-registry.json` from the typed source.
-
-**Constitution amendment:**
-- **Rule 51 — Route Topology Governance Law (BLOCKING).** Codifies: `src/routes/**` owns route topology and metadata only. Every route-family file lives under `src/routes/families/` with `@route-family` directive and registry entry. Module/platform/admin/app-runtime/os-shell/mobile-runtime kinds are mutually exclusive. App and OS surfaces remain compositionally separate. Redirects centralized under `src/routes/redirects/`. Page bodies in `src/routes/**` are forbidden (cross-references Rule 50). Pinned baseline: 0. Validators: the 4 above + existing 25 route validators retained.
-
-### Hidden-logic handling
-
-`<RevenueOfficeModeLayout>` (the `<RevenueOfficeModeProvider><Outlet/></RevenueOfficeModeProvider>` wrapper at line 84 of `experimental-routes.tsx`) is preserved as-is in the new `revenue-office-routes.tsx` and declared via `@owns: shell-mount` directive. Validator #2 explicitly allows this pattern.
+`unified-calendar-service.ts` only reads the `appointments` table (concierge-shaped: `appointment_date`, `prep_items`) — it is calendar-rendering, not scheduling-ops. The canonical operational table for Business OS is `bookings` (has `org_id`, `customer_id`, `metadata` — purpose-built). So a new file `src/data/repositories/business-scheduling-service.ts` is correct and non-duplicative.
 
 ---
 
-## Files Edited / Created (full list)
+## Phase 1 — Domain & service layer (foundation)
 
-**New (~30 files):**
-- `src/routes/types/route-family-types.ts`
-- `src/routes/registry/route-family-registry.ts`
-- `src/routes/compose-routes.tsx`
-- `src/routes/index.ts`
-- `src/routes/redirects/admin-redirect-map.ts` (re-export shim)
-- `src/routes/redirects/index.ts`
-- `src/routes/families/admin-routes.tsx` (moved + directive)
-- `src/routes/families/owner-routes.tsx` (moved + directive)
-- `src/routes/families/mobile-routes.tsx` (moved + directive)
-- `src/routes/families/{advisor,apps,boardroom,business,business-advisor,communications,concierge,files,health,investment,money,os,settings,trust}-routes.tsx` (14 moved + directives)
-- `src/routes/families/investment-office-routes.tsx` (split from experimental)
-- `src/routes/families/revenue-office-routes.tsx` (split from experimental)
-- `src/routes/families/digital-presence-routes.tsx` (split from experimental)
-- `src/routes/families/pack-store-routes.tsx` (split from experimental)
-- `src/routes/families/digital-twins-routes.tsx` (split from experimental)
-- `src/admin/modules/landing/views/AdminRootLanding.tsx` (moved page body)
-- `docs/architecture/ROUTE_TOPOLOGY_GOVERNANCE_MODEL.md`
-- `scripts/architecture/checks/check-route-family-classification.ts`
-- `scripts/architecture/checks/check-route-family-no-page-bodies.ts`
-- `scripts/architecture/checks/check-route-family-app-vs-os-separation.ts`
-- `scripts/architecture/checks/check-route-family-registry-completeness.ts`
-- `scripts/architecture/generate/generate-route-family-registry.ts`
-- `generated/manifests/route-family-registry.json`
-- `generated/manifests/route-family-ownership-map.json`
-- `generated/baselines/route-family-governance-baseline.json`
-- `generated/audits/route-topology-hardening-report.md`
+**Done = TypeScript compiles, service is tenant-scoped, no UI changes yet.**
 
-**Edited:**
-- `src/routes/AdminRoutes.tsx` → 1-line shim re-exporting from `families/admin-routes.tsx`
-- `src/routes/OwnerRoutes.tsx` → 1-line shim
-- `src/routes/MobileRoutes.tsx` → 1-line shim (re-exporting named `MobileRoutes`)
-- `src/routes/{advisor,apps,boardroom,business,business-advisor,communications,concierge,files,health,investment,money,os,settings,trust}-routes.tsx` → 1-line shims (14 files)
-- `src/routes/experimental-routes.tsx` → composes the 5 new sub-families and re-exports `getExperimentalRoutes()`
-- `src/routes/AdminRootLanding.tsx` → 1-line re-export shim from new admin location
-- `src/routes/os-routes.tsx` → directive added; 9 dead `/settings/*` duplicate lines removed (grep-proven dead)
-- `src/lib/ci/validator-gate-map.ts` → register 4 new validators with rationales linking to Rule 51
-- `docs/architecture/REPOSITORY_CONSTITUTION.md` → append Rule 51 section
-- `src/admin/MANIFEST.md` → note new `landing/views/AdminRootLanding.tsx`
+1. Add `src/modules/business/domain/scheduling/types.ts`:
+   - Re-export `Booking`, `BookingStatus` from `@/packages/business-contracts/booking`.
+   - Add view-model `ScheduledAppointmentVM` that maps `bookings` row → UI shape (id, customer, service, date, time, duration, location, status, staff, noShowRisk, lastContact, isFollowUp, notes). Strict types — no `any`.
+   - Add `ConfirmationStatus` mapping helper (`bookings.status: "scheduled"|"confirmed"|"completed"|"cancelled"|"no-show"` → UI `confirmed|pending|unconfirmed|cancelled|no-show`).
+   - Add deterministic `computeNoShowRisk(b: Booking): "low"|"medium"|"high"` derived from `metadata.priorReschedules`, `metadata.lastContactAt`, time-to-appointment, and prior no-show history (no AI call — pure function).
 
-**NOT edited (deliberately):**
-- `src/App.tsx` — all imports continue to resolve via shims. Zero touch on the orchestrator.
-- All 25 existing route validators — preserved as-is.
-- `src/admin/redirects/admin-redirect-map.ts` — already a shim, untouched.
-- `src/platform/architecture/admin-redirect-map.ts` — canonical body, untouched.
-- All `src/pages/**` — Wave F territory, untouched.
+2. Add `src/data/repositories/business-scheduling-service.ts` that exports:
+   - `fetchScheduledAppointments({ from, to, mode }): Promise<ScheduledAppointmentVM[]>`
+     - In `demo` mode: returns the existing 8-row sample fixture (moved out of the page into `src/data/fixtures/mock-data/business-scheduling.ts`).
+     - In `real` mode: queries `bookings` for `auth.uid()` between dates; maps via `bookingRowToVM`.
+   - `sendConfirmationReminder(bookingId)`: updates `bookings.metadata.lastReminderAt`, returns success/error.
+   - `markBookingConfirmed(bookingId)`: sets `status='confirmed'`.
+   - `recoverNoShow(bookingId, channel)`: writes `metadata.recoveryAttemptedAt`, sets `metadata.recoveryChannel`, returns a `NoShowRecoveryPlan` shape so the UI can show the prepared message.
+   - All mutations: tenant-checked via RLS (already enforced server-side), and emit a receipt via the existing receipt helper if the user is in `live` mode (no-op in demo).
+
+3. Add `src/data/fixtures/mock-data/business-scheduling.ts` — the 8 sample appointments, typed as `ScheduledAppointmentVM[]`. This is the **only** place demo data lives.
+
+**Phase 1 gate**: `npx tsc --noEmit` passes. No UI changes deployed yet. Do not start Phase 2 until clean.
 
 ---
 
-## Safety Discipline Applied
+## Phase 2 — React query hook + state coverage
 
-- **Reverse-dependency proof for every move:** `rg "from ['\"]@/routes/<oldname>" src/ tests/ docs/ generated/ scripts/ .github/` — every move retains a re-export shim so all 28+ existing import sites continue to resolve unchanged.
-- **No-logic / no-UI / no-API change rule:** All factories return JSX byte-equivalent to today. `experimental-routes.tsx` shim composes 5 fragments in identical order. `RevenueOfficeModeLayout` preserved.
-- **Canonical destination proof per moved file:** every move has exactly one new canonical path; the registry asserts uniqueness.
-- **Old-path removal verification gate:** none — shims retained for every move (no old paths removed in this wave). A future Wave H may purge shims after a release.
-- **Smoke tests for multi-consumer moves:** `src/__tests__/routes/route-page-alignment.test.ts`, `src/__tests__/routes/route-family-completeness.test.ts`, `src/__tests__/route-truth.test.ts` re-run via `tsc --noEmit` + ripgrep import resolution.
-- **Attestation resealing:** `route-family-governance-baseline.json` sealed at 0 only via `generate-route-family-registry.ts` (canonical generator).
-- **Strict Rule 24 safe-change compliance** for the 9 dead `/settings/*` lines removed from `os-routes.tsx` — grep proof of zero direct callers (they were registry-shadowed dead routes).
+**Done = the page consumes real state with all 5 UI states implemented; old `APPOINTMENTS` array deleted.**
 
-## Verification Plan
+1. Add `src/hooks/use-business-scheduling.ts`:
+   - Uses `usePageData<ScheduledAppointmentVM[]>` keyed on `["business-scheduling", mode, dateRange]`.
+   - `mode` from `useDataMode()`. Live mode `staleTime: 30s`; demo mode `Infinity`.
+   - Returns `{ appointments, state, isDemo, refetch, error }`.
+   - Memo'd selectors: `upcoming`, `needsConfirmation`, `highRisk`, `noShows`, `followUps`, `today` — derived from `appointments` (not from `[]`).
+   - Mutations: `sendReminder(id)`, `confirm(id)`, `recover(id, channel)` — each calls the service, optimistically updates the cache, shows a `sonner` toast, rolls back on error.
 
-1. `bunx tsc --noEmit` clean
-2. New 4 validators all PASS at baseline 0
-3. All 25 existing route validators continue to PASS unchanged
-4. Manual route smoke: `App.tsx` imports unchanged → `composeRoutes` not yet wired into App.tsx (additive only this wave; App.tsx adoption is opt-in for Wave H)
-5. `route-adapter-semantic-map.json` regeneration unchanged (we touch no `src/pages/**` files)
-6. `frontend-page-ownership-map.json` regeneration unchanged
+2. Rewrite `src/modules/business/pages/AppointmentsScheduling.tsx`:
+   - Delete the hardcoded `APPOINTMENTS` const.
+   - Delete every `([] as any[])` instance.
+   - Render branches by `state`:
+     - `loading` → `<PageSkeleton rows={4} />`
+     - `error` → `<PageErrorState onRetry={refetch} context="appointments" />`
+     - `empty` → `<PremiumEmptyState variant="no-data" title="No appointments yet" description="..." actions=[{label:"Add appointment",onClick:...}] />`
+     - `ready` → existing layout, but driven by hook selectors.
+   - KPIStrip and tab filters consume the memoized selectors — strict types.
+   - Today's Schedule consumes `today` selector.
+   - Card buttons wired to `sendReminder` / `confirm` / `recover`.
+   - "Send All Reminders" / "Call Unconfirmed" / "Recover No-Shows" wired to bulk operations on `needsConfirmation` and `noShows` selectors.
+   - Demo banner: when `isDemo`, render a small "Demo data — connect to activate live scheduling" chip (reuses existing `cn` styling, no new component).
 
-## Future Protections Installed
+**Phase 2 gate**: page renders correctly in demo mode (sample data shows up, KPIs non-zero, tabs filter correctly), `npx tsc --noEmit` passes, `npx vite build` succeeds. Do not start Phase 3 until clean.
 
-- Future contributors cannot create a new file in `src/routes/**` outside `families/` without the validator failing.
-- Future contributors cannot omit the `@route-family` directive — BLOCK.
-- Future contributors cannot put a page body in `src/routes/**` — BLOCK (and Rule 50 already blocks page bodies in `src/pages/**`).
-- Future contributors cannot create app↔admin or app↔OS leakage in route families — BLOCK.
-- Future route additions to `compose-routes.tsx` MUST appear in the registry — BLOCK.
+---
 
-## Deferred to Wave H (documented, not orphaned)
+## Phase 3 — Scheduling Advisor (data-driven, not static copy)
 
-- Splitting `os-routes.tsx` into `personal-brain-routes.tsx`, `built-in-apps-routes.tsx`, `intelligence-routes.tsx`, `os-shell-routes.tsx` (high risk, deferred with explicit ticket in the audit report).
-- Migrating `App.tsx` to call `composeRoutes()` instead of inline factory calls (additive next wave; current wave keeps `App.tsx` untouched).
-- Removing the 21 path shims after one release cycle of soak.
+**Done = the advisor panel reflects the actual appointment list; recovery messages are real.**
+
+1. Add `src/modules/business/domain/scheduling/advisor.ts`:
+   - `buildSchedulingInsights(appointments: ScheduledAppointmentVM[]): SchedulingInsight[]` — pure function returning ordered insights:
+     - "N high no-show risk in next 24h" (with the actual top customer name).
+     - "N recovery opportunities" (no-shows in last 7 days without recovery attempt).
+     - "N unconfirmed past reminder window" (>24h since last reminder, still pending).
+     - "Schedule conflict detected" if two appointments overlap for the same staff.
+     - Each insight has `id`, `severity`, `message`, `detail`, `cta: { label, action: "send-reminder"|"recover"|"open-detail", targetId }`.
+   - `buildPreparedMessages(appointments)`: returns drafts for each pending/no-show — `{ bookingId, channel, subject, body }`. Used by "View Prepared Messages" sheet.
+
+2. Replace the static "Scheduling Advisor" card content with a `<SchedulingAdvisorPanel insights={...} onAction={...} />` rendered inline (keep it inside the same file to avoid premature extraction). Empty insight list → "All clear — no scheduling risks right now" honest empty.
+
+3. "View Prepared Messages" → opens a `Sheet` (shadcn `sheet` already in the project) listing prepared messages with per-row "Send" buttons that call the same mutation as the card buttons.
+
+**Phase 3 gate**: insight panel reflects test data correctly (e.g., flipping a booking to `pending` with old `lastReminderAt` produces the "unconfirmed past reminder window" insight). Build clean.
+
+---
+
+## Phase 4 — Tests
+
+**Done = the page is regression-safe.**
+
+Add `src/modules/business/pages/__tests__/AppointmentsScheduling.test.tsx`:
+- Renders `loading` / `error` / `empty` / `ready` states (mock `usePageData` return).
+- KPI strip: given a fixture of 5 appointments (2 upcoming, 1 pending, 1 high-risk, 1 no-show), expect counts `2 / 1 / 1 / 1`.
+- Tab filtering: switching to `"needs-confirm"` shows only pending+unconfirmed cards.
+- Today's Schedule shows only today's appointments.
+- Action buttons call the right mutation (spy on `sendReminder` / `confirm` / `recover`).
+- Advisor panel: given a no-show appointment, the "recovery opportunity" insight appears.
+- No `as any` in the file (regex assertion in the test).
+
+Add `src/modules/business/domain/scheduling/__tests__/advisor.test.ts`:
+- `buildSchedulingInsights` deterministic across the 5 main scenarios.
+- `computeNoShowRisk` returns `high` for ≥2 prior reschedules, `medium` for 1, `low` for 0 (assuming `metadata` present).
+
+Add `src/data/repositories/__tests__/business-scheduling-service.test.ts`:
+- Demo mode returns fixture.
+- Live mode without auth returns `[]`.
+- `bookingRowToVM` maps fields correctly.
+
+**Phase 4 gate**: `bunx vitest run src/modules/business/pages/__tests__/AppointmentsScheduling.test.tsx src/modules/business/domain/scheduling/__tests__/advisor.test.ts src/data/repositories/__tests__/business-scheduling-service.test.ts` all green.
+
+---
+
+## Phase 5 — Integration report + deployment readiness
+
+**Done = report committed, build clean, no new unused exports.**
+
+1. Add `src/modules/business/pages/APPOINTMENTS_SCHEDULING_INTEGRATION_REPORT.md` covering parts 1–7 from the brief.
+2. `npx tsc --noEmit` clean.
+3. `npx vite build` clean.
+4. Final smoke list: route `/business/appointments` mounts the page (no route changes needed — already wired in `src/routes/families/business-routes.tsx`).
+
+---
+
+## Files I will create
+
+- `src/modules/business/domain/scheduling/types.ts`
+- `src/modules/business/domain/scheduling/advisor.ts`
+- `src/modules/business/domain/scheduling/__tests__/advisor.test.ts`
+- `src/data/repositories/business-scheduling-service.ts`
+- `src/data/repositories/__tests__/business-scheduling-service.test.ts`
+- `src/data/fixtures/mock-data/business-scheduling.ts`
+- `src/hooks/use-business-scheduling.ts`
+- `src/modules/business/pages/__tests__/AppointmentsScheduling.test.tsx`
+- `src/modules/business/pages/APPOINTMENTS_SCHEDULING_INTEGRATION_REPORT.md`
+
+## Files I will modify
+
+- `src/modules/business/pages/AppointmentsScheduling.tsx` (full rewrite — delete fake data, wire to hook, add states, wire actions, real advisor)
+
+## Files I will NOT touch
+
+- `src/pages/business/AppointmentsScheduling.tsx` (re-export shim — correct as-is)
+- `src/routes/families/business-routes.tsx` (route already exists)
+- `src/integrations/supabase/client.ts`, `types.ts` (forbidden)
+- `src/data/repositories/unified-calendar-service.ts` (different concern — calendar rendering, not scheduling ops)
+- Any contract in `src/packages/business-contracts/` (reused as-is)
+
+## Anti-duplication declaration
+
+- **Booking type**: reuse `Booking` from `@/packages/business-contracts/booking` — no new appointment type.
+- **No-show risk type**: reuse `NoShowRisk` from `@/packages/business-contracts/no-show-risk` — `computeNoShowRisk` returns the canonical `riskLevel` shape.
+- **Recovery packet**: reuse `NoShowRecoveryPacket` from `@/packages/business-contracts/revenue-autopilot/no-show-recovery-packet`.
+- **State components**: reuse `PageSkeleton`, `PageErrorState`, `PremiumEmptyState`.
+- **Demo flag**: reuse `useDataMode()` — never read the localStorage key directly.
+- **Toast**: reuse `sonner` — same pattern as CRMNotes/LeadsInbox.
+- **Receipt emission**: reuse the centralized helper noted in `mem://infrastructure/receipt-emission` rather than calling `ai_action_receipts` directly.
+
+## Hard rules I will enforce on myself
+
+1. Each phase must compile and (where applicable) test green before the next starts.
+2. Zero `as any` in any new or rewritten file.
+3. Zero hardcoded data outside `src/data/fixtures/mock-data/`.
+4. Every action button has either a real handler OR a `disabled` attribute with a tooltip explaining why — no dead buttons.
+5. No new component in `src/components/ui/` (only shadcn primitives belong there).
+6. No edits to `supabase/config.toml` (no new edge function this phase — service runs against existing `bookings` RLS).
