@@ -4,14 +4,18 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   appendVoiceTranscript,
   endVoiceSession,
+  extractVoiceIntents,
   getEmbeddingCoverage,
+  listSessionIntents,
   listRecentVoiceSessions,
   listSessionTranscripts,
   promoteVoiceTranscript,
   startVoiceSession,
+  updateVoiceIntent,
   type AppendTranscriptInput,
   type PromoteTranscriptInput,
   type StartSessionInput,
+  type VoiceIntentRow,
   type VoiceSessionRow,
   type VoiceSessionStatus,
   type VoiceTranscriptRow,
@@ -20,6 +24,7 @@ import {
 export const VOICE_QUERY_KEYS = {
   recentSessions: (limit: number) => ["voice", "sessions", "recent", limit] as const,
   sessionTranscripts: (id: string | null) => ["voice", "transcripts", id] as const,
+  sessionIntents: (id: string | null) => ["voice", "intents", id] as const,
   embeddingCoverage: () => ["voice", "embedding-coverage"] as const,
 };
 
@@ -56,6 +61,40 @@ export function usePromoteVoiceTranscript() {
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["voice", "transcripts"] });
       qc.invalidateQueries({ queryKey: VOICE_QUERY_KEYS.embeddingCoverage() });
+    },
+  });
+}
+
+/** Phase 7 — list intents already proposed for a session. */
+export function useSessionIntents(sessionId: string | null) {
+  return useQuery<VoiceIntentRow[]>({
+    queryKey: VOICE_QUERY_KEYS.sessionIntents(sessionId),
+    queryFn: () => (sessionId ? listSessionIntents(sessionId) : Promise.resolve([])),
+    enabled: !!sessionId,
+    refetchInterval: 8_000,
+  });
+}
+
+/** Phase 7 — trigger LLM intent extraction over a session's transcripts. */
+export function useExtractVoiceIntents() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({ sessionId, maxTranscripts }: { sessionId: string; maxTranscripts?: number }) =>
+      extractVoiceIntents(sessionId, maxTranscripts ?? 10),
+    onSuccess: (_d, vars) => {
+      qc.invalidateQueries({ queryKey: VOICE_QUERY_KEYS.sessionIntents(vars.sessionId) });
+    },
+  });
+}
+
+/** Phase 7 — approve / reject / mark-executed an intent. */
+export function useUpdateVoiceIntent(sessionId: string | null) {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (input: { intentId: string; status: "approved" | "rejected" | "executed"; rejectedReason?: string }) =>
+      updateVoiceIntent(input.intentId, input.status, input.rejectedReason),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: VOICE_QUERY_KEYS.sessionIntents(sessionId) });
     },
   });
 }
