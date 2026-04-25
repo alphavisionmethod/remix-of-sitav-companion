@@ -62,6 +62,9 @@ jobs:
       - name: Phase 10 — Federated attribution + cross-workspace approvals manifest (REQUIRED)
         run: node scripts/ci/check-phase-10-manifest.mjs
 
+      - name: Phase 11 — Citation enforcement + auto cross-workspace approvals manifest (REQUIRED)
+        run: node scripts/ci/check-phase-11-manifest.mjs
+
       - name: Run deployment-readiness gate
         run: npm run test:deployment-readiness
 

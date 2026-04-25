@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "phase": 11,
+  "citationEnforcement": {
+    "orchestrator": "ai-orchestrator-stream",
+    "tokenFormats": ["[#N]", "[F#N]"],
+    "warningEvent": "citation_warning",
+    "doneCitationField": "citation",
+    "planMetadataField": "citation"
+  },
+  "autoApprovals": {
+    "rpc": "auto_request_federated_approval",
+    "newColumns": ["auto_emitted", "source_invocation_id"],
+    "emittedFrom": ["ai-orchestrator-stream", "sita-agent-planner"],
+    "orchestratorEvent": "approval_requested",
+    "plannerField": "pendingApprovalIds",
+    "plannerInputField": "federated_peer_workspace_ids",
+    "defaultExpiresInHours": 168,
+    "defaultActionKind": "custom"
+  }
+}

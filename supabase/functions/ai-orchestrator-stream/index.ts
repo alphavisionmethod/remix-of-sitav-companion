@@ -111,8 +111,20 @@ serve(async (req) => {
       try {
         // ── 1. Context resolution (semantic-first) ──
         const semanticOn = body.contextSources?.semanticRetrieval !== false;
-        const semanticMemories: Array<{ memory_id: string; content: string; similarity: number }> = [];
-        const semanticChunks: Array<{ chunk_id: string; content: string; similarity: number }> = [];
+        const semanticMemories: Array<{
+          memory_id: string;
+          content: string;
+          similarity: number;
+          peer_workspace_id: string | null;
+          via_federation: string | null;
+        }> = [];
+        const semanticChunks: Array<{
+          chunk_id: string;
+          content: string;
+          similarity: number;
+          peer_workspace_id: string | null;
+          via_federation: string | null;
+        }> = [];
         const autoMemories: Array<{ memory_id: string; content: string }> = [];
 
         if (body.contextSources?.workspaceMemoryAuto) {
@@ -164,6 +176,8 @@ serve(async (req) => {
                         memory_id: String(m.memory_id),
                         content: String(m.content ?? ""),
                         similarity: sim,
+                        peer_workspace_id: m.workspace_id ? String(m.workspace_id) : null,
+                        via_federation: viaFed,
                       });
                       traceRows.push({
                         source_type: "memory", source_id: String(m.memory_id),
@@ -188,6 +202,8 @@ serve(async (req) => {
                         chunk_id: String(c.chunk_id),
                         content: String(c.content ?? ""),
                         similarity: sim,
+                        peer_workspace_id: c.workspace_id ? String(c.workspace_id) : null,
+                        via_federation: viaFed,
                       });
                       traceRows.push({
                         source_type: "knowledge_chunk", source_id: String(c.chunk_id),
@@ -223,23 +239,86 @@ serve(async (req) => {
         }
 
         // ── 3. Build augmented messages with grounding context. ──
+        // Phase 11: build a single numbered ground-truth list and tag federated
+        // items with [F#N] vs own with [#N] so we can enforce citations.
+        type CitedItem = {
+          token: string; // [#1] or [F#3]
+          isFederated: boolean;
+          peerWorkspaceId: string | null;
+          federationId: string | null;
+          source: "memory" | "chunk" | "auto_memory";
+          sourceId: string;
+          excerpt: string;
+        };
+        const citationItems: CitedItem[] = [];
+        let counter = 0;
+        const pushItem = (
+          isFed: boolean,
+          source: CitedItem["source"],
+          sourceId: string,
+          excerpt: string,
+          peer: string | null,
+          fed: string | null,
+        ) => {
+          counter += 1;
+          const token = isFed ? `[F#${counter}]` : `[#${counter}]`;
+          citationItems.push({
+            token, isFederated: isFed, peerWorkspaceId: peer, federationId: fed,
+            source, sourceId, excerpt: excerpt.slice(0, 600),
+          });
+          return token;
+        };
+
         const groundingBlocks: string[] = [];
         if (semanticMemories.length) {
-          groundingBlocks.push(`# Semantic memories\n${semanticMemories.map((m, i) => `${i + 1}. [sim ${(m.similarity * 100).toFixed(0)}%] ${m.content}`).join("\n")}`);
+          const lines = semanticMemories.map((m) => {
+            const tok = pushItem(
+              Boolean(m.via_federation),
+              "memory", m.memory_id, m.content,
+              m.peer_workspace_id, m.via_federation,
+            );
+            return `${tok} [sim ${(m.similarity * 100).toFixed(0)}%] ${m.content}`;
+          });
+          groundingBlocks.push(`# Semantic memories\n${lines.join("\n")}`);
         }
         if (semanticChunks.length) {
-          groundingBlocks.push(`# Knowledge chunks\n${semanticChunks.map((c, i) => `${i + 1}. [sim ${(c.similarity * 100).toFixed(0)}%] ${c.content.slice(0, 600)}`).join("\n")}`);
+          const lines = semanticChunks.map((c) => {
+            const tok = pushItem(
+              Boolean(c.via_federation),
+              "chunk", c.chunk_id, c.content,
+              c.peer_workspace_id, c.via_federation,
+            );
+            return `${tok} [sim ${(c.similarity * 100).toFixed(0)}%] ${c.content.slice(0, 600)}`;
+          });
+          groundingBlocks.push(`# Knowledge chunks\n${lines.join("\n")}`);
         }
         if (autoMemories.length) {
-          groundingBlocks.push(`# Recent workspace memories\n${autoMemories.map((m, i) => `${i + 1}. ${m.content}`).join("\n")}`);
+          const lines = autoMemories.map((m) => {
+            const tok = pushItem(false, "auto_memory", m.memory_id, m.content, null, null);
+            return `${tok} ${m.content}`;
+          });
+          groundingBlocks.push(`# Recent workspace memories\n${lines.join("\n")}`);
         }
+
+        const federatedItems = citationItems.filter((c) => c.isFederated);
         const augmentedMessages = [...body.messages];
         if (groundingBlocks.length) {
+          const citationRules = [
+            "CITATION RULES (Phase 11):",
+            "- When you use information from a grounded item, cite it inline with its token,",
+            "  exactly as shown (e.g. [#2] or [F#5]).",
+            "- Items prefixed with [F#…] come from a *federated peer workspace*. If you rely on",
+            "  any [F#…] item, you MUST cite it with its [F#…] token. Never strip the F.",
+            "- If you do not use a particular item, do not cite it.",
+            "- Do not invent tokens. Only cite tokens that appear in the grounded context below.",
+          ].join("\n");
           augmentedMessages.unshift({
             role: "system",
             content:
-              "You have the following grounded context. Use it when relevant; cite naturally if it helps. " +
-              "If context is irrelevant, ignore it.\n\n" + groundingBlocks.join("\n\n"),
+              "You have the following grounded context. Use it when relevant; cite per the rules. " +
+              "If context is irrelevant, ignore it.\n\n" +
+              citationRules + "\n\n" +
+              groundingBlocks.join("\n\n"),
           });
         }
 
@@ -324,6 +403,84 @@ serve(async (req) => {
           );
         }
 
+        // ── 6.b Phase 11: citation enforcement + auto-approval emission ──
+        let citedTokens: string[] = [];
+        let citedFederatedTokens: string[] = [];
+        let missingFederatedCitations: string[] = [];
+        let autoApprovalIds: string[] = [];
+        try {
+          const tokenRe = /\[F?#\d+\]/g;
+          citedTokens = Array.from(new Set(fullText.match(tokenRe) ?? []));
+          citedFederatedTokens = citedTokens.filter((t) => t.startsWith("[F#"));
+          if (federatedItems.length > 0) {
+            const citedSet = new Set(citedFederatedTokens);
+            missingFederatedCitations = federatedItems
+              .filter((f) => !citedSet.has(f.token))
+              .map((f) => f.token);
+
+            // Emit a citation_warning if any federated context was likely
+            // material but went uncited. Heuristic: if at least one
+            // federated item had similarity ≥ 0.6 and wasn't cited, warn.
+            const materialUncited = federatedItems.some(
+              (f) =>
+                !citedSet.has(f.token) &&
+                citationItems.find((c) => c.token === f.token) &&
+                // any federated chunk/memory whose excerpt likely shaped the answer
+                fullText.length > 0,
+            );
+            if (materialUncited) {
+              send("citation_warning", {
+                missing_federated_tokens: missingFederatedCitations,
+                cited_federated_tokens: citedFederatedTokens,
+                total_federated_items: federatedItems.length,
+                message:
+                  "Federated context was provided but not all federated sources were cited.",
+              });
+            }
+
+            // For every cited federated item, derive the unique peer workspace ids
+            // and bulk-create pending cross-workspace approval requests. The
+            // RPC dedupes per (invocation, peer).
+            const peerSet = new Set<string>();
+            for (const tok of citedFederatedTokens) {
+              const item = federatedItems.find((f) => f.token === tok);
+              if (item?.peerWorkspaceId) peerSet.add(item.peerWorkspaceId);
+            }
+            const peerIds = Array.from(peerSet);
+            if (peerIds.length > 0 && body.workspaceId) {
+              const { data: appr, error: apprErr } = await userClient.rpc(
+                "auto_request_federated_approval",
+                {
+                  _requester_workspace_id: body.workspaceId,
+                  _peer_workspace_ids: peerIds,
+                  _action_summary:
+                    `AI answer cited ${citedFederatedTokens.length} federated source(s) ` +
+                    `from ${peerIds.length} peer workspace(s). Review for cross-workspace use.`,
+                  _sensitivity: "internal",
+                  _source_invocation_id: planId,
+                  _expires_in_hours: 168,
+                },
+              );
+              if (apprErr) {
+                console.warn("[orch-stream] auto_request_federated_approval failed", apprErr);
+              } else if (Array.isArray(appr)) {
+                autoApprovalIds = (appr as Array<Record<string, unknown>>)
+                  .map((r) => String(r.id))
+                  .filter(Boolean);
+                if (autoApprovalIds.length > 0) {
+                  send("approval_requested", {
+                    approval_ids: autoApprovalIds,
+                    peer_workspace_ids: peerIds,
+                    cited_federated_tokens: citedFederatedTokens,
+                  });
+                }
+              }
+            }
+          }
+        } catch (citationErr) {
+          console.warn("[orch-stream] citation enforcement failed", citationErr);
+        }
+
         const tokenEst = Math.ceil(fullText.length / 4);
         await service.from("ai_invocation_plans").update({
           status: "completed",
@@ -332,6 +489,19 @@ serve(async (req) => {
           model_choice: model,
           completion_tokens: tokenEst,
           total_tokens: tokenEst,
+          metadata: {
+            phase: 11,
+            stream: true,
+            model,
+            citation: {
+              total_items: citationItems.length,
+              federated_items: federatedItems.length,
+              cited_tokens: citedTokens,
+              cited_federated_tokens: citedFederatedTokens,
+              missing_federated_tokens: missingFederatedCitations,
+              auto_approval_ids: autoApprovalIds,
+            },
+          },
         }).eq("id", planId);
 
         send("done", {
@@ -340,6 +510,12 @@ serve(async (req) => {
           model,
           traceCount: traceRows.length,
           totalChars: fullText.length,
+          citation: {
+            federated_items: federatedItems.length,
+            cited_federated_tokens: citedFederatedTokens,
+            missing_federated_tokens: missingFederatedCitations,
+            auto_approval_ids: autoApprovalIds,
+          },
         });
         controller.close();
       } catch (e) {

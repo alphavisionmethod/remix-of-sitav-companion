@@ -10694,6 +10694,7 @@ export type Database = {
       cross_workspace_approvals: {
         Row: {
           action_kind: string
+          auto_emitted: boolean
           created_at: string
           decided_at: string | null
           decided_by: string | null
@@ -10705,6 +10706,7 @@ export type Database = {
           rationale: string
           requester_workspace_id: string
           sensitivity: string
+          source_invocation_id: string | null
           status: string
           target_workspace_id: string
           updated_at: string
@@ -10712,6 +10714,7 @@ export type Database = {
         }
         Insert: {
           action_kind: string
+          auto_emitted?: boolean
           created_at?: string
           decided_at?: string | null
           decided_by?: string | null
@@ -10723,6 +10726,7 @@ export type Database = {
           rationale?: string
           requester_workspace_id: string
           sensitivity?: string
+          source_invocation_id?: string | null
           status?: string
           target_workspace_id: string
           updated_at?: string
@@ -10730,6 +10734,7 @@ export type Database = {
         }
         Update: {
           action_kind?: string
+          auto_emitted?: boolean
           created_at?: string
           decided_at?: string | null
           decided_by?: string | null
@@ -10741,6 +10746,7 @@ export type Database = {
           rationale?: string
           requester_workspace_id?: string
           sensitivity?: string
+          source_invocation_id?: string | null
           status?: string
           target_workspace_id?: string
           updated_at?: string
@@ -26060,6 +26066,42 @@ export type Database = {
         Args: { _finding_id: string; _new_status: string; _notes?: string }
         Returns: string
       }
+      auto_request_federated_approval: {
+        Args: {
+          _action_summary: string
+          _expires_in_hours?: number
+          _peer_workspace_ids: string[]
+          _requester_workspace_id: string
+          _sensitivity?: string
+          _source_invocation_id?: string
+        }
+        Returns: {
+          action_kind: string
+          auto_emitted: boolean
+          created_at: string
+          decided_at: string | null
+          decided_by: string | null
+          decision_notes: string | null
+          expires_at: string
+          federation_id: string | null
+          id: string
+          payload: Json
+          rationale: string
+          requester_workspace_id: string
+          sensitivity: string
+          source_invocation_id: string | null
+          status: string
+          target_workspace_id: string
+          updated_at: string
+          user_id: string
+        }[]
+        SetofOptions: {
+          from: "*"
+          to: "cross_workspace_approvals"
+          isOneToOne: false
+          isSetofReturn: true
+        }
+      }
       brd_followthrough_transition: {
         Args: {
           _correlation_id: string
@@ -26108,6 +26150,7 @@ export type Database = {
         Args: { _approval_id: string; _decision: string; _notes?: string }
         Returns: {
           action_kind: string
+          auto_emitted: boolean
           created_at: string
           decided_at: string | null
           decided_by: string | null
@@ -26119,6 +26162,7 @@ export type Database = {
           rationale: string
           requester_workspace_id: string
           sensitivity: string
+          source_invocation_id: string | null
           status: string
           target_workspace_id: string
           updated_at: string
@@ -26491,6 +26535,7 @@ export type Database = {
         }
         Returns: {
           action_kind: string
+          auto_emitted: boolean
           created_at: string
           decided_at: string | null
           decided_by: string | null
@@ -26502,6 +26547,7 @@ export type Database = {
           rationale: string
           requester_workspace_id: string
           sensitivity: string
+          source_invocation_id: string | null
           status: string
           target_workspace_id: string
           updated_at: string
