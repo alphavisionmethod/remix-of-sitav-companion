@@ -1,0 +1,532 @@
+{
+  "generatedAt": "2026-04-25T17:50:11.551Z",
+  "rule": "Constitution Rules 36, 37, 38",
+  "model": "docs/architecture/SHARED_COMPONENT_OWNERSHIP_MODEL.md",
+  "totals": {
+    "filesScanned": 32,
+    "sharedClean": 19,
+    "deprecatedShim": 1,
+    "violators": 12
+  },
+  "classificationBreakdown": {
+    "barrel-only-reexport": 5,
+    "shell-runtime-semantic": 1,
+    "shared-clean": 19,
+    "platform-semantic": 2,
+    "admin-semantic": 1,
+    "wrapper-with-platform-import": 3,
+    "deprecated-shim": 1
+  },
+  "files": [
+    {
+      "file": "src/components/cards/index.ts",
+      "classification": "barrel-only-reexport",
+      "targetOwner": "@/platform/sita/components/index.ts",
+      "vocabularyHits": [
+        "sita"
+      ],
+      "importViolations": [
+        "@/platform/sita/components/sita/cards/ActionCard",
+        "@/platform/sita/components/sita/cards/AdvisorCard",
+        "@/platform/sita/components/sita/cards/ComparisonCard",
+        "@/platform/sita/components/sita/cards/DomainCard",
+        "@/platform/sita/components/sita/cards/HeroCard",
+        "@/platform/sita/components/sita/cards/ProofCard",
+        "@/platform/sita/components/sita/cards/QueueCard",
+        "@/platform/sita/components/sita/cards/StatusCard",
+        "@/platform/sita/components/sita/cards/SummaryCard",
+        "@/platform/sita/components/sita/cards/TimelineCard"
+      ],
+      "shellHints": [],
+      "isBarrel": true,
+      "isDeprecatedShim": false,
+      "reason": "Pure barrel re-exporting from 10 platform/module path(s); should be a barrel under that owner."
+    },
+    {
+      "file": "src/components/launcher/PillarRail.tsx",
+      "classification": "shell-runtime-semantic",
+      "targetOwner": "@/platform/sita/components/sita/shell/",
+      "vocabularyHits": [
+        "business",
+        "concierge",
+        "finance",
+        "health",
+        "sita",
+        "trust"
+      ],
+      "importViolations": [
+        "@/platform/trust"
+      ],
+      "shellHints": [
+        "TRUST_LAYER",
+        "usePillarPriority",
+        "PILLAR_ICON"
+      ],
+      "isBarrel": false,
+      "isDeprecatedShim": false,
+      "reason": "Imports shell/runtime singletons (TRUST_LAYER, usePillarPriority, PILLAR_ICON)."
+    },
+    {
+      "file": "src/components/navigation/index.ts",
+      "classification": "shared-clean",
+      "targetOwner": null,
+      "vocabularyHits": [],
+      "importViolations": [],
+      "shellHints": [],
+      "isBarrel": true,
+      "isDeprecatedShim": false,
+      "reason": "Passes all three concept tests."
+    },
+    {
+      "file": "src/components/NavLink.tsx",
+      "classification": "shared-clean",
+      "targetOwner": null,
+      "vocabularyHits": [],
+      "importViolations": [],
+      "shellHints": [],
+      "isBarrel": false,
+      "isDeprecatedShim": false,
+      "reason": "Passes all three concept tests."
+    },
+    {
+      "file": "src/components/primitives/actions/EvidenceLink.tsx",
+      "classification": "platform-semantic",
+      "targetOwner": "@/platform/<system>/components/",
+      "vocabularyHits": [
+        "proof",
+        "receipt"
+      ],
+      "importViolations": [],
+      "shellHints": [],
+      "isBarrel": false,
+      "isDeprecatedShim": false,
+      "reason": "Platform vocabulary: proof, receipt."
+    },
+    {
+      "file": "src/components/primitives/actions/OperatorActionPanel.tsx",
+      "classification": "admin-semantic",
+      "targetOwner": "@/admin/modules/<domain>/components/",
+      "vocabularyHits": [
+        "operator"
+      ],
+      "importViolations": [],
+      "shellHints": [],
+      "isBarrel": false,
+      "isDeprecatedShim": false,
+      "reason": "Admin/operator vocabulary: operator."
+    },
+    {
+      "file": "src/components/primitives/display/BaseCard.tsx",
+      "classification": "shared-clean",
+      "targetOwner": null,
+      "vocabularyHits": [],
+      "importViolations": [],
+      "shellHints": [],
+      "isBarrel": false,
+      "isDeprecatedShim": false,
+      "reason": "Passes all three concept tests."
+    },
+    {
+      "file": "src/components/primitives/display/Hero.tsx",
+      "classification": "shared-clean",
+      "targetOwner": null,
+      "vocabularyHits": [],
+      "importViolations": [],
+      "shellHints": [],
+      "isBarrel": false,
+      "isDeprecatedShim": false,
+      "reason": "Passes all three concept tests."
+    },
+    {
+      "file": "src/components/primitives/display/Panel.tsx",
+      "classification": "shared-clean",
+      "targetOwner": null,
+      "vocabularyHits": [],
+      "importViolations": [],
+      "shellHints": [],
+      "isBarrel": false,
+      "isDeprecatedShim": false,
+      "reason": "Passes all three concept tests."
+    },
+    {
+      "file": "src/components/primitives/display/StatTile.tsx",
+      "classification": "shared-clean",
+      "targetOwner": null,
+      "vocabularyHits": [],
+      "importViolations": [],
+      "shellHints": [],
+      "isBarrel": false,
+      "isDeprecatedShim": false,
+      "reason": "Passes all three concept tests."
+    },
+    {
+      "file": "src/components/primitives/display/Summary.tsx",
+      "classification": "shared-clean",
+      "targetOwner": null,
+      "vocabularyHits": [],
+      "importViolations": [],
+      "shellHints": [],
+      "isBarrel": false,
+      "isDeprecatedShim": false,
+      "reason": "Passes all three concept tests."
+    },
+    {
+      "file": "src/components/primitives/feedback/EmptyState.tsx",
+      "classification": "barrel-only-reexport",
+      "targetOwner": "@/platform/sita/components/index.ts",
+      "vocabularyHits": [
+        "sita"
+      ],
+      "importViolations": [
+        "@/platform/sita/components/sita/EmptyState",
+        "@/platform/sita/components/sita/EmptyState"
+      ],
+      "shellHints": [],
+      "isBarrel": true,
+      "isDeprecatedShim": false,
+      "reason": "Pure barrel re-exporting from 2 platform/module path(s); should be a barrel under that owner."
+    },
+    {
+      "file": "src/components/primitives/feedback/NeedsDataExplainer.tsx",
+      "classification": "wrapper-with-platform-import",
+      "targetOwner": "@/platform/sita/components/sita/",
+      "vocabularyHits": [
+        "sita"
+      ],
+      "importViolations": [
+        "@/platform/sita/components/sita/PremiumEmptyState"
+      ],
+      "shellHints": [],
+      "isBarrel": false,
+      "isDeprecatedShim": false,
+      "reason": "Composes platform component(s): @/platform/sita/components/sita/PremiumEmptyState."
+    },
+    {
+      "file": "src/components/primitives/feedback/NeedsHistoricalReleasesExplainer.tsx",
+      "classification": "wrapper-with-platform-import",
+      "targetOwner": "@/platform/sita/components/sita/",
+      "vocabularyHits": [
+        "sita"
+      ],
+      "importViolations": [
+        "@/platform/sita/components/sita/PremiumEmptyState"
+      ],
+      "shellHints": [],
+      "isBarrel": false,
+      "isDeprecatedShim": false,
+      "reason": "Composes platform component(s): @/platform/sita/components/sita/PremiumEmptyState."
+    },
+    {
+      "file": "src/components/primitives/feedback/NeedsTimeWindowExplainer.tsx",
+      "classification": "wrapper-with-platform-import",
+      "targetOwner": "@/platform/sita/components/sita/",
+      "vocabularyHits": [
+        "sita"
+      ],
+      "importViolations": [
+        "@/platform/sita/components/sita/PremiumEmptyState"
+      ],
+      "shellHints": [],
+      "isBarrel": false,
+      "isDeprecatedShim": false,
+      "reason": "Composes platform component(s): @/platform/sita/components/sita/PremiumEmptyState."
+    },
+    {
+      "file": "src/components/primitives/feedback/Skeleton.tsx",
+      "classification": "shared-clean",
+      "targetOwner": null,
+      "vocabularyHits": [],
+      "importViolations": [],
+      "shellHints": [],
+      "isBarrel": false,
+      "isDeprecatedShim": false,
+      "reason": "Passes all three concept tests."
+    },
+    {
+      "file": "src/components/primitives/index.ts",
+      "classification": "shared-clean",
+      "targetOwner": null,
+      "vocabularyHits": [],
+      "importViolations": [],
+      "shellHints": [],
+      "isBarrel": true,
+      "isDeprecatedShim": false,
+      "reason": "Passes all three concept tests."
+    },
+    {
+      "file": "src/components/primitives/overlays/Drawer.tsx",
+      "classification": "shared-clean",
+      "targetOwner": null,
+      "vocabularyHits": [],
+      "importViolations": [],
+      "shellHints": [],
+      "isBarrel": false,
+      "isDeprecatedShim": false,
+      "reason": "Passes all three concept tests."
+    },
+    {
+      "file": "src/components/primitives/status/AITruthDisclosure.tsx",
+      "classification": "shared-clean",
+      "targetOwner": null,
+      "vocabularyHits": [],
+      "importViolations": [],
+      "shellHints": [],
+      "isBarrel": false,
+      "isDeprecatedShim": false,
+      "reason": "Passes all three concept tests."
+    },
+    {
+      "file": "src/components/primitives/status/ConnectorStateBadge.tsx",
+      "classification": "platform-semantic",
+      "targetOwner": "@/platform/<system>/components/",
+      "vocabularyHits": [
+        "connector"
+      ],
+      "importViolations": [],
+      "shellHints": [],
+      "isBarrel": false,
+      "isDeprecatedShim": false,
+      "reason": "Platform vocabulary: connector."
+    },
+    {
+      "file": "src/components/primitives/status/FreshnessBadge.tsx",
+      "classification": "shared-clean",
+      "targetOwner": null,
+      "vocabularyHits": [],
+      "importViolations": [],
+      "shellHints": [],
+      "isBarrel": false,
+      "isDeprecatedShim": false,
+      "reason": "Passes all three concept tests."
+    },
+    {
+      "file": "src/components/primitives/status/ModeBadge.tsx",
+      "classification": "shared-clean",
+      "targetOwner": null,
+      "vocabularyHits": [],
+      "importViolations": [],
+      "shellHints": [],
+      "isBarrel": false,
+      "isDeprecatedShim": false,
+      "reason": "Passes all three concept tests."
+    },
+    {
+      "file": "src/components/primitives/status/ProofBadge.tsx",
+      "classification": "shared-clean",
+      "targetOwner": null,
+      "vocabularyHits": [],
+      "importViolations": [],
+      "shellHints": [],
+      "isBarrel": false,
+      "isDeprecatedShim": false,
+      "reason": "Passes all three concept tests."
+    },
+    {
+      "file": "src/components/primitives/status/ProvenanceChip.tsx",
+      "classification": "shared-clean",
+      "targetOwner": null,
+      "vocabularyHits": [],
+      "importViolations": [],
+      "shellHints": [],
+      "isBarrel": false,
+      "isDeprecatedShim": false,
+      "reason": "Passes all three concept tests."
+    },
+    {
+      "file": "src/components/primitives/status/StatusBadge.tsx",
+      "classification": "shared-clean",
+      "targetOwner": null,
+      "vocabularyHits": [],
+      "importViolations": [],
+      "shellHints": [],
+      "isBarrel": false,
+      "isDeprecatedShim": false,
+      "reason": "Passes all three concept tests."
+    },
+    {
+      "file": "src/components/primitives/status/TrustBadge.tsx",
+      "classification": "deprecated-shim",
+      "targetOwner": "@/platform/sita/components/sita/TrustBadge",
+      "vocabularyHits": [
+        "sita"
+      ],
+      "importViolations": [
+        "@/platform/sita/components/sita/TrustBadge",
+        "@/platform/sita/components/sita/TrustBadge",
+        "@/platform/sita/components/sita/TrustBadge",
+        "@/platform/sita/components/sita/TrustBadge"
+      ],
+      "shellHints": [],
+      "isBarrel": false,
+      "isDeprecatedShim": true,
+      "reason": "Self-marked DEPRECATED re-export shim — tracked in deprecated-shim baseline."
+    },
+    {
+      "file": "src/components/primitives/status/UrgencyBadge.tsx",
+      "classification": "shared-clean",
+      "targetOwner": null,
+      "vocabularyHits": [],
+      "importViolations": [],
+      "shellHints": [],
+      "isBarrel": false,
+      "isDeprecatedShim": false,
+      "reason": "Passes all three concept tests."
+    },
+    {
+      "file": "src/components/primitives/timelines/TimelineRow.tsx",
+      "classification": "shared-clean",
+      "targetOwner": null,
+      "vocabularyHits": [],
+      "importViolations": [],
+      "shellHints": [],
+      "isBarrel": false,
+      "isDeprecatedShim": false,
+      "reason": "Passes all three concept tests."
+    },
+    {
+      "file": "src/components/shared/ai/index.ts",
+      "classification": "barrel-only-reexport",
+      "targetOwner": "@/platform/ai/components/index.ts",
+      "vocabularyHits": [],
+      "importViolations": [
+        "@/platform/ai/components/ai/AIReceiptLink",
+        "@/platform/ai/components/ai/AIStateBadge",
+        "@/platform/ai/components/ai/AIResponsePanel"
+      ],
+      "shellHints": [],
+      "isBarrel": true,
+      "isDeprecatedShim": false,
+      "reason": "Pure barrel re-exporting from 3 platform/module path(s); should be a barrel under that owner."
+    },
+    {
+      "file": "src/components/shared/FileUploadZone.tsx",
+      "classification": "shared-clean",
+      "targetOwner": null,
+      "vocabularyHits": [],
+      "importViolations": [],
+      "shellHints": [],
+      "isBarrel": false,
+      "isDeprecatedShim": false,
+      "reason": "Passes all three concept tests."
+    },
+    {
+      "file": "src/components/shared/sita/index.ts",
+      "classification": "barrel-only-reexport",
+      "targetOwner": "@/platform/sita/components/index.ts",
+      "vocabularyHits": [
+        "sita"
+      ],
+      "importViolations": [
+        "@/platform/sita/components/sita/SitaCard",
+        "@/platform/sita/components/sita/SitaCharts",
+        "@/platform/sita/components/sita/SitaCompanionBar",
+        "@/platform/sita/components/sita/SitaComponents",
+        "@/platform/sita/components/sita/SitaPageHeader",
+        "@/platform/sita/components/sita/SitaTopBar",
+        "@/platform/sita/components/sita/PageSkeleton",
+        "@/platform/sita/components/sita/SectionSkeleton",
+        "@/platform/sita/components/sita/EmptyState",
+        "@/platform/sita/components/sita/PremiumEmptyState",
+        "@/platform/sita/components/sita/DataLoadingWrapper",
+        "@/platform/sita/components/sita/StateBadge",
+        "@/platform/sita/components/sita/TrustBadge",
+        "@/platform/sita/components/sita/TrustStateBadge",
+        "@/platform/sita/components/sita/Typography",
+        "@/platform/sita/components/sita/Typography"
+      ],
+      "shellHints": [],
+      "isBarrel": true,
+      "isDeprecatedShim": false,
+      "reason": "Pure barrel re-exporting from 16 platform/module path(s); should be a barrel under that owner."
+    },
+    {
+      "file": "src/components/shared/status/index.ts",
+      "classification": "barrel-only-reexport",
+      "targetOwner": "@/platform/cloud/components/index.ts",
+      "vocabularyHits": [
+        "cloud"
+      ],
+      "importViolations": [
+        "@/platform/cloud/components/cloud/PlatformDegradedBanner"
+      ],
+      "shellHints": [],
+      "isBarrel": true,
+      "isDeprecatedShim": false,
+      "reason": "Pure barrel re-exporting from 1 platform/module path(s); should be a barrel under that owner."
+    }
+  ],
+  "violators": [
+    {
+      "file": "src/components/cards/index.ts",
+      "classification": "barrel-only-reexport",
+      "targetOwner": "@/platform/sita/components/index.ts",
+      "reason": "Pure barrel re-exporting from 10 platform/module path(s); should be a barrel under that owner."
+    },
+    {
+      "file": "src/components/launcher/PillarRail.tsx",
+      "classification": "shell-runtime-semantic",
+      "targetOwner": "@/platform/sita/components/sita/shell/",
+      "reason": "Imports shell/runtime singletons (TRUST_LAYER, usePillarPriority, PILLAR_ICON)."
+    },
+    {
+      "file": "src/components/primitives/actions/EvidenceLink.tsx",
+      "classification": "platform-semantic",
+      "targetOwner": "@/platform/<system>/components/",
+      "reason": "Platform vocabulary: proof, receipt."
+    },
+    {
+      "file": "src/components/primitives/actions/OperatorActionPanel.tsx",
+      "classification": "admin-semantic",
+      "targetOwner": "@/admin/modules/<domain>/components/",
+      "reason": "Admin/operator vocabulary: operator."
+    },
+    {
+      "file": "src/components/primitives/feedback/EmptyState.tsx",
+      "classification": "barrel-only-reexport",
+      "targetOwner": "@/platform/sita/components/index.ts",
+      "reason": "Pure barrel re-exporting from 2 platform/module path(s); should be a barrel under that owner."
+    },
+    {
+      "file": "src/components/primitives/feedback/NeedsDataExplainer.tsx",
+      "classification": "wrapper-with-platform-import",
+      "targetOwner": "@/platform/sita/components/sita/",
+      "reason": "Composes platform component(s): @/platform/sita/components/sita/PremiumEmptyState."
+    },
+    {
+      "file": "src/components/primitives/feedback/NeedsHistoricalReleasesExplainer.tsx",
+      "classification": "wrapper-with-platform-import",
+      "targetOwner": "@/platform/sita/components/sita/",
+      "reason": "Composes platform component(s): @/platform/sita/components/sita/PremiumEmptyState."
+    },
+    {
+      "file": "src/components/primitives/feedback/NeedsTimeWindowExplainer.tsx",
+      "classification": "wrapper-with-platform-import",
+      "targetOwner": "@/platform/sita/components/sita/",
+      "reason": "Composes platform component(s): @/platform/sita/components/sita/PremiumEmptyState."
+    },
+    {
+      "file": "src/components/primitives/status/ConnectorStateBadge.tsx",
+      "classification": "platform-semantic",
+      "targetOwner": "@/platform/<system>/components/",
+      "reason": "Platform vocabulary: connector."
+    },
+    {
+      "file": "src/components/shared/ai/index.ts",
+      "classification": "barrel-only-reexport",
+      "targetOwner": "@/platform/ai/components/index.ts",
+      "reason": "Pure barrel re-exporting from 3 platform/module path(s); should be a barrel under that owner."
+    },
+    {
+      "file": "src/components/shared/sita/index.ts",
+      "classification": "barrel-only-reexport",
+      "targetOwner": "@/platform/sita/components/index.ts",
+      "reason": "Pure barrel re-exporting from 16 platform/module path(s); should be a barrel under that owner."
+    },
+    {
+      "file": "src/components/shared/status/index.ts",
+      "classification": "barrel-only-reexport",
+      "targetOwner": "@/platform/cloud/components/index.ts",
+      "reason": "Pure barrel re-exporting from 1 platform/module path(s); should be a barrel under that owner."
+    }
+  ]
+}

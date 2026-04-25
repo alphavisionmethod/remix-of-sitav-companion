@@ -95,6 +95,10 @@ jobs:
           npx tsx scripts/manifests/generate/generate-route-adapter-semantic-map.ts
           npx tsx scripts/architecture/check-page-semantic-adapter.ts
           npx tsx scripts/architecture/check-page-adapter-subtype-declaration.ts
+      - name: Rules 36–38 — Concept-based shared component rule (REQUIRED)
+        run: |
+          npx tsx scripts/manifests/generate/generate-shared-component-ownership-map.ts
+          npx tsx scripts/architecture/check-shared-component-concept-rule.ts
 
       - name: Generate gate summary
         if: always()

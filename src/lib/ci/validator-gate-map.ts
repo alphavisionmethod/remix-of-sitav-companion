@@ -117,6 +117,14 @@ export const VALIDATOR_GATE_OVERRIDES: ValidatorGateMapEntry[] = [
     consumer: "release-readiness",
     rationale: "Wave 0.7 forward-looking declaration check. When a src/pages/** file carries the // @route-adapter: directive, its declared subtype must match the content the classifier detects. Enforces Constitution Rule 35.",
   },
+  // ─── Wave 0.9 — Concept-Based Shared Component Rule (Constitution Rules 36–38, BLOCKING) ──
+  {
+    validator: "check-shared-component-concept-rule",
+    gateId: "shared-component-concept-rule",
+    classification: "block",
+    consumer: "release-readiness",
+    rationale: "Wave 0.9 concept-based shared component rule. Replaces the structural 'used by ≥2 pillars' heuristic with a semantic 3-test rule (vocabulary, dependency, portability). Net-new files under src/components/** must classify as shared-clean; the 12 grandfathered violators are baselined and monotone-decreasing per Constitution Rule 37. See docs/architecture/SHARED_COMPONENT_OWNERSHIP_MODEL.md.",
+  },
 ];
 
 /** Lookup table for fast access by validator basename. */

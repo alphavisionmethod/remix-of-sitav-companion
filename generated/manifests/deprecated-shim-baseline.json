@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-25T17:32:39.020Z",
+  "generatedAt": "2026-04-25T17:52:25.584Z",
   "foundationVersion": 1,
   "rule": "Constitution Rule 23 (shim ratchet)",
   "description": "Baseline count of _shared / _trust shim imports. Future PRs must not increase these counts.",

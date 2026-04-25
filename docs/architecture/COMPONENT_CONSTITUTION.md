@@ -78,6 +78,14 @@ If a component does not clearly fit one of the three classes, it must be:
 1. **Merged** into an existing component, or
 2. **Extracted** into a primitive, or
 3. **Downgraded** to a `PRIVATE_HELPER`, or
+
+---
+
+## Cross-reference: Concept-Based Shared Component Rule (Wave 0.9)
+
+The 3-class model above answers *"what kind of component is this?"*. It is **orthogonal** to the question *"may this file live under `src/components/**`?"*, which is governed by the concept rule in `docs/architecture/SHARED_COMPONENT_OWNERSHIP_MODEL.md` and Constitution Rules 36–38.
+
+A `DOMAIN` component is fine — it just doesn't live in `src/components/**`. Its canonical home is `src/modules/<pillar>/components/`, `src/platform/<system>/components/`, or `src/admin/modules/<domain>/components/`, depending on its semantic owner.
 4. **Renamed and reclassified**, or
 5. **Removed**.
 
