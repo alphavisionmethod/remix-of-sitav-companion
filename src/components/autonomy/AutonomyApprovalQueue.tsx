@@ -292,3 +292,61 @@ function timeAgo(iso: string): string {
   if (h < 24) return `${h}h ago`;
   return `${Math.floor(h / 24)}d ago`;
 }
+
+function SimulationPanel({ sim }: { sim: SimulationReceipt }) {
+  return (
+    <div className="space-y-2 text-[11px] text-muted-foreground">
+      {sim.projected_outcomes?.length > 0 && (
+        <div>
+          <div className="mb-1 font-semibold text-foreground/80">Projected outcomes</div>
+          <ul className="list-disc space-y-0.5 pl-4">
+            {sim.projected_outcomes.map((o, i) => (
+              <li key={i}>{o}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+      {sim.side_effects?.length > 0 && (
+        <div>
+          <div className="mb-1 font-semibold text-foreground/80">Side effects</div>
+          <ul className="space-y-0.5">
+            {sim.side_effects.map((e, i) => (
+              <li key={i} className="flex items-start gap-1">
+                <span
+                  className={cn(
+                    "mt-0.5 inline-block h-1.5 w-1.5 shrink-0 rounded-full",
+                    e.reversible ? "bg-emerald-500" : "bg-amber-500",
+                  )}
+                />
+                <span>
+                  <span className="font-medium text-foreground/70">{e.kind}</span> · {e.target}
+                  {" — "}
+                  <span className="opacity-80">{e.description}</span>
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+      {sim.rollback_plan && (
+        <div>
+          <div className="mb-1 font-semibold text-foreground/80">Rollback plan</div>
+          <p>
+            <span className="font-mono text-foreground/70">{sim.rollback_plan.strategy}</span>
+            {sim.rollback_plan.humanSummary ? ` — ${sim.rollback_plan.humanSummary}` : ""}
+          </p>
+        </div>
+      )}
+      {sim.policy_warnings?.length > 0 && (
+        <div>
+          <div className="mb-1 font-semibold text-amber-600 dark:text-amber-400">Policy warnings</div>
+          <ul className="list-disc space-y-0.5 pl-4 text-amber-600 dark:text-amber-400">
+            {sim.policy_warnings.map((w, i) => (
+              <li key={i}>{w}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </div>
+  );
+}
