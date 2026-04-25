@@ -1,0 +1,650 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-04-25T18:45:46.318Z",
+  "summary": {
+    "totalEntries": 77,
+    "platformCanonical": 40,
+    "domainCanonical": 13,
+    "integrationAdapter": 9,
+    "projectionCanonical": 4,
+    "uiClient": 1,
+    "wrapperCompat": 10
+  },
+  "vocabCounts": {
+    "service": 53,
+    "adapter": 9,
+    "client": 1,
+    "readModel": 4,
+    "_other": 0
+  },
+  "entries": [
+    {
+      "path": "src/lib/core-services/policy-engine",
+      "family": "policy",
+      "layer": "PLATFORM_CANONICAL",
+      "vocabClass": "service",
+      "canonical": true,
+      "purpose": "Tenant policy evaluation + enforcement"
+    },
+    {
+      "path": "src/lib/core-services/executor-service",
+      "family": "execution",
+      "layer": "PLATFORM_CANONICAL",
+      "vocabClass": "service",
+      "canonical": true,
+      "purpose": "Sole canonical execution choke point"
+    },
+    {
+      "path": "src/lib/core-services/receipt-service",
+      "family": "proof",
+      "layer": "PLATFORM_CANONICAL",
+      "vocabClass": "service",
+      "canonical": true,
+      "purpose": "Receipt + proof emission"
+    },
+    {
+      "path": "src/lib/core-services/workflow-engine",
+      "family": "workflow",
+      "layer": "PLATFORM_CANONICAL",
+      "vocabClass": "service",
+      "canonical": true,
+      "purpose": "Workflow state-machine runtime"
+    },
+    {
+      "path": "src/lib/core-services/event-bus",
+      "family": "events",
+      "layer": "PLATFORM_CANONICAL",
+      "vocabClass": "service",
+      "canonical": true,
+      "purpose": "Domain event bus"
+    },
+    {
+      "path": "src/lib/core-services/approval-engine",
+      "family": "approval",
+      "layer": "PLATFORM_CANONICAL",
+      "vocabClass": "service",
+      "canonical": true,
+      "purpose": "Platform approval primitives"
+    },
+    {
+      "path": "src/lib/core-services/approval-service",
+      "family": "approval-runtime",
+      "layer": "PLATFORM_CANONICAL",
+      "vocabClass": "service",
+      "canonical": true,
+      "purpose": "Approval lifecycle service"
+    },
+    {
+      "path": "src/lib/core-services/trust-state-service",
+      "family": "trust",
+      "layer": "PLATFORM_CANONICAL",
+      "vocabClass": "service",
+      "canonical": true,
+      "purpose": "Trust-state authority"
+    },
+    {
+      "path": "src/lib/core-services/verification-engine",
+      "family": "verification",
+      "layer": "PLATFORM_CANONICAL",
+      "vocabClass": "service",
+      "canonical": true,
+      "purpose": "Verification pipeline"
+    },
+    {
+      "path": "src/lib/core-services/api-gateway",
+      "family": "api-gateway",
+      "layer": "PLATFORM_CANONICAL",
+      "vocabClass": "service",
+      "canonical": true,
+      "purpose": "Internal API gateway"
+    },
+    {
+      "path": "src/lib/core-services/capability-router",
+      "family": "capability-routing",
+      "layer": "PLATFORM_CANONICAL",
+      "vocabClass": "service",
+      "canonical": true,
+      "purpose": "Capability resolution + routing"
+    },
+    {
+      "path": "src/lib/core-services/memory-service",
+      "family": "memory",
+      "layer": "PLATFORM_CANONICAL",
+      "vocabClass": "service",
+      "canonical": true,
+      "purpose": "Memory abstraction"
+    },
+    {
+      "path": "src/lib/core-services/identity-graph",
+      "family": "identity",
+      "layer": "PLATFORM_CANONICAL",
+      "vocabClass": "service",
+      "canonical": true,
+      "purpose": "Identity graph kernel"
+    },
+    {
+      "path": "src/lib/core-services/identity-auth",
+      "family": "auth",
+      "layer": "PLATFORM_CANONICAL",
+      "vocabClass": "service",
+      "canonical": true,
+      "purpose": "Auth/session foundation"
+    },
+    {
+      "path": "src/lib/core-services/biometric-auth",
+      "family": "biometric",
+      "layer": "PLATFORM_CANONICAL",
+      "vocabClass": "service",
+      "canonical": true,
+      "purpose": "Biometric credential service"
+    },
+    {
+      "path": "src/lib/core-services/entity-graph",
+      "family": "entity-graph",
+      "layer": "PLATFORM_CANONICAL",
+      "vocabClass": "service",
+      "canonical": true,
+      "purpose": "Entity graph kernel"
+    },
+    {
+      "path": "src/lib/core-services/role-permission-engine",
+      "family": "rbac",
+      "layer": "PLATFORM_CANONICAL",
+      "vocabClass": "service",
+      "canonical": true,
+      "purpose": "Role/permission evaluation"
+    },
+    {
+      "path": "src/lib/core-services/brain-core",
+      "family": "ai-runtime",
+      "layer": "PLATFORM_CANONICAL",
+      "vocabClass": "service",
+      "canonical": true,
+      "purpose": "Generic reasoning/orchestration runtime"
+    },
+    {
+      "path": "src/lib/core-services/model-router",
+      "family": "model-routing",
+      "layer": "PLATFORM_CANONICAL",
+      "vocabClass": "service",
+      "canonical": true,
+      "purpose": "AI model router (sole canonical)"
+    },
+    {
+      "path": "src/lib/core-services/inference-gateway",
+      "family": "inference",
+      "layer": "PLATFORM_CANONICAL",
+      "vocabClass": "service",
+      "canonical": true,
+      "purpose": "Inference gateway"
+    },
+    {
+      "path": "src/lib/core-services/ai-gateway",
+      "family": "ai-gateway",
+      "layer": "PLATFORM_CANONICAL",
+      "vocabClass": "service",
+      "canonical": true,
+      "purpose": "Sovereign AI gateway"
+    },
+    {
+      "path": "src/lib/core-services/conscience-gate",
+      "family": "conscience",
+      "layer": "PLATFORM_CANONICAL",
+      "vocabClass": "service",
+      "canonical": true,
+      "purpose": "Conscience/safety gate"
+    },
+    {
+      "path": "src/lib/core-services/trust-governor",
+      "family": "trust-governor",
+      "layer": "PLATFORM_CANONICAL",
+      "vocabClass": "service",
+      "canonical": true,
+      "purpose": "Trust-tier governor"
+    },
+    {
+      "path": "src/lib/core-services/lease-manager",
+      "family": "lease",
+      "layer": "PLATFORM_CANONICAL",
+      "vocabClass": "service",
+      "canonical": true,
+      "purpose": "Lease/lock management"
+    },
+    {
+      "path": "src/lib/core-services/mnemosyne",
+      "family": "mnemosyne",
+      "layer": "PLATFORM_CANONICAL",
+      "vocabClass": "service",
+      "canonical": true,
+      "purpose": "Long-term memory store"
+    },
+    {
+      "path": "src/lib/core-services/constitution-compiler",
+      "family": "constitution",
+      "layer": "PLATFORM_CANONICAL",
+      "vocabClass": "service",
+      "canonical": true,
+      "purpose": "Constitution rule compiler"
+    },
+    {
+      "path": "src/lib/core-services/fraud-sentinel",
+      "family": "fraud",
+      "layer": "PLATFORM_CANONICAL",
+      "vocabClass": "service",
+      "canonical": true,
+      "purpose": "Fraud detection sentinel"
+    },
+    {
+      "path": "src/lib/core-services/self-healing",
+      "family": "self-healing",
+      "layer": "PLATFORM_CANONICAL",
+      "vocabClass": "service",
+      "canonical": true,
+      "purpose": "Self-healing + immune controller + fleet health"
+    },
+    {
+      "path": "src/lib/core-services/epistemic-firewall",
+      "family": "epistemic",
+      "layer": "PLATFORM_CANONICAL",
+      "vocabClass": "service",
+      "canonical": true,
+      "purpose": "Epistemic firewall"
+    },
+    {
+      "path": "src/lib/core-services/search-fabric",
+      "family": "search",
+      "layer": "PLATFORM_CANONICAL",
+      "vocabClass": "service",
+      "canonical": true,
+      "purpose": "Cross-domain search fabric"
+    },
+    {
+      "path": "src/lib/core-services/agent-orchestrator",
+      "family": "orchestration",
+      "layer": "PLATFORM_CANONICAL",
+      "vocabClass": "service",
+      "canonical": true,
+      "purpose": "Agent orchestrator (subordinate to OrchestrationFacade)"
+    },
+    {
+      "path": "src/lib/core-services/canonical-execution-path",
+      "family": "execution-path",
+      "layer": "PLATFORM_CANONICAL",
+      "vocabClass": "service",
+      "canonical": true,
+      "purpose": "Canonical execution path tracker"
+    },
+    {
+      "path": "src/lib/core-services/canonical-chain-orchestrator",
+      "family": "execution-chain",
+      "layer": "PLATFORM_CANONICAL",
+      "vocabClass": "service",
+      "canonical": true,
+      "purpose": "Canonical chain orchestrator"
+    },
+    {
+      "path": "src/lib/core-services/canonical-pipeline",
+      "family": "pipeline",
+      "layer": "PLATFORM_CANONICAL",
+      "vocabClass": "service",
+      "canonical": true,
+      "purpose": "Canonical pipeline runtime"
+    },
+    {
+      "path": "src/lib/core-services/executor-service-dir",
+      "family": "execution-runtime",
+      "layer": "PLATFORM_CANONICAL",
+      "vocabClass": "service",
+      "canonical": true,
+      "purpose": "Executor service runtime helpers"
+    },
+    {
+      "path": "src/lib/core-services/service-tier-manifest",
+      "family": "service-registry",
+      "layer": "PLATFORM_CANONICAL",
+      "vocabClass": "service",
+      "canonical": true,
+      "purpose": "Service tier manifest authority"
+    },
+    {
+      "path": "src/lib/core-services/manifest-generator",
+      "family": "manifests",
+      "layer": "PLATFORM_CANONICAL",
+      "vocabClass": "service",
+      "canonical": true,
+      "purpose": "Manifest generation runtime"
+    },
+    {
+      "path": "src/lib/core-services/kernel",
+      "family": "kernel",
+      "layer": "PLATFORM_CANONICAL",
+      "vocabClass": "service",
+      "canonical": true,
+      "purpose": "Kernel infra helpers"
+    },
+    {
+      "path": "src/lib/core-services/frontend",
+      "family": "frontend-runtime",
+      "layer": "PLATFORM_CANONICAL",
+      "vocabClass": "service",
+      "canonical": true,
+      "purpose": "Frontend runtime helpers"
+    },
+    {
+      "path": "src/lib/core-services/handoff",
+      "family": "handoff",
+      "layer": "PLATFORM_CANONICAL",
+      "vocabClass": "service",
+      "canonical": true,
+      "purpose": "Cross-runtime handoff"
+    },
+    {
+      "path": "src/lib/services/boardroom-service",
+      "family": "boardroom",
+      "layer": "DOMAIN_CANONICAL",
+      "vocabClass": "service",
+      "canonical": true,
+      "purpose": "Boardroom domain service"
+    },
+    {
+      "path": "src/lib/services/business-os",
+      "family": "business",
+      "layer": "DOMAIN_CANONICAL",
+      "vocabClass": "service",
+      "canonical": true,
+      "purpose": "Business OS domain logic"
+    },
+    {
+      "path": "src/lib/services/concierge-os",
+      "family": "concierge",
+      "layer": "DOMAIN_CANONICAL",
+      "vocabClass": "service",
+      "canonical": true,
+      "purpose": "Concierge OS domain logic"
+    },
+    {
+      "path": "src/lib/services/finance-os",
+      "family": "money",
+      "layer": "DOMAIN_CANONICAL",
+      "vocabClass": "service",
+      "canonical": true,
+      "purpose": "Money/finance domain"
+    },
+    {
+      "path": "src/lib/services/communication-service",
+      "family": "communications",
+      "layer": "DOMAIN_CANONICAL",
+      "vocabClass": "service",
+      "canonical": true,
+      "purpose": "Communication domain"
+    },
+    {
+      "path": "src/lib/services/advisor-knowledge",
+      "family": "advisor-knowledge",
+      "layer": "DOMAIN_CANONICAL",
+      "vocabClass": "service",
+      "canonical": true,
+      "purpose": "Advisor knowledge domain"
+    },
+    {
+      "path": "src/lib/services/advisor-memory",
+      "family": "advisor-memory",
+      "layer": "DOMAIN_CANONICAL",
+      "vocabClass": "service",
+      "canonical": true,
+      "purpose": "Advisor memory domain"
+    },
+    {
+      "path": "src/lib/services/advisor-feedback",
+      "family": "advisor-feedback",
+      "layer": "DOMAIN_CANONICAL",
+      "vocabClass": "service",
+      "canonical": true,
+      "purpose": "Advisor feedback domain"
+    },
+    {
+      "path": "src/lib/services/ai-economics",
+      "family": "ai-economics",
+      "layer": "DOMAIN_CANONICAL",
+      "vocabClass": "service",
+      "canonical": true,
+      "purpose": "AI economics domain"
+    },
+    {
+      "path": "src/lib/engines/engines/*",
+      "family": "domain-engines",
+      "layer": "DOMAIN_CANONICAL",
+      "vocabClass": "service",
+      "canonical": true,
+      "purpose": "All 60 domain engines (lead-scoring, planning, profitability, advisor-orchestration, etc.)",
+      "notes": "Classified as domain logic; pure functions over canonical state"
+    },
+    {
+      "path": "src/lib/boardroom/boardroom/*",
+      "family": "boardroom-packets",
+      "layer": "DOMAIN_CANONICAL",
+      "vocabClass": "service",
+      "canonical": true,
+      "purpose": "Boardroom packet generation"
+    },
+    {
+      "path": "src/lib/advisor-intelligence/advisor-intelligence/*",
+      "family": "advisor-intelligence",
+      "layer": "DOMAIN_CANONICAL",
+      "vocabClass": "service",
+      "canonical": true,
+      "purpose": "Advisor evaluation + recommendation intelligence"
+    },
+    {
+      "path": "src/lib/domain-engines/domain-engines/*",
+      "family": "domain-os-adapters",
+      "layer": "DOMAIN_CANONICAL",
+      "vocabClass": "service",
+      "canonical": true,
+      "purpose": "Domain OS adapter engines"
+    },
+    {
+      "path": "src/lib/core-services/connector-runners",
+      "family": "connector-runtime",
+      "layer": "INTEGRATION_ADAPTER",
+      "vocabClass": "adapter",
+      "canonical": true,
+      "purpose": "Connector execution runtime"
+    },
+    {
+      "path": "src/lib/core-services/connector-control",
+      "family": "connector-control",
+      "layer": "INTEGRATION_ADAPTER",
+      "vocabClass": "adapter",
+      "canonical": true,
+      "purpose": "Connector control plane primitives"
+    },
+    {
+      "path": "src/lib/core-services/connector-health-service",
+      "family": "connector-health",
+      "layer": "INTEGRATION_ADAPTER",
+      "vocabClass": "adapter",
+      "canonical": true,
+      "purpose": "Connector health probes"
+    },
+    {
+      "path": "src/lib/core-services/google-provider-family",
+      "family": "google-providers",
+      "layer": "INTEGRATION_ADAPTER",
+      "vocabClass": "adapter",
+      "canonical": true,
+      "purpose": "Google provider family adapters"
+    },
+    {
+      "path": "src/lib/core-services/integration-hub",
+      "family": "integration-hub",
+      "layer": "INTEGRATION_ADAPTER",
+      "vocabClass": "adapter",
+      "canonical": true,
+      "purpose": "Integration hub adapter"
+    },
+    {
+      "path": "src/lib/services/connector-control-plane",
+      "family": "connector-control-plane",
+      "layer": "INTEGRATION_ADAPTER",
+      "vocabClass": "adapter",
+      "canonical": true,
+      "purpose": "Connector control-plane facade"
+    },
+    {
+      "path": "src/lib/services/connector-runners-svc",
+      "family": "connector-runners-svc",
+      "layer": "INTEGRATION_ADAPTER",
+      "vocabClass": "adapter",
+      "canonical": true,
+      "purpose": "Higher-level connector runner facade"
+    },
+    {
+      "path": "src/lib/services/connector-truth",
+      "family": "connector-truth",
+      "layer": "INTEGRATION_ADAPTER",
+      "vocabClass": "adapter",
+      "canonical": true,
+      "purpose": "Connector truth registry"
+    },
+    {
+      "path": "src/lib/services/cloud-control-plane-infra",
+      "family": "cloud-infra",
+      "layer": "INTEGRATION_ADAPTER",
+      "vocabClass": "adapter",
+      "canonical": true,
+      "purpose": "Cloud control-plane infra adapters"
+    },
+    {
+      "path": "src/lib/core-services/projection-service",
+      "family": "projection-runtime",
+      "layer": "PROJECTION_CANONICAL",
+      "vocabClass": "readModel",
+      "canonical": true,
+      "purpose": "Projection runtime primitives"
+    },
+    {
+      "path": "src/lib/services/projection-service-svc",
+      "family": "projections",
+      "layer": "PROJECTION_CANONICAL",
+      "vocabClass": "readModel",
+      "canonical": true,
+      "purpose": "Domain projection services (boardroom, money, business, …)"
+    },
+    {
+      "path": "src/lib/services/audit-trail-timeline",
+      "family": "audit-projections",
+      "layer": "PROJECTION_CANONICAL",
+      "vocabClass": "readModel",
+      "canonical": true,
+      "purpose": "Audit trail read model"
+    },
+    {
+      "path": "src/lib/services/truth-indices",
+      "family": "truth-indices",
+      "layer": "PROJECTION_CANONICAL",
+      "vocabClass": "readModel",
+      "canonical": true,
+      "purpose": "Truth-index projections"
+    },
+    {
+      "path": "src/lib/data-services/data-services/*",
+      "family": "ui-data-clients",
+      "layer": "UI_CLIENT",
+      "vocabClass": "client",
+      "canonical": true,
+      "purpose": "33 mode-aware Supabase CRUD clients (fetchCustomers, fetchInvestments, …)",
+      "notes": "These are NOT services — they are UI data clients (Layer 5)"
+    },
+    {
+      "path": "src/lib/services/approval-engine",
+      "family": "approval",
+      "layer": "WRAPPER_COMPAT_ONLY",
+      "vocabClass": null,
+      "canonical": false,
+      "redirectTo": "core-services/approval-engine",
+      "purpose": "Re-export of core-services/approval-engine"
+    },
+    {
+      "path": "src/lib/services/brain-core",
+      "family": "ai-runtime",
+      "layer": "WRAPPER_COMPAT_ONLY",
+      "vocabClass": null,
+      "canonical": false,
+      "redirectTo": "core-services/brain-core",
+      "purpose": "Re-export of core-services/brain-core"
+    },
+    {
+      "path": "src/lib/services/conscience-gate",
+      "family": "conscience",
+      "layer": "WRAPPER_COMPAT_ONLY",
+      "vocabClass": null,
+      "canonical": false,
+      "redirectTo": "core-services/conscience-gate",
+      "purpose": "Re-export of core-services/conscience-gate"
+    },
+    {
+      "path": "src/lib/services/constitution-compiler",
+      "family": "constitution",
+      "layer": "WRAPPER_COMPAT_ONLY",
+      "vocabClass": null,
+      "canonical": false,
+      "redirectTo": "core-services/constitution-compiler",
+      "purpose": "Re-export of core-services/constitution-compiler"
+    },
+    {
+      "path": "src/lib/services/immune-controller",
+      "family": "self-healing",
+      "layer": "WRAPPER_COMPAT_ONLY",
+      "vocabClass": null,
+      "canonical": false,
+      "redirectTo": "core-services/self-healing",
+      "purpose": "Re-export from core-services/self-healing"
+    },
+    {
+      "path": "src/lib/services/inference-gateway",
+      "family": "inference",
+      "layer": "WRAPPER_COMPAT_ONLY",
+      "vocabClass": null,
+      "canonical": false,
+      "redirectTo": "core-services/inference-gateway",
+      "purpose": "Re-export of core-services/inference-gateway"
+    },
+    {
+      "path": "src/lib/services/lease-manager",
+      "family": "lease",
+      "layer": "WRAPPER_COMPAT_ONLY",
+      "vocabClass": null,
+      "canonical": false,
+      "redirectTo": "core-services/lease-manager",
+      "purpose": "Re-export of core-services/lease-manager"
+    },
+    {
+      "path": "src/lib/services/mnemosyne",
+      "family": "mnemosyne",
+      "layer": "WRAPPER_COMPAT_ONLY",
+      "vocabClass": null,
+      "canonical": false,
+      "redirectTo": "core-services/mnemosyne",
+      "purpose": "Re-export of core-services/mnemosyne"
+    },
+    {
+      "path": "src/lib/services/model-router",
+      "family": "model-routing",
+      "layer": "WRAPPER_COMPAT_ONLY",
+      "vocabClass": null,
+      "canonical": false,
+      "redirectTo": "core-services/model-router",
+      "purpose": "Re-export of core-services/model-router"
+    },
+    {
+      "path": "src/lib/services/trust-governor",
+      "family": "trust-governor",
+      "layer": "WRAPPER_COMPAT_ONLY",
+      "vocabClass": null,
+      "canonical": false,
+      "redirectTo": "core-services/trust-governor",
+      "purpose": "Re-export of core-services/trust-governor"
+    }
+  ]
+}
