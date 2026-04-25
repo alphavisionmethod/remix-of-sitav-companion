@@ -4889,6 +4889,78 @@ export type Database = {
         }
         Relationships: []
       }
+      autonomy_kill_switch: {
+        Row: {
+          created_at: string
+          domain_scope: string | null
+          engaged: boolean
+          engaged_at: string | null
+          engaged_by: string | null
+          reason: string | null
+          released_at: string | null
+          released_by: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          domain_scope?: string | null
+          engaged?: boolean
+          engaged_at?: string | null
+          engaged_by?: string | null
+          reason?: string | null
+          released_at?: string | null
+          released_by?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          domain_scope?: string | null
+          engaged?: boolean
+          engaged_at?: string | null
+          engaged_by?: string | null
+          reason?: string | null
+          released_at?: string | null
+          released_by?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      autonomy_kill_switch_audit: {
+        Row: {
+          action: string
+          actor_user_id: string
+          created_at: string
+          domain_scope: string | null
+          id: string
+          metadata: Json
+          reason: string | null
+          user_id: string
+        }
+        Insert: {
+          action: string
+          actor_user_id: string
+          created_at?: string
+          domain_scope?: string | null
+          id?: string
+          metadata?: Json
+          reason?: string | null
+          user_id: string
+        }
+        Update: {
+          action?: string
+          actor_user_id?: string
+          created_at?: string
+          domain_scope?: string | null
+          id?: string
+          metadata?: Json
+          reason?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       autonomy_simulation_receipts: {
         Row: {
           action_key: string
