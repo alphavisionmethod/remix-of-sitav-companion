@@ -225,6 +225,8 @@ jobs:
         env:
           MODULE_COVERAGE_BASELINE: "602"
         run: npx tsx scripts/architecture/check-module-registry-coverage.ts
+      - name: AI orchestration coverage (Phase 4, blocks merge above baseline)
+        run: npx tsx scripts/architecture/check-ai-orchestration-coverage.ts
       - name: Regenerate Trust action manifest & diff (blocks merge)
         env:
           SOURCE_DATE_EPOCH: "0"

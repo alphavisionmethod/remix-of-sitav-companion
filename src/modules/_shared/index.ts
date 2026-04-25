@@ -54,3 +54,23 @@ export {
   type MemoryScope,
   type WorkspaceVisibility,
 } from "./workspace/workspace-context";
+
+// ── Phase 4: AI Orchestration & Explainability ─────────────────
+export {
+  useOrchestrator,
+  callOrchestrator,
+  useInvocationPlan,
+  useExplainabilityTraces,
+  useRecentInvocations,
+  ExplainabilityPanel,
+  EXPLAINABILITY_QUERY_KEY,
+  type OrchestratorMode,
+  type OrchestratorMessage,
+  type OrchestratorRequest,
+  type OrchestratorResponse,
+  type OrchestratorBlocked,
+  type OrchestratorOutcome,
+  type OrchestratorContextSources,
+  type ExplainabilityTraceRow,
+  type InvocationPlanRow,
+} from "./ai";

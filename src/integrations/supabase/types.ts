@@ -1885,6 +1885,59 @@ export type Database = {
           },
         ]
       }
+      ai_explainability_traces: {
+        Row: {
+          created_at: string
+          excerpt: string | null
+          expires_at: string
+          id: string
+          invocation_id: string
+          metadata: Json
+          role: string
+          source_id: string | null
+          source_label: string | null
+          source_type: string
+          user_id: string
+          weight: number
+        }
+        Insert: {
+          created_at?: string
+          excerpt?: string | null
+          expires_at?: string
+          id?: string
+          invocation_id: string
+          metadata?: Json
+          role?: string
+          source_id?: string | null
+          source_label?: string | null
+          source_type: string
+          user_id: string
+          weight?: number
+        }
+        Update: {
+          created_at?: string
+          excerpt?: string | null
+          expires_at?: string
+          id?: string
+          invocation_id?: string
+          metadata?: Json
+          role?: string
+          source_id?: string | null
+          source_label?: string | null
+          source_type?: string
+          user_id?: string
+          weight?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_explainability_traces_invocation_id_fkey"
+            columns: ["invocation_id"]
+            isOneToOne: false
+            referencedRelation: "ai_invocation_plans"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       ai_fallback_events: {
         Row: {
           capability_key: string
@@ -2043,6 +2096,99 @@ export type Database = {
           status?: string | null
           user_id?: string
           verification_outcome?: string | null
+        }
+        Relationships: []
+      }
+      ai_invocation_plans: {
+        Row: {
+          assumptions: Json
+          authority_check: Json
+          blocked_reason: string | null
+          capability_key: string | null
+          completed_at: string | null
+          completion_tokens: number | null
+          confidence_observed: number | null
+          confidence_target: number | null
+          context_sources: Json
+          correlation_id: string
+          created_at: string
+          error_code: string | null
+          error_message: string | null
+          estimated_cost_usd: number | null
+          expires_at: string
+          id: string
+          inference_receipt_id: string | null
+          latency_ms: number | null
+          metadata: Json
+          mode: string
+          model_choice: string | null
+          module_id: string | null
+          prompt_tokens: number | null
+          receipt_id: string | null
+          status: string
+          total_tokens: number | null
+          user_id: string
+          workspace_id: string | null
+        }
+        Insert: {
+          assumptions?: Json
+          authority_check?: Json
+          blocked_reason?: string | null
+          capability_key?: string | null
+          completed_at?: string | null
+          completion_tokens?: number | null
+          confidence_observed?: number | null
+          confidence_target?: number | null
+          context_sources?: Json
+          correlation_id?: string
+          created_at?: string
+          error_code?: string | null
+          error_message?: string | null
+          estimated_cost_usd?: number | null
+          expires_at?: string
+          id?: string
+          inference_receipt_id?: string | null
+          latency_ms?: number | null
+          metadata?: Json
+          mode?: string
+          model_choice?: string | null
+          module_id?: string | null
+          prompt_tokens?: number | null
+          receipt_id?: string | null
+          status?: string
+          total_tokens?: number | null
+          user_id: string
+          workspace_id?: string | null
+        }
+        Update: {
+          assumptions?: Json
+          authority_check?: Json
+          blocked_reason?: string | null
+          capability_key?: string | null
+          completed_at?: string | null
+          completion_tokens?: number | null
+          confidence_observed?: number | null
+          confidence_target?: number | null
+          context_sources?: Json
+          correlation_id?: string
+          created_at?: string
+          error_code?: string | null
+          error_message?: string | null
+          estimated_cost_usd?: number | null
+          expires_at?: string
+          id?: string
+          inference_receipt_id?: string | null
+          latency_ms?: number | null
+          metadata?: Json
+          mode?: string
+          model_choice?: string | null
+          module_id?: string | null
+          prompt_tokens?: number | null
+          receipt_id?: string | null
+          status?: string
+          total_tokens?: number | null
+          user_id?: string
+          workspace_id?: string | null
         }
         Relationships: []
       }

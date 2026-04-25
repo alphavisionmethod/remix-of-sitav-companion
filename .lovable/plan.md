@@ -101,6 +101,14 @@ Add ~25 entries covering: `business.deal.create`, `business.invoice.send`, `busi
 
 ## PHASE 4 — AI Orchestration & Explainability Spine
 
+**Status: ✅ COMPLETE (2026-04-25)**
+
+- Backend: `ai_invocation_plans` + `ai_explainability_traces` tables (RLS, 90-day TTL).
+- Edge function: `ai-orchestrator` records plan → authority pre-check → calls `ai-gateway` → persists traces → updates telemetry.
+- Frontend: `@/modules/_shared/ai` exports `useOrchestrator`, `callOrchestrator`, `useInvocationPlan`, `useExplainabilityTraces`, `useRecentInvocations`, `<ExplainabilityPanel>`.
+- Admin: `/admin/architecture/ai-orchestration` lists recent invocations + renders explainability inline.
+- CI: `scripts/architecture/check-ai-orchestration-coverage.ts` writes `public/generated/ai-orchestration-coverage.json` and gates merges. Baseline = 1 (CommandPalette.tsx — slated for migration in Phase 5).
+
 **Goal:** Centralize AI invocation across all 4 modules through one orchestration layer with mandatory explainability and receipt emission.
 
 **Backend:**

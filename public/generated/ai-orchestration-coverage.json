@@ -1,0 +1,16 @@
+{
+  "generatedAt": "2026-04-25T13:16:51.948Z",
+  "rule": "All in-app AI calls must flow through `ai-orchestrator` (Phase 4).",
+  "baseline": 1,
+  "violationCount": 1,
+  "allowedCount": 4,
+  "violations": [
+    "src/components/sita/CommandPalette.tsx"
+  ],
+  "allowed": [
+    "src/components/sita/RuntimeTruthProbe.tsx",
+    "src/lib/core-services/inference-gateway/inference-gateway.ts",
+    "src/lib/services/ai-gateway/callable.ts",
+    "src/lib/services/ai-gateway/invoke.ts"
+  ]
+}
