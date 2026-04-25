@@ -26,6 +26,24 @@ if npx vite build 2>&1; then pass "Vite build — success"; else fail "Vite buil
 step "Trust action manifest freshness"
 if npx tsx scripts/architecture/check-trust-action-manifest.ts 2>&1; then pass "Trust manifest in sync"; else fail "Trust manifest stale — run scripts/architecture/emit-trust-action-manifest.ts"; fi
 
+step "Trust action manifest regeneration diff"
+if command -v jq >/dev/null 2>&1; then
+  cp public/generated/trust-action-registry.json /tmp/trust-manifest-before.json
+  SOURCE_DATE_EPOCH=0 npx tsx scripts/architecture/emit-trust-action-manifest.ts >/dev/null 2>&1
+  jq 'del(.generatedAt)' public/generated/trust-action-registry.json > /tmp/trust-manifest-after.json
+  jq 'del(.generatedAt)' /tmp/trust-manifest-before.json > /tmp/trust-manifest-prev.json
+  if diff -q /tmp/trust-manifest-prev.json /tmp/trust-manifest-after.json >/dev/null; then
+    cp /tmp/trust-manifest-before.json public/generated/trust-action-registry.json
+    pass "Trust manifest matches in-code registry"
+  else
+    cp /tmp/trust-manifest-before.json public/generated/trust-action-registry.json
+    fail "Trust manifest would change on regeneration — run emit-trust-action-manifest.ts and commit"
+  fi
+else
+  echo "  (skipped — jq not installed)"
+  pass "Trust manifest regen diff (skipped, no jq)"
+fi
+
 step "Route & page consistency"
 ROUTE_COUNT=$(grep -rc "path=" src/routes/*.tsx 2>/dev/null | awk -F: '{s+=$2} END {print s+0}')
 echo "  Routes: $ROUTE_COUNT"
