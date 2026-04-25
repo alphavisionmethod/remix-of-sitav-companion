@@ -5221,6 +5221,33 @@ export type Database = {
         }
         Relationships: []
       }
+      autopilot_configs: {
+        Row: {
+          config: Json
+          created_at: string
+          is_onboarded: boolean
+          schema_version: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          config?: Json
+          created_at?: string
+          is_onboarded?: boolean
+          schema_version?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          config?: Json
+          created_at?: string
+          is_onboarded?: boolean
+          schema_version?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       beta_applications: {
         Row: {
           country: string | null
