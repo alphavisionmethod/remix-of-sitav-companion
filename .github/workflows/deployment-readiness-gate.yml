@@ -121,5 +121,6 @@ jobs:
             generated/key-artifact-freshness-report.json
             generated/threshold-drift-regression-report.json
             generated/deployment-readiness-report.json
+            generated/audits/repository-canonicalization-baseline.json
           retention-days: 30
           if-no-files-found: warn
