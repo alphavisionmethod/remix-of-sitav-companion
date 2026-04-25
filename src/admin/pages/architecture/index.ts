@@ -32,6 +32,7 @@ export { default as EpistemicFirewallBoard } from "@/pages/admin/architecture/Ep
 export { default as GodTierIntegrationBoard } from "@/pages/admin/architecture/GodTierIntegrationBoard";
 export { default as GodTierRuntimeBoard } from "@/pages/admin/architecture/GodTierRuntimeBoard";
 export { default as KnowledgeSpineBoard } from "@/pages/admin/architecture/KnowledgeSpineBoard";
+export { default as SemanticSpineBoard } from "@/pages/admin/architecture/SemanticSpineBoard";
 
 // ── MC Architecture pages (from modules/) ──
 export { default as MCArchitectureDashboard } from "@/pages/admin/modules/MCArchitectureDashboard";
