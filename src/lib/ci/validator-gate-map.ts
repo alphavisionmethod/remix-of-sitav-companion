@@ -125,6 +125,28 @@ export const VALIDATOR_GATE_OVERRIDES: ValidatorGateMapEntry[] = [
     consumer: "release-readiness",
     rationale: "Wave 0.9 concept-based shared component rule. Replaces the structural 'used by ≥2 pillars' heuristic with a semantic 3-test rule (vocabulary, dependency, portability). Net-new files under src/components/** must classify as shared-clean; the 12 grandfathered violators are baselined and monotone-decreasing per Constitution Rule 37. See docs/architecture/SHARED_COMPONENT_OWNERSHIP_MODEL.md.",
   },
+  // ─── Wave 1.2 — Contract Layer Ownership (Constitution Rules 39–42, BLOCKING) ──
+  {
+    validator: "check-public-contract-barrel-purity",
+    gateId: "public-contract-barrel-purity",
+    classification: "block",
+    consumer: "release-readiness",
+    rationale: "Wave 1.2 Rule 40. Asserts src/contracts/** stays a pure public re-export barrel (re-exports only; no implementation bodies; no forbidden imports from react/supabase/services/components/pages/hooks/contexts/modules). See docs/architecture/CONTRACT_LAYER_OWNERSHIP_MODEL.md.",
+  },
+  {
+    validator: "check-platform-local-contract-scope",
+    gateId: "platform-local-contract-scope",
+    classification: "block",
+    consumer: "release-readiness",
+    rationale: "Wave 1.2 Rule 42. Asserts files under src/platform/<X>/contracts/** are imported only from inside src/platform/<X>/**. Cross-system / pillar / page importers indicate the contract must be promoted to src/packages/<family>-contracts/. Deprecated re-export shims (frontmatter @deprecated Wave 1.2) are exempted and tracked under the Rule 23 shim baseline.",
+  },
+  {
+    validator: "check-contract-duplicate-identifiers",
+    gateId: "contract-duplicate-identifiers",
+    classification: "block",
+    consumer: "release-readiness",
+    rationale: "Wave 1.2 Rule 39. Asserts no exported type/interface/enum/const identifier appears in ≥2 of {src/contracts/**, src/packages/**, src/domains/types/**, src/platform/<X>/contracts/**}. Emits generated/manifests/contract-ownership-map.json and generated/audits/duplicate-contract-family-report.json. Sealed at 0 dupes after the Wave 1.2 promotions.",
+  },
 ];
 
 /** Lookup table for fast access by validator basename. */
