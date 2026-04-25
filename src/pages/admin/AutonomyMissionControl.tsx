@@ -39,7 +39,7 @@ const STATE_TONE: Record<string, string> = {
   observing: "bg-primary/10 text-primary",
   proposing: "bg-primary/15 text-primary",
   dry_run: "bg-accent/15 text-accent-foreground",
-  awaiting_approval: "bg-warning/15 text-warning",
+  awaiting_approval: "bg-accent/20 text-accent-foreground",
   executing: "bg-primary text-primary-foreground",
   cooling_down: "bg-muted text-muted-foreground",
   circuit_open: "bg-destructive/15 text-destructive",
@@ -170,7 +170,7 @@ function Stat({
     tone === "primary"
       ? "text-primary"
       : tone === "warning"
-      ? "text-warning"
+      ? "text-accent"
       : tone === "destructive"
       ? "text-destructive"
       : "text-foreground";
