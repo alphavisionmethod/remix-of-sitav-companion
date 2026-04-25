@@ -223,23 +223,29 @@ jobs:
         run: npx tsx scripts/architecture/check-trust-action-manifest.ts
       - name: Regenerate Trust action manifest & diff (blocks merge)
         env:
-          # Freeze timestamp so regeneration is reproducible.
-          # Use the committed file's existing generatedAt so unrelated edits
-          # to the registry are the only thing that can produce a diff.
           SOURCE_DATE_EPOCH: "0"
         run: |
           set -e
-          # Re-emit with frozen epoch so generatedAt is deterministic.
+          # Snapshot committed file, regenerate deterministically, compare hashes
+          # of the structural content (everything except generatedAt).
+          cp public/generated/trust-action-registry.json /tmp/trust-manifest-before.json
           npx tsx scripts/architecture/emit-trust-action-manifest.ts
-          # Compare ignoring generatedAt (committed file may have any timestamp).
-          jq 'del(.generatedAt)' public/generated/trust-action-registry.json > /tmp/regenerated.json
-          git show HEAD:public/generated/trust-action-registry.json \
-            | jq 'del(.generatedAt)' > /tmp/committed.json
-          if ! diff -u /tmp/committed.json /tmp/regenerated.json; then
+          PREV=$(jq -S 'del(.generatedAt)' /tmp/trust-manifest-before.json | sha256sum | awk '{print $1}')
+          NEW=$(jq -S 'del(.generatedAt)' public/generated/trust-action-registry.json | sha256sum | awk '{print $1}')
+          # Restore committed file regardless of result so artifact uploads stay clean.
+          cp /tmp/trust-manifest-before.json public/generated/trust-action-registry.json
+          if [ "$PREV" != "$NEW" ]; then
+            echo "::group::Diff (committed vs regenerated, generatedAt stripped)"
+            jq -S 'del(.generatedAt)' /tmp/trust-manifest-before.json > /tmp/prev.json
+            SOURCE_DATE_EPOCH=0 npx tsx scripts/architecture/emit-trust-action-manifest.ts >/dev/null
+            jq -S 'del(.generatedAt)' public/generated/trust-action-registry.json > /tmp/new.json
+            cp /tmp/trust-manifest-before.json public/generated/trust-action-registry.json
+            diff -u /tmp/prev.json /tmp/new.json || true
+            echo "::endgroup::"
             echo "::error::Trust action manifest is stale. Run: npx tsx scripts/architecture/emit-trust-action-manifest.ts and commit the result."
             exit 1
           fi
-          echo "✅ Trust action manifest matches in-code registry."
+          echo "✅ Trust action manifest matches in-code registry (sha256: $NEW)."
       - name: Docker hardening
         run: npx tsx scripts/root/check-docker-hardening.ts
       - name: Deployment readiness gate

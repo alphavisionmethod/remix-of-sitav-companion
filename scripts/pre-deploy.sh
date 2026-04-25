@@ -27,21 +27,20 @@ step "Trust action manifest freshness"
 if npx tsx scripts/architecture/check-trust-action-manifest.ts 2>&1; then pass "Trust manifest in sync"; else fail "Trust manifest stale — run scripts/architecture/emit-trust-action-manifest.ts"; fi
 
 step "Trust action manifest regeneration diff"
-if command -v jq >/dev/null 2>&1; then
+if command -v jq >/dev/null 2>&1 && command -v sha256sum >/dev/null 2>&1; then
   cp public/generated/trust-action-registry.json /tmp/trust-manifest-before.json
   SOURCE_DATE_EPOCH=0 npx tsx scripts/architecture/emit-trust-action-manifest.ts >/dev/null 2>&1
-  jq 'del(.generatedAt)' public/generated/trust-action-registry.json > /tmp/trust-manifest-after.json
-  jq 'del(.generatedAt)' /tmp/trust-manifest-before.json > /tmp/trust-manifest-prev.json
-  if diff -q /tmp/trust-manifest-prev.json /tmp/trust-manifest-after.json >/dev/null; then
-    cp /tmp/trust-manifest-before.json public/generated/trust-action-registry.json
+  PREV=$(jq -S 'del(.generatedAt)' /tmp/trust-manifest-before.json | sha256sum | awk '{print $1}')
+  NEW=$(jq -S 'del(.generatedAt)' public/generated/trust-action-registry.json | sha256sum | awk '{print $1}')
+  cp /tmp/trust-manifest-before.json public/generated/trust-action-registry.json
+  if [ "$PREV" = "$NEW" ]; then
     pass "Trust manifest matches in-code registry"
   else
-    cp /tmp/trust-manifest-before.json public/generated/trust-action-registry.json
     fail "Trust manifest would change on regeneration — run emit-trust-action-manifest.ts and commit"
   fi
 else
-  echo "  (skipped — jq not installed)"
-  pass "Trust manifest regen diff (skipped, no jq)"
+  echo "  (skipped — jq or sha256sum not available)"
+  pass "Trust manifest regen diff (skipped)"
 fi
 
 step "Route & page consistency"
