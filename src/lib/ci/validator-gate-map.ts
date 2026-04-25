@@ -72,6 +72,21 @@ export const VALIDATOR_GATE_OVERRIDES: ValidatorGateMapEntry[] = [
     bucket: "architecture-hygiene",
     rationale: "Asserts public/generated/routes.json is fresh, mirrors generated/routes.json, and covers all <Route> declarations across App.tsx + every src/routes/* shell. WARN-tier — does not block release; surfaces in advisory ingestion.",
   },
+  // ─── Wave 0.5 — Platform Subclassification (Constitution Rule 27, BLOCKING) ──
+  {
+    validator: "check-platform-anti-patterns",
+    gateId: "platform-anti-patterns",
+    classification: "block",
+    consumer: "release-readiness",
+    rationale: "Wave 0.5 promotion. Thin wrapper that delegates to scripts/architecture/check-platform-subclassification.ts. Promoted from advisory to BLOCK so platform sprawl regressions fail CI under Constitution Rule 27.",
+  },
+  {
+    validator: "check-platform-subclassification",
+    gateId: "platform-subclassification",
+    classification: "block",
+    consumer: "release-readiness",
+    rationale: "Wave 0.5 canonical subclassification gate. Verifies every src/platform/<X>/ folder is classified into one of the six canonical subclasses and that cross-subclass imports respect the monotone ratchet (decrease-only). Wired into foundation-gate.yml as BLOCKING.",
+  },
 ];
 
 /** Lookup table for fast access by validator basename. */

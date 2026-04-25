@@ -3,6 +3,25 @@
   "lastWaveCompleted": 10,
   "schemaVersion": 1,
   "note": "Baseline file counts captured before Repository Tree Canonicalization waves. See docs/architecture/REPOSITORY_CONSTITUTION.md.",
+  "platformSubclassificationInstalled": true,
+  "platformSubclassification": {
+    "wave": "0.5",
+    "installedAt": "2026-04-25T17:13:00.000Z",
+    "rule": "Constitution Rules 27 & 28",
+    "subclassCount": 6,
+    "classifiedFolderCount": 54,
+    "subclassMap": "generated/manifests/platform-subclassification-map.json",
+    "ratchetBaseline": "generated/manifests/platform-cross-subclass-baseline.json",
+    "ratchetDirection": "decrease-only",
+    "baselineViolationCount": 509,
+    "modelDoc": "docs/architecture/PLATFORM_SUBCLASSIFICATION_MODEL.md",
+    "blockingValidators": [
+      "scripts/architecture/check-platform-subclassification.ts",
+      "scripts/architecture/checks/check-platform-anti-patterns.ts"
+    ],
+    "ciGate": ".github/workflows/foundation-gate.yml",
+    "report": "generated/audits/platform-subclassification-hardening-report.md"
+  },
   "topLevel": {
     "src/pages": 1148,
     "src/modules": 557,
