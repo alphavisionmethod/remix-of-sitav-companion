@@ -35,6 +35,9 @@ import "./marketing-advertising-advisor.spec";
 // Phase 5 — Growth Advisor
 import "./growth-advisor.spec";
 
+// Phase 6 — Tech Advisor
+import "./tech-advisor.spec";
+
 export type {
   BusinessAdvisorSpec,
   AutomationLevel,
