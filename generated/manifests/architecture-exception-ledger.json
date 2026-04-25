@@ -1,0 +1,33 @@
+{
+  "generatedAt": "2026-04-25T16:57:06.537Z",
+  "foundationVersion": 1,
+  "rule": "Constitution Rule 23",
+  "schema": {
+    "ruleId": "string — e.g. 'rule-7' or 'wave-7-relative-imports'",
+    "scope": "string — single file or glob",
+    "owner": "string — github handle or team",
+    "reason": "string — why this exception is necessary",
+    "expiresAt": "ISO date OR null",
+    "waveBound": "string OR null — e.g. 'foundation-v1'",
+    "createdAt": "ISO timestamp",
+    "baselineCount": "number — count at time of ratchet seal"
+  },
+  "monotoneRatchet": {
+    "enabled": true,
+    "direction": "decrease-only",
+    "enforcer": "scripts/architecture/check-architecture-exception-ledger.ts"
+  },
+  "exceptions": [
+    {
+      "ruleId": "rule-20-foundation-day-one",
+      "scope": "generated/audits/wave-10-architectural-attestation.json",
+      "owner": "platform-architecture",
+      "reason": "Wave-10 manifest is sealed pre-foundation; re-sealing requires ADR.",
+      "expiresAt": null,
+      "waveBound": "foundation-v1",
+      "createdAt": "2026-04-25T16:57:06.537Z",
+      "baselineCount": 1
+    }
+  ],
+  "totalExceptions": 1
+}
