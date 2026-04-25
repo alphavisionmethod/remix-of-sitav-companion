@@ -167,6 +167,9 @@ Deno.serve(async (req) => {
     // Phase G: optional rolling world snapshot from useSitaAgent.
     const worldState = (body.world_state && typeof body.world_state === "object") ? body.world_state : null;
     const missionId = typeof body.mission_id === "string" ? body.mission_id : null;
+    // Phase 9: optional workspace id so the planner can pull multi-modal context.
+    const workspaceId = typeof body.workspace_id === "string" ? body.workspace_id : null;
+    const authHeader = req.headers.get("authorization") ?? "";
 
     if (!intent) {
       return new Response(JSON.stringify({ error: "intent required" }), {
@@ -175,6 +178,12 @@ Deno.serve(async (req) => {
     }
 
     const allowed = CATALOG.map((e) => `- ${e.id} (${e.domain}, risk=${e.risk}, reversible=${e.reversible}): ${e.description}`).join("\n");
+
+    // Phase 9: ambient multi-modal context for the active workspace.
+    const mmRows = workspaceId ? await fetchMultiModalContext(authHeader, workspaceId) : [];
+    const mmDigest = mmRows.length > 0
+      ? mmRows.map((r) => `- [${r.modality}] ${r.content.slice(0, 220).replace(/\s+/g, " ")}`).join("\n")
+      : null;
 
     const systemPrompt = [
       "You are Sita's planner. Translate the user's intent into a concrete, ordered Action Plan.",
@@ -189,6 +198,9 @@ Deno.serve(async (req) => {
       worldState ? "WORLD STATE (use only if relevant — never invent fields):" : null,
       worldState ? JSON.stringify(worldState).slice(0, 1500) : null,
       missionId ? `ACTIVE MISSION: ${missionId} — bias steps toward advancing this mission when applicable.` : null,
+      mmDigest ? "" : null,
+      mmDigest ? "MULTI-MODAL CONTEXT (recent images/audio/video captions in this workspace — use only if directly relevant):" : null,
+      mmDigest,
       "",
       "ALLOWED SKILLS:",
       allowed,
