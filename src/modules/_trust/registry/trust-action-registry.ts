@@ -393,6 +393,28 @@ export const TRUST_ACTION_REGISTRY = {
     riskTier: "low", requireApproval: false, reversible: true,
     defaultAuthorityLevel: "pre_approved",
   },
+  // ── Phase 8: Federation + voice→agent bridge + multi-modal ───
+  "shared.voice.intent.dispatch": {
+    key: "shared.voice.intent.dispatch", pillar: "shared",
+    label: "Dispatch voice intent to agent",
+    description: "Hand a voice-extracted intent to the Sita agent planner for typed Action Plan execution.",
+    riskTier: "high", requireApproval: true, reversible: false,
+    defaultAuthorityLevel: "ask",
+  },
+  "shared.embedding.multimodal": {
+    key: "shared.embedding.multimodal", pillar: "shared",
+    label: "Embed multi-modal asset",
+    description: "Generate embeddings for image/audio/video assets through the AI gateway.",
+    riskTier: "low", requireApproval: false, reversible: true,
+    defaultAuthorityLevel: "pre_approved",
+  },
+  "shared.federation.share": {
+    key: "shared.federation.share", pillar: "shared",
+    label: "Share workspace data via federation",
+    description: "Grant a target workspace access to selected memories or chunks under an active federation.",
+    riskTier: "high", requireApproval: true, reversible: true,
+    defaultAuthorityLevel: "ask",
+  },
 } as const satisfies Record<string, TrustActionPreset>;
 
 export type TrustActionKey = keyof typeof TRUST_ACTION_REGISTRY;
