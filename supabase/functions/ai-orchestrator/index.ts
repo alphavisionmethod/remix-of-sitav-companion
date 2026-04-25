@@ -322,6 +322,24 @@ serve(async (req) => {
         role: "constraint",
       });
     }
+    for (const m of autoMemoryRows) {
+      traces.push({
+        source_type: "memory",
+        source_id: m.memory_id,
+        source_label: `Memory ${m.provenance_kind}/${m.confidence_band}`,
+        excerpt: m.content.slice(0, 240),
+        role: "context",
+      });
+    }
+    for (const c of autoChunkRows) {
+      traces.push({
+        source_type: "knowledge_chunk",
+        source_id: c.id,
+        source_label: `Chunk ${c.file_id.slice(0, 8)}#${c.chunk_index}`,
+        excerpt: c.content.slice(0, 240),
+        role: "grounding",
+      });
+    }
     if (body.workspaceId) {
       traces.push({
         source_type: "workspace",
