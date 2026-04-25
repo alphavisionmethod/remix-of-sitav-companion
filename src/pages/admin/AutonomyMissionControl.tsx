@@ -31,6 +31,7 @@ import { AutonomyApprovalQueue } from "@/components/autonomy/AutonomyApprovalQue
 import { AutonomyReflectionTimeline } from "@/components/autonomy/AutonomyReflectionTimeline";
 import { BoardroomKernelPanel } from "@/components/autonomy/BoardroomKernelPanel";
 import { AutonomyMissionsPanel } from "@/components/autonomy/AutonomyMissionsPanel";
+import { AutonomyKillSwitch } from "@/components/autonomy/AutonomyKillSwitch";
 import {
   runControllersForAdvisors,
   DEFAULT_CONTROLLED_ADVISORS,
@@ -120,6 +121,8 @@ export default function AutonomyMissionControl() {
         <Stat icon={<CheckCircle2 className="h-4 w-4" />} label="Queue depth" value={totals.totalQueued} />
       </section>
 
+      <AutonomyKillSwitch variant="banner" />
+
       <Tabs defaultValue="fleet" className="w-full">
         <TabsList>
           <TabsTrigger value="fleet">Fleet state</TabsTrigger>
@@ -127,6 +130,7 @@ export default function AutonomyMissionControl() {
           <TabsTrigger value="reflections">Reflections</TabsTrigger>
           <TabsTrigger value="boardroom">Boardroom</TabsTrigger>
           <TabsTrigger value="missions">Standing missions</TabsTrigger>
+          <TabsTrigger value="kill-switch">Kill-switch</TabsTrigger>
         </TabsList>
 
         <TabsContent value="fleet" className="mt-4">
@@ -167,6 +171,10 @@ export default function AutonomyMissionControl() {
 
         <TabsContent value="missions" className="mt-4">
           <AutonomyMissionsPanel />
+        </TabsContent>
+
+        <TabsContent value="kill-switch" className="mt-4">
+          <AutonomyKillSwitch />
         </TabsContent>
       </Tabs>
     </div>
