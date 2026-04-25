@@ -53,19 +53,20 @@ export type SimulatedReceipt = {
 
 /** Pure: given a plan + signal + policy + decision, build a simulation receipt. */
 export function buildSimulationReceipt(args: {
+  advisorId: string;
   plan: ProposedPlan;
   signal: OSStateSignal | null;
   policy: AutonomyPolicy | null;
   decision: DryRunDecision;
 }): SimulatedReceipt {
-  const { plan, signal, policy, decision } = args;
+  const { advisorId, plan, signal, policy, decision } = args;
 
   const sideEffects = inventorySideEffects(plan);
   const projectedOutcomes = projectOutcomes(plan);
   const policyWarnings = collectPolicyWarnings(plan, policy, decision);
 
   return {
-    advisorId: plan.payload.advisor_id as string ?? "unknown",
+    advisorId,
     domain: plan.domain,
     actionKey: plan.actionKey,
     summary: plan.summary,
