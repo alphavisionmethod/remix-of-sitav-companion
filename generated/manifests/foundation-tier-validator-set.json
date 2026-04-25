@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-04-25T16:57:06.537Z",
+  "generatedAt": "2026-04-25T17:13:56.601Z",
   "foundationVersion": 1,
   "rule": "Constitution Rule 21",
   "description": "Validators that run in .github/workflows/foundation-gate.yml as BLOCKING. Adding/removing requires an ADR.",
-  "count": 15,
+  "count": 16,
   "validators": [
     {
       "validator": "scripts/architecture/check-foundation-manifest-freshness.ts",
@@ -109,6 +109,13 @@
       "classification": "block",
       "origin": "wired-existing",
       "description": "Frontend↔backend substrate boundaries are intact."
+    },
+    {
+      "validator": "scripts/architecture/check-platform-subclassification.ts",
+      "rule": "Rule 27",
+      "classification": "block",
+      "origin": "new",
+      "description": "Every src/platform/<X>/ folder is classified; cross-subclass imports respect the ratchet."
     }
   ]
 }
