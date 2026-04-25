@@ -41,6 +41,12 @@ jobs:
       - name: Trust action manifest freshness (REQUIRED)
         run: npx tsx scripts/architecture/check-trust-action-manifest.ts
 
+      - name: Phase 5 — Memory provenance coverage (REQUIRED)
+        run: node scripts/ci/check-memory-provenance-coverage.mjs
+
+      - name: Phase 5 — Knowledge spine manifest freshness (REQUIRED)
+        run: node scripts/ci/check-knowledge-spine-manifest.mjs --check
+
       - name: Run deployment-readiness gate
         run: npm run test:deployment-readiness
 
