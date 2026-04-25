@@ -13,6 +13,7 @@ import Papa from "papaparse";
 import * as XLSX from "xlsx";
 import { useCreateContact } from "@/hooks/use-crm-data";
 import { supabase } from "@/integrations/supabase/client";
+import { emitRegisteredTrustAction } from "@/modules/_trust";
 
 interface Props {
   onClose: () => void;
@@ -277,6 +278,15 @@ const CRMImportWizard = ({ onClose }: Props) => {
     setImporting(false);
     setStep("summary");
     if (created > 0 || updated > 0) toast.success(`Imported ${created} new, updated ${updated} contacts`);
+
+    // Trust receipt — bulk PII writes must be auditable as a single
+    // owner-authorized event, not just N anonymous row inserts.
+    if (created > 0 || updated > 0) {
+      await emitRegisteredTrustAction("business.crm.contact_bulk_import", {
+        impactSummary: `Imported ${created} new contacts and updated ${updated} existing.`,
+        payload: { created, updated, skipped, errors, totalRows: rows.length },
+      });
+    }
   };
 
   const errorCount = validationIssues.filter(v => v.severity === "error").length;
