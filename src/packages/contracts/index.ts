@@ -167,3 +167,9 @@ export * from "./domain-types/token-governance";
 export * from "./domain-types/business-engine";
 export * from "./domain-types/finance-engine";
 export * from "./domain-types/concierge-engine";
+
+// ── Wave 1.2 — App-wide cross-pillar contracts ──
+// Promoted from src/platform/contracts/ to canonical home.
+// Re-exported via @/contracts public barrel.
+export * from "./pillar-contract";
+export * from "./decision-queue";
