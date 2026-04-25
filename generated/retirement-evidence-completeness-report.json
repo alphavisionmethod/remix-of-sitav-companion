@@ -1,0 +1,14 @@
+{
+  "generatedAt": "2026-04-25T19:51:18.559Z",
+  "rule": "Constitution Rule 47 (Wave D §D.3)",
+  "totalEntries": 1,
+  "issueCount": 1,
+  "revalidationFailures": 0,
+  "ok": false,
+  "issues": [
+    {
+      "id": "wave-9-adapter-sunset",
+      "reason": "missing evidence.docsProof"
+    }
+  ]
+}
