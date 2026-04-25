@@ -133,6 +133,12 @@ During an in-flight migration wave, a thin re-export wrapper at the old path is 
 34. **Page semantic violation ratchet.** Pre-existing `legacy-violation` files (550 at Wave 0.7 seal) are baselined in `generated/manifests/page-semantic-violation-baseline.json`. The count is monotone-decreasing — new violations BLOCK CI. Drained by the future Page Body Relocation Wave (gated by Rules 19, 24).
 35. **Adapter subtype declaration (forward).** Net-new files under `src/pages/**` SHOULD carry a top-of-file directive `// @route-adapter: <subtype>`. When present, the declared subtype MUST match the detected subtype; mismatches BLOCK CI. Enforcer: `scripts/architecture/check-page-adapter-subtype-declaration.ts`.
 
+## Concept-Based Shared Component Rule (Wave 0.9 — BLOCKING)
+
+36. **Concept-based shared component rule.** Files under `src/components/**` (excluding `ui/` shadcn library and `__tests__/`) MUST pass the 3-test concept rule (vocabulary, dependency, portability) defined in `docs/architecture/SHARED_COMPONENT_OWNERSHIP_MODEL.md`. Usage count is no longer the deciding criterion — Rule 13's "used by ≥2 pillars" phrasing is superseded for semantic ownership. Validator: `scripts/architecture/check-shared-component-concept-rule.ts` (foundation-tier, BLOCKING).
+37. **Shared-semantic violation ratchet.** Pre-existing files that fail the concept rule (12 files at Wave 0.9 seal) are baselined in `generated/manifests/shared-component-semantic-violation-baseline.json`. The count is monotone-decreasing — net-new violators BLOCK CI. Severity regressions on baselined files BLOCK CI. Drained by the future Shared Component Relocation Wave (gated by Rules 19, 24).
+38. **Shared-component import direction.** `src/components/**` MUST NOT import from `@/modules/**`, `@/platform/**`, `@/admin/**`, or `@/pages/**`. Pure-barrel re-exports of platform paths are flagged as `barrel-only-reexport` and tracked in the Rule 37 baseline; the canonical fix is to relocate the barrel under the owning subsystem (`@/platform/<system>/components/<sub>/index.ts`) and update consumers. Enforcer: same validator as Rule 36.
+
 ## Amendment process
 
 1. Open an ADR under `docs/adr/ADR-<NNN>-<slug>.md` describing the change and its blast radius.
