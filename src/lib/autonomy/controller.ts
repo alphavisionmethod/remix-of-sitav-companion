@@ -16,6 +16,7 @@ import { proposeForSignal, type ProposedPlan } from "./proposers";
 import { decideExecutionMode, fetchAutonomyPolicy, type DryRunDecision } from "./dry-run";
 import { buildSimulationReceipt, persistSimulationReceipt } from "./simulation";
 import { recordReflectionForQueueRow } from "./reflection";
+import { getKillSwitchStatus, shouldHalt } from "./kill-switch";
 import {
   decideBudget,
   estimatePlanTokenCost,
@@ -63,6 +64,15 @@ export async function runControllerCycle(advisorId: string): Promise<ControllerC
   const userId = userData.user?.id;
   if (!userId) {
     notes.push("not_authenticated");
+    return result;
+  }
+
+  // Phase 9 — Kill-switch gate (global). Domain-scoped halts apply later
+  // once we know the plan's domain.
+  const killSwitch = await getKillSwitchStatus();
+  if (killSwitch.engaged && !killSwitch.domainScope) {
+    notes.push("kill_switch_engaged_global");
+    result.finalState = "idle";
     return result;
   }
 
@@ -132,6 +142,15 @@ export async function runControllerCycle(advisorId: string): Promise<ControllerC
 
     const policy = await fetchAutonomyPolicy(userId, plan.domain);
     const decision = decideExecutionMode(plan, policy);
+
+    // Phase 9 — Domain-scoped kill-switch check (now that plan.domain known)
+    if (shouldHalt(killSwitch, plan.domain)) {
+      result.blocked += 1;
+      notes.push(`kill_switch_engaged:${plan.domain}`);
+      await transition(userId, advisorId, currentState, "idle");
+      currentState = "idle";
+      continue;
+    }
 
     if (!decision.ok) {
       result.blocked += 1;
