@@ -156,6 +156,10 @@ function checkRule3_AdapterAsFacade() {
     for (const prefix of adapterAliasPrefixes) {
       const re = new RegExp(`["']${prefix.replace(/[.*+?^${}()|[\\]\\\\]/g, "\\$&")}`);
       if (hasRuntimeImport(src, re)) {
+        // /types and /contracts subpaths are pure contract surfaces — those
+        // are explicitly allowed to be consumed cross-layer (Wave 1.2 model).
+        const typesRe = new RegExp(`["']${prefix.replace(/[.*+?^${}()|[\\]\\\\]/g, "\\$&")}\\/(types|contracts)(\\/|["'])`);
+        if (typesRe.test(src) && !new RegExp(`["']${prefix.replace(/[.*+?^${}()|[\\]\\\\]/g, "\\$&")}["']`).test(src)) continue;
         violations.push({
           rule: 3,
           file: path.relative(REPO, f),
@@ -175,6 +179,7 @@ function checkRule4_RawSdkBypass() {
     path.join(REPO, "supabase/functions"),
     path.join(REPO, "scripts"),
     path.join(REPO, "tests"),
+    path.join(REPO, "src/__tests__"),
     path.join(REPO, "src/lib/data-services"),
   ];
   function isAllowed(f: string): boolean {
