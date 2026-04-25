@@ -1,2 +1,2 @@
-/** @deprecated Wave 3 — moved to @/platform/contracts/pillar-contract */
-export * from "@/platform/contracts/pillar-contract";
+/** @deprecated Wave 1.2 — moved to @/packages/contracts/pillar-contract (canonical home). Public import: @/contracts. This shim will be removed in Wave 9. */
+export * from "@/packages/contracts/pillar-contract";
