@@ -14,6 +14,8 @@ import { z } from "https://esm.sh/zod@3.23.8";
 const EMBED_MODEL = "google/text-embedding-004";
 const EMBED_DIM = 768;
 const GATEWAY_URL = "https://ai.gateway.lovable.dev/v1/embeddings";
+const CHAT_URL = "https://ai.gateway.lovable.dev/v1/chat/completions";
+const CAPTION_MODEL = "google/gemini-2.5-flash";
 
 const BodySchema = z.object({
   scope: z.enum(["chunks", "memories", "transcripts", "all", "query"]).default("all"),
@@ -24,6 +26,7 @@ const BodySchema = z.object({
 });
 
 type EmbedRow = { id: string; content: string; table: "knowledge_chunks" | "memory_provenance" | "voice_transcripts" };
+type Modality = "text" | "image" | "audio" | "video";
 
 async function embedTexts(texts: string[]): Promise<number[][]> {
   const apiKey = Deno.env.get("LOVABLE_API_KEY");
@@ -45,6 +48,56 @@ async function embedTexts(texts: string[]): Promise<number[][]> {
   const out: number[][] = (json?.data ?? []).map((d: { embedding: number[] }) => d.embedding);
   if (out.length !== texts.length) throw new Error("embedding_count_mismatch");
   return out;
+}
+
+// ── Phase 8.b: multi-modal captioning via gateway ──────────────
+async function captionMedia(args: {
+  modality: Modality;
+  signedUrl: string;
+  mime: string;
+  fallbackText: string;
+}): Promise<string> {
+  const apiKey = Deno.env.get("LOVABLE_API_KEY");
+  if (!apiKey) return args.fallbackText;
+  // Gemini supports image_url / audio_url multimodal blocks via OpenAI-compatible chat schema.
+  const userParts: unknown[] = [
+    { type: "text", text: `Describe this ${args.modality} in 2-3 dense sentences for semantic search. Include named entities, actions, and concrete nouns.` },
+  ];
+  if (args.modality === "image") {
+    userParts.push({ type: "image_url", image_url: { url: args.signedUrl } });
+  } else if (args.modality === "audio") {
+    userParts.push({ type: "input_audio", input_audio: { data: args.signedUrl, format: args.mime.split("/")[1] ?? "mp3" } });
+  } else {
+    // video — we can't fully process video here; reuse existing caption text.
+    return args.fallbackText;
+  }
+  try {
+    const resp = await fetch(CHAT_URL, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: CAPTION_MODEL,
+        messages: [{ role: "user", content: userParts }],
+        max_tokens: 240,
+      }),
+    });
+    if (!resp.ok) {
+      console.warn(`[embedder] caption failed ${resp.status}`);
+      return args.fallbackText;
+    }
+    const json = await resp.json();
+    const out = String(json?.choices?.[0]?.message?.content ?? "").trim();
+    return out || args.fallbackText;
+  } catch (e) {
+    console.warn("[embedder] caption threw", e);
+    return args.fallbackText;
+  }
+}
+
+async function signedUrlFor(supabase: ReturnType<typeof createClient>, path: string): Promise<string | null> {
+  const { data, error } = await supabase.storage.from("user-files").createSignedUrl(path, 120);
+  if (error || !data) return null;
+  return data.signedUrl;
 }
 
 function vecLiteral(v: number[]): string {
@@ -127,6 +180,39 @@ serve(async (req) => {
   };
 
   if (input.scope === "chunks" || input.scope === "all") await pull("knowledge_chunks", "content", "");
+
+  // ── Phase 8.b: enrich knowledge_chunks rows that are media-backed ──
+  if (input.scope === "chunks" || input.scope === "all") {
+    const chunkIds = rows.filter((r) => r.table === "knowledge_chunks").map((r) => r.id);
+    if (chunkIds.length > 0) {
+      const { data: meta } = await supabase
+        .from("knowledge_chunks")
+        .select("id, modality, media_uri, media_mime")
+        .in("id", chunkIds);
+      const byId = new Map<string, { modality: Modality; media_uri: string | null; media_mime: string | null }>();
+      for (const m of (meta ?? []) as Array<{ id: string; modality: Modality | null; media_uri: string | null; media_mime: string | null }>) {
+        byId.set(m.id, { modality: (m.modality ?? "text") as Modality, media_uri: m.media_uri, media_mime: m.media_mime });
+      }
+      for (const r of rows) {
+        if (r.table !== "knowledge_chunks") continue;
+        const m = byId.get(r.id);
+        if (!m || m.modality === "text" || !m.media_uri) continue;
+        const signed = await signedUrlFor(supabase, m.media_uri);
+        if (!signed) continue;
+        const caption = await captionMedia({
+          modality: m.modality,
+          signedUrl: signed,
+          mime: m.media_mime ?? "application/octet-stream",
+          fallbackText: r.content,
+        });
+        // Persist enriched caption into content so downstream search has dense text.
+        r.content = caption.slice(0, 8000);
+        await supabase.from("knowledge_chunks")
+          .update({ content: r.content, metadata: { phase: "8.b", multimodal_caption: true, modality: m.modality } })
+          .eq("id", r.id);
+      }
+    }
+  }
   if (input.scope === "memories" || input.scope === "all") {
     // memory_provenance.content lives on pb_memories; pull joined view.
     const remaining = input.batch_size - rows.length;
