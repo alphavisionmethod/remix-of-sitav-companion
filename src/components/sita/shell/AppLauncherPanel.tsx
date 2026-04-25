@@ -18,6 +18,7 @@ import { useLauncherViewModel, type LauncherAppItem, type AppInstallCTA } from "
 import type { AppCategory } from "@/domains/apps/types";
 import { SoundEngine } from "@/platform/runtime/sound-engine";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { PillarRail } from "@/components/launcher/PillarRail";
 
 interface AppLauncherPanelProps {
   open: boolean;
@@ -380,6 +381,15 @@ export function AppLauncherPanel({ open, onClose, onLaunchApp }: AppLauncherPane
             {/* ── Right Panel: Pinned → Recent → Quick Actions ── */}
             <div className="flex-1 flex flex-col min-w-0">
               <div className="flex-1 overflow-y-auto px-3 pb-2">
+                {/* SITA OS Pillars — canonical 4 + Trust Center */}
+                {!query.trim() && (
+                  <div className="pt-3" data-testid="launcher-pillar-rail">
+                    <div className="px-1 pb-1.5 text-[10px] font-semibold uppercase tracking-wider text-[hsl(0_0%_100%/0.45)]">
+                      Pillars
+                    </div>
+                    <PillarRail />
+                  </div>
+                )}
                 {/* Desktop Widgets shortcut — opens the Widget Gallery */}
                 <button
                   type="button"
