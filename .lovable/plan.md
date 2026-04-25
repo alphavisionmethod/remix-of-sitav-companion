@@ -1,87 +1,139 @@
-# Platform Subclassification Hardening (Wave 0.5)
+# Wave 0.6 — Admin Plane Definition & Hardening
 
-## Problem (audited, not assumed)
+## Audit findings (real repo state)
 
-`src/platform/` currently contains **53 top-level folders** with no second-level structure. Concrete evidence:
-
-- `src/platform/admin/` (151 files: command palettes, sub-navs, shells) is operator/admin UI, and `src/admin/components/index.ts` already re-exports from it — formalizing the blurred boundary.
-- `src/platform/sita/` (551 files), `personal-brain/` (82), `orchestration/` (57), `nova-sdk/` (56) live as flat siblings with `tenant/` (1 file), `registry/` (1 file), `eventing/` (1 file).
-- Constitution Rule 92 lists platform systems as a flat enumeration. No subclass model exists in code, docs, or manifests.
-- `check-platform-anti-patterns.ts` and `check-platform-readiness.ts` are referenced in `generated/validator-gate-map.json` but **do not exist on disk** — orphaned advisory entries.
-
-## Approach: classification first, no destabilizing moves
-
-The Wave 10 attestation (Rule 19) is sealed and gates CI. Wave 0 foundation (Rules 21–26) was just installed. Safe path:
-
-1. **Encode the taxonomy as a manifest and validator** — no file moves, so Wave-10 digests stay unchanged, no imports/routes/tests break.
-2. **Classify every existing `src/platform/<X>/` folder** with `keep` / `relocate-future` / `split-future` decisions.
-3. **Wire the validator into the foundation tier** so future PRs cannot add unclassified folders, and cross-subclass imports are statically checked.
-4. **Document a follow-up Platform Relocation Wave** that runs under Rule 24 (safe-change evidence) + Rule 19 (re-seal). Path moves are explicitly out of scope.
-
-## Six canonical platform subclasses (derived from real folder set)
-
-| Subclass | Members |
+| Surface | Reality |
 |---|---|
-| `product-infrastructure` | `files`, `workspace`, `notifications`, `app-platform`, `apps`, `search`, `marketing`, `cloud`, `settings`, `setup`, `personal-brain`, `experience`, `design-system` |
-| `governance` | `trust`, `security`, `governance`, `contracts`, `proof`, `truth`, `verification` |
-| `operator-control` | `admin` *(relocate-future → `src/admin/`)*, `owner`, `mission-control`, `atlas`, `support`, `observability`, `operations`, `sita` *(split-future)* |
-| `identity-and-tenant` | `auth`, `tenant`, `enterprise` |
-| `intelligence` | `ai`, `intelligence`, `knowledge`, `advisors`, `boardroom`, `product` |
-| `runtime-bridges` | `runtime`, `registry`, `integration`, `orchestration`, `core-services`, `eventing`, `execution`, `sync-engine`, `nova-sdk`, `topology`, `architecture`, `capabilities`, `ci`, `deploy`, `migration`, `fip`, `control-plane` |
+| `src/admin/**` | Skeleton only — 9 subfolders, mostly barrels (1 component, 2 hooks, 17 modules, 1 shell, 1 nav, 1 redirects, 1 routes, 1 state). Contains **no** canonical page bodies; `src/admin/pages/` is just re-export barrels. |
+| `src/pages/admin/**` | **583 .tsx files**, median 150 lines, 452 files >100 lines — overwhelmingly **canonical page bodies**, not adapters. Only **8 files** are thin wrappers re-exporting from `@/admin`. |
+| `src/planes/admin.ts` | Re-exports from `@/lib/platform-plane/*` and `@/lib/admin-ai`, **never references `@/admin/**`** — plane metadata is detached from the canonical home. |
+| `src/routes/AdminRoutes.tsx` | 545 lines, lazy-imports **directly from `@/pages/admin/*`** — bypasses the `@/admin` barrels entirely. |
+| Cross-imports | `platform→admin`: **1** (`page-consolidation.ts` re-exports `admin-redirect-map`). `modules→admin`: 0. `admin→platform`: 13 (allowed). `admin→modules`: 0. |
+| Existing governance | `docs/architecture/ADMIN_INFORMATION_ARCHITECTURE.md` (12-domain budget), `src/lib/architecture/admin-route-registry.ts`, `src/lib/architecture/admin-ia-target.ts`, plus 10 `check-admin-*` validators in `scripts/architecture/checks/` and 20+ in `scripts/validation/`. |
+| Foundation tier | Wave 0 / 0.5 sealed; Wave 10 attestation locks `src/admin`, `src/pages`, `src/platform` digests. |
 
-Allowed dependency directions (encoded in validator):
-- `runtime-bridges` → only `governance`, `identity-and-tenant` (lowest layer).
-- `identity-and-tenant` → `governance`, `runtime-bridges`.
-- `governance` → `identity-and-tenant`, `runtime-bridges`.
-- `intelligence` → `governance`, `identity-and-tenant`, `runtime-bridges`.
-- `product-infrastructure` → all except `operator-control`.
-- `operator-control` → all (consumer surface).
+**Diagnosis.** `src/admin/` is **declared canonical** by Constitution but **physically near-empty**. The 583 real page bodies live in `src/pages/admin/`, and `AdminRoutes.tsx` imports them directly. A bulk physical move would (a) break the Wave 10 attestation, (b) churn 583 routes, and (c) violate the safe-change ledger requirements (Rule 25). The right move is **classification-first hardening with a monotone ratchet**, mirroring the Wave 0.5 platform pattern.
 
-Universal rule retained: no platform subclass may import from `src/modules/<pillar>/**`.
+---
 
-## Files to create or change
+## What this wave installs (no risky physical moves)
 
-**Manifests:**
-- Create `generated/manifests/platform-subclassification-map.json` (53 entries).
-- Create `scripts/manifests/generate/generate-platform-subclassification-map.ts`.
-- Update `scripts/manifests/generate/generate-foundation-manifest-index.ts` to register the new manifest as the 15th entry under Rule 26.
+### Part 1 — Constitution: Rules 29–32 (Admin Plane Law)
 
-**Validators:**
-- Create `scripts/architecture/check-platform-subclassification.ts` — strict mode for missing classifications + cross-subclass import violations; advisory warnings for `src/admin` ↔ `src/platform/admin` re-exports.
-- Create `scripts/architecture/checks/check-platform-anti-patterns.ts` — thin wrapper that delegates to the new check (revives the orphaned gate-map entry).
+Append to `docs/architecture/REPOSITORY_CONSTITUTION.md`:
 
-**CI wiring:**
-- Update `generated/manifests/foundation-tier-validator-set.json` — add new validator with `class: "block"`.
-- Update `.github/workflows/foundation-gate.yml` — add new validator as REQUIRED step.
-- Re-emit `generated/validator-gate-map.json` so `check-platform-anti-patterns` becomes `block` and `check-platform-subclassification` is registered.
+- **Rule 29 — Admin canonical home.** `src/admin/**` owns admin/operator page bodies, layouts, navigation, dashboards, and operator consoles. New admin page bodies MUST be created under `src/admin/modules/<domain>/views/` (matching the existing 8-file pattern in `src/admin/modules/verification/views/`).
+- **Rule 30 — `src/pages/admin/**` is adapter-only (forward).** New files under `src/pages/admin/**` MUST be thin re-export wrappers (≤10 lines) targeting `@/admin/**`. Existing 575 page-body files are grandfathered into a monotone ratchet baseline; the count may only decrease.
+- **Rule 31 — Admin dependency direction.** `admin → platform` ✅. `admin → modules` ❌ (admin may consume read-models via service facades, not import module page bodies). `platform → admin` ❌. `modules → admin` ❌. `pages/admin → admin` ✅ (adapter pattern). The single existing `platform→admin` violation (`src/platform/architecture/page-consolidation.ts`) is added to the exception ledger with a fix-forward target.
+- **Rule 32 — Admin vs Platform ownership.** `src/admin/**` may aggregate pillar/platform read-models but MUST NOT become the canonical owner of platform capability or pillar product logic. Capability lives in `src/platform/**`; admin owns the operator UI over it.
 
-**Constitution + docs:**
-- Update `docs/architecture/REPOSITORY_CONSTITUTION.md`: add **Rule 27 — Platform Subclassification (BLOCKING)** and **Rule 28 — Platform vs Admin Boundary (Wave-bound)**. Replace the flat platform enumeration with a pointer to the new model doc.
-- Create `docs/architecture/PLATFORM_SUBCLASSIFICATION_MODEL.md` — six subclasses, allowed/forbidden imports, every current folder classified, Platform-vs-Admin boundary, future Relocation Wave plan.
-- Update `src/platform/MANIFEST.md` — replace flat list with subclass grouping + pointer to new doc.
+### Part 2 — Canonical model document
 
-**Audit report:**
-- Create `generated/audits/platform-subclassification-hardening-report.md`.
-- Update `generated/audits/repository-canonicalization-baseline.json` with `platformSubclassificationInstalled: true`.
+Create `docs/architecture/ADMIN_PLANE_OWNERSHIP_MODEL.md` covering:
+- Canonical home + adapter layer model
+- Allowed/forbidden dependency matrix
+- Admin vs Platform vs Modules table with examples
+- Operator-only vs product-observable surface distinction
+- Profile-gating rules (cross-link to `ROUTE_AND_APP_PLANE_MAP.md`)
+- Migration policy (new files → `@/admin`; legacy bodies → ratchet down over time)
 
-## What is explicitly NOT in this pass
+### Part 3 — Canonical manifests
 
-- **No file moves.** Wave-10 attestation does not need re-sealing.
-- **No barrel changes** in `src/admin/components/index.ts` — advisory warnings only.
-- **The Platform Relocation Wave** (moving `src/platform/admin/**` → `src/admin/**`, splitting `src/platform/sita/**`, etc.) is documented as a separate future request with prerequisite Rule 24 evidence and Rule 19 re-seal steps.
+1. **`generated/manifests/admin-plane-ownership-map.json`** — generated by new `scripts/manifests/generate/generate-admin-plane-ownership-map.ts`. For each of 583 `src/pages/admin/*` files, classify:
+   - `kind`: `THIN_ADAPTER` (≤10 lines, re-exports `@/admin`) or `LEGACY_PAGE_BODY`
+   - `canonicalPath`: target `@/admin/modules/<domain>/views/...` if known
+   - `domain`: one of the 12 IA domains (from `admin-route-registry.ts`)
+   - `profile`: `operator`-only (default for `/admin/*`)
 
-## Verification before finishing
+2. **`generated/manifests/admin-page-body-baseline.json`** — monotone ratchet snapshot: current count of `LEGACY_PAGE_BODY` files (~575). Future PRs may only **decrease** this number. Mirrors the Wave 0.5 cross-subclass ratchet model.
 
-1. New generator produces 53 classified entries, zero unclassified.
-2. New validator exits 0 in strict mode (no cross-subclass import violations).
-3. `check-foundation-manifest-freshness.ts` passes with 15th manifest.
-4. `wave-10-check-attestation.ts` still passes (no file moves).
-5. `npx tsc --noEmit` clean.
-6. `npx vite build` succeeds.
+3. **`generated/manifests/admin-dependency-violation-baseline.json`** — snapshot of the 1 known `platform→admin` import. Decrease-only ratchet.
 
-## Why this is the right scope
+Register all 3 in `scripts/manifests/generate/generate-foundation-manifest-index.ts` and re-emit `foundation-manifest-index.json`.
 
-- Directly answers the prompt: `src/platform/` stops being a flat broad bucket; every folder has a constitutionally-binding subclass with enforced dependency rules.
-- Avoids prohibitions: no duplicate taxonomy systems, no broken imports/routes/tests, no decorative subclasses, reuses Wave-0 foundation.
-- Respects the Wave-10 seal: no digest changes, deployment readiness preserved.
-- Sets up the follow-up Relocation Wave with an exact manifest of moves and evidence requirements, all already encoded in repo.
+### Part 4 — Validators (BLOCKING, foundation-tier)
+
+1. **`scripts/architecture/check-admin-plane-boundaries.ts`** (new, BLOCKING)
+   - Fails on any new `platform→admin` or `modules→admin` import (vs. baseline)
+   - Fails on any new `admin→modules` import
+   - Fails on new `src/pages/admin/*.tsx` files >10 lines that don't re-export `@/admin/**`
+   - Honors monotone ratchet baselines
+
+2. **`scripts/architecture/check-admin-page-body-ratchet.ts`** (new, BLOCKING)
+   - Recomputes `LEGACY_PAGE_BODY` count, fails if greater than baseline
+   - Emits `generated/manifests/admin-page-body-ratchet-report.json`
+
+3. **Wire into foundation gate.** Update `src/lib/ci/validator-gate-map.ts` to register both as `release-readiness` and add to `generated/manifests/foundation-tier-validator-set.json`. Re-emit `generated/validator-gate-map.json`.
+
+### Part 5 — Plane metadata alignment
+
+Update `src/planes/admin.ts` to re-export the canonical `@/admin/**` surfaces alongside the existing platform-plane utilities (additive — no removals, preserves existing imports). Add a header note pointing to the new ownership model doc.
+
+Update `src/planes/ADMIN_MANIFEST.md` to reflect Rule 29–32 and link to `ADMIN_PLANE_OWNERSHIP_MODEL.md`.
+
+### Part 6 — `src/admin/MANIFEST.md` (new)
+
+Create the missing manifest at `src/admin/MANIFEST.md` declaring:
+- The 9 subfolders + canonical purpose
+- The `modules/<domain>/views/` pattern for new page bodies
+- Pointer to `ADMIN_PLANE_OWNERSHIP_MODEL.md`
+- Pointer to the 12-domain IA in `ADMIN_INFORMATION_ARCHITECTURE.md`
+
+### Part 7 — CI wiring
+
+Update `.github/workflows/foundation-gate.yml` to invoke the two new validators in the blocking step. No change to `deployment-readiness-gate.yml` (foundation gate is upstream).
+
+### Part 8 — Audit report
+
+Create `generated/audits/admin-plane-hardening-report.md` capturing:
+- Pre-state: 583 page-body files, 9-folder shell, detached planes/admin.ts
+- Post-state: classification map, baselines installed, Rules 29–32 active
+- Wave 10 attestation: **preserved** (no physical moves)
+- Future relocation wave: out of scope, governed by ratchet
+
+---
+
+## What this wave deliberately does NOT do
+
+- ❌ **No physical file moves** of the 575 legacy page bodies (would break Wave 10 attestation; requires safe-change evidence per file under Rule 25). A future "Admin Relocation Wave" governed by the ratchet handles this incrementally.
+- ❌ **No changes to `AdminRoutes.tsx`** (still imports `@/pages/admin/*` — adapters will be added file-by-file as bodies migrate).
+- ❌ **No removal of `src/lib/platform-plane/*`** despite its name suggesting overlap — that's a separate platform-subclassification concern.
+- ❌ **No new top-level admin domains** (12-domain budget enforced by existing `check-admin-domain-budget.ts`).
+
+---
+
+## Files touched (preview)
+
+| Action | Path |
+|---|---|
+| Create | `docs/architecture/ADMIN_PLANE_OWNERSHIP_MODEL.md` |
+| Create | `src/admin/MANIFEST.md` |
+| Create | `scripts/manifests/generate/generate-admin-plane-ownership-map.ts` |
+| Create | `scripts/architecture/check-admin-plane-boundaries.ts` |
+| Create | `scripts/architecture/check-admin-page-body-ratchet.ts` |
+| Create | `generated/manifests/admin-plane-ownership-map.json` |
+| Create | `generated/manifests/admin-page-body-baseline.json` |
+| Create | `generated/manifests/admin-dependency-violation-baseline.json` |
+| Create | `generated/audits/admin-plane-hardening-report.md` |
+| Edit | `docs/architecture/REPOSITORY_CONSTITUTION.md` (+ Rules 29–32) |
+| Edit | `src/planes/admin.ts` (additive re-exports + header) |
+| Edit | `src/planes/ADMIN_MANIFEST.md` (link new model) |
+| Edit | `scripts/manifests/generate/generate-foundation-manifest-index.ts` (+3 manifests, +2 validators) |
+| Edit | `src/lib/ci/validator-gate-map.ts` (register 2 new BLOCKING validators) |
+| Edit | `generated/manifests/foundation-manifest-index.json` (regenerated) |
+| Edit | `generated/manifests/foundation-tier-validator-set.json` (regenerated) |
+| Edit | `generated/validator-gate-map.json` (regenerated) |
+| Edit | `.github/workflows/foundation-gate.yml` (+ 2 validator invocations) |
+| Edit | `generated/audits/repository-canonicalization-baseline.json` (+ `adminPlaneHardeningInstalled: true`) |
+
+---
+
+## Verification
+
+1. Run `tsx scripts/manifests/generate/generate-admin-plane-ownership-map.ts` → manifest emitted, ~575 LEGACY_PAGE_BODY + ~8 THIN_ADAPTER.
+2. Run `tsx scripts/architecture/check-admin-plane-boundaries.ts` → green (1 known platform→admin baselined).
+3. Run `tsx scripts/architecture/check-admin-page-body-ratchet.ts` → green (count matches baseline).
+4. Confirm Wave 10 attestation digests for `src/admin/` and `src/pages/admin/` unchanged (no physical moves).
+5. Confirm `AdminRoutes.tsx` resolves all 545 lazy imports (no route regression).
+
+This installs the durable enforcement substrate so future relocation waves can drive the ratchet down safely, file-by-file, with full safe-change evidence.

@@ -3,6 +3,11 @@
 ## Purpose
 Operational control surface for administrators. RBAC, safety gates, support workflows, notification routing, AI workforce management, and route truth validation.
 
+> **Wave 0.6 update.** The canonical home for admin **page bodies** is `src/admin/**`,
+> with `src/pages/admin/**` reduced to thin re-export wrappers. See
+> [`docs/architecture/ADMIN_PLANE_OWNERSHIP_MODEL.md`](../../docs/architecture/ADMIN_PLANE_OWNERSHIP_MODEL.md)
+> for the canonical model and Constitution **Rules 29–32** for binding rules.
+
 ## Ownership
 - **Primary owner**: Admin/Operations Engineering
 - **Trust level**: Governed elevated control — dual-approval for destructive actions
@@ -30,6 +35,8 @@ Operational control surface for administrators. RBAC, safety gates, support work
 ## Forbidden Dependencies
 - `os`, `founder`, `mobile`, `backend` (implementation)
 - Talks to backend via BFF/API only
+- **`src/modules/<pillar>/**` page bodies** (admin reads pillar state via service facades only — Rule 31).
+- **`src/platform/**` MUST NOT import from `src/admin/**`** (Rule 31, decrease-only ratchet).
 
 ## Deployment Target
 - SPA on CDN (Vite build)

@@ -1,0 +1,19 @@
+{
+  "generatedAt": "2026-04-25T17:21:47.036Z",
+  "schemaVersion": 1,
+  "rule": "Constitution Rule 31 — admin plane dependency direction",
+  "description": "Pre-existing platform→admin and modules→admin imports. Future PRs may only DECREASE these.",
+  "direction": "decrease-only",
+  "enforcer": "scripts/architecture/check-admin-plane-boundaries.ts",
+  "baselines": {
+    "platformImportingAdmin": [
+      "src/platform/architecture/page-consolidation.ts"
+    ],
+    "platformImportingAdminCount": 1,
+    "moduleImportingAdmin": [],
+    "moduleImportingAdminCount": 0,
+    "adminImportingModules": [],
+    "adminImportingModulesCount": 0
+  },
+  "sealedAt": "2026-04-25T17:21:47.036Z"
+}

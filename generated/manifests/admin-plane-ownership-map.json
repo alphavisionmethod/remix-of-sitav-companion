@@ -1,0 +1,4114 @@
+{
+  "generatedAt": "2026-04-25T17:21:47.036Z",
+  "schemaVersion": 1,
+  "rule": "Constitution Rules 29–32 (Admin Plane Law)",
+  "description": "Classification of every src/pages/admin/* file as THIN_ADAPTER or LEGACY_PAGE_BODY, plus admin↔platform↔modules dependency inventory.",
+  "pagesAdminFileCount": 583,
+  "thinAdapterCount": 7,
+  "legacyPageBodyCount": 576,
+  "domains": [
+    "overview",
+    "alerts",
+    "approvals",
+    "environments",
+    "ai-runtime",
+    "integrations",
+    "trust-security",
+    "health",
+    "releases",
+    "verification",
+    "config",
+    "support"
+  ],
+  "knownAdapterTarget": "@/admin/modules/<domain>/views/<ViewName>",
+  "dependencyInventory": {
+    "platformImportingAdmin": [
+      "src/platform/architecture/page-consolidation.ts"
+    ],
+    "moduleImportingAdmin": [],
+    "adminImportingModules": []
+  },
+  "entries": [
+    {
+      "file": "src/pages/admin/AIAgentDebate.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 89,
+      "canonicalPath": null,
+      "domain": "ai-runtime"
+    },
+    {
+      "file": "src/pages/admin/AIApprovalDesk.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 93,
+      "canonicalPath": null,
+      "domain": "ai-runtime"
+    },
+    {
+      "file": "src/pages/admin/AIChangePlanViewer.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 172,
+      "canonicalPath": null,
+      "domain": "ai-runtime"
+    },
+    {
+      "file": "src/pages/admin/AIDesignDiffTheater.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 87,
+      "canonicalPath": null,
+      "domain": "ai-runtime"
+    },
+    {
+      "file": "src/pages/admin/AIDesignStudio.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 89,
+      "canonicalPath": null,
+      "domain": "ai-runtime"
+    },
+    {
+      "file": "src/pages/admin/AIEngineeringBoard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 456,
+      "canonicalPath": null,
+      "domain": "ai-runtime"
+    },
+    {
+      "file": "src/pages/admin/AIEvidenceBundleComposer.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 261,
+      "canonicalPath": null,
+      "domain": "ai-runtime"
+    },
+    {
+      "file": "src/pages/admin/AIFixCenter.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 152,
+      "canonicalPath": null,
+      "domain": "ai-runtime"
+    },
+    {
+      "file": "src/pages/admin/AIG01ProviderRegistry.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 144,
+      "canonicalPath": null,
+      "domain": "ai-runtime"
+    },
+    {
+      "file": "src/pages/admin/AIG02ModelRegistry.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 96,
+      "canonicalPath": null,
+      "domain": "ai-runtime"
+    },
+    {
+      "file": "src/pages/admin/AIG03RoutingMatrix.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 211,
+      "canonicalPath": null,
+      "domain": "ai-runtime"
+    },
+    {
+      "file": "src/pages/admin/AIG04BudgetCenter.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 365,
+      "canonicalPath": null,
+      "domain": "ai-runtime"
+    },
+    {
+      "file": "src/pages/admin/AIG05ReceiptsExplorer.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 169,
+      "canonicalPath": null,
+      "domain": "ai-runtime"
+    },
+    {
+      "file": "src/pages/admin/AIG05UsageLedgerExplorer.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 182,
+      "canonicalPath": null,
+      "domain": "ai-runtime"
+    },
+    {
+      "file": "src/pages/admin/AIG06LaunchTruth.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 129,
+      "canonicalPath": null,
+      "domain": "ai-runtime"
+    },
+    {
+      "file": "src/pages/admin/AIG07LaunchTruth.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 223,
+      "canonicalPath": null,
+      "domain": "ai-runtime"
+    },
+    {
+      "file": "src/pages/admin/AIG08DegradedDiagnostics.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 137,
+      "canonicalPath": null,
+      "domain": "ai-runtime"
+    },
+    {
+      "file": "src/pages/admin/AIG09RuntimeVerification.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 540,
+      "canonicalPath": null,
+      "domain": "ai-runtime"
+    },
+    {
+      "file": "src/pages/admin/AIGovernancePage.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 115,
+      "canonicalPath": null,
+      "domain": "ai-runtime"
+    },
+    {
+      "file": "src/pages/admin/AIHumanBoundaryControls.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 167,
+      "canonicalPath": null,
+      "domain": "ai-runtime"
+    },
+    {
+      "file": "src/pages/admin/AILearningCenter.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 91,
+      "canonicalPath": null,
+      "domain": "ai-runtime"
+    },
+    {
+      "file": "src/pages/admin/AIMissionCenter.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 150,
+      "canonicalPath": null,
+      "domain": "ai-runtime"
+    },
+    {
+      "file": "src/pages/admin/AIPromptFamiliesExplorer.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 170,
+      "canonicalPath": null,
+      "domain": "ai-runtime"
+    },
+    {
+      "file": "src/pages/admin/AIReleasesCenter.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 139,
+      "canonicalPath": null,
+      "domain": "ai-runtime"
+    },
+    {
+      "file": "src/pages/admin/AIRootCauseGraph.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 110,
+      "canonicalPath": null,
+      "domain": "ai-runtime"
+    },
+    {
+      "file": "src/pages/admin/AIRuntimeStatus.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 234,
+      "canonicalPath": null,
+      "domain": "ai-runtime"
+    },
+    {
+      "file": "src/pages/admin/AISelfHealing.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 95,
+      "canonicalPath": null,
+      "domain": "ai-runtime"
+    },
+    {
+      "file": "src/pages/admin/AISelfLearningLedger.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 94,
+      "canonicalPath": null,
+      "domain": "ai-runtime"
+    },
+    {
+      "file": "src/pages/admin/AIT01TeamOverview.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 204,
+      "canonicalPath": null,
+      "domain": "ai-runtime"
+    },
+    {
+      "file": "src/pages/admin/AIT02RoleRegistry.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 182,
+      "canonicalPath": null,
+      "domain": "ai-runtime"
+    },
+    {
+      "file": "src/pages/admin/AIT03TaskInvocation.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 213,
+      "canonicalPath": null,
+      "domain": "ai-runtime"
+    },
+    {
+      "file": "src/pages/admin/AIT04ActivityFeedPage.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 2,
+      "canonicalPath": null,
+      "domain": "ai-runtime"
+    },
+    {
+      "file": "src/pages/admin/AIT04to08Boards.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 539,
+      "canonicalPath": null,
+      "domain": "ai-runtime"
+    },
+    {
+      "file": "src/pages/admin/AIT05CostEfficiency.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 202,
+      "canonicalPath": null,
+      "domain": "ai-runtime"
+    },
+    {
+      "file": "src/pages/admin/AIT06RecommendationsPage.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 2,
+      "canonicalPath": null,
+      "domain": "ai-runtime"
+    },
+    {
+      "file": "src/pages/admin/AIT07ApprovalQueuePage.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 6,
+      "canonicalPath": null,
+      "domain": "ai-runtime"
+    },
+    {
+      "file": "src/pages/admin/AIT08LaunchTruthPage.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 2,
+      "canonicalPath": null,
+      "domain": "ai-runtime"
+    },
+    {
+      "file": "src/pages/admin/AITSetupChecklist.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 186,
+      "canonicalPath": null,
+      "domain": "ai-runtime"
+    },
+    {
+      "file": "src/pages/admin/AITeamRoster.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 173,
+      "canonicalPath": null,
+      "domain": "ai-runtime"
+    },
+    {
+      "file": "src/pages/admin/AITimeMachine.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 104,
+      "canonicalPath": null,
+      "domain": "ai-runtime"
+    },
+    {
+      "file": "src/pages/admin/AITokenDashboard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 224,
+      "canonicalPath": null,
+      "domain": "ai-runtime"
+    },
+    {
+      "file": "src/pages/admin/AND01AndroidEcosystemCenter.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 361,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/AND02WearOSExperience.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 140,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/AND03AndroidTrustApprovals.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 142,
+      "canonicalPath": null,
+      "domain": "approvals"
+    },
+    {
+      "file": "src/pages/admin/AND04AndroidHealthConsent.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 119,
+      "canonicalPath": null,
+      "domain": "health"
+    },
+    {
+      "file": "src/pages/admin/AND05AndroidLaunchReadiness.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 98,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/APL01AppleEcosystemCenter.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 336,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/APL02AppleDevicesTrust.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 176,
+      "canonicalPath": null,
+      "domain": "trust-security"
+    },
+    {
+      "file": "src/pages/admin/APL03AppleWatchExperience.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 155,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/APL04AppleIdentityAccounts.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 119,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/APL05AppleHealthConsent.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 162,
+      "canonicalPath": null,
+      "domain": "health"
+    },
+    {
+      "file": "src/pages/admin/APL06AppleLaunchReadiness.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 142,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/APP01ApplianceDeployabilityCenter.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 155,
+      "canonicalPath": null,
+      "domain": "releases"
+    },
+    {
+      "file": "src/pages/admin/AR01AutomationOverview.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 112,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/AR02ScheduledJobRegistry.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 89,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/AR03SelfHealingBoard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 97,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/AR04AgentScheduler.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 105,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/AR05SystemMaintenanceBoard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 93,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/AR06ExecutionTraceExplorer.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 123,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/AR07RetryFailureCenter.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 82,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/AR08KillSwitchCenter.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 142,
+      "canonicalPath": null,
+      "domain": "trust-security"
+    },
+    {
+      "file": "src/pages/admin/AR09AutomationLaunchGate.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 144,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/ActionLineageExplorer.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 196,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/ActionStateDriftViewer.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 143,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/AdminConsolidationExplorer.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 196,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/AdminDashboard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 387,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/AdminDeploymentRings.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 200,
+      "canonicalPath": null,
+      "domain": "releases"
+    },
+    {
+      "file": "src/pages/admin/AdminKillSwitches.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 198,
+      "canonicalPath": null,
+      "domain": "trust-security"
+    },
+    {
+      "file": "src/pages/admin/AdminMutationAudit.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 236,
+      "canonicalPath": null,
+      "domain": "trust-security"
+    },
+    {
+      "file": "src/pages/admin/AdminOperationsHub.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 265,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/AdminPerformanceDashboard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 15,
+      "canonicalPath": null,
+      "domain": "health"
+    },
+    {
+      "file": "src/pages/admin/AdminProjectionModels.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 221,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/AdminRunbookViewerPage.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 11,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/AdminTruthClaims.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 162,
+      "canonicalPath": null,
+      "domain": "verification"
+    },
+    {
+      "file": "src/pages/admin/AdvisorActionApprovalAdmin.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 91,
+      "canonicalPath": null,
+      "domain": "ai-runtime"
+    },
+    {
+      "file": "src/pages/admin/AdvisorAgentDashboard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 154,
+      "canonicalPath": null,
+      "domain": "ai-runtime"
+    },
+    {
+      "file": "src/pages/admin/AdvisorAutonomyPolicyEditor.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 141,
+      "canonicalPath": null,
+      "domain": "ai-runtime"
+    },
+    {
+      "file": "src/pages/admin/AdvisorBoardCatalog.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 207,
+      "canonicalPath": null,
+      "domain": "ai-runtime"
+    },
+    {
+      "file": "src/pages/admin/AdvisorMemoryInspector.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 83,
+      "canonicalPath": null,
+      "domain": "ai-runtime"
+    },
+    {
+      "file": "src/pages/admin/AdvisorProfitabilityDashboard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 124,
+      "canonicalPath": null,
+      "domain": "ai-runtime"
+    },
+    {
+      "file": "src/pages/admin/AdvisorRecommendationMonitor.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 86,
+      "canonicalPath": null,
+      "domain": "ai-runtime"
+    },
+    {
+      "file": "src/pages/admin/AlertSimulationLab.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 285,
+      "canonicalPath": null,
+      "domain": "alerts"
+    },
+    {
+      "file": "src/pages/admin/AlertTriageBoard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 275,
+      "canonicalPath": null,
+      "domain": "alerts"
+    },
+    {
+      "file": "src/pages/admin/AuditComplianceWorkspace.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 177,
+      "canonicalPath": null,
+      "domain": "trust-security"
+    },
+    {
+      "file": "src/pages/admin/AutonomyMissionControl.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 264,
+      "canonicalPath": null,
+      "domain": "approvals"
+    },
+    {
+      "file": "src/pages/admin/BAP01BackendApiDeployabilityCenter.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 161,
+      "canonicalPath": null,
+      "domain": "releases"
+    },
+    {
+      "file": "src/pages/admin/BackendTopologyDashboard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 231,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/BrainCoreDashboard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 353,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/BuilderKnowledgeBase.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 124,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/CAI01PersonalGraphExplorer.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 73,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/CAI02IntentTraceBoard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 91,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/CAI03AttentionCenter.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 80,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/CAI04ContinuityCenter.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 42,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/CAI05TrustActionsBoard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 48,
+      "canonicalPath": null,
+      "domain": "trust-security"
+    },
+    {
+      "file": "src/pages/admin/CAI06ChiefOfStaffCenter.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 70,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/CAI07TimingStudio.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 46,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/CAI08RelationshipCenter.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 52,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/CAI09DigestConsole.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 71,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/CAI10ModesCenter.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 61,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/CAI11InterfaceProfiler.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 57,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/CAI12OpportunityBoard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 56,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/CAI13MemoryGovernance.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 109,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/CAI14BoundaryControl.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 46,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/CAI15SignatureStudio.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 77,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/CI01CIUmbrellaCenter.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 126,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/CN01ConnectorRealityOverview.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 352,
+      "canonicalPath": null,
+      "domain": "integrations"
+    },
+    {
+      "file": "src/pages/admin/CN02ConnectorRegistryConsole.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 65,
+      "canonicalPath": null,
+      "domain": "integrations"
+    },
+    {
+      "file": "src/pages/admin/CN03AccountLinkageBoard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 61,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/CN04SyncTruthCenter.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 92,
+      "canonicalPath": null,
+      "domain": "verification"
+    },
+    {
+      "file": "src/pages/admin/CN05ConnectorHealthBoard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 62,
+      "canonicalPath": null,
+      "domain": "integrations"
+    },
+    {
+      "file": "src/pages/admin/CN06ConnectorDemoReview.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 99,
+      "canonicalPath": null,
+      "domain": "integrations"
+    },
+    {
+      "file": "src/pages/admin/CN07ConnectorLaunchGate.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 119,
+      "canonicalPath": null,
+      "domain": "integrations"
+    },
+    {
+      "file": "src/pages/admin/CanonicalChainExplorer.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 161,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/ChangeImpactAnalyzer.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 107,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/CommunicationHub.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 1246,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/CompositorDebugPage.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 16,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/ComputeGovernanceBoard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 979,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/ConciergeRuntimeBoard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 216,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/ConnectorGovernanceCenter.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 278,
+      "canonicalPath": null,
+      "domain": "integrations"
+    },
+    {
+      "file": "src/pages/admin/ConscienceGateDashboard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 311,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/ContractBackendReadiness.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 80,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/CorePersistenceOverview.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 182,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/CoreServiceMigrationBoard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 149,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/CostPerActiveUserDashboard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 327,
+      "canonicalPath": null,
+      "domain": "environments"
+    },
+    {
+      "file": "src/pages/admin/CrossDomainMemoryExplorer.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 188,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/DRS01RealityModeOverview.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 97,
+      "canonicalPath": null,
+      "domain": "verification"
+    },
+    {
+      "file": "src/pages/admin/DRS02ModeRegistryConsole.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 64,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/DRS03ScenarioLibrary.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 62,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/DRS04ScenarioEntityGraph.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 70,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/DRS05ProviderConsole.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 67,
+      "canonicalPath": null,
+      "domain": "ai-runtime"
+    },
+    {
+      "file": "src/pages/admin/DRS06DemoPolicySafety.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 148,
+      "canonicalPath": null,
+      "domain": "trust-security"
+    },
+    {
+      "file": "src/pages/admin/DRS07DemoAIControl.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 64,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/DRS08AnalyticsSegregation.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 60,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/DRS09TruthLabeling.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 68,
+      "canonicalPath": null,
+      "domain": "verification"
+    },
+    {
+      "file": "src/pages/admin/DRS10DualRealityLaunchGate.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 108,
+      "canonicalPath": null,
+      "domain": "verification"
+    },
+    {
+      "file": "src/pages/admin/DSK01DeployabilityCenter.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 151,
+      "canonicalPath": null,
+      "domain": "releases"
+    },
+    {
+      "file": "src/pages/admin/DWE01ConnectedDevicesCenter.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 92,
+      "canonicalPath": null,
+      "domain": "environments"
+    },
+    {
+      "file": "src/pages/admin/DWE02PresenceContinuityCenter.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 92,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/DWE03WearableSignalsCenter.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 115,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/DWE04NotificationRoutingStudio.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 97,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/DWE05DeviceTrustApprovalsCenter.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 99,
+      "canonicalPath": null,
+      "domain": "approvals"
+    },
+    {
+      "file": "src/pages/admin/DWE06AmbientAssistantCenter.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 89,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/DWE07DeviceLaunchHonestyBoard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 122,
+      "canonicalPath": null,
+      "domain": "environments"
+    },
+    {
+      "file": "src/pages/admin/DataRetentionDashboard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 274,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/DataSourceDebugPage.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 154,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/DbTruthExplorer.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 218,
+      "canonicalPath": null,
+      "domain": "verification"
+    },
+    {
+      "file": "src/pages/admin/DeliveryReadinessBoard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 111,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/DeliveryWavePlanner.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 75,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/DependencyMapViewer.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 69,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/DeploymentUnitExplorer.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 63,
+      "canonicalPath": null,
+      "domain": "releases"
+    },
+    {
+      "file": "src/pages/admin/DesktopHostCapabilityExplorer.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 119,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/DomainManifestDashboard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 215,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/DomainMethodologyPacks.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 70,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/DomainRealityBoard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 133,
+      "canonicalPath": null,
+      "domain": "verification"
+    },
+    {
+      "file": "src/pages/admin/ECO01EcosystemCommand.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 926,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/EFH01EdgeFunctionHealthCenter.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 283,
+      "canonicalPath": null,
+      "domain": "health"
+    },
+    {
+      "file": "src/pages/admin/EnvironmentAppliancePage.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 172,
+      "canonicalPath": null,
+      "domain": "environments"
+    },
+    {
+      "file": "src/pages/admin/ErrorEventsExplorer.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 134,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/EventStreamExplorer.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 189,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/FCC01FounderCommandConsole.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 391,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/FCC02TaskDecompositionGraph.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 201,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/FCC03CICDPipelineBoard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 189,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/FCC04RunbookCenter.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 291,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/FCC05FounderDashboard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 268,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/FCC06ProgramManagementBoard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 262,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/FCC07PlatformCostCapacity.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 223,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/FCC08SyncStorageOps.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 192,
+      "canonicalPath": null,
+      "domain": "health"
+    },
+    {
+      "file": "src/pages/admin/FCC09SecurityRiskCenter.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 339,
+      "canonicalPath": null,
+      "domain": "trust-security"
+    },
+    {
+      "file": "src/pages/admin/FCC10HumanOversightEscalation.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 317,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/FCC11IncidentResponseTimeline.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 403,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/FCC12KnowledgeMemorySystem.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 278,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/FL01FlagshipLoopsExecutive.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 306,
+      "canonicalPath": null,
+      "domain": "config"
+    },
+    {
+      "file": "src/pages/admin/FL02FlagshipLoopDetail.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 261,
+      "canonicalPath": null,
+      "domain": "config"
+    },
+    {
+      "file": "src/pages/admin/FL03FlagshipPrioritization.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 178,
+      "canonicalPath": null,
+      "domain": "config"
+    },
+    {
+      "file": "src/pages/admin/FeatureFactoryConsole.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 84,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/FeatureIntakeDesk.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 146,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/FeatureLifecycleBoard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 114,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/FeatureRealityDetail.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 147,
+      "canonicalPath": null,
+      "domain": "verification"
+    },
+    {
+      "file": "src/pages/admin/FleetHealthPage.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 171,
+      "canonicalPath": null,
+      "domain": "health"
+    },
+    {
+      "file": "src/pages/admin/FounderCouncilBoard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 167,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/GeneratedTruthDashboard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 356,
+      "canonicalPath": null,
+      "domain": "verification"
+    },
+    {
+      "file": "src/pages/admin/GoogleProviderFamilyDashboard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 301,
+      "canonicalPath": null,
+      "domain": "ai-runtime"
+    },
+    {
+      "file": "src/pages/admin/GraphIntelligencePage.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 90,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/HQApprovalQueue.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 459,
+      "canonicalPath": null,
+      "domain": "approvals"
+    },
+    {
+      "file": "src/pages/admin/HRS01HealthConsentCenter.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 161,
+      "canonicalPath": null,
+      "domain": "health"
+    },
+    {
+      "file": "src/pages/admin/HRS02SignalSourcesBoard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 111,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/HRS03ReadinessExplanation.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 118,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/HRS04NotificationInfluence.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 103,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/HRS05AssistantTimingBoard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 130,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/HRS06SignalLaunchHonesty.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 101,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/ISA01IdentityProviderRegistryBoard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 240,
+      "canonicalPath": null,
+      "domain": "ai-runtime"
+    },
+    {
+      "file": "src/pages/admin/ISA02ConnectorProviderRegistryBoard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 187,
+      "canonicalPath": null,
+      "domain": "ai-runtime"
+    },
+    {
+      "file": "src/pages/admin/ISA03OAuthClientRegistryConsole.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 163,
+      "canonicalPath": null,
+      "domain": "integrations"
+    },
+    {
+      "file": "src/pages/admin/ISA04ConsentLedgerExplorer.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 184,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/ISA05ScopePolicyMatrixBoard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 128,
+      "canonicalPath": null,
+      "domain": "trust-security"
+    },
+    {
+      "file": "src/pages/admin/ISA06UnifiedAccountGraphExplorer.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 149,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/ISA07AuthConnectorTruthBoard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 257,
+      "canonicalPath": null,
+      "domain": "integrations"
+    },
+    {
+      "file": "src/pages/admin/IncidentCommandCenter.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 225,
+      "canonicalPath": null,
+      "domain": "alerts"
+    },
+    {
+      "file": "src/pages/admin/IncidentDashboardPage.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 252,
+      "canonicalPath": null,
+      "domain": "alerts"
+    },
+    {
+      "file": "src/pages/admin/InfraRealityClassificationBoard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 76,
+      "canonicalPath": null,
+      "domain": "verification"
+    },
+    {
+      "file": "src/pages/admin/IngressTopologyViewer.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 74,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/IntegrationConciergePage.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 183,
+      "canonicalPath": null,
+      "domain": "integrations"
+    },
+    {
+      "file": "src/pages/admin/IntelligenceArtifactLibrary.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 153,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/IntelligenceDashboard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 197,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/InvestorProofLedger.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 197,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/KernelDashboard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 1931,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/KillSwitchDrillCenter.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 434,
+      "canonicalPath": null,
+      "domain": "trust-security"
+    },
+    {
+      "file": "src/pages/admin/LT01BehavioralTruthOverview.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 131,
+      "canonicalPath": null,
+      "domain": "verification"
+    },
+    {
+      "file": "src/pages/admin/LT02CIPipelineCenter.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 117,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/LT03E2EJourneyBoard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 108,
+      "canonicalPath": null,
+      "domain": "verification"
+    },
+    {
+      "file": "src/pages/admin/LT04RuntimeProbeCenter.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 112,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/LT05LaunchGateBoard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 142,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/LT06RouteInteractionTruth.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 80,
+      "canonicalPath": null,
+      "domain": "verification"
+    },
+    {
+      "file": "src/pages/admin/LT07TruthRegressionRadar.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 105,
+      "canonicalPath": null,
+      "domain": "verification"
+    },
+    {
+      "file": "src/pages/admin/LaunchHonestyBoard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 95,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/LaunchReadinessBoard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 179,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/META01ArchitectureAtlas.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 173,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/META02ControlPlaneCenter.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 223,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/META03GoldenPathHealth.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 290,
+      "canonicalPath": null,
+      "domain": "health"
+    },
+    {
+      "file": "src/pages/admin/META04ProductReality.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 242,
+      "canonicalPath": null,
+      "domain": "verification"
+    },
+    {
+      "file": "src/pages/admin/META05CompletenessMatrix.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 245,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/MSA01MultiSurfaceOverview.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 245,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/MSA02CoreSurfaceBoundary.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 110,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/MSA03CapabilityPortability.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 100,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/MSA04SurfaceAdapterRegistry.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 95,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/MSA05CompatibilityRadar.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 217,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/ManifestDriftTriage.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 64,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/ManifestTruthDashboard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 68,
+      "canonicalPath": null,
+      "domain": "verification"
+    },
+    {
+      "file": "src/pages/admin/MemoryContinuityCenter.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 175,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/MigrationWavePlanner.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 91,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/MissionControlHome.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 341,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/MockEliminationCenter.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 97,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/MockReplacementProgram.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 404,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/MockSourceInventory.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 110,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/NOT01NotificationRuntimeVerification.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 275,
+      "canonicalPath": null,
+      "domain": "verification"
+    },
+    {
+      "file": "src/pages/admin/NOT02NotificationRoutingBoard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 159,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/NOT03DeliveryReceiptsExplorer.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 128,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/NOT04CalmPolicyBoard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 136,
+      "canonicalPath": null,
+      "domain": "trust-security"
+    },
+    {
+      "file": "src/pages/admin/NOT05NotificationPreferencesBoard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 140,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/NRC01RoutingStudio.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 102,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/NRC02CalmnessCenter.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 96,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/NRC03FatigueBoard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 105,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/NRC04QueueInterruptMatrix.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 102,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/NRC05CrossDeviceDelivery.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 103,
+      "canonicalPath": null,
+      "domain": "environments"
+    },
+    {
+      "file": "src/pages/admin/NRC06NotificationLaunchHonesty.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 175,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/NSS01StrategyBoard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 99,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/NSS02CapabilityMatrix.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 107,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/NSS03TrustContinuity.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 92,
+      "canonicalPath": null,
+      "domain": "trust-security"
+    },
+    {
+      "file": "src/pages/admin/NSS04MobileLaunchHonesty.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 95,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/OS01PlatformCommandCenter.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 738,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/OperatorHome.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 90,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/OutcomeEconomicsDashboard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 273,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/PFA01ProviderFamilyRegistry.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 94,
+      "canonicalPath": null,
+      "domain": "ai-runtime"
+    },
+    {
+      "file": "src/pages/admin/PFA02ProviderCapabilityMatrix.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 67,
+      "canonicalPath": null,
+      "domain": "ai-runtime"
+    },
+    {
+      "file": "src/pages/admin/PFA03OAuthClientRegistry.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 74,
+      "canonicalPath": null,
+      "domain": "integrations"
+    },
+    {
+      "file": "src/pages/admin/PFA04ConsentLedgerExplorer.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 84,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/PFA05ScopePolicyMatrix.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 62,
+      "canonicalPath": null,
+      "domain": "trust-security"
+    },
+    {
+      "file": "src/pages/admin/PFA06PermissionUpgradeCenter.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 81,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/PFA07ConnectorHealthDrift.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 90,
+      "canonicalPath": null,
+      "domain": "integrations"
+    },
+    {
+      "file": "src/pages/admin/PFA08AccountGraphExplorer.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 194,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/PFA09ConnectedAccountsCenter.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 123,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/PFA10IntegrationLaunchHonesty.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 92,
+      "canonicalPath": null,
+      "domain": "integrations"
+    },
+    {
+      "file": "src/pages/admin/PersistenceDriftRadar.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 115,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/PersistenceStatus.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 198,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/PlatformMaturityDashboard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 108,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/PlatformReadinessScorecard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 169,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/PolicyDecisionLedger.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 145,
+      "canonicalPath": null,
+      "domain": "trust-security"
+    },
+    {
+      "file": "src/pages/admin/PolicySimulator.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 216,
+      "canonicalPath": null,
+      "domain": "trust-security"
+    },
+    {
+      "file": "src/pages/admin/ProofMatrixExplorer.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 243,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/REX01RecommendationIntelligence.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 139,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/REX02ApprovalQueueCompletion.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 99,
+      "canonicalPath": null,
+      "domain": "approvals"
+    },
+    {
+      "file": "src/pages/admin/REX03RecommendationExecution.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 94,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/REX04RemediationPrograms.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 84,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/REX05OutcomeVerification.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 94,
+      "canonicalPath": null,
+      "domain": "verification"
+    },
+    {
+      "file": "src/pages/admin/RealityClassificationMatrix.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 518,
+      "canonicalPath": null,
+      "domain": "verification"
+    },
+    {
+      "file": "src/pages/admin/RealityConversionOverview.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 204,
+      "canonicalPath": null,
+      "domain": "verification"
+    },
+    {
+      "file": "src/pages/admin/RealityProgressTimeline.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 98,
+      "canonicalPath": null,
+      "domain": "verification"
+    },
+    {
+      "file": "src/pages/admin/RecoveryOpsCenter.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 125,
+      "canonicalPath": null,
+      "domain": "support"
+    },
+    {
+      "file": "src/pages/admin/ReleaseEngineeringPage.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 104,
+      "canonicalPath": null,
+      "domain": "releases"
+    },
+    {
+      "file": "src/pages/admin/ReleaseRingCommandBoard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 219,
+      "canonicalPath": null,
+      "domain": "releases"
+    },
+    {
+      "file": "src/pages/admin/ReplayRecoveryConsole.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 295,
+      "canonicalPath": null,
+      "domain": "support"
+    },
+    {
+      "file": "src/pages/admin/RevenueAutopilotMonitor.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 209,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/RouteRealityHeatmap.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 72,
+      "canonicalPath": null,
+      "domain": "verification"
+    },
+    {
+      "file": "src/pages/admin/RouteSourceDiagnostics.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 93,
+      "canonicalPath": null,
+      "domain": "support"
+    },
+    {
+      "file": "src/pages/admin/RuntimeContinuityBoard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 134,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/RuntimeRealityValidation.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 114,
+      "canonicalPath": null,
+      "domain": "verification"
+    },
+    {
+      "file": "src/pages/admin/RuntimeTierGovernanceDashboard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 200,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/RuntimeTruthCoverageDashboard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 119,
+      "canonicalPath": null,
+      "domain": "verification"
+    },
+    {
+      "file": "src/pages/admin/SEC01SessionSecrets.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 618,
+      "canonicalPath": null,
+      "domain": "environments"
+    },
+    {
+      "file": "src/pages/admin/SEC02SecurityFoundation.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 659,
+      "canonicalPath": null,
+      "domain": "trust-security"
+    },
+    {
+      "file": "src/pages/admin/SERV01ServiceOwnership.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 183,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/SERV02DomainOwnership.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 130,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/SERV03RouteServiceTrace.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 132,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/SERV04ServiceDuplication.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 186,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/SERV05CanonicalActions.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 97,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/SERV06FlagshipTraceability.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 129,
+      "canonicalPath": null,
+      "domain": "config"
+    },
+    {
+      "file": "src/pages/admin/SLAMonitoringDashboard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 307,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/SRE01ValidationCenter.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 171,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/SRE02BuilderCriticConsole.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 173,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/SRE03SimulationLab.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 184,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/SRE04CodeStandardsTestGen.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 154,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/SRE05ChaosTestingFramework.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 291,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/SRE06AutoRollbackCenter.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 145,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/SRE07VersionIntelligence.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 112,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/SRE08SelfOptimizationBudgets.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 178,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/SYS01SystemIntelligence.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 652,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/SecurityCommandCenter.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 952,
+      "canonicalPath": null,
+      "domain": "trust-security"
+    },
+    {
+      "file": "src/pages/admin/SecurityPostureBoard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 190,
+      "canonicalPath": null,
+      "domain": "trust-security"
+    },
+    {
+      "file": "src/pages/admin/SimulatedCoreServicesBoard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 74,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/SimulationCenterPage.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 115,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/SystemArchitecture.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 22,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/SystemHealthDashboard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 196,
+      "canonicalPath": null,
+      "domain": "health"
+    },
+    {
+      "file": "src/pages/admin/SystemManagement.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 207,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/TeamManagement.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 433,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/TrustStateRegistry.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 222,
+      "canonicalPath": null,
+      "domain": "trust-security"
+    },
+    {
+      "file": "src/pages/admin/TruthIndexDashboard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 91,
+      "canonicalPath": null,
+      "domain": "verification"
+    },
+    {
+      "file": "src/pages/admin/UAO01PresenceContinuity.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 114,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/UAO02ConnectedDevices.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 100,
+      "canonicalPath": null,
+      "domain": "environments"
+    },
+    {
+      "file": "src/pages/admin/UAO03AmbientTeamControl.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 76,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/UAO04NotificationRouter.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 101,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/UAO05HealthReadiness.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 124,
+      "canonicalPath": null,
+      "domain": "health"
+    },
+    {
+      "file": "src/pages/admin/UAO06DeviceTrust.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 109,
+      "canonicalPath": null,
+      "domain": "trust-security"
+    },
+    {
+      "file": "src/pages/admin/UAO07CrossSurfaceJourney.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 88,
+      "canonicalPath": null,
+      "domain": "verification"
+    },
+    {
+      "file": "src/pages/admin/UAO08AmbientLaunchReadiness.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 96,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/UserManagement.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 143,
+      "canonicalPath": null,
+      "domain": "environments"
+    },
+    {
+      "file": "src/pages/admin/UserSeedHealth.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 170,
+      "canonicalPath": null,
+      "domain": "health"
+    },
+    {
+      "file": "src/pages/admin/WEB01DeployabilityCenter.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 144,
+      "canonicalPath": null,
+      "domain": "releases"
+    },
+    {
+      "file": "src/pages/admin/WorkflowReplayAudit.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 246,
+      "canonicalPath": null,
+      "domain": "trust-security"
+    },
+    {
+      "file": "src/pages/admin/ai-runtime/AIRuntimeHome.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 162,
+      "canonicalPath": null,
+      "domain": "ai-runtime"
+    },
+    {
+      "file": "src/pages/admin/ai-runtime/AssuranceChaosBoard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 131,
+      "canonicalPath": null,
+      "domain": "ai-runtime"
+    },
+    {
+      "file": "src/pages/admin/ai-runtime/BoardroomSLADrillDown.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 148,
+      "canonicalPath": null,
+      "domain": "ai-runtime"
+    },
+    {
+      "file": "src/pages/admin/ai-runtime/ComplianceAttestationBoard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 159,
+      "canonicalPath": null,
+      "domain": "ai-runtime"
+    },
+    {
+      "file": "src/pages/admin/ai-runtime/CouncilsBoard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 323,
+      "canonicalPath": null,
+      "domain": "ai-runtime"
+    },
+    {
+      "file": "src/pages/admin/ai-runtime/CrossCouncilBoard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 339,
+      "canonicalPath": null,
+      "domain": "ai-runtime"
+    },
+    {
+      "file": "src/pages/admin/ai-runtime/DependencyFindingsBoard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 189,
+      "canonicalPath": null,
+      "domain": "ai-runtime"
+    },
+    {
+      "file": "src/pages/admin/ai-runtime/ExternalWorkforceApiBoard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 120,
+      "canonicalPath": null,
+      "domain": "ai-runtime"
+    },
+    {
+      "file": "src/pages/admin/ai-runtime/InternalAgentIntentTimeline.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 421,
+      "canonicalPath": null,
+      "domain": "ai-runtime"
+    },
+    {
+      "file": "src/pages/admin/ai-runtime/InternalAgentsBoard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 486,
+      "canonicalPath": null,
+      "domain": "ai-runtime"
+    },
+    {
+      "file": "src/pages/admin/ai-runtime/KnowledgeFederationBoard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 132,
+      "canonicalPath": null,
+      "domain": "ai-runtime"
+    },
+    {
+      "file": "src/pages/admin/ai-runtime/OwnerCopilotBriefings.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 92,
+      "canonicalPath": null,
+      "domain": "ai-runtime"
+    },
+    {
+      "file": "src/pages/admin/ai-runtime/OwnerCopilotSessionConsole.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 164,
+      "canonicalPath": null,
+      "domain": "ai-runtime"
+    },
+    {
+      "file": "src/pages/admin/ai-runtime/PolicyDraftReviewBoard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 256,
+      "canonicalPath": null,
+      "domain": "ai-runtime"
+    },
+    {
+      "file": "src/pages/admin/ai-runtime/ProductionLaunchAttestationConsole.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 204,
+      "canonicalPath": null,
+      "domain": "ai-runtime"
+    },
+    {
+      "file": "src/pages/admin/ai-runtime/ReflectionBoard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 294,
+      "canonicalPath": null,
+      "domain": "ai-runtime"
+    },
+    {
+      "file": "src/pages/admin/ai-runtime/SLOObservabilityBoard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 164,
+      "canonicalPath": null,
+      "domain": "ai-runtime"
+    },
+    {
+      "file": "src/pages/admin/ai-runtime/SecurityCouncilBoard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 467,
+      "canonicalPath": null,
+      "domain": "ai-runtime"
+    },
+    {
+      "file": "src/pages/admin/ai-runtime/SovereignDeploymentDRBoard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 160,
+      "canonicalPath": null,
+      "domain": "ai-runtime"
+    },
+    {
+      "file": "src/pages/admin/ai-runtime/SuggestionsBoard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 346,
+      "canonicalPath": null,
+      "domain": "ai-runtime"
+    },
+    {
+      "file": "src/pages/admin/ai-runtime/TenantFederationBoard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 133,
+      "canonicalPath": null,
+      "domain": "ai-runtime"
+    },
+    {
+      "file": "src/pages/admin/ai-runtime/TrustLadderBoard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 278,
+      "canonicalPath": null,
+      "domain": "ai-runtime"
+    },
+    {
+      "file": "src/pages/admin/ai-runtime/WeeklyDigestBoard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 180,
+      "canonicalPath": null,
+      "domain": "ai-runtime"
+    },
+    {
+      "file": "src/pages/admin/alerts/AlertsHome.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 56,
+      "canonicalPath": null,
+      "domain": "alerts"
+    },
+    {
+      "file": "src/pages/admin/approvals/ApprovalsHome.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 72,
+      "canonicalPath": null,
+      "domain": "approvals"
+    },
+    {
+      "file": "src/pages/admin/architecture/ArchitectureBoundaryBoard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 449,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/architecture/EpistemicFirewallBoard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 329,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/architecture/GodTierIntegrationBoard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 355,
+      "canonicalPath": null,
+      "domain": "integrations"
+    },
+    {
+      "file": "src/pages/admin/architecture/GodTierRuntimeBoard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 221,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/architecture/KnowledgeSpineBoard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 156,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/architecture/LiveCortexBoard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 127,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/architecture/SemanticSpineBoard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 203,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/architecture/WorkspaceFederationBoard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 252,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/cloud/AdminAuditExplorer.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 142,
+      "canonicalPath": null,
+      "domain": "trust-security"
+    },
+    {
+      "file": "src/pages/admin/cloud/AdminRBACConsole.tsx",
+      "kind": "THIN_ADAPTER",
+      "logicalLines": 1,
+      "canonicalPath": "@/admin/modules/trust-security/views/AdminRBACConsole",
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/cloud/AdminSafetyRails.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 148,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/cloud/AdminTokenManager.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 144,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/cloud/ApiGatewayRoutesAdmin.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 138,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/cloud/ClientCapabilityAdmin.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 192,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/cloud/CloudActivityAdmin.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 235,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/cloud/CloudAdminLayout.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 157,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/cloud/CloudAuditAdmin.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 180,
+      "canonicalPath": null,
+      "domain": "trust-security"
+    },
+    {
+      "file": "src/pages/admin/cloud/CloudBackboneAdmin.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 114,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/cloud/CloudBootstrapAdmin.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 128,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/cloud/CloudCollaborationAdmin.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 244,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/cloud/CloudComplianceAdmin.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 118,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/cloud/CloudCostCapacityAdmin.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 100,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/cloud/CloudDashboard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 188,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/cloud/CloudDeviceIdentityAdmin.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 200,
+      "canonicalPath": null,
+      "domain": "environments"
+    },
+    {
+      "file": "src/pages/admin/cloud/CloudDevicesAdmin.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 137,
+      "canonicalPath": null,
+      "domain": "environments"
+    },
+    {
+      "file": "src/pages/admin/cloud/CloudEncryptionAdmin.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 169,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/cloud/CloudFeatureFlagsAdmin.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 137,
+      "canonicalPath": null,
+      "domain": "config"
+    },
+    {
+      "file": "src/pages/admin/cloud/CloudGovernanceAdmin.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 336,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/cloud/CloudIntegrityAdmin.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 100,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/cloud/CloudJobsAdmin.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 120,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/cloud/CloudLifecycleAdmin.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 125,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/cloud/CloudMaintenanceModeAdmin.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 139,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/cloud/CloudMonitoringAdmin.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 175,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/cloud/CloudNamespacesAdmin.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 146,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/cloud/CloudObservabilityAdmin.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 202,
+      "canonicalPath": null,
+      "domain": "health"
+    },
+    {
+      "file": "src/pages/admin/cloud/CloudPolicyAdmin.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 151,
+      "canonicalPath": null,
+      "domain": "trust-security"
+    },
+    {
+      "file": "src/pages/admin/cloud/CloudRecoveryAdmin.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 225,
+      "canonicalPath": null,
+      "domain": "support"
+    },
+    {
+      "file": "src/pages/admin/cloud/CloudSharingAdmin.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 235,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/cloud/CloudStorageAdmin.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 149,
+      "canonicalPath": null,
+      "domain": "health"
+    },
+    {
+      "file": "src/pages/admin/cloud/CloudStorageHealthAdmin.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 120,
+      "canonicalPath": null,
+      "domain": "health"
+    },
+    {
+      "file": "src/pages/admin/cloud/CloudSupportConsole.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 108,
+      "canonicalPath": null,
+      "domain": "support"
+    },
+    {
+      "file": "src/pages/admin/cloud/CloudSyncAdmin.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 146,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/cloud/CloudSyncObjectsAdmin.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 167,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/cloud/CloudTenantAdmin.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 113,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/cloud/CloudUsersAdmin.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 155,
+      "canonicalPath": null,
+      "domain": "environments"
+    },
+    {
+      "file": "src/pages/admin/cloud/CloudWorkerOpsAdmin.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 101,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/cloud/ConfigChangeHistory.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 97,
+      "canonicalPath": null,
+      "domain": "config"
+    },
+    {
+      "file": "src/pages/admin/cloud/DataFlowMapAdmin.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 163,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/cloud/DomainOwnershipAdmin.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 95,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/cloud/EnvironmentSwitcher.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 95,
+      "canonicalPath": null,
+      "domain": "environments"
+    },
+    {
+      "file": "src/pages/admin/cloud/PlatformPlaneOverview.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 148,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/cloud/ReadModelSnapshotsAdmin.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 157,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/cloud/ReleaseGovernanceAdmin.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 161,
+      "canonicalPath": null,
+      "domain": "releases"
+    },
+    {
+      "file": "src/pages/admin/cloud/ServiceIdentityAdmin.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 118,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/cloud/SupportCaseManager.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 181,
+      "canonicalPath": null,
+      "domain": "support"
+    },
+    {
+      "file": "src/pages/admin/cloud/SupportConsoleSafe.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 142,
+      "canonicalPath": null,
+      "domain": "support"
+    },
+    {
+      "file": "src/pages/admin/config/ConfigHome.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 50,
+      "canonicalPath": null,
+      "domain": "config"
+    },
+    {
+      "file": "src/pages/admin/customer-journey/CJ01ExecutiveReport.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 326,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/customer-journey/CJ02JourneyTruthMatrix.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 180,
+      "canonicalPath": null,
+      "domain": "verification"
+    },
+    {
+      "file": "src/pages/admin/customer-journey/CJ03JourneyDetailView.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 201,
+      "canonicalPath": null,
+      "domain": "verification"
+    },
+    {
+      "file": "src/pages/admin/customer-journey/CJ04LaunchBlockerView.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 232,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/customer-journey/CJ05DemoVsRealComparison.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 190,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/customer-journey/CJ06BrokenClicksExplorer.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 88,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/customer-journey/CJ07OwnerRemediationView.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 78,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/customer-journey/CJ08RouteActionCoverage.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 211,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/customer-journey/CJ09RecentVerificationRuns.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 149,
+      "canonicalPath": null,
+      "domain": "verification"
+    },
+    {
+      "file": "src/pages/admin/environments/EnvironmentsHome.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 66,
+      "canonicalPath": null,
+      "domain": "environments"
+    },
+    {
+      "file": "src/pages/admin/fip/FIPBuilderConsole.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 92,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/fip/FIPCapabilityRegistry.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 90,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/fip/FIPComplianceBoard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 65,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/fip/FIPDeprecationManager.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 71,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/fip/FIPExecutionExplorer.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 69,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/fip/FIPGeneratedTruthBoard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 70,
+      "canonicalPath": null,
+      "domain": "verification"
+    },
+    {
+      "file": "src/pages/admin/fip/FIPIntakeDesk.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 155,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/fip/FIPMemoryGraphStudio.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 53,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/fip/FIPObservabilityCenter.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 65,
+      "canonicalPath": null,
+      "domain": "health"
+    },
+    {
+      "file": "src/pages/admin/fip/FIPOwnerBoundary.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 59,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/fip/FIPPolicyTrustBoard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 79,
+      "canonicalPath": null,
+      "domain": "trust-security"
+    },
+    {
+      "file": "src/pages/admin/fip/FIPReadinessGateReview.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 78,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/fip/FIPRolloutPlanner.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 72,
+      "canonicalPath": null,
+      "domain": "releases"
+    },
+    {
+      "file": "src/pages/admin/fip/FIPSpecStudio.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 88,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/frontend/FE01QualityMatrix.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 162,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/frontend/FE02DesignGovernance.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 82,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/health/CostSpotlight.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 174,
+      "canonicalPath": null,
+      "domain": "health"
+    },
+    {
+      "file": "src/pages/admin/health/ErrorPatrolBoard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 448,
+      "canonicalPath": null,
+      "domain": "health"
+    },
+    {
+      "file": "src/pages/admin/health/HealthHome.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 110,
+      "canonicalPath": null,
+      "domain": "health"
+    },
+    {
+      "file": "src/pages/admin/implementation-truth/ITC01Overview.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 130,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/implementation-truth/ITC02SpecRegistry.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 175,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/implementation-truth/ITC03ContractVerification.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 124,
+      "canonicalPath": null,
+      "domain": "verification"
+    },
+    {
+      "file": "src/pages/admin/implementation-truth/ITC04WiringGraph.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 197,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/implementation-truth/ITC05ReadinessScoreboard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 91,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/implementation-truth/ITC06DriftRadar.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 194,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/implementation-truth/ITC07ImplementationMap.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 118,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/implementation-truth/ITC08ArchitectureCompliance.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 143,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/implementation-truth/ITC09RouteInventory.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 124,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/implementation-truth/ITC10RuntimeEvidence.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 170,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/implementation-truth/ITC11PromptTraceability.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 171,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/implementation-truth/ITC12ValidationPipeline.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 197,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/implementation-truth/ITC13LaunchTruthGate.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 186,
+      "canonicalPath": null,
+      "domain": "verification"
+    },
+    {
+      "file": "src/pages/admin/implementation-truth/ITC14ManifestExplorer.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 230,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/integrations/IntegrationsHome.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 63,
+      "canonicalPath": null,
+      "domain": "integrations"
+    },
+    {
+      "file": "src/pages/admin/intelligence/AIEfficiencyScoreboard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 197,
+      "canonicalPath": null,
+      "domain": "ai-runtime"
+    },
+    {
+      "file": "src/pages/admin/intelligence/CrossTenantGovernance.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 141,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/intelligence/DifferentialReasoningExplorer.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 146,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/intelligence/EscalationControlCenter.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 131,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/intelligence/IntelligenceAssetLibrary.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 344,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/intelligence/IntelligenceLayerAdmin.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 534,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/intelligence/IntelligencePacketInspector.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 113,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/intelligence/IntelligenceReuseOverview.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 142,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/intelligence/OutcomeEconomicsBoard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 160,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/intelligence/PatternLearningCenter.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 119,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/intelligence/SmartDigestCenter.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 125,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/intelligence/ZeroWastePromptView.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 125,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/launch/LAUNCH01ReadinessExecutive.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 136,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/launch/LAUNCH02FlagshipReadiness.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 68,
+      "canonicalPath": null,
+      "domain": "config"
+    },
+    {
+      "file": "src/pages/admin/launch/LAUNCH03ClaimSafetyMatrix.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 67,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/launch/LAUNCH04BlockerCommand.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 63,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/launch/LAUNCH06NarrativeGuide.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 58,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/launch/LAUNCH07GoNoGo.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 100,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/modules/MCAIControl.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 178,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/modules/MCAIOrchestration.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 117,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/modules/MCApprovalFlow.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 4,
+      "canonicalPath": null,
+      "domain": "approvals"
+    },
+    {
+      "file": "src/pages/admin/modules/MCArchitectureDashboard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 253,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/modules/MCArchitectureTests.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 4,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/modules/MCAuthorityMatrix.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 4,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/modules/MCCommandRouting.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 4,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/modules/MCControlReceipts.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 4,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/modules/MCCostsAIBudgets.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 154,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/modules/MCDevicesCenter.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 181,
+      "canonicalPath": null,
+      "domain": "environments"
+    },
+    {
+      "file": "src/pages/admin/modules/MCEmergencyAuthority.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 4,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/modules/MCEventRouting.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 4,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/modules/MCFailureRecovery.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 4,
+      "canonicalPath": null,
+      "domain": "support"
+    },
+    {
+      "file": "src/pages/admin/modules/MCFeatureOwnership.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 4,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/modules/MCIncidents.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 139,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/modules/MCJobsMaintenance.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 128,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/modules/MCKnowledgeBase.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 149,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/modules/MCLogsAudit.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 133,
+      "canonicalPath": null,
+      "domain": "trust-security"
+    },
+    {
+      "file": "src/pages/admin/modules/MCModuleRegistry.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 136,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/modules/MCPlatformAdaptation.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 4,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/modules/MCPoliciesFlags.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 123,
+      "canonicalPath": null,
+      "domain": "config"
+    },
+    {
+      "file": "src/pages/admin/modules/MCReleasesUpdates.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 139,
+      "canonicalPath": null,
+      "domain": "releases"
+    },
+    {
+      "file": "src/pages/admin/modules/MCStateAuthority.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 4,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/modules/MCStorageCenter.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 168,
+      "canonicalPath": null,
+      "domain": "health"
+    },
+    {
+      "file": "src/pages/admin/modules/MCSupport.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 134,
+      "canonicalPath": null,
+      "domain": "support"
+    },
+    {
+      "file": "src/pages/admin/modules/MCSyncCloud.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 136,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/modules/MCSystemHealth.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 114,
+      "canonicalPath": null,
+      "domain": "health"
+    },
+    {
+      "file": "src/pages/admin/modules/MCTrustSecurity.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 145,
+      "canonicalPath": null,
+      "domain": "trust-security"
+    },
+    {
+      "file": "src/pages/admin/modules/MCUsersCenter.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 135,
+      "canonicalPath": null,
+      "domain": "environments"
+    },
+    {
+      "file": "src/pages/admin/modules/MCWorkspacesContinuity.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 130,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/overview/OverviewHome.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 86,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/platform-law/PLE01Overview.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 345,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/platform-law/PLE02LawRegistry.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 198,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/platform-law/PLE03ScaffoldRegistry.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 217,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/platform-law/PLE04CIGateMonitor.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 250,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/platform-law/PLE05ManifestEnforcer.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 356,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/platform-law/PLE06OwnershipBoard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 256,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/platform-law/PLE07ComplianceDashboard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 208,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/platform-law/PLT05ViolationTriage.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 226,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/platform-law/PLT06FeatureCompliance.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 271,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/platform-law/PLT08LaunchEnforcement.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 223,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/platform-law/PLT10DriftRadar.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 236,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/reality-audit/CoreServicePersistence.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 157,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/reality-audit/LaunchHonestyBoard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 196,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/reality-audit/MockReplacementProgram.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 225,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/reality-audit/RCP01Overview.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 198,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/reality-audit/RCP03FeatureDetail.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 188,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/reality-audit/RCP05MockSourceInventory.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 131,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/reality-audit/RCP07RouteHeatmap.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 107,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/reality-audit/RCP08ContractReadiness.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 126,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/reality-audit/RCP10WavePlanner.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 116,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/reality-audit/RCP11ProgressTimeline.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 126,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/reality-audit/RealityClassificationMatrix.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 213,
+      "canonicalPath": null,
+      "domain": "verification"
+    },
+    {
+      "file": "src/pages/admin/reality-audit/RuntimeTruthGate.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 176,
+      "canonicalPath": null,
+      "domain": "verification"
+    },
+    {
+      "file": "src/pages/admin/releases/EnvironmentConfigVerification.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 206,
+      "canonicalPath": null,
+      "domain": "releases"
+    },
+    {
+      "file": "src/pages/admin/releases/ReleasesHome.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 70,
+      "canonicalPath": null,
+      "domain": "releases"
+    },
+    {
+      "file": "src/pages/admin/releases/SbomHistory.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 148,
+      "canonicalPath": null,
+      "domain": "releases"
+    },
+    {
+      "file": "src/pages/admin/sag/SAGBuilderConsole.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 87,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/sag/SAGComplianceGate.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 92,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/sag/SAGCostConfidenceLab.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 99,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/sag/SAGEconomicsBoard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 96,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/sag/SAGFallbackCenter.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 80,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/sag/SAGModelRegistry.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 95,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/sag/SAGMultiStageExplorer.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 53,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/sag/SAGOverview.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 90,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/sag/SAGPromptRegistry.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 89,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/sag/SAGProviderHealth.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 56,
+      "canonicalPath": null,
+      "domain": "ai-runtime"
+    },
+    {
+      "file": "src/pages/admin/sag/SAGReceiptExplorer.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 66,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/sag/SAGRoutingPolicy.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 100,
+      "canonicalPath": null,
+      "domain": "trust-security"
+    },
+    {
+      "file": "src/pages/admin/security/SEC01PostureExecutive.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 124,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/security/SEC02PrivilegedActions.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 52,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/security/SEC03SensitiveAssets.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 84,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/security/SEC04EdgeFunctionAudit.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 79,
+      "canonicalPath": null,
+      "domain": "trust-security"
+    },
+    {
+      "file": "src/pages/admin/security/SEC05ClaimSafety.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 92,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/security/SEC06IncidentRecovery.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 168,
+      "canonicalPath": null,
+      "domain": "support"
+    },
+    {
+      "file": "src/pages/admin/strategic/BenchmarkLabDashboard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 103,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/strategic/CostToConfidenceDashboard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 92,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/strategic/DecayMonitorDashboard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 82,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/strategic/IntelligenceCapitalDashboard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 96,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/strategic/IntelligenceInsuranceDashboard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 92,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/strategic/IntelligenceMarketDashboard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 68,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/strategic/OperatorTasteDashboard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 64,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/strategic/PortfolioAllocationDashboard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 71,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/strategic/QualityFloorDashboard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 80,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/strategic/ReasoningReplayDashboard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 102,
+      "canonicalPath": null,
+      "domain": "support"
+    },
+    {
+      "file": "src/pages/admin/strategic/TimeToTruthDashboard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 85,
+      "canonicalPath": null,
+      "domain": "verification"
+    },
+    {
+      "file": "src/pages/admin/strategic/ValueRiskDashboard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 94,
+      "canonicalPath": null,
+      "domain": "overview"
+    },
+    {
+      "file": "src/pages/admin/support/AdminRecoveryOperations.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 595,
+      "canonicalPath": null,
+      "domain": "support"
+    },
+    {
+      "file": "src/pages/admin/support/SupportHome.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 76,
+      "canonicalPath": null,
+      "domain": "support"
+    },
+    {
+      "file": "src/pages/admin/trust-security/TrustSecurityHome.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 93,
+      "canonicalPath": null,
+      "domain": "trust-security"
+    },
+    {
+      "file": "src/pages/admin/verification/CrossDomainCoherence.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 146,
+      "canonicalPath": null,
+      "domain": "verification"
+    },
+    {
+      "file": "src/pages/admin/verification/JVC01JourneyVerificationOverview.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 202,
+      "canonicalPath": null,
+      "domain": "verification"
+    },
+    {
+      "file": "src/pages/admin/verification/JVC04ButtonCTAHealth.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 316,
+      "canonicalPath": null,
+      "domain": "verification"
+    },
+    {
+      "file": "src/pages/admin/verification/JVC05RedirectIntegrityMap.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 193,
+      "canonicalPath": null,
+      "domain": "verification"
+    },
+    {
+      "file": "src/pages/admin/verification/JVC06PageLoadIntegrity.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 277,
+      "canonicalPath": null,
+      "domain": "verification"
+    },
+    {
+      "file": "src/pages/admin/verification/JVC07FormVerificationCenter.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 204,
+      "canonicalPath": null,
+      "domain": "verification"
+    },
+    {
+      "file": "src/pages/admin/verification/JVC08ModalDrawerBoard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 165,
+      "canonicalPath": null,
+      "domain": "verification"
+    },
+    {
+      "file": "src/pages/admin/verification/JVC09KeyboardCommandBoard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 181,
+      "canonicalPath": null,
+      "domain": "verification"
+    },
+    {
+      "file": "src/pages/admin/verification/JVC10RuntimeProbeCenter.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 268,
+      "canonicalPath": null,
+      "domain": "verification"
+    },
+    {
+      "file": "src/pages/admin/verification/JVC11JourneyReplay.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 216,
+      "canonicalPath": null,
+      "domain": "verification"
+    },
+    {
+      "file": "src/pages/admin/verification/JVC13InteractionDriftRadar.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 244,
+      "canonicalPath": null,
+      "domain": "verification"
+    },
+    {
+      "file": "src/pages/admin/verification/JVC14LaunchInteractionGate.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 253,
+      "canonicalPath": null,
+      "domain": "verification"
+    },
+    {
+      "file": "src/pages/admin/verification/SelfHealRunsDashboard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 329,
+      "canonicalPath": null,
+      "domain": "verification"
+    },
+    {
+      "file": "src/pages/admin/verification/V01SurfaceInventoryBoard.tsx",
+      "kind": "THIN_ADAPTER",
+      "logicalLines": 1,
+      "canonicalPath": "@/admin/modules/verification/views/V01SurfaceInventoryBoard",
+      "domain": "verification"
+    },
+    {
+      "file": "src/pages/admin/verification/V02InteractionCoverageBoard.tsx",
+      "kind": "THIN_ADAPTER",
+      "logicalLines": 1,
+      "canonicalPath": "@/admin/modules/verification/views/V02InteractionCoverageBoard",
+      "domain": "verification"
+    },
+    {
+      "file": "src/pages/admin/verification/V03P0JourneyBoard.tsx",
+      "kind": "THIN_ADAPTER",
+      "logicalLines": 1,
+      "canonicalPath": "@/admin/modules/verification/views/V03P0JourneyBoard",
+      "domain": "verification"
+    },
+    {
+      "file": "src/pages/admin/verification/V04ModeVerificationBoard.tsx",
+      "kind": "THIN_ADAPTER",
+      "logicalLines": 1,
+      "canonicalPath": "@/admin/modules/verification/views/V04ModeVerificationBoard",
+      "domain": "verification"
+    },
+    {
+      "file": "src/pages/admin/verification/V05FailureTriageBoard.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 66,
+      "canonicalPath": null,
+      "domain": "verification"
+    },
+    {
+      "file": "src/pages/admin/verification/V06EvidenceExplorer.tsx",
+      "kind": "THIN_ADAPTER",
+      "logicalLines": 1,
+      "canonicalPath": "@/admin/modules/verification/views/V06EvidenceExplorer",
+      "domain": "verification"
+    },
+    {
+      "file": "src/pages/admin/verification/V07LaunchBlockerBoard.tsx",
+      "kind": "THIN_ADAPTER",
+      "logicalLines": 1,
+      "canonicalPath": "@/admin/modules/verification/views/V07LaunchBlockerBoard",
+      "domain": "verification"
+    },
+    {
+      "file": "src/pages/admin/verification/VerificationHome.tsx",
+      "kind": "LEGACY_PAGE_BODY",
+      "logicalLines": 96,
+      "canonicalPath": null,
+      "domain": "verification"
+    }
+  ]
+}

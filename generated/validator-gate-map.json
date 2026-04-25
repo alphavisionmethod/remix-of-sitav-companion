@@ -1,18 +1,18 @@
 {
-  "generatedAt": "2026-04-25T17:13:49.926Z",
+  "generatedAt": "2026-04-25T17:24:36.796Z",
   "source": {
     "checksDir": "scripts/architecture/checks",
     "requiredGatesCount": 275,
     "deploymentGapSuiteCount": 17,
-    "overrideCount": 3
+    "overrideCount": 5
   },
-  "totalValidators": 237,
-  "blockCount": 73,
+  "totalValidators": 239,
+  "blockCount": 75,
   "warnCount": 18,
   "advisoryCount": 146,
   "disabledCount": 0,
   "archivedCount": 0,
-  "classified": 237,
+  "classified": 239,
   "unclassified": 0,
   "unwiredAdvisoryCount": 146,
   "coveragePercent": 100,
@@ -68,6 +68,16 @@
       "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
     },
     {
+      "validator": "check-admin-page-body-ratchet",
+      "gateId": "admin-page-body-ratchet",
+      "classification": "block",
+      "consumer": "release-readiness",
+      "declaredInRegistry": true,
+      "lastModifiedAt": "2026-04-25T17:24:25.413Z",
+      "hasReportArtifact": false,
+      "rationale": "Wave 0.6 admin page-body monotone ratchet. The LEGACY_PAGE_BODY count under src/pages/admin/ may only decrease — new admin pages must be thin re-exports targeting @/admin/** per Constitution Rule 30."
+    },
+    {
       "validator": "check-admin-page-classification-coverage",
       "gateId": "admin-page-classification-coverage",
       "classification": "advisory",
@@ -76,6 +86,16 @@
       "lastModifiedAt": "2026-04-25T11:42:39.321Z",
       "hasReportArtifact": true,
       "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-admin-plane-boundaries",
+      "gateId": "admin-plane-boundaries",
+      "classification": "block",
+      "consumer": "release-readiness",
+      "declaredInRegistry": true,
+      "lastModifiedAt": "2026-04-25T17:24:25.407Z",
+      "hasReportArtifact": false,
+      "rationale": "Wave 0.6 admin plane boundary gate. Verifies platform→admin, modules→admin, and admin→modules import counts have not grown above their sealed baselines, and that no new page-body files were added under src/pages/admin/. Wired into foundation-gate.yml as BLOCKING."
     },
     {
       "validator": "check-admin-route-coherence",

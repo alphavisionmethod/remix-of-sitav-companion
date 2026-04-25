@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-04-25T17:13:56.601Z",
+  "generatedAt": "2026-04-25T17:24:31.635Z",
   "foundationVersion": 1,
   "rule": "Constitution Rule 21",
   "description": "Validators that run in .github/workflows/foundation-gate.yml as BLOCKING. Adding/removing requires an ADR.",
-  "count": 16,
+  "count": 18,
   "validators": [
     {
       "validator": "scripts/architecture/check-foundation-manifest-freshness.ts",
@@ -116,6 +116,20 @@
       "classification": "block",
       "origin": "new",
       "description": "Every src/platform/<X>/ folder is classified; cross-subclass imports respect the ratchet."
+    },
+    {
+      "validator": "scripts/architecture/check-admin-plane-boundaries.ts",
+      "rule": "Rules 30/31",
+      "classification": "block",
+      "origin": "new",
+      "description": "Admin plane dependency direction + new-page-body forbidden in src/pages/admin/."
+    },
+    {
+      "validator": "scripts/architecture/check-admin-page-body-ratchet.ts",
+      "rule": "Rule 30",
+      "classification": "block",
+      "origin": "new",
+      "description": "src/pages/admin/* LEGACY_PAGE_BODY count is decrease-only."
     }
   ]
 }

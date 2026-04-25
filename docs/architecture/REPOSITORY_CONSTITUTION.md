@@ -120,6 +120,13 @@ During an in-flight migration wave, a thin re-export wrapper at the old path is 
 27. **Platform sub-classes are constitutional.** `src/platform/` is partitioned into six canonical sub-classes: `product-infrastructure`, `governance`, `operator-control`, `identity-and-tenant`, `intelligence`, `runtime-bridges`. Every top-level `src/platform/<X>/` folder MUST appear in `generated/manifests/platform-subclassification-map.json`. Adding an unclassified folder fails CI via `scripts/architecture/check-platform-subclassification.ts` (foundation-tier, BLOCKING). See `docs/architecture/PLATFORM_SUBCLASSIFICATION_MODEL.md` for purpose, allowed-dependency matrix, and member registry.
 28. **Platform vs Admin boundary (Wave-bound).** Operator/admin UI lives under `src/admin/**`; reusable cross-pillar capability lives under `src/platform/**`. The current `src/platform/admin/**` (151 files) is dispositioned `relocate-future` in the subclassification map and re-exported by `src/admin/components/index.ts`. The validator emits **advisory** warnings for these re-exports during Wave 0.5; they upgrade to **BLOCKING** once the future Platform Relocation Wave moves the files (gated by Rule 24 evidence + Rule 19 re-seal).
 
+## Admin Plane Law (Wave 0.6 — Pre-Relocation Hardening, BLOCKING)
+
+29. **Admin canonical home.** `src/admin/**` owns admin/operator page bodies, layouts, navigation, dashboards, and operator consoles. New admin page bodies MUST be created under `src/admin/modules/<domain>/views/<ViewName>.tsx` (the pattern proved by `src/admin/modules/verification/views/`). The 12 canonical admin domains are enumerated in `docs/architecture/ADMIN_INFORMATION_ARCHITECTURE.md`.
+30. **`src/pages/admin/**` is adapter-only (forward).** New files under `src/pages/admin/**` MUST be thin re-export wrappers (≤10 logical lines) targeting `@/admin/**`. The pre-existing 576 legacy page bodies are grandfathered into the monotone ratchet at `generated/manifests/admin-page-body-baseline.json`; the legacy count may only decrease. Enforcer: `scripts/architecture/check-admin-page-body-ratchet.ts`.
+31. **Admin plane dependency direction.** `admin → platform` ✅. `admin → modules/<pillar>` ❌ (admin reads pillar state via service facades, never page bodies). `platform → admin` ❌. `modules → admin` ❌. `pages/admin → admin` ✅ (adapter pattern). All three directions are ratcheted in `generated/manifests/admin-dependency-violation-baseline.json` (decrease-only). Enforcer: `scripts/architecture/check-admin-plane-boundaries.ts`.
+32. **Admin vs Platform ownership.** `src/admin/**` may aggregate pillar/platform read-models but MUST NOT become the canonical owner of platform capability or pillar product logic. Capability lives in `src/platform/**`; admin owns the operator UI over it. See `docs/architecture/ADMIN_PLANE_OWNERSHIP_MODEL.md` for the canonical model.
+
 ## Amendment process
 
 1. Open an ADR under `docs/adr/ADR-<NNN>-<slug>.md` describing the change and its blast radius.
@@ -138,3 +145,5 @@ During an in-flight migration wave, a thin re-export wrapper at the old path is 
 - Pillar manifests: `src/modules/<pillar>/MANIFEST.md`
 - Platform manifest: `src/platform/MANIFEST.md`
 - Deprecated shim manifests (Wave 3 → removal Wave 9): `src/modules/_shared/MANIFEST.md`, `src/modules/_trust/MANIFEST.md`
+- Admin plane manifest: `src/admin/MANIFEST.md`
+- Admin plane model: `docs/architecture/ADMIN_PLANE_OWNERSHIP_MODEL.md`

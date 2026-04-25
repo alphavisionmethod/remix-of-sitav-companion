@@ -1,7 +1,11 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Admin Plane Public API (Complete)
 // Operations, policy, support, security, rollout control.
-// May depend on: shared. Must NOT import from os/founder/mobile.
+//
+// Authority: Constitution Rules 29–32 (Admin Plane Law).
+// Model:     docs/architecture/ADMIN_PLANE_OWNERSHIP_MODEL.md
+// Boundary:  Admin may import from platform; admin must NOT import from modules.
+//            platform/ and modules/ MUST NOT import from this file.
 // ═══════════════════════════════════════════════════════════════
 
 // ── Admin RBAC ──
@@ -31,3 +35,9 @@ export { loadManifest, validateRouteTruth, getRouteMismatches, getManifestStalen
 
 // ── Compute Governance (admin visibility) ──
 export * from "@/lib/compute-governance";
+
+// ── Canonical admin UI barrels (Wave 0.6 — Rule 29) ──
+// These re-exports align src/planes/admin.ts with the canonical
+// src/admin/** home. Additive only — does not remove any prior export.
+export * as AdminPages from "@/admin/pages";
+export * as AdminComponents from "@/admin/components";

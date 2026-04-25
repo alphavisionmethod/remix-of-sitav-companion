@@ -1,0 +1,10 @@
+{
+  "generatedAt": "2026-04-25T17:21:57.456Z",
+  "rule": "Constitution Rule 30",
+  "ok": true,
+  "baseline": 576,
+  "current": 576,
+  "delta": 0,
+  "direction": "decrease-only",
+  "adaptersInPlace": 7
+}
