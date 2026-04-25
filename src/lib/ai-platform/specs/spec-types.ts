@@ -218,7 +218,7 @@ const REQUIRED_AUTOMATION_LEVELS: readonly AutomationLevel[] = [
 const STUB_PATTERNS = [/\bTODO\b/i, /\bTBD\b/i, /\bFIXME\b/i, /lorem ipsum/i];
 
 function isStubString(value: string): boolean {
-  if (!value || value.trim().length < 4) return true;
+  if (!value || value.trim().length < 2) return true;
   return STUB_PATTERNS.some((rx) => rx.test(value));
 }
 
