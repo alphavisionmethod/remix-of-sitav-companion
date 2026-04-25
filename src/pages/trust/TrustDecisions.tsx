@@ -4,8 +4,9 @@
 // the 4-pillar re-architecture (DECISION_QUEUE in _shared).
 // ════════════════════════════════════════════════════════════
 
-import { GitBranch, ShieldCheck, Layers } from "lucide-react";
+import { GitBranch, ShieldCheck, Layers, Zap } from "lucide-react";
 import { DECISION_QUEUE, type SurfaceOwner } from "@/modules/_shared/decision-queue";
+import { TRUST_ACTION_LIST } from "@/modules/_trust";
 
 const ownerStyles: Record<SurfaceOwner, string> = {
   business: "bg-blue-500/10 text-blue-600 border-blue-500/30",
@@ -63,6 +64,41 @@ export default function TrustDecisions() {
         <ShieldCheck className="h-3.5 w-3.5" />
         Source of truth: <code>src/modules/_shared/decision-queue.ts</code>
       </footer>
+
+      <section className="mt-10">
+        <h2 className="text-xl font-semibold flex items-center gap-2 mb-3">
+          <Zap className="h-5 w-5 text-primary" />
+          Trust-Gated Actions
+        </h2>
+        <p className="text-sm text-muted-foreground mb-4">
+          Mutations registered with the Trust layer. Each call site receives
+          its risk tier and approval requirement from this catalog.
+        </p>
+        <div className="rounded-lg border bg-card divide-y">
+          {TRUST_ACTION_LIST.map((a) => (
+            <div key={a.key} className="p-3 flex items-start gap-3">
+              <div className="flex-1 min-w-0">
+                <div className="flex flex-wrap items-center gap-2">
+                  <code className="text-xs font-mono">{a.key}</code>
+                  <span className="text-[10px] uppercase px-2 py-0.5 rounded-full bg-muted text-muted-foreground">
+                    {a.pillar}
+                  </span>
+                  <span className="text-[10px] uppercase px-2 py-0.5 rounded-full bg-primary/10 text-primary">
+                    risk: {a.riskTier}
+                  </span>
+                  {a.requireApproval && (
+                    <span className="text-[10px] uppercase px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-600">
+                      approval required
+                    </span>
+                  )}
+                </div>
+                <div className="text-sm mt-1">{a.label}</div>
+                <div className="text-xs text-muted-foreground">{a.description}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
     </div>
   );
 }
