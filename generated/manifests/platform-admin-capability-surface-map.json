@@ -1,0 +1,1969 @@
+{
+  "generatedAt": "2026-04-25T17:41:21.268Z",
+  "schemaVersion": 1,
+  "rule": "Constitution Rules 36–38 — platform ↔ admin capability/surface map",
+  "description": "Every src/platform/<system>/pages/*.tsx classified as capability-page, operator-surface, end-user-surface, or ambiguous. operator-surface files SHOULD migrate to src/admin/modules/<domain>/views/.",
+  "totalFiles": 214,
+  "byClassification": {
+    "ambiguous": 7,
+    "end-user-surface": 160,
+    "operator-surface": 47
+  },
+  "bySystem": {
+    "advisors": 5,
+    "ai": 9,
+    "app-platform": 22,
+    "apps": 6,
+    "atlas": 12,
+    "auth": 4,
+    "boardroom": 5,
+    "enterprise": 2,
+    "files": 13,
+    "governance": 1,
+    "integration": 7,
+    "intelligence": 3,
+    "marketing": 11,
+    "mission-control": 2,
+    "notifications": 8,
+    "observability": 7,
+    "orchestration": 3,
+    "owner": 13,
+    "personal-brain": 22,
+    "search": 1,
+    "settings": 13,
+    "setup": 6,
+    "sita": 2,
+    "support": 1,
+    "tenant": 1,
+    "trust": 15,
+    "workspace": 20
+  },
+  "entries": [
+    {
+      "currentPath": "src/platform/advisors/pages/AdvisorCouncilDashboard.tsx",
+      "system": "advisors",
+      "subclass": "intelligence",
+      "classification": "ambiguous",
+      "logicalLines": 334,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/advisors/AdvisorCouncilDashboard.tsx"
+    },
+    {
+      "currentPath": "src/platform/advisors/pages/AdvisorRegistry.tsx",
+      "system": "advisors",
+      "subclass": "intelligence",
+      "classification": "end-user-surface",
+      "logicalLines": 382,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/advisors/AdvisorRegistry.tsx"
+    },
+    {
+      "currentPath": "src/platform/advisors/pages/AdvisorShowcase.tsx",
+      "system": "advisors",
+      "subclass": "intelligence",
+      "classification": "end-user-surface",
+      "logicalLines": 340,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/advisors/AdvisorShowcase.tsx"
+    },
+    {
+      "currentPath": "src/platform/advisors/pages/AdvisorWorkspace.tsx",
+      "system": "advisors",
+      "subclass": "intelligence",
+      "classification": "end-user-surface",
+      "logicalLines": 847,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/advisors/AdvisorWorkspace.tsx"
+    },
+    {
+      "currentPath": "src/platform/advisors/pages/CalmAssistantChat.tsx",
+      "system": "advisors",
+      "subclass": "intelligence",
+      "classification": "end-user-surface",
+      "logicalLines": 194,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/advisors/CalmAssistantChat.tsx"
+    },
+    {
+      "currentPath": "src/platform/ai/pages/AIEconomicsPage.tsx",
+      "system": "ai",
+      "subclass": "intelligence",
+      "classification": "end-user-surface",
+      "logicalLines": 225,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/AIEconomicsPage.tsx"
+    },
+    {
+      "currentPath": "src/platform/ai/pages/AIWorkforcePage.tsx",
+      "system": "ai",
+      "subclass": "intelligence",
+      "classification": "end-user-surface",
+      "logicalLines": 168,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/AIWorkforcePage.tsx"
+    },
+    {
+      "currentPath": "src/platform/ai/pages/AgentActivityDashboard.tsx",
+      "system": "ai",
+      "subclass": "intelligence",
+      "classification": "ambiguous",
+      "logicalLines": 248,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/AgentActivityDashboard.tsx"
+    },
+    {
+      "currentPath": "src/platform/ai/pages/DigitalTwinsPage.tsx",
+      "system": "ai",
+      "subclass": "intelligence",
+      "classification": "end-user-surface",
+      "logicalLines": 263,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/DigitalTwinsPage.tsx"
+    },
+    {
+      "currentPath": "src/platform/ai/pages/LifeSimulator.tsx",
+      "system": "ai",
+      "subclass": "intelligence",
+      "classification": "end-user-surface",
+      "logicalLines": 178,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/LifeSimulator.tsx"
+    },
+    {
+      "currentPath": "src/platform/ai/pages/OpportunityEngine.tsx",
+      "system": "ai",
+      "subclass": "intelligence",
+      "classification": "end-user-surface",
+      "logicalLines": 142,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/OpportunityEngine.tsx"
+    },
+    {
+      "currentPath": "src/platform/ai/pages/OutcomeEnginePage.tsx",
+      "system": "ai",
+      "subclass": "intelligence",
+      "classification": "end-user-surface",
+      "logicalLines": 167,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/OutcomeEnginePage.tsx"
+    },
+    {
+      "currentPath": "src/platform/ai/pages/ScenarioLabPage.tsx",
+      "system": "ai",
+      "subclass": "intelligence",
+      "classification": "end-user-surface",
+      "logicalLines": 276,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/ScenarioLabPage.tsx"
+    },
+    {
+      "currentPath": "src/platform/ai/pages/SimulationEnginePage.tsx",
+      "system": "ai",
+      "subclass": "intelligence",
+      "classification": "end-user-surface",
+      "logicalLines": 250,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/SimulationEnginePage.tsx"
+    },
+    {
+      "currentPath": "src/platform/app-platform/pages/AppAssociationsPage.tsx",
+      "system": "app-platform",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 132,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/app-platform/AppAssociationsPage.tsx"
+    },
+    {
+      "currentPath": "src/platform/app-platform/pages/AppComparePage.tsx",
+      "system": "app-platform",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 137,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/app-platform/AppComparePage.tsx"
+    },
+    {
+      "currentPath": "src/platform/app-platform/pages/AppDetailPage.tsx",
+      "system": "app-platform",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 396,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/app-platform/AppDetailPage.tsx"
+    },
+    {
+      "currentPath": "src/platform/app-platform/pages/AppLibraryPage.tsx",
+      "system": "app-platform",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 171,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/app-platform/AppLibraryPage.tsx"
+    },
+    {
+      "currentPath": "src/platform/app-platform/pages/AppManagePage.tsx",
+      "system": "app-platform",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 211,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/app-platform/AppManagePage.tsx"
+    },
+    {
+      "currentPath": "src/platform/app-platform/pages/AppPermissionsCenterPage.tsx",
+      "system": "app-platform",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 77,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/app-platform/AppPermissionsCenterPage.tsx"
+    },
+    {
+      "currentPath": "src/platform/app-platform/pages/AppReceiptDetailPage.tsx",
+      "system": "app-platform",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 219,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/app-platform/AppReceiptDetailPage.tsx"
+    },
+    {
+      "currentPath": "src/platform/app-platform/pages/AppReceiptsPage.tsx",
+      "system": "app-platform",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 112,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/app-platform/AppReceiptsPage.tsx"
+    },
+    {
+      "currentPath": "src/platform/app-platform/pages/AppStoreCenter.tsx",
+      "system": "app-platform",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 46,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/AppStoreCenter.tsx"
+    },
+    {
+      "currentPath": "src/platform/app-platform/pages/AppStorePage.tsx",
+      "system": "app-platform",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 242,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/app-platform/AppStorePage.tsx"
+    },
+    {
+      "currentPath": "src/platform/app-platform/pages/AppUpdatesPage.tsx",
+      "system": "app-platform",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 78,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/app-platform/AppUpdatesPage.tsx"
+    },
+    {
+      "currentPath": "src/platform/app-platform/pages/BundleDetailPage.tsx",
+      "system": "app-platform",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 160,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/app-platform/BundleDetailPage.tsx"
+    },
+    {
+      "currentPath": "src/platform/app-platform/pages/DevToolsCatalogPage.tsx",
+      "system": "app-platform",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 72,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/app-platform/DevToolsCatalogPage.tsx"
+    },
+    {
+      "currentPath": "src/platform/app-platform/pages/DownloadPage.tsx",
+      "system": "app-platform",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 204,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/DownloadPage.tsx"
+    },
+    {
+      "currentPath": "src/platform/app-platform/pages/DownloadsCenter.tsx",
+      "system": "app-platform",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 137,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/DownloadsCenter.tsx"
+    },
+    {
+      "currentPath": "src/platform/app-platform/pages/EnterpriseCatalogPage.tsx",
+      "system": "app-platform",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 89,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/app-platform/EnterpriseCatalogPage.tsx"
+    },
+    {
+      "currentPath": "src/platform/app-platform/pages/ExternalInstallerPage.tsx",
+      "system": "app-platform",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 194,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/app-platform/ExternalInstallerPage.tsx"
+    },
+    {
+      "currentPath": "src/platform/app-platform/pages/FirstLaunchPage.tsx",
+      "system": "app-platform",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 152,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/app-platform/FirstLaunchPage.tsx"
+    },
+    {
+      "currentPath": "src/platform/app-platform/pages/OpenWithPage.tsx",
+      "system": "app-platform",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 107,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/app-platform/OpenWithPage.tsx"
+    },
+    {
+      "currentPath": "src/platform/app-platform/pages/TemplateCenter.tsx",
+      "system": "app-platform",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 82,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/TemplateCenter.tsx"
+    },
+    {
+      "currentPath": "src/platform/app-platform/pages/UpdateCenter.tsx",
+      "system": "app-platform",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 432,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/UpdateCenter.tsx"
+    },
+    {
+      "currentPath": "src/platform/app-platform/pages/WebAppInstallPage.tsx",
+      "system": "app-platform",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 182,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/app-platform/WebAppInstallPage.tsx"
+    },
+    {
+      "currentPath": "src/platform/apps/pages/EmailApp.tsx",
+      "system": "apps",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 83,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/apps/EmailApp.tsx"
+    },
+    {
+      "currentPath": "src/platform/apps/pages/GalleryApp.tsx",
+      "system": "apps",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 125,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/apps/GalleryApp.tsx"
+    },
+    {
+      "currentPath": "src/platform/apps/pages/HealthApp.tsx",
+      "system": "apps",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 158,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/apps/HealthApp.tsx"
+    },
+    {
+      "currentPath": "src/platform/apps/pages/MessengerApp.tsx",
+      "system": "apps",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 114,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/apps/MessengerApp.tsx"
+    },
+    {
+      "currentPath": "src/platform/apps/pages/VaultApp.tsx",
+      "system": "apps",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 100,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/apps/VaultApp.tsx"
+    },
+    {
+      "currentPath": "src/platform/apps/pages/WeatherNewsApp.tsx",
+      "system": "apps",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 122,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/apps/WeatherNewsApp.tsx"
+    },
+    {
+      "currentPath": "src/platform/atlas/pages/AdminDurabilityBoard.tsx",
+      "system": "atlas",
+      "subclass": "operator-control",
+      "classification": "operator-surface",
+      "logicalLines": 257,
+      "recommendedAdminTarget": "src/admin/modules/verification/views/AdminDurabilityBoard.tsx",
+      "routeAdapterPath": "src/pages/atlas/AdminDurabilityBoard.tsx"
+    },
+    {
+      "currentPath": "src/platform/atlas/pages/AtlasHub.tsx",
+      "system": "atlas",
+      "subclass": "operator-control",
+      "classification": "operator-surface",
+      "logicalLines": 123,
+      "recommendedAdminTarget": "src/admin/modules/verification/views/AtlasHub.tsx",
+      "routeAdapterPath": "src/pages/atlas/AtlasHub.tsx"
+    },
+    {
+      "currentPath": "src/platform/atlas/pages/ConciergeCommandCenter.tsx",
+      "system": "atlas",
+      "subclass": "operator-control",
+      "classification": "operator-surface",
+      "logicalLines": 247,
+      "recommendedAdminTarget": "src/admin/modules/verification/views/ConciergeCommandCenter.tsx",
+      "routeAdapterPath": "src/pages/atlas/ConciergeCommandCenter.tsx"
+    },
+    {
+      "currentPath": "src/platform/atlas/pages/ConnectorControlCenter.tsx",
+      "system": "atlas",
+      "subclass": "operator-control",
+      "classification": "operator-surface",
+      "logicalLines": 211,
+      "recommendedAdminTarget": "src/admin/modules/verification/views/ConnectorControlCenter.tsx",
+      "routeAdapterPath": "src/pages/atlas/ConnectorControlCenter.tsx"
+    },
+    {
+      "currentPath": "src/platform/atlas/pages/DataProtectionPosture.tsx",
+      "system": "atlas",
+      "subclass": "operator-control",
+      "classification": "operator-surface",
+      "logicalLines": 223,
+      "recommendedAdminTarget": "src/admin/modules/verification/views/DataProtectionPosture.tsx",
+      "routeAdapterPath": "src/pages/atlas/DataProtectionPosture.tsx"
+    },
+    {
+      "currentPath": "src/platform/atlas/pages/DeploymentTruthCenter.tsx",
+      "system": "atlas",
+      "subclass": "operator-control",
+      "classification": "operator-surface",
+      "logicalLines": 275,
+      "recommendedAdminTarget": "src/admin/modules/verification/views/DeploymentTruthCenter.tsx",
+      "routeAdapterPath": "src/pages/atlas/DeploymentTruthCenter.tsx"
+    },
+    {
+      "currentPath": "src/platform/atlas/pages/OperationalInfraMonitor.tsx",
+      "system": "atlas",
+      "subclass": "operator-control",
+      "classification": "operator-surface",
+      "logicalLines": 203,
+      "recommendedAdminTarget": "src/admin/modules/verification/views/OperationalInfraMonitor.tsx",
+      "routeAdapterPath": "src/pages/atlas/OperationalInfraMonitor.tsx"
+    },
+    {
+      "currentPath": "src/platform/atlas/pages/OperationsCommandCenter.tsx",
+      "system": "atlas",
+      "subclass": "operator-control",
+      "classification": "operator-surface",
+      "logicalLines": 216,
+      "recommendedAdminTarget": "src/admin/modules/verification/views/OperationsCommandCenter.tsx",
+      "routeAdapterPath": "src/pages/atlas/OperationsCommandCenter.tsx"
+    },
+    {
+      "currentPath": "src/platform/atlas/pages/PlatformTruthRegistry.tsx",
+      "system": "atlas",
+      "subclass": "operator-control",
+      "classification": "operator-surface",
+      "logicalLines": 240,
+      "recommendedAdminTarget": "src/admin/modules/verification/views/PlatformTruthRegistry.tsx",
+      "routeAdapterPath": "src/pages/atlas/PlatformTruthRegistry.tsx"
+    },
+    {
+      "currentPath": "src/platform/atlas/pages/ProjectionControlCenter.tsx",
+      "system": "atlas",
+      "subclass": "operator-control",
+      "classification": "operator-surface",
+      "logicalLines": 246,
+      "recommendedAdminTarget": "src/admin/modules/verification/views/ProjectionControlCenter.tsx",
+      "routeAdapterPath": "src/pages/atlas/ProjectionControlCenter.tsx"
+    },
+    {
+      "currentPath": "src/platform/atlas/pages/ProofCoverageBoard.tsx",
+      "system": "atlas",
+      "subclass": "operator-control",
+      "classification": "operator-surface",
+      "logicalLines": 244,
+      "recommendedAdminTarget": "src/admin/modules/verification/views/ProofCoverageBoard.tsx",
+      "routeAdapterPath": "src/pages/atlas/ProofCoverageBoard.tsx"
+    },
+    {
+      "currentPath": "src/platform/atlas/pages/ValidationCommandCenter.tsx",
+      "system": "atlas",
+      "subclass": "operator-control",
+      "classification": "operator-surface",
+      "logicalLines": 245,
+      "recommendedAdminTarget": "src/admin/modules/verification/views/ValidationCommandCenter.tsx",
+      "routeAdapterPath": "src/pages/atlas/ValidationCommandCenter.tsx"
+    },
+    {
+      "currentPath": "src/platform/auth/pages/ForgotPassword.tsx",
+      "system": "auth",
+      "subclass": "identity-and-tenant",
+      "classification": "end-user-surface",
+      "logicalLines": 70,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/auth/ForgotPassword.tsx"
+    },
+    {
+      "currentPath": "src/platform/auth/pages/Login.tsx",
+      "system": "auth",
+      "subclass": "identity-and-tenant",
+      "classification": "end-user-surface",
+      "logicalLines": 238,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/auth/Login.tsx"
+    },
+    {
+      "currentPath": "src/platform/auth/pages/ResetPassword.tsx",
+      "system": "auth",
+      "subclass": "identity-and-tenant",
+      "classification": "end-user-surface",
+      "logicalLines": 87,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/auth/ResetPassword.tsx"
+    },
+    {
+      "currentPath": "src/platform/auth/pages/Signup.tsx",
+      "system": "auth",
+      "subclass": "identity-and-tenant",
+      "classification": "end-user-surface",
+      "logicalLines": 192,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/auth/Signup.tsx"
+    },
+    {
+      "currentPath": "src/platform/boardroom/pages/Boardroom.tsx",
+      "system": "boardroom",
+      "subclass": "intelligence",
+      "classification": "end-user-surface",
+      "logicalLines": 1226,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/Boardroom.tsx"
+    },
+    {
+      "currentPath": "src/platform/boardroom/pages/BoardroomHistory.tsx",
+      "system": "boardroom",
+      "subclass": "intelligence",
+      "classification": "end-user-surface",
+      "logicalLines": 90,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/boardroom/BoardroomHistory.tsx"
+    },
+    {
+      "currentPath": "src/platform/boardroom/pages/BoardroomReplay.tsx",
+      "system": "boardroom",
+      "subclass": "intelligence",
+      "classification": "ambiguous",
+      "logicalLines": 374,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/boardroom/BoardroomReplay.tsx"
+    },
+    {
+      "currentPath": "src/platform/boardroom/pages/GlobalBoardroom.tsx",
+      "system": "boardroom",
+      "subclass": "intelligence",
+      "classification": "end-user-surface",
+      "logicalLines": 247,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/GlobalBoardroom.tsx"
+    },
+    {
+      "currentPath": "src/platform/boardroom/pages/WeeklyBoardroom.tsx",
+      "system": "boardroom",
+      "subclass": "intelligence",
+      "classification": "end-user-surface",
+      "logicalLines": 102,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/WeeklyBoardroom.tsx"
+    },
+    {
+      "currentPath": "src/platform/enterprise/pages/EnterpriseControlPlane.tsx",
+      "system": "enterprise",
+      "subclass": "identity-and-tenant",
+      "classification": "end-user-surface",
+      "logicalLines": 304,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/enterprise/EnterpriseControlPlane.tsx"
+    },
+    {
+      "currentPath": "src/platform/enterprise/pages/EnterpriseMaturityDashboard.tsx",
+      "system": "enterprise",
+      "subclass": "identity-and-tenant",
+      "classification": "ambiguous",
+      "logicalLines": 463,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/EnterpriseMaturityDashboard.tsx"
+    },
+    {
+      "currentPath": "src/platform/files/pages/FilesAll.tsx",
+      "system": "files",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 203,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/files/FilesAll.tsx"
+    },
+    {
+      "currentPath": "src/platform/files/pages/FilesCenter.tsx",
+      "system": "files",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 126,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/FilesCenter.tsx"
+    },
+    {
+      "currentPath": "src/platform/files/pages/FilesExplorer.tsx",
+      "system": "files",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 133,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/files/FilesExplorer.tsx"
+    },
+    {
+      "currentPath": "src/platform/files/pages/FilesMemoryReview.tsx",
+      "system": "files",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 147,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/files/FilesMemoryReview.tsx"
+    },
+    {
+      "currentPath": "src/platform/files/pages/FilesOverview.tsx",
+      "system": "files",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 150,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/files/FilesOverview.tsx"
+    },
+    {
+      "currentPath": "src/platform/files/pages/FilesProcessing.tsx",
+      "system": "files",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 144,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/files/FilesProcessing.tsx"
+    },
+    {
+      "currentPath": "src/platform/files/pages/FilesReview.tsx",
+      "system": "files",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 102,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/files/FilesReview.tsx"
+    },
+    {
+      "currentPath": "src/platform/files/pages/FilesSearch.tsx",
+      "system": "files",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 204,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/files/FilesSearch.tsx"
+    },
+    {
+      "currentPath": "src/platform/files/pages/FilesSensitive.tsx",
+      "system": "files",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 105,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/files/FilesSensitive.tsx"
+    },
+    {
+      "currentPath": "src/platform/files/pages/FilesSettings.tsx",
+      "system": "files",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 152,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/files/FilesSettings.tsx"
+    },
+    {
+      "currentPath": "src/platform/files/pages/ImportExportCenter.tsx",
+      "system": "files",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 171,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/ImportExportCenter.tsx"
+    },
+    {
+      "currentPath": "src/platform/files/pages/SovereignExportPage.tsx",
+      "system": "files",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 164,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/SovereignExportPage.tsx"
+    },
+    {
+      "currentPath": "src/platform/files/pages/StorageManager.tsx",
+      "system": "files",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 122,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/StorageManager.tsx"
+    },
+    {
+      "currentPath": "src/platform/governance/pages/GovernanceDashboard.tsx",
+      "system": "governance",
+      "subclass": "governance",
+      "classification": "operator-surface",
+      "logicalLines": 130,
+      "recommendedAdminTarget": "src/admin/modules/trust-security/views/GovernanceDashboard.tsx",
+      "routeAdapterPath": "src/pages/GovernanceDashboard.tsx"
+    },
+    {
+      "currentPath": "src/platform/integration/pages/ActionsApprovals.tsx",
+      "system": "integration",
+      "subclass": "runtime-bridges",
+      "classification": "end-user-surface",
+      "logicalLines": 166,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/integrations/ActionsApprovals.tsx"
+    },
+    {
+      "currentPath": "src/platform/integration/pages/ConnectionDetail.tsx",
+      "system": "integration",
+      "subclass": "runtime-bridges",
+      "classification": "end-user-surface",
+      "logicalLines": 167,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/integrations/ConnectionDetail.tsx"
+    },
+    {
+      "currentPath": "src/platform/integration/pages/ConnectionsList.tsx",
+      "system": "integration",
+      "subclass": "runtime-bridges",
+      "classification": "end-user-surface",
+      "logicalLines": 161,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/integrations/ConnectionsList.tsx"
+    },
+    {
+      "currentPath": "src/platform/integration/pages/ConnectorHub.tsx",
+      "system": "integration",
+      "subclass": "runtime-bridges",
+      "classification": "end-user-surface",
+      "logicalLines": 281,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/ConnectorHub.tsx"
+    },
+    {
+      "currentPath": "src/platform/integration/pages/IntegrationConcierge.tsx",
+      "system": "integration",
+      "subclass": "runtime-bridges",
+      "classification": "end-user-surface",
+      "logicalLines": 361,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/IntegrationConcierge.tsx"
+    },
+    {
+      "currentPath": "src/platform/integration/pages/IntegrationsCatalog.tsx",
+      "system": "integration",
+      "subclass": "runtime-bridges",
+      "classification": "end-user-surface",
+      "logicalLines": 121,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/integrations/IntegrationsCatalog.tsx"
+    },
+    {
+      "currentPath": "src/platform/integration/pages/ProviderDetail.tsx",
+      "system": "integration",
+      "subclass": "runtime-bridges",
+      "classification": "end-user-surface",
+      "logicalLines": 223,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/integrations/ProviderDetail.tsx"
+    },
+    {
+      "currentPath": "src/platform/intelligence/pages/DeviceMeshPanel.tsx",
+      "system": "intelligence",
+      "subclass": "intelligence",
+      "classification": "end-user-surface",
+      "logicalLines": 163,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/intelligence/DeviceMeshPanel.tsx"
+    },
+    {
+      "currentPath": "src/platform/intelligence/pages/IntelligenceDashboard.tsx",
+      "system": "intelligence",
+      "subclass": "intelligence",
+      "classification": "ambiguous",
+      "logicalLines": 227,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/intelligence/IntelligenceDashboard.tsx"
+    },
+    {
+      "currentPath": "src/platform/intelligence/pages/PrivacyControlCenter.tsx",
+      "system": "intelligence",
+      "subclass": "intelligence",
+      "classification": "end-user-surface",
+      "logicalLines": 212,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/intelligence/PrivacyControlCenter.tsx"
+    },
+    {
+      "currentPath": "src/platform/marketing/pages/Beta.tsx",
+      "system": "marketing",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 19,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/marketing/Beta.tsx"
+    },
+    {
+      "currentPath": "src/platform/marketing/pages/Demo.tsx",
+      "system": "marketing",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 80,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/marketing/Demo.tsx"
+    },
+    {
+      "currentPath": "src/platform/marketing/pages/Donate.tsx",
+      "system": "marketing",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 41,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/marketing/Donate.tsx"
+    },
+    {
+      "currentPath": "src/platform/marketing/pages/Download.tsx",
+      "system": "marketing",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 42,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/marketing/Download.tsx"
+    },
+    {
+      "currentPath": "src/platform/marketing/pages/Home.tsx",
+      "system": "marketing",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 96,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/marketing/Home.tsx"
+    },
+    {
+      "currentPath": "src/platform/marketing/pages/Investors.tsx",
+      "system": "marketing",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 67,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/marketing/Investors.tsx"
+    },
+    {
+      "currentPath": "src/platform/marketing/pages/LandingPage.tsx",
+      "system": "marketing",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 214,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/LandingPage.tsx"
+    },
+    {
+      "currentPath": "src/platform/marketing/pages/Manifesto.tsx",
+      "system": "marketing",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 25,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/marketing/Manifesto.tsx"
+    },
+    {
+      "currentPath": "src/platform/marketing/pages/Press.tsx",
+      "system": "marketing",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 19,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/marketing/Press.tsx"
+    },
+    {
+      "currentPath": "src/platform/marketing/pages/Proof.tsx",
+      "system": "marketing",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 48,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/marketing/Proof.tsx"
+    },
+    {
+      "currentPath": "src/platform/marketing/pages/Waitlist.tsx",
+      "system": "marketing",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 35,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/marketing/Waitlist.tsx"
+    },
+    {
+      "currentPath": "src/platform/mission-control/pages/MissionControlPage.tsx",
+      "system": "mission-control",
+      "subclass": "operator-control",
+      "classification": "operator-surface",
+      "logicalLines": 1165,
+      "recommendedAdminTarget": "src/admin/modules/overview/views/MissionControlPage.tsx",
+      "routeAdapterPath": "src/pages/mission-control/MissionControlPage.tsx"
+    },
+    {
+      "currentPath": "src/platform/mission-control/pages/PlatformTruthDashboard.tsx",
+      "system": "mission-control",
+      "subclass": "operator-control",
+      "classification": "operator-surface",
+      "logicalLines": 391,
+      "recommendedAdminTarget": "src/admin/modules/overview/views/PlatformTruthDashboard.tsx",
+      "routeAdapterPath": "src/pages/mission-control/PlatformTruthDashboard.tsx"
+    },
+    {
+      "currentPath": "src/platform/notifications/pages/ActivityStream.tsx",
+      "system": "notifications",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 438,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/ActivityStream.tsx"
+    },
+    {
+      "currentPath": "src/platform/notifications/pages/CommunicationInbox.tsx",
+      "system": "notifications",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 266,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/CommunicationInbox.tsx"
+    },
+    {
+      "currentPath": "src/platform/notifications/pages/CommunicationsPage.tsx",
+      "system": "notifications",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 312,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/CommunicationsPage.tsx"
+    },
+    {
+      "currentPath": "src/platform/notifications/pages/DailyPulse.tsx",
+      "system": "notifications",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 240,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/DailyPulse.tsx"
+    },
+    {
+      "currentPath": "src/platform/notifications/pages/InboxCapture.tsx",
+      "system": "notifications",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 161,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/InboxCapture.tsx"
+    },
+    {
+      "currentPath": "src/platform/notifications/pages/MyActivity.tsx",
+      "system": "notifications",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 189,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/MyActivity.tsx"
+    },
+    {
+      "currentPath": "src/platform/notifications/pages/NotificationCenter.tsx",
+      "system": "notifications",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 302,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/NotificationCenter.tsx"
+    },
+    {
+      "currentPath": "src/platform/notifications/pages/NotificationSettingsPage.tsx",
+      "system": "notifications",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 252,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/NotificationSettingsPage.tsx"
+    },
+    {
+      "currentPath": "src/platform/observability/pages/NetworkUtility.tsx",
+      "system": "observability",
+      "subclass": "operator-control",
+      "classification": "operator-surface",
+      "logicalLines": 303,
+      "recommendedAdminTarget": "src/admin/modules/health/views/NetworkUtility.tsx",
+      "routeAdapterPath": "src/pages/NetworkUtility.tsx"
+    },
+    {
+      "currentPath": "src/platform/observability/pages/ObservabilityPage.tsx",
+      "system": "observability",
+      "subclass": "operator-control",
+      "classification": "operator-surface",
+      "logicalLines": 332,
+      "recommendedAdminTarget": "src/admin/modules/health/views/ObservabilityPage.tsx",
+      "routeAdapterPath": "src/pages/ObservabilityPage.tsx"
+    },
+    {
+      "currentPath": "src/platform/observability/pages/ServiceArchitectureDashboard.tsx",
+      "system": "observability",
+      "subclass": "operator-control",
+      "classification": "operator-surface",
+      "logicalLines": 413,
+      "recommendedAdminTarget": "src/admin/modules/health/views/ServiceArchitectureDashboard.tsx",
+      "routeAdapterPath": "src/pages/ServiceArchitectureDashboard.tsx"
+    },
+    {
+      "currentPath": "src/platform/observability/pages/SpilloverDashboard.tsx",
+      "system": "observability",
+      "subclass": "operator-control",
+      "classification": "operator-surface",
+      "logicalLines": 136,
+      "recommendedAdminTarget": "src/admin/modules/health/views/SpilloverDashboard.tsx",
+      "routeAdapterPath": "src/pages/SpilloverDashboard.tsx"
+    },
+    {
+      "currentPath": "src/platform/observability/pages/SystemStatus.tsx",
+      "system": "observability",
+      "subclass": "operator-control",
+      "classification": "operator-surface",
+      "logicalLines": 712,
+      "recommendedAdminTarget": "src/admin/modules/health/views/SystemStatus.tsx",
+      "routeAdapterPath": "src/pages/SystemStatus.tsx"
+    },
+    {
+      "currentPath": "src/platform/observability/pages/TimeMachinePage.tsx",
+      "system": "observability",
+      "subclass": "operator-control",
+      "classification": "operator-surface",
+      "logicalLines": 288,
+      "recommendedAdminTarget": "src/admin/modules/health/views/TimeMachinePage.tsx",
+      "routeAdapterPath": "src/pages/TimeMachinePage.tsx"
+    },
+    {
+      "currentPath": "src/platform/observability/pages/WorkflowReplayHub.tsx",
+      "system": "observability",
+      "subclass": "operator-control",
+      "classification": "operator-surface",
+      "logicalLines": 108,
+      "recommendedAdminTarget": "src/admin/modules/health/views/WorkflowReplayHub.tsx",
+      "routeAdapterPath": "src/pages/WorkflowReplayHub.tsx"
+    },
+    {
+      "currentPath": "src/platform/orchestration/pages/AutomationCenter.tsx",
+      "system": "orchestration",
+      "subclass": "runtime-bridges",
+      "classification": "end-user-surface",
+      "logicalLines": 182,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/AutomationCenter.tsx"
+    },
+    {
+      "currentPath": "src/platform/orchestration/pages/TasksWorkflowsCenter.tsx",
+      "system": "orchestration",
+      "subclass": "runtime-bridges",
+      "classification": "end-user-surface",
+      "logicalLines": 445,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/TasksWorkflowsCenter.tsx"
+    },
+    {
+      "currentPath": "src/platform/orchestration/pages/WorkflowsCenter.tsx",
+      "system": "orchestration",
+      "subclass": "runtime-bridges",
+      "classification": "end-user-surface",
+      "logicalLines": 211,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/WorkflowsCenter.tsx"
+    },
+    {
+      "currentPath": "src/platform/owner/pages/AdminCenter.tsx",
+      "system": "owner",
+      "subclass": "operator-control",
+      "classification": "operator-surface",
+      "logicalLines": 23,
+      "recommendedAdminTarget": "src/admin/modules/owner/views/AdminCenter.tsx",
+      "routeAdapterPath": "src/pages/AdminCenter.tsx"
+    },
+    {
+      "currentPath": "src/platform/owner/pages/AdvisorConfig.tsx",
+      "system": "owner",
+      "subclass": "operator-control",
+      "classification": "operator-surface",
+      "logicalLines": 115,
+      "recommendedAdminTarget": "src/admin/modules/owner/views/AdvisorConfig.tsx",
+      "routeAdapterPath": "src/pages/owner/AdvisorConfig.tsx"
+    },
+    {
+      "currentPath": "src/platform/owner/pages/AutonomyControlCenter.tsx",
+      "system": "owner",
+      "subclass": "operator-control",
+      "classification": "operator-surface",
+      "logicalLines": 82,
+      "recommendedAdminTarget": "src/admin/modules/owner/views/AutonomyControlCenter.tsx",
+      "routeAdapterPath": "src/pages/owner/AutonomyControlCenter.tsx"
+    },
+    {
+      "currentPath": "src/platform/owner/pages/ConstitutionEditor.tsx",
+      "system": "owner",
+      "subclass": "operator-control",
+      "classification": "operator-surface",
+      "logicalLines": 412,
+      "recommendedAdminTarget": "src/admin/modules/owner/views/ConstitutionEditor.tsx",
+      "routeAdapterPath": "src/pages/owner/ConstitutionEditor.tsx"
+    },
+    {
+      "currentPath": "src/platform/owner/pages/LeaseDashboard.tsx",
+      "system": "owner",
+      "subclass": "operator-control",
+      "classification": "operator-surface",
+      "logicalLines": 361,
+      "recommendedAdminTarget": "src/admin/modules/owner/views/LeaseDashboard.tsx",
+      "routeAdapterPath": "src/pages/owner/LeaseDashboard.tsx"
+    },
+    {
+      "currentPath": "src/platform/owner/pages/OwnerAiTeamUpdatesPage.tsx",
+      "system": "owner",
+      "subclass": "operator-control",
+      "classification": "operator-surface",
+      "logicalLines": 105,
+      "recommendedAdminTarget": "src/admin/modules/owner/views/OwnerAiTeamUpdatesPage.tsx",
+      "routeAdapterPath": "src/pages/owner/OwnerAiTeamUpdatesPage.tsx"
+    },
+    {
+      "currentPath": "src/platform/owner/pages/OwnerApprovalsPage.tsx",
+      "system": "owner",
+      "subclass": "operator-control",
+      "classification": "operator-surface",
+      "logicalLines": 130,
+      "recommendedAdminTarget": "src/admin/modules/owner/views/OwnerApprovalsPage.tsx",
+      "routeAdapterPath": "src/pages/owner/OwnerApprovalsPage.tsx"
+    },
+    {
+      "currentPath": "src/platform/owner/pages/OwnerCenter.tsx",
+      "system": "owner",
+      "subclass": "operator-control",
+      "classification": "operator-surface",
+      "logicalLines": 2416,
+      "recommendedAdminTarget": "src/admin/modules/owner/views/OwnerCenter.tsx",
+      "routeAdapterPath": "src/pages/OwnerCenter.tsx"
+    },
+    {
+      "currentPath": "src/platform/owner/pages/OwnerPulsePage.tsx",
+      "system": "owner",
+      "subclass": "operator-control",
+      "classification": "operator-surface",
+      "logicalLines": 139,
+      "recommendedAdminTarget": "src/admin/modules/owner/views/OwnerPulsePage.tsx",
+      "routeAdapterPath": "src/pages/owner/OwnerPulsePage.tsx"
+    },
+    {
+      "currentPath": "src/platform/owner/pages/PackEditor.tsx",
+      "system": "owner",
+      "subclass": "operator-control",
+      "classification": "operator-surface",
+      "logicalLines": 70,
+      "recommendedAdminTarget": "src/admin/modules/owner/views/PackEditor.tsx",
+      "routeAdapterPath": "src/pages/owner/PackEditor.tsx"
+    },
+    {
+      "currentPath": "src/platform/owner/pages/PricingEditor.tsx",
+      "system": "owner",
+      "subclass": "operator-control",
+      "classification": "operator-surface",
+      "logicalLines": 103,
+      "recommendedAdminTarget": "src/admin/modules/owner/views/PricingEditor.tsx",
+      "routeAdapterPath": "src/pages/owner/PricingEditor.tsx"
+    },
+    {
+      "currentPath": "src/platform/owner/pages/ReleaseDeploymentWorkspace.tsx",
+      "system": "owner",
+      "subclass": "operator-control",
+      "classification": "operator-surface",
+      "logicalLines": 213,
+      "recommendedAdminTarget": "src/admin/modules/owner/views/ReleaseDeploymentWorkspace.tsx",
+      "routeAdapterPath": "src/pages/owner/ReleaseDeploymentWorkspace.tsx"
+    },
+    {
+      "currentPath": "src/platform/owner/pages/UsersAdminPage.tsx",
+      "system": "owner",
+      "subclass": "operator-control",
+      "classification": "operator-surface",
+      "logicalLines": 123,
+      "recommendedAdminTarget": "src/admin/modules/owner/views/UsersAdminPage.tsx",
+      "routeAdapterPath": "src/pages/UsersAdminPage.tsx"
+    },
+    {
+      "currentPath": "src/platform/personal-brain/pages/AcceptInvite.tsx",
+      "system": "personal-brain",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 120,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/personal-brain/AcceptInvite.tsx"
+    },
+    {
+      "currentPath": "src/platform/personal-brain/pages/BrainCommandCenter.tsx",
+      "system": "personal-brain",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 407,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/personal-brain/BrainCommandCenter.tsx"
+    },
+    {
+      "currentPath": "src/platform/personal-brain/pages/BrainSettings.tsx",
+      "system": "personal-brain",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 115,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/personal-brain/BrainSettings.tsx"
+    },
+    {
+      "currentPath": "src/platform/personal-brain/pages/BrainSnapshot.tsx",
+      "system": "personal-brain",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 209,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/personal-brain/BrainSnapshot.tsx"
+    },
+    {
+      "currentPath": "src/platform/personal-brain/pages/DataSettings.tsx",
+      "system": "personal-brain",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 30,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/personal-brain/DataSettings.tsx"
+    },
+    {
+      "currentPath": "src/platform/personal-brain/pages/LearnLaterPage.tsx",
+      "system": "personal-brain",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 50,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/LearnLaterPage.tsx"
+    },
+    {
+      "currentPath": "src/platform/personal-brain/pages/LearningSettings.tsx",
+      "system": "personal-brain",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 28,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/personal-brain/LearningSettings.tsx"
+    },
+    {
+      "currentPath": "src/platform/personal-brain/pages/MemoryCenter.tsx",
+      "system": "personal-brain",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 205,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/MemoryCenter.tsx"
+    },
+    {
+      "currentPath": "src/platform/personal-brain/pages/PersonalBrain.tsx",
+      "system": "personal-brain",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 29,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/PersonalBrain.tsx"
+    },
+    {
+      "currentPath": "src/platform/personal-brain/pages/PersonalBrainChat.tsx",
+      "system": "personal-brain",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 275,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/personal-brain/PersonalBrainChat.tsx"
+    },
+    {
+      "currentPath": "src/platform/personal-brain/pages/PersonalBrainWorkspace.tsx",
+      "system": "personal-brain",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 153,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/personal-brain/PersonalBrainWorkspace.tsx"
+    },
+    {
+      "currentPath": "src/platform/personal-brain/pages/RetentionSettings.tsx",
+      "system": "personal-brain",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 28,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/personal-brain/RetentionSettings.tsx"
+    },
+    {
+      "currentPath": "src/platform/personal-brain/pages/SecuritySettings.tsx",
+      "system": "personal-brain",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 30,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/personal-brain/SecuritySettings.tsx"
+    },
+    {
+      "currentPath": "src/platform/personal-brain/pages/ToolsRegistry.tsx",
+      "system": "personal-brain",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 29,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/personal-brain/ToolsRegistry.tsx"
+    },
+    {
+      "currentPath": "src/platform/personal-brain/pages/VoiceSettings.tsx",
+      "system": "personal-brain",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 28,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/personal-brain/VoiceSettings.tsx"
+    },
+    {
+      "currentPath": "src/platform/personal-brain/pages/settings/FilesSettings.tsx",
+      "system": "personal-brain",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 11,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/files/FilesSettings.tsx"
+    },
+    {
+      "currentPath": "src/platform/personal-brain/pages/settings/LabsSettings.tsx",
+      "system": "personal-brain",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 15,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": null
+    },
+    {
+      "currentPath": "src/platform/personal-brain/pages/settings/MemorySettings.tsx",
+      "system": "personal-brain",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 15,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": null
+    },
+    {
+      "currentPath": "src/platform/personal-brain/pages/settings/ModesSettings.tsx",
+      "system": "personal-brain",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 30,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": null
+    },
+    {
+      "currentPath": "src/platform/personal-brain/pages/settings/NotificationsSettings.tsx",
+      "system": "personal-brain",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 38,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": null
+    },
+    {
+      "currentPath": "src/platform/personal-brain/pages/settings/ProfileSettings.tsx",
+      "system": "personal-brain",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 41,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": null
+    },
+    {
+      "currentPath": "src/platform/personal-brain/pages/settings/WorkspacesSettings.tsx",
+      "system": "personal-brain",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 34,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": null
+    },
+    {
+      "currentPath": "src/platform/search/pages/SearchPage.tsx",
+      "system": "search",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 442,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/SearchPage.tsx"
+    },
+    {
+      "currentPath": "src/platform/settings/pages/AccessibilitySettings.tsx",
+      "system": "settings",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 95,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/settings/AccessibilitySettings.tsx"
+    },
+    {
+      "currentPath": "src/platform/settings/pages/AchievementsPage.tsx",
+      "system": "settings",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 230,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/AchievementsPage.tsx"
+    },
+    {
+      "currentPath": "src/platform/settings/pages/CalmFocusMode.tsx",
+      "system": "settings",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 99,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/CalmFocusMode.tsx"
+    },
+    {
+      "currentPath": "src/platform/settings/pages/DeviceSettings.tsx",
+      "system": "settings",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 76,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/settings/DeviceSettings.tsx"
+    },
+    {
+      "currentPath": "src/platform/settings/pages/GoogleConnectedAccounts.tsx",
+      "system": "settings",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 265,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/settings/GoogleConnectedAccounts.tsx"
+    },
+    {
+      "currentPath": "src/platform/settings/pages/MFAEnrollment.tsx",
+      "system": "settings",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 159,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/settings/MFAEnrollment.tsx"
+    },
+    {
+      "currentPath": "src/platform/settings/pages/MyPlanUsage.tsx",
+      "system": "settings",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 368,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/settings/MyPlanUsage.tsx"
+    },
+    {
+      "currentPath": "src/platform/settings/pages/NotificationPreferences.tsx",
+      "system": "settings",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 149,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/settings/NotificationPreferences.tsx"
+    },
+    {
+      "currentPath": "src/platform/settings/pages/PasskeyManagement.tsx",
+      "system": "settings",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 143,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/settings/PasskeyManagement.tsx"
+    },
+    {
+      "currentPath": "src/platform/settings/pages/SettingsPage.tsx",
+      "system": "settings",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 140,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/SettingsPage.tsx"
+    },
+    {
+      "currentPath": "src/platform/settings/pages/TrustedDeviceManager.tsx",
+      "system": "settings",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 67,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/settings/TrustedDeviceManager.tsx"
+    },
+    {
+      "currentPath": "src/platform/settings/pages/UserCloudSettings.tsx",
+      "system": "settings",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 416,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/settings/UserCloudSettings.tsx"
+    },
+    {
+      "currentPath": "src/platform/settings/pages/UserProfilePage.tsx",
+      "system": "settings",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 180,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/UserProfilePage.tsx"
+    },
+    {
+      "currentPath": "src/platform/setup/pages/EnvironmentSwitcher.tsx",
+      "system": "setup",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 124,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/EnvironmentSwitcher.tsx"
+    },
+    {
+      "currentPath": "src/platform/setup/pages/FirstBootSetup.tsx",
+      "system": "setup",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 664,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/FirstBootSetup.tsx"
+    },
+    {
+      "currentPath": "src/platform/setup/pages/FirstWinActivation.tsx",
+      "system": "setup",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 343,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/FirstWinActivation.tsx"
+    },
+    {
+      "currentPath": "src/platform/setup/pages/Onboarding.tsx",
+      "system": "setup",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 515,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/Onboarding.tsx"
+    },
+    {
+      "currentPath": "src/platform/setup/pages/OnboardingWrapper.tsx",
+      "system": "setup",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 9,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/OnboardingWrapper.tsx"
+    },
+    {
+      "currentPath": "src/platform/setup/pages/PersonalizationStudio.tsx",
+      "system": "setup",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 364,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/PersonalizationStudio.tsx"
+    },
+    {
+      "currentPath": "src/platform/sita/pages/EntityView.tsx",
+      "system": "sita",
+      "subclass": "operator-control",
+      "classification": "operator-surface",
+      "logicalLines": 297,
+      "recommendedAdminTarget": "src/admin/modules/sita/views/EntityView.tsx",
+      "routeAdapterPath": "src/pages/sita/EntityView.tsx"
+    },
+    {
+      "currentPath": "src/platform/sita/pages/JarvisBridge.tsx",
+      "system": "sita",
+      "subclass": "operator-control",
+      "classification": "operator-surface",
+      "logicalLines": 42,
+      "recommendedAdminTarget": "src/admin/modules/sita/views/JarvisBridge.tsx",
+      "routeAdapterPath": "src/pages/sita/JarvisBridge.tsx"
+    },
+    {
+      "currentPath": "src/platform/support/pages/RecoveryCenter.tsx",
+      "system": "support",
+      "subclass": "operator-control",
+      "classification": "operator-surface",
+      "logicalLines": 251,
+      "recommendedAdminTarget": "src/admin/modules/support/views/RecoveryCenter.tsx",
+      "routeAdapterPath": "src/pages/RecoveryCenter.tsx"
+    },
+    {
+      "currentPath": "src/platform/tenant/pages/TenantSelfServiceConsole.tsx",
+      "system": "tenant",
+      "subclass": "identity-and-tenant",
+      "classification": "ambiguous",
+      "logicalLines": 227,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/tenant/TenantSelfServiceConsole.tsx"
+    },
+    {
+      "currentPath": "src/platform/trust/pages/ApprovalChamber.tsx",
+      "system": "trust",
+      "subclass": "governance",
+      "classification": "end-user-surface",
+      "logicalLines": 480,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/ApprovalChamber.tsx"
+    },
+    {
+      "currentPath": "src/platform/trust/pages/ApprovalsCenter.tsx",
+      "system": "trust",
+      "subclass": "governance",
+      "classification": "end-user-surface",
+      "logicalLines": 196,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/ApprovalsCenter.tsx"
+    },
+    {
+      "currentPath": "src/platform/trust/pages/PermissionsCenter.tsx",
+      "system": "trust",
+      "subclass": "governance",
+      "classification": "end-user-surface",
+      "logicalLines": 254,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/PermissionsCenter.tsx"
+    },
+    {
+      "currentPath": "src/platform/trust/pages/PolicyEditor.tsx",
+      "system": "trust",
+      "subclass": "governance",
+      "classification": "operator-surface",
+      "logicalLines": 156,
+      "recommendedAdminTarget": "src/admin/modules/trust-security/views/PolicyEditor.tsx",
+      "routeAdapterPath": "src/pages/PolicyEditor.tsx"
+    },
+    {
+      "currentPath": "src/platform/trust/pages/PolicySimulatorHub.tsx",
+      "system": "trust",
+      "subclass": "governance",
+      "classification": "operator-surface",
+      "logicalLines": 117,
+      "recommendedAdminTarget": "src/admin/modules/trust-security/views/PolicySimulatorHub.tsx",
+      "routeAdapterPath": "src/pages/PolicySimulatorHub.tsx"
+    },
+    {
+      "currentPath": "src/platform/trust/pages/ProofCenter.tsx",
+      "system": "trust",
+      "subclass": "governance",
+      "classification": "end-user-surface",
+      "logicalLines": 345,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/ProofCenter.tsx"
+    },
+    {
+      "currentPath": "src/platform/trust/pages/TrustApprovals.tsx",
+      "system": "trust",
+      "subclass": "governance",
+      "classification": "operator-surface",
+      "logicalLines": 101,
+      "recommendedAdminTarget": "src/admin/modules/trust-security/views/TrustApprovals.tsx",
+      "routeAdapterPath": "src/pages/trust/TrustApprovals.tsx"
+    },
+    {
+      "currentPath": "src/platform/trust/pages/TrustAudit.tsx",
+      "system": "trust",
+      "subclass": "governance",
+      "classification": "operator-surface",
+      "logicalLines": 90,
+      "recommendedAdminTarget": "src/admin/modules/trust-security/views/TrustAudit.tsx",
+      "routeAdapterPath": "src/pages/trust/TrustAudit.tsx"
+    },
+    {
+      "currentPath": "src/platform/trust/pages/TrustAutomationAuthority.tsx",
+      "system": "trust",
+      "subclass": "governance",
+      "classification": "operator-surface",
+      "logicalLines": 109,
+      "recommendedAdminTarget": "src/admin/modules/trust-security/views/TrustAutomationAuthority.tsx",
+      "routeAdapterPath": "src/pages/trust/TrustAutomationAuthority.tsx"
+    },
+    {
+      "currentPath": "src/platform/trust/pages/TrustCenter.tsx",
+      "system": "trust",
+      "subclass": "governance",
+      "classification": "end-user-surface",
+      "logicalLines": 258,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/TrustCenter.tsx"
+    },
+    {
+      "currentPath": "src/platform/trust/pages/TrustCoverage.tsx",
+      "system": "trust",
+      "subclass": "governance",
+      "classification": "operator-surface",
+      "logicalLines": 92,
+      "recommendedAdminTarget": "src/admin/modules/trust-security/views/TrustCoverage.tsx",
+      "routeAdapterPath": "src/pages/trust/TrustCoverage.tsx"
+    },
+    {
+      "currentPath": "src/platform/trust/pages/TrustDecisions.tsx",
+      "system": "trust",
+      "subclass": "governance",
+      "classification": "operator-surface",
+      "logicalLines": 92,
+      "recommendedAdminTarget": "src/admin/modules/trust-security/views/TrustDecisions.tsx",
+      "routeAdapterPath": "src/pages/trust/TrustDecisions.tsx"
+    },
+    {
+      "currentPath": "src/platform/trust/pages/TrustHome.tsx",
+      "system": "trust",
+      "subclass": "governance",
+      "classification": "end-user-surface",
+      "logicalLines": 41,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/trust/TrustHome.tsx"
+    },
+    {
+      "currentPath": "src/platform/trust/pages/TrustPermissions.tsx",
+      "system": "trust",
+      "subclass": "governance",
+      "classification": "operator-surface",
+      "logicalLines": 4,
+      "recommendedAdminTarget": "src/admin/modules/trust-security/views/TrustPermissions.tsx",
+      "routeAdapterPath": "src/pages/trust/TrustPermissions.tsx"
+    },
+    {
+      "currentPath": "src/platform/trust/pages/TrustReceipts.tsx",
+      "system": "trust",
+      "subclass": "governance",
+      "classification": "operator-surface",
+      "logicalLines": 20,
+      "recommendedAdminTarget": "src/admin/modules/trust-security/views/TrustReceipts.tsx",
+      "routeAdapterPath": "src/pages/trust/TrustReceipts.tsx"
+    },
+    {
+      "currentPath": "src/platform/workspace/pages/CalendarWorkspace.tsx",
+      "system": "workspace",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 440,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/CalendarWorkspace.tsx"
+    },
+    {
+      "currentPath": "src/platform/workspace/pages/ClipboardHistory.tsx",
+      "system": "workspace",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 121,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/ClipboardHistory.tsx"
+    },
+    {
+      "currentPath": "src/platform/workspace/pages/CommandHistory.tsx",
+      "system": "workspace",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 101,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/CommandHistory.tsx"
+    },
+    {
+      "currentPath": "src/platform/workspace/pages/DesktopPage.tsx",
+      "system": "workspace",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 152,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/DesktopPage.tsx"
+    },
+    {
+      "currentPath": "src/platform/workspace/pages/DocsWorkspace.tsx",
+      "system": "workspace",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 381,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/workspace/DocsWorkspace.tsx"
+    },
+    {
+      "currentPath": "src/platform/workspace/pages/DocumentEditor.tsx",
+      "system": "workspace",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 263,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/DocumentEditor.tsx"
+    },
+    {
+      "currentPath": "src/platform/workspace/pages/MediaWorkspace.tsx",
+      "system": "workspace",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 236,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/MediaWorkspace.tsx"
+    },
+    {
+      "currentPath": "src/platform/workspace/pages/NotesWorkspace.tsx",
+      "system": "workspace",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 285,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/NotesWorkspace.tsx"
+    },
+    {
+      "currentPath": "src/platform/workspace/pages/OperatorWorkspace.tsx",
+      "system": "workspace",
+      "subclass": "product-infrastructure",
+      "classification": "ambiguous",
+      "logicalLines": 147,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/workspace/OperatorWorkspace.tsx"
+    },
+    {
+      "currentPath": "src/platform/workspace/pages/PDFViewerWorkspace.tsx",
+      "system": "workspace",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 238,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/PDFViewerWorkspace.tsx"
+    },
+    {
+      "currentPath": "src/platform/workspace/pages/PeopleWorkspace.tsx",
+      "system": "workspace",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 192,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/PeopleWorkspace.tsx"
+    },
+    {
+      "currentPath": "src/platform/workspace/pages/PlanningCanvas.tsx",
+      "system": "workspace",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 129,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/PlanningCanvas.tsx"
+    },
+    {
+      "currentPath": "src/platform/workspace/pages/PrincipalWorkspace.tsx",
+      "system": "workspace",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 158,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/workspace/PrincipalWorkspace.tsx"
+    },
+    {
+      "currentPath": "src/platform/workspace/pages/PrintScanCenter.tsx",
+      "system": "workspace",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 153,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/PrintScanCenter.tsx"
+    },
+    {
+      "currentPath": "src/platform/workspace/pages/ProductivityHub.tsx",
+      "system": "workspace",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 124,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/ProductivityHub.tsx"
+    },
+    {
+      "currentPath": "src/platform/workspace/pages/ReportingWorkspace.tsx",
+      "system": "workspace",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 357,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/ReportingWorkspace.tsx"
+    },
+    {
+      "currentPath": "src/platform/workspace/pages/SheetsWorkspace.tsx",
+      "system": "workspace",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 331,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/workspace/SheetsWorkspace.tsx"
+    },
+    {
+      "currentPath": "src/platform/workspace/pages/SlidesWorkspace.tsx",
+      "system": "workspace",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 295,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/workspace/SlidesWorkspace.tsx"
+    },
+    {
+      "currentPath": "src/platform/workspace/pages/SpreadsheetWorkspace.tsx",
+      "system": "workspace",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 174,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/SpreadsheetWorkspace.tsx"
+    },
+    {
+      "currentPath": "src/platform/workspace/pages/TeamWorkspace.tsx",
+      "system": "workspace",
+      "subclass": "product-infrastructure",
+      "classification": "end-user-surface",
+      "logicalLines": 112,
+      "recommendedAdminTarget": null,
+      "routeAdapterPath": "src/pages/TeamWorkspace.tsx"
+    }
+  ]
+}
