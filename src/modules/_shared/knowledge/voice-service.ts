@@ -79,6 +79,28 @@ interface SpineTranscriptResponse { ok: boolean; transcript: { id: string; seq: 
 interface SpineEndResponse { ok: boolean; session_id: string; duration_ms: number; }
 interface SpinePromoteResponse { ok: boolean; memory_id: string; }
 
+export interface VoiceIntentRow {
+  id: string;
+  session_id: string;
+  transcript_id: string | null;
+  action_key: string;
+  params: Record<string, unknown>;
+  rationale: string;
+  confidence: number;
+  status: "proposed" | "approved" | "rejected" | "executed" | "expired";
+  executed_at: string | null;
+  rejected_at: string | null;
+  created_at: string;
+}
+
+interface ExtractIntentsResponse {
+  ok: boolean;
+  proposed: number;
+  inserted: number;
+  intents: VoiceIntentRow[];
+}
+interface ExecuteIntentResponse { ok: boolean; intent: { id: string; status: string; executed_at: string | null; rejected_at: string | null } }
+
 export async function startVoiceSession(input: StartSessionInput = {}): Promise<SpineStartResponse> {
   const { data, error } = await supabase.functions.invoke("voice-spine", {
     body: {
@@ -132,6 +154,48 @@ export async function promoteVoiceTranscript(input: PromoteTranscriptInput): Pro
   });
   if (error) throw new Error(error.message ?? "Promote transcript failed");
   return data as SpinePromoteResponse;
+}
+
+export async function extractVoiceIntents(sessionId: string, maxTranscripts = 10): Promise<ExtractIntentsResponse> {
+  const { data, error } = await supabase.functions.invoke("voice-spine", {
+    body: { op: "extract_intents", session_id: sessionId, max_transcripts: maxTranscripts },
+  });
+  if (error) throw new Error(error.message ?? "Intent extraction failed");
+  return data as ExtractIntentsResponse;
+}
+
+export async function updateVoiceIntent(
+  intentId: string,
+  status: "approved" | "rejected" | "executed",
+  rejectedReason?: string,
+): Promise<ExecuteIntentResponse> {
+  const { data, error } = await supabase.functions.invoke("voice-spine", {
+    body: { op: "execute_intent", intent_id: intentId, status, rejected_reason: rejectedReason },
+  });
+  if (error) throw new Error(error.message ?? "Intent update failed");
+  return data as ExecuteIntentResponse;
+}
+
+export async function listSessionIntents(sessionId: string): Promise<VoiceIntentRow[]> {
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return [];
+  const { data, error } = await (supabase as any).rpc("extract_voice_intents", {
+    _session_id: sessionId, _max_n: 25,
+  });
+  if (error) throw error;
+  return ((data ?? []) as Array<Record<string, unknown>>).map((r) => ({
+    id: String(r.id),
+    session_id: sessionId,
+    transcript_id: (r.transcript_id ?? null) as string | null,
+    action_key: String(r.action_key),
+    params: (r.params ?? {}) as Record<string, unknown>,
+    rationale: String(r.rationale ?? ""),
+    confidence: Number(r.confidence ?? 0),
+    status: String(r.status ?? "proposed") as VoiceIntentRow["status"],
+    executed_at: null,
+    rejected_at: null,
+    created_at: String(r.created_at),
+  }));
 }
 
 export async function listRecentVoiceSessions(limit = 25): Promise<VoiceSessionRow[]> {

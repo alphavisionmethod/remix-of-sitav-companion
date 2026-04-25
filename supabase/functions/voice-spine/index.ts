@@ -46,9 +46,129 @@ const PromoteSchema = z.object({
   category: z.string().default("voice_note"),
 });
 
+const ExtractIntentsSchema = z.object({
+  op: z.literal("extract_intents"),
+  session_id: z.string().uuid(),
+  /** Optional cap on transcripts to scan (most recent first). */
+  max_transcripts: z.number().int().min(1).max(50).default(10),
+});
+
+const ExecuteIntentSchema = z.object({
+  op: z.literal("execute_intent"),
+  intent_id: z.string().uuid(),
+  status: z.enum(["approved", "rejected", "executed"]).default("approved"),
+  rejected_reason: z.string().max(500).optional(),
+});
+
 const BodySchema = z.discriminatedUnion("op", [
-  StartSchema, TranscriptSchema, EndSchema, PromoteSchema,
+  StartSchema, TranscriptSchema, EndSchema, PromoteSchema, ExtractIntentsSchema, ExecuteIntentSchema,
 ]);
+
+// ── Allowed action keys for voice intent extraction (whitelist) ──
+// We restrict the model to safe, reversible actions. The Trust engine
+// remains the only path to actually execute these.
+const VOICE_INTENT_ACTION_KEYS = [
+  "crm.contact.create",
+  "crm.deal.stage_change",
+  "shared.note.create",
+  "shared.task.create",
+  "shared.calendar.event.create",
+  "shared.knowledge.reindex",
+] as const;
+
+async function extractIntentsViaGateway(transcripts: Array<{ id: string; text: string; role: string }>): Promise<Array<{
+  transcript_id: string;
+  action_key: string;
+  params: Record<string, unknown>;
+  rationale: string;
+  confidence: number;
+}>> {
+  const apiKey = Deno.env.get("LOVABLE_API_KEY");
+  if (!apiKey) return [];
+  const userText = transcripts
+    .filter((t) => t.role === "user")
+    .map((t) => `[${t.id}] ${t.text}`)
+    .join("\n");
+  if (!userText.trim()) return [];
+
+  const tools = [{
+    type: "function",
+    function: {
+      name: "propose_intents",
+      description: "Propose actionable intents extracted from voice transcripts. Only use whitelisted action_keys.",
+      parameters: {
+        type: "object",
+        properties: {
+          intents: {
+            type: "array",
+            items: {
+              type: "object",
+              properties: {
+                transcript_id: { type: "string", description: "UUID of the source transcript line" },
+                action_key: { type: "string", enum: [...VOICE_INTENT_ACTION_KEYS] },
+                params: { type: "object", description: "Plain JSON params for the action" },
+                rationale: { type: "string", description: "One sentence on why this action follows from the transcript" },
+                confidence: { type: "number", minimum: 0, maximum: 1 },
+              },
+              required: ["transcript_id", "action_key", "rationale", "confidence"],
+              additionalProperties: false,
+            },
+          },
+        },
+        required: ["intents"],
+        additionalProperties: false,
+      },
+    },
+  }];
+
+  const resp = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+    method: "POST",
+    headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
+    body: JSON.stringify({
+      model: "google/gemini-3-flash-preview",
+      messages: [
+        {
+          role: "system",
+          content:
+            "You extract concrete user intents from voice transcripts. Return at most 5 high-confidence intents (>=0.6). " +
+            "Never invent transcript_ids — only use those provided. Use only the whitelisted action_keys. " +
+            "If nothing concrete, return an empty intents array.",
+        },
+        { role: "user", content: `Transcripts:\n${userText}` },
+      ],
+      tools,
+      tool_choice: { type: "function", function: { name: "propose_intents" } },
+    }),
+  });
+  if (!resp.ok) {
+    console.warn("[voice-spine] intent extraction gateway non-ok", resp.status);
+    return [];
+  }
+  const json = await resp.json();
+  const call = json?.choices?.[0]?.message?.tool_calls?.[0];
+  if (!call?.function?.arguments) return [];
+  try {
+    const parsed = JSON.parse(call.function.arguments) as { intents?: unknown[] };
+    const intents = Array.isArray(parsed.intents) ? parsed.intents : [];
+    const allowed = new Set<string>(VOICE_INTENT_ACTION_KEYS);
+    const knownIds = new Set(transcripts.map((t) => t.id));
+    return intents
+      .filter((i): i is Record<string, unknown> => !!i && typeof i === "object")
+      .filter((i) => allowed.has(String(i.action_key)) && knownIds.has(String(i.transcript_id)))
+      .map((i) => ({
+        transcript_id: String(i.transcript_id),
+        action_key: String(i.action_key),
+        params: (i.params && typeof i.params === "object") ? i.params as Record<string, unknown> : {},
+        rationale: String(i.rationale ?? ""),
+        confidence: Math.min(1, Math.max(0, Number(i.confidence ?? 0.5))),
+      }))
+      .filter((i) => i.confidence >= 0.6)
+      .slice(0, 5);
+  } catch (e) {
+    console.warn("[voice-spine] failed to parse intent tool call", e);
+    return [];
+  }
+}
 
 serve(async (req) => {
   const cors = handleCors(req);
@@ -166,6 +286,89 @@ serve(async (req) => {
       });
       if (error) throw error;
       return new Response(JSON.stringify({ ok: true, memory_id: data }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    if (input.op === "extract_intents") {
+      // Verify session ownership.
+      const { data: session, error: sessErr } = await supabase
+        .from("voice_sessions")
+        .select("id, user_id")
+        .eq("id", input.session_id)
+        .eq("user_id", user.id)
+        .maybeSingle();
+      if (sessErr || !session) {
+        return new Response(JSON.stringify({ error: "session not found" }), {
+          status: 404, headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+      // Pull recent final transcripts for this session.
+      const { data: tx, error: txErr } = await supabase
+        .from("voice_transcripts")
+        .select("id, text, role, is_final")
+        .eq("session_id", input.session_id)
+        .eq("user_id", user.id)
+        .eq("is_final", true)
+        .order("seq", { ascending: false })
+        .limit(input.max_transcripts);
+      if (txErr) throw txErr;
+      const transcripts = ((tx ?? []) as Array<{ id: string; text: string; role: string }>).reverse();
+      if (transcripts.length === 0) {
+        return new Response(JSON.stringify({ ok: true, intents: [], skipped: "no_transcripts" }), {
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+      const proposals = await extractIntentsViaGateway(transcripts);
+      let inserted = 0;
+      const insertedRows: unknown[] = [];
+      for (const p of proposals) {
+        const { data: row, error: insErr } = await supabase
+          .from("voice_intents")
+          .insert({
+            user_id: user.id,
+            session_id: input.session_id,
+            transcript_id: p.transcript_id,
+            action_key: p.action_key,
+            params: p.params,
+            rationale: p.rationale,
+            confidence: p.confidence,
+            status: "proposed",
+            metadata: { extractor_model: "google/gemini-3-flash-preview", phase: 7 },
+          })
+          .select("id, action_key, confidence, rationale, params, transcript_id, created_at, status")
+          .single();
+        if (insErr) {
+          console.warn("[voice-spine] intent insert failed", insErr);
+          continue;
+        }
+        inserted++;
+        insertedRows.push(row);
+      }
+      return new Response(JSON.stringify({
+        ok: true,
+        proposed: proposals.length,
+        inserted,
+        intents: insertedRows,
+      }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    }
+
+    if (input.op === "execute_intent") {
+      const updates: Record<string, unknown> = { status: input.status };
+      if (input.status === "executed") updates.executed_at = new Date().toISOString();
+      if (input.status === "rejected") {
+        updates.rejected_at = new Date().toISOString();
+        if (input.rejected_reason) updates.rejected_reason = input.rejected_reason;
+      }
+      const { data, error } = await supabase
+        .from("voice_intents")
+        .update(updates)
+        .eq("id", input.intent_id)
+        .eq("user_id", user.id)
+        .select("id, status, executed_at, rejected_at")
+        .single();
+      if (error) throw error;
+      return new Response(JSON.stringify({ ok: true, intent: data }), {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }

@@ -24581,6 +24581,81 @@ export type Database = {
         }
         Relationships: []
       }
+      voice_intents: {
+        Row: {
+          action_key: string
+          confidence: number
+          created_at: string
+          executed_at: string | null
+          expires_at: string
+          id: string
+          metadata: Json
+          params: Json
+          rationale: string
+          rejected_at: string | null
+          rejected_reason: string | null
+          session_id: string
+          status: string
+          transcript_id: string | null
+          trust_request_id: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          action_key: string
+          confidence?: number
+          created_at?: string
+          executed_at?: string | null
+          expires_at?: string
+          id?: string
+          metadata?: Json
+          params?: Json
+          rationale?: string
+          rejected_at?: string | null
+          rejected_reason?: string | null
+          session_id: string
+          status?: string
+          transcript_id?: string | null
+          trust_request_id?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          action_key?: string
+          confidence?: number
+          created_at?: string
+          executed_at?: string | null
+          expires_at?: string
+          id?: string
+          metadata?: Json
+          params?: Json
+          rationale?: string
+          rejected_at?: string | null
+          rejected_reason?: string | null
+          session_id?: string
+          status?: string
+          transcript_id?: string | null
+          trust_request_id?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "voice_intents_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "voice_sessions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "voice_intents_transcript_id_fkey"
+            columns: ["transcript_id"]
+            isOneToOne: false
+            referencedRelation: "voice_transcripts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       voice_sessions: {
         Row: {
           correlation_id: string
@@ -25461,6 +25536,21 @@ export type Database = {
         }
         Relationships: []
       }
+      embedding_budget_overview: {
+        Row: {
+          completion_tokens: number | null
+          day: string | null
+          estimated_cost_usd: number | null
+          failed: number | null
+          invocations: number | null
+          month: string | null
+          prompt_tokens: number | null
+          succeeded: number | null
+          total_tokens: number | null
+          user_id: string | null
+        }
+        Relationships: []
+      }
       error_patrol_triage_view: {
         Row: {
           acknowledged_at: string | null
@@ -25819,6 +25909,19 @@ export type Database = {
         Returns: Json
       }
       expire_overdue_kill_switches: { Args: never; Returns: number }
+      extract_voice_intents: {
+        Args: { _max_n?: number; _session_id: string }
+        Returns: {
+          action_key: string
+          confidence: number
+          created_at: string
+          id: string
+          params: Json
+          rationale: string
+          status: string
+          transcript_id: string
+        }[]
+      }
       gen_short_code: { Args: { len?: number }; Returns: string }
       get_ai_runtime_streak_summary: { Args: never; Returns: Json }
       get_compliance_rls_summary: { Args: never; Returns: Json }
@@ -25987,6 +26090,7 @@ export type Database = {
         Returns: string
       }
       purge_expired_budget_decision_receipts: { Args: never; Returns: number }
+      purge_expired_voice_intents: { Args: never; Returns: number }
       purge_sita_app_open_log: { Args: never; Returns: undefined }
       purge_sita_perception_events: { Args: never; Returns: undefined }
       record_dp_epsilon_spend: {

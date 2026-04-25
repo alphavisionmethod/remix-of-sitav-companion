@@ -153,6 +153,55 @@ serve(async (req) => {
     });
   }
 
+  // ── Phase 7: budget pre-check + decision receipt ──────────────
+  const tokenEstPre = rows.reduce((s, r) => s + Math.ceil(r.content.length / 4), 0);
+  const estCostUsdPre = tokenEstPre * 0.000_000_025;
+  const estCostCentsPre = Math.max(1, Math.ceil(estCostUsdPre * 100));
+  let budgetDecision: "allow" | "degrade" | "block" = "allow";
+  let budgetReason = "no_policy";
+  let budgetState: Record<string, unknown> = {};
+  try {
+    const { data: budgetCheck, error: budgetErr } = await supabase.rpc("check_ai_budget_policies", {
+      p_user_id: user.id,
+      p_capability_key: "shared.embed.text",
+      p_estimated_cost_cents: estCostCentsPre,
+    });
+    if (!budgetErr && budgetCheck && typeof budgetCheck === "object") {
+      const bc = budgetCheck as Record<string, unknown>;
+      const decisionRaw = String(bc.decision ?? "allow").toLowerCase();
+      budgetDecision = decisionRaw === "block" ? "block" : decisionRaw === "degrade" ? "degrade" : "allow";
+      budgetReason = String(bc.reason ?? "policy_ok");
+      budgetState = bc;
+    }
+  } catch (e) {
+    console.warn("[embedder] budget check threw, defaulting to allow", e);
+  }
+
+  // Always write a decision receipt for governance.
+  await supabase.from("ai_budget_decision_receipts").insert({
+    user_id: user.id,
+    capability_key: "shared.embed.text",
+    decision: budgetDecision,
+    reason: budgetReason,
+    pre_check_state: budgetState,
+    policy_rule: "embedding_capability",
+    cost_estimate_cents: estCostCentsPre,
+    daily_pct: typeof budgetState.daily_pct === "number" ? budgetState.daily_pct : null,
+    monthly_pct: typeof budgetState.monthly_pct === "number" ? budgetState.monthly_pct : null,
+    correlation_id: correlationId,
+  }).then(({ error }) => { if (error) console.warn("[embedder] decision receipt insert failed", error); });
+
+  if (budgetDecision === "block") {
+    // Mark batch as deferred (re-stays pending) but log a failure receipt for visibility.
+    return new Response(JSON.stringify({
+      ok: false,
+      blocked: true,
+      reason: budgetReason,
+      attempted: rows.length,
+      embedded: 0,
+    }), { status: 402, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+  }
+
   let embeddings: number[][];
   try {
     embeddings = await embedTexts(rows.map((r) => r.content));
@@ -206,7 +255,7 @@ serve(async (req) => {
     prompt_tokens: tokenEst,
     total_tokens: tokenEst,
     estimated_cost_usd: tokenEst * 0.000_000_025, // ~$0.025 / 1M tokens
-    metadata: { phase: 6, scope: input.scope, embedded, attempted: rows.length },
+    metadata: { phase: 7, scope: input.scope, embedded, attempted: rows.length, budget_decision: budgetDecision },
   });
 
   return new Response(JSON.stringify({
