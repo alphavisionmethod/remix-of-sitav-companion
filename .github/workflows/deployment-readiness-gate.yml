@@ -65,6 +65,31 @@ jobs:
       - name: Phase 11 — Citation enforcement + auto cross-workspace approvals manifest (REQUIRED)
         run: node scripts/ci/check-phase-11-manifest.mjs
 
+      # ────────────────────────────────────────────────────────────────────
+      # Repository Tree Canonicalization — Wave 1 validators (WARN-only).
+      # See docs/architecture/REPOSITORY_CONSTITUTION.md and
+      # generated/audits/repository-canonicalization-plan.md.
+      # Each subsequent wave flips the relevant validator to STRICT mode.
+      # ────────────────────────────────────────────────────────────────────
+      - name: Repo canonicalization — module ownership (WARN)
+        run: npx tsx scripts/architecture/check-module-ownership.ts --warn
+        continue-on-error: true
+
+      - name: Repo canonicalization — pages thin-adapter (WARN)
+        run: npx tsx scripts/architecture/check-pages-thin-adapter.ts
+        continue-on-error: true
+
+      - name: Repo canonicalization — no duplicate platform folders (WARN)
+        run: npx tsx scripts/architecture/check-no-duplicate-platform.ts
+        continue-on-error: true
+
+      - name: Repo canonicalization — generated/docs lifecycle (WARN)
+        run: npx tsx scripts/architecture/check-generated-vs-docs.ts
+        continue-on-error: true
+
+      - name: Repo canonicalization — refresh baseline snapshot
+        run: npx tsx scripts/architecture/emit-canonicalization-baseline.ts
+
       - name: Run deployment-readiness gate
         run: npm run test:deployment-readiness
 
@@ -96,5 +121,6 @@ jobs:
             generated/key-artifact-freshness-report.json
             generated/threshold-drift-regression-report.json
             generated/deployment-readiness-report.json
+            generated/audits/repository-canonicalization-baseline.json
           retention-days: 30
           if-no-files-found: warn

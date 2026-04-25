@@ -1,0 +1,371 @@
+{
+  "generatedAt": "2026-04-25T15:40:06.035Z",
+  "schemaVersion": 1,
+  "note": "Baseline file counts captured before Repository Tree Canonicalization waves. See docs/architecture/REPOSITORY_CONSTITUTION.md.",
+  "topLevel": {
+    "src/pages": 1148,
+    "src/modules": 61,
+    "src/platform": 296,
+    "src/components": 1227,
+    "src/lib": 1710,
+    "src/domains": 111,
+    "src/runtimes": 84,
+    "src/admin": 41,
+    "src/routes": 20,
+    "src/hooks": 206,
+    "src/contexts": 28
+  },
+  "pillars": {
+    "business": {
+      "moduleOwned": 6,
+      "legacyPages": 49,
+      "revenueOffice": 69,
+      "digitalPresence": 20
+    },
+    "concierge": {
+      "moduleOwned": 4,
+      "legacyPages": 21
+    },
+    "finance": {
+      "moduleOwned": 4,
+      "legacyMoney": 34,
+      "legacyInvestmentOffice": 42
+    },
+    "health": {
+      "moduleOwned": 4,
+      "legacyPages": 9
+    }
+  },
+  "platformDuplicateCandidates": {
+    "ai_vs_ai_gateway": {
+      "ai": 1,
+      "ai_gateway": 1
+    },
+    "nova_sdk_vs_nova_runtime_sdk": {
+      "nova_sdk": 56,
+      "nova_runtime_sdk": 1
+    },
+    "policy_vs_policies": {
+      "policy": 1,
+      "policies": 1
+    },
+    "sync_vs_sync_engine": {
+      "sync": 1,
+      "sync_engine": 38
+    },
+    "core_vs_core_services_vs_os_services": {
+      "core": 1,
+      "core_services": 2,
+      "os_services": 1
+    },
+    "services_unclassified": 1
+  },
+  "adminTrees": {
+    "src/admin": 41,
+    "src/pages/admin": 583
+  },
+  "generatedTrees": {
+    "generated": 0,
+    "public/generated": 0
+  },
+  "pagesSubdirInventory": [
+    {
+      "dir": "src/pages/__tests__",
+      "files": 50
+    },
+    {
+      "dir": "src/pages/admin",
+      "files": 583
+    },
+    {
+      "dir": "src/pages/advisors",
+      "files": 5
+    },
+    {
+      "dir": "src/pages/app-platform",
+      "files": 17
+    },
+    {
+      "dir": "src/pages/apps",
+      "files": 6
+    },
+    {
+      "dir": "src/pages/atlas",
+      "files": 12
+    },
+    {
+      "dir": "src/pages/auth",
+      "files": 4
+    },
+    {
+      "dir": "src/pages/boardroom",
+      "files": 2
+    },
+    {
+      "dir": "src/pages/business",
+      "files": 49
+    },
+    {
+      "dir": "src/pages/business-advisors",
+      "files": 2
+    },
+    {
+      "dir": "src/pages/concierge",
+      "files": 21
+    },
+    {
+      "dir": "src/pages/digital-presence",
+      "files": 20
+    },
+    {
+      "dir": "src/pages/enterprise",
+      "files": 1
+    },
+    {
+      "dir": "src/pages/files",
+      "files": 9
+    },
+    {
+      "dir": "src/pages/health",
+      "files": 9
+    },
+    {
+      "dir": "src/pages/integrations",
+      "files": 5
+    },
+    {
+      "dir": "src/pages/intelligence",
+      "files": 3
+    },
+    {
+      "dir": "src/pages/investment-office",
+      "files": 42
+    },
+    {
+      "dir": "src/pages/marketing",
+      "files": 10
+    },
+    {
+      "dir": "src/pages/mission",
+      "files": 8
+    },
+    {
+      "dir": "src/pages/mission-control",
+      "files": 2
+    },
+    {
+      "dir": "src/pages/mobile",
+      "files": 27
+    },
+    {
+      "dir": "src/pages/money",
+      "files": 34
+    },
+    {
+      "dir": "src/pages/owner",
+      "files": 10
+    },
+    {
+      "dir": "src/pages/owner-mode",
+      "files": 1
+    },
+    {
+      "dir": "src/pages/personal-brain",
+      "files": 19
+    },
+    {
+      "dir": "src/pages/revenue-office",
+      "files": 69
+    },
+    {
+      "dir": "src/pages/settings",
+      "files": 9
+    },
+    {
+      "dir": "src/pages/sita",
+      "files": 2
+    },
+    {
+      "dir": "src/pages/store",
+      "files": 6
+    },
+    {
+      "dir": "src/pages/tenant",
+      "files": 1
+    },
+    {
+      "dir": "src/pages/trust",
+      "files": 8
+    },
+    {
+      "dir": "src/pages/workspace",
+      "files": 5
+    }
+  ],
+  "platformSubdirInventory": [
+    {
+      "dir": "src/platform/admin",
+      "files": 2
+    },
+    {
+      "dir": "src/platform/ai",
+      "files": 1
+    },
+    {
+      "dir": "src/platform/ai-gateway",
+      "files": 1
+    },
+    {
+      "dir": "src/platform/architecture",
+      "files": 59
+    },
+    {
+      "dir": "src/platform/auth",
+      "files": 1
+    },
+    {
+      "dir": "src/platform/capabilities",
+      "files": 1
+    },
+    {
+      "dir": "src/platform/ci",
+      "files": 1
+    },
+    {
+      "dir": "src/platform/cloud",
+      "files": 11
+    },
+    {
+      "dir": "src/platform/control-plane",
+      "files": 1
+    },
+    {
+      "dir": "src/platform/core",
+      "files": 1
+    },
+    {
+      "dir": "src/platform/core-services",
+      "files": 2
+    },
+    {
+      "dir": "src/platform/deploy",
+      "files": 2
+    },
+    {
+      "dir": "src/platform/design-system",
+      "files": 5
+    },
+    {
+      "dir": "src/platform/eventing",
+      "files": 1
+    },
+    {
+      "dir": "src/platform/execution",
+      "files": 1
+    },
+    {
+      "dir": "src/platform/experience",
+      "files": 18
+    },
+    {
+      "dir": "src/platform/fip",
+      "files": 1
+    },
+    {
+      "dir": "src/platform/governance",
+      "files": 2
+    },
+    {
+      "dir": "src/platform/migration",
+      "files": 1
+    },
+    {
+      "dir": "src/platform/notifications",
+      "files": 1
+    },
+    {
+      "dir": "src/platform/nova-runtime-sdk",
+      "files": 1
+    },
+    {
+      "dir": "src/platform/nova-sdk",
+      "files": 56
+    },
+    {
+      "dir": "src/platform/observability",
+      "files": 1
+    },
+    {
+      "dir": "src/platform/operations",
+      "files": 1
+    },
+    {
+      "dir": "src/platform/orchestration",
+      "files": 51
+    },
+    {
+      "dir": "src/platform/os-services",
+      "files": 1
+    },
+    {
+      "dir": "src/platform/policies",
+      "files": 1
+    },
+    {
+      "dir": "src/platform/policy",
+      "files": 1
+    },
+    {
+      "dir": "src/platform/product",
+      "files": 17
+    },
+    {
+      "dir": "src/platform/proof",
+      "files": 1
+    },
+    {
+      "dir": "src/platform/runtime",
+      "files": 2
+    },
+    {
+      "dir": "src/platform/search",
+      "files": 1
+    },
+    {
+      "dir": "src/platform/security",
+      "files": 1
+    },
+    {
+      "dir": "src/platform/services-unclassified",
+      "files": 1
+    },
+    {
+      "dir": "src/platform/setup",
+      "files": 1
+    },
+    {
+      "dir": "src/platform/support",
+      "files": 2
+    },
+    {
+      "dir": "src/platform/sync",
+      "files": 1
+    },
+    {
+      "dir": "src/platform/sync-engine",
+      "files": 38
+    },
+    {
+      "dir": "src/platform/topology",
+      "files": 1
+    },
+    {
+      "dir": "src/platform/truth",
+      "files": 1
+    },
+    {
+      "dir": "src/platform/verification",
+      "files": 3
+    }
+  ]
+}
