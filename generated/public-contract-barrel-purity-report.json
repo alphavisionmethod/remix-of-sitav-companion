@@ -1,0 +1,9 @@
+{
+  "generatedAt": "2026-04-25T18:30:43.838Z",
+  "gate": "public-contract-barrel-purity",
+  "scanRoot": "src/contracts",
+  "level": "block",
+  "ok": true,
+  "violationCount": 0,
+  "violations": []
+}
