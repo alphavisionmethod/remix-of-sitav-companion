@@ -372,6 +372,13 @@ export const TRUST_ACTION_REGISTRY = {
     riskTier: "low", requireApproval: false, reversible: true,
     defaultAuthorityLevel: "pre_approved",
   },
+  "shared.voice.session.start": {
+    key: "shared.voice.session.start", pillar: "shared",
+    label: "Start voice session",
+    description: "Begin a voice dictation/conversation session and stream transcripts to the spine.",
+    riskTier: "low", requireApproval: false, reversible: true,
+    defaultAuthorityLevel: "pre_approved",
+  },
 } as const satisfies Record<string, TrustActionPreset>;
 
 export type TrustActionKey = keyof typeof TRUST_ACTION_REGISTRY;

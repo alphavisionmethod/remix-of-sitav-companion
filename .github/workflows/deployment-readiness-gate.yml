@@ -47,6 +47,9 @@ jobs:
       - name: Phase 5 — Knowledge spine manifest freshness (REQUIRED)
         run: node scripts/ci/check-knowledge-spine-manifest.mjs --check
 
+      - name: Phase 6 — Semantic spine manifest freshness (REQUIRED)
+        run: node scripts/ci/check-semantic-spine-manifest.mjs --check
+
       - name: Run deployment-readiness gate
         run: npm run test:deployment-readiness
 
