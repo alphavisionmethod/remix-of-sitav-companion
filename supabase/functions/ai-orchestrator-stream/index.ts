@@ -239,23 +239,86 @@ serve(async (req) => {
         }
 
         // ── 3. Build augmented messages with grounding context. ──
+        // Phase 11: build a single numbered ground-truth list and tag federated
+        // items with [F#N] vs own with [#N] so we can enforce citations.
+        type CitedItem = {
+          token: string; // [#1] or [F#3]
+          isFederated: boolean;
+          peerWorkspaceId: string | null;
+          federationId: string | null;
+          source: "memory" | "chunk" | "auto_memory";
+          sourceId: string;
+          excerpt: string;
+        };
+        const citationItems: CitedItem[] = [];
+        let counter = 0;
+        const pushItem = (
+          isFed: boolean,
+          source: CitedItem["source"],
+          sourceId: string,
+          excerpt: string,
+          peer: string | null,
+          fed: string | null,
+        ) => {
+          counter += 1;
+          const token = isFed ? `[F#${counter}]` : `[#${counter}]`;
+          citationItems.push({
+            token, isFederated: isFed, peerWorkspaceId: peer, federationId: fed,
+            source, sourceId, excerpt: excerpt.slice(0, 600),
+          });
+          return token;
+        };
+
         const groundingBlocks: string[] = [];
         if (semanticMemories.length) {
-          groundingBlocks.push(`# Semantic memories\n${semanticMemories.map((m, i) => `${i + 1}. [sim ${(m.similarity * 100).toFixed(0)}%] ${m.content}`).join("\n")}`);
+          const lines = semanticMemories.map((m) => {
+            const tok = pushItem(
+              Boolean(m.via_federation),
+              "memory", m.memory_id, m.content,
+              m.peer_workspace_id, m.via_federation,
+            );
+            return `${tok} [sim ${(m.similarity * 100).toFixed(0)}%] ${m.content}`;
+          });
+          groundingBlocks.push(`# Semantic memories\n${lines.join("\n")}`);
         }
         if (semanticChunks.length) {
-          groundingBlocks.push(`# Knowledge chunks\n${semanticChunks.map((c, i) => `${i + 1}. [sim ${(c.similarity * 100).toFixed(0)}%] ${c.content.slice(0, 600)}`).join("\n")}`);
+          const lines = semanticChunks.map((c) => {
+            const tok = pushItem(
+              Boolean(c.via_federation),
+              "chunk", c.chunk_id, c.content,
+              c.peer_workspace_id, c.via_federation,
+            );
+            return `${tok} [sim ${(c.similarity * 100).toFixed(0)}%] ${c.content.slice(0, 600)}`;
+          });
+          groundingBlocks.push(`# Knowledge chunks\n${lines.join("\n")}`);
         }
         if (autoMemories.length) {
-          groundingBlocks.push(`# Recent workspace memories\n${autoMemories.map((m, i) => `${i + 1}. ${m.content}`).join("\n")}`);
+          const lines = autoMemories.map((m) => {
+            const tok = pushItem(false, "auto_memory", m.memory_id, m.content, null, null);
+            return `${tok} ${m.content}`;
+          });
+          groundingBlocks.push(`# Recent workspace memories\n${lines.join("\n")}`);
         }
+
+        const federatedItems = citationItems.filter((c) => c.isFederated);
         const augmentedMessages = [...body.messages];
         if (groundingBlocks.length) {
+          const citationRules = [
+            "CITATION RULES (Phase 11):",
+            "- When you use information from a grounded item, cite it inline with its token,",
+            "  exactly as shown (e.g. [#2] or [F#5]).",
+            "- Items prefixed with [F#…] come from a *federated peer workspace*. If you rely on",
+            "  any [F#…] item, you MUST cite it with its [F#…] token. Never strip the F.",
+            "- If you do not use a particular item, do not cite it.",
+            "- Do not invent tokens. Only cite tokens that appear in the grounded context below.",
+          ].join("\n");
           augmentedMessages.unshift({
             role: "system",
             content:
-              "You have the following grounded context. Use it when relevant; cite naturally if it helps. " +
-              "If context is irrelevant, ignore it.\n\n" + groundingBlocks.join("\n\n"),
+              "You have the following grounded context. Use it when relevant; cite per the rules. " +
+              "If context is irrelevant, ignore it.\n\n" +
+              citationRules + "\n\n" +
+              groundingBlocks.join("\n\n"),
           });
         }
 
