@@ -10,7 +10,7 @@ import { SitaCard, SitaCardTitle } from "@/platform/sita/components/sita/SitaCar
 import { Input } from "@/components/ui/input";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { AdminPageHeader, TrustRibbon, StatusBadge } from "@/components/sita/admin";
+import { AdminPageHeader, TrustRibbon, StatusBadge } from "@/platform/sita/components/sita/admin";
 import { useOSRuntime } from "@/hooks/useOSRuntime";
 import { useRecoverySummary } from "@/hooks/use-mission-control-views";
 import type { ReplayableWorkflowView } from "@/packages/contracts";

@@ -1,11 +1,11 @@
 import { useAuth } from "@/contexts/AuthContext";
 import { SurfaceTrustStrip } from "@/platform/sita/components/sita/SurfaceTrustStrip";
-import { ConciergePageWrapper } from "@/components/concierge";
+import { ConciergePageWrapper } from "@/modules/concierge/components/concierge";
 import { KPITile, SitaTabs, RiskCard } from "@/platform/sita/components/sita/SitaComponents";
 import { TrustBadge } from "@/platform/sita/components/sita/TrustBadge";
 import { GlassCard } from "@/platform/sita/components/sita/PremiumPageComponents";
 import { BoardroomSection, OverloadCard } from "@/platform/sita/components/sita/HouseholdComponents";
-import { ConciergeAdvisorInsightCard, ConciergeEmptyState } from "@/components/concierge";
+import { ConciergeAdvisorInsightCard, ConciergeEmptyState } from "@/modules/concierge/components/concierge";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import {

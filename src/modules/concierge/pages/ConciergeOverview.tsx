@@ -5,9 +5,9 @@ import { toast } from "sonner";
 // ═══════════════════════════════════════════════════════════════
 
 import { useAuth } from "@/contexts/AuthContext";
-import { HeroCard, QueueCard, ActionCard, TimelineCard, AdvisorCard, StatusCard } from "@/components/sita/cards";
+import { HeroCard, QueueCard, ActionCard, TimelineCard, AdvisorCard, StatusCard } from "@/platform/sita/components/sita/cards";
 import { DomainCard } from "@/platform/sita/components/sita/cards/DomainCard";
-import { UrgencyBadge, FreshnessBadge } from "@/components/sita/badges";
+import { UrgencyBadge, FreshnessBadge } from "@/platform/sita/components/sita/badges";
 import { ListReveal, ListRevealItem } from "@/platform/sita/components/sita/motion/AppTransitions";
 import { AppSurface } from "@/platform/sita/components/sita/surfaces/AppSurface";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";

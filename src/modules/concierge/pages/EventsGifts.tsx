@@ -1,6 +1,6 @@
 import { KPITile, SitaTabs, EmptyState } from "@/platform/sita/components/sita/SitaComponents";
-import { ConciergeAdvisorInsightCard, EventPrepCard, ConciergePageWrapper, ConciergeEmptyState } from "@/components/concierge";
-import type { EventPrep } from "@/components/concierge";
+import { ConciergeAdvisorInsightCard, EventPrepCard, ConciergePageWrapper, ConciergeEmptyState } from "@/modules/concierge/components/concierge";
+import type { EventPrep } from "@/modules/concierge/components/concierge";
 import { TrustBadge } from "@/platform/sita/components/sita/TrustBadge";
 import { useState } from "react";
 import { Gift, Heart, Calendar, PartyPopper, Star, Clock, CheckCircle, ShoppingBag, Mail } from "lucide-react";

@@ -16,8 +16,8 @@ import {
 import { useCollectionsAccounts } from "@/hooks/use-domain-data";
 import type { CollectionsAccount } from "@/data/fixtures/mock-data/collections";
 
-import { HeroCard, QueueCard, StatusCard, ActionCard, SummaryCard, TimelineCard } from "@/components/sita/cards";
-import { ExecutionBadge, UrgencyBadge } from "@/components/sita/badges";
+import { HeroCard, QueueCard, StatusCard, ActionCard, SummaryCard, TimelineCard } from "@/platform/sita/components/sita/cards";
+import { ExecutionBadge, UrgencyBadge } from "@/platform/sita/components/sita/badges";
 import { SplitWorkspace } from "@/platform/sita/components/sita/surfaces/SplitWorkspace";
 import { AppSurface } from "@/platform/sita/components/sita/surfaces/AppSurface";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";

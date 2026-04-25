@@ -1,7 +1,7 @@
 import { KPITile, SitaTabs, EmptyState } from "@/platform/sita/components/sita/SitaComponents";
 import { TrustBadge } from "@/platform/sita/components/sita/TrustBadge";
 import { GroceryContinuityCard } from "@/platform/sita/components/sita/HouseholdComponents";
-import { ConciergeAdvisorInsightCard, ConciergePageWrapper, ConciergeEmptyState } from "@/components/concierge";
+import { ConciergeAdvisorInsightCard, ConciergePageWrapper, ConciergeEmptyState } from "@/modules/concierge/components/concierge";
 import { ShoppingCart, Plus, Check, Clock, DollarSign, Leaf, AlertCircle, RotateCcw, Sparkles, Store, CalendarCheck, Plane } from "lucide-react";
 import { useState } from "react";
 import { motion } from "framer-motion";

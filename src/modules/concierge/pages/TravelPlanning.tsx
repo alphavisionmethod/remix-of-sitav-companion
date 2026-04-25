@@ -1,11 +1,11 @@
 import { useAuth } from "@/contexts/AuthContext";
-import { HeroCard, QueueCard, TimelineCard, StatusCard, AdvisorCard } from "@/components/sita/cards";
-import { FreshnessBadge } from "@/components/sita/badges";
+import { HeroCard, QueueCard, TimelineCard, StatusCard, AdvisorCard } from "@/platform/sita/components/sita/cards";
+import { FreshnessBadge } from "@/platform/sita/components/sita/badges";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { CrossAppAction } from "@/platform/sita/components/sita/CrossAppAction";
 import { SitaTabs, SectionHeader } from "@/platform/sita/components/sita/SitaComponents";
 import { TripCard, PrepCard } from "@/platform/sita/components/sita/HouseholdComponents";
-import { ConciergePageWrapper, ConciergeEmptyState, TravelReadinessCard, ReservationStatusCard, ConciergeAdvisorInsightCard } from "@/components/concierge";
+import { ConciergePageWrapper, ConciergeEmptyState, TravelReadinessCard, ReservationStatusCard, ConciergeAdvisorInsightCard } from "@/modules/concierge/components/concierge";
 import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
 import { cn } from "@/lib/utils";
 import { useState } from "react";

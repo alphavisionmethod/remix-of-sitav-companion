@@ -1,4 +1,4 @@
-import { ConciergePageWrapper } from "@/components/concierge";
+import { ConciergePageWrapper } from "@/modules/concierge/components/concierge";
 import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
 import { KPITile, EmptyState } from "@/platform/sita/components/sita/SitaComponents";
 import { SectionSkeleton } from "@/platform/sita/components/sita/SectionSkeleton";

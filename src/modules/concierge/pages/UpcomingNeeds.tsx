@@ -1,13 +1,13 @@
 import { useAuth } from "@/contexts/AuthContext";
-import { HeroCard, QueueCard, TimelineCard, StatusCard } from "@/components/sita/cards";
+import { HeroCard, QueueCard, TimelineCard, StatusCard } from "@/platform/sita/components/sita/cards";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { SitaTabs } from "@/platform/sita/components/sita/SitaComponents";
 import { PremiumEmptyState } from "@/platform/sita/components/sita/PremiumEmptyState";
 import { ModuleAdvisorInsight } from "@/platform/sita/components/sita/domain-shared/ModuleAdvisorInsight";
-import { ConciergePageWrapper, ConciergeEmptyState, SupportBurdenCard, ConciergeReviewQueue } from "@/components/concierge";
+import { ConciergePageWrapper, ConciergeEmptyState, SupportBurdenCard, ConciergeReviewQueue } from "@/modules/concierge/components/concierge";
 import { ConciergeAdvisorInsightCard } from "@/modules/concierge/components/concierge/ConciergeAdvisorInsightCard";
-import type { UpcomingObligation, ReviewItem } from "@/components/concierge";
-import { UpcomingObligationsCard } from "@/components/concierge";
+import type { UpcomingObligation, ReviewItem } from "@/modules/concierge/components/concierge";
+import { UpcomingObligationsCard } from "@/modules/concierge/components/concierge";
 import { AppSurface } from "@/platform/sita/components/sita/surfaces/AppSurface";
 import { cn } from "@/lib/utils";
 import { useState } from "react";

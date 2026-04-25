@@ -3,7 +3,7 @@ import { toast } from "sonner";
 // SITA OS — Money Office: Debt, Credit & Liability Office
 // ═══════════════════════════════════════════════════════════════
 
-import { HeroCard, StatusCard, SummaryCard } from "@/components/sita/cards";
+import { HeroCard, StatusCard, SummaryCard } from "@/platform/sita/components/sita/cards";
 import { ModuleAdvisorInsight } from "@/platform/sita/components/sita/domain-shared/ModuleAdvisorInsight";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { CreditCard, TrendingDown, AlertTriangle, Shield, DollarSign, Target, BarChart3, CheckCircle } from "lucide-react";

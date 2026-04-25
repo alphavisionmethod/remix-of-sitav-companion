@@ -2,7 +2,7 @@
 // SITA OS — Financial Peace Score (Signature Emotional Surface)
 // ═══════════════════════════════════════════════════════════════
 
-import { HeroCard, StatusCard, AdvisorCard } from "@/components/sita/cards";
+import { HeroCard, StatusCard, AdvisorCard } from "@/platform/sita/components/sita/cards";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { ModuleAdvisorInsight } from "@/platform/sita/components/sita/domain-shared/ModuleAdvisorInsight";
 import { ConfidenceBar } from "@/platform/sita/components/sita/primitives/ConfidenceBar";

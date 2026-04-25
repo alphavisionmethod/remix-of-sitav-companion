@@ -2,8 +2,8 @@ import { KPITile, SitaTabs, EmptyState } from "@/platform/sita/components/sita/S
 import { TrustBadge } from "@/platform/sita/components/sita/TrustBadge";
 import { StateBadge } from "@/platform/sita/components/sita/StateBadge";
 import { GlassCard } from "@/platform/sita/components/sita/PremiumPageComponents";
-import { ConciergeAdvisorInsightCard, ConciergeAutomationRuleCard, ConciergePageWrapper } from "@/components/concierge";
-import type { AutomationRule } from "@/components/concierge";
+import { ConciergeAdvisorInsightCard, ConciergeAutomationRuleCard, ConciergePageWrapper } from "@/modules/concierge/components/concierge";
+import type { AutomationRule } from "@/modules/concierge/components/concierge";
 import { useState } from "react";
 import { Workflow, ShoppingCart, Calendar, Wrench, GraduationCap, Plane, Gift, Bell, CheckCircle, Clock, AlertTriangle, Play, Pause, Sparkles, Shield, Eye, Zap } from "lucide-react";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";

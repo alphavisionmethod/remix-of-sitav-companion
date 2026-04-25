@@ -1,8 +1,8 @@
 import { useAuth } from "@/contexts/AuthContext";
 import { KPITile, SitaTabs, ProofCard } from "@/platform/sita/components/sita/SitaComponents";
 import { TrustBadge } from "@/platform/sita/components/sita/TrustBadge";
-import { ConciergeProofChip, ConciergeReceiptViewer, ConciergePageWrapper, ConciergeEmptyState } from "@/components/concierge";
-import type { ReceiptRecord } from "@/components/concierge";
+import { ConciergeProofChip, ConciergeReceiptViewer, ConciergePageWrapper, ConciergeEmptyState } from "@/modules/concierge/components/concierge";
+import type { ReceiptRecord } from "@/modules/concierge/components/concierge";
 import { useState } from "react";
 import { Shield, CheckCircle, Clock, FileText, ShoppingCart, Calendar, Wrench, GraduationCap, Plane, Gift } from "lucide-react";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";

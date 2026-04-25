@@ -5,7 +5,7 @@ import { SectionSkeleton } from "@/platform/sita/components/sita/SectionSkeleton
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { ModuleAdvisorInsight } from "@/platform/sita/components/sita/domain-shared/ModuleAdvisorInsight";
 import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
-import { QueueCard } from "@/components/sita/cards";
+import { QueueCard } from "@/platform/sita/components/sita/cards";
 import { useState, useMemo } from "react";
 import {
   DollarSign, ArrowDownLeft, ArrowUpRight, Clock, AlertTriangle, CheckCircle,

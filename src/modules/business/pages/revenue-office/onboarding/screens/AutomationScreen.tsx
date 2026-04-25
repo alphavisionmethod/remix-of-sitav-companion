@@ -1,7 +1,7 @@
 import { Eye, FileText, CheckCircle, Zap, Check, DollarSign, Star, AlertTriangle, Heart, Award, Shield } from "lucide-react";
 import { Toggle, SectionTitle, ChapterBanner } from "../primitives";
 // Canonical onboarding primitives (drift-prevented by check-onboarding-components-folder)
-import { OnboardingFooterNav as _CanonNav } from "@/components/onboarding";
+import { OnboardingFooterNav as _CanonNav } from "@/platform/setup/components/onboarding";
 void _CanonNav;
 import type { ScreenProps } from "../types";
 import { useCallback } from "react";

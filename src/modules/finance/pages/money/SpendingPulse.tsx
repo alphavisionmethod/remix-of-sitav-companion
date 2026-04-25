@@ -8,8 +8,8 @@ import {
 import { cn } from "@/lib/utils";
 
 // New design system
-import { HeroCard, QueueCard, StatusCard, ActionCard } from "@/components/sita/cards";
-import { FreshnessBadge, UrgencyBadge } from "@/components/sita/badges";
+import { HeroCard, QueueCard, StatusCard, ActionCard } from "@/platform/sita/components/sita/cards";
+import { FreshnessBadge, UrgencyBadge } from "@/platform/sita/components/sita/badges";
 import { SplitWorkspace } from "@/platform/sita/components/sita/surfaces/SplitWorkspace";
 import { AppSurface } from "@/platform/sita/components/sita/surfaces/AppSurface";
 import { ListReveal, ListRevealItem } from "@/platform/sita/components/sita/motion/AppTransitions";

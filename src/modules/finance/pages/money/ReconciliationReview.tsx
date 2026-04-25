@@ -3,7 +3,7 @@ import { TrustBadge } from "@/platform/sita/components/sita/TrustBadge";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { ModuleAdvisorInsight } from "@/platform/sita/components/sita/domain-shared/ModuleAdvisorInsight";
 import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
-import { QueueCard } from "@/components/sita/cards";
+import { QueueCard } from "@/platform/sita/components/sita/cards";
 import { useState } from "react";
 import {
   Search, AlertTriangle, HelpCircle, RefreshCw, CheckCircle2, ArrowRight,

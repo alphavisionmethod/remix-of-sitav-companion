@@ -5,8 +5,8 @@
 
 import { SplitWorkspace } from "@/platform/sita/components/sita/surfaces/SplitWorkspace";
 import { AppSurface } from "@/platform/sita/components/sita/surfaces/AppSurface";
-import { HeroCard, SummaryCard, AdvisorCard } from "@/components/sita/cards";
-import { FreshnessBadge, TrustBadge } from "@/components/sita/badges";
+import { HeroCard, SummaryCard, AdvisorCard } from "@/platform/sita/components/sita/cards";
+import { FreshnessBadge, TrustBadge } from "@/platform/sita/components/sita/badges";
 import { ListReveal, ListRevealItem } from "@/platform/sita/components/sita/motion/AppTransitions";
 import { PremiumEmptyState } from "@/platform/sita/components/sita/PremiumEmptyState";
 import { CustomerDetailPane } from "@/modules/business/components/business/CustomerDetailPane";

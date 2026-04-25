@@ -15,8 +15,8 @@ import { ConfirmationDialog } from "@/platform/sita/components/sita/Confirmation
 import { useQueryFreshness } from "@/hooks/use-query-freshness";
 
 // New design system imports
-import { HeroCard, QueueCard, ActionCard, StatusCard } from "@/components/sita/cards";
-import { ExecutionBadge, FreshnessBadge } from "@/components/sita/badges";
+import { HeroCard, QueueCard, ActionCard, StatusCard } from "@/platform/sita/components/sita/cards";
+import { ExecutionBadge, FreshnessBadge } from "@/platform/sita/components/sita/badges";
 import { SplitWorkspace } from "@/platform/sita/components/sita/surfaces/SplitWorkspace";
 import { DetailDrawer } from "@/platform/sita/components/sita/surfaces/DetailDrawer";
 import { AppSurface } from "@/platform/sita/components/sita/surfaces/AppSurface";

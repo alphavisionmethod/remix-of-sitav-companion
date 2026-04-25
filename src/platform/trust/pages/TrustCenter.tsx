@@ -21,8 +21,8 @@ import {
   ShieldCheck, ShieldAlert, Wifi, WifiOff, Globe, Pause, Play,
   RotateCcw, FileText
 } from "lucide-react";
-import { HeroCard, StatusCard, ProofCard, AdvisorCard } from "@/components/sita/cards";
-import { TrustBadge } from "@/components/sita/badges";
+import { HeroCard, StatusCard, ProofCard, AdvisorCard } from "@/platform/sita/components/sita/cards";
+import { TrustBadge } from "@/platform/sita/components/sita/badges";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
 import { EmptyState } from "@/platform/sita/components/sita/SitaComponents";

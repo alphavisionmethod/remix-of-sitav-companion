@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Lock, Fingerprint, Key, Mail, Shield, Check, ChevronRight, Download, AlertCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { SetupStageHeader } from "@/components/sita/setup";
+import { SetupStageHeader } from "@/platform/sita/components/sita/setup";
 import { biometricAuthBridge } from "@/lib/core-services/biometric-auth";
 
 type AccessMethod = "pin" | "password" | "";

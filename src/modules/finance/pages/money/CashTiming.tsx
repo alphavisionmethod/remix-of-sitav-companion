@@ -1,5 +1,5 @@
 import { toast } from "sonner";
-import { HeroCard, SummaryCard, StatusCard, TimelineCard } from "@/components/sita/cards";
+import { HeroCard, SummaryCard, StatusCard, TimelineCard } from "@/platform/sita/components/sita/cards";
 import { ModuleAdvisorInsight } from "@/platform/sita/components/sita/domain-shared/ModuleAdvisorInsight";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { PremiumEmptyState } from "@/platform/sita/components/sita/PremiumEmptyState";

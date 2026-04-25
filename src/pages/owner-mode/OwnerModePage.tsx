@@ -13,7 +13,7 @@ import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { AdminPageHeader, TrustRibbon, SafeModeBanner, QuickActionsDock, StatusBadge } from "@/components/sita/admin";
+import { AdminPageHeader, TrustRibbon, SafeModeBanner, QuickActionsDock, StatusBadge } from "@/platform/sita/components/sita/admin";
 import {
   useWhatMattersNow, useMissionControlSummary, useFounderCostSummary,
   useTrustSummary, useRecoverySummary, useConnectorSummaries, useAITeamSummary,

@@ -1,5 +1,5 @@
-import { HeroCard, SummaryCard, StatusCard, AdvisorCard } from "@/components/sita/cards";
-import { TrustBadge } from "@/components/sita/badges";
+import { HeroCard, SummaryCard, StatusCard, AdvisorCard } from "@/platform/sita/components/sita/cards";
+import { TrustBadge } from "@/platform/sita/components/sita/badges";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { ReserveProgressChart, ReserveOverTimeChart } from "@/platform/sita/components/sita/SitaCharts";
 import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";

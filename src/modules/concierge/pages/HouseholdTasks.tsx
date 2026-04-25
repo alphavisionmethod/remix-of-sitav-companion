@@ -2,7 +2,7 @@ import { useAction } from "@/hooks/use-action";
 import { KPITile, SitaTabs, EmptyState } from "@/platform/sita/components/sita/SitaComponents";
 import { TrustBadge } from "@/platform/sita/components/sita/TrustBadge";
 import { MemberAvatar } from "@/platform/sita/components/sita/HouseholdComponents";
-import { ConciergeAdvisorInsightCard, ConciergePageWrapper } from "@/components/concierge";
+import { ConciergeAdvisorInsightCard, ConciergePageWrapper } from "@/modules/concierge/components/concierge";
 import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";

@@ -117,35 +117,35 @@ const LOADERS: Record<string, Loader> = {
 
   // truth-closure
   "@/components/admin/ai-runtime/AIRuntimeNightlyTruthPanel":
-    () => import("@/components/admin/ai-runtime/AIRuntimeNightlyTruthPanel"),
+    () => import("@/platform/admin/components/admin/ai-runtime/AIRuntimeNightlyTruthPanel"),
   "@/components/admin/ai-runtime/ConnectorTruthSummaryPanel":
-    () => import("@/components/admin/ai-runtime/ConnectorTruthSummaryPanel"),
+    () => import("@/platform/admin/components/admin/ai-runtime/ConnectorTruthSummaryPanel"),
   "@/components/admin/ai-runtime/MobileScopeTruthPanel":
-    () => import("@/components/admin/ai-runtime/MobileScopeTruthPanel"),
+    () => import("@/platform/admin/components/admin/ai-runtime/MobileScopeTruthPanel"),
   "@/components/admin/ai-runtime/FrontendPolishTruthPanel":
-    () => import("@/components/admin/ai-runtime/FrontendPolishTruthPanel"),
+    () => import("@/platform/admin/components/admin/ai-runtime/FrontendPolishTruthPanel"),
   "@/components/admin/ai-runtime/AdminValidationTruthPanel":
-    () => import("@/components/admin/ai-runtime/AdminValidationTruthPanel"),
+    () => import("@/platform/admin/components/admin/ai-runtime/AdminValidationTruthPanel"),
   "@/components/admin/ai-runtime/HardwareAndOperatorTruthPanel":
-    () => import("@/components/admin/ai-runtime/HardwareAndOperatorTruthPanel"),
+    () => import("@/platform/admin/components/admin/ai-runtime/HardwareAndOperatorTruthPanel"),
   "@/components/admin/ai-runtime/SecurityAndPortabilityTruthPanel":
-    () => import("@/components/admin/ai-runtime/SecurityAndPortabilityTruthPanel"),
+    () => import("@/platform/admin/components/admin/ai-runtime/SecurityAndPortabilityTruthPanel"),
   "@/components/admin/ai-runtime/ArchitecturalCleanupTruthPanel":
-    () => import("@/components/admin/ai-runtime/ArchitecturalCleanupTruthPanel"),
+    () => import("@/platform/admin/components/admin/ai-runtime/ArchitecturalCleanupTruthPanel"),
   "@/components/admin/ai-runtime/EconomicTrustFutureTruthPanel":
-    () => import("@/components/admin/ai-runtime/EconomicTrustFutureTruthPanel"),
+    () => import("@/platform/admin/components/admin/ai-runtime/EconomicTrustFutureTruthPanel"),
   "@/components/admin/ai-runtime/ArchitectureHardeningTruthPanel":
-    () => import("@/components/admin/ai-runtime/ArchitectureHardeningTruthPanel"),
+    () => import("@/platform/admin/components/admin/ai-runtime/ArchitectureHardeningTruthPanel"),
   "@/components/admin/ai-runtime/FlagshipSurfaceClosureTruthPanel":
-    () => import("@/components/admin/ai-runtime/FlagshipSurfaceClosureTruthPanel"),
+    () => import("@/platform/admin/components/admin/ai-runtime/FlagshipSurfaceClosureTruthPanel"),
   "@/components/admin/ai-runtime/AdminEmptyStateClosureTruthPanel":
-    () => import("@/components/admin/ai-runtime/AdminEmptyStateClosureTruthPanel"),
+    () => import("@/platform/admin/components/admin/ai-runtime/AdminEmptyStateClosureTruthPanel"),
   "@/components/admin/ai-runtime/AdminCoherenceClosureTruthPanel":
-    () => import("@/components/admin/ai-runtime/AdminCoherenceClosureTruthPanel"),
+    () => import("@/platform/admin/components/admin/ai-runtime/AdminCoherenceClosureTruthPanel"),
   "@/components/admin/ai-runtime/TrustStateAndCopyClosureTruthPanel":
-    () => import("@/components/admin/ai-runtime/TrustStateAndCopyClosureTruthPanel"),
+    () => import("@/platform/admin/components/admin/ai-runtime/TrustStateAndCopyClosureTruthPanel"),
   "@/components/admin/ai-runtime/FrontendTruthBackingClosureTruthPanel":
-    () => import("@/components/admin/ai-runtime/FrontendTruthBackingClosureTruthPanel"),
+    () => import("@/platform/admin/components/admin/ai-runtime/FrontendTruthBackingClosureTruthPanel"),
 };
 
 function buildModule(spec: AIEngineerTabSpec): HubModule {

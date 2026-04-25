@@ -4,7 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { SplitWorkspace } from "@/platform/sita/components/sita/surfaces/SplitWorkspace";
-import { HeroCard, QueueCard, ProofCard, StatusCard } from "@/components/sita/cards";
+import { HeroCard, QueueCard, ProofCard, StatusCard } from "@/platform/sita/components/sita/cards";
 import { ModuleAdvisorInsight } from "@/platform/sita/components/sita/domain-shared/ModuleAdvisorInsight";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { PremiumEmptyState } from "@/platform/sita/components/sita/PremiumEmptyState";

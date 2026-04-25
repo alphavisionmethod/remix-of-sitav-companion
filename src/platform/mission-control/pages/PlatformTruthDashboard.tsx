@@ -4,8 +4,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
-import { TruthBadge, DegradedStateBanner, StalenessIndicator } from "@/components/sita/truth";
-import type { FreshnessStatus, SourceType } from "@/components/sita/truth";
+import { TruthBadge, DegradedStateBanner, StalenessIndicator } from "@/platform/sita/components/sita/truth";
+import type { FreshnessStatus, SourceType } from "@/platform/sita/components/sita/truth";
 import {
   CheckCircle, AlertTriangle, XCircle, Shield, Activity, Clock, Target, Rocket,
   RefreshCw, Database, GitBranch, Eye, FileCheck, Zap, BarChart3, Radio, Lock

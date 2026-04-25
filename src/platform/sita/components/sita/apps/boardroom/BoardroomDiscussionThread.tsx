@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 import { Brain, ChevronDown, ChevronRight, FileCheck, MessageCircle, AlertTriangle, Mic, Volume2, Play, Pause } from "lucide-react";
-import { ConfidenceBar } from "@/components/sita/primitives";
+import { ConfidenceBar } from "@/platform/sita/components/sita/primitives";
 import { ADVISOR_ROSTERS, type AdvisorRole } from "@/domains/advisors/topology";
 import { TalkingAvatar } from "./TalkingAvatar";
 import { useDataMode } from "@/contexts/DataModeContext";

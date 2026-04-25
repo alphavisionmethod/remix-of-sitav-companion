@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 import { AlertTriangle, HelpCircle, CheckCircle, Database, Brain, Clock, ShieldAlert, Eye, EyeOff } from "lucide-react";
-import { ScenarioComparison, ConfidenceBand } from "@/components/sita/primitives";
+import { ScenarioComparison, ConfidenceBand } from "@/platform/sita/components/sita/primitives";
 
 interface Props {
   scope: "global" | "business" | "finance" | "concierge";

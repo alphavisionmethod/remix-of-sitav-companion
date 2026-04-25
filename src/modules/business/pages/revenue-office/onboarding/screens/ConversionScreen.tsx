@@ -1,7 +1,7 @@
 import { Globe, Phone, MessageSquare, FileText, ShoppingCart, MapPin, Users, Mail, Calendar, Brain, Eye, Shield, Heart, ClipboardList, AlertTriangle } from "lucide-react";
 import { Toggle, SectionTitle, ScreenHeader } from "../primitives";
 // Canonical onboarding primitives (drift-prevented by check-onboarding-components-folder)
-import { OnboardingChoiceCard as _CanonChoice } from "@/components/onboarding";
+import { OnboardingChoiceCard as _CanonChoice } from "@/platform/setup/components/onboarding";
 void _CanonChoice;
 import SitaInsightCallout from "./SitaInsightCallout";
 import type { ScreenProps } from "../types";

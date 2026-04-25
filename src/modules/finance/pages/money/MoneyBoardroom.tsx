@@ -1,9 +1,9 @@
-import { HeroCard, SummaryCard, ComparisonCard, ProofCard, AdvisorCard, QueueCard, ActionCard } from "@/components/sita/cards";
+import { HeroCard, SummaryCard, ComparisonCard, ProofCard, AdvisorCard, QueueCard, ActionCard } from "@/platform/sita/components/sita/cards";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { BoardroomCinematic } from "@/platform/sita/components/sita/motion/AppTransitions";
 import { SitaTabs } from "@/platform/sita/components/sita/SitaComponents";
 import { SitaCard, SitaCardTitle } from "@/platform/sita/components/sita/SitaCard";
-import { TrustBadge } from "@/components/sita/badges";
+import { TrustBadge } from "@/platform/sita/components/sita/badges";
 import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
 import { DomainAdvisorBoard } from "@/platform/sita/components/sita/domain-shared/DomainAdvisorBoard";
 import { cn } from "@/lib/utils";

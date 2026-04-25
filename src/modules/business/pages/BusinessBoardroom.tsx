@@ -1,6 +1,6 @@
 import { useAuth } from "@/contexts/AuthContext";
 import { GlobalErrorBoundary } from "@/platform/sita/components/sita/GlobalErrorBoundary";
-import { HeroCard, SummaryCard, ComparisonCard, ProofCard, AdvisorCard, QueueCard, TimelineCard } from "@/components/sita/cards";
+import { HeroCard, SummaryCard, ComparisonCard, ProofCard, AdvisorCard, QueueCard, TimelineCard } from "@/platform/sita/components/sita/cards";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { BoardroomCinematic } from "@/platform/sita/components/sita/motion/AppTransitions";
 import { SitaTabs } from "@/platform/sita/components/sita/SitaComponents";

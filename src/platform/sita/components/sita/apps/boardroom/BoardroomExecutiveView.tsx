@@ -5,7 +5,7 @@ import {
   AlertTriangle, ArrowUpRight, ArrowDownRight, Minus,
   Briefcase, DollarSign, Users, Sparkles, FileCheck, Play, Clock, Zap, MessageCircle,
 } from "lucide-react";
-import { ConfidenceBar, ExecutionChainTimeline, buildDefaultChain } from "@/components/sita/primitives";
+import { ConfidenceBar, ExecutionChainTimeline, buildDefaultChain } from "@/platform/sita/components/sita/primitives";
 import { EvidenceChain, type EvidenceNode } from "@/platform/sita/components/sita/primitives/EvidenceChain";
 import { BoardroomAdvisorCouncil } from "./BoardroomAdvisorCouncil";
 import { BoardroomIssueFrame } from "./BoardroomIssueFrame";

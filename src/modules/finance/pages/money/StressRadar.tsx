@@ -2,7 +2,7 @@
 // SITA OS — Financial Stress Radar (Signature Emotional Surface)
 // ═══════════════════════════════════════════════════════════════
 
-import { HeroCard, QueueCard, StatusCard } from "@/components/sita/cards";
+import { HeroCard, QueueCard, StatusCard } from "@/platform/sita/components/sita/cards";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { ModuleAdvisorInsight } from "@/platform/sita/components/sita/domain-shared/ModuleAdvisorInsight";
 import { ConfidenceBar } from "@/platform/sita/components/sita/primitives/ConfidenceBar";

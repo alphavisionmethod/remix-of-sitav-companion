@@ -7,8 +7,8 @@ import { toast } from "sonner";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { fromTable } from "@/lib/supabase-helpers";
 
-import { HeroCard, SummaryCard, ActionCard, QueueCard } from "@/components/sita/cards";
-import { ExecutionBadge } from "@/components/sita/badges";
+import { HeroCard, SummaryCard, ActionCard, QueueCard } from "@/platform/sita/components/sita/cards";
+import { ExecutionBadge } from "@/platform/sita/components/sita/badges";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { SplitWorkspace } from "@/platform/sita/components/sita/surfaces/SplitWorkspace";
 import { AppSurface } from "@/platform/sita/components/sita/surfaces/AppSurface";

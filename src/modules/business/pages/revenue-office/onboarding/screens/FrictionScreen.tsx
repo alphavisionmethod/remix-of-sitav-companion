@@ -4,7 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Flame, Users, MessageSquare, Target, Phone, DollarSign, Package, Heart, Star, RefreshCw, AlertTriangle, Eye, Brain } from "lucide-react";
 import { Toggle, ScreenHeader, SectionTitle, SingleSelect } from "../primitives";
 // Canonical onboarding primitives (drift-prevented by check-onboarding-components-folder)
-import { OnboardingProgress as _CanonProgress } from "@/components/onboarding";
+import { OnboardingProgress as _CanonProgress } from "@/platform/setup/components/onboarding";
 void _CanonProgress;
 import BranchingQuestionsPanel from "./BranchingQuestionsPanel";
 import { getBottleneckBranch } from "../branching";

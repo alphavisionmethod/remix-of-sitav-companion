@@ -1,7 +1,7 @@
 import { Package, Phone, ClipboardList, DollarSign, Rocket, GraduationCap, ShoppingBag, RefreshCw, Heart, UserPlus, MessageSquare, ArrowRight, AlertTriangle, Star, TrendingUp } from "lucide-react";
 import { Toggle, SectionTitle, ChapterBanner } from "../primitives";
 // Canonical onboarding primitives (drift-prevented by check-onboarding-components-folder)
-import { OnboardingStepHeader as _CanonHeader } from "@/components/onboarding";
+import { OnboardingStepHeader as _CanonHeader } from "@/platform/setup/components/onboarding";
 void _CanonHeader;
 import type { ScreenProps } from "../types";
 import { useCallback } from "react";

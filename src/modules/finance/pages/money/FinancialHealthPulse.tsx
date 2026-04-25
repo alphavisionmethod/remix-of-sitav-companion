@@ -1,6 +1,6 @@
 import { useAuth } from "@/contexts/AuthContext";
-import { HeroCard, SummaryCard, StatusCard, AdvisorCard, QueueCard } from "@/components/sita/cards";
-import { TrustBadge } from "@/components/sita/badges";
+import { HeroCard, SummaryCard, StatusCard, AdvisorCard, QueueCard } from "@/platform/sita/components/sita/cards";
+import { TrustBadge } from "@/platform/sita/components/sita/badges";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { ConfidenceBar } from "@/platform/sita/components/sita/primitives/ConfidenceBar";
 import { DomainHeader } from "@/platform/sita/components/sita/primitives/DomainHeader";

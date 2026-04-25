@@ -1,5 +1,5 @@
-import { HeroCard, SummaryCard, QueueCard, ActionCard, AdvisorCard } from "@/components/sita/cards";
-import { FreshnessBadge, UrgencyBadge } from "@/components/sita/badges";
+import { HeroCard, SummaryCard, QueueCard, ActionCard, AdvisorCard } from "@/platform/sita/components/sita/cards";
+import { FreshnessBadge, UrgencyBadge } from "@/platform/sita/components/sita/badges";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { SubscriptionTrendsChart, SubscriptionCategoryChart } from "@/platform/sita/components/sita/SitaCharts";
 import { SitaTabs } from "@/platform/sita/components/sita/SitaComponents";

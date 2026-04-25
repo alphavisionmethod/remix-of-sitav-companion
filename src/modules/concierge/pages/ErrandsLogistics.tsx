@@ -1,10 +1,10 @@
-import { ConciergePageWrapper } from "@/components/concierge";
+import { ConciergePageWrapper } from "@/modules/concierge/components/concierge";
 import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
 import { KPITile, SitaTabs } from "@/platform/sita/components/sita/SitaComponents";
 import { GlassCard } from "@/platform/sita/components/sita/PremiumPageComponents";
-import { ConciergeAdvisorInsightCard } from "@/components/concierge";
-import { ErrandBundleCard, LogisticsTimelineCard, ConciergeEmptyState } from "@/components/concierge";
-import type { ErrandBundle, ErrandItem, TimelineStop } from "@/components/concierge";
+import { ConciergeAdvisorInsightCard } from "@/modules/concierge/components/concierge";
+import { ErrandBundleCard, LogisticsTimelineCard, ConciergeEmptyState } from "@/modules/concierge/components/concierge";
+import type { ErrandBundle, ErrandItem, TimelineStop } from "@/modules/concierge/components/concierge";
 import { AddErrandDialog } from "@/modules/concierge/components/concierge/AddErrandDialog";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { useState, useMemo } from "react";

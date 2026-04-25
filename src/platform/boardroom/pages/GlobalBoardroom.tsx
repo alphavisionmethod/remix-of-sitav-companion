@@ -13,7 +13,7 @@ import {
   ArrowRight, Sparkles
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { HeroCard, SummaryCard, ComparisonCard, ProofCard, AdvisorCard, QueueCard } from "@/components/sita/cards";
+import { HeroCard, SummaryCard, ComparisonCard, ProofCard, AdvisorCard, QueueCard } from "@/platform/sita/components/sita/cards";
 import { AdvisorPortrait } from "@/platform/advisors/components/advisors/AdvisorPortrait";
 import { PROMO_IMAGES } from "@/lib/advisors/advisor-responsive-assets";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";

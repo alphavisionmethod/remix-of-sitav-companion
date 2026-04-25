@@ -8,7 +8,7 @@ import { RotateCcw, Target, BarChart3, Megaphone, ChevronUp, ChevronDown, Search
 import { cn } from "@/lib/utils";
 import { SplitWorkspace } from "@/platform/sita/components/sita/surfaces/SplitWorkspace";
 import { AppSurface } from "@/platform/sita/components/sita/surfaces/AppSurface";
-import { QueueCard, StatusCard } from "@/components/sita/cards";
+import { QueueCard, StatusCard } from "@/platform/sita/components/sita/cards";
 import { LeadRecoveryPane } from "@/modules/business/components/business/LeadRecoveryPane";
 import { RecoveryOverview } from "@/modules/business/components/business/lead-recovery/RecoveryOverview";
 import { RecoveryQueuePanel } from "@/modules/business/components/business/lead-recovery/RecoveryQueuePanel";

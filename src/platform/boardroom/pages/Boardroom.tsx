@@ -14,7 +14,7 @@ import { EvidenceChain, type EvidenceNode } from "@/platform/sita/components/sit
 import { ScenarioFork } from "@/platform/sita/components/sita/primitives/ScenarioFork";
 import { DecisionSeal } from "@/platform/sita/components/sita/primitives/DecisionSeal";
 import { SentimentPulse } from "@/platform/sita/components/sita/primitives/SentimentPulse";
-import { TrustDebtPanel, ExecutionDebtHeatmap, DragIndexRadar, ReadinessGauge, DelegationRegistryTable } from "@/components/governance";
+import { TrustDebtPanel, ExecutionDebtHeatmap, DragIndexRadar, ReadinessGauge, DelegationRegistryTable } from "@/platform/governance/components/governance";
 import { KPITile, RiskCard, OpportunityCard, EmptyState, SitaTabs } from "@/platform/sita/components/sita/SitaComponents";
 import { TrustBadge } from "@/platform/sita/components/sita/TrustBadge";
 import { StateBadge, StateStep } from "@/platform/sita/components/sita/StateBadge";

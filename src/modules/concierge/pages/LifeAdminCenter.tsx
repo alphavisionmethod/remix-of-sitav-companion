@@ -3,10 +3,10 @@ import { motion } from "framer-motion";
 import { ModuleWorkspace } from "@/platform/sita/components/sita/domain-shared/ModuleWorkspace";
 import { DomainAdvisorCard } from "@/platform/advisors/components/advisors/DomainAdvisorCard";
 import { LifeAdminDetailPane } from "@/modules/concierge/components/concierge/LifeAdminDetailPane";
-import { QueueCard, ActionCard } from "@/components/sita/cards";
+import { QueueCard, ActionCard } from "@/platform/sita/components/sita/cards";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { SitaTabs } from "@/platform/sita/components/sita/SitaComponents";
-import { LifeAdminQueueCard } from "@/components/concierge";
+import { LifeAdminQueueCard } from "@/modules/concierge/components/concierge";
 import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
 import { cn } from "@/lib/utils";
 import {

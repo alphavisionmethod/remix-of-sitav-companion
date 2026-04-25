@@ -9,7 +9,7 @@ import { SitaCard, SitaCardTitle } from "@/platform/sita/components/sita/SitaCar
 import { Input } from "@/components/ui/input";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { AdminPageHeader, StatusBadge, TrustRibbon } from "@/components/sita/admin";
+import { AdminPageHeader, StatusBadge, TrustRibbon } from "@/platform/sita/components/sita/admin";
 import type { UserRowView } from "@/packages/contracts";
 import {
   Users, Search, Shield, Wifi, AlertTriangle, CheckCircle, Eye,

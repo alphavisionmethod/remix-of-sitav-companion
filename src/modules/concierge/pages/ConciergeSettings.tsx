@@ -1,4 +1,4 @@
-import { ConciergePageWrapper } from "@/components/concierge";
+import { ConciergePageWrapper } from "@/modules/concierge/components/concierge";
 import { TrustBadge } from "@/platform/sita/components/sita/TrustBadge";
 import { Users, Bell, Shield, Calendar, ShoppingCart, Plane, Wrench, Gift, Settings, Link, CheckCircle, AlertCircle } from "lucide-react";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";

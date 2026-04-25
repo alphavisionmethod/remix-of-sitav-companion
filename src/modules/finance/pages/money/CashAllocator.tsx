@@ -2,7 +2,7 @@
 // SITA OS — Money Office: Cash Allocation AI
 // ═══════════════════════════════════════════════════════════════
 
-import { HeroCard, StatusCard } from "@/components/sita/cards";
+import { HeroCard, StatusCard } from "@/platform/sita/components/sita/cards";
 import { ModuleAdvisorInsight } from "@/platform/sita/components/sita/domain-shared/ModuleAdvisorInsight";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { DollarSign, PieChart, Shield, Zap, TrendingUp } from "lucide-react";

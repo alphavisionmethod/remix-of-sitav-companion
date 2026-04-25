@@ -1,9 +1,9 @@
 import { KPITile, EmptyState } from "@/platform/sita/components/sita/SitaComponents";
 import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
 import { TrustBadge } from "@/platform/sita/components/sita/TrustBadge";
-import { DomainHeader } from "@/components/sita/primitives";
-import { ConciergeAdvisorInsightCard, ServiceFollowUpCard, VendorDetailPanel, ConciergePageWrapper, ConciergeEmptyState } from "@/components/concierge";
-import type { ServiceFollowUp, VendorDetail } from "@/components/concierge";
+import { DomainHeader } from "@/platform/sita/components/sita/primitives";
+import { ConciergeAdvisorInsightCard, ServiceFollowUpCard, VendorDetailPanel, ConciergePageWrapper, ConciergeEmptyState } from "@/modules/concierge/components/concierge";
+import type { ServiceFollowUp, VendorDetail } from "@/modules/concierge/components/concierge";
 import { Wrench, Star, Phone, Clock, DollarSign, MapPin, Shield, Plus, Search, Calendar, FileText, History, CheckCircle, AlertTriangle, ExternalLink, Sparkles } from "lucide-react";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";

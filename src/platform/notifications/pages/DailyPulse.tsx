@@ -10,7 +10,7 @@ import { fromTable } from "@/lib/supabase-helpers";
 import { useQuery } from "@tanstack/react-query";
 
 import { useLoopEmitter } from "@/hooks/use-flagship-loop-proof";
-import { HeroCard, SummaryCard, QueueCard, AdvisorCard } from "@/components/sita/cards";
+import { HeroCard, SummaryCard, QueueCard, AdvisorCard } from "@/platform/sita/components/sita/cards";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { EmptyState } from "@/platform/sita/components/sita/EmptyState";
 import { ListReveal, ListRevealItem } from "@/platform/sita/components/sita/motion/AppTransitions";

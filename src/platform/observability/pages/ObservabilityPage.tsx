@@ -11,7 +11,7 @@ import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { AdminPageHeader, TrustRibbon, StatusBadge } from "@/components/sita/admin";
+import { AdminPageHeader, TrustRibbon, StatusBadge } from "@/platform/sita/components/sita/admin";
 import { useOSRuntime } from "@/hooks/useOSRuntime";
 import {
   useMissionControlSummary, useFounderCostSummary, useConnectorSummaries,

@@ -1,7 +1,7 @@
 import { KPITile, SitaTabs } from "@/platform/sita/components/sita/SitaComponents";
 import { TrustBadge } from "@/platform/sita/components/sita/TrustBadge";
 import { CalendarEventCard, ConflictCard, PrepCard, MemberAvatar } from "@/platform/sita/components/sita/HouseholdComponents";
-import { ConciergeAdvisorInsightCard, ConciergePageWrapper } from "@/components/concierge";
+import { ConciergeAdvisorInsightCard, ConciergePageWrapper } from "@/modules/concierge/components/concierge";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Calendar, Users, Clock, MapPin, AlertCircle, Heart, GraduationCap, Dumbbell, Stethoscope, Wrench, Car, Sparkles } from "lucide-react";

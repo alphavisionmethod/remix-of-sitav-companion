@@ -12,9 +12,9 @@ import { DomainHubLayout, type HubModule } from "@/platform/admin/components/adm
 const CloudBackboneAdmin = lazy(() => import("@/pages/admin/cloud/CloudBackboneAdmin"));
 const MCSyncCloud = lazy(() => import("@/pages/admin/modules/MCSyncCloud"));
 const IntegrationConciergePage = lazy(() => import("@/pages/admin/IntegrationConciergePage"));
-const OAuthRefreshHealthBoard = lazy(() => import("@/components/admin/OAuthRefreshHealthBoard"));
+const OAuthRefreshHealthBoard = lazy(() => import("@/platform/admin/components/admin/OAuthRefreshHealthBoard"));
 const IntegrationStreakPanel = lazy(() =>
-  import("@/components/admin/integrations/IntegrationStreakPanel"),
+  import("@/platform/admin/components/admin/integrations/IntegrationStreakPanel"),
 );
 
 function ModuleFallback() {

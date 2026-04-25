@@ -1,11 +1,11 @@
-import { HeroCard, QueueCard, TimelineCard, StatusCard } from "@/components/sita/cards";
+import { HeroCard, QueueCard, TimelineCard, StatusCard } from "@/platform/sita/components/sita/cards";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { SitaTabs } from "@/platform/sita/components/sita/SitaComponents";
 import { PremiumEmptyState } from "@/platform/sita/components/sita/PremiumEmptyState";
 import { ModuleAdvisorInsight } from "@/platform/sita/components/sita/domain-shared/ModuleAdvisorInsight";
 import { SlidePanel } from "@/platform/sita/components/sita/surfaces/SlidePanel";
 import { AppSurface } from "@/platform/sita/components/sita/surfaces/AppSurface";
-import { ConciergePageWrapper } from "@/components/concierge";
+import { ConciergePageWrapper } from "@/modules/concierge/components/concierge";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { Stethoscope, Calendar, MapPin, Clock, FileText, User, CheckCircle, AlertCircle, Car, ClipboardCheck } from "lucide-react";

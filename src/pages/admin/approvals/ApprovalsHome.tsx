@@ -16,7 +16,7 @@ const AdvisorActionApproval = lazy(
   () => import("@/pages/admin/AdvisorActionApprovalAdmin"),
 );
 const Layer7FollowthroughBoard = lazy(() =>
-  import("@/components/admin/boardroom/Layer7FollowthroughBoard").then((m) => ({
+  import("@/platform/admin/components/admin/boardroom/Layer7FollowthroughBoard").then((m) => ({
     default: m.Layer7FollowthroughBoard,
   })),
 );

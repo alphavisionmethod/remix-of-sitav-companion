@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { HeroCard, SummaryCard, QueueCard, AdvisorCard, ProofCard } from "@/components/sita/cards";
+import { HeroCard, SummaryCard, QueueCard, AdvisorCard, ProofCard } from "@/platform/sita/components/sita/cards";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { ListReveal, ListRevealItem } from "@/platform/sita/components/sita/motion/AppTransitions";
 import { SectionSkeleton } from "@/platform/sita/components/sita/SectionSkeleton";

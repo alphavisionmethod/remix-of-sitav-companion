@@ -1,4 +1,4 @@
-import { HeroCard, SummaryCard, StatusCard, AdvisorCard, TimelineCard } from "@/components/sita/cards";
+import { HeroCard, SummaryCard, StatusCard, AdvisorCard, TimelineCard } from "@/platform/sita/components/sita/cards";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { PremiumEmptyState } from "@/platform/sita/components/sita/PremiumEmptyState";
 import { SitaTabs } from "@/platform/sita/components/sita/SitaComponents";

@@ -8,7 +8,7 @@ import { useAuth } from "@/contexts/AuthContext";
 
 import { SitaPageHeader, SitaSectionHeader, SitaCard } from "@/platform/sita/components/sita/SitaCard";
 import { KPITile } from "@/platform/sita/components/sita/SitaComponents";
-import { TrustDebtPanel, ExecutionDebtHeatmap, DragIndexRadar, ReadinessGauge, DelegationRegistryTable } from "@/components/governance";
+import { TrustDebtPanel, ExecutionDebtHeatmap, DragIndexRadar, ReadinessGauge, DelegationRegistryTable } from "@/platform/governance/components/governance";
 import { useGovernanceSummary } from "@/hooks/use-admin-durable-state";
 import { Scale, Shield, AlertTriangle, CheckCircle, Clock, Eye } from "lucide-react";
 import { cn } from "@/lib/utils";

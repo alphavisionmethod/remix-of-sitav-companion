@@ -3,7 +3,7 @@ import { TrustBadge } from "@/platform/sita/components/sita/TrustBadge";
 import { SectionSkeleton } from "@/platform/sita/components/sita/SectionSkeleton";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
-import { ProofCard } from "@/components/sita/cards";
+import { ProofCard } from "@/platform/sita/components/sita/cards";
 import { SplitWorkspace } from "@/platform/sita/components/sita/surfaces/SplitWorkspace";
 import { useState, useMemo } from "react";
 import { Shield, CheckCircle, Clock, FileText, DollarSign } from "lucide-react";

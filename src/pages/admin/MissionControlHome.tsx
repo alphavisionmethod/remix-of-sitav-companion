@@ -18,7 +18,7 @@ import {
   ConnectorSummaryPanel,
   IncidentSummaryPanel,
   ReplaySummaryPanel,
-} from "@/components/admin/panels";
+} from "@/platform/admin/components/admin/panels";
 import { HealthScoreGauge } from "@/platform/admin/components/admin/shells/HealthScoreGauge";
 import { AISuggestionsPanel } from "@/platform/admin/components/admin/shells/AISuggestionsPanel";
 import { OneClickActions } from "@/platform/admin/components/admin/shells/OneClickActions";

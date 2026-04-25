@@ -10,7 +10,7 @@ import {
   AlertTriangle, CheckCircle, HelpCircle, Brain, Clock,
   Shield, Lock, Sparkles, ArrowUpRight,
 } from "lucide-react";
-import { ConfidenceBar } from "@/components/sita/primitives";
+import { ConfidenceBar } from "@/platform/sita/components/sita/primitives";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 interface IssueFrameItem {

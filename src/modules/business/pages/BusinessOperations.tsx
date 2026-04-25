@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
 import { getModuleAdaptation } from "@/domains/engines/business-module-adaptations";
 import { motion } from "framer-motion";
-import { HeroCard, QueueCard, ActionCard, StatusCard } from "@/components/sita/cards";
+import { HeroCard, QueueCard, ActionCard, StatusCard } from "@/platform/sita/components/sita/cards";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { SitaTabs } from "@/platform/sita/components/sita/SitaComponents";
 import { ConfidenceBar } from "@/platform/sita/components/sita/primitives/ConfidenceBar";

@@ -4,12 +4,12 @@ import { toast } from "sonner";
 // New design system: BoardroomCinematic + ComparisonCard + ProofCard
 // ═══════════════════════════════════════════════════════════════
 
-import { HeroCard, SummaryCard, QueueCard, ProofCard, ComparisonCard, AdvisorCard, TimelineCard } from "@/components/sita/cards";
+import { HeroCard, SummaryCard, QueueCard, ProofCard, ComparisonCard, AdvisorCard, TimelineCard } from "@/platform/sita/components/sita/cards";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { BoardroomCinematic } from "@/platform/sita/components/sita/motion/AppTransitions";
 import { SitaTabs } from "@/platform/sita/components/sita/SitaComponents";
 import { DomainAdvisorBoard } from "@/platform/sita/components/sita/domain-shared/DomainAdvisorBoard";
-import { ConciergePageWrapper } from "@/components/concierge";
+import { ConciergePageWrapper } from "@/modules/concierge/components/concierge";
 import { AITruthDisclosure } from "@/components/primitives/status/AITruthDisclosure";
 import { EvidenceLink } from "@/components/primitives/actions/EvidenceLink";
 import { useState } from "react";

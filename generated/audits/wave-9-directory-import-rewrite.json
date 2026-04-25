@@ -1,0 +1,132 @@
+{
+  "generatedAt": "2026-04-25T16:41:07.238Z",
+  "filesChanged": 109,
+  "importsRewritten": 161,
+  "unmatchedAliases": [],
+  "topAliases": [
+    {
+      "alias": "@/components/sita/cards",
+      "count": 49
+    },
+    {
+      "alias": "@/components/concierge",
+      "count": 32
+    },
+    {
+      "alias": "@/components/sita/badges",
+      "count": 16
+    },
+    {
+      "alias": "@/components/sita/setup",
+      "count": 12
+    },
+    {
+      "alias": "@/components/sita/primitives",
+      "count": 10
+    },
+    {
+      "alias": "@/components/onboarding",
+      "count": 7
+    },
+    {
+      "alias": "@/components/governance",
+      "count": 6
+    },
+    {
+      "alias": "@/components/sita/admin",
+      "count": 5
+    },
+    {
+      "alias": "@/components/sita/truth",
+      "count": 2
+    },
+    {
+      "alias": "@/components/admin/shells",
+      "count": 1
+    },
+    {
+      "alias": "@/components/sita/money-onboarding",
+      "count": 1
+    },
+    {
+      "alias": "@/components/admin/panels",
+      "count": 1
+    },
+    {
+      "alias": "@/components/admin/ai-runtime/AIRuntimeNightlyTruthPanel",
+      "count": 1
+    },
+    {
+      "alias": "@/components/admin/ai-runtime/ConnectorTruthSummaryPanel",
+      "count": 1
+    },
+    {
+      "alias": "@/components/admin/ai-runtime/MobileScopeTruthPanel",
+      "count": 1
+    },
+    {
+      "alias": "@/components/admin/ai-runtime/FrontendPolishTruthPanel",
+      "count": 1
+    },
+    {
+      "alias": "@/components/admin/ai-runtime/AdminValidationTruthPanel",
+      "count": 1
+    },
+    {
+      "alias": "@/components/admin/ai-runtime/HardwareAndOperatorTruthPanel",
+      "count": 1
+    },
+    {
+      "alias": "@/components/admin/ai-runtime/SecurityAndPortabilityTruthPanel",
+      "count": 1
+    },
+    {
+      "alias": "@/components/admin/ai-runtime/ArchitecturalCleanupTruthPanel",
+      "count": 1
+    },
+    {
+      "alias": "@/components/admin/ai-runtime/EconomicTrustFutureTruthPanel",
+      "count": 1
+    },
+    {
+      "alias": "@/components/admin/ai-runtime/ArchitectureHardeningTruthPanel",
+      "count": 1
+    },
+    {
+      "alias": "@/components/admin/ai-runtime/FlagshipSurfaceClosureTruthPanel",
+      "count": 1
+    },
+    {
+      "alias": "@/components/admin/ai-runtime/AdminEmptyStateClosureTruthPanel",
+      "count": 1
+    },
+    {
+      "alias": "@/components/admin/ai-runtime/AdminCoherenceClosureTruthPanel",
+      "count": 1
+    },
+    {
+      "alias": "@/components/admin/ai-runtime/TrustStateAndCopyClosureTruthPanel",
+      "count": 1
+    },
+    {
+      "alias": "@/components/admin/ai-runtime/FrontendTruthBackingClosureTruthPanel",
+      "count": 1
+    },
+    {
+      "alias": "@/components/admin/boardroom/Layer7FollowthroughBoard",
+      "count": 1
+    },
+    {
+      "alias": "@/components/admin/DrillCadenceBoard",
+      "count": 1
+    },
+    {
+      "alias": "@/components/admin/OAuthRefreshHealthBoard",
+      "count": 1
+    },
+    {
+      "alias": "@/components/admin/integrations/IntegrationStreakPanel",
+      "count": 1
+    }
+  ]
+}

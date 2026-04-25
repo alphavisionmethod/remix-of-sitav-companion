@@ -3,4 +3,4 @@
 // Canonical import path: @/admin/shell
 // ═══════════════════════════════════════════════════════════════
 
-export * from "@/components/admin/shells";
+export * from "@/platform/admin/components/admin/shells";

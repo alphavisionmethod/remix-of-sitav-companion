@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import { KPITile, SitaTabs, TimelineItem, EmptyState } from "@/platform/sita/components/sita/SitaComponents";
 import { TrustBadge } from "@/platform/sita/components/sita/TrustBadge";
 import { StateBadge } from "@/platform/sita/components/sita/StateBadge";
-import { TrustDebtPanel, ExecutionDebtHeatmap, DragIndexRadar, ReadinessGauge, DelegationRegistryTable } from "@/components/governance";
+import { TrustDebtPanel, ExecutionDebtHeatmap, DragIndexRadar, ReadinessGauge, DelegationRegistryTable } from "@/platform/governance/components/governance";
 import { useState, useEffect, useMemo } from "react";
 import { useOSRuntime } from "@/hooks/useOSRuntime";
 import { FounderBottleneckEngine } from "@/domains/engines/founder-bottleneck-engine";
