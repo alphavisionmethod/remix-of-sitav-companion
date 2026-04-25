@@ -29,6 +29,9 @@ if npx tsx scripts/architecture/check-trust-action-manifest.ts 2>&1; then pass "
 step "Module registry coverage (Phase 1)"
 if MODULE_COVERAGE_BASELINE="${MODULE_COVERAGE_BASELINE:-602}" npx tsx scripts/architecture/check-module-registry-coverage.ts 2>&1; then pass "Module registry coverage within baseline"; else fail "Module registry coverage exceeded baseline"; fi
 
+step "AI orchestration coverage (Phase 4)"
+if npx tsx scripts/architecture/check-ai-orchestration-coverage.ts 2>&1; then pass "AI orchestration coverage within baseline"; else fail "AI orchestration coverage exceeded baseline — migrate direct ai-gateway callers to useOrchestrator"; fi
+
 step "Trust action manifest regeneration diff"
 if command -v jq >/dev/null 2>&1 && command -v sha256sum >/dev/null 2>&1; then
   cp public/generated/trust-action-registry.json /tmp/trust-manifest-before.json
