@@ -147,6 +147,14 @@ export const VALIDATOR_GATE_OVERRIDES: ValidatorGateMapEntry[] = [
     consumer: "release-readiness",
     rationale: "Wave 1.2 Rule 39. Asserts no exported type/interface/enum/const identifier appears in ≥2 of {src/contracts/**, src/packages/**, src/domains/types/**, src/platform/<X>/contracts/**}. Emits generated/manifests/contract-ownership-map.json and generated/audits/duplicate-contract-family-report.json. Sealed at 0 dupes after the Wave 1.2 promotions.",
   },
+  // ─── Wave 1.3 — Service / Adapter / Client Vocabulary Coherence (Constitution Rule 43, BLOCKING) ──
+  {
+    validator: "check-service-vocabulary-coherence",
+    gateId: "service-vocabulary-coherence",
+    classification: "block",
+    consumer: "release-readiness",
+    rationale: "Wave 1.3 Rule 43. Bridges the user-facing `service / adapter / client` vocabulary onto the existing 5-layer Service Layer Constitution and enforces the four forbidden sprawl patterns (service-as-transport, client-as-orchestrator, adapter-as-facade, raw-SDK bypass). See docs/architecture/SERVICE_ADAPTER_CLIENT_OWNERSHIP_MODEL.md and src/lib/migration/service-vocabulary-bridge.ts.",
+  },
 ];
 
 /** Lookup table for fast access by validator basename. */
