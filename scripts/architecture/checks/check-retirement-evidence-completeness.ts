@@ -24,6 +24,7 @@ const WARN = process.argv.includes("--warn");
 const LEDGER = join(ROOT, "generated", "manifests", "safe-change-evidence-ledger.json");
 const POLICY = join(ROOT, "generated", "manifests", "reverse-dependency-retirement-policy.json");
 const REPORT = join(ROOT, "generated", "retirement-evidence-completeness-report.json");
+const BASELINE = join(ROOT, "generated", "baselines", "retirement-evidence-completeness-baseline.json");
 
 type Entry = {
   changeId?: string;
@@ -60,6 +61,25 @@ if (!existsSync(LEDGER)) {
 const ledger = JSON.parse(readFileSync(LEDGER, "utf8")) as Ledger;
 const entries = ledger.entries ?? [];
 
+// Pre-Wave-D ledger entries are grandfathered: net-new requirements (e.g. docsProof)
+// are informational for entries whose changeId is in the baseline. New entries must comply.
+let baseline: { sealedAt: string; sealedChangeIds: string[] } = {
+  sealedAt: "",
+  sealedChangeIds: [],
+};
+if (existsSync(BASELINE)) {
+  baseline = JSON.parse(readFileSync(BASELINE, "utf8"));
+} else {
+  baseline = {
+    sealedAt: new Date().toISOString(),
+    sealedChangeIds: entries.map((e) => e.changeId).filter(Boolean) as string[],
+  };
+  mkdirSync(dirname(BASELINE), { recursive: true });
+  writeFileSync(BASELINE, JSON.stringify(baseline, null, 2) + "\n", "utf8");
+  console.log(`🔒 Sealed retirement-evidence baseline: ${baseline.sealedChangeIds.length} pre-existing entries`);
+}
+const grandfathered = new Set(baseline.sealedChangeIds);
+
 function rgCount(pattern: string, scope: string): number {
   try {
     const out = execSync(`rg --no-heading --color=never -l ${JSON.stringify(pattern)} ${scope}`, {
@@ -88,6 +108,7 @@ let revalidationFailures = 0;
 
 for (const e of entries) {
   const id = e.changeId ?? "<no-id>";
+  const isGrandfathered = grandfathered.has(id);
   if (!e.target) {
     issues.push({ id, reason: "missing target" });
     continue;
@@ -99,6 +120,7 @@ for (const e of entries) {
   const required = pickRequiredEvidence(e.target);
   for (const k of required) {
     if (!(k in e.evidence) || e.evidence[k] == null || e.evidence[k] === "") {
+      if (isGrandfathered) continue; // pre-Wave-D entries are informational
       issues.push({ id, reason: `missing evidence.${k}` });
     }
   }
