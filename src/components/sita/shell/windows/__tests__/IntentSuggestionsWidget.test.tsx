@@ -1,20 +1,6 @@
-import { describe, it, expect, vi } from "vitest";
-import { render } from "@/test/test-utils";
-import { IntentSuggestionsWidget } from "../../IntentSuggestionsWidget";
-
-describe("IntentSuggestionsWidget", () => {
-  const mockLaunch = vi.fn();
-
-  it("renders without crashing", () => {
-    const { container } = render(
-      <IntentSuggestionsWidget onLaunchApp={mockLaunch} />
-    );
-    expect(container).toBeTruthy();
-  });
-
-  it("accepts onLaunchApp callback", () => {
-    render(<IntentSuggestionsWidget onLaunchApp={mockLaunch} />);
-    // Component should render without calling the callback on mount
-    expect(mockLaunch).not.toHaveBeenCalled();
-  });
-});
+// ════════════════════════════════════════════════════════════
+// Wave 7 — legacy component path. Canonical home:
+//   @/platform/sita/components/sita/shell/windows/__tests__/IntentSuggestionsWidget.test
+// This adapter preserves every existing @/components/<sub>/* import.
+// ════════════════════════════════════════════════════════════
+export * from "@/platform/sita/components/sita/shell/windows/__tests__/IntentSuggestionsWidget.test";

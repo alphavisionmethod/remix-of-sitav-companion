@@ -1,0 +1,380 @@
+// ═══════════════════════════════════════════════════════════════
+// SITA OS — Just-In-Time Approval Queue (Phase 5)
+// Owner-facing surface for reviewing reversible plans the
+// controllers have proposed but cannot auto-execute (queued under
+// the L3 ceiling). Approve → mark approved + executed; Reject →
+// mark rejected; the plan's stored rollback runs on rejection if
+// the action was already executed (rare under L3).
+// ═══════════════════════════════════════════════════════════════
+
+import { useEffect, useState, useCallback } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { toast } from "sonner";
+import { Check, X, ShieldCheck, Clock, AlertTriangle, ChevronDown, FlaskConical } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { recordReflectionForQueueRow, type OwnerAction } from "@/lib/autonomy/reflection";
+
+type QueueRow = {
+  id: string;
+  advisor_id: string;
+  domain: string;
+  action_type: string;
+  summary: string;
+  confidence: number;
+  status: string;
+  created_at: string;
+  payload: Record<string, unknown> | null;
+};
+
+type SimulationReceipt = {
+  id: string;
+  queue_id: string | null;
+  projected_outcomes: string[];
+  side_effects: Array<{ kind: string; target: string; reversible: boolean; description: string }>;
+  rollback_plan: { strategy: string; humanSummary?: string };
+  policy_warnings: string[];
+  decision_reason: string;
+};
+
+type Props = {
+  /** Optional advisor filter; if omitted, shows all awaiting approval. */
+  advisorId?: string;
+  /** Compact = no header card chrome. */
+  compact?: boolean;
+};
+
+export function AutonomyApprovalQueue({ advisorId, compact = false }: Props) {
+  const [rows, setRows] = useState<QueueRow[]>([]);
+  const [simulations, setSimulations] = useState<Record<string, SimulationReceipt>>({});
+  const [loading, setLoading] = useState(true);
+  const [busyId, setBusyId] = useState<string | null>(null);
+  const [openId, setOpenId] = useState<string | null>(null);
+
+  const load = useCallback(async () => {
+    setLoading(true);
+    let q = supabase
+      .from("advisor_action_queue")
+      .select("id, advisor_id, domain, action_type, summary, confidence, status, created_at, payload")
+      .in("status", ["awaiting_approval"])
+      .order("created_at", { ascending: false })
+      .limit(50);
+    if (advisorId) q = q.eq("advisor_id", advisorId);
+    const { data, error } = await q;
+    if (error) toast.error(`Failed to load queue: ${error.message}`);
+    setRows((data as QueueRow[]) ?? []);
+    // Pull simulation receipts for visible rows in one shot.
+    if (data && data.length > 0) {
+      const ids = data.map((r) => r.id);
+      const { data: sims } = await supabase
+        .from("autonomy_simulation_receipts")
+        .select(
+          "id, queue_id, projected_outcomes, side_effects, rollback_plan, policy_warnings, decision_reason",
+        )
+        .in("queue_id", ids);
+      const map: Record<string, SimulationReceipt> = {};
+      for (const s of (sims ?? []) as SimulationReceipt[]) {
+        if (s.queue_id) map[s.queue_id] = s;
+      }
+      setSimulations(map);
+    } else {
+      setSimulations({});
+    }
+    setLoading(false);
+  }, [advisorId]);
+
+  useEffect(() => {
+    void load();
+    const ch = supabase
+      .channel("autonomy-queue-jit")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "advisor_action_queue" },
+        () => void load(),
+      )
+      .subscribe();
+    return () => {
+      supabase.removeChannel(ch);
+    };
+  }, [load]);
+
+  const approve = async (row: QueueRow) => {
+    setBusyId(row.id);
+    const { data: userData } = await supabase.auth.getUser();
+    const now = new Date().toISOString();
+    const { error } = await supabase
+      .from("advisor_action_queue")
+      .update({
+        status: "executed",
+        approved_at: now,
+        approved_by: userData.user?.id ?? null,
+        executed_at: now,
+      })
+      .eq("id", row.id);
+    setBusyId(null);
+    if (error) toast.error(`Approve failed: ${error.message}`);
+    else {
+      await emitReflection(row, "approved", userData.user?.id, simulations[row.id]);
+      toast.success(`Approved ${row.action_type}`);
+      void load();
+    }
+  };
+
+  const reject = async (row: QueueRow) => {
+    setBusyId(row.id);
+    const { data: userData } = await supabase.auth.getUser();
+    const { error } = await supabase
+      .from("advisor_action_queue")
+      .update({
+        status: "rejected",
+        error_message: "Owner rejected via JIT approval queue",
+      })
+      .eq("id", row.id);
+    setBusyId(null);
+    if (error) toast.error(`Reject failed: ${error.message}`);
+    else {
+      await emitReflection(row, "rejected", userData.user?.id, simulations[row.id]);
+      toast.success(`Rejected ${row.action_type}`);
+      void load();
+    }
+  };
+
+  async function emitReflection(
+    row: QueueRow,
+    ownerAction: OwnerAction,
+    userId: string | undefined,
+    sim: SimulationReceipt | undefined,
+  ) {
+    if (!userId) return;
+    await recordReflectionForQueueRow({
+      userId,
+      queueRow: {
+        id: row.id,
+        advisor_id: row.advisor_id,
+        domain: row.domain,
+        action_type: row.action_type,
+        confidence: row.confidence,
+        status: ownerAction === "rejected" ? "rejected" : "executed",
+        error_message: ownerAction === "rejected" ? "owner_rejected" : null,
+        payload: row.payload,
+      },
+      ownerAction,
+      simulation: sim ? { policyWarnings: sim.policy_warnings ?? [] } : null,
+    });
+  }
+
+  const list = (
+    <ScrollArea className="h-[480px]">
+      <div className="space-y-2 pr-3">
+        {loading && (
+          <>
+            <Skeleton className="h-20 w-full" />
+            <Skeleton className="h-20 w-full" />
+            <Skeleton className="h-20 w-full" />
+          </>
+        )}
+        {!loading && rows.length === 0 && (
+          <div className="rounded-lg border border-dashed border-border/50 p-6 text-center text-sm text-muted-foreground">
+            <ShieldCheck className="mx-auto mb-2 h-6 w-6 opacity-60" />
+            No actions waiting on you. Advisors will queue items here when they need approval.
+          </div>
+        )}
+        {!loading &&
+          rows.map((row) => {
+            const payload = (row.payload ?? {}) as {
+              risk_class?: string;
+              draft_only?: boolean;
+              is_client_facing?: boolean;
+              financial_impact_cents?: number;
+              dry_run_reason?: string;
+              signal_kind?: string;
+            };
+            const riskTone =
+              payload.risk_class === "irreversible"
+                ? "destructive"
+                : payload.risk_class === "reversible_risky"
+                ? "default"
+                : "secondary";
+            return (
+              <Card key={row.id} className="border-border/60">
+                <CardContent className="space-y-2 p-3">
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="min-w-0 flex-1">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                          {row.advisor_id}
+                        </span>
+                        <Badge variant={riskTone as "default" | "secondary" | "destructive"} className="text-[10px]">
+                          {payload.risk_class ?? "unknown"}
+                        </Badge>
+                        {payload.draft_only && (
+                          <Badge variant="outline" className="text-[10px]">
+                            draft only
+                          </Badge>
+                        )}
+                        {payload.is_client_facing && (
+                          <Badge variant="outline" className="text-[10px] border-accent/60 text-accent-foreground bg-accent/15">
+                            <AlertTriangle className="mr-1 h-3 w-3" /> client-facing
+                          </Badge>
+                        )}
+                        {simulations[row.id] && (
+                          <Badge variant="outline" className="text-[10px] border-primary/40 text-primary">
+                            <FlaskConical className="mr-1 h-3 w-3" /> simulated
+                          </Badge>
+                        )}
+                      </div>
+                      <p className="mt-1 text-sm font-medium leading-snug">{row.summary}</p>
+                      <div className="mt-1 flex flex-wrap items-center gap-3 text-[11px] text-muted-foreground">
+                        <span className="inline-flex items-center gap-1">
+                          <Clock className="h-3 w-3" /> {timeAgo(row.created_at)}
+                        </span>
+                        <span>conf {(row.confidence * 100).toFixed(0)}%</span>
+                        {typeof payload.financial_impact_cents === "number" && payload.financial_impact_cents > 0 && (
+                          <span>${(payload.financial_impact_cents / 100).toFixed(2)}</span>
+                        )}
+                        {payload.dry_run_reason && (
+                          <span className="truncate">{payload.dry_run_reason}</span>
+                        )}
+                      </div>
+                      {simulations[row.id] && (
+                        <Collapsible
+                          open={openId === row.id}
+                          onOpenChange={(open) => setOpenId(open ? row.id : null)}
+                          className="mt-2"
+                        >
+                          <CollapsibleTrigger asChild>
+                            <button
+                              type="button"
+                              className="inline-flex items-center gap-1 text-[11px] text-primary hover:underline"
+                            >
+                              <ChevronDown
+                                className={cn(
+                                  "h-3 w-3 transition-transform",
+                                  openId === row.id && "rotate-180",
+                                )}
+                              />
+                              {openId === row.id ? "Hide" : "Show"} simulation
+                            </button>
+                          </CollapsibleTrigger>
+                          <CollapsibleContent className="mt-2 space-y-2 rounded-md border border-border/50 bg-muted/30 p-2">
+                            <SimulationPanel sim={simulations[row.id]} />
+                          </CollapsibleContent>
+                        </Collapsible>
+                      )}
+                    </div>
+                    <div className="flex shrink-0 gap-1">
+                      <Button
+                        size="sm"
+                        variant="default"
+                        disabled={busyId === row.id}
+                        onClick={() => void approve(row)}
+                        className="h-8"
+                      >
+                        <Check className="mr-1 h-3 w-3" /> Approve
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        disabled={busyId === row.id}
+                        onClick={() => void reject(row)}
+                        className="h-8"
+                      >
+                        <X className="mr-1 h-3 w-3" /> Reject
+                      </Button>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            );
+          })}
+      </div>
+    </ScrollArea>
+  );
+
+  if (compact) return list;
+
+  return (
+    <Card className={cn("border-border/60")}>
+      <CardHeader className="pb-3">
+        <div className="flex items-center justify-between">
+          <CardTitle className="text-base">Approvals waiting on you</CardTitle>
+          <Badge variant="secondary">{rows.length}</Badge>
+        </div>
+      </CardHeader>
+      <CardContent>{list}</CardContent>
+    </Card>
+  );
+}
+
+function timeAgo(iso: string): string {
+  const ms = Date.now() - new Date(iso).getTime();
+  const m = Math.floor(ms / 60_000);
+  if (m < 1) return "just now";
+  if (m < 60) return `${m}m ago`;
+  const h = Math.floor(m / 60);
+  if (h < 24) return `${h}h ago`;
+  return `${Math.floor(h / 24)}d ago`;
+}
+
+function SimulationPanel({ sim }: { sim: SimulationReceipt }) {
+  return (
+    <div className="space-y-2 text-[11px] text-muted-foreground">
+      {sim.projected_outcomes?.length > 0 && (
+        <div>
+          <div className="mb-1 font-semibold text-foreground/80">Projected outcomes</div>
+          <ul className="list-disc space-y-0.5 pl-4">
+            {sim.projected_outcomes.map((o, i) => (
+              <li key={i}>{o}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+      {sim.side_effects?.length > 0 && (
+        <div>
+          <div className="mb-1 font-semibold text-foreground/80">Side effects</div>
+          <ul className="space-y-0.5">
+            {sim.side_effects.map((e, i) => (
+              <li key={i} className="flex items-start gap-1">
+                <span
+                  className={cn(
+                    "mt-0.5 inline-block h-1.5 w-1.5 shrink-0 rounded-full",
+                    e.reversible ? "bg-primary" : "bg-destructive/70",
+                  )}
+                />
+                <span>
+                  <span className="font-medium text-foreground/70">{e.kind}</span> · {e.target}
+                  {" — "}
+                  <span className="opacity-80">{e.description}</span>
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+      {sim.rollback_plan && (
+        <div>
+          <div className="mb-1 font-semibold text-foreground/80">Rollback plan</div>
+          <p>
+            <span className="font-mono text-foreground/70">{sim.rollback_plan.strategy}</span>
+            {sim.rollback_plan.humanSummary ? ` — ${sim.rollback_plan.humanSummary}` : ""}
+          </p>
+        </div>
+      )}
+      {sim.policy_warnings?.length > 0 && (
+        <div>
+          <div className="mb-1 font-semibold text-destructive">Policy warnings</div>
+          <ul className="list-disc space-y-0.5 pl-4 text-destructive">
+            {sim.policy_warnings.map((w, i) => (
+              <li key={i}>{w}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </div>
+  );
+}

@@ -1,11 +1,6 @@
-export { RoleDomainBadge, BudgetClassBadge, RiskTierBadge, AutonomyBadge, LaunchHonestyBadge } from "./AIWorkforceBadge";
-export { StatusPill } from "./AIWorkforceStatusPill";
-export { AIWorkforceOverviewCard } from "./AIWorkforceOverviewCards";
-export { AIWorkforceRoleTable } from "./AIWorkforceRoleTable";
-export { AIWorkforceRoleCard } from "./AIWorkforceRoleCard";
-export { AIWorkforceRoleDetailDrawer } from "./AIWorkforceRoleDetailDrawer";
-export { AIWorkforceRecommendationCard } from "./AIWorkforceRecommendationCard";
-export { AIWorkforceApprovalQueueTable } from "./AIWorkforceApprovalQueueTable";
-export { AIWorkforceLaunchTruthBoard } from "./AIWorkforceLaunchTruthBoard";
-export { AIWorkforceScoreForm } from "./AIWorkforceScoreForm";
-export { AIWorkforceActivityFeed } from "./AIWorkforceActivityFeed";
+// ════════════════════════════════════════════════════════════
+// Wave 7 — legacy component path. Canonical home:
+//   @/platform/admin/components/admin-ai/index
+// This adapter preserves every existing @/components/<sub>/* import.
+// ════════════════════════════════════════════════════════════
+export * from "@/platform/admin/components/admin-ai/index";

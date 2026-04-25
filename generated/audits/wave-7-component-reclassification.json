@@ -1,0 +1,80 @@
+{
+  "generatedAt": "2026-04-25T16:20:18.458Z",
+  "dryRun": false,
+  "classifications": 47,
+  "movedFiles": 1144,
+  "adaptersWritten": 1144,
+  "importRewrites": 0,
+  "skipped": [],
+  "movesByOwner": {
+    "module:business": 206,
+    "module:concierge": 30,
+    "module:finance": 12,
+    "platform:admin": 149,
+    "platform:advisors": 16,
+    "platform:ai": 24,
+    "platform:app-platform": 3,
+    "platform:auth": 6,
+    "platform:trust": 7,
+    "platform:orchestration": 3,
+    "platform:cloud": 11,
+    "platform:files": 8,
+    "platform:governance": 6,
+    "platform:intelligence": 5,
+    "platform:marketing": 9,
+    "platform:experience": 10,
+    "platform:notifications": 2,
+    "platform:observability": 3,
+    "platform:setup": 9,
+    "platform:operations": 1,
+    "platform:personal-brain": 60,
+    "platform:core-services": 2,
+    "platform:product": 5,
+    "platform:runtime": 2,
+    "platform:settings": 5,
+    "platform:sita": 549,
+    "platform:sync-engine": 1
+  },
+  "sample": [
+    {
+      "from": "@/components/business/AtRiskQueueCard",
+      "to": "@/modules/business/components/business/AtRiskQueueCard"
+    },
+    {
+      "from": "@/components/business/BusinessMoneyFlow",
+      "to": "@/modules/business/components/business/BusinessMoneyFlow"
+    },
+    {
+      "from": "@/components/business/BusinessQuickActions",
+      "to": "@/modules/business/components/business/BusinessQuickActions"
+    },
+    {
+      "from": "@/components/business/BusinessRecentActivity",
+      "to": "@/modules/business/components/business/BusinessRecentActivity"
+    },
+    {
+      "from": "@/components/business/BusinessStatCard",
+      "to": "@/modules/business/components/business/BusinessStatCard"
+    },
+    {
+      "from": "@/components/business/CRMConnectModal",
+      "to": "@/modules/business/components/business/CRMConnectModal"
+    },
+    {
+      "from": "@/components/business/CRMImportWizard",
+      "to": "@/modules/business/components/business/CRMImportWizard"
+    },
+    {
+      "from": "@/components/business/CallbackQueueCard",
+      "to": "@/modules/business/components/business/CallbackQueueCard"
+    },
+    {
+      "from": "@/components/business/CartRecoveryQueue",
+      "to": "@/modules/business/components/business/CartRecoveryQueue"
+    },
+    {
+      "from": "@/components/business/CustomerDetailPane",
+      "to": "@/modules/business/components/business/CustomerDetailPane"
+    }
+  ]
+}

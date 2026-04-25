@@ -1,13 +1,6 @@
-// ═══════════════════════════════════════════════════════════════
-// SITA OS — Sita Agent mount (Phase E)
-// ═══════════════════════════════════════════════════════════════
-// Activates the useSitaAgent listener inside the Shell so window
-// events ("sita-agent-intent") are handled globally.
-// ═══════════════════════════════════════════════════════════════
-
-import { useSitaAgent } from "@/lib/sita-agent";
-
-export function SitaAgentMount() {
-  useSitaAgent();
-  return null;
-}
+// ════════════════════════════════════════════════════════════
+// Wave 7 — legacy component path. Canonical home:
+//   @/platform/sita/components/sita/shell/sita-agent/SitaAgentMount
+// This adapter preserves every existing @/components/<sub>/* import.
+// ════════════════════════════════════════════════════════════
+export * from "@/platform/sita/components/sita/shell/sita-agent/SitaAgentMount";

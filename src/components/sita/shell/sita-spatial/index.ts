@@ -1,6 +1,6 @@
-export { SitaHandoffBanner } from "./SitaHandoffBanner";
-export { SitaGestureLayer } from "./SitaGestureLayer";
-export { SitaHolographicBoardroom } from "./SitaHolographicBoardroom";
-export { SitaSpatialField } from "./SitaSpatialField";
-export { SitaSpatialControls } from "./SitaSpatialControls";
-export { SitaSpatialIntentMount } from "./SitaSpatialIntentMount";
+// ════════════════════════════════════════════════════════════
+// Wave 7 — legacy component path. Canonical home:
+//   @/platform/sita/components/sita/shell/sita-spatial/index
+// This adapter preserves every existing @/components/<sub>/* import.
+// ════════════════════════════════════════════════════════════
+export * from "@/platform/sita/components/sita/shell/sita-spatial/index";

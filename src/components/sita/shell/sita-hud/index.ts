@@ -1,26 +1,6 @@
-// ═══════════════════════════════════════════════════════════════
-// SITA OS — Sita HUD barrel (Phase A)
-// ═══════════════════════════════════════════════════════════════
-
-export { SitaPresenceOrb } from "./SitaPresenceOrb";
-export { SitaHudStrip } from "./SitaHudStrip";
-export { SitaFirstRunReveal } from "./SitaFirstRunReveal";
-export { useSitaAmbientMood } from "./useSitaAmbientMood";
-export { SitaWhisper } from "./SitaWhisper";
-export { SitaProactiveRunner } from "./SitaProactiveRunner";
-export { SitaActionPlanCard } from "../sita-agent/SitaActionPlanCard";
-export {
-  SitaHandoffBanner,
-  SitaGestureLayer,
-  SitaHolographicBoardroom,
-  SitaSpatialField,
-  SitaSpatialControls,
-} from "../sita-spatial";
-export {
-  publishSitaHud,
-  readSitaHud,
-  subscribeSitaHud,
-  useSitaHud,
-  type SitaPresenceState,
-  type SitaHudSnapshot,
-} from "./sita-hud-bus";
+// ════════════════════════════════════════════════════════════
+// Wave 7 — legacy component path. Canonical home:
+//   @/platform/sita/components/sita/shell/sita-hud/index
+// This adapter preserves every existing @/components/<sub>/* import.
+// ════════════════════════════════════════════════════════════
+export * from "@/platform/sita/components/sita/shell/sita-hud/index";
