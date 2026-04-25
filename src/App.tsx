@@ -61,6 +61,8 @@ import { MobileRoutes } from "@/routes/MobileRoutes";
 import { getCommunicationsRoutes } from "@/routes/communications-routes";
 import { getAppsRoutes } from "@/routes/apps-routes";
 import { getSettingsRoutes } from "@/routes/settings-routes";
+import { getTrustRoutes } from "@/routes/trust-routes";
+import { getHealthRoutes } from "@/routes/health-routes";
 
 // ═══════════════════════════════════════════════════════════════
 // Minimal lazy-loaded pages not covered by route families
@@ -296,6 +298,8 @@ const App = () => (
                         {getCommunicationsRoutes()}
                         {getAppsRoutes()}
                         {getSettingsRoutes()}
+                        {getTrustRoutes()}
+                        {getHealthRoutes()}
 
                         {/* Phase 2 (Page Consolidation): user-domain redirect layer */}
                         {USER_REDIRECTS.map((r) => (
