@@ -100,7 +100,7 @@ function main() {
     for (const v of violations) console.error(`   - ${v}`);
     console.error(
       "\nFix: replace direct supabase.functions.invoke('ai-gateway', ...) with",
-      "useOrchestrator() / callOrchestrator() from @/modules/_shared/ai.",
+      "useOrchestrator() / callOrchestrator() from @/platform/ai.",
     );
     process.exit(1);
   }

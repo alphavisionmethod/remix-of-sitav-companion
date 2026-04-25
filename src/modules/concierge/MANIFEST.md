@@ -24,7 +24,7 @@
 
 ## Forbidden Imports
 - ❌ `src/modules/business/**` · `src/modules/finance/**` · `src/modules/health/**`
-- ✅ `src/modules/_shared/**` · `src/modules/_trust/**`
+- ✅ `@/platform/**` · `@/platform/trust/**`
 
 ## Trust Integration
-Bookings, travel reservations, and any third-party action on the user's behalf MUST go through `_trust/approvals.requireApproval` and emit receipts.
+Bookings, travel reservations, and any third-party action on the user's behalf MUST go through `@/platform/trust/approvals.requireApproval` and emit receipts.

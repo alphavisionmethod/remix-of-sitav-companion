@@ -30,9 +30,9 @@ These are renamed/scoped accordingly in the migration plan and **do not** belong
 
 ## Trust Integration (Required from day 1)
 Health is the most sensitive data class. Every read of a wearable connector or medical record MUST:
-1. Emit a `data_access` receipt to `_trust/receipts`.
-2. Honor the user's per-domain consent flags (`_trust/permissions`).
-3. Redact PII from logs (DLP guard, already in `_trust/dlp`).
+1. Emit a `data_access` receipt to `@/platform/trust/receipts`.
+2. Honor the user's per-domain consent flags (`@/platform/trust/permissions`).
+3. Redact PII from logs (DLP guard, already in `@/platform/trust/dlp`).
 
 ## Phase 1 deliverable (this scaffold)
 Stub pages live at `src/pages/health/*` and a manifest entry in `src/routes/health-routes.tsx` so the launcher can render the pillar even before features ship.

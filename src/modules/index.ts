@@ -10,8 +10,8 @@ import { BUSINESS_PILLAR } from "./business";
 import { CONCIERGE_PILLAR } from "./concierge";
 import { FINANCE_PILLAR } from "./finance";
 import { HEALTH_PILLAR } from "./health";
-import { TRUST_LAYER } from "./_trust";
-import { SHARED_LAYER } from "./_shared";
+import { TRUST_LAYER } from "@/platform/trust";
+import { SHARED_LAYER } from "@/platform/shared-layer";
 
 export const PILLARS = [
   BUSINESS_PILLAR,
