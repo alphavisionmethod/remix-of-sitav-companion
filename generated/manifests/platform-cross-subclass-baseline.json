@@ -1,0 +1,18 @@
+{
+  "generatedAt": "2026-04-25T17:10:00.000Z",
+  "schemaVersion": 1,
+  "rule": "Constitution Rule 27 (cross-subclass ratchet)",
+  "description": "Snapshot of pre-existing cross-subclass platform imports as of Wave 0.5. Future PRs may not increase this count. Each violation is reported as advisory by check-platform-subclassification.ts; the ratchet itself is BLOCKING.",
+  "monotoneRatchet": {
+    "enabled": true,
+    "direction": "decrease-only",
+    "enforcer": "scripts/architecture/check-platform-subclassification.ts"
+  },
+  "baselineCount": 509,
+  "drainPlan": "Resolve via the future Platform Relocation Wave (split src/platform/sita/** into shell+HUD+apps, relocate src/platform/admin/** to src/admin/**). Each relocation re-emits this baseline with the new lower count.",
+  "topOffenders": [
+    "src/platform/sita (operator-control) — imported by intelligence + product-infrastructure subclasses",
+    "src/platform/admin (operator-control) — imported by product-infrastructure pages",
+    "src/platform/personal-brain (product-infrastructure) — bidirectional with sita HUD"
+  ]
+}
