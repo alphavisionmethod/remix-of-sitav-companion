@@ -2321,7 +2321,7 @@
       "stale": false
     },
     {
-      "path": "generated/architecture-remediation/ARCHITECTURE_HARDENING_STATUS.md",
+      "path": "generated/historical/architecture-remediation/ARCHITECTURE_HARDENING_STATUS.md",
       "lifecycleClass": "reference",
       "freshnessTtlDays": 180,
       "owningScript": null,
@@ -2331,7 +2331,7 @@
       "stale": false
     },
     {
-      "path": "generated/architecture-remediation/CONTRACT_REMEDIATION_PLAN.md",
+      "path": "generated/historical/architecture-remediation/CONTRACT_REMEDIATION_PLAN.md",
       "lifecycleClass": "reference",
       "freshnessTtlDays": 180,
       "owningScript": null,
@@ -2341,7 +2341,7 @@
       "stale": false
     },
     {
-      "path": "generated/architecture-remediation/CONTRACT_TOPOLOGY_AUDIT.md",
+      "path": "generated/historical/architecture-remediation/CONTRACT_TOPOLOGY_AUDIT.md",
       "lifecycleClass": "reference",
       "freshnessTtlDays": 180,
       "owningScript": null,
@@ -2351,7 +2351,7 @@
       "stale": false
     },
     {
-      "path": "generated/architecture-remediation/DEPLOYMENT_CERTIFICATE.md",
+      "path": "generated/historical/architecture-remediation/DEPLOYMENT_CERTIFICATE.md",
       "lifecycleClass": "reference",
       "freshnessTtlDays": 180,
       "owningScript": null,
@@ -2361,7 +2361,7 @@
       "stale": false
     },
     {
-      "path": "generated/architecture-remediation/FINAL_VERIFICATION_RESULTS.md",
+      "path": "generated/historical/architecture-remediation/FINAL_VERIFICATION_RESULTS.md",
       "lifecycleClass": "reference",
       "freshnessTtlDays": 180,
       "owningScript": null,
@@ -2371,7 +2371,7 @@
       "stale": false
     },
     {
-      "path": "generated/architecture-remediation/PHASE_B5_GUARDRAIL_GRADUATION.md",
+      "path": "generated/historical/architecture-remediation/PHASE_B5_GUARDRAIL_GRADUATION.md",
       "lifecycleClass": "reference",
       "freshnessTtlDays": 180,
       "owningScript": null,
@@ -2381,7 +2381,7 @@
       "stale": false
     },
     {
-      "path": "generated/architecture-remediation/PLANE_ISOLATION_FIXES.md",
+      "path": "generated/historical/architecture-remediation/PLANE_ISOLATION_FIXES.md",
       "lifecycleClass": "reference",
       "freshnessTtlDays": 180,
       "owningScript": null,
@@ -2391,7 +2391,7 @@
       "stale": false
     },
     {
-      "path": "generated/architecture-remediation/PLANE_ISOLATION_PROOF.md",
+      "path": "generated/historical/architecture-remediation/PLANE_ISOLATION_PROOF.md",
       "lifecycleClass": "reference",
       "freshnessTtlDays": 180,
       "owningScript": null,
@@ -2401,7 +2401,7 @@
       "stale": false
     },
     {
-      "path": "generated/architecture-remediation/ROUTE_REMEDIATION_PLAN.md",
+      "path": "generated/historical/architecture-remediation/ROUTE_REMEDIATION_PLAN.md",
       "lifecycleClass": "reference",
       "freshnessTtlDays": 180,
       "owningScript": null,
@@ -2411,7 +2411,7 @@
       "stale": false
     },
     {
-      "path": "generated/architecture-remediation/ROUTE_TRUTH_AND_TOPOLOGY_AUDIT.md",
+      "path": "generated/historical/architecture-remediation/ROUTE_TRUTH_AND_TOPOLOGY_AUDIT.md",
       "lifecycleClass": "reference",
       "freshnessTtlDays": 180,
       "owningScript": null,
@@ -2421,7 +2421,7 @@
       "stale": false
     },
     {
-      "path": "generated/architecture-remediation/SERVICE_REMEDIATION_PLAN.md",
+      "path": "generated/historical/architecture-remediation/SERVICE_REMEDIATION_PLAN.md",
       "lifecycleClass": "reference",
       "freshnessTtlDays": 180,
       "owningScript": null,
@@ -2431,7 +2431,7 @@
       "stale": false
     },
     {
-      "path": "generated/architecture-remediation/SERVICE_TOPOLOGY_AUDIT.md",
+      "path": "generated/historical/architecture-remediation/SERVICE_TOPOLOGY_AUDIT.md",
       "lifecycleClass": "reference",
       "freshnessTtlDays": 180,
       "owningScript": null,
@@ -2441,7 +2441,7 @@
       "stale": false
     },
     {
-      "path": "generated/architecture-remediation/STALE_PAGES_AND_ROUTE_WRAPPERS.md",
+      "path": "generated/historical/architecture-remediation/STALE_PAGES_AND_ROUTE_WRAPPERS.md",
       "lifecycleClass": "reference",
       "freshnessTtlDays": 180,
       "owningScript": null,
@@ -2451,7 +2451,7 @@
       "stale": false
     },
     {
-      "path": "generated/architecture-remediation/contract-topology-map.json",
+      "path": "generated/historical/architecture-remediation/contract-topology-map.json",
       "lifecycleClass": "reference",
       "freshnessTtlDays": 180,
       "owningScript": null,
@@ -2461,7 +2461,7 @@
       "stale": false
     },
     {
-      "path": "generated/architecture-remediation/plane-isolation-graph.json",
+      "path": "generated/historical/architecture-remediation/plane-isolation-graph.json",
       "lifecycleClass": "reference",
       "freshnessTtlDays": 180,
       "owningScript": null,
@@ -2471,7 +2471,7 @@
       "stale": false
     },
     {
-      "path": "generated/architecture-remediation/route-truth-map.json",
+      "path": "generated/historical/architecture-remediation/route-truth-map.json",
       "lifecycleClass": "reference",
       "freshnessTtlDays": 180,
       "owningScript": null,
@@ -2481,7 +2481,7 @@
       "stale": false
     },
     {
-      "path": "generated/architecture-remediation/service-topology-map.json",
+      "path": "generated/historical/architecture-remediation/service-topology-map.json",
       "lifecycleClass": "reference",
       "freshnessTtlDays": 180,
       "owningScript": null,
@@ -2491,7 +2491,7 @@
       "stale": false
     },
     {
-      "path": "generated/architecture-remediation/verification-results.json",
+      "path": "generated/historical/architecture-remediation/verification-results.json",
       "lifecycleClass": "reference",
       "freshnessTtlDays": 180,
       "owningScript": null,
@@ -3081,7 +3081,7 @@
       "stale": false
     },
     {
-      "path": "generated/behavioral-equivalence-proofs/EQUIVALENCE_PROOF_SUMMARY.md",
+      "path": "generated/historical/behavioral-equivalence-proofs/EQUIVALENCE_PROOF_SUMMARY.md",
       "lifecycleClass": "reference",
       "freshnessTtlDays": 180,
       "owningScript": null,
@@ -3091,7 +3091,7 @@
       "stale": false
     },
     {
-      "path": "generated/behavioral-equivalence-proofs/bundles/146c4a3d05c4-proof.json",
+      "path": "generated/historical/behavioral-equivalence-proofs/bundles/146c4a3d05c4-proof.json",
       "lifecycleClass": "reference",
       "freshnessTtlDays": 180,
       "owningScript": null,
@@ -3101,7 +3101,7 @@
       "stale": false
     },
     {
-      "path": "generated/behavioral-equivalence-proofs/bundles/1ae13581bc60-proof.json",
+      "path": "generated/historical/behavioral-equivalence-proofs/bundles/1ae13581bc60-proof.json",
       "lifecycleClass": "reference",
       "freshnessTtlDays": 180,
       "owningScript": null,
@@ -3111,7 +3111,7 @@
       "stale": false
     },
     {
-      "path": "generated/behavioral-equivalence-proofs/bundles/1bbf771a8291-proof.json",
+      "path": "generated/historical/behavioral-equivalence-proofs/bundles/1bbf771a8291-proof.json",
       "lifecycleClass": "reference",
       "freshnessTtlDays": 180,
       "owningScript": null,
@@ -3121,7 +3121,7 @@
       "stale": false
     },
     {
-      "path": "generated/behavioral-equivalence-proofs/bundles/22e3ecca4a79-proof.json",
+      "path": "generated/historical/behavioral-equivalence-proofs/bundles/22e3ecca4a79-proof.json",
       "lifecycleClass": "reference",
       "freshnessTtlDays": 180,
       "owningScript": null,
@@ -3131,7 +3131,7 @@
       "stale": false
     },
     {
-      "path": "generated/behavioral-equivalence-proofs/bundles/319ac0213ed6-proof.json",
+      "path": "generated/historical/behavioral-equivalence-proofs/bundles/319ac0213ed6-proof.json",
       "lifecycleClass": "reference",
       "freshnessTtlDays": 180,
       "owningScript": null,
@@ -3141,7 +3141,7 @@
       "stale": false
     },
     {
-      "path": "generated/behavioral-equivalence-proofs/bundles/32c5954796dc-proof.json",
+      "path": "generated/historical/behavioral-equivalence-proofs/bundles/32c5954796dc-proof.json",
       "lifecycleClass": "reference",
       "freshnessTtlDays": 180,
       "owningScript": null,
@@ -3151,7 +3151,7 @@
       "stale": false
     },
     {
-      "path": "generated/behavioral-equivalence-proofs/bundles/3db298e2e6af-proof.json",
+      "path": "generated/historical/behavioral-equivalence-proofs/bundles/3db298e2e6af-proof.json",
       "lifecycleClass": "reference",
       "freshnessTtlDays": 180,
       "owningScript": null,
@@ -3161,7 +3161,7 @@
       "stale": false
     },
     {
-      "path": "generated/behavioral-equivalence-proofs/bundles/47519b4f36dc-proof.json",
+      "path": "generated/historical/behavioral-equivalence-proofs/bundles/47519b4f36dc-proof.json",
       "lifecycleClass": "reference",
       "freshnessTtlDays": 180,
       "owningScript": null,
@@ -3171,7 +3171,7 @@
       "stale": false
     },
     {
-      "path": "generated/behavioral-equivalence-proofs/bundles/7c58947f44d5-proof.json",
+      "path": "generated/historical/behavioral-equivalence-proofs/bundles/7c58947f44d5-proof.json",
       "lifecycleClass": "reference",
       "freshnessTtlDays": 180,
       "owningScript": null,
@@ -3181,7 +3181,7 @@
       "stale": false
     },
     {
-      "path": "generated/behavioral-equivalence-proofs/bundles/7cb5f88c3fe6-proof.json",
+      "path": "generated/historical/behavioral-equivalence-proofs/bundles/7cb5f88c3fe6-proof.json",
       "lifecycleClass": "reference",
       "freshnessTtlDays": 180,
       "owningScript": null,
@@ -3191,7 +3191,7 @@
       "stale": false
     },
     {
-      "path": "generated/behavioral-equivalence-proofs/bundles/9ac10a379946-proof.json",
+      "path": "generated/historical/behavioral-equivalence-proofs/bundles/9ac10a379946-proof.json",
       "lifecycleClass": "reference",
       "freshnessTtlDays": 180,
       "owningScript": null,
@@ -3201,7 +3201,7 @@
       "stale": false
     },
     {
-      "path": "generated/behavioral-equivalence-proofs/bundles/b499dfa5cecf-proof.json",
+      "path": "generated/historical/behavioral-equivalence-proofs/bundles/b499dfa5cecf-proof.json",
       "lifecycleClass": "reference",
       "freshnessTtlDays": 180,
       "owningScript": null,
@@ -3211,7 +3211,7 @@
       "stale": false
     },
     {
-      "path": "generated/behavioral-equivalence-proofs/bundles/cbaaf3105a80-proof.json",
+      "path": "generated/historical/behavioral-equivalence-proofs/bundles/cbaaf3105a80-proof.json",
       "lifecycleClass": "reference",
       "freshnessTtlDays": 180,
       "owningScript": null,
@@ -3221,7 +3221,7 @@
       "stale": false
     },
     {
-      "path": "generated/behavioral-equivalence-proofs/bundles/f5a7393b87b8-proof.json",
+      "path": "generated/historical/behavioral-equivalence-proofs/bundles/f5a7393b87b8-proof.json",
       "lifecycleClass": "reference",
       "freshnessTtlDays": 180,
       "owningScript": null,
@@ -3231,7 +3231,7 @@
       "stale": false
     },
     {
-      "path": "generated/behavioral-equivalence-proofs/equivalence-manifest.json",
+      "path": "generated/historical/behavioral-equivalence-proofs/equivalence-manifest.json",
       "lifecycleClass": "reference",
       "freshnessTtlDays": 180,
       "owningScript": null,
@@ -8031,7 +8031,7 @@
       "stale": false
     },
     {
-      "path": "generated/internal-ai-runtime-phase2/AGENT_TO_PRIMITIVE_WIRING_MAP.md",
+      "path": "generated/historical/internal-ai-runtime-phase2/AGENT_TO_PRIMITIVE_WIRING_MAP.md",
       "lifecycleClass": "reference",
       "freshnessTtlDays": 180,
       "owningScript": null,
@@ -8041,7 +8041,7 @@
       "stale": false
     },
     {
-      "path": "generated/internal-ai-runtime-phase2/ERROR_PATROL_TRIAGE_UI_SPEC.md",
+      "path": "generated/historical/internal-ai-runtime-phase2/ERROR_PATROL_TRIAGE_UI_SPEC.md",
       "lifecycleClass": "reference",
       "freshnessTtlDays": 180,
       "owningScript": null,
@@ -8051,7 +8051,7 @@
       "stale": false
     },
     {
-      "path": "generated/internal-ai-runtime-phase2/INTERNAL_AGENT_EXECUTE_ACTION_SPEC.md",
+      "path": "generated/historical/internal-ai-runtime-phase2/INTERNAL_AGENT_EXECUTE_ACTION_SPEC.md",
       "lifecycleClass": "reference",
       "freshnessTtlDays": 180,
       "owningScript": null,
@@ -8061,7 +8061,7 @@
       "stale": false
     },
     {
-      "path": "generated/internal-ai-runtime-phase2/INTERNAL_AI_PHASE2_CURRENT_STATE_AUDIT.md",
+      "path": "generated/historical/internal-ai-runtime-phase2/INTERNAL_AI_PHASE2_CURRENT_STATE_AUDIT.md",
       "lifecycleClass": "reference",
       "freshnessTtlDays": 180,
       "owningScript": null,
@@ -8071,7 +8071,7 @@
       "stale": false
     },
     {
-      "path": "generated/internal-ai-runtime-phase2/INTERNAL_AI_PHASE2_FINAL_VERIFICATION.md",
+      "path": "generated/historical/internal-ai-runtime-phase2/INTERNAL_AI_PHASE2_FINAL_VERIFICATION.md",
       "lifecycleClass": "reference",
       "freshnessTtlDays": 180,
       "owningScript": null,
@@ -8081,7 +8081,7 @@
       "stale": false
     },
     {
-      "path": "generated/internal-ai-runtime-phase2/PHASE2_CLOSURE_AUDIT.md",
+      "path": "generated/historical/internal-ai-runtime-phase2/PHASE2_CLOSURE_AUDIT.md",
       "lifecycleClass": "reference",
       "freshnessTtlDays": 180,
       "owningScript": null,
@@ -8091,7 +8091,7 @@
       "stale": false
     },
     {
-      "path": "generated/internal-ai-runtime-phase2/SAFE_ACTION_GOVERNANCE_MODEL.md",
+      "path": "generated/historical/internal-ai-runtime-phase2/SAFE_ACTION_GOVERNANCE_MODEL.md",
       "lifecycleClass": "reference",
       "freshnessTtlDays": 180,
       "owningScript": null,
@@ -8101,7 +8101,7 @@
       "stale": false
     },
     {
-      "path": "generated/internal-ai-runtime-phase2/agent-primitive-wiring-status.json",
+      "path": "generated/historical/internal-ai-runtime-phase2/agent-primitive-wiring-status.json",
       "lifecycleClass": "reference",
       "freshnessTtlDays": 180,
       "owningScript": null,
@@ -8111,7 +8111,7 @@
       "stale": false
     },
     {
-      "path": "generated/internal-ai-runtime-phase2/error-patrol-ui-status.json",
+      "path": "generated/historical/internal-ai-runtime-phase2/error-patrol-ui-status.json",
       "lifecycleClass": "reference",
       "freshnessTtlDays": 180,
       "owningScript": null,
@@ -8121,7 +8121,7 @@
       "stale": false
     },
     {
-      "path": "generated/internal-ai-runtime-phase2/internal-agent-execute-action-status.json",
+      "path": "generated/historical/internal-ai-runtime-phase2/internal-agent-execute-action-status.json",
       "lifecycleClass": "reference",
       "freshnessTtlDays": 180,
       "owningScript": null,
@@ -8241,7 +8241,7 @@
       "stale": false
     },
     {
-      "path": "generated/internal-ai-runtime-phase4/PHASE4_CLOSURE_AUDIT.md",
+      "path": "generated/historical/internal-ai-runtime-phase4/PHASE4_CLOSURE_AUDIT.md",
       "lifecycleClass": "reference",
       "freshnessTtlDays": 180,
       "owningScript": null,
@@ -8251,7 +8251,7 @@
       "stale": false
     },
     {
-      "path": "generated/internal-ai-runtime-phase4/security-council-runtime-status.json",
+      "path": "generated/historical/internal-ai-runtime-phase4/security-council-runtime-status.json",
       "lifecycleClass": "reference",
       "freshnessTtlDays": 180,
       "owningScript": null,
@@ -8261,7 +8261,7 @@
       "stale": false
     },
     {
-      "path": "generated/internal-ai-runtime-phase5/PHASE5_CLOSURE_AUDIT.md",
+      "path": "generated/historical/internal-ai-runtime-phase5/PHASE5_CLOSURE_AUDIT.md",
       "lifecycleClass": "reference",
       "freshnessTtlDays": 180,
       "owningScript": null,
@@ -8271,7 +8271,7 @@
       "stale": false
     },
     {
-      "path": "generated/internal-ai-runtime-phase5/phase5-status.json",
+      "path": "generated/historical/internal-ai-runtime-phase5/phase5-status.json",
       "lifecycleClass": "reference",
       "freshnessTtlDays": 180,
       "owningScript": null,
@@ -8281,7 +8281,7 @@
       "stale": false
     },
     {
-      "path": "generated/internal-ai-runtime-phase6/PHASE6_CLOSURE_AUDIT.md",
+      "path": "generated/historical/internal-ai-runtime-phase6/PHASE6_CLOSURE_AUDIT.md",
       "lifecycleClass": "reference",
       "freshnessTtlDays": 180,
       "owningScript": null,
@@ -8291,7 +8291,7 @@
       "stale": false
     },
     {
-      "path": "generated/internal-ai-runtime-phase7/PHASE7_CLOSURE_AUDIT.md",
+      "path": "generated/historical/internal-ai-runtime-phase7/PHASE7_CLOSURE_AUDIT.md",
       "lifecycleClass": "reference",
       "freshnessTtlDays": 180,
       "owningScript": null,
@@ -8301,7 +8301,7 @@
       "stale": false
     },
     {
-      "path": "generated/internal-ai-runtime-phase7/phase7-status.json",
+      "path": "generated/historical/internal-ai-runtime-phase7/phase7-status.json",
       "lifecycleClass": "reference",
       "freshnessTtlDays": 180,
       "owningScript": null,
@@ -9191,7 +9191,7 @@
       "stale": false
     },
     {
-      "path": "generated/master-deployment-readiness/FINAL_DEPLOYMENT_CERTIFICATION_REPORT.md",
+      "path": "generated/historical/master-deployment-readiness/FINAL_DEPLOYMENT_CERTIFICATION_REPORT.md",
       "lifecycleClass": "reference",
       "freshnessTtlDays": 180,
       "owningScript": null,
@@ -9201,7 +9201,7 @@
       "stale": false
     },
     {
-      "path": "generated/master-deployment-readiness/PHASE_AA_FINAL_CERTIFICATION.md",
+      "path": "generated/historical/master-deployment-readiness/PHASE_AA_FINAL_CERTIFICATION.md",
       "lifecycleClass": "reference",
       "freshnessTtlDays": 180,
       "owningScript": null,
@@ -9211,7 +9211,7 @@
       "stale": false
     },
     {
-      "path": "generated/master-deployment-readiness/deployment-certification-status.json",
+      "path": "generated/historical/master-deployment-readiness/deployment-certification-status.json",
       "lifecycleClass": "reference",
       "freshnessTtlDays": 180,
       "owningScript": null,
