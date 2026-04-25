@@ -14,6 +14,7 @@
 import { supabase } from "@/integrations/supabase/client";
 import type { Database, Json } from "@/integrations/supabase/types";
 import { emitSignal, compareSeverity, type SignalSeverity } from "./signal-bus";
+import { getKillSwitchStatus } from "./kill-switch";
 
 export type StandingMissionRow =
   Database["public"]["Tables"]["advisor_standing_missions"]["Row"];
@@ -228,6 +229,10 @@ export async function runDueMissionsForCurrentUser(): Promise<{
   const { data: userData } = await supabase.auth.getUser();
   const userId = userData.user?.id;
   if (!userId) return { evaluated: 0, fired: 0 };
+
+  // Phase 9 — kill-switch halts mission evaluation entirely when global.
+  const ks = await getKillSwitchStatus();
+  if (ks.engaged && !ks.domainScope) return { evaluated: 0, fired: 0 };
 
   const nowIso = new Date().toISOString();
   const { data: missions } = await supabase
