@@ -24,7 +24,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { ArrowLeft, ShieldAlert, Sparkles, FileText, FlaskConical, ListChecks, Brain, ScrollText, Send, Loader2 } from "lucide-react";
+import { ArrowLeft, ShieldAlert, Sparkles, FileText, FlaskConical, ListChecks, Brain, ScrollText, Send, Loader2, ClipboardList } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import {
   askBusinessAdvisor,
@@ -33,6 +33,8 @@ import {
   type AdvisorContextSnapshot,
   type AdvisorAskResult,
 } from "@/lib/ai-platform/runtime";
+import { getAdvisorSpec } from "@/lib/ai-platform/specs";
+import { AdvisorSpecPanel, AdvisorSpecEmptyState } from "@/components/business-advisors/AdvisorSpecPanel";
 
 interface AdvisorPageShellProps {
   advisor: BusinessAdvisorManifest;
@@ -242,13 +244,14 @@ export function AdvisorPageShell({
 
         {/* Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="grid w-full grid-cols-6">
+          <TabsList className="grid w-full grid-cols-7">
             <TabsTrigger value="chat"><Sparkles className="h-4 w-4 mr-1.5" />Chat</TabsTrigger>
             <TabsTrigger value="sources"><FileText className="h-4 w-4 mr-1.5" />Sources</TabsTrigger>
             <TabsTrigger value="simulation"><FlaskConical className="h-4 w-4 mr-1.5" />Simulation</TabsTrigger>
             <TabsTrigger value="recommendations"><ListChecks className="h-4 w-4 mr-1.5" />Recommendations</TabsTrigger>
             <TabsTrigger value="memory"><Brain className="h-4 w-4 mr-1.5" />Memory</TabsTrigger>
             <TabsTrigger value="proof"><ScrollText className="h-4 w-4 mr-1.5" />Proof</TabsTrigger>
+            <TabsTrigger value="spec"><ClipboardList className="h-4 w-4 mr-1.5" />Spec</TabsTrigger>
           </TabsList>
 
           {/* Chat */}
@@ -468,6 +471,18 @@ export function AdvisorPageShell({
                 )}
               </CardContent>
             </Card>
+          </TabsContent>
+
+          {/* Spec — 23-section build spec (Phase 0+) */}
+          <TabsContent value="spec" className="mt-4">
+            {(() => {
+              const spec = getAdvisorSpec(advisor.id);
+              return spec ? (
+                <AdvisorSpecPanel spec={spec} />
+              ) : (
+                <AdvisorSpecEmptyState advisorName={advisor.displayName} />
+              );
+            })()}
           </TabsContent>
         </Tabs>
       </div>

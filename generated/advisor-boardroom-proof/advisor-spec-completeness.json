@@ -1,0 +1,67 @@
+{
+  "generatedAt": "2026-04-25T02:26:22.423Z",
+  "gate": "advisor-spec-completeness",
+  "ok": true,
+  "totalAdvisors": 9,
+  "complete": 0,
+  "incomplete": 0,
+  "pending": 9,
+  "registryFile": "src/lib/ai-platform/runtime/business-advisor-registry.ts",
+  "specsFile": "src/lib/ai-platform/specs/index.ts",
+  "details": [
+    {
+      "id": "sales-advisor",
+      "status": "pending",
+      "issueCount": 0,
+      "issues": []
+    },
+    {
+      "id": "customer-service-advisor",
+      "status": "pending",
+      "issueCount": 0,
+      "issues": []
+    },
+    {
+      "id": "cfo-advisor",
+      "status": "pending",
+      "issueCount": 0,
+      "issues": []
+    },
+    {
+      "id": "marketing-advertising-advisor",
+      "status": "pending",
+      "issueCount": 0,
+      "issues": []
+    },
+    {
+      "id": "growth-advisor",
+      "status": "pending",
+      "issueCount": 0,
+      "issues": []
+    },
+    {
+      "id": "tech-advisor",
+      "status": "pending",
+      "issueCount": 0,
+      "issues": []
+    },
+    {
+      "id": "imports-exports-advisor",
+      "status": "pending",
+      "issueCount": 0,
+      "issues": []
+    },
+    {
+      "id": "taxes-laws-advisor",
+      "status": "pending",
+      "issueCount": 0,
+      "issues": []
+    },
+    {
+      "id": "ceo-advisor",
+      "status": "pending",
+      "issueCount": 0,
+      "issues": []
+    }
+  ]
+}
