@@ -155,6 +155,22 @@ export const VALIDATOR_GATE_OVERRIDES: ValidatorGateMapEntry[] = [
     consumer: "release-readiness",
     rationale: "Wave 1.3 Rule 43. Bridges the user-facing `service / adapter / client` vocabulary onto the existing 5-layer Service Layer Constitution and enforces the four forbidden sprawl patterns (service-as-transport, client-as-orchestrator, adapter-as-facade, raw-SDK bypass). See docs/architecture/SERVICE_ADAPTER_CLIENT_OWNERSHIP_MODEL.md and src/lib/migration/service-vocabulary-bridge.ts.",
   },
+  // ─── Wave B — Generated Artifact Governance (Constitution §B.1, BLOCKING) ──
+  {
+    validator: "check-generated-artifact-governance",
+    gateId: "generated-artifact-governance",
+    classification: "block",
+    consumer: "release-readiness",
+    rationale: "Wave B §B.1. Enforces the 4-class lifecycle model (active-blocking / active-informational / reference / historical-archived) over every file in generated/**. Reads generated/manifests/generated-artifact-governance-map.json and generated/baselines/orphan-artifact-baseline.json (917 pre-Wave-B orphans pinned). Fails on stale active-blocking artifacts, missing active artifacts, or new orphans beyond baseline. See docs/architecture/GENERATED_ARTIFACT_LIFECYCLE_MODEL.md.",
+  },
+  // ─── Wave B — Frontend/Backend Boundary Ratchet (Constitution §B.2, BLOCKING) ──
+  {
+    validator: "check-page-backend-bypass",
+    gateId: "page-backend-bypass",
+    classification: "block",
+    consumer: "release-readiness",
+    rationale: "Wave B §B.2. Monotone ratchet over direct @/integrations/supabase imports from src/pages/** (baseline 145, decrease-only), src/components/** (sealed at 0, zero-tolerance), and src/domains/** (baseline 9, decrease-only). New violators must be moved to a canonical service facade in src/lib/services/**. See docs/architecture/FRONTEND_BACKEND_OWNERSHIP_MODEL.md and generated/baselines/page-backend-bypass-baseline.json.",
+  },
 ];
 
 /** Lookup table for fast access by validator basename. */
