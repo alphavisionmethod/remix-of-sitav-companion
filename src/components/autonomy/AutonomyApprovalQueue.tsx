@@ -14,8 +14,9 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { toast } from "sonner";
-import { Check, X, ShieldCheck, Clock, AlertTriangle } from "lucide-react";
+import { Check, X, ShieldCheck, Clock, AlertTriangle, ChevronDown, FlaskConical } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 type QueueRow = {
@@ -30,6 +31,16 @@ type QueueRow = {
   payload: Record<string, unknown> | null;
 };
 
+type SimulationReceipt = {
+  id: string;
+  queue_id: string | null;
+  projected_outcomes: string[];
+  side_effects: Array<{ kind: string; target: string; reversible: boolean; description: string }>;
+  rollback_plan: { strategy: string; humanSummary?: string };
+  policy_warnings: string[];
+  decision_reason: string;
+};
+
 type Props = {
   /** Optional advisor filter; if omitted, shows all awaiting approval. */
   advisorId?: string;
@@ -39,8 +50,10 @@ type Props = {
 
 export function AutonomyApprovalQueue({ advisorId, compact = false }: Props) {
   const [rows, setRows] = useState<QueueRow[]>([]);
+  const [simulations, setSimulations] = useState<Record<string, SimulationReceipt>>({});
   const [loading, setLoading] = useState(true);
   const [busyId, setBusyId] = useState<string | null>(null);
+  const [openId, setOpenId] = useState<string | null>(null);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -54,6 +67,23 @@ export function AutonomyApprovalQueue({ advisorId, compact = false }: Props) {
     const { data, error } = await q;
     if (error) toast.error(`Failed to load queue: ${error.message}`);
     setRows((data as QueueRow[]) ?? []);
+    // Pull simulation receipts for visible rows in one shot.
+    if (data && data.length > 0) {
+      const ids = data.map((r) => r.id);
+      const { data: sims } = await supabase
+        .from("autonomy_simulation_receipts")
+        .select(
+          "id, queue_id, projected_outcomes, side_effects, rollback_plan, policy_warnings, decision_reason",
+        )
+        .in("queue_id", ids);
+      const map: Record<string, SimulationReceipt> = {};
+      for (const s of (sims ?? []) as SimulationReceipt[]) {
+        if (s.queue_id) map[s.queue_id] = s;
+      }
+      setSimulations(map);
+    } else {
+      setSimulations({});
+    }
     setLoading(false);
   }, [advisorId]);
 
