@@ -194,6 +194,11 @@ export function AutonomyApprovalQueue({ advisorId, compact = false }: Props) {
                             <AlertTriangle className="mr-1 h-3 w-3" /> client-facing
                           </Badge>
                         )}
+                        {simulations[row.id] && (
+                          <Badge variant="outline" className="text-[10px] border-primary/40 text-primary">
+                            <FlaskConical className="mr-1 h-3 w-3" /> simulated
+                          </Badge>
+                        )}
                       </div>
                       <p className="mt-1 text-sm font-medium leading-snug">{row.summary}</p>
                       <div className="mt-1 flex flex-wrap items-center gap-3 text-[11px] text-muted-foreground">
@@ -208,6 +213,31 @@ export function AutonomyApprovalQueue({ advisorId, compact = false }: Props) {
                           <span className="truncate">{payload.dry_run_reason}</span>
                         )}
                       </div>
+                      {simulations[row.id] && (
+                        <Collapsible
+                          open={openId === row.id}
+                          onOpenChange={(open) => setOpenId(open ? row.id : null)}
+                          className="mt-2"
+                        >
+                          <CollapsibleTrigger asChild>
+                            <button
+                              type="button"
+                              className="inline-flex items-center gap-1 text-[11px] text-primary hover:underline"
+                            >
+                              <ChevronDown
+                                className={cn(
+                                  "h-3 w-3 transition-transform",
+                                  openId === row.id && "rotate-180",
+                                )}
+                              />
+                              {openId === row.id ? "Hide" : "Show"} simulation
+                            </button>
+                          </CollapsibleTrigger>
+                          <CollapsibleContent className="mt-2 space-y-2 rounded-md border border-border/50 bg-muted/30 p-2">
+                            <SimulationPanel sim={simulations[row.id]} />
+                          </CollapsibleContent>
+                        </Collapsible>
+                      )}
                     </div>
                     <div className="flex shrink-0 gap-1">
                       <Button
