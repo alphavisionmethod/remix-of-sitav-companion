@@ -1,181 +1,87 @@
+# Platform Subclassification Hardening (Wave 0.5)
 
-# Architecture Enforcement Foundation — Wave 0 (Pre-Migration Hardening)
+## Problem (audited, not assumed)
 
-## Audit findings (grounded in the real repo)
+`src/platform/` currently contains **53 top-level folders** with no second-level structure. Concrete evidence:
 
-The repo is already extraordinarily well-equipped:
+- `src/platform/admin/` (151 files: command palettes, sub-navs, shells) is operator/admin UI, and `src/admin/components/index.ts` already re-exports from it — formalizing the blurred boundary.
+- `src/platform/sita/` (551 files), `personal-brain/` (82), `orchestration/` (57), `nova-sdk/` (56) live as flat siblings with `tenant/` (1 file), `registry/` (1 file), `eventing/` (1 file).
+- Constitution Rule 92 lists platform systems as a flat enumeration. No subclass model exists in code, docs, or manifests.
+- `check-platform-anti-patterns.ts` and `check-platform-readiness.ts` are referenced in `generated/validator-gate-map.json` but **do not exist on disk** — orphaned advisory entries.
 
-- **Constitution:** `docs/architecture/REPOSITORY_CONSTITUTION.md` (20 rules, Wave 1→10 sealed)
-- **Canonical orchestrators:** `scripts/validate-all.ts` (10 domains) + `scripts/generate-all.ts`
-- **Wiring registry:** `generated/validator-gate-map.json` (187 validators, 100% classified, 50 block / 18 warn / 119 advisory)
-- **Architecture validators on disk:** **258** (`scripts/architecture/check*.ts` + `checks/check-*.ts`)
-- **Validators wired into GitHub Actions:** **only 37** (the gap)
-- **Generated manifests/registries:** ~80 already exist (`artifact-ownership-manifest.json`, `capability-owner-map.json`, `app-plane-map.json`, `bounded-context-manifest.json`, `contract-manifest.json`, `db-schema-ownership-map.json`, `golden-path-registry.json`, `validator-gate-map.json`, …)
-- **CI gates:** 28 workflows (`deployment-readiness-gate.yml` is the REQUIRED merge gate)
-- **Sealed attestation:** Wave-10 master fingerprint `fe9b1776…` already drift-protected
+## Approach: classification first, no destabilizing moves
 
-**The real gap is NOT volume — it is foundation-level wiring + canonical entrypoints + exception governance.** Specifically:
+The Wave 10 attestation (Rule 19) is sealed and gates CI. Wave 0 foundation (Rules 21–26) was just installed. Safe path:
 
-1. 221 of 258 architecture validators are not visible in any CI workflow (most are advisory or only run via `validate-all`, but there's no single foundation-tier required gate).
-2. There is no canonical **"Foundation Gate"** that future waves attach to.
-3. No central **exception/ratchet/baseline registry** — wave-specific compatibility manifests exist but no foundation index.
-4. No **reverse-dependency proof law** for safe deletes/merges/folder retirements.
-5. No **architecture-enforcement-foundation-readiness-report**.
-6. The constitution does not yet reference the foundation layer (Rules 21+).
+1. **Encode the taxonomy as a manifest and validator** — no file moves, so Wave-10 digests stay unchanged, no imports/routes/tests break.
+2. **Classify every existing `src/platform/<X>/` folder** with `keep` / `relocate-future` / `split-future` decisions.
+3. **Wire the validator into the foundation tier** so future PRs cannot add unclassified folders, and cross-subclass imports are statically checked.
+4. **Document a follow-up Platform Relocation Wave** that runs under Rule 24 (safe-change evidence) + Rule 19 (re-seal). Path moves are explicitly out of scope.
 
-This plan installs the foundation **on top of** existing systems — no duplicate constitutions, no parallel governance universe, no rewrite of the 187-validator registry.
+## Six canonical platform subclasses (derived from real folder set)
 
----
+| Subclass | Members |
+|---|---|
+| `product-infrastructure` | `files`, `workspace`, `notifications`, `app-platform`, `apps`, `search`, `marketing`, `cloud`, `settings`, `setup`, `personal-brain`, `experience`, `design-system` |
+| `governance` | `trust`, `security`, `governance`, `contracts`, `proof`, `truth`, `verification` |
+| `operator-control` | `admin` *(relocate-future → `src/admin/`)*, `owner`, `mission-control`, `atlas`, `support`, `observability`, `operations`, `sita` *(split-future)* |
+| `identity-and-tenant` | `auth`, `tenant`, `enterprise` |
+| `intelligence` | `ai`, `intelligence`, `knowledge`, `advisors`, `boardroom`, `product` |
+| `runtime-bridges` | `runtime`, `registry`, `integration`, `orchestration`, `core-services`, `eventing`, `execution`, `sync-engine`, `nova-sdk`, `topology`, `architecture`, `capabilities`, `ci`, `deploy`, `migration`, `fip`, `control-plane` |
 
-## What I will install
+Allowed dependency directions (encoded in validator):
+- `runtime-bridges` → only `governance`, `identity-and-tenant` (lowest layer).
+- `identity-and-tenant` → `governance`, `runtime-bridges`.
+- `governance` → `identity-and-tenant`, `runtime-bridges`.
+- `intelligence` → `governance`, `identity-and-tenant`, `runtime-bridges`.
+- `product-infrastructure` → all except `operator-control`.
+- `operator-control` → all (consumer surface).
 
-### Part 1 — Architecture Law Layer (constitution amendments)
+Universal rule retained: no platform subclass may import from `src/modules/<pillar>/**`.
 
-Append **Rules 21–26** to `docs/architecture/REPOSITORY_CONSTITUTION.md`:
+## Files to create or change
 
-- **Rule 21 — Foundation Gate authority.** A new BLOCKING CI step `foundation-gate.yml` runs the canonical foundation-tier validator set on every PR. Failure blocks merge.
-- **Rule 22 — Validator registry is single source of truth.** Every architecture validator MUST be classified in `generated/validator-gate-map.json` (block / warn / advisory / disabled / archived). New validators without a classification fail `check-validator-gate-coverage.ts`.
-- **Rule 23 — Exception ratchet.** All exceptions live in `generated/manifests/architecture-exception-ledger.json` with: rule-id, file/glob, owner, reason, expires-at (or wave-bound). The ratchet is monotone: counts may decrease, never increase.
-- **Rule 24 — Safe-change law for deletes/merges/retirements.** Before deleting, merging, or retiring any file/folder, a reverse-dependency proof must be recorded in `generated/manifests/safe-change-evidence-ledger.json` (grep proof, manifest proof, route proof, test proof). CI validator `check-safe-change-evidence.ts` enforces this for changes touching frozen subtrees.
-- **Rule 25 — Manifest freshness law.** Foundation-tier manifests (listed in Rule 26) MUST be regenerated by their owning script and committed in the same PR that changes their inputs. Validator: `check-foundation-manifest-freshness.ts`.
-- **Rule 26 — Foundation manifest index.** The 14 canonical manifests required by future waves are enumerated in `generated/manifests/foundation-manifest-index.json` (master pointer file). All future wave prompts attach to this index.
+**Manifests:**
+- Create `generated/manifests/platform-subclassification-map.json` (53 entries).
+- Create `scripts/manifests/generate/generate-platform-subclassification-map.ts`.
+- Update `scripts/manifests/generate/generate-foundation-manifest-index.ts` to register the new manifest as the 15th entry under Rule 26.
 
-### Part 2 — Canonical Manifests (no duplicates — only what is missing)
+**Validators:**
+- Create `scripts/architecture/check-platform-subclassification.ts` — strict mode for missing classifications + cross-subclass import violations; advisory warnings for `src/admin` ↔ `src/platform/admin` re-exports.
+- Create `scripts/architecture/checks/check-platform-anti-patterns.ts` — thin wrapper that delegates to the new check (revives the orphaned gate-map entry).
 
-I will create or seed exactly **5 new canonical manifests** + **1 master pointer**. Where a substrate already exists, I will pointer-link to it (no copy).
+**CI wiring:**
+- Update `generated/manifests/foundation-tier-validator-set.json` — add new validator with `class: "block"`.
+- Update `.github/workflows/foundation-gate.yml` — add new validator as REQUIRED step.
+- Re-emit `generated/validator-gate-map.json` so `check-platform-anti-patterns` becomes `block` and `check-platform-subclassification` is registered.
 
-| Manifest | Action | Source of truth |
-|---|---|---|
-| `generated/manifests/foundation-manifest-index.json` | **CREATE** (master pointer) | New — points to all 14 below |
-| `generated/manifests/architecture-exception-ledger.json` | **CREATE** | New — single exception registry |
-| `generated/manifests/safe-change-evidence-ledger.json` | **CREATE** | New — append-only delete/merge/retire proofs |
-| `generated/manifests/foundation-tier-validator-set.json` | **CREATE** | Filtered view of `validator-gate-map.json` (the validators that run in `foundation-gate.yml`) |
-| `generated/manifests/deprecated-shim-baseline.json` | **CREATE** | Snapshots current `_shared`/`_trust` shim usage for monotone ratchet |
-| `generated/validator-gate-map.json` | **REUSE** (already canonical) | `scripts/manifests/generate/generate-validator-gate-map.ts` |
-| `generated/artifact-ownership-manifest.json` | **REUSE** | existing |
-| `generated/capability-owner-map.json` | **REUSE** | existing |
-| `generated/app-plane-map.json` | **REUSE** | existing |
-| `generated/bounded-context-manifest.json` | **REUSE** | existing |
-| `generated/contract-manifest.json` | **REUSE** | existing |
-| `generated/db-schema-ownership-map.json` | **REUSE** | existing |
-| `generated/golden-path-registry.json` | **REUSE** | existing |
-| `generated/audits/wave-10-architectural-attestation.json` | **REUSE** (sealed) | existing |
+**Constitution + docs:**
+- Update `docs/architecture/REPOSITORY_CONSTITUTION.md`: add **Rule 27 — Platform Subclassification (BLOCKING)** and **Rule 28 — Platform vs Admin Boundary (Wave-bound)**. Replace the flat platform enumeration with a pointer to the new model doc.
+- Create `docs/architecture/PLATFORM_SUBCLASSIFICATION_MODEL.md` — six subclasses, allowed/forbidden imports, every current folder classified, Platform-vs-Admin boundary, future Relocation Wave plan.
+- Update `src/platform/MANIFEST.md` — replace flat list with subclass grouping + pointer to new doc.
 
-The master pointer `foundation-manifest-index.json` lists all 14 with their owning generator script and freshness policy.
+**Audit report:**
+- Create `generated/audits/platform-subclassification-hardening-report.md`.
+- Update `generated/audits/repository-canonicalization-baseline.json` with `platformSubclassificationInstalled: true`.
 
-### Part 3 — Validator Framework (no duplicates — only wire what exists)
+## What is explicitly NOT in this pass
 
-I will add exactly **3 new foundation-tier validators** and **wire 12 existing-but-orphaned validators** into the foundation set:
+- **No file moves.** Wave-10 attestation does not need re-sealing.
+- **No barrel changes** in `src/admin/components/index.ts` — advisory warnings only.
+- **The Platform Relocation Wave** (moving `src/platform/admin/**` → `src/admin/**`, splitting `src/platform/sita/**`, etc.) is documented as a separate future request with prerequisite Rule 24 evidence and Rule 19 re-seal steps.
 
-**New (3):**
-1. `scripts/architecture/check-foundation-manifest-freshness.ts` — verifies all 14 manifests in `foundation-manifest-index.json` exist, are valid JSON, and were regenerated within their declared TTL.
-2. `scripts/architecture/check-architecture-exception-ledger.ts` — verifies every exception has owner + reason + expiry, and that the ratchet is monotone (count today ≤ count in baseline).
-3. `scripts/architecture/check-safe-change-evidence.ts` — verifies any deletion under frozen subtrees has a corresponding entry in `safe-change-evidence-ledger.json`.
+## Verification before finishing
 
-**Wired into foundation gate (12 existing, currently orphaned):**
+1. New generator produces 53 classified entries, zero unclassified.
+2. New validator exits 0 in strict mode (no cross-subclass import violations).
+3. `check-foundation-manifest-freshness.ts` passes with 15th manifest.
+4. `wave-10-check-attestation.ts` still passes (no file moves).
+5. `npx tsc --noEmit` clean.
+6. `npx vite build` succeeds.
 
-`check-no-duplicate-primary-concept`, `check-deprecated-wrappers`, `check-page-registry-completeness`, `check-context-membership`, `check-hook-purity`, `check-no-runtime-in-shared`, `check-lib-ownership-drift`, `check-canonical-paths`, `check-domain-purity`, `check-primitive-purity`, `check-bounded-context-coverage`, `check-frontend-backend-substrate-map`.
+## Why this is the right scope
 
-All 15 (3 new + 12 existing) get `foundation-tier` classification in `validator-gate-map.json`.
-
-### Part 4 — CI Enforcement (one new workflow + one wired step)
-
-**New workflow:** `.github/workflows/foundation-gate.yml`
-- Triggers: `pull_request` to main/develop, `push` to main, `workflow_dispatch`
-- Concurrency-grouped, 15-min timeout, `permissions: contents: read`
-- Runs the foundation-tier validator set (15 validators) — REQUIRED to merge
-- Runs `check-validator-gate-coverage.ts` to ensure no unclassified validators
-- Uploads foundation reports as artifacts (30-day retention)
-- Emits a `## 🏛️ Foundation Gate` summary
-
-**Wired into existing `deployment-readiness-gate.yml`:** one new BLOCKING step
-- `Foundation manifest freshness (REQUIRED)` → `npx tsx scripts/architecture/check-foundation-manifest-freshness.ts`
-
-This means **two** REQUIRED CI gates now block merges: `Deployment Readiness Gate` (existing) and `Foundation Gate` (new). They are complementary, not duplicative.
-
-### Part 5 — Safe-Change & Exception Model
-
-- `architecture-exception-ledger.json` schema: `{ ruleId, scope (file|glob), owner, reason, expiresAt | waveBound, createdAt, baselineCount }` — validated by new validator + monotone ratchet.
-- `safe-change-evidence-ledger.json` schema: `{ changeId, kind (delete|merge|retire), target, evidence: { grepProof, manifestProof, routeProof, testProof, duplicateReconciliation? }, approvedAt, owner }` — append-only.
-- Both seeded from current state (existing wave-9 deletion ledger gives us the seed for safe-change evidence; existing `_shared`/`_trust` shim usage gives the seed for the exception baseline).
-
-### Part 6 — Documentation Hardening
-
-- Append Rules 21–26 to `docs/architecture/REPOSITORY_CONSTITUTION.md`.
-- Create `docs/architecture/ARCHITECTURE_ENFORCEMENT_FOUNDATION.md` — single canonical doc explaining the foundation layer (law → manifest → validator → CI → exception → ratchet flow). All future wave prompts cite this single doc.
-- Update `scripts/architecture/README.md` with a new "Foundation tier" section listing the 15 foundation validators and the 14 canonical manifests.
-- **No duplicate constitutions, no FLOWOS.MD (it does not exist in the repo and would duplicate the existing constitution).**
-
-### Part 7 — Verification & Readiness Report
-
-- Generate `generated/audits/architecture-enforcement-foundation-readiness-report.md` with: existing systems found (counts), canonical systems adopted, manifests created/reused, validators added/wired, CI gates added, exception/ratchet schema, safe-change schema, remaining gaps for future waves, proof of deployment-readiness.
-- Generate `generated/audits/architecture-enforcement-foundation-readiness-report.json` (machine-readable mirror).
-- Run the full foundation gate locally and confirm zero hard-policy regressions.
-- Run `npx tsc --noEmit` to confirm no type breaks.
-- Bump `generated/audits/repository-canonicalization-baseline.json` to record `foundationInstalled: true, foundationVersion: 1`.
-
-### Part 8 — Next-wave readiness (what this enables)
-
-After this foundation lands, future wave prompts can safely:
-
-- Reference `generated/manifests/foundation-manifest-index.json` as the single starting point.
-- Add new validators by classifying them in `validator-gate-map.json` and (optionally) joining the foundation tier.
-- Add exceptions through the ledger (with monotone ratchet protection).
-- Perform deletes/merges/retirements with the safe-change evidence law enforcing proof.
-- Re-seal the Wave-10 attestation only via ADR + the existing emit/check pipeline.
-
----
-
-## Out of scope (intentionally — to keep the foundation safe)
-
-- I will **not** rewrite the constitution.
-- I will **not** create a duplicate ownership manifest (the 80 existing manifests are reused).
-- I will **not** flip currently-advisory validators to blocking en masse — only the 15 foundation-tier ones become BLOCKING.
-- I will **not** delete any existing files. Wave 9 already deleted the legacy adapters; the foundation only adds protection going forward.
-- I will **not** touch `src/` source code. This is a governance/CI/manifest pass.
-- I will **not** modify `supabase/`, edge functions, or migrations.
-
----
-
-## Risk & rollback
-
-- **Risk:** the new foundation gate could flag pre-existing low-grade drift in one of the 12 wired validators. Mitigation: any validator that fires on day-one drift will be added to the exception ledger with `waveBound: "foundation-v1"` and a 30-day expiry, then promoted to strict in a follow-up. CI never goes red on day one.
-- **Rollback:** delete `.github/workflows/foundation-gate.yml` and revert the constitution amendment commit. All 5 new manifests are additive — leaving them in place causes no harm.
-
----
-
-## Files that will be created or modified
-
-**Created (10):**
-- `.github/workflows/foundation-gate.yml`
-- `docs/architecture/ARCHITECTURE_ENFORCEMENT_FOUNDATION.md`
-- `scripts/architecture/check-foundation-manifest-freshness.ts`
-- `scripts/architecture/check-architecture-exception-ledger.ts`
-- `scripts/architecture/check-safe-change-evidence.ts`
-- `scripts/manifests/generate/generate-foundation-manifest-index.ts`
-- `generated/manifests/foundation-manifest-index.json`
-- `generated/manifests/architecture-exception-ledger.json` (seeded)
-- `generated/manifests/safe-change-evidence-ledger.json` (seeded from wave-9 deletion log)
-- `generated/manifests/foundation-tier-validator-set.json`
-- `generated/manifests/deprecated-shim-baseline.json` (seeded)
-- `generated/audits/architecture-enforcement-foundation-readiness-report.md`
-- `generated/audits/architecture-enforcement-foundation-readiness-report.json`
-
-**Modified (4):**
-- `docs/architecture/REPOSITORY_CONSTITUTION.md` (append Rules 21–26)
-- `.github/workflows/deployment-readiness-gate.yml` (add 1 new REQUIRED step)
-- `scripts/architecture/README.md` (add Foundation tier section)
-- `generated/audits/repository-canonicalization-baseline.json` (set `foundationInstalled`)
-- `package.json` (add 3 npm scripts: `foundation:check`, `foundation:emit`, `foundation:report`)
-
----
-
-## Acceptance criteria
-
-1. `npx tsc --noEmit` is clean.
-2. `npm run foundation:check` is green.
-3. `npx tsx scripts/validate-all.ts architecture` does not regress.
-4. The new `foundation-gate.yml` workflow lints (`actionlint`-equivalent — name/permissions/concurrency present).
-5. `generated/validator-gate-map.json` still shows `coveragePercent: 100`.
-6. Wave-10 attestation drift check still passes (we touch governance, not the 7 sealed surfaces).
-7. The readiness report shows: 14 canonical manifests, 15 foundation-tier validators, 2 REQUIRED CI gates, exception ledger seeded, safe-change ledger seeded, zero remaining foundation-blocker gaps.
+- Directly answers the prompt: `src/platform/` stops being a flat broad bucket; every folder has a constitutionally-binding subclass with enforced dependency rules.
+- Avoids prohibitions: no duplicate taxonomy systems, no broken imports/routes/tests, no decorative subclasses, reuses Wave-0 foundation.
+- Respects the Wave-10 seal: no digest changes, deployment readiness preserved.
+- Sets up the follow-up Relocation Wave with an exact manifest of moves and evidence requirements, all already encoded in repo.

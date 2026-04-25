@@ -1,0 +1,616 @@
+{
+  "generatedAt": "2026-04-25T17:07:26.657Z",
+  "schemaVersion": 1,
+  "rule": "Constitution Rule 27 — Platform Subclassification",
+  "description": "Single source of truth for the second-level classification of every src/platform/<X>/ folder. Refusing to add a new platform folder here BLOCKS CI.",
+  "subclasses": [
+    {
+      "id": "product-infrastructure",
+      "purpose": "Reusable product capability surfaces (file/notification/search/app/workspace plumbing).",
+      "allowedDependencies": [
+        "governance",
+        "identity-and-tenant",
+        "runtime-bridges",
+        "intelligence"
+      ],
+      "memberCount": 13
+    },
+    {
+      "id": "governance",
+      "purpose": "Trust, security, policy, audit, contracts, and verification.",
+      "allowedDependencies": [
+        "identity-and-tenant",
+        "runtime-bridges"
+      ],
+      "memberCount": 7
+    },
+    {
+      "id": "operator-control",
+      "purpose": "Operator/admin/owner UI surfaces and shells. Consumers of every other subclass.",
+      "allowedDependencies": [
+        "governance",
+        "identity-and-tenant",
+        "runtime-bridges",
+        "intelligence",
+        "product-infrastructure"
+      ],
+      "memberCount": 8
+    },
+    {
+      "id": "identity-and-tenant",
+      "purpose": "Identity, auth, tenant, enterprise scoping.",
+      "allowedDependencies": [
+        "governance",
+        "runtime-bridges"
+      ],
+      "memberCount": 3
+    },
+    {
+      "id": "intelligence",
+      "purpose": "AI capability layer, knowledge spine, advisors, boardroom.",
+      "allowedDependencies": [
+        "governance",
+        "identity-and-tenant",
+        "runtime-bridges"
+      ],
+      "memberCount": 6
+    },
+    {
+      "id": "runtime-bridges",
+      "purpose": "Runtime/registry/integration/orchestration adapters, bridges, and host SDKs (lowest layer).",
+      "allowedDependencies": [
+        "governance",
+        "identity-and-tenant"
+      ],
+      "memberCount": 17
+    }
+  ],
+  "universalRules": [
+    "No platform subclass may import from src/modules/<pillar>/** (Constitution Rule 2).",
+    "Cross-subclass imports must follow ALLOWED_DEPENDENCIES.",
+    "Adding a new top-level src/platform/<X>/ folder requires a CLASSIFICATION entry (Rule 27)."
+  ],
+  "folderCount": 54,
+  "folders": [
+    {
+      "folder": "admin",
+      "path": "src/platform/admin/",
+      "subclass": "operator-control",
+      "purpose": "Operator/admin/owner UI surfaces and shells. Consumers of every other subclass.",
+      "disposition": "relocate-future",
+      "relocateTarget": "src/admin/",
+      "notes": "151 files of admin command palettes/sub-navs/shells. Already re-exported by src/admin/components/index.ts. Wave-bound migration to src/admin/.",
+      "fileCount": 151
+    },
+    {
+      "folder": "advisors",
+      "path": "src/platform/advisors/",
+      "subclass": "intelligence",
+      "purpose": "AI capability layer, knowledge spine, advisors, boardroom.",
+      "disposition": "keep",
+      "relocateTarget": null,
+      "notes": null,
+      "fileCount": 21
+    },
+    {
+      "folder": "ai",
+      "path": "src/platform/ai/",
+      "subclass": "intelligence",
+      "purpose": "AI capability layer, knowledge spine, advisors, boardroom.",
+      "disposition": "keep",
+      "relocateTarget": null,
+      "notes": null,
+      "fileCount": 39
+    },
+    {
+      "folder": "app-platform",
+      "path": "src/platform/app-platform/",
+      "subclass": "product-infrastructure",
+      "purpose": "Reusable product capability surfaces (file/notification/search/app/workspace plumbing).",
+      "disposition": "keep",
+      "relocateTarget": null,
+      "notes": null,
+      "fileCount": 31
+    },
+    {
+      "folder": "apps",
+      "path": "src/platform/apps/",
+      "subclass": "product-infrastructure",
+      "purpose": "Reusable product capability surfaces (file/notification/search/app/workspace plumbing).",
+      "disposition": "keep",
+      "relocateTarget": null,
+      "notes": null,
+      "fileCount": 6
+    },
+    {
+      "folder": "architecture",
+      "path": "src/platform/architecture/",
+      "subclass": "runtime-bridges",
+      "purpose": "Runtime/registry/integration/orchestration adapters, bridges, and host SDKs (lowest layer).",
+      "disposition": "keep",
+      "relocateTarget": null,
+      "notes": null,
+      "fileCount": 59
+    },
+    {
+      "folder": "atlas",
+      "path": "src/platform/atlas/",
+      "subclass": "operator-control",
+      "purpose": "Operator/admin/owner UI surfaces and shells. Consumers of every other subclass.",
+      "disposition": "keep",
+      "relocateTarget": null,
+      "notes": null,
+      "fileCount": 12
+    },
+    {
+      "folder": "auth",
+      "path": "src/platform/auth/",
+      "subclass": "identity-and-tenant",
+      "purpose": "Identity, auth, tenant, enterprise scoping.",
+      "disposition": "keep",
+      "relocateTarget": null,
+      "notes": null,
+      "fileCount": 11
+    },
+    {
+      "folder": "boardroom",
+      "path": "src/platform/boardroom/",
+      "subclass": "intelligence",
+      "purpose": "AI capability layer, knowledge spine, advisors, boardroom.",
+      "disposition": "keep",
+      "relocateTarget": null,
+      "notes": null,
+      "fileCount": 5
+    },
+    {
+      "folder": "capabilities",
+      "path": "src/platform/capabilities/",
+      "subclass": "runtime-bridges",
+      "purpose": "Runtime/registry/integration/orchestration adapters, bridges, and host SDKs (lowest layer).",
+      "disposition": "keep",
+      "relocateTarget": null,
+      "notes": null,
+      "fileCount": 1
+    },
+    {
+      "folder": "ci",
+      "path": "src/platform/ci/",
+      "subclass": "runtime-bridges",
+      "purpose": "Runtime/registry/integration/orchestration adapters, bridges, and host SDKs (lowest layer).",
+      "disposition": "keep",
+      "relocateTarget": null,
+      "notes": null,
+      "fileCount": 1
+    },
+    {
+      "folder": "cloud",
+      "path": "src/platform/cloud/",
+      "subclass": "product-infrastructure",
+      "purpose": "Reusable product capability surfaces (file/notification/search/app/workspace plumbing).",
+      "disposition": "keep",
+      "relocateTarget": null,
+      "notes": null,
+      "fileCount": 22
+    },
+    {
+      "folder": "contracts",
+      "path": "src/platform/contracts/",
+      "subclass": "governance",
+      "purpose": "Trust, security, policy, audit, contracts, and verification.",
+      "disposition": "keep",
+      "relocateTarget": null,
+      "notes": null,
+      "fileCount": 2
+    },
+    {
+      "folder": "control-plane",
+      "path": "src/platform/control-plane/",
+      "subclass": "runtime-bridges",
+      "purpose": "Runtime/registry/integration/orchestration adapters, bridges, and host SDKs (lowest layer).",
+      "disposition": "keep",
+      "relocateTarget": null,
+      "notes": null,
+      "fileCount": 1
+    },
+    {
+      "folder": "core-services",
+      "path": "src/platform/core-services/",
+      "subclass": "runtime-bridges",
+      "purpose": "Runtime/registry/integration/orchestration adapters, bridges, and host SDKs (lowest layer).",
+      "disposition": "keep",
+      "relocateTarget": null,
+      "notes": null,
+      "fileCount": 4
+    },
+    {
+      "folder": "deploy",
+      "path": "src/platform/deploy/",
+      "subclass": "runtime-bridges",
+      "purpose": "Runtime/registry/integration/orchestration adapters, bridges, and host SDKs (lowest layer).",
+      "disposition": "keep",
+      "relocateTarget": null,
+      "notes": null,
+      "fileCount": 2
+    },
+    {
+      "folder": "design-system",
+      "path": "src/platform/design-system/",
+      "subclass": "product-infrastructure",
+      "purpose": "Reusable product capability surfaces (file/notification/search/app/workspace plumbing).",
+      "disposition": "keep",
+      "relocateTarget": null,
+      "notes": null,
+      "fileCount": 5
+    },
+    {
+      "folder": "enterprise",
+      "path": "src/platform/enterprise/",
+      "subclass": "identity-and-tenant",
+      "purpose": "Identity, auth, tenant, enterprise scoping.",
+      "disposition": "keep",
+      "relocateTarget": null,
+      "notes": null,
+      "fileCount": 2
+    },
+    {
+      "folder": "eventing",
+      "path": "src/platform/eventing/",
+      "subclass": "runtime-bridges",
+      "purpose": "Runtime/registry/integration/orchestration adapters, bridges, and host SDKs (lowest layer).",
+      "disposition": "keep",
+      "relocateTarget": null,
+      "notes": null,
+      "fileCount": 1
+    },
+    {
+      "folder": "execution",
+      "path": "src/platform/execution/",
+      "subclass": "runtime-bridges",
+      "purpose": "Runtime/registry/integration/orchestration adapters, bridges, and host SDKs (lowest layer).",
+      "disposition": "keep",
+      "relocateTarget": null,
+      "notes": null,
+      "fileCount": 1
+    },
+    {
+      "folder": "experience",
+      "path": "src/platform/experience/",
+      "subclass": "product-infrastructure",
+      "purpose": "Reusable product capability surfaces (file/notification/search/app/workspace plumbing).",
+      "disposition": "keep",
+      "relocateTarget": null,
+      "notes": null,
+      "fileCount": 28
+    },
+    {
+      "folder": "files",
+      "path": "src/platform/files/",
+      "subclass": "product-infrastructure",
+      "purpose": "Reusable product capability surfaces (file/notification/search/app/workspace plumbing).",
+      "disposition": "keep",
+      "relocateTarget": null,
+      "notes": null,
+      "fileCount": 21
+    },
+    {
+      "folder": "fip",
+      "path": "src/platform/fip/",
+      "subclass": "runtime-bridges",
+      "purpose": "Runtime/registry/integration/orchestration adapters, bridges, and host SDKs (lowest layer).",
+      "disposition": "keep",
+      "relocateTarget": null,
+      "notes": null,
+      "fileCount": 1
+    },
+    {
+      "folder": "governance",
+      "path": "src/platform/governance/",
+      "subclass": "governance",
+      "purpose": "Trust, security, policy, audit, contracts, and verification.",
+      "disposition": "keep",
+      "relocateTarget": null,
+      "notes": null,
+      "fileCount": 9
+    },
+    {
+      "folder": "integration",
+      "path": "src/platform/integration/",
+      "subclass": "runtime-bridges",
+      "purpose": "Runtime/registry/integration/orchestration adapters, bridges, and host SDKs (lowest layer).",
+      "disposition": "keep",
+      "relocateTarget": null,
+      "notes": null,
+      "fileCount": 7
+    },
+    {
+      "folder": "intelligence",
+      "path": "src/platform/intelligence/",
+      "subclass": "intelligence",
+      "purpose": "AI capability layer, knowledge spine, advisors, boardroom.",
+      "disposition": "keep",
+      "relocateTarget": null,
+      "notes": null,
+      "fileCount": 8
+    },
+    {
+      "folder": "knowledge",
+      "path": "src/platform/knowledge/",
+      "subclass": "intelligence",
+      "purpose": "AI capability layer, knowledge spine, advisors, boardroom.",
+      "disposition": "keep",
+      "relocateTarget": null,
+      "notes": null,
+      "fileCount": 23
+    },
+    {
+      "folder": "marketing",
+      "path": "src/platform/marketing/",
+      "subclass": "product-infrastructure",
+      "purpose": "Reusable product capability surfaces (file/notification/search/app/workspace plumbing).",
+      "disposition": "keep",
+      "relocateTarget": null,
+      "notes": null,
+      "fileCount": 20
+    },
+    {
+      "folder": "migration",
+      "path": "src/platform/migration/",
+      "subclass": "runtime-bridges",
+      "purpose": "Runtime/registry/integration/orchestration adapters, bridges, and host SDKs (lowest layer).",
+      "disposition": "keep",
+      "relocateTarget": null,
+      "notes": null,
+      "fileCount": 1
+    },
+    {
+      "folder": "mission-control",
+      "path": "src/platform/mission-control/",
+      "subclass": "operator-control",
+      "purpose": "Operator/admin/owner UI surfaces and shells. Consumers of every other subclass.",
+      "disposition": "keep",
+      "relocateTarget": null,
+      "notes": null,
+      "fileCount": 10
+    },
+    {
+      "folder": "notifications",
+      "path": "src/platform/notifications/",
+      "subclass": "product-infrastructure",
+      "purpose": "Reusable product capability surfaces (file/notification/search/app/workspace plumbing).",
+      "disposition": "keep",
+      "relocateTarget": null,
+      "notes": null,
+      "fileCount": 11
+    },
+    {
+      "folder": "nova-sdk",
+      "path": "src/platform/nova-sdk/",
+      "subclass": "runtime-bridges",
+      "purpose": "Runtime/registry/integration/orchestration adapters, bridges, and host SDKs (lowest layer).",
+      "disposition": "keep",
+      "relocateTarget": null,
+      "notes": null,
+      "fileCount": 56
+    },
+    {
+      "folder": "observability",
+      "path": "src/platform/observability/",
+      "subclass": "operator-control",
+      "purpose": "Operator/admin/owner UI surfaces and shells. Consumers of every other subclass.",
+      "disposition": "keep",
+      "relocateTarget": null,
+      "notes": null,
+      "fileCount": 11
+    },
+    {
+      "folder": "operations",
+      "path": "src/platform/operations/",
+      "subclass": "operator-control",
+      "purpose": "Operator/admin/owner UI surfaces and shells. Consumers of every other subclass.",
+      "disposition": "keep",
+      "relocateTarget": null,
+      "notes": null,
+      "fileCount": 2
+    },
+    {
+      "folder": "orchestration",
+      "path": "src/platform/orchestration/",
+      "subclass": "runtime-bridges",
+      "purpose": "Runtime/registry/integration/orchestration adapters, bridges, and host SDKs (lowest layer).",
+      "disposition": "keep",
+      "relocateTarget": null,
+      "notes": null,
+      "fileCount": 57
+    },
+    {
+      "folder": "owner",
+      "path": "src/platform/owner/",
+      "subclass": "operator-control",
+      "purpose": "Operator/admin/owner UI surfaces and shells. Consumers of every other subclass.",
+      "disposition": "keep",
+      "relocateTarget": null,
+      "notes": null,
+      "fileCount": 13
+    },
+    {
+      "folder": "personal-brain",
+      "path": "src/platform/personal-brain/",
+      "subclass": "product-infrastructure",
+      "purpose": "Reusable product capability surfaces (file/notification/search/app/workspace plumbing).",
+      "disposition": "keep",
+      "relocateTarget": null,
+      "notes": null,
+      "fileCount": 82
+    },
+    {
+      "folder": "product",
+      "path": "src/platform/product/",
+      "subclass": "intelligence",
+      "purpose": "AI capability layer, knowledge spine, advisors, boardroom.",
+      "disposition": "keep",
+      "relocateTarget": null,
+      "notes": null,
+      "fileCount": 22
+    },
+    {
+      "folder": "proof",
+      "path": "src/platform/proof/",
+      "subclass": "governance",
+      "purpose": "Trust, security, policy, audit, contracts, and verification.",
+      "disposition": "keep",
+      "relocateTarget": null,
+      "notes": null,
+      "fileCount": 1
+    },
+    {
+      "folder": "registry",
+      "path": "src/platform/registry/",
+      "subclass": "runtime-bridges",
+      "purpose": "Runtime/registry/integration/orchestration adapters, bridges, and host SDKs (lowest layer).",
+      "disposition": "keep",
+      "relocateTarget": null,
+      "notes": null,
+      "fileCount": 1
+    },
+    {
+      "folder": "runtime",
+      "path": "src/platform/runtime/",
+      "subclass": "runtime-bridges",
+      "purpose": "Runtime/registry/integration/orchestration adapters, bridges, and host SDKs (lowest layer).",
+      "disposition": "keep",
+      "relocateTarget": null,
+      "notes": null,
+      "fileCount": 4
+    },
+    {
+      "folder": "search",
+      "path": "src/platform/search/",
+      "subclass": "product-infrastructure",
+      "purpose": "Reusable product capability surfaces (file/notification/search/app/workspace plumbing).",
+      "disposition": "keep",
+      "relocateTarget": null,
+      "notes": null,
+      "fileCount": 2
+    },
+    {
+      "folder": "security",
+      "path": "src/platform/security/",
+      "subclass": "governance",
+      "purpose": "Trust, security, policy, audit, contracts, and verification.",
+      "disposition": "keep",
+      "relocateTarget": null,
+      "notes": null,
+      "fileCount": 1
+    },
+    {
+      "folder": "settings",
+      "path": "src/platform/settings/",
+      "subclass": "product-infrastructure",
+      "purpose": "Reusable product capability surfaces (file/notification/search/app/workspace plumbing).",
+      "disposition": "keep",
+      "relocateTarget": null,
+      "notes": null,
+      "fileCount": 18
+    },
+    {
+      "folder": "setup",
+      "path": "src/platform/setup/",
+      "subclass": "product-infrastructure",
+      "purpose": "Reusable product capability surfaces (file/notification/search/app/workspace plumbing).",
+      "disposition": "keep",
+      "relocateTarget": null,
+      "notes": null,
+      "fileCount": 16
+    },
+    {
+      "folder": "sita",
+      "path": "src/platform/sita/",
+      "subclass": "operator-control",
+      "purpose": "Operator/admin/owner UI surfaces and shells. Consumers of every other subclass.",
+      "disposition": "split-future",
+      "relocateTarget": null,
+      "notes": "551 files spanning HUD, shell, primitives, onboarding, apps. Future split: HUD → operator-control/sita-hud, shell → product-infrastructure/shell, apps → product-infrastructure/apps.",
+      "fileCount": 551
+    },
+    {
+      "folder": "support",
+      "path": "src/platform/support/",
+      "subclass": "operator-control",
+      "purpose": "Operator/admin/owner UI surfaces and shells. Consumers of every other subclass.",
+      "disposition": "keep",
+      "relocateTarget": null,
+      "notes": null,
+      "fileCount": 3
+    },
+    {
+      "folder": "sync-engine",
+      "path": "src/platform/sync-engine/",
+      "subclass": "runtime-bridges",
+      "purpose": "Runtime/registry/integration/orchestration adapters, bridges, and host SDKs (lowest layer).",
+      "disposition": "keep",
+      "relocateTarget": null,
+      "notes": null,
+      "fileCount": 39
+    },
+    {
+      "folder": "tenant",
+      "path": "src/platform/tenant/",
+      "subclass": "identity-and-tenant",
+      "purpose": "Identity, auth, tenant, enterprise scoping.",
+      "disposition": "keep",
+      "relocateTarget": null,
+      "notes": null,
+      "fileCount": 1
+    },
+    {
+      "folder": "topology",
+      "path": "src/platform/topology/",
+      "subclass": "runtime-bridges",
+      "purpose": "Runtime/registry/integration/orchestration adapters, bridges, and host SDKs (lowest layer).",
+      "disposition": "keep",
+      "relocateTarget": null,
+      "notes": null,
+      "fileCount": 1
+    },
+    {
+      "folder": "trust",
+      "path": "src/platform/trust/",
+      "subclass": "governance",
+      "purpose": "Trust, security, policy, audit, contracts, and verification.",
+      "disposition": "keep",
+      "relocateTarget": null,
+      "notes": null,
+      "fileCount": 30
+    },
+    {
+      "folder": "truth",
+      "path": "src/platform/truth/",
+      "subclass": "governance",
+      "purpose": "Trust, security, policy, audit, contracts, and verification.",
+      "disposition": "keep",
+      "relocateTarget": null,
+      "notes": null,
+      "fileCount": 1
+    },
+    {
+      "folder": "verification",
+      "path": "src/platform/verification/",
+      "subclass": "governance",
+      "purpose": "Trust, security, policy, audit, contracts, and verification.",
+      "disposition": "keep",
+      "relocateTarget": null,
+      "notes": null,
+      "fileCount": 3
+    },
+    {
+      "folder": "workspace",
+      "path": "src/platform/workspace/",
+      "subclass": "product-infrastructure",
+      "purpose": "Reusable product capability surfaces (file/notification/search/app/workspace plumbing).",
+      "disposition": "keep",
+      "relocateTarget": null,
+      "notes": null,
+      "fileCount": 21
+    }
+  ]
+}
