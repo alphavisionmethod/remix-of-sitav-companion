@@ -23,6 +23,9 @@ export {
 // Phase 1 — Sales Advisor
 import "./sales-advisor.spec";
 
+// Phase 2 — Customer Service Advisor
+import "./customer-service-advisor.spec";
+
 export type {
   BusinessAdvisorSpec,
   AutomationLevel,
