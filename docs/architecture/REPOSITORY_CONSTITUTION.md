@@ -47,7 +47,9 @@ steady-state target — independent of what wave is currently in progress.
 4. **`_shared`, `_trust`, and `src/platform/**` are leaves.** They MUST NOT import from any pillar (`src/modules/<pillar>/**`).
 5. **Components are pillar-blind.** `src/components/**` MUST NOT import from `src/pages/**` or `src/modules/<pillar>/**`.
 6. **Domains are pure.** `src/domains/**` MUST NOT import from `src/lib/services/**`, `src/integrations/**`, or any UI module.
-7. **Pages are thin.** Files under `src/pages/<pillar>/**` (where `<pillar>` ∈ {business, concierge, finance, health, money, investment-office, revenue-office, digital-presence}) MUST be ≤40 lines OR be a pure re-export. The canonical page body lives in `src/modules/<pillar>/pages/` or `src/platform/<system>/pages/`.
+7. **Pages are thin.** Files under `src/pages/<family>/**` MUST be ≤40 lines OR be a pure re-export.
+    - **Pillar families** (`<pillar>` ∈ {business, concierge, finance, health, money, investment-office, revenue-office, digital-presence}) — canonical body in `src/modules/<pillar>/pages/`. (Wave 4)
+    - **Platform families** (Wave 5: `<system>` ∈ {atlas, files, owner, mission-control, mission, boardroom, intelligence, trust, personal-brain, enterprise, tenant, workspace, integrations, marketing, settings, store, app-platform, apps, sita, advisors, auth}) — canonical body in `src/platform/<system>/pages/`. Special re-routings: `pages/mission/*` → `platform/mission-control/mission-pages/`; `pages/store/*` → `platform/app-platform/store-pages/`; `pages/integrations/*` → `platform/integration/pages/`.
 
 ## Folder uniqueness rules (CI-enforced)
 

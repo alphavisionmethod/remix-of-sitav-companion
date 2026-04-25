@@ -1,12 +1,4 @@
-import { Card, CardContent } from "@/components/ui/card";
-
-export default function FilesSettings() {
-  return (
-    <Card>
-      <CardContent className="p-5 space-y-2">
-        <h2 className="text-sm font-semibold">Files & Knowledge</h2>
-        <p className="text-xs text-muted-foreground">Upload files to a workspace from the workspace page. Indexed files become Brain context.</p>
-      </CardContent>
-    </Card>
-  );
-}
+// Wave 5 — legacy path re-exports the canonical platform implementation.
+// Moved to @/platform/personal-brain/pages/settings/FilesSettings
+export { default } from "@/platform/personal-brain/pages/settings/FilesSettings";
+export * from "@/platform/personal-brain/pages/settings/FilesSettings";
