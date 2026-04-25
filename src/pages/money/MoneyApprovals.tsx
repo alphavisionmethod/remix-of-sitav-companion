@@ -12,6 +12,7 @@ import { AppSurface } from "@/components/sita/surfaces/AppSurface";
 import { ListReveal, ListRevealItem } from "@/components/sita/motion/AppTransitions";
 import { cn } from "@/lib/utils";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { TrustBoundary } from "@/modules/_trust/ui/TrustBoundary";
 
 const MoneyApprovals = () => {
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -117,20 +118,48 @@ const MoneyApprovals = () => {
 
       {selected.status === "pending" && (
         <div className="flex gap-2">
-          <ActionCard
-            title="Approve"
-            description="Confirm this financial action"
-            accentColor="hsl(152 55% 48%)"
-            onApprove={handleApprove}
-            className="flex-1"
-          />
-          <ActionCard
-            title="Reject"
-            description="Decline this action"
-            accentColor="hsl(0 70% 55%)"
-            onApprove={handleReject}
-            className="flex-1"
-          />
+          <TrustBoundary
+            pillar="finance"
+            actionKey="finance.approval.approve"
+            riskTier={selected.proposed_action?.risk === "high" ? "critical" : "high"}
+            reversible={false}
+            impactSummary={selected.action_summary}
+            payload={{
+              approvalId: selected.id,
+              amount: selected.proposed_action?.amount,
+              linkedTo: selected.proposed_action?.linkedTo,
+            }}
+            onConfirm={async () => handleApprove()}
+          >
+            {({ run, busy }) => (
+              <ActionCard
+                title={busy ? "Recording…" : "Approve"}
+                description="Confirm this financial action"
+                accentColor="hsl(152 55% 48%)"
+                onApprove={run}
+                className="flex-1"
+              />
+            )}
+          </TrustBoundary>
+          <TrustBoundary
+            pillar="finance"
+            actionKey="finance.approval.reject"
+            riskTier="medium"
+            reversible={true}
+            impactSummary={selected.action_summary}
+            payload={{ approvalId: selected.id }}
+            onConfirm={async () => handleReject()}
+          >
+            {({ run, busy }) => (
+              <ActionCard
+                title={busy ? "Recording…" : "Reject"}
+                description="Decline this action"
+                accentColor="hsl(0 70% 55%)"
+                onApprove={run}
+                className="flex-1"
+              />
+            )}
+          </TrustBoundary>
         </div>
       )}
     </div>
