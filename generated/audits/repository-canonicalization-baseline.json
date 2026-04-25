@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-04-25T15:56:39.466Z",
+  "generatedAt": "2026-04-25T16:05:04.956Z",
   "schemaVersion": 1,
   "note": "Baseline file counts captured before Repository Tree Canonicalization waves. See docs/architecture/REPOSITORY_CONSTITUTION.md.",
   "topLevel": {
     "src/pages": 1148,
-    "src/modules": 61,
+    "src/modules": 297,
     "src/platform": 328,
     "src/components": 1227,
     "src/lib": 1710,
@@ -17,22 +17,22 @@
   },
   "pillars": {
     "business": {
-      "moduleOwned": 6,
+      "moduleOwned": 140,
       "legacyPages": 49,
       "revenueOffice": 69,
       "digitalPresence": 20
     },
     "concierge": {
-      "moduleOwned": 4,
+      "moduleOwned": 23,
       "legacyPages": 21
     },
     "finance": {
-      "moduleOwned": 4,
+      "moduleOwned": 78,
       "legacyMoney": 34,
       "legacyInvestmentOffice": 42
     },
     "health": {
-      "moduleOwned": 4,
+      "moduleOwned": 13,
       "legacyPages": 9
     }
   },

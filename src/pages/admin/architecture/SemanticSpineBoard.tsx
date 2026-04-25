@@ -19,7 +19,7 @@ import {
   useRecentVoiceSessions,
   type RetrievalKind,
   type VoiceSessionRow,
-} from "@/modules/_shared/knowledge";
+} from "@/platform/knowledge";
 
 interface RecentTrace {
   id: string;

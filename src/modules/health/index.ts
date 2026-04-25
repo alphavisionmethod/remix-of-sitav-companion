@@ -4,7 +4,7 @@
 // Capabilities are scaffolded as stubs at /health/* and represent
 // the planned surface — no business logic shipped yet.
 
-import type { PillarCapability, PillarManifest } from "@/modules/_shared/pillar-contract";
+import type { PillarCapability, PillarManifest } from "@/platform/contracts/pillar-contract";
 
 export const HEALTH_CAPABILITIES: readonly PillarCapability[] = [
   { id: "nutrition", label: "Nutrition", route: "/health/nutrition", maturity: "stub", trustTier: "medium" },

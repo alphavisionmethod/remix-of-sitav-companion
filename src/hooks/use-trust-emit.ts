@@ -10,7 +10,7 @@ import {
   openTrustApproval,
   type TrustReceiptInput,
   type ApprovalRequestInput,
-} from "@/modules/_trust";
+} from "@/platform/trust";
 
 export function useTrustEmit() {
   const receipt = useCallback(

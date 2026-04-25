@@ -1,0 +1,786 @@
+{
+  "summary": {
+    "moved": 147,
+    "alreadyAdapter": 8,
+    "collisionSkipped": 0,
+    "errors": []
+  },
+  "details": [
+    {
+      "pillar": "business",
+      "file": "AppointmentsScheduling.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "business",
+      "file": "AutopilotHub.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "business",
+      "file": "BackgroundTaskCenter.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "business",
+      "file": "BusinessAdvisorBoardPage.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "business",
+      "file": "BusinessBoardroom.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "business",
+      "file": "BusinessDocuments.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "business",
+      "file": "BusinessOperations.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "business",
+      "file": "BusinessOverview.tsx",
+      "action": "already-adapter"
+    },
+    {
+      "pillar": "business",
+      "file": "BusinessProof.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "business",
+      "file": "BusinessSettingsPage.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "business",
+      "file": "CRMAdvisorPage.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "business",
+      "file": "CRMAutomations.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "business",
+      "file": "CRMCommunications.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "business",
+      "file": "CRMCompanies.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "business",
+      "file": "CRMContacts.tsx",
+      "action": "already-adapter"
+    },
+    {
+      "pillar": "business",
+      "file": "CRMCustomFieldsPage.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "business",
+      "file": "CRMDuplicates.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "business",
+      "file": "CRMHealth.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "business",
+      "file": "CRMHome.tsx",
+      "action": "already-adapter"
+    },
+    {
+      "pillar": "business",
+      "file": "CRMImportCenter.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "business",
+      "file": "CRMIntegrationHub.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "business",
+      "file": "CRMNotes.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "business",
+      "file": "CRMPipeline.tsx",
+      "action": "already-adapter"
+    },
+    {
+      "pillar": "business",
+      "file": "CRMSegments.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "business",
+      "file": "CRMTasks.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "business",
+      "file": "CRMTimeline.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "business",
+      "file": "CollectionsCommandCenter.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "business",
+      "file": "CommunicationsCenter.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "business",
+      "file": "CustomerSupportCenter.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "business",
+      "file": "CustomersPage.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "business",
+      "file": "DealRoom.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "business",
+      "file": "EcommerceManager.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "business",
+      "file": "EndOfDayClosure.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "business",
+      "file": "FollowThroughCenter.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "business",
+      "file": "InvoicesCollections.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "business",
+      "file": "LeadRecovery.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "business",
+      "file": "LeadsInbox.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "business",
+      "file": "MorningBriefing.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "business",
+      "file": "OpportunitiesCenter.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "business",
+      "file": "PlaybookBuilder.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "business",
+      "file": "ProposalsContracts.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "business",
+      "file": "QuotesWorkspace.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "business",
+      "file": "RelationshipDossier.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "business",
+      "file": "RevenueAutopilot.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "business",
+      "file": "RevenueForecast.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "business",
+      "file": "RevenueImpactDashboard.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "business",
+      "file": "SocialCommand.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "business",
+      "file": "StrategicAccountRoom.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "business",
+      "file": "WebsiteBuilder.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "concierge",
+      "file": "AppointmentsPrep.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "concierge",
+      "file": "ConciergeBoardroom.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "concierge",
+      "file": "ConciergeFiles.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "concierge",
+      "file": "ConciergeOverview.tsx",
+      "action": "already-adapter"
+    },
+    {
+      "pillar": "concierge",
+      "file": "ConciergeProof.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "concierge",
+      "file": "ConciergeSettings.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "concierge",
+      "file": "ConciergeWorkflows.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "concierge",
+      "file": "ErrandsLogistics.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "concierge",
+      "file": "EventsGifts.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "concierge",
+      "file": "FamilyBoardroom.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "concierge",
+      "file": "FamilyCalendar.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "concierge",
+      "file": "GroceryPlanning.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "concierge",
+      "file": "HouseholdCommandCenter.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "concierge",
+      "file": "HouseholdTasks.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "concierge",
+      "file": "LifeAdminCenter.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "concierge",
+      "file": "MonthGridCalendar.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "concierge",
+      "file": "RecurringObligations.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "concierge",
+      "file": "SchoolActivities.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "concierge",
+      "file": "ServiceProviders.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "concierge",
+      "file": "TravelPlanning.tsx",
+      "action": "already-adapter"
+    },
+    {
+      "pillar": "concierge",
+      "file": "UpcomingNeeds.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "health",
+      "file": "HealthFitness.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "health",
+      "file": "HealthHome.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "health",
+      "file": "HealthMedical.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "health",
+      "file": "HealthMetricsApp.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "health",
+      "file": "HealthNutrition.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "health",
+      "file": "HealthRecovery.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "health",
+      "file": "HealthRemindersPage.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "health",
+      "file": "HealthStub.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "health",
+      "file": "HealthWearables.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "finance/money",
+      "file": "BillsWorkspace.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "finance/money",
+      "file": "BudgetEnvelopeOffice.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "finance/money",
+      "file": "CashAllocator.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "finance/money",
+      "file": "CashTiming.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "finance/money",
+      "file": "DebtCreditOffice.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "finance/money",
+      "file": "FinanceAutomations.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "finance/money",
+      "file": "FinanceBoardroom.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "finance/money",
+      "file": "FinancialBoundaryMonitor.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "finance/money",
+      "file": "FinancialHealthPulse.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "finance/money",
+      "file": "HouseholdMoneyOffice.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "finance/money",
+      "file": "InvestmentOffice.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "finance/money",
+      "file": "LifeMoneyEngine.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "finance/money",
+      "file": "MoneyAdvisorBoard.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "finance/money",
+      "file": "MoneyApprovals.tsx",
+      "action": "already-adapter"
+    },
+    {
+      "pillar": "finance/money",
+      "file": "MoneyBoardroom.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "finance/money",
+      "file": "MoneyDocuments.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "finance/money",
+      "file": "MoneyModes.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "finance/money",
+      "file": "MoneyOverview.tsx",
+      "action": "already-adapter"
+    },
+    {
+      "pillar": "finance/money",
+      "file": "MoneyProof.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "finance/money",
+      "file": "MoneyRituals.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "finance/money",
+      "file": "MoneySettings.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "finance/money",
+      "file": "NetWorthOffice.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "finance/money",
+      "file": "OpportunityCost.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "finance/money",
+      "file": "PeaceScore.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "finance/money",
+      "file": "ReceivablesObligations.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "finance/money",
+      "file": "ReconciliationReview.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "finance/money",
+      "file": "ReservesSavings.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "finance/money",
+      "file": "ScenarioPlanner.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "finance/money",
+      "file": "SpendingPulse.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "finance/money",
+      "file": "StressRadar.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "finance/money",
+      "file": "SubscriptionsWaste.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "finance/money",
+      "file": "TaxEstimator.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "finance/money",
+      "file": "TransactionIntelligence.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "finance/money",
+      "file": "TrustGraph.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "finance/io",
+      "file": "AdvancedMode.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "finance/io",
+      "file": "AdvisorBoard.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "finance/io",
+      "file": "BeginnerMode.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "finance/io",
+      "file": "BehavioralFirewall.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "finance/io",
+      "file": "CapitalPurpose.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "finance/io",
+      "file": "CapitalTwin.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "finance/io",
+      "file": "CatalystWarRoom.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "finance/io",
+      "file": "ConvictionEngine.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "finance/io",
+      "file": "CrossAssetStoryEngine.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "finance/io",
+      "file": "DecisionReadiness.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "finance/io",
+      "file": "DecisionTheater.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "finance/io",
+      "file": "DisagreementEngine.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "finance/io",
+      "file": "EventMarketsWorkspace.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "finance/io",
+      "file": "EventProbabilityLab.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "finance/io",
+      "file": "ExecutionDesk.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "finance/io",
+      "file": "FamilyOffice.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "finance/io",
+      "file": "InstrumentDetail.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "finance/io",
+      "file": "IntelligenceDossier.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "finance/io",
+      "file": "InvestmentBoardroom.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "finance/io",
+      "file": "InvestmentConstitution.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "finance/io",
+      "file": "InvestmentGate.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "finance/io",
+      "file": "InvestmentReceipts.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "finance/io",
+      "file": "InvestmentShellPage.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "finance/io",
+      "file": "KnowledgeGraph.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "finance/io",
+      "file": "MarketExplorer.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "finance/io",
+      "file": "MarketMemoryFeed.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "finance/io",
+      "file": "OperatingModes.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "finance/io",
+      "file": "OpportunityMap.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "finance/io",
+      "file": "PlatformConnections.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "finance/io",
+      "file": "PortfolioOffice.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "finance/io",
+      "file": "PositionSizingCoach.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "finance/io",
+      "file": "PostTradeLoop.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "finance/io",
+      "file": "ResearchLibrary.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "finance/io",
+      "file": "RiskOffice.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "finance/io",
+      "file": "StrategyDNA.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "finance/io",
+      "file": "StrategyStudio.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "finance/io",
+      "file": "ThesisJournal.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "finance/io",
+      "file": "TimeMachineReview.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "finance/io",
+      "file": "TradingFloor.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "finance/io",
+      "file": "WarRoom.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "finance/io",
+      "file": "WatchlistsSignals.tsx",
+      "action": "moved"
+    },
+    {
+      "pillar": "finance/io",
+      "file": "WhatWouldBreak.tsx",
+      "action": "moved"
+    }
+  ],
+  "generatedAt": "2026-04-25T16:02:14.076Z"
+}

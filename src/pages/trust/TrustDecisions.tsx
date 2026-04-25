@@ -5,8 +5,8 @@
 // ════════════════════════════════════════════════════════════
 
 import { GitBranch, ShieldCheck, Layers, Zap } from "lucide-react";
-import { DECISION_QUEUE, type SurfaceOwner } from "@/modules/_shared/decision-queue";
-import { TRUST_ACTION_LIST } from "@/modules/_trust";
+import { DECISION_QUEUE, type SurfaceOwner } from "@/platform/contracts/decision-queue";
+import { TRUST_ACTION_LIST } from "@/platform/trust";
 
 const ownerStyles: Record<SurfaceOwner, string> = {
   business: "bg-blue-500/10 text-blue-600 border-blue-500/30",

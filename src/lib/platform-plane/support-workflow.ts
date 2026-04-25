@@ -5,7 +5,7 @@
 
 import { supabase } from "@/integrations/supabase/client";
 import type { Json } from "@/integrations/supabase/types";
-import { emitRegisteredTrustAction } from "@/modules/_trust";
+import { emitRegisteredTrustAction } from "@/platform/trust";
 
 export interface SupportCase {
   id: string;

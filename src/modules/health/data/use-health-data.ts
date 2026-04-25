@@ -5,7 +5,7 @@
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { emitRegisteredTrustAction } from "@/modules/_trust/registry/emit-registered";
+import { emitRegisteredTrustAction } from "@/platform/trust/registry/emit-registered";
 import {
   cancelAppointment,
   createAppointment,

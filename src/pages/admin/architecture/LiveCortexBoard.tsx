@@ -12,8 +12,8 @@ import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Activity, Wand2, Radio } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { EmbeddingBudgetPanel } from "@/modules/_shared/knowledge/EmbeddingBudgetPanel";
-import { StreamingChatPanel } from "@/modules/_shared/ai/StreamingChatPanel";
+import { EmbeddingBudgetPanel } from "@/platform/knowledge/EmbeddingBudgetPanel";
+import { StreamingChatPanel } from "@/platform/ai/StreamingChatPanel";
 
 interface IntentRow {
   id: string;

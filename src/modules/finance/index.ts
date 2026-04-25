@@ -4,7 +4,7 @@
 // User-facing label is "Finance OS"; route prefix remains /money/*
 // (with /finance/* and /investment-office aliases) for URL stability.
 
-import type { PillarCapability, PillarManifest } from "@/modules/_shared/pillar-contract";
+import type { PillarCapability, PillarManifest } from "@/platform/contracts/pillar-contract";
 
 export const FINANCE_CAPABILITIES: readonly PillarCapability[] = [
   { id: "budget", label: "Budget", route: "/money/budget", maturity: "active", trustTier: "medium" },

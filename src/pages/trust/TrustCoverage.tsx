@@ -7,7 +7,7 @@
 // ════════════════════════════════════════════════════════════
 
 import { ShieldCheck, AlertTriangle, CheckCircle2 } from "lucide-react";
-import { TRUST_ACTION_LIST, type TrustActionPreset } from "@/modules/_trust";
+import { TRUST_ACTION_LIST, type TrustActionPreset } from "@/platform/trust";
 
 const RISK_ORDER: Record<TrustActionPreset["riskTier"], number> = {
   critical: 0,

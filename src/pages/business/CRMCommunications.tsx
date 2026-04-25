@@ -1,14 +1,3 @@
-import React from "react";
-import { CRMCommunicationQueue } from "@/components/business/crm/CRMCommunicationQueue";
-import { useBusinessNavigation } from "@/contexts/BusinessNavigationContext";
-import { useBusinessProfile } from "@/hooks/useBusinessProfile";
-
-const CRMCommunications = () => {
-  const { navigateTo } = useBusinessNavigation();
-  const { adaptations } = useBusinessProfile();
-  return (
-    <CRMCommunicationQueue onViewTimeline={() => navigateTo("crm-timeline")} />
-  );
-};
-
-export default CRMCommunications;
+// Wave 4 — legacy path re-exports the canonical module implementation.
+// Canonical: src/modules/business/pages/CRMCommunications.tsx
+export { default } from "@/modules/business/pages/CRMCommunications";

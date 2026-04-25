@@ -10,7 +10,7 @@ import { NovaSDKProvider } from "@/contexts/NovaSDKContext";
 import { RuntimeTierProvider } from "@/runtimes/runtime-context";
 import { usePipelineBootstrap } from "@/hooks/usePipelineBootstrap";
 import { useAutonomyBootstrap } from "@/hooks/useAutonomyBootstrap";
-import { ActiveWorkspaceProvider } from "@/modules/_shared";
+import { ActiveWorkspaceProvider } from "@/platform/workspace/workspace-context";
 
 /** Boots the orchestration pipeline inside the provider tree */
 function PipelineBootstrap({ children }: { children: ReactNode }) {

@@ -1,6 +1,6 @@
 // ═══════════════════════════════════════════════════════════════════
 // SITA OS — Shared AI Orchestration barrel (Phase 4)
-// Canonical import: @/modules/_shared/ai
+// Canonical import: @/platform/ai
 // ═══════════════════════════════════════════════════════════════════
 
 export {

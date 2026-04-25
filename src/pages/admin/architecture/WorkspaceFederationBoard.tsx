@@ -23,10 +23,10 @@ import {
   useFederationOverview,
   useCreateFederation,
   useRevokeFederation,
-} from "@/modules/_shared/knowledge/use-federation";
-import { MultiModalIngestPanel } from "@/modules/_shared/knowledge/MultiModalIngestPanel";
-import type { FederationSensitivity } from "@/modules/_shared/knowledge/federation-service";
-import { CrossWorkspaceApprovalQueue } from "@/modules/_shared/knowledge/CrossWorkspaceApprovalQueue";
+} from "@/platform/knowledge/use-federation";
+import { MultiModalIngestPanel } from "@/platform/knowledge/MultiModalIngestPanel";
+import type { FederationSensitivity } from "@/platform/knowledge/federation-service";
+import { CrossWorkspaceApprovalQueue } from "@/platform/knowledge/CrossWorkspaceApprovalQueue";
 
 const STATUS_VARIANT: Record<string, "default" | "secondary" | "outline" | "destructive"> = {
   active: "default",

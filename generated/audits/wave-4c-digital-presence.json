@@ -1,0 +1,30 @@
+{
+  "summary": {
+    "moved": 20,
+    "alreadyAdapter": 0,
+    "collision": 0
+  },
+  "files": [
+    "AIWebTeam.tsx",
+    "AppExperienceStudio.tsx",
+    "BrandStudio.tsx",
+    "CROOffice.tsx",
+    "ConnectedSites.tsx",
+    "ContentFreshness.tsx",
+    "DPOOnboarding.tsx",
+    "DPOSubNav.tsx",
+    "DomainPublishManager.tsx",
+    "EcommerceOffice.tsx",
+    "ErrorRadar.tsx",
+    "LaunchWarRoom.tsx",
+    "PresenceAnalytics.tsx",
+    "PresenceBoardroom.tsx",
+    "PresenceGate.tsx",
+    "PresenceTimeMachine.tsx",
+    "PromotionsOffice.tsx",
+    "SelfHealingQueue.tsx",
+    "SiteBuilder.tsx",
+    "WebsiteTwin.tsx"
+  ],
+  "generatedAt": "2026-04-25T16:04:58.583Z"
+}
