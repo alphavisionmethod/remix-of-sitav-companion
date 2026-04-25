@@ -315,7 +315,7 @@ function SimulationPanel({ sim }: { sim: SimulationReceipt }) {
                 <span
                   className={cn(
                     "mt-0.5 inline-block h-1.5 w-1.5 shrink-0 rounded-full",
-                    e.reversible ? "bg-emerald-500" : "bg-amber-500",
+                    e.reversible ? "bg-primary" : "bg-destructive/70",
                   )}
                 />
                 <span>
@@ -339,8 +339,8 @@ function SimulationPanel({ sim }: { sim: SimulationReceipt }) {
       )}
       {sim.policy_warnings?.length > 0 && (
         <div>
-          <div className="mb-1 font-semibold text-amber-600 dark:text-amber-400">Policy warnings</div>
-          <ul className="list-disc space-y-0.5 pl-4 text-amber-600 dark:text-amber-400">
+          <div className="mb-1 font-semibold text-destructive">Policy warnings</div>
+          <ul className="list-disc space-y-0.5 pl-4 text-destructive">
             {sim.policy_warnings.map((w, i) => (
               <li key={i}>{w}</li>
             ))}
