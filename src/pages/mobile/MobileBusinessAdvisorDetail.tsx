@@ -16,6 +16,7 @@ import { MobileCFOAdvisorPanels } from "@/components/business-advisors/cfo/Mobil
 import { MobileMarketingAdvisorPanels } from "@/components/business-advisors/marketing/MobileMarketingAdvisorPanels";
 import { MobileGrowthAdvisorPanels } from "@/components/business-advisors/growth/MobileGrowthAdvisorPanels";
 import { MobileTechAdvisorPanels } from "@/components/business-advisors/tech/MobileTechAdvisorPanels";
+import { MobileImportsExportsAdvisorPanels } from "@/components/business-advisors/imports-exports/MobileImportsExportsAdvisorPanels";
 
 export default function MobileBusinessAdvisorDetail() {
   const { advisorId } = useParams<{ advisorId: string }>();
@@ -83,6 +84,7 @@ export default function MobileBusinessAdvisorDetail() {
         {advisor.id === "marketing-advertising-advisor" && <MobileMarketingAdvisorPanels />}
         {advisor.id === "growth-advisor" && <MobileGrowthAdvisorPanels />}
         {advisor.id === "tech-advisor" && <MobileTechAdvisorPanels />}
+        {advisor.id === "imports-exports-advisor" && <MobileImportsExportsAdvisorPanels />}
 
         <Textarea
           rows={3}

@@ -19,6 +19,9 @@ import { GrowthAdvisorHeaderStats } from "@/components/business-advisors/growth/
 import { TechAdvisorRecommendations } from "@/components/business-advisors/tech/TechAdvisorRecommendations";
 import { TechAdvisorSimulationForm } from "@/components/business-advisors/tech/TechAdvisorSimulationForm";
 import { TechAdvisorHeaderStats } from "@/components/business-advisors/tech/TechAdvisorHeaderStats";
+import { ImportsExportsRecommendations } from "@/components/business-advisors/imports-exports/ImportsExportsRecommendations";
+import { ImportsExportsSimulationForm } from "@/components/business-advisors/imports-exports/ImportsExportsSimulationForm";
+import { ImportsExportsHeaderStats } from "@/components/business-advisors/imports-exports/ImportsExportsHeaderStats";
 
 export default function BusinessAdvisorPage() {
   const { advisorId } = useParams<{ advisorId: string }>();
@@ -83,6 +86,16 @@ export default function BusinessAdvisorPage() {
         headerStatsSlot={<TechAdvisorHeaderStats />}
         recommendationsSlot={<TechAdvisorRecommendations />}
         simulationFormSlot={<TechAdvisorSimulationForm />}
+      />
+    );
+  }
+  if (advisor.id === "imports-exports-advisor") {
+    return (
+      <AdvisorPageShell
+        advisor={advisor}
+        headerStatsSlot={<ImportsExportsHeaderStats />}
+        recommendationsSlot={<ImportsExportsRecommendations />}
+        simulationFormSlot={<ImportsExportsSimulationForm />}
       />
     );
   }
