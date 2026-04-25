@@ -14,6 +14,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { fetchSignalsForAdvisor, markSignalActedOn, type OSStateSignal } from "./signal-bus";
 import { proposeForSignal, type ProposedPlan } from "./proposers";
 import { decideExecutionMode, fetchAutonomyPolicy, type DryRunDecision } from "./dry-run";
+import type { Database } from "@/integrations/supabase/types";
 import {
   canTransition,
   COOLDOWN_AFTER_EXECUTE_MS,
@@ -249,7 +250,7 @@ async function transition(
     ? (current?.consecutive_successes ?? 0) + 1
     : current?.consecutive_successes ?? 0;
 
-  const update: Record<string, unknown> = {
+  const update: Database["public"]["Tables"]["advisor_autonomy_state"]["Update"] = {
     current_state: to,
     last_state_change_at: new Date().toISOString(),
     consecutive_failures: failures,
