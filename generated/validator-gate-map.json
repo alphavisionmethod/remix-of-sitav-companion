@@ -1,18 +1,18 @@
 {
-  "generatedAt": "2026-04-25T17:32:44.429Z",
+  "generatedAt": "2026-04-25T17:52:40.097Z",
   "source": {
     "checksDir": "scripts/architecture/checks",
     "requiredGatesCount": 275,
     "deploymentGapSuiteCount": 17,
-    "overrideCount": 7
+    "overrideCount": 8
   },
-  "totalValidators": 239,
-  "blockCount": 75,
+  "totalValidators": 240,
+  "blockCount": 76,
   "warnCount": 18,
   "advisoryCount": 146,
   "disabledCount": 0,
   "archivedCount": 0,
-  "classified": 239,
+  "classified": 240,
   "unclassified": 0,
   "unwiredAdvisoryCount": 146,
   "coveragePercent": 100,
@@ -2251,6 +2251,16 @@
       "lastModifiedAt": "2026-04-25T11:42:39.332Z",
       "hasReportArtifact": true,
       "rationale": "Auto-classified: no consumer wiring found; surfaced via advisory ingestion."
+    },
+    {
+      "validator": "check-shared-component-concept-rule",
+      "gateId": "shared-component-concept-rule",
+      "classification": "block",
+      "consumer": "release-readiness",
+      "declaredInRegistry": true,
+      "lastModifiedAt": "2026-04-25T17:51:19.805Z",
+      "hasReportArtifact": true,
+      "rationale": "Wave 0.9 concept-based shared component rule. Replaces the structural 'used by ≥2 pillars' heuristic with a semantic 3-test rule (vocabulary, dependency, portability). Net-new files under src/components/** must classify as shared-clean; the 12 grandfathered violators are baselined and monotone-decreasing per Constitution Rule 37. See docs/architecture/SHARED_COMPONENT_OWNERSHIP_MODEL.md."
     },
     {
       "validator": "check-shared-component-profile-pollution",
