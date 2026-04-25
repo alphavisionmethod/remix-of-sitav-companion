@@ -82,10 +82,14 @@ const SOURCE_TO_TABLE: Record<string, { table: string; label?: string } | null> 
   architecture_docs: { table: "error_events", label: "Recent error events" },
   incidents: { table: "incidents", label: "Open & recent incidents" },
   // Imports/Exports
+  // Imports/Exports — Phase 7 wired.
+  // `supplier_data` → CRM contacts (we filter for vendor/supplier tags in the panel),
+  // `customs_docs` → uploaded files (panel filters by trade-related classification).
+  // `trade_records` and `logistics` stay honestly null (no live table yet).
   trade_records: null,
   logistics: null,
-  supplier_data: null,
-  customs_docs: null,
+  supplier_data: { table: "crm_contacts", label: "Supplier / vendor contacts" },
+  customs_docs: { table: "file_metadata", label: "Customs & trade documents" },
   // Taxes/Laws
   tax_documents: null,
   jurisdiction_data: null,
@@ -136,7 +140,8 @@ async function loadSlice(
       | "customer_lifecycle_stages"
       | "conversion_experiments"
       | "incidents"
-      | "error_events";
+      | "error_events"
+      | "file_metadata";
     const { data, error, count } = await supabase
       .from(tableName)
       .select("*", { count: "exact" })
