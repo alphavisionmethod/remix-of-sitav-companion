@@ -55,3 +55,30 @@ export {
   type FederatedChunkHit,
   type FederatedMemoryHit,
 } from "./federated-retrieval-service";
+
+// ── Phase 10 — Federated attribution + cross-workspace approvals ──
+export {
+  fetchAttributionSummary,
+  groupAttributionByWorkspace,
+  type AttributionSummaryRow,
+  type AttributionGroup,
+} from "./attribution-service";
+export {
+  listCrossWorkspaceApprovals,
+  requestCrossWorkspaceApproval,
+  decideCrossWorkspaceApproval,
+  type ApprovalStatus,
+  type ApprovalActionKind,
+  type ApprovalSensitivity,
+  type CrossWorkspaceApprovalRow,
+  type RequestApprovalInput,
+  type DecideApprovalInput,
+} from "./cross-workspace-approval-service";
+export {
+  useCrossWorkspaceApprovals,
+  useRequestCrossWorkspaceApproval,
+  useDecideCrossWorkspaceApproval,
+  useAttributionSummary,
+} from "./use-cross-workspace-approvals";
+export { FederatedAttributionPanel } from "./FederatedAttributionPanel";
+export { CrossWorkspaceApprovalQueue } from "./CrossWorkspaceApprovalQueue";

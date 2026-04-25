@@ -10691,6 +10691,78 @@ export type Database = {
         }
         Relationships: []
       }
+      cross_workspace_approvals: {
+        Row: {
+          action_kind: string
+          created_at: string
+          decided_at: string | null
+          decided_by: string | null
+          decision_notes: string | null
+          expires_at: string
+          federation_id: string | null
+          id: string
+          payload: Json
+          rationale: string
+          requester_workspace_id: string
+          sensitivity: string
+          status: string
+          target_workspace_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          action_kind: string
+          created_at?: string
+          decided_at?: string | null
+          decided_by?: string | null
+          decision_notes?: string | null
+          expires_at?: string
+          federation_id?: string | null
+          id?: string
+          payload?: Json
+          rationale?: string
+          requester_workspace_id: string
+          sensitivity?: string
+          status?: string
+          target_workspace_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          action_kind?: string
+          created_at?: string
+          decided_at?: string | null
+          decided_by?: string | null
+          decision_notes?: string | null
+          expires_at?: string
+          federation_id?: string | null
+          id?: string
+          payload?: Json
+          rationale?: string
+          requester_workspace_id?: string
+          sensitivity?: string
+          status?: string
+          target_workspace_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cross_workspace_approvals_federation_id_fkey"
+            columns: ["federation_id"]
+            isOneToOne: false
+            referencedRelation: "workspace_federation_overview"
+            referencedColumns: ["federation_id"]
+          },
+          {
+            foreignKeyName: "cross_workspace_approvals_federation_id_fkey"
+            columns: ["federation_id"]
+            isOneToOne: false
+            referencedRelation: "workspace_federations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       customer_journey_stages: {
         Row: {
           avg_duration_days: number | null
@@ -25644,6 +25716,28 @@ export type Database = {
           },
         ]
       }
+      attribution_summary_v: {
+        Row: {
+          avg_similarity: number | null
+          federation_id: string | null
+          hit_count: number | null
+          invocation_id: string | null
+          last_used_at: string | null
+          max_similarity: number | null
+          peer_workspace_id: string | null
+          retrieval_kind: string | null
+          user_id: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_explainability_traces_invocation_id_fkey"
+            columns: ["invocation_id"]
+            isOneToOne: false
+            referencedRelation: "ai_invocation_plans"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       connector_effective_state: {
         Row: {
           account_email: string | null
@@ -26010,6 +26104,33 @@ export type Database = {
         Returns: number
       }
       current_user_workspace_ids: { Args: never; Returns: string[] }
+      decide_cross_workspace_approval: {
+        Args: { _approval_id: string; _decision: string; _notes?: string }
+        Returns: {
+          action_kind: string
+          created_at: string
+          decided_at: string | null
+          decided_by: string | null
+          decision_notes: string | null
+          expires_at: string
+          federation_id: string | null
+          id: string
+          payload: Json
+          rationale: string
+          requester_workspace_id: string
+          sensitivity: string
+          status: string
+          target_workspace_id: string
+          updated_at: string
+          user_id: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "cross_workspace_approvals"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
       dispatch_voice_intent: {
         Args: { _intent_id: string }
         Returns: {
@@ -26356,6 +26477,42 @@ export type Database = {
           _title: string
         }
         Returns: string
+      }
+      request_cross_workspace_approval: {
+        Args: {
+          _action_kind: string
+          _expires_in_hours?: number
+          _federation_id?: string
+          _payload?: Json
+          _rationale?: string
+          _requester_workspace_id: string
+          _sensitivity?: string
+          _target_workspace_id: string
+        }
+        Returns: {
+          action_kind: string
+          created_at: string
+          decided_at: string | null
+          decided_by: string | null
+          decision_notes: string | null
+          expires_at: string
+          federation_id: string | null
+          id: string
+          payload: Json
+          rationale: string
+          requester_workspace_id: string
+          sensitivity: string
+          status: string
+          target_workspace_id: string
+          updated_at: string
+          user_id: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "cross_workspace_approvals"
+          isOneToOne: true
+          isSetofReturn: false
+        }
       }
       resolve_error_patrol_detection: {
         Args: { _detection_id: string; _notes?: string }

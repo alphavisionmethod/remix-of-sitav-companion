@@ -26,6 +26,7 @@ import {
 } from "@/modules/_shared/knowledge/use-federation";
 import { MultiModalIngestPanel } from "@/modules/_shared/knowledge/MultiModalIngestPanel";
 import type { FederationSensitivity } from "@/modules/_shared/knowledge/federation-service";
+import { CrossWorkspaceApprovalQueue } from "@/modules/_shared/knowledge/CrossWorkspaceApprovalQueue";
 
 const STATUS_VARIANT: Record<string, "default" | "secondary" | "outline" | "destructive"> = {
   active: "default",
@@ -266,6 +267,8 @@ function WorkspaceFederationBoard() {
           )}
         </CardContent>
       </Card>
+
+      <CrossWorkspaceApprovalQueue defaultStatus="pending" />
     </div>
   );
 }

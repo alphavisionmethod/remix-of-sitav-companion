@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "phase": 10,
+  "attribution": {
+    "view": "attribution_summary_v",
+    "service": "attribution-service",
+    "exports": ["fetchAttributionSummary", "groupAttributionByWorkspace"],
+    "panel": "FederatedAttributionPanel",
+    "compactBadge": true,
+    "ownPeerSentinel": "__own__"
+  },
+  "approvals": {
+    "table": "cross_workspace_approvals",
+    "rpcs": [
+      "request_cross_workspace_approval",
+      "decide_cross_workspace_approval"
+    ],
+    "actionKinds": [
+      "promote_memory",
+      "share_chunk",
+      "grant_voice",
+      "elevate_sensitivity",
+      "custom"
+    ],
+    "statuses": [
+      "pending",
+      "approved",
+      "rejected",
+      "expired",
+      "cancelled",
+      "executed"
+    ],
+    "service": "cross-workspace-approval-service",
+    "hooks": [
+      "useCrossWorkspaceApprovals",
+      "useRequestCrossWorkspaceApproval",
+      "useDecideCrossWorkspaceApproval",
+      "useAttributionSummary"
+    ],
+    "queueComponent": "CrossWorkspaceApprovalQueue",
+    "embeddedIn": "WorkspaceFederationBoard"
+  }
+}
