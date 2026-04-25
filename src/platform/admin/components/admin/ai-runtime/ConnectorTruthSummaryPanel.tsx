@@ -11,10 +11,10 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ConnectorStateBadge } from "@/components/primitives/status/ConnectorStateBadge";
-import { EvidenceLink } from "@/components/primitives/actions/EvidenceLink";
+import { ConnectorStateBadge } from "@/platform/cloud/components/ConnectorStateBadge";
+import { EvidenceLink } from "@/platform/trust/components/EvidenceLink";
 import { ProvenanceChip } from "@/components/primitives/status/ProvenanceChip";
-import { NeedsHistoricalReleasesExplainer } from "@/components/primitives/feedback/NeedsHistoricalReleasesExplainer";
+import { NeedsHistoricalReleasesExplainer } from "@/platform/sita/components/sita/explainers/NeedsHistoricalReleasesExplainer";
 import {
   loadConnectorTruthSummary,
   type ConnectorTruthSummary,

@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/sheet";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ConnectorStateBadge } from "@/components/primitives/status/ConnectorStateBadge";
+import { ConnectorStateBadge } from "@/platform/cloud/components/ConnectorStateBadge";
 import { requestProviderReauth } from "@/lib/connectors/reauth-actions";
 import { toast } from "sonner";
 import { ShieldAlert, RefreshCw } from "lucide-react";
