@@ -28,6 +28,8 @@ import { TaxesLawsHeaderStats } from "@/components/business-advisors/taxes-laws/
 import { CEOAdvisorRecommendations } from "@/components/business-advisors/ceo/CEOAdvisorRecommendations";
 import { CEOAdvisorSimulationForm } from "@/components/business-advisors/ceo/CEOAdvisorSimulationForm";
 import { CEOAdvisorHeaderStats } from "@/components/business-advisors/ceo/CEOAdvisorHeaderStats";
+import { CEOSimulationComparisonRunner } from "@/components/business-advisors/ceo/CEOSimulationComparisonRunner";
+import { CEOApprovalCenter } from "@/components/business-advisors/ceo/CEOApprovalCenter";
 
 export default function BusinessAdvisorPage() {
   const { advisorId } = useParams<{ advisorId: string }>();
@@ -120,8 +122,18 @@ export default function BusinessAdvisorPage() {
       <AdvisorPageShell
         advisor={advisor}
         headerStatsSlot={<CEOAdvisorHeaderStats />}
-        recommendationsSlot={<CEOAdvisorRecommendations />}
-        simulationFormSlot={<CEOAdvisorSimulationForm />}
+        recommendationsSlot={
+          <div className="space-y-4">
+            <CEOApprovalCenter />
+            <CEOAdvisorRecommendations />
+          </div>
+        }
+        simulationFormSlot={
+          <div className="space-y-4">
+            <CEOAdvisorSimulationForm />
+            <CEOSimulationComparisonRunner />
+          </div>
+        }
       />
     );
   }
