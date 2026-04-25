@@ -33,6 +33,7 @@ export { default as GodTierIntegrationBoard } from "@/pages/admin/architecture/G
 export { default as GodTierRuntimeBoard } from "@/pages/admin/architecture/GodTierRuntimeBoard";
 export { default as KnowledgeSpineBoard } from "@/pages/admin/architecture/KnowledgeSpineBoard";
 export { default as SemanticSpineBoard } from "@/pages/admin/architecture/SemanticSpineBoard";
+export { default as LiveCortexBoard } from "@/pages/admin/architecture/LiveCortexBoard";
 
 // ── MC Architecture pages (from modules/) ──
 export { default as MCArchitectureDashboard } from "@/pages/admin/modules/MCArchitectureDashboard";

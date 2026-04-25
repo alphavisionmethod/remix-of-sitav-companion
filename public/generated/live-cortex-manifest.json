@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "phase": 7,
+  "streaming": {
+    "transport": "sse",
+    "edgeFunction": "ai-orchestrator-stream",
+    "events": [
+      "context",
+      "delta",
+      "done",
+      "error",
+      "trace"
+    ]
+  },
+  "intents": {
+    "extractionModel": "google/gemini-3-flash-preview",
+    "states": [
+      "approved",
+      "executed",
+      "expired",
+      "proposed",
+      "rejected"
+    ]
+  },
+  "tables": [
+    "voice_intents"
+  ],
+  "views": [
+    "embedding_budget_overview"
+  ],
+  "rpcs": [
+    "extract_voice_intents",
+    "purge_expired_voice_intents"
+  ],
+  "trustActions": [
+    "shared.embedding.batch",
+    "shared.voice.intent.execute"
+  ],
+  "edgeFunctions": [
+    "ai-orchestrator-stream",
+    "knowledge-embedder",
+    "voice-spine"
+  ],
+  "surfaces": [
+    "EmbeddingBudgetPanel",
+    "LiveCortexBoard",
+    "StreamingChatPanel",
+    "useExtractVoiceIntents",
+    "useOrchestratorStream"
+  ],
+  "adminRoutes": [
+    "/admin/architecture/live-cortex"
+  ]
+}

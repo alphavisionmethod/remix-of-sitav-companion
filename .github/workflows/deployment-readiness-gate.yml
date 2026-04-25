@@ -50,6 +50,9 @@ jobs:
       - name: Phase 6 — Semantic spine manifest freshness (REQUIRED)
         run: node scripts/ci/check-semantic-spine-manifest.mjs --check
 
+      - name: Phase 7 — Live Cortex manifest freshness (REQUIRED)
+        run: node scripts/ci/check-live-cortex-manifest.mjs --check
+
       - name: Run deployment-readiness gate
         run: npm run test:deployment-readiness
 
