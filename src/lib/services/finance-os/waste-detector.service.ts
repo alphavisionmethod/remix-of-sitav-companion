@@ -3,17 +3,12 @@
 // Identifies unused/underutilized subscriptions
 // ═══════════════════════════════════════════════════════════════
 
-import type { SubscriptionRecord, WasteOpportunity } from "@/packages/finance-contracts";
+import type { SubscriptionRecord } from "@/packages/finance-contracts";
+import type { WasteReport } from "@/domains/finance";
 
-
-export interface WasteReport {
-  totalWasteAnnualCents: number;
-  totalWasteMonthCents: number;
-  opportunities: WasteOpportunity[];
-  topCategory: string;
-  actionableCount: number;
-  generatedAt: string;
-}
+// Canonical type re-export for backward compatibility.
+// New code should import from `@/domains/finance` directly.
+export type { WasteReport };
 
 export function buildWasteReport(subscriptions: SubscriptionRecord[]): WasteReport {
   const opportunities = subscriptions
