@@ -153,7 +153,7 @@ async function probeCrmFinanceBridge(): Promise<ContinuityProbe> {
 async function probeInvoiceProofTrail(): Promise<ContinuityProbe> {
   try {
     const { count, error } = await supabase
-      .from("communication_log")
+      .from("receipts")
       .select("id", { count: "exact", head: true })
       .eq("subject_type", "invoice");
     if (error) throw error;
@@ -161,29 +161,29 @@ async function probeInvoiceProofTrail(): Promise<ContinuityProbe> {
       return {
         id: "invoice-proof",
         phase: 5,
-        title: "Invoice send writes a receipt + communication log entry",
+        title: "Invoice send writes a verifiable receipt",
         status: "unknown",
-        detail: "No invoice send events recorded yet — handler + edge function are wired and will write here on first send.",
-        evidenceRef: "supabase/functions/invoice-generate + communication_log",
+        detail: "No invoice receipts recorded yet — handler + edge function are wired and will write here on first send.",
+        evidenceRef: "supabase/functions/invoice-generate + receipts",
       };
     }
     return {
       id: "invoice-proof",
       phase: 5,
-      title: "Invoice send writes a receipt + communication log entry",
+      title: "Invoice send writes a verifiable receipt",
       status: "pass",
-      detail: `${count} invoice communication log entries recorded under the current scope.`,
-      evidenceRef: "supabase/functions/invoice-generate + communication_log",
-      evidence: { invoice_communications: count },
+      detail: `${count} invoice receipt(s) recorded under the current scope.`,
+      evidenceRef: "supabase/functions/invoice-generate + receipts",
+      evidence: { invoice_receipts: count },
     };
   } catch (err) {
     return {
       id: "invoice-proof",
       phase: 5,
-      title: "Invoice send writes a receipt + communication log entry",
+      title: "Invoice send writes a verifiable receipt",
       status: "unknown",
-      detail: `Cannot inspect communication_log: ${(err as Error).message}`,
-      evidenceRef: "communication_log",
+      detail: `Cannot inspect receipts: ${(err as Error).message}`,
+      evidenceRef: "receipts",
     };
   }
 }
@@ -334,8 +334,8 @@ function deferredProbes(): ContinuityProbe[] {
       phase: 9,
       title: "Real email / SMS dispatch",
       status: "deferred",
-      detail: "communication_log captures intent + receipt today. Real send needs Resend / Twilio connector approval.",
-      evidenceRef: "communication_log + integrations hub",
+      detail: "Receipts table captures intent + proof today. Real send needs Resend / Twilio connector approval.",
+      evidenceRef: "receipts + integrations hub",
     },
     {
       id: "deferred-adaptive-writeback",
