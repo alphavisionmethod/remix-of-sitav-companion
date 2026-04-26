@@ -7,7 +7,11 @@ import { chromium, FullConfig } from "@playwright/test";
 import { TEST_USERS } from "./fixtures/test-users";
 import * as fs from "fs";
 import * as path from "path";
+import { fileURLToPath } from "url";
 
+// ESM-safe __dirname (Playwright loads this file as ESM under "type":"module" projects).
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const AUTH_STATE_PATH = path.join(__dirname, "../../test-results/.auth/state.json");
 
 async function globalSetup(config: FullConfig) {
