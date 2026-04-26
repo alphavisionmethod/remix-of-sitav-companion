@@ -4427,10 +4427,14 @@ export type Database = {
           appointment_date: string | null
           category: string | null
           created_at: string
+          crm_company_id: string | null
+          crm_contact_id: string | null
+          customer_id: string | null
           docs_needed: string[] | null
           id: string
           location: string | null
           notes: string | null
+          opportunity_id: string | null
           owner: string | null
           prep_items: string[] | null
           provider: string | null
@@ -4445,10 +4449,14 @@ export type Database = {
           appointment_date?: string | null
           category?: string | null
           created_at?: string
+          crm_company_id?: string | null
+          crm_contact_id?: string | null
+          customer_id?: string | null
           docs_needed?: string[] | null
           id?: string
           location?: string | null
           notes?: string | null
+          opportunity_id?: string | null
           owner?: string | null
           prep_items?: string[] | null
           provider?: string | null
@@ -4463,10 +4471,14 @@ export type Database = {
           appointment_date?: string | null
           category?: string | null
           created_at?: string
+          crm_company_id?: string | null
+          crm_contact_id?: string | null
+          customer_id?: string | null
           docs_needed?: string[] | null
           id?: string
           location?: string | null
           notes?: string | null
+          opportunity_id?: string | null
           owner?: string | null
           prep_items?: string[] | null
           provider?: string | null
@@ -4477,7 +4489,43 @@ export type Database = {
           user_id?: string
           who?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "appointments_crm_company_id_fkey"
+            columns: ["crm_company_id"]
+            isOneToOne: false
+            referencedRelation: "crm_companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "appointments_crm_contact_id_fkey"
+            columns: ["crm_contact_id"]
+            isOneToOne: false
+            referencedRelation: "crm_contacts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "appointments_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "customers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "appointments_opportunity_id_fkey"
+            columns: ["opportunity_id"]
+            isOneToOne: false
+            referencedRelation: "crm_opportunities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "appointments_opportunity_id_fkey"
+            columns: ["opportunity_id"]
+            isOneToOne: false
+            referencedRelation: "v_revenue_lineage"
+            referencedColumns: ["opportunity_id"]
+          },
+        ]
       }
       approval_decisions: {
         Row: {
@@ -10047,6 +10095,13 @@ export type Database = {
             referencedRelation: "crm_opportunities"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "crm_communications_opportunity_id_fkey"
+            columns: ["opportunity_id"]
+            isOneToOne: false
+            referencedRelation: "v_revenue_lineage"
+            referencedColumns: ["opportunity_id"]
+          },
         ]
       }
       crm_companies: {
@@ -10414,6 +10469,13 @@ export type Database = {
             referencedRelation: "crm_opportunities"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "crm_notes_opportunity_id_fkey"
+            columns: ["opportunity_id"]
+            isOneToOne: false
+            referencedRelation: "v_revenue_lineage"
+            referencedColumns: ["opportunity_id"]
+          },
         ]
       }
       crm_opportunities: {
@@ -10676,6 +10738,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "crm_opportunities"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crm_tasks_opportunity_id_fkey"
+            columns: ["opportunity_id"]
+            isOneToOne: false
+            referencedRelation: "v_revenue_lineage"
+            referencedColumns: ["opportunity_id"]
           },
         ]
       }
@@ -15500,6 +15569,8 @@ export type Database = {
         Row: {
           amount_cents: number
           created_at: string
+          crm_company_id: string | null
+          crm_contact_id: string | null
           currency: string
           customer_id: string | null
           due_at: string | null
@@ -15508,8 +15579,11 @@ export type Database = {
           issued_at: string | null
           line_items: Json
           metadata: Json
+          opportunity_id: string | null
           org_id: string | null
           paid_at: string | null
+          proposal_id: string | null
+          quote_id: string | null
           status: string
           updated_at: string
           user_id: string
@@ -15517,6 +15591,8 @@ export type Database = {
         Insert: {
           amount_cents?: number
           created_at?: string
+          crm_company_id?: string | null
+          crm_contact_id?: string | null
           currency?: string
           customer_id?: string | null
           due_at?: string | null
@@ -15525,8 +15601,11 @@ export type Database = {
           issued_at?: string | null
           line_items?: Json
           metadata?: Json
+          opportunity_id?: string | null
           org_id?: string | null
           paid_at?: string | null
+          proposal_id?: string | null
+          quote_id?: string | null
           status?: string
           updated_at?: string
           user_id: string
@@ -15534,6 +15613,8 @@ export type Database = {
         Update: {
           amount_cents?: number
           created_at?: string
+          crm_company_id?: string | null
+          crm_contact_id?: string | null
           currency?: string
           customer_id?: string | null
           due_at?: string | null
@@ -15542,13 +15623,73 @@ export type Database = {
           issued_at?: string | null
           line_items?: Json
           metadata?: Json
+          opportunity_id?: string | null
           org_id?: string | null
           paid_at?: string | null
+          proposal_id?: string | null
+          quote_id?: string | null
           status?: string
           updated_at?: string
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "invoices_crm_company_id_fkey"
+            columns: ["crm_company_id"]
+            isOneToOne: false
+            referencedRelation: "crm_companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "invoices_crm_contact_id_fkey"
+            columns: ["crm_contact_id"]
+            isOneToOne: false
+            referencedRelation: "crm_contacts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "invoices_opportunity_id_fkey"
+            columns: ["opportunity_id"]
+            isOneToOne: false
+            referencedRelation: "crm_opportunities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "invoices_opportunity_id_fkey"
+            columns: ["opportunity_id"]
+            isOneToOne: false
+            referencedRelation: "v_revenue_lineage"
+            referencedColumns: ["opportunity_id"]
+          },
+          {
+            foreignKeyName: "invoices_proposal_id_fkey"
+            columns: ["proposal_id"]
+            isOneToOne: false
+            referencedRelation: "proposals"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "invoices_proposal_id_fkey"
+            columns: ["proposal_id"]
+            isOneToOne: false
+            referencedRelation: "v_revenue_lineage"
+            referencedColumns: ["proposal_id"]
+          },
+          {
+            foreignKeyName: "invoices_quote_id_fkey"
+            columns: ["quote_id"]
+            isOneToOne: false
+            referencedRelation: "quotes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "invoices_quote_id_fkey"
+            columns: ["quote_id"]
+            isOneToOne: false
+            referencedRelation: "v_revenue_lineage"
+            referencedColumns: ["quote_id"]
+          },
+        ]
       }
       job_executions: {
         Row: {
@@ -19700,12 +19841,17 @@ export type Database = {
       proposals: {
         Row: {
           content: Json
+          converted_invoice_id: string | null
           created_at: string
+          crm_company_id: string | null
+          crm_contact_id: string | null
           customer_id: string | null
           decided_at: string | null
           id: string
           metadata: Json
+          opportunity_id: string | null
           org_id: string | null
+          quote_id: string | null
           scope: string | null
           sent_at: string | null
           status: string
@@ -19715,12 +19861,17 @@ export type Database = {
         }
         Insert: {
           content?: Json
+          converted_invoice_id?: string | null
           created_at?: string
+          crm_company_id?: string | null
+          crm_contact_id?: string | null
           customer_id?: string | null
           decided_at?: string | null
           id?: string
           metadata?: Json
+          opportunity_id?: string | null
           org_id?: string | null
+          quote_id?: string | null
           scope?: string | null
           sent_at?: string | null
           status?: string
@@ -19730,12 +19881,17 @@ export type Database = {
         }
         Update: {
           content?: Json
+          converted_invoice_id?: string | null
           created_at?: string
+          crm_company_id?: string | null
+          crm_contact_id?: string | null
           customer_id?: string | null
           decided_at?: string | null
           id?: string
           metadata?: Json
+          opportunity_id?: string | null
           org_id?: string | null
+          quote_id?: string | null
           scope?: string | null
           sent_at?: string | null
           status?: string
@@ -19743,7 +19899,50 @@ export type Database = {
           updated_at?: string
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "proposals_crm_company_id_fkey"
+            columns: ["crm_company_id"]
+            isOneToOne: false
+            referencedRelation: "crm_companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "proposals_crm_contact_id_fkey"
+            columns: ["crm_contact_id"]
+            isOneToOne: false
+            referencedRelation: "crm_contacts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "proposals_opportunity_id_fkey"
+            columns: ["opportunity_id"]
+            isOneToOne: false
+            referencedRelation: "crm_opportunities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "proposals_opportunity_id_fkey"
+            columns: ["opportunity_id"]
+            isOneToOne: false
+            referencedRelation: "v_revenue_lineage"
+            referencedColumns: ["opportunity_id"]
+          },
+          {
+            foreignKeyName: "proposals_quote_id_fkey"
+            columns: ["quote_id"]
+            isOneToOne: false
+            referencedRelation: "quotes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "proposals_quote_id_fkey"
+            columns: ["quote_id"]
+            isOneToOne: false
+            referencedRelation: "v_revenue_lineage"
+            referencedColumns: ["quote_id"]
+          },
+        ]
       }
       providers: {
         Row: {
@@ -19872,51 +20071,107 @@ export type Database = {
       }
       quotes: {
         Row: {
+          accepted_at: string | null
           amount_cents: number
+          converted_invoice_id: string | null
+          converted_proposal_id: string | null
           created_at: string
+          crm_company_id: string | null
+          crm_contact_id: string | null
           currency: string
           customer_id: string | null
           expires_at: string | null
           id: string
           line_items: Json
           metadata: Json
+          opportunity_id: string | null
           org_id: string | null
+          quote_number: string | null
+          rejected_at: string | null
+          sent_at: string | null
           status: string
           title: string
           updated_at: string
           user_id: string
         }
         Insert: {
+          accepted_at?: string | null
           amount_cents?: number
+          converted_invoice_id?: string | null
+          converted_proposal_id?: string | null
           created_at?: string
+          crm_company_id?: string | null
+          crm_contact_id?: string | null
           currency?: string
           customer_id?: string | null
           expires_at?: string | null
           id?: string
           line_items?: Json
           metadata?: Json
+          opportunity_id?: string | null
           org_id?: string | null
+          quote_number?: string | null
+          rejected_at?: string | null
+          sent_at?: string | null
           status?: string
           title: string
           updated_at?: string
           user_id: string
         }
         Update: {
+          accepted_at?: string | null
           amount_cents?: number
+          converted_invoice_id?: string | null
+          converted_proposal_id?: string | null
           created_at?: string
+          crm_company_id?: string | null
+          crm_contact_id?: string | null
           currency?: string
           customer_id?: string | null
           expires_at?: string | null
           id?: string
           line_items?: Json
           metadata?: Json
+          opportunity_id?: string | null
           org_id?: string | null
+          quote_number?: string | null
+          rejected_at?: string | null
+          sent_at?: string | null
           status?: string
           title?: string
           updated_at?: string
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "quotes_crm_company_id_fkey"
+            columns: ["crm_company_id"]
+            isOneToOne: false
+            referencedRelation: "crm_companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "quotes_crm_contact_id_fkey"
+            columns: ["crm_contact_id"]
+            isOneToOne: false
+            referencedRelation: "crm_contacts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "quotes_opportunity_id_fkey"
+            columns: ["opportunity_id"]
+            isOneToOne: false
+            referencedRelation: "crm_opportunities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "quotes_opportunity_id_fkey"
+            columns: ["opportunity_id"]
+            isOneToOne: false
+            referencedRelation: "v_revenue_lineage"
+            referencedColumns: ["opportunity_id"]
+          },
+        ]
       }
       read_model_snapshots: {
         Row: {
@@ -26010,6 +26265,31 @@ export type Database = {
           program_key: string | null
           program_status: string | null
           total_tasks: number | null
+          user_id: string | null
+        }
+        Relationships: []
+      }
+      v_revenue_lineage: {
+        Row: {
+          crm_company_id: string | null
+          crm_contact_id: string | null
+          customer_id: string | null
+          invoice_amount_cents: number | null
+          invoice_id: string | null
+          invoice_number: string | null
+          invoice_status: string | null
+          last_activity_at: string | null
+          opportunity_id: string | null
+          opportunity_stage: string | null
+          opportunity_title: string | null
+          proposal_id: string | null
+          proposal_status: string | null
+          proposal_title: string | null
+          quote_amount_cents: number | null
+          quote_id: string | null
+          quote_number: string | null
+          quote_status: string | null
+          quote_title: string | null
           user_id: string | null
         }
         Relationships: []
