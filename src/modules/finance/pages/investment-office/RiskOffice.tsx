@@ -23,6 +23,7 @@ export default function RiskOffice() {
 
   return (
     <div className="mx-auto max-w-6xl space-y-6">
+      <PageTruthBanner truthState="partial" />
 <div>
         <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><Shield className="h-6 w-6 text-primary" /> Risk Office</h1>
         <p className="text-sm text-muted-foreground mt-1">Exposure monitoring, concentration warnings, and risk controls</p>

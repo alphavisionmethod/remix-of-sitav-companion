@@ -95,6 +95,7 @@ function VolumePulse() {
           animate={{ height: [4, 8 + Math.random() * 20, 4] }}
           transition={{ duration: 0.8 + Math.random() * 1.2, repeat: Infinity, delay: i * 0.05 }}
         />
+      <PageTruthBanner truthState="partial" />
       ))}
     </div>
   );

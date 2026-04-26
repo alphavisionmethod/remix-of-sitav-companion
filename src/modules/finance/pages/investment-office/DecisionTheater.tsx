@@ -29,6 +29,7 @@ function SpotlightOverlay({ active }: { active: boolean }) {
             background: "radial-gradient(ellipse 600px 400px at center 40%, transparent 0%, rgba(0,0,0,0.6) 100%)",
           }}
         />
+      <PageTruthBanner truthState="partial" />
       )}
     </AnimatePresence>
   );

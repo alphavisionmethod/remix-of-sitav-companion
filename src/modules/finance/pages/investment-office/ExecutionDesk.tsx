@@ -18,6 +18,7 @@ function TradePrepReceipt({ instrument, action, quantity, orderType, limitPrice,
 
   return (
     <div className="rounded-2xl border-2 border-primary/20 bg-gradient-to-b from-primary/5 via-card to-card p-6 space-y-5">
+      <PageTruthBanner truthState="partial" />
       {/* Header */}
       <div className="flex items-center gap-3 border-b border-border pb-4">
         <FileText className="h-5 w-5 text-primary" />

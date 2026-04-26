@@ -21,6 +21,7 @@ export default function AdvancedMode() {
 
   return (
     <div className="mx-auto max-w-[90rem] space-y-4">
+      <PageTruthBanner truthState="partial" />
 {/* Compact Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">

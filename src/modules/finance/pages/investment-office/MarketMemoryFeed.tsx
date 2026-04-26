@@ -49,6 +49,7 @@ export default function MarketMemoryFeed() {
         {([] as any[]).map((evt, i) => (
           <motion.div key={evt.id} initial={{ opacity: 0, x: -6 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.03 }}
             className={`rounded-xl border p-4 ${SEVERITY_STYLES[evt.severity] || SEVERITY_STYLES.info}`}>
+      <PageTruthBanner truthState="partial" />
             <div className="flex items-start gap-3">
               <span className="text-lg shrink-0">{evt.icon}</span>
               <div className="flex-1 min-w-0">

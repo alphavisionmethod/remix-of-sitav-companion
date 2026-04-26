@@ -68,6 +68,7 @@ export default function InvestmentConstitution() {
                 isViolated ? "border-destructive/20 bg-destructive/5" :
                 rule.active ? "border-border bg-card" : "border-border/50 bg-card/50 opacity-60"
               }`}>
+      <PageTruthBanner truthState="partial" />
               <div className="flex items-center gap-3">
                 <div className={`rounded-lg p-1.5 ${rule.severity === "hard" ? "bg-destructive/10" : "bg-[hsl(var(--trust-warn))]/10"}`}>
                   {rule.severity === "hard" ? <Lock className="h-3.5 w-3.5 text-destructive" /> : <Shield className="h-3.5 w-3.5 text-[hsl(var(--trust-warn))]" />}

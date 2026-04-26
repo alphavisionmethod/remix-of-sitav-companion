@@ -85,6 +85,7 @@ export default function BehavioralFirewall() {
               signal.severity === "positive" ? "border-[hsl(var(--trust-safe))]/20 bg-[hsl(var(--trust-safe))]/5" :
               "border-border bg-card"
             }`}>
+      <PageTruthBanner truthState="partial" />
             <div className="flex items-start gap-3">
               <span className="text-xl">{signal.icon}</span>
               <div className="flex-1">

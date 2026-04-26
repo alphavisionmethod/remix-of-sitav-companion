@@ -61,6 +61,7 @@ export default function OpportunityMap() {
       {/* Selected Theme Detail */}
       <motion.div key={selectedTheme.id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
         className="rounded-2xl border border-primary/15 bg-card p-6 space-y-4">
+      <PageTruthBanner truthState="partial" />
         <div className="flex items-center gap-3">
           <span className="text-3xl">{selectedTheme.icon}</span>
           <div className="flex-1">

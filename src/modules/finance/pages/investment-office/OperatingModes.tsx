@@ -53,6 +53,7 @@ export default function OperatingModes() {
       {/* Active Mode Detail */}
       <motion.div key={activeMode} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
         className="rounded-2xl border border-primary/15 bg-primary/5 p-6 text-center space-y-2">
+      <PageTruthBanner truthState="partial" />
         <p className="text-3xl">{([] as any[]).find(m => m.id === activeMode)?.emoji}</p>
         <p className="text-lg font-bold text-foreground">{([] as any[]).find(m => m.id === activeMode)?.label} Mode Active</p>
         <p className="text-sm text-muted-foreground max-w-md mx-auto">{([] as any[]).find(m => m.id === activeMode)?.description}</p>

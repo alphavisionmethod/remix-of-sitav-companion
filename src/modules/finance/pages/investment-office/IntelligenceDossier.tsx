@@ -53,6 +53,7 @@ export default function IntelligenceDossier() {
 
       {/* Dossier */}
       <motion.div key={selectedId} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-5">
+      <PageTruthBanner truthState="partial" />
         {/* Hero */}
         <div className="rounded-3xl border border-primary/15 bg-gradient-to-br from-primary/5 via-card to-card p-8">
           <div className="flex items-center gap-4">

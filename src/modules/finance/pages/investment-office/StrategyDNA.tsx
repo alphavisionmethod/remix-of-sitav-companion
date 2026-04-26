@@ -32,6 +32,7 @@ export default function StrategyDNA() {
         <div className="space-y-3">
           {([] as any[]).map((d, i) => (
             <motion.div key={d.label} initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.03 }}>
+      <PageTruthBanner truthState="partial" />
               <div className="flex items-center justify-between mb-1">
                 <p className="text-xs font-medium text-foreground">{d.label}</p>
                 <p className="text-xs font-bold text-foreground">{d.score}%</p>

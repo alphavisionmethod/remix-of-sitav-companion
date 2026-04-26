@@ -136,6 +136,7 @@ const LifeMoneyEngine = () => {
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
       <DomainHeader domain="money" title="Life-to-Money Impact Engine" subtitle="See how life changes affect your financial system" />
+      <PageTruthBanner truthState="partial" />
 <SitaSectionHeader title="Select a Life Event" />
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         {LIFE_EVENTS.map(evt => {

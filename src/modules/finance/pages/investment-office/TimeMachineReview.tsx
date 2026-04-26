@@ -42,6 +42,7 @@ export default function TimeMachineReview() {
         {/* What We Knew Then */}
         <motion.div key={selected.id + "-thesis"} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
           className="rounded-2xl border border-primary/15 bg-primary/5 p-6 space-y-3">
+      <PageTruthBanner truthState="partial" />
           <p className="text-[10px] font-semibold text-primary uppercase tracking-wider">What We Knew Then · {selected.date}</p>
           <p className="text-lg font-bold text-foreground">{selected.action}</p>
           <div className="rounded-xl bg-card/60 p-4 space-y-2">

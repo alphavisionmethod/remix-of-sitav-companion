@@ -17,6 +17,7 @@ export default function EventMarketsWorkspace() {
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
+      <PageTruthBanner truthState="partial" />
 <div>
         <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><Sparkles className="h-6 w-6 text-primary" /> Event & Prediction Markets</h1>
         <p className="text-sm text-muted-foreground mt-1">Probability intelligence, catalysts, and disciplined event positioning</p>

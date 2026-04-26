@@ -30,6 +30,7 @@ export default function WhatWouldBreak() {
       </div>
 
       <motion.div key={selected.id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="space-y-4">
+      <PageTruthBanner truthState="partial" />
         {/* Fragility Score */}
         <div className="rounded-2xl border border-destructive/15 bg-destructive/5 p-5 text-center space-y-1">
           <p className="text-[10px] text-muted-foreground uppercase font-semibold">Fragility Score</p>

@@ -32,6 +32,7 @@ export default function StrategyStudio() {
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
+      <PageTruthBanner truthState="partial" />
 <div>
         <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><Sliders className="h-6 w-6 text-primary" /> Strategy Studio</h1>
         <p className="text-sm text-muted-foreground mt-1">Scenario analysis, what-if simulations, and allocation planning</p>

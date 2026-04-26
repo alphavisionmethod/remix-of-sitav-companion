@@ -18,6 +18,7 @@ export default function CrossAssetStoryEngine() {
       {([] as any[]).map((n, ni) => (
         <motion.div key={n.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: ni * 0.06 }}
           className="rounded-2xl border border-border bg-card p-6 space-y-4">
+      <PageTruthBanner truthState="partial" />
           <div className="flex items-center gap-3">
             <span className="text-3xl">{n.icon}</span>
             <div className="flex-1">

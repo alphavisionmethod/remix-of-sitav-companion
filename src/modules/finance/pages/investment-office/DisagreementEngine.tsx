@@ -19,6 +19,7 @@ export default function DisagreementEngine() {
       {([] as any[]).map((d, di) => (
         <motion.div key={d.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: di * 0.06 }}
           className="rounded-2xl border border-border bg-card p-6 space-y-4">
+      <PageTruthBanner truthState="partial" />
           <div className="flex items-center gap-3">
             <GitCompareArrows className="h-5 w-5 text-primary" />
             <h2 className="text-lg font-bold text-foreground">{d.topic}</h2>

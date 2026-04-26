@@ -19,6 +19,7 @@ export default function ResearchLibrary() {
 
   return (
     <div className="mx-auto max-w-6xl space-y-6">
+      <PageTruthBanner truthState="partial" />
 <div>
         <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><BookOpen className="h-6 w-6 text-primary" /> Research Library</h1>
         <p className="text-sm text-muted-foreground mt-1">Public information synthesis, macro updates, and saved memos</p>

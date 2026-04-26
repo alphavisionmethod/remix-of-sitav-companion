@@ -25,6 +25,7 @@ export default function MarketExplorer() {
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
+      <PageTruthBanner truthState="partial" />
 <div>
         <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><Globe className="h-6 w-6 text-primary" /> Market Explorer</h1>
         <p className="text-sm text-muted-foreground mt-1">Stocks, crypto, commodities, and event markets</p>
