@@ -390,21 +390,15 @@ serve(async (req) => {
       });
     }
 
-    // 4. Call Lovable AI Gateway
+    // 4. Call AI provider (Quatarly primary, Lovable AI fallback)
     const startTime = Date.now();
 
     const aiPayload: Record<string, unknown> = { model, messages, stream };
     if (maxTokens) aiPayload.max_tokens = maxTokens;
     if (temperature !== undefined) aiPayload.temperature = temperature;
 
-    const aiResponse = await fetch(LOVABLE_AI_URL, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${LOVABLE_API_KEY}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(aiPayload),
-    });
+    const { res: aiResponse, provider: providerUsed, modelUsed } =
+      await callProvider(aiPayload, QUATARLY_API_KEY, LOVABLE_API_KEY);
 
     const latencyMs = Date.now() - startTime;
 
@@ -412,7 +406,7 @@ serve(async (req) => {
     if (stream) {
       if (!aiResponse.ok) {
         const errText = await aiResponse.text();
-        console.error("AI gateway stream error:", aiResponse.status, errText);
+        console.error(`AI gateway stream error (${providerUsed}):`, aiResponse.status, errText);
 
         if (aiResponse.status === 429) {
           return corsResponse({ error: "Rate limited. Please try again later.", status: "rate_limited" }, 429);
@@ -435,11 +429,11 @@ serve(async (req) => {
 
       serviceClient.from("ai_inference_receipts").insert({
         user_id: user.id,
-        provider: model.split("/")[0] ?? "lovable",
-        model,
+        provider: providerUsed,
+        model: modelUsed,
         capability_id: capabilityId,
         latency_ms: latencyMs,
-        route_reason: `${routingSource}, task_class=${taskClass}`,
+        route_reason: `${routingSource}, task_class=${taskClass}, provider=${providerUsed}`,
       }).then(() => {});
 
       return new Response(aiResponse.body, {
