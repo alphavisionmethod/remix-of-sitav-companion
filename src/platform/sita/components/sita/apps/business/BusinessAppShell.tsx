@@ -6,6 +6,7 @@ import {
   BarChart3, BookOpen, LineChart, Mail, FolderOpen, Crown, Shield, Heart,
   Building2, StickyNote, Upload, Filter, Workflow, BrainCircuit, Search,
   ChevronDown, ChevronRight, Sliders, Sun, Moon
+  , ShieldCheck
 } from "lucide-react";
 import { Headphones as SupportIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -56,6 +57,7 @@ import RevenueImpactDashboard from "@/pages/business/RevenueImpactDashboard";
 import PlaybookBuilder from "@/pages/business/PlaybookBuilder";
 import RevenueForecast from "@/pages/business/RevenueForecast";
 import RevenueOpsHome from "@/modules/business/pages/RevenueOpsHome";
+import ContinuityReport from "@/modules/business/pages/ContinuityReport";
 import WebsiteBuilder from "@/pages/business/WebsiteBuilder";
 import ProposalsContracts from "@/pages/business/ProposalsContracts";
 import LeadRecovery from "@/pages/business/LeadRecovery";
@@ -196,6 +198,7 @@ const SIDEBAR_GROUPS: SidebarGroup[] = [
       { id: "boardroom-agenda", label: "Boardroom Agenda", icon: BookOpen },
       { id: "business-settings", label: "Settings", icon: Settings },
       { id: "background-tasks", label: "Tasks & Syncs", icon: Activity },
+      { id: "continuity-report", label: "Continuity Report", icon: ShieldCheck },
     ],
   },
 ];
@@ -259,6 +262,7 @@ const pages: Record<string, React.ComponentType> = {
   "strategic-accounts": StrategicAccountRoom,
   "relationship-dossier": RelationshipDossier,
   "background-tasks": BackgroundTaskCenter,
+  "continuity-report": ContinuityReport,
   "advisor-board": BusinessAdvisorBoardPage,
 };
 
