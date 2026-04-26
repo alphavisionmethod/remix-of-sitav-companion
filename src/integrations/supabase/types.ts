@@ -20712,6 +20712,7 @@ export type Database = {
       }
       recovery_jobs: {
         Row: {
+          appointment_id: string | null
           completed_at: string | null
           created_at: string
           error: string | null
@@ -20728,6 +20729,7 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          appointment_id?: string | null
           completed_at?: string | null
           created_at?: string
           error?: string | null
@@ -20744,6 +20746,7 @@ export type Database = {
           user_id: string
         }
         Update: {
+          appointment_id?: string | null
           completed_at?: string | null
           created_at?: string
           error?: string | null
