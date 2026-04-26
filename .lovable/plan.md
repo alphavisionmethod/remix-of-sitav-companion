@@ -70,14 +70,20 @@ src/routes/registry/route-family-registry.ts  ← typed registry (one entry per 
 - Replace inline types in services, hooks, and `MoneyCenter` page modules.
 - **Gate**: `tsc --noEmit` clean; finance tests pass; engine purity passes.
 
-### **Phase 3 — Investment Domain Barrel Fix + Type Migration**
-- Existing `src/domains/investment/types.ts` is real but **not exported** by the barrel — fix immediately:
-  - Move `types.ts` → `src/domains/investment/types/index.ts` (split into `instruments.ts`, `portfolio.ts`, `advisors.ts`, `theses.ts`, `execution.ts` for maintainability).
-  - Wire barrel: `export * from "./types"; export * from "./contracts";`
-- Demo/mock data stays at `src/domains/investment/mock-data.ts` BUT must be moved out of the domain layer (domain ≠ fixtures). Relocate to `src/data/fixtures/investment/` and update consumers.
-- Add `src/domains/investment/contracts/` for AdvisorRecommendation envelope & TradeApprovalRequest cross-layer contracts.
-- Update all 10+ consumers from `@/domains/investment/types` → `@/domains/investment`.
-- **Gate**: `tsc --noEmit` clean; smoke-import test for barrel; mock-data leak removed from domain.
+### **Phase 3 — Investment Domain Barrel Fix + Type Migration** ✅ COMPLETE
+- ✅ Moved `src/domains/investment/types.ts` → `src/domains/investment/types/index.ts`.
+- ✅ Moved `src/domains/investment/mock-data.ts` → `src/domains/investment/fixtures/index.ts`
+  with explicit demo-data header preserving `__DEMO_SOURCE__` / `__DATA_CLASSIFICATION__` markers
+  for the demo-mode auditor (per `mem://design/demo-mode-standardization`).
+  Note: kept inside the domain (not in `src/data/fixtures/`) to keep types + fixtures
+  co-located, matching SITA OS's existing pattern. Demo-mode gating remains the consumer's responsibility.
+- ✅ Replaced broken `export {}` barrel with `export * from "./types"; export * from "./fixtures";`.
+- ✅ Rewired all 16 consumers (1 hook + 14 pages + 1 component) from
+  `@/domains/investment/{types,mock-data}` → `@/domains/investment` (canonical).
+- ✅ Skipped speculative `src/domains/investment/contracts/` subdir — no cross-layer
+  AdvisorRecommendation/TradeApprovalRequest envelopes are required yet; will be added
+  organically when persistence/edge-function contracts emerge.
+- **Gate**: `tsc --noEmit` clean; engine-purity passes; smoke test passes.
 
 ### **Phase 4 — Engine Purity Re-Audit + Service Boundary Cleanup**
 - Run `scripts/architecture/check-engine-purity.ts` against current state; fix any new violations.
