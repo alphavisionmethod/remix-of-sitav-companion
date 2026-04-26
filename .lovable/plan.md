@@ -146,3 +146,24 @@ Phase 7 will be fully wired and green before Phase 8 (Documentation + Deployment
 **Modified (2):** `.github/workflows/check-boundaries.yml`, `.lovable/plan.md`
 
 Ready for Phase 8.
+
+---
+
+## ✅ Phase 8 — COMPLETE (Documentation + Deployment Readiness)
+
+- ✅ `SITA_OS_CANONICAL_ARCHITECTURE_COMPLETION_REPORT.md` written at repo root: audit findings, final ownership model, per-module outcomes, routing normalization table, App-in-OS justification, full file inventory (created / modified / removed), command-line guard reference, remaining transitional debt (none for canonical scope), deployment readiness sign-off.
+- ✅ `src/domains/ARCHITECTURE.md` extended from business-only to cover concierge + finance + investment, plus Phase 5/6/7 invariants and the full guard command list.
+- ✅ Memory entry `mem://architecture/canonical-domain-completion` saved — captures the durable rules for canonical domains, investment routing, and the 5 CI-enforced guards.
+
+**Final gate (all green):**
+| Check | Result |
+|---|---|
+| `npx tsc --noEmit` | ✅ clean |
+| `npx tsx scripts/architecture/check-engine-purity.ts` | ✅ All domain engines are pure |
+| `npx tsx scripts/architecture/audits/check-no-empty-domain-barrels.ts` | ✅ 4/4 populated |
+| `npx tsx scripts/architecture/audits/check-investment-route-namespace.ts` | ✅ 21 files, 0 plural leaks |
+| `npx vitest run src/__tests__/architecture/` | ✅ 14/14 tests passing |
+| `rg path="/investments" src/routes/families/` | ✅ empty |
+| `rg "export \{\};" src/domains/{business,concierge,finance,investment}/index.ts` | ✅ empty |
+
+The canonical architecture program (Phases 1–8) is complete and deployment-ready.
