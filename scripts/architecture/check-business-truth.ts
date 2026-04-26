@@ -46,6 +46,12 @@ function hasFakeLiveArray(src: string): boolean {
   // Match a const at column 0 followed by an array literal containing
   // at least one object literal — the classic "hardcoded fixture" shape.
   // Allows export prefix.
+  //
+  // Escape hatch: a top-level `// truth-allow: ia-config` comment marks
+  // the file as containing only static IA / navigation descriptors
+  // (e.g. lists of route groups, icons, labels) — not telemetry rows.
+  // These are presentation config, not fake-live data.
+  if (/\/\/\s*truth-allow:\s*ia-config/.test(src)) return false;
   const pattern = /^(?:export\s+)?const\s+[A-Z_][A-Z0-9_]*(?:\s*:\s*[^=]+)?\s*=\s*\[\s*\{[\s\S]*?\}\s*,?/m;
   return pattern.test(src);
 }

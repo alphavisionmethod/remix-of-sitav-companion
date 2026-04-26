@@ -1,7 +1,18 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Revenue Impact Dashboard
-// Aggregated recovered + generated revenue across all playbooks
-// with daily/weekly/monthly trend charts
+// Aggregated revenue impact across all playbooks.
+//
+// Production-truth rule:
+//   • Unauthenticated → sign-in CTA (no fake KPIs).
+//   • Demo mode       → uses DEMO_PLAYBOOK_REVENUE + a deterministic
+//                       sample trend, clearly labelled by PageTruthBanner.
+//   • Live mode       → derives KPIs and trend from the user's real
+//                       paid invoices. If there is no paid invoice
+//                       history yet, renders an honest empty state
+//                       instead of fabricating a trend with random math.
+//
+// All previously-random "trend" math (Math.random) and the fake
+// "+X% vs target" badge have been removed.
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useMemo } from "react";
@@ -17,13 +28,15 @@ import {
   Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend
 } from "recharts";
 import {
-  DollarSign, TrendingUp, Zap, Target, ArrowUpRight,
-  ArrowDownRight, Clock, Users, BarChart3, PieChart as PieIcon
+  DollarSign, TrendingUp, Zap, Target, ArrowUpRight, ArrowDownRight,
+  Users, BarChart3, PieChart as PieIcon, LogIn, Inbox,
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
+import { useRealityModeSafe } from "@/lib/dual-reality/reality-mode-context";
+import { LegacyEmptyStateCard as EmptyStateCard } from "@/platform/sita/components/sita/EmptyStateCard";
+import { REVENUE_IMPACT_PLAYBOOKS } from "@/data/fixtures/mock-data/revenue-impact-playbooks";
 
 // ── Types ────────────────────────────────────────────────────────
 
@@ -48,42 +61,98 @@ interface TrendPoint {
   total: number;
 }
 
-// ── Demo Data ──────────────────────────────────────────────────
+// Demo-only playbook fixtures live in
+// src/data/fixtures/mock-data/revenue-impact-playbooks and are ONLY
+// rendered when reality mode reports `isDemo === true`. Live mode
+// derives KPIs from real paid invoices.
+const DEMO_PLAYBOOK_REVENUE: ReadonlyArray<PlaybookRevenue> = REVENUE_IMPACT_PLAYBOOKS;
 
-function generateTrend(granularity: Granularity): TrendPoint[] {
-  // isDemoMode is checked in the component, not here
-  const points: TrendPoint[] = [];
+function buildDemoTrend(granularity: Granularity): TrendPoint[] {
   const count = granularity === "daily" ? 30 : granularity === "weekly" ? 12 : 6;
   const now = new Date();
+  const out: TrendPoint[] = [];
+  for (let i = count - 1; i >= 0; i--) {
+    const d = new Date(now);
+    if (granularity === "daily") d.setDate(d.getDate() - i);
+    else if (granularity === "weekly") d.setDate(d.getDate() - i * 7);
+    else d.setMonth(d.getMonth() - i);
+    // Deterministic curve: gentle growth, no random.
+    const base = granularity === "daily" ? 1800 : granularity === "weekly" ? 12000 : 48000;
+    const growth = 1 + (count - i) * 0.02;
+    const recovered = Math.round(base * growth * 0.7);
+    const generated = Math.round(base * growth * 0.35);
+    const label = granularity === "daily"
+      ? d.toLocaleDateString("en-US", { month: "short", day: "numeric" })
+      : granularity === "weekly"
+        ? `W${Math.ceil(d.getDate() / 7)} ${d.toLocaleDateString("en-US", { month: "short" })}`
+        : d.toLocaleDateString("en-US", { month: "short", year: "2-digit" });
+    out.push({ label, recovered, generated, total: recovered + generated });
+  }
+  return out;
+}
+
+/**
+ * Build a real trend from paid invoices grouped by date bucket.
+ * Recovered = sum of paid invoice totals in the bucket.
+ * Generated is intentionally 0 in live mode today — there is no
+ * "generated revenue" source wired yet, and we don't fabricate one.
+ */
+function buildRealTrend(
+  invoices: Array<{ total_cents: number | null; paid_at: string | null }>,
+  granularity: Granularity,
+): TrendPoint[] {
+  const count = granularity === "daily" ? 30 : granularity === "weekly" ? 12 : 6;
+  const now = new Date();
+  const buckets: TrendPoint[] = [];
+  const bucketKey = (d: Date) => {
+    if (granularity === "daily") return d.toISOString().slice(0, 10);
+    if (granularity === "weekly") {
+      const start = new Date(d);
+      start.setDate(d.getDate() - d.getDay());
+      return start.toISOString().slice(0, 10);
+    }
+    return `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, "0")}`;
+  };
 
   for (let i = count - 1; i >= 0; i--) {
     const d = new Date(now);
     if (granularity === "daily") d.setDate(d.getDate() - i);
     else if (granularity === "weekly") d.setDate(d.getDate() - i * 7);
     else d.setMonth(d.getMonth() - i);
-
-    const base = granularity === "daily" ? 1800 : granularity === "weekly" ? 12000 : 48000;
-    const variance = 0.4;
-    const growthFactor = 1 + (count - i) * 0.02;
-    const recovered = Math.round(base * growthFactor * (0.6 + Math.random() * variance));
-    const generated = Math.round(base * growthFactor * (0.3 + Math.random() * variance) * 0.7);
-
     const label = granularity === "daily"
       ? d.toLocaleDateString("en-US", { month: "short", day: "numeric" })
       : granularity === "weekly"
-        ? `W${Math.ceil((d.getDate()) / 7)} ${d.toLocaleDateString("en-US", { month: "short" })}`
+        ? `W${Math.ceil(d.getDate() / 7)} ${d.toLocaleDateString("en-US", { month: "short" })}`
         : d.toLocaleDateString("en-US", { month: "short", year: "2-digit" });
-
-    points.push({ label, recovered, generated, total: recovered + generated });
+    buckets.push({ label, recovered: 0, generated: 0, total: 0 });
   }
-  return points;
+
+  const labelByOffset = new Map<string, number>();
+  for (let i = count - 1; i >= 0; i--) {
+    const d = new Date(now);
+    if (granularity === "daily") d.setDate(d.getDate() - i);
+    else if (granularity === "weekly") d.setDate(d.getDate() - i * 7);
+    else d.setMonth(d.getMonth() - i);
+    labelByOffset.set(bucketKey(d), count - 1 - i);
+  }
+
+  for (const inv of invoices) {
+    if (!inv.paid_at || !inv.total_cents) continue;
+    const key = bucketKey(new Date(inv.paid_at));
+    const idx = labelByOffset.get(key);
+    if (idx === undefined) continue;
+    const amount = (inv.total_cents || 0) / 100;
+    buckets[idx].recovered += amount;
+    buckets[idx].total += amount;
+  }
+  return buckets;
 }
 
 // ── Chart Colors ─────────────────────────────────────────────────
 
+import { PIE_COLORS } from "@/lib/constants/ui-config";
 const RECOVERED_COLOR = "hsl(var(--trust-safe))";
 const GENERATED_COLOR = "hsl(var(--accent))";
-import { PIE_COLORS } from "@/lib/constants/ui-config";
 const categoryColors: Record<string, string> = {
   recovery: "bg-trust-safe/10 text-trust-safe",
   growth: "bg-accent/10 text-accent",
@@ -114,76 +183,98 @@ const ChartTooltip = ({ active, payload, label }: any) => {
 const RevenueImpactDashboard = () => {
   const { primaryMode } = useBusinessProfile();
   const { user } = useAuth();
-  const revenueLabel = primaryMode === "ecommerce" ? "Store Revenue" : primaryMode === "appointment-based" ? "Booking Revenue" : primaryMode === "membership" ? "MRR Impact" : "Revenue";
+  const { isDemo } = useRealityModeSafe();
   const [granularity, setGranularity] = useState<Granularity>("daily");
   const [chartType, setChartType] = useState<"area" | "bar">("area");
 
-  // Real data: aggregate from invoices + payment_transactions
-  const { data: realRevenue } = useQuery({
+  // Real data: paid invoices for the signed-in user.
+  const { data: realInvoices, isLoading: invoicesLoading } = useQuery({
     queryKey: ["revenue-impact", user?.id],
-    enabled: !!user,
+    enabled: !!user && !isDemo,
     queryFn: async () => {
-      const { data: invoices } = await fromTable("invoices").select("id, total_cents, status, paid_at, created_at").eq("user_id", user!.id);
-      if (!invoices?.length) return null;
-      const paid = invoices.filter((i: Record<string, any>) => i.status === "paid");
-      const recovered = paid.reduce((s: number,  i: Record<string, any>) => s + (i.total_cents || 0), 0) / 100;
-      return {
-        recovered,
-        generated: recovered * 0.4,
-        actions: paid.length * 3,
-        avgRoi: 890,
-        avgSuccess: 72,
-      };
+      const { data: invoices } = await fromTable("invoices")
+        .select("id, total_cents, status, paid_at, created_at")
+        .eq("user_id", user!.id);
+      return (invoices ?? []).filter((i: Record<string, any>) => i.status === "paid") as Array<{
+        id: string; total_cents: number | null; status: string; paid_at: string | null; created_at: string | null;
+      }>;
     },
   });
 
-  const PLAYBOOK_REVENUE: any[] = []; // Playbook breakdown is config/demo — real aggregates feed KPIs
+  // Playbook breakdown — fixture rows live ONLY in demo mode.
+  const playbooks: PlaybookRevenue[] = isDemo ? [...DEMO_PLAYBOOK_REVENUE] : [];
 
-  const trendData = useMemo(() => generateTrend(granularity), [granularity]);
+  const trendData = useMemo(() => {
+    if (isDemo) return buildDemoTrend(granularity);
+    return buildRealTrend(realInvoices ?? [], granularity);
+  }, [isDemo, realInvoices, granularity]);
 
   const totals = useMemo(() => {
-    if (realRevenue) {
-      return {
-        recovered: realRevenue.recovered,
-        generated: realRevenue.generated,
-        total: realRevenue.recovered + realRevenue.generated,
-        actions: realRevenue.actions,
-        avgRoi: realRevenue.avgRoi,
-        avgSuccess: realRevenue.avgSuccess,
-      };
+    if (isDemo) {
+      const recovered = playbooks.reduce((s, p) => s + p.recovered, 0);
+      const generated = playbooks.reduce((s, p) => s + p.generated, 0);
+      const actions = playbooks.reduce((s, p) => s + p.actionsRun, 0);
+      const avgRoi = Math.round(playbooks.reduce((s, p) => s + p.roi, 0) / Math.max(playbooks.length, 1));
+      const avgSuccess = Math.round(playbooks.reduce((s, p) => s + p.successRate, 0) / Math.max(playbooks.length, 1));
+      return { recovered, generated, total: recovered + generated, actions, avgRoi, avgSuccess };
     }
-    const recovered = PLAYBOOK_REVENUE.reduce((s, p) => s + p.recovered, 0);
-    const generated = PLAYBOOK_REVENUE.reduce((s, p) => s + p.generated, 0);
-    const actions = PLAYBOOK_REVENUE.reduce((s, p) => s + p.actionsRun, 0);
-    const avgRoi = Math.round(PLAYBOOK_REVENUE.reduce((s, p) => s + p.roi, 0) / PLAYBOOK_REVENUE.length);
-    const avgSuccess = Math.round(PLAYBOOK_REVENUE.reduce((s, p) => s + p.successRate, 0) / PLAYBOOK_REVENUE.length);
-    return { recovered, generated, total: recovered + generated, actions, avgRoi, avgSuccess };
-  }, [realRevenue]);
+    // Live mode — derive KPIs strictly from real paid invoices.
+    const recovered = (realInvoices ?? []).reduce((s, i) => s + ((i.total_cents || 0) / 100), 0);
+    const actions = (realInvoices ?? []).length;
+    return { recovered, generated: 0, total: recovered, actions, avgRoi: 0, avgSuccess: 0 };
+  }, [isDemo, playbooks, realInvoices]);
 
   const pieData = useMemo(() =>
-    PLAYBOOK_REVENUE.map(p => ({
+    playbooks.map(p => ({
       name: p.name.length > 18 ? p.name.slice(0, 16) + "…" : p.name,
       value: p.recovered + p.generated,
     })).sort((a, b) => b.value - a.value),
-  []);
+  [playbooks]);
+
+  // Honest unauth state in live mode.
+  if (!isDemo && !user) {
+    return (
+      <div className="space-y-4">
+        <PageTruthBanner />
+        <EmptyStateCard
+          icon={LogIn}
+          title="Sign in to view revenue impact"
+          description="Revenue Impact aggregates paid invoices and recovery activity for your account. Switch to Demo mode to explore the workspace with sample data."
+          ctaLabel="Open sign-in"
+          ctaPath="/auth"
+        />
+      </div>
+    );
+  }
+
+  // Honest empty state in live mode (no paid invoices yet).
+  if (!isDemo && !invoicesLoading && (realInvoices ?? []).length === 0) {
+    return (
+      <div className="space-y-4">
+        <PageTruthBanner />
+        <EmptyStateCard
+          icon={Inbox}
+          title="No revenue impact yet"
+          description="This workspace summarises recovered and generated revenue once paid invoices and playbook executions exist. Send your first invoice or run a recovery playbook to populate this dashboard."
+          ctaLabel="Open invoices"
+          ctaPath="/business/invoices"
+        />
+      </div>
+    );
+  }
 
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
       <PageTruthBanner />
       <HierarchyHint tier="insight" surface="Revenue Impact" description="Recovered + generated revenue" />
-      <div className="flex items-center justify-end">
-        <span className="rounded-full bg-trust-safe/10 px-3 py-1 text-[10px] font-semibold text-trust-safe flex items-center gap-1">
-          <TrendingUp className="h-3 w-3" /> +{Math.round(((totals.total) / 100000) * 100)}% vs target
-        </span>
-      </div>
 
       {/* KPI Row */}
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
         <KPITile label="Total Revenue Impact" value={`$${(totals.total / 1000).toFixed(1)}K`} sub="Recovered + Generated" icon={DollarSign} trend="up" />
         <KPITile label="Recovered" value={`$${(totals.recovered / 1000).toFixed(1)}K`} sub="From leaks & overdue" icon={Target} trend="up" />
-        <KPITile label="Generated" value={`$${(totals.generated / 1000).toFixed(1)}K`} sub="New revenue created" icon={Zap} trend="up" />
-        <KPITile label="Avg ROI" value={`${totals.avgRoi}%`} sub="Per playbook" icon={TrendingUp} trend="up" />
-        <KPITile label="Actions Run" value={String(totals.actions)} sub={`${totals.avgSuccess}% success rate`} icon={Users} />
+        <KPITile label="Generated" value={`$${(totals.generated / 1000).toFixed(1)}K`} sub={isDemo ? "New revenue created" : "Not wired yet"} icon={Zap} />
+        <KPITile label="Avg ROI" value={isDemo ? `${totals.avgRoi}%` : "—"} sub={isDemo ? "Per playbook" : "Requires playbook engine"} icon={TrendingUp} />
+        <KPITile label="Actions Run" value={String(totals.actions)} sub={isDemo ? `${totals.avgSuccess}% success rate` : "Paid invoices"} icon={Users} />
       </div>
 
       {/* Trend Chart */}
@@ -258,7 +349,7 @@ const RevenueImpactDashboard = () => {
           <SitaCard className="p-5" hover={false}>
             <SitaCardTitle sub="Revenue attribution per playbook">Playbook Breakdown</SitaCardTitle>
             <div className="mt-4 space-y-2">
-              {PLAYBOOK_REVENUE.sort((a, b) => (b.recovered + b.generated) - (a.recovered + a.generated)).map(pb => {
+              {playbooks.sort((a, b) => (b.recovered + b.generated) - (a.recovered + a.generated)).map(pb => {
                 const total = pb.recovered + pb.generated;
                 const pct = totals.total > 0 ? Math.round((total / totals.total) * 100) : 0;
 
@@ -340,7 +431,7 @@ const RevenueImpactDashboard = () => {
             <SitaCardTitle sub="Revenue by category">Category Breakdown</SitaCardTitle>
             <div className="mt-3 space-y-2">
               {Object.entries(
-                PLAYBOOK_REVENUE.reduce((cats, p) => {
+                playbooks.reduce((cats, p) => {
                   if (!cats[p.category]) cats[p.category] = { recovered: 0, generated: 0 };
                   cats[p.category].recovered += p.recovered;
                   cats[p.category].generated += p.generated;
