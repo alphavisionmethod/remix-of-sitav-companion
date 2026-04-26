@@ -1,8 +1,17 @@
+// ═══════════════════════════════════════════════════════════════
+// SITA OS — Investment Domain: Demo Fixtures
+//
+// ⚠️  DEMO/MOCK DATA — gate behind `isDemoMode` at the consumer layer.
+// Markers `__DEMO_SOURCE__` and `__DATA_CLASSIFICATION__` are
+// preserved so the demo-mode auditor can detect this fixture set.
+// See: mem://design/demo-mode-standardization
+// ═══════════════════════════════════════════════════════════════
+
 import type {
   Instrument, Holding, Portfolio, Watchlist, InvestmentThesis,
   InvestmentAdvisor, PlatformConnection, ResearchNote, Scenario, TradeOrder,
   AdvisorSynthesis
-} from "./types";
+} from "../types";
 
 // ── Instruments ──
 export const INSTRUMENTS: Instrument[] = [
