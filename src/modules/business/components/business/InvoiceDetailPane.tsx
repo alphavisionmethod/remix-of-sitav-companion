@@ -37,17 +37,17 @@ export function InvoiceDetailPane({
   invoice, onMarkSent, onMarkPaid, onSendInvoice, onRenderHtml, onDelete,
   sendPending, renderPending,
 }: InvoiceDetailPaneProps) {
-  if (!invoice) {
-    return <EmptyState icon={DollarSign} title="Select an invoice" description="Click on an invoice to see payment details and collection actions" />;
-  }
-
-  const st = statusConfig[invoice.computedStatus] || statusConfig.draft;
   const generatePdf = useGenerateInvoicePdf();
   const requestSig = useRequestSignature();
   const dispatch = useDispatchComm();
   const [signerEmail, setSignerEmail] = useState("");
   const [signerOpen, setSignerOpen] = useState(false);
 
+  if (!invoice) {
+    return <EmptyState icon={DollarSign} title="Select an invoice" description="Click on an invoice to see payment details and collection actions" />;
+  }
+
+  const st = statusConfig[invoice.computedStatus] || statusConfig.draft;
   const recipient =
     invoice?.customers?.email ??
     invoice?.crm_contacts?.email ??
