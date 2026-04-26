@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
 import { getModuleAdaptation } from "@/domains/engines/business-module-adaptations";
 import { motion } from "framer-motion";
@@ -11,6 +11,7 @@ import {
   CalendarDays, Clock, CheckCircle2, AlertTriangle, Phone,
   MessageSquare, User, MapPin, RefreshCw, Sparkles,
   ChevronRight, UserCheck, XCircle, Send, Bell, LogIn,
+  Plus, Link2,
 } from "lucide-react";
 import { LegacyEmptyStateCard as EmptyStateCard } from "@/platform/sita/components/sita/EmptyStateCard";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
@@ -22,6 +23,15 @@ import {
   useRecoverNoShow,
   type ScheduledAppointmentVM,
 } from "@/hooks/use-scheduled-appointments";
+import { consumeLinkedContext } from "@/platform/sita/components/sita/CrossAppAction";
+import { useAction } from "@/hooks/useAction";
+import {
+  Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { toast } from "sonner";
 
 type ConfirmationStatus = ScheduledAppointmentVM["status"];
 
@@ -164,7 +174,95 @@ const AppointmentsScheduling = () => {
   const remind = useSendConfirmationReminder();
   const confirm = useMarkBookingConfirmed();
   const recover = useRecoverNoShow();
-  const mutating = remind.isPending || confirm.isPending || recover.isPending;
+
+  // Phase 6 — kernel-backed no-show / create / cancel that write to the
+  // canonical `appointments` table (and enqueue recovery_jobs on no-show).
+  const noShowAction = useAction("business", "appointment.no-show");
+  const createAction = useAction("business", "appointment.create");
+  const cancelAction = useAction("business", "appointment.cancel");
+
+  const mutating =
+    remind.isPending || confirm.isPending || recover.isPending ||
+    noShowAction.isPending || createAction.isPending || cancelAction.isPending;
+
+  // Phase 6 — pick up "Schedule with this contact / opportunity" hand-offs
+  // from CRM detail panes via setLinkedContext.
+  const [linked, setLinked] = useState<
+    | { entityType: string; entityId: string; entityLabel?: string }
+    | null
+  >(null);
+  useEffect(() => {
+    const ctx = consumeLinkedContext();
+    if (!ctx) return;
+    setLinked({
+      entityType: ctx.entityType,
+      entityId: ctx.entityId,
+      entityLabel: ctx.entityLabel,
+    });
+    if (ctx.entityType !== "appointment") {
+      setCreateOpen(true);
+    }
+  }, []);
+
+  // Create dialog state
+  const [createOpen, setCreateOpen] = useState(false);
+  const [form, setForm] = useState({
+    title: "",
+    starts_at: "",
+    duration_minutes: 30,
+    location: "",
+    customer_name: "",
+    notes: "",
+  });
+
+  const resetForm = () => setForm({
+    title: "",
+    starts_at: "",
+    duration_minutes: 30,
+    location: "",
+    customer_name: "",
+    notes: "",
+  });
+
+  const handleCreate = async () => {
+    if (!form.title.trim() || !form.starts_at) {
+      toast.error("Title and start time are required");
+      return;
+    }
+    const payload: Record<string, unknown> = {
+      title: form.title.trim(),
+      starts_at: new Date(form.starts_at).toISOString(),
+      duration_minutes: Number(form.duration_minutes) || 30,
+      location: form.location.trim() || null,
+      customer_name: form.customer_name.trim() || null,
+      notes: form.notes.trim() || null,
+    };
+    if (linked && linked.entityType === "contact") payload.crm_contact_id = linked.entityId;
+    if (linked && linked.entityType === "company") payload.crm_company_id = linked.entityId;
+    if (linked && linked.entityType === "opportunity") payload.opportunity_id = linked.entityId;
+
+    const result = await createAction.execute(payload);
+    if (result?.status === "success") {
+      toast.success("Appointment scheduled");
+      setCreateOpen(false);
+      resetForm();
+      refetch();
+    } else {
+      const msg = (result?.result as { error?: string })?.error ?? "Failed to schedule";
+      toast.error(msg);
+    }
+  };
+
+  const handleNoShow = async (id: string) => {
+    const result = await noShowAction.execute({ id });
+    if (result?.status === "success") {
+      toast.success("Marked as no-show — recovery job queued");
+      refetch();
+    } else {
+      const msg = (result?.result as { error?: string })?.error ?? "Failed to mark no-show";
+      toast.error(msg);
+    }
+  };
 
   const filtered = useMemo(() => {
     if (activeTab === "upcoming") return appointments.filter(a => isUpcomingDate(a.date) && a.status !== "no-show" && a.status !== "cancelled");
@@ -200,8 +298,28 @@ const AppointmentsScheduling = () => {
             <p className="text-xs text-muted-foreground">{moduleConfig.subtitle}</p>
           </div>
         </div>
-        <PageTruthBanner />
+        <div className="flex items-center gap-2">
+          <Button size="sm" variant="default" onClick={() => setCreateOpen(true)} disabled={isUnauthenticated}>
+            <Plus className="h-3.5 w-3.5 mr-1" /> New Appointment
+          </Button>
+          <PageTruthBanner />
+        </div>
       </div>
+
+      {/* Linked-context banner — appears when entered via CRM detail "Schedule" CTA. */}
+      {linked && linked.entityType !== "appointment" && (
+        <div className="rounded-lg border border-primary/30 bg-primary/5 p-3 flex items-center gap-2 text-xs">
+          <Link2 className="h-3.5 w-3.5 text-primary" />
+          <span className="text-foreground">
+            Linking new appointment to{" "}
+            <span className="font-semibold">{linked.entityLabel ?? linked.entityId.slice(0, 8)}</span>{" "}
+            <span className="text-muted-foreground">({linked.entityType})</span>
+          </span>
+          <Button size="sm" variant="ghost" className="h-6 ml-auto text-[11px]" onClick={() => setLinked(null)}>
+            Clear
+          </Button>
+        </div>
+      )}
 
       {/* Auth required */}
       {isUnauthenticated && (
