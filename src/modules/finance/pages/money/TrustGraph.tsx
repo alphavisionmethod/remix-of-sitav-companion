@@ -1,3 +1,4 @@
+// truth-allow: ia-config
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Money Office: Financial Trust Graph
 // ═══════════════════════════════════════════════════════════════
@@ -62,6 +63,7 @@ const TrustGraph = () => {
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
       <DomainHeader domain="money" title="Financial Trust Graph" subtitle="Visualize dependencies between your financial obligations" />
+      <PageTruthBanner truthState="partial" />
 <div className="grid gap-3 sm:grid-cols-3">
         <KPITile label="Graph Integrity" value={`${integrity}%`} icon={Link2} sub={`${demoNodes.length} nodes`} />
         <KPITile label="Dependencies" value={demoEdges.length} icon={ArrowRight} sub="Financial links" />

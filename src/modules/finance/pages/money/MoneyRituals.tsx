@@ -1,3 +1,4 @@
+// truth-allow: ia-config
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Money Office: Money Rituals
 // Guided financial ceremonies for sustained money health
@@ -121,6 +122,7 @@ const MoneyRituals = () => {
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
       <DomainHeader domain="money" title="Money Rituals" subtitle="Guided financial ceremonies for sustained money health" />
+      <PageTruthBanner truthState="partial" />
 <div className="grid gap-3 sm:grid-cols-3">
         <KPITile label="Active Rituals" value={defaultRituals.length} icon={Sparkles} sub="Guided ceremonies" />
         <KPITile label="Steps Completed" value={`${completedSteps}/${totalSteps}`} icon={CheckCircle} sub="This session" />
