@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
 import { getModuleAdaptation } from "@/domains/engines/business-module-adaptations";
 import { motion, AnimatePresence } from "framer-motion";
@@ -21,7 +21,6 @@ import { useAction } from "@/hooks/use-action";
 import { useDraftAutosave } from "@/hooks/useDraftAutosave";
 import { setLinkedContext, consumeLinkedContext } from "@/platform/sita/components/sita/CrossAppAction";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
 import { ArrowRight } from "lucide-react";
 
 const QuotesWorkspace = () => {
