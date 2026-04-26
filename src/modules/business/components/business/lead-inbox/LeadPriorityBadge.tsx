@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import type { PriorityTier } from "@/domains/engines/lead-scoring-engine";
+import type { PriorityTier } from "@/domains/business";
 import { PRIORITY_TIER_META } from "@/domains/engines/lead-scoring-engine";
 import { Flame, ArrowUp, Eye, Sprout, RotateCcw, Minus } from "lucide-react";
 

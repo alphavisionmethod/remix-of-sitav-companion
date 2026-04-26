@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import type { HeatStatus } from "@/domains/engines/lead-scoring-engine";
+import type { HeatStatus } from "@/domains/business";
 import { TrendingUp, TrendingDown, Minus, RotateCcw } from "lucide-react";
 
 const trendConfig: Record<string, { icon: typeof TrendingUp; label: string; color: string }> = {

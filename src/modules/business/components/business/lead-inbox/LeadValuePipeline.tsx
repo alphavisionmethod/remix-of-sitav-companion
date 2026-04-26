@@ -1,8 +1,9 @@
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
-import type { LeadScoreResult } from "@/domains/engines/lead-scoring-engine";
+import type { LeadScoreResult } from "@/domains/business";
 import type { InboxItem } from "./mock-inbox-data";
-import { PRIORITY_TIER_META, type PriorityTier } from "@/domains/engines/lead-scoring-engine";
+import type { PriorityTier } from "@/domains/business";
+import { PRIORITY_TIER_META } from "@/domains/engines/lead-scoring-engine";
 
 interface Props {
   items: InboxItem[];

@@ -3,7 +3,7 @@ import { LeadTriageCard } from "./LeadTriageCard";
 import { LeadEmptyState } from "./LeadEmptyStates";
 import type { InboxItem } from "./mock-inbox-data";
 import type { InboxFilter } from "./useLeadInbox";
-import type { LeadScoreResult } from "@/domains/engines/lead-scoring-engine";
+import type { LeadScoreResult } from "@/domains/business";
 
 interface Props {
   items: InboxItem[];

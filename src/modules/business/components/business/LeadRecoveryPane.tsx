@@ -10,7 +10,7 @@ import {
   FileText, RotateCcw, Archive, ChevronRight, Heart, Zap
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import type { RecoveryCandidate } from "@/domains/engines/lead-recovery-engine";
+import type { RecoveryCandidate } from "@/domains/business";
 import { FAILURE_MODE_META, SUCCESS_BAND_META, RECOVERY_PATH_META } from "@/domains/engines/lead-recovery-engine";
 import { ModuleAdvisorPanel } from "@/modules/business/components/business/advisor-board/ModuleAdvisorPanel";
 import { EscalationPacketPreview } from "@/modules/business/components/business/advisor-board/EscalationPacketPreview";

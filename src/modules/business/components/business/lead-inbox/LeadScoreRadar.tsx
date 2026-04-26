@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
-import type { ScoreFactor } from "@/domains/engines/lead-scoring-engine";
+import type { ScoreFactor } from "@/domains/business";
 
 interface Props {
   factors: ScoreFactor[];

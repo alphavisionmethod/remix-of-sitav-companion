@@ -1,5 +1,5 @@
 import type { LeadSource } from "./LeadSourceBadge";
-import type { ScoreableLead } from "@/domains/engines/lead-scoring-engine";
+import type { ScoreableLead } from "@/domains/business";
 
 export interface InboxItem extends ScoreableLead {
   user_id: string;

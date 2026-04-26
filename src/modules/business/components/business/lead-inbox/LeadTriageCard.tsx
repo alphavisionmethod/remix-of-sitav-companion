@@ -10,7 +10,7 @@ import { AlertTriangle, Copy, ChevronRight, Zap } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import type { InboxItem } from "./mock-inbox-data";
 import type { LeadSource } from "./LeadSourceBadge";
-import type { LeadScoreResult } from "@/domains/engines/lead-scoring-engine";
+import type { LeadScoreResult } from "@/domains/business";
 
 const urgencyBar: Record<string, string> = {
   critical: "bg-[hsl(var(--urgency-critical))]",
