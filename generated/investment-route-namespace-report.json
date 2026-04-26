@@ -1,0 +1,13 @@
+{
+  "generatedAt": "2026-04-26T22:26:06.973Z",
+  "scannedFileCount": 21,
+  "scanTargets": [
+    "src/routes/families",
+    "src/App.tsx",
+    "src/routes/registry/route-family-registry.ts"
+  ],
+  "canonicalNamespace": "/investment",
+  "forbiddenPattern": "/path\\s*=\\s*[\"'`]\\/investments(?:\\/|[\"'`])/",
+  "violationCount": 0,
+  "violations": []
+}

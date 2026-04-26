@@ -1,0 +1,40 @@
+{
+  "generatedAt": "2026-04-26T22:26:02.724Z",
+  "canonicalDomains": [
+    "business",
+    "concierge",
+    "finance",
+    "investment"
+  ],
+  "results": [
+    {
+      "domain": "business",
+      "barrelPath": "src/domains/business/index.ts",
+      "exists": true,
+      "empty": false,
+      "exportNodeCount": 2
+    },
+    {
+      "domain": "concierge",
+      "barrelPath": "src/domains/concierge/index.ts",
+      "exists": true,
+      "empty": false,
+      "exportNodeCount": 2
+    },
+    {
+      "domain": "finance",
+      "barrelPath": "src/domains/finance/index.ts",
+      "exists": true,
+      "empty": false,
+      "exportNodeCount": 2
+    },
+    {
+      "domain": "investment",
+      "barrelPath": "src/domains/investment/index.ts",
+      "exists": true,
+      "empty": false,
+      "exportNodeCount": 2
+    }
+  ],
+  "violationCount": 0
+}
