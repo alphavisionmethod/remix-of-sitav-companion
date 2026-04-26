@@ -9,6 +9,10 @@ import { Loader2 } from "lucide-react";
  */
 
 const subpageFromPath = (path: string): string => {
+  // Phase 8: Revenue Operations Home is the canonical landing for /business/revenue.
+  if (path.endsWith("/business/revenue") || path.includes("/revenue-home")) {
+    return "revenue-home";
+  }
   if (path.includes("/crm-communications")) return "crm-communications";
   if (path.includes("/crm-home")) return "crm-home";
   if (path.includes("/crm-contacts")) return "crm-contacts";

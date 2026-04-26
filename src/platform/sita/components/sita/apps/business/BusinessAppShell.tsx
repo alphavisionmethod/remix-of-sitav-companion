@@ -55,6 +55,7 @@ import CollectionsCommandCenter from "@/pages/business/CollectionsCommandCenter"
 import RevenueImpactDashboard from "@/pages/business/RevenueImpactDashboard";
 import PlaybookBuilder from "@/pages/business/PlaybookBuilder";
 import RevenueForecast from "@/pages/business/RevenueForecast";
+import RevenueOpsHome from "@/modules/business/pages/RevenueOpsHome";
 import WebsiteBuilder from "@/pages/business/WebsiteBuilder";
 import ProposalsContracts from "@/pages/business/ProposalsContracts";
 import LeadRecovery from "@/pages/business/LeadRecovery";
@@ -160,6 +161,7 @@ const SIDEBAR_GROUPS: SidebarGroup[] = [
   {
     label: "Growth",
     items: [
+      { id: "revenue-home", label: "Revenue Home", icon: LayoutDashboard },
       { id: "revenue-autopilot", label: "Revenue Autopilot", icon: Zap },
       { id: "autopilot-hub", label: "Autopilot Hub", icon: Bot },
       { id: "lead-recovery", label: "Lead Recovery", icon: RefreshCw, count: 5, countSeverity: "warning" },
@@ -219,6 +221,7 @@ const pages: Record<string, React.ComponentType> = {
   "revenue-impact": RevenueImpactDashboard,
   "playbook-builder": PlaybookBuilder,
   "revenue-forecast": RevenueForecast,
+  "revenue-home": RevenueOpsHome,
   "website-builder": WebsiteBuilder,
   proposals: ProposalsContracts,
   "lead-recovery": LeadRecovery,
