@@ -4433,6 +4433,7 @@ export type Database = {
           docs_needed: string[] | null
           id: string
           location: string | null
+          metadata: Json
           notes: string | null
           opportunity_id: string | null
           owner: string | null
@@ -4455,6 +4456,7 @@ export type Database = {
           docs_needed?: string[] | null
           id?: string
           location?: string | null
+          metadata?: Json
           notes?: string | null
           opportunity_id?: string | null
           owner?: string | null
@@ -4477,6 +4479,7 @@ export type Database = {
           docs_needed?: string[] | null
           id?: string
           location?: string | null
+          metadata?: Json
           notes?: string | null
           opportunity_id?: string | null
           owner?: string | null
@@ -20712,6 +20715,7 @@ export type Database = {
       }
       recovery_jobs: {
         Row: {
+          appointment_id: string | null
           completed_at: string | null
           created_at: string
           error: string | null
@@ -20728,6 +20732,7 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          appointment_id?: string | null
           completed_at?: string | null
           created_at?: string
           error?: string | null
@@ -20744,6 +20749,7 @@ export type Database = {
           user_id: string
         }
         Update: {
+          appointment_id?: string | null
           completed_at?: string | null
           created_at?: string
           error?: string | null

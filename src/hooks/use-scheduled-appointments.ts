@@ -28,6 +28,12 @@ export interface UseScheduledAppointmentsOptions {
   from?: string;
   /** ISO end of the window (default: now + 30 days). */
   to?: string;
+  /** Phase 6: scope by linked CRM contact. */
+  crmContactId?: string;
+  /** Phase 6: scope by linked CRM company. */
+  crmCompanyId?: string;
+  /** Phase 6: scope by linked opportunity. */
+  opportunityId?: string;
 }
 
 export interface UseScheduledAppointmentsResult {
@@ -73,15 +79,26 @@ function useCurrentUserId(): { userId: string | null; loaded: boolean } {
 export function useScheduledAppointments(
   options: UseScheduledAppointmentsOptions = {}
 ): UseScheduledAppointmentsResult {
-  const { from, to } = options;
+  const { from, to, crmContactId, crmCompanyId, opportunityId } = options;
   const { mode } = useDataMode();
   const { userId, loaded } = useCurrentUserId();
 
   const isUnauthenticated = mode === "live" && loaded && !userId;
 
   const result = usePageData<ScheduledAppointmentVM[]>({
-    queryKey: [SCHEDULE_KEY, mode, userId ?? "anon", from ?? "default", to ?? "default"],
-    queryFn: () => fetchScheduledAppointments({ mode, from, to }),
+    queryKey: [
+      SCHEDULE_KEY,
+      mode,
+      userId ?? "anon",
+      from ?? "default",
+      to ?? "default",
+      crmContactId ?? "",
+      crmCompanyId ?? "",
+      opportunityId ?? "",
+    ],
+    queryFn: () => fetchScheduledAppointments({
+      mode, from, to, crmContactId, crmCompanyId, opportunityId,
+    }),
     enabled: mode === "demo" || (loaded && !!userId),
     staleTime: 30_000,
     refetchOnWindowFocus: true,

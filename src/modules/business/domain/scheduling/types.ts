@@ -27,6 +27,10 @@ export interface ScheduledAppointmentVM {
   id: string;
   customer: string;
   customerId?: string;
+  /** Phase 6 lineage — stable links back to CRM/Opportunity. */
+  crmContactId?: string;
+  crmCompanyId?: string;
+  opportunityId?: string;
   service: string;
   /** Human-readable bucket: "Today" | "Tomorrow" | weekday name | absolute date */
   date: string;
@@ -162,33 +166,52 @@ function formatDuration(min: number): string {
 
 // ── Row → VM mapper ────────────────────────────────────────────
 
-export interface BookingRow {
+/**
+ * Phase 6: scheduling now reads/writes the canonical `appointments`
+ * table (lineage-equipped) instead of `bookings`. The legacy
+ * `BookingRow` type is preserved as an alias so existing imports
+ * compile, but the service maps from `AppointmentRow` going forward.
+ */
+export interface AppointmentRow {
   id: string;
   user_id: string;
-  org_id: string | null;
-  customer_id: string | null;
   title: string;
-  starts_at: string;
-  ends_at: string | null;
+  provider: string | null;
+  appointment_date: string | null;
+  status: string | null;
+  prep_items: string[] | null;
+  docs_needed: string[] | null;
+  transport_time: string | null;
+  category: string | null;
+  owner: string | null;
   location: string | null;
-  status: string;
+  who: string | null;
+  notes: string | null;
+  customer_id: string | null;
+  crm_contact_id: string | null;
+  crm_company_id: string | null;
+  opportunity_id: string | null;
   metadata: Record<string, unknown> | null;
   created_at: string;
   updated_at: string;
 }
 
-export function bookingRowToVM(row: BookingRow, now: Date = new Date()): ScheduledAppointmentVM {
-  const meta = row.metadata ?? {};
-  const startsAt = row.starts_at;
-  const endsAt = row.ends_at;
-  const durationMinutes = endsAt
-    ? Math.max(
-        5,
-        Math.round(
-          (new Date(endsAt).getTime() - new Date(startsAt).getTime()) / 60000
-        )
-      )
-    : Number(meta.durationMinutes ?? 30);
+/** @deprecated Use AppointmentRow. Retained for legacy import paths. */
+export type BookingRow = AppointmentRow;
+
+/**
+ * Map an `appointments` row + an optional `metadata` bag (read from
+ * `notes` / linked entities) to the page view-model. Keeps the
+ * existing UI contract intact so the page does not have to change.
+ */
+export function appointmentRowToVM(
+  row: AppointmentRow,
+  metaOverride: Record<string, unknown> | null = null,
+  now: Date = new Date(),
+): ScheduledAppointmentVM {
+  const meta: Record<string, unknown> = metaOverride ?? row.metadata ?? {};
+  const startsAt = row.appointment_date ?? new Date().toISOString();
+  const durationMinutes = Number(meta.durationMinutes ?? 30);
 
   const status = mapBookingStatusToConfirmation(row.status, meta, startsAt);
   const noShowRisk = computeNoShowRisk({ startsAt, metadata: meta, status });
@@ -202,12 +225,18 @@ export function bookingRowToVM(row: BookingRow, now: Date = new Date()): Schedul
     lastContact = `Reminded ${formatDateBucket(lastReminderAt, now)}`;
   }
 
+  const customerLabel: string =
+    (typeof meta.customerName === "string" && meta.customerName) ||
+    row.who ||
+    (row.customer_id ? row.customer_id.slice(0, 8) : "Unknown customer");
+
   return {
     id: row.id,
-    customer:
-      (meta.customerName as string | undefined) ??
-      (row.customer_id ? row.customer_id.slice(0, 8) : "Unknown customer"),
+    customer: customerLabel,
     customerId: row.customer_id ?? undefined,
+    crmContactId: row.crm_contact_id ?? undefined,
+    crmCompanyId: row.crm_company_id ?? undefined,
+    opportunityId: row.opportunity_id ?? undefined,
     service: row.title,
     date: formatDateBucket(startsAt, now),
     startsAt,
@@ -216,11 +245,14 @@ export function bookingRowToVM(row: BookingRow, now: Date = new Date()): Schedul
     durationMinutes,
     location: row.location ?? "—",
     status,
-    staff: (meta.staff as string | undefined) ?? "You",
+    staff: (meta.staff as string | undefined) ?? row.owner ?? "You",
     noShowRisk,
-    notes: (meta.notes as string | undefined) ?? undefined,
+    notes: row.notes ?? (meta.notes as string | undefined) ?? undefined,
     lastContact,
     isFollowUp: Boolean(meta.isFollowUp),
     metadata: meta,
   };
 }
+
+/** @deprecated Use appointmentRowToVM. Retained for legacy callers. */
+export const bookingRowToVM = appointmentRowToVM;

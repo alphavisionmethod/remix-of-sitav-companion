@@ -393,4 +393,107 @@ export function registerBusinessHandlers(executor: ExecutorService): void {
       return { entity: "invoice", id: invoice.id, row: invoice, source_quote_id: quoteId };
     });
   });
+
+  // ── Appointments (table: appointments) ───────────────────────
+  // Phase 6: scheduling capabilities. Writes to the canonical
+  // `appointments` table with full CRM/Opportunity lineage.
+  executor.registerHandler("business.appointment.create", async (env) => {
+    const p = env.payload;
+    return safe(async () => {
+      const startsAt = nullableIso(p.starts_at) ?? nullableIso(p.appointment_date);
+      const durationMinutes =
+        typeof p.duration_minutes === "number" ? p.duration_minutes : 30;
+      const meta: Record<string, unknown> = {
+        durationMinutes,
+        ...(typeof p.customer_name === "string" ? { customerName: p.customer_name } : {}),
+        ...(typeof p.staff === "string" ? { staff: p.staff } : {}),
+      };
+      const row = await insertRow("appointments", {
+        title: String(p.title ?? p.service ?? "Appointment"),
+        appointment_date: startsAt,
+        location: typeof p.location === "string" ? p.location : null,
+        status: typeof p.status === "string" ? p.status : "scheduled",
+        category: typeof p.category === "string" ? p.category : "business",
+        owner: typeof p.staff === "string" ? p.staff : null,
+        who: typeof p.customer_name === "string" ? p.customer_name : null,
+        notes: typeof p.notes === "string" ? p.notes : null,
+        customer_id: (p.customer_id as string | null) ?? null,
+        crm_contact_id: (p.crm_contact_id as string | null) ?? null,
+        crm_company_id: (p.crm_company_id as string | null) ?? null,
+        opportunity_id: (p.opportunity_id as string | null) ?? null,
+        metadata: meta,
+      });
+      return { entity: "appointment", id: row.id, row };
+    });
+  });
+
+  executor.registerHandler("business.appointment.reschedule", async (env) => {
+    const p = env.payload;
+    return safe(async () => {
+      const id = pickId(p);
+      const newStart = nullableIso(p.starts_at) ?? nullableIso(p.appointment_date);
+      if (!newStart) throw new Error("New start time required");
+      const row = await updateRowById("appointments", id, {
+        appointment_date: newStart,
+        status: "scheduled",
+      });
+      return { entity: "appointment", id, row };
+    });
+  });
+
+  executor.registerHandler("business.appointment.cancel", async (env) => {
+    const p = env.payload;
+    return safe(async () => {
+      const id = pickId(p);
+      const row = await updateRowById("appointments", id, { status: "cancelled" });
+      return { entity: "appointment", id, row };
+    });
+  });
+
+  executor.registerHandler("business.appointment.complete", async (env) => {
+    const p = env.payload;
+    return safe(async () => {
+      const id = pickId(p);
+      const row = await updateRowById("appointments", id, { status: "completed" });
+      return { entity: "appointment", id, row };
+    });
+  });
+
+  // No-show: mark the appointment AND enqueue a recovery_jobs row so it
+  // appears on the LeadRecovery surface (real loop, not a toast).
+  executor.registerHandler("business.appointment.no-show", async (env) => {
+    const p = env.payload;
+    return safe(async () => {
+      const id = pickId(p);
+      const appt = (await updateRowById("appointments", id, {
+        status: "no-show",
+      })) as Record<string, unknown>;
+
+      const recovery = await insertRow("recovery_jobs", {
+        label: `Recover no-show: ${appt.title ?? "Appointment"}`,
+        status: "pending",
+        progress: 0,
+        is_dry_run: false,
+        appointment_id: id,
+        parameters: {
+          source: "appointment.no-show",
+          appointment_id: id,
+          crm_contact_id: appt.crm_contact_id ?? null,
+          crm_company_id: appt.crm_company_id ?? null,
+          opportunity_id: appt.opportunity_id ?? null,
+          customer_id: appt.customer_id ?? null,
+          original_starts_at: appt.appointment_date ?? null,
+          channel:
+            typeof p.channel === "string" ? p.channel : "email",
+        },
+      });
+
+      return {
+        entity: "appointment",
+        id,
+        row: appt,
+        recovery_job_id: recovery.id,
+      };
+    });
+  });
 }

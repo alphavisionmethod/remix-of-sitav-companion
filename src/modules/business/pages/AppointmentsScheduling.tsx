@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
 import { getModuleAdaptation } from "@/domains/engines/business-module-adaptations";
 import { motion } from "framer-motion";
@@ -11,6 +11,7 @@ import {
   CalendarDays, Clock, CheckCircle2, AlertTriangle, Phone,
   MessageSquare, User, MapPin, RefreshCw, Sparkles,
   ChevronRight, UserCheck, XCircle, Send, Bell, LogIn,
+  Plus, Link2,
 } from "lucide-react";
 import { LegacyEmptyStateCard as EmptyStateCard } from "@/platform/sita/components/sita/EmptyStateCard";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
@@ -22,6 +23,15 @@ import {
   useRecoverNoShow,
   type ScheduledAppointmentVM,
 } from "@/hooks/use-scheduled-appointments";
+import { consumeLinkedContext } from "@/platform/sita/components/sita/CrossAppAction";
+import { useAction } from "@/hooks/useAction";
+import {
+  Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { toast } from "sonner";
 
 type ConfirmationStatus = ScheduledAppointmentVM["status"];
 
@@ -164,7 +174,93 @@ const AppointmentsScheduling = () => {
   const remind = useSendConfirmationReminder();
   const confirm = useMarkBookingConfirmed();
   const recover = useRecoverNoShow();
-  const mutating = remind.isPending || confirm.isPending || recover.isPending;
+
+  // Phase 6 — kernel-backed no-show / create / cancel that write to the
+  // canonical `appointments` table (and enqueue recovery_jobs on no-show).
+  const noShowAction = useAction("business", "appointment.no-show");
+  const createAction = useAction("business", "appointment.create");
+  const cancelAction = useAction("business", "appointment.cancel");
+
+  const mutating =
+    remind.isPending || confirm.isPending || recover.isPending ||
+    noShowAction.isPending || createAction.isPending || cancelAction.isPending;
+
+  // Phase 6 — pick up "Schedule with this contact / opportunity" hand-offs
+  // from CRM detail panes via setLinkedContext.
+  const [linked, setLinked] = useState<
+    | { entityType: string; entityId: string; entityLabel?: string }
+    | null
+  >(null);
+  useEffect(() => {
+    const ctx = consumeLinkedContext();
+    if (!ctx) return;
+    setLinked({
+      entityType: ctx.entityType,
+      entityId: ctx.entityId,
+      entityLabel: ctx.entityLabel,
+    });
+    if (ctx.entityType !== "appointment") {
+      setCreateOpen(true);
+    }
+  }, []);
+
+  // Create dialog state
+  const [createOpen, setCreateOpen] = useState(false);
+  const [form, setForm] = useState({
+    title: "",
+    starts_at: "",
+    duration_minutes: 30,
+    location: "",
+    customer_name: "",
+    notes: "",
+  });
+
+  const resetForm = () => setForm({
+    title: "",
+    starts_at: "",
+    duration_minutes: 30,
+    location: "",
+    customer_name: "",
+    notes: "",
+  });
+
+  const handleCreate = async () => {
+    if (!form.title.trim() || !form.starts_at) {
+      toast.error("Title and start time are required");
+      return;
+    }
+    const payload: Record<string, unknown> = {
+      title: form.title.trim(),
+      starts_at: new Date(form.starts_at).toISOString(),
+      duration_minutes: Number(form.duration_minutes) || 30,
+      location: form.location.trim() || null,
+      customer_name: form.customer_name.trim() || null,
+      notes: form.notes.trim() || null,
+    };
+    if (linked && linked.entityType === "contact") payload.crm_contact_id = linked.entityId;
+    if (linked && linked.entityType === "company") payload.crm_company_id = linked.entityId;
+    if (linked && linked.entityType === "opportunity") payload.opportunity_id = linked.entityId;
+
+    try {
+      await createAction.mutateAsync(payload);
+      toast.success("Appointment scheduled");
+      setCreateOpen(false);
+      resetForm();
+      refetch();
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Failed to schedule");
+    }
+  };
+
+  const handleNoShow = async (id: string) => {
+    try {
+      await noShowAction.mutateAsync({ id });
+      toast.success("Marked as no-show — recovery job queued");
+      refetch();
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Failed to mark no-show");
+    }
+  };
 
   const filtered = useMemo(() => {
     if (activeTab === "upcoming") return appointments.filter(a => isUpcomingDate(a.date) && a.status !== "no-show" && a.status !== "cancelled");
@@ -200,8 +296,28 @@ const AppointmentsScheduling = () => {
             <p className="text-xs text-muted-foreground">{moduleConfig.subtitle}</p>
           </div>
         </div>
-        <PageTruthBanner />
+        <div className="flex items-center gap-2">
+          <Button size="sm" variant="default" onClick={() => setCreateOpen(true)} disabled={isUnauthenticated}>
+            <Plus className="h-3.5 w-3.5 mr-1" /> New Appointment
+          </Button>
+          <PageTruthBanner />
+        </div>
       </div>
+
+      {/* Linked-context banner — appears when entered via CRM detail "Schedule" CTA. */}
+      {linked && linked.entityType !== "appointment" && (
+        <div className="rounded-lg border border-primary/30 bg-primary/5 p-3 flex items-center gap-2 text-xs">
+          <Link2 className="h-3.5 w-3.5 text-primary" />
+          <span className="text-foreground">
+            Linking new appointment to{" "}
+            <span className="font-semibold">{linked.entityLabel ?? linked.entityId.slice(0, 8)}</span>{" "}
+            <span className="text-muted-foreground">({linked.entityType})</span>
+          </span>
+          <Button size="sm" variant="ghost" className="h-6 ml-auto text-[11px]" onClick={() => setLinked(null)}>
+            Clear
+          </Button>
+        </div>
+      )}
 
       {/* Auth required */}
       {isUnauthenticated && (
@@ -275,7 +391,12 @@ const AppointmentsScheduling = () => {
                       apt={apt}
                       onRemind={(id) => remind.mutate({ bookingId: id })}
                       onConfirm={(id) => confirm.mutate({ bookingId: id })}
-                      onRecover={(id) => recover.mutate({ bookingId: id })}
+                      onRecover={(id) => {
+                        // Two-step: prepare outreach text AND record the
+                        // canonical no-show + recovery_jobs row.
+                        recover.mutate({ bookingId: id });
+                        void handleNoShow(id);
+                      }}
                       pending={mutating}
                     />
                   ))
@@ -380,7 +501,10 @@ const AppointmentsScheduling = () => {
                     onClick={() => {
                       const targets = appointments.filter(a => a.status === "no-show");
                       if (targets.length === 0) return;
-                      targets.forEach(a => recover.mutate({ bookingId: a.id }));
+                      targets.forEach(a => {
+                        recover.mutate({ bookingId: a.id });
+                        void handleNoShow(a.id);
+                      });
                     }}
                   >
                     <RefreshCw className="h-3 w-3 mr-2" /> Recover No-Shows
@@ -391,6 +515,60 @@ const AppointmentsScheduling = () => {
           </div>
         </>
       )}
+
+      {/* Phase 6 — Create Appointment dialog */}
+      <Dialog open={createOpen} onOpenChange={setCreateOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>New Appointment</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-3">
+            {linked && linked.entityType !== "appointment" && (
+              <div className="rounded-md border border-primary/30 bg-primary/5 p-2 text-[11px] flex items-center gap-2">
+                <Link2 className="h-3 w-3 text-primary" />
+                <span>
+                  Linking to{" "}
+                  <span className="font-semibold">{linked.entityLabel ?? linked.entityId.slice(0, 8)}</span>{" "}
+                  ({linked.entityType})
+                </span>
+              </div>
+            )}
+            <div className="space-y-1.5">
+              <Label htmlFor="apt-title" className="text-xs">Title *</Label>
+              <Input id="apt-title" value={form.title} onChange={(e) => setForm(f => ({ ...f, title: e.target.value }))} placeholder="e.g. Strategy session" />
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-1.5">
+                <Label htmlFor="apt-when" className="text-xs">Starts at *</Label>
+                <Input id="apt-when" type="datetime-local" value={form.starts_at} onChange={(e) => setForm(f => ({ ...f, starts_at: e.target.value }))} />
+              </div>
+              <div className="space-y-1.5">
+                <Label htmlFor="apt-dur" className="text-xs">Duration (min)</Label>
+                <Input id="apt-dur" type="number" min={5} step={5} value={form.duration_minutes}
+                  onChange={(e) => setForm(f => ({ ...f, duration_minutes: Number(e.target.value) || 30 }))} />
+              </div>
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="apt-loc" className="text-xs">Location</Label>
+              <Input id="apt-loc" value={form.location} onChange={(e) => setForm(f => ({ ...f, location: e.target.value }))} placeholder="Office / Video / Phone" />
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="apt-cust" className="text-xs">Customer / Attendee</Label>
+              <Input id="apt-cust" value={form.customer_name} onChange={(e) => setForm(f => ({ ...f, customer_name: e.target.value }))} placeholder={linked?.entityLabel ?? "Name"} />
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="apt-notes" className="text-xs">Notes</Label>
+              <Textarea id="apt-notes" rows={2} value={form.notes} onChange={(e) => setForm(f => ({ ...f, notes: e.target.value }))} />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" size="sm" onClick={() => setCreateOpen(false)}>Cancel</Button>
+            <Button size="sm" onClick={handleCreate} disabled={createAction.isPending}>
+              {createAction.isPending ? "Scheduling…" : "Schedule"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

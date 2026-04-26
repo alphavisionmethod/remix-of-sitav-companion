@@ -276,3 +276,23 @@ This is the full scope. Approving moves us into Phase 1 in default mode; I will 
 - **Deploy + typecheck**: `bunx tsc --noEmit` clean; `invoice-generate` deployed.
 
 **Next**: Phase 6 — Appointments → CRM/Customer/Opportunity Linkage.
+
+---
+
+## Phase 6 — COMPLETE ✅
+
+- Migrations: `appointments.metadata jsonb` added; `recovery_jobs` got user INSERT/UPDATE policies and an `appointment_id` lineage column.
+- Scheduling layer migrated from `bookings` → canonical lineage-equipped `appointments` table:
+  - `business-scheduling-service` reads `appointments` by user, supports `crmContactId` / `crmCompanyId` / `opportunityId` filters.
+  - `domain/scheduling/types.ts` now exports `AppointmentRow` + `appointmentRowToVM`; legacy `BookingRow` / `bookingRowToVM` kept as aliases.
+  - `useScheduledAppointments` accepts the same scoping options.
+- Kernel handlers added in `business-handlers.ts`:
+  - `business.appointment.create` — writes lineage-aware row.
+  - `business.appointment.reschedule` / `.cancel` / `.complete`.
+  - `business.appointment.no-show` — flips status AND inserts a `recovery_jobs` row referencing the appointment so it surfaces in `LeadRecovery`.
+- New `AppointmentLineagePanel.tsx` mounted into `CRMContactDetail` and `CRMCompanyDetail` Finance tabs — shows linked upcoming + recent appointments and a "Schedule" CTA via `setLinkedContext`.
+- `AppointmentsScheduling.tsx`: consumes linked context, shows a banner, opens a Create Appointment dialog with the link pre-applied; the no-show button now triggers the kernel handler (recovery_jobs queue) in addition to the existing prepared-message flow.
+- Calendar provider sync remains explicitly deferred (no fake provider toggle introduced).
+- `bunx tsc --noEmit` clean.
+
+**Next**: Phase 7 — Background Tasks → Real Execution Surface.
