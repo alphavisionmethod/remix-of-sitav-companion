@@ -286,8 +286,10 @@ export async function recordBackgroundJobAction(
     await fromTable("ai_action_receipts").insert({
       user_id: userId,
       action_type: `background_task.${action}`,
-      action_summary: `${action} ${job.kind} ${job.sourceId}`,
-      payload: {
+      recommendation_summary: `${action} ${job.kind} job (${job.title})`,
+      status: result.ok ? "executed" : "failed",
+      executed_at: new Date().toISOString(),
+      action_payload: {
         job_id: job.id,
         source_table: job.sourceTable,
         source_id: job.sourceId,
@@ -295,7 +297,7 @@ export async function recordBackgroundJobAction(
         title: job.title,
         result,
       },
-      surface: "business.background-tasks",
+      metadata: { surface: "business.background-tasks" },
     });
   } catch (err) {
     console.warn("[bg-tasks] receipt emission failed:", err);
