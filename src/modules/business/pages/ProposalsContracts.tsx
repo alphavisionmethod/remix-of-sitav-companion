@@ -351,7 +351,7 @@ const ProposalsContracts = () => {
       {/* ── Templates / Clauses / Analytics — honestly future-facing ── */}
       {activeTab === "templates" && (
         <PremiumEmptyState
-          variant="setup-required"
+          variant="connect-to-activate"
           icon={BookOpen}
           domain="business"
           title="Template library — coming soon"
@@ -360,7 +360,7 @@ const ProposalsContracts = () => {
       )}
       {activeTab === "clauses" && (
         <PremiumEmptyState
-          variant="setup-required"
+          variant="connect-to-activate"
           icon={FileText}
           domain="business"
           title="Clause library — coming soon"
@@ -369,7 +369,7 @@ const ProposalsContracts = () => {
       )}
       {activeTab === "analytics" && (
         <PremiumEmptyState
-          variant="setup-required"
+          variant="no-data"
           icon={BarChart3}
           domain="business"
           title="Win/loss analytics — coming soon"
