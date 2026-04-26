@@ -60,14 +60,15 @@ export const ROUTE_FAMILY_REGISTRY: readonly RouteFamilyDescriptor[] = [
   },
   {
     id: "investment",
-    name: "Investment Workspace (legacy /investment)",
+    name: "Investment Workspace (canonical /investment — core 18 routes)",
     kind: "module",
     surface: "user-product",
     profiles: ["user"],
     owns: "topology-only",
-    canonicalPageOwner: "src/modules/finance/pages/investment-office/**",
+    canonicalPageOwner: "src/pages/investment-office/**",
     filePath: "src/routes/families/investment-routes.tsx",
     factoryExport: "getInvestmentRoutes",
+    notes: "Phase 5 consolidation — /investment is the single canonical Investment Office namespace. Extended pages live in the sibling 'investment-office' family below.",
   },
 
   // ── Platform systems ───────────────────────────────────────
@@ -165,7 +166,7 @@ export const ROUTE_FAMILY_REGISTRY: readonly RouteFamilyDescriptor[] = [
   // ── Experimental split (Wave G — was experimental-routes.tsx) ─
   {
     id: "investment-office",
-    name: "Investment Office (full)",
+    name: "Investment Office — Extended Pages (canonical /investment/* extension)",
     kind: "module",
     surface: "user-product",
     profiles: ["user"],
@@ -173,7 +174,7 @@ export const ROUTE_FAMILY_REGISTRY: readonly RouteFamilyDescriptor[] = [
     canonicalPageOwner: "src/pages/investment-office/**",
     filePath: "src/routes/families/investment-office-routes.tsx",
     factoryExport: "getInvestmentOfficeRoutes",
-    notes: "Split from experimental-routes.tsx in Wave G.",
+    notes: "Phase 5 — emits ONLY the extended /investment/* routes that are not declared in investment-routes.tsx (BeginnerMode, AdvancedMode, CapitalTwin, DecisionTheater, etc.). Together both families form the single canonical /investment/* namespace. Legacy /investments/* served by USER_REDIRECTS in src/routes/redirects/user-redirect-map.ts.",
   },
   {
     id: "revenue-office",
