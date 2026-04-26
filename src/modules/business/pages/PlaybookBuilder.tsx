@@ -569,7 +569,7 @@ const [draft, setDraft] = useState<PlaybookDraft>(defaultDraft);
               <div>
                 <label className="text-[10px] font-semibold text-muted-foreground uppercase">Category</label>
                 <div className="mt-1.5 flex gap-2">
-                  {([] as any[]).map(c => (
+                  {CATEGORIES.map(c => (
                     <button key={c.value} onClick={() => setDraft(d => ({ ...d, category: c.value }))}
                       className={`px-3 py-1.5 rounded-lg text-[11px] font-medium capitalize transition-all ${
                         draft.category === c.value ? `${c.color} ring-1 ring-current/20` : "bg-secondary text-muted-foreground hover:text-foreground"
@@ -645,11 +645,7 @@ const [draft, setDraft] = useState<PlaybookDraft>(defaultDraft);
               <SitaCard className="p-4" hover={false}>
                 <SitaCardTitle sub="Start from a template">Quick Start</SitaCardTitle>
                 <div className="mt-3 space-y-1.5">
-                  {[
-                    { label: "Overdue Invoice Chase", steps: 5, category: "recovery" },
-                    { label: "Cold Lead Re-engagement", steps: 4, category: "growth" },
-                    { label: "Churn Prevention", steps: 6, category: "retention" },
-                  ].map(t => (
+                  {QUICK_START_TEMPLATES.map(t => (
                     <button key={t.label} className="w-full flex items-center justify-between p-2.5 rounded-lg bg-secondary/30 hover:bg-secondary/50 transition-colors text-left">
                       <div>
                         <p className="text-[11px] font-medium text-foreground">{t.label}</p>
