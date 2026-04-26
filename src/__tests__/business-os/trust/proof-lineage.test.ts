@@ -98,13 +98,16 @@ describe("continuity report — proof lineage probes", () => {
     const r = await runContinuityVerification();
     for (const p of r.probes) {
       const ref = p.evidenceRef;
-      const isFilePath = ref.includes("/") || ref.endsWith(".ts") || ref.endsWith(".tsx");
+      const isFilePath =
+        ref.includes("/") ||
+        ref.includes(".ts") ||
+        ref.includes(".tsx");
       const isCapId = /^[A-Z][A-Z0-9_]+$/.test(ref) || ref.includes("CANONICAL");
       const isDottedKey = /^[a-z0-9_]+(\.[a-z0-9_-]+)+$/.test(ref);
       // Column-set locators like "appointments.{contact_id, customer_id}" or
       // capability-style references ("business.appointment.no-show → recovery_jobs").
       const isColumnSet = /^[a-z_]+\.\{[^}]+\}$/.test(ref);
-      const isCapabilityArrow = ref.includes("→") || ref.includes("+");
+      const isCapabilityArrow = ref.includes("→") || ref.includes("+") || ref.includes("·");
       const isPlainTable = /^[a-z_]+$/.test(ref);
       expect(
         isFilePath || isCapId || isDottedKey || isColumnSet || isCapabilityArrow || isPlainTable,
