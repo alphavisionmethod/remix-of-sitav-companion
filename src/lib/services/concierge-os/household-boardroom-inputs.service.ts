@@ -1,14 +1,11 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Concierge OS: Household Boardroom Inputs Service
+// Domain type imported from `@/domains/concierge` (canonical).
 // ═══════════════════════════════════════════════════════════════
 
-export interface HouseholdBoardroomPacket {
-  activeTasks: number; overdueTasks: number; loadBalanceScore: number;
-  upcomingEvents: string[]; calendarConflicts: number; schoolItems: number;
-  travelPrep: { tripName: string; readinessPct: number }[];
-  actionItems: string[];
-  generatedAt: string;
-}
+import type { HouseholdBoardroomPacket } from "@/domains/concierge";
+
+export type { HouseholdBoardroomPacket };
 
 export function buildHouseholdBoardroomPacket(): HouseholdBoardroomPacket {
   return {

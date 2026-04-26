@@ -1,7 +1,20 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Canonical Barrel: src/domains/concierge
-// Created by Wave 1 of src/lib decomposition.
-// Files migrated here from src/lib/* will be re-exported from this barrel.
-// Do NOT add deep cross-layer imports here.
+//
+// This is the trusted domain layer for Concierge OS. It owns
+// shared concierge entity contracts (re-exported from
+// `@/packages/concierge-contracts`) and derived service-output
+// view types consumed by services
+// (src/lib/services/concierge-os/), engines, and the Concierge
+// UI (src/modules/concierge/, src/pages/ConciergeCenter.tsx).
+//
+// It MUST NOT import from those layers — domain depends on
+// nothing.
+//
+// Import conventions:
+//   import type { HouseholdTask } from "@/domains/concierge";
+//   import type { HouseholdOverview } from "@/domains/concierge";
 // ═══════════════════════════════════════════════════════════════
-export {};
+
+export * from "./types";
+export * from "./contracts";

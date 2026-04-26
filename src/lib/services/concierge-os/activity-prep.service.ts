@@ -1,8 +1,11 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Concierge OS: Activity Prep Service
+// Domain types imported from `@/domains/concierge` (canonical).
 // ═══════════════════════════════════════════════════════════════
 
-export interface ActivityChecklist { activityName: string; items: { task: string; done: boolean }[]; completionPct: number; }
+import type { ActivityChecklist } from "@/domains/concierge";
+
+export type { ActivityChecklist };
 
 export function buildActivityChecklist(activityName: string, items: string[]): ActivityChecklist {
   return { activityName, items: items.map(task => ({ task, done: false })), completionPct: 0 };

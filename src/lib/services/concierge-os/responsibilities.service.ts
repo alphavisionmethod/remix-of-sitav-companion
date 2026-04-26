@@ -1,11 +1,11 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Concierge OS: Responsibilities Service
+// Domain types imported from `@/domains/concierge` (canonical).
 // ═══════════════════════════════════════════════════════════════
 
-import type { HouseholdTask } from "@/packages/concierge-contracts";
+import type { HouseholdTask, ResponsibilityAssignment } from "@/domains/concierge";
 
-
-export interface ResponsibilityAssignment { memberId: string; memberName: string; tasks: HouseholdTask[]; totalMinutes: number; }
+export type { ResponsibilityAssignment };
 
 export function assignResponsibilities(tasks: HouseholdTask[], memberMap: Record<string, string>): ResponsibilityAssignment[] {
   const assignments = new Map<string, HouseholdTask[]>();
