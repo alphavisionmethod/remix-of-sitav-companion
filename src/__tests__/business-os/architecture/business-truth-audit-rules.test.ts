@@ -143,12 +143,13 @@ describe("Phase 3 — sanity: rule 3 still functions", () => {
   });
 
   it("flags telemetry-shaped top-level arrays", () => {
-    const src = `
-      const REVENUE = [
-        { id: "r1", amount: 1000 },
-        { id: "r2", amount: 2000 },
-      ];
-    `;
+    // Match the column-0 anchor used in production page sources.
+    const src = [
+      `const REVENUE = [`,
+      `  { id: "r1", amount: 1000 },`,
+      `  { id: "r2", amount: 2000 },`,
+      `];`,
+    ].join("\n");
     expect(hasFakeLiveArray(src)).toBe(true);
   });
 });
