@@ -57,6 +57,27 @@ const CollectionsCommandCenter = () => {
   const promised = useMemo(() => accounts.filter(a => a.status === "promised"), [accounts]);
   const selected = accounts.find(a => a.id === selectedId) || null;
 
+  // Queue items sorted by risk
+  const queueItems = useMemo(() =>
+    [...accounts].sort((a, b) => b.riskScore - a.riskScore).map(a => ({
+      id: a.id,
+      label: `${a.customerName} — ${formatCents(a.amountCents)}`,
+      meta: `${a.agingDays}d · Risk ${a.riskScore}`,
+      urgency: riskUrgency(a.riskScore),
+      badge: <ExecutionBadge state={a.status === "recovered" ? "complete" : a.status === "escalated" ? "failed" : a.chaseSequenceActive ? "executing" : "drafted"} />,
+    })),
+    [accounts]
+  );
+
+  // Escalation timeline
+  const escalationTimeline = CHASE_SEQUENCE.map(step => ({
+    id: `step-${step.step}`,
+    title: `Step ${step.step}: ${step.action}`,
+    timestamp: `Day +${step.dayAfterDue}`,
+    detail: `${step.channel.toUpperCase()} · ${escalationLabel[step.escalationLevel]}${step.requiresApproval ? " · Approval" : ""}${step.autoExecute ? " · Auto" : ""}`,
+    accentColor: step.escalationLevel >= 3 ? "hsl(0 70% 55%)" : step.escalationLevel >= 2 ? "hsl(38 85% 58%)" : "hsl(265 55% 58%)",
+  }));
+
   // Honest unauth state in live mode.
   if (!isDemo && !user) {
     return (
@@ -88,27 +109,6 @@ const CollectionsCommandCenter = () => {
       </div>
     );
   }
-
-  // Queue items sorted by risk
-  const queueItems = useMemo(() =>
-    [...accounts].sort((a, b) => b.riskScore - a.riskScore).map(a => ({
-      id: a.id,
-      label: `${a.customerName} — ${formatCents(a.amountCents)}`,
-      meta: `${a.agingDays}d · Risk ${a.riskScore}`,
-      urgency: riskUrgency(a.riskScore),
-      badge: <ExecutionBadge state={a.status === "recovered" ? "complete" : a.status === "escalated" ? "failed" : a.chaseSequenceActive ? "executing" : "drafted"} />,
-    })),
-    [accounts]
-  );
-
-  // Escalation timeline
-  const escalationTimeline = CHASE_SEQUENCE.map(step => ({
-    id: `step-${step.step}`,
-    title: `Step ${step.step}: ${step.action}`,
-    timestamp: `Day +${step.dayAfterDue}`,
-    detail: `${step.channel.toUpperCase()} · ${escalationLabel[step.escalationLevel]}${step.requiresApproval ? " · Approval" : ""}${step.autoExecute ? " · Auto" : ""}`,
-    accentColor: step.escalationLevel >= 3 ? "hsl(0 70% 55%)" : step.escalationLevel >= 2 ? "hsl(38 85% 58%)" : "hsl(265 55% 58%)",
-  }));
 
   // ── List Pane ──────────────────────────────────────────────
   const listPane = (
