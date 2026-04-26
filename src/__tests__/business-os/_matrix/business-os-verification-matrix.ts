@@ -69,7 +69,7 @@ export const SERVICE_SURFACES: SurfaceEntry[] = [
   { id: "svc.invoice-linking", kind: "service", ref: "src/lib/services/business-os/invoice-linking.service.ts", tests: ["src/__tests__/business-os/services/invoice-linking.service.test.ts"], status: "behavioral", priority: "P1" },
   { id: "svc.callback-queue", kind: "service", ref: "src/lib/services/business-os/callback-queue.service.ts", tests: ["src/__tests__/business-os/services/callback-queue.service.test.ts"], status: "behavioral", priority: "P1" },
   { id: "svc.customer-health", kind: "service", ref: "src/lib/services/business-os/customer-health.service.ts", tests: ["src/__tests__/business-os/services/customer-health.service.test.ts"], status: "behavioral", priority: "P1" },
-  { id: "svc.continuity-verification", kind: "service", ref: "src/lib/services/business-os/continuity-verification.service.ts", tests: ["src/__tests__/business-os/trust/continuity-verification.test.ts"], status: "behavioral", priority: "P0" },
+  { id: "svc.continuity-verification", kind: "service", ref: "src/lib/services/business-os/continuity-verification.service.ts", tests: ["src/__tests__/business-os/services/continuity-verification.service.test.ts", "src/__tests__/business-os/trust/continuity-verification.test.ts"], status: "behavioral", priority: "P0" },
 ];
 
 /** Services intentionally excluded from dedicated behavioral tests, with stable reason. */
