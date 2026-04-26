@@ -8,7 +8,7 @@ import {
 } from "lucide-react";
 import { SparklineChart } from "@/platform/sita/components/sita/SparklineChart";
 import { INSTRUMENTS, INVESTMENT_ADVISORS, PORTFOLIO, SAMPLE_ORDERS, SAMPLE_THESES, WATCHLISTS } from "@/hooks/useInvestmentOfficeData";
-import { SPARKLINE_DATA, WHAT_CHANGED, ADVISOR_EVENT_ALERTS } from "@/domains/investment/mock-data";
+import { SPARKLINE_DATA, WHAT_CHANGED, ADVISOR_EVENT_ALERTS } from "@/domains/investment";
 import { useInvestmentDecisions } from "@/hooks/use-investment-office";
 import { PortfolioGlobe } from "@/modules/finance/components/investment/PortfolioGlobe";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";

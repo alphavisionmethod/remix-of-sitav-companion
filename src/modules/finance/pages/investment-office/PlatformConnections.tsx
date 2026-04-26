@@ -1,13 +1,13 @@
 import { useState, useMemo } from "react";
 import { Link2, Plus, RefreshCw, CheckCircle2, AlertTriangle, XCircle, Shield, Clock, Search, Star } from "lucide-react";
 import { PLATFORM_CONNECTIONS } from "@/hooks/useInvestmentOfficeData";
-import { SYNC_HISTORY, PLATFORM_PERMISSIONS } from "@/domains/investment/mock-data";
+import { SYNC_HISTORY, PLATFORM_PERMISSIONS } from "@/domains/investment";
 import { useMarketWatchlistItems } from "@/hooks/use-investment-office";
 import { ConnectPlatformModal } from "@/modules/finance/components/investment/ConnectPlatformModal";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import type { AvailablePlatform, PlatformType } from "@/domains/investment/types";
+import type { AvailablePlatform, PlatformType } from "@/domains/investment";
 import { cn } from "@/lib/utils";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 const STATUS_CONFIG = {

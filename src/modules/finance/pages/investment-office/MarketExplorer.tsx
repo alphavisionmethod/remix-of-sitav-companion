@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Search, TrendingUp, TrendingDown, Filter, BarChart3, Globe, Zap, ChevronRight } from "lucide-react";
-import type { AssetClass } from "@/domains/investment/types";
+import type { AssetClass } from "@/domains/investment";
 import { SparklineChart } from "@/platform/sita/components/sita/SparklineChart";
 import { INSTRUMENTS, INVESTMENT_ADVISORS } from "@/hooks/useInvestmentOfficeData";
-import { SPARKLINE_DATA } from "@/domains/investment/mock-data";
+import { SPARKLINE_DATA } from "@/domains/investment";
 import { useMarketWatchlistItems } from "@/hooks/use-investment-office";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 const pctFmt = (n: number) => `${n >= 0 ? "+" : ""}${n.toFixed(2)}%`;

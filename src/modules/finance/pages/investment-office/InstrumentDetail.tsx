@@ -5,7 +5,7 @@ import {
 } from "lucide-react";
 import LightweightChart from "@/modules/finance/components/investment/LightweightChart";
 import { INVESTMENT_ADVISORS, PORTFOLIO, SAMPLE_THESES, PLATFORM_CONNECTIONS, getInstrument } from "@/hooks/useInvestmentOfficeData";
-import { SAMPLE_SCENARIOS } from "@/domains/investment/mock-data";
+import { SAMPLE_SCENARIOS } from "@/domains/investment";
 import { usePortfolioPositions } from "@/hooks/use-investment-office";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
