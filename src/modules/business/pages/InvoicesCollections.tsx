@@ -23,6 +23,7 @@ import { DetailDrawer } from "@/platform/sita/components/sita/surfaces/DetailDra
 import { AppSurface } from "@/platform/sita/components/sita/surfaces/AppSurface";
 import { ListReveal, ListRevealItem } from "@/platform/sita/components/sita/motion/AppTransitions";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import HierarchyHint from "@/modules/business/components/business/shared/HierarchyHint";
 
 const executionState = (status: string): "drafted" | "approved" | "executing" | "complete" | "failed" => {
   if (status === "paid") return "complete";
@@ -125,6 +126,7 @@ const InvoicesCollections = () => {
 
   const listPane = (
     <div className="p-3 space-y-3">
+      <HierarchyHint tier="execution" surface="Invoices" description="Issue, send, and track payable invoices" />
       <div className="flex items-center justify-between px-1">
         <h3 className="text-[13px] font-semibold text-[hsl(0_0%_85%)]">Invoices & Collections</h3>
         <button
