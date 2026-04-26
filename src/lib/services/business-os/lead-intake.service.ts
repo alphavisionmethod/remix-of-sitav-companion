@@ -2,7 +2,7 @@
 // SITA OS — Business OS: Lead Intake Service
 // ═══════════════════════════════════════════════════════════════
 
-import type { Lead } from "@/packages/business-contracts";
+import type { Lead } from "@/domains/business";
 
 export interface LeadIntakePayload {
   name: string;

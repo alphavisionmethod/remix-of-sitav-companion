@@ -3,7 +3,7 @@
 // Orchestrates revenue recovery workflows
 // ═══════════════════════════════════════════════════════════════
 
-import type { RevenueLeakRecord } from "@/packages/business-contracts/revenue-autopilot";
+import type { RevenueLeakRecord } from "@/domains/business";
 
 export interface RecoveryPlan {
   id: string;

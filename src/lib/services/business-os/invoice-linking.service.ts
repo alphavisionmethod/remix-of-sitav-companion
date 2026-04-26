@@ -3,7 +3,7 @@
 // Links invoices to quotes and tracks conversion
 // ═══════════════════════════════════════════════════════════════
 
-import type { Invoice } from "@/packages/business-contracts";
+import type { Invoice } from "@/domains/business";
 
 export interface InvoiceLink {
   invoiceId: string;

@@ -3,7 +3,7 @@
 // Dormant customer reactivation engine
 // ═══════════════════════════════════════════════════════════════
 
-import type { CRMAccount } from "@/packages/business-contracts";
+import type { CRMAccount } from "@/domains/business";
 
 export interface ReactivationCandidate {
   accountId: string;

@@ -2,8 +2,8 @@
 // SITA OS — Business OS: Revenue Autopilot Service
 // ═══════════════════════════════════════════════════════════════
 
-import type { Invoice } from "@/packages/business-contracts";
-import type { RevenueLeakRecord, RevenueAutopilotKpiSummary, CollectionsEscalationPacket } from "@/packages/business-contracts/revenue-autopilot";
+import type { Invoice } from "@/domains/business";
+import type { RevenueLeakRecord, RevenueAutopilotKpiSummary, CollectionsEscalationPacket } from "@/domains/business";
 
 export function detectLeaks(invoices: Invoice[]): RevenueLeakRecord[] {
   return invoices.filter(inv => inv.status === "overdue").map(inv => {

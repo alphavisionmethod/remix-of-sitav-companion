@@ -3,8 +3,8 @@
 // Escalation logic for overdue accounts
 // ═══════════════════════════════════════════════════════════════
 
-import type { Invoice } from "@/packages/business-contracts";
-import type { CollectionsEscalationPacket } from "@/packages/business-contracts/revenue-autopilot";
+import type { Invoice } from "@/domains/business";
+import type { CollectionsEscalationPacket } from "@/domains/business";
 
 export function buildEscalationQueue(invoices: Invoice[]): CollectionsEscalationPacket[] {
   return invoices
