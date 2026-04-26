@@ -3,8 +3,7 @@
 // Detects revenue leaks across all channels
 // ═══════════════════════════════════════════════════════════════
 
-import type { Invoice } from "@/domains/business";
-import type { RevenueLeakRecord } from "@/domains/business";
+import type { Invoice, RevenueLeakRecord } from "@/domains/business";
 
 export function detectLeakageComprehensive(invoices: Invoice[]): RevenueLeakRecord[] {
   const leaks: RevenueLeakRecord[] = [];

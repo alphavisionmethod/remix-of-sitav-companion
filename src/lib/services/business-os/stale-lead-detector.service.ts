@@ -2,8 +2,7 @@
 // SITA OS — Business OS: Stale Lead Detector
 // ═══════════════════════════════════════════════════════════════
 
-import type { Lead } from "@/domains/business";
-import type { StaleLeadState } from "@/domains/business";
+import type { Lead, StaleLeadState } from "@/domains/business";
 
 export interface StaleLeadReport {
   totalLeads: number;
