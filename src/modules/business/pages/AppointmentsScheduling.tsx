@@ -241,26 +241,24 @@ const AppointmentsScheduling = () => {
     if (linked && linked.entityType === "company") payload.crm_company_id = linked.entityId;
     if (linked && linked.entityType === "opportunity") payload.opportunity_id = linked.entityId;
 
-    const result = await createAction.execute(payload);
-    if (result?.status === "success") {
+    try {
+      await createAction.mutateAsync(payload);
       toast.success("Appointment scheduled");
       setCreateOpen(false);
       resetForm();
       refetch();
-    } else {
-      const msg = (result?.result as { error?: string })?.error ?? "Failed to schedule";
-      toast.error(msg);
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Failed to schedule");
     }
   };
 
   const handleNoShow = async (id: string) => {
-    const result = await noShowAction.execute({ id });
-    if (result?.status === "success") {
+    try {
+      await noShowAction.mutateAsync({ id });
       toast.success("Marked as no-show — recovery job queued");
       refetch();
-    } else {
-      const msg = (result?.result as { error?: string })?.error ?? "Failed to mark no-show";
-      toast.error(msg);
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Failed to mark no-show");
     }
   };
 
