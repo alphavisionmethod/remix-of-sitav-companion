@@ -23,13 +23,17 @@ import { useLeadInbox, type InboxFilter } from "@/modules/business/components/bu
 import { getInboxStats } from "@/modules/business/components/business/lead-inbox/mock-inbox-data";
 import { LEADS_INBOX_FILTER_TABS as FILTER_TABS } from "./_config/LeadsInbox.config";
 
-import { Search, Plus, Plug, ChevronDown, ChevronUp, LayoutGrid, BarChart3, List, ArrowLeftRight } from "lucide-react";
+import { Search, Plus, Plug, ChevronDown, ChevronUp, LayoutGrid, BarChart3, List, ArrowLeftRight, LogIn, Inbox } from "lucide-react";
 import { toast } from "sonner";
+import { EmptyStateCard } from "@/platform/sita/components/sita/EmptyStateCard";
+import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 
 type ViewMode = "queue" | "priority-stack" | "dashboard";
 
 const LeadsInbox = () => {
   const { navigateTo } = useBusinessNavigation();
+  const navigate = useNavigate();
   const { primaryMode } = useBusinessProfile();
   const [showOverview, setShowOverview] = useState(true);
   const [viewMode, setViewMode] = useState<ViewMode>("queue");
@@ -41,6 +45,7 @@ const LeadsInbox = () => {
     filter, setFilter, search, setSearch,
     setSelectedId, checkedIds, toggleCheck, clearChecked,
     triageAction, bulkAction, isLoading, isDemo,
+    isUnauthenticated, isError, error, refetch,
     scoreMap, scoreResults,
     explainId, setExplainId, explainScore,
   } = useLeadInbox();
@@ -84,6 +89,61 @@ const LeadsInbox = () => {
         <PageTruthBanner />
         <KPISkeleton count={8} />
         <SectionSkeleton cards={4} columns={1} />
+      </motion.div>
+    );
+  }
+
+  // Unauthenticated → honest sign-in CTA (live mode only).
+  if (isUnauthenticated && !isDemo) {
+    return (
+      <motion.div className="space-y-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+        <PageTruthBanner />
+        <EmptyStateCard
+          icon={LogIn}
+          title="Sign in to view your lead inbox"
+          description="Inbound leads, scoring, and triage are scoped to your account. Switch to Demo mode to explore the surface with sample data."
+          ctaLabel="Open sign-in"
+          ctaPath="/auth"
+        />
+      </motion.div>
+    );
+  }
+
+  // Live-mode error.
+  if (isError) {
+    return (
+      <motion.div className="space-y-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+        <PageTruthBanner />
+        <EmptyStateCard
+          icon={Inbox}
+          title="Couldn't load your inbox"
+          description={error?.message ?? "Something went wrong while reading inbound leads."}
+          ctaLabel="Retry"
+          onAction={() => refetch()}
+        />
+      </motion.div>
+    );
+  }
+
+  // Live-mode empty (authenticated, no demo, no rows) → honest empty state.
+  // The previous behaviour silently fell back to FALLBACK_INBOX_ITEMS — that
+  // was a fake-live leak. We now surface the truth and offer setup actions.
+  if (!isDemo && items.length === 0) {
+    return (
+      <motion.div className="space-y-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+        <PageTruthBanner />
+        <EmptyStateCard
+          icon={Inbox}
+          title="No inbound leads yet"
+          description="When new leads arrive from your website, integrations, or manual entry, they'll appear here for triage and scoring."
+          ctaLabel="Connect a lead source"
+          ctaPath="/business/integrations"
+        />
+        <div className="text-center">
+          <Button variant="ghost" size="sm" onClick={() => navigate("/business/crm-contacts")}>
+            Or add a lead manually
+          </Button>
+        </div>
       </motion.div>
     );
   }
