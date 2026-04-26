@@ -9,26 +9,13 @@
 import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { LeadTriageQueue } from "@/modules/business/components/business/lead-inbox/LeadTriageQueue";
-import type { InboxItem } from "@/modules/business/components/business/lead-inbox/mock-inbox-data";
+import {
+  FALLBACK_INBOX_ITEMS,
+  type InboxItem,
+} from "@/modules/business/components/business/lead-inbox/mock-inbox-data";
 
-// Minimal fixture matching the InboxItem shape.
 function makeInboxItem(overrides: Partial<InboxItem> = {}): InboxItem {
-  return {
-    id: "lead-test-1",
-    name: "Test Lead",
-    email: "test@example.com",
-    phone: null,
-    company: "Acme",
-    source: "form",
-    score: 72,
-    status: "new",
-    intent: "high",
-    receivedAt: new Date().toISOString(),
-    summary: "Inbound demo request",
-    tags: [],
-    isDuplicate: false,
-    ...(overrides as InboxItem),
-  } as InboxItem;
+  return { ...FALLBACK_INBOX_ITEMS[0], ...overrides };
 }
 
 const noopHandlers = {
@@ -60,7 +47,7 @@ describe("LeadTriageQueue — empty-state honesty", () => {
   });
 
   it("renders the caught-up state when allItems exist but none match the inbox + filter is 'all' + newCount=0", () => {
-    const item = makeInboxItem({ status: "won" as InboxItem["status"] });
+    const item = makeInboxItem({ id: "li-caught", triage_status: "accepted" });
     render(
       <LeadTriageQueue
         items={[]}
@@ -95,9 +82,9 @@ describe("LeadTriageQueue — empty-state honesty", () => {
 
   it("renders one card per item when populated", () => {
     const items = [
-      makeInboxItem({ id: "a", name: "Alpha Lead" }),
-      makeInboxItem({ id: "b", name: "Bravo Lead" }),
-      makeInboxItem({ id: "c", name: "Charlie Lead" }),
+      makeInboxItem({ id: "a", contact_name: "Alpha Lead" }),
+      makeInboxItem({ id: "b", contact_name: "Bravo Lead" }),
+      makeInboxItem({ id: "c", contact_name: "Charlie Lead" }),
     ];
     render(
       <LeadTriageQueue
