@@ -207,6 +207,7 @@ export default function DecisionTheater() {
 
   return (
     <div className="mx-auto max-w-5xl space-y-6 relative">
+      <PageTruthBanner truthState="partial" />
       <SpotlightOverlay active={spotlightActive} />
 <div className="text-center space-y-2 pt-4">
         <h1 className="text-3xl font-bold text-foreground flex items-center justify-center gap-3">
