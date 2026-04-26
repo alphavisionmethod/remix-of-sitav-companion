@@ -5,7 +5,7 @@
 import { motion } from "framer-motion";
 import { Phone, Mail, Linkedin, MessageSquare, ChevronRight, Crown, RotateCcw } from "lucide-react";
 import { cn } from "@/lib/utils";
-import type { RecoveryCandidate } from "@/domains/engines/lead-recovery-engine";
+import type { RecoveryCandidate } from "@/domains/business";
 import { FAILURE_MODE_META, SUCCESS_BAND_META, RECOVERY_PATH_META } from "@/domains/engines/lead-recovery-engine";
 
 const CHANNEL_ICONS: Record<string, typeof Mail> = {

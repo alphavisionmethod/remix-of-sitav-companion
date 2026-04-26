@@ -5,7 +5,7 @@ import { LeadScoreRadar } from "./LeadScoreRadar";
 import { LeadPriorityBadge } from "./LeadPriorityBadge";
 import { LeadHeatIndicator } from "./LeadHeatIndicator";
 import type { InboxItem } from "./mock-inbox-data";
-import type { LeadScoreResult } from "@/domains/engines/lead-scoring-engine";
+import type { LeadScoreResult } from "@/domains/business";
 import { X, ArrowLeftRight } from "lucide-react";
 
 interface Props {

@@ -6,7 +6,7 @@ import { LeadHeatIndicator } from "./LeadHeatIndicator";
 import { LeadConfidenceDisplay } from "./LeadConfidenceDisplay";
 import { PriorityEvolutionTimeline } from "./PriorityEvolutionTimeline";
 import { LeadScoreRadar } from "./LeadScoreRadar";
-import type { LeadScoreResult, ScoreFactor } from "@/domains/engines/lead-scoring-engine";
+import type { LeadScoreResult, ScoreFactor } from "@/domains/business";
 import { X, TrendingUp, TrendingDown, Zap, Target, Clock, Brain } from "lucide-react";
 
 const FactorBar = ({ factor, maxWeight }: { factor: ScoreFactor; maxWeight: number }) => {

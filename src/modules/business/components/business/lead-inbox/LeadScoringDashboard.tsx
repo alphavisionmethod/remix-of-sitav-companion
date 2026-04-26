@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
-import type { LeadScoreResult, PriorityTier } from "@/domains/engines/lead-scoring-engine";
+import type { LeadScoreResult, PriorityTier } from "@/domains/business";
 import { PRIORITY_TIER_META } from "@/domains/engines/lead-scoring-engine";
 import type { InboxItem } from "./mock-inbox-data";
 import { LeadScoreRadar } from "./LeadScoreRadar";

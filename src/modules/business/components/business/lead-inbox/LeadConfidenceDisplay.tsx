@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import type { ConfidenceLevel } from "@/domains/engines/lead-scoring-engine";
+import type { ConfidenceLevel } from "@/domains/business";
 import { CONFIDENCE_META } from "@/domains/engines/lead-scoring-engine";
 import { Shield, ShieldAlert, ShieldQuestion } from "lucide-react";
 

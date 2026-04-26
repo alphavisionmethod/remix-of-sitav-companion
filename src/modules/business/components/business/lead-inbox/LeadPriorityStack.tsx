@@ -6,7 +6,7 @@ import { LeadHeatIndicator } from "./LeadHeatIndicator";
 import { LeadConfidenceDisplay } from "./LeadConfidenceDisplay";
 import { PriorityEvolutionTimeline } from "./PriorityEvolutionTimeline";
 import { LeadSourceBadge } from "./LeadSourceBadge";
-import type { LeadScoreResult } from "@/domains/engines/lead-scoring-engine";
+import type { LeadScoreResult } from "@/domains/business";
 import type { InboxItem } from "./mock-inbox-data";
 import type { LeadSource } from "./LeadSourceBadge";
 import { Zap, Star, ChevronRight } from "lucide-react";

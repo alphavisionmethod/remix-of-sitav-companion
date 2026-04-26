@@ -24,7 +24,7 @@ import {
   computeOverallHealth,
   computeChurnRisk,
   getAvailableTransitions,
-} from "@/packages/business-contracts/customer-lifecycle";
+} from "@/domains/business";
 
 // ── Stage colors ────────────────────────────────────────────
 const STAGE_STYLES: Record<CustomerLifecycleStage, { bg: string; text: string; ring: string }> = {

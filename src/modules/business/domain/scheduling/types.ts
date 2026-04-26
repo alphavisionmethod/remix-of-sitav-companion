@@ -1,10 +1,11 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Business Scheduling: Domain Types & Mappers
-// Reuses canonical Booking / NoShowRisk contracts from
-// @/packages/business-contracts. No duplicate appointment type.
+// Reuses canonical Booking / NoShowRisk contracts from the
+// canonical Business OS domain barrel (@/domains/business).
+// No duplicate appointment type.
 // ═══════════════════════════════════════════════════════════════
 
-import type { Booking, BookingStatus } from "@/packages/business-contracts/booking";
+import type { Booking, BookingStatus } from "@/domains/business";
 
 export type { Booking, BookingStatus };
 

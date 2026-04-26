@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Inbox, UserX, Zap, Star, AlertTriangle, RotateCcw, Flame, TrendingDown } from "lucide-react";
-import type { LeadScoreResult } from "@/domains/engines/lead-scoring-engine";
+import type { LeadScoreResult } from "@/domains/business";
 import type { InboxItem } from "./mock-inbox-data";
 import { getInboxStats } from "./mock-inbox-data";
 

@@ -8,7 +8,7 @@ import {
   GitBranch, ArrowRightLeft, VolumeX, PhoneMissed, RotateCcw, Crown
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import type { RecoveryCandidate } from "@/domains/engines/lead-recovery-engine";
+import type { RecoveryCandidate } from "@/domains/business";
 import { RECOVERY_QUEUES, getQueueCounts, getQueueValueAtRisk } from "@/domains/engines/lead-recovery-engine";
 
 const QUEUE_ICONS: Record<string, typeof Layers> = {

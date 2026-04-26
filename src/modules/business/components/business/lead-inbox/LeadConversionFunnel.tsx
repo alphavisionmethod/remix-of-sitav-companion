@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import type { InboxItem } from "./mock-inbox-data";
-import type { LeadScoreResult } from "@/domains/engines/lead-scoring-engine";
+import type { LeadScoreResult } from "@/domains/business";
 
 interface Props {
   items: InboxItem[];
