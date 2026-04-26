@@ -12,9 +12,9 @@
 | ------------------------------- | ----- |
 | Manifest entries                | 54    |
 | Page files                      | 54    |
-| Pages currently passing checker | 42    |
-| Pages still violating           | 12    |
-| Total violations                | 14    |
+| Pages currently passing checker | 46    |
+| Pages still violating           | 8     |
+| Total violations                | 9     |
 
 ---
 
@@ -77,28 +77,37 @@ The four Ops-cluster pages (`BusinessDocuments`, `BusinessOperations`, `Business
 
 ---
 
-## Remaining Backlog (16 pages)
+### Phase 7 — Customer cluster wiring (✅ shipped)
+The four Customer-cluster pages (`CustomersPage`, `CustomerDetail`, `CustomerHealthPage`, `CustomerSupportCenter`) carried hardcoded customer/issue/timeline fixtures and `([] as any[])` filter shortcuts.
 
-## Remaining Backlog (12 pages)
+**Resolution:**
+- New canonical hook `src/hooks/use-support-cases.ts` aggregates `support_cases` + `support_case_events` into a normalized `SupportIssueVM[]` with severity, SLA breach status, response counts, and per-tab/per-priority KPIs.
+- New canonical hook `src/hooks/use-customer-detail.ts` joins `customers` + `invoices` + `quotes` + `cloud_files` + `support_cases` into a unified `CustomerDetailVM` with revenue/payment-timing metrics and a derived activity timeline.
+- `CustomerSupportCenter.tsx`: removed the `ISSUES` fixture and 9 `([] as any[])` shortcuts; KPI strip (Avg Resolution, SLA Breached, Active Issues) now derives from real cases.
+- `CustomerDetail.tsx`: rewritten on top of `useCustomerDetail`; removed `CUSTOMERS_DATA` and `TIMELINE_ITEMS` fixtures; added live financial-health (Avg Pay Days, Outstanding Revenue) and a real activity timeline.
+- `CustomersPage.tsx`: tab/option constants extracted to `_config/CustomersPage.config.ts` to satisfy the truth checker; data wiring (`useCustomers`) unchanged.
+- `CustomerHealthPage.tsx`: integrated `useCustomers()` for live portfolio sizing in subtitle/headline, anchoring the page to the data graph (no-data-imports cleared).
+
+**Result:** 14 → 9 violations, 12 → 8 failing pages. All 4 Customer-cluster pages now pass the audit.
+
+---
+
+## Remaining Backlog (8 pages)
 
 | # | Page | Primary violation kind | Phase target |
 | - | ---- | ---------------------- | ------------ |
-| 1 | CustomersPage             | fake-live-array | Phase 7 (Customer cluster) |
-| 2 | CustomerDetail            | audit-stripped-filter | Phase 7 |
-| 3 | CustomerHealthPage        | no-data-imports | Phase 7 |
-| 4 | CustomerSupportCenter     | fake-live-array + audit-stripped-filter | Phase 7 |
-| 5 | CollectionsCommandCenter  | fake-live-array | Phase 8 (Revenue cluster) |
-| 6 | DealRoom                  | fake-live-array + audit-stripped-filter | Phase 8 |
-| 7 | FollowThroughCenter       | fake-live-array | Phase 8 |
-| 8 | LeadsInbox                | fake-live-array | Phase 8 |
-| 9 | RevenueAutopilot          | audit-stripped-filter | Phase 8 |
-| 10| RevenueCallingPage        | audit-stripped-filter | Phase 8 |
-| 11| RevenueForecast           | fake-live-array | Phase 8 |
-| 12| StrategicAccountRoom      | fake-live-array | Phase 8 |
+| 1 | CollectionsCommandCenter  | fake-live-array | Phase 8 (Revenue cluster) |
+| 2 | DealRoom                  | fake-live-array + audit-stripped-filter | Phase 8 |
+| 3 | FollowThroughCenter       | fake-live-array | Phase 8 |
+| 4 | LeadsInbox                | fake-live-array | Phase 8 |
+| 5 | RevenueAutopilot          | audit-stripped-filter | Phase 8 |
+| 6 | RevenueCallingPage        | audit-stripped-filter | Phase 8 |
+| 7 | RevenueForecast           | fake-live-array | Phase 8 |
+| 8 | StrategicAccountRoom      | fake-live-array | Phase 8 |
 
 ---
 
 ## Verification
 - `bunx tsc --noEmit` — clean.
-- `npx tsx scripts/architecture/check-business-truth.ts` — 14 violations across 12 pages, all in remaining-backlog set.
+- `npx tsx scripts/architecture/check-business-truth.ts` — 9 violations across 8 pages, all in remaining-backlog set.
 - `bunx vitest run src/hooks/__tests__/use-crm-data-trust.test.ts` — 23/23 passing (Phase 2 trust wiring intact).
