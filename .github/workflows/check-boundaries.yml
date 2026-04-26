@@ -42,6 +42,25 @@ jobs:
       - name: Run engine purity checker
         run: npx tsx scripts/architecture/check-engine-purity.ts
 
+      - name: Run Business OS production-truth checker
+        # Phased rollout: failures are gated by BUSINESS_TRUTH_ENFORCE
+        # so the check publishes signal during the closure phases and
+        # flips to blocking once Phase 7 lands.
+        env:
+          BUSINESS_TRUTH_ENFORCE: ${{ vars.BUSINESS_TRUTH_ENFORCE || 'false' }}
+        run: |
+          set +e
+          npx tsx scripts/architecture/check-business-truth.ts
+          status=$?
+          if [ "$BUSINESS_TRUTH_ENFORCE" = "true" ] && [ "$status" -ne 0 ]; then
+            echo "::error::Business OS production-truth gate is enforcing and failed."
+            exit "$status"
+          fi
+          if [ "$status" -ne 0 ]; then
+            echo "::warning::Business OS production-truth violations detected (non-blocking until BUSINESS_TRUTH_ENFORCE=true)."
+          fi
+          exit 0
+
       - name: Run mutation traceability gate
         env:
           MUTATION_UNDECLARED_THRESHOLD: "242"
