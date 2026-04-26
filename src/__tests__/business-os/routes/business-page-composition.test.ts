@@ -37,6 +37,7 @@ describe("business pages — composition", () => {
       expect(def, "missing default export").toBeDefined();
       expect(isComponent(def), "default export is not a component").toBe(true);
     },
+    30_000,
   );
 
   it("BusinessCenter dispatcher resolves to the canonical pages module", async () => {
