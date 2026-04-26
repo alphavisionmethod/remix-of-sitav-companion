@@ -187,10 +187,10 @@ export function InvoiceDetailPane({
       </div>
 
       {pendingList.length > 0 && (
-        <div className="rounded-lg border border-amber-500/30 bg-amber-500/5 p-3 space-y-2">
+        <div className="rounded-lg border border-urgency-medium/30 bg-urgency-medium/5 p-3 space-y-2">
           <div className="flex items-center gap-1.5">
-            <FileSignature className="h-3 w-3 text-amber-600" />
-            <span className="text-[10px] font-semibold uppercase tracking-wider text-amber-700 dark:text-amber-400">
+            <FileSignature className="h-3 w-3 text-urgency-medium" />
+            <span className="text-[10px] font-semibold uppercase tracking-wider text-urgency-medium">
               Pending signatures
             </span>
           </div>
