@@ -11,7 +11,7 @@ import { getModuleAdaptation } from "@/domains/engines/business-module-adaptatio
 import { motion } from "framer-motion";
 import {
   DollarSign, AlertTriangle, Clock, CheckCircle, ArrowRight, Zap,
-  Send, Phone, Mail, MessageSquare, Shield, FileText, Scale
+  Send, Phone, Mail, MessageSquare, Shield, FileText, Scale, LogIn, Inbox,
 } from "lucide-react";
 import { useCollectionsAccounts } from "@/hooks/use-domain-data";
 import type { CollectionsAccount } from "@/data/fixtures/mock-data/collections";
@@ -28,6 +28,8 @@ import { ModuleAdvisorInsight } from "@/platform/sita/components/sita/domain-sha
 import { ListReveal, ListRevealItem } from "@/platform/sita/components/sita/motion/AppTransitions";
 import { cn } from "@/lib/utils";
 import { CrossAppAction } from "@/platform/sita/components/sita/CrossAppAction";
+import { useRealityModeSafe } from "@/lib/dual-reality/reality-mode-context";
+import { LegacyEmptyStateCard as EmptyStateCard } from "@/platform/sita/components/sita/EmptyStateCard";
 
 
 const formatCents = (cents: number) => `$${(cents / 100).toLocaleString("en-US", { minimumFractionDigits: 0 })}`;
@@ -41,6 +43,8 @@ const riskUrgency = (score: number): "critical" | "high" | "normal" | "low" =>
 // ── Main Component ──────────────────────────────────────────────
 
 const CollectionsCommandCenter = () => {
+  const { user } = useAuth();
+  const { isDemo } = useRealityModeSafe();
   const { primaryMode } = useBusinessProfile();
   const moduleConfig = getModuleAdaptation("collections", primaryMode);
   const { data: accounts = [] } = useCollectionsAccounts();
@@ -52,6 +56,38 @@ const CollectionsCommandCenter = () => {
   const avgAging = useMemo(() => accounts.length > 0 ? Math.round(accounts.reduce((s, a) => s + a.agingDays, 0) / accounts.length) : 0, [accounts]);
   const promised = useMemo(() => accounts.filter(a => a.status === "promised"), [accounts]);
   const selected = accounts.find(a => a.id === selectedId) || null;
+
+  // Honest unauth state in live mode.
+  if (!isDemo && !user) {
+    return (
+      <div className="space-y-4 p-4">
+        <PageTruthBanner />
+        <EmptyStateCard
+          icon={LogIn}
+          title="Sign in to view collections"
+          description="The collections command center surfaces overdue accounts and chase sequences for your invoices. Switch to Demo mode to explore the workspace with sample data."
+          ctaLabel="Open sign-in"
+          ctaPath="/auth"
+        />
+      </div>
+    );
+  }
+
+  // Honest empty state in live mode (no overdue accounts wired yet).
+  if (!isDemo && accounts.length === 0) {
+    return (
+      <div className="space-y-4 p-4">
+        <PageTruthBanner />
+        <EmptyStateCard
+          icon={Inbox}
+          title="No collections accounts yet"
+          description="Overdue invoices and chase sequences appear here once the collections engine is connected to your invoicing source. Send invoices and let them age past due, or wire a billing connector to populate this workspace."
+          ctaLabel="Open invoices"
+          ctaPath="/business/invoices"
+        />
+      </div>
+    );
+  }
 
   // Queue items sorted by risk
   const queueItems = useMemo(() =>
@@ -77,7 +113,7 @@ const CollectionsCommandCenter = () => {
   // ── List Pane ──────────────────────────────────────────────
   const listPane = (
     <div className="p-3 space-y-3">
-      <PageTruthBanner truthState="live" />
+      <PageTruthBanner />
       <HierarchyHint tier="execution" surface="Collections" description="Operator-led recovery on overdue invoices" />
 
       {/* KPI Strip */}
