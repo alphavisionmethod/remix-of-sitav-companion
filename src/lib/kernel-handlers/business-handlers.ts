@@ -313,6 +313,13 @@ export function registerBusinessHandlers(executor: ExecutorService): void {
         ? p.invoice_number
         : `INV-${Date.now().toString(36).toUpperCase()}`;
 
+      // Bridge: ensure the invoice lands on a real billing customer.
+      const bridge = await resolveCustomerId({
+        customer_id: (proposal.customer_id as string | null) ?? null,
+        crm_contact_id: (proposal.crm_contact_id as string | null) ?? null,
+        source: "auto-from-invoice",
+      });
+
       const invoice = await insertRow("invoices", {
         invoice_number: invoiceNumber,
         amount_cents: amountCents,
@@ -324,8 +331,8 @@ export function registerBusinessHandlers(executor: ExecutorService): void {
         opportunity_id: (proposal.opportunity_id as string | null) ?? null,
         crm_contact_id: (proposal.crm_contact_id as string | null) ?? null,
         crm_company_id: (proposal.crm_company_id as string | null) ?? null,
-        customer_id: (proposal.customer_id as string | null) ?? null,
-        metadata: { converted_from: "proposal" },
+        customer_id: bridge.customer_id,
+        metadata: { converted_from: "proposal", bridge_link_id: bridge.link_id },
       });
 
       // Back-link on the proposal (and quote, if present).
@@ -359,6 +366,12 @@ export function registerBusinessHandlers(executor: ExecutorService): void {
         ? p.invoice_number
         : `INV-${Date.now().toString(36).toUpperCase()}`;
 
+      const bridge = await resolveCustomerId({
+        customer_id: (quote.customer_id as string | null) ?? null,
+        crm_contact_id: (quote.crm_contact_id as string | null) ?? null,
+        source: "auto-from-invoice",
+      });
+
       const invoice = await insertRow("invoices", {
         invoice_number: invoiceNumber,
         amount_cents: Number(quote.amount_cents ?? 0),
@@ -369,8 +382,8 @@ export function registerBusinessHandlers(executor: ExecutorService): void {
         opportunity_id: (quote.opportunity_id as string | null) ?? null,
         crm_contact_id: (quote.crm_contact_id as string | null) ?? null,
         crm_company_id: (quote.crm_company_id as string | null) ?? null,
-        customer_id: (quote.customer_id as string | null) ?? null,
-        metadata: { converted_from: "quote" },
+        customer_id: bridge.customer_id,
+        metadata: { converted_from: "quote", bridge_link_id: bridge.link_id },
       });
 
       await updateRowById("quotes", quoteId, {
