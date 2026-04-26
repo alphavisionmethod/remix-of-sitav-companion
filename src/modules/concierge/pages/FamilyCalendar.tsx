@@ -22,7 +22,7 @@ const FamilyCalendar = () => {
 
   return (
     <ConciergePageWrapper className="space-y-6">
-      <PageTruthBanner />
+      <PageTruthBanner truthState="partial" />
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
         <KPITile label="Events This Week" value={String(([] as typeof events).length)} icon={Calendar} />

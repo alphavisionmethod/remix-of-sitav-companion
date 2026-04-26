@@ -50,7 +50,7 @@ export const CONCIERGE_TRUTH_MANIFEST: ReadonlyArray<PageTruthEntry> = [
   // ── Container / shells ────────────────────────────────────────
   { page: "ConciergeCenter",         state: "fully-wired", sources: ["routing shim → desktop window"], bannerState: "live" },
   { page: "ConciergeOverview",       state: "fully-wired", sources: ["useHouseholdTasks", "useFamilyEvents", "useConciergeNavigation"], bannerState: "live" },
-  { page: "ConciergeSettings",       state: "fully-wired", sources: ["AdvisorKnowledgePanel", "TrustBadge"], bannerState: "live" },
+  { page: "ConciergeSettings",       state: "degraded",    degradedReason: "Household members / automation rules / connector health are presentational samples until the household_settings + connectors table are wired into this surface. Demo fixtures gated behind reality mode.", bannerState: "partial" },
   { page: "ConciergeProof",          state: "fully-wired", sources: ["ai_action_receipts via ConciergeReceiptViewer"], bannerState: "live" },
   { page: "ConciergeFiles",          state: "fully-wired", sources: ["files namespace via PersonalEssentialsPreviewPanel"], bannerState: "live" },
   { page: "ConciergeWorkflows",      state: "fully-wired", sources: ["ConciergeAutomationRuleCard", "ConciergeAdvisorInsightCard"], bannerState: "live" },

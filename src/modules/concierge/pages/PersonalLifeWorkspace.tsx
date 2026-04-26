@@ -14,6 +14,10 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Textarea } from "@/components/ui/textarea";
 import { useAuth } from "@/contexts/AuthContext";
+import { useRealityModeSafe } from "@/lib/dual-reality/reality-mode-context";
+import { PremiumEmptyState } from "@/platform/sita/components/sita/PremiumEmptyState";
+import { ConciergePageWrapper } from "@/modules/concierge/components/concierge";
+import { PERSONAL_ROUTINES_DEMO, PERSONAL_GOALS_DEMO, PERSONAL_SLIPPING_DEMO, PERSONAL_BACKLOG_DEMO } from "@/data/fixtures/mock-data/concierge-personal-life-demo";
 import { useQuery } from "@tanstack/react-query";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
@@ -26,43 +30,27 @@ import {
   Plus, ChevronRight, Home, DollarSign, Brain,
 } from "lucide-react";
 
-// ── Demo Data ──────────────────────────────────────────────
-const routines = [
-  { id: "1", name: "Morning meditation", time: "6:30 AM", streak: 14, active: true, category: "wellbeing" },
-  { id: "2", name: "Exercise", time: "7:00 AM", streak: 7, active: true, category: "health" },
-  { id: "3", name: "Journal", time: "9:00 PM", streak: 3, active: true, category: "growth" },
-  { id: "4", name: "Read 30 min", time: "8:30 PM", streak: 0, active: false, category: "growth" },
-  { id: "5", name: "Hydrate (8 glasses)", time: "All day", streak: 21, active: true, category: "health" },
-];
-
-const goals = [
-  { id: "1", title: "Run a half marathon", progress: 65, deadline: "2026-09-01", domain: "health", milestones: ["5K done", "10K done", "15K next"], nextAction: "Register for 10K race" },
-  { id: "2", title: "Learn Spanish B1", progress: 40, deadline: "2026-12-31", domain: "growth", milestones: ["A1 complete", "A2 in progress"], nextAction: "Complete Duolingo Unit 5" },
-  { id: "3", title: "Save €10k emergency fund", progress: 82, deadline: "2026-06-30", domain: "finance", milestones: ["€5K saved", "€8.2K saved"], nextAction: "Set up auto-transfer for €500/mo" },
-  { id: "4", title: "Declutter home office", progress: 30, deadline: "2026-05-15", domain: "household", milestones: ["Sorted papers"], nextAction: "Organize bookshelf" },
-];
-
-const slipping = [
-  { id: "1", item: "Dentist appointment — overdue by 2 weeks", severity: "medium" as const, domain: "health", action: "Schedule appointment" },
-  { id: "2", item: "Car insurance renewal — 3 days left", severity: "high" as const, domain: "finance", action: "Review & renew online" },
-  { id: "3", item: "Read 30 min habit — streak broken 4 days ago", severity: "low" as const, domain: "growth", action: "Resume tonight" },
-  { id: "4", item: "Annual physical — 6 months overdue", severity: "high" as const, domain: "health", action: "Call doctor" },
-];
-
-const backlog = [
-  { id: "1", item: "Learn to cook Thai food", domain: "growth" },
-  { id: "2", item: "Organize photo library", domain: "household" },
-  { id: "3", item: "Plan summer vacation", domain: "personal" },
-  { id: "4", item: "Update will/estate docs", domain: "finance" },
-  { id: "5", item: "Set up home automation", domain: "household" },
-  { id: "6", item: "Start a podcast", domain: "growth" },
-];
 
 const ENERGY_ICONS = { high: Battery, medium: BatteryMedium, low: BatteryLow };
 const ENERGY_COLORS = { high: "text-emerald-400", medium: "text-amber-400", low: "text-destructive" };
 
 export default function PersonalLifeWorkspace() {
   const { user } = useAuth();
+  const { isDemo } = useRealityModeSafe();
+
+  if (!isDemo) {
+    return (
+      <ConciergePageWrapper className="space-y-6">
+        <PageTruthBanner truthState="partial" />
+        <PremiumEmptyState icon={Heart} title={user ? "Personal life workspace empty" : "Sign in to use personal life workspace"} description={user ? "Connect calendar, household tasks and habits sources to populate routines, goals and slipping items here." : "Sign in to access routines, goals, habits and reflection."} variant="first-use" domain="concierge" />
+      </ConciergePageWrapper>
+    );
+  }
+
+  const routines = PERSONAL_ROUTINES_DEMO;
+  const goals = PERSONAL_GOALS_DEMO;
+  const slipping = PERSONAL_SLIPPING_DEMO;
+  const backlog = PERSONAL_BACKLOG_DEMO;
   const [activeTab, setActiveTab] = useState("daily");
   const [energyLevel, setEnergyLevel] = useState<"high" | "medium" | "low">("medium");
   const [reflections, setReflections] = useState({ well: "", improve: "", gratitude: "" });
