@@ -1,64 +1,38 @@
 import { ConciergePageWrapper } from "@/modules/concierge/components/concierge";
+import { useAuth } from "@/contexts/AuthContext";
+import { useRealityModeSafe } from "@/lib/dual-reality/reality-mode-context";
+import { PremiumEmptyState } from "@/platform/sita/components/sita/PremiumEmptyState";
+import { SETTINGS_MEMBERS_DEMO, SETTINGS_RULES_DEMO, SETTINGS_CONNECTORS_DEMO } from "@/data/fixtures/mock-data/concierge-settings-demo";
 import { TrustBadge } from "@/platform/sita/components/sita/TrustBadge";
 import { Users, Bell, Shield, Calendar, ShoppingCart, Plane, Wrench, Gift, Settings, Link, CheckCircle, AlertCircle } from "lucide-react";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
 import { AdvisorKnowledgePanel } from "@/platform/advisors/components/advisors/AdvisorKnowledgePanel";
 
-interface HouseholdMember {
-  name: string;
-  role: string;
-  avatar: string;
-  permissions: string[];
-}
 
-const members: HouseholdMember[] = [
-  { name: "You", role: "Household Admin", avatar: "👤", permissions: ["Full access", "Approval authority", "Settings management"] },
-  { name: "Partner", role: "Co-Admin", avatar: "👤", permissions: ["Full access", "Approval authority"] },
-  { name: "Emma", role: "Dependent", avatar: "👧", permissions: ["View calendar", "Task completion"] },
-  { name: "Liam", role: "Dependent", avatar: "👦", permissions: ["View calendar", "Task completion"] },
-];
 
-interface HouseholdRule {
-  id: string;
-  name: string;
-  description: string;
-  enabled: boolean;
-  category: string;
-  icon: typeof Bell;
-}
-
-const rules: HouseholdRule[] = [
-  { id: "1", name: "Grocery auto-reminder", description: "Remind to restock when weekly cycle starts", enabled: true, category: "Shopping", icon: ShoppingCart },
-  { id: "2", name: "School deadline alerts", description: "Notify 3 days before any school form or fee deadline", enabled: true, category: "School", icon: Calendar },
-  { id: "3", name: "Appointment prep reminders", description: "Trigger prep checklist 48 hours before appointments", enabled: true, category: "Appointments", icon: Bell },
-  { id: "4", name: "Travel booking approval", description: "Require approval for travel bookings over $500", enabled: true, category: "Travel", icon: Plane },
-  { id: "5", name: "Service provider follow-up", description: "Auto-remind to follow up 7 days after service visit", enabled: false, category: "Home Admin", icon: Wrench },
-  { id: "6", name: "Gift budget alerts", description: "Notify when gift spending exceeds $150/month", enabled: true, category: "Events", icon: Gift },
-  { id: "7", name: "Task escalation", description: "Escalate unresolved tasks after 3 days overdue", enabled: false, category: "Tasks", icon: AlertCircle },
-  { id: "8", name: "Weekly boardroom auto-generate", description: "Generate family boardroom summary every Sunday at 8 AM", enabled: true, category: "Boardroom", icon: Settings },
-];
-
-interface Connector {
-  name: string;
-  type: string;
-  status: "connected" | "disconnected" | "error";
-  lastSync?: string;
-  icon: typeof Calendar;
-}
-
-const connectors: Connector[] = [
-  { name: "Google Calendar", type: "Calendar", status: "connected", lastSync: "2 min ago", icon: Calendar },
-  { name: "Apple Reminders", type: "Tasks", status: "connected", lastSync: "5 min ago", icon: Bell },
-  { name: "Instacart", type: "Grocery", status: "disconnected", icon: ShoppingCart },
-  { name: "TripIt", type: "Travel", status: "disconnected", icon: Plane },
-  { name: "Google Drive", type: "Files", status: "connected", lastSync: "1 hour ago", icon: Link },
-];
 
 const ConciergeSettings = () => {
+  const { user } = useAuth();
+  const { isDemo } = useRealityModeSafe();
+
+  if (!isDemo) {
+    return (
+      <ConciergePageWrapper className="space-y-6">
+        <PageTruthBanner truthState="partial" />
+        <PremiumEmptyState icon={Settings} title={user ? "Settings not configured yet" : "Sign in to manage settings"} description={user ? "Connect a calendar, tasks, or files provider to populate household members, automation rules and connector health." : "Sign in to manage household members, automation rules and connectors."} variant="first-use" domain="concierge" />
+        <AdvisorKnowledgePanel advisorId="concierge-advisor" domain="concierge" title="Concierge Advisor Knowledge" />
+      </ConciergePageWrapper>
+    );
+  }
+
+  const members = SETTINGS_MEMBERS_DEMO;
+  const rules = SETTINGS_RULES_DEMO;
+  const connectors = SETTINGS_CONNECTORS_DEMO;
+
   return (
     <ConciergePageWrapper className="space-y-6">
-      <PageTruthBanner />
+      <PageTruthBanner truthState="demo" />
 
       {/* Household Members */}
       <div className="space-y-3">
