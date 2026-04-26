@@ -10,86 +10,31 @@
 //   ✅ Explainable — every score has reasoning
 // ═══════════════════════════════════════════════════════════════
 
-import type { ProfileArchetype } from "./business-profile-engine";
+import type {
+  ProfileArchetype,
+  PriorityTier,
+  UrgencyBand,
+  HeatStatus,
+  ConfidenceLevel,
+  ConversionBand,
+  ScoreFactor,
+  LeadScoreResult,
+  ScoreableLead,
+} from "@/domains/business";
 
-// ── Types ─────────────────────────────────────────────────────
-
-export type PriorityTier = "critical-now" | "high-priority" | "active-watch" | "nurture" | "recovery-candidate" | "low-priority";
-export type UrgencyBand = "heating-up" | "needs-response-today" | "at-risk-of-cooling" | "quiet-but-recoverable" | "stable";
-export type HeatStatus = "hot" | "warm" | "cooling" | "cold" | "recovering";
-export type ConfidenceLevel = "strong" | "moderate" | "low";
-export type ConversionBand = "very-likely" | "likely" | "possible" | "unlikely" | "insufficient-data";
-
-export interface ScoreFactor {
-  key: string;
-  label: string;
-  rawValue: number;
-  normalizedScore: number;   // 0–100
-  weight: number;            // 0–1
-  polarity: "positive" | "negative" | "neutral";
-  explanation: string;
-}
-
-export interface LeadScoreResult {
-  leadId: string;
-  priorityScore: number;           // 0–100
-  priorityTier: PriorityTier;
-  conversionLikelihood: ConversionBand;
-  urgencyBand: UrgencyBand;
-  heatStatus: HeatStatus;
-  staleRisk: number;               // 0–100
-  recoveryPotential: number;       // 0–100
-  boardroomWorthy: boolean;
-  confidenceLevel: ConfidenceLevel;
-  confidenceScore: number;         // 0–100
-  nextBestAction: string;
-  nextBestActionType: "respond" | "assign" | "schedule" | "follow-up" | "enrich" | "recover" | "escalate" | "archive" | "review";
-  topPositiveFactors: ScoreFactor[];
-  topNegativeFactors: ScoreFactor[];
-  allFactors: ScoreFactor[];
-  explanation: string;
-  whatChanged: string[];
-  valuePotentialBand: "high-value" | "strategic" | "moderate" | "low" | "repeat-value";
-  timingSensitivity: "narrow-window" | "time-sensitive" | "standard" | "flexible";
-  businessModeUsed: string;
-}
-
-// ── Scoreable Lead Shape ──────────────────────────────────────
-
-export interface ScoreableLead {
-  id: string;
-  contact_name: string;
-  company: string | null;
-  source: string;
-  inquiry_text: string | null;
-  urgency: "low" | "medium" | "high" | "critical";
-  quality_score: number;
-  completeness_score: number;
-  missing_fields: string[];
-  duplicate_status: "none" | "possible" | "definite";
-  suggested_route: string;
-  suggested_owner: string | null;
-  advisor_suggestion: string | null;
-  triage_status: string;
-  created_at: string;
-  updated_at: string;
-  contact_email: string | null;
-  contact_phone: string | null;
-  quality_hints: string[];
-  // Scoring-enrichment fields
-  response_time_minutes?: number | null;
-  last_activity_at?: string | null;
-  engagement_events?: number;
-  appointment_booked?: boolean;
-  quote_requested?: boolean;
-  prior_customer?: boolean;
-  owner_assigned?: string | null;
-  owner_last_action_at?: string | null;
-  estimated_value?: number | null;
-  communication_count?: number;
-  replied_to_outreach?: boolean;
-  engagement_quality?: "high" | "medium" | "low" | null;
-}
+// Re-export the canonical contracts so existing import paths
+// (`from "@/domains/engines/lead-scoring-engine"`) keep working.
+// Source of truth lives in `@/domains/business`.
+export type {
+  PriorityTier,
+  UrgencyBand,
+  HeatStatus,
+  ConfidenceLevel,
+  ConversionBand,
+  ScoreFactor,
+  LeadScoreResult,
+  ScoreableLead,
+};
 
 // ── Business-Mode Weight Profiles ─────────────────────────────
 
