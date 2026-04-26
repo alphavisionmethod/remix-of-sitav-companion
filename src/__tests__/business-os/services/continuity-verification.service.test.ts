@@ -40,10 +40,10 @@ vi.mock("@/lib/supabase-helpers", () => ({
 
 describe("continuity-verification.service", () => {
   it("handler-coverage probe asserts canonical handler counts", async () => {
-    const { runContinuityReport } = await import(
+    const { runContinuityVerification } = await import(
       "@/lib/services/business-os/continuity-verification.service"
     );
-    const report = await runContinuityReport();
+    const report = await runContinuityVerification();
     const handler = report.probes.find(p => p.id === "handler-coverage");
     expect(handler).toBeDefined();
     expect(["pass", "fail"]).toContain(handler!.status);
@@ -51,20 +51,20 @@ describe("continuity-verification.service", () => {
   });
 
   it("returns a complete report shape with truthful counts", async () => {
-    const { runContinuityReport } = await import(
+    const { runContinuityVerification } = await import(
       "@/lib/services/business-os/continuity-verification.service"
     );
-    const r = await runContinuityReport();
+    const r = await runContinuityVerification();
     expect(r.totalProbes).toBe(r.probes.length);
     expect(r.passed + r.failed + r.unknown + r.deferred).toBe(r.totalProbes);
     expect(typeof r.generatedAt).toBe("string");
   });
 
   it("emits 'unknown' (never fake 'pass') for probes without persisted data", async () => {
-    const { runContinuityReport } = await import(
+    const { runContinuityVerification } = await import(
       "@/lib/services/business-os/continuity-verification.service"
     );
-    const r = await runContinuityReport();
+    const r = await runContinuityVerification();
     // With the mocked empty DB, every DB-backed probe must be 'unknown' —
     // the service must never fabricate a pass.
     const dbProbes = r.probes.filter(p => p.id !== "handler-coverage");
