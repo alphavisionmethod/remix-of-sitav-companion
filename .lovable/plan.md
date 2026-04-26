@@ -240,3 +240,20 @@ These are the real, code-grounded gaps. The plan below fixes them in dependency 
 - `invoice-generate/index.ts` edge function (add `render-html`)
 
 This is the full scope. Approving moves us into Phase 1 in default mode; I will not start Phase 2 until Phase 1 is verified deployable, and so on through Phase 9.
+---
+
+## Phase 4 — COMPLETE ✅
+
+- Migration: `crm_customer_link` table + RLS + indexes (verified via `information_schema`).
+- New service: `src/lib/services/business-os/crm-finance-bridge.service.ts` (`linkCrmToCustomer`, `findCustomerForContact`, `findContactForCustomer`, `createCustomerFromContact`, `resolveCustomerId`, `listLinksForContact`, `unlinkCrmCustomer`).
+- Handlers wired:
+  - `business.quote.create` — auto-creates billing customer from `crm_contact_id` via bridge.
+  - `business.opportunity.convert-to-quote` — same.
+  - `business.quote.convert-to-invoice` + `business.proposal.convert-to-invoice` — bridge before insert.
+  - `finance.invoice.create` — bridge before insert.
+- UI:
+  - `QuotesWorkspace.tsx` — accepts `linked.entityType === "contact"` hand-off, shows "Billing" chip, passes `crm_contact_id` into create.
+  - `CRMFinanceLinkage.tsx` — fully rewritten: reads real `crm_customer_link`, real `invoices`, real `quotes`; "Bill this contact" CTA navigates to QuotesWorkspace via `setLinkedContext`.
+- `bunx tsc --noEmit` clean.
+
+**Next**: Phase 5 — Invoice Send + Real Receipt Path.
