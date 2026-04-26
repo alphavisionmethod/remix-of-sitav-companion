@@ -262,6 +262,7 @@ const pages: Record<string, React.ComponentType> = {
   "strategic-accounts": StrategicAccountRoom,
   "relationship-dossier": RelationshipDossier,
   "background-tasks": BackgroundTaskCenter,
+  "continuity-report": ContinuityReport,
   "advisor-board": BusinessAdvisorBoardPage,
 };
 
