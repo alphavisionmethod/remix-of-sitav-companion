@@ -1,4 +1,8 @@
 // SITA OS — CRM React Query Hooks (Complete)
+// Phase 2 (Business OS Production-Truth Closure):
+// Every mutation now flows through emitRegisteredTrustAction so the
+// CRM produces a real audit trail (Trust receipts + authority gating).
+// Blocked actions short-circuit before the data layer is touched.
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   fetchCRMContacts, fetchCRMCompanies, fetchCRMOpportunities,
@@ -20,6 +24,36 @@ import {
   createCRMAutomation, updateCRMAutomation, deleteCRMAutomation,
 } from "@/data/repositories/crm-data-service";
 import type { RealityModeKey } from "@/lib/dual-reality/reality-mode-registry";
+import { emitRegisteredTrustAction } from "@/platform/trust/registry/emit-registered";
+import type { TrustActionKey } from "@/platform/trust/registry/trust-action-registry";
+
+/**
+ * Wrap any CRM mutation function so it:
+ *  1. Resolves authority via emitRegisteredTrustAction (catalog-driven).
+ *  2. Short-circuits with a typed error when the action is blocked.
+ *  3. Otherwise runs the mutation and returns its native result.
+ * The trust receipt is fire-and-forget for the caller — it is durably
+ * recorded by the trust layer and visible from the Trust Center.
+ */
+function withTrust<TArgs, TResult>(
+  action: TrustActionKey,
+  fn: (args: TArgs) => Promise<TResult>,
+  describe?: (args: TArgs) => string,
+) {
+  return async (args: TArgs): Promise<TResult> => {
+    const decision = await emitRegisteredTrustAction(action, {
+      payload: { args: args as unknown as Record<string, unknown> },
+      impactSummary: describe?.(args),
+    });
+    if (decision.blocked) {
+      throw new Error(
+        decision.blockedReason ??
+          `Action ${action} blocked by trust authority engine.`,
+      );
+    }
+    return fn(args);
+  };
+}
 
 function useCRMQuery<T>(key: string, fetcher: (mode: RealityModeKey) => Promise<{ data: T; source: string }>, mode: RealityModeKey = "demo") {
   return useQuery({
@@ -47,151 +81,246 @@ export function useCRMContactCompanyLinks(mode: RealityModeKey = "demo") { retur
 // ─── Contact Mutations ──────────────────────────────────────
 export function useCreateContact() {
   const qc = useQueryClient();
-  return useMutation({ mutationFn: createCRMContact, onSuccess: () => qc.invalidateQueries({ queryKey: ["crm", "contacts"] }) });
+  return useMutation({
+    mutationFn: withTrust("crm.contact.create", createCRMContact),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["crm", "contacts"] }),
+  });
 }
 export function useUpdateContact() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, updates }: { id: string; updates: Parameters<typeof updateCRMContact>[1] }) => updateCRMContact(id, updates),
+    mutationFn: withTrust(
+      "crm.contact.update",
+      ({ id, updates }: { id: string; updates: Parameters<typeof updateCRMContact>[1] }) =>
+        updateCRMContact(id, updates),
+    ),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["crm", "contacts"] }),
   });
 }
 export function useDeleteContact() {
   const qc = useQueryClient();
-  return useMutation({ mutationFn: deleteCRMContact, onSuccess: () => qc.invalidateQueries({ queryKey: ["crm", "contacts"] }) });
+  return useMutation({
+    mutationFn: withTrust("business.crm.contact_delete", deleteCRMContact),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["crm", "contacts"] }),
+  });
 }
 
 // ─── Company Mutations ──────────────────────────────────────
 export function useCreateCompany() {
   const qc = useQueryClient();
-  return useMutation({ mutationFn: createCRMCompany, onSuccess: () => qc.invalidateQueries({ queryKey: ["crm", "companies"] }) });
+  return useMutation({
+    mutationFn: withTrust("crm.company.create", createCRMCompany),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["crm", "companies"] }),
+  });
 }
 export function useUpdateCompany() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, updates }: { id: string; updates: Parameters<typeof updateCRMCompany>[1] }) => updateCRMCompany(id, updates),
+    mutationFn: withTrust(
+      "crm.company.update",
+      ({ id, updates }: { id: string; updates: Parameters<typeof updateCRMCompany>[1] }) =>
+        updateCRMCompany(id, updates),
+    ),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["crm", "companies"] }),
   });
 }
 export function useDeleteCompany() {
   const qc = useQueryClient();
-  return useMutation({ mutationFn: deleteCRMCompany, onSuccess: () => qc.invalidateQueries({ queryKey: ["crm", "companies"] }) });
+  return useMutation({
+    mutationFn: withTrust("crm.company.delete", deleteCRMCompany),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["crm", "companies"] }),
+  });
 }
 
 // ─── Opportunity Mutations ──────────────────────────────────
 export function useCreateOpportunity() {
   const qc = useQueryClient();
-  return useMutation({ mutationFn: createCRMOpportunity, onSuccess: () => qc.invalidateQueries({ queryKey: ["crm", "opportunities"] }) });
+  return useMutation({
+    mutationFn: withTrust("crm.opportunity.create", createCRMOpportunity),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["crm", "opportunities"] }),
+  });
 }
 export function useUpdateOpportunity() {
   const qc = useQueryClient();
+  // Stage transitions are domain-significant — route via the existing
+  // crm.deal.stage_change preset when the update touches stage_id; otherwise
+  // record as a generic opportunity update.
   return useMutation({
-    mutationFn: ({ id, updates }: { id: string; updates: Parameters<typeof updateCRMOpportunity>[1] }) => updateCRMOpportunity(id, updates),
+    mutationFn: async ({ id, updates }: { id: string; updates: Parameters<typeof updateCRMOpportunity>[1] }) => {
+      const stageTouched =
+        updates && typeof updates === "object" && "stage_id" in (updates as Record<string, unknown>);
+      const action: TrustActionKey = stageTouched
+        ? "crm.deal.stage_change"
+        : "crm.opportunity.update";
+      return withTrust(action, () => updateCRMOpportunity(id, updates))(undefined as never);
+    },
     onSuccess: () => qc.invalidateQueries({ queryKey: ["crm", "opportunities"] }),
   });
 }
 export function useDeleteOpportunity() {
   const qc = useQueryClient();
-  return useMutation({ mutationFn: deleteCRMOpportunity, onSuccess: () => qc.invalidateQueries({ queryKey: ["crm", "opportunities"] }) });
+  return useMutation({
+    mutationFn: withTrust("crm.opportunity.delete", deleteCRMOpportunity),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["crm", "opportunities"] }),
+  });
 }
 
 // ─── Task Mutations ─────────────────────────────────────────
 export function useCreateTask() {
   const qc = useQueryClient();
-  return useMutation({ mutationFn: createCRMTask, onSuccess: () => qc.invalidateQueries({ queryKey: ["crm", "tasks"] }) });
+  return useMutation({
+    mutationFn: withTrust("crm.task.create", createCRMTask),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["crm", "tasks"] }),
+  });
 }
 export function useUpdateTask() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, updates }: { id: string; updates: Parameters<typeof updateCRMTask>[1] }) => updateCRMTask(id, updates),
+    mutationFn: withTrust(
+      "crm.task.update",
+      ({ id, updates }: { id: string; updates: Parameters<typeof updateCRMTask>[1] }) =>
+        updateCRMTask(id, updates),
+    ),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["crm", "tasks"] }),
   });
 }
 export function useDeleteTask() {
   const qc = useQueryClient();
-  return useMutation({ mutationFn: deleteCRMTask, onSuccess: () => qc.invalidateQueries({ queryKey: ["crm", "tasks"] }) });
+  return useMutation({
+    mutationFn: withTrust("crm.task.delete", deleteCRMTask),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["crm", "tasks"] }),
+  });
 }
 
 // ─── Communication Mutations ────────────────────────────────
 export function useCreateCommunication() {
   const qc = useQueryClient();
-  return useMutation({ mutationFn: createCRMCommunication, onSuccess: () => qc.invalidateQueries({ queryKey: ["crm", "communications"] }) });
+  return useMutation({
+    mutationFn: withTrust("crm.communication.log", createCRMCommunication),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["crm", "communications"] }),
+  });
 }
 export function useDeleteCommunication() {
   const qc = useQueryClient();
-  return useMutation({ mutationFn: deleteCRMCommunication, onSuccess: () => qc.invalidateQueries({ queryKey: ["crm", "communications"] }) });
+  return useMutation({
+    mutationFn: withTrust("crm.communication.delete", deleteCRMCommunication),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["crm", "communications"] }),
+  });
 }
 
 // ─── Note Mutations ─────────────────────────────────────────
 export function useCreateNote() {
   const qc = useQueryClient();
-  return useMutation({ mutationFn: createCRMNote, onSuccess: () => qc.invalidateQueries({ queryKey: ["crm", "notes"] }) });
+  return useMutation({
+    mutationFn: withTrust("crm.note.create", createCRMNote),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["crm", "notes"] }),
+  });
 }
 export function useUpdateNote() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, updates }: { id: string; updates: Parameters<typeof updateCRMNote>[1] }) => updateCRMNote(id, updates),
+    mutationFn: withTrust(
+      "crm.note.update",
+      ({ id, updates }: { id: string; updates: Parameters<typeof updateCRMNote>[1] }) =>
+        updateCRMNote(id, updates),
+    ),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["crm", "notes"] }),
   });
 }
 export function useDeleteNote() {
   const qc = useQueryClient();
-  return useMutation({ mutationFn: deleteCRMNote, onSuccess: () => qc.invalidateQueries({ queryKey: ["crm", "notes"] }) });
+  return useMutation({
+    mutationFn: withTrust("crm.note.delete", deleteCRMNote),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["crm", "notes"] }),
+  });
 }
 
 // ─── Pipeline Stage Mutations ───────────────────────────────
 export function useCreatePipelineStage() {
   const qc = useQueryClient();
-  return useMutation({ mutationFn: createCRMPipelineStage, onSuccess: () => qc.invalidateQueries({ queryKey: ["crm", "pipeline-stages"] }) });
+  return useMutation({
+    mutationFn: withTrust("crm.pipeline_stage.create", createCRMPipelineStage),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["crm", "pipeline-stages"] }),
+  });
 }
 export function useUpdatePipelineStage() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, updates }: { id: string; updates: Parameters<typeof updateCRMPipelineStage>[1] }) => updateCRMPipelineStage(id, updates),
+    mutationFn: withTrust(
+      "crm.pipeline_stage.update",
+      ({ id, updates }: { id: string; updates: Parameters<typeof updateCRMPipelineStage>[1] }) =>
+        updateCRMPipelineStage(id, updates),
+    ),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["crm", "pipeline-stages"] }),
   });
 }
 export function useDeletePipelineStage() {
   const qc = useQueryClient();
-  return useMutation({ mutationFn: deleteCRMPipelineStage, onSuccess: () => qc.invalidateQueries({ queryKey: ["crm", "pipeline-stages"] }) });
+  return useMutation({
+    mutationFn: withTrust("crm.pipeline_stage.delete", deleteCRMPipelineStage),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["crm", "pipeline-stages"] }),
+  });
 }
 
 // ─── Segment Mutations ──────────────────────────────────────
 export function useCreateSegment() {
   const qc = useQueryClient();
-  return useMutation({ mutationFn: createCRMSegment, onSuccess: () => qc.invalidateQueries({ queryKey: ["crm", "segments"] }) });
+  return useMutation({
+    mutationFn: withTrust("crm.segment.create", createCRMSegment),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["crm", "segments"] }),
+  });
 }
 export function useUpdateSegment() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, updates }: { id: string; updates: Parameters<typeof updateCRMSegment>[1] }) => updateCRMSegment(id, updates),
+    mutationFn: withTrust(
+      "crm.segment.update",
+      ({ id, updates }: { id: string; updates: Parameters<typeof updateCRMSegment>[1] }) =>
+        updateCRMSegment(id, updates),
+    ),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["crm", "segments"] }),
   });
 }
 export function useDeleteSegment() {
   const qc = useQueryClient();
-  return useMutation({ mutationFn: deleteCRMSegment, onSuccess: () => qc.invalidateQueries({ queryKey: ["crm", "segments"] }) });
+  return useMutation({
+    mutationFn: withTrust("crm.segment.delete", deleteCRMSegment),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["crm", "segments"] }),
+  });
 }
 
 // ─── Tag Mutations ──────────────────────────────────────────
 export function useCreateTag() {
   const qc = useQueryClient();
-  return useMutation({ mutationFn: createCRMTag, onSuccess: () => qc.invalidateQueries({ queryKey: ["crm", "tags"] }) });
+  return useMutation({
+    mutationFn: withTrust("crm.tag.create", createCRMTag),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["crm", "tags"] }),
+  });
 }
 export function useDeleteTag() {
   const qc = useQueryClient();
-  return useMutation({ mutationFn: deleteCRMTag, onSuccess: () => qc.invalidateQueries({ queryKey: ["crm", "tags"] }) });
+  return useMutation({
+    mutationFn: withTrust("crm.tag.delete", deleteCRMTag),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["crm", "tags"] }),
+  });
 }
 
 // ─── Import Job Mutations ───────────────────────────────────
 export function useCreateImportJob() {
   const qc = useQueryClient();
-  return useMutation({ mutationFn: createCRMImportJob, onSuccess: () => qc.invalidateQueries({ queryKey: ["crm", "import-jobs"] }) });
+  return useMutation({
+    mutationFn: withTrust("crm.import_job.create", createCRMImportJob),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["crm", "import-jobs"] }),
+  });
 }
 export function useUpdateImportJob() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, updates }: { id: string; updates: Parameters<typeof updateCRMImportJob>[1] }) => updateCRMImportJob(id, updates),
+    mutationFn: withTrust(
+      "crm.import_job.update",
+      ({ id, updates }: { id: string; updates: Parameters<typeof updateCRMImportJob>[1] }) =>
+        updateCRMImportJob(id, updates),
+    ),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["crm", "import-jobs"] }),
   });
 }
@@ -199,21 +328,24 @@ export function useUpdateImportJob() {
 // ─── Merge Log ──────────────────────────────────────────────
 export function useCreateMergeLog() {
   const qc = useQueryClient();
-  return useMutation({ mutationFn: createCRMMergeLog, onSuccess: () => qc.invalidateQueries({ queryKey: ["crm"] }) });
+  return useMutation({
+    mutationFn: withTrust("crm.merge.execute", createCRMMergeLog),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["crm"] }),
+  });
 }
 
 // ─── Contact-Company Link Mutations ─────────────────────────
 export function useCreateContactCompanyLink() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: createCRMContactCompanyLink,
+    mutationFn: withTrust("crm.contact_company_link.create", createCRMContactCompanyLink),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["crm", "contact-company-links"] }),
   });
 }
 export function useDeleteContactCompanyLink() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: deleteCRMContactCompanyLink,
+    mutationFn: withTrust("crm.contact_company_link.delete", deleteCRMContactCompanyLink),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["crm", "contact-company-links"] }),
   });
 }
@@ -223,16 +355,26 @@ export function useCRMAutomations(mode: RealityModeKey = "demo") { return useCRM
 
 export function useCreateAutomation() {
   const qc = useQueryClient();
-  return useMutation({ mutationFn: createCRMAutomation, onSuccess: () => qc.invalidateQueries({ queryKey: ["crm", "automations"] }) });
+  return useMutation({
+    mutationFn: withTrust("crm.automation.create", createCRMAutomation),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["crm", "automations"] }),
+  });
 }
 export function useUpdateAutomation() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, updates }: { id: string; updates: Parameters<typeof updateCRMAutomation>[1] }) => updateCRMAutomation(id, updates),
+    mutationFn: withTrust(
+      "crm.automation.update",
+      ({ id, updates }: { id: string; updates: Parameters<typeof updateCRMAutomation>[1] }) =>
+        updateCRMAutomation(id, updates),
+    ),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["crm", "automations"] }),
   });
 }
 export function useDeleteAutomation() {
   const qc = useQueryClient();
-  return useMutation({ mutationFn: deleteCRMAutomation, onSuccess: () => qc.invalidateQueries({ queryKey: ["crm", "automations"] }) });
+  return useMutation({
+    mutationFn: withTrust("crm.automation.delete", deleteCRMAutomation),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["crm", "automations"] }),
+  });
 }
