@@ -1,10 +1,11 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Concierge OS: Trip Overview Service
+// Domain types imported from `@/domains/concierge` (canonical).
 // ═══════════════════════════════════════════════════════════════
 
-import type { TripSummary } from "@/packages/concierge-contracts";
+import type { TripSummary, TripDashboard } from "@/domains/concierge";
 
-export interface TripDashboard { upcoming: TripSummary[]; active: TripSummary[]; past: TripSummary[]; totalBudgetCents: number; totalSpentCents: number; }
+export type { TripDashboard };
 
 export function buildTripDashboard(trips: TripSummary[]): TripDashboard {
   const now = Date.now();

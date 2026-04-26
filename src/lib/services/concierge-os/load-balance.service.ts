@@ -1,11 +1,12 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Concierge OS: Load Balance Service
+// Domain types imported from `@/domains/concierge` (canonical).
 // ═══════════════════════════════════════════════════════════════
 
-import type { HouseholdTask } from "@/packages/concierge-contracts";
+import type { HouseholdTask, LoadReport } from "@/domains/concierge";
 import type { HouseholdMember } from "@/packages/concierge-contracts/household";
 
-export interface LoadReport { memberId: string; name: string; taskCount: number; hours: number; overloaded: boolean; }
+export type { LoadReport };
 
 export function analyzeLoad(members: HouseholdMember[], tasks: HouseholdTask[]): LoadReport[] {
   const active = tasks.filter(t => t.status !== "completed");

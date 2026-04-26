@@ -1,8 +1,11 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Concierge OS: School Items Service
+// Domain types imported from `@/domains/concierge` (canonical).
 // ═══════════════════════════════════════════════════════════════
 
-export interface SchoolItem { id: string; childId: string; title: string; dueDate: string; type: "assignment" | "event" | "supply" | "form"; completed: boolean; }
+import type { SchoolItem } from "@/domains/concierge";
+
+export type { SchoolItem };
 
 export function getUpcomingSchoolItems(items: SchoolItem[], daysAhead: number = 7): SchoolItem[] {
   const cutoff = Date.now() + daysAhead * 86400000;

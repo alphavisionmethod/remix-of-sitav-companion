@@ -1,8 +1,11 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Concierge OS: Gift Reminders Service
+// Domain types imported from `@/domains/concierge` (canonical).
 // ═══════════════════════════════════════════════════════════════
 
-export interface GiftReminder { id: string; recipientName: string; occasion: string; date: string; daysUntil: number; budgetCents: number; ideas: string[]; purchased: boolean; }
+import type { GiftReminder } from "@/domains/concierge";
+
+export type { GiftReminder };
 
 export function getUpcomingGiftReminders(): GiftReminder[] {
   return [
