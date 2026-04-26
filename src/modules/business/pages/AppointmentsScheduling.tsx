@@ -23,6 +23,7 @@ import {
   useRecoverNoShow,
   type ScheduledAppointmentVM,
 } from "@/hooks/use-scheduled-appointments";
+import { useSyncAppointmentToCalendar } from "@/hooks/use-phase10-actions";
 import { consumeLinkedContext } from "@/platform/sita/components/sita/CrossAppAction";
 import { useAction } from "@/hooks/useAction";
 import {
@@ -91,10 +92,12 @@ interface AppointmentCardProps {
   onRemind: (id: string) => void;
   onConfirm: (id: string) => void;
   onRecover: (id: string) => void;
+  onSync: (id: string) => void;
+  syncing: boolean;
   pending: boolean;
 }
 
-const AppointmentCard = ({ apt, onRemind, onConfirm, onRecover, pending }: AppointmentCardProps) => {
+const AppointmentCard = ({ apt, onRemind, onConfirm, onRecover, onSync, syncing, pending }: AppointmentCardProps) => {
   const st = statusConfig[apt.status];
   const isNoShow = apt.status === "no-show";
 
@@ -145,6 +148,19 @@ const AppointmentCard = ({ apt, onRemind, onConfirm, onRecover, pending }: Appoi
               {apt.status === "no-show" && (
                 <Button size="sm" variant="outline" className="h-6 text-[10px] px-2" disabled={pending} onClick={() => onRecover(apt.id)}>
                   <RefreshCw className="h-3 w-3 mr-1" /> Recover
+                </Button>
+              )}
+              {apt.status === "confirmed" && (
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="h-6 text-[10px] px-2"
+                  disabled={syncing}
+                  onClick={() => onSync(apt.id)}
+                  aria-label="Sync to calendar"
+                  title="Sync to internal calendar"
+                >
+                  <CalendarDays className="h-3 w-3 mr-1" /> Sync
                 </Button>
               )}
               <ChevronRight className="h-4 w-4 text-muted-foreground/50 opacity-0 group-hover:opacity-100 transition-opacity" />
