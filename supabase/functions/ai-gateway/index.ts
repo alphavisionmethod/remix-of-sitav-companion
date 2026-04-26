@@ -24,17 +24,32 @@ const LOVABLE_AI_URL = "https://ai.gateway.lovable.dev/v1/chat/completions";
 
 // Task class → default model mapping
 const TASK_CLASS_MODELS: Record<string, string> = {
-  premium_synthesis: "google/gemini-2.5-pro",
-  balanced_assistant: "google/gemini-3-flash-preview",
-  economy_utility: "google/gemini-2.5-flash-lite",
-  cheap_utility: "google/gemini-2.5-flash-lite",
-  internal_only: "google/gemini-2.5-pro",
-  fallback: "google/gemini-2.5-flash-lite",
-  fallback_degraded: "google/gemini-2.5-flash-lite",
+  // ─── Quatarly-first model map (Lovable AI used as automatic fallback) ───
+  premium_synthesis: "claude-opus-4-6-thinking",
+  balanced_assistant: "gemini-3-flash",
+  economy_utility: "claude-haiku-4-5-20251001",
+  cheap_utility: "gemini-3-flash",
+  internal_only: "gpt-5.2",
+  fallback: "gemini-3-flash",
+  fallback_degraded: "gemini-3-flash",
 };
 
 // Rough cost estimate per 1K tokens by model prefix
 const COST_PER_1K: Record<string, number> = {
+  // Quatarly model IDs
+  "claude-opus-4-6-thinking": 0.015,
+  "claude-sonnet-4-6-thinking": 0.006,
+  "claude-haiku-4-5-20251001": 0.0008,
+  "gemini-3.1-pro": 0.005,
+  "gemini-3-flash": 0.0003,
+  "gpt-5.2": 0.010,
+  "gpt-5.2-codex": 0.010,
+  "gpt-5.1": 0.008,
+  "gpt-5.1-codex": 0.008,
+  "gpt-5.1-codex-max": 0.012,
+  "gpt-5.3-codex": 0.012,
+  "gpt-5.4": 0.012,
+  // Lovable equivalents (used on fallback)
   "google/gemini-2.5-pro": 0.01,
   "google/gemini-3-flash-preview": 0.002,
   "google/gemini-2.5-flash": 0.001,
@@ -44,6 +59,87 @@ const COST_PER_1K: Record<string, number> = {
 function estimateCostUsd(model: string, totalTokens: number): number {
   const rate = COST_PER_1K[model] ?? 0.002;
   return (totalTokens / 1000) * rate;
+}
+
+// ─── Quatarly model ID → nearest Lovable AI equivalent (for fallback) ───
+const QUATARLY_TO_LOVABLE: Record<string, string> = {
+  "claude-opus-4-6-thinking":     "google/gemini-2.5-pro",
+  "claude-sonnet-4-6-thinking":   "google/gemini-2.5-pro",
+  "claude-haiku-4-5-20251001":    "google/gemini-2.5-flash-lite",
+  "gemini-3.1-pro":               "google/gemini-2.5-pro",
+  "gemini-3-flash":               "google/gemini-3-flash-preview",
+  "gpt-5.2":                      "openai/gpt-5",
+  "gpt-5.2-codex":                "openai/gpt-5",
+  "gpt-5.3-codex":                "openai/gpt-5",
+  "gpt-5.4":                      "openai/gpt-5",
+  "gpt-5.1":                      "openai/gpt-5-mini",
+  "gpt-5.1-codex":                "openai/gpt-5-mini",
+  "gpt-5.1-codex-max":            "openai/gpt-5",
+};
+
+function translateToLovableModel(quatarlyModel: string): string {
+  // If already a Lovable model id (contains "/"), keep it as-is.
+  if (quatarlyModel.includes("/")) return quatarlyModel;
+  return QUATARLY_TO_LOVABLE[quatarlyModel] ?? "google/gemini-3-flash-preview";
+}
+
+const QUATARLY_URL = "https://api.quatarly.cloud/v1/chat/completions";
+
+/**
+ * Calls Quatarly first (primary). On infra/credit/rate failures (402, 429, 5xx)
+ * automatically retries against Lovable AI with a translated model id.
+ * Returns the actual provider used so receipts stay honest.
+ */
+async function callProvider(
+  payload: Record<string, unknown>,
+  quatarlyKey: string | undefined,
+  lovableKey: string | undefined,
+): Promise<{ res: Response; provider: "quatarly" | "lovable"; modelUsed: string }> {
+  const originalModel = String(payload.model ?? "");
+
+  if (quatarlyKey) {
+    try {
+      const res = await fetch(QUATARLY_URL, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${quatarlyKey}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+      // Only fall back on infra / credit / rate failures (not on 4xx client errors)
+      if (res.ok || ![402, 429, 500, 502, 503, 504].includes(res.status)) {
+        return { res, provider: "quatarly", modelUsed: originalModel };
+      }
+      console.warn(`[ai-gateway] Quatarly returned ${res.status} — falling back to Lovable AI`);
+      // Drain the body so it doesn't leak.
+      try { await res.text(); } catch { /* ignore */ }
+    } catch (e) {
+      console.warn(`[ai-gateway] Quatarly fetch threw: ${(e as Error).message} — falling back to Lovable AI`);
+    }
+  }
+
+  if (!lovableKey) {
+    // Construct a synthetic 503 so the caller can degrade gracefully.
+    const body = JSON.stringify({ error: "no_provider_available" });
+    return {
+      res: new Response(body, { status: 503, headers: { "Content-Type": "application/json" } }),
+      provider: "lovable",
+      modelUsed: originalModel,
+    };
+  }
+
+  const lovableModel = translateToLovableModel(originalModel);
+  const fallbackPayload = { ...payload, model: lovableModel };
+  const res = await fetch(LOVABLE_AI_URL, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${lovableKey}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(fallbackPayload),
+  });
+  return { res, provider: "lovable", modelUsed: lovableModel };
 }
 
 serve(async (req) => {
