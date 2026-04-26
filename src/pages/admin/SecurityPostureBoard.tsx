@@ -7,7 +7,6 @@ import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Lock, Shield, CheckCircle, AlertTriangle, XCircle, RefreshCw, Key, Database, Server, Eye, Fingerprint, Clock } from "lucide-react";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
-import { useSecurityFabric } from "@/hooks/use-security-fabric";
 import {
   ENCRYPTION_BADGE,
   SECRET_BADGE,
@@ -21,11 +20,8 @@ const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.05 } } };
 
 const SecurityPostureBoard = () => {
   const [tab, setTab] = useState("overview");
-  const { data: fabric } = useSecurityFabric();
-  // Live fabric overlays the authored baseline; fall back to the catalog when fabric is empty.
-  const posture = (fabric?.domainPosture && fabric.domainPosture.length > 0)
-    ? fabric.domainPosture
-    : DOMAIN_POSTURE_BASELINE;
+  // Authored baseline catalog drives the posture view; live fabric overlays land in a future wave.
+  const posture = DOMAIN_POSTURE_BASELINE;
 
   const fullEncryption = posture.filter((p) => p.encryption === "full").length;
   const allRls = posture.filter((p) => p.rlsEnabled).length;
