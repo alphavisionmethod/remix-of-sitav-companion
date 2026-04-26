@@ -7,6 +7,7 @@
 
 import type { ExecutorService } from "@/lib/core-services/executor-service";
 import { safe, insertRow, updateRowById, deleteRowById, pickId } from "./_shared";
+import { resolveCustomerId } from "@/lib/services/business-os/crm-finance-bridge.service";
 
 /** Convert any numeric "dollar" value (number, "12.34", null) to integer cents. */
 function toCents(value: unknown): number {
@@ -69,7 +70,13 @@ export function registerBusinessHandlers(executor: ExecutorService): void {
     const p = env.payload;
     return safe(async () => {
       // UI sends { title, total, expiry_date, notes, status }
-      // DB columns: title, amount_cents, expires_at, status, opportunity_id, crm_contact_id, crm_company_id, metadata
+      // Phase 4: if a CRM contact is supplied without an explicit customer_id,
+      // auto-create (or reuse) the billing customer via the bridge.
+      const bridge = await resolveCustomerId({
+        customer_id: (p.customer_id as string | null) ?? null,
+        crm_contact_id: (p.crm_contact_id as string | null) ?? null,
+        source: "auto-from-quote",
+      });
       const row = await insertRow("quotes", {
         title: String(p.title ?? "Untitled"),
         amount_cents: toCents(p.total ?? p.amount_cents),
@@ -78,9 +85,15 @@ export function registerBusinessHandlers(executor: ExecutorService): void {
         opportunity_id: (p.opportunity_id as string | null) ?? null,
         crm_contact_id: (p.crm_contact_id as string | null) ?? null,
         crm_company_id: (p.crm_company_id as string | null) ?? null,
-        metadata: { notes: p.notes ?? null },
+        customer_id: bridge.customer_id,
+        metadata: { notes: p.notes ?? null, bridge_link_id: bridge.link_id },
       });
-      return { entity: "quote", id: row.id, row };
+      return {
+        entity: "quote",
+        id: row.id,
+        row,
+        bridge_customer_created: bridge.created_customer,
+      };
     });
   });
 
@@ -205,6 +218,13 @@ export function registerBusinessHandlers(executor: ExecutorService): void {
         .single();
       if (oppErr || !opp) throw new Error(`Opportunity ${opportunityId} not found`);
 
+      const oppRow = opp as Record<string, unknown>;
+      // Bridge: when an opportunity already has a contact, ensure the
+      // billing customer exists so the downstream invoice has somewhere to land.
+      const bridge = await resolveCustomerId({
+        crm_contact_id: (oppRow.contact_id as string | null) ?? null,
+        source: "auto-from-quote",
+      });
       const quote = await insertRow("quotes", {
         title: `Quote — ${(opp as Record<string, unknown>).title ?? "Untitled"}`,
         amount_cents: Math.round(Number((opp as Record<string, unknown>).value ?? 0) * 100),
@@ -213,9 +233,16 @@ export function registerBusinessHandlers(executor: ExecutorService): void {
         opportunity_id: opportunityId,
         crm_contact_id: ((opp as Record<string, unknown>).contact_id as string | null) ?? null,
         crm_company_id: ((opp as Record<string, unknown>).company_id as string | null) ?? null,
-        metadata: { converted_from: "opportunity" },
+        customer_id: bridge.customer_id,
+        metadata: { converted_from: "opportunity", bridge_link_id: bridge.link_id },
       });
-      return { entity: "quote", id: quote.id, row: quote, source_opportunity_id: opportunityId };
+      return {
+        entity: "quote",
+        id: quote.id,
+        row: quote,
+        source_opportunity_id: opportunityId,
+        bridge_customer_created: bridge.created_customer,
+      };
     });
   });
 
@@ -286,6 +313,13 @@ export function registerBusinessHandlers(executor: ExecutorService): void {
         ? p.invoice_number
         : `INV-${Date.now().toString(36).toUpperCase()}`;
 
+      // Bridge: ensure the invoice lands on a real billing customer.
+      const bridge = await resolveCustomerId({
+        customer_id: (proposal.customer_id as string | null) ?? null,
+        crm_contact_id: (proposal.crm_contact_id as string | null) ?? null,
+        source: "auto-from-invoice",
+      });
+
       const invoice = await insertRow("invoices", {
         invoice_number: invoiceNumber,
         amount_cents: amountCents,
@@ -297,8 +331,8 @@ export function registerBusinessHandlers(executor: ExecutorService): void {
         opportunity_id: (proposal.opportunity_id as string | null) ?? null,
         crm_contact_id: (proposal.crm_contact_id as string | null) ?? null,
         crm_company_id: (proposal.crm_company_id as string | null) ?? null,
-        customer_id: (proposal.customer_id as string | null) ?? null,
-        metadata: { converted_from: "proposal" },
+        customer_id: bridge.customer_id,
+        metadata: { converted_from: "proposal", bridge_link_id: bridge.link_id },
       });
 
       // Back-link on the proposal (and quote, if present).
@@ -332,6 +366,12 @@ export function registerBusinessHandlers(executor: ExecutorService): void {
         ? p.invoice_number
         : `INV-${Date.now().toString(36).toUpperCase()}`;
 
+      const bridge = await resolveCustomerId({
+        customer_id: (quote.customer_id as string | null) ?? null,
+        crm_contact_id: (quote.crm_contact_id as string | null) ?? null,
+        source: "auto-from-invoice",
+      });
+
       const invoice = await insertRow("invoices", {
         invoice_number: invoiceNumber,
         amount_cents: Number(quote.amount_cents ?? 0),
@@ -342,8 +382,8 @@ export function registerBusinessHandlers(executor: ExecutorService): void {
         opportunity_id: (quote.opportunity_id as string | null) ?? null,
         crm_contact_id: (quote.crm_contact_id as string | null) ?? null,
         crm_company_id: (quote.crm_company_id as string | null) ?? null,
-        customer_id: (quote.customer_id as string | null) ?? null,
-        metadata: { converted_from: "quote" },
+        customer_id: bridge.customer_id,
+        metadata: { converted_from: "quote", bridge_link_id: bridge.link_id },
       });
 
       await updateRowById("quotes", quoteId, {

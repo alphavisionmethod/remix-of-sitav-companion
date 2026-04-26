@@ -10311,6 +10311,64 @@ export type Database = {
         }
         Relationships: []
       }
+      crm_customer_link: {
+        Row: {
+          created_at: string
+          crm_company_id: string | null
+          crm_contact_id: string
+          customer_id: string
+          id: string
+          link_source: string
+          metadata: Json
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          crm_company_id?: string | null
+          crm_contact_id: string
+          customer_id: string
+          id?: string
+          link_source?: string
+          metadata?: Json
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          crm_company_id?: string | null
+          crm_contact_id?: string
+          customer_id?: string
+          id?: string
+          link_source?: string
+          metadata?: Json
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "crm_customer_link_crm_company_id_fkey"
+            columns: ["crm_company_id"]
+            isOneToOne: false
+            referencedRelation: "crm_companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crm_customer_link_crm_contact_id_fkey"
+            columns: ["crm_contact_id"]
+            isOneToOne: false
+            referencedRelation: "crm_contacts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crm_customer_link_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "customers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       crm_import_jobs: {
         Row: {
           completed_at: string | null
