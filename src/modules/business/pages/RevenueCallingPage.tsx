@@ -478,49 +478,11 @@ const RevenueCallingPage = () => {
       {/* Scripts */}
       {activeView === "scripts" && (
         <div className="space-y-3">
-          {true ? (
-            <SitaCard className="p-6 text-center">
-              <FileText className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
-              <p className="text-sm font-medium text-foreground">No Scripts Configured</p>
-              <p className="text-xs text-muted-foreground mt-1">Call scripts will appear here once configured.</p>
-            </SitaCard>
-          ) : ([] as any[]).map(script => (
-            <SitaCard key={script.id} className="p-4">
-              <div className="space-y-3">
-                <div className="flex items-center gap-2">
-                  <FileText className="h-4 w-4 text-primary" />
-                  <span className="text-sm font-bold text-foreground">{script.name}</span>
-                  <span className={cn("text-[8px] px-1.5 py-0.5 rounded-full capitalize", STAGE_COLORS[script.stage] || "bg-secondary text-muted-foreground")}>{script.stage}</span>
-                </div>
-                <div className="rounded-lg bg-primary/3 border border-primary/10 p-3">
-                  <p className="text-[10px] font-semibold text-primary mb-1">OPENER</p>
-                  <p className="text-[11px] text-foreground italic">"{script.opener}"</p>
-                </div>
-                <div>
-                  <p className="text-[10px] font-semibold text-muted-foreground mb-1">TALKING POINTS</p>
-                  {script.talkingPoints.map((tp, i) => (
-                    <div key={i} className="flex items-start gap-1.5 text-[10px] py-0.5">
-                      <span className="text-primary font-bold">{i + 1}.</span>
-                      <span className="text-foreground">{tp}</span>
-                    </div>
-                  ))}
-                </div>
-                <div>
-                  <p className="text-[10px] font-semibold text-muted-foreground mb-1">OBJECTION HANDLERS ({script.objectionHandlers.length})</p>
-                  {script.objectionHandlers.map((oh, i) => (
-                    <div key={i} className="rounded-lg bg-secondary/30 p-2 mb-1">
-                      <p className="text-[10px] font-semibold text-amber-600">"{oh.objection}"</p>
-                      <p className="text-[10px] text-foreground mt-0.5">→ {oh.response}</p>
-                    </div>
-                  ))}
-                </div>
-                <div className="rounded-lg bg-trust-safe/5 border border-trust-safe/10 p-3">
-                  <p className="text-[10px] font-semibold text-trust-safe mb-1">CLOSER</p>
-                  <p className="text-[11px] text-foreground italic">"{script.closer}"</p>
-                </div>
-              </div>
-            </SitaCard>
-          ))}
+          <SitaCard className="p-6 text-center">
+            <FileText className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
+            <p className="text-sm font-medium text-foreground">No Scripts Configured</p>
+            <p className="text-xs text-muted-foreground mt-1">Call scripts will appear here once configured.</p>
+          </SitaCard>
         </div>
       )}
     </motion.div>
