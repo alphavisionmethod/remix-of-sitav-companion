@@ -13,8 +13,12 @@ import { describe, it, expect } from "vitest";
 import { ADVISOR_REGISTRY } from "@/lib/advisor-protocol";
 import { CANONICAL_HANDLER_IDS } from "@/lib/kernel-handlers";
 
+// Widen the literal-tuple type to plain string[] so we can compare against
+// arbitrary advisor permission strings without TS narrowing complaints.
+const HANDLERS: readonly string[] = CANONICAL_HANDLER_IDS as readonly string[];
+
 describe("Phase 6 — advisor → business action handler coverage", () => {
-  const businessHandlers = CANONICAL_HANDLER_IDS.filter((id) =>
+  const businessHandlers = HANDLERS.filter((id) =>
     id.startsWith("business."),
   );
 
