@@ -23,7 +23,12 @@ import {
   useRecoverNoShow,
   type ScheduledAppointmentVM,
 } from "@/hooks/use-scheduled-appointments";
-import { useSyncAppointmentToCalendar } from "@/hooks/use-phase10-actions";
+import {
+  useSyncAppointmentToCalendar,
+  useAppointmentSyncStatus,
+  type AppointmentSyncBadgeData,
+} from "@/hooks/use-phase10-actions";
+import { CalendarSyncBadge } from "@/modules/business/components/business/CalendarSyncBadge";
 import { consumeLinkedContext } from "@/platform/sita/components/sita/CrossAppAction";
 import { useAction } from "@/hooks/useAction";
 import {
@@ -95,9 +100,12 @@ interface AppointmentCardProps {
   onSync: (id: string) => void;
   syncing: boolean;
   pending: boolean;
+  syncLinks?: AppointmentSyncBadgeData[];
 }
 
-const AppointmentCard = ({ apt, onRemind, onConfirm, onRecover, onSync, syncing, pending }: AppointmentCardProps) => {
+const AppointmentCard = ({
+  apt, onRemind, onConfirm, onRecover, onSync, syncing, pending, syncLinks,
+}: AppointmentCardProps) => {
   const st = statusConfig[apt.status];
   const isNoShow = apt.status === "no-show";
 
@@ -122,6 +130,7 @@ const AppointmentCard = ({ apt, onRemind, onConfirm, onRecover, onSync, syncing,
                     <RefreshCw className="h-3 w-3 mr-0.5" /> Follow-Up
                   </Badge>
                 )}
+                <CalendarSyncBadge links={syncLinks} />
               </div>
               <h4 className="text-sm font-semibold text-foreground">{apt.service}</h4>
               <div className="flex items-center gap-3 text-[11px] text-muted-foreground flex-wrap">
@@ -132,6 +141,15 @@ const AppointmentCard = ({ apt, onRemind, onConfirm, onRecover, onSync, syncing,
               </div>
               {apt.notes && <p className="text-[11px] text-muted-foreground/80 italic">{apt.notes}</p>}
               {apt.lastContact && <p className="text-[11px] text-muted-foreground">{apt.lastContact}</p>}
+              {syncLinks && syncLinks.some((l) => l.status === "failed" || (l.status === "pending" && l.lastError)) && (
+                <p className="text-[11px] text-destructive/80">
+                  Calendar:{" "}
+                  {syncLinks
+                    .filter((l) => l.lastError)
+                    .map((l) => `${l.provider} — ${l.lastError}`)
+                    .join(" · ")}
+                </p>
+              )}
             </div>
             <div className="flex flex-col items-end gap-2 shrink-0">
               <span className="text-[10px] text-muted-foreground flex items-center gap-1"><UserCheck className="h-3 w-3" />{apt.staff}</span>
