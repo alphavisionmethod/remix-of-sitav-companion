@@ -80,7 +80,10 @@ describe("CRMHome — empty/populated honesty", () => {
       { id: "c-2", lifecycle_stage: "active", health_score: 18, created_at: new Date().toISOString() },
     ];
     renderBusinessPage(<CRMHome />);
-    expect(screen.getByText(/at risk/i)).toBeInTheDocument();
+    // The advisor insight reads "N contact(s) at risk — consider outreach"
+    expect(
+      screen.getByText(/contact.*at risk.*consider outreach/i),
+    ).toBeInTheDocument();
   });
 
   it("surfaces a strong-win-rate insight when win rate exceeds 60%", () => {
