@@ -160,12 +160,7 @@ export default function RevenueOpsHome() {
 
   return (
     <div className="space-y-6 p-6">
-      <PageTruthBanner
-        page="RevenueOpsHome"
-        domain="business"
-        capabilityKey="business.revenue.home"
-        truthMode="canonical"
-      />
+      <PageTruthBanner />
 
       <header className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
         <div>
