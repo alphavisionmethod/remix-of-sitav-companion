@@ -42,6 +42,12 @@ jobs:
       - name: Run engine purity checker
         run: npx tsx scripts/architecture/check-engine-purity.ts
 
+      - name: Run canonical domain barrel non-empty checker (Phase 7)
+        run: npx tsx scripts/architecture/audits/check-no-empty-domain-barrels.ts
+
+      - name: Run Investment route namespace checker (Phase 7)
+        run: npx tsx scripts/architecture/audits/check-investment-route-namespace.ts
+
       - name: Run Business OS production-truth checker
         # Phased rollout: failures are gated by BUSINESS_TRUTH_ENFORCE
         # so the check publishes signal during the closure phases and
@@ -100,5 +106,16 @@ jobs:
         with:
           name: boundary-report
           path: generated/boundary-check-report.json
+          retention-days: 14
+          if-no-files-found: warn
+
+      - name: Upload Phase 7 architecture guard reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: phase7-architecture-guard-reports
+          path: |
+            generated/empty-domain-barrels-report.json
+            generated/investment-route-namespace-report.json
           retention-days: 14
           if-no-files-found: warn
