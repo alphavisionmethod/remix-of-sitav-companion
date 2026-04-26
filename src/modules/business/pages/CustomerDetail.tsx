@@ -12,6 +12,19 @@ import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner
 import { PremiumEmptyState } from "@/platform/sita/components/sita/PremiumEmptyState";
 import { useCustomerDetail } from "@/hooks/use-customer-detail";
 
+const TIMELINE_ICONS: Record<string, typeof FileText> = {
+  invoice: DollarSign,
+  quote: FileText,
+  document: FileText,
+  support: AlertTriangle,
+  default: Clock,
+};
+
+function pickTimelineIcon(kind: string | undefined): typeof FileText {
+  if (!kind) return TIMELINE_ICONS.default;
+  return TIMELINE_ICONS[kind] ?? TIMELINE_ICONS.default;
+}
+
 const CustomerDetail = ({ customerId: propId }: { customerId?: string }) => {
   const params = useParams<{ id: string }>();
   const id = propId || params.id || null;
@@ -123,7 +136,13 @@ const CustomerDetail = ({ customerId: propId }: { customerId?: string }) => {
                   <p className="text-xs text-muted-foreground text-center py-4">No activity yet for this customer.</p>
                 ) : (
                   customer.timeline.slice(0, 5).map((t) => (
-                    <TimelineItem key={t.id} title={t.title} description={t.detail} time={new Date(t.occurredAt).toLocaleDateString()} state={t.status as any} />
+                    <TimelineItem
+                      key={t.id}
+                      icon={pickTimelineIcon((t as any).kind)}
+                      title={t.title}
+                      subtitle={t.detail}
+                      time={new Date(t.occurredAt).toLocaleDateString()}
+                    />
                   ))
                 )}
               </SitaCard>
@@ -181,7 +200,13 @@ const CustomerDetail = ({ customerId: propId }: { customerId?: string }) => {
             {customer.timeline.length === 0 ? (
               <p className="text-xs text-muted-foreground text-center py-6">No activity yet for this customer.</p>
             ) : customer.timeline.map((t) => (
-              <TimelineItem key={t.id} title={t.title} description={t.detail} time={new Date(t.occurredAt).toLocaleString()} state={t.status as any} />
+              <TimelineItem
+                key={t.id}
+                icon={pickTimelineIcon((t as any).kind)}
+                title={t.title}
+                subtitle={t.detail}
+                time={new Date(t.occurredAt).toLocaleString()}
+              />
             ))}
           </div>
         </SitaCard>
