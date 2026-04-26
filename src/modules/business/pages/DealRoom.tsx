@@ -6,38 +6,14 @@ import {
   BarChart3, ArrowUpRight, Star, Briefcase, Zap
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-const DEALS = [
-  { id: "1", name: "NovaTech Enterprise License", value: "$85,000", stage: "Negotiation", probability: 75, daysInStage: 8, contacts: 3, nextAction: "Send revised pricing", health: "good" },
-  { id: "2", name: "DataFlow API Integration", value: "$42,000", stage: "Proposal", probability: 60, daysInStage: 12, contacts: 2, nextAction: "Follow up on proposal", health: "warning" },
-  { id: "3", name: "BlueStar Annual Contract", value: "$120,000", stage: "Discovery", probability: 35, daysInStage: 5, contacts: 4, nextAction: "Schedule deep-dive demo", health: "good" },
-];
-
-const RISK_FACTORS = [
-  { label: "No executive sponsor identified", severity: "high" },
-  { label: "Competitor mentioned in last call", severity: "medium" },
-  { label: "Budget cycle ends next month", severity: "high" },
-];
-
-const STAKEHOLDERS = [
-  { name: "Sarah Chen", role: "Decision Maker", influence: "high", sentiment: "positive", lastContact: "2 days ago" },
-  { name: "Mike Johnson", role: "Champion", influence: "high", sentiment: "positive", lastContact: "1 day ago" },
-  { name: "Lisa Wang", role: "Evaluator", influence: "medium", sentiment: "neutral", lastContact: "5 days ago" },
-  { name: "Tom Davis", role: "Blocker", influence: "medium", sentiment: "negative", lastContact: "14 days ago" },
-];
-
-const STAGE_PLAYBOOK = [
-  { step: "Confirm budget authority", done: true },
-  { step: "Map all stakeholders", done: true },
-  { step: "Complete technical validation", done: false },
-  { step: "Get verbal commitment", done: false },
-  { step: "Send final contract", done: false },
-];
-
-const CLOSE_SCENARIOS = [
-  { name: "Best Case", probability: "85%", timeline: "2 weeks", value: "$85,000" },
-  { name: "Most Likely", probability: "65%", timeline: "4 weeks", value: "$72,000" },
-  { name: "Worst Case", probability: "30%", timeline: "8 weeks", value: "$55,000" },
-];
+import { useDeals } from "@/hooks/use-revenue-office";
+import {
+  DEAL_SAMPLES,
+  DEAL_RISK_FACTORS,
+  DEAL_STAKEHOLDERS,
+  DEAL_STAGE_PLAYBOOK,
+  DEAL_CLOSE_SCENARIOS,
+} from "./_config/DealRoom.config";
 
 const healthColors: Record<string, string> = {
   good: "text-[hsl(var(--trust-safe))]",
@@ -59,7 +35,29 @@ const roleColors: Record<string, string> = {
 };
 
 export default function DealRoom() {
-  const [selectedDeal, setSelectedDeal] = useState(DEALS[0]);
+  const { data: liveDeals = [] } = useDeals();
+  const deals = liveDeals.length > 0
+    ? liveDeals.map((d: Record<string, unknown>) => {
+        const updated = d.updated_at ? new Date(d.updated_at as string) : new Date();
+        const days = Math.max(0, Math.round((Date.now() - updated.getTime()) / 86_400_000));
+        const prob = Number(d.probability ?? 0);
+        const health: "good" | "warning" | "critical" =
+          prob >= 60 ? "good" : prob >= 30 ? "warning" : "critical";
+        return {
+          id: String(d.id),
+          name: String(d.title ?? "Untitled deal"),
+          value: `$${Math.round(Number(d.value_cents ?? 0) / 100).toLocaleString()}`,
+          stage: String(d.stage ?? "Discovery"),
+          probability: prob,
+          daysInStage: days,
+          contacts: 0,
+          nextAction: "Review deal status",
+          health,
+        };
+      })
+    : DEAL_SAMPLES;
+  const [selectedDealId, setSelectedDealId] = useState<string>(deals[0]?.id ?? "");
+  const selectedDeal = deals.find((d) => d.id === selectedDealId) ?? deals[0];
   const [activeTab, setActiveTab] = useState<"overview" | "stakeholders" | "playbook" | "scenarios">("overview");
 
   return (
@@ -67,10 +65,10 @@ export default function DealRoom() {
       {/* Deal list sidebar */}
       <div className="w-[220px] shrink-0 border-r border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_100%/0.01)] p-3 space-y-1.5 overflow-y-auto">
         <p className="text-[9px] font-bold uppercase tracking-[0.15em] text-foreground/25 px-2 mb-2">Active Deals</p>
-        {([] as any[]).map((deal) => (
+        {deals.map((deal) => (
           <button
             key={deal.id}
-            onClick={() => setSelectedDeal(deal)}
+            onClick={() => setSelectedDealId(deal.id)}
             className={cn(
               "w-full text-left rounded-xl p-3 transition-all",
               selectedDeal.id === deal.id
@@ -142,7 +140,7 @@ export default function DealRoom() {
                   <span className="text-[10px] font-bold uppercase text-foreground/50">Risk Factors</span>
                 </div>
                 <div className="space-y-1.5">
-                  {RISK_FACTORS.map((r, i) => (
+                  {DEAL_RISK_FACTORS.map((r, i) => (
                     <div key={i} className="flex items-center gap-2">
                       <span className={cn("w-1.5 h-1.5 rounded-full shrink-0", r.severity === "high" ? "bg-[hsl(var(--destructive))]" : "bg-[hsl(var(--sita-gold))]")} />
                       <span className="text-[10px] text-foreground/50">{r.label}</span>
@@ -177,7 +175,7 @@ export default function DealRoom() {
 
           {activeTab === "stakeholders" && (
             <motion.div key="stakeholders" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-3">
-              {STAKEHOLDERS.map((s) => (
+              {DEAL_STAKEHOLDERS.map((s) => (
                 <div key={s.name} className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_100%/0.02)] p-4 flex items-center gap-4">
                   <div className="w-10 h-10 rounded-full bg-[hsl(265_55%_58%/0.15)] flex items-center justify-center text-xs font-bold text-[hsl(var(--sita-purple))]">
                     {s.name.split(" ").map(n => n[0]).join("")}
@@ -201,7 +199,7 @@ export default function DealRoom() {
           {activeTab === "playbook" && (
             <motion.div key="playbook" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-2">
               <p className="text-xs font-bold text-foreground/50 mb-3">Stage Playbook — {selectedDeal.stage}</p>
-              {STAGE_PLAYBOOK.map((step, i) => (
+              {DEAL_STAGE_PLAYBOOK.map((step, i) => (
                 <div key={i} className={cn("flex items-center gap-3 rounded-lg p-3 border", step.done ? "border-[hsl(var(--trust-safe))]/15 bg-[hsl(var(--trust-safe))]/5" : "border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_100%/0.02)]")}>
                   {step.done ? (
                     <CheckCircle size={14} className="text-[hsl(var(--trust-safe))] shrink-0" />
@@ -217,7 +215,7 @@ export default function DealRoom() {
           {activeTab === "scenarios" && (
             <motion.div key="scenarios" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-3">
               <p className="text-xs font-bold text-foreground/50 mb-3">Close Scenarios</p>
-              {CLOSE_SCENARIOS.map((s) => (
+              {DEAL_CLOSE_SCENARIOS.map((s) => (
                 <div key={s.name} className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_100%/0.02)] p-4">
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-[12px] font-semibold text-foreground/80">{s.name}</span>
