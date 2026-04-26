@@ -56,6 +56,7 @@ import RevenueImpactDashboard from "@/pages/business/RevenueImpactDashboard";
 import PlaybookBuilder from "@/pages/business/PlaybookBuilder";
 import RevenueForecast from "@/pages/business/RevenueForecast";
 import RevenueOpsHome from "@/modules/business/pages/RevenueOpsHome";
+import ContinuityReport from "@/modules/business/pages/ContinuityReport";
 import WebsiteBuilder from "@/pages/business/WebsiteBuilder";
 import ProposalsContracts from "@/pages/business/ProposalsContracts";
 import LeadRecovery from "@/pages/business/LeadRecovery";
@@ -196,6 +197,7 @@ const SIDEBAR_GROUPS: SidebarGroup[] = [
       { id: "boardroom-agenda", label: "Boardroom Agenda", icon: BookOpen },
       { id: "business-settings", label: "Settings", icon: Settings },
       { id: "background-tasks", label: "Tasks & Syncs", icon: Activity },
+      { id: "continuity-report", label: "Continuity Report", icon: ShieldCheck },
     ],
   },
 ];
