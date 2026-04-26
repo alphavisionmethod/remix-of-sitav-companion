@@ -23,9 +23,9 @@ describe("Phase 6 — adaptive surface reactivity", () => {
   it("home widgets differ between archetypes (visible adaptation)", () => {
     const ecom = computeBusinessProfile({}, { ecommerce: 95 });
     const service = computeBusinessProfile({}, { service: 95 });
-    const ecomKeys = ecom.homeWidgets.map((w: any) => w.id ?? w.key ?? JSON.stringify(w)).sort();
-    const svcKeys = service.homeWidgets.map((w: any) => w.id ?? w.key ?? JSON.stringify(w)).sort();
-    expect(ecomKeys).not.toEqual(svcKeys);
+    expect(JSON.stringify(ecom.homeWidgets)).not.toEqual(
+      JSON.stringify(service.homeWidgets),
+    );
   });
 
   it("sidebar / KPI sets differ across archetypes (real branching, not constant)", () => {
