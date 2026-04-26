@@ -12,7 +12,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   FileSignature, Clock, CheckCircle, AlertCircle, Plus, Send, DollarSign,
   TrendingUp, Zap, BarChart3, FileText, BookOpen, ChevronRight, Timer,
-  ArrowRight, X, Trash2,
+  ArrowRight, X, Trash2, Loader2,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -21,6 +21,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useAction } from "@/hooks/use-action";
 import { useDraftAutosave } from "@/hooks/useDraftAutosave";
 import { setLinkedContext, consumeLinkedContext } from "@/platform/sita/components/sita/CrossAppAction";
+import { useRequestSignature } from "@/hooks/use-phase10-actions";
 
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import HierarchyHint from "@/modules/business/components/business/shared/HierarchyHint";
@@ -98,6 +99,8 @@ const ProposalsContracts = () => {
     invalidateKeys: [["proposals"]],
     onSuccess: () => setSelectedId(null),
   });
+  const requestSig = useRequestSignature();
+  const [signFor, setSignFor] = useState<{ id: string; email: string } | null>(null);
   const convertToInvoice = useAction("business", "proposal.convert-to-invoice", {
     successMessage: "Invoice drafted from proposal",
     invalidateKeys: [["proposals"], ["invoices"]],
@@ -334,6 +337,14 @@ const ProposalsContracts = () => {
                             <ArrowRight className="inline h-3 w-3 mr-1" /> {convertToInvoice.isPending ? "Drafting…" : "Convert to Invoice"}
                           </button>
                         )}
+                        {["sent", "accepted"].includes(p.status) && p.status !== "signed" && (
+                          <button
+                            onClick={() => setSignFor({ id: p.id, email: "" })}
+                            className="text-[10px] bg-primary/10 text-primary border border-primary/30 px-3 py-1.5 rounded-lg font-medium hover:bg-primary/20"
+                          >
+                            <FileSignature className="inline h-3 w-3 mr-1" /> Request Signature
+                          </button>
+                        )}
                         <button
                           onClick={() => deleteProposal.mutate({ id: p.id })}
                           className="text-[10px] text-muted-foreground border border-border/40 px-3 py-1.5 rounded-lg hover:text-destructive hover:border-destructive/30"
@@ -341,6 +352,45 @@ const ProposalsContracts = () => {
                           <Trash2 className="inline h-3 w-3 mr-1" /> Delete
                         </button>
                       </div>
+                      {signFor?.id === p.id && (
+                        <div className="mt-2 rounded-lg border border-primary/30 bg-primary/5 p-3 space-y-2">
+                          <label className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                            Send sign request to
+                          </label>
+                          <input
+                            type="email"
+                            placeholder="signer@example.com"
+                            value={signFor.email}
+                            onChange={(e) => setSignFor({ id: p.id, email: e.target.value })}
+                            className="w-full rounded-md border border-input bg-background px-2 py-1.5 text-xs"
+                          />
+                          <div className="flex gap-2">
+                            <button
+                              onClick={() =>
+                                requestSig.mutate(
+                                  {
+                                    document_type: "proposal",
+                                    document_id: p.id,
+                                    signer_email: signFor.email.trim(),
+                                  },
+                                  { onSuccess: () => setSignFor(null) },
+                                )
+                              }
+                              disabled={!signFor.email.includes("@") || requestSig.isPending}
+                              className="text-[10px] bg-primary text-primary-foreground px-3 py-1.5 rounded-lg font-medium disabled:opacity-50 inline-flex items-center gap-1"
+                            >
+                              {requestSig.isPending ? <Loader2 className="h-3 w-3 animate-spin" /> : <FileSignature className="h-3 w-3" />}
+                              Send link
+                            </button>
+                            <button
+                              onClick={() => setSignFor(null)}
+                              className="text-[10px] text-muted-foreground border border-border/40 px-3 py-1.5 rounded-lg"
+                            >
+                              Cancel
+                            </button>
+                          </div>
+                        </div>
+                      )}
                     </motion.div>
                   )}
                 </motion.div>
