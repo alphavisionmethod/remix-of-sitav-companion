@@ -19,6 +19,7 @@ import { InlineAdvisorInsights, generateCompanyInsights } from "./CRMAdvisorInsi
 import { CRMFinanceLinkage } from "./CRMFinanceLinkage";
 import { CRMFilesLinkage } from "./CRMFilesLinkage";
 import { CRMConciergeLinkage } from "./CRMConciergeLinkage";
+import { AppointmentLineagePanel } from "../shared/AppointmentLineagePanel";
 import { CRMProofTrail } from "./CRMProofTrail";
 import { CRMOwnership } from "./CRMOwnership";
 
@@ -271,12 +272,19 @@ export function CRMCompanyDetail({ company, onClose, onSelectContact }: CRMCompa
 
             {/* Finance Linkage */}
             <TabsContent value="finance" className="mt-0">
-              <CRMFinanceLinkage
-                entityType="company"
-                entityId={company.id}
-                entityName={company.name}
-                healthScore={health}
-              />
+              <div className="space-y-4">
+                <CRMFinanceLinkage
+                  entityType="company"
+                  entityId={company.id}
+                  entityName={company.name}
+                  healthScore={health}
+                />
+                <AppointmentLineagePanel
+                  scope="company"
+                  entityId={company.id}
+                  entityLabel={company.name}
+                />
+              </div>
             </TabsContent>
 
             {/* Files Linkage */}

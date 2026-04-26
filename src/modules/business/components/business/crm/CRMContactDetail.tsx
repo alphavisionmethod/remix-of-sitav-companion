@@ -27,6 +27,7 @@ import { InlineAdvisorInsights, generateContactInsights } from "./CRMAdvisorInsi
 import { CRMFinanceLinkage } from "./CRMFinanceLinkage";
 import { CRMFilesLinkage } from "./CRMFilesLinkage";
 import { CRMConciergeLinkage } from "./CRMConciergeLinkage";
+import { AppointmentLineagePanel } from "../shared/AppointmentLineagePanel";
 import { CRMProofTrail } from "./CRMProofTrail";
 import { CRMOwnership } from "./CRMOwnership";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
@@ -497,12 +498,19 @@ export function CRMContactDetail({ contact, companies = [], onClose, onEdit }: C
 
             {/* Finance Linkage */}
             <TabsContent value="finance" className="mt-0">
-              <CRMFinanceLinkage
-                entityType="contact"
-                entityId={contact.id}
-                entityName={`${contact.first_name} ${contact.last_name}`}
-                healthScore={health}
-              />
+              <div className="space-y-4">
+                <CRMFinanceLinkage
+                  entityType="contact"
+                  entityId={contact.id}
+                  entityName={`${contact.first_name} ${contact.last_name}`}
+                  healthScore={health}
+                />
+                <AppointmentLineagePanel
+                  scope="contact"
+                  entityId={contact.id}
+                  entityLabel={`${contact.first_name} ${contact.last_name}`}
+                />
+              </div>
             </TabsContent>
 
             {/* Files Linkage */}
