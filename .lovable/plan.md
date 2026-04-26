@@ -296,3 +296,17 @@ This is the full scope. Approving moves us into Phase 1 in default mode; I will 
 - `bunx tsc --noEmit` clean.
 
 **Next**: Phase 7 — Background Tasks → Real Execution Surface.
+
+---
+
+## ✅ Phase 7 — Shipped
+
+- Extended `BackgroundJobVM` (and its mappers) to ingest three new canonical proof tables: `recovery_jobs`, `audit_logs`, `ai_invocations`. Added kinds `recovery`, `audit`, `ai-invocation` and the matching `Lifebuoy / ScrollText / Sparkles` icons.
+- Service layer (`business-background-tasks-service.ts`) now runs **9 parallel RLS-scoped queries** instead of 6, with the same graceful-degrade contract (`partial`, `failedSources`).
+- New helper `src/lib/business/task-target-resolver.ts` maps every job to a structured `BackgroundJobNavigationTarget` (subpage key + label). Each row in `BackgroundTaskCenter.tsx` now exposes an "Open …" deep-link via `useBusinessNavigation().navigateTo(module)` — Imports → CRM Import; Syncs → Integrations; Workflows → Operations; Recovery → Lead Recovery; Audit → Proof; AI invocations → Boardroom; etc.
+- Retry/cancel matrix made truthful: `recovery_jobs` retry/cancel are now wired (status+error reset). `audit_logs` and `ai_invocations` are explicitly read-only — UI shows an `Info` badge with an honest tooltip ("Read-only audit entry · no retry path." / "Re-trigger the AI capability from its source surface.") instead of a dead button.
+- Typecheck (`bunx tsc --noEmit`) clean.
+
+**Phase 7 done-criteria met:** real-table rendering across 9 sources, click-through navigation for every row, no fake retry buttons.
+
+**Next**: Phase 8 — IA Consolidation: Revenue Operations Hierarchy.

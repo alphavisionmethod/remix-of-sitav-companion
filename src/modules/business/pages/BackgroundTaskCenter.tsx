@@ -3,10 +3,13 @@ import { motion } from "framer-motion";
 import {
   Activity, CheckCircle, Clock, AlertTriangle, Upload, RefreshCw,
   Zap, Download, Loader2, XCircle, FileSearch, GitBranch, LogIn,
+  LifeBuoy, ScrollText, Sparkles, ArrowUpRight, Info,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { useBusinessNavigation } from "@/contexts/BusinessNavigationContext";
 import { LegacyEmptyStateCard as EmptyStateCard } from "@/platform/sita/components/sita/EmptyStateCard";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import {
@@ -28,6 +31,9 @@ const typeIcons: Record<BackgroundJobKind, React.ElementType> = {
   export: Download,
   ingestion: FileSearch,
   workflow: GitBranch,
+  recovery: LifeBuoy,
+  audit: ScrollText,
+  "ai-invocation": Sparkles,
 };
 
 const statusConfig: Record<BackgroundJobStatus, { icon: React.ElementType; color: string; bg: string }> = {
@@ -63,6 +69,7 @@ function formatDuration(ms?: number): string | undefined {
 
 export default function BackgroundTaskCenter() {
   const [filter, setFilter] = useState<FilterKey>("all");
+  const { navigateTo } = useBusinessNavigation();
 
   const {
     jobs,
@@ -221,32 +228,56 @@ export default function BackgroundTaskCenter() {
                       </div>
                     )}
 
-                    {(task.canRetry || task.canCancel) && (
-                      <div className="mt-2.5 flex gap-2 justify-end">
-                        {task.canRetry && (
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            className="h-6 text-[10px] px-2"
-                            disabled={mutating}
-                            onClick={() => retry.mutate(task)}
-                          >
-                            <RefreshCw className="h-3 w-3 mr-1" /> Retry
-                          </Button>
-                        )}
-                        {task.canCancel && (
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            className="h-6 text-[10px] px-2"
-                            disabled={mutating}
-                            onClick={() => cancel.mutate(task)}
-                          >
-                            <XCircle className="h-3 w-3 mr-1" /> Cancel
-                          </Button>
-                        )}
-                      </div>
-                    )}
+                    <div className="mt-2.5 flex items-center gap-2 justify-end">
+                      {task.navigationTarget && (
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          className="h-6 text-[10px] px-2 text-foreground/60 hover:text-foreground"
+                          onClick={() => navigateTo(task.navigationTarget!.module)}
+                          aria-label={task.navigationTarget.label}
+                          title={task.navigationTarget.label}
+                        >
+                          {task.navigationTarget.label}
+                          <ArrowUpRight className="h-3 w-3 ml-1" />
+                        </Button>
+                      )}
+                      {task.canRetry ? (
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="h-6 text-[10px] px-2"
+                          disabled={mutating}
+                          onClick={() => retry.mutate(task)}
+                        >
+                          <RefreshCw className="h-3 w-3 mr-1" /> Retry
+                        </Button>
+                      ) : task.retryUnavailableReason ? (
+                        <TooltipProvider delayDuration={200}>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <span className="inline-flex items-center gap-1 text-[10px] text-foreground/30 px-2 h-6 rounded border border-[hsl(0_0%_100%/0.06)]">
+                                <Info className="h-3 w-3" /> No retry
+                              </span>
+                            </TooltipTrigger>
+                            <TooltipContent side="top" className="max-w-[220px] text-[10px]">
+                              {task.retryUnavailableReason}
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                      ) : null}
+                      {task.canCancel && (
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="h-6 text-[10px] px-2"
+                          disabled={mutating}
+                          onClick={() => cancel.mutate(task)}
+                        >
+                          <XCircle className="h-3 w-3 mr-1" /> Cancel
+                        </Button>
+                      )}
+                    </div>
                   </motion.div>
                 );
               })

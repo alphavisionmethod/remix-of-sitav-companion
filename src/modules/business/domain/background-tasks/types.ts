@@ -15,6 +15,9 @@ export type DataExportRequestRow = Tables["data_export_requests"]["Row"];
 export type IngestionJobRow = Tables["ingestion_jobs"]["Row"];
 export type CrmAutomationRow = Tables["crm_automations"]["Row"];
 export type WorkflowRunRow = Tables["workflow_runs"]["Row"];
+export type RecoveryJobRow = Tables["recovery_jobs"]["Row"];
+export type AuditLogRow = Tables["audit_logs"]["Row"];
+export type AiInvocationRow = Tables["ai_invocations"]["Row"];
 
 // ── Canonical contracts ───────────────────────────────────────
 export type BackgroundJobKind =
@@ -23,7 +26,10 @@ export type BackgroundJobKind =
   | "export"
   | "automation"
   | "ingestion"
-  | "workflow";
+  | "workflow"
+  | "recovery"
+  | "audit"
+  | "ai-invocation";
 
 export type BackgroundJobStatus =
   | "queued"
@@ -53,12 +59,29 @@ export interface BackgroundJobVM {
     | "data_export_requests"
     | "ingestion_jobs"
     | "crm_automations"
-    | "workflow_runs";
+    | "workflow_runs"
+    | "recovery_jobs"
+    | "audit_logs"
+    | "ai_invocations";
   sourceId: string;
   canRetry: boolean;
   canCancel: boolean;
+  /** Honest reason shown when canRetry is false (e.g., "Read-only audit entry"). */
+  retryUnavailableReason?: string;
+  /** Optional structured target for in-app navigation (resolved by task-target-resolver). */
+  navigationTarget?: BackgroundJobNavigationTarget;
   /** Optional deep-link to recovery surface for failed jobs. */
   recoveryHref?: string;
+}
+
+/** Where clicking a job row should send the operator inside Business OS. */
+export interface BackgroundJobNavigationTarget {
+  /** Business app sub-page key consumed by `subpageFromPath` / `navigateTo`. */
+  module: string;
+  /** Optional entity id to preselect at the destination. */
+  entityId?: string;
+  /** Human-readable label for the link (used as tooltip / aria-label). */
+  label: string;
 }
 
 // ── Helpers ───────────────────────────────────────────────────
@@ -240,6 +263,79 @@ export function workflowRunToVM(row: WorkflowRunRow): BackgroundJobVM {
     canRetry: status === "failed",
     canCancel: status === "queued" || status === "running",
     recoveryHref: status === "failed" ? `/admin/workflow-replay-audit?run=${row.id}` : undefined,
+  };
+}
+
+// ── Phase 7: Recovery / Audit / AI invocation mappers ────────
+
+export function recoveryJobToVM(row: RecoveryJobRow): BackgroundJobVM {
+  const status = normalizeStatus(row.status);
+  const pct = Math.max(0, Math.min(100, Number(row.progress ?? 0)));
+  return {
+    id: `recovery:${row.id}`,
+    kind: "recovery",
+    title: `Recovery — ${row.label ?? "job"}`,
+    status,
+    progress: status === "completed" ? 100 : status === "running" ? Math.max(pct, 5) : pct,
+    startedAt: row.started_at ?? row.created_at,
+    completedAt: row.completed_at ?? undefined,
+    durationMs: durationMs(row.started_at ?? row.created_at, row.completed_at),
+    details: row.is_dry_run ? "Dry-run" : (row.appointment_id ? "Appointment recovery" : undefined),
+    error: status === "failed" ? (row.error ?? "Recovery failed") : undefined,
+    sourceTable: "recovery_jobs",
+    sourceId: row.id,
+    canRetry: status === "failed",
+    canCancel: status === "queued" || status === "running",
+    retryUnavailableReason: status === "failed" ? undefined : "Only failed recovery jobs can be re-run.",
+    recoveryHref: status === "failed" ? `/admin/ar07-retry-failure-center?source=recovery_jobs&id=${row.id}` : undefined,
+  };
+}
+
+/**
+ * Audit log entries are read-only proof — surfaced here so operators
+ * see the most recent meaningful events alongside live jobs.
+ */
+export function auditLogToVM(row: AuditLogRow): BackgroundJobVM {
+  return {
+    id: `audit:${row.id}`,
+    kind: "audit",
+    title: `Event — ${row.action}${row.subject_type ? ` · ${row.subject_type}` : ""}`,
+    status: row.severity === "error" || row.severity === "critical" ? "failed" : "completed",
+    progress: 100,
+    startedAt: row.created_at,
+    completedAt: row.created_at,
+    durationMs: 0,
+    details: row.domain ? `${row.domain} · ${row.severity}` : row.severity,
+    error: (row.severity === "error" || row.severity === "critical") ? (row.reason ?? row.action) : undefined,
+    sourceTable: "audit_logs",
+    sourceId: row.id,
+    canRetry: false,
+    canCancel: false,
+    retryUnavailableReason: "Read-only audit entry · no retry path.",
+  };
+}
+
+export function aiInvocationToVM(row: AiInvocationRow): BackgroundJobVM {
+  const status = normalizeStatus(row.status);
+  const tokens = row.total_tokens ?? 0;
+  return {
+    id: `ai:${row.id}`,
+    kind: "ai-invocation",
+    title: `AI · ${row.capability_key}`,
+    status,
+    progress: progressFromStatus(status),
+    startedAt: row.created_at,
+    completedAt: undefined,
+    durationMs: typeof row.latency_ms === "number" ? row.latency_ms : undefined,
+    details: tokens > 0
+      ? `${row.model} · ${tokens.toLocaleString()} tok${row.estimated_cost_usd ? ` · $${Number(row.estimated_cost_usd).toFixed(4)}` : ""}`
+      : row.model,
+    error: status === "failed" ? (row.error_message ?? row.error_code ?? "Inference failed") : undefined,
+    sourceTable: "ai_invocations",
+    sourceId: row.id,
+    canRetry: false,
+    canCancel: false,
+    retryUnavailableReason: "AI invocations are emitted by capabilities · re-trigger from the source surface.",
   };
 }
 

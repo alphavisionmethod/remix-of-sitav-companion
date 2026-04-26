@@ -14,6 +14,9 @@ import {
   dataExportRequestToVM,
   ingestionJobToVM,
   workflowRunToVM,
+  recoveryJobToVM,
+  auditLogToVM,
+  aiInvocationToVM,
   type BackgroundJobVM,
   type CrmAutomationRow,
   type CrmImportJobRow,
@@ -21,7 +24,11 @@ import {
   type DataExportRequestRow,
   type IngestionJobRow,
   type WorkflowRunRow,
+  type RecoveryJobRow,
+  type AuditLogRow,
+  type AiInvocationRow,
 } from "@/modules/business/domain/background-tasks/types";
+import { resolveTaskTarget } from "@/lib/business/task-target-resolver";
 import { buildDemoBackgroundJobs } from "@/data/fixtures/mock-data/business-background-tasks";
 
 export type BackgroundTasksMode = "demo" | "live";
@@ -75,7 +82,7 @@ export async function fetchBackgroundJobs(
   const sinceHours = opts.sinceHours ?? 72;
   const since = new Date(Date.now() - sinceHours * 60 * 60 * 1000).toISOString();
 
-  const [imports, syncs, exports_, ingestions, automations, workflows] = await Promise.all([
+  const [imports, syncs, exports_, ingestions, automations, workflows, recoveries, audits, aiCalls] = await Promise.all([
     safeQuery<CrmImportJobRow>("crm_import_jobs", async () => {
       const { data, error } = await fromTable("crm_import_jobs")
         .select("*")
@@ -137,6 +144,36 @@ export async function fetchBackgroundJobs(
       if (error) throw error;
       return (data ?? []) as WorkflowRunRow[];
     }),
+    safeQuery<RecoveryJobRow>("recovery_jobs", async () => {
+      const { data, error } = await fromTable("recovery_jobs")
+        .select("*")
+        .eq("user_id", userId)
+        .gte("created_at", since)
+        .order("created_at", { ascending: false })
+        .limit(50);
+      if (error) throw error;
+      return (data ?? []) as RecoveryJobRow[];
+    }),
+    safeQuery<AuditLogRow>("audit_logs", async () => {
+      const { data, error } = await fromTable("audit_logs")
+        .select("*")
+        .eq("user_id", userId)
+        .gte("created_at", since)
+        .order("created_at", { ascending: false })
+        .limit(25);
+      if (error) throw error;
+      return (data ?? []) as AuditLogRow[];
+    }),
+    safeQuery<AiInvocationRow>("ai_invocations", async () => {
+      const { data, error } = await fromTable("ai_invocations")
+        .select("*")
+        .eq("user_id", userId)
+        .gte("created_at", since)
+        .order("created_at", { ascending: false })
+        .limit(25);
+      if (error) throw error;
+      return (data ?? []) as AiInvocationRow[];
+    }),
   ]);
 
   const jobs: BackgroundJobVM[] = [
@@ -146,7 +183,16 @@ export async function fetchBackgroundJobs(
     ...ingestions.rows.map(ingestionJobToVM),
     ...automations.rows.map(crmAutomationToVM).filter((j): j is BackgroundJobVM => j !== null),
     ...workflows.rows.map(workflowRunToVM),
+    ...recoveries.rows.map(recoveryJobToVM),
+    ...audits.rows.map(auditLogToVM),
+    ...aiCalls.rows.map(aiInvocationToVM),
   ];
+
+  // Attach in-app navigation targets so the page can render a deep-link per row.
+  for (const job of jobs) {
+    const target = resolveTaskTarget(job);
+    if (target) job.navigationTarget = target;
+  }
 
   jobs.sort((a, b) => Date.parse(b.startedAt) - Date.parse(a.startedAt));
 
@@ -157,6 +203,9 @@ export async function fetchBackgroundJobs(
   if (!ingestions.ok) failedSources.push("ingestion_jobs");
   if (!automations.ok) failedSources.push("crm_automations");
   if (!workflows.ok) failedSources.push("workflow_runs");
+  if (!recoveries.ok) failedSources.push("recovery_jobs");
+  if (!audits.ok) failedSources.push("audit_logs");
+  if (!aiCalls.ok) failedSources.push("ai_invocations");
 
   return { jobs, partial: failedSources.length > 0, failedSources };
 }
@@ -221,11 +270,31 @@ export async function retryBackgroundJob(job: BackgroundJobVM): Promise<JobActio
       if (error) return { ok: false, message: error.message };
       return { ok: true, message: "Workflow re-queued" };
     }
+    case "recovery_jobs": {
+      const { error } = await fromTable("recovery_jobs")
+        .update({ status: "pending", error: null, error_stack: null, progress: 0 })
+        .eq("id", job.sourceId)
+        .eq("user_id", userId);
+      if (error) return { ok: false, message: error.message };
+      return { ok: true, message: "Recovery re-queued" };
+    }
     case "crm_automations":
       return {
         ok: false,
         reason: "not-supported",
         message: "Open the automation to re-run it from its definition.",
+      };
+    case "audit_logs":
+      return {
+        ok: false,
+        reason: "not-supported",
+        message: "Audit entries are immutable proof — no retry path.",
+      };
+    case "ai_invocations":
+      return {
+        ok: false,
+        reason: "not-supported",
+        message: "Re-trigger the AI capability from its source surface.",
       };
     default:
       return { ok: false, reason: "not-supported" };
@@ -265,6 +334,14 @@ export async function cancelBackgroundJob(job: BackgroundJobVM): Promise<JobActi
         .eq("user_id", userId);
       if (error) return { ok: false, message: error.message };
       return { ok: true, message: "Workflow cancelled" };
+    }
+    case "recovery_jobs": {
+      const { error } = await fromTable("recovery_jobs")
+        .update({ status: "cancelled", completed_at: new Date().toISOString() })
+        .eq("id", job.sourceId)
+        .eq("user_id", userId);
+      if (error) return { ok: false, message: error.message };
+      return { ok: true, message: "Recovery cancelled" };
     }
     default:
       return { ok: false, reason: "not-supported", message: "This job kind cannot be cancelled mid-run." };
