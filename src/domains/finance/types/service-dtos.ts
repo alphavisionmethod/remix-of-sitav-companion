@@ -20,7 +20,11 @@ import type {
 import type {
   MarketRegimeResult,
   RiskBudgetResult,
+  FactorRiskDecomposition,
+  TradeReviewPacket,
+  CryptoExposureSummary,
 } from "@/packages/finance-contracts/investment-office";
+import type { EntityCapitalMap } from "@/packages/finance-contracts/family-office";
 
 // ── Subscriptions / Waste ────────────────────────────────────
 
@@ -229,13 +233,6 @@ export interface RegimeHistory {
 
 // ── Crypto exposure ─────────────────────────────────────────
 
-export interface CryptoExposureSummary {
-  totalValueCents: number;
-  topHoldings: { symbol: string; valueCents: number; percent: number }[];
-  byChain: { chain: string; valueCents: number }[];
-  byCustody: { custody: "self" | "exchange" | "cold-storage"; valueCents: number }[];
-}
-
 export interface CryptoRiskAssessment {
   exposure: CryptoExposureSummary;
   percentOfPortfolio: number;
@@ -246,12 +243,6 @@ export interface CryptoRiskAssessment {
 }
 
 // ── Portfolio risk ──────────────────────────────────────────
-
-export interface FactorRiskDecomposition {
-  factors: { name: string; exposure: number; contribution: number }[];
-  totalIdiosyncraticRisk: number;
-  totalSystematicRisk: number;
-}
 
 export interface PortfolioRiskReport {
   riskBudget: RiskBudgetResult;
@@ -264,15 +255,6 @@ export interface PortfolioRiskReport {
 
 // ── Execution ───────────────────────────────────────────────
 
-export interface TradeReviewPacket {
-  tradeId: string;
-  symbol: string;
-  executedAt: string;
-  slippageBps: number;
-  commissionCents: number;
-  fillQuality: "excellent" | "good" | "acceptable" | "poor";
-}
-
 export interface ExecutionQualityReport {
   trades: TradeReviewPacket[];
   avgSlippageBps: number;
@@ -283,16 +265,6 @@ export interface ExecutionQualityReport {
 }
 
 // ── Entity capital ──────────────────────────────────────────
-
-export interface EntityCapitalMap {
-  entityId: string;
-  entityName: string;
-  totalAssetsCents: number;
-  totalLiabilitiesCents: number;
-  netCapitalCents: number;
-  jurisdictionMinimumCents: number;
-  liquidAssetsCents: number;
-}
 
 export interface EntityCapitalReport {
   entity: EntityCapitalMap;
