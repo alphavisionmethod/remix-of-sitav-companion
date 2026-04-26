@@ -54,6 +54,7 @@ import {
   ADMIN_REQUIRED_SUBSCRIPTIONS,
 } from "./core-services/canonical-execution-path";
 import type { EntityProfile } from "@/contexts/EntityContext";
+import { registerCanonicalHandlers } from "./kernel-handlers";
 
 // ── Kernel Class ────────────────────────────────────────────────
 
@@ -180,6 +181,10 @@ export class SitaKernel {
 
     // ── Tier 5: Kernel Architecture & Security Model ────────
     this.kernelArch = new KernelSubsystem({ tpmAvailable: true });
+
+    // ── Register canonical capability handlers (business/finance/concierge) ──
+    // Without this, every useAction() write returns NO_HANDLER from the executor.
+    registerCanonicalHandlers(this.executor);
 
     // ── Admin/owner event subscriptions (same truth chain) ──
     this.eventBus.subscribe("*", () => { this._eventCount++; }, "kernel-counter");
