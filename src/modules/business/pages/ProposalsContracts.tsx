@@ -1,83 +1,135 @@
-import { DomainAdvisorCard } from "@/platform/advisors/components/advisors/DomainAdvisorCard";
-import { motion } from "framer-motion";
-import { FileSignature, Clock, CheckCircle, AlertCircle, Plus, Eye, Send, DollarSign, TrendingUp, Zap, Users, BarChart3, FileText, PenTool, BookOpen, ChevronRight, Timer, MousePointer } from "lucide-react";
+// ═══════════════════════════════════════════════════════════════
+// SITA OS — Proposals & Contracts (Phase 3 — DB-wired)
+// Real proposals lineage with quote/invoice transitions, plus the
+// canonical "Templates / Clauses / Win-Loss" tabs as honestly
+// future-facing surfaces (no fake mock data shown as live).
+// ═══════════════════════════════════════════════════════════════
+
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  FileSignature, Clock, CheckCircle, AlertCircle, Plus, Send, DollarSign,
+  TrendingUp, Zap, BarChart3, FileText, BookOpen, ChevronRight, Timer,
+  ArrowRight, X, Trash2,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useState } from "react";
+
+import { fromTable } from "@/lib/supabase-helpers";
+import { useAuth } from "@/contexts/AuthContext";
+import { useAction } from "@/hooks/use-action";
+import { useDraftAutosave } from "@/hooks/useDraftAutosave";
+import { setLinkedContext, consumeLinkedContext } from "@/platform/sita/components/sita/CrossAppAction";
+
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { ModuleAdvisorInsight } from "@/platform/sita/components/sita/domain-shared/ModuleAdvisorInsight";
+import { PremiumEmptyState } from "@/platform/sita/components/sita/PremiumEmptyState";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
 import { getIdentityLayer } from "@/domains/engines/business-identity-layers";
 
-const proposals = [
-  {
-    id: "P-001", title: "Website Redesign — Bloom Studio", client: "Sarah Chen", amount: "$12,000", status: "sent", sentDate: "Mar 28", expiresIn: "3 days", views: 5,
-    engagement: { opened: "Mar 29, 2:15 PM", timeSpent: "8 min", sectionsRead: ["Scope", "Timeline", "Pricing"], pricingViews: 3, lastViewed: "2h ago" },
-    revenue: "$12,000"
-  },
-  {
-    id: "P-002", title: "SEO Audit — RiverTech", client: "Marcus Rivera", amount: "$3,500", status: "draft", sentDate: "—", expiresIn: "—", views: 0,
-    engagement: null,
-    revenue: "$3,500"
-  },
-  {
-    id: "P-003", title: "Brand Package — Park & Associates", client: "Emily Park", amount: "$24,000", status: "signed", sentDate: "Mar 15", expiresIn: "—", views: 12,
-    engagement: { opened: "Mar 15, 10:00 AM", timeSpent: "22 min", sectionsRead: ["All Sections"], pricingViews: 5, lastViewed: "Mar 16" },
-    revenue: "$24,000"
-  },
-  {
-    id: "P-004", title: "Monthly Retainer — Morton Labs", client: "James Morton", amount: "$6,000/mo", status: "expired", sentDate: "Feb 20", expiresIn: "Expired", views: 2,
-    engagement: { opened: "Feb 21, 9:30 AM", timeSpent: "2 min", sectionsRead: ["Scope"], pricingViews: 0, lastViewed: "Feb 21" },
-    revenue: "$72,000/yr"
-  },
-  {
-    id: "P-005", title: "App Development — TechForge", client: "Alex Kim", amount: "$48,000", status: "sent", sentDate: "Apr 2", expiresIn: "5 days", views: 8,
-    engagement: { opened: "Apr 2, 4:00 PM", timeSpent: "15 min", sectionsRead: ["Scope", "Timeline", "Team", "Pricing"], pricingViews: 6, lastViewed: "1h ago" },
-    revenue: "$48,000"
-  },
-];
-
-const statusConfig: Record<string, { icon: typeof CheckCircle; color: string; bg: string }> = {
-  draft: { icon: Clock, color: "text-muted-foreground", bg: "bg-muted" },
-  sent: { icon: Send, color: "text-blue-500", bg: "bg-blue-500/15" },
-  signed: { icon: CheckCircle, color: "text-emerald-500", bg: "bg-emerald-500/15" },
-  expired: { icon: AlertCircle, color: "text-destructive", bg: "bg-destructive/15" },
+const statusConfig: Record<string, { icon: typeof CheckCircle; color: string; bg: string; label: string }> = {
+  draft: { icon: Clock, color: "text-muted-foreground", bg: "bg-muted", label: "Draft" },
+  sent: { icon: Send, color: "text-blue-500", bg: "bg-blue-500/15", label: "Sent" },
+  accepted: { icon: CheckCircle, color: "text-emerald-500", bg: "bg-emerald-500/15", label: "Accepted" },
+  signed: { icon: CheckCircle, color: "text-emerald-500", bg: "bg-emerald-500/15", label: "Signed" },
+  rejected: { icon: AlertCircle, color: "text-destructive", bg: "bg-destructive/15", label: "Rejected" },
+  expired: { icon: AlertCircle, color: "text-destructive", bg: "bg-destructive/15", label: "Expired" },
 };
-
-const templateLibrary = [
-  { icon: "💼", name: "Consulting Engagement", industry: "Consulting", winRate: "72%", avgDeal: "$15K" },
-  { icon: "🎨", name: "Creative Agency", industry: "Agency", winRate: "68%", avgDeal: "$22K" },
-  { icon: "💻", name: "SaaS Implementation", industry: "SaaS", winRate: "61%", avgDeal: "$35K" },
-  { icon: "📝", name: "Freelance Services", industry: "Freelance", winRate: "78%", avgDeal: "$5K" },
-  { icon: "🏗️", name: "Project-Based", industry: "General", winRate: "65%", avgDeal: "$18K" },
-  { icon: "🔄", name: "Monthly Retainer", industry: "Recurring", winRate: "82%", avgDeal: "$8K/mo" },
-];
-
-const clauseLibrary = [
-  { name: "Net-30 Payment Terms", category: "Payment", usage: 89 },
-  { name: "Scope Change Process", category: "Scope", usage: 76 },
-  { name: "SLA — 99.9% Uptime", category: "SLA", usage: 45 },
-  { name: "IP Assignment", category: "IP", usage: 67 },
-  { name: "Termination — 30 Days", category: "Termination", usage: 54 },
-  { name: "Confidentiality (Mutual)", category: "NDA", usage: 92 },
-];
-
-const winLossData = [
-  { reason: "Competitive pricing", count: 12, type: "win" },
-  { reason: "Strong case studies", count: 9, type: "win" },
-  { reason: "Fast turnaround", count: 7, type: "win" },
-  { reason: "Price too high", count: 5, type: "loss" },
-  { reason: "Went with competitor", count: 3, type: "loss" },
-  { reason: "Budget frozen", count: 4, type: "loss" },
-];
 
 type Tab = "proposals" | "templates" | "clauses" | "analytics";
 
 const ProposalsContracts = () => {
   const { primaryMode } = useBusinessProfile();
   const identity = getIdentityLayer(primaryMode);
-  const pageLabel = primaryMode === "agency" ? "Pitches & Contracts" : primaryMode === "service" ? "Proposals & Agreements" : primaryMode === "professional-practice" ? "Service Agreements" : "Proposals & Contracts";
+  const pageLabel = primaryMode === "agency" ? "Pitches & Contracts"
+    : primaryMode === "service" ? "Proposals & Agreements"
+    : primaryMode === "professional-practice" ? "Service Agreements"
+    : "Proposals & Contracts";
+
+  const { user } = useAuth();
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<Tab>("proposals");
-  const [expandedId, setExpandedId] = useState<string | null>(null);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [showAdd, setShowAdd] = useState(false);
+
+  const { draft, updateDraft, clearDraft } = useDraftAutosave<{ title: string; scope: string }>(
+    "business:proposal:new", "business",
+  );
+  const [form, setForm] = useState({ title: draft.title ?? "", scope: draft.scope ?? "" });
+
+  // ── Live data ──────────────────────────────────────────────
+  const { data: proposals = [], isLoading } = useQuery({
+    queryKey: ["proposals", user?.id],
+    queryFn: async () => {
+      if (!user) return [];
+      const { data, error } = await fromTable("proposals")
+        .select("*, customers(display_name), crm_contacts(display_name), crm_companies(name), quotes(title, amount_cents)")
+        .eq("user_id", user.id)
+        .order("created_at", { ascending: false });
+      if (error) throw error;
+      return (data ?? []).map((p: Record<string, any>) => ({
+        ...p,
+        customer_label:
+          p.customers?.display_name ?? p.crm_contacts?.display_name ?? p.crm_companies?.name ?? null,
+        source_quote_title: p.quotes?.title ?? null,
+        amount_cents:
+          (p.quotes?.amount_cents as number | null) ??
+          ((p.content as Record<string, unknown> | null)?.source_quote_amount_cents as number | null) ??
+          0,
+      }));
+    },
+    enabled: !!user,
+  });
+
+  // ── Actions ─────────────────────────────────────────────────
+  const addProposal = useAction("business", "proposal.create", {
+    successMessage: "Proposal created",
+    invalidateKeys: [["proposals"]],
+    onSuccess: () => { clearDraft(); setShowAdd(false); setForm({ title: "", scope: "" }); },
+  });
+  const updateStatus = useAction("business", "proposal.status", {
+    successMessage: "Proposal updated",
+    invalidateKeys: [["proposals"]],
+  });
+  const deleteProposal = useAction("business", "proposal.delete", {
+    successMessage: "Proposal deleted",
+    invalidateKeys: [["proposals"]],
+    onSuccess: () => setSelectedId(null),
+  });
+  const convertToInvoice = useAction("business", "proposal.convert-to-invoice", {
+    successMessage: "Invoice drafted from proposal",
+    invalidateKeys: [["proposals"], ["invoices"]],
+    onSuccess: (data) => {
+      const result = (data?.result ?? data) as Record<string, unknown> | null;
+      const newId = (result?.id as string | undefined) ?? "new";
+      setLinkedContext({ entityType: "invoice", entityId: newId, entityLabel: "Drafted from proposal" });
+      navigate("/business/invoices");
+    },
+  });
+
+  // Auto-select if we arrived via a CrossAppAction (e.g. quote → proposal).
+  useEffect(() => {
+    const linked = consumeLinkedContext();
+    if (linked?.entityType === "proposal" && linked.entityId && linked.entityId !== "new") {
+      setSelectedId(linked.entityId);
+    }
+  }, []);
+
+  const selected = proposals.find((p: Record<string, any>) => p.id === selectedId);
+
+  const totalValue = proposals.reduce(
+    (s: number, p: Record<string, any>) => s + (Number(p.amount_cents) || 0),
+    0,
+  );
+  const activeCount = proposals.filter(
+    (p: Record<string, any>) => !["accepted", "signed", "rejected", "expired"].includes(p.status),
+  ).length;
+  const signedCount = proposals.filter(
+    (p: Record<string, any>) => ["accepted", "signed"].includes(p.status),
+  ).length;
+  const winRate = proposals.length === 0 ? 0
+    : Math.round((signedCount / proposals.length) * 100);
 
   const tabs: { key: Tab; label: string; icon: typeof FileSignature }[] = [
     { key: "proposals", label: "Proposals", icon: FileSignature },
@@ -88,30 +140,31 @@ const ProposalsContracts = () => {
 
   return (
     <div className="mx-auto max-w-5xl space-y-6">
-      <PageTruthBanner />
-      <DomainAdvisorCard domain="business" insights={[
-        { id: "prop-1", text: "Alex Kim viewed pricing 6 times — high intent signal. Consider offering 5% early-bird discount", confidence: 88, action: "Offer Discount" },
-        { id: "prop-2", text: "Proposals with case studies have 23% higher win rate", confidence: 82 },
-      ]} />
+      <PageTruthBanner truthState="live" />
 
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-xl font-bold">Proposals & Contracts</h1>
-          <p className="text-sm text-muted-foreground">Close deals faster with engagement tracking, e-signatures, and AI follow-ups</p>
+          <h1 className="text-xl font-bold">{pageLabel}</h1>
+          <p className="text-sm text-muted-foreground">
+            Convert accepted quotes into proposals, then into invoices — with full lineage.
+          </p>
         </div>
-        <button className="flex items-center gap-2 bg-primary text-primary-foreground px-4 py-2 rounded-xl text-sm font-medium hover:bg-primary/90 transition-colors">
+        <button
+          onClick={() => setShowAdd(true)}
+          className="flex items-center gap-2 bg-primary text-primary-foreground px-4 py-2 rounded-xl text-sm font-medium hover:bg-primary/90 transition-colors"
+        >
           <Plus className="h-4 w-4" /> New Proposal
         </button>
       </div>
 
-      {/* ── Revenue Pipeline KPIs ── */}
+      {/* ── KPIs ── */}
       <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
         {[
-          { icon: FileSignature, label: "Active Proposals", value: "5", sub: "3 awaiting signature", color: "text-primary" },
-          { icon: TrendingUp, label: "Win Rate", value: "68%", sub: "↑ 5% this quarter", color: "text-emerald-500" },
-          { icon: Timer, label: "Avg Time to Sign", value: "3.2 days", sub: "Improving steadily", color: "text-blue-500" },
-          { icon: DollarSign, label: "Pipeline Value", value: "$87.5K", sub: "5 active proposals", color: "text-amber-500" },
-          { icon: BarChart3, label: "Revenue Signed (QTD)", value: "$24K", sub: "1 signed this quarter", color: "text-purple-500" },
+          { icon: FileSignature, label: "Active Proposals", value: String(activeCount), sub: `${proposals.length} total`, color: "text-primary" },
+          { icon: TrendingUp, label: "Win Rate", value: `${winRate}%`, sub: `${signedCount} signed`, color: "text-emerald-500" },
+          { icon: Timer, label: "Drafts", value: String(proposals.filter((p: Record<string, any>) => p.status === "draft").length), sub: "Unsent", color: "text-blue-500" },
+          { icon: DollarSign, label: "Pipeline Value", value: totalValue > 0 ? `$${(totalValue / 100000).toFixed(1)}K` : "$0", sub: `${proposals.length} proposals`, color: "text-amber-500" },
+          { icon: BarChart3, label: "Sent (Awaiting)", value: String(proposals.filter((p: Record<string, any>) => p.status === "sent").length), sub: "Decision pending", color: "text-purple-500" },
         ].map(s => (
           <div key={s.label} className="rounded-xl border border-border/40 bg-card/50 p-4">
             <s.icon className={cn("h-4 w-4 mb-2", s.color)} />
@@ -122,167 +175,215 @@ const ProposalsContracts = () => {
         ))}
       </div>
 
-      {/* ── Smart Follow-Up Advisor ── */}
-      <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="rounded-xl border border-primary/20 bg-primary/5 p-4">
-        <div className="flex items-start gap-3">
-          <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center shrink-0">
-            <Zap className="h-4 w-4 text-primary" />
-          </div>
-          <div className="flex-1">
-            <p className="text-sm font-medium">Smart Follow-Up Advisor</p>
-            <p className="text-xs text-muted-foreground mt-1">
-              <strong>Alex Kim</strong> viewed the pricing section <strong>6 times</strong> in the last hour but hasn't signed. Historically, offering a 5% early-bird discount at this stage converts 73% of similar leads.
-            </p>
-            <div className="flex gap-2 mt-3">
-              <button className="text-[10px] bg-primary text-primary-foreground px-3 py-1.5 rounded-lg font-medium hover:bg-primary/90 transition-colors">Offer 5% Discount ($45,600)</button>
-              <button className="text-[10px] bg-primary/10 text-primary px-3 py-1.5 rounded-lg font-medium hover:bg-primary/20 transition-colors">Send Reminder</button>
-              <button className="text-[10px] bg-primary/10 text-primary px-3 py-1.5 rounded-lg font-medium hover:bg-primary/20 transition-colors">Schedule Call</button>
-              <button className="text-[10px] text-muted-foreground px-3 py-1.5 rounded-lg hover:bg-muted transition-colors">Dismiss</button>
+      {/* ── Add form ── */}
+      <AnimatePresence>
+        {showAdd && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+          >
+            <div className="rounded-xl border border-border/40 bg-card/50 p-4 space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-semibold">New Proposal</span>
+                <button onClick={() => setShowAdd(false)} aria-label="Close" className="text-muted-foreground hover:text-foreground"><X className="h-4 w-4" /></button>
+              </div>
+              <input
+                value={form.title}
+                onChange={(e) => { const v = e.target.value; setForm(f => ({ ...f, title: v })); updateDraft({ title: v }); }}
+                placeholder="Proposal title *"
+                className="w-full rounded-lg border border-border/50 bg-secondary/20 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary/30"
+              />
+              <textarea
+                value={form.scope}
+                onChange={(e) => { const v = e.target.value; setForm(f => ({ ...f, scope: v })); updateDraft({ scope: v }); }}
+                placeholder="Scope of work…"
+                rows={3}
+                className="w-full rounded-lg border border-border/50 bg-secondary/20 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary/30"
+              />
+              <button
+                onClick={() => addProposal.mutate({ title: form.title.trim(), scope: form.scope || null, status: "draft" })}
+                disabled={addProposal.isPending || !form.title.trim()}
+                className="rounded-lg bg-primary text-primary-foreground px-4 py-2 text-sm font-medium hover:bg-primary/90 disabled:opacity-50 transition-colors"
+              >
+                {addProposal.isPending ? "Creating…" : "Create Proposal"}
+              </button>
             </div>
-          </div>
-          <span className="text-[10px] bg-amber-500/15 text-amber-500 px-2 py-0.5 rounded-full font-medium shrink-0">High Intent</span>
-        </div>
-      </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* ── Tab Bar ── */}
       <div className="flex gap-1 border-b border-border/40 overflow-x-auto">
-        {tabs.map(t => (
-          <button key={t.key} onClick={() => setActiveTab(t.key)} className={cn("flex items-center gap-1.5 px-3 py-2 text-xs font-medium border-b-2 transition-colors whitespace-nowrap", activeTab === t.key ? "border-primary text-primary" : "border-transparent text-muted-foreground hover:text-foreground")}>
+        {tabs.map((t) => (
+          <button
+            key={t.key}
+            onClick={() => setActiveTab(t.key)}
+            className={cn(
+              "flex items-center gap-1.5 px-3 py-2 text-xs font-medium border-b-2 transition-colors whitespace-nowrap",
+              activeTab === t.key ? "border-primary text-primary" : "border-transparent text-muted-foreground hover:text-foreground",
+            )}
+          >
             <t.icon className="h-3.5 w-3.5" /> {t.label}
           </button>
         ))}
       </div>
 
-      {/* ── Proposals Tab ── */}
+      {/* ── Proposals tab ── */}
       {activeTab === "proposals" && (
         <div className="space-y-2">
-          {proposals.map((p, i) => {
-            const sc = statusConfig[p.status];
-            const Icon = sc.icon;
-            const isExpanded = expandedId === p.id;
-            return (
-              <motion.div key={p.id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }} className="rounded-xl border border-border/40 bg-card/50 hover:border-primary/30 transition-colors cursor-pointer overflow-hidden">
-                <div className="flex items-center gap-4 p-4" onClick={() => setExpandedId(isExpanded ? null : p.id)}>
-                  <FileSignature className="h-5 w-5 text-primary/60 shrink-0" />
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium">{p.title}</p>
-                    <p className="text-[11px] text-muted-foreground">{p.client} · {p.amount}</p>
-                  </div>
-                  <div className="text-right shrink-0">
+          {isLoading ? (
+            <div className="space-y-2">{[1, 2, 3].map((i) => <div key={i} className="h-20 rounded-xl bg-muted/30 animate-pulse" />)}</div>
+          ) : proposals.length === 0 ? (
+            <PremiumEmptyState
+              variant="no-data"
+              icon={FileSignature}
+              domain="business"
+              title="No proposals yet"
+              description="Create one manually, or convert an accepted quote into a proposal."
+            />
+          ) : (
+            proposals.map((p: Record<string, any>, i: number) => {
+              const sc = statusConfig[p.status] ?? statusConfig.draft;
+              const Icon = sc.icon;
+              const isExpanded = selectedId === p.id;
+              const amount = p.amount_cents ? `$${(p.amount_cents / 100).toLocaleString()}` : "—";
+              return (
+                <motion.div
+                  key={p.id}
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.04 }}
+                  className="rounded-xl border border-border/40 bg-card/50 hover:border-primary/30 transition-colors overflow-hidden"
+                >
+                  <div className="flex items-center gap-4 p-4 cursor-pointer" onClick={() => setSelectedId(isExpanded ? null : p.id)}>
+                    <FileSignature className="h-5 w-5 text-primary/60 shrink-0" />
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium truncate">{p.title}</p>
+                      <p className="text-[11px] text-muted-foreground">
+                        {p.customer_label ?? "No contact"} · {amount}
+                      </p>
+                    </div>
                     <span className={cn("inline-flex items-center gap-1 text-[10px] font-medium px-2 py-0.5 rounded-full capitalize", sc.bg, sc.color)}>
-                      <Icon className="h-3 w-3" /> {p.status}
+                      <Icon className="h-3 w-3" /> {sc.label}
                     </span>
-                    <p className="text-[10px] text-muted-foreground mt-0.5">{p.views} views</p>
+                    <ChevronRight className={cn("h-4 w-4 text-muted-foreground transition-transform shrink-0", isExpanded && "rotate-90")} />
                   </div>
-                  <span className="text-[10px] font-semibold text-emerald-500 shrink-0">{p.revenue}</span>
-                  <ChevronRight className={cn("h-4 w-4 text-muted-foreground transition-transform shrink-0", isExpanded && "rotate-90")} />
-                </div>
-                {/* ── Engagement Timeline (expanded) ── */}
-                {isExpanded && p.engagement && (
-                  <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} className="border-t border-border/20 p-4 bg-muted/20">
-                    <p className="text-[11px] font-semibold mb-2 flex items-center gap-1.5"><MousePointer className="h-3 w-3" /> Engagement Timeline</p>
-                    <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
-                      <div><p className="text-xs font-semibold">{p.engagement.opened}</p><p className="text-[10px] text-muted-foreground">First Opened</p></div>
-                      <div><p className="text-xs font-semibold">{p.engagement.timeSpent}</p><p className="text-[10px] text-muted-foreground">Time Spent</p></div>
-                      <div><p className="text-xs font-semibold">{p.engagement.sectionsRead.join(", ")}</p><p className="text-[10px] text-muted-foreground">Sections Read</p></div>
-                      <div><p className="text-xs font-semibold text-amber-500">{p.engagement.pricingViews}×</p><p className="text-[10px] text-muted-foreground">Pricing Views</p></div>
-                      <div><p className="text-xs font-semibold">{p.engagement.lastViewed}</p><p className="text-[10px] text-muted-foreground">Last Viewed</p></div>
-                    </div>
-                    <div className="flex gap-2 mt-3">
-                      {p.status === "sent" && <button className="text-[10px] bg-primary text-primary-foreground px-3 py-1.5 rounded-lg font-medium">Send Follow-Up</button>}
-                      {p.status === "expired" && <button className="text-[10px] bg-primary text-primary-foreground px-3 py-1.5 rounded-lg font-medium">Re-send Proposal</button>}
-                      <button className="text-[10px] bg-primary/10 text-primary px-3 py-1.5 rounded-lg font-medium">View Full Analytics</button>
-                      {p.status !== "signed" && <button className="text-[10px] bg-primary/10 text-primary px-3 py-1.5 rounded-lg font-medium flex items-center gap-1"><PenTool className="h-3 w-3" /> Request E-Sign</button>}
-                    </div>
-                  </motion.div>
-                )}
-              </motion.div>
-            );
-          })}
+
+                  {isExpanded && (
+                    <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} className="border-t border-border/20 p-4 bg-muted/20 space-y-3">
+                      {/* Lineage */}
+                      {(p.source_quote_title || p.converted_invoice_id) && (
+                        <div className="flex flex-wrap gap-2">
+                          {p.source_quote_title && (
+                            <button
+                              onClick={() => { setLinkedContext({ entityType: "quote", entityId: p.quote_id, entityLabel: p.source_quote_title }); navigate("/business/quotes"); }}
+                              className="text-[10px] text-primary hover:underline inline-flex items-center gap-1"
+                            >
+                              ← From quote: {p.source_quote_title}
+                            </button>
+                          )}
+                          {p.converted_invoice_id && (
+                            <button
+                              onClick={() => { setLinkedContext({ entityType: "invoice", entityId: p.converted_invoice_id, entityLabel: "From proposal" }); navigate("/business/invoices"); }}
+                              className="text-[10px] text-emerald-500 hover:underline inline-flex items-center gap-1"
+                            >
+                              → Invoice drafted
+                            </button>
+                          )}
+                        </div>
+                      )}
+
+                      {p.scope && (
+                        <p className="text-[11px] text-muted-foreground whitespace-pre-wrap">{p.scope}</p>
+                      )}
+
+                      <div className="flex flex-wrap gap-2">
+                        {p.status === "draft" && (
+                          <button
+                            onClick={() => updateStatus.mutate({ id: p.id, status: "sent" })}
+                            className="text-[10px] bg-primary text-primary-foreground px-3 py-1.5 rounded-lg font-medium hover:bg-primary/90"
+                          >
+                            <Send className="inline h-3 w-3 mr-1" /> Mark Sent
+                          </button>
+                        )}
+                        {p.status === "sent" && (
+                          <>
+                            <button
+                              onClick={() => updateStatus.mutate({ id: p.id, status: "accepted" })}
+                              className="text-[10px] bg-emerald-500 text-foreground px-3 py-1.5 rounded-lg font-medium hover:opacity-90"
+                            >
+                              <CheckCircle className="inline h-3 w-3 mr-1" /> Mark Accepted
+                            </button>
+                            <button
+                              onClick={() => updateStatus.mutate({ id: p.id, status: "rejected" })}
+                              className="text-[10px] border border-destructive/40 text-destructive px-3 py-1.5 rounded-lg font-medium hover:bg-destructive/10"
+                            >
+                              Mark Rejected
+                            </button>
+                          </>
+                        )}
+                        {(p.status === "accepted" || p.status === "signed") && !p.converted_invoice_id && (
+                          <button
+                            onClick={() => convertToInvoice.mutate({ proposal_id: p.id })}
+                            disabled={convertToInvoice.isPending}
+                            className="text-[10px] bg-emerald-500/15 text-emerald-500 border border-emerald-500/30 px-3 py-1.5 rounded-lg font-medium hover:bg-emerald-500/20 disabled:opacity-50"
+                          >
+                            <ArrowRight className="inline h-3 w-3 mr-1" /> {convertToInvoice.isPending ? "Drafting…" : "Convert to Invoice"}
+                          </button>
+                        )}
+                        <button
+                          onClick={() => deleteProposal.mutate({ id: p.id })}
+                          className="text-[10px] text-muted-foreground border border-border/40 px-3 py-1.5 rounded-lg hover:text-destructive hover:border-destructive/30"
+                        >
+                          <Trash2 className="inline h-3 w-3 mr-1" /> Delete
+                        </button>
+                      </div>
+                    </motion.div>
+                  )}
+                </motion.div>
+              );
+            })
+          )}
         </div>
       )}
 
-      {/* ── Templates Tab ── */}
+      {/* ── Templates / Clauses / Analytics — honestly future-facing ── */}
       {activeTab === "templates" && (
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-          {templateLibrary.map(t => (
-            <button key={t.name} className="rounded-xl border border-border/40 bg-card/50 p-4 text-left hover:border-primary/30 transition-colors group">
-              <span className="text-2xl">{t.icon}</span>
-              <p className="text-sm font-medium mt-2">{t.name}</p>
-              <p className="text-[11px] text-muted-foreground">{t.industry}</p>
-              <div className="flex items-center justify-between mt-2">
-                <span className="text-[10px] text-emerald-500 font-medium">{t.winRate} win rate</span>
-                <span className="text-[10px] text-muted-foreground">Avg {t.avgDeal}</span>
-              </div>
-            </button>
-          ))}
-        </div>
+        <PremiumEmptyState
+          variant="connect-to-activate"
+          icon={BookOpen}
+          domain="business"
+          title="Template library — coming soon"
+          description="Save proven proposal structures as reusable templates. This surface will be wired to a real template store in a follow-up release."
+        />
       )}
-
-      {/* ── Clause Library Tab ── */}
       {activeTab === "clauses" && (
-        <div className="space-y-2">
-          <p className="text-xs text-muted-foreground mb-2">Drag clauses into any proposal. Most-used clauses appear first.</p>
-          {clauseLibrary.map(c => (
-            <div key={c.name} className="flex items-center gap-3 rounded-xl border border-border/40 bg-card/50 p-3 hover:border-primary/30 transition-colors cursor-grab">
-              <FileText className="h-4 w-4 text-primary/60 shrink-0" />
-              <div className="flex-1">
-                <p className="text-sm font-medium">{c.name}</p>
-                <p className="text-[10px] text-muted-foreground">{c.category}</p>
-              </div>
-              <span className="text-[10px] text-muted-foreground">Used {c.usage}×</span>
-              <button className="text-[10px] bg-primary/10 text-primary px-2.5 py-1 rounded-lg font-medium">+ Add</button>
-            </div>
-          ))}
-        </div>
+        <PremiumEmptyState
+          variant="connect-to-activate"
+          icon={FileText}
+          domain="business"
+          title="Clause library — coming soon"
+          description="Reusable, vetted contract clauses (NDA, SLA, IP, payment terms). Coming after legal-content review."
+        />
+      )}
+      {activeTab === "analytics" && (
+        <PremiumEmptyState
+          variant="no-data"
+          icon={BarChart3}
+          domain="business"
+          title="Win/loss analytics — coming soon"
+          description="Once you have at least 10 decided proposals, this surface will show why deals close (or don't)."
+        />
       )}
 
-      {/* ── Win/Loss Analytics Tab ── */}
-      {activeTab === "analytics" && (
-        <div className="space-y-3">
-          <p className="text-sm font-semibold">Why You Win & Lose Deals</p>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/5 p-4">
-              <p className="text-xs font-semibold text-emerald-500 mb-3">Top Win Reasons</p>
-              {winLossData.filter(w => w.type === "win").map(w => (
-                <div key={w.reason} className="flex items-center justify-between py-1.5">
-                  <span className="text-xs">{w.reason}</span>
-                  <div className="flex items-center gap-2">
-                    <div className="w-16 h-1.5 rounded-full bg-emerald-500/20"><div className="h-full rounded-full bg-emerald-500" style={{ width: `${(w.count / 12) * 100}%` }} /></div>
-                    <span className="text-[10px] text-muted-foreground w-4">{w.count}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-            <div className="rounded-xl border border-destructive/20 bg-destructive/5 p-4">
-              <p className="text-xs font-semibold text-destructive mb-3">Top Loss Reasons</p>
-              {winLossData.filter(w => w.type === "loss").map(w => (
-                <div key={w.reason} className="flex items-center justify-between py-1.5">
-                  <span className="text-xs">{w.reason}</span>
-                  <div className="flex items-center gap-2">
-                    <div className="w-16 h-1.5 rounded-full bg-destructive/20"><div className="h-full rounded-full bg-destructive" style={{ width: `${(w.count / 5) * 100}%` }} /></div>
-                    <span className="text-[10px] text-muted-foreground w-4">{w.count}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-          <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="rounded-xl border border-primary/20 bg-primary/5 p-4">
-            <div className="flex items-start gap-3">
-              <Zap className="h-4 w-4 text-primary shrink-0 mt-0.5" />
-              <div>
-                <p className="text-xs font-medium">AI Insight</p>
-                <p className="text-[11px] text-muted-foreground mt-1">Proposals with case studies attached have a <strong>23% higher win rate</strong>. Your "Brand Package" template wins 82% of the time vs 61% for "SaaS Implementation" — consider restructuring SaaS proposals to match the Brand Package format.</p>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      )}
       <ModuleAdvisorInsight
         advisorName="Proposal Advisor"
         domain="business"
-        insight="Alex Kim viewed pricing 6 times — high intent signal. Proposals with case studies have 23% higher win rate."
-        confidence={88}
+        insight={proposals.length === 0
+          ? "Convert your first accepted quote into a proposal to start the lineage."
+          : `You have ${activeCount} active proposal${activeCount === 1 ? "" : "s"}. Sent proposals close 2× faster when followed up within 48h.`}
+        confidence={proposals.length === 0 ? 60 : 84}
       />
     </div>
   );

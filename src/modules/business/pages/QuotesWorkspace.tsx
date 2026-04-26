@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
 import { getModuleAdaptation } from "@/domains/engines/business-module-adaptations";
 import { motion, AnimatePresence } from "framer-motion";
@@ -19,12 +19,16 @@ import { cn } from "@/lib/utils";
 import { useAuth } from "@/contexts/AuthContext";
 import { useAction } from "@/hooks/use-action";
 import { useDraftAutosave } from "@/hooks/useDraftAutosave";
+import { setLinkedContext, consumeLinkedContext } from "@/platform/sita/components/sita/CrossAppAction";
+import { useNavigate } from "react-router-dom";
+import { ArrowRight } from "lucide-react";
 
 const QuotesWorkspace = () => {
   const { primaryMode } = useBusinessProfile();
   const { user } = useAuth();
   const moduleConfig = getModuleAdaptation("quotes", primaryMode);
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
   const [tab, setTab] = useState("all");
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [showAdd, setShowAdd] = useState(false);
@@ -40,16 +44,70 @@ const QuotesWorkspace = () => {
     queryKey: ["quotes", user?.id],
     queryFn: async () => {
       if (!user) return [];
-      const { data, error } = await fromTable("quotes").select("*, customers(name)").eq("user_id", user.id).order("created_at", { ascending: false });
+      const { data, error } = await fromTable("quotes")
+        .select("*, customers(display_name), crm_contacts(display_name), crm_companies(name), crm_opportunities(title)")
+        .eq("user_id", user.id)
+        .order("created_at", { ascending: false });
       if (error) throw error;
-      return data;
+      // Normalize so legacy UI bindings keep working: total <- amount_cents/100, expiry_date <- expires_at, customer label.
+      return (data ?? []).map((q: Record<string, any>) => ({
+        ...q,
+        total: typeof q.amount_cents === "number" ? q.amount_cents / 100 : 0,
+        expiry_date: q.expires_at ?? null,
+        customer_label:
+          q.customers?.display_name ??
+          q.crm_contacts?.display_name ??
+          q.crm_companies?.name ??
+          null,
+        opportunity_title: q.crm_opportunities?.title ?? null,
+      }));
     },
     enabled: !!user,
   });
 
-  const addQuote = useAction("business", "quote.create");
-  const updateStatus = useAction("business", "status.update", { invalidateKeys: [["quotes"]] });
-  const deleteQuote = useAction("business", "quote.delete", { invalidateKeys: [["quotes"]] });
+  const addQuote = useAction("business", "quote.create", {
+    successMessage: "Quote created",
+    invalidateKeys: [["quotes"]],
+  });
+  const updateStatus = useAction("business", "status.update", {
+    successMessage: "Quote updated",
+    invalidateKeys: [["quotes"]],
+  });
+  const deleteQuote = useAction("business", "quote.delete", {
+    successMessage: "Quote deleted",
+    invalidateKeys: [["quotes"]],
+    onSuccess: () => setSelectedId(null),
+  });
+
+  // Phase 3 — quote → proposal and quote → invoice transitions.
+  const convertToProposal = useAction("business", "quote.convert-to-proposal", {
+    successMessage: "Proposal drafted",
+    invalidateKeys: [["quotes"], ["proposals"]],
+    onSuccess: (data) => {
+      const result = (data?.result ?? data) as Record<string, unknown> | null;
+      const newId = (result?.id as string | undefined) ?? "new";
+      setLinkedContext({ entityType: "proposal", entityId: newId, entityLabel: "Drafted from quote" });
+      navigate("/business/proposals");
+    },
+  });
+  const convertToInvoice = useAction("business", "quote.convert-to-invoice", {
+    successMessage: "Invoice drafted",
+    invalidateKeys: [["quotes"], ["invoices"]],
+    onSuccess: (data) => {
+      const result = (data?.result ?? data) as Record<string, unknown> | null;
+      const newId = (result?.id as string | undefined) ?? "new";
+      setLinkedContext({ entityType: "invoice", entityId: newId, entityLabel: "Drafted from quote" });
+      navigate("/business/invoices");
+    },
+  });
+
+  // Auto-select if we arrived via a CrossAppAction conversion.
+  useEffect(() => {
+    const linked = consumeLinkedContext();
+    if (linked?.entityType === "quote" && linked.entityId && linked.entityId !== "new" && linked.entityId !== "all") {
+      setSelectedId(linked.entityId);
+    }
+  }, []);
 
   const selected = quotes.find((q: Record<string, any>) => q.id === selectedId);
   const filtered = tab === "all" ? quotes
@@ -63,7 +121,7 @@ const QuotesWorkspace = () => {
   const queueItems = filtered.map((q: Record<string, any>) => ({
     id: q.id,
     label: q.title || "(Untitled)",
-    meta: `${q.customers?.name || "No customer"} · ${q.total ? `$${Number(q.total).toLocaleString()}` : "—"}`,
+    meta: `${q.customer_label || "No contact"} · ${q.total ? `$${Number(q.total).toLocaleString()}` : "—"}`,
     urgency: (q.status === "draft" ? "normal" : q.status === "sent" ? "high" : "low") as "normal" | "high" | "low",
     badge: <ExecutionBadge state={q.status === "accepted" ? "complete" : q.status === "sent" ? "executing" : "drafted"} />,
   }));
@@ -71,7 +129,16 @@ const QuotesWorkspace = () => {
   const listPane = (
     <div className="p-3 space-y-3">
       <PageTruthBanner truthState="live" />
-      <CrossAppAction to="/business/invoices" label="Convert to Invoice" variant="chip" context={{ entityType: "quote", entityId: selectedId || "all" }} />
+      {selected && (
+        <button
+          onClick={() => convertToInvoice.mutate({ quote_id: selected.id })}
+          disabled={convertToInvoice.isPending || !!selected.converted_invoice_id}
+          className="inline-flex items-center gap-1 rounded-full border border-[hsl(152_55%_48%/0.15)] bg-[hsl(152_55%_48%/0.08)] text-[hsl(152_55%_48%)] px-2.5 py-0.5 text-[10px] font-medium hover:brightness-110 disabled:opacity-50 transition-all micro-press"
+        >
+          <ArrowRight className="h-2.5 w-2.5" />
+          {selected.converted_invoice_id ? "Already invoiced" : convertToInvoice.isPending ? "Drafting…" : "Convert to Invoice"}
+        </button>
+      )}
 
       <div className="flex items-center justify-between px-1">
         <h3 className="text-[13px] font-semibold text-[hsl(0_0%_85%)]">{moduleConfig.title}</h3>
@@ -131,12 +198,43 @@ const QuotesWorkspace = () => {
       <HeroCard
         title={selected.title}
         metric={selected.total ? `$${Number(selected.total).toLocaleString()}` : "—"}
-        subtitle={`${selected.customers?.name || "No customer"} · Created ${new Date(selected.created_at).toLocaleDateString()}`}
+        subtitle={`${selected.customer_label || "No contact"} · Created ${new Date(selected.created_at).toLocaleDateString()}`}
         accentFrom="hsl(265 55% 58%)"
         accentTo="hsl(285 50% 50%)"
       >
         <ExecutionBadge state={selected.status === "accepted" ? "complete" : selected.status === "sent" ? "executing" : "drafted"} />
       </HeroCard>
+
+      {/* Lineage badges — upstream/downstream */}
+      {(selected.opportunity_title || selected.converted_proposal_id || selected.converted_invoice_id) && (
+        <AppSurface level={2} className="p-3 space-y-1.5">
+          <p className="text-[10px] font-semibold text-[hsl(0_0%_50%)] uppercase tracking-wider">Revenue Lineage</p>
+          {selected.opportunity_title && (
+            <button
+              onClick={() => { setLinkedContext({ entityType: "opportunity", entityId: selected.opportunity_id, entityLabel: selected.opportunity_title }); navigate("/business/opportunities"); }}
+              className="text-[11px] text-[hsl(265_55%_68%)] hover:underline"
+            >
+              ← From opportunity: {selected.opportunity_title}
+            </button>
+          )}
+          {selected.converted_proposal_id && (
+            <button
+              onClick={() => { setLinkedContext({ entityType: "proposal", entityId: selected.converted_proposal_id, entityLabel: "From quote" }); navigate("/business/proposals"); }}
+              className="text-[11px] text-[hsl(152_55%_58%)] hover:underline block"
+            >
+              → Proposal drafted
+            </button>
+          )}
+          {selected.converted_invoice_id && (
+            <button
+              onClick={() => { setLinkedContext({ entityType: "invoice", entityId: selected.converted_invoice_id, entityLabel: "From quote" }); navigate("/business/invoices"); }}
+              className="text-[11px] text-[hsl(152_55%_58%)] hover:underline block"
+            >
+              → Invoice drafted
+            </button>
+          )}
+        </AppSurface>
+      )}
 
       <AppSurface level={2} className="p-4 space-y-2.5">
         <div className="flex justify-between text-[12px]">
@@ -163,6 +261,15 @@ const QuotesWorkspace = () => {
         )}
         {selected.status === "sent" && (
           <ActionCard title="Mark Accepted" description="Client accepted this quote" accentColor="hsl(152 55% 48%)" onApprove={() => updateStatus.mutate({ id: selected.id, status: "accepted" })} className="flex-1" />
+        )}
+        {selected.status === "accepted" && !selected.converted_proposal_id && !selected.converted_invoice_id && (
+          <button
+            onClick={() => convertToProposal.mutate({ quote_id: selected.id })}
+            disabled={convertToProposal.isPending}
+            className="flex-1 rounded-lg bg-[hsl(265_55%_58%)] hover:bg-[hsl(265_55%_50%)] text-foreground text-[12px] font-medium py-2 px-3 transition-colors micro-press disabled:opacity-50"
+          >
+            {convertToProposal.isPending ? "Drafting…" : "Convert to Proposal"}
+          </button>
         )}
         <button onClick={() => deleteQuote.mutate({ id: selected.id })} className="rounded-lg border border-[hsl(0_0%_100%/0.06)] px-3 py-2 text-xs text-[hsl(0_0%_50%)] hover:text-[hsl(0_70%_55%)] transition-colors micro-press">
           <Trash2 className="h-3.5 w-3.5" />

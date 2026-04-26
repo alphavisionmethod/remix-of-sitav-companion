@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
@@ -9,7 +10,7 @@ import { PremiumEmptyState } from "@/platform/sita/components/sita/PremiumEmptyS
 import { useInvoiceGenerate, useInvoiceSend } from "@/hooks/use-backend-actions";
 import { InvoiceDetailPane } from "@/modules/business/components/business/InvoiceDetailPane";
 import { cn } from "@/lib/utils";
-import { CrossAppAction } from "@/platform/sita/components/sita/CrossAppAction";
+import { CrossAppAction, consumeLinkedContext } from "@/platform/sita/components/sita/CrossAppAction";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
 import { getIdentityLayer } from "@/domains/engines/business-identity-layers";
 import { useDraftAutosave } from "@/hooks/useDraftAutosave";
@@ -52,18 +53,42 @@ const InvoicesCollections = () => {
     queryKey: ["invoices", user?.id],
     queryFn: async () => {
       if (!user) return [];
-      const { data, error } = await fromTable("invoices").select("*, customers(name)").eq("user_id", user.id).order("created_at", { ascending: false });
+      const { data, error } = await fromTable("invoices")
+        .select("*, customers(display_name), crm_contacts(display_name), crm_companies(name), quotes(title, quote_number), proposals(title)")
+        .eq("user_id", user.id)
+        .order("created_at", { ascending: false });
       if (error) throw error;
-      return data.map((inv: any) => {
-        const due = new Date(inv.due_date);
+      return (data ?? []).map((inv: any) => {
+        // Schema is amount_cents + due_at; preserve legacy field names so InvoiceDetailPane keeps working.
+        const dueRaw = inv.due_at ?? inv.due_date;
+        const due = dueRaw ? new Date(dueRaw) : new Date();
         const now = new Date();
-        const daysOverdue = inv.status !== "paid" ? Math.max(0, Math.floor((now.getTime() - due.getTime()) / 86400000)) : 0;
+        const daysOverdue = inv.status !== "paid" && dueRaw
+          ? Math.max(0, Math.floor((now.getTime() - due.getTime()) / 86400000)) : 0;
         const computedStatus = inv.status === "paid" ? "paid" : daysOverdue > 0 ? "overdue" : inv.status;
-        return { ...inv, daysOverdue, computedStatus };
+        return {
+          ...inv,
+          amount: typeof inv.amount_cents === "number" ? inv.amount_cents / 100 : 0,
+          due_date: dueRaw,
+          daysOverdue,
+          computedStatus,
+          customer_label:
+            inv.customers?.display_name ?? inv.crm_contacts?.display_name ?? inv.crm_companies?.name ?? null,
+          source_quote_title: inv.quotes?.title ?? null,
+          source_proposal_title: inv.proposals?.title ?? null,
+        };
       });
     },
     enabled: !!user,
   });
+
+  // If we arrived via a quote→invoice or proposal→invoice transition, auto-select the new invoice.
+  useEffect(() => {
+    const linked = consumeLinkedContext();
+    if (linked?.entityType === "invoice" && linked.entityId && linked.entityId !== "new" && linked.entityId !== "all") {
+      setSelectedId(linked.entityId);
+    }
+  }, []);
 
   const addInvoice = useAction("finance", "invoice.create", {
     successMessage: "Invoice created",
