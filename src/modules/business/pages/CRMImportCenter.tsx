@@ -10,31 +10,16 @@ import { CRMImportTemplates, CRMImportQuality } from "@/modules/business/compone
 import { useCRMImportJobs } from "@/hooks/use-crm-data";
 import { format } from "date-fns";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
-
-const PLATFORMS = [
-  { id: "hubspot", name: "HubSpot", icon: "🟠", description: "Import from HubSpot CRM", authType: "oauth" as const, color: "#FF7A59" },
-  { id: "salesforce", name: "Salesforce", icon: "☁️", description: "Import from Salesforce", authType: "oauth" as const, color: "#00A1E0" },
-  { id: "pipedrive", name: "Pipedrive", icon: "🟢", description: "Import from Pipedrive", authType: "oauth" as const, color: "#017737" },
-  { id: "zoho", name: "Zoho CRM", icon: "🔴", description: "Import from Zoho CRM", authType: "oauth" as const, color: "#DC2626" },
-  { id: "google-contacts", name: "Google Contacts", icon: "📇", description: "Import from Google", authType: "oauth" as const, color: "#4285F4" },
-  { id: "airtable", name: "Airtable", icon: "📊", description: "Import from Airtable", authType: "import" as const, color: "#18BFFF" },
-];
+import { IMPORT_PLATFORMS, SMART_FIELDS_BY_MODE, type ImportPlatform } from "./_config/CRMImportCenter.config";
 
 const CRMImportCenter = () => {
   const [showImportWizard, setShowImportWizard] = useState(false);
-  const [connectPlatform, setConnectPlatform] = useState<typeof PLATFORMS[0] | null>(null);
+  const [connectPlatform, setConnectPlatform] = useState<ImportPlatform | null>(null);
   const [activeTab, setActiveTab] = useState("import");
   const { data: importJobs = [] } = useCRMImportJobs();
   const { adaptations, primaryMode } = useBusinessProfile();
 
-  const SMART_FIELDS: Record<string, { label: string; fields: string[] }> = {
-    ecommerce: { label: "E-Commerce", fields: ["order_history", "cart_status", "lifetime_value", "campaign_source", "spend_segment", "return_rate"] },
-    service: { label: "Service", fields: ["proposal_status", "invoice_status", "delivery_timeline", "communication_history", "follow_up_date"] },
-    "brick-and-mortar": { label: "Local", fields: ["visit_count", "loyalty_status", "preferred_location", "staff_notes", "last_visit"] },
-    "employee-based": { label: "Operations", fields: ["account_owner", "handoff_state", "response_time", "accountability_score", "team_assigned"] },
-    agency: { label: "Agency", fields: ["project_status", "retainer_health", "billing_status", "team_assigned", "proposal_status"] },
-  };
-  const smartFieldConfig = SMART_FIELDS[primaryMode] || SMART_FIELDS.service;
+  const smartFieldConfig = SMART_FIELDS_BY_MODE[primaryMode] || SMART_FIELDS_BY_MODE.service;
 
   return (
     <div className="space-y-6">
@@ -85,7 +70,7 @@ const CRMImportCenter = () => {
               </CardContent>
             </Card>
 
-            <Card className="border-border/50 bg-card/50 backdrop-blur-sm hover:border-primary/30 transition-all cursor-pointer group" onClick={() => setConnectPlatform(PLATFORMS[0])}>
+            <Card className="border-border/50 bg-card/50 backdrop-blur-sm hover:border-primary/30 transition-all cursor-pointer group" onClick={() => setConnectPlatform(IMPORT_PLATFORMS[0])}>
               <CardContent className="p-5 flex items-center gap-4">
                 <div className="w-12 h-12 rounded-xl bg-[hsl(var(--trust-safe))]/10 flex items-center justify-center">
                   <Link className="h-6 w-6 text-[hsl(var(--trust-safe))]" />
@@ -102,7 +87,7 @@ const CRMImportCenter = () => {
           <div>
             <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">Available Platforms</h3>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
-              {PLATFORMS.map(p => (
+              {IMPORT_PLATFORMS.map(p => (
                 <Card key={p.id} className="border-border/50 bg-card/50 backdrop-blur-sm hover:border-primary/30 transition-all cursor-pointer" onClick={() => setConnectPlatform(p)}>
                   <CardContent className="p-3 flex items-center gap-3">
                     <span className="text-xl">{p.icon}</span>
