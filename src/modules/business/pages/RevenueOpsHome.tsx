@@ -5,6 +5,9 @@
 // Operators see the four-tier Revenue hierarchy and jump into the
 // existing surfaces via the windowed-app navigation context.
 // ═══════════════════════════════════════════════════════════════
+// truth-allow: ia-config
+// (Top-level GROUPS array is static navigation descriptors — module
+//  keys, labels, icons. No fixtures, no telemetry, no fake metrics.)
 
 import { useCallback } from "react";
 import { motion } from "framer-motion";
