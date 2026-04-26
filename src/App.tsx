@@ -55,6 +55,7 @@ import { getAdvisorRoutes } from "@/routes/advisor-routes";
 import { getBusinessAdvisorRoutes } from "@/routes/business-advisor-routes";
 import { getExperimentalRoutes } from "@/routes/experimental-routes";
 import { getInvestmentRoutes } from "@/routes/investment-routes";
+import { getInvestmentOfficeRoutes } from "@/routes/investment-office-routes";
 import { USER_REDIRECTS } from "@/routes/redirects/user-redirect-map";
 import { getOwnerRoutes } from "@/routes/OwnerRoutes";
 import { MobileRoutes } from "@/routes/MobileRoutes";
@@ -298,6 +299,7 @@ const App = () => (
                         {getBusinessAdvisorRoutes()}
                         {getExperimentalRoutes()}
                         {getInvestmentRoutes()}
+                        {getInvestmentOfficeRoutes()}
                         {getCommunicationsRoutes()}
                         {getAppsRoutes()}
                         {getSettingsRoutes()}

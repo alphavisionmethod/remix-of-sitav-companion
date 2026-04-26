@@ -126,7 +126,7 @@ const P1_CALENDAR: SurfaceEntry[] = [
 ];
 
 const P1_INVESTMENTS: SurfaceEntry[] = [
-  { routeKey: "investments.page", routePath: "/investments", shell: "user", surfaceClass: "page", domain: "investments", actionType: "navigation", actionLabel: "Investment Gate", expectedResult: "Investment dashboard renders", supportedModes: ["real", "demo"], launchHonestyClass: "real", testPriority: "P1" },
+  { routeKey: "investment.page", routePath: "/investment", shell: "user", surfaceClass: "page", domain: "investment", actionType: "navigation", actionLabel: "Investment Gate", expectedResult: "Investment dashboard renders", supportedModes: ["real", "demo"], launchHonestyClass: "real", testPriority: "P1" },
 ];
 
 const P1_REVENUE: SurfaceEntry[] = [

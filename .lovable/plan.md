@@ -102,15 +102,19 @@ src/routes/registry/route-family-registry.ts  ← typed registry (one entry per 
   consumer ergonomics — single source of truth preserved).
 - **Gate**: engine-purity returns 0; `tsc --noEmit` clean; service boundaries verified.
 
-### **Phase 5 — Investment Routing Consolidation (`/investment` is canonical)**
-- Decision: `/investment/*` (singular) is canonical. Rationale: matches `route-family-registry.ts` id `"investment"`, matches feature registry, matches `InvestmentShellPage` page name, shorter URL.
-- Actions:
-  1. Build a one-time redirect map: every `/investments/*` → `/investment/*` via `src/routes/redirects/user-redirect-map.ts` (already exists; extend it, don't duplicate).
-  2. Remove the duplicate `/investments/*` block from `src/routes/families/experimental-routes.tsx` (lines 157-186).
-  3. Convert `src/routes/families/investment-office-routes.tsx` from emitting `/investments/*` routes to emitting **only the routes that don't already exist on `/investment/*`** (e.g., the extended pages: BeginnerMode, AdvancedMode, CapitalTwin, DecisionTheater, etc.) on `/investment/*` paths. This merges the two route families into a single `/investment/*` namespace.
-  4. Update `route-family-registry.ts`: collapse `investment` + `investment-office` entries into one canonical family `investment` pointing to the merged file. Mark legacy file as removed.
-  5. Update `src/features/investment-office/index.ts`, `src/runtimes/reality/reality-audit-registry.ts`, `src/data/fixtures/mock-data/index.ts`, mobile-routes, and feature-registry to reference `/investment/*` only.
-- **Gate**: no `path="/investments` in route families; redirects cover all old paths; route-integrity test extended.
+### **Phase 5 — Investment Routing Consolidation (`/investment` is canonical)** ✅ COMPLETE
+- ✅ Decision applied: `/investment/*` (singular) is the single canonical Investment Office namespace.
+- ✅ Extended `src/routes/redirects/user-redirect-map.ts` from 9 → 41 entries covering every legacy `/investments/*` path (incl. `:instrumentId`, `/money/investments` shell-consolidation entry).
+- ✅ Removed the duplicate `/investments/*` block (41 routes + 41 imports) from `src/routes/families/experimental-routes.tsx`. Header note updated to point at the canonical families.
+- ✅ Rewrote `src/routes/families/investment-office-routes.tsx` to emit ONLY the 23 extended `/investment/*` routes not declared in `investment-routes.tsx` (BeginnerMode, AdvancedMode, CapitalTwin, DecisionTheater, TimeMachine, Catalysts, OpportunityMap, Constitution, MarketMemory, Dossier, ProbabilityLab, StrategyDNA, PostTrade, CrossAsset, Conviction, Sizing, Modes, Readiness, CapitalPurpose, WhatWouldBreak, Disagreements, KnowledgeGraph, Events). Together both families form the single `/investment/*` namespace.
+- ✅ Created legacy alias `src/routes/investment-office-routes.tsx` and mounted `getInvestmentOfficeRoutes()` in `src/App.tsx` next to `getInvestmentRoutes()`.
+- ✅ `route-family-registry.ts` updated: kept both `investment` (core 18) and `investment-office` (extended 23) entries with explicit Phase 5 notes documenting they jointly own the `/investment/*` namespace; corrected canonicalPageOwner to `src/pages/investment-office/**`.
+- ✅ Consumer rewires:
+  - `src/lib/frontend/truth-surface-registry.ts`: `/money/investments` → `/investment`
+  - `src/lib/domain-system/manifests/finance-manifest.ts`: `/finance/investments/:id` → `/investment/instrument/:id`
+  - `src/platform/verification/surface-registry.ts`: `routePath: "/investments"` → `"/investment"` (key + domain renamed)
+  - `src/features/feature-registry.ts`: removed phantom `/investment-office` literal from `ownedRoutes`
+- **Gate**: ✅ `rg path="/investments" src/routes/families/` returns empty; ✅ `tsc --noEmit` clean; ✅ engine-purity returns 0; ✅ 41 redirect entries cover every legacy path.
 
 ### **Phase 6 — Investment Office App-in-OS Normalization**
 - `InvestmentShellPage` already has `<Outlet/>` and tab-nav — wire it as the **parent route** for `/investment/*`:

@@ -166,7 +166,7 @@ export const financeManifest: DomainManifest = {
       { id: "search-bills", name: "Bills", entityType: "bill", searchFields: ["name", "vendor", "amount"], resultRoute: "/finance/bills/:id", icon: "CreditCard" },
       { id: "search-subscriptions", name: "Subscriptions", entityType: "subscription", searchFields: ["name", "provider", "amount"], resultRoute: "/finance/subscriptions/:id", icon: "RefreshCw" },
       { id: "search-budgets", name: "Budgets", entityType: "budget", searchFields: ["name", "category"], resultRoute: "/finance/budgets/:id", icon: "PieChart" },
-      { id: "search-investments", name: "Investments", entityType: "portfolio", searchFields: ["name", "ticker", "thesis"], resultRoute: "/finance/investments/:id", icon: "BarChart3" },
+      { id: "search-investments", name: "Investments", entityType: "portfolio", searchFields: ["name", "ticker", "thesis"], resultRoute: "/investment/instrument/:id", icon: "BarChart3" },
     ],
     notificationTriggers: [
       { eventSubject: "bill.overdue", title: "Bill overdue", priority: "critical", actionRoute: "/finance/bills/:id", groupKey: "finance-bills" },
