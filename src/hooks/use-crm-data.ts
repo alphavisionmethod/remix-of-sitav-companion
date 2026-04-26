@@ -152,7 +152,11 @@ export function useUpdateOpportunity() {
       const action: TrustActionKey = stageTouched
         ? "crm.deal.stage_change"
         : "crm.opportunity.update";
-      return withTrust(action, () => updateCRMOpportunity(id, updates))(undefined as never);
+      return withTrust(
+        action,
+        (args: { id: string; updates: Parameters<typeof updateCRMOpportunity>[1] }) =>
+          updateCRMOpportunity(args.id, args.updates),
+      )({ id, updates });
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: ["crm", "opportunities"] }),
   });
