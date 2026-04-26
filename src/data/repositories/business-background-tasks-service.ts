@@ -270,11 +270,31 @@ export async function retryBackgroundJob(job: BackgroundJobVM): Promise<JobActio
       if (error) return { ok: false, message: error.message };
       return { ok: true, message: "Workflow re-queued" };
     }
+    case "recovery_jobs": {
+      const { error } = await fromTable("recovery_jobs")
+        .update({ status: "pending", error: null, error_stack: null, progress: 0 })
+        .eq("id", job.sourceId)
+        .eq("user_id", userId);
+      if (error) return { ok: false, message: error.message };
+      return { ok: true, message: "Recovery re-queued" };
+    }
     case "crm_automations":
       return {
         ok: false,
         reason: "not-supported",
         message: "Open the automation to re-run it from its definition.",
+      };
+    case "audit_logs":
+      return {
+        ok: false,
+        reason: "not-supported",
+        message: "Audit entries are immutable proof — no retry path.",
+      };
+    case "ai_invocations":
+      return {
+        ok: false,
+        reason: "not-supported",
+        message: "Re-trigger the AI capability from its source surface.",
       };
     default:
       return { ok: false, reason: "not-supported" };
@@ -314,6 +334,14 @@ export async function cancelBackgroundJob(job: BackgroundJobVM): Promise<JobActi
         .eq("user_id", userId);
       if (error) return { ok: false, message: error.message };
       return { ok: true, message: "Workflow cancelled" };
+    }
+    case "recovery_jobs": {
+      const { error } = await fromTable("recovery_jobs")
+        .update({ status: "cancelled", completed_at: new Date().toISOString() })
+        .eq("id", job.sourceId)
+        .eq("user_id", userId);
+      if (error) return { ok: false, message: error.message };
+      return { ok: true, message: "Recovery cancelled" };
     }
     default:
       return { ok: false, reason: "not-supported", message: "This job kind cannot be cancelled mid-run." };
