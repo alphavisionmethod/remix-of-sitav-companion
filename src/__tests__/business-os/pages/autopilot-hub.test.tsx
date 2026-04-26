@@ -55,6 +55,28 @@ vi.mock("@/platform/orchestration/components/autopilot/AutopilotCommandCenter", 
   default: () => <div data-testid="autopilot-command-center">Command Center</div>,
 }));
 
+// Isolate from a downstream icon-rendering quirk in EmptyState (lucide
+// forwardRef icons are objects, not functions; EmptyState's `typeof
+// iconProp === "function"` check then attempts to render an object as a
+// React child). We assert the page-state *branch* — title + action — not
+// the icon implementation.
+vi.mock("@/platform/sita/components/sita/EmptyStateCard", () => ({
+  __esModule: true,
+  EmptyStateCard: ({ title, description, action }: { title: string; description: string; action?: React.ReactNode }) => (
+    <div data-testid="empty-state-card">
+      <h3>{title}</h3>
+      <p>{description}</p>
+      {action}
+    </div>
+  ),
+  LegacyEmptyStateCard: ({ title, description }: { title: string; description: string }) => (
+    <div data-testid="empty-state-card">
+      <h3>{title}</h3>
+      <p>{description}</p>
+    </div>
+  ),
+}));
+
 // Lazy import after mocks.
 import AutopilotHubPage from "@/modules/business/pages/AutopilotHub";
 
