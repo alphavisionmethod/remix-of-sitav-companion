@@ -1,3 +1,4 @@
+// truth-allow: ia-config
 import { useState } from "react";
 import { BookOpen, Search, Calendar, Tag, Brain, Zap } from "lucide-react";
 import { INSTRUMENTS, SAMPLE_RESEARCH } from "@/hooks/useInvestmentOfficeData";

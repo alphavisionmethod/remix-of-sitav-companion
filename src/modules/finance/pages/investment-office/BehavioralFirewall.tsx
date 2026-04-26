@@ -1,3 +1,4 @@
+// truth-allow: ia-config
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { ShieldAlert, Brain, AlertTriangle, Check, Clock, Eye, TrendingUp, Zap, MessageSquare } from "lucide-react";

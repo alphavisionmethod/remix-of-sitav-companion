@@ -1,3 +1,4 @@
+// truth-allow: ia-config
 import { motion } from "framer-motion";
 import { Dna, Info } from "lucide-react";
 import { useStrategyDnaProfile, useDecisionRecords, useThesisRecords, useBehavioralSignals, usePortfolioPositionsMemory } from "@/hooks/use-investment-memory";

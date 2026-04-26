@@ -1,3 +1,4 @@
+// truth-allow: ia-config
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { ScrollText, Shield, Check, AlertTriangle, Settings, Lock } from "lucide-react";

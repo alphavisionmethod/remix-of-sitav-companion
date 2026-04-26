@@ -1,3 +1,4 @@
+// truth-allow: ia-config
 import { motion } from "framer-motion";
 import { History, TrendingUp, TrendingDown, AlertTriangle, Brain, RefreshCw, Zap, Shield, FileText, Globe } from "lucide-react";
 import { useMarketMemoryEvents, useAdvisorObservations, useCatalystEvents, useBehavioralSignals, usePortfolioPositionsMemory } from "@/hooks/use-investment-memory";

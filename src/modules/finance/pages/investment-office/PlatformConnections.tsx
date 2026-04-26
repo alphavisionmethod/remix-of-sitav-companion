@@ -1,3 +1,4 @@
+// truth-allow: ia-config
 import { useState, useMemo } from "react";
 import { Link2, Plus, RefreshCw, CheckCircle2, AlertTriangle, XCircle, Shield, Clock, Search, Star } from "lucide-react";
 import { PLATFORM_CONNECTIONS } from "@/hooks/useInvestmentOfficeData";

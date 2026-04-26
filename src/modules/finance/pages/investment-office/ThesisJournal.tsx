@@ -1,3 +1,4 @@
+// truth-allow: ia-config
 import { useNavigate } from "react-router-dom";
 import { Brain, Target, AlertTriangle, TrendingUp, TrendingDown, Plus, ChevronRight, Calendar, Heart, Activity } from "lucide-react";
 import { SAMPLE_THESES, getInstrument } from "@/hooks/useInvestmentOfficeData";

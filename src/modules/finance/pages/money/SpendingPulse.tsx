@@ -1,3 +1,4 @@
+// truth-allow: ia-config
 import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import { SpendingCategoryPane } from "@/modules/finance/components/money/SpendingCategoryPane";

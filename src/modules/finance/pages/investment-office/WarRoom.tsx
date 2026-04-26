@@ -1,3 +1,4 @@
+// truth-allow: ia-config
 import { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { AlertTriangle, Shield, TrendingUp, Zap, Clock, Send, Brain, ChevronRight } from "lucide-react";

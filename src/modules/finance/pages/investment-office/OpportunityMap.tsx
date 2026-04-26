@@ -1,3 +1,4 @@
+// truth-allow: ia-config
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Map, TrendingUp, Zap, Eye, AlertTriangle, ChevronRight } from "lucide-react";

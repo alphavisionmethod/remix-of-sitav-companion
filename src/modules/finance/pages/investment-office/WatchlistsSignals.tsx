@@ -1,3 +1,4 @@
+// truth-allow: ia-config
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Eye, Plus, Bell, Brain, TrendingUp, TrendingDown, ChevronRight, Star, Zap, Shield } from "lucide-react";

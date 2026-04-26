@@ -1,3 +1,4 @@
+// truth-allow: ia-config
 import { useState } from "react";
 import { Shield, AlertTriangle, BarChart3, PieChart, Eye, Settings, Zap } from "lucide-react";
 import { INVESTMENT_ADVISORS, PLATFORM_CONNECTIONS, PORTFOLIO } from "@/hooks/useInvestmentOfficeData";

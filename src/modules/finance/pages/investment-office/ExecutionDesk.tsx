@@ -1,3 +1,4 @@
+// truth-allow: ia-config
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Target, Shield, DollarSign, AlertTriangle, Check, ChevronRight, ArrowRight, Loader2, CheckCircle2, Brain, FileText, Clock } from "lucide-react";

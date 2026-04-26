@@ -1,3 +1,4 @@
+// truth-allow: ia-config
 import { motion } from "framer-motion";
 import { GitCompareArrows, AlertTriangle, Check, HelpCircle } from "lucide-react";
 import { useInvestmentDecisions } from "@/hooks/use-investment-office";

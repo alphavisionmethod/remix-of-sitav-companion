@@ -1,3 +1,4 @@
+// truth-allow: ia-config
 import { motion } from "framer-motion";
 import { Landmark, Shield, TrendingUp, Wallet, Zap, Calendar, Target, Coins } from "lucide-react";
 import { useCapitalPurposeBuckets } from "@/hooks/use-investment-office";

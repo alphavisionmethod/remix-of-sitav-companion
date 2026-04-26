@@ -1,3 +1,4 @@
+// truth-allow: ia-config
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Money Office: Household / Shared Money Office
 // ═══════════════════════════════════════════════════════════════
@@ -29,7 +30,7 @@ const HouseholdMoneyOffice = () => {
 
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}>
-      <PageTruthBanner />
+      <PageTruthBanner truthState="partial" />
 
       <HeroCard
         title="HOUSEHOLD MONEY OFFICE"

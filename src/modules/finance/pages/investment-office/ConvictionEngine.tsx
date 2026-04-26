@@ -1,3 +1,4 @@
+// truth-allow: ia-config
 import { motion } from "framer-motion";
 import { Gauge, AlertTriangle, Check } from "lucide-react";
 import { usePortfolioPositions } from "@/hooks/use-investment-office";

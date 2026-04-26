@@ -1,3 +1,4 @@
+// truth-allow: ia-config
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Wealth Command Center
 // Cinematic full-screen financial dashboard

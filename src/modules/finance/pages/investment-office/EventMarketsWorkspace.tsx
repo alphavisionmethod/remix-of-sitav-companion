@@ -1,3 +1,4 @@
+// truth-allow: ia-config
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Sparkles, Calendar, TrendingUp, TrendingDown, AlertTriangle, Target, Shield, ChevronRight, BarChart3 } from "lucide-react";

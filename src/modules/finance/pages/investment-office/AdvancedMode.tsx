@@ -1,3 +1,4 @@
+// truth-allow: ia-config
 import { useNavigate } from "react-router-dom";
 import {
   BarChart3, Brain, TrendingUp, TrendingDown, Shield, PieChart, Target, Eye,

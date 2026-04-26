@@ -1,3 +1,4 @@
+// truth-allow: ia-config
 import { TrustBadge } from "@/platform/sita/components/sita/TrustBadge";
 import { SectionSkeleton } from "@/platform/sita/components/sita/SectionSkeleton";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";

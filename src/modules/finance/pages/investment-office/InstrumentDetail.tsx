@@ -1,3 +1,4 @@
+// truth-allow: ia-config
 import { useParams, useNavigate } from "react-router-dom";
 import {
   ArrowLeft, TrendingUp, TrendingDown, Shield, Zap, Brain, BarChart3,

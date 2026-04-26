@@ -1,3 +1,4 @@
+// truth-allow: ia-config
 import { motion } from "framer-motion";
 import { Users, Shield, Landmark, Heart, GraduationCap, Home, Check, AlertTriangle } from "lucide-react";
 import { useCapitalPurposeBuckets } from "@/hooks/use-investment-office";

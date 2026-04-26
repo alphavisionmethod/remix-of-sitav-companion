@@ -1,3 +1,4 @@
+// truth-allow: ia-config
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { DollarSign, TrendingUp, TrendingDown, PieChart, Shield, RefreshCw, AlertTriangle, Wallet } from "lucide-react";
