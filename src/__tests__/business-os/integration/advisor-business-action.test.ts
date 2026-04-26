@@ -79,9 +79,6 @@ describe("Phase 6 — advisor → business action handler coverage", () => {
       ).toBe(0);
     }
   });
-      }
-    }
-  });
 
   it("every blocked business.* action is also a known handler (cannot block phantom ids)", () => {
     const businessAdvisors = ADVISOR_REGISTRY.filter((a) => a.council === "business");
