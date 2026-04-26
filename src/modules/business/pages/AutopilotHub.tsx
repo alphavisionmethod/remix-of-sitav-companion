@@ -7,6 +7,7 @@
 
 import { useCallback, useState } from "react";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import HierarchyHint from "@/modules/business/components/business/shared/HierarchyHint";
 import { ModuleAdvisorInsight } from "@/platform/sita/components/sita/domain-shared/ModuleAdvisorInsight";
 import { PageSkeleton } from "@/platform/sita/components/sita/PageSkeleton";
 import { EmptyStateCard } from "@/platform/sita/components/sita/EmptyStateCard";
@@ -131,6 +132,7 @@ const AutopilotHubPage = () => {
   return (
     <div className="space-y-4">
       <PageTruthBanner />
+      <HierarchyHint tier="execution" surface="Autopilot Hub" description="Strategy / config view" />
       <AutopilotCommandCenter
         config={config}
         onConfigUpdate={handleConfigUpdate}

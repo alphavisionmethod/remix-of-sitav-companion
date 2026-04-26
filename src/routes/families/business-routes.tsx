@@ -16,6 +16,8 @@ export function getBusinessRoutes() {
       <Route path="/business/quotes" element={<BusinessCenter />} />
       <Route path="/business/invoices" element={<BusinessCenter />} />
       <Route path="/business/collections" element={<BusinessCenter />} />
+      <Route path="/business/revenue" element={<BusinessCenter />} />
+      <Route path="/business/revenue-home" element={<BusinessCenter />} />
       <Route path="/business/revenue-autopilot" element={<BusinessCenter />} />
       <Route path="/business/autopilot-hub" element={<BusinessCenter />} />
       <Route path="/business/revenue-impact" element={<BusinessCenter />} />

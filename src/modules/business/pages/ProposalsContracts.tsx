@@ -23,6 +23,7 @@ import { useDraftAutosave } from "@/hooks/useDraftAutosave";
 import { setLinkedContext, consumeLinkedContext } from "@/platform/sita/components/sita/CrossAppAction";
 
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import HierarchyHint from "@/modules/business/components/business/shared/HierarchyHint";
 import { ModuleAdvisorInsight } from "@/platform/sita/components/sita/domain-shared/ModuleAdvisorInsight";
 import { PremiumEmptyState } from "@/platform/sita/components/sita/PremiumEmptyState";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
@@ -141,6 +142,7 @@ const ProposalsContracts = () => {
   return (
     <div className="mx-auto max-w-5xl space-y-6">
       <PageTruthBanner truthState="live" />
+      <HierarchyHint tier="workflow" surface="Proposals" description="Contracts and statements of work" />
 
       <div className="flex items-center justify-between">
         <div>
