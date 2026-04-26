@@ -2,125 +2,51 @@
 // SITA OS — Business Profile Engine
 // Computes weighted business model profile from BusinessTwin data
 // and derives full adaptation config for the entire Business OS.
+//
+// PURITY:
+//   ✅ Pure computation — no I/O or side effects
+//   ✅ Deterministic — same inputs = same outputs
+//
+//   Persistence helpers (save/load/clear) live in
+//   `src/lib/services/business-os/business-profile.service.ts`.
+//   Canonical domain types live in `@/domains/business`.
 // ═══════════════════════════════════════════════════════════════
 
 import type { BusinessTwin, BusinessArchetype, BusinessTwinProfile, BusinessRevenueModel } from "@/pages/revenue-office/onboarding/business-twin";
 import type { OnboardingState } from "@/pages/revenue-office/onboarding/types";
 
-// ── Archetypes ────────────────────────────────────────────────
+// ── Canonical types (single source of truth in @/domains/business) ──
+import {
+  ALL_ARCHETYPES,
+  type ProfileArchetype,
+  type ArchetypeWeights,
+  type OperatingFlags,
+  type SidebarPriority,
+  type HomeWidgetConfig,
+  type CRMAdaptation,
+  type AdvisorSpec,
+  type BoardroomFocus,
+  type WorkflowSuggestion,
+  type CrossDomainSignals,
+  type BusinessProfileResult,
+} from "@/domains/business";
 
-export const ALL_ARCHETYPES = [
-  "ecommerce", "brick-and-mortar", "service", "employee-based",
-  "appointment-based", "agency", "professional-practice", "hybrid",
-  "multi-location", "product-service", "membership", "marketplace",
-] as const;
-
-export type ProfileArchetype = (typeof ALL_ARCHETYPES)[number];
-
-// ── Core types ────────────────────────────────────────────────
-
-export interface ArchetypeWeights {
-  ecommerce: number;
-  "brick-and-mortar": number;
-  service: number;
-  "employee-based": number;
-  "appointment-based": number;
-  agency: number;
-  "professional-practice": number;
-  hybrid: number;
-  "multi-location": number;
-  "product-service": number;
-  membership: number;
-  marketplace: number;
-}
-
-export interface OperatingFlags {
-  hasEmployees: boolean;
-  hasAppointments: boolean;
-  hasEcommerce: boolean;
-  hasLocations: boolean;
-  sendsQuotes: boolean;
-  sendsInvoices: boolean;
-  hasRecurringRevenue: boolean;
-  hasCollections: boolean;
-  hasLocalPresence: boolean;
-  hasDigitalProducts: boolean;
-  hasTeam: boolean;
-  hasProposals: boolean;
-}
-
-export interface SidebarPriority {
-  groupOrder: string[];
-  hiddenGroups: string[];
-  badgeOverrides: Record<string, { label: string; severity?: "warning" | "critical" }>;
-}
-
-export interface HomeWidgetConfig {
-  primary: string[];   // top-priority widget IDs
-  secondary: string[]; // lower-priority widget IDs
-  hidden: string[];    // explicitly hidden
-}
-
-export interface CRMAdaptation {
-  language: {
-    contactLabel: string;    // "Customers" / "Clients" / "Buyers"
-    dealLabel: string;       // "Orders" / "Jobs" / "Deals"
-    pipelineLabel: string;   // "Pipeline" / "Order Flow" / "Job Queue"
-    proposalLabel: string;   // "Proposals" / "Quotes" / "Offers"
-  };
-  priorityFields: string[];
-  hiddenFields: string[];
-  defaultSegments: string[];
-  pipelineStages: string[];
-}
-
-export interface AdvisorSpec {
-  id: string;
-  name: string;
-  specialty: string;
-  accent: string;
-  portraitSeed: number;
-  affinityScore: number;
-}
-
-export interface BoardroomFocus {
-  focusAreas: string[];
-  kpiEmphasis: string[];
-  reviewMode: string;
-  agendaPriorities: string[];
-}
-
-export interface WorkflowSuggestion {
-  id: string;
-  name: string;
-  description: string;
-  trigger: string;
-  steps: string[];
-  affinityScore: number;
-  archetype: ProfileArchetype;
-}
-
-export interface CrossDomainSignals {
-  finance: { emphasis: string; kpis: string[] };
-  concierge: { emphasis: string; triggers: string[] };
-}
-
-export interface BusinessProfileResult {
-  weights: ArchetypeWeights;
-  primaryMode: ProfileArchetype;
-  secondaryModes: ProfileArchetype[];
-  operatingFlags: OperatingFlags;
-  sidebar: SidebarPriority;
-  homeWidgets: HomeWidgetConfig;
-  crm: CRMAdaptation;
-  advisors: AdvisorSpec[];
-  boardroom: BoardroomFocus;
-  workflows: WorkflowSuggestion[];
-  kpis: string[];
-  manualOverrides: Partial<ArchetypeWeights>;
-  profileConfidence: number;
-  crossDomainSignals: CrossDomainSignals;
-}
+// Re-export so existing import paths (`from "@/domains/engines/business-profile-engine"`)
+// keep working. Source of truth lives in `@/domains/business`.
+export { ALL_ARCHETYPES };
+export type {
+  ProfileArchetype,
+  ArchetypeWeights,
+  OperatingFlags,
+  SidebarPriority,
+  HomeWidgetConfig,
+  CRMAdaptation,
+  AdvisorSpec,
+  BoardroomFocus,
+  WorkflowSuggestion,
+  CrossDomainSignals,
+  BusinessProfileResult,
+};
 
 // ── Weight defaults ───────────────────────────────────────────
 
@@ -620,25 +546,4 @@ function deriveCrossDomain(primary: ProfileArchetype, flags: OperatingFlags): Cr
     finance: financeMap[primary] || financeMap.service,
     concierge: conciergeMap[primary] || conciergeMap.service,
   };
-}
-
-// ── Storage helpers ───────────────────────────────────────────
-
-const STORAGE_KEY = "sita-business-profile";
-
-export function saveBusinessProfile(profile: BusinessProfileResult): void {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(profile));
-  } catch { /* quota exceeded — fail silently */ }
-}
-
-export function loadBusinessProfile(): BusinessProfileResult | null {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? JSON.parse(raw) : null;
-  } catch { return null; }
-}
-
-export function clearBusinessProfile(): void {
-  localStorage.removeItem(STORAGE_KEY);
 }

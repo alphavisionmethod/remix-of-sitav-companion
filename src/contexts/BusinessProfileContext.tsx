@@ -1,12 +1,14 @@
 import React, { createContext, useState, useCallback, useEffect } from "react";
 import {
   computeBusinessProfile,
-  saveBusinessProfile,
-  loadBusinessProfile,
   type BusinessProfileResult,
   type ArchetypeWeights,
   type ProfileArchetype,
 } from "@/domains/engines/business-profile-engine";
+import {
+  saveBusinessProfile,
+  loadBusinessProfile,
+} from "@/lib/services/business-os/business-profile.service";
 
 interface BusinessProfileContextValue {
   profile: BusinessProfileResult;
