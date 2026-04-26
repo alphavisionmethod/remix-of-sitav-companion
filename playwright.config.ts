@@ -61,6 +61,13 @@ export default defineConfig({
       timeout: 120_000,
       retries: 0,
     },
+    {
+      name: "business-os",
+      testDir: "./tests/e2e/business-os",
+      use: { ...devices["Desktop Chrome"] },
+      timeout: 60_000,
+      retries: 1,
+    },
   ],
   webServer: process.env.CI
     ? undefined
