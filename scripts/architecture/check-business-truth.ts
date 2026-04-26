@@ -12,6 +12,14 @@
 //        - `([] as any[])` filter shortcuts (audit-stripped data)
 //   4) A page declared "fully-wired" imports zero hooks/services
 //      (purely presentational with no data wiring)
+//   5) A page declared "fully-wired" unconditionally imports from
+//      @/data/fixtures/mock-data/* without an isDemo gate
+//   6) A page declared "fully-wired" contains `setTimeout(...)` →
+//      `setStatus("done"|"complete"|"success")` fake-execute pattern
+//   7) A page declared "degraded" must render an empty/setup state
+//      and must not contain top-level fake-live arrays
+//   8) (advisory) A page fetches a `useXxx()` query and never
+//      references the destructured value — informational warning
 //
 // Run locally:
 //   bunx tsx scripts/architecture/check-business-truth.ts
@@ -30,9 +38,11 @@ interface Violation {
   page: string;
   rule: string;
   detail: string;
+  severity?: "error" | "warning";
 }
 
 const violations: Violation[] = [];
+const warnings: Violation[] = [];
 
 function listPageFiles(): string[] {
   return readdirSync(PAGES_DIR)
@@ -70,6 +80,77 @@ function hasDataImports(src: string): boolean {
   return false;
 }
 
+/**
+ * Rule 5: detect imports from @/data/fixtures/mock-data/* that are
+ * not gated behind an `isDemo` reality-mode check.
+ * Returns the offending import lines, or an empty array if all
+ * fixture imports are properly gated (or absent).
+ */
+function findUngatedMockImports(src: string): string[] {
+  const importRe = /import\s+(?:\{[^}]+\}|\*\s+as\s+\w+|\w+)\s+from\s+["'](@\/data\/fixtures\/mock-data\/[^"']+)["']/g;
+  const matches: string[] = [];
+  let m: RegExpExecArray | null;
+  while ((m = importRe.exec(src)) !== null) {
+    matches.push(m[1]);
+  }
+  if (matches.length === 0) return [];
+  // If the file exposes any reality-mode demo gate, treat fixture
+  // imports as gated. The runtime contract is that demo branches
+  // render fixtures only when isDemo === true.
+  const hasDemoGate =
+    /useRealityModeSafe\s*\(/.test(src) ||
+    /\bisDemo\b/.test(src) ||
+    /useRealityMode\s*\(/.test(src);
+  if (hasDemoGate) return [];
+  return matches;
+}
+
+/**
+ * Rule 6: detect fake-execute patterns where a page schedules a
+ * setTimeout that flips a status setter to "done"/"complete"/"success".
+ * This masquerades as real async work and is forbidden in fully-wired
+ * pages.
+ */
+function hasFakeExecutePattern(src: string): boolean {
+  // setTimeout(() => setStatus("done"), …) or
+ //  setTimeout(() => { setStatus("complete"); }, …)
+  const re = /setTimeout\s*\(\s*\(\s*\)\s*=>\s*\{?\s*set[A-Z]\w*\s*\(\s*["'](?:done|complete|success|completed|finished)["']/;
+  return re.test(src);
+}
+
+/**
+ * Rule 7: degraded pages must render an honest empty/setup-required
+ * surface and must not contain fake-live arrays.
+ */
+function hasEmptyStateGrammar(src: string): boolean {
+  if (/EmptyStateCard|PremiumEmptyState|LegacyEmptyStateCard|ConciergeEmptyState|<EmptyState\b/.test(src)) return true;
+  if (/setup-required|setupRequired|connect-an-integration|"connect"/i.test(src)) return true;
+  if (/PageTruthBanner[^>]*truthState=["'](?:partial|degraded|connecting)["']/.test(src)) return true;
+  return false;
+}
+
+/**
+ * Rule 8 (advisory): destructure a `useXxx` result into a name that
+ * never appears again in the file body.
+ */
+function findFetchedButUnusedQueries(src: string): string[] {
+  const offenders: string[] = [];
+  const decl = /const\s*\{\s*data\s*:\s*(\w+)[\s\S]*?\}\s*=\s*use[A-Z]\w*\s*\(/g;
+  let m: RegExpExecArray | null;
+  while ((m = decl.exec(src)) !== null) {
+    const varName = m[1];
+    // Skip well-known unused destructure names
+    if (varName === "_" || varName.startsWith("_")) continue;
+    // Search for any further reference to the variable after its
+    // declaration. Account for the declaration itself by counting
+    // total appearances of the identifier (must be > 1).
+    const ref = new RegExp(`\\b${varName}\\b`, "g");
+    const hits = src.match(ref) ?? [];
+    if (hits.length <= 1) offenders.push(varName);
+  }
+  return offenders;
+}
+
 function check() {
   const manifestPages = new Set(BUSINESS_OS_TRUTH_MANIFEST.map((e) => e.page));
   const filePages = new Set(listPageFiles());
@@ -101,6 +182,30 @@ function check() {
 
   // Rules 3 + 4: fully-wired contracts
   for (const entry of BUSINESS_OS_TRUTH_MANIFEST) {
+    // Apply degraded-only rules first (Rule 7).
+    if (entry.state === "degraded") {
+      const path = join(PAGES_DIR, `${entry.page}.tsx`);
+      if (!existsSync(path)) continue;
+      const src = readFileSync(path, "utf8");
+      if (!hasEmptyStateGrammar(src)) {
+        violations.push({
+          page: entry.page,
+          rule: "degraded-must-render-empty",
+          detail:
+            "Page declared `degraded` but does not render an EmptyStateCard / PremiumEmptyState / LegacyEmptyStateCard / ConciergeEmptyState / setup-required state, nor a PageTruthBanner with truthState='partial|degraded|connecting'. Render an honest setup-required UI.",
+        });
+      }
+      if (hasFakeLiveArray(src)) {
+        violations.push({
+          page: entry.page,
+          rule: "degraded-fake-live-array",
+          detail:
+            "Page declared `degraded` still contains a top-level hardcoded fixture array. Move to a demo fixture under src/data/fixtures/ and gate via reality mode, or replace with descriptive setup copy.",
+        });
+      }
+      continue;
+    }
+
     if (entry.state !== "fully-wired") continue;
     const path = join(PAGES_DIR, `${entry.page}.tsx`);
     if (!existsSync(path)) continue;
@@ -130,6 +235,31 @@ function check() {
           "Page declared fully-wired but imports zero hooks / services / repositories. Wire to a canonical data source or reclassify.",
       });
     }
+    const ungatedMocks = findUngatedMockImports(src);
+    if (ungatedMocks.length > 0) {
+      violations.push({
+        page: entry.page,
+        rule: "no-mock-fixture-import",
+        detail: `Imports demo fixtures without an isDemo / useRealityModeSafe gate: ${ungatedMocks.join(", ")}. Gate fixture branches behind the reality mode check.`,
+      });
+    }
+    if (hasFakeExecutePattern(src)) {
+      violations.push({
+        page: entry.page,
+        rule: "no-fake-execute",
+        detail:
+          'Detected `setTimeout(() => setXxx("done"|"complete"|"success"))` masquerading as real async work. Replace with a real action / mutation backed by the canonical action kernel.',
+      });
+    }
+    const unused = findFetchedButUnusedQueries(src);
+    if (unused.length > 0) {
+      warnings.push({
+        page: entry.page,
+        rule: "fetched-but-unused-query",
+        severity: "warning",
+        detail: `Fetched query result(s) destructured but never referenced: ${unused.join(", ")}. Either consume the data or stop fetching it.`,
+      });
+    }
   }
 }
 
@@ -138,7 +268,21 @@ function report() {
   console.log(`\n📋 Business OS Production-Truth Check`);
   console.log(`   Manifest entries: ${total}`);
   console.log(`   Page files:       ${listPageFiles().length}`);
-  console.log(`   Violations:       ${violations.length}\n`);
+  console.log(`   Violations:       ${violations.length}`);
+  console.log(`   Warnings:         ${warnings.length}\n`);
+
+  if (warnings.length > 0) {
+    const grouped = new Map<string, Violation[]>();
+    for (const w of warnings) {
+      if (!grouped.has(w.page)) grouped.set(w.page, []);
+      grouped.get(w.page)!.push(w);
+    }
+    for (const [page, ws] of [...grouped.entries()].sort()) {
+      console.log(`⚠️  ${page}`);
+      for (const w of ws) console.log(`   • [${w.rule}] ${w.detail}`);
+      console.log("");
+    }
+  }
 
   if (violations.length === 0) {
     console.log("✅ All Business OS pages pass production-truth checks.\n");
