@@ -25,7 +25,7 @@ import { LEADS_INBOX_FILTER_TABS as FILTER_TABS } from "./_config/LeadsInbox.con
 
 import { Search, Plus, Plug, ChevronDown, ChevronUp, LayoutGrid, BarChart3, List, ArrowLeftRight, LogIn, Inbox } from "lucide-react";
 import { toast } from "sonner";
-import { EmptyStateCard } from "@/platform/sita/components/sita/EmptyStateCard";
+import { LegacyEmptyStateCard as EmptyStateCard } from "@/platform/sita/components/sita/EmptyStateCard";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 
