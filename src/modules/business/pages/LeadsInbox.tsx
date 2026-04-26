@@ -21,24 +21,10 @@ import { ScoreExplainabilityDrawer } from "@/modules/business/components/busines
 import { LeadScoreComparison } from "@/modules/business/components/business/lead-inbox/LeadScoreComparison";
 import { useLeadInbox, type InboxFilter } from "@/modules/business/components/business/lead-inbox/useLeadInbox";
 import { getInboxStats } from "@/modules/business/components/business/lead-inbox/mock-inbox-data";
+import { LEADS_INBOX_FILTER_TABS as FILTER_TABS } from "./_config/LeadsInbox.config";
 
 import { Search, Plus, Plug, ChevronDown, ChevronUp, LayoutGrid, BarChart3, List, ArrowLeftRight } from "lucide-react";
 import { toast } from "sonner";
-
-const FILTER_TABS: { key: InboxFilter; label: string }[] = [
-  { key: "all", label: "All Pending" },
-  { key: "new", label: "New" },
-  { key: "urgent", label: "Urgent" },
-  { key: "high-quality", label: "High Quality" },
-  { key: "at-risk", label: "At Risk" },
-  { key: "recovery", label: "Recovery" },
-  { key: "missing-info", label: "Missing Info" },
-  { key: "duplicates", label: "Duplicates" },
-  { key: "exceptional", label: "★ Exceptional" },
-  { key: "snoozed", label: "Snoozed" },
-  { key: "accepted", label: "Accepted" },
-  { key: "rejected", label: "Rejected" },
-];
 
 type ViewMode = "queue" | "priority-stack" | "dashboard";
 
