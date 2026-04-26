@@ -61,7 +61,7 @@ export const FEATURE_REGISTRY: readonly FeatureSurfaceEntry[] = [
   {
     featureId: "investment-office", name: "Investment Office", canonicalImport: "@/features/investment-office",
     domain: "finance", riskTier: "R4", status: "beta",
-    ownedRoutes: ["/investment", "/investment-office", "/investment/boardroom", "/investment/markets", "/investment/portfolio", "/investment/strategy", "/investment/execute", "/investment/research", "/investment/risk", "/investment/family-office"],
+    ownedRoutes: ["/investment", "/investment/boardroom", "/investment/markets", "/investment/portfolio", "/investment/strategy", "/investment/execute", "/investment/research", "/investment/risk", "/investment/family-office"],
     ownedApps: ["investment-app"], runtimeSupport: [...ALL_TIERS], stateGrammar: [...FULL_STATES],
     proofCoverage: CORE_PROOF, supportIntegrated: true, trustIntegrated: true,
   },
