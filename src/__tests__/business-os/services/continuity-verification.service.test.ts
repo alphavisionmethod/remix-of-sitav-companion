@@ -60,24 +60,23 @@ describe("continuity-verification.service", () => {
     expect(typeof r.generatedAt).toBe("string");
   });
 
-  it("emits 'unknown' (never fake 'pass') for probes without persisted data", async () => {
+  it("data-existence probes emit 'unknown' (never fake 'pass') against an empty scope", async () => {
     const { runContinuityVerification } = await import(
       "@/lib/services/business-os/continuity-verification.service"
     );
     const r = await runContinuityVerification();
-    // With the mocked empty DB, every *DB-backed* probe must be 'unknown'
-    // (or 'fail') — the service must never fabricate a pass against empty
-    // RLS-scoped data. Registry-only probes (handler-coverage, revenue-ia)
-    // and explicitly deferred probes are excluded.
-    const dbBackedIds = new Set([
+    // Probes that prove a *behavior occurred* (lineage written, receipt
+    // emitted, appointment scheduled) must NEVER fabricate a pass when no
+    // rows exist — they must report 'unknown'. Reachability-only probes
+    // (crm-finance-bridge, tasks-bridge) and registry probes are exempt.
+    const dataExistenceProbes = new Set([
       "qpi-lineage",
-      "crm-finance-bridge",
       "invoice-proof",
       "appointment-lineage",
-      "tasks-bridge",
     ]);
-    const dbProbes = r.probes.filter(p => dbBackedIds.has(p.id));
-    for (const probe of dbProbes) {
+    const probes = r.probes.filter(p => dataExistenceProbes.has(p.id));
+    expect(probes.length).toBe(dataExistenceProbes.size);
+    for (const probe of probes) {
       expect(["unknown", "deferred", "fail"]).toContain(probe.status);
     }
   });
