@@ -43,7 +43,7 @@ describe("LeadTriageQueue — empty-state honesty", () => {
       />,
     );
     // First-use copy from LeadEmptyStates
-    expect(screen.getByText(/no leads yet|first lead|connect|import|add lead/i)).toBeInTheDocument();
+    expect(screen.getByText(/Welcome to Lead Inbox/i)).toBeInTheDocument();
   });
 
   it("renders the caught-up state when allItems exist but none match the inbox + filter is 'all' + newCount=0", () => {
@@ -77,7 +77,7 @@ describe("LeadTriageQueue — empty-state honesty", () => {
         {...noopHandlers}
       />,
     );
-    expect(screen.getByText(/no matching|adjust|filter|search/i)).toBeInTheDocument();
+    expect(screen.getByText(/No matching items/i)).toBeInTheDocument();
   });
 
   it("renders one card per item when populated", () => {
@@ -102,6 +102,8 @@ describe("LeadTriageQueue — empty-state honesty", () => {
     expect(screen.getByText("Bravo Lead")).toBeInTheDocument();
     expect(screen.getByText("Charlie Lead")).toBeInTheDocument();
     // No empty-state copy when populated
-    expect(screen.queryByText(/caught up|no matching/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/You're all caught up/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/No matching items/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Welcome to Lead Inbox/i)).not.toBeInTheDocument();
   });
 });
