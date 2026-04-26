@@ -133,14 +133,3 @@ export interface ScoreableLead {
   replied_to_outreach?: boolean;
   engagement_quality?: "high" | "medium" | "low" | null;
 }
-
-/**
- * Persisted/service-layer view of a lead score after it has been
- * stored, dispatched to a queue, or wrapped with side-effect metadata.
- * Services and persistence callers consume this; the engine produces
- * `LeadScoreResult` and the service layer enriches into this shape.
- */
-export interface ScoredLeadResult extends LeadScoreResult {
-  scoredAt: string;
-  scoredBy?: string;
-}
