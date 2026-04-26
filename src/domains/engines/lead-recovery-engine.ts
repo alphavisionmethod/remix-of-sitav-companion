@@ -2,20 +2,38 @@
 // SITA OS — Lead Recovery Engine
 // Pure stateless engine for recovery scoring, classification,
 // queue assignment, and path recommendation
+//
+// PURITY:
+//   ✅ Pure computation — no I/O or side effects
+//   ✅ No embedded fixtures — demo rows live in
+//      `src/data/fixtures/mock-data/recovery-candidates.ts`
+//   ✅ Canonical contracts re-exported from `@/domains/business`
 // ═══════════════════════════════════════════════════════════════
 
-// ── Failure Modes ──────────────────────────────────────────────
-export type FailureMode =
-  | "no_response"
-  | "missed_followup"
-  | "quote_abandoned"
-  | "lost_momentum"
-  | "owner_dropped"
-  | "appointment_incomplete"
-  | "post_consult_drift"
-  | "handoff_failure"
-  | "silent_high_value"
-  | "callback_missed";
+import type {
+  FailureMode,
+  RecoveryPath,
+  SuccessBand,
+  UrgencyLevel,
+  RelationshipSensitivity,
+  RecoveryQueueDef,
+  RecoveryTimelineEvent,
+  RecoveryCandidate,
+} from "@/domains/business";
+
+// Re-export canonical contracts so existing import paths
+// (`from "@/domains/engines/lead-recovery-engine"`) keep working.
+// Source of truth lives in `@/domains/business`.
+export type {
+  FailureMode,
+  RecoveryPath,
+  SuccessBand,
+  UrgencyLevel,
+  RelationshipSensitivity,
+  RecoveryQueueDef,
+  RecoveryTimelineEvent,
+  RecoveryCandidate,
+};
 
 export const FAILURE_MODE_META: Record<FailureMode, { label: string; icon: string; color: string }> = {
   no_response:            { label: "No Response",            icon: "mail-x",        color: "hsl(0 70% 55%)" },
@@ -30,16 +48,6 @@ export const FAILURE_MODE_META: Record<FailureMode, { label: string; icon: strin
   callback_missed:        { label: "Callback Missed",        icon: "phone-missed",  color: "hsl(0 70% 55%)" },
 };
 
-// ── Recovery Paths ─────────────────────────────────────────────
-export type RecoveryPath =
-  | "soft_reactivation"
-  | "direct_rescue"
-  | "quote_rescue"
-  | "consult_reactivation"
-  | "relationship_repair"
-  | "reassignment"
-  | "strategic_rescue";
-
 export const RECOVERY_PATH_META: Record<RecoveryPath, { label: string; tone: string; description: string }> = {
   soft_reactivation:    { label: "Soft Reactivation",    tone: "Warm & Low-Pressure",    description: "Gentle re-entry for quiet leads that may still be interested" },
   direct_rescue:        { label: "Direct Rescue",        tone: "Professional & Direct",  description: "Immediate follow-up for simply missed actions" },
@@ -50,9 +58,6 @@ export const RECOVERY_PATH_META: Record<RecoveryPath, { label: string; tone: str
   strategic_rescue:     { label: "Strategic Rescue",      tone: "Senior & High-Touch",   description: "Escalate for founder or boardroom visibility" },
 };
 
-// ── Success Bands ──────────────────────────────────────────────
-export type SuccessBand = "strong" | "moderate" | "uncertain" | "low" | "archive";
-
 export const SUCCESS_BAND_META: Record<SuccessBand, { label: string; color: string }> = {
   strong:    { label: "Strong Chance",         color: "hsl(152 55% 48%)" },
   moderate:  { label: "Moderate Chance",        color: "hsl(38 85% 58%)" },
@@ -60,18 +65,6 @@ export const SUCCESS_BAND_META: Record<SuccessBand, { label: string; color: stri
   low:       { label: "Low Chance",             color: "hsl(0 70% 55%)" },
   archive:   { label: "Archive Likely",         color: "hsl(0 0% 40%)" },
 };
-
-// ── Urgency ────────────────────────────────────────────────────
-export type UrgencyLevel = "act_today" | "this_week" | "flexible";
-export type RelationshipSensitivity = "handle_carefully" | "standard" | "direct_approach";
-
-// ── Recovery Queue ─────────────────────────────────────────────
-export interface RecoveryQueueDef {
-  key: string;
-  label: string;
-  failureModes: FailureMode[];
-  icon: string;
-}
 
 export const RECOVERY_QUEUES: RecoveryQueueDef[] = [
   { key: "all",                   label: "All Recovery",         failureModes: [],                                                  icon: "layers" },
