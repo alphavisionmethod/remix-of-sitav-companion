@@ -62,9 +62,7 @@ const STATE_GRAMMAR_DEBT = new Set<string>([
   "CRMHealth.tsx",
   "CRMHome.tsx",
   "CRMSegments.tsx",
-  "CollectionsCommandCenter.tsx",
   "CommunicationsCenter.tsx",
-  "RevenueImpactDashboard.tsx",
   "StrategicAccountRoom.tsx",
 ]);
 
