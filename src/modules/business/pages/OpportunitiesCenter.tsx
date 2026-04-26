@@ -18,6 +18,9 @@ import { Target, DollarSign, TrendingUp, Clock, AlertTriangle, Sparkles, ArrowRi
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
 import { getModuleAdaptation } from "@/domains/engines/business-module-adaptations";
 import { generateOpportunityAdvisors } from "@/domains/engines/business-advisor-engine";
+import { CrossAppAction } from "@/platform/sita/components/sita/CrossAppAction";
+import { setLinkedContext } from "@/platform/sita/components/sita/CrossAppAction";
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -44,6 +47,7 @@ const OpportunitiesCenter = () => {
   const moduleConfig = getModuleAdaptation("opportunities", primaryMode);
   const { user } = useAuth();
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
   const [tab, setTab] = useState("all");
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [showAdd, setShowAdd] = useState(false);
@@ -54,14 +58,29 @@ const OpportunitiesCenter = () => {
     queryKey: ["opportunities", user?.id],
     queryFn: async () => {
       if (!user) return [];
-      const { data, error } = await fromTable("opportunities").select("*, customers(name)").eq("user_id", user.id).order("created_at", { ascending: false });
+      // Canonical table is crm_opportunities. Customer name is resolved via crm_contacts (display_name) or crm_companies (name).
+      const { data, error } = await fromTable("crm_opportunities")
+        .select("*, crm_contacts(display_name), crm_companies(name)")
+        .eq("user_id", user.id)
+        .order("created_at", { ascending: false });
       if (error) throw error;
-      return data;
+      // Normalize: expose `confidence` (UI legacy) from `probability`, and a unified `customer_label`.
+      return (data ?? []).map((o: Record<string, any>) => ({
+        ...o,
+        confidence: o.probability ?? 0,
+        customer_label: o.crm_contacts?.display_name ?? o.crm_companies?.name ?? null,
+        stale_risk: o.status === "stale" || o.stage === "stale",
+        next_action: o.notes ?? null,
+      }));
     },
     enabled: !!user,
   });
 
-  const addOpp = useAction("business", "opportunity.create");
+  const addOpp = useAction("business", "opportunity.create", {
+    successMessage: "Opportunity added",
+    invalidateKeys: [["opportunities"]],
+    onSuccess: () => { setShowAdd(false); setForm({ title: "", value: "", confidence: 50, stage: "lead", next_action: "" }); },
+  });
 
   const updateStage = useAction("business", "opportunity.update-stage", {
     invalidateKeys: [["opportunities"]],
@@ -69,6 +88,24 @@ const OpportunitiesCenter = () => {
 
   const deleteOpp = useAction("business", "opportunity.delete", {
     invalidateKeys: [["opportunities"]],
+    onSuccess: () => { setSelectedId(null); },
+  });
+
+  // Phase 3 — opportunity → quote transition. Lands user on QuotesWorkspace
+  // with the new quote pre-selected.
+  const convertToQuote = useAction("business", "opportunity.convert-to-quote", {
+    successMessage: "Quote drafted from opportunity",
+    invalidateKeys: [["opportunities"], ["quotes"]],
+    onSuccess: (data) => {
+      const result = (data?.result ?? data) as Record<string, unknown> | null;
+      const newQuoteId = (result?.id as string | undefined) ?? null;
+      setLinkedContext({
+        entityType: "quote",
+        entityId: newQuoteId ?? "new",
+        entityLabel: "Drafted from opportunity",
+      });
+      navigate("/business/quotes");
+    },
   });
 
   const selected = opportunities.find((o: Record<string, any>) => o.id === selectedId);
@@ -210,7 +247,7 @@ const OpportunitiesCenter = () => {
             {selected ? (
               <>
                 <SitaCard hover={false} glow className="p-5">
-                  <SitaCardTitle sub={`${selected.customers?.name || "No customer"} · ${stageLabels[selected.stage] || selected.stage}`}>{selected.title}</SitaCardTitle>
+                  <SitaCardTitle sub={`${selected.customer_label || "No contact"} · ${stageLabels[selected.stage] || selected.stage}`}>{selected.title}</SitaCardTitle>
                   <div className="mt-4 space-y-3">
                     <div className="flex justify-between text-sm"><span className="text-muted-foreground">Value</span><span className="font-semibold text-foreground">{selected.value ? `$${Number(selected.value).toLocaleString()}` : "—"}</span></div>
                     <ConfidenceBar value={selected.confidence || 0} label="Confidence" />
@@ -220,6 +257,13 @@ const OpportunitiesCenter = () => {
                   </div>
                 </SitaCard>
                 <div className="flex gap-2 flex-wrap">
+                  <button
+                    onClick={() => convertToQuote.mutate({ opportunity_id: selected.id })}
+                    disabled={convertToQuote.isPending}
+                    className="flex-1 flex items-center justify-center gap-1.5 rounded-lg border border-primary/30 bg-primary/10 px-3 py-2 text-xs font-medium text-primary hover:bg-primary/15 disabled:opacity-50 transition-colors micro-press"
+                  >
+                    <ArrowRight className="h-3.5 w-3.5" /> {convertToQuote.isPending ? "Drafting…" : "Draft Quote"}
+                  </button>
                   {selected.stage !== "won" && <button onClick={() => updateStage.mutate({ id: selected.id, stage: "won" })} className="flex-1 flex items-center justify-center gap-1.5 rounded-lg bg-primary px-3 py-2 text-xs font-medium text-primary-foreground hover:bg-primary/90 transition-colors"><CheckCircle className="h-3.5 w-3.5" /> Mark Won</button>}
                   <button onClick={() => deleteOpp.mutate({ id: selected.id })} className="rounded-lg border border-border px-3 py-2 text-xs text-muted-foreground hover:text-destructive hover:border-destructive/30 transition-colors"><Trash2 className="h-3.5 w-3.5" /></button>
                 </div>
