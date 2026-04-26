@@ -30,16 +30,15 @@ describe("Phase 6 — profile-evolution persistence round-trip", () => {
 
   it("round-trips a single snapshot exactly", () => {
     saveEvolutionSnapshot(makeSnap(1));
-    const history = loadEvolutionHistory();
+    const history = loadEvolutionHistory() as any[];
     expect(history.length).toBe(1);
     expect(history[0].id).toBe("s-1");
   });
 
   it("caps stored snapshots at 30 (MAX_SNAPSHOTS) — oldest trimmed first", () => {
     for (let i = 0; i < 35; i++) saveEvolutionSnapshot(makeSnap(i));
-    const history = loadEvolutionHistory();
+    const history = loadEvolutionHistory() as any[];
     expect(history.length).toBeLessThanOrEqual(30);
-    // Newest entry must be present.
     expect(history.some((h: any) => h.id === "s-34")).toBe(true);
   });
 
