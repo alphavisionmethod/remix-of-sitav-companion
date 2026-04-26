@@ -2,10 +2,16 @@
 // Invoice Detail Pane — Right panel for ModuleWorkspace
 // ═══════════════════════════════════════════════════════════════
 
-import { Send, Receipt, FileText, Trash2, Loader2, Eye, Lock } from "lucide-react";
+import { Send, Receipt, FileText, Trash2, Loader2, Eye, FileDown, FileSignature } from "lucide-react";
 import { SitaCard, SitaCardTitle, SitaButton } from "@/platform/sita/components/sita/SitaCard";
 import { EmptyState } from "@/platform/sita/components/sita/SitaComponents";
 import { DollarSign } from "lucide-react";
+import { useState } from "react";
+import {
+  useGenerateInvoicePdf,
+  useRequestSignature,
+  useDispatchComm,
+} from "@/hooks/use-phase10-actions";
 
 const statusConfig: Record<string, { label: string; color: string }> = {
   draft: { label: "Draft", color: "bg-muted text-muted-foreground border-border" },
@@ -36,6 +42,17 @@ export function InvoiceDetailPane({
   }
 
   const st = statusConfig[invoice.computedStatus] || statusConfig.draft;
+  const generatePdf = useGenerateInvoicePdf();
+  const requestSig = useRequestSignature();
+  const dispatch = useDispatchComm();
+  const [signerEmail, setSignerEmail] = useState("");
+  const [signerOpen, setSignerOpen] = useState(false);
+
+  const recipient =
+    invoice?.customers?.email ??
+    invoice?.crm_contacts?.email ??
+    invoice?.metadata?.recipient_email ??
+    null;
 
   return (
     <div className="space-y-4">
@@ -89,18 +106,90 @@ export function InvoiceDetailPane({
             Preview HTML
           </SitaButton>
         )}
-        <SitaButton variant="secondary" size="sm" disabled title="PDF rendering coming soon — needs render service">
-          <Lock className="h-3.5 w-3.5" /> PDF · Soon
+        <SitaButton
+          variant="secondary"
+          size="sm"
+          className="flex-1"
+          onClick={() => generatePdf.mutate(invoice.id)}
+          disabled={generatePdf.isPending}
+          title="Generate a verifiable PDF on the server"
+        >
+          {generatePdf.isPending ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <FileDown className="h-3.5 w-3.5" />}
+          Generate PDF
         </SitaButton>
-        <SitaButton variant="secondary" size="sm" disabled title="E-signature provider not yet integrated">
-          <Lock className="h-3.5 w-3.5" /> E-sign · Soon
+        <SitaButton
+          variant="secondary"
+          size="sm"
+          onClick={() => setSignerOpen((v) => !v)}
+          title="Request an e-signature on this invoice"
+        >
+          <FileSignature className="h-3.5 w-3.5" /> E-sign
         </SitaButton>
+        {recipient && (
+          <SitaButton
+            variant="secondary"
+            size="sm"
+            onClick={() =>
+              dispatch.mutate({
+                channel: "email",
+                recipient,
+                subject: `Invoice #${invoice.invoice_number}`,
+                message_text: `Your invoice #${invoice.invoice_number} for $${Number(invoice.amount).toLocaleString()} is ready.`,
+                subject_type: "invoice",
+                subject_id: invoice.id,
+              })
+            }
+            disabled={dispatch.isPending}
+            title={`Email invoice to ${recipient}`}
+          >
+            {dispatch.isPending ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Send className="h-3.5 w-3.5" />}
+            Email
+          </SitaButton>
+        )}
         {onDelete && (
           <SitaButton variant="danger" size="sm" onClick={onDelete}>
             <Trash2 className="h-3.5 w-3.5" />
           </SitaButton>
         )}
       </div>
+
+      {signerOpen && (
+        <div className="rounded-lg border border-border/40 bg-card/40 p-3 space-y-2">
+          <label className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+            Send sign request to
+          </label>
+          <input
+            type="email"
+            placeholder="signer@example.com"
+            value={signerEmail}
+            onChange={(e) => setSignerEmail(e.target.value)}
+            className="w-full rounded-md border border-input bg-background px-2 py-1.5 text-xs"
+          />
+          <div className="flex gap-2">
+            <SitaButton
+              variant="primary"
+              size="sm"
+              onClick={() =>
+                requestSig.mutate(
+                  {
+                    document_type: "invoice",
+                    document_id: invoice.id,
+                    signer_email: signerEmail.trim(),
+                  },
+                  { onSuccess: () => { setSignerEmail(""); setSignerOpen(false); } },
+                )
+              }
+              disabled={!signerEmail.includes("@") || requestSig.isPending}
+            >
+              {requestSig.isPending ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <FileSignature className="h-3.5 w-3.5" />}
+              Send link
+            </SitaButton>
+            <SitaButton variant="secondary" size="sm" onClick={() => setSignerOpen(false)}>
+              Cancel
+            </SitaButton>
+          </div>
+        </div>
+      )}
 
       <InvoiceProofBadges invoiceId={invoice.id} />
     </div>
