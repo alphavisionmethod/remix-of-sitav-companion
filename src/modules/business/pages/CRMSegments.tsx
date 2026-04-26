@@ -11,29 +11,12 @@ import { supabase } from "@/integrations/supabase/client";
 import { dbAny } from "@/lib/supabase-helpers";
 import { toast } from "sonner";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { SEGMENT_FILTER_FIELDS, SEGMENT_OPERATORS } from "./_config/CRMSegments.config";
 
 type FilterCondition = {
   field: string;
   operator: string;
   value: string;
-};
-
-const FILTER_FIELDS = [
-  { key: "lifecycle_stage", label: "Lifecycle Stage", type: "select", options: ["new", "lead", "contacted", "engaged", "qualified", "opportunity", "active_opportunity", "proposal_sent", "negotiation", "won", "customer", "dormant", "at_risk", "lost", "churned", "reactivation", "support_sensitive", "collections_sensitive"] },
-  { key: "status", label: "Status", type: "select", options: ["active", "inactive", "archived"] },
-  { key: "health_score", label: "Health Score", type: "number" },
-  { key: "source", label: "Source", type: "text" },
-  { key: "city", label: "City", type: "text" },
-  { key: "country", label: "Country", type: "text" },
-  { key: "last_contacted_days", label: "Days Since Contact", type: "number" },
-  { key: "tags", label: "Has Tag", type: "text" },
-  { key: "owner", label: "Owner", type: "text" },
-];
-
-const OPERATORS: Record<string, { key: string; label: string }[]> = {
-  text: [{ key: "eq", label: "equals" }, { key: "contains", label: "contains" }],
-  number: [{ key: "eq", label: "=" }, { key: "gt", label: ">" }, { key: "lt", label: "<" }, { key: "gte", label: "≥" }, { key: "lte", label: "≤" }],
-  select: [{ key: "eq", label: "is" }, { key: "neq", label: "is not" }],
 };
 
 function matchesFilter(contact: any, condition: FilterCondition): boolean {
@@ -242,8 +225,8 @@ const CRMSegments = () => {
 
             <div className="space-y-2">
               {conditions.map((cond, i) => {
-                const fieldDef = FILTER_FIELDS.find(f => f.key === cond.field);
-                const ops = OPERATORS[fieldDef?.type || "text"];
+                const fieldDef = SEGMENT_FILTER_FIELDS.find(f => f.key === cond.field);
+                const ops = SEGMENT_OPERATORS[fieldDef?.type || "text"];
                 return (
                   <div key={i} className="flex items-center gap-2">
                     {i > 0 && <span className="text-[10px] text-muted-foreground font-medium">AND</span>}
@@ -252,7 +235,7 @@ const CRMSegments = () => {
                       onChange={e => setConditions(prev => prev.map((c, idx) => idx === i ? { ...c, field: e.target.value, value: "" } : c))}
                       className="rounded-lg border border-border bg-background px-2 py-1.5 text-xs flex-1"
                     >
-                      {FILTER_FIELDS.map(f => <option key={f.key} value={f.key}>{f.label}</option>)}
+                      {SEGMENT_FILTER_FIELDS.map(f => <option key={f.key} value={f.key}>{f.label}</option>)}
                     </select>
                     <select
                       value={cond.operator}
