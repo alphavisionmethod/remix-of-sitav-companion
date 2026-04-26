@@ -353,7 +353,7 @@ const RevenueImpactDashboard = () => {
           <SitaCard className="p-5" hover={false}>
             <SitaCardTitle sub="Revenue attribution per playbook">Playbook Breakdown</SitaCardTitle>
             <div className="mt-4 space-y-2">
-              {PLAYBOOK_REVENUE.sort((a, b) => (b.recovered + b.generated) - (a.recovered + a.generated)).map(pb => {
+              {playbooks.sort((a, b) => (b.recovered + b.generated) - (a.recovered + a.generated)).map(pb => {
                 const total = pb.recovered + pb.generated;
                 const pct = totals.total > 0 ? Math.round((total / totals.total) * 100) : 0;
 
@@ -435,7 +435,7 @@ const RevenueImpactDashboard = () => {
             <SitaCardTitle sub="Revenue by category">Category Breakdown</SitaCardTitle>
             <div className="mt-3 space-y-2">
               {Object.entries(
-                PLAYBOOK_REVENUE.reduce((cats, p) => {
+                playbooks.reduce((cats, p) => {
                   if (!cats[p.category]) cats[p.category] = { recovered: 0, generated: 0 };
                   cats[p.category].recovered += p.recovered;
                   cats[p.category].generated += p.generated;
