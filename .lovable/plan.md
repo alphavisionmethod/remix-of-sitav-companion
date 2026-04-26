@@ -85,14 +85,22 @@ src/routes/registry/route-family-registry.ts  ← typed registry (one entry per 
   organically when persistence/edge-function contracts emerge.
 - **Gate**: `tsc --noEmit` clean; engine-purity passes; smoke test passes.
 
-### **Phase 4 — Engine Purity Re-Audit + Service Boundary Cleanup**
-- Run `scripts/architecture/check-engine-purity.ts` against current state; fix any new violations.
-- Audit `src/domains/engines/business-*.ts`, `concierge` adjacent engines, and finance/investment engines for:
-  - inline domain types → relocate to `@/domains/<m>` and re-import.
-  - hidden mock-data → move to `src/data/fixtures/`.
-  - service imports → invert: services import from engines, not vice versa.
-- Audit service `index.ts` barrels: ensure no domain-type re-exports leak (services should re-export *behavior*, types come from `@/domains/<m>`).
-- **Gate**: engine-purity script returns 0; service barrels reviewed; `tsc --noEmit` clean.
+### **Phase 4 — Engine Purity Re-Audit + Service Boundary Cleanup** ✅ COMPLETE
+- ✅ `scripts/architecture/check-engine-purity.ts` returns clean — "All domain engines are pure."
+- ✅ Engine-layer audit:
+  - No inline domain entities found that belong to a `@/domains/<m>` layer.
+    `lead-recovery-engine.ts` already exports its types AND comments confirm
+    fixtures live in `src/data/fixtures/mock-data/recovery-candidates.ts`.
+  - No hidden mock fixtures inside `src/domains/engines/**` (only the
+    deterministic `generateMockSignals()` synthesis function in
+    `profile-evolution-engine.ts`, which is pure logic, not stored data).
+  - No engine→service imports detected (`rg "from ['\"]@/lib/services" src/domains/engines/` returns empty).
+- ✅ Service barrels (`business-os/index.ts`, `concierge-os/index.ts`,
+  `finance-os/index.ts`) re-export *behavior* via `export * from "./<svc>"`.
+  Domain types flow through the canonical re-export pattern established in
+  Phase 2 (services re-export `type { X }` from `@/domains/<m>` for
+  consumer ergonomics — single source of truth preserved).
+- **Gate**: engine-purity returns 0; `tsc --noEmit` clean; service boundaries verified.
 
 ### **Phase 5 — Investment Routing Consolidation (`/investment` is canonical)**
 - Decision: `/investment/*` (singular) is canonical. Rationale: matches `route-family-registry.ts` id `"investment"`, matches feature registry, matches `InvestmentShellPage` page name, shorter URL.
