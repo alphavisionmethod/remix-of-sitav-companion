@@ -15,6 +15,7 @@ import { cn } from "@/lib/utils";
 import { useOSRuntime } from "@/hooks/useOSRuntime";
 import { useCountUpFormatted } from "@/hooks/useCountUp";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import HierarchyHint from "@/modules/business/components/business/shared/HierarchyHint";
 import { PageShell } from "@/platform/sita/components/sita/PageShell";
 
 // ── Seed demo recovered values ─────────────────────────────────
@@ -75,6 +76,7 @@ export default function RecoveredValuePage() {
 
   return (
     <div className="p-4 md:p-6 max-w-[1200px] mx-auto space-y-6">
+      <HierarchyHint tier="result" surface="Recovered Value" description="Closed-loop revenue evidence" />
       {/* Hero */}
       <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
         className="rounded-2xl border border-sita-gold/15 bg-gradient-to-br from-sita-gold/5 via-card to-card p-6"

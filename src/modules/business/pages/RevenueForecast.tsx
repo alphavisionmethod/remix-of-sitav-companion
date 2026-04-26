@@ -11,6 +11,7 @@ import { fromTable } from "@/lib/supabase-helpers";
 import { motion } from "framer-motion";
 import { SitaCard, SitaCardTitle } from "@/platform/sita/components/sita/SitaCard";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import HierarchyHint from "@/modules/business/components/business/shared/HierarchyHint";
 import { EmptyState } from "@/platform/sita/components/sita/EmptyState";
 import { ModuleAdvisorInsight } from "@/platform/sita/components/sita/domain-shared/ModuleAdvisorInsight";
 import { KPITile } from "@/platform/sita/components/sita/SitaComponents";
@@ -278,6 +279,7 @@ const RevenueForecast = () => {
   return (
     <div className="space-y-6">
       <PageTruthBanner />
+      <HierarchyHint tier="insight" surface="Revenue Forecast" description="Projected pipeline value" />
 
       {/* ── KPI Row ────────────────────────────────── */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">

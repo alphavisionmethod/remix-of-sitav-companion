@@ -5,6 +5,7 @@
 import { useState, useMemo } from "react";
 import { SitaCard, SitaCardTitle } from "@/platform/sita/components/sita/SitaCard";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import HierarchyHint from "@/modules/business/components/business/shared/HierarchyHint";
 import { ModuleAdvisorInsight } from "@/platform/sita/components/sita/domain-shared/ModuleAdvisorInsight";
 import { SitaTabs, KPITile } from "@/platform/sita/components/sita/SitaComponents";
 import { motion } from "framer-motion";
@@ -249,6 +250,7 @@ const RevenueAutopilot = () => {
    return (
     <div className="space-y-6">
       <PageTruthBanner />
+      <HierarchyHint tier="execution" surface="Revenue Autopilot" description="Execution view · live results from policies" />
       <div className="flex items-center justify-between">
         <span className="rounded-full bg-primary/10 px-3 py-1 text-[10px] font-semibold text-primary flex items-center gap-1">
           <Zap className="h-3 w-3" /> Autopilot Active

@@ -7,6 +7,7 @@ import { SplitWorkspace } from "@/platform/sita/components/sita/surfaces/SplitWo
 import { HeroCard, QueueCard, ProofCard, StatusCard } from "@/platform/sita/components/sita/cards";
 import { ModuleAdvisorInsight } from "@/platform/sita/components/sita/domain-shared/ModuleAdvisorInsight";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import HierarchyHint from "@/modules/business/components/business/shared/HierarchyHint";
 import { PremiumEmptyState } from "@/platform/sita/components/sita/PremiumEmptyState";
 import { TrustBadge } from "@/platform/sita/components/sita/TrustBadge";
 import { StateBadge, type ExecutionState } from "@/platform/sita/components/sita/StateBadge";
@@ -57,6 +58,7 @@ const BusinessProof = () => {
   const listPane = (
     <div className="p-3 space-y-3">
       <PageTruthBanner />
+      <HierarchyHint tier="result" surface="Business Proof" description="Receipts and lineage for every action" />
       
       {/* Summary strip */}
       <div className="grid grid-cols-4 gap-2">

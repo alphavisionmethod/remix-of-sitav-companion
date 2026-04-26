@@ -9,6 +9,7 @@ import { motion } from "framer-motion";
 import { SitaCard, SitaCardTitle } from "@/platform/sita/components/sita/SitaCard";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import HierarchyHint from "@/modules/business/components/business/shared/HierarchyHint";
 import { ModuleAdvisorInsight } from "@/platform/sita/components/sita/domain-shared/ModuleAdvisorInsight";
 import { KPITile } from "@/platform/sita/components/sita/SitaComponents";
 import {
@@ -169,6 +170,7 @@ const RevenueImpactDashboard = () => {
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
       <PageTruthBanner />
+      <HierarchyHint tier="insight" surface="Revenue Impact" description="Recovered + generated revenue" />
       <div className="flex items-center justify-end">
         <span className="rounded-full bg-trust-safe/10 px-3 py-1 text-[10px] font-semibold text-trust-safe flex items-center gap-1">
           <TrendingUp className="h-3 w-3" /> +{Math.round(((totals.total) / 100000) * 100)}% vs target

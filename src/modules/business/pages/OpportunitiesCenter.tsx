@@ -3,6 +3,7 @@ import { SitaCard, SitaCardTitle, SitaButton } from "@/platform/sita/components/
 import { KPITile, SitaTabs, EmptyState } from "@/platform/sita/components/sita/SitaComponents";
 import { TrustBadge, TrustLevel } from "@/platform/sita/components/sita/TrustBadge";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import HierarchyHint from "@/modules/business/components/business/shared/HierarchyHint";
 import { ModuleAdvisorPanel } from "@/modules/business/components/business/advisor-board/ModuleAdvisorPanel";
 import { PremiumEmptyState } from "@/platform/sita/components/sita/PremiumEmptyState";
 import { StateBadge, ExecutionState } from "@/platform/sita/components/sita/StateBadge";
@@ -121,6 +122,7 @@ const OpportunitiesCenter = () => {
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
       <PageTruthBanner />
+      <HierarchyHint tier="workflow" surface="Opportunities" description="Source of every quote and invoice" />
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <div className="flex gap-1 rounded-lg border border-border p-0.5">

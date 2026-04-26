@@ -10,6 +10,7 @@ import { fromTable } from "@/lib/supabase-helpers";
 import { HeroCard, SummaryCard, ActionCard, QueueCard } from "@/platform/sita/components/sita/cards";
 import { ExecutionBadge } from "@/platform/sita/components/sita/badges";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import HierarchyHint from "@/modules/business/components/business/shared/HierarchyHint";
 import { SplitWorkspace } from "@/platform/sita/components/sita/surfaces/SplitWorkspace";
 import { AppSurface } from "@/platform/sita/components/sita/surfaces/AppSurface";
 import { SitaTabs } from "@/platform/sita/components/sita/SitaComponents";
@@ -145,6 +146,7 @@ const QuotesWorkspace = () => {
   const listPane = (
     <div className="p-3 space-y-3">
       <PageTruthBanner truthState="live" />
+      <HierarchyHint tier="workflow" surface="Quotes" description="Front door to revenue" />
       {selected && (
         <button
           onClick={() => convertToInvoice.mutate({ quote_id: selected.id })}

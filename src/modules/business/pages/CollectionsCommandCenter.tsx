@@ -22,6 +22,7 @@ import { ExecutionBadge, UrgencyBadge } from "@/platform/sita/components/sita/ba
 import { SplitWorkspace } from "@/platform/sita/components/sita/surfaces/SplitWorkspace";
 import { AppSurface } from "@/platform/sita/components/sita/surfaces/AppSurface";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import HierarchyHint from "@/modules/business/components/business/shared/HierarchyHint";
 import { SitaTabs } from "@/platform/sita/components/sita/SitaComponents";
 import { ModuleAdvisorInsight } from "@/platform/sita/components/sita/domain-shared/ModuleAdvisorInsight";
 import { ListReveal, ListRevealItem } from "@/platform/sita/components/sita/motion/AppTransitions";
@@ -77,6 +78,7 @@ const CollectionsCommandCenter = () => {
   const listPane = (
     <div className="p-3 space-y-3">
       <PageTruthBanner truthState="live" />
+      <HierarchyHint tier="execution" surface="Collections" description="Operator-led recovery on overdue invoices" />
 
       {/* KPI Strip */}
       <div className="grid grid-cols-2 gap-2">
