@@ -39,6 +39,9 @@ jobs:
       - name: Run import boundary checker
         run: npx tsx scripts/check-import-boundaries.ts
 
+      - name: Run engine purity checker
+        run: npx tsx scripts/architecture/check-engine-purity.ts
+
       - name: Run mutation traceability gate
         env:
           MUTATION_UNDECLARED_THRESHOLD: "242"
