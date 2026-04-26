@@ -182,12 +182,45 @@ const QuotesWorkspace = () => {
                 <span className="text-[12px] font-semibold text-[hsl(0_0%_85%)]">New Quote</span>
                 <button onClick={() => setShowAdd(false)} aria-label="Close" className="text-[hsl(0_0%_50%)]"><X className="h-4 w-4" /></button>
               </div>
+              {prefillContactId && (
+                <div className="flex items-center gap-2 rounded-lg border border-[hsl(265_55%_58%/0.25)] bg-[hsl(265_55%_58%/0.08)] px-2.5 py-1.5 text-[11px] text-[hsl(265_55%_78%)]">
+                  <span className="font-medium">Billing</span>
+                  <span className="truncate">{prefillContactLabel ?? "CRM contact"}</span>
+                  <button
+                    type="button"
+                    onClick={() => { setPrefillContactId(null); setPrefillContactLabel(null); }}
+                    className="ml-auto text-[hsl(0_0%_50%)] hover:text-[hsl(0_0%_85%)]"
+                  >
+                    Clear
+                  </button>
+                </div>
+              )}
               <input value={form.title} onChange={e => { const v = e.target.value; setForm(f => ({ ...f, title: v })); updateDraft({ title: v }); }} placeholder="Quote title *" className="w-full rounded-lg border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_100%/0.04)] px-3 py-2 text-sm text-[hsl(0_0%_85%)] placeholder:text-[hsl(0_0%_40%)] focus:outline-none focus:ring-1 focus:ring-[hsl(265_55%_58%/0.3)]" />
               <div className="grid grid-cols-2 gap-3">
                 <input type="number" value={form.total} onChange={e => { const v = e.target.value; setForm(f => ({ ...f, total: v })); updateDraft({ total: v }); }} placeholder="Total ($)" className="rounded-lg border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_100%/0.04)] px-3 py-2 text-sm text-[hsl(0_0%_85%)] focus:outline-none" />
                 <input type="date" value={form.expiry_date} onChange={e => { const v = e.target.value; setForm(f => ({ ...f, expiry_date: v })); updateDraft({ expiry_date: v }); }} className="rounded-lg border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_100%/0.04)] px-3 py-2 text-sm text-[hsl(0_0%_85%)] focus:outline-none" />
               </div>
-              <button onClick={() => { addQuote.mutate({ title: form.title.trim(), total: form.total ? parseFloat(form.total) : null, expiry_date: form.expiry_date || null, notes: form.notes || null, status: "draft" }); clearDraft(); setForm({ title: "", total: "", expiry_date: "", notes: "" }); setShowAdd(false); }} disabled={!form.title.trim()} className="px-4 py-2 rounded-lg bg-[hsl(265_55%_58%)] text-foreground text-xs font-medium hover:bg-[hsl(265_55%_50%)] disabled:opacity-50 transition-colors micro-press">Create Quote</button>
+              <button
+                onClick={() => {
+                  addQuote.mutate({
+                    title: form.title.trim(),
+                    total: form.total ? parseFloat(form.total) : null,
+                    expiry_date: form.expiry_date || null,
+                    notes: form.notes || null,
+                    status: "draft",
+                    crm_contact_id: prefillContactId,
+                  });
+                  clearDraft();
+                  setForm({ title: "", total: "", expiry_date: "", notes: "" });
+                  setPrefillContactId(null);
+                  setPrefillContactLabel(null);
+                  setShowAdd(false);
+                }}
+                disabled={!form.title.trim()}
+                className="px-4 py-2 rounded-lg bg-[hsl(265_55%_58%)] text-foreground text-xs font-medium hover:bg-[hsl(265_55%_50%)] disabled:opacity-50 transition-colors micro-press"
+              >
+                Create Quote
+              </button>
             </AppSurface>
           </motion.div>
         )}
