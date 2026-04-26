@@ -78,6 +78,7 @@ const Login = lazy(() => import("./pages/auth/Login"));
 const Signup = lazy(() => import("./pages/auth/Signup"));
 const ForgotPassword = lazy(() => import("./pages/auth/ForgotPassword"));
 const ResetPassword = lazy(() => import("./pages/auth/ResetPassword"));
+const PublicSign = lazy(() => import("./pages/PublicSign"));
 
 // Marketing site pages removed from routes — reference only.
 // Build the marketing website separately using the pages in src/pages/marketing/ as templates.
@@ -259,6 +260,8 @@ const App = () => (
             <Route path="/signup" element={<PublicLayout><PublicRoute><Signup /></PublicRoute></PublicLayout>} />
             <Route path="/forgot-password" element={<PublicLayout><PublicRoute><ForgotPassword /></PublicRoute></PublicLayout>} />
             <Route path="/reset-password" element={<PublicLayout><ResetPassword /></PublicLayout>} />
+            {/* Public e-sign — no auth, token-gated by edge function */}
+            <Route path="/sign/:token" element={<PublicLayout><PublicSign /></PublicLayout>} />
 
             {/* TIER 2+3: AUTHENTICATED */}
             <Route path="/*" element={
