@@ -11,6 +11,7 @@ import { PremiumEmptyState } from "@/platform/sita/components/sita/PremiumEmptyS
 import { TrustBadge } from "@/platform/sita/components/sita/TrustBadge";
 import { useState } from "react";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { useBusinessDocuments, type BusinessDocumentVM } from "@/hooks/use-business-documents";
 import { getModuleAdaptation } from "@/domains/engines/business-module-adaptations";
 import { motion } from "framer-motion";
 import {
@@ -23,28 +24,11 @@ import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
 type Tab = "all" | "quotes" | "invoices" | "contracts" | "attachments" | "images";
 type ViewMode = "grid" | "list";
 
-interface BusinessDocument {
-  id: string; name: string; type: "pdf" | "doc" | "image" | "spreadsheet" | "contract" | "other";
-  category: "quote" | "invoice" | "contract" | "proposal" | "attachment" | "image" | "intake" | "receipt";
-  size: string; uploadedAt: string; uploadedBy: string; linkedEntity?: string;
-  linkedEntityType?: string; status: "active" | "draft" | "sent" | "signed" | "expired" | "archived";
-  starred: boolean; previewable: boolean; tags: string[];
-}
-
-const DOCUMENTS: BusinessDocument[] = [
-  { id: "doc-1", name: "Q-2024-0847 — Acme Corp Website Redesign.pdf", type: "pdf", category: "quote", size: "2.4 MB", uploadedAt: "2 hours ago", uploadedBy: "Sarah K.", linkedEntity: "Acme Corp", linkedEntityType: "Customer", status: "sent", starred: true, previewable: true, tags: ["high-value", "website"] },
-  { id: "doc-2", name: "INV-2024-1205 — Monthly Retainer.pdf", type: "pdf", category: "invoice", size: "156 KB", uploadedAt: "1 day ago", uploadedBy: "System", linkedEntity: "Wilson & Partners", linkedEntityType: "Customer", status: "sent", starred: false, previewable: true, tags: ["recurring", "retainer"] },
-  { id: "doc-3", name: "Master Services Agreement — BigCorp.pdf", type: "pdf", category: "contract", size: "4.8 MB", uploadedAt: "3 days ago", uploadedBy: "Michael R.", linkedEntity: "BigCorp Industries", linkedEntityType: "Customer", status: "signed", starred: true, previewable: true, tags: ["legal", "enterprise"] },
-  { id: "doc-4", name: "Proposal — Digital Marketing Package.docx", type: "doc", category: "proposal", size: "1.2 MB", uploadedAt: "5 days ago", uploadedBy: "Lisa M.", linkedEntity: "Fresh Start Bakery", linkedEntityType: "Lead", status: "draft", starred: false, previewable: true, tags: ["marketing", "proposal"] },
-  { id: "doc-5", name: "Site Survey Photos — 123 Main St.zip", type: "image", category: "attachment", size: "18.3 MB", uploadedAt: "1 week ago", uploadedBy: "Jordan T.", linkedEntity: "Apex Industries", linkedEntityType: "Customer", status: "active", starred: false, previewable: false, tags: ["site-visit", "photos"] },
-  { id: "doc-6", name: "NDA — Confidentiality Agreement.pdf", type: "pdf", category: "contract", size: "220 KB", uploadedAt: "1 month ago", uploadedBy: "Legal", linkedEntity: "Apex Industries", linkedEntityType: "Customer", status: "signed", starred: false, previewable: true, tags: ["legal", "NDA"] },
-];
-
-const typeIcon = (type: BusinessDocument["type"]) => {
+const typeIcon = (type: BusinessDocumentVM["type"]) => {
   switch (type) { case "pdf": return FileText; case "doc": return File; case "image": return Image; default: return File; }
 };
 
-const statusStyle = (status: BusinessDocument["status"]) => {
+const statusStyle = (status: BusinessDocumentVM["status"]) => {
   switch (status) {
     case "signed": return "text-[hsl(152_55%_48%)] bg-[hsl(152_55%_48%/0.12)]";
     case "sent": return "text-primary bg-primary/10";
@@ -57,13 +41,14 @@ const statusStyle = (status: BusinessDocument["status"]) => {
 const BusinessDocuments = () => {
   const { primaryMode } = useBusinessProfile();
   const moduleConfig = getModuleAdaptation("documents", primaryMode);
+  const { documents, isLoading, isEmpty, counts } = useBusinessDocuments();
   const [tab, setTab] = useState<Tab>("all");
   const [viewMode, setViewMode] = useState<ViewMode>("list");
   const [search, setSearch] = useState("");
   const [selectedId, setSelectedId] = useState<string | null>(null);
-  const [starredIds, setStarredIds] = useState<Set<string>>(new Set(([] as any[]).filter(d => d.starred).map(d => d.id)));
+  const [starredIds, setStarredIds] = useState<Set<string>>(new Set());
 
-  const filtered = ([] as any[]).filter(doc => {
+  const filtered = documents.filter(doc => {
     if (tab === "quotes") return doc.category === "quote" || doc.category === "proposal";
     if (tab === "invoices") return doc.category === "invoice" || doc.category === "receipt";
     if (tab === "contracts") return doc.category === "contract";
@@ -72,16 +57,16 @@ const BusinessDocuments = () => {
     return true;
   }).filter(doc => !search || doc.name.toLowerCase().includes(search.toLowerCase()) || doc.linkedEntity?.toLowerCase().includes(search.toLowerCase()));
 
-  const selected = ([] as any[]).find(d => d.id === selectedId);
+  const selected = documents.find(d => d.id === selectedId);
   const toggleStar = (id: string) => setStarredIds(prev => { const n = new Set(prev); n.has(id) ? n.delete(id) : n.add(id); return n; });
 
   const tabs = [
-    { key: "all", label: `All (${([] as any[]).length})` },
-    { key: "quotes", label: "Quotes" },
-    { key: "invoices", label: "Invoices" },
-    { key: "contracts", label: "Contracts" },
-    { key: "attachments", label: "Attachments" },
-    { key: "images", label: "Images" },
+    { key: "all", label: `All (${counts.total})` },
+    { key: "quotes", label: `Quotes (${counts.quotes})` },
+    { key: "invoices", label: `Invoices (${counts.invoices})` },
+    { key: "contracts", label: `Contracts (${counts.contracts})` },
+    { key: "attachments", label: `Attachments (${counts.attachments})` },
+    { key: "images", label: `Images (${counts.images})` },
   ];
 
   const listPane = (
@@ -125,7 +110,9 @@ const BusinessDocuments = () => {
       </div>
 
       {/* Document list */}
-      {filtered.length === 0 ? (
+      {isLoading ? (
+        <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_6%)] p-6 text-center text-[11px] text-muted-foreground">Loading documents…</div>
+      ) : isEmpty || filtered.length === 0 ? (
         <PremiumEmptyState variant="no-results" icon={FolderOpen} title="No documents found" description="Upload your first file or adjust your search filters" domain="business" />
       ) : (
         <QueueCard
@@ -206,7 +193,7 @@ const BusinessDocuments = () => {
       <ModuleAdvisorInsight
         advisorName="Document Advisor"
         domain="business"
-        insight={`${([] as any[]).filter(d => d.status === "expired").length} expired document(s) need attention. ${([] as any[]).filter(d => d.status === "signed").length} contracts fully signed.`}
+        insight={`${counts.expired} expired document(s) need attention. ${counts.signed} contracts fully signed.`}
         confidence={85}
       />
     </motion.div>
