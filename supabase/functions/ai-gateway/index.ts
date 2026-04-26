@@ -157,6 +157,7 @@ serve(async (req) => {
     }
 
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
+    const QUATARLY_API_KEY = Deno.env.get("QUATARLY_API_KEY");
     const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
     const SUPABASE_ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY")!;
     const SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
@@ -187,7 +188,9 @@ serve(async (req) => {
         status: "ok",
         timestamp: new Date().toISOString(),
         userId: user.id,
-        hasApiKey: !!LOVABLE_API_KEY,
+        hasApiKey: !!(QUATARLY_API_KEY || LOVABLE_API_KEY),
+        primaryProvider: QUATARLY_API_KEY ? "quatarly" : "lovable",
+        fallbackProvider: QUATARLY_API_KEY && LOVABLE_API_KEY ? "lovable" : null,
       }, 200);
     }
 
@@ -207,7 +210,7 @@ serve(async (req) => {
     let resolvedPromptVersionId: string | null = null;
 
     // 1. Check if AI is available
-    if (!LOVABLE_API_KEY) {
+    if (!QUATARLY_API_KEY && !LOVABLE_API_KEY) {
       return corsResponse({
         status: "degraded",
         reason: "no_api_key",
