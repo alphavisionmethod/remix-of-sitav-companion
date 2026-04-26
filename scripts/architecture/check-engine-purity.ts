@@ -28,6 +28,12 @@ const ALLOWLIST = new Set<string>([
   "setup-orchestration-engine.ts",
 ]);
 
+// Files allowed to import @/data/persistence — typically kernel-level
+// state machines whose durability is part of their contract.
+const PERSISTENCE_ALLOWLIST = new Set<string>([
+  "action-state-machine.ts", // 16-state durable FSM (os_action_lineage)
+]);
+
 function walk(dir: string, out: string[] = []): string[] {
   for (const name of readdirSync(dir)) {
     const p = join(dir, name);
@@ -45,6 +51,7 @@ for (const file of walk(ROOT)) {
   const src = readFileSync(file, "utf8");
 
   for (const { pattern, label } of FORBIDDEN) {
+    if (label === "persistence import" && PERSISTENCE_ALLOWLIST.has(base)) continue;
     if (pattern.test(src)) {
       violations.push(`  ✗ ${rel} — ${label}`);
     }
