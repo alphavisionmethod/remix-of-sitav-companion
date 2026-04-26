@@ -2,16 +2,29 @@
 // Invoice Detail Pane — Right panel for ModuleWorkspace
 // ═══════════════════════════════════════════════════════════════
 
-import { Send, Receipt, FileText, Trash2, Loader2, Eye, FileDown, FileSignature } from "lucide-react";
+import { Send, Receipt, FileText, Trash2, Loader2, Eye, FileDown, FileSignature, Download, RotateCw } from "lucide-react";
 import { SitaCard, SitaCardTitle, SitaButton } from "@/platform/sita/components/sita/SitaCard";
 import { EmptyState } from "@/platform/sita/components/sita/SitaComponents";
 import { DollarSign } from "lucide-react";
 import { useState } from "react";
 import {
   useGenerateInvoicePdf,
+  useDownloadInvoicePdf,
   useRequestSignature,
+  useResendSignatureLink,
+  usePendingSignatures,
   useDispatchComm,
 } from "@/hooks/use-phase10-actions";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 const statusConfig: Record<string, { label: string; color: string }> = {
   draft: { label: "Draft", color: "bg-muted text-muted-foreground border-border" },
@@ -38,10 +51,17 @@ export function InvoiceDetailPane({
   sendPending, renderPending,
 }: InvoiceDetailPaneProps) {
   const generatePdf = useGenerateInvoicePdf();
+  const downloadPdf = useDownloadInvoicePdf();
   const requestSig = useRequestSignature();
+  const resendSig = useResendSignatureLink();
   const dispatch = useDispatchComm();
   const [signerEmail, setSignerEmail] = useState("");
   const [signerOpen, setSignerOpen] = useState(false);
+  const [resendConfirmId, setResendConfirmId] = useState<string | null>(null);
+
+  const pendingSigs = usePendingSignatures("invoice", invoice?.id);
+  const pendingList = pendingSigs.data ?? [];
+  const hasPdf = Boolean(invoice?.metadata?.pdf_path);
 
   if (!invoice) {
     return <EmptyState icon={DollarSign} title="Select an invoice" description="Click on an invoice to see payment details and collection actions" />;
@@ -120,6 +140,19 @@ export function InvoiceDetailPane({
         <SitaButton
           variant="secondary"
           size="sm"
+          className="flex-1"
+          onClick={() => downloadPdf.mutate(invoice.id)}
+          disabled={downloadPdf.isPending || !hasPdf}
+          title={hasPdf
+            ? "Download the exact stored PDF from its verifiable path"
+            : "Generate a PDF first to enable download"}
+        >
+          {downloadPdf.isPending ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Download className="h-3.5 w-3.5" />}
+          Download PDF
+        </SitaButton>
+        <SitaButton
+          variant="secondary"
+          size="sm"
           onClick={() => setSignerOpen((v) => !v)}
           title="Request an e-signature on this invoice"
         >
@@ -152,6 +185,79 @@ export function InvoiceDetailPane({
           </SitaButton>
         )}
       </div>
+
+      {pendingList.length > 0 && (
+        <div className="rounded-lg border border-amber-500/30 bg-amber-500/5 p-3 space-y-2">
+          <div className="flex items-center gap-1.5">
+            <FileSignature className="h-3 w-3 text-amber-600" />
+            <span className="text-[10px] font-semibold uppercase tracking-wider text-amber-700 dark:text-amber-400">
+              Pending signatures
+            </span>
+          </div>
+          <ul className="space-y-1.5">
+            {pendingList.map((sig: any) => (
+              <li key={sig.id} className="flex items-center justify-between gap-2 text-[11px]">
+                <div className="min-w-0 flex-1">
+                  <p className="truncate text-foreground">{sig.signer_email}</p>
+                  <p className="text-[10px] text-muted-foreground capitalize">
+                    {sig.status}
+                    {sig.sent_at && ` · sent ${new Date(sig.sent_at).toLocaleDateString()}`}
+                  </p>
+                </div>
+                <SitaButton
+                  variant="secondary"
+                  size="sm"
+                  onClick={() => setResendConfirmId(sig.id)}
+                  disabled={resendSig.isPending}
+                  title="Resend signature link to this signer"
+                >
+                  {resendSig.isPending && resendConfirmId === sig.id
+                    ? <Loader2 className="h-3 w-3 animate-spin" />
+                    : <RotateCw className="h-3 w-3" />}
+                  Resend link
+                </SitaButton>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      <AlertDialog
+        open={!!resendConfirmId}
+        onOpenChange={(o) => { if (!o) setResendConfirmId(null); }}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Resend signature link?</AlertDialogTitle>
+            <AlertDialogDescription>
+              {(() => {
+                const sig = pendingList.find((s: any) => s.id === resendConfirmId);
+                if (!sig) return "This will send a fresh email containing the secure signing URL.";
+                return `A new email will be sent to ${sig.signer_email} with the secure signing link for invoice #${invoice.invoice_number}. The existing link remains valid.`;
+              })()}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => {
+                if (!resendConfirmId) return;
+                resendSig.mutate(
+                  {
+                    signature_id: resendConfirmId,
+                    document_type: "invoice",
+                    document_id: invoice.id,
+                    document_label: `invoice #${invoice.invoice_number}`,
+                  },
+                  { onSettled: () => setResendConfirmId(null) },
+                );
+              }}
+            >
+              Resend
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
       {signerOpen && (
         <div className="rounded-lg border border-border/40 bg-card/40 p-3 space-y-2">
