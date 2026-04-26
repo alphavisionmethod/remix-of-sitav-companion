@@ -26,7 +26,6 @@ const KNOWN_PERMISSION_DEBT = new Set<string>([
   "business.ops.*",      // operations-advisor — no business.ops.* handlers registered yet
   "business.risk.*",     // biz-risk-advisor — risk handlers not yet wired
   "business.report.*",   // biz-risk-advisor — report handlers not yet wired
-  "business.opportunity.*", // growth-advisor wildcard — covered by individual handlers but prefix mismatch tracked here
 ]);
 
 describe("Phase 6 — advisor → business action handler coverage", () => {
