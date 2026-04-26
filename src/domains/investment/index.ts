@@ -1,7 +1,15 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Canonical Barrel: src/domains/investment
-// Created by Wave 1 of src/lib decomposition.
-// Files migrated here from src/lib/* will be re-exported from this barrel.
-// Do NOT add deep cross-layer imports here.
+//
+// Trusted domain layer for the Investment Office. Owns:
+//   • Domain types (instruments, portfolios, advisors, theses, …)
+//   • Demo fixtures (gated behind isDemoMode at consumer layer)
+//
+// Pages, hooks, services and components MUST import from this
+// barrel — NOT from `./types` or `./fixtures` directly.
+//
+// Domain depends on nothing — no UI, no Supabase, no engines.
 // ═══════════════════════════════════════════════════════════════
-export {};
+
+export * from "./types";
+export * from "./fixtures";

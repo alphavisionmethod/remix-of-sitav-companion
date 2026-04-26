@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Target, Shield, DollarSign, AlertTriangle, Check, ChevronRight, ArrowRight, Loader2, CheckCircle2, Brain, FileText, Clock } from "lucide-react";
-import type { TradeAction, Instrument } from "@/domains/investment/types";
+import type { TradeAction, Instrument } from "@/domains/investment";
 import { INSTRUMENTS, INVESTMENT_ADVISORS, PLATFORM_CONNECTIONS, SAMPLE_ORDERS, SAMPLE_THESES } from "@/hooks/useInvestmentOfficeData";
 import { useTradeOrders } from "@/hooks/use-investment-office";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";

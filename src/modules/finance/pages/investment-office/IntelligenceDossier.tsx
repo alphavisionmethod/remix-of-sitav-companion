@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { FileSearch, Brain, TrendingUp, TrendingDown, AlertTriangle, Calendar, Globe, Shield, Layers } from "lucide-react";
 import { INSTRUMENTS, INVESTMENT_ADVISORS } from "@/hooks/useInvestmentOfficeData";
 import { useInvestmentThesisEntries } from "@/hooks/use-investment-office";
-import { EXPLAINABILITY_LAYERS, type ExplainabilityDepth } from "@/domains/investment/mock-data";
+import { EXPLAINABILITY_LAYERS, type ExplainabilityDepth } from "@/domains/investment";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 const DEPTH_OPTIONS: { value: ExplainabilityDepth; label: string; description: string }[] = [

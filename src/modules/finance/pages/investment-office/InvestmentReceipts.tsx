@@ -4,7 +4,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
-import { POST_TRADE_REVIEWS } from "@/domains/investment/mock-data";
+import { POST_TRADE_REVIEWS } from "@/domains/investment";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 interface Receipt {
   id: string;

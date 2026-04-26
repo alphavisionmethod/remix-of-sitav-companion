@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Eye, Plus, Bell, Brain, TrendingUp, TrendingDown, ChevronRight, Star, Zap, Shield } from "lucide-react";
 import { SparklineChart } from "@/platform/sita/components/sita/SparklineChart";
 import { INSTRUMENTS, PORTFOLIO, WATCHLISTS } from "@/hooks/useInvestmentOfficeData";
-import { SPARKLINE_DATA } from "@/domains/investment/mock-data";
+import { SPARKLINE_DATA } from "@/domains/investment";
 import { useMarketWatchlistItems } from "@/hooks/use-investment-office";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 

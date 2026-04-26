@@ -3,7 +3,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { CheckCircle2, Key, Globe, Wallet, ArrowRight, Shield, ExternalLink } from "lucide-react";
-import type { AvailablePlatform } from "@/domains/investment/types";
+import type { AvailablePlatform } from "@/domains/investment";
 import { cn } from "@/lib/utils";
 
 interface Props {
