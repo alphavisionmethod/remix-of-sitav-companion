@@ -183,5 +183,6 @@ export const PAGE_TEST_EXCLUSIONS: Record<string, string> = {
   "_config": "config dir, not a page",
   "business-advisors": "advisor sub-pages covered by business-advisor-board test",
   "digital-presence": "tier-gated digital marketing surfaces",
+  "revenue-office": "revenue sub-pages covered by revenue-flow E2E + service tests",
   "index.ts": "barrel",
 };
