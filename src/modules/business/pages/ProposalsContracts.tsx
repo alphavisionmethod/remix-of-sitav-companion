@@ -21,7 +21,18 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useAction } from "@/hooks/use-action";
 import { useDraftAutosave } from "@/hooks/useDraftAutosave";
 import { setLinkedContext, consumeLinkedContext } from "@/platform/sita/components/sita/CrossAppAction";
-import { useRequestSignature } from "@/hooks/use-phase10-actions";
+import { useRequestSignature, useResendSignatureLink, usePendingSignatures } from "@/hooks/use-phase10-actions";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { RotateCw } from "lucide-react";
 
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import HierarchyHint from "@/modules/business/components/business/shared/HierarchyHint";
@@ -100,7 +111,14 @@ const ProposalsContracts = () => {
     onSuccess: () => setSelectedId(null),
   });
   const requestSig = useRequestSignature();
+  const resendSig = useResendSignatureLink();
   const [signFor, setSignFor] = useState<{ id: string; email: string } | null>(null);
+  const [resendFor, setResendFor] = useState<{
+    signatureId: string;
+    proposalId: string;
+    proposalTitle: string;
+    signerEmail: string;
+  } | null>(null);
   const convertToInvoice = useAction("business", "proposal.convert-to-invoice", {
     successMessage: "Invoice drafted from proposal",
     invalidateKeys: [["proposals"], ["invoices"]],
@@ -352,6 +370,20 @@ const ProposalsContracts = () => {
                           <Trash2 className="inline h-3 w-3 mr-1" /> Delete
                         </button>
                       </div>
+                      {["sent", "accepted"].includes(p.status) && (
+                        <ProposalPendingSignatures
+                          proposalId={p.id}
+                          onResend={(s) =>
+                            setResendFor({
+                              signatureId: s.id,
+                              proposalId: p.id,
+                              proposalTitle: p.title,
+                              signerEmail: s.signer_email,
+                            })
+                          }
+                          resending={resendSig.isPending}
+                        />
+                      )}
                       {signFor?.id === p.id && (
                         <div className="mt-2 rounded-lg border border-primary/30 bg-primary/5 p-3 space-y-2">
                           <label className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
@@ -437,8 +469,95 @@ const ProposalsContracts = () => {
           : `You have ${activeCount} active proposal${activeCount === 1 ? "" : "s"}. Sent proposals close 2× faster when followed up within 48h.`}
         confidence={proposals.length === 0 ? 60 : 84}
       />
+
+      <AlertDialog
+        open={!!resendFor}
+        onOpenChange={(o) => { if (!o) setResendFor(null); }}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Resend signature link?</AlertDialogTitle>
+            <AlertDialogDescription>
+              {resendFor
+                ? `A new email will be sent to ${resendFor.signerEmail} with the secure signing link for "${resendFor.proposalTitle}". The existing link remains valid until expiry.`
+                : "This sends a fresh email with the signing link."}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => {
+                if (!resendFor) return;
+                resendSig.mutate(
+                  {
+                    signature_id: resendFor.signatureId,
+                    document_type: "proposal",
+                    document_id: resendFor.proposalId,
+                    document_label: `proposal "${resendFor.proposalTitle}"`,
+                  },
+                  { onSettled: () => setResendFor(null) },
+                );
+              }}
+            >
+              Resend
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };
 
 export default ProposalsContracts;
+
+// ── Per-proposal pending signatures pane ────────────────────
+interface PendingSignatureRow {
+  id: string;
+  signer_email: string;
+  signer_name?: string | null;
+  status: string;
+  sent_at?: string | null;
+}
+
+function ProposalPendingSignatures({
+  proposalId,
+  onResend,
+  resending,
+}: {
+  proposalId: string;
+  onResend: (sig: PendingSignatureRow) => void;
+  resending: boolean;
+}) {
+  const { data: sigs = [] } = usePendingSignatures("proposal", proposalId);
+  if (!sigs.length) return null;
+  return (
+    <div className="mt-2 rounded-lg border border-urgency-medium/30 bg-urgency-medium/5 p-3 space-y-2">
+      <div className="flex items-center gap-1.5">
+        <FileSignature className="h-3 w-3 text-urgency-medium" />
+        <span className="text-[10px] font-semibold uppercase tracking-wider text-urgency-medium">
+          Pending signatures
+        </span>
+      </div>
+      <ul className="space-y-1.5">
+        {(sigs as PendingSignatureRow[]).map((s) => (
+          <li key={s.id} className="flex items-center justify-between gap-2 text-[11px]">
+            <div className="min-w-0 flex-1">
+              <p className="truncate text-foreground">{s.signer_email}</p>
+              <p className="text-[10px] text-muted-foreground capitalize">
+                {s.status}
+                {s.sent_at && ` · sent ${new Date(s.sent_at).toLocaleDateString()}`}
+              </p>
+            </div>
+            <button
+              onClick={() => onResend(s)}
+              disabled={resending}
+              className="text-[10px] inline-flex items-center gap-1 border border-primary/30 bg-primary/10 text-primary px-2.5 py-1 rounded-md font-medium hover:bg-primary/20 disabled:opacity-50"
+            >
+              <RotateCw className="h-3 w-3" /> Resend link
+            </button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
