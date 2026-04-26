@@ -456,14 +456,8 @@ serve(async (req) => {
       // Try fallback
       if (fallbackModel && model !== fallbackModel) {
         aiPayload.model = fallbackModel;
-        const fallbackResp = await fetch(LOVABLE_AI_URL, {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${LOVABLE_API_KEY}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(aiPayload),
-        });
+        const { res: fallbackResp, provider: fbProvider, modelUsed: fbModelUsed } =
+          await callProvider(aiPayload, QUATARLY_API_KEY, LOVABLE_API_KEY);
 
         if (fallbackResp.ok) {
           const fallbackData = await fallbackResp.json();
@@ -473,7 +467,7 @@ serve(async (req) => {
           const inputTokens = usage.prompt_tokens ?? 0;
           const outputTokens = usage.completion_tokens ?? 0;
           const totalTokens = inputTokens + outputTokens;
-          const costUsd = estimateCostUsd(fallbackModel, totalTokens);
+          const costUsd = estimateCostUsd(fbModelUsed, totalTokens);
 
           // Log fallback event
           await serviceClient.from("ai_fallback_events").insert({
@@ -510,21 +504,21 @@ serve(async (req) => {
           // Legacy receipt
           await serviceClient.from("ai_inference_receipts").insert({
             user_id: user.id,
-            provider: fallbackModel.split("/")[0],
-            model: fallbackModel,
+            provider: fbProvider,
+            model: fbModelUsed,
             capability_id: capabilityId,
             input_tokens: inputTokens,
             output_tokens: outputTokens,
             cost_estimate_cents: Math.round(costUsd * 100),
             latency_ms: fbLatency,
-            route_reason: `fallback from ${model}`,
+            route_reason: `fallback from ${model} via ${fbProvider}`,
             verification_outcome: "fallback_used",
           });
 
           return corsResponse({
             content,
-            provider: fallbackModel.split("/")[0],
-            model: fallbackModel,
+            provider: fbProvider,
+            model: fbModelUsed,
             taskClass,
             inputTokens,
             outputTokens,
@@ -560,7 +554,7 @@ serve(async (req) => {
     const inputTokens = usage.prompt_tokens ?? 0;
     const outputTokens = usage.completion_tokens ?? 0;
     const totalTokens = inputTokens + outputTokens;
-    const costUsd = estimateCostUsd(model, totalTokens);
+    const costUsd = estimateCostUsd(modelUsed, totalTokens);
     const costCents = Math.round(costUsd * 100);
 
     // 6. Log to all canonical tables
@@ -589,14 +583,14 @@ serve(async (req) => {
     // Legacy inference receipt
     await serviceClient.from("ai_inference_receipts").insert({
       user_id: user.id,
-      provider: model.split("/")[0] ?? "lovable",
-      model,
+      provider: providerUsed,
+      model: modelUsed,
       capability_id: capabilityId,
       input_tokens: inputTokens,
       output_tokens: outputTokens,
       cost_estimate_cents: costCents,
       latency_ms: latencyMs,
-      route_reason: `${routingSource}, task_class=${taskClass}, capability=${capabilityId}`,
+      route_reason: `${routingSource}, task_class=${taskClass}, capability=${capabilityId}, provider=${providerUsed}`,
       verification_outcome: "success",
     });
 
@@ -619,15 +613,15 @@ serve(async (req) => {
 
     return corsResponse({
       content,
-      provider: model.split("/")[0] ?? "lovable",
-      model,
+      provider: providerUsed,
+      model: modelUsed,
       taskClass,
       inputTokens,
       outputTokens,
       costCents,
       latencyMs,
       cached: false,
-      fallbackUsed: budgetDowngrade,
+      fallbackUsed: budgetDowngrade || providerUsed === "lovable",
       receiptId: ledgerRow?.id ?? crypto.randomUUID(),
     });
 
