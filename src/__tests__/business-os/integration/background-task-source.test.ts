@@ -77,13 +77,14 @@ describe("Phase 6 — background task source lineage", () => {
 
   it("every VM converter produces a non-empty sourceTable from the allowed set", () => {
     const samples = [
-      crmAutomationToVM({ id: "1", user_id: "u", status: "completed", created_at: NOW, updated_at: NOW } as any),
-      dataExportRequestToVM({ id: "1", user_id: "u", status: "completed", created_at: NOW, updated_at: NOW } as any),
-      ingestionJobToVM({ id: "1", user_id: "u", status: "succeeded", created_at: NOW, updated_at: NOW } as any),
-      workflowRunToVM({ id: "1", user_id: "u", status: "completed", created_at: NOW, updated_at: NOW } as any),
-      recoveryJobToVM({ id: "1", user_id: "u", status: "completed", created_at: NOW, updated_at: NOW } as any),
-      aiInvocationToVM({ id: "1", user_id: "u", status: "completed", created_at: NOW } as any),
-    ];
+      crmAutomationToVM({ id: "1", title: "T", target_entity: "leads", runs: 5, last_run_at: NOW } as any),
+      dataExportRequestToVM({ id: "1", export_format: "csv", status: "completed", requested_at: NOW, completed_at: NOW, row_count: 10, table_count: 1 } as any),
+      ingestionJobToVM({ id: "1", source_kind: "csv", stage: "completed", progress: 1, created_at: NOW, completed_at: NOW } as any),
+      workflowRunToVM({ id: "1", status: "completed", current_step: 1, started_at: NOW, completed_at: NOW } as any),
+      recoveryJobToVM({ id: "1", status: "completed", created_at: NOW, updated_at: NOW } as any),
+      aiInvocationToVM({ id: "1", status: "completed", created_at: NOW } as any),
+    ].filter((vm): vm is NonNullable<typeof vm> => vm !== null);
+    expect(samples.length).toBeGreaterThanOrEqual(5);
     for (const vm of samples) {
       expect(ALLOWED_SOURCES.has(vm.sourceTable)).toBe(true);
       expect(vm.sourceId.length).toBeGreaterThan(0);
