@@ -82,54 +82,6 @@ export const RECOVERY_QUEUES: RecoveryQueueDef[] = [
   { key: "strategic",             label: "Strategic Recovery",    failureModes: ["silent_high_value", "owner_dropped", "handoff_failure"], icon: "crown" },
 ];
 
-// ── Timeline Event ─────────────────────────────────────────────
-export interface RecoveryTimelineEvent {
-  date: string;
-  label: string;
-  status: "positive" | "neutral" | "warning" | "negative" | "current";
-}
-
-// ── Recovery Candidate ─────────────────────────────────────────
-export interface RecoveryCandidate {
-  id: string;
-  name: string;
-  company: string;
-  email: string;
-  phone: string;
-  avatarUrl?: string;
-  // Failure context
-  failureMode: FailureMode;
-  recoveryReason: string;
-  stageAtSlip: string;
-  daysSinceLastAction: number;
-  // Value
-  valueAtRisk: number;
-  dealSize: number;
-  // Scores
-  recoveryScore: number;
-  successBand: SuccessBand;
-  urgency: UrgencyLevel;
-  relationshipSensitivity: RelationshipSensitivity;
-  // Path
-  recommendedPath: RecoveryPath;
-  suggestedChannel: "email" | "phone" | "linkedin" | "sms";
-  // Accountability
-  currentOwner: string;
-  previousOwner?: string;
-  ownerIssue?: string;
-  escalationNeeded: boolean;
-  boardroomCandidate: boolean;
-  // Communications
-  aiDraft: string;
-  draftTone: string;
-  // Timeline
-  timeline: RecoveryTimelineEvent[];
-  // Advisor
-  advisorInsight: string;
-  // Queue
-  queueKey: string;
-}
-
 // ── Scoring Functions ──────────────────────────────────────────
 export function computeRecoveryScore(c: Pick<RecoveryCandidate, "daysSinceLastAction" | "dealSize" | "failureMode" | "stageAtSlip">): number {
   let score = 50;
