@@ -56,6 +56,7 @@ import { getBusinessAdvisorRoutes } from "@/routes/business-advisor-routes";
 import { getExperimentalRoutes } from "@/routes/experimental-routes";
 import { getInvestmentRoutes } from "@/routes/investment-routes";
 import { getInvestmentOfficeRoutes } from "@/routes/investment-office-routes";
+import InvestmentShellPage from "@/pages/investment-office/InvestmentShellPage";
 import { USER_REDIRECTS } from "@/routes/redirects/user-redirect-map";
 import { getOwnerRoutes } from "@/routes/OwnerRoutes";
 import { MobileRoutes } from "@/routes/MobileRoutes";
@@ -298,8 +299,15 @@ const App = () => (
                         {getAdvisorRoutes()}
                         {getBusinessAdvisorRoutes()}
                         {getExperimentalRoutes()}
-                        {getInvestmentRoutes()}
-                        {getInvestmentOfficeRoutes()}
+                        {/* Phase 6 — Investment Office App-in-OS shell-mount.
+                            InvestmentShellPage wraps every /investment/* route
+                            with workspace chrome (header + tab nav + <Outlet/>).
+                            Both route families emit absolute child paths and
+                            render through the parent's <Outlet/>. */}
+                        <Route element={<InvestmentShellPage />}>
+                          {getInvestmentRoutes()}
+                          {getInvestmentOfficeRoutes()}
+                        </Route>
                         {getCommunicationsRoutes()}
                         {getAppsRoutes()}
                         {getSettingsRoutes()}
