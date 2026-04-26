@@ -6148,6 +6148,63 @@ export type Database = {
         }
         Relationships: []
       }
+      business_dispatch_log: {
+        Row: {
+          channel: string
+          created_at: string
+          error_code: string | null
+          error_message: string | null
+          id: string
+          latency_ms: number | null
+          payload: Json
+          provider: string
+          provider_message_id: string | null
+          receipt_id: string | null
+          recipient: string
+          status: string
+          subject_id: string | null
+          subject_type: string
+          template_key: string | null
+          user_id: string
+        }
+        Insert: {
+          channel: string
+          created_at?: string
+          error_code?: string | null
+          error_message?: string | null
+          id?: string
+          latency_ms?: number | null
+          payload?: Json
+          provider: string
+          provider_message_id?: string | null
+          receipt_id?: string | null
+          recipient: string
+          status: string
+          subject_id?: string | null
+          subject_type: string
+          template_key?: string | null
+          user_id: string
+        }
+        Update: {
+          channel?: string
+          created_at?: string
+          error_code?: string | null
+          error_message?: string | null
+          id?: string
+          latency_ms?: number | null
+          payload?: Json
+          provider?: string
+          provider_message_id?: string | null
+          receipt_id?: string | null
+          recipient?: string
+          status?: string
+          subject_id?: string | null
+          subject_type?: string
+          template_key?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       business_health_scores: {
         Row: {
           biggest_drag: string | null
@@ -6278,6 +6335,51 @@ export type Database = {
           source_id?: string | null
           start_time?: string | null
           title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      calendar_sync_links: {
+        Row: {
+          appointment_id: string
+          calendar_event_id: string | null
+          created_at: string
+          external_event_id: string | null
+          id: string
+          last_error: string | null
+          last_synced_at: string | null
+          metadata: Json
+          provider: string
+          sync_status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          appointment_id: string
+          calendar_event_id?: string | null
+          created_at?: string
+          external_event_id?: string | null
+          id?: string
+          last_error?: string | null
+          last_synced_at?: string | null
+          metadata?: Json
+          provider?: string
+          sync_status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          appointment_id?: string
+          calendar_event_id?: string | null
+          created_at?: string
+          external_event_id?: string | null
+          id?: string
+          last_error?: string | null
+          last_synced_at?: string | null
+          metadata?: Json
+          provider?: string
+          sync_status?: string
           updated_at?: string
           user_id?: string
         }
@@ -11569,6 +11671,72 @@ export type Database = {
           simulation_config?: Json
           updated_at?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      document_signatures: {
+        Row: {
+          created_at: string
+          document_id: string
+          document_type: string
+          evidence: Json
+          expires_at: string
+          id: string
+          sent_at: string
+          sign_token: string
+          signed_at: string | null
+          signed_pdf_path: string | null
+          signer_email: string
+          signer_ip: string | null
+          signer_name: string | null
+          signer_user_agent: string | null
+          status: string
+          typed_signature: string | null
+          updated_at: string
+          user_id: string
+          viewed_at: string | null
+        }
+        Insert: {
+          created_at?: string
+          document_id: string
+          document_type: string
+          evidence?: Json
+          expires_at?: string
+          id?: string
+          sent_at?: string
+          sign_token: string
+          signed_at?: string | null
+          signed_pdf_path?: string | null
+          signer_email: string
+          signer_ip?: string | null
+          signer_name?: string | null
+          signer_user_agent?: string | null
+          status?: string
+          typed_signature?: string | null
+          updated_at?: string
+          user_id: string
+          viewed_at?: string | null
+        }
+        Update: {
+          created_at?: string
+          document_id?: string
+          document_type?: string
+          evidence?: Json
+          expires_at?: string
+          id?: string
+          sent_at?: string
+          sign_token?: string
+          signed_at?: string | null
+          signed_pdf_path?: string | null
+          signer_email?: string
+          signer_ip?: string | null
+          signer_name?: string | null
+          signer_user_agent?: string | null
+          status?: string
+          typed_signature?: string | null
+          updated_at?: string
+          user_id?: string
+          viewed_at?: string | null
         }
         Relationships: []
       }
