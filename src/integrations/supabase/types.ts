@@ -4433,6 +4433,7 @@ export type Database = {
           docs_needed: string[] | null
           id: string
           location: string | null
+          metadata: Json
           notes: string | null
           opportunity_id: string | null
           owner: string | null
@@ -4455,6 +4456,7 @@ export type Database = {
           docs_needed?: string[] | null
           id?: string
           location?: string | null
+          metadata?: Json
           notes?: string | null
           opportunity_id?: string | null
           owner?: string | null
@@ -4477,6 +4479,7 @@ export type Database = {
           docs_needed?: string[] | null
           id?: string
           location?: string | null
+          metadata?: Json
           notes?: string | null
           opportunity_id?: string | null
           owner?: string | null
