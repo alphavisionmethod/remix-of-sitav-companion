@@ -21,7 +21,18 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useAction } from "@/hooks/use-action";
 import { useDraftAutosave } from "@/hooks/useDraftAutosave";
 import { setLinkedContext, consumeLinkedContext } from "@/platform/sita/components/sita/CrossAppAction";
-import { useRequestSignature } from "@/hooks/use-phase10-actions";
+import { useRequestSignature, useResendSignatureLink, usePendingSignatures } from "@/hooks/use-phase10-actions";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { RotateCw } from "lucide-react";
 
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import HierarchyHint from "@/modules/business/components/business/shared/HierarchyHint";
@@ -100,7 +111,14 @@ const ProposalsContracts = () => {
     onSuccess: () => setSelectedId(null),
   });
   const requestSig = useRequestSignature();
+  const resendSig = useResendSignatureLink();
   const [signFor, setSignFor] = useState<{ id: string; email: string } | null>(null);
+  const [resendFor, setResendFor] = useState<{
+    signatureId: string;
+    proposalId: string;
+    proposalTitle: string;
+    signerEmail: string;
+  } | null>(null);
   const convertToInvoice = useAction("business", "proposal.convert-to-invoice", {
     successMessage: "Invoice drafted from proposal",
     invalidateKeys: [["proposals"], ["invoices"]],
