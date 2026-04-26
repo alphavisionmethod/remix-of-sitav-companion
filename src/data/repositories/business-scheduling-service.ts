@@ -7,8 +7,8 @@
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import {
-  bookingRowToVM,
-  type BookingRow,
+  appointmentRowToVM,
+  type AppointmentRow,
   type ScheduledAppointmentVM,
 } from "@/modules/business/domain/scheduling/types";
 import { buildDemoScheduledAppointments } from "@/data/fixtures/mock-data/business-scheduling";
@@ -21,6 +21,12 @@ export interface FetchScheduledAppointmentsOptions {
   from?: string;
   /** ISO end of the window (defaults to now + 30 days). */
   to?: string;
+  /** Optional CRM scoping: only return appointments linked to this contact. */
+  crmContactId?: string;
+  /** Optional CRM scoping: only return appointments linked to this company. */
+  crmCompanyId?: string;
+  /** Optional CRM scoping: only return appointments linked to this opportunity. */
+  opportunityId?: string;
 }
 
 async function uid(): Promise<string | null> {
@@ -56,12 +62,17 @@ export async function fetchScheduledAppointments(
     ...(opts.to ? { to: opts.to } : {}),
   };
 
-  const { data, error } = await fromTable("bookings")
+  let query = fromTable("appointments")
     .select("*")
     .eq("user_id", userId)
-    .gte("starts_at", from)
-    .lte("starts_at", to)
-    .order("starts_at", { ascending: true });
+    .gte("appointment_date", from)
+    .lte("appointment_date", to);
+
+  if (opts.crmContactId) query = query.eq("crm_contact_id", opts.crmContactId);
+  if (opts.crmCompanyId) query = query.eq("crm_company_id", opts.crmCompanyId);
+  if (opts.opportunityId) query = query.eq("opportunity_id", opts.opportunityId);
+
+  const { data, error } = await query.order("appointment_date", { ascending: true });
 
   if (error || !data) {
     if (error) console.error("[business-scheduling] fetch:", error);
@@ -69,7 +80,7 @@ export async function fetchScheduledAppointments(
   }
 
   const now = new Date();
-  return (data as BookingRow[]).map((row) => bookingRowToVM(row, now));
+  return (data as AppointmentRow[]).map((row) => appointmentRowToVM(row, null, now));
 }
 
 // ── Mutations ──────────────────────────────────────────────────
@@ -88,7 +99,7 @@ async function patchBookingMetadata(
   if (!userId) return { ok: false, error: "not-authenticated" };
 
   // Read current metadata first to merge (avoid clobbering)
-  const { data: existing, error: readErr } = await fromTable("bookings")
+  const { data: existing, error: readErr } = await fromTable("appointments")
     .select("metadata")
     .eq("id", bookingId)
     .eq("user_id", userId)
@@ -98,11 +109,13 @@ async function patchBookingMetadata(
     return { ok: false, error: readErr.message };
   }
 
-  const merged = { ...(existing?.metadata ?? {}), ...patch };
+  const existingMeta =
+    (existing?.metadata as Record<string, unknown> | null | undefined) ?? {};
+  const merged = { ...existingMeta, ...patch };
   const updates: Record<string, unknown> = { metadata: merged };
   if (statusUpdate) updates.status = statusUpdate;
 
-  const { error } = await fromTable("bookings")
+  const { error } = await fromTable("appointments")
     .update(updates)
     .eq("id", bookingId)
     .eq("user_id", userId);

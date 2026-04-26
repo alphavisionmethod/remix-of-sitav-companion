@@ -191,6 +191,7 @@ export interface AppointmentRow {
   crm_contact_id: string | null;
   crm_company_id: string | null;
   opportunity_id: string | null;
+  metadata: Record<string, unknown> | null;
   created_at: string;
   updated_at: string;
 }
@@ -205,9 +206,10 @@ export type BookingRow = AppointmentRow;
  */
 export function appointmentRowToVM(
   row: AppointmentRow,
-  meta: Record<string, unknown> = {},
+  metaOverride: Record<string, unknown> | null = null,
   now: Date = new Date(),
 ): ScheduledAppointmentVM {
+  const meta: Record<string, unknown> = metaOverride ?? row.metadata ?? {};
   const startsAt = row.appointment_date ?? new Date().toISOString();
   const durationMinutes = Number(meta.durationMinutes ?? 30);
 
@@ -223,9 +225,9 @@ export function appointmentRowToVM(
     lastContact = `Reminded ${formatDateBucket(lastReminderAt, now)}`;
   }
 
-  const customerLabel =
-    (meta.customerName as string | undefined) ??
-    (row.who ?? undefined) ??
+  const customerLabel: string =
+    (typeof meta.customerName === "string" && meta.customerName) ||
+    row.who ||
     (row.customer_id ? row.customer_id.slice(0, 8) : "Unknown customer");
 
   return {
