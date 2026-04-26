@@ -220,47 +220,9 @@ export function generateMockSignals(primaryMode: ProfileArchetype): BehaviorSign
 }
 
 // ── Storage ───────────────────────────────────────────────────
-
-const EVOLUTION_KEY = "sita-profile-evolution";
-const INSIGHTS_KEY = "sita-evolution-insights";
-
-export function saveEvolutionSnapshot(snapshot: EvolutionSnapshot): void {
-  try {
-    const existing = loadEvolutionHistory();
-    existing.push(snapshot);
-    // Keep last 30 snapshots
-    const trimmed = existing.slice(-30);
-    localStorage.setItem(EVOLUTION_KEY, JSON.stringify(trimmed));
-  } catch { /* fail silently */ }
-}
-
-export function loadEvolutionHistory(): EvolutionSnapshot[] {
-  try {
-    const raw = localStorage.getItem(EVOLUTION_KEY);
-    return raw ? JSON.parse(raw) : [];
-  } catch { return []; }
-}
-
-export function saveEvolutionInsights(insights: EvolutionInsight[]): void {
-  try {
-    localStorage.setItem(INSIGHTS_KEY, JSON.stringify(insights));
-  } catch { /* fail silently */ }
-}
-
-export function loadEvolutionInsights(): EvolutionInsight[] {
-  try {
-    const raw = localStorage.getItem(INSIGHTS_KEY);
-    return raw ? JSON.parse(raw) : [];
-  } catch { return []; }
-}
-
-export function dismissInsight(insightId: string): void {
-  const insights = loadEvolutionInsights();
-  const updated = insights.map(i =>
-    i.id === insightId ? { ...i, dismissed: true } : i
-  );
-  saveEvolutionInsights(updated);
-}
+// Storage helpers for evolution snapshots/insights live in the
+// service layer to keep this engine pure & deterministic. See:
+//   src/lib/services/business-os/profile-evolution.service.ts
 
 // ── Helpers ───────────────────────────────────────────────────
 
