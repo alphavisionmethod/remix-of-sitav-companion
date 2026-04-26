@@ -4,7 +4,7 @@
 
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { RotateCcw, Target, BarChart3, Megaphone, ChevronUp, ChevronDown, Search, ArrowUpDown, DollarSign, Play, Pause } from "lucide-react";
+import { RotateCcw, Target, BarChart3, Megaphone, ChevronUp, ChevronDown, Search, ArrowUpDown, DollarSign, Play, Pause, LogIn, Inbox } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { SplitWorkspace } from "@/platform/sita/components/sita/surfaces/SplitWorkspace";
 import { AppSurface } from "@/platform/sita/components/sita/surfaces/AppSurface";
@@ -16,11 +16,14 @@ import { RecoveryCard } from "@/modules/business/components/business/lead-recove
 import { RecoveryHighPressureBanner } from "@/modules/business/components/business/lead-recovery/RecoveryStates";
 import type { RecoveryCandidate } from "@/domains/business";
 import { filterByQueue } from "@/domains/engines/lead-recovery-engine";
-import { RECOVERY_CANDIDATES } from "@/data/fixtures/mock-data/recovery-candidates";
+import { useLeadRecoveryCandidates } from "@/hooks/use-lead-recovery-candidates";
+import { LegacyEmptyStateCard as EmptyStateCard } from "@/platform/sita/components/sita/EmptyStateCard";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 type MainTab = "overview" | "queues" | "campaigns" | "analytics";
 type SortMode = "score" | "value" | "urgency" | "recency";
 
-const campaigns = [
+// Demo-only campaign fixtures — gated behind isDemo at render time.
+const DEMO_CAMPAIGNS = [
   { id: 1, name: "Cold Lead Winback", status: "active", leads: 23, recovered: 4, revenue: "$18,400", costPerRecovery: "$12.50", roi: "32x", sequence: "5 emails over 14 days", channels: ["email", "sms"] },
   { id: 2, name: "Proposal Follow-up", status: "active", leads: 8, recovered: 2, revenue: "$9,200", costPerRecovery: "$8.00", roi: "28x", sequence: "3 emails + call reminder", channels: ["email", "phone"] },
   { id: 3, name: "Past Client Re-engagement", status: "paused", leads: 45, recovered: 7, revenue: "$31,500", costPerRecovery: "$15.00", roi: "20x", sequence: "Quarterly check-in", channels: ["email", "linkedin"] },
@@ -36,7 +39,7 @@ const LeadRecovery = () => {
   const [search, setSearch] = useState("");
   const [sortMode, setSortMode] = useState<SortMode>("score");
 
-  const candidates = RECOVERY_CANDIDATES;
+  const { candidates, isDemo, isUnauthenticated } = useLeadRecoveryCandidates();
   const filtered = useMemo(() => {
     let list = filterByQueue(candidates, activeQueue);
     if (search) {
@@ -58,6 +61,38 @@ const LeadRecovery = () => {
   const selected = candidates.find(c => c.id === selectedId) || null;
   const actTodayCount = candidates.filter(c => c.urgency === "act_today").length;
   const totalValue = candidates.reduce((s, c) => s + c.valueAtRisk, 0);
+
+  // Honest unauth state in live mode.
+  if (isUnauthenticated && !isDemo) {
+    return (
+      <div className="space-y-4">
+        <PageTruthBanner />
+        <EmptyStateCard
+          icon={LogIn}
+          title="Sign in to view recovery candidates"
+          description="Lead recovery surfaces at-risk deals from your CRM and lead intake. Switch to Demo mode to explore the workspace with sample data."
+          ctaLabel="Open sign-in"
+          ctaPath="/auth"
+        />
+      </div>
+    );
+  }
+
+  // Honest empty state in live mode (no real recovery_candidates table yet).
+  if (!isDemo && candidates.length === 0) {
+    return (
+      <div className="space-y-4">
+        <PageTruthBanner />
+        <EmptyStateCard
+          icon={Inbox}
+          title="No recovery candidates yet"
+          description="At-risk deals are surfaced once your CRM, lead intake, or appointment data identifies stalled or abandoned opportunities. Connect a source or run lead intake to populate this workspace."
+          ctaLabel="Open lead inbox"
+          ctaPath="/business/leads"
+        />
+      </div>
+    );
+  }
 
   const tabs: { key: MainTab; label: string; icon: typeof Target }[] = [
     { key: "overview", label: "Overview", icon: BarChart3 },
@@ -145,7 +180,14 @@ const LeadRecovery = () => {
         {/* ── Campaigns Tab ── */}
         {activeTab === "campaigns" && (
           <div className="p-3 space-y-2">
-            {campaigns.map(c => (
+            {!isDemo && (
+              <EmptyStateCard
+                icon={Megaphone}
+                title="Recovery campaigns require a campaign engine"
+                description="The recovery campaign engine isn't wired in your environment yet. Once available, configured sequences and ROI metrics will appear here."
+              />
+            )}
+            {isDemo && DEMO_CAMPAIGNS.map(c => (
               <AppSurface key={c.id} level={1} className="p-4">
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center gap-2">
@@ -189,6 +231,14 @@ const LeadRecovery = () => {
         {/* ── Analytics Tab ── */}
         {activeTab === "analytics" && (
           <div className="p-3 space-y-3">
+            {!isDemo && (
+              <EmptyStateCard
+                icon={BarChart3}
+                title="Recovery analytics will appear once you run campaigns"
+                description="Win rates, recovered value, failure modes, and trend charts populate from real recovery activity. No campaigns have been recorded against your account yet."
+              />
+            )}
+            {isDemo && (<>
             {/* Recovery stats */}
             <div className="grid grid-cols-2 gap-3">
               <AppSurface level={1} className="p-4 text-center">
@@ -283,6 +333,7 @@ const LeadRecovery = () => {
                 })}
               </div>
             </AppSurface>
+            </>)}
           </div>
         )}
       </div>
@@ -291,6 +342,7 @@ const LeadRecovery = () => {
 
   return (
     <div className="h-[calc(100vh-200px)] -m-4">
+      <div className="px-3 pt-3"><PageTruthBanner /></div>
       <SplitWorkspace
         list={listPane}
         detail={
