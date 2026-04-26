@@ -244,6 +244,28 @@ const InvoicesCollections = () => {
           </button>
         </div>
       </DetailDrawer>
+
+      {/* HTML Preview Drawer */}
+      <DetailDrawer
+        isOpen={!!previewHtml}
+        onClose={() => { setPreviewHtml(null); setPreviewMeta(null); }}
+        title={previewMeta ? `Preview · Invoice ${previewMeta.number}` : "Invoice Preview"}
+        domain="business"
+      >
+        <div className="space-y-3">
+          <div className="text-[11px] text-muted-foreground">
+            HTML preview · PDF rendering coming soon
+            {previewMeta?.recipient ? <> · Recipient on file: <span className="text-foreground">{previewMeta.recipient}</span></> : <> · No recipient email on file</>}
+          </div>
+          {previewHtml && (
+            <iframe
+              title="Invoice HTML preview"
+              srcDoc={previewHtml}
+              className="w-full h-[70vh] rounded-lg border border-border/40 bg-white"
+            />
+          )}
+        </div>
+      </DetailDrawer>
     </div>
   );
 };
