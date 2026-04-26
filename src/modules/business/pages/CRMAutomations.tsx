@@ -19,59 +19,15 @@ import type { CRMAutomation } from "@/data/repositories/crm-data-service";
 import { format, formatDistanceToNow } from "date-fns";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
 import { getWorkflowSuggestions } from "@/domains/engines/adaptive-workflow-templates";
-
-// ─── Constants ──────────────────────────────────────────────
-const TRIGGER_TYPES = [
-  { key: "contact_created", label: "Contact Created", icon: Users, description: "When a new contact is added" },
-  { key: "stage_changed", label: "Stage Changed", icon: TrendingUp, description: "When lifecycle stage changes" },
-  { key: "no_contact_days", label: "No Contact (Days)", icon: Clock, description: "When contact has no interaction for X days" },
-  { key: "health_threshold", label: "Health Threshold", icon: AlertTriangle, description: "When health score crosses a threshold" },
-  { key: "health_declining", label: "Health Declining", icon: RefreshCw, description: "When health drops significantly" },
-  { key: "opportunity_stalled", label: "Deal Stalled", icon: Target, description: "When an opportunity stops progressing" },
-  { key: "invoice_overdue", label: "Invoice Overdue", icon: Receipt, description: "When an invoice passes due date" },
-  { key: "quote_no_reply", label: "Quote No Reply", icon: FileText, description: "When a sent quote goes unanswered" },
-  { key: "manual", label: "Manual Trigger", icon: Zap, description: "Run manually or on-demand" },
-];
-
-const ACTION_TYPES = [
-  { key: "create_task", label: "Create Task", icon: Target },
-  { key: "assign_owner", label: "Assign Owner", icon: Users },
-  { key: "send_notification", label: "Send Notification", icon: Bell },
-  { key: "draft_email", label: "Draft Email", icon: Mail },
-  { key: "update_stage", label: "Update Stage", icon: TrendingUp },
-  { key: "notify_advisor", label: "Notify Advisor", icon: Brain },
-  { key: "create_advisor_insight", label: "Create Advisor Insight", icon: Sparkles },
-  { key: "suggest_recovery", label: "Suggest Recovery Plan", icon: RefreshCw },
-  { key: "compile_evidence", label: "Compile Evidence", icon: FileText },
-  { key: "create_boardroom_item", label: "Escalate to Boardroom", icon: Shield },
-  { key: "queue_for_review", label: "Queue for Review", icon: Eye },
-  { key: "notify_owner", label: "Notify Owner", icon: Phone },
-];
-
-const TRUST_GATES = [
-  { key: "suggested", label: "Suggested Only", description: "Shows as a suggestion — no auto-execution", color: "text-muted-foreground", bg: "bg-muted/50" },
-  { key: "simulation", label: "Simulation", description: "Runs in dry-run mode — shows what would happen", color: "text-blue-400", bg: "bg-blue-500/10" },
-  { key: "approval_required", label: "Approval Required", description: "Queues for human approval before executing", color: "text-orange-400", bg: "bg-orange-500/10" },
-  { key: "active", label: "Auto-Execute", description: "Runs automatically when triggered", color: "text-green-400", bg: "bg-green-500/10" },
-  { key: "paused", label: "Paused", description: "Temporarily disabled", color: "text-yellow-400", bg: "bg-yellow-500/10" },
-];
-
-const ENTITY_TYPES = [
-  { key: "contact", label: "Contact" },
-  { key: "company", label: "Company" },
-  { key: "opportunity", label: "Opportunity" },
-];
-
-const CATEGORIES = [
-  { key: "all", label: "All" },
-  { key: "engagement", label: "Engagement", triggers: ["contact_created", "no_contact_days", "stage_changed"] },
-  { key: "pipeline", label: "Pipeline", triggers: ["opportunity_stalled", "quote_no_reply", "invoice_overdue"] },
-  { key: "health", label: "Health", triggers: ["health_threshold", "health_declining"] },
-  { key: "escalation", label: "Escalation", triggers: ["opportunity_stalled"] },
-];
-
-const getTrustGate = (key: string) => TRUST_GATES.find(t => t.key === key) || TRUST_GATES[0];
-const getTrigger = (key: string) => TRIGGER_TYPES.find(t => t.key === key) || TRIGGER_TYPES[TRIGGER_TYPES.length - 1];
+import {
+  AUTOMATION_TRIGGER_TYPES,
+  AUTOMATION_ACTION_TYPES,
+  AUTOMATION_TRUST_GATES,
+  AUTOMATION_ENTITY_TYPES,
+  AUTOMATION_CATEGORIES,
+  getTrustGate,
+  getTrigger,
+} from "./_config/CRMAutomations.config";
 
 const CRMAutomations = () => {
   const { data: automations = [] } = useCRMAutomations();
@@ -95,7 +51,7 @@ const CRMAutomations = () => {
 
   const filtered = useMemo(() => {
     if (category === "all") return automations;
-    const cat = CATEGORIES.find(c => c.key === category);
+    const cat = AUTOMATION_CATEGORIES.find(c => c.key === category);
     if (!cat || !cat.triggers) return automations;
     return automations.filter(a => cat.triggers!.includes(a.trigger_type));
   }, [automations, category]);
@@ -215,7 +171,7 @@ const CRMAutomations = () => {
 
       {/* Category tabs */}
       <div className="flex gap-1.5 flex-wrap">
-        {CATEGORIES.map(c => (
+        {AUTOMATION_CATEGORIES.map(c => (
           <button
             key={c.key}
             onClick={() => setCategory(c.key)}
@@ -374,7 +330,7 @@ const CRMAutomations = () => {
             <div>
               <p className="text-xs font-semibold text-foreground mb-2">Trigger — When should this run?</p>
               <div className="grid grid-cols-3 gap-1.5">
-                {TRIGGER_TYPES.map(t => {
+                {AUTOMATION_TRIGGER_TYPES.map(t => {
                   const TIcon = t.icon;
                   return (
                     <button
@@ -399,7 +355,7 @@ const CRMAutomations = () => {
             <div>
               <p className="text-xs font-semibold text-foreground mb-2">Target Entity</p>
               <div className="flex gap-2">
-                {ENTITY_TYPES.map(e => (
+                {AUTOMATION_ENTITY_TYPES.map(e => (
                   <button
                     key={e.key}
                     onClick={() => setBuilderForm(p => ({ ...p, target_entity: e.key }))}
@@ -418,7 +374,7 @@ const CRMAutomations = () => {
               <p className="text-xs font-semibold text-foreground mb-2">Actions — What should happen?</p>
               <div className="space-y-2">
                 {builderForm.actions.map((action, idx) => {
-                  const at = ACTION_TYPES.find(a => a.key === action.type);
+                  const at = AUTOMATION_ACTION_TYPES.find(a => a.key === action.type);
                   return (
                     <div key={idx} className="flex items-center gap-2">
                       <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center text-[10px] font-bold text-primary shrink-0">{idx + 1}</div>
@@ -431,7 +387,7 @@ const CRMAutomations = () => {
                           setBuilderForm(p => ({ ...p, actions: updated }));
                         }}
                       >
-                        {ACTION_TYPES.map(a => <option key={a.key} value={a.key}>{a.label}</option>)}
+                        {AUTOMATION_ACTION_TYPES.map(a => <option key={a.key} value={a.key}>{a.label}</option>)}
                       </select>
                       <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => {
                         const updated = builderForm.actions.filter((_, i) => i !== idx);
@@ -470,7 +426,7 @@ const CRMAutomations = () => {
                 <Shield className="h-3 w-3 text-primary" /> Trust Gate — How should it execute?
               </p>
               <div className="space-y-1.5">
-                {TRUST_GATES.map(g => (
+                {AUTOMATION_TRUST_GATES.map(g => (
                   <button
                     key={g.key}
                     onClick={() => setBuilderForm(p => ({ ...p, trust_gate: g.key }))}
@@ -571,7 +527,7 @@ const WorkflowDetailPanel: React.FC<{
           <p className="text-xs font-semibold text-foreground mb-2">Action Pipeline</p>
           <div className="space-y-2">
             {actions.map((action, i) => {
-              const at = ACTION_TYPES.find(a => a.key === action.type);
+              const at = AUTOMATION_ACTION_TYPES.find(a => a.key === action.type);
               const AIcon = at?.icon || Zap;
               return (
                 <div key={i} className="flex items-center gap-2">

@@ -10,6 +10,7 @@ import {
   ArrowUpRight, Clock, Phone, Mail, Calendar, ChevronRight, Sparkles,
   Activity, Target, BarChart3, Zap, Shield, X
 } from "lucide-react";
+import { HEALTH_BUCKETS, healthBucketFor, type HealthBucket } from "./_config/CRMHealth.config";
 import { formatDistanceToNow, differenceInDays } from "date-fns";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { CRMRelationshipIntelligence } from "@/modules/business/components/business/crm/CRMRelationshipIntelligence";
@@ -17,18 +18,7 @@ import { CRMNextBestAction } from "@/modules/business/components/business/crm/CR
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
 import { getIdentityLayer, getStatusWord } from "@/domains/engines/business-identity-layers";
 
-type HealthBucket = { label: string; icon: React.ElementType; color: string; bg: string; border: string; min: number; max: number; description: string };
-
-const BUCKETS: HealthBucket[] = [
-  { label: "Healthy", icon: Heart, color: "text-green-400", bg: "bg-green-500/10", border: "border-green-500/20", min: 80, max: 101, description: "Strong, active relationships" },
-  { label: "Warming", icon: TrendingUp, color: "text-emerald-400", bg: "bg-emerald-500/10", border: "border-emerald-500/20", min: 70, max: 80, description: "Growing engagement" },
-  { label: "Stable", icon: Eye, color: "text-blue-400", bg: "bg-blue-500/10", border: "border-blue-500/20", min: 60, max: 70, description: "Steady, consistent" },
-  { label: "Drifting", icon: TrendingDown, color: "text-yellow-400", bg: "bg-yellow-500/10", border: "border-yellow-500/20", min: 40, max: 60, description: "Engagement declining" },
-  { label: "At Risk", icon: AlertTriangle, color: "text-orange-400", bg: "bg-orange-500/10", border: "border-orange-500/20", min: 20, max: 40, description: "Needs immediate attention" },
-  { label: "Critical", icon: ShieldAlert, color: "text-red-400", bg: "bg-red-500/10", border: "border-red-500/20", min: 0, max: 20, description: "Relationship in danger" },
-];
-
-const healthLabel = (s: number) => BUCKETS.find(b => s >= b.min && s < b.max) || BUCKETS[5];
+const healthLabel = healthBucketFor;
 
 const CRMHealth = () => {
   const { data: contacts = [] } = useCRMContacts();
@@ -43,7 +33,7 @@ const CRMHealth = () => {
   const [selectedContact, setSelectedContact] = useState<string | null>(null);
 
   const bucketData = useMemo(() => {
-    return BUCKETS.map(b => ({
+    return HEALTH_BUCKETS.map(b => ({
       ...b,
       contacts: contacts.filter(c => (c.health_score ?? 50) >= b.min && (c.health_score ?? 50) < b.max)
         .sort((a, z) => (z.health_score ?? 50) - (a.health_score ?? 50)),
