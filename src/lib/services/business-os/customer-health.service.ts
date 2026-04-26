@@ -3,7 +3,7 @@
 // Deterministic health score computation engine
 // ═══════════════════════════════════════════════════════════════
 
-import type { CRMAccount } from "@/packages/business-contracts";
+import type { CRMAccount } from "@/domains/business";
 
 export interface HealthScoreBreakdown {
   accountId: string;

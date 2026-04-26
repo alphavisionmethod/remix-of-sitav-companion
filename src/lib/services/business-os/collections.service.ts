@@ -3,7 +3,7 @@
 // Invoice collections workflow management
 // ═══════════════════════════════════════════════════════════════
 
-import type { Invoice } from "@/packages/business-contracts";
+import type { Invoice } from "@/domains/business";
 
 export interface CollectionsStatus {
   invoiceId: string;

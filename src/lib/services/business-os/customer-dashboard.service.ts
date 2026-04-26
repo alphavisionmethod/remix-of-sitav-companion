@@ -2,7 +2,7 @@
 // SITA OS — Business OS: Customer Dashboard Service
 // ═══════════════════════════════════════════════════════════════
 
-import type { CRMAccount, CRMContact } from "@/packages/business-contracts";
+import type { CRMAccount, CRMContact } from "@/domains/business";
 
 export interface CustomerHealthResult {
   accountId: string;
