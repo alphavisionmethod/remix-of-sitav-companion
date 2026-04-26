@@ -121,6 +121,15 @@ For each of these high-value pages: render with `render-business-page.tsx`, mock
 
 ## Phase 4 — Route Integrity + Trust / Receipt / Approval Tests
 
+**Status: ✅ COMPLETE.** 29 new tests across 5 files; full Business OS suite at 163/163 green; `tsc --noEmit` clean.
+
+**Files added:**
+- `routes/business-routes-integrity.test.ts` — 6 tests: ≥40 routes, all `/business`-prefixed, no duplicates, dispatcher handles every static segment, fallback present, sita-open-business event wired.
+- `routes/business-page-composition.test.ts` — 6 tests: 5 canonical page modules import cleanly + legacy `src/pages/BusinessCenter` aliases the canonical module.
+- `trust/receipt-emission.test.tsx` — 6 tests: PDF / eSign / dispatch / sync / download hooks each invoke the right edge function with the right lineage payload (with toast + storage mocks).
+- `trust/approval-routing.test.ts` — 7 tests: registry contains canonical business actions, no low-risk auto-approval, irreversible actions are gated, R3+ business policies require justification, registry record/list parity.
+- `trust/proof-lineage.test.ts` — 4 tests: probes expose evidenceRef + canonical statuses, totals coherent, lineage probes return `unknown` (never fake `pass`) on empty DB.
+
 **Goal:** Routes resolve to the right page; trust events are verifiable.
 
 **Files:**

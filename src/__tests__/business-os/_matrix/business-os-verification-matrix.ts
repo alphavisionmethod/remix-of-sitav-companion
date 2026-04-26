@@ -96,7 +96,7 @@ export const ROUTE_SURFACES: SurfaceEntry[] = [
 
 // ── Trust / receipt / approval ────────────────────────────────
 export const TRUST_SURFACES: SurfaceEntry[] = [
-  { id: "trust.receipt-emission", kind: "trust", ref: "src/hooks/business-os-phase10/*", tests: ["src/__tests__/business-os/trust/receipt-emission.test.ts"], status: "behavioral", priority: "P0" },
+  { id: "trust.receipt-emission", kind: "trust", ref: "src/hooks/use-phase10-actions.ts", tests: ["src/__tests__/business-os/trust/receipt-emission.test.tsx"], status: "behavioral", priority: "P0" },
   { id: "trust.approval-routing", kind: "trust", ref: "src/lib/policy/", tests: ["src/__tests__/business-os/trust/approval-routing.test.ts"], status: "behavioral", priority: "P0" },
   { id: "trust.proof-lineage", kind: "trust", ref: "src/lib/services/business-os/continuity-verification.service.ts", tests: ["src/__tests__/business-os/trust/proof-lineage.test.ts"], status: "behavioral", priority: "P1" },
 ];
