@@ -391,7 +391,12 @@ const AppointmentsScheduling = () => {
                       apt={apt}
                       onRemind={(id) => remind.mutate({ bookingId: id })}
                       onConfirm={(id) => confirm.mutate({ bookingId: id })}
-                      onRecover={(id) => recover.mutate({ bookingId: id })}
+                      onRecover={(id) => {
+                        // Two-step: prepare outreach text AND record the
+                        // canonical no-show + recovery_jobs row.
+                        recover.mutate({ bookingId: id });
+                        void handleNoShow(id);
+                      }}
                       pending={mutating}
                     />
                   ))
@@ -496,7 +501,10 @@ const AppointmentsScheduling = () => {
                     onClick={() => {
                       const targets = appointments.filter(a => a.status === "no-show");
                       if (targets.length === 0) return;
-                      targets.forEach(a => recover.mutate({ bookingId: a.id }));
+                      targets.forEach(a => {
+                        recover.mutate({ bookingId: a.id });
+                        void handleNoShow(a.id);
+                      });
                     }}
                   >
                     <RefreshCw className="h-3 w-3 mr-2" /> Recover No-Shows
@@ -507,6 +515,60 @@ const AppointmentsScheduling = () => {
           </div>
         </>
       )}
+
+      {/* Phase 6 — Create Appointment dialog */}
+      <Dialog open={createOpen} onOpenChange={setCreateOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>New Appointment</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-3">
+            {linked && linked.entityType !== "appointment" && (
+              <div className="rounded-md border border-primary/30 bg-primary/5 p-2 text-[11px] flex items-center gap-2">
+                <Link2 className="h-3 w-3 text-primary" />
+                <span>
+                  Linking to{" "}
+                  <span className="font-semibold">{linked.entityLabel ?? linked.entityId.slice(0, 8)}</span>{" "}
+                  ({linked.entityType})
+                </span>
+              </div>
+            )}
+            <div className="space-y-1.5">
+              <Label htmlFor="apt-title" className="text-xs">Title *</Label>
+              <Input id="apt-title" value={form.title} onChange={(e) => setForm(f => ({ ...f, title: e.target.value }))} placeholder="e.g. Strategy session" />
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-1.5">
+                <Label htmlFor="apt-when" className="text-xs">Starts at *</Label>
+                <Input id="apt-when" type="datetime-local" value={form.starts_at} onChange={(e) => setForm(f => ({ ...f, starts_at: e.target.value }))} />
+              </div>
+              <div className="space-y-1.5">
+                <Label htmlFor="apt-dur" className="text-xs">Duration (min)</Label>
+                <Input id="apt-dur" type="number" min={5} step={5} value={form.duration_minutes}
+                  onChange={(e) => setForm(f => ({ ...f, duration_minutes: Number(e.target.value) || 30 }))} />
+              </div>
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="apt-loc" className="text-xs">Location</Label>
+              <Input id="apt-loc" value={form.location} onChange={(e) => setForm(f => ({ ...f, location: e.target.value }))} placeholder="Office / Video / Phone" />
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="apt-cust" className="text-xs">Customer / Attendee</Label>
+              <Input id="apt-cust" value={form.customer_name} onChange={(e) => setForm(f => ({ ...f, customer_name: e.target.value }))} placeholder={linked?.entityLabel ?? "Name"} />
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="apt-notes" className="text-xs">Notes</Label>
+              <Textarea id="apt-notes" rows={2} value={form.notes} onChange={(e) => setForm(f => ({ ...f, notes: e.target.value }))} />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" size="sm" onClick={() => setCreateOpen(false)}>Cancel</Button>
+            <Button size="sm" onClick={handleCreate} disabled={createAction.isPending}>
+              {createAction.isPending ? "Scheduling…" : "Schedule"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
