@@ -56,6 +56,7 @@ import { getBusinessAdvisorRoutes } from "@/routes/business-advisor-routes";
 import { getExperimentalRoutes } from "@/routes/experimental-routes";
 import { getInvestmentRoutes } from "@/routes/investment-routes";
 import { getInvestmentOfficeRoutes } from "@/routes/investment-office-routes";
+import InvestmentShellPage from "@/pages/investment-office/InvestmentShellPage";
 import { USER_REDIRECTS } from "@/routes/redirects/user-redirect-map";
 import { getOwnerRoutes } from "@/routes/OwnerRoutes";
 import { MobileRoutes } from "@/routes/MobileRoutes";
