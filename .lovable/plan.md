@@ -78,7 +78,18 @@
 
 ## Phase 3 — Component & Page-State Honesty Tests
 
-**Goal:** Every high-value Business OS page renders honestly across loading/empty/error/populated.
+**Status: ✅ COMPLETE.** 33 new tests across 7 files; full Business OS suite at 134/134 green; `tsc --noEmit` clean.
+
+**Files added:**
+- `pages/autopilot-hub.test.tsx` — 5 tests: loading/error/unauth/wizard/command-center branches.
+- `pages/appointments-scheduling.test.tsx` — 5 tests: loading/error/unauth/empty/populated.
+- `pages/customer-health-page.test.tsx` — 5 tests: truth-anchored subtitle (loading/singular/plural/zero) + dashboard composition.
+- `pages/crm-home.test.tsx` — 4 tests: empty rendering, honest insight copy, at-risk warning, win-rate insight.
+- `pages/business-page-state-grammar.test.ts` — Per-page Business OS audit (stricter than project-wide); ratcheted debt set of 7 known violators with regression + stale-debt guards.
+- `components/lead-triage-queue.test.tsx` — 4 tests: first-use / caught-up / no-results / populated empty-state variants.
+- `components/calendar-sync-badge.test.tsx` — 8 tests: "Not synced" honesty + status priority order (failed > conflict > pending > synced > deleted).
+
+**Done when:** ✅ all page+component tests green; ✅ honest empty/error states asserted; ✅ per-page state-grammar baseline ratcheted.
 
 **Files (all under `src/__tests__/business-os/pages/`):**
 For each of these high-value pages: render with `render-business-page.tsx`, mock the underlying **data hooks only** (`useCRMContacts`, etc.) to inject loading/empty/error/populated states, and assert the page surfaces the correct UI for each state.
