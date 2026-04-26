@@ -5,26 +5,11 @@
 
 import type { FinancialAccount } from "@/packages/finance-contracts";
 
-export interface SyncResult {
-  accountId: string;
-  previousBalanceCents: number;
-  newBalanceCents: number;
-  deltaCents: number;
-  synced: boolean;
-  syncedAt: string;
-  discrepancy: boolean;
-  discrepancyReason?: string;
-}
+import type { SyncResult, SyncHealthReport } from "@/domains/finance";
 
-export interface SyncHealthReport {
-  totalAccounts: number;
-  synced: number;
-  failed: number;
-  stale: number;
-  avgSyncAgeMinutes: number;
-  overallHealth: "healthy" | "degraded" | "critical";
-  generatedAt: string;
-}
+// Canonical type re-exports for backward compatibility.
+// New code should import from `@/domains/finance` directly.
+export type { SyncResult, SyncHealthReport };
 
 export function reconcileBalance(account: FinancialAccount, newBalanceCents: number): SyncResult {
   const delta = newBalanceCents - account.balanceCents;

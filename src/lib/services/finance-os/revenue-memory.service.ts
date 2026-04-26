@@ -6,61 +6,13 @@
 
 import { revenueAdvisorStances, revenueMemoryEvents, revenueRetentionSignals, revenueExperiments, revenueCampaigns, revenueFunnels, revenueFunnelSteps, revenueOffers, revenueBookings, revenueReviews, revenueSegments, revenueReputationMetrics, revenueWinbackQueue } from "@/data/repositories/revenue-ops-data-service";
 
+import type { AdvisorMemoryEntry, GrowthDNATrait, WhatChangedItem, GrowthFirewallAlert, TimeMachineSnapshot, AdvisorDebate, AlignmentCluster } from "@/domains/finance";
+
+// Canonical type re-exports for backward compatibility.
+// New code should import from `@/domains/finance` directly.
+export type { AdvisorMemoryEntry, GrowthDNATrait, WhatChangedItem, GrowthFirewallAlert, TimeMachineSnapshot, AdvisorDebate, AlignmentCluster };
+
 // ── Types ──────────────────────────────────────────────────────
-export interface AdvisorMemoryEntry {
-  advisorId: string;
-  name: string;
-  domain: string;
-  stance: string;
-  confidence: number;
-  timestamp: string;
-  whatChanged?: string;
-  previousStance?: string;
-  confidenceDelta?: number;
-}
-
-export interface GrowthDNATrait {
-  trait: string;
-  score: number;
-  trend: "improving" | "declining" | "stable";
-  evidenceCount: number;
-  lastMeasured: string;
-}
-
-export interface WhatChangedItem {
-  domain: string;
-  description: string;
-  impact: "positive" | "negative" | "neutral";
-  timestamp: string;
-  magnitude: number; // 0-100
-  advisorLinked?: string;
-}
-
-export interface GrowthFirewallAlert {
-  ruleId: string;
-  ruleName: string;
-  severity: "warning" | "critical";
-  description: string;
-  triggerSignal: string;
-  recommendation: string;
-  timestamp: string;
-}
-
-export interface TimeMachineSnapshot {
-  snapshotDate: string;
-  metrics: {
-    monthlyRevenue: number;
-    pipelineValue: number;
-    activeClients: number;
-    conversionRate: number;
-    churnRate: number;
-    reputationScore: number;
-    funnelHealth: number;
-  };
-  advisorStances: Array<{ name: string; stance: string; confidence: number }>;
-  topRisks: string[];
-  topOpportunities: string[];
-}
 
 // ── What Changed Engine ────────────────────────────────────────
 export async function computeWhatChanged(dayWindow = 7): Promise<WhatChangedItem[]> {
@@ -304,19 +256,6 @@ export async function getAdvisorMemory(): Promise<AdvisorMemoryEntry[]> {
 }
 
 // ── Advisor Debate Detection ───────────────────────────────────
-export interface AdvisorDebate {
-  topic: string;
-  disagreements: Array<{
-    advisorA: string;
-    stanceA: string;
-    confidenceA: number;
-    advisorB: string;
-    stanceB: string;
-    confidenceB: number;
-    severity: "mild" | "moderate" | "strong";
-  }>;
-  synthesis: string;
-}
 
 export function detectDebates(advisors: Array<{ name: string; domain: string; stance: string; confidence: number; recommendation: string }>): AdvisorDebate[] {
   const debates: AdvisorDebate[] = [];
@@ -349,12 +288,6 @@ export function detectDebates(advisors: Array<{ name: string; domain: string; st
 }
 
 // ── Alignment Map ──────────────────────────────────────────────
-export interface AlignmentCluster {
-  theme: string;
-  advisors: string[];
-  avgConfidence: number;
-  direction: "bullish" | "bearish" | "neutral";
-}
 
 export function computeAlignmentMap(advisors: Array<{ name: string; confidence: number; type: string }>): AlignmentCluster[] {
   const clusters: AlignmentCluster[] = [];

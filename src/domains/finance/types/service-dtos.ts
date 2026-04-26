@@ -17,6 +17,7 @@ import type {
   FinancialAccount,
   SafeToSpendResult,
 } from "@/packages/finance-contracts";
+import type { RenewalRisk } from "@/packages/finance-contracts/subscriptions/renewal-risk";
 import type {
   MarketRegimeResult,
   RiskBudgetResult,
@@ -47,17 +48,8 @@ export interface DetectedSubscription {
   lastSeen: string;
 }
 
-export interface RenewalRiskItem {
-  subscriptionId: string;
-  name: string;
-  daysUntilRenewal: number;
-  amountCents: number;
-  riskLevel: "low" | "medium" | "high";
-  reason: string;
-}
-
 export interface RenewalRiskReport {
-  risks: RenewalRiskItem[];
+  risks: RenewalRisk[];
   totalPotentialSavingsCents: number;
   highRiskCount: number;
   upcomingRenewals30Days: number;

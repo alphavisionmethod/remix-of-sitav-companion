@@ -5,13 +5,11 @@
 
 import type { FinancialAccount, AccountSummary, AccountType } from "@/packages/finance-contracts";
 
+import type { AccountsByType } from "@/domains/finance";
 
-export interface AccountsByType {
-  type: AccountType;
-  accounts: FinancialAccount[];
-  totalBalanceCents: number;
-  count: number;
-}
+// Canonical type re-exports for backward compatibility.
+// New code should import from `@/domains/finance` directly.
+export type { AccountsByType };
 
 export function buildAccountSummary(accounts: FinancialAccount[]): AccountSummary {
   const assets = accounts.filter(a => ["checking", "savings", "investment", "retirement"].includes(a.type));

@@ -5,14 +5,11 @@
 
 import type { TradeReviewPacket } from "@/packages/finance-contracts/investment-office";
 
-export interface ExecutionQualityReport {
-  trades: TradeReviewPacket[];
-  avgSlippageBps: number;
-  totalCommissionCents: number;
-  bestExecution: boolean;
-  recommendations: string[];
-  generatedAt: string;
-}
+import type { ExecutionQualityReport } from "@/domains/finance";
+
+// Canonical type re-exports for backward compatibility.
+// New code should import from `@/domains/finance` directly.
+export type { ExecutionQualityReport };
 
 export function buildExecutionReview(trades: TradeReviewPacket[]): ExecutionQualityReport {
   return {

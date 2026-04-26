@@ -1,78 +1,16 @@
 import { loadServiceState, debouncedSaveServiceState } from "@/data/persistence/universal-service-persistence";
+import type { RegimeType, SyncStatus, InvestmentAction, PortfolioSnapshot, ConnectorSyncState, InvestmentProofReceipt, RegimeDetection, RegimeSignal, InvestmentOfficeSummary } from "@/domains/finance";
+
+// Canonical type re-exports for backward compatibility.
+// New code should import from `@/domains/finance` directly.
+export type { RegimeType, SyncStatus, InvestmentAction, PortfolioSnapshot, ConnectorSyncState, InvestmentProofReceipt, RegimeDetection, RegimeSignal, InvestmentOfficeSummary };
+
 // @persistence: os_service_state — state survives refresh via universal adapter
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Investment Office Runtime Service
 // Stateful orchestrator wrapping the 47 domain engines with
 // caching, audit trails, regime detection, and self-healing hooks
 // ═══════════════════════════════════════════════════════════════
-
-export type RegimeType = "bull" | "bear" | "sideways" | "volatile" | "crisis" | "recovery";
-export type SyncStatus = "synced" | "stale" | "error" | "syncing" | "disconnected";
-export type InvestmentAction = "rebalance" | "tax_harvest" | "dividend_reinvest" | "risk_review" | "regime_shift" | "allocation_drift";
-
-export interface PortfolioSnapshot {
-  id: string;
-  capturedAt: string;
-  totalValueCents: number;
-  allocation: Record<string, number>;  // asset class → percentage
-  driftPercent: Record<string, number>; // asset class → drift from target
-  maxDrift: number;
-  staleFields: string[];
-  regime: RegimeType;
-}
-
-export interface ConnectorSyncState {
-  connectorId: string;
-  provider: string;   // "brokerage" | "crypto" | "bank"
-  status: SyncStatus;
-  lastSyncAt: string;
-  staleSinceMs: number;
-  consecutiveErrors: number;
-  lastError?: string;
-  retryCount: number;
-  circuitBroken: boolean;
-}
-
-export interface InvestmentProofReceipt {
-  id: string;
-  action: InvestmentAction;
-  timestamp: string;
-  input: Record<string, unknown>;
-  output: Record<string, unknown>;
-  durationMs: number;
-  regime: RegimeType;
-  confidence: number;
-  approved: boolean;
-  approvedBy?: string;
-}
-
-export interface RegimeDetection {
-  current: RegimeType;
-  previous: RegimeType;
-  changedAt: string;
-  confidence: number;
-  signals: RegimeSignal[];
-  rebalanceSuggested: boolean;
-}
-
-export interface RegimeSignal {
-  indicator: string;
-  value: number;
-  threshold: number;
-  direction: "bullish" | "bearish" | "neutral";
-  weight: number;
-}
-
-export interface InvestmentOfficeSummary {
-  portfolioValue: number;
-  regime: RegimeType;
-  maxDrift: number;
-  driftAlert: boolean;
-  connectorHealth: { total: number; synced: number; stale: number; error: number };
-  pendingActions: number;
-  lastRebalanceAt?: string;
-  receiptsGenerated: number;
-}
 
 const DRIFT_THRESHOLD = 0.05;    // 5% drift triggers rebalance
 const STALE_THRESHOLD_MS = 3_600_000; // 1 hour
@@ -339,7 +277,6 @@ export class InvestmentOfficeRuntimeService {
 
 export function createInvestmentOfficeRuntime(): InvestmentOfficeRuntimeService {
   return new InvestmentOfficeRuntimeService();
-
 
 }
 

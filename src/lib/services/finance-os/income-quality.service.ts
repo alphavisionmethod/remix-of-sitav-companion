@@ -4,14 +4,11 @@
 
 import type { IncomeQualityScore, IncomeQualityDimension } from "@/packages/finance-contracts/advanced-intelligence";
 
-export interface IncomeQualityInput {
-  recurringIncomePct: number;
-  topClientConcentrationPct: number;
-  seasonalVariationPct: number;
-  avgPaymentDelayDays: number;
-  oneTimeIncomePct: number;
-  householdDependencyOnUnstablePct: number;
-}
+import type { IncomeQualityInput } from "@/domains/finance";
+
+// Canonical type re-exports for backward compatibility.
+// New code should import from `@/domains/finance` directly.
+export type { IncomeQualityInput };
 
 export function computeIncomeQuality(input: IncomeQualityInput): IncomeQualityScore {
   const dimensions: IncomeQualityDimension[] = [

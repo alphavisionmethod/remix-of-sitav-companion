@@ -5,24 +5,11 @@
 
 import type { StressSignal, StressRadarResult, StressSeverity } from "@/packages/finance-contracts/advanced-intelligence";
 
-export interface StressRadarInput {
-  cashBalanceCents: number;
-  monthlyIncomeCents: number;
-  monthlyBurnCents: number;
-  upcomingBills: Array<{ name: string; amountCents: number; dueDate: string }>;
-  reserveFundedPct: number;
-  reserveTargetCents: number;
-  totalDebtCents: number;
-  monthlyDebtPaymentCents: number;
-  creditUtilizationPct: number;
-  subscriptionMonthlyCents: number;
-  subscriptionCountActive: number;
-  taxReservedPct: number;
-  taxOwedEstimateCents: number;
-  founderDrawMonthlyCents: number;
-  founderDrawStable: boolean;
-  floatReliancePct: number;
-}
+import type { StressRadarInput } from "@/domains/finance";
+
+// Canonical type re-exports for backward compatibility.
+// New code should import from `@/domains/finance` directly.
+export type { StressRadarInput };
 
 export function computeStressRadar(input: StressRadarInput): StressRadarResult {
   const signals: StressSignal[] = [];

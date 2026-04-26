@@ -4,19 +4,11 @@
 
 import type { ObligationRecord } from "@/packages/finance-contracts";
 
+import type { BillCalendarDay, BillCalendarMonth } from "@/domains/finance";
 
-export interface BillCalendarDay {
-  date: string;
-  obligations: ObligationRecord[];
-  totalDueCents: number;
-}
-
-export interface BillCalendarMonth {
-  month: string;
-  days: BillCalendarDay[];
-  totalDueCents: number;
-  obligationCount: number;
-}
+// Canonical type re-exports for backward compatibility.
+// New code should import from `@/domains/finance` directly.
+export type { BillCalendarDay, BillCalendarMonth };
 
 export function buildBillCalendar(obligations: ObligationRecord[], monthsAhead: number = 3): BillCalendarMonth[] {
   const months: BillCalendarMonth[] = [];

@@ -5,15 +5,11 @@
 
 import type { Receivable } from "@/packages/finance-contracts";
 
-export interface ReceivableAgingReport {
-  current: { count: number; totalCents: number };
-  thirtyDay: { count: number; totalCents: number };
-  sixtyDay: { count: number; totalCents: number };
-  ninetyPlus: { count: number; totalCents: number };
-  totalOutstandingCents: number;
-  averageAgingDays: number;
-  generatedAt: string;
-}
+import type { ReceivableAgingReport } from "@/domains/finance";
+
+// Canonical type re-exports for backward compatibility.
+// New code should import from `@/domains/finance` directly.
+export type { ReceivableAgingReport };
 
 export function buildAgingReport(receivables: Receivable[]): ReceivableAgingReport {
   const outstanding = receivables.filter(r => r.status === "expected" || r.status === "overdue");

@@ -5,14 +5,11 @@
 
 import type { SubscriptionRecord } from "@/packages/finance-contracts";
 import type { RenewalRisk } from "@/packages/finance-contracts/subscriptions/renewal-risk";
+import type { RenewalRiskReport } from "@/domains/finance";
 
-export interface RenewalRiskReport {
-  risks: RenewalRisk[];
-  totalPotentialSavingsCents: number;
-  highRiskCount: number;
-  upcomingRenewals30Days: number;
-  generatedAt: string;
-}
+// Canonical type re-export for backward compatibility.
+// New code should import from `@/domains/finance` directly.
+export type { RenewalRiskReport };
 
 export function buildRenewalRiskReport(subscriptions: SubscriptionRecord[]): RenewalRiskReport {
   const risks = subscriptions.filter(s => s.status === "active").map(s => {

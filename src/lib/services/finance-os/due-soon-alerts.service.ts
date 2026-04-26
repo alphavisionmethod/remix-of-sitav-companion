@@ -4,16 +4,11 @@
 
 import type { ObligationRecord } from "@/packages/finance-contracts";
 
-export interface DueSoonAlert {
-  obligationId: string;
-  name: string;
-  amountCents: number;
-  dueDate: string;
-  daysUntilDue: number;
-  severity: "info" | "warning" | "urgent";
-  hasAutoPay: boolean;
-  message: string;
-}
+import type { DueSoonAlert } from "@/domains/finance";
+
+// Canonical type re-exports for backward compatibility.
+// New code should import from `@/domains/finance` directly.
+export type { DueSoonAlert };
 
 export function generateDueSoonAlerts(obligations: ObligationRecord[], lookaheadDays: number = 7): DueSoonAlert[] {
   const now = Date.now();

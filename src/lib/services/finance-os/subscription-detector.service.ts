@@ -4,17 +4,11 @@
 // ═══════════════════════════════════════════════════════════════
 
 import type { TransactionRecord, SubscriptionRecord } from "@/packages/finance-contracts";
+import type { DetectedSubscription } from "@/domains/finance";
 
-
-export interface DetectedSubscription {
-  merchantName: string;
-  averageAmountCents: number;
-  frequency: "monthly" | "quarterly" | "annually";
-  occurrences: number;
-  confidence: number;
-  firstSeen: string;
-  lastSeen: string;
-}
+// Canonical type re-export for backward compatibility.
+// New code should import from `@/domains/finance` directly.
+export type { DetectedSubscription };
 
 export function detectSubscriptions(transactions: TransactionRecord[]): DetectedSubscription[] {
   const merchantGroups = new Map<string, TransactionRecord[]>();

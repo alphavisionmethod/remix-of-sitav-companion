@@ -11,76 +11,17 @@
 
 // ── Types ───────────────────────────────────────────────────────
 
-export interface MemoryChange {
-  id: string;
-  domain: "user" | "advisor" | "thesis" | "portfolio" | "event";
-  type: string;
-  title: string;
-  summary: string;
-  severity: "info" | "warning" | "alert" | "positive";
-  timestamp: string;
-  relatedAssetIds?: string[];
-  relatedAdvisorIds?: string[];
-  relatedThesisId?: string;
-  relatedDecisionId?: string;
-}
-
-export interface AdvisorMemoryState {
-  advisorId: string;
-  domain: string;
-  currentStance: string;
-  confidenceLevel: number;
-  stanceHistory: { date: string; stance: string; confidence: number }[];
-  whatChangedOverTime: string[];
-  disagreementHistory: { date: string; topic: string; otherAdvisorId: string }[];
-}
-
-export interface ThesisMemoryState {
-  thesisId: string;
-  title: string;
-  originalBelief: string;
-  currentStatus: "active" | "invalidated" | "closed" | "watching";
-  invalidationReason?: string;
-  outcomeVsExpectation?: "better" | "worse" | "as-expected" | "pending";
-  lessonsSummary?: string;
-  assumptions: string[];
-  validatedAssumptions: string[];
-  invalidatedAssumptions: string[];
-}
-
-export interface PortfolioMemoryState {
-  exposureShifts: { date: string; assetClass: string; from: number; to: number }[];
-  regimeShifts: { date: string; from: string; to: string; confidence: number }[];
-  drawdownHistory: { period: string; maxDrawdown: number; recovery: string }[];
-  concentrationEvolution: { date: string; topHolding: string; weight: number }[];
-}
-
-export interface EventMemoryState {
-  catalystsThatMattered: { id: string; title: string; outcome: string; portfolioImpact: string }[];
-  eventsChangedOutcomes: { id: string; title: string; before: string; after: string }[];
-  timingLessons: { lesson: string; context: string; confidence: number }[];
-}
-
-export interface StrategyDNAInference {
-  traits: { trait: string; score: number; evidence: string }[];
-  dominantStyle: string;
-  alignmentScore: number;
-  recentDeviations: string[];
-}
-
-export interface BehavioralFirewallState {
-  overallHealth: number;
-  activeDetections: { type: string; severity: string; evidence: string; suggestion: string }[];
-  cooldownActive: boolean;
-  recentPatterns: string[];
-  disciplineScore: number;
-}
-
 // ── Service Functions ───────────────────────────────────────────
 
 /**
  * Compute "what changed" for the boardroom by analyzing all 5 memory domains.
  */
+import type { MemoryChange, AdvisorMemoryState, ThesisMemoryState, PortfolioMemoryState, EventMemoryState, StrategyDNAInference, BehavioralFirewallState } from "@/domains/finance";
+
+// Canonical type re-exports for backward compatibility.
+// New code should import from `@/domains/finance` directly.
+export type { MemoryChange, AdvisorMemoryState, ThesisMemoryState, PortfolioMemoryState, EventMemoryState, StrategyDNAInference, BehavioralFirewallState };
+
 export function computeWhatChanged(
   advisorObservations: any[],
   portfolioPositions: any[],

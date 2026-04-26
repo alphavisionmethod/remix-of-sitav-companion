@@ -5,17 +5,11 @@
 
 import type { ObligationRecord } from "@/packages/finance-contracts";
 
+import type { RecurringObligationSummary } from "@/domains/finance";
 
-export interface RecurringObligationSummary {
-  totalMonthlyCommitmentCents: number;
-  totalAnnualCommitmentCents: number;
-  obligationCount: number;
-  byFrequency: { frequency: string; count: number; monthlyCents: number }[];
-  byCategory: { category: string; count: number; monthlyCents: number }[];
-  autoPayCount: number;
-  manualPayCount: number;
-  generatedAt: string;
-}
+// Canonical type re-exports for backward compatibility.
+// New code should import from `@/domains/finance` directly.
+export type { RecurringObligationSummary };
 
 function toMonthlyCents(obl: ObligationRecord): number {
   switch (obl.frequency) {
