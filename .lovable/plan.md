@@ -177,6 +177,19 @@ These are the real, code-grounded gaps. The plan below fixes them in dependency 
 **Phase 8 Done = Ready to Deploy when:**
 - Revenue Home renders, every group link navigates correctly via `BusinessNavigationContext`. Hierarchy chips visible on every revenue page.
 
+**Phase 8 — STATUS: ✅ SHIPPED (2026-04-26)**
+- Added `src/modules/business/components/business/shared/HierarchyHint.tsx` — 4-tier (Insight/Workflow/Execution/Result) chip with "Revenue Home" affordance via `useBusinessNavigation`.
+- Added `src/modules/business/pages/RevenueOpsHome.tsx` — single landing page grouping the existing surfaces under the canonical hierarchy. Pure IA: no logic moved, no metrics fabricated, no surfaces deleted.
+- Wired `revenue-home` module key into `BusinessAppShell` (Growth group + pages map) so the windowed app routes correctly.
+- Updated `BusinessCenter.subpageFromPath` to map `/business/revenue` and `/business/revenue-home` → `revenue-home`, plus added matching `Route` entries in `business-routes.tsx`.
+- Mounted `<HierarchyHint />` chips on 10 revenue surfaces:
+  - Insight: `RevenueForecast`, `RevenueImpactDashboard`
+  - Workflow: `OpportunitiesCenter`, `QuotesWorkspace`, `ProposalsContracts`
+  - Execution: `InvoicesCollections`, `CollectionsCommandCenter`, `RevenueAutopilot` (labelled "Execution view"), `AutopilotHub` (labelled "Strategy / config view")
+  - Result: `RecoveredValuePage`, `BusinessProof` (labelled "Revenue-filtered proof view")
+- Verified clean `bunx tsc --noEmit`.
+- Honest tags reflect overlap (e.g. RevenueAutopilot vs AutopilotHub vs RevenueImpactDashboard) per the plan — no surface was deleted to preserve deep-link continuity.
+
 ---
 
 ## Phase 9 — Tests, Continuity Report, and Honest Deferred List
