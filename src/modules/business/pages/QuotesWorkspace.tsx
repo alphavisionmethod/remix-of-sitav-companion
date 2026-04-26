@@ -39,6 +39,10 @@ const QuotesWorkspace = () => {
     expiry_date: draft.expiry_date ?? "",
     notes: draft.notes ?? "",
   });
+  // Phase 4: when arriving via "Bill this contact" from CRM, capture the contact
+  // so the create-quote mutation can pass it through to the bridge service.
+  const [prefillContactId, setPrefillContactId] = useState<string | null>(null);
+  const [prefillContactLabel, setPrefillContactLabel] = useState<string | null>(null);
 
   const { data: quotes = [], isLoading } = useQuery({
     queryKey: ["quotes", user?.id],
@@ -104,8 +108,20 @@ const QuotesWorkspace = () => {
   // Auto-select if we arrived via a CrossAppAction conversion.
   useEffect(() => {
     const linked = consumeLinkedContext();
-    if (linked?.entityType === "quote" && linked.entityId && linked.entityId !== "new" && linked.entityId !== "all") {
+    if (!linked) return;
+    if (linked.entityType === "quote" && linked.entityId && linked.entityId !== "new" && linked.entityId !== "all") {
       setSelectedId(linked.entityId);
+      return;
+    }
+    // Phase 4: incoming "Bill this contact" hand-off from CRM.
+    if (linked.entityType === "contact" && linked.entityId) {
+      setPrefillContactId(linked.entityId);
+      setPrefillContactLabel(linked.entityLabel ?? null);
+      setShowAdd(true);
+      setForm((f) => ({
+        ...f,
+        title: f.title || `Quote — ${linked.entityLabel ?? "Contact"}`,
+      }));
     }
   }, []);
 
