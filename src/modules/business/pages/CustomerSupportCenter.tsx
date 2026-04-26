@@ -1,6 +1,7 @@
 import { toast } from "sonner";
 import { useState } from "react";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { useSupportCases, type SupportSeverity } from "@/hooks/use-support-cases";
 import { getModuleAdaptation } from "@/domains/engines/business-module-adaptations";
 import { motion } from "framer-motion";
 import { HeroCard, QueueCard, StatusCard, AdvisorCard } from "@/platform/sita/components/sita/cards";
@@ -15,48 +16,29 @@ import {
   HeadphonesIcon, AlertTriangle, Clock, CheckCircle2, MessageSquare, User, ShieldAlert,
   Timer, TrendingDown, Mail, Phone, FileText, RotateCcw
 } from "lucide-react";
-type Severity = "critical" | "high" | "medium" | "low";
-type IssueStatus = "open" | "waiting-on-us" | "waiting-on-customer" | "escalated" | "resolved";
-
-interface SupportIssue {
-  id: string; customer: string; subject: string; preview: string; severity: Severity;
-  status: IssueStatus; owner: string; linkedEntity?: string; linkedType?: string;
-  createdAt: string; lastAction: string; responseCount: number; slaHours: number; hoursOpen: number;
-}
-
-const ISSUES: SupportIssue[] = [
-  { id: "SUP-001", customer: "Marcus Chen", subject: "Order arrived damaged — requesting replacement", preview: "The packaging was torn and the product inside has visible damage.", severity: "critical", status: "waiting-on-us", owner: "You", linkedEntity: "ORD-4521", linkedType: "order", createdAt: "2h ago", lastAction: "Customer sent photos", responseCount: 3, slaHours: 4, hoursOpen: 2 },
-  { id: "SUP-002", customer: "Sarah Park", subject: "Billing discrepancy on last invoice", preview: "I was charged $450 but the agreed amount was $380.", severity: "high", status: "open", owner: "Unassigned", linkedEntity: "INV-1892", linkedType: "invoice", createdAt: "5h ago", lastAction: "New ticket", responseCount: 0, slaHours: 8, hoursOpen: 5 },
-  { id: "SUP-003", customer: "David Liu", subject: "Can't access my account portal", preview: "I've tried resetting my password three times and still can't log in.", severity: "medium", status: "waiting-on-us", owner: "Alex M.", createdAt: "1d ago", lastAction: "Escalated to tech", responseCount: 2, slaHours: 24, hoursOpen: 26 },
-  { id: "SUP-004", customer: "Elena Torres", subject: "Requesting refund for cancelled service", preview: "I cancelled last week but was still charged.", severity: "high", status: "escalated", owner: "You", linkedEntity: "INV-2001", linkedType: "invoice", createdAt: "3d ago", lastAction: "Manager review pending", responseCount: 5, slaHours: 24, hoursOpen: 72 },
-  { id: "SUP-005", customer: "James Wright", subject: "Feature request — bulk export", preview: "Would love to be able to export all my data in CSV format.", severity: "low", status: "open", owner: "Unassigned", createdAt: "2d ago", lastAction: "New ticket", responseCount: 0, slaHours: 72, hoursOpen: 48 },
-  { id: "SUP-006", customer: "Amy Nguyen", subject: "Appointment was rescheduled without notice", preview: "My appointment was moved without anyone telling me.", severity: "high", status: "waiting-on-customer", owner: "Alex M.", linkedEntity: "APT-337", linkedType: "appointment", createdAt: "6h ago", lastAction: "Apology sent", responseCount: 2, slaHours: 8, hoursOpen: 6 },
-  { id: "SUP-007", customer: "Robert Kim", subject: "Delivery tracking shows wrong address", preview: "The tracking info shows a completely different delivery address.", severity: "critical", status: "open", owner: "Unassigned", linkedEntity: "ORD-4580", linkedType: "order", createdAt: "45m ago", lastAction: "New ticket", responseCount: 0, slaHours: 2, hoursOpen: 0.75 },
-  { id: "SUP-008", customer: "Lisa Chang", subject: "Thank you — issue resolved perfectly", preview: "Just wanted to say thanks for the quick resolution!", severity: "low", status: "resolved", owner: "You", createdAt: "1d ago", lastAction: "Closed", responseCount: 4, slaHours: 24, hoursOpen: 6 },
-];
-
-const urgencyMap: Record<Severity, "critical" | "high" | "normal" | "low"> = { critical: "critical", high: "high", medium: "normal", low: "low" };
+const urgencyMap: Record<SupportSeverity, "critical" | "high" | "normal" | "low"> = { critical: "critical", high: "high", medium: "normal", low: "low" };
 
 const CustomerSupportCenter = () => {
   const { primaryMode } = useBusinessProfile();
   const moduleConfig = getModuleAdaptation("support", primaryMode);
+  const { issues, isLoading, metrics } = useSupportCases();
   const [activeTab, setActiveTab] = useState("all");
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [panelOpen, setPanelOpen] = useState(false);
 
   const filterIssues = (tab: string) => {
-    if (tab === "all") return ([] as any[]).filter(i => i.status !== "resolved");
-    if (tab === "urgent") return ([] as any[]).filter(i => (i.severity === "critical" || i.severity === "high") && i.status !== "resolved");
-    if (tab === "waiting-on-us") return ([] as any[]).filter(i => i.status === "waiting-on-us");
-    if (tab === "escalated") return ([] as any[]).filter(i => i.status === "escalated");
-    if (tab === "resolved") return ([] as any[]).filter(i => i.status === "resolved");
-    return ISSUES;
+    if (tab === "all") return issues.filter(i => i.status !== "resolved");
+    if (tab === "urgent") return issues.filter(i => (i.severity === "critical" || i.severity === "high") && i.status !== "resolved");
+    if (tab === "waiting-on-us") return issues.filter(i => i.status === "waiting-on-us");
+    if (tab === "escalated") return issues.filter(i => i.status === "escalated");
+    if (tab === "resolved") return issues.filter(i => i.status === "resolved");
+    return issues;
   };
 
   const filtered = filterIssues(activeTab);
-  const selected = ([] as any[]).find(i => i.id === selectedId);
-  const criticalCount = ([] as any[]).filter(i => i.severity === "critical" && i.status !== "resolved").length;
-  const breachedCount = ([] as any[]).filter(i => i.hoursOpen > i.slaHours && i.status !== "resolved").length;
+  const selected = issues.find(i => i.id === selectedId);
+  const criticalCount = metrics.critical;
+  const breachedCount = metrics.breached;
 
   const handleSelect = (id: string) => { setSelectedId(id); setPanelOpen(true); };
 
@@ -69,11 +51,11 @@ const CustomerSupportCenter = () => {
 
   return (
     <motion.div className="space-y-5" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-      <PageTruthBanner truthState="demo" />
+      <PageTruthBanner />
 
       <HeroCard
         title={moduleConfig.title}
-        metric={`${([] as any[]).filter(i => i.status !== "resolved").length} open ${moduleConfig.terminology.issue?.toLowerCase() || "issue"}s`}
+        metric={`${metrics.totalOpen} open ${moduleConfig.terminology.issue?.toLowerCase() || "issue"}s`}
         subtitle={moduleConfig.subtitle}
         icon={<HeadphonesIcon className="h-5 w-5 text-[hsl(265_55%_68%)]" />}
         accentFrom="hsl(265 55% 58%)"
@@ -83,23 +65,25 @@ const CustomerSupportCenter = () => {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
         <StatusCard label="Critical" status={criticalCount > 0 ? "down" : "healthy"} lastChecked={`${criticalCount}`} icon={<ShieldAlert className="h-3.5 w-3.5" />} />
         <StatusCard label="SLA Breached" status={breachedCount > 0 ? "down" : "healthy"} lastChecked={`${breachedCount}`} icon={<Timer className="h-3.5 w-3.5" />} />
-        <StatusCard label="Avg Resolution" status="healthy" lastChecked="4.2 hours" icon={<Clock className="h-3.5 w-3.5" />} />
-        <StatusCard label="Satisfaction" status="healthy" lastChecked="94%" confidence={94} icon={<CheckCircle2 className="h-3.5 w-3.5" />} />
+        <StatusCard label="Avg Resolution" status={metrics.avgResolutionHours == null ? "healthy" : metrics.avgResolutionHours > 24 ? "degraded" : "healthy"} lastChecked={metrics.avgResolutionHours == null ? "—" : `${metrics.avgResolutionHours.toFixed(1)} hours`} icon={<Clock className="h-3.5 w-3.5" />} />
+        <StatusCard label="Resolved" status="healthy" lastChecked={`${metrics.resolved}`} icon={<CheckCircle2 className="h-3.5 w-3.5" />} />
       </div>
 
       <SitaTabs
         tabs={[
-          { key: "all", label: "All Open", count: ([] as any[]).filter(i => i.status !== "resolved").length },
-          { key: "urgent", label: "Urgent", count: ([] as any[]).filter(i => (i.severity === "critical" || i.severity === "high") && i.status !== "resolved").length },
-          { key: "waiting-on-us", label: "Waiting on Us", count: ([] as any[]).filter(i => i.status === "waiting-on-us").length },
-          { key: "escalated", label: "Escalated", count: ([] as any[]).filter(i => i.status === "escalated").length },
-          { key: "resolved", label: "Resolved" },
+          { key: "all", label: "All Open", count: metrics.totalOpen },
+          { key: "urgent", label: "Urgent", count: metrics.urgent },
+          { key: "waiting-on-us", label: "Waiting on Us", count: metrics.waitingOnUs },
+          { key: "escalated", label: "Escalated", count: metrics.escalated },
+          { key: "resolved", label: "Resolved", count: metrics.resolved },
         ]}
         active={activeTab}
         onChange={setActiveTab}
       />
 
-      {filtered.length === 0 ? (
+      {isLoading ? (
+        <AppSurface level={1} className="p-6 text-center text-[11px] text-[hsl(0_0%_55%)]">Loading support cases…</AppSurface>
+      ) : filtered.length === 0 ? (
         <PremiumEmptyState icon={CheckCircle2} title="No issues here" description="All clear in this category" variant="no-results" domain="business" />
       ) : (
         <QueueCard title={moduleConfig.terminology.queue?.toUpperCase() || "SUPPORT QUEUE"} items={queueItems} maxVisible={10} onItemClick={handleSelect} />
@@ -109,7 +93,7 @@ const CustomerSupportCenter = () => {
         advisorName={moduleConfig.advisorName}
         domain="business"
         confidence={92}
-        insight={`2 ${moduleConfig.terminology.issue?.toLowerCase() || "issue"}s need immediate response. ${moduleConfig.advisorSpecialty}.`}
+        insight={`${criticalCount} ${moduleConfig.terminology.issue?.toLowerCase() || "issue"}${criticalCount === 1 ? "" : "s"} need immediate response. ${breachedCount} SLA breach${breachedCount === 1 ? "" : "es"} active. ${moduleConfig.advisorSpecialty}.`}
         actions={[{ label: "View Drafts", onClick: () => toast.info("Drafts planned — coming in a future update") }, { label: "Call Queue", onClick: () => toast.info("Call queue planned — coming in a future update") }]}
       />
 

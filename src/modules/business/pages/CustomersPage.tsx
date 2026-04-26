@@ -31,9 +31,10 @@ import { cn } from "@/lib/utils";
 import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { CrossAppAction } from "@/platform/sita/components/sita/CrossAppAction";
+import { CUSTOMERS_PAGE_TABS, type CustomersPageTab } from "@/modules/business/pages/_config/CustomersPage.config";
 
 type Customer = MockCustomer;
-type Tab = "all" | "active" | "at-risk" | "new" | "inactive";
+type Tab = CustomersPageTab;
 
 const healthColor = (score: number | null) => {
   if (!score) return "text-muted-foreground";
@@ -61,14 +62,6 @@ const timeAgo = (dt: string | null) => {
   if (days < 30) return `${days}d ago`;
   return `${Math.floor(days / 30)}mo ago`;
 };
-
-const TABS: { key: Tab; label: string }[] = [
-  { key: "all", label: "All" },
-  { key: "active", label: "Active" },
-  { key: "at-risk", label: "At Risk" },
-  { key: "new", label: "New" },
-  { key: "inactive", label: "Inactive" },
-];
 
 const CustomersPage = () => {
   const { primaryMode, adaptations } = useBusinessProfile();
@@ -178,7 +171,7 @@ const CustomersPage = () => {
 
       {/* Tabs */}
       <div className="flex gap-1 overflow-x-auto">
-        {TABS.map(t => (
+        {CUSTOMERS_PAGE_TABS.map(t => (
           <button key={t.key} onClick={() => setTab(t.key)}
             className={cn(
               "px-2.5 py-1 rounded-lg text-[11px] font-medium transition-colors whitespace-nowrap",

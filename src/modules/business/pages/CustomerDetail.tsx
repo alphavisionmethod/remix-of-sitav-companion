@@ -1,37 +1,56 @@
-import { SitaCard, SitaCardTitle, SitaSectionHeader, SitaButton, SitaPageHeader } from "@/platform/sita/components/sita/SitaCard";
-import { KPITile, TimelineItem, ProofCard, OpportunityCard, RiskCard, SitaTabs } from "@/platform/sita/components/sita/SitaComponents";
+import { SitaCard, SitaCardTitle, SitaSectionHeader, SitaButton } from "@/platform/sita/components/sita/SitaCard";
+import { KPITile, TimelineItem, ProofCard, OpportunityCard, SitaTabs } from "@/platform/sita/components/sita/SitaComponents";
 import { TrustBadge } from "@/platform/sita/components/sita/TrustBadge";
-import { StateBadge } from "@/platform/sita/components/sita/StateBadge";
 import { useNavigate, useParams } from "react-router-dom";
 import { useBusinessNavigation } from "@/contexts/BusinessNavigationContext";
 import { useState } from "react";
 import {
   ArrowLeft, Phone, Mail, Clock, MapPin, Globe, Building, DollarSign, FileText, CheckCircle,
-  AlertTriangle, Briefcase, MessageSquare, Calendar, Receipt, BarChart3, Sparkles, Star, TrendingUp, TrendingDown, Shield
+  AlertTriangle, Calendar, BarChart3, Sparkles, TrendingUp, TrendingDown
 } from "lucide-react";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { PremiumEmptyState } from "@/platform/sita/components/sita/PremiumEmptyState";
+import { useCustomerDetail } from "@/hooks/use-customer-detail";
 
-// Production fallback — seed data removed
-const TIMELINE_ITEMS: any[] = [];
-
-// Production fallback — customer data from DB
-const CUSTOMERS_DATA: Record<string, any> = {};
-
-const CustomerDetail = ({
-  customerId: propId }: { customerId?: string }) => {
+const CustomerDetail = ({ customerId: propId }: { customerId?: string }) => {
   const params = useParams<{ id: string }>();
-  const id = propId || params.id;
+  const id = propId || params.id || null;
   const { navigateTo } = useBusinessNavigation();
   const navigate = useNavigate();
   const [tab, setTab] = useState("overview");
-  const customer = CUSTOMERS_DATA[id || "marcus-johnson"] || CUSTOMERS_DATA["marcus-johnson"];
+  const { customer, isLoading, isEmpty } = useCustomerDetail(id);
 
-  const healthColor = customer.health >= 80 ? "text-trust-verified" : customer.health >= 50 ? "text-trust-review" : "text-urgency-high";
-  const healthBg = customer.health >= 80 ? "bg-trust-verified" : customer.health >= 50 ? "bg-trust-review" : "bg-urgency-high";
+  if (isLoading) {
+    return (
+      <div className="mx-auto max-w-7xl space-y-6 p-6">
+        <PageTruthBanner />
+        <div className="text-sm text-muted-foreground">Loading customer…</div>
+      </div>
+    );
+  }
+
+  if (isEmpty || !customer) {
+    return (
+      <div className="mx-auto max-w-7xl space-y-6 p-6">
+        <PageTruthBanner />
+        <PremiumEmptyState
+          variant="no-data"
+          icon={Building}
+          title="Customer not found"
+          description="This customer no longer exists or you don't have access to it."
+          actions={[{ label: "Back to Customers", onClick: () => navigateTo("customers") }]}
+          domain="business"
+        />
+      </div>
+    );
+  }
+
+  const healthColor = customer.healthScore >= 80 ? "text-trust-verified" : customer.healthScore >= 50 ? "text-trust-review" : "text-urgency-high";
+  const healthBg = customer.healthScore >= 80 ? "bg-trust-verified" : customer.healthScore >= 50 ? "bg-trust-review" : "bg-urgency-high";
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
-{/* Back + Header */}
+      <PageTruthBanner />
       <div>
         <button onClick={() => navigateTo("customers")} className="mb-4 inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
           <ArrowLeft className="h-4 w-4" /> Back to Business Center
@@ -48,7 +67,7 @@ const CustomerDetail = ({
               </div>
               {customer.company && <p className="mt-0.5 text-sm text-muted-foreground flex items-center gap-1.5"><Building className="h-3.5 w-3.5" /> {customer.company}</p>}
               <div className="mt-1.5 flex items-center gap-4 text-xs text-muted-foreground">
-                <span className="flex items-center gap-1"><MapPin className="h-3 w-3" /> {customer.location}</span>
+                {customer.location && <span className="flex items-center gap-1"><MapPin className="h-3 w-3" /> {customer.location}</span>}
                 <span className="flex items-center gap-1"><Calendar className="h-3 w-3" /> Customer since {customer.since}</span>
                 {customer.website && <span className="flex items-center gap-1"><Globe className="h-3 w-3" /> {customer.website}</span>}
               </div>
@@ -62,90 +81,64 @@ const CustomerDetail = ({
         </div>
       </div>
 
-      {/* KPI row */}
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
         <KPITile label="Total Revenue" value={customer.totalRevenue} trend="up" icon={DollarSign} />
         <KPITile label="Invoices Paid" value={`${customer.invoicesPaid}/${customer.invoicesTotal}`} icon={CheckCircle} />
         <KPITile label="Outstanding" value={customer.outstanding} icon={AlertTriangle} />
-        <KPITile label="Avg Pay Days" value={customer.avgPayDays} sub={customer.avgPayDays <= 7 ? "Excellent" : customer.avgPayDays <= 14 ? "Good" : "Slow"} icon={Clock} />
-        {/* Health */}
+        <KPITile label="Avg Pay Days" value={String(customer.avgPayDays)} sub={customer.avgPayDays <= 7 ? "Excellent" : customer.avgPayDays <= 14 ? "Good" : "Slow"} icon={Clock} />
         <div className="rounded-xl border border-border bg-card p-4 transition-all hover:shadow-card-hover">
           <div className="flex items-start justify-between">
             <p className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">Health</p>
             {customer.healthTrend === "up" ? <TrendingUp className="h-4 w-4 text-trust-safe" /> : customer.healthTrend === "down" ? <TrendingDown className="h-4 w-4 text-urgency-high" /> : null}
           </div>
           <div className="mt-2 flex items-baseline gap-2">
-            <p className={`font-display text-2xl font-bold tracking-tight ${healthColor}`}>{customer.health}%</p>
+            <p className={`font-display text-2xl font-bold tracking-tight ${healthColor}`}>{customer.healthScore}%</p>
             <span className="text-xs text-muted-foreground">{customer.healthLabel}</span>
           </div>
           <div className="mt-2 h-1.5 w-full rounded-full bg-secondary overflow-hidden">
-            <div className={`h-full rounded-full transition-all ${healthBg}`} style={{ width: `${customer.health}%` }} />
+            <div className={`h-full rounded-full transition-all ${healthBg}`} style={{ width: `${customer.healthScore}%` }} />
           </div>
         </div>
       </div>
 
-      {/* Tabs */}
       <SitaTabs
         tabs={[
           { key: "overview", label: "Overview" },
-          { key: "timeline", label: "Timeline" },
-          { key: "financials", label: "Financials" },
-          { key: "documents", label: "Documents" },
+          { key: "timeline", label: "Timeline", count: customer.timeline.length },
+          { key: "financials", label: "Financials", count: customer.invoices.length },
+          { key: "documents", label: "Documents", count: customer.documents.length },
           { key: "boardroom", label: "Boardroom" },
         ]}
         active={tab}
         onChange={setTab}
       />
 
-      {/* ============ OVERVIEW TAB ============ */}
       {tab === "overview" && (
         <div className="grid gap-6 lg:grid-cols-5">
           <div className="lg:col-span-3 space-y-6">
-            {/* Action Queue */}
-            <div className="space-y-3">
-              <SitaSectionHeader title="Action Queue" subtitle={`${([] as any[]).length} items pending`} />
-              {([] as any[]).map((a, i) => (
-                <SitaCard key={i} lane="action" className="p-4 pl-5">
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-1"><StateBadge state={a.state} size="sm" /></div>
-                      <p className="text-sm font-medium text-foreground">{a.title}</p>
-                      <p className="mt-0.5 text-xs text-muted-foreground">{a.reason}</p>
-                    </div>
-                    <SitaButton variant="accent" size="sm">Act</SitaButton>
-                  </div>
-                </SitaCard>
-              ))}
-            </div>
-
-            {/* Advisor */}
-            <div className="space-y-3">
-              <SitaSectionHeader title="Advisor Insight" />
-</div>
-
-            {/* Recent Timeline */}
             <div className="space-y-3">
               <SitaSectionHeader title="Recent Activity" action={<button onClick={() => setTab("timeline")} className="text-xs text-primary hover:underline">View all</button>} />
               <SitaCard hover={false} className="p-4">
-                {([] as any[]).slice(0, 4).map((t, i) => (
-                  <TimelineItem key={i} {...t} />
-                ))}
+                {customer.timeline.length === 0 ? (
+                  <p className="text-xs text-muted-foreground text-center py-4">No activity yet for this customer.</p>
+                ) : (
+                  customer.timeline.slice(0, 5).map((t) => (
+                    <TimelineItem key={t.id} title={t.title} description={t.detail} time={new Date(t.occurredAt).toLocaleDateString()} state={t.status as any} />
+                  ))
+                )}
               </SitaCard>
             </div>
           </div>
-
-          {/* Right side */}
           <div className="lg:col-span-2 space-y-6">
-            {/* Contact Info */}
             <SitaCard hover={false}>
               <SitaCardTitle>Contact Information</SitaCardTitle>
               <div className="mt-4 space-y-3">
                 {[
-                  { icon: Mail, label: "Email", value: customer.email },
-                  { icon: Phone, label: "Phone", value: customer.phone },
-                  { icon: MapPin, label: "Location", value: customer.location },
-                  ...(customer.website ? [{ icon: Globe, label: "Website", value: customer.website }] : []),
-                ].map((row) => (
+                  customer.email ? { icon: Mail, label: "Email", value: customer.email } : null,
+                  customer.phone ? { icon: Phone, label: "Phone", value: customer.phone } : null,
+                  customer.location ? { icon: MapPin, label: "Location", value: customer.location } : null,
+                  customer.website ? { icon: Globe, label: "Website", value: customer.website } : null,
+                ].filter((r): r is { icon: typeof Mail; label: string; value: string } => !!r).map((row) => (
                   <div key={row.label} className="flex items-center gap-3">
                     <row.icon className="h-4 w-4 text-muted-foreground shrink-0" />
                     <div>
@@ -157,89 +150,97 @@ const CustomerDetail = ({
               </div>
             </SitaCard>
 
-            {/* Opportunities */}
             <div className="space-y-3">
-              <SitaSectionHeader title="Opportunities" />
-              <OpportunityCard title="Retainer package upsell" description="Strong relationship — propose monthly retainer to increase LTV" action="Create Proposal" />
-              <OpportunityCard title="Referral program" description="High satisfaction — ask for referrals during next call" action="Prepare" />
+              <SitaSectionHeader title="Open Quotes" />
+              {customer.quotes.length === 0 ? (
+                <p className="text-xs text-muted-foreground">No quotes yet.</p>
+              ) : (
+                customer.quotes.slice(0, 3).map((q) => (
+                  <OpportunityCard key={q.id} title={q.title} description={`${q.status} · ${(q.amountCents / 100).toLocaleString(undefined, { style: "currency", currency: q.currency })}`} action="Open" />
+                ))
+              )}
             </div>
 
-            {/* Recent Proof */}
             <div className="space-y-3">
-              <SitaSectionHeader title="Proof & Receipts" action={<button onClick={() => setTab("documents")} className="text-xs text-primary hover:underline">View all</button>} />
-              <ProofCard title="Invoice #1038 paid" artifact="Stripe confirmation — $4,200" time="2h ago" trust="verified" state="verified" />
-              <ProofCard title="Quote #1037 delivered" artifact="Email opened 3x" time="5d ago" trust="verified" state="completed" />
+              <SitaSectionHeader title="Recent Receipts" action={<button onClick={() => setTab("documents")} className="text-xs text-primary hover:underline">View all</button>} />
+              {customer.invoices.filter((i) => i.status === "paid").slice(0, 3).map((inv) => (
+                <ProofCard key={inv.id} title={`Invoice ${inv.number} paid`} artifact={`${(inv.amountCents / 100).toLocaleString(undefined, { style: "currency", currency: inv.currency })}`} time={inv.paidAt ? new Date(inv.paidAt).toLocaleDateString() : "—"} trust="verified" state="verified" />
+              ))}
+              {customer.invoices.filter((i) => i.status === "paid").length === 0 && (
+                <p className="text-xs text-muted-foreground">No paid invoices yet.</p>
+              )}
             </div>
           </div>
         </div>
       )}
 
-      {/* ============ TIMELINE TAB ============ */}
       {tab === "timeline" && (
         <SitaCard hover={false} className="p-5">
           <SitaCardTitle sub="Complete relationship history">Full Timeline</SitaCardTitle>
           <div className="mt-4">
-            {([] as any[]).map((t, i) => <TimelineItem key={i} {...t} />)}
+            {customer.timeline.length === 0 ? (
+              <p className="text-xs text-muted-foreground text-center py-6">No activity yet for this customer.</p>
+            ) : customer.timeline.map((t) => (
+              <TimelineItem key={t.id} title={t.title} description={t.detail} time={new Date(t.occurredAt).toLocaleString()} state={t.status as any} />
+            ))}
           </div>
         </SitaCard>
       )}
 
-      {/* ============ FINANCIALS TAB ============ */}
       {tab === "financials" && (
         <div className="space-y-6">
           <div className="grid gap-3 sm:grid-cols-3">
             <KPITile label="Lifetime Revenue" value={customer.totalRevenue} trend="up" className="gradient-sita-subtle" />
             <KPITile label="Payment Reliability" value={customer.avgPayDays <= 7 ? "Excellent" : customer.avgPayDays <= 14 ? "Good" : "Needs Attention"} sub={`${customer.avgPayDays} day avg`} />
-            <KPITile label="Collection Risk" value={customer.outstanding === "$0" ? "None" : customer.outstanding} sub={customer.outstanding === "$0" ? "All paid" : "Outstanding balance"} />
+            <KPITile label="Collection Risk" value={customer.outstandingCents === 0 ? "None" : customer.outstanding} sub={customer.outstandingCents === 0 ? "All paid" : "Outstanding balance"} />
           </div>
           <SitaCard hover={false}>
             <SitaCardTitle sub="All invoices and payments">Invoice History</SitaCardTitle>
             <div className="mt-4 space-y-2">
-              {[
-                { id: "#1038", amount: "$4,200", date: "Mar 28", status: "Paid", days: "3 days", trust: "verified" as const },
-                { id: "#1037", amount: "$3,200", date: "Mar 23", status: "Quoted", days: "—", trust: "review" as const },
-                { id: "#1035", amount: "$1,800", date: "Mar 15", status: "Overdue", days: "7 days late", trust: "degraded" as const },
-                { id: "#1032", amount: "$2,800", date: "Feb 28", status: "Paid", days: "On time", trust: "verified" as const },
-                { id: "#1028", amount: "$2,200", date: "Jan 30", status: "Paid", days: "2 days", trust: "verified" as const },
-              ].map((inv) => (
-                <div key={inv.id} className="flex items-center justify-between rounded-xl bg-secondary/30 p-3.5">
-                  <div className="flex items-center gap-3">
-                    <div className="rounded-lg bg-primary/8 p-2"><FileText className="h-4 w-4 text-primary" /></div>
-                    <div>
-                      <p className="text-sm font-medium text-foreground">Invoice {inv.id} — {inv.amount}</p>
-                      <p className="text-xs text-muted-foreground">{inv.date} · {inv.days}</p>
+              {customer.invoices.length === 0 ? (
+                <p className="text-xs text-muted-foreground text-center py-6">No invoices yet for this customer.</p>
+              ) : customer.invoices.map((inv) => {
+                const trust = inv.status === "paid" ? "verified" as const : inv.status === "overdue" ? "degraded" as const : "review" as const;
+                return (
+                  <div key={inv.id} className="flex items-center justify-between rounded-xl bg-secondary/30 p-3.5">
+                    <div className="flex items-center gap-3">
+                      <div className="rounded-lg bg-primary/8 p-2"><FileText className="h-4 w-4 text-primary" /></div>
+                      <div>
+                        <p className="text-sm font-medium text-foreground">Invoice {inv.number} — {(inv.amountCents / 100).toLocaleString(undefined, { style: "currency", currency: inv.currency })}</p>
+                        <p className="text-xs text-muted-foreground">{inv.issuedAt ? new Date(inv.issuedAt).toLocaleDateString() : "—"} · {inv.daysToPay != null ? `${inv.daysToPay} days to pay` : inv.status}</p>
+                      </div>
                     </div>
+                    <TrustBadge level={trust} label={inv.status} size="sm" />
                   </div>
-                  <TrustBadge level={inv.trust} label={inv.status} size="sm" />
-                </div>
-              ))}
+                );
+              })}
             </div>
           </SitaCard>
         </div>
       )}
 
-      {/* ============ DOCUMENTS TAB ============ */}
       {tab === "documents" && (
         <div className="space-y-3">
-          <SitaSectionHeader title="Customer Documents" subtitle="All files linked to this customer" />
-          {([] as any[]).map((doc, i) => (
-            <SitaCard key={i} className="p-4">
+          <SitaSectionHeader title="Customer Documents" subtitle={`${customer.documents.length} file${customer.documents.length === 1 ? "" : "s"} linked to your account`} />
+          {customer.documents.length === 0 ? (
+            <p className="text-xs text-muted-foreground text-center py-6">No documents uploaded yet.</p>
+          ) : customer.documents.map((doc) => (
+            <SitaCard key={doc.id} className="p-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="rounded-xl bg-secondary p-2.5"><FileText className="h-4 w-4 text-primary" /></div>
                   <div>
                     <p className="text-sm font-medium text-foreground">{doc.name}</p>
-                    <p className="text-xs text-muted-foreground">{doc.type} · {doc.date}</p>
+                    <p className="text-xs text-muted-foreground">{doc.mime ?? "file"} · {new Date(doc.createdAt).toLocaleDateString()}</p>
                   </div>
                 </div>
-                <TrustBadge level={doc.trust} size="sm" />
+                <TrustBadge level="verified" size="sm" />
               </div>
             </SitaCard>
           ))}
         </div>
       )}
 
-      {/* ============ BOARDROOM TAB ============ */}
       {tab === "boardroom" && (
         <div className="space-y-6">
           <SitaCard hover={false} className="gradient-sita-subtle p-6">
@@ -250,50 +251,18 @@ const CustomerDetail = ({
             <div className="grid gap-4 sm:grid-cols-3">
               <div>
                 <p className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">Relationship Health</p>
-                <p className={`mt-1 font-display text-xl font-bold ${healthColor}`}>{customer.health}% — {customer.healthLabel}</p>
+                <p className={`mt-1 font-display text-xl font-bold ${healthColor}`}>{customer.healthScore}% — {customer.healthLabel}</p>
               </div>
               <div>
-                <p className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">Revenue Trend</p>
-                <p className="mt-1 font-display text-xl font-bold text-trust-safe">↑ Growing</p>
+                <p className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">Open Cases</p>
+                <p className="mt-1 font-display text-xl font-bold text-foreground">{customer.openCases} / {customer.totalCases}</p>
               </div>
               <div>
                 <p className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">Risk Level</p>
-                <p className="mt-1 font-display text-xl font-bold text-trust-review">{customer.outstanding === "$0" ? "Low" : "Medium"}</p>
+                <p className="mt-1 font-display text-xl font-bold text-trust-review">{customer.outstandingCents === 0 ? "Low" : "Medium"}</p>
               </div>
             </div>
           </SitaCard>
-
-          <div className="grid gap-6 lg:grid-cols-2">
-            <SitaCard hover={false}>
-              <SitaCardTitle>Priorities</SitaCardTitle>
-              <div className="mt-3 space-y-2.5">
-                {["Close outstanding quote #1037 ($3,200)", "Collect overdue invoice #1035", "Propose retainer package"].map((p, i) => (
-                  <div key={i} className="flex items-center gap-3 rounded-lg bg-secondary/30 p-3">
-                    <span className="flex h-6 w-6 items-center justify-center rounded-full gradient-sita font-display text-xs font-bold text-primary-foreground">{i + 1}</span>
-                    <p className="text-sm text-foreground">{p}</p>
-                  </div>
-                ))}
-              </div>
-            </SitaCard>
-            <SitaCard hover={false}>
-              <SitaCardTitle>Recommended Next Moves</SitaCardTitle>
-              <div className="mt-3 space-y-2.5">
-                {[
-                  { text: "Call to discuss Quote #1037 — decision likely this week", confidence: "High" },
-                  { text: "Send friendly reminder on Invoice #1035", confidence: "High" },
-                  { text: "Draft retainer proposal for Q2", confidence: "Medium" },
-                ].map((r, i) => (
-                  <div key={i} className="flex items-center justify-between rounded-lg bg-secondary/30 p-3">
-                    <div className="flex items-center gap-2">
-                      <Sparkles className="h-4 w-4 text-accent shrink-0" />
-                      <p className="text-sm text-foreground">{r.text}</p>
-                    </div>
-                    <span className="text-[10px] text-muted-foreground shrink-0">{r.confidence}</span>
-                  </div>
-                ))}
-              </div>
-            </SitaCard>
-          </div>
         </div>
       )}
     </div>
