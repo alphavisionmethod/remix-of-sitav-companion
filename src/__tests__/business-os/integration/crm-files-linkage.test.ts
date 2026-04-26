@@ -50,7 +50,7 @@ describe("Phase 6 — CRM ↔ Files linkage integration", () => {
     const file = await import(
       "@/data/repositories/business-background-tasks-service"
     );
-    expect(typeof file.fetchBackgroundJobs ?? typeof Object.keys(file)[0]).toBeDefined();
+    expect(Object.keys(file).length).toBeGreaterThan(0);
   });
 
   it("link surface honestly returns empty when CRM tables hold nothing", async () => {
