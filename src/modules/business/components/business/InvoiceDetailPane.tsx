@@ -2,7 +2,7 @@
 // Invoice Detail Pane — Right panel for ModuleWorkspace
 // ═══════════════════════════════════════════════════════════════
 
-import { Send, Receipt, FileText, Trash2, Loader2, CheckCircle } from "lucide-react";
+import { Send, Receipt, FileText, Trash2, Loader2, Eye, Lock } from "lucide-react";
 import { SitaCard, SitaCardTitle, SitaButton } from "@/platform/sita/components/sita/SitaCard";
 import { EmptyState } from "@/platform/sita/components/sita/SitaComponents";
 import { DollarSign } from "lucide-react";
@@ -21,15 +21,15 @@ interface InvoiceDetailPaneProps {
   onMarkSent?: () => void;
   onMarkPaid?: () => void;
   onSendInvoice?: () => void;
-  onGeneratePdf?: () => void;
+  onRenderHtml?: () => void;
   onDelete?: () => void;
   sendPending?: boolean;
-  pdfPending?: boolean;
+  renderPending?: boolean;
 }
 
 export function InvoiceDetailPane({
-  invoice, onMarkSent, onMarkPaid, onSendInvoice, onGeneratePdf, onDelete,
-  sendPending, pdfPending,
+  invoice, onMarkSent, onMarkPaid, onSendInvoice, onRenderHtml, onDelete,
+  sendPending, renderPending,
 }: InvoiceDetailPaneProps) {
   if (!invoice) {
     return <EmptyState icon={DollarSign} title="Select an invoice" description="Click on an invoice to see payment details and collection actions" />;
@@ -83,18 +83,74 @@ export function InvoiceDetailPane({
             <Receipt className="h-3.5 w-3.5" /> Mark Paid
           </SitaButton>
         )}
-        {onGeneratePdf && (
-          <SitaButton variant="secondary" size="sm" className="flex-1" onClick={onGeneratePdf} disabled={pdfPending}>
-            {pdfPending ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <FileText className="h-3.5 w-3.5" />}
-            Generate PDF
+        {onRenderHtml && (
+          <SitaButton variant="secondary" size="sm" className="flex-1" onClick={onRenderHtml} disabled={renderPending}>
+            {renderPending ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Eye className="h-3.5 w-3.5" />}
+            Preview HTML
           </SitaButton>
         )}
+        <SitaButton variant="secondary" size="sm" disabled title="PDF rendering coming soon — needs render service">
+          <Lock className="h-3.5 w-3.5" /> PDF · Soon
+        </SitaButton>
+        <SitaButton variant="secondary" size="sm" disabled title="E-signature provider not yet integrated">
+          <Lock className="h-3.5 w-3.5" /> E-sign · Soon
+        </SitaButton>
         {onDelete && (
           <SitaButton variant="danger" size="sm" onClick={onDelete}>
             <Trash2 className="h-3.5 w-3.5" />
           </SitaButton>
         )}
       </div>
+
+      <InvoiceProofBadges invoiceId={invoice.id} />
+    </div>
+  );
+}
+
+// ─── Real proof badge: reads back receipts written by invoice-generate ───
+import { useQuery } from "@tanstack/react-query";
+import { fromTable } from "@/lib/supabase-helpers";
+
+function InvoiceProofBadges({ invoiceId }: { invoiceId: string }) {
+  const { data: receipts = [] } = useQuery({
+    queryKey: ["invoice-receipts", invoiceId],
+    queryFn: async () => {
+      const { data, error } = await fromTable("receipts")
+        .select("id, action_key, outcome, created_at, evidence")
+        .eq("subject_type", "invoice")
+        .eq("subject_id", invoiceId)
+        .order("created_at", { ascending: false })
+        .limit(5);
+      if (error) return [];
+      return data ?? [];
+    },
+    enabled: !!invoiceId,
+    staleTime: 5_000,
+  });
+  if (!receipts.length) return null;
+  return (
+    <div className="rounded-lg border border-border/40 bg-card/40 p-3">
+      <div className="flex items-center gap-1.5 mb-2">
+        <Receipt className="h-3 w-3 text-trust-verified" />
+        <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Proof Trail</span>
+      </div>
+      <ul className="space-y-1">
+        {receipts.map((r: any) => {
+          const deferred = r?.evidence?.delivery_pending === true || r?.outcome === "deferred";
+          return (
+            <li key={r.id} className="flex items-center justify-between text-[11px]">
+              <span className="font-mono text-foreground/80">{r.action_key}</span>
+              <span className={`rounded-md border px-1.5 py-px text-[9px] font-medium ${
+                deferred
+                  ? "bg-accent/10 text-accent border-accent/20"
+                  : "bg-trust-verified/10 text-trust-verified border-trust-verified/20"
+              }`}>
+                {deferred ? "Logged · Provider deferred" : r.outcome}
+              </span>
+            </li>
+          );
+        })}
+      </ul>
     </div>
   );
 }
