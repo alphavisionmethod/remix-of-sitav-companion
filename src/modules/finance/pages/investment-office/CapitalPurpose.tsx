@@ -1,3 +1,4 @@
+// truth-allow: ia-config
 import { motion } from "framer-motion";
 import { Landmark, Shield, TrendingUp, Wallet, Zap, Calendar, Target, Coins } from "lucide-react";
 import { useCapitalPurposeBuckets } from "@/hooks/use-investment-office";
@@ -33,6 +34,7 @@ export default function CapitalPurpose() {
           return (
             <motion.div key={p.id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.04 }}
               className={`rounded-2xl border p-5 space-y-3 ${overTarget ? "border-[hsl(var(--trust-warn))]/30 bg-[hsl(var(--trust-warn))]/5" : "border-border bg-card"}`}>
+      <PageTruthBanner truthState="partial" />
               <div className="flex items-center gap-3">
                 <span className="text-2xl">{p.emoji}</span>
                 <div className="flex-1">

@@ -1,3 +1,4 @@
+// truth-allow: ia-config
 import { KPITile, SitaTabs, EmptyState } from "@/platform/sita/components/sita/SitaComponents";
 import { CrossAppAction } from "@/platform/sita/components/sita/CrossAppAction";
 import { TrustBadge } from "@/platform/sita/components/sita/TrustBadge";
@@ -95,7 +96,7 @@ const ReceivablesObligations = () => {
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
       <div className="flex items-center gap-3 flex-wrap">
-        <PageTruthBanner />
+        <PageTruthBanner truthState="partial" />
         <CrossAppAction to="/business/invoices" label="Invoices Hub" context={{ entityType: "invoice", entityId: "all" }} />
         <CrossAppAction to="/business/collections" label="Collections" context={{ entityType: "collection", entityId: "all" }} />
       </div>

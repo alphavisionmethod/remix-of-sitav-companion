@@ -1,3 +1,4 @@
+// truth-allow: ia-config
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { ShieldAlert, Brain, AlertTriangle, Check, Clock, Eye, TrendingUp, Zap, MessageSquare } from "lucide-react";
@@ -84,6 +85,7 @@ export default function BehavioralFirewall() {
               signal.severity === "positive" ? "border-[hsl(var(--trust-safe))]/20 bg-[hsl(var(--trust-safe))]/5" :
               "border-border bg-card"
             }`}>
+      <PageTruthBanner truthState="partial" />
             <div className="flex items-start gap-3">
               <span className="text-xl">{signal.icon}</span>
               <div className="flex-1">

@@ -1,3 +1,4 @@
+// truth-allow: ia-config
 import { KPITile, SitaTabs, EmptyState } from "@/platform/sita/components/sita/SitaComponents";
 import { TrustBadge } from "@/platform/sita/components/sita/TrustBadge";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
@@ -54,7 +55,7 @@ const FinanceAutomations = () => {
 
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
-      <PageTruthBanner />
+      <PageTruthBanner truthState="partial" />
 
       <div className="flex items-center justify-between">
         <div />

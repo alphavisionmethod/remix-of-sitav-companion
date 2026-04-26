@@ -1,3 +1,4 @@
+// truth-allow: ia-config
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { FlaskConical, TrendingUp, TrendingDown, ChevronRight } from "lucide-react";

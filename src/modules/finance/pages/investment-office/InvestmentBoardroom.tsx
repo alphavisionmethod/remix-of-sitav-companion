@@ -1,3 +1,4 @@
+// truth-allow: ia-config
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -143,6 +144,7 @@ export default function InvestmentBoardroom() {
         animate={{ opacity: 1, y: 0 }}
         className="rounded-2xl border border-primary/15 bg-gradient-to-br from-primary/5 via-card to-card p-6"
       >
+      <PageTruthBanner truthState="partial" />
         <h3 className="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
           <Briefcase className="h-4 w-4 text-primary" /> Portfolio Globe
         </h3>

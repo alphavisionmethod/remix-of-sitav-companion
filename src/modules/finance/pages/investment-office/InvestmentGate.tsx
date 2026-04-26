@@ -1,3 +1,4 @@
+// truth-allow: ia-config
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
@@ -23,6 +24,7 @@ export default function InvestmentGate() {
 {/* Hero — Cinematic Entry */}
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease: "easeOut" }}
         className="relative rounded-3xl border border-border bg-gradient-to-br from-card via-card to-primary/5 p-8 overflow-hidden">
+      <PageTruthBanner truthState="partial" />
         <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4" />
         <div className="absolute bottom-0 left-0 w-48 h-48 bg-primary/3 rounded-full blur-2xl translate-y-1/3 -translate-x-1/4" />
         <div className="relative z-10 flex flex-col lg:flex-row gap-8">

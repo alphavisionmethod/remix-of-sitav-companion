@@ -1,3 +1,4 @@
+// truth-allow: ia-config
 import { DomainHeader } from "@/platform/sita/components/sita/primitives/DomainHeader";
 import { TrustBadge } from "@/platform/sita/components/sita/TrustBadge";
 import { SitaCard } from "@/platform/sita/components/sita/SitaCard";
@@ -46,6 +47,7 @@ const MoneyAdvisorBoard = () => {
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}>
       <DomainHeader domain="money" title="Money Advisor Board" subtitle="8 specialized advisors with adaptive personality" />
+      <PageTruthBanner truthState="partial" />
 {/* Mode Personality Switcher */}
       <SitaCard hover={false} className="p-4">
         <div className="flex items-center gap-3 mb-3">

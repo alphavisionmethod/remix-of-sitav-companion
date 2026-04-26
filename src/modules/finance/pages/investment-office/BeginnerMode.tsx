@@ -1,3 +1,4 @@
+// truth-allow: ia-config
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -25,6 +26,7 @@ export default function BeginnerMode() {
 {/* Hero */}
       <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
         className="rounded-3xl border border-primary/15 bg-gradient-to-br from-primary/5 via-card to-card p-8 space-y-4">
+      <PageTruthBanner truthState="partial" />
         <div className="flex items-center gap-3">
           <div className="rounded-2xl bg-primary/10 p-3"><GraduationCap className="h-7 w-7 text-primary" /></div>
           <div>

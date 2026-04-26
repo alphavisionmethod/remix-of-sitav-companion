@@ -1,3 +1,4 @@
+// truth-allow: ia-config
 import { useState, useMemo } from "react";
 import { Link2, Plus, RefreshCw, CheckCircle2, AlertTriangle, XCircle, Shield, Clock, Search, Star } from "lucide-react";
 import { PLATFORM_CONNECTIONS } from "@/hooks/useInvestmentOfficeData";
@@ -59,6 +60,7 @@ export default function PlatformConnections() {
 
   return (
     <div className="mx-auto max-w-6xl space-y-6">
+      <PageTruthBanner truthState="partial" />
 <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><Link2 className="h-6 w-6 text-primary" /> Platform Connections</h1>

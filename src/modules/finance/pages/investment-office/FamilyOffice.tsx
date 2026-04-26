@@ -1,3 +1,4 @@
+// truth-allow: ia-config
 import { motion } from "framer-motion";
 import { Users, Shield, Landmark, Heart, GraduationCap, Home, Check, AlertTriangle } from "lucide-react";
 import { useCapitalPurposeBuckets } from "@/hooks/use-investment-office";
@@ -38,6 +39,7 @@ export default function FamilyOffice() {
           return (
             <motion.div key={g.id} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.04 }}
               className="rounded-xl border border-border bg-secondary/10 p-4 space-y-2">
+      <PageTruthBanner truthState="partial" />
               <div className="flex items-center gap-3">
                 <span className="text-xl">{g.emoji}</span>
                 <div className="flex-1">

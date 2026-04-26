@@ -1,3 +1,4 @@
+// truth-allow: ia-config
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Money Office: Opportunity Cost Dashboard
 // ═══════════════════════════════════════════════════════════════
@@ -29,6 +30,7 @@ const OpportunityCost = () => {
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
       <DomainHeader domain="money" title="Opportunity Cost Dashboard" subtitle="See what your spending prevented — not just what it cost" />
+      <PageTruthBanner truthState="partial" />
 <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <KPITile label="Discretionary Spent" value={`$${(totalSpent / 100).toLocaleString()}`} icon={DollarSign} sub="This month" />
         <KPITile label="Reserve Growth Delayed" value={`$${(totalSpent / 100).toLocaleString()}`} icon={PiggyBank} sub="Could have been reserves" />

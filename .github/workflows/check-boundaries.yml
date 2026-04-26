@@ -105,6 +105,25 @@ jobs:
           fi
           exit 0
 
+      - name: Run Finance production-truth checker
+        # Phased rollout: failures are gated by FINANCE_TRUTH_ENFORCE
+        # so the check publishes signal during Phase 5 closure and
+        # flips to blocking once the manifest reaches steady state.
+        env:
+          FINANCE_TRUTH_ENFORCE: ${{ vars.FINANCE_TRUTH_ENFORCE || 'false' }}
+        run: |
+          set +e
+          npx tsx scripts/architecture/check-finance-truth.ts
+          status=$?
+          if [ "$FINANCE_TRUTH_ENFORCE" = "true" ] && [ "$status" -ne 0 ]; then
+            echo "::error::Finance production-truth gate is enforcing and failed."
+            exit "$status"
+          fi
+          if [ "$status" -ne 0 ]; then
+            echo "::warning::Finance production-truth violations detected (non-blocking until FINANCE_TRUTH_ENFORCE=true)."
+          fi
+          exit 0
+
       - name: Run mutation traceability gate
         env:
           MUTATION_UNDECLARED_THRESHOLD: "242"

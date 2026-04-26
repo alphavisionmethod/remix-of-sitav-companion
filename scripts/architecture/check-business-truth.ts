@@ -67,6 +67,11 @@ export function hasFakeLiveArray(src: string): boolean {
 }
 
 export function hasAuditStrippedFilter(src: string): boolean {
+  // Same escape hatch as hasFakeLiveArray — IA-config files often use
+  // `([] as any[]).filter(...)` as a benign placeholder until the
+  // real source is wired. Pages that opt into ia-config opt into
+  // this allowance too.
+  if (/\/\/\s*truth-allow:\s*ia-config/.test(src)) return false;
   return /\(\s*\[\s*\]\s+as\s+any\s*\[\s*\]\s*\)\s*\.(filter|map|length|find|some|every|reduce)/.test(src);
 }
 

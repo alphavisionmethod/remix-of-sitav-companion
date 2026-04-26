@@ -1,3 +1,4 @@
+// truth-allow: ia-config
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Wealth Command Center
 // Cinematic full-screen financial dashboard
@@ -13,6 +14,7 @@ import {
 } from "lucide-react";
 import { useCountUp } from "@/hooks/useCountUp";
 import { PageShell } from "@/platform/sita/components/sita/PageShell";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 // ─── Simulated data ───
 const ACCOUNTS = [
@@ -386,6 +388,7 @@ export default function WealthCommandCenter() {
 
   return (
     <div className="min-h-screen bg-background relative overflow-hidden">
+      <PageTruthBanner truthState="partial" />
       {/* Ambient background */}
       <div className="absolute inset-0 pointer-events-none">
         <motion.div

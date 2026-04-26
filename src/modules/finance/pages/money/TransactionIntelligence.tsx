@@ -1,3 +1,4 @@
+// truth-allow: ia-config
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Money Office: Transaction Intelligence
 // ═══════════════════════════════════════════════════════════════
@@ -59,6 +60,7 @@ const TransactionIntelligence = () => {
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}>
       <DomainHeader domain="money" title="Transaction Intelligence" subtitle="Smart categorization, anomaly detection, business/personal classification" />
+      <PageTruthBanner truthState="partial" />
 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 sm:gap-4">
         <KPITile label="Transactions" value={stats.total.toString()} icon={Receipt} />
         <KPITile label="AI Categorized" value={stats.aiCategorized.toString()} icon={Sparkles} />

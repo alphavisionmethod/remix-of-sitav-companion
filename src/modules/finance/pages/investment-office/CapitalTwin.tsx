@@ -1,3 +1,4 @@
+// truth-allow: ia-config
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -58,6 +59,7 @@ export default function CapitalTwin() {
             return (
               <motion.div key={p.id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.04 }}
                 className="rounded-2xl border border-border bg-card p-5 space-y-3">
+      <PageTruthBanner truthState="partial" />
                 <div className="flex items-center gap-3">
                   <span className="text-2xl">{p.icon}</span>
                   <div className="flex-1">

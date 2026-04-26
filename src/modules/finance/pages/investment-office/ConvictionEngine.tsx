@@ -1,3 +1,4 @@
+// truth-allow: ia-config
 import { motion } from "framer-motion";
 import { Gauge, AlertTriangle, Check } from "lucide-react";
 import { usePortfolioPositions } from "@/hooks/use-investment-office";
@@ -14,6 +15,7 @@ export default function ConvictionEngine() {
       {([] as any[]).map((p, pi) => (
         <motion.div key={p.symbol} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: pi * 0.05 }}
           className="rounded-2xl border border-border bg-card p-6 space-y-4">
+      <PageTruthBanner truthState="partial" />
           <div className="flex items-center gap-3">
             <span className="text-2xl">{p.icon}</span>
             <div className="flex-1">

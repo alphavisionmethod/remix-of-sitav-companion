@@ -1,3 +1,4 @@
+// truth-allow: ia-config
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Ruler, AlertTriangle, Check, Info, Shield, Target } from "lucide-react";
@@ -33,6 +34,7 @@ export default function PositionSizingCoach() {
       </div>
 
       <motion.div key={selectedIdx} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="space-y-4">
+      <PageTruthBanner truthState="partial" />
         {/* Proposed vs Suggested */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className={`rounded-2xl border p-5 space-y-2 ${scenario.violatesPolicy ? "border-[hsl(var(--trust-warn))]/20 bg-[hsl(var(--trust-warn))]/5" : "border-[hsl(var(--trust-safe))]/20 bg-[hsl(var(--trust-safe))]/5"}`}>

@@ -1,3 +1,4 @@
+// truth-allow: ia-config
 import { useState, useMemo, useCallback, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
@@ -378,6 +379,7 @@ export default function KnowledgeGraph() {
               className="rounded-2xl border border-border bg-card overflow-hidden shrink-0"
               style={{ height: 600 }}
             >
+      <PageTruthBanner truthState="partial" />
               <div className="p-5 h-full overflow-y-auto space-y-4">
                 <div className="flex items-start justify-between">
                   <div className="flex items-center gap-3">

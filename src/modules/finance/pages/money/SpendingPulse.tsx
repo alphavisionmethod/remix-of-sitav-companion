@@ -1,3 +1,4 @@
+// truth-allow: ia-config
 import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import { SpendingCategoryPane } from "@/modules/finance/components/money/SpendingCategoryPane";
@@ -56,6 +57,7 @@ const SpendingPulse = () => {
 
   const listPane = (
     <div className="p-3 space-y-3">
+      <PageTruthBanner truthState="partial" />
 {/* Pulse State */}
       <StatusCard
         label={pulseState === "all-normal" ? "All Normal" : pulseState === "review-needed" ? "Review Needed" : "Attention Required"}

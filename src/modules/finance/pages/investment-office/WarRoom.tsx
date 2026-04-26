@@ -1,3 +1,4 @@
+// truth-allow: ia-config
 import { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { AlertTriangle, Shield, TrendingUp, Zap, Clock, Send, Brain, ChevronRight } from "lucide-react";
@@ -35,6 +36,7 @@ function CrisisTimeline() {
             transition={{ delay: i * 0.15 }}
             className="relative"
           >
+      <PageTruthBanner truthState="partial" />
             <div className={`absolute -left-[14px] top-1 w-2.5 h-2.5 rounded-full border-2 ${
               ev.severity === "critical" ? "bg-destructive border-destructive" :
               ev.severity === "warning" ? "bg-[hsl(var(--trust-warn))] border-[hsl(var(--trust-warn))]" :

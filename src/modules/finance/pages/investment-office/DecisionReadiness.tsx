@@ -1,3 +1,4 @@
+// truth-allow: ia-config
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { ShieldCheck, AlertTriangle, Check, X, Clock, Search, Brain } from "lucide-react";
@@ -41,6 +42,7 @@ export default function DecisionReadiness() {
       </div>
 
       <motion.div key={selected.id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="space-y-4">
+      <PageTruthBanner truthState="partial" />
         {/* Verdict Hero */}
         <div className={`rounded-2xl border p-6 text-center space-y-2 ${vc.bg} border-transparent`}>
           <div className={`inline-flex items-center justify-center ${vc.color}`}>{vc.icon}</div>

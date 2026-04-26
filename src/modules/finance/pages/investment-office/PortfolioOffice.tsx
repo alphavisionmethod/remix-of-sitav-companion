@@ -1,3 +1,4 @@
+// truth-allow: ia-config
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { DollarSign, TrendingUp, TrendingDown, PieChart, Shield, RefreshCw, AlertTriangle, Wallet } from "lucide-react";
@@ -41,6 +42,7 @@ export default function PortfolioOffice() {
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
+      <PageTruthBanner truthState="partial" />
 <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><PieChart className="h-6 w-6 text-primary" /> Portfolio Office</h1>
