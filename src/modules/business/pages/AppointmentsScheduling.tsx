@@ -209,6 +209,8 @@ const AppointmentsScheduling = () => {
   const confirm = useMarkBookingConfirmed();
   const recover = useRecoverNoShow();
   const calendarSync = useSyncAppointmentToCalendar();
+  const syncStatusQuery = useAppointmentSyncStatus(appointments.map((a) => a.id));
+  const syncLinksMap = syncStatusQuery.data;
 
   // Phase 6 — kernel-backed no-show / create / cancel that write to the
   // canonical `appointments` table (and enqueue recovery_jobs on no-show).
@@ -435,6 +437,7 @@ const AppointmentsScheduling = () => {
                       onSync={(id) => calendarSync.mutate(id)}
                       syncing={calendarSync.isPending}
                       pending={mutating}
+                      syncLinks={syncLinksMap?.get(apt.id)}
                     />
                   ))
                 )}
