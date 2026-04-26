@@ -4,6 +4,7 @@ import { fromTable } from "@/lib/supabase-helpers";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { useRealityModeSafe } from "@/lib/dual-reality/reality-mode-context";
 import { toast } from "sonner";
 import { FALLBACK_INBOX_ITEMS, type InboxItem } from "./mock-inbox-data";
 import type { LeadScoreResult } from "@/domains/business";
@@ -14,6 +15,7 @@ export type InboxFilter = "all" | "new" | "urgent" | "high-quality" | "missing-i
 export function useLeadInbox() {
   const { user } = useAuth();
   const { primaryMode } = useBusinessProfile();
+  const { isDemo } = useRealityModeSafe();
   const queryClient = useQueryClient();
   const [filter, setFilter] = useState<InboxFilter>("all");
   const [search, setSearch] = useState("");
@@ -21,21 +23,25 @@ export function useLeadInbox() {
   const [checkedIds, setCheckedIds] = useState<Set<string>>(new Set());
   const [explainId, setExplainId] = useState<string | null>(null);
 
-  // Fetch from DB, fallback to mock data for demo
+  // Production-truth rule:
+  //  - Unauthenticated  → no data (page renders sign-in CTA).
+  //  - Demo mode        → fixture rows (clearly labelled by truth banner).
+  //  - Live + empty DB  → empty array (page renders honest empty state).
+  //  - Live + DB rows   → real rows.
   const inboxQuery = useQuery({
-    queryKey: ["lead-inbox-items"],
+    queryKey: ["lead-inbox-items", user?.id ?? "anon", isDemo],
     queryFn: async () => {
-      if (!user?.id) return FALLBACK_INBOX_ITEMS;
+      if (!user?.id) return [] as InboxItem[];
+      if (isDemo) return FALLBACK_INBOX_ITEMS;
       const { data, error } = await fromTable("lead_inbox_items")
         .select("*")
         .order("created_at", { ascending: false });
       if (error) throw error;
-      if (!data || data.length === 0) return FALLBACK_INBOX_ITEMS;
-      return data as InboxItem[];
+      return (data ?? []) as InboxItem[];
     },
   });
 
-  const items = inboxQuery.data ?? FALLBACK_INBOX_ITEMS;
+  const items = inboxQuery.data ?? [];
 
   // Compute scores for all items
   const scoreResults = useMemo(() => {
@@ -153,7 +159,11 @@ export function useLeadInbox() {
     setSelectedId, checkedIds, toggleCheck, clearChecked,
     triageAction, bulkAction,
     isLoading: inboxQuery.isLoading,
-    isDemo: !user?.id || (items === FALLBACK_INBOX_ITEMS),
+    isDemo,
+    isUnauthenticated: !user?.id,
+    isError: inboxQuery.isError,
+    error: inboxQuery.error as Error | null,
+    refetch: inboxQuery.refetch,
     scoreMap, scoreResults,
     explainId, setExplainId, explainScore,
   };
