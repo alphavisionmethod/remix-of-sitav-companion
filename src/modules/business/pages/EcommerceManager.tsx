@@ -42,6 +42,7 @@ const statusConfig: Record<EcommerceOrderStatus, { color: string; icon: typeof C
   refunded:  { color: "bg-red-500/10 text-red-600 border-red-500/20",             icon: XCircle      },
 };
 
+// truth-allow: ia-config
 const LIVE_PREVIEW_FEATURES: ReadonlyArray<{ icon: typeof ShoppingCart; title: string; description: string }> = [
   { icon: BarChart3,    title: "Sales dashboard",    description: "Today's sales, orders, AOV, and conversion rate sourced from your connected store." },
   { icon: ShoppingCart, title: "Order timeline",     description: "Order lifecycle from placement to delivery with payment and fulfilment events." },

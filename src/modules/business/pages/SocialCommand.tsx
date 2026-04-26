@@ -30,6 +30,7 @@ import {
 
 type Tab = "overview" | "calendar" | "comments" | "hashtags" | "competitors" | "attribution";
 
+// truth-allow: ia-config
 const LIVE_PREVIEW_FEATURES: ReadonlyArray<{ icon: typeof Share2; title: string; description: string }> = [
   { icon: BarChart3,     title: "Platform overview",   description: "Follower counts, engagement rate, and revenue attribution per connected channel." },
   { icon: Calendar,      title: "Scheduled posts",     description: "Cross-platform publishing calendar with predicted reach and engagement." },

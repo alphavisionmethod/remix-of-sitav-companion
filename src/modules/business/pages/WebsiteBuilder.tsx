@@ -30,6 +30,7 @@ import {
 
 type Tab = "sites" | "ab-tests" | "seo" | "heatmaps" | "templates";
 
+// truth-allow: ia-config
 // Live-mode descriptive preview (no fake numbers).
 const LIVE_PREVIEW_FEATURES: ReadonlyArray<{ icon: typeof Globe; title: string; description: string }> = [
   { icon: Globe,        title: "Sites & pages",   description: "Inventory of every page with traffic, leads, and revenue once a hosting provider is connected." },
