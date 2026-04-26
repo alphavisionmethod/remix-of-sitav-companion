@@ -12,7 +12,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   FileSignature, Clock, CheckCircle, AlertCircle, Plus, Send, DollarSign,
   TrendingUp, Zap, BarChart3, FileText, BookOpen, ChevronRight, Timer,
-  ArrowRight, X, Trash2,
+  ArrowRight, X, Trash2, Loader2,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -21,6 +21,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useAction } from "@/hooks/use-action";
 import { useDraftAutosave } from "@/hooks/useDraftAutosave";
 import { setLinkedContext, consumeLinkedContext } from "@/platform/sita/components/sita/CrossAppAction";
+import { useRequestSignature } from "@/hooks/use-phase10-actions";
 
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import HierarchyHint from "@/modules/business/components/business/shared/HierarchyHint";
