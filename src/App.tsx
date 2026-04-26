@@ -299,8 +299,15 @@ const App = () => (
                         {getAdvisorRoutes()}
                         {getBusinessAdvisorRoutes()}
                         {getExperimentalRoutes()}
-                        {getInvestmentRoutes()}
-                        {getInvestmentOfficeRoutes()}
+                        {/* Phase 6 — Investment Office App-in-OS shell-mount.
+                            InvestmentShellPage wraps every /investment/* route
+                            with workspace chrome (header + tab nav + <Outlet/>).
+                            Both route families emit absolute child paths and
+                            render through the parent's <Outlet/>. */}
+                        <Route element={<InvestmentShellPage />}>
+                          {getInvestmentRoutes()}
+                          {getInvestmentOfficeRoutes()}
+                        </Route>
                         {getCommunicationsRoutes()}
                         {getAppsRoutes()}
                         {getSettingsRoutes()}
