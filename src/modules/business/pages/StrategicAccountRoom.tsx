@@ -6,34 +6,13 @@ import {
   Phone, Calendar, Target, ArrowUpRight
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-
-const STRATEGIC_ACCOUNTS = [
-  { id: "1", name: "NovaTech Corp", tier: "Platinum", revenue: "$420K", health: 92, contracts: 3, contacts: 12, since: "2023" },
-  { id: "2", name: "DataFlow Systems", tier: "Gold", revenue: "$185K", health: 78, contracts: 2, contacts: 6, since: "2024" },
-  { id: "3", name: "BlueStar Industries", tier: "Platinum", revenue: "$310K", health: 65, contracts: 4, contacts: 8, since: "2022" },
-];
-
-const ACCOUNT_HEALTH_FACTORS = [
-  { factor: "Engagement frequency", score: 95, trend: "up" },
-  { factor: "Revenue growth", score: 82, trend: "up" },
-  { factor: "Support satisfaction", score: 88, trend: "stable" },
-  { factor: "Contract utilization", score: 72, trend: "down" },
-  { factor: "Expansion potential", score: 90, trend: "up" },
-];
-
-const BUYING_COMMITTEE = [
-  { name: "Jennifer Martinez", title: "VP Engineering", role: "Economic Buyer", influence: 95, engaged: true },
-  { name: "David Kim", title: "CTO", role: "Technical Buyer", influence: 88, engaged: true },
-  { name: "Amanda Foster", title: "CFO", role: "Budget Holder", influence: 80, engaged: false },
-  { name: "Robert Chen", title: "Director of Ops", role: "End User", influence: 60, engaged: true },
-];
-
-const ACCOUNT_STRATEGY = [
-  { objective: "Expand to 3 additional departments", status: "in_progress", progress: 40 },
-  { objective: "Upgrade to enterprise tier", status: "planned", progress: 10 },
-  { objective: "Secure 3-year renewal", status: "in_progress", progress: 65 },
-  { objective: "Launch co-marketing initiative", status: "planned", progress: 0 },
-];
+import { useCustomers } from "@/hooks/use-customers";
+import {
+  STRATEGIC_ACCOUNT_SAMPLES,
+  ACCOUNT_HEALTH_FACTOR_SAMPLES,
+  BUYING_COMMITTEE_SAMPLES,
+  ACCOUNT_STRATEGY_SAMPLES,
+} from "./_config/StrategicAccountRoom.config";
 
 const tierColors: Record<string, string> = {
   Platinum: "bg-[hsl(265_55%_58%/0.12)] text-[hsl(var(--sita-purple))] border-[hsl(265_55%_58%/0.2)]",
@@ -41,7 +20,29 @@ const tierColors: Record<string, string> = {
 };
 
 export default function StrategicAccountRoom() {
-  const [selectedAccount, setSelectedAccount] = useState(STRATEGIC_ACCOUNTS[0]);
+  const { customers } = useCustomers();
+  const liveAccounts = customers
+    .filter((c) => (c.lifetimeValueCents ?? 0) > 0)
+    .sort((a, b) => (b.lifetimeValueCents ?? 0) - (a.lifetimeValueCents ?? 0))
+    .slice(0, 6)
+    .map((c, i) => {
+      const ltv = c.lifetimeValueCents ?? 0;
+      return {
+        id: c.id,
+        name: c.name ?? `Account ${i + 1}`,
+        tier: (ltv >= 30_000_00 ? "Platinum" : "Gold") as "Platinum" | "Gold",
+        revenue: ltv >= 1_000_00
+          ? `$${Math.round(ltv / 100_000)}K`
+          : `$${Math.round(ltv / 100).toLocaleString()}`,
+        health: typeof c.healthScore === "number" ? Math.round(c.healthScore) : 70,
+        contracts: 1,
+        contacts: 1,
+        since: c.createdAt ? new Date(c.createdAt).getFullYear().toString() : "—",
+      };
+    });
+  const accounts = liveAccounts.length > 0 ? liveAccounts : STRATEGIC_ACCOUNT_SAMPLES;
+  const [selectedAccountId, setSelectedAccountId] = useState<string>(accounts[0]?.id ?? "");
+  const selectedAccount = accounts.find((a) => a.id === selectedAccountId) ?? accounts[0];
   const [activeTab, setActiveTab] = useState<"health" | "committee" | "strategy">("health");
 
   return (
@@ -52,10 +53,10 @@ export default function StrategicAccountRoom() {
           <Crown size={14} className="text-[hsl(var(--sita-gold))]" />
           <p className="text-[9px] font-bold uppercase tracking-[0.15em] text-foreground/25">Strategic Accounts</p>
         </div>
-        {STRATEGIC_ACCOUNTS.map((acct) => (
+        {accounts.map((acct) => (
           <button
             key={acct.id}
-            onClick={() => setSelectedAccount(acct)}
+            onClick={() => setSelectedAccountId(acct.id)}
             className={cn(
               "w-full text-left rounded-xl p-3 transition-all",
               selectedAccount.id === acct.id
@@ -134,7 +135,7 @@ export default function StrategicAccountRoom() {
         <AnimatePresence mode="wait">
           {activeTab === "health" && (
             <motion.div key="health" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-2">
-              {ACCOUNT_HEALTH_FACTORS.map((f) => (
+              {ACCOUNT_HEALTH_FACTOR_SAMPLES.map((f) => (
                 <div key={f.factor} className="flex items-center gap-3 rounded-lg border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_100%/0.02)] p-3">
                   <span className="text-[11px] text-foreground/60 flex-1">{f.factor}</span>
                   <div className="w-24 h-1.5 rounded-full bg-[hsl(0_0%_100%/0.06)] overflow-hidden">
@@ -151,7 +152,7 @@ export default function StrategicAccountRoom() {
 
           {activeTab === "committee" && (
             <motion.div key="committee" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-3">
-              {BUYING_COMMITTEE.map((p) => (
+              {BUYING_COMMITTEE_SAMPLES.map((p) => (
                 <div key={p.name} className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_100%/0.02)] p-4 flex items-center gap-4">
                   <div className="w-10 h-10 rounded-full bg-[hsl(265_55%_58%/0.15)] flex items-center justify-center text-xs font-bold text-[hsl(var(--sita-purple))]">
                     {p.name.split(" ").map(n => n[0]).join("")}
@@ -175,7 +176,7 @@ export default function StrategicAccountRoom() {
 
           {activeTab === "strategy" && (
             <motion.div key="strategy" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-3">
-              {ACCOUNT_STRATEGY.map((s, i) => (
+              {ACCOUNT_STRATEGY_SAMPLES.map((s, i) => (
                 <div key={i} className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_100%/0.02)] p-4">
                   <div className="flex items-center justify-between mb-2">
                     <p className="text-[12px] font-medium text-foreground/80">{s.objective}</p>
