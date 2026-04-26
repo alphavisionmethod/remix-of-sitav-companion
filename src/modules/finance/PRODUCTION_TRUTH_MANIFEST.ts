@@ -54,7 +54,7 @@ export const FINANCE_TRUTH_MANIFEST: ReadonlyArray<PageTruthEntry> = [
   // ── Top-level shells ──────────────────────────────────────────
   { page: "MoneyCenter",                subdir: "",                  state: "fully-wired", sources: ["routing shim → desktop window"], bannerState: "live" },
   { page: "MoneyOverview",              subdir: "",                  state: "fully-wired", sources: ["useMoneyOverview", "PremiumEmptyState"], bannerState: "live" },
-  { page: "MoneyOnboarding",            subdir: "",                  state: "fully-wired", sources: ["onboarding wizard shell"], bannerState: "live" },
+  { page: "MoneyOnboarding",            subdir: "",                  state: "degraded",    degradedReason: "Onboarding shell — delegates to MoneyOnboardingFlow which carries its own internal state machine; no data wiring at this surface.", bannerState: "partial" },
   { page: "MoneyApprovals",             subdir: "",                  state: "fully-wired", sources: ["useApprovalQueue", "approval_requests"], bannerState: "live" },
   { page: "CapitalAllocationPage",      subdir: "",                  state: "fully-wired", sources: ["useCapitalAllocation hooks"], bannerState: "live" },
   { page: "WealthCommandCenter",        subdir: "",                  state: "degraded",    degradedReason: "Cross-account flows / global positions / danger zones source not yet wired; demo fixtures gated behind reality mode until aggregation pipeline is connected.", bannerState: "partial" },
@@ -64,7 +64,7 @@ export const FINANCE_TRUTH_MANIFEST: ReadonlyArray<PageTruthEntry> = [
   { page: "BudgetEnvelopeOffice",       subdir: "money",             state: "fully-wired", sources: ["useBudgetEnvelopes", "budget_envelopes table"], bannerState: "live" },
   { page: "CashAllocator",              subdir: "money",             state: "fully-wired", sources: ["useCashAllocator", "useReserves"], bannerState: "live" },
   { page: "CashTiming",                 subdir: "money",             state: "fully-wired", sources: ["useCashTiming", "useUpcomingObligations"], bannerState: "live" },
-  { page: "DebtCreditOffice",           subdir: "money",             state: "fully-wired", sources: ["useDebtAccounts", "debt_accounts table"], bannerState: "live" },
+  { page: "DebtCreditOffice",           subdir: "money",             state: "degraded",    degradedReason: "Debt-account source not yet wired; ACCOUNTS list is a presentational sample until debt accounts hook is connected.", bannerState: "partial" },
   { page: "FinanceAutomations",         subdir: "money",             state: "degraded",    degradedReason: "Automations registry not yet wired; AUTOMATIONS list is presentational sample until rules engine is connected.", bannerState: "partial" },
   { page: "FinanceBoardroom",           subdir: "money",             state: "fully-wired", sources: ["DomainAdvisorBoard", "AITruthDisclosure"], bannerState: "live" },
   { page: "FinancialBoundaryMonitor",   subdir: "money",             state: "degraded",    degradedReason: "Boundary monitor source not yet wired; renders honest empty state until thresholds + observation pipeline are connected.", bannerState: "partial" },

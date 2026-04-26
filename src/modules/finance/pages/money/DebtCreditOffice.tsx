@@ -1,3 +1,4 @@
+// truth-allow: ia-config
 import { toast } from "sonner";
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Money Office: Debt, Credit & Liability Office
