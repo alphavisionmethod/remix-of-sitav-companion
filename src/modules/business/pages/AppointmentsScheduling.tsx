@@ -190,6 +190,7 @@ const AppointmentsScheduling = () => {
   const remind = useSendConfirmationReminder();
   const confirm = useMarkBookingConfirmed();
   const recover = useRecoverNoShow();
+  const calendarSync = useSyncAppointmentToCalendar();
 
   // Phase 6 — kernel-backed no-show / create / cancel that write to the
   // canonical `appointments` table (and enqueue recovery_jobs on no-show).
@@ -413,6 +414,8 @@ const AppointmentsScheduling = () => {
                         recover.mutate({ bookingId: id });
                         void handleNoShow(id);
                       }}
+                      onSync={(id) => calendarSync.mutate(id)}
+                      syncing={calendarSync.isPending}
                       pending={mutating}
                     />
                   ))
