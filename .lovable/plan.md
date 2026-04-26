@@ -116,19 +116,17 @@ src/routes/registry/route-family-registry.ts  ← typed registry (one entry per 
   - `src/features/feature-registry.ts`: removed phantom `/investment-office` literal from `ownedRoutes`
 - **Gate**: ✅ `rg path="/investments" src/routes/families/` returns empty; ✅ `tsc --noEmit` clean; ✅ engine-purity returns 0; ✅ 41 redirect entries cover every legacy path.
 
-### **Phase 6 — Investment Office App-in-OS Normalization**
-- `InvestmentShellPage` already has `<Outlet/>` and tab-nav — wire it as the **parent route** for `/investment/*`:
+### **Phase 6 — Investment Office App-in-OS Normalization** ✅ COMPLETE
+- ✅ `InvestmentShellPage` (tab-nav + `<Outlet/>`) wired as a **layout-only parent route** in `src/App.tsx`. Both investment route families now nest under a single `<Route element={<InvestmentShellPage />}>` parent so every `/investment/*` path renders inside the shared workspace chrome (header + section nav + outlet). Pattern mirrors how revenue-office uses `<RevenueOfficeModeLayout/>` in `experimental-routes.tsx`.
   ```tsx
-  <Route path="/investment" element={<InvestmentShellPage />}>
-    <Route index element={<InvestmentGate />} />
-    <Route path="boardroom" element={<InvestmentBoardroom />} />
-    ...
+  <Route element={<InvestmentShellPage />}>
+    {getInvestmentRoutes()}        // 18 core routes
+    {getInvestmentOfficeRoutes()}  // 23 extended routes
   </Route>
   ```
-- This aligns Investment Office with the App-in-OS pattern (single shell + child routes), matching how `RevenueOfficeModeProvider` wraps revenue-office in `route-family-registry` (`owns: "shell-mount"`).
-- Update registry entry: `owns: "shell-mount"` for investment with rationale note.
-- Resolve page-location ambiguity: pick `src/pages/investment-office/` as canonical (matches existing imports in route family); delete or relocate orphan duplicates in `src/modules/finance/pages/investment-office/` to a re-export shim if any module-page is referenced elsewhere, otherwise remove.
-- **Gate**: deep-link to `/investment/boardroom` renders shell + page; no orphan duplicate pages.
+- ✅ Registry updated: both `investment` and `investment-office` entries now declare `owns: "shell-mount"` with `canonicalPageOwner: "src/modules/finance/pages/investment-office/**"` and Phase 6 rationale notes.
+- ✅ Page-location ambiguity resolved (and the plan's earlier framing corrected): per the **Wave 4 architectural decision**, the canonical implementations live in `src/modules/finance/pages/investment-office/**` (~6,577 lines across 42 files). All 42 files in `src/pages/investment-office/**` are 3-line re-export shims (`export { default } from "@/modules/finance/pages/investment-office/<X>"`) preserved as lazy-import compatibility entries. There are **no "orphan duplicates" to delete** — the modules folder is the canonical owner; the shims are a deliberate compatibility layer that the route families consume.
+- **Gate**: ✅ `tsc --noEmit` clean; ✅ engine-purity returns clean; ✅ no `path="/investments"` (plural) anywhere in `src/routes/families/`; ✅ 18 + 23 = 41 `/investment/*` routes resolve through the shared shell.
 
 ### **Phase 7 — Architecture Guards (new + extended)**
 - New script: `scripts/architecture/audits/check-no-empty-domain-barrels.ts` — fails if any `src/domains/*/index.ts` resolves to `export {};` or empty.
