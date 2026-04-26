@@ -387,6 +387,7 @@ export default function WealthCommandCenter() {
 
   return (
     <div className="min-h-screen bg-background relative overflow-hidden">
+      <PageTruthBanner truthState="partial" />
       {/* Ambient background */}
       <div className="absolute inset-0 pointer-events-none">
         <motion.div
