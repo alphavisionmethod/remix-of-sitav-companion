@@ -4,6 +4,7 @@
 
 import type { ExecutorService } from "@/lib/core-services/executor-service";
 import { safe, insertRow, updateRowById, deleteRowById, pickId } from "./_shared";
+import { resolveCustomerId } from "@/lib/services/business-os/crm-finance-bridge.service";
 
 function toCents(value: unknown): number {
   if (value === null || value === undefined || value === "") return 0;
@@ -23,22 +24,33 @@ export function registerFinanceHandlers(executor: ExecutorService): void {
     const p = env.payload;
     return safe(async () => {
       // UI sends { invoice_number, amount, due_date, notes, status }
-      // DB columns: invoice_number, amount_cents, currency, status, due_at, line_items, metadata
+      // Phase 4: when only a CRM contact is supplied, the bridge ensures
+      // a billing customer exists so the invoice is reachable from Finance.
+      const bridge = await resolveCustomerId({
+        customer_id: (p.customer_id as string | null) ?? null,
+        crm_contact_id: (p.crm_contact_id as string | null) ?? null,
+        source: "auto-from-invoice",
+      });
       const row = await insertRow("invoices", {
         invoice_number: typeof p.invoice_number === "string" ? p.invoice_number : null,
         amount_cents: toCents(p.amount ?? p.amount_cents),
         currency: typeof p.currency === "string" ? p.currency : "USD",
         status: typeof p.status === "string" ? p.status : "draft",
         due_at: nullableIso(p.due_date ?? p.due_at),
-        customer_id: (p.customer_id as string | null) ?? null,
+        customer_id: bridge.customer_id,
         opportunity_id: (p.opportunity_id as string | null) ?? null,
         proposal_id: (p.proposal_id as string | null) ?? null,
         quote_id: (p.quote_id as string | null) ?? null,
         crm_contact_id: (p.crm_contact_id as string | null) ?? null,
         crm_company_id: (p.crm_company_id as string | null) ?? null,
-        metadata: { notes: p.notes ?? null },
+        metadata: { notes: p.notes ?? null, bridge_link_id: bridge.link_id },
       });
-      return { entity: "invoice", id: row.id, row };
+      return {
+        entity: "invoice",
+        id: row.id,
+        row,
+        bridge_customer_created: bridge.created_customer,
+      };
     });
   });
 
