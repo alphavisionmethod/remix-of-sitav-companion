@@ -101,7 +101,7 @@ export const BUSINESS_OS_TRUTH_MANIFEST: ReadonlyArray<PageTruthEntry> = [
   { page: "MorningBriefing",         state: "fully-wired", sources: ["useCRMTasks", "useScheduledAppointments", "useLeadInbox", "ai_action_receipts"], bannerState: "live" },
   { page: "EndOfDayClosure",         state: "fully-wired", sources: ["useCRMTasks", "useScheduledAppointments", "ai_action_receipts"], bannerState: "live" },
   { page: "RelationshipDossier",     state: "fully-wired", sources: ["useCRMContact", "useCRMCommunications", "useCRMNotes", "useCRMOpportunities"], bannerState: "live" },
-  { page: "BackgroundTaskCenter",    state: "fully-wired", sources: ["use-background-jobs", "crm_import_jobs", "recovery_jobs", "ai_invocations"], bannerState: "live" },
+  { page: "BackgroundTaskCenter",    state: "fully-wired", sources: ["use-background-tasks", "crm_import_jobs", "connector_sync_runs", "data_export_requests", "ingestion_jobs", "crm_automations", "workflow_runs"], bannerState: "live" },
 
   // ── Revenue automation (canonical IA after Phase 6) ───────────
   { page: "AutopilotHub",            state: "fully-wired", sources: ["use-autopilot-config", "autopilot_configs"], bannerState: "live" },
