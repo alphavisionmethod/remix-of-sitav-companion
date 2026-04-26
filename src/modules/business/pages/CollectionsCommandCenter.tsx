@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { useCollectionsAccounts } from "@/hooks/use-domain-data";
 import type { CollectionsAccount } from "@/data/fixtures/mock-data/collections";
+import { COLLECTIONS_CHASE_SEQUENCE as CHASE_SEQUENCE, ESCALATION_LABELS as escalationLabel } from "./_config/CollectionsCommandCenter.config";
 
 import { HeroCard, QueueCard, StatusCard, ActionCard, SummaryCard, TimelineCard } from "@/platform/sita/components/sita/cards";
 import { ExecutionBadge, UrgencyBadge } from "@/platform/sita/components/sita/badges";
@@ -28,34 +29,7 @@ import { cn } from "@/lib/utils";
 import { CrossAppAction } from "@/platform/sita/components/sita/CrossAppAction";
 
 
-// ── Chase Sequence ──────────────────────────────────────────────
-
-interface ChaseStep {
-  step: number;
-  dayAfterDue: number;
-  action: string;
-  channel: "email" | "phone" | "sms" | "letter" | "legal";
-  icon: typeof Mail;
-  escalationLevel: 0 | 1 | 2 | 3 | 4;
-  autoExecute: boolean;
-  requiresApproval: boolean;
-}
-
-const CHASE_SEQUENCE: ChaseStep[] = [
-  { step: 1, dayAfterDue: 1, action: "Friendly reminder email", channel: "email", icon: Mail, escalationLevel: 0, autoExecute: true, requiresApproval: false },
-  { step: 2, dayAfterDue: 7, action: "Second reminder with invoice", channel: "email", icon: Mail, escalationLevel: 0, autoExecute: true, requiresApproval: false },
-  { step: 3, dayAfterDue: 14, action: "Phone call follow-up", channel: "phone", icon: Phone, escalationLevel: 1, autoExecute: false, requiresApproval: false },
-  { step: 4, dayAfterDue: 21, action: "Urgent payment request", channel: "email", icon: Mail, escalationLevel: 1, autoExecute: true, requiresApproval: true },
-  { step: 5, dayAfterDue: 30, action: "Final notice before escalation", channel: "email", icon: AlertTriangle, escalationLevel: 2, autoExecute: false, requiresApproval: true },
-  { step: 6, dayAfterDue: 45, action: "Executive escalation call", channel: "phone", icon: Phone, escalationLevel: 2, autoExecute: false, requiresApproval: true },
-  { step: 7, dayAfterDue: 60, action: "Payment plan offer", channel: "email", icon: DollarSign, escalationLevel: 3, autoExecute: false, requiresApproval: true },
-  { step: 8, dayAfterDue: 75, action: "Formal demand letter", channel: "letter", icon: FileText, escalationLevel: 3, autoExecute: false, requiresApproval: true },
-  { step: 9, dayAfterDue: 90, action: "Collections agency referral", channel: "legal", icon: Scale, escalationLevel: 4, autoExecute: false, requiresApproval: true },
-];
-
 const formatCents = (cents: number) => `$${(cents / 100).toLocaleString("en-US", { minimumFractionDigits: 0 })}`;
-
-const escalationLabel = ["Friendly", "Firm", "Urgent", "Formal", "Legal"];
 
 const riskColor = (score: number) =>
   score >= 80 ? "hsl(0 70% 55%)" : score >= 50 ? "hsl(38 85% 58%)" : score >= 25 ? "hsl(265 55% 58%)" : "hsl(152 55% 48%)";

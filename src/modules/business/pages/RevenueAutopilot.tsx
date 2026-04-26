@@ -20,13 +20,6 @@ import {
 } from "@/lib/domain-engines/revenue-autopilot";
 import { useRevenueLeaksData, useRecoveredValuesData, useRawOpportunities } from "@/hooks/use-business-data";
 
-// ── Derived data (fallback to mock, overridden in component) ──
-let LEAKAGE = detectLeakage({ leads: [], quotes: [], invoices: [], customers: [], bookings: [], subscriptions: [] });
-let RECOVERY_ACTIONS = suggestRecoveryActions(LEAKAGE);
-let RECOVERED: any[] = [];
-let OPPORTUNITIES = rankOpportunities([] as any[]);
-let SUMMARY = computeAutopilotSummary(LEAKAGE, RECOVERY_ACTIONS, RECOVERED);
-
 // ── Severity Colors ─────────────────────────────────────────────
 
 const severityColors: Record<string, string> = {
@@ -38,17 +31,25 @@ const severityColors: Record<string, string> = {
 
 // ── Sub-Pages ───────────────────────────────────────────────────
 
-const LeakageRadar = () => {
+interface SubPageProps {
+  leakage: LeakageItem[];
+  recoveryActions: ReturnType<typeof suggestRecoveryActions>;
+  recovered: RecoveredValueEntry[];
+  opportunities: RankedOpportunity[];
+  summary: ReturnType<typeof computeAutopilotSummary>;
+}
+
+const LeakageRadar = ({ leakage, summary }: Pick<SubPageProps, "leakage" | "summary">) => {
   return (
   <div className="space-y-4">
     <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-      <KPITile label="Total Leakage Detected" value={`$${Math.round(SUMMARY.totalLeakageDetected).toLocaleString()}`} sub="Across all sources" trend="down" />
-      <KPITile label="Recoverable" value={`$${Math.round(SUMMARY.totalRecoverable).toLocaleString()}`} sub={`${([] as any[]).filter(l => l.recoverable).length} items`} />
-      <KPITile label="Critical Items" value={String(([] as any[]).filter(l => l.severity === "critical").length)} sub="Need immediate action" trend="down" />
-      <KPITile label="Health Score" value={`${SUMMARY.healthScore}/100`} sub="Revenue health" trend="up" />
+      <KPITile label="Total Leakage Detected" value={`$${Math.round(summary.totalLeakageDetected).toLocaleString()}`} sub="Across all sources" trend="down" />
+      <KPITile label="Recoverable" value={`$${Math.round(summary.totalRecoverable).toLocaleString()}`} sub={`${leakage.filter(l => l.recoverable).length} items`} />
+      <KPITile label="Critical Items" value={String(leakage.filter(l => l.severity === "critical").length)} sub="Need immediate action" trend="down" />
+      <KPITile label="Health Score" value={`${summary.healthScore}/100`} sub="Revenue health" trend="up" />
     </div>
     <div className="space-y-2">
-      {([] as any[]).map((item, i) => (
+      {leakage.map((item, i) => (
         <motion.div key={item.id} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.03 }}>
           <SitaCard className="p-4" hover>
             <div className="flex items-center gap-4">
@@ -74,21 +75,28 @@ const LeakageRadar = () => {
           </SitaCard>
         </motion.div>
       ))}
+      {leakage.length === 0 && (
+        <SitaCard className="p-6 text-center">
+          <Activity className="h-6 w-6 text-muted-foreground mx-auto mb-2" />
+          <p className="text-sm font-medium text-foreground">No revenue leaks detected</p>
+          <p className="text-xs text-muted-foreground mt-1">Your revenue flow is healthy.</p>
+        </SitaCard>
+      )}
     </div>
   </div>
   );
 };
 
-const RecoveryEngine = () => {
+const RecoveryEngine = ({ recoveryActions, summary }: Pick<SubPageProps, "recoveryActions" | "summary">) => {
   return (
   <div className="space-y-4">
     <div className="grid gap-3 sm:grid-cols-3">
-      <KPITile label="Active Recoveries" value={String(SUMMARY.activeRecoveryActions)} sub="In progress" />
-      <KPITile label="Suggested Actions" value={String(([] as any[]).length)} sub="Ready to launch" />
-      <KPITile label="Approval Required" value={String(([] as any[]).filter(r => r.approvalRequired).length)} sub="Need your OK" />
+      <KPITile label="Active Recoveries" value={String(summary.activeRecoveryActions)} sub="In progress" />
+      <KPITile label="Suggested Actions" value={String(recoveryActions.length)} sub="Ready to launch" />
+      <KPITile label="Approval Required" value={String(recoveryActions.filter(r => r.approvalRequired).length)} sub="Need your OK" />
     </div>
     <div className="space-y-2">
-      {([] as any[]).map((action, i) => (
+      {recoveryActions.map((action, i) => (
         <motion.div key={action.id} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.03 }}>
           <SitaCard className="p-4" hover>
             <div className="flex items-center gap-4">
@@ -113,17 +121,24 @@ const RecoveryEngine = () => {
           </SitaCard>
         </motion.div>
       ))}
+      {recoveryActions.length === 0 && (
+        <SitaCard className="p-6 text-center">
+          <CheckCircle className="h-6 w-6 text-muted-foreground mx-auto mb-2" />
+          <p className="text-sm font-medium text-foreground">No recovery actions queued</p>
+          <p className="text-xs text-muted-foreground mt-1">Detected leaks will surface recovery suggestions here.</p>
+        </SitaCard>
+      )}
     </div>
   </div>
 );
 
 };
 
-const OpportunitiesRanked = () => {
+const OpportunitiesRanked = ({ opportunities }: Pick<SubPageProps, "opportunities">) => {
   return (
   <div className="space-y-4">
     <div className="space-y-2">
-      {([] as any[]).map((opp, i) => (
+      {opportunities.map((opp, i) => (
         <motion.div key={opp.id} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.03 }}>
           <SitaCard className="p-4" hover>
             <div className="flex items-center gap-4">
@@ -146,14 +161,21 @@ const OpportunitiesRanked = () => {
           </SitaCard>
         </motion.div>
       ))}
+      {opportunities.length === 0 && (
+        <SitaCard className="p-6 text-center">
+          <Target className="h-6 w-6 text-muted-foreground mx-auto mb-2" />
+          <p className="text-sm font-medium text-foreground">No ranked opportunities</p>
+          <p className="text-xs text-muted-foreground mt-1">Open deals and pipeline items will be ranked here.</p>
+        </SitaCard>
+      )}
     </div>
   </div>
 );
 
 };
 
-const RecoveredValueLedger = () => {
-  const summary = computeRecoveredValueSummary(RECOVERED);
+const RecoveredValueLedger = ({ recovered }: Pick<SubPageProps, "recovered">) => {
+  const summary = computeRecoveredValueSummary(recovered);
   return (
     <div className="space-y-4">
       <div className="grid gap-3 sm:grid-cols-3">
@@ -162,7 +184,7 @@ const RecoveredValueLedger = () => {
         <KPITile label="Categories" value={String(Object.keys(summary.byCategory).length)} sub="Active recovery types" />
       </div>
       <div className="space-y-2">
-        {([] as any[]).map((entry, i) => (
+        {recovered.map((entry, i) => (
           <motion.div key={entry.id} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.03 }}>
             <SitaCard className="p-4" hover>
               <div className="flex items-center gap-4">
@@ -178,6 +200,12 @@ const RecoveredValueLedger = () => {
             </SitaCard>
           </motion.div>
         ))}
+        {recovered.length === 0 && (
+          <SitaCard className="p-6 text-center">
+            <DollarSign className="h-6 w-6 text-muted-foreground mx-auto mb-2" />
+            <p className="text-sm font-medium text-foreground">No recovered revenue logged yet</p>
+          </SitaCard>
+        )}
       </div>
     </div>
   );
@@ -193,9 +221,23 @@ const RevenueAutopilot = () => {
   const { data: oppsData } = useRawOpportunities();
   const [activeTab, setActiveTab] = useState("leakage");
 
-  // In live mode, use real data from hooks when available
-  // The hooks already handle mode-aware fetching (demo vs real)
-  // Module-level vars serve as fallback rendering data
+  // ── Derive live data through engines ───────────────────────────
+  const leakage = useMemo<LeakageItem[]>(() => {
+    const input = (leaksData ?? {}) as Parameters<typeof detectLeakage>[0];
+    return detectLeakage({
+      leads: input?.leads ?? [],
+      quotes: input?.quotes ?? [],
+      invoices: input?.invoices ?? [],
+      customers: input?.customers ?? [],
+      bookings: input?.bookings ?? [],
+      subscriptions: input?.subscriptions ?? [],
+    });
+  }, [leaksData]);
+
+  const recoveryActions = useMemo(() => suggestRecoveryActions(leakage), [leakage]);
+  const recovered = useMemo<RecoveredValueEntry[]>(() => Array.isArray(recoveredData) ? recoveredData as RecoveredValueEntry[] : [], [recoveredData]);
+  const opportunities = useMemo<RankedOpportunity[]>(() => rankOpportunities(Array.isArray(oppsData) ? oppsData as never[] : []), [oppsData]);
+  const summary = useMemo(() => computeAutopilotSummary(leakage, recoveryActions, recovered), [leakage, recoveryActions, recovered]);
 
   const tabs = [
     { key: "leakage", label: "Leakage Radar" },
@@ -213,16 +255,19 @@ const RevenueAutopilot = () => {
         </span>
       </div>
       <SitaTabs tabs={tabs} active={activeTab} onChange={setActiveTab} />
-      {activeTab === "leakage" && <LeakageRadar />}
-      {activeTab === "recovery" && <RecoveryEngine />}
-      {activeTab === "opportunities" && <OpportunitiesRanked />}
-      {activeTab === "recovered" && <RecoveredValueLedger />}
+      {activeTab === "leakage" && <LeakageRadar leakage={leakage} summary={summary} />}
+      {activeTab === "recovery" && <RecoveryEngine recoveryActions={recoveryActions} summary={summary} />}
+      {activeTab === "opportunities" && <OpportunitiesRanked opportunities={opportunities} />}
+      {activeTab === "recovered" && <RecoveredValueLedger recovered={recovered} />}
 
       <ModuleAdvisorInsight
         advisorName="Revenue Recovery AI"
         domain="business"
-        insight="$23,500 in detectable leakage across stale leads, aging quotes, and overdue invoices. Top recovery priority: TechVentures $15K overdue."
-        confidence={90}
+        insight={leakage.length === 0
+          ? "No active revenue leaks detected. Continue monitoring stale leads, aging quotes, and overdue invoices."
+          : `$${Math.round(summary.totalLeakageDetected).toLocaleString()} in detectable leakage across ${leakage.length} item${leakage.length === 1 ? "" : "s"}. Recoverable: $${Math.round(summary.totalRecoverable).toLocaleString()}.`
+        }
+        confidence={leakage.length === 0 ? 60 : 90}
       />
     </div>
   );
