@@ -51,7 +51,7 @@ const CRMAutomations = () => {
 
   const filtered = useMemo(() => {
     if (category === "all") return automations;
-    const cat = CATEGORIES.find(c => c.key === category);
+    const cat = AUTOMATION_CATEGORIES.find(c => c.key === category);
     if (!cat || !cat.triggers) return automations;
     return automations.filter(a => cat.triggers!.includes(a.trigger_type));
   }, [automations, category]);
@@ -171,7 +171,7 @@ const CRMAutomations = () => {
 
       {/* Category tabs */}
       <div className="flex gap-1.5 flex-wrap">
-        {CATEGORIES.map(c => (
+        {AUTOMATION_CATEGORIES.map(c => (
           <button
             key={c.key}
             onClick={() => setCategory(c.key)}
@@ -330,7 +330,7 @@ const CRMAutomations = () => {
             <div>
               <p className="text-xs font-semibold text-foreground mb-2">Trigger — When should this run?</p>
               <div className="grid grid-cols-3 gap-1.5">
-                {TRIGGER_TYPES.map(t => {
+                {AUTOMATION_TRIGGER_TYPES.map(t => {
                   const TIcon = t.icon;
                   return (
                     <button
@@ -355,7 +355,7 @@ const CRMAutomations = () => {
             <div>
               <p className="text-xs font-semibold text-foreground mb-2">Target Entity</p>
               <div className="flex gap-2">
-                {ENTITY_TYPES.map(e => (
+                {AUTOMATION_ENTITY_TYPES.map(e => (
                   <button
                     key={e.key}
                     onClick={() => setBuilderForm(p => ({ ...p, target_entity: e.key }))}
@@ -374,7 +374,7 @@ const CRMAutomations = () => {
               <p className="text-xs font-semibold text-foreground mb-2">Actions — What should happen?</p>
               <div className="space-y-2">
                 {builderForm.actions.map((action, idx) => {
-                  const at = ACTION_TYPES.find(a => a.key === action.type);
+                  const at = AUTOMATION_ACTION_TYPES.find(a => a.key === action.type);
                   return (
                     <div key={idx} className="flex items-center gap-2">
                       <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center text-[10px] font-bold text-primary shrink-0">{idx + 1}</div>
@@ -387,7 +387,7 @@ const CRMAutomations = () => {
                           setBuilderForm(p => ({ ...p, actions: updated }));
                         }}
                       >
-                        {ACTION_TYPES.map(a => <option key={a.key} value={a.key}>{a.label}</option>)}
+                        {AUTOMATION_ACTION_TYPES.map(a => <option key={a.key} value={a.key}>{a.label}</option>)}
                       </select>
                       <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => {
                         const updated = builderForm.actions.filter((_, i) => i !== idx);
@@ -426,7 +426,7 @@ const CRMAutomations = () => {
                 <Shield className="h-3 w-3 text-primary" /> Trust Gate — How should it execute?
               </p>
               <div className="space-y-1.5">
-                {TRUST_GATES.map(g => (
+                {AUTOMATION_TRUST_GATES.map(g => (
                   <button
                     key={g.key}
                     onClick={() => setBuilderForm(p => ({ ...p, trust_gate: g.key }))}
@@ -527,7 +527,7 @@ const WorkflowDetailPanel: React.FC<{
           <p className="text-xs font-semibold text-foreground mb-2">Action Pipeline</p>
           <div className="space-y-2">
             {actions.map((action, i) => {
-              const at = ACTION_TYPES.find(a => a.key === action.type);
+              const at = AUTOMATION_ACTION_TYPES.find(a => a.key === action.type);
               const AIcon = at?.icon || Zap;
               return (
                 <div key={i} className="flex items-center gap-2">
