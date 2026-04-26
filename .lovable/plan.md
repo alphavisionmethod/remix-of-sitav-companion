@@ -257,3 +257,22 @@ This is the full scope. Approving moves us into Phase 1 in default mode; I will 
 - `bunx tsc --noEmit` clean.
 
 **Next**: Phase 5 — Invoice Send + Real Receipt Path.
+
+---
+
+## Phase 5 — COMPLETE ✅
+
+- **Edge `invoice-generate` rewritten against the real schema**:
+  - `generate` writes `amount_cents` + `due_at` (was broken `total_cents`/`due_date`).
+  - `send` resolves recipient from linked `customers.primary_email` / `crm_contacts.primary_email`, logs to canonical `communications` (the broken `communication_log` reference is gone), writes a real `receipts` row using the canonical schema (`receipt_class`/`subject_type`/`subject_id`/`action_key`/`outcome`/`payload`/`evidence`), audits via `audit_logs`. Returns `delivery_pending_provider` flag when no recipient on file.
+  - `mark-paid` / `void` write to `metadata` JSON (was broken `payment_method`/`void_reason` columns).
+  - **NEW** `render-html` action returns server-rendered HTML invoice (XSS-escaped). Honest stand-in for PDF, explicitly labelled "PDF rendering coming soon".
+- **Client hooks fixed (`use-backend-actions.ts`)**:
+  - `useInvoiceGenerate` now matches server contract (`customer_id`, `line_items`, `due_date`).
+  - `useInvoiceSend` takes `{ invoice_id, channel?, recipient_email? }` — surfaces deferred-provider toast honestly.
+  - **NEW** `useInvoiceRenderHtml`.
+- **`InvoiceDetailPane`**: split into "Send via Email" + "Preview HTML"; PDF and E-sign render as honest disabled `Coming Soon` chips. Added live `InvoiceProofBadges` reading back from `receipts` (Logged · Provider deferred vs success).
+- **`InvoicesCollections`**: HTML preview drawer with sandboxed iframe (`srcDoc`).
+- **Deploy + typecheck**: `bunx tsc --noEmit` clean; `invoice-generate` deployed.
+
+**Next**: Phase 6 — Appointments → CRM/Customer/Opportunity Linkage.

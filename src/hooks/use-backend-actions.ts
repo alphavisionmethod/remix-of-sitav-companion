@@ -151,12 +151,32 @@ export function useBurnRate() {
 export function useInvoiceGenerate() {
   return useMutation({
     mutationFn: (params: {
-      action: "generate";
-      invoice_id: string;
-      format?: "pdf" | "html";
-      template?: string;
-    }) => invokeEdge("invoice-generate", params),
+      customer_id: string;
+      line_items: Array<{ description: string; quantity: number; unit_price_cents: number }>;
+      due_date: string; // YYYY-MM-DD
+      notes?: string;
+      currency?: string;
+    }) => invokeEdge<{ invoice: Record<string, unknown> }>("invoice-generate", { action: "generate", ...params }),
     onSuccess: () => toast.success("Invoice generated"),
+    onError: (e: Error) => toast.error(e.message),
+  });
+}
+
+/**
+ * Render an existing invoice as HTML preview (server-side rendered).
+ * PDF rendering is intentionally deferred — this is the honest stand-in.
+ */
+export function useInvoiceRenderHtml() {
+  return useMutation({
+    mutationFn: (params: { invoice_id: string }) =>
+      invokeEdge<{
+        html: string;
+        invoice_id: string;
+        invoice_number: string;
+        recipient_email: string | null;
+        format: "html";
+        pdf_status: "deferred";
+      }>("invoice-generate", { action: "render-html", ...params }),
     onError: (e: Error) => toast.error(e.message),
   });
 }
@@ -164,9 +184,23 @@ export function useInvoiceGenerate() {
 export function useInvoiceSend() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: (params: { action: "send"; invoice_id: string; delivery_method?: string; recipient_email?: string }) =>
-      invokeEdge("invoice-generate", params),
-    onSuccess: () => { qc.invalidateQueries({ queryKey: ["invoices"] }); toast.success("Invoice sent"); },
+    mutationFn: (params: { invoice_id: string; channel?: "email" | "sms" | "portal"; recipient_email?: string }) =>
+      invokeEdge<{
+        invoice: Record<string, unknown>;
+        recipient_email: string | null;
+        delivery_pending_provider: boolean;
+      }>("invoice-generate", { action: "send", ...params }),
+    onSuccess: (data) => {
+      qc.invalidateQueries({ queryKey: ["invoices"] });
+      qc.invalidateQueries({ queryKey: ["invoice-receipts"] });
+      if (data?.delivery_pending_provider) {
+        toast.success("Marked sent — provider dispatch deferred (no email connector)");
+      } else if (data?.recipient_email) {
+        toast.success(`Logged send to ${data.recipient_email}`);
+      } else {
+        toast.success("Invoice sent");
+      }
+    },
     onError: (e: Error) => toast.error(e.message),
   });
 }

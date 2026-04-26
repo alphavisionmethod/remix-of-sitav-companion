@@ -7,7 +7,7 @@ import { useAction } from "@/hooks/useAction";
 import { motion, AnimatePresence } from "framer-motion";
 import { DollarSign, Clock, AlertTriangle, CheckCircle, Plus, X, FileText, Target } from "lucide-react";
 import { PremiumEmptyState } from "@/platform/sita/components/sita/PremiumEmptyState";
-import { useInvoiceGenerate, useInvoiceSend } from "@/hooks/use-backend-actions";
+import { useInvoiceRenderHtml, useInvoiceSend } from "@/hooks/use-backend-actions";
 import { InvoiceDetailPane } from "@/modules/business/components/business/InvoiceDetailPane";
 import { cn } from "@/lib/utils";
 import { CrossAppAction, consumeLinkedContext } from "@/platform/sita/components/sita/CrossAppAction";
@@ -46,8 +46,10 @@ const InvoicesCollections = () => {
     due_date: draft.due_date ?? "",
     notes: draft.notes ?? "",
   });
-  const generatePdf = useInvoiceGenerate();
+  const renderHtml = useInvoiceRenderHtml();
   const sendInvoice = useInvoiceSend();
+  const [previewHtml, setPreviewHtml] = useState<string | null>(null);
+  const [previewMeta, setPreviewMeta] = useState<{ number: string; recipient: string | null } | null>(null);
 
   const { data: invoices = [], isLoading } = useQuery({
     queryKey: ["invoices", user?.id],
@@ -177,11 +179,17 @@ const InvoicesCollections = () => {
         invoice={selected}
         onMarkSent={() => updateStatus.mutate({ id: selected.id, status: "sent" })}
         onMarkPaid={() => updateStatus.mutate({ id: selected.id, status: "paid" })}
-        onSendInvoice={() => sendInvoice.mutate({ action: "send", invoice_id: selected.id })}
-        onGeneratePdf={() => generatePdf.mutate({ action: "generate", invoice_id: selected.id, format: "pdf" })}
+        onSendInvoice={() => sendInvoice.mutate({ invoice_id: selected.id, channel: "email" })}
+        onRenderHtml={async () => {
+          const res = await renderHtml.mutateAsync({ invoice_id: selected.id });
+          if (res?.html) {
+            setPreviewHtml(res.html);
+            setPreviewMeta({ number: res.invoice_number, recipient: res.recipient_email });
+          }
+        }}
         onDelete={() => deleteInvoice.mutate(selected.id)}
         sendPending={sendInvoice.isPending}
-        pdfPending={generatePdf.isPending}
+        renderPending={renderHtml.isPending}
       />
     </div>
   ) : (
@@ -234,6 +242,28 @@ const InvoicesCollections = () => {
           >
             {addInvoice.isPending ? "Creating..." : "Create Invoice"}
           </button>
+        </div>
+      </DetailDrawer>
+
+      {/* HTML Preview Drawer */}
+      <DetailDrawer
+        isOpen={!!previewHtml}
+        onClose={() => { setPreviewHtml(null); setPreviewMeta(null); }}
+        title={previewMeta ? `Preview · Invoice ${previewMeta.number}` : "Invoice Preview"}
+        domain="business"
+      >
+        <div className="space-y-3">
+          <div className="text-[11px] text-muted-foreground">
+            HTML preview · PDF rendering coming soon
+            {previewMeta?.recipient ? <> · Recipient on file: <span className="text-foreground">{previewMeta.recipient}</span></> : <> · No recipient email on file</>}
+          </div>
+          {previewHtml && (
+            <iframe
+              title="Invoice HTML preview"
+              srcDoc={previewHtml}
+              className="w-full h-[70vh] rounded-lg border border-border/40 bg-white"
+            />
+          )}
         </div>
       </DetailDrawer>
     </div>
