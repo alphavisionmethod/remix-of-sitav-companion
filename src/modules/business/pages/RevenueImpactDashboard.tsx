@@ -36,6 +36,7 @@ import { useQuery } from "@tanstack/react-query";
 import { fromTable } from "@/lib/supabase-helpers";
 import { useRealityModeSafe } from "@/lib/dual-reality/reality-mode-context";
 import { LegacyEmptyStateCard as EmptyStateCard } from "@/platform/sita/components/sita/EmptyStateCard";
+import { REVENUE_IMPACT_PLAYBOOKS } from "@/data/fixtures/mock-data/revenue-impact-playbooks";
 
 // ── Types ────────────────────────────────────────────────────────
 
@@ -60,16 +61,11 @@ interface TrendPoint {
   total: number;
 }
 
-// ── Demo-only fixtures (gated by isDemo at render time) ─────────
-//
-// Deterministic — no Math.random — so demo runs are reproducible and
-// don't masquerade as fluctuating live telemetry.
-const DEMO_PLAYBOOK_REVENUE: PlaybookRevenue[] = [
-  { id: "pb-recover-overdue",   name: "Recover overdue invoices",   category: "recovery",   recovered: 42_300, generated:      0, actionsRun: 38, successRate: 71, roi: 940, trend:  12 },
-  { id: "pb-winback-cold-leads", name: "Win back cold leads",        category: "growth",     recovered:      0, generated: 28_900, actionsRun: 64, successRate: 58, roi: 720, trend:   8 },
-  { id: "pb-retain-churn-risk",  name: "Retain at-risk customers",   category: "retention",  recovered: 19_500, generated:  6_400, actionsRun: 22, successRate: 79, roi: 1180, trend:  -3 },
-  { id: "pb-collect-deposits",   name: "Collect outstanding deposits", category: "recovery", recovered: 11_200, generated:      0, actionsRun: 15, successRate: 83, roi: 990, trend:   5 },
-];
+// Demo-only playbook fixtures live in
+// src/data/fixtures/mock-data/revenue-impact-playbooks and are ONLY
+// rendered when reality mode reports `isDemo === true`. Live mode
+// derives KPIs from real paid invoices.
+const DEMO_PLAYBOOK_REVENUE: ReadonlyArray<PlaybookRevenue> = REVENUE_IMPACT_PLAYBOOKS;
 
 function buildDemoTrend(granularity: Granularity): TrendPoint[] {
   const count = granularity === "daily" ? 30 : granularity === "weekly" ? 12 : 6;
@@ -206,7 +202,7 @@ const RevenueImpactDashboard = () => {
   });
 
   // Playbook breakdown — fixture rows live ONLY in demo mode.
-  const playbooks: PlaybookRevenue[] = isDemo ? DEMO_PLAYBOOK_REVENUE : [];
+  const playbooks: PlaybookRevenue[] = isDemo ? [...DEMO_PLAYBOOK_REVENUE] : [];
 
   const trendData = useMemo(() => {
     if (isDemo) return buildDemoTrend(granularity);

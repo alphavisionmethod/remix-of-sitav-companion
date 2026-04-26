@@ -103,6 +103,10 @@ export const BUSINESS_OS_TRUTH_MANIFEST: ReadonlyArray<PageTruthEntry> = [
   { page: "RelationshipDossier",     state: "fully-wired", sources: ["useCRMContact", "useCRMCommunications", "useCRMNotes", "useCRMOpportunities"], bannerState: "live" },
   { page: "BackgroundTaskCenter",    state: "fully-wired", sources: ["use-background-tasks", "crm_import_jobs", "connector_sync_runs", "data_export_requests", "ingestion_jobs", "crm_automations", "workflow_runs"], bannerState: "live" },
 
+  // ── IA / navigation surfaces (no fixtures, no fabricated metrics) ─
+  { page: "RevenueOpsHome",          state: "fully-wired", sources: ["BusinessNavigationContext"], bannerState: "live" },
+  { page: "ContinuityReport",        state: "fully-wired", sources: ["business-os/continuity-verification.service"], bannerState: "live" },
+
   // ── Revenue automation (canonical IA after Phase 6) ───────────
   { page: "AutopilotHub",            state: "fully-wired", sources: ["use-autopilot-config", "autopilot_configs"], bannerState: "live" },
   { page: "RevenueAutopilot",        state: "fully-wired", sources: ["useRevenueLeaksData", "useRecoveredValuesData", "useRawOpportunities", "revenue-autopilot.service"], bannerState: "live" },

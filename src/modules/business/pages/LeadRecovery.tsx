@@ -19,16 +19,13 @@ import { filterByQueue } from "@/domains/engines/lead-recovery-engine";
 import { useLeadRecoveryCandidates } from "@/hooks/use-lead-recovery-candidates";
 import { LegacyEmptyStateCard as EmptyStateCard } from "@/platform/sita/components/sita/EmptyStateCard";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { LEAD_RECOVERY_CAMPAIGNS } from "@/data/fixtures/mock-data/lead-recovery-campaigns";
 type MainTab = "overview" | "queues" | "campaigns" | "analytics";
 type SortMode = "score" | "value" | "urgency" | "recency";
 
-// Demo-only campaign fixtures — gated behind isDemo at render time.
-const DEMO_CAMPAIGNS = [
-  { id: 1, name: "Cold Lead Winback", status: "active", leads: 23, recovered: 4, revenue: "$18,400", costPerRecovery: "$12.50", roi: "32x", sequence: "5 emails over 14 days", channels: ["email", "sms"] },
-  { id: 2, name: "Proposal Follow-up", status: "active", leads: 8, recovered: 2, revenue: "$9,200", costPerRecovery: "$8.00", roi: "28x", sequence: "3 emails + call reminder", channels: ["email", "phone"] },
-  { id: 3, name: "Past Client Re-engagement", status: "paused", leads: 45, recovered: 7, revenue: "$31,500", costPerRecovery: "$15.00", roi: "20x", sequence: "Quarterly check-in", channels: ["email", "linkedin"] },
-  { id: 4, name: "Free Consultation Offer", status: "draft", leads: 0, recovered: 0, revenue: "$0", costPerRecovery: "—", roi: "—", sequence: "Lead magnet + 4 nurture emails", channels: ["email"] },
-];
+// Demo-only campaign fixtures live in src/data/fixtures/mock-data/lead-recovery-campaigns
+// and are ONLY rendered when reality mode reports `isDemo === true`.
+const DEMO_CAMPAIGNS = LEAD_RECOVERY_CAMPAIGNS;
 
 const LeadRecovery = () => {
   
