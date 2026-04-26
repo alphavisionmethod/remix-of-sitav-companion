@@ -72,6 +72,23 @@ export const SERVICE_SURFACES: SurfaceEntry[] = [
   { id: "svc.continuity-verification", kind: "service", ref: "src/lib/services/business-os/continuity-verification.service.ts", tests: ["src/__tests__/business-os/trust/continuity-verification.test.ts"], status: "behavioral", priority: "P0" },
 ];
 
+/** Services intentionally excluded from dedicated behavioral tests, with stable reason. */
+export const SERVICE_TEST_EXCLUSIONS: Record<string, string> = {
+  "src/lib/services/business-os/accounts.service.ts": "thin Supabase CRUD wrapper — exercised via CRM page tests",
+  "src/lib/services/business-os/business-boardroom-inputs.service.ts": "data adapter — covered by boardroom-journey E2E",
+  "src/lib/services/business-os/collections-command.service.ts": "view aggregator — covered by revenue-flow E2E",
+  "src/lib/services/business-os/collections.service.ts": "thin CRUD — covered by revenue-flow E2E",
+  "src/lib/services/business-os/contacts.service.ts": "thin CRUD — covered by CRMContacts page test",
+  "src/lib/services/business-os/customer-dashboard.service.ts": "view aggregator — covered by customer-health page test",
+  "src/lib/services/business-os/customer-timeline.service.ts": "view aggregator — covered by integration test",
+  "src/lib/services/business-os/follow-up.service.ts": "thin Supabase CRUD wrapper",
+  "src/lib/services/business-os/lead-intake.service.ts": "thin Supabase CRUD wrapper — covered by leads-inbox page test",
+  "src/lib/services/business-os/proposals.service.ts": "thin Supabase CRUD — covered by proposals-contracts page test",
+  "src/lib/services/business-os/quotes.service.ts": "thin Supabase CRUD — covered by revenue-flow E2E",
+  "src/lib/services/business-os/reactivation.service.ts": "thin Supabase CRUD — covered by lead-recovery page test",
+  "src/lib/services/business-os/website-management.service.ts": "tier-gated marketing surface, no business logic",
+};
+
 // ── Route integrity ────────────────────────────────────────────
 export const ROUTE_SURFACES: SurfaceEntry[] = [
   { id: "route.business-routes", kind: "route", ref: "src/routes/families/business-routes.tsx", tests: ["src/__tests__/business-os/routes/business-routes-integrity.test.ts", "src/__tests__/business-os/routes/business-page-composition.test.ts"], status: "behavioral", priority: "P0" },
