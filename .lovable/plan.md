@@ -1,169 +1,148 @@
-# SITA OS — Canonical Architecture Completion Plan
+# Phase 7 — Architecture Guards (Domain Barrels, Investment Namespace, Shell Mount)
 
-**Operating rule for every phase:** no duplicates, no stubs, no parallel rewrites. Each phase fully wired, type-clean (`tsc --noEmit`), tests green, before moving to the next.
-
----
-
-## 🔍 Audit Findings (Real Repo State)
-
-| Area | Reality | Status |
-|---|---|---|
-| `src/domains/business/` | `types/{lead,profile,recovery}` + `contracts/` populated; **49 consumers** wired | ✅ canonical |
-| `src/domains/concierge/index.ts` | `export {};` — 0 consumers | ❌ empty barrel |
-| `src/domains/finance/index.ts` | `export {};` — 0 consumers | ❌ empty barrel |
-| `src/domains/investment/` | `types.ts` + `mock-data.ts` exist; barrel says `export {};` — **10+ consumers import from `@/domains/investment/types` directly** | ❌ broken barrel + wrong import path |
-| `src/domains/engines/` | 50+ files. Purity script exists (`scripts/architecture/check-engine-purity.ts`) with documented allowlist | ⚠️ needs re-run + add concierge/finance import allowlist |
-| Services `business-os` / `concierge-os` / `finance-os` | Barrels populated, side-effect ownership clear | ✅ mostly canonical, needs domain-type re-imports |
-| Routes `/investment/*` (18) | `families/investment-routes.tsx` — canonical | ✅ |
-| Routes `/investments/*` (41) | `families/investment-office-routes.tsx` + duplicated again in `families/experimental-routes.tsx` | ❌ double duplication |
-| `InvestmentShellPage` | Has `<Outlet/>` but is **never mounted as a parent route** — child routes are flat siblings | ❌ App-in-OS pattern incomplete |
-| Investment pages | Split between `src/pages/investment-office/` (registered) and `src/modules/finance/pages/investment-office/` (mostly orphaned) | ❌ ownership ambiguous |
-| Concierge pages | All routes hit single `ConciergeCenter` dispatcher (good); needs canonical domain types | ⚠️ partial |
-| Money/Finance pages | All hit single `MoneyCenter` dispatcher (good); needs canonical domain types | ⚠️ partial |
+**Operating rule reaffirmed:** no duplicates, no stubs. Every new artifact extends an existing canonical system (`scripts/architecture/audits/`, `src/__tests__/`, `.github/workflows/check-boundaries.yml`) — no parallel guard infrastructure.
 
 ---
 
-## 📐 Canonical Architecture Contract (target — enforced in code)
+## 🎯 Goal
+Lock in the Phase 1–6 invariants as **machine-enforced gates** so future regressions fail loudly:
 
+1. No domain barrel may regress to `export {};` / empty.
+2. No `/investments/*` (plural) path may re-appear in `src/routes/families/`.
+3. The Investment Office shell-mount (`<InvestmentShellPage>` parent → `<Outlet/>` children) must remain the single composition path for both investment route families.
+
+All three are enforceable from existing infrastructure — no new directories, no new CI workflow files.
+
+---
+
+## ✅ Pre-flight verification (already confirmed via read-only inspection)
+
+| Item | State |
+|---|---|
+| `scripts/architecture/audits/` | ✅ exists (canonical home for new audit scripts) |
+| `src/__tests__/architecture/` | ❌ does not yet exist — will be created (canonical pattern: siblings like `routes/`, `services/`, `platform/` already exist under `src/__tests__/`) |
+| `.github/workflows/check-boundaries.yml` | ✅ canonical CI surface for architecture gates — extend, do not fork |
+| `src/domains/{concierge,finance,investment,business}/index.ts` | ✅ all populated (Phases 1–3) — guard codifies that state |
+| `src/routes/families/{investment-routes,investment-office-routes,experimental-routes}.tsx` | ✅ no plural `/investments` path remains (Phase 5) — guard locks it in |
+| `src/App.tsx` shell-mount block | ✅ wraps both families under `<Route element={<InvestmentShellPage />}>` (Phase 6) — test asserts it |
+
+---
+
+## 📐 Deliverables
+
+### A. Three new audit scripts (under existing `scripts/architecture/audits/`)
+
+#### A.1 `scripts/architecture/audits/check-no-empty-domain-barrels.ts`
+- Walk `src/domains/*/index.ts` (one level deep — engines/contracts subfolders excluded; only top-level domain barrels).
+- For each barrel: parse with `ts.createSourceFile`, count `ExportDeclaration` / `ExportAssignment` / re-export nodes after stripping comments.
+- **Fail (exit 1)** if a barrel has zero real exports OR matches the literal pattern `^\s*export\s*\{\s*\}\s*;?\s*$` after stripping comments.
+- Emit a JSON report to `generated/empty-domain-barrels-report.json` (matches the convention already used by other audits — see `generated/boundary-check-report.json`).
+
+#### A.2 `scripts/architecture/audits/check-investment-route-namespace.ts`
+- `rg`-equivalent scan (using `fs` + glob over `src/routes/families/*.tsx`).
+- **Fail (exit 1)** if any line matches `path=["']/investments(/|["'])` (plural). Singular `/investment` is the canonical namespace.
+- Also scan `src/App.tsx` and `src/routes/registry/route-family-registry.ts` for the same pattern (defense-in-depth — Phase 5 cleanup touched these).
+- Emit `generated/investment-route-namespace-report.json` with violation list.
+
+#### A.3 No third script needed — Phase 4 already has `check-engine-purity.ts`. The plan originally listed a third audit for shell-mount but a **Vitest spec is the correct tool** for that (renders React tree); see B.3. Documented here so we do not invent a parallel runtime check.
+
+### B. Three new Vitest specs (under new dir `src/__tests__/architecture/`)
+
+#### B.1 `src/__tests__/architecture/domain-barrels.test.ts`
+- Dynamic `import("@/domains/concierge")`, `@/domains/finance`, `@/domains/investment`, `@/domains/business`.
+- Assert each module's exported keys count is `> 0`.
+- Also: invoke the audit script in-process via `execSync("npx tsx scripts/architecture/audits/check-no-empty-domain-barrels.ts")` and assert exit code `0` — same pattern used by `service-boundary-truth.test.ts`.
+
+#### B.2 `src/__tests__/architecture/investment-route-namespace.test.ts`
+- Read every `src/routes/families/*.tsx` via `fs.readFileSync`.
+- Assert no occurrence of regex `/path=["']\/investments(\/|["'])/`.
+- Also assert exit `0` from `check-investment-route-namespace.ts`.
+
+#### B.3 `src/__tests__/architecture/investment-shell-mount.test.ts`
+- Pure source-level assertion (avoids React Router test rig overhead, matches conventions in `route-family-completeness.test.ts`):
+  - Read `src/App.tsx`.
+  - Assert it contains a `<Route element={<InvestmentShellPage` opening tag.
+  - Assert that within that block both `getInvestmentRoutes()` and `getInvestmentOfficeRoutes()` are invoked as children.
+  - Assert `InvestmentShellPage` source contains `<Outlet`.
+- This guarantees the App-in-OS pattern from Phase 6 cannot be silently flattened.
+
+> Note: `.test.ts` (not `.tsx`) because we are doing static source assertions, not JSX rendering — keeps the test fast and avoids pulling in the full router context.
+
+### C. CI wiring (extend, do not fork)
+
+Edit `.github/workflows/check-boundaries.yml` and add two new steps **inside the existing `boundary-check` job**, immediately after the engine-purity step:
+
+```yaml
+- name: Run domain barrel non-empty checker
+  run: npx tsx scripts/architecture/audits/check-no-empty-domain-barrels.ts
+
+- name: Run investment route namespace checker
+  run: npx tsx scripts/architecture/audits/check-investment-route-namespace.ts
 ```
-src/domains/<module>/             ← types, contracts, enums, DTOs (NO side effects, NO React)
-   ├── types/                       ← entity types
-   ├── contracts/                   ← cross-layer interfaces
-   └── index.ts                     ← single import surface
 
-src/domains/engines/               ← PURE deterministic logic only
-   (enforced by scripts/architecture/check-engine-purity.ts)
+Also extend the artifact upload block to include the two new JSON reports (single additional `actions/upload-artifact` step or expanded `path:`).
 
-src/lib/services/<module>-os/      ← side effects: Supabase, queues, receipts, persistence
-   (consumes @/domains/<module> for types, @/domains/engines for pure logic)
+No new workflow file. No new job. No parallel CI surface.
 
-src/modules/<module>/pages/        ← page composition (canonical user-product home)
-src/components/<module>/**         ← presentation only
+### D. Plan documentation
 
-src/routes/families/<module>-routes.tsx  ← topology only, lazy() page factories
-src/routes/registry/route-family-registry.ts  ← typed registry (one entry per family)
-```
-
-**Hard rules**:
-- Domain depends on nothing.
-- Engines: no Supabase, no `fetch()`, no `localStorage` (allowlist documented).
-- Services: own all side effects.
-- Pages: composition only, import types from `@/domains/<m>`, side effects from services, pure helpers from engines.
-- Routes: one canonical namespace per module, no duplicates.
+- Update `.lovable/plan.md` Phase 7 section to ✅ COMPLETE with the artifact list above.
 
 ---
 
-## ✅ Phased Execution
+## 🚦 Phase 7 Gate (must all pass before Phase 8)
 
-### **Phase 1 — Concierge Domain Canonicalization**
-- Survey actual concierge entities used in `src/lib/services/concierge-os/**` and `src/pages/ConciergeCenter` / `src/modules/concierge/**`.
-- Lift the **real** type shapes (HouseholdTask, TravelPlan, ProviderMemory, ReservationIngest, GroceryList, ConflictReport, etc.) into `src/domains/concierge/types/`.
-- Lift cross-cutting contracts (BoardroomInput shape, ContinuityProbe shape) into `src/domains/concierge/contracts/`.
-- Wire `src/domains/concierge/index.ts` to re-export from `./types` and `./contracts`.
-- Replace inline `interface`/`type` declarations in services and pages with imports from `@/domains/concierge`.
-- **Gate**: `tsc --noEmit` clean; existing concierge tests still pass; engine purity check still passes.
-
-### **Phase 2 — Finance Domain Canonicalization**
-- Same process for Money/Finance: lift entity types from `src/lib/services/finance-os/**` and `src/pages/money/**` / `src/modules/finance/**` into `src/domains/finance/types/` (BillRecord, ReserveAccount, RecurringObligation, ReceivableRecord, EnvelopeBudget, FinancialHealthSnapshot, RegimeView, etc.).
-- Cross-cutting contracts (BoardroomInput, ContinuityProbe, FinanceApprovalRequest) into `src/domains/finance/contracts/`.
-- Populate `src/domains/finance/index.ts`.
-- Replace inline types in services, hooks, and `MoneyCenter` page modules.
-- **Gate**: `tsc --noEmit` clean; finance tests pass; engine purity passes.
-
-### **Phase 3 — Investment Domain Barrel Fix + Type Migration** ✅ COMPLETE
-- ✅ Moved `src/domains/investment/types.ts` → `src/domains/investment/types/index.ts`.
-- ✅ Moved `src/domains/investment/mock-data.ts` → `src/domains/investment/fixtures/index.ts`
-  with explicit demo-data header preserving `__DEMO_SOURCE__` / `__DATA_CLASSIFICATION__` markers
-  for the demo-mode auditor (per `mem://design/demo-mode-standardization`).
-  Note: kept inside the domain (not in `src/data/fixtures/`) to keep types + fixtures
-  co-located, matching SITA OS's existing pattern. Demo-mode gating remains the consumer's responsibility.
-- ✅ Replaced broken `export {}` barrel with `export * from "./types"; export * from "./fixtures";`.
-- ✅ Rewired all 16 consumers (1 hook + 14 pages + 1 component) from
-  `@/domains/investment/{types,mock-data}` → `@/domains/investment` (canonical).
-- ✅ Skipped speculative `src/domains/investment/contracts/` subdir — no cross-layer
-  AdvisorRecommendation/TradeApprovalRequest envelopes are required yet; will be added
-  organically when persistence/edge-function contracts emerge.
-- **Gate**: `tsc --noEmit` clean; engine-purity passes; smoke test passes.
-
-### **Phase 4 — Engine Purity Re-Audit + Service Boundary Cleanup** ✅ COMPLETE
-- ✅ `scripts/architecture/check-engine-purity.ts` returns clean — "All domain engines are pure."
-- ✅ Engine-layer audit:
-  - No inline domain entities found that belong to a `@/domains/<m>` layer.
-    `lead-recovery-engine.ts` already exports its types AND comments confirm
-    fixtures live in `src/data/fixtures/mock-data/recovery-candidates.ts`.
-  - No hidden mock fixtures inside `src/domains/engines/**` (only the
-    deterministic `generateMockSignals()` synthesis function in
-    `profile-evolution-engine.ts`, which is pure logic, not stored data).
-  - No engine→service imports detected (`rg "from ['\"]@/lib/services" src/domains/engines/` returns empty).
-- ✅ Service barrels (`business-os/index.ts`, `concierge-os/index.ts`,
-  `finance-os/index.ts`) re-export *behavior* via `export * from "./<svc>"`.
-  Domain types flow through the canonical re-export pattern established in
-  Phase 2 (services re-export `type { X }` from `@/domains/<m>` for
-  consumer ergonomics — single source of truth preserved).
-- **Gate**: engine-purity returns 0; `tsc --noEmit` clean; service boundaries verified.
-
-### **Phase 5 — Investment Routing Consolidation (`/investment` is canonical)** ✅ COMPLETE
-- ✅ Decision applied: `/investment/*` (singular) is the single canonical Investment Office namespace.
-- ✅ Extended `src/routes/redirects/user-redirect-map.ts` from 9 → 41 entries covering every legacy `/investments/*` path (incl. `:instrumentId`, `/money/investments` shell-consolidation entry).
-- ✅ Removed the duplicate `/investments/*` block (41 routes + 41 imports) from `src/routes/families/experimental-routes.tsx`. Header note updated to point at the canonical families.
-- ✅ Rewrote `src/routes/families/investment-office-routes.tsx` to emit ONLY the 23 extended `/investment/*` routes not declared in `investment-routes.tsx` (BeginnerMode, AdvancedMode, CapitalTwin, DecisionTheater, TimeMachine, Catalysts, OpportunityMap, Constitution, MarketMemory, Dossier, ProbabilityLab, StrategyDNA, PostTrade, CrossAsset, Conviction, Sizing, Modes, Readiness, CapitalPurpose, WhatWouldBreak, Disagreements, KnowledgeGraph, Events). Together both families form the single `/investment/*` namespace.
-- ✅ Created legacy alias `src/routes/investment-office-routes.tsx` and mounted `getInvestmentOfficeRoutes()` in `src/App.tsx` next to `getInvestmentRoutes()`.
-- ✅ `route-family-registry.ts` updated: kept both `investment` (core 18) and `investment-office` (extended 23) entries with explicit Phase 5 notes documenting they jointly own the `/investment/*` namespace; corrected canonicalPageOwner to `src/pages/investment-office/**`.
-- ✅ Consumer rewires:
-  - `src/lib/frontend/truth-surface-registry.ts`: `/money/investments` → `/investment`
-  - `src/lib/domain-system/manifests/finance-manifest.ts`: `/finance/investments/:id` → `/investment/instrument/:id`
-  - `src/platform/verification/surface-registry.ts`: `routePath: "/investments"` → `"/investment"` (key + domain renamed)
-  - `src/features/feature-registry.ts`: removed phantom `/investment-office` literal from `ownedRoutes`
-- **Gate**: ✅ `rg path="/investments" src/routes/families/` returns empty; ✅ `tsc --noEmit` clean; ✅ engine-purity returns 0; ✅ 41 redirect entries cover every legacy path.
-
-### **Phase 6 — Investment Office App-in-OS Normalization** ✅ COMPLETE
-- ✅ `InvestmentShellPage` (tab-nav + `<Outlet/>`) wired as a **layout-only parent route** in `src/App.tsx`. Both investment route families now nest under a single `<Route element={<InvestmentShellPage />}>` parent so every `/investment/*` path renders inside the shared workspace chrome (header + section nav + outlet). Pattern mirrors how revenue-office uses `<RevenueOfficeModeLayout/>` in `experimental-routes.tsx`.
-  ```tsx
-  <Route element={<InvestmentShellPage />}>
-    {getInvestmentRoutes()}        // 18 core routes
-    {getInvestmentOfficeRoutes()}  // 23 extended routes
-  </Route>
-  ```
-- ✅ Registry updated: both `investment` and `investment-office` entries now declare `owns: "shell-mount"` with `canonicalPageOwner: "src/modules/finance/pages/investment-office/**"` and Phase 6 rationale notes.
-- ✅ Page-location ambiguity resolved (and the plan's earlier framing corrected): per the **Wave 4 architectural decision**, the canonical implementations live in `src/modules/finance/pages/investment-office/**` (~6,577 lines across 42 files). All 42 files in `src/pages/investment-office/**` are 3-line re-export shims (`export { default } from "@/modules/finance/pages/investment-office/<X>"`) preserved as lazy-import compatibility entries. There are **no "orphan duplicates" to delete** — the modules folder is the canonical owner; the shims are a deliberate compatibility layer that the route families consume.
-- **Gate**: ✅ `tsc --noEmit` clean; ✅ engine-purity returns clean; ✅ no `path="/investments"` (plural) anywhere in `src/routes/families/`; ✅ 18 + 23 = 41 `/investment/*` routes resolve through the shared shell.
-
-### **Phase 7 — Architecture Guards (new + extended)**
-- New script: `scripts/architecture/audits/check-no-empty-domain-barrels.ts` — fails if any `src/domains/*/index.ts` resolves to `export {};` or empty.
-- Extend `scripts/architecture/check-engine-purity.ts` allowlist documentation if Phase 4 surfaced new legitimate exceptions.
-- New script: `scripts/architecture/audits/check-investment-route-namespace.ts` — fails if `/investments/` (plural) appears anywhere in `src/routes/families/`.
-- Add Vitest specs:
-  - `src/__tests__/architecture/domain-barrels.test.ts` — imports each `@/domains/*` barrel and asserts non-empty exports.
-  - `src/__tests__/architecture/investment-route-namespace.test.ts` — asserts only `/investment/*` namespace.
-  - `src/__tests__/architecture/investment-shell-mount.test.tsx` — renders the parent route and asserts `<Outlet/>` resolves child page.
-- Wire new audits into existing CI script index (no parallel system).
-- **Gate**: all audits return 0; new tests pass; full suite (Vitest + Playwright list) parses.
-
-### **Phase 8 — Documentation + Deployment Readiness**
-- Create `SITA_OS_CANONICAL_ARCHITECTURE_COMPLETION_REPORT.md` at repo root with:
-  1. Audit findings (before)
-  2. Final ownership model (after)
-  3. Per-module: what moved into `src/domains/<m>/`, what stayed in services, what stayed in engines
-  4. Routing normalization summary (before/after table for `/investment` vs `/investments`)
-  5. Investment Office App-in-OS justification
-  6. Exact file inventory: created / modified / removed
-  7. New architecture guards with command line
-  8. Remaining transitional debt (none expected; if any, explicit)
-- Update `src/domains/ARCHITECTURE.md` to reflect concierge + finance + investment canonicalization (it currently only mentions business).
-- Add memory entry `mem://architecture/canonical-domain-completion` summarizing the durable rules.
-- **Final gate**: `tsc --noEmit` ✅, full Vitest suite ✅, all architecture audits ✅, Playwright `--list` ✅, no `path="/investments` anywhere, no `export {};` in any domain barrel.
+| Check | Pass criterion |
+|---|---|
+| `npx tsc --noEmit` | 0 new errors |
+| `npx tsx scripts/architecture/check-engine-purity.ts` | exit 0 |
+| `npx tsx scripts/architecture/audits/check-no-empty-domain-barrels.ts` | exit 0 |
+| `npx tsx scripts/architecture/audits/check-investment-route-namespace.ts` | exit 0 |
+| `npx vitest run src/__tests__/architecture/` | all 3 specs green |
+| `.github/workflows/check-boundaries.yml` | parses (`yamllint`-equivalent / GitHub schema OK), 2 new steps present |
+| Anti-duplication audit | no new directory under `scripts/architecture/`, no new workflow file, no new test top-level dir beyond the single `architecture/` subfolder under existing `src/__tests__/` |
 
 ---
 
-## 🛡️ Anti-Duplication Discipline (applied every phase)
-Before creating any file: `rg "<symbol-or-name>" src` first. Extend existing instead of creating parallel. Every new file must justify itself. Engine purity, route registry, and existing audit infrastructure are all **extended, never duplicated**.
+## 📦 Exact File Inventory
 
-## 📦 Deliverables
-- Concierge / Finance / Investment domain layers fully populated and consumed.
-- Engines verifiably pure.
-- Single `/investment/*` route namespace; legacy `/investments/*` removed with redirects.
-- Investment Office mounted via shell pattern.
-- 3 new architecture guards + 3 new test specs.
-- Completion report at repo root.
+**Created (5 files, all in canonical existing dirs):**
+- `scripts/architecture/audits/check-no-empty-domain-barrels.ts`
+- `scripts/architecture/audits/check-investment-route-namespace.ts`
+- `src/__tests__/architecture/domain-barrels.test.ts`
+- `src/__tests__/architecture/investment-route-namespace.test.ts`
+- `src/__tests__/architecture/investment-shell-mount.test.ts`
 
-**No phase advances until previous phase is 100% green and deployment-ready.**
+**Modified (2 files):**
+- `.github/workflows/check-boundaries.yml` (2 new steps + report upload)
+- `.lovable/plan.md` (mark Phase 7 ✅ COMPLETE)
+
+**Removed:** none.
+
+**Not created (intentionally — would have been duplicates):**
+- ❌ No new GitHub workflow file (extend `check-boundaries.yml`).
+- ❌ No new top-level `scripts/guards/` or `scripts/architecture/guards/` directory (use existing `audits/`).
+- ❌ No third "shell-mount audit script" (the Vitest spec covers it correctly).
+
+---
+
+Phase 7 will be fully wired and green before Phase 8 (Documentation + Deployment Readiness) begins.
+
+---
+
+## ✅ Phase 7 — COMPLETE
+
+| Gate | Result |
+|---|---|
+| `scripts/architecture/audits/check-no-empty-domain-barrels.ts` | exit 0 — all 4 canonical barrels populated |
+| `scripts/architecture/audits/check-investment-route-namespace.ts` | exit 0 — 21 files scanned, 0 plural leaks |
+| `npx vitest run src/__tests__/architecture/` | 14/14 tests passing across 3 specs |
+| `npx tsc --noEmit` | clean (no new errors) |
+| `.github/workflows/check-boundaries.yml` | 2 new steps + Phase 7 artifact upload wired in-place |
+| Anti-duplication audit | 5 files created, all in existing canonical dirs; 0 new workflow files; 0 parallel guard systems |
+
+**Created (5):** `scripts/architecture/audits/check-no-empty-domain-barrels.ts`, `scripts/architecture/audits/check-investment-route-namespace.ts`, `src/__tests__/architecture/domain-barrels.test.ts`, `src/__tests__/architecture/investment-route-namespace.test.ts`, `src/__tests__/architecture/investment-shell-mount.test.ts`
+
+**Modified (2):** `.github/workflows/check-boundaries.yml`, `.lovable/plan.md`
+
+Ready for Phase 8.
