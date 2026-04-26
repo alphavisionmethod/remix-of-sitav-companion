@@ -20,6 +20,14 @@ import {
   XCircle, Pause, RefreshCw, Filter, ArrowUpRight
 } from "lucide-react";
 import type { AutoActionType } from "@/lib/domain-engines/autopilot-engine";
+import {
+  PLAYBOOK_ACTION_TYPES as ACTION_TYPES,
+  PLAYBOOK_STEP_TYPES as STEP_TYPES,
+  PLAYBOOK_CONDITION_FIELDS as CONDITION_FIELDS,
+  PLAYBOOK_TRIGGER_EVENTS as TRIGGER_EVENTS,
+  PLAYBOOK_CATEGORIES as CATEGORIES,
+  PLAYBOOK_QUICK_START_TEMPLATES as QUICK_START_TEMPLATES,
+} from "./_config/PlaybookBuilder.config";
 // ── Types ────────────────────────────────────────────────────────
 
 interface BuilderStep {
@@ -63,27 +71,7 @@ interface PlaybookDraft {
 
 // ── Constants ────────────────────────────────────────────────────
 
-const ACTION_TYPES: { type: AutoActionType; label: string; icon: typeof Mail; color: string }[] = [
-  { type: "email", label: "Send Email", icon: Mail, color: "bg-primary/15 text-primary" },
-  { type: "sms", label: "Send SMS", icon: MessageSquare, color: "bg-accent/15 text-accent" },
-  { type: "call", label: "Schedule Call", icon: Phone, color: "bg-trust-safe/15 text-trust-safe" },
-  { type: "task", label: "Create Task", icon: CheckCircle, color: "bg-urgency-high/15 text-urgency-high" },
-  { type: "escalation", label: "Escalate", icon: AlertTriangle, color: "bg-destructive/15 text-destructive" },
-  { type: "discount", label: "Offer Discount", icon: DollarSign, color: "bg-trust-safe/15 text-trust-safe" },
-  { type: "follow-up", label: "Follow Up", icon: RefreshCw, color: "bg-primary/15 text-primary" },
-  { type: "upsell", label: "Upsell Offer", icon: ArrowUpRight, color: "bg-accent/15 text-accent" },
-];
-
-const STEP_TYPES: { type: BuilderStep["type"]; label: string; icon: typeof Zap; description: string }[] = [
-  { type: "action", label: "Action", icon: Zap, description: "Execute an automation action" },
-  { type: "condition", label: "Condition", icon: GitBranch, description: "Branch based on criteria" },
-  { type: "delay", label: "Wait", icon: Clock, description: "Pause before next step" },
-  { type: "gate", label: "Approval Gate", icon: Shield, description: "Require human approval" },
-];
-
 import { OPERATORS, DELAY_OPTIONS } from "@/lib/constants/ui-config";
-// Production fallback — seed data removed
-const CATEGORIES: any[] = [];
 
 // ── Helpers ──────────────────────────────────────────────────────
 
@@ -253,7 +241,7 @@ const StepCard = ({
                             onUpdate({ ...step, conditions: updated });
                           }}
                             className="flex-1 rounded-lg border border-border bg-secondary/50 px-2 py-1.5 text-[11px] text-foreground focus:outline-none">
-                            {([] as any[]).map(f => <option key={f.value} value={f.value}>{f.label}</option>)}
+                            {CONDITION_FIELDS.map(f => <option key={f.value} value={f.value}>{f.label}</option>)}
                           </select>
                           <select value={cond.operator} onChange={e => {
                             const updated = [...step.conditions];
@@ -385,7 +373,7 @@ const TriggerPanel = ({ trigger, onChange }: { trigger: BuilderTrigger; onChange
       {trigger.type === "event" && (
         <select value={trigger.event || ""} onChange={e => onChange({ ...trigger, event: e.target.value })}
           className="w-full rounded-lg border border-border bg-secondary/50 px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-primary/50">
-          {([] as any[]).map(te => <option key={te.value} value={te.value}>{te.label}</option>)}
+          {TRIGGER_EVENTS.map(te => <option key={te.value} value={te.value}>{te.label}</option>)}
         </select>
       )}
 
@@ -404,7 +392,7 @@ const TriggerPanel = ({ trigger, onChange }: { trigger: BuilderTrigger; onChange
         <div className="flex items-center gap-2">
           <select value={trigger.threshold?.field || "customer.ltv"} onChange={e => onChange({ ...trigger, threshold: { ...trigger.threshold!, field: e.target.value, operator: trigger.threshold?.operator || "gt", value: trigger.threshold?.value || "" } })}
             className="flex-1 rounded-lg border border-border bg-secondary/50 px-2 py-1.5 text-[11px] text-foreground focus:outline-none">
-            {([] as any[]).map(f => <option key={f.value} value={f.value}>{f.label}</option>)}
+            {CONDITION_FIELDS.map(f => <option key={f.value} value={f.value}>{f.label}</option>)}
           </select>
           <select value={trigger.threshold?.operator || "gt"} onChange={e => onChange({ ...trigger, threshold: { ...trigger.threshold!, operator: e.target.value } })}
             className="w-16 rounded-lg border border-border bg-secondary/50 px-2 py-1.5 text-[11px] text-foreground text-center focus:outline-none">
@@ -430,7 +418,7 @@ const TriggerPanel = ({ trigger, onChange }: { trigger: BuilderTrigger; onChange
 const PreviewPanel = ({
   draft }: { draft: PlaybookDraft }) => {
   const triggerLabel = draft.trigger.type === "event"
-    ? ([] as any[]).find(e => e.value === draft.trigger.event)?.label || draft.trigger.event
+    ? TRIGGER_EVENTS.find(e => e.value === draft.trigger.event)?.label || draft.trigger.event
     : draft.trigger.type === "schedule" ? draft.trigger.schedule
     : draft.trigger.type === "threshold" ? `${draft.trigger.threshold?.field} ${draft.trigger.threshold?.operator} ${draft.trigger.threshold?.value}`
     : "Manual trigger";
