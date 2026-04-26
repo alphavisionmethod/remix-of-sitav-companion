@@ -3,15 +3,11 @@
 // Investment committee briefing data
 // ═══════════════════════════════════════════════════════════════
 
-export interface CommitteeBriefing {
-  sessionDate: string;
-  marketSummary: string;
-  portfolioHighlights: string[];
-  riskAlerts: string[];
-  pendingDecisions: { topic: string; urgency: string; deadline: string }[];
-  performanceSummary: { period: string; returnPct: number; benchmarkPct: number; alpha: number };
-  generatedAt: string;
-}
+import type { CommitteeBriefing } from "@/domains/finance";
+
+// Canonical type re-exports for backward compatibility.
+// New code should import from `@/domains/finance` directly.
+export type { CommitteeBriefing };
 
 export function buildCommitteeBriefing(): CommitteeBriefing {
   return {
