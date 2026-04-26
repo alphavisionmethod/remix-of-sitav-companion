@@ -5,14 +5,11 @@
 
 import type { RiskBudgetResult, FactorRiskDecomposition } from "@/packages/finance-contracts/investment-office";
 
-export interface PortfolioRiskReport {
-  riskBudget: RiskBudgetResult;
-  factorRisk: FactorRiskDecomposition;
-  stressScenarios: { name: string; impactPct: number; severity: string }[];
-  overallRiskLevel: "low" | "moderate" | "elevated" | "high";
-  recommendations: string[];
-  generatedAt: string;
-}
+import type { PortfolioRiskReport } from "@/domains/finance";
+
+// Canonical type re-exports for backward compatibility.
+// New code should import from `@/domains/finance` directly.
+export type { PortfolioRiskReport };
 
 export function buildPortfolioRiskReport(): PortfolioRiskReport {
   return {

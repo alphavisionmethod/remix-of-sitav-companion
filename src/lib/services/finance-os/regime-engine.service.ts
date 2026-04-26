@@ -5,11 +5,11 @@
 
 import type { MarketRegimeResult } from "@/packages/finance-contracts/investment-office";
 
-export interface RegimeHistory {
-  regimes: { regime: string; startDate: string; endDate?: string; durationDays: number }[];
-  currentRegime: MarketRegimeResult;
-  avgRegimeDurationDays: number;
-}
+import type { RegimeHistory } from "@/domains/finance";
+
+// Canonical type re-exports for backward compatibility.
+// New code should import from `@/domains/finance` directly.
+export type { RegimeHistory };
 
 export function buildRegimeHistory(): RegimeHistory {
   const regimes = [

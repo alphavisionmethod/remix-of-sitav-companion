@@ -5,12 +5,11 @@
 
 import type { EntityCapitalMap } from "@/packages/finance-contracts/family-office/types";
 
-export interface EntityCapitalReport {
-  entity: EntityCapitalMap;
-  debtToAssetRatio: number;
-  jurisdictionCompliance: boolean;
-  recommendations: string[];
-}
+import type { EntityCapitalReport } from "@/domains/finance";
+
+// Canonical type re-exports for backward compatibility.
+// New code should import from `@/domains/finance` directly.
+export type { EntityCapitalReport };
 
 export function analyzeEntityCapital(entity: EntityCapitalMap): EntityCapitalReport {
   const ratio = entity.assetsCents > 0 ? entity.liabilitiesCents / entity.assetsCents : 0;

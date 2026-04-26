@@ -5,20 +5,11 @@
 
 import type { CashAllocationPlan, AllocationEntry, AllocationStrategy } from "@/packages/finance-contracts/advanced-intelligence";
 
-export interface CashAllocatorInput {
-  availableCashCents: number;
-  billsDueCents: number;
-  taxOwedCents: number;
-  taxReservedCents: number;
-  emergencyTargetCents: number;
-  emergencyCurrentCents: number;
-  debtBalanceCents: number;
-  debtMinimumCents: number;
-  sinkingFundTargetCents: number;
-  sinkingFundCurrentCents: number;
-  payrollNeededCents: number;
-  payrollReservedCents: number;
-}
+import type { CashAllocatorInput } from "@/domains/finance";
+
+// Canonical type re-exports for backward compatibility.
+// New code should import from `@/domains/finance` directly.
+export type { CashAllocatorInput };
 
 const BUCKET_LABELS: Record<string, string> = {
   bills: "Bills & Obligations",

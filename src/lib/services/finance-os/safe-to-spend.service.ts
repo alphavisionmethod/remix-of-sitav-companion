@@ -5,13 +5,11 @@
 
 import type { FinancialAccount, ObligationRecord, ReserveModel, SafeToSpendResult } from "@/packages/finance-contracts";
 
-export interface SafeToSpendForecast {
-  current: SafeToSpendResult;
-  sevenDay: SafeToSpendResult;
-  thirtyDay: SafeToSpendResult;
-  trend: "improving" | "stable" | "tightening";
-  recommendations: string[];
-}
+import type { SafeToSpendForecast } from "@/domains/finance";
+
+// Canonical type re-exports for backward compatibility.
+// New code should import from `@/domains/finance` directly.
+export type { SafeToSpendForecast };
 
 export function computeSafeToSpendForecast(
   accounts: FinancialAccount[],

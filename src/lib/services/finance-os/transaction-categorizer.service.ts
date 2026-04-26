@@ -5,14 +5,11 @@
 
 import type { TransactionRecord, CategorizedSpend } from "@/packages/finance-contracts";
 
+import type { CategorizationRule } from "@/domains/finance";
 
-export interface CategorizationRule {
-  id: string;
-  pattern: string;
-  category: string;
-  subcategory?: string;
-  priority: number;
-}
+// Canonical type re-exports for backward compatibility.
+// New code should import from `@/domains/finance` directly.
+export type { CategorizationRule };
 
 const DEFAULT_RULES: CategorizationRule[] = [
   { id: "r-1", pattern: "grocery|whole foods|trader joe|kroger|safeway", category: "Groceries", priority: 10 },

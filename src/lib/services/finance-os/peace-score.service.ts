@@ -5,16 +5,11 @@
 
 import type { PeaceScoreResult, PeaceScoreDimension } from "@/packages/finance-contracts/advanced-intelligence";
 
-export interface PeaceScoreInput {
-  reserveFundedPct: number;
-  billsCoveredPct: number;
-  debtToIncomeRatio: number;
-  taxReservedPct: number;
-  incomeStabilityScore: number; // 0-100
-  obligationPressurePct: number;
-  discretionaryRoomPct: number;
-  householdCoordinationScore: number; // 0-100
-}
+import type { PeaceScoreInput } from "@/domains/finance";
+
+// Canonical type re-exports for backward compatibility.
+// New code should import from `@/domains/finance` directly.
+export type { PeaceScoreInput };
 
 function dimStatus(score: number): "strong" | "adequate" | "weak" | "critical" {
   if (score >= 80) return "strong";

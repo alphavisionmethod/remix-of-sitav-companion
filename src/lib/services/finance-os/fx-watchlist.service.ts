@@ -5,13 +5,11 @@
 
 import type { FxExposureSummary } from "@/packages/finance-contracts/investment-office";
 
-export interface FxAlert {
-  currency: string;
-  type: "threshold-breach" | "volatility-spike" | "hedge-opportunity";
-  message: string;
-  severity: "info" | "warning" | "urgent";
-  createdAt: string;
-}
+import type { FxAlert } from "@/domains/finance";
+
+// Canonical type re-exports for backward compatibility.
+// New code should import from `@/domains/finance` directly.
+export type { FxAlert };
 
 export function monitorFxExposure(exposure: FxExposureSummary): FxAlert[] {
   const alerts: FxAlert[] = [];

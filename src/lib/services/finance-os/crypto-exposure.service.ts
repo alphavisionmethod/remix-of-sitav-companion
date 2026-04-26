@@ -5,14 +5,11 @@
 
 import type { CryptoExposureSummary } from "@/packages/finance-contracts/investment-office";
 
-export interface CryptoRiskAssessment {
-  exposure: CryptoExposureSummary;
-  percentOfPortfolio: number;
-  mandateLimit: number;
-  withinMandate: boolean;
-  custodyScore: number;
-  recommendations: string[];
-}
+import type { CryptoRiskAssessment } from "@/domains/finance";
+
+// Canonical type re-exports for backward compatibility.
+// New code should import from `@/domains/finance` directly.
+export type { CryptoRiskAssessment };
 
 export function assessCryptoRisk(exposure: CryptoExposureSummary, totalPortfolioCents: number, mandateLimitPct: number = 10): CryptoRiskAssessment {
   const pct = totalPortfolioCents > 0 ? (exposure.totalValueCents / totalPortfolioCents) * 100 : 0;
