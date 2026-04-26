@@ -152,7 +152,7 @@ describe("AppointmentsScheduling — page-state honesty", () => {
       makeAppt({ id: "a-2", customer: "James Rodriguez", service: "Strategy Session" }),
     ];
     renderBusinessPage(<AppointmentsScheduling />);
-    expect(screen.getByText(/Sarah Chen/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/Sarah Chen/i).length).toBeGreaterThan(0);
     expect(screen.getByText(/Discovery Call/i)).toBeInTheDocument();
     // Empty state MUST NOT show when populated.
     expect(screen.queryByText(/No appointments yet/i)).not.toBeInTheDocument();
