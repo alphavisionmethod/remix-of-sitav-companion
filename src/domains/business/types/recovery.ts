@@ -90,24 +90,3 @@ export interface RecoveryCandidate {
   // Queue assignment
   queueKey: string;
 }
-
-/**
- * Side-effect view of a recovery action plan, used by the
- * recovery service after a candidate has been turned into a runnable plan.
- * Engine produces RecoveryCandidate; service derives RecoveryPlan + RecoveryStep[].
- */
-export interface RecoveryStep {
-  id: string;
-  label: string;
-  channel: "email" | "phone" | "linkedin" | "sms" | "internal";
-  scheduledFor: string;
-  status: "pending" | "running" | "completed" | "skipped" | "failed";
-}
-
-export interface RecoveryPlan {
-  candidateId: string;
-  path: RecoveryPath;
-  steps: RecoveryStep[];
-  createdAt: string;
-  ownerId: string | null;
-}
