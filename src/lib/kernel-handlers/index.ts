@@ -59,6 +59,7 @@ export const CANONICAL_HANDLER_IDS = [
   "finance.invoice.status",
   "finance.invoice.delete",
   "finance.bill.create",
+  "finance.bill.update",
   "finance.bill.pay",
   "finance.bill.delete",
   "finance.subscription.status",
