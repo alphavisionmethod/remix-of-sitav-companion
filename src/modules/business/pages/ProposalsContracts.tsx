@@ -370,6 +370,20 @@ const ProposalsContracts = () => {
                           <Trash2 className="inline h-3 w-3 mr-1" /> Delete
                         </button>
                       </div>
+                      {["sent", "accepted"].includes(p.status) && (
+                        <ProposalPendingSignatures
+                          proposalId={p.id}
+                          onResend={(s) =>
+                            setResendFor({
+                              signatureId: s.id,
+                              proposalId: p.id,
+                              proposalTitle: p.title,
+                              signerEmail: s.signer_email,
+                            })
+                          }
+                          resending={resendSig.isPending}
+                        />
+                      )}
                       {signFor?.id === p.id && (
                         <div className="mt-2 rounded-lg border border-primary/30 bg-primary/5 p-3 space-y-2">
                           <label className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
