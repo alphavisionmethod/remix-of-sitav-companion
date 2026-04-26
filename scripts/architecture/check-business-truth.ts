@@ -309,5 +309,15 @@ function report() {
   return 1;
 }
 
-check();
-process.exit(report());
+// Only run when invoked directly via tsx/node CLI (not when imported
+// by tests). `import.meta.url` matches the script entrypoint when
+// executed with `tsx scripts/architecture/check-business-truth.ts`.
+const invokedDirectly =
+  typeof process !== "undefined" &&
+  Array.isArray(process.argv) &&
+  process.argv[1]?.endsWith("check-business-truth.ts");
+
+if (invokedDirectly) {
+  check();
+  process.exit(report());
+}
