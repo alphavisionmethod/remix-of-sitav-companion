@@ -54,6 +54,7 @@ const subpageFromPath = (path: string): string => {
   if (path.includes("/ecommerce")) return "ecommerce";
   if (path.includes("/integrations")) return "integrations";
   if (path.includes("/customer-health")) return "customer-health";
+  if (path.includes("/continuity-report") || path.includes("/continuity")) return "continuity-report";
   // Handle /customers/:id pattern
   const customerMatch = path.match(/\/customers\/([^/]+)/);
   if (customerMatch) return `customer-detail:${customerMatch[1]}`;
