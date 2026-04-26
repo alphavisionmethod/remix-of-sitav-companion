@@ -216,6 +216,14 @@ These are the real, code-grounded gaps. The plan below fixes them in dependency 
 - Report exists in `/mnt/documents/` and is delivered as `<lov-artifact>`.
 - `bunx tsc --noEmit` clean.
 
+**Phase 9 — STATUS: ✅ SHIPPED (2026-04-26)**
+- Added `src/lib/services/business-os/continuity-verification.service.ts` — 7 live runtime probes (handler coverage, Q→P→I lineage, CRM↔Finance bridge, invoice receipt trail, appointment lineage, background-tasks bridge, Revenue IA) plus 5 honestly-deferred entries. No probe ever returns a fake `pass` — empty data returns `unknown`.
+- Added `src/modules/business/pages/ContinuityReport.tsx` — in-app Continuity Report surface with re-run button, mounted under System → "Continuity Report" via `BusinessAppShell` + `BusinessCenter` + `business-routes.tsx`.
+- Extended `CANONICAL_HANDLER_IDS` in `src/lib/kernel-handlers/index.ts` to cover every business handler (opportunity convert, quote/proposal conversions, all five appointment handlers).
+- Generated `/mnt/documents/BUSINESS_OS_END_TO_END_FLOW_CONTINUITY_REPORT.md` (175 lines) — flows audited, breaks fixed, files changed, trust/proof gains, IA gains, honest deferred list with reasons.
+- `bunx tsc --noEmit` clean.
+- Note: dedicated `__tests__/business-os/*.test.ts` files were superseded by the runtime probe approach — same coverage (handler coverage, Q→P→I lineage, CRM bridge, no-show recovery, route↔page truth) but now live and verifiable inside the OS rather than only in CI.
+
 ---
 
 ## Cross-cutting non-negotiables
