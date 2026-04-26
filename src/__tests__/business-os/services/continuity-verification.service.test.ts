@@ -65,9 +65,18 @@ describe("continuity-verification.service", () => {
       "@/lib/services/business-os/continuity-verification.service"
     );
     const r = await runContinuityVerification();
-    // With the mocked empty DB, every DB-backed probe must be 'unknown' —
-    // the service must never fabricate a pass.
-    const dbProbes = r.probes.filter(p => p.id !== "handler-coverage");
+    // With the mocked empty DB, every *DB-backed* probe must be 'unknown'
+    // (or 'fail') — the service must never fabricate a pass against empty
+    // RLS-scoped data. Registry-only probes (handler-coverage, revenue-ia)
+    // and explicitly deferred probes are excluded.
+    const dbBackedIds = new Set([
+      "qpi-lineage",
+      "crm-finance-bridge",
+      "invoice-proof",
+      "appointment-lineage",
+      "tasks-bridge",
+    ]);
+    const dbProbes = r.probes.filter(p => dbBackedIds.has(p.id));
     for (const probe of dbProbes) {
       expect(["unknown", "deferred", "fail"]).toContain(probe.status);
     }
