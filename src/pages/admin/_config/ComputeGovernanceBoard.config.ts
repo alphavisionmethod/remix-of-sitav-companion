@@ -7,7 +7,7 @@
 // useAISpendSummary, useModelRoutingStats, useMarginSnapshot.
 // ═══════════════════════════════════════════════════════════════
 
-import type { CostClass, ComputeModelTier, BudgetEnvelope } from "@/lib/compute-governance";
+import type { CostClass, ComputeModelTier, BudgetScope, BudgetStatus } from "@/lib/compute-governance";
 
 export interface AnomalyEntry {
   id: string;
@@ -105,12 +105,29 @@ export const COMPUTE_DEEP_JOBS: DeepJob[] = [
   { id: "j3", title: "Portfolio rebalance simulation", type: "simulation", tenant: "Initech", costClass: "C", estimatedCost: 920, elapsedMin: 22, approval: "approved", status: "completed", quality: 88 },
 ];
 
-/** Authored budget envelope baseline (CG03). */
-export const COMPUTE_BUDGET_ENVELOPES: BudgetEnvelope[] = [
-  { envelopeId: "env-acme-tenant", scope: "tenant", scopeRef: "t-acme", label: "Acme — Apr", periodStart: "2026-04-01", periodEnd: "2026-04-30", allocatedCents: 32000, spentCents: 24800, deepReasoningMinutesAllocated: 300, deepReasoningMinutesUsed: 220, retriesUsed: 4, maxRetries: 12, status: "warning", asyncJobsUsed: 6, asyncJobsAllocated: 12 },
-  { envelopeId: "env-globex-tenant", scope: "tenant", scopeRef: "t-globex", label: "Globex — Apr", periodStart: "2026-04-01", periodEnd: "2026-04-30", allocatedCents: 18000, spentCents: 9200, deepReasoningMinutesAllocated: 300, deepReasoningMinutesUsed: 180, retriesUsed: 2, maxRetries: 12, status: "healthy", asyncJobsUsed: 4, asyncJobsAllocated: 12 },
-  { envelopeId: "env-initech-tenant", scope: "tenant", scopeRef: "t-initech", label: "Initech — Apr", periodStart: "2026-04-01", periodEnd: "2026-04-30", allocatedCents: 4000, spentCents: 1900, deepReasoningMinutesAllocated: 100, deepReasoningMinutesUsed: 60, retriesUsed: 0, maxRetries: 6, status: "healthy", asyncJobsUsed: 1, asyncJobsAllocated: 6 },
-  { envelopeId: "env-finance-ws", scope: "workspace", scopeRef: "ws-finance", label: "Finance workspace", periodStart: "2026-04-01", periodEnd: "2026-04-30", allocatedCents: 12000, spentCents: 5600, deepReasoningMinutesAllocated: 180, deepReasoningMinutesUsed: 90, retriesUsed: 1, maxRetries: 8, status: "healthy", asyncJobsUsed: 2, asyncJobsAllocated: 8 },
-  { envelopeId: "env-admin-ws", scope: "workspace", scopeRef: "ws-admin", label: "Admin workspace", periodStart: "2026-04-01", periodEnd: "2026-04-30", allocatedCents: 8000, spentCents: 1800, deepReasoningMinutesAllocated: 120, deepReasoningMinutesUsed: 28, retriesUsed: 0, maxRetries: 8, status: "healthy", asyncJobsUsed: 0, asyncJobsAllocated: 8 },
-  { envelopeId: "env-ops-mission", scope: "mission", scopeRef: "mx-318", label: "Connector resync mission", periodStart: "2026-04-08", periodEnd: "2026-04-12", allocatedCents: 2000, spentCents: 1740, deepReasoningMinutesAllocated: 30, deepReasoningMinutesUsed: 22, retriesUsed: 7, maxRetries: 10, status: "warning", asyncJobsUsed: 1, asyncJobsAllocated: 4 },
+/**
+ * Authored budget envelope baseline (CG03).
+ * Local lightweight shape — the page only needs scope/label/spend/cap/retry/deep
+ * counters for display. Live data overlays via useComputeBudgetStatus.
+ */
+export interface BudgetEnvelopeSummary {
+  envelopeId: string;
+  scope: BudgetScope;
+  label: string;
+  allocatedCents: number;
+  spentCents: number;
+  deepReasoningMinutesAllocated: number;
+  deepReasoningMinutesUsed: number;
+  retriesUsed: number;
+  maxRetries: number;
+  status: BudgetStatus;
+}
+
+export const COMPUTE_BUDGET_ENVELOPES: BudgetEnvelopeSummary[] = [
+  { envelopeId: "env-acme-tenant", scope: "tenant", label: "Acme — Apr", allocatedCents: 32000, spentCents: 24800, deepReasoningMinutesAllocated: 300, deepReasoningMinutesUsed: 220, retriesUsed: 4, maxRetries: 12, status: "warning" },
+  { envelopeId: "env-globex-tenant", scope: "tenant", label: "Globex — Apr", allocatedCents: 18000, spentCents: 9200, deepReasoningMinutesAllocated: 300, deepReasoningMinutesUsed: 180, retriesUsed: 2, maxRetries: 12, status: "healthy" },
+  { envelopeId: "env-initech-tenant", scope: "tenant", label: "Initech — Apr", allocatedCents: 4000, spentCents: 1900, deepReasoningMinutesAllocated: 100, deepReasoningMinutesUsed: 60, retriesUsed: 0, maxRetries: 6, status: "healthy" },
+  { envelopeId: "env-finance-ws", scope: "workspace", label: "Finance workspace", allocatedCents: 12000, spentCents: 5600, deepReasoningMinutesAllocated: 180, deepReasoningMinutesUsed: 90, retriesUsed: 1, maxRetries: 8, status: "healthy" },
+  { envelopeId: "env-admin-ws", scope: "workspace", label: "Admin workspace", allocatedCents: 8000, spentCents: 1800, deepReasoningMinutesAllocated: 120, deepReasoningMinutesUsed: 28, retriesUsed: 0, maxRetries: 8, status: "healthy" },
+  { envelopeId: "env-ops-mission", scope: "mission", label: "Connector resync mission", allocatedCents: 2000, spentCents: 1740, deepReasoningMinutesAllocated: 30, deepReasoningMinutesUsed: 22, retriesUsed: 7, maxRetries: 10, status: "warning" },
 ];
