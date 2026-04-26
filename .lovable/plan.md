@@ -1,131 +1,98 @@
+# Background Task Center — Remaining Phases (2 → 5)
 
-# Background Task Center — Production Integration Plan
+**Status going in:** Phase 1 is already merged and TypeScript-clean.
+- `src/modules/business/domain/background-tasks/types.ts` — `BackgroundJobVM`, 6 typed mappers, `summarizeJobs`, `groupJobsBySection`, `filterJobsByStatus`, `formatDuration`, `formatRelativeShort`.
+- `src/data/repositories/business-background-tasks-service.ts` — parallel RLS-scoped fetch across `crm_import_jobs`, `connector_sync_runs`, `data_export_requests`, `ingestion_jobs`, `crm_automations`, `workflow_runs` + `retryBackgroundJob`, `cancelBackgroundJob`, `recordBackgroundJobAction` (writes to `ai_action_receipts`).
+- `src/data/fixtures/mock-data/business-background-tasks.ts` — `buildDemoBackgroundJobs()`.
 
-## Audit findings (current `src/modules/business/pages/BackgroundTaskCenter.tsx`)
+**Routing note:** the page is mounted by `BusinessAppShell` under the `"ns"` key — no `App.tsx`/router changes required. The `src/pages/business/BackgroundTaskCenter.tsx` shim already re-exports the canonical module.
 
-1. **Static `TASKS` array** (6 fake rows) presented as live activity.
-2. **`([] as any[]).filter(...)`** for both filtered list and `runningCount` — counts always 0, list always empty.
-3. **No data fetching**, no auth scope, no demo/live split, no realtime/polling.
-4. **No state coverage** — no loading / error / empty / unauth / degraded.
-5. **Dead UI** — no row drilldown, no retry/cancel/open-result, filters work on nothing.
-6. **No observability/proof wiring** despite `ai_action_receipts`, `workflow_receipts`, `RecoveryOpsCenter`, `AR07RetryFailureCenter` already existing.
-7. Sits in the Business shell as **"Tasks & Syncs"** but is not connected to any of the 60+ canonical job/run tables.
-
-## Canonical systems found and reused (no duplication)
-
-| Capability | Reused from |
-|---|---|
-| Job sources | `crm_import_jobs`, `connector_sync_runs`, `data_export_requests`, `cloud_sync_jobs`, `ingestion_jobs`, `crm_automations` (last_run), `workflow_runs` |
-| Page state model | `usePageData` + `PageSkeleton` + `EmptyStateCard` + `PageTruthBanner` |
-| Demo/live split | `useDataMode()` + `_demo-source-marker.ts` fixture pattern (matches `business-scheduling-service`) |
-| Receipts/proof | `ai_action_receipts` via shared `recordAutopilotEvent` pattern |
-| Recovery routes | Link to `/admin/recovery-ops` and `/admin/ar07-retry-failure-center` (no duplicate recovery UI) |
-| Auth | `supabase.auth.getUser()` (matches scheduling/autopilot services) |
-| Realtime | Supabase channels on the same job tables (no new realtime infra) |
-
-**Explicitly NOT building:** new job tables, a parallel workflow engine, a new receipt model, a new retry handler, a new recovery surface, or a duplicate `TasksWorkflowsCenter` (that is the user-task kanban — different surface).
+**Hard rules carried forward:** no duplicate task/workflow/runtime systems; reuse `usePageData`, `PageSkeleton`, `PremiumEmptyState`, `PageErrorState`, `StatusBadge`, `AR07RetryFailureCenter`, `WorkflowReplayAudit`; zero `as any` in the page.
 
 ---
 
-## Phase 1 — Domain model + service + demo fixture (gate before Phase 2)
+## Phase 2 — React Query hook + realtime subscriptions
 
-**New files**
-- `src/modules/business/domain/background-tasks/types.ts`
-  - `BackgroundJobKind` = `"import" | "sync" | "export" | "automation" | "ingestion" | "workflow"`
-  - `BackgroundJobStatus` = `"queued" | "running" | "completed" | "failed" | "cancelled"`
-  - `BackgroundJobVM { id; kind; title; status; progress; startedAt; completedAt?; durationMs?; details?; error?; sourceTable; sourceId; canRetry; canCancel; receiptId?; recoveryHref? }`
-  - Pure mappers: `crmImportJobToVM`, `connectorSyncRunToVM`, `dataExportRequestToVM`, `cloudSyncJobToVM`, `ingestionJobToVM`, `crmAutomationToVM`, `workflowRunToVM` — each strongly typed against `BookingRow`-style `*Row` aliases derived from `Database["public"]["Tables"]`.
-  - `summarizeJobs(jobs)` → `{ running, queued, completed24h, failed24h, total }`.
-  - `groupJobsBySection(jobs)` → `{ attention, running, queued, recent, history }`.
+**File added:** `src/hooks/use-background-tasks.ts`
 
-- `src/data/fixtures/mock-data/business-background-tasks.ts`
-  - `buildDemoBackgroundJobs(): BackgroundJobVM[]` — relative-to-now timestamps so demo always looks fresh. Replaces the inline `TASKS` array. Marked with `_demo-source-marker`.
+- `useBackgroundJobs({ sinceHours? })` — wraps `usePageData` with `queryKey: ["bg-tasks", mode, userId, sinceHours]`, calls `fetchBackgroundJobs`, returns `{ jobs, partial, failedSources, summary, sections, state, refetch }` where `summary` and `sections` come from the Phase 1 pure aggregators.
+- `useBackgroundJobsRealtime()` — in `live` mode only, subscribes to `postgres_changes` on the 6 source tables filtered by `user_id=eq.<uid>` and invalidates the query on any change. Demo mode is a no-op. Uses a single Supabase channel (`bg-tasks:<uid>`) to avoid channel sprawl. Cleans up on unmount.
+- `useRetryBackgroundJob()` / `useCancelBackgroundJob()` — `useMutation` wrappers that call the Phase 1 service mutations, then call `recordBackgroundJobAction(...)`, then `queryClient.invalidateQueries({ queryKey: ["bg-tasks"] })`. On not-supported / not-authenticated reasons, surface a toast via `sonner` with the honest reason; do not silently swallow.
 
-- `src/data/repositories/business-background-tasks-service.ts`
-  - `fetchBackgroundJobs({ mode, sinceHours = 72 }): Promise<BackgroundJobVM[]>`
-    - `mode === "demo"` → fixture
-    - `mode === "live"` → 7 parallel `fromTable(...).select(...).eq("user_id", uid).gte("created_at", ...)` queries against the tables above (only those with user-scoped RLS for the operator surface; `cloud_sync_jobs` is admin-only and is excluded for the business operator view), normalized via the mappers, sorted by `startedAt` desc.
-    - Per-source try/catch → degraded results carry a `partial` flag instead of throwing.
-  - `retryBackgroundJob(job)` — kind-aware: imports re-enqueue via existing `crm-import` edge function if present, else marks `pending`; for `connector_sync_runs` calls existing `connector-sync` invoker; for `workflow_runs` uses existing replay path; for unsupported kinds returns `{ ok: false, reason: "manual" }` so the UI shows an honest disabled state.
-  - `cancelBackgroundJob(job)` — only for `queued`/`running` and only on tables/kinds where the existing engine supports it; otherwise honest no-op with reason.
-  - `recordBackgroundJobAction(event)` — writes to `ai_action_receipts` (governance trail), reuses the same pattern as `recordAutopilotEvent`.
-
-**Validation gate (must pass before Phase 2):**
-- `bunx tsc --noEmit` clean
-- `bunx vitest run src/data/repositories/business-background-tasks-service` (added in Phase 4 — for now just type-check + manual `psql` smoke)
-- Zero new tables, zero new edge functions
+**Gate:** `bunx tsc --noEmit -p tsconfig.app.json` clean for the new hook file. Manual smoke: hook compiles, types flow.
 
 ---
 
-## Phase 2 — React Query hook + realtime (gate before Phase 3)
+## Phase 3 — Page rewrite + detail drawer
 
-**New file**
-- `src/hooks/use-background-tasks.ts`
-  - `useBackgroundTasks()` → wraps `usePageData<BackgroundJobVM[]>` with the service.
-  - Subscribes via `supabase.channel("bg-tasks").on("postgres_changes", ...)` to `crm_import_jobs`, `connector_sync_runs`, `data_export_requests`, `ingestion_jobs`, `workflow_runs` (filtered by `user_id=eq.${uid}`), invalidating the query on change. Falls back to a 15s polling interval if realtime denied.
-  - `useRetryBackgroundJob()` / `useCancelBackgroundJob()` — mutation hooks with optimistic toast + receipt emission + invalidation.
+**File rewritten:** `src/modules/business/pages/BackgroundTaskCenter.tsx`
+- Remove the static `TASKS` array, `BGTask` interface, and every `([] as any[])`.
+- Mount `useBackgroundJobs()` and `useBackgroundJobsRealtime()` at the top.
+- Render four real states using canonical primitives:
+  - `loading` → `<PageSkeleton variant="list" />`
+  - `error` → `<PageErrorState onRetry={refetch} />`
+  - `unauthenticated` (live + no user) → `<PremiumEmptyState variant="auth-required" cta="Sign in" onCta={…} />`
+  - `empty` → `<PremiumEmptyState variant="no-data" title="No background jobs" body="Imports, syncs, exports, automations, and workflows will appear here as they run." />`
+- Header KPI strip: `summary.running`, `summary.queued`, `summary.completed24h`, `summary.failed24h`. All derived from real state.
+- Filters: `all | running | queued | completed | failed` — drives `filterJobsByStatus`.
+- Sectioned list (when filter = `all`): **Attention required** (failed) → **Running** → **Queued** → **Recent (24h)** → **History**. Each section uses `groupJobsBySection`. Empty sections collapse silently.
+- Per-row: kind icon, title, `StatusBadge` mapped from canonical tones (`running→info`, `queued→muted`, `completed→success`, `failed→danger`, `cancelled→muted`), real progress bar derived from `job.progress`, `formatRelativeShort(startedAt)` and `formatDuration(durationMs)`.
+- **Partial-degraded banner:** when `partial` is true, render an honest `StatusBadge tone="warning"` strip listing `failedSources` ("Some sources unavailable: …. Showing what we have."). No fake fallback rows.
+- Click row → opens `BackgroundJobDetailDrawer`.
 
-**Validation gate:** `tsc --noEmit` clean, hook used nowhere else (no duplication), realtime subscription cleanup verified.
+**File added:** `src/modules/business/components/background-tasks/BackgroundJobDetailDrawer.tsx`
+- `<Sheet>` (right side). Body shows: kind, title, status badge, source table + id, started/completed/duration, details, error (if any), and an explanation of where the row came from ("Source: `crm_import_jobs` · row `…`").
+- Action footer:
+  - **Retry** → enabled iff `job.canRetry`. Uses `useRetryBackgroundJob()`.
+  - **Cancel** → enabled iff `job.canCancel`. Uses `useCancelBackgroundJob()`. Confirmation via `<AlertDialog>`.
+  - **Open recovery** → `Link` to `job.recoveryHref` when set (already routes to `AR07RetryFailureCenter` or `WorkflowReplayAudit` per Phase 1).
+  - **View logs** → for `workflow` kind, deep-links to `WorkflowReplayAudit?run=<sourceId>`; for other kinds where no canonical viewer exists, render a disabled button with tooltip `"Logs not yet exposed for this source"` (honest deferred — no dead button).
+- Receipt visibility: a "Last governance receipt" line appears when the latest mutation result is in cache; otherwise hidden.
 
----
-
-## Phase 3 — Page rewrite + actions + observability (gate before Phase 4)
-
-**Edited file**
-- `src/modules/business/pages/BackgroundTaskCenter.tsx` — full rewrite:
-  - Remove `TASKS`, remove all `([] as any[])` casts, remove `any`.
-  - Add `PageTruthBanner` (matches Autopilot/Scheduling).
-  - State machine via `usePageData`:
-    - `loading` → `<PageSkeleton variant="list" />`
-    - `error` → inline error card with retry
-    - `unauth` (live + no user) → sign-in CTA
-    - `empty` → `<EmptyStateCard>` with "Run an import or connect a sync source" CTA linking to `/business/contacts` (CSV import) and `/business/integrations`
-    - `ready` → real layout
-  - **KPIs** computed from `summarizeJobs(jobs)`: Running · Queued · Completed (24h) · Failed (24h) · Total.
-  - **Filter tabs** drive a real predicate over typed `jobs` (`all | running | completed | failed | queued`).
-  - **Grouped sections** via `groupJobsBySection`: "Attention required" (failed + recoverable) → "Running now" → "Queued" → "Recent" → expandable "History".
-  - **Row click** opens a slide-over `BackgroundJobDetailDrawer` (new co-located component in same dir):
-    - Shows kind, source table, started/completed/duration, progress, error message, raw `details`.
-    - Action buttons: **Retry** (enabled iff `canRetry`), **Cancel** (iff `canCancel`), **Open recovery center** (links to `/admin/ar07-retry-failure-center?jobId=...` for failed), **View receipt** (opens `/admin/aig05-receipts-explorer?ref=...` if `receiptId`).
-    - Buttons that aren't supported for that kind render disabled with a tooltip explaining why — **no dead buttons**.
-  - Replace static "advisor" copy: a small `BackgroundOpsAdvisorStrip` derived from `summarizeJobs` (e.g., "3 imports failed in last 24h — open recovery", or "All clear · 12 syncs completed today"). Not a parallel advisor system, just a derived insight string + CTA, matching the Autopilot pattern.
-
-**Validation gate:** Manual smoke in preview against demo + live mode, `tsc --noEmit` clean, all action buttons resolve to a real handler or honest disabled state.
+**Gate:** `bunx tsc --noEmit -p tsconfig.app.json` clean. Page renders all four states in dev. No `any`.
 
 ---
 
-## Phase 4 — Tests (gate before Phase 5)
+## Phase 4 — Tests
 
-**New files**
-- `src/modules/business/domain/background-tasks/__tests__/types.test.ts`
-  - Mappers produce expected `BackgroundJobVM` from sample rows of every source table.
-  - `summarizeJobs` and `groupJobsBySection` cover empty, all-running, all-failed, mixed.
-- `src/data/repositories/__tests__/business-background-tasks-service.test.ts`
-  - Demo mode returns fixture. Live mode unauth returns `[]`. Per-source failure → `partial` flag, no throw.
-- `src/modules/business/pages/__tests__/BackgroundTaskCenter.test.tsx`
-  - Renders skeleton on loading, error card on error, empty state on `[]`, real rows + KPIs on ready.
-  - Filter tabs filter the typed list.
-  - Detail drawer opens on row click; retry button disabled when `canRetry === false`.
+**Files added:**
+- `src/modules/business/domain/background-tasks/__tests__/types.test.ts` — Vitest unit tests for every mapper (one row per source table → asserts shape, status normalization, progress, error, recovery href). Covers `summarizeJobs`, `groupJobsBySection`, `filterJobsByStatus`, `formatDuration`, `formatRelativeShort` (deterministic clock).
+- `src/data/repositories/__tests__/business-background-tasks-service.test.ts` — mocks `@/integrations/supabase/client` and `fromTable`; asserts demo mode returns fixture, live mode aggregates 6 sources, partial-degraded behavior when one source throws, and that `recordBackgroundJobAction` writes to `ai_action_receipts` with the right columns.
+- `src/modules/business/pages/__tests__/BackgroundTaskCenter.test.tsx` — RTL renders the page in `loading`, `error`, `empty`, and `ready` states by mocking `use-background-tasks`. Asserts: KPI strip uses real summary numbers, filter buttons switch lists, clicking a row opens the drawer, retry button is disabled when `canRetry=false`, partial-degraded banner appears when `partial=true`.
 
-**Validation gate:** `bunx vitest run src/modules/business src/data/repositories/__tests__/business-background-tasks-service` all green.
+**Gate:** `bunx vitest run` for these three files passes locally. No flakes from realtime (subscription hook is mocked in page tests).
 
 ---
 
-## Phase 5 — Integration report (final gate)
+## Phase 5 — Integration report
 
-**New file**
-- `docs/integration/BACKGROUND_TASK_CENTER_INTEGRATION_REPORT.md`
-  - Sections 1–10 per the spec: original issues, canonical systems reused, files added/changed, data wiring, observability/recovery integrations, UX states, wow upgrades, deferred items (with honest representation), tests added.
+**File added:** `docs/integration/BACKGROUND_TASK_CENTER_INTEGRATION_REPORT.md`
+
+Sections:
+1. What was wrong (static `TASKS`, `([] as any[])` filters/counts, no fetch, no auth, no drawer, no retry/cancel, no observability).
+2. Canonical systems reused (`bookings`/job tables × 6, `usePageData`, `PageSkeleton`, `PremiumEmptyState`, `PageErrorState`, `StatusBadge`, `Sheet`, `AlertDialog`, `AR07RetryFailureCenter`, `WorkflowReplayAudit`, `ai_action_receipts`, `useDataMode`).
+3. Files changed / files added (exact paths from this plan).
+4. Wiring map (what powers each visual: KPI → `summarizeJobs`, sections → `groupJobsBySection`, retry → service mutation → receipt → invalidate).
+5. Observability/proof/recovery (receipts to `ai_action_receipts`, deep-links to recovery surfaces, partial-degraded source list).
+6. UX states added (loading/error/empty/unauth/partial/no-match-filter).
+7. Wow upgrades (sectioned attention queue, realtime invalidation, honest deferred actions, governance receipts on every mutation).
+8. Deferred items + why (per-source log viewers for non-workflow kinds; cross-tenant operator view; cancellation for `connector_sync_runs` and `data_export_requests` — workers don't expose a cancel API).
+9. Tests added (3 files above) and how to run them.
+
+**Gate:** report file exists, links resolve, paths match the actual changes.
 
 ---
 
-## OS / App impact
+## Anti-duplication assertions (verified during Phase 1 audit, re-checked at each gate)
 
-- **OS layer:** no changes needed — `BusinessAppShell` already mounts the page at `background-tasks`. The page lives inside the Business app surface only; it does not pollute the desktop shell or `TasksWorkflowsCenter` (which remains the user-task kanban).
-- **Mobile/Admin:** out of scope; the relevant deep links (`/admin/ar07-retry-failure-center`, `/admin/aig05-receipts-explorer`) already exist and are reused, not duplicated.
+- No new task/job DB tables — uses the 6 existing ones.
+- No new edge functions.
+- No new status/badge primitive — uses `StatusBadge`.
+- No new empty/error/loading primitive — uses `usePageData` + `PremiumEmptyState` + `PageErrorState` + `PageSkeleton`.
+- No new receipt/proof system — writes to `ai_action_receipts` (same pattern as `autopilot-config-service`).
+- No new recovery surface — links to existing `AR07RetryFailureCenter` and `WorkflowReplayAudit`.
+- The `TasksWorkflowsCenter` (user-task kanban) is intentionally not touched: distinct domain (human tasks vs. system jobs).
 
-## Hard rules I will hold to
+## Gating discipline
 
-- One in-progress phase at a time. No phase advances until the previous phase is `tsc`-clean and (from Phase 4) test-green.
-- No new tables, no new edge functions, no new admin pages, no new advisor system, no `as any` in the page.
-- Every action button is wired to a real handler or disabled with an explicit reason — zero dead UI.
+After each phase: TypeScript clean → tests added at that phase pass → I report and **stop**, waiting for "continue" before starting the next phase. No phase begins until the previous one is 100% deployment-ready.
