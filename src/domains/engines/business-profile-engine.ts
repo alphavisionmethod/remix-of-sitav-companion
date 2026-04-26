@@ -547,24 +547,3 @@ function deriveCrossDomain(primary: ProfileArchetype, flags: OperatingFlags): Cr
     concierge: conciergeMap[primary] || conciergeMap.service,
   };
 }
-
-// ── Storage helpers ───────────────────────────────────────────
-
-const STORAGE_KEY = "sita-business-profile";
-
-export function saveBusinessProfile(profile: BusinessProfileResult): void {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(profile));
-  } catch { /* quota exceeded — fail silently */ }
-}
-
-export function loadBusinessProfile(): BusinessProfileResult | null {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? JSON.parse(raw) : null;
-  } catch { return null; }
-}
-
-export function clearBusinessProfile(): void {
-  localStorage.removeItem(STORAGE_KEY);
-}
