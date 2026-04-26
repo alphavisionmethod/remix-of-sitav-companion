@@ -13,12 +13,10 @@ import type {
 
 function snap(i: number): EvolutionSnapshot {
   return {
-    id: `snap-${i}`,
-    capturedAt: new Date(2026, 0, i + 1).toISOString(),
-    primaryMode: "service",
-    weights: { service: 60, product: 20, marketplace: 10, hybrid: 10 },
-    confidence: 80,
-  } as unknown as EvolutionSnapshot;
+    capturedAt: new Date(Date.UTC(2026, 0, i + 1)).toISOString(),
+    signalSummary: {} as EvolutionSnapshot["signalSummary"],
+    derivedWeightDelta: { service: i },
+  };
 }
 
 function insight(id: string): EvolutionInsight {
@@ -49,8 +47,9 @@ describe("profile-evolution.service", () => {
     for (let i = 0; i < 35; i++) saveEvolutionSnapshot(snap(i));
     const history = loadEvolutionHistory();
     expect(history).toHaveLength(30);
-    expect(history[0].id).toBe("snap-5");
-    expect(history[29].id).toBe("snap-34");
+    // oldest 5 dropped: deltas 0-4 gone, 5-34 remain
+    expect(history[0].derivedWeightDelta.service).toBe(5);
+    expect(history[29].derivedWeightDelta.service).toBe(34);
   });
 
   it("loadEvolutionHistory returns [] when storage empty", () => {
