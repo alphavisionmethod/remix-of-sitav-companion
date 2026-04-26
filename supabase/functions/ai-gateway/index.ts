@@ -24,17 +24,32 @@ const LOVABLE_AI_URL = "https://ai.gateway.lovable.dev/v1/chat/completions";
 
 // Task class → default model mapping
 const TASK_CLASS_MODELS: Record<string, string> = {
-  premium_synthesis: "google/gemini-2.5-pro",
-  balanced_assistant: "google/gemini-3-flash-preview",
-  economy_utility: "google/gemini-2.5-flash-lite",
-  cheap_utility: "google/gemini-2.5-flash-lite",
-  internal_only: "google/gemini-2.5-pro",
-  fallback: "google/gemini-2.5-flash-lite",
-  fallback_degraded: "google/gemini-2.5-flash-lite",
+  // ─── Quatarly-first model map (Lovable AI used as automatic fallback) ───
+  premium_synthesis: "claude-opus-4-6-thinking",
+  balanced_assistant: "gemini-3-flash",
+  economy_utility: "claude-haiku-4-5-20251001",
+  cheap_utility: "gemini-3-flash",
+  internal_only: "gpt-5.2",
+  fallback: "gemini-3-flash",
+  fallback_degraded: "gemini-3-flash",
 };
 
 // Rough cost estimate per 1K tokens by model prefix
 const COST_PER_1K: Record<string, number> = {
+  // Quatarly model IDs
+  "claude-opus-4-6-thinking": 0.015,
+  "claude-sonnet-4-6-thinking": 0.006,
+  "claude-haiku-4-5-20251001": 0.0008,
+  "gemini-3.1-pro": 0.005,
+  "gemini-3-flash": 0.0003,
+  "gpt-5.2": 0.010,
+  "gpt-5.2-codex": 0.010,
+  "gpt-5.1": 0.008,
+  "gpt-5.1-codex": 0.008,
+  "gpt-5.1-codex-max": 0.012,
+  "gpt-5.3-codex": 0.012,
+  "gpt-5.4": 0.012,
+  // Lovable equivalents (used on fallback)
   "google/gemini-2.5-pro": 0.01,
   "google/gemini-3-flash-preview": 0.002,
   "google/gemini-2.5-flash": 0.001,
@@ -44,6 +59,87 @@ const COST_PER_1K: Record<string, number> = {
 function estimateCostUsd(model: string, totalTokens: number): number {
   const rate = COST_PER_1K[model] ?? 0.002;
   return (totalTokens / 1000) * rate;
+}
+
+// ─── Quatarly model ID → nearest Lovable AI equivalent (for fallback) ───
+const QUATARLY_TO_LOVABLE: Record<string, string> = {
+  "claude-opus-4-6-thinking":     "google/gemini-2.5-pro",
+  "claude-sonnet-4-6-thinking":   "google/gemini-2.5-pro",
+  "claude-haiku-4-5-20251001":    "google/gemini-2.5-flash-lite",
+  "gemini-3.1-pro":               "google/gemini-2.5-pro",
+  "gemini-3-flash":               "google/gemini-3-flash-preview",
+  "gpt-5.2":                      "openai/gpt-5",
+  "gpt-5.2-codex":                "openai/gpt-5",
+  "gpt-5.3-codex":                "openai/gpt-5",
+  "gpt-5.4":                      "openai/gpt-5",
+  "gpt-5.1":                      "openai/gpt-5-mini",
+  "gpt-5.1-codex":                "openai/gpt-5-mini",
+  "gpt-5.1-codex-max":            "openai/gpt-5",
+};
+
+function translateToLovableModel(quatarlyModel: string): string {
+  // If already a Lovable model id (contains "/"), keep it as-is.
+  if (quatarlyModel.includes("/")) return quatarlyModel;
+  return QUATARLY_TO_LOVABLE[quatarlyModel] ?? "google/gemini-3-flash-preview";
+}
+
+const QUATARLY_URL = "https://api.quatarly.cloud/v1/chat/completions";
+
+/**
+ * Calls Quatarly first (primary). On infra/credit/rate failures (402, 429, 5xx)
+ * automatically retries against Lovable AI with a translated model id.
+ * Returns the actual provider used so receipts stay honest.
+ */
+async function callProvider(
+  payload: Record<string, unknown>,
+  quatarlyKey: string | undefined,
+  lovableKey: string | undefined,
+): Promise<{ res: Response; provider: "quatarly" | "lovable"; modelUsed: string }> {
+  const originalModel = String(payload.model ?? "");
+
+  if (quatarlyKey) {
+    try {
+      const res = await fetch(QUATARLY_URL, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${quatarlyKey}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+      // Only fall back on infra / credit / rate failures (not on 4xx client errors)
+      if (res.ok || ![402, 429, 500, 502, 503, 504].includes(res.status)) {
+        return { res, provider: "quatarly", modelUsed: originalModel };
+      }
+      console.warn(`[ai-gateway] Quatarly returned ${res.status} — falling back to Lovable AI`);
+      // Drain the body so it doesn't leak.
+      try { await res.text(); } catch { /* ignore */ }
+    } catch (e) {
+      console.warn(`[ai-gateway] Quatarly fetch threw: ${(e as Error).message} — falling back to Lovable AI`);
+    }
+  }
+
+  if (!lovableKey) {
+    // Construct a synthetic 503 so the caller can degrade gracefully.
+    const body = JSON.stringify({ error: "no_provider_available" });
+    return {
+      res: new Response(body, { status: 503, headers: { "Content-Type": "application/json" } }),
+      provider: "lovable",
+      modelUsed: originalModel,
+    };
+  }
+
+  const lovableModel = translateToLovableModel(originalModel);
+  const fallbackPayload = { ...payload, model: lovableModel };
+  const res = await fetch(LOVABLE_AI_URL, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${lovableKey}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(fallbackPayload),
+  });
+  return { res, provider: "lovable", modelUsed: lovableModel };
 }
 
 serve(async (req) => {
@@ -61,6 +157,7 @@ serve(async (req) => {
     }
 
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
+    const QUATARLY_API_KEY = Deno.env.get("QUATARLY_API_KEY");
     const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
     const SUPABASE_ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY")!;
     const SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
@@ -91,7 +188,9 @@ serve(async (req) => {
         status: "ok",
         timestamp: new Date().toISOString(),
         userId: user.id,
-        hasApiKey: !!LOVABLE_API_KEY,
+        hasApiKey: !!(QUATARLY_API_KEY || LOVABLE_API_KEY),
+        primaryProvider: QUATARLY_API_KEY ? "quatarly" : "lovable",
+        fallbackProvider: QUATARLY_API_KEY && LOVABLE_API_KEY ? "lovable" : null,
       }, 200);
     }
 
@@ -111,7 +210,7 @@ serve(async (req) => {
     let resolvedPromptVersionId: string | null = null;
 
     // 1. Check if AI is available
-    if (!LOVABLE_API_KEY) {
+    if (!QUATARLY_API_KEY && !LOVABLE_API_KEY) {
       return corsResponse({
         status: "degraded",
         reason: "no_api_key",
@@ -291,21 +390,15 @@ serve(async (req) => {
       });
     }
 
-    // 4. Call Lovable AI Gateway
+    // 4. Call AI provider (Quatarly primary, Lovable AI fallback)
     const startTime = Date.now();
 
     const aiPayload: Record<string, unknown> = { model, messages, stream };
     if (maxTokens) aiPayload.max_tokens = maxTokens;
     if (temperature !== undefined) aiPayload.temperature = temperature;
 
-    const aiResponse = await fetch(LOVABLE_AI_URL, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${LOVABLE_API_KEY}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(aiPayload),
-    });
+    const { res: aiResponse, provider: providerUsed, modelUsed } =
+      await callProvider(aiPayload, QUATARLY_API_KEY, LOVABLE_API_KEY);
 
     const latencyMs = Date.now() - startTime;
 
@@ -313,7 +406,7 @@ serve(async (req) => {
     if (stream) {
       if (!aiResponse.ok) {
         const errText = await aiResponse.text();
-        console.error("AI gateway stream error:", aiResponse.status, errText);
+        console.error(`AI gateway stream error (${providerUsed}):`, aiResponse.status, errText);
 
         if (aiResponse.status === 429) {
           return corsResponse({ error: "Rate limited. Please try again later.", status: "rate_limited" }, 429);
@@ -336,11 +429,11 @@ serve(async (req) => {
 
       serviceClient.from("ai_inference_receipts").insert({
         user_id: user.id,
-        provider: model.split("/")[0] ?? "lovable",
-        model,
+        provider: providerUsed,
+        model: modelUsed,
         capability_id: capabilityId,
         latency_ms: latencyMs,
-        route_reason: `${routingSource}, task_class=${taskClass}`,
+        route_reason: `${routingSource}, task_class=${taskClass}, provider=${providerUsed}`,
       }).then(() => {});
 
       return new Response(aiResponse.body, {
@@ -363,14 +456,8 @@ serve(async (req) => {
       // Try fallback
       if (fallbackModel && model !== fallbackModel) {
         aiPayload.model = fallbackModel;
-        const fallbackResp = await fetch(LOVABLE_AI_URL, {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${LOVABLE_API_KEY}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(aiPayload),
-        });
+        const { res: fallbackResp, provider: fbProvider, modelUsed: fbModelUsed } =
+          await callProvider(aiPayload, QUATARLY_API_KEY, LOVABLE_API_KEY);
 
         if (fallbackResp.ok) {
           const fallbackData = await fallbackResp.json();
@@ -380,7 +467,7 @@ serve(async (req) => {
           const inputTokens = usage.prompt_tokens ?? 0;
           const outputTokens = usage.completion_tokens ?? 0;
           const totalTokens = inputTokens + outputTokens;
-          const costUsd = estimateCostUsd(fallbackModel, totalTokens);
+          const costUsd = estimateCostUsd(fbModelUsed, totalTokens);
 
           // Log fallback event
           await serviceClient.from("ai_fallback_events").insert({
@@ -417,21 +504,21 @@ serve(async (req) => {
           // Legacy receipt
           await serviceClient.from("ai_inference_receipts").insert({
             user_id: user.id,
-            provider: fallbackModel.split("/")[0],
-            model: fallbackModel,
+            provider: fbProvider,
+            model: fbModelUsed,
             capability_id: capabilityId,
             input_tokens: inputTokens,
             output_tokens: outputTokens,
             cost_estimate_cents: Math.round(costUsd * 100),
             latency_ms: fbLatency,
-            route_reason: `fallback from ${model}`,
+            route_reason: `fallback from ${model} via ${fbProvider}`,
             verification_outcome: "fallback_used",
           });
 
           return corsResponse({
             content,
-            provider: fallbackModel.split("/")[0],
-            model: fallbackModel,
+            provider: fbProvider,
+            model: fbModelUsed,
             taskClass,
             inputTokens,
             outputTokens,
@@ -467,7 +554,7 @@ serve(async (req) => {
     const inputTokens = usage.prompt_tokens ?? 0;
     const outputTokens = usage.completion_tokens ?? 0;
     const totalTokens = inputTokens + outputTokens;
-    const costUsd = estimateCostUsd(model, totalTokens);
+    const costUsd = estimateCostUsd(modelUsed, totalTokens);
     const costCents = Math.round(costUsd * 100);
 
     // 6. Log to all canonical tables
@@ -496,14 +583,14 @@ serve(async (req) => {
     // Legacy inference receipt
     await serviceClient.from("ai_inference_receipts").insert({
       user_id: user.id,
-      provider: model.split("/")[0] ?? "lovable",
-      model,
+      provider: providerUsed,
+      model: modelUsed,
       capability_id: capabilityId,
       input_tokens: inputTokens,
       output_tokens: outputTokens,
       cost_estimate_cents: costCents,
       latency_ms: latencyMs,
-      route_reason: `${routingSource}, task_class=${taskClass}, capability=${capabilityId}`,
+      route_reason: `${routingSource}, task_class=${taskClass}, capability=${capabilityId}, provider=${providerUsed}`,
       verification_outcome: "success",
     });
 
@@ -526,15 +613,15 @@ serve(async (req) => {
 
     return corsResponse({
       content,
-      provider: model.split("/")[0] ?? "lovable",
-      model,
+      provider: providerUsed,
+      model: modelUsed,
       taskClass,
       inputTokens,
       outputTokens,
       costCents,
       latencyMs,
       cached: false,
-      fallbackUsed: budgetDowngrade,
+      fallbackUsed: budgetDowngrade || providerUsed === "lovable",
       receiptId: ledgerRow?.id ?? crypto.randomUUID(),
     });
 
