@@ -25,7 +25,7 @@ import { RECOVERY_CANDIDATES } from "@/data/fixtures/mock-data/recovery-candidat
 import type { RecoveryCandidate } from "@/domains/business";
 
 export interface UseLeadRecoveryCandidatesResult {
-  candidates: ReadonlyArray<RecoveryCandidate>;
+  candidates: RecoveryCandidate[];
   /** True when the candidate list comes from demo fixtures. */
   isDemo: boolean;
   /** True when no user session is available (live mode only). */
@@ -41,8 +41,8 @@ export function useLeadRecoveryCandidates(): UseLeadRecoveryCandidatesResult {
   const { user } = useAuth();
   const { isDemo } = useRealityModeSafe();
 
-  const candidates = useMemo<ReadonlyArray<RecoveryCandidate>>(() => {
-    if (isDemo) return RECOVERY_CANDIDATES;
+  const candidates = useMemo<RecoveryCandidate[]>(() => {
+    if (isDemo) return [...RECOVERY_CANDIDATES];
     // Live mode: no real recovery_candidates table exists yet. Returning an
     // empty list lets the page render an honest empty state instead of
     // masquerading as live with fixture rows.
