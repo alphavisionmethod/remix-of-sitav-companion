@@ -50,7 +50,7 @@ function listPageFiles(): string[] {
     .map((f) => f.replace(/\.tsx$/, ""));
 }
 
-function hasFakeLiveArray(src: string): boolean {
+export function hasFakeLiveArray(src: string): boolean {
   // top-level `const NAME: Type[] = [ {  ... } , {  ... } ]` or
   //              `const NAME = [ { ... }, { ... } ]`
   // Match a const at column 0 followed by an array literal containing
@@ -66,11 +66,11 @@ function hasFakeLiveArray(src: string): boolean {
   return pattern.test(src);
 }
 
-function hasAuditStrippedFilter(src: string): boolean {
+export function hasAuditStrippedFilter(src: string): boolean {
   return /\(\s*\[\s*\]\s+as\s+any\s*\[\s*\]\s*\)\s*\.(filter|map|length|find|some|every|reduce)/.test(src);
 }
 
-function hasDataImports(src: string): boolean {
+export function hasDataImports(src: string): boolean {
   // Any hook import (use*) or service import counts as data wiring.
   if (/from\s+["']@\/hooks\/[^"']+["']/.test(src)) return true;
   if (/from\s+["']@\/lib\/services\/business-os\/[^"']+["']/.test(src)) return true;
@@ -86,7 +86,7 @@ function hasDataImports(src: string): boolean {
  * Returns the offending import lines, or an empty array if all
  * fixture imports are properly gated (or absent).
  */
-function findUngatedMockImports(src: string): string[] {
+export function findUngatedMockImports(src: string): string[] {
   const importRe = /import\s+(?:\{[^}]+\}|\*\s+as\s+\w+|\w+)\s+from\s+["'](@\/data\/fixtures\/mock-data\/[^"']+)["']/g;
   const matches: string[] = [];
   let m: RegExpExecArray | null;
@@ -111,7 +111,7 @@ function findUngatedMockImports(src: string): string[] {
  * This masquerades as real async work and is forbidden in fully-wired
  * pages.
  */
-function hasFakeExecutePattern(src: string): boolean {
+export function hasFakeExecutePattern(src: string): boolean {
   // setTimeout(() => setStatus("done"), …) or
  //  setTimeout(() => { setStatus("complete"); }, …)
   const re = /setTimeout\s*\(\s*\(\s*\)\s*=>\s*\{?\s*set[A-Z]\w*\s*\(\s*["'](?:done|complete|success|completed|finished)["']/;
@@ -122,7 +122,7 @@ function hasFakeExecutePattern(src: string): boolean {
  * Rule 7: degraded pages must render an honest empty/setup-required
  * surface and must not contain fake-live arrays.
  */
-function hasEmptyStateGrammar(src: string): boolean {
+export function hasEmptyStateGrammar(src: string): boolean {
   if (/EmptyStateCard|PremiumEmptyState|LegacyEmptyStateCard|ConciergeEmptyState|<EmptyState\b/.test(src)) return true;
   if (/setup-required|setupRequired|connect-an-integration|"connect"/i.test(src)) return true;
   if (/PageTruthBanner[^>]*truthState=["'](?:partial|degraded|connecting)["']/.test(src)) return true;
@@ -133,7 +133,7 @@ function hasEmptyStateGrammar(src: string): boolean {
  * Rule 8 (advisory): destructure a `useXxx` result into a name that
  * never appears again in the file body.
  */
-function findFetchedButUnusedQueries(src: string): string[] {
+export function findFetchedButUnusedQueries(src: string): string[] {
   const offenders: string[] = [];
   const decl = /const\s*\{\s*data\s*:\s*(\w+)[\s\S]*?\}\s*=\s*use[A-Z]\w*\s*\(/g;
   let m: RegExpExecArray | null;
