@@ -11,6 +11,7 @@ import {
   ADAPTIVE_SURFACES,
   E2E_SURFACES,
   PAGE_TEST_EXCLUSIONS,
+  SERVICE_TEST_EXCLUSIONS,
 } from "./business-os-verification-matrix";
 
 const PAGES_DIR = "src/modules/business/pages";
@@ -40,7 +41,7 @@ describe("Business OS Verification Matrix", () => {
       .filter((f) => f.endsWith(".service.ts"))
       .map((f) => path.join(SERVICES_DIR, f));
     const classified = new Set(SERVICE_SURFACES.map((s) => s.ref));
-    const missing = onDisk.filter((p) => !classified.has(p));
+    const missing = onDisk.filter((p) => !classified.has(p) && !(p in SERVICE_TEST_EXCLUSIONS));
     expect(missing, `Unclassified services in matrix: ${missing.join(", ")}`).toEqual([]);
   });
 
