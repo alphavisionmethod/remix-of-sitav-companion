@@ -1,6 +1,7 @@
 import { toast } from "sonner";
 import { useState } from "react";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { useBusinessOperations } from "@/hooks/use-business-operations";
 import { getModuleAdaptation } from "@/domains/engines/business-module-adaptations";
 import { motion } from "framer-motion";
 import { HeroCard, QueueCard, ActionCard, StatusCard } from "@/platform/sita/components/sita/cards";
@@ -20,44 +21,17 @@ import {
 } from "lucide-react";
 type Tab = "all" | "queues" | "escalations" | "team" | "bottlenecks" | "delayed";
 
-interface OperationalItem {
-  id: string; title: string;
-  category: "queue" | "escalation" | "bottleneck" | "delayed" | "exception";
-  status: "active" | "at-risk" | "blocked" | "resolved" | "overdue";
-  urgency: "critical" | "high" | "medium" | "low";
-  owner: string; ownerAvatar: string; customerImpact: number; description: string;
-  linkedEntity?: string; linkedEntityType?: string; age: string; nextAction: string; workload?: number;
-}
-
-const ITEMS: OperationalItem[] = [
-  { id: "ops-1", title: "Order fulfillment queue backup", category: "queue", status: "at-risk", urgency: "critical", owner: "Sarah K.", ownerAvatar: "SK", customerImpact: 12, description: "14 orders pending fulfillment > 48hrs. SLA breach imminent for 5 priority accounts.", linkedEntity: "Warehouse A", linkedEntityType: "Facility", age: "2d 6h", nextAction: "Reassign 5 priority orders to express lane" },
-  { id: "ops-2", title: "Billing dispute escalation — Acme Corp", category: "escalation", status: "active", urgency: "high", owner: "Michael R.", ownerAvatar: "MR", customerImpact: 1, description: "Customer disputes $12,400 invoice. Finance review pending since Monday.", linkedEntity: "INV-2024-0847", linkedEntityType: "Invoice", age: "4d", nextAction: "Schedule finance review call" },
-  { id: "ops-3", title: "API integration stall — payment processor", category: "bottleneck", status: "blocked", urgency: "critical", owner: "Dev Team", ownerAvatar: "DT", customerImpact: 45, description: "Payment processor webhook failing intermittently. 45 transactions in retry queue.", linkedEntity: "Stripe Webhook", linkedEntityType: "Integration", age: "18h", nextAction: "Escalate to engineering lead" },
-  { id: "ops-4", title: "Delayed onboarding — 3 enterprise accounts", category: "delayed", status: "overdue", urgency: "high", owner: "Lisa M.", ownerAvatar: "LM", customerImpact: 3, description: "Enterprise onboarding behind schedule. Missing compliance docs from 2 accounts.", linkedEntity: "Q1 Enterprise Cohort", linkedEntityType: "Program", age: "1w 2d", nextAction: "Send compliance doc reminders" },
-  { id: "ops-5", title: "Support ticket volume spike", category: "queue", status: "at-risk", urgency: "high", owner: "Support Team", ownerAvatar: "ST", customerImpact: 28, description: "Support volume 3x normal after product update. Response time degrading.", linkedEntity: "v2.4 Release", linkedEntityType: "Release", age: "1d 4h", nextAction: "Deploy additional support agents" },
-  { id: "ops-6", title: "Inventory restock delay — top 5 SKUs", category: "bottleneck", status: "at-risk", urgency: "medium", owner: "Procurement", ownerAvatar: "PR", customerImpact: 8, description: "Supplier delayed shipment for 5 best-selling SKUs. Current stock covers ~3 days.", linkedEntity: "SKU Batch #447", linkedEntityType: "Inventory", age: "3d", nextAction: "Contact alternate supplier" },
-  { id: "ops-7", title: "SLA breach — premium tier response time", category: "escalation", status: "overdue", urgency: "critical", owner: "Jordan T.", ownerAvatar: "JT", customerImpact: 2, description: "2 premium-tier customers waiting 6h+ for response (SLA: 1h).", linkedEntity: "Premium SLA Policy", linkedEntityType: "Policy", age: "6h", nextAction: "Immediate response + apology credit" },
-  { id: "ops-8", title: "Workflow exception — auto-renewal failures", category: "exception", status: "active", urgency: "medium", owner: "Billing Team", ownerAvatar: "BT", customerImpact: 15, description: "15 subscription auto-renewals failed due to expired payment methods.", linkedEntity: "Renewal Batch", linkedEntityType: "Subscription", age: "2d", nextAction: "Send payment update reminders" },
-];
-
-const TEAM_MEMBERS = [
-  { name: "Sarah K.", avatar: "SK", role: "Fulfillment Lead", activeItems: 6, capacity: 85, status: "high-load" as const },
-  { name: "Michael R.", avatar: "MR", role: "Account Manager", activeItems: 4, capacity: 60, status: "normal" as const },
-  { name: "Lisa M.", avatar: "LM", role: "Onboarding Specialist", activeItems: 5, capacity: 90, status: "overloaded" as const },
-  { name: "Jordan T.", avatar: "JT", role: "Support Lead", activeItems: 8, capacity: 95, status: "overloaded" as const },
-  { name: "Dev Team", avatar: "DT", role: "Engineering", activeItems: 3, capacity: 45, status: "normal" as const },
-];
-
 const urgencyMap = { critical: "critical" as const, high: "high" as const, medium: "normal" as const, low: "low" as const };
 
 const BusinessOperations = () => {
   const { primaryMode } = useBusinessProfile();
   const moduleConfig = getModuleAdaptation("operations", primaryMode);
+  const { items, isLoading, isEmpty, metrics } = useBusinessOperations();
   const [tab, setTab] = useState<Tab>("all");
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [panelOpen, setPanelOpen] = useState(false);
 
-  const filtered = ([] as any[]).filter(item => {
+  const filtered = items.filter(item => {
     if (tab === "all") return true;
     if (tab === "queues") return item.category === "queue";
     if (tab === "escalations") return item.category === "escalation";
@@ -66,9 +40,9 @@ const BusinessOperations = () => {
     return true;
   });
 
-  const selected = ([] as any[]).find(i => i.id === selectedId);
-  const criticalCount = ([] as any[]).filter(i => i.urgency === "critical").length;
-  const totalCustomerImpact = ([] as any[]).reduce((sum, i) => sum + i.customerImpact, 0);
+  const selected = items.find(i => i.id === selectedId);
+  const criticalCount = metrics.critical;
+  const totalCustomerImpact = metrics.customerImpact;
 
   const handleSelectItem = (id: string) => {
     setSelectedId(id);
@@ -85,11 +59,11 @@ const BusinessOperations = () => {
 
   return (
     <motion.div className="space-y-5" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }}>
-      <PageTruthBanner truthState="demo" />
+      <PageTruthBanner />
 
       <HeroCard
         title={moduleConfig.title}
-        metric={`${([] as any[]).length} active ${moduleConfig.terminology.item?.toLowerCase() || "item"}s`}
+        metric={`${metrics.total} active ${moduleConfig.terminology.item?.toLowerCase() || "item"}s`}
         subtitle={moduleConfig.subtitle}
         icon={<Layers className="h-5 w-5 text-[hsl(265_55%_68%)]" />}
         accentFrom="hsl(265 55% 58%)"
@@ -99,8 +73,8 @@ const BusinessOperations = () => {
       {/* KPI Strip */}
       <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
         <StatusCard label="Critical Items" status={criticalCount > 0 ? "down" : "healthy"} lastChecked={`${criticalCount} active`} icon={<Flame className="h-3.5 w-3.5" />} />
-        <StatusCard label="Escalations" status="degraded" lastChecked={`${([] as any[]).filter(i => i.category === "escalation").length} open`} icon={<ShieldAlert className="h-3.5 w-3.5" />} />
-        <StatusCard label="Bottlenecks" status="degraded" lastChecked={`${([] as any[]).filter(i => i.category === "bottleneck").length} blocking`} icon={<GitBranch className="h-3.5 w-3.5" />} />
+        <StatusCard label="Escalations" status={metrics.escalations > 0 ? "degraded" : "healthy"} lastChecked={`${metrics.escalations} open`} icon={<ShieldAlert className="h-3.5 w-3.5" />} />
+        <StatusCard label="Bottlenecks" status={metrics.bottlenecks > 0 ? "degraded" : "healthy"} lastChecked={`${metrics.bottlenecks} blocking`} icon={<GitBranch className="h-3.5 w-3.5" />} />
         <StatusCard label="Customer Impact" status={totalCustomerImpact > 20 ? "down" : "degraded"} lastChecked={`${totalCustomerImpact} affected`} icon={<Users className="h-3.5 w-3.5" />} />
       </div>
 
@@ -131,48 +105,22 @@ const BusinessOperations = () => {
 
       <SitaTabs
         tabs={[
-          { key: "all", label: "All", count: ([] as any[]).length },
-          { key: "queues", label: "Queues", count: ([] as any[]).filter(i => i.category === "queue").length },
-          { key: "escalations", label: "Escalations", count: ([] as any[]).filter(i => i.category === "escalation").length },
-          { key: "bottlenecks", label: "Bottlenecks", count: ([] as any[]).filter(i => i.category === "bottleneck").length },
-          { key: "delayed", label: "Delayed", count: ([] as any[]).filter(i => i.category === "delayed" || i.category === "exception").length },
-          { key: "team", label: "Team Activity" },
+          { key: "all", label: "All", count: metrics.total },
+          { key: "queues", label: "Queues", count: metrics.queues },
+          { key: "escalations", label: "Escalations", count: metrics.escalations },
+          { key: "bottlenecks", label: "Bottlenecks", count: metrics.bottlenecks },
+          { key: "delayed", label: "Delayed", count: metrics.delayed },
         ]}
         active={tab}
         onChange={k => setTab(k as Tab)}
       />
 
-      {tab === "team" ? (
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {TEAM_MEMBERS.map(member => (
-            <AppSurface key={member.name} level={1} className="p-4 micro-hover-lift">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[hsl(265_55%_58%/0.12)] font-semibold text-sm text-[hsl(265_55%_68%)] shrink-0">{member.avatar}</div>
-                <div className="min-w-0 flex-1">
-                  <p className="text-[12px] font-medium text-[hsl(0_0%_85%)]">{member.name}</p>
-                  <p className="text-[10px] text-[hsl(0_0%_50%)]">{member.role}</p>
-                </div>
-                <span className={cn("text-[9px] font-bold px-2 py-0.5 rounded-full",
-                  member.status === "overloaded" ? "text-[hsl(0_70%_55%)] bg-[hsl(0_70%_55%/0.12)]" :
-                  member.status === "high-load" ? "text-[hsl(38_85%_58%)] bg-[hsl(38_85%_58%/0.12)]" :
-                  "text-[hsl(152_55%_48%)] bg-[hsl(152_55%_48%/0.12)]"
-                )}>
-                  {member.status === "overloaded" ? "Overloaded" : member.status === "high-load" ? "High Load" : "Normal"}
-                </span>
-              </div>
-              <ConfidenceBar value={member.capacity} label="Capacity Used" size="sm" />
-              <p className="text-[10px] text-[hsl(0_0%_50%)] mt-2">{member.activeItems} active items</p>
-            </AppSurface>
-          ))}
-        </div>
+      {isLoading ? (
+        <AppSurface level={1} className="p-6 text-center text-[11px] text-[hsl(0_0%_55%)]">Loading operations…</AppSurface>
+      ) : isEmpty || filtered.length === 0 ? (
+        <PremiumEmptyState icon={Layers} title="No operational items" description="All queues are clear — nothing needs attention right now" variant="first-use" domain="business" />
       ) : (
-        <>
-          {filtered.length === 0 ? (
-            <PremiumEmptyState icon={Layers} title="No operational items" description="All queues are clear — nothing needs attention right now" variant="first-use" domain="business" />
-          ) : (
-            <QueueCard title={moduleConfig.terminology.queue?.toUpperCase() || "OPERATIONAL QUEUE"} items={queueItems} maxVisible={10} onItemClick={handleSelectItem} />
-          )}
-        </>
+        <QueueCard title={moduleConfig.terminology.queue?.toUpperCase() || "OPERATIONAL QUEUE"} items={queueItems} maxVisible={10} onItemClick={handleSelectItem} />
       )}
 
       <ModuleAdvisorInsight
@@ -180,7 +128,7 @@ const BusinessOperations = () => {
         domain="business"
         confidence={88}
         insight={`${criticalCount} critical ${moduleConfig.terminology.item?.toLowerCase() || "item"}s need immediate attention. ${totalCustomerImpact} customers impacted. ${moduleConfig.advisorSpecialty}.`}
-        linkedItems={["API Webhook", "SLA Breach", "Queue Backup"]}
+        linkedItems={items.slice(0, 3).map(i => i.title)}
       />
 
       {/* SlidePanel for detail */}
