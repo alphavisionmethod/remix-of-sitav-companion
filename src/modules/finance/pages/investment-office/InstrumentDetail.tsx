@@ -51,6 +51,7 @@ export default function InstrumentDetail() {
 
   return (
     <div className="mx-auto max-w-6xl space-y-6">
+      <PageTruthBanner truthState="partial" />
 <button onClick={() => navigate(-1)} className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors">
         <ArrowLeft className="h-3.5 w-3.5" /> Back
       </button>
