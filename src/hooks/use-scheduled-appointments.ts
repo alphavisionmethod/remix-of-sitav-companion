@@ -7,6 +7,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { syncAppointmentEverywhere } from "@/lib/business/appointment-calendar-sync";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useDataMode } from "@/contexts/DataModeContext";
@@ -184,7 +185,16 @@ export function useSendConfirmationReminder() {
 
 export function useMarkBookingConfirmed() {
   return useReceiptedScheduleMutation<{ bookingId: string }, MutationResult>(
-    ({ bookingId }) => markBookingConfirmed(bookingId),
+    async ({ bookingId }) => {
+      const res = await markBookingConfirmed(bookingId);
+      // Phase 10: once a booking is confirmed, mirror it to the unified
+      // internal calendar (and queue Google sync if scaffolded).
+      // Failures are non-fatal — they're recorded in calendar_sync_links.
+      if (res.ok) {
+        try { await syncAppointmentEverywhere(bookingId); } catch { /* best-effort */ }
+      }
+      return res;
+    },
     () => "Booking confirmed",
   );
 }
