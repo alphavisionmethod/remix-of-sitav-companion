@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { useCountUp } from "@/hooks/useCountUp";
 import { PageShell } from "@/platform/sita/components/sita/PageShell";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 // ─── Simulated data ───
 const ACCOUNTS = [
