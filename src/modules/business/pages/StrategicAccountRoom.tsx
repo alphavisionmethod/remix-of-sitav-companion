@@ -6,7 +6,7 @@ import {
   Phone, Calendar, Target, ArrowUpRight
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useCustomers } from "@/hooks/use-customers";
+import { useCustomers } from "@/hooks/use-domain-data";
 import {
   STRATEGIC_ACCOUNT_SAMPLES,
   ACCOUNT_HEALTH_FACTOR_SAMPLES,
@@ -20,24 +20,24 @@ const tierColors: Record<string, string> = {
 };
 
 export default function StrategicAccountRoom() {
-  const { customers } = useCustomers();
-  const liveAccounts = customers
-    .filter((c) => (c.lifetimeValueCents ?? 0) > 0)
-    .sort((a, b) => (b.lifetimeValueCents ?? 0) - (a.lifetimeValueCents ?? 0))
+  const { data: customers = [] } = useCustomers();
+  const liveAccounts = (customers ?? [])
+    .filter((c) => (c.lifetime_revenue ?? 0) > 0)
+    .sort((a, b) => (b.lifetime_revenue ?? 0) - (a.lifetime_revenue ?? 0))
     .slice(0, 6)
     .map((c, i) => {
-      const ltv = c.lifetimeValueCents ?? 0;
+      const ltv = c.lifetime_revenue ?? 0;
       return {
         id: c.id,
-        name: c.name ?? `Account ${i + 1}`,
-        tier: (ltv >= 30_000_00 ? "Platinum" : "Gold") as "Platinum" | "Gold",
-        revenue: ltv >= 1_000_00
-          ? `$${Math.round(ltv / 100_000)}K`
-          : `$${Math.round(ltv / 100).toLocaleString()}`,
-        health: typeof c.healthScore === "number" ? Math.round(c.healthScore) : 70,
+        name: c.company || c.name || `Account ${i + 1}`,
+        tier: (ltv >= 200_000 ? "Platinum" : "Gold") as "Platinum" | "Gold",
+        revenue: ltv >= 1_000
+          ? `$${Math.round(ltv / 1_000)}K`
+          : `$${Math.round(ltv).toLocaleString()}`,
+        health: typeof c.health_score === "number" ? Math.round(c.health_score) : 70,
         contracts: 1,
         contacts: 1,
-        since: c.createdAt ? new Date(c.createdAt).getFullYear().toString() : "—",
+        since: c.created_at ? new Date(c.created_at).getFullYear().toString() : "—",
       };
     });
   const accounts = liveAccounts.length > 0 ? liveAccounts : STRATEGIC_ACCOUNT_SAMPLES;
