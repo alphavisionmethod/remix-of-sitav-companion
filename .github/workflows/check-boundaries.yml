@@ -61,6 +61,25 @@ jobs:
           fi
           exit 0
 
+      - name: Run Admin (Mission Control) production-truth checker
+        # Phased rollout: failures are gated by ADMIN_TRUTH_ENFORCE so
+        # the check publishes signal during Phase 9 and flips to
+        # blocking once Wave B closes (Phase 9.4).
+        env:
+          ADMIN_TRUTH_ENFORCE: ${{ vars.ADMIN_TRUTH_ENFORCE || 'false' }}
+        run: |
+          set +e
+          npx tsx scripts/architecture/check-admin-truth.ts
+          status=$?
+          if [ "$ADMIN_TRUTH_ENFORCE" = "true" ] && [ "$status" -ne 0 ]; then
+            echo "::error::Admin production-truth gate is enforcing and failed."
+            exit "$status"
+          fi
+          if [ "$status" -ne 0 ]; then
+            echo "::warning::Admin production-truth violations detected (non-blocking until ADMIN_TRUTH_ENFORCE=true)."
+          fi
+          exit 0
+
       - name: Run mutation traceability gate
         env:
           MUTATION_UNDECLARED_THRESHOLD: "242"
