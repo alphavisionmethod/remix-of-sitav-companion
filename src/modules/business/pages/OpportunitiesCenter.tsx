@@ -188,7 +188,7 @@ const OpportunitiesCenter = () => {
                   {stageOpps.map((opp: Record<string, any>) => (
                     <div key={opp.id} onClick={() => setSelectedId(opp.id)} className="rounded-lg border border-border/50 bg-card p-3 cursor-pointer hover:border-primary/20 hover:shadow-sm transition-all">
                       <p className="text-[12px] font-medium text-foreground truncate">{opp.title}</p>
-                      <p className="text-[10px] text-muted-foreground mt-0.5">{opp.customers?.name || "No customer"}</p>
+                      <p className="text-[10px] text-muted-foreground mt-0.5">{opp.customer_label || "No contact"}</p>
                       <div className="flex items-center justify-between mt-2">
                         <span className="text-[11px] font-semibold text-foreground">{opp.value ? `$${Number(opp.value).toLocaleString()}` : "—"}</span>
                         <ConfidenceBar value={opp.confidence || 0} size="sm" showValue={false} className="w-12" />
@@ -212,7 +212,7 @@ const OpportunitiesCenter = () => {
               <motion.div className="space-y-2" variants={stagger} initial="hidden" animate="show">
                 {filtered.map((opp: Record<string, any>) => {
                   const conf = opp.confidence || 0;
-                  const customerName = opp.customers?.name || "No customer";
+                  const customerName = opp.customer_label || "No contact";
                   return (
                     <motion.div key={opp.id} variants={fadeUp} layout>
                       <SitaCard onClick={() => setSelectedId(opp.id)} selected={selectedId === opp.id} lane={opp.stale_risk ? "action" : conf >= 80 ? "opportunity" : undefined} className="p-4">
