@@ -6,7 +6,7 @@ import {
   BarChart3, ArrowUpRight, Star, Briefcase, Zap
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useDeals } from "@/hooks/use-deals";
+import { useDeals } from "@/hooks/use-revenue-office";
 import {
   DEAL_SAMPLES,
   DEAL_RISK_FACTORS,
@@ -35,19 +35,26 @@ const roleColors: Record<string, string> = {
 };
 
 export default function DealRoom() {
-  const { deals: liveDeals } = useDeals();
+  const { data: liveDeals = [] } = useDeals();
   const deals = liveDeals.length > 0
-    ? liveDeals.map((d) => ({
-        id: d.id,
-        name: d.name,
-        value: d.valueDisplay ?? `$${(d.valueCents / 100).toLocaleString()}`,
-        stage: d.stage,
-        probability: d.probability,
-        daysInStage: d.daysInStage,
-        contacts: d.contactCount ?? 0,
-        nextAction: d.nextAction ?? "Review deal status",
-        health: (d.health ?? "good") as "good" | "warning" | "critical",
-      }))
+    ? liveDeals.map((d: Record<string, unknown>) => {
+        const updated = d.updated_at ? new Date(d.updated_at as string) : new Date();
+        const days = Math.max(0, Math.round((Date.now() - updated.getTime()) / 86_400_000));
+        const prob = Number(d.probability ?? 0);
+        const health: "good" | "warning" | "critical" =
+          prob >= 60 ? "good" : prob >= 30 ? "warning" : "critical";
+        return {
+          id: String(d.id),
+          name: String(d.title ?? "Untitled deal"),
+          value: `$${Math.round(Number(d.value_cents ?? 0) / 100).toLocaleString()}`,
+          stage: String(d.stage ?? "Discovery"),
+          probability: prob,
+          daysInStage: days,
+          contacts: 0,
+          nextAction: "Review deal status",
+          health,
+        };
+      })
     : DEAL_SAMPLES;
   const [selectedDealId, setSelectedDealId] = useState<string>(deals[0]?.id ?? "");
   const selectedDeal = deals.find((d) => d.id === selectedDealId) ?? deals[0];
