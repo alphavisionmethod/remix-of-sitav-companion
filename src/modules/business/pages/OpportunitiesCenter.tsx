@@ -79,6 +79,18 @@ const OpportunitiesCenter = () => {
     enabled: !!user,
   });
 
+  // Phase 3/4 carryover — close the `opportunity` orphan handoff. Surfaces
+  // (e.g., QuotesWorkspace) call setLinkedContext({entityType:"opportunity"})
+  // and navigate here; auto-select the matching opportunity card.
+  useEffect(() => {
+    if (!linked || linked.entityType !== "opportunity") return;
+    const match = opportunities.find((o: Record<string, any>) => o.id === linked.entityId);
+    if (match) {
+      setSelectedId(match.id);
+      setTab("all");
+    }
+  }, [linked, opportunities]);
+
   const addOpp = useAction("business", "opportunity.create", {
     successMessage: "Opportunity added",
     invalidateKeys: [["opportunities"]],
