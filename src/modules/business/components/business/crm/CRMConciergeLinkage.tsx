@@ -173,26 +173,33 @@ export function CRMConciergeLinkage({ entityType, entityId, entityName }: CRMCon
             <CardTitle className="text-sm font-semibold flex items-center gap-2">
               <Calendar className="h-4 w-4 text-primary" /> Appointments
             </CardTitle>
-            <Button variant="outline" size="sm" className="h-7 text-xs gap-1">
+            <Button variant="outline" size="sm" className="h-7 text-xs gap-1" onClick={() => handoff("/concierge/calendar")}>
               <Plus className="h-3 w-3" /> Schedule
             </Button>
           </div>
         </CardHeader>
         <CardContent className="space-y-2">
+          {appointments.length === 0 && (
+            <p className="text-xs text-muted-foreground text-center py-3">No linked appointments.</p>
+          )}
           {appointments.map(apt => {
-            const cfg = APT_STATUS[apt.status];
-            const aptDate = new Date(apt.date);
+            const cfg = APT_STATUS[apt.status] ?? APT_STATUS.upcoming;
+            const aptDate = new Date(apt.appointment_date);
             const daysUntil = differenceInDays(aptDate, new Date());
             return (
-              <div key={apt.id} className="p-3 rounded-lg bg-muted/10 border border-border/30 hover:border-primary/20 transition-colors cursor-pointer">
+              <div
+                key={apt.id}
+                onClick={() => handoff("/concierge/calendar")}
+                className="p-3 rounded-lg bg-muted/10 border border-border/30 hover:border-primary/20 transition-colors cursor-pointer"
+              >
                 <div className="flex items-start justify-between">
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
                       <span className={`text-[10px] font-medium px-1.5 py-0.5 rounded-full border flex items-center gap-1 ${cfg.className}`}>
                         {cfg.icon} {apt.status}
                       </span>
-                      {apt.status === "upcoming" && daysUntil <= 7 && (
-                        <span className="text-[10px] text-orange-400 font-medium">In {daysUntil}d</span>
+                      {(apt.status === "upcoming" || apt.status === "scheduled") && daysUntil >= 0 && daysUntil <= 7 && (
+                        <span className="text-[10px] text-urgency-high font-medium">In {daysUntil}d</span>
                       )}
                     </div>
                     <p className="text-sm font-medium text-foreground mt-1.5">{apt.title}</p>
@@ -203,7 +210,7 @@ export function CRMConciergeLinkage({ entityType, entityId, entityName }: CRMCon
                   </div>
                 </div>
                 {/* Prep items for upcoming */}
-                {apt.status === "upcoming" && apt.prep_items.length > 0 && (
+                {(apt.status === "upcoming" || apt.status === "scheduled") && apt.prep_items && apt.prep_items.length > 0 && (
                   <div className="mt-2 pl-2 border-l-2 border-primary/20 space-y-1">
                     <p className="text-[10px] font-semibold text-primary uppercase tracking-wider flex items-center gap-1">
                       <Sparkles className="h-2.5 w-2.5" /> Prep Checklist
@@ -225,22 +232,34 @@ export function CRMConciergeLinkage({ entityType, entityId, entityName }: CRMCon
       {/* Obligations */}
       <Card className="border-border/50 bg-card/50">
         <CardHeader className="pb-2">
-          <CardTitle className="text-sm font-semibold flex items-center gap-2">
-            <RotateCcw className="h-4 w-4 text-primary" /> Recurring Obligations
-          </CardTitle>
+          <div className="flex items-center justify-between">
+            <CardTitle className="text-sm font-semibold flex items-center gap-2">
+              <RotateCcw className="h-4 w-4 text-primary" /> Recurring Obligations
+            </CardTitle>
+            <Button variant="outline" size="sm" className="h-7 text-xs gap-1" onClick={() => handoff("/concierge/recurring")}>
+              <Plus className="h-3 w-3" /> Add
+            </Button>
+          </div>
         </CardHeader>
         <CardContent className="space-y-2">
+          {obligations.length === 0 && (
+            <p className="text-xs text-muted-foreground text-center py-3">No recurring obligations linked.</p>
+          )}
           {obligations.map(obl => {
             const isOverdue = obl.next_due && isPast(new Date(obl.next_due));
             return (
-              <div key={obl.id} className={`flex items-center gap-3 p-3 rounded-lg border transition-colors ${isOverdue ? "bg-red-500/5 border-red-500/20" : "bg-muted/10 border-border/30"}`}>
+              <div
+                key={obl.id}
+                onClick={() => handoff("/concierge/recurring")}
+                className={`flex items-center gap-3 p-3 rounded-lg border transition-colors cursor-pointer ${isOverdue ? "bg-urgency-high/5 border-urgency-high/20" : "bg-muted/10 border-border/30"}`}
+              >
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium text-foreground">{obl.title}</p>
                   <div className="flex items-center gap-2 mt-1 text-xs text-muted-foreground">
                     <span className="capitalize">{obl.frequency}</span>
                     <span>·</span>
-                    <span className={isOverdue ? "text-red-400 font-semibold" : ""}>
-                      {isOverdue ? "Overdue" : `Due ${format(new Date(obl.next_due), "MMM d")}`}
+                    <span className={isOverdue ? "text-urgency-high font-semibold" : ""}>
+                      {isOverdue ? "Overdue" : obl.next_due ? `Due ${format(new Date(obl.next_due), "MMM d")}` : "No due date"}
                     </span>
                     {obl.automatable && (
                       <>
@@ -261,19 +280,30 @@ export function CRMConciergeLinkage({ entityType, entityId, entityName }: CRMCon
       {pendingErrands.length > 0 && (
         <Card className="border-border/50 bg-card/50">
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-semibold flex items-center gap-2">
-              <ListTodo className="h-4 w-4 text-primary" /> Related Errands
-            </CardTitle>
+            <div className="flex items-center justify-between">
+              <CardTitle className="text-sm font-semibold flex items-center gap-2">
+                <ListTodo className="h-4 w-4 text-primary" /> Related Errands
+              </CardTitle>
+              <Button variant="outline" size="sm" className="h-7 text-xs gap-1" onClick={() => handoff("/concierge/errands")}>
+                <ExternalLink className="h-3 w-3" /> Open
+              </Button>
+            </div>
           </CardHeader>
           <CardContent className="space-y-2">
             {pendingErrands.map(err => (
-              <div key={err.id} className="flex items-center gap-3 p-3 rounded-lg bg-muted/10 border border-border/30">
-                <div className={`w-2 h-2 rounded-full shrink-0 ${err.priority === "high" ? "bg-red-400" : err.priority === "medium" ? "bg-yellow-400" : "bg-muted-foreground"}`} />
+              <div
+                key={err.id}
+                onClick={() => handoff("/concierge/errands")}
+                className="flex items-center gap-3 p-3 rounded-lg bg-muted/10 border border-border/30 cursor-pointer"
+              >
+                <div className={`w-2 h-2 rounded-full shrink-0 ${err.priority === "high" ? "bg-urgency-high" : err.priority === "medium" ? "bg-trust-review" : "bg-muted-foreground"}`} />
                 <div className="flex-1 min-w-0">
                   <p className="text-sm text-foreground">{err.title}</p>
                   <div className="flex items-center gap-2 mt-0.5 text-xs text-muted-foreground">
                     {err.due_date && <span>Due {format(new Date(err.due_date), "MMM d")}</span>}
-                    <span className="flex items-center gap-0.5"><Timer className="h-2.5 w-2.5" /> ~{err.estimated_minutes}min</span>
+                    {err.estimated_minutes != null && (
+                      <span className="flex items-center gap-0.5"><Timer className="h-2.5 w-2.5" /> ~{err.estimated_minutes}min</span>
+                    )}
                   </div>
                 </div>
               </div>
@@ -283,7 +313,7 @@ export function CRMConciergeLinkage({ entityType, entityId, entityName }: CRMCon
       )}
 
       {/* Cross-link action */}
-      <Button variant="outline" className="w-full text-xs gap-2 h-9">
+      <Button variant="outline" className="w-full text-xs gap-2 h-9" onClick={() => handoff("/concierge/calendar")}>
         <ExternalLink className="h-3.5 w-3.5" /> Open in Concierge
       </Button>
     </div>
