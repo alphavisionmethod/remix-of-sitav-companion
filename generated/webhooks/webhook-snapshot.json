@@ -1,0 +1,234 @@
+{
+  "generatedAt": "2026-04-27T16:16:38.563Z",
+  "count": 11,
+  "byRole": {
+    "domain-ingest": 6,
+    "dispatcher": 1,
+    "intake": 1,
+    "processor": 1,
+    "replay": 1,
+    "retry": 1
+  },
+  "entries": [
+    {
+      "name": "alert-ingest",
+      "file": "supabase/functions/alert-ingest/index.ts",
+      "role": "domain-ingest",
+      "capabilities": {
+        "hasHmac": false,
+        "hasTimingSafeCompare": false,
+        "readsSigHeader": false,
+        "exposesSigHeaderInCors": false,
+        "writesSignatureValidFlag": false,
+        "hasIdempotencyAnchor": false,
+        "writesToWebhookEvents": false,
+        "hasDeadLetterPosture": false,
+        "hasRetryCount": false,
+        "usesServiceRole": true,
+        "hasRateLimit": false,
+        "hasKillSwitch": false,
+        "readsWebhookSecret": false
+      }
+    },
+    {
+      "name": "apm-metrics-ingest",
+      "file": "supabase/functions/apm-metrics-ingest/index.ts",
+      "role": "domain-ingest",
+      "capabilities": {
+        "hasHmac": false,
+        "hasTimingSafeCompare": false,
+        "readsSigHeader": false,
+        "exposesSigHeaderInCors": false,
+        "writesSignatureValidFlag": false,
+        "hasIdempotencyAnchor": false,
+        "writesToWebhookEvents": false,
+        "hasDeadLetterPosture": false,
+        "hasRetryCount": false,
+        "usesServiceRole": true,
+        "hasRateLimit": false,
+        "hasKillSwitch": false,
+        "readsWebhookSecret": false
+      }
+    },
+    {
+      "name": "crash-report-ingest",
+      "file": "supabase/functions/crash-report-ingest/index.ts",
+      "role": "domain-ingest",
+      "capabilities": {
+        "hasHmac": false,
+        "hasTimingSafeCompare": false,
+        "readsSigHeader": false,
+        "exposesSigHeaderInCors": false,
+        "writesSignatureValidFlag": false,
+        "hasIdempotencyAnchor": false,
+        "writesToWebhookEvents": false,
+        "hasDeadLetterPosture": false,
+        "hasRetryCount": false,
+        "usesServiceRole": true,
+        "hasRateLimit": false,
+        "hasKillSwitch": false,
+        "readsWebhookSecret": false
+      }
+    },
+    {
+      "name": "error-ingest",
+      "file": "supabase/functions/error-ingest/index.ts",
+      "role": "domain-ingest",
+      "capabilities": {
+        "hasHmac": false,
+        "hasTimingSafeCompare": false,
+        "readsSigHeader": false,
+        "exposesSigHeaderInCors": false,
+        "writesSignatureValidFlag": false,
+        "hasIdempotencyAnchor": true,
+        "writesToWebhookEvents": false,
+        "hasDeadLetterPosture": false,
+        "hasRetryCount": false,
+        "usesServiceRole": true,
+        "hasRateLimit": false,
+        "hasKillSwitch": false,
+        "readsWebhookSecret": false
+      }
+    },
+    {
+      "name": "external-workforce-webhook-dispatcher",
+      "file": "supabase/functions/external-workforce-webhook-dispatcher/index.ts",
+      "role": "dispatcher",
+      "capabilities": {
+        "hasHmac": true,
+        "hasTimingSafeCompare": false,
+        "readsSigHeader": true,
+        "exposesSigHeaderInCors": false,
+        "writesSignatureValidFlag": false,
+        "hasIdempotencyAnchor": false,
+        "writesToWebhookEvents": false,
+        "hasDeadLetterPosture": false,
+        "hasRetryCount": true,
+        "usesServiceRole": true,
+        "hasRateLimit": false,
+        "hasKillSwitch": false,
+        "readsWebhookSecret": false
+      }
+    },
+    {
+      "name": "recovery-evidence-ingest",
+      "file": "supabase/functions/recovery-evidence-ingest/index.ts",
+      "role": "domain-ingest",
+      "capabilities": {
+        "hasHmac": false,
+        "hasTimingSafeCompare": false,
+        "readsSigHeader": false,
+        "exposesSigHeaderInCors": false,
+        "writesSignatureValidFlag": false,
+        "hasIdempotencyAnchor": false,
+        "writesToWebhookEvents": false,
+        "hasDeadLetterPosture": false,
+        "hasRetryCount": false,
+        "usesServiceRole": true,
+        "hasRateLimit": false,
+        "hasKillSwitch": false,
+        "readsWebhookSecret": false
+      }
+    },
+    {
+      "name": "trace-ingest",
+      "file": "supabase/functions/trace-ingest/index.ts",
+      "role": "domain-ingest",
+      "capabilities": {
+        "hasHmac": false,
+        "hasTimingSafeCompare": false,
+        "readsSigHeader": false,
+        "exposesSigHeaderInCors": false,
+        "writesSignatureValidFlag": false,
+        "hasIdempotencyAnchor": false,
+        "writesToWebhookEvents": false,
+        "hasDeadLetterPosture": false,
+        "hasRetryCount": false,
+        "usesServiceRole": true,
+        "hasRateLimit": false,
+        "hasKillSwitch": false,
+        "readsWebhookSecret": false
+      }
+    },
+    {
+      "name": "webhook-ingest",
+      "file": "supabase/functions/webhook-ingest/index.ts",
+      "role": "intake",
+      "capabilities": {
+        "hasHmac": false,
+        "hasTimingSafeCompare": false,
+        "readsSigHeader": true,
+        "exposesSigHeaderInCors": true,
+        "writesSignatureValidFlag": true,
+        "hasIdempotencyAnchor": true,
+        "writesToWebhookEvents": true,
+        "hasDeadLetterPosture": false,
+        "hasRetryCount": false,
+        "usesServiceRole": true,
+        "hasRateLimit": false,
+        "hasKillSwitch": false,
+        "readsWebhookSecret": false
+      }
+    },
+    {
+      "name": "webhook-process",
+      "file": "supabase/functions/webhook-process/index.ts",
+      "role": "processor",
+      "capabilities": {
+        "hasHmac": false,
+        "hasTimingSafeCompare": false,
+        "readsSigHeader": false,
+        "exposesSigHeaderInCors": false,
+        "writesSignatureValidFlag": false,
+        "hasIdempotencyAnchor": false,
+        "writesToWebhookEvents": true,
+        "hasDeadLetterPosture": true,
+        "hasRetryCount": true,
+        "usesServiceRole": true,
+        "hasRateLimit": false,
+        "hasKillSwitch": false,
+        "readsWebhookSecret": false
+      }
+    },
+    {
+      "name": "webhook-replay",
+      "file": "supabase/functions/webhook-replay/index.ts",
+      "role": "replay",
+      "capabilities": {
+        "hasHmac": false,
+        "hasTimingSafeCompare": false,
+        "readsSigHeader": false,
+        "exposesSigHeaderInCors": false,
+        "writesSignatureValidFlag": false,
+        "hasIdempotencyAnchor": false,
+        "writesToWebhookEvents": false,
+        "hasDeadLetterPosture": false,
+        "hasRetryCount": true,
+        "usesServiceRole": true,
+        "hasRateLimit": false,
+        "hasKillSwitch": false,
+        "readsWebhookSecret": false
+      }
+    },
+    {
+      "name": "webhook-retry-processor",
+      "file": "supabase/functions/webhook-retry-processor/index.ts",
+      "role": "retry",
+      "capabilities": {
+        "hasHmac": true,
+        "hasTimingSafeCompare": false,
+        "readsSigHeader": false,
+        "exposesSigHeaderInCors": false,
+        "writesSignatureValidFlag": false,
+        "hasIdempotencyAnchor": false,
+        "writesToWebhookEvents": false,
+        "hasDeadLetterPosture": true,
+        "hasRetryCount": false,
+        "usesServiceRole": true,
+        "hasRateLimit": false,
+        "hasKillSwitch": false,
+        "readsWebhookSecret": true
+      }
+    }
+  ]
+}
