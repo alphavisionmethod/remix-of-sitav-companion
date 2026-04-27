@@ -63,8 +63,8 @@ describe("Phase 4 — Platform Background Task Target Resolver", () => {
     const legacy = resolveTaskTarget(vm({ sourceTable: "audit_logs" }));
     // Legacy shape has no `app` / `route` fields.
     expect(legacy).not.toBeNull();
-    expect((legacy as Record<string, unknown>).app).toBeUndefined();
-    expect((legacy as Record<string, unknown>).route).toBeUndefined();
+    expect((legacy as unknown as Record<string, unknown>).app).toBeUndefined();
+    expect((legacy as unknown as Record<string, unknown>).route).toBeUndefined();
   });
 
   it("returns null for unknown sources rather than guessing", () => {
