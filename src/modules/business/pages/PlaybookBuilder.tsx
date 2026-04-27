@@ -674,4 +674,32 @@ const [draft, setDraft] = useState<PlaybookDraft>(defaultDraft);
   );
 };
 
+/**
+ * Cross-links to the other three Autopilot canonical surfaces so the
+ * operator can move strategy → execution → result without re-navigating
+ * through Revenue Home. Pure presentational; no data fetching.
+ */
+function PlaybookCrossLinks() {
+  const { navigateTo } = useBusinessNavigation();
+  const links: Array<{ key: string; label: string; tier: string }> = [
+    { key: "autopilot-hub", label: "Autopilot Hub", tier: "Strategy" },
+    { key: "revenue-autopilot", label: "Revenue Autopilot", tier: "Execution" },
+    { key: "revenue-impact", label: "Revenue Impact", tier: "Result" },
+  ];
+  return (
+    <div className="flex flex-wrap items-center gap-1.5" aria-label="Autopilot canonical surfaces">
+      {links.map((l) => (
+        <button
+          key={l.key}
+          type="button"
+          onClick={() => navigateTo(l.key)}
+          className="text-[10px] uppercase tracking-wide text-muted-foreground hover:text-foreground border border-border/60 rounded-md px-2 py-1 transition-colors"
+        >
+          {l.tier} · {l.label} <ArrowUpRight className="h-3 w-3 inline-block" aria-hidden />
+        </button>
+      ))}
+    </div>
+  );
+}
+
 export default PlaybookBuilder;
