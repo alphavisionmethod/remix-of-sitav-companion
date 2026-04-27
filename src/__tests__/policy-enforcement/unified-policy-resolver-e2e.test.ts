@@ -413,8 +413,20 @@ describe("Phase 15 / Unified Policy — proof bundle integrity", () => {
   });
 
   it("every R4 proof requirement includes approval-receipt", () => {
+    // identity/R4 (role change / biometric enrollment) substitutes
+    // biometric-step-up FOR approval-receipt — the live biometric proof
+    // IS the approval. Codify the exemption explicitly so any future
+    // identity/R4 mutation that drops biometric-step-up trips the test.
+    const APPROVAL_RECEIPT_EXEMPT_R4: Record<string, string> = {
+      identity:
+        "Identity/R4 substitutes biometric-step-up for approval-receipt — the live biometric IS the approval; an async approval queue would defeat the security model.",
+    };
     const r4 = PROOF_REQUIREMENTS.filter((p) => p.riskClass === "R4");
     for (const p of r4) {
+      if (p.domain in APPROVAL_RECEIPT_EXEMPT_R4) {
+        expect(p.required, `${p.domain}/R4 (exempt)`).toContain("biometric-step-up");
+        continue;
+      }
       expect(p.required, `${p.domain}/R4`).toContain("approval-receipt");
     }
   });
