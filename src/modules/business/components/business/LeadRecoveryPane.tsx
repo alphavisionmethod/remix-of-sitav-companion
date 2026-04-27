@@ -72,7 +72,7 @@ export function LeadRecoveryPane({ lead }: Props) {
       entityLabel: `${lead.name} · ${lead.company}`,
     });
     toast.success("Recovery message sent — opening Recovered Value");
-    navigate("/business/recovered-value");
+    navigate("/recovered-value");
   };
 
   return (
