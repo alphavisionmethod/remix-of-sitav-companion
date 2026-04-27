@@ -109,7 +109,6 @@ export function getOSRoutes() {
       <Route path="/life-simulator" element={<LifeSimulator />} />
       <Route path="/downloads" element={<DownloadsCenter />} />
       <Route path="/download" element={<DownloadPage />} />
-      <Route path="/wealth-command" element={<WealthCommandCenter />} />
       <Route path="/time-machine" element={<TimeMachinePage />} />
       <Route path="/achievements" element={<AchievementsPage />} />
       <Route path="/simulation-engine" element={<SimulationEnginePage />} />
