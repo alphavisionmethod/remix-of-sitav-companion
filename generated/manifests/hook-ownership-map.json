@@ -1,0 +1,3295 @@
+{
+  "generatedAt": "2026-04-27T02:13:30.514Z",
+  "kind": "hook",
+  "root": "src/hooks",
+  "total": 210,
+  "summary": {
+    "module:business": 27,
+    "module:concierge": 3,
+    "module:finance": 5,
+    "module:health": 2,
+    "module:mobile": 1,
+    "platform:advisors": 5,
+    "platform:app-platform": 5,
+    "platform:auth": 5,
+    "platform:boardroom": 6,
+    "platform:governance": 8,
+    "platform:integration": 2,
+    "platform:mission-control": 3,
+    "platform:notifications": 1,
+    "platform:operations": 2,
+    "platform:orchestration": 16,
+    "platform:personal-brain": 8,
+    "platform:runtime": 8,
+    "platform:security": 1,
+    "platform:settings": 4,
+    "platform:setup": 3,
+    "platform:sita": 19,
+    "platform:trust": 7,
+    "shared": 69
+  },
+  "entries": [
+    {
+      "path": "src/hooks/use-background-tasks.ts",
+      "filename": "use-background-tasks.ts",
+      "classification": "module:business",
+      "evidence": {
+        "imports": {
+          "pillars": [
+            "business"
+          ],
+          "platforms": []
+        },
+        "name": {}
+      },
+      "proposedTargetPath": "src/modules/business/hooks/use-background-tasks.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/use-business-data.ts",
+      "filename": "use-business-data.ts",
+      "classification": "module:business",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "pillar": "business"
+        }
+      },
+      "proposedTargetPath": "src/modules/business/hooks/use-business-data.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/use-business-documents.ts",
+      "filename": "use-business-documents.ts",
+      "classification": "module:business",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "pillar": "business"
+        }
+      },
+      "proposedTargetPath": "src/modules/business/hooks/use-business-documents.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/use-business-operations.ts",
+      "filename": "use-business-operations.ts",
+      "classification": "module:business",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "pillar": "business"
+        }
+      },
+      "proposedTargetPath": "src/modules/business/hooks/use-business-operations.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/use-cai-data.ts",
+      "filename": "use-cai-data.ts",
+      "classification": "module:business",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "pillar": "business"
+        }
+      },
+      "proposedTargetPath": "src/modules/business/hooks/use-cai-data.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/use-call-desk.ts",
+      "filename": "use-call-desk.ts",
+      "classification": "module:business",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "pillar": "business"
+        }
+      },
+      "proposedTargetPath": "src/modules/business/hooks/use-call-desk.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/use-crm-data.ts",
+      "filename": "use-crm-data.ts",
+      "classification": "module:business",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "pillar": "business"
+        }
+      },
+      "proposedTargetPath": "src/modules/business/hooks/use-crm-data.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/use-crm-proof-trail.ts",
+      "filename": "use-crm-proof-trail.ts",
+      "classification": "module:business",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "pillar": "business"
+        }
+      },
+      "proposedTargetPath": "src/modules/business/hooks/use-crm-proof-trail.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/use-customer-detail.ts",
+      "filename": "use-customer-detail.ts",
+      "classification": "module:business",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "pillar": "business"
+        }
+      },
+      "proposedTargetPath": "src/modules/business/hooks/use-customer-detail.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/use-digital-presence.ts",
+      "filename": "use-digital-presence.ts",
+      "classification": "module:business",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "pillar": "business"
+        }
+      },
+      "proposedTargetPath": "src/modules/business/hooks/use-digital-presence.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/use-domain-data.ts",
+      "filename": "use-domain-data.ts",
+      "classification": "module:business",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "pillar": "business"
+        }
+      },
+      "proposedTargetPath": "src/modules/business/hooks/use-domain-data.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/use-domain-projections.ts",
+      "filename": "use-domain-projections.ts",
+      "classification": "module:business",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "pillar": "business"
+        }
+      },
+      "proposedTargetPath": "src/modules/business/hooks/use-domain-projections.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/use-fip-data.ts",
+      "filename": "use-fip-data.ts",
+      "classification": "module:business",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "pillar": "business"
+        }
+      },
+      "proposedTargetPath": "src/modules/business/hooks/use-fip-data.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/use-growth-advisor-board.ts",
+      "filename": "use-growth-advisor-board.ts",
+      "classification": "module:business",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "pillar": "business"
+        }
+      },
+      "proposedTargetPath": "src/modules/business/hooks/use-growth-advisor-board.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/use-lead-recovery-candidates.ts",
+      "filename": "use-lead-recovery-candidates.ts",
+      "classification": "module:business",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "pillar": "business"
+        }
+      },
+      "proposedTargetPath": "src/modules/business/hooks/use-lead-recovery-candidates.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/use-operations-command-center.ts",
+      "filename": "use-operations-command-center.ts",
+      "classification": "module:business",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "pillar": "business"
+        }
+      },
+      "proposedTargetPath": "src/modules/business/hooks/use-operations-command-center.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/use-revenue-automation-health.ts",
+      "filename": "use-revenue-automation-health.ts",
+      "classification": "module:business",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "pillar": "business"
+        }
+      },
+      "proposedTargetPath": "src/modules/business/hooks/use-revenue-automation-health.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/use-revenue-memory.ts",
+      "filename": "use-revenue-memory.ts",
+      "classification": "module:business",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "pillar": "business"
+        }
+      },
+      "proposedTargetPath": "src/modules/business/hooks/use-revenue-memory.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/use-revenue-office.ts",
+      "filename": "use-revenue-office.ts",
+      "classification": "module:business",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "pillar": "business"
+        }
+      },
+      "proposedTargetPath": "src/modules/business/hooks/use-revenue-office.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/use-sag-data.ts",
+      "filename": "use-sag-data.ts",
+      "classification": "module:business",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "pillar": "business"
+        }
+      },
+      "proposedTargetPath": "src/modules/business/hooks/use-sag-data.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/use-scheduled-appointments.ts",
+      "filename": "use-scheduled-appointments.ts",
+      "classification": "module:business",
+      "evidence": {
+        "imports": {
+          "pillars": [
+            "business"
+          ],
+          "platforms": []
+        },
+        "name": {
+          "pillar": "business"
+        }
+      },
+      "proposedTargetPath": "src/modules/business/hooks/use-scheduled-appointments.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/use-store-analytics.ts",
+      "filename": "use-store-analytics.ts",
+      "classification": "module:business",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "pillar": "business"
+        }
+      },
+      "proposedTargetPath": "src/modules/business/hooks/use-store-analytics.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/useBusinessAdvisorBoard.ts",
+      "filename": "useBusinessAdvisorBoard.ts",
+      "classification": "module:business",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "pillar": "business"
+        }
+      },
+      "proposedTargetPath": "src/modules/business/hooks/useBusinessAdvisorBoard.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/useBusinessOnboarding.ts",
+      "filename": "useBusinessOnboarding.ts",
+      "classification": "module:business",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "pillar": "business"
+        }
+      },
+      "proposedTargetPath": "src/modules/business/hooks/useBusinessOnboarding.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/useBusinessProfile.ts",
+      "filename": "useBusinessProfile.ts",
+      "classification": "module:business",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "pillar": "business"
+        }
+      },
+      "proposedTargetPath": "src/modules/business/hooks/useBusinessProfile.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/useCAIData.ts",
+      "filename": "useCAIData.ts",
+      "classification": "module:business",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "pillar": "business"
+        }
+      },
+      "proposedTargetPath": "src/modules/business/hooks/useCAIData.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/useShopifyData.ts",
+      "filename": "useShopifyData.ts",
+      "classification": "module:business",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "pillar": "business"
+        }
+      },
+      "proposedTargetPath": "src/modules/business/hooks/useShopifyData.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/use-concierge-data.ts",
+      "filename": "use-concierge-data.ts",
+      "classification": "module:concierge",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "pillar": "concierge"
+        }
+      },
+      "proposedTargetPath": "src/modules/concierge/hooks/use-concierge-data.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/use-concierge-proof-trail.ts",
+      "filename": "use-concierge-proof-trail.ts",
+      "classification": "module:concierge",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "pillar": "concierge"
+        }
+      },
+      "proposedTargetPath": "src/modules/concierge/hooks/use-concierge-proof-trail.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/use-household.ts",
+      "filename": "use-household.ts",
+      "classification": "module:concierge",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "pillar": "concierge"
+        }
+      },
+      "proposedTargetPath": "src/modules/concierge/hooks/use-household.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/use-investment-data.ts",
+      "filename": "use-investment-data.ts",
+      "classification": "module:finance",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "pillar": "finance"
+        }
+      },
+      "proposedTargetPath": "src/modules/finance/hooks/use-investment-data.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/use-investment-memory.ts",
+      "filename": "use-investment-memory.ts",
+      "classification": "module:finance",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "pillar": "finance"
+        }
+      },
+      "proposedTargetPath": "src/modules/finance/hooks/use-investment-memory.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/use-investment-office.ts",
+      "filename": "use-investment-office.ts",
+      "classification": "module:finance",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "pillar": "finance"
+        }
+      },
+      "proposedTargetPath": "src/modules/finance/hooks/use-investment-office.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/use-money-data.ts",
+      "filename": "use-money-data.ts",
+      "classification": "module:finance",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "pillar": "finance"
+        }
+      },
+      "proposedTargetPath": "src/modules/finance/hooks/use-money-data.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/useInvestmentOfficeData.ts",
+      "filename": "useInvestmentOfficeData.ts",
+      "classification": "module:finance",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "pillar": "finance"
+        }
+      },
+      "proposedTargetPath": "src/modules/finance/hooks/useInvestmentOfficeData.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/use-health-signal-data.ts",
+      "filename": "use-health-signal-data.ts",
+      "classification": "module:health",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "pillar": "health"
+        }
+      },
+      "proposedTargetPath": "src/modules/health/hooks/use-health-signal-data.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/use-health-signal-mutations.ts",
+      "filename": "use-health-signal-mutations.ts",
+      "classification": "module:health",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "pillar": "health"
+        }
+      },
+      "proposedTargetPath": "src/modules/health/hooks/use-health-signal-mutations.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/use-mobile-data.ts",
+      "filename": "use-mobile-data.ts",
+      "classification": "module:mobile",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "pillar": "mobile"
+        }
+      },
+      "proposedTargetPath": "src/modules/mobile/hooks/use-mobile-data.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/use-advisor-agents.ts",
+      "filename": "use-advisor-agents.ts",
+      "classification": "platform:advisors",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "advisors"
+        }
+      },
+      "proposedTargetPath": "src/platform/advisors/hooks/use-advisor-agents.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/use-advisor-portraits.ts",
+      "filename": "use-advisor-portraits.ts",
+      "classification": "platform:advisors",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "advisors"
+        }
+      },
+      "proposedTargetPath": "src/platform/advisors/hooks/use-advisor-portraits.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/use-advisor-status.ts",
+      "filename": "use-advisor-status.ts",
+      "classification": "platform:advisors",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "advisors"
+        }
+      },
+      "proposedTargetPath": "src/platform/advisors/hooks/use-advisor-status.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/useAdvisorController.ts",
+      "filename": "useAdvisorController.ts",
+      "classification": "platform:advisors",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "advisors"
+        }
+      },
+      "proposedTargetPath": "src/platform/advisors/hooks/useAdvisorController.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/useAdvisorMissionControl.ts",
+      "filename": "useAdvisorMissionControl.ts",
+      "classification": "platform:advisors",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "advisors"
+        }
+      },
+      "proposedTargetPath": "src/platform/advisors/hooks/useAdvisorMissionControl.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/use-app-ingestion.ts",
+      "filename": "use-app-ingestion.ts",
+      "classification": "platform:app-platform",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "app-platform"
+        }
+      },
+      "proposedTargetPath": "src/platform/app-platform/hooks/use-app-ingestion.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/use-app-platform.ts",
+      "filename": "use-app-platform.ts",
+      "classification": "platform:app-platform",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "app-platform"
+        }
+      },
+      "proposedTargetPath": "src/platform/app-platform/hooks/use-app-platform.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/use-apps-data.ts",
+      "filename": "use-apps-data.ts",
+      "classification": "platform:app-platform",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "app-platform"
+        }
+      },
+      "proposedTargetPath": "src/platform/app-platform/hooks/use-apps-data.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/useAppBadges.ts",
+      "filename": "useAppBadges.ts",
+      "classification": "platform:app-platform",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "app-platform"
+        }
+      },
+      "proposedTargetPath": "src/platform/app-platform/hooks/useAppBadges.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/useAppSurfacing.ts",
+      "filename": "useAppSurfacing.ts",
+      "classification": "platform:app-platform",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "app-platform"
+        }
+      },
+      "proposedTargetPath": "src/platform/app-platform/hooks/useAppSurfacing.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/useIsAdmin.ts",
+      "filename": "useIsAdmin.ts",
+      "classification": "platform:auth",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "auth"
+        }
+      },
+      "proposedTargetPath": "src/platform/auth/hooks/useIsAdmin.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/usePermissionGate.ts",
+      "filename": "usePermissionGate.ts",
+      "classification": "platform:auth",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "auth"
+        }
+      },
+      "proposedTargetPath": "src/platform/auth/hooks/usePermissionGate.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/useRecoveryPermissions.ts",
+      "filename": "useRecoveryPermissions.ts",
+      "classification": "platform:auth",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "auth"
+        }
+      },
+      "proposedTargetPath": "src/platform/auth/hooks/useRecoveryPermissions.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/useRequireAdmin.ts",
+      "filename": "useRequireAdmin.ts",
+      "classification": "platform:auth",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "auth"
+        }
+      },
+      "proposedTargetPath": "src/platform/auth/hooks/useRequireAdmin.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/useRequireAdminPermission.ts",
+      "filename": "useRequireAdminPermission.ts",
+      "classification": "platform:auth",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "auth"
+        }
+      },
+      "proposedTargetPath": "src/platform/auth/hooks/useRequireAdminPermission.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/use-boardroom-data.ts",
+      "filename": "use-boardroom-data.ts",
+      "classification": "platform:boardroom",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "boardroom"
+        }
+      },
+      "proposedTargetPath": "src/platform/boardroom/hooks/use-boardroom-data.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/use-boardroom.ts",
+      "filename": "use-boardroom.ts",
+      "classification": "platform:boardroom",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "boardroom"
+        }
+      },
+      "proposedTargetPath": "src/platform/boardroom/hooks/use-boardroom.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/useBoardroomBridge.ts",
+      "filename": "useBoardroomBridge.ts",
+      "classification": "platform:boardroom",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "boardroom"
+        }
+      },
+      "proposedTargetPath": "src/platform/boardroom/hooks/useBoardroomBridge.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/useBoardroomKernel.ts",
+      "filename": "useBoardroomKernel.ts",
+      "classification": "platform:boardroom",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "boardroom"
+        }
+      },
+      "proposedTargetPath": "src/platform/boardroom/hooks/useBoardroomKernel.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/useBoardroomLiveData.ts",
+      "filename": "useBoardroomLiveData.ts",
+      "classification": "platform:boardroom",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "boardroom"
+        }
+      },
+      "proposedTargetPath": "src/platform/boardroom/hooks/useBoardroomLiveData.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/useBoardroomSession.ts",
+      "filename": "useBoardroomSession.ts",
+      "classification": "platform:boardroom",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "boardroom"
+        }
+      },
+      "proposedTargetPath": "src/platform/boardroom/hooks/useBoardroomSession.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/use-ai-budget-data.ts",
+      "filename": "use-ai-budget-data.ts",
+      "classification": "platform:governance",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "governance"
+        }
+      },
+      "proposedTargetPath": "src/platform/governance/hooks/use-ai-budget-data.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/use-ai-engineering-data.ts",
+      "filename": "use-ai-engineering-data.ts",
+      "classification": "platform:governance",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "governance"
+        }
+      },
+      "proposedTargetPath": "src/platform/governance/hooks/use-ai-engineering-data.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/use-ai-engineering-realtime.ts",
+      "filename": "use-ai-engineering-realtime.ts",
+      "classification": "platform:governance",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "governance"
+        }
+      },
+      "proposedTargetPath": "src/platform/governance/hooks/use-ai-engineering-realtime.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/use-ai-health.ts",
+      "filename": "use-ai-health.ts",
+      "classification": "platform:governance",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "governance"
+        }
+      },
+      "proposedTargetPath": "src/platform/governance/hooks/use-ai-health.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/use-compute-governance.ts",
+      "filename": "use-compute-governance.ts",
+      "classification": "platform:governance",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "governance"
+        }
+      },
+      "proposedTargetPath": "src/platform/governance/hooks/use-compute-governance.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/use-meta-governance.ts",
+      "filename": "use-meta-governance.ts",
+      "classification": "platform:governance",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "governance"
+        }
+      },
+      "proposedTargetPath": "src/platform/governance/hooks/use-meta-governance.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/useAIChatPerformance.ts",
+      "filename": "useAIChatPerformance.ts",
+      "classification": "platform:governance",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "governance"
+        }
+      },
+      "proposedTargetPath": "src/platform/governance/hooks/useAIChatPerformance.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/useAIGovernance.ts",
+      "filename": "useAIGovernance.ts",
+      "classification": "platform:governance",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "governance"
+        }
+      },
+      "proposedTargetPath": "src/platform/governance/hooks/useAIGovernance.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/use-connector-control-center.ts",
+      "filename": "use-connector-control-center.ts",
+      "classification": "platform:integration",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "integration"
+        }
+      },
+      "proposedTargetPath": "src/platform/integration/hooks/use-connector-control-center.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/use-google-provider-family.ts",
+      "filename": "use-google-provider-family.ts",
+      "classification": "platform:integration",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "integration"
+        }
+      },
+      "proposedTargetPath": "src/platform/integration/hooks/use-google-provider-family.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/use-mission-control-data.ts",
+      "filename": "use-mission-control-data.ts",
+      "classification": "platform:mission-control",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "mission-control"
+        }
+      },
+      "proposedTargetPath": "src/platform/mission-control/hooks/use-mission-control-data.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/use-mission-control-views.ts",
+      "filename": "use-mission-control-views.ts",
+      "classification": "platform:mission-control",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "mission-control"
+        }
+      },
+      "proposedTargetPath": "src/platform/mission-control/hooks/use-mission-control-views.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/use-mission-data.ts",
+      "filename": "use-mission-data.ts",
+      "classification": "platform:mission-control",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "mission-control"
+        }
+      },
+      "proposedTargetPath": "src/platform/mission-control/hooks/use-mission-data.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/use-notification-calm-data.ts",
+      "filename": "use-notification-calm-data.ts",
+      "classification": "platform:notifications",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "notifications"
+        }
+      },
+      "proposedTargetPath": "src/platform/notifications/hooks/use-notification-calm-data.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/use-operational-rituals.ts",
+      "filename": "use-operational-rituals.ts",
+      "classification": "platform:operations",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "operations"
+        }
+      },
+      "proposedTargetPath": "src/platform/operations/hooks/use-operational-rituals.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/use-support-cases.ts",
+      "filename": "use-support-cases.ts",
+      "classification": "platform:operations",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "operations"
+        }
+      },
+      "proposedTargetPath": "src/platform/operations/hooks/use-support-cases.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/use-autopilot-config.ts",
+      "filename": "use-autopilot-config.ts",
+      "classification": "platform:orchestration",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "orchestration"
+        }
+      },
+      "proposedTargetPath": "src/platform/orchestration/hooks/use-autopilot-config.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/useAutonomyBootstrap.ts",
+      "filename": "useAutonomyBootstrap.ts",
+      "classification": "platform:orchestration",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "orchestration"
+        }
+      },
+      "proposedTargetPath": "src/platform/orchestration/hooks/useAutonomyBootstrap.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/useAutonomyFleet.ts",
+      "filename": "useAutonomyFleet.ts",
+      "classification": "platform:orchestration",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "orchestration"
+        }
+      },
+      "proposedTargetPath": "src/platform/orchestration/hooks/useAutonomyFleet.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/useGraphEngine.ts",
+      "filename": "useGraphEngine.ts",
+      "classification": "platform:orchestration",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "orchestration"
+        }
+      },
+      "proposedTargetPath": "src/platform/orchestration/hooks/useGraphEngine.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/useOrchestrationExecution.ts",
+      "filename": "useOrchestrationExecution.ts",
+      "classification": "platform:orchestration",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": [
+            "orchestration"
+          ]
+        },
+        "name": {
+          "platform": "orchestration"
+        }
+      },
+      "proposedTargetPath": "src/platform/orchestration/hooks/useOrchestrationExecution.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/useOrchestrationFacade.ts",
+      "filename": "useOrchestrationFacade.ts",
+      "classification": "platform:orchestration",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": [
+            "orchestration"
+          ]
+        },
+        "name": {
+          "platform": "orchestration"
+        }
+      },
+      "proposedTargetPath": "src/platform/orchestration/hooks/useOrchestrationFacade.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/useOrchestrationHealth.ts",
+      "filename": "useOrchestrationHealth.ts",
+      "classification": "platform:orchestration",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "orchestration"
+        }
+      },
+      "proposedTargetPath": "src/platform/orchestration/hooks/useOrchestrationHealth.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/useOrchestrationPlanning.ts",
+      "filename": "useOrchestrationPlanning.ts",
+      "classification": "platform:orchestration",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": [
+            "orchestration"
+          ]
+        },
+        "name": {
+          "platform": "orchestration"
+        }
+      },
+      "proposedTargetPath": "src/platform/orchestration/hooks/useOrchestrationPlanning.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/useOrchestrationProof.ts",
+      "filename": "useOrchestrationProof.ts",
+      "classification": "platform:orchestration",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": [
+            "orchestration"
+          ]
+        },
+        "name": {
+          "platform": "orchestration"
+        }
+      },
+      "proposedTargetPath": "src/platform/orchestration/hooks/useOrchestrationProof.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/useOSOrchestration.ts",
+      "filename": "useOSOrchestration.ts",
+      "classification": "platform:orchestration",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "orchestration"
+        }
+      },
+      "proposedTargetPath": "src/platform/orchestration/hooks/useOSOrchestration.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/usePersistedEngine.ts",
+      "filename": "usePersistedEngine.ts",
+      "classification": "platform:orchestration",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "orchestration"
+        }
+      },
+      "proposedTargetPath": "src/platform/orchestration/hooks/usePersistedEngine.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/useReleaseEngine.ts",
+      "filename": "useReleaseEngine.ts",
+      "classification": "platform:orchestration",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "orchestration"
+        }
+      },
+      "proposedTargetPath": "src/platform/orchestration/hooks/useReleaseEngine.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/useReleaseIntelligence.ts",
+      "filename": "useReleaseIntelligence.ts",
+      "classification": "platform:orchestration",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "orchestration"
+        }
+      },
+      "proposedTargetPath": "src/platform/orchestration/hooks/useReleaseIntelligence.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/useSetupOrchestration.ts",
+      "filename": "useSetupOrchestration.ts",
+      "classification": "platform:orchestration",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": [
+            "sita"
+          ]
+        },
+        "name": {
+          "platform": "orchestration"
+        }
+      },
+      "proposedTargetPath": "src/platform/orchestration/hooks/useSetupOrchestration.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/useSignalBus.ts",
+      "filename": "useSignalBus.ts",
+      "classification": "platform:orchestration",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "orchestration"
+        }
+      },
+      "proposedTargetPath": "src/platform/orchestration/hooks/useSignalBus.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/useSimulationEngine.ts",
+      "filename": "useSimulationEngine.ts",
+      "classification": "platform:orchestration",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "orchestration"
+        }
+      },
+      "proposedTargetPath": "src/platform/orchestration/hooks/useSimulationEngine.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/use-brain-core.ts",
+      "filename": "use-brain-core.ts",
+      "classification": "platform:personal-brain",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "personal-brain"
+        }
+      },
+      "proposedTargetPath": "src/platform/personal-brain/hooks/use-brain-core.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/use-intelligence-screen-data.ts",
+      "filename": "use-intelligence-screen-data.ts",
+      "classification": "platform:personal-brain",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "personal-brain"
+        }
+      },
+      "proposedTargetPath": "src/platform/personal-brain/hooks/use-intelligence-screen-data.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/useDigestJournal.ts",
+      "filename": "useDigestJournal.ts",
+      "classification": "platform:personal-brain",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "personal-brain"
+        }
+      },
+      "proposedTargetPath": "src/platform/personal-brain/hooks/useDigestJournal.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/useEconomicIntelligence.ts",
+      "filename": "useEconomicIntelligence.ts",
+      "classification": "platform:personal-brain",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "personal-brain"
+        }
+      },
+      "proposedTargetPath": "src/platform/personal-brain/hooks/useEconomicIntelligence.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/useEngineEventsData.ts",
+      "filename": "useEngineEventsData.ts",
+      "classification": "platform:personal-brain",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "personal-brain"
+        }
+      },
+      "proposedTargetPath": "src/platform/personal-brain/hooks/useEngineEventsData.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/useIntelligenceAPI.ts",
+      "filename": "useIntelligenceAPI.ts",
+      "classification": "platform:personal-brain",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "personal-brain"
+        }
+      },
+      "proposedTargetPath": "src/platform/personal-brain/hooks/useIntelligenceAPI.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/useIntelligencePersistence.ts",
+      "filename": "useIntelligencePersistence.ts",
+      "classification": "platform:personal-brain",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "personal-brain"
+        }
+      },
+      "proposedTargetPath": "src/platform/personal-brain/hooks/useIntelligencePersistence.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/useLiveActivityDomainData.ts",
+      "filename": "useLiveActivityDomainData.ts",
+      "classification": "platform:personal-brain",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": [
+            "sita"
+          ]
+        },
+        "name": {
+          "platform": "personal-brain"
+        }
+      },
+      "proposedTargetPath": "src/platform/personal-brain/hooks/useLiveActivityDomainData.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/use-native-shell-data.ts",
+      "filename": "use-native-shell-data.ts",
+      "classification": "platform:runtime",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "runtime"
+        }
+      },
+      "proposedTargetPath": "src/platform/runtime/hooks/use-native-shell-data.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/useDegradedMode.ts",
+      "filename": "useDegradedMode.ts",
+      "classification": "platform:runtime",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "runtime"
+        }
+      },
+      "proposedTargetPath": "src/platform/runtime/hooks/useDegradedMode.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/useEcosystemDevices.ts",
+      "filename": "useEcosystemDevices.ts",
+      "classification": "platform:runtime",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "runtime"
+        }
+      },
+      "proposedTargetPath": "src/platform/runtime/hooks/useEcosystemDevices.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/useKillSwitch.ts",
+      "filename": "useKillSwitch.ts",
+      "classification": "platform:runtime",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "runtime"
+        }
+      },
+      "proposedTargetPath": "src/platform/runtime/hooks/useKillSwitch.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/useRealityClassifications.ts",
+      "filename": "useRealityClassifications.ts",
+      "classification": "platform:runtime",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "runtime"
+        }
+      },
+      "proposedTargetPath": "src/platform/runtime/hooks/useRealityClassifications.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/useRealityDetection.ts",
+      "filename": "useRealityDetection.ts",
+      "classification": "platform:runtime",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "runtime"
+        }
+      },
+      "proposedTargetPath": "src/platform/runtime/hooks/useRealityDetection.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/useRealityProvider.ts",
+      "filename": "useRealityProvider.ts",
+      "classification": "platform:runtime",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "runtime"
+        }
+      },
+      "proposedTargetPath": "src/platform/runtime/hooks/useRealityProvider.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/useUpdateDaemon.ts",
+      "filename": "useUpdateDaemon.ts",
+      "classification": "platform:runtime",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "runtime"
+        }
+      },
+      "proposedTargetPath": "src/platform/runtime/hooks/useUpdateDaemon.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/use-security-fabric.ts",
+      "filename": "use-security-fabric.ts",
+      "classification": "platform:security",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "security"
+        }
+      },
+      "proposedTargetPath": "src/platform/security/hooks/use-security-fabric.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/use-settings-value.ts",
+      "filename": "use-settings-value.ts",
+      "classification": "platform:settings",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": [
+            "nova-sdk"
+          ]
+        },
+        "name": {
+          "platform": "settings"
+        }
+      },
+      "proposedTargetPath": "src/platform/settings/hooks/use-settings-value.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/use-user-preferences.ts",
+      "filename": "use-user-preferences.ts",
+      "classification": "platform:settings",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "settings"
+        }
+      },
+      "proposedTargetPath": "src/platform/settings/hooks/use-user-preferences.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/useLocaleSwitcher.ts",
+      "filename": "useLocaleSwitcher.ts",
+      "classification": "platform:settings",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "settings"
+        }
+      },
+      "proposedTargetPath": "src/platform/settings/hooks/useLocaleSwitcher.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/useUserPreferences.ts",
+      "filename": "useUserPreferences.ts",
+      "classification": "platform:settings",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "settings"
+        }
+      },
+      "proposedTargetPath": "src/platform/settings/hooks/useUserPreferences.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/useOnboardingBridge.ts",
+      "filename": "useOnboardingBridge.ts",
+      "classification": "platform:setup",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "setup"
+        }
+      },
+      "proposedTargetPath": "src/platform/setup/hooks/useOnboardingBridge.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/useOnboardingDaemon.ts",
+      "filename": "useOnboardingDaemon.ts",
+      "classification": "platform:setup",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "setup"
+        }
+      },
+      "proposedTargetPath": "src/platform/setup/hooks/useOnboardingDaemon.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/useOnboardingResume.ts",
+      "filename": "useOnboardingResume.ts",
+      "classification": "platform:setup",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "setup"
+        }
+      },
+      "proposedTargetPath": "src/platform/setup/hooks/useOnboardingResume.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/use-kernel-events.ts",
+      "filename": "use-kernel-events.ts",
+      "classification": "platform:sita",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "sita"
+        }
+      },
+      "proposedTargetPath": "src/platform/sita/hooks/use-kernel-events.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/use-kernel-mutation.ts",
+      "filename": "use-kernel-mutation.ts",
+      "classification": "platform:sita",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "sita"
+        }
+      },
+      "proposedTargetPath": "src/platform/sita/hooks/use-kernel-mutation.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/use-kernel-query.ts",
+      "filename": "use-kernel-query.ts",
+      "classification": "platform:sita",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "sita"
+        }
+      },
+      "proposedTargetPath": "src/platform/sita/hooks/use-kernel-query.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/use-os-api.ts",
+      "filename": "use-os-api.ts",
+      "classification": "platform:sita",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "sita"
+        }
+      },
+      "proposedTargetPath": "src/platform/sita/hooks/use-os-api.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/use-sita-data.ts",
+      "filename": "use-sita-data.ts",
+      "classification": "platform:sita",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "sita"
+        }
+      },
+      "proposedTargetPath": "src/platform/sita/hooks/use-sita-data.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/use-wallpaper.ts",
+      "filename": "use-wallpaper.ts",
+      "classification": "platform:sita",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "sita"
+        }
+      },
+      "proposedTargetPath": "src/platform/sita/hooks/use-wallpaper.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/useDesktopWidgets.ts",
+      "filename": "useDesktopWidgets.ts",
+      "classification": "platform:sita",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "sita"
+        }
+      },
+      "proposedTargetPath": "src/platform/sita/hooks/useDesktopWidgets.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/useDesktopWidgetsData.ts",
+      "filename": "useDesktopWidgetsData.ts",
+      "classification": "platform:sita",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "sita"
+        }
+      },
+      "proposedTargetPath": "src/platform/sita/hooks/useDesktopWidgetsData.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/useDockContext.ts",
+      "filename": "useDockContext.ts",
+      "classification": "platform:sita",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "sita"
+        }
+      },
+      "proposedTargetPath": "src/platform/sita/hooks/useDockContext.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/useLauncherViewModel.ts",
+      "filename": "useLauncherViewModel.ts",
+      "classification": "platform:sita",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "sita"
+        }
+      },
+      "proposedTargetPath": "src/platform/sita/hooks/useLauncherViewModel.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/useLayerOpacity.ts",
+      "filename": "useLayerOpacity.ts",
+      "classification": "platform:sita",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "sita"
+        }
+      },
+      "proposedTargetPath": "src/platform/sita/hooks/useLayerOpacity.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/useOSRuntime.tsx",
+      "filename": "useOSRuntime.tsx",
+      "classification": "platform:sita",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "sita"
+        }
+      },
+      "proposedTargetPath": "src/platform/sita/hooks/useOSRuntime.tsx",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/useOSSecurity.ts",
+      "filename": "useOSSecurity.ts",
+      "classification": "platform:sita",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "sita"
+        }
+      },
+      "proposedTargetPath": "src/platform/sita/hooks/useOSSecurity.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/useWallpaperParallax.ts",
+      "filename": "useWallpaperParallax.ts",
+      "classification": "platform:sita",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "sita"
+        }
+      },
+      "proposedTargetPath": "src/platform/sita/hooks/useWallpaperParallax.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/useWindowAttention.ts",
+      "filename": "useWindowAttention.ts",
+      "classification": "platform:sita",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "sita"
+        }
+      },
+      "proposedTargetPath": "src/platform/sita/hooks/useWindowAttention.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/useWindowKeyboardScroll.ts",
+      "filename": "useWindowKeyboardScroll.ts",
+      "classification": "platform:sita",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "sita"
+        }
+      },
+      "proposedTargetPath": "src/platform/sita/hooks/useWindowKeyboardScroll.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/useWindowManager.ts",
+      "filename": "useWindowManager.ts",
+      "classification": "platform:sita",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "sita"
+        }
+      },
+      "proposedTargetPath": "src/platform/sita/hooks/useWindowManager.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/useWindowScrollSync.ts",
+      "filename": "useWindowScrollSync.ts",
+      "classification": "platform:sita",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "sita"
+        }
+      },
+      "proposedTargetPath": "src/platform/sita/hooks/useWindowScrollSync.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/useWindowSnap.ts",
+      "filename": "useWindowSnap.ts",
+      "classification": "platform:sita",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "sita"
+        }
+      },
+      "proposedTargetPath": "src/platform/sita/hooks/useWindowSnap.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/use-approval-queue-mutations.ts",
+      "filename": "use-approval-queue-mutations.ts",
+      "classification": "platform:trust",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "trust"
+        }
+      },
+      "proposedTargetPath": "src/platform/trust/hooks/use-approval-queue-mutations.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/use-flagship-loop-proof.ts",
+      "filename": "use-flagship-loop-proof.ts",
+      "classification": "platform:trust",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "trust"
+        }
+      },
+      "proposedTargetPath": "src/platform/trust/hooks/use-flagship-loop-proof.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/use-policy-decision.ts",
+      "filename": "use-policy-decision.ts",
+      "classification": "platform:trust",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "trust"
+        }
+      },
+      "proposedTargetPath": "src/platform/trust/hooks/use-policy-decision.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/use-proof-chain.ts",
+      "filename": "use-proof-chain.ts",
+      "classification": "platform:trust",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "trust"
+        }
+      },
+      "proposedTargetPath": "src/platform/trust/hooks/use-proof-chain.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/use-proof-timeline.ts",
+      "filename": "use-proof-timeline.ts",
+      "classification": "platform:trust",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "trust"
+        }
+      },
+      "proposedTargetPath": "src/platform/trust/hooks/use-proof-timeline.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/use-trust-emit.ts",
+      "filename": "use-trust-emit.ts",
+      "classification": "platform:trust",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "trust"
+        }
+      },
+      "proposedTargetPath": "src/platform/trust/hooks/use-trust-emit.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/use-unified-policy.ts",
+      "filename": "use-unified-policy.ts",
+      "classification": "platform:trust",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "trust"
+        }
+      },
+      "proposedTargetPath": "src/platform/trust/hooks/use-unified-policy.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/use-accent-sync.ts",
+      "filename": "use-accent-sync.ts",
+      "classification": "shared",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": [
+            "nova-sdk"
+          ]
+        },
+        "name": {}
+      },
+      "proposedTargetPath": null,
+      "status": "stays"
+    },
+    {
+      "path": "src/hooks/use-action.ts",
+      "filename": "use-action.ts",
+      "classification": "shared",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {}
+      },
+      "proposedTargetPath": null,
+      "status": "stays"
+    },
+    {
+      "path": "src/hooks/use-adaptive-personalization.ts",
+      "filename": "use-adaptive-personalization.ts",
+      "classification": "shared",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {}
+      },
+      "proposedTargetPath": null,
+      "status": "stays"
+    },
+    {
+      "path": "src/hooks/use-admin-data.ts",
+      "filename": "use-admin-data.ts",
+      "classification": "shared",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {}
+      },
+      "proposedTargetPath": null,
+      "status": "stays"
+    },
+    {
+      "path": "src/hooks/use-admin-durable-state.ts",
+      "filename": "use-admin-durable-state.ts",
+      "classification": "shared",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {}
+      },
+      "proposedTargetPath": null,
+      "status": "stays"
+    },
+    {
+      "path": "src/hooks/use-agent-fleet-live.ts",
+      "filename": "use-agent-fleet-live.ts",
+      "classification": "shared",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {}
+      },
+      "proposedTargetPath": null,
+      "status": "review"
+    },
+    {
+      "path": "src/hooks/use-backend-actions.ts",
+      "filename": "use-backend-actions.ts",
+      "classification": "shared",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {}
+      },
+      "proposedTargetPath": null,
+      "status": "stays"
+    },
+    {
+      "path": "src/hooks/use-calendar-data.ts",
+      "filename": "use-calendar-data.ts",
+      "classification": "shared",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {}
+      },
+      "proposedTargetPath": null,
+      "status": "review"
+    },
+    {
+      "path": "src/hooks/use-calendar-mutations.ts",
+      "filename": "use-calendar-mutations.ts",
+      "classification": "shared",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {}
+      },
+      "proposedTargetPath": null,
+      "status": "review"
+    },
+    {
+      "path": "src/hooks/use-calm-mode.ts",
+      "filename": "use-calm-mode.ts",
+      "classification": "shared",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": [
+            "runtime"
+          ]
+        },
+        "name": {}
+      },
+      "proposedTargetPath": null,
+      "status": "stays"
+    },
+    {
+      "path": "src/hooks/use-catalyst-events.ts",
+      "filename": "use-catalyst-events.ts",
+      "classification": "shared",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {}
+      },
+      "proposedTargetPath": null,
+      "status": "stays"
+    },
+    {
+      "path": "src/hooks/use-companion.ts",
+      "filename": "use-companion.ts",
+      "classification": "shared",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {}
+      },
+      "proposedTargetPath": null,
+      "status": "stays"
+    },
+    {
+      "path": "src/hooks/use-confirmation.ts",
+      "filename": "use-confirmation.ts",
+      "classification": "shared",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {}
+      },
+      "proposedTargetPath": null,
+      "status": "stays"
+    },
+    {
+      "path": "src/hooks/use-event-probabilities.ts",
+      "filename": "use-event-probabilities.ts",
+      "classification": "shared",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {}
+      },
+      "proposedTargetPath": null,
+      "status": "stays"
+    },
+    {
+      "path": "src/hooks/use-file-explorer.ts",
+      "filename": "use-file-explorer.ts",
+      "classification": "shared",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {}
+      },
+      "proposedTargetPath": null,
+      "status": "stays"
+    },
+    {
+      "path": "src/hooks/use-file-upload.ts",
+      "filename": "use-file-upload.ts",
+      "classification": "shared",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {}
+      },
+      "proposedTargetPath": null,
+      "status": "stays"
+    },
+    {
+      "path": "src/hooks/use-focus-mode.ts",
+      "filename": "use-focus-mode.ts",
+      "classification": "shared",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": [
+            "runtime"
+          ]
+        },
+        "name": {}
+      },
+      "proposedTargetPath": null,
+      "status": "stays"
+    },
+    {
+      "path": "src/hooks/use-gesture-engine.ts",
+      "filename": "use-gesture-engine.ts",
+      "classification": "shared",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {}
+      },
+      "proposedTargetPath": null,
+      "status": "stays"
+    },
+    {
+      "path": "src/hooks/use-global-search.ts",
+      "filename": "use-global-search.ts",
+      "classification": "shared",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {}
+      },
+      "proposedTargetPath": null,
+      "status": "stays"
+    },
+    {
+      "path": "src/hooks/use-implementation-truth.ts",
+      "filename": "use-implementation-truth.ts",
+      "classification": "shared",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {}
+      },
+      "proposedTargetPath": null,
+      "status": "stays"
+    },
+    {
+      "path": "src/hooks/use-live-data.ts",
+      "filename": "use-live-data.ts",
+      "classification": "shared",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {}
+      },
+      "proposedTargetPath": null,
+      "status": "stays"
+    },
+    {
+      "path": "src/hooks/use-mobile.tsx",
+      "filename": "use-mobile.tsx",
+      "classification": "shared",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {}
+      },
+      "proposedTargetPath": null,
+      "status": "stays"
+    },
+    {
+      "path": "src/hooks/use-online-status.ts",
+      "filename": "use-online-status.ts",
+      "classification": "shared",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {}
+      },
+      "proposedTargetPath": null,
+      "status": "stays"
+    },
+    {
+      "path": "src/hooks/use-optimistic-mutation.ts",
+      "filename": "use-optimistic-mutation.ts",
+      "classification": "shared",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {}
+      },
+      "proposedTargetPath": null,
+      "status": "stays"
+    },
+    {
+      "path": "src/hooks/use-phase10-actions.ts",
+      "filename": "use-phase10-actions.ts",
+      "classification": "shared",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {}
+      },
+      "proposedTargetPath": null,
+      "status": "stays"
+    },
+    {
+      "path": "src/hooks/use-pillar-priority.ts",
+      "filename": "use-pillar-priority.ts",
+      "classification": "shared",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {}
+      },
+      "proposedTargetPath": null,
+      "status": "stays"
+    },
+    {
+      "path": "src/hooks/use-proactive-notifications.ts",
+      "filename": "use-proactive-notifications.ts",
+      "classification": "shared",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "notifications"
+        }
+      },
+      "proposedTargetPath": null,
+      "status": "stays"
+    },
+    {
+      "path": "src/hooks/use-profile.ts",
+      "filename": "use-profile.ts",
+      "classification": "shared",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {}
+      },
+      "proposedTargetPath": null,
+      "status": "stays"
+    },
+    {
+      "path": "src/hooks/use-push-notifications.ts",
+      "filename": "use-push-notifications.ts",
+      "classification": "shared",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "notifications"
+        }
+      },
+      "proposedTargetPath": null,
+      "status": "stays"
+    },
+    {
+      "path": "src/hooks/use-query-freshness.ts",
+      "filename": "use-query-freshness.ts",
+      "classification": "shared",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {}
+      },
+      "proposedTargetPath": null,
+      "status": "stays"
+    },
+    {
+      "path": "src/hooks/use-quote-studio.ts",
+      "filename": "use-quote-studio.ts",
+      "classification": "shared",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "pillar": "business"
+        }
+      },
+      "proposedTargetPath": null,
+      "status": "stays"
+    },
+    {
+      "path": "src/hooks/use-realtime-notifications.ts",
+      "filename": "use-realtime-notifications.ts",
+      "classification": "shared",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "notifications"
+        }
+      },
+      "proposedTargetPath": null,
+      "status": "stays"
+    },
+    {
+      "path": "src/hooks/use-realtime.ts",
+      "filename": "use-realtime.ts",
+      "classification": "shared",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {}
+      },
+      "proposedTargetPath": null,
+      "status": "stays"
+    },
+    {
+      "path": "src/hooks/use-session-restore.ts",
+      "filename": "use-session-restore.ts",
+      "classification": "shared",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {}
+      },
+      "proposedTargetPath": null,
+      "status": "stays"
+    },
+    {
+      "path": "src/hooks/use-shell-indicators.ts",
+      "filename": "use-shell-indicators.ts",
+      "classification": "shared",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {}
+      },
+      "proposedTargetPath": null,
+      "status": "stays"
+    },
+    {
+      "path": "src/hooks/use-spec-seed.ts",
+      "filename": "use-spec-seed.ts",
+      "classification": "shared",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "setup"
+        }
+      },
+      "proposedTargetPath": null,
+      "status": "stays"
+    },
+    {
+      "path": "src/hooks/use-stale-data.ts",
+      "filename": "use-stale-data.ts",
+      "classification": "shared",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {}
+      },
+      "proposedTargetPath": null,
+      "status": "stays"
+    },
+    {
+      "path": "src/hooks/use-streaming-chat.ts",
+      "filename": "use-streaming-chat.ts",
+      "classification": "shared",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {}
+      },
+      "proposedTargetPath": null,
+      "status": "stays"
+    },
+    {
+      "path": "src/hooks/use-toast.ts",
+      "filename": "use-toast.ts",
+      "classification": "shared",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {}
+      },
+      "proposedTargetPath": null,
+      "status": "stays"
+    },
+    {
+      "path": "src/hooks/use-undoable-action.ts",
+      "filename": "use-undoable-action.ts",
+      "classification": "shared",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {}
+      },
+      "proposedTargetPath": null,
+      "status": "stays"
+    },
+    {
+      "path": "src/hooks/use-unified-calendar.ts",
+      "filename": "use-unified-calendar.ts",
+      "classification": "shared",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {}
+      },
+      "proposedTargetPath": null,
+      "status": "review"
+    },
+    {
+      "path": "src/hooks/use-unified-ws.ts",
+      "filename": "use-unified-ws.ts",
+      "classification": "shared",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {}
+      },
+      "proposedTargetPath": null,
+      "status": "stays"
+    },
+    {
+      "path": "src/hooks/use-zero-latency.ts",
+      "filename": "use-zero-latency.ts",
+      "classification": "shared",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": [
+            "runtime"
+          ]
+        },
+        "name": {}
+      },
+      "proposedTargetPath": null,
+      "status": "stays"
+    },
+    {
+      "path": "src/hooks/useAction.ts",
+      "filename": "useAction.ts",
+      "classification": "shared",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {}
+      },
+      "proposedTargetPath": null,
+      "status": "stays"
+    },
+    {
+      "path": "src/hooks/useAdaptiveInterface.ts",
+      "filename": "useAdaptiveInterface.ts",
+      "classification": "shared",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {}
+      },
+      "proposedTargetPath": null,
+      "status": "stays"
+    },
+    {
+      "path": "src/hooks/useAppStatePersistence.ts",
+      "filename": "useAppStatePersistence.ts",
+      "classification": "shared",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "app-platform"
+        }
+      },
+      "proposedTargetPath": null,
+      "status": "stays"
+    },
+    {
+      "path": "src/hooks/useCoreSubstrateHydration.ts",
+      "filename": "useCoreSubstrateHydration.ts",
+      "classification": "shared",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {}
+      },
+      "proposedTargetPath": null,
+      "status": "review"
+    },
+    {
+      "path": "src/hooks/useCountUp.ts",
+      "filename": "useCountUp.ts",
+      "classification": "shared",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {}
+      },
+      "proposedTargetPath": null,
+      "status": "stays"
+    },
+    {
+      "path": "src/hooks/useCurrentOrg.ts",
+      "filename": "useCurrentOrg.ts",
+      "classification": "shared",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {}
+      },
+      "proposedTargetPath": null,
+      "status": "stays"
+    },
+    {
+      "path": "src/hooks/useCurrentPlane.ts",
+      "filename": "useCurrentPlane.ts",
+      "classification": "shared",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {}
+      },
+      "proposedTargetPath": null,
+      "status": "stays"
+    },
+    {
+      "path": "src/hooks/useDemoModeRuntimeEnforcement.ts",
+      "filename": "useDemoModeRuntimeEnforcement.ts",
+      "classification": "shared",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {}
+      },
+      "proposedTargetPath": null,
+      "status": "stays"
+    },
+    {
+      "path": "src/hooks/useDraftAutosave.ts",
+      "filename": "useDraftAutosave.ts",
+      "classification": "shared",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {}
+      },
+      "proposedTargetPath": null,
+      "status": "stays"
+    },
+    {
+      "path": "src/hooks/useElectronBridge.ts",
+      "filename": "useElectronBridge.ts",
+      "classification": "shared",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {}
+      },
+      "proposedTargetPath": null,
+      "status": "review"
+    },
+    {
+      "path": "src/hooks/useExperienceSignature.ts",
+      "filename": "useExperienceSignature.ts",
+      "classification": "shared",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {}
+      },
+      "proposedTargetPath": null,
+      "status": "stays"
+    },
+    {
+      "path": "src/hooks/useGlobalShortcuts.ts",
+      "filename": "useGlobalShortcuts.ts",
+      "classification": "shared",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {}
+      },
+      "proposedTargetPath": null,
+      "status": "stays"
+    },
+    {
+      "path": "src/hooks/useIdleDetector.ts",
+      "filename": "useIdleDetector.ts",
+      "classification": "shared",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {}
+      },
+      "proposedTargetPath": null,
+      "status": "stays"
+    },
+    {
+      "path": "src/hooks/useLinkedContext.ts",
+      "filename": "useLinkedContext.ts",
+      "classification": "shared",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": [
+            "sita"
+          ]
+        },
+        "name": {}
+      },
+      "proposedTargetPath": null,
+      "status": "stays"
+    },
+    {
+      "path": "src/hooks/useMockReplacements.ts",
+      "filename": "useMockReplacements.ts",
+      "classification": "shared",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {}
+      },
+      "proposedTargetPath": null,
+      "status": "stays"
+    },
+    {
+      "path": "src/hooks/useModeData.ts",
+      "filename": "useModeData.ts",
+      "classification": "shared",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {}
+      },
+      "proposedTargetPath": null,
+      "status": "stays"
+    },
+    {
+      "path": "src/hooks/useModedData.ts",
+      "filename": "useModedData.ts",
+      "classification": "shared",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {}
+      },
+      "proposedTargetPath": null,
+      "status": "stays"
+    },
+    {
+      "path": "src/hooks/useNotifications.ts",
+      "filename": "useNotifications.ts",
+      "classification": "shared",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "notifications"
+        }
+      },
+      "proposedTargetPath": null,
+      "status": "stays"
+    },
+    {
+      "path": "src/hooks/useOfflineStore.ts",
+      "filename": "useOfflineStore.ts",
+      "classification": "shared",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {}
+      },
+      "proposedTargetPath": null,
+      "status": "stays"
+    },
+    {
+      "path": "src/hooks/usePageData.ts",
+      "filename": "usePageData.ts",
+      "classification": "shared",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {}
+      },
+      "proposedTargetPath": null,
+      "status": "stays"
+    },
+    {
+      "path": "src/hooks/usePipelineBootstrap.ts",
+      "filename": "usePipelineBootstrap.ts",
+      "classification": "shared",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {}
+      },
+      "proposedTargetPath": null,
+      "status": "review"
+    },
+    {
+      "path": "src/hooks/useProtocolBridge.ts",
+      "filename": "useProtocolBridge.ts",
+      "classification": "shared",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {}
+      },
+      "proposedTargetPath": null,
+      "status": "stays"
+    },
+    {
+      "path": "src/hooks/useRealtimeBridge.ts",
+      "filename": "useRealtimeBridge.ts",
+      "classification": "shared",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {}
+      },
+      "proposedTargetPath": null,
+      "status": "stays"
+    },
+    {
+      "path": "src/hooks/useReducedMotion.ts",
+      "filename": "useReducedMotion.ts",
+      "classification": "shared",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {}
+      },
+      "proposedTargetPath": null,
+      "status": "stays"
+    },
+    {
+      "path": "src/hooks/useRoutePerformance.ts",
+      "filename": "useRoutePerformance.ts",
+      "classification": "shared",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {}
+      },
+      "proposedTargetPath": null,
+      "status": "stays"
+    },
+    {
+      "path": "src/hooks/useRoutePrefetch.ts",
+      "filename": "useRoutePrefetch.ts",
+      "classification": "shared",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {}
+      },
+      "proposedTargetPath": null,
+      "status": "stays"
+    }
+  ]
+}

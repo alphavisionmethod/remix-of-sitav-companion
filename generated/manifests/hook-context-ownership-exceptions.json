@@ -1,0 +1,10 @@
+{
+  "$schema": "Hook & Context Ownership Exception Ledger — see docs/architecture/HOOK_AND_CONTEXT_OWNERSHIP_MODEL.md",
+  "policy": {
+    "shimThreshold": 30,
+    "shimMustReExportFrom": ["@/modules/<pillar>/hooks/<name>", "@/platform/<system>/hooks/<name>", "@/modules/<pillar>/contexts/<name>", "@/platform/<system>/contexts/<name>"],
+    "expiry": "Every shim entry MUST carry an `expiry` phase tag. Shims with no remaining importers MUST be deleted in the next pass."
+  },
+  "shims": [],
+  "rationale": []
+}

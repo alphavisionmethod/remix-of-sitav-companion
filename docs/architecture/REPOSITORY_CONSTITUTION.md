@@ -26,8 +26,8 @@ steady-state target — independent of what wave is currently in progress.
 | `src/components/` | Shared presentation | Reusable, presentation-only components used by ≥2 pillars | Pillar-specific components (move to `src/modules/<pillar>/components/`); page bodies |
 | `src/routes/` | Route registries | Route maps, lazy import wiring, redirect tables | Page bodies |
 | `src/admin/` | Admin canonical home | All admin/operator pages, modules, shell, navigation | Product (non-admin) pages |
-| `src/contexts/` | React contexts | Provider components and their state contracts | Services with side effects unrelated to React state |
-| `src/hooks/` | Reusable React hooks | Cross-cutting hooks | Hooks owned by a single pillar (move to `src/modules/<pillar>/hooks/`) |
+| `src/contexts/` | App-wide shell-level React contexts only | `AuthContext`, `AppearanceContext`/`ThemeContext`, `DisplayModeContext`, `CalmEngineContext`, `DataModeContext`, `DemoModeProvider`, `ConnectivityContext`, `EntityContext`, `InspectorContext`, `WindowManagerContext`, `RuntimeProvider` | Pillar-owned contexts (move to `src/modules/<pillar>/contexts/`); platform-subsystem contexts (move to `src/platform/<system>/contexts/`); services with side effects unrelated to React state. **CI-enforced — see boundary rule #51.** |
+| `src/hooks/` | Truly cross-cutting React hooks only | Hooks with no `@/modules/<pillar>` import and not tied to a single platform subsystem's internal state | Hooks owned by a single pillar (move to `src/modules/<pillar>/hooks/`); hooks owned by a single platform subsystem (move to `src/platform/<system>/hooks/`). **CI-enforced — see boundary rule #51.** |
 | `src/contracts/` | Public contracts | Stable cross-layer types and constants | Implementation code |
 | `src/integrations/` | Generated integration clients | Auto-generated Supabase client and types | **Never edit `client.ts` or `types.ts` manually** |
 | `src/data/` | Static seed/reference data | Static lookup tables, repository barrels | Live data (use `src/lib/services/`) |
@@ -220,6 +220,17 @@ Full model: `docs/architecture/UI_OWNERSHIP_MODEL.md`.
 ## Wave F — Frontend Page Ownership Law (BLOCKING)
 
 50. **`src/pages/**` is a route-adapter zone only.** Canonical page bodies live in exactly one of five zones: (1) `src/modules/<pillar>/pages/**` (pillar product pages), (2) `src/platform/<system>/pages/**` (platform system pages), (3) `src/admin/modules/<domain>/views/**` (admin/operator pages — Rule 30 destination), (4) `src/platform/experience/pages/mobile/**` (mobile/shell pages), (5) `src/components/**` and equivalents (reusable UI, NOT page bodies). Allowlisted exceptions inside `src/pages/**`: `NotFound.tsx`, `__tests__/`, `index.ts` barrels, and the legacy `src/pages/admin/**` region governed by the Rule 30 monotone-decrease ratchet. Sealed zones (Wave F): `src/pages/{mobile,business-advisors,owner-mode}/` — bodies physically moved to canonical owners; thick bodies re-emerging here BLOCK CI. Every page shim's `canonicalOwner` target MUST exist; broken shims BLOCK CI. Manifest: `generated/manifests/frontend-page-ownership-map.json`. Baseline: `generated/baselines/frontend-page-canonical-baseline.json` (sealed at 0). Validator (BLOCK): `scripts/architecture/checks/check-frontend-page-canonical-ownership.ts`. Generator: `scripts/architecture/generate/generate-frontend-page-ownership-map.ts`. Complements Rules 30, 33–35, and Wave C §C.1. Full model: `docs/architecture/FRONTEND_PAGE_OWNERSHIP_MODEL.md`.
+
+## Hook & Context Ownership Law (Hardening Wave — phased, warn → BLOCKING)
+
+51. **Hook & context ownership boundaries.** `src/hooks/**` and `src/contexts/**` are precise ownership layers, not convenience buckets. Specifically:
+    - **Shared hooks (`src/hooks/**`)** — only truly cross-cutting React hooks. A hook MUST NOT import from `@/modules/<pillar>/**`, and MUST NOT depend on the internal state of one platform subsystem. Consuming a platform subsystem's *public contract* (registry, types, gateway) is allowed.
+    - **Module-owned hooks** — live under `src/modules/<pillar>/hooks/**` and are exported from `src/modules/<pillar>/index.ts`.
+    - **Platform-owned hooks** — live under `src/platform/<system>/hooks/**` and are exported from `src/platform/<system>/index.ts`.
+    - **App-shell contexts (`src/contexts/**`)** — only app-wide shell-level providers (`AuthContext`, `AppearanceContext`/`ThemeContext`, `DisplayModeContext`, `CalmEngineContext`, `DataModeContext`, `DemoModeProvider`, `ConnectivityContext`, `EntityContext`, `InspectorContext`, `WindowManagerContext`, `RuntimeProvider`). A context in `src/contexts/**` MUST NOT import from `@/modules/<pillar>/**`.
+    - **Module-owned contexts** — live under `src/modules/<pillar>/contexts/**`.
+    - **Platform-owned contexts** — live under `src/platform/<system>/contexts/**`.
+    - Manifests: `generated/manifests/hook-ownership-map.json`, `generated/manifests/context-ownership-map.json`. Generator: `scripts/architecture/emit-hook-context-ownership-map.ts`. Validator: `scripts/architecture/check-hook-context-ownership.ts`. CI gate: `.github/workflows/check-boundaries.yml` step "Run hook & context ownership checker", env `HOOK_CONTEXT_OWNERSHIP_ENFORCE` (warn-only during the migration phases, BLOCKING after Phase 7). Transitional re-export shims tracked in `generated/manifests/hook-context-ownership-exceptions.json`. Full model: `docs/architecture/HOOK_AND_CONTEXT_OWNERSHIP_MODEL.md`.
 
 ## Amendment process
 

@@ -1,0 +1,351 @@
+{
+  "generatedAt": "2026-04-27T02:13:30.518Z",
+  "kind": "context",
+  "root": "src/contexts",
+  "total": 23,
+  "summary": {
+    "app-shell": 12,
+    "module:business": 3,
+    "module:concierge": 2,
+    "module:finance": 1,
+    "platform:app-platform": 1,
+    "platform:nova-sdk": 1,
+    "platform:sita": 3
+  },
+  "entries": [
+    {
+      "path": "src/contexts/AppearanceContext.tsx",
+      "filename": "AppearanceContext.tsx",
+      "classification": "app-shell",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {}
+      },
+      "proposedTargetPath": null,
+      "status": "stays"
+    },
+    {
+      "path": "src/contexts/AuthContext.tsx",
+      "filename": "AuthContext.tsx",
+      "classification": "app-shell",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {}
+      },
+      "proposedTargetPath": null,
+      "status": "stays"
+    },
+    {
+      "path": "src/contexts/CalmEngineContext.tsx",
+      "filename": "CalmEngineContext.tsx",
+      "classification": "app-shell",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {}
+      },
+      "proposedTargetPath": null,
+      "status": "stays"
+    },
+    {
+      "path": "src/contexts/ConnectivityContext.tsx",
+      "filename": "ConnectivityContext.tsx",
+      "classification": "app-shell",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {}
+      },
+      "proposedTargetPath": null,
+      "status": "stays"
+    },
+    {
+      "path": "src/contexts/DataModeContext.tsx",
+      "filename": "DataModeContext.tsx",
+      "classification": "app-shell",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {}
+      },
+      "proposedTargetPath": null,
+      "status": "stays"
+    },
+    {
+      "path": "src/contexts/DemoModeProvider.tsx",
+      "filename": "DemoModeProvider.tsx",
+      "classification": "app-shell",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {}
+      },
+      "proposedTargetPath": null,
+      "status": "stays"
+    },
+    {
+      "path": "src/contexts/DisplayModeContext.tsx",
+      "filename": "DisplayModeContext.tsx",
+      "classification": "app-shell",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {}
+      },
+      "proposedTargetPath": null,
+      "status": "stays"
+    },
+    {
+      "path": "src/contexts/EntityContext.tsx",
+      "filename": "EntityContext.tsx",
+      "classification": "app-shell",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {}
+      },
+      "proposedTargetPath": null,
+      "status": "stays"
+    },
+    {
+      "path": "src/contexts/InspectorContext.tsx",
+      "filename": "InspectorContext.tsx",
+      "classification": "app-shell",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {}
+      },
+      "proposedTargetPath": null,
+      "status": "stays"
+    },
+    {
+      "path": "src/contexts/RuntimeProvider.tsx",
+      "filename": "RuntimeProvider.tsx",
+      "classification": "app-shell",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {}
+      },
+      "proposedTargetPath": null,
+      "status": "stays"
+    },
+    {
+      "path": "src/contexts/ThemeContext.tsx",
+      "filename": "ThemeContext.tsx",
+      "classification": "app-shell",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {}
+      },
+      "proposedTargetPath": null,
+      "status": "stays"
+    },
+    {
+      "path": "src/contexts/WindowManagerContext.tsx",
+      "filename": "WindowManagerContext.tsx",
+      "classification": "app-shell",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "sita"
+        }
+      },
+      "proposedTargetPath": null,
+      "status": "stays"
+    },
+    {
+      "path": "src/contexts/BusinessNavigationContext.tsx",
+      "filename": "BusinessNavigationContext.tsx",
+      "classification": "module:business",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {}
+      },
+      "proposedTargetPath": "src/modules/business/contexts/BusinessNavigationContext.tsx",
+      "status": "move"
+    },
+    {
+      "path": "src/contexts/BusinessProfileContext.tsx",
+      "filename": "BusinessProfileContext.tsx",
+      "classification": "module:business",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {}
+      },
+      "proposedTargetPath": "src/modules/business/contexts/BusinessProfileContext.tsx",
+      "status": "move"
+    },
+    {
+      "path": "src/contexts/RevenueOfficeModeContext.tsx",
+      "filename": "RevenueOfficeModeContext.tsx",
+      "classification": "module:business",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "pillar": "business"
+        }
+      },
+      "proposedTargetPath": "src/modules/business/contexts/RevenueOfficeModeContext.tsx",
+      "status": "move"
+    },
+    {
+      "path": "src/contexts/ConciergeDataContext.tsx",
+      "filename": "ConciergeDataContext.tsx",
+      "classification": "module:concierge",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {}
+      },
+      "proposedTargetPath": "src/modules/concierge/contexts/ConciergeDataContext.tsx",
+      "status": "move"
+    },
+    {
+      "path": "src/contexts/ConciergeNavigationContext.tsx",
+      "filename": "ConciergeNavigationContext.tsx",
+      "classification": "module:concierge",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {}
+      },
+      "proposedTargetPath": "src/modules/concierge/contexts/ConciergeNavigationContext.tsx",
+      "status": "move"
+    },
+    {
+      "path": "src/contexts/FinanceNavigationContext.tsx",
+      "filename": "FinanceNavigationContext.tsx",
+      "classification": "module:finance",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {}
+      },
+      "proposedTargetPath": "src/modules/finance/contexts/FinanceNavigationContext.tsx",
+      "status": "move"
+    },
+    {
+      "path": "src/contexts/AppPlatformContext.tsx",
+      "filename": "AppPlatformContext.tsx",
+      "classification": "platform:app-platform",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "platform": "app-platform"
+        }
+      },
+      "proposedTargetPath": "src/platform/app-platform/contexts/AppPlatformContext.tsx",
+      "status": "move"
+    },
+    {
+      "path": "src/contexts/NovaSDKContext.tsx",
+      "filename": "NovaSDKContext.tsx",
+      "classification": "platform:nova-sdk",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": [
+            "nova-sdk",
+            "runtime"
+          ]
+        },
+        "name": {}
+      },
+      "proposedTargetPath": "src/platform/nova-sdk/contexts/NovaSDKContext.tsx",
+      "status": "move"
+    },
+    {
+      "path": "src/contexts/SitaKernelContext.tsx",
+      "filename": "SitaKernelContext.tsx",
+      "classification": "platform:sita",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {}
+      },
+      "proposedTargetPath": "src/platform/sita/contexts/SitaKernelContext.tsx",
+      "status": "move"
+    },
+    {
+      "path": "src/contexts/SitaOSContext.tsx",
+      "filename": "SitaOSContext.tsx",
+      "classification": "platform:sita",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {}
+      },
+      "proposedTargetPath": "src/platform/sita/contexts/SitaOSContext.tsx",
+      "status": "move"
+    },
+    {
+      "path": "src/contexts/SitaVoiceContext.tsx",
+      "filename": "SitaVoiceContext.tsx",
+      "classification": "platform:sita",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": [
+            "personal-brain",
+            "sita"
+          ]
+        },
+        "name": {}
+      },
+      "proposedTargetPath": "src/platform/sita/contexts/SitaVoiceContext.tsx",
+      "status": "move"
+    }
+  ]
+}
