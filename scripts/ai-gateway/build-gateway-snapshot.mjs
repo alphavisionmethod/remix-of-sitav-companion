@@ -72,12 +72,20 @@ for (const file of allFiles) {
   const isGatewayTest = /ai-gateway[\\/].*test/.test(rel);
 
   if (urls.length && !isGatewayItself && !isGatewayTest) {
-    // Heuristic: a real runtime call has the URL inside a fetch() within ~80 chars.
+    // A URL counts as a runtime call if EITHER:
+    //   (a) it sits inside a fetch(...) within ~80 chars, OR
+    //   (b) it is bound to a const/let/var URL constant (used later in fetch).
+    // Pure references inside CSP strings, doc comments, or registry seeds
+    // (no fetch nearby AND no const binding) are excluded.
     const runtimeCalls = urls.filter((u) => {
       const idx = text.indexOf(u);
       if (idx < 0) return false;
-      const window = text.substring(Math.max(0, idx - 80), idx);
-      return /\bfetch\s*\(/.test(window);
+      const before = text.substring(Math.max(0, idx - 120), idx);
+      const inFetch = /\bfetch\s*\(\s*$|\bfetch\s*\(\s*[^)]*$/.test(before);
+      const isConstBinding = /\b(?:const|let|var)\s+[A-Za-z_][A-Za-z0-9_]*\s*=\s*$|\b(?:const|let|var)\s+[A-Za-z_][A-Za-z0-9_]*\s*=\s*["'`]?$/.test(
+        before,
+      );
+      return inFetch || isConstBinding;
     });
     if (runtimeCalls.length) {
       directProviderCallers.push({
