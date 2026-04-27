@@ -1,0 +1,308 @@
+{
+  "generatedAt": "2026-04-27T17:46:21.471Z",
+  "counts": {
+    "total": 47,
+    "byKind": {
+      "link-table": 1,
+      "bridge-service": 1,
+      "linkage-component": 3,
+      "set-linked-context": 10,
+      "fk-column-usage": 19,
+      "background-task-resolver": 1,
+      "advisor-outcome-handler": 1,
+      "adaptive-signal-emitter": 3,
+      "adaptive-signal-receiver": 1,
+      "readiness-consumer": 7
+    },
+    "byClassification": {
+      "strong": 38,
+      "missing-identity": 1,
+      "partial": 8
+    }
+  },
+  "touchpoints": [
+    {
+      "id": "link-table:crm_customer_link",
+      "kind": "link-table",
+      "file": "supabase/migrations/20260426181345_53355088-a21c-4ba5-8be0-7b1fdb6a5b9f.sql",
+      "excerpt": "CREATE TABLE IF NOT EXISTS public.crm_customer_link",
+      "classification": "strong"
+    },
+    {
+      "id": "bridge-service:src/lib/services/business-os/crm-finance-bridge.service.ts",
+      "kind": "bridge-service",
+      "file": "src/lib/services/business-os/crm-finance-bridge.service.ts",
+      "classification": "strong"
+    },
+    {
+      "id": "linkage-component:src/modules/business/components/business/crm/CRMConciergeLinkage.tsx",
+      "kind": "linkage-component",
+      "file": "src/modules/business/components/business/crm/CRMConciergeLinkage.tsx",
+      "classification": "strong"
+    },
+    {
+      "id": "linkage-component:src/modules/business/components/business/crm/CRMFilesLinkage.tsx",
+      "kind": "linkage-component",
+      "file": "src/modules/business/components/business/crm/CRMFilesLinkage.tsx",
+      "classification": "missing-identity"
+    },
+    {
+      "id": "linkage-component:src/modules/business/components/business/crm/CRMFinanceLinkage.tsx",
+      "kind": "linkage-component",
+      "file": "src/modules/business/components/business/crm/CRMFinanceLinkage.tsx",
+      "classification": "strong"
+    },
+    {
+      "id": "set-linked-context:src/__tests__/business-os/integration/lead-recovery-loop.test.ts",
+      "kind": "set-linked-context",
+      "file": "src/__tests__/business-os/integration/lead-recovery-loop.test.ts",
+      "classification": "strong"
+    },
+    {
+      "id": "set-linked-context:src/modules/business/components/business/InvoiceDetailPane.tsx",
+      "kind": "set-linked-context",
+      "file": "src/modules/business/components/business/InvoiceDetailPane.tsx",
+      "classification": "strong"
+    },
+    {
+      "id": "set-linked-context:src/modules/business/components/business/LeadRecoveryPane.tsx",
+      "kind": "set-linked-context",
+      "file": "src/modules/business/components/business/LeadRecoveryPane.tsx",
+      "classification": "strong"
+    },
+    {
+      "id": "set-linked-context:src/modules/business/components/business/crm/CRMConciergeLinkage.tsx",
+      "kind": "set-linked-context",
+      "file": "src/modules/business/components/business/crm/CRMConciergeLinkage.tsx",
+      "classification": "strong"
+    },
+    {
+      "id": "set-linked-context:src/modules/business/components/business/crm/CRMFinanceLinkage.tsx",
+      "kind": "set-linked-context",
+      "file": "src/modules/business/components/business/crm/CRMFinanceLinkage.tsx",
+      "classification": "strong"
+    },
+    {
+      "id": "set-linked-context:src/modules/business/components/business/shared/AppointmentLineagePanel.tsx",
+      "kind": "set-linked-context",
+      "file": "src/modules/business/components/business/shared/AppointmentLineagePanel.tsx",
+      "classification": "strong"
+    },
+    {
+      "id": "set-linked-context:src/modules/business/pages/BackgroundTaskCenter.tsx",
+      "kind": "set-linked-context",
+      "file": "src/modules/business/pages/BackgroundTaskCenter.tsx",
+      "classification": "strong"
+    },
+    {
+      "id": "set-linked-context:src/modules/business/pages/OpportunitiesCenter.tsx",
+      "kind": "set-linked-context",
+      "file": "src/modules/business/pages/OpportunitiesCenter.tsx",
+      "classification": "strong"
+    },
+    {
+      "id": "set-linked-context:src/modules/business/pages/ProposalsContracts.tsx",
+      "kind": "set-linked-context",
+      "file": "src/modules/business/pages/ProposalsContracts.tsx",
+      "classification": "strong"
+    },
+    {
+      "id": "set-linked-context:src/modules/business/pages/QuotesWorkspace.tsx",
+      "kind": "set-linked-context",
+      "file": "src/modules/business/pages/QuotesWorkspace.tsx",
+      "classification": "strong"
+    },
+    {
+      "id": "fk-column-usage:src/__tests__/business-os/integration/appointment-noshow-recovery.test.ts",
+      "kind": "fk-column-usage",
+      "file": "src/__tests__/business-os/integration/appointment-noshow-recovery.test.ts",
+      "classification": "strong"
+    },
+    {
+      "id": "fk-column-usage:src/__tests__/business-os/integration/background-task-routing.test.ts",
+      "kind": "fk-column-usage",
+      "file": "src/__tests__/business-os/integration/background-task-routing.test.ts",
+      "classification": "strong"
+    },
+    {
+      "id": "fk-column-usage:src/__tests__/business-os/integration/crm-concierge-linkage-live.test.tsx",
+      "kind": "fk-column-usage",
+      "file": "src/__tests__/business-os/integration/crm-concierge-linkage-live.test.tsx",
+      "classification": "strong"
+    },
+    {
+      "id": "fk-column-usage:src/__tests__/business-os/integration/support-health-loop.test.ts",
+      "kind": "fk-column-usage",
+      "file": "src/__tests__/business-os/integration/support-health-loop.test.ts",
+      "classification": "strong"
+    },
+    {
+      "id": "fk-column-usage:src/data/repositories/business-scheduling-service.ts",
+      "kind": "fk-column-usage",
+      "file": "src/data/repositories/business-scheduling-service.ts",
+      "classification": "strong"
+    },
+    {
+      "id": "fk-column-usage:src/lib/kernel-handlers/business-handlers.ts",
+      "kind": "fk-column-usage",
+      "file": "src/lib/kernel-handlers/business-handlers.ts",
+      "classification": "strong"
+    },
+    {
+      "id": "fk-column-usage:src/lib/kernel-handlers/finance-handlers.ts",
+      "kind": "fk-column-usage",
+      "file": "src/lib/kernel-handlers/finance-handlers.ts",
+      "classification": "strong"
+    },
+    {
+      "id": "fk-column-usage:src/lib/operations/golden-path-registry.ts",
+      "kind": "fk-column-usage",
+      "file": "src/lib/operations/golden-path-registry.ts",
+      "classification": "strong"
+    },
+    {
+      "id": "fk-column-usage:src/lib/services/business-os/crm-finance-bridge.service.ts",
+      "kind": "fk-column-usage",
+      "file": "src/lib/services/business-os/crm-finance-bridge.service.ts",
+      "classification": "strong"
+    },
+    {
+      "id": "fk-column-usage:src/lib/services/business-os/support-health-loop.service.ts",
+      "kind": "fk-column-usage",
+      "file": "src/lib/services/business-os/support-health-loop.service.ts",
+      "classification": "strong"
+    },
+    {
+      "id": "fk-column-usage:src/modules/business/components/business/crm/CRMConciergeLinkage.tsx",
+      "kind": "fk-column-usage",
+      "file": "src/modules/business/components/business/crm/CRMConciergeLinkage.tsx",
+      "classification": "strong"
+    },
+    {
+      "id": "fk-column-usage:src/modules/business/components/business/crm/CRMFinanceLinkage.tsx",
+      "kind": "fk-column-usage",
+      "file": "src/modules/business/components/business/crm/CRMFinanceLinkage.tsx",
+      "classification": "strong"
+    },
+    {
+      "id": "fk-column-usage:src/modules/business/components/business/shared/AppointmentLineagePanel.tsx",
+      "kind": "fk-column-usage",
+      "file": "src/modules/business/components/business/shared/AppointmentLineagePanel.tsx",
+      "classification": "strong"
+    },
+    {
+      "id": "fk-column-usage:src/modules/business/domain/background-tasks/types.ts",
+      "kind": "fk-column-usage",
+      "file": "src/modules/business/domain/background-tasks/types.ts",
+      "classification": "strong"
+    },
+    {
+      "id": "fk-column-usage:src/modules/business/domain/scheduling/types.ts",
+      "kind": "fk-column-usage",
+      "file": "src/modules/business/domain/scheduling/types.ts",
+      "classification": "strong"
+    },
+    {
+      "id": "fk-column-usage:src/modules/business/hooks/use-follow-through-queues.ts",
+      "kind": "fk-column-usage",
+      "file": "src/modules/business/hooks/use-follow-through-queues.ts",
+      "classification": "strong"
+    },
+    {
+      "id": "fk-column-usage:src/modules/business/pages/AppointmentsScheduling.tsx",
+      "kind": "fk-column-usage",
+      "file": "src/modules/business/pages/AppointmentsScheduling.tsx",
+      "classification": "strong"
+    },
+    {
+      "id": "fk-column-usage:src/modules/business/pages/QuotesWorkspace.tsx",
+      "kind": "fk-column-usage",
+      "file": "src/modules/business/pages/QuotesWorkspace.tsx",
+      "classification": "strong"
+    },
+    {
+      "id": "fk-column-usage:src/platform/integration/cross-module-integration-map.ts",
+      "kind": "fk-column-usage",
+      "file": "src/platform/integration/cross-module-integration-map.ts",
+      "classification": "strong"
+    },
+    {
+      "id": "background-task-resolver:src/lib/business/task-target-resolver.ts",
+      "kind": "background-task-resolver",
+      "file": "src/lib/business/task-target-resolver.ts",
+      "classification": "strong"
+    },
+    {
+      "id": "advisor-outcome-handler:src/platform/integration/cross-module-integration-map.ts",
+      "kind": "advisor-outcome-handler",
+      "file": "src/platform/integration/cross-module-integration-map.ts",
+      "classification": "strong"
+    },
+    {
+      "id": "adaptive-signal-emitter:src/lib/debug/page-data-source-registry.ts",
+      "kind": "adaptive-signal-emitter",
+      "file": "src/lib/debug/page-data-source-registry.ts",
+      "classification": "partial"
+    },
+    {
+      "id": "adaptive-signal-emitter:src/modules/business/components/business/adaptive/CrossDomainSignalBridge.tsx",
+      "kind": "adaptive-signal-emitter",
+      "file": "src/modules/business/components/business/adaptive/CrossDomainSignalBridge.tsx",
+      "classification": "partial"
+    },
+    {
+      "id": "adaptive-signal-emitter:src/platform/integration/cross-module-integration-map.ts",
+      "kind": "adaptive-signal-emitter",
+      "file": "src/platform/integration/cross-module-integration-map.ts",
+      "classification": "strong"
+    },
+    {
+      "id": "adaptive-signal-receiver:src/platform/sita/components/sita/apps/business/BusinessAppShell.tsx",
+      "kind": "adaptive-signal-receiver",
+      "file": "src/platform/sita/components/sita/apps/business/BusinessAppShell.tsx",
+      "classification": "partial"
+    },
+    {
+      "id": "readiness-consumer:src/lib/debug/page-data-source-registry.ts",
+      "kind": "readiness-consumer",
+      "file": "src/lib/debug/page-data-source-registry.ts",
+      "classification": "partial"
+    },
+    {
+      "id": "readiness-consumer:src/packages/contracts/domain-types/admin-view-models.ts",
+      "kind": "readiness-consumer",
+      "file": "src/packages/contracts/domain-types/admin-view-models.ts",
+      "classification": "strong"
+    },
+    {
+      "id": "readiness-consumer:src/packages/internal-agent-config/agents/product-build.ts",
+      "kind": "readiness-consumer",
+      "file": "src/packages/internal-agent-config/agents/product-build.ts",
+      "classification": "strong"
+    },
+    {
+      "id": "readiness-consumer:src/platform/integration/cross-module-integration-map.ts",
+      "kind": "readiness-consumer",
+      "file": "src/platform/integration/cross-module-integration-map.ts",
+      "classification": "partial"
+    },
+    {
+      "id": "readiness-consumer:src/platform/sita/components/sita/ShellLayout.tsx",
+      "kind": "readiness-consumer",
+      "file": "src/platform/sita/components/sita/ShellLayout.tsx",
+      "classification": "partial"
+    },
+    {
+      "id": "readiness-consumer:src/platform/sita/components/sita/shell/ShellLiveLayer.tsx",
+      "kind": "readiness-consumer",
+      "file": "src/platform/sita/components/sita/shell/ShellLiveLayer.tsx",
+      "classification": "partial"
+    },
+    {
+      "id": "readiness-consumer:src/runtimes/portability-boundary-model.ts",
+      "kind": "readiness-consumer",
+      "file": "src/runtimes/portability-boundary-model.ts",
+      "classification": "partial"
+    }
+  ]
+}
