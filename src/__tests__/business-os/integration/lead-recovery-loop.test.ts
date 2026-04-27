@@ -50,7 +50,7 @@ describe("Phase 4 — lead recovery loop", () => {
       entityLabel: "Maya Chen · Northwind",
     });
 
-    const raw = storage["sita.linkedContext"] || storage["sita:linkedContext"];
+    const raw = storage["sita-linked-context"];
     expect(raw).toBeTruthy();
     const parsed = JSON.parse(raw!);
     expect(parsed.entityType).toBe("recovery_candidate");
