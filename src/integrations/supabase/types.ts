@@ -13827,11 +13827,52 @@ export type Database = {
         }
         Relationships: []
       }
+      household_business_link: {
+        Row: {
+          concierge_entity_id: string
+          concierge_entity_type: string
+          created_at: string
+          crm_company_id: string | null
+          crm_contact_id: string | null
+          id: string
+          link_source: string
+          metadata: Json
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          concierge_entity_id: string
+          concierge_entity_type: string
+          created_at?: string
+          crm_company_id?: string | null
+          crm_contact_id?: string | null
+          id?: string
+          link_source?: string
+          metadata?: Json
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          concierge_entity_id?: string
+          concierge_entity_type?: string
+          created_at?: string
+          crm_company_id?: string | null
+          crm_contact_id?: string | null
+          id?: string
+          link_source?: string
+          metadata?: Json
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       household_tasks: {
         Row: {
           assigned_to: string | null
           category: string | null
           created_at: string
+          crm_company_id: string | null
+          crm_contact_id: string | null
           description: string | null
           due_date: string | null
           id: string
@@ -13846,6 +13887,8 @@ export type Database = {
           assigned_to?: string | null
           category?: string | null
           created_at?: string
+          crm_company_id?: string | null
+          crm_contact_id?: string | null
           description?: string | null
           due_date?: string | null
           id?: string
@@ -13860,6 +13903,8 @@ export type Database = {
           assigned_to?: string | null
           category?: string | null
           created_at?: string
+          crm_company_id?: string | null
+          crm_contact_id?: string | null
           description?: string | null
           due_date?: string | null
           id?: string
@@ -20301,6 +20346,8 @@ export type Database = {
           contact_email: string | null
           contact_phone: string | null
           created_at: string
+          crm_company_id: string | null
+          crm_contact_id: string | null
           id: string
           metadata: Json
           name: string
@@ -20315,6 +20362,8 @@ export type Database = {
           contact_email?: string | null
           contact_phone?: string | null
           created_at?: string
+          crm_company_id?: string | null
+          crm_contact_id?: string | null
           id?: string
           metadata?: Json
           name: string
@@ -20329,6 +20378,8 @@ export type Database = {
           contact_email?: string | null
           contact_phone?: string | null
           created_at?: string
+          crm_company_id?: string | null
+          crm_contact_id?: string | null
           id?: string
           metadata?: Json
           name?: string

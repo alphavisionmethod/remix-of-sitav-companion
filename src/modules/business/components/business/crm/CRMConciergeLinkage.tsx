@@ -18,6 +18,7 @@ import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
 import { setLinkedContext } from "@/platform/sita/components/sita/CrossAppAction";
 import { PremiumEmptyState } from "@/platform/sita/components/sita/PremiumEmptyState";
+import { loadConciergeSurfaceForCrm } from "@/lib/services/concierge/household-business-bridge.service";
 
 interface LinkedAppointment {
   id: string;
@@ -112,12 +113,31 @@ export function CRMConciergeLinkage({ entityType, entityId, entityName }: CRMCon
     },
   });
 
+  // Phase 3: providers + household tasks linked to this CRM entity.
+  const householdSurfaceQuery = useQuery({
+    queryKey: ["crm-concierge:household-surface", entityType, entityId, user?.id],
+    enabled: !!user,
+    queryFn: () =>
+      loadConciergeSurfaceForCrm(
+        entityType === "contact"
+          ? { crm_contact_id: entityId }
+          : { crm_company_id: entityId },
+      ),
+  });
+
   const appointments = apptQuery.data ?? [];
   const obligations = obligationsQuery.data ?? [];
   const errands = errandsQuery.data ?? [];
+  const householdProviders = householdSurfaceQuery.data?.providers ?? [];
+  const householdTasks = householdSurfaceQuery.data?.household_tasks ?? [];
 
   const isLoading = apptQuery.isLoading || obligationsQuery.isLoading || errandsQuery.isLoading;
-  const hasAny = appointments.length > 0 || obligations.length > 0 || errands.length > 0;
+  const hasAny =
+    appointments.length > 0 ||
+    obligations.length > 0 ||
+    errands.length > 0 ||
+    householdProviders.length > 0 ||
+    householdTasks.length > 0;
 
   const handoff = (target: "/concierge/calendar" | "/concierge/recurring" | "/concierge/errands") => {
     setLinkedContext({

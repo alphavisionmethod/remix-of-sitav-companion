@@ -160,3 +160,80 @@ _(none — Phase 1 is purely additive.)_
   `customer_id`), so the back-link is not wired there yet. Phase 6
   (recovered value ↔ Finance) will replace that fixture surface with the
   DB-backed ledger and the back-link will fall in naturally.
+
+---
+
+## Phase 3 — Concierge ↔ Business linkage (COMPLETE)
+
+**Goal**: Provide a structural bridge between Concierge entities
+(household tasks, recurring obligations, providers, appointments,
+errands) and CRM entities (contacts, companies). Phase 2 closed CRM →
+Finance; this phase closes CRM ↔ Concierge in both directions.
+
+### Schema delivered
+
+- New table `public.household_business_link` with RLS, unique-triple
+  index, idempotency-friendly insert, and `updated_at` trigger.
+- Direct FK columns added to `public.providers` and
+  `public.household_tasks` (`crm_contact_id`, `crm_company_id`),
+  matching the existing shape on `concierge_recurring_obligations`.
+- Per-user RLS on every new column / table; no broadening of any
+  existing policy.
+
+### Files created
+
+- `src/lib/services/concierge/household-business-bridge.service.ts`
+- `src/modules/concierge/components/concierge/ProviderCRMBackLink.tsx`
+- `src/__tests__/integration/phase-3-concierge-business-bridge.test.ts`
+  (4 tests)
+
+### Files modified
+
+- `src/modules/business/components/business/crm/CRMConciergeLinkage.tsx`
+  — now folds providers + household tasks into the existing linkage
+  card via `loadConciergeSurfaceForCrm` (single round-trip).
+
+### Bidirectionality
+
+- Forward (CRM → Concierge): `setLinkedContext` → `/concierge/*`
+  surfaces (already wired in Phase 2 era).
+- Reverse (Concierge → CRM): `ProviderCRMBackLink` resolves the
+  bridge or direct FK and routes back to `/business/crm` with the
+  matching `setLinkedContext` payload.
+
+---
+
+## Phase 4 — Background Task Continuity (COMPLETE)
+
+**Goal**: Promote `task-target-resolver` to a platform-level service
+so Concierge / Finance / Boardroom can resolve background-job lineage
+without reaching into `src/modules/business/**`.
+
+### Files created
+
+- `src/platform/integration/background-task-target-resolver.ts`
+  — adds `resolvePlatformTaskTarget(job)` returning `{ app, route, … }`
+  for cross-app deep linking, and a back-compat `resolveTaskTarget`
+  that preserves the legacy contract used by `BackgroundTaskCenter`.
+- `src/__tests__/integration/phase-4-platform-task-resolver.test.ts`
+  (6 tests).
+
+### Behaviour
+
+- Concierge sources (`concierge_automations`, `calendar_sync_links`,
+  `household_tasks`, `errands`, `concierge_documents`) → `/concierge/*`.
+- Finance sources (`invoices`, `billing_runs`, `quotes`,
+  `wealth_snapshots`, `recovered_value_entries`) → `/business/billing`,
+  `/business/quotes`, `/money/wealth`.
+- All Business sources continue to flow through the legacy
+  `resolveTaskTarget` so `BackgroundTaskCenter` is unaffected.
+- Unknown sources return `null` (truth-honest fallback) instead of a
+  guessed destination.
+
+### Gate
+
+- 21/21 integration tests passing (Phase 1 + 2 + 3 + 4)
+- `tsc --noEmit` clean
+- No new ESLint or security linter regressions for these files
+- Migration applied; only pre-existing project-wide linter warnings
+  remain (unrelated to this phase).
