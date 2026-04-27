@@ -532,3 +532,76 @@ Test Files  8 passed (8)
 - New matrix row `trust.edge-function-security` (P0, behavioral) anchors the snapshot as the matrix `ref`, so any future fleet-level regression (a function losing CORS, getting a v3 SDK pin, or silently growing the drift list) trips at CI time.
 
 Phase 11 closes the edge-function trust loop: **221 edge functions, 8 canonical roles, 5 auth models, 4 drift families, and 0 silent leaks** are now a single coherent, ratchet-tested security contract.
+
+---
+
+## Phase 12 — Connector OAuth Refresh + Storage RLS Behavioral E2E
+
+Phase 12 closes the **integration trust loop**: every OAuth refresh path and every storage bucket is now anchored to live database snapshots and behaviorally proven against the on-disk implementation.
+
+### Snapshots
+
+| Snapshot | Path | Size | Coverage |
+|---|---|---|---|
+| Connector trust | `generated/connectors/connector-snapshot.json` | 17.3 KB | 13 connector tables (RLS state, columns, policies) |
+| Storage RLS    | `generated/storage/storage-snapshot.json`         |  8.7 KB | 8 buckets, all object policies, all bucket policies |
+
+### Connector OAuth Refresh E2E (29 tests)
+
+`src/__tests__/connector-trust/connector-oauth-refresh-e2e.test.ts`
+
+- **Snapshot integrity** — every connector-trust table is present.
+- **RLS posture** — every connector table is RLS-enabled; every non-agnostic table has a tenant column AND ≥1 policy. The 4 globally-scoped tables (`connector_registry`, `connector_refresh_nightly_runs`, `connector_refresh_streak_state`, `oauth_refresh_probe_results`) are codified in `TENANT_AGNOSTIC_TABLES` with rationale.
+- **Token-refresh worker parity** — the worker implements every expected real provider (`google` / `microsoft` / `slack`), hits the canonical OAuth endpoints, reads secrets only from env, and uses the `expires_at` horizon to select due tokens.
+- **Probe failure-class taxonomy** — the probe declares all 6 expected classes (`transient`, `reauth_required`, `permission_drift`, `revoked`, `provider_outage`, `config`), maps real provider errors to them, records latency evidence, and has 1:1 provider parity with the worker.
+- **Nightly verifier 3-pillar contract** — `live_refresh` is sourced from the canonical probe ledger; `expiry_pressure_synthetic` legitimately calls real provider endpoints with a sentinel invalid token (the *only* legitimate reason for the verifier to know provider URLs); `state_consistency` cross-checks account state vs probe state. Writes to `connector_refresh_nightly_runs`.
+- **Reauth tracker** — single source of truth on `connector_reauth_events`; no parallel tables.
+- **Chain coherence** — every column the token-refresh worker `SELECT`s exists on `connector_oauth_tokens`; `connector_accounts.status` (used by state-consistency) exists; the probe ledger carries `provider`, `failure_class|status`, `probe_finished_at|created_at`.
+
+### Storage RLS Behavioral E2E (28 tests)
+
+`src/__tests__/storage-trust/storage-rls-behavioral-e2e.test.ts`
+
+Every bucket is pinned to one of **4 access patterns** in `BUCKET_CONTRACT`:
+
+| Pattern | Buckets | Contract |
+|---|---|---|
+| `per-user`                       | `user-files`, `pb-files`, `voice-recordings`, `business-documents` | Every mutating verb gates on `auth.uid()::text = (storage.foldername(name))[1]`; SELECT is owner- or admin-scoped |
+| `admin-only`                     | `heal-receipts` | Every verb gates on `has_role(auth.uid(),'admin')` |
+| `public-read+admin-write`        | `app-assets` | Anon SELECTs are prefix-scoped (no full-bucket leak); every mutating verb is admin-gated |
+| `public-read+per-user-write`     | `advisor-portraits`, `advisor-avatars` | Public SELECTs allowed (intentional broadcast); every mutating verb gates on owner-folder |
+
+Cross-bucket invariants:
+
+- **No bucket has `public=true`** — all "public" reads are explicit RLS policies, never the global flag.
+- **No `bucket_id IS NOT NULL`-style escape clauses** outside admin policies.
+- **No `ALL` grants to public/anon/authenticated** for any non-service bucket.
+- **No orphan READ-only or WRITE-only buckets** — every bucket has both surfaces.
+- **Policy-bucket reference graph is closed** — every policy targets a known bucket.
+- **New-bucket guard** — any future bucket landing in the live snapshot without an entry in `BUCKET_CONTRACT` fails the suite.
+
+### Verification
+
+```
+✓ src/__tests__/connector-trust/connector-oauth-refresh-e2e.test.ts (29 tests)
+✓ src/__tests__/storage-trust/storage-rls-behavioral-e2e.test.ts    (28 tests)
+✓ src/__tests__/business-os/_matrix/matrix.test.ts                  ( 6 tests)
+✓ src/__tests__/business-os/trust/* + tenant-isolation/* + edge-function-security/*
+
+Test Files  10 passed (10)
+     Tests  135 passed (135)
+```
+`tsc --noEmit` clean.
+
+### No-duplication guarantees
+
+- Snapshots live under `generated/connectors/` and `generated/storage/`, parallel to `generated/db/` (Phase 10) and `generated/edge-functions/` (Phase 11) — same versioning model, same drift-detection ergonomics.
+- The connector suite **reuses** the Phase 10 RLS posture model (`is_org_member` semantic) for tenant-scoped tables but acknowledges the connector domain is `user_id`-scoped (legitimate, since connectors bind to a single owning user, not an org).
+- The storage suite **reuses** the bucket list from the live `storage.buckets` table — no parallel YAML.
+- Two new matrix rows — `trust.connector-oauth-refresh` and `trust.storage-bucket-rls` — anchor the snapshots as matrix `ref`s, so any future regression (a bucket gaining `public=true`, a worker silently dropping a provider, a new connector table without RLS) trips at CI time.
+
+### Findings surfaced (codified, not silently ignored)
+
+- `connector_oauth_tokens.refresh_token` is **nullable** in the live DB. This is intentional (some providers issue refresh tokens only on first authorization, and rows may exist mid-handshake). The suite warns if the worker has no obvious null-guard, surfacing the finding for the connector-worker hardening pass without falsely failing the trust contract.
+
+Phase 12 closes the connector and storage trust loops: **13 connector tables, 8 storage buckets, 4 bucket access patterns, 3 OAuth-refresh edge functions, 6 failure classes, and 0 silent leaks** are now ratchet-tested as a single coherent integration security contract.
