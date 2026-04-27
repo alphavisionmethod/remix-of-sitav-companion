@@ -18,7 +18,7 @@ export type Priority = "P0" | "P1" | "P2";
 
 export interface SurfaceEntry {
   id: string;
-  kind: "page" | "service" | "route" | "trust" | "integration" | "adaptive" | "e2e";
+  kind: "page" | "service" | "route" | "trust" | "integration" | "adaptive" | "e2e" | "hook";
   ref: string;
   tests: string[];
   status: CoverageStatus;
@@ -28,17 +28,17 @@ export interface SurfaceEntry {
 
 // ── Pages (high-value Finance OS surfaces) ────────────────────
 export const PAGE_SURFACES: SurfaceEntry[] = [
-  { id: "page.money-overview",         kind: "page", ref: "src/modules/finance/pages/MoneyOverview.tsx",                         tests: ["src/__tests__/finance/pages/money-overview.test.tsx"],         status: "missing", priority: "P0" },
-  { id: "page.money-approvals",        kind: "page", ref: "src/modules/finance/pages/MoneyApprovals.tsx",                        tests: ["src/__tests__/finance/pages/money-approvals.test.tsx"],        status: "missing", priority: "P0" },
-  { id: "page.capital-allocation",     kind: "page", ref: "src/modules/finance/pages/CapitalAllocationPage.tsx",                 tests: ["src/__tests__/finance/pages/capital-allocation.test.tsx"],     status: "missing", priority: "P0" },
-  { id: "page.wealth-command-center",  kind: "page", ref: "src/modules/finance/pages/WealthCommandCenter.tsx",                   tests: ["src/__tests__/finance/pages/wealth-command-center.test.tsx"],  status: "missing", priority: "P1" },
-  { id: "page.bills-workspace",        kind: "page", ref: "src/modules/finance/pages/money/BillsWorkspace.tsx",                  tests: ["src/__tests__/finance/pages/bills-workspace.test.tsx"],        status: "missing", priority: "P0" },
-  { id: "page.cash-allocator",         kind: "page", ref: "src/modules/finance/pages/money/CashAllocator.tsx",                   tests: ["src/__tests__/finance/pages/cash-allocator.test.tsx"],         status: "missing", priority: "P0" },
-  { id: "page.budget-envelope-office", kind: "page", ref: "src/modules/finance/pages/money/BudgetEnvelopeOffice.tsx",            tests: ["src/__tests__/finance/pages/budget-envelope-office.test.tsx"], status: "missing", priority: "P1" },
-  { id: "page.financial-health-pulse", kind: "page", ref: "src/modules/finance/pages/money/FinancialHealthPulse.tsx",            tests: ["src/__tests__/finance/pages/financial-health-pulse.test.tsx"], status: "missing", priority: "P1" },
-  { id: "page.portfolio-office",       kind: "page", ref: "src/modules/finance/pages/investment-office/PortfolioOffice.tsx",     tests: ["src/__tests__/finance/pages/portfolio-office.test.tsx"],       status: "missing", priority: "P0" },
-  { id: "page.execution-desk",         kind: "page", ref: "src/modules/finance/pages/investment-office/ExecutionDesk.tsx",       tests: ["src/__tests__/finance/pages/execution-desk.test.tsx"],         status: "missing", priority: "P1" },
-  { id: "page.investment-boardroom",   kind: "page", ref: "src/modules/finance/pages/investment-office/InvestmentBoardroom.tsx", tests: ["src/__tests__/finance/pages/investment-boardroom.test.tsx"],   status: "missing", priority: "P1" },
+  { id: "page.money-overview",         kind: "page", ref: "src/modules/finance/pages/MoneyOverview.tsx",                         tests: ["src/__tests__/finance/pages/money-overview.test.tsx"],         status: "behavioral", notes: "Phase 5: page renders honest empty/loading state under canonical Supabase mock", priority: "P0" },
+  { id: "page.money-approvals",        kind: "page", ref: "src/modules/finance/pages/MoneyApprovals.tsx",                        tests: ["src/__tests__/finance/pages/money-approvals.test.tsx"],        status: "behavioral", notes: "Phase 5: page renders honest empty/loading state under canonical Supabase mock", priority: "P0" },
+  { id: "page.capital-allocation",     kind: "page", ref: "src/modules/finance/pages/CapitalAllocationPage.tsx",                 tests: ["src/__tests__/finance/pages/capital-allocation.test.tsx"],     status: "behavioral", notes: "Phase 5: page renders honest empty/loading state under canonical Supabase mock", priority: "P0" },
+  { id: "page.wealth-command-center",  kind: "page", ref: "src/modules/finance/pages/WealthCommandCenter.tsx",                   tests: ["src/__tests__/finance/pages/wealth-command-center.test.tsx"],  status: "behavioral", notes: "Phase 5: page renders honest empty/loading state under canonical Supabase mock", priority: "P1" },
+  { id: "page.bills-workspace",        kind: "page", ref: "src/modules/finance/pages/money/BillsWorkspace.tsx",                  tests: ["src/__tests__/finance/pages/bills-workspace.test.tsx"],        status: "behavioral", notes: "Phase 5: page renders honest empty/loading state under canonical Supabase mock", priority: "P0" },
+  { id: "page.cash-allocator",         kind: "page", ref: "src/modules/finance/pages/money/CashAllocator.tsx",                   tests: ["src/__tests__/finance/pages/cash-allocator.test.tsx"],         status: "behavioral", notes: "Phase 5: page renders honest empty/loading state under canonical Supabase mock", priority: "P0" },
+  { id: "page.budget-envelope-office", kind: "page", ref: "src/modules/finance/pages/money/BudgetEnvelopeOffice.tsx",            tests: ["src/__tests__/finance/pages/budget-envelope-office.test.tsx"], status: "behavioral", notes: "Phase 5: page renders honest empty/loading state under canonical Supabase mock", priority: "P1" },
+  { id: "page.financial-health-pulse", kind: "page", ref: "src/modules/finance/pages/money/FinancialHealthPulse.tsx",            tests: ["src/__tests__/finance/pages/financial-health-pulse.test.tsx"], status: "behavioral", notes: "Phase 5: page renders honest empty/loading state under canonical Supabase mock", priority: "P1" },
+  { id: "page.portfolio-office",       kind: "page", ref: "src/modules/finance/pages/investment-office/PortfolioOffice.tsx",     tests: ["src/__tests__/finance/pages/portfolio-office.test.tsx"],       status: "behavioral", notes: "Phase 5: page renders honest empty/loading state under canonical Supabase mock", priority: "P0" },
+  { id: "page.execution-desk",         kind: "page", ref: "src/modules/finance/pages/investment-office/ExecutionDesk.tsx",       tests: ["src/__tests__/finance/pages/execution-desk.test.tsx"],         status: "behavioral", notes: "Phase 5: page renders honest empty/loading state under canonical Supabase mock", priority: "P1" },
+  { id: "page.investment-boardroom",   kind: "page", ref: "src/modules/finance/pages/investment-office/InvestmentBoardroom.tsx", tests: ["src/__tests__/finance/pages/investment-boardroom.test.tsx"],   status: "behavioral", notes: "Phase 5: page renders honest empty/loading state under canonical Supabase mock", priority: "P1" },
   { id: "page.finance-page-state",     kind: "page", ref: "src/modules/finance/pages",                                           tests: ["src/__tests__/finance/finance-page-state-grammar.test.ts"],    status: "behavioral", priority: "P0", notes: "page-state grammar audit covers every page across the three subdirs" },
 ];
 
@@ -127,6 +127,16 @@ export const E2E_SURFACES: SurfaceEntry[] = [
   { id: "e2e.investment-route-continuity", kind: "e2e", ref: "/investment/* deep-link continuity",      tests: ["tests/e2e/finance/investment-route-continuity.spec.ts"],        status: "missing", priority: "P0" },
 ];
 
+// ── Data hooks (React Query gateways into the live backend) ───
+// Phase 6: each hook is exercised through `renderHook` against the
+// canonical Supabase mock to prove auth-gating, idle-when-disabled,
+// and resolve-to-empty behavior without throwing.
+export const HOOK_SURFACES: SurfaceEntry[] = [
+  { id: "hook.use-money-data",        kind: "hook", ref: "src/modules/finance/hooks/use-money-data.ts",        tests: ["src/__tests__/finance/hooks/use-money-data.hook.test.tsx"],        status: "behavioral", priority: "P0", notes: "Phase 6: 7 money read hooks gated by auth, idle when disabled" },
+  { id: "hook.use-investment-office", kind: "hook", ref: "src/modules/finance/hooks/use-investment-office.ts", tests: ["src/__tests__/finance/hooks/use-investment-office.hook.test.tsx"], status: "behavioral", priority: "P0", notes: "Phase 6: 9 investment-office read hooks gated by auth" },
+  { id: "hook.use-page-data",         kind: "hook", ref: "src/hooks/usePageData.ts",                           tests: ["src/__tests__/finance/hooks/use-page-data.canonical.test.tsx"],    status: "behavioral", priority: "P0", notes: "Phase 6: canonical loading→empty→ready→error transitions + custom emptyCheck" },
+];
+
 export const ALL_SURFACES: SurfaceEntry[] = [
   ...PAGE_SURFACES,
   ...SERVICE_SURFACES,
@@ -135,6 +145,7 @@ export const ALL_SURFACES: SurfaceEntry[] = [
   ...INTEGRATION_SURFACES,
   ...ADAPTIVE_SURFACES,
   ...E2E_SURFACES,
+  ...HOOK_SURFACES,
 ];
 
 /** Pages explicitly excluded from per-page state-honesty tests, with stable reason. */

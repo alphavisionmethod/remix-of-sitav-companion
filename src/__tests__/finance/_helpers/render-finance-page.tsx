@@ -26,13 +26,15 @@ export function renderFinancePage(
     activeModule: options.activeModule ?? "overview",
     navigateTo: options.navigateTo ?? (() => {}),
   };
-  const Wrapper = ({ children }: { children: React.ReactNode }) => (
+  // Wrap UI in finance-specific provider, then defer to canonical
+  // render so QueryClient + Router providers from test-utils survive.
+  const wrapped = (
     <FinanceNavigationContext.Provider value={navValue}>
-      {children}
+      {ui}
     </FinanceNavigationContext.Provider>
   );
   const { initialRoute: _i, activeModule: _a, navigateTo: _n, ...rest } = options;
-  return canonicalRender(ui, { wrapper: Wrapper, ...rest });
+  return canonicalRender(wrapped, rest);
 }
 
 export * from "@testing-library/react";

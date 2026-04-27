@@ -25,7 +25,7 @@ export type Priority = "P0" | "P1" | "P2";
 
 export interface SurfaceEntry {
   id: string;
-  kind: "page" | "service" | "route" | "trust" | "integration" | "adaptive" | "e2e";
+  kind: "page" | "service" | "route" | "trust" | "integration" | "adaptive" | "e2e" | "hook";
   /** Path of the implementation file or route (relative to repo root). */
   ref: string;
   /** Path(s) of the test file(s) that cover it (relative to repo root). */
@@ -38,15 +38,15 @@ export interface SurfaceEntry {
 // ── Pages (high-value Concierge OS surfaces) ──────────────────
 // Tests added in Phase 5 are listed here as "missing" until then.
 export const PAGE_SURFACES: SurfaceEntry[] = [
-  { id: "page.household-command-center", kind: "page", ref: "src/modules/concierge/pages/HouseholdCommandCenter.tsx", tests: ["src/__tests__/concierge/pages/household-command-center.test.tsx"], status: "missing", priority: "P0" },
-  { id: "page.life-admin-center",        kind: "page", ref: "src/modules/concierge/pages/LifeAdminCenter.tsx",       tests: ["src/__tests__/concierge/pages/life-admin-center.test.tsx"],       status: "missing", priority: "P0" },
-  { id: "page.appointments-prep",        kind: "page", ref: "src/modules/concierge/pages/AppointmentsPrep.tsx",      tests: ["src/__tests__/concierge/pages/appointments-prep.test.tsx"],       status: "missing", priority: "P0" },
-  { id: "page.recurring-obligations",    kind: "page", ref: "src/modules/concierge/pages/RecurringObligations.tsx",  tests: ["src/__tests__/concierge/pages/recurring-obligations.test.tsx"],   status: "missing", priority: "P0" },
-  { id: "page.service-providers",        kind: "page", ref: "src/modules/concierge/pages/ServiceProviders.tsx",      tests: ["src/__tests__/concierge/pages/service-providers.test.tsx"],       status: "missing", priority: "P0" },
-  { id: "page.family-calendar",          kind: "page", ref: "src/modules/concierge/pages/FamilyCalendar.tsx",        tests: ["src/__tests__/concierge/pages/family-calendar.test.tsx"],         status: "missing", priority: "P1" },
-  { id: "page.travel-planning",          kind: "page", ref: "src/modules/concierge/pages/TravelPlanning.tsx",        tests: ["src/__tests__/concierge/pages/travel-planning.test.tsx"],         status: "missing", priority: "P1" },
-  { id: "page.errands-logistics",        kind: "page", ref: "src/modules/concierge/pages/ErrandsLogistics.tsx",      tests: ["src/__tests__/concierge/pages/errands-logistics.test.tsx"],       status: "missing", priority: "P1" },
-  { id: "page.grocery-planning",         kind: "page", ref: "src/modules/concierge/pages/GroceryPlanning.tsx",       tests: ["src/__tests__/concierge/pages/grocery-planning.test.tsx"],        status: "missing", priority: "P1" },
+  { id: "page.household-command-center", kind: "page", ref: "src/modules/concierge/pages/HouseholdCommandCenter.tsx", tests: ["src/__tests__/concierge/pages/household-command-center.test.tsx"], status: "behavioral", notes: "Phase 5: page renders honest empty/loading state under canonical Supabase mock", priority: "P0" },
+  { id: "page.life-admin-center",        kind: "page", ref: "src/modules/concierge/pages/LifeAdminCenter.tsx",       tests: ["src/__tests__/concierge/pages/life-admin-center.test.tsx"],       status: "behavioral", notes: "Phase 5: page renders honest empty/loading state under canonical Supabase mock", priority: "P0" },
+  { id: "page.appointments-prep",        kind: "page", ref: "src/modules/concierge/pages/AppointmentsPrep.tsx",      tests: ["src/__tests__/concierge/pages/appointments-prep.test.tsx"],       status: "behavioral", notes: "Phase 5: page renders honest empty/loading state under canonical Supabase mock", priority: "P0" },
+  { id: "page.recurring-obligations",    kind: "page", ref: "src/modules/concierge/pages/RecurringObligations.tsx",  tests: ["src/__tests__/concierge/pages/recurring-obligations.test.tsx"],   status: "behavioral", notes: "Phase 5: page renders honest empty/loading state under canonical Supabase mock", priority: "P0" },
+  { id: "page.service-providers",        kind: "page", ref: "src/modules/concierge/pages/ServiceProviders.tsx",      tests: ["src/__tests__/concierge/pages/service-providers.test.tsx"],       status: "behavioral", notes: "Phase 5: page renders honest empty/loading state under canonical Supabase mock", priority: "P0" },
+  { id: "page.family-calendar",          kind: "page", ref: "src/modules/concierge/pages/FamilyCalendar.tsx",        tests: ["src/__tests__/concierge/pages/family-calendar.test.tsx"],         status: "behavioral", notes: "Phase 5: page renders honest empty/loading state under canonical Supabase mock", priority: "P1" },
+  { id: "page.travel-planning",          kind: "page", ref: "src/modules/concierge/pages/TravelPlanning.tsx",        tests: ["src/__tests__/concierge/pages/travel-planning.test.tsx"],         status: "behavioral", notes: "Phase 5: page renders honest empty/loading state under canonical Supabase mock", priority: "P1" },
+  { id: "page.errands-logistics",        kind: "page", ref: "src/modules/concierge/pages/ErrandsLogistics.tsx",      tests: ["src/__tests__/concierge/pages/errands-logistics.test.tsx"],       status: "behavioral", notes: "Phase 5: page renders honest empty/loading state under canonical Supabase mock", priority: "P1" },
+  { id: "page.grocery-planning",         kind: "page", ref: "src/modules/concierge/pages/GroceryPlanning.tsx",       tests: ["src/__tests__/concierge/pages/grocery-planning.test.tsx"],        status: "behavioral", notes: "Phase 5: page renders honest empty/loading state under canonical Supabase mock", priority: "P1" },
   { id: "page.concierge-page-state",     kind: "page", ref: "src/modules/concierge/pages",                           tests: ["src/__tests__/concierge/concierge-page-state-grammar.test.ts"],   status: "behavioral", priority: "P0", notes: "page-state grammar audit covers every page in the dir" },
 ];
 
@@ -108,6 +108,15 @@ export const E2E_SURFACES: SurfaceEntry[] = [
   { id: "e2e.household-reservation-flow",  kind: "e2e", ref: "/concierge/household → /concierge/recurring → linkage", tests: ["tests/e2e/concierge/household-reservation-flow.spec.ts"], status: "missing", priority: "P0" },
 ];
 
+// ── Data hooks (React Query gateways into the live backend) ───
+// Phase 6: each hook is exercised through `renderHook` against the
+// canonical Supabase mock to prove auth-gating, idle-when-disabled,
+// and resolve-to-empty behavior without throwing.
+export const HOOK_SURFACES: SurfaceEntry[] = [
+  { id: "hook.use-household",          kind: "hook", ref: "src/modules/concierge/hooks/use-household.ts",       tests: ["src/__tests__/concierge/hooks/use-household.hook.test.tsx"],       status: "behavioral", priority: "P0", notes: "Phase 6: auth-gated query + dependent householdId queries" },
+  { id: "hook.use-concierge-data",     kind: "hook", ref: "src/modules/concierge/hooks/use-concierge-data.ts",  tests: ["src/__tests__/concierge/hooks/use-concierge-data.hook.test.tsx"],  status: "behavioral", priority: "P0", notes: "Phase 6: cross-section of read hooks resolve cleanly under empty backend" },
+];
+
 export const ALL_SURFACES: SurfaceEntry[] = [
   ...PAGE_SURFACES,
   ...SERVICE_SURFACES,
@@ -116,6 +125,7 @@ export const ALL_SURFACES: SurfaceEntry[] = [
   ...INTEGRATION_SURFACES,
   ...ADAPTIVE_SURFACES,
   ...E2E_SURFACES,
+  ...HOOK_SURFACES,
 ];
 
 /** Pages explicitly excluded from per-page state-honesty tests, with a stable reason. */
