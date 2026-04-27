@@ -21,6 +21,8 @@ import {
   type PreparedRecoveryMessage,
 } from "@/data/repositories/business-scheduling-service";
 import type { ScheduledAppointmentVM } from "@/modules/business/domain/scheduling/types";
+import { emitClientReceipt, emitClientFailureReceipt } from "@/lib/trust/emit-client-receipt";
+import { withApprovalGate, type ApprovalGateResult } from "@/lib/trust/request-approval";
 
 const SCHEDULE_KEY = "business-scheduling" as const;
 
@@ -174,11 +176,51 @@ function useReceiptedScheduleMutation<TInput, TOut extends MutationResult>(
 }
 
 export function useSendConfirmationReminder() {
+  // Reminders are external outreach but low-blast (single recipient, the
+  // operator already booked them) → emit a canonical receipt around every
+  // attempt, but do NOT gate. Failures emit a structured failure receipt.
   return useReceiptedScheduleMutation<
     { bookingId: string; channel?: "sms" | "email" | "phone" },
     MutationResult
   >(
-    ({ bookingId, channel = "sms" }) => sendConfirmationReminder(bookingId, channel),
+    async ({ bookingId, channel = "sms" }) => {
+      try {
+        const out = await sendConfirmationReminder(bookingId, channel);
+        if (out.ok) {
+          await emitClientReceipt({
+            actionType: "appointment.reminder.send",
+            summary: `Sent ${channel} reminder for booking ${bookingId}`,
+            payload: {
+              args: { bookingId, channel },
+              entity_ref: { entity_type: "booking", entity_id: bookingId },
+            },
+            riskTier: "medium",
+            status: "executed",
+            metadata: { channel },
+          });
+        } else {
+          await emitClientFailureReceipt({
+            actionType: "appointment.reminder.send",
+            summary: `Reminder failed for booking ${bookingId}`,
+            payload: { args: { bookingId, channel } },
+            riskTier: "medium",
+            errorCode: "reminder_send_failed",
+            errorMessage: out.error ?? "unknown",
+          });
+        }
+        return out;
+      } catch (err) {
+        await emitClientFailureReceipt({
+          actionType: "appointment.reminder.send",
+          summary: `Reminder threw for booking ${bookingId}`,
+          payload: { args: { bookingId, channel } },
+          riskTier: "medium",
+          errorCode: "reminder_send_threw",
+          errorMessage: err instanceof Error ? err.message : String(err),
+        });
+        throw err;
+      }
+    },
     () => "Reminder sent",
   );
 }
@@ -192,6 +234,16 @@ export function useMarkBookingConfirmed() {
       // Failures are non-fatal — they're recorded in calendar_sync_links.
       if (res.ok) {
         try { await syncAppointmentEverywhere(bookingId); } catch { /* best-effort */ }
+        await emitClientReceipt({
+          actionType: "appointment.confirm",
+          summary: `Booking ${bookingId} confirmed`,
+          payload: {
+            args: { bookingId },
+            entity_ref: { entity_type: "booking", entity_id: bookingId },
+          },
+          riskTier: "low",
+          status: "executed",
+        });
       }
       return res;
     },
@@ -199,14 +251,90 @@ export function useMarkBookingConfirmed() {
   );
 }
 
+/**
+ * No-show recovery touches a customer who already failed to show up — high
+ * brand-risk external outreach. Routes through `withApprovalGate` (queued
+ * at `high`/`critical`) so an operator can review the prepared message.
+ * The hook returns either an executed `MutationResult` (when skipped/demo)
+ * or a `gated` envelope the caller must surface to the user.
+ */
+export type RecoverNoShowResult =
+  | (MutationResult & { gated: false; message?: PreparedRecoveryMessage })
+  | { gated: true; approvalId: string; receiptId: string | null; ok: true };
+
 export function useRecoverNoShow() {
-  return useReceiptedScheduleMutation<
-    { bookingId: string; channel?: "sms" | "email" | "phone" },
-    MutationResult & { message?: PreparedRecoveryMessage }
-  >(
-    ({ bookingId, channel = "email" }) => recoverNoShow(bookingId, channel),
-    () => "Recovery message prepared",
-  );
+  const queryClient = useQueryClient();
+  return useMutation<
+    RecoverNoShowResult,
+    Error,
+    { bookingId: string; channel?: "sms" | "email" | "phone"; reason?: string; skip?: boolean }
+  >({
+    mutationFn: async ({ bookingId, channel = "email", reason, skip }) => {
+      const gated: ApprovalGateResult<MutationResult & { message?: PreparedRecoveryMessage }> =
+        await withApprovalGate(
+          async () => {
+            const out = await recoverNoShow(bookingId, channel);
+            if (out.ok) {
+              await emitClientReceipt({
+                actionType: "appointment.recovery.send",
+                summary: `No-show recovery prepared for booking ${bookingId}`,
+                payload: {
+                  args: { bookingId, channel },
+                  entity_ref: { entity_type: "booking", entity_id: bookingId },
+                },
+                riskTier: "high",
+                status: "executed",
+                metadata: { channel },
+              });
+            } else {
+              await emitClientFailureReceipt({
+                actionType: "appointment.recovery.send",
+                summary: `No-show recovery failed for booking ${bookingId}`,
+                payload: { args: { bookingId, channel } },
+                riskTier: "high",
+                errorCode: "recovery_failed",
+                errorMessage: out.error ?? "unknown",
+              });
+            }
+            return out;
+          },
+          {
+            actionType: "appointment.recovery.send",
+            title: `Send no-show recovery (${channel}) for booking ${bookingId}`,
+            justification:
+              reason ??
+              "External outreach to a customer who missed their appointment. Reviewed before send to protect brand and avoid duplicate contact.",
+            riskTier: "high",
+            payload: { bookingId, channel },
+            launchImplications: `Sends ${channel} message to one third party.`,
+            skip,
+          },
+        );
+
+      if (gated.gated) {
+        return {
+          gated: true,
+          approvalId: gated.approvalId,
+          receiptId: gated.receiptId,
+          ok: true,
+        };
+      }
+      return { ...gated.result, gated: false } as RecoverNoShowResult;
+    },
+    onSuccess: (out) => {
+      if (out.gated) {
+        toast.message("Recovery queued for approval");
+      } else if (out.ok) {
+        toast.success("Recovery message prepared");
+        void queryClient.invalidateQueries({ queryKey: [SCHEDULE_KEY] });
+      } else {
+        toast.error(out.error ?? "Recovery failed");
+      }
+    },
+    onError: (err) => {
+      toast.error(err.message ?? "Recovery failed unexpectedly");
+    },
+  });
 }
 
 export type { ScheduledAppointmentVM, PreparedRecoveryMessage };
