@@ -11,7 +11,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useAction } from "@/hooks/useAction";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
-import { useAutomationRules, useDelegations } from "@/modules/business/hooks/use-domain-data";
+import { useAutomationRules, useDelegations } from "@/hooks/use-domain-data";
 import {
   Zap, Shield, Clock, CheckCircle, Eye, Lock, Settings, ArrowRight, Sparkles,
   DollarSign, Briefcase, Home, Mail, Calendar, AlertTriangle, RefreshCw, Pause, Play,

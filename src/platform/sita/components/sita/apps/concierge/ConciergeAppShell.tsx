@@ -15,7 +15,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { DomainAdvisorBoard } from "@/platform/sita/components/sita/domain-shared/DomainAdvisorBoard";
 import { useBoardroomBridge } from "@/platform/boardroom/hooks/useBoardroomBridge";
 import { getAdvisorOutputs } from "@/lib/services/orchestration-pipeline/module-advisor-consumer";
-import { useRelationshipContexts, useHumanObligations } from "@/modules/business/hooks/useCAIData";
+import { useRelationshipContexts, useHumanObligations } from "@/hooks/useCAIData";
 import { ConciergeDataProvider } from "@/modules/concierge/contexts/ConciergeDataContext";
 import { ConciergeNavigationContext } from "@/modules/concierge/contexts/ConciergeNavigationContext";
 import { useBusinessProfile } from "@/modules/business/hooks/useBusinessProfile";

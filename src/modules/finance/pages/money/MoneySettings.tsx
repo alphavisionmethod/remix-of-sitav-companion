@@ -6,7 +6,7 @@ import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
 import { StatusCard, SummaryCard } from "@/platform/sita/components/sita/cards";
 import { Shield, Bell, DollarSign, PiggyBank, CreditCard, Zap, Link, AlertTriangle, CheckCircle, Settings } from "lucide-react";
 import { motion } from "framer-motion";
-import { useMoneyPolicies, useToggleMoneyPolicy } from "@/modules/business/hooks/use-domain-data";
+import { useMoneyPolicies, useToggleMoneyPolicy } from "@/hooks/use-domain-data";
 import { useMemo } from "react";
 import { toast } from "sonner";
 import { AdvisorKnowledgePanel } from "@/platform/advisors/components/advisors/AdvisorKnowledgePanel";

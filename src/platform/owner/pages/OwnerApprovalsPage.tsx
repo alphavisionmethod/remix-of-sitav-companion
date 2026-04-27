@@ -14,7 +14,7 @@ import {
   Users, Zap, Eye, Lock, ThumbsUp, ThumbsDown, RotateCcw,
 } from "lucide-react";
 
-import { useOwnerApprovals } from "@/modules/business/hooks/use-domain-data";
+import { useOwnerApprovals } from "@/hooks/use-domain-data";
 import type { OwnerApprovalItem as ApprovalItem } from "@/data/fixtures/mock-data/owner";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 

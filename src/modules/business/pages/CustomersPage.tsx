@@ -23,7 +23,7 @@ import {
 } from "lucide-react";
 import { motion } from "framer-motion";
 import CustomerAutopilotPanel from "@/platform/orchestration/components/autopilot/CustomerAutopilotPanel";
-import { useCustomers } from "@/modules/business/hooks/use-domain-data";
+import { useCustomers } from "@/hooks/use-domain-data";
 import type { MockCustomer } from "@/data/repositories/business-data-service";
 import { useCRMSync } from "@/hooks/use-backend-actions";
 import { RefreshCw } from "lucide-react";

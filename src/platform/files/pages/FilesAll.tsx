@@ -8,7 +8,7 @@ import { ModuleAdvisorInsight } from "@/platform/sita/components/sita/domain-sha
 import { useState, useMemo } from "react";
 import { FolderOpen, Search, Eye, Link2, Shield, Upload } from "lucide-react";
 import { motion } from "framer-motion";
-import { useAllFiles } from "@/modules/business/hooks/use-domain-data";
+import { useAllFiles } from "@/hooks/use-domain-data";
 import { FileUploader } from "@/platform/sita/components/sita/FileUploader";
 import { useQueryClient } from "@tanstack/react-query";
 import { format } from "date-fns";

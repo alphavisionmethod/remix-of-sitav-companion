@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Shield, CheckCircle, XCircle, AlertTriangle, DollarSign, Eye, Clock, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
-import { useMoneyApprovals, useApproveMoneyAction, useRejectMoneyAction } from "@/modules/business/hooks/use-domain-data";
+import { useMoneyApprovals, useApproveMoneyAction, useRejectMoneyAction } from "@/hooks/use-domain-data";
 import { toast } from "sonner";
 
 // New design system

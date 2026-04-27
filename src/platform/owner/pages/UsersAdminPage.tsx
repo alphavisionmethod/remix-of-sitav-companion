@@ -15,7 +15,7 @@ import {
   Users, Search, Shield, Wifi, AlertTriangle, CheckCircle, Eye,
   ChevronRight, CreditCard, Headphones, Star, Clock,
 } from "lucide-react";
-import { useAdminUsers } from "@/modules/business/hooks/use-domain-data";
+import { useAdminUsers } from "@/hooks/use-domain-data";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { PageShell } from "@/platform/sita/components/sita/PageShell";
 

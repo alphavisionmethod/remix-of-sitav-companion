@@ -11,7 +11,7 @@ import { Upload, FolderOpen, Brain, Shield, FileText, Sparkles, Link2, Calendar 
 import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import { classifyFile, detectSensitivity, type FileClassification, type SensitivityLevel } from "@/lib/utils/file-classification";
-import { useFilesOverview } from "@/modules/business/hooks/use-domain-data";
+import { useFilesOverview } from "@/hooks/use-domain-data";
 import { useAIInsight } from "@/hooks/use-backend-actions";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { fromTable } from "@/lib/supabase-helpers";

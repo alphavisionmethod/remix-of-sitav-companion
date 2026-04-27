@@ -54,7 +54,7 @@ import type { ProofPack } from "@/packages/proof-model";
 import type { AdvisorConfig } from "@/packages/advisor-config";
 import { cn } from "@/lib/utils";
 import { useBoardroomData } from "@/platform/boardroom/hooks/use-boardroom-data";
-import { useOpportunitySignals, usePriorityStacks, useDigestCompilations } from "@/modules/business/hooks/useCAIData";
+import { useOpportunitySignals, usePriorityStacks, useDigestCompilations } from "@/hooks/useCAIData";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { BoardroomSeedSampleButton } from "@/platform/sita/components/sita/BoardroomSeedSampleButton";
 

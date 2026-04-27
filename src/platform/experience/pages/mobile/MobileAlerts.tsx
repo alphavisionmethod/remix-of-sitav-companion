@@ -2,7 +2,7 @@ import { MobileShell } from "@/platform/experience/components/mobile/MobileShell
 import { AlertCard, type AlertItem } from "@/platform/experience/components/mobile/AlertCard";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
-import { useMobileAlerts } from "@/modules/business/hooks/use-domain-data";
+import { useMobileAlerts } from "@/hooks/use-domain-data";
 import { Bell, AlertTriangle, Info, CheckCircle } from "lucide-react";
 
 const MobileAlerts = () => {

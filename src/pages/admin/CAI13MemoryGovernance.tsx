@@ -2,7 +2,7 @@ import { useSitaOS } from "@/platform/sita/contexts/SitaOSContext";
 import { AdminPageHeader } from "@/platform/sita/components/sita/admin/AdminPageHeader";
 import { SitaCard, SitaCardHeader, SitaCardTitle, SitaMetric, SitaSectionHeader } from "@/platform/sita/components/sita/SitaCard";
 import { Database, RefreshCw } from "lucide-react";
-import { useMemoryGovernanceRecords, useMemoryCorrections } from "@/modules/business/hooks/useCAIData";
+import { useMemoryGovernanceRecords, useMemoryCorrections } from "@/hooks/useCAIData";
 
 export default function CAI13MemoryGovernance() {
   const { memoryGovernance } = useSitaOS();

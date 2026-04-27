@@ -3,7 +3,7 @@ import { AdminPageHeader } from "@/platform/sita/components/sita/admin/AdminPage
 import { SitaCard, SitaCardHeader, SitaCardTitle, SitaMetric, SitaSectionHeader } from "@/platform/sita/components/sita/SitaCard";
 import { Zap, Database } from "lucide-react";
 import { useState } from "react";
-import { useIntentResolutions } from "@/modules/business/hooks/useCAIData";
+import { useIntentResolutions } from "@/hooks/useCAIData";
 
 export default function CAI02IntentTraceBoard() {
   const { intentOrchestrator } = useSitaOS();

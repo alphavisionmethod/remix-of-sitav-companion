@@ -8,7 +8,7 @@ import { SplitWorkspace } from "@/platform/sita/components/sita/surfaces/SplitWo
 import { useState, useMemo } from "react";
 import { Shield, CheckCircle, Clock, FileText, DollarSign } from "lucide-react";
 import { motion } from "framer-motion";
-import { useMoneyProofItems } from "@/modules/business/hooks/use-domain-data";
+import { useMoneyProofItems } from "@/hooks/use-domain-data";
 import { formatDistanceToNow } from "date-fns";
 
 const categoryLabels: Record<string, string> = {

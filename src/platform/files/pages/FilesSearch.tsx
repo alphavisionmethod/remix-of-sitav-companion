@@ -9,7 +9,7 @@ import { useSearchFabric } from "@/platform/sita/contexts/SitaKernelContext";
 import type { SearchResponse } from "@/lib/services/search-fabric";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import { useFilesSearchIndex } from "@/modules/business/hooks/use-domain-data";
+import { useFilesSearchIndex } from "@/hooks/use-domain-data";
 import { SectionSkeleton } from "@/platform/sita/components/sita/SectionSkeleton";
 import { useAIInsight } from "@/hooks/use-backend-actions";
 import { useGlobalSearch } from "@/platform/search";

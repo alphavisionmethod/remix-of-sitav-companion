@@ -5,7 +5,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useState } from "react";
-import { useDecks } from "@/modules/business/hooks/use-domain-data";
+import { useDecks } from "@/hooks/use-domain-data";
 import type { MockDeck, MockSlide } from "@/data/fixtures/mock-data/workspace";
 import { SitaPageHeader, SitaCard, SitaCardTitle } from "@/platform/sita/components/sita/SitaCard";
 import { motion, AnimatePresence } from "framer-motion";

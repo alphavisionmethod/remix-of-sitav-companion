@@ -14,7 +14,7 @@ const customersHookState: { data: any[] | undefined; isLoading: boolean } = {
   isLoading: false,
 };
 
-vi.mock("@/modules/business/hooks/use-domain-data", async (importOriginal) => {
+vi.mock("@/hooks/use-domain-data", async (importOriginal) => {
   const actual = (await importOriginal()) as Record<string, unknown>;
   return {
     ...actual,

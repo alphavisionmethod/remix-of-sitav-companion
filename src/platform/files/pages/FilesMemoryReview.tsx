@@ -6,7 +6,7 @@ import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner
 import { ModuleAdvisorInsight } from "@/platform/sita/components/sita/domain-shared/ModuleAdvisorInsight";
 import { Brain, Eye, RotateCcw, Trash2 } from "lucide-react";
 import { motion } from "framer-motion";
-import { useAllFiles } from "@/modules/business/hooks/use-domain-data";
+import { useAllFiles } from "@/hooks/use-domain-data";
 import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";

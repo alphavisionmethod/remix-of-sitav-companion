@@ -10,7 +10,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { dbAny as db } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
-import { useFilesProcessing } from "@/modules/business/hooks/use-domain-data";
+import { useFilesProcessing } from "@/hooks/use-domain-data";
 
 const stageFromStatus = (status: string): ProcessingStage => {
   const map: Record<string, ProcessingStage> = {

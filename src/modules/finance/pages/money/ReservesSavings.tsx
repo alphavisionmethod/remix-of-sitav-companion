@@ -11,7 +11,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { dbAny as db } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
 import { useAction } from "@/hooks/useAction";
-import { useReservesSavings } from "@/modules/business/hooks/use-domain-data";
+import { useReservesSavings } from "@/hooks/use-domain-data";
 import { useConfirmation } from "@/hooks/use-confirmation";
 import { ConfirmationDialog } from "@/platform/sita/components/sita/ConfirmationDialog";
 import { useQueryFreshness } from "@/hooks/use-query-freshness";

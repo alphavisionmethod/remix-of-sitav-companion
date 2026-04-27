@@ -3,7 +3,7 @@
 // Re-exports from use-domain-data + adds additional hooks
 // ═══════════════════════════════════════════════════════════════
 
-export { useCapitalBuckets, usePositions, useTheses } from "@/modules/business/hooks/use-domain-data";
+export { useCapitalBuckets, usePositions, useTheses } from "@/hooks/use-domain-data";
 
 import { useQuery } from "@tanstack/react-query";
 import { useRealityProvider } from "@/hooks/useRealityProvider";

@@ -43,7 +43,7 @@ import { CABWorkflow } from "@/platform/sita/components/sita/CABWorkflow";
 import { AgentCommunicationGraph } from "@/platform/sita/components/sita/AgentCommunicationGraph";
 import { SelfHealingNotifications } from "@/platform/sita/components/sita/SelfHealingNotifications";
 import PlatformTruthDashboard from "./PlatformTruthDashboard";
-import { useTokenUsages } from "@/modules/business/hooks/use-domain-data";
+import { useTokenUsages } from "@/hooks/use-domain-data";
 
 
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";

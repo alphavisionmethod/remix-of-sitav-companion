@@ -21,7 +21,7 @@ import { BoardroomCinematic } from "@/platform/sita/components/sita/motion/AppTr
 import { SitaTabs } from "@/platform/sita/components/sita/SitaComponents";
 import { DomainAdvisorBoard } from "@/platform/sita/components/sita/domain-shared/DomainAdvisorBoard";
 import { useLeads, useCustomers, useInvoices } from "@/platform/sita/hooks/use-sita-data";
-import { useMoneyKPIs } from "@/modules/business/hooks/use-domain-data";
+import { useMoneyKPIs } from "@/hooks/use-domain-data";
 type BoardroomView = "synthesis" | "priorities" | "risks" | "advisors";
 
 const GlobalBoardroom = () => {

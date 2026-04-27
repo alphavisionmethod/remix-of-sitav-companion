@@ -7,7 +7,7 @@ import { ModuleAdvisorInsight } from "@/platform/sita/components/sita/domain-sha
 import { useState, useMemo } from "react";
 import { Eye, CheckCircle, AlertTriangle, FileText } from "lucide-react";
 import { motion } from "framer-motion";
-import { useFilesByStatus, useAllFiles } from "@/modules/business/hooks/use-domain-data";
+import { useFilesByStatus, useAllFiles } from "@/hooks/use-domain-data";
 
 function classifyDomainFromFile(f: Record<string, any>): string {
   const text = `${f.filename} ${f.extracted_data?.text || ""} ${f.classification || ""}`.toLowerCase();
