@@ -13,7 +13,7 @@ import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner
 import { ModuleAdvisorInsight } from "@/platform/sita/components/sita/domain-shared/ModuleAdvisorInsight";
 import { KPITile } from "@/platform/sita/components/sita/SitaComponents";
 import HierarchyHint from "@/modules/business/components/business/shared/HierarchyHint";
-import { useBusinessNavigation } from "@/modules/business/contexts/BusinessNavigationContext";
+import AutopilotPeers from "@/modules/business/components/business/shared/AutopilotPeers";
 import {
   Plus, Trash2, GripVertical, ChevronDown, ChevronRight,
   Mail, Phone, MessageSquare, AlertTriangle, Clock, Zap,
@@ -532,7 +532,7 @@ const [draft, setDraft] = useState<PlaybookDraft>(defaultDraft);
           surface="Playbook Builder"
           description="Strategy / configuration view"
         />
-        <PlaybookCrossLinks />
+        <AutopilotPeers current="playbook-builder" />
       </div>
       <div className="flex items-center justify-between flex-wrap gap-2">
         <div className="flex rounded-lg border border-border overflow-hidden">
@@ -673,33 +673,5 @@ const [draft, setDraft] = useState<PlaybookDraft>(defaultDraft);
     </motion.div>
   );
 };
-
-/**
- * Cross-links to the other three Autopilot canonical surfaces so the
- * operator can move strategy → execution → result without re-navigating
- * through Revenue Home. Pure presentational; no data fetching.
- */
-function PlaybookCrossLinks() {
-  const { navigateTo } = useBusinessNavigation();
-  const links: Array<{ key: string; label: string; tier: string }> = [
-    { key: "autopilot-hub", label: "Autopilot Hub", tier: "Strategy" },
-    { key: "revenue-autopilot", label: "Revenue Autopilot", tier: "Execution" },
-    { key: "revenue-impact", label: "Revenue Impact", tier: "Result" },
-  ];
-  return (
-    <div className="flex flex-wrap items-center gap-1.5" aria-label="Autopilot canonical surfaces">
-      {links.map((l) => (
-        <button
-          key={l.key}
-          type="button"
-          onClick={() => navigateTo(l.key)}
-          className="text-[10px] uppercase tracking-wide text-muted-foreground hover:text-foreground border border-border/60 rounded-md px-2 py-1 transition-colors"
-        >
-          {l.tier} · {l.label} <ArrowUpRight className="h-3 w-3 inline-block" aria-hidden />
-        </button>
-      ))}
-    </div>
-  );
-}
 
 export default PlaybookBuilder;
