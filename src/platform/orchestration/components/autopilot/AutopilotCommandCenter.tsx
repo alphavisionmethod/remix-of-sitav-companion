@@ -23,6 +23,10 @@ import type {
 import {
   buildDashboard, activatePlaybook, pausePlaybook
 } from "@/lib/domain-engines/autopilot-engine";
+import { withApprovalGate } from "@/lib/trust/request-approval";
+import { emitClientReceipt } from "@/lib/trust/emit-client-receipt";
+import { useDataMode } from "@/contexts/DataModeContext";
+import { toast } from "sonner";
 
 interface AutopilotCommandCenterProps {
   config: AutopilotConfig;
@@ -270,6 +274,8 @@ const AutopilotCommandCenter = ({ config, onConfigUpdate, onOpenWizard }: Autopi
   const [activeTab, setActiveTab] = useState("overview");
   const dashboard = useMemo(() => buildDashboard(config), [config]);
   const [playbooks, setPlaybooks] = useState(dashboard.playbooks);
+  const { mode } = useDataMode();
+  const isDemo = mode === "demo";
 
   const stats = useMemo(() => {
     const feed = dashboard.activityFeed;
@@ -287,13 +293,70 @@ const AutopilotCommandCenter = ({ config, onConfigUpdate, onOpenWizard }: Autopi
     };
   }, [playbooks, dashboard]);
 
-  const handleTogglePlaybook = (id: PlaybookId) => {
+  const handleTogglePlaybook = async (id: PlaybookId) => {
     const pb = playbooks.find(p => p.id === id);
     if (!pb) return;
-    const updated = pb.status === "active" ? pausePlaybook(playbooks, id) : activatePlaybook(playbooks, id);
+    const isActivation = pb.status !== "active";
+
+    if (isActivation) {
+      // Activation can trigger external outreach (collections, recovery,
+      // upsell). Route through `withApprovalGate` at risk=high so an
+      // operator must explicitly approve. Demo mode bypasses the gate.
+      const result = await withApprovalGate(
+        async () => {
+          const updated = activatePlaybook(playbooks, id);
+          setPlaybooks(updated);
+          const activeIds = updated.filter(p => p.status === "active").map(p => p.id);
+          onConfigUpdate({ ...config, activePlaybooks: activeIds });
+          await emitClientReceipt({
+            actionType: "autopilot.playbook.activate",
+            summary: `Activated playbook "${pb.name ?? id}"`,
+            payload: {
+              args: { playbookId: id },
+              entity_ref: { entity_type: "playbook", entity_id: String(id) },
+            },
+            riskTier: "high",
+            status: "executed",
+            metadata: { source: "autopilot-command-center" },
+          });
+          return updated;
+        },
+        {
+          actionType: "autopilot.playbook.activate",
+          title: `Activate playbook: ${pb.name ?? id}`,
+          justification:
+            "Activating an Autopilot playbook may send messages, create tasks, or trigger appointments on the operator's behalf. Reviewed before turning on.",
+          riskTier: "high",
+          payload: { playbookId: id, playbookName: pb.name },
+          launchImplications:
+            "Playbook will run autonomously and may contact customers, modify CRM data, or schedule actions.",
+          skip: isDemo,
+        },
+      );
+      if (result.gated) {
+        toast.message(`Playbook activation queued for approval`);
+      }
+      return;
+    }
+
+    // Pause is reversible and has no external side effects → no gate,
+    // but we still emit a receipt so the proof timeline is complete.
+    const updated = pausePlaybook(playbooks, id);
     setPlaybooks(updated);
     const activeIds = updated.filter(p => p.status === "active").map(p => p.id);
     onConfigUpdate({ ...config, activePlaybooks: activeIds });
+    void emitClientReceipt({
+      actionType: "autopilot.playbook.pause",
+      summary: `Paused playbook "${pb.name ?? id}"`,
+      payload: {
+        args: { playbookId: id },
+        entity_ref: { entity_type: "playbook", entity_id: String(id) },
+      },
+      riskTier: "low",
+      status: "executed",
+      metadata: { source: "autopilot-command-center" },
+      skip: isDemo,
+    });
   };
 
   const tabs = [
