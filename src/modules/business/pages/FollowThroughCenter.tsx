@@ -78,13 +78,13 @@ const FollowThroughCenter = () => {
         kpis={[
           { label: "Total Queue", value: String(totalItems) },
           { label: "At Risk Value", value: `$${totalValue.toLocaleString()}`, trend: "down" },
-          { label: "Overdue", value: String(TAB_DATA.overdue.items.length + TAB_DATA["no-touch"].items.length), trend: "up" },
-          { label: "Ready to Send", value: String(TAB_DATA.drafts.items.length) },
+          { label: "Overdue", value: String(queues.overdue.items.length + queues["no-touch"].items.length), trend: "up" },
+          { label: "Ready to Send", value: String(queues.drafts.items.length) },
         ]}
       />
 
       <SitaTabs
-        tabs={Object.entries(TAB_DATA).map(([key, data]) => ({
+        tabs={(Object.entries(queues) as [QueueTab, { label: string; items: unknown[] }][]).map(([key, data]) => ({
           key, label: data.label, count: data.items.length,
         }))}
         active={activeTab}
