@@ -60,9 +60,18 @@ export function receiptRowToProofEntry(row: {
   const meta = (row.metadata ?? {}) as Record<string, unknown>;
   const payload = (row.action_payload ?? {}) as Record<string, unknown>;
 
-  // action_type format: "<module>.<entity>.<verb>" — derive the action kind
+  // action_type format: "<module>.<entity>.<verb>" — derive the action kind.
+  // Order matters: status overrides verb (failed > rolled_back > automation).
   const verb = (row.action_type.split(".").pop() ?? "").toLowerCase();
+  const isAutomation =
+    row.action_type.startsWith("autopilot.") ||
+    row.action_type.includes(".automation.");
+
   const action: ProofActionKind =
+    row.status === "failed" ? "failed" :
+    row.status === "rolled_back" ? "rolled_back" :
+    verb === "rollback" || verb === "rolled_back" ? "rolled_back" :
+    isAutomation ? "automated" :
     verb === "create" || verb === "created" ? "created" :
     verb === "update" || verb === "updated" ? "updated" :
     verb === "delete" || verb === "deleted" ? "deleted" :
@@ -73,8 +82,6 @@ export function receiptRowToProofEntry(row: {
     verb === "link" || verb === "linked" ? "linked" :
     verb === "approve" || verb === "approved" ? "approved" :
     verb === "reject" || verb === "rejected" ? "rejected" :
-    verb === "rollback" || verb === "rolled_back" ? "rolled_back" :
-    row.status === "failed" ? "failed" :
     row.status === "executed" ? "executed" :
     "automated";
 
