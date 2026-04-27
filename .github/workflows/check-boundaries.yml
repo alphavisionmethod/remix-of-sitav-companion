@@ -211,6 +211,28 @@ jobs:
           MUTATION_UNDECLARED_THRESHOLD: "242"
         run: npx tsx scripts/architecture/checks/check-edge-function-mutation-traceability.ts
 
+      - name: Run hook & context ownership checker
+        # Phased rollout: failures are gated by HOOK_CONTEXT_OWNERSHIP_ENFORCE
+        # so the check publishes signal during the migration phases (0–6) and
+        # flips to blocking once Phase 7 lands. See
+        # docs/architecture/HOOK_AND_CONTEXT_OWNERSHIP_MODEL.md and
+        # REPOSITORY_CONSTITUTION.md rule #51.
+        env:
+          HOOK_CONTEXT_OWNERSHIP_ENFORCE: ${{ vars.HOOK_CONTEXT_OWNERSHIP_ENFORCE || 'false' }}
+          HOOK_CONTEXT_OWNERSHIP_VERBOSE: 'true'
+        run: |
+          set +e
+          npx tsx scripts/architecture/check-hook-context-ownership.ts
+          status=$?
+          if [ "$HOOK_CONTEXT_OWNERSHIP_ENFORCE" = "true" ] && [ "$status" -ne 0 ]; then
+            echo "::error::Hook & context ownership gate is enforcing and failed (constitution rule #51)."
+            exit "$status"
+          fi
+          if [ "$status" -ne 0 ]; then
+            echo "::warning::Hook & context ownership violations detected (non-blocking until HOOK_CONTEXT_OWNERSHIP_ENFORCE=true)."
+          fi
+          exit 0
+
       - name: Upload mutation traceability report
         if: always()
         uses: actions/upload-artifact@v4
