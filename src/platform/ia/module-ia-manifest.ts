@@ -25,7 +25,7 @@ import type { PageDescriptor } from "./page-role";
 export const BUSINESS_IA: readonly PageDescriptor[] = [
   { id: "overview", pillar: "business", role: "overview", label: "Overview", component: "BusinessOverview", route: "/business/overview", sidebarVisible: true, status: "ga" },
   { id: "morning-briefing", pillar: "business", role: "workspace", label: "Morning Brief", component: "MorningBriefing", route: null, sidebarVisible: true, status: "ga", notes: "Sub-tab of overview today; shim added in Phase 2 if promoted." },
-  { id: "end-of-day", pillar: "business", role: "workspace", label: "End of Day", component: "EndOfDayClosure", route: null, sidebarVisible: true, status: "ga" },
+  { id: "end-of-day", pillar: "business", role: "workspace", label: "End of Day", component: "EndOfDayClosure", route: null, sidebarVisible: true, status: "ga", notes: "In-shell daily-close ritual; no public deep-link by design." },
   { id: "leads", pillar: "business", role: "workspace", label: "Leads", component: "LeadsInbox", route: "/business/leads", sidebarVisible: true, status: "ga" },
   { id: "customers", pillar: "business", role: "workspace", label: "Customers", component: "CustomersPage", route: "/business/customers", sidebarVisible: true, status: "ga" },
   { id: "follow-through", pillar: "business", role: "workspace", label: "Follow-Through", component: "FollowThroughCenter", route: "/business/follow-through", sidebarVisible: true, status: "legacy", notes: "Phase 2 rename → FollowThroughWorkspace." },
@@ -49,7 +49,7 @@ export const BUSINESS_IA: readonly PageDescriptor[] = [
   { id: "ecommerce", pillar: "business", role: "workspace", label: "E-Commerce", component: "EcommerceManager", route: "/business/ecommerce", sidebarVisible: true, status: "ga" },
   { id: "website-builder", pillar: "business", role: "workspace", label: "Website", component: "WebsiteBuilder", route: "/business/website-builder", sidebarVisible: true, status: "ga" },
   { id: "advisor-board", pillar: "business", role: "boardroom", label: "Advisor Board", component: "BusinessAdvisorBoardPage", route: null, sidebarVisible: true, status: "ga", notes: "In-shell only today; Phase 2 evaluates promoting to /business/advisor-board." },
-  { id: "revenue-impact", pillar: "business", role: "internal", label: "Revenue Impact", component: "RevenueImpactDashboard", route: "/business/revenue-impact", sidebarVisible: true, status: "legacy", notes: "Phase 2 demotes to internal tab of revenue-home; route → redirect.", legacyNameAllowed: true },
+  { id: "revenue-impact", pillar: "business", role: "internal", label: "Revenue Impact", component: "RevenueImpactDashboard", route: null, sidebarVisible: true, status: "legacy", notes: "Phase 2 demotes to internal tab of revenue-home; legacy /business/revenue-impact → redirect handled in user-redirect-map.", legacyNameAllowed: true },
   { id: "kpi-dashboard", pillar: "business", role: "internal", label: "KPI Dashboard", component: "AdaptiveKPIDashboard", route: null, sidebarVisible: true, status: "ga" },
   { id: "playbook-builder", pillar: "business", role: "workspace", label: "Builder", component: "PlaybookBuilder", route: "/business/playbook-builder", sidebarVisible: true, status: "ga" },
   { id: "revenue-forecast", pillar: "business", role: "workspace", label: "Forecast", component: "RevenueForecast", route: "/business/revenue-forecast", sidebarVisible: true, status: "ga" },
