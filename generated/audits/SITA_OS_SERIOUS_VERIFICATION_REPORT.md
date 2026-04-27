@@ -182,4 +182,53 @@ _Phases 4–10 will append below this line as they complete._
 - Concierge services: 8 missing → 0 missing (–8)
 - All P0 + P1 finance/concierge service entries are now `behavioral`.
 
-Phase 5 (page-state honesty across the 18 high-value pages) starts on the next "continue".
+## Phase 5 — Page-state honesty (Concierge + Finance)
+
+Real pages are rendered through the canonical Supabase mock from
+`src/test/test-utils.tsx` and asserted to surface an honest empty/
+loading/setup grammar (PremiumEmptyState / EmptyState / SectionSkeleton /
+`animate-pulse` / `PageTruthBanner`). The shared assertion lives in
+`src/__tests__/concierge/pages/_shared.ts` and is re-exported (no fork)
+from `src/__tests__/finance/pages/_shared.ts`.
+
+Render helpers fixed: `renderConciergePage` / `renderFinancePage` now
+wrap the UI in domain providers and defer to the canonical `render`
+from test-utils, so the QueryClient + MemoryRouter are preserved.
+
+- Concierge pages added (9): HouseholdCommandCenter, LifeAdminCenter,
+  AppointmentsPrep, RecurringObligations, ServiceProviders,
+  FamilyCalendar, TravelPlanning, ErrandsLogistics, GroceryPlanning.
+- Finance pages added (11): MoneyOverview, MoneyApprovals,
+  CapitalAllocationPage, WealthCommandCenter, BillsWorkspace,
+  CashAllocator, BudgetEnvelopeOffice, FinancialHealthPulse,
+  PortfolioOffice, ExecutionDesk, InvestmentBoardroom.
+- 24/24 page tests pass. All matrix entries flipped `missing → behavioral`.
+
+## Phase 6 — Hook integration (Concierge + Finance)
+
+Each domain's React Query data hooks are exercised through
+`renderHook` against the canonical Supabase mock to prove auth-gating
+(`enabled: !!user`), idle-when-disabled, and resolve-to-empty without
+throwing. A shared `_hookHarness.tsx` provides a fresh QueryClient
+per test (no cross-test cache leakage).
+
+- Concierge hook tests: `use-household.hook.test.tsx` (4),
+  `use-concierge-data.hook.test.tsx` (6 hooks via `it.each`).
+- Finance hook tests: `use-money-data.hook.test.tsx` (7 hooks),
+  `use-investment-office.hook.test.tsx` (9 hooks),
+  `use-page-data.canonical.test.tsx` (6 transitions: loading→ready,
+  loading→empty for [], null, {}; loading→error; custom emptyCheck).
+- 32/32 hook tests pass.
+- Matrix `SurfaceEntry.kind` extended with `"hook"`; new
+  `HOOK_SURFACES` section added to both matrices and folded into
+  `ALL_SURFACES`.
+
+### Verification status (cumulative through Phase 6)
+- `bunx vitest run src/__tests__/concierge/ src/__tests__/finance/`
+  → **74 test files / 214 tests pass**.
+- `bunx tsc --noEmit` → clean (no type errors).
+- All P0 page + hook surfaces in both matrices are `behavioral`.
+
+Phase 7 (cross-domain trust + receipt lineage E2E for the missing
+`int.finance-business-linkage` and `int.concierge-finance-linkage`)
+starts on the next "continue".
