@@ -8,7 +8,7 @@ import { ModuleAdvisorPanel } from "@/modules/business/components/business/advis
 import { PremiumEmptyState } from "@/platform/sita/components/sita/PremiumEmptyState";
 import { StateBadge, ExecutionState } from "@/platform/sita/components/sita/StateBadge";
 import { ConfidenceBar } from "@/platform/sita/components/sita/primitives/ConfidenceBar";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
@@ -21,6 +21,7 @@ import { getModuleAdaptation } from "@/domains/engines/business-module-adaptatio
 import { generateOpportunityAdvisors } from "@/domains/engines/business-advisor-engine";
 import { CrossAppAction } from "@/platform/sita/components/sita/CrossAppAction";
 import { setLinkedContext } from "@/platform/sita/components/sita/CrossAppAction";
+import { useLinkedContext } from "@/hooks/useLinkedContext";
 import { useNavigate } from "react-router-dom";
 
 
@@ -54,6 +55,7 @@ const OpportunitiesCenter = () => {
   const [showAdd, setShowAdd] = useState(false);
   const [view, setView] = useState<"list" | "kanban">("list");
   const [form, setForm] = useState({ title: "", value: "", confidence: 50, stage: "lead", next_action: "" });
+  const linked = useLinkedContext();
 
   const { data: opportunities = [], isLoading } = useQuery({
     queryKey: ["opportunities", user?.id],
@@ -76,6 +78,18 @@ const OpportunitiesCenter = () => {
     },
     enabled: !!user,
   });
+
+  // Phase 3/4 carryover — close the `opportunity` orphan handoff. Surfaces
+  // (e.g., QuotesWorkspace) call setLinkedContext({entityType:"opportunity"})
+  // and navigate here; auto-select the matching opportunity card.
+  useEffect(() => {
+    if (!linked || linked.entityType !== "opportunity") return;
+    const match = opportunities.find((o: Record<string, any>) => o.id === linked.entityId);
+    if (match) {
+      setSelectedId(match.id);
+      setTab("all");
+    }
+  }, [linked, opportunities]);
 
   const addOpp = useAction("business", "opportunity.create", {
     successMessage: "Opportunity added",

@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-04-27T07:45:21.288Z",
-  "scannedFileCount": 5983,
+  "generatedAt": "2026-04-27T09:16:30.142Z",
+  "scannedFileCount": 5985,
   "setLinkedContextSites": [
     {
       "file": "src/modules/business/components/business/InvoiceDetailPane.tsx",
@@ -14,6 +14,13 @@
       "line": 133,
       "entityType": "quote",
       "targetRoute": "/business/quotes",
+      "snippet": "setLinkedContext({"
+    },
+    {
+      "file": "src/modules/business/components/business/LeadRecoveryPane.tsx",
+      "line": 69,
+      "entityType": "recovery_candidate",
+      "targetRoute": "/recovered-value",
       "snippet": "setLinkedContext({"
     },
     {
@@ -46,7 +53,14 @@
     },
     {
       "file": "src/modules/business/pages/OpportunitiesCenter.tsx",
-      "line": 103,
+      "line": 83,
+      "entityType": "opportunity",
+      "targetRoute": null,
+      "snippet": "// (e.g., QuotesWorkspace) call setLinkedContext({entityType:\"opportunity\"})"
+    },
+    {
+      "file": "src/modules/business/pages/OpportunitiesCenter.tsx",
+      "line": 117,
       "entityType": "quote",
       "targetRoute": "/business/quotes",
       "snippet": "setLinkedContext({"
@@ -152,7 +166,7 @@
   "convertActionSites": [
     {
       "file": "src/modules/business/pages/OpportunitiesCenter.tsx",
-      "line": 97,
+      "line": 111,
       "domain": "business",
       "verb": "opportunity.convert-to-quote"
     },
@@ -176,6 +190,12 @@
     }
   ],
   "crossAppTargets": [
+    {
+      "file": "src/modules/business/components/business/lead-inbox/LeadDetailPanel.tsx",
+      "line": 289,
+      "to": "/business/lead-recovery",
+      "label": "Open in Recovery"
+    },
     {
       "file": "src/modules/business/pages/CollectionsCommandCenter.tsx",
       "line": 265,
@@ -217,6 +237,12 @@
       "line": 143,
       "to": "/business/collections",
       "label": "Collections Center"
+    },
+    {
+      "file": "src/modules/business/pages/RecoveredValuePage.tsx",
+      "line": 103,
+      "to": "/business/lead-recovery",
+      "label": "Back to Recovery"
     },
     {
       "file": "src/modules/concierge/pages/TravelPlanning.tsx",
@@ -498,14 +524,15 @@
     }
   ],
   "summary": {
-    "setLinkedTotal": 15,
+    "setLinkedTotal": 17,
     "consumeLinkedTotal": 6,
     "convertActionTotal": 4,
-    "crossAppTargetTotal": 11,
+    "crossAppTargetTotal": 13,
     "fixtureLeakTotal": 42,
     "fixtureLeakUnguarded": 21,
     "orphanEntityTypes": [
-      "opportunity"
+      "opportunity",
+      "recovery_candidate"
     ]
   }
 }

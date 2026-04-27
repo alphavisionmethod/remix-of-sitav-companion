@@ -122,6 +122,15 @@ After reading the actual repository, the **continuity infrastructure is already 
 
 ## PHASE 4 — Lead intake → scoring → triage → recovery → recovered value
 
+**STATUS: ✅ DONE (2026-04-27)**
+
+- Migration `20260427085843_*` adds `crm_contacts.source_lead_inbox_item_id`, `lead_inbox_items.produced_*`, and `recovery_jobs.{lead_id, crm_contact_id, recovered_value_cents, recovered_at}`.
+- `useLeadInbox` materialises a real CRM contact + lead row on accept (idempotent via `source_lead_inbox_item_id`).
+- `LeadDetailPanel` exposes "Open in Recovery" CrossAppAction; `LeadRecoveryPane` deep-links to `/recovered-value`; `LeadRecovery` and `RecoveredValuePage` consume the linked context.
+- Phase 3 carryover closed: `OpportunitiesCenter` now consumes `entityType:"opportunity"` handoffs (silent-drop orphans 1 → 0).
+- Demo gating verified: `LEAD_RECOVERY_CAMPAIGNS` and analytics block strictly behind `isDemo`.
+- Test: `src/__tests__/business-os/integration/lead-recovery-loop.test.ts` (3 cases, all green); full `tsc --noEmit` clean; baseline regenerated (setLinkedContext 15 → 17).
+
 **Goal:** Close the loop from `LeadsInbox` through `LeadRecovery` to `RecoveredValuePage` so recovered leads show measurable outcomes.
 
 **Tasks:**
@@ -139,6 +148,14 @@ After reading the actual repository, the **continuity infrastructure is already 
 ---
 
 ## PHASE 5 — Support → callback → retention → health score (kill demo `FOLLOW_THROUGH_TAB_DATA`)
+
+**STATUS: ✅ DONE (2026-04-27)**
+
+- Migration `20260427091357_*` adds CRM lineage (`crm_contact_id`/`crm_company_id`) to `support_cases` and `business_health_scores`, plus a new RLS-scoped `callback_queue` table with the six canonical queue kinds.
+- New `useFollowThroughQueues` hook backs `FollowThroughCenter` with live data; demo fixture preserved only behind `isDemo === true`. Honest unauth + empty states wired.
+- `support-health-loop.service` (new, justified) bridges resolved `support_cases` → `business_health_scores`, idempotent on `source_support_case_id`, refuses to emit without CRM attribution.
+- Test: `support-health-loop.test.ts` (2 cases, green); full `tsc --noEmit` clean.
+- Deferred to Phase 6 micro-task: wiring the service into the CustomerSupportCenter resolve handler + mounting support/health timelines in CustomerDetail.
 
 **Goal:** Replace the fully-demo `FollowThroughCenter` with live data backed by real `support_tickets` / `callback_queue` / `customer_health_signals` tables, and close the support → retention → health loop.
 

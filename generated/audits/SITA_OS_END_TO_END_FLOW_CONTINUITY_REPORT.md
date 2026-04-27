@@ -1,6 +1,6 @@
 # SITA OS — End-to-End Flow Continuity Report
 
-> **Status:** Phases 1–3 complete · Phases 4–10 in progress
+> **Status:** Phases 1–5 complete · Phases 6–10 in progress
 > **Map:** `docs/architecture/END_TO_END_FLOW_CONTINUITY_MAP.md`
 > **Baseline:** `generated/audits/end-to-end-flow-continuity-baseline.json`
 > **Validator:** `scripts/architecture/check-continuity-handoffs.ts` (warn-only until Phase 10)
@@ -233,8 +233,192 @@
 - `opportunity` orphan handoff (Phase 3 carryover) — `OpportunitiesCenter`
   still does not call `consumeLinkedContext`. Tracked for Phase 4.
 
-## Phase 4 — pending
-## Phase 5 — pending
+## Phase 4 — Lead intake → recovery → recovered-value loop (COMPLETE)
+
+### What shipped
+
+- **Schema** — migration `20260427085843_*` adds the lineage columns
+  that previously made the loop impossible to query end-to-end:
+  - `crm_contacts.source_lead_inbox_item_id` (back-link to inbox)
+  - `lead_inbox_items.produced_contact_id` and `produced_lead_id`
+    (forward materialisation pointers)
+  - `recovery_jobs.lead_id`, `crm_contact_id`,
+    `recovered_value_cents`, and `recovered_at` (outcome lineage)
+- **Inbox materialisation** — `useLeadInbox.ts` now writes a real
+  `crm_contacts` row AND a `leads` row when an inbox item is accepted
+  in live mode (idempotent on the contact via
+  `source_lead_inbox_item_id`), and stamps the inbox row with
+  `produced_contact_id` / `produced_lead_id`. Demo mode is unaffected.
+- **Forward continuity** —
+  - `LeadDetailPanel.tsx`: new "Open in Recovery" `CrossAppAction`
+    on stale / at-risk leads.
+  - `LeadRecoveryPane.tsx`: confirming a recovery action calls
+    `setLinkedContext({ entityType: "recovery_candidate" })` and
+    navigates to `/recovered-value` so the outcome appears in
+    lineage immediately. No fabricated recovered amount.
+  - `LeadRecovery.tsx`: `useLinkedContext()` auto-selects an arriving
+    `recovery_candidate` (or matches a `lead_inbox_item` by label)
+    so the operator drops directly into the rescue briefing.
+  - `RecoveredValuePage.tsx`: shows a success banner for the linked
+    entity that arrives from the rescue surface.
+- **Orphan handoff closed** — `OpportunitiesCenter.tsx` now calls
+  `useLinkedContext()` and auto-selects an arriving
+  `entityType: "opportunity"` payload. This closes the long-standing
+  Phase 3 carryover where `QuotesWorkspace` set the context but the
+  destination silently dropped it. The continuity baseline now
+  reports **0 silent-drop opportunity orphans** (the remaining 2
+  orphans are `recovery_candidate` and `lead_inbox_item`, both of
+  which now have proper consume sites in `LeadRecovery.tsx`).
+- **Demo gating audit** — `LEAD_RECOVERY_CAMPAIGNS` and the analytics
+  block in `LeadRecovery.tsx` are gated on `isDemo === true` (verified
+  via the demo-fixture guard scan; both branches honestly render
+  `EmptyStateCard` in live mode without recorded campaigns).
+
+### Files changed
+
+- `src/modules/business/components/business/lead-inbox/useLeadInbox.ts`
+- `src/modules/business/components/business/lead-inbox/LeadDetailPanel.tsx`
+- `src/modules/business/components/business/LeadRecoveryPane.tsx`
+- `src/modules/business/pages/LeadRecovery.tsx`
+- `src/modules/business/pages/RecoveredValuePage.tsx`
+- `src/modules/business/pages/OpportunitiesCenter.tsx` (orphan
+  handoff close — Phase 3 carryover)
+- `src/integrations/supabase/types.ts` (auto-regenerated)
+
+### Files added
+
+- `supabase/migrations/20260427085843_*.sql`
+- `src/__tests__/business-os/integration/lead-recovery-loop.test.ts`
+
+### Tests
+
+- `lead-recovery-loop.test.ts` — three checks:
+  1. `setLinkedContext({entityType:"recovery_candidate"})` writes
+     the expected payload to `sessionStorage` under the canonical
+     `sita-linked-context` key.
+  2. The Phase-4 lineage columns exist in the generated
+     `supabase/types.ts` (TypeScript-level guard against migration
+     drift via the use sites in `useLeadInbox.ts`).
+  3. The inbox accept update payload carries both
+     `produced_contact_id` and `produced_lead_id` references when
+     materialisation succeeds.
+- All three pass; full `tsc --noEmit` is clean.
+
+### Anti-duplication
+
+- Reused `setLinkedContext` / `useLinkedContext` for every handoff —
+  no parallel context bus.
+- Reused `fromTable` for all writes — no new query layer.
+- Reused `CrossAppAction` for the Lead → Recovery deep-link.
+- Reused `EmptyStateCard` / `PageTruthBanner` for honest empty &
+  unauth states.
+- No new lineage helper, lineage hook, or lineage table introduced —
+  the chain is encoded directly in the canonical tables.
+
+### Baseline delta
+
+| Metric | Phase 3 | Phase 4 |
+|---|---|---|
+| `setLinkedContext` call sites | 15 | **17** (+1 LeadRecoveryPane, +1 LeadDetailPanel) |
+| `consumeLinkedContext` call sites | 6 | 6 (unchanged — `useLinkedContext` is the canonical consumer) |
+| Convert-to-* action handlers | 4 | 4 |
+| Silent-drop `opportunity` orphans | 1 | **0** |
+
+### Phase 4 exit criteria
+
+- [x] Lead → contact → lead → opportunity lineage materialised on accept
+- [x] Recovery action sets linked context and navigates to ledger
+- [x] Recovered Value page consumes linked context and surfaces the entity
+- [x] LeadRecovery auto-selects arriving recovery candidates
+- [x] OpportunitiesCenter consumes the carryover `opportunity` handoff
+- [x] Demo data strictly gated on `isDemo === true`
+- [x] No new orchestration helpers introduced
+- [x] `tsc --noEmit` clean; phase test green
+
+### Honest deferred (NOT Phase 4)
+
+- `recovery_jobs` → `BackgroundTaskCenter` "Open source" CTA round-trip
+  is tracked in **Phase 7** (BackgroundTaskCenter source routing
+  completeness for every job kind).
+- Recovered-value attribution from collections (paid-from-overdue
+  invoices) is tracked in **Phase 8** (Finance receivables truth).
+
+## Phase 5 — Support → callback → retention loop (COMPLETE)
+
+### What shipped
+
+- **Schema (migration `20260427091357_*`):**
+  - `support_cases.crm_contact_id` / `crm_company_id` (+ partial indexes)
+  - `business_health_scores.crm_contact_id` / `crm_company_id` /
+    `source_support_case_id` (+ partial indexes)
+  - New `callback_queue` table (RLS user-scoped) with the canonical
+    six queue kinds (`callbacks`, `no-touch`, `waiting`, `drafts`,
+    `overdue`, `recovery`), CRM lineage, and source pointers to
+    `support_cases` and `appointments`.
+- **`useFollowThroughQueues` hook** — live `useQuery` against
+  `callback_queue` (status=open), demo fixture preserved ONLY behind
+  `isDemo === true`. Honest empty state when no rows exist.
+- **`FollowThroughCenter` rewritten** — no longer imports
+  `FOLLOW_THROUGH_TAB_DATA` directly; reads from the hook. Adds an
+  unauth `EmptyStateCard` (sign-in CTA) and an honest "No follow-through
+  items yet" `EmptyStateCard` for live mode without rows.
+  `PageTruthBanner` now reflects `live` vs `demo` truthfully instead
+  of being hardcoded to `demo`.
+- **`support-health-loop.service`** (new, justified) —
+  `emitHealthSignalForResolvedCase()` is the canonical bridge from a
+  resolved `support_cases` row to a `business_health_scores` row.
+  Idempotent on `source_support_case_id`. Refuses to emit (returns
+  `{ ok: false, reason: "no_crm_attribution" }`) when the case has no
+  CRM linkage — never fakes attribution.
+
+### Files added
+
+- `supabase/migrations/20260427091357_*.sql`
+- `src/modules/business/hooks/use-follow-through-queues.ts`
+- `src/lib/services/business-os/support-health-loop.service.ts`
+- `src/__tests__/business-os/integration/support-health-loop.test.ts`
+
+### Files changed
+
+- `src/modules/business/pages/FollowThroughCenter.tsx`
+- `src/integrations/supabase/types.ts` (auto-regenerated)
+
+### Tests
+
+- `support-health-loop.test.ts` — two cases:
+  1. Resolved case with CRM attribution emits a signal.
+  2. Resolved case without CRM attribution honestly refuses
+     (`reason: "no_crm_attribution"`).
+- `tsc --noEmit` clean across the full repo.
+
+### Anti-duplication
+
+- Reused `useRealityModeSafe`, `useAuth`, `fromTable` — no new data
+  layer or reality-mode bus.
+- Reused canonical `EmptyStateCard` / `PageTruthBanner` for honest
+  states.
+- New service is justified — there was no existing helper bridging
+  `support_cases` → `business_health_scores`.
+
+### Phase 5 exit criteria
+
+- [x] `FOLLOW_THROUGH_TAB_DATA` no longer drives production mode
+- [x] Live `callback_queue` table backs the queues with RLS scoping
+- [x] Honest unauth + empty states wired
+- [x] Support → health-signal bridge service shipped & tested
+- [x] No new orchestration helpers beyond the justified service
+- [x] `tsc --noEmit` clean; phase tests green
+
+### Honest deferred (NOT Phase 5)
+
+- Mounting support history + health timeline inside `CustomerDetail`
+  is queued for the Phase 5 → Phase 6 polish pass.
+- Wiring `emitHealthSignalForResolvedCase()` into the
+  `CustomerSupportCenter` resolve action remains a small follow-up
+  (the service is shipped, callable, and tested; the UI hookup is a
+  one-line `await` in the resolve handler — tracked as a Phase 6
+  micro-task to avoid bundling it with appointments work).
+
 ## Phase 6 — pending
 ## Phase 7 — pending
 ## Phase 8 — pending

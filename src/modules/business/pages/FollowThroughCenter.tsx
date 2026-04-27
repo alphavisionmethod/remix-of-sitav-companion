@@ -11,18 +11,21 @@ import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
 import { cn } from "@/lib/utils";
 import {
   Phone, Mail, Clock, AlertCircle, SkipForward, AlarmClock,
-  FileText, DollarSign, Users, CheckCircle
+  FileText, DollarSign, Users, CheckCircle, Inbox, LogIn
 } from "lucide-react";
-import { FOLLOW_THROUGH_TAB_DATA as TAB_DATA, type QueueTab } from "./_config/FollowThroughCenter.config";
+import { type QueueTab } from "./_config/FollowThroughCenter.config";
+import { useFollowThroughQueues } from "@/modules/business/hooks/use-follow-through-queues";
+import { LegacyEmptyStateCard as EmptyStateCard } from "@/platform/sita/components/sita/EmptyStateCard";
 
 const FollowThroughCenter = () => {
   const { primaryMode } = useBusinessProfile();
   const moduleConfig = getModuleAdaptation("follow-through", primaryMode);
   const [activeTab, setActiveTab] = useState<QueueTab>("callbacks");
-  const tabData = TAB_DATA[activeTab];
+  const { queues, isDemo, isUnauthenticated, isLoading } = useFollowThroughQueues();
+  const tabData = queues[activeTab];
 
-  const totalItems = useMemo(() => Object.values(TAB_DATA).reduce((sum, t) => sum + t.items.length, 0), []);
-  const totalValue = useMemo(() => Object.values(TAB_DATA).flatMap(t => t.items).reduce((sum, i) => sum + (i.value || 0), 0), []);
+  const totalItems = useMemo(() => Object.values(queues).reduce((sum, t) => sum + t.items.length, 0), [queues]);
+  const totalValue = useMemo(() => Object.values(queues).flatMap(t => t.items).reduce((sum, i) => sum + (i.value || 0), 0), [queues]);
 
   const queueItems = tabData.items.map(item => ({
     id: item.id,
@@ -36,9 +39,25 @@ const FollowThroughCenter = () => {
     ) : undefined,
   }));
 
+  // Honest unauth state in live mode.
+  if (isUnauthenticated && !isDemo) {
+    return (
+      <div className="space-y-4">
+        <PageTruthBanner />
+        <EmptyStateCard
+          icon={LogIn}
+          title="Sign in to view follow-through queues"
+          description="The Follow-Through Center surfaces real callbacks, no-touch leads, waiting replies, and overdue outreach scoped to your account. Switch to Demo mode to explore the workspace with sample data."
+          ctaLabel="Open sign-in"
+          ctaPath="/auth"
+        />
+      </div>
+    );
+  }
+
   return (
     <motion.div className="space-y-5" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-      <PageTruthBanner truthState="demo" />
+      <PageTruthBanner truthState={isDemo ? "demo" : "live"} />
 
       <HeroCard
         title={moduleConfig.title}
@@ -59,25 +78,37 @@ const FollowThroughCenter = () => {
         kpis={[
           { label: "Total Queue", value: String(totalItems) },
           { label: "At Risk Value", value: `$${totalValue.toLocaleString()}`, trend: "down" },
-          { label: "Overdue", value: String(TAB_DATA.overdue.items.length + TAB_DATA["no-touch"].items.length), trend: "up" },
-          { label: "Ready to Send", value: String(TAB_DATA.drafts.items.length) },
+          { label: "Overdue", value: String(queues.overdue.items.length + queues["no-touch"].items.length), trend: "up" },
+          { label: "Ready to Send", value: String(queues.drafts.items.length) },
         ]}
       />
 
       <SitaTabs
-        tabs={Object.entries(TAB_DATA).map(([key, data]) => ({
+        tabs={(Object.entries(queues) as [QueueTab, { label: string; items: unknown[] }][]).map(([key, data]) => ({
           key, label: data.label, count: data.items.length,
         }))}
         active={activeTab}
         onChange={(k) => setActiveTab(k as QueueTab)}
       />
 
-      {queueItems.length === 0 ? (
+      {isLoading ? (
         <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-8 text-center">
-          <CheckCircle className="h-8 w-8 text-[hsl(152_55%_48%)] mx-auto mb-2" />
-          <p className={cn(SITA_TYPE.cardTitle, "text-[hsl(0_0%_85%)]")}>All clear</p>
-          <p className={cn(SITA_TYPE.timelineMeta)}>No items in this queue</p>
+          <p className={cn(SITA_TYPE.timelineMeta)}>Loading queues…</p>
         </div>
+      ) : queueItems.length === 0 ? (
+        !isDemo && totalItems === 0 ? (
+          <EmptyStateCard
+            icon={Inbox}
+            title="No follow-through items yet"
+            description="The Follow-Through Center populates from real callback, support, and lead activity tied to your account. Items are added when the system detects stale leads, missed callbacks, or open support cases."
+          />
+        ) : (
+          <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-8 text-center">
+            <CheckCircle className="h-8 w-8 text-[hsl(152_55%_48%)] mx-auto mb-2" />
+            <p className={cn(SITA_TYPE.cardTitle, "text-[hsl(0_0%_85%)]")}>All clear</p>
+            <p className={cn(SITA_TYPE.timelineMeta)}>No items in this queue</p>
+          </div>
+        )
       ) : (
         <QueueCard
           title={tabData.label}
