@@ -494,5 +494,64 @@
 
 ## Phase 7 — pending
 ## Phase 8 — pending
-## Phase 9 — pending
+## Phase 9 — Autopilot canonical hierarchy + Adaptive profile visibility (COMPLETE)
+
+### Canonical roles (now consistent across the four surfaces)
+
+| Surface | Tier | Canonical role |
+|---|---|---|
+| **Playbook Builder** | Workflow | Strategy / configuration — author + version playbooks |
+| **Autopilot Hub** | Execution | Setup / activation control — wizard, policy on/off, kill-switch entry |
+| **Revenue Autopilot** | Execution | Live execution — runs, approval queue, leakage radar |
+| **Revenue Impact** | Insight | Result / proof — recovered + generated revenue |
+
+### What shipped
+
+- New shared component `src/modules/business/components/business/shared/AutopilotPeers.tsx`
+  renders the four-key cross-link bar with the active surface anchored
+  and the others one-tap reachable via `useBusinessNavigation().navigateTo(...)`.
+- All four canonical surfaces now expose `<HierarchyHint />` + `<AutopilotPeers />`
+  in a unified `flex justify-between` header — no operator can land on
+  any of them without seeing the other three.
+- `RevenueOpsHome` already documents the same role descriptors
+  (Phase 8 deliverable); Phase 9 simply propagates them into the
+  surfaces themselves.
+- Adaptive profile coverage confirmed: `useBusinessProfile().primaryMode`
+  already drives `RevenueImpactDashboard`, `AutopilotHub`,
+  `RevenueAutopilot`, `PlaybookBuilder`, `RevenueOpsHome`,
+  `AdaptiveBusinessHome`, plus 10+ other continuity-critical surfaces
+  (sidebar, KPIs, terminology) — no surface that drives the four-tier
+  hierarchy ignores it.
+
+### Files added
+
+- `src/modules/business/components/business/shared/AutopilotPeers.tsx`
+- `src/__tests__/business-os/integration/autopilot-canonical-hierarchy.test.tsx`
+
+### Files changed
+
+- `src/modules/business/pages/PlaybookBuilder.tsx`
+- `src/modules/business/pages/AutopilotHub.tsx`
+- `src/modules/business/pages/RevenueAutopilot.tsx`
+- `src/modules/business/pages/RevenueImpactDashboard.tsx`
+
+### Verified
+
+- `tsc --noEmit` clean
+- `autopilot-canonical-hierarchy.test.tsx` — 5/5 green
+- Continuity baseline regenerated:
+  `setLinkedTotal=17, consume=6, convertActions=4, crossApp=13, fixtureLeaks=42/21 unguarded, orphans=2`
+- No new orphan handoffs, no new silent drops, no new fixture leaks.
+
+### Honest deferred (NOT Phase 9)
+
+- Calendar OAuth env-readiness check (Google/Outlook live mode) is
+  carried into Phase 10's deployment-readiness gate — the
+  `CalendarSyncBadge` continues to honestly render `setup-required`
+  when env vars are absent.
+- The two persistent orphan handoffs (`opportunity` from
+  `OpportunitiesCenter:83` self-comment and `recovery_candidate` →
+  `/recovered-value`) are explicitly tracked for Phase 10's flip of
+  `check-continuity-handoffs.ts` from warn → enforce.
+
 ## Phase 10 — pending
