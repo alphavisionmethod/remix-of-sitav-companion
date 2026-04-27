@@ -8,7 +8,7 @@ import { ModuleAdvisorPanel } from "@/modules/business/components/business/advis
 import { PremiumEmptyState } from "@/platform/sita/components/sita/PremiumEmptyState";
 import { StateBadge, ExecutionState } from "@/platform/sita/components/sita/StateBadge";
 import { ConfidenceBar } from "@/platform/sita/components/sita/primitives/ConfidenceBar";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
@@ -21,6 +21,7 @@ import { getModuleAdaptation } from "@/domains/engines/business-module-adaptatio
 import { generateOpportunityAdvisors } from "@/domains/engines/business-advisor-engine";
 import { CrossAppAction } from "@/platform/sita/components/sita/CrossAppAction";
 import { setLinkedContext } from "@/platform/sita/components/sita/CrossAppAction";
+import { useLinkedContext } from "@/hooks/useLinkedContext";
 import { useNavigate } from "react-router-dom";
 
 
