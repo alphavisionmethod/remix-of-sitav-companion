@@ -122,6 +122,68 @@ export function useLeadInbox() {
       const update: Record<string, unknown> = { triage_status: newStatus };
       if (action === "accept") update.accepted_at = new Date().toISOString();
       if (action === "route" && dest) update.routed_to = dest;
+      // ── Phase 4 lineage: when accepting, materialise a real CRM contact and
+      // a `leads` row, and stamp the inbox item with the produced ids so the
+      // intake → contact → lead → opportunity → quote → invoice chain has an
+      // honest, queryable origin link.
+      if (action === "accept" && !isDemo) {
+        const inboxRow = items.find(i => i.id === id);
+        if (inboxRow) {
+          const fullName = inboxRow.contact_name?.trim() ?? "";
+          const [firstName, ...rest] = fullName.split(/\s+/);
+          const lastName = rest.join(" ") || null;
+          // Create / fetch the CRM contact (idempotent: don't duplicate if
+          // this inbox row was previously accepted).
+          let producedContactId: string | null = null;
+          let producedLeadId: string | null = null;
+          try {
+            const { data: existing } = await fromTable("crm_contacts")
+              .select("id")
+              .eq("source_lead_inbox_item_id", id)
+              .maybeSingle();
+            if (existing?.id) {
+              producedContactId = existing.id as string;
+            } else {
+              const { data: contact } = await fromTable("crm_contacts")
+                .insert({
+                  user_id: user.id,
+                  first_name: firstName || (inboxRow.company ?? "Unknown"),
+                  last_name: lastName,
+                  email: inboxRow.contact_email,
+                  phone: inboxRow.contact_phone,
+                  source: inboxRow.source ?? "lead_inbox",
+                  lifecycle_stage: "lead",
+                  status: "active",
+                  source_lead_inbox_item_id: id,
+                } as never)
+                .select("id")
+                .single();
+              producedContactId = (contact?.id as string) ?? null;
+            }
+            const { data: lead } = await fromTable("leads")
+              .insert({
+                user_id: user.id,
+                name: fullName || (inboxRow.company ?? "Lead"),
+                email: inboxRow.contact_email,
+                phone: inboxRow.contact_phone,
+                company: inboxRow.company,
+                source: inboxRow.source ?? "lead_inbox",
+                status: "new",
+                inbox_item_id: id,
+                opportunity_score: inboxRow.quality_score ?? 0,
+                urgency: inboxRow.urgency ?? "low",
+              } as never)
+              .select("id")
+              .single();
+            producedLeadId = (lead?.id as string) ?? null;
+          } catch {
+            // Non-fatal: inbox item still moves to accepted even if lineage
+            // write fails — the toast below stays accurate.
+          }
+          if (producedContactId) update.produced_contact_id = producedContactId;
+          if (producedLeadId) update.produced_lead_id = producedLeadId;
+        }
+      }
       await fromTable("lead_inbox_items").update(update).eq("id", id);
     }
 
@@ -133,8 +195,10 @@ export function useLeadInbox() {
     };
     toast.success(msgs[action]);
     queryClient.invalidateQueries({ queryKey: ["lead-inbox-items"] });
+    queryClient.invalidateQueries({ queryKey: ["leads"] });
+    queryClient.invalidateQueries({ queryKey: ["crm-contacts"] });
     if (selectedId === id) setSelectedId(null);
-  }, [user, queryClient, selectedId]);
+  }, [user, queryClient, selectedId, items, isDemo]);
 
   const toggleCheck = useCallback((id: string, checked: boolean) => {
     setCheckedIds(prev => {
