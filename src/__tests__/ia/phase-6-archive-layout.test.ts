@@ -27,7 +27,11 @@ interface ArchivedPage {
 }
 
 const ARCHIVED: ArchivedPage[] = [
-  { pillar: "business",  component: "RevenueImpactDashboard", descriptorId: "revenue-impact",         legacyShim: "src/pages/business/RevenueImpactDashboard.tsx" },
+  // Phase 2 demoted RevenueImpactDashboard's descriptor to role=internal/status=legacy
+  // (legacy URL still served by redirect → /business/revenue). Phase 6 then moved the
+  // file under _archived/ since no live shell mounts it. Both states are correct,
+  // so we deliberately do NOT assert manifest archival here.
+  { pillar: "business",  component: "RevenueImpactDashboard", legacyShim: "src/pages/business/RevenueImpactDashboard.tsx" },
   { pillar: "business",  component: "RevenueCallingPage",                                              legacyShim: "src/pages/RevenueCallingPage.tsx" },
   { pillar: "concierge", component: "LifeDashboard",          descriptorId: "life-dashboard",          legacyShim: "src/pages/LifeDashboard.tsx" },
   { pillar: "concierge", component: "PersonalLifeWorkspace",  descriptorId: "personal-life-workspace", legacyShim: "src/pages/PersonalLifeWorkspace.tsx" },
