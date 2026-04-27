@@ -212,19 +212,22 @@ jobs:
         run: npx tsx scripts/architecture/checks/check-edge-function-mutation-traceability.ts
 
       - name: Run hook & context ownership checker
-        # Phases 4–5 closed (2026-04-27): the migration moved 11 contexts and
-        # 139 hooks to their canonical owners. The ownership map is clean
-        # under both --enforce and --enforce-classification, so the gate is
-        # now BLOCKING by default. The two whitelisted exceptions
-        # (useRealityProvider, use-flagship-loop-proof) are tracked in
+        # Phases 4–7 closed (2026-04-27): 11 contexts and 139 hooks were
+        # relocated to their canonical owners; the exception ledger
+        # `shims[]` array is empty (no transitional re-exports remain).
+        # The ownership map is clean under BOTH --enforce and
+        # --enforce-classification, so the gate runs in full BLOCKING mode
+        # for both hard import boundaries AND classification drift. The
+        # five whitelisted survivors (useRealityProvider, use-flagship-loop-proof,
+        # use-domain-data, use-cai-data, useCAIData) are tracked in
         # generated/manifests/hook-context-ownership-exceptions.json under
-        # `rationale` and skipped by the validator.
+        # `rationale` (decision: keep-shared) and skipped by the validator.
         # See docs/architecture/HOOK_AND_CONTEXT_OWNERSHIP_MODEL.md and
         # REPOSITORY_CONSTITUTION.md rule #51.
         env:
           HOOK_CONTEXT_OWNERSHIP_ENFORCE: ${{ vars.HOOK_CONTEXT_OWNERSHIP_ENFORCE || 'true' }}
           HOOK_CONTEXT_OWNERSHIP_VERBOSE: 'true'
-        run: npx tsx scripts/architecture/check-hook-context-ownership.ts
+        run: npx tsx scripts/architecture/check-hook-context-ownership.ts --enforce-classification
 
       - name: Upload mutation traceability report
         if: always()
