@@ -72,6 +72,17 @@ export interface BackgroundJobVM {
   navigationTarget?: BackgroundJobNavigationTarget;
   /** Optional deep-link to recovery surface for failed jobs. */
   recoveryHref?: string;
+  /**
+   * Phase 7: when this job has a meaningful originating entity
+   * (a lead, appointment, contact, opportunity, invoice…), the mapper
+   * populates this hint. The Background Task Center forwards it as
+   * `linkedContext` so the destination app can auto-select the entity.
+   */
+  linkedEntity?: {
+    type: "lead" | "appointment" | "customer" | "opportunity" | "invoice" | "audit-subject";
+    id: string;
+    label?: string;
+  };
 }
 
 /** Where clicking a job row should send the operator inside Business OS. */
@@ -82,6 +93,8 @@ export interface BackgroundJobNavigationTarget {
   entityId?: string;
   /** Human-readable label for the link (used as tooltip / aria-label). */
   label: string;
+  /** Optional entity type for the destination's `useLinkedContext` consumer. */
+  entityType?: "lead" | "appointment" | "customer" | "opportunity" | "invoice" | "audit-subject";
 }
 
 // ── Helpers ───────────────────────────────────────────────────
