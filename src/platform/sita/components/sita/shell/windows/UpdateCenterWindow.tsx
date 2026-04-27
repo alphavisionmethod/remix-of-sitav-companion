@@ -19,7 +19,7 @@ import {
   NovaToggle, NovaBadge, NovaToolbar, NovaAvatar,
 } from "@/platform/nova-sdk/ui/components";
 import { AppStateWrapper } from "@/platform/sita/components/sita/shell/AppStateWrapper";
-import { useAppPlatform } from "@/contexts/AppPlatformContext";
+import { useAppPlatform } from "@/platform/app-platform/contexts/AppPlatformContext";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";

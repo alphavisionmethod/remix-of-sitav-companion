@@ -9,7 +9,7 @@
 
 import { useEffect } from "react";
 import { startSitaSignalSources } from "@/lib/sita-proactive";
-import { useSitaVoice } from "@/contexts/SitaVoiceContext";
+import { useSitaVoice } from "@/platform/sita/contexts/SitaVoiceContext";
 
 export function SitaProactiveRunner() {
   const voice = useSitaVoice();

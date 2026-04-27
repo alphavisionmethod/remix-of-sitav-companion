@@ -5,7 +5,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useInspector } from "@/contexts/InspectorContext";
-import { useSharedTrust, useKernelStatus } from "@/contexts/SitaKernelContext";
+import { useSharedTrust, useKernelStatus } from "@/platform/sita/contexts/SitaKernelContext";
 import { useProofTimeline } from "@/hooks/use-proof-timeline";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Shield, Brain, GitBranch, Link2, Clock, CheckCircle, AlertTriangle, XCircle, ChevronRight, Activity } from "lucide-react";

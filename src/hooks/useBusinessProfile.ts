@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { BusinessProfileCtx } from "@/contexts/BusinessProfileContext";
+import { BusinessProfileCtx } from "@/modules/business/contexts/BusinessProfileContext";
 
 export function useBusinessProfile() {
   const ctx = useContext(BusinessProfileCtx);

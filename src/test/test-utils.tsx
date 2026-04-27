@@ -166,7 +166,7 @@ vi.mock("@/contexts/InspectorContext", () => ({
 }));
 
 // Mock app platform
-vi.mock("@/contexts/AppPlatformContext", () => ({
+vi.mock("@/platform/app-platform/contexts/AppPlatformContext", () => ({
   useAppPlatform: () => ({
     apps: [], installApp: vi.fn(), uninstallApp: vi.fn(), loading: false, receipts: [],
     getApp: vi.fn().mockReturnValue(null),
@@ -178,7 +178,7 @@ vi.mock("@/contexts/AppPlatformContext", () => ({
 }));
 
 // Mock kernel
-vi.mock("@/contexts/SitaKernelContext", () => ({
+vi.mock("@/platform/sita/contexts/SitaKernelContext", () => ({
   useSitaKernel: () => ({ ready: true }),
   useCanonicalAction: () => ({ dispatch: vi.fn() }),
   useSharedMemory: () => ({ get: vi.fn(), set: vi.fn() }),
@@ -217,7 +217,7 @@ vi.mock("@/hooks/useOSRuntime", () => ({
 }));
 
 // Mock SitaOS context
-vi.mock("@/contexts/SitaOSContext", () => ({
+vi.mock("@/platform/sita/contexts/SitaOSContext", () => ({
   useSitaOS: () => ({
     hydrated: true,
     kernel: { ready: true },

@@ -11,7 +11,7 @@ import { cn } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
-import { useIncidentManagement, useEntityScoped } from "@/contexts/SitaKernelContext";
+import { useIncidentManagement, useEntityScoped } from "@/platform/sita/contexts/SitaKernelContext";
 type Incident = { id: string; title: string; severity: string; status: string; assignee?: string; createdAt: string; [k: string]: any };
 type Severity = "critical" | "high" | "medium" | "low";
 type IncidentStatus = "active" | "investigating" | "mitigating" | "resolved" | "closed" | "open";

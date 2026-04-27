@@ -8,7 +8,7 @@ import { useBills, useSubscriptions, useInvoices } from "@/hooks/use-sita-data";
 import { useFinancialAccounts, useMoneyKPIs } from "@/hooks/use-domain-data";
 import { DollarSign, Receipt, CreditCard } from "lucide-react";
 import { PremiumEmptyState } from "@/platform/sita/components/sita/PremiumEmptyState";
-import { useFinanceNavigation } from "@/contexts/FinanceNavigationContext";
+import { useFinanceNavigation } from "@/modules/finance/contexts/FinanceNavigationContext";
 
 
 

@@ -4,9 +4,9 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { type ReactNode } from "react";
-import { SitaKernelProvider } from "@/contexts/SitaKernelContext";
-import { SitaOSProvider } from "@/contexts/SitaOSContext";
-import { NovaSDKProvider } from "@/contexts/NovaSDKContext";
+import { SitaKernelProvider } from "@/platform/sita/contexts/SitaKernelContext";
+import { SitaOSProvider } from "@/platform/sita/contexts/SitaOSContext";
+import { NovaSDKProvider } from "@/platform/nova-sdk/contexts/NovaSDKContext";
 import { RuntimeTierProvider } from "@/runtimes/runtime-context";
 import { usePipelineBootstrap } from "@/hooks/usePipelineBootstrap";
 import { useAutonomyBootstrap } from "@/hooks/useAutonomyBootstrap";
@@ -49,6 +49,6 @@ export function RuntimeProvider({ children }: { children: ReactNode }) {
 }
 
 // Re-export all hooks from a single location for convenience
-export { useSitaKernel, useCanonicalAction, useSharedMemory, useSharedTrust, useEntityScoped, useCapabilityLease, useConstitution, useKernelStatus, useWorkflowRecovery, useWorkflowReplay, useTransitionValidator, useReceiptVerification, useWebsiteManager, useCloudControlPlane, useEdgeDeviceRuntime, useFleetOTA, useIncidentManagement, useFraudSentinel, useGovernanceSimulator, useSearchFabric, useSelfHealingServices, useLifeSimulator, useEmergencyHalt, useCurrentLayer } from "@/contexts/SitaKernelContext";
-export { useSitaOS } from "@/contexts/SitaOSContext";
-export { useNovaSDK } from "@/contexts/NovaSDKContext";
+export { useSitaKernel, useCanonicalAction, useSharedMemory, useSharedTrust, useEntityScoped, useCapabilityLease, useConstitution, useKernelStatus, useWorkflowRecovery, useWorkflowReplay, useTransitionValidator, useReceiptVerification, useWebsiteManager, useCloudControlPlane, useEdgeDeviceRuntime, useFleetOTA, useIncidentManagement, useFraudSentinel, useGovernanceSimulator, useSearchFabric, useSelfHealingServices, useLifeSimulator, useEmergencyHalt, useCurrentLayer } from "@/platform/sita/contexts/SitaKernelContext";
+export { useSitaOS } from "@/platform/sita/contexts/SitaOSContext";
+export { useNovaSDK } from "@/platform/nova-sdk/contexts/NovaSDKContext";

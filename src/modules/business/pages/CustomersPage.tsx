@@ -17,7 +17,7 @@ import { useState, useMemo } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
 import { useAction } from "@/hooks/useAction";
-import { useBusinessNavigation } from "@/contexts/BusinessNavigationContext";
+import { useBusinessNavigation } from "@/modules/business/contexts/BusinessNavigationContext";
 import {
   Users, Search, DollarSign, Heart, AlertTriangle, Plus, X, Plug
 } from "lucide-react";

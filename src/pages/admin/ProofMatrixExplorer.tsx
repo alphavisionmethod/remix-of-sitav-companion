@@ -8,7 +8,7 @@ import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { useReceiptVerification, useSharedMemory } from "@/contexts/SitaKernelContext";
+import { useReceiptVerification, useSharedMemory } from "@/platform/sita/contexts/SitaKernelContext";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 interface ProofRecord {
   id: string;

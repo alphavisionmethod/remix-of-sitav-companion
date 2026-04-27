@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence, Reorder } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { LayoutGrid, LayoutDashboard } from "lucide-react";
-import { useAppPlatform } from "@/contexts/AppPlatformContext";
+import { useAppPlatform } from "@/platform/app-platform/contexts/AppPlatformContext";
 import { useAppBadges } from "@/hooks/useAppBadges";
 import { useAppSurfacing } from "@/hooks/useAppSurfacing";
 import { useDockContext } from "@/hooks/useDockContext";

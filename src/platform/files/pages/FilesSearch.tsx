@@ -5,7 +5,7 @@ import { ModuleAdvisorInsight } from "@/platform/sita/components/sita/domain-sha
 import { useState, useMemo } from "react";
 import { Search, FileText, Brain, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
-import { useSearchFabric } from "@/contexts/SitaKernelContext";
+import { useSearchFabric } from "@/platform/sita/contexts/SitaKernelContext";
 import type { SearchResponse } from "@/lib/services/search-fabric";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";

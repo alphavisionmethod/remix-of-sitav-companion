@@ -11,7 +11,7 @@
 
 import { useCallback } from "react";
 import { motion } from "framer-motion";
-import { useBusinessNavigation } from "@/contexts/BusinessNavigationContext";
+import { useBusinessNavigation } from "@/modules/business/contexts/BusinessNavigationContext";
 import { SitaCard, SitaCardTitle } from "@/platform/sita/components/sita/SitaCard";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import HierarchyHint, { type RevenueTier } from "@/modules/business/components/business/shared/HierarchyHint";

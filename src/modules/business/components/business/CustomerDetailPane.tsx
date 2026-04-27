@@ -9,7 +9,7 @@ import { TrustBadge, TrustLevel } from "@/platform/sita/components/sita/TrustBad
 import { TimelineItem } from "@/platform/sita/components/sita/SitaComponents";
 import { RelationshipGraphPanel } from "@/modules/business/components/business/RelationshipGraphPanel";
 import type { MockCustomer } from "@/data/repositories/business-data-service";
-import { useBusinessNavigation } from "@/contexts/BusinessNavigationContext";
+import { useBusinessNavigation } from "@/modules/business/contexts/BusinessNavigationContext";
 
 interface CustomerDetailPaneProps {
   customer: MockCustomer;

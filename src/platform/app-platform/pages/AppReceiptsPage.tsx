@@ -6,7 +6,7 @@ import { useMemo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ArrowLeft, Shield, Clock, Download, Check, AlertTriangle, FileText, RefreshCw, Trash2, Lock } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useAppPlatform } from "@/contexts/AppPlatformContext";
+import { useAppPlatform } from "@/platform/app-platform/contexts/AppPlatformContext";
 import { AppIcon } from "@/platform/sita/components/sita/app-platform/AppStoreComponents";
 import type { AppLifecycleReceipt } from "@/domains/apps/types";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";

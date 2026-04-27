@@ -1,6 +1,6 @@
 import React from "react";
 import { CRMCommunicationQueue } from "@/modules/business/components/business/crm/CRMCommunicationQueue";
-import { useBusinessNavigation } from "@/contexts/BusinessNavigationContext";
+import { useBusinessNavigation } from "@/modules/business/contexts/BusinessNavigationContext";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
 
 const CRMCommunications = () => {

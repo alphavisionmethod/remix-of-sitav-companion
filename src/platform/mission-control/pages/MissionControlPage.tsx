@@ -27,7 +27,7 @@ import {
 } from "@/platform/sita/components/sita/MissionControlComponents";
 import { advisors, recommendations, internalAgents, incidents, connectorHealth, stuckWorkflows, costAnomalies, policyAnomalies, releaseSafety, approvals, safeMode, type SafeModeState } from "@/hooks/useAdvisorMissionControl";
 import { cn } from "@/lib/utils";
-import { useFraudSentinel, useGovernanceSimulator } from "@/contexts/SitaKernelContext";
+import { useFraudSentinel, useGovernanceSimulator } from "@/platform/sita/contexts/SitaKernelContext";
 import type { TrustState, ExecutionEnvelope, WorkflowState, DiagnosticBundle } from "@/packages/contracts";
 import type { ConnectorFreshnessPolicy } from "@/packages/policy-contracts";
 import type { ReceiptRow, SyncLogRow, TenantFirewallLogRow, CapabilityRow } from "@/packages/database-schemas";

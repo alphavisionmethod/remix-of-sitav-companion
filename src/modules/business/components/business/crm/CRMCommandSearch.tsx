@@ -2,7 +2,7 @@ import React, { useState, useMemo, useRef, useEffect, useCallback } from "react"
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { useCRMContacts, useCRMCompanies, useCRMOpportunities } from "@/hooks/use-crm-data";
 import { Search, User, Building2, TrendingUp, ArrowRight, Plus, Upload, Zap, Shield, MessageSquare, Sparkles, FileText } from "lucide-react";
-import { useBusinessNavigation } from "@/contexts/BusinessNavigationContext";
+import { useBusinessNavigation } from "@/modules/business/contexts/BusinessNavigationContext";
 
 interface SearchResult {
   id: string;

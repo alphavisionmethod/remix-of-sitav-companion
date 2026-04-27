@@ -21,11 +21,11 @@ import { AppearanceProvider } from "@/contexts/AppearanceContext";
 import { InspectorProvider } from "@/contexts/InspectorContext";
 import { EntityContextProvider } from "@/contexts/EntityContext";
 import { RuntimeProvider } from "@/contexts/RuntimeProvider";
-import { AppPlatformProvider } from "@/contexts/AppPlatformContext";
+import { AppPlatformProvider } from "@/platform/app-platform/contexts/AppPlatformContext";
 import { OSRuntimeProvider } from "@/hooks/useOSRuntime";
 import { RealityModeProvider } from "@/lib/dual-reality/reality-mode-context";
 import { ThemeProvider } from "@/contexts/AppearanceContext";
-import { SitaVoiceProvider } from "@/contexts/SitaVoiceContext";
+import { SitaVoiceProvider } from "@/platform/sita/contexts/SitaVoiceContext";
 // MobileRuntimeProvider archived — Ubuntu-native is canonical native platform.
 // See docs/PLATFORM_SCOPE.md and archive/src/mobile-platform/.
 import { ShellLayout } from "@/platform/sita/components/sita/ShellLayout";

@@ -10,7 +10,7 @@ import { SitaCard, SitaCardTitle, SitaSectionHeader } from "@/platform/sita/comp
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { AdminPageHeader, TrustRibbon, StatusBadge } from "@/platform/sita/components/sita/admin";
-import { useGovernanceSimulator } from "@/contexts/SitaKernelContext";
+import { useGovernanceSimulator } from "@/platform/sita/contexts/SitaKernelContext";
 import type { SimulationResult } from "@/lib/services/governance-simulator";
 import {
   Shield, Play, AlertTriangle, CheckCircle, ChevronRight,

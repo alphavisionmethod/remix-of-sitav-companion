@@ -5,7 +5,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useQuery, type UseQueryOptions } from "@tanstack/react-query";
-import { useSitaKernel } from "@/contexts/SitaKernelContext";
+import { useSitaKernel } from "@/platform/sita/contexts/SitaKernelContext";
 import { fromDynamicTable } from "@/lib/supabase-helpers";
 import { supabase } from "@/integrations/supabase/client";
 

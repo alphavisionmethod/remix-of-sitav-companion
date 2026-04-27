@@ -10,7 +10,7 @@ import {
 import { format, formatDistanceToNow, isPast, differenceInDays, subDays } from "date-fns";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { motion } from "framer-motion";
-import { useBusinessNavigation } from "@/contexts/BusinessNavigationContext";
+import { useBusinessNavigation } from "@/modules/business/contexts/BusinessNavigationContext";
 import CRMCommandSearch from "@/modules/business/components/business/crm/CRMCommandSearch";
 import { CRMLifecycleEngine } from "@/modules/business/components/business/crm/CRMLifecycleEngine";
 import { CRMRelationshipIntelligence } from "@/modules/business/components/business/crm/CRMRelationshipIntelligence";

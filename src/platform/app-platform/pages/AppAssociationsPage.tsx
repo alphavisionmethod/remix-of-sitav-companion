@@ -6,7 +6,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, FileText, Link2, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useAppPlatform } from "@/contexts/AppPlatformContext";
+import { useAppPlatform } from "@/platform/app-platform/contexts/AppPlatformContext";
 import { AppIcon } from "@/platform/sita/components/sita/app-platform/AppStoreComponents";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 const AppAssociationsPage = () => {

@@ -16,8 +16,8 @@ import { DomainAdvisorBoard } from "@/platform/sita/components/sita/domain-share
 import { useBoardroomBridge } from "@/hooks/useBoardroomBridge";
 import { getAdvisorOutputs } from "@/lib/services/orchestration-pipeline/module-advisor-consumer";
 import { useRelationshipContexts, useHumanObligations } from "@/hooks/useCAIData";
-import { ConciergeDataProvider } from "@/contexts/ConciergeDataContext";
-import { ConciergeNavigationContext } from "@/contexts/ConciergeNavigationContext";
+import { ConciergeDataProvider } from "@/modules/concierge/contexts/ConciergeDataContext";
+import { ConciergeNavigationContext } from "@/modules/concierge/contexts/ConciergeNavigationContext";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
 import { getConciergeAdaptation } from "@/domains/engines/cross-os-integration";
 import { CrossOSLinksPanel } from "@/platform/sita/components/sita/cross-os/CrossOSLinksPanel";

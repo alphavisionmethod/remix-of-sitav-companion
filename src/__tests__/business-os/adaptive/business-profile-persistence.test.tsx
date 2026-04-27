@@ -11,7 +11,7 @@ import { render, act, screen } from "@testing-library/react";
 import {
   BusinessProfileProvider,
   BusinessProfileCtx,
-} from "@/contexts/BusinessProfileContext";
+} from "@/modules/business/contexts/BusinessProfileContext";
 import {
   saveBusinessProfile,
   loadBusinessProfile,

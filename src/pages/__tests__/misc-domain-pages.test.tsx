@@ -10,7 +10,7 @@ vi.mock("react-router-dom", async () => {
   return { ...actual, useNavigate: () => vi.fn(), useParams: () => ({ id: "test" }), useSearchParams: () => [new URLSearchParams(), vi.fn()] };
 });
 
-vi.mock("@/contexts/SitaOSContext", () => ({
+vi.mock("@/platform/sita/contexts/SitaOSContext", () => ({
   useSitaOS: () => ({
     explainability: { clearHistory: vi.fn(), getExplanationHistory: () => [], explain: vi.fn(), loadPersistedState: vi.fn() },
     workspaceIntelligence: { getAvailableWorkspaces: () => [], getWorkspaceUsageStats: () => ({}), suggestWorkspace: () => null, loadPersistedState: vi.fn() },
@@ -23,7 +23,7 @@ vi.mock("@/contexts/SitaOSContext", () => ({
   SitaOSProvider: ({ children }: any) => children,
 }));
 
-vi.mock("@/contexts/AppPlatformContext", () => ({
+vi.mock("@/platform/app-platform/contexts/AppPlatformContext", () => ({
   useAppPlatform: () => ({
     receipts: [],
     apps: [],

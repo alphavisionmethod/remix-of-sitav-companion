@@ -1,4 +1,4 @@
-import { useSitaOS } from "@/contexts/SitaOSContext";
+import { useSitaOS } from "@/platform/sita/contexts/SitaOSContext";
 import { AdminPageHeader } from "@/platform/sita/components/sita/admin/AdminPageHeader";
 import { SitaCard, SitaCardHeader, SitaCardTitle, SitaMetric, SitaSectionHeader, SitaButton } from "@/platform/sita/components/sita/SitaCard";
 import { Crown, Users, CheckCircle } from "lucide-react";

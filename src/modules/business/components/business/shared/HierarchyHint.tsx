@@ -6,7 +6,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useCallback } from "react";
-import { useBusinessNavigation } from "@/contexts/BusinessNavigationContext";
+import { useBusinessNavigation } from "@/modules/business/contexts/BusinessNavigationContext";
 import { cn } from "@/lib/utils";
 import { BarChart3, Workflow, Rocket, ShieldCheck, ChevronRight } from "lucide-react";
 

@@ -43,7 +43,7 @@ import { Compositor } from "@/platform/nova-sdk/kernel/compositor";
 import { MemoryManager } from "@/platform/nova-sdk/kernel/memory-manager";
 import { predictiveIntentEngine } from "@/lib/services/predictive-intent";
 import { routineDetector } from "@/lib/services/routine-detector";
-import { useAppPlatform } from "@/contexts/AppPlatformContext";
+import { useAppPlatform } from "@/platform/app-platform/contexts/AppPlatformContext";
 import { AppPermissionGate, isPermissionGranted } from "./AppPermissionGate";
 import { useState } from "react";
 

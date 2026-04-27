@@ -13,7 +13,7 @@ import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner
 import { useProofRecords } from "@/hooks/use-sita-data";
 import { useProofTimeline } from "@/hooks/use-proof-timeline";
 import { useProofChain, useProofBundle } from "@/hooks/use-proof-chain";
-import { useKernelStatus } from "@/contexts/SitaKernelContext";
+import { useKernelStatus } from "@/platform/sita/contexts/SitaKernelContext";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";

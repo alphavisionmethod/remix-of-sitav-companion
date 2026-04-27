@@ -4,7 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useMemo } from "react";
-import { useSitaOS } from "@/contexts/SitaOSContext";
+import { useSitaOS } from "@/platform/sita/contexts/SitaOSContext";
 import type { ExperienceSignature } from "@/lib/services/experience-signature/experience-signature";
 
 export function useExperienceSignature(): ExperienceSignature {

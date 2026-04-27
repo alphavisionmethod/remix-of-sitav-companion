@@ -18,7 +18,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { SettingRow, ResetSectionButton } from "./shared";
-import { useGovernanceSimulator } from "@/contexts/SitaKernelContext";
+import { useGovernanceSimulator } from "@/platform/sita/contexts/SitaKernelContext";
 import type { SimulationResult } from "@/lib/services/governance-simulator";
 import { useQuery } from "@tanstack/react-query";
 import { fromTable, fromDynamicTable } from "@/lib/supabase-helpers";

@@ -1,4 +1,4 @@
-import { useSitaOS } from "@/contexts/SitaOSContext";
+import { useSitaOS } from "@/platform/sita/contexts/SitaOSContext";
 import { useAdaptiveInterface } from "@/hooks/useAdaptiveInterface";
 import { useExperienceSignature } from "@/hooks/useExperienceSignature";
 import { AdminPageHeader } from "@/platform/sita/components/sita/admin/AdminPageHeader";

@@ -10,7 +10,7 @@ import {
   Lock, Check, X, Eye, Loader2, CheckCircle2, HelpCircle,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useAppPlatform } from "@/contexts/AppPlatformContext";
+import { useAppPlatform } from "@/platform/app-platform/contexts/AppPlatformContext";
 import { toast } from "sonner";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { MobileHonestyNotice } from "@/platform/core-services/components/platform/MobileHonestyNotice";

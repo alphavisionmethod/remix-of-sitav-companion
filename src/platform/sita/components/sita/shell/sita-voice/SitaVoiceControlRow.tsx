@@ -8,7 +8,7 @@
 
 import { Mic, MicOff, Power } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useSitaVoice } from "@/contexts/SitaVoiceContext";
+import { useSitaVoice } from "@/platform/sita/contexts/SitaVoiceContext";
 
 export function SitaVoiceControlRow() {
   const voice = useSitaVoice();

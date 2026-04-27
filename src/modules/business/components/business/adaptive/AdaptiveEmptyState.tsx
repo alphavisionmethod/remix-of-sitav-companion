@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
 import { getIdentityLayer } from "@/domains/engines/business-identity-layers";
-import { useBusinessNavigation } from "@/contexts/BusinessNavigationContext";
+import { useBusinessNavigation } from "@/modules/business/contexts/BusinessNavigationContext";
 import type { ProfileArchetype } from "@/domains/engines/business-profile-engine";
 
 interface ContextConfig {

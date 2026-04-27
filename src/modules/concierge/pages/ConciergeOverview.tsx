@@ -13,7 +13,7 @@ import { AppSurface } from "@/platform/sita/components/sita/surfaces/AppSurface"
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
 import { PremiumEmptyState } from "@/platform/sita/components/sita/PremiumEmptyState";
-import { useConciergeNavigation } from "@/contexts/ConciergeNavigationContext";
+import { useConciergeNavigation } from "@/modules/concierge/contexts/ConciergeNavigationContext";
 import { useHouseholdTasks, useFamilyEvents } from "@/hooks/use-sita-data";
 import { useMemo } from "react";
 import {

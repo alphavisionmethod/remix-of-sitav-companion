@@ -1,5 +1,5 @@
 import { GraduationCap, Zap } from "lucide-react";
-import { useRevenueOfficeMode } from "@/contexts/RevenueOfficeModeContext";
+import { useRevenueOfficeMode } from "@/modules/business/contexts/RevenueOfficeModeContext";
 import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
 

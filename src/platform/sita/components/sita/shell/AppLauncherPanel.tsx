@@ -13,7 +13,7 @@ import {
   Lock, Download, ChevronRight, Sparkles, Star, LayoutDashboard,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useAppPlatform } from "@/contexts/AppPlatformContext";
+import { useAppPlatform } from "@/platform/app-platform/contexts/AppPlatformContext";
 import { useLauncherViewModel, type LauncherAppItem, type AppInstallCTA } from "@/hooks/useLauncherViewModel";
 import type { AppCategory } from "@/domains/apps/types";
 import { SoundEngine } from "@/platform/runtime/sound-engine";

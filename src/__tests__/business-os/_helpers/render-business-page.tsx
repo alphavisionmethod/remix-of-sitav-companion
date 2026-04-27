@@ -9,7 +9,7 @@
 import React from "react";
 import { render as canonicalRender } from "@/test/test-utils";
 import type { RenderOptions } from "@testing-library/react";
-import { BusinessProfileProvider } from "@/contexts/BusinessProfileContext";
+import { BusinessProfileProvider } from "@/modules/business/contexts/BusinessProfileContext";
 
 interface BusinessRenderOptions extends Omit<RenderOptions, "wrapper"> {
   initialRoute?: string;

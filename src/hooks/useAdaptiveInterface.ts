@@ -4,7 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useEffect, useState } from "react";
-import { useSitaOS } from "@/contexts/SitaOSContext";
+import { useSitaOS } from "@/platform/sita/contexts/SitaOSContext";
 import type { InterfaceState } from "@/lib/services/adaptive-interface/adaptive-interface";
 
 const DEFAULT_STATE: InterfaceState = {

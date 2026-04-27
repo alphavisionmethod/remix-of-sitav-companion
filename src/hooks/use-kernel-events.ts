@@ -4,7 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useEffect, useRef, useState, useCallback } from "react";
-import { useSitaKernel } from "@/contexts/SitaKernelContext";
+import { useSitaKernel } from "@/platform/sita/contexts/SitaKernelContext";
 import type { BusEvent } from "@/platform/core-services/event-bus";
 
 /**

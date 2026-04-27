@@ -6,7 +6,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useCanonicalAction } from "@/contexts/SitaKernelContext";
+import { useCanonicalAction } from "@/platform/sita/contexts/SitaKernelContext";
 import { toast } from "sonner";
 
 export interface UseActionOptions {

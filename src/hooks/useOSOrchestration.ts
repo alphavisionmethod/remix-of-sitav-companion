@@ -3,7 +3,7 @@
 // Thin wrapper exposing the most-used OS kernel APIs
 // ═══════════════════════════════════════════════════════════════
 
-import { useSitaOS } from "@/contexts/SitaOSContext";
+import { useSitaOS } from "@/platform/sita/contexts/SitaOSContext";
 import { useAuth } from "@/contexts/AuthContext";
 import type { IntentSource, IntentResolution } from "@/lib/services/intent-orchestrator/intent-orchestrator";
 import type { AttentionStack } from "@/lib/services/attention-os/attention-os";

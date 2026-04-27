@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 import type { AppDefinition } from "@/domains/apps/types";
 import { cn } from "@/lib/utils";
-import { useAppPlatform } from "@/contexts/AppPlatformContext";
+import { useAppPlatform } from "@/platform/app-platform/contexts/AppPlatformContext";
 import { AppIcon, VerificationBadge, AppSourceLabel } from "@/platform/sita/components/sita/app-platform/AppStoreComponents";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
