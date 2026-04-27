@@ -108,7 +108,7 @@ const NAVIGATE_AFTER_SET_RX =
   /navigate\(\s*["'`](\/[a-z0-9/_:-]+)["'`]/i;
 const CONSUME_LINKED_RX = /consumeLinkedContext\(\)/g;
 const CONSUME_TYPE_GUARD_RX =
-  /linked(?:Context)?\??\.entityType\s*===\s*["'`]([a-z0-9_-]+)["'`]/gi;
+  /(?:linked|ctx)(?:Context)?\??\.entityType\s*(?:===|!==)\s*["'`]([a-z0-9_-]+)["'`]/gi;
 const USE_ACTION_RX =
   /useAction\(\s*["'`]([a-z0-9-]+)["'`]\s*,\s*["'`]([a-z0-9._-]+)["'`]/gi;
 const CROSS_APP_RX =
