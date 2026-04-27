@@ -74,3 +74,89 @@ npx tsc --noEmit → 0 errors
 ---
 
 _Phases 2–10 will append below this line as they complete._
+
+---
+
+## Phase 2 — Shared Render Helpers (Concierge & Finance) — ✅ COMPLETE
+
+**Goal:** Provide a single canonical way to render Concierge and Finance pages
+in tests with their context providers wired, without duplicating the canonical
+Supabase mock, QueryClient, or MemoryRouter from `src/test/test-utils.tsx`.
+
+**Deliverables (no duplicates, no stubs):**
+
+- `src/__tests__/concierge/_helpers/render-concierge-page.tsx` — wraps the
+  canonical `render` with `ConciergeNavigationContext` + `ConciergeDataProvider`.
+- `src/__tests__/finance/_helpers/render-finance-page.tsx` — wraps the
+  canonical `render` with `FinanceNavigationContext`.
+- `src/__tests__/concierge/_helpers/concierge-fixtures.ts` — deterministic
+  factories for `HouseholdMember`, `HouseholdTask`, `LocalCalendarEvent`.
+- `src/__tests__/finance/_helpers/finance-fixtures.ts` — deterministic factories
+  for `FinancialAccount`, `ObligationRecord`, `ReserveModel`, `TransactionRecord`,
+  `CashAllocatorInput`, `PeaceScoreInput`.
+- Helper smoke tests (`render-concierge-page.test.tsx`, `render-finance-page.test.tsx`)
+  verify default context, custom overrides, and navigation callback wiring.
+
+**Verification:** 4/4 helper tests pass. Helpers reuse `src/test/test-utils.tsx`
+entirely — no parallel Supabase mock, no parallel QueryClient.
+
+---
+
+## Phase 3 — Service & Hook Tests (P0) — ✅ COMPLETE
+
+**Goal:** Replace `status: "missing"` for every P0 service in the Concierge
+and Finance matrices with real deterministic behavioral coverage. Each test
+exercises the actual service exported from `src/lib/services/{concierge,finance}-os/`
+with realistic fixture inputs and asserts invariants on the returned shape.
+
+**Concierge P0 services (4/4 → behavioral):**
+
+| Service | Test file | Behaviors asserted |
+|---|---|---|
+| `household-overview.service.ts` | `services/household-overview.service.test.ts` | Active vs overdue derivation; top-priority fallback |
+| `household-ops.service.ts` | `services/household-ops.service.test.ts` | KPI completion-rate, top contributor, load distribution, empty-set behavior |
+| `conflict-detector.service.ts` | `services/conflict-detector.service.test.ts` | Overlap minute computation; non-overlap = empty; auto-resolvable bands |
+| `load-balance.service.ts` | `services/load-balance.service.test.ts` | Per-member hours; >8h overload flag; rebalance threshold (>=2h delta) |
+
+**Finance P0 services (10/10 → behavioral):**
+
+| Service | Test file | Behaviors asserted |
+|---|---|---|
+| `cash-allocator.service.ts` | `services/cash-allocator.service.test.ts` | All 3 strategies; bills-first invariant; cap respect; zero-cash safety |
+| `safe-to-spend.service.ts` | `services/safe-to-spend.service.test.ts` | Forecast windows; 80% obligation warning; low-S2S recommendation |
+| `financial-health.service.ts` | `services/financial-health.service.test.ts` | Healthy composite >70; high-DTI penalty; dimension 0..100 bounds |
+| `peace-score.service.ts` | `services/peace-score.service.test.ts` | Strong-status reporting; reserves critical at low fund pct; debt insight |
+| `envelope-budget.service.ts` | `services/envelope-budget.service.test.ts` | 4 canonical groups; allocation cap; linear scaling; on-track default |
+| `liquidity.service.ts` | `services/liquidity.service.test.ts` | Pass classification; fail + recommendation; investment shock effect |
+| `transaction-categorizer.service.ts` | `services/transaction-categorizer.service.test.ts` | Default rule pack matching; subcategory; spend aggregation % |
+| `recurring-obligation.service.ts` | `services/recurring-obligation.service.test.ts` | Excludes one-time; annual→monthly normalisation; autopay split; sort |
+| `portfolio-risk.service.ts` | `services/portfolio-risk.service.test.ts` | Risk-budget identity (used+remaining=total); downside scenarios; dominant factor |
+| `investment-office.service.ts` | `services/investment-office.service.test.ts` | Regime confidence bounds; asset-class/geo sums = 100; risk-budget identity |
+
+**Verification (Phase 2 + 3 combined):**
+
+```
+vitest src/__tests__/{finance,concierge}/{services,_helpers,_matrix}/
+  Test Files  18 passed (18)
+       Tests  59 passed (59)
+
+npx tsc --noEmit → 0 errors
+```
+
+**Coverage gate impact:**
+
+- Concierge P0 missing: 12 → **8** (4 services flipped to behavioral).
+- Finance P0 missing: 23 → **13** (10 services flipped to behavioral).
+- Status-downgrade guard active: any future revert from `behavioral`→`missing`
+  on a P0 surface fails CI.
+
+**Dedup discipline:**
+
+- Helpers wrap the canonical `render` from `@/test/test-utils` rather than
+  re-mocking Supabase/QueryClient/MemoryRouter.
+- Fixtures import canonical types from `@/packages/finance-contracts`,
+  `@/packages/concierge-contracts`, `@/domains/finance`, `@/domains/concierge` —
+  no parallel type definitions.
+- Service tests reference real production services; no shadow re-implementations.
+
+_Phases 4–10 will append below this line as they complete._
