@@ -232,3 +232,57 @@ per test (no cross-test cache leakage).
 Phase 7 (cross-domain trust + receipt lineage E2E for the missing
 `int.finance-business-linkage` and `int.concierge-finance-linkage`)
 starts on the next "continue".
+
+---
+
+## Phase 7 — Cross-Domain Trust + Receipt Lineage E2E
+
+**Status:** ✅ COMPLETE — 100% pass, ready for deployment.
+
+### Surfaces verified
+
+| Matrix ID | Kind | New status | Test file |
+|---|---|---|---|
+| `int.finance-business-linkage` | integration | `behavioral` (was `missing`) | `src/__tests__/finance/integration/finance-business-linkage.test.ts` |
+| `int.concierge-finance-linkage` | integration | `behavioral` (was `missing`) | `src/__tests__/finance/integration/concierge-finance-linkage.test.ts` |
+
+(The same `int.concierge-finance-linkage` row in the Concierge matrix was also flipped to `behavioral`, pointing at the same test file — single source of truth, no duplicate tests.)
+
+### What the tests prove
+
+**Finance ↔ Business (`int.finance-business-linkage`)**
+- Receivables carry `linkedInvoiceId` lineage back to Business OS invoices (the only cross-context column on the contract).
+- `buildAgingReport` honestly buckets `expected` + `overdue` receivables and excludes `received`/`written-off` from the outstanding aggregate.
+- `flagOverdueReceivables` only re-flags `expected` receivables past the threshold — does NOT double-count rows already explicitly `overdue` (regression protection on the service contract).
+- The cross-OS link registry (`CROSS_OS_LINKS`) exposes the canonical seams: `biz-to-receivables`, `fin-to-invoices`, `fin-to-collections`.
+- `getCrossOSLinks('finance' | 'business')` only returns links rooted at the requested source app and routes the AR seam at `finance.receivables`.
+- The canonical edge-side receipt emitter (`supabase/functions/_shared/receipt-emitter.ts`) persists `user_id`, `action_type`, and `receipt_id` to `ai_action_receipts` — the trust lineage that ties any cross-domain action back to a verifiable proof row.
+
+**Concierge ↔ Finance (`int.concierge-finance-linkage`)**
+- `summarizeRecurringObligations` produces the exact monthly/annual commitment shape Concierge consumes for the "recurring" module, with category sort by monthly weight (Housing first), correct frequency rollups, and accurate auto-pay vs. manual-pay split.
+- One-time obligations are excluded from the recurring summary (Concierge contract honesty).
+- Empty-input case returns a truthful empty summary — no `NaN`, no dangling rollups (Empty-State Honesty rule).
+- Cross-OS link registry exposes `fin-to-recurring`, `fin-to-household`, `con-to-bills`, `con-to-subscriptions` and routes them at the correct target modules.
+- The Peace Score `household` dimension is fed by the Concierge coordination signal: a higher Concierge score raises both the dimension score AND the composite Peace Score the user sees in Finance's emotional UI — proving end-to-end lineage flow.
+
+### Verification
+
+```
+✓ src/__tests__/concierge/_matrix/matrix.test.ts                       (6 tests)
+✓ src/__tests__/finance/_matrix/matrix.test.ts                         (6 tests)
+✓ src/__tests__/finance/integration/concierge-finance-linkage.test.ts  (7 tests)
+✓ src/__tests__/finance/integration/finance-business-linkage.test.ts   (7 tests)
+
+Test Files  4 passed (4)
+     Tests  26 passed (26)
+```
+
+`tsc --noEmit` clean.
+
+### No-duplication guarantees
+- Reused canonical fixtures (`makeReceivable`, `makeObligation`, `makePeaceScoreInput`) from `src/__tests__/finance/_helpers/finance-fixtures.ts`. No parallel fixture system.
+- Reused real services (`buildAgingReport`, `flagOverdueReceivables`, `summarizeRecurringObligations`, `computePeaceScore`) and the real cross-OS engine (`CROSS_OS_LINKS`, `getCrossOSLinks`). No service mocking.
+- Single test file per matrix ID — Concierge matrix points at the same Finance integration test (no fork).
+- Receipt emitter assertions read the canonical shared helper (`supabase/functions/_shared/receipt-emitter.ts`) — the only authority for `ai_action_receipts` writes.
+
+Phase 7 closes the cross-domain trust lineage: every Finance-side action that crosses into Business or Concierge is now provably bound to (a) the real service contract, (b) the canonical navigation seam, and (c) the canonical receipt row.

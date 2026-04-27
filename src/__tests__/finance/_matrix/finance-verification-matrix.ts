@@ -110,8 +110,8 @@ export const TRUST_SURFACES: SurfaceEntry[] = [
 export const INTEGRATION_SURFACES: SurfaceEntry[] = [
   { id: "int.crm-finance-bridge",         kind: "integration", ref: "src/lib/services/business-os/crm-finance-bridge.service.ts", tests: ["src/__tests__/business-os/integration/crm-finance-bridge.test.ts"],     status: "behavioral", priority: "P0", notes: "owned by Business matrix; reused for Finance lineage" },
   { id: "int.quote-proposal-invoice",     kind: "integration", ref: "src/__tests__/business-os/integration/quote-proposal-invoice-lineage.test.ts", tests: ["src/__tests__/business-os/integration/quote-proposal-invoice-lineage.test.ts"], status: "behavioral", priority: "P0" },
-  { id: "int.finance-business-linkage",   kind: "integration", ref: "src/lib/services/finance-os/receivables.service.ts",       tests: ["src/__tests__/finance/integration/finance-business-linkage.test.ts"], status: "missing",    priority: "P1" },
-  { id: "int.concierge-finance-linkage",  kind: "integration", ref: "src/lib/services/finance-os/recurring-obligation.service.ts", tests: ["src/__tests__/finance/integration/concierge-finance-linkage.test.ts"], status: "missing",    priority: "P1" },
+  { id: "int.finance-business-linkage",   kind: "integration", ref: "src/lib/services/finance-os/receivables.service.ts",       tests: ["src/__tests__/finance/integration/finance-business-linkage.test.ts"], status: "behavioral", priority: "P1", notes: "Phase 7 — receivables linkedInvoiceId lineage + cross-OS link registry + canonical receipt emitter" },
+  { id: "int.concierge-finance-linkage",  kind: "integration", ref: "src/lib/services/finance-os/recurring-obligation.service.ts", tests: ["src/__tests__/finance/integration/concierge-finance-linkage.test.ts"], status: "behavioral", priority: "P1", notes: "Phase 7 — recurring obligation summary feeds Concierge.recurring + Peace Score household lineage" },
 ];
 
 // ── Adaptive / persistence ────────────────────────────────────
