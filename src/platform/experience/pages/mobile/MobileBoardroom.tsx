@@ -8,16 +8,15 @@ import type { AdvisorConfig } from "@/platform/advisors/components/advisors/Advi
 import { Badge } from "@/components/ui/badge";
 import { Shield, TrendingUp, Briefcase, Wallet, Home } from "lucide-react";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { useRealityModeSafe } from "@/lib/dual-reality/reality-mode-context";
+import { MOCK_MOBILE_BOARDROOM_ADVISORS } from "@/data/fixtures/mock-data/mobile-shells";
 
-const MOBILE_ADVISORS: AdvisorConfig[] = [
-  { id: "biz-1", advisorId: "strategy", name: "Strategy", domain: "business", role: "Business Strategy Advisor", status: "active", confidence: 82, mission: "Revenue up 12% MTD. 3 deals closing worth $28K.", specialAbility: "Pipeline forecasting" },
-  { id: "fin-1", advisorId: "finance", name: "Finance", domain: "money", role: "Financial Operations Advisor", status: "active", confidence: 91, mission: "Cash position healthy. $8,240 safe-to-spend.", specialAbility: "Waste detection" },
-  { id: "ops-1", advisorId: "concierge", name: "Operations", domain: "concierge", role: "Household Ops Advisor", status: "active", confidence: 74, mission: "6 active tasks, 1 overdue. Calendar conflict Thursday.", specialAbility: "Schedule optimization" },
-  { id: "growth-1", advisorId: "growth", name: "Growth", domain: "growth", role: "Growth & Opportunity Advisor", status: "idle", confidence: 68, mission: "Monitoring 3 market signals for expansion.", specialAbility: "Market signal detection" },
-  { id: "risk-1", advisorId: "trust", name: "Risk", domain: "trust", role: "Risk & Trust Advisor", status: "active", confidence: 88, mission: "No critical risks. 1 compliance item due.", specialAbility: "Compliance scanning" },
-];
-
-const MobileBoardroom = () => (
+const MobileBoardroom = () => {
+  const { isDemo } = useRealityModeSafe();
+  const advisors: AdvisorConfig[] = isDemo
+    ? (MOCK_MOBILE_BOARDROOM_ADVISORS as AdvisorConfig[])
+    : [];
+  return (
   <MobileShell title="Boardroom">
       <div className="mb-2"><PageTruthBanner truthState="partial" /></div>
     <div className="mb-4 p-3 rounded-xl bg-card border border-border/40">
@@ -42,8 +41,9 @@ const MobileBoardroom = () => (
         ))}
       </div>
     </div>
-    <MobileAdvisorBoard advisors={MOBILE_ADVISORS} />
+    <MobileAdvisorBoard advisors={advisors} />
   </MobileShell>
-);
+  );
+};
 
 export default MobileBoardroom;

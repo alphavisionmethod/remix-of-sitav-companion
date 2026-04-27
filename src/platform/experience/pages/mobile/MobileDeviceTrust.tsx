@@ -9,6 +9,8 @@ import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { toast } from "sonner";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { useRealityModeSafe } from "@/lib/dual-reality/reality-mode-context";
+import { MOCK_MOBILE_DEVICES } from "@/data/fixtures/mock-data/mobile-shells";
 type TrustLevel = "hardware-attested" | "verified" | "basic" | "untrusted";
 
 interface DeviceInfo {
@@ -23,26 +25,7 @@ interface DeviceInfo {
   fingerprint: string;
 }
 
-const DEVICES: DeviceInfo[] = [
-  {
-    id: "dev-001", name: "This iPhone", platform: "iOS 18", trustLevel: "hardware-attested",
-    enrolledAt: "2026-03-15T10:00:00Z", lastSeenAt: "2026-04-09T08:30:00Z",
-    isCurrentDevice: true, capabilities: ["biometric", "secure-enclave", "push"],
-    fingerprint: "a3f8...c2d1",
-  },
-  {
-    id: "dev-002", name: "MacBook Pro", platform: "macOS 15", trustLevel: "verified",
-    enrolledAt: "2026-03-10T14:00:00Z", lastSeenAt: "2026-04-08T22:15:00Z",
-    isCurrentDevice: false, capabilities: ["biometric", "tpm", "push"],
-    fingerprint: "b7e2...f4a9",
-  },
-  {
-    id: "dev-003", name: "Work Laptop", platform: "Windows 11", trustLevel: "basic",
-    enrolledAt: "2026-04-01T09:00:00Z", lastSeenAt: "2026-04-07T17:00:00Z",
-    isCurrentDevice: false, capabilities: ["push"],
-    fingerprint: "c1d4...e8b3",
-  },
-];
+// Devices catalog moved to demo fixtures; gated via isDemo at consume time.
 
 const TRUST_META: Record<TrustLevel, { label: string; color: string; icon: typeof ShieldCheck }> = {
   "hardware-attested": { label: "Hardware Attested", color: "text-[hsl(var(--trust-safe))]", icon: ShieldCheck },
