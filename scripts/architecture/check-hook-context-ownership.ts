@@ -112,6 +112,22 @@ function checkHardImports(dir: string, ruleId: string) {
   }
 }
 
+function loadRationaleExemptions(): Set<string> {
+  if (!existsSync(LEDGER)) return new Set();
+  try {
+    const data = JSON.parse(readFileSync(LEDGER, "utf8")) as {
+      rationale?: Array<{ path?: string; decision?: string }>;
+    };
+    const out = new Set<string>();
+    for (const r of data.rationale ?? []) {
+      if (r.decision === "keep-shared" && r.path) out.add(r.path);
+    }
+    return out;
+  } catch {
+    return new Set();
+  }
+}
+
 function checkClassification(mapPath: string, expected: string, ruleId: string) {
   if (!existsSync(mapPath)) {
     violations.push({ file: relative(ROOT, mapPath), rule: ruleId,
@@ -119,9 +135,11 @@ function checkClassification(mapPath: string, expected: string, ruleId: string) 
       severity: "soft" });
     return;
   }
+  const exemptions = loadRationaleExemptions();
   const data = JSON.parse(readFileSync(mapPath, "utf8")) as { entries: Array<{ path: string; classification: string }> };
   for (const e of data.entries) {
     if (e.classification !== expected) {
+      if (exemptions.has(e.path)) continue;
       violations.push({
         file: e.path,
         rule: ruleId,
