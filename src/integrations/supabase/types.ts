@@ -9138,10 +9138,13 @@ export type Database = {
           automatable: boolean | null
           category: string | null
           created_at: string
+          crm_company_id: string | null
+          crm_contact_id: string | null
           effort: string | null
           frequency: string | null
           id: string
           last_completed: string | null
+          metadata: Json
           next_due: string | null
           notes: string | null
           status: string | null
@@ -9153,10 +9156,13 @@ export type Database = {
           automatable?: boolean | null
           category?: string | null
           created_at?: string
+          crm_company_id?: string | null
+          crm_contact_id?: string | null
           effort?: string | null
           frequency?: string | null
           id?: string
           last_completed?: string | null
+          metadata?: Json
           next_due?: string | null
           notes?: string | null
           status?: string | null
@@ -9168,10 +9174,13 @@ export type Database = {
           automatable?: boolean | null
           category?: string | null
           created_at?: string
+          crm_company_id?: string | null
+          crm_contact_id?: string | null
           effort?: string | null
           frequency?: string | null
           id?: string
           last_completed?: string | null
+          metadata?: Json
           next_due?: string | null
           notes?: string | null
           status?: string | null
@@ -12272,6 +12281,8 @@ export type Database = {
           bundle_id: string | null
           combinable: boolean
           created_at: string
+          crm_company_id: string | null
+          crm_contact_id: string | null
           due_date: string | null
           estimated_minutes: number | null
           id: string
@@ -12288,6 +12299,8 @@ export type Database = {
           bundle_id?: string | null
           combinable?: boolean
           created_at?: string
+          crm_company_id?: string | null
+          crm_contact_id?: string | null
           due_date?: string | null
           estimated_minutes?: number | null
           id?: string
@@ -12304,6 +12317,8 @@ export type Database = {
           bundle_id?: string | null
           combinable?: boolean
           created_at?: string
+          crm_company_id?: string | null
+          crm_contact_id?: string | null
           due_date?: string | null
           estimated_minutes?: number | null
           id?: string
