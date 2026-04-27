@@ -6211,12 +6211,15 @@ export type Database = {
           biggest_mover: string | null
           contributing_signals: Json | null
           created_at: string
+          crm_company_id: string | null
+          crm_contact_id: string | null
           dimension: string
           id: string
           improvement_opportunity: string | null
           previous_score: number | null
           score: number
           scored_at: string
+          source_support_case_id: string | null
           trend: string
           updated_at: string
           user_id: string
@@ -6226,12 +6229,15 @@ export type Database = {
           biggest_mover?: string | null
           contributing_signals?: Json | null
           created_at?: string
+          crm_company_id?: string | null
+          crm_contact_id?: string | null
           dimension: string
           id?: string
           improvement_opportunity?: string | null
           previous_score?: number | null
           score?: number
           scored_at?: string
+          source_support_case_id?: string | null
           trend?: string
           updated_at?: string
           user_id: string
@@ -6241,12 +6247,15 @@ export type Database = {
           biggest_mover?: string | null
           contributing_signals?: Json | null
           created_at?: string
+          crm_company_id?: string | null
+          crm_contact_id?: string | null
           dimension?: string
           id?: string
           improvement_opportunity?: string | null
           previous_score?: number | null
           score?: number
           scored_at?: string
+          source_support_case_id?: string | null
           trend?: string
           updated_at?: string
           user_id?: string
@@ -6458,6 +6467,72 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      callback_queue: {
+        Row: {
+          channel: string
+          company: string | null
+          contact_name: string
+          created_at: string
+          crm_company_id: string | null
+          crm_contact_id: string | null
+          days_stale: number
+          due_at: string | null
+          id: string
+          metadata: Json
+          queue_kind: string
+          reason: string
+          source_appointment_id: string | null
+          source_support_case_id: string | null
+          status: string
+          updated_at: string
+          urgency: string
+          user_id: string
+          value_cents: number | null
+        }
+        Insert: {
+          channel?: string
+          company?: string | null
+          contact_name: string
+          created_at?: string
+          crm_company_id?: string | null
+          crm_contact_id?: string | null
+          days_stale?: number
+          due_at?: string | null
+          id?: string
+          metadata?: Json
+          queue_kind?: string
+          reason?: string
+          source_appointment_id?: string | null
+          source_support_case_id?: string | null
+          status?: string
+          updated_at?: string
+          urgency?: string
+          user_id: string
+          value_cents?: number | null
+        }
+        Update: {
+          channel?: string
+          company?: string | null
+          contact_name?: string
+          created_at?: string
+          crm_company_id?: string | null
+          crm_contact_id?: string | null
+          days_stale?: number
+          due_at?: string | null
+          id?: string
+          metadata?: Json
+          queue_kind?: string
+          reason?: string
+          source_appointment_id?: string | null
+          source_support_case_id?: string | null
+          status?: string
+          updated_at?: string
+          urgency?: string
+          user_id?: string
+          value_cents?: number | null
+        }
+        Relationships: []
       }
       capital_buckets: {
         Row: {
@@ -23911,6 +23986,8 @@ export type Database = {
           category: string
           correlation_id: string | null
           created_at: string
+          crm_company_id: string | null
+          crm_contact_id: string | null
           description: string | null
           diagnostic_package: Json | null
           escalated_to_role: string | null
@@ -23930,6 +24007,8 @@ export type Database = {
           category?: string
           correlation_id?: string | null
           created_at?: string
+          crm_company_id?: string | null
+          crm_contact_id?: string | null
           description?: string | null
           diagnostic_package?: Json | null
           escalated_to_role?: string | null
@@ -23949,6 +24028,8 @@ export type Database = {
           category?: string
           correlation_id?: string | null
           created_at?: string
+          crm_company_id?: string | null
+          crm_contact_id?: string | null
           description?: string | null
           diagnostic_package?: Json | null
           escalated_to_role?: string | null
