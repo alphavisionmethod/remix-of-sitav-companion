@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { Shield, FileText, CheckSquare, Key, Bot, ScrollText, Smartphone, AlertTriangle, Database, Sparkles, GitBranch, ShieldCheck } from "lucide-react";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 const tiles = [
   { to: "/trust/receipts", icon: FileText, label: "Receipts", desc: "Every action, signed and explainable" },
@@ -18,12 +19,15 @@ const tiles = [
 export default function TrustHome() {
   return (
     <div className="p-6 max-w-6xl mx-auto">
-      <header className="flex items-center gap-3 mb-6">
-        <Shield className="h-8 w-8 text-primary" />
-        <div>
-          <h1 className="text-3xl font-semibold">Trust Center</h1>
-          <p className="text-muted-foreground">Receipts, security, and automation under your authority.</p>
+      <header className="flex items-start justify-between gap-3 mb-6">
+        <div className="flex items-center gap-3">
+          <Shield className="h-8 w-8 text-primary" />
+          <div>
+            <h1 className="text-3xl font-semibold">Trust Center</h1>
+            <p className="text-muted-foreground">Receipts, security, and automation under your authority.</p>
+          </div>
         </div>
+        <PageTruthBanner truthState="partial" />
       </header>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {tiles.map(({ to, icon: Icon, label, desc }) => (

@@ -8,6 +8,7 @@
 
 import { ShieldCheck, AlertTriangle, CheckCircle2 } from "lucide-react";
 import { TRUST_ACTION_LIST, type TrustActionPreset } from "@/platform/trust";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 const RISK_ORDER: Record<TrustActionPreset["riskTier"], number> = {
   critical: 0,
@@ -38,14 +39,17 @@ export default function TrustCoverage() {
 
   return (
     <div className="p-6 max-w-5xl mx-auto">
-      <header className="flex items-center gap-3 mb-6">
-        <ShieldCheck className="h-8 w-8 text-primary" />
-        <div>
-          <h1 className="text-3xl font-semibold">Trust Coverage</h1>
-          <p className="text-muted-foreground">
-            Every mutation registered with the Trust layer, grouped by pillar.
-          </p>
+      <header className="flex items-start justify-between gap-3 mb-6">
+        <div className="flex items-center gap-3">
+          <ShieldCheck className="h-8 w-8 text-primary" />
+          <div>
+            <h1 className="text-3xl font-semibold">Trust Coverage</h1>
+            <p className="text-muted-foreground">
+              Every mutation registered with the Trust layer, grouped by pillar.
+            </p>
+          </div>
         </div>
+        <PageTruthBanner truthState="partial" />
       </header>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
