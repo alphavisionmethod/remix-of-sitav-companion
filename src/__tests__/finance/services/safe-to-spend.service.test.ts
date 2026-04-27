@@ -8,7 +8,10 @@ import {
 
 describe("computeSafeToSpendForecast", () => {
   it("returns current/7d/30d windows with non-negative safe-to-spend", () => {
-    const accounts = [makeAccount({ availableCensorCents: 0 } as any), makeAccount({ availableCents: 1_000_000 })];
+    const accounts = [
+      makeAccount({ id: "a1", availableCents: 0, balanceCents: 0 }),
+      makeAccount({ id: "a2", availableCents: 1_000_000, balanceCents: 1_000_000 }),
+    ];
     const forecast = computeSafeToSpendForecast(accounts, [], []);
     expect(forecast.current.safeToSpendCents).toBeGreaterThanOrEqual(0);
     expect(forecast.sevenDay.safeToSpendCents).toBeGreaterThanOrEqual(0);

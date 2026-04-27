@@ -20,7 +20,7 @@ describe("computeFinancialHealth", () => {
   it("produces a healthy composite score for a strong profile", () => {
     const result = computeFinancialHealth(baseInputs);
     expect(result.dimensions.length).toBeGreaterThanOrEqual(8);
-    expect(result.compositeScore).toBeGreaterThan(70);
+    expect(result.overallScore).toBeGreaterThan(70);
     expect(result.dimensions.find((d) => d.key === "debtPressure")?.score).toBeGreaterThanOrEqual(80);
   });
 
