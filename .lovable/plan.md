@@ -366,3 +366,23 @@ This plan touches code in every layer that owns the broken handoffs — services
 **Verified:**
 - `tsc --noEmit` clean
 - `investment-route-namespace` (4 tests) + `investment-shell-mount` (4 tests) + `investment-plural-callsites` (1 test) — all green.
+
+---
+
+## Phase 10 — Verification, golden paths, deployment readiness ✅
+
+**Goal:** Flip continuity validator to enforce, register new Golden Paths, codify the rule in memory, and gate CI.
+
+**Landed:**
+- 5 new Golden Paths (`GP-OPPORTUNITY-TO-PAID-INVOICE` P0, `GP-LEAD-TO-RECOVERED-VALUE` P1, `GP-SUPPORT-TO-HEALTH-SIGNAL` P1, `GP-CRM-CONCIERGE-LINKAGE` P1, `GP-BACKGROUND-TASK-SOURCE-NAV` P2) registered in `golden-path-registry.ts` + `golden-path-types.ts`. All cross-resolved against bounded contexts, DB schema, and on-disk artifacts.
+- `check-continuity-handoffs.ts` flipped to ENFORCE (env-gated escape hatch preserved). Added `CROSS_MODULE_ROUTE_OWNERSHIP` map so `/recovered-value` + `/lead-recovery` route to their owning module.
+- `emit-continuity-baseline.ts` upgraded to recognise the canonical `useLinkedContext()` hook as a consume site → cleared the 2 persistent false-positive orphans carried since Phase 4.
+- New CI step in `.github/workflows/check-boundaries.yml` (emit + enforce).
+- Memory rule at `mem/architecture/end-to-end-continuity.md`.
+- 2 new tests (`quote-proposal-invoice-lineage`, `crm-concierge-linkage-live`) — both green.
+
+**Verified:** `tsc --noEmit` clean · validator exit 0 (orphans 0, silent drops 0) · golden-path coverage adds 0 new errors · baseline `set=17, consume=12, convert=4, crossApp=13, orphans=0`.
+
+**Honest deferred:** 7 pre-existing legacy `runtime-probe` phantom artifacts (kernel/identity team), 21 advisory fixture leaks (demo-data validator), calendar OAuth env (badge stays honest), Concierge↔Finance UI bridge (no live surface yet).
+
+# 🎯 10-Phase Continuity Hardening — COMPLETE

@@ -23,7 +23,13 @@ export type GoldenPathId =
   | "GP-PUSH-TO-APPROVAL"
   | "GP-OWNER-INTERVENTION"
   | "GP-LAUNCH-READINESS"
-  | "GP-ENV-RECOVERY";
+  | "GP-ENV-RECOVERY"
+  // Phase 10 — End-to-end flow continuity Golden Paths
+  | "GP-OPPORTUNITY-TO-PAID-INVOICE"
+  | "GP-LEAD-TO-RECOVERED-VALUE"
+  | "GP-SUPPORT-TO-HEALTH-SIGNAL"
+  | "GP-CRM-CONCIERGE-LINKAGE"
+  | "GP-BACKGROUND-TASK-SOURCE-NAV";
 
 /** Persona executing the path. */
 export type GoldenPathPersona =

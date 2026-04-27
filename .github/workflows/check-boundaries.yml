@@ -48,6 +48,13 @@ jobs:
       - name: Run Investment route namespace checker (Phase 7)
         run: npx tsx scripts/architecture/audits/check-investment-route-namespace.ts
 
+      - name: Emit + check continuity handoffs (Phase 10 — enforcing)
+        env:
+          CONTINUITY_HANDOFFS_ENFORCE: ${{ vars.CONTINUITY_HANDOFFS_ENFORCE || 'true' }}
+        run: |
+          npx tsx scripts/architecture/emit-continuity-baseline.ts
+          npx tsx scripts/architecture/check-continuity-handoffs.ts
+
       - name: Run Business OS production-truth checker
         # Phased rollout: failures are gated by BUSINESS_TRUTH_ENFORCE
         # so the check publishes signal during the closure phases and
