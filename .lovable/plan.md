@@ -1,208 +1,121 @@
-# SITA OS — Module Information Architecture Cleanup
+# SITA OS — Cross-Module Integration Deepening
 
-## Background — What's actually in the repo
+Eight sequential phases. Each phase is fully implemented, tested, validator-clean, and `tsc --noEmit` clean before the next begins. All work extends existing canonical primitives — no parallel architecture.
 
-I audited the real surfaces. Three facts shape this plan:
+## Canonical primitives discovered (will be reused, not duplicated)
 
-1. **`/business/*`, `/concierge/*`, `/money/*` are SHIM ROUTES**, not real pages. Every business route currently renders `BusinessCenter`, which dispatches a `sita-open-business` event with a `module` slug, and redirects to `/desktop`. The actual pages live inside windowed app shells (`BusinessAppShell`, `ConciergeAppShell`, `FinanceAppShell`) that switch on the slug. So "shell-internal vs route-level" is not a binary — it is **(a) is the slug deep-linkable from a route?** and **(b) is the slug exposed in the in-app sidebar?**
-2. **A canonical IA layer already exists**: DB-backed `module_registry` + `route_ownership` (read via `src/platform/registry/module-registry.ts`), plus `src/routes/redirects/user-redirect-map.ts` already redirecting plural `/investments/*` → singular `/investment/*`. Both are under-populated and under-enforced. We will **extend**, not replace.
-3. **Page-role taxonomy does NOT exist**. The `_config/*.config.ts` files are per-page constants only. We must create one canonical role system.
+- **Bridge table**: `crm_customer_link` (DB) — already keyed on `user_id + crm_contact_id + customer_id`
+- **Bridge service**: `src/lib/services/business-os/crm-finance-bridge.service.ts` — `findCustomerForContact`, `findContactForCustomer`, `ensureCustomerForContact`
+- **Cross-app handoff**: `setLinkedContext()` in `src/platform/sita/components/sita/CrossAppAction.tsx`
+- **Linkage UIs**: `CRMFinanceLinkage`, `CRMConciergeLinkage`, `CRMFilesLinkage`, `CRMProofTrail`, `CRMEscalateToBoardroom`
+- **Background task lineage**: `src/lib/business/task-target-resolver.ts` (+ `business-background-tasks-service.ts`)
+- **Continuity verifier**: `src/lib/services/business-os/continuity-verification.service.ts`
+- **Recovered value**: `recovered-value-ledger.service.ts` + `RecoveredValuePage.tsx` + `recovered-value-runtime` contract
+- **Adaptive**: `CrossDomainSignalBridge.tsx` (Business-side only today)
+- **Readiness/focus**: `use-focus-mode.ts`, `health-signal-data-service.ts`, `notification-calm-data-service.ts`, `CognitiveLoadGuard.tsx`
+- **Advisor lineage**: `advisor-business-action.test.ts` exists; advisor → outcome propagation is partial
+- **Truth artifacts**: `generated/audits/SITA_OS_ROUTE_AND_NAVIGATION_TRUTH_MAP.md`, IA manifest, validators in `scripts/architecture/checks/`
 
-The mess is real and confirmed:
-- Business sidebar shows three rooms doing one job: **Revenue Autopilot** (id `revenue-autopilot`), **Autopilot Hub** (id `autopilot-hub`), and **Revenue Impact** (id `revenue-impact`) — all in the "Growth" / "Intelligence" groups.
-- Business has **two opportunity surfaces**: the deep-linked `OpportunitiesCenter` (page) and `OpportunityEngine` (a service the page calls). The service is fine; the issue is the *page* is also called "Center" while the *engine* (service) name leaks into nav vocabulary.
-- Concierge has overlapping rooms: `ConciergeCenter`, `LifeAdminCenter`, `HouseholdCommandCenter`, `LifeDashboard`, `PersonalLifeWorkspace` — only some are wired into the shell's `PAGE_COMPONENTS` (LifeDashboard and PersonalLifeWorkspace are NOT mounted = orphans).
-- Finance route consolidation is **partially done** (`/investments/*` → `/investment/*` redirects are in place for ~30 routes), but legacy `/investments/*` declarations still exist in `experimental-routes.tsx` and `BusinessOverview.tsx` lives in two folders (`src/modules/business/pages/BusinessOverview.tsx` and `src/pages/business/BusinessOverview.tsx`).
-- Existing route-truth artifact at `generated/historical/architecture-remediation/route-truth-map.json` is in `historical/` and stale.
+## Phase 1 — Audit + Canonical Integration Map (foundation, blocks all other phases)
 
-## Canonical Role Taxonomy (adopted across all modules)
+Deliverables (no UI yet — this becomes the contract every later phase implements against):
 
-| Role | Meaning | Naming suffix | Route-deep-linkable? | In sidebar? |
-|---|---|---|---|---|
-| `overview` | Module landing — "the dashboard" | `Overview` | Yes | Yes (top) |
-| `workspace` | Operator daily surface — list/work view | `Workspace` / domain noun | Yes | Yes |
-| `engine` | Stateful automation/decision surface — *user faces it*, service still named `*Engine` underneath | `Autopilot` / `Engine` | Yes | Yes |
-| `control-plane` | Configures rules/policies for an engine | `Console` (was: Hub) | Yes | Yes |
-| `boardroom` | Multi-advisor council surface | `Boardroom` | Yes | Yes |
-| `proof` | Evidence / continuity / receipts | `Proof` | Yes | Yes |
-| `settings` | Module preferences | `Settings` | Yes | Yes (bottom) |
-| `room` | Single-purpose deep work surface (Deal Room, War Room) | `Room` | Yes | Yes |
-| `internal` | Shell-internal — reachable from sub-tabs of another page only | n/a | **No route** | No |
-| `labs` | Experimental — flag-gated, hidden from default sidebar | n/a | Behind `feature_flag` | Conditional |
-| `archived` | Deprecated — file kept for diff history, removed from registry/shell | n/a | **No route** | No |
+1. `scripts/architecture/audit-cross-module-integration.ts` — scans repo for: link tables, bridge services, linkage components, `setLinkedContext` call-sites, `crm_*_id` FK usage, advisor outcome handlers, background-task source tables, adaptive signal emitters/receivers, readiness consumers. Emits `generated/audits/cross-module-integration-audit.json` + `.md` classifying each touchpoint as `ui-only | partial | strong | missing-reverse | missing-proof | missing-identity`.
+2. `src/platform/integration/cross-module-integration-map.ts` — single canonical TS registry of every cross-module relationship (pair, direction, identity model, proof carrier, navigation route, owning service). All later phases read from this.
+3. `src/__tests__/integration/cross-module-map-coverage.test.ts` — fails if a known integration pair is missing from the map, or if a registered pair lacks navigation/identity/proof fields.
+4. `generated/audits/SITA_OS_CROSS_MODULE_INTEGRATION_DEEPENING_REPORT.md` — initial scaffold (rolling document updated each phase).
 
-`Center` / `Hub` / `Office` are deprecated as IA suffixes — they are the **primary source of confusion**. They will survive only as legacy *display strings* where rebranding is too risky for one release.
+Exit gate: audit JSON + map exist, coverage test green, tsc clean.
 
----
+## Phase 2 — CRM ↔ Finance hardening
 
-## Phase 1 — Page-Role Registry foundation
-**Outcome:** A single typed registry that every module shell, sidebar, route shim, command palette, and validator reads. Phase only ships when it (a) compiles, (b) is consumed by at least one app shell, and (c) is covered by a validator test.
+Existing weakness: `crm_customer_link` is contact-scoped only; companies cannot resolve to billing customers; finance surfaces (Invoices/Quotes/Collections) don't link back to the originating CRM contact in their detail UI.
 
-- New: `src/platform/ia/page-role.ts` exporting `PageRole` enum + `PageDescriptor` type (id, role, label, route, sidebarVisible, status, replacedBy?).
-- New: `src/platform/ia/module-ia-manifest.ts` — three exports `BUSINESS_IA`, `CONCIERGE_IA`, `FINANCE_IA`. Each is a `PageDescriptor[]` with the cleaned-up names from Phases 2–4.
-- New: `src/__tests__/ia/page-role-manifest.test.ts` — asserts every BusinessAppShell / ConciergeAppShell / FinanceAppShell `PAGE_COMPONENTS` key is in the manifest, and every manifest descriptor maps to a real component import.
-- Validator script: `scripts/architecture/checks/check-ia-manifest-coverage.ts`, wired into the existing `check-ia-coherence.ts` aggregate.
+1. **DB migration**: extend `crm_customer_link` with optional `crm_company_id` index and add a unique partial index `(user_id, crm_company_id, customer_id) WHERE crm_company_id IS NOT NULL`. Add `link_origin_event_id` FK for proof lineage. RLS preserved (already `is_org_member`).
+2. **Service extension** (no new service): add `findCustomerForCompany`, `ensureCustomerForCompany`, `linkCustomerToCompany` to `crm-finance-bridge.service.ts`.
+3. **Reverse navigation**: new `FinanceContactBackLink` component reused inside `InvoiceDetail`, `QuoteDetail`, `CollectionsCase` — uses `findContactForCustomer` and renders a "Open in CRM" pill that calls `setLinkedContext`.
+4. **Auto-link** on invoice/quote create paths in existing `invoice-linking.service.ts` and `quotes.service.ts` — write the link with `link_source: 'auto-from-invoice' | 'auto-from-quote'`.
+5. Tests: extend `crm-finance-bridge.test.ts` + new `finance-to-crm-backlink.test.tsx`.
 
-## Phase 2 — Business IA cleanup
-**Outcome:** No two surfaces share a role. All three "autopilot" rooms collapse into a clear hierarchy. Sidebar groups reflect the role taxonomy.
+## Phase 3 — CRM ↔ Concierge hardening + Household/Provider linkage
 
-| Old surface | Action | New canonical |
-|---|---|---|
-| `RevenueAutopilot` (page, slug `revenue-autopilot`) | **Keep** — this is the **engine** surface (live runs, status). | `RevenueAutopilot` (role: `engine`, label "Revenue Autopilot") |
-| `AutopilotHub` (page, slug `autopilot-hub`) | **Rename** → `RevenueAutopilotConsole`. This is the **control-plane** for Autopilot — rules, policies, kill-switches. | slug `revenue-autopilot-console`, label "Autopilot Console" |
-| `RevenueImpactDashboard` (page, slug `revenue-impact`) | **Demote** to internal tab inside `RevenueOpsHome` (it is the impact analytics view, not a top-level destination). Removed from sidebar; route slug kept as 301-style internal redirect → `/business/revenue-home?tab=impact`. | role: `internal` |
-| `OpportunitiesCenter` (page, slug `opportunities`) | **Rename** file & component → `OpportunitiesWorkspace`. Slug stays `opportunities`. Service `OpportunityEngine` is unchanged (not a page). | role: `workspace`, label "Opportunities" |
-| `CollectionsCommandCenter` (page, slug `collections`) | **Rename** → `CollectionsWorkspace`. | role: `workspace`, label "Collections" |
-| `CustomerSupportCenter` | **Rename** → `SupportWorkspace`. | role: `workspace`, label "Support" |
-| `BackgroundTaskCenter` | **Rename** → `BackgroundTasks`. | role: `internal` (kept in System group) |
-| `FollowThroughCenter` | **Rename** → `FollowThroughWorkspace`. | role: `workspace` |
-| `CRMImportCenter` | **Rename** → `CRMImport`. | role: `workspace` |
-| `CRMIntegrationHub` | **Rename** → `CRMIntegrations`. | role: `workspace` |
-| `LifeAdminCenter` (concierge — handled in Phase 3) | — | — |
-| `BusinessCenter` shim file | **Keep** — it is the route shim, not a destination. Add file-header comment explaining role. | role: `internal` |
-| `BusinessOverview` duplicate at `src/pages/business/BusinessOverview.tsx` | **Delete duplicate**, keep canonical at `src/modules/business/pages/BusinessOverview.tsx`. | — |
+1. **Reverse direction**: `CRMConciergeLinkage` already reads concierge artifacts by `crm_contact_id`. Add the symmetric `ConciergeCRMBackLink` shown inside `AppointmentDetail`, `ErrandDetail`, `HouseholdProviderDetail`. Resolves CRM contact via the same column.
+2. **Household ↔ business records**: new link table `household_business_link (user_id, household_id, crm_contact_id | crm_company_id, role, created_at)` + service `household-business-bridge.service.ts` (mirrors finance bridge shape — same patterns, no parallel abstraction).
+3. **Provider ↔ contact**: surface provider records on `CRMContactDetail` via the same bridge.
+4. Tests: extend `concierge-business-linkage.test.ts` + new `household-business-bridge.test.ts`.
 
-**Files touched (Phase 2 — wiring):**
-- `src/platform/sita/components/sita/apps/business/BusinessAppShell.tsx` — rename imports, `pages` map keys, sidebar labels.
-- `src/modules/business/pages/BusinessCenter.tsx` — update `subpageFromPath` slugs (add `revenue-autopilot-console`).
-- `src/routes/families/business-routes.tsx` — replace `autopilot-hub` route with `revenue-autopilot-console`; remove `revenue-impact` route (replaced by redirect entry).
-- `src/routes/redirects/user-redirect-map.ts` — add 3 new redirects: `/business/autopilot-hub` → `/business/revenue-autopilot-console`, `/business/revenue-impact` → `/business/revenue-home`.
-- `src/lib/business-launcher.ts` — update sidebar slug constants.
-- All `import` callsites of renamed components.
-- `src/platform/ia/module-ia-manifest.ts` — populate `BUSINESS_IA`.
+## Phase 4 — Background tasks as cross-module continuity infrastructure
 
-Phase ships only when `bunx vitest run src/__tests__/business-os/` and `tsc --noEmit` are clean and the `check-ia-manifest-coverage` validator passes for Business.
+Existing weakness: `task-target-resolver` is Business-only.
 
-## Phase 3 — Concierge IA cleanup
-**Outcome:** Five overlapping "life" surfaces reduced to a clear three-tier hierarchy.
+1. Promote resolver to platform: move logic into `src/platform/integration/background-task-target-resolver.ts` (re-export from existing path to preserve imports). Extend `sourceTable` map with Concierge (`concierge_recurring_obligations`, `errand_runs`, `appointment_recovery_runs`) and Finance (`invoice_dunning_runs`, `payment_reconciliation_jobs`).
+2. Background task list (`BackgroundTaskCenter`) gets a `module` filter chip (Business / Concierge / Finance / Platform).
+3. Each task row gains a "Open source" + "Open result" pair (already present for source — add result destination from `result_artifact_ref`).
+4. Tests: extend `background-task-source.test.ts`, `background-task-routing.test.ts`.
 
-| Old surface | Action | New canonical |
-|---|---|---|
-| `ConciergeOverview` (slug `overview`) | **Keep** as overview. | role: `overview` |
-| `LifeDashboard` (page file, **NOT mounted** in shell) | **Archive** — duplicate of Overview. Move file to `src/modules/concierge/pages/_archived/LifeDashboard.tsx`. | role: `archived` |
-| `PersonalLifeWorkspace` (page file, **NOT mounted** in shell) | **Archive** — superseded by Overview + per-area workspaces. | role: `archived` |
-| `HouseholdCommandCenter` (slug `household`) | **Rename** → `HouseholdWorkspace`. | role: `workspace`, label "Household" |
-| `LifeAdminCenter` (slug `life-admin`) | **Rename** → `LifeAdminWorkspace`. | role: `workspace`, label "Life Admin" |
-| `ConciergeCenter` shim file | **Keep** — route shim. Header comment added. | role: `internal` |
-| `ConciergeBoardroom` vs `FamilyBoardroom` | Shell mounts `FamilyBoardroom` for slug `boardroom`; `ConciergeBoardroom` is unused. **Archive** `ConciergeBoardroom`. | `FamilyBoardroom` is canonical. |
+## Phase 5 — Advisor actions ↔ operational outcomes
 
-**Files touched (Phase 3 — wiring):**
-- `src/platform/sita/components/sita/apps/concierge/ConciergeAppShell.tsx` — rename imports, sidebar labels.
-- `src/modules/concierge/pages/ConciergeCenter.tsx` — keep slug map (no slug renames; only file/component renames).
-- `src/modules/concierge/pages/index.ts` (if it re-exports) — drop archived names.
-- Move 3 files into `_archived/`.
-- `src/platform/ia/module-ia-manifest.ts` — populate `CONCIERGE_IA`.
+Existing weakness: advisor recommendations are emitted but outcome lineage back to the advisor surface is partial.
 
-Phase ships only when concierge tests pass and grep shows zero non-archived imports of `LifeDashboard` / `PersonalLifeWorkspace` / `ConciergeBoardroom`.
+1. **DB**: new table `advisor_action_outcomes (id, user_id, advisor_id, recommendation_id, target_module, target_entity_type, target_entity_id, outcome_status, outcome_value_cents, receipt_id, created_at)` with RLS via `is_org_member`.
+2. **Service**: `src/lib/services/advisors/advisor-outcome-bridge.service.ts` — `recordOutcome`, `listOutcomesForRecommendation`, `listRecentOutcomesForAdvisor`. Used by existing receipt emission helper (`emitActionReceipt`) — receipts that include `advisor_recommendation_id` automatically write an outcome row via a single DB trigger (`fn_advisor_outcome_from_receipt`).
+3. **UI**: `AdvisorOutcomeTrail` component embedded in `CRMAdvisorBoard`, advisor profile pages, and Boardroom advisor detail. Bidirectional: clicking an outcome row navigates to the target entity via `setLinkedContext`.
+4. Tests: `advisor-outcome-bridge.test.ts` + extend `advisor-business-action.test.ts` to assert outcome row written.
 
-## Phase 4 — Finance IA cleanup + `/investment/*` final consolidation
-**Outcome:** `/investment/*` is the **only** route namespace. `/investments/*` exists exclusively in `user-redirect-map.ts`. Money-vs-Investment hierarchy is explicit.
+## Phase 6 — Recovered value ↔ Finance + Revenue surfaces
 
-- Audit `src/routes/families/experimental-routes.tsx` — remove any remaining `Route path="/investments/..."` declarations (stale per file-header comment but possibly still active). Migrate any unique routes into `investment-office-routes.tsx`.
-- `MoneyCenter` (slug `money` shim) → role `internal` (header comment).
-- `WealthCommandCenter` (page) → currently file-only. Verify mount in `FinanceAppShell` — if mounted, **rename** → `WealthWorkspace`; if orphaned, archive.
-- `InvestmentShellPage` → audit. If it is a wrapper used by routes, keep but document role; if it's another shim, mark `internal`.
-- `CapitalAllocationPage` → 8 references. If reachable from `/money/*`, give it canonical slug `capital-allocation` (currently maybe ambiguous); else archive.
-- `MoneyApprovals` (slug `approvals`) → keep as `workspace`.
-- `MoneyOnboarding` → keep as `workspace` but mark `sidebarVisible: false` (only shown via onboarding flow).
-- Add 4 missing `/investments/*` → `/investment/*` redirects identified by audit (any `experimental-routes.tsx` paths not yet in the redirect map).
-- Add **one consolidated audit** test: `src/__tests__/architecture/finance-investment-singular-namespace.test.ts` — extends existing `investment-route-namespace.test.ts` to also check `experimental-routes.tsx` and the `MoneyCenter` slug map.
+Existing weakness: ledger lives in-memory; Finance/Revenue dashboards don't query it.
 
-**Files touched (Phase 4):**
-- `src/routes/families/experimental-routes.tsx` — strip plural routes.
-- `src/routes/families/investment-office-routes.tsx` — absorb any unique routes.
-- `src/routes/redirects/user-redirect-map.ts` — close the gap.
-- `src/platform/sita/components/sita/apps/finance/FinanceAppShell.tsx` — rename labels.
-- `src/platform/ia/module-ia-manifest.ts` — populate `FINANCE_IA`.
+1. **DB-backed ledger**: new table `recovered_value_entries` (mirrors `RecoveredValueEntry` shape exactly; no model duplication) with FK `invoice_id`, `crm_contact_id`, `recovery_run_id`. RLS standard.
+2. **Service**: extend existing `recovered-value-ledger.service.ts` with `persistEntry`, `listForInvoice`, `listForContact`, `summarizeForPeriod`. The in-memory `summarizeLedger` is kept as a pure helper used by both runtime and tests (no duplication).
+3. **Surface integration**:
+   - `RevenueAutopilotConsole` and `WealthCommandCenter` read `summarizeForPeriod` and render a "Recovered this period" tile.
+   - `InvoiceDetail` shows a "Recovered via" trail when `recovered_value_entries.invoice_id` exists.
+   - `CRMContactDetail` shows lifetime recovered value.
+4. Tests: extend `recovered-value-ledger.service.test.ts` + new `recovered-value-finance-surface.test.tsx`.
 
-Phase ships only when `rg "/investments/" src/routes/` returns zero non-redirect-map matches and `investment-route-namespace.test.ts` + new finance test pass.
+## Phase 7 — Adaptive signals + readiness ↔ real consumers
 
-## Phase 5 — Shell-vs-Route boundary rules (codified, not just documented)
-**Outcome:** Mechanical rule, enforced by validator, for whether a slug gets a route shim.
+Existing weakness: `CrossDomainSignalBridge` only emits in Business; readiness/focus state doesn't actually gate notifications or proactive nudges.
 
-Rule (encoded in `PageDescriptor`):
-- `role` ∈ {`overview`, `workspace`, `engine`, `control-plane`, `boardroom`, `proof`, `settings`, `room`} ⇒ **must** have a route shim entry in the corresponding family file.
-- `role` ∈ {`internal`} ⇒ **must not** have a route shim. Reachable only via in-app sub-nav.
-- `role` ∈ {`labs`} ⇒ shim allowed only if `feature_flag` is set.
-- `role` ∈ {`archived`} ⇒ no shim, no shell mount, no sidebar.
+1. **Promote bridge** to `src/platform/integration/cross-domain-signal-bus.ts` — typed pub/sub over the existing `eventing` layer (no new event bus). Business `CrossDomainSignalBridge` becomes a thin emitter that calls into it; new symmetric receivers wired into Concierge (`ConciergeOverview`), Finance (`MoneyOverview`), Boardroom, and Notification calm engine.
+2. **Readiness → interruption policy**: `notification-calm-data-service.ts` already exists. Add a `readinessGate(notification, readinessSnapshot, focusMode)` pure function in `src/platform/notifications/readiness-gate.ts`. Wire into `NotificationDispatcher` and `SitaProactiveBus` (Phase D nudge bus from memory). When `focus-mode = deep` or readiness < threshold, non-critical nudges are suppressed and queued; critical ones escalate per existing escalation policy.
+3. **Adaptive context propagation**: new lightweight `useAdaptiveContext()` hook reads from the bus and exposes `{ workload, focus, readiness, recentSignals }` consumed by Business/Concierge/Finance overview pages to subtly reorder priority lists.
+4. Tests: `cross-domain-signal-bus.test.ts`, `readiness-gate.test.ts`, `adaptive-context-propagation.test.tsx`.
 
-Validator: `scripts/architecture/checks/check-shell-route-boundary.ts`. Reads the manifest, the route-family files, and each `*AppShell` page map; fails on any mismatch.
+## Phase 8 — Bidirectional navigation sweep + proof/notification continuity + final report
 
-Test: `src/__tests__/ia/shell-route-boundary.test.ts` invokes the validator script.
+1. **Navigation sweep**: validator `scripts/architecture/checks/check-bidirectional-navigation.ts` walks the cross-module map and asserts each pair flagged `bidirectional: true` has both source→target and target→source `setLinkedContext` call-sites or back-link components. Auto-fail if missing.
+2. **Proof continuity**: extend `continuity-verification.service.ts` with `verifyProofAcrossModules(receiptId)` — walks receipt → outcome → linked entity across modules, asserting the chain resolves.
+3. **Notification continuity**: ensure cross-module outcomes (e.g., invoice paid → CRM contact lifetime value bump → advisor outcome row) all emit through the existing notification dispatcher with deep-link payloads.
+4. **Tests**: `cross-module-bidirectional-nav.test.ts`, `proof-continuity-cross-module.test.ts`, `notification-continuity-cross-module.test.ts`.
+5. **Final report**: `generated/audits/SITA_OS_CROSS_MODULE_INTEGRATION_DEEPENING_REPORT.md` finalized — every integration pair listed with: old weakness → new linkage → reused canonical systems → files changed → tests protecting it → remaining deferred gaps with rationale.
+6. **Truth map regeneration**: `build-route-nav-truth-map.ts` re-run; IA tests stay green.
 
-Phase ships only when the validator returns zero violations.
+## Per-phase exit gate (every phase)
 
-## Phase 6 — Hide / archive weak / orphaned pages
-**Outcome:** No mounted page lacks a clear role.
+- All phase tests green
+- All prior IA tests still green (57+ from earlier work)
+- `tsc --noEmit` clean
+- Validators clean (architecture, naming-grammar, shell-route-boundary, manifest-coverage, truth-map, plus phase 8's new bidirectional-nav and the phase-1 cross-module-map-coverage)
+- Cross-module integration report updated
+- Memory updated only if a new constitutional rule emerged
 
-- Survey output of grep for every page file under `src/modules/{business,concierge,finance}/pages/**`. For each: confirm (a) imported by an app shell, (b) reachable via slug, (c) listed in a sidebar group.
-- For pages failing (a) or (b): move to `_archived/` under the module's `pages/` folder (single canonical location, per Concierge precedent).
-- For pages reachable but not in a sidebar (intentional `internal` role): set `sidebarVisible: false` in the manifest.
-- Update `module_registry` DB rows: insert/update for each canonical page, set `lifecycle = 'legacy'` for archived ones (nightly job already supports this enum). Migration via `supabase--migration`.
+## Anti-duplication discipline (applies to every phase)
 
-Phase ships only when every file in `pages/` is either (manifest entry with role) OR (in `_archived/`).
+Before adding any file, search for canonical equivalents:
+- Bridge logic → extend `crm-finance-bridge.service.ts` pattern
+- Cross-app handoff → reuse `setLinkedContext`
+- Background task routing → extend `task-target-resolver`
+- Receipt emission → reuse `emitActionReceipt`
+- Eventing → reuse `src/platform/eventing`
+- Notification dispatch → reuse existing dispatcher / calm engine
+- Empty states → reuse `PremiumEmptyState`
 
-## Phase 7 — Naming normalization sweep
-**Outcome:** `Center` / `Hub` / `Office` removed as **suffixes** for non-canonical surfaces. Surviving usages are documented exceptions.
+If a new file is created, the PR description (and the final report) records why no existing surface could be extended.
 
-- Codemod: in component file names + class names + sidebar `label` strings, apply renames table from Phases 2–4.
-- Documented exceptions (kept by intent, with rationale in manifest comment):
-  - `InvestmentOffice` route slug (industry term — wealth-management vocabulary).
-  - `FamilyOffice`, `RiskOffice`, `PortfolioOffice` (same reason — these are real wealth-management terms).
-  - `WarRoom`, `CatalystWarRoom` (intentional "Room" vocabulary for crisis surfaces).
-- Add a **naming-grammar lint**: `scripts/architecture/checks/check-page-naming-grammar.ts` — bans `Center` / `Hub` suffix in any page-component class name **unless** the manifest descriptor for that page has `legacyNameAllowed: true`.
+## Deferred (out of scope for this prompt, recorded in final report)
 
-Phase ships only when the grammar validator passes.
-
-## Phase 8 — Truth Map + cleanup report + cumulative validation
-**Outcome:** A single, authoritative, machine-generated route+nav truth map plus a human-readable cleanup report.
-
-- New: `scripts/architecture/build-route-nav-truth-map.ts` — reads the manifest + route families + redirects + `module_registry` table, emits:
-  - `generated/route-and-navigation-truth-map.json` (machine — used by validators).
-  - `generated/audits/SITA_OS_ROUTE_AND_NAVIGATION_TRUTH_MAP.md` (human — module → canonical route → page name → role → route-level/internal → sidebar visibility → redirects → notes).
-- New: `generated/audits/SITA_OS_MODULE_INFORMATION_ARCHITECTURE_CLEANUP_REPORT.md` — sections 1–12 from the request, populated from real diff output (old name, new name, files changed, role, validator that protects it).
-- Cumulative test: `src/__tests__/ia/ia-truth-map.test.ts` — asserts the JSON truth map matches the live state of routes + manifest + shells (no drift).
-- Final run: full `bunx vitest run src/__tests__/ia/ src/__tests__/architecture/` + `tsc --noEmit` + all four IA validator scripts.
-
-Phase ships only when **all** of: every IA test green, validators green, type-check clean, no orphaned imports, redirect map covers every renamed slug.
-
----
-
-## Per-change discipline applied to every rename in Phases 2–4
-
-For each renamed/moved/hidden surface, the diff will show:
-1. **Old problem** (e.g., "two pages claim 'autopilot' role")
-2. **New canonical name + role** (e.g., "RevenueAutopilotConsole, role=control-plane")
-3. **Files changed** (component file, app shell, route family, redirect map, business launcher, manifest, tests)
-4. **Duplication-avoidance check** (confirmed only by extending `module-registry`/`user-redirect-map`/`module-ia-manifest`, never by introducing a parallel registry)
-5. **Protecting validator** (which test in Phase 1/5/7/8 will fail if this regresses)
-
-## Order of execution & ship gate
-
-Phases run **strictly sequentially**. A phase is "100% complete and deployment-ready" when:
-- All listed files are modified.
-- `tsc --noEmit` is clean.
-- The phase-specific test suite is green.
-- The phase's named validator script returns zero errors.
-- Grep checks listed in the phase's "Phase ships only when..." line return the expected empty/full result.
-
-Only then does the next phase begin. No interleaving, no stub files, no parallel IA structures.
-
-## Files NOT touched (and why)
-
-- `src/integrations/supabase/client.ts`, `types.ts`, `.env`, `supabase/config.toml` (auto-generated / project-config).
-- `module_registry` & `route_ownership` table **schemas** (extend rows, not columns).
-- `BoardroomAppShell`, `MissionControlAppShell`, `AppStoreAppShell` — out of scope for this pass (admin/owner surfaces have their own IA report at `docs/architecture/ADMIN_INFORMATION_ARCHITECTURE.md`).
-- Mobile / Health / Trust modules — not flagged in the request and have far less drift; revisit in a follow-up if Phase 8's truth map exposes problems.
-
-## Expected final deliverables
-
-- 1 page-role taxonomy (`src/platform/ia/page-role.ts`).
-- 1 module-IA manifest (`src/platform/ia/module-ia-manifest.ts`).
-- 4 validator scripts under `scripts/architecture/checks/`.
-- 1 truth-map builder under `scripts/architecture/`.
-- 2 generated audit reports under `generated/audits/`.
-- 5+ vitest suites under `src/__tests__/ia/`.
-- ~15–20 page-component renames + ~3 archives in `_archived/` folders.
-- ~6 new redirect entries in `user-redirect-map.ts`.
-- 0 new route registries, 0 new nav systems, 0 parallel IA structures.
+- Wearable hardware ingestion (no device SDK in repo today — readiness layer will accept a `provider: 'manual' | 'simulated'` for now, real wearable plumbing deferred until device runtime lands)
+- Cross-org / multi-tenant link sharing (single-org assumption preserved; multi-tenancy already governed elsewhere)
+- Mobile push notification continuity (memory notes mobile push deferred — web push + in-app remain in scope)
