@@ -200,8 +200,8 @@ describe("Phase 9 — Trust Journey E2E (9-stage canonical pipeline)", () => {
         input: { domain: "money", context: { quarter: "Q4" } },
         // Provide synthetic evidence so retrieval doesn't refuse.
         evidenceSources: [
-          { type: "rag", id: "ev-1" },
-          { type: "rag", id: "ev-2" },
+          { type: "rag", id: "ev-1", content: "Q4 cash flow forecast: stable.", confidence: 0.9 },
+          { type: "rag", id: "ev-2", content: "Reserves at 6 months runway.", confidence: 0.85 },
         ],
         correlationId: "trust-journey-approval-001",
       });
