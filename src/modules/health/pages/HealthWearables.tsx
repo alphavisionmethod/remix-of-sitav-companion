@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { Watch, Plus, RefreshCw, X, ShieldCheck } from "lucide-react";
+// truth-allow: ia-config — PROVIDERS / STATUS_VARIANT below are static
+// presentation catalogs (provider labels, badge variants), not telemetry.
 import { useCreateWearableConnection, useRevokeWearable, useSyncEvents, useSyncWearable, useWearableConnections } from "@/modules/health/data/use-health-data";
 import type { WearableProvider } from "@/modules/health/data/health-data-service";
 import { Button } from "@/components/ui/button";

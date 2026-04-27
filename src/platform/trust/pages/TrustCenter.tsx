@@ -1,6 +1,8 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Trust Center (App-in-OS Shell)
 // ═══════════════════════════════════════════════════════════════
+// truth-allow: ia-config — DOMAIN_CONFIG / TAB_GROUPS below are static
+// IA descriptors (titles, tabs, icons), not data fixtures.
 
 import { PageSkeleton } from "@/platform/sita/components/sita/PageSkeleton";
 import { DomainAppShell } from "@/platform/sita/components/sita/shell/DomainAppShell";
