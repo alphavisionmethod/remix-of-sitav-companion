@@ -1,283 +1,199 @@
 
-# SITA OS — Production-Truth Enforcement Plan
+# Phase 7 — System-Wide Trust Coverage (Beyond Advisor Flows)
 
-## Context discovered (read-only audit)
-
-The repository **already has the canonical infrastructure**:
-
-- `src/modules/business/PRODUCTION_TRUTH_MANIFEST.ts` — declares each Business page as `fully-wired | degraded | hidden` (54 entries).
-- `scripts/architecture/check-business-truth.ts` — CI guardrail that validates pages against the manifest.
-- `src/__tests__/business-os/pages/business-page-state-grammar.test.ts` — debt-tracking baseline for state grammar (only ratchets down).
-- `src/platform/sita/components/sita/PageTruthBanner.tsx` — canonical Live/Demo/Partial/Connecting/Degraded banner.
-- `src/platform/sita/components/sita/EmptyState.tsx` + `PremiumEmptyState` + `EmptyStateCard` + `LegacyEmptyStateCard` + `ConciergeEmptyState` — canonical empty primitives.
-- `src/lib/ui/state-renderer.tsx` + `src/lib/reality/page-state-contract.ts` — canonical page-state grammar (loading/empty/error/degraded/permission-denied).
-- `src/hooks/usePageData.ts` — canonical query → state resolver.
-- `src/contexts/AuthContext` + `useRealityModeSafe()` — canonical auth + demo gating.
-
-**No new parallel systems will be created.** Every change extends one of these.
-
-## Confirmed truth gaps (must be closed)
-
-### Tier-1 fake-live leaks (priority — manifest currently misclassifies these as `fully-wired`)
-1. **`RevenueImpactDashboard`** — `generateTrend()` (line 53) emits **random fake numbers every render** even for authenticated users; `+X% vs target` badge computed from fake totals. `realRevenue` from invoices is fetched but only used as one branch; demo trend always renders.
-2. **`LeadsInbox`** (via `useLeadInbox`) — falls back to `FALLBACK_INBOX_ITEMS` for **authenticated users with empty inbox** (line 33 of `useLeadInbox.ts`). Fake-live for any new account.
-3. **`LeadRecovery`** — always uses `RECOVERY_CANDIDATES` mock (line 39). No demo gate, no real hook, no empty state.
-4. **`ExecutionDesk`** (finance) — `setTimeout(() => setStatus("done"), 2500)` fakes trade execution (line 122). `liveData` is fetched but unused. Hardcoded `INSTRUMENTS`/`PLATFORM_CONNECTIONS`. Surface implies real execution.
-5. **`PortfolioOffice` + 18 sister investment-office pages** — `usePortfolioPositions/useTradeOrders/etc.` fetched then **completely ignored**; render fixtures (`PORTFOLIO`, `SAMPLE_THESES`, `SPARKLINE_DATA`).
-
-### Tier-2 honest-degraded surfaces that still render fake-live data
-6. **`WebsiteBuilder`** — manifest says `degraded`, page renders `$52.4K revenue / 64 leads / A/B winners` static rows. Should render setup-required UI.
-7. **`SocialCommand`** — manifest says `degraded`, page renders fake follower counts / scheduled posts / DM threads.
-8. **`EcommerceManager`** — manifest says `degraded`, page renders fake `$2,847 today / 43 orders / Sarah Johnson`. Shopify connector exists at platform level but not wired.
-
-### Tier-3 missing module manifests
-9. **No `CONCIERGE_TRUTH_MANIFEST`** — Concierge pages have good `ConciergeEmptyState` patterns but no production-truth declaration.
-10. **No `FINANCE_TRUTH_MANIFEST`** — Finance/Investment Office is the largest fake-live surface with zero classification.
-
-### Tier-4 audit checker is too lenient
-11. `check-business-truth.ts` doesn't catch:
-    - Imports of `@/data/fixtures/mock-data/*` consumed unconditionally in `fully-wired` pages.
-    - Fetched-but-unused `useQuery` results (the `liveData` ignored anti-pattern).
-    - `setTimeout` "fake execute" patterns.
-    - Pages declared `degraded` that still render hardcoded numeric KPIs.
-
-## Plan — 8 phases, strict order, no skipping
-
-Each phase has explicit completion criteria. **Next phase does not start until previous one passes its full gate.**
+**Discipline**: One phase at a time. Do NOT advance until the current phase has 0 violations, all new tests pass, the truth-coverage report is updated, and the closure gate is green. No stubs. No duplicate infrastructure. No fake trust UI.
 
 ---
 
-### Phase 1 — Tier-1 Fake-Live Removal (Business)
+## Audit summary (already complete — used to ground every phase)
 
-Fix the four highest-risk Business surfaces that masquerade as live.
+**Canonical trust infrastructure that exists and MUST be reused (no duplicates):**
 
-**Changes**
-- `src/modules/business/components/business/lead-inbox/useLeadInbox.ts`: Replace authenticated-fallback-to-`FALLBACK_INBOX_ITEMS` with empty array; gate fixture path **only** on `useRealityModeSafe().isDemo`. Surface `isDemo` honestly.
-- `src/modules/business/pages/LeadsInbox.tsx`: When authenticated + empty + not-demo → render `EmptyState` ("No leads in your inbox yet — connect a lead source or add manually") with action linking to integrations.
-- `src/modules/business/pages/LeadRecovery.tsx`: Remove unconditional `RECOVERY_CANDIDATES` import. Read from new hook `useLeadRecoveryCandidates` (extends existing `recovery-engine.service`). In demo mode → show fixture; in live + empty → honest empty state; in live + data → render real candidates.
-- `src/modules/business/pages/RevenueImpactDashboard.tsx`: Remove `generateTrend()` and `pieData`-from-empty-PLAYBOOK_REVENUE patterns. Use only `realRevenue` from `recovered_value_ledger` aggregation. Loading skeleton via existing `PageSkeleton`. Empty → `EmptyState` ("No revenue impact recorded yet — autopilot playbooks will populate this dashboard"). Remove fake `+X% vs target` badge.
-- `src/modules/business/pages/CollectionsCommandCenter.tsx`: Add explicit empty/loading state grammar (currently relies on `accounts = []` silent fallback). Honest empty when no accounts.
+| Concern | Canonical primitive | Path |
+|---|---|---|
+| Edge-side receipt emission | `emitActionReceipt(serviceClient, params)` | `supabase/functions/_shared/receipt-emitter.ts` |
+| Receipt store | `public.ai_action_receipts` table | DB |
+| Approval queue store | `public.ai_workforce_approval_queue` table | DB |
+| Approval CRUD hooks | `useApprovalQueue` / `useApproveApprovalItem` / `useRejectApprovalItem` | `src/hooks/use-approval-queue-mutations.ts` |
+| Client action execution | `useAction()` → `useCanonicalAction()` → `SitaKernel.executeAction()` | `src/hooks/useAction.ts`, `src/contexts/SitaKernelContext.tsx` |
+| In-app receipt persist | `executeAction.service.ts` (writes to `ai_action_receipts`) | `src/lib/services/executor-service/` |
+| Loop / proof-chain emitter | `emitLoopCompletion()` | `src/hooks/use-flagship-loop-proof.ts` |
+| Authority / risk / reversibility | `unified-policy-matrix` + `policy-trust-thresholds` + `policy-reversibility-map` + `policy-approval-map` | `src/lib/policy/` |
+| Receipt protocol types | `ReceiptEnvelope`, `ExecutionReceiptData`, `ApprovalReceiptData`, `RollbackReceiptData` | `src/packages/protocols/receipt-protocol.ts` |
+| Approval protocol types | `ApprovalRequest`, `ApprovalDecision`, `ApprovalPolicy` | `src/packages/protocols/approval-protocol.ts` |
 
-**Phase 1 Gate (all must pass)**
-- `bunx tsx scripts/architecture/check-business-truth.ts` exits 0.
-- `bunx vitest run src/__tests__/business-os/` passes.
-- `tsc --noEmit` clean.
-- `rg "FALLBACK_INBOX_ITEMS|RECOVERY_CANDIDATES|generateTrend"` returns zero matches inside `src/modules/business/pages/` and `src/modules/business/components/business/lead-inbox/useLeadInbox.ts` (allowed only inside `src/data/fixtures/`).
+**Gaps confirmed by direct inspection of the repo:**
 
----
-
-### Phase 2 — Honest-Degraded Conversion (Website / Social / Ecommerce)
-
-Convert the three Tier-2 surfaces to true setup-required UIs that match their `degraded` manifest declaration. **No invented numbers.**
-
-**Changes**
-- `src/modules/business/pages/WebsiteBuilder.tsx`: Rewrite to show:
-  - `PageTruthBanner truthState="partial"` (already supported).
-  - `EmptyStateCard` with title "Connect a website provider" and `ctaPath="/business/integrations"` listing available connectors (Webflow / Framer / WordPress / Custom DNS).
-  - Below the empty state: a **read-only preview block** of what becomes available once connected (no fake numbers — descriptive text only, e.g. "Once connected, this surface will show Sites, A/B Tests, SEO Rankings, Heatmaps").
-  - Remove all hardcoded `sites`, `abTests`, `seoKeywords`, `heatmapData`, `templates` arrays.
-- `src/modules/business/pages/SocialCommand.tsx`: Same treatment. Remove hardcoded `platforms`, `scheduled`, `topPerforming`, `hashtags`, `comments`, `competitors`. Replace with setup-required + descriptive preview.
-- `src/modules/business/pages/EcommerceManager.tsx`: Same treatment. Detect existing Shopify connection via `standard_connectors` listing (canonical hook) — if connected, show `connecting` banner + empty awaiting first sync; if not connected, show setup-required.
-
-**Phase 2 Gate**
-- `rg "(?:^|\s)const\s+[A-Z_]+\s*=\s*\[\s*\{" src/modules/business/pages/{WebsiteBuilder,SocialCommand,EcommerceManager}.tsx` returns zero matches.
-- New Vitest spec `src/__tests__/business-os/pages/honest-degraded.test.tsx` asserts each renders the setup-required EmptyState and no hardcoded numeric values.
-- Manifest banner state remains `partial`. PageTruthBanner renders correctly.
-- `tsc --noEmit` + business-truth checker pass.
+1. `src/data/repositories/crm-data-service.ts` — full CRUD on contacts/companies/opportunities/notes/tasks. **Zero receipt emissions, zero approval gating, zero proof linkage.**
+2. `src/lib/services/business-os/revenue-autopilot.service.ts` and `lead-intake.service.ts` — execution paths do not enqueue to `ai_workforce_approval_queue` even when actions affect external parties.
+3. `src/lib/services/concierge-os/*.service.ts` (28 services: reservations, providers, household ops, dispatch, recurring supplies, etc.) — no receipts, no approval, no proof.
+4. `src/modules/finance/pages/money/{Bills,Reserves,Subscriptions}.tsx` use `useAction` inconsistently; investment-office mutations bypass the canonical pipeline.
+5. `src/modules/business/components/business/crm/CRMProofTrail.tsx` reads `generateDemoTrail()` — UI implies provenance that isn't actually backed by `ai_action_receipts`. **This is fake trust UI and must be wired to the real table.**
+6. No module-wide proof surface for Concierge or Finance equivalent to `BusinessProof`.
+7. No canonical client-side receipt helper — `recordAutopilotEvent()` reinvents the wheel locally; we must extract it into a single canonical `emitClientReceipt()` and reuse it everywhere.
+8. No system-wide trust-coverage validator script (we have receipt-coverage for edge functions only — `src/__tests__/edge-functions/receipt-emission-coverage.test.ts` — but nothing for client services).
 
 ---
 
-### Phase 3 — Audit Guard Hardening
+## Phase 7.1 — Canonical client-side receipt + approval helper (foundation)
 
-Strengthen `check-business-truth.ts` so Tier-1/2/3 patterns can never re-enter.
+**Goal**: Extract the receipt-emission pattern used by `recordAutopilotEvent()` into one canonical client helper; do the same for "enqueue an approval request". All later phases reuse these — zero duplication.
 
-**Changes (extend, do not duplicate)**
-- Extend `scripts/architecture/check-business-truth.ts` with:
-  - **Rule 5 (no-mock-fixture-import-in-fully-wired)**: A `fully-wired` page must not unconditionally import from `@/data/fixtures/mock-data/*` unless the import is gated by `useRealityModeSafe().isDemo` or `isDemo` in the same file.
-  - **Rule 6 (no-fake-execute)**: `setTimeout(.*set(?:Status|State|Progress).*"(?:done|complete|success)"|setTimeout\(\(\)\s*=>\s*set[A-Z]\w+\("(?:done|complete|success)"\))` triggers a violation in `fully-wired` pages.
-  - **Rule 7 (degraded-must-render-empty)**: A `degraded` page must contain `EmptyStateCard|EmptyState|PremiumEmptyState|setup-required|connect` and must not contain top-level fake-live arrays.
-  - **Rule 8 (fetched-but-unused-query)**: Detect `const { data: liveData } = use…()` followed by no `liveData` reference further in the file → warning (informational, not blocking, to allow whitelisted exceptions).
-- Wire the script into `.github/workflows/check-boundaries.yml` (already exists from Phase 7 of prior program).
+**Implementation:**
+- Create `src/lib/trust/emit-client-receipt.ts` exporting:
+  - `emitClientReceipt({ actionType, summary, payload, riskTier, status, confidence, correlationId, parentReceiptId })` → writes to `ai_action_receipts` via `fromTable`. Mode-aware (skips in demo). Returns `{ receiptId } | null`. Fire-and-forget by default; throws only on `{ strict: true }`.
+  - `emitClientFailureReceipt(...)` — same shape but `status: "failed"` with `error_code`/`error_message`.
+- Create `src/lib/trust/request-approval.ts` exporting:
+  - `requestApproval({ actionType, riskTier, justification, payload, correlationId, parentReceiptId, executionRequired })` → inserts into `ai_workforce_approval_queue` and returns `{ approvalId, status: "pending" }`. Reuses the same row contract `useApprovalQueue` already reads.
+  - `withApprovalGate(action, opts)` — higher-order wrapper: if `riskTier ≥ opts.threshold`, enqueues approval and short-circuits with `{ gated: true, approvalId }`; otherwise executes inline.
+- Extract `recordAutopilotEvent` to delegate to `emitClientReceipt` (no behavior change, just dedupe).
+- Add `src/__tests__/trust/emit-client-receipt.test.ts` and `src/__tests__/trust/request-approval.test.ts` covering: receipt write, failure-receipt path, demo-mode skip, approval insert, `withApprovalGate` short-circuit at threshold.
 
-**Phase 3 Gate**
-- New rules implemented, pre-existing pages still pass (Phase 1 + 2 must have already removed every violation).
-- New Vitest spec `src/__tests__/business-os/architecture/business-truth-audit-rules.test.ts` covers each new rule with positive + negative fixtures.
-- CI workflow updated and green.
-
----
-
-### Phase 4 — Concierge Production-Truth Manifest
-
-Create the Concierge equivalent of the Business truth system.
-
-**Changes**
-- New file `src/modules/concierge/PRODUCTION_TRUTH_MANIFEST.ts` modeled exactly on the Business manifest. Classify all 22 Concierge pages.
-  - Most are already `fully-wired` (good `ConciergeEmptyState` patterns, real hooks `useErrands`, `useReservations`, etc.).
-  - Identify any that should be `degraded` (e.g. provider/event surfaces lacking real data sources).
-- New file `scripts/architecture/check-concierge-truth.ts` — identical structure to business checker, importing the new manifest, applying the same 8 rules.
-- For any page found violating, do one of:
-  - Wire it (Concierge mostly has empty-state grammar already).
-  - Mark `degraded` with honest reason.
-  - Mark `hidden` if not exposed in IA.
-- New Vitest spec `src/__tests__/concierge/concierge-page-state-grammar.test.ts` mirroring the business one.
-
-**Phase 4 Gate**
-- `bunx tsx scripts/architecture/check-concierge-truth.ts` exits 0.
-- New tests pass.
-- Manifest covers 100% of `src/modules/concierge/pages/*.tsx`.
+**Closure gate for 7.1:**
+- All new tests pass.
+- `recordAutopilotEvent` continues to behave identically (existing autopilot tests still pass).
+- 0 new TypeScript errors.
 
 ---
 
-### Phase 5 — Finance / Investment Office Production-Truth Manifest
+## Phase 7.2 — CRM mutations: receipts + approval gating + real proof trail
 
-The largest fake-live surface area. Same canonical pattern.
+**Goal**: Every CRM CRUD path emits a real receipt; bulk operations and external-impact actions are approval-gated; `CRMProofTrail` reads from real receipts (no more demo).
 
-**Changes**
-- New file `src/modules/finance/PRODUCTION_TRUTH_MANIFEST.ts`. Classify:
-  - **`fully-wired`**: pages already using real hooks correctly (e.g. `MoneyOverview`, `WealthCommandCenter`, `EventProbabilityLab`).
-  - **`degraded`** (most investment-office pages): `PortfolioOffice`, `MarketExplorer`, `RiskOffice`, `ResearchLibrary`, `InvestmentBoardroom`, `WatchlistsSignals`, `TradingFloor`, `WarRoom`, `OpportunityMap`, `ConvictionEngine`, `DecisionTheater`, `DecisionReadiness`, `ThesisJournal`, `IntelligenceDossier`, `InvestmentConstitution`, `CrossAssetStoryEngine`, `DisagreementEngine`, `EventMarketsWorkspace`, `FamilyOffice` — they fetch real data but render fixtures. Mark each `degraded` with honest reason ("Awaiting brokerage connector — preview shows reference layout").
-  - **`hidden`**: surfaces that overclaim (e.g. `ExecutionDesk` → reclassify as `hidden` until real broker execution exists, OR rewrite as honest "Trade Prep" surface that produces a draft order with no fake-execute).
-- For each `degraded` page in investment-office: replace the fixture-driven KPI/holdings block with:
-  - A "Awaiting brokerage data" `EmptyStateCard` when `liveData` is empty.
-  - When `liveData.length > 0`: render real data via the already-fetched hook.
-  - Keep the descriptive layout but remove invented numbers.
-- `ExecutionDesk`: rewrite to "Trade Prep Workbench" — generates a draft order saved to `trade_orders` with `status='draft'`, **no setTimeout**. Or mark `hidden` and remove from routes — decided per the new finance manifest.
-- New file `scripts/architecture/check-finance-truth.ts` (same pattern).
-- New Vitest spec `src/__tests__/finance/finance-page-state-grammar.test.ts`.
+**Implementation:**
+- `src/data/repositories/crm-data-service.ts` — wrap each mutation (createContact / updateContact / deleteContact, createCompany / updateCompany / deleteCompany, createOpportunity / updateOpportunity / changeStage / markWon / markLost, createTask, createNote, **bulk** triage / merge / delete) so they:
+  - Call `emitClientReceipt` post-mutation with `actionType: "crm.<entity>.<verb>"`, `payload: { entity_id, diff }`, `riskTier` per the policy matrix (delete=high, bulk=high, single update=low).
+  - For `riskTier: "high"` (bulk delete, bulk owner reassignment, mass merge), route through `withApprovalGate(threshold: "high")` so execution is blocked until approved.
+  - Emit `emitClientFailureReceipt` on caught errors.
+- `CRMProofTrail.tsx` — replace `generateDemoTrail()` with a real query: `SELECT * FROM ai_action_receipts WHERE action_payload->>'entity_id' = entityId AND action_type LIKE 'crm.%' ORDER BY executed_at DESC`. Keep demo data only when `useDataMode().isDemo === true`. Update `ProofEntry` mapping to use real receipt fields. Keep demo path under `// truth-allow: ia-config` because it's the demo fixture.
+- Add a real "Approval pending" badge on the entity detail header when an approval is queued.
+- Tests: `src/__tests__/business-os/crm/crm-receipt-coverage.test.ts` — asserts each public mutation in `crm-data-service.ts` emits one receipt. `crm-approval-gating.test.ts` — asserts bulk delete/merge insert into `ai_workforce_approval_queue`. `crm-proof-trail-live.test.tsx` — asserts component renders real receipts when `isDemo === false`.
 
-**Phase 5 Gate**
-- All three module truth checkers exit 0 (`business`, `concierge`, `finance`).
-- `rg "PORTFOLIO|SAMPLE_THESES|SPARKLINE_DATA|PERFORMANCE_TIMELINE"` returns zero unconditional consumers in `src/modules/finance/pages/` (only fixture files may export them).
-- Investment-office pages render honest empty when `liveData` is empty for authenticated users.
-- `tsc --noEmit` clean.
+**Closure gate for 7.2:**
+- 0 CRM mutations missing a receipt (validated by new audit script `scripts/architecture/check-trust-coverage.ts`).
+- 0 high-risk CRM actions without approval gating.
+- `CRMProofTrail` no longer renders fake provenance in live mode (visual proof: snapshot test).
+- All new vitest suites pass.
 
 ---
 
-### Phase 6 — Route & Navigation Honesty
+## Phase 7.3 — Autopilot, lead-intake, outreach: receipts + approval
 
-Make sure no route advertises a surface that is `hidden` in any of the three manifests, and that `degraded` surfaces carry an honest hint in nav.
+**Goal**: Revenue Autopilot, lead recovery, no-show recovery, and any external outreach (email/SMS/dispatch) emit receipts and require approval per their risk tier.
 
-**Changes**
-- New helper `src/routes/registry/truth-aware-route-helpers.ts` (small, additive — extends existing `route-family-registry.ts`):
-  - `isHiddenInTruthManifest(pagePath: string): boolean` — checks all three manifests.
-  - `getDegradedReason(pagePath: string): string | undefined`.
-- Update launchers / sidebars (`src/platform/sita/components/sita/apps/business/BusinessAppShell.tsx`, concierge equivalent, finance investment-office shell):
-  - Skip nav entries pointing at `hidden` pages.
-  - Append a small "Setup needed" badge on entries pointing at `degraded` pages (using the existing `Badge` primitive).
-- Remove route declarations for any page reclassified as `hidden`.
-- New Vitest spec `src/__tests__/architecture/truth-aware-navigation.test.ts`: asserts every nav entry points at a page that is **not** `hidden`, and that `degraded` entries either carry a setup hint or open a setup-required surface.
+**Implementation:**
+- `src/lib/services/business-os/revenue-autopilot.service.ts`, `lead-intake.service.ts`, `stale-lead-detector.service.ts`, `crm-finance-bridge.service.ts` — wire `emitClientReceipt` on every triggered action and `withApprovalGate` for actions that touch external parties (send email, SMS, dispatch follow-up).
+- `src/modules/business/pages/{LeadsInbox,LeadRecovery,AppointmentsScheduling,AutopilotHub,RevenueAutopilot,BackgroundTaskCenter,CommunicationsCenter}.tsx` — convert any direct DB writes to go through `useAction` (which already routes to the canonical executor, which already writes a receipt) **OR** call `emitClientReceipt` directly from the page mutation. Add a "Pending approval" surface (existing `useApprovalQueue` hook) so the operator sees the queued items inline.
+- `src/data/repositories/business-background-tasks-service.ts` — already imports `ai_action_receipts`; verify it uses the new canonical helper instead of inline insert.
+- Add `<ApprovalPendingBanner>` to autopilot/outreach pages (reuses existing approval-queue hook; no new infra).
+- Tests: `src/__tests__/business-os/autopilot/autopilot-receipt-coverage.test.ts`, `outreach-approval-gating.test.ts`, `lead-recovery-trust.test.ts`.
 
-**Phase 6 Gate**
-- All nav/launcher tests pass.
-- `tsc --noEmit` clean.
-- Routes for any newly `hidden` surfaces removed; redirects added in `src/routes/redirects/user-redirect-map.ts` if needed.
+**Closure gate for 7.3:**
+- Every external-outreach call enqueues approval.
+- Every autopilot action emits a receipt.
+- Approval-pending banner renders on Autopilot, Lead Recovery, Communications, Revenue Autopilot pages.
 
 ---
 
-### Phase 7 — Trust / Approval Surface Honesty
+## Phase 7.4 — Concierge: receipts + approval for third-party-affecting actions
 
-For pages implying execution, automation, scheduling, or proof, ensure the trust layer is wired or the implied execution is removed.
+**Goal**: Concierge actions that affect third parties (reservations, providers, dispatch, gift orders, household ops with external touch) emit receipts and gate when risky.
 
-**Changes**
-- Audit `BusinessAdvisorBoardPage`, `AutopilotHub`, `RevenueAutopilot`, `BackgroundTaskCenter`, `LeadRecovery` for action-button truth.
-- For each "Execute / Approve / Send" action that is **not actually wired** to a real edge function, either:
-  - Wire it through the canonical `useAction` hook + existing trust pipeline.
-  - Replace it with a `disabled` button + tooltip ("Approval pipeline not yet provisioned for this action") and add the page to its module's `degraded` set.
-- Verify Receipts / Proof tabs read from `ai_action_receipts` (already true on most surfaces).
-- New Vitest spec `src/__tests__/business-os/trust-surface-honesty.test.tsx` — for each `fully-wired` page, every visible action button must either invoke a real mutation or be `disabled`/`aria-disabled`.
+**Implementation:**
+- Wrap mutations in `src/lib/services/concierge-os/*.service.ts` — focus on services with real third-party impact: `reservation-ingest`, `provider-memory`, `gift-reminders`, `home-admin`, `recurring-supplies`, `event-continuity`, `travel-continuity`, `school-items`, `responsibilities`. Skip purely-internal services (`prep-derivation`, `prep-checklist`, `projection`).
+- Each wrapped mutation calls `emitClientReceipt({ actionType: "concierge.<service>.<verb>", riskTier: <per matrix> })`.
+- External-outreach concierge actions (provider dispatch, gift order send, reservation cancel) go through `withApprovalGate("high")`.
+- Build `src/modules/concierge/components/concierge/ConciergeProofTrail.tsx` (new — there is no existing equivalent; this is NOT a duplicate of `CRMProofTrail` because Concierge entities and risk semantics differ; it reuses the `ProofEntry` shape exported from a shared `src/lib/trust/proof-entry.ts`).
+- Add `src/modules/concierge/pages/ConciergeProof.tsx` — the module-level proof surface (matches the `BusinessProof` precedent).
+- Wire route in concierge route registry.
+- Tests: `src/__tests__/concierge/concierge-receipt-coverage.test.ts`, `concierge-approval-gating.test.ts`, `concierge-proof-page.test.tsx`.
 
-**Phase 7 Gate**
-- Trust honesty test passes.
-- Production-truth manifests updated for any pages whose state changed.
-- All three module checkers green.
-
----
-
-### Phase 8 — Final Report + Deployment Gate
-
-**Changes**
-- Generate `SITA_OS_PRODUCTION_TRUTH_ENFORCEMENT_REPORT.md` at repo root with:
-  - Per-page final classification (Business / Concierge / Finance).
-  - Wiring improvements per surface (old problem → new truth state).
-  - Fake-live removals enumerated with file:line references.
-  - Route/nav exposure changes.
-  - Tests added/updated.
-  - Remaining future-facing surfaces (with explicit reasons + tracking issue link if applicable).
-- Update `src/domains/ARCHITECTURE.md` to reference the three-module truth manifest system as canonical.
-- Add memory entry `mem://constraints/production-truth-enforcement.md` capturing the rules:
-  - Every visible surface in Business / Concierge / Finance MUST be classified in its module's `PRODUCTION_TRUTH_MANIFEST`.
-  - `fully-wired` pages MUST NOT import from `@/data/fixtures/mock-data/*` unconditionally.
-  - `degraded` pages MUST render an `EmptyStateCard` and MUST NOT render hardcoded KPI numbers.
-  - `hidden` pages MUST NOT appear in any nav / launcher / route.
-- Update `mem://index.md` to add this rule.
-
-**Phase 8 Gate (final deployment-readiness gate)**
-- All three module truth checkers exit 0.
-- All new + existing Vitest specs pass.
-- `tsc --noEmit` clean.
-- `bunx tsx scripts/architecture/check-engine-purity.ts` clean (Phase 4 of previous program, must remain green).
-- `bunx tsx scripts/architecture/audits/check-no-empty-domain-barrels.ts` clean.
-- `bunx tsx scripts/architecture/audits/check-investment-route-namespace.ts` clean.
-- Final report written.
-- Memory updated.
+**Closure gate for 7.4:**
+- Every third-party-affecting concierge mutation emits a receipt.
+- Provider dispatch / reservation cancel / gift order require approval.
+- `/concierge/proof` route renders real receipts.
 
 ---
 
-## Files involved (summary)
+## Phase 7.5 — Finance: receipts + approval for money-movement-adjacent actions
 
-### Modified (existing canonical files extended)
-- `src/modules/business/pages/LeadsInbox.tsx`
-- `src/modules/business/pages/LeadRecovery.tsx`
-- `src/modules/business/pages/RevenueImpactDashboard.tsx`
-- `src/modules/business/pages/CollectionsCommandCenter.tsx`
-- `src/modules/business/pages/WebsiteBuilder.tsx`
-- `src/modules/business/pages/SocialCommand.tsx`
-- `src/modules/business/pages/EcommerceManager.tsx`
-- `src/modules/business/components/business/lead-inbox/useLeadInbox.ts`
-- `src/modules/finance/pages/investment-office/ExecutionDesk.tsx`
-- `src/modules/finance/pages/investment-office/PortfolioOffice.tsx` (+ ~18 sister pages)
-- `scripts/architecture/check-business-truth.ts`
-- `src/routes/registry/route-family-registry.ts`
-- `src/platform/sita/components/sita/apps/business/BusinessAppShell.tsx` (+ concierge / finance app shells)
-- `src/domains/ARCHITECTURE.md`
-- `mem://index.md`
+**Goal**: Finance mutations (Bills, Reserves, Subscriptions, holdings/allocation, tax estimate adjustments, investment-office actions) emit receipts; high-impact decisions (large allocation change, large bill schedule, subscription cancel, debt action) require approval.
 
-### Created (new canonical, no parallel systems)
-- `src/modules/concierge/PRODUCTION_TRUTH_MANIFEST.ts`
-- `src/modules/finance/PRODUCTION_TRUTH_MANIFEST.ts`
-- `scripts/architecture/check-concierge-truth.ts`
-- `scripts/architecture/check-finance-truth.ts`
-- `src/routes/registry/truth-aware-route-helpers.ts`
-- `src/__tests__/business-os/pages/honest-degraded.test.tsx`
-- `src/__tests__/business-os/architecture/business-truth-audit-rules.test.ts`
-- `src/__tests__/business-os/trust-surface-honesty.test.tsx`
-- `src/__tests__/concierge/concierge-page-state-grammar.test.ts`
-- `src/__tests__/finance/finance-page-state-grammar.test.ts`
-- `src/__tests__/architecture/truth-aware-navigation.test.ts`
-- `src/hooks/use-lead-recovery-candidates.ts` (new canonical hook over existing `recovery-engine.service`)
-- `SITA_OS_PRODUCTION_TRUTH_ENFORCEMENT_REPORT.md`
-- `mem://constraints/production-truth-enforcement.md`
+**Implementation:**
+- Pages already using `useAction`: audit and ensure each `useAction` call passes `amount` so the existing budget/approval gate in `SitaKernel.executeAction` activates correctly. Currently many calls omit `amount`, which silently disables the gate.
+- For investment-office and money-page mutations not yet on `useAction`, wrap with `useAction({ amount, riskTier })` so they route through the canonical pipeline (which already emits receipts).
+- Build `src/modules/finance/pages/FinanceProof.tsx` (parallel to `BusinessProof`) and `src/modules/finance/components/finance/FinanceProofTrail.tsx` (reuses shared `ProofEntry` from 7.4).
+- Wire route.
+- Tests: `src/__tests__/finance/finance-receipt-coverage.test.ts`, `finance-approval-gating.test.ts`, `finance-proof-page.test.tsx`.
 
-### Removed
-- Hardcoded fixture arrays inside the Tier-2 pages (moved/already exist under `src/data/fixtures/`).
-- Any route registration for surfaces reclassified as `hidden` (Phase 6).
+**Closure gate for 7.5:**
+- Every money-impacting Finance mutation emits a receipt.
+- High-impact actions (above policy threshold) gate via approval queue.
+- `/finance/proof` route renders real receipts.
 
-## Duplication-avoidance summary
+---
 
-| Need | Reused canonical |
-|---|---|
-| Empty / setup state | `EmptyState`, `EmptyStateCard`, `PremiumEmptyState`, `ConciergeEmptyState` |
-| Truth banner | `PageTruthBanner` |
-| Page state grammar | `usePageData`, `StateRenderer`, `PAGE_STATE_CONTRACTS` |
-| Auth + demo gating | `useAuth`, `useRealityModeSafe` |
-| Per-module classification | `PRODUCTION_TRUTH_MANIFEST` (extended to concierge + finance) |
-| CI guardrail | `check-business-truth.ts` (extended + cloned to concierge/finance) |
-| Action wiring | `useAction` |
-| Receipts/proof | `ai_action_receipts` table + existing `ProofTimelinePanel` |
-| Trust mode | existing `TrustModeIndicator` |
+## Phase 7.6 — Rollback & outcome lineage (truthful only)
 
-No parallel page-state system, no parallel banner system, no parallel manifest schema.
+**Goal**: Where rollback truly exists, link it to the originating receipt. Where rollback does NOT exist, surface that honestly (do NOT add fake "Undo" buttons).
 
-## Hard rule
+**Implementation:**
+- Inventory rollback-capable actions by reading `policy-reversibility-map.ts`. Only those rows get rollback wiring.
+- For each reversible action, when the rollback executes:
+  - Emit a new receipt with `category: "rollback"`, `parent_receipt_id: <original>`, payload describing what was reverted.
+  - Update the original receipt's `metadata.rollback_receipt_id` so proof trails can render the linkage.
+- For irreversible actions: in proof surfaces, render a `<IrreversibleBadge>` instead of any rollback affordance. Add lint test `src/__tests__/trust/no-fake-undo.test.tsx` that fails if any proof component renders an "Undo" button for an action whose policy entry has `reversibility === "irreversible"`.
+- Outcome lineage: when an approval-gated action eventually executes, write a receipt with `parent_receipt_id` pointing to the approval receipt — closing the chain `recommendation → approval → execution → outcome`.
+- Tests: `src/__tests__/trust/rollback-lineage.test.ts`, `outcome-lineage.test.ts`.
 
-**Each phase ends with all gate items GREEN. If any gate item fails, that phase is not complete and the next phase does not start.** The user's directive — "no duplicates, no stubs, do a plan in phases and don't continue to the next phase until you have 100% completed the previous one ready for deployment" — is the binding constraint throughout.
+**Closure gate for 7.6:**
+- Every rollback emits a child receipt linked to its parent.
+- No fake undo affordances anywhere (lint test green).
+- Outcome chain visible on `/business/proof`, `/concierge/proof`, `/finance/proof`.
+
+---
+
+## Phase 7.7 — System-wide trust-coverage validator + closure report
+
+**Goal**: One repo-wide audit script + one report file. Future regressions caught in CI.
+
+**Implementation:**
+- Create `scripts/architecture/check-trust-coverage.ts` — for each module (`business`, `concierge`, `finance`):
+  1. Parse `*-data-service.ts` and `services/**/*.service.ts` for exported async functions that perform `.insert/.update/.delete` on a table.
+  2. Assert each one calls `emitClientReceipt` (or routes through `useAction` / `executeAction`).
+  3. Cross-reference `policy-approval-map` — assert every `riskTier: "high" | "critical"` action has a `withApprovalGate` call.
+  4. Print coverage % per module and fail if any module < 95%.
+- Wire into `.github/workflows/check-boundaries.yml` as `system_wide_trust_enforce`.
+- Create `SITA_OS_SYSTEM_WIDE_TRUST_COVERAGE_REPORT.md` at repo root with the exact structure the user requested:
+  1. Canonical trust systems reused
+  2. Actions now covered by receipts (table per module)
+  3. Actions now gated by approval (table per module)
+  4. Execution proof added (per workflow)
+  5. Rollback / outcome lineage added (per action)
+  6. Proof surfaces strengthened (BusinessProof / ConciergeProof / FinanceProof / CRMProofTrail)
+  7. Exact files changed (auto-generated section)
+  8. Tests added
+  9. Remaining future-facing trust gaps + why deferred
+- Add `src/__tests__/trust/system-wide-trust-coverage.test.ts` that runs the validator and asserts the global threshold.
+
+**Closure gate for 7.7 (final):**
+- `check-trust-coverage.ts` reports ≥ 95% coverage on each of business / concierge / finance.
+- Report file committed and accurate.
+- Full vitest suite green for `src/__tests__/trust/**`, `src/__tests__/business-os/**`, `src/__tests__/concierge/**`, `src/__tests__/finance/**`.
+- CI workflow includes the new gate.
+
+---
+
+## Non-negotiable rules enforced across all 7 phases
+
+- **No parallel infrastructure** — every receipt goes through `emitClientReceipt` → `ai_action_receipts`; every approval goes through `requestApproval` → `ai_workforce_approval_queue`. No new tables, no new queues.
+- **No fake trust UI** — `CRMProofTrail` switches to real data; new proof surfaces query `ai_action_receipts` directly; no "Undo" buttons on irreversible actions (lint-enforced).
+- **No stubs** — every wrapped mutation actually emits the receipt at runtime, verified by unit tests that mock `fromTable` and assert the insert payload.
+- **One phase at a time** — each phase has its own closure gate. I will not start phase N+1 until phase N is fully green and the report section for phase N is written.
+- **Advisor flows preserved** — existing advisor approval/receipt tests (`src/__tests__/business-os/trust/proof-lineage.test.ts`, etc.) must remain green at every checkpoint.
+
+---
+
+## Ready to execute
+
+On your approval I will switch to default mode and start with **Phase 7.1 (canonical helpers)**, run its closure gate, write the report-section-1 entry, and only then move to 7.2.
