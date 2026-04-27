@@ -650,3 +650,76 @@ Test Files  18 passed (18)
 - The bus's `${target}:${type}` and `*:${type}` keys collapse when the emitted event uses `target: "*"`, causing wildcard listeners to fire twice. This is **expected behavior** (broadcast emissions deliver to both targeted and wildcard listeners) and the test now binds to a concrete target to assert the canonical 1:1 delivery contract.
 
 Phase 13 closes the cross-OS bridge loop: **16 links, 12 archetypes, 8 signals, 5 event types, 3 apps, 2 adaptation surfaces, and 0 silent leaks** are now a single coherent, ratchet-tested integration contract.
+
+---
+
+## Phase 14 — Sovereign AI Gateway Behavioral E2E
+
+Phase 14 closes the **AI invocation trust loop**: every model call is anchored to the canonical `supabase/functions/ai-gateway/index.ts` and proven against a live snapshot of the entire codebase's AI call graph.
+
+### Snapshot
+
+`scripts/ai-gateway/build-gateway-snapshot.mjs` → `generated/ai-gateway/gateway-snapshot.json`
+
+Captures, for every `.ts/.tsx/.mjs/.js` file under `src/` and `supabase/functions/`:
+
+- **Direct provider URL callers** — runtime references to `ai.gateway.lovable.dev`, `api.openai.com`, `api.anthropic.com`, `api.quatarly.cloud`, `generativelanguage.googleapis.com` (excluding pure CSP/registry strings; counted only when in `fetch(...)` or bound to a URL constant).
+- **Direct provider SDK imports** — any import from `openai`, `@anthropic-ai/*`, `@google/generative-ai`, `cohere-ai`, `@cohere-ai/*`, `@google-cloud/vertexai`.
+- **Canonical callers** — every file that calls `supabase.functions.invoke("ai-gateway")` or `invokeAI(...)`.
+- **9 gateway invariants** — auth check, KS-MODEL-PROVIDERS kill-switch, strict budget gate, 3-table receipt lineage (`ai_usage_ledger` + `ai_receipt_records` + `ai_inference_receipts`), fallback events, R3+ raw-prompt rejection, rate-limiting.
+
+### Suite
+
+`src/__tests__/ai-gateway/sovereign-ai-gateway-e2e.test.ts` — **26 tests** across 7 contract families.
+
+| # | Contract family | Coverage |
+|---|---|---|
+| 1 | **Canonical invariants**         | All 9 invariants verified true on the live snapshot |
+| 2 | **Provider SDK lockdown**        | Hard-zero direct provider SDK imports across the entire repo |
+| 3 | **`src/**` lockdown**            | Hard-zero direct provider HTTP calls anywhere in client code |
+| 4 | **Edge fleet drift bounded**     | 24 declared exemptions in `EDGE_DIRECT_CALLER_DRIFT`, ratcheted; new bypass without rationale fails CI; stale-detector removes entries on remediation; reserved internals (`ai-gateway`, `api-gateway`) explicitly excluded |
+| 5 | **`invokeAI` client contract**   | R3/R4/R5 calls without `promptFamilyId` rejected; R3+ inline `system` rejected unless `allowAdHoc`; R0 inline allowed (no client-side throw) |
+| 6 | **Canonical caller census**      | Canonical client wrapper present; ≥3 src callers anchor the public surface; `api-gateway` proves edge↔edge re-entrance |
+| 7 | **Snapshot integrity**           | Snapshot file present + parseable; canonical gateway and client files exist with expected anchors (`checkAIBudget`, `KS-MODEL-PROVIDERS`, `ai_usage_ledger`, `invokeAI`, `promptFamilyId`) |
+
+### Edge drift exemption tiers
+
+The 24 edge functions that legitimately bypass the canonical gateway are stratified into 5 tiers, each with a stable per-file rationale:
+
+| Tier | Functions | Justification |
+|---|---|---|
+| **A — gateway-internal / observability** | `ai-health`, `ai-runtime-nightly-verify`, `runtime-probes` | Must hit the provider directly to detect provider/gateway outages — gateway-mediated probing would mask the very failures they exist to surface. |
+| **B — streaming surfaces**               | `ai-orchestrator-stream`, `voice-spine` | Sub-200ms TTFB / multi-channel SSE framing not yet supported by gateway streaming v1; tracked as `ISS-0181` / `ISS-0182`. |
+| **C — advisor / brain pipelines**        | `advisor-agent-loop`, `advisor-conversation`, `advisor-deep-intelligence`, `advisor-weekly-report`, `business-advisor-intelligence`, `chat-advisor`, `personal-brain`, `personal-brain-cron`, `brain-core` | Long-running loops with own scoped receipts (`ai_workforce_invocations`) and prompt-family wiring; gateway round-trips would multiply latency. Tracked as `ISS-0183` + `personal-brain-adaptive-layer` memory. |
+| **D — service-role agent lane**          | `agent-executor`, `internal-agent-loop`, `admin-ai-workforce-run`, `sita-agent-planner`, `sita-council-prevote`, `sita-reflection-loop`, `file-ingestion`, `intelligence-api` | Run without an end-user auth context (gateway requires user JWT); awaiting gateway service-role lane. Tracked as `ISS-0184` / `ISS-0185`. |
+| **E — specialized pipelines**            | `advisor-avatar-generate`, `knowledge-embedder` | Image and embeddings endpoints — gateway only proves chat-completions today. Tracked as `ISS-0186`. |
+
+Every entry is enforced two ways:
+
+- **No silent additions** — a new edge function bypassing the gateway without a `EDGE_DIRECT_CALLER_DRIFT` entry fails the suite at CI.
+- **No stale exemptions** — once a function is migrated to the canonical gateway, the suite fails until its entry is removed from the drift map (the stale-detector test).
+
+### Verification
+
+```
+✓ src/__tests__/ai-gateway/sovereign-ai-gateway-e2e.test.ts (26 tests)
+
+ Test Files  1 passed (1)
+      Tests  26 passed (26)
+```
+`tsc --noEmit` clean.
+
+### No-duplication guarantees
+
+- The snapshot lives under `generated/ai-gateway/`, parallel to `generated/db/` (Phase 10), `generated/edge-functions/` (Phase 11), `generated/connectors/` + `generated/storage/` (Phase 12) — same versioning model, same drift-detection ergonomics.
+- The suite **reuses** the canonical gateway file, the canonical client wrapper, and the existing constraint memory (`mem://constraints/sovereign-ai-gateway`) as truth sources — no parallel YAML or test-only fixtures.
+- New matrix row `trust.sovereign-ai-gateway` (P0, behavioral) anchors the snapshot as the matrix `ref`, so any future regression (a new provider URL appearing in `src/**`, a direct SDK import being added, a gateway invariant being silently disabled, or the edge drift count growing past the ratchet) trips at CI time.
+
+### Findings surfaced
+
+- **24 edge functions currently bypass the canonical `ai-gateway`** — codified into 5 remediation tiers above. This is the most consequential drift surfaced by the verification framework so far: it represents the gap between the architectural rule (constraint memory, all AI calls through the gateway) and runtime reality (these functions still call providers directly). The phase does not silently absolve them — every entry is named, justified, and ticketed (`ISS-0181`–`ISS-0186`), and the stale-detector ensures they are removed from the exemption set the moment they are migrated.
+- **Zero direct provider SDK imports anywhere in the repo** — the SDK lockdown is currently *perfect*. This is the single strongest invariant in the AI trust fabric and is now ratchet-protected.
+- **Zero `src/**` direct provider HTTP calls** — all client code routes through the gateway. The two src files that string-reference provider URLs (`ai-routing-seed-service.ts` registry seed, `web-deployability-readiness.ts` CSP doc) were correctly excluded by the runtime-call heuristic.
+- **Canonical caller census** — 6 files anchor the public invocation surface, including the `api-gateway` edge function itself, proving edge↔edge re-entrance through the canonical seam.
+
+Phase 14 closes the AI invocation loop: **9 gateway invariants, 0 SDK leaks, 0 src leaks, 24 ratcheted edge exemptions across 5 remediation tiers, 6 canonical callers, and 0 silent additions** are now a single coherent, ratchet-tested AI trust contract.
