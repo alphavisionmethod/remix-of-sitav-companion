@@ -65,9 +65,60 @@ These are the **single** entry points every later phase will reuse. Inline `ai_a
 
 ---
 
-## Phase 7.2 — CRM mutations: receipts + approval gating + real proof trail
+## Phase 7.2 — CRM mutations: receipts + approval gating + real proof trail ✅
 
-_Status: not yet started. Will begin once 7.1 is reviewed._
+**Status**: Closed. Closure gate green: 44 / 44 trust unit tests pass (16 new for 7.2). TypeScript clean across `src/hooks/use-crm-data.ts`, `src/hooks/use-crm-proof-trail.ts`, `src/lib/trust/**`, and the new test files.
+
+### 1. Canonical trust systems reused (zero duplication)
+
+| Concern | Reused primitive |
+|---|---|
+| CRM mutation trust gating (already existed) | `emitRegisteredTrustAction` (`src/platform/trust/registry/emit-registered.ts`) — every CRM CRUD already routes through it. |
+| Bulk / risky-action gating | `withApprovalGate` from 7.1 (`src/lib/trust/request-approval.ts`) → writes to existing `ai_workforce_approval_queue`. |
+| Receipts | `emitClientReceipt` from 7.1 → writes to existing `ai_action_receipts`. |
+| Receipt → ProofEntry projection | `receiptRowToProofEntry` from 7.1. |
+| Trust action keys (already existed) | `business.crm.contact_delete` (high, requires_approval) and `business.email.campaign_send` (high, requires_approval) in `trust-action-registry.ts`. |
+
+No new tables, queues, action keys, or approval pipelines.
+
+### 2. Receipt coverage improvements
+
+- Every CRM mutation now embeds a normalized `entity_ref` (`{ entity_type, entity_id?, related? }`) in its receipt payload, derived purely from action-key + args by the new `deriveEntityRef` helper. Module proof surfaces filter on this without parsing args defensively at read time.
+- Bulk delete and bulk outreach hooks emit one `executed`/`failed` receipt **per record** so the proof trail stays complete even after a batch.
+
+### 3. Approval gating improvements
+
+| Hook | Action key | Threshold logic |
+|---|---|---|
+| `useBulkDeleteContacts` | `business.crm.contact_delete` | `critical` when `ids.length >= 25`, else `high`. Both ≥ default gate threshold → always queued. |
+| `useBulkLogCommunications` | `business.email.campaign_send` | `critical` when `items.length >= 10`, else `high`. Always queued. |
+
+Both return `{ gated: true, approvalId }` instead of executing inline; on approval the existing approve→`bindExecution` chain runs them. A `skip: true` flag exists for demo mode and for a graceful fallback when the queue is unreachable (still emits the canonical pending/executed/failed receipt trail).
+
+### 4. Proof surface improvements
+
+- `useCRMEntityProofTrail(entityType, entityId)` issues three indexable JSONB queries against `ai_action_receipts` (entity_ref / related-entity / legacy `args.id`), prefix-filters by entity, dedupes, and projects through `receiptRowToProofEntry`.
+- `CRMProofTrail.tsx` now renders live receipts (with a "Live receipts" badge) outside demo mode, completing the swap from `generateDemoTrail()`.
+
+### 5. Files added
+
+- `src/hooks/use-crm-proof-trail.ts`
+- `src/__tests__/trust/derive-entity-ref.test.ts`
+- `src/__tests__/trust/use-crm-proof-trail.test.ts`
+
+### 6. Files modified
+
+- `src/hooks/use-crm-data.ts` — `withTrust` enriches receipts with `entity_ref`; new `useBulkDeleteContacts` and `useBulkLogCommunications` hooks routed through `withApprovalGate`.
+- `src/modules/business/components/business/crm/CRMProofTrail.tsx` — wired to `useCRMEntityProofTrail`.
+
+### 7. Tests added (closure gate)
+
+| Suite | Asserts | Result |
+|---|---|---|
+| `derive-entity-ref.test.ts` (9) | Unknown action → null; canonical mappings (`contact`, legacy `business.crm.contact_delete`, `opportunity`/`deal` → `deal`); related-id capture for comm + merge; `entity_id` fallback; longest-prefix wins. | ✅ |
+| `use-crm-proof-trail.test.ts` (7) | Disabled when `entityId` null; three filter shapes (entity_ref / related / legacy args.id); per-entity related key (`opportunity_id` for deals); prefix filtering drops noise rows; dedupe across the three queries; newest-first ordering; `enabled=false` honoured. | ✅ |
+
+**Phase 7.2 closure gate**: 44 / 44 trust tests green (16 new). Existing `use-crm-data-trust.test.ts` (3) and trust foundation suite (22) still pass.
 
 ## Phase 7.3 — Autopilot, lead-intake, outreach: receipts + approval
 
