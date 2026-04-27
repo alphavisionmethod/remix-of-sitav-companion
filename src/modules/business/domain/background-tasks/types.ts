@@ -321,7 +321,6 @@ export function recoveryJobToVM(row: RecoveryJobRow): BackgroundJobVM {
 export function auditLogToVM(row: AuditLogRow): BackgroundJobVM {
   // Phase 7: forward the audit subject if it looks like a known entity type.
   const subjectType = (row.subject_type ?? "").toLowerCase();
-  const knownType: BackgroundJobVM["linkedEntity"] extends infer _ ? never : never = undefined as never;
   const mapped: BackgroundJobVM["linkedEntity"] = row.subject_id
     ? subjectType.includes("lead")
       ? { type: "lead", id: row.subject_id }
