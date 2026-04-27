@@ -30,11 +30,11 @@ const ConciergeOverview = lazy(() => import("@/pages/concierge/ConciergeOverview
 const UpcomingNeeds = lazy(() => import("@/pages/concierge/UpcomingNeeds"));
 const FamilyCalendar = lazy(() => import("@/pages/concierge/MonthGridCalendar"));
 const HouseholdTasks = lazy(() => import("@/pages/concierge/HouseholdTasks"));
-const LifeAdminCenter = lazy(() => import("@/pages/concierge/LifeAdminCenter"));
+const LifeAdminWorkspace = lazy(() => import("@/pages/concierge/LifeAdminWorkspace"));
 const ErrandsLogistics = lazy(() => import("@/pages/concierge/ErrandsLogistics"));
 const AppointmentsPrep = lazy(() => import("@/pages/concierge/AppointmentsPrep"));
 const TravelPlanning = lazy(() => import("@/pages/concierge/TravelPlanning"));
-const HouseholdCommandCenter = lazy(() => import("@/pages/concierge/HouseholdCommandCenter"));
+const HouseholdWorkspace = lazy(() => import("@/pages/concierge/HouseholdWorkspace"));
 const SchoolActivities = lazy(() => import("@/pages/concierge/SchoolActivities"));
 const GroceryPlanning = lazy(() => import("@/pages/concierge/GroceryPlanning"));
 const ServiceProviders = lazy(() => import("@/pages/concierge/ServiceProviders"));
@@ -113,9 +113,9 @@ const PAGE_COMPONENTS: Record<string, React.LazyExoticComponent<React.ComponentT
   upcoming: UpcomingNeeds,
   calendar: FamilyCalendar,
   tasks: HouseholdTasks,
-  "life-admin": LifeAdminCenter,
+  "life-admin": LifeAdminWorkspace,
   errands: ErrandsLogistics,
-  household: HouseholdCommandCenter,
+  household: HouseholdWorkspace,
   school: SchoolActivities,
   grocery: GroceryPlanning,
   appointments: AppointmentsPrep,
