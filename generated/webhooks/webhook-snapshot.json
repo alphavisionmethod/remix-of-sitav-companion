@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-27T16:16:38.563Z",
+  "generatedAt": "2026-04-27T16:20:38.256Z",
   "count": 11,
   "byRole": {
     "domain-ingest": 6,
@@ -107,7 +107,7 @@
         "usesServiceRole": true,
         "hasRateLimit": false,
         "hasKillSwitch": false,
-        "readsWebhookSecret": false
+        "readsWebhookSecret": true
       }
     },
     {
@@ -223,7 +223,7 @@
         "hasIdempotencyAnchor": false,
         "writesToWebhookEvents": false,
         "hasDeadLetterPosture": true,
-        "hasRetryCount": false,
+        "hasRetryCount": true,
         "usesServiceRole": true,
         "hasRateLimit": false,
         "hasKillSwitch": false,

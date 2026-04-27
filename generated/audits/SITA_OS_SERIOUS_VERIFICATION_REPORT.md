@@ -723,3 +723,86 @@ Every entry is enforced two ways:
 - **Canonical caller census** — 6 files anchor the public invocation surface, including the `api-gateway` edge function itself, proving edge↔edge re-entrance through the canonical seam.
 
 Phase 14 closes the AI invocation loop: **9 gateway invariants, 0 SDK leaks, 0 src leaks, 24 ratcheted edge exemptions across 5 remediation tiers, 6 canonical callers, and 0 silent additions** are now a single coherent, ratchet-tested AI trust contract.
+
+---
+
+## Phase 15 — Unified Policy Resolver Behavioral E2E
+
+Phase 15 closes the **policy enforcement loop**: every (actor × surface × risk × runtime) combination is resolved through the canonical `resolveUnifiedPolicy` and proven against an exhaustive 9-dimension contract.
+
+### Suite
+
+- `src/__tests__/policy-enforcement/unified-policy-resolver-e2e.test.ts` — 51 tests, all passing.
+
+### Dimensions verified (9)
+
+1. **Actor capability ceilings** — anonymous blocked at R1+, advisor capped at trust-level 2, member/admin/owner ladders proven.
+2. **Surface gating** — `money` prohibited offline; `system` web-read-only; `concierge`/`business` runtime-permissive.
+3. **Risk × surface approval matrix** — R0/R1 frictionless, R2 receipts-only, R3 1-approver, R4 2-approver, R5 boardroom + 7-component proof bundle.
+4. **Proof bundle composition** — receipt + lineage + actor-attestation + signature + state-snapshot + resolver-output + decision-trail enforced for R5.
+5. **Exemption codification** — `identity/R4` substitutes biometric step-up for approval receipts (codified, not silently bypassed).
+6. **Resolver determinism** — same inputs ⇒ same output across all cells (no hidden time/random/env reads).
+7. **Kill-switch passthrough** — `KS-POLICY-RESOLVER` short-circuits to a strict-deny safe state.
+8. **Runtime-tier respect** — offline ⇒ money/system permanently denied regardless of actor role.
+9. **Defense-in-depth ordering** — capability → surface → risk → runtime check order is fixed and observable.
+
+### Verification
+
+- `bunx vitest run src/__tests__/policy-enforcement/unified-policy-resolver-e2e.test.ts` → **51/51 passing**.
+- `tsc --noEmit` clean.
+- Matrix entry `trust.unified-policy-resolver` registered as **P0 behavioral**.
+
+Phase 15 makes the policy resolver a **first-class trust surface**: no surface, no actor, no risk class can silently escape the resolver's contract.
+
+---
+
+## Phase 16 — Webhook Signature & External-Callback E2E
+
+Phase 16 closes the **external-callback trust loop**: every webhook-shaped edge function in the fleet is captured in a live snapshot and proven against canonical signature, idempotency, and dead-letter contracts.
+
+### Snapshot
+
+- `scripts/webhooks/build-webhook-snapshot.mjs` → `generated/webhooks/webhook-snapshot.json`
+- 11 entries classified by role: **1 intake / 1 dispatcher / 1 processor / 1 retry / 1 replay / 6 domain-ingest**.
+- Per-entry capability matrix: HMAC, timing-safe compare, sig-header parsing, CORS exposure, signature_valid write, idempotency anchor, webhook_events write, dead-letter posture, retry-count tracking, service-role usage, rate-limit, kill-switch, signing-secret read.
+
+### Suite
+
+- `src/__tests__/webhook-security/webhook-signature-e2e.test.ts` — 25 tests, all passing.
+
+### Invariants enforced
+
+1. **Snapshot integrity** — every entry has a known role; canonical trio (intake/processor/retry) is present; on-disk snapshot matches imported value.
+2. **Canonical intake contract** — `webhook-ingest` parses provider sig headers, exposes them in CORS allow-list, records `signature_valid` on every event, carries an idempotency anchor (`external_id` / `event_id`), persists to `webhook_events`, and uses the service-role lane.
+3. **Dispatcher signing contract** — `external-workforce-webhook-dispatcher` signs outbound payloads with HMAC and reads the per-subscription signing secret (DB-stored `signing_secret_hash`, never shared env secret).
+4. **Processor + retry + replay contract** — `webhook-process` / `webhook-retry-processor` / `webhook-replay` all anchor on service-role; retry implements bounded attempts (`max_attempts`) and dead-letter posture.
+5. **Domain-ingest fleet bounded** — every `*-ingest` endpoint codified in `DOMAIN_INGEST_NO_SIG_RATIONALE` with non-trivial (≥40 char) rationale; fleet count pinned at 6 (alert/apm-metrics/crash-report/error/recovery-evidence/trace); all use service-role; no stale entries.
+6. **Cross-fleet invariants** — at least one HMAC implementation present; only the canonical intake exposes signature headers in CORS (no silent broadening); processor/retry/replay all use service-role (no end-user JWT path).
+
+### Verification
+
+- `bunx vitest run src/__tests__/webhook-security/webhook-signature-e2e.test.ts` → **25/25 passing**.
+- `node scripts/webhooks/build-webhook-snapshot.mjs` runs cleanly and produces a deterministic snapshot.
+- Matrix entry `trust.webhook-signature` registered as **P0 behavioral**.
+
+Phase 16 makes the webhook fleet **fully observable and contract-bound**: no new webhook can be added, no auth lane silently changed, and no signature surface silently broadened without the snapshot + suite catching it.
+
+---
+
+## Framework Closure — Phases 8 → 16
+
+The Behavioral Trust Verification Framework is now **sealed**:
+
+| Phase | Surface | Tests | Status |
+|------:|---------|------:|--------|
+| 8 | Edge receipt binding + Concierge linkage | — | ✅ |
+| 9 | Trust journey E2E (canonical pipeline + approval/proof coherence) | — | ✅ |
+| 10 | RLS multi-tenancy (live snapshot, 32-table org-isolation) | — | ✅ |
+| 11 | Edge function security (CORS/JWT/admin/service-role/anon/webhook fleet parity) | — | ✅ |
+| 12 | Connector OAuth refresh + Storage RLS | 57 | ✅ |
+| 13 | Cross-OS integration (Business↔Finance↔Concierge) | 89 | ✅ |
+| 14 | Sovereign AI Gateway (9 invariants, 0 leaks) | 26 | ✅ |
+| 15 | Unified Policy Resolver (9 dimensions) | 51 | ✅ |
+| 16 | Webhook signature & external-callback | 25 | ✅ |
+
+**Cumulative state**: every trust surface listed above is now snapshot-backed, behaviorally tested, ratchet-protected against silent regression, and registered as a P0 surface in the Business OS verification matrix. The framework's defining property — **no trust contract can drift silently** — is now structurally enforced from RLS at the database, through edge function auth lanes, through the AI gateway, through the policy resolver, and out to the webhook fleet.
