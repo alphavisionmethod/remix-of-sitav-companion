@@ -115,6 +115,7 @@ export const INTEGRATION_SURFACES: SurfaceEntry[] = [
   { id: "int.advisor-business-action", kind: "integration", ref: "src/lib/kernel-handlers", tests: ["src/__tests__/business-os/integration/advisor-business-action.test.ts"], status: "behavioral", priority: "P0" },
   { id: "int.background-task-source", kind: "integration", ref: "src/modules/business/pages/BackgroundTaskCenter.tsx", tests: ["src/__tests__/business-os/integration/background-task-source.test.ts"], status: "behavioral", priority: "P2" },
   { id: "int.concierge-business-linkage", kind: "integration", ref: "src/domains/engines/cross-os-integration.ts", tests: ["src/__tests__/business-os/integration/concierge-business-linkage.test.ts", "src/__tests__/business-os/integration/crm-concierge-linkage-live.test.tsx"], status: "behavioral", priority: "P0", notes: "Phase 8 — archetype-filtered Business↔Concierge cross-OS seams + live CRM→Concierge query" },
+  { id: "int.cross-os-e2e", kind: "integration", ref: "src/domains/engines/cross-os-integration.ts", tests: ["src/__tests__/cross-os/cross-os-integration-e2e.test.ts"], status: "behavioral", priority: "P0", notes: "Phase 13 — full Business↔Finance↔Concierge bridge E2E: registry truth, archetype filter integrity (12 archetypes × 3 source apps = 36 cells), bidirectional pair coverage, adaptation parity (Finance + Concierge × 12), signal lineage (signal→link coherence), event bus + crossNavigate behavioral contract, and ratchet-protected link/signal counts" },
 ];
 
 // ── Adaptive profile persistence ──────────────────────────────
