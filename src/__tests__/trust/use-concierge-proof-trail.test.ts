@@ -66,7 +66,9 @@ describe("useConciergeProofTrail (Phase 7.4)", () => {
     const { result } = renderHook(() => useConciergeProofTrail(), {
       wrapper: wrapper(),
     });
-    await waitFor(() => !result.current.isLoading);
+    await waitFor(() => {
+      expect(result.current.isLoading).toBe(false);
+    });
     expect(likeCalls).toEqual(["concierge.%"]);
     expect(containsCalls).toHaveLength(0);
   });
@@ -86,7 +88,9 @@ describe("useConciergeProofTrail (Phase 7.4)", () => {
     const { result } = renderHook(() => useConciergeProofTrail(), {
       wrapper: wrapper(),
     });
-    await waitFor(() => result.current.data !== undefined);
+    await waitFor(() => {
+      expect(result.current.data).toBeDefined();
+    });
     expect(result.current.data).toHaveLength(1);
     expect(result.current.data?.[0].action).toBe("created");
     expect(result.current.data?.[0].source).toBe("concierge.errand.create");
@@ -98,7 +102,9 @@ describe("useConciergeProofTrail (Phase 7.4)", () => {
       () => useConciergeProofTrail({ entityType: "grocery_list", entityId: "l1" }),
       { wrapper: wrapper() },
     );
-    await waitFor(() => !result.current.isLoading);
+    await waitFor(() => {
+      expect(result.current.isLoading).toBe(false);
+    });
     expect(containsCalls).toHaveLength(3);
     expect(containsCalls[0]).toEqual({
       entity_ref: { entity_id: "l1", entity_type: "grocery_list" },
@@ -115,13 +121,15 @@ describe("useConciergeProofTrail (Phase 7.4)", () => {
       () => useConciergeProofTrail({ entityType: "provider", entityId: "p1" }),
       { wrapper: wrapper() },
     );
-    await waitFor(() => !result.current.isLoading);
+    await waitFor(() => {
+      expect(result.current.isLoading).toBe(false);
+    });
     expect(containsCalls[1]).toEqual({
       entity_ref: { related: { provider_id: "p1" } },
     });
   });
 
-  it.skip("entity mode — filters out non-concierge prefixes (defence-in-depth)", async () => {
+  it("entity mode — filters out non-concierge prefixes (defence-in-depth)", async () => {
     containsResults.push(
       [
         {
@@ -150,12 +158,14 @@ describe("useConciergeProofTrail (Phase 7.4)", () => {
       () => useConciergeProofTrail({ entityType: "errand", entityId: "e1" }),
       { wrapper: wrapper() },
     );
-    await waitFor(() => result.current.data !== undefined);
+    await waitFor(() => {
+      expect(result.current.data).toBeDefined();
+    });
     expect(result.current.data).toHaveLength(1);
     expect(result.current.data?.[0].id).toBe("ok");
   });
 
-  it.skip("entity mode — dedupes rows that appear in multiple queries", async () => {
+  it("entity mode — dedupes rows that appear in multiple queries", async () => {
     const dup = {
       id: "dup",
       action_type: "concierge.errand.update",
@@ -170,11 +180,13 @@ describe("useConciergeProofTrail (Phase 7.4)", () => {
       () => useConciergeProofTrail({ entityType: "errand", entityId: "e1" }),
       { wrapper: wrapper() },
     );
-    await waitFor(() => result.current.data !== undefined);
+    await waitFor(() => {
+      expect(result.current.data).toBeDefined();
+    });
     expect(result.current.data).toHaveLength(1);
   });
 
-  it.skip("entity mode — orders entries newest-first", async () => {
+  it("entity mode — orders entries newest-first", async () => {
     containsResults.push(
       [
         {
@@ -203,7 +215,9 @@ describe("useConciergeProofTrail (Phase 7.4)", () => {
       () => useConciergeProofTrail({ entityType: "errand", entityId: "e1" }),
       { wrapper: wrapper() },
     );
-    await waitFor(() => result.current.data !== undefined);
+    await waitFor(() => {
+      expect(result.current.data).toBeDefined();
+    });
     expect(result.current.data?.map((e) => e.id)).toEqual(["new", "old"]);
   });
 
