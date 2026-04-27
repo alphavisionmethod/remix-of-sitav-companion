@@ -1,6 +1,6 @@
 # SITA OS — End-to-End Flow Continuity Report
 
-> **Status:** Phases 1–5 complete · Phases 6–10 in progress
+> **Status:** Phases 1–6 complete · Phases 7–10 in progress
 > **Map:** `docs/architecture/END_TO_END_FLOW_CONTINUITY_MAP.md`
 > **Baseline:** `generated/audits/end-to-end-flow-continuity-baseline.json`
 > **Validator:** `scripts/architecture/check-continuity-handoffs.ts` (warn-only until Phase 10)
@@ -419,7 +419,79 @@
   one-line `await` in the resolve handler — tracked as a Phase 6
   micro-task to avoid bundling it with appointments work).
 
-## Phase 6 — pending
+## Phase 6 — Appointments + no-show recovery + calendar continuity (COMPLETE)
+
+### What shipped
+
+- **Existing infrastructure verified live:**
+  - `useScheduledAppointments` already supports CRM/opportunity scoping
+    (`crmContactId` / `crmCompanyId` / `opportunityId`).
+  - `useRecoverNoShow` is gated through `withApprovalGate` and emits
+    canonical receipts on success and failure.
+  - `useMarkBookingConfirmed` already mirrors confirmed bookings to
+    the unified internal calendar via `syncAppointmentEverywhere`,
+    surfacing honest sync state via `CalendarSyncBadge`.
+  - `AppointmentsScheduling.tsx` already calls `consumeLinkedContext`
+    and exposes a "Link to CRM" affordance.
+- **NEW — Appointments → Follow-Through bridge:**
+  - `recoverNoShow()` in `business-scheduling-service.ts` now inserts
+    a `callback_queue` row in the `recovery` kind for every recovered
+    no-show, with CRM lineage (`crm_contact_id`, `crm_company_id`,
+    `source_appointment_id`) carried forward from the source
+    appointment. Best-effort — the recovery message preparation is
+    not blocked if the insert fails (logged at warn level).
+  - This closes the appointments → callback_queue → Follow-Through
+    Center loop introduced in Phase 5; the no-show now appears in the
+    operator's "Recovery" tab with full lineage to the failed booking.
+
+### Files changed
+
+- `src/data/repositories/business-scheduling-service.ts`
+
+### Files added
+
+- `src/__tests__/business-os/integration/appointment-noshow-recovery.test.ts`
+
+### Tests
+
+- `appointment-noshow-recovery.test.ts` — verifies the
+  `callback_queue` insert carries `queue_kind="recovery"`,
+  urgency, channel, both CRM lineage columns, and
+  `source_appointment_id`. Green.
+- `tsc --noEmit` clean across the full repo.
+
+### Anti-duplication
+
+- Reused `fromTable` for the callback_queue insert (no new write
+  helper).
+- Reused the existing `recoverNoShow` service entry point — the
+  bridge is added inline rather than introducing a parallel service.
+- Reused the canonical `callback_queue` table (created in Phase 5)
+  rather than introducing a separate "no-show queue".
+
+### Phase 6 exit criteria
+
+- [x] No-show recovery materialises a `callback_queue` row with full
+      CRM + appointment lineage
+- [x] Calendar sync continues to be honest via `CalendarSyncBadge`
+      (no faking when Google/Outlook isn't configured)
+- [x] Approval-gated outreach for the no-show message remains intact
+- [x] CRM ↔ appointments handoff via `consumeLinkedContext` continues
+      to work on the page
+- [x] No new orchestration helpers introduced
+- [x] `tsc --noEmit` clean; phase test green
+
+### Honest deferred (NOT Phase 6)
+
+- Concierge `appointments_kind` discriminator is deliberately not
+  introduced — the existing `appointments` table already serves both
+  business and concierge surfaces with RLS scoping; adding a
+  discriminator now would be premature without a concrete
+  cross-domain conflict.
+- Calendar OAuth scope verification (Google/Outlook live mode) is
+  tracked as a Phase 9 environment readiness check; the badge
+  honestly renders `setup-required` today when env vars are absent.
+
 ## Phase 7 — pending
 ## Phase 8 — pending
 ## Phase 9 — pending
