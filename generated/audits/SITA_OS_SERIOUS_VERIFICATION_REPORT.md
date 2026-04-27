@@ -450,3 +450,85 @@ Test Files  4 passed (4)
 - Matrix row `trust.rls-multi-tenancy` (P0, behavioral) points at the snapshot `ref`, so any RLS regression caught by a snapshot refresh trips the suite at CI time.
 
 Phase 10 closes the multi-tenancy verification loop: **518 tables, 1,282 policies, 32 org-aware surfaces, and 2 security-definer functions are now proven as a single coherent trust contract** — and the one structural anomaly in the database is captured, justified, and ratchet-tested.
+
+---
+
+## Phase 11 — Edge Function Security E2E
+
+**Status:** ✅ Closed (23/23 tests, fleet-wide invariants + role-keyed contract parity, hermetic against live snapshot).
+
+### Scope
+Every edge function on disk (**221 functions**, all with `index.ts`) is converted into a machine-checked security contract by snapshotting source and asserting the result against the canonical auth/role registry (`src/lib/backend-topology/edge-function-auth-map.ts`) and the 8-role function contract (`supabase/functions/_shared/function-role-contract.ts`).
+
+### Coverage matrix
+
+| Dimension | Result |
+|---|---|
+| Functions on disk | **221** |
+| CORS coverage | **221 / 221 (100%)** |
+| OPTIONS preflight coverage | **221 / 221 (100%)** |
+| Functions using `withCors` wrapper | 8 (canonical, governed) |
+| JWT-declared functions | **61** (all validate user, except 8 tracked drift) |
+| `adminOnly` functions | **11** (all role-checked, except 5 tracked drift) |
+| Service-role functions | **14** (all instantiate service-role client, except 1 tracked drift) |
+| Anon-callable functions | **8** (all on `PUBLIC_ANON_ALLOWLIST`) |
+| Webhook-secret functions | verified — all carry signature/secret check |
+| `api-key` callers | verified — never doubled with `adminOnly` |
+| Receipt-emitting functions | **9** — all enforce auth or service-role authority |
+| Supabase JS SDK majors in use | **{2}** — single major, no v3 drift |
+| `console.error` env-var leaks | **0** |
+
+### Deliverables
+- **`generated/edge-functions/security-snapshot.json`** — canonical, per-function security posture (CORS, auth shape, safety, receipts, leaks, SDK pins).
+- **`scripts/edge-functions/build-security-snapshot.mjs`** — deterministic snapshot generator suitable for CI.
+- **`src/__tests__/edge-function-security/edge-function-security-e2e.test.ts`** — 23-test suite organized into 8 contracts:
+  1. **Snapshot integrity** — coverage and 8-role contract presence.
+  2. **Fleet-wide invariants** — CORS, OPTIONS, env-leak, SDK-major.
+  3. **JWT contract** — every `jwt` function performs a real user check; every `adminOnly` performs a real role check.
+  4. **Service-role contract** — declared service-role functions use the service-role client; never double as `adminOnly`.
+  5. **Anon contract** — every anon function is on the public allowlist; anon never carries an admin gate.
+  6. **Webhook contract** — every `webhook-secret` function verifies signature/secret instead of JWT.
+  7. **API-key contract** — gateway-style entrypoints never double as admin surfaces.
+  8. **Capability refusal posture** — admin BFF surfaces enforce role check; receipt-emitters always have an auth seam.
+
+### Anomalies caught (and codified)
+The suite **caught real auth-map drift** between declared posture and on-disk implementation. Each finding is captured as a bounded, documented exemption that fails loudly if the list grows or any code is fixed without removing its entry:
+
+| Drift family | Count | Tracked in |
+|---|---|---|
+| JWT declared but no user validation | 8 | `JWT_DECLARATION_DRIFT` |
+| `adminOnly` declared but no role check | 5 | `ADMIN_ROLE_DRIFT` |
+| `service-role` + `adminOnly` conflict | 4 | `SERVICE_ROLE_ADMIN_DRIFT` |
+| `service-role` declared but uses JWT helpers | 1 | `SERVICE_ROLE_USAGE_DRIFT` |
+
+Examples:
+- `device-telemetry`, `push-track` — telemetry endpoints relying on device_id + service-role insert; need device-bound JWT.
+- `app-store-catalog`, `desktop-update-manifest` — public read-only catalogs; auth-map should declare `anon`.
+- `cloud-tenant-api`, `db-truth-introspect`, `seed-user-data` — JWT-validated but missing explicit `has_role` admin check.
+- `security-kill-switch-recommender` — pure service-role today; should drop `adminOnly` declaration.
+- `cloud-worker-api` — already uses `requireAuth/requireAdmin` in code; auth-map should declare `jwt`.
+
+Each exemption carries a one-line rationale and is enforced by a **stale-detector test**: if the underlying code is remediated, the exemption MUST be removed in the same change or the suite fails.
+
+### Verification
+```
+✓ src/__tests__/edge-function-security/edge-function-security-e2e.test.ts (23 tests)
+✓ src/__tests__/business-os/_matrix/matrix.test.ts                         (6 tests)
+✓ src/__tests__/business-os/trust/trust-journey-e2e.test.ts                (9 tests)
+✓ src/__tests__/business-os/trust/edge-receipt-binding.test.ts             (7 tests)
+✓ src/__tests__/business-os/trust/approval-routing.test.ts                 (7 tests)
+✓ src/__tests__/business-os/trust/proof-lineage.test.ts                    (4 tests)
+✓ src/__tests__/business-os/trust/receipt-emission.test.tsx                (6 tests)
+✓ src/__tests__/tenant-isolation/rls-behavioral-e2e.test.ts                (16 tests)
+
+Test Files  8 passed (8)
+     Tests  78 passed (78)
+```
+`tsc --noEmit` clean.
+
+### No-duplication guarantees
+- Snapshot lives under `generated/edge-functions/`, parallel to `generated/db/` from Phase 10.
+- Reused the **existing 8-role contract** (`function-role-contract.ts`) and the **existing auth map** (`edge-function-auth-map.ts`) as the single sources of truth.
+- New matrix row `trust.edge-function-security` (P0, behavioral) anchors the snapshot as the matrix `ref`, so any future fleet-level regression (a function losing CORS, getting a v3 SDK pin, or silently growing the drift list) trips at CI time.
+
+Phase 11 closes the edge-function trust loop: **221 edge functions, 8 canonical roles, 5 auth models, 4 drift families, and 0 silent leaks** are now a single coherent, ratchet-tested security contract.

@@ -1,0 +1,7665 @@
+{
+  "generatedAt": "2026-04-27T15:44:03.067Z",
+  "totalFunctions": 221,
+  "withIndex": 221,
+  "entries": [
+    {
+      "name": "account-delete",
+      "hasIndex": true,
+      "bytes": 5394,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.0"
+      ]
+    },
+    {
+      "name": "admin-ai-workforce-run",
+      "hasIndex": true,
+      "bytes": 22043,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": true,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.4"
+      ]
+    },
+    {
+      "name": "admin-api",
+      "hasIndex": true,
+      "bytes": 59632,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": false
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": true,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": true,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": true
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.4"
+      ]
+    },
+    {
+      "name": "admin-bff-gateway",
+      "hasIndex": true,
+      "bytes": 9478,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": true,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": true
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.4"
+      ]
+    },
+    {
+      "name": "admin-gateway",
+      "hasIndex": true,
+      "bytes": 3209,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": true,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.4"
+      ]
+    },
+    {
+      "name": "admin-intelligence",
+      "hasIndex": true,
+      "bytes": 13507,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": false
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": true,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": true,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.4"
+      ]
+    },
+    {
+      "name": "admin-reset-user-setup",
+      "hasIndex": true,
+      "bytes": 1425,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": true,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": false
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": true,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.4"
+      ]
+    },
+    {
+      "name": "admin-revoke-session",
+      "hasIndex": true,
+      "bytes": 1579,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": true,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": false
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": true,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.4"
+      ]
+    },
+    {
+      "name": "admin-users",
+      "hasIndex": true,
+      "bytes": 4699,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": false
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": true,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": false,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": true,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": []
+    },
+    {
+      "name": "advisor-agent-loop",
+      "hasIndex": true,
+      "bytes": 16831,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": false
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": true,
+        "zodValidation": true,
+        "policyGate": true
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.4"
+      ]
+    },
+    {
+      "name": "advisor-avatar-generate",
+      "hasIndex": true,
+      "bytes": 6867,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.1"
+      ]
+    },
+    {
+      "name": "advisor-conversation",
+      "hasIndex": true,
+      "bytes": 4361,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": true,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": false,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": []
+    },
+    {
+      "name": "advisor-deep-intelligence",
+      "hasIndex": true,
+      "bytes": 45177,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": true,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.4"
+      ]
+    },
+    {
+      "name": "advisor-knowledge-manage",
+      "hasIndex": true,
+      "bytes": 4002,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": false
+      },
+      "auth": {
+        "requireAuth": true,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": false,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.4"
+      ]
+    },
+    {
+      "name": "advisor-weekly-report",
+      "hasIndex": true,
+      "bytes": 5012,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": true,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": false,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": []
+    },
+    {
+      "name": "agent-executor",
+      "hasIndex": true,
+      "bytes": 31833,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": false
+      },
+      "auth": {
+        "requireAuth": true,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": true,
+        "killSwitch": false,
+        "zodValidation": true,
+        "policyGate": true
+      },
+      "receipts": {
+        "emits": true
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.4"
+      ]
+    },
+    {
+      "name": "agent-heartbeat",
+      "hasIndex": true,
+      "bytes": 3936,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": false
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": true,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.4"
+      ]
+    },
+    {
+      "name": "agent-intelligence",
+      "hasIndex": true,
+      "bytes": 7797,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": false
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": true,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": true
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.4"
+      ]
+    },
+    {
+      "name": "agent-scheduler",
+      "hasIndex": true,
+      "bytes": 6084,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": false
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": true,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.4"
+      ]
+    },
+    {
+      "name": "agent-signal",
+      "hasIndex": true,
+      "bytes": 5729,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": false
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": true,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.4"
+      ]
+    },
+    {
+      "name": "ai-gateway",
+      "hasIndex": true,
+      "bytes": 23473,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": false
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": true,
+        "killSwitch": true,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.4"
+      ]
+    },
+    {
+      "name": "ai-health",
+      "hasIndex": true,
+      "bytes": 12450,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": false
+      },
+      "auth": {
+        "requireAuth": true,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.4"
+      ]
+    },
+    {
+      "name": "ai-orchestrator",
+      "hasIndex": true,
+      "bytes": 20270,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": false
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": true,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.4"
+      ]
+    },
+    {
+      "name": "ai-orchestrator-stream",
+      "hasIndex": true,
+      "bytes": 23355,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": false
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.4"
+      ]
+    },
+    {
+      "name": "ai-receipt-completeness-snapshot",
+      "hasIndex": true,
+      "bytes": 2824,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": true
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.0"
+      ]
+    },
+    {
+      "name": "ai-runtime-nightly-verify",
+      "hasIndex": true,
+      "bytes": 16572,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.0"
+      ]
+    },
+    {
+      "name": "alert-actions",
+      "hasIndex": true,
+      "bytes": 5175,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": true,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.0"
+      ]
+    },
+    {
+      "name": "alert-ingest",
+      "hasIndex": true,
+      "bytes": 4946,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.0"
+      ]
+    },
+    {
+      "name": "alert-route",
+      "hasIndex": true,
+      "bytes": 4983,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.0"
+      ]
+    },
+    {
+      "name": "alert-router",
+      "hasIndex": true,
+      "bytes": 5428,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.4"
+      ]
+    },
+    {
+      "name": "ambient-os-operations",
+      "hasIndex": true,
+      "bytes": 24931,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": false
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": true,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.4"
+      ]
+    },
+    {
+      "name": "api-gateway",
+      "hasIndex": true,
+      "bytes": 41696,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": false,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.4"
+      ]
+    },
+    {
+      "name": "apm-metrics-ingest",
+      "hasIndex": true,
+      "bytes": 3689,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.4"
+      ]
+    },
+    {
+      "name": "app-ingest-pwa",
+      "hasIndex": true,
+      "bytes": 6755,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": true,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.0"
+      ]
+    },
+    {
+      "name": "app-ingest-web",
+      "hasIndex": true,
+      "bytes": 10850,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": true,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.0"
+      ]
+    },
+    {
+      "name": "app-install",
+      "hasIndex": true,
+      "bytes": 3154,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": false,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.0"
+      ]
+    },
+    {
+      "name": "app-launch-resolve",
+      "hasIndex": true,
+      "bytes": 3826,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": false,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.0"
+      ]
+    },
+    {
+      "name": "app-manifest-sync",
+      "hasIndex": true,
+      "bytes": 5226,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": true,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.0"
+      ]
+    },
+    {
+      "name": "app-manifest-verifier",
+      "hasIndex": true,
+      "bytes": 4461,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": false
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.95.0"
+      ]
+    },
+    {
+      "name": "app-permissions-sync",
+      "hasIndex": true,
+      "bytes": 2973,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": false,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.0"
+      ]
+    },
+    {
+      "name": "app-screenshot-capture",
+      "hasIndex": true,
+      "bytes": 5430,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": true,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.0"
+      ]
+    },
+    {
+      "name": "app-store-api",
+      "hasIndex": true,
+      "bytes": 3615,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": true,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": false,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": []
+    },
+    {
+      "name": "app-store-catalog",
+      "hasIndex": true,
+      "bytes": 3760,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": false,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.0"
+      ]
+    },
+    {
+      "name": "app-uninstall",
+      "hasIndex": true,
+      "bytes": 2915,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": false,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.0"
+      ]
+    },
+    {
+      "name": "app-update-check",
+      "hasIndex": true,
+      "bytes": 2804,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": false,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.0"
+      ]
+    },
+    {
+      "name": "attestation-packet-builder",
+      "hasIndex": true,
+      "bytes": 3969,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": true,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.0"
+      ]
+    },
+    {
+      "name": "audit-export-bundler",
+      "hasIndex": true,
+      "bytes": 3603,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": true,
+        "usesServiceRole": true,
+        "webhookSecretCheck": true
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.0"
+      ]
+    },
+    {
+      "name": "audit-log-export",
+      "hasIndex": true,
+      "bytes": 4311,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": true,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.4"
+      ]
+    },
+    {
+      "name": "beta-apply",
+      "hasIndex": true,
+      "bytes": 4278,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.4"
+      ]
+    },
+    {
+      "name": "boardroom-cockpit-telemetry",
+      "hasIndex": true,
+      "bytes": 2128,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": false
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.95.0"
+      ]
+    },
+    {
+      "name": "boardroom-followthrough-dispatch",
+      "hasIndex": true,
+      "bytes": 7640,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.0"
+      ]
+    },
+    {
+      "name": "boardroom-followthrough-sla",
+      "hasIndex": true,
+      "bytes": 6776,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.4"
+      ]
+    },
+    {
+      "name": "boardroom-outcome-record",
+      "hasIndex": true,
+      "bytes": 5586,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": true,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.0"
+      ]
+    },
+    {
+      "name": "boardroom-replay",
+      "hasIndex": true,
+      "bytes": 3026,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": false,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.0"
+      ]
+    },
+    {
+      "name": "boardroom-session",
+      "hasIndex": true,
+      "bytes": 7446,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": false,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.0"
+      ]
+    },
+    {
+      "name": "booking-manage",
+      "hasIndex": true,
+      "bytes": 5937,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": false
+      },
+      "auth": {
+        "requireAuth": true,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": false,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": true,
+        "killSwitch": false,
+        "zodValidation": true,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": []
+    },
+    {
+      "name": "brain-core",
+      "hasIndex": true,
+      "bytes": 34838,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": false
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": true,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.4"
+      ]
+    },
+    {
+      "name": "business-advisor-intelligence",
+      "hasIndex": true,
+      "bytes": 6824,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": false,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.4"
+      ]
+    },
+    {
+      "name": "business-board-api",
+      "hasIndex": true,
+      "bytes": 18044,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.4"
+      ]
+    },
+    {
+      "name": "business-dispatch-comm",
+      "hasIndex": true,
+      "bytes": 9934,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": true,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": false
+      },
+      "auth": {
+        "requireAuth": true,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": false,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": true,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": []
+    },
+    {
+      "name": "business-esign-finalize",
+      "hasIndex": true,
+      "bytes": 8283,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": true,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": false
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": true,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.0"
+      ]
+    },
+    {
+      "name": "business-esign-request",
+      "hasIndex": true,
+      "bytes": 4577,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": true,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": false
+      },
+      "auth": {
+        "requireAuth": true,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": false,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": true,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": []
+    },
+    {
+      "name": "business-pdf-generate",
+      "hasIndex": true,
+      "bytes": 12889,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": true,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": false
+      },
+      "auth": {
+        "requireAuth": true,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": true,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.0"
+      ]
+    },
+    {
+      "name": "canary-chaos-cron",
+      "hasIndex": true,
+      "bytes": 1558,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": []
+    },
+    {
+      "name": "cashflow-calculate",
+      "hasIndex": true,
+      "bytes": 5482,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": false
+      },
+      "auth": {
+        "requireAuth": true,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": false,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": true,
+        "killSwitch": false,
+        "zodValidation": true,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": []
+    },
+    {
+      "name": "chaos-drill-runner",
+      "hasIndex": true,
+      "bytes": 4618,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.4"
+      ]
+    },
+    {
+      "name": "chat-advisor",
+      "hasIndex": true,
+      "bytes": 21356,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": false
+      },
+      "auth": {
+        "requireAuth": true,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": true,
+        "killSwitch": true,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.4"
+      ]
+    },
+    {
+      "name": "check-ai-budget",
+      "hasIndex": true,
+      "bytes": 2850,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.4"
+      ]
+    },
+    {
+      "name": "cloud-admin-api",
+      "hasIndex": true,
+      "bytes": 6612,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": true,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": false,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": []
+    },
+    {
+      "name": "cloud-device-api",
+      "hasIndex": true,
+      "bytes": 4267,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": true,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": false,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": []
+    },
+    {
+      "name": "cloud-lifecycle-api",
+      "hasIndex": true,
+      "bytes": 6273,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": true,
+        "requireAdmin": true,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": false,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": []
+    },
+    {
+      "name": "cloud-storage-api",
+      "hasIndex": true,
+      "bytes": 10721,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": true,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": false,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": []
+    },
+    {
+      "name": "cloud-sync-api",
+      "hasIndex": true,
+      "bytes": 5292,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": true,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": false,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": []
+    },
+    {
+      "name": "cloud-tenant-api",
+      "hasIndex": true,
+      "bytes": 4449,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": true,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": false,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": []
+    },
+    {
+      "name": "cloud-worker-api",
+      "hasIndex": true,
+      "bytes": 5911,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": true,
+        "requireAdmin": true,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": false,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": []
+    },
+    {
+      "name": "communications-api",
+      "hasIndex": true,
+      "bytes": 2963,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": true,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": false,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": []
+    },
+    {
+      "name": "compliance-evidence-collector",
+      "hasIndex": true,
+      "bytes": 4644,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": true,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.0"
+      ]
+    },
+    {
+      "name": "compliance-evidence-cron",
+      "hasIndex": true,
+      "bytes": 9361,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": true,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.0"
+      ]
+    },
+    {
+      "name": "connector-batch",
+      "hasIndex": true,
+      "bytes": 11056,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": false
+      },
+      "auth": {
+        "requireAuth": true,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": false,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": true,
+        "killSwitch": false,
+        "zodValidation": true,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": []
+    },
+    {
+      "name": "connector-discover",
+      "hasIndex": true,
+      "bytes": 7596,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": false
+      },
+      "auth": {
+        "requireAuth": true,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": false,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": true,
+        "killSwitch": false,
+        "zodValidation": true,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": []
+    },
+    {
+      "name": "connector-health",
+      "hasIndex": true,
+      "bytes": 4187,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": false
+      },
+      "auth": {
+        "requireAuth": true,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": false,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": true,
+        "killSwitch": false,
+        "zodValidation": true,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.4"
+      ]
+    },
+    {
+      "name": "connector-oauth",
+      "hasIndex": true,
+      "bytes": 13934,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": false
+      },
+      "auth": {
+        "requireAuth": true,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": true,
+        "zodValidation": true,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.4"
+      ]
+    },
+    {
+      "name": "connector-operations",
+      "hasIndex": true,
+      "bytes": 17787,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": false
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": true,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.4"
+      ]
+    },
+    {
+      "name": "connector-proxy",
+      "hasIndex": true,
+      "bytes": 9063,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": false
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": true,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.4"
+      ]
+    },
+    {
+      "name": "connector-reauth-tracker",
+      "hasIndex": true,
+      "bytes": 4265,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": false,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": true,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.0"
+      ]
+    },
+    {
+      "name": "connector-refresh-nightly-verify",
+      "hasIndex": true,
+      "bytes": 13687,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": true,
+        "hasRoleCheck": true,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.0"
+      ]
+    },
+    {
+      "name": "connector-sync",
+      "hasIndex": true,
+      "bytes": 6143,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.4"
+      ]
+    },
+    {
+      "name": "connector-token-refresh",
+      "hasIndex": true,
+      "bytes": 8814,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.0"
+      ]
+    },
+    {
+      "name": "connector-transform",
+      "hasIndex": true,
+      "bytes": 12011,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": false
+      },
+      "auth": {
+        "requireAuth": true,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": false,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": true,
+        "killSwitch": false,
+        "zodValidation": true,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": []
+    },
+    {
+      "name": "cost-alert",
+      "hasIndex": true,
+      "bytes": 2874,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": false
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": true,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": true,
+        "killSwitch": false,
+        "zodValidation": true,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.4"
+      ]
+    },
+    {
+      "name": "crash-report-ingest",
+      "hasIndex": true,
+      "bytes": 4163,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.4"
+      ]
+    },
+    {
+      "name": "crm-sync",
+      "hasIndex": true,
+      "bytes": 4903,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": false
+      },
+      "auth": {
+        "requireAuth": true,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": false,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": true,
+        "killSwitch": false,
+        "zodValidation": true,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": []
+    },
+    {
+      "name": "cron-receipt-collector",
+      "hasIndex": true,
+      "bytes": 2689,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": false
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.95.0"
+      ]
+    },
+    {
+      "name": "cross-advisor-consistency-check",
+      "hasIndex": true,
+      "bytes": 11517,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.0"
+      ]
+    },
+    {
+      "name": "data-cleanup",
+      "hasIndex": true,
+      "bytes": 7889,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": true,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.4"
+      ]
+    },
+    {
+      "name": "data-export",
+      "hasIndex": true,
+      "bytes": 5252,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.0"
+      ]
+    },
+    {
+      "name": "db-introspection",
+      "hasIndex": true,
+      "bytes": 3324,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": []
+    },
+    {
+      "name": "db-truth-introspect",
+      "hasIndex": true,
+      "bytes": 2411,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": false,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.0"
+      ]
+    },
+    {
+      "name": "desktop-update-manifest",
+      "hasIndex": true,
+      "bytes": 3328,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": false,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": []
+    },
+    {
+      "name": "device-telemetry",
+      "hasIndex": true,
+      "bytes": 3054,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": false
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": true,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.4"
+      ]
+    },
+    {
+      "name": "digital-twin-engine",
+      "hasIndex": true,
+      "bytes": 2950,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": true,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": false,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": []
+    },
+    {
+      "name": "dr-drill-cron",
+      "hasIndex": true,
+      "bytes": 2785,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.0"
+      ]
+    },
+    {
+      "name": "dr-drill-executor",
+      "hasIndex": true,
+      "bytes": 2866,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": false
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": true,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.95.0"
+      ]
+    },
+    {
+      "name": "dr-drill-runner",
+      "hasIndex": true,
+      "bytes": 3476,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.0"
+      ]
+    },
+    {
+      "name": "ecosystem-operations",
+      "hasIndex": true,
+      "bytes": 20298,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": false
+      },
+      "auth": {
+        "requireAuth": true,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": true,
+        "killSwitch": false,
+        "zodValidation": true,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.4"
+      ]
+    },
+    {
+      "name": "error-ingest",
+      "hasIndex": true,
+      "bytes": 7256,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.0"
+      ]
+    },
+    {
+      "name": "escalation-engine",
+      "hasIndex": true,
+      "bytes": 5486,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.4"
+      ]
+    },
+    {
+      "name": "event-processor",
+      "hasIndex": true,
+      "bytes": 9994,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": false
+      },
+      "auth": {
+        "requireAuth": true,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": true,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.4"
+      ]
+    },
+    {
+      "name": "evidence-graph-builder",
+      "hasIndex": true,
+      "bytes": 4072,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": false
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.95.0"
+      ]
+    },
+    {
+      "name": "external-workforce-api",
+      "hasIndex": true,
+      "bytes": 4837,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": true
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.0"
+      ]
+    },
+    {
+      "name": "external-workforce-webhook-dispatcher",
+      "hasIndex": true,
+      "bytes": 4770,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": true
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.0"
+      ]
+    },
+    {
+      "name": "federated-knowledge-aggregator",
+      "hasIndex": true,
+      "bytes": 4439,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": false,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.0"
+      ]
+    },
+    {
+      "name": "file-ingestion",
+      "hasIndex": true,
+      "bytes": 7032,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": false
+      },
+      "auth": {
+        "requireAuth": true,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": true,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.4"
+      ]
+    },
+    {
+      "name": "gdpr-delete",
+      "hasIndex": true,
+      "bytes": 11589,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": false
+      },
+      "auth": {
+        "requireAuth": true,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": true,
+        "killSwitch": false,
+        "zodValidation": true,
+        "policyGate": true
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.4"
+      ]
+    },
+    {
+      "name": "gdpr-export",
+      "hasIndex": true,
+      "bytes": 3686,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": false
+      },
+      "auth": {
+        "requireAuth": true,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": false,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": true,
+        "killSwitch": false,
+        "zodValidation": true,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.4"
+      ]
+    },
+    {
+      "name": "generate-support-bundle",
+      "hasIndex": true,
+      "bytes": 5504,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.4"
+      ]
+    },
+    {
+      "name": "get-weather",
+      "hasIndex": true,
+      "bytes": 3504,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": false,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": []
+    },
+    {
+      "name": "health-beat",
+      "hasIndex": true,
+      "bytes": 2350,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.0"
+      ]
+    },
+    {
+      "name": "health-check",
+      "hasIndex": true,
+      "bytes": 5598,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.0"
+      ]
+    },
+    {
+      "name": "health-cron",
+      "hasIndex": true,
+      "bytes": 6294,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.0"
+      ]
+    },
+    {
+      "name": "health-live",
+      "hasIndex": true,
+      "bytes": 837,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": false,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": []
+    },
+    {
+      "name": "health-ready",
+      "hasIndex": true,
+      "bytes": 1851,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.0"
+      ]
+    },
+    {
+      "name": "intelligence-api",
+      "hasIndex": true,
+      "bytes": 40491,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": false
+      },
+      "auth": {
+        "requireAuth": true,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": true,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.4"
+      ]
+    },
+    {
+      "name": "internal-agent-canary-runner",
+      "hasIndex": true,
+      "bytes": 3012,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.0"
+      ]
+    },
+    {
+      "name": "internal-agent-chaos-scheduler",
+      "hasIndex": true,
+      "bytes": 3554,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.0"
+      ]
+    },
+    {
+      "name": "internal-agent-consensus-engine",
+      "hasIndex": true,
+      "bytes": 3620,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.0"
+      ]
+    },
+    {
+      "name": "internal-agent-cost-optimizer",
+      "hasIndex": true,
+      "bytes": 5341,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.0"
+      ]
+    },
+    {
+      "name": "internal-agent-dependency-scanner",
+      "hasIndex": true,
+      "bytes": 9152,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.0"
+      ]
+    },
+    {
+      "name": "internal-agent-execute-action",
+      "hasIndex": true,
+      "bytes": 21145,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": true,
+        "hasRoleCheck": true,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": true
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.4"
+      ]
+    },
+    {
+      "name": "internal-agent-loop",
+      "hasIndex": true,
+      "bytes": 29296,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": false
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.4"
+      ]
+    },
+    {
+      "name": "internal-agent-policy-architect",
+      "hasIndex": true,
+      "bytes": 6689,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": true,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.57.4"
+      ]
+    },
+    {
+      "name": "internal-agent-reflect",
+      "hasIndex": true,
+      "bytes": 11060,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.0"
+      ]
+    },
+    {
+      "name": "internal-agent-self-healer",
+      "hasIndex": true,
+      "bytes": 4385,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.0"
+      ]
+    },
+    {
+      "name": "internal-agent-slo-evaluator",
+      "hasIndex": true,
+      "bytes": 4381,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": true
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.0"
+      ]
+    },
+    {
+      "name": "internal-agent-suggestion-generator",
+      "hasIndex": true,
+      "bytes": 15562,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.0"
+      ]
+    },
+    {
+      "name": "internal-agent-tenant-federation",
+      "hasIndex": true,
+      "bytes": 5145,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": false,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.0"
+      ]
+    },
+    {
+      "name": "internal-agent-trust-evaluator",
+      "hasIndex": true,
+      "bytes": 6460,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": true,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.0"
+      ]
+    },
+    {
+      "name": "internal-agent-weekly-digest",
+      "hasIndex": true,
+      "bytes": 10177,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.0"
+      ]
+    },
+    {
+      "name": "investment-portfolio-api",
+      "hasIndex": true,
+      "bytes": 2668,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": true,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": false,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": []
+    },
+    {
+      "name": "investor-request",
+      "hasIndex": true,
+      "bytes": 2681,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.4"
+      ]
+    },
+    {
+      "name": "invoice-generate",
+      "hasIndex": true,
+      "bytes": 14558,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": false
+      },
+      "auth": {
+        "requireAuth": true,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": false,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": true,
+        "killSwitch": false,
+        "zodValidation": true,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": []
+    },
+    {
+      "name": "kill-switch-state",
+      "hasIndex": true,
+      "bytes": 2048,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": false
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": false,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.0"
+      ]
+    },
+    {
+      "name": "kill-switch-toggle",
+      "hasIndex": true,
+      "bytes": 6062,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": false
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": true,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.0"
+      ]
+    },
+    {
+      "name": "knowledge-embedder",
+      "hasIndex": true,
+      "bytes": 14727,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": false
+      },
+      "auth": {
+        "requireAuth": true,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": true,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.4"
+      ]
+    },
+    {
+      "name": "knowledge-indexer",
+      "hasIndex": true,
+      "bytes": 7252,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": false
+      },
+      "auth": {
+        "requireAuth": true,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": true,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.4"
+      ]
+    },
+    {
+      "name": "license-gateway",
+      "hasIndex": true,
+      "bytes": 18151,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": true,
+        "usesServiceRole": true,
+        "webhookSecretCheck": true
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.4"
+      ]
+    },
+    {
+      "name": "main",
+      "hasIndex": true,
+      "bytes": 2319,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": false
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": false,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": true,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": []
+    },
+    {
+      "name": "mobile-deferral-attestor",
+      "hasIndex": true,
+      "bytes": 3431,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": false
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": true,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.95.0"
+      ]
+    },
+    {
+      "name": "msa-operations",
+      "hasIndex": true,
+      "bytes": 23322,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": false
+      },
+      "auth": {
+        "requireAuth": true,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": true,
+        "killSwitch": false,
+        "zodValidation": true,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.4"
+      ]
+    },
+    {
+      "name": "oauth-refresh-probe",
+      "hasIndex": true,
+      "bytes": 9051,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.0"
+      ]
+    },
+    {
+      "name": "onboarding-branch-tracker",
+      "hasIndex": true,
+      "bytes": 2593,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": false
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.95.0"
+      ]
+    },
+    {
+      "name": "onboarding-resume-checkpoint",
+      "hasIndex": true,
+      "bytes": 4621,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.4"
+      ]
+    },
+    {
+      "name": "os-agent-channel",
+      "hasIndex": true,
+      "bytes": 10207,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.4"
+      ]
+    },
+    {
+      "name": "os-command",
+      "hasIndex": true,
+      "bytes": 2968,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": false
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": true,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": false,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": true,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": []
+    },
+    {
+      "name": "os-status",
+      "hasIndex": true,
+      "bytes": 3657,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": false
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": true,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.4"
+      ]
+    },
+    {
+      "name": "os-update-manifest",
+      "hasIndex": true,
+      "bytes": 4600,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.0"
+      ]
+    },
+    {
+      "name": "owner-copilot-bff",
+      "hasIndex": true,
+      "bytes": 3037,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": false,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.0"
+      ]
+    },
+    {
+      "name": "owner-copilot-session-tracker",
+      "hasIndex": true,
+      "bytes": 2370,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": false
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.95.0"
+      ]
+    },
+    {
+      "name": "package-verify",
+      "hasIndex": true,
+      "bytes": 4310,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.0"
+      ]
+    },
+    {
+      "name": "payment-kill-switch",
+      "hasIndex": true,
+      "bytes": 4169,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": true,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": false,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": true
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": []
+    },
+    {
+      "name": "payment-process",
+      "hasIndex": true,
+      "bytes": 6829,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": false
+      },
+      "auth": {
+        "requireAuth": true,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": false,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": true,
+        "killSwitch": true,
+        "zodValidation": true,
+        "policyGate": true
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.4"
+      ]
+    },
+    {
+      "name": "personal-brain",
+      "hasIndex": true,
+      "bytes": 49087,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": false
+      },
+      "auth": {
+        "requireAuth": true,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": true,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.4"
+      ]
+    },
+    {
+      "name": "personal-brain-cron",
+      "hasIndex": true,
+      "bytes": 7538,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.4"
+      ]
+    },
+    {
+      "name": "press-inquiry",
+      "hasIndex": true,
+      "bytes": 2175,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.4"
+      ]
+    },
+    {
+      "name": "production-launch-attestor",
+      "hasIndex": true,
+      "bytes": 3062,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": false
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": true,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.95.0"
+      ]
+    },
+    {
+      "name": "prompt-versioning",
+      "hasIndex": true,
+      "bytes": 4405,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": false
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": true,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.4"
+      ]
+    },
+    {
+      "name": "provider-family-operations",
+      "hasIndex": true,
+      "bytes": 16599,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": false
+      },
+      "auth": {
+        "requireAuth": true,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": true,
+        "killSwitch": false,
+        "zodValidation": true,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.4"
+      ]
+    },
+    {
+      "name": "push-dispatch",
+      "hasIndex": true,
+      "bytes": 17991,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": false
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.4"
+      ]
+    },
+    {
+      "name": "push-track",
+      "hasIndex": true,
+      "bytes": 1778,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": false
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.4"
+      ]
+    },
+    {
+      "name": "recovery-evidence-ingest",
+      "hasIndex": true,
+      "bytes": 5307,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.57.4"
+      ]
+    },
+    {
+      "name": "release-artifact-signer",
+      "hasIndex": true,
+      "bytes": 4253,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": true,
+        "usesServiceRole": false,
+        "webhookSecretCheck": true
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.0"
+      ]
+    },
+    {
+      "name": "release-artifact-verifier",
+      "hasIndex": true,
+      "bytes": 3011,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": true,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.0"
+      ]
+    },
+    {
+      "name": "release-env-gate",
+      "hasIndex": true,
+      "bytes": 8476,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": true,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": false
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": true,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": true,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.4"
+      ]
+    },
+    {
+      "name": "release-evidence-graph-snapshot",
+      "hasIndex": true,
+      "bytes": 2015,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": false
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.95.0"
+      ]
+    },
+    {
+      "name": "revenue-caller",
+      "hasIndex": true,
+      "bytes": 6970,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": false
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": false,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": true,
+        "killSwitch": false,
+        "zodValidation": true,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.4"
+      ]
+    },
+    {
+      "name": "routing-policy-update",
+      "hasIndex": true,
+      "bytes": 3210,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": true,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.4"
+      ]
+    },
+    {
+      "name": "runbook-drill",
+      "hasIndex": true,
+      "bytes": 8549,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": false
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": []
+    },
+    {
+      "name": "runtime-probes",
+      "hasIndex": true,
+      "bytes": 13094,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": false
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": true,
+        "killSwitch": false,
+        "zodValidation": true,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.4"
+      ]
+    },
+    {
+      "name": "scheduler-dispatch",
+      "hasIndex": true,
+      "bytes": 9690,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": false
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": true,
+        "killSwitch": true,
+        "zodValidation": true,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.4"
+      ]
+    },
+    {
+      "name": "secret-rotation-orchestrator",
+      "hasIndex": true,
+      "bytes": 8272,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": true,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.4"
+      ]
+    },
+    {
+      "name": "security-anomaly-rotation-trigger",
+      "hasIndex": true,
+      "bytes": 4836,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.0"
+      ]
+    },
+    {
+      "name": "security-council-tick",
+      "hasIndex": true,
+      "bytes": 12903,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": true,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.0"
+      ]
+    },
+    {
+      "name": "security-fabric-runtime-probe",
+      "hasIndex": true,
+      "bytes": 4572,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.0"
+      ]
+    },
+    {
+      "name": "security-kill-switch-recommender",
+      "hasIndex": true,
+      "bytes": 3597,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.0"
+      ]
+    },
+    {
+      "name": "seed-advisor-registry",
+      "hasIndex": true,
+      "bytes": 3426,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.4"
+      ]
+    },
+    {
+      "name": "seed-connector-registry",
+      "hasIndex": true,
+      "bytes": 3914,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.0"
+      ]
+    },
+    {
+      "name": "seed-user-data",
+      "hasIndex": true,
+      "bytes": 24577,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": false
+      },
+      "auth": {
+        "requireAuth": true,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": true,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.4",
+        "2.95.0"
+      ]
+    },
+    {
+      "name": "self-heal-receipts",
+      "hasIndex": true,
+      "bytes": 2235,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": false
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": true,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.0"
+      ]
+    },
+    {
+      "name": "self-healing",
+      "hasIndex": true,
+      "bytes": 5586,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": false
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": true,
+        "zodValidation": true,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.4"
+      ]
+    },
+    {
+      "name": "simulation-engine-api",
+      "hasIndex": true,
+      "bytes": 3574,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": true,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": false,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": true,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": []
+    },
+    {
+      "name": "sita-agent-planner",
+      "hasIndex": true,
+      "bytes": 17958,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": false,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": []
+    },
+    {
+      "name": "sita-briefings-generate",
+      "hasIndex": true,
+      "bytes": 6319,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": true
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.0"
+      ]
+    },
+    {
+      "name": "sita-council-prevote",
+      "hasIndex": true,
+      "bytes": 4408,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": false,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": []
+    },
+    {
+      "name": "sita-dream-consolidate",
+      "hasIndex": true,
+      "bytes": 8214,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": true,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": []
+    },
+    {
+      "name": "sita-handoff-broker",
+      "hasIndex": true,
+      "bytes": 3901,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.0"
+      ]
+    },
+    {
+      "name": "sita-personality-tune",
+      "hasIndex": true,
+      "bytes": 4024,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": false,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.0"
+      ]
+    },
+    {
+      "name": "sita-reflection-loop",
+      "hasIndex": true,
+      "bytes": 7320,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": true
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.0"
+      ]
+    },
+    {
+      "name": "sla-evaluator",
+      "hasIndex": true,
+      "bytes": 9153,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.4"
+      ]
+    },
+    {
+      "name": "support-gateway",
+      "hasIndex": true,
+      "bytes": 3857,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.4"
+      ]
+    },
+    {
+      "name": "support-recovery-api",
+      "hasIndex": true,
+      "bytes": 7607,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": true,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.4"
+      ]
+    },
+    {
+      "name": "system-updates",
+      "hasIndex": true,
+      "bytes": 4200,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": false
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": true,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.4"
+      ]
+    },
+    {
+      "name": "tasks-workflow-api",
+      "hasIndex": true,
+      "bytes": 3775,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": true,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": false,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": []
+    },
+    {
+      "name": "tax-estimate",
+      "hasIndex": true,
+      "bytes": 7033,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": false
+      },
+      "auth": {
+        "requireAuth": true,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": false,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": true,
+        "killSwitch": false,
+        "zodValidation": true,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": []
+    },
+    {
+      "name": "tenant-self-service-bff",
+      "hasIndex": true,
+      "bytes": 3916,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": false,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.0"
+      ]
+    },
+    {
+      "name": "trace-ingest",
+      "hasIndex": true,
+      "bytes": 4198,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.0"
+      ]
+    },
+    {
+      "name": "uptime-rollup",
+      "hasIndex": true,
+      "bytes": 1542,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.0"
+      ]
+    },
+    {
+      "name": "user-bff-gateway",
+      "hasIndex": true,
+      "bytes": 5649,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": false,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.4"
+      ]
+    },
+    {
+      "name": "vapid-public-key",
+      "hasIndex": true,
+      "bytes": 735,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": false
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": false,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": []
+    },
+    {
+      "name": "verification-recorder",
+      "hasIndex": true,
+      "bytes": 3615,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.4"
+      ]
+    },
+    {
+      "name": "voice-spine",
+      "hasIndex": true,
+      "bytes": 14957,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": false
+      },
+      "auth": {
+        "requireAuth": true,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": true,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.4"
+      ]
+    },
+    {
+      "name": "waitlist-signup",
+      "hasIndex": true,
+      "bytes": 3428,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.4"
+      ]
+    },
+    {
+      "name": "waitlist-stats",
+      "hasIndex": true,
+      "bytes": 877,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.4"
+      ]
+    },
+    {
+      "name": "webauthn-challenge",
+      "hasIndex": true,
+      "bytes": 9137,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": true,
+        "hasRoleCheck": false,
+        "usesServiceRole": false,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.0"
+      ]
+    },
+    {
+      "name": "webhook-ingest",
+      "hasIndex": true,
+      "bytes": 2888,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": true
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.0"
+      ]
+    },
+    {
+      "name": "webhook-process",
+      "hasIndex": true,
+      "bytes": 3217,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.0"
+      ]
+    },
+    {
+      "name": "webhook-replay",
+      "hasIndex": true,
+      "bytes": 3462,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": true,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": false
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": true,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.4"
+      ]
+    },
+    {
+      "name": "webhook-retry-processor",
+      "hasIndex": true,
+      "bytes": 5140,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": true
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.45.0"
+      ]
+    },
+    {
+      "name": "workflow-execute",
+      "hasIndex": true,
+      "bytes": 6866,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": true,
+        "zodValidation": true,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.4"
+      ]
+    },
+    {
+      "name": "workflow-repair",
+      "hasIndex": true,
+      "bytes": 5089,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": true,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": true,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.4"
+      ]
+    },
+    {
+      "name": "workflow-replay",
+      "hasIndex": true,
+      "bytes": 4133,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": true,
+        "getClaims": false,
+        "hasRoleCheck": true,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": true,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.4"
+      ]
+    },
+    {
+      "name": "workflow-stuck-detector",
+      "hasIndex": true,
+      "bytes": 3305,
+      "cors": {
+        "hasAny": true,
+        "usesWithCors": false,
+        "hasOptionsHandler": true,
+        "allowsAllOrigins": true
+      },
+      "auth": {
+        "requireAuth": false,
+        "requireAdmin": false,
+        "getUser": false,
+        "getClaims": false,
+        "hasRoleCheck": false,
+        "usesServiceRole": true,
+        "webhookSecretCheck": false
+      },
+      "safety": {
+        "rateLimit": false,
+        "killSwitch": false,
+        "zodValidation": false,
+        "policyGate": false
+      },
+      "receipts": {
+        "emits": false
+      },
+      "leaks": {
+        "consoleErrorEnv": false
+      },
+      "pinnedSupabaseSdkVersions": [
+        "2.49.4"
+      ]
+    }
+  ]
+}
