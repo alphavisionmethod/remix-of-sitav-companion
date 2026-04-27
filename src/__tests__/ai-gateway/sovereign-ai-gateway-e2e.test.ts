@@ -60,9 +60,9 @@ const EDGE_DIRECT_CALLER_DRIFT: Record<string, string> = {
   "supabase/functions/personal-brain/index.ts":
     "Personal Brain pillar (7-phase) — own dispatch + receipt fabric; tracked under personal-brain-adaptive-layer memory.",
   "supabase/functions/personal-brain-cron/index.ts":
-    "Personal Brain cron generator — paired with personal-brain runtime above.",
+    "Personal Brain cron generator — paired with the personal-brain-adaptive-layer pillar above; tracked under the same memory ref.",
   "supabase/functions/brain-core/index.ts":
-    "Brain core synthesis — paired with personal-brain pillar.",
+    "Brain core synthesis — paired with the personal-brain-adaptive-layer pillar.",
 
   // ── Tier D: agent / orchestration internals ──
   "supabase/functions/agent-executor/index.ts":
