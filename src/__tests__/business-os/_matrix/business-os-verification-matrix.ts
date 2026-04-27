@@ -70,6 +70,7 @@ export const SERVICE_SURFACES: SurfaceEntry[] = [
   { id: "svc.callback-queue", kind: "service", ref: "src/lib/services/business-os/callback-queue.service.ts", tests: ["src/__tests__/business-os/services/callback-queue.service.test.ts"], status: "behavioral", priority: "P1" },
   { id: "svc.customer-health", kind: "service", ref: "src/lib/services/business-os/customer-health.service.ts", tests: ["src/__tests__/business-os/services/customer-health.service.test.ts"], status: "behavioral", priority: "P1" },
   { id: "svc.continuity-verification", kind: "service", ref: "src/lib/services/business-os/continuity-verification.service.ts", tests: ["src/__tests__/business-os/services/continuity-verification.service.test.ts", "src/__tests__/business-os/trust/continuity-verification.test.ts"], status: "behavioral", priority: "P0" },
+  { id: "svc.support-health-loop", kind: "service", ref: "src/lib/services/business-os/support-health-loop.service.ts", tests: ["src/__tests__/business-os/integration/support-health-loop.test.ts"], status: "behavioral", priority: "P1", notes: "Phase 8 — drift fix; existing test was orphaned from matrix" },
 ];
 
 /** Services intentionally excluded from dedicated behavioral tests, with stable reason. */
