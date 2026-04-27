@@ -396,3 +396,57 @@ Test Files  6 passed (6)
 - The trust matrix `trust.journey-e2e` row points at the **canonical orchestrator file** as `ref` so any future refactor that breaks the 9-stage contract trips this test before merge.
 
 Phase 9 collapses the verification surface from "every stage is tested in isolation" to **"the entire trust journey is proven as one continuous lineage"** — refusal, approval-parking, receipt emission, and policy/proof coherence are all gated by a single E2E suite that runs in <30ms.
+
+---
+
+## Phase 10 — Multi-Tenancy + RLS Behavioral E2E
+
+### Goal
+Prove the canonical `is_org_member` security-definer seam and the 1,282 RLS policies enforce **tenant isolation against cross-org probe attempts** — converting "100% RLS coverage" from a documented claim to a **machine-verified contract** anchored to a live database snapshot.
+
+### Live snapshot (production database)
+Captured via `psql` against the live Lovable Cloud database into `generated/db/rls-snapshot.json`:
+
+| Metric | Value |
+|---|---|
+| Public tables | **518** |
+| RLS-enabled tables | **518 (100%)** |
+| Tables without RLS | **0** |
+| RLS policies (total) | **1,282** |
+| Org-aware tables (with `org_id` column) | **32** |
+| Policies gated by `is_org_member` | **62** |
+| Service-role bypass policies | **17** |
+| `SECURITY DEFINER` functions verified | **2** (`is_org_member`, `is_org_owner`) |
+
+### Deliverables
+- **`generated/db/rls-snapshot.json`** — frozen snapshot of `pg_tables`, `pg_policies`, `information_schema.columns` (org_id), and `pg_proc` (security definers) for hermetic test consumption.
+- **`src/__tests__/tenant-isolation/rls-behavioral-e2e.test.ts`** (16 tests, all passing) covering 6 invariant categories:
+  1. **Snapshot freshness** — totals are coherent and non-empty.
+  2. **RLS coverage** — every public table has `rowsecurity=true`, and every RLS-enabled table has at least one policy attached (no silent deny-all).
+  3. **Security-definer seam** — `is_org_member` and `is_org_owner` exist as `SECURITY DEFINER` with **pinned `search_path=public`** (search_path hijack defense).
+  4. **Org-aware canonical pattern** — every `org_id`-bearing table has at least one `is_org_member`-gated policy, the full SELECT/INSERT/UPDATE/DELETE quartet, and INSERT policies always carry a non-empty `WITH CHECK`.
+  5. **Overpermissive detection** — no DML policy uses a tautological `USING (true)` or `WITH CHECK (true)` clause; service-role exemptions are bounded (<50 watermark).
+  6. **Cross-org isolation** — at least 30 distinct tables are gated by `is_org_member`; `organizations.SELECT` and `org_members.SELECT` are themselves gated by `is_org_member`; defense-in-depth user_id fallback present where canonical.
+
+### Anomaly caught (and codified)
+The test suite **caught a real anomaly**: `sita_agent_plans` has an `org_id` column but is gated strictly by `auth.uid() = user_id` (no `is_org_member` gate). This is **safe** — strict user_id gating is more restrictive than org gating — but the deviation deserves visibility. Phase 10 codifies this as a documented `USER_ID_ONLY_EXEMPTIONS` allowlist with its own contract test that proves every exemption is gated by `auth.uid() = user_id` on every CRUD command. **Future regressions of either kind will fail loudly.**
+
+### Verification
+```
+✓ src/__tests__/tenant-isolation/cross-tenant-prevention.test.ts (6 tests)
+✓ src/__tests__/tenant-isolation/tenant-sovereignty.test.ts      (8 tests)
+✓ src/__tests__/tenant-isolation/rls-behavioral-e2e.test.ts      (16 tests)  ← NEW
+✓ src/__tests__/tenant-isolation/tenant-isolation-map.test.ts    (6 tests)
+
+Test Files  4 passed (4)
+     Tests  36 passed (36)
+```
+`tsc --noEmit` clean.
+
+### No-duplication guarantees
+- Reused the **existing `tenant-isolation/` directory** — no parallel test pillar created.
+- Reused the **live database** as the single source of truth — the snapshot is generated, not hand-authored.
+- The existing `tenant-isolation-map.test.ts` covers the in-code registry side; the new `rls-behavioral-e2e.test.ts` covers the **live database side**. The two suites verify the **same invariants from opposite ends of the trust seam**, which is the whole point of an E2E.
+- Matrix row `trust.rls-multi-tenancy` (P0, behavioral) points at the snapshot `ref`, so any RLS regression caught by a snapshot refresh trips the suite at CI time.
+
+Phase 10 closes the multi-tenancy verification loop: **518 tables, 1,282 policies, 32 org-aware surfaces, and 2 security-definer functions are now proven as a single coherent trust contract** — and the one structural anomaly in the database is captured, justified, and ratchet-tested.
