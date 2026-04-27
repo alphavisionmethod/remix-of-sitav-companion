@@ -41,8 +41,15 @@ function withTrust<TArgs, TResult>(
   describe?: (args: TArgs) => string,
 ) {
   return async (args: TArgs): Promise<TResult> => {
+    // Phase 7.2 — derive a normalized entity ref from the action key + args
+    // so module proof surfaces (CRMProofTrail, etc.) can filter receipts by
+    // entity without parsing args defensively at read time.
+    const entityRef = deriveEntityRef(action, args);
     const decision = await emitRegisteredTrustAction(action, {
-      payload: { args: args as unknown as Record<string, unknown> },
+      payload: {
+        args: args as unknown as Record<string, unknown>,
+        ...(entityRef ? { entity_ref: entityRef } : {}),
+      },
       impactSummary: describe?.(args),
     });
     if (decision.blocked) {
@@ -52,6 +59,58 @@ function withTrust<TArgs, TResult>(
       );
     }
     return fn(args);
+  };
+}
+
+// ─── Entity-ref derivation (Phase 7.2) ──────────────────────
+// CRM action keys follow `crm.<entity>.<verb>` (or
+// `business.crm.contact_delete`). We map that prefix to a canonical proof
+// entity_type and pull `id` from the mutation args. Pure function — no IO.
+const ACTION_KEY_TO_ENTITY: Record<string, string> = {
+  "crm.contact": "contact",
+  "business.crm.contact_delete": "contact",
+  "crm.company": "company",
+  "crm.opportunity": "deal",
+  "crm.deal": "deal",
+  "crm.task": "task",
+  "crm.note": "note",
+  "crm.communication": "communication",
+  "crm.pipeline_stage": "pipeline_stage",
+  "crm.segment": "segment",
+  "crm.tag": "tag",
+  "crm.import_job": "import_job",
+  "crm.automation": "automation",
+  "crm.merge": "merge",
+  "crm.contact_company_link": "link",
+};
+
+export function deriveEntityRef(
+  action: string,
+  args: unknown,
+): { entity_type: string; entity_id?: string; related?: Record<string, string> } | null {
+  const prefix = Object.keys(ACTION_KEY_TO_ENTITY)
+    .filter((k) => action === k || action.startsWith(`${k}.`))
+    .sort((a, b) => b.length - a.length)[0];
+  if (!prefix) return null;
+  const entity_type = ACTION_KEY_TO_ENTITY[prefix];
+
+  const a = (args ?? {}) as Record<string, unknown>;
+  const id =
+    typeof a.id === "string" ? a.id :
+    typeof (a as { entity_id?: unknown }).entity_id === "string" ? (a as { entity_id: string }).entity_id :
+    undefined;
+
+  const related: Record<string, string> = {};
+  if (typeof a.contact_id === "string") related.contact_id = a.contact_id;
+  if (typeof a.company_id === "string") related.company_id = a.company_id;
+  if (typeof a.opportunity_id === "string") related.opportunity_id = a.opportunity_id;
+  if (typeof a.winner_id === "string") related.winner_id = a.winner_id;
+  if (typeof a.loser_id === "string") related.loser_id = a.loser_id;
+
+  return {
+    entity_type,
+    ...(id ? { entity_id: id } : {}),
+    ...(Object.keys(related).length ? { related } : {}),
   };
 }
 
