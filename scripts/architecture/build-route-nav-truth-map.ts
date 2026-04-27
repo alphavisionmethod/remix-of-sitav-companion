@@ -101,15 +101,30 @@ function buildTruth(): {
     if (d.role === "archived") pillars[d.pillar].counts.archived = (pillars[d.pillar].counts.archived ?? 0) + 1;
   }
 
-  // Orphaned routes: declared in a family but no manifest descriptor and no redirect target.
-  const redirectTargets = new Set(USER_REDIRECTS.map((r) => r.to.replace(/\/:[^/]+/g, "/:_")));
+  // Orphaned routes: declared in a family but no manifest descriptor AND not
+  // referenced by either side of the redirect map (`from` legacy stub or `to` target).
+  const norm = (p: string) => p.replace(/\/:[^/]+/g, "/:_");
+  const redirectKnown = new Set<string>();
+  for (const r of USER_REDIRECTS) {
+    redirectKnown.add(norm(r.from));
+    redirectKnown.add(norm(r.to));
+  }
+  // Also: the bare pillar roots (`/business`, `/concierge`, `/money`) are
+  // structural shims, not pages, and must not count as orphans.
+  const STRUCTURAL_PILLAR_ROOTS = new Set([
+    "/business",
+    "/concierge",
+    "/money",
+    "/investment",
+  ]);
+  // Detail routes (params) are entity-scoped and intentionally not in the page manifest.
+  const isParamRoute = (p: string) => /\/:[^/]+/.test(p);
   const orphanedRoutes = familyRoutes
     .filter((r) => pillarOwnedRoute(r.path))
     .filter((r) => !declaredRoutesFromManifest.has(r.path))
-    .filter((r) => {
-      const norm = r.path.replace(/\/:[^/]+/g, "/:_");
-      return !redirectTargets.has(norm);
-    });
+    .filter((r) => !redirectKnown.has(norm(r.path)))
+    .filter((r) => !STRUCTURAL_PILLAR_ROOTS.has(r.path))
+    .filter((r) => !isParamRoute(r.path));
 
   const totals = {
     descriptors: ALL_IA_DESCRIPTORS.length,
