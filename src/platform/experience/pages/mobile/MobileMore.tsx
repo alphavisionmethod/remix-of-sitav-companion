@@ -1,11 +1,11 @@
 import { MobileShell } from "@/platform/experience/components/mobile/MobileShell";
 import { useNavigate } from "react-router-dom";
 import {
-import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
   BarChart3, ShieldCheck, Bell, FileText, TrendingUp, FolderOpen,
   Smartphone, AlertTriangle, Camera, Settings, Briefcase, Gavel,
   Terminal, Bot, Activity, RefreshCw, Clock, Mail,
 } from "lucide-react";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 const links = [
   { icon: Terminal, label: "Command", path: "/mobile/command", color: "bg-primary/15 text-primary" },
