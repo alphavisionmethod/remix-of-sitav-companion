@@ -1,14 +1,63 @@
 {
-  "generatedAt": "2026-04-27T02:41:41.424Z",
+  "generatedAt": "2026-04-27T02:45:22.089Z",
   "kind": "hook",
   "root": "src/hooks",
-  "total": 71,
+  "total": 74,
   "summary": {
+    "module:business": 3,
     "platform:runtime": 1,
     "platform:trust": 1,
     "shared": 69
   },
   "entries": [
+    {
+      "path": "src/hooks/use-cai-data.ts",
+      "filename": "use-cai-data.ts",
+      "classification": "module:business",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "pillar": "business"
+        }
+      },
+      "proposedTargetPath": "src/modules/business/hooks/use-cai-data.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/use-domain-data.ts",
+      "filename": "use-domain-data.ts",
+      "classification": "module:business",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "pillar": "business"
+        }
+      },
+      "proposedTargetPath": "src/modules/business/hooks/use-domain-data.ts",
+      "status": "move"
+    },
+    {
+      "path": "src/hooks/useCAIData.ts",
+      "filename": "useCAIData.ts",
+      "classification": "module:business",
+      "evidence": {
+        "imports": {
+          "pillars": [],
+          "platforms": []
+        },
+        "name": {
+          "pillar": "business"
+        }
+      },
+      "proposedTargetPath": "src/modules/business/hooks/useCAIData.ts",
+      "status": "move"
+    },
     {
       "path": "src/hooks/useRealityProvider.ts",
       "filename": "useRealityProvider.ts",
