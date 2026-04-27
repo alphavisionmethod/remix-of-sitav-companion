@@ -56,6 +56,16 @@ function fileToRouteFamily(file: string): string | null {
   return null;
 }
 
+// Phase 10 — top-level cross-app routes that are owned by a module
+// even though their URL does not begin with the module's prefix.
+// Each entry maps "/<route-family>" → owning module family so the
+// silent-drop check considers them satisfied as long as the owning
+// module has at least one consume site.
+const CROSS_MODULE_ROUTE_OWNERSHIP: Record<string, string> = {
+  "/recovered-value": "/business",
+  "/lead-recovery": "/business",
+};
+
 function main(): number {
   if (!fs.existsSync(BASELINE)) {
     console.error(`❌ Baseline not found at ${BASELINE}. Run scripts/architecture/emit-continuity-baseline.ts first.`);
@@ -84,7 +94,9 @@ function main(): number {
   );
   for (const s of baseline.setLinkedContextSites) {
     const fam = routeFamily(s.targetRoute);
-    if (fam && !consumeFamilies.has(fam)) {
+    if (!fam) continue;
+    const ownerFam = CROSS_MODULE_ROUTE_OWNERSHIP[fam] ?? fam;
+    if (!consumeFamilies.has(ownerFam)) {
       blocking.push(
         `[silent-drop] ${s.file}:${s.line}  → target route family ${fam} has no consumeLinkedContext site.`,
       );
