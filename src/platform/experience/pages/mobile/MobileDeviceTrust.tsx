@@ -106,8 +106,10 @@ const DeviceCard = ({ device, onRevoke, onReEnroll }: { device: DeviceInfo; onRe
 };
 
 export default function MobileDeviceTrust() {
-  
-  const [devices] = useState<DeviceInfo[]>(DEVICES);
+  const { isDemo } = useRealityModeSafe();
+  const [devices] = useState<DeviceInfo[]>(
+    isDemo ? (MOCK_MOBILE_DEVICES as DeviceInfo[]) : []
+  );
 
   const handleRevoke = (id: string) => {
     toast.info("Device trust revoked", { description: "This device can no longer approve high-trust actions." });
