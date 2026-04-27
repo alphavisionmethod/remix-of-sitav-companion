@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-27T03:00:22.992Z",
+  "generatedAt": "2026-04-27T03:01:00.636Z",
   "scannedFileCount": 5983,
   "setLinkedContextSites": [
     {
@@ -103,7 +103,9 @@
     {
       "file": "src/modules/business/pages/AppointmentsScheduling.tsx",
       "line": 232,
-      "acceptedEntityTypes": []
+      "acceptedEntityTypes": [
+        "appointment"
+      ]
     },
     {
       "file": "src/modules/business/pages/InvoicesCollections.tsx",
@@ -489,7 +491,6 @@
     "fixtureLeakTotal": 42,
     "fixtureLeakUnguarded": 21,
     "orphanEntityTypes": [
-      "appointment",
       "opportunity"
     ]
   }
