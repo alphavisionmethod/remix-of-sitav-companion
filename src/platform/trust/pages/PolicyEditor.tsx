@@ -16,9 +16,6 @@ import { useDraftAutosave } from "@/hooks/useDraftAutosave";
 import { useEffect } from "react";
 import { PageShell } from "@/platform/sita/components/sita/PageShell";
 
-// Production fallback — seed data removed
-const POLICY_CATEGORIES: any[] = [];
-
 const PolicyEditor = () => {
   const { user } = useAuth();
   const qc = useQueryClient();
@@ -55,6 +52,14 @@ const PolicyEditor = () => {
   const filtered = category === "all" ? policies : policies.filter(p => p.category === category);
   const selected = policies.find(p => p.id === selectedId);
   const activeCount = policies.filter(p => p.active).length;
+  // Derive category list from the live policies query — no audit-stripped placeholder.
+  const categories = Array.from(
+    new Set(
+      (policies as Array<{ category?: string | null }>)
+        .map((p) => p.category)
+        .filter((c): c is string => typeof c === "string" && c.length > 0),
+    ),
+  ).sort();
 
   return (
     <PageShell>
@@ -73,7 +78,14 @@ const PolicyEditor = () => {
       </div>
 
       <SitaTabs
-        tabs={[{ key: "all", label: "All", count: policies.length }, ...([] as any[]).map(c => ({ key: c, label: c.charAt(0).toUpperCase() + c.slice(1), count: policies.filter(p => p.category === c).length }))]}
+        tabs={[
+          { key: "all", label: "All", count: policies.length },
+          ...categories.map((c) => ({
+            key: c,
+            label: c.charAt(0).toUpperCase() + c.slice(1),
+            count: policies.filter((p) => p.category === c).length,
+          })),
+        ]}
         active={category}
         onChange={setCategory}
       />
@@ -84,7 +96,9 @@ const PolicyEditor = () => {
           <div className="mt-3 space-y-3">
             <input className="w-full rounded-xl border border-border bg-secondary/40 px-4 py-2.5 text-sm text-foreground" placeholder="Policy name" value={newName} onChange={e => setNewName(e.target.value)} />
             <select className="w-full rounded-xl border border-border bg-secondary/40 px-4 py-2.5 text-sm text-foreground" value={newCategory} onChange={e => setNewCategory(e.target.value)}>
-              {([] as any[]).map(c => <option key={c} value={c}>{c.charAt(0).toUpperCase() + c.slice(1)}</option>)}
+              {(categories.length > 0 ? categories : ["general"]).map((c) => (
+                <option key={c} value={c}>{c.charAt(0).toUpperCase() + c.slice(1)}</option>
+              ))}
             </select>
             <label className="flex items-center gap-2 text-sm text-foreground">
               <input type="checkbox" checked={newApproval} onChange={e => setNewApproval(e.target.checked)} className="rounded border-border" />
