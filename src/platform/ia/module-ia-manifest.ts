@@ -157,6 +157,10 @@ export const FINANCE_IA: readonly PageDescriptor[] = [
   { id: "boardroom", pillar: "finance", role: "boardroom", label: "Boardroom", component: "MoneyBoardroom", route: "/money/boardroom", sidebarVisible: true, status: "ga" },
   { id: "automations", pillar: "finance", role: "workspace", label: "Automations", component: "FinanceAutomations", route: "/money/automations", sidebarVisible: true, status: "ga" },
   { id: "settings", pillar: "finance", role: "settings", label: "Settings", component: "MoneySettings", route: "/money/settings", sidebarVisible: true, status: "ga" },
+  // ── Phase 4: non-shell Money/Wealth surfaces ──────────────────
+  { id: "money-onboarding", pillar: "finance", role: "workspace", label: "Money Onboarding", component: "MoneyOnboarding", route: "/money/onboarding", sidebarVisible: false, status: "ga", notes: "Phase 4: first-use only — reachable via /money/onboarding flow, intentionally not in the Money sidebar." },
+  { id: "capital-allocation", pillar: "finance", role: "workspace", label: "Capital Allocation", component: "CapitalAllocationPage", route: "/capital-allocation", sidebarVisible: false, status: "legacy", legacyNameAllowed: true, notes: "Phase 4: legacy root-level slug retained — referenced by capital-allocation service. Hidden from Money sidebar; will be folded into Money Allocator in a follow-up.", replacedBy: "allocator" },
+  { id: "wealth-command", pillar: "finance", role: "archived", label: "Wealth Command (legacy)", component: "WealthCommandCenter", route: null, sidebarVisible: false, status: "archived", legacyNameAllowed: true, notes: "Phase 4: archived — orphan root-level cinematic dashboard duplicating MoneyOverview. Route /wealth-command removed. File kept on disk for diff history; no shell mount, no sidebar, no public route.", replacedBy: "overview" },
 ];
 
 // ─────────────────────────────────────────────────────────────
