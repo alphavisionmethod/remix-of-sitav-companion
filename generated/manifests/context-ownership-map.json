@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-27T02:37:54.977Z",
+  "generatedAt": "2026-04-27T02:41:41.426Z",
   "kind": "context",
   "root": "src/contexts",
   "total": 12,
@@ -42,7 +42,10 @@
       "evidence": {
         "imports": {
           "pillars": [],
-          "platforms": []
+          "platforms": [
+            "sita",
+            "app-platform"
+          ]
         },
         "name": {}
       },
@@ -142,7 +145,8 @@
           "pillars": [],
           "platforms": [
             "sita",
-            "nova-sdk"
+            "nova-sdk",
+            "orchestration"
           ]
         },
         "name": {}
@@ -171,7 +175,9 @@
       "evidence": {
         "imports": {
           "pillars": [],
-          "platforms": []
+          "platforms": [
+            "sita"
+          ]
         },
         "name": {
           "platform": "sita"
