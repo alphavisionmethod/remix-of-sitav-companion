@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-04-27T17:31:40.262Z",
+  "generatedAt": "2026-04-27T17:48:14.247Z",
   "totals": {
     "descriptors": 118,
-    "familyRoutes": 713,
-    "uniqueFamilyRoutePaths": 710,
+    "familyRoutes": 709,
+    "uniqueFamilyRoutePaths": 706,
     "redirects": 56,
     "orphanedRoutes": 0
   },
