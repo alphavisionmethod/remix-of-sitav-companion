@@ -11,6 +11,7 @@ import {
   getDefaultConfig,
   type AutopilotConfig,
 } from "@/lib/domain-engines/autopilot-engine";
+import { emitClientReceipt } from "@/lib/trust";
 
 const LEGACY_LS_KEY = "sita-autopilot-config";
 
@@ -195,26 +196,25 @@ export interface RecordAutopilotEventOptions {
 /**
  * Records a governance receipt for an Autopilot configuration change.
  * Non-blocking: failures are logged but never thrown.
+ *
+ * Delegates to the canonical `emitClientReceipt` helper (`@/lib/trust`)
+ * so all autopilot receipts share the same shape, metadata envelope,
+ * and audit lineage as every other module's receipts. Do NOT inline
+ * `ai_action_receipts` inserts here — extend `emitClientReceipt` instead.
  */
 export async function recordAutopilotEvent(
   opts: RecordAutopilotEventOptions,
 ): Promise<void> {
-  try {
-    await fromTable("ai_action_receipts").insert({
-      user_id: opts.userId,
-      recommendation_summary: opts.summary,
-      action_type: opts.kind,
-      action_payload: opts.payload ?? {},
-      confidence: 1,
-      risk_tier: "low",
-      status: "executed",
-      executed_at: new Date().toISOString(),
-      metadata: { source: "autopilot-hub" },
-    });
-  } catch (err) {
-    // eslint-disable-next-line no-console
-    console.warn("[autopilot] failed to record event", opts.kind, err);
-  }
+  await emitClientReceipt({
+    userId: opts.userId,
+    actionType: opts.kind,
+    summary: opts.summary,
+    payload: opts.payload,
+    riskTier: "low",
+    status: "executed",
+    confidence: 1,
+    metadata: { source: "autopilot-hub" },
+  });
 }
 
 export const __testing__ = { sanitizeConfig, getDemoConfig, LEGACY_LS_KEY };
