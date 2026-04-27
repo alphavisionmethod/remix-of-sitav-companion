@@ -66,7 +66,7 @@ export default function MarketExplorer() {
       {/* Instruments Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
         {filtered.map(inst => (
-          <button key={inst.id} onClick={() => navigate(`/investments/instrument/${inst.id}`)}
+          <button key={inst.id} onClick={() => navigate(`/investment/instrument/${inst.id}`)}
             className="rounded-2xl border border-border bg-card p-4 text-left hover:border-primary/20 transition-all group">
             <div className="flex items-start gap-3">
               <span className="text-2xl">{inst.logoIcon}</span>

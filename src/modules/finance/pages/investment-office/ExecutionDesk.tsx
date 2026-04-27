@@ -250,7 +250,7 @@ export default function ExecutionDesk() {
               </div>
               <div className="flex gap-2 justify-center">
                 <button onClick={() => setStatus("config")} className="rounded-xl bg-secondary px-4 py-2 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors">New Trade</button>
-                <button onClick={() => navigate("/investments/portfolio")} className="rounded-xl bg-primary px-4 py-2 text-xs font-medium text-primary-foreground hover:bg-primary/90 transition-colors">View Portfolio</button>
+                <button onClick={() => navigate("/investment/portfolio")} className="rounded-xl bg-primary px-4 py-2 text-xs font-medium text-primary-foreground hover:bg-primary/90 transition-colors">View Portfolio</button>
               </div>
             </div>
           )}

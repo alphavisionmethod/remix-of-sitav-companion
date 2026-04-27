@@ -91,7 +91,7 @@ export default function WatchlistsSignals() {
         </div>
         <div className="divide-y divide-border/50">
           {displayInstruments.map(inst => (
-            <button key={inst.id} onClick={() => navigate(`/investments/instrument/${inst.id}`)}
+            <button key={inst.id} onClick={() => navigate(`/investment/instrument/${inst.id}`)}
               className="w-full flex items-center gap-4 px-5 py-3.5 hover:bg-secondary/30 transition-colors text-left">
               <span className="text-xl">{inst.logoIcon}</span>
               <div className="flex-1 min-w-0">

@@ -236,11 +236,11 @@ export default function KnowledgeGraph() {
           </p>
         </div>
         <div className="flex gap-2">
-          <button onClick={() => navigate("/investments/boardroom")}
+          <button onClick={() => navigate("/investment/boardroom")}
             className="rounded-lg bg-secondary px-3 py-2 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors">
             Boardroom
           </button>
-          <button onClick={() => navigate("/investments/markets")}
+          <button onClick={() => navigate("/investment/markets")}
             className="rounded-lg bg-secondary px-3 py-2 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors">
             Markets
           </button>
@@ -424,7 +424,7 @@ export default function KnowledgeGraph() {
                 </div>
 
                 {selectedNode.type === "instrument" && (
-                  <button onClick={() => navigate(`/investments/instrument/${selectedNode.id}`)}
+                  <button onClick={() => navigate(`/investment/instrument/${selectedNode.id}`)}
                     className="w-full rounded-xl bg-primary/10 text-primary text-xs font-medium py-2.5 flex items-center justify-center gap-2 hover:bg-primary/20 transition-colors">
                     <Eye className="h-3.5 w-3.5" /> View Full Instrument Detail
                   </button>

@@ -119,15 +119,15 @@ export default function InvestmentBoardroom() {
         </div>
         <div className="flex gap-2 flex-wrap">
           {[
-            { label: "Markets", path: "/investments/markets" },
-            { label: "Portfolio", path: "/investments/portfolio" },
-            { label: "Strategy", path: "/investments/strategy" },
-            { label: "Execute", path: "/investments/execute" },
-            { label: "Research", path: "/investments/research" },
-            { label: "Risk", path: "/investments/risk" },
-            { label: "Trading Floor", path: "/investments/trading-floor", icon: Activity },
-            { label: "War Room", path: "/investments/war-room", icon: Siren },
-            { label: "Knowledge Graph", path: "/investments/knowledge-graph", icon: Network },
+            { label: "Markets", path: "/investment/markets" },
+            { label: "Portfolio", path: "/investment/portfolio" },
+            { label: "Strategy", path: "/investment/strategy" },
+            { label: "Execute", path: "/investment/execute" },
+            { label: "Research", path: "/investment/research" },
+            { label: "Risk", path: "/investment/risk" },
+            { label: "Trading Floor", path: "/investment/trading-floor", icon: Activity },
+            { label: "War Room", path: "/investment/war-room", icon: Siren },
+            { label: "Knowledge Graph", path: "/investment/knowledge-graph", icon: Network },
           ].map(l => (
             <button key={l.path} onClick={() => navigate(l.path)}
               className="rounded-lg bg-secondary px-3 py-2 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1.5">
@@ -180,7 +180,7 @@ export default function InvestmentBoardroom() {
         <div className="rounded-2xl border border-border bg-card p-5 space-y-3">
           <h3 className="text-sm font-semibold text-foreground flex items-center gap-2"><TrendingUp className="h-4 w-4 text-primary" /> Top Movers</h3>
           {topMovers.map(inst => (
-            <button key={inst.id} onClick={() => navigate(`/investments/instrument/${inst.id}`)}
+            <button key={inst.id} onClick={() => navigate(`/investment/instrument/${inst.id}`)}
               className="w-full flex items-center gap-3 text-left hover:bg-secondary/50 rounded-xl p-2 -mx-2 transition-colors">
               <span className="text-lg">{inst.logoIcon}</span>
               <div className="flex-1 min-w-0">
@@ -203,7 +203,7 @@ export default function InvestmentBoardroom() {
         <div className="rounded-2xl border border-border bg-card p-5 space-y-3">
           <h3 className="text-sm font-semibold text-foreground flex items-center gap-2"><Brain className="h-4 w-4 text-primary" /> Advisor Council</h3>
           {INVESTMENT_ADVISORS.slice(0, 5).map(adv => (
-            <button key={adv.id} onClick={() => navigate("/investments/advisors")}
+            <button key={adv.id} onClick={() => navigate("/investment/advisors")}
               className="w-full flex items-start gap-3 text-left hover:bg-secondary/50 rounded-xl p-2 -mx-2 transition-colors">
               <span className="text-sm mt-0.5">{adv.icon}</span>
               <div className="flex-1 min-w-0">
@@ -217,7 +217,7 @@ export default function InvestmentBoardroom() {
               }`}>{adv.confidence}%</div>
             </button>
           ))}
-          <button onClick={() => navigate("/investments/advisors")} className="text-[10px] text-primary hover:underline flex items-center gap-1 mt-1">
+          <button onClick={() => navigate("/investment/advisors")} className="text-[10px] text-primary hover:underline flex items-center gap-1 mt-1">
             Full council <ChevronRight className="h-3 w-3" />
           </button>
         </div>
@@ -268,7 +268,7 @@ export default function InvestmentBoardroom() {
               <span className="text-xs font-medium text-foreground w-12 text-right">{pct.toFixed(1)}%</span>
             </div>
           ))}
-          <button onClick={() => navigate("/investments/portfolio")} className="text-[10px] text-primary hover:underline flex items-center gap-1 mt-2">
+          <button onClick={() => navigate("/investment/portfolio")} className="text-[10px] text-primary hover:underline flex items-center gap-1 mt-2">
             View full portfolio <ChevronRight className="h-3 w-3" />
           </button>
         </div>
@@ -294,7 +294,7 @@ export default function InvestmentBoardroom() {
         <div className="rounded-2xl border border-border bg-card p-5 space-y-3">
           <h3 className="text-sm font-semibold text-foreground flex items-center gap-2"><Clock className="h-4 w-4 text-primary" /> Pending Actions</h3>
           {SAMPLE_ORDERS.filter(o => o.status === "draft").map(ord => (
-            <button key={ord.id} onClick={() => navigate("/investments/execute")}
+            <button key={ord.id} onClick={() => navigate("/investment/execute")}
               className="w-full flex items-start gap-3 text-left hover:bg-secondary/50 rounded-xl p-2 -mx-2 transition-colors">
               <span className="text-sm">{ord.instrument.logoIcon}</span>
               <div className="flex-1 min-w-0">
@@ -305,7 +305,7 @@ export default function InvestmentBoardroom() {
             </button>
           ))}
           {SAMPLE_THESES.filter(t => t.status === "active").slice(0, 2).map(th => (
-            <button key={th.id} onClick={() => navigate("/investments/journal")}
+            <button key={th.id} onClick={() => navigate("/investment/journal")}
               className="w-full flex items-start gap-3 text-left hover:bg-secondary/50 rounded-xl p-2 -mx-2 transition-colors">
               <Brain className="h-4 w-4 text-primary shrink-0 mt-0.5" />
               <div className="flex-1 min-w-0">
