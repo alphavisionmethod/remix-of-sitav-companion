@@ -1,5 +1,6 @@
 import { MobileShell } from "@/platform/experience/components/mobile/MobileShell";
 import { TrendingUp, TrendingDown, ArrowRight } from "lucide-react";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 const holdings = [
   { name: "S&P 500 Index", allocation: "42%", change: "+1.2%", up: true },
@@ -10,6 +11,7 @@ const holdings = [
 
 const MobileInvestment = () => (
   <MobileShell title="Investment">
+      <div className="mb-2"><PageTruthBanner truthState="partial" /></div>
     {/* Portfolio summary */}
     <div className="rounded-2xl border border-border/40 bg-card p-4 mb-4">
       <p className="text-[11px] text-muted-foreground uppercase tracking-wider mb-1">Total Portfolio</p>

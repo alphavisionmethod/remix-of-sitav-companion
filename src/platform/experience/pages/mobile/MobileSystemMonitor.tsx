@@ -7,6 +7,7 @@ import {
   Server, Zap, Database, Globe, Lock,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 interface GaugeData {
   label: string;
@@ -98,6 +99,7 @@ const MobileSystemMonitor = () => {
 
   return (
     <MobileShell title="System Monitor">
+      <div className="mb-2"><PageTruthBanner truthState="partial" /></div>
       {/* Overall Health Banner */}
       <div className="rounded-xl border border-border/40 bg-card p-4 mb-4">
         <div className="flex items-center justify-between mb-3">

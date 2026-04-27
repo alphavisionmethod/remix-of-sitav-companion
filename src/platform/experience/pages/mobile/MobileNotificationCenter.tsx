@@ -6,6 +6,7 @@ import {
   ChevronRight, Clock, MessageSquare, XCircle, Info, Filter,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 type NotifPriority = "critical" | "normal" | "info";
 type NotifType = "approval" | "security" | "sync" | "update" | "command" | "system";
@@ -62,6 +63,7 @@ const MobileNotificationCenter = () => {
 
   return (
     <MobileShell title="Notifications">
+      <div className="mb-2"><PageTruthBanner truthState="partial" /></div>
       {/* Header */}
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">

@@ -27,6 +27,7 @@ const MobileApprovalDetail = () => {
   if (status !== "pending") {
     return (
       <MobileShell title="Approval">
+      <div className="mb-2"><PageTruthBanner truthState="partial" /></div>
 <div className="flex flex-col items-center justify-center py-16">
           {status === "approved" ? (
             <CheckCircle2 className="h-16 w-16 text-[hsl(var(--trust-safe))] mb-4" />

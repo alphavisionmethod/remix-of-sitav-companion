@@ -7,6 +7,7 @@ import {
   StarOff, ArchiveRestore, Check, Filter,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 type InboxTab = "primary" | "social" | "updates";
 type ChannelType = "email" | "sms" | "system";
@@ -73,6 +74,7 @@ const MobileInbox = () => {
 
   return (
     <MobileShell title="Inbox">
+      <div className="mb-2"><PageTruthBanner truthState="partial" /></div>
       {/* Search */}
       <div className="flex items-center gap-2 rounded-xl border border-border/40 bg-card px-3 py-2 mb-3">
         <Search className="h-3.5 w-3.5 text-muted-foreground" />

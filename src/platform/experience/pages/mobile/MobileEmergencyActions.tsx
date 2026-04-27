@@ -81,6 +81,7 @@ export default function MobileEmergencyActions() {
 
   return (
     <MobileShell title="Emergency Actions">
+      <div className="mb-2"><PageTruthBanner truthState="partial" /></div>
       
 
       {/* Warning Banner */}

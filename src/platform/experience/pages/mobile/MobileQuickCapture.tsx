@@ -70,6 +70,7 @@ export default function MobileQuickCapture() {
 
   return (
     <MobileShell title="Quick Capture">
+      <div className="mb-2"><PageTruthBanner truthState="partial" /></div>
       
       <input ref={fileInputRef} type="file" className="hidden" onChange={() => toast.success("File queued for upload")} />
 

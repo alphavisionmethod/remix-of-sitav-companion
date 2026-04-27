@@ -138,6 +138,7 @@ export default function MobileDeviceTrust() {
 
   return (
     <MobileShell title="Device Trust">
+      <div className="mb-2"><PageTruthBanner truthState="partial" /></div>
       
 
       {/* Trust Health Summary */}

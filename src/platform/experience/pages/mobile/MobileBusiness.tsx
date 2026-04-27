@@ -1,6 +1,7 @@
 import { MobileShell } from "@/platform/experience/components/mobile/MobileShell";
 import { useNavigate } from "react-router-dom";
 import { Users, FileText, TrendingUp, Megaphone, ArrowRight, Plus } from "lucide-react";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 const metrics = [
   { icon: Users, label: "Active Leads", value: "23", trend: "+4 this week" },
@@ -21,6 +22,7 @@ const MobileBusiness = () => {
 
   return (
     <MobileShell title="Business">
+      <div className="mb-2"><PageTruthBanner truthState="partial" /></div>
       {/* Quick add */}
       <button className="w-full flex items-center justify-center gap-2 px-4 py-3 mb-4 rounded-xl bg-primary text-primary-foreground font-medium text-sm">
         <Plus className="h-4 w-4" />

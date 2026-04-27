@@ -7,6 +7,7 @@ import { MobileAdvisorBoard } from "@/platform/advisors/components/advisors/Mobi
 import type { AdvisorConfig } from "@/platform/advisors/components/advisors/AdvisorCouncilShell";
 import { Badge } from "@/components/ui/badge";
 import { Shield, TrendingUp, Briefcase, Wallet, Home } from "lucide-react";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 const MOBILE_ADVISORS: AdvisorConfig[] = [
   { id: "biz-1", advisorId: "strategy", name: "Strategy", domain: "business", role: "Business Strategy Advisor", status: "active", confidence: 82, mission: "Revenue up 12% MTD. 3 deals closing worth $28K.", specialAbility: "Pipeline forecasting" },
@@ -18,6 +19,7 @@ const MOBILE_ADVISORS: AdvisorConfig[] = [
 
 const MobileBoardroom = () => (
   <MobileShell title="Boardroom">
+      <div className="mb-2"><PageTruthBanner truthState="partial" /></div>
     <div className="mb-4 p-3 rounded-xl bg-card border border-border/40">
       <div className="flex items-center justify-between mb-2">
         <p className="text-sm font-semibold text-foreground">Council Status</p>

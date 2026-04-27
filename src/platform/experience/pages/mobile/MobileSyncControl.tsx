@@ -7,6 +7,7 @@ import {
   ChevronRight, RotateCcw,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 interface SyncItem {
   id: string;
@@ -76,6 +77,7 @@ const MobileSyncControl = () => {
 
   return (
     <MobileShell title="Sync Control">
+      <div className="mb-2"><PageTruthBanner truthState="partial" /></div>
       {/* Status Bar */}
       <div className="rounded-xl border border-border/40 bg-card p-3 mb-4">
         <div className="flex items-center justify-between mb-2">

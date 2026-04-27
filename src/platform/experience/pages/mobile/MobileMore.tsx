@@ -1,6 +1,7 @@
 import { MobileShell } from "@/platform/experience/components/mobile/MobileShell";
 import { useNavigate } from "react-router-dom";
 import {
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
   BarChart3, ShieldCheck, Bell, FileText, TrendingUp, FolderOpen,
   Smartphone, AlertTriangle, Camera, Settings, Briefcase, Gavel,
   Terminal, Bot, Activity, RefreshCw, Clock, Mail,
@@ -30,6 +31,7 @@ const MobileMore = () => {
 
   return (
     <MobileShell title="More">
+      <div className="mb-2"><PageTruthBanner truthState="partial" /></div>
       <div className="grid grid-cols-3 gap-3">
         {links.map((item) => {
           const Icon = item.icon;
