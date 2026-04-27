@@ -1,5 +1,8 @@
 // SITA OS — CRM Proof Trail Component
-// Immutable audit trail + data provenance for CRM entities
+// Immutable audit trail + data provenance for CRM entities.
+// Phase 7.2: now reads canonical receipts from `ai_action_receipts`
+// via `useCRMEntityProofTrail`. Demo mode falls back to the bundled
+// fixture trail so the surface remains alive in the showcase.
 import React, { useState, useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -7,27 +10,16 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import {
-  Shield, FileCheck2, Clock, CheckCircle, AlertTriangle, Eye,
+  Shield, FileCheck2, CheckCircle, AlertTriangle,
   Hash, Link2, User, Sparkles, Lock, ChevronDown, ChevronRight,
   Fingerprint, BookOpen, ArrowRight, History, Scale
 } from "lucide-react";
 import { format, formatDistanceToNow } from "date-fns";
+import { useCRMEntityProofTrail, type CRMProofEntityType } from "@/hooks/use-crm-proof-trail";
+import { useRealityModeSafe } from "@/lib/dual-reality/reality-mode-context";
+import type { ProofEntry, ProofActionKind } from "@/lib/trust";
 
 // ── Types ──
-
-interface ProofEntry {
-  id: string;
-  timestamp: string;
-  action: "created" | "updated" | "imported" | "merged" | "escalated" | "automated" | "verified" | "linked" | "deleted";
-  actor: { type: "user" | "system" | "advisor" | "automation"; name: string };
-  field?: string;
-  oldValue?: string;
-  newValue?: string;
-  source: string;
-  confidence?: number;
-  receipt_hash?: string;
-  metadata?: Record<string, unknown>;
-}
 
 interface ProofSummary {
   totalEntries: number;
@@ -51,6 +43,11 @@ const ACTION_CONFIG: Record<string, { label: string; icon: React.ReactNode; clas
   verified: { label: "Verified", icon: <Fingerprint className="h-3 w-3" />, className: "bg-emerald-500/15 text-emerald-400 border-emerald-500/25" },
   linked: { label: "Linked", icon: <Link2 className="h-3 w-3" />, className: "bg-cyan-500/15 text-cyan-400 border-cyan-500/25" },
   deleted: { label: "Deleted", icon: <AlertTriangle className="h-3 w-3" />, className: "bg-red-500/15 text-red-400 border-red-500/25" },
+  approved: { label: "Approved", icon: <CheckCircle className="h-3 w-3" />, className: "bg-emerald-500/15 text-emerald-400 border-emerald-500/25" },
+  rejected: { label: "Rejected", icon: <AlertTriangle className="h-3 w-3" />, className: "bg-red-500/15 text-red-400 border-red-500/25" },
+  executed: { label: "Executed", icon: <CheckCircle className="h-3 w-3" />, className: "bg-blue-500/15 text-blue-400 border-blue-500/25" },
+  rolled_back: { label: "Rolled back", icon: <History className="h-3 w-3" />, className: "bg-amber-500/15 text-amber-400 border-amber-500/25" },
+  failed: { label: "Failed", icon: <AlertTriangle className="h-3 w-3" />, className: "bg-red-500/15 text-red-400 border-red-500/25" },
 };
 
 const ACTOR_ICONS: Record<string, React.ReactNode> = {
@@ -60,7 +57,7 @@ const ACTOR_ICONS: Record<string, React.ReactNode> = {
   automation: <Sparkles className="h-3 w-3" />,
 };
 
-// ── Demo data generator ──
+// ── Demo fallback (only used when realityMode === "demo") ──
 
 function generateDemoTrail(entityName: string): ProofEntry[] {
   const entries: ProofEntry[] = [
@@ -109,14 +106,24 @@ export function CRMProofTrail({ entityType, entityId, entityName }: CRMProofTrai
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
   const [filterAction, setFilterAction] = useState<string | null>(null);
 
-  const entries = useMemo(() => generateDemoTrail(entityName), [entityName]);
+  const { isDemo } = useRealityModeSafe();
+  const { data: realEntries, isLoading } = useCRMEntityProofTrail(
+    entityType as CRMProofEntityType,
+    entityId,
+    { enabled: !isDemo },
+  );
+
+  const entries = useMemo<ProofEntry[]>(() => {
+    if (isDemo) return generateDemoTrail(entityName);
+    return realEntries ?? [];
+  }, [isDemo, realEntries, entityName]);
   const summary = useMemo(() => computeProvenanceSummary(entries), [entries]);
 
   const filtered = filterAction ? entries.filter(e => e.action === filterAction) : entries;
   const actionCounts = useMemo(() => {
-    const counts: Record<string, number> = {};
+    const counts: Partial<Record<ProofActionKind, number>> = {};
     entries.forEach(e => { counts[e.action] = (counts[e.action] || 0) + 1; });
-    return counts;
+    return counts as Record<string, number>;
   }, [entries]);
 
   const toggleExpand = (id: string) => {
@@ -127,6 +134,8 @@ export function CRMProofTrail({ entityType, entityId, entityName }: CRMProofTrai
     });
   };
 
+  const showEmpty = !isDemo && !isLoading && entries.length === 0;
+
   return (
     <div className="space-y-4">
       {/* Provenance Score */}
@@ -134,6 +143,9 @@ export function CRMProofTrail({ entityType, entityId, entityName }: CRMProofTrai
         <CardHeader className="pb-2">
           <CardTitle className="text-sm font-semibold flex items-center gap-2">
             <Fingerprint className="h-4 w-4 text-primary" /> Data Provenance
+            {!isDemo && (
+              <span className="ml-2 text-[9px] uppercase tracking-wider text-muted-foreground/70 border border-border/40 rounded px-1.5 py-0.5">Live receipts</span>
+            )}
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -166,7 +178,25 @@ export function CRMProofTrail({ entityType, entityId, entityName }: CRMProofTrai
         </CardContent>
       </Card>
 
+      {/* Loading / empty states (real mode only) */}
+      {!isDemo && isLoading && (
+        <Card className="border-border/50 bg-card/50">
+          <CardContent className="py-8 text-center text-xs text-muted-foreground">
+            Loading proof trail…
+          </CardContent>
+        </Card>
+      )}
+      {showEmpty && (
+        <Card className="border-border/50 bg-card/50">
+          <CardContent className="py-8 text-center text-xs text-muted-foreground space-y-1">
+            <p className="font-medium text-foreground">No receipts yet.</p>
+            <p>Mutations on this {entityType} will appear here as they happen.</p>
+          </CardContent>
+        </Card>
+      )}
+
       {/* Filter chips */}
+      {entries.length > 0 && (
       <div className="flex flex-wrap gap-1.5">
         <button
           onClick={() => setFilterAction(null)}
@@ -176,6 +206,7 @@ export function CRMProofTrail({ entityType, entityId, entityName }: CRMProofTrai
         >All ({entries.length})</button>
         {Object.entries(actionCounts).map(([action, count]) => {
           const cfg = ACTION_CONFIG[action];
+          if (!cfg) return null;
           return (
             <button
               key={action}
@@ -189,13 +220,15 @@ export function CRMProofTrail({ entityType, entityId, entityName }: CRMProofTrai
           );
         })}
       </div>
+      )}
 
       {/* Trail entries */}
+      {entries.length > 0 && (
       <Card className="border-border/50 bg-card/50">
         <CardContent className="p-0">
           <div className="divide-y divide-border/20">
             {filtered.map(entry => {
-              const cfg = ACTION_CONFIG[entry.action];
+              const cfg = ACTION_CONFIG[entry.action] ?? ACTION_CONFIG.updated;
               const isExpanded = expanded.has(entry.id);
               return (
                 <div key={entry.id} className="hover:bg-muted/10 transition-colors">
@@ -283,6 +316,7 @@ export function CRMProofTrail({ entityType, entityId, entityName }: CRMProofTrai
           </div>
         </CardContent>
       </Card>
+      )}
     </div>
   );
 }
