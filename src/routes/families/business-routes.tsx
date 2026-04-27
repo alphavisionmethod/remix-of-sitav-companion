@@ -17,7 +17,6 @@ export function getBusinessRoutes() {
       <Route path="/business/invoices" element={<BusinessCenter />} />
       <Route path="/business/collections" element={<BusinessCenter />} />
       <Route path="/business/revenue" element={<BusinessCenter />} />
-      <Route path="/business/revenue-home" element={<BusinessCenter />} />
       <Route path="/business/revenue-autopilot" element={<BusinessCenter />} />
       {/* Phase 2 IA cleanup — canonical Autopilot Console URL.
           Legacy /business/autopilot-hub is redirected by user-redirect-map. */}
@@ -34,7 +33,6 @@ export function getBusinessRoutes() {
       <Route path="/business/communications" element={<BusinessCenter />} />
       <Route path="/business/boardroom" element={<BusinessCenter />} />
       <Route path="/business/proof" element={<BusinessCenter />} />
-      <Route path="/business/files" element={<BusinessCenter />} />
       <Route path="/business/settings" element={<BusinessCenter />} />
       <Route path="/business/website-builder" element={<BusinessCenter />} />
       <Route path="/business/proposals" element={<BusinessCenter />} />

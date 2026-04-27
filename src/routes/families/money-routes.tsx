@@ -17,11 +17,9 @@ export function getMoneyRoutes() {
       <Route path="/money/receivables" element={<MoneyCenter />} />
       <Route path="/money/investment-office" element={<MoneyCenter />} />
       <Route path="/money/tax" element={<MoneyCenter />} />
-      <Route path="/money/family-office" element={<MoneyCenter />} />
       <Route path="/money/approvals" element={<MoneyCenter />} />
       <Route path="/money/proof" element={<MoneyCenter />} />
       <Route path="/money/files" element={<MoneyCenter />} />
-      <Route path="/money/documents" element={<MoneyCenter />} />
       <Route path="/money/boardroom" element={<MoneyCenter />} />
       <Route path="/money/settings" element={<MoneyCenter />} />
       <Route path="/money/net-worth" element={<MoneyCenter />} />
