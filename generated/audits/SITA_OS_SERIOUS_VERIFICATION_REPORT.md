@@ -160,3 +160,26 @@ npx tsc --noEmit → 0 errors
 - Service tests reference real production services; no shadow re-implementations.
 
 _Phases 4–10 will append below this line as they complete._
+## Phase 4 — P1 Service & Engine Behavioral Tests ✅
+
+**Status**: Complete. 100% pass.
+
+**New tests**: 13 finance suites (56 tests) + 16 concierge suites (51 tests) = **107 tests, all green**.
+
+**Finance** (P1 → behavioral): reserve-engine, sinking-fund, scenario-engine, regime-engine, stress-radar, subscription-detector, waste-detector, income-quality, debt-analyzer, due-soon-alerts, bill-calendar, receivables, renewal-risk.
+
+**Concierge** (P1 → behavioral): event-continuity, travel-continuity, grocery-continuity, recurring-supplies, responsibilities, activity-prep, prep-derivation, prep-checklist, gift-reminders, reservation-ingest, trip-overview, school-items, home-admin, provider-memory, reconciliation, household-boardroom-inputs.
+
+**Fixtures extended**: `makeSubscription`, `makeReceivable`, `makeDebtAccount`, `makeSinkingFund`, `makeStressRadarInput`, `makeIncomeQualityInput`, `makeScenarioInput` (finance); `makeRecurringSupply`, `makeTripSummary`, `makeProvider`, `makeAdminTracker` (concierge).
+
+**Verification**:
+- `bunx vitest run src/__tests__/finance/services/ src/__tests__/concierge/services/` → 107/107 pass
+- `bunx vitest run src/__tests__/finance/_matrix/ src/__tests__/concierge/_matrix/` → 12/12 pass
+- `bunx tsc --noEmit` → clean
+
+**Coverage delta**:
+- Finance services: 23 missing → 13 missing (–10)
+- Concierge services: 8 missing → 0 missing (–8)
+- All P0 + P1 finance/concierge service entries are now `behavioral`.
+
+Phase 5 (page-state honesty across the 18 high-value pages) starts on the next "continue".

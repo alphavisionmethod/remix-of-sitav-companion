@@ -11,11 +11,18 @@ import type {
   ObligationRecord,
   ReserveModel,
   TransactionRecord,
+  SubscriptionRecord,
+  Receivable,
+  DebtAccount,
 } from "@/packages/finance-contracts";
 import type {
   CashAllocatorInput,
   PeaceScoreInput,
+  StressRadarInput,
+  IncomeQualityInput,
 } from "@/domains/finance";
+import type { SinkingFund } from "@/packages/finance-contracts/reserves";
+import type { ScenarioInput } from "@/packages/finance-contracts/scenario";
 
 const FIXED_NOW = new Date("2026-04-15T12:00:00Z").getTime();
 
@@ -133,6 +140,130 @@ export function makePeaceScoreInput(
     obligationPressurePct: 30,
     discretionaryRoomPct: 25,
     householdCoordinationScore: 75,
+    ...overrides,
+  };
+}
+
+export function makeSubscription(
+  overrides: Partial<SubscriptionRecord> = {},
+): SubscriptionRecord {
+  return {
+    id: "sub-1",
+    name: "Streaming Plus",
+    provider: "StreamCo",
+    amountCents: 1499,
+    frequency: "monthly",
+    category: "entertainment",
+    detectedAt: daysAgo(30),
+    lastChargeDate: daysAgo(2),
+    isWaste: false,
+    savingsIfCancelled: 0,
+    status: "active",
+    ...overrides,
+  };
+}
+
+export function makeReceivable(
+  overrides: Partial<Receivable> = {},
+): Receivable {
+  return {
+    id: "ar-1",
+    fromEntity: "Acme Corp",
+    amountCents: 250_000,
+    dueDate: daysAhead(15),
+    status: "expected",
+    agingDays: 10,
+    ...overrides,
+  };
+}
+
+export function makeDebtAccount(
+  overrides: Partial<DebtAccount> = {},
+): DebtAccount {
+  return {
+    id: "debt-1",
+    name: "Visa Card",
+    type: "credit-card",
+    balanceCents: 500_000,
+    limitCents: 1_000_000,
+    interestRate: 22.99,
+    minimumPaymentCents: 25_000,
+    dueDate: daysAhead(20),
+    utilizationPercent: 50,
+    monthlyInterestCents: 9_580,
+    payoffMonths: 24,
+    isAutoPay: true,
+    institution: "Test Bank",
+    ...overrides,
+  };
+}
+
+export function makeSinkingFund(
+  overrides: Partial<SinkingFund> = {},
+): SinkingFund {
+  return {
+    id: "sf-1",
+    name: "Property Tax",
+    targetCents: 600_000,
+    currentCents: 100_000,
+    targetDate: daysAhead(180),
+    monthlyContributionCents: 100_000,
+    purpose: "Annual property tax escrow",
+    category: "property-tax",
+    onTrack: true,
+    projectedShortfallCents: 0,
+    createdAt: daysAgo(30),
+    ...overrides,
+  };
+}
+
+export function makeStressRadarInput(
+  overrides: Partial<StressRadarInput> = {},
+): StressRadarInput {
+  return {
+    cashBalanceCents: 500_000,
+    monthlyIncomeCents: 800_000,
+    monthlyBurnCents: 600_000,
+    upcomingBills: [],
+    reserveFundedPct: 60,
+    reserveTargetCents: 1_000_000,
+    totalDebtCents: 0,
+    monthlyDebtPaymentCents: 0,
+    creditUtilizationPct: 0,
+    subscriptionMonthlyCents: 5_000,
+    subscriptionCountActive: 4,
+    taxReservedPct: 80,
+    taxOwedEstimateCents: 200_000,
+    founderDrawMonthlyCents: 0,
+    founderDrawStable: true,
+    floatReliancePct: 0,
+    ...overrides,
+  };
+}
+
+export function makeIncomeQualityInput(
+  overrides: Partial<IncomeQualityInput> = {},
+): IncomeQualityInput {
+  return {
+    recurringIncomePct: 70,
+    topClientConcentrationPct: 35,
+    seasonalVariationPct: 15,
+    avgPaymentDelayDays: 7,
+    oneTimeIncomePct: 20,
+    householdDependencyOnUnstablePct: 25,
+    ...overrides,
+  };
+}
+
+export function makeScenarioInput(
+  overrides: Partial<ScenarioInput> = {},
+): ScenarioInput {
+  return {
+    id: "sc-1",
+    name: "Cancel a subscription",
+    type: "cut-subscription",
+    parameters: { monthlySavingsCents: 5_000 },
+    description: "Test scenario",
     ...overrides,
   };
 }
