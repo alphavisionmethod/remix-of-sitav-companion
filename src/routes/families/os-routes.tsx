@@ -109,9 +109,7 @@ export function getOSRoutes() {
       <Route path="/pulse" element={<DailyPulse />} />
       <Route path="/daily-pulse" element={<DailyPulse />} />
       <Route path="/profile" element={<UserProfilePage />} />
-      <Route path="/life" element={<LifeDashboard />} />
       <Route path="/life-simulator" element={<LifeSimulator />} />
-      <Route path="/personal-life" element={<PersonalLifeWorkspace />} />
       <Route path="/downloads" element={<DownloadsCenter />} />
       <Route path="/download" element={<DownloadPage />} />
       <Route path="/wealth-command" element={<WealthCommandCenter />} />
