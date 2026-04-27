@@ -14,8 +14,8 @@ function readSrc(rel: string): string {
 }
 
 describe("Opportunity → Quote → Proposal → Invoice lineage", () => {
-  it("Quotes workspace converts opportunity → quote with opportunity_id lineage", () => {
-    const src = readSrc("src/modules/business/pages/QuotesWorkspace.tsx");
+  it("Opportunities Center converts opportunity → quote with opportunity_id lineage", () => {
+    const src = readSrc("src/modules/business/pages/OpportunitiesCenter.tsx");
     expect(src).toMatch(/opportunity\.convert-to-quote/);
   });
 
