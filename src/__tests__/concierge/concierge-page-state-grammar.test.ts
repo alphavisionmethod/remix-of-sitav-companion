@@ -51,6 +51,12 @@ const EXEMPT_PAGES = new Set<string>([
   "ConciergeProof.tsx",
   "ConciergeWorkflows.tsx",
   "MonthGridCalendar.tsx",
+  // Phase 3 IA cleanup — these are 1-line re-exports of their canonical
+  // implementations; the empty-state grammar lives in the canonical file
+  // (LifeAdminCenter.tsx / HouseholdCommandCenter.tsx) which the test
+  // already audits.
+  "LifeAdminWorkspace.tsx",
+  "HouseholdWorkspace.tsx",
   "index.ts",
 ]);
 

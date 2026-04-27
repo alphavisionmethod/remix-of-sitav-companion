@@ -85,6 +85,13 @@ export const USER_REDIRECTS: UserRedirect[] = [
   { from: "/business/autopilot-hub", to: "/business/revenue-autopilot-console", reason: "domain-rename" },
   // RevenueImpactDashboard demoted to an internal sub-tab of Revenue Home.
   { from: "/business/revenue-impact", to: "/business/revenue", reason: "shell-consolidation" },
+
+  // ── Concierge IA Phase 3 cleanup ────────────────────────────────
+  // Orphan root-level surfaces archived; users are funneled into the
+  // canonical Concierge App Shell. The component files are kept on
+  // disk for diff history but are no longer mounted by any route.
+  { from: "/life", to: "/concierge/overview", reason: "shell-consolidation" },
+  { from: "/personal-life", to: "/concierge/overview", reason: "shell-consolidation" },
 ];
 
 export type { UserRedirect as UserRedirectEntry };

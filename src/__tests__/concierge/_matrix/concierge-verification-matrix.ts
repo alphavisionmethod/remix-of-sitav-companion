@@ -145,5 +145,7 @@ export const PAGE_TEST_EXCLUSIONS: Record<string, string> = {
   "SchoolActivities.tsx":      "covered by school-items service test",
   "UpcomingNeeds.tsx":         "covered by appointments-prep test",
   "PersonalLifeWorkspace.tsx": "covered by life-admin-center test",
+  "LifeAdminWorkspace.tsx":    "Phase 3 canonical alias — re-exports LifeAdminCenter; covered by life-admin-center test",
+  "HouseholdWorkspace.tsx":    "Phase 3 canonical alias — re-exports HouseholdCommandCenter; covered by household-command-center test",
   "index.ts":                  "barrel",
 };

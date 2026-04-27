@@ -16,9 +16,7 @@ const AutonomyMissionControl = lazy(() => import("@/pages/admin/AutonomyMissionC
 const AutonomyControlCenter = lazy(() => import("@/pages/owner/AutonomyControlCenter"));
 const PersonalizationStudio = lazy(() => import("@/pages/PersonalizationStudio"));
 const MemoryCenter = lazy(() => import("@/pages/MemoryCenter"));
-const LifeDashboard = lazy(() => import("@/pages/LifeDashboard"));
 const LifeSimulator = lazy(() => import("@/pages/LifeSimulator"));
-const PersonalLifeWorkspace = lazy(() => import("@/pages/PersonalLifeWorkspace"));
 const DownloadsCenter = lazy(() => import("@/pages/DownloadsCenter"));
 const StorageManager = lazy(() => import("@/pages/StorageManager"));
 const NetworkUtility = lazy(() => import("@/pages/NetworkUtility"));
@@ -109,9 +107,7 @@ export function getOSRoutes() {
       <Route path="/pulse" element={<DailyPulse />} />
       <Route path="/daily-pulse" element={<DailyPulse />} />
       <Route path="/profile" element={<UserProfilePage />} />
-      <Route path="/life" element={<LifeDashboard />} />
       <Route path="/life-simulator" element={<LifeSimulator />} />
-      <Route path="/personal-life" element={<PersonalLifeWorkspace />} />
       <Route path="/downloads" element={<DownloadsCenter />} />
       <Route path="/download" element={<DownloadPage />} />
       <Route path="/wealth-command" element={<WealthCommandCenter />} />

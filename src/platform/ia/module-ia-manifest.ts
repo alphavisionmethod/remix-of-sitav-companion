@@ -95,11 +95,11 @@ export const CONCIERGE_IA: readonly PageDescriptor[] = [
   { id: "overview", pillar: "concierge", role: "overview", label: "Overview", component: "ConciergeOverview", route: "/concierge/overview", sidebarVisible: true, status: "ga" },
   { id: "upcoming", pillar: "concierge", role: "workspace", label: "Upcoming", component: "UpcomingNeeds", route: "/concierge/upcoming", sidebarVisible: true, status: "ga" },
   { id: "calendar", pillar: "concierge", role: "workspace", label: "Calendar", component: "MonthGridCalendar", route: "/concierge/calendar", sidebarVisible: true, status: "ga" },
-  { id: "life-admin", pillar: "concierge", role: "workspace", label: "Life Admin", component: "LifeAdminCenter", route: "/concierge/life-admin", sidebarVisible: true, status: "legacy", notes: "Phase 3 rename → LifeAdminWorkspace.", legacyNameAllowed: true },
+  { id: "life-admin", pillar: "concierge", role: "workspace", label: "Life Admin", component: "LifeAdminWorkspace", route: "/concierge/life-admin", sidebarVisible: true, status: "ga", notes: "Phase 3 rename complete (LifeAdminCenter → LifeAdminWorkspace). Old class re-exported for backwards compat." },
   { id: "errands", pillar: "concierge", role: "workspace", label: "Errands", component: "ErrandsLogistics", route: "/concierge/errands", sidebarVisible: true, status: "ga" },
   { id: "appointments", pillar: "concierge", role: "workspace", label: "Appointments", component: "AppointmentsPrep", route: "/concierge/appointments", sidebarVisible: true, status: "ga" },
   { id: "travel", pillar: "concierge", role: "workspace", label: "Travel", component: "TravelPlanning", route: "/concierge/travel", sidebarVisible: true, status: "ga" },
-  { id: "household", pillar: "concierge", role: "workspace", label: "Household", component: "HouseholdCommandCenter", route: "/concierge/household", sidebarVisible: true, status: "legacy", notes: "Phase 3 rename → HouseholdWorkspace.", legacyNameAllowed: true },
+  { id: "household", pillar: "concierge", role: "workspace", label: "Household", component: "HouseholdWorkspace", route: "/concierge/household", sidebarVisible: true, status: "ga", notes: "Phase 3 rename complete (HouseholdCommandCenter → HouseholdWorkspace). Old class re-exported for backwards compat." },
   { id: "tasks", pillar: "concierge", role: "workspace", label: "Tasks", component: "HouseholdTasks", route: "/concierge/tasks", sidebarVisible: true, status: "ga" },
   { id: "grocery", pillar: "concierge", role: "workspace", label: "Grocery", component: "GroceryPlanning", route: "/concierge/grocery", sidebarVisible: true, status: "ga" },
   { id: "school", pillar: "concierge", role: "workspace", label: "School", component: "SchoolActivities", route: "/concierge/school", sidebarVisible: true, status: "ga" },
@@ -109,8 +109,12 @@ export const CONCIERGE_IA: readonly PageDescriptor[] = [
   { id: "workflows", pillar: "concierge", role: "workspace", label: "Automations", component: "ConciergeWorkflows", route: "/concierge/workflows", sidebarVisible: true, status: "ga" },
   { id: "proof", pillar: "concierge", role: "proof", label: "Proof", component: "ConciergeProof", route: "/concierge/proof", sidebarVisible: true, status: "ga" },
   { id: "files", pillar: "concierge", role: "workspace", label: "Files", component: "ConciergeFiles", route: "/concierge/files", sidebarVisible: true, status: "ga" },
-  { id: "boardroom", pillar: "concierge", role: "boardroom", label: "Boardroom", component: "FamilyBoardroom", route: "/concierge/boardroom", sidebarVisible: true, status: "ga", notes: "Canonical = FamilyBoardroom; ConciergeBoardroom is unused (Phase 3 archives)." },
+  { id: "boardroom", pillar: "concierge", role: "boardroom", label: "Boardroom", component: "FamilyBoardroom", route: "/concierge/boardroom", sidebarVisible: true, status: "ga", notes: "Phase 3 confirmed: canonical = FamilyBoardroom. Sibling ConciergeBoardroom alias archived (see concierge/boardroom-legacy descriptor)." },
   { id: "settings", pillar: "concierge", role: "settings", label: "Settings", component: "ConciergeSettings", route: "/concierge/settings", sidebarVisible: true, status: "ga" },
+  // ── Phase 3 archived surfaces (kept on disk for history; not mounted) ──
+  { id: "boardroom-legacy", pillar: "concierge", role: "archived", label: "Concierge Boardroom (legacy)", component: "ConciergeBoardroom", route: null, sidebarVisible: false, status: "archived", notes: "Unused alias of FamilyBoardroom. File retained for diff history; no shell mount, no route, no sidebar entry. Tests treat it as a covered alias.", replacedBy: "boardroom" },
+  { id: "life-dashboard", pillar: "concierge", role: "archived", label: "Life Dashboard (legacy)", component: "LifeDashboard", route: null, sidebarVisible: false, status: "archived", notes: "Orphan root-level /life surface. Phase 3 unmounts the route and redirects /life → /concierge/overview via user-redirect-map. File retained for diff history.", replacedBy: "overview" },
+  { id: "personal-life-workspace", pillar: "concierge", role: "archived", label: "Personal Life Workspace (legacy)", component: "PersonalLifeWorkspace", route: null, sidebarVisible: false, status: "archived", notes: "Orphan root-level /personal-life surface. Phase 3 unmounts the route and redirects /personal-life → /concierge/overview via user-redirect-map. File retained for diff history.", replacedBy: "overview" },
 ];
 
 // ─────────────────────────────────────────────────────────────

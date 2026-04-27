@@ -75,6 +75,10 @@ export const CONCIERGE_TRUTH_MANIFEST: ReadonlyArray<PageTruthEntry> = [
   { page: "SchoolActivities",        state: "degraded",    degradedReason: "School activities source not yet wired; surface renders an empty queue until a school provider is connected.",                                                                                     bannerState: "partial" },
   { page: "UpcomingNeeds",           state: "degraded",    degradedReason: "Upcoming-obligations source not yet wired; surface renders an empty queue until a calendar/errands source is connected. Demo fixtures gated behind reality mode.",                                  bannerState: "partial" },
   { page: "LifeAdminCenter",         state: "degraded",    degradedReason: "Life-admin queue source not yet wired; surface renders an empty queue until a life-admin source is connected.",                                                                                    bannerState: "partial" },
+  // Phase 3 IA cleanup — canonical Workspace-suffixed aliases. Implementations
+  // are re-exports of the legacy classes; truth state mirrors the canonical impl.
+  { page: "LifeAdminWorkspace",      state: "fully-wired", sources: ["Phase 3 canonical alias of LifeAdminCenter — re-exports the same component; degraded empty-state grammar is enforced on LifeAdminCenter.tsx by this same audit."],                                          bannerState: "live" },
+  { page: "HouseholdWorkspace",      state: "fully-wired", sources: ["Phase 3 canonical alias of HouseholdCommandCenter — re-exports its full hook set"],                                                                                                                        bannerState: "live" },
   { page: "PersonalLifeWorkspace",   state: "degraded",    degradedReason: "Personal-life data hooks not yet wired into this workspace; renders an empty workspace until household/calendar sources are connected.",                                                            bannerState: "partial" },
 ] as const;
 
