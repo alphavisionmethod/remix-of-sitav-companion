@@ -92,6 +92,11 @@ export const USER_REDIRECTS: UserRedirect[] = [
   // disk for diff history but are no longer mounted by any route.
   { from: "/life", to: "/concierge/overview", reason: "shell-consolidation" },
   { from: "/personal-life", to: "/concierge/overview", reason: "shell-consolidation" },
+
+  // ── Finance IA Phase 4 cleanup ──────────────────────────────────
+  // WealthCommandCenter archived (orphan root-level cinematic dashboard
+  // duplicating MoneyOverview). Legacy URL funnels into Money Overview.
+  { from: "/wealth-command", to: "/money/overview", reason: "shell-consolidation" },
 ];
 
 export type { UserRedirect as UserRedirectEntry };
