@@ -149,6 +149,14 @@ After reading the actual repository, the **continuity infrastructure is already 
 
 ## PHASE 5 — Support → callback → retention → health score (kill demo `FOLLOW_THROUGH_TAB_DATA`)
 
+**STATUS: ✅ DONE (2026-04-27)**
+
+- Migration `20260427091357_*` adds CRM lineage (`crm_contact_id`/`crm_company_id`) to `support_cases` and `business_health_scores`, plus a new RLS-scoped `callback_queue` table with the six canonical queue kinds.
+- New `useFollowThroughQueues` hook backs `FollowThroughCenter` with live data; demo fixture preserved only behind `isDemo === true`. Honest unauth + empty states wired.
+- `support-health-loop.service` (new, justified) bridges resolved `support_cases` → `business_health_scores`, idempotent on `source_support_case_id`, refuses to emit without CRM attribution.
+- Test: `support-health-loop.test.ts` (2 cases, green); full `tsc --noEmit` clean.
+- Deferred to Phase 6 micro-task: wiring the service into the CustomerSupportCenter resolve handler + mounting support/health timelines in CustomerDetail.
+
 **Goal:** Replace the fully-demo `FollowThroughCenter` with live data backed by real `support_tickets` / `callback_queue` / `customer_health_signals` tables, and close the support → retention → health loop.
 
 **Tasks:**
