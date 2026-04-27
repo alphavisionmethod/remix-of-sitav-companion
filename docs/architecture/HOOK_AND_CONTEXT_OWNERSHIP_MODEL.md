@@ -1,0 +1,165 @@
+# SITA OS — Hook & Context Ownership Model
+
+**Status:** Adopted (Hook & Context Hardening, 2026-04-27).
+**Authority:** This document, together with the rows for `src/hooks/` and
+`src/contexts/` in `docs/architecture/REPOSITORY_CONSTITUTION.md` (boundary
+rule #13), defines the canonical ownership of every React hook and React
+context in the repository. It is enforced by
+`scripts/architecture/check-hook-context-ownership.ts` and the
+`HOOK_CONTEXT_OWNERSHIP_ENFORCE` step in
+`.github/workflows/check-boundaries.yml`.
+
+---
+
+## Why this exists
+
+`src/hooks/**` and `src/contexts/**` were historically *convenience buckets*.
+Anything reusable that returned a React value tended to land in `src/hooks/`,
+and anything that exposed `Context.Provider` tended to land in
+`src/contexts/`. The result: 211 hooks and 24 contexts in two shared roots,
+including pillar-owned (`use-crm-data`, `use-concierge-data`,
+`useBusinessProfile`, `BusinessNavigationContext`,
+`ConciergeDataContext`, `FinanceNavigationContext`, …) and
+platform-subsystem-owned (`useBoardroomKernel`, `use-trust-emit`,
+`useOrchestrationExecution`, `SitaKernelContext`, `NovaSDKContext`,
+`AppPlatformContext`, …) artefacts mixed in with the truly cross-cutting
+ones (`use-toast`, `useReducedMotion`, `AuthContext`, `DataModeContext`).
+
+This document closes the gap.
+
+---
+
+## Ownership rules (constitutional)
+
+### Hooks
+
+1. **`src/hooks/**` is for truly cross-cutting React hooks only.**
+   A hook qualifies *iff* **all** of the following hold:
+   - It does not import from `@/modules/<pillar>/**`.
+   - It does not depend on the internal state of one platform subsystem.
+     (Consuming a platform subsystem's *public contract* — registry,
+     types, gateway, public emit helper — is allowed.)
+   - Its concept is meaningful to ≥2 unrelated consumers and not tied
+     to one pillar's entities, workflows, or routes.
+
+2. **`src/modules/<pillar>/hooks/**` owns pillar-scoped hooks.**
+   Any hook tied to that pillar's entities, queries, mutations,
+   workflows, navigation, or shell composition belongs here.
+
+3. **`src/platform/<system>/hooks/**` owns platform-subsystem hooks.**
+   Any hook whose state, types, or behavior is owned by exactly one
+   platform subsystem (boardroom, advisors, trust, orchestration,
+   sita, runtime, auth, notifications, security, governance,
+   personal-brain, app-platform, integration, settings,
+   mission-control, operations, setup, ai-gateway, nova-sdk) belongs
+   inside that subsystem.
+
+4. **Hard import rule (CI-enforced).**
+   `src/hooks/**` MUST NOT contain any `from "@/modules/<pillar>/..."`
+   import.
+
+### Contexts
+
+5. **`src/contexts/**` is for app-wide shell-level providers only.**
+   Allowed members are providers used by the application shell itself:
+   `AuthContext`, `AppearanceContext`/`ThemeContext`,
+   `DisplayModeContext`, `CalmEngineContext`, `DataModeContext`,
+   `DemoModeProvider`, `ConnectivityContext`, `EntityContext`
+   (OS-level entity selection), `InspectorContext` (OS-level
+   inspector), `WindowManagerContext`, and `RuntimeProvider` (the
+   composition entry point).
+
+6. **`src/modules/<pillar>/contexts/**` owns pillar-scoped contexts.**
+   Pillar navigation, pillar profile/data scope, pillar mode
+   selectors all live here.
+
+7. **`src/platform/<system>/contexts/**` owns platform-subsystem
+   contexts** (e.g., `SitaKernelContext`, `SitaOSContext`,
+   `NovaSDKContext`, `AppPlatformContext`, `SitaVoiceContext`).
+
+8. **Hard import rule (CI-enforced).**
+   `src/contexts/**` MUST NOT contain any `from "@/modules/<pillar>/..."`
+   import.
+
+---
+
+## Dependency direction summary
+
+| From → To                       | shared `src/hooks/` / `src/contexts/` | `src/modules/<pillar>/{hooks,contexts}` | `src/platform/<system>/{hooks,contexts}` |
+|---------------------------------|---------------------------------------|----------------------------------------|------------------------------------------|
+| Pillar pages/components         | ✅                                    | ✅ (own pillar only)                    | ✅                                        |
+| Other pillars                   | ✅                                    | ❌ (no pillar crosstalk)                | ✅                                        |
+| Platform subsystem              | ✅                                    | ❌                                      | ✅ (own subsystem; siblings via contracts) |
+| Shared hook in `src/hooks/`     | n/a                                   | ❌ NEVER import a module                 | ❌ avoid; consume contracts only          |
+| Shared context in `src/contexts/` | n/a                                 | ❌ NEVER import a module                 | ❌ avoid; consume contracts only          |
+
+---
+
+## Authoritative classification
+
+The current classification of every hook and context lives in:
+
+- `generated/manifests/hook-ownership-map.json`
+- `generated/manifests/context-ownership-map.json`
+
+These are regenerated by:
+
+```bash
+npx tsx scripts/architecture/emit-hook-context-ownership-map.ts
+```
+
+Validator:
+
+```bash
+npx tsx scripts/architecture/check-hook-context-ownership.ts
+```
+
+CI gate: `.github/workflows/check-boundaries.yml` step
+`Run hook & context ownership checker` (env
+`HOOK_CONTEXT_OWNERSHIP_ENFORCE`).
+
+---
+
+## Transitional compatibility shims
+
+High-fanout hooks (≥30 importers) may temporarily keep a one-line
+re-export at their old `src/hooks/<name>.ts` path while consumers are
+migrated. Every such shim MUST be recorded in
+`generated/manifests/hook-context-ownership-exceptions.json` with:
+
+- the new canonical path,
+- the importer count at the time the shim was created,
+- the expiry phase (e.g., `phase-7`),
+- the ADR or hardening report reference.
+
+Shims with no remaining importers are deleted in the next pass; the
+validator fails when the exception ledger contains any unjustified or
+expired entry.
+
+---
+
+## Procedure for adding a new hook or context
+
+1. Decide who semantically *owns* the hook/context using the rules
+   above — not where it would be most convenient to put it.
+2. Place the file under the canonical owner directory and export it
+   from that owner's barrel (`src/modules/<pillar>/index.ts` or
+   `src/platform/<system>/index.ts`). For shared hooks/contexts,
+   place it under `src/hooks/` / `src/contexts/`.
+3. Run `npx tsx scripts/architecture/emit-hook-context-ownership-map.ts`
+   and commit the regenerated manifests.
+4. Run `npx tsx scripts/architecture/check-hook-context-ownership.ts`
+   locally to confirm zero violations.
+
+## Procedure for moving an existing misowned hook/context
+
+1. Move the file to its canonical owner directory.
+2. Update the owner's barrel.
+3. Rewrite every importer (`rg -l "@/hooks/<name>" src` and
+   `rg -l "@/contexts/<name>" src`) to the new path.
+4. Move any colocated test from `src/hooks/__tests__/` /
+   `src/contexts/__tests__/` next to the new owner.
+5. If the importer count is ≥30, leave a one-line re-export shim at
+   the old path and add an entry to the exception ledger; otherwise
+   delete the old file.
+6. Re-run the emitter and the checker.
