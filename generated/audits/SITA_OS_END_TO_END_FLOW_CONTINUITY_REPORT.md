@@ -1,6 +1,6 @@
 # SITA OS — End-to-End Flow Continuity Report
 
-> **Status:** Phase 1 complete · Phases 2–10 in progress
+> **Status:** Phases 1–3 complete · Phases 4–10 in progress
 > **Map:** `docs/architecture/END_TO_END_FLOW_CONTINUITY_MAP.md`
 > **Baseline:** `generated/audits/end-to-end-flow-continuity-baseline.json`
 > **Validator:** `scripts/architecture/check-continuity-handoffs.ts` (warn-only until Phase 10)
@@ -102,8 +102,137 @@
 - [x] No new orchestration/continuity helpers introduced
 - [x] All findings classified into a downstream phase
 
-## Phase 2 — pending
-## Phase 3 — pending
+## Phase 2 — CRM ↔ Concierge linkage made REAL (COMPLETE)
+
+### What shipped
+
+- **Schema** — `concierge_recurring_obligations` and `errands` gained
+  `crm_contact_id` + `crm_company_id` columns with partial indexes
+  (migration `20260427042450_*`).
+- **`CRMConciergeLinkage`** rewritten — `generateDemo*` mock data
+  removed; live `useQuery` against `appointments`,
+  `concierge_recurring_obligations`, and `errands` joined on
+  `crm_contact_id`. Empty states are honest.
+- **Cross-app handoff** — `setLinkedContext` + `navigate` to
+  `/concierge/calendar`, `/concierge/recurring`, `/concierge/errands`
+  with `entityType` lineage so the destination can auto-select.
+- **`CustomerDetail`** now mounts both `CRMConciergeLinkage` (new
+  Concierge tab) and `CRMFinanceLinkage` (Financials tab) so the
+  cross-domain story is visible from the canonical entity surface.
+
+### Files changed
+
+- `src/modules/business/components/business/crm/CRMConciergeLinkage.tsx`
+- `src/modules/business/pages/CustomerDetail.tsx`
+- `src/integrations/supabase/types.ts` (auto-regenerated)
+
+### Files added
+
+- `supabase/migrations/20260427042450_*.sql`
+
+### Anti-duplication
+
+- Reused `setLinkedContext` / `consumeLinkedContext` — no parallel
+  context bus.
+- Reused `fromTable` from `@/lib/supabase-helpers` — no new query layer.
+- Reused existing `CRMFinanceLinkage` mounting pattern.
+
+## Phase 3 — Quote → Proposal → Invoice continuity (COMPLETE)
+
+### What shipped
+
+- **Conversion handlers (already shipped, verified)** —
+  `business.quote.convert-to-proposal`,
+  `business.quote.convert-to-invoice`,
+  `business.proposal.convert-to-invoice` registered in
+  `src/lib/kernel-handlers/business-handlers.ts`. All three propagate
+  full lineage (`quote_id`, `proposal_id`, `opportunity_id`,
+  `crm_contact_id`, `crm_company_id`, `customer_id`) and write
+  back-link columns (`converted_proposal_id`, `converted_invoice_id`)
+  so `v_revenue_lineage` projects the chain.
+- **Conversion CTAs** — `QuotesWorkspace` shows "Convert to Proposal"
+  on accepted quotes and "Convert to Invoice" on selection;
+  `ProposalsContracts` shows "Convert to Invoice" on accepted/signed
+  proposals. All three call `setLinkedContext` and navigate to the
+  destination, where `consumeLinkedContext` auto-selects the new row.
+- **Lineage badges** — Quotes show upstream `opportunity` link and
+  downstream `proposal` / `invoice` links; Proposals show upstream
+  `quote` link and downstream `invoice` link.
+- **NEW — Invoice upstream lineage badges** —
+  `InvoiceDetailPane` now renders "← From proposal: …" and
+  "← From quote: …" buttons (using `source_proposal_title` /
+  `source_quote_title` already loaded by `InvoicesCollections`'s
+  query) that call `setLinkedContext` and navigate back to the
+  upstream surface. This closes the bidirectional lineage loop —
+  every node in the quote → proposal → invoice chain can now navigate
+  to both its parent and its child.
+- **PDF generation & download** — `useGenerateInvoicePdf` /
+  `useDownloadInvoicePdf` wired in `InvoiceDetailPane`, calling the
+  `business-pdf-generate` edge function. Download is gated on
+  `invoice.metadata.pdf_path` existing.
+- **E-sign** — `useRequestSignature` /
+  `useResendSignatureLink` / `usePendingSignatures` wired into
+  both `ProposalsContracts` and `InvoiceDetailPane` against the
+  `business-esign-request` edge function. Pending signatures list
+  with resend confirmation.
+- **HTML preview & email send** — `useInvoiceRenderHtml` /
+  `useInvoiceSend` / `useDispatchComm` for in-line HTML preview and
+  recipient-aware email dispatch.
+
+### Files changed
+
+- `src/modules/business/components/business/InvoiceDetailPane.tsx` —
+  added `useNavigate`, `setLinkedContext`, and the upstream lineage
+  badge block.
+
+### Files verified (no change needed — already complete)
+
+- `src/lib/kernel-handlers/business-handlers.ts` — three converters.
+- `src/modules/business/pages/QuotesWorkspace.tsx` — CTAs +
+  consume + lineage badges.
+- `src/modules/business/pages/ProposalsContracts.tsx` — CTA +
+  consume + lineage badges + e-sign.
+- `src/modules/business/pages/InvoicesCollections.tsx` — consume +
+  joined query loading `source_quote_title` / `source_proposal_title`.
+- `src/hooks/use-phase10-actions.ts` — PDF + e-sign hooks.
+- `src/hooks/use-backend-actions.ts` — invoice render/send hooks.
+
+### Anti-duplication
+
+- Reused `useAction` for all three conversion mutations — no new
+  orchestration service.
+- Reused `setLinkedContext` / `consumeLinkedContext` for handoff.
+- Reused `fromTable("invoices").select(... quotes(title), proposals(title))`
+  join (already in `InvoicesCollections`) instead of adding a second
+  query in the detail pane.
+- Did NOT introduce a new lineage helper, lineage hook, or lineage
+  table — `v_revenue_lineage` is the canonical projection.
+
+### Baseline delta
+
+| Metric | Phase 1 | Phase 3 |
+|---|---|---|
+| `setLinkedContext` call sites | 13 | **15** (+2 in InvoiceDetailPane) |
+| `consumeLinkedContext` call sites | 6 | 6 |
+| Convert-to-* action handlers | 4 | 4 |
+
+### Phase 3 exit criteria
+
+- [x] All three conversions execute end-to-end with lineage columns set
+- [x] Upstream and downstream lineage badges visible on all three surfaces
+- [x] PDF generation/download wired and gated on availability
+- [x] E-sign request + resend + pending list wired on proposals AND invoices
+- [x] No fake "coming soon" continuity affordances on the lineage path
+- [x] No duplicate orchestration introduced
+
+### Honest deferred (NOT Phase 3)
+
+- `Templates`, `Clauses`, `Win/Loss Analysis` tabs in
+  `ProposalsContracts` remain `PremiumEmptyState`s — explicitly
+  labeled "coming soon". Not in Phase 3 scope.
+- `opportunity` orphan handoff (Phase 3 carryover) — `OpportunitiesCenter`
+  still does not call `consumeLinkedContext`. Tracked for Phase 4.
+
 ## Phase 4 — pending
 ## Phase 5 — pending
 ## Phase 6 — pending
