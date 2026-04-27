@@ -11,6 +11,8 @@ import {
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { PremiumEmptyState } from "@/platform/sita/components/sita/PremiumEmptyState";
 import { useCustomerDetail } from "@/modules/business/hooks/use-customer-detail";
+import { CRMFinanceLinkage } from "@/modules/business/components/business/crm/CRMFinanceLinkage";
+import { CRMConciergeLinkage } from "@/modules/business/components/business/crm/CRMConciergeLinkage";
 
 const TIMELINE_ICONS: Record<string, typeof FileText> = {
   invoice: DollarSign,
@@ -119,6 +121,7 @@ const CustomerDetail = ({ customerId: propId }: { customerId?: string }) => {
           { key: "overview", label: "Overview" },
           { key: "timeline", label: "Timeline", count: customer.timeline.length },
           { key: "financials", label: "Financials", count: customer.invoices.length },
+          { key: "concierge", label: "Concierge" },
           { key: "documents", label: "Documents", count: customer.documents.length },
           { key: "boardroom", label: "Boardroom" },
         ]}
@@ -214,6 +217,7 @@ const CustomerDetail = ({ customerId: propId }: { customerId?: string }) => {
 
       {tab === "financials" && (
         <div className="space-y-6">
+          <CRMFinanceLinkage entityType="contact" entityId={customer.id} entityName={customer.name} healthScore={customer.healthScore} />
           <div className="grid gap-3 sm:grid-cols-3">
             <KPITile label="Lifetime Revenue" value={customer.totalRevenue} trend="up" className="gradient-sita-subtle" />
             <KPITile label="Payment Reliability" value={customer.avgPayDays <= 7 ? "Excellent" : customer.avgPayDays <= 14 ? "Good" : "Needs Attention"} sub={`${customer.avgPayDays} day avg`} />
@@ -241,6 +245,12 @@ const CustomerDetail = ({ customerId: propId }: { customerId?: string }) => {
               })}
             </div>
           </SitaCard>
+        </div>
+      )}
+
+      {tab === "concierge" && (
+        <div className="space-y-6">
+          <CRMConciergeLinkage entityType="contact" entityId={customer.id} entityName={customer.name} />
         </div>
       )}
 
