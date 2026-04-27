@@ -88,3 +88,75 @@ _(none — Phase 1 is purely additive.)_
   `provider: 'manual' | 'simulated'` only)
 - Cross-org / multi-tenant link sharing (single-org assumption preserved)
 - Mobile push notification continuity (per `mem://constraints/notification-scope`)
+
+---
+
+## Phase 2 — CRM ↔ Finance hardening (DONE)
+
+### Old weakness
+
+- `crm_customer_link` was contact-only at the service layer — no helper to
+  resolve customers reachable from a `crm_company`.
+- Finance detail surfaces (Invoice, Quote) had **no reverse navigation** to
+  the originating CRM contact, even though the FK column was already
+  populated by the kernel handlers.
+- The bridge service had no helper to walk `customer → CRM contact/company`
+  for back-link UIs.
+
+### New structural linkage
+
+- **Service** (extended, no new file): `crm-finance-bridge.service.ts` gains
+  `findCustomersForCompany`, `findPrimaryCustomerForCompany`, and
+  `resolveCrmEntityForCustomer`. All reuse the existing
+  `crm_customer_link` table, `getUserId` helper, and `fromTable` chain — no
+  parallel lookup logic.
+- **UI** (new): `FinanceContactBackLink` component (`pill` + `card`
+  variants), embedded in `InvoiceDetailPane` and `QuotesWorkspace` detail
+  pane. Uses `setLinkedContext` for handoff. Renders nothing when no link
+  exists — preserves Empty-State Honesty.
+- **Auto-link** on quote/invoice create paths was **already implemented**
+  via `resolveCustomerId` in `business-handlers.ts` (verified). No
+  duplication added.
+- **Schema migration**: not required. `crm_customer_link.crm_company_id`
+  index already exists; `crm_contact_id NOT NULL` semantics are preserved
+  (company linkage is naturally expressed as the union of contact links).
+
+### Canonical systems reused
+
+- `crm_customer_link` table + RLS
+- `crm-finance-bridge.service.ts`
+- `setLinkedContext()` (CrossAppAction)
+- `fromTable` Supabase helper
+- `useAuth` context, `@tanstack/react-query`
+
+### Files added
+
+- `src/modules/business/components/business/finance/FinanceContactBackLink.tsx`
+- `src/__tests__/integration/phase-2-crm-finance-hardening.test.ts` (5 tests)
+
+### Files modified
+
+- `src/lib/services/business-os/crm-finance-bridge.service.ts` (+3 helpers)
+- `src/modules/business/components/business/InvoiceDetailPane.tsx`
+- `src/modules/business/pages/QuotesWorkspace.tsx`
+
+### Tests protecting it
+
+- `phase-2-crm-finance-hardening.test.ts` — 5 assertions across
+  `findCustomersForCompany` (dedup + isolation), `findPrimaryCustomerForCompany`
+  (recency heuristic + null path), `resolveCrmEntityForCustomer` (truthful empty)
+- Pre-existing `crm-finance-bridge.test.ts` continues to cover contact-side
+  helpers and ledger summarization.
+
+### Gate
+
+- 68/68 tests passing (57 IA + 6 Phase 1 + 5 Phase 2)
+- `tsc --noEmit` clean
+- Truth map unchanged
+
+### Remaining gaps (deferred to later phases)
+
+- `CollectionsWorkspace` uses fixture-shape selection (`customerName`, not
+  `customer_id`), so the back-link is not wired there yet. Phase 6
+  (recovered value ↔ Finance) will replace that fixture surface with the
+  DB-backed ledger and the back-link will fall in naturally.
