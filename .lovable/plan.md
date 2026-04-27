@@ -68,6 +68,13 @@ After reading the actual repository, the **continuity infrastructure is already 
 
 ## PHASE 2 — CRM↔Concierge linkage made REAL (kill the fake)
 
+**STATUS: ✅ DONE (2026-04-27)**
+
+- Migration added `crm_contact_id` / `crm_company_id` (+ indexes) to `concierge_recurring_obligations` and `errands`; `appointments` already had them.
+- `CRMConciergeLinkage.tsx` rewritten: zero `generateDemo*`, three live `useQuery` calls via `fromTable`, canonical `setLinkedContext` handoffs to `/concierge/calendar|recurring|errands`, honest `PremiumEmptyState` when no links exist.
+- `CustomerDetail.tsx` now mounts both `CRMFinanceLinkage` (Financials tab) and `CRMConciergeLinkage` (new Concierge tab) — cross-domain story is visible from the canonical entity surface.
+- Typecheck clean.
+
 **Goal:** Replace `generateDemoAppointments/Obligations/Errands` with real queries against `appointments`, `recurring_obligations`, `errands` filtered by `crm_contact_id`/`crm_company_id`. If a table lacks the link column, add it via migration.
 
 **Tasks:**
